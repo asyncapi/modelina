@@ -1,4 +1,3 @@
 node_modules
 docs
 lib
-src/transpiler/__tests__/__transpiled_testfiles/
