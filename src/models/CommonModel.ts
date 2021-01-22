@@ -8,6 +8,13 @@ import { Schema } from "./Schema";
 export class CommonModel extends CommonSchema<CommonModel>{
     "x-extend"?: string
     "x-original-schema"?: Schema
+
+    /**
+     * Transform object into a type of CommonModel.
+     * 
+     * @param object to transform
+     * @returns CommonModel instance of the object
+     */
     static toCommonModel(object: Object) : CommonModel{
         let newCommonModel = new CommonModel();
         newCommonModel = Object.assign(newCommonModel, object);

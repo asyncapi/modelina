@@ -2,6 +2,7 @@ import { CommonSchema } from "./CommonSchema";
 
 /**
  * JSON Schema Draft 7 model
+ * @extends CommonSchema<Schema>
  */
 export class Schema extends CommonSchema<Schema>{
     title?: string;
@@ -42,10 +43,18 @@ export class Schema extends CommonSchema<Schema>{
     writeOnly?: boolean;
     examples?: Object[];
 
+    /**
+     * Transform object into a type of Schema.
+     * 
+     * @param object to transform
+     * @returns CommonModel instance of the object
+     */
     static toSchema(object: Object) : Schema{
         let schema = new Schema();
         schema = Object.assign(schema, object);
         schema = CommonSchema.transformSchema(schema, Schema.toSchema);
+
+        //Transform JSON Schema properties which contain nested schemas into an instance of Schema
         if(schema.allOf !== undefined){
             schema.allOf = schema.allOf.map((item) => Schema.toSchema(item))
         }
