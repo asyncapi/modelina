@@ -115,20 +115,20 @@ describe('CommonModel', function() {
   });
   describe('x-extend', function() {
     test('should return a string ', function() {
-      const doc: any = { "x-extend": 'reference' };
+      const doc: any = { "extend": 'reference' };
       const d = CommonModel.toCommonModel(doc);
-      expect(d['x-extend']).not.toBeUndefined();
-      expect(typeof d['x-extend']).toEqual('string');
-      expect(d['x-extend']).toEqual(doc['x-extend']);
+      expect(d.extend).not.toBeUndefined();
+      expect(typeof d.extend).toEqual('string');
+      expect(d.extend).toEqual(doc.extend);
     });
   });
   describe('x-original-schema', function() {
     test('should return a schema', function() {
-      const doc: any = { "x-original-schema": { "type": "string", "minLength": 2 } };
+      const doc: any = { "originalSchema": { "type": "string", "minLength": 2 } };
       const d = CommonModel.toCommonModel(doc);
-      expect(d['x-original-schema']).not.toBeUndefined();
-      expect(d['x-original-schema']!.constructor.name).toEqual('Schema');
-      expect(d['x-original-schema']).toEqual(doc['x-original-schema']);
+      expect(d.originalSchema).not.toBeUndefined();
+      expect(d.originalSchema!.constructor.name).toEqual('Schema');
+      expect(d.originalSchema).toEqual(doc.originalSchema);
     });
   });
 });
