@@ -1,0 +1,107 @@
+{
+  "models": [
+    {
+      "$id": "address",
+      "type": "object",
+      "properties": {
+        "street_address": { "type": "string" },
+        "city":           { "type": "string" },
+        "state":          { "type": "string" }
+      },
+      "originalSchema": {
+        "type": "object",
+        "properties": {
+          "street_address": { "type": "string" },
+          "city":           { "type": "string" },
+          "state":          { "type": "string" }
+        }
+      }
+    },
+    {
+      "$id": "shipping_address",
+      "extend": "address", 
+      "type": "object",
+      "properties": {
+        "type": { "enum": [ "residential", "business" ] }
+      },
+      "originalSchema": {
+        "allOf": [
+          { "$ref": "#/definitions/address" },
+          { 
+            "properties": { 
+              "type": { 
+                "enum": [ "residential", "business" ] 
+              } 
+            },
+            "required": ["type"]
+          }
+        ]
+      }
+    },
+    { 
+      "type": "object",
+      "properties": {
+        "billing_address": { "$ref": "address" },
+        "shipping_address": { "$ref": "shipping_address"}
+      },
+      "originalSchema": {
+        "definitions": {
+          "address": {
+            "type": "object",
+            "properties": {
+              "street_address": { "type": "string" },
+              "city":           { "type": "string" },
+              "state":          { "type": "string" }
+            }
+          }
+        },
+        "type": "object",
+        "properties": {
+          "billing_address": { "$ref": "#/definitions/address" },
+          "shipping_address": {
+            "allOf": [
+              { "$ref": "#/definitions/address" },
+              { 
+                "properties": { 
+                  "type": { 
+                    "enum": [ "residential", "business" ] 
+                  } 
+                },
+                "required": ["type"]
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "originalSchema": {
+    "definitions": {
+      "address": {
+        "type": "object",
+        "properties": {
+          "street_address": { "type": "string" },
+          "city":           { "type": "string" },
+          "state":          { "type": "string" }
+        }
+      }
+    },
+    "type": "object",
+    "properties": {
+      "billing_address": { "$ref": "#/definitions/address" },
+      "shipping_address": {
+        "allOf": [
+          { "$ref": "#/definitions/address" },
+          { 
+            "properties": { 
+              "type": { 
+                "enum": [ "residential", "business" ] 
+              } 
+            },
+            "required": ["type"]
+          }
+        ]
+      }
+    }
+  }
+}

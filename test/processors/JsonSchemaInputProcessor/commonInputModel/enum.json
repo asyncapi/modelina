@@ -1,0 +1,32 @@
+
+{
+  "models": [
+    { 
+      "type": "object",
+      "properties": { 
+        "address_type": {
+          "type": ["string", "number"],
+          "enum": [ "residential", "business", 123 ] 
+        }
+      },
+      "originalSchema": { 
+        "type": "object",
+        "properties": { 
+          "address_type": {
+            "type": ["string", "number"],
+            "enum": [ "residential", "business", 123 ] 
+          }
+        }
+      }
+    }
+  ],
+  "originalSchema": { 
+    "type": "object",
+    "properties": { 
+      "address_type": {
+        "type": ["string", "number"],
+        "enum": [ "residential", "business", 123 ] 
+      }
+    }
+  }
+}

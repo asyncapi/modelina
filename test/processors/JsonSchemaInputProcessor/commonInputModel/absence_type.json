@@ -1,0 +1,24 @@
+{
+  "models": [
+    {
+      "type": "object",
+      "properties": {
+        "foo": {
+            "type": ["string", "object", "number", "array", "boolean", "null"]
+        }
+      },
+      "originalSchema": {
+        "type": "object",
+        "properties": {
+            "foo": true
+        }
+      }
+    }
+  ],
+  "originalSchema": {
+    "type": "object",
+    "properties": {
+        "foo": true
+    }
+  }
+}
