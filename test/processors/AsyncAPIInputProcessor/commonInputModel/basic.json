@@ -1,6 +1,6 @@
 {
-  "models": [
-    {
+  "models": {
+    "ano": {
       "type": "object",
       "properties": {
         "email": {
@@ -17,8 +17,8 @@
         }
       }
     }
-  ],
-  "originalSchema": {
+  },
+  "originalInput": {
     "asyncapi": "2.0.0",
     "defaultContentType": "application/json",
     "externalDocs": {

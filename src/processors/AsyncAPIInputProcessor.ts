@@ -1,8 +1,8 @@
 import { CommonInputModel } from '../models/CommonInputModel';
-import { I_InputProcessor } from '../interfaces/I_InputProcessor';
+import { AbstractInputProcessor } from '../models/AbstractInputProcessor';
 import {parse, AsyncAPIDocument, Schema as AsyncAPISchema} from '@asyncapi/parser';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
-export class AsyncAPIInputProcessor implements I_InputProcessor {
+export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     /**
      * Process the input as an AsyncAPI document
      * 
@@ -17,9 +17,8 @@ export class AsyncAPIInputProcessor implements I_InputProcessor {
         }
         let common = new CommonInputModel();
         common.originalInput= doc;
-        common.models = [];
         doc.allSchemas().forEach((schema: AsyncAPISchema) => {
-            common.models = common.models.merge(JsonSchemaInputProcessor.convertSchemaToCommonModel(schema.json()));
+            common.models = new Map([... Array.from(common.models.entries()), ...Array.from(JsonSchemaInputProcessor.convertSchemaToCommonModel(schema.json()).entries())]);
         });
         return common;
     }
