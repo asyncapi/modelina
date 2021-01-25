@@ -1,7 +1,7 @@
 
 {
-  "models": [
-    {
+  "models": {
+    "<Anonym schema id>": {
       "type": "object",
       "required": ["country"],
       "properties": {
@@ -31,8 +31,8 @@
         }
       }
     }
-  ],
-  "originalSchema": {
+  },
+  "originalInput": {
     "type": "object",
     "properties": {
       "street_address": {

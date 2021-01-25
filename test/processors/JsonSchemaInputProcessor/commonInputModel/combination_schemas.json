@@ -1,6 +1,6 @@
 {
-  "models": [
-    {
+  "models": {
+    "address": {
       "$id": "address",
       "type": "object",
       "properties": {
@@ -17,7 +17,7 @@
         }
       }
     },
-    {
+    "shipping_address": {
       "$id": "shipping_address",
       "extend": "address", 
       "type": "object",
@@ -38,7 +38,7 @@
         ]
       }
     },
-    { 
+    "<Anonym schema id>": { 
       "type": "object",
       "properties": {
         "billing_address": { "$ref": "address" },
@@ -74,7 +74,7 @@
         }
       }
     }
-  ],
+  },
   "originalSchema": {
     "definitions": {
       "address": {

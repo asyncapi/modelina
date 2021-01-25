@@ -1,6 +1,6 @@
 {
-  "models": [
-    {
+  "models": {
+    "<Anonym schema id>": {
       "type": "array",
       "items": [
         {
@@ -27,8 +27,8 @@
         ]
       }
     }
-  ],
-  "originalSchema": {
+  },
+  "originalInput": {
     "type": "array",
     "items": [
       {

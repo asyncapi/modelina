@@ -1,6 +1,6 @@
 {
-  "models": [
-    {
+  "models": {
+    "<Anonym schema id>": {
       "type": "object",
       "properties": {
         "foo": {
@@ -14,8 +14,8 @@
         }
       }
     }
-  ],
-  "originalSchema": {
+  },
+  "originalInput": {
     "type": "object",
     "properties": {
         "foo": true

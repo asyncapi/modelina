@@ -1,6 +1,6 @@
 {
-  "models": [
-    {
+  "models": {
+    "<Anonym schema id>": {
       "type": "object",
       "properties": {
         "street_address": {
@@ -27,7 +27,7 @@
         }
       }
     },
-    {
+    "street_address": {
       "$id": "street_address",
       "type": "object",
       "properties": {
@@ -44,8 +44,8 @@
         }
       }
     }
-  ],
-  "originalSchema": {
+  },
+  "originalInput": {
     "type": "object",
     "properties": {
       "street_address": {
