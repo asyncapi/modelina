@@ -1,0 +1,32 @@
+
+{
+  "models":{
+    "<Anonym schema id>" : { 
+      "type": "object",
+      "properties": { 
+        "address_type": {
+          "type": ["string", "number"],
+          "enum": [ "residential", "business", 123 ] 
+        }
+      },
+      "originalSchema": { 
+        "type": "object",
+        "properties": { 
+          "address_type": {
+            "type": ["string", "number"],
+            "enum": [ "residential", "business", 123 ] 
+          }
+        }
+      }
+    }
+  },
+  "originalInput": { 
+    "type": "object",
+    "properties": { 
+      "address_type": {
+        "type": ["string", "number"],
+        "enum": [ "residential", "business", 123 ] 
+      }
+    }
+  }
+}
