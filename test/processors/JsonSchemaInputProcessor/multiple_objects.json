@@ -1,0 +1,16 @@
+{
+  "type": "object",
+  "properties": {
+    "street_address": {
+      "type": "object",
+      "properties": {
+        "floor": {
+          "type": "number"
+        }
+      }
+    },
+    "country": {
+      "enum": ["United States of America", "Canada"]
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "models": {
+    "<Anonym schema id>": {
+      "type": "array",
+      "items": [
+        {
+          "type": ["string", "number"]
+        }
+      ],
+      "originalSchema": {
+        "type": "array",
+        "items": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "string"
+          },
+          {
+            "type": "string",
+            "enum": ["Street", "Avenue", "Boulevard"]
+          },
+          {
+            "type": "string",
+            "enum": ["NW", "NE", "SW", "SE"]
+          }
+        ]
+      }
+    }
+  },
+  "originalInput": {
+    "type": "array",
+    "items": [
+      {
+        "type": "number"
+      },
+      {
+        "type": "string"
+      },
+      {
+        "type": "string",
+        "enum": ["Street", "Avenue", "Boulevard"]
+      },
+      {
+        "type": "string",
+        "enum": ["NW", "NE", "SW", "SE"]
+      }
+    ]
+  }
+}
