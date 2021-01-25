@@ -16,10 +16,10 @@ export class AsyncAPIInputProcessor implements I_InputProcessor {
             doc = input;
         }
         let common = new CommonInputModel();
-        common.originalSchema = doc;
+        common.originalInput= doc;
         common.models = [];
         doc.allSchemas().forEach((schema: AsyncAPISchema) => {
-            common.models = common.models.concat(JsonSchemaInputProcessor.convertSchemaToCommonModel(schema.json()));
+            common.models = common.models.merge(JsonSchemaInputProcessor.convertSchemaToCommonModel(schema.json()));
         });
         return common;
     }
