@@ -3,14 +3,12 @@ import { I_InputProcessor } from '../interfaces/I_InputProcessor';
 import {parse, AsyncAPIDocument, Schema as AsyncAPISchema} from '@asyncapi/parser';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
 export class AsyncAPIInputProcessor implements I_InputProcessor {
-
     /**
+     * Process the input as an AsyncAPI document
      * 
      * @param input 
      */
     async process(input: any): Promise<CommonInputModel> {
-        // Normalize input..
-        // Should we use our parser here?
         var doc: AsyncAPIDocument;
         if(!AsyncAPIInputProcessor.isFromParser(input)){
             doc = await parse(input);
@@ -20,8 +18,7 @@ export class AsyncAPIInputProcessor implements I_InputProcessor {
         let common = new CommonInputModel();
         common.originalSchema = doc;
         common.models = [];
-        const allSchemas = doc.allSchemas();
-        allSchemas.forEach((schema: AsyncAPISchema) => {
+        doc.allSchemas().forEach((schema: AsyncAPISchema) => {
             common.models = common.models.concat(JsonSchemaInputProcessor.convertSchemaToCommonModel(schema.json()));
         });
         return common;

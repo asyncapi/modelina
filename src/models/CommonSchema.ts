@@ -13,6 +13,9 @@ export class CommonSchema<T> {
     /**
      * Function to transform nested schemas into type of generic extended class
      * 
+     * Since both CommonModel and Schema uses these properties we need a common function to
+     * convert nested schemas into their corresponding class.
+     * 
      * @param object to be transformed
      * @param transformationSchemaCallback callback to transform nested schemas
      */

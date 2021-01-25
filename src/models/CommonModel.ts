@@ -3,6 +3,7 @@ import { Schema } from "./Schema";
 
 /**
  * Common representation for the renderers.
+ * 
  * @extends CommonSchema<CommonModel>
  */
 export class CommonModel extends CommonSchema<CommonModel>{
