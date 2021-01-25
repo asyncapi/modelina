@@ -75,7 +75,7 @@
       }
     }
   },
-  "originalSchema": {
+  "originalInput": {
     "definitions": {
       "address": {
         "type": "object",
