@@ -1,3 +1,5 @@
+import { AsyncAPIInputProcessor } from "./processors/AsyncAPIInputProcessor";
+import { JsonSchemaInputProcessor } from "./processors/JsonSchemaInputProcessor";
 import { AbstractInputProcessor } from "./models/AbstractInputProcessor";
 import { CommonInputModel } from "./models/CommonInputModel";
 
@@ -9,6 +11,10 @@ export class InputProcessor extends AbstractInputProcessor {
 
   constructor(){
     super();
+    const asyncAPI = new AsyncAPIInputProcessor();
+    this.addProcessor("asyncapi", asyncAPI); 
+    const jsonSchema = new JsonSchemaInputProcessor();
+    this.addProcessor("json-schema", jsonSchema);
   }
 
   /**

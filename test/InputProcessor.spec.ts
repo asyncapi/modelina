@@ -5,15 +5,8 @@ import { InputProcessor } from '../src/InputProcessor';
 import { AsyncAPIInputProcessor } from '../src/processors/AsyncAPIInputProcessor';
 import { JsonSchemaInputProcessor } from '../src/processors/JsonSchemaInputProcessor';
 describe('InputProcessor', function() {
-    let mainProcessor : InputProcessor;
-    beforeAll(() => {
-        mainProcessor = new InputProcessor();
-        const asyncAPI = new AsyncAPIInputProcessor();
-        mainProcessor.addProcessor("asyncapi", asyncAPI); 
-        const jsonSchema = new JsonSchemaInputProcessor();
-        mainProcessor.addProcessor("json-schema", jsonSchema);
-    });
-
+    let mainProcessor : InputProcessor = new InputProcessor();
+    
     /**
      * The input schema when processed should be equals to the expected CommonInputModel
      * 
