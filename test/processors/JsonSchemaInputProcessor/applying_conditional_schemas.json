@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "properties": {
+    "street_address": {
+      "type": "string"
+    },
+    "country": {
+      "enum": ["United States of America", "Canada"]
+    }
+  },
+  "if": {
+    "properties": { "street_address": { "const": "Some street" } }
+  },
+  "then": {
+    "required": ["country"],
+    "properties": { "country": { "enum": ["Canada2", "something else"] } }
+  }
+}

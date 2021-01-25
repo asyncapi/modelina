@@ -1,0 +1,64 @@
+{
+  "models": {
+    "<Anonym schema id>": {
+      "type": "object",
+      "properties": {
+        "street_address": {
+          "$ref": "street_address"
+        },
+        "country": {
+          "enum": ["United States of America", "Canada"]
+        }
+      },
+      "originalSchema": {
+        "type": "object",
+        "properties": {
+          "street_address": {
+            "type": "object",
+            "properties": {
+              "floor": {
+                "type": "number"
+              }
+            }
+          },
+          "country": {
+            "enum": ["United States of America", "Canada"]
+          }
+        }
+      }
+    },
+    "street_address": {
+      "$id": "street_address",
+      "type": "object",
+      "properties": {
+        "floor": {
+          "type": "number"
+        }
+      },
+      "originalSchema": {
+        "type": "object",
+        "properties": {
+          "floor": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  },
+  "originalInput": {
+    "type": "object",
+    "properties": {
+      "street_address": {
+        "type": "object",
+        "properties": {
+          "floor": {
+            "type": "number"
+          }
+        }
+      },
+      "country": {
+        "enum": ["United States of America", "Canada"]
+      }
+    }
+  }
+}
