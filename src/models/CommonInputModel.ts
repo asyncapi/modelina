@@ -1,8 +1,6 @@
 import { CommonModel } from './CommonModel';
-import { Schema } from './Schema'; 
-
 export class CommonInputModel {
-    models: CommonModel[] = [];
+    models: Map<string, CommonModel> = new Map();
     customizations: Object = {};
-    originalSchema: any = {};
+    originalInput: any = {};
 }

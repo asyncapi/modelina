@@ -4,7 +4,7 @@ import { CommonModel } from '../models/CommonModel';
 export class JsonSchemaInputProcessor implements I_InputProcessor {
     async process(object: any): Promise<CommonInputModel> {
         const commonInputModel = new CommonInputModel();
-        commonInputModel.originalSchema = object;
+        commonInputModel.originalInput = object;
         commonInputModel.models = JsonSchemaInputProcessor.convertSchemaToCommonModel(object);
         return commonInputModel;
     }
@@ -14,7 +14,7 @@ export class JsonSchemaInputProcessor implements I_InputProcessor {
      * 
      * @param schema to simplify to common model
      */
-    static convertSchemaToCommonModel(schema: any) : CommonModel[]{
+    static convertSchemaToCommonModel(schema: any) : Map<string, CommonModel>{
         //To be defined in https://github.com/asyncapi/shape-up-process/issues/53
         throw new Error('Method not implemented.');
     }
