@@ -1,7 +1,7 @@
 import { CommonInputModel } from '../models/CommonInputModel';
-import { I_InputProcessor } from '../interfaces/I_InputProcessor';
+import { AbstractInputProcessor } from '../models/AbstractInputProcessor';
 import { CommonModel } from '../models/CommonModel';
-export class JsonSchemaInputProcessor implements I_InputProcessor {
+export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     async process(object: any): Promise<CommonInputModel> {
         const commonInputModel = new CommonInputModel();
         commonInputModel.originalInput = object;
