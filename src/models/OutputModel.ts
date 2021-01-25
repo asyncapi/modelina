@@ -17,4 +17,8 @@ export class OutputModel {
   static toOutputModel(args: IOutputModel): OutputModel {
     return new this(args.content, args.commonModel);
   }
+
+  static toOutputModels(args: Array<IOutputModel>): Array<OutputModel> {
+    return args.map(arg => new this(arg.content, arg.commonModel));
+  }
 }
