@@ -1,9 +1,8 @@
 import { CommonModel } from "./CommonModel"
 
-interface ToOutputModel {
+export interface IOutputModel {
   content: string;
   commonModel: CommonModel;
-  models?: OutputModel[];
 }
 
 /**
@@ -13,10 +12,9 @@ export class OutputModel {
   constructor(
     public readonly content: string,
     public readonly commonModel: CommonModel,
-    public readonly models: OutputModel[] = [],
   ) {}
 
-  static toOutputModel(args: ToOutputModel): OutputModel {
-    return new this(args.content, args.commonModel, args.models);
+  static toOutputModel(args: IOutputModel): OutputModel {
+    return new this(args.content, args.commonModel);
   }
 }
