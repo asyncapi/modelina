@@ -2,6 +2,7 @@ import { CommonSchema } from "./CommonSchema";
 
 /**
  * JSON Schema Draft 7 model
+ * 
  * @extends CommonSchema<Schema>
  */
 export class Schema extends CommonSchema<Schema>{

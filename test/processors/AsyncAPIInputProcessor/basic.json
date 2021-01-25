@@ -1,0 +1,38 @@
+{
+  "asyncapi": "2.0.0",
+  "defaultContentType": "application/json",
+  "externalDocs": {
+    "description": "Find more info here",
+    "url": "https://example.com"
+  },
+  "tags": [
+    {
+      "name": "user",
+      "description": "user signed up"
+    },
+    {
+      "name": "signup"
+    }
+  ],
+  "info": {
+    "title": "Signup service example (internal)",
+    "version": "0.1.0"
+  },
+  "channels": {
+    "/user/signedup": {
+      "subscribe": {
+        "message": {
+          "payload": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "format": "email"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
