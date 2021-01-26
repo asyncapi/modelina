@@ -1,0 +1,8 @@
+{ 
+  "type": "object",
+  "properties": { 
+    "address_type": { 
+      "enum": [ "residential", "business", 123 ] 
+    }
+  }
+}

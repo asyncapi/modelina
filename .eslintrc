@@ -4,8 +4,7 @@ env:
 plugins:
   - sonarjs
   - security
-  - react
-
+  
 extends:
   - eslint:recommended
   - plugin:sonarjs/recommended

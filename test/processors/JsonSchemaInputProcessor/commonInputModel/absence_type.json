@@ -1,0 +1,24 @@
+{
+  "models": {
+    "<Anonym schema id>": {
+      "type": "object",
+      "properties": {
+        "foo": {
+            "type": ["string", "object", "number", "array", "boolean", "null"]
+        }
+      },
+      "originalSchema": {
+        "type": "object",
+        "properties": {
+            "foo": true
+        }
+      }
+    }
+  },
+  "originalInput": {
+    "type": "object",
+    "properties": {
+        "foo": true
+    }
+  }
+}
