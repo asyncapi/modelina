@@ -59,7 +59,6 @@
     "get:name": "echo $npm_package_name",
     "release": "semantic-release",
     "generate:assets": "npm run docs",
-    "generate:readme:toc": "markdown-toc -i README.md",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION"
   },
   "publishConfig": {
