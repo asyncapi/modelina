@@ -1,4 +1,4 @@
-import { CommonInputModel, OutputModel } from "../models";
+import { CommonInputModel, CommonModel, OutputModel } from "../models";
 import { inputProcessor } from "../processors";
 
 export abstract class AbstractGenerator<O = object> {
@@ -7,15 +7,24 @@ export abstract class AbstractGenerator<O = object> {
     public readonly options?: O,
   ) {}
 
-  public abstract render(model: CommonInputModel): Promise<OutputModel>;
+  public abstract render(model: CommonModel, modelName: string, inputModel: CommonInputModel): Promise<string>;
 
-  public generate(commonModel: CommonInputModel): Promise<OutputModel>;
-  public generate(object: any, type: string): Promise<OutputModel>;
-  public async generate(commonModelOrObject: any, type: string = 'json-schema'): Promise<OutputModel> {
-    if (commonModelOrObject instanceof CommonInputModel) {
-      return this.render(commonModelOrObject);
+  public generate(input: CommonInputModel): Promise<OutputModel[]>;
+  public generate(input: any, type: string): Promise<OutputModel[]>;
+  public async generate(input: any, type: string = 'json-schema'): Promise<OutputModel[]> {
+    if (input instanceof CommonInputModel) {
+      return this.generateModels(input);
     }
-    const model = await inputProcessor.process(commonModelOrObject, type);
-    return this.render(model);
+    const model = await inputProcessor.process(input, type);
+    return this.generateModels(model);
+  }
+
+  private generateModels(inputModel: CommonInputModel): Promise<OutputModel[]> {
+    const models = inputModel.models;
+    const renders = Array.from(models).map(async ([modelName, model]) => {
+      const result = await this.render(model, modelName, inputModel);
+      return OutputModel.toOutputModel({ result, model, modelName, inputModel });
+    })
+    return Promise.all(renders);
   }
 }

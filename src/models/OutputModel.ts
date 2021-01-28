@@ -1,7 +1,10 @@
 import { CommonInputModel } from "./CommonInputModel"
+import { CommonModel } from "./CommonModel";
 
 export interface IOutputModel {
-  content: string;
+  result: string;
+  model: CommonModel;
+  modelName: string;
   inputModel: CommonInputModel;
 }
 
@@ -10,7 +13,9 @@ export interface IOutputModel {
  */
 export class OutputModel {
   constructor(
-    public readonly content: string,
+    public readonly result: string,
+    public readonly model: CommonModel,
+    public readonly modelName: string,
     public readonly inputModel: CommonInputModel,
   ) {}
 
@@ -18,8 +23,8 @@ export class OutputModel {
   static toOutputModel(args: Array<IOutputModel>): Array<OutputModel>;
   static toOutputModel(args: IOutputModel | Array<IOutputModel>): OutputModel | Array<OutputModel> {
     if (Array.isArray(args)) {
-      return args.map(arg => new this(arg.content, arg.inputModel));
+      return args.map(arg => new this(arg.result, arg.model, arg.modelName, arg.inputModel));
     }
-    return new this(args.content, args.inputModel);
+    return new this(args.result, args.model, args.modelName, args.inputModel);
   }
 }

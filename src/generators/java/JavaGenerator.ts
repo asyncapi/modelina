@@ -1,5 +1,5 @@
 import { AbstractGenerator } from "../AbstractGenerator";
-import { CommonInputModel, OutputModel } from "../../models";
+import { CommonModel, CommonInputModel } from "../../models";
 
 export interface JavaOptions {
   // to be implement
@@ -19,7 +19,7 @@ export class JavaGenerator extends AbstractGenerator {
     super(displayName, options);
   }
 
-  async render(inputModel: CommonInputModel): Promise<OutputModel> {
-    return OutputModel.toOutputModel({ content: "", inputModel, });
+  async render(model: CommonModel, modelName: string, inputModel: CommonInputModel): Promise<string> {
+    return "";
   }
 }

@@ -6,13 +6,17 @@ describe('OutputModel', function() {
     const commonModel = CommonModel.toCommonModel(doc);
 
     const ioutput: IOutputModel = {
-      content: "content",
-      commonModel,
+      result: "result",
+      model: commonModel,
+      modelName: "someModel",
+      inputModel: undefined,
     };
     const output = OutputModel.toOutputModel(ioutput);
 
-    expect(output.content).toEqual(ioutput.content);
-    expect(output.commonModel).toEqual(ioutput.commonModel);
+    expect(output.result).toEqual(ioutput.result);
+    expect(output.model).toEqual(ioutput.model);
+    expect(output.modelName).toEqual(ioutput.modelName);
+    expect(output.inputModel).toEqual(ioutput.inputModel);
   });
 
   test('should return an array of OutputModel', function() {
@@ -20,14 +24,20 @@ describe('OutputModel', function() {
     const commonModel = CommonModel.toCommonModel(doc);
 
     const ioutput: IOutputModel = {
-      content: "content",
-      commonModel,
+      result: "result",
+      model: commonModel,
+      modelName: "someModel",
+      inputModel: undefined,
     };
     const output = OutputModel.toOutputModel([ioutput, ioutput]);
 
-    expect(output[0].content).toEqual(ioutput.content);
-    expect(output[0].commonModel).toEqual(ioutput.commonModel);
-    expect(output[1].content).toEqual(ioutput.content);
-    expect(output[1].commonModel).toEqual(ioutput.commonModel);
+    expect(output[0].result).toEqual(ioutput.result);
+    expect(output[0].model).toEqual(ioutput.model);
+    expect(output[0].modelName).toEqual(ioutput.modelName);
+    expect(output[0].inputModel).toEqual(ioutput.inputModel);
+    expect(output[1].result).toEqual(ioutput.result);
+    expect(output[1].model).toEqual(ioutput.model);
+    expect(output[1].modelName).toEqual(ioutput.modelName);
+    expect(output[1].inputModel).toEqual(ioutput.inputModel);
   });
 });
