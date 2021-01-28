@@ -1,7 +1,8 @@
-import { AsyncAPIInputProcessor } from "./processors/AsyncAPIInputProcessor";
-import { JsonSchemaInputProcessor } from "./processors/JsonSchemaInputProcessor";
-import { AbstractInputProcessor } from "./models/AbstractInputProcessor";
-import { CommonInputModel } from "./models/CommonInputModel";
+import { AbstractInputProcessor } from "./AbstractInputProcessor";
+import { AsyncAPIInputProcessor } from "./AsyncAPIInputProcessor";
+import { JsonSchemaInputProcessor } from "./JsonSchemaInputProcessor";
+
+import { CommonInputModel } from "../models/CommonInputModel";
 
 /**
  * Main input processor which figures out the type of input it receives and delegates the processing into separate individual processors.
@@ -41,3 +42,5 @@ export class InputProcessor extends AbstractInputProcessor {
     return processor.process(object);
   }
 }
+
+export const inputProcessor = new InputProcessor();

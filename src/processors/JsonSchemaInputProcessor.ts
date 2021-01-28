@@ -1,6 +1,6 @@
+import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { CommonInputModel } from '../models/CommonInputModel';
-import { AbstractInputProcessor } from '../models/AbstractInputProcessor';
-import { CommonModel } from '../models/CommonModel';
+import { CommonModel } from '../models/CommonModel'
 import { simplify } from '../simplification/Simplify';
 import { Schema } from '../models/Schema';
 export class JsonSchemaInputProcessor extends AbstractInputProcessor {
