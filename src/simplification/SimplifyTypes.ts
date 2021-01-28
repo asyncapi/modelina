@@ -22,27 +22,19 @@ export default function simplifyTypes(schema: Schema | boolean) : string[] {
       typesToCheck.forEach(addToTypes);
     }
   };
+  const handleCombinationSchemas = (schemas: Schema[] = []) => {
+    schemas.forEach((schema) => {
+      addToTypes(simplifyTypes(schema));
+    });
+  }
 
   if(schema.type){
     addToTypes(schema.type);
   }
-
   //If we encounter combination schemas ensure we recursively find the types
-  if(schema.allOf){
-    schema.allOf.forEach((allOfSchema) => {
-      addToTypes(simplifyTypes(allOfSchema));
-    });
-  }
-  if(schema.oneOf){
-    schema.oneOf.forEach((allOfSchema) => {
-      addToTypes(simplifyTypes(allOfSchema));
-    });
-  }
-  if(schema.anyOf){
-    schema.anyOf.forEach((allOfSchema) => {
-      addToTypes(simplifyTypes(allOfSchema));
-    });
-  }
+  handleCombinationSchemas(schema.allOf);
+  handleCombinationSchemas(schema.oneOf);
+  handleCombinationSchemas(schema.anyOf);
 
   //If we encounter combination schemas ensure we recursively find and cumulate the types
   if(schema.then){
