@@ -19,7 +19,7 @@ export class CommonModel extends CommonSchema<CommonModel>{
     static toCommonModel(object: Object) : CommonModel{
         let newCommonModel = new CommonModel();
         newCommonModel = Object.assign(newCommonModel, object);
-        newCommonModel = CommonSchema.transformSchema(newCommonModel, CommonModel.toCommonModel);
+        newCommonModel = CommonSchema.transformSchema(newCommonModel, object, CommonModel.toCommonModel);
         if(newCommonModel.originalSchema !== undefined){
             newCommonModel.originalSchema = Schema.toSchema(newCommonModel.originalSchema);
         }

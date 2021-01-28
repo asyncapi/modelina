@@ -19,23 +19,25 @@ export class CommonSchema<T> {
      * @param object to be transformed
      * @param transformationSchemaCallback callback to transform nested schemas
      */
-    static transformSchema<T>(object: CommonSchema<T>, transformationSchemaCallback: (object: Object) => T){
+    static transformSchema<T>(schema: CommonSchema<T>, object: CommonSchema<T>, transformationSchemaCallback: (object: Object) => T){
         if(object.items !== undefined){
             if(Array.isArray(object.items)){
-                object.items = object.items.map((item) => transformationSchemaCallback(item))
+                schema.items = object.items.map((item) => transformationSchemaCallback(item))
             }else{
-                object.items = transformationSchemaCallback(object.items);
+                schema.items = transformationSchemaCallback(object.items);
             }
         }
         if(object.properties !== undefined){
-            Object.entries(object.properties).forEach(([propertyName, property]) => {
-                object.properties![propertyName] = transformationSchemaCallback(property);
+            var properties : {[key: string]: T} = {}
+            Object.entries(object.properties).forEach(([propertyName, propertySchema]) => {
+                properties[propertyName] = transformationSchemaCallback(propertySchema);
             });
+            schema.properties = properties;
         }
         if(typeof object.additionalProperties === 'object' && 
             object.additionalProperties !== null){
-            object.additionalProperties = transformationSchemaCallback(object.additionalProperties);
+            schema.additionalProperties = transformationSchemaCallback(object.additionalProperties);
         }
-        return object;
+        return schema;
     }
 }
