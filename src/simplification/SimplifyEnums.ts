@@ -7,6 +7,7 @@ import { Schema } from "models/Schema";
  */
 export default function simplifyEnums(schema: Schema) : any[] {
   let enums : any[] = [];
+  
   const addToEnums = (enumsToCheck: any[]) => {
     enumsToCheck.forEach((value) => {
       if(!enums.includes(value)){
@@ -14,26 +15,23 @@ export default function simplifyEnums(schema: Schema) : any[] {
       }
     });
   };
+  const handleCombinationSchemas = (schemas: Schema[] = []) => {
+    schemas.forEach((schema) => {
+      addToEnums(simplifyEnums(schema));
+    });
+  }
+
+
   
   if(schema.enum){
     addToEnums(schema.enum);
   }
   //If we encounter combination schemas ensure we recursively find the enums
-  if(schema.allOf){
-    schema.allOf.forEach((allOfSchema) => {
-      addToEnums(simplifyEnums(allOfSchema));
-    });
-  }
-  if(schema.oneOf){
-    schema.oneOf.forEach((allOfSchema) => {
-      addToEnums(simplifyEnums(allOfSchema));
-    });
-  }
-  if(schema.anyOf){
-    schema.anyOf.forEach((allOfSchema) => {
-      addToEnums(simplifyEnums(allOfSchema));
-    });
-  }
+  handleCombinationSchemas(schema.allOf);
+  handleCombinationSchemas(schema.oneOf);
+  handleCombinationSchemas(schema.anyOf);
+
+
 
   //If we encounter combination schemas ensure we recursively find the enums
   if(schema.then){
