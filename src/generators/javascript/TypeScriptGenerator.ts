@@ -20,6 +20,6 @@ export class TypeScriptGenerator extends AbstractGenerator {
   }
 
   async render(model: CommonModel, modelName: string, inputModel: CommonInputModel): Promise<string> {
-    return "";
+    return "TypeScriptGenerator"; // placeholder
   }
 }

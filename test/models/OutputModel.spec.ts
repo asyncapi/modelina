@@ -1,4 +1,4 @@
-import { CommonModel, IOutputModel, OutputModel } from '../../src/models'; 
+import { CommonInputModel, CommonModel, IOutputModel, OutputModel } from '../../src/models'; 
 
 describe('OutputModel', function() {
   test('should return an OutputModel', function() {
@@ -9,7 +9,7 @@ describe('OutputModel', function() {
       result: "result",
       model: commonModel,
       modelName: "someModel",
-      inputModel: undefined,
+      inputModel: new CommonInputModel(),
     };
     const output = OutputModel.toOutputModel(ioutput);
 
@@ -27,7 +27,7 @@ describe('OutputModel', function() {
       result: "result",
       model: commonModel,
       modelName: "someModel",
-      inputModel: undefined,
+      inputModel: new CommonInputModel(),
     };
     const output = OutputModel.toOutputModel([ioutput, ioutput]);
 
