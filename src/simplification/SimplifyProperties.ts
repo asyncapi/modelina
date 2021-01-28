@@ -10,6 +10,7 @@ type output = {newModels: CommonModel[] | undefined; properties: { [key: string]
  */
 export default function simplifyProperties(schema: Schema) : output {
   let models : CommonModel[] | undefined;
+  let commonProperties : { [key: string]: CommonModel; } | undefined;
   const addToModels = (model : CommonModel | CommonModel[]) => {
     if(models === undefined){
       models = [];
@@ -20,7 +21,6 @@ export default function simplifyProperties(schema: Schema) : output {
       models.push(model);
     }
   }
-  let commonProperties : { [key: string]: CommonModel; } | undefined;
   const addToProperty = (propName: string, propModel : CommonModel) => {
     if(commonProperties === undefined){
       commonProperties = {};
@@ -33,6 +33,23 @@ export default function simplifyProperties(schema: Schema) : output {
       commonProperties[propName] = propModel;
     }
   }
+
+  const addToPropertiesAndModels = (out: output) => {
+    if(out?.newModels !== undefined){
+        addToModels(out.newModels);
+    }
+    if(out.properties !== undefined){
+      for(const [prop, propSchema] of Object.entries(out.properties)){
+        addToProperty(prop, propSchema);
+      }
+    }
+  };
+  const handleCombinationSchemas = (schemas: Schema[] = []) => {
+    schemas.forEach((schema) => {
+      addToPropertiesAndModels(simplifyProperties(schema));
+    });
+  }
+
   if(schema.properties !== undefined){
     for(const [prop, propSchema] of Object.entries(schema.properties)){
       let newModels = simplifyRecursive(propSchema);
@@ -44,39 +61,17 @@ export default function simplifyProperties(schema: Schema) : output {
       }
     }
   }
-  const add = (out: output) => {
-    if(out?.newModels !== undefined){
-        addToModels(out.newModels);
-    }
-    if(out.properties !== undefined){
-      for(const [prop, propSchema] of Object.entries(out.properties)){
-        addToProperty(prop, propSchema);
-      }
-    }
-  };
   //If we encounter combination schemas ensure we recursively find the properties
-  if(schema.allOf){
-    schema.allOf.forEach((allOfSchema) => {
-      add(simplifyProperties(allOfSchema));
-    });
-  }
-  if(schema.oneOf){
-    schema.oneOf.forEach((allOfSchema) => {
-      add(simplifyProperties(allOfSchema));
-    });
-  }
-  if(schema.anyOf){
-    schema.anyOf.forEach((allOfSchema) => {
-      add(simplifyProperties(allOfSchema));
-    });
-  }
+  handleCombinationSchemas(schema.allOf);
+  handleCombinationSchemas(schema.oneOf);
+  handleCombinationSchemas(schema.anyOf);
 
   //If we encounter combination schemas ensure we recursively find the properties
   if(schema.then){
-    add(simplifyProperties(schema.then));
+    addToPropertiesAndModels(simplifyProperties(schema.then));
   }
   if(schema.else){
-    add(simplifyProperties(schema.else));
+    addToPropertiesAndModels(simplifyProperties(schema.else));
   }
   
   return {newModels: models, properties: commonProperties}

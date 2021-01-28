@@ -1,5 +1,6 @@
 
 import { CommonModel, Schema } from '../models';
+import simplifyProperties from './SimplifyProperties';
 import simplifyTypes from './SimplifyTypes';
 let anonymCounter = 1;
 
@@ -42,6 +43,14 @@ export function simplify(schema : Schema | boolean) : CommonModel[] {
       model.$id = schemaId;
     } else if (schema.$id !== undefined){
       model.$id = schema.$id;
+    }
+
+    const {newModels, properties} = simplifyProperties(schema);
+    if(newModels !== undefined){
+        models = [...models, ...newModels];
+    }
+    if(properties !== undefined){
+      model.properties = properties;
     }
   }
 
