@@ -1,5 +1,6 @@
-import { CommonModel } from "models";
-import { Schema } from "models/Schema";
+
+import { CommonModel } from "../models/CommonModel";
+import { Schema } from "../models/Schema";
 import {simplifyRecursive} from "./Simplify";
 type output = {newModels: CommonModel[] | undefined; properties: { [key: string]: CommonModel } | undefined};
 /**
@@ -26,7 +27,11 @@ export default function simplifyProperties(schema: Schema) : output {
     }
 
     //TODO if already exist merge the two properties
-    commonProperties[propName] = propModel;
+    if(commonProperties[propName] !== undefined){
+      commonProperties[propName] = CommonModel.mergeCommonModels(commonProperties[propName], propModel);
+    } else {
+      commonProperties[propName] = propModel;
+    }
   }
   if(schema.properties !== undefined){
     for(const [prop, propSchema] of Object.entries(schema.properties)){
