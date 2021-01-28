@@ -1,7 +1,7 @@
 import { CommonInputModel } from "./CommonInputModel"
 import { CommonModel } from "./CommonModel";
 
-export interface IOutputModel {
+export interface ToOutputModelArg {
   result: string;
   model: CommonModel;
   modelName: string;
@@ -19,9 +19,9 @@ export class OutputModel {
     public readonly inputModel: CommonInputModel,
   ) {}
 
-  static toOutputModel(args: IOutputModel): OutputModel;
-  static toOutputModel(args: Array<IOutputModel>): Array<OutputModel>;
-  static toOutputModel(args: IOutputModel | Array<IOutputModel>): OutputModel | Array<OutputModel> {
+  static toOutputModel(args: ToOutputModelArg): OutputModel;
+  static toOutputModel(args: Array<ToOutputModelArg>): Array<OutputModel>;
+  static toOutputModel(args: ToOutputModelArg | Array<ToOutputModelArg>): OutputModel | Array<OutputModel> {
     if (Array.isArray(args)) {
       return args.map(arg => new this(arg.result, arg.model, arg.modelName, arg.inputModel));
     }
