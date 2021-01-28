@@ -1,6 +1,7 @@
+import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { CommonInputModel } from '../models/CommonInputModel';
-import { AbstractInputProcessor } from '../models/AbstractInputProcessor';
 import { CommonModel } from '../models/CommonModel';
+
 export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     async process(object: any): Promise<CommonInputModel> {
         const commonInputModel = new CommonInputModel();
