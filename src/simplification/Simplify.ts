@@ -4,6 +4,25 @@ import simplifyTypes from './SimplifyTypes';
 let anonymCounter = 1;
 
 /**
+ * Simplifies a schema by first checking if its an object, if so, split it out and ref it based on id.
+ * 
+ * @param schema to simplify
+ */
+export function simplifyRecursive(schema : Schema) : CommonModel[] {
+  let models : CommonModel[] = [];
+  let types = simplifyTypes(schema);
+  let simplifiedModel = simplify(schema);
+  if(types !== undefined && types.includes("object")){
+    let rootModel = new CommonModel();
+    rootModel.$ref = schema.$id;
+    models[0] = rootModel;
+  }
+  models = [...models, ...simplifiedModel];
+  return models;
+}
+
+
+/**
  * Simplifies a schema into instances of CommonModel.
  * 
  * @param schema to simplify
