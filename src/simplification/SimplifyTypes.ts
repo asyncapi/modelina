@@ -9,7 +9,11 @@ import { Schema } from "models/Schema";
 export default function simplifyTypes(schema: Schema | boolean) : string[] {
   //If we find absence of data format ensure all types are returned
   if(typeof schema === "boolean"){
-    return ["object", "string", "number", "array", "boolean", "null"];
+    if(schema === true){
+      return ["object", "string", "number", "array", "boolean", "null"];
+    }else{
+      throw new Error("False value schemas are not supported");
+    }
   }
   let types : string[] = [];
   
