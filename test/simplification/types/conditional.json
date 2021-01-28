@@ -1,0 +1,12 @@
+{
+    "type": "string",
+    "if": {
+        "const": "some_const"
+    },
+    "then": {
+        "type": ["number"]
+    },
+    "else": {
+        "type": ["boolean"]
+    }
+}

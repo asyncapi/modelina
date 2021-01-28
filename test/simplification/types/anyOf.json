@@ -1,0 +1,10 @@
+{
+    "anyOf": [
+        {
+            "type": ["string"]
+        },
+        {
+            "type": ["number"]
+        }
+    ]
+}
