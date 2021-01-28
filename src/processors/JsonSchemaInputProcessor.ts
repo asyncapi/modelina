@@ -3,7 +3,11 @@ import { CommonInputModel } from '../models/CommonInputModel';
 import { CommonModel } from '../models/CommonModel'
 import { simplify } from '../simplification/Simplify';
 import { Schema } from '../models/Schema';
+/**
+ * Class for processing JSON Schema
+ */
 export class JsonSchemaInputProcessor extends AbstractInputProcessor {
+    
     /**
      * Function for processing a JSON Schema input.
      * 
