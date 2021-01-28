@@ -1,11 +1,11 @@
-import { CommonInputModel, CommonModel, IOutputModel, OutputModel } from '../../src/models'; 
+import { CommonInputModel, CommonModel, ToOutputModelArg, OutputModel } from '../../src/models'; 
 
 describe('OutputModel', function() {
   test('should return an OutputModel', function() {
     const doc: any = { $id: 'test' };
     const commonModel = CommonModel.toCommonModel(doc);
 
-    const ioutput: IOutputModel = {
+    const ioutput: ToOutputModelArg = {
       result: "result",
       model: commonModel,
       modelName: "someModel",
@@ -23,7 +23,7 @@ describe('OutputModel', function() {
     const doc: any = { $id: 'test' };
     const commonModel = CommonModel.toCommonModel(doc);
 
-    const ioutput: IOutputModel = {
+    const ioutput: ToOutputModelArg = {
       result: "result",
       model: commonModel,
       modelName: "someModel",
