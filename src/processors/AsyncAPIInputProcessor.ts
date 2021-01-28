@@ -18,7 +18,8 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
         let common = new CommonInputModel();
         common.originalInput= doc;
         doc.allSchemas().forEach((schema: AsyncAPISchema) => {
-            common.models = new Map([... Array.from(common.models.entries()), ...Array.from(JsonSchemaInputProcessor.convertSchemaToCommonModel(schema.json()).entries())]);
+            let commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema.json())
+            common.models = {...common.models, ...commonModels};
         });
         return common;
     }

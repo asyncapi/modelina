@@ -1,0 +1,30 @@
+{
+    "type": "string",
+    "if": {
+        "const": "some_const"
+    },
+    "then": {
+        "type": "string",
+        "if": {
+            "const": "some_const"
+        },
+        "then": {
+            "type": ["number"]
+        },
+        "else": {
+            "type": ["boolean"]
+        }
+    },
+    "else": {
+        "type": "string",
+        "if": {
+            "const": "some_const"
+        },
+        "then": {
+            "type": ["array"]
+        },
+        "else": {
+            "type": ["null"]
+        }
+    }
+}
