@@ -23,7 +23,7 @@ describe('OutputModel', function() {
       content: "content",
       commonModel,
     };
-    const output = OutputModel.toOutputModels([ioutput, ioutput]);
+    const output = OutputModel.toOutputModel([ioutput, ioutput]);
 
     expect(output[0].content).toEqual(ioutput.content);
     expect(output[0].commonModel).toEqual(ioutput.commonModel);

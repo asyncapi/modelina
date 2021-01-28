@@ -1,6 +1,6 @@
+import { AbstractInputProcessor } from "./processors/AbstractInputProcessor";
 import { AsyncAPIInputProcessor } from "./processors/AsyncAPIInputProcessor";
 import { JsonSchemaInputProcessor } from "./processors/JsonSchemaInputProcessor";
-import { AbstractInputProcessor } from "./models/AbstractInputProcessor";
 import { CommonInputModel } from "./models/CommonInputModel";
 
 /**

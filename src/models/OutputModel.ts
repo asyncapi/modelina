@@ -14,11 +14,12 @@ export class OutputModel {
     public readonly commonModel: CommonModel,
   ) {}
 
-  static toOutputModel(args: IOutputModel): OutputModel {
+  static toOutputModel(args: IOutputModel): OutputModel;
+  static toOutputModel(args: Array<IOutputModel>): Array<OutputModel>;
+  static toOutputModel(args: IOutputModel | Array<IOutputModel>): OutputModel | Array<OutputModel> {
+    if (Array.isArray(args)) {
+      return args.map(arg => new this(arg.content, arg.commonModel));
+    }
     return new this(args.content, args.commonModel);
-  }
-
-  static toOutputModels(args: Array<IOutputModel>): Array<OutputModel> {
-    return args.map(arg => new this(arg.content, arg.commonModel));
   }
 }
