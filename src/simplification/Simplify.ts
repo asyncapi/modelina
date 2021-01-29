@@ -3,6 +3,19 @@ import { CommonModel, Schema } from '../models';
 import simplifyTypes from './SimplifyTypes';
 let anonymCounter = 1;
 
+export function simplifyRecursive(schema : Schema) : CommonModel[] {
+  let models : CommonModel[] = [];
+  let types = simplifyTypes(schema);
+  let simplifiedModel = simplify(schema);
+  if(types !== undefined && types.includes("object")){
+    let rootModel = new CommonModel();
+    rootModel.$ref = schema.$id;
+    models[0] = rootModel;
+  }
+  models = [...models, ...simplifiedModel];
+  return models;
+}
+
 /**
  * Simplifies a schema into instances of CommonModel.
  * 

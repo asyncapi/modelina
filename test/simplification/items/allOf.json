@@ -1,0 +1,18 @@
+{
+    "allOf": [
+        {
+            "items": [
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "items": [
+                {
+                    "type": "number"
+                }
+            ]
+        }
+    ]
+}
