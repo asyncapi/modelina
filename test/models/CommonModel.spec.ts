@@ -113,7 +113,7 @@ describe('CommonModel', function() {
       expect(d.$ref).toEqual(doc.$ref);
     });
   });
-  describe('x-extend', function() {
+  describe('extend', function() {
     test('should return a string ', function() {
       const doc: any = { "extend": 'reference' };
       const d = CommonModel.toCommonModel(doc);
@@ -122,13 +122,33 @@ describe('CommonModel', function() {
       expect(d.extend).toEqual(doc.extend);
     });
   });
-  describe('x-original-schema', function() {
+  describe('originalSchema', function() {
     test('should return a schema', function() {
       const doc: any = { "originalSchema": { "type": "string", "minLength": 2 } };
       const d = CommonModel.toCommonModel(doc);
       expect(d.originalSchema).not.toBeUndefined();
       expect(d.originalSchema!.constructor.name).toEqual('Schema');
       expect(d.originalSchema).toEqual(doc.originalSchema);
+    });
+  });
+  describe('toCommonModel', function() {
+    test('should never return the same instance of properties', function() {
+      const doc: any = { type: 'string', properties: {test: {type:"string"}} };
+      const d = CommonModel.toCommonModel(doc);
+      const d2 = CommonModel.toCommonModel(d);
+      d.properties!["test"].$id = "test";
+      expect(d.properties!["test"].$id).toEqual("test");
+      expect(d2.properties!["test"].$id).not.toEqual("test");
+    });
+    test('should never return the same instance of items', function() {
+      const doc: any = { type: 'string', items: [{type:"string"}] };
+      const d = CommonModel.toCommonModel(doc);
+      const d2 = CommonModel.toCommonModel(d);
+      const d_items : CommonModel[] = d.items as CommonModel[];
+      const d2_items : CommonModel[] = d2.items as CommonModel[];
+      d_items[0].$id = "test";
+      expect(d_items[0].$id).toEqual("test");
+      expect(d2_items[0].$id).not.toEqual("test");
     });
   });
 });
