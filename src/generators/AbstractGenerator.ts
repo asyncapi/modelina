@@ -21,7 +21,7 @@ export abstract class AbstractGenerator<O = object> {
 
   private generateModels(inputModel: CommonInputModel): Promise<OutputModel[]> {
     const models = inputModel.models;
-    const renders = Array.from(models).map(async ([modelName, model]) => {
+    const renders = Object.entries(models).map(async ([modelName, model]) => {
       const result = await this.render(model, modelName, inputModel);
       return OutputModel.toOutputModel({ result, model, modelName, inputModel });
     })
