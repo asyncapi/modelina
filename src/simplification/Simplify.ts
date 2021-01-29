@@ -1,5 +1,6 @@
 
 import { CommonModel, Schema } from '../models';
+import simplifyEnums from './SimplifyEnums';
 import simplifyTypes from './SimplifyTypes';
 let anonymCounter = 1;
 
@@ -24,7 +25,17 @@ export function simplify(schema : Schema | boolean) : CommonModel[] {
     } else if (schema.$id !== undefined){
       model.$id = schema.$id;
     }
+
+    const enums = simplifyEnums(schema);
+    if(enums.length > 0){
+      if(model.enum){
+        model.enum = [...model.enum, ...enums];
+      }else{
+        model.enum = enums;
+      }
+    }
   }
+ 
 
   models.push(model);
   return models;
