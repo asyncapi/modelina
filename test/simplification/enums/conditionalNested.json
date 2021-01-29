@@ -1,0 +1,27 @@
+{
+    "if": {
+        "const": "some_const"
+    },
+    "then": {
+        "if": {
+            "const": "some_const"
+        },
+        "then": {
+            "enum": ["test1"]
+        },
+        "else": {
+            "enum": ["test2"]
+        }
+    },
+    "else": {
+        "if": {
+            "const": "some_const"
+        },
+        "then": {
+            "enum": ["test3"]
+        },
+        "else": {
+            "enum": ["test4"]
+        }
+    }
+}

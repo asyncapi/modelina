@@ -10,3 +10,4 @@ We have split out the different simplification processes into separate small fun
 
 - [Simplification of types](./docs/SimplifyTypes.md)
 - [Simplification of properties](./docs/SimplifyProperties.md)
+- [Simplification of enums](./docs/SimplifyEnums.md)
