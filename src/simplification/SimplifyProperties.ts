@@ -25,15 +25,13 @@ export default function simplifyProperties(schema: Schema) : output {
     if(commonProperties === undefined){
       commonProperties = {};
     }
-
-    //TODO if already exist merge the two properties
+    //If a simplified property already exist, merge the two
     if(commonProperties[propName] !== undefined){
       commonProperties[propName] = CommonModel.mergeCommonModels(commonProperties[propName], propModel);
     } else {
       commonProperties[propName] = propModel;
     }
   }
-
   const addToPropertiesAndModels = (out: output) => {
     if(out?.newModels !== undefined){
         addToModels(out.newModels);
