@@ -78,19 +78,27 @@ export class Schema extends CommonSchema<Schema>{
             schema.contains = Schema.toSchema(schema.contains);
         }
         if(schema.dependencies !== undefined){
+            var dependencies : {[key: string]: Schema | string[]} = {}
             Object.entries(schema.dependencies).forEach(([propertyName, property]) => {
+                //We only care about object dependencies
                 if(typeof property === 'object' && !Array.isArray(property)){
-                    schema.dependencies![propertyName] = Schema.toSchema(property);
+                    dependencies[propertyName] = Schema.toSchema(property);
+                } else {
+                    dependencies[propertyName] = property as string[];
                 }
             });
+            schema.dependencies = dependencies;
         }
         if(schema.propertyNames !== undefined){
             schema.propertyNames = Schema.toSchema(schema.propertyNames);
         }
+
         if(schema.patternProperties !== undefined){
+            var patternProperties : {[key: string]: Schema} = {}
             Object.entries(schema.patternProperties).forEach(([propertyName, property]) => {
-                schema.patternProperties![propertyName] = Schema.toSchema(property);
+                patternProperties[propertyName] = Schema.toSchema(property);
             });
+            schema.patternProperties = patternProperties;
         }
         if(schema.if !== undefined){
             schema.if = Schema.toSchema(schema.if);
@@ -103,9 +111,11 @@ export class Schema extends CommonSchema<Schema>{
         }
 
         if(schema.definitions !== undefined){
+            var definitions : {[key: string]: Schema} = {}
             Object.entries(schema.definitions).forEach(([propertyName, property]) => {
-                schema.definitions![propertyName] = Schema.toSchema(property);
+                definitions[propertyName] = Schema.toSchema(property);
             });
+            schema.definitions = definitions;
         }
         return schema;
     }

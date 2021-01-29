@@ -16,29 +16,28 @@ export class CommonSchema<T> {
      * Since both CommonModel and Schema uses these properties we need a common function to
      * convert nested schemas into their corresponding class.
      * 
-     * @param object to be transformed
+     * @param schema to be transformed
      * @param transformationSchemaCallback callback to transform nested schemas
      */
-    static transformSchema<T>(schema: CommonSchema<T>, object: CommonSchema<T>, transformationSchemaCallback: (object: Object) => T){
-        if(object.items !== undefined){
-            if(Array.isArray(object.items)){
-                schema.items = object.items.map((item) => transformationSchemaCallback(item))
+    static transformSchema<T>(schema: CommonSchema<T>, transformationSchemaCallback: (object: Object) => T){
+        if(schema.items !== undefined){
+            if(Array.isArray(schema.items)){
+                schema.items = schema.items.map((item) => transformationSchemaCallback(item))
             }else{
-                schema.items = transformationSchemaCallback(object.items);
+                schema.items = transformationSchemaCallback(schema.items);
             }
         }
-        if(object.properties !== undefined){
+        if(schema.properties !== undefined){
             var properties : {[key: string]: T} = {}
-            Object.entries(object.properties).forEach(([propertyName, propertySchema]) => {
+            Object.entries(schema.properties).forEach(([propertyName, propertySchema]) => {
                 properties[propertyName] = transformationSchemaCallback(propertySchema);
             });
             schema.properties = properties;
         }
-        if(typeof object.additionalProperties === 'object' && 
-            object.additionalProperties !== null){
-            schema.additionalProperties = transformationSchemaCallback(object.additionalProperties);
+        if(typeof schema.additionalProperties === 'object' && 
+            schema.additionalProperties !== null){
+            schema.additionalProperties = transformationSchemaCallback(schema.additionalProperties);
         }
         return schema;
     }
-
 }

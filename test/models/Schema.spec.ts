@@ -550,4 +550,49 @@ describe('Schema', function() {
       expect(d.examples).toEqual(doc.examples);
     });
   });
+
+  describe('toSchema', function() {
+    test('should never return the same instance of properties', function() {
+      const doc: any = { type: 'string', properties: {test: {type:"string"}} };
+      const d = Schema.toSchema(doc);
+      const d2 = Schema.toSchema(d);
+      d.properties!["test"].$id = "test";
+      expect(d.properties!["test"].$id).toEqual("test");
+      expect(d2.properties!["test"].$id).not.toEqual("test");
+    });
+    test('should never return the same instance of items', function() {
+      const doc: any = { type: 'string', items: [{type:"string"}] };
+      const d = Schema.toSchema(doc);
+      const d2 = Schema.toSchema(d);
+      const d_items : Schema[] = d.items as Schema[];
+      const d2_items : Schema[] = d2.items as Schema[];
+      d_items[0].$id = "test";
+      expect(d_items[0].$id).toEqual("test");
+      expect(d2_items[0].$id).not.toEqual("test");
+    });
+    test('should never return the same instance of dependencies', function() {
+      const doc: any = { type: 'object', properties: {test: {type:"string"}}, dependencies: {test: {properties: {test2: { type: "string" }}}}};
+      const d = Schema.toSchema(doc);
+      const d2 = Schema.toSchema(d);
+      (d.dependencies!["test"] as Schema).$id = "test";
+      expect((d.dependencies!["test"] as Schema).$id).toEqual("test");
+      expect((d2.dependencies!["test"] as Schema).$id).not.toEqual("test");
+    });
+    test('should never return the same instance of properties', function() {
+      const doc: any = { type: 'object', patternProperties: { "^S_": { type: "string" }}};
+      const d = Schema.toSchema(doc);
+      const d2 = Schema.toSchema(d);
+      d.patternProperties!["^S_"].$id = "test";
+      expect(d.patternProperties!["^S_"].$id).toEqual("test");
+      expect(d2.patternProperties!["^S_"].$id).not.toEqual("test");
+    });
+    test('should never return the same instance of definitions', function() {
+      const doc: any = { definitions: { "test": { type: "string" }}};
+      const d = Schema.toSchema(doc);
+      const d2 = Schema.toSchema(d);
+      d.definitions!["test"].$id = "test";
+      expect(d.definitions!["test"].$id).toEqual("test");
+      expect(d2.definitions!["test"].$id).not.toEqual("test");
+    });
+  });
 });
