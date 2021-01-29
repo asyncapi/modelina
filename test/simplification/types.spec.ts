@@ -47,8 +47,7 @@ describe('Simplification of types', function() {
     });
     test('should if false return all types', function() {
       const schema: any = false;
-      const types = simplifyTypes(schema);
-      expect(types).toEqual(["object", "string", "number", "array", "boolean", "null"]);
+      expect(() => {simplifyTypes(schema)}).toThrow("False value schemas are not supported");
     });
   });
 
