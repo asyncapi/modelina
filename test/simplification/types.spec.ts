@@ -153,6 +153,11 @@ describe('Simplification of types', function() {
       const types = simplifyTypes(schema);
       expect(types).toEqual("number");
     });
+    test('with bigint', function() {
+      const schema = {const: BigInt(123)};
+      const types = simplifyTypes(schema);
+      expect(types).toEqual("number");
+    });
     test('with array', function() {
       const schema = {
         const: ["test"]
@@ -170,12 +175,25 @@ describe('Simplification of types', function() {
     });
   });
   describe('from not', function() {
-    test('with all types', function() {
-      const schemaString = fs.readFileSync(path.resolve(__dirname, './types/not.json'), 'utf8');
-      const schema = JSON.parse(schemaString);
+    test('with only one type', function() {
+      const schema = {
+          "not": {
+              "type": "string"
+          }
+      };
       const types = simplifyTypes(schema);
       expect(Array.isArray(types)).toEqual(true);
       expect((types as String[]).sort()).toEqual(["object", "number", "array", "boolean", "null"].sort());
+    });
+    test('with multiple types', function() {
+      const schema = {
+          "not": {
+              "type": ["string", "number"]
+          }
+      };
+      const types = simplifyTypes(schema);
+      expect(Array.isArray(types)).toEqual(true);
+      expect((types as String[]).sort()).toEqual(["object", "array", "boolean", "null"].sort());
     });
   });
 });

@@ -17,20 +17,21 @@ export default function simplifyTypes(schema: Schema | boolean) : string[] | str
   }
   let types : string[] | string | undefined = undefined;
   const addToTypes = (typesToCheck: string[] | string | undefined) => {
-    if(typesToCheck === undefined) return;
-    if(types === undefined){
-      types = typesToCheck;
-    } else {
-      if(Array.isArray(typesToCheck)){
-        typesToCheck.forEach(addToTypes);
-      }else{
-        if(Array.isArray(types)){
-          if(!types.includes(typesToCheck)){
-            types.push(typesToCheck);
-          }
+    if(typesToCheck !== undefined){
+      if(types === undefined){
+        types = typesToCheck;
+      } else {
+        if(Array.isArray(typesToCheck)){
+          typesToCheck.forEach(addToTypes);
         }else{
-          if(types !== typesToCheck){
-            types = [types, typesToCheck]
+          if(Array.isArray(types)){
+            if(!types.includes(typesToCheck)){
+              types.push(typesToCheck);
+            }
+          }else{
+            if(types !== typesToCheck){
+              types = [types, typesToCheck]
+            }
           }
         }
       }
@@ -69,11 +70,7 @@ export default function simplifyTypes(schema: Schema | boolean) : string[] | str
       }
       const typeOfEnum = typeof value;
       switch(typeOfEnum){
-        //This should never happen, but just to be sure
-        case "undefined": 
-        case "function":
-        case "symbol":
-          return;
+        //We don't need to check undefined, function, symbol since it should never be possible
         case "bigint": 
           return "number";
         default:
@@ -102,8 +99,7 @@ export default function simplifyTypes(schema: Schema | boolean) : string[] | str
     let notTypes = simplifyTypes(schema.not);
     let remainingTypes = ["object", "string", "number", "array", "boolean", "null"];
     const tryAndCutRemainingArray = (notType : string | undefined) => {
-      if(notType === undefined) return;
-      if(remainingTypes.includes(notType)){
+      if(notType !== undefined && remainingTypes.includes(notType)){
         remainingTypes.splice(remainingTypes.indexOf(notType), 1);
       }
     }
