@@ -1,20 +1,8 @@
 
 import { CommonModel, Schema } from '../models';
+import simplifyEnums from './SimplifyEnums';
 import simplifyTypes from './SimplifyTypes';
 let anonymCounter = 1;
-
-export function simplifyRecursive(schema : Schema) : CommonModel[] {
-  let models : CommonModel[] = [];
-  let types = simplifyTypes(schema);
-  let simplifiedModel = simplify(schema);
-  if(types !== undefined && types.includes("object")){
-    let rootModel = new CommonModel();
-    rootModel.$ref = schema.$id;
-    models[0] = rootModel;
-  }
-  models = [...models, ...simplifiedModel];
-  return models;
-}
 
 /**
  * Simplifies a schema into instances of CommonModel.
@@ -37,7 +25,17 @@ export function simplify(schema : Schema | boolean) : CommonModel[] {
     } else if (schema.$id !== undefined){
       model.$id = schema.$id;
     }
+
+    const enums = simplifyEnums(schema);
+    if(enums.length > 0){
+      if(model.enum){
+        model.enum = [...model.enum, ...enums];
+      }else{
+        model.enum = enums;
+      }
+    }
   }
+ 
 
   models.push(model);
   return models;

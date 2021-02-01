@@ -1,0 +1,17 @@
+{
+    "anyOf": [
+        {
+            "anyOf": [
+                {
+                    "enum": ["test1"]
+                },
+                {
+                    "enum": ["test2"]
+                }
+            ]
+        },
+        {
+            "enum": ["test3"]
+        }
+    ]
+}
