@@ -14,13 +14,13 @@ describe('Simplification of properties', function() {
     expect(newModels).toBeUndefined();
     expect(properties).toEqual({ 
       "testProp1": { 
-        "type": ["string"],
+        "type": "string",
         "originalSchema": { 
           "type": "string"
         } 
       },
       "testProp2": { 
-        "type": ["string"],
+        "type": "string",
         "originalSchema": { 
           "type": "string"
         } 
@@ -35,13 +35,13 @@ describe('Simplification of properties', function() {
       expect(newModels).toBeUndefined();
       expect(properties).toEqual({ 
         "testProp1": { 
-          "type": ["string"],
+          "type": "string",
           "originalSchema": { 
             "type": "string"
           } 
         },
         "testProp2": { 
-          "type": ["string"],
+          "type": "string",
           "originalSchema": { 
             "type": "string"
           } 
@@ -55,19 +55,19 @@ describe('Simplification of properties', function() {
       expect(newModels).toBeUndefined();
       expect(properties).toEqual({ 
         "testProp1": { 
-          "type": ["string"],
+          "type": "string",
           "originalSchema": { 
             "type": "string"
           } 
         },
         "testProp2": { 
-          "type": ["string"],
+          "type": "string",
           "originalSchema": { 
             "type": "string"
           } 
         },
         "testProp3": { 
-          "type": ["string"],
+          "type": "string",
           "originalSchema": { 
             "type": "string"
           } 
@@ -83,13 +83,13 @@ describe('Simplification of properties', function() {
       expect(newModels).toBeUndefined();
       expect(properties).toEqual({ 
         "testProp1": { 
-          "type": ["string"],
+          "type": "string",
           "originalSchema": { 
             "type": "string"
           } 
         },
         "testProp2": { 
-          "type": ["string"],
+          "type": "string",
           "originalSchema": { 
             "type": "string"
           } 
@@ -103,19 +103,19 @@ describe('Simplification of properties', function() {
       expect(newModels).toBeUndefined();
       expect(properties).toEqual({ 
         "testProp1": { 
-          "type": ["string"],
+          "type": "string",
           "originalSchema": { 
             "type": "string"
           } 
         },
         "testProp2": { 
-          "type": ["string"],
+          "type": "string",
           "originalSchema": { 
             "type": "string"
           } 
         },
         "testProp3": { 
-          "type": ["string"],
+          "type": "string",
           "originalSchema": { 
             "type": "string"
           } 
@@ -131,13 +131,13 @@ describe('Simplification of properties', function() {
       expect(newModels).toBeUndefined();
       expect(properties).toEqual({ 
         "testProp1": { 
-          "type": ["string"],
+          "type": "string",
           "originalSchema": { 
             "type": "string"
           } 
         },
         "testProp2": { 
-          "type": ["string"],
+          "type": "string",
           "originalSchema": { 
             "type": "string"
           } 
@@ -151,19 +151,19 @@ describe('Simplification of properties', function() {
       expect(newModels).toBeUndefined();
       expect(properties).toEqual({ 
         "testProp1": { 
-          "type": ["string"],
+          "type": "string",
           "originalSchema": { 
             "type": "string"
           } 
         },
         "testProp2": { 
-          "type": ["string"],
+          "type": "string",
           "originalSchema": { 
             "type": "string"
           } 
         },
         "testProp3": { 
-          "type": ["string"],
+          "type": "string",
           "originalSchema": { 
             "type": "string"
           } 
@@ -179,19 +179,19 @@ describe('Simplification of properties', function() {
       expect(newModels).toBeUndefined();
       expect(properties).toEqual({ 
         "testProp1": { 
-          "type": ["string"],
+          "type": "string",
           "originalSchema": { 
             "type": "string"
           } 
         },
         "testProp2": { 
-          "type": ["string"],
+          "type": "string",
           "originalSchema": { 
             "type": "string"
           } 
         },
         "testProp3": { 
-          "type": ["string"],
+          "type": "string",
           "originalSchema": { 
             "type": "string"
           } 
@@ -205,31 +205,31 @@ describe('Simplification of properties', function() {
       expect(newModels).toBeUndefined();
       expect(properties).toEqual({ 
         "testProp1": { 
-          "type": ["string"],
+          "type": "string",
           "originalSchema": { 
             "type": "string"
           } 
         },
         "testProp2": { 
-          "type": ["string"],
+          "type": "string",
           "originalSchema": { 
             "type": "string"
           } 
         },
         "testProp3": { 
-          "type": ["string"],
+          "type": "string",
           "originalSchema": { 
             "type": "string"
           } 
         },
         "testProp4": { 
-          "type": ["string"],
+          "type": "string",
           "originalSchema": { 
             "type": "string"
           } 
         },
         "testProp5": { 
-          "type": ["string"],
+          "type": "string",
           "originalSchema": { 
             "type": "string"
           } 
@@ -293,22 +293,18 @@ describe('Simplification of properties', function() {
           },
         },
       },
-      type: [
-        "object",
-      ],
+      type: "object",
       $id: "anonymSchema1",
       properties: {
         floor: {
           originalSchema: {
             type: "number",
           },
-          type: [
-            "number",
-          ],
+          type: "number",
         },
       },
     })]));
-    expect(properties).toEqual({
+    expect(properties).toMatchObject({
       street_address: {
         $ref: "anonymSchema1",
       },
@@ -319,9 +315,7 @@ describe('Simplification of properties', function() {
             "Canada",
           ],
         },
-        type: [
-          "string",
-        ],
+        type: "string",
         enum: [
           "United States of America",
           "Canada",
