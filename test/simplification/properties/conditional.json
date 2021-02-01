@@ -1,0 +1,28 @@
+{
+    "properties": { 
+      "testProp1": { 
+        "type": "string"
+      } 
+    },
+    "if": {
+        "properties": { 
+          "testProp1": { 
+            "const": "string"
+          } 
+        } 
+    },
+    "then": {
+        "properties": { 
+          "testProp2": { 
+            "type": "string"
+          } 
+        } 
+    },
+    "else": {
+        "properties": { 
+          "testProp3": { 
+            "type": "string"
+          } 
+        } 
+    }
+}
