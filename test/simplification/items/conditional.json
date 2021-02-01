@@ -1,12 +1,20 @@
 {
-    "type": "string",
+    "type": ["array"],
     "if": {
-        "const": "some_const"
+        "const": ["some_const"]
     },
     "then": {
-        "type": ["number"]
+        "items": [
+            {
+                "type": "string"
+            }
+        ]
     },
     "else": {
-        "type": ["boolean"]
+        "items": [
+            {
+                "type": "boolean"
+            }
+        ]
     }
 }

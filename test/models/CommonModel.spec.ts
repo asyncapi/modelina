@@ -290,7 +290,7 @@ describe('CommonModel', function() {
         let doc2 = CommonModel.toCommonModel(doc);
         doc2.items = [{type: "string"}];
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
-        expect(doc1.items).toEqual(doc2.items);
+        expect(doc1.items).toEqual(doc2.items[0]);
       });
       test('should be merged when both sides are defined as schemas', function() {
         const doc: Schema = { };
@@ -299,7 +299,7 @@ describe('CommonModel', function() {
         doc2.items = {type: "string"};
         doc1.items = {type: "number"};
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
-        expect(doc1.items).toEqual([{type: ["number", "string"], originalSchema: {}}]);
+        expect(doc1.items).toEqual({type: ["number", "string"], originalSchema: {}});
       });
       test('should be merged when both sides are defined as array of schemas with different lengths', function() {
         const doc: Schema = { };
@@ -308,7 +308,7 @@ describe('CommonModel', function() {
         doc2.items = [{type: "string"}, {type: ["boolean"]}];
         doc1.items = [{type: ["number"]}];
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
-        expect(doc1.items).toEqual([{type: ["number", "string"], originalSchema: {}}, {type: ["boolean"]}]);
+        expect(doc1.items).toEqual({"originalSchema": {}, "type": ["number", "string", "boolean"]});
       });
       test('should not change if nothing is defined', function() {
         const doc: Schema = { };

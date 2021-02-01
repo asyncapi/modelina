@@ -3,6 +3,7 @@ import { CommonModel, Schema } from '../models';
 import simplifyProperties from './SimplifyProperties';
 import simplifyEnums from './SimplifyEnums';
 import simplifyTypes from './SimplifyTypes';
+import simplifyItems from './SimplifyItems';
 let anonymCounter = 1;
 
 /**
@@ -49,12 +50,20 @@ export function simplify(schema : Schema | boolean) : CommonModel[] {
       model.$id = schema.$id;
     }
 
-    const {newModels, properties} = simplifyProperties(schema);
-    if(newModels !== undefined){
-        models = [...models, ...newModels];
+    const simplifiedItems = simplifyItems(schema);
+    if(simplifiedItems.newModels !== undefined){
+        models = [...models, ...simplifiedItems.newModels];
     }
-    if(properties !== undefined){
-      model.properties = properties;
+    if(simplifiedItems.items !== undefined){
+      model.items = simplifiedItems.items;
+    }
+
+    const simplifiedProperties = simplifyProperties(schema);
+    if(simplifiedProperties.newModels !== undefined){
+        models = [...models, ...simplifiedProperties.newModels];
+    }
+    if(simplifiedProperties.properties !== undefined){
+      model.properties = simplifiedProperties.properties;
     }
     const enums = simplifyEnums(schema);
     if(enums.length > 0){

@@ -33,7 +33,8 @@ export class CommonModel extends CommonSchema<CommonModel>{
      * @param mergeTo CommonModel to merge into
      * @param mergeFrom CommonModel to merge values from
      */
-    static mergeCommonModels(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema) : CommonModel {
+    static mergeCommonModels(mergeTo: CommonModel | undefined, mergeFrom: CommonModel, originalSchema: Schema) : CommonModel {
+        if(mergeTo === undefined) return mergeFrom;
         const mergeToProperties = mergeTo.properties;
         const mergeFromProperties = mergeFrom.properties;
         if(mergeFromProperties !== undefined){
@@ -49,26 +50,38 @@ export class CommonModel extends CommonSchema<CommonModel>{
                 });
             }
         }
-        if(mergeFrom.items !== undefined){
-            if(mergeTo.items === undefined){
-                mergeTo.items = mergeFrom.items;
-            } else {
-                if(!Array.isArray(mergeFrom.items)){
-                    mergeFrom.items = [mergeFrom.items];
-                }
-                if(!Array.isArray(mergeTo.items)){
-                    mergeTo.items = [mergeTo.items];
-                }
-                mergeFrom.items.forEach((value, index) => {
-                    const mergeToItems = mergeTo.items as CommonModel[];
-                    if(mergeToItems[index] !== undefined){
-                        mergeToItems[index] = CommonModel.mergeCommonModels(mergeToItems[index], value, originalSchema);
-                    }else{
-                        mergeToItems[index] = value;
+
+
+        const mergeItems = (models: CommonModel | CommonModel[] | undefined) : CommonModel | undefined => {
+            if(models !== undefined){
+                if(Array.isArray(models)){
+                    if(models.length > 0){
+                        let mergedItemsModel : CommonModel = models[0];
+                        models.forEach((model) => {mergedItemsModel = CommonModel.mergeCommonModels(mergedItemsModel, model, originalSchema);});
+                        return mergedItemsModel;
+                    } else {
+                        return undefined;
                     }
-                });
+                } 
             }
+            return models;
+        };
+        if(mergeFrom.items !== undefined){
+            //Incase of arrays, merge them into a single schema
+            let mergeFromItemsModel = mergeItems(mergeFrom.items);
+            let mergeToItemsModel = mergeItems(mergeTo.items);
+            if(mergeFromItemsModel !== undefined){
+                if(mergeToItemsModel !== undefined){
+                    mergeTo.items = CommonModel.mergeCommonModels(mergeToItemsModel, mergeFromItemsModel, originalSchema);
+                }else{
+                    mergeTo.items = mergeFromItemsModel;
+                }
+            }
+        }else if(mergeTo.items !== undefined){
+            mergeTo.items = mergeItems(mergeTo.items);
         }
+
+
         if(mergeFrom.enum !== undefined){
             if(mergeTo.enum === undefined){
                 mergeTo.enum = mergeFrom.enum;
@@ -81,13 +94,20 @@ export class CommonModel extends CommonSchema<CommonModel>{
             if(mergeTo.type === undefined){
                 mergeTo.type = mergeFrom.type;
             } else {
-                if(!Array.isArray(mergeTo.type)){
-                    mergeTo.type = [mergeTo.type!]; 
+                const addToType = (type : string) => {
+                    if(!mergeTo.type!.includes(type)){
+                        if(Array.isArray(mergeTo.type)){
+                            mergeTo.type.push(type);
+                        }else{
+                            mergeTo.type = [mergeTo.type!, type];
+                        }
+                    }
                 }
-                if(!Array.isArray(mergeFrom.type)){
-                    mergeFrom.type = [mergeFrom.type!]; 
+                if(Array.isArray(mergeFrom.type)){
+                    mergeFrom.type.forEach(addToType);
+                }else{
+                    addToType(mergeFrom.type);
                 }
-                mergeTo.type = [...mergeTo.type, ...mergeFrom.type];
             }
         }
         // Which values are correct to use here? Is allOf required?

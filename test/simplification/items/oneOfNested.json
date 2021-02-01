@@ -3,15 +3,27 @@
         {
             "oneOf": [
                 {
-                    "type": ["string"]
+                    "items": [
+                        {
+                            "type": "string"
+                        }
+                    ]
                 },
                 {
-                    "type": ["boolean"]
+                    "items": [
+                        {
+                            "type": "boolean"
+                        }
+                    ]
                 }
             ]
         },
         {
-            "type": ["number"]
+            "items": [
+                {
+                    "type": "number"
+                }
+            ]
         }
     ]
 }

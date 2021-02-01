@@ -1,10 +1,18 @@
 {
     "oneOf": [
         {
-            "type": ["string"]
+            "items": [
+                {
+                    "type": "string"
+                }
+            ]
         },
         {
-            "type": ["number"]
+            "items": [
+                {
+                    "type": "number"
+                }
+            ]
         }
     ]
 }

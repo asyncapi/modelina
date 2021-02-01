@@ -3,45 +3,49 @@ import { CommonModel } from "../models/CommonModel";
 import { Schema } from "../models/Schema";
 import {simplifyRecursive} from "./Simplify";
 
+type output = {newModels: CommonModel[] | undefined; items: CommonModel | undefined};
 /**
  * Find the enums for a simplified version of a schema
  * 
  * @param schema to find the simplified enums for
  */
-export default function simplifyItems(schema: Schema) : CommonModel[] | undefined {
-  let commonItems : CommonModel[] | undefined;
-  const addToItems = (model : CommonModel[] | undefined) => {
+export default function simplifyItems(schema: Schema) : output {
+  let commonItems : CommonModel | undefined;
+  let models : CommonModel[] | undefined;
+  const addToModels = (model : CommonModel[] = []) => { models = [...(models || []), ...model]; }
+  const mergeWithItem = (model : CommonModel | undefined) => {
     if(model === undefined) return;
-    if(commonItems === undefined){
-      commonItems = [];
-    }
-    commonItems = [...commonItems, ...model]; 
+    commonItems = CommonModel.mergeCommonModels(commonItems, model, schema);
   }
-
+  const addToItemsAndModels = (out: output) => {
+    if(out?.newModels !== undefined){
+        addToModels(out.newModels);
+    }
+    if(out.items !== undefined){
+      mergeWithItem(out.items);
+    }
+  };
   const handleCombinationSchemas = (schemas: Schema[] = []) => {
-    schemas.forEach((schema) => {
-      addToItems(simplifyItems(schema));
+    schemas.forEach((itemSchema) => {
+      addToItemsAndModels(simplifyItems(itemSchema));
     });
   }
 
   if(schema.items !== undefined){
-    commonItems = [];
+    const addItemsAndModels = (newModels : CommonModel[]) => {
+      mergeWithItem(newModels[0]);
+      //If there are more then one model returned, it is extra.
+      if(newModels.length > 1){
+        newModels.splice(0,1);
+        addToModels(newModels);
+      }
+    };
     if(Array.isArray(schema.items)){
       schema.items.forEach((value) => {
-        var models = simplifyRecursive(value);
-        if(commonItems!.length == 1 ){
-
-        }else{
-          if(models.length > 1){
-          } else {
-            commonItems[0] = models[0];
-          }
-        }
-        CommonModel.mergeCommonModels(commonItems[0], );
+        addItemsAndModels(simplifyRecursive(value));
       })
     }else{
-      var models = simplifyRecursive(schema);
-      addToItems(simplifyItems(schema));
+      addItemsAndModels(simplifyRecursive(schema.items));
     }
   }
 
@@ -52,11 +56,11 @@ export default function simplifyItems(schema: Schema) : CommonModel[] | undefine
 
   //If we encounter combination schemas ensure we recursively find the properties
   if(schema.then){
-    addToItems(simplifyItems(schema.then));
+    addToItemsAndModels(simplifyItems(schema.then));
   }
   if(schema.else){
-    addToItems(simplifyItems(schema.else));
+    addToItemsAndModels(simplifyItems(schema.else));
   }
   
-  return commonItems;
+  return {newModels: models, items: commonItems}
 }
