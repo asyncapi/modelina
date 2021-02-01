@@ -6,7 +6,7 @@ import { Schema } from "models/Schema";
  * 
  * @param schema to find the simplified types for
  */
-export default function simplifyTypes(schema: Schema | boolean) : string[] {
+export default function simplifyTypes(schema: Schema | boolean) : string[] | string | undefined{
   //If we find absence of data format ensure all types are returned
   if(typeof schema === "boolean"){
     if(schema === true){
@@ -15,15 +15,26 @@ export default function simplifyTypes(schema: Schema | boolean) : string[] {
       throw new Error("False value schemas are not supported");
     }
   }
-  let types : string[] = [];
-  
-  const addToTypes = (typesToCheck: string | string[]) => {
-    if(typeof typesToCheck === "string"){
-      if(!types.includes(typesToCheck)){
-        types.push(typesToCheck);
+  let types : string[] | string | undefined = undefined;
+  const addToTypes = (typesToCheck: string[] | string | undefined) => {
+    if(typesToCheck !== undefined){
+      if(types === undefined){
+        types = typesToCheck;
+      } else {
+        if(Array.isArray(typesToCheck)){
+          typesToCheck.forEach(addToTypes);
+        }else{
+          if(Array.isArray(types)){
+            if(!types.includes(typesToCheck)){
+              types.push(typesToCheck);
+            }
+          }else{
+            if(types !== typesToCheck){
+              types = [types, typesToCheck]
+            }
+          }
+        }
       }
-    }else{
-      typesToCheck.forEach(addToTypes);
     }
   };
   const handleCombinationSchemas = (schemas: Schema[] = []) => {
@@ -59,11 +70,7 @@ export default function simplifyTypes(schema: Schema | boolean) : string[] {
       }
       const typeOfEnum = typeof value;
       switch(typeOfEnum){
-        //This should never happen, but just to be sure
-        case "undefined": 
-        case "function":
-        case "symbol":
-          return;
+        //We don't need to check undefined, function, symbol since it should never be possible
         case "bigint": 
           return "number";
         default:
@@ -71,7 +78,6 @@ export default function simplifyTypes(schema: Schema | boolean) : string[] {
       }
     };
     if(schema.enum){
-      types = [];
       schema.enum.forEach((value: any) => {
         const inferredType = inferTypeFromValue(value);
         if(inferredType !== undefined){
@@ -83,7 +89,7 @@ export default function simplifyTypes(schema: Schema | boolean) : string[] {
     if(schema.const !== undefined){
       const inferredType = inferTypeFromValue(schema.const);
       if(inferredType !== undefined){
-        types = [inferredType];
+        types = inferredType;
       }
     }
   }
@@ -92,11 +98,18 @@ export default function simplifyTypes(schema: Schema | boolean) : string[] {
   if(schema.not){
     let notTypes = simplifyTypes(schema.not);
     let remainingTypes = ["object", "string", "number", "array", "boolean", "null"];
-    notTypes.forEach((notType) => {
-      if(remainingTypes.includes(notType)){
+    const tryAndCutRemainingArray = (notType : string | undefined) => {
+      if(notType !== undefined && remainingTypes.includes(notType)){
         remainingTypes.splice(remainingTypes.indexOf(notType), 1);
       }
-    });
+    }
+    if(Array.isArray(notTypes)){
+      notTypes.forEach((notType) => {
+        tryAndCutRemainingArray(notType);
+      });
+    }else{
+      tryAndCutRemainingArray(notTypes);
+    }
     //Assign all remaining types
     types = remainingTypes;
   }

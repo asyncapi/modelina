@@ -33,10 +33,13 @@ export function simplify(schema : Schema | boolean) : CommonModel[] {
   let models : CommonModel[] = [];
   let model = new CommonModel();
   model.originalSchema = Schema.toSchema(schema);
-  model.type = simplifyTypes(schema);
+  const simplifiedTypes = simplifyTypes(schema);
+  if(simplifiedTypes !== undefined){
+    model.type = simplifiedTypes;
+  }
   if(typeof schema !== "boolean"){
     //All schemas of type object MUST have ids, for now lets make it simple
-    if(model.type !== undefined && model.type.includes("object")){
+    if(model.type !== undefined && (model.type === "object" || model.type.includes("object"))){
       let schemaId = schema.$id ? schema.$id : `anonymSchema${anonymCounter++}`;
       if(typeof schema !== "boolean"){
         schema.$id = schemaId;
