@@ -36,16 +36,18 @@ export class CommonModel extends CommonSchema<CommonModel>{
     static mergeCommonModels(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema) : CommonModel {
         const mergeToProperties = mergeTo.properties;
         const mergeFromProperties = mergeFrom.properties;
-        if(mergeToProperties === undefined && mergeFromProperties !== undefined){
-            mergeTo.properties = mergeFromProperties;
-        } else if(mergeToProperties !== undefined && mergeFromProperties !== undefined) {
-            Object.entries(mergeFromProperties).forEach(([propName, prop])=> {
-                if(mergeToProperties![propName] !== undefined){
-                  mergeTo.properties![propName] = CommonModel.mergeCommonModels(mergeToProperties![propName], prop, originalSchema);
-                } else {
-                  mergeTo.properties![propName] = prop;
-                }
-            });
+        if(mergeFromProperties !== undefined){
+            if(mergeToProperties === undefined){
+                mergeTo.properties = mergeFromProperties;
+            } else if(mergeToProperties !== undefined && mergeFromProperties !== undefined) {
+                Object.entries(mergeFromProperties).forEach(([propName, prop])=> {
+                    if(mergeToProperties![propName] !== undefined){
+                      mergeTo.properties![propName] = CommonModel.mergeCommonModels(mergeToProperties![propName], prop, originalSchema);
+                    } else {
+                      mergeTo.properties![propName] = prop;
+                    }
+                });
+            }
         }
 
         if(mergeTo.items === undefined && mergeFrom.items !== undefined){

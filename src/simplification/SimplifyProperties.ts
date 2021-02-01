@@ -11,12 +11,7 @@ type output = {newModels: CommonModel[] | undefined; properties: { [key: string]
 export default function simplifyProperties(schema: Schema) : output {
   let models : CommonModel[] | undefined;
   let commonProperties : { [key: string]: CommonModel; } | undefined;
-  const addToModels = (model : CommonModel[]) => {
-    if(models === undefined){
-      models = [];
-    }
-    models = [...models, ...model];
-  }
+  const addToModels = (model : CommonModel[] = []) => { models = [...(models || []), ...model]; }
   const addToProperty = (propName: string, propModel : CommonModel) => {
     if(commonProperties === undefined){
       commonProperties = {};
