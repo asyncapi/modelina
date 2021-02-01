@@ -53,7 +53,7 @@ export class Schema extends CommonSchema<Schema>{
     static toSchema(object: Object) : Schema{
         let schema = new Schema();
         schema = Object.assign(schema, object);
-        schema = CommonSchema.transformSchema(schema, object, Schema.toSchema);
+        schema = CommonSchema.transformSchema(schema, Schema.toSchema);
 
         //Transform JSON Schema properties which contain nested schemas into an instance of Schema
         if(schema.allOf !== undefined){

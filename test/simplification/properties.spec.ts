@@ -237,4 +237,96 @@ describe('Simplification of properties', function() {
       });
     });
   });
+  test('Should merge properties which same key', function() {
+    const schemaString = fs.readFileSync(path.resolve(__dirname, './properties/combine_properties.json'), 'utf8');
+    const schema = JSON.parse(schemaString);
+    const {newModels, properties} = simplifyProperties(schema);
+    expect(newModels).toBeUndefined();
+    expect(properties).toEqual(expect.objectContaining({ 
+      "testProp1": {
+        originalSchema: {
+          allOf: [
+            {
+              properties: {
+                testProp1: {
+                  type: "string",
+                  enum: [
+                    "merge",
+                  ],
+                },
+              },
+            },
+            {
+              properties: {
+                testProp1: {
+                  type: "number",
+                  enum: [
+                    0,
+                  ],
+                },
+              },
+            },
+          ],
+        },
+        type: [
+          "string",
+          "number",
+        ],
+        enum: [
+          "merge",
+          0,
+        ],
+      }
+    }));
+  });
+  test('Should split out multiple objects into their own models and add reference', function() {
+    const schemaString = fs.readFileSync(path.resolve(__dirname, './properties/multiple_objects.json'), 'utf8');
+    const schema = JSON.parse(schemaString);
+    const {newModels, properties} = simplifyProperties(schema);
+    expect(newModels).toHaveLength(1);
+    expect(newModels).toEqual(expect.arrayContaining([expect.objectContaining({
+      originalSchema: {
+        type: "object",
+        properties: {
+          floor: {
+            type: "number",
+          },
+        },
+      },
+      type: [
+        "object",
+      ],
+      $id: "anonymSchema1",
+      properties: {
+        floor: {
+          originalSchema: {
+            type: "number",
+          },
+          type: [
+            "number",
+          ],
+        },
+      },
+    })]));
+    expect(properties).toEqual({
+      street_address: {
+        $ref: "anonymSchema1",
+      },
+      country: {
+        originalSchema: {
+          enum: [
+            "United States of America",
+            "Canada",
+          ],
+        },
+        type: [
+          "string",
+        ],
+        enum: [
+          "United States of America",
+          "Canada",
+        ],
+      },
+    });
+  });
 });

@@ -27,7 +27,7 @@ export default function simplifyProperties(schema: Schema) : output {
     }
     //If a simplified property already exist, merge the two
     if(commonProperties[propName] !== undefined){
-      commonProperties[propName] = CommonModel.mergeCommonModels(commonProperties[propName], propModel);
+      commonProperties[propName] = CommonModel.mergeCommonModels(commonProperties[propName], propModel, schema);
     } else {
       commonProperties[propName] = propModel;
     }
