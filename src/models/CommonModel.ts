@@ -33,18 +33,21 @@ export class CommonModel extends CommonSchema<CommonModel>{
      * @param mergeTo CommonModel to merge into
      * @param mergeFrom CommonModel to merge values from
      */
-    static mergeCommonModels(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema) : CommonModel {     
-        if(mergeTo.properties === undefined && mergeFrom.properties !== undefined){
-            mergeTo.properties = mergeFrom.properties;
-        } else if(mergeTo.properties !== undefined && mergeFrom.properties !== undefined) {
-            Object.entries(mergeFrom.properties).forEach(([propName, prop])=> {
-                if(mergeTo.properties![propName] !== undefined){
-                  mergeTo.properties![propName] = CommonModel.mergeCommonModels(mergeTo.properties![propName], prop, originalSchema);
+    static mergeCommonModels(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema) : CommonModel {
+        const mergeToProperties = mergeTo.properties;
+        const mergeFromProperties = mergeFrom.properties;
+        if(mergeToProperties === undefined && mergeFromProperties !== undefined){
+            mergeTo.properties = mergeFromProperties;
+        } else if(mergeToProperties !== undefined && mergeFromProperties !== undefined) {
+            Object.entries(mergeFromProperties).forEach(([propName, prop])=> {
+                if(mergeToProperties![propName] !== undefined){
+                  mergeTo.properties![propName] = CommonModel.mergeCommonModels(mergeToProperties![propName], prop, originalSchema);
                 } else {
                   mergeTo.properties![propName] = prop;
                 }
             });
         }
+
         if(mergeTo.items === undefined && mergeFrom.items !== undefined){
             mergeTo.items = mergeFrom.items;
         } else if(mergeTo.items !== undefined && mergeFrom.items !== undefined) {
