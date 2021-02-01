@@ -39,7 +39,7 @@ export class CommonModel extends CommonSchema<CommonModel>{
         if(mergeFromProperties !== undefined){
             if(mergeToProperties === undefined){
                 mergeTo.properties = mergeFromProperties;
-            } else if(mergeToProperties !== undefined && mergeFromProperties !== undefined) {
+            } else {
                 Object.entries(mergeFromProperties).forEach(([propName, prop])=> {
                     if(mergeToProperties![propName] !== undefined){
                       mergeTo.properties![propName] = CommonModel.mergeCommonModels(mergeToProperties![propName], prop, originalSchema);
@@ -49,40 +49,46 @@ export class CommonModel extends CommonSchema<CommonModel>{
                 });
             }
         }
-
-        if(mergeTo.items === undefined && mergeFrom.items !== undefined){
-            mergeTo.items = mergeFrom.items;
-        } else if(mergeTo.items !== undefined && mergeFrom.items !== undefined) {
-            if(!Array.isArray(mergeFrom.items)){
-                mergeFrom.items = [mergeFrom.items];
-            }
-            if(!Array.isArray(mergeTo.items)){
-                mergeTo.items = [mergeTo.items];
-            }
-            mergeFrom.items.forEach((value, index) => {
-                const mergeToItems = mergeTo.items as CommonModel[];
-                if(mergeToItems[index] !== undefined){
-                    mergeToItems[index] = CommonModel.mergeCommonModels(mergeToItems[index], value, originalSchema);
-                }else{
-                    mergeToItems[index] = value;
+        if(mergeFrom.items !== undefined){
+            if(mergeTo.items === undefined){
+                mergeTo.items = mergeFrom.items;
+            } else {
+                if(!Array.isArray(mergeFrom.items)){
+                    mergeFrom.items = [mergeFrom.items];
                 }
-            });
-        }
-        if(mergeTo.enum === undefined && mergeFrom.enum !== undefined){
-            mergeTo.enum = mergeFrom.enum;
-        } else if(mergeTo.enum !== undefined && mergeFrom.enum !== undefined) {
-            mergeTo.enum = [...mergeTo.enum, ...mergeFrom.enum];
-        }
-        if(mergeTo.type === undefined && mergeFrom.type !== undefined){
-            mergeTo.type = mergeFrom.type;
-        } else if(mergeTo.type !== undefined && mergeFrom.type !== undefined) {
-            if(!Array.isArray(mergeTo.type)){
-                mergeTo.type = [mergeTo.type!]; 
+                if(!Array.isArray(mergeTo.items)){
+                    mergeTo.items = [mergeTo.items];
+                }
+                mergeFrom.items.forEach((value, index) => {
+                    const mergeToItems = mergeTo.items as CommonModel[];
+                    if(mergeToItems[index] !== undefined){
+                        mergeToItems[index] = CommonModel.mergeCommonModels(mergeToItems[index], value, originalSchema);
+                    }else{
+                        mergeToItems[index] = value;
+                    }
+                });
             }
-            if(!Array.isArray(mergeFrom.type)){
-                mergeFrom.type = [mergeFrom.type!]; 
+        }
+        if(mergeFrom.enum !== undefined){
+            if(mergeTo.enum === undefined){
+                mergeTo.enum = mergeFrom.enum;
+            } else {
+                mergeTo.enum = [...mergeTo.enum, ...mergeFrom.enum];
             }
-            mergeTo.type = [...mergeTo.type, ...mergeFrom.type];
+        }
+
+        if(mergeFrom.type !== undefined){
+            if(mergeTo.type === undefined){
+                mergeTo.type = mergeFrom.type;
+            } else {
+                if(!Array.isArray(mergeTo.type)){
+                    mergeTo.type = [mergeTo.type!]; 
+                }
+                if(!Array.isArray(mergeFrom.type)){
+                    mergeFrom.type = [mergeFrom.type!]; 
+                }
+                mergeTo.type = [...mergeTo.type, ...mergeFrom.type];
+            }
         }
         // Which values are correct to use here? Is allOf required?
         if(mergeFrom.$id !== undefined){
