@@ -13,12 +13,11 @@ export default function simplifyItems(schema: Schema) : output {
   let commonItems : CommonModel | undefined;
   let models : CommonModel[] | undefined;
   const addToModels = (model : CommonModel[] = []) => { models = [...(models || []), ...model]; }
-  const mergeWithItem = (model : CommonModel | undefined) => {
-    if(model === undefined) return;
+  const mergeWithItem = (model : CommonModel) => {
     commonItems = CommonModel.mergeCommonModels(commonItems, model, schema);
   }
   const addToItemsAndModels = (out: output) => {
-    if(out?.newModels !== undefined){
+    if(out.newModels !== undefined){
         addToModels(out.newModels);
     }
     if(out.items !== undefined){

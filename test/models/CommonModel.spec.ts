@@ -292,6 +292,22 @@ describe('CommonModel', function() {
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
         expect(doc1.items).toEqual(doc2.items[0]);
       });
+      test('should be merged when only left side is defined', function() {
+        const doc: Schema = { };
+        let doc1 = CommonModel.toCommonModel(doc);
+        let doc2 = CommonModel.toCommonModel(doc);
+        doc1.items = [{type: "string"}, {type: "number"}];
+        doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
+        expect(doc1.items).toEqual({type: ["string", "number"], originalSchema: {}});
+      });
+      test('should handle empty items', function() {
+        const doc: Schema = { };
+        let doc1 = CommonModel.toCommonModel(doc);
+        let doc2 = CommonModel.toCommonModel(doc);
+        doc1.items = [];
+        doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
+        expect(doc1.items).toBeUndefined();
+      });
       test('should be merged when both sides are defined as schemas', function() {
         const doc: Schema = { };
         let doc1 = CommonModel.toCommonModel(doc);
