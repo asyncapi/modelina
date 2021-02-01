@@ -1,0 +1,20 @@
+{
+  "allOf": [
+    { 
+      "properties": { 
+        "testProp1": { 
+          "type": "string",
+          "enum": ["merge"]
+        } 
+      }  
+    },
+    { 
+      "properties": { 
+        "testProp1": { 
+          "type": "number",
+          "enum": [0]
+        } 
+      }
+    }
+  ]
+}

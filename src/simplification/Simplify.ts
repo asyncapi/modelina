@@ -1,8 +1,28 @@
 
 import { CommonModel, Schema } from '../models';
+import simplifyProperties from './SimplifyProperties';
 import simplifyEnums from './SimplifyEnums';
 import simplifyTypes from './SimplifyTypes';
 let anonymCounter = 1;
+
+/**
+ * Simplifies a schema by first checking if its an object, if so, split it out and ref it based on id.
+ * 
+ * @param schema to simplify
+ */
+export function simplifyRecursive(schema : Schema) : CommonModel[] {
+  let models : CommonModel[] = [];
+  let types = simplifyTypes(schema);
+  let simplifiedModel = simplify(schema);
+  if(types !== undefined && types.includes("object")){
+    let rootModel = new CommonModel();
+    rootModel.$ref = schema.$id;
+    models[0] = rootModel;
+  }
+  models = [...models, ...simplifiedModel];
+  return models;
+}
+
 
 /**
  * Simplifies a schema into instances of CommonModel.
@@ -13,10 +33,13 @@ export function simplify(schema : Schema | boolean) : CommonModel[] {
   let models : CommonModel[] = [];
   let model = new CommonModel();
   model.originalSchema = Schema.toSchema(schema);
-  model.type = simplifyTypes(schema);
+  const simplifiedTypes = simplifyTypes(schema);
+  if(simplifiedTypes !== undefined){
+    model.type = simplifiedTypes;
+  }
   if(typeof schema !== "boolean"){
     //All schemas of type object MUST have ids, for now lets make it simple
-    if(model.type !== undefined && model.type.includes("object")){
+    if(model.type !== undefined && (model.type === "object" || model.type.includes("object"))){
       let schemaId = schema.$id ? schema.$id : `anonymSchema${anonymCounter++}`;
       if(typeof schema !== "boolean"){
         schema.$id = schemaId;
@@ -26,6 +49,13 @@ export function simplify(schema : Schema | boolean) : CommonModel[] {
       model.$id = schema.$id;
     }
 
+    const {newModels, properties} = simplifyProperties(schema);
+    if(newModels !== undefined){
+        models = [...models, ...newModels];
+    }
+    if(properties !== undefined){
+      model.properties = properties;
+    }
     const enums = simplifyEnums(schema);
     if(enums.length > 0){
       if(model.enum){

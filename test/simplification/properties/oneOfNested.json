@@ -1,0 +1,29 @@
+{
+    "oneOf": [
+        {
+            "oneOf": [
+                { 
+                  "properties": { 
+                    "testProp1": { 
+                      "type": "string"
+                    } 
+                  }  
+                },
+                { 
+                  "properties": { 
+                    "testProp2": { 
+                      "type": "string"
+                    } 
+                  }  
+                }
+            ]
+        },
+        { 
+          "properties": { 
+            "testProp3": { 
+              "type": "string"
+            } 
+          }
+        }
+    ]
+}
