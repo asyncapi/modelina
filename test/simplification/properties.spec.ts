@@ -144,7 +144,7 @@ describe('Simplification of properties', function() {
         } 
       });
     });
-    test('with nested schema', function() {
+    test('with nested oneOf schemas', function() {
       const schemaString = fs.readFileSync(path.resolve(__dirname, './properties/oneOfNested.json'), 'utf8');
       const schema = JSON.parse(schemaString);
       const {newModels, properties} = simplifyProperties(schema);
