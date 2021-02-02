@@ -11,11 +11,12 @@ let anonymCounter = 1;
  * 
  * @param schema to simplify
  */
-export function simplifyRecursive(schema : Schema) : CommonModel[] {
+export function simplifyRecursive(schema : Schema | boolean) : CommonModel[] {
   let models : CommonModel[] = [];
   let types = simplifyTypes(schema);
   let simplifiedModel = simplify(schema);
-  if(types !== undefined && types.includes("object")){
+  //Only if it contains object and is the only type
+  if(types !== undefined && typeof schema !== "boolean" && types.includes("object") && simplifiedModel[0].properties !== undefined){
     let rootModel = new CommonModel();
     rootModel.$ref = schema.$id;
     models[0] = rootModel;
@@ -40,11 +41,9 @@ export function simplify(schema : Schema | boolean) : CommonModel[] {
   }
   if(typeof schema !== "boolean"){
     //All schemas of type object MUST have ids, for now lets make it simple
-    if(model.type !== undefined && (model.type === "object" || model.type.includes("object"))){
+    if(model.type !== undefined && model.type.includes("object")){
       let schemaId = schema.$id ? schema.$id : `anonymSchema${anonymCounter++}`;
-      if(typeof schema !== "boolean"){
-        schema.$id = schemaId;
-      }
+      schema.$id = schemaId;
       model.$id = schemaId;
     } else if (schema.$id !== undefined){
       model.$id = schema.$id;
@@ -66,7 +65,7 @@ export function simplify(schema : Schema | boolean) : CommonModel[] {
       model.properties = simplifiedProperties.properties;
     }
     const enums = simplifyEnums(schema);
-    if(enums.length > 0){
+    if(enums !== undefined && enums.length > 0){
       if(model.enum){
         model.enum = [...model.enum, ...enums];
       }else{
@@ -74,8 +73,6 @@ export function simplify(schema : Schema | boolean) : CommonModel[] {
       }
     }
   }
- 
-
   models.push(model);
   return models;
 }
