@@ -16,8 +16,7 @@ ${this.indent(this.renderProperties())}
   protected renderProperties(): string {
     const properties = this.model.properties || {};
     return Object.entries(properties).map(([name, property]) => {
-      const isRequired = this.isPropertyRequired(name, this.model);
-      return this.renderProperty(name, property, isRequired);
+      return this.renderProperty(name, property, this.isPropertyRequired(name, this.model));
     }).filter(Boolean).join('\n');
   }
 

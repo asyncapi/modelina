@@ -19,13 +19,8 @@ describe('TypeScriptGenerator', function() {
         members:        { oneOf: [{ type: "string" }, { type: "number" }, { type: "boolean" }], },
       },
       required: ["street_name", "city", "state", "house_number"],
-    }
-
-    const inputModel = await generator.process(doc);
-    const model = inputModel.models["Address"];
-    const interfaceModel = await generator.render(model, "Address", inputModel);
-    
-    expect(interfaceModel).toEqual(`interface Address {
+    };
+    const expected = `interface Address {
   street_name: string;
   /**
    * City description
@@ -38,7 +33,16 @@ describe('TypeScriptGenerator', function() {
    */
   marriage?: boolean;
   members?: string | number | boolean;
-}`);
+}`;
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models["Address"];
+
+    let interfaceModel = await generator.renderInterface(model, "Address", inputModel);
+    expect(interfaceModel).toEqual(expected);
+
+    interfaceModel = await generator.render(model, "Address", inputModel);
+    expect(interfaceModel).toEqual(expected);
   });
 
 test('should render `enum` type', async function() {
@@ -46,16 +50,20 @@ test('should render `enum` type', async function() {
       $id: "States",
       type: "string",
       enum: ["Texas", "Alabama", "California"],
-    }
-
-    const inputModel = await generator.process(doc);
-    const model = inputModel.models["States"];
-    const enumModel = await generator.render(model, "States", inputModel);
-    
-    expect(enumModel).toEqual(`enum States {
+    };
+    const expected = `enum States {
   Texas = "Texas",
   Alabama = "Alabama",
   California = "California",
-}`);
+}`;
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models["States"];
+
+    let enumModel = await generator.renderEnum(model, "States", inputModel);
+    expect(enumModel).toEqual(expected);
+
+    enumModel = await generator.render(model, "States", inputModel);
+    expect(enumModel).toEqual(expected);
   });
 });
