@@ -15,10 +15,8 @@ ${this.indent(this.renderProperties())}
 
   protected renderProperties(): string {
     const properties = this.model.properties || {};
-    // TODO: make from it some helper.
-    const required = (this.model.originalSchema as any)?.required || [];
     return Object.entries(properties).map(([name, property]) => {
-      const isRequired = required.includes(name);
+      const isRequired = this.isPropertyRequired(name, this.model);
       return this.renderProperty(name, property, isRequired);
     }).filter(Boolean).join('\n');
   }
@@ -27,12 +25,13 @@ ${this.indent(this.renderProperties())}
     if (property.type === undefined) {
       return "";
     }
-    const signature = this.renderTypeSignature(property, !isRequired);
-    const content = `${name}${signature};`
 
-    const description = (property.originalSchema as any).description;
+    const signature = this.renderTypeSignature(property, !isRequired);
+    let content = `${name}${signature};`
+
+    const description = this.renderDescription(property);
     if (description) {
-      return `${this.renderDescription(description)}\n${content}`;
+      content = `${description}\n${content}`;
     }
     return content;
   }

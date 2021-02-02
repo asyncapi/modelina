@@ -30,7 +30,7 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
       return model.type.map(t => this.renderType(t as any)).join(' | ');
     }
 
-    const type = model.type;
+    const type = typeof model === "string" ? model : model.type;
     switch (model.type) {
     case 'string':
       return 'string';
@@ -55,8 +55,14 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
     return `${annotation} ${this.renderType(type)}`;
   }
 
-  protected renderDescription(desc: string): string {
-    return this.renderComments(desc);
+  protected renderDescription(desc: string | CommonModel): string {
+    if (desc instanceof CommonModel) {
+      desc = (desc.originalSchema as any)?.description || "";
+    }
+    if (!desc) {
+      return "";
+    }
+    return this.renderComments(desc as string);
   }
 
   protected renderComments(lines: string | string[]): string {

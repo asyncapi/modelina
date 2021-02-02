@@ -1,5 +1,6 @@
 import { CommonGeneratorOptions } from "./AbstractGenerator";
 import { FormatHelpers, IndentationTypes } from "../helpers";
+import { CommonModel } from "models";
 
 /**
  * Abstract renderer with common helper methods
@@ -24,5 +25,10 @@ export abstract class AbstractRenderer<O extends CommonGeneratorOptions = Common
     type: IndentationTypes = this.options.indentation.type
   ) {
     return FormatHelpers.indent(content, size, type);
+  }
+
+  isPropertyRequired(propertyName: string, model: CommonModel): boolean {
+    const required = (model.originalSchema as any)?.required || [];
+    return required.includes(propertyName);
   }
 }

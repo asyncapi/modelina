@@ -16,6 +16,7 @@ describe('TypeScriptGenerator', function() {
         state:          { type: "string" },
         house_number:   { type: "number" },
         marriage:       { type: "boolean", description: "Status if marriage live in given house" },
+        members:        { oneOf: [{ type: "string" }, { type: "number" }, { type: "boolean" }], },
       },
       required: ["street_name", "city", "state", "house_number"],
     }
@@ -36,6 +37,7 @@ describe('TypeScriptGenerator', function() {
    * Status if marriage live in given house
    */
   marriage?: boolean;
+  members?: string | number | boolean;
 }`);
   });
 
