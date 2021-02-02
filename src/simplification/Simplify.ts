@@ -18,8 +18,8 @@ export function simplifyRecursive(schema : Schema | boolean) : CommonModel[] {
     //Get the root model from the simplification process which is the last element in the list
     //This is because any intermediary models are put in front of the root
     const rootSimplifiedModel = simplifiedModel[simplifiedModel.length-1];
-    //Only if it contains object and is the only type
-    if(rootSimplifiedModel.type !== undefined && typeof schema !== "boolean" && rootSimplifiedModel.type.includes("object") && rootSimplifiedModel.properties !== undefined){
+    //Only if the schema is of type object and contains properties, split it out
+    if(rootSimplifiedModel.type !== undefined && rootSimplifiedModel.type.includes("object") && rootSimplifiedModel.properties !== undefined){
       let switchRootModel = new CommonModel();
       switchRootModel.$ref = rootSimplifiedModel.$id;
       models[0] = switchRootModel;
