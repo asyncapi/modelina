@@ -7,7 +7,6 @@ export interface CommonGeneratorOptions {
     type: IndentationTypes;
     size: number;
   };
-  namingConvention: (name: string) => string; 
 }
 
 export abstract class AbstractGenerator<O = object> {

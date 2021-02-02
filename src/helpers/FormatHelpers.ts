@@ -5,16 +5,6 @@ export enum IndentationTypes {
 
 export class FormatHelpers {
   /**
-   * Ensures formatting according to the camelcase format
-   * @param {string} content to format
-   * @returns {string}
-   */
-  static camelCase(name: string): string {
-    // to implement
-    return name;
-  }
-
-  /**
    * Ensures breaking text into new lines according to newline char (`\n`) in text
    * @param {(string | string[])} lines to breaks
    * @returns {string[]}
