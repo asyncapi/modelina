@@ -5,7 +5,7 @@ import { InputProcessor } from '../src/processors/InputProcessor';
 import { AsyncAPIInputProcessor } from '../src/processors/AsyncAPIInputProcessor';
 import { JsonSchemaInputProcessor } from '../src/processors/JsonSchemaInputProcessor';
 
-describe.skip('InputProcessor', function() {
+describe('InputProcessor', function() {
     let mainProcessor : InputProcessor = new InputProcessor();
     
     /**

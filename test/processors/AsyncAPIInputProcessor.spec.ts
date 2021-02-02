@@ -3,7 +3,7 @@ import * as path from 'path';
 import {parse} from '@asyncapi/parser';
 import {AsyncAPIInputProcessor} from '../../src/processors/AsyncAPIInputProcessor'
 
-describe.skip('AsyncAPIInputProcessor', function() {
+describe('AsyncAPIInputProcessor', function() {
     describe('isAsyncAPI()', function() {
         test('should be able to detect pure object', function() {
             const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'), 'utf8');

@@ -14,10 +14,17 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
      * @param object 
      */
     async process(object: any): Promise<CommonInputModel> {
-        const commonInputModel = new CommonInputModel();
-        commonInputModel.originalInput = object;
-        commonInputModel.models = JsonSchemaInputProcessor.convertSchemaToCommonModel(object);
-        return commonInputModel;
+        if(object.$schema !== undefined){
+            switch(object.$schema){
+                case 'http://json-schema.org/draft-07/schema#':
+                    const schema = Schema.toSchema(object);
+                    const commonInputModel = new CommonInputModel();
+                    commonInputModel.originalInput = schema;
+                    commonInputModel.models = JsonSchemaInputProcessor.convertSchemaToCommonModel(object);
+                    return commonInputModel;
+            }
+        }
+        throw "Input not supported"
     }
 
     /**
@@ -37,5 +44,4 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         });
         return commonModelsMap;
     }
-    
 }
