@@ -1,5 +1,5 @@
 import { Schema } from "../../../models";
-import { TypeScriptRenderer } from "./CommonRenderer";
+import { TypeScriptRenderer } from "./TypeScriptRenderer";
 import { InterfaceRenderer } from "./InterfaceRenderer";
 
 export class ClassRenderer extends TypeScriptRenderer {

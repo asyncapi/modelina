@@ -30,7 +30,7 @@ ${content}
     if (Array.isArray(model)) {
       return model.map(t => this.renderType(t)).join(' | ');
     }
-    if(model.$ref !== undefined){
+    if (model.$ref !== undefined) {
       return model.$ref;
     }
     if (Array.isArray(model.type)) {
