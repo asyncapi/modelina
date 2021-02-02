@@ -16,5 +16,6 @@ describe('Simplification', function() {
     expect(actualModels).not.toBeUndefined();
     expect(actualModels[0]).toEqual(expectedModels[1]);
     expect(actualModels[1]).toEqual(expectedModels[0]);
+    expect(schema.$id).toBeUndefined();
   });
 });

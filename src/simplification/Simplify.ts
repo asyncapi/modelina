@@ -13,13 +13,13 @@ let anonymCounter = 1;
  */
 export function simplifyRecursive(schema : Schema | boolean) : CommonModel[] {
   let models : CommonModel[] = [];
-  let types = simplifyTypes(schema);
   let simplifiedModel = simplify(schema);
+  const rootSimplifiedModel = simplifiedModel[0];
   //Only if it contains object and is the only type
-  if(types !== undefined && typeof schema !== "boolean" && types.includes("object") && simplifiedModel[0].properties !== undefined){
-    let rootModel = new CommonModel();
-    rootModel.$ref = schema.$id;
-    models[0] = rootModel;
+  if(rootSimplifiedModel.type !== undefined && typeof schema !== "boolean" && rootSimplifiedModel.type.includes("object") && rootSimplifiedModel.properties !== undefined){
+    let switchRootModel = new CommonModel();
+    switchRootModel.$ref = rootSimplifiedModel.$id;
+    models[0] = switchRootModel;
   }
   models = [...models, ...simplifiedModel];
   return models;
@@ -43,7 +43,6 @@ export function simplify(schema : Schema | boolean) : CommonModel[] {
     //All schemas of type object MUST have ids, for now lets make it simple
     if(model.type !== undefined && model.type.includes("object")){
       let schemaId = schema.$id ? schema.$id : `anonymSchema${anonymCounter++}`;
-      schema.$id = schemaId;
       model.$id = schemaId;
     } else if (schema.$id !== undefined){
       model.$id = schema.$id;
