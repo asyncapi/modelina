@@ -8,7 +8,7 @@ import { Schema } from "./Schema";
  */
 export class CommonModel extends CommonSchema<CommonModel>{
     extend?: string
-    originalSchema?: Schema
+    originalSchema?: Schema | boolean
 
     /**
      * Transform object into a type of CommonModel.
