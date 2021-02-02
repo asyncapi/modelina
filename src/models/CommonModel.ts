@@ -53,16 +53,14 @@ export class CommonModel extends CommonSchema<CommonModel>{
 
 
         const mergeItems = (models: CommonModel | CommonModel[] | undefined) : CommonModel | undefined => {
-            if(models !== undefined){
-                if(Array.isArray(models)){
-                    if(models.length > 0){
-                        let mergedItemsModel : CommonModel = models[0];
-                        models.forEach((model) => {mergedItemsModel = CommonModel.mergeCommonModels(mergedItemsModel, model, originalSchema);});
-                        return mergedItemsModel;
-                    } else {
-                        return undefined;
-                    }
-                } 
+            if(Array.isArray(models)){
+                if(models.length > 0){
+                    let mergedItemsModel : CommonModel = models[0];
+                    models.forEach((model) => {mergedItemsModel = CommonModel.mergeCommonModels(mergedItemsModel, model, originalSchema);});
+                    return mergedItemsModel;
+                } else {
+                    return undefined;
+                }
             }
             return models;
         };
@@ -94,6 +92,7 @@ export class CommonModel extends CommonSchema<CommonModel>{
             if(mergeTo.type === undefined){
                 mergeTo.type = mergeFrom.type;
             } else {
+                //Only add the types that do not already exist
                 const addToType = (type : string) => {
                     if(!mergeTo.type!.includes(type)){
                         if(Array.isArray(mergeTo.type)){
