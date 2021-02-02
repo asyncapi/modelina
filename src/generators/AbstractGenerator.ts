@@ -9,6 +9,9 @@ export interface CommonGeneratorOptions {
   };
 }
 
+/**
+ * Abstract generator which must be implemented by each language
+ */
 export abstract class AbstractGenerator<O = object> {
   constructor(
     public readonly displayName: string,

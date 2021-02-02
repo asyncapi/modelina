@@ -1,6 +1,9 @@
 import { CommonGeneratorOptions } from "./AbstractGenerator";
 import { FormatHelpers, IndentationTypes } from "../helpers";
 
+/**
+ * Abstract renderer with common helper methods
+ */
 export abstract class AbstractRenderer<O extends CommonGeneratorOptions = CommonGeneratorOptions> {
   constructor(
     protected readonly options: O,
