@@ -7,6 +7,11 @@ import simplifyEnums from '../../src/simplification/SimplifyEnums';
  * on a JSON Schema which actually makes sense but are used to test the principles.
  */
 describe('Simplification of enum', function() {
+  test('should return undefined when boolean', function() {
+    const schema: any = true;
+    const enums = simplifyEnums(schema);
+    expect(enums).toBeUndefined();
+  });
   test('should return as is', function() {
     const schema: any = { enum: ['test']};
     const enums = simplifyEnums(schema);
