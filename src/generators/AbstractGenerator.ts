@@ -9,6 +9,13 @@ export interface CommonGeneratorOptions {
   };
 }
 
+export const defaultGeneratorOptions = {
+  indentation: {
+    type: IndentationTypes.SPACES,
+    size: 2,
+  },
+}
+
 /**
  * Abstract generator which must be implemented by each language
  */
