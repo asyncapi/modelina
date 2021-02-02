@@ -1,5 +1,14 @@
 import { CommonInputModel, CommonModel, OutputModel } from "../models";
 import { inputProcessor } from "../processors";
+import { IndentationTypes } from "../helpers";
+
+export interface CommonGeneratorOptions {
+  indentation: {
+    type: IndentationTypes;
+    size: number;
+  };
+  namingConvention: (name: string) => string; 
+}
 
 export abstract class AbstractGenerator<O = object> {
   constructor(
@@ -9,13 +18,17 @@ export abstract class AbstractGenerator<O = object> {
 
   public abstract render(model: CommonModel, modelName: string, inputModel: CommonInputModel): Promise<string>;
 
+  public async process(input: any, type: string = 'json-schema'): Promise<CommonInputModel> {
+    return await inputProcessor.process(input, type);
+  }
+
   public generate(input: CommonInputModel): Promise<OutputModel[]>;
   public generate(input: any, type: string): Promise<OutputModel[]>;
   public async generate(input: any, type: string = 'json-schema'): Promise<OutputModel[]> {
     if (input instanceof CommonInputModel) {
       return this.generateModels(input);
     }
-    const model = await inputProcessor.process(input, type);
+    const model = await this.process(input, type);
     return this.generateModels(model);
   }
 
