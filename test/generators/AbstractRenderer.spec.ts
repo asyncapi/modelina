@@ -18,17 +18,17 @@ describe('AbstractRenderer', function() {
     renderer = new TestRenderer();
   });
 
-  test('should `renderLine` function works', async function() {
+  test('renderLine function should render string with new line', async function() {
     const content = renderer.renderLine('Test');
     expect(content).toEqual('Test\n');
   });
 
-  test('should `renderBlock` function works', async function() {
+  test('renderBlock function should render multiple lines', async function() {
     const content = renderer.renderBlock(['Test1', 'Test2']);
     expect(content).toEqual('Test1\nTest2');
   });
 
-  test('should `indent` function works', async function() {
+  test('indent function should render text with indentation', async function() {
     const content = renderer.indent('Test');
     expect(content).toEqual('  Test');
   });
