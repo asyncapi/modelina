@@ -26,8 +26,19 @@ ${content}
  */`;
   }
 
-  protected renderType(type: string): string {
-    switch (type) {
+  protected renderType(model: CommonModel | CommonModel[]): string {
+    if (Array.isArray(model)) {
+      return model.map(t => this.renderType(t)).join(' | ');
+    }
+    if(model.$ref !== undefined){
+      return model.$ref;
+    }
+    if (Array.isArray(model.type)) {
+      return model.type.map(t => this.renderType(t as any)).join(' | ');
+    }
+
+    const type = model.type;
+    switch (model.type) {
     case 'string':
       return 'string';
     case 'integer':
@@ -35,27 +46,21 @@ ${content}
       return 'number';
     case 'boolean':
       return 'boolean';
-    case 'object':
-      return 'any';
-    case 'array': 
-      return 'Array<any>';
-    default: return type;
+    case 'array': {
+      const types = model.items ? this.renderType(model.items) : 'any';
+      return `Array<${types}>`;
+    }
+    default: return type || "any";
     }
   }
   
-  protected renderTypeSignature(type: string | string[], isOptional: boolean = false): string {
-    // FOR JS
+  protected renderTypeSignature(type: CommonModel | CommonModel[], isOptional: boolean = false): string {
     if (this.options.renderTypes === false) {
       return "";
     }
 
-    if (!Array.isArray(type)) {
-      type = [type];
-    }
-    const types = type.map(t => this.renderType(t)).join(' | ');
     const annotation = isOptional ? "?:" : ":";
-
-    return `${annotation} ${types}`;
+    return `${annotation} ${this.renderType(type)}`;
   }
 
   protected renderImport(what: string | string[], from: string): string {

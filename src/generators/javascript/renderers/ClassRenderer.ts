@@ -1,5 +1,5 @@
 import { Schema } from "../../../models";
-import { TypeScriptRenderer } from "./TypeScriptRenderer";
+import { TypeScriptRenderer } from "./CommonRenderer";
 import { InterfaceRenderer } from "./InterfaceRenderer";
 
 export class ClassRenderer extends TypeScriptRenderer {
@@ -47,7 +47,7 @@ ${classContent}`;
     }
 
     name = this.options.namingConvention(name);
-    const signature = this.renderTypeSignature(property.type, !isRequired);
+    const signature = this.renderTypeSignature(property, !isRequired);
     let content = `private ${name}${signature};`
     if (this.options.renderTypes === false) {
       content = `${name}${signature};`
@@ -60,7 +60,7 @@ ${classContent}`;
   }
 
   protected renderConstructor(): string {
-    const signature = this.renderTypeSignature(`${this.modelName}Input`);
+    const signature = this.options.renderTypes ? `: ${this.modelName}Input` : '';
     return `constructor(input${signature}) {
 ${this.indent(this.renderConstructorBody())}
 }`;
@@ -88,7 +88,7 @@ ${this.indent(this.renderConstructorBody())}
       return "";
     }
 
-    const signature = this.renderTypeSignature(property.type, false);
+    const signature = this.renderTypeSignature(property, false);
     return `get ${name}()${signature} { return this.${name}; }`;
   }
 
@@ -97,7 +97,7 @@ ${this.indent(this.renderConstructorBody())}
       return "";
     }
 
-    const signature = this.renderTypeSignature(property.type, false);
+    const signature = this.renderTypeSignature(property, false);
     const arg = `${name}${signature}`
     return `set ${name}(${arg}) { this.${name} = ${name}; }`;
   }

@@ -1,5 +1,5 @@
 import { Schema } from "../../../models";
-import { TypeScriptRenderer } from "./TypeScriptRenderer";
+import { TypeScriptRenderer } from "./CommonRenderer";
 
 export class InterfaceRenderer extends TypeScriptRenderer {
   public render(): string {
@@ -25,7 +25,7 @@ ${this.indent(properties)}
     }
 
     name = this.options.namingConvention(name);
-    const signature = this.renderTypeSignature(property.type, !isRequired);
+    const signature = this.renderTypeSignature(property, !isRequired);
     const content = `${name}${signature};`
 
     if (property.description) {

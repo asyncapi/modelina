@@ -1,4 +1,4 @@
-import { TypeScriptRenderer } from "./TypeScriptRenderer";
+import { TypeScriptRenderer } from "./CommonRenderer";
 
 export class EnumRenderer extends TypeScriptRenderer {
   public render(): string {
