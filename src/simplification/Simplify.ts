@@ -65,7 +65,7 @@ export function simplify(schema : Schema | boolean) : CommonModel[] {
       model.properties = simplifiedProperties.properties;
     }
     const enums = simplifyEnums(schema);
-    if(enums.length > 0){
+    if(enums !== undefined && enums.length > 0){
       if(model.enum){
         model.enum = [...model.enum, ...enums];
       }else{

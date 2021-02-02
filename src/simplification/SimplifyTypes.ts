@@ -37,7 +37,7 @@ export default function simplifyTypes(schema: Schema | boolean) : string[] | str
       }
     }
   };
-  const handleCombinationSchemas = (schemas: Schema[] = []) => {
+  const handleCombinationSchemas = (schemas: (Schema | boolean)[] = []) => {
     schemas.forEach((schema) => {
       addToTypes(simplifyTypes(schema));
     });
