@@ -1,4 +1,5 @@
 import { Schema } from "models/Schema";
+import Simplifier from "./Simplifier";
 
 
 /**

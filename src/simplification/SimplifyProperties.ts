@@ -1,14 +1,14 @@
 
 import { CommonModel } from "../models/CommonModel";
 import { Schema } from "../models/Schema";
-import {simplifyRecursive} from "./Simplify";
+import Simplifier from "./Simplifier";
 type output = {newModels: CommonModel[] | undefined; properties: { [key: string]: CommonModel } | undefined};
 /**
  * Find the enums for a simplified version of a schema
  * 
  * @param schema to find the simplified enums for
  */
-export default function simplifyProperties(schema: Schema | boolean) : output {
+export default function simplifyProperties(schema: Schema | boolean, simplifier : Simplifier) : output {
   let models : CommonModel[] | undefined;
   let commonProperties : { [key: string]: CommonModel; } | undefined;
   if(typeof schema !== "boolean"){
@@ -36,13 +36,13 @@ export default function simplifyProperties(schema: Schema | boolean) : output {
     };
     const handleCombinationSchemas = (schemas: (Schema | boolean)[] = []) => {
       schemas.forEach((schema) => {
-        addToPropertiesAndModels(simplifyProperties(schema));
+        addToPropertiesAndModels(simplifyProperties(schema, simplifier));
       });
     }
 
     if(schema.properties !== undefined){
       for(const [prop, propSchema] of Object.entries(schema.properties)){
-        let newModels = simplifyRecursive(propSchema);
+        let newModels = simplifier.simplifyRecursive(propSchema);
         addToProperty(prop, newModels[0]);
         //If there are more then one model returned, it is extra.
         if(newModels.length > 1){
@@ -58,10 +58,10 @@ export default function simplifyProperties(schema: Schema | boolean) : output {
 
     //If we encounter combination schemas ensure we recursively find the properties
     if(schema.then){
-      addToPropertiesAndModels(simplifyProperties(schema.then));
+      addToPropertiesAndModels(simplifyProperties(schema.then, simplifier));
     }
     if(schema.else){
-      addToPropertiesAndModels(simplifyProperties(schema.else));
+      addToPropertiesAndModels(simplifyProperties(schema.else, simplifier));
     }
   }
   
