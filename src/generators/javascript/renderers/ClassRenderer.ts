@@ -1,5 +1,7 @@
 import { CommonModel } from "../../../models";
-import { TypeScriptRenderer } from "../TypeScriptRenderer_a";
+import { TypeScriptRenderer } from "../TypeScriptRenderer";
+
+import { InterfaceRenderer } from "./InterfaceRenderer";
 
 /**
  * Renderer for TypeScript's/JavaScript's `class` type
@@ -12,13 +14,20 @@ export class ClassRenderer extends TypeScriptRenderer {
     const ctor = this.renderConstructor();
     const accessors = this.renderAccessors();
 
-    return `class ${this.modelName} {
+    const clazz = `class ${this.modelName} {
 ${this.indent(properties)}
       
 ${this.indent(ctor)}
       
 ${this.indent(accessors)}
 }`;
+
+    if (this.options.renderTypes === true) {
+      const renderer = new InterfaceRenderer(this.model, `${this.modelName}Input`, this.inputModel, this.options);
+      const interfaceValue = renderer.render();
+      return this.renderBlock([interfaceValue, clazz], 2);
+    }
+    return clazz;
   }
 
   protected renderProperties(): string {
@@ -27,7 +36,7 @@ ${this.indent(accessors)}
       return this.renderProperty(name, property, false); // false at the moment is only for fallback
     }).filter(Boolean);
 
-    return this.renderBlock(fields, 1);
+    return this.renderBlock(fields);
   }
 
   protected renderProperty(name: string, property: CommonModel, isRequired: boolean): string {

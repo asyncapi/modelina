@@ -1,1 +1,2 @@
-export * from "./TypeScriptGenerator_a";
+export * from "./JavaScriptGenerator";
+export * from "./TypeScriptGenerator";

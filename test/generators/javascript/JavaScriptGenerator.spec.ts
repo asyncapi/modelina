@@ -1,4 +1,4 @@
-import { JavaScriptGenerator } from '../../../src/generators/javascript/JavaScriptGenerator'; 
+import { JavaScriptGenerator } from '../../../src/generators'; 
 
 describe('JavaScriptGenerator', function() {
   let generator: JavaScriptGenerator;

@@ -5,11 +5,13 @@ import {
 import { CommonModel, CommonInputModel } from "../../models";
 import { TypeHelpers, ModelKind } from "../../helpers";
 
+import { TypeScriptGenerator } from "./TypeScriptGenerator";
+
 import { ClassRenderer } from "./renderers/ClassRenderer";
-import { TypeScriptGenerator } from "./TypeScriptGenerator_a";
 
 export interface JavaScriptOptions extends CommonGeneratorOptions {
   renderTypes?: false;
+  modelType?: 'class',
 }
 
 /**
@@ -19,6 +21,7 @@ export class JavaScriptGenerator extends TypeScriptGenerator {
   static defaultOptions: JavaScriptOptions = {
     ...defaultGeneratorOptions,
     renderTypes: false,
+    modelType: 'class',
   };
 
   static createGenerator(options?: JavaScriptOptions): TypeScriptGenerator {
@@ -31,6 +34,7 @@ export class JavaScriptGenerator extends TypeScriptGenerator {
   ) {
     super({ ...TypeScriptGenerator.defaultOptions, ...options }, displayName);
     this.options.renderTypes = false; // must be override in any case
+    this.options.modelType = 'class'; // must be override in any case
   }
 
   async render(model: CommonModel, modelName: string, inputModel: CommonInputModel): Promise<string> {
@@ -39,7 +43,7 @@ export class JavaScriptGenerator extends TypeScriptGenerator {
       case ModelKind.OBJECT: {
         return this.renderClass(model, modelName, inputModel);
       }
-      default: return this.renderClass(model, modelName, inputModel);
+      default: return "";
     }
   }
 
