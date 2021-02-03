@@ -1,4 +1,5 @@
 import { 
+  AbstractGenerator,
   CommonGeneratorOptions,
   defaultGeneratorOptions,
 } from "../AbstractGenerator";
@@ -24,7 +25,7 @@ export class JavaScriptGenerator extends TypeScriptGenerator {
     modelType: 'class',
   };
 
-  static createGenerator(options?: JavaScriptOptions): TypeScriptGenerator {
+  static createGenerator(options?: JavaScriptOptions): JavaScriptGenerator {
     return new this(options);
   }
 
@@ -32,7 +33,7 @@ export class JavaScriptGenerator extends TypeScriptGenerator {
     public readonly options: JavaScriptOptions = JavaScriptGenerator.defaultOptions,
     public readonly displayName: string = "JavaScript",
   ) {
-    super({ ...TypeScriptGenerator.defaultOptions, ...options }, displayName);
+    super({ ...JavaScriptGenerator.defaultOptions, ...options }, displayName);
     this.options.renderTypes = false; // must be override in any case
     this.options.modelType = 'class'; // must be override in any case
   }
