@@ -1,47 +1,83 @@
 {
   "customizations": {},
   "models": {
-    "address": {
-      "$id": "address",
+    "anonymSchema2": {
+      "$id": "anonymSchema2",
       "type": "object",
       "properties": {
         "street_address": { "type": "string", "originalSchema": { "type": "string" } },
         "city":           { "type": "string", "originalSchema": { "type": "string" } },
-        "state":          { "type": "string", "originalSchema": { "type": "string" } }
+        "state":          { "type": "string", "originalSchema": { "type": "string" } },
+        "type": { 
+          "type": "string",
+          "enum": [ "residential", "business" ], 
+          "originalSchema": { 
+            "enum": [ "residential", "business" ] 
+          } 
+        }
       },
       "originalSchema": {
-        "type": "object",
-        "properties": {
-          "street_address": { "type": "string" },
-          "city":           { "type": "string" },
-          "state":          { "type": "string" }
-        }
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "street_address": {
+                "type": "string"
+              },
+              "city": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "street_address",
+              "city",
+              "state"
+            ]
+          },
+          {
+            "properties": {
+              "type": {
+                "enum": [
+                  "residential",
+                  "business"
+                ]
+              }
+            },
+            "required": [
+              "type"
+            ]
+          }
+        ]
       }
     },
     "anonymSchema1": {
       "$id": "anonymSchema1",
       "type": "object",
       "properties": {
-        "billing_address": { "$ref": "address" },
-        "shipping_address": { "$ref": "shipping_address" }
+        "shipping_address": { "$ref": "anonymSchema2" }
       },
       "originalSchema": {
-        "definitions": {
-          "address": {
-            "type": "object",
-            "properties": {
-              "street_address": { "type": "string" },
-              "city":           { "type": "string" },
-              "state":          { "type": "string" }
-            }
-          }
-        },
+        "$schema": "http://json-schema.org/draft-07/schema#",
         "type": "object",
         "properties": {
-          "billing_address": { "$ref": "#/definitions/address" },
           "shipping_address": {
             "allOf": [
-              { "$ref": "#/definitions/address" },
+              {
+                "type": "object",
+                "properties": {
+                  "street_address": { "type": "string" },
+                  "city":           { "type": "string" },
+                  "state":          { "type": "string" }
+                },
+                "required": [
+                  "street_address",
+                  "city",
+                  "state"
+                ]
+              },
               { 
                 "properties": { 
                   "type": { 
@@ -54,50 +90,23 @@
           }
         }
       }
-    },
-    "shipping_address": {
-      "$id": "shipping_address",
-      "extend": "address", 
-      "type": "object",
-      "properties": {
-        "type": { 
-          "enum": [ "residential", "business" ], 
-          "originalSchema": { "enum": [ "residential", "business" ] } 
-        }
-      },
-      "originalSchema": {
-        "allOf": [
-          { "$ref": "#/definitions/address" },
-          { 
-            "properties": { 
-              "type": { 
-                "enum": [ "residential", "business" ] 
-              } 
-            },
-            "required": ["type"]
-          }
-        ]
-      }
     }
   },
   "originalInput": {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "definitions": {
-      "address": {
-        "type": "object",
-        "properties": {
-          "street_address": { "type": "string" },
-          "city":           { "type": "string" },
-          "state":          { "type": "string" }
-        }
-      }
-    },
     "type": "object",
     "properties": {
-      "billing_address": { "$ref": "#/definitions/address" },
       "shipping_address": {
         "allOf": [
-          { "$ref": "#/definitions/address" },
+          {
+            "type": "object",
+            "properties": {
+              "street_address": { "type": "string" },
+              "city":           { "type": "string" },
+              "state":          { "type": "string" }
+            },
+            "required": ["street_address", "city", "state"]
+          },
           { 
             "properties": { 
               "type": { 

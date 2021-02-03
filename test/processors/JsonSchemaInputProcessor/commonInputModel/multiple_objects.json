@@ -1,16 +1,23 @@
 {
+  "customizations": {},
   "models": {
-    "<Anonym schema id>": {
+    "anonymSchema1": {
+      "$id": "anonymSchema1",
       "type": "object",
       "properties": {
         "street_address": {
-          "$ref": "street_address"
+          "$ref": "anonymSchema2"
         },
         "country": {
-          "enum": ["United States of America", "Canada"]
+          "type": "string",
+          "enum": ["United States of America", "Canada"],
+          "originalSchema": {
+            "enum": ["United States of America", "Canada"]
+          }
         }
       },
       "originalSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
         "type": "object",
         "properties": {
           "street_address": {
@@ -27,12 +34,15 @@
         }
       }
     },
-    "street_address": {
-      "$id": "street_address",
+    "anonymSchema2": {
+      "$id": "anonymSchema2",
       "type": "object",
       "properties": {
         "floor": {
-          "type": "number"
+          "type": "number",
+          "originalSchema": {
+            "type": "number"
+          }
         }
       },
       "originalSchema": {

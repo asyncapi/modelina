@@ -4,7 +4,7 @@ import {parse} from '@asyncapi/parser';
 import { JsonSchemaInputProcessor } from '../../src/processors/JsonSchemaInputProcessor';
 import { CommonInputModel } from '../../src/models/CommonInputModel';
 
-describe.skip('JsonSchemaInputProcessor', function() {
+describe('JsonSchemaInputProcessor', function() {
     describe('process()', function() {
 
         /**
