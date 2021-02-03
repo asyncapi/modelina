@@ -1,21 +1,19 @@
 import { AbstractInputProcessor } from "./AbstractInputProcessor";
 import { AsyncAPIInputProcessor } from "./AsyncAPIInputProcessor";
 import { JsonSchemaInputProcessor } from "./JsonSchemaInputProcessor";
-
 import { CommonInputModel } from "../models/CommonInputModel";
 
 /**
  * Main input processor which figures out the type of input it receives and delegates the processing into separate individual processors.
  */
-export class InputProcessor extends AbstractInputProcessor {
-  processors: Map<string, AbstractInputProcessor> = new Map();
+export class InputProcessor {
+  processors: {[key: string]: AbstractInputProcessor} = {};
 
   constructor(){
-    super();
     const asyncAPI = new AsyncAPIInputProcessor();
     this.addProcessor("asyncapi", asyncAPI); 
     const jsonSchema = new JsonSchemaInputProcessor();
-    this.addProcessor("json-schema", jsonSchema);
+    this.addProcessor("default", jsonSchema);
   }
 
   /**
@@ -25,22 +23,25 @@ export class InputProcessor extends AbstractInputProcessor {
    * @param processor
    */
   addProcessor(type: string, processor: AbstractInputProcessor) {
-    this.processors.set(type, processor);
+    this.processors[type] = processor;
   }
 
   /**
    * The processor code which delegates the processing to the correct implementation.
    * 
-   * @param object to process
+   * @param input to process
    * @param type of processor to use
    */
-  process(object: any, type: string = 'json-schema'): Promise<CommonInputModel> {
-    const processor = this.processors.get(type);
-    if (processor === undefined) {
-      throw Error(`Could not find processor '${type}'`);
+  process(input: any): Promise<CommonInputModel> {
+    const nonDefaultProcessors = Object.entries(this.processors).filter(([type]) => {
+      return type !== "default";
+    });
+    for (const [type, processor] of nonDefaultProcessors) {
+      if(processor.isForMe(input)) {
+        return processor.process(input);
+      }
     }
-    return processor.process(object);
+    const defaultProcessor = this.processors["default"];
+    return defaultProcessor.process(input);
   }
 }
-
-export const inputProcessor = new InputProcessor();

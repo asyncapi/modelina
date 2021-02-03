@@ -14,17 +14,38 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
      * @param input 
      */
     async process(input: any): Promise<CommonInputModel> {
+        if(this.isForMe(input)){
+            if(input.$schema !== undefined){
+                switch(input.$schema){
+                    case 'http://json-schema.org/draft-07/schema#':
+                        return this.processDraft7(input);
+                }
+            }else{
+                return this.processDraft7(input);
+            }
+        }
+        throw "Input is not a JSON Schema, so it cannot be processed."
+    }
+
+
+    /**
+     * Unless the schema states one that is not supported we assume its of type JSON Schema
+     * 
+     * @param input 
+     */
+    isForMe(input: any): boolean {
         if(input.$schema !== undefined){
             switch(input.$schema){
                 case 'http://json-schema.org/draft-07/schema#':
-                    return this.processDraft7(input);
+                    return true;
                 default: 
-                    throw "Input not supported"
+                    return false;
             }
-        }else{
-            return this.processDraft7(input);
         }
+        return true;
     }
+
+
 
     /**
      * Process a draft 7 schema

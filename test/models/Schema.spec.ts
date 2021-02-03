@@ -265,7 +265,7 @@ describe('Schema', function() {
       expect(typeof d).toEqual("object");
       expect(d.items).not.toBeUndefined();
       expect(Array.isArray(d.items)).toEqual(true);
-      (<Schema[]>d.items).forEach((s, i) => {
+      (d.items as Schema[]).forEach((s, i) => {
         expect(s.constructor.name).toEqual('Schema');
         expect(s).toEqual(doc.items[i]);
       });
@@ -617,6 +617,7 @@ describe('Schema', function() {
       expect((d.properties!["test"] as Schema).$id).toEqual("test");
       expect((d2.properties!["test"] as Schema).$id).not.toEqual("test");
     });
+    
     test('should never return the same instance of items', function() {
       const doc: any = { type: 'string', items: [{type:"string"}] };
       const d = Schema.toSchema(doc) as Schema;
