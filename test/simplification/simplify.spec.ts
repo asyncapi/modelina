@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import {simplify} from '../../src/simplification/Simplify';
+import Simplifier from '../../src/simplification/Simplifier';
 
 /**
  * Some of these test are purely theoretical and have little if any merit 
@@ -12,7 +12,8 @@ describe('Simplification', function() {
     const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './simplify/expected/multipleObjects.json'), 'utf8');
     const schema = JSON.parse(inputSchemaString);
     const expectedModels = JSON.parse(expectedSchemaString);
-    const actualModels = simplify(schema);
+    const simplifier = new Simplifier();
+    const actualModels = simplifier.simplify(schema);
     expect(actualModels).not.toBeUndefined();
     expect(actualModels[0]).toEqual(expectedModels[1]);
     expect(actualModels[1]).toEqual(expectedModels[0]);
