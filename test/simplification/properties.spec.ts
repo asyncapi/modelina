@@ -1,248 +1,259 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import Simplifier from '../../src/simplification/Simplifier';
 import simplifyProperties from '../../src/simplification/SimplifyProperties';
 
 /**
  * Some of these test are purely theoretical and have little if any merit 
  * on a JSON Schema which actually makes sense but are used to test the principles.
  */
-describe('Simplification of properties', function() {
-  test('should return as is', function() {
+describe('Simplification of properties', function () {
+  test('should return as is', function () {
     const schemaString = fs.readFileSync(path.resolve(__dirname, './properties/basic.json'), 'utf8');
     const schema = JSON.parse(schemaString);
-    const {newModels, properties} = simplifyProperties(schema);
+    const simplifier = new Simplifier();
+    const { newModels, properties } = simplifyProperties(schema, simplifier);
     expect(newModels).toBeUndefined();
-    expect(properties).toEqual({ 
-      "testProp1": { 
+    expect(properties).toEqual({
+      "testProp1": {
         "type": "string",
-        "originalSchema": { 
+        "originalSchema": {
           "type": "string"
-        } 
+        }
       },
-      "testProp2": { 
+      "testProp2": {
         "type": "string",
-        "originalSchema": { 
+        "originalSchema": {
           "type": "string"
-        } 
-      } 
+        }
+      }
     });
   });
-  describe('from allOf schemas', function() {
-    test('with simple schema', function() {
+  describe('from allOf schemas', function () {
+    test('with simple schema', function () {
       const schemaString = fs.readFileSync(path.resolve(__dirname, './properties/allOf.json'), 'utf8');
       const schema = JSON.parse(schemaString);
-      const {newModels, properties} = simplifyProperties(schema);
+      const simplifier = new Simplifier();
+      const { newModels, properties } = simplifyProperties(schema, simplifier);
       expect(newModels).toBeUndefined();
-      expect(properties).toEqual({ 
-        "testProp1": { 
+      expect(properties).toEqual({
+        "testProp1": {
           "type": "string",
-          "originalSchema": { 
+          "originalSchema": {
             "type": "string"
-          } 
+          }
         },
-        "testProp2": { 
+        "testProp2": {
           "type": "string",
-          "originalSchema": { 
+          "originalSchema": {
             "type": "string"
-          } 
-        } 
+          }
+        }
       });
     });
-    test('with nested schema', function() {
+    test('with nested schema', function () {
       const schemaString = fs.readFileSync(path.resolve(__dirname, './properties/allOfNested.json'), 'utf8');
       const schema = JSON.parse(schemaString);
-      const {newModels, properties} = simplifyProperties(schema);
+      const simplifier = new Simplifier();
+      const { newModels, properties } = simplifyProperties(schema, simplifier);
       expect(newModels).toBeUndefined();
-      expect(properties).toEqual({ 
-        "testProp1": { 
+      expect(properties).toEqual({
+        "testProp1": {
           "type": "string",
-          "originalSchema": { 
+          "originalSchema": {
             "type": "string"
-          } 
+          }
         },
-        "testProp2": { 
+        "testProp2": {
           "type": "string",
-          "originalSchema": { 
+          "originalSchema": {
             "type": "string"
-          } 
+          }
         },
-        "testProp3": { 
+        "testProp3": {
           "type": "string",
-          "originalSchema": { 
+          "originalSchema": {
             "type": "string"
-          } 
-        } 
+          }
+        }
       });
     });
   });
-  describe('from anyOf schemas', function() {
-    test('with simple schema', function() {
+  describe('from anyOf schemas', function () {
+    test('with simple schema', function () {
       const schemaString = fs.readFileSync(path.resolve(__dirname, './properties/anyOf.json'), 'utf8');
       const schema = JSON.parse(schemaString);
-      const {newModels, properties} = simplifyProperties(schema);
+      const simplifier = new Simplifier();
+      const { newModels, properties } = simplifyProperties(schema, simplifier);
       expect(newModels).toBeUndefined();
-      expect(properties).toEqual({ 
-        "testProp1": { 
+      expect(properties).toEqual({
+        "testProp1": {
           "type": "string",
-          "originalSchema": { 
+          "originalSchema": {
             "type": "string"
-          } 
+          }
         },
-        "testProp2": { 
+        "testProp2": {
           "type": "string",
-          "originalSchema": { 
+          "originalSchema": {
             "type": "string"
-          } 
-        } 
+          }
+        }
       });
     });
-    test('with nested schema', function() {
+    test('with nested schema', function () {
       const schemaString = fs.readFileSync(path.resolve(__dirname, './properties/anyOfNested.json'), 'utf8');
       const schema = JSON.parse(schemaString);
-      const {newModels, properties} = simplifyProperties(schema);
+      const simplifier = new Simplifier();
+      const { newModels, properties } = simplifyProperties(schema, simplifier);
       expect(newModels).toBeUndefined();
-      expect(properties).toEqual({ 
-        "testProp1": { 
+      expect(properties).toEqual({
+        "testProp1": {
           "type": "string",
-          "originalSchema": { 
+          "originalSchema": {
             "type": "string"
-          } 
+          }
         },
-        "testProp2": { 
+        "testProp2": {
           "type": "string",
-          "originalSchema": { 
+          "originalSchema": {
             "type": "string"
-          } 
+          }
         },
-        "testProp3": { 
+        "testProp3": {
           "type": "string",
-          "originalSchema": { 
+          "originalSchema": {
             "type": "string"
-          } 
-        } 
+          }
+        }
       });
     });
   });
-  describe('from oneOf schemas', function() {
-    test('with simple schema', function() {
+  describe('from oneOf schemas', function () {
+    test('with simple schema', function () {
       const schemaString = fs.readFileSync(path.resolve(__dirname, './properties/oneOf.json'), 'utf8');
       const schema = JSON.parse(schemaString);
-      const {newModels, properties} = simplifyProperties(schema);
+      const simplifier = new Simplifier();
+      const { newModels, properties } = simplifyProperties(schema, simplifier);
       expect(newModels).toBeUndefined();
-      expect(properties).toEqual({ 
-        "testProp1": { 
+      expect(properties).toEqual({
+        "testProp1": {
           "type": "string",
-          "originalSchema": { 
+          "originalSchema": {
             "type": "string"
-          } 
+          }
         },
-        "testProp2": { 
+        "testProp2": {
           "type": "string",
-          "originalSchema": { 
+          "originalSchema": {
             "type": "string"
-          } 
-        } 
+          }
+        }
       });
     });
-    test('with nested oneOf schemas', function() {
+    test('with nested oneOf schemas', function () {
       const schemaString = fs.readFileSync(path.resolve(__dirname, './properties/oneOfNested.json'), 'utf8');
       const schema = JSON.parse(schemaString);
-      const {newModels, properties} = simplifyProperties(schema);
+      const simplifier = new Simplifier();
+      const { newModels, properties } = simplifyProperties(schema, simplifier);
       expect(newModels).toBeUndefined();
-      expect(properties).toEqual({ 
-        "testProp1": { 
+      expect(properties).toEqual({
+        "testProp1": {
           "type": "string",
-          "originalSchema": { 
+          "originalSchema": {
             "type": "string"
-          } 
+          }
         },
-        "testProp2": { 
+        "testProp2": {
           "type": "string",
-          "originalSchema": { 
+          "originalSchema": {
             "type": "string"
-          } 
+          }
         },
-        "testProp3": { 
+        "testProp3": {
           "type": "string",
-          "originalSchema": { 
+          "originalSchema": {
             "type": "string"
-          } 
-        } 
+          }
+        }
       });
     });
   });
-  describe('from if/then/else schemas', function() {
-    test('with simple schema', function() {
+  describe('from if/then/else schemas', function () {
+    test('with simple schema', function () {
       const schemaString = fs.readFileSync(path.resolve(__dirname, './properties/conditional.json'), 'utf8');
       const schema = JSON.parse(schemaString);
-      const {newModels, properties} = simplifyProperties(schema);
+      const simplifier = new Simplifier();
+      const { newModels, properties } = simplifyProperties(schema, simplifier);
       expect(newModels).toBeUndefined();
-      expect(properties).toEqual({ 
-        "testProp1": { 
+      expect(properties).toEqual({
+        "testProp1": {
           "type": "string",
-          "originalSchema": { 
+          "originalSchema": {
             "type": "string"
-          } 
+          }
         },
-        "testProp2": { 
+        "testProp2": {
           "type": "string",
-          "originalSchema": { 
+          "originalSchema": {
             "type": "string"
-          } 
+          }
         },
-        "testProp3": { 
+        "testProp3": {
           "type": "string",
-          "originalSchema": { 
+          "originalSchema": {
             "type": "string"
-          } 
-        } 
+          }
+        }
       });
     });
-    test('with nested schema', function() {
+    test('with nested schema', function () {
       const schemaString = fs.readFileSync(path.resolve(__dirname, './properties/conditionalNested.json'), 'utf8');
       const schema = JSON.parse(schemaString);
-      const {newModels, properties} = simplifyProperties(schema);
+      const simplifier = new Simplifier();
+      const { newModels, properties } = simplifyProperties(schema, simplifier);
       expect(newModels).toBeUndefined();
-      expect(properties).toEqual({ 
-        "testProp1": { 
+      expect(properties).toEqual({
+        "testProp1": {
           "type": "string",
-          "originalSchema": { 
+          "originalSchema": {
             "type": "string"
-          } 
+          }
         },
-        "testProp2": { 
+        "testProp2": {
           "type": "string",
-          "originalSchema": { 
+          "originalSchema": {
             "type": "string"
-          } 
+          }
         },
-        "testProp3": { 
+        "testProp3": {
           "type": "string",
-          "originalSchema": { 
+          "originalSchema": {
             "type": "string"
-          } 
+          }
         },
-        "testProp4": { 
+        "testProp4": {
           "type": "string",
-          "originalSchema": { 
+          "originalSchema": {
             "type": "string"
-          } 
+          }
         },
-        "testProp5": { 
+        "testProp5": {
           "type": "string",
-          "originalSchema": { 
+          "originalSchema": {
             "type": "string"
-          } 
-        } 
+          }
+        }
       });
     });
   });
-  test('Should merge properties which same key', function() {
+  test('Should merge properties which same key', function () {
     const schemaString = fs.readFileSync(path.resolve(__dirname, './properties/combine_properties.json'), 'utf8');
     const schema = JSON.parse(schemaString);
-    const {newModels, properties} = simplifyProperties(schema);
+    const simplifier = new Simplifier();
+    const { newModels, properties } = simplifyProperties(schema, simplifier);
     expect(newModels).toBeUndefined();
-    expect(properties).toEqual(expect.objectContaining({ 
+    expect(properties).toEqual(expect.objectContaining({
       "testProp1": {
         originalSchema: {
           allOf: [
@@ -279,10 +290,11 @@ describe('Simplification of properties', function() {
       }
     }));
   });
-  test('Should split out multiple objects into their own models and add reference', function() {
+  test('Should split out multiple objects into their own models and add reference', function () {
     const schemaString = fs.readFileSync(path.resolve(__dirname, './properties/multiple_objects.json'), 'utf8');
     const schema = JSON.parse(schemaString);
-    const {newModels, properties} = simplifyProperties(schema);
+    const simplifier = new Simplifier();
+    const { newModels, properties } = simplifyProperties(schema, simplifier);
     expect(newModels).toHaveLength(1);
     expect(newModels).toEqual(expect.arrayContaining([expect.objectContaining({
       originalSchema: {

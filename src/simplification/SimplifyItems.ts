@@ -1,7 +1,7 @@
 
 import { CommonModel } from "../models/CommonModel";
 import { Schema } from "../models/Schema";
-import {simplifyRecursive} from "./Simplify";
+import Simplifier from "./Simplifier";
 
 type output = {newModels: CommonModel[] | undefined; items: CommonModel | undefined};
 /**
@@ -9,7 +9,7 @@ type output = {newModels: CommonModel[] | undefined; items: CommonModel | undefi
  * 
  * @param schema to find the simplified enums for
  */
-export default function simplifyItems(schema: Schema | boolean) : output {
+export default function simplifyItems(schema: Schema | boolean, simplifier : Simplifier) : output {
   let commonItems : CommonModel | undefined;
   let models : CommonModel[] | undefined;
   if(typeof schema !== "boolean"){
@@ -27,7 +27,7 @@ export default function simplifyItems(schema: Schema | boolean) : output {
     };
     const handleCombinationSchemas = (schemas: (Schema | boolean)[] = []) => {
       schemas.forEach((itemSchema) => {
-        addToItemsAndModels(simplifyItems(itemSchema));
+        addToItemsAndModels(simplifyItems(itemSchema, simplifier));
       });
     }
 
@@ -42,10 +42,10 @@ export default function simplifyItems(schema: Schema | boolean) : output {
       };
       if(Array.isArray(schema.items)){
         schema.items.forEach((value) => {
-          addItemsAndModels(simplifyRecursive(value));
+          addItemsAndModels(simplifier.simplifyRecursive(value));
         })
       }else{
-        addItemsAndModels(simplifyRecursive(schema.items));
+        addItemsAndModels(simplifier.simplifyRecursive(schema.items));
       }
     }
 
@@ -56,10 +56,10 @@ export default function simplifyItems(schema: Schema | boolean) : output {
 
     //If we encounter combination schemas ensure we recursively find the properties
     if(schema.then){
-      addToItemsAndModels(simplifyItems(schema.then));
+      addToItemsAndModels(simplifyItems(schema.then, simplifier));
     }
     if(schema.else){
-      addToItemsAndModels(simplifyItems(schema.else));
+      addToItemsAndModels(simplifyItems(schema.else, simplifier));
     }
   }
   
