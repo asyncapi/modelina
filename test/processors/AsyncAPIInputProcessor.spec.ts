@@ -5,15 +5,16 @@ import {AsyncAPIInputProcessor} from '../../src/processors/AsyncAPIInputProcesso
 
 describe('AsyncAPIInputProcessor', function() {
     describe('isAsyncAPI()', function() {
+        const processor = new AsyncAPIInputProcessor();
         test('should be able to detect pure object', function() {
             const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'), 'utf8');
             const basicDoc = JSON.parse(basicDocString);
-            expect(AsyncAPIInputProcessor.isAsyncAPI(basicDoc)).toEqual(true);
+            expect(processor.isForMe(basicDoc)).toEqual(true);
         });
         test('should be able to detect parsed object', async function() {
             const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'), 'utf8');
             const parsedObject = await parse(basicDocString);
-            expect(AsyncAPIInputProcessor.isAsyncAPI(parsedObject)).toEqual(true);
+            expect(processor.isForMe(parsedObject)).toEqual(true);
         });
     });
     describe('isFromParser()', function() {
