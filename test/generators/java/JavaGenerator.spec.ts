@@ -26,7 +26,7 @@ describe('TypeScriptGenerator', function() {
   private String state;
   private double house_number;
   private boolean marriage;
-  private String members;
+  private Object members;
 
   public String getStreet_name() { return this.street_name; }
   public void setStreet_name(String value) { this.street_name = value; }
@@ -43,8 +43,8 @@ describe('TypeScriptGenerator', function() {
   public boolean getMarriage() { return this.marriage; }
   public void setMarriage(boolean value) { this.marriage = value; }
 
-  public String getMembers() { return this.members; }
-  public void setMembers(String value) { this.members = value; }
+  public Object getMembers() { return this.members; }
+  public void setMembers(Object value) { this.members = value; }
 }`;
 
     const inputModel = await generator.process(doc);

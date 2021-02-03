@@ -34,10 +34,10 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
     case 'boolean':
       return 'boolean';
     case 'array': {
-      const t = model.items && !Array.isArray(model.items) ? this.renderType(model.items) : 'void';
+      const t = model.items && !Array.isArray(model.items) ? this.renderType(model.items) : 'Object';
       return `${t}[]`;
     }
-    default: return Array.isArray(type) ? this.renderType(type[0] as any) : "void"; // fallback - it should be changed for union...
+    default: return Array.isArray(type) ? "Object" : (type || "void");
     }
   }
 }
