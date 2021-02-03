@@ -1,6 +1,11 @@
 import { CommonModel } from "../../../models";
 import { TypeScriptRenderer } from "../TypeScriptRenderer_a";
 
+/**
+ * Renderer for TypeScript's/JavaScript's `class` type
+ * 
+ * @extends TypeScriptRenderer
+ */
 export class ClassRenderer extends TypeScriptRenderer {
   public render(): string {
     const properties = this.renderProperties();
