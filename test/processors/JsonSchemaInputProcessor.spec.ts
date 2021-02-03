@@ -4,7 +4,7 @@ import {parse} from '@asyncapi/parser';
 import { JsonSchemaInputProcessor } from '../../src/processors/JsonSchemaInputProcessor';
 import { CommonInputModel } from '../../src/models/CommonInputModel';
 
-describe.skip('JsonSchemaInputProcessor', function() {
+describe('JsonSchemaInputProcessor', function() {
     describe('process()', function() {
 
         /**
@@ -50,6 +50,11 @@ describe.skip('JsonSchemaInputProcessor', function() {
         test('should be able to process multiple objects', async function() {
             const inputSchemaPath = './JsonSchemaInputProcessor/multiple_objects.json';
             const expectedCommonModulePath = './JsonSchemaInputProcessor/commonInputModel/multiple_objects.json';
+            await expectFunction(inputSchemaPath, expectedCommonModulePath)
+        });
+        test('should be able to use $ref', async function() {
+            const inputSchemaPath = './JsonSchemaInputProcessor/references.json';
+            const expectedCommonModulePath = './JsonSchemaInputProcessor/commonInputModel/references.json';
             await expectFunction(inputSchemaPath, expectedCommonModulePath)
         });
     });
