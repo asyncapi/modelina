@@ -85,6 +85,19 @@ describe('Simplification of types', function() {
     });
   });
 
+  test('array should be inferred if items are defined', function() {
+    const schemaString = fs.readFileSync(path.resolve(__dirname, './types/items.json'), 'utf8');
+    const schema = JSON.parse(schemaString);
+    const types = simplifyTypes(schema);
+    expect(types).toEqual("array");
+  });
+  test('object should be inferred if properties are defined', function() {
+    const schemaString = fs.readFileSync(path.resolve(__dirname, './types/properties.json'), 'utf8');
+    const schema = JSON.parse(schemaString);
+    const types = simplifyTypes(schema);
+    expect(types).toEqual("object");
+  });
+
   describe('from anyOf schemas', function() {
     test('with simple schema', function() {
       const schemaString = fs.readFileSync(path.resolve(__dirname, './types/anyOf.json'), 'utf8');
