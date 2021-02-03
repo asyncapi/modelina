@@ -12,7 +12,6 @@ import { CommonModel, CommonInputModel } from "../../models";
 export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOptions> {
   constructor(
     protected model: CommonModel, 
-    protected modelName: string, 
     protected inputModel: CommonInputModel,
     protected options: TypeScriptOptions = TypeScriptGenerator.defaultOptions,
   ) {

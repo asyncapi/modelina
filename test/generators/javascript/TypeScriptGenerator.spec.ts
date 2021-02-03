@@ -68,10 +68,10 @@ class Address {
     const inputModel = await generator.process(doc);
     const model = inputModel.models["Address"];
 
-    let classModel = await generator.renderClass(model, "Address", inputModel);
+    let classModel = await generator.renderClass(model, inputModel);
     expect(classModel).toEqual(expected);
 
-    classModel = await generator.render(model, "Address", inputModel);
+    classModel = await generator.render(model, inputModel);
     expect(classModel).toEqual(expected);
   });
 
@@ -101,7 +101,7 @@ class Address {
     const inputModel = await generator.process(doc);
     const model = inputModel.models["Address"];
 
-    let interfaceModel = await generator.renderInterface(model, "Address", inputModel);
+    let interfaceModel = await generator.renderInterface(model, inputModel);
     expect(interfaceModel).toEqual(expected);
   });
 
@@ -120,10 +120,10 @@ class Address {
     const inputModel = await generator.process(doc);
     const model = inputModel.models["States"];
 
-    let enumModel = await generator.renderEnum(model, "States", inputModel);
+    let enumModel = await generator.renderEnum(model, inputModel);
     expect(enumModel).toEqual(expected);
 
-    enumModel = await generator.render(model, "States", inputModel);
+    enumModel = await generator.render(model, inputModel);
     expect(enumModel).toEqual(expected);
   });
 });

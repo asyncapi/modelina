@@ -7,7 +7,7 @@ import { TypeScriptRenderer } from "../TypeScriptRenderer";
  */
 export class EnumRenderer extends TypeScriptRenderer {
   public render(): string {
-    return `enum ${this.modelName} {
+    return `enum ${this.model.$id} {
 ${this.indent(this.renderItems())}
 }`;
   }

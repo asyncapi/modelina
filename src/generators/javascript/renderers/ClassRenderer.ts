@@ -14,7 +14,7 @@ export class ClassRenderer extends TypeScriptRenderer {
     const ctor = this.renderConstructor();
     const accessors = this.renderAccessors();
 
-    const clazz = `class ${this.modelName} {
+    const clazz = `class ${this.model.$id} {
 ${this.indent(properties)}
       
 ${this.indent(ctor)}
@@ -23,8 +23,8 @@ ${this.indent(accessors)}
 }`;
 
     if (this.options.renderTypes === true) {
-      const renderer = new InterfaceRenderer(this.model, `${this.modelName}Input`, this.inputModel, this.options);
-      const interfaceValue = renderer.render();
+      const renderer = new InterfaceRenderer(this.model, this.inputModel, this.options);
+      const interfaceValue = renderer.render(`${this.model.$id}Input`);
       return this.renderBlock([interfaceValue, clazz], 2);
     }
     return clazz;
@@ -50,7 +50,7 @@ ${this.indent(accessors)}
   }
 
   protected renderConstructor(): string {
-    const signature = this.options.renderTypes ? `: ${this.modelName}Input` : '';
+    const signature = this.options.renderTypes ? `: ${this.model.$id}Input` : '';
     return `constructor(input${signature}) {
 ${this.indent(this.renderConstructorBody())}
 }`;

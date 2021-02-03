@@ -25,7 +25,7 @@ export abstract class AbstractGenerator<O = object> {
     public readonly options?: O,
   ) {}
 
-  public abstract render(model: CommonModel, modelName: string, inputModel: CommonInputModel): Promise<string>;
+  public abstract render(model: CommonModel, inputModel: CommonInputModel): Promise<string>;
 
   public async process(input: any, type: string = 'json-schema'): Promise<CommonInputModel> {
     return await inputProcessor.process(input, type);
@@ -44,7 +44,7 @@ export abstract class AbstractGenerator<O = object> {
   private generateModels(inputModel: CommonInputModel): Promise<OutputModel[]> {
     const models = inputModel.models;
     const renders = Object.entries(models).map(async ([modelName, model]) => {
-      const result = await this.render(model, modelName, inputModel);
+      const result = await this.render(model, inputModel);
       return OutputModel.toOutputModel({ result, model, modelName, inputModel });
     })
     return Promise.all(renders);

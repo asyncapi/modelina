@@ -37,18 +37,18 @@ export class JavaScriptGenerator extends TypeScriptGenerator {
     this.options.modelType = 'class'; // must be override in any case
   }
 
-  async render(model: CommonModel, modelName: string, inputModel: CommonInputModel): Promise<string> {
+  async render(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const kind = TypeHelpers.extractKind(model);
     switch(kind) {
       case ModelKind.OBJECT: {
-        return this.renderClass(model, modelName, inputModel);
+        return this.renderClass(model, inputModel);
       }
       default: return "";
     }
   }
 
-  async renderClass(model: CommonModel, modelName: string, inputModel: CommonInputModel): Promise<string> {
-    const renderer = new ClassRenderer(model, modelName, inputModel, this.options);
+  async renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
+    const renderer = new ClassRenderer(model, inputModel, this.options);
     return renderer.render();
   }
 }

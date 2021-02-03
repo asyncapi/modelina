@@ -59,10 +59,10 @@ describe('JavaScriptGenerator', function() {
     const inputModel = await generator.process(doc);
     const model = inputModel.models["Address"];
 
-    let classModel = await generator.renderClass(model, "Address", inputModel);
+    let classModel = await generator.renderClass(model, inputModel);
     expect(classModel).toEqual(expected);
 
-    classModel = await generator.render(model, "Address", inputModel);
+    classModel = await generator.render(model, inputModel);
     expect(classModel).toEqual(expected);
   });
 });
