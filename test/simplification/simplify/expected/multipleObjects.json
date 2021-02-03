@@ -2,52 +2,39 @@
   {
     "type": "object",
     "$id": "anonymSchema1",
-    "properties": {
-      "street_address": {
-        "$ref": "anonymSchema2"
-      },
-      "country": {
-        "type": "string",
-        "enum": ["United States of America", "Canada"],
-        "originalSchema": {
-          "enum": ["United States of America", "Canada"]
-        }
-      }
-    },
-    "originalSchema": {
-      "type": "object",
-      "properties": {
-        "street_address": {
-          "type": "object",
-          "properties": {
-            "floor": {
-              "type": "number"
-            }
-          }
-        },
-        "country": {
-          "enum": ["United States of America", "Canada"]
-        }
-      }
-    }
+    "extend": ["anonymSchema2", "anonymSchema3"]
   },
   {
     "$id": "anonymSchema2",
     "type": "object",
     "properties": {
-      "floor": {
-        "type": "number",
-        "originalSchema": {
-          "type": "number"
+      "street_address": {
+        "type": "object",
+        "properties": {
+          "floor": {
+            "type": "number"
+          }
         }
+      },
+      "country": {
+        "enum": ["United States of America", "Canada"]
       }
-    },
-    "originalSchema": {
-      "type": "object",
-      "properties": {
-        "floor": {
-          "type": "number"
+    }
+  },
+  {
+    "$id": "anonymSchema3",
+    "type": "object",
+    "properties": {
+      "street_address2": {
+        "type": "object",
+        "properties": {
+          "floor": {
+            "type": "number"
+          }
         }
+      },
+      "country2": {
+        "enum": ["United States of America", "Canada"]
       }
     }
   }

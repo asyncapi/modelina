@@ -1,0 +1,34 @@
+{
+  "allOf": [
+    {
+      "properties": {
+        "street_address": {
+          "type": "object",
+          "properties": {
+            "floor": {
+              "type": "number"
+            }
+          }
+        },
+        "country": {
+          "enum": ["United States of America", "Canada"]
+        }
+      }
+    },
+    {
+      "properties": {
+        "street_address2": {
+          "type": "object",
+          "properties": {
+            "floor": {
+              "type": "number"
+            }
+          }
+        },
+        "country2": {
+          "enum": ["United States of America", "Canada"]
+        }
+      }
+    }
+  ]
+}
