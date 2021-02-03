@@ -19,7 +19,7 @@ export class JavaGenerator extends AbstractGenerator {
     super(displayName, options);
   }
 
-  async render(model: CommonModel, modelName: string, inputModel: CommonInputModel): Promise<string> {
+  async render(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     return "JavaGenerator"; // placeholder
   }
 }
