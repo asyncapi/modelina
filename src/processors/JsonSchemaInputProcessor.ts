@@ -45,8 +45,6 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         return true;
     }
 
-
-
     /**
      * Process a draft 7 schema
      * @param input to process as draft 7

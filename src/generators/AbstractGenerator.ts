@@ -9,6 +9,13 @@ export interface CommonGeneratorOptions {
   };
 }
 
+export const defaultGeneratorOptions = {
+  indentation: {
+    type: IndentationTypes.SPACES,
+    size: 2,
+  },
+}
+
 /**
  * Abstract generator which must be implemented by each language
  */
@@ -19,7 +26,7 @@ export abstract class AbstractGenerator<O = object> {
     public readonly options?: O,
   ) {}
 
-  public abstract render(model: CommonModel, modelName: string, inputModel: CommonInputModel): Promise<string>;
+  public abstract render(model: CommonModel, inputModel: CommonInputModel): Promise<string>;
 
   public async process(input: any): Promise<CommonInputModel> {
     return await this.processor.process(input);
@@ -38,7 +45,7 @@ export abstract class AbstractGenerator<O = object> {
   private generateModels(inputModel: CommonInputModel): Promise<OutputModel[]> {
     const models = inputModel.models;
     const renders = Object.entries(models).map(async ([modelName, model]) => {
-      const result = await this.render(model, modelName, inputModel);
+      const result = await this.render(model, inputModel);
       return OutputModel.toOutputModel({ result, model, modelName, inputModel });
     })
     return Promise.all(renders);
