@@ -26,9 +26,4 @@ export abstract class AbstractRenderer<O extends CommonGeneratorOptions = Common
   ) {
     return FormatHelpers.indent(content, size, type);
   }
-
-  isPropertyRequired(propertyName: string, model: CommonModel): boolean {
-    const required = (model.originalSchema as any)?.required || [];
-    return required.includes(propertyName);
-  }
 }

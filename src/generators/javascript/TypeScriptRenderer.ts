@@ -31,7 +31,7 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
     }
 
     const type = typeof model === "string" ? model : model.type;
-    switch (model.type) {
+    switch (type) {
     case 'string':
       return 'string';
     case 'integer':
@@ -53,16 +53,6 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
     }
     const annotation = isOptional ? "?:" : ":";
     return `${annotation} ${this.renderType(type)}`;
-  }
-
-  protected renderDescription(desc: string | CommonModel): string {
-    if (desc instanceof CommonModel) {
-      desc = (desc.originalSchema as any)?.description || "";
-    }
-    if (!desc) {
-      return "";
-    }
-    return this.renderComments(desc as string);
   }
 
   protected renderComments(lines: string | string[]): string {

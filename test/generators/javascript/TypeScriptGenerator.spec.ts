@@ -21,16 +21,10 @@ describe('TypeScriptGenerator', function() {
       required: ["street_name", "city", "state", "house_number"],
     };
     const expected = `interface Address {
-  street_name: string;
-  /**
-   * City description
-   */
-  city: string;
-  state: string;
-  house_number: number;
-  /**
-   * Status if marriage live in given house
-   */
+  street_name?: string;
+  city?: string;
+  state?: string;
+  house_number?: number;
   marriage?: boolean;
   members?: string | number | boolean;
 }`;

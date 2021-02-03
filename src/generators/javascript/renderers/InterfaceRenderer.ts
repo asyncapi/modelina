@@ -16,7 +16,7 @@ ${this.indent(this.renderProperties())}
   protected renderProperties(): string {
     const properties = this.model.properties || {};
     return Object.entries(properties).map(([name, property]) => {
-      return this.renderProperty(name, property, this.isPropertyRequired(name, this.model));
+      return this.renderProperty(name, property, false); // false at the moment is only for fallback
     }).filter(Boolean).join('\n');
   }
 
@@ -27,11 +27,6 @@ ${this.indent(this.renderProperties())}
 
     const signature = this.renderTypeSignature(property, !isRequired);
     let content = `${name}${signature};`
-
-    const description = this.renderDescription(property);
-    if (description) {
-      content = `${description}\n${content}`;
-    }
     return content;
   }
 }
