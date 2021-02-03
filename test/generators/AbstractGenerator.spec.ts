@@ -12,9 +12,12 @@ describe('AbstractGenerator', function() {
     }
   }
 
-  test('should `generate` function return OutputModels', async function() {
-    const generator = new TestGenerator();
+  let generator: TestGenerator;
+  beforeEach(() => {
+    generator = new TestGenerator();
+  });
 
+  test('should `generate` function return OutputModels', async function() {
     const doc: any = { $id: 'test' };
     const outputModels = await generator.generate(doc);
 
@@ -22,8 +25,6 @@ describe('AbstractGenerator', function() {
   });
 
   test('should `process` function return CommonInputModel', async function() {
-    const generator = new TestGenerator();
-
     const doc: any = { $id: 'test' };
     const commonInputModel = await generator.process(doc);
     const keys = Object.keys(commonInputModel.models);
@@ -35,8 +36,6 @@ describe('AbstractGenerator', function() {
   });
 
   test('should `render` function return renderer model', async function() {
-    const generator = new TestGenerator();
-
     const doc: any = { $id: 'test' };
     const commonInputModel = await generator.process(doc);
     const keys = Object.keys(commonInputModel.models);
