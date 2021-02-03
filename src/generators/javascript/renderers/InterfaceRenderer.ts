@@ -7,8 +7,8 @@ import { CommonModel } from "../../../models";
  * @extends TypeScriptRenderer
  */
 export class InterfaceRenderer extends TypeScriptRenderer {
-  public render(): string {
-    return `interface ${this.modelName} {
+  public render(modelName?: string): string {
+    return `interface ${modelName || this.model.$id} {
 ${this.indent(this.renderProperties())}
 }`;
   }
