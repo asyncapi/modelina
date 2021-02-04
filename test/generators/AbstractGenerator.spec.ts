@@ -1,7 +1,7 @@
 import { AbstractGenerator } from '../../src/generators'; 
 import { CommonInputModel, CommonModel } from '../../src/models';
 
-describe.skip('AbstractGenerator', function() {
+describe('AbstractGenerator', function() {
   class TestGenerator extends AbstractGenerator {
     constructor() {
       super("TestGenerator", {});
