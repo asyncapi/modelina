@@ -1,0 +1,41 @@
+[
+  {
+    "type": "object",
+    "$id": "anonymSchema1",
+    "extend": ["anonymSchema2", "anonymSchema3"]
+  },
+  {
+    "$id": "anonymSchema2",
+    "type": "object",
+    "properties": {
+      "street_address": {
+        "type": "object",
+        "properties": {
+          "floor": {
+            "type": "number"
+          }
+        }
+      },
+      "country": {
+        "enum": ["United States of America", "Canada"]
+      }
+    }
+  },
+  {
+    "$id": "anonymSchema3",
+    "type": "object",
+    "properties": {
+      "street_address2": {
+        "type": "object",
+        "properties": {
+          "floor": {
+            "type": "number"
+          }
+        }
+      },
+      "country2": {
+        "enum": ["United States of America", "Canada"]
+      }
+    }
+  }
+]
