@@ -1,10 +1,9 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import {parse} from '@asyncapi/parser';
 import { JsonSchemaInputProcessor } from '../../src/processors/JsonSchemaInputProcessor';
 import { CommonInputModel } from '../../src/models/CommonInputModel';
 
-describe.skip('JsonSchemaInputProcessor', function() {
+describe('JsonSchemaInputProcessor', function() {
     describe('process()', function() {
 
         /**
@@ -25,32 +24,32 @@ describe.skip('JsonSchemaInputProcessor', function() {
         test('should be able to process absence types', async function() {
             const inputSchemaPath = './JsonSchemaInputProcessor/absence_type.json';
             const expectedCommonModulePath = './JsonSchemaInputProcessor/commonInputModel/absence_type.json';
-            await expectFunction(inputSchemaPath, expectedCommonModulePath)
+            await expectFunction(inputSchemaPath, expectedCommonModulePath);
         });
         test('should be able to process conditional schemas', async function() {
             const inputSchemaPath = './JsonSchemaInputProcessor/applying_conditional_schemas.json';
             const expectedCommonModulePath = './JsonSchemaInputProcessor/commonInputModel/applying_conditional_schemas.json';
-            await expectFunction(inputSchemaPath, expectedCommonModulePath)
+            await expectFunction(inputSchemaPath, expectedCommonModulePath);
         });
         test('should be able to process combination schemas', async function() {
             const inputSchemaPath = './JsonSchemaInputProcessor/combination_schemas.json';
             const expectedCommonModulePath = './JsonSchemaInputProcessor/commonInputModel/combination_schemas.json';
-            await expectFunction(inputSchemaPath, expectedCommonModulePath)
+            await expectFunction(inputSchemaPath, expectedCommonModulePath);
         });
         test('should be able to process enum schemas', async function() {
             const inputSchemaPath = './JsonSchemaInputProcessor/enum.json';
             const expectedCommonModulePath = './JsonSchemaInputProcessor/commonInputModel/enum.json';
-            await expectFunction(inputSchemaPath, expectedCommonModulePath)
+            await expectFunction(inputSchemaPath, expectedCommonModulePath);
         });
         test('should be able to process items schemas', async function() {
             const inputSchemaPath = './JsonSchemaInputProcessor/items.json';
             const expectedCommonModulePath = './JsonSchemaInputProcessor/commonInputModel/items.json';
-            await expectFunction(inputSchemaPath, expectedCommonModulePath)
+            await expectFunction(inputSchemaPath, expectedCommonModulePath);
         });
         test('should be able to process multiple objects', async function() {
             const inputSchemaPath = './JsonSchemaInputProcessor/multiple_objects.json';
             const expectedCommonModulePath = './JsonSchemaInputProcessor/commonInputModel/multiple_objects.json';
-            await expectFunction(inputSchemaPath, expectedCommonModulePath)
+            await expectFunction(inputSchemaPath, expectedCommonModulePath);
         });
     });
 
@@ -72,32 +71,32 @@ describe.skip('JsonSchemaInputProcessor', function() {
         test('should be able to process absence types', async function() {
             const inputSchemaPath = './JsonSchemaInputProcessor/absence_type.json';
             const expectedCommonModulePath = './JsonSchemaInputProcessor/commonInputModel/absence_type.json';
-            expectFunction(inputSchemaPath, expectedCommonModulePath)
+            expectFunction(inputSchemaPath, expectedCommonModulePath);
         });
         test('should be able to process conditional schemas', async function() {
             const inputSchemaPath = './JsonSchemaInputProcessor/applying_conditional_schemas.json';
             const expectedCommonModulePath = './JsonSchemaInputProcessor/commonInputModel/applying_conditional_schemas.json';
-            expectFunction(inputSchemaPath, expectedCommonModulePath)
+            expectFunction(inputSchemaPath, expectedCommonModulePath);
         });
         test('should be able to process combination schemas', async function() {
             const inputSchemaPath = './JsonSchemaInputProcessor/combination_schemas.json';
             const expectedCommonModulePath = './JsonSchemaInputProcessor/commonInputModel/combination_schemas.json';
-            expectFunction(inputSchemaPath, expectedCommonModulePath)
+            expectFunction(inputSchemaPath, expectedCommonModulePath);
         });
         test('should be able to process enum schemas', async function() {
             const inputSchemaPath = './JsonSchemaInputProcessor/enum.json';
             const expectedCommonModulePath = './JsonSchemaInputProcessor/commonInputModel/enum.json';
-            expectFunction(inputSchemaPath, expectedCommonModulePath)
+            expectFunction(inputSchemaPath, expectedCommonModulePath);
         });
         test('should be able to process items schemas', async function() {
             const inputSchemaPath = './JsonSchemaInputProcessor/items.json';
             const expectedCommonModulePath = './JsonSchemaInputProcessor/commonInputModel/items.json';
-            expectFunction(inputSchemaPath, expectedCommonModulePath)
+            expectFunction(inputSchemaPath, expectedCommonModulePath);
         });
         test('should be able to process multiple objects', async function() {
             const inputSchemaPath = './JsonSchemaInputProcessor/multiple_objects.json';
             const expectedCommonModulePath = './JsonSchemaInputProcessor/commonInputModel/multiple_objects.json';
-            expectFunction(inputSchemaPath, expectedCommonModulePath)
+            expectFunction(inputSchemaPath, expectedCommonModulePath);
         });
     });
 

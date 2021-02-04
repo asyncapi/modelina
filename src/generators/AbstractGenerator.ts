@@ -1,5 +1,5 @@
 import { CommonInputModel, CommonModel, OutputModel } from "../models";
-import { inputProcessor } from "../processors";
+import { InputProcessor } from "../processors";
 import { IndentationTypes } from "../helpers";
 
 export interface CommonGeneratorOptions {
@@ -20,6 +20,7 @@ export const defaultGeneratorOptions = {
  * Abstract generator which must be implemented by each language
  */
 export abstract class AbstractGenerator<O = object> {
+  private processor = new InputProcessor();
   constructor(
     public readonly displayName: string,
     public readonly options?: O,
@@ -27,17 +28,17 @@ export abstract class AbstractGenerator<O = object> {
 
   public abstract render(model: CommonModel, inputModel: CommonInputModel): Promise<string>;
 
-  public async process(input: any, type: string = 'json-schema'): Promise<CommonInputModel> {
-    return await inputProcessor.process(input, type);
+  public async process(input: any): Promise<CommonInputModel> {
+    return await this.processor.process(input);
   }
 
   public generate(input: CommonInputModel): Promise<OutputModel[]>;
   public generate(input: any, type: string): Promise<OutputModel[]>;
-  public async generate(input: any, type: string = 'json-schema'): Promise<OutputModel[]> {
+  public async generate(input: any): Promise<OutputModel[]> {
     if (input instanceof CommonInputModel) {
       return this.generateModels(input);
     }
-    const model = await this.process(input, type);
+    const model = await this.process(input);
     return this.generateModels(model);
   }
 

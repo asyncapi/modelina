@@ -1,24 +1,36 @@
 {
+  "customizations": {},
   "models": {
-    "<Anonym schema id>": {
+    "anonymSchema1": {
+      "$id": "anonymSchema1",
       "type": "object",
       "properties": {
         "foo": {
-            "type": ["string", "object", "number", "array", "boolean", "null"]
+          "originalSchema": true,
+          "type": [
+            "object",
+            "string",
+            "number",
+            "array",
+            "boolean",
+            "null"
+          ]
         }
       },
       "originalSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
         "type": "object",
         "properties": {
-            "foo": true
+          "foo": true
         }
       }
     }
   },
   "originalInput": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
     "properties": {
-        "foo": true
+      "foo": true
     }
   }
 }

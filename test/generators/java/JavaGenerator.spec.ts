@@ -1,6 +1,6 @@
 import { JavaGenerator } from '../../../src/generators'; 
 
-describe.skip('JavaGenerator', function() {
+describe('JavaGenerator', function() {
   test('should `generate` function return OutputModels', async function() {
     const generator = JavaGenerator.createGenerator();
 

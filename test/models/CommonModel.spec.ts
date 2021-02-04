@@ -53,7 +53,7 @@ describe('CommonModel', function() {
       const d = CommonModel.toCommonModel(doc);
       expect(d.items).not.toBeUndefined();
       expect(Array.isArray(d.items)).toEqual(true);
-      (<CommonModel[]>d.items).forEach((s, i) => {
+      (d.items as CommonModel[]).forEach((s, i) => {
         expect(s.constructor.name).toEqual('CommonModel');
         expect(s).toEqual(doc.items[i]);
       });
