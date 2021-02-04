@@ -17,6 +17,7 @@ describe('Simplification to extend', function() {
     expect(actualModels).toEqual(expectedModels);
     expect(schema.$id).toBeUndefined();
   });
+  
   test('should support advanced extend with nested objects', function() {
     const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/extendMultipleObjects.json'), 'utf8');
     const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/expected/extendMultipleObjects.json'), 'utf8');
@@ -27,6 +28,7 @@ describe('Simplification to extend', function() {
     expect(actualModels).toEqual(expectedModels);
     expect(schema.$id).toBeUndefined();
   });
+
   test('should support advanced extend with nested objects', function() {
     const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/extendWithProperties.json'), 'utf8');
     const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/expected/extendWithProperties.json'), 'utf8');
@@ -37,6 +39,7 @@ describe('Simplification to extend', function() {
     expect(actualModels).toEqual(expectedModels);
     expect(schema.$id).toBeUndefined();
   });
+
   test('should support nested extends', function() {
     const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/nestedExtends.json'), 'utf8');
     const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/expected/nestedExtends.json'), 'utf8');

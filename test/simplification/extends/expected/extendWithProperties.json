@@ -3,6 +3,54 @@
     "originalSchema":{
       "type":"object",
       "properties":{
+        "initial":{
+          "type":"string"
+        }
+      },
+      "allOf":[
+        {
+          "type":"object",
+          "properties":{
+            "street_address":{
+              "type":"string"
+            },
+            "country":{
+              "type":"string"
+            }
+          }
+        },
+        {
+          "type":"object",
+          "properties":{
+            "street_address2":{
+              "type":"string"
+            },
+            "country2":{
+              "type":"string"
+            }
+          }
+        }
+      ]
+    },
+    "type":"object",
+    "$id":"anonymSchema1",
+    "properties":{
+      "initial":{
+        "originalSchema":{
+          "type":"string"
+        },
+        "type":"string"
+      }
+    },
+    "extend":[
+      "anonymSchema2",
+      "anonymSchema3"
+    ]
+  },
+  {
+    "originalSchema":{
+      "type":"object",
+      "properties":{
         "street_address":{
           "type":"string"
         },
@@ -56,53 +104,5 @@
         "type":"string"
       }
     }
-  },
-  {
-    "originalSchema":{
-      "type":"object",
-      "properties":{
-        "initial":{
-          "type":"string"
-        }
-      },
-      "allOf":[
-        {
-          "type":"object",
-          "properties":{
-            "street_address":{
-              "type":"string"
-            },
-            "country":{
-              "type":"string"
-            }
-          }
-        },
-        {
-          "type":"object",
-          "properties":{
-            "street_address2":{
-              "type":"string"
-            },
-            "country2":{
-              "type":"string"
-            }
-          }
-        }
-      ]
-    },
-    "type":"object",
-    "$id":"anonymSchema1",
-    "properties":{
-      "initial":{
-        "originalSchema":{
-          "type":"string"
-        },
-        "type":"string"
-      }
-    },
-    "extend":[
-      "anonymSchema2",
-      "anonymSchema3"
-    ]
   }
 ]
