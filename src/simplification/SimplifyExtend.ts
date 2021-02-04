@@ -16,6 +16,7 @@ export default function simplifyExtend(schema: Schema | boolean, simplifier : Si
       if(typeof allOfSchema !== "boolean"){
         let simplifiedModels = simplifier.simplify(allOfSchema);
         if(simplifiedModels.length > 0){
+          //If the root schema is of type object and has an id (should always have one) then extend the model
           const rootSimplifiedModel = simplifiedModels[simplifiedModels.length-1];
           if(rootSimplifiedModel.type !== undefined && rootSimplifiedModel.type.includes("object") && rootSimplifiedModel.$id !== undefined){
             extendingSchemas = [...(extendingSchemas || []), rootSimplifiedModel.$id];
