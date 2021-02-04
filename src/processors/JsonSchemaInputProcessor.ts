@@ -49,20 +49,21 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
 
     /**
      * Process a draft 7 schema
+     * 
      * @param input to process as draft 7
      */
     private async processDraft7(input: any) : Promise<CommonInputModel> {
         const refParser = new $RefParser;
+        const commonInputModel = new CommonInputModel();
         const localPath = `${process.cwd()}${path.sep}`;
+        commonInputModel.originalInput = Schema.toSchema(input);
         await refParser.dereference(localPath, 
             input, {
             continueOnError: true,
             dereference: { circular: 'ignore' },
         });
-        const schema = Schema.toSchema(input);
-        const commonInputModel = new CommonInputModel();
-        commonInputModel.originalInput = schema;
-        commonInputModel.models = JsonSchemaInputProcessor.convertSchemaToCommonModel(input);
+        const parsedSchema = Schema.toSchema(input);
+        commonInputModel.models = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema);
         return commonInputModel;
     }
 
