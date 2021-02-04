@@ -19,4 +19,30 @@ describe('Simplification', function() {
     expect(actualModels[1]).toEqual(expectedModels[0]);
     expect(schema.$id).toBeUndefined();
   });
+  test('should support simple extend', function() {
+    const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './simplify/extend.json'), 'utf8');
+    const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './simplify/expected/extend.json'), 'utf8');
+    const schema = JSON.parse(inputSchemaString);
+    const expectedModels = JSON.parse(expectedSchemaString);
+    const simplifier = new Simplifier();
+    const actualModels = simplifier.simplify(schema);
+    expect(actualModels).not.toBeUndefined();
+    expect(actualModels[0]).toEqual(expectedModels[0]);
+    expect(actualModels[1]).toEqual(expectedModels[1]);
+    expect(actualModels[2]).toEqual(expectedModels[2]);
+    expect(schema.$id).toBeUndefined();
+  });
+  test('should support advanced extend with nested objects', function() {
+    const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './simplify/extendMultipleObjects.json'), 'utf8');
+    const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './simplify/expected/extendMultipleObjects.json'), 'utf8');
+    const schema = JSON.parse(inputSchemaString);
+    const expectedModels = JSON.parse(expectedSchemaString);
+    const simplifier = new Simplifier();
+    const actualModels = simplifier.simplify(schema);
+    expect(actualModels).not.toBeUndefined();
+    expect(actualModels[0]).toEqual(expectedModels[0]);
+    expect(actualModels[1]).toEqual(expectedModels[1]);
+    expect(actualModels[2]).toEqual(expectedModels[2]);
+    expect(schema.$id).toBeUndefined();
+  });
 });

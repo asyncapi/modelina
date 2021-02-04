@@ -1,41 +1,94 @@
 [
   {
-    "type": "object",
-    "$id": "anonymSchema1",
-    "extend": ["anonymSchema2", "anonymSchema3"]
+     "originalSchema":{
+        "type":"object",
+        "properties":{
+           "street_address":{
+              "type":"string"
+           },
+           "country":{
+              "type":"string"
+           }
+        }
+     },
+     "type":"object",
+     "$id":"anonymSchema2",
+     "properties":{
+        "street_address":{
+           "originalSchema":{
+              "type":"string"
+           },
+           "type":"string"
+        },
+        "country":{
+           "originalSchema":{
+              "type":"string"
+           },
+           "type":"string"
+        }
+     }
   },
   {
-    "$id": "anonymSchema2",
-    "type": "object",
-    "properties": {
-      "street_address": {
-        "type": "object",
-        "properties": {
-          "floor": {
-            "type": "number"
-          }
+     "originalSchema":{
+        "type":"object",
+        "properties":{
+           "street_address2":{
+              "type":"string"
+           },
+           "country2":{
+              "type":"string"
+           }
         }
-      },
-      "country": {
-        "enum": ["United States of America", "Canada"]
-      }
-    }
+     },
+     "type":"object",
+     "$id":"anonymSchema3",
+     "properties":{
+        "street_address2":{
+           "originalSchema":{
+              "type":"string"
+           },
+           "type":"string"
+        },
+        "country2":{
+           "originalSchema":{
+              "type":"string"
+           },
+           "type":"string"
+        }
+     }
   },
   {
-    "$id": "anonymSchema3",
-    "type": "object",
-    "properties": {
-      "street_address2": {
-        "type": "object",
-        "properties": {
-          "floor": {
-            "type": "number"
-          }
-        }
-      },
-      "country2": {
-        "enum": ["United States of America", "Canada"]
-      }
-    }
+     "originalSchema":{
+        "allOf":[
+           {
+              "type":"object",
+              "properties":{
+                 "street_address":{
+                    "type":"string"
+                 },
+                 "country":{
+                    "type":"string"
+                 }
+              }
+           },
+           {
+              "type":"object",
+              "properties":{
+                 "street_address2":{
+                    "type":"string"
+                 },
+                 "country2":{
+                    "type":"string"
+                 }
+              }
+           }
+        ]
+     },
+     "type":"object",
+     "$id":"anonymSchema1",
+     "extend":[
+        "anonymSchema2",
+        "anonymSchema3"
+     ]
   }
 ]

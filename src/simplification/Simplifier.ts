@@ -24,8 +24,8 @@ export default class Simplifier {
         switchRootModel.$ref = rootSimplifiedModel.$id;
         models[0] = switchRootModel;
       }
+      models = [...models, ...simplifiedModel];
     }
-    models = [...models, ...simplifiedModel];
     return models;
   }
 
@@ -44,6 +44,7 @@ export default class Simplifier {
       model.type = simplifiedTypes;
     }
     if(typeof schema !== "boolean"){
+
       //All schemas of type object MUST have ids, for now lets make it simple
       if(model.type !== undefined && model.type.includes("object")){
         let schemaId = schema.$id ? schema.$id : `anonymSchema${this.anonymCounter++}`;
@@ -73,6 +74,27 @@ export default class Simplifier {
           model.enum = [...model.enum, ...enums];
         }else{
           model.enum = enums;
+        }
+      }
+
+      if(schema.allOf !== undefined){
+        const extendingSchemas : string[] = [];
+        schema.allOf.forEach((allOfSchema) => {
+          if(typeof allOfSchema !== "boolean"){
+            let simplifiedModels = this.simplify(allOfSchema);
+            if(simplifiedModels.length > 0){
+              const rootSimplifiedModel = simplifiedModels[simplifiedModels.length-1];
+              if(rootSimplifiedModel.type !== undefined && rootSimplifiedModel.type.includes("object") && rootSimplifiedModel.properties !== undefined && rootSimplifiedModel.$id !== undefined){
+                extendingSchemas.push(rootSimplifiedModel.$id);
+                models = [...models, ...simplifiedModels];
+              } else {
+                //Add to properties
+              }
+            }
+          }
+        });
+        if(extendingSchemas.length > 0){
+          model.extend = extendingSchemas;
         }
       }
     }
