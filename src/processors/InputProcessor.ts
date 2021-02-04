@@ -7,7 +7,7 @@ import { CommonInputModel } from "../models/CommonInputModel";
  * Main input processor which figures out the type of input it receives and delegates the processing into separate individual processors.
  */
 export class InputProcessor {
-  private processors: {[key: string]: AbstractInputProcessor} = {};
+  private processors: Map<string, AbstractInputProcessor> = new Map();
 
   constructor(){
     const asyncAPI = new AsyncAPIInputProcessor();
@@ -23,7 +23,7 @@ export class InputProcessor {
    * @param processor
    */
   addProcessor(type: string, processor: AbstractInputProcessor) {
-    this.processors[type] = processor;
+    this.processors.set(type, processor);
   }
 
   /**
@@ -41,7 +41,10 @@ export class InputProcessor {
         return processor.process(input);
       }
     }
-    const defaultProcessor = this.processors["default"];
-    return defaultProcessor.process(input);
+    const defaultProcessor = this.processors.get("default");
+    if(defaultProcessor !== undefined){
+      return defaultProcessor.process(input);
+    }
+    throw "No default processor found"
   }
 }

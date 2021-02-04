@@ -11,7 +11,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
      * @param input 
      */
     async process(input: any): Promise<CommonInputModel> {
-        if(!this.isForMe(input)) throw "Input is not an AsyncAPI document so it cannot be processed."
+        if(!this.shouldProcess(input)) throw "Input is not an AsyncAPI document so it cannot be processed."
         var doc: AsyncAPIDocument;
         if(!AsyncAPIInputProcessor.isFromParser(input)){
             doc = await parse(input);

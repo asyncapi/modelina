@@ -14,7 +14,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
      * @param input 
      */
     async process(input: any): Promise<CommonInputModel> {
-        if(this.isForMe(input)){
+        if(this.shouldProcess(input)){
             if(input.$schema !== undefined){
                 switch(input.$schema){
                     case 'http://json-schema.org/draft-07/schema#':
