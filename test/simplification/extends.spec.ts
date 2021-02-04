@@ -8,8 +8,8 @@ import Simplifier from '../../src/simplification/Simplifier';
  */
 describe('Simplification to extend', function() {
   test('should support simple extend', function() {
-    const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './simplify/extend.json'), 'utf8');
-    const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './simplify/expected/extend.json'), 'utf8');
+    const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/extend.json'), 'utf8');
+    const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/expected/extend.json'), 'utf8');
     const schema = JSON.parse(inputSchemaString);
     const expectedModels = JSON.parse(expectedSchemaString);
     const simplifier = new Simplifier();
@@ -18,8 +18,8 @@ describe('Simplification to extend', function() {
     expect(schema.$id).toBeUndefined();
   });
   test('should support advanced extend with nested objects', function() {
-    const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './simplify/extendMultipleObjects.json'), 'utf8');
-    const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './simplify/expected/extendMultipleObjects.json'), 'utf8');
+    const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/extendMultipleObjects.json'), 'utf8');
+    const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/expected/extendMultipleObjects.json'), 'utf8');
     const schema = JSON.parse(inputSchemaString);
     const expectedModels = JSON.parse(expectedSchemaString);
     const simplifier = new Simplifier();
@@ -28,8 +28,18 @@ describe('Simplification to extend', function() {
     expect(schema.$id).toBeUndefined();
   });
   test('should support advanced extend with nested objects', function() {
-    const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './simplify/extendWithProperties.json'), 'utf8');
-    const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './simplify/expected/extendWithProperties.json'), 'utf8');
+    const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/extendWithProperties.json'), 'utf8');
+    const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/expected/extendWithProperties.json'), 'utf8');
+    const schema = JSON.parse(inputSchemaString);
+    const expectedModels = JSON.parse(expectedSchemaString);
+    const simplifier = new Simplifier();
+    const actualModels = simplifier.simplify(schema);
+    expect(actualModels).toEqual(expectedModels);
+    expect(schema.$id).toBeUndefined();
+  });
+  test('should support nested extends', function() {
+    const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/nestedExtends.json'), 'utf8');
+    const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/expected/nestedExtends.json'), 'utf8');
     const schema = JSON.parse(inputSchemaString);
     const expectedModels = JSON.parse(expectedSchemaString);
     const simplifier = new Simplifier();

@@ -5,8 +5,15 @@ import simplifyEnums from './SimplifyEnums';
 import simplifyTypes from './SimplifyTypes';
 import simplifyItems from './SimplifyItems';
 import simplifyExtend from './SimplifyExtend';
+import { SimplificationOptions } from '../models/SimplificationOptions';
 export default class Simplifier {
+  options: SimplificationOptions;
   anonymCounter = 1;
+
+  constructor(options: SimplificationOptions = new SimplificationOptions()){
+    this.options = options;
+  }
+
   /**
    * Simplifies a schema by first checking if its an object, if so, split it out and ref it based on id.
    * 
@@ -77,13 +84,14 @@ export default class Simplifier {
           model.enum = enums;
         }
       }
-      
-      const simplifiedExtends = simplifyExtend(schema, this);
-      if(simplifiedExtends.newModels !== undefined){
-        models = [...models, ...simplifiedExtends.newModels];
-      }
-      if(simplifiedExtends.extendingSchemas !== undefined){
-        model.extend = simplifiedExtends.extendingSchemas;
+      if(this.options.allowInheritance){
+        const simplifiedExtends = simplifyExtend(schema, this);
+        if(simplifiedExtends.newModels !== undefined){
+          models = [...models, ...simplifiedExtends.newModels];
+        }
+        if(simplifiedExtends.extendingSchemas !== undefined){
+          model.extend = simplifiedExtends.extendingSchemas;
+        }
       }
 
 

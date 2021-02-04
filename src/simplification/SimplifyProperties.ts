@@ -52,7 +52,10 @@ export default function simplifyProperties(schema: Schema | boolean, simplifier 
       }
     }
     //If we encounter combination schemas ensure we recursively find the properties
-    //handleCombinationSchemas(schema.allOf);
+    if(!simplifier.options.allowInheritance){
+      //Only merge allOf schemas if we dont allow inheritance
+      handleCombinationSchemas(schema.allOf);
+    }
     handleCombinationSchemas(schema.oneOf);
     handleCombinationSchemas(schema.anyOf);
 

@@ -29,6 +29,56 @@ describe('Simplification of properties', function () {
       }
     });
   });
+  describe('if inheritance turned off allOf schemas should be merged', function () {
+    test('when simple schema', function () {
+      const schemaString = fs.readFileSync(path.resolve(__dirname, './properties/allOf.json'), 'utf8');
+      const schema = JSON.parse(schemaString);
+      const simplifier = new Simplifier({allowInheritance: false});
+      const { newModels, properties } = simplifyProperties(schema, simplifier);
+      expect(newModels).toBeUndefined();
+      expect(properties).toEqual({
+        "testProp1": {
+          "type": "string",
+          "originalSchema": {
+            "type": "string"
+          }
+        },
+        "testProp2": {
+          "type": "string",
+          "originalSchema": {
+            "type": "string"
+          }
+        }
+      });
+    });
+    test('when nested schema', function () {
+      const schemaString = fs.readFileSync(path.resolve(__dirname, './properties/allOfNested.json'), 'utf8');
+      const schema = JSON.parse(schemaString);
+      const simplifier = new Simplifier({allowInheritance: false});
+      const { newModels, properties } = simplifyProperties(schema, simplifier);
+      expect(newModels).toBeUndefined();
+      expect(properties).toEqual({
+        "testProp1": {
+          "type": "string",
+          "originalSchema": {
+            "type": "string"
+          }
+        },
+        "testProp2": {
+          "type": "string",
+          "originalSchema": {
+            "type": "string"
+          }
+        },
+        "testProp3": {
+          "type": "string",
+          "originalSchema": {
+            "type": "string"
+          }
+        }
+      });
+    });
+  });
   describe('from anyOf schemas', function () {
     test('with simple schema', function () {
       const schemaString = fs.readFileSync(path.resolve(__dirname, './properties/anyOf.json'), 'utf8');
