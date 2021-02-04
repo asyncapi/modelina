@@ -8,9 +8,15 @@
       },
       "country": {
         "type": "string",
-        "enum": ["United States of America", "Canada"],
+        "enum": [
+          "United States of America",
+          "Canada"
+        ],
         "originalSchema": {
-          "enum": ["United States of America", "Canada"]
+          "enum": [
+            "United States of America",
+            "Canada"
+          ]
         }
       }
     },
@@ -26,7 +32,10 @@
           }
         },
         "country": {
-          "enum": ["United States of America", "Canada"]
+          "enum": [
+            "United States of America",
+            "Canada"
+          ]
         }
       }
     }
