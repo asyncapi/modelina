@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import { SimplificationOptions } from '../../src/models/SimplificationOptions';
 import Simplifier from '../../src/simplification/Simplifier';
 import simplifyProperties from '../../src/simplification/SimplifyProperties';
 
@@ -8,12 +9,12 @@ import simplifyProperties from '../../src/simplification/SimplifyProperties';
  * @param inputSchemaPath 
  * @param expectedPropertiesPath 
  */
-const expectFunction = (inputSchemaPath: string, expectedPropertiesPath: string) => {
+const expectFunction = (inputSchemaPath: string, expectedPropertiesPath: string, options: SimplificationOptions = new SimplificationOptions()) => {
   const inputSchemaString = fs.readFileSync(path.resolve(__dirname, inputSchemaPath), 'utf8');
   const expectedCommonInputModelString = fs.readFileSync(path.resolve(__dirname, expectedPropertiesPath), 'utf8');
   const inputSchema = JSON.parse(inputSchemaString);
   const expectedProperties = JSON.parse(expectedCommonInputModelString);
-  const simplifier = new Simplifier();
+  const simplifier = new Simplifier(options);
   const { newModels, properties } = simplifyProperties(inputSchema, simplifier);
   expect(newModels).toBeUndefined();
   expect(properties).toEqual(expectedProperties);
@@ -33,12 +34,12 @@ describe('Simplification of properties', function () {
     test('when simple schema', function () {
       const inputSchemaPath = './properties/allOf.json';
       const expectedPropertiesPath = './properties/expected/allOf.json';
-      expectFunction(inputSchemaPath, expectedPropertiesPath);
+      expectFunction(inputSchemaPath, expectedPropertiesPath, {allowInheritance: false});
     });
     test('when nested schema', function () {
       const inputSchemaPath = './properties/allOfNested.json';
       const expectedPropertiesPath = './properties/expected/allOfNested.json';
-      expectFunction(inputSchemaPath, expectedPropertiesPath);
+      expectFunction(inputSchemaPath, expectedPropertiesPath, {allowInheritance: false});
     });
   });
   describe('from anyOf schemas', function () {
