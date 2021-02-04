@@ -20,7 +20,7 @@ export const defaultGeneratorOptions = {
  * Abstract generator which must be implemented by each language
  */
 export abstract class AbstractGenerator<O = object> {
-  processor = new InputProcessor();
+  private processor = new InputProcessor();
   constructor(
     public readonly displayName: string,
     public readonly options?: O,
