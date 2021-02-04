@@ -52,6 +52,14 @@ export default function simplifyTypes(schema: Schema | boolean) : string[] | str
   handleCombinationSchemas(schema.oneOf);
   handleCombinationSchemas(schema.anyOf);
 
+  //Infer types from items and properties
+  if(schema.items !== undefined){
+    addToTypes("array");
+  }
+  if(schema.properties !== undefined){
+    addToTypes("object");
+  }
+
   //If we encounter combination schemas ensure we recursively find and cumulate the types
   if(schema.then){
     addToTypes(simplifyTypes(schema.then));

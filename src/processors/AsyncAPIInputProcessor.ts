@@ -11,16 +11,17 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
      * @param input 
      */
     async process(input: any): Promise<CommonInputModel> {
+        if(!this.shouldProcess(input)) throw "Input is not an AsyncAPI document so it cannot be processed."
         var doc: AsyncAPIDocument;
+        let common = new CommonInputModel();
         if(!AsyncAPIInputProcessor.isFromParser(input)){
             doc = await parse(input);
         }else{
             doc = input;
         }
-        let common = new CommonInputModel();
         common.originalInput= doc;
-        doc.allSchemas().forEach((schema: AsyncAPISchema) => {
-            let commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema.json())
+        doc.allMessages().forEach((message) => {
+            let commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(message.payload().json())
             common.models = {...common.models, ...commonModels};
         });
         return common;
@@ -31,7 +32,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
      * 
      * @param input 
      */
-    static isAsyncAPI(input: any) : boolean {
+    shouldProcess(input: any) : boolean {
         if(typeof input === "object"){
             //Check if we got a parsed document from out parser
             if(AsyncAPIInputProcessor.isFromParser(input)){
