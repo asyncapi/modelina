@@ -30,7 +30,7 @@ export class InputProcessor {
    * @param input to process
    * @param type of processor to use
    */
-  process(input: any): Promise<CommonInputModel> {
+  process(input: any) : Promise<CommonInputModel> {
     for (const [type, processor] of this.processors) {
       if(type === "default") continue;
       if(processor.shouldProcess(input)) {

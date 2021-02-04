@@ -12,7 +12,7 @@ export default function simplifyExtend(schema: Schema | boolean, simplifier : Si
   let models : CommonModel[] | undefined;
   let extendingSchemas : string[] | undefined;
   if(typeof schema !== "boolean" && schema.allOf !== undefined){
-    schema.allOf.forEach((allOfSchema) => {
+    for(const allOfSchema of schema.allOf){
       if(typeof allOfSchema !== "boolean"){
         let simplifiedModels = simplifier.simplify(allOfSchema);
         if(simplifiedModels.length > 0){
@@ -24,7 +24,7 @@ export default function simplifyExtend(schema: Schema | boolean, simplifier : Si
           }
         }
       }
-    });
+    }
   }
   return {newModels: models, extendingSchemas};
 }

@@ -93,10 +93,8 @@ export default class Simplifier {
           model.extend = simplifiedExtends.extendingSchemas;
         }
       }
-
-
     }
-    models.push(model);
+    models = [model, ...models];
     return models;
   }
 }
