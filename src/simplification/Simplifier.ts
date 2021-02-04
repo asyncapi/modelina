@@ -4,6 +4,7 @@ import simplifyProperties from './SimplifyProperties';
 import simplifyEnums from './SimplifyEnums';
 import simplifyTypes from './SimplifyTypes';
 import simplifyItems from './SimplifyItems';
+import simplifyExtend from './SimplifyExtend';
 export default class Simplifier {
   anonymCounter = 1;
   /**
@@ -76,27 +77,16 @@ export default class Simplifier {
           model.enum = enums;
         }
       }
-
-      if(schema.allOf !== undefined){
-        const extendingSchemas : string[] = [];
-        schema.allOf.forEach((allOfSchema) => {
-          if(typeof allOfSchema !== "boolean"){
-            let simplifiedModels = this.simplify(allOfSchema);
-            if(simplifiedModels.length > 0){
-              const rootSimplifiedModel = simplifiedModels[simplifiedModels.length-1];
-              if(rootSimplifiedModel.type !== undefined && rootSimplifiedModel.type.includes("object") && rootSimplifiedModel.properties !== undefined && rootSimplifiedModel.$id !== undefined){
-                extendingSchemas.push(rootSimplifiedModel.$id);
-                models = [...models, ...simplifiedModels];
-              } else {
-                //Add to properties
-              }
-            }
-          }
-        });
-        if(extendingSchemas.length > 0){
-          model.extend = extendingSchemas;
-        }
+      
+      const simplifiedExtends = simplifyExtend(schema, this);
+      if(simplifiedExtends.newModels !== undefined){
+        models = [...models, ...simplifiedExtends.newModels];
       }
+      if(simplifiedExtends.extendingSchemas !== undefined){
+        model.extend = simplifiedExtends.extendingSchemas;
+      }
+
+
     }
     models.push(model);
     return models;

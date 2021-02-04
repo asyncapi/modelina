@@ -44,7 +44,6 @@ describe('Simplification', function() {
     const expectedModels = JSON.parse(expectedSchemaString);
     const simplifier = new Simplifier();
     const actualModels = simplifier.simplify(schema);
-    expect(actualModels).not.toBeUndefined();
     expect(actualModels).toEqual(expectedModels);
     expect(schema.$id).toBeUndefined();
   });

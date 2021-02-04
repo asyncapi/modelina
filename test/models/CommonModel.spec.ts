@@ -210,7 +210,7 @@ describe('CommonModel', function() {
         const doc: Schema = { };
         let doc1 = CommonModel.toCommonModel(doc);
         let doc2 = CommonModel.toCommonModel(doc);
-        doc2.extend = "test";
+        doc2.extend = ["test"];
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
         expect(doc1.extend).toEqual(doc2.extend);
       });
