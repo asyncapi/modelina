@@ -7,7 +7,7 @@ import { CommonInputModel } from "../models/CommonInputModel";
  * Main input processor which figures out the type of input it receives and delegates the processing into separate individual processors.
  */
 export class InputProcessor {
-  processors: {[key: string]: AbstractInputProcessor} = {};
+  private processors: {[key: string]: AbstractInputProcessor} = {};
 
   constructor(){
     const asyncAPI = new AsyncAPIInputProcessor();
@@ -37,7 +37,7 @@ export class InputProcessor {
       return type !== "default";
     });
     for (const [type, processor] of nonDefaultProcessors) {
-      if(processor.isForMe(input)) {
+      if(processor.shouldProcess(input)) {
         return processor.process(input);
       }
     }

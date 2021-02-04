@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import {parse} from '@asyncapi/parser';
 import { JsonSchemaInputProcessor } from '../../src/processors/JsonSchemaInputProcessor';
 import { CommonInputModel } from '../../src/models/CommonInputModel';
 

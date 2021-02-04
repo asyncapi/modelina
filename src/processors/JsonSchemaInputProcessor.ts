@@ -33,7 +33,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
      * 
      * @param input 
      */
-    isForMe(input: any): boolean {
+    shouldProcess(input: any): boolean {
         if(input.$schema !== undefined){
             switch(input.$schema){
                 case 'http://json-schema.org/draft-07/schema#':

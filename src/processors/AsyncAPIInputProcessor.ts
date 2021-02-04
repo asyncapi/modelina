@@ -32,7 +32,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
      * 
      * @param input 
      */
-    isForMe(input: any) : boolean {
+    shouldProcess(input: any) : boolean {
         if(typeof input === "object"){
             //Check if we got a parsed document from out parser
             if(AsyncAPIInputProcessor.isFromParser(input)){

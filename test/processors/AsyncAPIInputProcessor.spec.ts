@@ -9,12 +9,12 @@ describe('AsyncAPIInputProcessor', function() {
         test('should be able to detect pure object', function() {
             const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'), 'utf8');
             const basicDoc = JSON.parse(basicDocString);
-            expect(processor.isForMe(basicDoc)).toEqual(true);
+            expect(processor.shouldProcess(basicDoc)).toEqual(true);
         });
         test('should be able to detect parsed object', async function() {
             const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'), 'utf8');
             const parsedObject = await parse(basicDocString);
-            expect(processor.isForMe(parsedObject)).toEqual(true);
+            expect(processor.shouldProcess(parsedObject)).toEqual(true);
         });
     });
     describe('isFromParser()', function() {
