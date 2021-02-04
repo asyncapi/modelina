@@ -111,72 +111,13 @@ describe('Simplification of items', function () {
     });
   });
   test('Should split out multiple objects into their own models and add reference', function () {
-    const schemaString = fs.readFileSync(path.resolve(__dirname, './items/multipleObjects.json'), 'utf8');
-    const schema = JSON.parse(schemaString);
+    const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './items/multipleObjects.json'), 'utf8');
+    const expectedCommonInputModelString = fs.readFileSync(path.resolve(__dirname, './items/expected/multipleObjects.json'), 'utf8');
+    const inputSchema = JSON.parse(inputSchemaString);
+    const expectedCommonInputModel = JSON.parse(expectedCommonInputModelString);
     const simplifier = new Simplifier();
-    const output = simplifyItems(schema, simplifier);
-    expect(output.newModels).toHaveLength(2);
-    expect(output.newModels![0]).toEqual({
-      originalSchema: {
-        type: "object",
-        properties: {
-          floor: {
-            type: "number",
-          },
-        },
-      },
-      type: "object",
-      $id: "anonymSchema2",
-      properties: {
-        floor: {
-          originalSchema: {
-            type: "number",
-          },
-          type: "number",
-        },
-      },
-    });
-    expect(output.newModels![1]).toEqual({
-      originalSchema: {
-        type: "object",
-        properties: {
-          street_address: {
-            type: "object",
-            properties: {
-              floor: {
-                type: "number",
-              },
-            },
-          },
-          country: {
-            enum: [
-              "United States of America",
-              "Canada",
-            ],
-          },
-        },
-      },
-      type: "object",
-      $id: "anonymSchema1",
-      properties: {
-        street_address: {
-          $ref: "anonymSchema2",
-        },
-        country: {
-          originalSchema: {
-            enum: [
-              "United States of America",
-              "Canada",
-            ],
-          },
-          type: "string",
-          enum: [
-            "United States of America",
-            "Canada",
-          ],
-        },
-      },
-    });
+    const output = simplifyItems(inputSchema, simplifier);
+    expect(output.newModels).toEqual(expectedCommonInputModel);
     expect(output.items).toEqual({
       $ref: "anonymSchema1"
     });
