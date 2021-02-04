@@ -67,10 +67,13 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         const commonModels = simplifier.simplify(schema);
         const commonModelsMap : {[key: string]: CommonModel}  = {};
         commonModels.forEach((value) => {
-            if(value.$id){
-                commonModelsMap[value.$id] = value;
-            }else{
-                console.log("Looks like someone is missing an id");
+            //Ignore all models which are not object
+            if(value.type?.includes("object")){
+                if(value.$id){
+                    commonModelsMap[value.$id] = value;
+                }else{
+                    console.log("Looks like someone is missing an id");
+                }
             }
         });
         return commonModelsMap;

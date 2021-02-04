@@ -10,10 +10,8 @@ export class InputProcessor {
   private processors: Map<string, AbstractInputProcessor> = new Map();
 
   constructor(){
-    const asyncAPI = new AsyncAPIInputProcessor();
-    this.addProcessor("asyncapi", asyncAPI); 
-    const jsonSchema = new JsonSchemaInputProcessor();
-    this.addProcessor("default", jsonSchema);
+    this.addProcessor("asyncapi", new AsyncAPIInputProcessor()); 
+    this.addProcessor("default", new JsonSchemaInputProcessor());
   }
 
   /**
@@ -33,10 +31,8 @@ export class InputProcessor {
    * @param type of processor to use
    */
   process(input: any): Promise<CommonInputModel> {
-    const nonDefaultProcessors = Object.entries(this.processors).filter(([type]) => {
-      return type !== "default";
-    });
-    for (const [type, processor] of nonDefaultProcessors) {
+    for (const [type, processor] of this.processors) {
+      if(type === "default") continue;
       if(processor.shouldProcess(input)) {
         return processor.process(input);
       }
