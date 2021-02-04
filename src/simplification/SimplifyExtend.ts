@@ -11,19 +11,15 @@ type output = {newModels: CommonModel[] | undefined; extendingSchemas: string[] 
 export default function simplifyExtend(schema: Schema | boolean, simplifier : Simplifier) : output {
   let models : CommonModel[] | undefined;
   let extendingSchemas : string[] | undefined;
-  const addToModels = (model : CommonModel[] = []) => { models = [...(models || []), ...model]; }
-  const addToExtend = (extending : string) => { extendingSchemas = [...(extendingSchemas || []), extending]; }
   if(typeof schema !== "boolean" && schema.allOf !== undefined){
     schema.allOf.forEach((allOfSchema) => {
       if(typeof allOfSchema !== "boolean"){
         let simplifiedModels = simplifier.simplify(allOfSchema);
         if(simplifiedModels.length > 0){
           const rootSimplifiedModel = simplifiedModels[simplifiedModels.length-1];
-          if(rootSimplifiedModel.type !== undefined && rootSimplifiedModel.type.includes("object") && rootSimplifiedModel.properties !== undefined && rootSimplifiedModel.$id !== undefined){
-            addToExtend(rootSimplifiedModel.$id);
-            addToModels(simplifiedModels);
-          } else {
-            //Add to properties
+          if(rootSimplifiedModel.type !== undefined && rootSimplifiedModel.type.includes("object") && rootSimplifiedModel.$id !== undefined){
+            extendingSchemas = [...(extendingSchemas || []), rootSimplifiedModel.$id];
+            models = [...(models || []), ...simplifiedModels];
           }
         }
       }
