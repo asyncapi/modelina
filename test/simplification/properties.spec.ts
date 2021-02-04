@@ -77,14 +77,6 @@ describe('Simplification of properties', function () {
       expectFunction(inputSchemaPath, expectedPropertiesPath);
     });
   });
-<<<<<<< HEAD
-=======
-  test('Should merge properties which same key', function () {
-    const inputSchemaPath = './properties/combine_properties.json';
-    const expectedPropertiesPath = './properties/expected/combine_properties.json';
-    expectFunction(inputSchemaPath, expectedPropertiesPath);
-  });
->>>>>>> origin/feature/fix_tests
   test('Should split out multiple objects into their own models and add reference', function () {
     const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './properties/multiple_objects.json'), 'utf8');
     const expectedCommonInputModelString = fs.readFileSync(path.resolve(__dirname, './properties/expected/multiple_objects.json'), 'utf8');
