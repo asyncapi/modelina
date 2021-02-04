@@ -15,8 +15,8 @@ describe('Simplification', function() {
     const simplifier = new Simplifier();
     const actualModels = simplifier.simplify(schema);
     expect(actualModels).not.toBeUndefined();
-    expect(actualModels[0]).toEqual(expectedModels[1]);
-    expect(actualModels[1]).toEqual(expectedModels[0]);
+    expect(actualModels[0]).toEqual(expectedModels[0]);
+    expect(actualModels[1]).toEqual(expectedModels[1]);
     expect(schema.$id).toBeUndefined();
   });
 });

@@ -8,6 +8,7 @@ export default class Simplifier {
   anonymCounter = 1;
   /**
    * Simplifies a schema by first checking if its an object, if so, split it out and ref it based on id.
+   * Index 0 will always be the input schema CommonModel representation
    * 
    * @param schema to simplify
    */
@@ -15,13 +16,12 @@ export default class Simplifier {
     let models : CommonModel[] = [];
     let simplifiedModel = this.simplify(schema);
     if(simplifiedModel.length > 0){
-      //Get the root model from the simplification process which is the last element in the list
-      //This is because any intermediary models are put in front of the root
-      const rootSimplifiedModel = simplifiedModel[simplifiedModel.length-1];
+      //Get the root model from the simplification process which is the first element in the list
+      const schemaSimplifiedModel = simplifiedModel[0];
       //Only if the schema is of type object and contains properties, split it out
-      if(rootSimplifiedModel.type !== undefined && rootSimplifiedModel.type.includes("object") && rootSimplifiedModel.properties !== undefined){
+      if(schemaSimplifiedModel.type !== undefined && schemaSimplifiedModel.type.includes("object") && schemaSimplifiedModel.properties !== undefined){
         let switchRootModel = new CommonModel();
-        switchRootModel.$ref = rootSimplifiedModel.$id;
+        switchRootModel.$ref = schemaSimplifiedModel.$id;
         models[0] = switchRootModel;
       }
     }
@@ -31,7 +31,8 @@ export default class Simplifier {
 
 
   /**
-   * Simplifies a schema into instances of CommonModel.
+   * Simplifies a schema into instances of CommonModel. 
+   * Index 0 will always be the input schema CommonModel representation
    * 
    * @param schema to simplify
    */
@@ -76,7 +77,9 @@ export default class Simplifier {
         }
       }
     }
-    models.push(model);
+
+    //Always ensure the model representing the input schema to be in index 0. 
+    models = [model, ...models];
     return models;
   }
 }
