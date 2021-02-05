@@ -9,7 +9,7 @@ import path from 'path';
  * Class for processing JSON Schema
  */
 export class JsonSchemaInputProcessor extends AbstractInputProcessor {
-    refParser = new $RefParser;
+    
     /**
      * Function for processing a JSON Schema input.
      * 
@@ -53,10 +53,11 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
      * @param input to process as draft 7
      */
     private async processDraft7(input: any) : Promise<CommonInputModel> {
+        const refParser = new $RefParser;
         const commonInputModel = new CommonInputModel();
         const localPath = `${process.cwd()}${path.sep}`;
         commonInputModel.originalInput = Schema.toSchema(input);
-        await this.refParser.dereference(localPath, 
+        await refParser.dereference(localPath, 
             input, {
             continueOnError: true,
             dereference: { circular: 'ignore' },
