@@ -117,7 +117,7 @@ describe('Simplification of items', function () {
     const expectedCommonInputModel = JSON.parse(expectedCommonInputModelString);
     const simplifier = new Simplifier();
     const output = simplifyItems(inputSchema, simplifier);
-    expect(output.newModels).toEqual(expectedCommonInputModel);
+    expect(output.newModels).toEqual(expect.arrayContaining(expectedCommonInputModel));
     expect(output.items).toEqual({
       $ref: "anonymSchema1"
     });
