@@ -9,7 +9,7 @@ import simplifyProperties from '../../src/simplification/SimplifyProperties';
  * @param inputSchemaPath 
  * @param expectedPropertiesPath 
  */
-const expectFunction = (inputSchemaPath: string, expectedPropertiesPath: string, options: SimplificationOptions = new SimplificationOptions()) => {
+const expectFunction = (inputSchemaPath: string, expectedPropertiesPath: string, options?: SimplificationOptions) => {
   const inputSchemaString = fs.readFileSync(path.resolve(__dirname, inputSchemaPath), 'utf8');
   const expectedCommonInputModelString = fs.readFileSync(path.resolve(__dirname, expectedPropertiesPath), 'utf8');
   const inputSchema = JSON.parse(inputSchemaString);
