@@ -7,11 +7,16 @@ import simplifyItems from './SimplifyItems';
 import simplifyExtend from './SimplifyExtend';
 import { SimplificationOptions } from '../models/SimplificationOptions';
 export default class Simplifier {
+  static defaultOptions: SimplificationOptions = {
+    allowInheritance: true
+  }
   options: SimplificationOptions;
   anonymCounter = 1;
 
-  constructor(options: SimplificationOptions = new SimplificationOptions()){
-    this.options = options;
+  constructor(
+    options: SimplificationOptions = Simplifier.defaultOptions,
+  ) {
+    this.options = { ...Simplifier.defaultOptions, ...options }
   }
 
   /**

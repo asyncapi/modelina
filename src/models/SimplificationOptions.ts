@@ -2,6 +2,6 @@
 /**
  * Options passed along in the simplification stage.
  */
-export class SimplificationOptions {
-    allowInheritance: boolean = true;
+export interface SimplificationOptions {
+    allowInheritance: boolean;
 }
