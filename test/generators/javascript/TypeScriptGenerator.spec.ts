@@ -17,8 +17,9 @@ describe('TypeScriptGenerator', function() {
         house_number:   { type: "number" },
         marriage:       { type: "boolean", description: "Status if marriage live in given house" },
         members:        { oneOf: [{ type: "string" }, { type: "number" }, { type: "boolean" }], },
+        array_type:     { type: "array", items: [{ type: "string" }, { type: "number" }] },
       },
-      required: ["street_name", "city", "state", "house_number"],
+      required: ["street_name", "city", "state", "house_number", "array_type"],
     };
     const expected = `interface AddressInput {
   street_name?: string;
@@ -27,6 +28,7 @@ describe('TypeScriptGenerator', function() {
   house_number?: number;
   marriage?: boolean;
   members?: string | number | boolean;
+  array_type?: Array<string | number>;
 }
 
 class Address {
@@ -36,6 +38,7 @@ class Address {
   house_number?: number;
   marriage?: boolean;
   members?: string | number | boolean;
+  array_type?: Array<string | number>;
       
   constructor(input: AddressInput) {
     this.street_name = input.street_name;
@@ -44,6 +47,7 @@ class Address {
     this.house_number = input.house_number;
     this.marriage = input.marriage;
     this.members = input.members;
+    this.array_type = input.array_type;
   }
       
   get street_name(): string { return this.street_name; }
@@ -63,6 +67,9 @@ class Address {
 
   get members(): string | number | boolean { return this.members; }
   set members(members: string | number | boolean) { this.members = members; }
+
+  get array_type(): Array<string | number> { return this.array_type; }
+  set array_type(array_type: Array<string | number>) { this.array_type = array_type; }
 }`;
 
     const inputModel = await generator.process(doc);
@@ -86,8 +93,9 @@ class Address {
         house_number:   { type: "number" },
         marriage:       { type: "boolean", description: "Status if marriage live in given house" },
         members:        { oneOf: [{ type: "string" }, { type: "number" }, { type: "boolean" }], },
+        array_type:     { type: "array", items: [{ type: "string" }, { type: "number" }] },
       },
-      required: ["street_name", "city", "state", "house_number"],
+      required: ["street_name", "city", "state", "house_number", "array_type"],
     };
     const expected = `interface Address {
   street_name?: string;
@@ -96,6 +104,7 @@ class Address {
   house_number?: number;
   marriage?: boolean;
   members?: string | number | boolean;
+  array_type?: Array<string | number>;
 }`;
 
     const inputModel = await generator.process(doc);
@@ -124,6 +133,87 @@ class Address {
     expect(enumModel).toEqual(expected);
 
     enumModel = await generator.render(model, inputModel);
+    expect(enumModel).toEqual(expected);
+  });
+
+  test('should render `type` type - primitive', async function() {
+    const doc = {
+      $id: "TypePrimitive",
+      type: "string",
+    };
+    const expected = `type TypePrimitive = string;`
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models["TypePrimitive"];
+
+    let enumModel = await generator.renderType(model, inputModel);
+    expect(enumModel).toEqual(expected);
+
+    enumModel = await generator.render(model, inputModel);
+    expect(enumModel).toEqual(expected);
+  });
+
+  test('should render `type` type - union', async function() {
+    const doc = {
+      $id: "TypeUnion",
+      type: ["string", "number", "boolean"],
+    };
+    const expected = `type TypeUnion = string | number | boolean;`
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models["TypeUnion"];
+
+    let enumModel = await generator.renderType(model, inputModel);
+    expect(enumModel).toEqual(expected);
+  });
+
+  test('should render `type` type - array of primitive type', async function() {
+    const doc = {
+      $id: "TypeArray",
+      type: "array",
+      items: {
+        $id: "StringArray",
+        type: "string",
+      }
+    };
+    const expected = `type TypeArray = Array<string>;`
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models["TypeArray"];
+
+    let enumModel = await generator.renderType(model, inputModel);
+    expect(enumModel).toEqual(expected);
+  });
+
+  test('should render `type` type - array of union type', async function() {
+    const doc = {
+      $id: "TypeArray",
+      type: "array",
+      items: {
+        $id: "StringArray",
+        type: ["string", "number", "boolean"],
+      }
+    };
+    const expected = `type TypeArray = Array<string | number | boolean>;`
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models["TypeArray"];
+
+    let enumModel = await generator.renderType(model, inputModel);
+    expect(enumModel).toEqual(expected);
+  });
+
+  test('should render `type` type - enum', async function() {
+    const doc = {
+      $id: "TypeEnum",
+      enum: ["Texas", "Alabama", "California", 0, 1, false, true],
+    };
+    const expected = `type TypeEnum = "Texas" | "Alabama" | "California" | 0 | 1 | false | true;`
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models["TypeEnum"];
+
+    let enumModel = await generator.renderType(model, inputModel);
     expect(enumModel).toEqual(expected);
   });
 });

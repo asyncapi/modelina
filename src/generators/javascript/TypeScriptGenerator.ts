@@ -9,6 +9,7 @@ import { TypeHelpers, ModelKind } from "../../helpers";
 import { ClassRenderer } from "./renderers/ClassRenderer";
 import { InterfaceRenderer } from "./renderers/InterfaceRenderer";
 import { EnumRenderer } from "./renderers/EnumRenderer";
+import { TypeRenderer } from "./renderers/TypeRenderer";
 
 export interface TypeScriptOptions extends CommonGeneratorOptions {
   renderTypes?: boolean
@@ -45,7 +46,7 @@ export class TypeScriptGenerator extends AbstractGenerator {
       case ModelKind.ENUM: {
         return this.renderEnum(model, inputModel);
       }
-      default: return this.rendeModelType(model, inputModel);
+      default: return this.renderType(model, inputModel);
     }
   }
 
@@ -61,6 +62,11 @@ export class TypeScriptGenerator extends AbstractGenerator {
 
   async renderEnum(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const renderer = new EnumRenderer(model, inputModel, this.options);
+    return renderer.render();
+  }
+
+  async renderType(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
+    const renderer = new TypeRenderer(model, inputModel, this.options);
     return renderer.render();
   }
 
