@@ -1,0 +1,14 @@
+{
+  "testProp1":{
+    "originalSchema":{
+      "type":"string"
+    },
+    "type":"string"
+  },
+  "testProp2":{
+    "originalSchema":{
+      "type":"string"
+    },
+    "type":"string"
+  }
+}
