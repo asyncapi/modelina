@@ -51,6 +51,11 @@ describe('JsonSchemaInputProcessor', function() {
             const expectedCommonModulePath = './JsonSchemaInputProcessor/commonInputModel/multiple_objects.json';
             await expectFunction(inputSchemaPath, expectedCommonModulePath);
         });
+        test('should be able to use $ref', async function() {
+            const inputSchemaPath = './JsonSchemaInputProcessor/references.json';
+            const expectedCommonModulePath = './JsonSchemaInputProcessor/commonInputModel/references.json';
+            await expectFunction(inputSchemaPath, expectedCommonModulePath)
+        });
     });
 
     describe('schemaToCommonModel()', function() {

@@ -3,6 +3,8 @@ import { CommonInputModel } from '../models/CommonInputModel';
 import { CommonModel } from '../models/CommonModel'
 import Simplifier from '../simplification/Simplifier';
 import { Schema } from '../models/Schema';
+import $RefParser from '@apidevtools/json-schema-ref-parser';
+import path from 'path';
 /**
  * Class for processing JSON Schema
  */
@@ -47,13 +49,21 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
 
     /**
      * Process a draft 7 schema
+     * 
      * @param input to process as draft 7
      */
-    private processDraft7(input: any) : CommonInputModel {
-        const schema = Schema.toSchema(input);
+    private async processDraft7(input: any) : Promise<CommonInputModel> {
+        const refParser = new $RefParser;
         const commonInputModel = new CommonInputModel();
-        commonInputModel.originalInput = schema;
-        commonInputModel.models = JsonSchemaInputProcessor.convertSchemaToCommonModel(input);
+        const localPath = `${process.cwd()}${path.sep}`;
+        commonInputModel.originalInput = Schema.toSchema(input);
+        await refParser.dereference(localPath, 
+            input, {
+            continueOnError: true,
+            dereference: { circular: 'ignore' },
+        });
+        const parsedSchema = Schema.toSchema(input);
+        commonInputModel.models = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema);
         return commonInputModel;
     }
 
