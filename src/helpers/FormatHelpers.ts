@@ -1,3 +1,9 @@
+import { 
+  camelCase,
+  pascalCase,
+  constantCase
+} from "change-case";
+
 export enum IndentationTypes {
   TABS = 'tabs',
   SPACES = 'spaces',
@@ -5,7 +11,43 @@ export enum IndentationTypes {
 
 export class FormatHelpers {
   /**
-   * Ensures breaking text into new lines according to newline char (`\n`) in text
+   * Upper first char in given string value.
+   * @param {string} value to change
+   * @returns {string}
+   */
+  static upperFirst(value: string): string {
+    return value.charAt(0).toUpperCase() + value.slice(1);
+  }
+
+  /**
+   * Transform into a string with the separator denoted by the next word capitalized.
+   * @param {string} value to transform
+   * @returns {string}
+   */
+  static toCamelCase(value: string): string {
+    return camelCase(value);
+  }
+
+  /**
+   * Transform into a string of capitalized words without separators.
+   * @param {string} value to transform
+   * @returns {string}
+   */
+  static toPascalCase(value: string): string {
+    return pascalCase(value);
+  }
+
+  /**
+   * Transform into upper case string with an underscore between words.
+   * @param {string} value to transform
+   * @returns {string}
+   */
+  static toConstantCase(value: string): string {
+    return constantCase(value);
+  };
+
+  /**
+   * Ensures breaking text into new lines according to newline char (`\n`) in text.
    * @param {(string | string[])} lines to breaks
    * @returns {string[]}
    */
