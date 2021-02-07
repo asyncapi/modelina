@@ -1,25 +1,21 @@
-import { CommonModel } from "../../../models";
+import { CommonModel } from "../../../../models";
 import { TypeScriptRenderer } from "../TypeScriptRenderer";
 
 import { InterfaceRenderer } from "./InterfaceRenderer";
 
 /**
- * Renderer for TypeScript's/JavaScript's `class` type
+ * Renderer for TypeScript's `class` type
  * 
  * @extends TypeScriptRenderer
  */
 export class ClassRenderer extends TypeScriptRenderer {
   public render(): string {
-    const properties = this.renderProperties();
-    const ctor = this.renderConstructor();
-    const accessors = this.renderAccessors();
-
     const clazz = `class ${this.model.$id} {
-${this.indent(properties)}
+${this.indent(this.renderProperties())}
       
-${this.indent(ctor)}
+${this.indent(this.renderConstructor())}
       
-${this.indent(accessors)}
+${this.indent(this.renderAccessors())}
 }`;
 
     if (this.options.renderTypes === true) {
@@ -28,25 +24,6 @@ ${this.indent(accessors)}
       return this.renderBlock([interfaceValue, clazz], 2);
     }
     return clazz;
-  }
-
-  protected renderProperties(): string {
-    const properties = this.model.properties || {};
-    const fields = Object.entries(properties).map(([name, property]) => {
-      return this.renderProperty(name, property, false); // false at the moment is only for fallback
-    }).filter(Boolean);
-
-    return this.renderBlock(fields);
-  }
-
-  protected renderProperty(name: string, property: CommonModel, isRequired: boolean): string {
-    if (property.type === undefined) {
-      return "";
-    }
-
-    const signature = this.renderTypeSignature(property, !isRequired);
-    let content = `${name}${signature};`
-    return content;
   }
 
   protected renderConstructor(): string {

@@ -2,9 +2,9 @@ import {
   AbstractGenerator, 
   CommonGeneratorOptions,
   defaultGeneratorOptions,
-} from "../AbstractGenerator";
-import { CommonModel, CommonInputModel } from "../../models";
-import { TypeHelpers, ModelKind } from "../../helpers";
+} from "../../AbstractGenerator";
+import { CommonModel, CommonInputModel } from "../../../models";
+import { TypeHelpers, ModelKind } from "../../../helpers";
 
 import { ClassRenderer } from "./renderers/ClassRenderer";
 import { InterfaceRenderer } from "./renderers/InterfaceRenderer";
@@ -13,7 +13,7 @@ import { TypeRenderer } from "./renderers/TypeRenderer";
 
 export interface TypeScriptOptions extends CommonGeneratorOptions {
   renderTypes?: boolean
-  modelType?: 'class' | 'interface';
+  modelType?: 'class' | 'interface' | 'type';
 }
 
 /**

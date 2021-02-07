@@ -1,10 +1,9 @@
 import { TypeScriptRenderer } from "../TypeScriptRenderer";
-import { InterfaceRenderer } from "./InterfaceRenderer";
 
-import { TypeHelpers, ModelKind } from "../../../helpers";
+import { TypeHelpers, ModelKind } from "../../../../helpers";
 
 /**
- * Renderer for TypeScript's `interface` type
+ * Renderer for TypeScript's `type` type
  * 
  * @extends TypeScriptRenderer
  */
@@ -17,6 +16,9 @@ export class TypeRenderer extends TypeScriptRenderer {
   protected renderTypeBody(): string {
     const kind = TypeHelpers.extractKind(this.model);
     switch(kind) {
+      case ModelKind.OBJECT: {
+        return this.renderObject();
+      }
       case ModelKind.ENUM: {
         return this.renderEnum();
       }
@@ -24,7 +26,14 @@ export class TypeRenderer extends TypeScriptRenderer {
     }
   }
 
+  protected renderObject(): string {
+    return `{
+${this.indent(this.renderProperties())}
+}`;
+  }
+
   protected renderEnum(): string {
-    return (this.model.enum || []).map(t => typeof t === "string" ? `"${t}"` : t).join(" | ");
+    const enums = this.model.enum || [];
+    return enums.map(t => typeof t === "string" ? `"${t}"` : t).join(" | ");
   }
 }
