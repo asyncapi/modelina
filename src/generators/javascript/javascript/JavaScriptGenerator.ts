@@ -11,7 +11,7 @@ import { ClassRenderer } from "./renderers/ClassRenderer";
 export interface JavaScriptOptions extends CommonGeneratorOptions {}
 
 /**
- * Generator for TypeScript
+ * Generator for JavaScript
  */
 export class JavaScriptGenerator extends AbstractGenerator {
   static defaultOptions: JavaScriptOptions = {

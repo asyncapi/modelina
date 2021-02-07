@@ -5,7 +5,7 @@ import { FormatHelpers } from "../../../helpers";
 import { CommonModel, CommonInputModel } from "../../../models";
 
 /**
- * Common renderer for TypeScript types
+ * Common renderer for JavaScript types
  * 
  * @extends AbstractRenderer
  */
