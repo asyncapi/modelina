@@ -44,26 +44,18 @@ ${this.indent(this.renderConstructorBody())}
     const accessors = Object.entries(properties).map(([name, property]) => {
       const getter = this.renderGetter(name, property);
       const setter = this.renderSetter(name, property);
-      return `${getter}\n${setter}`;
+      return this.renderBlock([getter, setter]);
     }).filter(Boolean);
 
     return this.renderBlock(accessors, 2);
   }
 
   protected renderGetter(name: string, property: CommonModel): string {
-    if (property.type === undefined) {
-      return "";
-    }
-
     const signature = this.renderTypeSignature(property, false);
     return `get ${name}()${signature} { return this.${name}; }`;
   }
 
   protected renderSetter(name: string, property: CommonModel): string {
-    if (property.type === undefined) {
-      return "";
-    }
-
     const signature = this.renderTypeSignature(property, false);
     const arg = `${name}${signature}`
     return `set ${name}(${arg}) { this.${name} = ${name}; }`;

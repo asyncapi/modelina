@@ -34,7 +34,7 @@ ${this.indent(this.renderConstructorBody())}
     const accessors = Object.entries(properties).map(([name, property]) => {
       const getter = this.renderGetter(name, property);
       const setter = this.renderSetter(name, property);
-      return `${getter}\n${setter}`;
+      return this.renderBlock([getter, setter]);
     }).filter(Boolean);
 
     return this.renderBlock(accessors, 2);

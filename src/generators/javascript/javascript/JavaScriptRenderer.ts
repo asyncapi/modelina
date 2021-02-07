@@ -20,14 +20,14 @@ export abstract class JavaScriptRenderer extends AbstractRenderer<JavaScriptOpti
 
   protected renderProperties(): string {
     const properties = this.model.properties || {};
-    const fields = Object.entries(properties).map(([name, property]) => {
+    const fields = Object.keys(properties).map(name => {
       return this.renderProperty(name);
     }).filter(Boolean);
     return this.renderBlock(fields);
   }
 
   protected renderProperty(name: string): string {
-    return name;
+    return `${name};`;
   }
 
   protected renderComments(lines: string | string[]): string {
