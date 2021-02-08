@@ -2,17 +2,18 @@ import {
   AbstractGenerator, 
   CommonGeneratorOptions,
   defaultGeneratorOptions,
-} from "../AbstractGenerator";
-import { CommonModel, CommonInputModel } from "../../models";
-import { TypeHelpers, ModelKind } from "../../helpers";
+} from "../../AbstractGenerator";
+import { CommonModel, CommonInputModel } from "../../../models";
+import { TypeHelpers, ModelKind } from "../../../helpers";
 
 import { ClassRenderer } from "./renderers/ClassRenderer";
 import { InterfaceRenderer } from "./renderers/InterfaceRenderer";
 import { EnumRenderer } from "./renderers/EnumRenderer";
+import { TypeRenderer } from "./renderers/TypeRenderer";
 
 export interface TypeScriptOptions extends CommonGeneratorOptions {
   renderTypes?: boolean
-  modelType?: 'class' | 'interface';
+  modelType?: 'class' | 'interface' | 'type';
 }
 
 /**
@@ -45,7 +46,7 @@ export class TypeScriptGenerator extends AbstractGenerator {
       case ModelKind.ENUM: {
         return this.renderEnum(model, inputModel);
       }
-      default: return this.rendeModelType(model, inputModel);
+      default: return this.renderType(model, inputModel);
     }
   }
 
@@ -64,11 +65,19 @@ export class TypeScriptGenerator extends AbstractGenerator {
     return renderer.render();
   }
 
+  async renderType(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
+    const renderer = new TypeRenderer(model, inputModel, this.options);
+    return renderer.render();
+  }
+
   private rendeModelType(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const modelType = this.options.modelType;
     switch(modelType) {
       case 'interface': {
         return this.renderInterface(model, inputModel);
+      };
+      case 'type': {
+        return this.renderType(model, inputModel);
       };
       default: return this.renderClass(model, inputModel);
     }

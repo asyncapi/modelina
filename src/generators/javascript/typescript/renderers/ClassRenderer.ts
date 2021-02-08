@@ -1,25 +1,22 @@
-import { CommonModel } from "../../../models";
 import { TypeScriptRenderer } from "../TypeScriptRenderer";
-
 import { InterfaceRenderer } from "./InterfaceRenderer";
 
+import { CommonModel } from "../../../../models";
+import { FormatHelpers } from "../../../../helpers";
+
 /**
- * Renderer for TypeScript's/JavaScript's `class` type
+ * Renderer for TypeScript's `class` type
  * 
  * @extends TypeScriptRenderer
  */
 export class ClassRenderer extends TypeScriptRenderer {
   public render(): string {
-    const properties = this.renderProperties();
-    const ctor = this.renderConstructor();
-    const accessors = this.renderAccessors();
-
     const clazz = `class ${this.model.$id} {
-${this.indent(properties)}
+${this.indent(this.renderProperties())}
       
-${this.indent(ctor)}
+${this.indent(this.renderConstructor())}
       
-${this.indent(accessors)}
+${this.indent(this.renderAccessors())}
 }`;
 
     if (this.options.renderTypes === true) {
@@ -28,25 +25,6 @@ ${this.indent(accessors)}
       return this.renderBlock([interfaceValue, clazz], 2);
     }
     return clazz;
-  }
-
-  protected renderProperties(): string {
-    const properties = this.model.properties || {};
-    const fields = Object.entries(properties).map(([name, property]) => {
-      return this.renderProperty(name, property, false); // false at the moment is only for fallback
-    }).filter(Boolean);
-
-    return this.renderBlock(fields);
-  }
-
-  protected renderProperty(name: string, property: CommonModel, isRequired: boolean): string {
-    if (property.type === undefined) {
-      return "";
-    }
-
-    const signature = this.renderTypeSignature(property, !isRequired);
-    let content = `${name}${signature};`
-    return content;
   }
 
   protected renderConstructor(): string {
@@ -58,7 +36,10 @@ ${this.indent(this.renderConstructorBody())}
 
   protected renderConstructorBody(): string {
     const properties = this.model.properties!;
-    const assigments = Object.keys(properties).map(property => `this.${property} = input.${property};`);
+    const assigments = Object.keys(properties).map(property => {
+      property = FormatHelpers.toCamelCase(property);
+      return`this.${property} = input.${property};`
+    });
     return this.renderBlock(assigments);
   }
 
@@ -67,26 +48,20 @@ ${this.indent(this.renderConstructorBody())}
     const accessors = Object.entries(properties).map(([name, property]) => {
       const getter = this.renderGetter(name, property);
       const setter = this.renderSetter(name, property);
-      return `${getter}\n${setter}`;
+      return this.renderBlock([getter, setter]);
     }).filter(Boolean);
 
     return this.renderBlock(accessors, 2);
   }
 
   protected renderGetter(name: string, property: CommonModel): string {
-    if (property.type === undefined) {
-      return "";
-    }
-
+    name = FormatHelpers.toCamelCase(name);
     const signature = this.renderTypeSignature(property, false);
     return `get ${name}()${signature} { return this.${name}; }`;
   }
 
   protected renderSetter(name: string, property: CommonModel): string {
-    if (property.type === undefined) {
-      return "";
-    }
-
+    name = FormatHelpers.toCamelCase(name);
     const signature = this.renderTypeSignature(property, false);
     const arg = `${name}${signature}`
     return `set ${name}(${arg}) { this.${name} = ${name}; }`;
