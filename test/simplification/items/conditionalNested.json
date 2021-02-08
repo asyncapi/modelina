@@ -1,0 +1,46 @@
+{
+    "type": ["array"],
+    "if": {
+        "const": ["some_const"]
+    },
+    "then": {
+        "type": ["array"],
+        "if": {
+            "const": ["some_const"]
+        },
+        "then": {
+            "items": [
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "else": {
+            "items": [
+                {
+                    "type": "boolean"
+                }
+            ]
+        }
+    },
+    "else": {
+        "type": ["array"],
+        "if": {
+            "const": ["some_const"]
+        },
+        "then": {
+            "items": [
+                {
+                    "type": "number"
+                }
+            ]
+        },
+        "else": {
+            "items": [
+                {
+                    "type": "null"
+                }
+            ]
+        }
+    }
+}

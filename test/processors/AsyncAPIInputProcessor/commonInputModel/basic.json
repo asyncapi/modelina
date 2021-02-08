@@ -1,0 +1,75 @@
+{
+  "customizations": {},
+  "models": {
+    "anonymSchema1": {
+      "$id": "anonymSchema1",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "originalSchema": {
+            "type": "string",
+            "format": "email",
+            "x-parser-schema-id": "<anonymous-schema-2>"
+          }
+        }
+      }, 
+      "originalSchema": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "x-parser-schema-id": "<anonymous-schema-2>"
+          }
+        },
+        "x-parser-schema-id": "<anonymous-schema-1>"
+      }
+    }
+  },
+  "originalInput": {
+    "_json": {
+      "asyncapi": "2.0.0",
+      "defaultContentType": "application/json",
+      "externalDocs": {
+        "description": "Find more info here",
+        "url": "https://example.com"
+      },
+      "tags": [
+        {
+          "name": "user",
+          "description": "user signed up"
+        },
+        {
+          "name": "signup"
+        }
+      ],
+      "info": {
+        "title": "Signup service example (internal)",
+        "version": "0.1.0"
+      },
+      "channels": {
+        "/user/signedup": {
+          "subscribe": {
+            "message": {
+              "payload": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "x-parser-schema-id": "<anonymous-schema-2>"
+                  }
+                },
+                "x-parser-schema-id": "<anonymous-schema-1>"
+              },
+              "schemaFormat": "application/vnd.aai.asyncapi;version=2.0.0",
+              "x-parser-message-parsed": true,
+              "x-parser-message-name": "<anonymous-message-1>"
+            }
+          }
+        }
+      }
+    }
+  }
+}

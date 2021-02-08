@@ -2,9 +2,11 @@ import { CommonSchema } from "./CommonSchema";
 
 /**
  * JSON Schema Draft 7 model
+ * 
  * @extends CommonSchema<Schema>
  */
-export class Schema extends CommonSchema<Schema>{
+export class Schema extends CommonSchema<Schema | boolean>{
+    $schema?: string;
     title?: string;
     multipleOf?: number;
     maximum?: number;
@@ -20,23 +22,23 @@ export class Schema extends CommonSchema<Schema>{
     maxProperties?: number;
     minProperties?: number;
     required?: string[];
-    allOf?: Schema[];
-    oneOf?: Schema[];
-    anyOf?: Schema[];
-    not?: Schema;
+    allOf?: (Schema | boolean)[];
+    oneOf?: (Schema | boolean)[];
+    anyOf?: (Schema | boolean)[];
+    not?: (Schema | boolean);
     additionalItems?: boolean | Schema;
-    contains?: Schema;
+    contains?: (Schema | boolean);
     const?: any;
-    dependencies?: { [key: string]: Schema | string[]; };
-    propertyNames?: Schema;
-    patternProperties?: { [key: string]: Schema ; };
-    if?: Schema;
-    then?: Schema;
-    else?: Schema;
+    dependencies?: { [key: string]: Schema | boolean | string[]; };
+    propertyNames?: Schema | boolean;
+    patternProperties?: { [key: string]: Schema | boolean ; };
+    if?: Schema | boolean;
+    then?: Schema | boolean;
+    else?: Schema | boolean;
     format?: string; //Enum?
     contentEncoding?: string; //Enum?
     contentMediaType?: string; //Enum?
-    definitions?: { [key: string]: Schema; };
+    definitions?: { [key: string]: Schema | boolean; };
     description?: string;
     default?: string;
     readOnly?: boolean;
@@ -49,10 +51,11 @@ export class Schema extends CommonSchema<Schema>{
      * @param object to transform
      * @returns CommonModel instance of the object
      */
-    static toSchema(object: Object) : Schema{
+    static toSchema(object: Object) : Schema | boolean{
+        if(typeof object === "boolean") return object;
         let schema = new Schema();
         schema = Object.assign(schema, object);
-        schema = CommonSchema.transformSchema(schema, Schema.toSchema);
+        schema = CommonSchema.transformSchema(schema, Schema.toSchema) as Schema;
 
         //Transform JSON Schema properties which contain nested schemas into an instance of Schema
         if(schema.allOf !== undefined){
@@ -77,19 +80,27 @@ export class Schema extends CommonSchema<Schema>{
             schema.contains = Schema.toSchema(schema.contains);
         }
         if(schema.dependencies !== undefined){
+            var dependencies : {[key: string]: Schema | boolean | string[]} = {}
             Object.entries(schema.dependencies).forEach(([propertyName, property]) => {
+                //We only care about object dependencies
                 if(typeof property === 'object' && !Array.isArray(property)){
-                    schema.dependencies![propertyName] = Schema.toSchema(property);
+                    dependencies[propertyName] = Schema.toSchema(property);
+                } else {
+                    dependencies[propertyName] = property as string[];
                 }
             });
+            schema.dependencies = dependencies;
         }
         if(schema.propertyNames !== undefined){
             schema.propertyNames = Schema.toSchema(schema.propertyNames);
         }
+
         if(schema.patternProperties !== undefined){
+            var patternProperties : {[key: string]: Schema | boolean} = {}
             Object.entries(schema.patternProperties).forEach(([propertyName, property]) => {
-                schema.patternProperties![propertyName] = Schema.toSchema(property);
+                patternProperties[propertyName] = Schema.toSchema(property);
             });
+            schema.patternProperties = patternProperties;
         }
         if(schema.if !== undefined){
             schema.if = Schema.toSchema(schema.if);
@@ -102,9 +113,11 @@ export class Schema extends CommonSchema<Schema>{
         }
 
         if(schema.definitions !== undefined){
+            var definitions : {[key: string]: Schema | boolean} = {}
             Object.entries(schema.definitions).forEach(([propertyName, property]) => {
-                schema.definitions![propertyName] = Schema.toSchema(property);
+                definitions[propertyName] = Schema.toSchema(property);
             });
+            schema.definitions = definitions;
         }
         return schema;
     }

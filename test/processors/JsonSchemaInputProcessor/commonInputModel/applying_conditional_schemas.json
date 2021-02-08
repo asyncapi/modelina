@@ -1,0 +1,79 @@
+
+{
+  "customizations": {},
+  "models": {
+    "anonymSchema1": {
+      "$id": "anonymSchema1",
+      "type": "object",
+      "properties": {
+        "street_address": {
+          "type": "string",
+          "originalSchema": {
+            "type": "string"
+          }
+        },
+        "country": {
+          "type": "string",
+          "enum": ["United States of America", "Canada", "Canada2", "something else"],
+          "originalSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "street_address": {
+                "type": "string"
+              },
+              "country": {
+                "enum": ["United States of America", "Canada"]
+              }
+            },
+            "if": {
+              "properties": { "street_address": { "const": "Some street" } }
+            },
+            "then": {
+              "required": ["country"],
+              "properties": { "country": { "enum": ["Canada2", "something else"] } }
+            }
+          }
+        }
+      },
+      "originalSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "street_address": {
+            "type": "string"
+          },
+          "country": {
+            "enum": ["United States of America", "Canada"]
+          }
+        },
+        "if": {
+          "properties": { "street_address": { "const": "Some street" } }
+        },
+        "then": {
+          "required": ["country"],
+          "properties": { "country": { "enum": ["Canada2", "something else"] } }
+        }
+      }
+    }
+  },
+  "originalInput": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "street_address": {
+        "type": "string"
+      },
+      "country": {
+        "enum": ["United States of America", "Canada"]
+      }
+    },
+    "if": {
+      "properties": { "street_address": { "const": "Some street" } }
+    },
+    "then": {
+      "required": ["country"],
+      "properties": { "country": { "enum": ["Canada2", "something else"] } }
+    }
+  }
+}

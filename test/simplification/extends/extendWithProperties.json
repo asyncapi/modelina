@@ -1,0 +1,32 @@
+{
+  "type": "object",
+  "properties": {
+    "initial": {
+      "type": "string"
+    }
+  },
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "street_address": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "properties": {
+        "street_address2": {
+          "type": "string"
+        },
+        "country2": {
+          "type": "string"
+        }
+      }
+    }
+  ]
+}

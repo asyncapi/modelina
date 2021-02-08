@@ -1,0 +1,18 @@
+{
+  "anyOf": [
+    { 
+      "properties": { 
+        "testProp1": { 
+          "type": "string"
+        } 
+      }  
+    },
+    { 
+      "properties": { 
+        "testProp2": { 
+          "type": "string"
+        } 
+      }
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "testProp1": {
+    "type": "string",
+    "originalSchema": {
+      "type": "string"
+    }
+  },
+  "testProp2": {
+    "type": "string",
+    "originalSchema": {
+      "type": "string"
+    }
+  },
+  "testProp3": {
+    "type": "string",
+    "originalSchema": {
+      "type": "string"
+    }
+  },
+  "testProp4": {
+    "type": "string",
+    "originalSchema": {
+      "type": "string"
+    }
+  },
+  "testProp5": {
+    "type": "string",
+    "originalSchema": {
+      "type": "string"
+    }
+  }
+}
