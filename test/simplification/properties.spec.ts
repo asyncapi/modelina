@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import { SimplificationOptions } from '../../src/models/SimplificationOptions';
 import Simplifier from '../../src/simplification/Simplifier';
 import simplifyProperties from '../../src/simplification/SimplifyProperties';
 
@@ -8,12 +9,12 @@ import simplifyProperties from '../../src/simplification/SimplifyProperties';
  * @param inputSchemaPath 
  * @param expectedPropertiesPath 
  */
-const expectFunction = (inputSchemaPath: string, expectedPropertiesPath: string) => {
+const expectFunction = (inputSchemaPath: string, expectedPropertiesPath: string, options?: SimplificationOptions) => {
   const inputSchemaString = fs.readFileSync(path.resolve(__dirname, inputSchemaPath), 'utf8');
   const expectedCommonInputModelString = fs.readFileSync(path.resolve(__dirname, expectedPropertiesPath), 'utf8');
   const inputSchema = JSON.parse(inputSchemaString);
   const expectedProperties = JSON.parse(expectedCommonInputModelString);
-  const simplifier = new Simplifier();
+  const simplifier = new Simplifier(options);
   const { newModels, properties } = simplifyProperties(inputSchema, simplifier);
   expect(newModels).toBeUndefined();
   expect(properties).toEqual(expectedProperties);
@@ -28,16 +29,17 @@ describe('Simplification of properties', function () {
     const expectedPropertiesPath = './properties/expected/basic.json';
     expectFunction(inputSchemaPath, expectedPropertiesPath);
   });
-  describe('from allOf schemas', function () {
-    test('with simple schema', function () {
+  
+  describe('if inheritance turned off allOf schemas should be merged', function () {
+    test('when simple schema', function () {
       const inputSchemaPath = './properties/allOf.json';
       const expectedPropertiesPath = './properties/expected/allOf.json';
-      expectFunction(inputSchemaPath, expectedPropertiesPath);
+      expectFunction(inputSchemaPath, expectedPropertiesPath, {allowInheritance: false});
     });
-    test('with nested schema', function () {
+    test('when nested schema', function () {
       const inputSchemaPath = './properties/allOfNested.json';
       const expectedPropertiesPath = './properties/expected/allOfNested.json';
-      expectFunction(inputSchemaPath, expectedPropertiesPath);
+      expectFunction(inputSchemaPath, expectedPropertiesPath, {allowInheritance: false});
     });
   });
   describe('from anyOf schemas', function () {
@@ -79,7 +81,7 @@ describe('Simplification of properties', function () {
   test('Should merge properties which same key', function () {
     const inputSchemaPath = './properties/combine_properties.json';
     const expectedPropertiesPath = './properties/expected/combine_properties.json';
-    expectFunction(inputSchemaPath, expectedPropertiesPath);
+    expectFunction(inputSchemaPath, expectedPropertiesPath, {allowInheritance: false});
   });
   test('Should split out multiple objects into their own models and add reference', function () {
     const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './properties/multiple_objects.json'), 'utf8');

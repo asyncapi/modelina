@@ -1,62 +1,62 @@
 [
   {
-    "originalSchema": {
-      "type": "object",
-      "properties": {
-        "floor": {
-          "type": "number"
+    "originalSchema":{
+      "type":"object",
+      "properties":{
+        "street_address":{
+          "type":"object",
+          "properties":{
+            "floor":{
+              "type":"number"
+            }
+          }
+        },
+        "country":{
+          "enum":[
+            "United States of America",
+            "Canada"
+          ]
         }
       }
     },
-    "type": "object",
-    "$id": "anonymSchema2",
-    "properties": {
-      "floor": {
-        "originalSchema": {
-          "type": "number"
+    "type":"object",
+    "$id":"anonymSchema1",
+    "properties":{
+      "street_address":{
+        "$ref":"anonymSchema2"
+      },
+      "country":{
+        "originalSchema":{
+          "enum":[
+            "United States of America",
+            "Canada"
+          ]
         },
-        "type": "number"
+        "type":"string",
+        "enum":[
+          "United States of America",
+          "Canada"
+        ]
       }
     }
   },
   {
-    "originalSchema": {
-      "type": "object",
-      "properties": {
-        "street_address": {
-          "type": "object",
-          "properties": {
-            "floor": {
-              "type": "number"
-            }
-          }
-        },
-        "country": {
-          "enum": [
-            "United States of America",
-            "Canada"
-          ]
+    "originalSchema":{
+      "type":"object",
+      "properties":{
+        "floor":{
+          "type":"number"
         }
       }
     },
-    "type": "object",
-    "$id": "anonymSchema1",
-    "properties": {
-      "street_address": {
-        "$ref": "anonymSchema2"
-      },
-      "country": {
-        "originalSchema": {
-          "enum": [
-            "United States of America",
-            "Canada"
-          ]
+    "type":"object",
+    "$id":"anonymSchema2",
+    "properties":{
+      "floor":{
+        "originalSchema":{
+          "type":"number"
         },
-        "type": "string",
-        "enum": [
-          "United States of America",
-          "Canada"
-        ]
+        "type":"number"
       }
     }
   }

@@ -1,119 +1,213 @@
 {
-  "customizations": {},
-  "models": {
-    "anonymSchema2": {
-      "$id": "anonymSchema2",
-      "type": "object",
-      "properties": {
-        "street_address": { "type": "string", "originalSchema": { "type": "string" } },
-        "city":           { "type": "string", "originalSchema": { "type": "string" } },
-        "state":          { "type": "string", "originalSchema": { "type": "string" } },
-        "type": { 
-          "type": "string",
-          "enum": [ "residential", "business" ], 
-          "originalSchema": { 
-            "enum": [ "residential", "business" ] 
-          } 
+  "models":{
+    "anonymSchema1":{
+      "originalSchema":{
+        "$schema":"http://json-schema.org/draft-07/schema#",
+        "type":"object",
+        "properties":{
+          "shipping_address":{
+            "allOf":[
+              {
+                "type":"object",
+                "properties":{
+                  "street_address":{
+                    "type":"string"
+                  },
+                  "city":{
+                    "type":"string"
+                  },
+                  "state":{
+                    "type":"string"
+                  }
+                },
+                "required":[
+                  "street_address",
+                  "city",
+                  "state"
+                ]
+              },
+              {
+                "properties":{
+                  "type":{
+                    "enum":[
+                      "residential",
+                      "business"
+                    ]
+                  }
+                },
+                "required":[
+                  "type"
+                ]
+              }
+            ]
+          }
         }
       },
-      "originalSchema": {
-        "allOf": [
+      "type":"object",
+      "$id":"anonymSchema1",
+      "properties":{
+        "shipping_address":{
+          "originalSchema":{
+            "allOf":[
+              {
+                "type":"object",
+                "properties":{
+                  "street_address":{
+                    "type":"string"
+                  },
+                  "city":{
+                    "type":"string"
+                  },
+                  "state":{
+                    "type":"string"
+                  }
+                },
+                "required":[
+                  "street_address",
+                  "city",
+                  "state"
+                ]
+              },
+              {
+                "properties":{
+                  "type":{
+                    "enum":[
+                      "residential",
+                      "business"
+                    ]
+                  }
+                },
+                "required":[
+                  "type"
+                ]
+              }
+            ]
+          },
+          "type":"object",
+          "$id":"anonymSchema2",
+          "extend":[
+            "anonymSchema3",
+            "anonymSchema4"
+          ]
+        }
+      }
+    },
+    "anonymSchema3":{
+      "originalSchema":{
+        "type":"object",
+        "properties":{
+          "street_address":{
+            "type":"string"
+          },
+          "city":{
+            "type":"string"
+          },
+          "state":{
+            "type":"string"
+          }
+        },
+        "required":[
+          "street_address",
+          "city",
+          "state"
+        ]
+      },
+      "type":"object",
+      "$id":"anonymSchema3",
+      "properties":{
+        "street_address":{
+          "originalSchema":{
+            "type":"string"
+          },
+          "type":"string"
+        },
+        "city":{
+          "originalSchema":{
+            "type":"string"
+          },
+          "type":"string"
+        },
+        "state":{
+          "originalSchema":{
+            "type":"string"
+          },
+          "type":"string"
+        }
+      }
+    },
+    "anonymSchema4":{
+      "originalSchema":{
+        "properties":{
+          "type":{
+            "enum":[
+              "residential",
+              "business"
+            ]
+          }
+        },
+        "required":[
+          "type"
+        ]
+      },
+      "type":"object",
+      "$id":"anonymSchema4",
+      "properties":{
+        "type":{
+          "originalSchema":{
+            "enum":[
+              "residential",
+              "business"
+            ]
+          },
+          "type":"string",
+          "enum":[
+            "residential",
+            "business"
+          ]
+        }
+      }
+    }
+  },
+  "customizations":{
+    
+  },
+  "originalInput":{
+    "$schema":"http://json-schema.org/draft-07/schema#",
+    "type":"object",
+    "properties":{
+      "shipping_address":{
+        "allOf":[
           {
-            "type": "object",
-            "properties": {
-              "street_address": {
-                "type": "string"
+            "type":"object",
+            "properties":{
+              "street_address":{
+                "type":"string"
               },
-              "city": {
-                "type": "string"
+              "city":{
+                "type":"string"
               },
-              "state": {
-                "type": "string"
+              "state":{
+                "type":"string"
               }
             },
-            "required": [
+            "required":[
               "street_address",
               "city",
               "state"
             ]
           },
           {
-            "properties": {
-              "type": {
-                "enum": [
+            "properties":{
+              "type":{
+                "enum":[
                   "residential",
                   "business"
                 ]
               }
             },
-            "required": [
+            "required":[
               "type"
             ]
-          }
-        ]
-      }
-    },
-    "anonymSchema1": {
-      "$id": "anonymSchema1",
-      "type": "object",
-      "properties": {
-        "shipping_address": { "$ref": "anonymSchema2" }
-      },
-      "originalSchema": {
-        "$schema": "http://json-schema.org/draft-07/schema#",
-        "type": "object",
-        "properties": {
-          "shipping_address": {
-            "allOf": [
-              {
-                "type": "object",
-                "properties": {
-                  "street_address": { "type": "string" },
-                  "city":           { "type": "string" },
-                  "state":          { "type": "string" }
-                },
-                "required": [
-                  "street_address",
-                  "city",
-                  "state"
-                ]
-              },
-              { 
-                "properties": { 
-                  "type": { 
-                    "enum": [ "residential", "business" ] 
-                  } 
-                },
-                "required": ["type"]
-              }
-            ]
-          }
-        }
-      }
-    }
-  },
-  "originalInput": {
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "type": "object",
-    "properties": {
-      "shipping_address": {
-        "allOf": [
-          {
-            "type": "object",
-            "properties": {
-              "street_address": { "type": "string" },
-              "city":           { "type": "string" },
-              "state":          { "type": "string" }
-            },
-            "required": ["street_address", "city", "state"]
-          },
-          { 
-            "properties": { 
-              "type": { 
-                "enum": [ "residential", "business" ] 
-              } 
-            },
-            "required": ["type"]
           }
         ]
       }
