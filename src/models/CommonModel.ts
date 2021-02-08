@@ -7,7 +7,7 @@ import { Schema } from "./Schema";
  * @extends CommonSchema<CommonModel>
  */
 export class CommonModel extends CommonSchema<CommonModel>{
-    extend?: string
+    extend?: string[]
     originalSchema?: Schema | boolean
 
     /**

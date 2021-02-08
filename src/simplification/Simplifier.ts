@@ -4,8 +4,21 @@ import simplifyProperties from './SimplifyProperties';
 import simplifyEnums from './SimplifyEnums';
 import simplifyTypes from './SimplifyTypes';
 import simplifyItems from './SimplifyItems';
+import simplifyExtend from './SimplifyExtend';
+import { SimplificationOptions } from '../models/SimplificationOptions';
 export default class Simplifier {
+  static defaultOptions: SimplificationOptions = {
+    allowInheritance: true
+  }
+  options: SimplificationOptions;
   anonymCounter = 1;
+
+  constructor(
+    options: SimplificationOptions = Simplifier.defaultOptions,
+  ) {
+    this.options = { ...Simplifier.defaultOptions, ...options }
+  }
+
   /**
    * Simplifies a schema by first checking if its an object, if so, split it out and ref it based on id.
    * Index 0 will always be the input schema CommonModel representation
@@ -24,8 +37,8 @@ export default class Simplifier {
         switchRootModel.$ref = schemaSimplifiedModel.$id;
         models[0] = switchRootModel;
       }
+      models = [...models, ...simplifiedModel];
     }
-    models = [...models, ...simplifiedModel];
     return models;
   }
 
@@ -45,6 +58,7 @@ export default class Simplifier {
       model.type = simplifiedTypes;
     }
     if(typeof schema !== "boolean"){
+
       //All schemas of type object MUST have ids, for now lets make it simple
       if(model.type !== undefined && model.type.includes("object")){
         let schemaId = schema.$id ? schema.$id : `anonymSchema${this.anonymCounter++}`;
@@ -74,6 +88,15 @@ export default class Simplifier {
           model.enum = [...model.enum, ...enums];
         }else{
           model.enum = enums;
+        }
+      }
+      if(this.options.allowInheritance){
+        const simplifiedExtends = simplifyExtend(schema, this);
+        if(simplifiedExtends.newModels !== undefined){
+          models = [...models, ...simplifiedExtends.newModels];
+        }
+        if(simplifiedExtends.extendingSchemas !== undefined){
+          model.extend = simplifiedExtends.extendingSchemas;
         }
       }
     }

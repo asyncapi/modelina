@@ -1,17 +1,17 @@
 {
   "allOf": [
-    { 
-      "properties": { 
-        "testProp1": { 
+    {
+      "properties": {
+        "testProp1": {
           "type": "string"
-        } 
-      }  
+        }
+      }
     },
-    { 
-      "properties": { 
-        "testProp2": { 
+    {
+      "properties": {
+        "testProp2": {
           "type": "string"
-        } 
+        }
       }
     }
   ]
