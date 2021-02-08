@@ -26,12 +26,12 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
       return model.$ref;
     }
     if (Array.isArray(model.type)) {
-      return model.type.map(t => this.renderPrimitiveType(t, model)).join(' | ');
+      return model.type.map(t => this.toTsType(t, model)).join(' | ');
     }
-    return this.renderPrimitiveType(model.type, model);
+    return this.toTsType(model.type, model);
   }
 
-  protected renderPrimitiveType(type: string | undefined, model: CommonModel): string {
+  protected toTsType(type: string | undefined, model: CommonModel): string {
     if (type === undefined) {
       return "any";
     }
@@ -41,6 +41,8 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
       case 'integer':
       case 'number':
         return 'number';
+      case 'bigint':
+        return 'bigint';
       case 'boolean':
         return 'boolean';
       case 'array': {
@@ -62,6 +64,7 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
   protected renderProperties(): string {
     const p = this.model.properties || {};
     const props = Object.entries(p).map(([name, property]) => {
+      name = FormatHelpers.toCamelCase(name);
       return this.renderProperty(name, property, true); // false at the moment is only for fallback
     }).filter(Boolean);
     return this.renderBlock(props);

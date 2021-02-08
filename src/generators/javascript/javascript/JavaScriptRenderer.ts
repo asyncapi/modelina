@@ -21,6 +21,7 @@ export abstract class JavaScriptRenderer extends AbstractRenderer<JavaScriptOpti
   protected renderProperties(): string {
     const properties = this.model.properties || {};
     const fields = Object.keys(properties).map(name => {
+      name = FormatHelpers.toCamelCase(name);
       return this.renderProperty(name);
     }).filter(Boolean);
     return this.renderBlock(fields);

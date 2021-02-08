@@ -1,7 +1,8 @@
-import { CommonModel } from "../../../../models";
 import { TypeScriptRenderer } from "../TypeScriptRenderer";
-
 import { InterfaceRenderer } from "./InterfaceRenderer";
+
+import { CommonModel } from "../../../../models";
+import { FormatHelpers } from "../../../../helpers";
 
 /**
  * Renderer for TypeScript's `class` type
@@ -35,7 +36,10 @@ ${this.indent(this.renderConstructorBody())}
 
   protected renderConstructorBody(): string {
     const properties = this.model.properties!;
-    const assigments = Object.keys(properties).map(property => `this.${property} = input.${property};`);
+    const assigments = Object.keys(properties).map(property => {
+      property = FormatHelpers.toCamelCase(property);
+      return`this.${property} = input.${property};`
+    });
     return this.renderBlock(assigments);
   }
 
@@ -51,11 +55,13 @@ ${this.indent(this.renderConstructorBody())}
   }
 
   protected renderGetter(name: string, property: CommonModel): string {
+    name = FormatHelpers.toCamelCase(name);
     const signature = this.renderTypeSignature(property, false);
     return `get ${name}()${signature} { return this.${name}; }`;
   }
 
   protected renderSetter(name: string, property: CommonModel): string {
+    name = FormatHelpers.toCamelCase(name);
     const signature = this.renderTypeSignature(property, false);
     const arg = `${name}${signature}`
     return `set ${name}(${arg}) { this.${name} = ${name}; }`;

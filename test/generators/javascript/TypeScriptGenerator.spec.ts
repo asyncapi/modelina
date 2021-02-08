@@ -22,36 +22,36 @@ describe('TypeScriptGenerator', function() {
       required: ["street_name", "city", "state", "house_number", "array_type"],
     };
     const expected = `interface AddressInput {
-  street_name?: string;
+  streetName?: string;
   city?: string;
   state?: string;
-  house_number?: number;
+  houseNumber?: number;
   marriage?: boolean;
   members?: string | number | boolean;
-  array_type?: Array<string | number>;
+  arrayType?: Array<string | number>;
 }
 
 class Address {
-  street_name?: string;
+  streetName?: string;
   city?: string;
   state?: string;
-  house_number?: number;
+  houseNumber?: number;
   marriage?: boolean;
   members?: string | number | boolean;
-  array_type?: Array<string | number>;
+  arrayType?: Array<string | number>;
       
   constructor(input: AddressInput) {
-    this.street_name = input.street_name;
+    this.streetName = input.streetName;
     this.city = input.city;
     this.state = input.state;
-    this.house_number = input.house_number;
+    this.houseNumber = input.houseNumber;
     this.marriage = input.marriage;
     this.members = input.members;
-    this.array_type = input.array_type;
+    this.arrayType = input.arrayType;
   }
       
-  get street_name(): string { return this.street_name; }
-  set street_name(street_name: string) { this.street_name = street_name; }
+  get streetName(): string { return this.streetName; }
+  set streetName(streetName: string) { this.streetName = streetName; }
 
   get city(): string { return this.city; }
   set city(city: string) { this.city = city; }
@@ -59,8 +59,8 @@ class Address {
   get state(): string { return this.state; }
   set state(state: string) { this.state = state; }
 
-  get house_number(): number { return this.house_number; }
-  set house_number(house_number: number) { this.house_number = house_number; }
+  get houseNumber(): number { return this.houseNumber; }
+  set houseNumber(houseNumber: number) { this.houseNumber = houseNumber; }
 
   get marriage(): boolean { return this.marriage; }
   set marriage(marriage: boolean) { this.marriage = marriage; }
@@ -68,8 +68,8 @@ class Address {
   get members(): string | number | boolean { return this.members; }
   set members(members: string | number | boolean) { this.members = members; }
 
-  get array_type(): Array<string | number> { return this.array_type; }
-  set array_type(array_type: Array<string | number>) { this.array_type = array_type; }
+  get arrayType(): Array<string | number> { return this.arrayType; }
+  set arrayType(arrayType: Array<string | number>) { this.arrayType = arrayType; }
 }`;
 
     const inputModel = await generator.process(doc);
@@ -98,13 +98,13 @@ class Address {
       required: ["street_name", "city", "state", "house_number", "array_type"],
     };
     const expected = `interface Address {
-  street_name?: string;
+  streetName?: string;
   city?: string;
   state?: string;
-  house_number?: number;
+  houseNumber?: number;
   marriage?: boolean;
   members?: string | number | boolean;
-  array_type?: Array<string | number>;
+  arrayType?: Array<string | number>;
 }`;
 
     const inputModel = await generator.process(doc);
@@ -233,13 +233,13 @@ class Address {
       required: ["street_name", "city", "state", "house_number", "array_type"],
     };
     const expected = `type TypeObject = {
-  street_name?: string;
+  streetName?: string;
   city?: string;
   state?: string;
-  house_number?: number;
+  houseNumber?: number;
   marriage?: boolean;
   members?: string | number | boolean;
-  array_type?: Array<string | number>;
+  arrayType?: Array<string | number>;
 };`;
 
     const inputModel = await generator.process(doc);

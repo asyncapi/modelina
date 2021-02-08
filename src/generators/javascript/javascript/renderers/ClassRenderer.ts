@@ -1,6 +1,8 @@
 import { CommonModel } from "../../../../models";
 import { JavaScriptRenderer } from "../JavaScriptRenderer";
 
+import { FormatHelpers } from "../../../../helpers";
+
 /**
  * Renderer for JavaScript's `class` type
  * 
@@ -25,26 +27,29 @@ ${this.indent(this.renderConstructorBody())}
 
   protected renderConstructorBody(): string {
     const properties = this.model.properties!;
-    const assigments = Object.keys(properties).map(property => `this.${property} = input.${property};`);
+    const assigments = Object.keys(properties).map(property => {
+      property = FormatHelpers.toCamelCase(property);
+      return `this.${property} = input.${property};`
+    });
     return this.renderBlock(assigments);
   }
 
   protected renderAccessors(): string {
     const properties = this.model.properties!;
-    const accessors = Object.entries(properties).map(([name, property]) => {
-      const getter = this.renderGetter(name, property);
-      const setter = this.renderSetter(name, property);
+    const accessors = Object.keys(properties).map(name => {
+      name = FormatHelpers.toCamelCase(name);
+      const getter = this.renderGetter(name);
+      const setter = this.renderSetter(name);
       return this.renderBlock([getter, setter]);
     }).filter(Boolean);
-
     return this.renderBlock(accessors, 2);
   }
 
-  protected renderGetter(name: string, property: CommonModel): string {
+  protected renderGetter(name: string): string {
     return `get ${name}() { return this.${name}; }`;
   }
 
-  protected renderSetter(name: string, property: CommonModel): string {
+  protected renderSetter(name: string): string {
     return `set ${name}(${name}) { this.${name} = ${name}; }`;
   }
 }
