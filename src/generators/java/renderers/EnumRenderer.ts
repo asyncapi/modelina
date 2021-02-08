@@ -10,45 +10,57 @@ import { FormatHelpers } from "../../../helpers";
 export class EnumRenderer extends JavaRenderer {
   render(): string {
     const enumName = this.model.$id;
-    const type = Array.isArray(this.model.type) ? this.model.type[0] : this.model.type!;
+    const type = Array.isArray(this.model.type) ? "Object" : this.model.type!;
+    const classType = this.toClassType(this.toJavaType(type, this.model));
 
-    switch(type) {
-      case "string": {
-        return `public enum ${enumName} {
-${this.indent(this.renderItems("String"))};
+    return `public enum ${enumName} {
+${this.indent(this.renderItems())};
 
-${this.indent(this.renderHelpers(enumName!, "String"))}
+${this.indent(this.renderHelpers(enumName!, classType))}
 }`;
-      } 
-      case "integer": {
-        return `public enum ${enumName} {
-${this.indent(this.renderItems("Integer"))};
-
-${this.indent(this.renderHelpers(enumName!, "Integer"))}
-}`;
-      }
-      default: return "";
-    }
   }
 
-  protected renderItems(type: "String" | "Integer" = "String"): string {
+  protected renderItems(): string {
     const enums = this.model.enum || [];
     const items = enums.map(e => {
-      const name = FormatHelpers.toConstantCase(type === "String" ? e : `number ${e}`);
-      return `${name}("${e}")`;
+      const key = this.normalizeKey(e);
+      const value = this.normalizeValue(e);
+      return `${key}(${value})`
     }).join(", ");
     return `${items}`;
   }
 
-  protected renderHelpers(enumName: string, type: "String" | "Integer" = "String"): string {
-    return `private ${type} value;
+  protected normalizeKey(value: any): string {
+    switch(typeof value) {
+      case "bigint":
+      case "number": {
+        return FormatHelpers.toConstantCase(`number ${value}`);
+      }
+      case "boolean": {
+        return FormatHelpers.toConstantCase(`boolean ${value}`);
+      }
+      default: return FormatHelpers.toConstantCase(value);
+    }
+  }
+
+  protected normalizeValue(value: any): string {
+    switch(typeof value) {
+      case "string": {
+        return `"${value}"`;
+      }
+      default: return `${value}`;
+    }
+  }
+
+  protected renderHelpers(enumName: string, classType: string): string {
+    return `private ${classType} value;
     
-${enumName}(${type} value) {
+${enumName}(${classType} value) {
   this.value = value;
 }
     
 @JsonValue
-public ${type} getValue() {
+public ${classType} getValue() {
   return value;
 }
 
@@ -58,7 +70,7 @@ public String toString() {
 }
 
 @JsonCreator
-public static ${enumName} fromValue(${type} value) {
+public static ${enumName} fromValue(${classType} value) {
   for (${enumName} e : ${enumName}.values()) {
     if (e.value.equals(value)) {
       return e;

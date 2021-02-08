@@ -115,7 +115,7 @@ describe('TypeScriptGenerator', function() {
       enum: [0, 1, 2, 3],
     };
     const expected = `public enum Numbers {
-  NUMBER_0("0"), NUMBER_1("1"), NUMBER_2("2"), NUMBER_3("3");
+  NUMBER_0(0), NUMBER_1(1), NUMBER_2(2), NUMBER_3(3);
 
   private Integer value;
     
@@ -146,6 +146,52 @@ describe('TypeScriptGenerator', function() {
 
     const inputModel = await generator.process(doc);
     const model = inputModel.models["Numbers"];
+
+    let enumModel = await generator.renderEnum(model, inputModel);
+    expect(enumModel).toEqual(expected);
+
+    enumModel = await generator.render(model, inputModel);
+    expect(enumModel).toEqual(expected);
+  });
+
+  test('should render `enum` type (union type)', async function() {
+    const doc = {
+      $id: "Union",
+      type: ["string", "integer", "boolean"],
+      enum: ["Texas", "Alabama", 0, 1, true],
+    };
+    const expected = `public enum Union {
+  TEXAS("Texas"), ALABAMA("Alabama"), NUMBER_0(0), NUMBER_1(1), BOOLEAN_TRUE(true);
+
+  private Object value;
+    
+  Union(Object value) {
+    this.value = value;
+  }
+    
+  @JsonValue
+  public Object getValue() {
+    return value;
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+
+  @JsonCreator
+  public static Union fromValue(Object value) {
+    for (Union e : Union.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException("Unexpected value '" + value + "'");
+  }
+}`;
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models["Union"];
 
     let enumModel = await generator.renderEnum(model, inputModel);
     expect(enumModel).toEqual(expected);

@@ -1,7 +1,7 @@
 import { 
   camelCase,
   pascalCase,
-  constantCase
+  constantCase,
 } from "change-case";
 
 export enum IndentationTypes {
@@ -24,27 +24,21 @@ export class FormatHelpers {
    * @param {string} value to transform
    * @returns {string}
    */
-  static toCamelCase(value: string): string {
-    return camelCase(value);
-  }
+  static toCamelCase = camelCase;
 
   /**
    * Transform into a string of capitalized words without separators.
    * @param {string} value to transform
    * @returns {string}
    */
-  static toPascalCase(value: string): string {
-    return pascalCase(value);
-  }
+  static toPascalCase = pascalCase;
 
   /**
    * Transform into upper case string with an underscore between words.
    * @param {string} value to transform
    * @returns {string}
    */
-  static toConstantCase(value: string): string {
-    return constantCase(value);
-  };
+  static toConstantCase = constantCase;
 
   /**
    * Ensures breaking text into new lines according to newline char (`\n`) in text.
