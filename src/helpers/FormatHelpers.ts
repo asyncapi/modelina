@@ -52,12 +52,12 @@ export class FormatHelpers {
 
   /**
    * Ensures indentations are prepended to content.
-   * @param {string} content to prepend the indentation
-   * @param {number} size the number of indendations to use
+   * @param {string} content to prepend the indentation.
+   * @param {number} size the number of indendations to use. 1 by default
    * @param {IndentationTypes} type the type of indendations to use. SPACES by default.
    * @returns {string}
    */
-  static indent(content: string = '', size: number, type: IndentationTypes = IndentationTypes.SPACES): string {
+  static indent(content: string = '', size: number = 1, type: IndentationTypes = IndentationTypes.SPACES): string {
     if (size < 1) {
       return content;
     }

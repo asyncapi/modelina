@@ -6,27 +6,25 @@ import {
 import { CommonModel, CommonInputModel } from "../../../models";
 import { TypeHelpers, ModelKind } from "../../../helpers";
 
+import { JavaScriptPreset, JS_DEFAULT_PRESET } from "./JavaScriptPreset";
+
 import { ClassRenderer } from "./renderers/ClassRenderer";
 
-export interface JavaScriptOptions extends CommonGeneratorOptions {}
+export interface JavaScriptOptions extends CommonGeneratorOptions<JavaScriptPreset> {}
 
 /**
  * Generator for JavaScript
  */
-export class JavaScriptGenerator extends AbstractGenerator {
+export class JavaScriptGenerator extends AbstractGenerator<JavaScriptOptions> {
   static defaultOptions: JavaScriptOptions = {
     ...defaultGeneratorOptions,
+    defaultPreset: JS_DEFAULT_PRESET,
   };
 
-  static createGenerator(options?: JavaScriptOptions): JavaScriptGenerator {
-    return new this(options);
-  }
-
   constructor(
-    public readonly options: JavaScriptOptions = JavaScriptGenerator.defaultOptions,
-    public readonly displayName: string = "JavaScript",
+    options: JavaScriptOptions = JavaScriptGenerator.defaultOptions,
   ) {
-    super(displayName, { ...JavaScriptGenerator.defaultOptions, ...options });
+    super("JavaScript", JavaScriptGenerator.defaultOptions, options);
   }
 
   async render(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
@@ -41,6 +39,6 @@ export class JavaScriptGenerator extends AbstractGenerator {
 
   async renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const renderer = new ClassRenderer(model, inputModel, this.options);
-    return renderer.render();
+    return this.renderModel(renderer, "class", model, inputModel);
   }
 }

@@ -9,6 +9,8 @@ export abstract class AbstractRenderer<O extends CommonGeneratorOptions = Common
     protected readonly options: O,
   ) {}
 
+  public abstract render(): string;
+
   renderLine(line: string): string {
     return `${line}\n`;
   }
@@ -19,10 +21,12 @@ export abstract class AbstractRenderer<O extends CommonGeneratorOptions = Common
   }
 
   indent(
-    content: string = '', 
-    size: number = this.options.indentation.size, 
-    type: IndentationTypes = this.options.indentation.type
+    content: string, 
+    size?: number, 
+    type?: IndentationTypes,
   ) {
+    size = size || this.options.indentation?.size;
+    type = type || this.options.indentation?.type;
     return FormatHelpers.indent(content, size, type);
   }
 }

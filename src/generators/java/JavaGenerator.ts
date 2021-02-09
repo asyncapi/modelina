@@ -6,25 +6,23 @@ import {
 import { CommonModel, CommonInputModel } from "../../models";
 import { ModelKind, TypeHelpers } from "../../helpers";
 
+import { JavaPreset, JAVA_DEFAULT_PRESET } from "./JavaPreset";
+
 import { ClassRenderer } from "./renderers/ClassRenderer";
 import { EnumRenderer } from "./renderers/EnumRenderer";
 
-export interface JavaOptions extends CommonGeneratorOptions {}
+export interface JavaOptions extends CommonGeneratorOptions<JavaPreset> {}
 
-export class JavaGenerator extends AbstractGenerator {
+export class JavaGenerator extends AbstractGenerator<JavaOptions> {
   static defaultOptions: JavaOptions = {
     ...defaultGeneratorOptions,
+    defaultPreset: JAVA_DEFAULT_PRESET,
   };
 
-  static createGenerator(options?: JavaOptions): JavaGenerator {
-    return new this(options);
-  }
-
   constructor(
-    public readonly options: JavaOptions = JavaGenerator.defaultOptions,
-    public readonly displayName: string = "Java",
+    options: JavaOptions = JavaGenerator.defaultOptions,
   ) {
-    super(displayName, { ...JavaGenerator.defaultOptions, ...options });
+    super("Java", JavaGenerator.defaultOptions, options);
   }
 
   async render(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
@@ -39,11 +37,11 @@ export class JavaGenerator extends AbstractGenerator {
 
   async renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const renderer = new ClassRenderer(model, inputModel, this.options);
-    return renderer.render();
+    return this.renderModel(renderer, "class", model, inputModel);
   }
 
   async renderEnum(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const renderer = new EnumRenderer(model, inputModel, this.options);
-    return renderer.render();
+    return this.renderModel(renderer, "enum", model, inputModel);
   }
 }
