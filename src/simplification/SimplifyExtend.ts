@@ -1,5 +1,5 @@
 import { CommonModel } from "models";
-import { ParsedSchema } from "models/ParsedSchema";
+import { Schema } from "models/Schema";
 import Simplifier from "./Simplifier";
 type output = {newModels: CommonModel[] | undefined; extendingSchemas: string[] | undefined};
 
@@ -8,7 +8,7 @@ type output = {newModels: CommonModel[] | undefined; extendingSchemas: string[] 
  * 
  * @param schema to find extends of
  */
-export default function simplifyExtend(schema: ParsedSchema | boolean, simplifier : Simplifier) : output {
+export default function simplifyExtend(schema: Schema | boolean, simplifier : Simplifier) : output {
   let models : CommonModel[] | undefined;
   let extendingSchemas : string[] | undefined;
   if(typeof schema !== "boolean" && schema.allOf !== undefined){

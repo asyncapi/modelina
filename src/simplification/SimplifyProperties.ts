@@ -1,6 +1,6 @@
 
 import { CommonModel } from "../models/CommonModel";
-import { ParsedSchema } from "../models/ParsedSchema";
+import { Schema } from "../models/Schema";
 import Simplifier from "./Simplifier";
 type output = {newModels: CommonModel[] | undefined; properties: { [key: string]: CommonModel } | undefined};
 /**
@@ -8,7 +8,7 @@ type output = {newModels: CommonModel[] | undefined; properties: { [key: string]
  * 
  * @param schema to find the simplified enums for
  */
-export default function simplifyProperties(schema: ParsedSchema | boolean, simplifier : Simplifier) : output {
+export default function simplifyProperties(schema: Schema | boolean, simplifier : Simplifier) : output {
   let models : CommonModel[] | undefined;
   let commonProperties : { [key: string]: CommonModel; } | undefined;
   if(typeof schema !== "boolean"){
@@ -34,7 +34,7 @@ export default function simplifyProperties(schema: ParsedSchema | boolean, simpl
         }
       }
     };
-    const handleCombinationSchemas = (schemas: (ParsedSchema | boolean)[] = []) => {
+    const handleCombinationSchemas = (schemas: (Schema | boolean)[] = []) => {
       schemas.forEach((schema) => {
         addToPropertiesAndModels(simplifyProperties(schema, simplifier));
       });
