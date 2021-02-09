@@ -56,6 +56,11 @@ describe('JsonSchemaInputProcessor', function() {
             const expectedCommonModulePath = './JsonSchemaInputProcessor/commonInputModel/references.json';
             await expectFunction(inputSchemaPath, expectedCommonModulePath)
         });
+        test('should be able to use $ref when circular', async function() {
+            const inputSchemaPath = './JsonSchemaInputProcessor/references_circular.json';
+            const expectedCommonModulePath = './JsonSchemaInputProcessor/commonInputModel/references_circular.json';
+            await expectFunction(inputSchemaPath, expectedCommonModulePath)
+        });
     });
 
     describe('schemaToCommonModel()', function() {

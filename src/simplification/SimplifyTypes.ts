@@ -1,4 +1,4 @@
-import { Schema } from "models/Schema";
+import { ParsedSchema } from "models/ParsedSchema";
 import Simplifier from "./Simplifier";
 
 
@@ -7,7 +7,7 @@ import Simplifier from "./Simplifier";
  * 
  * @param schema to find the simplified types for
  */
-export default function simplifyTypes(schema: Schema | boolean) : string[] | string | undefined{
+export default function simplifyTypes(schema: ParsedSchema | boolean) : string[] | string | undefined{
   //If we find absence of data format ensure all types are returned
   if(typeof schema === "boolean"){
     if(schema === true){
@@ -38,7 +38,7 @@ export default function simplifyTypes(schema: Schema | boolean) : string[] | str
       }
     }
   };
-  const handleCombinationSchemas = (schemas: (Schema | boolean)[] = []) => {
+  const handleCombinationSchemas = (schemas: (ParsedSchema | boolean)[] = []) => {
     schemas.forEach((schema) => {
       addToTypes(simplifyTypes(schema));
     });

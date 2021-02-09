@@ -1,3 +1,5 @@
+import { ParsedSchema } from "./ParsedSchema";
+
 /**
  * CommonSchema which contains the common properties between Schema and CommonModel
  */
@@ -19,7 +21,7 @@ export class CommonSchema<T> {
      * @param schema to be transformed
      * @param transformationSchemaCallback callback to transform nested schemas
      */
-    static transformSchema<T>(schema: CommonSchema<T>, transformationSchemaCallback: (object: Object) => T){
+    static transformSchema<T>(schema: CommonSchema<T>, transformationSchemaCallback: (object: Object) => T) : CommonSchema<T>{
         if(schema.items !== undefined){
             if(Array.isArray(schema.items)){
                 schema.items = schema.items.map((item) => transformationSchemaCallback(item))
@@ -30,6 +32,7 @@ export class CommonSchema<T> {
         if(schema.properties !== undefined){
             var properties : {[key: string]: T} = {}
             Object.entries(schema.properties).forEach(([propertyName, propertySchema]) => {
+                if(schema instanceof ParsedSchema && schema.circularProps !== undefined && schema.circularProps.includes(propertyName)) return;
                 properties[propertyName] = transformationSchemaCallback(propertySchema);
             });
             schema.properties = properties;
@@ -38,6 +41,6 @@ export class CommonSchema<T> {
             schema.additionalProperties !== null){
             schema.additionalProperties = transformationSchemaCallback(schema.additionalProperties);
         }
-        return schema;
+        return schema as T;
     }
 }

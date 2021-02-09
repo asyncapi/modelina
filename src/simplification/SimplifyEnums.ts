@@ -1,11 +1,11 @@
-import { Schema } from "models/Schema";
+import { ParsedSchema } from "models/ParsedSchema";
 
 /**
  * Find the enums for a simplified version of a schema
  * 
  * @param schema to find the simplified enums for
  */
-export default function simplifyEnums(schema: Schema | boolean) : any[] | undefined {
+export default function simplifyEnums(schema: ParsedSchema | boolean) : any[] | undefined {
   if(typeof schema !== "boolean"){
     let enums : any[] = [];
     const addToEnums = (enumsToCheck: any[] | undefined) => {
@@ -16,7 +16,7 @@ export default function simplifyEnums(schema: Schema | boolean) : any[] | undefi
         }
       });
     };
-    const handleCombinationSchemas = (schemas: (Schema | boolean)[] = []) => {
+    const handleCombinationSchemas = (schemas: (ParsedSchema | boolean)[] = []) => {
       schemas.forEach((schema) => {
         addToEnums(simplifyEnums(schema));
       });

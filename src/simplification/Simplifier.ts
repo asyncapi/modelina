@@ -6,6 +6,7 @@ import simplifyTypes from './SimplifyTypes';
 import simplifyItems from './SimplifyItems';
 import simplifyExtend from './SimplifyExtend';
 import { SimplificationOptions } from '../models/SimplificationOptions';
+import { ParsedSchema } from 'models/ParsedSchema';
 export default class Simplifier {
   static defaultOptions: SimplificationOptions = {
     allowInheritance: true
@@ -25,7 +26,7 @@ export default class Simplifier {
    * 
    * @param schema to simplify
    */
-  simplifyRecursive(schema : Schema | boolean) : CommonModel[] {
+  simplifyRecursive(schema : ParsedSchema | boolean) : CommonModel[] {
     let models : CommonModel[] = [];
     let simplifiedModel = this.simplify(schema);
     if(simplifiedModel.length > 0){
@@ -49,7 +50,7 @@ export default class Simplifier {
    * 
    * @param schema to simplify
    */
-  simplify(schema : Schema | boolean) : CommonModel[] {
+  simplify(schema : ParsedSchema | boolean) : CommonModel[] {
     let models : CommonModel[] = [];
     let model = new CommonModel();
     model.originalSchema = Schema.toSchema(schema);

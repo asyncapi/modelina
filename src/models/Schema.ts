@@ -1,4 +1,5 @@
 import { CommonSchema } from "./CommonSchema";
+import { ParsedSchema } from "./ParsedSchema";
 
 /**
  * JSON Schema Draft 7 model
@@ -55,36 +56,43 @@ export class Schema extends CommonSchema<Schema | boolean>{
         if(typeof object === "boolean") return object;
         let schema = new Schema();
         schema = Object.assign(schema, object);
-        schema = CommonSchema.transformSchema(schema, Schema.toSchema) as Schema;
+        return Schema.transformToSchema(schema, Schema.toSchema);
+    }
+    
+    protected static transformToSchema<T extends Schema | boolean>(input: T, transformationSchemaCallback: (object: Object) => T){
+        if(typeof input === "boolean") return input;
+        let schema = input as Schema;
+        if(input instanceof ParsedSchema && input.isCircular) schema;
+        schema = CommonSchema.transformSchema(schema, transformationSchemaCallback);
 
         //Transform JSON Schema properties which contain nested schemas into an instance of Schema
         if(schema.allOf !== undefined){
-            schema.allOf = schema.allOf.map((item) => Schema.toSchema(item))
+            schema.allOf = schema.allOf.map((item) => transformationSchemaCallback(item))
         }
         if(schema.oneOf !== undefined){
-            schema.oneOf = schema.oneOf.map((item) => Schema.toSchema(item))
+            schema.oneOf = schema.oneOf.map((item) => transformationSchemaCallback(item))
         }
         if(schema.anyOf !== undefined){
-            schema.anyOf = schema.anyOf.map((item) => Schema.toSchema(item))
+            schema.anyOf = schema.anyOf.map((item) => transformationSchemaCallback(item))
         }
 
         if(schema.not !== undefined){
-            schema.not = Schema.toSchema(schema.not);
+            schema.not = transformationSchemaCallback(schema.not);
         }
 
         if(typeof schema.additionalItems === 'object' && 
             schema.additionalItems !== null){
-            schema.additionalItems = Schema.toSchema(schema.additionalItems);
+            schema.additionalItems = transformationSchemaCallback(schema.additionalItems);
         }
         if(schema.contains !== undefined){
-            schema.contains = Schema.toSchema(schema.contains);
+            schema.contains = transformationSchemaCallback(schema.contains);
         }
         if(schema.dependencies !== undefined){
-            var dependencies : {[key: string]: Schema | boolean | string[]} = {}
+            var dependencies : {[key: string]: T | boolean | string[]} = {}
             Object.entries(schema.dependencies).forEach(([propertyName, property]) => {
                 //We only care about object dependencies
                 if(typeof property === 'object' && !Array.isArray(property)){
-                    dependencies[propertyName] = Schema.toSchema(property);
+                    dependencies[propertyName] = transformationSchemaCallback(property);
                 } else {
                     dependencies[propertyName] = property as string[];
                 }
@@ -96,26 +104,26 @@ export class Schema extends CommonSchema<Schema | boolean>{
         }
 
         if(schema.patternProperties !== undefined){
-            var patternProperties : {[key: string]: Schema | boolean} = {}
+            var patternProperties : {[key: string]: T | boolean} = {}
             Object.entries(schema.patternProperties).forEach(([propertyName, property]) => {
-                patternProperties[propertyName] = Schema.toSchema(property);
+                patternProperties[propertyName] = transformationSchemaCallback(property);
             });
             schema.patternProperties = patternProperties;
         }
         if(schema.if !== undefined){
-            schema.if = Schema.toSchema(schema.if);
+            schema.if = transformationSchemaCallback(schema.if);
         }
         if(schema.then !== undefined){
-            schema.then = Schema.toSchema(schema.then);
+            schema.then = transformationSchemaCallback(schema.then);
         }
         if(schema.else !== undefined){
-            schema.else = Schema.toSchema(schema.else);
+            schema.else = transformationSchemaCallback(schema.else);
         }
 
         if(schema.definitions !== undefined){
-            var definitions : {[key: string]: Schema | boolean} = {}
+            var definitions : {[key: string]: T | boolean} = {}
             Object.entries(schema.definitions).forEach(([propertyName, property]) => {
-                definitions[propertyName] = Schema.toSchema(property);
+                definitions[propertyName] = transformationSchemaCallback(property);
             });
             schema.definitions = definitions;
         }
