@@ -13,6 +13,7 @@ export default class Simplifier {
   }
   options: SimplificationOptions;
   anonymCounter = 1;
+  
 
   constructor(
     options: SimplificationOptions = Simplifier.defaultOptions,

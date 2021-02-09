@@ -59,16 +59,12 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     const commonInputModel = new CommonInputModel();
     const localPath = `${process.cwd()}${path.sep}`;
     commonInputModel.originalInput = Schema.toSchema(input);
-
-    //Lets ignore circular schemas for now
     await refParser.dereference(localPath,
       input, {
       continueOnError: true,
       dereference: { circular: 'ignore' },
     });
-    const parsedSchema = ParsedSchema.toSchema(input);
-    
-    //If the input contained circular references lets dereference it once again and mark all schemas
+    const parsedSchema = ParsedSchema.toParsedSchema(input);
     if (refParser.$refs.circular && typeof parsedSchema !== "boolean"){
       await refParser.dereference(localPath,
         parsedSchema, {
@@ -77,7 +73,8 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       });
       this.markCircularSchemas(parsedSchema);
     }
-    commonInputModel.models = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema);
+
+    commonInputModel.models = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema, commonInputModel.originalInput);
     return commonInputModel;
   }
 
@@ -127,7 +124,8 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param schema to simplify to common model
    */
-  static convertSchemaToCommonModel(schema: Schema | boolean): { [key: string]: CommonModel } {
+  static convertSchemaToCommonModel(schema: Schema | boolean, original? : Schema | boolean): { [key: string]: CommonModel } {
+    if(original === undefined) original = schema;
     const simplifier = new Simplifier();
     const commonModels = simplifier.simplify(schema);
     const commonModelsMap: { [key: string]: CommonModel } = {};

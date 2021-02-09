@@ -51,19 +51,9 @@ export function traverseSchema(schema: ParsedSchema | boolean, callback: Travers
   if (!schemaTypesToIterate.includes(SchemaTypesToIterate.objects) && schema.type === 'object') return;
   if (schema.isCircular) return;
   if (callback(schema, SchemaIteratorCallbackType.NEW_SCHEMA, prop) === false) return;
-  
-  if (schema.type !== undefined) {
-    switch (schema.type) {
-    case 'object':
-      recursiveSchemaObject(schema, callback, schemaTypesToIterate);
-      break;
-    case 'array':
-      recursiveSchemaArray(schema, callback, schemaTypesToIterate);
-      break;
-    }
-  } else {
-    traverseCombinedSchemas(schema, callback, schemaTypesToIterate);
-  }
+  recursiveSchemaObject(schema, callback, schemaTypesToIterate);
+  recursiveSchemaArray(schema, callback, schemaTypesToIterate);
+  traverseCombinedSchemas(schema, callback, schemaTypesToIterate);
   callback(schema, SchemaIteratorCallbackType.END_SCHEMA, prop);
 }
   

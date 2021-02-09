@@ -1,6 +1,4 @@
 import { CommonSchema } from "./CommonSchema";
-import { ParsedSchema } from "./ParsedSchema";
-
 /**
  * JSON Schema Draft 7 model
  * 
@@ -62,7 +60,6 @@ export class Schema extends CommonSchema<Schema | boolean>{
     protected static transformToSchema<T extends Schema | boolean>(input: T, transformationSchemaCallback: (object: Object) => T){
         if(typeof input === "boolean") return input;
         let schema = input as Schema;
-        if(input instanceof ParsedSchema && input.isCircular) schema;
         schema = CommonSchema.transformSchema(schema, transformationSchemaCallback);
 
         //Transform JSON Schema properties which contain nested schemas into an instance of Schema

@@ -32,7 +32,7 @@ export class CommonSchema<T> {
         if(schema.properties !== undefined){
             var properties : {[key: string]: T} = {}
             Object.entries(schema.properties).forEach(([propertyName, propertySchema]) => {
-                if(schema instanceof ParsedSchema && schema.circularProps !== undefined && schema.circularProps.includes(propertyName)) return;
+                //if(schema instanceof ParsedSchema && schema.circularProps !== undefined && schema.circularProps.includes(propertyName)) return;
                 properties[propertyName] = transformationSchemaCallback(propertySchema);
             });
             schema.properties = properties;

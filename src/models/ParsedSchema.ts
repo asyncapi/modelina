@@ -1,4 +1,3 @@
-import { CommonSchema } from "./CommonSchema";
 import { Schema } from "./Schema";
 
 /**
@@ -18,10 +17,11 @@ export class ParsedSchema extends Schema {
      * @param object to transform
      * @returns CommonModel instance of the object
      */
-    static toSchema(object: Object) : ParsedSchema | boolean {
+    static toParsedSchema(object: Object) : ParsedSchema | boolean {
         if(typeof object === "boolean") return object;
         let parsedSchema = new ParsedSchema();
         parsedSchema = Object.assign(parsedSchema, object);
-        return Schema.transformToSchema(parsedSchema, ParsedSchema.toSchema);
+        return Schema.transformToSchema(parsedSchema, ParsedSchema.toParsedSchema);
     }
+
 }
