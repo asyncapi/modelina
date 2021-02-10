@@ -16,6 +16,25 @@ export function simplify(schema : Schema | boolean) : CommonModel[] {
   return simplifier.simplify(schema);
 }
 
+
+/**
+ * check if CommonModel is a separate model or a simple model.
+ */
+function isModelObject(model: CommonModel) : boolean {
+  // This check should be done instead, needs a refactor to allow it though:
+  // this.extend !== undefined || this.properties !== undefined
+  if (model.type !== undefined) {
+    if(Array.isArray(model.type)){
+      // If all possible JSON types are defined, don't split it even if it does contain object.
+      if(model.type.length === 6){
+        return false;
+      }
+    }
+    return model.type.includes("object");
+  }
+  return false;
+}
+
 export class Simplifier {
   static defaultOptions: SimplificationOptions = {
     allowInheritance: true
@@ -43,7 +62,7 @@ export class Simplifier {
       //Get the root model from the simplification process which is the first element in the list
       const schemaSimplifiedModel = simplifiedModel[0];
       //Only if the schema is of type object and contains properties, split it out
-      if(schemaSimplifiedModel.isModelObject()){
+      if(isModelObject(schemaSimplifiedModel)){
         let switchRootModel = new CommonModel();
         switchRootModel.$ref = schemaSimplifiedModel.$id;
         models[0] = switchRootModel;

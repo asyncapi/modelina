@@ -9,24 +9,6 @@ import { Schema } from "./Schema";
 export class CommonModel extends CommonSchema<CommonModel>{
   extend?: string[]
   originalSchema?: Schema | boolean
-
-  /**
-   * check if CommonModel is a separate model or a simple model.
-   */
-  isModelObject() : boolean {
-    // This check should be done instead, needs a refactor to allow it though:
-    // this.extend !== undefined || this.properties !== undefined
-    if (this.type !== undefined) {
-      if(Array.isArray(this.type)){
-        // If all possible JSON types are defined, don't split it even if it does contain object.
-        if(this.type.length === 6){
-          return false;
-        }
-      }
-      return this.type.includes("object");
-    }
-    return false;
-  }
   
   /**
    * Transform object into a type of CommonModel.
