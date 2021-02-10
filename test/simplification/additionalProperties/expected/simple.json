@@ -1,0 +1,28 @@
+{
+  "newModels":[
+    {
+      "originalSchema":{
+        "type":"object",
+        "properties":{
+          "test":{
+            "type":"string"
+          }
+        }
+      },
+      "type":"object",
+      "$id":"anonymSchema1",
+      "properties":{
+        "test":{
+          "originalSchema":{
+            "type":"string"
+          },
+          "type":"string"
+        }
+      },
+      "additionalProperties":true
+    }
+  ],
+  "additionalProperties":{
+    "$ref":"anonymSchema1"
+  }
+}

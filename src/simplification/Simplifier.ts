@@ -6,6 +6,7 @@ import simplifyTypes from './SimplifyTypes';
 import simplifyItems from './SimplifyItems';
 import simplifyExtend from './SimplifyExtend';
 import { SimplificationOptions } from '../models/SimplificationOptions';
+import simplifyAdditionalProperties from './SimplifyAdditionalProperties';
 
 export function simplify(schema : Schema | boolean) : CommonModel[] {
   const simplifier = new Simplifier();
@@ -99,6 +100,16 @@ export class Simplifier {
       if(simplifiedProperties.properties !== undefined){
         model.properties = simplifiedProperties.properties;
       }
+
+      const simplifiedAdditionalProperties = simplifyAdditionalProperties(schema, this, model);
+      if(simplifiedAdditionalProperties.newModels !== undefined){
+          models = [...models, ...simplifiedAdditionalProperties.newModels];
+      }
+      if(simplifiedAdditionalProperties.additionalProperties !== undefined){
+        model.additionalProperties = simplifiedAdditionalProperties.additionalProperties;
+      }
+
+
       const enums = simplifyEnums(schema);
       if(enums !== undefined && enums.length > 0){
         if(model.enum){
