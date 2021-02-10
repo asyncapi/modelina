@@ -53,18 +53,6 @@ export class Simplifier {
     return models;
   }
 
-  ensureModelsAreSeparated(commonModel: CommonModel, existingModels : CommonModel[]) : CommonModel{
-    if(commonModel.isModelObject()){
-      let switchRootModel = new CommonModel();
-      switchRootModel.$ref = commonModel.$id;
-      existingModels.push(commonModel);
-      return switchRootModel;
-    }
-    return commonModel;
-
-  }
-
-
   /**
    * Simplifies a schema into instances of CommonModel. 
    * Index 0 will always be the input schema CommonModel representation
@@ -92,6 +80,22 @@ export class Simplifier {
         model.$id = schema.$id;
       }
 
+      const simplifiedItems = simplifyItems(schema, this);
+      if(simplifiedItems.newModels !== undefined){
+          models = [...models, ...simplifiedItems.newModels];
+      }
+      if(simplifiedItems.items !== undefined){
+        model.items = simplifiedItems.items;
+      }
+
+      const simplifiedProperties = simplifyProperties(schema, this);
+      if(simplifiedProperties.properties !== undefined){
+        model.properties = simplifiedProperties.properties;
+      }
+      if(simplifiedProperties.newModels !== undefined){
+          models = [...models, ...simplifiedProperties.newModels];
+      }
+
       if(this.options.allowInheritance){
         const simplifiedExtends = simplifyExtend(schema, this);
         if(simplifiedExtends.newModels !== undefined){
@@ -109,22 +113,6 @@ export class Simplifier {
         }else{
           model.enum = enums;
         }
-      }
-
-      const simplifiedItems = simplifyItems(schema, this);
-      if(simplifiedItems.newModels !== undefined){
-          models = [...models, ...simplifiedItems.newModels];
-      }
-      if(simplifiedItems.items !== undefined){
-        model.items = simplifiedItems.items;
-      }
-
-      const simplifiedProperties = simplifyProperties(schema, this);
-      if(simplifiedProperties.properties !== undefined){
-        model.properties = simplifiedProperties.properties;
-      }
-      if(simplifiedProperties.newModels !== undefined){
-          models = [...models, ...simplifiedProperties.newModels];
       }
     }
 
