@@ -19,7 +19,7 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
     super(options, presets, model, inputModel);
   }
 
-  protected renderType(model: CommonModel | CommonModel[]): string {
+  renderType(model: CommonModel | CommonModel[]): string {
     if (Array.isArray(model)) {
       return model.map(t => this.renderType(t)).join(' | ');
     }
@@ -32,7 +32,7 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
     return this.toTsType(model.type, model);
   }
 
-  protected toTsType(type: string | undefined, model: CommonModel): string {
+  toTsType(type: string | undefined, model: CommonModel): string {
     if (type === undefined) {
       return "any";
     }
@@ -54,7 +54,7 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
     }
   }
 
-  protected renderTypeSignature(type: CommonModel | CommonModel[], isOptional: boolean = false): string {
+  renderTypeSignature(type: CommonModel | CommonModel[], isOptional: boolean = false): string {
     if (this.options.renderTypes === false) {
       return "";
     }
@@ -62,14 +62,14 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
     return `${annotation} ${this.renderType(type)}`;
   }
 
-  protected renderComments(lines: string | string[]): string {
+  renderComments(lines: string | string[]): string {
     lines = FormatHelpers.breakLines(lines);
     return `/**
 ${lines.map(line => ` * ${line}`).join('\n')}
  */`;
   }
 
-  protected renderProperties(): string {
+  renderProperties(): string {
     const p = this.model.properties || {};
     const props = Object.entries(p).map(([name, property]) => {
       name = FormatHelpers.toCamelCase(name);
@@ -78,14 +78,14 @@ ${lines.map(line => ` * ${line}`).join('\n')}
     return this.renderBlock(props);
   }
 
-  protected renderProperty(propertyName: string, property: CommonModel): string {
+  renderProperty(propertyName: string, property: CommonModel): string {
     propertyName = FormatHelpers.toCamelCase(propertyName);
     const signature = this.renderTypeSignature(property, true);
     let content = `${propertyName}${signature};`
     return content;
   }
 
-  protected runPropertyPreset(propertyName: string, property: CommonModel): Promise<string> {
+  runPropertyPreset(propertyName: string, property: CommonModel): Promise<string> {
     return this.runPreset("property", { propertyName, property })
   }
 }

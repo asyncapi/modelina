@@ -21,17 +21,7 @@ describe('TypeScriptGenerator', function() {
       },
       required: ["street_name", "city", "state", "house_number", "array_type"],
     };
-    const expected = `interface AddressInput {
-  streetName?: string;
-  city?: string;
-  state?: string;
-  houseNumber?: number;
-  marriage?: boolean;
-  members?: string | number | boolean;
-  arrayType?: Array<string | number>;
-}
-
-class Address {
+    const expected = `class Address {
   streetName?: string;
   city?: string;
   state?: string;
@@ -121,9 +111,9 @@ class Address {
       enum: ["Texas", "Alabama", "California"],
     };
     const expected = `enum States {
-  Texas = "Texas",
-  Alabama = "Alabama",
-  California = "California",
+  TEXAS = "Texas",
+  ALABAMA = "Alabama",
+  CALIFORNIA = "California",
 }`;
 
     const inputModel = await generator.process(doc);

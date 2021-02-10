@@ -1,11 +1,11 @@
 import { Preset, ClassPreset, InterfacePreset, EnumPreset, CommonPreset } from "../../../models";
 
-import { ClassRenderer } from "./renderers/ClassRenderer";
-import { InterfaceRenderer } from "./renderers/InterfaceRenderer";
-import { EnumRenderer } from "./renderers/EnumRenderer";
-import { TypeRenderer } from "./renderers/TypeRenderer";
+import { ClassRenderer, TS_DEFAULT_CLASS_PRESET } from "./renderers/ClassRenderer";
+import { InterfaceRenderer, TS_DEFAULT_INTERFACE_PRESET } from "./renderers/InterfaceRenderer";
+import { EnumRenderer, TS_DEFAULT_ENUM_PRESET } from "./renderers/EnumRenderer";
+import { TypeRenderer, TS_DEFAULT_TYPE_PRESET } from "./renderers/TypeRenderer";
 
-export interface TypePreset extends CommonPreset<TypeRenderer> {}
+export interface TypePreset<R extends TypeRenderer = TypeRenderer> extends CommonPreset<R> {}
 
 export type TypeScriptPreset = Preset<{
   class: ClassPreset<ClassRenderer>;
@@ -15,24 +15,8 @@ export type TypeScriptPreset = Preset<{
 }>;
 
 export const TS_DEFAULT_PRESET: TypeScriptPreset = {
-  class: {
-    self({ renderer }) {
-      return renderer.render();
-    },
-  },
-  interface: {
-    self({ renderer }) {
-      return renderer.render();
-    },
-  },
-  enum: {
-    self({ renderer }) {
-      return renderer.render();
-    },
-  },
-  type: {
-    self({ renderer }) {
-      return renderer.render();
-    },
-  },
+  class: TS_DEFAULT_CLASS_PRESET,
+  interface: TS_DEFAULT_INTERFACE_PRESET,
+  enum: TS_DEFAULT_ENUM_PRESET,
+  type: TS_DEFAULT_TYPE_PRESET,
 };

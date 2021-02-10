@@ -23,14 +23,14 @@ ${this.indent(this.renderHelpers(enumName!, classType))}
 
   async renderItems(): Promise<string> {
     const enums = this.model.enum || [];
-    const content: string[] = [];
+    const items: string[] = [];
 
     for (const value of enums) {
       const renderedItem = await this.runItemPreset(value);
-      content.push(renderedItem);
+      items.push(renderedItem);
     }
 
-    return content.join(', ');
+    return items.join(', ');
   }
 
   normalizeKey(value: any): string {

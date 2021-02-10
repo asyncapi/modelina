@@ -65,9 +65,6 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
-  ctor() {
-    return "";
-  },
   property({ renderer, propertyName, property }) {
     propertyName = FormatHelpers.toCamelCase(propertyName);
     return `private ${renderer.renderType(property)} ${propertyName};`;

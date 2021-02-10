@@ -1,32 +1,42 @@
 import { TypeScriptRenderer } from "../TypeScriptRenderer";
 
+import { FormatHelpers } from "../../../../helpers";
+import { EnumPreset } from "../../../../models";
+
 /**
  * Renderer for TypeScript's `enum` type
  * 
  * @extends TypeScriptRenderer
  */
 export class EnumRenderer extends TypeScriptRenderer {
-  public render(): string {
+  async defaultSelf(): Promise<string> {
     return `enum ${this.model.$id} {
-${this.indent(this.renderItems())}
+${this.indent(await this.renderItems())}
 }`;
   }
 
-  protected renderItems(): string {
+  async renderItems(): Promise<string> {
     const enums = this.model.enum || [];
-    const items = enums.map(e => this.renderItem(e));
+    const items: string[] = [];
+
+    for (const item of enums) {
+      const renderedItem = await this.runItemPreset(item);
+      items.push(renderedItem);
+    }
+
     return this.renderBlock(items);
   }
 
-  protected renderItem(item: string): string {
-    return `${this.normalizeKey(item)} = "${item}",`;
+  runItemPreset(item: any): Promise<string> {
+    return this.runPreset("item", { item });
   }
+}
 
-  protected normalizeKey(key: string): string {
-    return key;
-  }
-
-  protected runItemPreset(value: any): Promise<string> {
-    return this.runPreset("item", { value });
+export const TS_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
+  self({ renderer }) {
+    return renderer.defaultSelf();
+  },
+  item({ item }) {
+    return `${FormatHelpers.toConstantCase(`${item}`)} = "${item}",`;
   }
 }
