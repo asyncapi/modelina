@@ -1,5 +1,5 @@
 import { AbstractRenderer } from "./AbstractRenderer";
-import { CommonInputModel, CommonModel, OutputModel, Preset } from "../models";
+import { CommonInputModel, CommonModel, OutputModel, Preset, Presets, isPresetWithOptions } from "../models";
 import { InputProcessor } from "../processors";
 import { IndentationTypes } from "../helpers";
 
@@ -10,7 +10,7 @@ export interface CommonGeneratorOptions<P extends Preset = Preset, R extends Rec
   };
   renderers?: R;
   defaultPreset?: P;
-  presets?: Array<P>;
+  presets?: Presets<P>;
 }
 
 export const defaultGeneratorOptions = {
@@ -60,30 +60,27 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
     return Promise.all(renders);
   }
 
-  protected async renderModel(
-    renderer: AbstractRenderer, 
-    presetType: string, 
-    model: CommonModel,
-    inputModel: CommonInputModel,
-  ): Promise<string> {
-    let content: string = "";
+  protected getPresets(presetType: string): Array<[Preset, unknown]> {
+    const filteredPresets: Array<[Preset, unknown]> = []
 
-    const defaultPreset = this.options.defaultPreset;
-    if (defaultPreset === undefined) {
-      throw ".defaultPreset must be defined!";
-    }
-    content = defaultPreset[presetType].self({ renderer, model, inputModel, content });
+    const defaultPreset = this.options.defaultPreset!;
+    filteredPresets.push([defaultPreset[presetType], undefined]);
 
     let presets = this.options.presets || [];
-    presets = presets.map(p => p[presetType]).filter(Boolean);
-    for (const preset of presets) {
-      content = await preset.self({ renderer, model, inputModel, content });
-    }
+    presets.forEach(p => {
+      if (isPresetWithOptions(p)) {
+        const preset = p.preset[presetType];
+        preset && filteredPresets.push([preset, p.options]);
+      } else {
+        const preset = p[presetType];
+        preset && filteredPresets.push([preset, undefined]);
+      }
+    });
 
-    return content;
+    return filteredPresets;
   }
 
-  private mergeOptions(defaultOptions: Options = {} as any, passedOptions: Options = {} as any): Options {
+  protected mergeOptions(defaultOptions: Options = {} as any, passedOptions: Options = {} as any): Options {
     const renders = { 
       ...(defaultOptions.renderers || {}),
       ...(passedOptions.renderers || {})

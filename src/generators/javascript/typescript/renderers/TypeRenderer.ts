@@ -28,7 +28,7 @@ export class TypeRenderer extends TypeScriptRenderer {
 
   protected renderObject(): string {
     return `{
-${this.indent(this.renderProperties())}
+${this.indent(this.renderProperties(this.model.properties!))}
 }`;
   }
 

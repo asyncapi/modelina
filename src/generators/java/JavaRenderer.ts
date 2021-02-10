@@ -1,7 +1,7 @@
 import { AbstractRenderer } from "../AbstractRenderer";
-import { JavaGenerator, JavaOptions } from "./JavaGenerator";
+import { JavaOptions } from "./JavaGenerator";
 
-import { CommonModel, CommonInputModel } from "../../models";
+import { CommonModel, CommonInputModel, Preset } from "../../models";
 import { FormatHelpers } from "../../helpers";
 
 /**
@@ -13,9 +13,10 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
   constructor(
     protected model: CommonModel, 
     protected inputModel: CommonInputModel,
-    protected options: JavaOptions = JavaGenerator.defaultOptions,
+    options: JavaOptions,
+    presets: Array<[Preset, unknown]>,
   ) {
-    super({ ...JavaGenerator.defaultOptions, ...options });
+    super(options, presets);
   }
 
   protected renderType(model: CommonModel | CommonModel[]): string {

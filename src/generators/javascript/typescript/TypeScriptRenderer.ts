@@ -1,8 +1,8 @@
 import { AbstractRenderer } from "../../AbstractRenderer";
-import { TypeScriptGenerator, TypeScriptOptions } from "./TypeScriptGenerator";
+import { TypeScriptOptions } from "./TypeScriptGenerator";
 
 import { FormatHelpers } from "../../../helpers";
-import { CommonModel, CommonInputModel } from "../../../models";
+import { CommonModel, CommonInputModel, Preset } from "../../../models";
 
 /**
  * Common renderer for TypeScript types
@@ -13,9 +13,10 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
   constructor(
     protected model: CommonModel, 
     protected inputModel: CommonInputModel,
-    protected options: TypeScriptOptions = TypeScriptGenerator.defaultOptions,
+    options: TypeScriptOptions,
+    presets: Array<[Preset, unknown]>,
   ) {
-    super({ ...TypeScriptGenerator.defaultOptions, ...options });
+    super(options, presets);
   }
 
   protected renderType(model: CommonModel | CommonModel[]): string {
@@ -61,9 +62,8 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
     return `${annotation} ${this.renderType(type)}`;
   }
 
-  protected renderProperties(): string {
-    const p = this.model.properties || {};
-    const props = Object.entries(p).map(([name, property]) => {
+  protected renderProperties(properties: Record<string, CommonModel>): string {
+    const props = Object.entries(properties || {}).map(([name, property]) => {
       name = FormatHelpers.toCamelCase(name);
       return this.renderProperty(name, property, true); // false at the moment is only for fallback
     }).filter(Boolean);
@@ -78,9 +78,8 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
 
   protected renderComments(lines: string | string[]): string {
     lines = FormatHelpers.breakLines(lines);
-    const content = lines.map(line => ` * ${line}`).join('\n');
     return `/**
-${content}
+${lines.map(line => ` * ${line}`).join('\n')}
  */`;
   }
 }

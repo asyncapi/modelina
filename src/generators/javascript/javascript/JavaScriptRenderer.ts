@@ -1,8 +1,8 @@
 import { AbstractRenderer } from "../../AbstractRenderer";
-import { JavaScriptGenerator, JavaScriptOptions } from "./JavaScriptGenerator";
+import { JavaScriptOptions } from "./JavaScriptGenerator";
 
 import { FormatHelpers } from "../../../helpers";
-import { CommonModel, CommonInputModel } from "../../../models";
+import { CommonModel, CommonInputModel, Preset } from "../../../models";
 
 /**
  * Common renderer for JavaScript types
@@ -13,9 +13,10 @@ export abstract class JavaScriptRenderer extends AbstractRenderer<JavaScriptOpti
   constructor(
     protected model: CommonModel, 
     protected inputModel: CommonInputModel,
-    protected options: JavaScriptOptions = JavaScriptGenerator.defaultOptions,
+    options: JavaScriptOptions,
+    presets: Array<[Preset, unknown]>,
   ) {
-    super({ ...JavaScriptGenerator.defaultOptions, ...options });
+    super(options, presets);
   }
 
   protected renderProperties(): string {

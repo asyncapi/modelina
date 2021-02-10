@@ -1,7 +1,7 @@
 import { TypeScriptRenderer } from "../TypeScriptRenderer";
 import { InterfaceRenderer } from "./InterfaceRenderer";
 
-import { CommonModel } from "../../../../models";
+import { CommonModel, Preset } from "../../../../models";
 import { FormatHelpers } from "../../../../helpers";
 
 /**
@@ -12,7 +12,7 @@ import { FormatHelpers } from "../../../../helpers";
 export class ClassRenderer extends TypeScriptRenderer {
   public render(): string {
     const clazz = `class ${this.model.$id} {
-${this.indent(this.renderProperties())}
+${this.indent(this.renderProperties(this.model.properties!))}
       
 ${this.indent(this.renderConstructor())}
       
@@ -20,7 +20,7 @@ ${this.indent(this.renderAccessors())}
 }`;
 
     if (this.options.renderTypes === true) {
-      const renderer = new InterfaceRenderer(this.model, this.inputModel, this.options);
+      const renderer = new InterfaceRenderer(this.model, this.inputModel, this.options, []);
       const interfaceValue = renderer.render(`${this.model.$id}Input`);
       return this.renderBlock([interfaceValue, clazz], 2);
     }

@@ -11,6 +11,7 @@ describe('AbstractRenderer', function() {
         },
       });
     }
+    render() { return "" }
   }
 
   let renderer: TestRenderer;
