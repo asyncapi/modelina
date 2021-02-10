@@ -46,51 +46,54 @@
       "type":"object",
       "$id":"anonymSchema1",
       "properties":{
-        "shipping_address":{
-          "originalSchema":{
-            "allOf":[
-              {
-                "type":"object",
-                "properties":{
-                  "street_address":{
-                    "type":"string"
-                  },
-                  "city":{
-                    "type":"string"
-                  },
-                  "state":{
-                    "type":"string"
-                  }
-                },
-                "required":[
-                  "street_address",
-                  "city",
-                  "state"
-                ]
-              },
-              {
-                "properties":{
-                  "type":{
-                    "enum":[
-                      "residential",
-                      "business"
-                    ]
-                  }
-                },
-                "required":[
-                  "type"
-                ]
-              }
-            ]
-          },
-          "type":"object",
-          "$id":"anonymSchema2",
-          "extend":[
-            "anonymSchema3",
-            "anonymSchema4"
-          ]
+        "shipping_address": {
+          "$ref": "anonymSchema2"
         }
       }
+    },
+    "anonymSchema2": {
+      "originalSchema":{
+        "allOf":[
+          {
+            "type":"object",
+            "properties":{
+              "street_address":{
+                "type":"string"
+              },
+              "city":{
+                "type":"string"
+              },
+              "state":{
+                "type":"string"
+              }
+            },
+            "required":[
+              "street_address",
+              "city",
+              "state"
+            ]
+          },
+          {
+            "properties":{
+              "type":{
+                "enum":[
+                  "residential",
+                  "business"
+                ]
+              }
+            },
+            "required":[
+              "type"
+            ]
+          }
+        ]
+      },
+      "type":"object",
+      "$id":"anonymSchema2",
+      "extend":[
+        "anonymSchema3",
+        "anonymSchema4"
+      ]
     },
     "anonymSchema3":{
       "originalSchema":{

@@ -1,0 +1,62 @@
+{
+  "models":{
+    "anonymSchema2":{
+      "type":"object",
+      "$id":"anonymSchema2",
+      "properties":{
+        "floor":{
+          "$ref": "anonymSchema2"
+        }
+      }
+    },
+    "anonymSchema1":{
+      "type":"object",
+      "$id":"anonymSchema1",
+      "properties":{
+        "street_address":{
+          "$ref": "anonymSchema2"
+        },
+        "country":{
+          "originalSchema":{
+            "enum":[
+              "United States of America",
+              "Canada"
+            ]
+          },
+          "type":"string",
+          "enum":[
+            "United States of America",
+            "Canada"
+          ]
+        }
+      }
+    }
+  },
+  "customizations":{
+    
+  },
+  "originalInput":{
+    "definitions":{
+      "test":{
+        "type":"object",
+        "properties":{
+          "floor":{
+            "$ref":"#/definitions/test"
+          }
+        }
+      }
+    },
+    "type":"object",
+    "properties":{
+      "street_address":{
+        "$ref":"#/definitions/test"
+      },
+      "country":{
+        "enum":[
+          "United States of America",
+          "Canada"
+        ]
+      }
+    }
+  }
+}
