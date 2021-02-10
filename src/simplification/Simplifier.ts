@@ -12,6 +12,7 @@ export default class Simplifier {
   }
   options: SimplificationOptions;
   anonymCounter = 1;
+  seenSchemas: Map<Schema, CommonModel> = new Map();
 
   constructor(
     options: SimplificationOptions = Simplifier.defaultOptions,
@@ -26,6 +27,9 @@ export default class Simplifier {
    * @param schema to simplify
    */
   simplifyRecursive(schema : Schema | boolean) : CommonModel[] {
+    if(typeof schema !== "boolean" && this.seenSchemas.has(schema)){
+      return [this.seenSchemas.get(schema)!]
+    }
     let models : CommonModel[] = [];
     let simplifiedModel = this.simplify(schema);
     if(simplifiedModel.length > 0){
@@ -58,7 +62,7 @@ export default class Simplifier {
       model.type = simplifiedTypes;
     }
     if(typeof schema !== "boolean"){
-
+      this.seenSchemas.set(schema, model);
       //All schemas of type object MUST have ids, for now lets make it simple
       if(model.type !== undefined && model.type.includes("object")){
         let schemaId = schema.$id ? schema.$id : `anonymSchema${this.anonymCounter++}`;

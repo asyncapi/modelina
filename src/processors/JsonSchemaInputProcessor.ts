@@ -63,6 +63,13 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
             dereference: { circular: 'ignore' },
         });
         const parsedSchema = Schema.toSchema(input);
+        if (refParser.$refs.circular && typeof parsedSchema !== "boolean"){
+          await refParser.dereference(localPath,
+            parsedSchema, {
+            continueOnError: true,
+            dereference: { circular: true },
+          });
+        }
         commonInputModel.models = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema);
         return commonInputModel;
     }

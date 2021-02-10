@@ -1,0 +1,35 @@
+{
+  "definitions": {
+    "test2": {
+      "properties": {
+        "floor2": {
+          "$ref": "#/definitions/test2"
+        }
+      }
+    },
+    "test": {
+      "type": "object",
+      "allOf": [
+        {
+          "properties": {
+            "floor": {
+              "$ref": "#/definitions/test2"
+            }
+          }
+        },
+        {
+          "$ref": "#/definitions/test2"
+        }
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "street_address": {
+      "$ref": "#/definitions/test"
+    },
+    "country": {
+      "enum": ["United States of America", "Canada"]
+    }
+  }
+}
