@@ -30,8 +30,6 @@ describe('TypeScriptGenerator', function() {
   private Object members;
   private Array<Object> arrayType;
 
-  
-
   public String getStreetName() { return this.streetName; }
   public void setStreetName(String streetName) { this.streetName = streetName; }
 
@@ -56,6 +54,53 @@ describe('TypeScriptGenerator', function() {
 
     const inputModel = await generator.process(doc);
     const model = inputModel.models["Address"];
+
+    let classModel = await generator.renderClass(model, inputModel);
+    expect(classModel).toEqual(expected);
+
+    classModel = await generator.render(model, inputModel);
+    expect(classModel).toEqual(expected);
+  });
+
+  test('should work custom preset for `class` type', async function() {
+    const doc = {
+      $id: "CustomClass",
+      type: "object",
+      properties: {
+        property: { type: "string" },
+      }
+    };
+    const expected = `public class CustomClass {
+  @JsonProperty("property")
+  private String property;
+
+  @JsonProperty("property")
+  public String getProperty() { return this.property; }
+  @JsonProperty("property")
+  public void setProperty(String property) { this.property = property; }
+}`;
+
+    generator = new JavaGenerator({ presets: [
+      {
+        class: {
+          property({ propertyName, content }) {
+            return `@JsonProperty("${propertyName}")
+${content}`;
+          },
+          getter({ propertyName, content }) {
+            return `@JsonProperty("${propertyName}")
+${content}`;
+          },
+          setter({ propertyName, content }) {
+            return `@JsonProperty("${propertyName}")
+${content}`;
+          },
+        }
+      }
+    ] });
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models["CustomClass"];
 
     let classModel = await generator.renderClass(model, inputModel);
     expect(classModel).toEqual(expected);

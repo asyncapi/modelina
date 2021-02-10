@@ -69,13 +69,16 @@ ${lines.map(line => ` * ${line}`).join('\n')}
  */`;
   }
 
-  renderProperties(): string {
-    const p = this.model.properties || {};
-    const props = Object.entries(p).map(([name, property]) => {
-      name = FormatHelpers.toCamelCase(name);
-      return this.renderProperty(name, property); // false at the moment is only for fallback
-    }).filter(Boolean);
-    return this.renderBlock(props);
+  async renderProperties(): Promise<string> {
+    const properties = this.model.properties || {};
+    const content: string[] = [];
+
+    for (const [propertyName, property] of Object.entries(properties)) {
+      const rendererProperty = await this.runPropertyPreset(propertyName, property);
+      content.push(rendererProperty);
+    }
+
+    return this.renderBlock(content);
   }
 
   renderProperty(propertyName: string, property: CommonModel): string {
@@ -85,7 +88,7 @@ ${lines.map(line => ` * ${line}`).join('\n')}
     return content;
   }
 
-  runPropertyPreset(propertyName: string, property: CommonModel): Promise<string> {
+  async runPropertyPreset(propertyName: string, property: CommonModel): Promise<string> {
     return this.runPreset("property", { propertyName, property })
   }
 }

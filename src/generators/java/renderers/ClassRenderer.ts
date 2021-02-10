@@ -13,8 +13,6 @@ export class ClassRenderer extends JavaRenderer {
     return `public class ${this.model.$id} {
 ${this.indent(await this.renderProperties())}
 
-${this.indent(await this.runCtorPreset())}
-
 ${this.indent(await this.renderAccessors())}
 }`;
   }

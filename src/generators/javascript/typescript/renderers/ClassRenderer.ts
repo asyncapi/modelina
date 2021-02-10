@@ -61,7 +61,7 @@ ${renderer.indent(renderer.renderBlock(assigments))}
 }`;
   },
   property({ renderer, propertyName, property }) {
-    return renderer.renderProperty(propertyName, property);
+    return `private ${renderer.renderProperty(propertyName, property)}`;
   },
   getter({ renderer, propertyName, property }) {
     propertyName = FormatHelpers.toCamelCase(propertyName);
