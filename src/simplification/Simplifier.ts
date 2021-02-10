@@ -6,7 +6,11 @@ import simplifyTypes from './SimplifyTypes';
 import simplifyItems from './SimplifyItems';
 import simplifyExtend from './SimplifyExtend';
 import { SimplificationOptions } from '../models/SimplificationOptions';
-
+/**
+ * This is the default wrapper for the simplifier class which always create a new instance of the simplifier. 
+ * 
+ * @param schema to simplify
+ */
 export function simplify(schema : Schema | boolean) : CommonModel[] {
   const simplifier = new Simplifier();
   return simplifier.simplify(schema);

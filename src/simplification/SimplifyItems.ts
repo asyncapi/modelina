@@ -5,13 +5,13 @@ import { Simplifier } from "./Simplifier";
 
 type Output = {newModels: CommonModel[] | undefined; items: CommonModel | undefined};
 /**
- * Find the enums for a simplified version of a schema
+ * Find the items for a simplified version of a schema
  * 
- * @param schema to find the simplified enums for
+ * @param schema to find the simplified items for
+ * @param simplifier the simplifier instance 
+ * @param seenSchemas already seen schemas and their corresponding output, this is to avoid circular schemas
  */
-export default function simplifyItems(input: Schema | boolean, simplifier : Simplifier) : Output {
-  const seenSchemas: Map<any, Output> = new Map();
-  const callback = (schema: Schema | boolean): Output => {
+export default function simplifyItems(schema: Schema | boolean, simplifier : Simplifier, seenSchemas: Map<any, Output> = new Map()) : Output {
     let tempOutput: Output = {newModels: undefined, items: undefined};
     if(typeof schema !== "boolean"){
       if (seenSchemas.has(schema)) return seenSchemas.get(schema)!;
@@ -30,7 +30,7 @@ export default function simplifyItems(input: Schema | boolean, simplifier : Simp
       };
       const handleCombinationSchemas = (schemas: (Schema | boolean)[] = []) => {
         schemas.forEach((itemSchema) => {
-          addToItemsAndModels(callback(itemSchema));
+          addToItemsAndModels(simplifyItems(itemSchema, simplifier, seenSchemas));
         });
       }
 
@@ -59,14 +59,12 @@ export default function simplifyItems(input: Schema | boolean, simplifier : Simp
 
       //If we encounter combination schemas ensure we recursively find the properties
       if(schema.then){
-        addToItemsAndModels(callback(schema.then));
+        addToItemsAndModels(simplifyItems(schema.then, simplifier, seenSchemas));
       }
       if(schema.else){
-        addToItemsAndModels(callback(schema.else));
+        addToItemsAndModels(simplifyItems(schema.else, simplifier, seenSchemas));
       }
     }
     
     return tempOutput
-  };
-  return callback(input);
 }
