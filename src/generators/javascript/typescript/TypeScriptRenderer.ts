@@ -11,12 +11,12 @@ import { CommonModel, CommonInputModel, Preset } from "../../../models";
  */
 export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOptions> {
   constructor(
-    protected model: CommonModel, 
-    protected inputModel: CommonInputModel,
     options: TypeScriptOptions,
     presets: Array<[Preset, unknown]>,
+    model: CommonModel, 
+    inputModel: CommonInputModel,
   ) {
-    super(options, presets);
+    super(options, presets, model, inputModel);
   }
 
   protected renderType(model: CommonModel | CommonModel[]): string {
@@ -62,24 +62,30 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
     return `${annotation} ${this.renderType(type)}`;
   }
 
-  protected renderProperties(properties: Record<string, CommonModel>): string {
-    const props = Object.entries(properties || {}).map(([name, property]) => {
-      name = FormatHelpers.toCamelCase(name);
-      return this.renderProperty(name, property, true); // false at the moment is only for fallback
-    }).filter(Boolean);
-    return this.renderBlock(props);
-  }
-
-  protected renderProperty(name: string, property: CommonModel, isOptional: boolean): string {
-    const signature = this.renderTypeSignature(property, isOptional);
-    let content = `${name}${signature};`
-    return content;
-  }
-
   protected renderComments(lines: string | string[]): string {
     lines = FormatHelpers.breakLines(lines);
     return `/**
 ${lines.map(line => ` * ${line}`).join('\n')}
  */`;
+  }
+
+  protected renderProperties(): string {
+    const p = this.model.properties || {};
+    const props = Object.entries(p).map(([name, property]) => {
+      name = FormatHelpers.toCamelCase(name);
+      return this.renderProperty(name, property); // false at the moment is only for fallback
+    }).filter(Boolean);
+    return this.renderBlock(props);
+  }
+
+  protected renderProperty(propertyName: string, property: CommonModel): string {
+    propertyName = FormatHelpers.toCamelCase(propertyName);
+    const signature = this.renderTypeSignature(property, true);
+    let content = `${propertyName}${signature};`
+    return content;
+  }
+
+  protected runPropertyPreset(propertyName: string, property: CommonModel): Promise<string> {
+    return this.runPreset("property", { propertyName, property })
   }
 }

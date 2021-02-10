@@ -39,7 +39,7 @@ export class JavaScriptGenerator extends AbstractGenerator<JavaScriptOptions> {
 
   async renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const presets = this.getPresets("class"); 
-    const renderer = new ClassRenderer(model, inputModel, this.options, presets);
-    return renderer.runSelfPreset({ model, inputModel });
+    const renderer = new ClassRenderer(this.options, presets, model, inputModel);
+    return renderer.runSelfPreset();
   }
 }

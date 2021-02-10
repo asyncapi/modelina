@@ -1,6 +1,6 @@
 import { JavaRenderer } from "../JavaRenderer";
 
-import { CommonModel } from "../../../models";
+import { CommonModel, ClassPreset } from "../../../models";
 import { FormatHelpers } from "../../../helpers";
 
 /**
@@ -9,47 +9,79 @@ import { FormatHelpers } from "../../../helpers";
  * @extends JavaRenderer
  */
 export class ClassRenderer extends JavaRenderer {
-  render(): string {
+  async defaultSelf(): Promise<string> {
     return `public class ${this.model.$id} {
-${this.indent(this.renderProperties())}
+${this.indent(await this.renderProperties())}
 
-${this.indent(this.renderAccessors())}
+${this.indent(await this.runCtorPreset())}
+
+${this.indent(await this.renderAccessors())}
 }`;
   }
 
-  protected renderProperties(): string {
-    const p = this.model.properties || {};
-    const props = Object.entries(p).map(([name, property]) => {
-      name = FormatHelpers.toCamelCase(name);
-      return this.renderProperty(name, property);
-    });
-    return this.renderBlock(props);
+  async runCtorPreset(): Promise<string> {
+    return this.runPreset("ctor");
   }
 
-  protected renderProperty(name: string, property: CommonModel): string {
-    return `private ${this.renderType(property)} ${name};`;
-  }
-
-  protected renderAccessors(): string {
+  async renderProperties(): Promise<string> {
     const properties = this.model.properties || {};
-    const accessors = Object.entries(properties).map(([name, property]) => {
-      name = FormatHelpers.toCamelCase(name);
-      const getter = this.renderGetter(name, property);
-      const setter = this.renderSetter(name, property);
-      return this.renderBlock([getter, setter]);
-    });
-    return this.renderBlock(accessors, 2);
+    const content: string[] = [];
+
+    for (const [propertyName, property] of Object.entries(properties)) {
+      const rendererProperty = await this.runPropertyPreset(propertyName, property);
+      content.push(rendererProperty);
+    }
+
+    return this.renderBlock(content);
   }
 
-  protected renderGetter(name: string, property: CommonModel): string {
-    const getterName = FormatHelpers.toPascalCase(name);
-    const type = this.renderType(property);
-    return `public ${type} get${getterName}() { return this.${name}; }`;
+  async runPropertyPreset(propertyName: string, property: CommonModel): Promise<string> {
+    return this.runPreset("property", { propertyName, property })
   }
 
-  protected renderSetter(name: string, property: CommonModel): string {
-    const setterName = FormatHelpers.toPascalCase(name);
-    const type = this.renderType(property);
-    return `public void set${setterName}(${type} ${name}) { this.${name} = ${name}; }`;
+  async renderAccessors(): Promise<string> {
+    const properties = this.model.properties || {};
+    const content: string[] = [];
+
+    for (const [propertyName, property] of Object.entries(properties)) {
+      const getter = await this.runGetterPreset(propertyName, property);
+      const setter = await this.runSetterPreset(propertyName, property);
+      content.push(this.renderBlock([getter, setter]));
+    }
+
+    return this.renderBlock(content, 2);
   }
+
+  async runGetterPreset(propertyName: string, property: CommonModel): Promise<string> {
+    return this.runPreset("getter", { propertyName, property });
+  }
+
+  async runSetterPreset(propertyName: string, property: CommonModel): Promise<string> {
+    return this.runPreset("setter", { propertyName, property });
+  }
+}
+
+export const JAVA_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
+  self({ renderer }) {
+    return renderer.defaultSelf();
+  },
+  ctor() {
+    return "";
+  },
+  property({ renderer, propertyName, property }) {
+    propertyName = FormatHelpers.toCamelCase(propertyName);
+    return `private ${renderer.renderType(property)} ${propertyName};`;
+  },
+  getter({ renderer, propertyName, property }) {
+    propertyName = FormatHelpers.toCamelCase(propertyName);
+    const getterName = FormatHelpers.toPascalCase(propertyName);
+    const type = renderer.renderType(property);
+    return `public ${type} get${getterName}() { return this.${propertyName}; }`;
+  },
+  setter({ renderer, propertyName, property }) {
+    propertyName = FormatHelpers.toCamelCase(propertyName);
+    const setterName = FormatHelpers.toPascalCase(propertyName);
+    const type = renderer.renderType(property);
+    return `public void set${setterName}(${type} ${propertyName}) { this.${propertyName} = ${propertyName}; }`;
+  },
 }

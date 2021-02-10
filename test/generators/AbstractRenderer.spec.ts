@@ -1,5 +1,6 @@
 import { AbstractRenderer } from '../../src/generators'; 
 import { IndentationTypes } from '../../src/helpers';
+import { CommonInputModel, CommonModel } from '../../src/models';
 
 describe('AbstractRenderer', function() {
   class TestRenderer extends AbstractRenderer {
@@ -9,7 +10,7 @@ describe('AbstractRenderer', function() {
           type: IndentationTypes.SPACES,
           size: 2,
         },
-      });
+      }, [], new CommonModel(), new CommonInputModel());
     }
     render() { return "" }
   }

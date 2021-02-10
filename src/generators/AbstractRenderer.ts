@@ -1,5 +1,5 @@
 import { CommonGeneratorOptions } from "./AbstractGenerator";
-import { Preset } from "../models";
+import { CommonModel, CommonInputModel, Preset } from "../models";
 import { FormatHelpers, IndentationTypes } from "../helpers";
 
 /**
@@ -9,20 +9,20 @@ export abstract class AbstractRenderer<O extends CommonGeneratorOptions = Common
   constructor(
     protected readonly options: O,
     protected readonly presets: Array<[Preset, unknown]>,
+    protected readonly model: CommonModel, 
+    protected readonly inputModel: CommonInputModel,
   ) {}
 
-  public abstract render(): string;
-
-  protected renderLine(line: string): string {
+  renderLine(line: string): string {
     return `${line}\n`;
   }
 
-  protected renderBlock(lines: string[], newLines: number = 1): string {
+  renderBlock(lines: string[], newLines: number = 1): string {
     const n = Array(newLines).fill('\n').join('');
     return lines.join(n);
   }
 
-  protected indent(
+  indent(
     content: string, 
     size?: number, 
     type?: IndentationTypes,
@@ -32,18 +32,18 @@ export abstract class AbstractRenderer<O extends CommonGeneratorOptions = Common
     return FormatHelpers.indent(content, size, type);
   }
 
-  async runSelfPreset(params: object): Promise<string> {
-    return this.runPreset("self", params);
+  async runSelfPreset(): Promise<string> {
+    return this.runPreset("self");
   }
 
   async runPreset(
     functionName: string,
-    params: object,
+    params: object = {},
   ): Promise<string> {
     let content = "";
     for (const [preset, options] of this.presets) {
       if (typeof preset[functionName] === "function") {
-        content = await preset[functionName]({ content, options, ...params, renderer: this });
+        content = await preset[functionName]({ ...params, renderer: this, content, options, model: this.model, inputModel: this.inputModel, });
       }
     }
     return content;

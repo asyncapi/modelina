@@ -15,7 +15,7 @@ export function isPresetWithOptions(preset: Preset | PresetWithOptions): preset 
 }
 
 export interface CommonPreset<R extends AbstractRenderer> {
-  self?: (args: PresetArgs<R>) => string;
+  self?: (args: PresetArgs<R>) => Promise<string> | string;
 }
 
 export interface PresetArgs<R extends AbstractRenderer> {
@@ -31,18 +31,18 @@ export interface PropertyArgs {
 }
 
 export interface ClassPreset<R extends AbstractRenderer> extends CommonPreset<R> {
-  ctor?: (args: PresetArgs<R>) => string;
-  property?: (args: PresetArgs<R> & PropertyArgs) => string;
-  getter?: (args: PresetArgs<R> & PropertyArgs) => string;
-  setter?: (args: PresetArgs<R> & PropertyArgs) => string;
+  ctor?: (args: PresetArgs<R>) => Promise<string> | string;
+  property?: (args: PresetArgs<R> & PropertyArgs) => Promise<string> | string;
+  getter?: (args: PresetArgs<R> & PropertyArgs) => Promise<string> | string;
+  setter?: (args: PresetArgs<R> & PropertyArgs) => Promise<string> | string;
 }
 
 export interface InterfacePreset<R extends AbstractRenderer> extends CommonPreset<R> {
-  property?: (args: PresetArgs<R> & PropertyArgs) => string;
+  property?: (args: PresetArgs<R> & PropertyArgs) => Promise<string> | string;
 }
 
 export interface EnumArgs {
-  value: any;
+  item: any;
 }
 
 export interface EnumPreset<R extends AbstractRenderer> extends CommonPreset<R> {

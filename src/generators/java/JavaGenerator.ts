@@ -37,13 +37,13 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions> {
 
   async renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const presets = this.getPresets("class");
-    const renderer = new ClassRenderer(model, inputModel, this.options, presets);
-    return renderer.runSelfPreset({ model, inputModel });
+    const renderer = new ClassRenderer(this.options, presets, model, inputModel);
+    return renderer.runSelfPreset();
   }
 
   async renderEnum(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const presets = this.getPresets("enum"); 
-    const renderer = new EnumRenderer(model, inputModel, this.options, presets);
-    return renderer.runSelfPreset({ model, inputModel });
+    const renderer = new EnumRenderer(this.options, presets, model, inputModel);
+    return renderer.runSelfPreset();
   }
 }

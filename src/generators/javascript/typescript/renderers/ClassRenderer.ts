@@ -1,7 +1,7 @@
 import { TypeScriptRenderer } from "../TypeScriptRenderer";
 import { InterfaceRenderer } from "./InterfaceRenderer";
 
-import { CommonModel, Preset } from "../../../../models";
+import { CommonModel } from "../../../../models";
 import { FormatHelpers } from "../../../../helpers";
 
 /**
@@ -12,7 +12,7 @@ import { FormatHelpers } from "../../../../helpers";
 export class ClassRenderer extends TypeScriptRenderer {
   public render(): string {
     const clazz = `class ${this.model.$id} {
-${this.indent(this.renderProperties(this.model.properties!))}
+${this.indent(this.renderProperties())}
       
 ${this.indent(this.renderConstructor())}
       
@@ -20,7 +20,7 @@ ${this.indent(this.renderAccessors())}
 }`;
 
     if (this.options.renderTypes === true) {
-      const renderer = new InterfaceRenderer(this.model, this.inputModel, this.options, []);
+      const renderer = new InterfaceRenderer(this.options, [], this.model, this.inputModel);
       const interfaceValue = renderer.render(`${this.model.$id}Input`);
       return this.renderBlock([interfaceValue, clazz], 2);
     }
@@ -65,5 +65,17 @@ ${this.indent(this.renderConstructorBody())}
     const signature = this.renderTypeSignature(property, false);
     const arg = `${name}${signature}`
     return `set ${name}(${arg}) { this.${name} = ${name}; }`;
+  }
+
+  protected runCtorPreset(): Promise<string> {
+    return this.runPreset("ctor");
+  }
+
+  protected runGetterPreset(propertyName: string, property: CommonModel): Promise<string> {
+    return this.runPreset("getter", { propertyName, property });
+  }
+
+  protected runSetterPreset(propertyName: string, property: CommonModel): Promise<string> {
+    return this.runPreset("setter", { propertyName, property });
   }
 }

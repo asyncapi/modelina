@@ -11,15 +11,15 @@ import { FormatHelpers } from "../../helpers";
  */
 export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
   constructor(
-    protected model: CommonModel, 
-    protected inputModel: CommonInputModel,
     options: JavaOptions,
     presets: Array<[Preset, unknown]>,
+    model: CommonModel, 
+    inputModel: CommonInputModel,
   ) {
-    super(options, presets);
+    super(options, presets, model, inputModel);
   }
 
-  protected renderType(model: CommonModel | CommonModel[]): string {
+  renderType(model: CommonModel | CommonModel[]): string {
     if (Array.isArray(model) || Array.isArray(model.type)) {
       return `Object`; // fallback
     }
@@ -29,7 +29,7 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
     return this.toClassType(this.toJavaType(model.type, model));
   }
 
-  protected toJavaType(type: string | undefined, model: CommonModel): string {
+  toJavaType(type: string | undefined, model: CommonModel): string {
     switch(type) {
       case 'integer':
       case 'int32':
@@ -66,7 +66,7 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
     }
   }
 
-  protected toClassType(type: string): string {
+  toClassType(type: string): string {
     switch(type) {
       case 'int':
         return 'Integer';
@@ -83,9 +83,9 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
     }
   }
 
-  protected renderAnnotation(annotation: any): string;
-  protected renderAnnotation(annotations: Array<any>): string;
-  protected renderAnnotation(annotation: Array<any> | any): string {
+  renderAnnotation(annotation: any): string;
+  renderAnnotation(annotations: Array<any>): string;
+  renderAnnotation(annotation: Array<any> | any): string {
     if (Array.isArray(annotation)) {
       return annotation.map(ann => this.renderAnnotation(ann)).join(" ");
     }

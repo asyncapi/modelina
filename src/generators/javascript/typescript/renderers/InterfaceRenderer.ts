@@ -8,7 +8,7 @@ import { TypeScriptRenderer } from "../TypeScriptRenderer";
 export class InterfaceRenderer extends TypeScriptRenderer {
   public render(modelName?: string): string {
     return `interface ${modelName || this.model.$id} {
-${this.indent(this.renderProperties(this.model.properties!))}
+${this.indent(this.renderProperties())}
 }`;
   }
 }

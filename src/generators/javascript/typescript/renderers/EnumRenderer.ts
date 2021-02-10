@@ -25,4 +25,8 @@ ${this.indent(this.renderItems())}
   protected normalizeKey(key: string): string {
     return key;
   }
+
+  protected runItemPreset(value: any): Promise<string> {
+    return this.runPreset("item", { value });
+  }
 }

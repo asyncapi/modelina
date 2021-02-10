@@ -1,5 +1,6 @@
 import { JavaRenderer } from "../JavaRenderer";
 
+import { EnumPreset } from "../../../models";
 import { FormatHelpers } from "../../../helpers";
 
 /**
@@ -8,29 +9,31 @@ import { FormatHelpers } from "../../../helpers";
  * @extends JavaRenderer
  */
 export class EnumRenderer extends JavaRenderer {
-  render(): string {
+  async defaultSelf(): Promise<string> {
     const enumName = this.model.$id;
     const type = Array.isArray(this.model.type) ? "Object" : this.model.type!;
     const classType = this.toClassType(this.toJavaType(type, this.model));
 
     return `public enum ${enumName} {
-${this.indent(this.renderItems())};
+${this.indent(await this.renderItems())};
 
 ${this.indent(this.renderHelpers(enumName!, classType))}
 }`;
   }
 
-  protected renderItems(): string {
+  async renderItems(): Promise<string> {
     const enums = this.model.enum || [];
-    const items = enums.map(e => {
-      const key = this.normalizeKey(e);
-      const value = this.normalizeValue(e);
-      return `${key}(${value})`
-    }).join(", ");
-    return `${items}`;
+    const content: string[] = [];
+
+    for (const value of enums) {
+      const renderedItem = await this.runItemPreset(value);
+      content.push(renderedItem);
+    }
+
+    return content.join(', ');
   }
 
-  protected normalizeKey(value: any): string {
+  normalizeKey(value: any): string {
     switch(typeof value) {
       case "bigint":
       case "number": {
@@ -43,7 +46,7 @@ ${this.indent(this.renderHelpers(enumName!, classType))}
     }
   }
 
-  protected normalizeValue(value: any): string {
+  normalizeValue(value: any): string {
     switch(typeof value) {
       case "string": {
         return `"${value}"`;
@@ -52,7 +55,7 @@ ${this.indent(this.renderHelpers(enumName!, classType))}
     }
   }
 
-  protected renderHelpers(enumName: string, classType: string): string {
+  renderHelpers(enumName: string, classType: string): string {
     return `private ${classType} value;
     
 ${enumName}(${classType} value) {
@@ -79,4 +82,19 @@ public static ${enumName} fromValue(${classType} value) {
   throw new IllegalArgumentException("Unexpected value '" + value + "'");
 }`;
   }
+
+  async runItemPreset(item: any): Promise<string> {
+    return this.runPreset("item", { item })
+  }
+}
+
+export const JAVA_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
+  self({ renderer }) {
+    return renderer.defaultSelf();
+  },
+  item({ renderer, item }) {
+    const key = renderer.normalizeKey(item);
+    const value = renderer.normalizeValue(item);
+    return `${key}(${value})`;
+  },
 }

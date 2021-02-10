@@ -30,6 +30,8 @@ describe('TypeScriptGenerator', function() {
   private Object members;
   private Array<Object> arrayType;
 
+  
+
   public String getStreetName() { return this.streetName; }
   public void setStreetName(String streetName) { this.streetName = streetName; }
 
