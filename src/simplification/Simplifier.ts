@@ -8,9 +8,33 @@ import simplifyExtend from './SimplifyExtend';
 import { SimplificationOptions } from '../models/SimplificationOptions';
 import simplifyAdditionalProperties from './SimplifyAdditionalProperties';
 
+/**
+ * This is the default wrapper for the simplifier class which always create a new instance of the simplifier. 
+ * 
+ * @param schema to simplify
+ */
 export function simplify(schema : Schema | boolean) : CommonModel[] {
   const simplifier = new Simplifier();
   return simplifier.simplify(schema);
+}
+
+
+/**
+ * check if CommonModel is a separate model or a simple model.
+ */
+function isModelObject(model: CommonModel) : boolean {
+  // This check should be done instead, needs a refactor to allow it though:
+  // this.extend !== undefined || this.properties !== undefined
+  if (model.type !== undefined) {
+    if(Array.isArray(model.type)){
+      // If all possible JSON types are defined, don't split it even if it does contain object.
+      if(model.type.length === 6){
+        return false;
+      }
+    }
+    return model.type.includes("object");
+  }
+  return false;
 }
 
 export class Simplifier {
@@ -36,19 +60,11 @@ export class Simplifier {
   simplifyRecursive(schema : Schema | boolean) : CommonModel[] {
     let models : CommonModel[] = [];
     let simplifiedModel = this.simplify(schema);
-    const containsAllTypes = (model : CommonModel) => {
-      if(model.type !== undefined){
-        if(Array.isArray(model.type)){
-          return model.type.length === 6;
-        }
-      }
-      return false;
-    };
     if(simplifiedModel.length > 0){
       //Get the root model from the simplification process which is the first element in the list
       const schemaSimplifiedModel = simplifiedModel[0];
       //Only if the schema is of type object and contains properties, split it out
-      if(schemaSimplifiedModel.type !== undefined && schemaSimplifiedModel.type.includes("object") && !containsAllTypes(schemaSimplifiedModel)){
+      if(isModelObject(schemaSimplifiedModel)){
         let switchRootModel = new CommonModel();
         switchRootModel.$ref = schemaSimplifiedModel.$id;
         models[0] = switchRootModel;
@@ -94,13 +110,13 @@ export class Simplifier {
       }
 
       const simplifiedProperties = simplifyProperties(schema, this);
-      if(simplifiedProperties.newModels !== undefined){
-          models = [...models, ...simplifiedProperties.newModels];
-      }
       if(simplifiedProperties.properties !== undefined){
         model.properties = simplifiedProperties.properties;
       }
-
+      if(simplifiedProperties.newModels !== undefined){
+          models = [...models, ...simplifiedProperties.newModels];
+      }
+      
       const simplifiedAdditionalProperties = simplifyAdditionalProperties(schema, this, model);
       if(simplifiedAdditionalProperties.newModels !== undefined){
           models = [...models, ...simplifiedAdditionalProperties.newModels];
@@ -109,15 +125,6 @@ export class Simplifier {
         model.additionalProperties = simplifiedAdditionalProperties.additionalProperties;
       }
 
-
-      const enums = simplifyEnums(schema);
-      if(enums !== undefined && enums.length > 0){
-        if(model.enum){
-          model.enum = [...model.enum, ...enums];
-        }else{
-          model.enum = enums;
-        }
-      }
       if(this.options.allowInheritance){
         const simplifiedExtends = simplifyExtend(schema, this);
         if(simplifiedExtends.newModels !== undefined){
@@ -125,6 +132,15 @@ export class Simplifier {
         }
         if(simplifiedExtends.extendingSchemas !== undefined){
           model.extend = simplifiedExtends.extendingSchemas;
+        }
+      }
+
+      const enums = simplifyEnums(schema);
+      if(enums !== undefined && enums.length > 0){
+        if(model.enum){
+          model.enum = [...model.enum, ...enums];
+        }else{
+          model.enum = enums;
         }
       }
     }
