@@ -39,19 +39,11 @@ export class Simplifier {
   simplifyRecursive(schema : Schema | boolean) : CommonModel[] {
     let models : CommonModel[] = [];
     let simplifiedModel = this.simplify(schema);
-    const containsAllTypes = (model : CommonModel) => {
-      if(model.type !== undefined){
-        if(Array.isArray(model.type)){
-          return model.type.length === 6;
-        }
-      }
-      return false;
-    };
     if(simplifiedModel.length > 0){
       //Get the root model from the simplification process which is the first element in the list
       const schemaSimplifiedModel = simplifiedModel[0];
       //Only if the schema is of type object and contains properties, split it out
-      if(schemaSimplifiedModel.type !== undefined && schemaSimplifiedModel.type.includes("object") && !containsAllTypes(schemaSimplifiedModel)){
+      if(schemaSimplifiedModel.isModelObject()){
         let switchRootModel = new CommonModel();
         switchRootModel.$ref = schemaSimplifiedModel.$id;
         models[0] = switchRootModel;
@@ -60,6 +52,18 @@ export class Simplifier {
     }
     return models;
   }
+
+  ensureModelsAreSeparated(commonModel: CommonModel, existingModels : CommonModel[]) : CommonModel{
+    if(commonModel.isModelObject()){
+      let switchRootModel = new CommonModel();
+      switchRootModel.$ref = commonModel.$id;
+      existingModels.push(commonModel);
+      return switchRootModel;
+    }
+    return commonModel;
+
+  }
+
 
   /**
    * Simplifies a schema into instances of CommonModel. 
@@ -88,6 +92,25 @@ export class Simplifier {
         model.$id = schema.$id;
       }
 
+      if(this.options.allowInheritance){
+        const simplifiedExtends = simplifyExtend(schema, this);
+        if(simplifiedExtends.newModels !== undefined){
+          models = [...models, ...simplifiedExtends.newModels];
+        }
+        if(simplifiedExtends.extendingSchemas !== undefined){
+          model.extend = simplifiedExtends.extendingSchemas;
+        }
+      }
+
+      const enums = simplifyEnums(schema);
+      if(enums !== undefined && enums.length > 0){
+        if(model.enum){
+          model.enum = [...model.enum, ...enums];
+        }else{
+          model.enum = enums;
+        }
+      }
+
       const simplifiedItems = simplifyItems(schema, this);
       if(simplifiedItems.newModels !== undefined){
           models = [...models, ...simplifiedItems.newModels];
@@ -97,28 +120,11 @@ export class Simplifier {
       }
 
       const simplifiedProperties = simplifyProperties(schema, this);
-      if(simplifiedProperties.newModels !== undefined){
-          models = [...models, ...simplifiedProperties.newModels];
-      }
       if(simplifiedProperties.properties !== undefined){
         model.properties = simplifiedProperties.properties;
       }
-      const enums = simplifyEnums(schema);
-      if(enums !== undefined && enums.length > 0){
-        if(model.enum){
-          model.enum = [...model.enum, ...enums];
-        }else{
-          model.enum = enums;
-        }
-      }
-      if(this.options.allowInheritance){
-        const simplifiedExtends = simplifyExtend(schema, this);
-        if(simplifiedExtends.newModels !== undefined){
-          models = [...models, ...simplifiedExtends.newModels];
-        }
-        if(simplifiedExtends.extendingSchemas !== undefined){
-          model.extend = simplifiedExtends.extendingSchemas;
-        }
+      if(simplifiedProperties.newModels !== undefined){
+          models = [...models, ...simplifiedProperties.newModels];
       }
     }
 
