@@ -1,58 +1,20 @@
 {
   "models":{
     "anonymSchema2":{
-      "originalSchema":{
-        "type":"object",
-        "properties":{
-          "floor":{
-            "$ref":"#/definitions/test"
-          }
-        }
-      },
       "type":"object",
       "$id":"anonymSchema2",
       "properties":{
         "floor":{
-          "$ref": "anonymSchema2",
-          "originalSchema":{
-            "$ref":"#/definitions/test"
-          }
+          "$ref": "anonymSchema2"
         }
       }
     },
     "anonymSchema1":{
-      "originalSchema":{
-        "definitions":{
-          "test":{
-            "type":"object",
-            "properties":{
-              "floor":{
-                "$ref":"#/definitions/test"
-              }
-            }
-          }
-        },
-        "type":"object",
-        "properties":{
-          "street_address":{
-            "$ref":"#/definitions/test"
-          },
-          "country":{
-            "enum":[
-              "United States of America",
-              "Canada"
-            ]
-          }
-        }
-      },
       "type":"object",
       "$id":"anonymSchema1",
       "properties":{
         "street_address":{
-          "$ref": "anonymSchema2",
-          "originalSchema":{
-            "$ref":"#/definitions/test"
-          }
+          "$ref": "anonymSchema2"
         },
         "country":{
           "originalSchema":{

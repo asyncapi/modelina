@@ -5,21 +5,24 @@ import { CommonInputModel } from '../../src/models/CommonInputModel';
 
 describe('JsonSchemaInputProcessor', function() {
     describe('process()', function() {
-
         /**
          * The input schema when processed should be equals to the expected CommonInputModel
          * 
          * @param inputSchemaPath 
          * @param expectedCommonModulePath 
          */
-        const expectFunction = async (inputSchemaPath: string, expectedCommonModulePath: string) => {
+        const expectFunction = async (inputSchemaPath: string, expectedCommonModulePath: string, match: boolean = false) => {
             const inputSchemaString = fs.readFileSync(path.resolve(__dirname, inputSchemaPath), 'utf8');
             const expectedCommonInputModelString = fs.readFileSync(path.resolve(__dirname, expectedCommonModulePath), 'utf8');
             const inputSchema = JSON.parse(inputSchemaString);
             const expectedCommonInputModel = JSON.parse(expectedCommonInputModelString);
             const processor = new JsonSchemaInputProcessor();
             const commonInputModel = await processor.process(inputSchema);
-            expect(commonInputModel).toEqual(expectedCommonInputModel);
+            if(match){
+                expect(commonInputModel).toMatchObject(expectedCommonInputModel);
+            } else {
+                expect(commonInputModel).toEqual(expectedCommonInputModel);
+            }
         }
         test('should be able to process absence types', async function() {
             const inputSchemaPath = './JsonSchemaInputProcessor/absence_type.json';
@@ -54,17 +57,17 @@ describe('JsonSchemaInputProcessor', function() {
         test('should be able to use $ref', async function() {
             const inputSchemaPath = './JsonSchemaInputProcessor/references.json';
             const expectedCommonModulePath = './JsonSchemaInputProcessor/commonInputModel/references.json';
-            await expectFunction(inputSchemaPath, expectedCommonModulePath)
+            await expectFunction(inputSchemaPath, expectedCommonModulePath);
         });
         test('should be able to use $ref when circular', async function() {
             const inputSchemaPath = './JsonSchemaInputProcessor/references_circular.json';
             const expectedCommonModulePath = './JsonSchemaInputProcessor/commonInputModel/references_circular.json';
-            await expectFunction(inputSchemaPath, expectedCommonModulePath)
+            await expectFunction(inputSchemaPath, expectedCommonModulePath, true);
         });
         test('should be able to use $ref when circular with allOf', async function() {
             const inputSchemaPath = './JsonSchemaInputProcessor/references_circular_allOf.json';
             const expectedCommonModulePath = './JsonSchemaInputProcessor/commonInputModel/references_circular_allOf.json';
-            await expectFunction(inputSchemaPath, expectedCommonModulePath)
+            await expectFunction(inputSchemaPath, expectedCommonModulePath, true);
         });
     });
 

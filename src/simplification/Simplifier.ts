@@ -6,7 +6,13 @@ import simplifyTypes from './SimplifyTypes';
 import simplifyItems from './SimplifyItems';
 import simplifyExtend from './SimplifyExtend';
 import { SimplificationOptions } from '../models/SimplificationOptions';
-export default class Simplifier {
+
+export function simplify(schema : Schema | boolean) : CommonModel[] {
+  const simplifier = new Simplifier();
+  return simplifier.simplify(schema);
+}
+
+export class Simplifier {
   static defaultOptions: SimplificationOptions = {
     allowInheritance: true
   }
@@ -27,16 +33,21 @@ export default class Simplifier {
    * @param schema to simplify
    */
   simplifyRecursive(schema : Schema | boolean) : CommonModel[] {
-    if(typeof schema !== "boolean" && this.seenSchemas.has(schema)){
-      return [this.seenSchemas.get(schema)!]
-    }
     let models : CommonModel[] = [];
     let simplifiedModel = this.simplify(schema);
+    const containsAllTypes = (model : CommonModel) => {
+      if(model.type !== undefined){
+        if(Array.isArray(model.type)){
+          return model.type.length === 6;
+        }
+      }
+      return false;
+    };
     if(simplifiedModel.length > 0){
       //Get the root model from the simplification process which is the first element in the list
       const schemaSimplifiedModel = simplifiedModel[0];
       //Only if the schema is of type object and contains properties, split it out
-      if(schemaSimplifiedModel.type !== undefined && schemaSimplifiedModel.type.includes("object") && schemaSimplifiedModel.properties !== undefined){
+      if(schemaSimplifiedModel.type !== undefined && schemaSimplifiedModel.type.includes("object") && !containsAllTypes(schemaSimplifiedModel)){
         let switchRootModel = new CommonModel();
         switchRootModel.$ref = schemaSimplifiedModel.$id;
         models[0] = switchRootModel;
@@ -45,7 +56,6 @@ export default class Simplifier {
     }
     return models;
   }
-
 
   /**
    * Simplifies a schema into instances of CommonModel. 
@@ -56,6 +66,9 @@ export default class Simplifier {
   simplify(schema : Schema | boolean) : CommonModel[] {
     let models : CommonModel[] = [];
     let model = new CommonModel();
+    if(typeof schema !== "boolean" && this.seenSchemas.has(schema)){
+      return [this.seenSchemas.get(schema)!]
+    }
     model.originalSchema = Schema.toSchema(schema);
     const simplifiedTypes = simplifyTypes(schema);
     if(simplifiedTypes !== undefined){
