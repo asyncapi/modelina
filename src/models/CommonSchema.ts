@@ -19,24 +19,25 @@ export class CommonSchema<T> {
      * @param schema to be transformed
      * @param transformationSchemaCallback callback to transform nested schemas
      */
-    static transformSchema<T>(schema: CommonSchema<T>, transformationSchemaCallback: (object: Object) => T){
+    static transformSchema<T extends CommonSchema<T | boolean>>(schema: T, transformationSchemaCallback: (object: Object, seenSchemas: Map<any, T>) => T | boolean, seenSchemas: Map<any, T> = new Map()) : T{
+        if (seenSchemas.has(schema)) return seenSchemas.get(schema) as T;
         if(schema.items !== undefined){
             if(Array.isArray(schema.items)){
-                schema.items = schema.items.map((item) => transformationSchemaCallback(item))
+                schema.items = schema.items.map((item) => transformationSchemaCallback(item, seenSchemas))
             }else{
-                schema.items = transformationSchemaCallback(schema.items);
+                schema.items = transformationSchemaCallback(schema.items, seenSchemas);
             }
         }
         if(schema.properties !== undefined){
-            var properties : {[key: string]: T} = {}
+            var properties : {[key: string]: T | boolean} = {}
             Object.entries(schema.properties).forEach(([propertyName, propertySchema]) => {
-                properties[propertyName] = transformationSchemaCallback(propertySchema);
+                properties[propertyName] = transformationSchemaCallback(propertySchema, seenSchemas);
             });
             schema.properties = properties;
         }
         if(typeof schema.additionalProperties === 'object' && 
             schema.additionalProperties !== null){
-            schema.additionalProperties = transformationSchemaCallback(schema.additionalProperties);
+            schema.additionalProperties = transformationSchemaCallback(schema.additionalProperties, seenSchemas);
         }
         return schema;
     }

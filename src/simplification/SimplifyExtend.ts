@@ -1,14 +1,14 @@
 import { CommonModel } from "models";
 import { Schema } from "models/Schema";
-import Simplifier from "./Simplifier";
-type output = {newModels: CommonModel[] | undefined; extendingSchemas: string[] | undefined};
+import { Simplifier } from "./Simplifier";
+type Output = {newModels: CommonModel[] | undefined; extendingSchemas: string[] | undefined};
 
 /**
  * Find out which common models we should extend
  * 
  * @param schema to find extends of
  */
-export default function simplifyExtend(schema: Schema | boolean, simplifier : Simplifier) : output {
+export default function simplifyExtend(schema: Schema | boolean, simplifier : Simplifier) : Output {
   let models : CommonModel[] | undefined;
   let extendingSchemas : string[] | undefined;
   if(typeof schema !== "boolean" && schema.allOf !== undefined){

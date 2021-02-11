@@ -1,36 +1,38 @@
 import { Schema } from "models/Schema";
-import Simplifier from "./Simplifier";
 
-
+type Output = string[] | string | undefined;
 /**
  * Find the types for a simplified version of a schema
  * 
  * @param schema to find the simplified types for
+ * @param seenSchemas already seen schemas and their corresponding output, this is to avoid circular schemas
  */
-export default function simplifyTypes(schema: Schema | boolean) : string[] | string | undefined{
+export default function simplifyTypes(schema: Schema | boolean, seenSchemas: Map<any, Output> = new Map()): Output {
   //If we find absence of data format ensure all types are returned
-  if(typeof schema === "boolean"){
-    if(schema === true){
+  if (typeof schema === "boolean") {
+    if (schema === true) {
       return ["object", "string", "number", "array", "boolean", "null"];
-    }else{
+    } else {
       throw new Error("False value schemas are not supported");
     }
   }
-  let types : string[] | string | undefined = undefined;
-  const addToTypes = (typesToCheck: string[] | string | undefined) => {
-    if(typesToCheck !== undefined){
-      if(types === undefined){
+  let types: Output = undefined;
+  if (seenSchemas.has(schema)) return seenSchemas.get(schema);
+  seenSchemas.set(schema, types);
+  const addToTypes = (typesToCheck: Output) => {
+    if (typesToCheck !== undefined) {
+      if (types === undefined) {
         types = typesToCheck;
       } else {
-        if(Array.isArray(typesToCheck)){
+        if (Array.isArray(typesToCheck)) {
           typesToCheck.forEach(addToTypes);
-        }else{
-          if(Array.isArray(types)){
-            if(!types.includes(typesToCheck)){
+        } else {
+          if (Array.isArray(types)) {
+            if (!types.includes(typesToCheck)) {
               types.push(typesToCheck);
             }
-          }else{
-            if(types !== typesToCheck){
+          } else {
+            if (types !== typesToCheck) {
               types = [types, typesToCheck]
             }
           }
@@ -38,85 +40,85 @@ export default function simplifyTypes(schema: Schema | boolean) : string[] | str
       }
     }
   };
-  const handleCombinationSchemas = (schemas: (Schema | boolean)[] = []) => {
+  const handler = (schemas: (Schema | boolean)[] = []) => {
     schemas.forEach((schema) => {
-      addToTypes(simplifyTypes(schema));
+      addToTypes(simplifyTypes(schema, seenSchemas));
     });
   }
 
-  if(schema.type){
+  if (schema.type) {
     addToTypes(schema.type);
   }
   //If we encounter combination schemas ensure we recursively find the types
-  handleCombinationSchemas(schema.allOf);
-  handleCombinationSchemas(schema.oneOf);
-  handleCombinationSchemas(schema.anyOf);
+  handler(schema.allOf);
+  handler(schema.oneOf);
+  handler(schema.anyOf);
 
   //Infer types from items and properties
-  if(schema.items !== undefined){
+  if (schema.items !== undefined) {
     addToTypes("array");
   }
-  if(schema.properties !== undefined){
+  if (schema.properties !== undefined) {
     addToTypes("object");
   }
 
   //If we encounter combination schemas ensure we recursively find and cumulate the types
-  if(schema.then){
-    addToTypes(simplifyTypes(schema.then));
+  if (schema.then) {
+    addToTypes(simplifyTypes(schema.then, seenSchemas));
   }
-  if(schema.else){
-    addToTypes(simplifyTypes(schema.else));
+  if (schema.else) {
+    addToTypes(simplifyTypes(schema.else, seenSchemas));
   }
 
   //Check enums and const keywords to infer type if type has not already been defined.
-  if(!schema.type){
+  if (!schema.type) {
     const inferTypeFromValue = (value: any) => {
-      if(Array.isArray(value)){
+      if (Array.isArray(value)) {
         return "array";
       }
-      if(value === null){
+      if (value === null) {
         return "null";
       }
       const typeOfEnum = typeof value;
-      switch(typeOfEnum){
+      switch (typeOfEnum) {
         //We don't need to check undefined, function, symbol since it should never be possible
-        case "bigint": 
+        case "bigint":
           return "number";
         default:
           return typeOfEnum;
       }
     };
-    if(schema.enum){
+    if (schema.enum) {
       schema.enum.forEach((value: any) => {
         const inferredType = inferTypeFromValue(value);
-        if(inferredType !== undefined){
+        if (inferredType !== undefined) {
           addToTypes(inferredType);
         }
       });
     }
     //Should const overwrite the type?
-    if(schema.const !== undefined){
+    if (schema.const !== undefined) {
       const inferredType = inferTypeFromValue(schema.const);
-      if(inferredType !== undefined){
+      if (inferredType !== undefined) {
         types = inferredType;
       }
     }
   }
 
   //Infer which types should not be there and include what is left, overwrites what ever has been defined earlier.
-  if(schema.not){
-    let notTypes = simplifyTypes(schema.not);
+  if (schema.not) {
+    let notTypes = simplifyTypes(schema.not, seenSchemas);
     let remainingTypes = ["object", "string", "number", "array", "boolean", "null"];
-    const tryAndCutRemainingArray = (notType : string | undefined) => {
-      if(notType !== undefined && remainingTypes.includes(notType)){
+    const tryAndCutRemainingArray = (notType: string | undefined) => {
+      if (notType !== undefined && remainingTypes.includes(notType)) {
         remainingTypes.splice(remainingTypes.indexOf(notType), 1);
       }
     }
-    if(Array.isArray(notTypes)){
+    if (Array.isArray(notTypes)) {
       notTypes.forEach((notType) => {
         tryAndCutRemainingArray(notType);
       });
-    }else{
+    } else {
       tryAndCutRemainingArray(notTypes);
     }
     //Assign all remaining types

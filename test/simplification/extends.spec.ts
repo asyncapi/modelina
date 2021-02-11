@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import Simplifier from '../../src/simplification/Simplifier';
+import { simplify } from '../../src/simplification/Simplifier';
 
 /**
  * Some of these test are purely theoretical and have little if any merit 
@@ -12,8 +12,7 @@ describe('Simplification to extend', function() {
     const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/expected/extend.json'), 'utf8');
     const schema = JSON.parse(inputSchemaString);
     const expectedModels = JSON.parse(expectedSchemaString);
-    const simplifier = new Simplifier();
-    const actualModels = simplifier.simplify(schema);
+    const actualModels = simplify(schema);
     expect(actualModels).toEqual(expectedModels);
     expect(schema.$id).toBeUndefined();
   });
@@ -23,8 +22,7 @@ describe('Simplification to extend', function() {
     const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/expected/extendMultipleObjects.json'), 'utf8');
     const schema = JSON.parse(inputSchemaString);
     const expectedModels = JSON.parse(expectedSchemaString);
-    const simplifier = new Simplifier();
-    const actualModels = simplifier.simplify(schema);
+    const actualModels = simplify(schema);
     expect(actualModels).toEqual(expectedModels);
     expect(schema.$id).toBeUndefined();
   });
@@ -34,8 +32,7 @@ describe('Simplification to extend', function() {
     const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/expected/extendWithProperties.json'), 'utf8');
     const schema = JSON.parse(inputSchemaString);
     const expectedModels = JSON.parse(expectedSchemaString);
-    const simplifier = new Simplifier();
-    const actualModels = simplifier.simplify(schema);
+    const actualModels = simplify(schema);
     expect(actualModels).toEqual(expectedModels);
     expect(schema.$id).toBeUndefined();
   });
@@ -45,8 +42,7 @@ describe('Simplification to extend', function() {
     const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/expected/nestedExtends.json'), 'utf8');
     const schema = JSON.parse(inputSchemaString);
     const expectedModels = JSON.parse(expectedSchemaString);
-    const simplifier = new Simplifier();
-    const actualModels = simplifier.simplify(schema);
+    const actualModels = simplify(schema);
     expect(actualModels).toEqual(expectedModels);
     expect(schema.$id).toBeUndefined();
   });
