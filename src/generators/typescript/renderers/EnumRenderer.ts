@@ -1,7 +1,7 @@
-import { TypeScriptRenderer } from "../TypeScriptRenderer";
+import { TypeScriptRenderer } from '../TypeScriptRenderer';
 
-import { FormatHelpers } from "../../../helpers";
-import { EnumPreset } from "../../../models";
+import { FormatHelpers } from '../../../helpers';
+import { EnumPreset } from '../../../models';
 
 /**
  * Renderer for TypeScript's `enum` type
@@ -28,7 +28,7 @@ ${this.indent(await this.renderItems())}
   }
 
   runItemPreset(item: any): Promise<string> {
-    return this.runPreset("item", { item });
+    return this.runPreset('item', { item });
   }
 }
 
@@ -39,4 +39,4 @@ export const TS_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
   item({ item }) {
     return `${FormatHelpers.toConstantCase(`${item}`)} = "${item}",`;
   }
-}
+};

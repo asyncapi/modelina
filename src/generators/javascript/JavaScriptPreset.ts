@@ -1,6 +1,6 @@
-import { Preset, ClassPreset } from "../../models";
+import { Preset, ClassPreset } from '../../models';
 
-import { ClassRenderer, JS_DEFAULT_CLASS_PRESET } from "./renderers/ClassRenderer";
+import { ClassRenderer, JS_DEFAULT_CLASS_PRESET } from './renderers/ClassRenderer';
 
 export type JavaScriptPreset = Preset<{
   class: ClassPreset<ClassRenderer>;

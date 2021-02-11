@@ -1,4 +1,4 @@
-import { CommonInputModel } from "../models/CommonInputModel";
+import { CommonInputModel } from '../models/CommonInputModel';
 
 export abstract class AbstractInputProcessor {
   // Process content

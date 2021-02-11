@@ -1,6 +1,6 @@
-import { AbstractRenderer } from "../generators/AbstractRenderer";
-import { CommonInputModel } from "./CommonInputModel";
-import { CommonModel } from "./CommonModel";
+import { AbstractRenderer } from '../generators/AbstractRenderer';
+import { CommonInputModel } from './CommonInputModel';
+import { CommonModel } from './CommonModel';
 
 // TODO: Change any type to correct one
 export type Preset<C extends Record<string, any> = any> = Partial<C>;
@@ -14,15 +14,15 @@ export function isPresetWithOptions(preset: Preset | PresetWithOptions): preset 
   return preset.hasOwnProperty('preset');
 }
 
-export interface CommonPreset<R extends AbstractRenderer> {
-  self?: (args: PresetArgs<R>) => Promise<string> | string;
-}
-
 export interface PresetArgs<R extends AbstractRenderer> {
   model: CommonModel;
   inputModel: CommonInputModel;
   renderer: R;
   content: string;
+}
+
+export interface CommonPreset<R extends AbstractRenderer> {
+  self?: (args: PresetArgs<R>) => Promise<string> | string;
 }
 
 export interface PropertyArgs {

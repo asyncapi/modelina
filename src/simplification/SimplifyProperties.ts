@@ -1,7 +1,7 @@
 
-import { CommonModel } from "../models/CommonModel";
-import { Schema } from "../models/Schema";
-import { Simplifier } from "./Simplifier";
+import { CommonModel } from '../models/CommonModel';
+import { Schema } from '../models/Schema';
+import { Simplifier } from './Simplifier';
 type Output = { newModels: CommonModel[] | undefined; properties: { [key: string]: CommonModel } | undefined };
 
 /**
@@ -11,12 +11,12 @@ type Output = { newModels: CommonModel[] | undefined; properties: { [key: string
  * @param simplifier the simplifier instance 
  * @param seenSchemas already seen schemas and their corresponding output, this is to avoid circular schemas
  */
-export default function simplifyProperties(schema: Schema | boolean, simplifier : Simplifier, seenSchemas: Map<any, Output> = new Map()): Output{
-  let output: Output = {newModels: undefined, properties: undefined};
-  if (typeof schema !== "boolean") {
+export default function simplifyProperties(schema: Schema | boolean, simplifier : Simplifier, seenSchemas: Map<any, Output> = new Map()): Output {
+  const output: Output = {newModels: undefined, properties: undefined};
+  if (typeof schema !== 'boolean') {
     if (seenSchemas.has(schema)) return seenSchemas.get(schema)!;
     seenSchemas.set(schema, output);
-    const addToModels = (model: CommonModel[] = []) => { output.newModels = [...(output.newModels || []), ...model]; }
+    const addToModels = (model: CommonModel[] = []) => { output.newModels = [...(output.newModels || []), ...model]; };
     const addToProperty = (propName: string, propModel: CommonModel) => {
       if (output.properties === undefined) {
         output.properties = {};
@@ -27,7 +27,7 @@ export default function simplifyProperties(schema: Schema | boolean, simplifier 
       } else {
         output.properties[propName] = propModel;
       }
-    }
+    };
     const addToPropertiesAndModels = (out: Output) => {
       if (out?.newModels !== undefined) {
         addToModels(out.newModels);
@@ -42,11 +42,11 @@ export default function simplifyProperties(schema: Schema | boolean, simplifier 
       schemas.forEach((schema) => {
         addToPropertiesAndModels(simplifyProperties(schema, simplifier, seenSchemas));
       });
-    }
+    };
 
     if (schema.properties !== undefined) {
       for (const [prop, propSchema] of Object.entries(schema.properties)) {
-        let newModels = simplifier.simplifyRecursive(propSchema);
+        const newModels = simplifier.simplifyRecursive(propSchema);
         addToProperty(prop, newModels[0]);
         //If there are more then one model returned, it is extra.
         if (newModels.length > 1) {
@@ -72,4 +72,4 @@ export default function simplifyProperties(schema: Schema | boolean, simplifier 
     }
   }
   return output;
-};
+}

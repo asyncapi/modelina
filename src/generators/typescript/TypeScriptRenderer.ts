@@ -1,8 +1,8 @@
-import { AbstractRenderer } from "../AbstractRenderer";
-import { TypeScriptOptions } from "./TypeScriptGenerator";
+import { AbstractRenderer } from '../AbstractRenderer';
+import { TypeScriptOptions } from './TypeScriptGenerator';
 
-import { FormatHelpers } from "../../helpers";
-import { CommonModel, CommonInputModel, Preset } from "../../models";
+import { FormatHelpers } from '../../helpers';
+import { CommonModel, CommonInputModel, Preset } from '../../models';
 
 /**
  * Common renderer for TypeScript types
@@ -34,31 +34,31 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
 
   toTsType(type: string | undefined, model: CommonModel): string {
     if (type === undefined) {
-      return "any";
+      return 'any';
     }
     switch (type) {
-      case 'string':
-        return 'string';
-      case 'integer':
-      case 'number':
-        return 'number';
-      case 'bigint':
-        return 'bigint';
-      case 'boolean':
-        return 'boolean';
-      case 'array': {
-        const types = model.items ? this.renderType(model.items) : 'unknown';
-        return `Array<${types}>`;
-      }
-      default: return type;
+    case 'string':
+      return 'string';
+    case 'integer':
+    case 'number':
+      return 'number';
+    case 'bigint':
+      return 'bigint';
+    case 'boolean':
+      return 'boolean';
+    case 'array': {
+      const types = model.items ? this.renderType(model.items) : 'unknown';
+      return `Array<${types}>`;
+    }
+    default: return type;
     }
   }
 
-  renderTypeSignature(type: CommonModel | CommonModel[], isOptional: boolean = false): string {
+  renderTypeSignature(type: CommonModel | CommonModel[], isOptional = false): string {
     if (this.options.renderTypes === false) {
-      return "";
+      return '';
     }
-    const annotation = isOptional ? "?:" : ":";
+    const annotation = isOptional ? '?:' : ':';
     return `${annotation} ${this.renderType(type)}`;
   }
 
@@ -84,11 +84,10 @@ ${lines.map(line => ` * ${line}`).join('\n')}
   renderProperty(propertyName: string, property: CommonModel): string {
     propertyName = FormatHelpers.toCamelCase(propertyName);
     const signature = this.renderTypeSignature(property, true);
-    let content = `${propertyName}${signature};`
-    return content;
+    return `${propertyName}${signature};`;
   }
 
   async runPropertyPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset("property", { propertyName, property })
+    return this.runPreset('property', { propertyName, property });
   }
 }

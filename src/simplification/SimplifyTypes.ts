@@ -1,4 +1,4 @@
-import { Schema } from "models/Schema";
+import { Schema } from 'models/Schema';
 
 type Output = string[] | string | undefined;
 /**
@@ -9,12 +9,11 @@ type Output = string[] | string | undefined;
  */
 export default function simplifyTypes(schema: Schema | boolean, seenSchemas: Map<any, Output> = new Map()): Output {
   //If we find absence of data format ensure all types are returned
-  if (typeof schema === "boolean") {
+  if (typeof schema === 'boolean') {
     if (schema === true) {
-      return ["object", "string", "number", "array", "boolean", "null"];
-    } else {
-      throw new Error("False value schemas are not supported");
-    }
+      return ['object', 'string', 'number', 'array', 'boolean', 'null'];
+    } 
+    throw new Error('False value schemas are not supported');
   }
   let types: Output = undefined;
   if (seenSchemas.has(schema)) return seenSchemas.get(schema);
@@ -23,20 +22,14 @@ export default function simplifyTypes(schema: Schema | boolean, seenSchemas: Map
     if (typesToCheck !== undefined) {
       if (types === undefined) {
         types = typesToCheck;
-      } else {
-        if (Array.isArray(typesToCheck)) {
-          typesToCheck.forEach(addToTypes);
-        } else {
-          if (Array.isArray(types)) {
-            if (!types.includes(typesToCheck)) {
-              types.push(typesToCheck);
-            }
-          } else {
-            if (types !== typesToCheck) {
-              types = [types, typesToCheck]
-            }
-          }
+      } else if (Array.isArray(typesToCheck)) {
+        typesToCheck.forEach(addToTypes);
+      } else if (Array.isArray(types)) {
+        if (!types.includes(typesToCheck)) {
+          types.push(typesToCheck);
         }
+      } else if (types !== typesToCheck) {
+        types = [types, typesToCheck];
       }
     }
   };
@@ -44,7 +37,7 @@ export default function simplifyTypes(schema: Schema | boolean, seenSchemas: Map
     schemas.forEach((schema) => {
       addToTypes(simplifyTypes(schema, seenSchemas));
     });
-  }
+  };
 
   if (schema.type) {
     addToTypes(schema.type);
@@ -56,10 +49,10 @@ export default function simplifyTypes(schema: Schema | boolean, seenSchemas: Map
 
   //Infer types from items and properties
   if (schema.items !== undefined) {
-    addToTypes("array");
+    addToTypes('array');
   }
   if (schema.properties !== undefined) {
-    addToTypes("object");
+    addToTypes('object');
   }
 
   //If we encounter combination schemas ensure we recursively find and cumulate the types
@@ -74,19 +67,16 @@ export default function simplifyTypes(schema: Schema | boolean, seenSchemas: Map
   if (!schema.type) {
     const inferTypeFromValue = (value: any) => {
       if (Array.isArray(value)) {
-        return "array";
+        return 'array';
       }
       if (value === null) {
-        return "null";
+        return 'null';
       }
       const typeOfEnum = typeof value;
-      switch (typeOfEnum) {
-        //We don't need to check undefined, function, symbol since it should never be possible
-        case "bigint":
-          return "number";
-        default:
-          return typeOfEnum;
-      }
+      if (typeOfEnum === 'bigint') {
+        return 'number';
+      } 
+      return typeOfEnum;
     };
     if (schema.enum) {
       schema.enum.forEach((value: any) => {
@@ -107,13 +97,13 @@ export default function simplifyTypes(schema: Schema | boolean, seenSchemas: Map
 
   //Infer which types should not be there and include what is left, overwrites what ever has been defined earlier.
   if (schema.not) {
-    let notTypes = simplifyTypes(schema.not, seenSchemas);
-    let remainingTypes = ["object", "string", "number", "array", "boolean", "null"];
+    const notTypes = simplifyTypes(schema.not, seenSchemas);
+    const remainingTypes = ['object', 'string', 'number', 'array', 'boolean', 'null'];
     const tryAndCutRemainingArray = (notType: string | undefined) => {
       if (notType !== undefined && remainingTypes.includes(notType)) {
         remainingTypes.splice(remainingTypes.indexOf(notType), 1);
       }
-    }
+    };
     if (Array.isArray(notTypes)) {
       notTypes.forEach((notType) => {
         tryAndCutRemainingArray(notType);

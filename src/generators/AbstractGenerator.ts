@@ -1,7 +1,7 @@
-import { AbstractRenderer } from "./AbstractRenderer";
-import { CommonInputModel, CommonModel, OutputModel, Preset, Presets, isPresetWithOptions } from "../models";
-import { InputProcessor } from "../processors";
-import { IndentationTypes } from "../helpers";
+import { AbstractRenderer } from './AbstractRenderer';
+import { CommonInputModel, CommonModel, OutputModel, Preset, Presets, isPresetWithOptions } from '../models';
+import { InputProcessor } from '../processors';
+import { IndentationTypes } from '../helpers';
 
 export interface CommonGeneratorOptions<P extends Preset = Preset, R extends Record<string, AbstractRenderer> = any> {
   indentation?: {
@@ -18,7 +18,7 @@ export const defaultGeneratorOptions = {
     type: IndentationTypes.SPACES,
     size: 2,
   },
-}
+};
 
 /**
  * Abstract generator which must be implemented by each language
@@ -56,17 +56,17 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
     const renders = Object.entries(models).map(async ([modelName, model]) => {
       const result = await this.render(model, inputModel);
       return OutputModel.toOutputModel({ result, model, modelName, inputModel });
-    })
+    });
     return Promise.all(renders);
   }
 
   protected getPresets(presetType: string): Array<[Preset, unknown]> {
-    const filteredPresets: Array<[Preset, unknown]> = []
+    const filteredPresets: Array<[Preset, unknown]> = [];
 
     const defaultPreset = this.options.defaultPreset!;
     filteredPresets.push([defaultPreset[presetType], undefined]);
 
-    let presets = this.options.presets || [];
+    const presets = this.options.presets || [];
     presets.forEach(p => {
       if (isPresetWithOptions(p)) {
         const preset = p.preset[presetType];

@@ -1,6 +1,6 @@
-import { CommonGeneratorOptions } from "./AbstractGenerator";
-import { CommonModel, CommonInputModel, Preset } from "../models";
-import { FormatHelpers, IndentationTypes } from "../helpers";
+import { CommonGeneratorOptions } from './AbstractGenerator';
+import { CommonModel, CommonInputModel, Preset } from '../models';
+import { FormatHelpers, IndentationTypes } from '../helpers';
 
 /**
  * Abstract renderer with common helper methods
@@ -17,7 +17,7 @@ export abstract class AbstractRenderer<O extends CommonGeneratorOptions = Common
     return `${line}\n`;
   }
 
-  renderBlock(lines: string[], newLines: number = 1): string {
+  renderBlock(lines: string[], newLines = 1): string {
     const n = Array(newLines).fill('\n').join('');
     return lines.join(n);
   }
@@ -33,16 +33,16 @@ export abstract class AbstractRenderer<O extends CommonGeneratorOptions = Common
   }
 
   async runSelfPreset(): Promise<string> {
-    return this.runPreset("self");
+    return this.runPreset('self');
   }
 
   async runPreset(
     functionName: string,
     params: object = {},
   ): Promise<string> {
-    let content = "";
+    let content = '';
     for (const [preset, options] of this.presets) {
-      if (typeof preset[functionName] === "function") {
+      if (typeof preset[functionName] === 'function') {
         content = await preset[functionName]({ 
           ...params, 
           renderer: this, 
