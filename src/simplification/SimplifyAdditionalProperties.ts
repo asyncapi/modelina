@@ -1,6 +1,6 @@
-import { CommonModel } from "models";
-import { Schema } from "models/Schema";
-import { isModelObject, Simplifier } from "./Simplifier";
+import { CommonModel } from 'models';
+import { Schema } from 'models/Schema';
+import { isModelObject, Simplifier } from './Simplifier';
 type Output = {newModels: CommonModel[] | undefined; additionalProperties: boolean | CommonModel | undefined};
 
 /**
@@ -10,13 +10,13 @@ type Output = {newModels: CommonModel[] | undefined; additionalProperties: boole
  */
 export default function simplifyAdditionalProperties(schema: Schema | boolean, simplifier : Simplifier, commonModel: CommonModel) : Output {
   let models : CommonModel[] | undefined;
-  const addToModels = (model: CommonModel[] = []) => { models = [...(models || []), ...model]; }
+  const addToModels = (model: CommonModel[] = []) => { models = [...(models || []), ...model]; };
   let additionalProperties: boolean | CommonModel | undefined;
-  if(typeof schema !== "boolean" && isModelObject(commonModel)){
-    if(schema.additionalProperties === false){
+  if (typeof schema !== 'boolean' && isModelObject(commonModel)) {
+    if (schema.additionalProperties === false) {
       additionalProperties = undefined;
     } else {
-      let newModels = simplifier.simplifyRecursive(schema.additionalProperties || true);
+      const newModels = simplifier.simplifyRecursive(schema.additionalProperties || true);
       additionalProperties = newModels[0];
       //If there are more then one model returned, it is extra.
       if (newModels.length > 1) {

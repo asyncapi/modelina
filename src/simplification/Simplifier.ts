@@ -8,7 +8,6 @@ import simplifyExtend from './SimplifyExtend';
 import { SimplificationOptions } from '../models/SimplificationOptions';
 import simplifyAdditionalProperties from './SimplifyAdditionalProperties';
 
-
 export class Simplifier {
   static defaultOptions: SimplificationOptions = {
     allowInheritance: true
@@ -90,10 +89,10 @@ export class Simplifier {
       }
       
       const simplifiedAdditionalProperties = simplifyAdditionalProperties(schema, this, model);
-      if(simplifiedAdditionalProperties.newModels !== undefined){
-          models = [...models, ...simplifiedAdditionalProperties.newModels];
+      if (simplifiedAdditionalProperties.newModels !== undefined) {
+        models = [...models, ...simplifiedAdditionalProperties.newModels];
       }
-      if(simplifiedAdditionalProperties.additionalProperties !== undefined){
+      if (simplifiedAdditionalProperties.additionalProperties !== undefined) {
         model.additionalProperties = simplifiedAdditionalProperties.additionalProperties;
       }
 
@@ -136,7 +135,7 @@ export function simplify(schema : Schema | boolean) : CommonModel[] {
 /**
  * check if CommonModel is a separate model or a simple model.
  */
-function isModelObject(model: CommonModel) : boolean {
+export function isModelObject(model: CommonModel) : boolean {
   // This check should be done instead, needs a refactor to allow it though:
   // this.extend !== undefined || this.properties !== undefined
   if (model.type !== undefined) {
