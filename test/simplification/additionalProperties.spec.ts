@@ -73,11 +73,11 @@ describe('Simplification to additionalProperties', function() {
   test('should return simplified additionalProperties if schema', function() {
     const schema = { type: "object", additionalProperties: {type: "object", properties: {"test": {type: "string"}}}};
     const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './additionalProperties/expected/simple.json'), 'utf8');
-    const expectedModels = JSON.parse(expectedSchemaString);
+    const expectedAdditionalProperties = JSON.parse(expectedSchemaString);
     const simplifier = new Simplifier();
     const commonModel = new CommonModel();
     commonModel.type = "object";
     const simplifiedAdditionalProperties = simplifyAdditionalProperties(schema, simplifier, commonModel);
-    expect(simplifiedAdditionalProperties).toEqual(expectedModels);
+    expect(simplifiedAdditionalProperties).toEqual(expectedAdditionalProperties);
   });
 });
