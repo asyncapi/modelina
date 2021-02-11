@@ -1,7 +1,7 @@
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { CommonInputModel } from '../models/CommonInputModel';
 import { CommonModel } from '../models/CommonModel'
-import Simplifier from '../simplification/Simplifier';
+import {simplify} from '../simplification/Simplifier';
 import { Schema } from '../models/Schema';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import path from 'path';
@@ -63,6 +63,13 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
             dereference: { circular: 'ignore' },
         });
         const parsedSchema = Schema.toSchema(input);
+        if (refParser.$refs.circular && typeof parsedSchema !== "boolean"){
+          await refParser.dereference(localPath,
+            parsedSchema, {
+            continueOnError: true,
+            dereference: { circular: true },
+          });
+        }
         commonInputModel.models = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema);
         return commonInputModel;
     }
@@ -73,8 +80,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
      * @param schema to simplify to common model
      */
     static convertSchemaToCommonModel(schema: Schema | boolean) : {[key: string]: CommonModel} {
-        const simplifier = new Simplifier();
-        const commonModels = simplifier.simplify(schema);
+        const commonModels = simplify(schema);
         const commonModelsMap : {[key: string]: CommonModel}  = {};
         commonModels.forEach((value) => {
             if(value.$id){

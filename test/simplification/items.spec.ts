@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { Schema } from '../../src/models/Schema';
-import Simplifier from '../../src/simplification/Simplifier';
+import { Simplifier } from '../../src/simplification/Simplifier';
 import simplifyItems from '../../src/simplification/SimplifyItems';
 
 /**
