@@ -1,7 +1,7 @@
 import { AbstractRenderer } from "../AbstractRenderer";
-import { JavaGenerator, JavaOptions } from "./JavaGenerator";
+import { JavaOptions } from "./JavaGenerator";
 
-import { CommonModel, CommonInputModel } from "../../models";
+import { CommonModel, CommonInputModel, Preset } from "../../models";
 import { FormatHelpers } from "../../helpers";
 
 /**
@@ -11,14 +11,15 @@ import { FormatHelpers } from "../../helpers";
  */
 export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
   constructor(
-    protected model: CommonModel, 
-    protected inputModel: CommonInputModel,
-    protected options: JavaOptions = JavaGenerator.defaultOptions,
+    options: JavaOptions,
+    presets: Array<[Preset, unknown]>,
+    model: CommonModel, 
+    inputModel: CommonInputModel,
   ) {
-    super({ ...JavaGenerator.defaultOptions, ...options });
+    super(options, presets, model, inputModel);
   }
 
-  protected renderType(model: CommonModel | CommonModel[]): string {
+  renderType(model: CommonModel | CommonModel[]): string {
     if (Array.isArray(model) || Array.isArray(model.type)) {
       return `Object`; // fallback
     }
@@ -28,7 +29,7 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
     return this.toClassType(this.toJavaType(model.type, model));
   }
 
-  protected toJavaType(type: string | undefined, model: CommonModel): string {
+  toJavaType(type: string | undefined, model: CommonModel): string {
     switch(type) {
       case 'integer':
       case 'int32':
@@ -57,15 +58,15 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
       case 'binary':
         return 'byte[]';
       case 'array': {
-        const types = model?.items ? this.renderType(model.items) : 'Object';
-        return `Array<${types}>`;
+        const type = model?.items ? this.renderType(model.items) : 'Object';
+        return `${type}[]`;
       }
       default:
         return 'Object';
     }
   }
 
-  protected toClassType(type: string): string {
+  toClassType(type: string): string {
     switch(type) {
       case 'int':
         return 'Integer';
@@ -82,9 +83,9 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
     }
   }
 
-  protected renderAnnotation(annotation: any): string;
-  protected renderAnnotation(annotations: Array<any>): string;
-  protected renderAnnotation(annotation: Array<any> | any): string {
+  renderAnnotation(annotation: any): string;
+  renderAnnotation(annotations: Array<any>): string;
+  renderAnnotation(annotation: Array<any> | any): string {
     if (Array.isArray(annotation)) {
       return annotation.map(ann => this.renderAnnotation(ann)).join(" ");
     }

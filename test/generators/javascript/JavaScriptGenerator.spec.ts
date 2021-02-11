@@ -85,4 +85,54 @@ describe('JavaScriptGenerator', function() {
     const anyModel = await generator.render(model, inputModel);
     expect(anyModel).toEqual(expected);
   });
+
+  test('should work custom preset for `class` type', async function() {
+    const doc = {
+      $id: "CustomClass",
+      type: "object",
+      properties: {
+        property: { type: "string" },
+      }
+    };
+    const expected = `export class CustomClass {
+  #property;
+      
+  constructor(input) {
+    this.#property = input.property;
+  }
+      
+  get property() { return this.#property; }
+  set property(property) { this.#property = property; }
+}`;
+
+    generator = new JavaScriptGenerator({ presets: [
+      {
+        class: {
+          self({ content }) {
+            return `export ${content}`;
+          },
+          property({ content }) {
+            return `#${content}`;
+          },
+          ctor() {
+            return `constructor(input) {
+  this.#property = input.property;
+}`;
+          },
+          getter() {
+            return `get property() { return this.#property; }`;
+          },
+          setter() {
+            return `set property(property) { this.#property = property; }`;
+          },
+        }
+      }
+    ] });
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models["CustomClass"];
+    
+    const classModel = await generator.render(model, inputModel);
+    expect(classModel).toEqual(expected);
+  });
 });
