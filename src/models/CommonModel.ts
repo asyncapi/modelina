@@ -1,12 +1,12 @@
-import { CommonSchema } from "./CommonSchema";
-import { Schema } from "./Schema";
+import { CommonSchema } from './CommonSchema';
+import { Schema } from './Schema';
 
 /**
  * Common representation for the renderers.
  * 
  * @extends CommonSchema<CommonModel>
  */
-export class CommonModel extends CommonSchema<CommonModel>{
+export class CommonModel extends CommonSchema<CommonModel> {
   extend?: string[]
   originalSchema?: Schema | boolean
   
@@ -25,7 +25,6 @@ export class CommonModel extends CommonSchema<CommonModel>{
     }
     return newCommonModel;
   }
-
 
   /**
    * Only merge if left side is undefined and right side is sat OR both sides are defined
@@ -51,23 +50,21 @@ export class CommonModel extends CommonSchema<CommonModel>{
       }
     }
 
-
     const mergeItems = (models: CommonModel | CommonModel[] | undefined): CommonModel | undefined => {
       if (Array.isArray(models)) {
         if (models.length > 0) {
           let mergedItemsModel: CommonModel = models[0];
           models.forEach((model) => { mergedItemsModel = CommonModel.mergeCommonModels(mergedItemsModel, model, originalSchema); });
           return mergedItemsModel;
-        } else {
-          return undefined;
-        }
+        } 
+        return undefined;
       }
       return models;
     };
     if (mergeFrom.items !== undefined) {
       //Incase of arrays, merge them into a single schema
-      let mergeFromItemsModel = mergeItems(mergeFrom.items);
-      let mergeToItemsModel = mergeItems(mergeTo.items);
+      const mergeFromItemsModel = mergeItems(mergeFrom.items);
+      const mergeToItemsModel = mergeItems(mergeTo.items);
       if (mergeFromItemsModel !== undefined) {
         if (mergeToItemsModel !== undefined) {
           mergeTo.items = CommonModel.mergeCommonModels(mergeToItemsModel, mergeFromItemsModel, originalSchema);
@@ -78,7 +75,6 @@ export class CommonModel extends CommonSchema<CommonModel>{
     } else if (mergeTo.items !== undefined) {
       mergeTo.items = mergeItems(mergeTo.items);
     }
-
 
     if (mergeFrom.enum !== undefined) {
       if (mergeTo.enum === undefined) {
@@ -101,7 +97,7 @@ export class CommonModel extends CommonSchema<CommonModel>{
               mergeTo.type = [mergeTo.type!, type];
             }
           }
-        }
+        };
         if (Array.isArray(mergeFrom.type)) {
           mergeFrom.type.forEach(addToType);
         } else {

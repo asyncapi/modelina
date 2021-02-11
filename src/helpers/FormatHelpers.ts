@@ -2,7 +2,7 @@ import {
   camelCase,
   pascalCase,
   constantCase,
-} from "change-case";
+} from 'change-case';
 
 export enum IndentationTypes {
   TABS = 'tabs',
@@ -57,7 +57,7 @@ export class FormatHelpers {
    * @param {IndentationTypes} type the type of indendations to use. SPACES by default.
    * @returns {string}
    */
-  static indent(content: string = '', size: number = 1, type: IndentationTypes = IndentationTypes.SPACES): string {
+  static indent(content = '', size = 1, type: IndentationTypes = IndentationTypes.SPACES): string {
     if (size < 1) {
       return content;
     }
@@ -67,8 +67,8 @@ export class FormatHelpers {
       const newLineArray = content.split('\n');
       return newLineArray.reduce((accumulator, value) => {
         const newValue = value.trim() === '' ? value : `${this.getIndentation(size, type)}${value}`;
-        return accumulator === "" ? newValue : `${accumulator}\n${newValue}`;
-      }, "");
+        return accumulator === '' ? newValue : `${accumulator}\n${newValue}`;
+      }, '');
     }
     return `${this.getIndentation(size, type)}${content}`;
   }
@@ -80,8 +80,8 @@ export class FormatHelpers {
    * @param {IndentationTypes} type the type of indendations to use. SPACES by default.
    * @returns {string}
    */
-  private static getIndentation(size: number = 0, type: IndentationTypes = IndentationTypes.SPACES): string {
+  private static getIndentation(size = 0, type: IndentationTypes = IndentationTypes.SPACES): string {
     const whitespaceChar = type === IndentationTypes.SPACES ? ' ' : '\t';
-    return Array(size).fill(whitespaceChar).join("");
+    return Array(size).fill(whitespaceChar).join('');
   }
 }

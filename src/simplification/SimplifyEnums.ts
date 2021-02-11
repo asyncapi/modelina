@@ -1,4 +1,4 @@
-import { Schema } from "models/Schema";
+import { Schema } from 'models/Schema';
 
 type Output = any[] | undefined;
 /**
@@ -8,7 +8,7 @@ type Output = any[] | undefined;
  * @param seenSchemas already seen schemas and their corresponding output, this is to avoid circular schemas
  */
 export default function simplifyEnums(schema: Schema | boolean, seenSchemas: Map<any, Output> = new Map()): Output {
-  if (typeof schema !== "boolean") {
+  if (typeof schema !== 'boolean') {
     let enums: any[] = [];
     if (seenSchemas.has(schema)) return seenSchemas.get(schema);
     seenSchemas.set(schema, enums);
@@ -24,7 +24,7 @@ export default function simplifyEnums(schema: Schema | boolean, seenSchemas: Map
       schemas.forEach((schema) => {
         addToEnums(simplifyEnums(schema, seenSchemas));
       });
-    }
+    };
 
     if (schema.enum) {
       addToEnums(schema.enum);
@@ -44,12 +44,12 @@ export default function simplifyEnums(schema: Schema | boolean, seenSchemas: Map
 
     //If const is defined overwrite any already determined enums
     if (schema.const !== undefined) {
-      enums = [schema.const]
+      enums = [schema.const];
     }
 
     //Ensure any enums which should not be present
     if (schema.not) {
-      let notEnums = simplifyEnums(schema.not, seenSchemas);
+      const notEnums = simplifyEnums(schema.not, seenSchemas);
       if (notEnums !== undefined) {
         notEnums.forEach((notEnum) => {
           if (enums.includes(notEnum)) {

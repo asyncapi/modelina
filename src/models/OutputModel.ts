@@ -1,5 +1,5 @@
-import { CommonInputModel } from "./CommonInputModel"
-import { CommonModel } from "./CommonModel";
+import { CommonInputModel } from './CommonInputModel';
+import { CommonModel } from './CommonModel';
 
 export interface ToOutputModelArg {
   result: string;

@@ -1,7 +1,7 @@
-import { AbstractInputProcessor } from "./AbstractInputProcessor";
-import { AsyncAPIInputProcessor } from "./AsyncAPIInputProcessor";
-import { JsonSchemaInputProcessor } from "./JsonSchemaInputProcessor";
-import { CommonInputModel } from "../models/CommonInputModel";
+import { AbstractInputProcessor } from './AbstractInputProcessor';
+import { AsyncAPIInputProcessor } from './AsyncAPIInputProcessor';
+import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
+import { CommonInputModel } from '../models/CommonInputModel';
 
 /**
  * Main input processor which figures out the type of input it receives and delegates the processing into separate individual processors.
@@ -9,9 +9,9 @@ import { CommonInputModel } from "../models/CommonInputModel";
 export class InputProcessor {
   private processors: Map<string, AbstractInputProcessor> = new Map();
 
-  constructor(){
-    this.addProcessor("asyncapi", new AsyncAPIInputProcessor()); 
-    this.addProcessor("default", new JsonSchemaInputProcessor());
+  constructor() {
+    this.addProcessor('asyncapi', new AsyncAPIInputProcessor()); 
+    this.addProcessor('default', new JsonSchemaInputProcessor());
   }
 
   /**
@@ -32,15 +32,15 @@ export class InputProcessor {
    */
   process(input: any) : Promise<CommonInputModel> {
     for (const [type, processor] of this.processors) {
-      if(type === "default") continue;
-      if(processor.shouldProcess(input)) {
+      if (type === 'default') continue;
+      if (processor.shouldProcess(input)) {
         return processor.process(input);
       }
     }
-    const defaultProcessor = this.processors.get("default");
-    if(defaultProcessor !== undefined){
+    const defaultProcessor = this.processors.get('default');
+    if (defaultProcessor !== undefined) {
       return defaultProcessor.process(input);
     }
-    throw "No default processor found"
+    throw 'No default processor found';
   }
 }
