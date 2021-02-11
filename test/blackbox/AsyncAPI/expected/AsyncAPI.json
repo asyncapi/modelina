@@ -38106,10 +38106,10 @@
           "type":"string"
         },
         "info":{
-          "$ref":"anonymSchema2"
+          "$ref":"info"
         },
         "servers":{
-          "$ref":"anonymSchema5"
+          "$ref":"server"
         },
         "defaultContentType":{
           "originalSchema":{
@@ -38118,10 +38118,10 @@
           "type":"string"
         },
         "channels":{
-          "$ref":"anonymSchema11"
+          "$ref":"channels"
         },
         "components":{
-          "$ref":"anonymSchema45"
+          "$ref":"component"
         },
         "tags":{
           "originalSchema":{
@@ -38176,15 +38176,15 @@
           },
           "type":"array",
           "items":{
-            "$ref":"anonymSchema31"
+            "$ref":"tag"
           }
         },
         "externalDocs":{
-          "$ref":"anonymSchema27"
+          "$ref":"externalDoc"
         }
       }
     },
-    "anonymSchema2":{
+    "info":{
       "originalSchema":{
         "type":"object",
         "description":"General information about the API.",
@@ -38274,7 +38274,7 @@
         }
       },
       "type":"object",
-      "$id":"anonymSchema2",
+      "$id":"info",
       "properties":{
         "title":{
           "originalSchema":{
@@ -38416,7 +38416,7 @@
         }
       }
     },
-    "anonymSchema5":{
+    "server":{
       "originalSchema":{
         "type":"object",
         "additionalProperties":{
@@ -38549,7 +38549,7 @@
         }
       },
       "type":"object",
-      "$id":"anonymSchema5",
+      "$id":"server",
       "additionalProperties":{
         "$ref":"anonymSchema6"
       }
@@ -39028,7 +39028,7 @@
         ]
       }
     },
-    "anonymSchema11":{
+    "channels":{
       "originalSchema":{
         "type":"object",
         "propertyNames":{
@@ -44778,12 +44778,12 @@
         }
       },
       "type":"object",
-      "$id":"anonymSchema11",
+      "$id":"channels",
       "additionalProperties":{
-        "$ref":"anonymSchema12"
+        "$ref":"channel"
       }
     },
-    "anonymSchema12":{
+    "channel":{
       "originalSchema":{
         "type":"object",
         "additionalProperties":false,
@@ -50525,7 +50525,7 @@
         }
       },
       "type":"object",
-      "$id":"anonymSchema12",
+      "$id":"channel",
       "properties":{
         "$ref":{
           "originalSchema":{
@@ -52032,7 +52032,7 @@
       },
       "extend":[
         "http://json-schema.org/draft-07/schema#",
-        "anonymSchema27"
+        "externalDoc"
       ]
     },
     "http://json-schema.org/draft-07/schema#":{
@@ -63870,7 +63870,7 @@
           "type":"string"
         },
         "externalDocs":{
-          "$ref":"anonymSchema27"
+          "$ref":"externalDoc"
         },
         "deprecated":{
           "originalSchema":{
@@ -66195,7 +66195,7 @@
         "$ref":"anonymSchema15"
       }
     },
-    "anonymSchema27":{
+    "externalDoc":{
       "originalSchema":{
         "type":"object",
         "additionalProperties":false,
@@ -66221,7 +66221,7 @@
         }
       },
       "type":"object",
-      "$id":"anonymSchema27",
+      "$id":"externalDoc",
       "properties":{
         "description":{
           "originalSchema":{
@@ -69238,11 +69238,11 @@
           },
           "type":"array",
           "items":{
-            "$ref":"anonymSchema31"
+            "$ref":"tag"
           }
         },
         "externalDocs":{
-          "$ref":"anonymSchema27"
+          "$ref":"externalDoc"
         },
         "operationId":{
           "originalSchema":{
@@ -69838,11 +69838,11 @@
           },
           "type":"array",
           "items":{
-            "$ref":"anonymSchema31"
+            "$ref":"tag"
           }
         },
         "externalDocs":{
-          "$ref":"anonymSchema27"
+          "$ref":"externalDoc"
         },
         "operationId":{
           "originalSchema":{
@@ -70102,11 +70102,11 @@
           },
           "type":"array",
           "items":{
-            "$ref":"anonymSchema31"
+            "$ref":"tag"
           }
         },
         "externalDocs":{
-          "$ref":"anonymSchema27"
+          "$ref":"externalDoc"
         },
         "operationId":{
           "originalSchema":{
@@ -70130,7 +70130,7 @@
         ]
       }
     },
-    "anonymSchema31":{
+    "tag":{
       "originalSchema":{
         "type":"object",
         "additionalProperties":false,
@@ -70178,7 +70178,7 @@
         }
       },
       "type":"object",
-      "$id":"anonymSchema31",
+      "$id":"tag",
       "properties":{
         "name":{
           "originalSchema":{
@@ -70193,7 +70193,7 @@
           "type":"string"
         },
         "externalDocs":{
-          "$ref":"anonymSchema27"
+          "$ref":"externalDoc"
         }
       }
     },
@@ -74543,7 +74543,7 @@
           },
           "type":"array",
           "items":{
-            "$ref":"anonymSchema31"
+            "$ref":"tag"
           }
         },
         "summary":{
@@ -74575,7 +74575,7 @@
           "type":"string"
         },
         "externalDocs":{
-          "$ref":"anonymSchema27"
+          "$ref":"externalDoc"
         },
         "deprecated":{
           "originalSchema":{
@@ -78854,7 +78854,7 @@
           },
           "type":"array",
           "items":{
-            "$ref":"anonymSchema31"
+            "$ref":"tag"
           }
         },
         "summary":{
@@ -78886,7 +78886,7 @@
           "type":"string"
         },
         "externalDocs":{
-          "$ref":"anonymSchema27"
+          "$ref":"externalDoc"
         },
         "deprecated":{
           "originalSchema":{
@@ -79698,7 +79698,7 @@
           },
           "type":"array",
           "items":{
-            "$ref":"anonymSchema31"
+            "$ref":"tag"
           }
         },
         "summary":{
@@ -79730,7 +79730,7 @@
           "type":"string"
         },
         "externalDocs":{
-          "$ref":"anonymSchema27"
+          "$ref":"externalDoc"
         },
         "deprecated":{
           "originalSchema":{
@@ -80381,7 +80381,7 @@
         ]
       }
     },
-    "anonymSchema45":{
+    "component":{
       "originalSchema":{
         "type":"object",
         "description":"An object to hold a set of reusable objects for different aspects of the AsyncAPI Specification.",
@@ -85049,7 +85049,7 @@
         }
       },
       "type":"object",
-      "$id":"anonymSchema45",
+      "$id":"component",
       "properties":{
         "schemas":{
           "$ref":"anonymSchema46"
@@ -89132,11 +89132,11 @@
           },
           "type":"array",
           "items":{
-            "$ref":"anonymSchema31"
+            "$ref":"tag"
           }
         },
         "externalDocs":{
-          "$ref":"anonymSchema27"
+          "$ref":"externalDoc"
         },
         "operationId":{
           "originalSchema":{
@@ -90588,7 +90588,7 @@
           },
           "type":"array",
           "items":{
-            "$ref":"anonymSchema31"
+            "$ref":"tag"
           }
         },
         "summary":{
@@ -90620,7 +90620,7 @@
           "type":"string"
         },
         "externalDocs":{
-          "$ref":"anonymSchema27"
+          "$ref":"externalDoc"
         },
         "deprecated":{
           "originalSchema":{
