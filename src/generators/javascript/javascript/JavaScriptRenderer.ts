@@ -1,8 +1,8 @@
 import { AbstractRenderer } from "../../AbstractRenderer";
-import { JavaScriptGenerator, JavaScriptOptions } from "./JavaScriptGenerator";
+import { JavaScriptOptions } from "./JavaScriptGenerator";
 
 import { FormatHelpers } from "../../../helpers";
-import { CommonModel, CommonInputModel } from "../../../models";
+import { CommonModel, CommonInputModel, Preset } from "../../../models";
 
 /**
  * Common renderer for JavaScript types
@@ -11,31 +11,35 @@ import { CommonModel, CommonInputModel } from "../../../models";
  */
 export abstract class JavaScriptRenderer extends AbstractRenderer<JavaScriptOptions> {
   constructor(
-    protected model: CommonModel, 
-    protected inputModel: CommonInputModel,
-    protected options: JavaScriptOptions = JavaScriptGenerator.defaultOptions,
+    options: JavaScriptOptions,
+    presets: Array<[Preset, unknown]>,
+    model: CommonModel, 
+    inputModel: CommonInputModel,
   ) {
-    super({ ...JavaScriptGenerator.defaultOptions, ...options });
+    super(options, presets, model, inputModel);
   }
 
-  protected renderProperties(): string {
-    const properties = this.model.properties || {};
-    const fields = Object.keys(properties).map(name => {
-      name = FormatHelpers.toCamelCase(name);
-      return this.renderProperty(name);
-    }).filter(Boolean);
-    return this.renderBlock(fields);
-  }
-
-  protected renderProperty(name: string): string {
-    return `${name};`;
-  }
-
-  protected renderComments(lines: string | string[]): string {
+  renderComments(lines: string | string[]): string {
     lines = FormatHelpers.breakLines(lines);
     const content = lines.map(line => ` * ${line}`).join('\n');
     return `/**
 ${content}
  */`;
+  }
+
+  async renderProperties(): Promise<string> {
+    const properties = this.model.properties || {};
+    const content: string[] = [];
+
+    for (const [propertyName, property] of Object.entries(properties)) {
+      const rendererProperty = await this.runPropertyPreset(propertyName, property);
+      content.push(rendererProperty);
+    }
+
+    return this.renderBlock(content);
+  }
+
+  async runPropertyPreset(propertyName: string, property: CommonModel): Promise<string> {
+    return this.runPreset("property", { propertyName, property })
   }
 }

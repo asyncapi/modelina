@@ -1,6 +1,6 @@
-import { CommonModel } from "../../../../models";
 import { JavaScriptRenderer } from "../JavaScriptRenderer";
 
+import { CommonModel, ClassPreset } from "../../../../models";
 import { FormatHelpers } from "../../../../helpers";
 
 /**
@@ -9,47 +9,68 @@ import { FormatHelpers } from "../../../../helpers";
  * @extends JavaScriptRenderer
  */
 export class ClassRenderer extends JavaScriptRenderer {
-  public render(): string {
-    return`class ${this.model.$id} {
-${this.indent(this.renderProperties())}
+  public async defaultSelf(): Promise<string> {
+    return `class ${this.model.$id} {
+${this.indent(await this.renderProperties())}
       
-${this.indent(this.renderConstructor())}
+${this.indent(await this.runCtorPreset())}
       
-${this.indent(this.renderAccessors())}
+${this.indent(await this.renderAccessors())}
 }`;
   }
 
-  protected renderConstructor(): string {
-    return `constructor(input) {
-${this.indent(this.renderConstructorBody())}
-}`;
+  async runCtorPreset(): Promise<string> {
+    return this.runPreset("ctor");
   }
 
-  protected renderConstructorBody(): string {
-    const properties = this.model.properties!;
+  async renderAccessors(): Promise<string> {
+    const properties = this.model.properties || {};
+    const content: string[] = [];
+
+    for (const [propertyName, property] of Object.entries(properties)) {
+      const getter = await this.runGetterPreset(propertyName, property);
+      const setter = await this.runSetterPreset(propertyName, property);
+      content.push(this.renderBlock([getter, setter]));
+    }
+
+    return this.renderBlock(content, 2);
+  }
+
+  async runGetterPreset(propertyName: string, property: CommonModel): Promise<string> {
+    return this.runPreset("getter", { propertyName, property });
+  }
+
+  async runSetterPreset(propertyName: string, property: CommonModel): Promise<string> {
+    return this.runPreset("setter", { propertyName, property });
+  }
+}
+
+export const JS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
+  self({ renderer }) {
+    return renderer.defaultSelf();
+  },
+  ctor({ renderer, model }) {
+    const properties = model.properties || {};
     const assigments = Object.keys(properties).map(property => {
       property = FormatHelpers.toCamelCase(property);
       return `this.${property} = input.${property};`
     });
-    return this.renderBlock(assigments);
-  }
+    const body = renderer.renderBlock(assigments);
 
-  protected renderAccessors(): string {
-    const properties = this.model.properties!;
-    const accessors = Object.keys(properties).map(name => {
-      name = FormatHelpers.toCamelCase(name);
-      const getter = this.renderGetter(name);
-      const setter = this.renderSetter(name);
-      return this.renderBlock([getter, setter]);
-    }).filter(Boolean);
-    return this.renderBlock(accessors, 2);
-  }
-
-  protected renderGetter(name: string): string {
-    return `get ${name}() { return this.${name}; }`;
-  }
-
-  protected renderSetter(name: string): string {
-    return `set ${name}(${name}) { this.${name} = ${name}; }`;
-  }
+    return `constructor(input) {
+${renderer.indent(body)}
+}`;
+  },
+  property({ propertyName }) {
+    propertyName = FormatHelpers.toCamelCase(propertyName);
+    return `${propertyName};`;
+  },
+  getter({ propertyName }) {
+    propertyName = FormatHelpers.toCamelCase(propertyName);
+    return `get ${propertyName}() { return this.${propertyName}; }`;
+  },
+  setter({ propertyName }) {
+    propertyName = FormatHelpers.toCamelCase(propertyName);
+    return `set ${propertyName}(${propertyName}) { this.${propertyName} = ${propertyName}; }`;
+  },
 }

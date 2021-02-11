@@ -28,7 +28,7 @@ describe('TypeScriptGenerator', function() {
   private Double houseNumber;
   private Boolean marriage;
   private Object members;
-  private Array<Object> arrayType;
+  private Object[] arrayType;
 
   public String getStreetName() { return this.streetName; }
   public void setStreetName(String streetName) { this.streetName = streetName; }
@@ -48,12 +48,59 @@ describe('TypeScriptGenerator', function() {
   public Object getMembers() { return this.members; }
   public void setMembers(Object members) { this.members = members; }
 
-  public Array<Object> getArrayType() { return this.arrayType; }
-  public void setArrayType(Array<Object> arrayType) { this.arrayType = arrayType; }
+  public Object[] getArrayType() { return this.arrayType; }
+  public void setArrayType(Object[] arrayType) { this.arrayType = arrayType; }
 }`;
 
     const inputModel = await generator.process(doc);
     const model = inputModel.models["Address"];
+
+    let classModel = await generator.renderClass(model, inputModel);
+    expect(classModel).toEqual(expected);
+
+    classModel = await generator.render(model, inputModel);
+    expect(classModel).toEqual(expected);
+  });
+
+  test('should work custom preset for `class` type', async function() {
+    const doc = {
+      $id: "CustomClass",
+      type: "object",
+      properties: {
+        property: { type: "string" },
+      }
+    };
+    const expected = `public class CustomClass {
+  @JsonProperty("property")
+  private String property;
+
+  @JsonProperty("property")
+  public String getProperty() { return this.property; }
+  @JsonProperty("property")
+  public void setProperty(String property) { this.property = property; }
+}`;
+
+    generator = new JavaGenerator({ presets: [
+      {
+        class: {
+          property({ propertyName, content }) {
+            return `@JsonProperty("${propertyName}")
+${content}`;
+          },
+          getter({ propertyName, content }) {
+            return `@JsonProperty("${propertyName}")
+${content}`;
+          },
+          setter({ propertyName, content }) {
+            return `@JsonProperty("${propertyName}")
+${content}`;
+          },
+        }
+      }
+    ] });
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models["CustomClass"];
 
     let classModel = await generator.renderClass(model, inputModel);
     expect(classModel).toEqual(expected);
@@ -197,6 +244,63 @@ describe('TypeScriptGenerator', function() {
     expect(enumModel).toEqual(expected);
 
     enumModel = await generator.render(model, inputModel);
+    expect(enumModel).toEqual(expected);
+  });
+
+  test('should work custom preset for `enum` type', async function() {
+    const doc = {
+      $id: "CustomEnum",
+      type: "string",
+      enum: ["Texas", "Alabama", "California"],
+    };
+    const expected = `@EnumAnnotation
+public enum CustomEnum {
+  TEXAS("Texas"), ALABAMA("Alabama"), CALIFORNIA("California");
+
+  private String value;
+    
+  CustomEnum(String value) {
+    this.value = value;
+  }
+    
+  @JsonValue
+  public String getValue() {
+    return value;
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+
+  @JsonCreator
+  public static CustomEnum fromValue(String value) {
+    for (CustomEnum e : CustomEnum.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException("Unexpected value '" + value + "'");
+  }
+}`;
+
+    generator = new JavaGenerator({ presets: [
+      {
+        enum: {
+          self({ content }) {
+            return `@EnumAnnotation\n${content}`;
+          },
+        }
+      }
+    ] });
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models["CustomEnum"];
+    
+    let enumModel = await generator.render(model, inputModel);
+    expect(enumModel).toEqual(expected);
+    
+    enumModel = await generator.renderEnum(model, inputModel);
     expect(enumModel).toEqual(expected);
   });
 });
