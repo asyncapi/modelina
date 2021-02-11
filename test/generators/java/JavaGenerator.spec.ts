@@ -28,7 +28,7 @@ describe('TypeScriptGenerator', function() {
   private Double houseNumber;
   private Boolean marriage;
   private Object members;
-  private Array<Object> arrayType;
+  private Object[] arrayType;
 
   public String getStreetName() { return this.streetName; }
   public void setStreetName(String streetName) { this.streetName = streetName; }
@@ -48,8 +48,8 @@ describe('TypeScriptGenerator', function() {
   public Object getMembers() { return this.members; }
   public void setMembers(Object members) { this.members = members; }
 
-  public Array<Object> getArrayType() { return this.arrayType; }
-  public void setArrayType(Array<Object> arrayType) { this.arrayType = arrayType; }
+  public Object[] getArrayType() { return this.arrayType; }
+  public void setArrayType(Object[] arrayType) { this.arrayType = arrayType; }
 }`;
 
     const inputModel = await generator.process(doc);
@@ -244,6 +244,63 @@ ${content}`;
     expect(enumModel).toEqual(expected);
 
     enumModel = await generator.render(model, inputModel);
+    expect(enumModel).toEqual(expected);
+  });
+
+  test('should work custom preset for `enum` type', async function() {
+    const doc = {
+      $id: "CustomEnum",
+      type: "string",
+      enum: ["Texas", "Alabama", "California"],
+    };
+    const expected = `@EnumAnnotation
+public enum CustomEnum {
+  TEXAS("Texas"), ALABAMA("Alabama"), CALIFORNIA("California");
+
+  private String value;
+    
+  CustomEnum(String value) {
+    this.value = value;
+  }
+    
+  @JsonValue
+  public String getValue() {
+    return value;
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+
+  @JsonCreator
+  public static CustomEnum fromValue(String value) {
+    for (CustomEnum e : CustomEnum.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException("Unexpected value '" + value + "'");
+  }
+}`;
+
+    generator = new JavaGenerator({ presets: [
+      {
+        enum: {
+          self({ content }) {
+            return `@EnumAnnotation\n${content}`;
+          },
+        }
+      }
+    ] });
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models["CustomEnum"];
+    
+    let enumModel = await generator.render(model, inputModel);
+    expect(enumModel).toEqual(expected);
+    
+    enumModel = await generator.renderEnum(model, inputModel);
     expect(enumModel).toEqual(expected);
   });
 });

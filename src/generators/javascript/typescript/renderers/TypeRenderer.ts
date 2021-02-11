@@ -17,22 +17,13 @@ export class TypeRenderer extends TypeScriptRenderer {
   async renderTypeBody(): Promise<string> {
     const kind = TypeHelpers.extractKind(this.model);
     switch(kind) {
-      case ModelKind.OBJECT: {
-        return await this.renderObject();
-      }
       case ModelKind.ENUM: {
         return this.renderEnum();
       }
       default: return this.renderType(this.model);
     }
   }
-
-  async renderObject(): Promise<string> {
-    return `{
-${this.indent(await this.renderProperties())}
-}`;
-  }
-
+  
   renderEnum(): string {
     const enums = this.model.enum || [];
     return enums.map(t => typeof t === "string" ? `"${t}"` : t).join(" | ");

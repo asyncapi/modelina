@@ -58,8 +58,8 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
       case 'binary':
         return 'byte[]';
       case 'array': {
-        const types = model?.items ? this.renderType(model.items) : 'Object';
-        return `Array<${types}>`;
+        const type = model?.items ? this.renderType(model.items) : 'Object';
+        return `${type}[]`;
       }
       default:
         return 'Object';
