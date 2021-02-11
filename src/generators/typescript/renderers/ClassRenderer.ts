@@ -1,7 +1,7 @@
 import { TypeScriptRenderer } from "../TypeScriptRenderer";
 
-import { CommonModel, ClassPreset } from "../../../../models";
-import { FormatHelpers } from "../../../../helpers";
+import { CommonModel, ClassPreset } from "../../../models";
+import { FormatHelpers } from "../../../helpers";
 
 /**
  * Renderer for TypeScript's `class` type

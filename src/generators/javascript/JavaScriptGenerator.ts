@@ -2,9 +2,9 @@ import {
   AbstractGenerator, 
   CommonGeneratorOptions,
   defaultGeneratorOptions,
-} from "../../AbstractGenerator";
-import { CommonModel, CommonInputModel } from "../../../models";
-import { TypeHelpers, ModelKind } from "../../../helpers";
+} from "../AbstractGenerator";
+import { CommonModel, CommonInputModel } from "../../models";
+import { TypeHelpers, ModelKind } from "../../helpers";
 
 import { JavaScriptPreset, JS_DEFAULT_PRESET } from "./JavaScriptPreset";
 

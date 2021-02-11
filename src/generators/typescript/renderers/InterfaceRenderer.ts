@@ -1,6 +1,6 @@
 import { TypeScriptRenderer } from "../TypeScriptRenderer";
 
-import { InterfacePreset } from "../../../../models";
+import { InterfacePreset } from "../../../models";
 
 /**
  * Renderer for TypeScript's `interface` type
