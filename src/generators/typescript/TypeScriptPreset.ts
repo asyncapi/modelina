@@ -1,4 +1,4 @@
-import { Preset, ClassPreset, InterfacePreset, EnumPreset, CommonPreset } from "../../../models";
+import { Preset, ClassPreset, InterfacePreset, EnumPreset, CommonPreset } from "../../models";
 
 import { ClassRenderer, TS_DEFAULT_CLASS_PRESET } from "./renderers/ClassRenderer";
 import { InterfaceRenderer, TS_DEFAULT_INTERFACE_PRESET } from "./renderers/InterfaceRenderer";

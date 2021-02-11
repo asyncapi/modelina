@@ -43,7 +43,14 @@ export abstract class AbstractRenderer<O extends CommonGeneratorOptions = Common
     let content = "";
     for (const [preset, options] of this.presets) {
       if (typeof preset[functionName] === "function") {
-        content = await preset[functionName]({ ...params, renderer: this, content, options, model: this.model, inputModel: this.inputModel});
+        content = await preset[functionName]({ 
+          ...params, 
+          renderer: this, 
+          content, 
+          options, 
+          model: this.model, 
+          inputModel: this.inputModel
+        });
       }
     }
     return content;

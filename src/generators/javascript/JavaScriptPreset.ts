@@ -1,4 +1,4 @@
-import { Preset, ClassPreset } from "../../../models";
+import { Preset, ClassPreset } from "../../models";
 
 import { ClassRenderer, JS_DEFAULT_CLASS_PRESET } from "./renderers/ClassRenderer";
 
