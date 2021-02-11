@@ -25,7 +25,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         return this.processDraft7(input);
       }
     }
-    throw 'Input is not a JSON Schema, so it cannot be processed.';
+    throw new Error('Input is not a JSON Schema, so it cannot be processed.');
   }
 
   /**
@@ -53,6 +53,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
   private async processDraft7(input: any) : Promise<CommonInputModel> {
     const refParser = new $RefParser;
     const commonInputModel = new CommonInputModel();
+    // eslint-disable-next-line no-undef
     const localPath = `${process.cwd()}${path.sep}`;
     commonInputModel.originalInput = Schema.toSchema(input);
     await refParser.dereference(localPath, 

@@ -41,6 +41,6 @@ export class InputProcessor {
     if (defaultProcessor !== undefined) {
       return defaultProcessor.process(input);
     }
-    throw 'No default processor found';
+    throw new Error('No default processor found');
   }
 }

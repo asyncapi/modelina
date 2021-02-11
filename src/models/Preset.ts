@@ -14,15 +14,15 @@ export function isPresetWithOptions(preset: Preset | PresetWithOptions): preset 
   return preset.hasOwnProperty('preset');
 }
 
-export interface CommonPreset<R extends AbstractRenderer> {
-  self?: (args: PresetArgs<R>) => Promise<string> | string;
-}
-
 export interface PresetArgs<R extends AbstractRenderer> {
   model: CommonModel;
   inputModel: CommonInputModel;
   renderer: R;
   content: string;
+}
+
+export interface CommonPreset<R extends AbstractRenderer> {
+  self?: (args: PresetArgs<R>) => Promise<string> | string;
 }
 
 export interface PropertyArgs {

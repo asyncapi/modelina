@@ -16,7 +16,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * @param object to transform
    * @returns CommonModel instance of the object
    */
-  static toCommonModel(object: Object): CommonModel {
+  static toCommonModel(object: unknown): CommonModel {
     let newCommonModel = new CommonModel();
     newCommonModel = Object.assign(newCommonModel, object);
     newCommonModel = CommonSchema.transformSchema(newCommonModel, CommonModel.toCommonModel) as CommonModel;

@@ -73,13 +73,10 @@ export default function simplifyTypes(schema: Schema | boolean, seenSchemas: Map
         return 'null';
       }
       const typeOfEnum = typeof value;
-      switch (typeOfEnum) {
-      //We don't need to check undefined, function, symbol since it should never be possible
-      case 'bigint':
+      if (typeOfEnum === 'bigint') {
         return 'number';
-      default:
-        return typeOfEnum;
-      }
+      } 
+      return typeOfEnum;
     };
     if (schema.enum) {
       schema.enum.forEach((value: any) => {

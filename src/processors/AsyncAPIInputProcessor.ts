@@ -11,7 +11,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
      * @param input 
      */
   async process(input: any): Promise<CommonInputModel> {
-    if (!this.shouldProcess(input)) throw 'Input is not an AsyncAPI document so it cannot be processed.';
+    if (!this.shouldProcess(input)) throw new Error('Input is not an AsyncAPI document so it cannot be processed.');
     let doc: AsyncAPIDocument;
     const common = new CommonInputModel();
     if (!AsyncAPIInputProcessor.isFromParser(input)) {
@@ -33,14 +33,10 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
      * @param input 
      */
   shouldProcess(input: any) : boolean {
-    if (typeof input === 'object') {
-      //Check if we got a parsed document from out parser
-      if (AsyncAPIInputProcessor.isFromParser(input)) {
-        return true;
-        //Check if we just got provided a pure object
-      } else if (input.asyncapi !== undefined) {
-        return true;
-      }
+    //Check if we got a parsed document from out parser
+    //Check if we just got provided a pure object
+    if (typeof input === 'object' && (AsyncAPIInputProcessor.isFromParser(input) || input.asyncapi !== undefined)) {
+      return true;
     }
     return false;
   }
