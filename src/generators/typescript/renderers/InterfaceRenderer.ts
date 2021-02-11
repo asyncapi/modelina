@@ -1,6 +1,6 @@
-import { TypeScriptRenderer } from "../TypeScriptRenderer";
+import { TypeScriptRenderer } from '../TypeScriptRenderer';
 
-import { InterfacePreset } from "../../../models";
+import { InterfacePreset } from '../../../models';
 
 /**
  * Renderer for TypeScript's `interface` type
@@ -22,4 +22,4 @@ export const TS_DEFAULT_INTERFACE_PRESET: InterfacePreset<InterfaceRenderer> = {
   property({ renderer, propertyName, property }) {
     return renderer.renderProperty(propertyName, property);
   },
-}
+};

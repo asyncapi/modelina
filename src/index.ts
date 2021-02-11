@@ -1,1 +1,1 @@
-export var index = "";
+export const index = '';

@@ -1,8 +1,8 @@
-import { AbstractRenderer } from "../AbstractRenderer";
-import { JavaScriptOptions } from "./JavaScriptGenerator";
+import { AbstractRenderer } from '../AbstractRenderer';
+import { JavaScriptOptions } from './JavaScriptGenerator';
 
-import { FormatHelpers } from "../../helpers";
-import { CommonModel, CommonInputModel, Preset } from "../../models";
+import { FormatHelpers } from '../../helpers';
+import { CommonModel, CommonInputModel, Preset } from '../../models';
 
 /**
  * Common renderer for JavaScript types
@@ -40,6 +40,6 @@ ${content}
   }
 
   async runPropertyPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset("property", { propertyName, property })
+    return this.runPreset('property', { propertyName, property });
   }
 }

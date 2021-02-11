@@ -1,7 +1,7 @@
-import { TypeScriptRenderer } from "../TypeScriptRenderer";
+import { TypeScriptRenderer } from '../TypeScriptRenderer';
 
-import { CommonModel, ClassPreset } from "../../../models";
-import { FormatHelpers } from "../../../helpers";
+import { CommonModel, ClassPreset } from '../../../models';
+import { FormatHelpers } from '../../../helpers';
 
 /**
  * Renderer for TypeScript's `class` type
@@ -20,7 +20,7 @@ ${this.indent(await this.renderAccessors())}
   }
 
   runCtorPreset(): Promise<string> {
-    return this.runPreset("ctor");
+    return this.runPreset('ctor');
   }
 
   async renderAccessors(): Promise<string> {
@@ -37,11 +37,11 @@ ${this.indent(await this.renderAccessors())}
   }
 
   runGetterPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset("getter", { propertyName, property });
+    return this.runPreset('getter', { propertyName, property });
   }
 
   runSetterPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset("setter", { propertyName, property });
+    return this.runPreset('setter', { propertyName, property });
   }
 }
 
@@ -53,7 +53,7 @@ export const TS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
     const properties = model.properties || {};
     const assigments = Object.keys(properties).map(property => {
       property = FormatHelpers.toCamelCase(property);
-      return `this.${property} = input.${property};`
+      return `this.${property} = input.${property};`;
     });
 
     return `constructor(input: ${model.$id}Input) {
@@ -71,7 +71,7 @@ ${renderer.indent(renderer.renderBlock(assigments))}
   setter({ renderer, propertyName, property }) {
     propertyName = FormatHelpers.toCamelCase(propertyName);
     const signature = renderer.renderTypeSignature(property, false);
-    const arg = `${propertyName}${signature}`
+    const arg = `${propertyName}${signature}`;
     return `set ${propertyName}(${arg}) { this.${propertyName} = ${propertyName}; }`;
   },
-}
+};

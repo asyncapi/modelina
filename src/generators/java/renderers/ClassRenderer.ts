@@ -1,7 +1,7 @@
-import { JavaRenderer } from "../JavaRenderer";
+import { JavaRenderer } from '../JavaRenderer';
 
-import { CommonModel, ClassPreset } from "../../../models";
-import { FormatHelpers } from "../../../helpers";
+import { CommonModel, ClassPreset } from '../../../models';
+import { FormatHelpers } from '../../../helpers';
 
 /**
  * Renderer for Java's `class` type
@@ -18,7 +18,7 @@ ${this.indent(await this.renderAccessors())}
   }
 
   async runCtorPreset(): Promise<string> {
-    return this.runPreset("ctor");
+    return this.runPreset('ctor');
   }
 
   async renderProperties(): Promise<string> {
@@ -34,7 +34,7 @@ ${this.indent(await this.renderAccessors())}
   }
 
   async runPropertyPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset("property", { propertyName, property })
+    return this.runPreset('property', { propertyName, property });
   }
 
   async renderAccessors(): Promise<string> {
@@ -51,11 +51,11 @@ ${this.indent(await this.renderAccessors())}
   }
 
   async runGetterPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset("getter", { propertyName, property });
+    return this.runPreset('getter', { propertyName, property });
   }
 
   async runSetterPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset("setter", { propertyName, property });
+    return this.runPreset('setter', { propertyName, property });
   }
 }
 
@@ -79,4 +79,4 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
     const type = renderer.renderType(property);
     return `public void set${setterName}(${type} ${propertyName}) { this.${propertyName} = ${propertyName}; }`;
   },
-}
+};
