@@ -3,6 +3,17 @@
   "models": {
     "anonymSchema1": {
       "$id": "anonymSchema1",
+      "additionalProperties": {
+        "originalSchema": true,
+        "type": [
+          "object",
+          "string",
+          "number",
+          "array",
+          "boolean",
+          "null"
+        ]
+      },
       "type": "object",
       "properties": {
         "foo": {

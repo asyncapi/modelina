@@ -6,6 +6,8 @@ import simplifyTypes from './SimplifyTypes';
 import simplifyItems from './SimplifyItems';
 import simplifyExtend from './SimplifyExtend';
 import { SimplificationOptions } from '../models/SimplificationOptions';
+import simplifyAdditionalProperties from './SimplifyAdditionalProperties';
+
 
 export class Simplifier {
   static defaultOptions: SimplificationOptions = {
@@ -85,6 +87,14 @@ export class Simplifier {
       }
       if (simplifiedProperties.newModels !== undefined) {
         models = [...models, ...simplifiedProperties.newModels];
+      }
+      
+      const simplifiedAdditionalProperties = simplifyAdditionalProperties(schema, this, model);
+      if(simplifiedAdditionalProperties.newModels !== undefined){
+          models = [...models, ...simplifiedAdditionalProperties.newModels];
+      }
+      if(simplifiedAdditionalProperties.additionalProperties !== undefined){
+        model.additionalProperties = simplifiedAdditionalProperties.additionalProperties;
       }
 
       if (this.options.allowInheritance) {

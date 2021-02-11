@@ -44,6 +44,17 @@
      },
      "type":"object",
      "$id":"anonymSchema1",
+     "additionalProperties": {
+       "originalSchema": true,
+       "type": [
+         "object",
+         "string",
+         "number",
+         "array",
+         "boolean",
+         "null"
+       ]
+     },
      "extend":[
        "anonymSchema3",
        "anonymSchema5"
@@ -71,6 +82,17 @@
      },
      "type":"object",
      "$id":"anonymSchema2",
+     "additionalProperties": {
+       "originalSchema": true,
+       "type": [
+         "object",
+         "string",
+         "number",
+         "array",
+         "boolean",
+         "null"
+       ]
+     },
      "properties":{
        "street_address":{
          "$ref":"anonymSchema3"
@@ -101,6 +123,17 @@
      },
      "type":"object",
      "$id":"anonymSchema3",
+     "additionalProperties": {
+       "originalSchema": true,
+       "type": [
+         "object",
+         "string",
+         "number",
+         "array",
+         "boolean",
+         "null"
+       ]
+     },
      "properties":{
        "floor":{
          "originalSchema":{
@@ -132,6 +165,17 @@
      },
      "type":"object",
      "$id":"anonymSchema4",
+     "additionalProperties": {
+       "originalSchema": true,
+       "type": [
+         "object",
+         "string",
+         "number",
+         "array",
+         "boolean",
+         "null"
+       ]
+     },
      "properties":{
        "street_address2":{
          "$ref":"anonymSchema5"
@@ -162,6 +206,17 @@
      },
      "type":"object",
      "$id":"anonymSchema5",
+     "additionalProperties": {
+       "originalSchema": true,
+       "type": [
+         "object",
+         "string",
+         "number",
+         "array",
+         "boolean",
+         "null"
+       ]
+     },
      "properties":{
        "floor2":{
          "originalSchema":{

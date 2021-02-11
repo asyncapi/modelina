@@ -1,8 +1,8 @@
-import { AbstractRenderer } from "../../AbstractRenderer";
+import { AbstractRenderer } from "../AbstractRenderer";
 import { JavaScriptOptions } from "./JavaScriptGenerator";
 
-import { FormatHelpers } from "../../../helpers";
-import { CommonModel, CommonInputModel, Preset } from "../../../models";
+import { FormatHelpers } from "../../helpers";
+import { CommonModel, CommonInputModel, Preset } from "../../models";
 
 /**
  * Common renderer for JavaScript types
