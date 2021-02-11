@@ -4,6 +4,17 @@
     "anonymSchema1": {
       "$id": "anonymSchema1",
       "type": "object",
+      "additionalProperties": {
+        "originalSchema": true,
+        "type": [
+          "object",
+          "string",
+          "number",
+          "array",
+          "boolean",
+          "null"
+        ]
+      },
       "properties": {
         "address_type": {
           "type": "array",

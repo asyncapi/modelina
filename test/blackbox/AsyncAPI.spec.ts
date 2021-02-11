@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { JsonSchemaInputProcessor } from '../../src/processors/JsonSchemaInputProcessor';
 describe('Simplification', function() {
-    test.skip('should return as is', async function() {
+    test('should return as is', async function() {
       const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './AsyncAPI/AsyncAPI.json'), 'utf8');
       const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './AsyncAPI/expected/AsyncAPI.json'), 'utf8');
       const inputSchema = JSON.parse(inputSchemaString);

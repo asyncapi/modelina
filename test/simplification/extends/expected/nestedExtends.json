@@ -31,6 +31,17 @@
     },
     "type":"object",
     "$id":"anonymSchema1",
+    "additionalProperties": {
+      "originalSchema": true,
+      "type": [
+        "object",
+        "string",
+        "number",
+        "array",
+        "boolean",
+        "null"
+      ]
+    },
     "extend":[
       "anonymSchema4",
       "anonymSchema5"
@@ -57,6 +68,17 @@
     },
     "type":"object",
     "$id":"anonymSchema2",
+    "additionalProperties": {
+      "originalSchema": true,
+      "type": [
+        "object",
+        "string",
+        "number",
+        "array",
+        "boolean",
+        "null"
+      ]
+    },
     "extend":[
       "anonymSchema3",
       "anonymSchema4"
@@ -72,6 +94,17 @@
     },
     "type":"object",
     "$id":"anonymSchema3",
+    "additionalProperties": {
+      "originalSchema": true,
+      "type": [
+        "object",
+        "string",
+        "number",
+        "array",
+        "boolean",
+        "null"
+      ]
+    },
     "properties":{
       "testProp1":{
         "originalSchema":{
@@ -91,6 +124,17 @@
     },
     "type":"object",
     "$id":"anonymSchema4",
+    "additionalProperties": {
+      "originalSchema": true,
+      "type": [
+        "object",
+        "string",
+        "number",
+        "array",
+        "boolean",
+        "null"
+      ]
+    },
     "properties":{
       "testProp2":{
         "originalSchema":{
@@ -110,6 +154,17 @@
     },
     "type":"object",
     "$id":"anonymSchema5",
+    "additionalProperties": {
+      "originalSchema": true,
+      "type": [
+        "object",
+        "string",
+        "number",
+        "array",
+        "boolean",
+        "null"
+      ]
+    },
     "properties":{
       "testProp3":{
         "originalSchema":{

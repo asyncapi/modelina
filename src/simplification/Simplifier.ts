@@ -22,7 +22,7 @@ export function simplify(schema : Schema | boolean) : CommonModel[] {
 /**
  * check if CommonModel is a separate model or a simple model.
  */
-function isModelObject(model: CommonModel) : boolean {
+export function isModelObject(model: CommonModel) : boolean {
   // This check should be done instead, needs a refactor to allow it though:
   // this.extend !== undefined || this.properties !== undefined
   if (model.type !== undefined) {

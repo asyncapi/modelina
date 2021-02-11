@@ -27,7 +27,7 @@ describe('Simplification to extend', function() {
     expect(schema.$id).toBeUndefined();
   });
 
-  test('should support advanced extend with nested objects', function() {
+  test('should support advanced extend with nested objects and properties', function() {
     const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/extendWithProperties.json'), 'utf8');
     const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/expected/extendWithProperties.json'), 'utf8');
     const schema = JSON.parse(inputSchemaString);

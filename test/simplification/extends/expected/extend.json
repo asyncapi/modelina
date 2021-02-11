@@ -28,6 +28,17 @@
      },
      "type":"object",
      "$id":"anonymSchema1",
+     "additionalProperties": {
+       "originalSchema": true,
+       "type": [
+         "object",
+         "string",
+         "number",
+         "array",
+         "boolean",
+         "null"
+       ]
+     },
      "extend":[
        "anonymSchema2",
        "anonymSchema3"
@@ -47,6 +58,17 @@
      },
      "type":"object",
      "$id":"anonymSchema2",
+     "additionalProperties": {
+       "originalSchema": true,
+       "type": [
+         "object",
+         "string",
+         "number",
+         "array",
+         "boolean",
+         "null"
+       ]
+     },
      "properties":{
        "street_address":{
          "originalSchema":{
@@ -76,6 +98,17 @@
      },
      "type":"object",
      "$id":"anonymSchema3",
+     "additionalProperties": {
+       "originalSchema": true,
+       "type": [
+         "object",
+         "string",
+         "number",
+         "array",
+         "boolean",
+         "null"
+       ]
+     },
      "properties":{
        "street_address2":{
          "originalSchema":{

@@ -19,7 +19,17 @@
           "type":"string"
         }
       },
-      "additionalProperties":true
+      "additionalProperties":{
+        "originalSchema": true,
+        "type": [
+          "object",
+          "string",
+          "number",
+          "array",
+          "boolean",
+          "null"
+        ]
+      }
     }
   ],
   "additionalProperties":{
