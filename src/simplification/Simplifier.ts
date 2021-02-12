@@ -77,7 +77,7 @@ export class Simplifier {
     }
 
     //Always ensure the model representing the input schema to be in index 0. 
-    this.existingModels = [model, ...this.existingModels, ...splitModels(model)];
+    this.existingModels = [model, ...this.existingModels, ...ensureModelsAreSplit(model)];
     return this.existingModels;
   }
 }
@@ -113,7 +113,7 @@ export function isModelObject(model: CommonModel) : boolean {
  * @param model to ensure are split up correctly
  * @param models which have already been split up
  */
-function ensureModelsAreSplit(model: CommonModel, models: CommonModel[]) : CommonModel {
+function splitModels(model: CommonModel, models: CommonModel[]) : CommonModel {
   if (isModelObject(model)) {
     const switchRootModel = new CommonModel();
     switchRootModel.$ref = model.$id;
@@ -123,20 +123,20 @@ function ensureModelsAreSplit(model: CommonModel, models: CommonModel[]) : Commo
   return model;
 }
 
-function splitModels(model: CommonModel, models: CommonModel[] = []) : CommonModel[] {
+function ensureModelsAreSplit(model: CommonModel, models: CommonModel[] = []) : CommonModel[] {
   if (model.properties) {
     const existingProperties = model.properties;
     for (const [prop, propSchema] of Object.entries(existingProperties)) {
-      existingProperties[`${prop}`] = ensureModelsAreSplit(propSchema, models);
+      existingProperties[`${prop}`] = splitModels(propSchema, models);
     }
   }
   if (model.items) {
     const existingItem = model.items;
-    model.items = ensureModelsAreSplit(existingItem as CommonModel, models);
+    model.items = splitModels(existingItem as CommonModel, models);
   }
   if (model.additionalProperties) {
     const existingAdditionalProperties = model.additionalProperties;
-    model.additionalProperties = ensureModelsAreSplit(existingAdditionalProperties as CommonModel, models);
+    model.additionalProperties = splitModels(existingAdditionalProperties as CommonModel, models);
   }
   return models;
 }
