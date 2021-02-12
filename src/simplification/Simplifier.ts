@@ -55,7 +55,7 @@ export class Simplifier {
     let models : CommonModel[] = [];
     const model = new CommonModel();
     if (typeof schema !== 'boolean' && this.seenSchemas.has(schema)) {
-      return [this.seenSchemas.get(schema)!];
+      return [this.seenSchemas.get(schema)];
     }
     model.originalSchema = Schema.toSchema(schema);
     const simplifiedTypes = simplifyTypes(schema);
@@ -81,11 +81,8 @@ export class Simplifier {
       }
 
       const simplifiedProperties = simplifyProperties(schema, this);
-      if (simplifiedProperties.properties !== undefined) {
-        model.properties = simplifiedProperties.properties;
-      }
-      if (simplifiedProperties.newModels !== undefined) {
-        models = [...models, ...simplifiedProperties.newModels];
+      if (simplifiedProperties !== undefined) {
+        model.properties = simplifiedProperties;
       }
       
       const simplifiedAdditionalProperties = simplifyAdditionalProperties(schema, this, model);
@@ -117,7 +114,7 @@ export class Simplifier {
     }
 
     //Always ensure the model representing the input schema to be in index 0. 
-    models = [model, ...models];
+    models = [model, ...splitModels(model)];
     return models;
   }
 }
@@ -146,4 +143,29 @@ export function isModelObject(model: CommonModel) : boolean {
     return model.type.includes('object');
   }
   return false;
+}
+
+/**
+ * 
+ * @param model to ensure are split up correctly
+ * @param models which have already been split up
+ */
+function ensureModelsAreSplit(model: CommonModel, models: CommonModel[]) : CommonModel {
+  if (isModelObject(model)) {
+    const switchRootModel = new CommonModel();
+    switchRootModel.$ref = model.$id;
+    models.push(model);
+    return switchRootModel;
+  }
+  return model;
+}
+
+function splitModels(model: CommonModel, models: CommonModel[] = []) : CommonModel[] {
+  if (model.properties) {
+    const existingProperties = model.properties;
+    for (const [prop, propSchema] of Object.entries(existingProperties)) {
+      existingProperties[`${prop}`] = ensureModelsAreSplit(propSchema, models);
+    }
+  }
+  return models;
 }

@@ -15,10 +15,11 @@ const expectFunction = (inputSchemaPath: string, expectedPropertiesPath: string,
   const inputSchema = JSON.parse(inputSchemaString);
   const expectedProperties = JSON.parse(expectedCommonInputModelString);
   const simplifier = new Simplifier(options);
-  const { newModels, properties } = simplifyProperties(inputSchema, simplifier);
-  expect(newModels).toBeUndefined();
+  const properties = simplifyProperties(inputSchema, simplifier);
   expect(properties).toEqual(expectedProperties);
 }
+
+
 /**
  * Some of these test are purely theoretical and have little if any merit 
  * on a JSON Schema which actually makes sense but are used to test the principles.
@@ -89,9 +90,7 @@ describe('Simplification of properties', function () {
     const inputSchema = JSON.parse(inputSchemaString);
     const expectedProperties = JSON.parse(expectedCommonInputModelString);
     const simplifier = new Simplifier();
-    const { newModels, properties } = simplifyProperties(inputSchema, simplifier);
-    expect(newModels).toHaveLength(1);
-    expect(newModels).toEqual(expectedProperties.newModels);
+    const properties = simplifyProperties(inputSchema, simplifier);
     expect(properties).toEqual(expectedProperties.properties);
   });
 });
