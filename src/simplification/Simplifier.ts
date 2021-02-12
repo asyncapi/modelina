@@ -15,34 +15,11 @@ export class Simplifier {
   options: SimplificationOptions;
   anonymCounter = 1;
   seenSchemas: Map<Schema, CommonModel> = new Map();
-
+  existingModels: CommonModel[] = [];
   constructor(
     options: SimplificationOptions = Simplifier.defaultOptions,
   ) {
     this.options = { ...Simplifier.defaultOptions, ...options };
-  }
-
-  /**
-   * Simplifies a schema by first checking if its an object, if so, split it out and ref it based on id.
-   * Index 0 will always be the input schema CommonModel representation
-   * 
-   * @param schema to simplify
-   */
-  simplifyRecursive(schema : Schema | boolean) : CommonModel[] {
-    let models : CommonModel[] = [];
-    const simplifiedModel = this.simplify(schema);
-    if (simplifiedModel.length > 0) {
-      //Get the root model from the simplification process which is the first element in the list
-      const schemaSimplifiedModel = simplifiedModel[0];
-      //Only if the schema is of type object and contains properties, split it out
-      if (isModelObject(schemaSimplifiedModel)) {
-        const switchRootModel = new CommonModel();
-        switchRootModel.$ref = schemaSimplifiedModel.$id;
-        models[0] = switchRootModel;
-      }
-      models = [...models, ...simplifiedModel];
-    }
-    return models;
   }
 
   /**
@@ -52,10 +29,9 @@ export class Simplifier {
    * @param schema to simplify
    */
   simplify(schema : Schema | boolean) : CommonModel[] {
-    let models : CommonModel[] = [];
     const model = new CommonModel();
     if (typeof schema !== 'boolean' && this.seenSchemas.has(schema)) {
-      return [this.seenSchemas.get(schema)];
+      return [this.seenSchemas.get(schema)!];
     }
     model.originalSchema = Schema.toSchema(schema);
     const simplifiedTypes = simplifyTypes(schema);
@@ -73,11 +49,8 @@ export class Simplifier {
       }
 
       const simplifiedItems = simplifyItems(schema, this);
-      if (simplifiedItems.newModels !== undefined) {
-        models = [...models, ...simplifiedItems.newModels];
-      }
-      if (simplifiedItems.items !== undefined) {
-        model.items = simplifiedItems.items;
+      if (simplifiedItems !== undefined) {
+        model.items = simplifiedItems;
       }
 
       const simplifiedProperties = simplifyProperties(schema, this);
@@ -86,36 +59,26 @@ export class Simplifier {
       }
       
       const simplifiedAdditionalProperties = simplifyAdditionalProperties(schema, this, model);
-      if (simplifiedAdditionalProperties.newModels !== undefined) {
-        models = [...models, ...simplifiedAdditionalProperties.newModels];
-      }
-      if (simplifiedAdditionalProperties.additionalProperties !== undefined) {
-        model.additionalProperties = simplifiedAdditionalProperties.additionalProperties;
+      if (simplifiedAdditionalProperties !== undefined) {
+        model.additionalProperties = simplifiedAdditionalProperties;
       }
 
       if (this.options.allowInheritance) {
         const simplifiedExtends = simplifyExtend(schema, this);
-        if (simplifiedExtends.newModels !== undefined) {
-          models = [...models, ...simplifiedExtends.newModels];
-        }
-        if (simplifiedExtends.extendingSchemas !== undefined) {
-          model.extend = simplifiedExtends.extendingSchemas;
+        if (simplifiedExtends !== undefined) {
+          model.extend = simplifiedExtends;
         }
       }
 
       const enums = simplifyEnums(schema);
       if (enums !== undefined && enums.length > 0) {
-        if (model.enum) {
-          model.enum = [...model.enum, ...enums];
-        } else {
-          model.enum = enums;
-        }
+        model.enum = enums;
       }
     }
 
     //Always ensure the model representing the input schema to be in index 0. 
-    models = [model, ...splitModels(model)];
-    return models;
+    this.existingModels = [model, ...this.existingModels, ...splitModels(model)];
+    return this.existingModels;
   }
 }
 
@@ -166,6 +129,14 @@ function splitModels(model: CommonModel, models: CommonModel[] = []) : CommonMod
     for (const [prop, propSchema] of Object.entries(existingProperties)) {
       existingProperties[`${prop}`] = ensureModelsAreSplit(propSchema, models);
     }
+  }
+  if (model.items) {
+    const existingItem = model.items;
+    model.items = ensureModelsAreSplit(existingItem as CommonModel, models);
+  }
+  if (model.additionalProperties) {
+    const existingAdditionalProperties = model.additionalProperties;
+    model.additionalProperties = ensureModelsAreSplit(existingAdditionalProperties as CommonModel, models);
   }
   return models;
 }
