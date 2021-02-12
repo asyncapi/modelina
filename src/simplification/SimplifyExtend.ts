@@ -1,6 +1,6 @@
-import { CommonModel } from "models";
-import { Schema } from "models/Schema";
-import { Simplifier } from "./Simplifier";
+import { CommonModel } from 'models';
+import { Schema } from 'models/Schema';
+import { Simplifier } from './Simplifier';
 type Output = {newModels: CommonModel[] | undefined; extendingSchemas: string[] | undefined};
 
 /**
@@ -11,14 +11,14 @@ type Output = {newModels: CommonModel[] | undefined; extendingSchemas: string[] 
 export default function simplifyExtend(schema: Schema | boolean, simplifier : Simplifier) : Output {
   let models : CommonModel[] | undefined;
   let extendingSchemas : string[] | undefined;
-  if(typeof schema !== "boolean" && schema.allOf !== undefined){
-    for(const allOfSchema of schema.allOf){
-      if(typeof allOfSchema !== "boolean"){
-        let simplifiedModels = simplifier.simplify(allOfSchema);
-        if(simplifiedModels.length > 0){
+  if (typeof schema !== 'boolean' && schema.allOf !== undefined) {
+    for (const allOfSchema of schema.allOf) {
+      if (typeof allOfSchema !== 'boolean') {
+        const simplifiedModels = simplifier.simplify(allOfSchema);
+        if (simplifiedModels.length > 0) {
           //If the root schema is of type object and has an id (should always have one) then extend the model
           const rootSimplifiedModel = simplifiedModels[simplifiedModels.length-1];
-          if(rootSimplifiedModel.type !== undefined && rootSimplifiedModel.type.includes("object") && rootSimplifiedModel.$id !== undefined){
+          if (rootSimplifiedModel.type !== undefined && rootSimplifiedModel.type.includes('object') && rootSimplifiedModel.$id !== undefined) {
             extendingSchemas = [...(extendingSchemas || []), rootSimplifiedModel.$id];
             models = [...(models || []), ...simplifiedModels];
           }

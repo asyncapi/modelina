@@ -1,7 +1,7 @@
-import { JavaScriptRenderer } from "../JavaScriptRenderer";
+import { JavaScriptRenderer } from '../JavaScriptRenderer';
 
-import { CommonModel, ClassPreset } from "../../../models";
-import { FormatHelpers } from "../../../helpers";
+import { CommonModel, ClassPreset } from '../../../models';
+import { FormatHelpers } from '../../../helpers';
 
 /**
  * Renderer for JavaScript's `class` type
@@ -20,7 +20,7 @@ ${this.indent(await this.renderAccessors())}
   }
 
   async runCtorPreset(): Promise<string> {
-    return this.runPreset("ctor");
+    return this.runPreset('ctor');
   }
 
   async renderAccessors(): Promise<string> {
@@ -37,11 +37,11 @@ ${this.indent(await this.renderAccessors())}
   }
 
   async runGetterPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset("getter", { propertyName, property });
+    return this.runPreset('getter', { propertyName, property });
   }
 
   async runSetterPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset("setter", { propertyName, property });
+    return this.runPreset('setter', { propertyName, property });
   }
 }
 
@@ -53,7 +53,7 @@ export const JS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
     const properties = model.properties || {};
     const assigments = Object.keys(properties).map(property => {
       property = FormatHelpers.toCamelCase(property);
-      return `this.${property} = input.${property};`
+      return `this.${property} = input.${property};`;
     });
     const body = renderer.renderBlock(assigments);
 
@@ -73,4 +73,4 @@ ${renderer.indent(body)}
     propertyName = FormatHelpers.toCamelCase(propertyName);
     return `set ${propertyName}(${propertyName}) { this.${propertyName} = ${propertyName}; }`;
   },
-}
+};

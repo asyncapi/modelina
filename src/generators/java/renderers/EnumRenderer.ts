@@ -1,7 +1,7 @@
-import { JavaRenderer } from "../JavaRenderer";
+import { JavaRenderer } from '../JavaRenderer';
 
-import { EnumPreset } from "../../../models";
-import { FormatHelpers } from "../../../helpers";
+import { EnumPreset } from '../../../models';
+import { FormatHelpers } from '../../../helpers';
 
 /**
  * Renderer for Java's `enum` type
@@ -11,7 +11,7 @@ import { FormatHelpers } from "../../../helpers";
 export class EnumRenderer extends JavaRenderer {
   async defaultSelf(): Promise<string> {
     const enumName = this.model.$id;
-    const type = Array.isArray(this.model.type) ? "Object" : this.model.type!;
+    const type = Array.isArray(this.model.type) ? 'Object' : this.model.type!;
     const classType = this.toClassType(this.toJavaType(type, this.model));
 
     return `public enum ${enumName} {
@@ -34,24 +34,24 @@ ${this.indent(this.renderHelpers(enumName!, classType))}
   }
 
   normalizeKey(value: any): string {
-    switch(typeof value) {
-      case "bigint":
-      case "number": {
-        return FormatHelpers.toConstantCase(`number ${value}`);
-      }
-      case "boolean": {
-        return FormatHelpers.toConstantCase(`boolean ${value}`);
-      }
-      default: return FormatHelpers.toConstantCase(value);
+    switch (typeof value) {
+    case 'bigint':
+    case 'number': {
+      return FormatHelpers.toConstantCase(`number ${value}`);
+    }
+    case 'boolean': {
+      return FormatHelpers.toConstantCase(`boolean ${value}`);
+    }
+    default: return FormatHelpers.toConstantCase(value);
     }
   }
 
   normalizeValue(value: any): string {
-    switch(typeof value) {
-      case "string": {
-        return `"${value}"`;
-      }
-      default: return `${value}`;
+    switch (typeof value) {
+    case 'string': {
+      return `"${value}"`;
+    }
+    default: return `${value}`;
     }
   }
 
@@ -84,7 +84,7 @@ public static ${enumName} fromValue(${classType} value) {
   }
 
   async runItemPreset(item: any): Promise<string> {
-    return this.runPreset("item", { item })
+    return this.runPreset('item', { item });
   }
 }
 
@@ -97,4 +97,4 @@ export const JAVA_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
     const value = renderer.normalizeValue(item);
     return `${key}(${value})`;
   },
-}
+};

@@ -1,11 +1,11 @@
-import { CommonSchema } from "./CommonSchema";
+import { CommonSchema } from './CommonSchema';
 
 /**
  * JSON Schema Draft 7 model
  * 
  * @extends CommonSchema<Schema>
  */
-export class Schema extends CommonSchema<Schema | boolean>{
+export class Schema extends CommonSchema<Schema | boolean> {
     $schema?: string;
     title?: string;
     multipleOf?: number;
@@ -52,75 +52,75 @@ export class Schema extends CommonSchema<Schema | boolean>{
      * @returns CommonModel instance of the object
      */
     static toSchema(object: Object, seenSchemas: Map<any, Schema> = new Map()): Schema | boolean {
-        if (typeof object === "boolean") return object;
-        if (seenSchemas.has(object)) return seenSchemas.get(object) as Schema;
-        let schema = new Schema();
-        schema = Object.assign(schema, object as Schema);
-        seenSchemas.set(object, schema);
-        schema = CommonSchema.transformSchema(schema, Schema.toSchema, seenSchemas);
+      if (typeof object === 'boolean') return object;
+      if (seenSchemas.has(object)) return seenSchemas.get(object) as Schema;
+      let schema = new Schema();
+      schema = Object.assign(schema, object as Schema);
+      seenSchemas.set(object, schema);
+      schema = CommonSchema.transformSchema(schema, Schema.toSchema, seenSchemas);
 
-        //Transform JSON Schema properties which contain nested schemas into an instance of Schema
-        if (schema.allOf !== undefined) {
-            schema.allOf = schema.allOf.map((item) => Schema.toSchema(item, seenSchemas))
-        }
-        if (schema.oneOf !== undefined) {
-            schema.oneOf = schema.oneOf.map((item) => Schema.toSchema(item, seenSchemas))
-        }
-        if (schema.anyOf !== undefined) {
-            schema.anyOf = schema.anyOf.map((item) => Schema.toSchema(item, seenSchemas))
-        }
+      //Transform JSON Schema properties which contain nested schemas into an instance of Schema
+      if (schema.allOf !== undefined) {
+        schema.allOf = schema.allOf.map((item) => Schema.toSchema(item, seenSchemas));
+      }
+      if (schema.oneOf !== undefined) {
+        schema.oneOf = schema.oneOf.map((item) => Schema.toSchema(item, seenSchemas));
+      }
+      if (schema.anyOf !== undefined) {
+        schema.anyOf = schema.anyOf.map((item) => Schema.toSchema(item, seenSchemas));
+      }
 
-        if (schema.not !== undefined) {
-            schema.not = Schema.toSchema(schema.not, seenSchemas);
-        }
+      if (schema.not !== undefined) {
+        schema.not = Schema.toSchema(schema.not, seenSchemas);
+      }
 
-        if (typeof schema.additionalItems === 'object' &&
+      if (typeof schema.additionalItems === 'object' &&
             schema.additionalItems !== null) {
-            schema.additionalItems = Schema.toSchema(schema.additionalItems, seenSchemas);
-        }
-        if (schema.contains !== undefined) {
-            schema.contains = Schema.toSchema(schema.contains, seenSchemas);
-        }
-        if (schema.dependencies !== undefined) {
-            var dependencies: { [key: string]: Schema | boolean | string[] } = {}
-            Object.entries(schema.dependencies).forEach(([propertyName, property]) => {
-                //We only care about object dependencies
-                if (typeof property === 'object' && !Array.isArray(property)) {
-                    dependencies[propertyName] = Schema.toSchema(property, seenSchemas);
-                } else {
-                    dependencies[propertyName] = property as string[];
-                }
-            });
-            schema.dependencies = dependencies;
-        }
-        if (schema.propertyNames !== undefined) {
-            schema.propertyNames = Schema.toSchema(schema.propertyNames, seenSchemas);
-        }
+        schema.additionalItems = Schema.toSchema(schema.additionalItems, seenSchemas);
+      }
+      if (schema.contains !== undefined) {
+        schema.contains = Schema.toSchema(schema.contains, seenSchemas);
+      }
+      if (schema.dependencies !== undefined) {
+        const dependencies: { [key: string]: Schema | boolean | string[] } = {};
+        Object.entries(schema.dependencies).forEach(([propertyName, property]) => {
+          //We only care about object dependencies
+          if (typeof property === 'object' && !Array.isArray(property)) {
+            dependencies[propertyName] = Schema.toSchema(property, seenSchemas);
+          } else {
+            dependencies[propertyName] = property as string[];
+          }
+        });
+        schema.dependencies = dependencies;
+      }
+      if (schema.propertyNames !== undefined) {
+        schema.propertyNames = Schema.toSchema(schema.propertyNames, seenSchemas);
+      }
 
-        if (schema.patternProperties !== undefined) {
-            var patternProperties: { [key: string]: Schema | boolean } = {}
-            Object.entries(schema.patternProperties).forEach(([propertyName, property]) => {
-                patternProperties[propertyName] = Schema.toSchema(property, seenSchemas);
-            });
-            schema.patternProperties = patternProperties;
-        }
-        if (schema.if !== undefined) {
-            schema.if = Schema.toSchema(schema.if, seenSchemas);
-        }
-        if (schema.then !== undefined) {
-            schema.then = Schema.toSchema(schema.then, seenSchemas);
-        }
-        if (schema.else !== undefined) {
-            schema.else = Schema.toSchema(schema.else, seenSchemas);
-        }
+      if (schema.patternProperties !== undefined) {
+        const patternProperties: { [key: string]: Schema | boolean } = {};
+        Object.entries(schema.patternProperties).forEach(([propertyName, property]) => {
+          patternProperties[propertyName] = Schema.toSchema(property, seenSchemas);
+        });
+        schema.patternProperties = patternProperties;
+      }
+      if (schema.if !== undefined) {
+        schema.if = Schema.toSchema(schema.if, seenSchemas);
+      }
+      if (schema.then !== undefined) {
+        schema.then = Schema.toSchema(schema.then, seenSchemas);
+      }
+      if (schema.else !== undefined) {
+        schema.else = Schema.toSchema(schema.else, seenSchemas);
+      }
 
-        if (schema.definitions !== undefined) {
-            var definitions: { [key: string]: Schema | boolean } = {}
-            Object.entries(schema.definitions).forEach(([propertyName, property]) => {
-                definitions[propertyName] = Schema.toSchema(property, seenSchemas);
-            });
-            schema.definitions = definitions;
-        }
-        return schema;
+      if (schema.definitions !== undefined) {
+        const definitions: { [key: string]: Schema | boolean } = {};
+        Object.entries(schema.definitions).forEach(([propertyName, property]) => {
+          definitions[propertyName] = Schema.toSchema(property, seenSchemas);
+        });
+        schema.definitions = definitions;
+      }
+      return schema;
     }
 }
