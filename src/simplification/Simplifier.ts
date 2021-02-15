@@ -115,6 +115,7 @@ export class Simplifier {
         }
       }
 
+      // TODO: Uncomment when we'll have simplified tests, not based on dependencies
       // model.required = simplifyRequired(schema);
     }
 
