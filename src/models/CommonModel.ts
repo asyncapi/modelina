@@ -118,4 +118,29 @@ export class CommonModel extends CommonSchema<CommonModel> {
     mergeTo.originalSchema = originalSchema;
     return mergeTo;
   }
+
+  /**
+   * Retrieves data from originalSchema by given key
+   * 
+   * @param key given key
+   * @returns {any}
+   */
+  getFromSchema<K extends keyof Schema>(key: K) {
+    let schema = this.originalSchema || {};
+    if (typeof schema === 'boolean') schema = {};
+    return schema[key];
+  }
+
+  /**
+   * Checks if given property name is required in object
+   * 
+   * @param propertyName given property name
+   * @returns {boolean}
+   */
+  isRequired(propertyName: string): boolean {
+    if (this.required === undefined) {
+      return false;
+    }
+    return this.required.includes(propertyName);
+  }
 }

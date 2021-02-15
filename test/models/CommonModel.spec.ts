@@ -288,7 +288,7 @@ describe('CommonModel', function() {
         const doc: Schema = { };
         let doc1 = CommonModel.toCommonModel(doc);
         let doc2 = CommonModel.toCommonModel(doc);
-        doc2.items = [{type: "string"}];
+        doc2.items = [CommonModel.toCommonModel({type: "string"})];
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
         expect(doc1.items).toEqual(doc2.items[0]);
       });
@@ -296,7 +296,7 @@ describe('CommonModel', function() {
         const doc: Schema = { };
         let doc1 = CommonModel.toCommonModel(doc);
         let doc2 = CommonModel.toCommonModel(doc);
-        doc1.items = [{type: "string"}, {type: "number"}];
+        doc1.items = [CommonModel.toCommonModel({type: "string"}), CommonModel.toCommonModel({type: "number"})];
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
         expect(doc1.items).toEqual({type: ["string", "number"], originalSchema: {}});
       });
@@ -312,8 +312,8 @@ describe('CommonModel', function() {
         const doc: Schema = { };
         let doc1 = CommonModel.toCommonModel(doc);
         let doc2 = CommonModel.toCommonModel(doc);
-        doc2.items = {type: "string"};
-        doc1.items = {type: "number"};
+        doc2.items = CommonModel.toCommonModel({type: "string"});
+        doc1.items = CommonModel.toCommonModel({type: "number"});
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
         expect(doc1.items).toEqual({type: ["number", "string"], originalSchema: {}});
       });
@@ -321,8 +321,8 @@ describe('CommonModel', function() {
         const doc: Schema = { };
         let doc1 = CommonModel.toCommonModel(doc);
         let doc2 = CommonModel.toCommonModel(doc);
-        doc2.items = [{type: "string"}, {type: ["boolean"]}];
-        doc1.items = [{type: ["number"]}];
+        doc2.items = [CommonModel.toCommonModel({type: "string"}), CommonModel.toCommonModel({type: "boolean"})];
+        doc1.items = [CommonModel.toCommonModel({type: "number"})];
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
         expect(doc1.items).toEqual({"originalSchema": {}, "type": ["number", "string", "boolean"]});
       });
@@ -340,7 +340,7 @@ describe('CommonModel', function() {
         const doc: Schema = { };
         let doc1 = CommonModel.toCommonModel(doc);
         let doc2 = CommonModel.toCommonModel(doc);
-        doc2.properties = {"testProp": {type: "string"}};
+        doc2.properties = {"testProp": CommonModel.toCommonModel({type: "string"})};
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
         expect(doc1.properties).toEqual(doc2.properties);
       });
@@ -348,8 +348,8 @@ describe('CommonModel', function() {
         const doc: Schema = { };
         let doc1 = CommonModel.toCommonModel(doc);
         let doc2 = CommonModel.toCommonModel(doc);
-        doc2.properties = {"testProp": {type: "string"}};
-        doc1.properties = {"testProp2": {type: "number"}};
+        doc2.properties = {"testProp": CommonModel.toCommonModel({type: "string"})};
+        doc1.properties = {"testProp2": CommonModel.toCommonModel({type: "number"})};
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
         expect(doc1.properties).toEqual({"testProp": {type: "string"}, "testProp2": {type: "number"}});
       });
@@ -357,8 +357,8 @@ describe('CommonModel', function() {
         const doc: Schema = { };
         let doc1 = CommonModel.toCommonModel(doc);
         let doc2 = CommonModel.toCommonModel(doc);
-        doc2.properties = {"testProp": {type: "string"}};
-        doc1.properties = {"testProp": {type: "number"}};
+        doc2.properties = {"testProp": CommonModel.toCommonModel({type: "string"})};
+        doc1.properties = {"testProp": CommonModel.toCommonModel({type: "number"})};
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
         expect(doc1.properties).toEqual({"testProp": {type: ["number", "string"], originalSchema: {}}});
       });
@@ -368,6 +368,28 @@ describe('CommonModel', function() {
         let doc2 = CommonModel.toCommonModel(doc);
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
         expect(doc1.properties).toBeUndefined();
+      });
+    });
+  });
+
+  describe('helpers', function() {
+    describe('getFromSchema', function() {
+      test('should work', function() {
+        const doc = { type: "string", description: "Some description" };
+        const d = CommonModel.toCommonModel(doc);
+        d.originalSchema = doc;
+        const desc = d.getFromSchema('description');
+        expect(desc).toEqual(doc.description);
+      });
+    });
+
+    describe('isRequired', function() {
+      test('check that property is required', function() {
+        const doc = { type: "object", properties: { prop: { type: "string" } } };
+        const d = CommonModel.toCommonModel(doc);
+        d.required = ["prop"];
+        expect(d.isRequired("prop")).toEqual(true);
+        expect(d.isRequired("propX")).toEqual(false);
       });
     });
   });
