@@ -1,20 +1,5 @@
 {
-  "testProp1": {
-    "type": "string",
-    "originalSchema": {
-      "type": "string"
-    }
-  },
-  "testProp2": {
-    "type": "string",
-    "originalSchema": {
-      "type": "string"
-    }
-  },
-  "testProp3": {
-    "type": "string",
-    "originalSchema": {
-      "type": "string"
-    }
-  }
+  "testProp1": {  },
+  "testProp2": {  },
+  "testProp3": {  }
 }

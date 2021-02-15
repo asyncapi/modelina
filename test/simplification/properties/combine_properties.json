@@ -1,5 +1,5 @@
 {
-  "allOf":[
+  "anyOf":[
     {
       "properties":{
         "testProp1":{
