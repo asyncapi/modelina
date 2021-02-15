@@ -24,9 +24,7 @@ export const defaultGeneratorOptions = {
  * Abstract generator which must be implemented by each language
  */
 export abstract class AbstractGenerator<Options extends CommonGeneratorOptions = CommonGeneratorOptions> {
-  private processor = new InputProcessor();
   protected options: Options;
-  protected renderers: any = {};
   
   constructor(
     public readonly languageName: string,
@@ -39,7 +37,7 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
   public abstract render(model: CommonModel, inputModel: CommonInputModel): Promise<string>;
 
   public async process(input: any): Promise<CommonInputModel> {
-    return await this.processor.process(input);
+    return await InputProcessor.processor.process(input);
   }
 
   public generate(input: CommonInputModel): Promise<OutputModel[]>;
@@ -60,7 +58,7 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
     });
     return Promise.all(renders);
   }
-
+  
   protected getPresets(presetType: string): Array<[Preset, unknown]> {
     const filteredPresets: Array<[Preset, unknown]> = [];
 
