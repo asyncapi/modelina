@@ -6,8 +6,8 @@ jest.mock('../../src/simplification/Simplifier', () => {
   return {
     Simplifier: jest.fn().mockImplementation(() => {
       return {
-        simplifyRecursive: jest.fn().mockImplementation(() => [new CommonModel()]),
-        simplify: jest.fn().mockImplementation(() => [new CommonModel()])
+        simplifyRecursive: jest.fn().mockReturnValue([new CommonModel()]),
+        simplify: jest.fn().mockReturnValue([new CommonModel()])
       };
     })
   };

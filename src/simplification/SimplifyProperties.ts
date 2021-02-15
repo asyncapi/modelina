@@ -47,11 +47,13 @@ export default function simplifyProperties(schema: Schema | boolean, simplifier 
     if (schema.properties !== undefined) {
       for (const [prop, propSchema] of Object.entries(schema.properties)) {
         const newModels = simplifier.simplifyRecursive(propSchema);
-        addToProperty(prop, newModels[0]);
-        //If there are more then one model returned, it is extra.
-        if (newModels.length > 1) {
-          newModels.splice(0, 1);
-          addToModels(newModels);
+        if (newModels.length > 0) {
+          addToProperty(prop, newModels[0]);
+          //If there are more then one model returned, it is extra.
+          if (newModels.length > 1) {
+            newModels.splice(0, 1);
+            addToModels(newModels);
+          }
         }
       }
     }
