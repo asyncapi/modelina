@@ -21,7 +21,6 @@ export class Schema extends CommonSchema<Schema | boolean> {
     uniqueItems?: boolean;
     maxProperties?: number;
     minProperties?: number;
-    required?: string[];
     allOf?: (Schema | boolean)[];
     oneOf?: (Schema | boolean)[];
     anyOf?: (Schema | boolean)[];
@@ -40,7 +39,7 @@ export class Schema extends CommonSchema<Schema | boolean> {
     contentMediaType?: string; //Enum?
     definitions?: { [key: string]: Schema | boolean; };
     description?: string;
-    default?: string;
+    default?: any;
     readOnly?: boolean;
     writeOnly?: boolean;
     examples?: Object[];
