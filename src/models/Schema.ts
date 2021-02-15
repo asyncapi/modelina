@@ -40,7 +40,7 @@ export class Schema extends CommonSchema<Schema | boolean> {
     contentMediaType?: string; //Enum?
     definitions?: { [key: string]: Schema | boolean; };
     description?: string;
-    default?: string;
+    default?: any;
     readOnly?: boolean;
     writeOnly?: boolean;
     examples?: Object[];

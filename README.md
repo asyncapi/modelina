@@ -13,3 +13,4 @@ We have split out the different simplification processes into separate small fun
 - [Simplification of items](./docs/SimplifyItems.md)
 - [Simplification of properties](./docs/SimplifyProperties.md)
 - [Simplification of properties](./docs/SimplifyAdditionalProperties.md)
+- [Simplification of required](./docs/SimplifyRequired.md)
