@@ -71,9 +71,9 @@ export const JAVA_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
   },
   additionalContent({ renderer, model }) {
     const enumName = model.$id;
-    const type = Array.isArray(model.type) ? 'Object' : model.type!;
+    const type = Array.isArray(model.type) ? 'Object' : model.type;
     const classType = renderer.toClassType(renderer.toJavaType(type, model));
-    
+
     return `private ${classType} value;
 
 ${enumName}(${classType} value) {

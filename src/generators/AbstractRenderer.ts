@@ -46,8 +46,8 @@ export abstract class AbstractRenderer<O extends CommonGeneratorOptions = Common
   ): Promise<string> {
     let content = '';
     for (const [preset, options] of this.presets) {
-      if (typeof preset[functionName] === 'function') {
-        content = await preset[functionName]({ 
+      if (typeof preset[String(functionName)] === 'function') {
+        content = await preset[String(functionName)]({ 
           ...params, 
           renderer: this, 
           content, 

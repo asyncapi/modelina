@@ -61,17 +61,23 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
   protected getPresets(presetType: string): Array<[Preset, unknown]> {
     const filteredPresets: Array<[Preset, unknown]> = [];
 
-    const defaultPreset = this.options.defaultPreset!;
-    filteredPresets.push([defaultPreset[presetType], undefined]);
+    const defaultPreset = this.options.defaultPreset;
+    if (defaultPreset !== undefined) {
+      filteredPresets.push([defaultPreset[String(presetType)], undefined]);
+    }
 
     const presets = this.options.presets || [];
     presets.forEach(p => {
       if (isPresetWithOptions(p)) {
-        const preset = p.preset[presetType];
-        preset && filteredPresets.push([preset, p.options]);
+        const preset = p.preset[String(presetType)];
+        if (preset) {
+          filteredPresets.push([preset, p.options]);
+        }
       } else {
-        const preset = p[presetType];
-        preset && filteredPresets.push([preset, undefined]);
+        const preset = p[String(presetType)];
+        if (preset) {
+          filteredPresets.push([preset, undefined]);
+        }
       }
     });
 
