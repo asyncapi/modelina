@@ -22,13 +22,13 @@ describe('TypeScriptGenerator', function() {
       required: ["street_name", "city", "state", "house_number", "array_type"],
     };
     const expected = `class Address {
-  private streetName?: string;
-  private city?: string;
-  private state?: string;
-  private houseNumber?: number;
-  private marriage?: boolean;
-  private members?: string | number | boolean;
-  private arrayType?: Array<string | number>;
+  private streetName: string;
+  private city: string;
+  private state: string;
+  private houseNumber: number;
+  private marriage: boolean;
+  private members: string | number | boolean;
+  private arrayType: Array<string | number>;
       
   constructor(input: AddressInput) {
     this.streetName = input.streetName;
@@ -82,7 +82,7 @@ describe('TypeScriptGenerator', function() {
     };
     const expected = `export class CustomClass {
   @JsonProperty("property")
-  private property?: string;
+  private property: string;
       
   constructor(input: CustomClassInput) {
     this.property = input.property;
@@ -129,13 +129,13 @@ ${content}`;
       required: ["street_name", "city", "state", "house_number", "array_type"],
     };
     const expected = `interface Address {
-  streetName?: string;
-  city?: string;
-  state?: string;
-  houseNumber?: number;
-  marriage?: boolean;
-  members?: string | number | boolean;
-  arrayType?: Array<string | number>;
+  streetName: string;
+  city: string;
+  state: string;
+  houseNumber: number;
+  marriage: boolean;
+  members: string | number | boolean;
+  arrayType: Array<string | number>;
 }`;
 
     const inputModel = await generator.process(doc);
@@ -154,7 +154,7 @@ ${content}`;
       }
     };
     const expected = `export interface CustomInterface {
-  property?: string;
+  property: string;
 }`;
 
     generator = new TypeScriptGenerator({ presets: [

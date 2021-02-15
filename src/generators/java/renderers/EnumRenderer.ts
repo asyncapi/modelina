@@ -1,6 +1,6 @@
 import { JavaRenderer } from '../JavaRenderer';
 
-import { EnumPreset } from '../../../models';
+import { CommonModel, EnumPreset } from '../../../models';
 import { FormatHelpers } from '../../../helpers';
 
 /**
@@ -26,7 +26,7 @@ ${this.indent(this.renderHelpers(enumName!, classType))}
     const items: string[] = [];
 
     for (const value of enums) {
-      const renderedItem = await this.runItemPreset(value);
+      const renderedItem = await this.runItemPreset(value, this.model);
       items.push(renderedItem);
     }
 
@@ -83,8 +83,8 @@ public static ${enumName} fromValue(${classType} value) {
 }`;
   }
 
-  async runItemPreset(item: any): Promise<string> {
-    return this.runPreset('item', { item });
+  async runItemPreset(item: any, parentModel: CommonModel): Promise<string> {
+    return this.runPreset('item', { item, parentModel });
   }
 }
 

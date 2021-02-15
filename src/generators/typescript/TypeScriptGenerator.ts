@@ -78,9 +78,6 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions> {
     case 'interface': {
       return this.renderInterface(model, inputModel);
     }
-    case 'type': {
-      return this.renderType(model, inputModel);
-    }
     default: return this.renderClass(model, inputModel);
     }
   }

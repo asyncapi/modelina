@@ -3,48 +3,47 @@ import { CommonInputModel } from './CommonInputModel';
 import { CommonModel } from './CommonModel';
 
 // TODO: Change any type to correct one
-export type Preset<C extends Record<string, any> = any> = Partial<C>;
-export type PresetWithOptions<P extends Preset = Preset> = {
+export type Preset<C extends Record<string, CommonPreset<any, any>> = any> = Partial<C>;
+export type PresetWithOptions<P extends Preset = Preset, O = any> = {
   preset: P,
-  options: any,
+  options: O,
 }
 export type Presets<P extends Preset = Preset> = Array<P | PresetWithOptions<P>>;
 
-export function isPresetWithOptions(preset: Preset | PresetWithOptions): preset is PresetWithOptions {
-  return preset.hasOwnProperty('preset');
-}
-
-export interface PresetArgs<R extends AbstractRenderer> {
+export interface PresetArgs<R extends AbstractRenderer, O extends object = any> {
   model: CommonModel;
   inputModel: CommonInputModel;
   renderer: R;
+  options: O;
   content: string;
 }
 
-export interface CommonPreset<R extends AbstractRenderer> {
-  self?: (args: PresetArgs<R>) => Promise<string> | string;
+export interface CommonPreset<R extends AbstractRenderer, O extends object = any> {
+  self?: (args: PresetArgs<R, O>) => Promise<string> | string;
 }
 
 export interface PropertyArgs {
+  parentModel: CommonModel;
   propertyName: string;
   property: CommonModel;
 }
 
-export interface ClassPreset<R extends AbstractRenderer> extends CommonPreset<R> {
-  ctor?: (args: PresetArgs<R>) => Promise<string> | string;
-  property?: (args: PresetArgs<R> & PropertyArgs) => Promise<string> | string;
-  getter?: (args: PresetArgs<R> & PropertyArgs) => Promise<string> | string;
-  setter?: (args: PresetArgs<R> & PropertyArgs) => Promise<string> | string;
+export interface ClassPreset<R extends AbstractRenderer, O extends object = any> extends CommonPreset<R, O> {
+  ctor?: (args: PresetArgs<R, O>) => Promise<string> | string;
+  property?: (args: PresetArgs<R, O> & PropertyArgs) => Promise<string> | string;
+  getter?: (args: PresetArgs<R, O> & PropertyArgs) => Promise<string> | string;
+  setter?: (args: PresetArgs<R, O> & PropertyArgs) => Promise<string> | string;
 }
 
-export interface InterfacePreset<R extends AbstractRenderer> extends CommonPreset<R> {
-  property?: (args: PresetArgs<R> & PropertyArgs) => Promise<string> | string;
+export interface InterfacePreset<R extends AbstractRenderer, O extends object = any> extends CommonPreset<R, O> {
+  property?: (args: PresetArgs<R, O> & PropertyArgs) => Promise<string> | string;
 }
 
 export interface EnumArgs {
+  parentModel: CommonModel;
   item: any;
 }
 
-export interface EnumPreset<R extends AbstractRenderer> extends CommonPreset<R> {
-  item?: (args: PresetArgs<R> & EnumArgs) => string;
+export interface EnumPreset<R extends AbstractRenderer, O extends object = any> extends CommonPreset<R, O> {
+  item?: (args: PresetArgs<R, O> & EnumArgs) => string;
 }

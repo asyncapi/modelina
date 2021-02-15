@@ -19,7 +19,7 @@ export const TS_DEFAULT_INTERFACE_PRESET: InterfacePreset<InterfaceRenderer> = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
-  property({ renderer, propertyName, property }) {
-    return renderer.renderProperty(propertyName, property);
+  property({ renderer, propertyName, property, parentModel }) {
+    return renderer.renderProperty(propertyName, property, parentModel);
   },
 };
