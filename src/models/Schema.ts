@@ -21,7 +21,6 @@ export class Schema extends CommonSchema<Schema | boolean> {
     uniqueItems?: boolean;
     maxProperties?: number;
     minProperties?: number;
-    required?: string[];
     allOf?: (Schema | boolean)[];
     oneOf?: (Schema | boolean)[];
     anyOf?: (Schema | boolean)[];
