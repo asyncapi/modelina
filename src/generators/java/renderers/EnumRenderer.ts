@@ -55,9 +55,27 @@ ${this.indent(this.renderBlock(content, 2))}
     }
   }
 
-  renderHelpers(enumName: string, classType: string): string {
-    return `private ${classType} value;
+  async runItemPreset(item: any, parentModel: CommonModel): Promise<string> {
+    return this.runPreset('item', { item, parentModel });
+  }
+}
+
+export const JAVA_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
+  self({ renderer }) {
+    return renderer.defaultSelf();
+  },
+  item({ renderer, item }) {
+    const key = renderer.normalizeKey(item);
+    const value = renderer.normalizeValue(item);
+    return `${key}(${value})`;
+  },
+  additionalContent({ renderer, model }) {
+    const enumName = model.$id;
+    const type = Array.isArray(model.type) ? 'Object' : model.type!;
+    const classType = renderer.toClassType(renderer.toJavaType(type, model));
     
+    return `private ${classType} value;
+
 ${enumName}(${classType} value) {
   this.value = value;
 }
@@ -81,26 +99,5 @@ public static ${enumName} fromValue(${classType} value) {
   }
   throw new IllegalArgumentException("Unexpected value '" + value + "'");
 }`;
-  }
-
-  async runItemPreset(item: any, parentModel: CommonModel): Promise<string> {
-    return this.runPreset('item', { item, parentModel });
-  }
-}
-
-export const JAVA_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
-  self({ renderer }) {
-    return renderer.defaultSelf();
-  },
-  item({ renderer, item }) {
-    const key = renderer.normalizeKey(item);
-    const value = renderer.normalizeValue(item);
-    return `${key}(${value})`;
-  },
-  additionalContent({ renderer, model }) {
-    const enumName = model.$id;
-    const type = Array.isArray(model.type) ? 'Object' : model.type!;
-    const classType = renderer.toClassType(renderer.toJavaType(type, model));
-    return renderer.renderHelpers(enumName!, classType);
   },
 };
