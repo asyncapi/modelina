@@ -1,6 +1,7 @@
 import { CommonModel } from 'models';
 import { Schema } from 'models/Schema';
-import { isModelObject, Simplifier } from './Simplifier';
+import { Simplifier } from './Simplifier';
+import { isModelObject } from './Utils';
 type Output = CommonModel | undefined;
 
 /**
@@ -15,7 +16,9 @@ export default function simplifyAdditionalProperties(schema: Schema | boolean, s
       additionalProperties = undefined;
     } else {
       const newModels = simplifier.simplify(schema.additionalProperties || true);
-      additionalProperties = newModels[0];
+      if (newModels.length > 0) {
+        additionalProperties = newModels[0];
+      }
     }
   }
   return additionalProperties;

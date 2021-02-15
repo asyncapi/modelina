@@ -25,15 +25,17 @@ export class Simplifier {
 
   /**
    * Simplifies a schema into instances of CommonModel. 
-   * Index 0 will always be the input schema CommonModel representation
+   * Index 0 will always be the root schema CommonModel representation
    * 
    * @param schema to simplify
    */
   simplify(schema : Schema | boolean) : CommonModel[] {
     const model = new CommonModel();
     if (typeof schema !== 'boolean' && this.seenSchemas.has(schema)) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return [this.seenSchemas.get(schema)!];
     }
+    let localModelsToAdd: CommonModel[] = [];
     model.originalSchema = Schema.toSchema(schema);
     const simplifiedTypes = simplifyTypes(schema);
     if (simplifiedTypes !== undefined) {
@@ -66,8 +68,11 @@ export class Simplifier {
 
       if (this.options.allowInheritance) {
         const simplifiedExtends = simplifyExtend(schema, this);
-        if (simplifiedExtends !== undefined) {
-          model.extend = simplifiedExtends;
+        if (simplifiedExtends.extendingSchemas !== undefined) {
+          model.extend = simplifiedExtends.extendingSchemas;
+        }
+        if (simplifiedExtends.newModels !== undefined) {
+          localModelsToAdd = [...localModelsToAdd, ...simplifiedExtends.newModels];
         }
       }
 
@@ -76,10 +81,45 @@ export class Simplifier {
         model.enum = enums;
       }
     }
+    this.ensureModelsAreSplit(model);
+    return [model, ...this.existingModels, ...localModelsToAdd];
+  }
 
-    //Always ensure the model representing the input schema to be in index 0. 
-    this.existingModels = [model, ...this.existingModels, ...ensureModelsAreSplit(model)];
-    return this.existingModels;
+  /**
+   * 
+   * @param model to ensure are split
+   * @param models which are already split
+   */
+  private ensureModelsAreSplit(model: CommonModel) {
+    /**
+    * This function splits up a model if needed and add the new model to the list of models.
+    * 
+    * @param model check if it should be split up
+    * @param models which have already been split up
+    */
+    const splitModels = (model: CommonModel) : CommonModel => {
+      if (isModelObject(model)) {
+        const switchRootModel = new CommonModel();
+        switchRootModel.$ref = model.$id;
+        this.existingModels.push(model);
+        return switchRootModel;
+      }
+      return model;
+    };
+    if (model.properties) {
+      const existingProperties = model.properties;
+      for (const [prop, propSchema] of Object.entries(existingProperties)) {
+        existingProperties[`${prop}`] = splitModels(propSchema);
+      }
+    }
+    if (model.items) {
+      const existingItem = model.items;
+      model.items = splitModels(existingItem as CommonModel);
+    }
+    if (model.additionalProperties) {
+      const existingAdditionalProperties = model.additionalProperties;
+      model.additionalProperties = splitModels(existingAdditionalProperties as CommonModel);
+    }
   }
 }
 
@@ -91,53 +131,4 @@ export class Simplifier {
 export function simplify(schema : Schema | boolean) : CommonModel[] {
   const simplifier = new Simplifier();
   return simplifier.simplify(schema);
-}
-
-/**
- * check if CommonModel is a separate model or a simple model.
- */
-export function isModelObject(model: CommonModel) : boolean {
-  // This check should be done instead, needs a refactor to allow it though:
-  // this.extend !== undefined || this.properties !== undefined
-  if (model.type !== undefined) {
-    // If all possible JSON types are defined, don't split it even if it does contain object.
-    if (Array.isArray(model.type) && model.type.length === 6) {
-      return false;
-    }
-    return model.type.includes('object');
-  }
-  return false;
-}
-
-/**
- * 
- * @param model to ensure are split up correctly
- * @param models which have already been split up
- */
-function splitModels(model: CommonModel, models: CommonModel[]) : CommonModel {
-  if (isModelObject(model)) {
-    const switchRootModel = new CommonModel();
-    switchRootModel.$ref = model.$id;
-    models.push(model);
-    return switchRootModel;
-  }
-  return model;
-}
-
-function ensureModelsAreSplit(model: CommonModel, models: CommonModel[] = []) : CommonModel[] {
-  if (model.properties) {
-    const existingProperties = model.properties;
-    for (const [prop, propSchema] of Object.entries(existingProperties)) {
-      existingProperties[`${prop}`] = splitModels(propSchema, models);
-    }
-  }
-  if (model.items) {
-    const existingItem = model.items;
-    model.items = splitModels(existingItem as CommonModel, models);
-  }
-  if (model.additionalProperties) {
-    const existingAdditionalProperties = model.additionalProperties;
-    model.additionalProperties = splitModels(existingAdditionalProperties as CommonModel, models);
-  }
-  return models;
 }

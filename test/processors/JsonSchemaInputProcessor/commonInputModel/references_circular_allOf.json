@@ -48,7 +48,7 @@
         ]
       },
       "extend":[
-        "anonymSchema4",
+        "anonymSchema3",
         "anonymSchema4"
       ]
     },
