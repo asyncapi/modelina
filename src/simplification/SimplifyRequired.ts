@@ -9,6 +9,7 @@ type Output = string[] | undefined;
  * @param seenSchemas already seen schemas, this is to avoid circular schemas
  */
 export default function simplifyRequired(schema: Schema | boolean, seenSchemas: Set<any> = new Set()): Output {
+  // use Set, because we don't need cache any reference to previous simplified values
   if (
     typeof schema === 'boolean' ||
     seenSchemas.has(schema)
@@ -38,5 +39,8 @@ export default function simplifyRequired(schema: Schema | boolean, seenSchemas: 
   schema.else && addRequired(simplifyRequired(schema.else, seenSchemas));
 
   // remove duplication
-  return [...new Set(required)];
+  if (Array.isArray(required)) {
+    return [...new Set(required)];
+  }
+  return undefined;
 }
