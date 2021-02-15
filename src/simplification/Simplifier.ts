@@ -1,10 +1,10 @@
-
 import { CommonModel, Schema } from '../models';
 import simplifyProperties from './SimplifyProperties';
 import simplifyEnums from './SimplifyEnums';
-import simplifyTypes from './SimplifyTypes';
 import simplifyItems from './SimplifyItems';
 import simplifyExtend from './SimplifyExtend';
+import simplifyRequired from './SimplifyRequired';
+import simplifyTypes from './SimplifyTypes';
 import { SimplificationOptions } from '../models/SimplificationOptions';
 import simplifyAdditionalProperties from './SimplifyAdditionalProperties';
 import { isModelObject } from './Utils';
@@ -58,11 +58,10 @@ export class Simplifier {
     if (typeof schema !== 'boolean' && this.seenSchemas.has(schema)) {
       return [this.seenSchemas.get(schema)!];
     }
+
     model.originalSchema = Schema.toSchema(schema);
-    const simplifiedTypes = simplifyTypes(schema);
-    if (simplifiedTypes !== undefined) {
-      model.type = simplifiedTypes;
-    }
+    model.type = simplifyTypes(schema);
+
     if (typeof schema !== 'boolean') {
       this.seenSchemas.set(schema, model);
       //All schemas of type object MUST have ids, for now lets make it simple
@@ -114,6 +113,11 @@ export class Simplifier {
         } else {
           model.enum = enums;
         }
+      }
+
+      const required = simplifyRequired(schema);
+      if (required !== undefined) {
+        model.required = required;
       }
     }
 

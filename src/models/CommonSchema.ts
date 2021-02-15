@@ -10,6 +10,8 @@ export class CommonSchema<T> {
     additionalProperties?: boolean | T;
     $ref?: string;
 
+    required?: string[];
+    
     /**
      * Function to transform nested schemas into type of generic extended class
      * 
