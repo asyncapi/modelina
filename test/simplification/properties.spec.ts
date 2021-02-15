@@ -112,7 +112,6 @@ describe('Simplification of properties', () => {
     const simplifier = expectFunction(inputSchemaPath, expectedPropertiesPath);
     expect(simplifier.simplifyRecursive).toHaveBeenCalledTimes(2);
     expect(mockMergeCommonModels).toHaveBeenCalledTimes(1);
-    mockMergeCommonModels.mockClear();
   });
   test('Should split out multiple objects into their own models and add reference', () => {
     const inputSchemaPath = './properties/multiple_objects.json';
