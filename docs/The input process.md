@@ -43,7 +43,7 @@ In order to convert any JSON Schema into our CommonModel we use something we cal
 
 ## Simplification process
 
-To go from JSON Schema data validation to a data definition is not a trivial task, and we are along the way doing assumptions on how the underlying data definition should look like based on validation rules. In order to simplify the model rendering process as much as possible we want to remove any JSON Schema keywords which is not needed for rendering a data model.
+To go from JSON Schema data validation to a data definition is not a trivial task, and we are along the way making assumptions on how the underlying data definition should look like based on validation rules. In order to simplify the model rendering process as much as possible we want to remove any JSON Schema keywords which is not needed for rendering a data model.
 
 We have split out the different simplification processes into separate small functions which recursively simplifies schemas, these are the explanations for the functions:
 
