@@ -115,11 +115,10 @@ export class Simplifier {
         }
       }
 
-      // TODO: Uncomment when we'll have simplified tests, not based on dependencies
-      // const required = simplifyRequired(schema);
-      // if (required !== undefined) {
-      //   model.required = required;
-      // }
+      const required = simplifyRequired(schema);
+      if (required !== undefined) {
+        model.required = required;
+      }
     }
 
     //Always ensure the model representing the input schema to be in index 0. 

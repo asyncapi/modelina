@@ -20,8 +20,8 @@ export default function simplifyRequired(schema: Schema | boolean, seenSchemas: 
 
   let required: Output = schema.required;
   const addRequired = (r: Output) => {
-    required = required || [];
     if (r !== undefined) {
+      required = required || [];
       required.push(...r);
     }
   };
