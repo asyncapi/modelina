@@ -2,14 +2,6 @@ import { AbstractRenderer } from '../generators/AbstractRenderer';
 import { CommonInputModel } from './CommonInputModel';
 import { CommonModel } from './CommonModel';
 
-// TODO: Change any type to correct one
-export type Preset<C extends Record<string, CommonPreset<any, any>> = any> = Partial<C>;
-export type PresetWithOptions<P extends Preset = Preset, O = any> = {
-  preset: P,
-  options: O,
-}
-export type Presets<P extends Preset = Preset> = Array<P | PresetWithOptions<P>>;
-
 export interface PresetArgs<R extends AbstractRenderer, O extends object = any> {
   model: CommonModel;
   inputModel: CommonInputModel;
@@ -48,3 +40,10 @@ export interface EnumArgs {
 export interface EnumPreset<R extends AbstractRenderer, O extends object = any> extends CommonPreset<R, O> {
   item?: (args: PresetArgs<R, O> & EnumArgs) => string;
 }
+
+export type Preset<C extends Record<string, CommonPreset<any, any>> = any> = Partial<C>;
+export type PresetWithOptions<P extends Preset = Preset, O = any> = {
+  preset: P,
+  options: O,
+}
+export type Presets<P extends Preset = Preset> = Array<P | PresetWithOptions<P>>;

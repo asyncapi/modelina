@@ -1,4 +1,3 @@
-import { AbstractRenderer } from "./AbstractRenderer";
 import { CommonInputModel, CommonModel, OutputModel, Preset, Presets } from '../models';
 import { InputProcessor } from '../processors';
 import { IndentationTypes } from '../helpers';
@@ -58,7 +57,7 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
     });
     return Promise.all(renders);
   }
-  
+
   protected getPresets(presetType: string): Array<[Preset, unknown]> {
     const filteredPresets: Array<[Preset, unknown]> = [];
 
