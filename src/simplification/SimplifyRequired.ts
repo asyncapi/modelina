@@ -23,7 +23,7 @@ export default function simplifyRequired(schema: Schema | boolean, seenSchemas: 
     if (r !== undefined) {
       required.push(...r);
     }
-  }
+  };
   const handler = (schemas: (Schema | boolean)[] = []) => {
     schemas.forEach((schema) => {
       addRequired(simplifyRequired(schema, seenSchemas));

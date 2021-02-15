@@ -1,10 +1,9 @@
-
 import { CommonModel, Schema } from '../models';
 import simplifyProperties from './SimplifyProperties';
 import simplifyEnums from './SimplifyEnums';
 import simplifyItems from './SimplifyItems';
 import simplifyExtend from './SimplifyExtend';
-import simplifyRequired from './SimplifyRequired';
+// import simplifyRequired from './SimplifyRequired';
 import simplifyTypes from './SimplifyTypes';
 import { SimplificationOptions } from '../models/SimplificationOptions';
 import simplifyAdditionalProperties from './SimplifyAdditionalProperties';

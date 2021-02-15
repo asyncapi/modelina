@@ -1,5 +1,3 @@
-import { Schema } from "../models";
-
 /**
  * CommonSchema which contains the common properties between Schema and CommonModel
  */
