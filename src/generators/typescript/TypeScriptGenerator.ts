@@ -15,7 +15,7 @@ import { TypeRenderer } from './renderers/TypeRenderer';
 
 export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPreset> {
   renderTypes?: boolean
-  modelType?: 'class' | 'interface' | 'type';
+  modelType?: 'class' | 'interface';
 }
 
 /**
