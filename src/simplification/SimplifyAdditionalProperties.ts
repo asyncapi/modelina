@@ -1,6 +1,7 @@
 import { CommonModel } from 'models';
 import { Schema } from 'models/Schema';
-import { isModelObject, Simplifier } from './Simplifier';
+import { Simplifier } from './Simplifier';
+import { isModelObject } from './Utils';
 type Output = {newModels: CommonModel[] | undefined; additionalProperties: boolean | CommonModel | undefined};
 
 /**
@@ -17,11 +18,13 @@ export default function simplifyAdditionalProperties(schema: Schema | boolean, s
       additionalProperties = undefined;
     } else {
       const newModels = simplifier.simplifyRecursive(schema.additionalProperties || true);
-      additionalProperties = newModels[0];
-      //If there are more then one model returned, it is extra.
-      if (newModels.length > 1) {
-        newModels.splice(0, 1);
-        addToModels(newModels);
+      if (newModels.length > 0) {
+        additionalProperties = newModels[0];
+        //If there are more then one model returned, it is extra.
+        if (newModels.length > 1) {
+          newModels.splice(0, 1);
+          addToModels(newModels);
+        }
       }
     }
   }
