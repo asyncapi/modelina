@@ -1,5 +1,5 @@
 {
-    "type": ["array"],
+    "type": "array",
     "if": {
         "const": ["some_const"]
     },

@@ -43,7 +43,9 @@ export default function simplifyProperties(schema: Schema | boolean, simplifier 
     if (schema.properties !== undefined) {
       for (const [prop, propSchema] of Object.entries(schema.properties)) {
         const newModels = simplifier.simplify(propSchema);
-        addToProperty(prop, newModels[0]);
+        if (newModels.length > 0) {
+          addToProperty(prop, newModels[0]);
+        }
       }
     }
     //If we encounter combination schemas ensure we recursively find the properties

@@ -7,6 +7,7 @@ import simplifyItems from './SimplifyItems';
 import simplifyExtend from './SimplifyExtend';
 import { SimplificationOptions } from '../models/SimplificationOptions';
 import simplifyAdditionalProperties from './SimplifyAdditionalProperties';
+import { isModelObject } from './Utils';
 
 export class Simplifier {
   static defaultOptions: SimplificationOptions = {
