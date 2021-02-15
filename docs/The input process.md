@@ -38,7 +38,6 @@ The `CommonModel` extends the `CommonSchema` with a few custom properties:
 
 When you provide an input to the processor we first need to figure out what kind of input it is, and how it should be converted into a CommonInputModel object. At the moment two input processors are available, JSON Schema (defaults to this) and AsyncAPI documents/channel/operations/messages. 
 
-
 In order to convert any JSON Schema into our CommonModel we use something we call the [Simplification process](##simplification-process). Once the simplification process is over we are left without any clutter from the input.
 
 ## Simplification process
