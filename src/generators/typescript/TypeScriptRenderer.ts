@@ -83,7 +83,7 @@ ${lines.map(line => ` * ${line}`).join('\n')}
 
   renderProperty(propertyName: string, property: CommonModel, parentModel: CommonModel): string {
     const name = FormatHelpers.toCamelCase(propertyName);
-    const signature = this.renderTypeSignature(property);
+    const signature = this.renderTypeSignature(property, parentModel.isRequired(propertyName));
     return `${name}${signature};`;
   }
 

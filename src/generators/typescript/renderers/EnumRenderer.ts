@@ -10,8 +10,13 @@ import { FormatHelpers } from '../../../helpers';
  */
 export class EnumRenderer extends TypeScriptRenderer {
   async defaultSelf(): Promise<string> {
+    const content = [
+      await this.renderItems(),
+      await this.runAdditionalContentPreset(),
+    ];
+
     return `enum ${this.model.$id} {
-${this.indent(await this.renderItems())}
+${this.indent(this.renderBlock(content, 2))}
 }`;
   }
 

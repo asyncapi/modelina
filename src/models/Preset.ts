@@ -20,6 +20,7 @@ export interface PresetArgs<R extends AbstractRenderer, O extends object = any> 
 
 export interface CommonPreset<R extends AbstractRenderer, O extends object = any> {
   self?: (args: PresetArgs<R, O>) => Promise<string> | string;
+  additionalContent?: (args: PresetArgs<R, O>) => Promise<string> | string;
 }
 
 export interface PropertyArgs {

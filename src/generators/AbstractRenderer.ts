@@ -19,7 +19,7 @@ export abstract class AbstractRenderer<O extends CommonGeneratorOptions = Common
 
   renderBlock(lines: string[], newLines = 1): string {
     const n = Array(newLines).fill('\n').join('');
-    return lines.join(n);
+    return lines.filter(Boolean).join(n);
   }
 
   indent(
@@ -34,6 +34,10 @@ export abstract class AbstractRenderer<O extends CommonGeneratorOptions = Common
 
   async runSelfPreset(): Promise<string> {
     return this.runPreset('self');
+  }
+
+  async runAdditionalContentPreset(): Promise<string> {
+    return this.runPreset('additionalContent');
   }
 
   async runPreset(

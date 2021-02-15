@@ -10,12 +10,15 @@ import { FormatHelpers } from '../../../helpers';
  */
 export class ClassRenderer extends JavaScriptRenderer {
   public async defaultSelf(): Promise<string> {
+    const content = [
+      await this.renderProperties(),
+      await this.runCtorPreset(),
+      await this.renderAccessors(),
+      await this.runAdditionalContentPreset(),
+    ];
+
     return `class ${this.model.$id} {
-${this.indent(await this.renderProperties())}
-      
-${this.indent(await this.runCtorPreset())}
-      
-${this.indent(await this.renderAccessors())}
+${this.indent(this.renderBlock(content, 2))}
 }`;
   }
 

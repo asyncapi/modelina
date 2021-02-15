@@ -9,8 +9,13 @@ import { InterfacePreset } from '../../../models';
  */
 export class InterfaceRenderer extends TypeScriptRenderer {
   async defaultSelf(): Promise<string> {
+    const content = [
+      await this.renderProperties(),
+      await this.runAdditionalContentPreset(),
+    ];
+
     return `interface ${this.model.$id} {
-${this.indent(await this.renderProperties())}
+${this.indent(this.renderBlock(content, 2))}
 }`;
   }
 }

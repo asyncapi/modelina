@@ -26,10 +26,10 @@ describe('TypeScriptGenerator', function() {
   private city: string;
   private state: string;
   private houseNumber: number;
-  private marriage: boolean;
-  private members: string | number | boolean;
+  private marriage?: boolean;
+  private members?: string | number | boolean;
   private arrayType: Array<string | number>;
-      
+
   constructor(input: AddressInput) {
     this.streetName = input.streetName;
     this.city = input.city;
@@ -39,7 +39,7 @@ describe('TypeScriptGenerator', function() {
     this.members = input.members;
     this.arrayType = input.arrayType;
   }
-      
+
   get streetName(): string { return this.streetName; }
   set streetName(streetName: string) { this.streetName = streetName; }
 
@@ -82,12 +82,12 @@ describe('TypeScriptGenerator', function() {
     };
     const expected = `export class CustomClass {
   @JsonProperty("property")
-  private property: string;
-      
+  private property?: string;
+
   constructor(input: CustomClassInput) {
     this.property = input.property;
   }
-      
+
   get property(): string { return this.property; }
   set property(property: string) { this.property = property; }
 }`;
@@ -133,8 +133,8 @@ ${content}`;
   city: string;
   state: string;
   houseNumber: number;
-  marriage: boolean;
-  members: string | number | boolean;
+  marriage?: boolean;
+  members?: string | number | boolean;
   arrayType: Array<string | number>;
 }`;
 
@@ -154,7 +154,7 @@ ${content}`;
       }
     };
     const expected = `export interface CustomInterface {
-  property: string;
+  property?: string;
 }`;
 
     generator = new TypeScriptGenerator({ presets: [

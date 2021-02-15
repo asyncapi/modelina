@@ -10,14 +10,13 @@ import { FormatHelpers } from '../../../helpers';
  */
 export class EnumRenderer extends JavaRenderer {
   async defaultSelf(): Promise<string> {
-    const enumName = this.model.$id;
-    const type = Array.isArray(this.model.type) ? 'Object' : this.model.type!;
-    const classType = this.toClassType(this.toJavaType(type, this.model));
+    const content = [
+      await this.renderItems(),
+      await this.runAdditionalContentPreset(),
+    ];
 
-    return `public enum ${enumName} {
-${this.indent(await this.renderItems())};
-
-${this.indent(this.renderHelpers(enumName!, classType))}
+    return `public enum ${this.model.$id} {
+${this.indent(this.renderBlock(content, 2))}
 }`;
   }
 
@@ -30,7 +29,8 @@ ${this.indent(this.renderHelpers(enumName!, classType))}
       items.push(renderedItem);
     }
 
-    return items.join(', ');
+    const content = items.join(', ');
+    return `${content};`;
   }
 
   normalizeKey(value: any): string {
@@ -96,5 +96,11 @@ export const JAVA_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
     const key = renderer.normalizeKey(item);
     const value = renderer.normalizeValue(item);
     return `${key}(${value})`;
+  },
+  additionalContent({ renderer, model }) {
+    const enumName = model.$id;
+    const type = Array.isArray(model.type) ? 'Object' : model.type!;
+    const classType = renderer.toClassType(renderer.toJavaType(type, model));
+    return renderer.renderHelpers(enumName!, classType);
   },
 };
