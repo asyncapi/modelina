@@ -47,9 +47,11 @@ To go from JSON Schema data validation to a data definition is not a trivial tas
 
 We have split out the different simplification processes into separate small functions which recursively simplifies schemas, these are the explanations for the functions:
 
-- [Simplification of types](./docs/SimplifyTypes.md)
-- [Simplification of enums](./docs/SimplifyEnums.md)
-- [Simplification of items](./docs/SimplifyItems.md)
-- [Simplification of properties](./docs/SimplifyProperties.md)
-- [Simplification of extend](./docs/SimplifyExtend.md)
+- [Simplification of types](./SimplifyTypes.md)
+- [Simplification of enums](./SimplifyEnums.md)
+- [Simplification of items](./SimplifyItems.md)
+- [Simplification of properties](./SimplifyProperties.md)
+- [Simplification of extend](./SimplifyExtend.md)
+- [Simplification of additional properties](./SimplifyAdditionalProperties.md)
+
 
