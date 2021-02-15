@@ -1,7 +1,7 @@
 import { TypeScriptRenderer } from '../TypeScriptRenderer';
 
+import { CommonModel, EnumPreset } from '../../../models';
 import { FormatHelpers } from '../../../helpers';
-import { EnumPreset } from '../../../models';
 
 /**
  * Renderer for TypeScript's `enum` type
@@ -10,8 +10,13 @@ import { EnumPreset } from '../../../models';
  */
 export class EnumRenderer extends TypeScriptRenderer {
   async defaultSelf(): Promise<string> {
+    const content = [
+      await this.renderItems(),
+      await this.runAdditionalContentPreset(),
+    ];
+
     return `enum ${this.model.$id} {
-${this.indent(await this.renderItems())}
+${this.indent(this.renderBlock(content, 2))}
 }`;
   }
 
@@ -20,15 +25,15 @@ ${this.indent(await this.renderItems())}
     const items: string[] = [];
 
     for (const item of enums) {
-      const renderedItem = await this.runItemPreset(item);
+      const renderedItem = await this.runItemPreset(item, this.model);
       items.push(renderedItem);
     }
 
     return this.renderBlock(items);
   }
 
-  runItemPreset(item: any): Promise<string> {
-    return this.runPreset('item', { item });
+  runItemPreset(item: any, parentModel: CommonModel): Promise<string> {
+    return this.runPreset('item', { item, parentModel });
   }
 }
 

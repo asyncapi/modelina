@@ -1,6 +1,6 @@
 import { JavaRenderer } from '../JavaRenderer';
 
-import { EnumPreset } from '../../../models';
+import { CommonModel, EnumPreset } from '../../../models';
 import { FormatHelpers } from '../../../helpers';
 
 /**
@@ -10,14 +10,13 @@ import { FormatHelpers } from '../../../helpers';
  */
 export class EnumRenderer extends JavaRenderer {
   async defaultSelf(): Promise<string> {
-    const enumName = this.model.$id;
-    const type = Array.isArray(this.model.type) ? 'Object' : this.model.type!;
-    const classType = this.toClassType(this.toJavaType(type, this.model));
+    const content = [
+      await this.renderItems(),
+      await this.runAdditionalContentPreset(),
+    ];
 
-    return `public enum ${enumName} {
-${this.indent(await this.renderItems())};
-
-${this.indent(this.renderHelpers(enumName!, classType))}
+    return `public enum ${this.model.$id} {
+${this.indent(this.renderBlock(content, 2))}
 }`;
   }
 
@@ -26,11 +25,12 @@ ${this.indent(this.renderHelpers(enumName!, classType))}
     const items: string[] = [];
 
     for (const value of enums) {
-      const renderedItem = await this.runItemPreset(value);
+      const renderedItem = await this.runItemPreset(value, this.model);
       items.push(renderedItem);
     }
 
-    return items.join(', ');
+    const content = items.join(', ');
+    return `${content};`;
   }
 
   normalizeKey(value: any): string {
@@ -55,9 +55,27 @@ ${this.indent(this.renderHelpers(enumName!, classType))}
     }
   }
 
-  renderHelpers(enumName: string, classType: string): string {
+  async runItemPreset(item: any, parentModel: CommonModel): Promise<string> {
+    return this.runPreset('item', { item, parentModel });
+  }
+}
+
+export const JAVA_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
+  self({ renderer }) {
+    return renderer.defaultSelf();
+  },
+  item({ renderer, item }) {
+    const key = renderer.normalizeKey(item);
+    const value = renderer.normalizeValue(item);
+    return `${key}(${value})`;
+  },
+  additionalContent({ renderer, model }) {
+    const enumName = model.$id;
+    const type = Array.isArray(model.type) ? 'Object' : model.type;
+    const classType = renderer.toClassType(renderer.toJavaType(type, model));
+
     return `private ${classType} value;
-    
+
 ${enumName}(${classType} value) {
   this.value = value;
 }
@@ -81,20 +99,5 @@ public static ${enumName} fromValue(${classType} value) {
   }
   throw new IllegalArgumentException("Unexpected value '" + value + "'");
 }`;
-  }
-
-  async runItemPreset(item: any): Promise<string> {
-    return this.runPreset('item', { item });
-  }
-}
-
-export const JAVA_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
-  self({ renderer }) {
-    return renderer.defaultSelf();
-  },
-  item({ renderer, item }) {
-    const key = renderer.normalizeKey(item);
-    const value = renderer.normalizeValue(item);
-    return `${key}(${value})`;
   },
 };

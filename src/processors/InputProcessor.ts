@@ -7,6 +7,8 @@ import { CommonInputModel } from '../models/CommonInputModel';
  * Main input processor which figures out the type of input it receives and delegates the processing into separate individual processors.
  */
 export class InputProcessor {
+  public static processor: InputProcessor = new InputProcessor();
+
   private processors: Map<string, AbstractInputProcessor> = new Map();
 
   constructor() {

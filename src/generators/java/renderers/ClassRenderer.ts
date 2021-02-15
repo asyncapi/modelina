@@ -10,10 +10,15 @@ import { FormatHelpers } from '../../../helpers';
  */
 export class ClassRenderer extends JavaRenderer {
   async defaultSelf(): Promise<string> {
-    return `public class ${this.model.$id} {
-${this.indent(await this.renderProperties())}
+    const content = [
+      await this.renderProperties(),
+      await this.runCtorPreset(),
+      await this.renderAccessors(),
+      await this.runAdditionalContentPreset(),
+    ];
 
-${this.indent(await this.renderAccessors())}
+    return `public class ${this.model.$id} {
+${this.indent(this.renderBlock(content, 2))}
 }`;
   }
 
@@ -26,15 +31,15 @@ ${this.indent(await this.renderAccessors())}
     const content: string[] = [];
 
     for (const [propertyName, property] of Object.entries(properties)) {
-      const rendererProperty = await this.runPropertyPreset(propertyName, property);
+      const rendererProperty = await this.runPropertyPreset(propertyName, property, this.model);
       content.push(rendererProperty);
     }
 
     return this.renderBlock(content);
   }
 
-  async runPropertyPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset('property', { propertyName, property });
+  async runPropertyPreset(propertyName: string, property: CommonModel, parentModel: CommonModel): Promise<string> {
+    return this.runPreset('property', { propertyName, property, parentModel });
   }
 
   async renderAccessors(): Promise<string> {
@@ -42,20 +47,20 @@ ${this.indent(await this.renderAccessors())}
     const content: string[] = [];
 
     for (const [propertyName, property] of Object.entries(properties)) {
-      const getter = await this.runGetterPreset(propertyName, property);
-      const setter = await this.runSetterPreset(propertyName, property);
+      const getter = await this.runGetterPreset(propertyName, property, this.model);
+      const setter = await this.runSetterPreset(propertyName, property, this.model);
       content.push(this.renderBlock([getter, setter]));
     }
 
     return this.renderBlock(content, 2);
   }
 
-  async runGetterPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset('getter', { propertyName, property });
+  async runGetterPreset(propertyName: string, property: CommonModel, parentModel: CommonModel): Promise<string> {
+    return this.runPreset('getter', { propertyName, property, parentModel });
   }
 
-  async runSetterPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset('setter', { propertyName, property });
+  async runSetterPreset(propertyName: string, property: CommonModel, parentModel: CommonModel): Promise<string> {
+    return this.runPreset('setter', { propertyName, property, parentModel });
   }
 }
 

@@ -35,8 +35,12 @@ export default function simplifyRequired(schema: Schema | boolean, seenSchemas: 
   handler(schema.oneOf);
   handler(schema.anyOf);
 
-  schema.then && addRequired(simplifyRequired(schema.then, seenSchemas));
-  schema.else && addRequired(simplifyRequired(schema.else, seenSchemas));
+  if (schema.then) {
+    addRequired(simplifyRequired(schema.then, seenSchemas));
+  }
+  if (schema.else) {
+    addRequired(simplifyRequired(schema.else, seenSchemas));
+  }
 
   // remove duplication
   if (Array.isArray(required)) {

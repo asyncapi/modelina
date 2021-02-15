@@ -22,14 +22,14 @@ describe('TypeScriptGenerator', function() {
       required: ["street_name", "city", "state", "house_number", "array_type"],
     };
     const expected = `class Address {
-  private streetName?: string;
-  private city?: string;
-  private state?: string;
-  private houseNumber?: number;
+  private streetName: string;
+  private city: string;
+  private state: string;
+  private houseNumber: number;
   private marriage?: boolean;
   private members?: string | number | boolean;
-  private arrayType?: Array<string | number>;
-      
+  private arrayType: Array<string | number>;
+
   constructor(input: AddressInput) {
     this.streetName = input.streetName;
     this.city = input.city;
@@ -39,7 +39,7 @@ describe('TypeScriptGenerator', function() {
     this.members = input.members;
     this.arrayType = input.arrayType;
   }
-      
+
   get streetName(): string { return this.streetName; }
   set streetName(streetName: string) { this.streetName = streetName; }
 
@@ -83,11 +83,11 @@ describe('TypeScriptGenerator', function() {
     const expected = `export class CustomClass {
   @JsonProperty("property")
   private property?: string;
-      
+
   constructor(input: CustomClassInput) {
     this.property = input.property;
   }
-      
+
   get property(): string { return this.property; }
   set property(property: string) { this.property = property; }
 }`;
@@ -129,13 +129,13 @@ ${content}`;
       required: ["street_name", "city", "state", "house_number", "array_type"],
     };
     const expected = `interface Address {
-  streetName?: string;
-  city?: string;
-  state?: string;
-  houseNumber?: number;
+  streetName: string;
+  city: string;
+  state: string;
+  houseNumber: number;
   marriage?: boolean;
   members?: string | number | boolean;
-  arrayType?: Array<string | number>;
+  arrayType: Array<string | number>;
 }`;
 
     const inputModel = await generator.process(doc);

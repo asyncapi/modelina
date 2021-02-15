@@ -19,7 +19,7 @@ export abstract class AbstractRenderer<O extends CommonGeneratorOptions = Common
 
   renderBlock(lines: string[], newLines = 1): string {
     const n = Array(newLines).fill('\n').join('');
-    return lines.join(n);
+    return lines.filter(Boolean).join(n);
   }
 
   indent(
@@ -36,14 +36,18 @@ export abstract class AbstractRenderer<O extends CommonGeneratorOptions = Common
     return this.runPreset('self');
   }
 
+  async runAdditionalContentPreset(): Promise<string> {
+    return this.runPreset('additionalContent');
+  }
+
   async runPreset(
     functionName: string,
     params: object = {},
   ): Promise<string> {
     let content = '';
     for (const [preset, options] of this.presets) {
-      if (typeof preset[functionName] === 'function') {
-        content = await preset[functionName]({ 
+      if (typeof preset[String(functionName)] === 'function') {
+        content = await preset[String(functionName)]({ 
           ...params, 
           renderer: this, 
           content, 

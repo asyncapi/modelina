@@ -119,7 +119,7 @@ ${content}`;
   TEXAS("Texas"), ALABAMA("Alabama"), CALIFORNIA("California"), NEW_YORK("New York");
 
   private String value;
-    
+
   States(String value) {
     this.value = value;
   }
@@ -165,7 +165,7 @@ ${content}`;
   NUMBER_0(0), NUMBER_1(1), NUMBER_2(2), NUMBER_3(3);
 
   private Integer value;
-    
+
   Numbers(Integer value) {
     this.value = value;
   }
@@ -211,7 +211,7 @@ ${content}`;
   TEXAS("Texas"), ALABAMA("Alabama"), NUMBER_0(0), NUMBER_1(1), BOOLEAN_TRUE(true);
 
   private Object value;
-    
+
   Union(Object value) {
     this.value = value;
   }
@@ -258,7 +258,7 @@ public enum CustomEnum {
   TEXAS("Texas"), ALABAMA("Alabama"), CALIFORNIA("California");
 
   private String value;
-    
+
   CustomEnum(String value) {
     this.value = value;
   }
