@@ -45,52 +45,77 @@
       },
       "type":"object",
       "$id":"anonymSchema1",
+      "additionalProperties": {
+        "originalSchema": true,
+        "type": [
+          "object",
+          "string",
+          "number",
+          "array",
+          "boolean",
+          "null"
+        ]
+      },
       "properties":{
-        "shipping_address":{
-          "originalSchema":{
-            "allOf":[
-              {
-                "type":"object",
-                "properties":{
-                  "street_address":{
-                    "type":"string"
-                  },
-                  "city":{
-                    "type":"string"
-                  },
-                  "state":{
-                    "type":"string"
-                  }
-                },
-                "required":[
-                  "street_address",
-                  "city",
-                  "state"
-                ]
-              },
-              {
-                "properties":{
-                  "type":{
-                    "enum":[
-                      "residential",
-                      "business"
-                    ]
-                  }
-                },
-                "required":[
-                  "type"
-                ]
-              }
-            ]
-          },
-          "type":"object",
-          "$id":"anonymSchema2",
-          "extend":[
-            "anonymSchema3",
-            "anonymSchema4"
-          ]
+        "shipping_address": {
+          "$ref": "anonymSchema2"
         }
       }
+    },
+    "anonymSchema2": {
+      "originalSchema":{
+        "allOf":[
+          {
+            "type":"object",
+            "properties":{
+              "street_address":{
+                "type":"string"
+              },
+              "city":{
+                "type":"string"
+              },
+              "state":{
+                "type":"string"
+              }
+            },
+            "required":[
+              "street_address",
+              "city",
+              "state"
+            ]
+          },
+          {
+            "properties":{
+              "type":{
+                "enum":[
+                  "residential",
+                  "business"
+                ]
+              }
+            },
+            "required":[
+              "type"
+            ]
+          }
+        ]
+      },
+      "type":"object",
+      "$id":"anonymSchema2",
+      "additionalProperties": {
+        "originalSchema": true,
+        "type": [
+          "object",
+          "string",
+          "number",
+          "array",
+          "boolean",
+          "null"
+        ]
+      },
+      "extend":[
+        "anonymSchema3",
+        "anonymSchema4"
+      ]
     },
     "anonymSchema3":{
       "originalSchema":{
@@ -114,6 +139,17 @@
       },
       "type":"object",
       "$id":"anonymSchema3",
+      "additionalProperties": {
+        "originalSchema": true,
+        "type": [
+          "object",
+          "string",
+          "number",
+          "array",
+          "boolean",
+          "null"
+        ]
+      },
       "properties":{
         "street_address":{
           "originalSchema":{
@@ -151,6 +187,17 @@
       },
       "type":"object",
       "$id":"anonymSchema4",
+      "additionalProperties": {
+        "originalSchema": true,
+        "type": [
+          "object",
+          "string",
+          "number",
+          "array",
+          "boolean",
+          "null"
+        ]
+      },
       "properties":{
         "type":{
           "originalSchema":{

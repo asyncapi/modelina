@@ -1,94 +1,76 @@
-import { CommonModel } from "../../../models";
-import { TypeScriptRenderer } from "../TypeScriptRenderer";
+import { JavaScriptRenderer } from '../JavaScriptRenderer';
 
-import { InterfaceRenderer } from "./InterfaceRenderer";
+import { CommonModel, ClassPreset } from '../../../models';
+import { FormatHelpers } from '../../../helpers';
 
 /**
- * Renderer for TypeScript's/JavaScript's `class` type
+ * Renderer for JavaScript's `class` type
  * 
- * @extends TypeScriptRenderer
+ * @extends JavaScriptRenderer
  */
-export class ClassRenderer extends TypeScriptRenderer {
-  public render(): string {
-    const properties = this.renderProperties();
-    const ctor = this.renderConstructor();
-    const accessors = this.renderAccessors();
-
-    const clazz = `class ${this.model.$id} {
-${this.indent(properties)}
+export class ClassRenderer extends JavaScriptRenderer {
+  public async defaultSelf(): Promise<string> {
+    return `class ${this.model.$id} {
+${this.indent(await this.renderProperties())}
       
-${this.indent(ctor)}
+${this.indent(await this.runCtorPreset())}
       
-${this.indent(accessors)}
+${this.indent(await this.renderAccessors())}
 }`;
-
-    if (this.options.renderTypes === true) {
-      const renderer = new InterfaceRenderer(this.model, this.inputModel, this.options);
-      const interfaceValue = renderer.render(`${this.model.$id}Input`);
-      return this.renderBlock([interfaceValue, clazz], 2);
-    }
-    return clazz;
   }
 
-  protected renderProperties(): string {
+  async runCtorPreset(): Promise<string> {
+    return this.runPreset('ctor');
+  }
+
+  async renderAccessors(): Promise<string> {
     const properties = this.model.properties || {};
-    const fields = Object.entries(properties).map(([name, property]) => {
-      return this.renderProperty(name, property, false); // false at the moment is only for fallback
-    }).filter(Boolean);
+    const content: string[] = [];
 
-    return this.renderBlock(fields);
-  }
-
-  protected renderProperty(name: string, property: CommonModel, isRequired: boolean): string {
-    if (property.type === undefined) {
-      return "";
+    for (const [propertyName, property] of Object.entries(properties)) {
+      const getter = await this.runGetterPreset(propertyName, property);
+      const setter = await this.runSetterPreset(propertyName, property);
+      content.push(this.renderBlock([getter, setter]));
     }
 
-    const signature = this.renderTypeSignature(property, !isRequired);
-    let content = `${name}${signature};`
-    return content;
+    return this.renderBlock(content, 2);
   }
 
-  protected renderConstructor(): string {
-    const signature = this.options.renderTypes ? `: ${this.model.$id}Input` : '';
-    return `constructor(input${signature}) {
-${this.indent(this.renderConstructorBody())}
-}`;
+  async runGetterPreset(propertyName: string, property: CommonModel): Promise<string> {
+    return this.runPreset('getter', { propertyName, property });
   }
 
-  protected renderConstructorBody(): string {
-    const properties = this.model.properties!;
-    const assigments = Object.keys(properties).map(property => `this.${property} = input.${property};`);
-    return this.renderBlock(assigments);
-  }
-
-  protected renderAccessors(): string {
-    const properties = this.model.properties!;
-    const accessors = Object.entries(properties).map(([name, property]) => {
-      const getter = this.renderGetter(name, property);
-      const setter = this.renderSetter(name, property);
-      return `${getter}\n${setter}`;
-    }).filter(Boolean);
-
-    return this.renderBlock(accessors, 2);
-  }
-
-  protected renderGetter(name: string, property: CommonModel): string {
-    if (property.type === undefined) {
-      return "";
-    }
-
-    const signature = this.renderTypeSignature(property, false);
-    return `get ${name}()${signature} { return this.${name}; }`;
-  }
-
-  protected renderSetter(name: string, property: CommonModel): string {
-    if (property.type === undefined) {
-      return "";
-    }
-
-    const signature = this.renderTypeSignature(property, false);
-    const arg = `${name}${signature}`
-    return `set ${name}(${arg}) { this.${name} = ${name}; }`;
+  async runSetterPreset(propertyName: string, property: CommonModel): Promise<string> {
+    return this.runPreset('setter', { propertyName, property });
   }
 }
+
+export const JS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
+  self({ renderer }) {
+    return renderer.defaultSelf();
+  },
+  ctor({ renderer, model }) {
+    const properties = model.properties || {};
+    const assigments = Object.keys(properties).map(property => {
+      property = FormatHelpers.toCamelCase(property);
+      return `this.${property} = input.${property};`;
+    });
+    const body = renderer.renderBlock(assigments);
+
+    return `constructor(input) {
+${renderer.indent(body)}
+}`;
+  },
+  property({ propertyName }) {
+    propertyName = FormatHelpers.toCamelCase(propertyName);
+    return `${propertyName};`;
+  },
+  getter({ propertyName }) {
+    propertyName = FormatHelpers.toCamelCase(propertyName);
+    return `get ${propertyName}() { return this.${propertyName}; }`;
+  },
+  setter({ propertyName }) {
+    propertyName = FormatHelpers.toCamelCase(propertyName);
+    return `set ${propertyName}(${propertyName}) { this.${propertyName} = ${propertyName}; }`;
+  },
+};

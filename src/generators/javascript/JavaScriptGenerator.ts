@@ -1,55 +1,45 @@
 import { 
-  AbstractGenerator,
+  AbstractGenerator, 
   CommonGeneratorOptions,
   defaultGeneratorOptions,
-} from "../AbstractGenerator";
-import { CommonModel, CommonInputModel } from "../../models";
-import { TypeHelpers, ModelKind } from "../../helpers";
+} from '../AbstractGenerator';
+import { CommonModel, CommonInputModel } from '../../models';
+import { TypeHelpers, ModelKind } from '../../helpers';
 
-import { TypeScriptGenerator } from "./TypeScriptGenerator";
+import { JavaScriptPreset, JS_DEFAULT_PRESET } from './JavaScriptPreset';
 
-import { ClassRenderer } from "./renderers/ClassRenderer";
+import { ClassRenderer } from './renderers/ClassRenderer';
 
-export interface JavaScriptOptions extends CommonGeneratorOptions {
-  renderTypes?: false;
-  modelType?: 'class',
-}
+export type JavaScriptOptions = CommonGeneratorOptions<JavaScriptPreset>
 
 /**
- * Generator for TypeScript
+ * Generator for JavaScript
  */
-export class JavaScriptGenerator extends TypeScriptGenerator {
+export class JavaScriptGenerator extends AbstractGenerator<JavaScriptOptions> {
   static defaultOptions: JavaScriptOptions = {
     ...defaultGeneratorOptions,
-    renderTypes: false,
-    modelType: 'class',
+    defaultPreset: JS_DEFAULT_PRESET,
   };
 
-  static createGenerator(options?: JavaScriptOptions): JavaScriptGenerator {
-    return new this(options);
-  }
-
   constructor(
-    public readonly options: JavaScriptOptions = JavaScriptGenerator.defaultOptions,
-    public readonly displayName: string = "JavaScript",
+    options: JavaScriptOptions = JavaScriptGenerator.defaultOptions,
   ) {
-    super({ ...JavaScriptGenerator.defaultOptions, ...options }, displayName);
-    this.options.renderTypes = false; // must be override in any case
-    this.options.modelType = 'class'; // must be override in any case
+    super('JavaScript', JavaScriptGenerator.defaultOptions, options);
   }
 
   async render(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const kind = TypeHelpers.extractKind(model);
-    switch(kind) {
-      case ModelKind.OBJECT: {
-        return this.renderClass(model, inputModel);
-      }
-      default: return "";
+    switch (kind) {
+    case ModelKind.OBJECT: {
+      return this.renderClass(model, inputModel);
+    }
+    default: return '';
     }
   }
 
   async renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
-    const renderer = new ClassRenderer(model, inputModel, this.options);
-    return renderer.render();
+    const presets = this.getPresets('class'); 
+    const renderer = new ClassRenderer(this.options, presets, model, inputModel);
+    return renderer.runSelfPreset();
   }
 }

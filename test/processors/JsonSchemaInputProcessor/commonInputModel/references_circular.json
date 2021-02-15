@@ -1,0 +1,84 @@
+{
+  "models":{
+    "anonymSchema2":{
+      "type":"object",
+      "$id":"anonymSchema2",
+      "additionalProperties": {
+        "originalSchema": true,
+        "type": [
+          "object",
+          "string",
+          "number",
+          "array",
+          "boolean",
+          "null"
+        ]
+      },
+      "properties":{
+        "floor":{
+          "$ref": "anonymSchema2"
+        }
+      }
+    },
+    "anonymSchema1":{
+      "type":"object",
+      "$id":"anonymSchema1",
+      "additionalProperties": {
+        "originalSchema": true,
+        "type": [
+          "object",
+          "string",
+          "number",
+          "array",
+          "boolean",
+          "null"
+        ]
+      },
+      "properties":{
+        "street_address":{
+          "$ref": "anonymSchema2"
+        },
+        "country":{
+          "originalSchema":{
+            "enum":[
+              "United States of America",
+              "Canada"
+            ]
+          },
+          "type":"string",
+          "enum":[
+            "United States of America",
+            "Canada"
+          ]
+        }
+      }
+    }
+  },
+  "customizations":{
+    
+  },
+  "originalInput":{
+    "definitions":{
+      "test":{
+        "type":"object",
+        "properties":{
+          "floor":{
+            "$ref":"#/definitions/test"
+          }
+        }
+      }
+    },
+    "type":"object",
+    "properties":{
+      "street_address":{
+        "$ref":"#/definitions/test"
+      },
+      "country":{
+        "enum":[
+          "United States of America",
+          "Canada"
+        ]
+      }
+    }
+  }
+}

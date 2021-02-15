@@ -17,28 +17,31 @@ describe('JavaScriptGenerator', function() {
         house_number:   { type: "number" },
         marriage:       { type: "boolean", description: "Status if marriage live in given house" },
         members:        { oneOf: [{ type: "string" }, { type: "number" }, { type: "boolean" }], },
+        array_type:     { type: "array", items: [{ type: "string" }, { type: "number" }] },
       },
-      required: ["street_name", "city", "state", "house_number"],
+      required: ["street_name", "city", "state", "house_number", "array_type"],
     };
     const expected = `class Address {
-  street_name;
+  streetName;
   city;
   state;
-  house_number;
+  houseNumber;
   marriage;
   members;
+  arrayType;
       
   constructor(input) {
-    this.street_name = input.street_name;
+    this.streetName = input.streetName;
     this.city = input.city;
     this.state = input.state;
-    this.house_number = input.house_number;
+    this.houseNumber = input.houseNumber;
     this.marriage = input.marriage;
     this.members = input.members;
+    this.arrayType = input.arrayType;
   }
       
-  get street_name() { return this.street_name; }
-  set street_name(street_name) { this.street_name = street_name; }
+  get streetName() { return this.streetName; }
+  set streetName(streetName) { this.streetName = streetName; }
 
   get city() { return this.city; }
   set city(city) { this.city = city; }
@@ -46,14 +49,17 @@ describe('JavaScriptGenerator', function() {
   get state() { return this.state; }
   set state(state) { this.state = state; }
 
-  get house_number() { return this.house_number; }
-  set house_number(house_number) { this.house_number = house_number; }
+  get houseNumber() { return this.houseNumber; }
+  set houseNumber(houseNumber) { this.houseNumber = houseNumber; }
 
   get marriage() { return this.marriage; }
   set marriage(marriage) { this.marriage = marriage; }
 
   get members() { return this.members; }
   set members(members) { this.members = members; }
+
+  get arrayType() { return this.arrayType; }
+  set arrayType(arrayType) { this.arrayType = arrayType; }
 }`;
 
     const inputModel = await generator.process(doc);
@@ -63,6 +69,70 @@ describe('JavaScriptGenerator', function() {
     expect(classModel).toEqual(expected);
 
     classModel = await generator.render(model, inputModel);
+    expect(classModel).toEqual(expected);
+  });
+
+  test('should not render another type than `object`', async function() {
+    const doc = {
+      $id: "AnyType",
+      type: ["string", "number"],
+    };
+    const expected = ``;
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models["AnyType"];
+
+    const anyModel = await generator.render(model, inputModel);
+    expect(anyModel).toEqual(expected);
+  });
+
+  test('should work custom preset for `class` type', async function() {
+    const doc = {
+      $id: "CustomClass",
+      type: "object",
+      properties: {
+        property: { type: "string" },
+      }
+    };
+    const expected = `export class CustomClass {
+  #property;
+      
+  constructor(input) {
+    this.#property = input.property;
+  }
+      
+  get property() { return this.#property; }
+  set property(property) { this.#property = property; }
+}`;
+
+    generator = new JavaScriptGenerator({ presets: [
+      {
+        class: {
+          self({ content }) {
+            return `export ${content}`;
+          },
+          property({ content }) {
+            return `#${content}`;
+          },
+          ctor() {
+            return `constructor(input) {
+  this.#property = input.property;
+}`;
+          },
+          getter() {
+            return `get property() { return this.#property; }`;
+          },
+          setter() {
+            return `set property(property) { this.#property = property; }`;
+          },
+        }
+      }
+    ] });
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models["CustomClass"];
+    
+    const classModel = await generator.render(model, inputModel);
     expect(classModel).toEqual(expected);
   });
 });

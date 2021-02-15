@@ -11,6 +11,17 @@
       },
       "type": "object",
       "$id": "anonymSchema1",
+      "additionalProperties": {
+        "originalSchema": true,
+        "type": [
+          "object",
+          "string",
+          "number",
+          "array",
+          "boolean",
+          "null"
+        ]
+      },
       "properties": {
         "floor": {
           "originalSchema": {

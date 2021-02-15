@@ -1,0 +1,137 @@
+{
+  "models":{
+    "anonymSchema1":{
+      "type":"object",
+      "$id":"anonymSchema1",
+      "additionalProperties": {
+        "originalSchema": true,
+        "type": [
+          "object",
+          "string",
+          "number",
+          "array",
+          "boolean",
+          "null"
+        ]
+      },
+      "properties":{
+        "street_address":{
+          "$ref":"anonymSchema2"
+        },
+        "country":{
+          "originalSchema":{
+            "enum":[
+              "United States of America",
+              "Canada"
+            ]
+          },
+          "type":"string",
+          "enum":[
+            "United States of America",
+            "Canada"
+          ]
+        }
+      }
+    },
+    "anonymSchema2":{
+      "type":"object",
+      "$id":"anonymSchema2",
+      "additionalProperties": {
+        "originalSchema": true,
+        "type": [
+          "object",
+          "string",
+          "number",
+          "array",
+          "boolean",
+          "null"
+        ]
+      },
+      "extend":[
+        "anonymSchema4",
+        "anonymSchema4"
+      ]
+    },
+    "anonymSchema3":{
+      "type":"object",
+      "$id":"anonymSchema3",
+      "additionalProperties": {
+        "originalSchema": true,
+        "type": [
+          "object",
+          "string",
+          "number",
+          "array",
+          "boolean",
+          "null"
+        ]
+      },
+      "properties":{
+        "floor":{
+          "$ref":"anonymSchema4"
+        }
+      }
+    },
+    "anonymSchema4":{
+      "type":"object",
+      "$id":"anonymSchema4",
+      "additionalProperties": {
+        "originalSchema": true,
+        "type": [
+          "object",
+          "string",
+          "number",
+          "array",
+          "boolean",
+          "null"
+        ]
+      },
+      "properties":{
+        "floor2":{
+          "$ref":"anonymSchema4"
+        }
+      }
+    }
+  },
+  "customizations":{
+    
+  },
+  "originalInput":{
+    "definitions":{
+      "test2":{
+        "properties":{
+          "floor2":{
+            "$ref":"#/definitions/test2"
+          }
+        }
+      },
+      "test":{
+        "type":"object",
+        "allOf":[
+          {
+            "properties":{
+              "floor":{
+                "$ref":"#/definitions/test2"
+              }
+            }
+          },
+          {
+            "$ref":"#/definitions/test2"
+          }
+        ]
+      }
+    },
+    "type":"object",
+    "properties":{
+      "street_address":{
+        "$ref":"#/definitions/test"
+      },
+      "country":{
+        "enum":[
+          "United States of America",
+          "Canada"
+        ]
+      }
+    }
+  }
+}

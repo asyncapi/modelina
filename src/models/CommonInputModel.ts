@@ -5,6 +5,7 @@ import { CommonModel } from './CommonModel';
  */
 export class CommonInputModel {
     models: {[key: string]: CommonModel} = {};
+    // TODO: Remove it and update tests
     customizations: Object = {};
     originalInput: any = {};
 }
