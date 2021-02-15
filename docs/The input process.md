@@ -1,8 +1,6 @@
 # The Input Process
 
-Some of the requirements for the model generation library was that it should be able to handle multiple types of inputs such as AsyncAPI, JSON Schema etc. To support this requirement the input process needs to convert any input into a common format for which the modelling process can use to reduce as much complexity as possible. We decided to settle on using the structural keyword of JSON Schema as our common model behind the scenes with a few extra keywords. 
-
-Even though we are using JSON Schema we only use a very limited number of keywords based on whether it is relevant for the rendering a minimal model.
+Some of the requirements for the model generation library was that it should be able to handle multiple types of inputs such as AsyncAPI, JSON Schema etc. To support this requirement the input process needs to convert any input into a data definition language for which the modelling process can use to reduce as much complexity as possible. We decided to settle on using the structural keyword from JSON Schema and stay as close to their keywords as possible, but instead of it describing a data validation it (CommonModel) describes a data definition.
 
 <img src="./images/Data model - Input.png"
      alt="Markdown Monster icon"
@@ -45,9 +43,9 @@ In order to convert any JSON Schema into our CommonModel we use something we cal
 
 ## Simplification process
 
-In order to simplify the model rendering process as much as possible we want to remove any JSON Schema keywords which is not needed for rendering a data model.
+To go from JSON Schema data validation to a data definition is not a trivial task, and we are along the way doing assumptions on how the underlying data definition should look like based on validation rules. In order to simplify the model rendering process as much as possible we want to remove any JSON Schema keywords which is not needed for rendering a data model.
 
-We have split out the different simplification processes into separate small functions which recursively simplifies schemas, these are the explanations for the different functions:
+We have split out the different simplification processes into separate small functions which recursively simplifies schemas, these are the explanations for the functions:
 
 - [Simplification of types](./docs/SimplifyTypes.md)
 - [Simplification of enums](./docs/SimplifyEnums.md)
