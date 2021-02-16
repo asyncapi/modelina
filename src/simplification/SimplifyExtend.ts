@@ -1,5 +1,5 @@
+import { CommonModel } from 'models';
 import { Schema } from 'models/Schema';
-import { CommonModel } from 'models/CommonModel';
 import { Simplifier } from './Simplifier';
 type Output = {newModels: CommonModel[] | undefined; extendingSchemas: string[] | undefined};
 
@@ -26,5 +26,5 @@ export default function simplifyExtend(schema: Schema | boolean, simplifier : Si
       }
     }
   }
-  return {newModels: models, extendingSchemas};
+  return {newModels: [...new Set(models)], extendingSchemas};
 }

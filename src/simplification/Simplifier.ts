@@ -16,7 +16,7 @@ export class Simplifier {
   options: SimplificationOptions;
   anonymCounter = 1;
   seenSchemas: Map<Schema, CommonModel> = new Map();
-  existingModels: CommonModel[] = [];
+  iteratedModels: Map<string, CommonModel> = new Map();
   constructor(
     options: SimplificationOptions = Simplifier.defaultOptions,
   ) {
@@ -35,10 +35,8 @@ export class Simplifier {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return [this.seenSchemas.get(schema)!];
     }
-    let localModelsToAdd: CommonModel[] = [];
     model.originalSchema = Schema.toSchema(schema);
     model.type = simplifyTypes(schema);
-
     if (typeof schema !== 'boolean') {
       this.seenSchemas.set(schema, model);
       //All schemas of type object MUST have ids, for now lets make it simple
@@ -69,9 +67,6 @@ export class Simplifier {
         if (simplifiedExtends.extendingSchemas !== undefined) {
           model.extend = simplifiedExtends.extendingSchemas;
         }
-        if (simplifiedExtends.newModels !== undefined) {
-          localModelsToAdd = [...localModelsToAdd, ...simplifiedExtends.newModels];
-        }
       }
 
       const enums = simplifyEnums(schema);
@@ -85,10 +80,16 @@ export class Simplifier {
       }
     }
     this.ensureModelsAreSplit(model);
-    return [model, ...this.existingModels, ...localModelsToAdd];
+    //Add models which have not been iterated before
+    if (isModelObject(model) && !this.iteratedModels.has(`${model.$id}`)) {
+      this.iteratedModels.set(`${model.$id}`, model);
+      return [...this.iteratedModels.values()];
+    }
+    return [model, ...this.iteratedModels.values()];
   }
 
   /**
+   * Split up all models and use ref instead.
    * 
    * @param model to ensure are split
    * @param models which are already split
@@ -104,7 +105,7 @@ export class Simplifier {
       if (isModelObject(model)) {
         const switchRootModel = new CommonModel();
         switchRootModel.$ref = model.$id;
-        this.existingModels.push(model);
+        this.iteratedModels.set(`${model.$id}`, model);
         return switchRootModel;
       }
       return model;
