@@ -87,7 +87,7 @@ export class Simplifier {
   }
 
   /**
-   * Split up all models and use ref instead.
+   * Split up all models which should and use ref instead.
    * 
    * @param model to ensure are split
    * @param models which are already split
