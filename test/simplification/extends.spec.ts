@@ -13,7 +13,7 @@ describe('Simplification to extend', function() {
     const schema = JSON.parse(inputSchemaString);
     const expectedModels = JSON.parse(expectedSchemaString);
     const actualModels = simplify(schema);
-    expect(actualModels).toEqual(expectedModels);
+    expect(actualModels).toMatchObject(expectedModels);
     expect(schema.$id).toBeUndefined();
   });
   
@@ -23,7 +23,7 @@ describe('Simplification to extend', function() {
     const schema = JSON.parse(inputSchemaString);
     const expectedModels = JSON.parse(expectedSchemaString);
     const actualModels = simplify(schema);
-    expect(actualModels).toEqual(expectedModels);
+    expect(actualModels).toMatchObject(expectedModels);
     expect(schema.$id).toBeUndefined();
   });
 
@@ -33,7 +33,7 @@ describe('Simplification to extend', function() {
     const schema = JSON.parse(inputSchemaString);
     const expectedModels = JSON.parse(expectedSchemaString);
     const actualModels = simplify(schema);
-    expect(actualModels).toEqual(expectedModels);
+    expect(actualModels).toMatchObject(expectedModels);
     expect(schema.$id).toBeUndefined();
   });
 
@@ -43,7 +43,7 @@ describe('Simplification to extend', function() {
     const schema = JSON.parse(inputSchemaString);
     const expectedModels = JSON.parse(expectedSchemaString);
     const actualModels = simplify(schema);
-    expect(actualModels).toEqual(expectedModels);
+    expect(actualModels).toMatchObject(expectedModels);
     expect(schema.$id).toBeUndefined();
   });
 });

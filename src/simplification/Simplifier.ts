@@ -16,7 +16,7 @@ export class Simplifier {
   options: SimplificationOptions;
   anonymCounter = 1;
   seenSchemas: Map<Schema, CommonModel> = new Map();
-  iteratedModels: Map<string, CommonModel> = new Map();
+  iteratedModels: {[key: string]: CommonModel} = {};
   constructor(
     options: SimplificationOptions = Simplifier.defaultOptions,
   ) {
@@ -62,11 +62,9 @@ export class Simplifier {
         model.additionalProperties = simplifiedAdditionalProperties;
       }
 
-      if (this.options.allowInheritance) {
-        const simplifiedExtends = simplifyExtend(schema, this);
-        if (simplifiedExtends.extendingSchemas !== undefined) {
-          model.extend = simplifiedExtends.extendingSchemas;
-        }
+      const simplifiedExtends = simplifyExtend(schema, this);
+      if (simplifiedExtends !== undefined) {
+        model.extend = simplifiedExtends;
       }
 
       const enums = simplifyEnums(schema);
@@ -80,12 +78,12 @@ export class Simplifier {
       }
     }
     this.ensureModelsAreSplit(model);
+    const modelsToReturn = Object.values(this.iteratedModels);
     //Add models which have not been iterated before
-    if (isModelObject(model) && !this.iteratedModels.has(`${model.$id}`)) {
-      this.iteratedModels.set(`${model.$id}`, model);
-      return [...this.iteratedModels.values()];
+    if (isModelObject(model) && this.iteratedModels[`${model.$id}`] === undefined) {
+      this.iteratedModels[`${model.$id}`] = model;
     }
-    return [model, ...this.iteratedModels.values()];
+    return [model, ...modelsToReturn];
   }
 
   /**
@@ -105,7 +103,7 @@ export class Simplifier {
       if (isModelObject(model)) {
         const switchRootModel = new CommonModel();
         switchRootModel.$ref = model.$id;
-        this.iteratedModels.set(`${model.$id}`, model);
+        this.iteratedModels[`${model.$id}`] = model;
         return switchRootModel;
       }
       return model;

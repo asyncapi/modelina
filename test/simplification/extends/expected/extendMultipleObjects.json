@@ -1,52 +1,70 @@
 [
   {
-    "originalSchema":{
-      "allOf":[
+    "$id": "anonymSchema1",
+    "additionalProperties": {
+      "originalSchema": true,
+      "type": [
+        "object",
+        "string",
+        "number",
+        "array",
+        "boolean",
+        "null"
+      ]
+    },
+    "extend": [
+      "anonymSchema2",
+      "anonymSchema4"
+    ],
+    "originalSchema": {
+      "allOf": [
         {
-          "type":"object",
-          "properties":{
-            "street_address":{
-              "type":"object",
-              "properties":{
-                "floor":{
-                  "type":"number"
-                }
-              }
-            },
-            "country":{
-              "enum":[
+          "properties": {
+            "country": {
+              "enum": [
                 "United States of America2",
                 "Canada2"
               ]
+            },
+            "street_address": {
+              "properties": {
+                "floor": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             }
-          }
+          },
+          "type": "object"
         },
         {
-          "type":"object",
-          "properties":{
-            "street_address2":{
-              "type":"object",
-              "properties":{
-                "floor2":{
-                  "type":"number"
-                }
-              }
-            },
-            "country2":{
-              "enum":[
+          "properties": {
+            "country2": {
+              "enum": [
                 "United States of America2",
                 "Canada2"
               ]
+            },
+            "street_address2": {
+              "properties": {
+                "floor2": {
+                  "type": "number"
+                }
+              },
+              "type": "object"
             }
-          }
+          },
+          "type": "object"
         }
       ]
     },
-    "type":"object",
-    "$id":"anonymSchema1",
-    "additionalProperties":{
-      "originalSchema":true,
-      "type":[
+    "type": "object"
+  },
+  {
+    "$id": "anonymSchema3",
+    "additionalProperties": {
+      "originalSchema": true,
+      "type": [
         "object",
         "string",
         "number",
@@ -55,168 +73,81 @@
         "null"
       ]
     },
-    "extend":[
-      "anonymSchema3",
-      "anonymSchema5"
-    ]
-  },
-  {
-    "originalSchema":{
-      "type":"object",
-      "properties":{
-        "floor":{
-          "type":"number"
+    "originalSchema": {
+      "properties": {
+        "floor": {
+          "type": "number"
         }
-      }
-    },
-    "type":"object",
-    "$id":"anonymSchema3",
-    "properties":{
-      "floor":{
-        "originalSchema":{
-          "type":"number"
-        },
-        "type":"number"
-      }
-    },
-    "additionalProperties":{
-      "originalSchema":true,
-      "type":[
-        "object",
-        "string",
-        "number",
-        "array",
-        "boolean",
-        "null"
-      ]
-    }
-  },
-  {
-    "originalSchema":{
-      "type":"object",
-      "properties":{
-        "floor2":{
-          "type":"number"
-        }
-      }
-    },
-    "type":"object",
-    "$id":"anonymSchema5",
-    "properties":{
-      "floor2":{
-        "originalSchema":{
-          "type":"number"
-        },
-        "type":"number"
-      }
-    },
-    "additionalProperties":{
-      "originalSchema":true,
-      "type":[
-        "object",
-        "string",
-        "number",
-        "array",
-        "boolean",
-        "null"
-      ]
-    }
-  },
-  {
-    "originalSchema":{
-      "type":"object",
-      "properties":{
-        "street_address":{
-          "type":"object",
-          "properties":{
-            "floor":{
-              "type":"number"
-            }
-          }
-        },
-        "country":{
-          "enum":[
-            "United States of America2",
-            "Canada2"
-          ]
-        }
-      }
-    },
-    "type":"object",
-    "$id":"anonymSchema2",
-    "properties":{
-      "street_address":{
-        "$ref":"anonymSchema3"
       },
-      "country":{
-        "originalSchema":{
-          "enum":[
+      "type": "object"
+    },
+    "properties": {
+      "floor": {
+        "originalSchema": {
+          "type": "number"
+        },
+        "type": "number"
+      }
+    },
+    "type": "object"
+  },
+  {
+    "$id": "anonymSchema2",
+    "additionalProperties": {
+      "originalSchema": true,
+      "type": [
+        "object",
+        "string",
+        "number",
+        "array",
+        "boolean",
+        "null"
+      ]
+    },
+    "originalSchema": {
+      "properties": {
+        "country": {
+          "enum": [
             "United States of America2",
             "Canada2"
           ]
         },
-        "type":"string",
-        "enum":[
+        "street_address": {
+          "properties": {
+            "floor": {
+              "type": "number"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "properties": {
+      "country": {
+        "enum": [
           "United States of America2",
           "Canada2"
-        ]
+        ],
+        "originalSchema": {
+          "enum": [
+            "United States of America2",
+            "Canada2"
+          ]
+        },
+        "type": "string"
+      },
+      "street_address": {
+        "$ref": "anonymSchema3"
       }
     },
-    "additionalProperties":{
-      "originalSchema":true,
-      "type":[
-        "object",
-        "string",
-        "number",
-        "array",
-        "boolean",
-        "null"
-      ]
-    }
+    "type": "object"
   },
   {
-    "originalSchema":{
-      "type":"object",
-      "properties":{
-        "street_address2":{
-          "type":"object",
-          "properties":{
-            "floor2":{
-              "type":"number"
-            }
-          }
-        },
-        "country2":{
-          "enum":[
-            "United States of America2",
-            "Canada2"
-          ]
-        }
-      }
-    },
-    "type":"object",
-    "$id":"anonymSchema4",
-    "properties":{
-      "street_address2":{
-        "$ref":"anonymSchema5"
-      },
-      "country2":{
-        "originalSchema":{
-          "enum":[
-            "United States of America2",
-            "Canada2"
-          ]
-        },
-        "type":"string",
-        "enum":[
-          "United States of America2",
-          "Canada2"
-        ]
-      }
-    },
-    "additionalProperties":{
-      "originalSchema":true,
-      "type":[
+    "$id": "anonymSchema5",
+    "additionalProperties": {
+      "originalSchema": true,
+      "type": [
         "object",
         "string",
         "number",
@@ -224,6 +155,75 @@
         "boolean",
         "null"
       ]
-    }
+    },
+    "originalSchema": {
+      "properties": {
+        "floor2": {
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "properties": {
+      "floor2": {
+        "originalSchema": {
+          "type": "number"
+        },
+        "type": "number"
+      }
+    },
+    "type": "object"
+  },
+  {
+    "$id": "anonymSchema4",
+    "additionalProperties": {
+      "originalSchema": true,
+      "type": [
+        "object",
+        "string",
+        "number",
+        "array",
+        "boolean",
+        "null"
+      ]
+    },
+    "originalSchema": {
+      "properties": {
+        "country2": {
+          "enum": [
+            "United States of America2",
+            "Canada2"
+          ]
+        },
+        "street_address2": {
+          "properties": {
+            "floor2": {
+              "type": "number"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "properties": {
+      "country2": {
+        "enum": [
+          "United States of America2",
+          "Canada2"
+        ],
+        "originalSchema": {
+          "enum": [
+            "United States of America2",
+            "Canada2"
+          ]
+        },
+        "type": "string"
+      },
+      "street_address2": {
+        "$ref": "anonymSchema5"
+      }
+    },
+    "type": "object"
   }
 ]
