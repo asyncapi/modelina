@@ -29,7 +29,7 @@ describe('JavaScriptGenerator', function() {
   marriage;
   members;
   arrayType;
-      
+
   constructor(input) {
     this.streetName = input.streetName;
     this.city = input.city;
@@ -39,7 +39,7 @@ describe('JavaScriptGenerator', function() {
     this.members = input.members;
     this.arrayType = input.arrayType;
   }
-      
+
   get streetName() { return this.streetName; }
   set streetName(streetName) { this.streetName = streetName; }
 
@@ -96,11 +96,11 @@ describe('JavaScriptGenerator', function() {
     };
     const expected = `export class CustomClass {
   #property;
-      
+
   constructor(input) {
     this.#property = input.property;
   }
-      
+
   get property() { return this.#property; }
   set property(property) { this.#property = property; }
 }`;

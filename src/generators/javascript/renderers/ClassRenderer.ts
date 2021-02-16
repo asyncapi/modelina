@@ -10,12 +10,15 @@ import { FormatHelpers } from '../../../helpers';
  */
 export class ClassRenderer extends JavaScriptRenderer {
   public async defaultSelf(): Promise<string> {
+    const content = [
+      await this.renderProperties(),
+      await this.runCtorPreset(),
+      await this.renderAccessors(),
+      await this.runAdditionalContentPreset(),
+    ];
+
     return `class ${this.model.$id} {
-${this.indent(await this.renderProperties())}
-      
-${this.indent(await this.runCtorPreset())}
-      
-${this.indent(await this.renderAccessors())}
+${this.indent(this.renderBlock(content, 2))}
 }`;
   }
 
@@ -28,20 +31,20 @@ ${this.indent(await this.renderAccessors())}
     const content: string[] = [];
 
     for (const [propertyName, property] of Object.entries(properties)) {
-      const getter = await this.runGetterPreset(propertyName, property);
-      const setter = await this.runSetterPreset(propertyName, property);
+      const getter = await this.runGetterPreset(propertyName, property, this.model);
+      const setter = await this.runSetterPreset(propertyName, property, this.model);
       content.push(this.renderBlock([getter, setter]));
     }
 
     return this.renderBlock(content, 2);
   }
 
-  async runGetterPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset('getter', { propertyName, property });
+  async runGetterPreset(propertyName: string, property: CommonModel, parentModel: CommonModel): Promise<string> {
+    return this.runPreset('getter', { propertyName, property, parentModel });
   }
 
-  async runSetterPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset('setter', { propertyName, property });
+  async runSetterPreset(propertyName: string, property: CommonModel, parentModel: CommonModel): Promise<string> {
+    return this.runPreset('setter', { propertyName, property, parentModel });
   }
 }
 

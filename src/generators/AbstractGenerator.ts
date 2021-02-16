@@ -1,14 +1,13 @@
-import { AbstractRenderer } from './AbstractRenderer';
-import { CommonInputModel, CommonModel, OutputModel, Preset, Presets, isPresetWithOptions } from '../models';
+import { CommonInputModel, CommonModel, OutputModel, Preset, Presets } from '../models';
 import { InputProcessor } from '../processors';
 import { IndentationTypes } from '../helpers';
+import { isPresetWithOptions } from '../utils';
 
-export interface CommonGeneratorOptions<P extends Preset = Preset, R extends Record<string, AbstractRenderer> = any> {
+export interface CommonGeneratorOptions<P extends Preset = Preset> {
   indentation?: {
     type: IndentationTypes;
     size: number;
   };
-  renderers?: R;
   defaultPreset?: P;
   presets?: Presets<P>;
 }
@@ -24,7 +23,6 @@ export const defaultGeneratorOptions = {
  * Abstract generator which must be implemented by each language
  */
 export abstract class AbstractGenerator<Options extends CommonGeneratorOptions = CommonGeneratorOptions> {
-  private processor = new InputProcessor();
   protected options: Options;
   
   constructor(
@@ -38,7 +36,7 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
   public abstract render(model: CommonModel, inputModel: CommonInputModel): Promise<string>;
 
   public async process(input: any): Promise<CommonInputModel> {
-    return await this.processor.process(input);
+    return await InputProcessor.processor.process(input);
   }
 
   public generate(input: CommonInputModel): Promise<OutputModel[]>;
@@ -63,17 +61,23 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
   protected getPresets(presetType: string): Array<[Preset, unknown]> {
     const filteredPresets: Array<[Preset, unknown]> = [];
 
-    const defaultPreset = this.options.defaultPreset!;
-    filteredPresets.push([defaultPreset[presetType], undefined]);
+    const defaultPreset = this.options.defaultPreset;
+    if (defaultPreset !== undefined) {
+      filteredPresets.push([defaultPreset[String(presetType)], undefined]);
+    }
 
     const presets = this.options.presets || [];
     presets.forEach(p => {
       if (isPresetWithOptions(p)) {
-        const preset = p.preset[presetType];
-        preset && filteredPresets.push([preset, p.options]);
+        const preset = p.preset[String(presetType)];
+        if (preset) {
+          filteredPresets.push([preset, p.options]);
+        }
       } else {
-        const preset = p[presetType];
-        preset && filteredPresets.push([preset, undefined]);
+        const preset = p[String(presetType)];
+        if (preset) {
+          filteredPresets.push([preset, undefined]);
+        }
       }
     });
 
@@ -81,15 +85,10 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
   }
 
   protected mergeOptions(defaultOptions: Options = {} as any, passedOptions: Options = {} as any): Options {
-    const renders = { 
-      ...(defaultOptions.renderers || {}),
-      ...(passedOptions.renderers || {})
-    };
     return {
       ...defaultGeneratorOptions,
       ...defaultOptions,
       ...passedOptions,
-      renders,
     };
   }
 }

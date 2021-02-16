@@ -54,11 +54,11 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
     }
   }
 
-  renderTypeSignature(type: CommonModel | CommonModel[], isOptional = false): string {
+  renderTypeSignature(type: CommonModel | CommonModel[], isRequired = true): string {
     if (this.options.renderTypes === false) {
       return '';
     }
-    const annotation = isOptional ? '?:' : ':';
+    const annotation = isRequired ? ':' : '?:';
     return `${annotation} ${this.renderType(type)}`;
   }
 
@@ -74,20 +74,20 @@ ${lines.map(line => ` * ${line}`).join('\n')}
     const content: string[] = [];
 
     for (const [propertyName, property] of Object.entries(properties)) {
-      const rendererProperty = await this.runPropertyPreset(propertyName, property);
+      const rendererProperty = await this.runPropertyPreset(propertyName, property, this.model);
       content.push(rendererProperty);
     }
 
     return this.renderBlock(content);
   }
 
-  renderProperty(propertyName: string, property: CommonModel): string {
-    propertyName = FormatHelpers.toCamelCase(propertyName);
-    const signature = this.renderTypeSignature(property, true);
-    return `${propertyName}${signature};`;
+  renderProperty(propertyName: string, property: CommonModel, parentModel: CommonModel): string {
+    const name = FormatHelpers.toCamelCase(propertyName);
+    const signature = this.renderTypeSignature(property, parentModel.isRequired(propertyName));
+    return `${name}${signature};`;
   }
 
-  async runPropertyPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset('property', { propertyName, property });
+  async runPropertyPreset(propertyName: string, property: CommonModel, parentModel: CommonModel): Promise<string> {
+    return this.runPreset('property', { propertyName, property, parentModel });
   }
 }

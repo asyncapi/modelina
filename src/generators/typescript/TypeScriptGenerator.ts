@@ -15,7 +15,7 @@ import { TypeRenderer } from './renderers/TypeRenderer';
 
 export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPreset> {
   renderTypes?: boolean
-  modelType?: 'class' | 'interface' | 'type';
+  modelType?: 'class' | 'interface';
 }
 
 /**
@@ -77,9 +77,6 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions> {
     switch (modelType) {
     case 'interface': {
       return this.renderInterface(model, inputModel);
-    }
-    case 'type': {
-      return this.renderType(model, inputModel);
     }
     default: return this.renderClass(model, inputModel);
     }
