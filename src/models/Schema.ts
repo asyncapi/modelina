@@ -1,8 +1,6 @@
 import { CommonSchema } from './CommonSchema';
 import { applySchemaExtension } from "../utils";
 
-let a = 0;
-
 /**
  * JSON Schema Draft 7 model
  * 
@@ -54,15 +52,21 @@ export class Schema extends CommonSchema<Schema | boolean> {
      * @param object to transform
      * @returns CommonModel instance of the object
      */
-    static toSchema(object: Object, seenSchemas: Map<any, Schema> = new Map()): Schema | boolean {
+    static toSchema(object: Schema | boolean, seenSchemas: Map<any, Schema> = new Map(), propertyName?: string): Schema | boolean {
       if (typeof object === 'boolean') return object;
-      if (seenSchemas.has(object)) return seenSchemas.get(object) as Schema;
+      if (seenSchemas.has(object)) {
+        return seenSchemas.get(object) as Schema;
+      }
+      if (propertyName) {
+        applySchemaExtension(object, 'inferred-name', propertyName);
+      }
+
       let schema = new Schema();
       schema = Object.assign(schema, object as Schema);
       seenSchemas.set(object, schema);
       schema = CommonSchema.transformSchema(schema, Schema.toSchema, seenSchemas);
 
-      //Transform JSON Schema properties which contain nested schemas into an instance of Schema
+      // Transform JSON Schema properties which contain nested schemas into an instance of Schema
       if (schema.allOf !== undefined) {
         schema.allOf = schema.allOf.map((item) => Schema.toSchema(item, seenSchemas));
       }
@@ -89,9 +93,7 @@ export class Schema extends CommonSchema<Schema | boolean> {
         Object.entries(schema.dependencies).forEach(([propertyName, property]) => {
           //We only care about object dependencies
           if (typeof property === 'object' && !Array.isArray(property)) {
-            const newSchema = Schema.toSchema(property, seenSchemas);
-            applySchemaExtension(newSchema, 'inferred-name', propertyName);
-            dependencies[propertyName] = newSchema
+            dependencies[propertyName] = Schema.toSchema(property, seenSchemas, propertyName);
           } else {
             dependencies[propertyName] = property as string[];
           }
@@ -105,9 +107,7 @@ export class Schema extends CommonSchema<Schema | boolean> {
       if (schema.patternProperties !== undefined) {
         const patternProperties: { [key: string]: Schema | boolean } = {};
         Object.entries(schema.patternProperties).forEach(([propertyName, property]) => {
-          const newSchema = Schema.toSchema(property, seenSchemas);
-          applySchemaExtension(newSchema, 'inferred-name', propertyName);
-          patternProperties[propertyName] = newSchema;
+          patternProperties[propertyName] = Schema.toSchema(property, seenSchemas, propertyName);
         });
         schema.patternProperties = patternProperties;
       }
@@ -124,9 +124,7 @@ export class Schema extends CommonSchema<Schema | boolean> {
       if (schema.definitions !== undefined) {
         const definitions: { [key: string]: Schema | boolean } = {};
         Object.entries(schema.definitions).forEach(([propertyName, property]) => {
-          const newSchema = Schema.toSchema(property, seenSchemas);
-          applySchemaExtension(newSchema, 'inferred-name', propertyName);
-          definitions[propertyName] = newSchema;
+          definitions[propertyName] = Schema.toSchema(property, seenSchemas, propertyName);
         });
         schema.definitions = definitions;
       }
