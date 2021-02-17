@@ -20,6 +20,7 @@
           "originalSchema": {
             "type": "string",
             "format": "email",
+            "x-modelgen-inferred-name": "email",
             "x-parser-schema-id": "<anonymous-schema-2>"
           },
           "type": "string"

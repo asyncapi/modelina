@@ -4,8 +4,7 @@
       "type": "object",
       "properties": {
         "initial": {
-          "type": "string",
-          "x-modelgen-inferred-name": "initial"
+          "type": "string"
         }
       },
       "allOf": [
@@ -13,12 +12,10 @@
           "type": "object",
           "properties": {
             "street_address": {
-              "type": "string",
-              "x-modelgen-inferred-name": "street_address"
+              "type": "string"
             },
             "country": {
-              "type": "string",
-              "x-modelgen-inferred-name": "country"
+              "type": "string"
             }
           }
         },
@@ -26,12 +23,10 @@
           "type": "object",
           "properties": {
             "street_address2": {
-              "type": "string",
-              "x-modelgen-inferred-name": "street_address2"
+              "type": "string"
             },
             "country2": {
-              "type": "string",
-              "x-modelgen-inferred-name": "country2"
+              "type": "string"
             }
           }
         }
@@ -68,12 +63,10 @@
       "type": "object",
       "properties": {
         "street_address": {
-          "type": "string",
-          "x-modelgen-inferred-name": "street_address"
+          "type": "string"
         },
         "country": {
-          "type": "string",
-          "x-modelgen-inferred-name": "country"
+          "type": "string"
         }
       }
     },
@@ -110,12 +103,10 @@
       "type": "object",
       "properties": {
         "street_address2": {
-          "type": "string",
-          "x-modelgen-inferred-name": "street_address2"
+          "type": "string"
         },
         "country2": {
-          "type": "string",
-          "x-modelgen-inferred-name": "country2"
+          "type": "string"
         }
       }
     },

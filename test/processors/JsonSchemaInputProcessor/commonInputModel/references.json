@@ -17,14 +17,14 @@
         "type": "object",
         "properties": {
           "street_address": {
+            "x-modelgen-inferred-name": "street_address",
             "type": "object",
             "properties": {
               "floor": {
                 "type": "number",
                 "x-modelgen-inferred-name": "floor"
               }
-            },
-            "x-modelgen-inferred-name": "test"
+            }
           },
           "country": {
             "enum": [
@@ -70,14 +70,14 @@
     },
     "anonymSchema2": {
       "originalSchema": {
+        "x-modelgen-inferred-name": "street_address",
         "type": "object",
         "properties": {
           "floor": {
             "type": "number",
             "x-modelgen-inferred-name": "floor"
           }
-        },
-        "x-modelgen-inferred-name": "test"
+        }
       },
       "type": "object",
       "$id": "anonymSchema2",

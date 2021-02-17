@@ -7,16 +7,14 @@
             {
               "properties": {
                 "testProp1": {
-                  "type": "string",
-                  "x-modelgen-inferred-name": "testProp1"
+                  "type": "string"
                 }
               }
             },
             {
               "properties": {
                 "testProp2": {
-                  "type": "string",
-                  "x-modelgen-inferred-name": "testProp2"
+                  "type": "string"
                 }
               }
             }
@@ -25,8 +23,7 @@
         {
           "properties": {
             "testProp3": {
-              "type": "string",
-              "x-modelgen-inferred-name": "testProp3"
+              "type": "string"
             }
           }
         }
@@ -56,16 +53,14 @@
         {
           "properties": {
             "testProp1": {
-              "type": "string",
-              "x-modelgen-inferred-name": "testProp1"
+              "type": "string"
             }
           }
         },
         {
           "properties": {
             "testProp2": {
-              "type": "string",
-              "x-modelgen-inferred-name": "testProp2"
+              "type": "string"
             }
           }
         }
@@ -93,8 +88,7 @@
     "originalSchema": {
       "properties": {
         "testProp1": {
-          "type": "string",
-          "x-modelgen-inferred-name": "testProp1"
+          "type": "string"
         }
       }
     },
@@ -124,8 +118,7 @@
     "originalSchema": {
       "properties": {
         "testProp2": {
-          "type": "string",
-          "x-modelgen-inferred-name": "testProp2"
+          "type": "string"
         }
       }
     },
@@ -155,8 +148,7 @@
     "originalSchema": {
       "properties": {
         "testProp3": {
-          "type": "string",
-          "x-modelgen-inferred-name": "testProp3"
+          "type": "string"
         }
       }
     },

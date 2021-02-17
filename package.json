@@ -55,7 +55,7 @@
   "scripts": {
     "start": "tsc --watch",
     "build": "tsc",
-    "test": "cross-env CI=true jest --coverage test/processors/JsonSchemaInputProcessor",
+    "test": "cross-env CI=true jest --coverage",
     "test:watch": "jest --watch",
     "docs": "npm run docs:markdown",
     "docs:markdown": "./node_modules/.bin/jsdoc2md lib/index.js -f lib/**/*.js > API.md",

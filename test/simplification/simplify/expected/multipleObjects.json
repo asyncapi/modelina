@@ -7,18 +7,15 @@
           "type": "object",
           "properties": {
             "floor": {
-              "type": "number",
-              "x-modelgen-inferred-name": "floor"
+              "type": "number"
             }
-          },
-          "x-modelgen-inferred-name": "street_address"
+          }
         },
         "country": {
           "enum": [
             "United States of America",
             "Canada"
-          ],
-          "x-modelgen-inferred-name": "country"
+          ]
         }
       }
     },
@@ -59,8 +56,7 @@
       "type": "object",
       "properties": {
         "floor": {
-          "type": "number",
-          "x-modelgen-inferred-name": "floor"
+          "type": "number"
         }
       }
     },
