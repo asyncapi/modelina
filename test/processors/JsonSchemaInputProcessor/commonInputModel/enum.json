@@ -17,6 +17,7 @@
       },
       "type": "object",
       "$id": "anonymSchema1",
+      "name": "anonymSchema1",
       "properties": {
         "address_type": {
           "originalSchema": {
@@ -31,6 +32,7 @@
             "string",
             "number"
           ],
+          "name": "address_type",
           "enum": [
             "residential",
             "business",

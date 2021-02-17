@@ -8,6 +8,7 @@ import simplifyTypes from './SimplifyTypes';
 import { SimplificationOptions } from '../models/SimplificationOptions';
 import simplifyAdditionalProperties from './SimplifyAdditionalProperties';
 import { isModelObject } from './Utils';
+import simplifyName from './SimplifyName';
 
 /**
  * This is the default wrapper for the simplifier class which always create a new instance of the simplifier. 
@@ -74,12 +75,17 @@ export class Simplifier {
 
     if (typeof schema !== 'boolean') {
       this.seenSchemas.set(schema, model);
-      //All schemas of type object MUST have ids, for now lets make it simple
+      // All schemas of type object MUST have ids, for now lets make it simple
       if (model.type !== undefined && model.type.includes('object')) {
         const schemaId = schema.$id ? schema.$id : `anonymSchema${this.anonymCounter++}`;
         model.$id = schemaId;
       } else if (schema.$id !== undefined) {
         model.$id = schema.$id;
+      }
+
+      const name = simplifyName(schema, model.$id);
+      if (name) {
+        model.name = name;
       }
 
       const simplifiedItems = simplifyItems(schema, this);

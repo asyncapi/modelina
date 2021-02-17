@@ -38,6 +38,7 @@
       },
       "type": "object",
       "$id": "anonymSchema1",
+      "name": "anonymSchema1",
       "properties": {
         "address_type": {
           "originalSchema": {
@@ -70,6 +71,7 @@
             "x-modelgen-inferred-name": "address_type"
           },
           "type": "array",
+          "name": "address_type",
           "items": {
             "originalSchema": {
               "type": "array",

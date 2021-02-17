@@ -1,5 +1,4 @@
 import { CommonSchema } from './CommonSchema';
-import { applySchemaExtension } from "../utils";
 
 /**
  * JSON Schema Draft 7 model

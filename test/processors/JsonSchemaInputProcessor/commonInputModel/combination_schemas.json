@@ -1,45 +1,45 @@
 {
-  "models":{
-    "anonymSchema1":{
-      "originalSchema":{
-        "$schema":"http://json-schema.org/draft-07/schema#",
-        "type":"object",
-        "properties":{
-          "shipping_address":{
-            "allOf":[
+  "models": {
+    "anonymSchema1": {
+      "originalSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "shipping_address": {
+            "allOf": [
               {
-                "type":"object",
-                "properties":{
-                  "street_address":{
-                    "type":"string",
+                "type": "object",
+                "properties": {
+                  "street_address": {
+                    "type": "string",
                     "x-modelgen-inferred-name": "street_address"
                   },
-                  "city":{
-                    "type":"string",
+                  "city": {
+                    "type": "string",
                     "x-modelgen-inferred-name": "city"
                   },
-                  "state":{
-                    "type":"string",
+                  "state": {
+                    "type": "string",
                     "x-modelgen-inferred-name": "state"
                   }
                 },
-                "required":[
+                "required": [
                   "street_address",
                   "city",
                   "state"
                 ]
               },
               {
-                "properties":{
-                  "type":{
-                    "enum":[
+                "properties": {
+                  "type": {
+                    "enum": [
                       "residential",
                       "business"
                     ],
                     "x-modelgen-inferred-name": "type"
                   }
                 },
-                "required":[
+                "required": [
                   "type"
                 ]
               }
@@ -48,8 +48,14 @@
           }
         }
       },
-      "type":"object",
-      "$id":"anonymSchema1",
+      "type": "object",
+      "$id": "anonymSchema1",
+      "name": "anonymSchema1",
+      "properties": {
+        "shipping_address": {
+          "$ref": "anonymSchema2"
+        }
+      },
       "additionalProperties": {
         "originalSchema": true,
         "type": [
@@ -60,14 +66,9 @@
           "boolean",
           "null"
         ]
-      },
-      "properties":{
-        "shipping_address": {
-          "$ref": "anonymSchema2"
-        }
       }
     },
-    "anonymSchema2": {
+    "shipping_address": {
       "originalSchema": {
         "allOf": [
           {
@@ -111,6 +112,7 @@
       },
       "type": "object",
       "$id": "anonymSchema2",
+      "name": "shipping_address",
       "additionalProperties": {
         "originalSchema": true,
         "type": [
@@ -158,27 +160,31 @@
       },
       "type": "object",
       "$id": "anonymSchema3",
+      "name": "anonymSchema3",
       "properties": {
         "street_address": {
           "originalSchema": {
             "type": "string",
             "x-modelgen-inferred-name": "street_address"
           },
-          "type": "string"
+          "type": "string",
+          "name": "street_address"
         },
         "city": {
           "originalSchema": {
             "type": "string",
             "x-modelgen-inferred-name": "city"
           },
-          "type": "string"
+          "type": "string",
+          "name": "city"
         },
         "state": {
           "originalSchema": {
             "type": "string",
             "x-modelgen-inferred-name": "state"
           },
-          "type": "string"
+          "type": "string",
+          "name": "state"
         }
       },
       "additionalProperties": {
@@ -215,6 +221,7 @@
       },
       "type": "object",
       "$id": "anonymSchema4",
+      "name": "anonymSchema4",
       "properties": {
         "type": {
           "originalSchema": {
@@ -225,6 +232,7 @@
             "x-modelgen-inferred-name": "type"
           },
           "type": "string",
+          "name": "type",
           "enum": [
             "residential",
             "business"

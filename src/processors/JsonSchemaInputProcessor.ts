@@ -3,7 +3,6 @@ import { CommonInputModel } from '../models/CommonInputModel';
 import { CommonModel } from '../models/CommonModel';
 import {simplify} from '../simplification/Simplifier';
 import { Schema } from '../models/Schema';
-import { applySchemaExtension } from '../utils';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import path from 'path';
 
@@ -81,7 +80,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
 
     schema = Object.assign({}, schema);
     if (propertyName && !schema['x-modelgen-inferred-name']) {
-      applySchemaExtension(schema, "inferred-name", propertyName);
+      schema['x-modelgen-inferred-name'] = propertyName;
     }
 
     if (schema.allOf !== undefined) {
@@ -172,11 +171,13 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param schema to simplify to common model
    */
-  static convertSchemaToCommonModel(schema: Schema | boolean) : {[key: string]: CommonModel} {
+  static convertSchemaToCommonModel(schema: Schema | boolean): Record<string, CommonModel> {
     const commonModels = simplify(schema);
-    const commonModelsMap : {[key: string]: CommonModel}  = {};
-    commonModels.forEach((value) => {
-      if (value.$id) {
+    const commonModelsMap: Record<string, CommonModel> = {};
+    commonModels.forEach(value => {
+      if (value.name) {
+        commonModelsMap[value.name] = value;
+      } else if (value.$id) {
         commonModelsMap[value.$id] = value;
       }
     });

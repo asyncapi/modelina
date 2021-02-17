@@ -3,6 +3,7 @@
     "anonymSchema1":{
       "type":"object",
       "$id":"anonymSchema1",
+      "name": "anonymSchema1",
       "additionalProperties": {
         "originalSchema": true,
         "type": [
@@ -33,9 +34,10 @@
         }
       }
     },
-    "anonymSchema2":{
+    "street_address":{
       "type":"object",
       "$id":"anonymSchema2",
+      "name": "street_address",
       "additionalProperties": {
         "originalSchema": true,
         "type": [
@@ -55,6 +57,7 @@
     "anonymSchema3":{
       "type":"object",
       "$id":"anonymSchema3",
+      "name": "anonymSchema3",
       "additionalProperties": {
         "originalSchema": true,
         "type": [
@@ -72,9 +75,10 @@
         }
       }
     },
-    "anonymSchema4":{
+    "floor":{
       "type":"object",
       "$id":"anonymSchema4",
+      "name": "floor",
       "additionalProperties": {
         "originalSchema": true,
         "type": [

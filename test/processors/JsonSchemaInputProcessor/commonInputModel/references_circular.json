@@ -1,8 +1,9 @@
 {
   "models":{
-    "anonymSchema2":{
+    "street_address":{
       "type":"object",
       "$id":"anonymSchema2",
+      "name": "street_address",
       "additionalProperties": {
         "originalSchema": true,
         "type": [
@@ -23,6 +24,7 @@
     "anonymSchema1":{
       "type":"object",
       "$id":"anonymSchema1",
+      "name": "anonymSchema1",
       "additionalProperties": {
         "originalSchema": true,
         "type": [
