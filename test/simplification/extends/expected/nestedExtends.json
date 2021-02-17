@@ -1,36 +1,39 @@
 [
   {
-    "originalSchema":{
-      "allOf":[
+    "originalSchema": {
+      "allOf": [
         {
-          "allOf":[
+          "allOf": [
             {
-              "properties":{
-                "testProp1":{
-                  "type":"string"
+              "properties": {
+                "testProp1": {
+                  "type": "string",
+                  "x-modelgen-inferred-name": "testProp1"
                 }
               }
             },
             {
-              "properties":{
-                "testProp2":{
-                  "type":"string"
+              "properties": {
+                "testProp2": {
+                  "type": "string",
+                  "x-modelgen-inferred-name": "testProp2"
                 }
               }
             }
           ]
         },
         {
-          "properties":{
-            "testProp3":{
-              "type":"string"
+          "properties": {
+            "testProp3": {
+              "type": "string",
+              "x-modelgen-inferred-name": "testProp3"
             }
           }
         }
       ]
     },
-    "type":"object",
-    "$id":"anonymSchema1",
+    "type": "object",
+    "$id": "anonymSchema1",
     "additionalProperties": {
       "originalSchema": true,
       "type": [
@@ -42,32 +45,34 @@
         "null"
       ]
     },
-    "extend":[
+    "extend": [
       "anonymSchema4",
       "anonymSchema5"
     ]
   },
   {
-    "originalSchema":{
-      "allOf":[
+    "originalSchema": {
+      "allOf": [
         {
-          "properties":{
-            "testProp1":{
-              "type":"string"
+          "properties": {
+            "testProp1": {
+              "type": "string",
+              "x-modelgen-inferred-name": "testProp1"
             }
           }
         },
         {
-          "properties":{
-            "testProp2":{
-              "type":"string"
+          "properties": {
+            "testProp2": {
+              "type": "string",
+              "x-modelgen-inferred-name": "testProp2"
             }
           }
         }
       ]
     },
-    "type":"object",
-    "$id":"anonymSchema2",
+    "type": "object",
+    "$id": "anonymSchema2",
     "additionalProperties": {
       "originalSchema": true,
       "type": [
@@ -79,21 +84,30 @@
         "null"
       ]
     },
-    "extend":[
+    "extend": [
       "anonymSchema3",
       "anonymSchema4"
     ]
   },
   {
-    "originalSchema":{
-      "properties":{
-        "testProp1":{
-          "type":"string"
+    "originalSchema": {
+      "properties": {
+        "testProp1": {
+          "type": "string",
+          "x-modelgen-inferred-name": "testProp1"
         }
       }
     },
-    "type":"object",
-    "$id":"anonymSchema3",
+    "type": "object",
+    "$id": "anonymSchema3",
+    "properties": {
+      "testProp1": {
+        "originalSchema": {
+          "type": "string"
+        },
+        "type": "string"
+      }
+    },
     "additionalProperties": {
       "originalSchema": true,
       "type": [
@@ -104,26 +118,27 @@
         "boolean",
         "null"
       ]
-    },
-    "properties":{
-      "testProp1":{
-        "originalSchema":{
-          "type":"string"
-        },
-        "type":"string"
-      }
     }
   },
   {
-    "originalSchema":{
-      "properties":{
-        "testProp2":{
-          "type":"string"
+    "originalSchema": {
+      "properties": {
+        "testProp2": {
+          "type": "string",
+          "x-modelgen-inferred-name": "testProp2"
         }
       }
     },
-    "type":"object",
-    "$id":"anonymSchema4",
+    "type": "object",
+    "$id": "anonymSchema4",
+    "properties": {
+      "testProp2": {
+        "originalSchema": {
+          "type": "string"
+        },
+        "type": "string"
+      }
+    },
     "additionalProperties": {
       "originalSchema": true,
       "type": [
@@ -134,26 +149,27 @@
         "boolean",
         "null"
       ]
-    },
-    "properties":{
-      "testProp2":{
-        "originalSchema":{
-          "type":"string"
-        },
-        "type":"string"
-      }
     }
   },
   {
-    "originalSchema":{
-      "properties":{
-        "testProp3":{
-          "type":"string"
+    "originalSchema": {
+      "properties": {
+        "testProp3": {
+          "type": "string",
+          "x-modelgen-inferred-name": "testProp3"
         }
       }
     },
-    "type":"object",
-    "$id":"anonymSchema5",
+    "type": "object",
+    "$id": "anonymSchema5",
+    "properties": {
+      "testProp3": {
+        "originalSchema": {
+          "type": "string"
+        },
+        "type": "string"
+      }
+    },
     "additionalProperties": {
       "originalSchema": true,
       "type": [
@@ -164,14 +180,6 @@
         "boolean",
         "null"
       ]
-    },
-    "properties":{
-      "testProp3":{
-        "originalSchema":{
-          "type":"string"
-        },
-        "type":"string"
-      }
     }
   }
 ]

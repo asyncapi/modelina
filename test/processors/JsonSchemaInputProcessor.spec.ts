@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { JsonSchemaInputProcessor } from '../../src/processors/JsonSchemaInputProcessor';
-import { CommonInputModel } from '../../src/models/CommonInputModel';
+import { CommonInputModel, Schema } from '../../src/models';
 
 describe('JsonSchemaInputProcessor', function() {
     describe('process()', function() {
@@ -81,10 +81,10 @@ describe('JsonSchemaInputProcessor', function() {
         const expectFunction = (inputSchemaPath: string, expectedCommonModulePath: string) => {
             const inputSchemaString = fs.readFileSync(path.resolve(__dirname, inputSchemaPath), 'utf8');
             const expectedCommonInputModelString = fs.readFileSync(path.resolve(__dirname, expectedCommonModulePath), 'utf8');
-            const inputSchema = JSON.parse(inputSchemaString);
+            const inputSchema = Schema.toSchema(JSON.parse(inputSchemaString));
             const expectedCommonInputModel = JSON.parse(expectedCommonInputModelString) as CommonInputModel;
             const commonInputModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(inputSchema);
-            expect(commonInputModel).toEqual(expectedCommonInputModel.models);
+            expect(commonInputModel).toMatchObject(expectedCommonInputModel.models);
         }
         test('should be able to process absence types', async function() {
             const inputSchemaPath = './JsonSchemaInputProcessor/absence_type.json';
@@ -117,5 +117,4 @@ describe('JsonSchemaInputProcessor', function() {
             expectFunction(inputSchemaPath, expectedCommonModulePath);
         });
     });
-
 });

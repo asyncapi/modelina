@@ -11,13 +11,16 @@
                 "type":"object",
                 "properties":{
                   "street_address":{
-                    "type":"string"
+                    "type":"string",
+                    "x-modelgen-inferred-name": "street_address"
                   },
                   "city":{
-                    "type":"string"
+                    "type":"string",
+                    "x-modelgen-inferred-name": "city"
                   },
                   "state":{
-                    "type":"string"
+                    "type":"string",
+                    "x-modelgen-inferred-name": "state"
                   }
                 },
                 "required":[
@@ -32,14 +35,16 @@
                     "enum":[
                       "residential",
                       "business"
-                    ]
+                    ],
+                    "x-modelgen-inferred-name": "type"
                   }
                 },
                 "required":[
                   "type"
                 ]
               }
-            ]
+            ],
+            "x-modelgen-inferred-name": "shipping_address"
           }
         }
       },
@@ -63,44 +68,49 @@
       }
     },
     "anonymSchema2": {
-      "originalSchema":{
-        "allOf":[
+      "originalSchema": {
+        "allOf": [
           {
-            "type":"object",
-            "properties":{
-              "street_address":{
-                "type":"string"
+            "type": "object",
+            "properties": {
+              "street_address": {
+                "type": "string",
+                "x-modelgen-inferred-name": "street_address"
               },
-              "city":{
-                "type":"string"
+              "city": {
+                "type": "string",
+                "x-modelgen-inferred-name": "city"
               },
-              "state":{
-                "type":"string"
+              "state": {
+                "type": "string",
+                "x-modelgen-inferred-name": "state"
               }
             },
-            "required":[
+            "required": [
               "street_address",
               "city",
               "state"
             ]
           },
           {
-            "properties":{
-              "type":{
-                "enum":[
+            "properties": {
+              "type": {
+                "enum": [
                   "residential",
                   "business"
-                ]
+                ],
+                "x-modelgen-inferred-name": "type"
               }
             },
-            "required":[
+            "required": [
               "type"
             ]
           }
-        ]
+        ],
+        "x-modelgen-inferred-name": "shipping_address"
       },
-      "type":"object",
-      "$id":"anonymSchema2",
+      "type": "object",
+      "$id": "anonymSchema2",
       "additionalProperties": {
         "originalSchema": true,
         "type": [
@@ -112,7 +122,7 @@
           "null"
         ]
       },
-      "extend":[
+      "extend": [
         "anonymSchema3",
         "anonymSchema4"
       ],
@@ -123,28 +133,54 @@
         "type"
       ]
     },
-    "anonymSchema3":{
-      "originalSchema":{
-        "type":"object",
-        "properties":{
-          "street_address":{
-            "type":"string"
+    "anonymSchema3": {
+      "originalSchema": {
+        "type": "object",
+        "properties": {
+          "street_address": {
+            "type": "string",
+            "x-modelgen-inferred-name": "street_address"
           },
-          "city":{
-            "type":"string"
+          "city": {
+            "type": "string",
+            "x-modelgen-inferred-name": "city"
           },
-          "state":{
-            "type":"string"
+          "state": {
+            "type": "string",
+            "x-modelgen-inferred-name": "state"
           }
         },
-        "required":[
+        "required": [
           "street_address",
           "city",
           "state"
         ]
       },
-      "type":"object",
-      "$id":"anonymSchema3",
+      "type": "object",
+      "$id": "anonymSchema3",
+      "properties": {
+        "street_address": {
+          "originalSchema": {
+            "type": "string",
+            "x-modelgen-inferred-name": "street_address"
+          },
+          "type": "string"
+        },
+        "city": {
+          "originalSchema": {
+            "type": "string",
+            "x-modelgen-inferred-name": "city"
+          },
+          "type": "string"
+        },
+        "state": {
+          "originalSchema": {
+            "type": "string",
+            "x-modelgen-inferred-name": "state"
+          },
+          "type": "string"
+        }
+      },
       "additionalProperties": {
         "originalSchema": true,
         "type": [
@@ -156,48 +192,45 @@
           "null"
         ]
       },
-      "properties":{
-        "street_address":{
-          "originalSchema":{
-            "type":"string"
-          },
-          "type":"string"
-        },
-        "city":{
-          "originalSchema":{
-            "type":"string"
-          },
-          "type":"string"
-        },
-        "state":{
-          "originalSchema":{
-            "type":"string"
-          },
-          "type":"string"
-        }
-      },
-      "required":[
+      "required": [
         "street_address",
         "city",
         "state"
       ]
     },
-    "anonymSchema4":{
-      "originalSchema":{
-        "properties":{
-          "type":{
-            "enum":[
+    "anonymSchema4": {
+      "originalSchema": {
+        "properties": {
+          "type": {
+            "enum": [
               "residential",
               "business"
-            ]
+            ],
+            "x-modelgen-inferred-name": "type"
           }
         },
-        "required":[
+        "required": [
           "type"
         ]
       },
-      "type":"object",
-      "$id":"anonymSchema4",
+      "type": "object",
+      "$id": "anonymSchema4",
+      "properties": {
+        "type": {
+          "originalSchema": {
+            "enum": [
+              "residential",
+              "business"
+            ],
+            "x-modelgen-inferred-name": "type"
+          },
+          "type": "string",
+          "enum": [
+            "residential",
+            "business"
+          ]
+        }
+      },
       "additionalProperties": {
         "originalSchema": true,
         "type": [
@@ -209,68 +242,56 @@
           "null"
         ]
       },
-      "properties":{
-        "type":{
-          "originalSchema":{
-            "enum":[
-              "residential",
-              "business"
-            ]
-          },
-          "type":"string",
-          "enum":[
-            "residential",
-            "business"
-          ]
-        }
-      },
-      "required":[
+      "required": [
         "type"
       ]
     }
   },
-  "customizations":{
-    
-  },
-  "originalInput":{
-    "$schema":"http://json-schema.org/draft-07/schema#",
-    "type":"object",
-    "properties":{
-      "shipping_address":{
-        "allOf":[
+  "customizations": {},
+  "originalInput": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "shipping_address": {
+        "allOf": [
           {
-            "type":"object",
-            "properties":{
-              "street_address":{
-                "type":"string"
+            "type": "object",
+            "properties": {
+              "street_address": {
+                "type": "string",
+                "x-modelgen-inferred-name": "street_address"
               },
-              "city":{
-                "type":"string"
+              "city": {
+                "type": "string",
+                "x-modelgen-inferred-name": "city"
               },
-              "state":{
-                "type":"string"
+              "state": {
+                "type": "string",
+                "x-modelgen-inferred-name": "state"
               }
             },
-            "required":[
+            "required": [
               "street_address",
               "city",
               "state"
             ]
           },
           {
-            "properties":{
-              "type":{
-                "enum":[
+            "properties": {
+              "type": {
+                "enum": [
                   "residential",
                   "business"
-                ]
+                ],
+                "x-modelgen-inferred-name": "type"
               }
             },
-            "required":[
+            "required": [
               "type"
             ]
           }
-        ]
+        ],
+        "x-modelgen-inferred-name": "shipping_address"
       }
     }
   }

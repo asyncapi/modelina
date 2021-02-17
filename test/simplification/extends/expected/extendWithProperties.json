@@ -1,39 +1,52 @@
 [
   {
-    "originalSchema":{
-      "type":"object",
-      "properties":{
-        "initial":{
-          "type":"string"
+    "originalSchema": {
+      "type": "object",
+      "properties": {
+        "initial": {
+          "type": "string",
+          "x-modelgen-inferred-name": "initial"
         }
       },
-      "allOf":[
+      "allOf": [
         {
-          "type":"object",
-          "properties":{
-            "street_address":{
-              "type":"string"
+          "type": "object",
+          "properties": {
+            "street_address": {
+              "type": "string",
+              "x-modelgen-inferred-name": "street_address"
             },
-            "country":{
-              "type":"string"
+            "country": {
+              "type": "string",
+              "x-modelgen-inferred-name": "country"
             }
           }
         },
         {
-          "type":"object",
-          "properties":{
-            "street_address2":{
-              "type":"string"
+          "type": "object",
+          "properties": {
+            "street_address2": {
+              "type": "string",
+              "x-modelgen-inferred-name": "street_address2"
             },
-            "country2":{
-              "type":"string"
+            "country2": {
+              "type": "string",
+              "x-modelgen-inferred-name": "country2"
             }
           }
         }
       ]
     },
-    "type":"object",
-    "$id":"anonymSchema1",
+    "type": "object",
+    "$id": "anonymSchema1",
+    "properties": {
+      "initial": {
+        "originalSchema": {
+          "type": "string"
+        },
+        "type": "string"
+      }
+    },
     "additionalProperties": {
       "originalSchema": true,
       "type": [
@@ -45,33 +58,41 @@
         "null"
       ]
     },
-    "properties":{
-      "initial":{
-        "originalSchema":{
-          "type":"string"
-        },
-        "type":"string"
-      }
-    },
-    "extend":[
+    "extend": [
       "anonymSchema2",
       "anonymSchema3"
     ]
   },
   {
-    "originalSchema":{
-      "type":"object",
-      "properties":{
-        "street_address":{
-          "type":"string"
+    "originalSchema": {
+      "type": "object",
+      "properties": {
+        "street_address": {
+          "type": "string",
+          "x-modelgen-inferred-name": "street_address"
         },
-        "country":{
-          "type":"string"
+        "country": {
+          "type": "string",
+          "x-modelgen-inferred-name": "country"
         }
       }
     },
-    "type":"object",
-    "$id":"anonymSchema2",
+    "type": "object",
+    "$id": "anonymSchema2",
+    "properties": {
+      "street_address": {
+        "originalSchema": {
+          "type": "string"
+        },
+        "type": "string"
+      },
+      "country": {
+        "originalSchema": {
+          "type": "string"
+        },
+        "type": "string"
+      }
+    },
     "additionalProperties": {
       "originalSchema": true,
       "type": [
@@ -82,36 +103,38 @@
         "boolean",
         "null"
       ]
-    },
-    "properties":{
-      "street_address":{
-        "originalSchema":{
-          "type":"string"
-        },
-        "type":"string"
-      },
-      "country":{
-        "originalSchema":{
-          "type":"string"
-        },
-        "type":"string"
-      }
     }
   },
   {
-    "originalSchema":{
-      "type":"object",
-      "properties":{
-        "street_address2":{
-          "type":"string"
+    "originalSchema": {
+      "type": "object",
+      "properties": {
+        "street_address2": {
+          "type": "string",
+          "x-modelgen-inferred-name": "street_address2"
         },
-        "country2":{
-          "type":"string"
+        "country2": {
+          "type": "string",
+          "x-modelgen-inferred-name": "country2"
         }
       }
     },
-    "type":"object",
-    "$id":"anonymSchema3",
+    "type": "object",
+    "$id": "anonymSchema3",
+    "properties": {
+      "street_address2": {
+        "originalSchema": {
+          "type": "string"
+        },
+        "type": "string"
+      },
+      "country2": {
+        "originalSchema": {
+          "type": "string"
+        },
+        "type": "string"
+      }
+    },
     "additionalProperties": {
       "originalSchema": true,
       "type": [
@@ -122,20 +145,6 @@
         "boolean",
         "null"
       ]
-    },
-    "properties":{
-      "street_address2":{
-        "originalSchema":{
-          "type":"string"
-        },
-        "type":"string"
-      },
-      "country2":{
-        "originalSchema":{
-          "type":"string"
-        },
-        "type":"string"
-      }
     }
   }
 ]

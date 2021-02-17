@@ -9,16 +9,26 @@ import { SimplificationOptions } from '../models/SimplificationOptions';
 import simplifyAdditionalProperties from './SimplifyAdditionalProperties';
 import { isModelObject } from './Utils';
 
+/**
+ * This is the default wrapper for the simplifier class which always create a new instance of the simplifier. 
+ * 
+ * @param schema to simplify
+ */
+export function simplify(schema : Schema | boolean) : CommonModel[] {
+  const simplifier = new Simplifier();
+  return simplifier.simplify(schema);
+}
+
 export class Simplifier {
   static defaultOptions: SimplificationOptions = {
     allowInheritance: true
   }
-  options: SimplificationOptions;
-  anonymCounter = 1;
-  seenSchemas: Map<Schema, CommonModel> = new Map();
+
+  private anonymCounter = 1;
+  private seenSchemas: Map<Schema, CommonModel> = new Map();
 
   constructor(
-    options: SimplificationOptions = Simplifier.defaultOptions,
+    readonly options: SimplificationOptions = Simplifier.defaultOptions,
   ) {
     this.options = { ...Simplifier.defaultOptions, ...options };
   }
@@ -125,14 +135,4 @@ export class Simplifier {
     models = [model, ...models];
     return models;
   }
-}
-
-/**
- * This is the default wrapper for the simplifier class which always create a new instance of the simplifier. 
- * 
- * @param schema to simplify
- */
-export function simplify(schema : Schema | boolean) : CommonModel[] {
-  const simplifier = new Simplifier();
-  return simplifier.simplify(schema);
 }

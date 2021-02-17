@@ -1,3 +1,5 @@
+import { applySchemaExtension } from "../utils";
+
 /**
  * CommonSchema which contains the common properties between Schema and CommonModel
  */
@@ -10,6 +12,7 @@ export class CommonSchema<T> {
     additionalProperties?: boolean | T;
     $ref?: string;
 
+    name?: string;
     required?: string[];
     
     /**
@@ -21,7 +24,7 @@ export class CommonSchema<T> {
      * @param schema to be transformed
      * @param transformationSchemaCallback callback to transform nested schemas
      */
-    static transformSchema<T extends CommonSchema<T | boolean>>(schema: T, transformationSchemaCallback: (object: Object, seenSchemas: Map<any, T>) => T | boolean, seenSchemas: Map<any, T> = new Map()) : T {
+    static transformSchema<T extends CommonSchema<T | boolean>>(schema: T, transformationSchemaCallback: (object: T | boolean, seenSchemas: Map<any, T>) => T | boolean, seenSchemas: Map<any, T> = new Map()) : T {
       if (seenSchemas.has(schema)) return seenSchemas.get(schema) as T;
       if (schema.items !== undefined) {
         if (Array.isArray(schema.items)) {
@@ -33,7 +36,9 @@ export class CommonSchema<T> {
       if (schema.properties !== undefined) {
         const properties : {[key: string]: T | boolean} = {};
         Object.entries(schema.properties).forEach(([propertyName, propertySchema]) => {
-          properties[propertyName] = transformationSchemaCallback(propertySchema, seenSchemas);
+          const newSchema = transformationSchemaCallback(propertySchema, seenSchemas);
+          applySchemaExtension(newSchema, 'inferred-name', propertyName);
+          properties[propertyName] = newSchema;
         });
         schema.properties = properties;
       }

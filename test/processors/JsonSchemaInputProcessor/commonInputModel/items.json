@@ -1,79 +1,10 @@
 {
-  "customizations": {},
   "models": {
     "anonymSchema1": {
-      "$id": "anonymSchema1",
-      "type": "object",
-      "additionalProperties": {
-        "originalSchema": true,
-        "type": [
-          "object",
-          "string",
-          "number",
-          "array",
-          "boolean",
-          "null"
-        ]
-      },
-      "properties": {
-        "address_type": {
-          "type": "array",
-          "items": {
-            "type": ["number", "string"],
-            "enum": [
-              "Street",
-              "Avenue",
-              "Boulevard",
-              "NW",
-              "NE",
-              "SW",
-              "SE"
-            ],
-            "originalSchema": {
-              "type": "array",
-              "items": [
-                {
-                  "type": "number"
-                },
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "string",
-                  "enum": ["Street", "Avenue", "Boulevard"]
-                },
-                {
-                  "type": "string",
-                  "enum": ["NW", "NE", "SW", "SE"]
-                }
-              ]
-            }
-          },
-          "originalSchema": {
-            "type": "array",
-            "items": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "string"
-              },
-              {
-                "type": "string",
-                "enum": ["Street", "Avenue", "Boulevard"]
-              },
-              {
-                "type": "string",
-                "enum": ["NW", "NE", "SW", "SE"]
-              }
-            ]
-          }
-        }
-      },
       "originalSchema": {
         "$schema": "http://json-schema.org/draft-07/schema#",
         "type": "object",
-        "properties": { 
+        "properties": {
           "address_type": {
             "type": "array",
             "items": [
@@ -85,22 +16,124 @@
               },
               {
                 "type": "string",
-                "enum": ["Street", "Avenue", "Boulevard"]
+                "enum": [
+                  "Street",
+                  "Avenue",
+                  "Boulevard"
+                ]
               },
               {
                 "type": "string",
-                "enum": ["NW", "NE", "SW", "SE"]
+                "enum": [
+                  "NW",
+                  "NE",
+                  "SW",
+                  "SE"
+                ]
               }
+            ],
+            "x-modelgen-inferred-name": "address_type"
+          }
+        }
+      },
+      "type": "object",
+      "$id": "anonymSchema1",
+      "properties": {
+        "address_type": {
+          "originalSchema": {
+            "type": "array",
+            "items": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "Street",
+                  "Avenue",
+                  "Boulevard"
+                ]
+              },
+              {
+                "type": "string",
+                "enum": [
+                  "NW",
+                  "NE",
+                  "SW",
+                  "SE"
+                ]
+              }
+            ],
+            "x-modelgen-inferred-name": "address_type"
+          },
+          "type": "array",
+          "items": {
+            "originalSchema": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "Street",
+                    "Avenue",
+                    "Boulevard"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "NW",
+                    "NE",
+                    "SW",
+                    "SE"
+                  ]
+                }
+              ],
+              "x-modelgen-inferred-name": "address_type"
+            },
+            "type": [
+              "number",
+              "string"
+            ],
+            "enum": [
+              "Street",
+              "Avenue",
+              "Boulevard",
+              "NW",
+              "NE",
+              "SW",
+              "SE"
             ]
           }
         }
+      },
+      "additionalProperties": {
+        "originalSchema": true,
+        "type": [
+          "object",
+          "string",
+          "number",
+          "array",
+          "boolean",
+          "null"
+        ]
       }
     }
   },
-  "originalInput": { 
+  "customizations": {},
+  "originalInput": {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
-    "properties": { 
+    "properties": {
       "address_type": {
         "type": "array",
         "items": [
@@ -112,13 +145,23 @@
           },
           {
             "type": "string",
-            "enum": ["Street", "Avenue", "Boulevard"]
+            "enum": [
+              "Street",
+              "Avenue",
+              "Boulevard"
+            ]
           },
           {
             "type": "string",
-            "enum": ["NW", "NE", "SW", "SE"]
+            "enum": [
+              "NW",
+              "NE",
+              "SW",
+              "SE"
+            ]
           }
-        ]
+        ],
+        "x-modelgen-inferred-name": "address_type"
       }
     }
   }

@@ -1,4 +1,7 @@
 import { CommonSchema } from './CommonSchema';
+import { applySchemaExtension } from "../utils";
+
+let a = 0;
 
 /**
  * JSON Schema Draft 7 model
@@ -43,6 +46,7 @@ export class Schema extends CommonSchema<Schema | boolean> {
     readOnly?: boolean;
     writeOnly?: boolean;
     examples?: Object[];
+    [key: string]: any;
 
     /**
      * Transform object into a type of Schema.
@@ -85,7 +89,9 @@ export class Schema extends CommonSchema<Schema | boolean> {
         Object.entries(schema.dependencies).forEach(([propertyName, property]) => {
           //We only care about object dependencies
           if (typeof property === 'object' && !Array.isArray(property)) {
-            dependencies[propertyName] = Schema.toSchema(property, seenSchemas);
+            const newSchema = Schema.toSchema(property, seenSchemas);
+            applySchemaExtension(newSchema, 'inferred-name', propertyName);
+            dependencies[propertyName] = newSchema
           } else {
             dependencies[propertyName] = property as string[];
           }
@@ -99,7 +105,9 @@ export class Schema extends CommonSchema<Schema | boolean> {
       if (schema.patternProperties !== undefined) {
         const patternProperties: { [key: string]: Schema | boolean } = {};
         Object.entries(schema.patternProperties).forEach(([propertyName, property]) => {
-          patternProperties[propertyName] = Schema.toSchema(property, seenSchemas);
+          const newSchema = Schema.toSchema(property, seenSchemas);
+          applySchemaExtension(newSchema, 'inferred-name', propertyName);
+          patternProperties[propertyName] = newSchema;
         });
         schema.patternProperties = patternProperties;
       }
@@ -116,7 +124,9 @@ export class Schema extends CommonSchema<Schema | boolean> {
       if (schema.definitions !== undefined) {
         const definitions: { [key: string]: Schema | boolean } = {};
         Object.entries(schema.definitions).forEach(([propertyName, property]) => {
-          definitions[propertyName] = Schema.toSchema(property, seenSchemas);
+          const newSchema = Schema.toSchema(property, seenSchemas);
+          applySchemaExtension(newSchema, 'inferred-name', propertyName);
+          definitions[propertyName] = newSchema;
         });
         schema.definitions = definitions;
       }
