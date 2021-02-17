@@ -43,7 +43,7 @@ export class Schema extends CommonSchema<Schema | boolean> {
     readOnly?: boolean;
     writeOnly?: boolean;
     examples?: Object[];
-    [key: string]: any;
+    [k: string]: any; // eslint-disable-line no-undef
 
     /**
      * Transform object into a type of Schema.

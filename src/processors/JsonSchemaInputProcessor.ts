@@ -76,7 +76,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
   }
 
   static reflectSchemaName(schema: Schema | boolean, propertyName?: string): Schema | boolean {
-    if (typeof schema === "boolean") return schema;
+    if (typeof schema === 'boolean') return schema;
 
     schema = Object.assign({}, schema);
     if (propertyName && !schema['x-modelgen-inferred-name']) {
