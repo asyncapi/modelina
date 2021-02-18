@@ -42,15 +42,13 @@
       },
       "type": "object",
       "$id": "anonymSchema1",
-      "name": "anonymSchema1",
       "properties": {
         "street_address": {
           "originalSchema": {
             "type": "string",
             "x-modelgen-inferred-name": "street_address"
           },
-          "type": "string",
-          "name": "street_address"
+          "type": "string"
         },
         "country": {
           "originalSchema": {
@@ -93,7 +91,6 @@
             }
           },
           "type": "string",
-          "name": "country",
           "enum": [
             "United States of America",
             "Canada",

@@ -3,7 +3,7 @@ import * as path from 'path';
 import {parse} from '@asyncapi/parser';
 import {AsyncAPIInputProcessor} from '../../src/processors/AsyncAPIInputProcessor'
 
-describe.skip('AsyncAPIInputProcessor', function() {
+describe('AsyncAPIInputProcessor', function() {
     describe('isAsyncAPI()', function() {
         const processor = new AsyncAPIInputProcessor();
         test('should be able to detect pure object', function() {

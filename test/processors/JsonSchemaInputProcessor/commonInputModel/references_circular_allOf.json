@@ -3,7 +3,6 @@
     "anonymSchema1":{
       "type":"object",
       "$id":"anonymSchema1",
-      "name": "anonymSchema1",
       "additionalProperties": {
         "originalSchema": true,
         "type": [
@@ -17,7 +16,7 @@
       },
       "properties":{
         "street_address":{
-          "$ref":"anonymSchema2"
+          "$ref":"street_address"
         },
         "country":{
           "originalSchema":{
@@ -36,8 +35,7 @@
     },
     "street_address":{
       "type":"object",
-      "$id":"anonymSchema2",
-      "name": "street_address",
+      "$id":"street_address",
       "additionalProperties": {
         "originalSchema": true,
         "type": [
@@ -50,14 +48,13 @@
         ]
       },
       "extend":[
-        "anonymSchema5",
-        "anonymSchema5"
+        "floor2",
+        "floor2"
       ]
     },
     "anonymSchema3":{
       "type":"object",
       "$id":"anonymSchema3",
-      "name": "anonymSchema3",
       "additionalProperties": {
         "originalSchema": true,
         "type": [
@@ -71,14 +68,13 @@
       },
       "properties":{
         "floor":{
-          "$ref":"anonymSchema4"
+          "$ref":"floor"
         }
       }
     },
     "floor":{
       "type":"object",
-      "$id":"anonymSchema4",
-      "name": "floor",
+      "$id":"floor",
       "additionalProperties": {
         "originalSchema": true,
         "type": [
@@ -92,7 +88,7 @@
       },
       "properties":{
         "floor2":{
-          "$ref":"anonymSchema5"
+          "$ref":"floor2"
         }
       }
     }

@@ -37,10 +37,9 @@
       },
       "type": "object",
       "$id": "anonymSchema1",
-      "name": "anonymSchema1",
       "properties": {
         "street_address": {
-          "$ref": "anonymSchema2"
+          "$ref": "street_address"
         },
         "country": {
           "originalSchema": {
@@ -51,7 +50,6 @@
             "x-modelgen-inferred-name": "country"
           },
           "type": "string",
-          "name": "country",
           "enum": [
             "United States of America",
             "Canada"
@@ -82,16 +80,14 @@
         }
       },
       "type": "object",
-      "$id": "anonymSchema2",
-      "name": "street_address",
+      "$id": "street_address",
       "properties": {
         "floor": {
           "originalSchema": {
             "type": "number",
             "x-modelgen-inferred-name": "floor"
           },
-          "type": "number",
-          "name": "floor"
+          "type": "number"
         }
       },
       "additionalProperties": {

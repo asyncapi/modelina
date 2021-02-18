@@ -2,8 +2,7 @@
   "models":{
     "street_address":{
       "type":"object",
-      "$id":"anonymSchema2",
-      "name": "street_address",
+      "$id":"street_address",
       "additionalProperties": {
         "originalSchema": true,
         "type": [
@@ -17,14 +16,13 @@
       },
       "properties":{
         "floor":{
-          "$ref": "anonymSchema3"
+          "$ref": "floor"
         }
       }
     },
     "anonymSchema1":{
       "type":"object",
       "$id":"anonymSchema1",
-      "name": "anonymSchema1",
       "additionalProperties": {
         "originalSchema": true,
         "type": [
@@ -38,7 +36,7 @@
       },
       "properties":{
         "street_address":{
-          "$ref": "anonymSchema2"
+          "$ref": "street_address"
         },
         "country":{
           "originalSchema":{

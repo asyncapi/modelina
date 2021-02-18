@@ -9,8 +9,6 @@ export class CommonSchema<T> {
     properties?: { [key: string]: T; };
     additionalProperties?: boolean | T;
     $ref?: string;
-
-    name?: string;
     required?: string[];
     
     /**

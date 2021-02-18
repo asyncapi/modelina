@@ -21,7 +21,6 @@
     },
     "type": "object",
     "$id": "anonymSchema1",
-    "name": "anonymSchema1",
     "properties": {
       "street_address": {
         "$ref": "anonymSchema2"
@@ -63,7 +62,6 @@
     },
     "type": "object",
     "$id": "anonymSchema2",
-    "name": "anonymSchema2",
     "properties": {
       "floor": {
         "originalSchema": {

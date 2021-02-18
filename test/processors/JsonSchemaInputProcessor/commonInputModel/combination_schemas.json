@@ -50,10 +50,9 @@
       },
       "type": "object",
       "$id": "anonymSchema1",
-      "name": "anonymSchema1",
       "properties": {
         "shipping_address": {
-          "$ref": "anonymSchema2"
+          "$ref": "shipping_address"
         }
       },
       "additionalProperties": {
@@ -111,8 +110,7 @@
         "x-modelgen-inferred-name": "shipping_address"
       },
       "type": "object",
-      "$id": "anonymSchema2",
-      "name": "shipping_address",
+      "$id": "shipping_address",
       "additionalProperties": {
         "originalSchema": true,
         "type": [
@@ -160,31 +158,27 @@
       },
       "type": "object",
       "$id": "anonymSchema3",
-      "name": "anonymSchema3",
       "properties": {
         "street_address": {
           "originalSchema": {
             "type": "string",
             "x-modelgen-inferred-name": "street_address"
           },
-          "type": "string",
-          "name": "street_address"
+          "type": "string"
         },
         "city": {
           "originalSchema": {
             "type": "string",
             "x-modelgen-inferred-name": "city"
           },
-          "type": "string",
-          "name": "city"
+          "type": "string"
         },
         "state": {
           "originalSchema": {
             "type": "string",
             "x-modelgen-inferred-name": "state"
           },
-          "type": "string",
-          "name": "state"
+          "type": "string"
         }
       },
       "additionalProperties": {
@@ -221,7 +215,6 @@
       },
       "type": "object",
       "$id": "anonymSchema4",
-      "name": "anonymSchema4",
       "properties": {
         "type": {
           "originalSchema": {
@@ -232,7 +225,6 @@
             "x-modelgen-inferred-name": "type"
           },
           "type": "string",
-          "name": "type",
           "enum": [
             "residential",
             "business"

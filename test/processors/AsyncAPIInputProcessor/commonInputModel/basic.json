@@ -15,10 +15,8 @@
       },
       "type": "object",
       "$id": "anonymSchema1",
-      "name": "anonymSchema1",
       "properties": {
         "email": {
-          "name": "email",
           "originalSchema": {
             "type": "string",
             "format": "email",

@@ -31,7 +31,6 @@
     },
     "type": "object",
     "$id": "anonymSchema1",
-    "name": "anonymSchema1",
     "additionalProperties": {
       "originalSchema": true,
       "type": [
@@ -69,7 +68,6 @@
     },
     "type": "object",
     "$id": "anonymSchema2",
-    "name": "anonymSchema2",
     "additionalProperties": {
       "originalSchema": true,
       "type": [
@@ -96,7 +94,6 @@
     },
     "type": "object",
     "$id": "anonymSchema3",
-    "name": "anonymSchema3",
     "properties": {
       "testProp1": {
         "originalSchema": {
@@ -127,7 +124,6 @@
     },
     "type": "object",
     "$id": "anonymSchema4",
-    "name": "anonymSchema4",
     "properties": {
       "testProp2": {
         "originalSchema": {
@@ -158,7 +154,6 @@
     },
     "type": "object",
     "$id": "anonymSchema5",
-    "name": "anonymSchema5",
     "properties": {
       "testProp3": {
         "originalSchema": {

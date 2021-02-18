@@ -175,9 +175,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     const commonModels = simplify(schema);
     const commonModelsMap: Record<string, CommonModel> = {};
     commonModels.forEach(value => {
-      if (value.name) {
-        commonModelsMap[value.name] = value;
-      } else if (value.$id) {
+      if (value.$id) {
         commonModelsMap[value.$id] = value;
       }
     });

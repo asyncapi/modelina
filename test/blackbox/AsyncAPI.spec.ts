@@ -10,6 +10,6 @@ describe.skip('AsyncAPI JSON Schema file', function() {
       const expectedCommonInputModel = JSON.parse(expectedSchemaString);
       const processor = new JsonSchemaInputProcessor();
       const commonInputModel = await processor.process(inputSchema);
-      //expect(commonInputModel).toEqual(expectedCommonInputModel);
+      expect(commonInputModel).toEqual(expectedCommonInputModel);
     });
 });

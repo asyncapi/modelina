@@ -68,14 +68,9 @@ export class Simplifier {
       // All schemas of type object MUST have ids, for now lets make it simple
       if (model.type !== undefined && model.type.includes('object')) {
         const schemaId = schema.$id ? schema.$id : `anonymSchema${this.anonymCounter++}`;
-        model.$id = schemaId;
+        model.$id = simplifyName(schema, schemaId);
       } else if (schema.$id !== undefined) {
-        model.$id = schema.$id;
-      }
-
-      const name = simplifyName(schema, model.$id);
-      if (name) {
-        model.name = name;
+        model.$id = simplifyName(schema, schema.$id);
       }
 
       const simplifiedItems = simplifyItems(schema, this);
