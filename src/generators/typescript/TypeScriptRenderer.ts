@@ -78,11 +78,6 @@ ${lines.map(line => ` * ${line}`).join('\n')}
       content.push(rendererProperty);
     }
 
-    if (this.model.additionalProperties !== undefined && this.model.additionalProperties instanceof CommonModel) {
-      const additionalProperty = `[k: string]: ${this.renderType(this.model.additionalProperties)};`;
-      content.push(additionalProperty);
-    }
-
     return this.renderBlock(content);
   }
 

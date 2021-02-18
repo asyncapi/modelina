@@ -29,7 +29,6 @@ describe('TypeScriptGenerator', function() {
   private marriage?: boolean;
   private members?: string | number | boolean;
   private arrayType: Array<string | number>;
-  [k: string]: object | string | number | Array<unknown> | boolean | null;
 
   constructor(input: AddressInput) {
     this.streetName = input.streetName;
@@ -84,7 +83,6 @@ describe('TypeScriptGenerator', function() {
     const expected = `export class CustomClass {
   @JsonProperty("property")
   private property?: string;
-  [k: string]: object | string | number | Array<unknown> | boolean | null;
 
   constructor(input: CustomClassInput) {
     this.property = input.property;
@@ -138,7 +136,6 @@ ${content}`;
   marriage?: boolean;
   members?: string | number | boolean;
   arrayType: Array<string | number>;
-  [k: string]: object | string | number | Array<unknown> | boolean | null;
 }`;
 
     const inputModel = await generator.process(doc);
@@ -158,7 +155,6 @@ ${content}`;
     };
     const expected = `export interface CustomInterface {
   property?: string;
-  [k: string]: object | string | number | Array<unknown> | boolean | null;
 }`;
 
     generator = new TypeScriptGenerator({ presets: [
