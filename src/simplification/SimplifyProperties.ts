@@ -12,19 +12,18 @@ type Output = { [key: string]: CommonModel } | undefined;
  * @param seenSchemas already seen schemas and their corresponding output, this is to avoid circular schemas
  */
 export default function simplifyProperties(schema: Schema | boolean, simplifier : Simplifier, seenSchemas: Map<any, Output> = new Map()): Output {
-  let output: Output;
   if (typeof schema !== 'boolean') {
     if (seenSchemas.has(schema)) return seenSchemas.get(schema);
+    const output: Output = {};
     seenSchemas.set(schema, output);
     const addToProperty = (propName: string, propModel: CommonModel) => {
-      if (output === undefined) {
-        output = {};
-      }
-      //If a simplified property already exist, merge the two
-      if (output[`${propName}`] !== undefined) {
-        output[`${propName}`] = CommonModel.mergeCommonModels(output[`${propName}`], propModel, schema);
-      } else {
-        output[`${propName}`] = propModel;
+      if (output !== undefined) {
+        //If a simplified property already exist, merge the two
+        if (output[`${propName}`] !== undefined) {
+          output[`${propName}`] = CommonModel.mergeCommonModels(output[`${propName}`], propModel, schema);
+        } else {
+          output[`${propName}`] = propModel;
+        }
       }
     };
     const addProperties = (out: Output) => {
@@ -34,9 +33,9 @@ export default function simplifyProperties(schema: Schema | boolean, simplifier 
         }
       }
     };
-    const handleCombinationSchemas = (schemas: (Schema | boolean)[] = []) => {
-      schemas.forEach((schema) => {
-        addProperties(simplifyProperties(schema, simplifier, seenSchemas));
+    const handleCombinationSchemas = (combinationSchemas: (Schema | boolean)[] = []) => {
+      combinationSchemas.forEach((combinationSchema) => {
+        addProperties(simplifyProperties(combinationSchema, simplifier, seenSchemas));
       });
     };
 
@@ -63,6 +62,10 @@ export default function simplifyProperties(schema: Schema | boolean, simplifier 
     if (schema.else) {
       addProperties(simplifyProperties(schema.else, simplifier, seenSchemas));
     }
+    if (Object.keys(output).length === 0) {
+      return undefined;
+    }
+    return output;
   }
-  return output;
+  return undefined;
 }
