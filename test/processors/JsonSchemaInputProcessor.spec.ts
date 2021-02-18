@@ -18,7 +18,7 @@ describe('JsonSchemaInputProcessor', function() {
             const expectedCommonInputModel = JSON.parse(expectedCommonInputModelString);
             const processor = new JsonSchemaInputProcessor();
             const commonInputModel = await processor.process(inputSchema);
-            if(match){
+            if (match) {
                 expect(commonInputModel).toMatchObject(expectedCommonInputModel);
             } else {
                 expect(commonInputModel).toEqual(expectedCommonInputModel);
@@ -117,5 +117,38 @@ describe('JsonSchemaInputProcessor', function() {
             const expectedCommonModulePath = './JsonSchemaInputProcessor/commonInputModel/multiple_objects.json';
             expectFunction(inputSchemaPath, expectedCommonModulePath);
         });
+    });
+
+    describe('reflectSchemaName()', function() {
+        test('should work', async function() {
+            const schema = {
+                properties: {
+                    prop: {
+                        type: "prop",
+                    }
+                },
+                patternProperties: {
+                    prop: {
+                        type: "prop",
+                    }
+                },
+                dependencies: {
+                    dep: {
+                        type: "dep",
+                    }
+                },
+                definitions: {
+                    def: {
+                        type: "def",
+                    }
+                }
+            }
+            const expected = JsonSchemaInputProcessor.reflectSchemaName(schema) as any;
+
+            expect(expected.properties.prop['x-modelgen-inferred-name']).toEqual('prop');
+            expect(expected.patternProperties.prop['x-modelgen-inferred-name']).toEqual('prop');
+            expect(expected.dependencies.dep['x-modelgen-inferred-name']).toEqual('dep');
+            expect(expected.definitions.def['x-modelgen-inferred-name']).toEqual('def');
+        })
     });
 });

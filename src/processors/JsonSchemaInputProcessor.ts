@@ -75,6 +75,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     return commonInputModel;
   }
 
+  // it should be removed when we'll simplify current solution for processing schema to CommonModel
   static reflectSchemaName(schema: Schema | boolean, propertyName?: string): Schema | boolean {
     if (typeof schema === 'boolean') return schema;
 
