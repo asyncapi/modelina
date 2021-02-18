@@ -27,6 +27,7 @@ This package is under development and it has not reached version 1.0.0 yet, what
   * [The transformation process](#the-transformation-process)
   * [The simplification process](#the-simplification-process)
   * [The generatiion process](#the-generatiion-process)
+- [Example](#example)
 - [Development](#development)
 - [Contributing](#contributing)
 
