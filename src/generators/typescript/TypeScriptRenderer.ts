@@ -77,6 +77,11 @@ ${lines.map(line => ` * ${line}`).join('\n')}
       const rendererProperty = await this.runPropertyPreset(propertyName, property, this.model);
       content.push(rendererProperty);
     }
+    
+    if (this.model.additionalProperties !== undefined && this.model.additionalProperties instanceof CommonModel) {
+      const additionalProperty = `[k: string]: ${this.renderType(this.model.additionalProperties)};`;
+      content.push(additionalProperty);
+    }
 
     return this.renderBlock(content);
   }
