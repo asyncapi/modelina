@@ -35,6 +35,12 @@ ${this.indent(this.renderBlock(content, 2))}
       content.push(rendererProperty);
     }
 
+    if (this.model.additionalProperties !== undefined && this.model.additionalProperties instanceof CommonModel) {
+      const additionalType = this.renderType(this.model.additionalProperties);
+      const rendererProperty = `Map<String, ${additionalType}> additionalFields = new HashMap();`;
+      content.push(rendererProperty);
+    }
+
     return this.renderBlock(content);
   }
 
