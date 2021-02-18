@@ -2,7 +2,7 @@
 import { CommonModel } from '../models/CommonModel';
 import { Schema } from '../models/Schema';
 import { Simplifier } from './Simplifier';
-type Output = { [key: string]: CommonModel } | undefined;
+type Output = Record<string, CommonModel> | undefined;
 
 /**
  * Simplifier function for finding the simplified version of properties.

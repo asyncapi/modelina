@@ -16,7 +16,7 @@ export class Simplifier {
   options: SimplificationOptions;
   anonymCounter = 1;
   seenSchemas: Map<Schema, CommonModel> = new Map();
-  iteratedModels: { [key: string]: CommonModel } = {};
+  iteratedModels: Record<string, CommonModel> = {};
   constructor(
     options: SimplificationOptions = Simplifier.defaultOptions,
   ) {
@@ -101,7 +101,7 @@ export class Simplifier {
     }
     return model;
   }
-  
+
   /**
    * Split up all models which should and use ref instead.
    * 
