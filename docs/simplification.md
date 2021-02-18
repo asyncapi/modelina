@@ -10,6 +10,7 @@ The AsyncAPI Model SDK supports simplification of:
 - [Properties](#determining-the-properties-for-the-model)
 - [Additional properties](#determining-the-additionalProperties-for-the-model)
 - [Required](#determining-the-required-properties-for-the-model)
+- [Extend](#determining-the-extend-for-the-model)
 
 ## Determining the type for the model
 
@@ -111,3 +112,9 @@ In order to determine all the possible required properties a schema can have, we
 The precedence of keywords are in which order we merge or determine `required` in. The following are the precedence for determining the array of required:
 
 `required` --> `allOf` --> `oneOf` --> `anyOf` --> `then` --> `else`
+
+## Determining the extend for the model
+
+The `extend` keyword is one of the few keywords not originally from the JSON Schema specification. This keyword is used for when an object needs to extend another, where the name of the other `CommonModel` is used. Because of the nature of JSON Schema (`allOf` being an array) this extend keyword is an array of strings.
+
+The simplification process determines the `extend` keyword based on the `allOf` keyword, where it iterates over all schemas and recursively simplifies each. If iterated simplified schema is of type object we add it to the `extend` list.

@@ -14,7 +14,7 @@ AsyncAPI Model SDK is a set of classes/functions for generating data models from
 
 ## :loudspeaker: ATTENTION:
 
-This package is under development and it has not reached version 1.0.0 yet, what means its API might change without prior notice. Once it reaches its first stable version, we'll follow semantic versioning.
+This package is under development and it has not reached version 1.0.0 yet, which means its API might get breaking changes without prior notice. Once it reaches its first stable version, we'll follow semantic versioning.
 
 ---
 
@@ -43,29 +43,29 @@ npm install --save @asyncapi/generator-model-sdk
 
 ## How it works
 
-The process of creating data models from input data consists of three main process: transformation input data to JSON Schema, simplification and generatiion. 
+The process of creating data models from input data consists of three main process: transformation input data to JSON Schema, simplification and generation.
 
 ### The transformation process
 
-The transformation process starts from checking what type of input data is. Currently the AsyncAPI Model SDK supports JSON Schema and AsyncAPI spec. Each input data must be converted to the JSON Schema or be a subset of JSON Schema (like AsyncAPI spec) to go to the next process - the simplification process.
+The transformation process starts from checking what type of input data is provided and based on that it is processed differently. Currently JSON Schema Draft 7 and AsyncAPI version 2.0.0 are supported. It is also in this stage that references are resolved and schemas are named. Each input data must be converted to JSON Schema or be a subset of JSON Schema (like AsyncAPI spec) to go to the next process - the simplification stage.
 
 ### The simplification process
 
-In order to simplify the model generation process as much as possible, AsyncAPI Model SDK simplifies transformed JSON schema into CommonModels, which contain information what type of model is, what properties single model has, etc, so finally we have a bare minimum schema.
+In order to simplify the model generation process as much as possible, AsyncAPI Model SDK simplifies the transformed JSON schema into `CommonModel`s, which contain information about the type of model it is, what properties it might have, etc, so finally we have a bare minimum schema. Think of it like converting data validation rules (JSON Schema) to a data definition.
 
 Read [this](./docs/simplification.md) document for more information.
 
 ### The generatiion process
 
-The generation process uses predefined CommonModels. The generation begins with selecting the language for which the SDK should create models. The AsyncAPI Model SDK has currently implemented languages:
+The generation process uses the predefined `CommonModel`s from the simplification stage to easily generate models. The AsyncAPI Model SDK generator support the following languages:
 
 - JavaScript
 - TypeScript
 - Java
 
-Check out [the example](#example) to see how to use the generation inside project.
+Check out [the example](#example) to see how to use the library.
 
-> **NOTE**: Each implemented language has different options, dictated by the nature of the language. Keep this in mind on generating models.
+> **NOTE**: Each implemented language has different options, dictated by the nature of the language. Keep this in mind when selecting a language.
 
 ## Example
 
@@ -91,7 +91,7 @@ const doc = {
 
 const interfaceModel = await generator.generate(doc);
 
-// interfaceModel should have shape like:
+// interfaceModel should have the shape:
 interface Address {
   streetName: string;
   city: string;
