@@ -2,7 +2,7 @@ import { CommonModel } from 'models';
 import { Schema } from 'models/Schema';
 import { Simplifier } from './Simplifier';
 import { isModelObject } from './Utils';
-type Output = {newModels: CommonModel[] | undefined; additionalProperties: boolean | CommonModel | undefined};
+type Output = CommonModel | undefined;
 
 /**
  * Find out which common models we should extend
@@ -10,23 +10,16 @@ type Output = {newModels: CommonModel[] | undefined; additionalProperties: boole
  * @param schema to find extends of
  */
 export default function simplifyAdditionalProperties(schema: Schema | boolean, simplifier : Simplifier, commonModel: CommonModel) : Output {
-  let models : CommonModel[] | undefined;
-  const addToModels = (model: CommonModel[] = []) => { models = [...(models || []), ...model]; };
-  let additionalProperties: boolean | CommonModel | undefined;
+  let additionalProperties: Output;
   if (typeof schema !== 'boolean' && isModelObject(commonModel)) {
     if (schema.additionalProperties === false) {
       additionalProperties = undefined;
     } else {
-      const newModels = simplifier.simplifyRecursive(schema.additionalProperties || true);
+      const newModels = simplifier.simplify(schema.additionalProperties || true);
       if (newModels.length > 0) {
         additionalProperties = newModels[0];
-        //If there are more then one model returned, it is extra.
-        if (newModels.length > 1) {
-          newModels.splice(0, 1);
-          addToModels(newModels);
-        }
       }
     }
   }
-  return {newModels: models, additionalProperties};
+  return additionalProperties;
 }

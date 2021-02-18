@@ -31,9 +31,9 @@
     },
     "type":"object",
     "$id":"anonymSchema1",
-    "additionalProperties": {
-      "originalSchema": true,
-      "type": [
+    "additionalProperties":{
+      "originalSchema":true,
+      "type":[
         "object",
         "string",
         "number",
@@ -43,9 +43,69 @@
       ]
     },
     "extend":[
-      "anonymSchema4",
+      "anonymSchema2",
       "anonymSchema5"
     ]
+  },
+  {
+    "originalSchema":{
+      "properties":{
+        "testProp1":{
+          "type":"string"
+        }
+      }
+    },
+    "type":"object",
+    "$id":"anonymSchema3",
+    "properties":{
+      "testProp1":{
+        "originalSchema":{
+          "type":"string"
+        },
+        "type":"string"
+      }
+    },
+    "additionalProperties":{
+      "originalSchema":true,
+      "type":[
+        "object",
+        "string",
+        "number",
+        "array",
+        "boolean",
+        "null"
+      ]
+    }
+  },
+  {
+    "originalSchema":{
+      "properties":{
+        "testProp2":{
+          "type":"string"
+        }
+      }
+    },
+    "type":"object",
+    "$id":"anonymSchema4",
+    "properties":{
+      "testProp2":{
+        "originalSchema":{
+          "type":"string"
+        },
+        "type":"string"
+      }
+    },
+    "additionalProperties":{
+      "originalSchema":true,
+      "type":[
+        "object",
+        "string",
+        "number",
+        "array",
+        "boolean",
+        "null"
+      ]
+    }
   },
   {
     "originalSchema":{
@@ -68,9 +128,9 @@
     },
     "type":"object",
     "$id":"anonymSchema2",
-    "additionalProperties": {
-      "originalSchema": true,
-      "type": [
+    "additionalProperties":{
+      "originalSchema":true,
+      "type":[
         "object",
         "string",
         "number",
@@ -87,66 +147,6 @@
   {
     "originalSchema":{
       "properties":{
-        "testProp1":{
-          "type":"string"
-        }
-      }
-    },
-    "type":"object",
-    "$id":"anonymSchema3",
-    "additionalProperties": {
-      "originalSchema": true,
-      "type": [
-        "object",
-        "string",
-        "number",
-        "array",
-        "boolean",
-        "null"
-      ]
-    },
-    "properties":{
-      "testProp1":{
-        "originalSchema":{
-          "type":"string"
-        },
-        "type":"string"
-      }
-    }
-  },
-  {
-    "originalSchema":{
-      "properties":{
-        "testProp2":{
-          "type":"string"
-        }
-      }
-    },
-    "type":"object",
-    "$id":"anonymSchema4",
-    "additionalProperties": {
-      "originalSchema": true,
-      "type": [
-        "object",
-        "string",
-        "number",
-        "array",
-        "boolean",
-        "null"
-      ]
-    },
-    "properties":{
-      "testProp2":{
-        "originalSchema":{
-          "type":"string"
-        },
-        "type":"string"
-      }
-    }
-  },
-  {
-    "originalSchema":{
-      "properties":{
         "testProp3":{
           "type":"string"
         }
@@ -154,17 +154,6 @@
     },
     "type":"object",
     "$id":"anonymSchema5",
-    "additionalProperties": {
-      "originalSchema": true,
-      "type": [
-        "object",
-        "string",
-        "number",
-        "array",
-        "boolean",
-        "null"
-      ]
-    },
     "properties":{
       "testProp3":{
         "originalSchema":{
@@ -172,6 +161,17 @@
         },
         "type":"string"
       }
+    },
+    "additionalProperties":{
+      "originalSchema":true,
+      "type":[
+        "object",
+        "string",
+        "number",
+        "array",
+        "boolean",
+        "null"
+      ]
     }
   }
 ]
