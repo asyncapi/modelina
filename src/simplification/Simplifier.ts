@@ -39,43 +39,7 @@ export class Simplifier {
     model.type = simplifyTypes(schema);
     if (typeof schema !== 'boolean') {
       this.seenSchemas.set(schema, model);
-      //All schemas of type object MUST have ids, for now lets make it simple
-      if (model.type !== undefined && model.type.includes('object')) {
-        const schemaId = schema.$id ? schema.$id : `anonymSchema${this.anonymCounter++}`;
-        model.$id = schemaId;
-      } else if (schema.$id !== undefined) {
-        model.$id = schema.$id;
-      }
-
-      const simplifiedItems = simplifyItems(schema, this);
-      if (simplifiedItems !== undefined) {
-        model.items = simplifiedItems;
-      }
-
-      const simplifiedProperties = simplifyProperties(schema, this);
-      if (simplifiedProperties !== undefined) {
-        model.properties = simplifiedProperties;
-      }
-
-      const simplifiedAdditionalProperties = simplifyAdditionalProperties(schema, this, model);
-      if (simplifiedAdditionalProperties !== undefined) {
-        model.additionalProperties = simplifiedAdditionalProperties;
-      }
-
-      const simplifiedExtends = simplifyExtend(schema, this);
-      if (simplifiedExtends !== undefined) {
-        model.extend = simplifiedExtends;
-      }
-
-      const enums = simplifyEnums(schema);
-      if (enums !== undefined && enums.length > 0) {
-        model.enum = enums;
-      }
-
-      const required = simplifyRequired(schema);
-      if (required !== undefined) {
-        model.required = required;
-      }
+      this.simplifyModelProperties(model, schema);
     }
     this.ensureModelsAreSplit(model);
     const modelsToReturn = Object.values(this.iteratedModels);
@@ -84,6 +48,52 @@ export class Simplifier {
       this.iteratedModels[`${model.$id}`] = model;
     }
     return [model, ...modelsToReturn];
+  }
+
+  /**
+   * Function to simplify all model properties from schema.
+   * 
+   * @param model to simplify properties to 
+   * @param schema to simplify
+   */
+  private simplifyModelProperties(model: CommonModel, schema: Schema) {
+    //All schemas of type object MUST have ids, for now lets make it simple
+    if (model.type !== undefined && model.type.includes('object')) {
+      const schemaId = schema.$id ? schema.$id : `anonymSchema${this.anonymCounter++}`;
+      model.$id = schemaId;
+    } else if (schema.$id !== undefined) {
+      model.$id = schema.$id;
+    }
+
+    const simplifiedItems = simplifyItems(schema, this);
+    if (simplifiedItems !== undefined) {
+      model.items = simplifiedItems;
+    }
+
+    const simplifiedProperties = simplifyProperties(schema, this);
+    if (simplifiedProperties !== undefined) {
+      model.properties = simplifiedProperties;
+    }
+
+    const simplifiedAdditionalProperties = simplifyAdditionalProperties(schema, this, model);
+    if (simplifiedAdditionalProperties !== undefined) {
+      model.additionalProperties = simplifiedAdditionalProperties;
+    }
+
+    const simplifiedExtends = simplifyExtend(schema, this);
+    if (simplifiedExtends !== undefined) {
+      model.extend = simplifiedExtends;
+    }
+
+    const enums = simplifyEnums(schema);
+    if (enums !== undefined && enums.length > 0) {
+      model.enum = enums;
+    }
+
+    const required = simplifyRequired(schema);
+    if (required !== undefined) {
+      model.required = required;
+    }
   }
 
   /**
