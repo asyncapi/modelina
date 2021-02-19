@@ -44,7 +44,7 @@ describe('Simplification of items', () => {
       const items = simplifyItems(schema, simplifier);
       expect(items).toBeUndefined();
       expect(simplifier.simplify).toHaveBeenCalledTimes(2);
-      expect(mockMergeCommonModels).toHaveBeenCalledTimes(4);
+      expect(mockMergeCommonModels).toHaveBeenCalledTimes(2);
     });
     test('with nested schema', () => {
       const schemaString = fs.readFileSync(path.resolve(__dirname, './items/allOfNested.json'), 'utf8');
@@ -53,7 +53,7 @@ describe('Simplification of items', () => {
       const items = simplifyItems(schema, simplifier);
       expect(items).toBeUndefined();
       expect(simplifier.simplify).toHaveBeenCalledTimes(3);
-      expect(mockMergeCommonModels).toHaveBeenCalledTimes(7);
+      expect(mockMergeCommonModels).toHaveBeenCalledTimes(3);
     });
   });
 
@@ -65,7 +65,7 @@ describe('Simplification of items', () => {
       const items = simplifyItems(schema, simplifier);
       expect(items).toBeUndefined();
       expect(simplifier.simplify).toHaveBeenCalledTimes(2);
-      expect(mockMergeCommonModels).toHaveBeenCalledTimes(4);
+      expect(mockMergeCommonModels).toHaveBeenCalledTimes(2);
     });
     test('with nested schema', () => {
       const schemaString = fs.readFileSync(path.resolve(__dirname, './items/oneOfNested.json'), 'utf8');
@@ -74,7 +74,7 @@ describe('Simplification of items', () => {
       const items = simplifyItems(schema, simplifier);
       expect(items).toBeUndefined();
       expect(simplifier.simplify).toHaveBeenCalledTimes(3);
-      expect(mockMergeCommonModels).toHaveBeenCalledTimes(7);
+      expect(mockMergeCommonModels).toHaveBeenCalledTimes(3);
     });
   });
 
@@ -86,7 +86,7 @@ describe('Simplification of items', () => {
       const items = simplifyItems(schema, simplifier);
       expect(items).toBeUndefined();
       expect(simplifier.simplify).toHaveBeenCalledTimes(2);
-      expect(mockMergeCommonModels).toHaveBeenCalledTimes(4);
+      expect(mockMergeCommonModels).toHaveBeenCalledTimes(2);
     });
     test('with nested schema', () => {
       const schemaString = fs.readFileSync(path.resolve(__dirname, './items/anyOfNested.json'), 'utf8');
@@ -95,7 +95,7 @@ describe('Simplification of items', () => {
       const items = simplifyItems(schema, simplifier);
       expect(items).toBeUndefined();
       expect(simplifier.simplify).toHaveBeenCalledTimes(3);
-      expect(mockMergeCommonModels).toHaveBeenCalledTimes(7);
+      expect(mockMergeCommonModels).toHaveBeenCalledTimes(3);
     });
   });
   describe('from conditional if/then/else ', () => {
@@ -106,7 +106,7 @@ describe('Simplification of items', () => {
       const items = simplifyItems(schema, simplifier);
       expect(items).toBeUndefined();
       expect(simplifier.simplify).toHaveBeenCalledTimes(2);
-      expect(mockMergeCommonModels).toHaveBeenCalledTimes(4);
+      expect(mockMergeCommonModels).toHaveBeenCalledTimes(2);
     });
     test('with nested schema', () => {
       const schemaString = fs.readFileSync(path.resolve(__dirname, './items/conditionalNested.json'), 'utf8');
@@ -115,7 +115,7 @@ describe('Simplification of items', () => {
       const items = simplifyItems(schema, simplifier);
       expect(items).toBeUndefined();
       expect(simplifier.simplify).toHaveBeenCalledTimes(4);
-      expect(mockMergeCommonModels).toHaveBeenCalledTimes(10);
+      expect(mockMergeCommonModels).toHaveBeenCalledTimes(4);
     });
   });
   test('Should split out multiple objects into their own models and add reference', () => {

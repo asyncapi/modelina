@@ -76,6 +76,6 @@ function combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | unde
  * @param schema 
  * @param currentModel to merge into 
  */
-function mergeWithCurrentModel(model : CommonModel, schema: Schema, currentModel: Output) {
+function mergeWithCurrentModel(model: CommonModel, schema: Schema, currentModel: Output) {
   CommonModel.mergeCommonModels(currentModel, model, schema);
 }
