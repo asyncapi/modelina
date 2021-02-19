@@ -18,4 +18,22 @@ describe('Simplification', function() {
     expect(actualModels[1]).toEqual(expectedModels[1]);
     expect(schema.$id).toBeUndefined();
   });
+
+  test('should support array roots', function() {
+    const actualModels = simplify({ "type": "array", "items": [{ "type": "string" }, { "type": "number" }] });
+    const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './simplify/expected/array_root.json'), 'utf8');
+    const expectedModel = JSON.parse(expectedSchemaString);
+    expect(actualModels).not.toBeUndefined();
+    expect(actualModels[0]).toEqual(expectedModel);
+  });
+  test('should support string roots', function() {
+    const actualModels = simplify({ "type": "string" });
+    expect(actualModels).not.toBeUndefined();
+    expect(actualModels[0]).toEqual({
+      "originalSchema":{
+        "type":"string"
+      },
+      "type":"string"
+    });
+  });
 });
