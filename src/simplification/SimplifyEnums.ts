@@ -49,7 +49,6 @@ export default function simplifyEnums(schema: Schema | boolean, seenSchemas: Map
  * @param seenSchemas already seen schemas and their respectable output
  */
 function ensureNotEnumsAreRemoved(schema: Schema, existingEnums: any[], seenSchemas: Map<any, Output>) {
-  //Ensure any enums which should not be present
   if (schema.not) {
     const notEnums = simplifyEnums(schema.not, seenSchemas);
     if (notEnums !== undefined) {
