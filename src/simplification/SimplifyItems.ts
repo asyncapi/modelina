@@ -38,10 +38,7 @@ export default function simplifyItems(schema: Schema | boolean, simplifier : Sim
     combineSchemas(schema.then, tempOutput, simplifier, seenSchemas);
     combineSchemas(schema.else, tempOutput, simplifier, seenSchemas);
     
-    if (!Object.keys(tempOutput).length) {
-      return undefined;
-    }
-    return tempOutput;
+    return !Object.keys(tempOutput).length ? undefined : tempOutput;
   }
   return undefined;
 }
