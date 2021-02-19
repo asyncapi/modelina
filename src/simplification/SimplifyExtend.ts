@@ -16,10 +16,7 @@ export default function simplifyExtend(schema: Schema | boolean, simplifier : Si
       tryAddExtends(simplifiedModels, extendingModels);
     }
   }
-  if (extendingModels.length > 0) {
-    return extendingModels;
-  }
-  return undefined;
+  return extendingModels.length > 0 ? extendingModels : undefined;
 }
 
 /**
