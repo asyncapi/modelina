@@ -8,13 +8,13 @@ jest.mock('../../src/simplification/Simplifier', () => {
   return {
     Simplifier: jest.fn().mockImplementation(() => {
       return {
-        simplify: jest.fn().mockReturnValue(new CommonModel())
+        simplify: jest.fn().mockReturnValue([new CommonModel()])
       };
     })
   };
 });
 
-const mockMergeCommonModels = jest.fn().mockReturnValue(new CommonModel());
+const mockMergeCommonModels = jest.fn();
 CommonModel.mergeCommonModels = mockMergeCommonModels;
 /**
  * Some of these test are purely theoretical and have little if any merit 
@@ -32,7 +32,7 @@ describe('Simplification of items', () => {
       const schema: any = { items: { type: 'string' } };
       const simplifier = new Simplifier();
       const items = simplifyItems(schema, simplifier);
-      expect(items).toEqual({});
+      expect(items).toBeUndefined();
       expect(simplifier.simplify).toHaveBeenCalledTimes(1);
     });
   });
@@ -42,7 +42,7 @@ describe('Simplification of items', () => {
       const schema = JSON.parse(schemaString);
       const simplifier = new Simplifier();
       const items = simplifyItems(schema, simplifier);
-      expect(items).toEqual({});
+      expect(items).toBeUndefined();
       expect(simplifier.simplify).toHaveBeenCalledTimes(2);
       expect(mockMergeCommonModels).toHaveBeenCalledTimes(4);
     });
@@ -51,7 +51,7 @@ describe('Simplification of items', () => {
       const schema = JSON.parse(schemaString);
       const simplifier = new Simplifier();
       const items = simplifyItems(schema, simplifier);
-      expect(items).toEqual({});
+      expect(items).toBeUndefined();
       expect(simplifier.simplify).toHaveBeenCalledTimes(3);
       expect(mockMergeCommonModels).toHaveBeenCalledTimes(7);
     });
@@ -63,7 +63,7 @@ describe('Simplification of items', () => {
       const schema = JSON.parse(schemaString);
       const simplifier = new Simplifier();
       const items = simplifyItems(schema, simplifier);
-      expect(items).toEqual({});
+      expect(items).toBeUndefined();
       expect(simplifier.simplify).toHaveBeenCalledTimes(2);
       expect(mockMergeCommonModels).toHaveBeenCalledTimes(4);
     });
@@ -72,7 +72,7 @@ describe('Simplification of items', () => {
       const schema = JSON.parse(schemaString);
       const simplifier = new Simplifier();
       const items = simplifyItems(schema, simplifier);
-      expect(items).toEqual({});
+      expect(items).toBeUndefined();
       expect(simplifier.simplify).toHaveBeenCalledTimes(3);
       expect(mockMergeCommonModels).toHaveBeenCalledTimes(7);
     });
@@ -84,7 +84,7 @@ describe('Simplification of items', () => {
       const schema = JSON.parse(schemaString);
       const simplifier = new Simplifier();
       const items = simplifyItems(schema, simplifier);
-      expect(items).toEqual({});
+      expect(items).toBeUndefined();
       expect(simplifier.simplify).toHaveBeenCalledTimes(2);
       expect(mockMergeCommonModels).toHaveBeenCalledTimes(4);
     });
@@ -93,7 +93,7 @@ describe('Simplification of items', () => {
       const schema = JSON.parse(schemaString);
       const simplifier = new Simplifier();
       const items = simplifyItems(schema, simplifier);
-      expect(items).toEqual({});
+      expect(items).toBeUndefined();
       expect(simplifier.simplify).toHaveBeenCalledTimes(3);
       expect(mockMergeCommonModels).toHaveBeenCalledTimes(7);
     });
@@ -104,7 +104,7 @@ describe('Simplification of items', () => {
       const schema = JSON.parse(schemaString);
       const simplifier = new Simplifier();
       const items = simplifyItems(schema, simplifier);
-      expect(items).toEqual({});
+      expect(items).toBeUndefined();
       expect(simplifier.simplify).toHaveBeenCalledTimes(2);
       expect(mockMergeCommonModels).toHaveBeenCalledTimes(4);
     });
@@ -113,7 +113,7 @@ describe('Simplification of items', () => {
       const schema = JSON.parse(schemaString);
       const simplifier = new Simplifier();
       const items = simplifyItems(schema, simplifier);
-      expect(items).toEqual({});
+      expect(items).toBeUndefined();
       expect(simplifier.simplify).toHaveBeenCalledTimes(4);
       expect(mockMergeCommonModels).toHaveBeenCalledTimes(10);
     });
@@ -123,7 +123,7 @@ describe('Simplification of items', () => {
     const schema = JSON.parse(schemaString);
     const simplifier = new Simplifier();
     const items = simplifyItems(schema, simplifier);
-    expect(items).toEqual({});
+    expect(items).toBeUndefined();
     expect(simplifier.simplify).toHaveBeenCalledTimes(1);
     expect(mockMergeCommonModels).toHaveBeenCalledTimes(1);
   });
