@@ -12,12 +12,19 @@ type Output = CommonModel | undefined;
 export default function simplifyAdditionalProperties(schema: Schema | boolean, simplifier : Simplifier, commonModel: CommonModel) : Output {
   let additionalProperties: Output;
   if (typeof schema !== 'boolean' && isModelObject(commonModel)) {
-    if (schema.additionalProperties === false) {
-      additionalProperties = undefined;
-    } else {
+    if (schema.additionalProperties !== false) {
       const newModels = simplifier.simplify(schema.additionalProperties || true);
       if (newModels.length > 0) {
         additionalProperties = newModels[0];
+      }
+    }
+
+    if (schema.patternProperties !== undefined) {
+      for (const [pattern, patternSchema] in schema.patternProperties) {
+        const newModels = simplifier.simplify(schema.additionalProperties || true);
+        if (newModels.length > 0) {
+          additionalProperties = newModels[0];
+        }
       }
     }
   }
