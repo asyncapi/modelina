@@ -50,6 +50,7 @@ export class Schema extends CommonSchema<Schema | boolean> {
      * @param object to transform
      * @returns CommonModel instance of the object
      */
+    // eslint-disable-next-line sonarjs/cognitive-complexity
     static toSchema(object: Object, seenSchemas: Map<any, Schema> = new Map()): Schema | boolean {
       if (typeof object === 'boolean') return object;
       if (seenSchemas.has(object)) return seenSchemas.get(object) as Schema;
@@ -92,6 +93,7 @@ export class Schema extends CommonSchema<Schema | boolean> {
         });
         schema.dependencies = dependencies;
       }
+
       if (schema.propertyNames !== undefined) {
         schema.propertyNames = Schema.toSchema(schema.propertyNames, seenSchemas);
       }
@@ -103,6 +105,7 @@ export class Schema extends CommonSchema<Schema | boolean> {
         });
         schema.patternProperties = patternProperties;
       }
+      
       if (schema.if !== undefined) {
         schema.if = Schema.toSchema(schema.if, seenSchemas);
       }
