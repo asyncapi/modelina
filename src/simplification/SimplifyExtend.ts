@@ -13,7 +13,7 @@ export default function simplifyExtend(schema: Schema | boolean, simplifier : Si
   for (const allOfSchema of (schema.allOf || [])) {
     if (typeof allOfSchema !== 'boolean') {
       const simplifiedModels = simplifier.simplify(allOfSchema);
-      addExtends(simplifiedModels, extendingModels);
+      tryAddExtends(simplifiedModels, extendingModels);
     }
   }
   if (extendingModels.length > 0) {
@@ -28,7 +28,7 @@ export default function simplifyExtend(schema: Schema | boolean, simplifier : Si
  * @param simplifiedModels to check if we need to extend
  * @param extendingSchemas already extended CommonModels
  */
-function addExtends(simplifiedModels: CommonModel[], alreadyExtendingModels : string[]) {
+function tryAddExtends(simplifiedModels: CommonModel[], alreadyExtendingModels : string[]) {
   if (simplifiedModels.length > 0) {
     //If the root schema is of type object and has an id (should always have one) then extend the model
     const rootSimplifiedModel = simplifiedModels[0];
