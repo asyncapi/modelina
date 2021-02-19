@@ -29,7 +29,7 @@ describe('TypeScriptGenerator', function() {
   private Boolean marriage;
   private Object members;
   private Object[] arrayType;
-  Map<String, Object> additionalFields = new HashMap();
+  private Map<String, Object> additionalFields = new HashMap();
 
   public String getStreetName() { return this.streetName; }
   public void setStreetName(String streetName) { this.streetName = streetName; }
@@ -74,7 +74,7 @@ describe('TypeScriptGenerator', function() {
     const expected = `public class CustomClass {
   @JsonProperty("property")
   private String property;
-  Map<String, Object> additionalFields = new HashMap();
+  private Map<String, Object> additionalFields = new HashMap();
 
   @JsonProperty("property")
   public String getProperty() { return this.property; }
