@@ -26,7 +26,7 @@ describe('Simplification', function() {
     expect(actualModels).not.toBeUndefined();
     expect(actualModels[0]).toEqual(expectedModel);
   });
-  test('should support string roots', function() {
+  test('should support primitive roots', function() {
     const actualModels = simplify({ "type": "string" });
     expect(actualModels).not.toBeUndefined();
     expect(actualModels[0]).toEqual({
