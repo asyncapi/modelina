@@ -32,7 +32,10 @@ describe('AbstractGenerator', function() {
     expect(commonInputModel).toBeInstanceOf(CommonInputModel);
     expect(commonInputModel.models).toBeDefined();
     expect(keys).toHaveLength(1);
-    expect(commonInputModel.models[keys[0]].originalSchema).toEqual(doc);
+    expect(commonInputModel.models[keys[0]].originalSchema).toEqual({
+      $id: 'test',
+      'x-modelgen-inferred-name': 'root',
+    });
   });
 
   test('should `render` function return renderer model', async function() {

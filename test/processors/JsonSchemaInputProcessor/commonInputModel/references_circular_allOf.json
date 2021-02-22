@@ -1,8 +1,8 @@
 {
   "models":{
-    "anonymSchema1":{
+    "root":{
       "type":"object",
-      "$id":"anonymSchema1",
+      "$id":"root",
       "additionalProperties": {
         "originalSchema": true,
         "type": [
@@ -16,7 +16,7 @@
       },
       "properties":{
         "street_address":{
-          "$ref":"anonymSchema2"
+          "$ref":"street_address"
         },
         "country":{
           "originalSchema":{
@@ -33,9 +33,9 @@
         }
       }
     },
-    "anonymSchema2":{
+    "street_address":{
       "type":"object",
-      "$id":"anonymSchema2",
+      "$id":"street_address",
       "additionalProperties": {
         "originalSchema": true,
         "type": [
@@ -48,13 +48,13 @@
         ]
       },
       "extend":[
-        "anonymSchema3",
-        "anonymSchema4"
+        "test_allOf_0",
+        "test_allOf_1"
       ]
     },
-    "anonymSchema3":{
+    "test_allOf_0":{
       "type":"object",
-      "$id":"anonymSchema3",
+      "$id":"test_allOf_0",
       "additionalProperties": {
         "originalSchema": true,
         "type": [
@@ -68,13 +68,13 @@
       },
       "properties":{
         "floor":{
-          "$ref":"anonymSchema4"
+          "$ref":"test_allOf_0_floor"
         }
       }
     },
-    "anonymSchema4":{
+    "test_allOf_0_floor":{
       "type":"object",
-      "$id":"anonymSchema4",
+      "$id":"test_allOf_0_floor",
       "additionalProperties": {
         "originalSchema": true,
         "type": [
@@ -88,7 +88,7 @@
       },
       "properties":{
         "floor2":{
-          "$ref":"anonymSchema4"
+          "$ref":"test2_floor2"
         }
       }
     }

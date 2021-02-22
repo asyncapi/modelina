@@ -1,32 +1,6 @@
 {
-  "customizations": {},
   "models": {
-    "anonymSchema1": {
-      "$id": "anonymSchema1",
-      "type": "object",
-      "additionalProperties": {
-        "originalSchema": true,
-        "type": [
-          "object",
-          "string",
-          "number",
-          "array",
-          "boolean",
-          "null"
-        ]
-      },
-      "properties": {
-        "street_address": {
-          "$ref": "anonymSchema2"
-        },
-        "country": {
-          "type": "string",
-          "enum": ["United States of America", "Canada"],
-          "originalSchema": {
-            "enum": ["United States of America", "Canada"]
-          }
-        }
-      },
+    "root": {
       "originalSchema": {
         "$schema": "http://json-schema.org/draft-07/schema#",
         "type": "object",
@@ -35,19 +9,43 @@
             "type": "object",
             "properties": {
               "floor": {
-                "type": "number"
+                "type": "number",
+                "x-modelgen-inferred-name": "street_address_floor"
               }
-            }
+            },
+            "x-modelgen-inferred-name": "street_address"
           },
           "country": {
-            "enum": ["United States of America", "Canada"]
+            "enum": [
+              "United States of America",
+              "Canada"
+            ],
+            "x-modelgen-inferred-name": "country"
           }
-        }
-      }
-    },
-    "anonymSchema2": {
-      "$id": "anonymSchema2",
+        },
+        "x-modelgen-inferred-name": "root"
+      },
       "type": "object",
+      "$id": "root",
+      "properties": {
+        "street_address": {
+          "$ref": "street_address"
+        },
+        "country": {
+          "originalSchema": {
+            "enum": [
+              "United States of America",
+              "Canada"
+            ],
+            "x-modelgen-inferred-name": "country"
+          },
+          "type": "string",
+          "enum": [
+            "United States of America",
+            "Canada"
+          ]
+        }
+      },
       "additionalProperties": {
         "originalSchema": true,
         "type": [
@@ -58,25 +56,44 @@
           "boolean",
           "null"
         ]
-      },
-      "properties": {
-        "floor": {
-          "type": "number",
-          "originalSchema": {
-            "type": "number"
-          }
-        }
-      },
+      }
+    },
+    "street_address": {
       "originalSchema": {
         "type": "object",
         "properties": {
           "floor": {
-            "type": "number"
+            "type": "number",
+            "x-modelgen-inferred-name": "street_address_floor"
           }
+        },
+        "x-modelgen-inferred-name": "street_address"
+      },
+      "type": "object",
+      "$id": "street_address",
+      "properties": {
+        "floor": {
+          "originalSchema": {
+            "type": "number",
+            "x-modelgen-inferred-name": "street_address_floor"
+          },
+          "type": "number"
         }
+      },
+      "additionalProperties": {
+        "originalSchema": true,
+        "type": [
+          "object",
+          "string",
+          "number",
+          "array",
+          "boolean",
+          "null"
+        ]
       }
     }
   },
+  "customizations": {},
   "originalInput": {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
@@ -85,13 +102,20 @@
         "type": "object",
         "properties": {
           "floor": {
-            "type": "number"
+            "type": "number",
+            "x-modelgen-inferred-name": "street_address_floor"
           }
-        }
+        },
+        "x-modelgen-inferred-name": "street_address"
       },
       "country": {
-        "enum": ["United States of America", "Canada"]
+        "enum": [
+          "United States of America",
+          "Canada"
+        ],
+        "x-modelgen-inferred-name": "country"
       }
-    }
+    },
+    "x-modelgen-inferred-name": "root"
   }
 }
