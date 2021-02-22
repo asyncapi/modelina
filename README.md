@@ -101,7 +101,7 @@ interface Address {
 }
 ```
 ## Supported input
-These are the supported inputs:
+These are the supported inputs.
 ### AsyncAPI input
 The library expects the `asyncapi` property for the document to be sat in order to understand the input format.
 - Generate from a [parsed AsyncAPI document](https://github.com/asyncapi/parser-js)
