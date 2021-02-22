@@ -2,7 +2,7 @@
 import { CommonModel } from '../models/CommonModel';
 import { Schema } from '../models/Schema';
 import { Simplifier } from './Simplifier';
-type Output = { newModels: CommonModel[] | undefined; properties: { [key: string]: CommonModel } | undefined };
+type Output = Record<string, CommonModel> | undefined;
 
 /**
  * Simplifier function for finding the simplified version of properties.
@@ -12,48 +12,38 @@ type Output = { newModels: CommonModel[] | undefined; properties: { [key: string
  * @param seenSchemas already seen schemas and their corresponding output, this is to avoid circular schemas
  */
 export default function simplifyProperties(schema: Schema | boolean, simplifier : Simplifier, seenSchemas: Map<any, Output> = new Map()): Output {
-  const output: Output = {newModels: undefined, properties: undefined};
   if (typeof schema !== 'boolean') {
-    if (seenSchemas.has(schema)) return seenSchemas.get(schema)!;
+    if (seenSchemas.has(schema)) return seenSchemas.get(schema);
+    const output: Output = {};
     seenSchemas.set(schema, output);
-    const addToModels = (model: CommonModel[] = []) => { output.newModels = [...(output.newModels || []), ...model]; };
     const addToProperty = (propName: string, propModel: CommonModel) => {
-      if (output.properties === undefined) {
-        output.properties = {};
-      }
-      //If a simplified property already exist, merge the two
-      if (output.properties[propName] !== undefined) {
-        output.properties[propName] = CommonModel.mergeCommonModels(output.properties[propName], propModel, schema);
-      } else {
-        output.properties[propName] = propModel;
+      if (output !== undefined) {
+        //If a simplified property already exist, merge the two
+        if (output[`${propName}`] !== undefined) {
+          output[`${propName}`] = CommonModel.mergeCommonModels(output[`${propName}`], propModel, schema);
+        } else {
+          output[`${propName}`] = propModel;
+        }
       }
     };
-    const addToPropertiesAndModels = (out: Output) => {
-      if (out?.newModels !== undefined) {
-        addToModels(out.newModels);
-      }
-      if (out.properties !== undefined) {
-        for (const [prop, propSchema] of Object.entries(out.properties)) {
+    const addProperties = (out: Output) => {
+      if (out !== undefined) {
+        for (const [prop, propSchema] of Object.entries(out)) {
           addToProperty(prop, propSchema);
         }
       }
     };
-    const handleCombinationSchemas = (schemas: (Schema | boolean)[] = []) => {
-      schemas.forEach((schema) => {
-        addToPropertiesAndModels(simplifyProperties(schema, simplifier, seenSchemas));
+    const handleCombinationSchemas = (combinationSchemas: (Schema | boolean)[] = []) => {
+      combinationSchemas.forEach((combinationSchema) => {
+        addProperties(simplifyProperties(combinationSchema, simplifier, seenSchemas));
       });
     };
 
     if (schema.properties !== undefined) {
       for (const [prop, propSchema] of Object.entries(schema.properties)) {
-        const newModels = simplifier.simplifyRecursive(propSchema);
+        const newModels = simplifier.simplify(propSchema);
         if (newModels.length > 0) {
           addToProperty(prop, newModels[0]);
-          //If there are more then one model returned, it is extra.
-          if (newModels.length > 1) {
-            newModels.splice(0, 1);
-            addToModels(newModels);
-          }
         }
       }
     }
@@ -67,11 +57,15 @@ export default function simplifyProperties(schema: Schema | boolean, simplifier 
 
     //If we encounter combination schemas ensure we recursively find the properties
     if (schema.then) {
-      addToPropertiesAndModels(simplifyProperties(schema.then, simplifier, seenSchemas));
+      addProperties(simplifyProperties(schema.then, simplifier, seenSchemas));
     }
     if (schema.else) {
-      addToPropertiesAndModels(simplifyProperties(schema.else, simplifier, seenSchemas));
+      addProperties(simplifyProperties(schema.else, simplifier, seenSchemas));
     }
+    if (Object.keys(output).length === 0) {
+      return undefined;
+    }
+    return output;
   }
-  return output;
+  return undefined;
 }

@@ -1,49 +1,15 @@
 [
   {
-    "originalSchema": {
-      "allOf": [
-        {
-          "type": "object",
-          "properties": {
-            "street_address": {
-              "type": "object",
-              "properties": {
-                "floor": {
-                  "type": "number"
-                }
-              }
-            },
             "country": {
               "enum": [
                 "United States of America2",
                 "Canada2"
               ]
-            }
-          }
-        },
-        {
-          "type": "object",
-          "properties": {
-            "street_address2": {
-              "type": "object",
-              "properties": {
-                "floor2": {
-                  "type": "number"
-                }
-              }
-            },
             "country2": {
               "enum": [
                 "United States of America2",
                 "Canada2"
               ]
-            }
-          }
-        }
-      ]
-    },
-    "type": "object",
-    "$id": "anonymSchema1",
     "additionalProperties": {
       "originalSchema": true,
       "type": [
@@ -54,75 +20,10 @@
         "boolean",
         "null"
       ]
-    },
-    "extend": [
-      "anonymSchema3",
-      "anonymSchema5"
-    ]
-  },
-  {
-    "originalSchema": {
-      "type": "object",
-      "properties": {
-        "street_address": {
-          "type": "object",
-          "properties": {
-            "floor": {
-              "type": "number"
-            }
-          }
-        },
-        "country": {
-          "enum": [
-            "United States of America2",
-            "Canada2"
-          ]
-        }
-      }
-    },
-    "type": "object",
-    "$id": "anonymSchema2",
-    "properties": {
-      "street_address": {
-        "$ref": "anonymSchema3"
-      },
-      "country": {
-        "originalSchema": {
-          "enum": [
-            "United States of America2",
-            "Canada2"
-          ]
-        },
-        "type": "string",
-        "enum": [
-          "United States of America2",
-          "Canada2"
-        ]
-      }
-    },
-    "additionalProperties": {
-      "originalSchema": true,
-      "type": [
-        "object",
-        "string",
-        "number",
-        "array",
-        "boolean",
-        "null"
-      ]
-    }
-  },
-  {
-    "originalSchema": {
-      "type": "object",
       "properties": {
         "floor": {
           "type": "number"
         }
-      }
-    },
-    "type": "object",
-    "$id": "anonymSchema3",
     "properties": {
       "floor": {
         "originalSchema": {
@@ -141,48 +42,16 @@
         "boolean",
         "null"
       ]
-    }
-  },
-  {
-    "originalSchema": {
-      "type": "object",
-      "properties": {
-        "street_address2": {
-          "type": "object",
-          "properties": {
-            "floor2": {
-              "type": "number"
-            }
-          }
-        },
-        "country2": {
           "enum": [
             "United States of America2",
             "Canada2"
           ]
-        }
-      }
-    },
-    "type": "object",
-    "$id": "anonymSchema4",
-    "properties": {
-      "street_address2": {
-        "$ref": "anonymSchema5"
-      },
-      "country2": {
         "originalSchema": {
           "enum": [
             "United States of America2",
             "Canada2"
           ]
         },
-        "type": "string",
-        "enum": [
-          "United States of America2",
-          "Canada2"
-        ]
-      }
-    },
     "additionalProperties": {
       "originalSchema": true,
       "type": [
@@ -193,19 +62,6 @@
         "boolean",
         "null"
       ]
-    }
-  },
-  {
-    "originalSchema": {
-      "type": "object",
-      "properties": {
-        "floor2": {
-          "type": "number"
-        }
-      }
-    },
-    "type": "object",
-    "$id": "anonymSchema5",
     "properties": {
       "floor2": {
         "originalSchema": {
@@ -224,6 +80,5 @@
         "boolean",
         "null"
       ]
-    }
   }
 ]

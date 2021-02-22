@@ -25,32 +25,33 @@ export class CommonModel extends CommonSchema<CommonModel> {
     }
     return newCommonModel;
   }
-
-  /**
-   * Only merge if left side is undefined and right side is sat OR both sides are defined
-   * 
-   * @param mergeTo CommonModel to merge into
-   * @param mergeFrom CommonModel to merge values from
-   */
-  static mergeCommonModels(mergeTo: CommonModel | undefined, mergeFrom: CommonModel, originalSchema: Schema): CommonModel {
-    if (mergeTo === undefined) return mergeFrom;
+  private static mergeProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema) {
     const mergeToProperties = mergeTo.properties;
     const mergeFromProperties = mergeFrom.properties;
     if (mergeFromProperties !== undefined) {
       if (mergeToProperties === undefined) {
         mergeTo.properties = mergeFromProperties;
       } else {
-        Object.entries(mergeFromProperties).forEach(([propName, prop]) => {
-          if (mergeToProperties![propName] !== undefined) {
-            mergeTo.properties![propName] = CommonModel.mergeCommonModels(mergeToProperties![propName], prop, originalSchema);
+        for (const [propName, prop] of Object.entries(mergeFromProperties)) {
+          if (mergeToProperties[`${propName}`] !== undefined) {
+            mergeToProperties[`${propName}`] = CommonModel.mergeCommonModels(mergeToProperties[`${propName}`], prop, originalSchema);
           } else {
-            mergeTo.properties![propName] = prop;
+            mergeToProperties[`${propName}`] = prop;
           }
-        });
+        }
       }
     }
+  }
 
-    const mergeItems = (models: CommonModel | CommonModel[] | undefined): CommonModel | undefined => {
+  /**
+   * Merge items together so only one CommonModel remains.
+   * 
+   * @param mergeTo CommonModel to merge types into
+   * @param mergeFrom CommonModel to merge from
+   * @param originalSchema 
+   */
+  private static mergeItems(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema) {
+    const merge = (models: CommonModel | CommonModel[] | undefined): CommonModel | undefined => {
       if (Array.isArray(models)) {
         if (models.length > 0) {
           let mergedItemsModel: CommonModel = models[0];
@@ -63,8 +64,8 @@ export class CommonModel extends CommonSchema<CommonModel> {
     };
     if (mergeFrom.items !== undefined) {
       //Incase of arrays, merge them into a single schema
-      const mergeFromItemsModel = mergeItems(mergeFrom.items);
-      const mergeToItemsModel = mergeItems(mergeTo.items);
+      const mergeFromItemsModel = merge(mergeFrom.items);
+      const mergeToItemsModel = merge(mergeTo.items);
       if (mergeFromItemsModel !== undefined) {
         if (mergeToItemsModel !== undefined) {
           mergeTo.items = CommonModel.mergeCommonModels(mergeToItemsModel, mergeFromItemsModel, originalSchema);
@@ -73,8 +74,53 @@ export class CommonModel extends CommonSchema<CommonModel> {
         }
       }
     } else if (mergeTo.items !== undefined) {
-      mergeTo.items = mergeItems(mergeTo.items);
+      mergeTo.items = merge(mergeTo.items);
     }
+  }
+
+  /**
+   * Merge types together
+   * 
+   * @param mergeTo CommonModel to merge types into
+   * @param mergeFrom CommonModel to merge from
+   */
+  private static mergeTypes(mergeTo: CommonModel, mergeFrom: CommonModel) {
+    //Only add the types that do not already exist
+    const addToType = (type: string) => {
+      if (mergeTo.type !== undefined && !mergeTo.type.includes(type)) {
+        if (Array.isArray(mergeTo.type)) {
+          mergeTo.type.push(type);
+        } else {
+          mergeTo.type = [mergeTo.type, type];
+        }
+      }
+    };
+    if (mergeFrom.type !== undefined) {
+      if (mergeTo.type === undefined) {
+        mergeTo.type = mergeFrom.type;
+      } else {
+        if (Array.isArray(mergeFrom.type)) {
+          mergeFrom.type.forEach(addToType);
+          return;
+        }
+        addToType(mergeFrom.type);
+      }
+    }
+  }
+
+  /**
+   * Only merge if left side is undefined and right side is sat OR both sides are defined
+   * 
+   * @param mergeTo CommonModel to merge into
+   * @param mergeFrom CommonModel to merge values from
+   * @param originalSchema schema to use as original schema
+   */
+  static mergeCommonModels(mergeTo: CommonModel | undefined, mergeFrom: CommonModel, originalSchema: Schema): CommonModel {
+    if (mergeTo === undefined) return mergeFrom;
+
+    CommonModel.mergeProperties(mergeTo, mergeFrom, originalSchema);
+    CommonModel.mergeItems(mergeTo, mergeFrom, originalSchema);
+    CommonModel.mergeTypes(mergeTo, mergeFrom);
 
     if (mergeFrom.enum !== undefined) {
       if (mergeTo.enum === undefined) {
@@ -84,27 +130,6 @@ export class CommonModel extends CommonSchema<CommonModel> {
       }
     }
 
-    if (mergeFrom.type !== undefined) {
-      if (mergeTo.type === undefined) {
-        mergeTo.type = mergeFrom.type;
-      } else {
-        //Only add the types that do not already exist
-        const addToType = (type: string) => {
-          if (!mergeTo.type!.includes(type)) {
-            if (Array.isArray(mergeTo.type)) {
-              mergeTo.type.push(type);
-            } else {
-              mergeTo.type = [mergeTo.type!, type];
-            }
-          }
-        };
-        if (Array.isArray(mergeFrom.type)) {
-          mergeFrom.type.forEach(addToType);
-        } else {
-          addToType(mergeFrom.type);
-        }
-      }
-    }
     // Which values are correct to use here? Is allOf required?
     if (mergeFrom.$id !== undefined) {
       mergeTo.$id = mergeFrom.$id;
@@ -128,6 +153,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
   getFromSchema<K extends keyof Schema>(key: K) {
     let schema = this.originalSchema || {};
     if (typeof schema === 'boolean') schema = {};
+    // eslint-disable-next-line security/detect-object-injection
     return schema[key];
   }
 

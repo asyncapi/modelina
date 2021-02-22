@@ -42,8 +42,6 @@
         "null"
       ]
     },
-    "extend": [
-      "anonymSchema4",
       "anonymSchema5"
     ]
   },
@@ -63,21 +61,20 @@
               "type": "string"
             }
           }
-        }
-      ]
+
+    "type":"object",
+    "$id":"anonymSchema3",
+    "properties":{
+      "testProp1":{
+        "originalSchema":{
+          "type":"string"
+        },
+        "type":"string"
+      }
     },
-    "type": "object",
-    "$id": "anonymSchema2",
-    "additionalProperties": {
-      "originalSchema": true,
-      "type": [
-        "object",
-        "string",
-        "number",
-        "array",
-        "boolean",
-        "null"
-      ]
+    "additionalProperties":{
+      "originalSchema":true,
+      "type":[
     },
     "extend": [
       "anonymSchema3",
@@ -105,6 +102,29 @@
     "additionalProperties": {
       "originalSchema": true,
       "type": [
+    }
+  },
+  {
+    "originalSchema":{
+      "properties":{
+        "testProp2":{
+          "type":"string"
+        }
+      }
+    },
+    "type":"object",
+    "$id":"anonymSchema4",
+    "properties":{
+      "testProp2":{
+        "originalSchema":{
+          "type":"string"
+        },
+        "type":"string"
+      }
+    },
+    "additionalProperties":{
+      "originalSchema":true,
+      "type":[
         "object",
         "string",
         "number",
@@ -115,26 +135,23 @@
     }
   },
   {
-    "originalSchema": {
-      "properties": {
-        "testProp2": {
-          "type": "string"
-        }
-      }
-    },
-    "type": "object",
-    "$id": "anonymSchema4",
-    "properties": {
-      "testProp2": {
-        "originalSchema": {
-          "type": "string"
+
+    "originalSchema":{
+      "allOf":[
+        {
+          "properties":{
+            "testProp1":{
+              "type":"string"
+            }
+          }
         },
-        "type": "string"
-      }
-    },
-    "additionalProperties": {
-      "originalSchema": true,
-      "type": [
+        {
+          "properties":{
+            "testProp2":{
+              "type":"string"
+            }
+          }
+
         "object",
         "string",
         "number",
@@ -142,7 +159,6 @@
         "boolean",
         "null"
       ]
-    }
   },
   {
     "originalSchema": {
@@ -152,19 +168,6 @@
         }
       }
     },
-    "type": "object",
-    "$id": "anonymSchema5",
-    "properties": {
-      "testProp3": {
-        "originalSchema": {
-          "type": "string"
-        },
-        "type": "string"
-      }
-    },
-    "additionalProperties": {
-      "originalSchema": true,
-      "type": [
         "object",
         "string",
         "number",

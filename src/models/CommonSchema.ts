@@ -31,7 +31,7 @@ export class CommonSchema<T> {
       if (schema.properties !== undefined) {
         const properties : {[key: string]: T | boolean} = {};
         Object.entries(schema.properties).forEach(([propertyName, propertySchema]) => {
-          properties[propertyName] = transformationSchemaCallback(propertySchema, seenSchemas);
+          properties[`${propertyName}`] = transformationSchemaCallback(propertySchema, seenSchemas);
         });
         schema.properties = properties;
       }
