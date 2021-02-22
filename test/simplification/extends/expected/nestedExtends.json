@@ -42,43 +42,9 @@
         "null"
       ]
     },
-      "anonymSchema5"
-    ]
-  },
-  {
-    "originalSchema": {
-      "allOf": [
-        {
-          "properties": {
-            "testProp1": {
-              "type": "string"
-            }
-          }
-        },
-        {
-          "properties": {
-            "testProp2": {
-              "type": "string"
-            }
-          }
-
-    "type":"object",
-    "$id":"anonymSchema3",
-    "properties":{
-      "testProp1":{
-        "originalSchema":{
-          "type":"string"
-        },
-        "type":"string"
-      }
-    },
-    "additionalProperties":{
-      "originalSchema":true,
-      "type":[
-    },
     "extend": [
-      "anonymSchema3",
-      "anonymSchema4"
+      "anonymSchema2",
+      "anonymSchema5"
     ]
   },
   {
@@ -102,29 +68,36 @@
     "additionalProperties": {
       "originalSchema": true,
       "type": [
+        "object",
+        "string",
+        "number",
+        "array",
+        "boolean",
+        "null"
+      ]
     }
   },
   {
-    "originalSchema":{
-      "properties":{
-        "testProp2":{
-          "type":"string"
+    "originalSchema": {
+      "properties": {
+        "testProp2": {
+          "type": "string"
         }
       }
     },
-    "type":"object",
-    "$id":"anonymSchema4",
-    "properties":{
-      "testProp2":{
-        "originalSchema":{
-          "type":"string"
+    "type": "object",
+    "$id": "anonymSchema4",
+    "properties": {
+      "testProp2": {
+        "originalSchema": {
+          "type": "string"
         },
-        "type":"string"
+        "type": "string"
       }
     },
-    "additionalProperties":{
-      "originalSchema":true,
-      "type":[
+    "additionalProperties": {
+      "originalSchema": true,
+      "type": [
         "object",
         "string",
         "number",
@@ -135,23 +108,29 @@
     }
   },
   {
-
-    "originalSchema":{
-      "allOf":[
+    "originalSchema": {
+      "allOf": [
         {
-          "properties":{
-            "testProp1":{
-              "type":"string"
+          "properties": {
+            "testProp1": {
+              "type": "string"
             }
           }
         },
         {
-          "properties":{
-            "testProp2":{
-              "type":"string"
+          "properties": {
+            "testProp2": {
+              "type": "string"
             }
           }
-
+        }
+      ]
+    },
+    "type": "object",
+    "$id": "anonymSchema2",
+    "additionalProperties": {
+      "originalSchema": true,
+      "type": [
         "object",
         "string",
         "number",
@@ -159,6 +138,11 @@
         "boolean",
         "null"
       ]
+    },
+    "extend": [
+      "anonymSchema3",
+      "anonymSchema4"
+    ]
   },
   {
     "originalSchema": {
@@ -168,6 +152,19 @@
         }
       }
     },
+    "type": "object",
+    "$id": "anonymSchema5",
+    "properties": {
+      "testProp3": {
+        "originalSchema": {
+          "type": "string"
+        },
+        "type": "string"
+      }
+    },
+    "additionalProperties": {
+      "originalSchema": true,
+      "type": [
         "object",
         "string",
         "number",
