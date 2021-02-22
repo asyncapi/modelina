@@ -3,7 +3,7 @@ import * as path from 'path';
 import {parse} from '@asyncapi/parser';
 import { InputProcessor } from '../../src/processors/InputProcessor';
 
-describe('InputProcessor', function() {
+describe.skip('InputProcessor', function() {
     /**
      * The input schema when processed should be equals to the expected CommonInputModel
      * 
