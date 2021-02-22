@@ -153,6 +153,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
   getFromSchema<K extends keyof Schema>(key: K) {
     let schema = this.originalSchema || {};
     if (typeof schema === 'boolean') schema = {};
+    // eslint-disable-next-line security/detect-object-injection
     return schema[key];
   }
 
