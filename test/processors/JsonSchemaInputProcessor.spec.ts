@@ -140,7 +140,15 @@ describe('JsonSchemaInputProcessor', function() {
                                 type: "string",
                             },
                         ],
-                    }, 
+                    },
+                    object: {
+                        type: "object",
+                        properties: {
+                            prop: {
+                                type: "string",
+                            },
+                        }
+                    }
                 },
                 patternProperties: {
                     patternProp: {
@@ -172,7 +180,12 @@ describe('JsonSchemaInputProcessor', function() {
                         type: "string",
                     },
                     {
-                        type: "string",
+                        type: "object",
+                        properties: {
+                            prop: {
+                                type: "string",
+                            },
+                        }
                     },
                 ]
             }
@@ -182,9 +195,10 @@ describe('JsonSchemaInputProcessor', function() {
             expect(expected.properties.prop['x-modelgen-inferred-name']).toEqual('prop');
             expect(expected.properties.allOfCase.allOf[0]['x-modelgen-inferred-name']).toEqual('allOfCase_allOf_0');
             expect(expected.properties.allOfCase.allOf[1]['x-modelgen-inferred-name']).toEqual('allOfCase_allOf_1');
+            expect(expected.properties.object.properties.prop['x-modelgen-inferred-name']).toEqual('object_prop');
 
             // patternProperties
-            expect(expected.patternProperties.patternProp['x-modelgen-inferred-name']).toEqual('patternProp');
+            expect(expected.patternProperties.patternProp['x-modelgen-inferred-name']).toEqual('pattern_property_0');
 
             // dependencies
             expect(expected.dependencies.dep['x-modelgen-inferred-name']).toEqual('dep');
@@ -197,6 +211,7 @@ describe('JsonSchemaInputProcessor', function() {
             // anyOf
             expect(expected.anyOf[0]['x-modelgen-inferred-name']).toEqual('anyOf_0');
             expect(expected.anyOf[1]['x-modelgen-inferred-name']).toEqual('anyOf_1');
+            expect(expected.anyOf[1].properties.prop['x-modelgen-inferred-name']).toEqual('anyOf_1_prop');
         })
     });
 });

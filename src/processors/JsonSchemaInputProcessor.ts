@@ -172,8 +172,8 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     }
     if (schema.patternProperties !== undefined) {
       const patternProperties: { [key: string]: Schema | boolean } = {};
-      Object.entries(schema.patternProperties).forEach(([patternPropertyName, patternProperty]) => {
-        patternProperties[patternPropertyName] = this.reflectSchemaName(patternProperty, namesStack, this.ensureNamePattern(pattern, patternPropertyName), patternPropertyName);
+      Object.entries(schema.patternProperties).forEach(([patternPropertyName, patternProperty], idx) => {
+        patternProperties[patternPropertyName] = this.reflectSchemaName(patternProperty, namesStack, this.ensureNamePattern(pattern, 'pattern_property', idx), patternPropertyName);
       });
       schema.patternProperties = patternProperties;
     }
