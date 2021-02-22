@@ -9,37 +9,25 @@ type Output = any[] | undefined;
  */
 export default function simplifyEnums(schema: Schema | boolean, seenSchemas: Map<any, Output> = new Map()): Output {
   if (typeof schema !== 'boolean') {
-    let enums: any[] = [];
     if (seenSchemas.has(schema)) return seenSchemas.get(schema);
+    let enums: any[] = [];
     seenSchemas.set(schema, enums);
-    const addToEnums = (enumsToCheck: any[] | undefined) => {
-      if (enumsToCheck === undefined) return;
-      enumsToCheck.forEach((value) => {
-        if (!enums.includes(value)) {
-          enums.push(value);
-        }
-      });
-    };
-    const handleCombinationSchemas = (schemas: (Schema | boolean)[] = []) => {
-      schemas.forEach((schema) => {
-        addToEnums(simplifyEnums(schema, seenSchemas));
-      });
-    };
 
     if (schema.enum) {
-      addToEnums(schema.enum);
+      addToEnums(schema.enum, enums);
     }
+
     //If we encounter combination schemas ensure we recursively find the enums
-    handleCombinationSchemas(schema.allOf);
-    handleCombinationSchemas(schema.oneOf);
-    handleCombinationSchemas(schema.anyOf);
+    handleCombinationSchemas(schema.allOf, enums, seenSchemas);
+    handleCombinationSchemas(schema.oneOf, enums, seenSchemas);
+    handleCombinationSchemas(schema.anyOf, enums, seenSchemas);
 
     //If we encounter combination schemas ensure we recursively find the enums
     if (schema.then) {
-      addToEnums(simplifyEnums(schema.then, seenSchemas));
+      addToEnums(simplifyEnums(schema.then, seenSchemas), enums);
     }
     if (schema.else) {
-      addToEnums(simplifyEnums(schema.else, seenSchemas));
+      addToEnums(simplifyEnums(schema.else, seenSchemas), enums);
     }
 
     //If const is defined overwrite any already determined enums
@@ -47,18 +35,58 @@ export default function simplifyEnums(schema: Schema | boolean, seenSchemas: Map
       enums = [schema.const];
     }
 
-    //Ensure any enums which should not be present
-    if (schema.not) {
-      const notEnums = simplifyEnums(schema.not, seenSchemas);
-      if (notEnums !== undefined) {
-        notEnums.forEach((notEnum) => {
-          if (enums.includes(notEnum)) {
-            enums.splice(enums.indexOf(notEnum), 1);
-          }
-        });
-      }
-    }
+    ensureNotEnumsAreRemoved(schema, enums, seenSchemas);
     return enums;
   }
   return undefined;
 }
+
+/**
+ * Ensure enums in not are never included.
+ * 
+ * @param schema currently searching in
+ * @param existingEnums which have already been found
+ * @param seenSchemas already seen schemas and their respectable output
+ */
+function ensureNotEnumsAreRemoved(schema: Schema, existingEnums: any[], seenSchemas: Map<any, Output>) {
+  if (schema.not) {
+    const notEnums = simplifyEnums(schema.not, seenSchemas);
+    if (notEnums !== undefined) {
+      notEnums.forEach((notEnum) => {
+        //If it exist remove it
+        if (existingEnums.includes(notEnum)) {
+          existingEnums.splice(existingEnums.indexOf(notEnum), 1);
+        }
+      });
+    }
+  }
+}
+
+/**
+ * Ensuring all enums inside combination schemas are added
+ * 
+ * @param schemas to search in
+ * @param existingEnums which have already been found
+ * @param seenSchemas already seen schemas and their respectable output
+ */
+function handleCombinationSchemas(schemas: (Schema | boolean)[] = [], existingEnums: any[], seenSchemas: Map<any, Output>) {
+  schemas.forEach((schema) => {
+    addToEnums(simplifyEnums(schema, seenSchemas), existingEnums);
+  });
+}
+
+/**
+ * Tries to add enums if they don't already exist
+ * 
+ * @param enumsToCheck
+ * @param existingEnums 
+ */
+function addToEnums(enumsToCheck: any[] | undefined, existingEnums: any[]) {
+  if (enumsToCheck === undefined) return;
+  enumsToCheck.forEach((value) => {
+    if (!existingEnums.includes(value)) {
+      existingEnums.push(value);
+    }
+  });
+}
+

@@ -30,11 +30,11 @@ export class Simplifier {
    * @param schema to simplify
    */
   simplify(schema: Schema | boolean): CommonModel[] {
-    const model = new CommonModel();
     if (typeof schema !== 'boolean' && this.seenSchemas.has(schema)) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return [this.seenSchemas.get(schema)!];
     }
+    const model = new CommonModel();
     model.originalSchema = Schema.toSchema(schema);
     model.type = simplifyTypes(schema);
     if (typeof schema !== 'boolean') {
