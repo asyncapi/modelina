@@ -15,21 +15,15 @@ export default function simplifyTypes(schema: Schema | boolean, seenSchemas: Map
     } 
     throw new Error('False value schemas are not supported');
   }
-  let types: Output = undefined;
+  let types: Output = [];
   if (seenSchemas.has(schema)) return seenSchemas.get(schema);
   seenSchemas.set(schema, types);
   const addToTypes = (typesToCheck: Output) => {
     if (typesToCheck !== undefined) {
-      if (types === undefined) {
-        types = typesToCheck;
-      } else if (Array.isArray(typesToCheck)) {
+      if (Array.isArray(typesToCheck)) {
         typesToCheck.forEach(addToTypes);
-      } else if (Array.isArray(types)) {
-        if (!types.includes(typesToCheck)) {
-          types.push(typesToCheck);
-        }
-      } else if (types !== typesToCheck) {
-        types = [types, typesToCheck];
+      } else if (Array.isArray(types) && !types.includes(typesToCheck)) {
+        types.push(typesToCheck);
       }
     }
   };
@@ -114,6 +108,10 @@ export default function simplifyTypes(schema: Schema | boolean, seenSchemas: Map
     //Assign all remaining types
     types = remainingTypes;
   }
-
+  if (types.length === 0) {
+    return undefined;
+  } else if (types.length === 1) {
+    return types[0];
+  }
   return types;
 }
