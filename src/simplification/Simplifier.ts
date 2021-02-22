@@ -31,15 +31,17 @@ export class Simplifier {
    */
   simplify(schema: Schema | boolean): CommonModel[] {
     if (typeof schema !== 'boolean' && this.seenSchemas.has(schema)) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      return [this.seenSchemas.get(schema)!];
+      const cachedModel = this.seenSchemas.get(schema); 
+      if (cachedModel !== undefined) {
+        return [cachedModel];
+      }
     }
     const model = new CommonModel();
     model.originalSchema = Schema.toSchema(schema);
     model.type = simplifyTypes(schema);
     if (typeof schema !== 'boolean') {
       this.seenSchemas.set(schema, model);
-      this.simplifyModelProperties(model, schema);
+      this.simplifyModel(model, schema);
     }
     this.ensureModelsAreSplit(model);
     const modelsToReturn = Object.values(this.iteratedModels);
@@ -56,7 +58,7 @@ export class Simplifier {
    * @param model to simplify properties to 
    * @param schema to simplify
    */
-  private simplifyModelProperties(model: CommonModel, schema: Schema) {
+  private simplifyModel(model: CommonModel, schema: Schema) {
     //All schemas of type object MUST have ids, for now lets make it simple
     if (model.type !== undefined && model.type.includes('object')) {
       const schemaId = schema.$id ? schema.$id : `anonymSchema${this.anonymCounter++}`;
