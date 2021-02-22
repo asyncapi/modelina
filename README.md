@@ -72,7 +72,6 @@ import { TypeScriptGenerator } from '@asyncapi/generator-model-sdk';
 const generator = new TypeScriptGenerator({ modelType: 'interface' });
 
 const doc = {
-  $schema: 'http://json-schema.org/draft-07/schema#',
   $id: "Address",
   type: "object",
   properties: {
@@ -89,7 +88,7 @@ const doc = {
 
 const interfaceModel = await generator.generate(doc);
 
-// interfaceModel should have the shape:
+// interfaceModel[0] should have the shape:
 interface Address {
   streetName: string;
   city: string;
