@@ -50,6 +50,7 @@ export class Schema extends CommonSchema<Schema | boolean> {
      * @param object to transform
      * @returns CommonModel instance of the object
      */
+    // eslint-disable-next-line sonarjs/cognitive-complexity
     static toSchema(object: Object, seenSchemas: Map<any, Schema> = new Map()): Schema | boolean {
       if (typeof object === 'boolean') return object;
       if (seenSchemas.has(object)) return seenSchemas.get(object) as Schema;
@@ -85,13 +86,14 @@ export class Schema extends CommonSchema<Schema | boolean> {
         Object.entries(schema.dependencies).forEach(([propertyName, property]) => {
           //We only care about object dependencies
           if (typeof property === 'object' && !Array.isArray(property)) {
-            dependencies[propertyName] = Schema.toSchema(property, seenSchemas);
+            dependencies[`${propertyName}`] = Schema.toSchema(property, seenSchemas);
           } else {
-            dependencies[propertyName] = property as string[];
+            dependencies[`${propertyName}`] = property as string[];
           }
         });
         schema.dependencies = dependencies;
       }
+
       if (schema.propertyNames !== undefined) {
         schema.propertyNames = Schema.toSchema(schema.propertyNames, seenSchemas);
       }
@@ -99,10 +101,11 @@ export class Schema extends CommonSchema<Schema | boolean> {
       if (schema.patternProperties !== undefined) {
         const patternProperties: { [key: string]: Schema | boolean } = {};
         Object.entries(schema.patternProperties).forEach(([propertyName, property]) => {
-          patternProperties[propertyName] = Schema.toSchema(property, seenSchemas);
+          patternProperties[`${propertyName}`] = Schema.toSchema(property, seenSchemas);
         });
         schema.patternProperties = patternProperties;
       }
+      
       if (schema.if !== undefined) {
         schema.if = Schema.toSchema(schema.if, seenSchemas);
       }
@@ -116,7 +119,7 @@ export class Schema extends CommonSchema<Schema | boolean> {
       if (schema.definitions !== undefined) {
         const definitions: { [key: string]: Schema | boolean } = {};
         Object.entries(schema.definitions).forEach(([propertyName, property]) => {
-          definitions[propertyName] = Schema.toSchema(property, seenSchemas);
+          definitions[`${propertyName}`] = Schema.toSchema(property, seenSchemas);
         });
         schema.definitions = definitions;
       }
