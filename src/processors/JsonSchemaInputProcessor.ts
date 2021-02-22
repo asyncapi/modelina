@@ -80,12 +80,10 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
   /**
    * Reflect name from given schema and save it to `x-modelgen-inferred-name` extension.
    * 
-   * It should be removed when we'll simplify current solution for processing schema to CommonModel.
-   * 
    * @param schema to process
-   * @param namesStack
-   * @param name
-   * @param isRoot
+   * @param namesStack is a aggegator of previous used names
+   * @param name to infer
+   * @param isRoot indicates if performed schema is a root schema
    */
   // eslint-disable-next-line sonarjs/cognitive-complexity
   static reflectSchemaNames(
