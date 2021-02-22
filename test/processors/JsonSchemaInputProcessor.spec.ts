@@ -148,7 +148,15 @@ describe('JsonSchemaInputProcessor', function() {
                                 type: "string",
                             },
                         }
-                    }
+                    },
+                    propWithObject: {
+                        type: "object",
+                        properties: {
+                            propWithObject: {
+                                type: "object",
+                            }
+                        }
+                    },
                 },
                 patternProperties: {
                     patternProp: {
@@ -195,7 +203,10 @@ describe('JsonSchemaInputProcessor', function() {
             expect(expected.properties.prop['x-modelgen-inferred-name']).toEqual('prop');
             expect(expected.properties.allOfCase.allOf[0]['x-modelgen-inferred-name']).toEqual('allOfCase_allOf_0');
             expect(expected.properties.allOfCase.allOf[1]['x-modelgen-inferred-name']).toEqual('allOfCase_allOf_1');
+            expect(expected.properties.object['x-modelgen-inferred-name']).toEqual('object');
             expect(expected.properties.object.properties.prop['x-modelgen-inferred-name']).toEqual('object_prop');
+            expect(expected.properties.propWithObject['x-modelgen-inferred-name']).toEqual('propWithObject');
+            expect(expected.properties.propWithObject.properties.propWithObject['x-modelgen-inferred-name']).toEqual('propWithObject_propWithObject');
 
             // patternProperties
             expect(expected.patternProperties.patternProp['x-modelgen-inferred-name']).toEqual('pattern_property_0');
