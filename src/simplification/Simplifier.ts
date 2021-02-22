@@ -44,6 +44,10 @@ export class Simplifier {
       this.simplifyModel(model, schema);
     }
     this.ensureModelsAreSplit(model);
+    //Ensure current model is not part of the iterated list since we could have circular schemas
+    if (this.iteratedModels[`${model.$id}`] !== undefined) {
+      delete this.iteratedModels[`${model.$id}`];
+    }
     const modelsToReturn = Object.values(this.iteratedModels);
     //Add models to ensure we remember which has been iterated 
     if (isModelObject(model)) {
