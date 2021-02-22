@@ -4,7 +4,7 @@ import { JsonSchemaInputProcessor } from '../../src/processors/JsonSchemaInputPr
 import { CommonInputModel, Schema } from '../../src/models';
 
 describe('JsonSchemaInputProcessor', function() {
-    describe.skip('process()', function() {
+    describe('process()', function() {
         /**
          * The input schema when processed should be equals to the expected CommonInputModel
          * 
@@ -76,7 +76,7 @@ describe('JsonSchemaInputProcessor', function() {
         });
     });
 
-    describe.skip('schemaToCommonModel()', function() {
+    describe('schemaToCommonModel()', function() {
         /**
          * The input schema when converted should be equals to the models of the expected CommonInputModel
          * 
@@ -86,7 +86,7 @@ describe('JsonSchemaInputProcessor', function() {
         const expectFunction = (inputSchemaPath: string, expectedCommonModulePath: string) => {
             const inputSchemaString = fs.readFileSync(path.resolve(__dirname, inputSchemaPath), 'utf8');
             const expectedCommonInputModelString = fs.readFileSync(path.resolve(__dirname, expectedCommonModulePath), 'utf8');
-            const inferredSchema = JsonSchemaInputProcessor.reflectSchemaName(JSON.parse(inputSchemaString));
+            const inferredSchema = JsonSchemaInputProcessor.reflectSchemaNames(JSON.parse(inputSchemaString), undefined, 'root', true);
             const inputSchema = Schema.toSchema(inferredSchema);
             const expectedCommonInputModel = JSON.parse(expectedCommonInputModelString) as CommonInputModel;
             const commonInputModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(inputSchema);
@@ -197,7 +197,10 @@ describe('JsonSchemaInputProcessor', function() {
                     },
                 ]
             }
-            const expected = JsonSchemaInputProcessor.reflectSchemaName(schema) as any;
+            const expected = JsonSchemaInputProcessor.reflectSchemaNames(schema, undefined, 'root', true) as any;
+
+            // root
+            expect(expected['x-modelgen-inferred-name']).toEqual('root');
 
             // properties
             expect(expected.properties.prop['x-modelgen-inferred-name']).toEqual('prop');

@@ -1,6 +1,6 @@
 {
   "models": {
-    "anonymSchema1": {
+    "root": {
       "originalSchema": {
         "$schema": "http://json-schema.org/draft-07/schema#",
         "type": "object",
@@ -9,10 +9,12 @@
             "type": "array",
             "items": [
               {
-                "type": "number"
+                "type": "number",
+                "x-modelgen-inferred-name": "address_type_item_0"
               },
               {
-                "type": "string"
+                "type": "string",
+                "x-modelgen-inferred-name": "address_type_item_1"
               },
               {
                 "type": "string",
@@ -20,7 +22,8 @@
                   "Street",
                   "Avenue",
                   "Boulevard"
-                ]
+                ],
+                "x-modelgen-inferred-name": "address_type_item_2"
               },
               {
                 "type": "string",
@@ -29,25 +32,29 @@
                   "NE",
                   "SW",
                   "SE"
-                ]
+                ],
+                "x-modelgen-inferred-name": "address_type_item_3"
               }
             ],
             "x-modelgen-inferred-name": "address_type"
           }
-        }
+        },
+        "x-modelgen-inferred-name": "root"
       },
       "type": "object",
-      "$id": "anonymSchema1",
+      "$id": "root",
       "properties": {
         "address_type": {
           "originalSchema": {
             "type": "array",
             "items": [
               {
-                "type": "number"
+                "type": "number",
+                "x-modelgen-inferred-name": "address_type_item_0"
               },
               {
-                "type": "string"
+                "type": "string",
+                "x-modelgen-inferred-name": "address_type_item_1"
               },
               {
                 "type": "string",
@@ -55,7 +62,8 @@
                   "Street",
                   "Avenue",
                   "Boulevard"
-                ]
+                ],
+                "x-modelgen-inferred-name": "address_type_item_2"
               },
               {
                 "type": "string",
@@ -64,7 +72,8 @@
                   "NE",
                   "SW",
                   "SE"
-                ]
+                ],
+                "x-modelgen-inferred-name": "address_type_item_3"
               }
             ],
             "x-modelgen-inferred-name": "address_type"
@@ -75,10 +84,12 @@
               "type": "array",
               "items": [
                 {
-                  "type": "number"
+                  "type": "number",
+                  "x-modelgen-inferred-name": "address_type_item_0"
                 },
                 {
-                  "type": "string"
+                  "type": "string",
+                  "x-modelgen-inferred-name": "address_type_item_1"
                 },
                 {
                   "type": "string",
@@ -86,7 +97,8 @@
                     "Street",
                     "Avenue",
                     "Boulevard"
-                  ]
+                  ],
+                  "x-modelgen-inferred-name": "address_type_item_2"
                 },
                 {
                   "type": "string",
@@ -95,7 +107,8 @@
                     "NE",
                     "SW",
                     "SE"
-                  ]
+                  ],
+                  "x-modelgen-inferred-name": "address_type_item_3"
                 }
               ],
               "x-modelgen-inferred-name": "address_type"
@@ -138,10 +151,12 @@
         "type": "array",
         "items": [
           {
-            "type": "number"
+            "type": "number",
+            "x-modelgen-inferred-name": "address_type_item_0"
           },
           {
-            "type": "string"
+            "type": "string",
+            "x-modelgen-inferred-name": "address_type_item_1"
           },
           {
             "type": "string",
@@ -149,7 +164,8 @@
               "Street",
               "Avenue",
               "Boulevard"
-            ]
+            ],
+            "x-modelgen-inferred-name": "address_type_item_2"
           },
           {
             "type": "string",
@@ -158,11 +174,13 @@
               "NE",
               "SW",
               "SE"
-            ]
+            ],
+            "x-modelgen-inferred-name": "address_type_item_3"
           }
         ],
         "x-modelgen-inferred-name": "address_type"
       }
-    }
+    },
+    "x-modelgen-inferred-name": "root"
   }
 }

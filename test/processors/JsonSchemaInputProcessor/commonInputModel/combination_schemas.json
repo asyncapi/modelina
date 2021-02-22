@@ -1,6 +1,6 @@
 {
   "models": {
-    "anonymSchema1": {
+    "root": {
       "originalSchema": {
         "$schema": "http://json-schema.org/draft-07/schema#",
         "type": "object",
@@ -12,22 +12,23 @@
                 "properties": {
                   "street_address": {
                     "type": "string",
-                    "x-modelgen-inferred-name": "street_address"
+                    "x-modelgen-inferred-name": "shipping_address_allOf_0_street_address"
                   },
                   "city": {
                     "type": "string",
-                    "x-modelgen-inferred-name": "city"
+                    "x-modelgen-inferred-name": "shipping_address_allOf_0_city"
                   },
                   "state": {
                     "type": "string",
-                    "x-modelgen-inferred-name": "state"
+                    "x-modelgen-inferred-name": "shipping_address_allOf_0_state"
                   }
                 },
                 "required": [
                   "street_address",
                   "city",
                   "state"
-                ]
+                ],
+                "x-modelgen-inferred-name": "shipping_address_allOf_0"
               },
               {
                 "properties": {
@@ -36,20 +37,22 @@
                       "residential",
                       "business"
                     ],
-                    "x-modelgen-inferred-name": "type"
+                    "x-modelgen-inferred-name": "shipping_address_allOf_1_type"
                   }
                 },
                 "required": [
                   "type"
-                ]
+                ],
+                "x-modelgen-inferred-name": "shipping_address_allOf_1"
               }
             ],
             "x-modelgen-inferred-name": "shipping_address"
           }
-        }
+        },
+        "x-modelgen-inferred-name": "root"
       },
       "type": "object",
-      "$id": "anonymSchema1",
+      "$id": "root",
       "properties": {
         "shipping_address": {
           "$ref": "shipping_address"
@@ -67,116 +70,51 @@
         ]
       }
     },
-    "shipping_address": {
-      "originalSchema": {
-        "allOf": [
-          {
-            "type": "object",
-            "properties": {
-              "street_address": {
-                "type": "string",
-                "x-modelgen-inferred-name": "street_address"
-              },
-              "city": {
-                "type": "string",
-                "x-modelgen-inferred-name": "city"
-              },
-              "state": {
-                "type": "string",
-                "x-modelgen-inferred-name": "state"
-              }
-            },
-            "required": [
-              "street_address",
-              "city",
-              "state"
-            ]
-          },
-          {
-            "properties": {
-              "type": {
-                "enum": [
-                  "residential",
-                  "business"
-                ],
-                "x-modelgen-inferred-name": "type"
-              }
-            },
-            "required": [
-              "type"
-            ]
-          }
-        ],
-        "x-modelgen-inferred-name": "shipping_address"
-      },
-      "type": "object",
-      "$id": "shipping_address",
-      "additionalProperties": {
-        "originalSchema": true,
-        "type": [
-          "object",
-          "string",
-          "number",
-          "array",
-          "boolean",
-          "null"
-        ]
-      },
-      "extend": [
-        "anonymSchema3",
-        "anonymSchema4"
-      ],
-      "required": [
-        "street_address",
-        "city",
-        "state",
-        "type"
-      ]
-    },
-    "anonymSchema3": {
+    "shipping_address_allOf_0": {
       "originalSchema": {
         "type": "object",
         "properties": {
           "street_address": {
             "type": "string",
-            "x-modelgen-inferred-name": "street_address"
+            "x-modelgen-inferred-name": "shipping_address_allOf_0_street_address"
           },
           "city": {
             "type": "string",
-            "x-modelgen-inferred-name": "city"
+            "x-modelgen-inferred-name": "shipping_address_allOf_0_city"
           },
           "state": {
             "type": "string",
-            "x-modelgen-inferred-name": "state"
+            "x-modelgen-inferred-name": "shipping_address_allOf_0_state"
           }
         },
         "required": [
           "street_address",
           "city",
           "state"
-        ]
+        ],
+        "x-modelgen-inferred-name": "shipping_address_allOf_0"
       },
       "type": "object",
-      "$id": "anonymSchema3",
+      "$id": "shipping_address_allOf_0",
       "properties": {
         "street_address": {
           "originalSchema": {
             "type": "string",
-            "x-modelgen-inferred-name": "street_address"
+            "x-modelgen-inferred-name": "shipping_address_allOf_0_street_address"
           },
           "type": "string"
         },
         "city": {
           "originalSchema": {
             "type": "string",
-            "x-modelgen-inferred-name": "city"
+            "x-modelgen-inferred-name": "shipping_address_allOf_0_city"
           },
           "type": "string"
         },
         "state": {
           "originalSchema": {
             "type": "string",
-            "x-modelgen-inferred-name": "state"
+            "x-modelgen-inferred-name": "shipping_address_allOf_0_state"
           },
           "type": "string"
         }
@@ -198,7 +136,7 @@
         "state"
       ]
     },
-    "anonymSchema4": {
+    "shipping_address_allOf_1": {
       "originalSchema": {
         "properties": {
           "type": {
@@ -206,15 +144,16 @@
               "residential",
               "business"
             ],
-            "x-modelgen-inferred-name": "type"
+            "x-modelgen-inferred-name": "shipping_address_allOf_1_type"
           }
         },
         "required": [
           "type"
-        ]
+        ],
+        "x-modelgen-inferred-name": "shipping_address_allOf_1"
       },
       "type": "object",
-      "$id": "anonymSchema4",
+      "$id": "shipping_address_allOf_1",
       "properties": {
         "type": {
           "originalSchema": {
@@ -222,7 +161,7 @@
               "residential",
               "business"
             ],
-            "x-modelgen-inferred-name": "type"
+            "x-modelgen-inferred-name": "shipping_address_allOf_1_type"
           },
           "type": "string",
           "enum": [
@@ -245,6 +184,74 @@
       "required": [
         "type"
       ]
+    },
+    "shipping_address": {
+      "originalSchema": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "street_address": {
+                "type": "string",
+                "x-modelgen-inferred-name": "shipping_address_allOf_0_street_address"
+              },
+              "city": {
+                "type": "string",
+                "x-modelgen-inferred-name": "shipping_address_allOf_0_city"
+              },
+              "state": {
+                "type": "string",
+                "x-modelgen-inferred-name": "shipping_address_allOf_0_state"
+              }
+            },
+            "required": [
+              "street_address",
+              "city",
+              "state"
+            ],
+            "x-modelgen-inferred-name": "shipping_address_allOf_0"
+          },
+          {
+            "properties": {
+              "type": {
+                "enum": [
+                  "residential",
+                  "business"
+                ],
+                "x-modelgen-inferred-name": "shipping_address_allOf_1_type"
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "x-modelgen-inferred-name": "shipping_address_allOf_1"
+          }
+        ],
+        "x-modelgen-inferred-name": "shipping_address"
+      },
+      "type": "object",
+      "$id": "shipping_address",
+      "additionalProperties": {
+        "originalSchema": true,
+        "type": [
+          "object",
+          "string",
+          "number",
+          "array",
+          "boolean",
+          "null"
+        ]
+      },
+      "extend": [
+        "shipping_address_allOf_0",
+        "shipping_address_allOf_1"
+      ],
+      "required": [
+        "street_address",
+        "city",
+        "state",
+        "type"
+      ]
     }
   },
   "customizations": {},
@@ -259,22 +266,23 @@
             "properties": {
               "street_address": {
                 "type": "string",
-                "x-modelgen-inferred-name": "street_address"
+                "x-modelgen-inferred-name": "shipping_address_allOf_0_street_address"
               },
               "city": {
                 "type": "string",
-                "x-modelgen-inferred-name": "city"
+                "x-modelgen-inferred-name": "shipping_address_allOf_0_city"
               },
               "state": {
                 "type": "string",
-                "x-modelgen-inferred-name": "state"
+                "x-modelgen-inferred-name": "shipping_address_allOf_0_state"
               }
             },
             "required": [
               "street_address",
               "city",
               "state"
-            ]
+            ],
+            "x-modelgen-inferred-name": "shipping_address_allOf_0"
           },
           {
             "properties": {
@@ -283,16 +291,18 @@
                   "residential",
                   "business"
                 ],
-                "x-modelgen-inferred-name": "type"
+                "x-modelgen-inferred-name": "shipping_address_allOf_1_type"
               }
             },
             "required": [
               "type"
-            ]
+            ],
+            "x-modelgen-inferred-name": "shipping_address_allOf_1"
           }
         ],
         "x-modelgen-inferred-name": "shipping_address"
       }
-    }
+    },
+    "x-modelgen-inferred-name": "root"
   }
 }

@@ -1,6 +1,6 @@
 {
   "models": {
-    "anonymSchema1": {
+    "root": {
       "originalSchema": {
         "$schema": "http://json-schema.org/draft-07/schema#",
         "type": "object",
@@ -21,9 +21,10 @@
           "properties": {
             "street_address": {
               "const": "Some street",
-              "x-modelgen-inferred-name": "street_address"
+              "x-modelgen-inferred-name": "if_street_address"
             }
-          }
+          },
+          "x-modelgen-inferred-name": "if"
         },
         "then": {
           "required": [
@@ -35,13 +36,15 @@
                 "Canada2",
                 "something else"
               ],
-              "x-modelgen-inferred-name": "country"
+              "x-modelgen-inferred-name": "then_country"
             }
-          }
-        }
+          },
+          "x-modelgen-inferred-name": "then"
+        },
+        "x-modelgen-inferred-name": "root"
       },
       "type": "object",
-      "$id": "anonymSchema1",
+      "$id": "root",
       "properties": {
         "street_address": {
           "originalSchema": {
@@ -71,9 +74,10 @@
               "properties": {
                 "street_address": {
                   "const": "Some street",
-                  "x-modelgen-inferred-name": "street_address"
+                  "x-modelgen-inferred-name": "if_street_address"
                 }
-              }
+              },
+              "x-modelgen-inferred-name": "if"
             },
             "then": {
               "required": [
@@ -85,10 +89,12 @@
                     "Canada2",
                     "something else"
                   ],
-                  "x-modelgen-inferred-name": "country"
+                  "x-modelgen-inferred-name": "then_country"
                 }
-              }
-            }
+              },
+              "x-modelgen-inferred-name": "then"
+            },
+            "x-modelgen-inferred-name": "root"
           },
           "type": "string",
           "enum": [
@@ -136,9 +142,10 @@
       "properties": {
         "street_address": {
           "const": "Some street",
-          "x-modelgen-inferred-name": "street_address"
+          "x-modelgen-inferred-name": "if_street_address"
         }
-      }
+      },
+      "x-modelgen-inferred-name": "if"
     },
     "then": {
       "required": [
@@ -150,9 +157,11 @@
             "Canada2",
             "something else"
           ],
-          "x-modelgen-inferred-name": "country"
+          "x-modelgen-inferred-name": "then_country"
         }
-      }
-    }
+      },
+      "x-modelgen-inferred-name": "then"
+    },
+    "x-modelgen-inferred-name": "root"
   }
 }

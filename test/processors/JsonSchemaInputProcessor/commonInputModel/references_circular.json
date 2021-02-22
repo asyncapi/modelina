@@ -16,13 +16,13 @@
       },
       "properties":{
         "floor":{
-          "$ref": "floor"
+          "$ref": "test_floor"
         }
       }
     },
-    "anonymSchema1":{
+    "root":{
       "type":"object",
-      "$id":"anonymSchema1",
+      "$id":"root",
       "additionalProperties": {
         "originalSchema": true,
         "type": [

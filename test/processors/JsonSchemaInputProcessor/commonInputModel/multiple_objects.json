@@ -1,6 +1,6 @@
 {
   "models": {
-    "anonymSchema1": {
+    "root": {
       "originalSchema": {
         "$schema": "http://json-schema.org/draft-07/schema#",
         "type": "object",
@@ -10,7 +10,7 @@
             "properties": {
               "floor": {
                 "type": "number",
-                "x-modelgen-inferred-name": "floor"
+                "x-modelgen-inferred-name": "street_address_floor"
               }
             },
             "x-modelgen-inferred-name": "street_address"
@@ -22,10 +22,11 @@
             ],
             "x-modelgen-inferred-name": "country"
           }
-        }
+        },
+        "x-modelgen-inferred-name": "root"
       },
       "type": "object",
-      "$id": "anonymSchema1",
+      "$id": "root",
       "properties": {
         "street_address": {
           "$ref": "street_address"
@@ -63,7 +64,7 @@
         "properties": {
           "floor": {
             "type": "number",
-            "x-modelgen-inferred-name": "floor"
+            "x-modelgen-inferred-name": "street_address_floor"
           }
         },
         "x-modelgen-inferred-name": "street_address"
@@ -74,7 +75,7 @@
         "floor": {
           "originalSchema": {
             "type": "number",
-            "x-modelgen-inferred-name": "floor"
+            "x-modelgen-inferred-name": "street_address_floor"
           },
           "type": "number"
         }
@@ -102,7 +103,7 @@
         "properties": {
           "floor": {
             "type": "number",
-            "x-modelgen-inferred-name": "floor"
+            "x-modelgen-inferred-name": "street_address_floor"
           }
         },
         "x-modelgen-inferred-name": "street_address"
@@ -114,6 +115,7 @@
         ],
         "x-modelgen-inferred-name": "country"
       }
-    }
+    },
+    "x-modelgen-inferred-name": "root"
   }
 }

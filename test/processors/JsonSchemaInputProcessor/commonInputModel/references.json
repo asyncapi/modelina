@@ -1,6 +1,6 @@
 {
   "models": {
-    "anonymSchema1": {
+    "root": {
       "originalSchema": {
         "definitions": {
           "test": {
@@ -8,7 +8,7 @@
             "properties": {
               "floor": {
                 "type": "number",
-                "x-modelgen-inferred-name": "floor"
+                "x-modelgen-inferred-name": "test_floor"
               }
             },
             "x-modelgen-inferred-name": "test"
@@ -22,7 +22,7 @@
             "properties": {
               "floor": {
                 "type": "number",
-                "x-modelgen-inferred-name": "floor"
+                "x-modelgen-inferred-name": "test_floor"
               }
             }
           },
@@ -33,10 +33,11 @@
             ],
             "x-modelgen-inferred-name": "country"
           }
-        }
+        },
+        "x-modelgen-inferred-name": "root"
       },
       "type": "object",
-      "$id": "anonymSchema1",
+      "$id": "root",
       "properties": {
         "street_address": {
           "$ref": "street_address"
@@ -75,7 +76,7 @@
         "properties": {
           "floor": {
             "type": "number",
-            "x-modelgen-inferred-name": "floor"
+            "x-modelgen-inferred-name": "test_floor"
           }
         }
       },
@@ -85,7 +86,7 @@
         "floor": {
           "originalSchema": {
             "type": "number",
-            "x-modelgen-inferred-name": "floor"
+            "x-modelgen-inferred-name": "test_floor"
           },
           "type": "number"
         }
@@ -111,7 +112,7 @@
         "properties": {
           "floor": {
             "type": "number",
-            "x-modelgen-inferred-name": "floor"
+            "x-modelgen-inferred-name": "test_floor"
           }
         },
         "x-modelgen-inferred-name": "test"
@@ -130,6 +131,7 @@
         ],
         "x-modelgen-inferred-name": "country"
       }
-    }
+    },
+    "x-modelgen-inferred-name": "root"
   }
 }

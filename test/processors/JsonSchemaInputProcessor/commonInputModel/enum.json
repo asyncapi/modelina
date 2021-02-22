@@ -1,6 +1,6 @@
 {
   "models": {
-    "anonymSchema1": {
+    "root": {
       "originalSchema": {
         "$schema": "http://json-schema.org/draft-07/schema#",
         "type": "object",
@@ -13,10 +13,11 @@
             ],
             "x-modelgen-inferred-name": "address_type"
           }
-        }
+        },
+        "x-modelgen-inferred-name": "root"
       },
       "type": "object",
-      "$id": "anonymSchema1",
+      "$id": "root",
       "properties": {
         "address_type": {
           "originalSchema": {
@@ -64,6 +65,7 @@
         ],
         "x-modelgen-inferred-name": "address_type"
       }
-    }
+    },
+    "x-modelgen-inferred-name": "root"
   }
 }

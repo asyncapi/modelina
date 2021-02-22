@@ -21,7 +21,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     }
     common.originalInput = doc;
     doc.allMessages().forEach((message) => {
-      const schema = JsonSchemaInputProcessor.reflectSchemaName(message.payload().json());
+      const schema = JsonSchemaInputProcessor.reflectSchemaNames(message.payload().json());
       const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema);
       common.models = {...common.models, ...commonModels};
     });
