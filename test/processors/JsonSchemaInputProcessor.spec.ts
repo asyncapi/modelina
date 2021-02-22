@@ -3,8 +3,8 @@ import * as path from 'path';
 import { JsonSchemaInputProcessor } from '../../src/processors/JsonSchemaInputProcessor';
 import { CommonInputModel, Schema } from '../../src/models';
 
-describe.skip('JsonSchemaInputProcessor', function() {
-    describe('process()', function() {
+describe('JsonSchemaInputProcessor', function() {
+    describe.skip('process()', function() {
         /**
          * The input schema when processed should be equals to the expected CommonInputModel
          * 
@@ -71,7 +71,7 @@ describe.skip('JsonSchemaInputProcessor', function() {
         });
     });
 
-    describe('schemaToCommonModel()', function() {
+    describe.skip('schemaToCommonModel()', function() {
         /**
          * The input schema when converted should be equals to the models of the expected CommonInputModel
          * 
@@ -119,36 +119,79 @@ describe.skip('JsonSchemaInputProcessor', function() {
         });
     });
 
-    // describe('reflectSchemaName()', function() {
-    //     test('should work', async function() {
-    //         const schema = {
-    //             properties: {
-    //                 prop: {
-    //                     type: "prop",
-    //                 }
-    //             },
-    //             patternProperties: {
-    //                 prop: {
-    //                     type: "prop",
-    //                 }
-    //             },
-    //             dependencies: {
-    //                 dep: {
-    //                     type: "dep",
-    //                 }
-    //             },
-    //             definitions: {
-    //                 def: {
-    //                     type: "def",
-    //                 }
-    //             }
-    //         }
-    //         const expected = JsonSchemaInputProcessor.reflectSchemaName(schema) as any;
+    describe('reflectSchemaName()', function() {
+        test('should work', async function() {
+            const schema = {
+                properties: {
+                    prop: {
+                        type: "string",
+                    },
+                    allOfCase: {
+                        allOf: [
+                            {
+                                type: "string",
+                            },
+                            {
+                                type: "string",
+                            },
+                        ],
+                    }, 
+                },
+                patternProperties: {
+                    patternProp: {
+                        type: "string",
+                    }
+                },
+                dependencies: {
+                    dep: {
+                        type: "string",
+                    },
+                },
+                definitions: {
+                    def: {
+                        type: "string",
+                    },
+                    oneOfCase: {
+                        oneOf: [
+                            {
+                                type: "string",
+                            },
+                            {
+                                type: "string",
+                            },
+                        ],
+                    }, 
+                },
+                anyOf: [
+                    {
+                        type: "string",
+                    },
+                    {
+                        type: "string",
+                    },
+                ]
+            }
+            const expected = JsonSchemaInputProcessor.reflectSchemaName(schema) as any;
 
-    //         expect(expected.properties.prop['x-modelgen-inferred-name']).toEqual('prop');
-    //         expect(expected.patternProperties.prop['x-modelgen-inferred-name']).toEqual('prop');
-    //         expect(expected.dependencies.dep['x-modelgen-inferred-name']).toEqual('dep');
-    //         expect(expected.definitions.def['x-modelgen-inferred-name']).toEqual('def');
-    //     })
-    // });
+            // properties
+            expect(expected.properties.prop['x-modelgen-inferred-name']).toEqual('prop');
+            expect(expected.properties.allOfCase.allOf[0]['x-modelgen-inferred-name']).toEqual('allOfCase_allOf_0');
+            expect(expected.properties.allOfCase.allOf[1]['x-modelgen-inferred-name']).toEqual('allOfCase_allOf_1');
+
+            // patternProperties
+            expect(expected.patternProperties.patternProp['x-modelgen-inferred-name']).toEqual('patternProp');
+
+            // dependencies
+            expect(expected.dependencies.dep['x-modelgen-inferred-name']).toEqual('dep');
+
+            // definitions
+            expect(expected.definitions.def['x-modelgen-inferred-name']).toEqual('def');
+            expect(expected.definitions.oneOfCase.oneOf[0]['x-modelgen-inferred-name']).toEqual('oneOfCase_oneOf_0');
+            expect(expected.definitions.oneOfCase.oneOf[1]['x-modelgen-inferred-name']).toEqual('oneOfCase_oneOf_1');
+
+            // anyOf
+            expect(expected.anyOf[0]['x-modelgen-inferred-name']).toEqual('anyOf_0');
+            expect(expected.anyOf[1]['x-modelgen-inferred-name']).toEqual('anyOf_1');
+        })
+    });
 });
