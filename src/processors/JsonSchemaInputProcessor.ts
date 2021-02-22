@@ -10,6 +10,8 @@ import path from 'path';
  * Class for processing JSON Schema
  */
 export class JsonSchemaInputProcessor extends AbstractInputProcessor {
+  private static MODELGEN_INFFERED_NAME = 'x-modelgen-inferred-name';
+
   /**
      * Function for processing a JSON Schema input.
      * 
@@ -90,16 +92,16 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     schema: Schema | boolean,
     namesStack: Record<string, number> = {}, 
     name?: string,
-    isRoot: boolean = false,
+    isRoot?: boolean,
   ): Schema | boolean {
     if (typeof schema === 'boolean') return schema;
 
     schema = Object.assign({}, schema);
     if (isRoot) {
       namesStack[`${name}`] = 0;
-      schema['x-modelgen-inferred-name'] = name;
+      schema[this.MODELGEN_INFFERED_NAME] = name;
       name = '';
-    } else if (name && !schema['x-modelgen-inferred-name']) {
+    } else if (name && !schema[this.MODELGEN_INFFERED_NAME]) {
       let occurrence = namesStack[`${name}`];
       if (occurrence === undefined) {
         namesStack[`${name}`] = 0;
@@ -107,7 +109,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         occurrence++;
       }
       const inferredName = occurrence ? `${name}_${occurrence}` : name;
-      schema['x-modelgen-inferred-name'] = inferredName;
+      schema[this.MODELGEN_INFFERED_NAME] = inferredName;
     }
 
     if (schema.allOf !== undefined) {
