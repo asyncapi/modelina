@@ -46,7 +46,7 @@ if defined removes any defined/inferred types defined in `not`.
 
 ## Determining the enums for the model
 
-In order to determine all the possible enums a schema can be we both infer and use existing definitions, however we need to define a precedence for JSON Schema keywords and in which order they are applied.
+In order to determine the possible enums a model can be we both infer and use existing definitions, however we need to define a precedence for JSON Schema keywords and in which order they are applied.
 
 **Precedence of JSON Schema keywords**
 
@@ -118,4 +118,6 @@ The precedence of keywords are in which order we merge or determine `required` i
 <br/>
 
 ## Determining the extend for the model
-The simplification process determines the `extend` keyword based on the `allOf` keyword, where it iterates over all schemas and recursively simplifies each. If iterated simplified schema is of type object we add it to the `extend` list.
+This simplifier is only used to inheritance is wanted.
+
+The simplification process determines the `extend` keyword based on the `allOf` keyword, where it iterates over the schemas and recursively simplifies each. If simplified model is of type object we add it to the `extend` list.
