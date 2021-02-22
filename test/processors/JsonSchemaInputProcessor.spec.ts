@@ -39,6 +39,11 @@ describe('JsonSchemaInputProcessor', function() {
             const expectedCommonModulePath = './JsonSchemaInputProcessor/commonInputModel/combination_schemas.json';
             await expectFunction(inputSchemaPath, expectedCommonModulePath);
         });
+        test('should be able to process object property with anyOf', async function() {
+            const inputSchemaPath = './JsonSchemaInputProcessor/object_property_with_anyOf.json';
+            const expectedCommonModulePath = './JsonSchemaInputProcessor/commonInputModel/object_property_with_anyOf.json';
+            await expectFunction(inputSchemaPath, expectedCommonModulePath, true);
+        });
         test('should be able to process enum schemas', async function() {
             const inputSchemaPath = './JsonSchemaInputProcessor/enum.json';
             const expectedCommonModulePath = './JsonSchemaInputProcessor/commonInputModel/enum.json';
