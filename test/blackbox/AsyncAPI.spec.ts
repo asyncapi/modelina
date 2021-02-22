@@ -10,6 +10,7 @@ describe('AsyncAPI JSON Schema file', function() {
       const generator = new TypeScriptGenerator();
       const generatedContent = await generator.generate(inputSchema);
       expect(generatedContent).not.toBeUndefined();
+      expect(generatedContent.length).toBeGreaterThan(0);
     });
     test('should be generated in Java', async function() {
       const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './AsyncAPI/AsyncAPI_2_0_0.json'), 'utf8');
@@ -17,6 +18,7 @@ describe('AsyncAPI JSON Schema file', function() {
       const generator = new JavaGenerator();
       const generatedContent = await generator.generate(inputSchema);
       expect(generatedContent).not.toBeUndefined();
+      expect(generatedContent.length).toBeGreaterThan(0);
     });
     test('should be generated in JavaScript', async function() {
       const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './AsyncAPI/AsyncAPI_2_0_0.json'), 'utf8');
@@ -24,5 +26,6 @@ describe('AsyncAPI JSON Schema file', function() {
       const generator = new JavaScriptGenerator();
       const generatedContent = await generator.generate(inputSchema);
       expect(generatedContent).not.toBeUndefined();
+      expect(generatedContent.length).toBeGreaterThan(0);
     });
 });
