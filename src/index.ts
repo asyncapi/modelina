@@ -1,1 +1,3 @@
-export const index = '';
+export * from './generators';
+export * from './models';
+
