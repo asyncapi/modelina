@@ -18,8 +18,6 @@ To determine the different properties of `CommonModel` each property are split i
 - [Required](#determining-the-required-properties-for-the-model)
 - [Extend](#determining-the-extend-for-the-model)
 
-<br/>
-
 ## Determining the type for the model
 
 In order to determine all the possible types for a model, we both infer and use existing definitions of types. 
