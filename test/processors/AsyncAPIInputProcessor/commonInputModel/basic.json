@@ -1,34 +1,33 @@
 {
-  "models": {
-    "anonymSchema1": {
-      "originalSchema": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "format": "email",
-            "x-parser-schema-id": "<anonymous-schema-2>",
-            "x-modelgen-inferred-name": "email"
+  "models":{
+    "<anonymous-schema-1>":{
+      "originalSchema":{
+        "type":"object",
+        "properties":{
+          "email":{
+            "type":"string",
+            "format":"email",
+            "x-parser-schema-id":"<anonymous-schema-2>"
           }
         },
-        "x-parser-schema-id": "<anonymous-schema-1>"
+        "x-parser-schema-id":"<anonymous-schema-1>",
+        "x-modelgen-inferred-name":"<anonymous-schema-1>"
       },
-      "type": "object",
-      "$id": "anonymSchema1",
-      "properties": {
-        "email": {
-          "originalSchema": {
-            "type": "string",
-            "format": "email",
-            "x-modelgen-inferred-name": "email",
-            "x-parser-schema-id": "<anonymous-schema-2>"
+      "type":"object",
+      "$id":"<anonymous-schema-1>",
+      "properties":{
+        "email":{
+          "originalSchema":{
+            "type":"string",
+            "format":"email",
+            "x-parser-schema-id":"<anonymous-schema-2>"
           },
-          "type": "string"
+          "type":"string"
         }
       },
-      "additionalProperties": {
-        "originalSchema": true,
-        "type": [
+      "additionalProperties":{
+        "originalSchema":true,
+        "type":[
           "object",
           "string",
           "number",
@@ -39,46 +38,48 @@
       }
     }
   },
-  "customizations": {},
-  "originalInput": {
-    "_json": {
-      "asyncapi": "2.0.0",
-      "defaultContentType": "application/json",
-      "externalDocs": {
-        "description": "Find more info here",
-        "url": "https://example.com"
+  "customizations":{
+    
+  },
+  "originalInput":{
+    "_json":{
+      "asyncapi":"2.0.0",
+      "defaultContentType":"application/json",
+      "externalDocs":{
+        "description":"Find more info here",
+        "url":"https://example.com"
       },
-      "tags": [
+      "tags":[
         {
-          "name": "user",
-          "description": "user signed up"
+          "name":"user",
+          "description":"user signed up"
         },
         {
-          "name": "signup"
+          "name":"signup"
         }
       ],
-      "info": {
-        "title": "Signup service example (internal)",
-        "version": "0.1.0"
+      "info":{
+        "title":"Signup service example (internal)",
+        "version":"0.1.0"
       },
-      "channels": {
-        "/user/signedup": {
-          "subscribe": {
-            "message": {
-              "payload": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "format": "email",
-                    "x-parser-schema-id": "<anonymous-schema-2>"
+      "channels":{
+        "/user/signedup":{
+          "subscribe":{
+            "message":{
+              "payload":{
+                "type":"object",
+                "properties":{
+                  "email":{
+                    "type":"string",
+                    "format":"email",
+                    "x-parser-schema-id":"<anonymous-schema-2>"
                   }
                 },
-                "x-parser-schema-id": "<anonymous-schema-1>"
+                "x-parser-schema-id":"<anonymous-schema-1>"
               },
-              "schemaFormat": "application/vnd.aai.asyncapi;version=2.0.0",
-              "x-parser-message-parsed": true,
-              "x-parser-message-name": "<anonymous-message-1>"
+              "schemaFormat":"application/vnd.aai.asyncapi;version=2.0.0",
+              "x-parser-message-parsed":true,
+              "x-parser-message-name":"<anonymous-message-1>"
             }
           }
         }
