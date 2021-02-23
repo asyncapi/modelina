@@ -18,7 +18,7 @@ export default function simplifyItems(schema: Schema | boolean, simplifier : Sim
     const tempOutput: Output = new CommonModel();
     seenSchemas.set(schema, tempOutput);
 
-    //Check if any items have been sat, if so lets merge them
+    //Check if any items have been set, if so lets merge them
     if (schema.items !== undefined) {
       if (Array.isArray(schema.items)) {
         schema.items.forEach((value) => {
