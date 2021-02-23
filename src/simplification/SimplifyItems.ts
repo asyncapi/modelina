@@ -52,8 +52,7 @@ export default function simplifyItems(schema: Schema | boolean, simplifier : Sim
  * @param seenSchemas schemas which we already have outputs for
  */
 function combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | undefined, currentModel: Output, simplifier : Simplifier, seenSchemas: Map<any, Output>) {
-  if (schema === undefined) return;
-  if (typeof schema === 'boolean') return;
+  if (typeof schema !== 'object') return;
   if (Array.isArray(schema)) {
     schema.forEach((itemSchema) => {
       combineSchemas(itemSchema, currentModel, simplifier, seenSchemas);
