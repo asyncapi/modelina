@@ -1,20 +1,16 @@
 {
-  "customizations": {},
   "models": {
-    "anonymSchema1": {
-      "$id": "anonymSchema1",
-      "additionalProperties": {
-        "originalSchema": true,
-        "type": [
-          "object",
-          "string",
-          "number",
-          "array",
-          "boolean",
-          "null"
-        ]
+    "root": {
+      "originalSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "foo": true
+        },
+        "x-modelgen-inferred-name": "root"
       },
       "type": "object",
+      "$id": "root",
       "properties": {
         "foo": {
           "originalSchema": true,
@@ -28,20 +24,26 @@
           ]
         }
       },
-      "originalSchema": {
-        "$schema": "http://json-schema.org/draft-07/schema#",
-        "type": "object",
-        "properties": {
-          "foo": true
-        }
+      "additionalProperties": {
+        "originalSchema": true,
+        "type": [
+          "object",
+          "string",
+          "number",
+          "array",
+          "boolean",
+          "null"
+        ]
       }
     }
   },
+  "customizations": {},
   "originalInput": {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
     "properties": {
       "foo": true
-    }
+    },
+    "x-modelgen-inferred-name": "root"
   }
 }

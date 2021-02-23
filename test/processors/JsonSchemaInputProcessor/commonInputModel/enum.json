@@ -1,10 +1,44 @@
-
 {
-  "customizations": {},
-  "models":{
-    "anonymSchema1" : { 
-      "$id": "anonymSchema1",
+  "models": {
+    "root": {
+      "originalSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "address_type": {
+            "enum": [
+              "residential",
+              "business",
+              123
+            ],
+            "x-modelgen-inferred-name": "address_type"
+          }
+        },
+        "x-modelgen-inferred-name": "root"
+      },
       "type": "object",
+      "$id": "root",
+      "properties": {
+        "address_type": {
+          "originalSchema": {
+            "enum": [
+              "residential",
+              "business",
+              123
+            ],
+            "x-modelgen-inferred-name": "address_type"
+          },
+          "type": [
+            "string",
+            "number"
+          ],
+          "enum": [
+            "residential",
+            "business",
+            123
+          ]
+        }
+      },
       "additionalProperties": {
         "originalSchema": true,
         "type": [
@@ -15,34 +49,23 @@
           "boolean",
           "null"
         ]
-      },
-      "properties": { 
-        "address_type": {
-          "type": ["string", "number"],
-          "enum": [ "residential", "business", 123 ],
-          "originalSchema": {
-            "enum": [ "residential", "business", 123 ] 
-          } 
-        }
-      },
-      "originalSchema": { 
-        "$schema": "http://json-schema.org/draft-07/schema#",
-        "type": "object",
-        "properties": { 
-          "address_type": {
-            "enum": [ "residential", "business", 123 ] 
-          }
-        }
       }
     }
   },
-  "originalInput": { 
+  "customizations": {},
+  "originalInput": {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
-    "properties": { 
+    "properties": {
       "address_type": {
-        "enum": [ "residential", "business", 123 ] 
+        "enum": [
+          "residential",
+          "business",
+          123
+        ],
+        "x-modelgen-inferred-name": "address_type"
       }
-    }
+    },
+    "x-modelgen-inferred-name": "root"
   }
 }

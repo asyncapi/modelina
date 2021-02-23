@@ -1,8 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { TypeScriptGenerator, JavaGenerator, JavaScriptGenerator } from '../../src/';
-
-const generator = new TypeScriptGenerator({ modelType: 'interface' });
 describe('AsyncAPI JSON Schema file', function() {
     test('should be generated in TypeScript', async function() {
       const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './AsyncAPI/AsyncAPI_2_0_0.json'), 'utf8');

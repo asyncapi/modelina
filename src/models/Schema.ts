@@ -43,6 +43,7 @@ export class Schema extends CommonSchema<Schema | boolean> {
     readOnly?: boolean;
     writeOnly?: boolean;
     examples?: Object[];
+    [k: string]: any; // eslint-disable-line no-undef
 
     /**
      * Transform object into a type of Schema.
@@ -51,15 +52,18 @@ export class Schema extends CommonSchema<Schema | boolean> {
      * @returns CommonModel instance of the object
      */
     // eslint-disable-next-line sonarjs/cognitive-complexity
-    static toSchema(object: Object, seenSchemas: Map<any, Schema> = new Map()): Schema | boolean {
+    static toSchema(object: Schema | boolean, seenSchemas: Map<any, Schema> = new Map()): Schema | boolean {
       if (typeof object === 'boolean') return object;
-      if (seenSchemas.has(object)) return seenSchemas.get(object) as Schema;
+      if (seenSchemas.has(object)) {
+        return seenSchemas.get(object) as Schema;
+      }
+
       let schema = new Schema();
       schema = Object.assign(schema, object as Schema);
       seenSchemas.set(object, schema);
       schema = CommonSchema.transformSchema(schema, Schema.toSchema, seenSchemas);
 
-      //Transform JSON Schema properties which contain nested schemas into an instance of Schema
+      // Transform JSON Schema properties which contain nested schemas into an instance of Schema
       if (schema.allOf !== undefined) {
         schema.allOf = schema.allOf.map((item) => Schema.toSchema(item, seenSchemas));
       }
