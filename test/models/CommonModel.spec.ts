@@ -1,5 +1,6 @@
 import {CommonModel} from '../../src/models/CommonModel'; 
 import { Schema } from '../../src/models/Schema';
+
 describe('CommonModel', function() {
   describe('$id', function() {
     test('should return a string', function() {

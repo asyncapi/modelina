@@ -8,17 +8,19 @@ import simplifyTypes from './SimplifyTypes';
 import { SimplificationOptions } from '../models/SimplificationOptions';
 import simplifyAdditionalProperties from './SimplifyAdditionalProperties';
 import { isModelObject } from './Utils';
+import simplifyName from './SimplifyName';
 
 export class Simplifier {
   static defaultOptions: SimplificationOptions = {
     allowInheritance: true
   }
-  options: SimplificationOptions;
-  anonymCounter = 1;
-  seenSchemas: Map<Schema, CommonModel> = new Map();
-  iteratedModels: Record<string, CommonModel> = {};
+
+  private anonymCounter = 1;
+  private seenSchemas: Map<Schema, CommonModel> = new Map();
+  private iteratedModels: Record<string, CommonModel> = {};
+  
   constructor(
-    options: SimplificationOptions = Simplifier.defaultOptions,
+    readonly options: SimplificationOptions = Simplifier.defaultOptions,
   ) {
     this.options = { ...Simplifier.defaultOptions, ...options };
   }
@@ -65,10 +67,9 @@ export class Simplifier {
   private simplifyModel(model: CommonModel, schema: Schema) {
     //All schemas of type object MUST have ids, for now lets make it simple
     if (model.type !== undefined && model.type.includes('object')) {
-      const schemaId = schema.$id ? schema.$id : `anonymSchema${this.anonymCounter++}`;
-      model.$id = schemaId;
+      model.$id = simplifyName(schema) || `anonymSchema${this.anonymCounter++}`;
     } else if (schema.$id !== undefined) {
-      model.$id = schema.$id;
+      model.$id = simplifyName(schema);
     }
 
     const simplifiedItems = simplifyItems(schema, this);

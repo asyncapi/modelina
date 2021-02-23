@@ -1,10 +1,110 @@
-
 {
-  "customizations": {},
   "models": {
-    "anonymSchema1": {
-      "$id": "anonymSchema1",
+    "root": {
+      "originalSchema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+          "street_address": {
+            "type": "string",
+            "x-modelgen-inferred-name": "street_address"
+          },
+          "country": {
+            "enum": [
+              "United States of America",
+              "Canada"
+            ],
+            "x-modelgen-inferred-name": "country"
+          }
+        },
+        "if": {
+          "properties": {
+            "street_address": {
+              "const": "Some street",
+              "x-modelgen-inferred-name": "if_street_address"
+            }
+          },
+          "x-modelgen-inferred-name": "if"
+        },
+        "then": {
+          "required": [
+            "country"
+          ],
+          "properties": {
+            "country": {
+              "enum": [
+                "Canada2",
+                "something else"
+              ],
+              "x-modelgen-inferred-name": "then_country"
+            }
+          },
+          "x-modelgen-inferred-name": "then"
+        },
+        "x-modelgen-inferred-name": "root"
+      },
       "type": "object",
+      "$id": "root",
+      "properties": {
+        "street_address": {
+          "originalSchema": {
+            "type": "string",
+            "x-modelgen-inferred-name": "street_address"
+          },
+          "type": "string"
+        },
+        "country": {
+          "originalSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {
+              "street_address": {
+                "type": "string",
+                "x-modelgen-inferred-name": "street_address"
+              },
+              "country": {
+                "enum": [
+                  "United States of America",
+                  "Canada"
+                ],
+                "x-modelgen-inferred-name": "country"
+              }
+            },
+            "if": {
+              "properties": {
+                "street_address": {
+                  "const": "Some street",
+                  "x-modelgen-inferred-name": "if_street_address"
+                }
+              },
+              "x-modelgen-inferred-name": "if"
+            },
+            "then": {
+              "required": [
+                "country"
+              ],
+              "properties": {
+                "country": {
+                  "enum": [
+                    "Canada2",
+                    "something else"
+                  ],
+                  "x-modelgen-inferred-name": "then_country"
+                }
+              },
+              "x-modelgen-inferred-name": "then"
+            },
+            "x-modelgen-inferred-name": "root"
+          },
+          "type": "string",
+          "enum": [
+            "United States of America",
+            "Canada",
+            "Canada2",
+            "something else"
+          ]
+        }
+      },
       "additionalProperties": {
         "originalSchema": true,
         "type": [
@@ -16,76 +116,52 @@
           "null"
         ]
       },
-      "properties": {
-        "street_address": {
-          "type": "string",
-          "originalSchema": {
-            "type": "string"
-          }
-        },
-        "country": {
-          "type": "string",
-          "enum": ["United States of America", "Canada", "Canada2", "something else"],
-          "originalSchema": {
-            "$schema": "http://json-schema.org/draft-07/schema#",
-            "type": "object",
-            "properties": {
-              "street_address": {
-                "type": "string"
-              },
-              "country": {
-                "enum": ["United States of America", "Canada"]
-              }
-            },
-            "if": {
-              "properties": { "street_address": { "const": "Some street" } }
-            },
-            "then": {
-              "required": ["country"],
-              "properties": { "country": { "enum": ["Canada2", "something else"] } }
-            }
-          }
-        }
-      },
-      "required": ["country"],
-      "originalSchema": {
-        "$schema": "http://json-schema.org/draft-07/schema#",
-        "type": "object",
-        "properties": {
-          "street_address": {
-            "type": "string"
-          },
-          "country": {
-            "enum": ["United States of America", "Canada"]
-          }
-        },
-        "if": {
-          "properties": { "street_address": { "const": "Some street" } }
-        },
-        "then": {
-          "required": ["country"],
-          "properties": { "country": { "enum": ["Canada2", "something else"] } }
-        }
-      }
+      "required": [
+        "country"
+      ]
     }
   },
+  "customizations": {},
   "originalInput": {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
     "properties": {
       "street_address": {
-        "type": "string"
+        "type": "string",
+        "x-modelgen-inferred-name": "street_address"
       },
       "country": {
-        "enum": ["United States of America", "Canada"]
+        "enum": [
+          "United States of America",
+          "Canada"
+        ],
+        "x-modelgen-inferred-name": "country"
       }
     },
     "if": {
-      "properties": { "street_address": { "const": "Some street" } }
+      "properties": {
+        "street_address": {
+          "const": "Some street",
+          "x-modelgen-inferred-name": "if_street_address"
+        }
+      },
+      "x-modelgen-inferred-name": "if"
     },
     "then": {
-      "required": ["country"],
-      "properties": { "country": { "enum": ["Canada2", "something else"] } }
-    }
+      "required": [
+        "country"
+      ],
+      "properties": {
+        "country": {
+          "enum": [
+            "Canada2",
+            "something else"
+          ],
+          "x-modelgen-inferred-name": "then_country"
+        }
+      },
+      "x-modelgen-inferred-name": "then"
+    },
+    "x-modelgen-inferred-name": "root"
   }
 }

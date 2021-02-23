@@ -50,5 +50,4 @@ describe('AsyncAPIInputProcessor', function() {
             expect(commonInputModel).toEqual(expectedCommonInputModel);
         });
     });
-
 });

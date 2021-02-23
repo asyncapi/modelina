@@ -20,8 +20,7 @@ export class CommonSchema<T> {
      * @param schema to be transformed
      * @param transformationSchemaCallback callback to transform nested schemas
      */
-    static transformSchema<T extends CommonSchema<T | boolean>>(schema: T, transformationSchemaCallback: (object: Object, seenSchemas: Map<any, T>) => T | boolean, seenSchemas: Map<any, T> = new Map()) : T {
-      if (seenSchemas.has(schema)) return seenSchemas.get(schema) as T;
+    static transformSchema<T extends CommonSchema<T | boolean>>(schema: T, transformationSchemaCallback: (object: T | boolean, seenSchemas: Map<any, T>) => T | boolean, seenSchemas: Map<any, T> = new Map()) : T {
       if (schema.items !== undefined) {
         if (Array.isArray(schema.items)) {
           schema.items = schema.items.map((item) => transformationSchemaCallback(item, seenSchemas));
