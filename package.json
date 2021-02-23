@@ -1,6 +1,6 @@
 {
   "name": "@asyncapi/generator-model-sdk",
-  "version": "0.0.3",
+  "version": "0.1.2",
   "description": "The Model SDK for generating data models",
   "license": "Apache-2.0",
   "homepage": "https://github.com/asyncapi/generator-model-sdk",
@@ -67,7 +67,8 @@
     "release": "semantic-release",
     "generate:readme:toc": "markdown-toc -i README.md",
     "generate:assets": "npm run build && npm run docs",
-    "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION"
+    "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION",
+    "prepublishOnly": "npm run build"
   },
   "publishConfig": {
     "access": "public"
