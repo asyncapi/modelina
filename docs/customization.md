@@ -4,36 +4,29 @@ The AsyncAPI Model SDK uses **presets** to extend the rendered model.
 
 ## Preset
 
-**Preset** is a pure JavaScript object with format `key: value`, where `key` is a name of model type and `value` is another object which contains methods, which extend a given rendered part for a given model type, like below example:
+**Preset** is a pure JavaScript object with format `key: value`, where `key` is a name of model type and `value` is the object which contains methods, which extend a given rendered part for a given model type, like below example:
 
 ```js
 {
   // `class` model type 
   class: {
-    self(...options) {
-      // logic
-    },
+    self(...options) { /* logic */ },
     // `setter` customization method 
-    setter(...options) {
-      // logic
-    },
+    setter(...options) { /* logic */ },
   },
   interface: {
-    property(...options) {
-      // logic
-    },
-    additionalContent(...options) {
-      // logic
-    },
+    // `property` customization method 
+    property(...options) { /* logic */ },
+    additionalContent(...options) { /* logic */ },
   },
 }
 ```
 
-Each language has different model types, which results in different implementable methods in a single preset. For more information, please check the [available preset's shape](#presets-shape) section.
+Each language has different model types, which results in different implementable methods in a single preset. For more information, please check the [preset's shape](#presets-shape) section.
 
 ## Custom preset
 
-Below is a custom preset written for TypeScript language, which adds a description to each interface's property and to the self as a comment.
+Below is a custom preset written for TypeScript language, which adds a description to each interface's property and to the self as a JavaScript comment.
 
 ```ts
 import { TypeScriptGenerator } from '@asyncapi/generator-model-sdk';
@@ -133,7 +126,7 @@ Each customization method receives the following arguments:
 - `content` - rendered content from previous preset.
 - `options` - options passed to preset defined in the `presets` array.
 
-Below is a list of supported languages with their model types and corresponding additional presets with extra arguments based on the character of the customization method.
+Below is a list of supported languages with their model types and corresponding additional preset's methods with extra arguments based on the character of the customization method.
 
 ### Java
 
