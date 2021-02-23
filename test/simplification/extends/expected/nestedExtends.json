@@ -1,39 +1,39 @@
 [
   {
-    "originalSchema":{
-      "allOf":[
+    "originalSchema": {
+      "allOf": [
         {
-          "allOf":[
+          "allOf": [
             {
-              "properties":{
-                "testProp1":{
-                  "type":"string"
+              "properties": {
+                "testProp1": {
+                  "type": "string"
                 }
               }
             },
             {
-              "properties":{
-                "testProp2":{
-                  "type":"string"
+              "properties": {
+                "testProp2": {
+                  "type": "string"
                 }
               }
             }
           ]
         },
         {
-          "properties":{
-            "testProp3":{
-              "type":"string"
+          "properties": {
+            "testProp3": {
+              "type": "string"
             }
           }
         }
       ]
     },
-    "type":"object",
-    "$id":"anonymSchema1",
-    "additionalProperties":{
-      "originalSchema":true,
-      "type":[
+    "type": "object",
+    "$id": "anonymSchema1",
+    "additionalProperties": {
+      "originalSchema": true,
+      "type": [
         "object",
         "string",
         "number",
@@ -42,32 +42,32 @@
         "null"
       ]
     },
-    "extend":[
+    "extend": [
       "anonymSchema2",
       "anonymSchema5"
     ]
   },
   {
-    "originalSchema":{
-      "properties":{
-        "testProp1":{
-          "type":"string"
+    "originalSchema": {
+      "properties": {
+        "testProp1": {
+          "type": "string"
         }
       }
     },
-    "type":"object",
-    "$id":"anonymSchema3",
-    "properties":{
-      "testProp1":{
-        "originalSchema":{
-          "type":"string"
+    "type": "object",
+    "$id": "anonymSchema3",
+    "properties": {
+      "testProp1": {
+        "originalSchema": {
+          "type": "string"
         },
-        "type":"string"
+        "type": "string"
       }
     },
-    "additionalProperties":{
-      "originalSchema":true,
-      "type":[
+    "additionalProperties": {
+      "originalSchema": true,
+      "type": [
         "object",
         "string",
         "number",
@@ -78,26 +78,26 @@
     }
   },
   {
-    "originalSchema":{
-      "properties":{
-        "testProp2":{
-          "type":"string"
+    "originalSchema": {
+      "properties": {
+        "testProp2": {
+          "type": "string"
         }
       }
     },
-    "type":"object",
-    "$id":"anonymSchema4",
-    "properties":{
-      "testProp2":{
-        "originalSchema":{
-          "type":"string"
+    "type": "object",
+    "$id": "anonymSchema4",
+    "properties": {
+      "testProp2": {
+        "originalSchema": {
+          "type": "string"
         },
-        "type":"string"
+        "type": "string"
       }
     },
-    "additionalProperties":{
-      "originalSchema":true,
-      "type":[
+    "additionalProperties": {
+      "originalSchema": true,
+      "type": [
         "object",
         "string",
         "number",
@@ -108,29 +108,29 @@
     }
   },
   {
-    "originalSchema":{
-      "allOf":[
+    "originalSchema": {
+      "allOf": [
         {
-          "properties":{
-            "testProp1":{
-              "type":"string"
+          "properties": {
+            "testProp1": {
+              "type": "string"
             }
           }
         },
         {
-          "properties":{
-            "testProp2":{
-              "type":"string"
+          "properties": {
+            "testProp2": {
+              "type": "string"
             }
           }
         }
       ]
     },
-    "type":"object",
-    "$id":"anonymSchema2",
-    "additionalProperties":{
-      "originalSchema":true,
-      "type":[
+    "type": "object",
+    "$id": "anonymSchema2",
+    "additionalProperties": {
+      "originalSchema": true,
+      "type": [
         "object",
         "string",
         "number",
@@ -139,32 +139,32 @@
         "null"
       ]
     },
-    "extend":[
+    "extend": [
       "anonymSchema3",
       "anonymSchema4"
     ]
   },
   {
-    "originalSchema":{
-      "properties":{
-        "testProp3":{
-          "type":"string"
+    "originalSchema": {
+      "properties": {
+        "testProp3": {
+          "type": "string"
         }
       }
     },
-    "type":"object",
-    "$id":"anonymSchema5",
-    "properties":{
-      "testProp3":{
-        "originalSchema":{
-          "type":"string"
+    "type": "object",
+    "$id": "anonymSchema5",
+    "properties": {
+      "testProp3": {
+        "originalSchema": {
+          "type": "string"
         },
-        "type":"string"
+        "type": "string"
       }
     },
-    "additionalProperties":{
-      "originalSchema":true,
-      "type":[
+    "additionalProperties": {
+      "originalSchema": true,
+      "type": [
         "object",
         "string",
         "number",
