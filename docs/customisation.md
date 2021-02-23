@@ -4,7 +4,7 @@ The AsyncAPI Model SDK uses **presets** objects to extend the rendered model.
 
 ## Preset
 
-**Preset** is a pure JavaScript object with format `key: value`, where `key` is a name of model type and `value` is the object which contains methods, which extend a given rendered part for a given model type, like below example:
+A **preset** is a pure JavaScript object with format `key: value`, where `key` is the name of a model type and `value` is an object containing methods that extend a given rendered part for a given model type, like below example:
 
 ```js
 {
@@ -26,7 +26,7 @@ Each language has different model types, which results in different implementabl
 
 ## Custom preset
 
-Below is a custom preset written for TypeScript language, which adds a description to each interface's property and to the self as a JavaScript comment.
+Below is a custom preset written for TypeScript language, which adds a description to each interface's property and to the model itself as a JavaScript comment.
 
 ```ts
 import { TypeScriptGenerator } from '@asyncapi/generator-model-sdk';
@@ -113,7 +113,7 @@ const generator = new TypeScriptGenerator({ defaultPreset: DEFAULT_PRESET });
 
 ## Preset's shape
 
-By each preset user can implement two basic methods:
+For each model type, you can implement two basic methods:
 
 - `self` - the method for extending the whole model shape.
 - `additionalContent` - the method which adds additional content to the model.
