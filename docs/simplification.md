@@ -22,22 +22,21 @@ To determine the different properties of `CommonModel` each property are split i
 
 In order to determine all the possible types for a model, we both infer and use existing definitions of types. 
 Precedence for JSON Schema keywords needs to be predetermined to ensure consistency.
+### Precedence of JSON Schema keyword
 
-**Precedence of JSON Schema keywords**
-
-The precedence of keywords are in which order we infer or determine types in. Notice it goes form left to right meaning first we set the type using the `type` keyword and then it moves right applying them one by one. The following are the precedence for determining types:
+Notice it goes from left to right meaning first we set the type using the `type` keyword and then it moves right applying them one by one. The following are the precedence for determining types:
 
 <p align="center">type --> allOf --> oneOf --> anyOf --> then --> else --> enum --> const --> not</p>
 
-**Absence of data type**
+### Absence of data type
 
 If a schema is defined as `true` or `false` we infer all possible JSON Schema types.
 
-**Enum and const**
+### Enum and const
 
 `enum` and `const` are ONLY used to infer the type if it has not already been defined. Type is inferred from the provided value(s).
 
-**Not**
+### Not
 
 If defined, removes any defined/inferred types defined in `not`.
 
@@ -47,17 +46,17 @@ If defined, removes any defined/inferred types defined in `not`.
 
 In order to determine the possible enums a model can be we both infer and use existing definitions, however we need to define a precedence for JSON Schema keywords and in which order they are applied.
 
-**Precedence of JSON Schema keywords**
+### Precedence of JSON Schema keywords 
 
 The following are precedence of keywords in which order we infer or determine the `enum` in:
 
 <p align="center">enum --> allOf --> oneOf --> anyOf --> then --> else --> const --> not</p>
 
-**Const**
+### Const
 
 `const` if defined it always overwrites any already determined enums.
 
-**Not**
+### Not
 
 `not` if defined it removes any matching enums.
 
@@ -67,13 +66,13 @@ The following are precedence of keywords in which order we infer or determine th
 
 In order to determine all the possible items a schema can be, we both infer and use existing definitions, however we need to define a precedence for JSON Schema keywords for in which order the items are inferred or determined.
 
-**Precedence of JSON Schema keywords**
+### Precedence of JSON Schema keywords
 
 The precedence of keywords are in which order we infer or determine items in. The following are the precedence for determining types:
 
 <p align="center">items --> allOf --> oneOf --> anyOf --> then --> else</p>
 
-**Items**
+### Items
 
 All items are recursively simplified using the main simplification wrapper `simplifyRecursive` which ensures if it come across a schema of type object it splits them out into a reference and new instance of the common model.
 
@@ -83,13 +82,13 @@ All items are recursively simplified using the main simplification wrapper `simp
 
 In order to determine all the possible properties a schema can be, we both infer and use existing definitions, however we need to define a precedence for JSON Schema keywords for in which order the properties are inferred or determined.
 
-**Precedence of JSON Schema keywords**
+### Precedence of JSON Schema keywords
 
 The precedence of keywords are in which order we infer or determine properties in. The following are the precedence for determining types:
 
 <p align="center">properties --> allOf (Only if we don't want inheritance) --> oneOf --> anyOf --> then --> else</p>
 
-**Properties**
+### Properties
 
 All properties are recursively simplified using the main simplification wrapper `simplifyRecursive` which ensures if it come across a schema of type object it splits them out into a reference and new instance of the common model.
 
@@ -108,7 +107,7 @@ Additional properties are determined by the following form:
 
 In order to determine all the possible required properties a schema can have, we both merge and use existing definitions, however we need to define a precedence for JSON Schema keywords for in which order the required are merged or determined.
 
-**Precedence of JSON Schema keywords**
+### Precedence of JSON Schema keywords
 
 The precedence of keywords are in which order we merge or determine `required` in. The following are the precedence for determining the array of required:
 
