@@ -69,7 +69,7 @@ function inferTypeFromValue(value: any) {
   }
   const typeOfEnum = typeof value;
   if (typeOfEnum === 'bigint') {
-    return 'number';
+    return 'integer';
   } 
   return typeOfEnum;
 }
@@ -112,6 +112,7 @@ function inferTypes(schema: Schema | boolean, currentOutput: Output) {
 function inferNotTypes(schema: Schema | boolean, currentOutput: Output, seenSchemas: Map<any, Output>) {
   if (schema === undefined || currentOutput === undefined) return;
   if (!Array.isArray(currentOutput)) return;
+  if (currentOutput.length === 0) currentOutput.push('object', 'string', 'number', 'array', 'boolean', 'null');
   if (typeof schema === 'boolean') return;
   if (schema.not) {
     const notTypes = simplifyTypes(schema.not, seenSchemas);

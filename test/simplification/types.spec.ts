@@ -169,7 +169,7 @@ describe('Simplification of types', function () {
     test('with bigint', function () {
       const schema = { const: BigInt(123) };
       const types = simplifyTypes(schema);
-      expect(types).toEqual("number");
+      expect(types).toEqual("integer");
     });
     test('with array', function () {
       const schema = {
@@ -190,7 +190,6 @@ describe('Simplification of types', function () {
   describe('from not', function () {
     test('with only one type', function () {
       const schema = {
-        "type": ["object", "string", "number", "array", "boolean", "null"],
         "not": {
           "type": "string"
         }
@@ -201,7 +200,6 @@ describe('Simplification of types', function () {
     });
     test('with multiple types', function () {
       const schema = {
-        "type": ["object", "string", "number", "array", "boolean", "null"],
         "not": {
           "type": ["string", "number"]
         }
@@ -209,6 +207,16 @@ describe('Simplification of types', function () {
       const types = simplifyTypes(schema);
       expect(Array.isArray(types)).toEqual(true);
       expect((types as String[]).sort()).toEqual(["object", "array", "boolean", "null"].sort());
+    });
+    test('should acknowledge previous defined types', function () {
+      const schema = {
+        "type": ["string", "number", "null"],
+        "not": {
+          "type": ["string", "number"]
+        }
+      };
+      const types = simplifyTypes(schema);
+      expect(types).toEqual("null");
     });
   });
 });
