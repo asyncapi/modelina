@@ -1,14 +1,14 @@
 {
   "models":{
-    "anonymSchema1":{
+    "root":{
       "type":[
         "object",
         "boolean"
       ],
-      "$id":"anonymSchema1",
+      "$id":"root",
       "properties":{
         "items":{
-          "$ref":"anonymSchema2"
+          "$ref":"items"
         }
       },
       "additionalProperties":{
@@ -23,19 +23,19 @@
         ]
       }
     },
-    "anonymSchema2":{
+    "items":{
       "type":[
         "object",
         "boolean",
         "array"
       ],
-      "$id":"anonymSchema2",
+      "$id":"items",
       "items":{
-        "$ref":"anonymSchema1"
+        "$ref":"items_anyOf_1_item"
       },
       "properties":{
         "items":{
-          "$ref":"anonymSchema2"
+          "$ref":"items"
         }
       },
       "additionalProperties":{
