@@ -79,7 +79,7 @@ ${lines.map(line => ` * ${line}`).join('\n')}
     }
     
     if (this.model.additionalProperties !== undefined && this.model.additionalProperties instanceof CommonModel) {
-      const additionalProperty = `_additionalProperties: Record<string, ${this.renderType(this.model.additionalProperties)}>;`;
+      const additionalProperty = `_additionalProperties: Record<string, ${this.renderType(this.model.additionalProperties)}> = {};`;
       content.push(additionalProperty);
     }
 

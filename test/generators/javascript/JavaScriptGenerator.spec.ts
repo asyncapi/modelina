@@ -29,6 +29,7 @@ describe('JavaScriptGenerator', function() {
   marriage;
   members;
   arrayType;
+  additionalProperties = {};
 
   constructor(input) {
     this.streetName = input.streetName;
@@ -60,6 +61,9 @@ describe('JavaScriptGenerator', function() {
 
   get arrayType() { return this.arrayType; }
   set arrayType(arrayType) { this.arrayType = arrayType; }
+
+  get additionalProperty(key){ return _additionalProperties[key]; }
+  set additionalProperty(key, value) { _additionalProperties[key] = value; }
 }`;
 
     const inputModel = await generator.process(doc);
@@ -96,6 +100,7 @@ describe('JavaScriptGenerator', function() {
     };
     const expected = `export class CustomClass {
   #property;
+  additionalProperties = {};
 
   constructor(input) {
     this.#property = input.property;
@@ -103,6 +108,9 @@ describe('JavaScriptGenerator', function() {
 
   get property() { return this.#property; }
   set property(property) { this.#property = property; }
+  
+  get additionalProperty(key){ return _additionalProperties[key]; }
+  set additionalProperty(key, value) { _additionalProperties[key] = value; }
 }`;
 
     generator = new JavaScriptGenerator({ presets: [

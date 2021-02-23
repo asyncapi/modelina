@@ -29,7 +29,7 @@ describe('TypeScriptGenerator', function() {
   private _marriage?: boolean;
   private _members?: string | number | boolean;
   private _arrayType: Array<string | number>;
-  private [k: string]: object | string | number | Array<unknown> | boolean | null;
+  private _additionalProperties: Record<string, object | string | number | Array<unknown> | boolean | null> = {};
 
 
   constructor(input: {
@@ -93,7 +93,7 @@ describe('TypeScriptGenerator', function() {
     const expected = `export class CustomClass {
   @JsonProperty("property")
   private _property?: string;
-  private [k: string]: object | string | number | Array<unknown> | boolean | null;
+  private _additionalProperties: Record<string, object | string | number | Array<unknown> | boolean | null> = {};
 
   constructor(input: {
     property?: string,
@@ -103,6 +103,9 @@ describe('TypeScriptGenerator', function() {
 
   get property(): string { return this._property; }
   set property(property: string) { this._property = property; }
+
+  getAdditionalProperty(key: string): object | string | number | Array<unknown> | boolean | null { return _additionalProperties.get(key); }
+  setAdditionalProperty(key: string, value: object | string | number | Array<unknown> | boolean | null) { _additionalProperties.set(key, value); }
 }`;
 
     generator = new TypeScriptGenerator({ presets: [
@@ -146,7 +149,7 @@ ${content}`;
   marriage?: boolean;
   members?: string | number | boolean;
   arrayType: Array<string | number>;
-  private [k: string]: object | string | number | Array<unknown> | boolean | null;
+  additionalProperties: Record<string, object | string | number | Array<unknown> | boolean | null>;
 }`;
 
     const inputModel = await generator.process(doc);
@@ -166,7 +169,7 @@ ${content}`;
     };
     const expected = `export interface CustomInterface {
   property?: string;
-  [k: string]: object | string | number | Array<unknown> | boolean | null;
+  additionalProperties: Record<string, object | string | number | Array<unknown> | boolean | null>;
 }`;
 
     generator = new TypeScriptGenerator({ presets: [
