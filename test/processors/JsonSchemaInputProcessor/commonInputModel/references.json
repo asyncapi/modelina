@@ -1,124 +1,137 @@
 {
-  "models":{
-    "anonymSchema2":{
-      "originalSchema":{
-        "type":"object",
-        "properties":{
-          "floor":{
-            "type":"number"
-          }
-        }
-      },
-      "type":"object",
-      "$id":"anonymSchema2",
-      "additionalProperties": {
-        "originalSchema": true,
-        "type": [
-          "object",
-          "string",
-          "number",
-          "array",
-          "boolean",
-          "null"
-        ]
-      },
-      "properties":{
-        "floor":{
-          "originalSchema":{
-            "type":"number"
-          },
-          "type":"number"
-        }
-      }
-    },
-    "anonymSchema1":{
-      "originalSchema":{
-        "definitions":{
-          "test":{
-            "type":"object",
-            "properties":{
-              "floor":{
-                "type":"number"
+  "models": {
+    "root": {
+      "originalSchema": {
+        "definitions": {
+          "test": {
+            "type": "object",
+            "properties": {
+              "floor": {
+                "type": "number",
+                "x-modelgen-inferred-name": "test_floor"
               }
-            }
+            },
+            "x-modelgen-inferred-name": "test"
           }
         },
-        "type":"object",
-        "properties":{
-          "street_address":{
-            "type":"object",
-            "properties":{
-              "floor":{
-                "type":"number"
+        "type": "object",
+        "properties": {
+          "street_address": {
+            "x-modelgen-inferred-name": "street_address",
+            "type": "object",
+            "properties": {
+              "floor": {
+                "type": "number",
+                "x-modelgen-inferred-name": "test_floor"
               }
             }
           },
-          "country":{
-            "enum":[
+          "country": {
+            "enum": [
               "United States of America",
               "Canada"
-            ]
+            ],
+            "x-modelgen-inferred-name": "country"
           }
-        }
-      },
-      "type":"object",
-      "$id":"anonymSchema1",
-      "additionalProperties": {
-        "originalSchema": true,
-        "type": [
-          "object",
-          "string",
-          "number",
-          "array",
-          "boolean",
-          "null"
-        ]
-      },
-      "properties":{
-        "street_address":{
-          "$ref":"anonymSchema2"
         },
-        "country":{
-          "originalSchema":{
-            "enum":[
+        "x-modelgen-inferred-name": "root"
+      },
+      "type": "object",
+      "$id": "root",
+      "properties": {
+        "street_address": {
+          "$ref": "street_address"
+        },
+        "country": {
+          "originalSchema": {
+            "enum": [
               "United States of America",
               "Canada"
-            ]
+            ],
+            "x-modelgen-inferred-name": "country"
           },
-          "type":"string",
-          "enum":[
+          "type": "string",
+          "enum": [
             "United States of America",
             "Canada"
           ]
         }
-      }
-    }
-  },
-  "customizations":{
-    
-  },
-  "originalInput":{
-    "definitions":{
-      "test":{
-        "type":"object",
-        "properties":{
-          "floor":{
-            "type":"number"
-          }
-        }
+      },
+      "additionalProperties": {
+        "originalSchema": true,
+        "type": [
+          "object",
+          "string",
+          "number",
+          "array",
+          "boolean",
+          "null"
+        ]
       }
     },
-    "type":"object",
-    "properties":{
-      "street_address":{
-        "$ref":"#/definitions/test"
+    "street_address": {
+      "originalSchema": {
+        "x-modelgen-inferred-name": "street_address",
+        "type": "object",
+        "properties": {
+          "floor": {
+            "type": "number",
+            "x-modelgen-inferred-name": "test_floor"
+          }
+        }
       },
-      "country":{
-        "enum":[
-          "United States of America",
-          "Canada"
+      "type": "object",
+      "$id": "street_address",
+      "properties": {
+        "floor": {
+          "originalSchema": {
+            "type": "number",
+            "x-modelgen-inferred-name": "test_floor"
+          },
+          "type": "number"
+        }
+      },
+      "additionalProperties": {
+        "originalSchema": true,
+        "type": [
+          "object",
+          "string",
+          "number",
+          "array",
+          "boolean",
+          "null"
         ]
       }
     }
+  },
+  "customizations": {},
+  "originalInput": {
+    "definitions": {
+      "test": {
+        "type": "object",
+        "properties": {
+          "floor": {
+            "type": "number",
+            "x-modelgen-inferred-name": "test_floor"
+          }
+        },
+        "x-modelgen-inferred-name": "test"
+      }
+    },
+    "type": "object",
+    "properties": {
+      "street_address": {
+        "$ref": "#/definitions/test",
+        "x-modelgen-inferred-name": "street_address"
+      },
+      "country": {
+        "enum": [
+          "United States of America",
+          "Canada"
+        ],
+        "x-modelgen-inferred-name": "country"
+      }
+    },
+    "x-modelgen-inferred-name": "root"
   }
 }

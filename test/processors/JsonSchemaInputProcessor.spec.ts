@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { JsonSchemaInputProcessor } from '../../src/processors/JsonSchemaInputProcessor';
-import { CommonInputModel } from '../../src/models/CommonInputModel';
+import { CommonInputModel, Schema } from '../../src/models';
 
 describe('JsonSchemaInputProcessor', function() {
     describe('process()', function() {
@@ -18,7 +18,7 @@ describe('JsonSchemaInputProcessor', function() {
             const expectedCommonInputModel = JSON.parse(expectedCommonInputModelString);
             const processor = new JsonSchemaInputProcessor();
             const commonInputModel = await processor.process(inputSchema);
-            if(match){
+            if (match) {
                 expect(commonInputModel).toMatchObject(expectedCommonInputModel);
             } else {
                 expect(commonInputModel).toEqual(expectedCommonInputModel);
@@ -86,10 +86,11 @@ describe('JsonSchemaInputProcessor', function() {
         const expectFunction = (inputSchemaPath: string, expectedCommonModulePath: string) => {
             const inputSchemaString = fs.readFileSync(path.resolve(__dirname, inputSchemaPath), 'utf8');
             const expectedCommonInputModelString = fs.readFileSync(path.resolve(__dirname, expectedCommonModulePath), 'utf8');
-            const inputSchema = JSON.parse(inputSchemaString);
+            const inferredSchema = JsonSchemaInputProcessor.reflectSchemaNames(JSON.parse(inputSchemaString), undefined, 'root', true);
+            const inputSchema = Schema.toSchema(inferredSchema);
             const expectedCommonInputModel = JSON.parse(expectedCommonInputModelString) as CommonInputModel;
             const commonInputModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(inputSchema);
-            expect(commonInputModel).toEqual(expectedCommonInputModel.models);
+            expect(commonInputModel).toMatchObject(expectedCommonInputModel.models);
         }
         test('should be able to process absence types', async function() {
             const inputSchemaPath = './JsonSchemaInputProcessor/absence_type.json';
@@ -123,4 +124,108 @@ describe('JsonSchemaInputProcessor', function() {
         });
     });
 
+    describe('reflectSchemaName()', function() {
+        test('should work', async function() {
+            const schema = {
+                properties: {
+                    prop: {
+                        type: "string",
+                    },
+                    allOfCase: {
+                        allOf: [
+                            {
+                                type: "string",
+                            },
+                            {
+                                type: "string",
+                            },
+                        ],
+                    },
+                    object: {
+                        type: "object",
+                        properties: {
+                            prop: {
+                                type: "string",
+                            },
+                        }
+                    },
+                    propWithObject: {
+                        type: "object",
+                        properties: {
+                            propWithObject: {
+                                type: "object",
+                            }
+                        }
+                    },
+                },
+                patternProperties: {
+                    patternProp: {
+                        type: "string",
+                    }
+                },
+                dependencies: {
+                    dep: {
+                        type: "string",
+                    },
+                },
+                definitions: {
+                    def: {
+                        type: "string",
+                    },
+                    oneOfCase: {
+                        oneOf: [
+                            {
+                                type: "string",
+                            },
+                            {
+                                type: "string",
+                            },
+                        ],
+                    }, 
+                },
+                anyOf: [
+                    {
+                        type: "string",
+                    },
+                    {
+                        type: "object",
+                        properties: {
+                            prop: {
+                                type: "string",
+                            },
+                        }
+                    },
+                ]
+            }
+            const expected = JsonSchemaInputProcessor.reflectSchemaNames(schema, undefined, 'root', true) as any;
+
+            // root
+            expect(expected['x-modelgen-inferred-name']).toEqual('root');
+
+            // properties
+            expect(expected.properties.prop['x-modelgen-inferred-name']).toEqual('prop');
+            expect(expected.properties.allOfCase.allOf[0]['x-modelgen-inferred-name']).toEqual('allOfCase_allOf_0');
+            expect(expected.properties.allOfCase.allOf[1]['x-modelgen-inferred-name']).toEqual('allOfCase_allOf_1');
+            expect(expected.properties.object['x-modelgen-inferred-name']).toEqual('object');
+            expect(expected.properties.object.properties.prop['x-modelgen-inferred-name']).toEqual('object_prop');
+            expect(expected.properties.propWithObject['x-modelgen-inferred-name']).toEqual('propWithObject');
+            expect(expected.properties.propWithObject.properties.propWithObject['x-modelgen-inferred-name']).toEqual('propWithObject_propWithObject');
+
+            // patternProperties
+            expect(expected.patternProperties.patternProp['x-modelgen-inferred-name']).toEqual('pattern_property_0');
+
+            // dependencies
+            expect(expected.dependencies.dep['x-modelgen-inferred-name']).toEqual('dep');
+
+            // definitions
+            expect(expected.definitions.def['x-modelgen-inferred-name']).toEqual('def');
+            expect(expected.definitions.oneOfCase.oneOf[0]['x-modelgen-inferred-name']).toEqual('oneOfCase_oneOf_0');
+            expect(expected.definitions.oneOfCase.oneOf[1]['x-modelgen-inferred-name']).toEqual('oneOfCase_oneOf_1');
+
+            // anyOf
+            expect(expected.anyOf[0]['x-modelgen-inferred-name']).toEqual('anyOf_0');
+            expect(expected.anyOf[1]['x-modelgen-inferred-name']).toEqual('anyOf_1');
+            expect(expected.anyOf[1].properties.prop['x-modelgen-inferred-name']).toEqual('anyOf_1_prop');
+        })
+    });
 });
