@@ -69,8 +69,7 @@ function addToProperty(propName: string, propModel: CommonModel, schema: Schema,
  * @param rootSchema the root schema we are combining schemas for
  */
 function combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | undefined, currentModel: Output, simplifier : Simplifier, seenSchemas: Map<any, Output>, rootSchema : Schema) {
-  if (schema === undefined) return;
-  if (typeof schema === 'boolean') return;
+  if (typeof schema !== 'object') return;
   if (Array.isArray(schema)) {
     schema.forEach((combinationSchema) => {
       combineSchemas(combinationSchema, currentModel, simplifier, seenSchemas, rootSchema);
