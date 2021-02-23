@@ -5,7 +5,7 @@ The library simplify the JSON Schema from data validation rules to data definiti
 This document is expected to be a supplement to the code to better understand how the simplifier works.
 
 ## Simplifier
-The main functionality is located in the `Simplifier` class. This class ensures to recursively create (or retrieve from a cache) a `CommonModel` representation of a Schema. We have tried to keep the the functionality split out into separate functions to reduce complexity and ensure it is easier to maintain. This main function also ensures to split any created models into separate ones if needed.
+The main functionality is located in the `Simplifier` class. This class ensures to recursively create (or retrieve from a cache) a `CommonModel` representation of a Schema. We have tried to keep the functionality split out into separate functions to reduce complexity and ensure it is easier to maintain. This main function also ensures to split any created models into separate ones if needed.
 
 
 To determine the different properties of `CommonModel` each property are split into separate functions:
