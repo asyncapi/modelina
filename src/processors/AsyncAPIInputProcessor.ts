@@ -4,6 +4,9 @@ import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
 import { CommonInputModel } from '../models/CommonInputModel';
 
+/**
+ * Class for processing AsyncAPI inputs
+ */
 export class AsyncAPIInputProcessor extends AbstractInputProcessor {
   /**
    * Process the input as an AsyncAPI document
