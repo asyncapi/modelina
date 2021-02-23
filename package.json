@@ -60,7 +60,7 @@
     "test:watch": "jest --watch",
     "docs": "npm run docs:markdown",
     "docs:markdown": "./node_modules/.bin/jsdoc2md lib/index.js -f lib/**/*.js > API.md",
-    "lint": "eslint --config .eslintrc ./src/*",
+    "lint": "eslint --max-warnings 0 --config .eslintrc ./src/*",
     "lint:fix": "eslint --max-warnings 0 --config .eslintrc ./src/* --fix",
     "get:version": "echo $npm_package_version",
     "get:name": "echo $npm_package_name",
