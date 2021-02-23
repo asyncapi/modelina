@@ -49,32 +49,39 @@ ${this.indent(this.renderBlock(content, 2))}
 }
 
 export const TS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
-  self({ renderer }) {
-    return renderer.defaultSelf();
+  async self({ renderer }) {
+    return `export ${await renderer.defaultSelf()}`;
   },
   ctor({ renderer, model }) {
     const properties = model.properties || {};
     const assigments = Object.keys(properties).map(property => {
       property = FormatHelpers.toCamelCase(property);
-      return `this.${property} = input.${property};`;
+      return `this._${property} = input.${property};`;
     });
+    const ctorProperties: string[] = [];
+    for (const [propertyName, property] of Object.entries(properties)) {
+      const rendererProperty = renderer.renderProperty(propertyName, property, model).replace(';', ',');
+      ctorProperties.push(rendererProperty);
+    }
 
-    return `constructor(input: ${model.$id}Input) {
+    return `constructor(input: {
+${renderer.indent(renderer.renderBlock(ctorProperties))}
+}) {
 ${renderer.indent(renderer.renderBlock(assigments))}
 }`;
   },
   property({ renderer, propertyName, property, parentModel }) {
-    return `private ${renderer.renderProperty(propertyName, property, parentModel)}`;
+    return `private _${renderer.renderProperty(propertyName, property, parentModel)}`;
   },
   getter({ renderer, propertyName, property }) {
     propertyName = FormatHelpers.toCamelCase(propertyName);
     const signature = renderer.renderTypeSignature(property);
-    return `get ${propertyName}()${signature} { return this.${propertyName}; }`;
+    return `get ${propertyName}()${signature} { return this._${propertyName}; }`;
   },
   setter({ renderer, propertyName, property }) {
     propertyName = FormatHelpers.toCamelCase(propertyName);
     const signature = renderer.renderTypeSignature(property);
     const arg = `${propertyName}${signature}`;
-    return `set ${propertyName}(${arg}) { this.${propertyName} = ${propertyName}; }`;
+    return `set ${propertyName}(${arg}) { this._${propertyName} = ${propertyName}; }`;
   },
 };

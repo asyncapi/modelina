@@ -2,6 +2,7 @@
 import { 
   camelCase,
   pascalCase,
+  paramCase,
   constantCase,
 } from 'change-case';
 
@@ -33,6 +34,13 @@ export class FormatHelpers {
    * @returns {string}
    */
   static toPascalCase = pascalCase;
+
+  /**
+   * Transform into a lower cased string with dashes between words.
+   * @param {string} value to transform
+   * @returns {string}
+   */
+  static toParamCase = paramCase;
 
   /**
    * Transform into upper case string with an underscore between words.

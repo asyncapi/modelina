@@ -4,7 +4,6 @@ import {parse} from '@asyncapi/parser';
 import { InputProcessor } from '../../src/processors/InputProcessor';
 
 describe('InputProcessor', function() {
-    
     /**
      * The input schema when processed should be equals to the expected CommonInputModel
      * 
@@ -75,5 +74,4 @@ describe('InputProcessor', function() {
             });
         });
     });
-
 });
