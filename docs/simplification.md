@@ -40,7 +40,7 @@ If a schema is defined as `true` or `false` we infer all possible JSON Schema ty
 
 **Not**
 
-if defined removes any defined/inferred types defined in `not`.
+If defined, removes any defined/inferred types defined in `not`.
 
 <br/>
 
