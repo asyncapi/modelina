@@ -16,12 +16,15 @@ The AsyncAPI Model SDK uses **presets** to extend the rendered model.
     // `setter` customization method 
     setter(...options) {
       // logic
-    }
+    },
   },
   interface: {
     property(...options) {
       // logic
-    }
+    },
+    additionalContent(...options) {
+      // logic
+    },
   },
 }
 ```
@@ -30,7 +33,7 @@ Each language has different model types, which results in different implementabl
 
 ## Custom preset
 
-Below is a custom preset written for TypeScript language, which adds a description to each interface's property and to self as a comment.
+Below is a custom preset written for TypeScript language, which adds a description to each interface's property and to the self as a comment.
 
 ```ts
 import { TypeScriptGenerator } from '@asyncapi/generator-model-sdk';
@@ -120,17 +123,69 @@ const generator = new TypeScriptGenerator({ defaultPreset: DEFAULT_PRESET });
 By each preset user can implement two basic methods:
 
 - `self` - the method for extending the whole model shape.
-- `additionalContent` - the method which adds additional content to model.
+- `additionalContent` - the method which adds additional content to the model.
 
-For each customization method, the given argument is passed.
+Each customization method receives the following arguments:
 
-Below is a list of supported languages with the shape of the preset for a given model type.
+- `model` - an instance of the [`CommonModel`](../src/models/CommonModel.ts) class, which described rendered data model.
+- `inputModel` - an instance of the [`CommonInputModel`](../src/models/CommonInputModel.ts) class.
+- `renderer` - an instance of the class with common helper functions to render appropriate model type.
+- `content` - rendered content from previous preset.
+- `options` - options passed to preset defined in the `presets` array.
+
+Below is a list of supported languages with their model types and corresponding additional presets with extra arguments based on the character of the customization method.
 
 ### Java
 
-#### Class
+#### **Class**
 
-| Method | Description | Arguments |
-|---|---|---|---|
-| `self` | Main method for render the model shape. |  | [The generator instance](https://github.com/asyncapi/generator/blob/master/docs/api.md)
-| `enum` | Called at the very end of the generation. | void : Nothing is expected to be returned. | [The generator instance](https://github.com/asyncapi/generator/blob/master/docs/api.md)
+| Method | Description | Additional arguments |
+|---|---|---|
+| `ctor` | A method to extend rendered constructor for a given class | - |
+| `property` | A method to extend rendered given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance and `parentModel` as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
+| `setter` | A method to extend setter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance and `parentModel` as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
+| `getter` | A method to extend getter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance and `parentModel` as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
+
+#### **Enum**
+
+| Method | Description | Additional arguments |
+|---|---|---|
+| `item` | A method to extend enum's item. | an `item` containing the value of enum's item and `parentModel` as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
+
+### JavaScript
+
+#### **Class**
+
+| Method | Description | Additional arguments |
+|---|---|---|
+| `ctor` | A method to extend rendered constructor for a given class | - |
+| `property` | A method to extend rendered given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance and `parentModel` as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
+| `setter` | A method to extend setter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance and `parentModel` as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
+| `getter` | A method to extend getter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance and `parentModel` as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
+
+### TypeScript
+
+#### **Class**
+
+| Method | Description | Additional arguments |
+|---|---|---|
+| `ctor` | A method to extend rendered constructor for a given class | - |
+| `property` | A method to extend rendered given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance and `parentModel` as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
+| `setter` | A method to extend setter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance and `parentModel` as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
+| `getter` | A method to extend getter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance and `parentModel` as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
+
+#### **Interface**
+
+| Method | Description | Additional arguments |
+|---|---|---|
+| `property` | A method to extend rendered given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance and `parentModel` as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
+
+#### **Enum**
+
+| Method | Description | Additional arguments |
+|---|---|---|
+| `item` | A method to extend enum's item. | an `item` containing the value of enum's item and `parentModel` as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
+
+#### **Type**
+
+There are no additional methods
