@@ -14,18 +14,7 @@ As seen on the class diagram the `InputProcessor` is our main point of entry for
 
 The `process` function are expected to return `CommonInputModel` which is a wrapper for the core data representation of `CommonModel`. This is done to ensure we can return multiple models for any input to allow for references, inheritance etc. As said the core internal representation of a data model is `CommonModel`. This contains the data definition by using known keywords from JSON Schema, but instead of it representing a validation rules it represent data definitions.
 
-Here are the explanation of the different properties in `CommonModel`:
-- `$id` is the id/name of the model.
-- `type` this is the different types for the model. All types from JSON Schema are used, no custom types are used.
-- `enum` defines the different enums for the model.
-- `items` defines the type for `array` models as `CommonModel`.
-- `properties` defines the properties and its expected types as `CommonModel`.
-- `additionalProperties` are used to define if any extra properties are allowed, also defined as a  `CommonModel`.
-- `$ref` is a reference to another `CommonModel` by using`$id` as a simple string.
-- `required` list of required properties.
-- `extend` list of other `CommonModel`s this model extends, is an array of `$id` strings.
-- `originalSchema` is the actual input which this model represent.
-
+The explanation for the `CommonModel` properties can be found [here](../API.md#CommonModel).
 ## AsyncAPI
 At the moment the library only supports the whole AsyncAPI file as input where it generates models for all defined message payloads. If any other kind of AsyncAPI input is wanted please create a [feature request](https://github.com/asyncapi/generator-model-sdk/issues/new?assignees=&labels=enhancement&template=enhancement.md)!
 
