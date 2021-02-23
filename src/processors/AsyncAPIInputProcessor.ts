@@ -29,6 +29,13 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     return common;
   }
 
+  /**
+   * 
+   * Reflect the name of the schema and save it to `x-modelgen-inferred-name` extension. 
+   * This keeps the the id of the model deterministic if used in conjunction with other AsyncAPI tools such as the generator.
+   * 
+   * @param schema to reflect name for
+   */
   // eslint-disable-next-line sonarjs/cognitive-complexity
   static reflectSchemaNames(
     schema: AsyncAPISchema | boolean
