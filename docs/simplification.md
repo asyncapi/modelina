@@ -22,7 +22,7 @@ To determine the different properties of `CommonModel` each property are split i
 
 In order to determine all the possible types for a model, we both infer and use existing definitions of types. 
 Precedence for JSON Schema keywords needs to be predetermined to ensure consistency.
-### Precedence of JSON Schema keyword
+### Precedence of JSON Schema keywords
 
 Notice it goes from left to right meaning first we set the type using the `type` keyword and then it moves right applying them one by one. The following are the precedence for determining types:
 
