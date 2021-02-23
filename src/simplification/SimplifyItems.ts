@@ -15,30 +15,30 @@ type Output = CommonModel | undefined;
 export default function simplifyItems(schema: Schema | boolean, simplifier : Simplifier, seenSchemas: Map<any, Output> = new Map()) : Output {
   if (typeof schema !== 'boolean') {
     if (seenSchemas.has(schema)) return seenSchemas.get(schema);
-    const tempOutput: Output = new CommonModel();
-    seenSchemas.set(schema, tempOutput);
+    const output: Output = new CommonModel();
+    seenSchemas.set(schema, output);
 
     //Check if any items have been set, if so lets merge them
     if (schema.items !== undefined) {
       if (Array.isArray(schema.items)) {
         schema.items.forEach((value) => {
-          mergeWithCurrentModel(simplifier.simplify(value)[0], schema, tempOutput);
+          mergeWithCurrentModel(simplifier.simplify(value)[0], schema, output);
         });
       } else {
-        mergeWithCurrentModel(simplifier.simplify(schema.items)[0], schema, tempOutput);
+        mergeWithCurrentModel(simplifier.simplify(schema.items)[0], schema, output);
       }
     }
 
     //If we encounter combination schemas ensure we recursively find the items
-    combineSchemas(schema.allOf, tempOutput, simplifier, seenSchemas);
-    combineSchemas(schema.oneOf, tempOutput, simplifier, seenSchemas);
-    combineSchemas(schema.anyOf, tempOutput, simplifier, seenSchemas);
+    combineSchemas(schema.allOf, output, simplifier, seenSchemas);
+    combineSchemas(schema.oneOf, output, simplifier, seenSchemas);
+    combineSchemas(schema.anyOf, output, simplifier, seenSchemas);
 
     //If we encounter conditional schemas ensure we recursively find the items
-    combineSchemas(schema.then, tempOutput, simplifier, seenSchemas);
-    combineSchemas(schema.else, tempOutput, simplifier, seenSchemas);
+    combineSchemas(schema.then, output, simplifier, seenSchemas);
+    combineSchemas(schema.else, output, simplifier, seenSchemas);
     
-    return !Object.keys(tempOutput).length ? undefined : tempOutput;
+    return !Object.keys(output).length ? undefined : output;
   }
   return undefined;
 }
@@ -47,20 +47,20 @@ export default function simplifyItems(schema: Schema | boolean, simplifier : Sim
  * Go through schema(s) and combine the simplified items together.
  * 
  * @param schema to go through
- * @param currentModel the current output
+ * @param currentOutput the current output
  * @param simplifier the simplifier to use
  * @param seenSchemas schemas which we already have outputs for
  */
-function combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | undefined, currentModel: Output, simplifier : Simplifier, seenSchemas: Map<any, Output>) {
+function combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | undefined, currentOutput: Output, simplifier : Simplifier, seenSchemas: Map<any, Output>) {
   if (typeof schema !== 'object') return;
   if (Array.isArray(schema)) {
     schema.forEach((itemSchema) => {
-      combineSchemas(itemSchema, currentModel, simplifier, seenSchemas);
+      combineSchemas(itemSchema, currentOutput, simplifier, seenSchemas);
     });
   } else {
     const simplifiedItems = simplifyItems(schema, simplifier, seenSchemas);
     if (simplifiedItems !== undefined) {
-      mergeWithCurrentModel(simplifiedItems, schema, currentModel);
+      mergeWithCurrentModel(simplifiedItems, schema, currentOutput);
     }
   }
 }
@@ -69,9 +69,9 @@ function combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | unde
  * Merge common models together
  * 
  * @param model to merge from
- * @param schema 
- * @param currentModel to merge into 
+ * @param schema it is from
+ * @param currentOutput to merge into 
  */
-function mergeWithCurrentModel(model: CommonModel, schema: Schema, currentModel: Output) {
-  CommonModel.mergeCommonModels(currentModel, model, schema);
+function mergeWithCurrentModel(model: CommonModel, schema: Schema, currentOutput: Output) {
+  CommonModel.mergeCommonModels(currentOutput, model, schema);
 }
