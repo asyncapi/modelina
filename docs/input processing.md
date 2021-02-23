@@ -10,11 +10,17 @@ As of now two inputs are supported:
 <img src="./assets/class_diagram.png"
      alt="Class diagram" />
 
-As seen on the class diagram the `InputProcessor` is our main point of entry for processing input data. It uses the defined other input processors (`AsyncAPIInputProcessor`, `JsonSchemaInputProcessor`, ...) by calling `shouldProcess` function of each and if the function returns true processing it using the `process` function. If no processes returns true it defaults to `JsonSchemaInputProcessor`. 
+As seen on the class diagram the `InputProcessor` is our main point of entry for processing input data. 
 
-The `process` function are expected to return `CommonInputModel` which is a wrapper for the core data representation of `CommonModel`. This is done to ensure we can return multiple models for any input to allow for references, inheritance etc. As said the core internal representation of a data model is `CommonModel`. This contains the data definition by using known keywords from JSON Schema, but instead of it representing a validation rules it represent data definitions.
+It uses the defined input processors (`AsyncAPIInputProcessor`, `JsonSchemaInputProcessor`, ...) by first calling `shouldProcess` function of each and if the function returns true it calls the `process` function. 
 
-The explanation for the `CommonModel` properties can be found [here](../API.md#CommonModel).
+If no processes returns true it defaults to `JsonSchemaInputProcessor`. 
+
+The `process` function are expected to return `CommonInputModel` which is a wrapper for the core data representation of `CommonModel`. 
+
+This is done to ensure we can return multiple models for any input to allow for references, inheritance etc. 
+
+As said the core internal representation of a data model is `CommonModel`. This contains the data definition by using known keywords from JSON Schema, but instead of it representing a validation rules it represent data definition. The explanation for the `CommonModel` properties can be found [here](../API.md#CommonModel).
 ## AsyncAPI
 At the moment the library only supports the whole AsyncAPI file as input where it generates models for all defined message payloads. If any other kind of AsyncAPI input is wanted please create a [feature request](https://github.com/asyncapi/generator-model-sdk/issues/new?assignees=&labels=enhancement&template=enhancement.md)!
 
