@@ -46,9 +46,13 @@ export class Simplifier {
       this.simplifyModel(model, schema);
     }
     this.ensureModelsAreSplit(model);
+    //Ensure current model is not part of the iterated list since we could have circular schemas
+    if (this.iteratedModels[`${model.$id}`] !== undefined) {
+      delete this.iteratedModels[`${model.$id}`];
+    }
     const modelsToReturn = Object.values(this.iteratedModels);
-    //Add models which have not been iterated before
-    if (isModelObject(model) && this.iteratedModels[`${model.$id}`] === undefined) {
+    //Add models to ensure we remember which has been iterated 
+    if (isModelObject(model)) {
       this.iteratedModels[`${model.$id}`] = model;
     }
     return [model, ...modelsToReturn];
@@ -125,7 +129,7 @@ export class Simplifier {
     if (model.properties) {
       const existingProperties = model.properties;
       for (const [prop, propSchema] of Object.entries(existingProperties)) {
-        existingProperties[`${prop}`] = this.splitModels(propSchema);
+        model.properties[`${prop}`] = this.splitModels(propSchema);
       }
     }
     if (model.items) {
