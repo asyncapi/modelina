@@ -36,6 +36,12 @@ ${this.indent(this.renderBlock(content, 2))}
       content.push(this.renderBlock([getter, setter]));
     }
 
+    if (this.model.additionalProperties !== undefined && this.model.additionalProperties instanceof CommonModel) {
+      const getter = `getAdditionalProperty(key: string): ${this.renderType(this.model.additionalProperties)} { return _additionalProperties.get(key); }`;
+      const setter = `setAdditionalProperty(key: string, value: ${this.renderType(this.model.additionalProperties)}) { _additionalProperties.set(key, value); }`;
+      content.push(this.renderBlock([getter, setter]));
+    }
+
     return this.renderBlock(content, 2);
   }
 

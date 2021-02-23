@@ -35,6 +35,12 @@ ${this.indent(this.renderBlock(content, 2))}
       content.push(rendererProperty);
     }
 
+    if (this.model.additionalProperties !== undefined && this.model.additionalProperties instanceof CommonModel) {
+      const additionalType = this.renderType(this.model.additionalProperties);
+      const rendererProperty = `private Map<String, ${additionalType}> additionalProperties = new HashMap();`;
+      content.push(rendererProperty);
+    }
+
     return this.renderBlock(content);
   }
 
@@ -53,9 +59,10 @@ ${this.indent(this.renderBlock(content, 2))}
     }
 
     if (this.model.additionalProperties !== undefined && this.model.additionalProperties instanceof CommonModel) {
-      const additionalType = this.renderType(this.model.additionalProperties);
-      const rendererProperty = `Map<String, ${additionalType}> additionalFields = new HashMap();`;
-      content.push(rendererProperty);
+      const additionalPropertyType = this.renderType(this.model.additionalProperties);
+      const getter = `public ${additionalPropertyType} getAdditionalProperty(String key):  { return additionalProperties.get(key); }`;
+      const setter = `public void setAdditionalProperty(String key, ${additionalPropertyType} value) { additionalProperties.put(key, value); }`;
+      content.push(this.renderBlock([getter, setter]));
     }
 
     return this.renderBlock(content, 2);

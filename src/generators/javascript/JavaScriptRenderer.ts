@@ -36,6 +36,11 @@ ${content}
       content.push(rendererProperty);
     }
 
+    if (this.model.additionalProperties !== undefined && this.model.additionalProperties instanceof CommonModel) {
+      const additionalProperty = '_additionalProperties = {};';
+      content.push(additionalProperty);
+    }
+
     return this.renderBlock(content);
   }
 
