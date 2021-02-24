@@ -83,17 +83,17 @@ describe('TypeScriptGenerator', function() {
     generator = new JavaGenerator({ presets: [
       {
         class: {
-          property({ propertyName, content }) {
-            return `@JsonProperty("${propertyName}")
-${content}`;
+          property({ renderer, propertyName, content }) {
+            const annotation = renderer.renderAnnotation('JsonProperty', `"${propertyName}"`);
+            return `${annotation}\n${content}`;
           },
-          getter({ propertyName, content }) {
-            return `@JsonProperty("${propertyName}")
-${content}`;
+          getter({ renderer, propertyName, content }) {
+            const annotation = renderer.renderAnnotation('JsonProperty', `"${propertyName}"`);
+            return `${annotation}\n${content}`;
           },
-          setter({ propertyName, content }) {
-            return `@JsonProperty("${propertyName}")
-${content}`;
+          setter({ renderer, propertyName, content }) {
+            const annotation = renderer.renderAnnotation('JsonProperty', `"${propertyName}"`);
+            return `${annotation}\n${content}`;
           },
         }
       }
@@ -287,8 +287,9 @@ public enum CustomEnum {
     generator = new JavaGenerator({ presets: [
       {
         enum: {
-          self({ content }) {
-            return `@EnumAnnotation\n${content}`;
+          self({ renderer, content }) {
+            const annotation = renderer.renderAnnotation('EnumAnnotation');
+            return `${annotation}\n${content}`;
           },
         }
       }
