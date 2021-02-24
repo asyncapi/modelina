@@ -92,8 +92,8 @@ ${lines.map(line => ` * ${line}`).join('\n')}
     return `${name}${signature};`;
   }
 
-  async runAdditionalPropertiesPreset(additionalProperties: CommonModel, parentModel: CommonModel): Promise<string> {
-    return this.runPreset('additionalProperties', { additionalProperties, parentModel });
+  async runAdditionalPropertiesPreset(): Promise<string> {
+    return this.runPreset('additionalProperties');
   }
 
   async runPropertyPreset(propertyName: string, property: CommonModel, parentModel: CommonModel): Promise<string> {
