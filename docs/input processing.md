@@ -7,8 +7,7 @@ As of now two inputs are supported:
 
 ## Internal model representation
 
-<img src="./assets/class_diagram.png"
-     alt="Class diagram" />
+![Class diagram](./assets/class_diagram.png)
 
 As seen on the class diagram the `InputProcessor` is our main point of entry for processing input data. 
 
