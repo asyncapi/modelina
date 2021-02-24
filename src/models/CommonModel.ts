@@ -191,7 +191,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
       }
     }
     if (this.properties !== undefined && Object.keys(this.properties).length) {
-      Object.entries(this.properties).forEach(([_, propertyModel]) => {
+      Object.entries(this.properties).forEach(([, propertyModel]) => {
         if (propertyModel.$ref !== undefined) {
           const filename = FormatHelpers.toPascalCase(propertyModel.$ref);
           dependsOn.push(filename);
