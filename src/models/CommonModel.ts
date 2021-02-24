@@ -1,3 +1,4 @@
+import { FormatHelpers } from '../helpers/FormatHelpers';
 import { CommonSchema } from './CommonSchema';
 import { Schema } from './Schema';
 
@@ -168,5 +169,35 @@ export class CommonModel extends CommonSchema<CommonModel> {
       return false;
     }
     return this.required.includes(propertyName);
+  }
+
+  /**
+   * This function returns an array of all the other models it depends on.
+   */
+  getDependsOn(): string[] {
+    const dependsOn = [];
+    if (this.additionalProperties instanceof CommonModel) {
+      const additionalPropertiesRef = (this.additionalProperties as CommonModel).$ref;
+      if (additionalPropertiesRef !== undefined) {
+        const filename = FormatHelpers.toPascalCase(additionalPropertiesRef);
+        dependsOn.push(filename);
+      }
+    }
+    if (this.items instanceof CommonModel) {
+      const itemsRef = (this.items as CommonModel).$ref;
+      if (itemsRef !== undefined) {
+        const filename = FormatHelpers.toPascalCase(itemsRef);
+        dependsOn.push(filename);
+      }
+    }
+    if (this.properties !== undefined && Object.keys(this.properties).length) {
+      Object.entries(this.properties).forEach(([_, propertyModel]) => {
+        if (propertyModel.$ref !== undefined) {
+          const filename = FormatHelpers.toPascalCase(propertyModel.$ref);
+          dependsOn.push(filename);
+        }
+      });
+    }
+    return dependsOn;
   }
 }

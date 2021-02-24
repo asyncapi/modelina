@@ -393,5 +393,18 @@ describe('CommonModel', function() {
         expect(d.isRequired("propX")).toEqual(false);
       });
     });
+
+    describe('getDependsOn', function() {
+      test('check that all dependencies are returned', function() {
+        const doc = { additionalProperties: { $ref: "1" }, items: { $ref: "2" }, properties: { testProp: { $ref: "3" } }  };
+        const d = CommonModel.toCommonModel(doc);
+        expect(d.getDependsOn()).toEqual(["1", "2", "3"]);
+      });
+      test('check that no dependencies is returned if there are none', function() {
+        const doc = {  };
+        const d = CommonModel.toCommonModel(doc);
+        expect(d.getDependsOn()).toEqual([]);
+      });
+    });
   });
 });
