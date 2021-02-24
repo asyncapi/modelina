@@ -84,6 +84,21 @@
 <dt><a href="#simplifyTypes">simplifyTypes(schema, seenSchemas)</a></dt>
 <dd><p>Find the types for a simplified version of a schema</p>
 </dd>
+<dt><a href="#inferTypeFromValue">inferTypeFromValue(value)</a></dt>
+<dd><p>Infers the JSON Schema type from value</p>
+</dd>
+<dt><a href="#inferTypes">inferTypes(schema, currentOutput)</a></dt>
+<dd><p>Infer types from enum and const values.</p>
+</dd>
+<dt><a href="#inferNotTypes">inferNotTypes(schema, currentOutput, seenSchemas)</a></dt>
+<dd><p>Infer which types the model should NOT be.</p>
+</dd>
+<dt><a href="#addToTypes">addToTypes(typesToAdd, currentOutput)</a></dt>
+<dd><p>Adds missing types to the array.</p>
+</dd>
+<dt><a href="#combineSchemas">combineSchemas(schema, currentOutput, seenSchemas)</a></dt>
+<dd><p>Go through schema(s) and combine the simplified types together.</p>
+</dd>
 <dt><a href="#isModelObject">isModelObject()</a></dt>
 <dd><p>check if CommonModel is a separate model or a simple model.</p>
 </dd>
@@ -576,6 +591,67 @@ Find the types for a simplified version of a schema
 | --- | --- |
 | schema | to find the simplified types for |
 | seenSchemas | already seen schemas and their corresponding output, this is to avoid circular schemas |
+
+<a name="inferTypeFromValue"></a>
+
+## inferTypeFromValue(value)
+Infers the JSON Schema type from value
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| value | to infer type of |
+
+<a name="inferTypes"></a>
+
+## inferTypes(schema, currentOutput)
+Infer types from enum and const values.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema | to go through |
+| currentOutput | the current output |
+
+<a name="inferNotTypes"></a>
+
+## inferNotTypes(schema, currentOutput, seenSchemas)
+Infer which types the model should NOT be.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema | to go through |
+| currentOutput | the current output |
+| seenSchemas | schemas which we already have outputs for |
+
+<a name="addToTypes"></a>
+
+## addToTypes(typesToAdd, currentOutput)
+Adds missing types to the array.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| typesToAdd | which types we should try and add to the existing output |
+| currentOutput | the current output |
+
+<a name="combineSchemas"></a>
+
+## combineSchemas(schema, currentOutput, seenSchemas)
+Go through schema(s) and combine the simplified types together.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema | to go through |
+| currentOutput | the current output |
+| seenSchemas | schemas which we already have outputs for |
 
 <a name="isModelObject"></a>
 
