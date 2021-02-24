@@ -50,7 +50,7 @@ The input process ensures that any supported input is handled correctly, the bas
 - [JSON Schema Draft 7](#JSON-Schema-input), this is the default inferred input if we cannot find a another input processor.
 - [AsyncAPI version 2.0.0](#AsyncAPI-input)
 
-Read more about the input process [here](./docs/input%20processing.md).
+Read more about the input process [here](./docs/input_processing.md).
 
 ### The generation process
 
