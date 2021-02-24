@@ -10,8 +10,6 @@ import path from 'path';
  * Class for processing JSON Schema
  */
 export class JsonSchemaInputProcessor extends AbstractInputProcessor {
-  private static MODELGEN_INFFERED_NAME = 'x-modelgen-inferred-name';
-
   /**
      * Function for processing a JSON Schema input.
      * 
