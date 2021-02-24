@@ -37,9 +37,10 @@ ${this.indent(this.renderBlock(content, 2))}
     }
 
     if (this.model.additionalProperties !== undefined && this.model.additionalProperties instanceof CommonModel) {
-      const getter = `getAdditionalProperty(key: string): ${this.renderType(this.model.additionalProperties)} { return _additionalProperties.get(key); }`;
-      const setter = `setAdditionalProperty(key: string, value: ${this.renderType(this.model.additionalProperties)}) { _additionalProperties.set(key, value); }`;
-      content.push(this.renderBlock([getter, setter]));
+      const getEverything = `get additionalProperties(): Record<string, ${this.renderType(this.model.additionalProperties)}> { return _additionalProperties; }`;
+      const getter = `get additionalProperty(key: string): ${this.renderType(this.model.additionalProperties)} { return _additionalProperties.get(key); }`;
+      const setter = `set additionalProperty(key: string, value: ${this.renderType(this.model.additionalProperties)}) { _additionalProperties.set(key, value); }`;
+      content.push(this.renderBlock([getEverything, getter, setter]));
     }
 
     return this.renderBlock(content, 2);
@@ -78,6 +79,9 @@ ${renderer.indent(renderer.renderBlock(assigments))}
   },
   property({ renderer, propertyName, property, parentModel }) {
     return `private _${renderer.renderProperty(propertyName, property, parentModel)}`;
+  },
+  additionalProperties({renderer, additionalProperties}) {
+    return `private _additionalProperties: Record<string, ${renderer.renderType(additionalProperties)}> = {};`;
   },
   getter({ renderer, propertyName, property }) {
     propertyName = FormatHelpers.toCamelCase(propertyName);

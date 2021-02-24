@@ -79,7 +79,7 @@ ${lines.map(line => ` * ${line}`).join('\n')}
     }
     
     if (this.model.additionalProperties !== undefined && this.model.additionalProperties instanceof CommonModel) {
-      const additionalProperty = `_additionalProperties: Record<string, ${this.renderType(this.model.additionalProperties)}> = {};`;
+      const additionalProperty = await this.runAdditionalPropertiesPreset(this.model.additionalProperties, this.model);
       content.push(additionalProperty);
     }
 
@@ -90,6 +90,10 @@ ${lines.map(line => ` * ${line}`).join('\n')}
     const name = FormatHelpers.toCamelCase(propertyName);
     const signature = this.renderTypeSignature(property, parentModel.isRequired(propertyName));
     return `${name}${signature};`;
+  }
+
+  async runAdditionalPropertiesPreset(additionalProperties: CommonModel, parentModel: CommonModel): Promise<string> {
+    return this.runPreset('additionalProperties', { additionalProperties, parentModel });
   }
 
   async runPropertyPreset(propertyName: string, property: CommonModel, parentModel: CommonModel): Promise<string> {

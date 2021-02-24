@@ -27,4 +27,7 @@ export const TS_DEFAULT_INTERFACE_PRESET: InterfacePreset<InterfaceRenderer> = {
   property({ renderer, propertyName, property, parentModel }) {
     return renderer.renderProperty(propertyName, property, parentModel);
   },
+  additionalProperties({renderer, additionalProperties}) {
+    return `additionalProperties: Record<string, ${renderer.renderType(additionalProperties)}>;`;
+  },
 };
