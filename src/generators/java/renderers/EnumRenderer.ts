@@ -1,6 +1,6 @@
 import { JavaRenderer } from '../JavaRenderer';
 
-import { CommonModel, EnumPreset } from '../../../models';
+import { EnumPreset } from '../../../models';
 import { FormatHelpers } from '../../../helpers';
 
 /**
@@ -15,7 +15,8 @@ export class EnumRenderer extends JavaRenderer {
       await this.runAdditionalContentPreset(),
     ];
 
-    return `public enum ${this.model.$id} {
+    const formattedName = this.model.$id && FormatHelpers.toPascalCase(this.model.$id);
+    return `public enum ${formattedName} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
   }
@@ -25,7 +26,7 @@ ${this.indent(this.renderBlock(content, 2))}
     const items: string[] = [];
 
     for (const value of enums) {
-      const renderedItem = await this.runItemPreset(value, this.model);
+      const renderedItem = await this.runItemPreset(value);
       items.push(renderedItem);
     }
 
@@ -55,8 +56,8 @@ ${this.indent(this.renderBlock(content, 2))}
     }
   }
 
-  async runItemPreset(item: any, parentModel: CommonModel): Promise<string> {
-    return this.runPreset('item', { item, parentModel });
+  async runItemPreset(item: any): Promise<string> {
+    return this.runPreset('item', { item });
   }
 }
 

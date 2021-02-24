@@ -1,6 +1,7 @@
 import { TypeScriptRenderer } from '../TypeScriptRenderer';
 
 import { InterfacePreset } from '../../../models';
+import { FormatHelpers } from '../../../helpers';
 
 /**
  * Renderer for TypeScript's `interface` type
@@ -14,7 +15,8 @@ export class InterfaceRenderer extends TypeScriptRenderer {
       await this.runAdditionalContentPreset(),
     ];
 
-    return `interface ${this.model.$id} {
+    const formattedName = this.model.$id && FormatHelpers.toPascalCase(this.model.$id);
+    return `interface ${formattedName} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
   }
@@ -24,7 +26,7 @@ export const TS_DEFAULT_INTERFACE_PRESET: InterfacePreset<InterfaceRenderer> = {
   async self({ renderer }) {
     return `export ${await renderer.defaultSelf()}`;
   },
-  property({ renderer, propertyName, property, parentModel }) {
-    return renderer.renderProperty(propertyName, property, parentModel);
+  property({ renderer, propertyName, property }) {
+    return renderer.renderProperty(propertyName, property);
   },
 };

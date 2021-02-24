@@ -16,7 +16,6 @@ export interface CommonPreset<R extends AbstractRenderer, O extends object = any
 }
 
 export interface PropertyArgs {
-  parentModel: CommonModel;
   propertyName: string;
   property: CommonModel;
 }
@@ -33,7 +32,6 @@ export interface InterfacePreset<R extends AbstractRenderer, O extends object = 
 }
 
 export interface EnumArgs {
-  parentModel: CommonModel;
   item: any;
 }
 

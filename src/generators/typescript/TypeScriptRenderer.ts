@@ -36,7 +36,7 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
     if (type === undefined) {
       return 'any';
     }
-    switch (type) {
+    switch (type) { 
     case 'string':
       return 'string';
     case 'integer':
@@ -54,12 +54,22 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
     }
   }
 
-  renderTypeSignature(type: CommonModel | CommonModel[], isRequired = true): string {
+  renderTypeSignature(type: CommonModel | CommonModel[], {
+    isRequired = true,
+    orUndefined = false,
+  }: {
+    isRequired?: boolean;
+    orUndefined?: boolean;
+  } = {}): string {
     if (this.options.renderTypes === false) {
       return '';
     }
+
     const annotation = isRequired ? ':' : '?:';
-    return `${annotation} ${this.renderType(type)}`;
+    let t = this.renderType(type);
+    t = orUndefined ? `${t} | undefined` : t;
+
+    return `${annotation} ${t}`;
   }
 
   renderComments(lines: string | string[]): string {
@@ -74,20 +84,20 @@ ${lines.map(line => ` * ${line}`).join('\n')}
     const content: string[] = [];
 
     for (const [propertyName, property] of Object.entries(properties)) {
-      const rendererProperty = await this.runPropertyPreset(propertyName, property, this.model);
+      const rendererProperty = await this.runPropertyPreset(propertyName, property);
       content.push(rendererProperty);
     }
 
     return this.renderBlock(content);
   }
 
-  renderProperty(propertyName: string, property: CommonModel, parentModel: CommonModel): string {
+  renderProperty(propertyName: string, property: CommonModel): string {
     const name = FormatHelpers.toCamelCase(propertyName);
-    const signature = this.renderTypeSignature(property, parentModel.isRequired(propertyName));
+    const signature = this.renderTypeSignature(property, { isRequired: this.model.isRequired(propertyName) });
     return `${name}${signature};`;
   }
 
-  async runPropertyPreset(propertyName: string, property: CommonModel, parentModel: CommonModel): Promise<string> {
-    return this.runPreset('property', { propertyName, property, parentModel });
+  async runPropertyPreset(propertyName: string, property: CommonModel): Promise<string> {
+    return this.runPreset('property', { propertyName, property });
   }
 }
