@@ -28,7 +28,7 @@ This package is under development and it has not reached version 1.0.0 yet, whic
   * [The simplification process](#the-simplification-process)
   * [The generatiion process](#the-generatiion-process)
 - [Example](#example)
-- [Customization](#customization)
+- [Customisation](#customisation)
 - [Development](#development)
 - [Contributing](#contributing)
 
