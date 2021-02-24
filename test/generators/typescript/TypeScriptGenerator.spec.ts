@@ -71,9 +71,10 @@ describe('TypeScriptGenerator', function() {
   get arrayType(): Array<string | number> { return this._arrayType; }
   set arrayType(arrayType: Array<string | number>) { this._arrayType = arrayType; }
 
-  get additionalProperties(): Record<string, object | string | number | Array<unknown> | boolean | null> { return _additionalProperties; }
-  get additionalProperty(key: string): object | string | number | Array<unknown> | boolean | null { return _additionalProperties.get(key); }
-  set additionalProperty(key: string, value: object | string | number | Array<unknown> | boolean | null) { _additionalProperties.set(key, value); }
+  get additionalProperties(): Record<string, object | string | number | Array<unknown> | boolean | null> { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Record<string, object | string | number | Array<unknown> | boolean | null>) { this._additionalProperties = additionalProperties; }
+  getAdditionalProperty(key: string): object | string | number | Array<unknown> | boolean | null { return this._additionalProperties[key]}
+  setAdditionalProperty(key: string, value: (object | string | number | Array<unknown> | boolean | null)) { this._additionalProperties[key] = value; }
 }`;
 
     const inputModel = await generator.process(doc);
@@ -108,10 +109,10 @@ describe('TypeScriptGenerator', function() {
   get property(): string { return this._property; }
   set property(property: string) { this._property = property; }
 
-
-  get additionalProperties(): Record<string, object | string | number | Array<unknown> | boolean | null> { return _additionalProperties; }
-  get additionalProperty(key: string): object | string | number | Array<unknown> | boolean | null { return _additionalProperties.get(key); }
-  set additionalProperty(key: string, value: object | string | number | Array<unknown> | boolean | null) { _additionalProperties.set(key, value); }
+  get additionalProperties(): Record<string, object | string | number | Array<unknown> | boolean | null> { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Record<string, object | string | number | Array<unknown> | boolean | null>) { this._additionalProperties = additionalProperties; }
+  getAdditionalProperty(key: string): object | string | number | Array<unknown> | boolean | null { return this._additionalProperties[key]}
+  setAdditionalProperty(key: string, value: (object | string | number | Array<unknown> | boolean | null)) { this._additionalProperties[key] = value; }
 }`;
 
     generator = new TypeScriptGenerator({ presets: [

@@ -37,10 +37,11 @@ ${this.indent(this.renderBlock(content, 2))}
     }
 
     if (this.model.additionalProperties !== undefined && this.model.additionalProperties instanceof CommonModel) {
-      const getEverything = `get additionalProperties(): Record<string, ${this.renderType(this.model.additionalProperties)}> { return _additionalProperties; }`;
-      const getter = `get additionalProperty(key: string): ${this.renderType(this.model.additionalProperties)} { return _additionalProperties.get(key); }`;
-      const setter = `set additionalProperty(key: string, value: ${this.renderType(this.model.additionalProperties)}) { _additionalProperties.set(key, value); }`;
-      content.push(this.renderBlock([getEverything, getter, setter]));
+      const getter = `get additionalProperties(): Record<string, ${this.renderType(this.model.additionalProperties)}> { return this._additionalProperties; }`;
+      const setter = `set additionalProperties(additionalProperties: Record<string, ${this.renderType(this.model.additionalProperties)}>) { this._additionalProperties = additionalProperties; }`;
+      const getSingleProperty = `getAdditionalProperty(key: string): ${this.renderType(this.model.additionalProperties)} { return this._additionalProperties[key]}`;
+      const setSingleProperty = `setAdditionalProperty(key: string, value: ${this.renderType(this.model.additionalProperties)}) { this._additionalProperties[key] = value; }`;
+      content.push(this.renderBlock([getter, setter, getSingleProperty, setSingleProperty]));
     }
 
     return this.renderBlock(content, 2);
