@@ -42,20 +42,62 @@
 <dt><a href="#simplifyEnums">simplifyEnums(schema, seenSchemas)</a></dt>
 <dd><p>Find the enums for a simplified version of a schema</p>
 </dd>
+<dt><a href="#ensureNotEnumsAreRemoved">ensureNotEnumsAreRemoved(schema, existingEnums, seenSchemas)</a></dt>
+<dd><p>Ensure enums in not are never included.</p>
+</dd>
+<dt><a href="#handleCombinationSchemas">handleCombinationSchemas(schemas, existingEnums, seenSchemas)</a></dt>
+<dd><p>Ensuring all enums inside combination schemas are added</p>
+</dd>
+<dt><a href="#addToEnums">addToEnums(enumsToCheck, existingEnums)</a></dt>
+<dd><p>Tries to add enums if they don&#39;t already exist</p>
+</dd>
 <dt><a href="#simplifyExtend">simplifyExtend(schema)</a></dt>
-<dd><p>Find out which common models we should extend</p>
+<dd><p>Find out which CommonModels we should extend</p>
+</dd>
+<dt><a href="#tryAddExtends">tryAddExtends(simplifiedModels, extendingSchemas)</a></dt>
+<dd><p>Figure out if the simplified models should be extended</p>
 </dd>
 <dt><a href="#simplifyItems">simplifyItems(schema, simplifier, seenSchemas)</a></dt>
 <dd><p>Find the items for a simplified version of a schema</p>
 </dd>
+<dt><a href="#combineSchemas">combineSchemas(schema, currentOutput, simplifier, seenSchemas)</a></dt>
+<dd><p>Go through schema(s) and combine the simplified items together.</p>
+</dd>
+<dt><a href="#mergeWithCurrentModel">mergeWithCurrentModel(model, schema, currentOutput)</a></dt>
+<dd><p>Merge common models together</p>
+</dd>
+<dt><a href="#simplifyName">simplifyName(schema)</a></dt>
+<dd><p>Find the name for simplified version of schema</p>
+</dd>
 <dt><a href="#simplifyProperties">simplifyProperties(schema, simplifier, seenSchemas)</a></dt>
 <dd><p>Simplifier function for finding the simplified version of properties.</p>
+</dd>
+<dt><a href="#addToProperty">addToProperty(propName, propModel, schema, currentModel)</a></dt>
+<dd><p>Adds a property to the model</p>
+</dd>
+<dt><a href="#combineSchemas">combineSchemas(schema, currentModel, simplifier, seenSchemas, rootSchema)</a></dt>
+<dd><p>Go through schema(s) and combine the simplified properties together.</p>
 </dd>
 <dt><a href="#simplifyRequired">simplifyRequired(schema, seenSchemas)</a></dt>
 <dd><p>Find the required array for a simplified version of a schema</p>
 </dd>
 <dt><a href="#simplifyTypes">simplifyTypes(schema, seenSchemas)</a></dt>
 <dd><p>Find the types for a simplified version of a schema</p>
+</dd>
+<dt><a href="#inferTypeFromValue">inferTypeFromValue(value)</a></dt>
+<dd><p>Infers the JSON Schema type from value</p>
+</dd>
+<dt><a href="#inferTypes">inferTypes(schema, currentOutput)</a></dt>
+<dd><p>Infer types from enum and const values.</p>
+</dd>
+<dt><a href="#inferNotTypes">inferNotTypes(schema, currentOutput, seenSchemas)</a></dt>
+<dd><p>Infer which types the model should NOT be.</p>
+</dd>
+<dt><a href="#addToTypes">addToTypes(typesToAdd, currentOutput)</a></dt>
+<dd><p>Adds missing types to the array.</p>
+</dd>
+<dt><a href="#combineSchemas">combineSchemas(schema, currentOutput, seenSchemas)</a></dt>
+<dd><p>Go through schema(s) and combine the simplified types together.</p>
 </dd>
 <dt><a href="#isModelObject">isModelObject()</a></dt>
 <dd><p>check if CommonModel is a separate model or a simple model.</p>
@@ -94,7 +136,9 @@ Common representation for the renderers.
         * [.isRequired(propertyName)](#CommonModel+isRequired) ⇒ <code>boolean</code>
     * _static_
         * [.toCommonModel(object)](#CommonModel.toCommonModel) ⇒
-        * [.mergeCommonModels(mergeTo, mergeFrom)](#CommonModel.mergeCommonModels)
+        * [.mergeItems(mergeTo, mergeFrom, originalSchema)](#CommonModel.mergeItems)
+        * [.mergeTypes(mergeTo, mergeFrom)](#CommonModel.mergeTypes)
+        * [.mergeCommonModels(mergeTo, mergeFrom, originalSchema)](#CommonModel.mergeCommonModels)
 
 <a name="CommonModel+getFromSchema"></a>
 
@@ -130,9 +174,34 @@ Transform object into a type of CommonModel.
 | --- | --- |
 | object | to transform |
 
+<a name="CommonModel.mergeItems"></a>
+
+### CommonModel.mergeItems(mergeTo, mergeFrom, originalSchema)
+Merge items together so only one CommonModel remains.
+
+**Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
+
+| Param | Description |
+| --- | --- |
+| mergeTo | CommonModel to merge types into |
+| mergeFrom | CommonModel to merge from |
+| originalSchema |  |
+
+<a name="CommonModel.mergeTypes"></a>
+
+### CommonModel.mergeTypes(mergeTo, mergeFrom)
+Merge types together
+
+**Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
+
+| Param | Description |
+| --- | --- |
+| mergeTo | CommonModel to merge types into |
+| mergeFrom | CommonModel to merge from |
+
 <a name="CommonModel.mergeCommonModels"></a>
 
-### CommonModel.mergeCommonModels(mergeTo, mergeFrom)
+### CommonModel.mergeCommonModels(mergeTo, mergeFrom, originalSchema)
 Only merge if left side is undefined and right side is sat OR both sides are defined
 
 **Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
@@ -141,6 +210,7 @@ Only merge if left side is undefined and right side is sat OR both sides are def
 | --- | --- |
 | mergeTo | CommonModel to merge into |
 | mergeFrom | CommonModel to merge values from |
+| originalSchema | schema to use as original schema |
 
 <a name="CommonSchema"></a>
 
@@ -236,6 +306,8 @@ Class for processing JSON Schema
         * [.shouldProcess(input)](#JsonSchemaInputProcessor+shouldProcess)
         * [.processDraft7(input)](#JsonSchemaInputProcessor+processDraft7)
     * _static_
+        * [.reflectSchemaNames(schema, namesStack, name, isRoot)](#JsonSchemaInputProcessor.reflectSchemaNames)
+        * [.ensureNamePattern(previousName, ...newParts)](#JsonSchemaInputProcessor.ensureNamePattern)
         * [.convertSchemaToCommonModel(schema)](#JsonSchemaInputProcessor.convertSchemaToCommonModel)
 
 <a name="JsonSchemaInputProcessor+process"></a>
@@ -270,6 +342,32 @@ Process a draft 7 schema
 | Param | Description |
 | --- | --- |
 | input | to process as draft 7 |
+
+<a name="JsonSchemaInputProcessor.reflectSchemaNames"></a>
+
+### JsonSchemaInputProcessor.reflectSchemaNames(schema, namesStack, name, isRoot)
+Reflect name from given schema and save it to `x-modelgen-inferred-name` extension.
+
+**Kind**: static method of [<code>JsonSchemaInputProcessor</code>](#JsonSchemaInputProcessor)  
+
+| Param | Description |
+| --- | --- |
+| schema | to process |
+| namesStack | is a aggegator of previous used names |
+| name | to infer |
+| isRoot | indicates if performed schema is a root schema |
+
+<a name="JsonSchemaInputProcessor.ensureNamePattern"></a>
+
+### JsonSchemaInputProcessor.ensureNamePattern(previousName, ...newParts)
+Ensure schema name using previous name and new part
+
+**Kind**: static method of [<code>JsonSchemaInputProcessor</code>](#JsonSchemaInputProcessor)  
+
+| Param | Description |
+| --- | --- |
+| previousName | to concatenate with |
+| ...newParts |  |
 
 <a name="JsonSchemaInputProcessor.convertSchemaToCommonModel"></a>
 
@@ -316,16 +414,66 @@ Find the enums for a simplified version of a schema
 | schema | to find the simplified enums for |
 | seenSchemas | already seen schemas and their corresponding output, this is to avoid circular schemas |
 
+<a name="ensureNotEnumsAreRemoved"></a>
+
+## ensureNotEnumsAreRemoved(schema, existingEnums, seenSchemas)
+Ensure enums in not are never included.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema | currently searching in |
+| existingEnums | which have already been found |
+| seenSchemas | already seen schemas and their respectable output |
+
+<a name="handleCombinationSchemas"></a>
+
+## handleCombinationSchemas(schemas, existingEnums, seenSchemas)
+Ensuring all enums inside combination schemas are added
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schemas | to search in |
+| existingEnums | which have already been found |
+| seenSchemas | already seen schemas and their respectable output |
+
+<a name="addToEnums"></a>
+
+## addToEnums(enumsToCheck, existingEnums)
+Tries to add enums if they don't already exist
+
+**Kind**: global function  
+
+| Param |
+| --- |
+| enumsToCheck | 
+| existingEnums | 
+
 <a name="simplifyExtend"></a>
 
 ## simplifyExtend(schema)
-Find out which common models we should extend
+Find out which CommonModels we should extend
 
 **Kind**: global function  
 
 | Param | Description |
 | --- | --- |
 | schema | to find extends of |
+
+<a name="tryAddExtends"></a>
+
+## tryAddExtends(simplifiedModels, extendingSchemas)
+Figure out if the simplified models should be extended
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| simplifiedModels | to check if we need to extend |
+| extendingSchemas | already extended CommonModels |
 
 <a name="simplifyItems"></a>
 
@@ -340,6 +488,44 @@ Find the items for a simplified version of a schema
 | simplifier | the simplifier instance |
 | seenSchemas | already seen schemas and their corresponding output, this is to avoid circular schemas |
 
+<a name="combineSchemas"></a>
+
+## combineSchemas(schema, currentOutput, simplifier, seenSchemas)
+Go through schema(s) and combine the simplified items together.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema | to go through |
+| currentOutput | the current output |
+| simplifier | the simplifier to use |
+| seenSchemas | schemas which we already have outputs for |
+
+<a name="mergeWithCurrentModel"></a>
+
+## mergeWithCurrentModel(model, schema, currentOutput)
+Merge common models together
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| model | to merge from |
+| schema | it is from |
+| currentOutput | to merge into |
+
+<a name="simplifyName"></a>
+
+## simplifyName(schema)
+Find the name for simplified version of schema
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema | to find the name |
+
 <a name="simplifyProperties"></a>
 
 ## simplifyProperties(schema, simplifier, seenSchemas)
@@ -352,6 +538,35 @@ Simplifier function for finding the simplified version of properties.
 | schema | the schema to simplify properties for |
 | simplifier | the simplifier instance |
 | seenSchemas | already seen schemas and their corresponding output, this is to avoid circular schemas |
+
+<a name="addToProperty"></a>
+
+## addToProperty(propName, propModel, schema, currentModel)
+Adds a property to the model
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| propName | name of the property |
+| propModel | the corresponding model |
+| schema | the schema for the model |
+| currentModel | the current output |
+
+<a name="combineSchemas"></a>
+
+## combineSchemas(schema, currentModel, simplifier, seenSchemas, rootSchema)
+Go through schema(s) and combine the simplified properties together.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema | to go through |
+| currentModel | the current output |
+| simplifier | the simplifier to use |
+| seenSchemas | schemas which we already have outputs for |
+| rootSchema | the root schema we are combining schemas for |
 
 <a name="simplifyRequired"></a>
 
@@ -376,6 +591,67 @@ Find the types for a simplified version of a schema
 | --- | --- |
 | schema | to find the simplified types for |
 | seenSchemas | already seen schemas and their corresponding output, this is to avoid circular schemas |
+
+<a name="inferTypeFromValue"></a>
+
+## inferTypeFromValue(value)
+Infers the JSON Schema type from value
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| value | to infer type of |
+
+<a name="inferTypes"></a>
+
+## inferTypes(schema, currentOutput)
+Infer types from enum and const values.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema | to go through |
+| currentOutput | the current output |
+
+<a name="inferNotTypes"></a>
+
+## inferNotTypes(schema, currentOutput, seenSchemas)
+Infer which types the model should NOT be.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema | to go through |
+| currentOutput | the current output |
+| seenSchemas | schemas which we already have outputs for |
+
+<a name="addToTypes"></a>
+
+## addToTypes(typesToAdd, currentOutput)
+Adds missing types to the array.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| typesToAdd | which types we should try and add to the existing output |
+| currentOutput | the current output |
+
+<a name="combineSchemas"></a>
+
+## combineSchemas(schema, currentOutput, seenSchemas)
+Go through schema(s) and combine the simplified types together.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema | to go through |
+| currentOutput | the current output |
+| seenSchemas | schemas which we already have outputs for |
 
 <a name="isModelObject"></a>
 

@@ -26,7 +26,8 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
     if (model.$ref !== undefined) {
       return model.$ref;
     }
-    return this.toClassType(this.toJavaType(model.type, model));
+    const format = model.getFromSchema('format');
+    return this.toClassType(this.toJavaType(format || model.type, model));
   }
 
   toJavaType(type: string | undefined, model: CommonModel): string {
@@ -83,16 +84,28 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
     }
   }
 
-  renderAnnotation(annotation: any): string;
-  renderAnnotation(annotations: Array<any>): string;
-  renderAnnotation(annotation: Array<any> | any): string {
-    if (Array.isArray(annotation)) {
-      return annotation.map(ann => this.renderAnnotation(ann)).join(' ');
+  renderComments(lines: string | string[]): string {
+    lines = FormatHelpers.breakLines(lines);
+    return `/**
+${lines.map(line => ` * ${line}`).join('\n')}
+ */`;
+  }
+
+  renderAnnotation(annotationName: string, value?: any | Record<string, any>): string {
+    const name = `@${FormatHelpers.upperFirst(annotationName)}`;
+    let values = undefined;
+    if (value !== undefined) {
+      if (typeof value === 'object') {
+        values = Object.entries(value || {}).map(([paramName, value]) => {
+          if (paramName && value !== undefined) {
+            return `${paramName}=${value}`;
+          }
+          return value;
+        }).filter(v => v !== undefined).join(', ');
+      } else {
+        values = `${value}`;
+      }
     }
-    const name = `@${FormatHelpers.upperFirst(annotation.name)}`;
-    if (annotation.body) {
-      return `${name}(${annotation.body})`;
-    }
-    return name;
+    return values !== undefined ? `${name}(${values})` : name;
   }
 }

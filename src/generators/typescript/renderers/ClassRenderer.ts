@@ -17,7 +17,8 @@ export class ClassRenderer extends TypeScriptRenderer {
       await this.runAdditionalContentPreset(),
     ];
 
-    return `class ${this.model.$id} {
+    const formattedName = this.model.$id && FormatHelpers.toPascalCase(this.model.$id);
+    return `class ${formattedName} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
   }
@@ -31,50 +32,59 @@ ${this.indent(this.renderBlock(content, 2))}
     const content: string[] = [];
 
     for (const [propertyName, property] of Object.entries(properties)) {
-      const getter = await this.runGetterPreset(propertyName, property, this.model);
-      const setter = await this.runSetterPreset(propertyName, property, this.model);
+      const getter = await this.runGetterPreset(propertyName, property);
+      const setter = await this.runSetterPreset(propertyName, property);
       content.push(this.renderBlock([getter, setter]));
     }
 
     return this.renderBlock(content, 2);
   }
 
-  runGetterPreset(propertyName: string, property: CommonModel, parentModel: CommonModel): Promise<string> {
-    return this.runPreset('getter', { propertyName, property, parentModel });
+  runGetterPreset(propertyName: string, property: CommonModel): Promise<string> {
+    return this.runPreset('getter', { propertyName, property });
   }
 
-  runSetterPreset(propertyName: string, property: CommonModel, parentModel: CommonModel): Promise<string> {
-    return this.runPreset('setter', { propertyName, property, parentModel });
+  runSetterPreset(propertyName: string, property: CommonModel): Promise<string> {
+    return this.runPreset('setter', { propertyName, property });
   }
 }
 
 export const TS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
-  self({ renderer }) {
-    return renderer.defaultSelf();
+  async self({ renderer }) {
+    return `export ${await renderer.defaultSelf()}`;
   },
   ctor({ renderer, model }) {
     const properties = model.properties || {};
     const assigments = Object.keys(properties).map(property => {
       property = FormatHelpers.toCamelCase(property);
-      return `this.${property} = input.${property};`;
+      return `this._${property} = input.${property};`;
     });
+    const ctorProperties: string[] = [];
+    for (const [propertyName, property] of Object.entries(properties)) {
+      const rendererProperty = renderer.renderProperty(propertyName, property).replace(';', ',');
+      ctorProperties.push(rendererProperty);
+    }
 
-    return `constructor(input: ${model.$id}Input) {
+    return `constructor(input: {
+${renderer.indent(renderer.renderBlock(ctorProperties))}
+}) {
 ${renderer.indent(renderer.renderBlock(assigments))}
 }`;
   },
-  property({ renderer, propertyName, property, parentModel }) {
-    return `private ${renderer.renderProperty(propertyName, property, parentModel)}`;
+  property({ renderer, propertyName, property }) {
+    return `private _${renderer.renderProperty(propertyName, property)}`;
   },
-  getter({ renderer, propertyName, property }) {
-    propertyName = FormatHelpers.toCamelCase(propertyName);
-    const signature = renderer.renderTypeSignature(property);
-    return `get ${propertyName}()${signature} { return this.${propertyName}; }`;
+  getter({ renderer, model, propertyName, property }) {
+    const isRequired = model.isRequired(propertyName);
+    const formattedName = FormatHelpers.toCamelCase(propertyName);
+    const signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });
+    return `get ${formattedName}()${signature} { return this._${formattedName}; }`;
   },
-  setter({ renderer, propertyName, property }) {
-    propertyName = FormatHelpers.toCamelCase(propertyName);
-    const signature = renderer.renderTypeSignature(property);
-    const arg = `${propertyName}${signature}`;
-    return `set ${propertyName}(${arg}) { this.${propertyName} = ${propertyName}; }`;
+  setter({ renderer, model, propertyName, property }) {
+    const isRequired = model.isRequired(propertyName);
+    const formattedName = FormatHelpers.toCamelCase(propertyName);
+    const signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });
+    const arg = `${formattedName}${signature}`;
+    return `set ${formattedName}(${arg}) { this._${formattedName} = ${formattedName}; }`;
   },
 };
