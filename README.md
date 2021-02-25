@@ -41,24 +41,21 @@ Run this command to install the SDK in your project:
 ```bash
 npm install --save @asyncapi/generator-model-sdk
 ```
-
 ## How it works
 
-The process of creating data models from input data consists of three main process: transformation input data to JSON Schema, simplification and generation.
+The process of creating data models from input data consists of 2 processes, the input and generation process.
 
-### The transformation process
+### The input process
 
-The transformation process starts from checking what type of input data is provided and based on that it is processed differently. Currently JSON Schema Draft 7 and AsyncAPI version 2.0.0 are supported. It is also in this stage that references are resolved and schemas are named. Each input data must be converted to JSON Schema or be a subset of JSON Schema (like AsyncAPI spec) to go to the next process - the simplification stage.
+The input process ensures that any supported input is handled correctly, the basics are that any input needs to be converted into our internal model representation `CommonModel`. The following inputs are supported:
+- [JSON Schema Draft 7](#JSON-Schema-input), this is the default inferred input if we cannot find a another input processor.
+- [AsyncAPI version 2.0.0](#AsyncAPI-input)
 
-### The simplification process
+Read more about the input process [here](./docs/input_processing.md).
 
-In order to simplify the model generation process as much as possible, AsyncAPI Model SDK simplifies the transformed JSON schema into `CommonModel`s, which contain information about the type of model it is, what properties it might have, etc, so finally we have a bare minimum schema. Think of it like converting data validation rules (JSON Schema) to a data definition.
+### The generation process
 
-Read [this](./docs/simplification.md) document for more information.
-
-### The generatiion process
-
-The generation process uses the predefined `CommonModel`s from the simplification stage to easily generate models. The AsyncAPI Model SDK generator support the following languages:
+The generation process uses the predefined `CommonModel`s from the input stage to easily generate models regardless of input. The generator support the following output languages:
 
 - JavaScript
 - TypeScript
@@ -92,7 +89,7 @@ const doc = {
 
 const interfaceModel = await generator.generate(doc);
 
-// interfaceModel should have the shape:
+// interfaceModel[0] should have the shape:
 interface Address {
   streetName: string;
   city: string;
@@ -102,6 +99,25 @@ interface Address {
   petNames?: Array<string>;
   state?: "Texas" | "Alabama" | "California" | "other";
 }
+```
+## Supported input
+These are the supported inputs.
+### AsyncAPI input
+The library expects the `asyncapi` property for the document to be sat in order to understand the input format.
+- Generate from a [parsed AsyncAPI document](https://github.com/asyncapi/parser-js)
+```js
+const parser = require('@asyncapi/parser');
+const doc = await parser.parse(`{asyncapi: '2.0.0'}`);
+generator.generate(doc);
+```
+- Generate from a pure JS object
+```js
+generator.generate({asyncapi: '2.0.0'});
+```
+### JSON Schema input
+- Generate from a pure JS object
+```js
+generator.generate({$schema: 'http://json-schema.org/draft-07/schema#'});
 ```
 
 ## Customisation
