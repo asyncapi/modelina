@@ -12,7 +12,7 @@ import simplifyName from './SimplifyName';
 
 export class Simplifier {
   static defaultOptions: SimplificationOptions = {
-    allowInheritance: true
+    allowInheritance: false
   }
 
   private anonymCounter = 1;
@@ -148,7 +148,7 @@ export class Simplifier {
  * 
  * @param schema to simplify
  */
-export function simplify(schema: Schema | boolean): CommonModel[] {
-  const simplifier = new Simplifier();
+export function simplify(schema: Schema | boolean, options?: SimplificationOptions): CommonModel[] {
+  const simplifier = new Simplifier(options);
   return simplifier.simplify(schema);
 }
