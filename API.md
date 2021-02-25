@@ -134,6 +134,7 @@ Common representation for the renderers.
     * _instance_
         * [.getFromSchema(key)](#CommonModel+getFromSchema) ⇒ <code>any</code>
         * [.isRequired(propertyName)](#CommonModel+isRequired) ⇒ <code>boolean</code>
+        * [.getImmediateDependencies()](#CommonModel+getImmediateDependencies)
     * _static_
         * [.toCommonModel(object)](#CommonModel.toCommonModel) ⇒
         * [.mergeItems(mergeTo, mergeFrom, originalSchema)](#CommonModel.mergeItems)
@@ -162,6 +163,12 @@ Checks if given property name is required in object
 | --- | --- |
 | propertyName | given property name |
 
+<a name="CommonModel+getImmediateDependencies"></a>
+
+### commonModel.getImmediateDependencies()
+This function returns an array of `$id`s from all the CommonModel's it immediate depends on.
+
+**Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
 <a name="CommonModel.toCommonModel"></a>
 
 ### CommonModel.toCommonModel(object) ⇒

@@ -7,8 +7,8 @@ import { Schema } from './Schema';
  * @extends CommonSchema<CommonModel>
  */
 export class CommonModel extends CommonSchema<CommonModel> {
-  extend?: string[]
-  originalSchema?: Schema | boolean
+  extend?: string[];
+  originalSchema?: Schema | boolean;
   
   /**
    * Transform object into a type of CommonModel.
@@ -168,5 +168,37 @@ export class CommonModel extends CommonSchema<CommonModel> {
       return false;
     }
     return this.required.includes(propertyName);
+  }
+
+  /**
+   * This function returns an array of `$id`s from all the CommonModel's it immediate depends on.
+   */
+  getImmediateDependencies(): string[] {
+    const dependsOn = [];
+    if (this.additionalProperties instanceof CommonModel) {
+      const additionalPropertiesRef = (this.additionalProperties as CommonModel).$ref;
+      if (additionalPropertiesRef !== undefined) {
+        dependsOn.push(additionalPropertiesRef);
+      }
+    }
+    if (this.extend !== undefined) {
+      for (const extendedSchema of this.extend) {
+        dependsOn.push(extendedSchema);
+      }
+    }
+    if (this.items instanceof CommonModel) {
+      const itemsRef = (this.items as CommonModel).$ref;
+      if (itemsRef !== undefined) {
+        dependsOn.push(itemsRef);
+      }
+    }
+    if (this.properties !== undefined && Object.keys(this.properties).length) {
+      Object.entries(this.properties).forEach(([, propertyModel]) => {
+        if (propertyModel.$ref !== undefined) {
+          dependsOn.push(propertyModel.$ref);
+        }
+      });
+    }
+    return dependsOn;
   }
 }
