@@ -5,12 +5,15 @@ import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
 import { CommonInputModel } from '../models/CommonInputModel';
 import { Schema } from '../models/Schema';
 
+/**
+ * Class for processing AsyncAPI inputs
+ */
 export class AsyncAPIInputProcessor extends AbstractInputProcessor {
   /**
-     * Process the input as an AsyncAPI document
-     * 
-     * @param input 
-     */
+   * Process the input as an AsyncAPI document
+   * 
+   * @param input 
+   */
   async process(input: any): Promise<CommonInputModel> {
     if (!this.shouldProcess(input)) throw new Error('Input is not an AsyncAPI document so it cannot be processed.');
     let doc: AsyncAPIDocument;
@@ -128,10 +131,10 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     return convertedSchema;
   }
   /**
-     * Figures out if an object is of type AsyncAPI document
-     * 
-     * @param input 
-     */
+	 * Figures out if an object is of type AsyncAPI document
+	 * 
+	 * @param input 
+	 */
   shouldProcess(input: any) : boolean {
     //Check if we got a parsed document from out parser
     //Check if we just got provided a pure object
@@ -142,10 +145,10 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
   }
 
   /**
-     * Figure out if input is from our parser.
-     * 
-     * @param input 
-     */
+   * Figure out if input is from our parser.
+   * 
+   * @param input 
+   */
   static isFromParser(input: any) {
     if (input._json !== undefined && 
             input._json.asyncapi !== undefined && 

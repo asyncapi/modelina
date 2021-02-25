@@ -2,9 +2,19 @@ import { CommonSchema } from './CommonSchema';
 import { Schema } from './Schema';
 
 /**
- * Common representation for the renderers.
+ * Common internal representation for a model.
  * 
  * @extends CommonSchema<CommonModel>
+ * @property {string} $id define the id/name of the model.
+ * @property {string | string[]} type this is the different types for the model. All types from JSON Schema are used with no custom ones added.
+ * @property {any[]} enum defines the different enums for the model, constant values are included here
+ * @property {CommonModel | CommonModel[]} items defines the type for `array` models as `CommonModel`.
+ * @property {Record<string, CommonModel>} properties defines the properties and its expected types as `CommonModel`.
+ * @property {CommonModel} additionalProperties are used to define if any extra properties are allowed, also defined as a  `CommonModel`.
+ * @property {string} $ref is a reference to another `CommonModel` by using`$id` as a simple string.
+ * @property {string[]} required list of required properties.
+ * @property {string[]} extend list of other `CommonModel`s this model extends, is an array of `$id` strings.
+ * @property {Schema | boolean} originalSchema the actual input for which this model represent.
  */
 export class CommonModel extends CommonSchema<CommonModel> {
   extend?: string[];
