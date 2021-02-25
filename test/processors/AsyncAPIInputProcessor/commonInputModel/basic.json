@@ -38,9 +38,6 @@
       }
     }
   },
-  "customizations":{
-    
-  },
   "originalInput":{
     "_json":{
       "asyncapi":"2.0.0",
