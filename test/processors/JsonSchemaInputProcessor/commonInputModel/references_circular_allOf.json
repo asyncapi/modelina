@@ -3,17 +3,6 @@
     "root":{
       "type":"object",
       "$id":"root",
-      "additionalProperties": {
-        "originalSchema": true,
-        "type": [
-          "object",
-          "string",
-          "number",
-          "array",
-          "boolean",
-          "null"
-        ]
-      },
       "properties":{
         "street_address":{
           "$ref":"street_address"
@@ -23,7 +12,8 @@
             "enum":[
               "United States of America",
               "Canada"
-            ]
+            ],
+            "x-modelgen-inferred-name":"country"
           },
           "type":"string",
           "enum":[
@@ -31,53 +21,50 @@
             "Canada"
           ]
         }
+      },
+      "additionalProperties":{
+        "originalSchema":true,
+        "type":[
+          "object",
+          "string",
+          "number",
+          "array",
+          "boolean",
+          "null"
+        ]
       }
     },
-    "street_address":{
+    "test2_floor2":{
       "type":"object",
-      "$id":"street_address",
-      "additionalProperties": {
-        "originalSchema": true,
-        "type": [
-          "object",
-          "string",
-          "number",
-          "array",
-          "boolean",
-          "null"
-        ]
-      },
-      "extend":[
-        "test_allOf_0",
-        "test_allOf_1"
-      ]
-    },
-    "test_allOf_0":{
-      "type":"object",
-      "$id":"test_allOf_0",
-      "additionalProperties": {
-        "originalSchema": true,
-        "type": [
-          "object",
-          "string",
-          "number",
-          "array",
-          "boolean",
-          "null"
-        ]
-      },
+      "$id":"test2_floor2",
       "properties":{
-        "floor":{
-          "$ref":"test_allOf_0_floor"
+        "floor2":{
+          "$ref":"test2_floor2"
         }
+      },
+      "additionalProperties":{
+        "originalSchema":true,
+        "type":[
+          "object",
+          "string",
+          "number",
+          "array",
+          "boolean",
+          "null"
+        ]
       }
     },
     "test_allOf_0_floor":{
       "type":"object",
       "$id":"test_allOf_0_floor",
-      "additionalProperties": {
-        "originalSchema": true,
-        "type": [
+      "properties":{
+        "floor2":{
+          "$ref":"test2_floor2"
+        }
+      },
+      "additionalProperties":{
+        "originalSchema":true,
+        "type":[
           "object",
           "string",
           "number",
@@ -85,53 +72,33 @@
           "boolean",
           "null"
         ]
-      },
+      }
+    },
+    "street_address":{
+      "type":"object",
+      "$id":"street_address",
       "properties":{
+        "floor":{
+          "$ref":"test_allOf_0_floor"
+        },
         "floor2":{
           "$ref":"test2_floor2"
         }
+      },
+      "additionalProperties":{
+        "originalSchema":true,
+        "type":[
+          "object",
+          "string",
+          "number",
+          "array",
+          "boolean",
+          "null"
+        ]
       }
     }
   },
   "customizations":{
     
-  },
-  "originalInput":{
-    "definitions":{
-      "test2":{
-        "properties":{
-          "floor2":{
-            "$ref":"#/definitions/test2"
-          }
-        }
-      },
-      "test":{
-        "type":"object",
-        "allOf":[
-          {
-            "properties":{
-              "floor":{
-                "$ref":"#/definitions/test2"
-              }
-            }
-          },
-          {
-            "$ref":"#/definitions/test2"
-          }
-        ]
-      }
-    },
-    "type":"object",
-    "properties":{
-      "street_address":{
-        "$ref":"#/definitions/test"
-      },
-      "country":{
-        "enum":[
-          "United States of America",
-          "Canada"
-        ]
-      }
-    }
   }
 }
