@@ -3,7 +3,7 @@
  */
 export class CommonSchema<T> {
     $id?: string;
-    type?: string | string[]; //Enum?
+    type?: string | string[];
     enum?: any[];
     items?: T | T[];
     properties?: { [key: string]: T; };
