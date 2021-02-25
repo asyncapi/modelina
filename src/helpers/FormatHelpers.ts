@@ -101,11 +101,11 @@ export class FormatHelpers {
    * @returns {string}
    */
   static renderJSONExamples(examples: any[]): string {
-    let renderedExamples = "";
+    let renderedExamples = '';
     if (Array.isArray(examples)) {
       examples.forEach(example => {
-        if (renderedExamples !== "") {renderedExamples += ", "}
-        if (typeof example == "object") {
+        if (renderedExamples !== '') {renderedExamples += ', ';}
+        if (typeof example === 'object') {
           try {
             renderedExamples += JSON.stringify(example);
           } catch (ignore) {

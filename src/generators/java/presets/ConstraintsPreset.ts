@@ -1,6 +1,6 @@
-import { JavaPreset } from "../JavaPreset";
+import { JavaPreset } from '../JavaPreset';
 
-import { CommonModel } from "../../../models";
+import { CommonModel } from '../../../models';
 
 /**
  * Preset which extends class's getters with annotations from `javax.validation.constraints` package
@@ -17,7 +17,7 @@ export const JAVA_CONSTRAINTS_PRESET: JavaPreset = {
       
       const isRequired = model.isRequired(propertyName);
       if (isRequired) {
-        annotations.push(renderer.renderAnnotation('NotNull') );
+        annotations.push(renderer.renderAnnotation('NotNull'));
       }
     
       const pattern = property.getFromSchema('pattern');
@@ -54,4 +54,4 @@ export const JAVA_CONSTRAINTS_PRESET: JavaPreset = {
       return renderer.renderBlock([...annotations, content]);
     },
   }
-}
+};

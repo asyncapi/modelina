@@ -1,8 +1,8 @@
-import { JavaRenderer } from "../JavaRenderer";
-import { JavaPreset } from "../JavaPreset";
+import { JavaRenderer } from '../JavaRenderer';
+import { JavaPreset } from '../JavaPreset';
 
-import { FormatHelpers } from "../../../helpers";
-import { CommonModel } from "../../../models";
+import { FormatHelpers } from '../../../helpers';
+import { CommonModel } from '../../../models';
 
 function renderDescription({ renderer, content, item }: {
   renderer: JavaRenderer,
@@ -48,4 +48,4 @@ export const JAVA_DESCRIPTION_PRESET: JavaPreset = {
       return renderDescription({ renderer, content, item: model });
     },
   }
-}
+};

@@ -1,4 +1,4 @@
-import { JavaPreset } from "../JavaPreset";
+import { JavaPreset } from '../JavaPreset';
 
 /**
  * Preset which adds `com.fasterxml.jackson` related annotations to class's getters.
@@ -12,4 +12,4 @@ export const JAVA_JACKSON_PRESET: JavaPreset = {
       return renderer.renderBlock([annotation, content]);
     },
   }
-}
+};
