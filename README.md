@@ -28,6 +28,7 @@ This package is under development and it has not reached version 1.0.0 yet, whic
   * [The simplification process](#the-simplification-process)
   * [The generatiion process](#the-generatiion-process)
 - [Example](#example)
+- [Customisation](#customisation)
 - [Development](#development)
 - [Contributing](#contributing)
 
@@ -118,6 +119,10 @@ generator.generate({asyncapi: '2.0.0'});
 ```js
 generator.generate({$schema: 'http://json-schema.org/draft-07/schema#'});
 ```
+
+## Customisation
+
+The AsyncAPI Model SDK uses **preset** objects to extend the rendered model. For more information, check [customisation document](./docs/customisation.md).
 
 ## Development
 
