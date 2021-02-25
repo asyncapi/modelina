@@ -106,7 +106,7 @@ interface Address {
 
 ## Customisation
 
-The AsyncAPI Model SDK uses **presets** objects to extend the rendered model. For more information, check [customisation document](./docs/customisation.md).
+The AsyncAPI Model SDK uses **preset** objects to extend the rendered model. For more information, check [customisation document](./docs/customisation.md).
 
 ## Development
 

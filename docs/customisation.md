@@ -1,6 +1,6 @@
 # Customisation
 
-The AsyncAPI Model SDK uses **presets** objects to extend the rendered model.
+The AsyncAPI Model SDK uses **preset** objects to extend the rendered model.
 
 ## Preset
 
