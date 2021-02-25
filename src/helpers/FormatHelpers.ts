@@ -93,4 +93,29 @@ export class FormatHelpers {
     const whitespaceChar = type === IndentationTypes.SPACES ? ' ' : '\t';
     return Array(size).fill(whitespaceChar).join('');
   }
+
+  /**
+   * Render given JSON Schema example to string
+   * 
+   * @param {Array<Any>} examples to render
+   * @returns {string}
+   */
+  static renderJSONExamples(examples: any[]): string {
+    let renderedExamples = "";
+    if (Array.isArray(examples)) {
+      examples.forEach(example => {
+        if (renderedExamples !== "") {renderedExamples += ", "}
+        if (typeof example == "object") {
+          try {
+            renderedExamples += JSON.stringify(example);
+          } catch (ignore) {
+            renderedExamples += example;
+          }
+        } else {
+          renderedExamples += example;
+        }
+      });
+    }
+    return renderedExamples;
+  }
 }
