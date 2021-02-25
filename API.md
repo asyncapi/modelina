@@ -295,6 +295,7 @@ Class for processing AsyncAPI inputs
         * [.process(input)](#AsyncAPIInputProcessor+process)
         * [.shouldProcess(input)](#AsyncAPIInputProcessor+shouldProcess)
     * _static_
+        * [.reflectSchemaNames(schema)](#AsyncAPIInputProcessor.reflectSchemaNames)
         * [.isFromParser(input)](#AsyncAPIInputProcessor.isFromParser)
 
 <a name="AsyncAPIInputProcessor+process"></a>
@@ -318,6 +319,18 @@ Figures out if an object is of type AsyncAPI document
 | Param |
 | --- |
 | input | 
+
+<a name="AsyncAPIInputProcessor.reflectSchemaNames"></a>
+
+### AsyncAPIInputProcessor.reflectSchemaNames(schema)
+Reflect the name of the schema and save it to `x-modelgen-inferred-name` extension.
+This keeps the the id of the model deterministic if used in conjunction with other AsyncAPI tools such as the generator.
+
+**Kind**: static method of [<code>AsyncAPIInputProcessor</code>](#AsyncAPIInputProcessor)  
+
+| Param | Description |
+| --- | --- |
+| schema | to reflect name for |
 
 <a name="AsyncAPIInputProcessor.isFromParser"></a>
 
