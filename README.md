@@ -41,6 +41,7 @@ Run this command to install the SDK in your project:
 ```bash
 npm install --save @asyncapi/generator-model-sdk
 ```
+
 ## How it works
 
 The process of creating data models from input data consists of 2 processes, the input and generation process.
@@ -48,20 +49,21 @@ The process of creating data models from input data consists of 2 processes, the
 ### The input process
 
 The input process ensures that any supported input is handled correctly, the basics are that any input needs to be converted into our internal model representation `CommonModel`. The following inputs are supported:
-- [JSON Schema Draft 7](#JSON-Schema-input), this is the default inferred input if we cannot find a another input processor.
+
+- [JSON Schema Draft 7](#JSON-Schema-input), this is the default inferred input if we cannot find an another input processor.
 - [AsyncAPI version 2.0.0](#AsyncAPI-input)
 
 Read more about the input process [here](./docs/input_processing.md).
 
 ### The generation process
 
-The generation process uses the predefined `CommonModel`s from the input stage to easily generate models regardless of input. The generator support the following output languages:
+The generation process uses the predefined `CommonModel`s from the input stage to easily generate models regardless of input. The package supports the following output languages:
 
 - JavaScript
 - TypeScript
 - Java
 
-Check out [the example](#example) to see how to use the library.
+Check out [the example](#example) to see how to use the library and [generators document](./docs/generators.md) for more info.
 
 > **NOTE**: Each implemented language has different options, dictated by the nature of the language. Keep this in mind when selecting a language.
 
@@ -101,21 +103,31 @@ interface Address {
 }
 ```
 ## Supported input
+
 These are the supported inputs.
+
 ### AsyncAPI input
+
 The library expects the `asyncapi` property for the document to be sat in order to understand the input format.
-- Generate from a [parsed AsyncAPI document](https://github.com/asyncapi/parser-js)
+
+- Generate from a [parsed AsyncAPI document](https://github.com/asyncapi/parser-js):
+
 ```js
 const parser = require('@asyncapi/parser');
 const doc = await parser.parse(`{asyncapi: '2.0.0'}`);
 generator.generate(doc);
 ```
-- Generate from a pure JS object
+
+- Generate from a pure JS object:
+
 ```js
 generator.generate({asyncapi: '2.0.0'});
 ```
+
 ### JSON Schema input
-- Generate from a pure JS object
+
+- Generate from a pure JS object:
+
 ```js
 generator.generate({$schema: 'http://json-schema.org/draft-07/schema#'});
 ```
