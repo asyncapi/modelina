@@ -47,7 +47,8 @@
           "number",
           "array",
           "boolean",
-          "null"
+          "null",
+          "integer"
         ]
       }
     }

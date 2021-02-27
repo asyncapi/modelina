@@ -43,7 +43,8 @@ describe('Simplification of types', function () {
     test('should if true return all types', function () {
       const schema: any = true;
       const types = simplifyTypes(schema);
-      expect(types).toEqual(["object", "string", "number", "array", "boolean", "null"]);
+      expect(types).toEqual(["object", "string", "number", "array", "boolean", "null",
+          "integer"]);
     });
     test('should if false return all types', function () {
       const schema: any = false;
@@ -196,7 +197,8 @@ describe('Simplification of types', function () {
       };
       const types = simplifyTypes(schema);
       expect(Array.isArray(types)).toEqual(true);
-      expect((types as String[]).sort()).toEqual(["object", "number", "array", "boolean", "null"].sort());
+      expect((types as String[]).sort()).toEqual(["object", "number", "array", "boolean", "null",
+          "integer"].sort());
     });
     test('with multiple types', function () {
       const schema = {
@@ -206,7 +208,8 @@ describe('Simplification of types', function () {
       };
       const types = simplifyTypes(schema);
       expect(Array.isArray(types)).toEqual(true);
-      expect((types as String[]).sort()).toEqual(["object", "array", "boolean", "null"].sort());
+      expect((types as String[]).sort()).toEqual(["object", "array", "boolean", "null",
+          "integer"].sort());
     });
     test('should acknowledge previous defined types', function () {
       const schema = {
