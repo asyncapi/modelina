@@ -95,16 +95,16 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       }
     }
 
-    if (schema.properties !== null && Object.keys(schema.properties).length) {
+    if (schema.properties() !== null && Object.keys(schema.properties()).length) {
       const properties : {[key: string]: Schema | boolean} = {};
-      Object.entries(schema.properties).forEach(([propertyName, propertySchema]) => {
+      Object.entries(schema.properties()).forEach(([propertyName, propertySchema]) => {
         properties[`${propertyName}`] = this.reflectSchemaNames(propertySchema);
       });
       convertedSchema.properties = properties;
     }
-    if (schema.dependencies !== null && Object.keys(schema.dependencies).length) {
+    if (schema.dependencies() !== null && Object.keys(schema.dependencies()).length) {
       const dependencies: { [key: string]: Schema | boolean | string[] } = {};
-      Object.entries(schema.dependencies).forEach(([dependencyName, dependency]) => {
+      Object.entries(schema.dependencies()).forEach(([dependencyName, dependency]) => {
         if (typeof dependency === 'object' && !Array.isArray(dependency)) {
           dependencies[`${dependencyName}`] = this.reflectSchemaNames(dependency);
         } else {
@@ -113,16 +113,16 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       });
       convertedSchema.dependencies = dependencies;
     }
-    if (schema.patternProperties !== null && Object.keys(schema.patternProperties).length) {
+    if (schema.patternProperties() !== null && Object.keys(schema.patternProperties()).length) {
       const patternProperties: { [key: string]: Schema | boolean } = {};
-      Object.entries(schema.patternProperties).forEach(([patternPropertyName, patternProperty]) => {
+      Object.entries(schema.patternProperties()).forEach(([patternPropertyName, patternProperty]) => {
         patternProperties[`${patternPropertyName}`] = this.reflectSchemaNames(patternProperty);
       });
       convertedSchema.patternProperties = patternProperties;
     }
-    if (schema.definitions !== null && Object.keys(schema.definitions).length) {
+    if (schema.definitions() !== null && Object.keys(schema.definitions()).length) {
       const definitions: { [key: string]: Schema | boolean } = {};
-      Object.entries(schema.definitions).forEach(([definitionName, definition]) => {
+      Object.entries(schema.definitions()).forEach(([definitionName, definition]) => {
         definitions[`${definitionName}`] = this.reflectSchemaNames(definition);
       });
       convertedSchema.definitions = definitions;
