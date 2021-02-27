@@ -7,7 +7,8 @@
           "email":{
             "type":"string",
             "format":"email",
-            "x-parser-schema-id":"<anonymous-schema-2>"
+            "x-parser-schema-id":"<anonymous-schema-2>",
+            "x-modelgen-inferred-name": "<anonymous-schema-2>"
           }
         },
         "x-parser-schema-id":"<anonymous-schema-1>",
@@ -20,7 +21,8 @@
           "originalSchema":{
             "type":"string",
             "format":"email",
-            "x-parser-schema-id":"<anonymous-schema-2>"
+            "x-parser-schema-id":"<anonymous-schema-2>",
+            "x-modelgen-inferred-name": "<anonymous-schema-2>"
           },
           "type":"string"
         }
