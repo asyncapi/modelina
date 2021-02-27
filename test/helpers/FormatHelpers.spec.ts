@@ -16,6 +16,10 @@ describe('FormatHelpers', function() {
       expect(content).toEqual('  Test');
     });
 
+    test('should make indentation with no spaces', () => {
+      const content = FormatHelpers.indent(`Test`, -1, IndentationTypes.SPACES);
+      expect(content).toEqual('Test');
+    });
     test('should make indentation with spaces', () => {
       const content = FormatHelpers.indent(`Test`, 4, IndentationTypes.SPACES);
       expect(content).toEqual('    Test');
