@@ -47,6 +47,7 @@
     "eslint-plugin-security": "^1.4.0",
     "eslint-plugin-sonarjs": "^0.5.0",
     "jest": "^26.6.3",
+    "jest-coverage-badges": "^1.1.2",
     "jsdoc-to-markdown": "^6.0.1",
     "markdown-toc": "^1.2.0",
     "semantic-release": "^17.3.0",
@@ -56,7 +57,7 @@
   "scripts": {
     "start": "tsc --watch",
     "build": "tsc",
-    "test": "cross-env CI=true jest --coverage",
+    "test": "cross-env CI=true jest --coverage && jest-coverage-badges --input ./coverage/coverage-summary.json --output ./coverage-badge",
     "test:watch": "jest --watch",
     "docs": "npm run docs:markdown",
     "docs:markdown": "./node_modules/.bin/jsdoc2md lib/index.js -f lib/**/*.js > API.md",
