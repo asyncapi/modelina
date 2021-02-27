@@ -11,7 +11,7 @@ export default function simplifyTypes(schema: Schema | boolean, seenSchemas: Map
   //If we find absence of data format ensure all types are returned
   if (typeof schema === 'boolean') {
     if (schema === true) {
-      return ['object', 'string', 'number', 'array', 'boolean', 'null'];
+      return ['object', 'string', 'number', 'array', 'boolean', 'null', 'integer'];
     } 
     throw new Error('False value schemas are not supported');
   }
@@ -81,40 +81,37 @@ function inferTypeFromValue(value: any) {
  * @param currentOutput the current output
  */
 function inferTypes(schema: Schema | boolean, currentOutput: Output) {
-  if (schema === undefined || typeof schema === 'boolean' || currentOutput === undefined) return; 
-  if (!Array.isArray(currentOutput)) return;
-  if (schema.enum) {
-    schema.enum.forEach((value: any) => {
-      const inferredType = inferTypeFromValue(value);
+  if (typeof schema === 'object' && Array.isArray(currentOutput)) {
+    if (schema.enum) {
+      schema.enum.forEach((value: any) => {
+        const inferredType = inferTypeFromValue(value);
+        if (inferredType !== undefined) {
+          addToTypes(inferredType, currentOutput);
+        }
+      });
+    }
+    //Should const overwrite the type?
+    if (schema.const !== undefined) {
+      const inferredType = inferTypeFromValue(schema.const);
       if (inferredType !== undefined) {
-        addToTypes(inferredType, currentOutput);
+        currentOutput.length = 0;
+        currentOutput.splice(0, currentOutput.length);
+        currentOutput[0] = inferredType;
       }
-    });
-  }
-  //Should const overwrite the type?
-  if (schema.const !== undefined) {
-    const inferredType = inferTypeFromValue(schema.const);
-    if (inferredType !== undefined) {
-      currentOutput.length = 0;
-      currentOutput.splice(0, currentOutput.length);
-      currentOutput[0] = inferredType;
     }
   }
 }
 
 /**
- * Infer which types the model should NOT be. 
+ * Infer which types the model should NOT be included. 
  * 
  * @param schema to go through
  * @param currentOutput the current output
  * @param seenSchemas schemas which we already have outputs for
  */
 function inferNotTypes(schema: Schema | boolean, currentOutput: Output, seenSchemas: Map<any, Output>) {
-  if (schema === undefined || currentOutput === undefined) return;
-  if (!Array.isArray(currentOutput)) return;
-  if (currentOutput.length === 0) currentOutput.push('object', 'string', 'number', 'array', 'boolean', 'null');
-  if (typeof schema === 'boolean') return;
-  if (schema.not) {
+  if (typeof schema === 'object' && schema.not && Array.isArray(currentOutput)) {
+    if (currentOutput.length === 0) currentOutput.push('object', 'string', 'number', 'array', 'boolean', 'null', 'integer');
     const notTypes = simplifyTypes(schema.not, seenSchemas);
     // Cut any not types from the existing output.
     const tryAndCutRemainingArray = (notType: string | string[] | undefined) => {
@@ -157,13 +154,13 @@ function addToTypes(typesToAdd: Output, currentOutput: Output) {
  * @param seenSchemas schemas which we already have outputs for
  */
 function combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | undefined, currentOutput: Output, seenSchemas: Map<any, Output>) {
-  if (schema === undefined) return;
-  if (typeof schema === 'boolean') return;
-  if (Array.isArray(schema)) {
-    schema.forEach((itemSchema) => {
-      combineSchemas(itemSchema, currentOutput, seenSchemas);
-    });
-  } else {
-    addToTypes(simplifyTypes(schema, seenSchemas), currentOutput);
+  if (typeof schema === 'object') {
+    if (Array.isArray(schema)) {
+      schema.forEach((itemSchema) => {
+        combineSchemas(itemSchema, currentOutput, seenSchemas);
+      });
+    } else {
+      addToTypes(simplifyTypes(schema, seenSchemas), currentOutput);
+    }
   }
 }
