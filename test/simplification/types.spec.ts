@@ -219,4 +219,11 @@ describe('Simplification of types', function () {
       expect(types).toEqual("null");
     });
   });
+  test('should return already seen schemas', function() {
+    const alreadySeen = new Map<any, string[] | string | undefined>();
+    const schema = {$id: "test"};
+    alreadySeen.set(schema, "output");
+    const output = simplifyTypes(schema, alreadySeen);
+    expect(output).toEqual("output");
+  });
 });

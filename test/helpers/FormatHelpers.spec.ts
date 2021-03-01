@@ -3,10 +3,14 @@ import { FormatHelpers, IndentationTypes } from '../../src/helpers';
 describe('FormatHelpers', function() {
   describe('breakLines', function() {
     test('should break single text', function() {  
-      const breakedTexts = FormatHelpers.breakLines(`text\ntext2\ntext3`);
-  
+      const breakedTexts = FormatHelpers.breakLines(`text1\ntext2\ntext3`);
       expect(breakedTexts).toHaveLength(3);
-      expect(breakedTexts).toStrictEqual(['text', 'text2', 'text3']);
+      expect(breakedTexts).toStrictEqual(['text1', 'text2', 'text3']);
+    });
+    test('should support multiple lines', function() {  
+      const breakedTexts = FormatHelpers.breakLines(['text1', 'text2', 'text3']);
+      expect(breakedTexts).toHaveLength(3);
+      expect(breakedTexts).toStrictEqual(['text1', 'text2', 'text3']);
     });
   });
 
@@ -16,6 +20,15 @@ describe('FormatHelpers', function() {
       expect(content).toEqual('  Test');
     });
 
+    test('should make default indentation', () => {
+      const content = FormatHelpers.indent();
+      expect(content).toEqual(' ');
+    });
+
+    test('should make indentation with no spaces', () => {
+      const content = FormatHelpers.indent(`Test`, -1, IndentationTypes.SPACES);
+      expect(content).toEqual('Test');
+    });
     test('should make indentation with spaces', () => {
       const content = FormatHelpers.indent(`Test`, 4, IndentationTypes.SPACES);
       expect(content).toEqual('    Test');

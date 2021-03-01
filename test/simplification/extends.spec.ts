@@ -12,7 +12,7 @@ describe('Simplification to extend', function() {
     const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/expected/extend.json'), 'utf8');
     const schema = JSON.parse(inputSchemaString);
     const expectedModels = JSON.parse(expectedSchemaString);
-    const actualModels = simplify(schema);
+    const actualModels = simplify(schema, {allowInheritance: true});
     expect(actualModels).toMatchObject(expectedModels);
     expect(schema.$id).toBeUndefined();
   });
@@ -22,7 +22,7 @@ describe('Simplification to extend', function() {
     const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/expected/extendMultipleObjects.json'), 'utf8');
     const schema = JSON.parse(inputSchemaString);
     const expectedModels = JSON.parse(expectedSchemaString);
-    const actualModels = simplify(schema);
+    const actualModels = simplify(schema, {allowInheritance: true});
     expect(actualModels).toMatchObject(expectedModels);
     expect(schema.$id).toBeUndefined();
   });
@@ -32,7 +32,7 @@ describe('Simplification to extend', function() {
     const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/expected/extendWithProperties.json'), 'utf8');
     const schema = JSON.parse(inputSchemaString);
     const expectedModels = JSON.parse(expectedSchemaString);
-    const actualModels = simplify(schema);
+    const actualModels = simplify(schema, {allowInheritance: true});
     expect(actualModels).toMatchObject(expectedModels);
     expect(schema.$id).toBeUndefined();
   });
@@ -42,7 +42,7 @@ describe('Simplification to extend', function() {
     const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/expected/nestedExtends.json'), 'utf8');
     const schema = JSON.parse(inputSchemaString);
     const expectedModels = JSON.parse(expectedSchemaString);
-    const actualModels = simplify(schema);
+    const actualModels = simplify(schema, {allowInheritance: true});
     expect(actualModels).toMatchObject(expectedModels);
     expect(schema.$id).toBeUndefined();
   });

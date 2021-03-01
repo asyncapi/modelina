@@ -11,7 +11,7 @@
 <dd><p>This class is the wrapper for simplified models and the rest of the context needed for further generate typed models.</p>
 </dd>
 <dt><a href="#CommonModel">CommonModel</a> ⇐ <code><a href="#CommonModel">CommonSchema&lt;CommonModel&gt;</a></code></dt>
-<dd><p>Common representation for the renderers.</p>
+<dd><p>Common internal representation for a model.</p>
 </dd>
 <dt><a href="#CommonSchema">CommonSchema</a></dt>
 <dd><p>CommonSchema which contains the common properties between Schema and CommonModel</p>
@@ -21,6 +21,9 @@
 </dd>
 <dt><a href="#Schema">Schema</a> ⇐ <code><a href="#Schema">CommonSchema&lt;Schema&gt;</a></code></dt>
 <dd><p>JSON Schema Draft 7 model</p>
+</dd>
+<dt><a href="#AsyncAPIInputProcessor">AsyncAPIInputProcessor</a></dt>
+<dd><p>Class for processing AsyncAPI inputs</p>
 </dd>
 <dt><a href="#InputProcessor">InputProcessor</a></dt>
 <dd><p>Main input processor which figures out the type of input it receives and delegates the processing into separate individual processors.</p>
@@ -125,10 +128,25 @@ This class is the wrapper for simplified models and the rest of the context need
 <a name="CommonModel"></a>
 
 ## CommonModel ⇐ [<code>CommonSchema&lt;CommonModel&gt;</code>](#CommonModel)
-Common representation for the renderers.
+Common internal representation for a model.
 
 **Kind**: global class  
 **Extends**: [<code>CommonSchema&lt;CommonModel&gt;</code>](#CommonModel)  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| $id | <code>string</code> | define the id/name of the model. |
+| type | <code>string</code> \| <code>Array.&lt;string&gt;</code> | this is the different types for the model. All types from JSON Schema are used with no custom ones added. |
+| enum | <code>Array.&lt;any&gt;</code> | defines the different enums for the model, constant values are included here |
+| items | [<code>CommonModel</code>](#CommonModel) \| [<code>Array.&lt;CommonModel&gt;</code>](#CommonModel) | defines the type for `array` models as `CommonModel`. |
+| properties | <code>Record.&lt;string, CommonModel&gt;</code> | defines the properties and its expected types as `CommonModel`. |
+| additionalProperties | [<code>CommonModel</code>](#CommonModel) | are used to define if any extra properties are allowed, also defined as a  `CommonModel`. |
+| $ref | <code>string</code> | is a reference to another `CommonModel` by using`$id` as a simple string. |
+| required | <code>Array.&lt;string&gt;</code> | list of required properties. |
+| extend | <code>Array.&lt;string&gt;</code> | list of other `CommonModel`s this model extends, is an array of `$id` strings. |
+| originalSchema | [<code>Schema</code>](#Schema) \| <code>boolean</code> | the actual input for which this model represent. |
+
 
 * [CommonModel](#CommonModel) ⇐ [<code>CommonSchema&lt;CommonModel&gt;</code>](#CommonModel)
     * _instance_
@@ -264,6 +282,66 @@ Transform object into a type of Schema.
 | Param | Description |
 | --- | --- |
 | object | to transform |
+
+<a name="AsyncAPIInputProcessor"></a>
+
+## AsyncAPIInputProcessor
+Class for processing AsyncAPI inputs
+
+**Kind**: global class  
+
+* [AsyncAPIInputProcessor](#AsyncAPIInputProcessor)
+    * _instance_
+        * [.process(input)](#AsyncAPIInputProcessor+process)
+        * [.shouldProcess(input)](#AsyncAPIInputProcessor+shouldProcess)
+    * _static_
+        * [.reflectSchemaNames(schema)](#AsyncAPIInputProcessor.reflectSchemaNames)
+        * [.isFromParser(input)](#AsyncAPIInputProcessor.isFromParser)
+
+<a name="AsyncAPIInputProcessor+process"></a>
+
+### asyncAPIInputProcessor.process(input)
+Process the input as an AsyncAPI document
+
+**Kind**: instance method of [<code>AsyncAPIInputProcessor</code>](#AsyncAPIInputProcessor)  
+
+| Param |
+| --- |
+| input | 
+
+<a name="AsyncAPIInputProcessor+shouldProcess"></a>
+
+### asyncAPIInputProcessor.shouldProcess(input)
+Figures out if an object is of type AsyncAPI document
+
+**Kind**: instance method of [<code>AsyncAPIInputProcessor</code>](#AsyncAPIInputProcessor)  
+
+| Param |
+| --- |
+| input | 
+
+<a name="AsyncAPIInputProcessor.reflectSchemaNames"></a>
+
+### AsyncAPIInputProcessor.reflectSchemaNames(schema)
+Reflect the name of the schema and save it to `x-modelgen-inferred-name` extension.
+This keeps the the id of the model deterministic if used in conjunction with other AsyncAPI tools such as the generator.
+
+**Kind**: static method of [<code>AsyncAPIInputProcessor</code>](#AsyncAPIInputProcessor)  
+
+| Param | Description |
+| --- | --- |
+| schema | to reflect name for |
+
+<a name="AsyncAPIInputProcessor.isFromParser"></a>
+
+### AsyncAPIInputProcessor.isFromParser(input)
+Figure out if input is from our parser.
+
+**Kind**: static method of [<code>AsyncAPIInputProcessor</code>](#AsyncAPIInputProcessor)  
+
+| Param |
+| --- |
+| input | 
 
 <a name="InputProcessor"></a>
 
