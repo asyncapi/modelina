@@ -132,4 +132,12 @@ describe('Simplification of enum', function() {
       expect((enums as any[]).sort()).toEqual(["test2"].sort());
     });
   });
+
+  test('should return already seen schemas', function() {
+    const alreadySeen = new Map<any, any[] | undefined>();
+    const schema = {$id: "test"};
+    alreadySeen.set(schema, ['output']);
+    const output = simplifyEnums(schema, alreadySeen);
+    expect(output).toEqual(['output']);
+  });
 });

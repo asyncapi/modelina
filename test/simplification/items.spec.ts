@@ -127,4 +127,15 @@ describe('Simplification of items', () => {
     expect(simplifier.simplify).toHaveBeenCalledTimes(1);
     expect(mockMergeCommonModels).toHaveBeenCalledTimes(1);
   });
+
+  test('should return already seen schemas', function() {
+    const alreadySeen = new Map<any, CommonModel | undefined>();
+    const schema = {$id: "test"};
+    const model = new CommonModel();
+    model.$id = "test2";
+    alreadySeen.set(schema, model);
+    const simplifier = new Simplifier();
+    const output = simplifyItems(schema, simplifier, alreadySeen);
+    expect(output).toEqual(model);
+  });
 });
