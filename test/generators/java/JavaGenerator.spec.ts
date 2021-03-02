@@ -1,6 +1,6 @@
 import { JavaGenerator } from '../../../src/generators'; 
 
-describe('TypeScriptGenerator', function() {
+describe('JavaGenerator', function() {
   let generator: JavaGenerator;
   beforeEach(() => {
     generator = new JavaGenerator();

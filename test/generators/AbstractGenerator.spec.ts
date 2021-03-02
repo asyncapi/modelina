@@ -24,6 +24,15 @@ describe('AbstractGenerator', function() {
     expect(outputModels[0].result).toEqual('test');
   });
 
+  test('generate() should process CommonInputModel instance', async function() {
+    const cim = new CommonInputModel();
+    const model = new CommonModel();
+    model.$id = "test";
+    cim.models[model.$id] = model;
+    const outputModels = await generator.generate(cim);
+    expect(outputModels[0].result).toEqual('test');
+  });
+
   test('should `process` function return CommonInputModel', async function() {
     const doc: any = { $id: 'test' };
     const commonInputModel = await generator.process(doc);
@@ -45,5 +54,23 @@ describe('AbstractGenerator', function() {
     const renderedContent = await generator.render(commonInputModel.models[keys[0]], commonInputModel);
 
     expect(renderedContent).toEqual("SomeModel");
+  });
+
+  describe('getPresets()', function() {
+    test('getPresets()', async function() {
+      class GeneratorWithPresets extends AbstractGenerator {
+        constructor() {
+          super("TestGenerator", {presets: [{"preset": {"test": "test2"}, "options": {}}]});
+        }
+        render(model: CommonModel, inputModel: CommonInputModel): any {
+          return model.$id || "rendered content";
+        }
+        testGetPresets(string: string){
+          return this.getPresets(string);
+        }
+      }
+      let newGenerator = new GeneratorWithPresets();
+      expect(newGenerator.testGetPresets("test")).toEqual([["test2", {}]]);
+    });
   });
 });

@@ -42,8 +42,6 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
     case 'integer':
     case 'number':
       return 'number';
-    case 'bigint':
-      return 'bigint';
     case 'boolean':
       return 'boolean';
     case 'array': {
