@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-undef
 module.exports = {
   coverageReporters: [
-    "json-summary",
+    'json-summary',
     'lcov',
     'text'
   ],
