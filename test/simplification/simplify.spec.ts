@@ -2,6 +2,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import {simplify} from '../../src/simplification/Simplifier';
 
+
+
 /**
  * Some of these test are purely theoretical and have little if any merit 
  * on a JSON Schema which actually makes sense but are used to test the principles.

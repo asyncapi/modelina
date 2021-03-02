@@ -8,7 +8,7 @@ export function isModelObject(model: CommonModel) : boolean {
   // this.extend !== undefined || this.properties !== undefined
   if (model.type !== undefined) {
     // If all possible JSON types are defined, don't split it even if it does contain object.
-    if (Array.isArray(model.type) && model.type.length === 6) {
+    if (Array.isArray(model.type) && model.type.length === 7) {
       return false;
     }
     return model.type.includes('object');
