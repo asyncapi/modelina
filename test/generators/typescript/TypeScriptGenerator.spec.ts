@@ -145,10 +145,11 @@ ${content}`;
   arrayType: Array<string | number>;
 }`;
 
-    const inputModel = await generator.process(doc);
+    const interfaceGenerator = new TypeScriptGenerator({modelType: "interface"});
+    const inputModel = await interfaceGenerator.process(doc);
     const model = inputModel.models["Address"];
 
-    let interfaceModel = await generator.renderInterface(model, inputModel);
+    let interfaceModel = await interfaceGenerator.render(model, inputModel);
     expect(interfaceModel).toEqual(expected);
   });
 
@@ -315,4 +316,5 @@ ${content}`;
     const arrayModel = await generator.renderType(model, inputModel);
     expect(arrayModel).toEqual(expected);
   });
+
 });
