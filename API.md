@@ -94,7 +94,7 @@
 <dd><p>Infer types from enum and const values.</p>
 </dd>
 <dt><a href="#inferNotTypes">inferNotTypes(schema, currentOutput, seenSchemas)</a></dt>
-<dd><p>Infer which types the model should NOT be.</p>
+<dd><p>Infer which types the model should NOT be included.</p>
 </dd>
 <dt><a href="#addToTypes">addToTypes(typesToAdd, currentOutput)</a></dt>
 <dd><p>Adds missing types to the array.</p>
@@ -703,7 +703,7 @@ Infer types from enum and const values.
 <a name="inferNotTypes"></a>
 
 ## inferNotTypes(schema, currentOutput, seenSchemas)
-Infer which types the model should NOT be.
+Infer which types the model should NOT be included.
 
 **Kind**: global function  
 
