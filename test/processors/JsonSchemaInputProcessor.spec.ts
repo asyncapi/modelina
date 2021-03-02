@@ -226,6 +226,6 @@ describe('JsonSchemaInputProcessor', function() {
             expect(expected.anyOf[0]['x-modelgen-inferred-name']).toEqual('anyOf_0');
             expect(expected.anyOf[1]['x-modelgen-inferred-name']).toEqual('anyOf_1');
             expect(expected.anyOf[1].properties.prop['x-modelgen-inferred-name']).toEqual('anyOf_1_prop');
-        })
+        });
     });
 });

@@ -97,4 +97,11 @@ describe('Simplification of required', function() {
     const required = simplifyRequired(schema as any);
     expect(required).toEqual(expected);
   });
+  test('should return undefined for already seen schemas', function() {
+    const alreadySeen = new Set<any>();
+    const schema = {$id: "test"};
+    alreadySeen.add(schema);
+    const output = simplifyRequired(schema, alreadySeen);
+    expect(output).toBeUndefined();
+  });
 });
