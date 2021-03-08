@@ -2,6 +2,8 @@ import { AbstractRenderer } from '../../src/generators';
 import { IndentationTypes } from '../../src/helpers';
 import { CommonInputModel, CommonModel } from '../../src/models';
 
+import { TestGenerator } from './AbstractGenerator.spec';
+
 describe('AbstractRenderer', function() {
   class TestRenderer extends AbstractRenderer {
     constructor() {
@@ -18,7 +20,7 @@ describe('AbstractRenderer', function() {
             return `property__${name || ''}`;
           }
         }
-      }, [], new CommonModel(), new CommonInputModel());
+      }, new TestGenerator(), [], new CommonModel(), new CommonInputModel());
     }
     render() { return "" }
   }

@@ -11,10 +11,10 @@ export abstract class AbstractRenderer<
 > {
   constructor(
     protected readonly options: O,
+    protected readonly generator: G,
     protected readonly presets: Array<[Preset, unknown]>,
     protected readonly model: CommonModel, 
     protected readonly inputModel: CommonInputModel,
-    protected readonly _generator?: G,
   ) {}
 
   renderLine(line: string): string {
@@ -48,10 +48,6 @@ export abstract class AbstractRenderer<
     return this.options?.namingConvention?.property 
       ? this.options.namingConvention.property(name, { model: this.model, inputModel: this.inputModel, property })
       : name;
-  }
-
-  getGenerator() {
-    return this._generator;
   }
 
   async runSelfPreset(): Promise<string> {

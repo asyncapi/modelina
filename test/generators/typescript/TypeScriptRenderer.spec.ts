@@ -1,12 +1,13 @@
+import { TypeScriptGenerator } from '../../../src/generators'; 
 import { TypeScriptRenderer } from '../../../src/generators/typescript/TypeScriptRenderer';
 import { CommonInputModel, CommonModel } from '../../../src/models';
-class MockTypeScriptRenderer extends TypeScriptRenderer {
 
-}
 describe('TypeScriptRenderer', function() {
+  class MockTypeScriptRenderer extends TypeScriptRenderer {}
+
   let renderer: TypeScriptRenderer;
   beforeEach(() => {
-    renderer = new MockTypeScriptRenderer({}, [], new CommonModel(), new CommonInputModel());
+    renderer = new MockTypeScriptRenderer({}, new TypeScriptGenerator(), [], new CommonModel(), new CommonInputModel());
   });
 
   describe('renderComments()', function() {
@@ -26,6 +27,7 @@ describe('TypeScriptRenderer', function() {
       expect(renderer.toTsType("number", new CommonModel())).toEqual(`number`);
     });
   });
+  
   describe('renderType()', function() {
     test('Should render array of CommonModels', function() {
       const model1 = new CommonModel();

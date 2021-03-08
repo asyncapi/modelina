@@ -1,13 +1,13 @@
-import { JavaGenerator, JAVA_DEFAULT_PRESET } from '../../../src/generators'; 
+import { JavaGenerator } from '../../../src/generators'; 
 import { JavaRenderer } from '../../../src/generators/java/JavaRenderer';
 import { CommonInputModel, CommonModel } from '../../../src/models';
-class MockJavaRenderer extends JavaRenderer {
 
-}
 describe('JavaRenderer', function() {
+  class MockJavaRenderer extends JavaRenderer {}
+
   let renderer: JavaRenderer;
   beforeEach(() => {
-    renderer = new MockJavaRenderer({}, [], new CommonModel(), new CommonInputModel());
+    renderer = new MockJavaRenderer({}, new JavaGenerator(), [], new CommonModel(), new CommonInputModel());
   });
 
   describe('toJavaType()', function() {

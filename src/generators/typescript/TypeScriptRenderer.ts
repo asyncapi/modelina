@@ -12,12 +12,12 @@ import { CommonModel, CommonInputModel, Preset } from '../../models';
 export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOptions, TypeScriptGenerator> {
   constructor(
     options: TypeScriptOptions,
+    generator: TypeScriptGenerator,
     presets: Array<[Preset, unknown]>,
     model: CommonModel, 
     inputModel: CommonInputModel,
-    generator: TypeScriptGenerator,
   ) {
-    super(options, presets, model, inputModel, generator);
+    super(options, generator, presets, model, inputModel);
   }
 
   renderType(model: CommonModel | CommonModel[]): string {

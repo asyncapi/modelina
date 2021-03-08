@@ -1,17 +1,17 @@
 import { AbstractGenerator } from '../../src/generators'; 
 import { CommonInputModel, CommonModel } from '../../src/models';
 
-describe('AbstractGenerator', function() {
-  class TestGenerator extends AbstractGenerator {
-    constructor() {
-      super("TestGenerator", {});
-    }
-
-    render(model: CommonModel, inputModel: CommonInputModel): any {
-      return model.$id || "rendered content";
-    }
+export class TestGenerator extends AbstractGenerator {
+  constructor() {
+    super("TestGenerator", {});
   }
 
+  render(model: CommonModel, inputModel: CommonInputModel): any {
+    return model.$id || "rendered content";
+  }
+}
+
+describe('AbstractGenerator', function() {
   let generator: TestGenerator;
   beforeEach(() => {
     generator = new TestGenerator();

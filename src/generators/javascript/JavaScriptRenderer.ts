@@ -12,12 +12,12 @@ import { CommonModel, CommonInputModel, Preset } from '../../models';
 export abstract class JavaScriptRenderer extends AbstractRenderer<JavaScriptOptions, JavaScriptGenerator> {
   constructor(
     options: JavaScriptOptions,
+    generator: JavaScriptGenerator,
     presets: Array<[Preset, unknown]>,
     model: CommonModel, 
     inputModel: CommonInputModel,
-    generator: JavaScriptGenerator,
   ) {
-    super(options, presets, model, inputModel, generator);
+    super(options, generator, presets, model, inputModel);
   }
 
   renderComments(lines: string | string[]): string {

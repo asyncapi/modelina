@@ -12,12 +12,12 @@ import { FormatHelpers } from '../../helpers';
 export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGenerator> {
   constructor(
     options: JavaOptions,
+    generator: JavaGenerator,
     presets: Array<[Preset, unknown]>,
     model: CommonModel, 
     inputModel: CommonInputModel,
-    generator: JavaGenerator,
   ) {
-    super(options, presets, model, inputModel, generator);
+    super(options, generator, presets, model, inputModel);
   }
 
   renderType(model: CommonModel | CommonModel[]): string {

@@ -1,12 +1,13 @@
+import { JavaScriptGenerator } from '../../../src/generators'; 
 import { JavaScriptRenderer } from '../../../src/generators/javascript/JavaScriptRenderer';
 import { CommonInputModel, CommonModel } from '../../../src/models';
-class MockJavaScriptRenderer extends JavaScriptRenderer {
 
-}
 describe('JavaScriptRenderer', function() {
+  class MockJavaScriptRenderer extends JavaScriptRenderer {}
+
   let renderer: JavaScriptRenderer;
   beforeEach(() => {
-    renderer = new MockJavaScriptRenderer({}, [], new CommonModel(), new CommonInputModel());
+    renderer = new MockJavaScriptRenderer({}, new JavaScriptGenerator(), [], new CommonModel(), new CommonInputModel());
   });
 
   describe('renderComments()', function() {
