@@ -1,7 +1,6 @@
 import { TypeScriptRenderer } from '../TypeScriptRenderer';
 
 import { InterfacePreset } from '../../../models';
-import { FormatHelpers } from '../../../helpers';
 
 /**
  * Renderer for TypeScript's `interface` type

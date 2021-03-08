@@ -1,7 +1,7 @@
 import { TypeScriptRenderer } from '../TypeScriptRenderer';
 
 import { TypePreset } from '../TypeScriptPreset';
-import { FormatHelpers, TypeHelpers, ModelKind } from '../../../helpers';
+import { TypeHelpers, ModelKind } from '../../../helpers';
 
 /**
  * Renderer for TypeScript's `type` type
