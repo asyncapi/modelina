@@ -50,25 +50,25 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions> {
 
   async renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const presets = this.getPresets('class'); 
-    const renderer = new ClassRenderer(this.options, presets, model, inputModel);
+    const renderer = new ClassRenderer(this.options, presets, model, inputModel, this);
     return renderer.runSelfPreset();
   }
 
   async renderInterface(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const presets = this.getPresets('interface'); 
-    const renderer = new InterfaceRenderer(this.options, presets, model, inputModel);
+    const renderer = new InterfaceRenderer(this.options, presets, model, inputModel, this);
     return renderer.runSelfPreset();
   }
 
   async renderEnum(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const presets = this.getPresets('enum'); 
-    const renderer = new EnumRenderer(this.options, presets, model, inputModel);
+    const renderer = new EnumRenderer(this.options, presets, model, inputModel, this);
     return renderer.runSelfPreset();
   }
 
   async renderType(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const presets = this.getPresets('type'); 
-    const renderer = new TypeRenderer(this.options, presets, model, inputModel);
+    const renderer = new TypeRenderer(this.options, presets, model, inputModel, this);
     return renderer.runSelfPreset();
   }
 

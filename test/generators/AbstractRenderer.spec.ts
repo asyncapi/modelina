@@ -10,6 +10,14 @@ describe('AbstractRenderer', function() {
           type: IndentationTypes.SPACES,
           size: 2,
         },
+        namingConvention: {
+          type: (name: string | undefined) => {
+            return `type__${name || ''}`;
+          },
+          property: (name: string | undefined) => {
+            return `property__${name || ''}`;
+          }
+        }
       }, [], new CommonModel(), new CommonInputModel());
     }
     render() { return "" }
@@ -38,6 +46,20 @@ describe('AbstractRenderer', function() {
     test('should render indentation  with options', function() {
       const content = renderer.indent('Test', 4, IndentationTypes.SPACES);
       expect(content).toEqual('    Test');
+    });
+  });
+
+  describe('nameType()', function() {
+    test('should name the type', function() {
+      const name = renderer.nameType('someType');
+      expect(name).toEqual('type__someType');
+    });
+  });
+
+  describe('nameProperty()', function() {
+    test('should name the property', function() {
+      const name = renderer.nameProperty('someProperty');
+      expect(name).toEqual('property__someProperty');
     });
   });
 });

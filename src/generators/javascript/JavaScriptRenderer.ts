@@ -1,5 +1,5 @@
 import { AbstractRenderer } from '../AbstractRenderer';
-import { JavaScriptOptions } from './JavaScriptGenerator';
+import { JavaScriptOptions, JavaScriptGenerator } from './JavaScriptGenerator';
 
 import { FormatHelpers } from '../../helpers';
 import { CommonModel, CommonInputModel, Preset } from '../../models';
@@ -9,14 +9,15 @@ import { CommonModel, CommonInputModel, Preset } from '../../models';
  * 
  * @extends AbstractRenderer
  */
-export abstract class JavaScriptRenderer extends AbstractRenderer<JavaScriptOptions> {
+export abstract class JavaScriptRenderer extends AbstractRenderer<JavaScriptOptions, JavaScriptGenerator> {
   constructor(
     options: JavaScriptOptions,
     presets: Array<[Preset, unknown]>,
     model: CommonModel, 
     inputModel: CommonInputModel,
+    generator: JavaScriptGenerator,
   ) {
-    super(options, presets, model, inputModel);
+    super(options, presets, model, inputModel, generator);
   }
 
   renderComments(lines: string | string[]): string {

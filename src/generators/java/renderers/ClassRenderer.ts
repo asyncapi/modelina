@@ -17,7 +17,7 @@ export class ClassRenderer extends JavaRenderer {
       await this.runAdditionalContentPreset(),
     ];
 
-    const formattedName = this.model.$id && FormatHelpers.toPascalCase(this.model.$id);
+    const formattedName = this.nameType(this.model.$id);
     return `public class ${formattedName} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
@@ -70,19 +70,19 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
     return renderer.defaultSelf();
   },
   property({ renderer, propertyName, property }) {
-    propertyName = FormatHelpers.toCamelCase(propertyName);
-    return `private ${renderer.renderType(property)} ${propertyName};`;
+    const formattedName = renderer.nameProperty(propertyName, property);
+    return `private ${renderer.renderType(property)} ${formattedName};`;
   },
   getter({ renderer, propertyName, property }) {
-    propertyName = FormatHelpers.toCamelCase(propertyName);
     const getterName = FormatHelpers.toPascalCase(propertyName);
     const type = renderer.renderType(property);
-    return `public ${type} get${getterName}() { return this.${propertyName}; }`;
+    const formattedName = renderer.nameProperty(propertyName, property);
+    return `public ${type} get${getterName}() { return this.${formattedName}; }`;
   },
   setter({ renderer, propertyName, property }) {
-    propertyName = FormatHelpers.toCamelCase(propertyName);
     const setterName = FormatHelpers.toPascalCase(propertyName);
     const type = renderer.renderType(property);
-    return `public void set${setterName}(${type} ${propertyName}) { this.${propertyName} = ${propertyName}; }`;
+    const formattedName = renderer.nameProperty(propertyName, property);
+    return `public void set${setterName}(${type} ${formattedName}) { this.${formattedName} = ${formattedName}; }`;
   },
 };

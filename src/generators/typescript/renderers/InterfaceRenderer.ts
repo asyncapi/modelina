@@ -15,7 +15,7 @@ export class InterfaceRenderer extends TypeScriptRenderer {
       await this.runAdditionalContentPreset(),
     ];
 
-    const formattedName = this.model.$id && FormatHelpers.toPascalCase(this.model.$id);
+    const formattedName = this.nameType(this.model.$id);
     return `interface ${formattedName} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;

@@ -1,5 +1,5 @@
 import { AbstractRenderer } from '../AbstractRenderer';
-import { TypeScriptOptions } from './TypeScriptGenerator';
+import { TypeScriptOptions, TypeScriptGenerator } from './TypeScriptGenerator';
 
 import { FormatHelpers } from '../../helpers';
 import { CommonModel, CommonInputModel, Preset } from '../../models';
@@ -9,14 +9,15 @@ import { CommonModel, CommonInputModel, Preset } from '../../models';
  * 
  * @extends AbstractRenderer
  */
-export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOptions> {
+export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOptions, TypeScriptGenerator> {
   constructor(
     options: TypeScriptOptions,
     presets: Array<[Preset, unknown]>,
     model: CommonModel, 
     inputModel: CommonInputModel,
+    generator: TypeScriptGenerator,
   ) {
-    super(options, presets, model, inputModel);
+    super(options, presets, model, inputModel, generator);
   }
 
   renderType(model: CommonModel | CommonModel[]): string {
@@ -24,7 +25,7 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
       return model.map(t => this.renderType(t)).join(' | ');
     }
     if (model.$ref !== undefined) {
-      return model.$ref;
+      return this.nameType(model.$ref);
     }
     if (Array.isArray(model.type)) {
       return model.type.map(t => this.toTsType(t, model)).join(' | ');
@@ -90,7 +91,7 @@ ${lines.map(line => ` * ${line}`).join('\n')}
   }
 
   renderProperty(propertyName: string, property: CommonModel): string {
-    const name = FormatHelpers.toCamelCase(propertyName);
+    const name = this.nameProperty(propertyName, property);
     const signature = this.renderTypeSignature(property, { isRequired: this.model.isRequired(propertyName) });
     return `${name}${signature};`;
   }

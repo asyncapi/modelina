@@ -1,16 +1,20 @@
-import { CommonGeneratorOptions } from './AbstractGenerator';
+import { AbstractGenerator, CommonGeneratorOptions } from './AbstractGenerator';
 import { CommonModel, CommonInputModel, Preset } from '../models';
 import { FormatHelpers, IndentationTypes } from '../helpers';
 
 /**
  * Abstract renderer with common helper methods
  */
-export abstract class AbstractRenderer<O extends CommonGeneratorOptions = CommonGeneratorOptions> {
+export abstract class AbstractRenderer<
+  O extends CommonGeneratorOptions = CommonGeneratorOptions,
+  G extends AbstractGenerator = AbstractGenerator,
+> {
   constructor(
     protected readonly options: O,
     protected readonly presets: Array<[Preset, unknown]>,
     protected readonly model: CommonModel, 
     protected readonly inputModel: CommonInputModel,
+    protected readonly _generator?: G,
   ) {}
 
   renderLine(line: string): string {
@@ -30,6 +34,24 @@ export abstract class AbstractRenderer<O extends CommonGeneratorOptions = Common
     size = size || this.options.indentation?.size;
     type = type || this.options.indentation?.type;
     return FormatHelpers.indent(content, size, type);
+  }
+
+  nameType(name: string | undefined): string {
+    if (!name) return '';
+    return this.options?.namingConvention?.type 
+      ? this.options.namingConvention.type(name, { model: this.model, inputModel: this.inputModel })
+      : name;
+  }
+
+  nameProperty(name: string | undefined, property?: CommonModel): string {
+    if (!name) return '';
+    return this.options?.namingConvention?.property 
+      ? this.options.namingConvention.property(name, { model: this.model, inputModel: this.inputModel, property })
+      : name;
+  }
+
+  getGenerator() {
+    return this._generator;
   }
 
   async runSelfPreset(): Promise<string> {

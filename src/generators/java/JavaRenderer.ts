@@ -1,5 +1,5 @@
 import { AbstractRenderer } from '../AbstractRenderer';
-import { JavaOptions } from './JavaGenerator';
+import { JavaOptions, JavaGenerator } from './JavaGenerator';
 
 import { CommonModel, CommonInputModel, Preset } from '../../models';
 import { FormatHelpers } from '../../helpers';
@@ -9,14 +9,15 @@ import { FormatHelpers } from '../../helpers';
  * 
  * @extends AbstractRenderer
  */
-export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
+export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGenerator> {
   constructor(
     options: JavaOptions,
     presets: Array<[Preset, unknown]>,
     model: CommonModel, 
     inputModel: CommonInputModel,
+    generator: JavaGenerator,
   ) {
-    super(options, presets, model, inputModel);
+    super(options, presets, model, inputModel, generator);
   }
 
   renderType(model: CommonModel | CommonModel[]): string {
@@ -24,7 +25,7 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
       return 'Object'; // fallback
     }
     if (model.$ref !== undefined) {
-      return model.$ref;
+      return this.nameType(model.$ref);
     }
     const format = model.getFromSchema('format');
     return this.toClassType(this.toJavaType(format || model.type, model));

@@ -1,7 +1,6 @@
 import { JavaScriptRenderer } from '../JavaScriptRenderer';
 
 import { CommonModel, ClassPreset } from '../../../models';
-import { FormatHelpers } from '../../../helpers';
 
 /**
  * Renderer for JavaScript's `class` type
@@ -17,7 +16,7 @@ export class ClassRenderer extends JavaScriptRenderer {
       await this.runAdditionalContentPreset(),
     ];
 
-    const formattedName = this.model.$id && FormatHelpers.toPascalCase(this.model.$id);
+    const formattedName = this.nameType(this.model.$id);
     return `class ${formattedName} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
@@ -55,9 +54,9 @@ export const JS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
   },
   ctor({ renderer, model }) {
     const properties = model.properties || {};
-    const assigments = Object.keys(properties).map(property => {
-      property = FormatHelpers.toCamelCase(property);
-      return `this.${property} = input.${property};`;
+    const assigments = Object.entries(properties).map(([propertyName, property]) => {
+      propertyName = renderer.nameProperty(propertyName, property);
+      return `this.${propertyName} = input.${propertyName};`;
     });
     const body = renderer.renderBlock(assigments);
 
@@ -65,16 +64,16 @@ export const JS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
 ${renderer.indent(body)}
 }`;
   },
-  property({ propertyName }) {
-    propertyName = FormatHelpers.toCamelCase(propertyName);
-    return `${propertyName};`;
+  property({ renderer, propertyName, property }) {
+    const formattedName = renderer.nameProperty(propertyName, property);
+    return `${formattedName};`;
   },
-  getter({ propertyName }) {
-    propertyName = FormatHelpers.toCamelCase(propertyName);
-    return `get ${propertyName}() { return this.${propertyName}; }`;
+  getter({ renderer, propertyName, property }) {
+    const formattedName = renderer.nameProperty(propertyName, property);
+    return `get ${formattedName}() { return this.${formattedName}; }`;
   },
-  setter({ propertyName }) {
-    propertyName = FormatHelpers.toCamelCase(propertyName);
-    return `set ${propertyName}(${propertyName}) { this.${propertyName} = ${propertyName}; }`;
+  setter({ renderer, propertyName, property }) {
+    const formattedName = renderer.nameProperty(propertyName, property);
+    return `set ${formattedName}(${formattedName}) { this.${formattedName} = ${formattedName}; }`;
   },
 };

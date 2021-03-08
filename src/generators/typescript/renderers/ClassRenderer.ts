@@ -1,7 +1,6 @@
 import { TypeScriptRenderer } from '../TypeScriptRenderer';
 
 import { CommonModel, ClassPreset } from '../../../models';
-import { FormatHelpers } from '../../../helpers';
 
 /**
  * Renderer for TypeScript's `class` type
@@ -17,7 +16,7 @@ export class ClassRenderer extends TypeScriptRenderer {
       await this.runAdditionalContentPreset(),
     ];
 
-    const formattedName = this.model.$id && FormatHelpers.toPascalCase(this.model.$id);
+    const formattedName = this.nameType(this.model.$id);
     return `class ${formattedName} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
@@ -55,15 +54,13 @@ export const TS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
   },
   ctor({ renderer, model }) {
     const properties = model.properties || {};
-    const assigments = Object.keys(properties).map(property => {
-      property = FormatHelpers.toCamelCase(property);
-      return `this._${property} = input.${property};`;
+    const assigments = Object.entries(properties).map(([propertyName, property]) => {
+      const formattedName = renderer.nameProperty(propertyName, property);
+      return `this._${formattedName} = input.${formattedName};`;
     });
-    const ctorProperties: string[] = [];
-    for (const [propertyName, property] of Object.entries(properties)) {
-      const rendererProperty = renderer.renderProperty(propertyName, property).replace(';', ',');
-      ctorProperties.push(rendererProperty);
-    }
+    const ctorProperties = Object.entries(properties).map(([propertyName, property]) => {
+      return renderer.renderProperty(propertyName, property).replace(';', ',');
+    });
 
     return `constructor(input: {
 ${renderer.indent(renderer.renderBlock(ctorProperties))}
@@ -76,13 +73,13 @@ ${renderer.indent(renderer.renderBlock(assigments))}
   },
   getter({ renderer, model, propertyName, property }) {
     const isRequired = model.isRequired(propertyName);
-    const formattedName = FormatHelpers.toCamelCase(propertyName);
+    const formattedName = renderer.nameProperty(propertyName, property);
     const signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });
     return `get ${formattedName}()${signature} { return this._${formattedName}; }`;
   },
   setter({ renderer, model, propertyName, property }) {
     const isRequired = model.isRequired(propertyName);
-    const formattedName = FormatHelpers.toCamelCase(propertyName);
+    const formattedName = renderer.nameProperty(propertyName, property);
     const signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });
     const arg = `${formattedName}${signature}`;
     return `set ${formattedName}(${arg}) { this._${formattedName} = ${formattedName}; }`;
