@@ -39,7 +39,7 @@ Below is a list of additional options available for a given generator.
 
 ## Custom generator
 
-Creating a new generator that will become a part of the officially supported languages in AsyncAPI Model SDK is pretty simple. The minimum set of required actions to create a new generator are:
+The minimum set of required actions to create a new generator are:
 
 - Source code must be included in [generators](../src/generators) folder.
 - Must extend the abstract [`AbstractGenerator`](../src/generators/AbstractGenerator.ts) class,
@@ -51,3 +51,5 @@ Creating a new generator that will become a part of the officially supported lan
 - Must define **renderer**s classes for available model types in a given language. **Renderer** is an instance of the class with common helper functions to render appropriate model type and must be extended by [`AbstractRenderer`](../src/generators/AbstractRenderer.ts) class - [example](../src/generators/typescript/renderers/ClassRenderer.ts).
 
 Check the [generator implementation](../src/generators/typescript/TypeScriptGenerator.ts) for `TypeScript` language to see how it should look like.
+
+If you created a generator then you can contribute it to the AsyncAPI Model SDK and it will become the official supported generator.
