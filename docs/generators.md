@@ -12,13 +12,13 @@
 
 Each generator extends default options for the generator. It means that the generator can also have additional options.
 
-Options is passed as first argument to generator's constructor. Check the example:
+Options are passed as the first argument to the generator's constructor. Check the example:
 
 ```ts
 const generator = new TypeScriptGenerator({ ...options });
 ```
 
-Default options contains:
+Default options contain:
 
 | Option | Type | Description | Default value |
 |---|---|---|---|
@@ -28,18 +28,18 @@ Default options contains:
 | `defaultPreset` | Object | Default preset for generator. For more information, read [customisation](./customisation.md) document. | _Implemented by generator_ |
 | `presets` | Array | Array contains **presets**. For more information, read [customisation](./customisation.md) document. | `[]` |
 
-Below is a list with additional options available for a given generator.
+Below is a list of additional options available for a given generator.
 
 ### [TypeScript](../src/generators/typescript/TypeScriptGenerator.ts)
 
 | Option | Type | Description | Default value |
 |---|---|---|---|
-| `renderTypes` | Boolean | Renders or not signature for types. | `true` |
-| `modelType` | String | It indicates which model type should be rendered for `object` type. Its value can be either `interface` or `class`. | `class` |
+| `renderTypes` | Boolean | Render signature for types. | `true` |
+| `modelType` | String | It indicates which model type should be rendered for the `object` type. Its value can be either `interface` or `class`. | `class` |
 
 ## Custom generator
 
-Creating a new generator which will become a part of the officially supported languages in AsyncAPI Model SDK is pretty simple. The minimum set of required actions to create a new generator are:
+Creating a new generator that will become a part of the officially supported languages in AsyncAPI Model SDK is pretty simple. The minimum set of required actions to create a new generator are:
 
 - Source code must be included in [generators](../src/generators) folder.
 - Must extend the abstract [`AbstractGenerator`](../src/generators/AbstractGenerator.ts) class,
@@ -50,4 +50,4 @@ Creating a new generator which will become a part of the officially supported la
 - Must implement `render` function,
 - Must define **renderer**s classes for available model types in a given language. **Renderer** is an instance of the class with common helper functions to render appropriate model type and must be extended by [`AbstractRenderer`](../src/generators/AbstractRenderer.ts) class - [example](../src/generators/typescript/renderers/ClassRenderer.ts).
 
-Check the [generator implementation](../src/generators/typescript/TypeScriptGenerator.ts) for `TypeScript` language to see how it should looks like.
+Check the [generator implementation](../src/generators/typescript/TypeScriptGenerator.ts) for `TypeScript` language to see how it should look like.
