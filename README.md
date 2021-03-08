@@ -50,7 +50,7 @@ The process of creating data models from input data consists of 2 processes, the
 
 The input process ensures that any supported input is handled correctly, the basics are that any input needs to be converted into our internal model representation `CommonModel`. The following inputs are supported:
 
-- [JSON Schema Draft 7](#JSON-Schema-input), this is the default inferred input if we cannot find an another input processor.
+- [JSON Schema Draft 7](#JSON-Schema-input), this is the default inferred input if we cannot find another input processor.
 - [AsyncAPI version 2.0.0](#AsyncAPI-input)
 
 Read more about the input process [here](./docs/input_processing.md).

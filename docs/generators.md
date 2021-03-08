@@ -41,13 +41,13 @@ Below is a list with additional options available for a given generator.
 
 Creating a new generator which will become a part of the officially supported languages in AsyncAPI Model SDK is pretty simple. The minimum set of required actions to create a new generator are:
 
-- source code must be included in [generators](../src/generators) folder.
-- must extend the abstract [`AbstractGenerator`](../src/generators/AbstractGenerator.ts) class,
-- must define [`Preset`](./customisation.md)'s shape for the language,
-- must define language options by passing an interface describing additional options to the first generic argument of [`AbstractGenerator`](../src/generators/AbstractGenerator.ts). The interface must also be extended by `CommonGeneratorOptions` interface,
-- must define default options as static class's field, which must be extended by `defaultGeneratorOptions`,
-- default options must include `defaultPreset` property,
-- must implement `render` function,
-- must define **renderer**s classes for available model types in a given language. **Renderer** is an instance of the class with common helper functions to render appropriate model type and must be extended by [`AbstractRenderer`](../src/generators/AbstractRenderer.ts) class - [example](../src/generators/typescript/renderers/ClassRenderer.ts).
+- Source code must be included in [generators](../src/generators) folder.
+- Must extend the abstract [`AbstractGenerator`](../src/generators/AbstractGenerator.ts) class,
+- Must define [`Preset`](./customisation.md)'s shape for the language,
+- Must define language options by passing an interface describing additional options to the first generic argument of [`AbstractGenerator`](../src/generators/AbstractGenerator.ts). The interface must also be extended by `CommonGeneratorOptions` interface,
+- Must define default options as static class's field, which must be extended by `defaultGeneratorOptions`,
+- Default options must include `defaultPreset` property,
+- Must implement `render` function,
+- Must define **renderer**s classes for available model types in a given language. **Renderer** is an instance of the class with common helper functions to render appropriate model type and must be extended by [`AbstractRenderer`](../src/generators/AbstractRenderer.ts) class - [example](../src/generators/typescript/renderers/ClassRenderer.ts).
 
 Check the [generator implementation](../src/generators/typescript/TypeScriptGenerator.ts) for `TypeScript` language to see how it should looks like.
