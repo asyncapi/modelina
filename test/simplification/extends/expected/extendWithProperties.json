@@ -50,7 +50,8 @@
         "number",
         "array",
         "boolean",
-        "null"
+        "null",
+          "integer"
       ]
     },
     "extend": [
@@ -94,7 +95,8 @@
         "number",
         "array",
         "boolean",
-        "null"
+        "null",
+          "integer"
       ]
     }
   },
@@ -134,7 +136,8 @@
         "number",
         "array",
         "boolean",
-        "null"
+        "null",
+          "integer"
       ]
     }
   }
