@@ -2,25 +2,12 @@ import { AbstractRenderer } from '../../src/generators';
 import { IndentationTypes } from '../../src/helpers';
 import { CommonInputModel, CommonModel } from '../../src/models';
 
-import { TestGenerator } from './AbstractGenerator.spec';
+import { TestGenerator, testOptions } from './AbstractGenerator.spec';
 
 describe('AbstractRenderer', function() {
   class TestRenderer extends AbstractRenderer {
     constructor() {
-      super({
-        indentation: {
-          type: IndentationTypes.SPACES,
-          size: 2,
-        },
-        namingConvention: {
-          type: (name: string | undefined) => {
-            return `type__${name || ''}`;
-          },
-          property: (name: string | undefined) => {
-            return `property__${name || ''}`;
-          }
-        }
-      }, new TestGenerator(), [], new CommonModel(), new CommonInputModel());
+      super(testOptions, new TestGenerator(), [], new CommonModel(), new CommonInputModel());
     }
     render() { return "" }
   }
@@ -38,6 +25,14 @@ describe('AbstractRenderer', function() {
   test('renderBlock function should render multiple lines', async function() {
     const content = renderer.renderBlock(['Test1', 'Test2']);
     expect(content).toEqual('Test1\nTest2');
+  });
+
+  test('can use generator inside renderer', async function() {
+    const generator = renderer.generator;
+    const doc: any = { $id: 'test' };
+    const outputModels = await generator.generate(doc);
+
+    expect(outputModels[0].result).toEqual('test');
   });
 
   describe('indent()', function() {

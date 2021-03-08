@@ -10,8 +10,8 @@ export abstract class AbstractRenderer<
   G extends AbstractGenerator = AbstractGenerator,
 > {
   constructor(
-    protected readonly options: O,
-    protected readonly generator: G,
+    readonly options: O,
+    readonly generator: G,
     protected readonly presets: Array<[Preset, unknown]>,
     protected readonly model: CommonModel, 
     protected readonly inputModel: CommonInputModel,

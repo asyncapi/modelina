@@ -1,9 +1,24 @@
 import { AbstractGenerator } from '../../src/generators'; 
+import { IndentationTypes } from '../../src/helpers';
 import { CommonInputModel, CommonModel } from '../../src/models';
 
+export const testOptions = {
+  indentation: {
+    type: IndentationTypes.SPACES,
+    size: 2,
+  },
+  namingConvention: {
+    type: (name: string | undefined) => {
+      return `type__${name || ''}`;
+    },
+    property: (name: string | undefined) => {
+      return `property__${name || ''}`;
+    }
+  }
+};
 export class TestGenerator extends AbstractGenerator {
   constructor() {
-    super("TestGenerator", {});
+    super("TestGenerator", testOptions);
   }
 
   render(model: CommonModel, inputModel: CommonInputModel): any {
