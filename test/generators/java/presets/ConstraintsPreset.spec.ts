@@ -14,7 +14,7 @@ describe('JAVA_DESCRIPTION_PRESET', function() {
         min_number_prop:  { type: "number", minimum: 0 },
         max_number_prop:  { type: "number", exclusiveMaximum: 100 },
         array_prop:       { type: "array", minItems: 2, maxItems: 3, },
-        string_prop:      { type: "string", pattern: "^I_" }
+        string_prop:      { type: "string", pattern: "^I_", minLength: 3 }
       },
       required: ['min_number_prop', 'max_number_prop']
     };
@@ -39,6 +39,7 @@ describe('JAVA_DESCRIPTION_PRESET', function() {
   public void setArrayProp(Object[] arrayProp) { this.arrayProp = arrayProp; }
 
   @Pattern(regexp="^I_")
+  @Size(min=3)
   public String getStringProp() { return this.stringProp; }
   public void setStringProp(String stringProp) { this.stringProp = stringProp; }
 }`;
