@@ -2,7 +2,7 @@ import { AbstractRenderer } from '../AbstractRenderer';
 import { JavaOptions, JavaGenerator } from './JavaGenerator';
 
 import { CommonModel, CommonInputModel, Preset } from '../../models';
-import { FormatHelpers } from '../../helpers';
+import { TypeHelpers, ModelKind, FormatHelpers } from '../../helpers';
 
 /**
  * Common renderer for Java types
@@ -25,10 +25,16 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
       return 'Object'; // fallback
     }
     if (model.$ref !== undefined) {
-      return this.nameType(model.$ref);
+      return this.nameType(model.$ref, model);
     }
-    const format = model.getFromSchema('format');
-    return this.toClassType(this.toJavaType(format || model.type, model));
+    if (
+      TypeHelpers.extractKind(model) === ModelKind.PRIMITIVE ||
+      TypeHelpers.extractKind(model) === ModelKind.ARRAY
+    ) {
+      const format = model.getFromSchema('format');
+      return this.toClassType(this.toJavaType(format || model.type, model));
+    }
+    return this.nameType(model.$id, model);
   }
 
   toJavaType(type: string | undefined, model: CommonModel): string {

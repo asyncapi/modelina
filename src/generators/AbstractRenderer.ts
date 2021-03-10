@@ -36,15 +36,15 @@ export abstract class AbstractRenderer<
     return FormatHelpers.indent(content, size, type);
   }
 
-  nameType(name: string | undefined): string {
-    if (!name) return '';
+  nameType(name: string | undefined, model?: CommonModel): string {
+    name = name || '';
     return this.options?.namingConvention?.type 
-      ? this.options.namingConvention.type(name, { model: this.model, inputModel: this.inputModel })
+      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel })
       : name;
   }
 
   nameProperty(name: string | undefined, property?: CommonModel): string {
-    if (!name) return '';
+    name = name || '';
     return this.options?.namingConvention?.property 
       ? this.options.namingConvention.property(name, { model: this.model, inputModel: this.inputModel, property })
       : name;
