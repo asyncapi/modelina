@@ -24,11 +24,13 @@ This package is under development and it has not reached version 1.0.0 yet, whic
 
 - [Installation](#installation)
 - [How it works](#how-it-works)
-  * [The transformation process](#the-transformation-process)
-  * [The simplification process](#the-simplification-process)
-  * [The generatiion process](#the-generatiion-process)
+  * [The input process](#the-input-process)
+  * [The generation process](#the-generation-process)
 - [Example](#example)
-- [Customisation](#customisation)
+- [Supported input](#supported-input)
+  * [AsyncAPI input](#asyncapi-input)
+  * [JSON Schema input](#json-schema-input)
+- [Customization](#customization)
 - [Development](#development)
 - [Contributing](#contributing)
 
@@ -132,9 +134,9 @@ generator.generate({asyncapi: '2.0.0'});
 generator.generate({$schema: 'http://json-schema.org/draft-07/schema#'});
 ```
 
-## Customisation
+## Customization
 
-The AsyncAPI Model SDK uses **preset** objects to extend the rendered model. For more information, check [customisation document](./docs/customisation.md).
+The AsyncAPI Model SDK uses **preset** objects to extend the rendered model. For more information, check [customization document](./docs/customization.md).
 
 ## Development
 

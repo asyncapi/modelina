@@ -25,8 +25,8 @@ Default options contain:
 | `indentation` | Object | Options for indentation. | - |
 | `indentation.type` | String | Type of indentation. Its value can be either `SPACES` or `TABS`. | `SPACES` |
 | `indentation.size` | String | Size of indentation. | 2 |
-| `defaultPreset` | Object | Default preset for generator. For more information, read [customisation](./customisation.md) document. | _Implemented by generator_ |
-| `presets` | Array | Array contains **presets**. For more information, read [customisation](./customisation.md) document. | `[]` |
+| `defaultPreset` | Object | Default preset for generator. For more information, read [customization](./customization.md) document. | _Implemented by generator_ |
+| `presets` | Array | Array contains **presets**. For more information, read [customization](./customization.md) document. | `[]` |
 
 Below is a list of additional options available for a given generator.
 
@@ -43,7 +43,7 @@ The minimum set of required actions to create a new generator are:
 
 - Source code must be included in [generators](../src/generators) folder.
 - Must extend the abstract [`AbstractGenerator`](../src/generators/AbstractGenerator.ts) class,
-- Must define [`Preset`](./customisation.md)'s shape for the language,
+- Must define [`Preset`](./customization.md)'s shape for the language,
 - Must define language options by passing an interface describing additional options to the first generic argument of [`AbstractGenerator`](../src/generators/AbstractGenerator.ts). The interface must also be extended by `CommonGeneratorOptions` interface,
 - Must define default options as static class's field, which must be extended by `defaultGeneratorOptions`,
 - Default options must include `defaultPreset` property,
