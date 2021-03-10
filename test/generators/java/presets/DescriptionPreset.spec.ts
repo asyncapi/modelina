@@ -1,0 +1,92 @@
+import { JavaGenerator, JAVA_DESCRIPTION_PRESET } from '../../../../src/generators'; 
+
+describe('JAVA_DESCRIPTION_PRESET', function() {
+  let generator: JavaGenerator;
+  beforeEach(() => {
+    generator = new JavaGenerator({ presets: [JAVA_DESCRIPTION_PRESET] });
+  });
+
+  test('should render description and examples for class', async function() {
+    const doc = {
+      $id: "Clazz",
+      type: "object",
+      description: "Description for class",
+      examples: [{ prop: "value" }],
+      properties: {
+        prop:    { type: "string", description: "Description for prop", examples: ["exampleValue"] },
+      },
+    };
+    const expected = `/**
+ * Description for class
+ * Examples: {"prop":"value"}
+ */
+public class Clazz {
+  private String prop;
+
+  /**
+   * Description for prop
+   * Examples: exampleValue
+   */
+  public String getProp() { return this.prop; }
+  public void setProp(String prop) { this.prop = prop; }
+}`;
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models["Clazz"];
+
+    let classModel = await generator.renderClass(model, inputModel);
+    expect(classModel).toEqual(expected);
+  });
+
+  test('should render description and examples for enum', async function() {
+    const doc = {
+      $id: "Enum",
+      type: "string",
+      description: "Description for enum",
+      examples: ['value'],
+      enum: [
+        'on',
+        'off',
+      ]
+    };
+    const expected = `/**
+ * Description for enum
+ * Examples: value
+ */
+public enum Enum {
+  ON("on"), OFF("off");
+
+  private String value;
+
+  Enum(String value) {
+    this.value = value;
+  }
+    
+  @JsonValue
+  public String getValue() {
+    return value;
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+
+  @JsonCreator
+  public static Enum fromValue(String value) {
+    for (Enum e : Enum.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException("Unexpected value '" + value + "'");
+  }
+}`;
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models["Enum"];
+
+    let enumModel = await generator.renderEnum(model, inputModel);
+    expect(enumModel).toEqual(expected);
+  });
+});
