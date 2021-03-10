@@ -48,7 +48,7 @@ The minimum set of required actions to create a new generator are:
 - Must define default options as static class's field, which must be extended by `defaultGeneratorOptions`,
 - Default options must include `defaultPreset` property,
 - Must implement `render` function,
-- Must define **renderer**s classes for available model types in a given language. **Renderer** is an instance of the class with common helper functions to render appropriate model type and must be extended by [`AbstractRenderer`](../src/generators/AbstractRenderer.ts) class - [example](../src/generators/typescript/renderers/ClassRenderer.ts).
+- Must define **Renderers** classes for available model types in a given language. **Renderer** is an instance of the class with common helper functions to render appropriate model type and must be extended by [`AbstractRenderer`](../src/generators/AbstractRenderer.ts) class - [example](../src/generators/typescript/renderers/ClassRenderer.ts).
 
 Check the [generator implementation](../src/generators/typescript/TypeScriptGenerator.ts) for `TypeScript` language to see how it should look like.
 
