@@ -28,7 +28,7 @@ describe('JavaGenerator', function() {
   private Double houseNumber;
   private Boolean marriage;
   private Object members;
-  private Object[] arrayType;
+  private List<Object> arrayType;
 
   public String getStreetName() { return this.streetName; }
   public void setStreetName(String streetName) { this.streetName = streetName; }
@@ -48,8 +48,8 @@ describe('JavaGenerator', function() {
   public Object getMembers() { return this.members; }
   public void setMembers(Object members) { this.members = members; }
 
-  public Object[] getArrayType() { return this.arrayType; }
-  public void setArrayType(Object[] arrayType) { this.arrayType = arrayType; }
+  public List<Object> getArrayType() { return this.arrayType; }
+  public void setArrayType(List<Object> arrayType) { this.arrayType = arrayType; }
 }`;
 
     const inputModel = await generator.process(doc);
@@ -106,6 +106,30 @@ describe('JavaGenerator', function() {
     expect(classModel).toEqual(expected);
 
     classModel = await generator.render(model, inputModel);
+    expect(classModel).toEqual(expected);
+  });
+
+  test('should render Array type for collections', async function() {
+    const doc = {
+      $id: "CustomClass",
+      type: "object",
+      properties: {
+        arrayType: { type: "array" },
+      }
+    };
+    const expected = `public class CustomClass {
+  private Object[] arrayType;
+
+  public Object[] getArrayType() { return this.arrayType; }
+  public void setArrayType(Object[] arrayType) { this.arrayType = arrayType; }
+}`;
+
+    generator = new JavaGenerator({ collectionType: 'Array' });
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models["CustomClass"];
+
+    let classModel = await generator.render(model, inputModel);
     expect(classModel).toEqual(expected);
   });
 

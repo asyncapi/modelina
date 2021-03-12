@@ -1,6 +1,6 @@
 import { JavaGenerator, JAVA_CONSTRAINTS_PRESET } from '../../../../src/generators'; 
 
-describe('JAVA_DESCRIPTION_PRESET', function() {
+describe('JAVA_CONSTRAINTS_PRESET', function() {
   let generator: JavaGenerator;
   beforeEach(() => {
     generator = new JavaGenerator({ presets: [JAVA_CONSTRAINTS_PRESET] });
@@ -21,7 +21,7 @@ describe('JAVA_DESCRIPTION_PRESET', function() {
     const expected = `public class Clazz {
   private Double minNumberProp;
   private Double maxNumberProp;
-  private Object[] arrayProp;
+  private List<Object> arrayProp;
   private String stringProp;
 
   @NotNull
@@ -35,8 +35,8 @@ describe('JAVA_DESCRIPTION_PRESET', function() {
   public void setMaxNumberProp(Double maxNumberProp) { this.maxNumberProp = maxNumberProp; }
 
   @Size(min=2, max=3)
-  public Object[] getArrayProp() { return this.arrayProp; }
-  public void setArrayProp(Object[] arrayProp) { this.arrayProp = arrayProp; }
+  public List<Object> getArrayProp() { return this.arrayProp; }
+  public void setArrayProp(List<Object> arrayProp) { this.arrayProp = arrayProp; }
 
   @Pattern(regexp="^I_")
   @Size(min=3)

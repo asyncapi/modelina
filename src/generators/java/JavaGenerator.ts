@@ -11,12 +11,15 @@ import { JavaPreset, JAVA_DEFAULT_PRESET } from './JavaPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 
-export type JavaOptions = CommonGeneratorOptions<JavaPreset>
+export interface JavaOptions extends CommonGeneratorOptions<JavaPreset> {
+  collectionType?: 'List' | 'Array';
+}
 
 export class JavaGenerator extends AbstractGenerator<JavaOptions> {
   static defaultOptions: JavaOptions = {
     ...defaultGeneratorOptions,
     defaultPreset: JAVA_DEFAULT_PRESET,
+    collectionType: 'List',
   };
 
   constructor(

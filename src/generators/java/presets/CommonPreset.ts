@@ -19,7 +19,7 @@ function renderEqual({ renderer, model }: {
   renderer: JavaRenderer,
   model: CommonModel,
 }): string {
-  const formattedModelName = model.$id && FormatHelpers.toPascalCase(model.$id);
+  const formattedModelName = renderer.nameType(model.$id);
   const properties = model.properties || {};
   const equalProperties = Object.keys(properties).map(prop => {
     const camelCasedProp = FormatHelpers.toCamelCase(prop);
@@ -67,10 +67,10 @@ function renderToString({ renderer, model }: {
   renderer: JavaRenderer,
   model: CommonModel,
 }): string {
-  const formattedModelName = model.$id && FormatHelpers.toPascalCase(model.$id);
+  const formattedModelName = renderer.nameType(model.$id);
   const properties = model.properties || {};
   const toStringProperties = Object.keys(properties).map(prop => 
-    `"    ${prop}: " + toIndentedString(${FormatHelpers.toCamelCase(prop)}) + "\\n" +`
+    `"    ${renderer.nameProperty(prop)}: " + toIndentedString(${FormatHelpers.toCamelCase(prop)}) + "\\n" +`
   );
 
   return `${renderer.renderAnnotation('Override')}
