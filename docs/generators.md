@@ -25,6 +25,9 @@ Default options contain:
 | `indentation` | Object | Options for indentation. | - |
 | `indentation.type` | String | Type of indentation. Its value can be either `SPACES` or `TABS`. | `SPACES` |
 | `indentation.size` | String | Size of indentation. | 2 |
+| `namingConvention` | Object | Options for naming conventions. | - |
+| `namingConvention.type` | Function | A function that returns the format of the type. | _Returns pascal cased name_ |
+| `namingConvention.property` | Function | A function that returns the format of the property. | _Returns camel cased name_ |
 | `defaultPreset` | Object | Default preset for generator. For more information, read [customization](./customization.md) document. | _Implemented by generator_ |
 | `presets` | Array | Array contains **presets**. For more information, read [customization](./customization.md) document. | `[]` |
 
@@ -36,6 +39,12 @@ Below is a list of additional options available for a given generator.
 |---|---|---|---|
 | `renderTypes` | Boolean | Render signature for types. | `true` |
 | `modelType` | String | It indicates which model type should be rendered for the `object` type. Its value can be either `interface` or `class`. | `class` |
+
+### [Java](../src/generators/java/JavaGenerator.ts)
+
+| Option | Type | Description | Default value |
+|---|---|---|---|
+| `collectionType` | String | It indicates with which signature should be rendered the `array` type. Its value can be either `List` (`List<{type}>`) or `Array` (`{type}[]`). | `List` |
 
 ## Custom generator
 
