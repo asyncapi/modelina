@@ -38,7 +38,7 @@ describe('AsyncAPIInputProcessor', function() {
             const expectedCommonInputModel = JSON.parse(expectedCommonInputModelString);
             const processor = new AsyncAPIInputProcessor();
             const commonInputModel = await processor.process(basicDoc);
-            expect(commonInputModel).toEqual(expectedCommonInputModel);
+            expect(commonInputModel).toMatchObject(expectedCommonInputModel);
         });
         test('should be able to process parsed objects', async function() {
             const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'), 'utf8');
@@ -47,7 +47,7 @@ describe('AsyncAPIInputProcessor', function() {
             const parsedObject = await parse(basicDocString);
             const processor = new AsyncAPIInputProcessor();
             const commonInputModel = await processor.process(parsedObject);
-            expect(commonInputModel).toEqual(expectedCommonInputModel);
+            expect(commonInputModel).toMatchObject(expectedCommonInputModel);
         });
     });
 

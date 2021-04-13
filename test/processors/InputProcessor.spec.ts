@@ -61,7 +61,7 @@ describe('InputProcessor', function() {
                 const basicDoc = JSON.parse(basicDocString);
                 const expectedCommonInputModel = JSON.parse(expectedCommonInputModelString);
                 const commonInputModel = await processor.process(basicDoc);
-                expect(commonInputModel).toEqual(expectedCommonInputModel);
+                expect(commonInputModel).toMatchObject(expectedCommonInputModel);
             });
             test('with parsed document', async function() {
                 const processor = new InputProcessor();
@@ -70,7 +70,7 @@ describe('InputProcessor', function() {
                 const expectedCommonInputModel = JSON.parse(expectedCommonInputModelString);
                 const parsedObject = await parse(basicDocString);
                 const commonInputModel = await processor.process(parsedObject);
-                expect(commonInputModel).toEqual(expectedCommonInputModel);
+                expect(commonInputModel).toMatchObject(expectedCommonInputModel);
             });
         });
     });
