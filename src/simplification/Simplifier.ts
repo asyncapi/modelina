@@ -146,6 +146,12 @@ export class Simplifier {
       const existingAdditionalProperties = model.additionalProperties;
       model.additionalProperties = this.splitModels(existingAdditionalProperties);
     }
+    if (model.patternProperties) {
+      const existingPatternProperties = model.patternProperties;
+      for (const [pattern, patternModel] of Object.entries(existingPatternProperties)) {
+        model.patternProperties[`${pattern}`] = this.splitModels(patternModel);
+      }
+    }
   }
 }
 
