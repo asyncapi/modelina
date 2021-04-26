@@ -7,6 +7,7 @@ import simplifyRequired from './SimplifyRequired';
 import simplifyTypes from './SimplifyTypes';
 import { SimplificationOptions } from '../models/SimplificationOptions';
 import simplifyAdditionalProperties from './SimplifyAdditionalProperties';
+import simplifyPatternProperties from './SimplifyPatternProperties';
 import { isModelObject } from './Utils';
 import simplifyName from './SimplifyName';
 
@@ -80,6 +81,11 @@ export class Simplifier {
     const simplifiedProperties = simplifyProperties(schema, this);
     if (simplifiedProperties !== undefined) {
       model.properties = simplifiedProperties;
+    }
+
+    const simplifiedPatternProperties = simplifyPatternProperties(schema, this);
+    if (simplifiedPatternProperties !== undefined) {
+      model.patternProperties = simplifiedPatternProperties;
     }
 
     const simplifiedAdditionalProperties = simplifyAdditionalProperties(schema, this, model);
