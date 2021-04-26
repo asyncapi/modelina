@@ -38,11 +38,9 @@ ${this.indent(this.renderBlock(content, 2))}
     }
 
     if (this.model.additionalProperties instanceof CommonModel) {
-      const getter = `get additionalProperties(): Record<string, ${this.renderType(this.model.additionalProperties)}> { return this._additionalProperties; }`;
-      const setter = `set additionalProperties(additionalProperties: Record<string, ${this.renderType(this.model.additionalProperties)}>) { this._additionalProperties = additionalProperties; }`;
-      const getSingleProperty = `getAdditionalProperty(key: string): ${this.renderType(this.model.additionalProperties)} { return this._additionalProperties[key]}`;
-      const setSingleProperty = `setAdditionalProperty(key: string, value: ${this.renderType(this.model.additionalProperties)}) { this._additionalProperties[key] = value; }`;
-      content.push(this.renderBlock([getter, setter, getSingleProperty, setSingleProperty]));
+      const getter = await this.runPreset('additionalPropertyGetter', { this.options.additionalPropertiesName ?? 'additionalProperties', this.model.additionalProperties});
+      const setter = await this.runSetterPreset(this.options.additionalPropertiesName ?? 'additionalProperties', this.model.additionalProperties);
+      content.push(this.renderBlock([getter, setter]));
     }
 
     return this.renderBlock(content, 2);
@@ -97,5 +95,5 @@ ${renderer.indent(renderer.renderBlock(assigments))}
     const signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });
     const arg = `${formattedName}${signature}`;
     return `set ${formattedName}(${arg}) { this._${formattedName} = ${formattedName}; }`;
-  },
+  }
 };

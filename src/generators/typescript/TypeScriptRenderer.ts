@@ -105,9 +105,10 @@ ${lines.map(line => ` * ${line}`).join('\n')}
       content.push(rendererProperty);
     }
     
-    if (this.model.additionalProperties !== undefined && this.model.additionalProperties instanceof CommonModel) {
-      const additionalProperty = await this.runAdditionalPropertiesPreset(this.model.additionalProperties, this.model);
-      content.push(additionalProperty);
+    if (this.model.additionalProperties instanceof CommonModel) {
+      const getter = await this.runPropertyPreset(this.options.additionalPropertiesName ?? 'additionalProperties', this.model.additionalProperties);
+      const setter = await this.runPropertyPreset(this.options.additionalPropertiesName ?? 'additionalProperties', this.model.additionalProperties);
+      content.push(this.renderBlock([getter, setter]));
     }
 
     return this.renderBlock(content);
@@ -117,19 +118,18 @@ ${lines.map(line => ` * ${line}`).join('\n')}
    * Render a single property signature for TS. 
    * @param propertyName 
    * @param property 
+   * @param wrappedType used to wrap the property type in another TS type
    */
-  renderProperty(propertyName: string, property: CommonModel): string {
+  renderProperty(propertyName: string, property: CommonModel, wrappedType?: string): string {
     const name = FormatHelpers.toCamelCase(propertyName);
-    const signature = this.renderTypeSignature(property, { isRequired: this.model.isRequired(propertyName) });
+    let signature = this.renderTypeSignature(property, { isRequired: this.model.isRequired(propertyName) });
+    if(wrappedType !== undefined){
+      signature = `${wrappedType}${signature}>`
+    }
     return `${name}${signature};`;
-  }
-
-  async runAdditionalPropertiesPreset(): Promise<string> {
-    return this.runPreset('additionalProperties');
   }
 
   async runPropertyPreset(propertyName: string, property: CommonModel): Promise<string> {
     return this.runPreset('property', { propertyName, property });
-
   }
 }

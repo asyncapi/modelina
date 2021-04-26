@@ -10,6 +10,7 @@ export interface CommonGeneratorOptions<P extends Preset = Preset> {
   };
   defaultPreset?: P;
   presets?: Presets<P>;
+  additionalPropertiesName?: string;
 }
 
 export const defaultGeneratorOptions = {
@@ -17,6 +18,7 @@ export const defaultGeneratorOptions = {
     type: IndentationTypes.SPACES,
     size: 2,
   },
+  additionalPropertiesName: 'additionalProperties'
 };
 
 /**
