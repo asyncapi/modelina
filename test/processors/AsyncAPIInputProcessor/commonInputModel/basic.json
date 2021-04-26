@@ -7,11 +7,9 @@
           "email":{
             "type":"string",
             "format":"email",
-            "x-parser-schema-id":"<anonymous-schema-2>",
             "x-modelgen-inferred-name": "<anonymous-schema-2>"
           }
         },
-        "x-parser-schema-id":"<anonymous-schema-1>",
         "x-modelgen-inferred-name":"<anonymous-schema-1>"
       },
       "type":"object",
@@ -21,7 +19,6 @@
           "originalSchema":{
             "type":"string",
             "format":"email",
-            "x-parser-schema-id":"<anonymous-schema-2>",
             "x-modelgen-inferred-name": "<anonymous-schema-2>"
           },
           "type":"string"
@@ -71,15 +68,11 @@
                 "properties":{
                   "email":{
                     "type":"string",
-                    "format":"email",
-                    "x-parser-schema-id":"<anonymous-schema-2>"
+                    "format":"email"
                   }
-                },
-                "x-parser-schema-id":"<anonymous-schema-1>"
+                }
               },
-              "schemaFormat":"application/vnd.aai.asyncapi;version=2.0.0",
-              "x-parser-message-parsed":true,
-              "x-parser-message-name":"<anonymous-message-1>"
+              "schemaFormat":"application/vnd.aai.asyncapi;version=2.0.0"
             }
           }
         }
