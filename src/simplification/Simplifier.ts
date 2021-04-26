@@ -144,7 +144,7 @@ export class Simplifier {
     }
     if (model.additionalProperties) {
       const existingAdditionalProperties = model.additionalProperties;
-      model.additionalProperties = this.splitModels(existingAdditionalProperties as CommonModel);
+      model.additionalProperties = this.splitModels(existingAdditionalProperties);
     }
   }
 }
