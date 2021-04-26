@@ -37,7 +37,7 @@ ${this.indent(this.renderBlock(content, 2))}
       content.push(this.renderBlock([getter, setter]));
     }
 
-    if (this.model.additionalProperties !== undefined && this.model.additionalProperties instanceof CommonModel) {
+    if (this.model.additionalProperties instanceof CommonModel) {
       const getter = `get additionalProperties(): Record<string, ${this.renderType(this.model.additionalProperties)}> { return this._additionalProperties; }`;
       const setter = `set additionalProperties(additionalProperties: Record<string, ${this.renderType(this.model.additionalProperties)}>) { this._additionalProperties = additionalProperties; }`;
       const getSingleProperty = `getAdditionalProperty(key: string): ${this.renderType(this.model.additionalProperties)} { return this._additionalProperties[key]}`;
@@ -81,9 +81,6 @@ ${renderer.indent(renderer.renderBlock(assigments))}
   },
   property({ renderer, propertyName, property }) {
     return `private _${renderer.renderProperty(propertyName, property)}`;
-  },
-  additionalProperties({renderer, additionalProperties}) {
-    return `private _additionalProperties: Record<string, ${renderer.renderType(additionalProperties)}> = {};`;
   },
   getter({ renderer, model, propertyName, property }) {
     const isRequired = model.isRequired(propertyName);
