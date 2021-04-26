@@ -1,0 +1,119 @@
+{
+  "asyncapi": "2.0.0",
+  "defaultContentType": "application/json",
+  "externalDocs": {
+    "description": "Find more info here",
+    "url": "https://example.com"
+  },
+  "tags": [
+    {
+      "name": "user",
+      "description": "user signed up"
+    },
+    {
+      "name": "signup"
+    }
+  ],
+  "info": {
+    "title": "Signup service example (internal)",
+    "version": "0.1.0"
+  },
+  "channels": {
+    "/user/signedup": {
+      "subscribe": {
+        "message": {
+          "payload": {
+            "type": "object",
+            "x-parser-schema-id": "<anonymous-schema-1>",
+            "properties": {
+              "prop": {
+                "x-parser-schema-id": "<anonymous-schema-2>",
+                "type": "string"
+              },
+              "allOfCase": {
+                "x-parser-schema-id": "<anonymous-schema-3>",
+                "allOf": [
+                  {
+                    "x-parser-schema-id": "<anonymous-schema-4>",
+                    "type": "string"
+                  },
+                  {
+                    "x-parser-schema-id": "<anonymous-schema-5>",
+                    "type": "string"
+                  }
+                ]
+              },
+              "object": {
+                "x-parser-schema-id": "<anonymous-schema-6>",
+                "type": "object",
+                "properties": {
+                  "prop": {
+                    "x-parser-schema-id": "<anonymous-schema-7>",
+                    "type": "string"
+                  }
+                }
+              },
+              "propWithObject": {
+                "type": "object",
+                "x-parser-schema-id": "<anonymous-schema-8>",
+                "properties": {
+                  "propWithObject": {
+                    "x-parser-schema-id": "<anonymous-schema-9>",
+                    "type": "object"
+                  }
+                }
+              }
+            },
+            "patternProperties": {
+              "patternProp": {
+                "x-parser-schema-id": "<anonymous-schema-10>",
+                "type": "string"
+              }
+            },
+            "dependencies": {
+              "dep": {
+                "x-parser-schema-id": "<anonymous-schema-11>",
+                "type": "string"
+              }
+            },
+            "definitions": {
+              "def": {
+                "x-parser-schema-id": "<anonymous-schema-12>",
+                "type": "string"
+              },
+              "oneOfCase": {
+                "x-parser-schema-id": "<anonymous-schema-13>",
+                "oneOf": [
+                  {
+                    "x-parser-schema-id": "<anonymous-schema-14>",
+                    "type": "string"
+                  },
+                  {
+                    "x-parser-schema-id": "<anonymous-schema-15>",
+                    "type": "string"
+                  }
+                ]
+              }
+            },
+            "anyOf": [
+              {
+                "x-parser-schema-id": "<anonymous-schema-16>",
+                "type": "string"
+              },
+              {
+                "type": "object",
+                "x-parser-schema-id": "<anonymous-schema-17>",
+                "properties": {
+                  "prop": {
+                    "x-parser-schema-id": "<anonymous-schema-18>",
+                    "type": "string"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

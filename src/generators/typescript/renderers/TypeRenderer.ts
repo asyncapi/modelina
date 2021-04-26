@@ -1,7 +1,7 @@
 import { TypeScriptRenderer } from '../TypeScriptRenderer';
 
-import { TypeHelpers, ModelKind } from '../../../helpers';
 import { TypePreset } from '../TypeScriptPreset';
+import { FormatHelpers, TypeHelpers, ModelKind } from '../../../helpers';
 
 /**
  * Renderer for TypeScript's `type` type
@@ -11,7 +11,8 @@ import { TypePreset } from '../TypeScriptPreset';
 export class TypeRenderer extends TypeScriptRenderer {
   async defaultSelf(): Promise<string> {
     const body = await this.renderTypeBody();
-    return `type ${this.model.$id} = ${body};`;
+    const formattedName = this.model.$id && FormatHelpers.toPascalCase(this.model.$id);
+    return `type ${formattedName} = ${body};`;
   }
 
   async renderTypeBody(): Promise<string> {

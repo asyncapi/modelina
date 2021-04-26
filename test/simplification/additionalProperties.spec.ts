@@ -25,10 +25,10 @@ describe('Simplification to additionalProperties', () => {
     expect(simplifier.simplify).toHaveBeenCalledTimes(0);
   });
   test('should always return undefined if all types has been defined', () => {
-    const schema = {type: ['string', 'object', 'null', 'number', 'array', 'boolean']};
+    const schema = {type: ['string', 'object', 'null', 'number', 'array', 'boolean', 'integer']};
     const simplifier = new Simplifier();
     const commonModel = new CommonModel();
-    commonModel.type = ['string', 'object', 'null', 'number', 'array', 'boolean'];
+    commonModel.type = ['string', 'object', 'null', 'number', 'array', 'boolean', 'integer'];
     const additionalProperties = simplifyAdditionalProperties(schema, simplifier, commonModel);
     expect(additionalProperties).toBeUndefined();
     expect(simplifier.simplify).toHaveBeenCalledTimes(0);

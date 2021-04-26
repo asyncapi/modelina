@@ -17,7 +17,8 @@ export class ClassRenderer extends TypeScriptRenderer {
       await this.runAdditionalContentPreset(),
     ];
 
-    return `class ${this.model.$id} {
+    const formattedName = this.model.$id && FormatHelpers.toPascalCase(this.model.$id);
+    return `class ${formattedName} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
   }
@@ -31,8 +32,8 @@ ${this.indent(this.renderBlock(content, 2))}
     const content: string[] = [];
 
     for (const [propertyName, property] of Object.entries(properties)) {
-      const getter = await this.runGetterPreset(propertyName, property, this.model);
-      const setter = await this.runSetterPreset(propertyName, property, this.model);
+      const getter = await this.runGetterPreset(propertyName, property);
+      const setter = await this.runSetterPreset(propertyName, property);
       content.push(this.renderBlock([getter, setter]));
     }
 
@@ -47,12 +48,12 @@ ${this.indent(this.renderBlock(content, 2))}
     return this.renderBlock(content, 2);
   }
 
-  runGetterPreset(propertyName: string, property: CommonModel, parentModel: CommonModel): Promise<string> {
-    return this.runPreset('getter', { propertyName, property, parentModel });
+  runGetterPreset(propertyName: string, property: CommonModel): Promise<string> {
+    return this.runPreset('getter', { propertyName, property });
   }
 
-  runSetterPreset(propertyName: string, property: CommonModel, parentModel: CommonModel): Promise<string> {
-    return this.runPreset('setter', { propertyName, property, parentModel });
+  runSetterPreset(propertyName: string, property: CommonModel): Promise<string> {
+    return this.runPreset('setter', { propertyName, property });
   }
 }
 
@@ -68,7 +69,7 @@ export const TS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
     });
     const ctorProperties: string[] = [];
     for (const [propertyName, property] of Object.entries(properties)) {
-      const rendererProperty = renderer.renderProperty(propertyName, property, model).replace(';', ',');
+      const rendererProperty = renderer.renderProperty(propertyName, property).replace(';', ',');
       ctorProperties.push(rendererProperty);
     }
 
@@ -78,21 +79,23 @@ ${renderer.indent(renderer.renderBlock(ctorProperties))}
 ${renderer.indent(renderer.renderBlock(assigments))}
 }`;
   },
-  property({ renderer, propertyName, property, parentModel }) {
-    return `private _${renderer.renderProperty(propertyName, property, parentModel)}`;
+  property({ renderer, propertyName, property }) {
+    return `private _${renderer.renderProperty(propertyName, property)}`;
   },
   additionalProperties({renderer, additionalProperties}) {
     return `private _additionalProperties: Record<string, ${renderer.renderType(additionalProperties)}> = {};`;
   },
-  getter({ renderer, propertyName, property }) {
-    propertyName = FormatHelpers.toCamelCase(propertyName);
-    const signature = renderer.renderTypeSignature(property);
-    return `get ${propertyName}()${signature} { return this._${propertyName}; }`;
+  getter({ renderer, model, propertyName, property }) {
+    const isRequired = model.isRequired(propertyName);
+    const formattedName = FormatHelpers.toCamelCase(propertyName);
+    const signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });
+    return `get ${formattedName}()${signature} { return this._${formattedName}; }`;
   },
-  setter({ renderer, propertyName, property }) {
-    propertyName = FormatHelpers.toCamelCase(propertyName);
-    const signature = renderer.renderTypeSignature(property);
-    const arg = `${propertyName}${signature}`;
-    return `set ${propertyName}(${arg}) { this._${propertyName} = ${propertyName}; }`;
+  setter({ renderer, model, propertyName, property }) {
+    const isRequired = model.isRequired(propertyName);
+    const formattedName = FormatHelpers.toCamelCase(propertyName);
+    const signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });
+    const arg = `${formattedName}${signature}`;
+    return `set ${formattedName}(${arg}) { this._${formattedName} = ${formattedName}; }`;
   },
 };

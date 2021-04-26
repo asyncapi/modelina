@@ -17,7 +17,8 @@ export class ClassRenderer extends JavaScriptRenderer {
       await this.runAdditionalContentPreset(),
     ];
 
-    return `class ${this.model.$id} {
+    const formattedName = this.model.$id && FormatHelpers.toPascalCase(this.model.$id);
+    return `class ${formattedName} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
   }
@@ -31,8 +32,8 @@ ${this.indent(this.renderBlock(content, 2))}
     const content: string[] = [];
 
     for (const [propertyName, property] of Object.entries(properties)) {
-      const getter = await this.runGetterPreset(propertyName, property, this.model);
-      const setter = await this.runSetterPreset(propertyName, property, this.model);
+      const getter = await this.runGetterPreset(propertyName, property);
+      const setter = await this.runSetterPreset(propertyName, property);
       content.push(this.renderBlock([getter, setter]));
     }
 
@@ -45,12 +46,12 @@ ${this.indent(this.renderBlock(content, 2))}
     return this.renderBlock(content, 2);
   }
 
-  async runGetterPreset(propertyName: string, property: CommonModel, parentModel: CommonModel): Promise<string> {
-    return this.runPreset('getter', { propertyName, property, parentModel });
+  async runGetterPreset(propertyName: string, property: CommonModel): Promise<string> {
+    return this.runPreset('getter', { propertyName, property });
   }
 
-  async runSetterPreset(propertyName: string, property: CommonModel, parentModel: CommonModel): Promise<string> {
-    return this.runPreset('setter', { propertyName, property, parentModel });
+  async runSetterPreset(propertyName: string, property: CommonModel): Promise<string> {
+    return this.runPreset('setter', { propertyName, property });
   }
 }
 

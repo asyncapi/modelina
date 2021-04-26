@@ -54,7 +54,8 @@
           "number",
           "array",
           "boolean",
-          "null"
+          "null",
+          "integer"
         ]
       }
     },
@@ -88,12 +89,12 @@
           "number",
           "array",
           "boolean",
-          "null"
+          "null",
+          "integer"
         ]
       }
     }
   },
-  "customizations": {},
   "originalInput": {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",

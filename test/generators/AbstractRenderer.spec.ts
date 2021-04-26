@@ -30,8 +30,14 @@ describe('AbstractRenderer', function() {
     expect(content).toEqual('Test1\nTest2');
   });
 
-  test('indent function should render text with indentation', async function() {
-    const content = renderer.indent('Test');
-    expect(content).toEqual('  Test');
+  describe('indent()', function() {
+    test('should render text with indentation', function() {
+      const content = renderer.indent('Test');
+      expect(content).toEqual('  Test');
+    });
+    test('should render indentation  with options', function() {
+      const content = renderer.indent('Test', 4, IndentationTypes.SPACES);
+      expect(content).toEqual('    Test');
+    });
   });
 });

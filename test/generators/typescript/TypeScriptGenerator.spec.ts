@@ -8,7 +8,7 @@ describe('TypeScriptGenerator', function() {
 
   test('should render `class` type', async function() {
     const doc = {
-      $id: "Address",
+      $id: "_address",
       type: "object",
       properties: {
         street_name:    { type: "string" },
@@ -62,11 +62,11 @@ describe('TypeScriptGenerator', function() {
   get houseNumber(): number { return this._houseNumber; }
   set houseNumber(houseNumber: number) { this._houseNumber = houseNumber; }
 
-  get marriage(): boolean { return this._marriage; }
-  set marriage(marriage: boolean) { this._marriage = marriage; }
+  get marriage(): boolean | undefined { return this._marriage; }
+  set marriage(marriage: boolean | undefined) { this._marriage = marriage; }
 
-  get members(): string | number | boolean { return this._members; }
-  set members(members: string | number | boolean) { this._members = members; }
+  get members(): string | number | boolean | undefined { return this._members; }
+  set members(members: string | number | boolean | undefined) { this._members = members; }
 
   get arrayType(): Array<string | number> { return this._arrayType; }
   set arrayType(arrayType: Array<string | number>) { this._arrayType = arrayType; }
@@ -78,7 +78,7 @@ describe('TypeScriptGenerator', function() {
 }`;
 
     const inputModel = await generator.process(doc);
-    const model = inputModel.models["Address"];
+    const model = inputModel.models["_address"];
 
     let classModel = await generator.renderClass(model, inputModel);
     expect(classModel).toEqual(expected);
@@ -106,13 +106,13 @@ describe('TypeScriptGenerator', function() {
     this._property = input.property;
   }
 
-  get property(): string { return this._property; }
-  set property(property: string) { this._property = property; }
-
   get additionalProperties(): Record<string, object | string | number | Array<unknown> | boolean | null> { return this._additionalProperties; }
   set additionalProperties(additionalProperties: Record<string, object | string | number | Array<unknown> | boolean | null>) { this._additionalProperties = additionalProperties; }
   getAdditionalProperty(key: string): object | string | number | Array<unknown> | boolean | null { return this._additionalProperties[key]}
   setAdditionalProperty(key: string, value: (object | string | number | Array<unknown> | boolean | null)) { this._additionalProperties[key] = value; }
+  get property(): string | undefined { return this._property; }
+  set property(property: string | undefined) { this._property = property; }
+
 }`;
 
     generator = new TypeScriptGenerator({ presets: [
@@ -159,10 +159,11 @@ ${content}`;
   additionalProperties: Record<string, object | string | number | Array<unknown> | boolean | null>;
 }`;
 
-    const inputModel = await generator.process(doc);
+    const interfaceGenerator = new TypeScriptGenerator({modelType: "interface"});
+    const inputModel = await interfaceGenerator.process(doc);
     const model = inputModel.models["Address"];
 
-    let interfaceModel = await generator.renderInterface(model, inputModel);
+    let interfaceModel = await interfaceGenerator.render(model, inputModel);
     expect(interfaceModel).toEqual(expected);
   });
 
@@ -330,4 +331,5 @@ ${content}`;
     const arrayModel = await generator.renderType(model, inputModel);
     expect(arrayModel).toEqual(expected);
   });
+
 });

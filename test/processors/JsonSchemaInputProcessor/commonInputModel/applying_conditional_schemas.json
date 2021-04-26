@@ -113,7 +113,8 @@
           "number",
           "array",
           "boolean",
-          "null"
+          "null",
+          "integer"
         ]
       },
       "required": [
@@ -121,7 +122,6 @@
       ]
     }
   },
-  "customizations": {},
   "originalInput": {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",

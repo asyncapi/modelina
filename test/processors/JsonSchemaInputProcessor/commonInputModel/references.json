@@ -65,7 +65,8 @@
           "number",
           "array",
           "boolean",
-          "null"
+          "null",
+          "integer"
         ]
       }
     },
@@ -99,12 +100,12 @@
           "number",
           "array",
           "boolean",
-          "null"
+          "null",
+          "integer"
         ]
       }
     }
   },
-  "customizations": {},
   "originalInput": {
     "definitions": {
       "test": {
