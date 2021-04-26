@@ -14,6 +14,9 @@ export type TypeScriptPreset = Preset<{
   type: TypePreset;
 }>;
 
+/**
+ * Declare the default presets for the type of rendering wanted
+ */
 export const TS_DEFAULT_PRESET: TypeScriptPreset = {
   class: TS_DEFAULT_CLASS_PRESET,
   interface: TS_DEFAULT_INTERFACE_PRESET,

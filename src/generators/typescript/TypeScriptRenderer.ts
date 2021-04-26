@@ -19,6 +19,11 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
     super(options, presets, model, inputModel);
   }
 
+  /**
+   * Render CommonModel(s) to TS types
+   * 
+   * @param model(s) to render type for
+   */
   renderType(model: CommonModel | CommonModel[]): string {
     if (Array.isArray(model)) {
       return model.map(t => this.renderType(t)).join(' | ');
@@ -32,11 +37,17 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
     return this.toTsType(model.type, model);
   }
 
-  toTsType(type: string | undefined, model: CommonModel): string {
-    if (type === undefined) {
+  /**
+   * Renders CommonModel type to TS type
+   * 
+   * @param type from CommonModel to transform to TS type
+   * @param model used for array types to generate correct array of types
+   */
+  toTsType(commonModelType: string | undefined, model: CommonModel): string {
+    if (commonModelType === undefined) {
       return 'any';
     }
-    switch (type) { 
+    switch (commonModelType) { 
     case 'string':
       return 'string';
     case 'integer':
@@ -48,10 +59,15 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
       const types = model.items ? this.renderType(model.items) : 'unknown';
       return `Array<${types}>`;
     }
-    default: return type;
+    default: return commonModelType;
     }
   }
 
+  /**
+   * Renders a CommonModel type signature
+   * @param type 
+   * @param param1 
+   */
   renderTypeSignature(type: CommonModel | CommonModel[], {
     isRequired = true,
     orUndefined = false,
@@ -77,6 +93,9 @@ ${lines.map(line => ` * ${line}`).join('\n')}
  */`;
   }
 
+  /**
+   * Render all properties
+   */
   async renderProperties(): Promise<string> {
     const properties = this.model.properties || {};
     const content: string[] = [];
@@ -94,6 +113,11 @@ ${lines.map(line => ` * ${line}`).join('\n')}
     return this.renderBlock(content);
   }
 
+  /**
+   * Render a single property signature for TS. 
+   * @param propertyName 
+   * @param property 
+   */
   renderProperty(propertyName: string, property: CommonModel): string {
     const name = FormatHelpers.toCamelCase(propertyName);
     const signature = this.renderTypeSignature(property, { isRequired: this.model.isRequired(propertyName) });
