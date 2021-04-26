@@ -4,9 +4,9 @@
 
 ## Supported languages
 
-- [JavaScript](../src/generators/javascript/JavaScriptGenerator.ts),
-- [TypeScript](../src/generators/typescript/TypeScriptGenerator.ts),
-- [Java](../src/generators/java/JavaGenerator.ts).
+- [JavaScript](../src/generators/javascript/JavaScriptGenerator.ts)
+- [TypeScript](../src/generators/typescript/TypeScriptGenerator.ts)
+- [Java](../src/generators/java/JavaGenerator.ts)
 
 ## Generator's options
 
