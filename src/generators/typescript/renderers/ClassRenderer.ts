@@ -57,6 +57,9 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 }
 
+/**
+ * Default class renderer for TS
+ */
 export const TS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
   async self({ renderer }) {
     return `export ${await renderer.defaultSelf()}`;

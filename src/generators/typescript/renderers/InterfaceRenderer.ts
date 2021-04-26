@@ -22,6 +22,9 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 }
 
+/**
+ * Default interface renderer for TS
+ */
 export const TS_DEFAULT_INTERFACE_PRESET: InterfacePreset<InterfaceRenderer> = {
   async self({ renderer }) {
     return `export ${await renderer.defaultSelf()}`;

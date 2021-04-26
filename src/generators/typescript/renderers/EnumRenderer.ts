@@ -38,6 +38,9 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 }
 
+/**
+ * Default Enum renderer for TS
+ */
 export const TS_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
   async self({ renderer }) {
     return `export ${await renderer.defaultSelf()}`;
