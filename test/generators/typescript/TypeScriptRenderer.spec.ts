@@ -34,5 +34,10 @@ describe('TypeScriptRenderer', function() {
       model2.$ref = "ref2";
       expect(renderer.renderType([model1, model2])).toEqual('ref1 | ref2');
     });
+    test('Should render enums', function() {
+      const model = new CommonModel();
+      model.enum = ["enum1", "enum2", 9];
+      expect(renderer.renderType(model)).toEqual('"enum1" | "enum2" | 9');
+    });
   });
 });
