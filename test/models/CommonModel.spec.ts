@@ -310,6 +310,15 @@ describe('CommonModel', function() {
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
         expect(doc1.enum).toEqual(doc2.enum);
       });
+      test('Should not contain duplicate values', function() {
+        const doc: Schema = { };
+        let doc1 = CommonModel.toCommonModel(doc);
+        let doc2 = CommonModel.toCommonModel(doc);
+        doc2.enum = ["string"];
+        doc1.enum = ["string"];
+        doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
+        expect(doc1.enum).toEqual(["string"]);
+      });
       test('should be merged when both sides are defined', function() {
         const doc: Schema = { };
         let doc1 = CommonModel.toCommonModel(doc);

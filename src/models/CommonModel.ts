@@ -133,11 +133,10 @@ export class CommonModel extends CommonSchema<CommonModel> {
     CommonModel.mergeTypes(mergeTo, mergeFrom);
 
     if (mergeFrom.enum !== undefined) {
-      if (mergeTo.enum === undefined) {
-        mergeTo.enum = mergeFrom.enum;
-      } else {
-        mergeTo.enum = [...mergeTo.enum, ...mergeFrom.enum];
-      }
+      mergeTo.enum = [... new Set([...(mergeTo.enum || []), ...mergeFrom.enum])];
+    }
+    if (mergeFrom.required !== undefined) {
+      mergeTo.required = [... new Set([...(mergeTo.required || []), ...mergeFrom.required])];
     }
 
     // Which values are correct to use here? Is allOf required?
