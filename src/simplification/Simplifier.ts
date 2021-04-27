@@ -39,7 +39,7 @@ export class Simplifier {
       }
     }
     //If it is a false validation schema return no common model
-    if (typeof schema === 'boolean' && !schema) {
+    if (schema === false) {
       return [];
     }
     const model = new CommonModel();
