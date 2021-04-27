@@ -10,11 +10,7 @@
 
 AsyncAPI Model SDK is a set of classes/functions for generating data models from JSON Schema and AsyncAPI spec.
 
-![coverage-branches](./coverage-badge/badge-branches.svg)
-![coverage-functions](./coverage-badge/badge-functions.svg)
-![coverage-lines](./coverage-badge/badge-lines.svg)
-![coverage-statements](./coverage-badge/badge-statements.svg)
-
+[![Coverage Status](https://coveralls.io/repos/github/asyncapi/generator-model-sdk/badge.svg?branch=master)](https://coveralls.io/github/asyncapi/generator-model-sdk?branch=master)
 ---
 
 ## :loudspeaker: ATTENTION:
