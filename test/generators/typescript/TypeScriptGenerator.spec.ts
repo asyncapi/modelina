@@ -5,7 +5,36 @@ describe('TypeScriptGenerator', function() {
   beforeEach(() => {
     generator = new TypeScriptGenerator();
   });
+  test('should render union property type', async function() {
+    const doc = {
+      $id: "_address",
+      type: "object",
+      properties: {
+        state:          { type: "string", enum: ["Texas", "Alabama", "California", "other"] }
+      }
+    };
+    const expected = `export class Address {
+  private _state?: "Texas" | "Alabama" | "California" | "other";
 
+  constructor(input: {
+    state?: "Texas" | "Alabama" | "California" | "other",
+  }) {
+    this._state = input.state;
+  }
+
+  get state(): "Texas" | "Alabama" | "California" | "other" | undefined { return this._state; }
+  set state(state: "Texas" | "Alabama" | "California" | "other" | undefined) { this._state = state; }
+}`;
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models["_address"];
+
+    let classModel = await generator.renderClass(model, inputModel);
+    expect(classModel).toEqual(expected);
+
+    classModel = await generator.render(model, inputModel);
+    expect(classModel).toEqual(expected);
+  });
   test('should render `class` type', async function() {
     const doc = {
       $id: "_address",
