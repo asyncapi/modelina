@@ -10,10 +10,7 @@ type Output = string[] | string | undefined;
 export default function simplifyTypes(schema: Schema | boolean, seenSchemas: Map<any, Output> = new Map()): Output {
   //If we find absence of data format ensure all types are returned
   if (typeof schema === 'boolean') {
-    if (schema === true) {
-      return ['object', 'string', 'number', 'array', 'boolean', 'null', 'integer'];
-    } 
-    throw new Error('False value schemas are not supported');
+    return ['object', 'string', 'number', 'array', 'boolean', 'null', 'integer'];
   }
   const types: Output = [];
   if (seenSchemas.has(schema)) return seenSchemas.get(schema);
