@@ -39,6 +39,10 @@ export class Simplifier {
         return [cachedModel];
       }
     }
+    //If it is a false validation schema return no common model
+    if (schema === false) {
+      return [];
+    }
     const model = new CommonModel();
     model.originalSchema = Schema.toSchema(schema);
     model.type = simplifyTypes(schema);

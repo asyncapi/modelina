@@ -9,6 +9,12 @@ import {simplify} from '../../src/simplification/Simplifier';
  * on a JSON Schema which actually makes sense but are used to test the principles.
  */
 describe('Simplification', function() {
+
+  test('should return empty models if false schema', function () {
+    const schema: any = false;
+    const models = simplify(schema);
+    expect(models).toHaveLength(0);
+  });
   test('should return as is', function() {
     const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './simplify/multipleObjects.json'), 'utf8');
     const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './simplify/expected/multipleObjects.json'), 'utf8');
