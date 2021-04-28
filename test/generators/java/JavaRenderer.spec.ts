@@ -10,7 +10,20 @@ describe('JavaRenderer', function() {
     renderer = new MockJavaRenderer({}, [], new CommonModel(), new CommonInputModel());
   });
 
+  describe('renderType()', function() {
+    test('Should render refs with pascal case', function() {
+      const model = new CommonModel();
+      model.$ref = "<anonymous-schema-1>";
+      expect(renderer.renderType(model)).toEqual('AnonymousSchema_1');
+    });
+  });
+
   describe('toJavaType()', function() {
+    test('Should render refs with pascal case', function() {
+      const model = new CommonModel();
+      model.$ref = "<anonymous-schema-1>";
+      expect(renderer.renderType(model)).toEqual('AnonymousSchema_1');
+    });
     test('Should be able to return long', function() {
       expect(renderer.toJavaType("long", new CommonModel())).toEqual('long');
       expect(renderer.toJavaType("int64", new CommonModel())).toEqual('long');
