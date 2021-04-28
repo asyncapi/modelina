@@ -7,6 +7,7 @@ import simplifyRequired from './SimplifyRequired';
 import simplifyTypes from './SimplifyTypes';
 import { SimplificationOptions } from '../models/SimplificationOptions';
 import simplifyAdditionalProperties from './SimplifyAdditionalProperties';
+import simplifyPatternProperties from './SimplifyPatternProperties';
 import { isModelObject } from './Utils';
 import simplifyName from './SimplifyName';
 
@@ -86,6 +87,11 @@ export class Simplifier {
       model.properties = simplifiedProperties;
     }
 
+    const simplifiedPatternProperties = simplifyPatternProperties(schema, this);
+    if (simplifiedPatternProperties !== undefined) {
+      model.patternProperties = simplifiedPatternProperties;
+    }
+
     const simplifiedAdditionalProperties = simplifyAdditionalProperties(schema, this, model);
     if (simplifiedAdditionalProperties !== undefined) {
       model.additionalProperties = simplifiedAdditionalProperties;
@@ -142,7 +148,13 @@ export class Simplifier {
     }
     if (model.additionalProperties) {
       const existingAdditionalProperties = model.additionalProperties;
-      model.additionalProperties = this.splitModels(existingAdditionalProperties as CommonModel);
+      model.additionalProperties = this.splitModels(existingAdditionalProperties);
+    }
+    if (model.patternProperties) {
+      const existingPatternProperties = model.patternProperties;
+      for (const [pattern, patternModel] of Object.entries(existingPatternProperties)) {
+        model.patternProperties[`${pattern}`] = this.splitModels(patternModel);
+      }
     }
   }
 }
