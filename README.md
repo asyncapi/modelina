@@ -8,13 +8,13 @@
   <em>The official SDK for generating data models from JSON Schema and AsyncAPI spec</em>
 </p>
 
+[![Coverage Status](https://coveralls.io/repos/github/asyncapi/generator-model-sdk/badge.svg?branch=master)](https://coveralls.io/github/asyncapi/generator-model-sdk?branch=master)
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 AsyncAPI Model SDK is a set of classes/functions for generating data models from JSON Schema and AsyncAPI spec.
 
-[![Coverage Status](https://coveralls.io/repos/github/asyncapi/generator-model-sdk/badge.svg?branch=master)](https://coveralls.io/github/asyncapi/generator-model-sdk?branch=master)
 ---
 
 ## :loudspeaker: ATTENTION:
