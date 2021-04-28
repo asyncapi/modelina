@@ -173,6 +173,49 @@ describe('CommonModel', function() {
         expect(doc1.$id).toBeUndefined();
       });
     });
+    describe('required', function() {
+      test('should contain the same if right side is not defined', function() {
+        const doc: Schema = { };
+        let doc1 = CommonModel.toCommonModel(doc);
+        let doc2 = CommonModel.toCommonModel(doc);
+        doc1.required = ["test"];
+        doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
+        expect(doc1.required).toEqual(["test"]);
+      });
+      test('should be merged when only right side is defined', function() {
+        const doc: Schema = { };
+        let doc1 = CommonModel.toCommonModel(doc);
+        let doc2 = CommonModel.toCommonModel(doc);
+        doc2.required = ["test"];
+        doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
+        expect(doc1.required).toEqual(doc2.required);
+      });
+      test('should be merged when both sides are defined', function() {
+        const doc: Schema = { };
+        let doc1 = CommonModel.toCommonModel(doc);
+        let doc2 = CommonModel.toCommonModel(doc);
+        doc1.required = ["test"];
+        doc2.required = ["test2"];
+        doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
+        expect(doc1.required).toEqual(["test", "test2"]);
+      });
+      test('should only contain one if duplicate', function() {
+        const doc: Schema = { };
+        let doc1 = CommonModel.toCommonModel(doc);
+        let doc2 = CommonModel.toCommonModel(doc);
+        doc1.required = ["test"];
+        doc2.required = ["test"];
+        doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
+        expect(doc1.required).toEqual(["test"]);
+      });
+      test('should not change if nothing is defined', function() {
+        const doc: Schema = { };
+        let doc1 = CommonModel.toCommonModel(doc);
+        let doc2 = CommonModel.toCommonModel(doc);
+        doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
+        expect(doc1.required).toBeUndefined();
+      });
+    });
     describe('$ref', function() {
       test('should be merged when only right side is defined', function() {
         const doc: Schema = { };
@@ -259,6 +302,15 @@ describe('CommonModel', function() {
         doc2.enum = ["string"];
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
         expect(doc1.enum).toEqual(doc2.enum);
+      });
+      test('Should not contain duplicate values', function() {
+        const doc: Schema = { };
+        let doc1 = CommonModel.toCommonModel(doc);
+        let doc2 = CommonModel.toCommonModel(doc);
+        doc2.enum = ["string"];
+        doc1.enum = ["string"];
+        doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
+        expect(doc1.enum).toEqual(["string"]);
       });
       test('should be merged when both sides are defined', function() {
         const doc: Schema = { };
