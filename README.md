@@ -1,7 +1,4 @@
 <h5 align="center">
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
   <br>
   <a href="https://www.asyncapi.org"><img src="https://github.com/asyncapi/parser-nodejs/raw/master/assets/logo.png" alt="AsyncAPI logo" width="200"></a>
   <br>
@@ -11,7 +8,12 @@
   <em>The official SDK for generating data models from JSON Schema and AsyncAPI spec</em>
 </p>
 
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
+
 AsyncAPI Model SDK is a set of classes/functions for generating data models from JSON Schema and AsyncAPI spec.
+
 
 ---
 
