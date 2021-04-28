@@ -1,5 +1,10 @@
-on: ["push", "pull_request"]
-name: Test Coveralls
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+name: Check test coverage
 jobs:
   build:
     name: Build
