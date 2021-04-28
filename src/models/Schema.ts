@@ -30,7 +30,6 @@ export class Schema extends CommonSchema<Schema | boolean> {
     const?: any;
     dependencies?: { [key: string]: Schema | boolean | string[]; };
     propertyNames?: Schema | boolean;
-    patternProperties?: { [key: string]: Schema | boolean; };
     if?: Schema | boolean;
     then?: Schema | boolean;
     else?: Schema | boolean;
@@ -100,14 +99,6 @@ export class Schema extends CommonSchema<Schema | boolean> {
 
       if (schema.propertyNames !== undefined) {
         schema.propertyNames = Schema.toSchema(schema.propertyNames, seenSchemas);
-      }
-
-      if (schema.patternProperties !== undefined) {
-        const patternProperties: { [key: string]: Schema | boolean } = {};
-        Object.entries(schema.patternProperties).forEach(([propertyName, property]) => {
-          patternProperties[`${propertyName}`] = Schema.toSchema(property, seenSchemas);
-        });
-        schema.patternProperties = patternProperties;
       }
       
       if (schema.if !== undefined) {

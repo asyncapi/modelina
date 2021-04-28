@@ -1,0 +1,10 @@
+{
+  "patternProperties": { 
+    "testPattern1": { 
+      "type": "string"
+    },
+    "testPattern2": { 
+      "type": "string"
+    } 
+  }
+}

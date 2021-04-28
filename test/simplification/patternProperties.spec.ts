@@ -6,7 +6,7 @@ import * as path from 'path';
 import { CommonModel } from '../../src/models';
 import { SimplificationOptions } from '../../src/models/SimplificationOptions';
 import { Simplifier } from '../../src/simplification/Simplifier';
-import simplifyProperties from '../../src/simplification/SimplifyProperties';
+import simplifyPatternProperties from '../../src/simplification/SimplifyPatternProperties';
 jest.mock('../../src/simplification/Simplifier', () => {
   return {
     Simplifier: jest.fn().mockImplementation(() => {
@@ -29,8 +29,8 @@ const expectFunction = (inputSchemaPath: string, expectedPropertiesPath: string,
   const inputSchema = JSON.parse(inputSchemaString);
   const expectedProperties = JSON.parse(expectedCommonInputModelString);
   const simplifier = new Simplifier(options);
-  const properties = simplifyProperties(inputSchema, simplifier);
-  expect(properties).toEqual(expectedProperties);
+  const patternProperties = simplifyPatternProperties(inputSchema, simplifier);
+  expect(patternProperties).toEqual(expectedProperties);
   return simplifier;
 };
 
@@ -38,85 +38,85 @@ const expectFunction = (inputSchemaPath: string, expectedPropertiesPath: string,
  * Some of these test are purely theoretical and have little if any merit 
  * on a JSON Schema which actually makes sense, but they are used to test the principles.
  */
-describe('Simplification of properties', () => {
+describe('Simplification of patternProperties', () => {
   afterAll(() => {
     jest.restoreAllMocks();
   })
   test('should return as is', () => {
-    const inputSchemaPath = './properties/basic.json';
-    const expectedPropertiesPath = './properties/expected/basic.json';
+    const inputSchemaPath = './patternProperties/basic.json';
+    const expectedPropertiesPath = './patternProperties/expected/basic.json';
     const simplifier = expectFunction(inputSchemaPath, expectedPropertiesPath);
     expect(simplifier.simplify).toHaveBeenCalledTimes(2);
   });
   
   describe('if inheritance turned off allOf schemas should be merged', () => {
     test('when simple schema', () => {
-      const inputSchemaPath = './properties/allOf.json';
-      const expectedPropertiesPath = './properties/expected/allOf.json';
+      const inputSchemaPath = './patternProperties/allOf.json';
+      const expectedPropertiesPath = './patternProperties/expected/allOf.json';
       const simplifier = expectFunction(inputSchemaPath, expectedPropertiesPath, {allowInheritance: false});
       expect(simplifier.simplify).toHaveBeenCalledTimes(2);
     });
     test('when nested schema', () => {
-      const inputSchemaPath = './properties/allOfNested.json';
-      const expectedPropertiesPath = './properties/expected/allOfNested.json';
+      const inputSchemaPath = './patternProperties/allOfNested.json';
+      const expectedPropertiesPath = './patternProperties/expected/allOfNested.json';
       const simplifier = expectFunction(inputSchemaPath, expectedPropertiesPath, {allowInheritance: false});
       expect(simplifier.simplify).toHaveBeenCalledTimes(3);
     });
   });
   describe('from anyOf schemas', () => {
     test('with simple schema', () => {
-      const inputSchemaPath = './properties/anyOf.json';
-      const expectedPropertiesPath = './properties/expected/anyOf.json';
+      const inputSchemaPath = './patternProperties/anyOf.json';
+      const expectedPropertiesPath = './patternProperties/expected/anyOf.json';
       const simplifier = expectFunction(inputSchemaPath, expectedPropertiesPath);
       expect(simplifier.simplify).toHaveBeenCalledTimes(2);
     });
     test('with nested schema', () => {
-      const inputSchemaPath = './properties/anyOfNested.json';
-      const expectedPropertiesPath = './properties/expected/anyOfNested.json';
+      const inputSchemaPath = './patternProperties/anyOfNested.json';
+      const expectedPropertiesPath = './patternProperties/expected/anyOfNested.json';
       const simplifier = expectFunction(inputSchemaPath, expectedPropertiesPath);
       expect(simplifier.simplify).toHaveBeenCalledTimes(3);
     });
   });
   describe('from oneOf schemas', () => {
     test('with simple schema', () => {
-      const inputSchemaPath = './properties/oneOf.json';
-      const expectedPropertiesPath = './properties/expected/oneOf.json';
+      const inputSchemaPath = './patternProperties/oneOf.json';
+      const expectedPropertiesPath = './patternProperties/expected/oneOf.json';
       const simplifier = expectFunction(inputSchemaPath, expectedPropertiesPath);
       expect(simplifier.simplify).toHaveBeenCalledTimes(2);
     });
     test('with nested oneOf schemas', () => {
-      const inputSchemaPath = './properties/oneOfNested.json';
-      const expectedPropertiesPath = './properties/expected/oneOfNested.json';
+      const inputSchemaPath = './patternProperties/oneOfNested.json';
+      const expectedPropertiesPath = './patternProperties/expected/oneOfNested.json';
       const simplifier = expectFunction(inputSchemaPath, expectedPropertiesPath);
       expect(simplifier.simplify).toHaveBeenCalledTimes(3);
     });
   });
   describe('from if/then/else schemas', () => {
     test('with simple schema', () => {
-      const inputSchemaPath = './properties/conditional.json';
-      const expectedPropertiesPath = './properties/expected/conditional.json';
+      const inputSchemaPath = './patternProperties/conditional.json';
+      const expectedPropertiesPath = './patternProperties/expected/conditional.json';
       const simplifier = expectFunction(inputSchemaPath, expectedPropertiesPath);
       expect(simplifier.simplify).toHaveBeenCalledTimes(3);
     });
     test('with nested schema', () => {
-      const inputSchemaPath = './properties/conditionalNested.json';
-      const expectedPropertiesPath = './properties/expected/conditionalNested.json';
+      const inputSchemaPath = './patternProperties/conditionalNested.json';
+      const expectedPropertiesPath = './patternProperties/expected/conditionalNested.json';
       const simplifier = expectFunction(inputSchemaPath, expectedPropertiesPath);
       expect(simplifier.simplify).toHaveBeenCalledTimes(5);
     });
   });
-  test('Should merge properties which same key', () => {
-    const inputSchemaPath = './properties/combine_properties.json';
+  test('Should merge patternProperties which same key', () => {
+    const inputSchemaPath = './patternProperties/combinePatternProperties.json';
     const mockMergeCommonModels = jest.fn().mockReturnValue(new CommonModel());
     CommonModel.mergeCommonModels = mockMergeCommonModels;
-    const expectedPropertiesPath = './properties/expected/combine_properties.json';
+    const expectedPropertiesPath = './patternProperties/expected/combinePatternProperties.json';
     const simplifier = expectFunction(inputSchemaPath, expectedPropertiesPath);
     expect(simplifier.simplify).toHaveBeenCalledTimes(2);
     expect(mockMergeCommonModels).toHaveBeenCalledTimes(1);
   });
   test('Should split out multiple objects into their own models and add reference', () => {
-    const inputSchemaPath = './properties/multiple_objects.json';
-    const expectedPropertiesPath = './properties/expected/multiple_objects.json';
+    const inputSchemaPath = './patternProperties/multipleObjects.json';
+    const expectedPropertiesPath = './patternProperties/expected/multipleObjects.json';
     const simplifier = expectFunction(inputSchemaPath, expectedPropertiesPath);
     expect(simplifier.simplify).toHaveBeenCalledTimes(2);
   });
@@ -127,7 +127,7 @@ describe('Simplification of properties', () => {
     model.$id = "test2";
     alreadySeen.set(schema, {"testProp": model});
     const simplifier = new Simplifier();
-    const output = simplifyProperties(schema, simplifier, alreadySeen);
+    const output = simplifyPatternProperties(schema, simplifier, alreadySeen);
     expect(output).toEqual({"testProp": model});
   });
 });

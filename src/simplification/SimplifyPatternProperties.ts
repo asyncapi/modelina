@@ -1,26 +1,23 @@
-
-import { CommonModel } from '../models/CommonModel';
+import { CommonModel } from '../models';
 import { Schema } from '../models/Schema';
 import { Simplifier } from './Simplifier';
 type Output = Record<string, CommonModel> | undefined;
 
 /**
- * Simplifier function for finding the simplified version of properties.
+ * Find out which common models we should extend
  * 
- * @param schema the schema to simplify properties for
- * @param simplifier the simplifier instance 
- * @param seenSchemas already seen schemas and their corresponding output, this is to avoid circular schemas
+ * @param schema to find extends of
  */
-export default function simplifyProperties(schema: Schema | boolean, simplifier : Simplifier, seenSchemas: Map<any, Output> = new Map()): Output {
+export default function simplifyPatternProperties(schema: Schema | boolean, simplifier : Simplifier, seenSchemas: Map<any, Output> = new Map()) : Output {
   if (typeof schema !== 'boolean') {
     if (seenSchemas.has(schema)) return seenSchemas.get(schema);
     const output: Output = {};
     seenSchemas.set(schema, output);
   
-    for (const [prop, propSchema] of Object.entries(schema.properties || {})) {
-      const newModels = simplifier.simplify(propSchema);
+    for (const [pattern, patternSchema] of Object.entries(schema.patternProperties || {})) {
+      const newModels = simplifier.simplify(patternSchema);
       if (newModels.length > 0) {
-        addToProperty(prop, newModels[0], schema, output);
+        addToPatterns(pattern, newModels[0], schema, output);
       }
     }
 
@@ -40,25 +37,23 @@ export default function simplifyProperties(schema: Schema | boolean, simplifier 
   }
   return undefined;
 }
-
 /**
- * Adds a property to the model
+ * Adds a pattern to the model
  * 
- * @param propName name of the property
- * @param propModel the corresponding model
+ * @param pattern for the model
+ * @param patternModel the corresponding model for the pattern
  * @param schema for the model
  * @param currentModel the current output
  */
-function addToProperty(propName: string, propModel: CommonModel, schema: Schema, currentModel: Output) {
+function addToPatterns(pattern: string, patternModel: CommonModel, schema: Schema, currentModel: Output) {
   if (currentModel === undefined) return;
-  //If a simplified property already exist, merge the two
-  if (currentModel[`${propName}`] !== undefined) {
-    currentModel[`${propName}`] = CommonModel.mergeCommonModels(currentModel[`${propName}`], propModel, schema);
+  //If the pattern already exist, merge the two
+  if (currentModel[`${pattern}`] !== undefined) {
+    currentModel[`${pattern}`] = CommonModel.mergeCommonModels(currentModel[`${pattern}`], patternModel, schema);
   } else {
-    currentModel[`${propName}`] = propModel;
+    currentModel[`${pattern}`] = patternModel;
   }
 }
-
 /**
  * Go through schema(s) and combine the simplified properties together.
  * 
@@ -75,10 +70,10 @@ function combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | unde
       combineSchemas(combinationSchema, currentModel, simplifier, seenSchemas, rootSchema);
     });
   } else {
-    const props = simplifyProperties(schema, simplifier, seenSchemas);
-    if (props !== undefined) {
-      for (const [prop, propSchema] of Object.entries(props)) {
-        addToProperty(prop, propSchema, rootSchema, currentModel);
+    const patternProperties = simplifyPatternProperties(schema, simplifier, seenSchemas);
+    if (patternProperties !== undefined) {
+      for (const [pattern, patternSchema] of Object.entries(patternProperties)) {
+        addToPatterns(pattern, patternSchema, rootSchema, currentModel);
       }
     }
   }

@@ -7,7 +7,8 @@ export class CommonSchema<T> {
     enum?: any[];
     items?: T | T[];
     properties?: { [key: string]: T; };
-    additionalProperties?: boolean | T;
+    additionalProperties?: T;
+    patternProperties?: { [key: string]: T; };
     $ref?: string;
     required?: string[];
     
@@ -36,8 +37,16 @@ export class CommonSchema<T> {
         schema.properties = properties;
       }
       if (typeof schema.additionalProperties === 'object' && 
-            schema.additionalProperties !== null) {
+            schema.additionalProperties !== undefined) {
         schema.additionalProperties = transformationSchemaCallback(schema.additionalProperties, seenSchemas);
+      }
+      if (typeof schema.patternProperties === 'object' && 
+            schema.patternProperties !== undefined) {
+        const patternProperties : {[key: string]: T | boolean} = {};
+        Object.entries(schema.patternProperties).forEach(([pattern, patternSchema]) => {
+          patternProperties[`${pattern}`] = transformationSchemaCallback(patternSchema, seenSchemas);
+        });
+        schema.patternProperties = patternProperties;
       }
       return schema;
     }

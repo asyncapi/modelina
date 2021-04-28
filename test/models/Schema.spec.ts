@@ -313,13 +313,6 @@ describe('Schema', function() {
       expect(typeof d).toEqual("object");
       expect(d.additionalProperties).toEqual(undefined);
     });
-    
-    test('should return undefined when null', function() {
-      const doc: any = { additionalProperties: null };
-      const d = Schema.toSchema(doc) as Schema;
-      expect(typeof d).toEqual("object");
-      expect(d.additionalProperties).toEqual(null);
-    });
   });
 
   describe('additionalItems', function() {
