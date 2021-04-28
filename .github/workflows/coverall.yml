@@ -1,9 +1,4 @@
-on:
-  push:
-    branches:
-      - master
-  pull_request_target:
-    types: [opened, reopened, synchronize, ready_for_review]
+on: ["push", "pull_request_target"]
 name: Check test coverage
 jobs:
   build:
