@@ -36,7 +36,7 @@ export default function simplifyProperties(schema: Schema | boolean, simplifier 
     combineSchemas(schema.then, output, simplifier, seenSchemas, schema);
     combineSchemas(schema.else, output, simplifier, seenSchemas, schema);
 
-    return !Object.keys(output).length ? undefined : output;
+    return Object.keys(output).length ? output : undefined;
   }
   return undefined;
 }
