@@ -10,13 +10,11 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 14
-    - name: npm install, run ci:coveralls
+    - name: npm install, run test
       run: |
         npm install
-        npm run ci:coveralls
+        npm run test
     - name: Coveralls
       uses: coverallsapp/github-action@master
-      env:
-        NODE_COVERALLS_DEBUG: 1
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
