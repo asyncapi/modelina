@@ -14,7 +14,6 @@
 
 AsyncAPI Model SDK is a set of classes/functions for generating data models from JSON Schema and AsyncAPI spec.
 
-
 ---
 
 ## :loudspeaker: ATTENTION:
