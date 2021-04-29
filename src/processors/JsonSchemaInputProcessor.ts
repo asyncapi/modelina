@@ -1,20 +1,19 @@
 import { AbstractInputProcessor } from './AbstractInputProcessor';
-import { CommonInputModel } from '../models/CommonInputModel';
-import { CommonModel } from '../models/CommonModel';
 import {simplify} from '../simplification/Simplifier';
-import { Schema } from '../models/Schema';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import path from 'path';
+import { Schema, CommonModel, CommonInputModel} from '../models';
+import { Logger } from '../utils';
 
 /**
  * Class for processing JSON Schema
  */
 export class JsonSchemaInputProcessor extends AbstractInputProcessor {
   /**
-     * Function for processing a JSON Schema input.
-     * 
-     * @param input 
-     */
+   * Function for processing a JSON Schema input.
+   * 
+   * @param input 
+   */
   async process(input: any): Promise<CommonInputModel> {
     if (this.shouldProcess(input)) {
       if (input.$schema !== undefined) {
@@ -30,10 +29,10 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
   }
 
   /**
-     * Unless the schema states one that is not supported we assume its of type JSON Schema
-     * 
-     * @param input 
-     */
+   * Unless the schema states one that is not supported we assume its of type JSON Schema
+   * 
+   * @param input 
+   */
   shouldProcess(input: any): boolean {
     if (input.$schema !== undefined) {
       switch (input.$schema) {
@@ -47,11 +46,12 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
   }
 
   /**
-     * Process a draft 7 schema
-     * 
-     * @param input to process as draft 7
-     */
+   * Process a draft 7 schema
+   * 
+   * @param input to process as draft 7
+   */
   private async processDraft7(input: any) : Promise<CommonInputModel> {
+    Logger.getInstance().debug('Processing input as an AsyncAPI document');
     input = JsonSchemaInputProcessor.reflectSchemaNames(input, undefined, 'root', true);
     const refParser = new $RefParser;
     const commonInputModel = new CommonInputModel();
