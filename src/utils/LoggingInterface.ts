@@ -18,8 +18,7 @@ export class Logger implements ModelLoggingInterface {
   private static instance?: Logger;
   private logger?: ModelLoggingInterface;
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  private constructor() { }
+  private constructor() { this.logger = undefined; }
 
   debug(message?: any, ...optionalParams: any[]): void {
     if (this.logger) {
