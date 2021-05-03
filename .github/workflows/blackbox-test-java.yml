@@ -1,4 +1,4 @@
-name: Blackbox testing Java output
+name: Blackbox testing JS output
 on:
   push:
   pull_request:
@@ -20,9 +20,5 @@ jobs:
           node-version: 14
       - name: Build library
         run: npm install && npm run build
-      - uses: actions/setup-java@v2
-        with:
-          distribution: 'adopt' # See 'Supported distributions' for available options
-          java-version: '11'
       - name: Test output
-        run: npm run ci:blackbox:java
+        run: npm run ci:blackbox:js
