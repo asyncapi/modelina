@@ -68,7 +68,13 @@
     "generate:readme:toc": "markdown-toc -i README.md",
     "generate:assets": "npm run build && npm run docs",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "ci:blackbox:js": "npm run ci:generate:blackbox:js && npm run ci:test:blackbox:js",
+    "ci:generate:blackbox:js": "node ./test/CI-blackbox/JS/renderer.js",
+    "ci:test:blackbox:js": "node ./test/CI-blackbox/JS/output/output.js",
+    "ci:blackbox:ts": "npm run ci:generate:blackbox:ts && npm run ci:test:blackbox:ts",
+    "ci:generate:blackbox:ts": "node ./test/CI-blackbox/TS/renderer.js",
+    "ci:test:blackbox:ts": "tsc ./test/CI-blackbox/TS/output/output.ts --outfile ./test/CI-blackbox/JS/output/output.js && node ./test/CI-blackbox/TS/output/output.js"
   },
   "publishConfig": {
     "access": "public"
