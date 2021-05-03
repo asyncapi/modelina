@@ -21,4 +21,4 @@ jobs:
       - name: Build library
         run: npm install && npm run build
       - name: Test output
-        run: npm run ci:blackbox:ts:output
+        run: npm run ci:blackbox:ts
