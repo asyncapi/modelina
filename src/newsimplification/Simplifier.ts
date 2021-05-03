@@ -1,15 +1,14 @@
+/* eslint-disable security/detect-object-injection */
 import { CommonModel, Schema } from '../models';
-import simplifyProperties from './SimplifyProperties';
-import simplifyEnums from './SimplifyEnums';
-import simplifyItems from './SimplifyItems';
-import simplifyExtend from './SimplifyExtend';
-import simplifyRequired from './SimplifyRequired';
-import simplifyTypes from './SimplifyTypes';
 import { SimplificationOptions } from '../models/SimplificationOptions';
+import simplifyName, { isModelObject } from './Utils';
+import simplifyItems from './SimplifyItems';
+import simplifyEnums from './SimplifyEnums';
+import simplifyConst from './SimplifyConst';
 import simplifyAdditionalProperties from './SimplifyAdditionalProperties';
 import simplifyPatternProperties from './SimplifyPatternProperties';
-import { isModelObject } from './Utils';
-import simplifyName from './SimplifyName';
+import simplifyProperties from './SimplifyProperties';
+import simplifyNot from './SimplifyNot';
 
 export class Simplifier {
   static defaultOptions: SimplificationOptions = {
@@ -45,13 +44,15 @@ export class Simplifier {
     }
     const model = new CommonModel();
     model.originalSchema = Schema.toSchema(schema);
-    model.type = simplifyTypes(schema);
+    if (schema === true) {
+      model.type = ['object', 'string', 'number', 'array', 'boolean', 'null', 'integer'];
+    }
     if (typeof schema !== 'boolean') {
       this.seenSchemas.set(schema, model);
       this.simplifyModel(model, schema);
     }
     this.ensureModelsAreSplit(model);
-    //Ensure current model is not part of the iterated list since we could have circular schemas
+    //Ensure current model is not part of the iterated list since we could have circular schemas that enable this
     if (this.iteratedModels[`${model.$id}`] !== undefined) {
       delete this.iteratedModels[`${model.$id}`];
     }
@@ -70,46 +71,56 @@ export class Simplifier {
    * @param schema to simplify
    */
   private simplifyModel(model: CommonModel, schema: Schema) {
-    //All schemas of type object MUST have ids, for now lets make it simple
+    if (schema.type !== undefined) {
+      model.type = schema.type;
+    }
+
+    //All schemas of type object MUST have ids
     if (model.type !== undefined && model.type.includes('object')) {
       model.$id = simplifyName(schema) || `anonymSchema${this.anonymCounter++}`;
     } else if (schema.$id !== undefined) {
       model.$id = simplifyName(schema);
     }
 
-    const simplifiedItems = simplifyItems(schema, this);
-    if (simplifiedItems !== undefined) {
-      model.items = simplifiedItems;
+    if (typeof schema !== 'boolean' && schema.required !== undefined) {
+      model.required = schema.required;
     }
 
-    const simplifiedProperties = simplifyProperties(schema, this);
-    if (simplifiedProperties !== undefined) {
-      model.properties = simplifiedProperties;
-    }
+    simplifyProperties(schema, model, this);
+    simplifyAdditionalProperties(schema, model, this);
+    simplifyPatternProperties(schema, model, this);
+    simplifyItems(schema, model, this);
+    simplifyEnums(schema, model);
 
-    const simplifiedPatternProperties = simplifyPatternProperties(schema, this);
-    if (simplifiedPatternProperties !== undefined) {
-      model.patternProperties = simplifiedPatternProperties;
-    }
+    this.combineSchemas(schema.allOf, model);
+    this.combineSchemas(schema.oneOf, model);
+    this.combineSchemas(schema.anyOf, model);
+    this.combineSchemas(schema.then, model);
+    this.combineSchemas(schema.else, model);
+    simplifyConst(schema, model);
 
-    const simplifiedAdditionalProperties = simplifyAdditionalProperties(schema, this, model);
-    if (simplifiedAdditionalProperties !== undefined) {
-      model.additionalProperties = simplifiedAdditionalProperties;
-    }
+    //Apply not validations
+    simplifyNot(schema, model, this);
+  }
 
-    const simplifiedExtends = simplifyExtend(schema, this);
-    if (simplifiedExtends !== undefined) {
-      model.extend = simplifiedExtends;
-    }
-
-    const enums = simplifyEnums(schema);
-    if (enums !== undefined && enums.length > 0) {
-      model.enum = enums;
-    }
-
-    const required = simplifyRequired(schema);
-    if (required !== undefined) {
-      model.required = required;
+  /**
+   * Go through schema(s) and combine the simplified items together.
+   * 
+   * @param schema to go through
+   * @param currentModel the current output
+   */
+  private combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | undefined, currentModel: CommonModel) {
+    if (typeof schema !== 'object') return;
+    if (Array.isArray(schema)) {
+      schema.forEach((forEachSchema) => {
+        this.combineSchemas(forEachSchema, currentModel);
+      });
+    } else {
+      const models = this.simplify(schema);
+      if (models.length > 0) {
+        const model = models[0];
+        CommonModel.mergeCommonModels(currentModel, model, schema);
+      }
     }
   }
 

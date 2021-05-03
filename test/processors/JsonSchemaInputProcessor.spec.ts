@@ -11,18 +11,14 @@ describe('JsonSchemaInputProcessor', function() {
          * @param inputSchemaPath 
          * @param expectedCommonModulePath 
          */
-        const expectFunction = async (inputSchemaPath: string, expectedCommonModulePath: string, match: boolean = false) => {
+        const expectFunction = async (inputSchemaPath: string, expectedCommonModulePath: string) => {
             const inputSchemaString = fs.readFileSync(path.resolve(__dirname, inputSchemaPath), 'utf8');
             const expectedCommonInputModelString = fs.readFileSync(path.resolve(__dirname, expectedCommonModulePath), 'utf8');
             const inputSchema = JSON.parse(inputSchemaString);
             const expectedCommonInputModel = JSON.parse(expectedCommonInputModelString);
             const processor = new JsonSchemaInputProcessor();
             const commonInputModel = await processor.process(inputSchema);
-            if (match) {
-                expect(commonInputModel).toMatchObject(expectedCommonInputModel);
-            } else {
-                expect(commonInputModel).toEqual(expectedCommonInputModel);
-            }
+            expect(commonInputModel).toMatchObject(expectedCommonInputModel);
         }
         test('should be able to process absence types', async function() {
             const inputSchemaPath = './JsonSchemaInputProcessor/absence_type.json';
@@ -42,7 +38,7 @@ describe('JsonSchemaInputProcessor', function() {
         test('should be able to process object property with anyOf', async function() {
             const inputSchemaPath = './JsonSchemaInputProcessor/object_property_with_anyOf.json';
             const expectedCommonModulePath = './JsonSchemaInputProcessor/commonInputModel/object_property_with_anyOf.json';
-            await expectFunction(inputSchemaPath, expectedCommonModulePath, true);
+            await expectFunction(inputSchemaPath, expectedCommonModulePath);
         });
         test('should be able to process enum schemas', async function() {
             const inputSchemaPath = './JsonSchemaInputProcessor/enum.json';
@@ -67,12 +63,12 @@ describe('JsonSchemaInputProcessor', function() {
         test('should be able to use $ref when circular', async function() {
             const inputSchemaPath = './JsonSchemaInputProcessor/references_circular.json';
             const expectedCommonModulePath = './JsonSchemaInputProcessor/commonInputModel/references_circular.json';
-            await expectFunction(inputSchemaPath, expectedCommonModulePath, true);
+            await expectFunction(inputSchemaPath, expectedCommonModulePath);
         });
         test('should be able to use $ref when circular with allOf', async function() {
             const inputSchemaPath = './JsonSchemaInputProcessor/references_circular_allOf.json';
             const expectedCommonModulePath = './JsonSchemaInputProcessor/commonInputModel/references_circular_allOf.json';
-            await expectFunction(inputSchemaPath, expectedCommonModulePath, true);
+            await expectFunction(inputSchemaPath, expectedCommonModulePath);
         });
     });
 

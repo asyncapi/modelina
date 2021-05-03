@@ -12,7 +12,6 @@
         }
       },
       "additionalProperties":{
-        "originalSchema":true,
         "type":[
           "object",
           "string",
@@ -49,29 +48,6 @@
           "boolean",
           "null",
           "integer"
-        ]
-      }
-    }
-  },
-  "originalInput":{
-    "$schema":"http://json-schema.org/draft-07/schema#",
-    "type":[
-      "object",
-      "boolean"
-    ],
-    "properties":{
-      "items":{
-        "anyOf":[
-          {
-            "$ref":"#"
-          },
-          {
-            "type":"array",
-            "minItems":1,
-            "items":{
-              "$ref":"#"
-            }
-          }
         ]
       }
     }
