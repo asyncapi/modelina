@@ -2,11 +2,11 @@ import {ModelLoggingInterface, Logger} from '../../src/utils';
 
 describe('LoggingInterface', function() {
   test('should work when no logging interface have been defined', function() {
-    Logger.getInstance().setLogger(undefined);
-    Logger.getInstance().debug("test", {}, "test2");
-    Logger.getInstance().info("test", {}, "test2");
-    Logger.getInstance().warn("test", {}, "test2");
-    Logger.getInstance().error("test", {}, "test2");
+    Logger.setLogger(undefined);
+    Logger.debug("test", {}, "test2");
+    Logger.info("test", {}, "test2");
+    Logger.warn("test", {}, "test2");
+    Logger.error("test", {}, "test2");
   });
   describe('should log to correct level', function() {
     const debugMock = jest.fn();
@@ -20,8 +20,8 @@ describe('LoggingInterface', function() {
       error: errorMock
     };
     beforeAll(() => {
-      Logger.getInstance().setLogger(undefined);
-      Logger.getInstance().setLogger(mockedLogger);
+      Logger.setLogger(undefined);
+      Logger.setLogger(mockedLogger);
     });
     beforeEach(() => {
       debugMock.mockClear();
@@ -30,7 +30,7 @@ describe('LoggingInterface', function() {
       errorMock.mockClear();
     });
     test('debug', function() {
-      Logger.getInstance().debug("test", {}, "test2");
+      Logger.debug("test", {}, "test2");
       expect(debugMock).toHaveBeenCalledTimes(1);
       expect(debugMock).toHaveBeenCalledWith("test", {}, "test2");
       expect(infoMock).toHaveBeenCalledTimes(0);
@@ -38,7 +38,7 @@ describe('LoggingInterface', function() {
       expect(errorMock).toHaveBeenCalledTimes(0);
     });
     test('info', function() {
-      Logger.getInstance().info("test", {}, "test2");
+      Logger.info("test", {}, "test2");
       expect(infoMock).toHaveBeenCalledTimes(1);
       expect(infoMock).toHaveBeenCalledWith("test", {}, "test2");
       expect(debugMock).toHaveBeenCalledTimes(0);
@@ -46,7 +46,7 @@ describe('LoggingInterface', function() {
       expect(errorMock).toHaveBeenCalledTimes(0);
     });
     test('warn', function() {
-      Logger.getInstance().warn("test", {}, "test2");
+      Logger.warn("test", {}, "test2");
       expect(warnMock).toHaveBeenCalledTimes(1);
       expect(warnMock).toHaveBeenCalledWith("test", {}, "test2");
       expect(debugMock).toHaveBeenCalledTimes(0);
@@ -54,7 +54,7 @@ describe('LoggingInterface', function() {
       expect(errorMock).toHaveBeenCalledTimes(0);
     });
     test('error', function() {
-      Logger.getInstance().error("test", {}, "test2");
+      Logger.error("test", {}, "test2");
       expect(errorMock).toHaveBeenCalledTimes(1);
       expect(errorMock).toHaveBeenCalledWith("test", {}, "test2");
       expect(debugMock).toHaveBeenCalledTimes(0);
@@ -84,9 +84,9 @@ describe('LoggingInterface', function() {
       error: errorMock
     };
     beforeAll(() => {
-      Logger.getInstance().setLogger(undefined);
-      Logger.getInstance().setLogger(oldMockedLogger);
-      Logger.getInstance().setLogger(mockedLogger);
+      Logger.setLogger(undefined);
+      Logger.setLogger(oldMockedLogger);
+      Logger.setLogger(mockedLogger);
     });
     beforeEach(() => {
       debugMock.mockClear();
@@ -95,7 +95,7 @@ describe('LoggingInterface', function() {
       errorMock.mockClear();
     });
     test('debug', function() {
-      Logger.getInstance().debug("test", {}, "test2");
+      Logger.debug("test", {}, "test2");
       expect(debugMock).toHaveBeenCalledTimes(1);
       expect(debugMock).toHaveBeenCalledWith("test", {}, "test2");
       expect(infoMock).toHaveBeenCalledTimes(0);
@@ -107,7 +107,7 @@ describe('LoggingInterface', function() {
       expect(oldErrorMock).toHaveBeenCalledTimes(0);
     });
     test('info', function() {
-      Logger.getInstance().info("test", {}, "test2");
+      Logger.info("test", {}, "test2");
       expect(infoMock).toHaveBeenCalledTimes(1);
       expect(infoMock).toHaveBeenCalledWith("test", {}, "test2");
       expect(debugMock).toHaveBeenCalledTimes(0);
@@ -119,7 +119,7 @@ describe('LoggingInterface', function() {
       expect(oldErrorMock).toHaveBeenCalledTimes(0);
     });
     test('warn', function() {
-      Logger.getInstance().warn("test", {}, "test2");
+      Logger.warn("test", {}, "test2");
       expect(warnMock).toHaveBeenCalledTimes(1);
       expect(warnMock).toHaveBeenCalledWith("test", {}, "test2");
       expect(debugMock).toHaveBeenCalledTimes(0);
@@ -131,7 +131,7 @@ describe('LoggingInterface', function() {
       expect(oldErrorMock).toHaveBeenCalledTimes(0);
     });
     test('error', function() {
-      Logger.getInstance().error("test", {}, "test2");
+      Logger.error("test", {}, "test2");
       expect(errorMock).toHaveBeenCalledTimes(1);
       expect(errorMock).toHaveBeenCalledWith("test", {}, "test2");
       expect(debugMock).toHaveBeenCalledTimes(0);

@@ -14,11 +14,8 @@ export interface ModelLoggingInterface {
  * 
  * This class acts as a forefront for any external loggers which is why it also implements the interface itself.
  */
-export class Logger implements ModelLoggingInterface {
-  private static instance?: Logger;
-  private logger?: ModelLoggingInterface;
-
-  private constructor() { this.logger = undefined; }
+export class LoggerClass implements ModelLoggingInterface {
+  private logger?: ModelLoggingInterface = undefined;
 
   debug(message?: any, ...optionalParams: any[]): void {
     if (this.logger) {
@@ -49,12 +46,6 @@ export class Logger implements ModelLoggingInterface {
   setLogger(logger?: ModelLoggingInterface) {
     this.logger = logger;
   }
-
-  public static getInstance(): Logger {
-    if (!Logger.instance) {
-      Logger.instance = new Logger();
-    }
-    return Logger.instance;
-  }
 }
 
+export const Logger: LoggerClass = new LoggerClass();

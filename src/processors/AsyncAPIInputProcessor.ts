@@ -16,7 +16,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
    */
   async process(input: any): Promise<CommonInputModel> {
     if (!this.shouldProcess(input)) throw new Error('Input is not an AsyncAPI document so it cannot be processed.');
-    Logger.getInstance().debug('Processing input as an AsyncAPI document');
+    Logger.debug('Processing input as an AsyncAPI document');
     let doc: AsyncAPIDocument;
     const common = new CommonInputModel();
     if (!AsyncAPIInputProcessor.isFromParser(input)) {

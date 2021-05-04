@@ -51,7 +51,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * @param input to process as draft 7
    */
   private async processDraft7(input: any) : Promise<CommonInputModel> {
-    Logger.getInstance().debug('Processing input as an AsyncAPI document');
+    Logger.debug('Processing input as an AsyncAPI document');
     input = JsonSchemaInputProcessor.reflectSchemaNames(input, undefined, 'root', true);
     const refParser = new $RefParser;
     const commonInputModel = new CommonInputModel();
