@@ -27,7 +27,7 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
       return model.enum.map(value => typeof value === 'string' ? `"${value}"` : value).join(' | ');
     }
     if (model.$ref !== undefined) {
-      return model.$ref;
+      return FormatHelpers.toPascalCase(model.$ref);
     }
     if (Array.isArray(model.type)) {
       return model.type.map(t => this.toTsType(t, model)).join(' | ');

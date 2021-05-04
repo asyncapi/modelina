@@ -24,7 +24,7 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
       return 'Object'; // fallback
     }
     if (model.$ref !== undefined) {
-      return model.$ref;
+      return FormatHelpers.toPascalCase(model.$ref);
     }
     const format = model.getFromSchema('format');
     return this.toClassType(this.toJavaType(format || model.type, model));
