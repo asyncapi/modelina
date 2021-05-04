@@ -31,6 +31,10 @@
 <dt><a href="#JsonSchemaInputProcessor">JsonSchemaInputProcessor</a></dt>
 <dd><p>Class for processing JSON Schema</p>
 </dd>
+<dt><a href="#LoggerClass">LoggerClass</a></dt>
+<dd><p>Logger class for the model generation library</p>
+<p>This class acts as a forefront for any external loggers which is why it also implements the interface itself.</p>
+</dd>
 </dl>
 
 ## Functions
@@ -515,6 +519,25 @@ Simplifies a JSON Schema into a common models
 | Param | Description |
 | --- | --- |
 | schema | to simplify to common model |
+
+<a name="LoggerClass"></a>
+
+## LoggerClass
+Logger class for the model generation library
+
+This class acts as a forefront for any external loggers which is why it also implements the interface itself.
+
+**Kind**: global class  
+<a name="LoggerClass+setLogger"></a>
+
+### loggerClass.setLogger(logger)
+Sets the logger to use for the model generation library
+
+**Kind**: instance method of [<code>LoggerClass</code>](#LoggerClass)  
+
+| Param | Description |
+| --- | --- |
+| logger | to add |
 
 <a name="simplify"></a>
 
