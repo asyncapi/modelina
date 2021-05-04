@@ -27,12 +27,17 @@ describe('TypeScriptRenderer', function() {
     });
   });
   describe('renderType()', function() {
+    test('Should render refs with pascal case', function() {
+      const model = new CommonModel();
+      model.$ref = "<anonymous-schema-1>";
+      expect(renderer.renderType(model)).toEqual('AnonymousSchema_1');
+    });
     test('Should render array of CommonModels', function() {
       const model1 = new CommonModel();
       model1.$ref = "ref1";
       const model2 = new CommonModel();
       model2.$ref = "ref2";
-      expect(renderer.renderType([model1, model2])).toEqual('ref1 | ref2');
+      expect(renderer.renderType([model1, model2])).toEqual('Ref1 | Ref2');
     });
     test('Should render enums', function() {
       const model = new CommonModel();
