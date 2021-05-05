@@ -69,6 +69,7 @@
     "generate:assets": "npm run build && npm run docs",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION",
     "prepublishOnly": "npm run build",
+    "ci:blackbox": "npm run ci:blackbox:js && npm run ci:blackbox:ts && ci:blackbox:java",
     "ci:blackbox:js": "npm run ci:generate:blackbox:js && npm run ci:test:blackbox:js",
     "ci:generate:blackbox:js": "node ./test/CI-blackbox/js/renderer.js",
     "ci:test:blackbox:js": "node ./test/CI-blackbox/js/output/output.js",
