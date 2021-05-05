@@ -3,6 +3,7 @@
   "type": "object",
   "properties": {
     "shipping_address": {
+      "$id": "shipping_address",
       "allOf": [
         {
           "type": "object",

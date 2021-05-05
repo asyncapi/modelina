@@ -1,3 +1,4 @@
+import { Logger } from 'utils';
 import { CommonSchema } from './CommonSchema';
 import { Schema } from './Schema';
 
@@ -188,13 +189,14 @@ export class CommonModel extends CommonSchema<CommonModel> {
     }
 
     // Which values are correct to use here? Is allOf required?
-    if (mergeFrom.$id !== undefined) {
+    if (mergeFrom.$id !== undefined && mergeTo.$id === undefined) {
       mergeTo.$id = mergeFrom.$id;
     }
-    if (mergeFrom.$ref !== undefined) {
+    if (mergeFrom.$ref !== undefined && mergeTo.$ref === undefined) {
       mergeTo.$ref = mergeFrom.$ref;
     }
-    if (mergeFrom.extend !== undefined) {
+    //TODO: If this ever occur the extended models both have to be merged?
+    if (mergeFrom.extend !== undefined && mergeTo.extend === undefined) {
       mergeTo.extend = mergeFrom.extend;
     }
     mergeTo.originalSchema = originalSchema;
