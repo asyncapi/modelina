@@ -20,12 +20,8 @@ jobs:
           node-version: 14
       - name: Build library
         run: npm install && npm run build
-      - uses: actions/setup-java@v2
-        with:
-          distribution: 'adopt' # See 'Supported distributions' for available options
-          java-version: '11'
       - name: Test output
-        run: npm run ci:blackbox:java
+        run: npm run ci:blackbox:ts
   test-javascript:
     if: github.event.pull_request.draft == false
     name: JavaScript ${{ matrix.os }}
@@ -43,7 +39,7 @@ jobs:
       - name: Build library
         run: npm install && npm run build
       - name: Test output
-        run: npm run ci:blackbox:ts
+        run: npm run ci:blackbox:js
   test-java:
     if: github.event.pull_request.draft == false
     name: Java ${{ matrix.os }}
@@ -60,5 +56,9 @@ jobs:
           node-version: 14
       - name: Build library
         run: npm install && npm run build
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt' # See 'Supported distributions' for available options
+          java-version: '11'
       - name: Test output
         run: npm run ci:blackbox:java
