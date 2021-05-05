@@ -1,0 +1,29 @@
+{
+    "allOf": [
+        {
+            "allOf": [
+                {
+                    "items": [
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                {
+                    "items": [
+                        {
+                            "type": "boolean"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "items": [
+                {
+                    "type": "number"
+                }
+            ]
+        }
+    ]
+}

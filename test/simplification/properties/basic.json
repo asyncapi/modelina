@@ -1,0 +1,10 @@
+{
+  "properties": { 
+    "testProp1": { 
+      "type": "string"
+    },
+    "testProp2": { 
+      "type": "string"
+    } 
+  }
+}

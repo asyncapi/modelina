@@ -1,0 +1,20 @@
+{
+    "type": "array",
+    "if": {
+        "const": ["some_const"]
+    },
+    "then": {
+        "items": [
+            {
+                "type": "string"
+            }
+        ]
+    },
+    "else": {
+        "items": [
+            {
+                "type": "boolean"
+            }
+        ]
+    }
+}

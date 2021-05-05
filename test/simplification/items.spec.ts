@@ -2,11 +2,9 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { CommonModel } from '../../src/models/CommonModel';
-import { Simplifier } from '../../src/newsimplification/Simplifier';
-import simplifyItems from '../../src/newsimplification/SimplifyItems';
-import {addToTypes} from '../../src/newsimplification/Utils';
-
-jest.mock('../../src/newsimplification/Simplifier', () => {
+import { Simplifier } from '../../src/simplification/Simplifier';
+import simplifyItems from '../../src/simplification/SimplifyItems';
+jest.mock('../../src/simplification/Simplifier', () => {
   return {
     Simplifier: jest.fn().mockImplementation(() => {
       return {
@@ -16,63 +14,128 @@ jest.mock('../../src/newsimplification/Simplifier', () => {
   };
 });
 
-jest.mock('../../src/newsimplification/Utils', () => {
-  return {
-    addToTypes: jest.fn()
-  };
-});
+const mockMergeCommonModels = jest.fn();
+CommonModel.mergeCommonModels = mockMergeCommonModels;
 /**
  * Some of these test are purely theoretical and have little if any merit 
  * on a JSON Schema which actually makes sense but are used to test the principles.
  */
-describe('Simplification of', () => {
+describe('Simplification of items', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    mockMergeCommonModels.mockClear();
   });
   afterAll(() => {
     jest.restoreAllMocks();
   })
-  describe('single item schemas', () => {
-    test('should set items', () => {
+  describe('as is', () => {
+    test('should return item', () => {
       const schema: any = { items: { type: 'string' } };
-      const model = new CommonModel();
       const simplifier = new Simplifier();
-      simplifyItems(schema, model, simplifier);
-      expect(simplifier.simplify).toHaveBeenNthCalledWith(1, { type: 'string' });
-      expect(model).toMatchObject(
-        {
-          items: { },
-        },
-      );
-    });
-    test('should infer type of model', () => {
-      const schema: any = { items: { type: 'string' } };
-      const model = new CommonModel();
-      const simplifier = new Simplifier();
-      simplifyItems(schema, model, simplifier);
-      expect(addToTypes).toHaveBeenNthCalledWith(1, 'array', model);
+      const items = simplifyItems(schema, simplifier);
+      expect(items).toBeUndefined();
+      expect(simplifier.simplify).toHaveBeenCalledTimes(1);
     });
   });
-  describe('multiple item schemas', () => {
-    test('should set items', () => {
-      const schema: any = { items: [{ type: 'string' }, { type: 'number' }] };
-      const model = new CommonModel();
+  describe('from allOf schemas', () => {
+    test('with simple schema', () => {
+      const schemaString = fs.readFileSync(path.resolve(__dirname, './items/allOf.json'), 'utf8');
+      const schema = JSON.parse(schemaString);
       const simplifier = new Simplifier();
-      simplifyItems(schema, model, simplifier);
-      expect(simplifier.simplify).toHaveBeenNthCalledWith(1, { type: 'string' });
-      expect(simplifier.simplify).toHaveBeenNthCalledWith(2, { type: 'number' });
-      expect(model).toMatchObject(
-        {
-          items: [{ }, { }],
-        },
-      );
+      const items = simplifyItems(schema, simplifier);
+      expect(items).toBeUndefined();
+      expect(simplifier.simplify).toHaveBeenCalledTimes(2);
+      expect(mockMergeCommonModels).toHaveBeenCalledTimes(2);
     });
-    test('should infer type of model', () => {
-      const schema: any = { items: [{ type: 'string' }, { type: 'number' }] };
-      const model = new CommonModel();
+    test('with nested schema', () => {
+      const schemaString = fs.readFileSync(path.resolve(__dirname, './items/allOfNested.json'), 'utf8');
+      const schema = JSON.parse(schemaString);
       const simplifier = new Simplifier();
-      simplifyItems(schema, model, simplifier);
-      expect(addToTypes).toHaveBeenNthCalledWith(1, 'array', model);
+      const items = simplifyItems(schema, simplifier);
+      expect(items).toBeUndefined();
+      expect(simplifier.simplify).toHaveBeenCalledTimes(3);
+      expect(mockMergeCommonModels).toHaveBeenCalledTimes(3);
     });
+  });
+
+  describe('from oneOf schemas', () => {
+    test('with simple schema', () => {
+      const schemaString = fs.readFileSync(path.resolve(__dirname, './items/oneOf.json'), 'utf8');
+      const schema = JSON.parse(schemaString);
+      const simplifier = new Simplifier();
+      const items = simplifyItems(schema, simplifier);
+      expect(items).toBeUndefined();
+      expect(simplifier.simplify).toHaveBeenCalledTimes(2);
+      expect(mockMergeCommonModels).toHaveBeenCalledTimes(2);
+    });
+    test('with nested schema', () => {
+      const schemaString = fs.readFileSync(path.resolve(__dirname, './items/oneOfNested.json'), 'utf8');
+      const schema = JSON.parse(schemaString);
+      const simplifier = new Simplifier();
+      const items = simplifyItems(schema, simplifier);
+      expect(items).toBeUndefined();
+      expect(simplifier.simplify).toHaveBeenCalledTimes(3);
+      expect(mockMergeCommonModels).toHaveBeenCalledTimes(3);
+    });
+  });
+
+  describe('from anyOf schemas', () => {
+    test('with simple schema', () => {
+      const schemaString = fs.readFileSync(path.resolve(__dirname, './items/anyOf.json'), 'utf8');
+      const schema = JSON.parse(schemaString);
+      const simplifier = new Simplifier();
+      const items = simplifyItems(schema, simplifier);
+      expect(items).toBeUndefined();
+      expect(simplifier.simplify).toHaveBeenCalledTimes(2);
+      expect(mockMergeCommonModels).toHaveBeenCalledTimes(2);
+    });
+    test('with nested schema', () => {
+      const schemaString = fs.readFileSync(path.resolve(__dirname, './items/anyOfNested.json'), 'utf8');
+      const schema = JSON.parse(schemaString);
+      const simplifier = new Simplifier();
+      const items = simplifyItems(schema, simplifier);
+      expect(items).toBeUndefined();
+      expect(simplifier.simplify).toHaveBeenCalledTimes(3);
+      expect(mockMergeCommonModels).toHaveBeenCalledTimes(3);
+    });
+  });
+  describe('from conditional if/then/else ', () => {
+    test('with simple schema', () => {
+      const schemaString = fs.readFileSync(path.resolve(__dirname, './items/conditional.json'), 'utf8');
+      const schema = JSON.parse(schemaString);
+      const simplifier = new Simplifier();
+      const items = simplifyItems(schema, simplifier);
+      expect(items).toBeUndefined();
+      expect(simplifier.simplify).toHaveBeenCalledTimes(2);
+      expect(mockMergeCommonModels).toHaveBeenCalledTimes(2);
+    });
+    test('with nested schema', () => {
+      const schemaString = fs.readFileSync(path.resolve(__dirname, './items/conditionalNested.json'), 'utf8');
+      const schema = JSON.parse(schemaString);
+      const simplifier = new Simplifier();
+      const items = simplifyItems(schema, simplifier);
+      expect(items).toBeUndefined();
+      expect(simplifier.simplify).toHaveBeenCalledTimes(4);
+      expect(mockMergeCommonModels).toHaveBeenCalledTimes(4);
+    });
+  });
+  test('Should split out multiple objects into their own models and add reference', () => {
+    const schemaString = fs.readFileSync(path.resolve(__dirname, './items/multipleObjects.json'), 'utf8');
+    const schema = JSON.parse(schemaString);
+    const simplifier = new Simplifier();
+    const items = simplifyItems(schema, simplifier);
+    expect(items).toBeUndefined();
+    expect(simplifier.simplify).toHaveBeenCalledTimes(1);
+    expect(mockMergeCommonModels).toHaveBeenCalledTimes(1);
+  });
+
+  test('should return already seen schemas', function() {
+    const alreadySeen = new Map<any, CommonModel | undefined>();
+    const schema = {$id: "test"};
+    const model = new CommonModel();
+    model.$id = "test2";
+    alreadySeen.set(schema, model);
+    const simplifier = new Simplifier();
+    const output = simplifyItems(schema, simplifier, alreadySeen);
+    expect(output).toEqual(model);
   });
 });

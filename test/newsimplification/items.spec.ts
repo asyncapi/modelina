@@ -1,0 +1,78 @@
+/* eslint-disable no-undef */
+import * as fs from 'fs';
+import * as path from 'path';
+import { CommonModel } from '../../src/models/CommonModel';
+import { Simplifier } from '../../src/newsimplification/Simplifier';
+import simplifyItems from '../../src/newsimplification/SimplifyItems';
+import {addToTypes} from '../../src/newsimplification/Utils';
+
+jest.mock('../../src/newsimplification/Simplifier', () => {
+  return {
+    Simplifier: jest.fn().mockImplementation(() => {
+      return {
+        simplify: jest.fn().mockReturnValue([new CommonModel()])
+      };
+    })
+  };
+});
+
+jest.mock('../../src/newsimplification/Utils', () => {
+  return {
+    addToTypes: jest.fn()
+  };
+});
+/**
+ * Some of these test are purely theoretical and have little if any merit 
+ * on a JSON Schema which actually makes sense but are used to test the principles.
+ */
+describe('Simplification of', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+  afterAll(() => {
+    jest.restoreAllMocks();
+  })
+  describe('single item schemas', () => {
+    test('should set items', () => {
+      const schema: any = { items: { type: 'string' } };
+      const model = new CommonModel();
+      const simplifier = new Simplifier();
+      simplifyItems(schema, model, simplifier);
+      expect(simplifier.simplify).toHaveBeenNthCalledWith(1, { type: 'string' });
+      expect(model).toMatchObject(
+        {
+          items: { },
+        },
+      );
+    });
+    test('should infer type of model', () => {
+      const schema: any = { items: { type: 'string' } };
+      const model = new CommonModel();
+      const simplifier = new Simplifier();
+      simplifyItems(schema, model, simplifier);
+      expect(addToTypes).toHaveBeenNthCalledWith(1, 'array', model);
+    });
+  });
+  describe('multiple item schemas', () => {
+    test('should set items', () => {
+      const schema: any = { items: [{ type: 'string' }, { type: 'number' }] };
+      const model = new CommonModel();
+      const simplifier = new Simplifier();
+      simplifyItems(schema, model, simplifier);
+      expect(simplifier.simplify).toHaveBeenNthCalledWith(1, { type: 'string' });
+      expect(simplifier.simplify).toHaveBeenNthCalledWith(2, { type: 'number' });
+      expect(model).toMatchObject(
+        {
+          items: [{ }, { }],
+        },
+      );
+    });
+    test('should infer type of model', () => {
+      const schema: any = { items: [{ type: 'string' }, { type: 'number' }] };
+      const model = new CommonModel();
+      const simplifier = new Simplifier();
+      simplifyItems(schema, model, simplifier);
+      expect(addToTypes).toHaveBeenNthCalledWith(1, 'array', model);
+    });
+  });
+});
