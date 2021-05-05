@@ -27,6 +27,7 @@ describe('Simplification of additionalProperties', () => {
   test('should use as is', () => {
     const schema: any = { additionalProperties: { type: 'string' } };
     const model = new CommonModel();
+    model.type = "object";
     const simplifier = new Simplifier();
     simplifyAdditionalProperties(schema, model, simplifier);
     expect(simplifier.simplify).toHaveBeenNthCalledWith(1, { type: 'string' });
@@ -36,9 +37,19 @@ describe('Simplification of additionalProperties', () => {
       },
     );
   });
+  test('should only work if model is object type', () => {
+    const schema: any = { };
+    const model = new CommonModel();
+    model.type = "string";
+    const simplifier = new Simplifier();
+    simplifyAdditionalProperties(schema, model, simplifier);
+    expect(simplifier.simplify).not.toHaveBeenCalled();
+    expect(model.additionalProperties).toBeUndefined();
+  });
   test('should default to true', () => {
     const schema: any = { };
     const model = new CommonModel();
+    model.type = "object";
     const simplifier = new Simplifier();
     simplifyAdditionalProperties(schema, model, simplifier);
     expect(simplifier.simplify).toHaveBeenNthCalledWith(1, true);

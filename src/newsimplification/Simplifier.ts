@@ -91,9 +91,7 @@ export class Simplifier {
     }
 
     simplifyProperties(schema, model, this);
-    if (isModelObject(model)) {
-      simplifyAdditionalProperties(schema, model, this);
-    }
+    simplifyAdditionalProperties(schema, model, this);
     simplifyPatternProperties(schema, model, this);
     simplifyItems(schema, model, this);
     simplifyEnums(schema, model);
