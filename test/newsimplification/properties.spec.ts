@@ -18,11 +18,23 @@ CommonModel.mergeCommonModels = jest.fn();
  * on a JSON Schema which actually makes sense but are used to test the principles.
  */
 describe('Simplification of properties', () => {
+  
   beforeEach(() => {
     jest.clearAllMocks();
   });
   afterAll(() => {
     jest.restoreAllMocks();
+  });
+
+  test('should not do anything if schema does not contain properties', function() {
+    const model = new CommonModel();
+    const simplifier = new Simplifier();
+    simplifyProperties({}, model, simplifier);
+  });
+  test('should not do anything if schema is boolean', function() {
+    const model = new CommonModel();
+    const simplifier = new Simplifier();
+    simplifyProperties(true, model, simplifier);
   });
   test('should use as is', () => {
     const schema: any = { properties: { 'property1': { type: 'string' } } };

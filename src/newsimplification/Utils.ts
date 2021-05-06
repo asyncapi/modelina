@@ -42,18 +42,16 @@ export function inferTypeFromValue(value: any) {
  * @param currentOutput the current output
  */
 export function addToTypes(typesToAdd: string[] | string, model: CommonModel) {
-  if (typesToAdd !== undefined) {
-    if (Array.isArray(typesToAdd)) {
-      typesToAdd.forEach((value) => {
-        addToTypes(value, model);
-      });
-    } else if (model.type === undefined) {
-      model.type = typesToAdd;
-    } else if (!Array.isArray(model.type) && model.type !== typesToAdd) {
-      model.type = [model.type, typesToAdd];
-    } else if (Array.isArray(model.type) && !model.type.includes(typesToAdd)) {
-      model.type.push(typesToAdd);
-    }
+  if (Array.isArray(typesToAdd)) {
+    typesToAdd.forEach((value) => {
+      addToTypes(value, model);
+    });
+  } else if (model.type === undefined) {
+    model.type = typesToAdd;
+  } else if (!Array.isArray(model.type) && model.type !== typesToAdd) {
+    model.type = [model.type, typesToAdd];
+  } else if (Array.isArray(model.type) && !model.type.includes(typesToAdd)) {
+    model.type.push(typesToAdd);
   }
 }
 
@@ -62,7 +60,7 @@ export function addToTypes(typesToAdd: string[] | string, model: CommonModel) {
  * 
  * @param schema to find the name
  */
-export default function simplifyName(schema: any | boolean): string | undefined {
+export function simplifyName(schema: any | boolean): string | undefined {
   if (typeof schema === 'object') {
     return schema.title || schema.$id || schema['x-modelgen-inferred-name'];
   }

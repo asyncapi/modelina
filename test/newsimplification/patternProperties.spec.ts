@@ -24,6 +24,17 @@ describe('Simplification of patternProperties', () => {
   afterAll(() => {
     jest.restoreAllMocks();
   });
+
+  test('should not do anything if schema does not contain patternProperties', function() {
+    const model = new CommonModel();
+    const simplifier = new Simplifier();
+    simplifyPatternProperties({}, model, simplifier);
+  });
+  test('should not do anything if schema is boolean', function() {
+    const model = new CommonModel();
+    const simplifier = new Simplifier();
+    simplifyPatternProperties(true, model, simplifier);
+  });
   test('should use as is', () => {
     const schema: any = { patternProperties: { 'pattern': { type: 'string' } } };
     const model = new CommonModel();

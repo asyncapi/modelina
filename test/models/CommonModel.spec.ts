@@ -156,14 +156,15 @@ describe('CommonModel', function() {
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
         expect(doc1.$id).toEqual(doc2.$id);
       });
-      test('should be merged when both sides are defined', function() {
+      test('should not be merged when both sides are defined', function() {
         const doc: Schema = { };
         let doc1 = CommonModel.toCommonModel(doc);
         let doc2 = CommonModel.toCommonModel(doc);
         doc2.$id = "test";
         doc1.$id = "temp";
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
-        expect(doc1.$id).toEqual(doc2.$id);
+        expect(doc1.$id).not.toEqual(doc2.$id);
+        expect(doc1.$id).toEqual("temp");
       });
       test('should not change if nothing is defined', function() {
         const doc: Schema = { };

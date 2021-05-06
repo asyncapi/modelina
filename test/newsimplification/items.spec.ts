@@ -16,11 +16,7 @@ jest.mock('../../src/newsimplification/Simplifier', () => {
   };
 });
 
-jest.mock('../../src/newsimplification/Utils', () => {
-  return {
-    addToTypes: jest.fn()
-  };
-});
+jest.mock('../../src/newsimplification/Utils');
 /**
  * Some of these test are purely theoretical and have little if any merit 
  * on a JSON Schema which actually makes sense but are used to test the principles.
@@ -32,6 +28,16 @@ describe('Simplification of', () => {
   afterAll(() => {
     jest.restoreAllMocks();
   })
+  test('should not do anything if schema does not contain items', function() {
+    const model = new CommonModel();
+    const simplifier = new Simplifier();
+    simplifyItems({}, model, simplifier);
+  });
+  test('should not do anything if schema is boolean', function() {
+    const model = new CommonModel();
+    const simplifier = new Simplifier();
+    simplifyItems(true, model, simplifier);
+  });
   describe('single item schemas', () => {
     test('should set items', () => {
       const schema: any = { items: { type: 'string' } };

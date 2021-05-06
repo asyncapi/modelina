@@ -15,7 +15,7 @@ export default function simplifyProperties(schema: Schema | boolean, model: Comm
     //Ensure object type is inferred
     addToTypes('object', model);
 
-    for (const [propertyName, propertySchema] of Object.entries(schema.properties || {})) {
+    for (const [propertyName, propertySchema] of Object.entries(schema.properties)) {
       const newModels = simplifier.simplify(propertySchema);
       if (newModels.length > 0) {
         if (model.properties === undefined) model.properties = {};
