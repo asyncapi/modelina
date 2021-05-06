@@ -39,7 +39,7 @@ export class InputProcessor {
    * @param input to process
    * @param type of processor to use
    */
-  process(input: any): Promise<CommonInputModel> {
+  async process(input: any): Promise<CommonInputModel> {
     for (const [type, processor] of this.processors) {
       if (type === 'default') continue;
       if (processor.shouldProcess(input)) {
@@ -50,7 +50,7 @@ export class InputProcessor {
     if (defaultProcessor !== undefined) {
       return defaultProcessor.process(input);
     }
-    return Promise.reject(new Error('No default processor found'));
+    throw new Error('No default processor found');
   }
 }
 
