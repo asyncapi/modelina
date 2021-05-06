@@ -25,6 +25,12 @@ describe('JsonSchemaInputProcessor', function () {
       model.$id = "test";
       (simplify as jest.Mock).mockImplementation(() => [model]);
     });
+    test('should throw error when trying to process wrong schema', async function () {
+      const processor = new JsonSchemaInputProcessor();
+      await expect(processor.process({$schema: 'http://json-schema.org/draft-99/schema#'}))
+        .rejects
+        .toThrow('Input is not a JSON Schema, so it cannot be processed.');
+    });
     test('should process normal schema', async function () {
       const inputSchemaPath = './JsonSchemaInputProcessor/basic.json';
       const {commonInputModel, inputSchema} = await getCommonInput(inputSchemaPath);

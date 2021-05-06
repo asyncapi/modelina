@@ -48,6 +48,14 @@ describe('InputProcessor', function () {
       processor.setProcessor('default', defaultInputProcessor);
       return {processor, asyncInputProcessor, defaultInputProcessor}
     }
+    test('should throw error when no default processor found', async function () {
+      const processor = new InputProcessor();
+      const map = processor.getProcessors();
+      map.delete('default');
+      await expect(processor.process({}))
+        .rejects
+        .toThrow('No default processor found');
+    });
     test('should be able to process default JSON schema input', async function () {
       const {processor, asyncInputProcessor, defaultInputProcessor} = getProcessors(); 
       const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './JsonSchemaInputProcessor/basic.json'), 'utf8');
