@@ -8,22 +8,29 @@ import { CommonInputModel } from '../models/CommonInputModel';
  */
 export class InputProcessor {
   public static processor: InputProcessor = new InputProcessor();
-
   private processors: Map<string, AbstractInputProcessor> = new Map();
 
   constructor() {
-    this.addProcessor('asyncapi', new AsyncAPIInputProcessor()); 
-    this.addProcessor('default', new JsonSchemaInputProcessor());
+    this.setProcessor('asyncapi', new AsyncAPIInputProcessor()); 
+    this.setProcessor('default', new JsonSchemaInputProcessor());
   }
-
+  
   /**
-   * Add a processor.
+   * Set a processor.
    * 
    * @param type of processor
    * @param processor
    */
-  addProcessor(type: string, processor: AbstractInputProcessor) {
+  setProcessor(type: string, processor: AbstractInputProcessor) {
     this.processors.set(type, processor);
+  }
+
+  /**
+   * 
+   * @returns all processors
+   */
+  getProcessors() : Map<string, AbstractInputProcessor> {
+    return this.processors;
   }
 
   /**
@@ -46,3 +53,4 @@ export class InputProcessor {
     throw new Error('No default processor found');
   }
 }
+
