@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { CommonModel, Schema } from '../models';
 import { SimplificationOptions } from '../models/SimplificationOptions';
-import simplifyName, { isModelObject } from './Utils';
+import { simplifyName, isModelObject } from './Utils';
 import simplifyItems from './SimplifyItems';
 import simplifyEnums from './SimplifyEnums';
 import simplifyConst from './SimplifyConst';
