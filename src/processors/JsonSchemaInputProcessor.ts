@@ -60,7 +60,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     commonInputModel.originalInput = Schema.toSchema(input);
     const deRefOption: $RefParser.Options = {
       continueOnError: true,
-      dereference: { circular: 'ignore' },
+      dereference: { circular: true },
     };
     Logger.debug(`Trying to dereference all $ref instances from input, using option ${JSON.stringify(deRefOption)}.`);
     try {
@@ -71,12 +71,6 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       throw new Error(errorMessage);
     }
     const parsedSchema = Schema.toSchema(input);
-    if (refParser.$refs.circular && typeof parsedSchema !== 'boolean') {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      deRefOption.dereference!.circular = true;
-      Logger.debug(`Input contains circular references. Need to dereference again to associate correct references, using option ${JSON.stringify(deRefOption)}.`);
-      await refParser.dereference(localPath, parsedSchema as $RefParser.JSONSchema, deRefOption);
-    }
     Logger.debug('Successfully dereferenced all $ref instances from input.', parsedSchema);
     commonInputModel.models = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema);
     return commonInputModel;
