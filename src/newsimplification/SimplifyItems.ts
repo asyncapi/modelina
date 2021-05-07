@@ -17,17 +17,24 @@ export default function simplifyItems(schema: Schema | boolean, model: CommonMod
     addToTypes('array', model);
 
     if (Array.isArray(schema.items)) {
-      model.items = [];
-      schema.items.forEach((itemSchema, index) => {
+      schema.items.forEach((itemSchema) => {
         const itemModels = simplifier.simplify(itemSchema);
         if (itemModels.length > 0) {
-          (model.items as CommonModel[])[+index] = itemModels[0];
+          if (model.items) {
+            CommonModel.mergeCommonModels(model.items as CommonModel, itemModels[0], schema);
+          } else {
+            model.items = itemModels[0];
+          }
         }
       });
     } else {
       const itemModels = simplifier.simplify(schema.items);
       if (itemModels.length > 0) {
-        model.items = itemModels[0];
+        if (model.items) {
+          CommonModel.mergeCommonModels(model.items as CommonModel, itemModels[0], schema);
+        } else {
+          model.items = itemModels[0];
+        }
       }
     }
   }
