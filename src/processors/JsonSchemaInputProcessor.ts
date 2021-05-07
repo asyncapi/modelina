@@ -1,5 +1,5 @@
 import { AbstractInputProcessor } from './AbstractInputProcessor';
-import {simplify} from '../simplification/Simplifier';
+import { simplify } from '../simplification/Simplifier';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import path from 'path';
 import { Schema, CommonModel, CommonInputModel} from '../models';
@@ -58,19 +58,20 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     // eslint-disable-next-line no-undef
     const localPath = `${process.cwd()}${path.sep}`;
     commonInputModel.originalInput = Schema.toSchema(input);
-    await refParser.dereference(localPath, 
-      input, {
-        continueOnError: true,
-        dereference: { circular: 'ignore' },
-      });
-    const parsedSchema = Schema.toSchema(input);
-    if (refParser.$refs.circular && typeof parsedSchema !== 'boolean') {
-      const circularOption : $RefParser.Options = {
-        continueOnError: true,
-        dereference: { circular: true },
-      };
-      await refParser.dereference(localPath, parsedSchema as $RefParser.JSONSchema, circularOption);
+    const deRefOption: $RefParser.Options = {
+      continueOnError: true,
+      dereference: { circular: true },
+    };
+    Logger.debug(`Trying to dereference all $ref instances from input, using option ${JSON.stringify(deRefOption)}.`);
+    try {
+      await refParser.dereference(localPath, input, deRefOption);
+    } catch (e) {
+      const errorMessage = `Could not dereference $ref in input, is all the references correct? ${e.message}`;
+      Logger.error(errorMessage, e);
+      throw new Error(errorMessage);
     }
+    const parsedSchema = Schema.toSchema(input);
+    Logger.debug('Successfully dereferenced all $ref instances from input.', parsedSchema);
     commonInputModel.models = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema);
     return commonInputModel;
   }
@@ -215,7 +216,12 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     const commonModelsMap: Record<string, CommonModel> = {};
     commonModels.forEach(value => {
       if (value.$id) {
+        if (commonModelsMap[value.$id] !== undefined) {
+          Logger.warn(`Overwriting existing model with $id ${value.$id}, are there two models with the same id present?`, value);
+        }
         commonModelsMap[value.$id] = value;
+      } else {
+        Logger.debug('Model did not have $id, ignoring.', value);
       }
     });
     return commonModelsMap;
