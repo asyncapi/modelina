@@ -110,8 +110,10 @@ export class CommonModel extends CommonSchema<CommonModel> {
     const merge = (models: CommonModel | CommonModel[] | undefined): CommonModel | undefined => {
       if (Array.isArray(models)) {
         if (models.length > 0) {
-          let mergedItemsModel: CommonModel = models[0];
-          models.forEach((model) => { mergedItemsModel = CommonModel.mergeCommonModels(mergedItemsModel, model, originalSchema, alreadyIteratedModels); });
+          let mergedItemsModel: CommonModel | undefined = undefined;
+          models.forEach((model) => { 
+            mergedItemsModel = CommonModel.mergeCommonModels(mergedItemsModel, model, originalSchema, alreadyIteratedModels); 
+          });
           return mergedItemsModel;
         } 
         return undefined;
@@ -124,7 +126,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
       const mergeToItemsModel = merge(mergeTo.items);
       if (mergeFromItemsModel !== undefined) {
         if (mergeToItemsModel !== undefined) {
-          mergeTo.items = CommonModel.mergeCommonModels(mergeToItemsModel, mergeFromItemsModel, originalSchema);
+          mergeTo.items = CommonModel.mergeCommonModels(mergeToItemsModel, mergeFromItemsModel, originalSchema, alreadyIteratedModels);
         } else {
           mergeTo.items = mergeFromItemsModel;
         }

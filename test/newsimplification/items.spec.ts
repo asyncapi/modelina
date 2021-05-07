@@ -69,7 +69,7 @@ describe('Simplification of', () => {
       expect(simplifier.simplify).toHaveBeenNthCalledWith(2, { type: 'number' });
       expect(model).toMatchObject(
         {
-          items: [{ }, { }],
+          items: {},
         },
       );
     });

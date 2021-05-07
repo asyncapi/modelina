@@ -14,10 +14,12 @@ export default function simplifyEnums(schema: Schema | boolean, model: CommonMod
   if (typeof schema !== 'boolean' && schema.enum !== undefined) {
     const enums: any[] = [];
     schema.enum.forEach((enumValue) => {
-      // Infer type from enum values
-      const inferredType = inferTypeFromValue(enumValue);
-      if (inferredType !== undefined) {
-        addToTypes(inferredType, model);
+      if (model.type === undefined) {
+        // Infer type from enum values
+        const inferredType = inferTypeFromValue(enumValue);
+        if (inferredType !== undefined) {
+          addToTypes(inferredType, model);
+        }
       }
 
       if (!enums.includes(enumValue)) {

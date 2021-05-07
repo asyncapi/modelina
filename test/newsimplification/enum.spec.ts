@@ -15,6 +15,13 @@ describe('Simplification', function() {
   afterAll(() => {
     jest.restoreAllMocks();
   })
+  test('should not do anything if model have type', function() {
+    const model = new CommonModel();
+    model.type = "integer";
+    const schema: any = { enum: ['test']};
+    simplifyEnums(schema, model);
+    expect(model.type).toEqual("integer");
+  });
   test('should not do anything if schema does not contain enum', function() {
     const model = new CommonModel();
     simplifyEnums({}, model);

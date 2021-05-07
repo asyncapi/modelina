@@ -2,8 +2,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { JsonSchemaInputProcessor } from '../../src/processors/JsonSchemaInputProcessor';
 import { CommonInputModel, CommonModel, Schema } from '../../src/models';
-import { simplify } from '../../src/simplification/Simplifier';
-jest.mock('../../src/simplification/Simplifier');
+import { simplify } from '../../src/newsimplification/Simplifier';
+jest.mock('../../src/newsimplification/Simplifier');
 jest.spyOn(JsonSchemaInputProcessor, 'convertSchemaToCommonModel');
 describe('JsonSchemaInputProcessor', function () {
   beforeEach(() => {
@@ -20,7 +20,7 @@ describe('JsonSchemaInputProcessor', function () {
       const commonInputModel = await processor.process(inputSchema);
       return {inputSchema, commonInputModel};
     }
-    beforeAll(() => {
+    beforeEach(() => {
       const model = new CommonModel();
       model.$id = "test";
       (simplify as jest.Mock).mockImplementation(() => [model]);
