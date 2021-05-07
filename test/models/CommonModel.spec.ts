@@ -147,6 +147,18 @@ describe('CommonModel', function() {
     });
   });
   describe('mergeCommonModels', function() {
+    test('should handle recursive models', function() {
+      const doc: Schema = { };
+      let doc1 = CommonModel.toCommonModel(doc);
+      doc1.properties = {
+        "recursive": doc1
+      }
+      let doc2 = CommonModel.toCommonModel(doc);
+      doc2.properties = {
+        "recursive": doc2
+      }
+      doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
+    });
     describe('$id', function() {
       test('should be merged when only right side is defined', function() {
         const doc: Schema = { };

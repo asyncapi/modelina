@@ -1,4 +1,3 @@
-import { Logger } from 'utils';
 import { CommonSchema } from './CommonSchema';
 import { Schema } from './Schema';
 
@@ -42,7 +41,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * @param mergeFrom 
    * @param originalSchema 
    */
-  private static mergeProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema) {
+  private static mergeProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
     const mergeToProperties = mergeTo.properties;
     const mergeFromProperties = mergeFrom.properties;
     if (mergeFromProperties !== undefined) {
@@ -51,7 +50,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
       } else {
         for (const [propName, prop] of Object.entries(mergeFromProperties)) {
           if (mergeToProperties[`${propName}`] !== undefined) {
-            mergeToProperties[`${propName}`] = CommonModel.mergeCommonModels(mergeToProperties[`${propName}`], prop, originalSchema);
+            mergeToProperties[`${propName}`] = CommonModel.mergeCommonModels(mergeToProperties[`${propName}`], prop, originalSchema, alreadyIteratedModels);
           } else {
             mergeToProperties[`${propName}`] = prop;
           }
@@ -65,14 +64,14 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * @param mergeFrom 
    * @param originalSchema 
    */
-  private static mergeAdditionalProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema) {
+  private static mergeAdditionalProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
     const mergeToAdditionalProperties = mergeTo.additionalProperties;
     const mergeFromAdditionalProperties = mergeFrom.additionalProperties;
     if (mergeFromAdditionalProperties !== undefined) {
-      if (mergeToAdditionalProperties === undefined) {
-        mergeTo.additionalProperties = mergeFromAdditionalProperties;
+      if (mergeToAdditionalProperties !== undefined) {
+        mergeTo.additionalProperties = CommonModel.mergeCommonModels(mergeToAdditionalProperties, mergeFromAdditionalProperties, originalSchema, alreadyIteratedModels);
       } else {
-        mergeTo.additionalProperties = CommonModel.mergeCommonModels(mergeToAdditionalProperties, mergeFromAdditionalProperties, originalSchema);
+        mergeTo.additionalProperties = mergeFromAdditionalProperties;
       }
     }
   }
@@ -82,7 +81,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * @param mergeFrom 
    * @param originalSchema 
    */
-  private static mergePatternProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema) {
+  private static mergePatternProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
     const mergeToPatternProperties = mergeTo.patternProperties;
     const mergeFromPatternProperties = mergeFrom.patternProperties;
     if (mergeFromPatternProperties !== undefined) {
@@ -91,7 +90,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
       } else {
         for (const [pattern, patternModel] of Object.entries(mergeFromPatternProperties)) {
           if (mergeToPatternProperties[`${pattern}`] !== undefined) {
-            mergeToPatternProperties[`${pattern}`] = CommonModel.mergeCommonModels(mergeToPatternProperties[`${pattern}`], patternModel, originalSchema);
+            mergeToPatternProperties[`${pattern}`] = CommonModel.mergeCommonModels(mergeToPatternProperties[`${pattern}`], patternModel, originalSchema, alreadyIteratedModels);
           } else {
             mergeToPatternProperties[`${pattern}`] = patternModel;
           }
@@ -107,12 +106,12 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * @param mergeFrom CommonModel to merge from
    * @param originalSchema 
    */
-  private static mergeItems(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema) {
+  private static mergeItems(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
     const merge = (models: CommonModel | CommonModel[] | undefined): CommonModel | undefined => {
       if (Array.isArray(models)) {
         if (models.length > 0) {
           let mergedItemsModel: CommonModel = models[0];
-          models.forEach((model) => { mergedItemsModel = CommonModel.mergeCommonModels(mergedItemsModel, model, originalSchema); });
+          models.forEach((model) => { mergedItemsModel = CommonModel.mergeCommonModels(mergedItemsModel, model, originalSchema, alreadyIteratedModels); });
           return mergedItemsModel;
         } 
         return undefined;
@@ -172,13 +171,15 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * @param mergeFrom CommonModel to merge values from
    * @param originalSchema schema to use as original schema
    */
-  static mergeCommonModels(mergeTo: CommonModel | undefined, mergeFrom: CommonModel, originalSchema: Schema): CommonModel {
+  static mergeCommonModels(mergeTo: CommonModel | undefined, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()): CommonModel {
     if (mergeTo === undefined) return mergeFrom;
+    if (alreadyIteratedModels.has(mergeFrom)) return alreadyIteratedModels.get(mergeFrom) as CommonModel;
+    alreadyIteratedModels.set(mergeFrom, mergeTo);
 
-    CommonModel.mergeAdditionalProperties(mergeTo, mergeFrom, originalSchema);
-    CommonModel.mergePatternProperties(mergeTo, mergeFrom, originalSchema);
-    CommonModel.mergeProperties(mergeTo, mergeFrom, originalSchema);
-    CommonModel.mergeItems(mergeTo, mergeFrom, originalSchema);
+    CommonModel.mergeAdditionalProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels);
+    CommonModel.mergePatternProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels);
+    CommonModel.mergeProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels);
+    CommonModel.mergeItems(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels);
     CommonModel.mergeTypes(mergeTo, mergeFrom);
 
     if (mergeFrom.enum !== undefined) {

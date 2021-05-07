@@ -1,5 +1,5 @@
 import { AbstractInputProcessor } from './AbstractInputProcessor';
-import { simplify } from '../simplification/Simplifier';
+import { simplify } from '../newsimplification/Simplifier';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import path from 'path';
 import { Schema, CommonModel, CommonInputModel} from '../models';
