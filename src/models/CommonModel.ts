@@ -198,7 +198,6 @@ export class CommonModel extends CommonSchema<CommonModel> {
     if (mergeFrom.$ref !== undefined && mergeTo.$ref === undefined) {
       mergeTo.$ref = mergeFrom.$ref;
     }
-    //TODO: If this ever occur the extended models both have to be merged?
     if (mergeFrom.extend !== undefined && mergeTo.extend === undefined) {
       mergeTo.extend = mergeFrom.extend;
     }
