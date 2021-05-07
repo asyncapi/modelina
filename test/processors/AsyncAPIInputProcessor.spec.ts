@@ -31,6 +31,12 @@ describe('AsyncAPIInputProcessor', function() {
     });
 
     describe('process()', function() {
+        test('should throw error when trying to process wrong schema', async function () {
+          const processor = new AsyncAPIInputProcessor();
+          await expect(processor.process({}))
+            .rejects
+            .toThrow('Input is not an AsyncAPI document so it cannot be processed.');
+        });
         test('should be able to process pure object', async function() {
             const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'), 'utf8');
             const expectedCommonInputModelString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/commonInputModel/basic.json'), 'utf8');

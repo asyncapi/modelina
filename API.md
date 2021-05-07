@@ -31,6 +31,10 @@
 <dt><a href="#JsonSchemaInputProcessor">JsonSchemaInputProcessor</a></dt>
 <dd><p>Class for processing JSON Schema</p>
 </dd>
+<dt><a href="#LoggerClass">LoggerClass</a></dt>
+<dd><p>Logger class for the model generation library</p>
+<p>This class acts as a forefront for any external loggers which is why it also implements the interface itself.</p>
+</dd>
 </dl>
 
 ## Functions
@@ -40,7 +44,7 @@
 <dd><p>This is the default wrapper for the simplifier class which always create a new instance of the simplifier.</p>
 </dd>
 <dt><a href="#simplifyAdditionalProperties">simplifyAdditionalProperties(schema)</a></dt>
-<dd><p>Find out which common models we should extend</p>
+<dd><p>Simplifier function for finding the simplified version of additional properties</p>
 </dd>
 <dt><a href="#simplifyEnums">simplifyEnums(schema, seenSchemas)</a></dt>
 <dd><p>Find the enums for a simplified version of a schema</p>
@@ -71,6 +75,15 @@
 </dd>
 <dt><a href="#simplifyName">simplifyName(schema)</a></dt>
 <dd><p>Find the name for simplified version of schema</p>
+</dd>
+<dt><a href="#simplifyPatternProperties">simplifyPatternProperties(schema)</a></dt>
+<dd><p>Find out which common models we should extend</p>
+</dd>
+<dt><a href="#addToPatterns">addToPatterns(pattern, patternModel, schema, currentModel)</a></dt>
+<dd><p>Adds a pattern to the model</p>
+</dd>
+<dt><a href="#combineSchemas">combineSchemas(schema, currentModel, simplifier, seenSchemas, rootSchema)</a></dt>
+<dd><p>Go through schema(s) and combine the simplified properties together.</p>
 </dd>
 <dt><a href="#simplifyProperties">simplifyProperties(schema, simplifier, seenSchemas)</a></dt>
 <dd><p>Simplifier function for finding the simplified version of properties.</p>
@@ -155,6 +168,9 @@ Common internal representation for a model.
         * [.getImmediateDependencies()](#CommonModel+getImmediateDependencies)
     * _static_
         * [.toCommonModel(object)](#CommonModel.toCommonModel) ⇒
+        * [.mergeProperties(mergeTo, mergeFrom, originalSchema)](#CommonModel.mergeProperties)
+        * [.mergeAdditionalProperties(mergeTo, mergeFrom, originalSchema)](#CommonModel.mergeAdditionalProperties)
+        * [.mergePatternProperties(mergeTo, mergeFrom, originalSchema)](#CommonModel.mergePatternProperties)
         * [.mergeItems(mergeTo, mergeFrom, originalSchema)](#CommonModel.mergeItems)
         * [.mergeTypes(mergeTo, mergeFrom)](#CommonModel.mergeTypes)
         * [.mergeCommonModels(mergeTo, mergeFrom, originalSchema)](#CommonModel.mergeCommonModels)
@@ -198,6 +214,45 @@ Transform object into a type of CommonModel.
 | Param | Description |
 | --- | --- |
 | object | to transform |
+
+<a name="CommonModel.mergeProperties"></a>
+
+### CommonModel.mergeProperties(mergeTo, mergeFrom, originalSchema)
+Merge two common model properties together
+
+**Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
+
+| Param |
+| --- |
+| mergeTo | 
+| mergeFrom | 
+| originalSchema | 
+
+<a name="CommonModel.mergeAdditionalProperties"></a>
+
+### CommonModel.mergeAdditionalProperties(mergeTo, mergeFrom, originalSchema)
+Merge two common model additional properties together
+
+**Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
+
+| Param |
+| --- |
+| mergeTo | 
+| mergeFrom | 
+| originalSchema | 
+
+<a name="CommonModel.mergePatternProperties"></a>
+
+### CommonModel.mergePatternProperties(mergeTo, mergeFrom, originalSchema)
+Merge two common model pattern properties together
+
+**Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
+
+| Param |
+| --- |
+| mergeTo | 
+| mergeFrom | 
+| originalSchema | 
 
 <a name="CommonModel.mergeItems"></a>
 
@@ -465,6 +520,25 @@ Simplifies a JSON Schema into a common models
 | --- | --- |
 | schema | to simplify to common model |
 
+<a name="LoggerClass"></a>
+
+## LoggerClass
+Logger class for the model generation library
+
+This class acts as a forefront for any external loggers which is why it also implements the interface itself.
+
+**Kind**: global class  
+<a name="LoggerClass+setLogger"></a>
+
+### loggerClass.setLogger(logger)
+Sets the logger to use for the model generation library
+
+**Kind**: instance method of [<code>LoggerClass</code>](#LoggerClass)  
+
+| Param | Description |
+| --- | --- |
+| logger | to add |
+
 <a name="simplify"></a>
 
 ## simplify(schema)
@@ -479,7 +553,7 @@ This is the default wrapper for the simplifier class which always create a new i
 <a name="simplifyAdditionalProperties"></a>
 
 ## simplifyAdditionalProperties(schema)
-Find out which common models we should extend
+Simplifier function for finding the simplified version of additional properties
 
 **Kind**: global function  
 
@@ -611,6 +685,46 @@ Find the name for simplified version of schema
 | --- | --- |
 | schema | to find the name |
 
+<a name="simplifyPatternProperties"></a>
+
+## simplifyPatternProperties(schema)
+Find out which common models we should extend
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema | to find extends of |
+
+<a name="addToPatterns"></a>
+
+## addToPatterns(pattern, patternModel, schema, currentModel)
+Adds a pattern to the model
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| pattern | for the model |
+| patternModel | the corresponding model for the pattern |
+| schema | for the model |
+| currentModel | the current output |
+
+<a name="combineSchemas"></a>
+
+## combineSchemas(schema, currentModel, simplifier, seenSchemas, rootSchema)
+Go through schema(s) and combine the simplified properties together.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema | to go through |
+| currentModel | the current output |
+| simplifier | to use |
+| seenSchemas | which we already have outputs for |
+| rootSchema | we are combining schemas for |
+
 <a name="simplifyProperties"></a>
 
 ## simplifyProperties(schema, simplifier, seenSchemas)
@@ -635,7 +749,7 @@ Adds a property to the model
 | --- | --- |
 | propName | name of the property |
 | propModel | the corresponding model |
-| schema | the schema for the model |
+| schema | for the model |
 | currentModel | the current output |
 
 <a name="combineSchemas"></a>
@@ -649,9 +763,9 @@ Go through schema(s) and combine the simplified properties together.
 | --- | --- |
 | schema | to go through |
 | currentModel | the current output |
-| simplifier | the simplifier to use |
-| seenSchemas | schemas which we already have outputs for |
-| rootSchema | the root schema we are combining schemas for |
+| simplifier | to use |
+| seenSchemas | which we already have outputs for |
+| rootSchema | we are combining schemas for |
 
 <a name="simplifyRequired"></a>
 

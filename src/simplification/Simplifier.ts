@@ -7,6 +7,7 @@ import simplifyRequired from './SimplifyRequired';
 import simplifyTypes from './SimplifyTypes';
 import { SimplificationOptions } from '../models/SimplificationOptions';
 import simplifyAdditionalProperties from './SimplifyAdditionalProperties';
+import simplifyPatternProperties from './SimplifyPatternProperties';
 import { isModelObject } from './Utils';
 import simplifyName from './SimplifyName';
 
@@ -37,6 +38,10 @@ export class Simplifier {
       if (cachedModel !== undefined) {
         return [cachedModel];
       }
+    }
+    //If it is a false validation schema return no common model
+    if (schema === false) {
+      return [];
     }
     const model = new CommonModel();
     model.originalSchema = Schema.toSchema(schema);
@@ -80,6 +85,11 @@ export class Simplifier {
     const simplifiedProperties = simplifyProperties(schema, this);
     if (simplifiedProperties !== undefined) {
       model.properties = simplifiedProperties;
+    }
+
+    const simplifiedPatternProperties = simplifyPatternProperties(schema, this);
+    if (simplifiedPatternProperties !== undefined) {
+      model.patternProperties = simplifiedPatternProperties;
     }
 
     const simplifiedAdditionalProperties = simplifyAdditionalProperties(schema, this, model);
@@ -138,7 +148,13 @@ export class Simplifier {
     }
     if (model.additionalProperties) {
       const existingAdditionalProperties = model.additionalProperties;
-      model.additionalProperties = this.splitModels(existingAdditionalProperties as CommonModel);
+      model.additionalProperties = this.splitModels(existingAdditionalProperties);
+    }
+    if (model.patternProperties) {
+      const existingPatternProperties = model.patternProperties;
+      for (const [pattern, patternModel] of Object.entries(existingPatternProperties)) {
+        model.patternProperties[`${pattern}`] = this.splitModels(patternModel);
+      }
     }
   }
 }

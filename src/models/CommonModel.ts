@@ -35,6 +35,12 @@ export class CommonModel extends CommonSchema<CommonModel> {
     }
     return newCommonModel;
   }
+  /**
+   * Merge two common model properties together 
+   * @param mergeTo 
+   * @param mergeFrom 
+   * @param originalSchema 
+   */
   private static mergeProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema) {
     const mergeToProperties = mergeTo.properties;
     const mergeFromProperties = mergeFrom.properties;
@@ -47,6 +53,46 @@ export class CommonModel extends CommonSchema<CommonModel> {
             mergeToProperties[`${propName}`] = CommonModel.mergeCommonModels(mergeToProperties[`${propName}`], prop, originalSchema);
           } else {
             mergeToProperties[`${propName}`] = prop;
+          }
+        }
+      }
+    }
+  }
+  /**
+   * Merge two common model additional properties together 
+   * @param mergeTo 
+   * @param mergeFrom 
+   * @param originalSchema 
+   */
+  private static mergeAdditionalProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema) {
+    const mergeToAdditionalProperties = mergeTo.additionalProperties;
+    const mergeFromAdditionalProperties = mergeFrom.additionalProperties;
+    if (mergeFromAdditionalProperties !== undefined) {
+      if (mergeToAdditionalProperties === undefined) {
+        mergeTo.additionalProperties = mergeFromAdditionalProperties;
+      } else {
+        mergeTo.additionalProperties = CommonModel.mergeCommonModels(mergeToAdditionalProperties, mergeFromAdditionalProperties, originalSchema);
+      }
+    }
+  }
+  /**
+   * Merge two common model pattern properties together 
+   * @param mergeTo 
+   * @param mergeFrom 
+   * @param originalSchema 
+   */
+  private static mergePatternProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema) {
+    const mergeToPatternProperties = mergeTo.patternProperties;
+    const mergeFromPatternProperties = mergeFrom.patternProperties;
+    if (mergeFromPatternProperties !== undefined) {
+      if (mergeToPatternProperties === undefined) {
+        mergeTo.patternProperties = mergeFromPatternProperties;
+      } else {
+        for (const [pattern, patternModel] of Object.entries(mergeFromPatternProperties)) {
+          if (mergeToPatternProperties[`${pattern}`] !== undefined) {
+            mergeToPatternProperties[`${pattern}`] = CommonModel.mergeCommonModels(mergeToPatternProperties[`${pattern}`], patternModel, originalSchema);
+          } else {
+            mergeToPatternProperties[`${pattern}`] = patternModel;
           }
         }
       }
@@ -128,16 +174,17 @@ export class CommonModel extends CommonSchema<CommonModel> {
   static mergeCommonModels(mergeTo: CommonModel | undefined, mergeFrom: CommonModel, originalSchema: Schema): CommonModel {
     if (mergeTo === undefined) return mergeFrom;
 
+    CommonModel.mergeAdditionalProperties(mergeTo, mergeFrom, originalSchema);
+    CommonModel.mergePatternProperties(mergeTo, mergeFrom, originalSchema);
     CommonModel.mergeProperties(mergeTo, mergeFrom, originalSchema);
     CommonModel.mergeItems(mergeTo, mergeFrom, originalSchema);
     CommonModel.mergeTypes(mergeTo, mergeFrom);
 
     if (mergeFrom.enum !== undefined) {
-      if (mergeTo.enum === undefined) {
-        mergeTo.enum = mergeFrom.enum;
-      } else {
-        mergeTo.enum = [...mergeTo.enum, ...mergeFrom.enum];
-      }
+      mergeTo.enum = [... new Set([...(mergeTo.enum || []), ...mergeFrom.enum])];
+    }
+    if (mergeFrom.required !== undefined) {
+      mergeTo.required = [... new Set([...(mergeTo.required || []), ...mergeFrom.required])];
     }
 
     // Which values are correct to use here? Is allOf required?
@@ -163,8 +210,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
   getFromSchema<K extends keyof Schema>(key: K) {
     let schema = this.originalSchema || {};
     if (typeof schema === 'boolean') schema = {};
-    // eslint-disable-next-line security/detect-object-injection
-    return schema[key];
+    return schema[`${key}`];
   }
 
   /**

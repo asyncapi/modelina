@@ -5,7 +5,7 @@ import { isModelObject } from './Utils';
 type Output = CommonModel | undefined;
 
 /**
- * Find out which common models we should extend
+ * Simplifier function for finding the simplified version of additional properties
  * 
  * @param schema to find extends of
  */

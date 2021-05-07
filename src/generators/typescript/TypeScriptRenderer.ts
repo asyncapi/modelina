@@ -28,8 +28,11 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
     if (Array.isArray(model)) {
       return model.map(t => this.renderType(t)).join(' | ');
     }
+    if (model.enum !== undefined) {
+      return model.enum.map(value => typeof value === 'string' ? `"${value}"` : value).join(' | ');
+    }
     if (model.$ref !== undefined) {
-      return model.$ref;
+      return FormatHelpers.toPascalCase(model.$ref);
     }
     if (Array.isArray(model.type)) {
       return model.type.map(t => this.toTsType(t, model)).join(' | ');

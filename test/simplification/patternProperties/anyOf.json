@@ -1,0 +1,18 @@
+{
+  "anyOf": [
+    { 
+      "patternProperties": { 
+        "testPattern1": { 
+          "type": "string"
+        } 
+      }  
+    },
+    { 
+      "patternProperties": { 
+        "testPattern2": { 
+          "type": "string"
+        } 
+      }
+    }
+  ]
+}

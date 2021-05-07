@@ -1,9 +1,4 @@
 {
-  "definitions": {
-    "test": {
-      "type": "string"
-    }
-  },
   "type": "object",
   "properties": {
     "street_address": {

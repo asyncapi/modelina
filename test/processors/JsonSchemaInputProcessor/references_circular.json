@@ -13,9 +13,6 @@
   "properties": {
     "street_address": {
       "$ref": "#/definitions/test"
-    },
-    "country": {
-      "enum": ["United States of America", "Canada"]
     }
   }
 }
