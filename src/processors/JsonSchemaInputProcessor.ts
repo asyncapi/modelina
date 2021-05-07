@@ -1,5 +1,5 @@
 import { AbstractInputProcessor } from './AbstractInputProcessor';
-import { simplify } from '../newsimplification/Simplifier';
+import { simplify } from '../simplification/Simplifier';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import path from 'path';
 import { Schema, CommonModel, CommonInputModel} from '../models';
@@ -66,7 +66,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     try {
       await refParser.dereference(localPath, input, deRefOption);
     } catch (e) {
-      const errorMessage = 'Could not dereference $ref in input, is all the references correct?';
+      const errorMessage = `Could not dereference $ref in input, is all the references correct? ${e.message}`;
       Logger.error(errorMessage, e);
       throw new Error(errorMessage);
     }
