@@ -28,7 +28,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
    */
   getFromSchema<K extends keyof Schema>(key: K) {
     let schema = this.originalSchema || {};
-    if (typeof schema === 'boolean') schema = {};
+    if (typeof schema === 'boolean') return undefined;
     return schema[`${key}`];
   }
 
