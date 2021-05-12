@@ -2,7 +2,6 @@
 import { CommonModel } from '../models/CommonModel';
 import { Schema } from '../models/Schema';
 import { Simplifier } from './Simplifier';
-import { addToTypes } from './Utils';
 /**
  * Simplifier function for finding the simplified version of properties.
  * 
@@ -13,7 +12,7 @@ import { addToTypes } from './Utils';
 export default function simplifyProperties(schema: Schema | boolean, model: CommonModel, simplifier : Simplifier) {
   if (typeof schema !== 'boolean' && schema.properties !== undefined) {
     //Ensure object type is inferred
-    addToTypes('object', model);
+    model.addToTypes('object');
 
     for (const [propertyName, propertySchema] of Object.entries(schema.properties)) {
       const newModels = simplifier.simplify(propertySchema);

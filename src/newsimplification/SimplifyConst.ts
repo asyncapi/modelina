@@ -15,10 +15,12 @@ export default function simplifyConst(schema: Schema | boolean, model: CommonMod
     const schemaConst = schema.const;
     model.enum = [schemaConst];
 
-    //Overwrite existing type 
-    const inferredType = inferTypeFromValue(schemaConst);
-    if (inferredType !== undefined) {
-      model.type = inferredType;
+    if (schema.type === undefined) {
+      //Overwrite existing type 
+      const inferredType = inferTypeFromValue(schemaConst);
+      if (inferredType !== undefined) {
+        model.setType(inferredType);
+      }
     }
   }
 }

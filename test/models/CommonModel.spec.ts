@@ -492,6 +492,31 @@ describe('CommonModel', function() {
       });
     });
   });
+
+  describe('addToTypes', function() {
+    test('should add multiple types', function() {
+      const model = new CommonModel(); 
+      model.addToTypes(['type1', 'type2']);
+      expect(model.type).toEqual(['type1', 'type2']);
+    });
+    test('should add type as is', function() {
+      const model = new CommonModel(); 
+      model.addToTypes('type');
+      expect(model.type).toEqual('type');
+    });
+    test('should add type to existing type', function() {
+      const model = new CommonModel(); 
+      model.type = ['type1'];
+      model.addToTypes('type2');
+      expect(model.type).toEqual(['type1', 'type2']);
+    });
+    test('should set an array when adding two types', function() {
+      const model = new CommonModel(); 
+      model.addToTypes('type1');
+      model.addToTypes('type2');
+      expect(model.type).toEqual(['type1', 'type2']);
+    });
+  });
   describe('helpers', function() {
     describe('getFromSchema', function() {
       test('should work', function() {

@@ -1,8 +1,9 @@
 
 import { CommonModel } from '../../src/models/CommonModel';
 import simplifyEnums from '../../src/newsimplification/SimplifyEnums';
-import {inferTypeFromValue, addToTypes} from '../../src/newsimplification/Utils';
+import {inferTypeFromValue} from '../../src/newsimplification/Utils';
 jest.mock('../../src/newsimplification/Utils');
+jest.mock('../../src/models/CommonModel');
 /**
  * Some of these test are purely theoretical and have little if any merit 
  * on a JSON Schema which actually makes sense but are used to test the principles.
@@ -15,12 +16,11 @@ describe('Simplification', function() {
   afterAll(() => {
     jest.restoreAllMocks();
   })
-  test('should not do anything if model have type', function() {
+  test('should not do anything if schema have type', function() {
     const model = new CommonModel();
-    model.type = "integer";
-    const schema: any = { enum: ['test']};
+    const schema: any = { type: 'string', enum: ['test']};
     simplifyEnums(schema, model);
-    expect(model.type).toEqual("integer");
+    expect(model.type).toBeUndefined();
   });
   test('should not do anything if schema does not contain enum', function() {
     const model = new CommonModel();
@@ -35,7 +35,7 @@ describe('Simplification', function() {
     const schema: any = { enum: ['test']};
     const model = new CommonModel();
     simplifyEnums(schema, model);
-    expect(addToTypes).toHaveBeenCalledTimes(1);
+    expect(model.addToTypes).toHaveBeenCalledTimes(1);
   });
   describe('of single enum', function() {
     test('should infer type from enum', function() {

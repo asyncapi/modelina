@@ -2,7 +2,6 @@
 import { CommonModel } from '../models/CommonModel';
 import { Schema } from '../models/Schema';
 import { Simplifier } from './Simplifier';
-import { addToTypes } from './Utils';
 
 /**
  * Process JSON Schema draft 7 items
@@ -14,7 +13,7 @@ import { addToTypes } from './Utils';
 export default function simplifyItems(schema: Schema | boolean, model: CommonModel, simplifier : Simplifier) {
   if (typeof schema !== 'boolean' && schema.items !== undefined) {
     //Ensure array type is inferred
-    addToTypes('array', model);
+    model.addToTypes('array');
 
     if (Array.isArray(schema.items)) {
       schema.items.forEach((itemSchema) => {

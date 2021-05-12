@@ -36,26 +36,6 @@ export function inferTypeFromValue(value: any) {
 }
 
 /**
- * Adds missing types to the array.
- * 
- * @param typesToAdd which types we should try and add to the existing output
- * @param currentOutput the current output
- */
-export function addToTypes(typesToAdd: string[] | string, model: CommonModel) {
-  if (Array.isArray(typesToAdd)) {
-    typesToAdd.forEach((value) => {
-      addToTypes(value, model);
-    });
-  } else if (model.type === undefined) {
-    model.type = typesToAdd;
-  } else if (!Array.isArray(model.type) && model.type !== typesToAdd) {
-    model.type = [model.type, typesToAdd];
-  } else if (Array.isArray(model.type) && !model.type.includes(typesToAdd)) {
-    model.type.push(typesToAdd);
-  }
-}
-
-/**
  * Find the name for simplified version of schema
  * 
  * @param schema to find the name

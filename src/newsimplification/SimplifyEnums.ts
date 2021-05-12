@@ -1,7 +1,7 @@
 
 import { CommonModel } from '../models/CommonModel';
 import { Schema } from '../models/Schema';
-import { addToTypes, inferTypeFromValue } from './Utils';
+import { inferTypeFromValue } from './Utils';
 
 /**
  * Process JSON Schema draft 7 enums
@@ -14,14 +14,13 @@ export default function simplifyEnums(schema: Schema | boolean, model: CommonMod
   if (typeof schema !== 'boolean' && schema.enum !== undefined) {
     const enums: any[] = [];
     schema.enum.forEach((enumValue) => {
-      if (model.type === undefined) {
+      if (schema.type === undefined) {
         // Infer type from enum values
         const inferredType = inferTypeFromValue(enumValue);
         if (inferredType !== undefined) {
-          addToTypes(inferredType, model);
+          model.addToTypes(inferredType);
         }
       }
-
       if (!enums.includes(enumValue)) {
         enums.push(enumValue);
       }

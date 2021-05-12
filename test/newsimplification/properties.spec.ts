@@ -12,6 +12,7 @@ jest.mock('../../src/newsimplification/Simplifier', () => {
     })
   };
 });
+jest.mock('../../src/models/CommonModel');
 CommonModel.mergeCommonModels = jest.fn();
 /**
  * Some of these test are purely theoretical and have little if any merit 
@@ -36,6 +37,13 @@ describe('Simplification of properties', () => {
     const simplifier = new Simplifier();
     simplifyProperties(true, model, simplifier);
   });
+  test('should infer type of model', () => {
+    const schema: any = { properties: { 'property1': { type: 'string' } } };
+    const model = new CommonModel();
+    const simplifier = new Simplifier();
+    simplifyProperties(schema, model, simplifier);
+    expect(model.addToTypes).toHaveBeenNthCalledWith(1, 'object');
+  });
   test('should use as is', () => {
     const schema: any = { properties: { 'property1': { type: 'string' } } };
     const model = new CommonModel();
@@ -55,7 +63,7 @@ describe('Simplification of properties', () => {
     const simplifier = new Simplifier();
     simplifyProperties(schema, model, simplifier);
     expect(simplifier.simplify).toHaveBeenNthCalledWith(1, { type: 'string' });
-    expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, {  }, { }, schema);
+    expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, expect.anything(), expect.anything(), schema);
     expect(model).toMatchObject(
       {
         properties: { 'property1': {} },

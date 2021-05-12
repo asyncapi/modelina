@@ -14,6 +14,12 @@ describe('Simplification of const', function() {
   afterAll(() => {
     jest.restoreAllMocks();
   });
+  test('should not do anything if schema have type', function() {
+    const model = new CommonModel();
+    const schema: any = { type: 'string', const: 'test'};
+    simplifyConst(schema, model);
+    expect(model.type).toBeUndefined();
+  });
   test('should infer type', function() {
     const schema: any = { const: 'test'};
     const model = new CommonModel();

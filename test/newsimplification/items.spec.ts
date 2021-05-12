@@ -4,7 +4,6 @@ import * as path from 'path';
 import { CommonModel } from '../../src/models/CommonModel';
 import { Simplifier } from '../../src/newsimplification/Simplifier';
 import simplifyItems from '../../src/newsimplification/SimplifyItems';
-import {addToTypes} from '../../src/newsimplification/Utils';
 
 jest.mock('../../src/newsimplification/Simplifier', () => {
   return {
@@ -16,7 +15,7 @@ jest.mock('../../src/newsimplification/Simplifier', () => {
   };
 });
 
-jest.mock('../../src/newsimplification/Utils');
+jest.mock('../../src/models/CommonModel');
 /**
  * Some of these test are purely theoretical and have little if any merit 
  * on a JSON Schema which actually makes sense but are used to test the principles.
@@ -56,7 +55,7 @@ describe('Simplification of', () => {
       const model = new CommonModel();
       const simplifier = new Simplifier();
       simplifyItems(schema, model, simplifier);
-      expect(addToTypes).toHaveBeenNthCalledWith(1, 'array', model);
+      expect(model.addToTypes).toHaveBeenNthCalledWith(1, 'array');
     });
   });
   describe('multiple item schemas', () => {
@@ -78,7 +77,7 @@ describe('Simplification of', () => {
       const model = new CommonModel();
       const simplifier = new Simplifier();
       simplifyItems(schema, model, simplifier);
-      expect(addToTypes).toHaveBeenNthCalledWith(1, 'array', model);
+      expect(model.addToTypes).toHaveBeenNthCalledWith(1, 'array');
     });
   });
 });

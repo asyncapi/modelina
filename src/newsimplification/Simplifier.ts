@@ -45,7 +45,7 @@ export class Simplifier {
     const model = new CommonModel();
     model.originalSchema = Schema.toSchema(schema);
     if (schema === true) {
-      model.type = ['object', 'string', 'number', 'array', 'boolean', 'null', 'integer'];
+      model.setType(['object', 'string', 'number', 'array', 'boolean', 'null', 'integer']);
     }
     if (typeof schema !== 'boolean') {
       this.seenSchemas.set(schema, model);
@@ -104,11 +104,11 @@ export class Simplifier {
     simplifyConst(schema, model);
 
     //Apply not validations
-    simplifyNot(schema, model, this);
+    simplifyNot(schema, model);
   }
 
   /**
-   * Go through schema(s) and combine the simplified items together.
+   * Go through schema(s) and combine the simplified models together.
    * 
    * @param schema to go through
    * @param currentModel the current output

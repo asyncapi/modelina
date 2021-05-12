@@ -218,6 +218,44 @@ export class CommonModel extends CommonSchema<CommonModel> {
   }
 
   /**
+   * Set the types of the model
+   * 
+   * @param types to set
+   */
+  setType(types : string | string[]) {
+    if (Array.isArray(types)) {
+      if (types.length === 0) {
+        this.type = undefined;
+        return;
+      } else if (types.length === 1) {
+        this.type = types[0];
+        return;
+      }
+    }
+    this.type = types;
+  }
+
+  /**
+   * Adds types to the existing model types
+   * 
+   * @param typesToAdd which types we should try and add to the existing output
+   * @param currentOutput the current output
+   */
+  addToTypes(typesToAdd: string[] | string) {
+    if (Array.isArray(typesToAdd)) {
+      typesToAdd.forEach((value) => {
+        this.addToTypes(value);
+      });
+    } else if (this.type === undefined) {
+      this.type = typesToAdd;
+    } else if (!Array.isArray(this.type) && this.type !== typesToAdd) {
+      this.type = [this.type, typesToAdd];
+    } else if (Array.isArray(this.type) && !this.type.includes(typesToAdd)) {
+      this.type.push(typesToAdd);
+    }
+  }
+
+  /**
    * Checks if given property name is required in object
    * 
    * @param propertyName given property name
