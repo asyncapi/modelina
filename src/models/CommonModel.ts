@@ -27,7 +27,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * @returns {any}
    */
   getFromSchema<K extends keyof Schema>(key: K) {
-    let schema = this.originalSchema || {};
+    const schema = this.originalSchema || {};
     if (typeof schema === 'boolean') return undefined;
     return schema[`${key}`];
   }
@@ -294,17 +294,10 @@ export class CommonModel extends CommonSchema<CommonModel> {
     if (mergeFrom.required !== undefined) {
       mergeTo.required = [... new Set([...(mergeTo.required || []), ...mergeFrom.required])];
     }
-
     // Which values are correct to use here? Is allOf required?
-    if (mergeFrom.$id !== undefined && mergeTo.$id === undefined) {
-      mergeTo.$id = mergeFrom.$id;
-    }
-    if (mergeFrom.$ref !== undefined && mergeTo.$ref === undefined) {
-      mergeTo.$ref = mergeFrom.$ref;
-    }
-    if (mergeFrom.extend !== undefined && mergeTo.extend === undefined) {
-      mergeTo.extend = mergeFrom.extend;
-    }
+    mergeTo.$id = mergeTo.$id || mergeFrom.$id;
+    mergeTo.$ref = mergeTo.$ref || mergeFrom.$ref;
+    mergeTo.extend = mergeTo.extend || mergeFrom.extend;
     mergeTo.originalSchema = originalSchema;
     return mergeTo;
   }
