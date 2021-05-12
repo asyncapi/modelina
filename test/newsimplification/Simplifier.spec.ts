@@ -1,7 +1,6 @@
 import {simplify, Simplifier} from '../../src/newsimplification/Simplifier';
 import {isModelObject, simplifyName} from '../../src/newsimplification/Utils';
 import simplifyProperties from '../../src/newsimplification/SimplifyProperties';
-import simplifyAllOf from '../../src/newsimplification/SimplifyAllOf';
 import { CommonModel, Schema } from '../../src/models';
 
 let mockedIsModelObjectReturn = false;
@@ -14,7 +13,6 @@ jest.mock('../../src/newsimplification/Utils', () => {
   }
 });
 jest.mock('../../src/newsimplification/SimplifyProperties');
-jest.mock('../../src/newsimplification/SimplifyAllOf');
 CommonModel.mergeCommonModels = jest.fn();
 /**
  * Some of these test are purely theoretical and have little if any merit 
@@ -126,12 +124,6 @@ describe('Simplification', function() {
     const schema = {};
     simplify(schema);
     expect(simplifyProperties).toHaveBeenNthCalledWith(1, schema, expect.anything(), expect.anything());
-  });
-
-  test('should simplify allOf', function () {
-    const schema = {};
-    simplify(schema);
-    expect(simplifyAllOf).toHaveBeenNthCalledWith(1, schema, expect.anything(), expect.anything());
   });
 
   test('should support primitive roots', function() {
