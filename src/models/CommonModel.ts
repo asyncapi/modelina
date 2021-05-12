@@ -21,6 +21,102 @@ export class CommonModel extends CommonSchema<CommonModel> {
   originalSchema?: Schema | boolean;
   
   /**
+   * Retrieves data from originalSchema by given key
+   * 
+   * @param key given key
+   * @returns {any}
+   */
+  getFromSchema<K extends keyof Schema>(key: K) {
+    let schema = this.originalSchema || {};
+    if (typeof schema === 'boolean') schema = {};
+    return schema[`${key}`];
+  }
+
+  /**
+   * Set the types of the model
+   * 
+   * @param types to set the model type to
+   */
+  setType(types : string | string[]) {
+    if (Array.isArray(types)) {
+      if (types.length === 0) {
+        this.type = undefined;
+        return;
+      } else if (types.length === 1) {
+        this.type = types[0];
+        return;
+      }
+    }
+    this.type = types;
+  }
+
+  /**
+   * Adds types to the existing model types.
+   * 
+   * Makes sure to only keep a single type incase of duplicates.
+   * 
+   * @param types which types we should try and add to the existing output
+   */
+  addToTypes(types: string[] | string) {
+    if (Array.isArray(types)) {
+      types.forEach((value) => {
+        this.addToTypes(value);
+      });
+    } else if (this.type === undefined) {
+      this.type = types;
+    } else if (!Array.isArray(this.type) && this.type !== types) {
+      this.type = [this.type, types];
+    } else if (Array.isArray(this.type) && !this.type.includes(types)) {
+      this.type.push(types);
+    }
+  }
+
+  /**
+   * Checks if given property name is required in object
+   * 
+   * @param propertyName given property name
+   * @returns {boolean}
+   */
+  isRequired(propertyName: string): boolean {
+    if (this.required === undefined) {
+      return false;
+    }
+    return this.required.includes(propertyName);
+  }
+
+  /**
+   * This function returns an array of `$id`s from all the CommonModel's it immediate depends on.
+   */
+  getImmediateDependencies(): string[] {
+    const dependsOn = [];
+    if (this.additionalProperties instanceof CommonModel) {
+      const additionalPropertiesRef = (this.additionalProperties as CommonModel).$ref;
+      if (additionalPropertiesRef !== undefined) {
+        dependsOn.push(additionalPropertiesRef);
+      }
+    }
+    if (this.extend !== undefined) {
+      for (const extendedSchema of this.extend) {
+        dependsOn.push(extendedSchema);
+      }
+    }
+    if (this.items instanceof CommonModel) {
+      const itemsRef = (this.items as CommonModel).$ref;
+      if (itemsRef !== undefined) {
+        dependsOn.push(itemsRef);
+      }
+    }
+    if (this.properties !== undefined && Object.keys(this.properties).length) {
+      Object.entries(this.properties).forEach(([, propertyModel]) => {
+        if (propertyModel.$ref !== undefined) {
+          dependsOn.push(propertyModel.$ref);
+        }
+      });
+    }
+    return dependsOn;
+  }
+
+  /**
    * Transform object into a type of CommonModel.
    * 
    * @param object to transform
@@ -41,7 +137,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * @param mergeFrom 
    * @param originalSchema 
    */
-  private static mergeProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema) {
+  private static mergeProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
     const mergeToProperties = mergeTo.properties;
     const mergeFromProperties = mergeFrom.properties;
     if (mergeFromProperties !== undefined) {
@@ -50,7 +146,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
       } else {
         for (const [propName, prop] of Object.entries(mergeFromProperties)) {
           if (mergeToProperties[`${propName}`] !== undefined) {
-            mergeToProperties[`${propName}`] = CommonModel.mergeCommonModels(mergeToProperties[`${propName}`], prop, originalSchema);
+            mergeToProperties[`${propName}`] = CommonModel.mergeCommonModels(mergeToProperties[`${propName}`], prop, originalSchema, alreadyIteratedModels);
           } else {
             mergeToProperties[`${propName}`] = prop;
           }
@@ -64,14 +160,14 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * @param mergeFrom 
    * @param originalSchema 
    */
-  private static mergeAdditionalProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema) {
+  private static mergeAdditionalProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
     const mergeToAdditionalProperties = mergeTo.additionalProperties;
     const mergeFromAdditionalProperties = mergeFrom.additionalProperties;
     if (mergeFromAdditionalProperties !== undefined) {
-      if (mergeToAdditionalProperties === undefined) {
-        mergeTo.additionalProperties = mergeFromAdditionalProperties;
+      if (mergeToAdditionalProperties !== undefined) {
+        mergeTo.additionalProperties = CommonModel.mergeCommonModels(mergeToAdditionalProperties, mergeFromAdditionalProperties, originalSchema, alreadyIteratedModels);
       } else {
-        mergeTo.additionalProperties = CommonModel.mergeCommonModels(mergeToAdditionalProperties, mergeFromAdditionalProperties, originalSchema);
+        mergeTo.additionalProperties = mergeFromAdditionalProperties;
       }
     }
   }
@@ -81,7 +177,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * @param mergeFrom 
    * @param originalSchema 
    */
-  private static mergePatternProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema) {
+  private static mergePatternProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
     const mergeToPatternProperties = mergeTo.patternProperties;
     const mergeFromPatternProperties = mergeFrom.patternProperties;
     if (mergeFromPatternProperties !== undefined) {
@@ -90,7 +186,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
       } else {
         for (const [pattern, patternModel] of Object.entries(mergeFromPatternProperties)) {
           if (mergeToPatternProperties[`${pattern}`] !== undefined) {
-            mergeToPatternProperties[`${pattern}`] = CommonModel.mergeCommonModels(mergeToPatternProperties[`${pattern}`], patternModel, originalSchema);
+            mergeToPatternProperties[`${pattern}`] = CommonModel.mergeCommonModels(mergeToPatternProperties[`${pattern}`], patternModel, originalSchema, alreadyIteratedModels);
           } else {
             mergeToPatternProperties[`${pattern}`] = patternModel;
           }
@@ -106,12 +202,14 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * @param mergeFrom CommonModel to merge from
    * @param originalSchema 
    */
-  private static mergeItems(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema) {
+  private static mergeItems(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
     const merge = (models: CommonModel | CommonModel[] | undefined): CommonModel | undefined => {
       if (Array.isArray(models)) {
         if (models.length > 0) {
-          let mergedItemsModel: CommonModel = models[0];
-          models.forEach((model) => { mergedItemsModel = CommonModel.mergeCommonModels(mergedItemsModel, model, originalSchema); });
+          let mergedItemsModel: CommonModel | undefined = undefined;
+          models.forEach((model) => { 
+            mergedItemsModel = CommonModel.mergeCommonModels(mergedItemsModel, model, originalSchema, alreadyIteratedModels); 
+          });
           return mergedItemsModel;
         } 
         return undefined;
@@ -124,7 +222,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
       const mergeToItemsModel = merge(mergeTo.items);
       if (mergeFromItemsModel !== undefined) {
         if (mergeToItemsModel !== undefined) {
-          mergeTo.items = CommonModel.mergeCommonModels(mergeToItemsModel, mergeFromItemsModel, originalSchema);
+          mergeTo.items = CommonModel.mergeCommonModels(mergeToItemsModel, mergeFromItemsModel, originalSchema, alreadyIteratedModels);
         } else {
           mergeTo.items = mergeFromItemsModel;
         }
@@ -171,13 +269,15 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * @param mergeFrom CommonModel to merge values from
    * @param originalSchema schema to use as original schema
    */
-  static mergeCommonModels(mergeTo: CommonModel | undefined, mergeFrom: CommonModel, originalSchema: Schema): CommonModel {
+  static mergeCommonModels(mergeTo: CommonModel | undefined, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()): CommonModel {
     if (mergeTo === undefined) return mergeFrom;
+    if (alreadyIteratedModels.has(mergeFrom)) return alreadyIteratedModels.get(mergeFrom) as CommonModel;
+    alreadyIteratedModels.set(mergeFrom, mergeTo);
 
-    CommonModel.mergeAdditionalProperties(mergeTo, mergeFrom, originalSchema);
-    CommonModel.mergePatternProperties(mergeTo, mergeFrom, originalSchema);
-    CommonModel.mergeProperties(mergeTo, mergeFrom, originalSchema);
-    CommonModel.mergeItems(mergeTo, mergeFrom, originalSchema);
+    CommonModel.mergeAdditionalProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels);
+    CommonModel.mergePatternProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels);
+    CommonModel.mergeProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels);
+    CommonModel.mergeItems(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels);
     CommonModel.mergeTypes(mergeTo, mergeFrom);
 
     if (mergeFrom.enum !== undefined) {
@@ -188,73 +288,16 @@ export class CommonModel extends CommonSchema<CommonModel> {
     }
 
     // Which values are correct to use here? Is allOf required?
-    if (mergeFrom.$id !== undefined) {
+    if (mergeFrom.$id !== undefined && mergeTo.$id === undefined) {
       mergeTo.$id = mergeFrom.$id;
     }
-    if (mergeFrom.$ref !== undefined) {
+    if (mergeFrom.$ref !== undefined && mergeTo.$ref === undefined) {
       mergeTo.$ref = mergeFrom.$ref;
     }
-    if (mergeFrom.extend !== undefined) {
+    if (mergeFrom.extend !== undefined && mergeTo.extend === undefined) {
       mergeTo.extend = mergeFrom.extend;
     }
     mergeTo.originalSchema = originalSchema;
     return mergeTo;
-  }
-
-  /**
-   * Retrieves data from originalSchema by given key
-   * 
-   * @param key given key
-   * @returns {any}
-   */
-  getFromSchema<K extends keyof Schema>(key: K) {
-    let schema = this.originalSchema || {};
-    if (typeof schema === 'boolean') schema = {};
-    return schema[`${key}`];
-  }
-
-  /**
-   * Checks if given property name is required in object
-   * 
-   * @param propertyName given property name
-   * @returns {boolean}
-   */
-  isRequired(propertyName: string): boolean {
-    if (this.required === undefined) {
-      return false;
-    }
-    return this.required.includes(propertyName);
-  }
-
-  /**
-   * This function returns an array of `$id`s from all the CommonModel's it immediate depends on.
-   */
-  getImmediateDependencies(): string[] {
-    const dependsOn = [];
-    if (this.additionalProperties instanceof CommonModel) {
-      const additionalPropertiesRef = (this.additionalProperties as CommonModel).$ref;
-      if (additionalPropertiesRef !== undefined) {
-        dependsOn.push(additionalPropertiesRef);
-      }
-    }
-    if (this.extend !== undefined) {
-      for (const extendedSchema of this.extend) {
-        dependsOn.push(extendedSchema);
-      }
-    }
-    if (this.items instanceof CommonModel) {
-      const itemsRef = (this.items as CommonModel).$ref;
-      if (itemsRef !== undefined) {
-        dependsOn.push(itemsRef);
-      }
-    }
-    if (this.properties !== undefined && Object.keys(this.properties).length) {
-      Object.entries(this.properties).forEach(([, propertyModel]) => {
-        if (propertyModel.$ref !== undefined) {
-          dependsOn.push(propertyModel.$ref);
-        }
-      });
-    }
-    return dependsOn;
   }
 }
