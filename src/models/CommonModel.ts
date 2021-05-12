@@ -133,9 +133,11 @@ export class CommonModel extends CommonSchema<CommonModel> {
   }
   /**
    * Merge two common model properties together 
+   * 
    * @param mergeTo 
    * @param mergeFrom 
    * @param originalSchema 
+   * @param alreadyIteratedModels 
    */
   private static mergeProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
     const mergeToProperties = mergeTo.properties;

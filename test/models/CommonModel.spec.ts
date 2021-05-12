@@ -493,6 +493,41 @@ describe('CommonModel', function() {
     });
   });
 
+  describe('setTypes', function() {
+    test('should set multiple types', function() {
+      const model = new CommonModel(); 
+      model.setType(['type1', 'type2']);
+      expect(model.type).toEqual(['type1', 'type2']);
+    });
+    test('should set array type as regular type with length 1', function() {
+      const model = new CommonModel(); 
+      model.setType(['type']);
+      expect(model.type).toEqual('type');
+    });
+    test('should set type undefined with array of length 0', function() {
+      const model = new CommonModel(); 
+      model.setType([]);
+      expect(model.type).toBeUndefined();
+    });
+    test('should set type as is', function() {
+      const model = new CommonModel(); 
+      model.setType('type');
+      expect(model.type).toEqual('type');
+    });
+    test('should set type overwriting existing type', function() {
+      const model = new CommonModel(); 
+      model.type = ['type1'];
+      model.setType('type2');
+      expect(model.type).toEqual('type2');
+    });
+    test('should overwrite already sat type', function() {
+      const model = new CommonModel(); 
+      model.setType('type1');
+      model.setType('type2');
+      expect(model.type).toEqual('type2');
+    });
+  });
+
   describe('addToTypes', function() {
     test('should add multiple types', function() {
       const model = new CommonModel(); 
