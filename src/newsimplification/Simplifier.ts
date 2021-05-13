@@ -2,6 +2,7 @@ import { CommonModel, Schema } from '../models';
 import { SimplificationOptions } from '../models/SimplificationOptions';
 import { simplifyName, isModelObject } from './Utils';
 import simplifyProperties from './SimplifyProperties';
+import { Logger } from '../utils';
 
 export class Simplifier {
   static defaultOptions: SimplificationOptions = {
@@ -112,6 +113,7 @@ export class Simplifier {
   */
   private splitModels(model: CommonModel): CommonModel {
     if (isModelObject(model)) {
+      Logger.info(`Splitting model ${model.$id || 'unknown'} since it should be on its own`);
       const switchRootModel = new CommonModel();
       switchRootModel.$ref = model.$id;
       this.iteratedModels[`${model.$id}`] = model;

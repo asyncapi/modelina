@@ -1,3 +1,4 @@
+import { Logger } from '../utils';
 import { CommonSchema } from './CommonSchema';
 import { Schema } from './Schema';
 
@@ -95,6 +96,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
   addProperty(propertyName: string, propertyModel: CommonModel, schema: Schema) {
     if (this.properties === undefined) this.properties = {};
     if (this.properties[`${propertyName}`] !== undefined) {
+      Logger.warn(`While trying to add property to model, duplicate properties found. Merging models together for property ${propertyName}`, propertyModel, schema, this);
       this.properties[`${propertyName}`] = CommonModel.mergeCommonModels(this.properties[`${propertyName}`], propertyModel, schema);
     } else {
       this.properties[`${propertyName}`] = propertyModel;
@@ -165,6 +167,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
       } else {
         for (const [propName, prop] of Object.entries(mergeFromProperties)) {
           if (mergeToProperties[`${propName}`] !== undefined) {
+            Logger.warn(`Found duplicate properties ${propName} for model. Model property from ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalSchema);
             mergeToProperties[`${propName}`] = CommonModel.mergeCommonModels(mergeToProperties[`${propName}`], prop, originalSchema, alreadyIteratedModels);
           } else {
             mergeToProperties[`${propName}`] = prop;
@@ -186,6 +189,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
     const mergeFromAdditionalProperties = mergeFrom.additionalProperties;
     if (mergeFromAdditionalProperties !== undefined) {
       if (mergeToAdditionalProperties !== undefined) {
+        Logger.warn(`Found duplicate additionalProperties for model. additionalProperties from ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalSchema);
         mergeTo.additionalProperties = CommonModel.mergeCommonModels(mergeToAdditionalProperties, mergeFromAdditionalProperties, originalSchema, alreadyIteratedModels);
       } else {
         mergeTo.additionalProperties = mergeFromAdditionalProperties;
@@ -209,6 +213,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
       } else {
         for (const [pattern, patternModel] of Object.entries(mergeFromPatternProperties)) {
           if (mergeToPatternProperties[`${pattern}`] !== undefined) {
+            Logger.warn(`Found duplicate pattern ${pattern} for model. Model pattern for ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalSchema);
             mergeToPatternProperties[`${pattern}`] = CommonModel.mergeCommonModels(mergeToPatternProperties[`${pattern}`], patternModel, originalSchema, alreadyIteratedModels);
           } else {
             mergeToPatternProperties[`${pattern}`] = patternModel;
@@ -231,7 +236,8 @@ export class CommonModel extends CommonSchema<CommonModel> {
       if (Array.isArray(models)) {
         if (models.length > 0) {
           let mergedItemsModel: CommonModel | undefined = undefined;
-          models.forEach((model) => { 
+          models.forEach((model, index) => { 
+            Logger.warn(`Found duplicate items at index ${index} for model. Model item for ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalSchema);
             mergedItemsModel = CommonModel.mergeCommonModels(mergedItemsModel, model, originalSchema, alreadyIteratedModels); 
           });
           return mergedItemsModel;
@@ -246,6 +252,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
       const mergeToItemsModel = merge(mergeTo.items);
       if (mergeFromItemsModel !== undefined) {
         if (mergeToItemsModel !== undefined) {
+          Logger.warn(`Found duplicate item for model. Model item for ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalSchema);
           mergeTo.items = CommonModel.mergeCommonModels(mergeToItemsModel, mergeFromItemsModel, originalSchema, alreadyIteratedModels);
         } else {
           mergeTo.items = mergeFromItemsModel;
@@ -296,6 +303,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
    */
   static mergeCommonModels(mergeTo: CommonModel | undefined, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()): CommonModel {
     if (mergeTo === undefined) return mergeFrom;
+    Logger.debug(`Merging model ${mergeFrom.$id || 'unknown'} into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalSchema);
     if (alreadyIteratedModels.has(mergeFrom)) return alreadyIteratedModels.get(mergeFrom) as CommonModel;
     alreadyIteratedModels.set(mergeFrom, mergeTo);
 
