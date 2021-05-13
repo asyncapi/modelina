@@ -12,7 +12,7 @@ import { Simplifier } from './Simplifier';
 export default function simplifyProperties(schema: Schema | boolean, model: CommonModel, simplifier : Simplifier) {
   if (typeof schema !== 'boolean' && schema.properties !== undefined) {
     model.addTypes('object');
-
+    
     for (const [propertyName, propertySchema] of Object.entries(schema.properties)) {
       const propertyModels = simplifier.simplify(propertySchema);
       if (propertyModels.length > 0) {

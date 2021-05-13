@@ -164,7 +164,11 @@ export class CommonModel extends CommonSchema<CommonModel> {
         mergeTo.properties = mergeFromProperties;
       } else {
         for (const [propName, prop] of Object.entries(mergeFromProperties)) {
-          mergeTo.addProperty(propName, prop, originalSchema); 
+          if (mergeToProperties[`${propName}`] !== undefined) {
+            mergeToProperties[`${propName}`] = CommonModel.mergeCommonModels(mergeToProperties[`${propName}`], prop, originalSchema, alreadyIteratedModels);
+          } else {
+            mergeToProperties[`${propName}`] = prop;
+          }
         }
       }
     }
