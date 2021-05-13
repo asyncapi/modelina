@@ -57,6 +57,16 @@ describe('Simplification', function() {
     expect(models).toHaveLength(1);
     expect(models[0].required).toEqual(schema.required);
   });
+  test('should split models', function() {
+    const schema: Schema = { 
+      $id: "root",
+      properties: { }
+    };
+    mockedIsModelObjectReturn = true;
+    const simplifier = new Simplifier();
+    const models = simplifier.simplify(schema);
+    expect(models).toHaveLength(1);
+  });
 
   test('should support recursive schemas', function() {
     const schema1: Schema = { };
@@ -120,7 +130,7 @@ describe('Simplification', function() {
     });
   });
 
-  test('should simplify properties', function() {
+  test('should always try to simplify properties', function() {
     const schema = {};
     simplify(schema);
     expect(simplifyProperties).toHaveBeenNthCalledWith(1, schema, expect.anything(), expect.anything());
