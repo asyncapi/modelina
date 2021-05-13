@@ -234,20 +234,17 @@ export class CommonModel extends CommonSchema<CommonModel> {
   private static mergeItems(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
     const merge = (models: CommonModel | CommonModel[] | undefined): CommonModel | undefined => {
       if (Array.isArray(models)) {
-        if (models.length > 0) {
-          let mergedItemsModel: CommonModel | undefined = undefined;
-          models.forEach((model, index) => { 
-            Logger.warn(`Found duplicate items at index ${index} for model. Model item for ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalSchema);
-            mergedItemsModel = CommonModel.mergeCommonModels(mergedItemsModel, model, originalSchema, alreadyIteratedModels); 
-          });
-          return mergedItemsModel;
-        } 
-        return undefined;
+        let mergedItemsModel: CommonModel | undefined = undefined;
+        models.forEach((model, index) => { 
+          Logger.warn(`Found duplicate items at index ${index} for model. Model item for ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalSchema);
+          mergedItemsModel = CommonModel.mergeCommonModels(mergedItemsModel, model, originalSchema, alreadyIteratedModels); 
+        });
+        return mergedItemsModel;
       }
       return models;
     };
     if (mergeFrom.items !== undefined) {
-      //Incase of arrays, merge them into a single schema
+      //Incase of arrays, merge them into a single model
       const mergeFromItemsModel = merge(mergeFrom.items);
       const mergeToItemsModel = merge(mergeTo.items);
       if (mergeFromItemsModel !== undefined) {
