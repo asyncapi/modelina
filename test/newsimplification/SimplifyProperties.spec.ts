@@ -42,7 +42,7 @@ describe('Simplification of properties', () => {
     const model = new CommonModel();
     const simplifier = new Simplifier();
     simplifyProperties(schema, model, simplifier);
-    expect(model.addToTypes).toHaveBeenNthCalledWith(1, 'object');
+    expect(model.addTypes).toHaveBeenNthCalledWith(1, 'object');
   });
   test('should use as is', () => {
     const schema: any = { properties: { 'property1': { type: 'string' } } };

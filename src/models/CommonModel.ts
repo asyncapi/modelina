@@ -57,10 +57,10 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * 
    * @param types which types we should try and add to the existing output
    */
-  addToTypes(types: string[] | string) {
+  addTypes(types: string[] | string) {
     if (Array.isArray(types)) {
       types.forEach((value) => {
-        this.addToTypes(value);
+        this.addTypes(value);
       });
     } else if (this.type === undefined) {
       this.type = types;
@@ -82,6 +82,23 @@ export class CommonModel extends CommonSchema<CommonModel> {
       return false;
     }
     return this.required.includes(propertyName);
+  }
+
+  /**
+   * Adds a property to the model.
+   * If the property already exist the two are merged.
+   * 
+   * @param propertyName 
+   * @param propertyModel 
+   * @param schema schema to the corresponding property model
+   */
+  addProperty(propertyName: string, propertyModel: CommonModel, schema: Schema) {
+    if (this.properties === undefined) this.properties = {};
+    if (this.properties[`${propertyName}`] !== undefined) {
+      this.properties[`${propertyName}`] = CommonModel.mergeCommonModels(this.properties[`${propertyName}`], propertyModel, schema);
+    } else {
+      this.properties[`${propertyName}`] = propertyModel;
+    }
   }
 
   /**
@@ -147,11 +164,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
         mergeTo.properties = mergeFromProperties;
       } else {
         for (const [propName, prop] of Object.entries(mergeFromProperties)) {
-          if (mergeToProperties[`${propName}`] !== undefined) {
-            mergeToProperties[`${propName}`] = CommonModel.mergeCommonModels(mergeToProperties[`${propName}`], prop, originalSchema, alreadyIteratedModels);
-          } else {
-            mergeToProperties[`${propName}`] = prop;
-          }
+          mergeTo.addProperty(propName, prop, originalSchema); 
         }
       }
     }
