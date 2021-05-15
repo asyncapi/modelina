@@ -152,10 +152,10 @@ export class CommonModel extends CommonSchema<CommonModel> {
   /**
    * Merge two common model properties together 
    * 
-   * @param mergeTo CommonModel to merge properties into
-   * @param mergeFrom CommonModel to merge properties from
-   * @param originalSchema schema to use as original schema
-   * @param alreadyIteratedModels to handle circular models correctly
+   * @param mergeTo 
+   * @param mergeFrom 
+   * @param originalSchema 
+   * @param alreadyIteratedModels
    */
   private static mergeProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
     const mergeToProperties = mergeTo.properties;
@@ -178,10 +178,10 @@ export class CommonModel extends CommonSchema<CommonModel> {
   /**
    * Merge two common model additional properties together 
    * 
-   * @param mergeTo CommonModel to merge additional properties into
-   * @param mergeFrom CommonModel to merge additional properties from
-   * @param originalSchema schema to use as original schema
-   * @param alreadyIteratedModels to handle circular models correctly
+   * @param mergeTo 
+   * @param mergeFrom 
+   * @param originalSchema 
+   * @param alreadyIteratedModels
    */
   private static mergeAdditionalProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
     const mergeToAdditionalProperties = mergeTo.additionalProperties;
@@ -198,10 +198,10 @@ export class CommonModel extends CommonSchema<CommonModel> {
   /**
    * Merge two common model pattern properties together 
    * 
-   * @param mergeTo CommonModel to merge pattern properties into
-   * @param mergeFrom CommonModel to merge pattern properties from
-   * @param originalSchema schema to use as original schema
-   * @param alreadyIteratedModels to handle circular models correctly
+   * @param mergeTo 
+   * @param mergeFrom 
+   * @param originalSchema 
+   * @param alreadyIteratedModels
    */
   private static mergePatternProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
     const mergeToPatternProperties = mergeTo.patternProperties;
@@ -225,10 +225,10 @@ export class CommonModel extends CommonSchema<CommonModel> {
   /**
    * Merge items together so only one CommonModel remains.
    * 
-   * @param mergeTo CommonModel to merge items into
-   * @param mergeFrom CommonModel to merge items from
-   * @param originalSchema schema to use as original schema
-   * @param alreadyIteratedModels to handle circular models correctly
+   * @param mergeTo 
+   * @param mergeFrom 
+   * @param originalSchema 
+   * @param alreadyIteratedModels
    */
   private static mergeItems(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
     const merge = (models: CommonModel | CommonModel[] | undefined): CommonModel | undefined => {
@@ -262,8 +262,8 @@ export class CommonModel extends CommonSchema<CommonModel> {
   /**
    * Merge types together
    * 
-   * @param mergeTo CommonModel to merge types into
-   * @param mergeFrom CommonModel to merge from
+   * @param mergeTo 
+   * @param mergeFrom 
    */
   private static mergeTypes(mergeTo: CommonModel, mergeFrom: CommonModel) {
     //Only add the types that do not already exist
@@ -292,10 +292,10 @@ export class CommonModel extends CommonSchema<CommonModel> {
   /**
    * Only merge if left side is undefined and right side is sat OR both sides are defined
    * 
-   * @param mergeTo CommonModel to merge into
-   * @param mergeFrom CommonModel to merge values from
-   * @param originalSchema schema to use as original schema
-   * @param alreadyIteratedModels to handle circular models correctly
+   * @param mergeTo 
+   * @param mergeFrom 
+   * @param originalSchema 
+   * @param alreadyIteratedModels
    */
   static mergeCommonModels(mergeTo: CommonModel | undefined, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()): CommonModel {
     if (mergeTo === undefined) return mergeFrom;
