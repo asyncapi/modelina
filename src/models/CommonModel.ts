@@ -126,11 +126,10 @@ export class CommonModel extends CommonSchema<CommonModel> {
       }
     }
     if (this.properties !== undefined && Object.keys(this.properties).length) {
-      Object.entries(this.properties).forEach(([, propertyModel]) => {
-        if (propertyModel.$ref !== undefined) {
-          dependsOn.push(propertyModel.$ref);
-        }
-      });
+      const referencedProperties = Object.values(this.properties)
+        .filter(propertyModel => propertyModel.$ref !== undefined)
+        .map(propertyModel => `${propertyModel.$ref}`);
+      dependsOn.push(...referencedProperties);
     }
     return dependsOn;
   }
