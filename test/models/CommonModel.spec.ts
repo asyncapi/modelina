@@ -157,6 +157,9 @@ describe('CommonModel', function() {
         "recursive": doc2
       }
       doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
+      expect(doc1.properties).not.toBeUndefined();
+      expect(doc1.properties!["recursive"]).not.toBeUndefined();
+      expect(doc1.properties!["recursive"]).toEqual(doc1);
     });
     describe('$id', function() {
       test('should be merged when only right side is defined', function() {
