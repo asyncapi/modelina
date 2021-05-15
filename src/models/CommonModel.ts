@@ -315,7 +315,6 @@ export class CommonModel extends CommonSchema<CommonModel> {
     if (mergeFrom.required !== undefined) {
       mergeTo.required = [... new Set([...(mergeTo.required || []), ...mergeFrom.required])];
     }
-    // Which values are correct to use here? Is allOf required?
     mergeTo.$id = mergeTo.$id || mergeFrom.$id;
     mergeTo.$ref = mergeTo.$ref || mergeFrom.$ref;
     mergeTo.extend = mergeTo.extend || mergeFrom.extend;
