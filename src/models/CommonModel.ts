@@ -184,11 +184,11 @@ export class CommonModel extends CommonSchema<CommonModel> {
     const mergeToAdditionalProperties = mergeTo.additionalProperties;
     const mergeFromAdditionalProperties = mergeFrom.additionalProperties;
     if (mergeFromAdditionalProperties !== undefined) {
-      if (mergeToAdditionalProperties !== undefined) {
+      if (mergeToAdditionalProperties === undefined) {
+        mergeTo.additionalProperties = mergeFromAdditionalProperties;
+      } else {
         Logger.warn(`Found duplicate additionalProperties for model. additionalProperties from ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalSchema);
         mergeTo.additionalProperties = CommonModel.mergeCommonModels(mergeToAdditionalProperties, mergeFromAdditionalProperties, originalSchema, alreadyIteratedModels);
-      } else {
-        mergeTo.additionalProperties = mergeFromAdditionalProperties;
       }
     }
   }
@@ -244,11 +244,11 @@ export class CommonModel extends CommonSchema<CommonModel> {
       const mergeFromItemsModel = merge(mergeFrom.items);
       const mergeToItemsModel = merge(mergeTo.items);
       if (mergeFromItemsModel !== undefined) {
-        if (mergeToItemsModel !== undefined) {
+        if (mergeToItemsModel === undefined) {
+          mergeTo.items = mergeFromItemsModel;
+        } else {
           Logger.warn(`Found duplicate item for model. Model item for ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalSchema);
           mergeTo.items = CommonModel.mergeCommonModels(mergeToItemsModel, mergeFromItemsModel, originalSchema, alreadyIteratedModels);
-        } else {
-          mergeTo.items = mergeFromItemsModel;
         }
       }
     } else if (mergeTo.items !== undefined) {
