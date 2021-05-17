@@ -2,11 +2,11 @@
 const {JavaGenerator, JavaScriptGenerator, TypeScriptGenerator} = require('../../lib');
 const fs = require('fs').promises;
 const path = require('path');
-const languagesToInclude = process.argv.slice(2);
 /**
  * Processes the input and renders the language the models
  */
 async function processInput() {
+  const languagesToInclude = process.argv.slice(2);
   const inputFileContent = await fs.readFile(path.resolve(__dirname, './test.json'));
   const input = JSON.parse(inputFileContent);
   for (const language of languagesToInclude) {
