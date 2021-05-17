@@ -2,6 +2,7 @@
 const {JavaGenerator, JavaScriptGenerator, TypeScriptGenerator} = require('../../lib');
 const fs = require('fs').promises;
 const path = require('path');
+
 /**
  * Processes the input and renders the language the models
  */
@@ -34,9 +35,9 @@ async function processInput() {
 }
 
 /**
- * Render all models to file
+ * Render all models to a single file
  * 
- * @param {*} models 
+ * @param {*} models to render
  * @param {*} outputPath path to output
  */
 async function renderModels(models, outputPath) {
