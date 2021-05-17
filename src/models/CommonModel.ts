@@ -123,9 +123,11 @@ export class CommonModel extends CommonSchema<CommonModel> {
       }
     }
     if (this.properties !== undefined && Object.keys(this.properties).length) {
+      const refProperties = (propertyModel: CommonModel) => propertyModel.$ref !== undefined;
+      const refProperty = (propertyModel: CommonModel) => `${propertyModel.$ref}`;
       const referencedProperties = Object.values(this.properties)
-        .filter(propertyModel => propertyModel.$ref !== undefined)
-        .map(propertyModel => `${propertyModel.$ref}`);
+        .filter(refProperties)
+        .map(refProperty);
       dependsOn.push(...referencedProperties);
     }
     return dependsOn;
@@ -229,15 +231,13 @@ export class CommonModel extends CommonSchema<CommonModel> {
    */
   private static mergeItems(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
     const merge = (models: CommonModel | CommonModel[] | undefined): CommonModel | undefined => {
-      if (Array.isArray(models)) {
-        let mergedItemsModel: CommonModel | undefined = undefined;
-        models.forEach((model, index) => { 
-          Logger.warn(`Found duplicate items at index ${index} for model. Model item for ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalSchema);
-          mergedItemsModel = CommonModel.mergeCommonModels(mergedItemsModel, model, originalSchema, alreadyIteratedModels); 
-        });
-        return mergedItemsModel;
-      }
-      return models;
+      if (!Array.isArray(models)) return models;
+      let mergedItemsModel: CommonModel | undefined = undefined;
+      models.forEach((model, index) => { 
+        Logger.warn(`Found duplicate items at index ${index} for model. Model item for ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalSchema);
+        mergedItemsModel = CommonModel.mergeCommonModels(mergedItemsModel, model, originalSchema, alreadyIteratedModels); 
+      });
+      return mergedItemsModel;
     };
     if (mergeFrom.items !== undefined) {
       //Incase of arrays, merge them into a single model
