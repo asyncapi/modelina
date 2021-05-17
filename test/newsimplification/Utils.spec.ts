@@ -39,6 +39,11 @@ describe('utils', function () {
     });
   });
   describe('simplifyName', function () {
+    test('should return undefined if schema is null', function () {
+      const schema = null;
+      const simplifiedName = simplifyName(schema);
+      expect(simplifiedName).toBeUndefined();
+    });
     test('should return undefined if schema is boolean', function () {
       const schema = true;
       const simplifiedName = simplifyName(schema);
