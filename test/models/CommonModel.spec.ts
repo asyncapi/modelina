@@ -147,6 +147,18 @@ describe('CommonModel', function() {
     });
   });
   describe('mergeCommonModels', function() {
+    test('should handle recursive models', function() {
+      const doc: Schema = { };
+      let doc1 = CommonModel.toCommonModel(doc);
+      doc1.properties = {
+        "recursive": doc1
+      }
+      let doc2 = CommonModel.toCommonModel(doc);
+      doc2.properties = {
+        "recursive": doc2
+      }
+      doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
+    });
     describe('$id', function() {
       test('should be merged when only right side is defined', function() {
         const doc: Schema = { };
@@ -156,14 +168,15 @@ describe('CommonModel', function() {
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
         expect(doc1.$id).toEqual(doc2.$id);
       });
-      test('should be merged when both sides are defined', function() {
+      test('should not be merged when both sides are defined', function() {
         const doc: Schema = { };
         let doc1 = CommonModel.toCommonModel(doc);
         let doc2 = CommonModel.toCommonModel(doc);
         doc2.$id = "test";
         doc1.$id = "temp";
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
-        expect(doc1.$id).toEqual(doc2.$id);
+        expect(doc1.$id).not.toEqual(doc2.$id);
+        expect(doc1.$id).toEqual("temp");
       });
       test('should not change if nothing is defined', function() {
         const doc: Schema = { };
@@ -477,6 +490,66 @@ describe('CommonModel', function() {
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
         expect(doc1.patternProperties).toBeUndefined();
       });
+    });
+  });
+
+  describe('setTypes', function() {
+    test('should set multiple types', function() {
+      const model = new CommonModel(); 
+      model.setType(['type1', 'type2']);
+      expect(model.type).toEqual(['type1', 'type2']);
+    });
+    test('should set array type as regular type with length 1', function() {
+      const model = new CommonModel(); 
+      model.setType(['type']);
+      expect(model.type).toEqual('type');
+    });
+    test('should set type undefined with array of length 0', function() {
+      const model = new CommonModel(); 
+      model.setType([]);
+      expect(model.type).toBeUndefined();
+    });
+    test('should set type as is', function() {
+      const model = new CommonModel(); 
+      model.setType('type');
+      expect(model.type).toEqual('type');
+    });
+    test('should set type overwriting existing type', function() {
+      const model = new CommonModel(); 
+      model.type = ['type1'];
+      model.setType('type2');
+      expect(model.type).toEqual('type2');
+    });
+    test('should overwrite already sat type', function() {
+      const model = new CommonModel(); 
+      model.setType('type1');
+      model.setType('type2');
+      expect(model.type).toEqual('type2');
+    });
+  });
+
+  describe('addToTypes', function() {
+    test('should add multiple types', function() {
+      const model = new CommonModel(); 
+      model.addToTypes(['type1', 'type2']);
+      expect(model.type).toEqual(['type1', 'type2']);
+    });
+    test('should add type as is', function() {
+      const model = new CommonModel(); 
+      model.addToTypes('type');
+      expect(model.type).toEqual('type');
+    });
+    test('should add type to existing type', function() {
+      const model = new CommonModel(); 
+      model.type = ['type1'];
+      model.addToTypes('type2');
+      expect(model.type).toEqual(['type1', 'type2']);
+    });
+    test('should set an array when adding two types', function() {
+      const model = new CommonModel(); 
+      model.addToTypes('type1');
+      model.addToTypes('type2');
+      expect(model.type).toEqual(['type1', 'type2']);
     });
   });
   describe('helpers', function() {

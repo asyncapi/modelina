@@ -406,13 +406,14 @@ Main input processor which figures out the type of input it receives and delegat
 **Kind**: global class  
 
 * [InputProcessor](#InputProcessor)
-    * [.addProcessor(type, processor)](#InputProcessor+addProcessor)
+    * [.setProcessor(type, processor)](#InputProcessor+setProcessor)
+    * [.getProcessors()](#InputProcessor+getProcessors) ⇒
     * [.process(input, type)](#InputProcessor+process)
 
-<a name="InputProcessor+addProcessor"></a>
+<a name="InputProcessor+setProcessor"></a>
 
-### inputProcessor.addProcessor(type, processor)
-Add a processor.
+### inputProcessor.setProcessor(type, processor)
+Set a processor.
 
 **Kind**: instance method of [<code>InputProcessor</code>](#InputProcessor)  
 
@@ -421,6 +422,11 @@ Add a processor.
 | type | of processor |
 | processor |  |
 
+<a name="InputProcessor+getProcessors"></a>
+
+### inputProcessor.getProcessors() ⇒
+**Kind**: instance method of [<code>InputProcessor</code>](#InputProcessor)  
+**Returns**: all processors  
 <a name="InputProcessor+process"></a>
 
 ### inputProcessor.process(input, type)
