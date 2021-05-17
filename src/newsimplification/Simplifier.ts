@@ -63,7 +63,7 @@ export class Simplifier {
    */
   private simplifyModel(model: CommonModel, schema: Schema) {
     if (schema.type !== undefined) {
-      model.type = schema.type;
+      model.addTypes(schema.type);
     }
 
     //All schemas of type object MUST have ids

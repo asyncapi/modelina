@@ -28,12 +28,28 @@ describe('Simplification', function() {
     jest.restoreAllMocks();
   });
   test('should return empty models if false schema', function () {
-    const schema: any = false;
+    const schema = false;
     const models = simplify(schema);
     expect(models).toHaveLength(0);
   });
+  test('should inherit types from schema', function () {
+    const schema = {
+      type: ['string', 'number']
+    };
+    const models = simplify(schema);
+    expect(models).toHaveLength(1);
+    expect(models[0].type).toEqual(['string', 'number']);
+  });
+  test('should inherit type from schema', function () {
+    const schema = {
+      type: 'string'
+    };
+    const models = simplify(schema);
+    expect(models).toHaveLength(1);
+    expect(models[0].type).toEqual('string');
+  });
   test('should return model with all types if true schema', function () {
-    const schema: any = true;
+    const schema = true;
     const models = simplify(schema);
     expect(models).toHaveLength(1);
     expect(models[0].type).toEqual(['object', 'string', 'number', 'array', 'boolean', 'null', 'integer']);
@@ -59,7 +75,7 @@ describe('Simplification', function() {
   });
   test('should split models', function() {
     const schema = { 
-      $id: "root",
+      $id: 'root',
       properties: { }
     };
     mockedIsModelObjectReturn = true;
