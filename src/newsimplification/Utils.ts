@@ -41,7 +41,7 @@ export function inferTypeFromValue(value: any) {
  * @param schema to find the name
  */
 export function simplifyName(schema: any | boolean): string | undefined {
-  if (typeof schema === 'object') {
+  if (schema && typeof schema === 'object') {
     return schema.title || schema.$id || schema['x-modelgen-inferred-name'];
   }
 }
