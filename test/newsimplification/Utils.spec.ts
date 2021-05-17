@@ -17,49 +17,69 @@ describe('utils', function () {
     test('should return true if model type is object', function () {
       const model = new CommonModel();
       model.type = 'object';
-      expect(isModelObject(model)).toEqual(true);
+      const isModel = isModelObject(model);
+      expect(isModel).toEqual(true);
     });
     test('should return true if model type contains object', function () {
       const model = new CommonModel();
       model.type = ['object', 'string'];
-      expect(isModelObject(model)).toEqual(true);
+      const isModel = isModelObject(model);
+      expect(isModel).toEqual(true);
     });
     test('should return false if contains all types', function () {
       const model = new CommonModel();
       model.type = ['object', 'string', 'number', 'array', 'boolean', 'null', 'integer'];
-      expect(isModelObject(model)).toEqual(false);
+      const isModel = isModelObject(model);
+      expect(isModel).toEqual(false);
     });
     test('should return false if type is not defined', function () {
       const model = new CommonModel();
-      expect(isModelObject(model)).toEqual(false);
+      const isModel = isModelObject(model);
+      expect(isModel).toEqual(false);
     });
   });
   describe('simplifyName', function () {
     test('should return undefined if schema is boolean', function () {
-      expect(simplifyName(true)).toBeUndefined();
+      const schema = true;
+      const simplifiedName = simplifyName(schema);
+      expect(simplifiedName).toBeUndefined();
     });
     test('should return title as name', function () {
-      expect(simplifyName({ title: "test" })).toEqual("test");
+      const schema = { title: "test" };
+      const simplifiedName = simplifyName(schema);
+      expect(simplifiedName).toEqual("test");
     });
     test('should return $id as name', function () {
-      expect(simplifyName({ $id: "test" })).toEqual("test");
+      const schema = { $id: "test" };
+      const simplifiedName = simplifyName(schema);
+      expect(simplifiedName).toEqual("test");
     });
     test('should return x-modelgen-inferred-name as name', function () {
-      expect(simplifyName({ "x-modelgen-inferred-name": "test" })).toEqual("test");
+      const schema = { "x-modelgen-inferred-name": "test" };
+      const simplifiedName = simplifyName(schema);
+      expect(simplifiedName).toEqual("test");
     });
   });
   describe('inferTypeFromValue', function () {
     test('should infer string', function () {
-      expect(inferTypeFromValue('string value')).toEqual('string');
+      const value = 'string value';
+      const inferredType = inferTypeFromValue(value);
+      expect(inferredType).toEqual('string');
     });
-    test('should infer integer from bigint value ', function () {
-      expect(inferTypeFromValue(BigInt(0))).toEqual('integer');
+    test('should infer integer from bigint value', function () {
+      const value = BigInt(0);
+      const inferredType = inferTypeFromValue(value);
+      expect(inferredType).toEqual('integer');
     });
-    test('should infer null ', function () {
-      expect(inferTypeFromValue(null)).toEqual('null');
+    test('should infer null', function () {
+      const value = null;
+      const inferredType = inferTypeFromValue(value);
+      expect(inferredType).toEqual('null');
     });
     test('should infer array', function () {
-      expect(inferTypeFromValue([])).toEqual('array');
+      const value: any[] = [];
+      const inferredType = inferTypeFromValue(value);
+      expect(inferredType).toEqual('array');
     });
   });
 });

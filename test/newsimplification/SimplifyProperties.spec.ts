@@ -30,14 +30,17 @@ describe('Simplification of properties', () => {
   });
 
   test('should not do anything if schema does not contain properties', function() {
+    const schema = {};
     const model = new CommonModel();
     const simplifier = new Simplifier();
-    simplifyProperties({}, model, simplifier);
+    simplifyProperties(schema, model, simplifier);
+    expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });
   test('should not do anything if schema is boolean', function() {
     const model = new CommonModel();
     const simplifier = new Simplifier();
     simplifyProperties(true, model, simplifier);
+    expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });
   test('should infer type of model', () => {
     const schema: any = { properties: { 'property1': { type: 'string' } } };

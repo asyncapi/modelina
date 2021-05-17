@@ -58,7 +58,7 @@ describe('Simplification', function() {
     expect(models[0].required).toEqual(schema.required);
   });
   test('should split models', function() {
-    const schema: Schema = { 
+    const schema = { 
       $id: "root",
       properties: { }
     };
@@ -137,7 +137,8 @@ describe('Simplification', function() {
   });
 
   test('should support primitive roots', function() {
-    const actualModels = simplify({ 'type': 'string' });
+    const schema = { 'type': 'string' };
+    const actualModels = simplify(schema);
     expect(actualModels).not.toBeUndefined();
     expect(actualModels[0]).toEqual({
       'originalSchema':{
