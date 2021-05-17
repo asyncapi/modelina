@@ -71,14 +71,14 @@
     "prepublishOnly": "npm run build",
     "ci:blackbox": "npm run ci:blackbox:js && npm run ci:blackbox:ts && ci:blackbox:java",
     "ci:blackbox:js": "npm run ci:generate:blackbox:js && npm run ci:test:blackbox:js",
-    "ci:generate:blackbox:js": "node ./test/CI-blackbox/renderer.js js",
-    "ci:test:blackbox:js": "node ./test/CI-blackbox/js/output.js",
+    "ci:blackbox:js:generate": "node ./test/CI-blackbox/renderer.js js",
+    "ci:blackbox:js:test": "node ./test/CI-blackbox/js/output.js",
     "ci:blackbox:ts": "npm run ci:generate:blackbox:ts && npm run ci:test:blackbox:ts",
-    "ci:generate:blackbox:ts": "node ./test/CI-blackbox/renderer.js ts",
-    "ci:test:blackbox:ts": "tsc ./test/CI-blackbox/ts/output.ts --outfile ./test/CI-blackbox/ts/output.js && node ./test/CI-blackbox/ts/output.js",
+    "ci:blackbox:ts:generate": "node ./test/CI-blackbox/renderer.js ts",
+    "ci:blackbox:ts:test": "tsc ./test/CI-blackbox/ts/output.ts --outfile ./test/CI-blackbox/ts/output.js && node ./test/CI-blackbox/ts/output.js",
     "ci:blackbox:java": "npm run ci:generate:blackbox:java && npm run ci:test:blackbox:java",
-    "ci:generate:blackbox:java": "node ./test/CI-blackbox/renderer.js java",
-    "ci:test:blackbox:java": "javac ./test/CI-blackbox/java/output.java && java -cp ./test/CI-blackbox/java/output/ output"
+    "ci:blackbox:java:generate": "node ./test/CI-blackbox/renderer.js java",
+    "ci:blackbox:java:test": "javac ./test/CI-blackbox/java/output.java && java -cp ./test/CI-blackbox/java/output/ output"
   },
   "publishConfig": {
     "access": "public"

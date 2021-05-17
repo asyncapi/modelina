@@ -1,13 +1,14 @@
 
 const {JavaGenerator, JavaScriptGenerator, TypeScriptGenerator} = require('../../lib');
-const fs = require('fs');
+const fs = require('fs').promises;
 const path = require('path');
 const languagesToInclude = process.argv.slice(2);
 /**
  * Processes the input and renders the language the models
  */
 async function processInput() {
-  const input = JSON.parse(fs.readFileSync(path.resolve(__dirname, './test.json')));
+  const inputFileContent = await fs.readFile(path.resolve(__dirname, './test.json'));
+  const input = JSON.parse(inputFileContent);
   for (const language of languagesToInclude) {
     let generator;
     let outputPath;
@@ -40,13 +41,12 @@ async function processInput() {
  */
 async function renderModels(models, outputPath) {
   const outputDir = path.resolve(__dirname, path.dirname(outputPath));
-  await fs.promises.mkdir(outputDir, { recursive: true });
-  const output = [];
-  for (const generatedModel of models) {
-    output.push(generatedModel.result);
-  }
+  await fs.mkdir(outputDir, { recursive: true });
+  const output = models.map((model) => {
+    return model.result;
+  });
   const outputFilePath = path.resolve(__dirname, outputPath);
-  await fs.promises.writeFile(outputFilePath, output.join('\n'));
+  await fs.writeFile(outputFilePath, output.join('\n'));
 }
 
 processInput().then(() => console.log('Done')).catch((e) => console.error(e));
