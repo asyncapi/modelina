@@ -23,13 +23,13 @@
       "subscribe": {
         "message": {
           "payload": {
-            "$ref": "#/definitions/schemas/MainSchema"
+            "$ref": "#/components/schemas/MainSchema"
           }
         }
       }
     }
   },
-  "definitions": {
+  "components": {
     "schemas": {
       "MainSchema": {
         "type": "object",
@@ -71,6 +71,9 @@
                 "type": "object"
               }
             }
+          },
+          "recursiveProp": {
+            "$ref": "#/components/schemas/MainSchema"
           }
         },
         "patternProperties": {
@@ -119,10 +122,7 @@
               }
             }
           }
-        ],
-        "recursiveProp": {
-          "$ref": "#/definitions/schemas/MainSchema"
-        }
+        ]
       }
     }
   }

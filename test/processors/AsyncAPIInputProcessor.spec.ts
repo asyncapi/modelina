@@ -65,7 +65,7 @@ describe('AsyncAPIInputProcessor', function() {
             const expected = AsyncAPIInputProcessor.reflectSchemaNames(schema) as any;
 
             // root
-            expect(expected['x-modelgen-inferred-name']).toEqual('<anonymous-schema-1>');
+            expect(expected['x-modelgen-inferred-name']).toEqual('MainSchema');
 
             // properties
             expect(expected.properties.prop['x-modelgen-inferred-name']).toEqual('<anonymous-schema-2>');
