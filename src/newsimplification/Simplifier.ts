@@ -10,7 +10,7 @@ export class Simplifier {
   }
 
   private anonymCounter = 1;
-  private seenSchemas: Map<Schema, CommonModel> = new Map();
+  private seenSchemas: Map<Schema | boolean, CommonModel> = new Map();
   private iteratedModels: Record<string, CommonModel> = {};
   
   constructor(
@@ -20,37 +20,36 @@ export class Simplifier {
   }
 
   /**
-   * Simplifies a schema into instances of CommonModel. 
-   * Index 0 will always be the root schema CommonModel representation
+   * Simplifies a schema into instances of CommonModel by processing all JSON Schema draft 7 keywords and infers the model definition.
+   *  
+   * length == 0 means no model can be generated from the schema
+   * Index 0 will always be the root schema CommonModel representation.
+   * Index > 0 will always be the separated models that the simplifier determines are 
    * 
    * @param schema to simplify
+   * @param splitModels to simplify
    */
   simplify(schema: Schema | boolean, splitModels = true): CommonModel[] {
     const modelsToReturn = Object.values(this.iteratedModels);
-    if (typeof schema !== 'boolean' && this.seenSchemas.has(schema)) {
+    if (this.seenSchemas.has(schema)) {
       const cachedModel = this.seenSchemas.get(schema); 
       if (cachedModel !== undefined) {
-        return [cachedModel];
+        return [cachedModel, ...modelsToReturn];
       }
     }
-    //If it is a false validation schema return no common model
+    //If it is a false validation schema return no CommonModel
     if (schema === false) {
       return [];
-    }
+    } 
     const model = new CommonModel();
     model.originalSchema = Schema.toSchema(schema);
-    if (schema === true) {
-      model.setType(['object', 'string', 'number', 'array', 'boolean', 'null', 'integer']);
-    }
-    if (typeof schema !== 'boolean') {
-      this.seenSchemas.set(schema, model);
-      this.simplifyModel(model, schema);
-    }
+    this.seenSchemas.set(schema, model);
+    this.simplifyModel(model, schema);
     if (splitModels) {
       this.ensureModelsAreSplit(model);
-    }
-    if (isModelObject(model)) {
-      this.iteratedModels[`${model.$id}`] = model;
+      if (isModelObject(model)) {
+        this.iteratedModels[`${model.$id}`] = model;
+      }
     }
     return [model, ...modelsToReturn];
   }
@@ -61,28 +60,32 @@ export class Simplifier {
    * @param model to simplify to simplify schema into 
    * @param schema to simplify
    */
-  private simplifyModel(model: CommonModel, schema: Schema) {
-    if (schema.type !== undefined) {
-      model.addTypes(schema.type);
+  private simplifyModel(model: CommonModel, schema: Schema | boolean) {
+    if (schema === true) {
+      model.setType(['object', 'string', 'number', 'array', 'boolean', 'null', 'integer']);
+    } else if (typeof schema === 'object') {
+      if (schema.type !== undefined) {
+        model.addTypes(schema.type);
+      }
+
+      //All schemas of type object MUST have ids
+      if (model.type !== undefined && model.type.includes('object')) {
+        model.$id = simplifyName(schema) || `anonymSchema${this.anonymCounter++}`;
+      } else if (schema.$id !== undefined) {
+        model.$id = simplifyName(schema);
+      }
+
+      if (schema.required !== undefined) {
+        model.required = schema.required;
+      }
+
+      simplifyProperties(schema, model, this);
+
+      this.combineSchemas(schema.oneOf, model, schema);
+      this.combineSchemas(schema.anyOf, model, schema);
+      this.combineSchemas(schema.then, model, schema);
+      this.combineSchemas(schema.else, model, schema);
     }
-
-    //All schemas of type object MUST have ids
-    if (model.type !== undefined && model.type.includes('object')) {
-      model.$id = simplifyName(schema) || `anonymSchema${this.anonymCounter++}`;
-    } else if (schema.$id !== undefined) {
-      model.$id = simplifyName(schema);
-    }
-
-    if (typeof schema !== 'boolean' && schema.required !== undefined) {
-      model.required = schema.required;
-    }
-
-    simplifyProperties(schema, model, this);
-
-    this.combineSchemas(schema.oneOf, model, schema);
-    this.combineSchemas(schema.anyOf, model, schema);
-    this.combineSchemas(schema.then, model, schema);
-    this.combineSchemas(schema.else, model, schema);
   }
 
   /**
@@ -99,7 +102,8 @@ export class Simplifier {
       });
     } else {
       const models = this.simplify(schema, false);
-      if (models.length > 0) {
+      const rootModel = models[0];
+      if (rootModel !== undefined) {
         CommonModel.mergeCommonModels(currentModel, models[0], rootSchema);
       }
     }
