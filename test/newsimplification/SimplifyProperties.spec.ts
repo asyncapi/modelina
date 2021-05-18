@@ -2,12 +2,14 @@
 import { CommonModel } from '../../src/models/CommonModel';
 import { Simplifier } from '../../src/newsimplification/Simplifier';
 import simplifyProperties from '../../src/newsimplification/SimplifyProperties';
-
+const mockedSimplifierModel = new CommonModel();
 jest.mock('../../src/newsimplification/Simplifier', () => {
   return {
     Simplifier: jest.fn().mockImplementation(() => {
       return {
-        simplify: jest.fn().mockReturnValue([new CommonModel()])
+        simplify: jest.fn().mockImplementation(() => { 
+          return [mockedSimplifierModel]; 
+        })
       };
     })
   };
@@ -28,46 +30,31 @@ describe('Simplification of properties', () => {
   });
 
   test('should not do anything if schema does not contain properties', function() {
+    const schema = {};
     const model = new CommonModel();
     const simplifier = new Simplifier();
-    simplifyProperties({}, model, simplifier);
+    simplifyProperties(schema, model, simplifier);
+    expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });
   test('should not do anything if schema is boolean', function() {
     const model = new CommonModel();
     const simplifier = new Simplifier();
     simplifyProperties(true, model, simplifier);
+    expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });
   test('should infer type of model', () => {
     const schema: any = { properties: { 'property1': { type: 'string' } } };
     const model = new CommonModel();
     const simplifier = new Simplifier();
     simplifyProperties(schema, model, simplifier);
-    expect(model.addToTypes).toHaveBeenNthCalledWith(1, 'object');
+    expect(model.addTypes).toHaveBeenNthCalledWith(1, 'object');
   });
-  test('should use as is', () => {
+  test('should go trough properties and add it to model', () => {
     const schema: any = { properties: { 'property1': { type: 'string' } } };
     const model = new CommonModel();
     const simplifier = new Simplifier();
     simplifyProperties(schema, model, simplifier);
     expect(simplifier.simplify).toHaveBeenNthCalledWith(1, { type: 'string' });
-    expect(model).toMatchObject(
-      {
-        properties: { 'property1': {} },
-      },
-    );
-  });
-  test('should merge existing properties', () => {
-    const schema: any = { properties: { 'property1': { type: 'string' } } };
-    const model = new CommonModel();
-    model.properties = { 'property1': new CommonModel() };
-    const simplifier = new Simplifier();
-    simplifyProperties(schema, model, simplifier);
-    expect(simplifier.simplify).toHaveBeenNthCalledWith(1, { type: 'string' });
-    expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, expect.anything(), expect.anything(), schema);
-    expect(model).toMatchObject(
-      {
-        properties: { 'property1': {} },
-      },
-    );
+    expect(model.addProperty).toHaveBeenNthCalledWith(1, "property1", mockedSimplifierModel, schema);
   });
 });

@@ -1,7 +1,6 @@
 import {simplify, Simplifier} from '../../src/newsimplification/Simplifier';
 import {isModelObject, simplifyName} from '../../src/newsimplification/Utils';
 import simplifyProperties from '../../src/newsimplification/SimplifyProperties';
-import simplifyAllOf from '../../src/newsimplification/SimplifyAllOf';
 import { CommonModel, Schema } from '../../src/models';
 
 let mockedIsModelObjectReturn = false;
@@ -14,7 +13,6 @@ jest.mock('../../src/newsimplification/Utils', () => {
   }
 });
 jest.mock('../../src/newsimplification/SimplifyProperties');
-jest.mock('../../src/newsimplification/SimplifyAllOf');
 CommonModel.mergeCommonModels = jest.fn();
 /**
  * Some of these test are purely theoretical and have little if any merit 
@@ -30,12 +28,28 @@ describe('Simplification', function() {
     jest.restoreAllMocks();
   });
   test('should return empty models if false schema', function () {
-    const schema: any = false;
+    const schema = false;
     const models = simplify(schema);
     expect(models).toHaveLength(0);
   });
+  test('should inherit types from schema', function () {
+    const schema = {
+      type: ['string', 'number']
+    };
+    const models = simplify(schema);
+    expect(models).toHaveLength(1);
+    expect(models[0].type).toEqual(['string', 'number']);
+  });
+  test('should inherit type from schema', function () {
+    const schema = {
+      type: 'string'
+    };
+    const models = simplify(schema);
+    expect(models).toHaveLength(1);
+    expect(models[0].type).toEqual('string');
+  });
   test('should return model with all types if true schema', function () {
-    const schema: any = true;
+    const schema = true;
     const models = simplify(schema);
     expect(models).toHaveLength(1);
     expect(models[0].type).toEqual(['object', 'string', 'number', 'array', 'boolean', 'null', 'integer']);
@@ -58,6 +72,16 @@ describe('Simplification', function() {
     const models = simplify(schema);
     expect(models).toHaveLength(1);
     expect(models[0].required).toEqual(schema.required);
+  });
+  test('should split models', function() {
+    const schema = { 
+      $id: 'root',
+      properties: { }
+    };
+    mockedIsModelObjectReturn = true;
+    const simplifier = new Simplifier();
+    const models = simplifier.simplify(schema);
+    expect(models).toHaveLength(1);
   });
 
   test('should support recursive schemas', function() {
@@ -122,20 +146,15 @@ describe('Simplification', function() {
     });
   });
 
-  test('should simplify properties', function() {
+  test('should always try to simplify properties', function() {
     const schema = {};
     simplify(schema);
     expect(simplifyProperties).toHaveBeenNthCalledWith(1, schema, expect.anything(), expect.anything());
   });
 
-  test('should simplify allOf', function () {
-    const schema = {};
-    simplify(schema);
-    expect(simplifyAllOf).toHaveBeenNthCalledWith(1, schema, expect.anything(), expect.anything());
-  });
-
   test('should support primitive roots', function() {
-    const actualModels = simplify({ 'type': 'string' });
+    const schema = { 'type': 'string' };
+    const actualModels = simplify(schema);
     expect(actualModels).not.toBeUndefined();
     expect(actualModels[0]).toEqual({
       'originalSchema':{

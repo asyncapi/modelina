@@ -2,7 +2,7 @@ import { CommonModel, Schema } from '../models';
 import { SimplificationOptions } from '../models/SimplificationOptions';
 import { simplifyName, isModelObject } from './Utils';
 import simplifyProperties from './SimplifyProperties';
-import simplifyAllOf from './SimplifyAllOf';
+import { Logger } from '../utils';
 
 export class Simplifier {
   static defaultOptions: SimplificationOptions = {
@@ -63,7 +63,7 @@ export class Simplifier {
    */
   private simplifyModel(model: CommonModel, schema: Schema) {
     if (schema.type !== undefined) {
-      model.type = schema.type;
+      model.addTypes(schema.type);
     }
 
     //All schemas of type object MUST have ids
@@ -78,7 +78,6 @@ export class Simplifier {
     }
 
     simplifyProperties(schema, model, this);
-    simplifyAllOf(schema, model, this);
 
     this.combineSchemas(schema.oneOf, model, schema);
     this.combineSchemas(schema.anyOf, model, schema);
@@ -114,6 +113,7 @@ export class Simplifier {
   */
   private splitModels(model: CommonModel): CommonModel {
     if (isModelObject(model)) {
+      Logger.info(`Splitting model ${model.$id || 'unknown'} since it should be on its own`);
       const switchRootModel = new CommonModel();
       switchRootModel.$ref = model.$id;
       this.iteratedModels[`${model.$id}`] = model;

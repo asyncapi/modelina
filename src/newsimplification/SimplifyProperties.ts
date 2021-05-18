@@ -9,24 +9,14 @@ import { Simplifier } from './Simplifier';
  * @param model the model to simplify properties into
  * @param simplifier the simplifier instance 
  */
-// eslint-disable-next-line sonarjs/cognitive-complexity
 export default function simplifyProperties(schema: Schema | boolean, model: CommonModel, simplifier : Simplifier) {
-  if (typeof schema !== 'boolean' && schema.properties !== undefined) {
-    //Ensure object type is inferred
-    model.addToTypes('object');
-
-    for (const [propertyName, propertySchema] of Object.entries(schema.properties)) {
-      const propertyModels = simplifier.simplify(propertySchema);
-      if (propertyModels.length > 0) {
-        if (model.properties === undefined) model.properties = {};
-        const propertyModel = propertyModels[0];
-        //If a simplified property already exist, merge the two
-        if (model.properties[`${propertyName}`] !== undefined) {
-          model.properties[`${propertyName}`] = CommonModel.mergeCommonModels(model.properties[`${propertyName}`], propertyModel, schema);
-        } else {
-          model.properties[`${propertyName}`] = propertyModel;
-        }
-      }
+  if (typeof schema === 'boolean' || schema.properties === undefined) return;
+  model.addTypes('object');
+  
+  for (const [propertyName, propertySchema] of Object.entries(schema.properties)) {
+    const propertyModels = simplifier.simplify(propertySchema);
+    if (propertyModels.length > 0) {
+      model.addProperty(propertyName, propertyModels[0], schema);
     }
   }
 }
