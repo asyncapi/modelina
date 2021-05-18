@@ -54,25 +54,17 @@ describe('Simplification of allOf', () => {
 
   test('should combine schemas if inheritance is disabled', function() {
     const model = new CommonModel();
-    const schema = { allOf: [] };
+    const schema = { allOf: [{}] };
     simplifierOptions.allowInheritance = false;
     const simplifier = new Simplifier(simplifierOptions);
     simplifyAllOf(schema, model, simplifier);
-    expect(simplifier.combineSchemas).toHaveBeenNthCalledWith(1, schema.allOf, model, schema);
+    expect(simplifier.combineSchemas).toHaveBeenNthCalledWith(1, schema.allOf[0], model, schema);
     expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });
 
   test('should handle empty allOf array', function() {
     const model = new CommonModel();
     const schema = { allOf: [] };
-    const simplifier = new Simplifier(simplifierOptions);
-    simplifyAllOf(schema, model, simplifier);
-    expect(simplifier.combineSchemas).not.toHaveBeenCalled();
-    expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
-  });
-  test('should not do anything with non model object', function() {
-    const model = new CommonModel();
-    const schema = { allOf: [true] };
     const simplifier = new Simplifier(simplifierOptions);
     simplifyAllOf(schema, model, simplifier);
     expect(simplifier.combineSchemas).not.toHaveBeenCalled();

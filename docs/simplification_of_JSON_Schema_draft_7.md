@@ -13,8 +13,17 @@ The order of simplification:
 - [type](#determining-the-type-for-the-model)
 - `required` are determined as is.
 - `properties` are determined as is, where duplicate properties for the model are merged.
+- [allOf](#allOf-sub-schemas)
 - [oneOf/anyOf/then/else](#Processing-sub-schemas)
 
+## allOf sub schemas
+`allOf` are a bit different then the other [combination keywords](#Processing-sub-schemas) since it can imply inheritance. 
+
+So dependant on whether the simplify option `allowInheritance` is true or false.
+
+
+
+, it either add the inherited models `$id` to the `extend` property, or merge the models together.
 ## Determining the type for the model
 To determine the types for the model we use the following interpretation (and in that order):
 - `true` schema infers all model types (`object`, `string`, `number`, `array`, `boolean`, `null`, `integer`).
