@@ -16,7 +16,7 @@ async function processInput() {
     switch(language){
       case 'java':
         generator = new JavaGenerator();
-        outputPath = './java/';
+        outputPath = './java';
         const generatedModels = await generator.generate(input);
         await renderModelsToSeparateFiles(generatedModels, outputPath);
         return;
@@ -40,14 +40,14 @@ async function processInput() {
 /**
  * Render all models to separate files in the same directory
  * 
- * @param {*} models to render
+ * @param {*} generatedModels to write to file
  * @param {*} outputPath path to output
  */
-async function renderModelsToSeparateFiles(models, outputPath) {
-  const outputDir = path.resolve(__dirname, path.dirname(outputPath));
+async function renderModelsToSeparateFiles(generatedModels, outputPath) {
+  const outputDir = path.resolve(__dirname, outputPath);
+  await fs.rm(outputDir, { recursive: true, force: true });
   await fs.mkdir(outputDir, { recursive: true });
-  for(const outputModel of models) {
-    console.log(outputModel);
+  for(const outputModel of generatedModels) {
     const outputFilePath = path.resolve(__dirname, outputPath, `${FormatHelpers.toPascalCase(outputModel.model.$id)}.java`);
     await fs.writeFile(outputFilePath, outputModel.result);
   }
@@ -55,13 +55,14 @@ async function renderModelsToSeparateFiles(models, outputPath) {
 /**
  * Render all models to a single file
  * 
- * @param {*} models to render
+ * @param {*} models to write to file
  * @param {*} outputPath path to output
  */
-async function renderModels(models, outputPath) {
+async function renderModels(generatedModels, outputPath) {
   const outputDir = path.resolve(__dirname, path.dirname(outputPath));
+  await fs.rm(outputDir, { recursive: true, force: true });
   await fs.mkdir(outputDir, { recursive: true });
-  const output = models.map((model) => {
+  const output = generatedModels.map((model) => {
     return model.result;
   });
   const outputFilePath = path.resolve(__dirname, outputPath);
