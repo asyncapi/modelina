@@ -144,11 +144,7 @@ generator.generate({$schema: 'http://json-schema.org/draft-07/schema#'});
 The AsyncAPI Model SDK uses **preset** objects to extend the rendered model. For more information, check [customization document](./docs/customization.md).
 
 ## Development
-
-1. Setup project by installing dependencies `npm install`
-2. Write code and tests.
-3. Make sure all tests pass `npm test`
-4. Make sure code is well formatted and secure `npm run lint`
+To setup your development environment please read the [development](./docs/development.md) document.
 
 ## Contributing
 

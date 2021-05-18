@@ -1,5 +1,5 @@
 
-const {JavaGenerator, JavaScriptGenerator, TypeScriptGenerator} = require('../../lib');
+const {JavaGenerator, JavaScriptGenerator, TypeScriptGenerator, FormatHelpers} = require('../../lib');
 const fs = require('fs').promises;
 const path = require('path');
 
@@ -8,7 +8,7 @@ const path = require('path');
  */
 async function processInput() {
   const languagesToInclude = process.argv.slice(2);
-  const inputFileContent = await fs.readFile(path.resolve(__dirname, './test.json'));
+  const inputFileContent = await fs.readFile(path.resolve(__dirname, './dummy.json'));
   const input = JSON.parse(inputFileContent);
   for (const language of languagesToInclude) {
     let generator;
@@ -16,7 +16,10 @@ async function processInput() {
     switch(language){
       case 'java':
         generator = new JavaGenerator();
-        outputPath = './java/output.java';
+        outputPath = './java/';
+        const generatedModels = await generator.generate(input);
+        await renderModelsToSeparateFiles(generatedModels, outputPath);
+        return;
       break;
       case 'js':
         generator = new JavaScriptGenerator();
@@ -34,6 +37,21 @@ async function processInput() {
   }
 }
 
+/**
+ * Render all models to separate files in the same directory
+ * 
+ * @param {*} models to render
+ * @param {*} outputPath path to output
+ */
+async function renderModelsToSeparateFiles(models, outputPath) {
+  const outputDir = path.resolve(__dirname, path.dirname(outputPath));
+  await fs.mkdir(outputDir, { recursive: true });
+  for(const outputModel of models) {
+    console.log(outputModel);
+    const outputFilePath = path.resolve(__dirname, outputPath, `${FormatHelpers.toPascalCase(outputModel.model.$id)}.java`);
+    await fs.writeFile(outputFilePath, outputModel.result);
+  }
+}
 /**
  * Render all models to a single file
  * 
