@@ -102,8 +102,7 @@ export class Simplifier {
       });
     } else {
       const models = this.simplify(schema, false);
-      const rootModel = models[0];
-      if (rootModel !== undefined) {
+      if (models.length > 0) {
         CommonModel.mergeCommonModels(currentModel, models[0], rootSchema);
       }
     }
