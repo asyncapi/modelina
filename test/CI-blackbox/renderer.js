@@ -11,29 +11,30 @@ async function processInput() {
   const inputFileContent = await fs.readFile(path.resolve(__dirname, './dummy.json'));
   const input = JSON.parse(inputFileContent);
   for (const language of languagesToInclude) {
-    let generator;
-    let outputPath;
-    switch(language){
-      case 'java':
-        generator = new JavaGenerator();
-        outputPath = './java';
-        const generatedModels = await generator.generate(input);
-        await renderModelsToSeparateFiles(generatedModels, outputPath);
-        return;
-      break;
-      case 'js':
-        generator = new JavaScriptGenerator();
-        outputPath = './js/output.js';
-      break;
-      case 'ts':
-        generator = new TypeScriptGenerator();
-        outputPath = './ts/output.ts';
-      break;
-      default:
-        throw new Error(`Does not understand language input ${language}`);
+    if (language === 'java') {
+      //Because of the nature of Java we have to write each model to separate files
+      const generator = new JavaGenerator();
+      const outputPath = './java';
+      const generatedModels = await generator.generate(input);
+      await renderModelsToSeparateFiles(generatedModels, outputPath);
+    } else {
+      let generator;
+      let outputPath;
+      switch(language){
+        case 'js':
+          generator = new JavaScriptGenerator();
+          outputPath = './js/output.js';
+        break;
+        case 'ts':
+          generator = new TypeScriptGenerator();
+          outputPath = './ts/output.ts';
+        break;
+        default:
+          throw new Error(`Does not understand language input ${language}`);
+      }
+      const generatedModels = await generator.generate(input);
+      await renderModels(generatedModels, outputPath);
     }
-    const generatedModels = await generator.generate(input);
-    await renderModels(generatedModels, outputPath);
   }
 }
 
@@ -52,6 +53,7 @@ async function renderModelsToSeparateFiles(generatedModels, outputPath) {
     await fs.writeFile(outputFilePath, outputModel.result);
   }
 }
+
 /**
  * Render all models to a single file
  * 
