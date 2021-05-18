@@ -3,7 +3,6 @@ import { SimplificationOptions } from '../models/SimplificationOptions';
 import { simplifyName, isModelObject } from './Utils';
 import simplifyProperties from './SimplifyProperties';
 import { Logger } from '../utils';
-import simplifyPatternProperties from './SimplifyPatternProperties';
 
 export class Simplifier {
   static defaultOptions: SimplificationOptions = {
@@ -81,7 +80,7 @@ export class Simplifier {
       }
 
       simplifyProperties(schema, model, this);
-      simplifyPatternProperties(schema, model, this);
+
       this.combineSchemas(schema.oneOf, model, schema);
       this.combineSchemas(schema.anyOf, model, schema);
       this.combineSchemas(schema.then, model, schema);
