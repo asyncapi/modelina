@@ -55,9 +55,9 @@ export class Simplifier {
   }
 
   /**
-   * Function to simplify schema into a model.
+   * Function to simplify schema into a CommonModel.
    * 
-   * @param model to simplify to simplify schema into 
+   * @param model to simplify schema into 
    * @param schema to simplify
    */
   private simplifyModel(model: CommonModel, schema: Schema | boolean) {
