@@ -17,13 +17,12 @@ export default function interpretAllOf(schema: Schema | boolean, model: CommonMo
   if (typeof schema === 'boolean' || schema.allOf === undefined) return;
 
   for (const allOfSchema of (schema.allOf)) {  
-    const simplifiedModels = interpreter.interpret(allOfSchema);
-    if (simplifiedModels.length === 0) continue;
-    const interpretedModel = simplifiedModels[0];
+    const interpretedModels = interpreter.interpret(allOfSchema);
+    if (interpretedModels.length === 0) continue;
+    const interpretedModel = interpretedModels[0];
     if (isModelObject(interpretedModel) && interpreter.options.allowInheritance === true) {
       Logger.info(`Processing allOf, inheritance is allowed, ${model.$id} inherits from ${interpretedModel.$id}`, model, interpretedModel);
-      if (model.extend === undefined) model.extend = [];
-      model.extend.push(`${interpretedModel.$id}`);
+      model.addExtendedModel(interpretedModel);
     } else {
       Logger.info('Processing allOf, inheritance is not allowed. AllOf model is merged together with already interpreted model', model, interpretedModel);
       interpreter.combineSchemas(allOfSchema, model, schema);

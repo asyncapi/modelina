@@ -6,12 +6,12 @@ import interpretAllOf from '../../src/interpreter/InterpretAllOf';
 import { SimplificationOptions } from '../../src/models/SimplificationOptions';
 
 let interpreterOptions: SimplificationOptions = {};
-let interpretedModel = new CommonModel();
+let interpretedReturnModels = [new CommonModel()];
 jest.mock('../../src/interpreter/Interpreter', () => {
   return {
     Interpreter: jest.fn().mockImplementation(() => {
       return {
-        interpret: jest.fn().mockImplementation(() => {return [interpretedModel]}),
+        interpret: jest.fn().mockImplementation(() => {return interpretedReturnModels}),
         combineSchemas: jest.fn(),
         options: interpreterOptions
       };
@@ -37,7 +37,7 @@ describe('Interpretation of allOf', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     interpreterOptions = {allowInheritance: true};
-    interpretedModel = new CommonModel();
+    interpretedReturnModels = [new CommonModel()];
     mockedIsModelObjectReturn = false;
   });
   afterAll(() => {
@@ -62,6 +62,15 @@ describe('Interpretation of allOf', () => {
     expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });
 
+  test('should ignore model if interpreter cannot interpret schema', function() {
+    const model = new CommonModel();
+    const schema = { allOf: [{}] };
+    interpretedReturnModels.pop();
+    const interpreter = new Interpreter(interpreterOptions);
+    interpretAllOf(schema, model, interpreter);
+    expect(interpreter.combineSchemas).not.toHaveBeenCalled();
+    expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
+  });
   test('should handle empty allOf array', function() {
     const model = new CommonModel();
     const schema = { allOf: [] };
@@ -70,14 +79,15 @@ describe('Interpretation of allOf', () => {
     expect(interpreter.combineSchemas).not.toHaveBeenCalled();
     expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });
-  test('should extend all of model object', function() {
+  test('should extend model', function() {
     const model = new CommonModel();
     const schema = { allOf: [{type: "object", $id: "test"}] };
-    interpretedModel.$id = "test";
+    interpretedReturnModels[0].$id = "test";
     mockedIsModelObjectReturn = true;
     const interpreter = new Interpreter(interpreterOptions);
     interpretAllOf(schema, model, interpreter);
     expect(interpreter.combineSchemas).not.toHaveBeenCalled();
-    expect(model.extend).toEqual(['test']);
+    expect(isModelObject).toHaveBeenCalled();
+    expect(model.addExtendedModel).toHaveBeenCalledWith(interpretedReturnModels[0]);
   });
 });
