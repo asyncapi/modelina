@@ -1,11 +1,7 @@
 
 import { CommonModel } from '../../src/models/CommonModel';
-import { simplifyName, inferTypeFromValue, isModelObject } from '../../src/newsimplification/Utils';
+import { interpretName, inferTypeFromValue, isModelObject } from '../../src/interpreter/Utils';
 
-/**
- * Some of these test are purely theoretical and have little if any merit 
- * on a JSON Schema which actually makes sense but are used to test the principles.
- */
 describe('utils', function () {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -38,31 +34,31 @@ describe('utils', function () {
       expect(isModel).toEqual(false);
     });
   });
-  describe('simplifyName', function () {
+  describe('interpretName', function () {
     test('should return undefined if schema is null', function () {
       const schema = null;
-      const simplifiedName = simplifyName(schema);
-      expect(simplifiedName).toBeUndefined();
+      const interpretedName = interpretName(schema);
+      expect(interpretedName).toBeUndefined();
     });
     test('should return undefined if schema is boolean', function () {
       const schema = true;
-      const simplifiedName = simplifyName(schema);
-      expect(simplifiedName).toBeUndefined();
+      const interpretedName = interpretName(schema);
+      expect(interpretedName).toBeUndefined();
     });
     test('should return title as name', function () {
       const schema = { title: "test" };
-      const simplifiedName = simplifyName(schema);
-      expect(simplifiedName).toEqual("test");
+      const interpretedName = interpretName(schema);
+      expect(interpretedName).toEqual("test");
     });
     test('should return $id as name', function () {
       const schema = { $id: "test" };
-      const simplifiedName = simplifyName(schema);
-      expect(simplifiedName).toEqual("test");
+      const interpretedName = interpretName(schema);
+      expect(interpretedName).toEqual("test");
     });
     test('should return x-modelgen-inferred-name as name', function () {
       const schema = { "x-modelgen-inferred-name": "test" };
-      const simplifiedName = simplifyName(schema);
-      expect(simplifiedName).toEqual("test");
+      const interpretedName = interpretName(schema);
+      expect(interpretedName).toEqual("test");
     });
   });
   describe('inferTypeFromValue', function () {

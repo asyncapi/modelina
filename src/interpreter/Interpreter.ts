@@ -1,10 +1,10 @@
 import { CommonModel, Schema } from '../models';
 import { SimplificationOptions } from '../models/SimplificationOptions';
-import { simplifyName, isModelObject } from './Utils';
-import simplifyProperties from './SimplifyProperties';
+import { interpretName, isModelObject } from './Utils';
+import interpretProperties from './InterpretProperties';
 import { Logger } from '../utils';
 
-export class Simplifier {
+export class Interpreter {
   static defaultOptions: SimplificationOptions = {
     allowInheritance: false
   }
@@ -14,22 +14,22 @@ export class Simplifier {
   private iteratedModels: Record<string, CommonModel> = {};
   
   constructor(
-    readonly options: SimplificationOptions = Simplifier.defaultOptions,
+    readonly options: SimplificationOptions = Interpreter.defaultOptions,
   ) {
-    this.options = { ...Simplifier.defaultOptions, ...options };
+    this.options = { ...Interpreter.defaultOptions, ...options };
   }
 
   /**
-   * Simplifies a schema into instances of CommonModel by processing all JSON Schema draft 7 keywords and infers the model definition.
+   * Transforms a schema into instances of CommonModel by processing all JSON Schema draft 7 keywords and infers the model definition.
    *  
    * length == 0 means no model can be generated from the schema
    * Index 0 will always be the root schema CommonModel representation.
-   * Index > 0 will always be the separated models that the simplifier determines are 
+   * Index > 0 will always be the separated models that the interpreter determines are fit to be on their own.
    * 
-   * @param schema to simplify
-   * @param splitModels to simplify
+   * @param schema
+   * @param splitModels should it split up models
    */
-  simplify(schema: Schema | boolean, splitModels = true): CommonModel[] {
+  interpret(schema: Schema | boolean, splitModels = true): CommonModel[] {
     const modelsToReturn = Object.values(this.iteratedModels);
     if (this.seenSchemas.has(schema)) {
       const cachedModel = this.seenSchemas.get(schema); 
@@ -44,7 +44,7 @@ export class Simplifier {
     const model = new CommonModel();
     model.originalSchema = Schema.toSchema(schema);
     this.seenSchemas.set(schema, model);
-    this.simplifyModel(model, schema);
+    this.interpretSchema(model, schema);
     if (splitModels) {
       this.ensureModelsAreSplit(model);
       if (isModelObject(model)) {
@@ -55,12 +55,12 @@ export class Simplifier {
   }
 
   /**
-   * Function to simplify schema into a CommonModel.
+   * Function to interpret the JSON schema draft 7 into a CommonModel.
    * 
-   * @param model to simplify schema into 
-   * @param schema to simplify
+   * @param model 
+   * @param schema 
    */
-  private simplifyModel(model: CommonModel, schema: Schema | boolean) {
+  private interpretSchema(model: CommonModel, schema: Schema | boolean) {
     if (schema === true) {
       model.setType(['object', 'string', 'number', 'array', 'boolean', 'null', 'integer']);
     } else if (typeof schema === 'object') {
@@ -70,16 +70,16 @@ export class Simplifier {
 
       //All schemas of type object MUST have ids
       if (model.type !== undefined && model.type.includes('object')) {
-        model.$id = simplifyName(schema) || `anonymSchema${this.anonymCounter++}`;
+        model.$id = interpretName(schema) || `anonymSchema${this.anonymCounter++}`;
       } else if (schema.$id !== undefined) {
-        model.$id = simplifyName(schema);
+        model.$id = interpretName(schema);
       }
 
       if (schema.required !== undefined) {
         model.required = schema.required;
       }
 
-      simplifyProperties(schema, model, this);
+      interpretProperties(schema, model, this);
 
       this.combineSchemas(schema.oneOf, model, schema);
       this.combineSchemas(schema.anyOf, model, schema);
@@ -89,7 +89,7 @@ export class Simplifier {
   }
 
   /**
-   * Go through schema(s) and combine the simplified models together.
+   * Go through schema(s) and combine the interpreted models together.
    * 
    * @param schema to go through
    * @param currentModel the current output
@@ -101,7 +101,7 @@ export class Simplifier {
         this.combineSchemas(forEachSchema, currentModel, rootSchema);
       });
     } else {
-      const models = this.simplify(schema, false);
+      const models = this.interpret(schema, false);
       if (models.length > 0) {
         CommonModel.mergeCommonModels(currentModel, models[0], rootSchema);
       }
@@ -140,14 +140,4 @@ export class Simplifier {
       }
     }
   }
-}
-
-/**
- * This is the default wrapper for the simplifier class which always create a new instance of the simplifier. 
- * 
- * @param schema to simplify
- */
-export function simplify(schema: Schema | boolean, options?: SimplificationOptions): CommonModel[] {
-  const simplifier = new Simplifier(options);
-  return simplifier.simplify(schema);
 }

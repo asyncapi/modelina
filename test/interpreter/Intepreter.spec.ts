@@ -1,24 +1,24 @@
-import {simplify, Simplifier} from '../../src/newsimplification/Simplifier';
-import {isModelObject, simplifyName} from '../../src/newsimplification/Utils';
-import simplifyProperties from '../../src/newsimplification/SimplifyProperties';
+import {Interpreter} from '../../src/interpreter/Interpreter';
+import {isModelObject, interpretName} from '../../src/interpreter/Utils';
+import interpretProperties from '../../src/interpreter/InterpretProperties';
 import { CommonModel, Schema } from '../../src/models';
 
 let mockedIsModelObjectReturn = false;
-jest.mock('../../src/newsimplification/Utils', () => {
+jest.mock('../../src/interpreter/Utils', () => {
   return {
-    simplifyName: jest.fn(),
+    interpretName: jest.fn(),
     isModelObject: jest.fn().mockImplementation(() => {
       return mockedIsModelObjectReturn;
     })
   }
 });
-jest.mock('../../src/newsimplification/SimplifyProperties');
+jest.mock('../../src/interpreter/InterpretProperties');
 CommonModel.mergeCommonModels = jest.fn();
 /**
  * Some of these test are purely theoretical and have little if any merit 
  * on a JSON Schema which actually makes sense but are used to test the principles.
  */
-describe('Simplification', function() {
+describe('Interpreter', function() {
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -29,14 +29,16 @@ describe('Simplification', function() {
   });
   test('should return empty models if false schema', function () {
     const schema = false;
-    const models = simplify(schema);
+    const interpreter = new Interpreter();
+    const models = interpreter.interpret(schema);
     expect(models).toHaveLength(0);
   });
   test('should inherit types from schema', function () {
     const schema = {
       type: ['string', 'number']
     };
-    const models = simplify(schema);
+    const interpreter = new Interpreter();
+    const models = interpreter.interpret(schema);
     expect(models).toHaveLength(1);
     expect(models[0].type).toEqual(['string', 'number']);
   });
@@ -44,32 +46,37 @@ describe('Simplification', function() {
     const schema = {
       type: 'string'
     };
-    const models = simplify(schema);
+    const interpreter = new Interpreter();
+    const models = interpreter.interpret(schema);
     expect(models).toHaveLength(1);
     expect(models[0].type).toEqual('string');
   });
   test('should return model with all types if true schema', function () {
     const schema = true;
-    const models = simplify(schema);
+    const interpreter = new Interpreter();
+    const models = interpreter.interpret(schema);
     expect(models).toHaveLength(1);
     expect(models[0].type).toEqual(['object', 'string', 'number', 'array', 'boolean', 'null', 'integer']);
   });
   test('should set id of model if object', function() {
     const schema = { type: 'object' };
-    const models = simplify(schema);
+    const interpreter = new Interpreter();
+    const models = interpreter.interpret(schema);
     expect(models).toHaveLength(1);
-    expect(simplifyName).toHaveBeenNthCalledWith(1, schema);
+    expect(interpretName).toHaveBeenNthCalledWith(1, schema);
     expect(models[0].$id).toEqual('anonymSchema1');
   });
   test('should set custom id of model if object', function() {
     const schema = { $id: 'test' };
-    const models = simplify(schema);
+    const interpreter = new Interpreter();
+    const models = interpreter.interpret(schema);
     expect(models).toHaveLength(1);
-    expect(simplifyName).toHaveBeenNthCalledWith(1, schema);
+    expect(interpretName).toHaveBeenNthCalledWith(1, schema);
   });
   test('should set required list of properties', function() {
     const schema = { required: ['test'] };
-    const models = simplify(schema);
+    const interpreter = new Interpreter();
+    const models = interpreter.interpret(schema);
     expect(models).toHaveLength(1);
     expect(models[0].required).toEqual(schema.required);
   });
@@ -79,8 +86,8 @@ describe('Simplification', function() {
       properties: { }
     };
     mockedIsModelObjectReturn = true;
-    const simplifier = new Simplifier();
-    const models = simplifier.simplify(schema);
+    const interpreter = new Interpreter();
+    const models = interpreter.interpret(schema);
     expect(models).toHaveLength(1);
   });
 
@@ -88,30 +95,30 @@ describe('Simplification', function() {
     const schema1: Schema = { };
     const schema2 = { anyOf: [schema1] };
     schema1.anyOf = [schema2];
-    const simplifier = new Simplifier();
-    const models = simplifier.simplify(schema1);
+    const interpreter = new Interpreter();
+    const models = interpreter.interpret(schema1);
     expect(models).toHaveLength(1);
     expect(models[0]).toEqual({originalSchema: schema1})
   });
   describe('combineSchemas', function() {
     test('should combine single schema with model', function() {
       const schema = { required: ['test'] };
-      const simplifier = new Simplifier();
+      const interpreter = new Interpreter();
       const model = new CommonModel();
       const expectedSimplifiedModel = new CommonModel();
       expectedSimplifiedModel.required = ['test'];
       expectedSimplifiedModel.originalSchema = schema;
-      simplifier.combineSchemas(schema, model, schema);
+      interpreter.combineSchemas(schema, model, schema);
       expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, model, expectedSimplifiedModel, schema);
     });
     test('should combine multiple schema with model', function() {
       const schema = { required: ['test'] };
-      const simplifier = new Simplifier();
+      const interpreter = new Interpreter();
       const model = new CommonModel();
       const expectedSimplifiedModel = new CommonModel();
       expectedSimplifiedModel.required = ['test'];
       expectedSimplifiedModel.originalSchema = schema;
-      simplifier.combineSchemas([schema], model, schema);
+      interpreter.combineSchemas([schema], model, schema);
       expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, model, expectedSimplifiedModel, schema);
     });
   });
@@ -125,8 +132,8 @@ describe('Simplification', function() {
       model.properties = {
         'test': propertyModel
       }
-      const simplifier = new Simplifier();
-      simplifier.ensureModelsAreSplit(model);
+      const interpreter = new Interpreter();
+      interpreter.ensureModelsAreSplit(model);
       expect(isModelObject).toHaveBeenNthCalledWith(1, propertyModel);
       expect(model.properties.test.$ref).toEqual('test');
     });
@@ -139,22 +146,24 @@ describe('Simplification', function() {
       model.properties = {
         'test': propertyModel
       }
-      const simplifier = new Simplifier();
-      simplifier.ensureModelsAreSplit(model);
+      const interpreter = new Interpreter();
+      interpreter.ensureModelsAreSplit(model);
       expect(isModelObject).toHaveBeenNthCalledWith(1, propertyModel);
       expect(model.properties.test).toEqual(propertyModel);
     });
   });
 
-  test('should always try to simplify properties', function() {
+  test('should always try to interpret properties', function() {
     const schema = {};
-    simplify(schema);
-    expect(simplifyProperties).toHaveBeenNthCalledWith(1, schema, expect.anything(), expect.anything());
+    const interpreter = new Interpreter();
+    interpreter.interpret(schema);
+    expect(interpretProperties).toHaveBeenNthCalledWith(1, schema, expect.anything(), expect.anything());
   });
 
   test('should support primitive roots', function() {
     const schema = { 'type': 'string' };
-    const actualModels = simplify(schema);
+    const interpreter = new Interpreter();
+    const actualModels = interpreter.interpret(schema);
     expect(actualModels).not.toBeUndefined();
     expect(actualModels[0]).toEqual({
       'originalSchema':{
