@@ -75,9 +75,7 @@ export class Interpreter {
         model.$id = interpretName(schema);
       }
 
-      if (schema.required !== undefined) {
-        model.required = schema.required;
-      }
+        model.required = schema.required || model.required;
 
       interpretProperties(schema, model, this);
 
