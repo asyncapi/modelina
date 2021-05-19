@@ -1,7 +1,7 @@
 # Logging
 When you are generating models this library uses a detached logging module so you can integrate your own logging implementation based on your needs. By default nothing is logged to console or otherwise.
 
-The library uses 4 different logging levels.
+The library uses 4 different logging levels:
 - `debug`, for any very specific details only relevant to debugging.
 - `info`, for any general information relevant to the user.
 - `warn`, for any warnings that the user might need if the output is not as expected.
