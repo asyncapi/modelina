@@ -2,14 +2,14 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { CommonModel } from '../../src/models/CommonModel';
-import { Simplifier } from '../../src/newsimplification/Simplifier';
-import simplifyItems from '../../src/newsimplification/SimplifyItems';
+import { Interpreter } from '../../src/interpreter/Interpreter';
+import interpretItems from '../../src/interpreter/InterpretItems';
 
-jest.mock('../../src/newsimplification/Simplifier', () => {
+jest.mock('../../src/interpreter/Interpreter', () => {
   return {
-    Simplifier: jest.fn().mockImplementation(() => {
+    Interpreter: jest.fn().mockImplementation(() => {
       return {
-        simplify: jest.fn().mockReturnValue([new CommonModel()])
+        interpret: jest.fn().mockReturnValue([new CommonModel()])
       };
     })
   };
@@ -29,21 +29,21 @@ describe('Simplification of', () => {
   })
   test('should not do anything if schema does not contain items', function() {
     const model = new CommonModel();
-    const simplifier = new Simplifier();
-    simplifyItems({}, model, simplifier);
+    const interpreter = new Interpreter();
+    interpretItems({}, model, interpreter);
   });
   test('should not do anything if schema is boolean', function() {
     const model = new CommonModel();
-    const simplifier = new Simplifier();
-    simplifyItems(true, model, simplifier);
+    const interpreter = new Interpreter();
+    interpretItems(true, model, interpreter);
   });
   describe('single item schemas', () => {
     test('should set items', () => {
       const schema: any = { items: { type: 'string' } };
       const model = new CommonModel();
-      const simplifier = new Simplifier();
-      simplifyItems(schema, model, simplifier);
-      expect(simplifier.simplify).toHaveBeenNthCalledWith(1, { type: 'string' });
+      const interpreter = new Interpreter();
+      interpretItems(schema, model, interpreter);
+      expect(interpreter.interpret).toHaveBeenNthCalledWith(1, { type: 'string' });
       expect(model).toMatchObject(
         {
           items: { },
@@ -53,19 +53,19 @@ describe('Simplification of', () => {
     test('should infer type of model', () => {
       const schema: any = { items: { type: 'string' } };
       const model = new CommonModel();
-      const simplifier = new Simplifier();
-      simplifyItems(schema, model, simplifier);
-      expect(model.addToTypes).toHaveBeenNthCalledWith(1, 'array');
+      const interpreter = new Interpreter();
+      interpretItems(schema, model, interpreter);
+      expect(model.addTypes).toHaveBeenNthCalledWith(1, 'array');
     });
   });
   describe('multiple item schemas', () => {
     test('should set items', () => {
       const schema: any = { items: [{ type: 'string' }, { type: 'number' }] };
       const model = new CommonModel();
-      const simplifier = new Simplifier();
-      simplifyItems(schema, model, simplifier);
-      expect(simplifier.simplify).toHaveBeenNthCalledWith(1, { type: 'string' });
-      expect(simplifier.simplify).toHaveBeenNthCalledWith(2, { type: 'number' });
+      const interpreter = new Interpreter();
+      interpretItems(schema, model, interpreter);
+      expect(interpreter.interpret).toHaveBeenNthCalledWith(1, { type: 'string' });
+      expect(interpreter.interpret).toHaveBeenNthCalledWith(2, { type: 'number' });
       expect(model).toMatchObject(
         {
           items: {},
@@ -75,9 +75,9 @@ describe('Simplification of', () => {
     test('should infer type of model', () => {
       const schema: any = { items: [{ type: 'string' }, { type: 'number' }] };
       const model = new CommonModel();
-      const simplifier = new Simplifier();
-      simplifyItems(schema, model, simplifier);
-      expect(model.addToTypes).toHaveBeenNthCalledWith(1, 'array');
+      const interpreter = new Interpreter();
+      interpretItems(schema, model, interpreter);
+      expect(model.addTypes).toHaveBeenNthCalledWith(1, 'array');
     });
   });
 });
