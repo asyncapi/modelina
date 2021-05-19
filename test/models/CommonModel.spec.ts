@@ -495,6 +495,32 @@ describe('CommonModel', function() {
     });
   });
   
+  describe('addItem', function() {
+    beforeAll(() => {
+      jest.spyOn(CommonModel, "mergeCommonModels");
+    });
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+    test('should add items to model', function() {
+      const itemModel = new CommonModel();
+      itemModel.$id = "test"; 
+      const model = new CommonModel(); 
+      model.addItem(itemModel, {});
+      expect(model.items).toEqual(itemModel);
+      expect(CommonModel.mergeCommonModels).not.toHaveBeenCalled();
+    });
+    test('should merge items together', function() {
+      const itemModel = new CommonModel();
+      itemModel.$id = "test"; 
+      const model = new CommonModel();
+      model.items = itemModel;
+      model.addItem(itemModel, {});
+      model.addItem(itemModel, {});
+      expect(model.items).toEqual(itemModel);
+      expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, itemModel, itemModel, {});
+    });
+  });
   describe('addProperty', function() {
     beforeAll(() => {
       jest.spyOn(CommonModel, "mergeCommonModels");

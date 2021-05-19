@@ -32,11 +32,7 @@ function interpretArrayItems(rootSchema: Schema, itemSchemas: (Schema | boolean)
   } else {
     const itemModels = interpreter.interpret(itemSchemas);
     if (itemModels.length > 0) {
-      if (model.items) {
-        model.items = CommonModel.mergeCommonModels(model.items as CommonModel, itemModels[0], rootSchema);
-      } else {
-        model.items = itemModels[0];
-      }
+      model.addItem(itemModels[0], rootSchema);
     }
   }
 }

@@ -1,41 +1,53 @@
 /* eslint-disable no-undef */
-import * as fs from 'fs';
-import * as path from 'path';
 import { CommonModel } from '../../src/models/CommonModel';
 import { Interpreter } from '../../src/interpreter/Interpreter';
 import interpretItems from '../../src/interpreter/InterpretItems';
-
+let mockedReturnModels = [new CommonModel()];
 jest.mock('../../src/interpreter/Interpreter', () => {
   return {
     Interpreter: jest.fn().mockImplementation(() => {
       return {
-        interpret: jest.fn().mockReturnValue([new CommonModel()])
+        interpret: jest.fn().mockReturnValue(mockedReturnModels)
       };
     })
   };
 });
-
 jest.mock('../../src/models/CommonModel');
-/**
- * Some of these test are purely theoretical and have little if any merit 
- * on a JSON Schema which actually makes sense but are used to test the principles.
- */
-describe('Simplification of', () => {
+describe('Interpretation of', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockedReturnModels = [new CommonModel()];
   });
   afterAll(() => {
     jest.restoreAllMocks();
   })
   test('should not do anything if schema does not contain items', function() {
+    const schema = {};
     const model = new CommonModel();
     const interpreter = new Interpreter();
-    interpretItems({}, model, interpreter);
+    interpretItems(schema, model, interpreter);
+    expect(model.type).toBeUndefined();
+    expect(model.addItem).not.toHaveBeenCalled();
   });
   test('should not do anything if schema is boolean', function() {
+    const schema = true;
     const model = new CommonModel();
     const interpreter = new Interpreter();
-    interpretItems(true, model, interpreter);
+    interpretItems(schema, model, interpreter);
+    expect(model.type).toBeUndefined();
+    expect(model.addItem).not.toHaveBeenCalled();
+    expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
+  });
+
+  test('should ignore model if interpreter cannot interpret property schema', () => {
+    const schema: any = { items: { type: 'string' } };
+    const model = new CommonModel();
+    const interpreter = new Interpreter();
+    mockedReturnModels.pop();
+    interpretItems(schema, model, interpreter);
+
+    expect(model.type).toBeUndefined();
+    expect(model.addItem).not.toHaveBeenCalled();
   });
   describe('single item schemas', () => {
     test('should set items', () => {
@@ -44,11 +56,7 @@ describe('Simplification of', () => {
       const interpreter = new Interpreter();
       interpretItems(schema, model, interpreter);
       expect(interpreter.interpret).toHaveBeenNthCalledWith(1, { type: 'string' });
-      expect(model).toMatchObject(
-        {
-          items: { },
-        },
-      );
+      expect(model.addItem).toHaveBeenNthCalledWith(1, mockedReturnModels[0], schema);
     });
     test('should infer type of model', () => {
       const schema: any = { items: { type: 'string' } };
@@ -66,11 +74,7 @@ describe('Simplification of', () => {
       interpretItems(schema, model, interpreter);
       expect(interpreter.interpret).toHaveBeenNthCalledWith(1, { type: 'string' });
       expect(interpreter.interpret).toHaveBeenNthCalledWith(2, { type: 'number' });
-      expect(model).toMatchObject(
-        {
-          items: {},
-        },
-      );
+      expect(model.addItem).toHaveBeenNthCalledWith(1, mockedReturnModels[0], schema);
     });
     test('should infer type of model', () => {
       const schema: any = { items: [{ type: 'string' }, { type: 'number' }] };
