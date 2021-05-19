@@ -1,26 +1,26 @@
 /* eslint-disable no-undef */
 import { CommonModel } from '../../src/models/CommonModel';
-import { Simplifier } from '../../src/newsimplification/Simplifier';
-import { isModelObject } from '../../src/newsimplification/Utils';
-import simplifyAllOf from '../../src/newsimplification/SimplifyAllOf';
+import { Interpreter } from '../../src/interpreter/Interpreter';
+import { isModelObject } from '../../src/interpreter/Utils';
+import interpretAllOf from '../../src/interpreter/InterpretAllOf';
 import { SimplificationOptions } from '../../src/models/SimplificationOptions';
 
-let simplifierOptions: SimplificationOptions = {};
-let simplifiedModel = new CommonModel();
-jest.mock('../../src/newsimplification/Simplifier', () => {
+let interpreterOptions: SimplificationOptions = {};
+let interpretedModel = new CommonModel();
+jest.mock('../../src/interpreter/Interpreter', () => {
   return {
-    Simplifier: jest.fn().mockImplementation(() => {
+    Interpreter: jest.fn().mockImplementation(() => {
       return {
-        simplify: jest.fn().mockImplementation(() => {return [simplifiedModel]}),
+        interpret: jest.fn().mockImplementation(() => {return [interpretedModel]}),
         combineSchemas: jest.fn(),
-        options: simplifierOptions
+        options: interpreterOptions
       };
     })
   };
 });
 jest.mock('../../src/models/CommonModel');
 let mockedIsModelObjectReturn = false;
-jest.mock('../../src/newsimplification/Utils', () => {
+jest.mock('../../src/interpreter/Utils', () => {
   return {
     isModelObject: jest.fn().mockImplementation(() => {
       return mockedIsModelObjectReturn;
@@ -32,12 +32,12 @@ CommonModel.mergeCommonModels = jest.fn();
  * Some of these test are purely theoretical and have little if any merit 
  * on a JSON Schema which actually makes sense but are used to test the principles.
  */
-describe('Simplification of allOf', () => {
+describe('Interpretation of allOf', () => {
   
   beforeEach(() => {
     jest.clearAllMocks();
-    simplifierOptions = {allowInheritance: true};
-    simplifiedModel = new CommonModel();
+    interpreterOptions = {allowInheritance: true};
+    interpretedModel = new CommonModel();
     mockedIsModelObjectReturn = false;
   });
   afterAll(() => {
@@ -46,38 +46,38 @@ describe('Simplification of allOf', () => {
 
   test('should not do anything if schema does not contain allOf', function() {
     const model = new CommonModel();
-    const simplifier = new Simplifier();
-    simplifyAllOf({}, model, simplifier);
-    expect(simplifier.combineSchemas).not.toHaveBeenCalled();
+    const interpreter = new Interpreter();
+    interpretAllOf({}, model, interpreter);
+    expect(interpreter.combineSchemas).not.toHaveBeenCalled();
     expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });
 
   test('should combine schemas if inheritance is disabled', function() {
     const model = new CommonModel();
     const schema = { allOf: [{}] };
-    simplifierOptions.allowInheritance = false;
-    const simplifier = new Simplifier(simplifierOptions);
-    simplifyAllOf(schema, model, simplifier);
-    expect(simplifier.combineSchemas).toHaveBeenNthCalledWith(1, schema.allOf[0], model, schema);
+    interpreterOptions.allowInheritance = false;
+    const interpreter = new Interpreter(interpreterOptions);
+    interpretAllOf(schema, model, interpreter);
+    expect(interpreter.combineSchemas).toHaveBeenNthCalledWith(1, schema.allOf[0], model, schema);
     expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });
 
   test('should handle empty allOf array', function() {
     const model = new CommonModel();
     const schema = { allOf: [] };
-    const simplifier = new Simplifier(simplifierOptions);
-    simplifyAllOf(schema, model, simplifier);
-    expect(simplifier.combineSchemas).not.toHaveBeenCalled();
+    const interpreter = new Interpreter(interpreterOptions);
+    interpretAllOf(schema, model, interpreter);
+    expect(interpreter.combineSchemas).not.toHaveBeenCalled();
     expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });
   test('should extend all of model object', function() {
     const model = new CommonModel();
     const schema = { allOf: [{type: "object", $id: "test"}] };
-    simplifiedModel.$id = "test";
+    interpretedModel.$id = "test";
     mockedIsModelObjectReturn = true;
-    const simplifier = new Simplifier(simplifierOptions);
-    simplifyAllOf(schema, model, simplifier);
-    expect(simplifier.combineSchemas).not.toHaveBeenCalled();
+    const interpreter = new Interpreter(interpreterOptions);
+    interpretAllOf(schema, model, interpreter);
+    expect(interpreter.combineSchemas).not.toHaveBeenCalled();
     expect(model.extend).toEqual(['test']);
   });
 });
