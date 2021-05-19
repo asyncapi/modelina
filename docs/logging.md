@@ -19,6 +19,7 @@ const customLogger: ModelLoggingInterface = {
     error: (msg: string) => { console.log(msg) }
 };
 Logger.setLogger(mockedLogger);
-//const generator = new TypeScriptGenerator({ modelType: 'interface' });
-//const interfaceModel = await generator.generate(...);
+// Now use the library as normal without doing anything else. 
+//  const generator = new TypeScriptGenerator({ modelType: 'interface' });
+//  const interfaceModel = await generator.generate(...);
 ```
