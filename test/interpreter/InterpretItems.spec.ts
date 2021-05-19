@@ -45,7 +45,6 @@ describe('Interpretation of', () => {
     const interpreter = new Interpreter();
     mockedReturnModels.pop();
     interpretItems(schema, model, interpreter);
-
     expect(model.type).toBeUndefined();
     expect(model.addItem).not.toHaveBeenCalled();
   });
