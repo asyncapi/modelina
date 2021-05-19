@@ -27,7 +27,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     common.originalInput = doc;
     
     doc.allMessages().forEach((message) => {
-      const schema = AsyncAPIInputProcessor.reflectSchemaNames(message.payload());
+      const schema = AsyncAPIInputProcessor.convertToInternalSchema(message.payload());
       const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema);
       common.models = {...common.models, ...commonModels};
     });
@@ -42,7 +42,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
    * @param schema to reflect name for
    */
   // eslint-disable-next-line sonarjs/cognitive-complexity
-  static reflectSchemaNames(
+  static convertToInternalSchema(
     schema: AsyncAPISchema | boolean,
     alreadyIteratedSchemas: Map<string, Schema> = new Map()
   ): Schema | boolean {
@@ -57,56 +57,56 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     convertedSchema[this.MODELGEN_INFFERED_NAME] = schemaUid;
 
     if (schema.allOf() !== null) {
-      convertedSchema.allOf = schema.allOf().map((item) => this.reflectSchemaNames(item, alreadyIteratedSchemas));
+      convertedSchema.allOf = schema.allOf().map((item) => this.convertToInternalSchema(item, alreadyIteratedSchemas));
     }
     if (schema.oneOf() !== null) {
-      convertedSchema.oneOf = schema.oneOf().map((item) => this.reflectSchemaNames(item, alreadyIteratedSchemas));
+      convertedSchema.oneOf = schema.oneOf().map((item) => this.convertToInternalSchema(item, alreadyIteratedSchemas));
     }
     if (schema.anyOf() !== null) {
-      convertedSchema.anyOf = schema.anyOf().map((item) => this.reflectSchemaNames(item, alreadyIteratedSchemas));
+      convertedSchema.anyOf = schema.anyOf().map((item) => this.convertToInternalSchema(item, alreadyIteratedSchemas));
     }
     if (schema.not() !== null) {
-      convertedSchema.not = this.reflectSchemaNames(schema.not(), alreadyIteratedSchemas);
+      convertedSchema.not = this.convertToInternalSchema(schema.not(), alreadyIteratedSchemas);
     }
     if (
       typeof schema.additionalItems() === 'object' &&
       schema.additionalItems() !== null
     ) {
-      convertedSchema.additionalItems = this.reflectSchemaNames(schema.additionalItems(), alreadyIteratedSchemas);
+      convertedSchema.additionalItems = this.convertToInternalSchema(schema.additionalItems(), alreadyIteratedSchemas);
     }
     if (schema.contains() !== null) {
-      convertedSchema.contains = this.reflectSchemaNames(schema.contains(), alreadyIteratedSchemas);
+      convertedSchema.contains = this.convertToInternalSchema(schema.contains(), alreadyIteratedSchemas);
     }
     if (schema.propertyNames() !== null) {
-      convertedSchema.propertyNames = this.reflectSchemaNames(schema.propertyNames(), alreadyIteratedSchemas);
+      convertedSchema.propertyNames = this.convertToInternalSchema(schema.propertyNames(), alreadyIteratedSchemas);
     }
     if (schema.if() !== null) {
-      convertedSchema.if = this.reflectSchemaNames(schema.if(), alreadyIteratedSchemas);
+      convertedSchema.if = this.convertToInternalSchema(schema.if(), alreadyIteratedSchemas);
     }
     if (schema.then() !== null) {
-      convertedSchema.then = this.reflectSchemaNames(schema.then(), alreadyIteratedSchemas);
+      convertedSchema.then = this.convertToInternalSchema(schema.then(), alreadyIteratedSchemas);
     }
     if (schema.else() !== null) {
-      convertedSchema.else = this.reflectSchemaNames(schema.else(), alreadyIteratedSchemas);
+      convertedSchema.else = this.convertToInternalSchema(schema.else(), alreadyIteratedSchemas);
     }
     if (
       typeof schema.additionalProperties() === 'object' && 
       schema.additionalProperties() !== null
     ) {
-      convertedSchema.additionalProperties = this.reflectSchemaNames(schema.additionalProperties(), alreadyIteratedSchemas);
+      convertedSchema.additionalProperties = this.convertToInternalSchema(schema.additionalProperties(), alreadyIteratedSchemas);
     }
     if (schema.items() !== null) {
       if (Array.isArray(schema.items())) {
-        convertedSchema.items = (schema.items() as AsyncAPISchema[]).map((item) => this.reflectSchemaNames(item), alreadyIteratedSchemas);
+        convertedSchema.items = (schema.items() as AsyncAPISchema[]).map((item) => this.convertToInternalSchema(item), alreadyIteratedSchemas);
       } else {
-        convertedSchema.items = this.reflectSchemaNames(schema.items() as AsyncAPISchema, alreadyIteratedSchemas);
+        convertedSchema.items = this.convertToInternalSchema(schema.items() as AsyncAPISchema, alreadyIteratedSchemas);
       }
     }
 
     if (schema.properties() !== null && Object.keys(schema.properties()).length) {
       const properties : {[key: string]: Schema | boolean} = {};
       Object.entries(schema.properties()).forEach(([propertyName, propertySchema]) => {
-        properties[`${propertyName}`] = this.reflectSchemaNames(propertySchema, alreadyIteratedSchemas);
+        properties[`${propertyName}`] = this.convertToInternalSchema(propertySchema, alreadyIteratedSchemas);
       });
       convertedSchema.properties = properties;
     }
@@ -114,7 +114,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       const dependencies: { [key: string]: Schema | boolean | string[] } = {};
       Object.entries(schema.dependencies()).forEach(([dependencyName, dependency]) => {
         if (typeof dependency === 'object' && !Array.isArray(dependency)) {
-          dependencies[`${dependencyName}`] = this.reflectSchemaNames(dependency, alreadyIteratedSchemas);
+          dependencies[`${dependencyName}`] = this.convertToInternalSchema(dependency, alreadyIteratedSchemas);
         } else {
           dependencies[`${dependencyName}`] = dependency as string[];
         }
@@ -124,14 +124,14 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     if (schema.patternProperties() !== null && Object.keys(schema.patternProperties()).length) {
       const patternProperties: { [key: string]: Schema | boolean } = {};
       Object.entries(schema.patternProperties()).forEach(([patternPropertyName, patternProperty]) => {
-        patternProperties[`${patternPropertyName}`] = this.reflectSchemaNames(patternProperty, alreadyIteratedSchemas);
+        patternProperties[`${patternPropertyName}`] = this.convertToInternalSchema(patternProperty, alreadyIteratedSchemas);
       });
       convertedSchema.patternProperties = patternProperties;
     }
     if (schema.definitions() !== null && Object.keys(schema.definitions()).length) {
       const definitions: { [key: string]: Schema | boolean } = {};
       Object.entries(schema.definitions()).forEach(([definitionName, definition]) => {
-        definitions[`${definitionName}`] = this.reflectSchemaNames(definition, alreadyIteratedSchemas);
+        definitions[`${definitionName}`] = this.convertToInternalSchema(definition, alreadyIteratedSchemas);
       });
       convertedSchema.definitions = definitions;
     }
