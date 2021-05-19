@@ -13,6 +13,7 @@ The order of transformation:
 - [type](#determining-the-type-for-the-model)
 - `required` are determined as is.
 - `properties` are determined as is, where duplicate properties for the model are merged.
+- `const` overwrite already interpreted `enums`.
 - [oneOf/anyOf/then/else](#Processing-sub-schemas)
 
 ## Determining the type for the model
@@ -20,6 +21,7 @@ To determine the types for the model we use the following interpretation (and in
 - `true` schema infers all model types (`object`, `string`, `number`, `array`, `boolean`, `null`, `integer`).
 - Usage of `type` infers the initial model type.
 - Usage of `properties` infers `object` model type.
+- Usage of `const` infers the constant value as type, if schema does not have `type` specified.
 
 ## Processing sub schemas
 The following JSON Schema keywords are merged with the already transformed model:

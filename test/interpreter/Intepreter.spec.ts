@@ -1,6 +1,7 @@
 import {Interpreter} from '../../src/interpreter/Interpreter';
 import {isModelObject, interpretName} from '../../src/interpreter/Utils';
 import interpretProperties from '../../src/interpreter/InterpretProperties';
+import interpretConst from '../../src/interpreter/InterpretConst';
 import { CommonModel, Schema } from '../../src/models';
 
 let mockedIsModelObjectReturn = false;
@@ -13,6 +14,7 @@ jest.mock('../../src/interpreter/Utils', () => {
   }
 });
 jest.mock('../../src/interpreter/InterpretProperties');
+jest.mock('../../src/interpreter/interpretConst');
 CommonModel.mergeCommonModels = jest.fn();
 /**
  * Some of these test are purely theoretical and have little if any merit 
@@ -160,6 +162,13 @@ describe('Interpreter', function() {
     expect(interpretProperties).toHaveBeenNthCalledWith(1, schema, expect.anything(), expect.anything());
   });
 
+  test('should always try to interpret const', function() {
+    const schema = {};
+    const interpreter = new Interpreter();
+    interpreter.interpret(schema);
+    expect(interpretConst).toHaveBeenNthCalledWith(1, schema, expect.anything());
+  });
+  
   test('should support primitive roots', function() {
     const schema = { 'type': 'string' };
     const interpreter = new Interpreter();
