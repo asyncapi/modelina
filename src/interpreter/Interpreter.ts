@@ -80,7 +80,7 @@ export class Interpreter {
 
       interpretProperties(schema, model, this);
       interpretAllOf(schema, model, this);
-      
+
       this.combineSchemas(schema.oneOf, model, schema);
       this.combineSchemas(schema.anyOf, model, schema);
       this.combineSchemas(schema.then, model, schema);

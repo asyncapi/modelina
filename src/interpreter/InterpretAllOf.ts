@@ -1,4 +1,4 @@
-import { Logger } from 'utils';
+import { Logger } from '../utils';
 import { CommonModel } from '../models/CommonModel';
 import { Schema } from '../models/Schema';
 import { Interpreter } from './Interpreter';
