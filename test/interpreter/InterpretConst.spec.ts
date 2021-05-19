@@ -3,7 +3,7 @@ import { CommonModel } from '../../src/models/CommonModel';
 import interpretConst from '../../src/interpreter/InterpretConst';
 import {inferTypeFromValue} from '../../src/interpreter/Utils';
 jest.mock('../../src/interpreter/Utils');
-describe('Simplification of const', function() {
+describe('Interpretation of const', function() {
   beforeEach(() => {
     jest.clearAllMocks();
   });
