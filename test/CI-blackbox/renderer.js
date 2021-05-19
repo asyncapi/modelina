@@ -8,6 +8,10 @@ const path = require('path');
  */
 async function processInput() {
   const languagesToInclude = process.argv.slice(2);
+  if(languagesToInclude.length === 0) {
+    console.error(`No languages provided, please provide one or more of the following languages: js, ts, java.`);
+    process.exit(0);
+  }
   const inputFileContent = await fs.readFile(path.resolve(__dirname, './dummy.json'));
   const input = JSON.parse(inputFileContent);
   for (const language of languagesToInclude) {

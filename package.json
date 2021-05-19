@@ -69,15 +69,9 @@
     "generate:assets": "npm run build && npm run docs",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION",
     "prepublishOnly": "npm run build",
-    "ci:blackbox": "npm run ci:blackbox:js && npm run ci:blackbox:ts && npm run ci:blackbox:java",
-    "ci:blackbox:js": "npm run ci:blackbox:js:generate && npm run ci:blackbox:js:test",
-    "ci:blackbox:js:generate": "node ./test/CI-blackbox/renderer.js js",
-    "ci:blackbox:js:test": "node ./test/CI-blackbox/js/output.js",
-    "ci:blackbox:ts": "npm run ci:blackbox:ts:generate && npm run ci:blackbox:ts:test",
-    "ci:blackbox:ts:generate": "node ./test/CI-blackbox/renderer.js ts",
+    "ci:blackbox:generate": "node ./test/CI-blackbox/renderer.js",
+    "ci:blackbox:js:test": "node ./test/CI-blackbox/js/output.js", 
     "ci:blackbox:ts:test": "tsc -t es5 ./test/CI-blackbox/ts/output.ts && node ./test/CI-blackbox/ts/output.js",
-    "ci:blackbox:java": "npm run ci:blackbox:java:generate && npm run ci:blackbox:java:test",
-    "ci:blackbox:java:generate": "node ./test/CI-blackbox/renderer.js java",
     "ci:blackbox:java:test": "javac ./test/CI-blackbox/java/*.java"
   },
   "publishConfig": {
