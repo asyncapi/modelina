@@ -14,7 +14,7 @@ jest.mock('../../src/interpreter/Utils', () => {
   }
 });
 jest.mock('../../src/interpreter/InterpretProperties');
-jest.mock('../../src/interpreter/interpretConst');
+jest.mock('../../src/interpreter/InterpretConst');
 CommonModel.mergeCommonModels = jest.fn();
 /**
  * Some of these test are purely theoretical and have little if any merit 
@@ -168,7 +168,7 @@ describe('Interpreter', function() {
     interpreter.interpret(schema);
     expect(interpretConst).toHaveBeenNthCalledWith(1, schema, expect.anything());
   });
-  
+
   test('should support primitive roots', function() {
     const schema = { 'type': 'string' };
     const interpreter = new Interpreter();
