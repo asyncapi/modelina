@@ -159,8 +159,8 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
    */
   static isFromParser(input: any) {
     if (input._json !== undefined && 
-            input._json.asyncapi !== undefined && 
-            typeof input.version === 'function') {
+      input._json.asyncapi !== undefined && 
+      typeof input.version === 'function') {
       return true;
     }
     return false;
