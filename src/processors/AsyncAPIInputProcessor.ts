@@ -49,7 +49,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     if (typeof schema === 'boolean') return schema;
     const schemaUid = schema.uid();
     if (alreadyIteratedSchemas.has(schemaUid)) {
-      return alreadyIteratedSchemas.get(schemaUid); 
+      return alreadyIteratedSchemas.get(schemaUid) as Schema; 
     }
     let convertedSchema = new Schema();
     alreadyIteratedSchemas.set(schemaUid, convertedSchema);
