@@ -557,6 +557,33 @@ describe('CommonModel', function() {
     });
   });
 
+  describe('addPatternProperty', function() {
+    beforeAll(() => {
+      jest.spyOn(CommonModel, "mergeCommonModels");
+    });
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+    test('should add patternProperty to model', function() {
+      const patternPropertyModel = new CommonModel();
+      const pattern = "TestPattern";
+      patternPropertyModel.$id = "test"; 
+      const model = new CommonModel(); 
+      model.addPatternProperty(pattern, patternPropertyModel, {});
+      expect(model.patternProperties).toEqual({"TestPattern": patternPropertyModel});
+      expect(CommonModel.mergeCommonModels).not.toHaveBeenCalled();
+    });
+    test('should merge additionalProperties together', function() {
+      const patternPropertyModel = new CommonModel();
+      const pattern = "TestPattern";
+      patternPropertyModel.$id = "test"; 
+      const model = new CommonModel(); 
+      model.addPatternProperty(pattern, patternPropertyModel, {});
+      model.addPatternProperty(pattern, patternPropertyModel, {});
+      expect(model.patternProperties).toEqual({"TestPattern": patternPropertyModel});
+      expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, patternPropertyModel, patternPropertyModel, {});
+    });
+  });
   describe('addTypes', function() {
     test('should add multiple types', function() {
       const model = new CommonModel(); 

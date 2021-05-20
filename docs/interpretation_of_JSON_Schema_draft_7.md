@@ -13,6 +13,7 @@ The order of transformation:
 - [type](#determining-the-type-for-the-model)
 - `required` are determined as is.
 - `properties` are determined as is, where duplicate properties for the model are merged.
+- `patternProperties` are determined as is, where duplicate patterns for the model are merged together.
 - [oneOf/anyOf/then/else](#Processing-sub-schemas)
 
 ## Determining the type for the model

@@ -101,6 +101,24 @@ export class CommonModel extends CommonSchema<CommonModel> {
   }
 
   /**
+   * Adds a patternProperty to the model.
+   * If the pattern already exist the two models are merged.
+   * 
+   * @param pattern 
+   * @param patternModel 
+   * @param schema schema to the corresponding property model
+   */
+  addPatternProperty(pattern: string, patternModel: CommonModel, schema: Schema) {
+    if (this.patternProperties ===  undefined) this.patternProperties = {};
+    if (this.patternProperties[`${pattern}`] !== undefined) {
+      Logger.warn(`While trying to add patternProperty to model, duplicate patterns found. Merging pattern models together for pattern ${pattern}`, patternModel, schema, this);
+      this.patternProperties[`${pattern}`] = CommonModel.mergeCommonModels(this.patternProperties[`${pattern}`], patternModel, schema);
+    } else {
+      this.patternProperties[`${pattern}`] = patternModel;
+    }
+  }
+
+  /**
    * This function returns an array of `$id`s from all the CommonModel's it immediate depends on.
    */
   getImmediateDependencies(): string[] {

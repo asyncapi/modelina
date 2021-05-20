@@ -3,6 +3,7 @@ import { SimplificationOptions } from '../models/SimplificationOptions';
 import { interpretName, isModelObject } from './Utils';
 import interpretProperties from './InterpretProperties';
 import { Logger } from '../utils';
+import interpretPatternProperties from './InterpretPatternProperties';
 
 export class Interpreter {
   static defaultOptions: SimplificationOptions = {
@@ -78,6 +79,7 @@ export class Interpreter {
       model.required = schema.required || model.required;
 
       interpretProperties(schema, model, this);
+      interpretPatternProperties(schema, model, this);
 
       this.combineSchemas(schema.oneOf, model, schema);
       this.combineSchemas(schema.anyOf, model, schema);
