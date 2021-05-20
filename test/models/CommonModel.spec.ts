@@ -522,6 +522,29 @@ describe('CommonModel', function() {
       expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, propertyModel, propertyModel, {});
     });
   });
+  describe('addExtendedModel', function() {
+    test('should extend model', function() {
+      const extendedModel = new CommonModel();
+      extendedModel.$id = "test"; 
+      const model = new CommonModel(); 
+      model.addExtendedModel(extendedModel);
+      expect(model.extend).toEqual(["test"]);
+    });
+    test('should ignore model if it has no $id', function() {
+      const extendedModel = new CommonModel();
+      const model = new CommonModel(); 
+      model.addExtendedModel(extendedModel);
+      expect(model.extend).toBeUndefined();
+    });
+    test('should ignore duplicate model $id', function() {
+      const extendedModel = new CommonModel();
+      extendedModel.$id = "test"; 
+      const model = new CommonModel(); 
+      model.addExtendedModel(extendedModel);
+      model.addExtendedModel(extendedModel);
+      expect(model.extend).toEqual(["test"]);
+    });
+  });
   describe('setTypes', function() {
     test('should set multiple types', function() {
       const model = new CommonModel(); 

@@ -40,6 +40,18 @@
 ## Functions
 
 <dl>
+<dt><a href="#interpretProperties">interpretProperties(schema, model, interpreter)</a></dt>
+<dd><p>Interpreter function for interpreting JSON Schema draft 7 properties keyword.</p>
+</dd>
+<dt><a href="#isModelObject">isModelObject()</a></dt>
+<dd><p>check if CommonModel is a separate model or a simple model.</p>
+</dd>
+<dt><a href="#inferTypeFromValue">inferTypeFromValue(value)</a></dt>
+<dd><p>Infers the JSON Schema type from value</p>
+</dd>
+<dt><a href="#interpretName">interpretName(schema)</a></dt>
+<dd><p>Find the name for simplified version of schema</p>
+</dd>
 <dt><a href="#simplify">simplify(schema)</a></dt>
 <dd><p>This is the default wrapper for the simplifier class which always create a new instance of the simplifier.</p>
 </dd>
@@ -164,16 +176,19 @@ Common internal representation for a model.
 * [CommonModel](#CommonModel) ⇐ [<code>CommonSchema&lt;CommonModel&gt;</code>](#CommonModel)
     * _instance_
         * [.getFromSchema(key)](#CommonModel+getFromSchema) ⇒ <code>any</code>
+        * [.setType(types)](#CommonModel+setType)
+        * [.addTypes(types)](#CommonModel+addTypes)
         * [.isRequired(propertyName)](#CommonModel+isRequired) ⇒ <code>boolean</code>
+        * [.addProperty(propertyName, propertyModel, schema)](#CommonModel+addProperty)
         * [.getImmediateDependencies()](#CommonModel+getImmediateDependencies)
     * _static_
         * [.toCommonModel(object)](#CommonModel.toCommonModel) ⇒
-        * [.mergeProperties(mergeTo, mergeFrom, originalSchema)](#CommonModel.mergeProperties)
-        * [.mergeAdditionalProperties(mergeTo, mergeFrom, originalSchema)](#CommonModel.mergeAdditionalProperties)
-        * [.mergePatternProperties(mergeTo, mergeFrom, originalSchema)](#CommonModel.mergePatternProperties)
-        * [.mergeItems(mergeTo, mergeFrom, originalSchema)](#CommonModel.mergeItems)
+        * [.mergeProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)](#CommonModel.mergeProperties)
+        * [.mergeAdditionalProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)](#CommonModel.mergeAdditionalProperties)
+        * [.mergePatternProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)](#CommonModel.mergePatternProperties)
+        * [.mergeItems(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)](#CommonModel.mergeItems)
         * [.mergeTypes(mergeTo, mergeFrom)](#CommonModel.mergeTypes)
-        * [.mergeCommonModels(mergeTo, mergeFrom, originalSchema)](#CommonModel.mergeCommonModels)
+        * [.mergeCommonModels(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)](#CommonModel.mergeCommonModels)
 
 <a name="CommonModel+getFromSchema"></a>
 
@@ -186,6 +201,30 @@ Retrieves data from originalSchema by given key
 | --- | --- |
 | key | given key |
 
+<a name="CommonModel+setType"></a>
+
+### commonModel.setType(types)
+Set the types of the model
+
+**Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
+
+| Param | Description |
+| --- | --- |
+| types | to set the model type to |
+
+<a name="CommonModel+addTypes"></a>
+
+### commonModel.addTypes(types)
+Adds types to the existing model types.
+
+Makes sure to only keep a single type incase of duplicates.
+
+**Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
+
+| Param | Description |
+| --- | --- |
+| types | which types we should try and add to the existing output |
+
 <a name="CommonModel+isRequired"></a>
 
 ### commonModel.isRequired(propertyName) ⇒ <code>boolean</code>
@@ -196,6 +235,20 @@ Checks if given property name is required in object
 | Param | Description |
 | --- | --- |
 | propertyName | given property name |
+
+<a name="CommonModel+addProperty"></a>
+
+### commonModel.addProperty(propertyName, propertyModel, schema)
+Adds a property to the model.
+If the property already exist the two are merged.
+
+**Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
+
+| Param | Description |
+| --- | --- |
+| propertyName |  |
+| propertyModel |  |
+| schema | schema to the corresponding property model |
 
 <a name="CommonModel+getImmediateDependencies"></a>
 
@@ -217,7 +270,7 @@ Transform object into a type of CommonModel.
 
 <a name="CommonModel.mergeProperties"></a>
 
-### CommonModel.mergeProperties(mergeTo, mergeFrom, originalSchema)
+### CommonModel.mergeProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)
 Merge two common model properties together
 
 **Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
@@ -227,10 +280,11 @@ Merge two common model properties together
 | mergeTo | 
 | mergeFrom | 
 | originalSchema | 
+| alreadyIteratedModels | 
 
 <a name="CommonModel.mergeAdditionalProperties"></a>
 
-### CommonModel.mergeAdditionalProperties(mergeTo, mergeFrom, originalSchema)
+### CommonModel.mergeAdditionalProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)
 Merge two common model additional properties together
 
 **Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
@@ -240,10 +294,11 @@ Merge two common model additional properties together
 | mergeTo | 
 | mergeFrom | 
 | originalSchema | 
+| alreadyIteratedModels | 
 
 <a name="CommonModel.mergePatternProperties"></a>
 
-### CommonModel.mergePatternProperties(mergeTo, mergeFrom, originalSchema)
+### CommonModel.mergePatternProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)
 Merge two common model pattern properties together
 
 **Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
@@ -253,19 +308,21 @@ Merge two common model pattern properties together
 | mergeTo | 
 | mergeFrom | 
 | originalSchema | 
+| alreadyIteratedModels | 
 
 <a name="CommonModel.mergeItems"></a>
 
-### CommonModel.mergeItems(mergeTo, mergeFrom, originalSchema)
+### CommonModel.mergeItems(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)
 Merge items together so only one CommonModel remains.
 
 **Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
 
-| Param | Description |
-| --- | --- |
-| mergeTo | CommonModel to merge types into |
-| mergeFrom | CommonModel to merge from |
-| originalSchema |  |
+| Param |
+| --- |
+| mergeTo | 
+| mergeFrom | 
+| originalSchema | 
+| alreadyIteratedModels | 
 
 <a name="CommonModel.mergeTypes"></a>
 
@@ -274,23 +331,24 @@ Merge types together
 
 **Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
 
-| Param | Description |
-| --- | --- |
-| mergeTo | CommonModel to merge types into |
-| mergeFrom | CommonModel to merge from |
+| Param |
+| --- |
+| mergeTo | 
+| mergeFrom | 
 
 <a name="CommonModel.mergeCommonModels"></a>
 
-### CommonModel.mergeCommonModels(mergeTo, mergeFrom, originalSchema)
+### CommonModel.mergeCommonModels(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)
 Only merge if left side is undefined and right side is sat OR both sides are defined
 
 **Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
 
-| Param | Description |
-| --- | --- |
-| mergeTo | CommonModel to merge into |
-| mergeFrom | CommonModel to merge values from |
-| originalSchema | schema to use as original schema |
+| Param |
+| --- |
+| mergeTo | 
+| mergeFrom | 
+| originalSchema | 
+| alreadyIteratedModels | 
 
 <a name="CommonSchema"></a>
 
@@ -350,7 +408,7 @@ Class for processing AsyncAPI inputs
         * [.process(input)](#AsyncAPIInputProcessor+process)
         * [.shouldProcess(input)](#AsyncAPIInputProcessor+shouldProcess)
     * _static_
-        * [.reflectSchemaNames(schema)](#AsyncAPIInputProcessor.reflectSchemaNames)
+        * [.convertToInternalSchema(schema)](#AsyncAPIInputProcessor.convertToInternalSchema)
         * [.isFromParser(input)](#AsyncAPIInputProcessor.isFromParser)
 
 <a name="AsyncAPIInputProcessor+process"></a>
@@ -375,9 +433,9 @@ Figures out if an object is of type AsyncAPI document
 | --- |
 | input | 
 
-<a name="AsyncAPIInputProcessor.reflectSchemaNames"></a>
+<a name="AsyncAPIInputProcessor.convertToInternalSchema"></a>
 
-### AsyncAPIInputProcessor.reflectSchemaNames(schema)
+### AsyncAPIInputProcessor.convertToInternalSchema(schema)
 Reflect the name of the schema and save it to `x-modelgen-inferred-name` extension.
 This keeps the the id of the model deterministic if used in conjunction with other AsyncAPI tools such as the generator.
 
@@ -544,6 +602,47 @@ Sets the logger to use for the model generation library
 | Param | Description |
 | --- | --- |
 | logger | to add |
+
+<a name="interpretProperties"></a>
+
+## interpretProperties(schema, model, interpreter)
+Interpreter function for interpreting JSON Schema draft 7 properties keyword.
+
+**Kind**: global function  
+
+| Param |
+| --- |
+| schema | 
+| model | 
+| interpreter | 
+
+<a name="isModelObject"></a>
+
+## isModelObject()
+check if CommonModel is a separate model or a simple model.
+
+**Kind**: global function  
+<a name="inferTypeFromValue"></a>
+
+## inferTypeFromValue(value)
+Infers the JSON Schema type from value
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| value | to infer type of |
+
+<a name="interpretName"></a>
+
+## interpretName(schema)
+Find the name for simplified version of schema
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema | to find the name |
 
 <a name="simplify"></a>
 
