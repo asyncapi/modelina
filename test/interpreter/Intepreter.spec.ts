@@ -2,6 +2,7 @@ import {Interpreter} from '../../src/interpreter/Interpreter';
 import {isModelObject, interpretName} from '../../src/interpreter/Utils';
 import interpretProperties from '../../src/interpreter/InterpretProperties';
 import { CommonModel, Schema } from '../../src/models';
+import interpretAllOf from '../../src/interpreter/InterpretAllOf';
 
 let mockedIsModelObjectReturn = false;
 jest.mock('../../src/interpreter/Utils', () => {
@@ -13,6 +14,7 @@ jest.mock('../../src/interpreter/Utils', () => {
   }
 });
 jest.mock('../../src/interpreter/InterpretProperties');
+jest.mock('../../src/interpreter/InterpretAllOf');
 CommonModel.mergeCommonModels = jest.fn();
 /**
  * Some of these test are purely theoretical and have little if any merit 
@@ -158,6 +160,13 @@ describe('Interpreter', function() {
     const interpreter = new Interpreter();
     interpreter.interpret(schema);
     expect(interpretProperties).toHaveBeenNthCalledWith(1, schema, expect.anything(), expect.anything());
+  });
+
+  test('should always try to interpret allOf', function() {
+    const schema = {};
+    const interpreter = new Interpreter();
+    interpreter.interpret(schema);
+    expect(interpretAllOf).toHaveBeenNthCalledWith(1, schema, expect.anything(), expect.anything());
   });
 
   test('should support primitive roots', function() {
