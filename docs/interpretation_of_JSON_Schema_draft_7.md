@@ -17,6 +17,7 @@ The order of transformation:
 - `const` overwrite already interpreted `enums`.
 - `items` are determined as is, where more then 1 item are merged.
 - `additionalProperties` are determined as is, where duplicate additionalProperties for the model are merged together. If the schema does not define additionalProperties it defaults to `true` schema.
+- `patternProperties` are determined as is, where duplicate patterns for the model are merged together.
 - [oneOf/anyOf/then/else](#Processing-sub-schemas)
 
 ## allOf sub schemas

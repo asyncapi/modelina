@@ -6,6 +6,7 @@ import interpretAllOf from './InterpretAllOf';
 import interpretConst from './InterpretConst';
 import interpretAdditionalProperties from './InterpretAdditionalProperties';
 import interpretItems from './InterpretItems';
+import interpretPatternProperties from './InterpretPatternProperties';
 import { Logger } from '../utils';
 
 export class Interpreter {
@@ -81,6 +82,7 @@ export class Interpreter {
 
       model.required = schema.required || model.required;
       
+      interpretPatternProperties(schema, model, this);
       interpretAdditionalProperties(schema, model, this);
       interpretItems(schema, model, this);
       interpretProperties(schema, model, this);
