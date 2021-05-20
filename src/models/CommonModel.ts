@@ -118,6 +118,26 @@ export class CommonModel extends CommonSchema<CommonModel> {
   }
 
   /**
+   * Adds another model this model should extend.
+   * 
+   * It is only allowed to extend if the other model have $id and is not already being extended.
+   * 
+   * @param extendedModel 
+   */
+  addExtendedModel(extendedModel: CommonModel) {
+    if (extendedModel.$id === undefined) {
+      Logger.error('Found no $id for allOf model and cannot extend the existing model, this should never happen.', this, extendedModel);
+      return;
+    }
+    this.extend = this.extend || [];
+    if (this.extend.includes(extendedModel.$id)) { 
+      Logger.info(`${this.$id} model already extends model ${extendedModel.$id}.`, this, extendedModel);
+      return;
+    }
+    this.extend.push(extendedModel.$id);
+  }
+
+  /**
    * This function returns an array of `$id`s from all the CommonModel's it immediate depends on.
    */
   getImmediateDependencies(): string[] {
