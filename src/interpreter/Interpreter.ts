@@ -5,6 +5,7 @@ import interpretProperties from './InterpretProperties';
 import interpretAllOf from './InterpretAllOf';
 import interpretConst from './InterpretConst';
 import { Logger } from '../utils';
+import interpretItems from './InterpretItems';
 
 export class Interpreter {
   static defaultOptions: SimplificationOptions = {
@@ -78,7 +79,8 @@ export class Interpreter {
       }
 
       model.required = schema.required || model.required;
-
+      
+      interpretItems(schema, model, this);
       interpretProperties(schema, model, this);
       interpretAllOf(schema, model, this);
       interpretConst(schema, model);

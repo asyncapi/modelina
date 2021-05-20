@@ -83,6 +83,23 @@ export class CommonModel extends CommonSchema<CommonModel> {
   }
 
   /**
+   * Adds an item to the model.
+   * 
+   * If items already exist the two are merged.
+   * 
+   * @param itemModel 
+   * @param schema schema to the corresponding property model
+   */
+  addItem(itemModel: CommonModel, schema: Schema) {
+    if (this.items !== undefined) {
+      Logger.warn(`While trying to add item to model ${this.$id}, duplicate items found. Merging models together to form a unified item model.`, itemModel, schema, this);
+      this.items = CommonModel.mergeCommonModels(this.items as CommonModel, itemModel, schema);
+    } else {
+      this.items = itemModel;
+    }
+  }
+
+  /**
    * Adds a property to the model.
    * If the property already exist the two are merged.
    * 

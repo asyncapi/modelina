@@ -15,6 +15,7 @@ The order of transformation:
 - `properties` are determined as is, where duplicate properties for the model are merged.
 - [allOf](#allOf-sub-schemas)
 - `const` overwrite already interpreted `enums`.
+- `items` are determined as is, where more then 1 item are merged.
 - [oneOf/anyOf/then/else](#Processing-sub-schemas)
 
 ## allOf sub schemas
