@@ -672,7 +672,7 @@ describe('CommonModel', function() {
       model.addEnum(enumToAdd);
       model.addEnum(enumToAdd);
       expect(model.enum).toEqual([enumToAdd]);
-    });    
+    });
   });
   describe('addTypes', function() {
     test('should add multiple types', function() {
