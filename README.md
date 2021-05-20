@@ -141,7 +141,7 @@ generator.generate({$schema: 'http://json-schema.org/draft-07/schema#'});
 
 ## Customization
 
-The AsyncAPI Model SDK uses **preset** objects to extend the rendered model. For more information, check [customization document](./docs/customization.md).
+There are multiple ways to customize the library both in terms of processing, logging and output generation, check the [customization document](./docs/customization.md).
 
 ## Development
 
