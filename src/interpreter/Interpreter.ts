@@ -2,6 +2,7 @@ import { CommonModel, Schema } from '../models';
 import { SimplificationOptions } from '../models/SimplificationOptions';
 import { interpretName, isModelObject } from './Utils';
 import interpretProperties from './InterpretProperties';
+import interpretAdditionalProperties from './InterpretAdditionalProperties';
 import { Logger } from '../utils';
 
 export class Interpreter {
@@ -78,6 +79,7 @@ export class Interpreter {
       model.required = schema.required || model.required;
 
       interpretProperties(schema, model, this);
+      interpretAdditionalProperties(schema, model, this);
 
       this.combineSchemas(schema.oneOf, model, schema);
       this.combineSchemas(schema.anyOf, model, schema);
