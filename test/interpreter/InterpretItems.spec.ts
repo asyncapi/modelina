@@ -29,15 +29,6 @@ describe('Interpretation of', () => {
     expect(model.type).toBeUndefined();
     expect(model.addItem).not.toHaveBeenCalled();
   });
-  test('should not do anything if schema is boolean', function() {
-    const schema = true;
-    const model = new CommonModel();
-    const interpreter = new Interpreter();
-    interpretItems(schema, model, interpreter);
-    expect(model.type).toBeUndefined();
-    expect(model.addItem).not.toHaveBeenCalled();
-    expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
-  });
 
   test('should ignore model if interpreter cannot interpret property schema', () => {
     const schema: any = { items: { type: 'string' } };

@@ -10,8 +10,8 @@ import { Interpreter } from './Interpreter';
  * @param model 
  * @param interpreter 
  */
-export default function interpretItems(schema: Schema | boolean, model: CommonModel, interpreter : Interpreter) {
-  if (typeof schema === 'boolean' || schema.items === undefined) return;
+export default function interpretItems(schema: Schema, model: CommonModel, interpreter : Interpreter) {
+  if (schema.items === undefined) return;
   model.addTypes('array');
   interpretArrayItems(schema, schema.items, model, interpreter);
 }
