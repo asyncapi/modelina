@@ -83,6 +83,23 @@ export class CommonModel extends CommonSchema<CommonModel> {
   }
 
   /**
+   * Adds an item to the model.
+   * 
+   * If items already exist the two are merged.
+   * 
+   * @param itemModel 
+   * @param schema schema to the corresponding property model
+   */
+  addItem(itemModel: CommonModel, schema: Schema) {
+    if (this.items !== undefined) {
+      Logger.warn(`While trying to add item to model ${this.$id}, duplicate items found. Merging models together to form a unified item model.`, itemModel, schema, this);
+      this.items = CommonModel.mergeCommonModels(this.items as CommonModel, itemModel, schema);
+    } else {
+      this.items = itemModel;
+    }
+  }
+
+  /**
    * Adds a property to the model.
    * If the property already exist the two are merged.
    * 
@@ -114,6 +131,26 @@ export class CommonModel extends CommonSchema<CommonModel> {
     } else {
       this.additionalProperties = additionalPropertiesModel;
     }
+  }
+  
+  /**
+   * Adds another model this model should extend.
+   * 
+   * It is only allowed to extend if the other model have $id and is not already being extended.
+   * 
+   * @param extendedModel 
+   */
+  addExtendedModel(extendedModel: CommonModel) {
+    if (extendedModel.$id === undefined) {
+      Logger.error('Found no $id for allOf model and cannot extend the existing model, this should never happen.', this, extendedModel);
+      return;
+    }
+    this.extend = this.extend || [];
+    if (this.extend.includes(extendedModel.$id)) { 
+      Logger.info(`${this.$id} model already extends model ${extendedModel.$id}.`, this, extendedModel);
+      return;
+    }
+    this.extend.push(extendedModel.$id);
   }
 
   /**
