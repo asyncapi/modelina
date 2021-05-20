@@ -1,16 +1,13 @@
 
 import { CommonModel } from '../../src/models/CommonModel';
-import { Simplifier } from '../../src/newsimplification/Simplifier';
-import simplifyNot from '../../src/newsimplification/SimplifyNot';
-import {inferTypeFromValue} from '../../src/newsimplification/Utils';
+import { Interpreter } from '../../src/interpreter/Interpreter';
+import interpretNot from '../../src/interpreter/InterpretNot';
+import {inferTypeFromValue} from '../../src/interpreter/Utils';
 import { Logger } from '../../src/utils';
-jest.mock('../../src/newsimplification/Utils');
+jest.mock('../../src/interpreter/Utils');
 jest.mock('../../src/utils');
-/**
- * Some of these test are purely theoretical and have little if any merit 
- * on a JSON Schema which actually makes sense but are used to test the principles.
- */
-describe('Simplification of not', function() {
+
+describe('Interpretation of not', function() {
   beforeEach(() => {
     jest.clearAllMocks();
     (inferTypeFromValue as jest.Mock).mockImplementation(()=>{});
@@ -19,31 +16,37 @@ describe('Simplification of not', function() {
     jest.restoreAllMocks();
   });
 
+  test('should not do anything if not is not defined', function() {
+    const schema: any = {};
+    const model = new CommonModel();
+    interpretNot(schema, model);
+    expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
+  });
   test('should warn about true schemas', function() {
     const schema: any = { not: true};
     const model = new CommonModel();
     model.type = ["string"];
-    simplifyNot(schema, model);
+    interpretNot(schema, model);
     expect(Logger.warn).toHaveBeenCalled();
   });
   test('should handle false schemas', function() {
     const schema: any = { not: false};
     const model = new CommonModel();
-    simplifyNot(schema, model);
+    interpretNot(schema, model);
   });
   describe.skip('double negate', function() {
 
     test('should double negate enum', function() {
       const schema: any = { not: { enum: ["value"], not: { enum: ["value"] } }};
       const model = new CommonModel();
-      simplifyNot(schema, model);
+      interpretNot(schema, model);
       expect(model.enum).toEqual(["value"]);
     });
 
     test('should double negate types', function() {
       const schema: any = { not: { type: "string", not: { type: "string" }}};
       const model = new CommonModel();
-      simplifyNot(schema, model);
+      interpretNot(schema, model);
       expect(model.type).toEqual("string");
     });
   });
@@ -52,28 +55,28 @@ describe('Simplification of not', function() {
       const schema: any = { not: { enum: ["value"] }};
       const model = new CommonModel();
       model.enum = ["value"];
-      simplifyNot(schema, model);
+      interpretNot(schema, model);
       expect(model.enum).toBeUndefined();
     });
     test('should remove already existing inferred enums', function() {
       const schema: any = { not: { enum: ["value"] }};
       const model = new CommonModel();
       model.enum = ["value", "value2"];
-      simplifyNot(schema, model);
+      interpretNot(schema, model);
       expect(model.enum).toEqual(["value2"]);
     });
     test('should not negating non existing enum', function() {
       const schema: any = { not: { enum: ["value"] }};
       const model = new CommonModel();
       model.enum = ["value2"];
-      simplifyNot(schema, model);
+      interpretNot(schema, model);
       expect(model.enum).toEqual(["value2"]);
     });
     test('should handle multiple negated enums', function() {
       const schema: any = { not: { enum: ["value", "value2"] }};
       const model = new CommonModel();
       model.enum = ["value", "value2", "value3"];
-      simplifyNot(schema, model);
+      interpretNot(schema, model);
       expect(model.enum).toEqual(["value3"]);
     });
   });
@@ -82,28 +85,28 @@ describe('Simplification of not', function() {
       const schema: any = { not: { type: "string" }};
       const model = new CommonModel();
       model.type = "string";
-      simplifyNot(schema, model);
+      interpretNot(schema, model);
       expect(model.type).toBeUndefined();
     });
     test('should remove already existing inferred type', function() {
       const schema: any = { not: { type: "string" }};
       const model = new CommonModel();
       model.type = ["string", "number"];
-      simplifyNot(schema, model);
+      interpretNot(schema, model);
       expect(model.type).toEqual("number");
     });
     test('should not negating non existing type', function() {
       const schema: any = { not: { type: "string" }};
       const model = new CommonModel();
       model.type = "number";
-      simplifyNot(schema, model);
+      interpretNot(schema, model);
       expect(model.type).toEqual("number");
     });
     test('should handle multiple negated types', function() {
       const schema: any = { not: { type: ["string", "number"] }};
       const model = new CommonModel();
       model.type = ["number", "string", "integer"];
-      simplifyNot(schema, model);
+      interpretNot(schema, model);
       expect(model.type).toEqual("integer");
     });
   });

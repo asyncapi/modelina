@@ -8,6 +8,7 @@ import interpretAdditionalProperties from './InterpretAdditionalProperties';
 import interpretItems from './InterpretItems';
 import interpretPatternProperties from './InterpretPatternProperties';
 import { Logger } from '../utils';
+import interpretNot from './InterpretNot';
 
 export class Interpreter {
   static defaultOptions: SimplificationOptions = {
@@ -93,6 +94,8 @@ export class Interpreter {
       this.combineSchemas(schema.anyOf, model, schema);
       this.combineSchemas(schema.then, model, schema);
       this.combineSchemas(schema.else, model, schema);
+
+      interpretNot(schema, model, this);
     }
   }
 

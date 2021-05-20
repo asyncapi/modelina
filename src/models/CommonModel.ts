@@ -36,15 +36,35 @@ export class CommonModel extends CommonSchema<CommonModel> {
   /**
    * Set the types of the model
    * 
-   * @param types to set the model type to
+   * @param type
    */
-  setType(types : string | string[]) {
-    if (!Array.isArray(types) || types.length > 1) {
-      this.type = types;
-    } else if (types.length === 0) {
-      this.type = undefined;
-    } else if (types.length === 1) {
-      this.type = types[0];
+  setType(type : string | string[] | undefined) {
+    if (Array.isArray(type)) {
+      if (type.length === 0) {
+        this.type = undefined;
+      } else if (type.length === 1) {
+        this.type = type[0];
+      }
+    } 
+    this.type = type;
+  }
+  
+  /**
+   * Removes type(s) from model type
+   * 
+   * @param types 
+   */
+  removeType(types : string | string[]) {
+    if (Array.isArray(types)) {
+      for (const type of types) {
+        this.removeType(type);
+      }
+    } else if (this.type !== undefined && this.type.includes(types)) {
+      if (Array.isArray(this.type)) {
+        this.setType(this.type.slice(this.type.indexOf(types)));
+      } else {
+        this.setType(undefined);
+      }
     }
   }
 
