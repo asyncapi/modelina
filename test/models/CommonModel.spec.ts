@@ -495,6 +495,32 @@ describe('CommonModel', function() {
     });
   });
   
+  describe('addItem', function() {
+    beforeAll(() => {
+      jest.spyOn(CommonModel, "mergeCommonModels");
+    });
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+    test('should add items to model', function() {
+      const itemModel = new CommonModel();
+      itemModel.$id = "test"; 
+      const model = new CommonModel(); 
+      model.addItem(itemModel, {});
+      expect(model.items).toEqual(itemModel);
+      expect(CommonModel.mergeCommonModels).not.toHaveBeenCalled();
+    });
+    test('should merge items together', function() {
+      const itemModel = new CommonModel();
+      itemModel.$id = "test"; 
+      const model = new CommonModel();
+      model.items = itemModel;
+      model.addItem(itemModel, {});
+      model.addItem(itemModel, {});
+      expect(model.items).toEqual(itemModel);
+      expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, itemModel, itemModel, {});
+    });
+  });
   describe('addProperty', function() {
     beforeAll(() => {
       jest.spyOn(CommonModel, "mergeCommonModels");
@@ -520,6 +546,29 @@ describe('CommonModel', function() {
       model.addProperty("test", propertyModel, {});
       expect(model.properties).toEqual({"test": propertyModel});
       expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, propertyModel, propertyModel, {});
+    });
+  });
+  describe('addExtendedModel', function() {
+    test('should extend model', function() {
+      const extendedModel = new CommonModel();
+      extendedModel.$id = "test"; 
+      const model = new CommonModel(); 
+      model.addExtendedModel(extendedModel);
+      expect(model.extend).toEqual(["test"]);
+    });
+    test('should ignore model if it has no $id', function() {
+      const extendedModel = new CommonModel();
+      const model = new CommonModel(); 
+      model.addExtendedModel(extendedModel);
+      expect(model.extend).toBeUndefined();
+    });
+    test('should ignore duplicate model $id', function() {
+      const extendedModel = new CommonModel();
+      extendedModel.$id = "test"; 
+      const model = new CommonModel(); 
+      model.addExtendedModel(extendedModel);
+      model.addExtendedModel(extendedModel);
+      expect(model.extend).toEqual(["test"]);
     });
   });
   describe('setTypes', function() {
@@ -557,6 +606,32 @@ describe('CommonModel', function() {
     });
   });
 
+
+  describe('addAdditionalProperty', function() {
+    beforeAll(() => {
+      jest.spyOn(CommonModel, "mergeCommonModels");
+    });
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+    test('should add additionalProperties to model', function() {
+      const additionalPropertiesModel = new CommonModel();
+      additionalPropertiesModel.$id = "test"; 
+      const model = new CommonModel(); 
+      model.addAdditionalProperty(additionalPropertiesModel, {});
+      expect(model.additionalProperties).toEqual(additionalPropertiesModel);
+      expect(CommonModel.mergeCommonModels).not.toHaveBeenCalled();
+    });
+    test('should merge additionalProperties together', function() {
+      const additionalPropertiesModel = new CommonModel();
+      additionalPropertiesModel.$id = "test"; 
+      const model = new CommonModel(); 
+      model.addAdditionalProperty(additionalPropertiesModel, {});
+      model.addAdditionalProperty(additionalPropertiesModel, {});
+      expect(model.additionalProperties).toEqual(additionalPropertiesModel);
+      expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, additionalPropertiesModel, additionalPropertiesModel, {});
+    });
+  });
   describe('addPatternProperty', function() {
     beforeAll(() => {
       jest.spyOn(CommonModel, "mergeCommonModels");

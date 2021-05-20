@@ -2,8 +2,12 @@ import { CommonModel, Schema } from '../models';
 import { SimplificationOptions } from '../models/SimplificationOptions';
 import { interpretName, isModelObject } from './Utils';
 import interpretProperties from './InterpretProperties';
-import { Logger } from '../utils';
+import interpretAllOf from './InterpretAllOf';
+import interpretConst from './InterpretConst';
+import interpretAdditionalProperties from './InterpretAdditionalProperties';
+import interpretItems from './InterpretItems';
 import interpretPatternProperties from './InterpretPatternProperties';
+import { Logger } from '../utils';
 
 export class Interpreter {
   static defaultOptions: SimplificationOptions = {
@@ -77,9 +81,13 @@ export class Interpreter {
       }
 
       model.required = schema.required || model.required;
-
-      interpretProperties(schema, model, this);
+      
       interpretPatternProperties(schema, model, this);
+      interpretAdditionalProperties(schema, model, this);
+      interpretItems(schema, model, this);
+      interpretProperties(schema, model, this);
+      interpretAllOf(schema, model, this);
+      interpretConst(schema, model);
 
       this.combineSchemas(schema.oneOf, model, schema);
       this.combineSchemas(schema.anyOf, model, schema);

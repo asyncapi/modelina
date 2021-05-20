@@ -1,6 +1,10 @@
 import {Interpreter} from '../../src/interpreter/Interpreter';
 import {isModelObject, interpretName} from '../../src/interpreter/Utils';
 import interpretProperties from '../../src/interpreter/InterpretProperties';
+import interpretConst from '../../src/interpreter/InterpretConst';
+import interpretAllOf from '../../src/interpreter/InterpretAllOf';
+import interpretItems from '../../src/interpreter/InterpretItems';
+import interpretAdditionalProperties from '../../src/interpreter/InterpretAdditionalProperties';
 import { CommonModel, Schema } from '../../src/models';
 
 let mockedIsModelObjectReturn = false;
@@ -13,6 +17,10 @@ jest.mock('../../src/interpreter/Utils', () => {
   }
 });
 jest.mock('../../src/interpreter/InterpretProperties');
+jest.mock('../../src/interpreter/InterpretConst');
+jest.mock('../../src/interpreter/InterpretAllOf');
+jest.mock('../../src/interpreter/InterpretItems');
+jest.mock('../../src/interpreter/InterpretAdditionalProperties');
 CommonModel.mergeCommonModels = jest.fn();
 /**
  * Some of these test are purely theoretical and have little if any merit 
@@ -158,6 +166,31 @@ describe('Interpreter', function() {
     const interpreter = new Interpreter();
     interpreter.interpret(schema);
     expect(interpretProperties).toHaveBeenNthCalledWith(1, schema, expect.anything(), expect.anything());
+  });
+
+  test('should always try to interpret const', function() {
+    const schema = {};
+    const interpreter = new Interpreter();
+    interpreter.interpret(schema);
+    expect(interpretConst).toHaveBeenNthCalledWith(1, schema, expect.anything());
+  });
+  test('should always try to interpret allOf', function() {
+    const schema = {};
+    const interpreter = new Interpreter();
+    interpreter.interpret(schema);
+    expect(interpretAllOf).toHaveBeenNthCalledWith(1, schema, expect.anything(), expect.anything());
+  });
+  test('should always try to interpret items', function() {
+    const schema = {};
+    const interpreter = new Interpreter();
+    interpreter.interpret(schema);
+    expect(interpretItems).toHaveBeenNthCalledWith(1, schema, expect.anything(), expect.anything());
+  });
+  test('should always try to interpret additionalProperties', function() {
+    const schema = {};
+    const interpreter = new Interpreter();
+    interpreter.interpret(schema);
+    expect(interpretAdditionalProperties).toHaveBeenNthCalledWith(1, schema, expect.anything(), expect.anything());
   });
 
   test('should support primitive roots', function() {
