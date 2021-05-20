@@ -1,8 +1,9 @@
 import {Interpreter} from '../../src/interpreter/Interpreter';
 import {isModelObject, interpretName} from '../../src/interpreter/Utils';
 import interpretProperties from '../../src/interpreter/InterpretProperties';
-import { CommonModel, Schema } from '../../src/models';
+import interpretConst from '../../src/interpreter/InterpretConst';
 import interpretAllOf from '../../src/interpreter/InterpretAllOf';
+import { CommonModel, Schema } from '../../src/models';
 
 let mockedIsModelObjectReturn = false;
 jest.mock('../../src/interpreter/Utils', () => {
@@ -14,6 +15,7 @@ jest.mock('../../src/interpreter/Utils', () => {
   }
 });
 jest.mock('../../src/interpreter/InterpretProperties');
+jest.mock('../../src/interpreter/InterpretConst');
 jest.mock('../../src/interpreter/InterpretAllOf');
 CommonModel.mergeCommonModels = jest.fn();
 /**
@@ -162,6 +164,12 @@ describe('Interpreter', function() {
     expect(interpretProperties).toHaveBeenNthCalledWith(1, schema, expect.anything(), expect.anything());
   });
 
+  test('should always try to interpret const', function() {
+    const schema = {};
+    const interpreter = new Interpreter();
+    interpreter.interpret(schema);
+    expect(interpretConst).toHaveBeenNthCalledWith(1, schema, expect.anything());
+  });
   test('should always try to interpret allOf', function() {
     const schema = {};
     const interpreter = new Interpreter();
