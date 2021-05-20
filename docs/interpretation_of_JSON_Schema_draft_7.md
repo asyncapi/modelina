@@ -31,6 +31,7 @@ To determine the types for the model we use the following interpretation (and in
 - Usage of `type` infers the initial model type.
 - Usage of `properties` infers `object` model type.
 - Usage of `const` infers the constant value as type, if schema does not have `type` specified.
+- Usage of `enum` infers the enum values as type, if schema does not have `type` specified.
 
 ## Processing sub schemas
 The following JSON Schema keywords are merged with the already interpreted model:
