@@ -9,8 +9,8 @@ import { Interpreter } from './Interpreter';
  * @param model
  * @param interpreter
  */
-export default function interpretProperties(schema: Schema | boolean, model: CommonModel, interpreter : Interpreter) {
-  if (typeof schema === 'boolean' || schema.properties === undefined) return;
+export default function interpretProperties(schema: Schema, model: CommonModel, interpreter : Interpreter) {
+  if (schema.properties === undefined) return;
   model.addTypes('object');
   
   for (const [propertyName, propertySchema] of Object.entries(schema.properties)) {

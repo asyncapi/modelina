@@ -606,6 +606,32 @@ describe('CommonModel', function() {
     });
   });
 
+
+  describe('addAdditionalProperty', function() {
+    beforeAll(() => {
+      jest.spyOn(CommonModel, "mergeCommonModels");
+    });
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+    test('should add additionalProperties to model', function() {
+      const additionalPropertiesModel = new CommonModel();
+      additionalPropertiesModel.$id = "test"; 
+      const model = new CommonModel(); 
+      model.addAdditionalProperty(additionalPropertiesModel, {});
+      expect(model.additionalProperties).toEqual(additionalPropertiesModel);
+      expect(CommonModel.mergeCommonModels).not.toHaveBeenCalled();
+    });
+    test('should merge additionalProperties together', function() {
+      const additionalPropertiesModel = new CommonModel();
+      additionalPropertiesModel.$id = "test"; 
+      const model = new CommonModel(); 
+      model.addAdditionalProperty(additionalPropertiesModel, {});
+      model.addAdditionalProperty(additionalPropertiesModel, {});
+      expect(model.additionalProperties).toEqual(additionalPropertiesModel);
+      expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, additionalPropertiesModel, additionalPropertiesModel, {});
+    });
+  });
   describe('addTypes', function() {
     test('should add multiple types', function() {
       const model = new CommonModel(); 

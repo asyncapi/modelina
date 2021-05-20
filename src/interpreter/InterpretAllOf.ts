@@ -13,8 +13,8 @@ import { isModelObject } from './Utils';
  * @param model 
  * @param interpreter 
  */
-export default function interpretAllOf(schema: Schema | boolean, model: CommonModel, interpreter : Interpreter) {
-  if (typeof schema === 'boolean' || schema.allOf === undefined) return;
+export default function interpretAllOf(schema: Schema, model: CommonModel, interpreter : Interpreter) {
+  if (schema.allOf === undefined) return;
 
   for (const allOfSchema of schema.allOf) {  
     const interpretedModels = interpreter.interpret(allOfSchema);

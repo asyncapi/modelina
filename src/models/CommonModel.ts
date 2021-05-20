@@ -118,6 +118,22 @@ export class CommonModel extends CommonSchema<CommonModel> {
   }
 
   /**
+   * Adds additionalProperty to the model.
+   * If another model already are added the two are merged.
+   * 
+   * @param additionalPropertiesModel 
+   * @param schema 
+   */
+  addAdditionalProperty(additionalPropertiesModel: CommonModel, schema: Schema) {
+    if (this.additionalProperties !== undefined) {
+      Logger.warn('While trying to add additionalProperties to model, but it is already present, merging models together', additionalPropertiesModel, schema, this);
+      this.additionalProperties = CommonModel.mergeCommonModels(this.additionalProperties, additionalPropertiesModel, schema);
+    } else {
+      this.additionalProperties = additionalPropertiesModel;
+    }
+  }
+  
+  /**
    * Adds another model this model should extend.
    * 
    * It is only allowed to extend if the other model have $id and is not already being extended.

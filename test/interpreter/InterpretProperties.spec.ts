@@ -37,12 +37,6 @@ describe('Interpretation of properties', () => {
     interpretProperties(schema, model, interpreter);
     expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });
-  test('should not do anything if schema is boolean', function() {
-    const model = new CommonModel();
-    const interpreter = new Interpreter();
-    interpretProperties(true, model, interpreter);
-    expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
-  });
   test('should ignore model if interpreter cannot interpret property schema', () => {
     const schema: any = { properties: { 'property1': { type: 'string' } } };
     const model = new CommonModel();
