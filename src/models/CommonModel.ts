@@ -112,9 +112,8 @@ export class CommonModel extends CommonSchema<CommonModel> {
       Logger.error('Found no $id for allOf model and cannot extend the existing model, this should never happen.', this, extendedModel);
       return;
     }
-    if (this.extend === undefined) {
-      this.extend = [];
-    } else if (this.extend.includes(extendedModel.$id)) { 
+    this.extend = this.extend || [];
+    if (this.extend.includes(extendedModel.$id)) { 
       Logger.info(`${this.$id} model already extends model ${extendedModel.$id}.`, this, extendedModel);
       return;
     }
