@@ -83,6 +83,23 @@ export class CommonModel extends CommonSchema<CommonModel> {
   }
 
   /**
+   * Adds an item to the model.
+   * 
+   * If items already exist the two are merged.
+   * 
+   * @param itemModel 
+   * @param schema schema to the corresponding property model
+   */
+  addItem(itemModel: CommonModel, schema: Schema) {
+    if (this.items !== undefined) {
+      Logger.warn(`While trying to add item to model ${this.$id}, duplicate items found. Merging models together to form a unified item model.`, itemModel, schema, this);
+      this.items = CommonModel.mergeCommonModels(this.items as CommonModel, itemModel, schema);
+    } else {
+      this.items = itemModel;
+    }
+  }
+
+  /**
    * Adds a property to the model.
    * If the property already exist the two are merged.
    * 
@@ -98,6 +115,60 @@ export class CommonModel extends CommonSchema<CommonModel> {
     } else {
       this.properties[`${propertyName}`] = propertyModel;
     }
+  }
+
+  /**
+   * Adds additionalProperty to the model.
+   * If another model already are added the two are merged.
+   * 
+   * @param additionalPropertiesModel 
+   * @param schema 
+   */
+  addAdditionalProperty(additionalPropertiesModel: CommonModel, schema: Schema) {
+    if (this.additionalProperties !== undefined) {
+      Logger.warn('While trying to add additionalProperties to model, but it is already present, merging models together', additionalPropertiesModel, schema, this);
+      this.additionalProperties = CommonModel.mergeCommonModels(this.additionalProperties, additionalPropertiesModel, schema);
+    } else {
+      this.additionalProperties = additionalPropertiesModel;
+    }
+  }
+  
+  /**
+   * Adds a patternProperty to the model.
+   * If the pattern already exist the two models are merged.
+   * 
+   * @param pattern 
+   * @param patternModel 
+   * @param schema schema to the corresponding property model
+   */
+  addPatternProperty(pattern: string, patternModel: CommonModel, schema: Schema) {
+    if (this.patternProperties ===  undefined) this.patternProperties = {};
+    if (this.patternProperties[`${pattern}`] !== undefined) {
+      Logger.warn(`While trying to add patternProperty to model, duplicate patterns found. Merging pattern models together for pattern ${pattern}`, patternModel, schema, this);
+      this.patternProperties[`${pattern}`] = CommonModel.mergeCommonModels(this.patternProperties[`${pattern}`], patternModel, schema);
+    } else {
+      this.patternProperties[`${pattern}`] = patternModel;
+    }
+  }
+  
+  /**
+   * Adds another model this model should extend.
+   * 
+   * It is only allowed to extend if the other model have $id and is not already being extended.
+   * 
+   * @param extendedModel 
+   */
+  addExtendedModel(extendedModel: CommonModel) {
+    if (extendedModel.$id === undefined) {
+      Logger.error('Found no $id for allOf model and cannot extend the existing model, this should never happen.', this, extendedModel);
+      return;
+    }
+    this.extend = this.extend || [];
+    if (this.extend.includes(extendedModel.$id)) { 
+      Logger.info(`${this.$id} model already extends model ${extendedModel.$id}.`, this, extendedModel);
+      return;
+    }
+    this.extend.push(extendedModel.$id);
   }
 
   /**
@@ -123,11 +194,9 @@ export class CommonModel extends CommonSchema<CommonModel> {
       }
     }
     if (this.properties !== undefined && Object.keys(this.properties).length) {
-      const refProperties = (propertyModel: CommonModel) => propertyModel.$ref !== undefined;
-      const refProperty = (propertyModel: CommonModel) => `${propertyModel.$ref}`;
       const referencedProperties = Object.values(this.properties)
-        .filter(refProperties)
-        .map(refProperty);
+        .filter((propertyModel: CommonModel) => propertyModel.$ref !== undefined)
+        .map((propertyModel: CommonModel) => `${propertyModel.$ref}`);
       dependsOn.push(...referencedProperties);
     }
     return dependsOn;
