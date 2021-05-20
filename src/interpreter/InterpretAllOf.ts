@@ -21,7 +21,7 @@ export default function interpretAllOf(schema: Schema | boolean, model: CommonMo
     if (interpretedModels.length === 0) continue;
     const interpretedModel = interpretedModels[0];
     if (isModelObject(interpretedModel) && interpreter.options.allowInheritance === true) {
-      Logger.info(`Processing allOf, inheritance is allowed, ${model.$id} inherits from ${interpretedModel.$id}`, model, interpretedModel);
+      Logger.info(`Processing allOf, inheritance is enabled, ${model.$id} inherits from ${interpretedModel.$id}`, model, interpretedModel);
       model.addExtendedModel(interpretedModel);
     } else {
       Logger.info('Processing allOf, inheritance is not enabled. AllOf model is merged together with already interpreted model', model, interpretedModel);
