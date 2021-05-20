@@ -16,27 +16,27 @@ describe('Interpretation of enum', function() {
     const schema: any = { type: 'string', enum: ['test']};
     interpretEnum(schema, model);
     expect(model.addTypes).not.toHaveBeenCalled();
-    expect(model.enum).toEqual(schema.enum);
+    expect(model.addEnum).toHaveBeenNthCalledWith(1, schema.enum[0]);
   });
   test('Should not add enum if it already exist', function() {
     const model = new CommonModel();
     model.enum = ['test']
     const schema: any = {enum: ['test']};
     interpretEnum(schema, model);
-    expect(model.enum).toEqual(['test']);
+    expect(model.addEnum).toHaveBeenNthCalledWith(1, schema.enum[0]);
   });
   test('should not do anything if schema does not contain enum', function() {
     const model = new CommonModel();
     interpretEnum({}, model);
     expect(model.addTypes).not.toHaveBeenCalled();
-    expect(model.enum).toBeUndefined(); 
+    expect(model.addEnum).not.toHaveBeenCalled();
   });
   test('should not infer type from unknown value type', function() {
     (inferTypeFromValue as jest.Mock).mockReturnValue(undefined);
     const schema: any = { enum: ['test']};
     const model = new CommonModel();
     interpretEnum(schema, model);
-    expect(model.enum).toEqual(schema.enum);
+    expect(model.addEnum).toHaveBeenNthCalledWith(1, schema.enum[0]);
     expect(model.setType).not.toHaveBeenCalled();
     expect(inferTypeFromValue).toHaveBeenNthCalledWith(1, 'test');
   });
@@ -47,5 +47,6 @@ describe('Interpretation of enum', function() {
     interpretEnum(schema, model);
     expect(inferTypeFromValue).toHaveBeenNthCalledWith(1, 'test');
     expect(model.addTypes).toHaveBeenNthCalledWith(1, "string");
+    expect(model.addEnum).toHaveBeenNthCalledWith(1, schema.enum[0]);
   });
 });

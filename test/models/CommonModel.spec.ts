@@ -659,6 +659,21 @@ describe('CommonModel', function() {
       expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, patternPropertyModel, patternPropertyModel, {});
     });
   });
+  describe('addEnum', function() {
+    test('should add enum', function() {
+      const model = new CommonModel(); 
+      const enumToAdd = 'test';
+      model.addEnum(enumToAdd);
+      expect(model.enum).toEqual([enumToAdd]);
+    });
+    test('should not add enum if it already exist', function() {
+      const model = new CommonModel(); 
+      const enumToAdd = 'test';
+      model.addEnum(enumToAdd);
+      model.addEnum(enumToAdd);
+      expect(model.enum).toEqual([enumToAdd]);
+    });    
+  });
   describe('addTypes', function() {
     test('should add multiple types', function() {
       const model = new CommonModel(); 

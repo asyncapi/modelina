@@ -11,17 +11,13 @@ import { inferTypeFromValue } from './Utils';
  */
 export default function interpretEnum(schema: Schema, model: CommonModel) {
   if (schema.enum === undefined) return;
-  schema.enum.forEach((enumValue) => {
+  for (const enumValue of schema.enum) {
     if (schema.type === undefined) {
-      // Infer type from enum values
       const inferredType = inferTypeFromValue(enumValue);
       if (inferredType !== undefined) {
         model.addTypes(inferredType);
       }
     }
-    if (model.enum === undefined) model.enum = [];
-    if (!model.enum.includes(enumValue)) {
-      model.enum.push(enumValue);
-    }
-  });
+    model.addEnum(enumValue);
+  }
 }
