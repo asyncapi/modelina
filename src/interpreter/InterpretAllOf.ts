@@ -16,7 +16,7 @@ import { isModelObject } from './Utils';
 export default function interpretAllOf(schema: Schema | boolean, model: CommonModel, interpreter : Interpreter) {
   if (typeof schema === 'boolean' || schema.allOf === undefined) return;
 
-  for (const allOfSchema of (schema.allOf)) {  
+  for (const allOfSchema of schema.allOf) {  
     const interpretedModels = interpreter.interpret(allOfSchema);
     if (interpretedModels.length === 0) continue;
     const interpretedModel = interpretedModels[0];
