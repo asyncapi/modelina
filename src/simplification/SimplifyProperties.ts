@@ -52,10 +52,10 @@ export default function simplifyProperties(schema: Schema | boolean, simplifier 
 function addToProperty(propName: string, propModel: CommonModel, schema: Schema, currentModel: Output) {
   if (currentModel === undefined) return;
   //If a simplified property already exist, merge the two
-  if (currentModel[`${propName}`] !== undefined) {
-    currentModel[`${propName}`] = CommonModel.mergeCommonModels(currentModel[`${propName}`], propModel, schema);
+  if (currentModel[String(propName)] !== undefined) {
+    currentModel[String(propName)] = CommonModel.mergeCommonModels(currentModel[String(propName)], propModel, schema);
   } else {
-    currentModel[`${propName}`] = propModel;
+    currentModel[String(propName)] = propModel;
   }
 }
 

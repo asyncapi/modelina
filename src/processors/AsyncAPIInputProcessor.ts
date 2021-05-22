@@ -99,7 +99,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     if (schema.properties() !== null && Object.keys(schema.properties()).length) {
       const properties : {[key: string]: Schema | boolean} = {};
       Object.entries(schema.properties()).forEach(([propertyName, propertySchema]) => {
-        properties[`${propertyName}`] = this.reflectSchemaNames(propertySchema);
+        properties[String(propertyName)] = this.reflectSchemaNames(propertySchema);
       });
       convertedSchema.properties = properties;
     }
@@ -107,9 +107,9 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       const dependencies: { [key: string]: Schema | boolean | string[] } = {};
       Object.entries(schema.dependencies()).forEach(([dependencyName, dependency]) => {
         if (typeof dependency === 'object' && !Array.isArray(dependency)) {
-          dependencies[`${dependencyName}`] = this.reflectSchemaNames(dependency);
+          dependencies[String(dependencyName)] = this.reflectSchemaNames(dependency);
         } else {
-          dependencies[`${dependencyName}`] = dependency as string[];
+          dependencies[String(dependencyName)] = dependency as string[];
         }
       });
       convertedSchema.dependencies = dependencies;
@@ -117,14 +117,14 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     if (schema.patternProperties() !== null && Object.keys(schema.patternProperties()).length) {
       const patternProperties: { [key: string]: Schema | boolean } = {};
       Object.entries(schema.patternProperties()).forEach(([patternPropertyName, patternProperty]) => {
-        patternProperties[`${patternPropertyName}`] = this.reflectSchemaNames(patternProperty);
+        patternProperties[String(patternPropertyName)] = this.reflectSchemaNames(patternProperty);
       });
       convertedSchema.patternProperties = patternProperties;
     }
     if (schema.definitions() !== null && Object.keys(schema.definitions()).length) {
       const definitions: { [key: string]: Schema | boolean } = {};
       Object.entries(schema.definitions()).forEach(([definitionName, definition]) => {
-        definitions[`${definitionName}`] = this.reflectSchemaNames(definition);
+        definitions[String(definitionName)] = this.reflectSchemaNames(definition);
       });
       convertedSchema.definitions = definitions;
     }

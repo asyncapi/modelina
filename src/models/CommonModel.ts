@@ -29,7 +29,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
   getFromSchema<K extends keyof Schema>(key: K) {
     const schema = this.originalSchema || {};
     if (typeof schema === 'boolean') return undefined;
-    return schema[`${key}`];
+    return schema[String(key)];
   }
 
   /**
@@ -147,10 +147,10 @@ export class CommonModel extends CommonSchema<CommonModel> {
         mergeTo.properties = mergeFromProperties;
       } else {
         for (const [propName, prop] of Object.entries(mergeFromProperties)) {
-          if (mergeToProperties[`${propName}`] !== undefined) {
-            mergeToProperties[`${propName}`] = CommonModel.mergeCommonModels(mergeToProperties[`${propName}`], prop, originalSchema, alreadyIteratedModels);
+          if (mergeToProperties[String(propName)] !== undefined) {
+            mergeToProperties[String(propName)] = CommonModel.mergeCommonModels(mergeToProperties[String(propName)], prop, originalSchema, alreadyIteratedModels);
           } else {
-            mergeToProperties[`${propName}`] = prop;
+            mergeToProperties[String(propName)] = prop;
           }
         }
       }
@@ -191,10 +191,10 @@ export class CommonModel extends CommonSchema<CommonModel> {
         mergeTo.patternProperties = mergeFromPatternProperties;
       } else {
         for (const [pattern, patternModel] of Object.entries(mergeFromPatternProperties)) {
-          if (mergeToPatternProperties[`${pattern}`] !== undefined) {
-            mergeToPatternProperties[`${pattern}`] = CommonModel.mergeCommonModels(mergeToPatternProperties[`${pattern}`], patternModel, originalSchema, alreadyIteratedModels);
+          if (mergeToPatternProperties[String(pattern)] !== undefined) {
+            mergeToPatternProperties[String(pattern)] = CommonModel.mergeCommonModels(mergeToPatternProperties[String(pattern)], patternModel, originalSchema, alreadyIteratedModels);
           } else {
-            mergeToPatternProperties[`${pattern}`] = patternModel;
+            mergeToPatternProperties[String(pattern)] = patternModel;
           }
         }
       }

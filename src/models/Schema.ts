@@ -89,9 +89,9 @@ export class Schema extends CommonSchema<Schema | boolean> {
         Object.entries(schema.dependencies).forEach(([propertyName, property]) => {
           //We only care about object dependencies
           if (typeof property === 'object' && !Array.isArray(property)) {
-            dependencies[`${propertyName}`] = Schema.toSchema(property, seenSchemas);
+            dependencies[String(propertyName)] = Schema.toSchema(property, seenSchemas);
           } else {
-            dependencies[`${propertyName}`] = property as string[];
+            dependencies[String(propertyName)] = property as string[];
           }
         });
         schema.dependencies = dependencies;
@@ -114,7 +114,7 @@ export class Schema extends CommonSchema<Schema | boolean> {
       if (schema.definitions !== undefined) {
         const definitions: { [key: string]: Schema | boolean } = {};
         Object.entries(schema.definitions).forEach(([propertyName, property]) => {
-          definitions[`${propertyName}`] = Schema.toSchema(property, seenSchemas);
+          definitions[String(propertyName)] = Schema.toSchema(property, seenSchemas);
         });
         schema.definitions = definitions;
       }
