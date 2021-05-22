@@ -1,6 +1,5 @@
 import {CommonModel} from '../../src/models/CommonModel'; 
 import { Schema } from '../../src/models/Schema';
-
 describe('CommonModel', function() {
   describe('$id', function() {
     test('should return a string', function() {
@@ -158,6 +157,9 @@ describe('CommonModel', function() {
         "recursive": doc2
       }
       doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
+      expect(doc1.properties).not.toBeUndefined();
+      expect(doc1.properties!["recursive"]).not.toBeUndefined();
+      expect(doc1.properties!["recursive"]).toEqual(doc1);
     });
     describe('$id', function() {
       test('should be merged when only right side is defined', function() {
@@ -492,7 +494,83 @@ describe('CommonModel', function() {
       });
     });
   });
-
+  
+  describe('addItem', function() {
+    beforeAll(() => {
+      jest.spyOn(CommonModel, "mergeCommonModels");
+    });
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+    test('should add items to model', function() {
+      const itemModel = new CommonModel();
+      itemModel.$id = "test"; 
+      const model = new CommonModel(); 
+      model.addItem(itemModel, {});
+      expect(model.items).toEqual(itemModel);
+      expect(CommonModel.mergeCommonModels).not.toHaveBeenCalled();
+    });
+    test('should merge items together', function() {
+      const itemModel = new CommonModel();
+      itemModel.$id = "test"; 
+      const model = new CommonModel();
+      model.items = itemModel;
+      model.addItem(itemModel, {});
+      model.addItem(itemModel, {});
+      expect(model.items).toEqual(itemModel);
+      expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, itemModel, itemModel, {});
+    });
+  });
+  describe('addProperty', function() {
+    beforeAll(() => {
+      jest.spyOn(CommonModel, "mergeCommonModels");
+    });
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+    test('should add property to model', function() {
+      const propertyModel = new CommonModel();
+      propertyModel.$id = "test"; 
+      const model = new CommonModel(); 
+      model.addProperty("test", propertyModel, {});
+      expect(model.properties).toEqual({"test": propertyModel});
+      expect(CommonModel.mergeCommonModels).not.toHaveBeenCalled();
+    });
+    test('should merge if already existing property', function() {
+      const propertyModel = new CommonModel();
+      propertyModel.$id = "test"; 
+      const model = new CommonModel(); 
+      model.properties = {
+        "test": propertyModel
+      };
+      model.addProperty("test", propertyModel, {});
+      expect(model.properties).toEqual({"test": propertyModel});
+      expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, propertyModel, propertyModel, {});
+    });
+  });
+  describe('addExtendedModel', function() {
+    test('should extend model', function() {
+      const extendedModel = new CommonModel();
+      extendedModel.$id = "test"; 
+      const model = new CommonModel(); 
+      model.addExtendedModel(extendedModel);
+      expect(model.extend).toEqual(["test"]);
+    });
+    test('should ignore model if it has no $id', function() {
+      const extendedModel = new CommonModel();
+      const model = new CommonModel(); 
+      model.addExtendedModel(extendedModel);
+      expect(model.extend).toBeUndefined();
+    });
+    test('should ignore duplicate model $id', function() {
+      const extendedModel = new CommonModel();
+      extendedModel.$id = "test"; 
+      const model = new CommonModel(); 
+      model.addExtendedModel(extendedModel);
+      model.addExtendedModel(extendedModel);
+      expect(model.extend).toEqual(["test"]);
+    });
+  });
   describe('setTypes', function() {
     test('should set multiple types', function() {
       const model = new CommonModel(); 
@@ -528,27 +606,80 @@ describe('CommonModel', function() {
     });
   });
 
-  describe('addToTypes', function() {
+
+  describe('addAdditionalProperty', function() {
+    beforeAll(() => {
+      jest.spyOn(CommonModel, "mergeCommonModels");
+    });
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+    test('should add additionalProperties to model', function() {
+      const additionalPropertiesModel = new CommonModel();
+      additionalPropertiesModel.$id = "test"; 
+      const model = new CommonModel(); 
+      model.addAdditionalProperty(additionalPropertiesModel, {});
+      expect(model.additionalProperties).toEqual(additionalPropertiesModel);
+      expect(CommonModel.mergeCommonModels).not.toHaveBeenCalled();
+    });
+    test('should merge additionalProperties together', function() {
+      const additionalPropertiesModel = new CommonModel();
+      additionalPropertiesModel.$id = "test"; 
+      const model = new CommonModel(); 
+      model.addAdditionalProperty(additionalPropertiesModel, {});
+      model.addAdditionalProperty(additionalPropertiesModel, {});
+      expect(model.additionalProperties).toEqual(additionalPropertiesModel);
+      expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, additionalPropertiesModel, additionalPropertiesModel, {});
+    });
+  });
+  describe('addPatternProperty', function() {
+    beforeAll(() => {
+      jest.spyOn(CommonModel, "mergeCommonModels");
+    });
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+    test('should add patternProperty to model', function() {
+      const patternPropertyModel = new CommonModel();
+      const pattern = "TestPattern";
+      patternPropertyModel.$id = "test"; 
+      const model = new CommonModel(); 
+      model.addPatternProperty(pattern, patternPropertyModel, {});
+      expect(model.patternProperties).toEqual({"TestPattern": patternPropertyModel});
+      expect(CommonModel.mergeCommonModels).not.toHaveBeenCalled();
+    });
+    test('should merge additionalProperties together', function() {
+      const patternPropertyModel = new CommonModel();
+      const pattern = "TestPattern";
+      patternPropertyModel.$id = "test"; 
+      const model = new CommonModel(); 
+      model.addPatternProperty(pattern, patternPropertyModel, {});
+      model.addPatternProperty(pattern, patternPropertyModel, {});
+      expect(model.patternProperties).toEqual({"TestPattern": patternPropertyModel});
+      expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, patternPropertyModel, patternPropertyModel, {});
+    });
+  });
+  describe('addTypes', function() {
     test('should add multiple types', function() {
       const model = new CommonModel(); 
-      model.addToTypes(['type1', 'type2']);
+      model.addTypes(['type1', 'type2']);
       expect(model.type).toEqual(['type1', 'type2']);
     });
     test('should add type as is', function() {
       const model = new CommonModel(); 
-      model.addToTypes('type');
+      model.addTypes('type');
       expect(model.type).toEqual('type');
     });
     test('should add type to existing type', function() {
       const model = new CommonModel(); 
       model.type = ['type1'];
-      model.addToTypes('type2');
+      model.addTypes('type2');
       expect(model.type).toEqual(['type1', 'type2']);
     });
     test('should set an array when adding two types', function() {
       const model = new CommonModel(); 
-      model.addToTypes('type1');
-      model.addToTypes('type2');
+      model.addTypes('type1');
+      model.addTypes('type2');
       expect(model.type).toEqual(['type1', 'type2']);
     });
   });

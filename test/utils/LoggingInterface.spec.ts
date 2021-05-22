@@ -1,4 +1,4 @@
-import {ModelLoggingInterface, Logger} from '../../src/utils'; 
+import {ModelLoggingInterface, Logger} from '../../src'; 
 
 describe('LoggingInterface', function() {
   test('should work when no logging interface have been defined', function() {
