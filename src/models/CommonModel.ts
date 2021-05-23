@@ -279,7 +279,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
         mergeTo.patternProperties = mergeFromPatternProperties;
       } else {
         for (const [pattern, patternModel] of Object.entries(mergeFromPatternProperties)) {
-          if (mergeToPatternProperties[`${pattern}`] !== undefined) {
+          if (mergeToPatternProperties[String(pattern)] !== undefined) {
             Logger.warn(`Found duplicate pattern ${pattern} for model. Model pattern for ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalSchema);
             mergeToPatternProperties[String(pattern)] = CommonModel.mergeCommonModels(mergeToPatternProperties[String(pattern)], patternModel, originalSchema, alreadyIteratedModels);
           } else {
