@@ -3,6 +3,7 @@ import { Logger } from '../utils';
 import { CommonModel } from '../models/CommonModel';
 import { Schema } from '../models/Schema';
 import { Interpreter } from './Interpreter';
+
 /**
  * Interpreter function for JSON Schema draft 7 not keyword.
  *   
@@ -19,7 +20,7 @@ export default function interpretNot(schema: Schema, model: CommonModel, interpr
     model.removeEnum(notSchema.enum);
     model.removeEnum(notSchema.const);
 
-    //Nested not schemas works as a regular schema where it imply models
+    //Nested not schemas works as a regular schema where it imply model properties
     if (notSchema.not !== undefined) {
       const nestedNotModels = interpreter.interpret(notSchema.not, false);
       if (nestedNotModels.length > 0) {

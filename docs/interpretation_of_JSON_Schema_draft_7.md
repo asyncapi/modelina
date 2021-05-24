@@ -7,7 +7,7 @@ The algorithm tries to get to a model whose data can be validated against the JS
 We only provide the underlying structure of the schema file for the model formats such as `maxItems`, `uniqueItems`, `multipleOf`, etc, are not transformed.
 
 ## Interpreter 
-The main functionality is located in the `Interpreter` class. This class ensures to recursively create (or retrieve from a cache) a `CommonModel` representation of a Schema. We have tried to keep the functionality split out into separate functions to reduce complexity and ensure it is easier to maintain. This main function also ensures to split any created models into separate ones if needed.
+The main functionality is located in the `Interpreter` class. This class ensures to recursively create (or retrieve from a cache) a `CommonModel` representation of a Schema. We have tried to keep the functionality split out into separate functions to reduce complexity and ensure it is easy to maintain. This main function also ensures to split any created models into separate ones if needed.
 
 The order of transformation:
 - [type](#determining-the-type-for-the-model)
@@ -20,6 +20,12 @@ The order of transformation:
 - `additionalProperties` are interpreted as is, where duplicate additionalProperties for the model are merged together. If the schema does not define additionalProperties it defaults to `true` schema.
 - `patternProperties` are interpreted as is, where duplicate patterns for the model are merged together.
 - [oneOf/anyOf/then/else](#Processing-sub-schemas)
+- [not](#processing-not-schemas)
+
+## Not schemas
+`not` schemas infer the form for which the model properties should not take. 
+
+If the interpreter encounter nested `not` schema it interprets that schema as usual and merge it together with the current interpreted model. 
 
 ## allOf sub schemas
 `allOf` are a bit different then the other [combination keywords](#Processing-sub-schemas) since it can imply inheritance. 
