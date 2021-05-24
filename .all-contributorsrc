@@ -65,6 +65,15 @@
       "contributions": [
         "review"
       ]
+    },
+    {
+      "login": "arjungarg07",
+      "name": "Arjun Garg",
+      "avatar_url": "https://avatars.githubusercontent.com/u/53009722?v=4",
+      "profile": "https://github.com/arjungarg07",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
