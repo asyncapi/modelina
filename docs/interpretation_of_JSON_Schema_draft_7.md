@@ -11,13 +11,14 @@ The main functionality is located in the `Interpreter` class. This class ensures
 
 The order of transformation:
 - [type](#determining-the-type-for-the-model)
-- `required` are determined as is.
-- `properties` are determined as is, where duplicate properties for the model are merged.
+- `required` are interpreted as is.
+- `properties` are interpreted as is, where duplicate properties for the model are merged.
 - [allOf](#allOf-sub-schemas)
-- `const` overwrite already interpreted `enums`.
-- `items` are determined as is, where more then 1 item are merged.
-- `additionalProperties` are determined as is, where duplicate additionalProperties for the model are merged together. If the schema does not define additionalProperties it defaults to `true` schema.
-- `patternProperties` are determined as is, where duplicate patterns for the model are merged together.
+- `enum` are interpreted as is, where each `enums`.
+- `const` interpretation overwrite already interpreted `enums`.
+- `items` are interpreted as is, where more then 1 item are merged.
+- `additionalProperties` are interpreted as is, where duplicate additionalProperties for the model are merged together. If the schema does not define additionalProperties it defaults to `true` schema.
+- `patternProperties` are interpreted as is, where duplicate patterns for the model are merged together.
 - [oneOf/anyOf/then/else](#Processing-sub-schemas)
 
 ## allOf sub schemas
@@ -30,7 +31,8 @@ To determine the types for the model we use the following interpretation (and in
 - `true` schema infers all model types (`object`, `string`, `number`, `array`, `boolean`, `null`, `integer`).
 - Usage of `type` infers the initial model type.
 - Usage of `properties` infers `object` model type.
-- Usage of `const` infers the constant value as type, if schema does not have `type` specified.
+- Usage of `const` infers the constant value as type if schema does not have `type` specified.
+- Usage of `enum` infers the enum values as type if schema does not have `type` specified.
 
 ## Processing sub schemas
 The following JSON Schema keywords are merged with the already interpreted model:

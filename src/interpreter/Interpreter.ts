@@ -4,6 +4,7 @@ import { interpretName, isModelObject } from './Utils';
 import interpretProperties from './InterpretProperties';
 import interpretAllOf from './InterpretAllOf';
 import interpretConst from './InterpretConst';
+import interpretEnum from './InterpretEnum';
 import interpretAdditionalProperties from './InterpretAdditionalProperties';
 import interpretItems from './InterpretItems';
 import interpretPatternProperties from './InterpretPatternProperties';
@@ -89,6 +90,7 @@ export class Interpreter {
       interpretProperties(schema, model, this);
       interpretAllOf(schema, model, this);
       interpretConst(schema, model);
+      interpretEnum(schema, model);
 
       this.combineSchemas(schema.oneOf, model, schema);
       this.combineSchemas(schema.anyOf, model, schema);

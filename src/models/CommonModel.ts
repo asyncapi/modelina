@@ -30,7 +30,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
   getFromSchema<K extends keyof Schema>(key: K) {
     const schema = this.originalSchema || {};
     if (typeof schema === 'boolean') return undefined;
-    return schema[`${key}`];
+    return schema[String(key)];
   }
 
   /**
@@ -116,6 +116,20 @@ export class CommonModel extends CommonSchema<CommonModel> {
       this.items = CommonModel.mergeCommonModels(this.items as CommonModel, itemModel, schema);
     } else {
       this.items = itemModel;
+    }
+  }
+
+  /**
+   * Add enum value to the model.
+   * 
+   * Ensures no duplicates are added.
+   * 
+   * @param enumValue 
+   */
+  addEnum(enumValue: any) {
+    if (this.enum === undefined) this.enum = [];
+    if (!this.enum.includes(enumValue)) {
+      this.enum.push(enumValue);
     }
   }
 
@@ -257,7 +271,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
             Logger.warn(`Found duplicate properties ${propName} for model. Model property from ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalSchema);
             mergeToProperties[`${propName}`] = CommonModel.mergeCommonModels(mergeToProperties[`${propName}`], prop, originalSchema, alreadyIteratedModels);
           } else {
-            mergeToProperties[`${propName}`] = prop;
+            mergeToProperties[String(propName)] = prop;
           }
         }
       }
@@ -299,11 +313,11 @@ export class CommonModel extends CommonSchema<CommonModel> {
         mergeTo.patternProperties = mergeFromPatternProperties;
       } else {
         for (const [pattern, patternModel] of Object.entries(mergeFromPatternProperties)) {
-          if (mergeToPatternProperties[`${pattern}`] !== undefined) {
+          if (mergeToPatternProperties[String(pattern)] !== undefined) {
             Logger.warn(`Found duplicate pattern ${pattern} for model. Model pattern for ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalSchema);
-            mergeToPatternProperties[`${pattern}`] = CommonModel.mergeCommonModels(mergeToPatternProperties[`${pattern}`], patternModel, originalSchema, alreadyIteratedModels);
+            mergeToPatternProperties[String(pattern)] = CommonModel.mergeCommonModels(mergeToPatternProperties[String(pattern)], patternModel, originalSchema, alreadyIteratedModels);
           } else {
-            mergeToPatternProperties[`${pattern}`] = patternModel;
+            mergeToPatternProperties[String(pattern)] = patternModel;
           }
         }
       }

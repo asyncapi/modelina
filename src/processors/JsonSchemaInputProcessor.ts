@@ -95,13 +95,13 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
 
     schema = Object.assign({}, schema);
     if (isRoot) {
-      namesStack[`${name}`] = 0;
+      namesStack[String(name)] = 0;
       schema[this.MODELGEN_INFFERED_NAME] = name;
       name = '';
     } else if (name && !schema[this.MODELGEN_INFFERED_NAME]) {
-      let occurrence = namesStack[`${name}`];
+      let occurrence = namesStack[String(name)];
       if (occurrence === undefined) {
-        namesStack[`${name}`] = 0;
+        namesStack[String(name)] = 0;
       } else {
         occurrence++;
       }
@@ -159,7 +159,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     if (schema.properties !== undefined) {
       const properties : {[key: string]: Schema | boolean} = {};
       Object.entries(schema.properties).forEach(([propertyName, propertySchema]) => {
-        properties[`${propertyName}`] = this.reflectSchemaNames(propertySchema, namesStack, this.ensureNamePattern(name, propertyName));
+        properties[String(propertyName)] = this.reflectSchemaNames(propertySchema, namesStack, this.ensureNamePattern(name, propertyName));
       });
       schema.properties = properties;
     }
@@ -167,9 +167,9 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       const dependencies: { [key: string]: Schema | boolean | string[] } = {};
       Object.entries(schema.dependencies).forEach(([dependencyName, dependency]) => {
         if (typeof dependency === 'object' && !Array.isArray(dependency)) {
-          dependencies[`${dependencyName}`] = this.reflectSchemaNames(dependency, namesStack, this.ensureNamePattern(name, dependencyName));
+          dependencies[String(dependencyName)] = this.reflectSchemaNames(dependency, namesStack, this.ensureNamePattern(name, dependencyName));
         } else {
-          dependencies[`${dependencyName}`] = dependency as string[];
+          dependencies[String(dependencyName)] = dependency as string[];
         }
       });
       schema.dependencies = dependencies;
@@ -177,14 +177,14 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     if (schema.patternProperties !== undefined) {
       const patternProperties: { [key: string]: Schema | boolean } = {};
       Object.entries(schema.patternProperties).forEach(([patternPropertyName, patternProperty], idx) => {
-        patternProperties[`${patternPropertyName}`] = this.reflectSchemaNames(patternProperty, namesStack, this.ensureNamePattern(name, 'pattern_property', idx));
+        patternProperties[String(patternPropertyName)] = this.reflectSchemaNames(patternProperty, namesStack, this.ensureNamePattern(name, 'pattern_property', idx));
       });
       schema.patternProperties = patternProperties;
     }
     if (schema.definitions !== undefined) {
       const definitions: { [key: string]: Schema | boolean } = {};
       Object.entries(schema.definitions).forEach(([definitionName, definition]) => {
-        definitions[`${definitionName}`] = this.reflectSchemaNames(definition, namesStack, this.ensureNamePattern(name, definitionName));
+        definitions[String(definitionName)] = this.reflectSchemaNames(definition, namesStack, this.ensureNamePattern(name, definitionName));
       });
       schema.definitions = definitions;
     }
