@@ -100,6 +100,20 @@ export class CommonModel extends CommonSchema<CommonModel> {
   }
 
   /**
+   * Add enum value to the model.
+   * 
+   * Ensures no duplicates are added.
+   * 
+   * @param enumValue 
+   */
+  addEnum(enumValue: any) {
+    if (this.enum === undefined) this.enum = [];
+    if (!this.enum.includes(enumValue)) {
+      this.enum.push(enumValue);
+    }
+  }
+
+  /**
    * Adds a property to the model.
    * If the property already exist the two are merged.
    * 
