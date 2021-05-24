@@ -10,7 +10,7 @@
 
 [![Coverage Status](https://coveralls.io/repos/github/asyncapi/generator-model-sdk/badge.svg?branch=master)](https://coveralls.io/github/asyncapi/generator-model-sdk?branch=master)
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 AsyncAPI Model SDK is a set of classes/functions for generating data models from JSON Schema and AsyncAPI spec.
@@ -168,6 +168,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/smoya"><img src="https://avatars.githubusercontent.com/u/1083296?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Sergio Moya</b></sub></a><br /><a href="https://github.com/asyncapi/generator-model-sdk/issues?q=author%3Asmoya" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/jonaslagoni"><img src="https://avatars.githubusercontent.com/u/13396189?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jonas Lagoni</b></sub></a><br /><a href="https://github.com/asyncapi/generator-model-sdk/issues?q=author%3Ajonaslagoni" title="Bug reports">🐛</a> <a href="https://github.com/asyncapi/generator-model-sdk/commits?author=jonaslagoni" title="Code">💻</a> <a href="https://github.com/asyncapi/generator-model-sdk/commits?author=jonaslagoni" title="Documentation">📖</a> <a href="#ideas-jonaslagoni" title="Ideas, Planning, & Feedback">🤔</a> <a href="#maintenance-jonaslagoni" title="Maintenance">🚧</a> <a href="#question-jonaslagoni" title="Answering Questions">💬</a> <a href="https://github.com/asyncapi/generator-model-sdk/commits?author=jonaslagoni" title="Tests">⚠️</a> <a href="https://github.com/asyncapi/generator-model-sdk/pulls?q=is%3Apr+reviewed-by%3Ajonaslagoni" title="Reviewed Pull Requests">👀</a></td>
     <td align="center"><a href="https://dev.to/derberg"><img src="https://avatars.githubusercontent.com/u/6995927?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Lukasz Gornicki</b></sub></a><br /><a href="https://github.com/asyncapi/generator-model-sdk/pulls?q=is%3Apr+reviewed-by%3Aderberg" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://github.com/arjungarg07"><img src="https://avatars.githubusercontent.com/u/53009722?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Arjun Garg</b></sub></a><br /><a href="https://github.com/asyncapi/generator-model-sdk/commits?author=arjungarg07" title="Code">💻</a></td>
   </tr>
 </table>
 
