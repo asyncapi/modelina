@@ -201,11 +201,14 @@ export class CommonModel extends CommonSchema<CommonModel> {
         dependsOn.push(extendedSchema);
       }
     }
-    if (this.items instanceof CommonModel) {
-      const itemsRef = (this.items as CommonModel).$ref;
-      if (itemsRef !== undefined) {
-        dependsOn.push(itemsRef);
-      }
+    if (this.items !== undefined) {
+      const items = Array.isArray(this.items) ? this.items : [this.items];
+      items.forEach((item) => {
+        const itemRef = item.$ref;
+        if (itemRef !== undefined) {
+          dependsOn.push(itemRef);
+        }
+      });
     }
     if (this.properties !== undefined && Object.keys(this.properties).length) {
       const referencedProperties = Object.values(this.properties)

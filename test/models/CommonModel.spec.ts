@@ -720,6 +720,11 @@ describe('CommonModel', function() {
     });
 
     describe('getImmediateDependencies', function() {
+      test('should work with array of items', function() {
+        const doc = { items: [{ $ref: "1" }] };
+        const d = CommonModel.toCommonModel(doc);
+        expect(d.getImmediateDependencies()).toEqual(["1"]);
+      });
       test('check that all dependencies are returned', function() {
         const doc = { additionalProperties: { $ref: "1" }, extend: ["2"], items: { $ref: "3" }, properties: { testProp: { $ref: "4" } }  };
         const d = CommonModel.toCommonModel(doc);
