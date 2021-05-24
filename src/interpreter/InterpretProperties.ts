@@ -15,9 +15,8 @@ export default function interpretProperties(schema: Schema, model: CommonModel, 
   
   for (const [propertyName, propertySchema] of Object.entries(schema.properties)) {
     const propertyModels = interpreter.interpret(propertySchema);
-    if (propertyModels.length > 0) {
+    if (propertyModels.length > 0) 
       model.addProperty(propertyName, propertyModels[0], schema);
-    }
   }
 }
 

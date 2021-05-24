@@ -35,14 +35,13 @@ export class Simplifier {
   simplify(schema: Schema | boolean): CommonModel[] {
     if (typeof schema !== 'boolean' && this.seenSchemas.has(schema)) {
       const cachedModel = this.seenSchemas.get(schema); 
-      if (cachedModel !== undefined) {
+      if (cachedModel !== undefined) 
         return [cachedModel];
-      }
     }
     //If it is a false validation schema return no common model
-    if (schema === false) {
+    if (schema === false) 
       return [];
-    }
+    
     const model = new CommonModel();
     model.originalSchema = Schema.toSchema(schema);
     model.type = simplifyTypes(schema);
@@ -52,14 +51,14 @@ export class Simplifier {
     }
     this.ensureModelsAreSplit(model);
     //Ensure current model is not part of the iterated list since we could have circular schemas
-    if (this.iteratedModels[String(model.$id)] !== undefined) {
+    if (this.iteratedModels[String(model.$id)] !== undefined) 
       delete this.iteratedModels[String(model.$id)];
-    }
+    
     const modelsToReturn = Object.values(this.iteratedModels);
     //Add models to ensure we remember which has been iterated 
-    if (isModelObject(model)) {
+    if (isModelObject(model)) 
       this.iteratedModels[String(model.$id)] = model;
-    }
+    
     return [model, ...modelsToReturn];
   }
 
@@ -71,46 +70,38 @@ export class Simplifier {
    */
   private simplifyModel(model: CommonModel, schema: Schema) {
     //All schemas of type object MUST have ids, for now lets make it simple
-    if (model.type !== undefined && model.type.includes('object')) {
+    if (model.type !== undefined && model.type.includes('object')) 
       model.$id = simplifyName(schema) || `anonymSchema${this.anonymCounter++}`;
-    } else if (schema.$id !== undefined) {
+    else if (schema.$id !== undefined) 
       model.$id = simplifyName(schema);
-    }
 
     const simplifiedItems = simplifyItems(schema, this);
-    if (simplifiedItems !== undefined) {
+    if (simplifiedItems !== undefined) 
       model.items = simplifiedItems;
-    }
 
     const simplifiedProperties = simplifyProperties(schema, this);
-    if (simplifiedProperties !== undefined) {
+    if (simplifiedProperties !== undefined) 
       model.properties = simplifiedProperties;
-    }
 
     const simplifiedPatternProperties = simplifyPatternProperties(schema, this);
-    if (simplifiedPatternProperties !== undefined) {
+    if (simplifiedPatternProperties !== undefined) 
       model.patternProperties = simplifiedPatternProperties;
-    }
 
     const simplifiedAdditionalProperties = simplifyAdditionalProperties(schema, this, model);
-    if (simplifiedAdditionalProperties !== undefined) {
+    if (simplifiedAdditionalProperties !== undefined) 
       model.additionalProperties = simplifiedAdditionalProperties;
-    }
 
     const simplifiedExtends = simplifyExtend(schema, this);
-    if (simplifiedExtends !== undefined) {
+    if (simplifiedExtends !== undefined) 
       model.extend = simplifiedExtends;
-    }
 
     const enums = simplifyEnums(schema);
-    if (enums !== undefined && enums.length > 0) {
+    if (enums !== undefined && enums.length > 0) 
       model.enum = enums;
-    }
 
     const required = simplifyRequired(schema);
-    if (required !== undefined) {
+    if (required !== undefined) 
       model.required = required;
-    }
   }
 
   /**
@@ -138,9 +129,8 @@ export class Simplifier {
   private ensureModelsAreSplit(model: CommonModel) {
     if (model.properties) {
       const existingProperties = model.properties;
-      for (const [prop, propSchema] of Object.entries(existingProperties)) {
+      for (const [prop, propSchema] of Object.entries(existingProperties)) 
         model.properties[String(prop)] = this.splitModels(propSchema);
-      }
     }
     if (model.items) {
       const existingItem = model.items;
@@ -152,9 +142,8 @@ export class Simplifier {
     }
     if (model.patternProperties) {
       const existingPatternProperties = model.patternProperties;
-      for (const [pattern, patternModel] of Object.entries(existingPatternProperties)) {
+      for (const [pattern, patternModel] of Object.entries(existingPatternProperties)) 
         model.patternProperties[String(pattern)] = this.splitModels(patternModel);
-      }
     }
   }
 }

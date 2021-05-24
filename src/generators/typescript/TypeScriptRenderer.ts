@@ -20,25 +20,25 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
   }
 
   renderType(model: CommonModel | CommonModel[]): string {
-    if (Array.isArray(model)) {
+    if (Array.isArray(model)) 
       return model.map(t => this.renderType(t)).join(' | ');
-    }
-    if (model.enum !== undefined) {
+    
+    if (model.enum !== undefined) 
       return model.enum.map(value => typeof value === 'string' ? `"${value}"` : value).join(' | ');
-    }
-    if (model.$ref !== undefined) {
+    
+    if (model.$ref !== undefined) 
       return FormatHelpers.toPascalCase(model.$ref);
-    }
-    if (Array.isArray(model.type)) {
+    
+    if (Array.isArray(model.type)) 
       return model.type.map(t => this.toTsType(t, model)).join(' | ');
-    }
+    
     return this.toTsType(model.type, model);
   }
 
   toTsType(type: string | undefined, model: CommonModel): string {
-    if (type === undefined) {
+    if (type === undefined) 
       return 'any';
-    }
+    
     switch (type) { 
     case 'string':
       return 'string';
@@ -62,9 +62,8 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
     isRequired?: boolean;
     orUndefined?: boolean;
   } = {}): string {
-    if (this.options.renderTypes === false) {
+    if (this.options.renderTypes === false) 
       return '';
-    }
 
     const annotation = isRequired ? ':' : '?:';
     let t = this.renderType(type);

@@ -67,9 +67,8 @@ export class FormatHelpers {
    * @returns {string}
    */
   static indent(content = '', size = 1, type: IndentationTypes = IndentationTypes.SPACES): string {
-    if (size < 1) {
+    if (size < 1) 
       return content;
-    }
 
     // if the content includes new lines ensure that they have the added indentation as well.
     if (content.includes('\n')) {
@@ -104,16 +103,15 @@ export class FormatHelpers {
     let renderedExamples = '';
     if (Array.isArray(examples)) {
       examples.forEach(example => {
-        if (renderedExamples !== '') {renderedExamples += ', ';}
+        if (renderedExamples !== '') renderedExamples += ', ';
         if (typeof example === 'object') {
           try {
             renderedExamples += JSON.stringify(example);
           } catch (ignore) {
             renderedExamples += example;
           }
-        } else {
+        } else 
           renderedExamples += example;
-        }
       });
     }
     return renderedExamples;

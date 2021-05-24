@@ -23,11 +23,10 @@ export class CommonSchema<T> {
      */
     static transformSchema<T extends CommonSchema<T | boolean>>(schema: T, transformationSchemaCallback: (object: T | boolean, seenSchemas: Map<any, T>) => T | boolean, seenSchemas: Map<any, T> = new Map()) : T {
       if (schema.items !== undefined) {
-        if (Array.isArray(schema.items)) {
+        if (Array.isArray(schema.items)) 
           schema.items = schema.items.map((item) => transformationSchemaCallback(item, seenSchemas));
-        } else {
+        else 
           schema.items = transformationSchemaCallback(schema.items, seenSchemas);
-        }
       }
       if (schema.properties !== undefined) {
         const properties : {[key: string]: T | boolean} = {};
@@ -37,9 +36,9 @@ export class CommonSchema<T> {
         schema.properties = properties;
       }
       if (typeof schema.additionalProperties === 'object' && 
-            schema.additionalProperties !== undefined) {
+            schema.additionalProperties !== undefined) 
         schema.additionalProperties = transformationSchemaCallback(schema.additionalProperties, seenSchemas);
-      }
+      
       if (typeof schema.patternProperties === 'object' && 
             schema.patternProperties !== undefined) {
         const patternProperties : {[key: string]: T | boolean} = {};

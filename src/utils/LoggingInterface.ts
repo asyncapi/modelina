@@ -18,24 +18,20 @@ export class LoggerClass implements ModelLoggingInterface {
   private logger?: ModelLoggingInterface = undefined;
 
   debug(message?: any, ...optionalParams: any[]): void {
-    if (this.logger) {
+    if (this.logger) 
       this.logger.debug(message, ...optionalParams);
-    }
   }
   info(message?: any, ...optionalParams: any[]): void {
-    if (this.logger) {
+    if (this.logger) 
       this.logger.info(message, ...optionalParams);
-    }
   }
   warn(message?: any, ...optionalParams: any[]): void {
-    if (this.logger) {
+    if (this.logger) 
       this.logger.warn(message, ...optionalParams);
-    }
   }
   error(message?: any, ...optionalParams: any[]): void {
-    if (this.logger) {
+    if (this.logger) 
       this.logger.error(message, ...optionalParams);
-    }
   }
 
   /**

@@ -26,13 +26,11 @@ export default function interpretItems(schema: Schema, model: CommonModel, inter
  */
 function interpretArrayItems(rootSchema: Schema, itemSchemas: (Schema | boolean)[] | (Schema | boolean), model: CommonModel, interpreter : Interpreter) {
   if (Array.isArray(itemSchemas)) {
-    for (const itemSchema of itemSchemas) {
+    for (const itemSchema of itemSchemas) 
       interpretArrayItems(rootSchema, itemSchema, model, interpreter);
-    }
   } else {
     const itemModels = interpreter.interpret(itemSchemas);
-    if (itemModels.length > 0) {
+    if (itemModels.length > 0) 
       model.addItem(itemModels[0], rootSchema);
-    }
   }
 }

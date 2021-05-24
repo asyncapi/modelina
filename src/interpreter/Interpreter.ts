@@ -39,23 +39,21 @@ export class Interpreter {
     const modelsToReturn = Object.values(this.iteratedModels);
     if (this.seenSchemas.has(schema)) {
       const cachedModel = this.seenSchemas.get(schema); 
-      if (cachedModel !== undefined) {
+      if (cachedModel !== undefined) 
         return [cachedModel, ...modelsToReturn];
-      }
     }
     //If it is a false validation schema return no CommonModel
-    if (schema === false) {
+    if (schema === false) 
       return [];
-    } 
+     
     const model = new CommonModel();
     model.originalSchema = Schema.toSchema(schema);
     this.seenSchemas.set(schema, model);
     this.interpretSchema(model, schema);
     if (splitModels) {
       this.ensureModelsAreSplit(model);
-      if (isModelObject(model)) {
+      if (isModelObject(model)) 
         this.iteratedModels[`${model.$id}`] = model;
-      }
     }
     return [model, ...modelsToReturn];
   }
@@ -67,19 +65,17 @@ export class Interpreter {
    * @param schema 
    */
   private interpretSchema(model: CommonModel, schema: Schema | boolean) {
-    if (schema === true) {
+    if (schema === true) 
       model.setType(['object', 'string', 'number', 'array', 'boolean', 'null', 'integer']);
-    } else if (typeof schema === 'object') {
-      if (schema.type !== undefined) {
+    else if (typeof schema === 'object') {
+      if (schema.type !== undefined) 
         model.addTypes(schema.type);
-      }
 
       //All schemas of type object MUST have ids
-      if (model.type !== undefined && model.type.includes('object')) {
+      if (model.type !== undefined && model.type.includes('object')) 
         model.$id = interpretName(schema) || `anonymSchema${this.anonymCounter++}`;
-      } else if (schema.$id !== undefined) {
+      else if (schema.$id !== undefined) 
         model.$id = interpretName(schema);
-      }
 
       model.required = schema.required || model.required;
       
@@ -112,9 +108,8 @@ export class Interpreter {
       });
     } else {
       const models = this.interpret(schema, false);
-      if (models.length > 0) {
+      if (models.length > 0) 
         CommonModel.mergeCommonModels(currentModel, models[0], rootSchema);
-      }
     }
   }
 
@@ -145,9 +140,8 @@ export class Interpreter {
     // eslint-disable-next-line sonarjs/no-collapsible-if
     if (model.properties) {
       const existingProperties = model.properties;
-      for (const [prop, propSchema] of Object.entries(existingProperties)) {
+      for (const [prop, propSchema] of Object.entries(existingProperties)) 
         model.properties[`${prop}`] = this.splitModels(propSchema);
-      }
     }
   }
 }

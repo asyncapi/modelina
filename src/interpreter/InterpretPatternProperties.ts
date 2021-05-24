@@ -13,8 +13,7 @@ export default function interpretPatternProperties(schema: Schema | boolean, mod
   if (typeof schema === 'boolean') return;
   for (const [pattern, patternSchema] of Object.entries(schema.patternProperties || {})) {
     const newModels = interpreter.interpret(patternSchema);
-    if (newModels.length > 0) {
+    if (newModels.length > 0) 
       model.addPatternProperty(pattern, newModels[0], schema);
-    }
   }
 }

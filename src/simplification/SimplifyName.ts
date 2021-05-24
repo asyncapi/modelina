@@ -6,7 +6,6 @@ import { Schema } from '../models/Schema';
  * @param schema to find the name
  */
 export default function simplifyName(schema: Schema | boolean): string | undefined {
-  if (typeof schema === 'object') {
+  if (typeof schema === 'object') 
     return schema.title || schema.$id || schema['x-modelgen-inferred-name'];
-  }
 }

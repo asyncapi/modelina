@@ -19,9 +19,8 @@ export default function simplifyProperties(schema: Schema | boolean, simplifier 
   
     for (const [prop, propSchema] of Object.entries(schema.properties || {})) {
       const newModels = simplifier.simplify(propSchema);
-      if (newModels.length > 0) {
+      if (newModels.length > 0) 
         addToProperty(prop, newModels[0], schema, output);
-      }
     }
 
     //If we encounter combination schemas ensure we recursively find the properties
@@ -52,11 +51,10 @@ export default function simplifyProperties(schema: Schema | boolean, simplifier 
 function addToProperty(propName: string, propModel: CommonModel, schema: Schema, currentModel: Output) {
   if (currentModel === undefined) return;
   //If a simplified property already exist, merge the two
-  if (currentModel[String(propName)] !== undefined) {
+  if (currentModel[String(propName)] !== undefined) 
     currentModel[String(propName)] = CommonModel.mergeCommonModels(currentModel[String(propName)], propModel, schema);
-  } else {
+  else 
     currentModel[String(propName)] = propModel;
-  }
 }
 
 /**
@@ -77,9 +75,8 @@ function combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | unde
   } else {
     const props = simplifyProperties(schema, simplifier, seenSchemas);
     if (props !== undefined) {
-      for (const [prop, propSchema] of Object.entries(props)) {
+      for (const [prop, propSchema] of Object.entries(props)) 
         addToProperty(prop, propSchema, rootSchema, currentModel);
-      }
     }
   }
 }

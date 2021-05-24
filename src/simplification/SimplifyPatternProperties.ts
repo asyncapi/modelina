@@ -16,9 +16,8 @@ export default function simplifyPatternProperties(schema: Schema | boolean, simp
   
     for (const [pattern, patternSchema] of Object.entries(schema.patternProperties || {})) {
       const newModels = simplifier.simplify(patternSchema);
-      if (newModels.length > 0) {
+      if (newModels.length > 0) 
         addToPatterns(pattern, newModels[0], schema, output);
-      }
     }
 
     //If we encounter combination schemas ensure we recursively find the properties
@@ -48,11 +47,10 @@ export default function simplifyPatternProperties(schema: Schema | boolean, simp
 function addToPatterns(pattern: string, patternModel: CommonModel, schema: Schema, currentModel: Output) {
   if (currentModel === undefined) return;
   //If the pattern already exist, merge the two
-  if (currentModel[String(pattern)] !== undefined) {
+  if (currentModel[String(pattern)] !== undefined) 
     currentModel[String(pattern)] = CommonModel.mergeCommonModels(currentModel[String(pattern)], patternModel, schema);
-  } else {
+  else 
     currentModel[String(pattern)] = patternModel;
-  }
 }
 /**
  * Go through schema(s) and combine the simplified properties together.
@@ -72,9 +70,8 @@ function combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | unde
   } else {
     const patternProperties = simplifyPatternProperties(schema, simplifier, seenSchemas);
     if (patternProperties !== undefined) {
-      for (const [pattern, patternSchema] of Object.entries(patternProperties)) {
+      for (const [pattern, patternSchema] of Object.entries(patternProperties)) 
         addToPatterns(pattern, patternSchema, rootSchema, currentModel);
-      }
     }
   }
 }
