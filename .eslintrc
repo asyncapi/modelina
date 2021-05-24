@@ -4,7 +4,8 @@
   "plugins": [
     "@typescript-eslint",
     "sonarjs",
-    "security"
+    "security",
+    "github"
   ],
   "extends": [
     "eslint:recommended",
@@ -15,6 +16,7 @@
   ],
   "rules": {
     "strict": 0,
+    "github/array-foreach": 2,
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "sonarjs/no-small-switch": "off",
