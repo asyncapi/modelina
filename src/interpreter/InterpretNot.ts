@@ -14,10 +14,12 @@ export default function interpretNot(schema: Schema, model: CommonModel, interpr
   if (schema.not === undefined) return;
   if (typeof schema.not === 'object') {
     const notSchema = schema.not;
-    if (notSchema.type !== undefined) model.removeType(notSchema.type);
-    inferNotEnums(notSchema, model);
 
-    //Nested not schemas works as a regular schema
+    if (notSchema.type !== undefined) model.removeType(notSchema.type);
+    model.removeEnum(notSchema.enum);
+    model.removeEnum(notSchema.const);
+
+    //Nested not schemas works as a regular schema where it imply models
     if (notSchema.not !== undefined) {
       const nestedNotModels = interpreter.interpret(notSchema.not, false);
       if (nestedNotModels.length > 0) {
@@ -26,24 +28,5 @@ export default function interpretNot(schema: Schema, model: CommonModel, interpr
     }
   } else if (schema.not === true) {
     Logger.warn(`Encountered true not schema. Which rejects everything for ${model.$id}. This schema are not applied!`, schema);
-  }
-}
-
-/**
- * Infer all enums which the model should NOT contain.
- * 
- * @param notSchema
- * @param model current simplified model
- */
-function inferNotEnums(notSchema: Schema, model: CommonModel) {
-  if (notSchema.enum === undefined || model.enum === undefined) return;
-  const notEnums = notSchema.enum;
-  const filteredEnums = model.enum.filter((el) => {
-    return notEnums.indexOf(el) < 0;
-  });
-  if (filteredEnums.length === 0) {
-    model.enum = undefined;
-  } else {
-    model.enum = filteredEnums;
   }
 }

@@ -206,7 +206,7 @@ describe('Interpreter', function() {
     const schema = {};
     const interpreter = new Interpreter();
     interpreter.interpret(schema);
-    expect(interpretNot).toHaveBeenNthCalledWith(1, schema, expect.anything());
+    expect(interpretNot).toHaveBeenNthCalledWith(1, schema, expect.anything(), interpreter);
   });
 
   test('should support primitive roots', function() {

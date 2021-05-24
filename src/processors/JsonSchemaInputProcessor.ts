@@ -227,16 +227,3 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     return commonModelsMap;
   }
 }
-{
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "type": "string",
-  "const: "test",
-  "not": {
-      "type": "string",
-      "const": "test",
-      "not": {
-        "type": "string",
-        "const": "test"
-      }
-  }
-}

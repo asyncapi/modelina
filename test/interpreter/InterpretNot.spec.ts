@@ -19,34 +19,39 @@ describe('Interpretation of not', function() {
   test('should not do anything if not is not defined', function() {
     const schema: any = {};
     const model = new CommonModel();
-    interpretNot(schema, model);
+    const interpreter = new Interpreter();
+    interpretNot(schema, model, interpreter);
     expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });
   test('should warn about true schemas', function() {
     const schema: any = { not: true};
     const model = new CommonModel();
     model.type = ["string"];
-    interpretNot(schema, model);
+    const interpreter = new Interpreter();
+    interpretNot(schema, model, interpreter);
     expect(Logger.warn).toHaveBeenCalled();
   });
   test('should handle false schemas', function() {
     const schema: any = { not: false};
     const model = new CommonModel();
-    interpretNot(schema, model);
+    const interpreter = new Interpreter();
+    interpretNot(schema, model, interpreter);
   });
-  describe.skip('double negate', function() {
+  describe('double negate', function() {
 
     test('should double negate enum', function() {
       const schema: any = { not: { enum: ["value"], not: { enum: ["value"] } }};
       const model = new CommonModel();
-      interpretNot(schema, model);
+      const interpreter = new Interpreter();
+      interpretNot(schema, model, interpreter);
       expect(model.enum).toEqual(["value"]);
     });
 
     test('should double negate types', function() {
       const schema: any = { not: { type: "string", not: { type: "string" }}};
       const model = new CommonModel();
-      interpretNot(schema, model);
+      const interpreter = new Interpreter();
+      interpretNot(schema, model, interpreter);
       expect(model.type).toEqual("string");
     });
   });
@@ -55,28 +60,32 @@ describe('Interpretation of not', function() {
       const schema: any = { not: { enum: ["value"] }};
       const model = new CommonModel();
       model.enum = ["value"];
-      interpretNot(schema, model);
+      const interpreter = new Interpreter();
+      interpretNot(schema, model, interpreter);
       expect(model.enum).toBeUndefined();
     });
     test('should remove already existing inferred enums', function() {
       const schema: any = { not: { enum: ["value"] }};
       const model = new CommonModel();
       model.enum = ["value", "value2"];
-      interpretNot(schema, model);
+      const interpreter = new Interpreter();
+      interpretNot(schema, model, interpreter);
       expect(model.enum).toEqual(["value2"]);
     });
     test('should not negating non existing enum', function() {
       const schema: any = { not: { enum: ["value"] }};
       const model = new CommonModel();
       model.enum = ["value2"];
-      interpretNot(schema, model);
+      const interpreter = new Interpreter();
+      interpretNot(schema, model, interpreter);
       expect(model.enum).toEqual(["value2"]);
     });
     test('should handle multiple negated enums', function() {
       const schema: any = { not: { enum: ["value", "value2"] }};
       const model = new CommonModel();
       model.enum = ["value", "value2", "value3"];
-      interpretNot(schema, model);
+      const interpreter = new Interpreter();
+      interpretNot(schema, model, interpreter);
       expect(model.enum).toEqual(["value3"]);
     });
   });
@@ -85,28 +94,32 @@ describe('Interpretation of not', function() {
       const schema: any = { not: { type: "string" }};
       const model = new CommonModel();
       model.type = "string";
-      interpretNot(schema, model);
+      const interpreter = new Interpreter();
+      interpretNot(schema, model, interpreter);
       expect(model.type).toBeUndefined();
     });
     test('should remove already existing inferred type', function() {
       const schema: any = { not: { type: "string" }};
       const model = new CommonModel();
       model.type = ["string", "number"];
-      interpretNot(schema, model);
+      const interpreter = new Interpreter();
+      interpretNot(schema, model, interpreter);
       expect(model.type).toEqual("number");
     });
     test('should not negating non existing type', function() {
       const schema: any = { not: { type: "string" }};
       const model = new CommonModel();
       model.type = "number";
-      interpretNot(schema, model);
+      const interpreter = new Interpreter();
+      interpretNot(schema, model, interpreter);
       expect(model.type).toEqual("number");
     });
     test('should handle multiple negated types', function() {
       const schema: any = { not: { type: ["string", "number"] }};
       const model = new CommonModel();
       model.type = ["number", "string", "integer"];
-      interpretNot(schema, model);
+      const interpreter = new Interpreter();
+      interpretNot(schema, model, interpreter);
       expect(model.type).toEqual("integer");
     });
   });
