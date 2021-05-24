@@ -3,6 +3,7 @@ import { CommonModel } from '../../src/models/CommonModel';
 import interpretConst from '../../src/interpreter/InterpretConst';
 import {inferTypeFromValue} from '../../src/interpreter/Utils';
 jest.mock('../../src/interpreter/Utils');
+jest.mock('../../src/models/CommonModel');
 describe('Interpretation of const', function() {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -10,25 +11,18 @@ describe('Interpretation of const', function() {
   afterAll(() => {
     jest.restoreAllMocks();
   });
-  test('should not do anything for boolean schemas', function() {
-    const model = new CommonModel();
-    const schema: any = true;
-    interpretConst(schema, model);
-    expect(model.type).toBeUndefined();
-    expect(model.enum).toBeUndefined();
-  });
   test('should not do anything if schema does not contain const', function() {
     const model = new CommonModel();
     const schema: any = { type: 'string'};
     interpretConst(schema, model);
-    expect(model.type).toBeUndefined();
+    expect(model.setType).not.toHaveBeenCalled();
     expect(model.enum).toBeUndefined();
   });
   test('should not infer type from const if schema have type', function() {
     const model = new CommonModel();
     const schema: any = { type: 'string', const: 'test'};
     interpretConst(schema, model);
-    expect(model.type).toBeUndefined();
+    expect(model.setType).not.toHaveBeenCalled();
     expect(model.enum).toEqual([schema.const]);
   });
   test('should infer type and enum', function() {
@@ -38,7 +32,7 @@ describe('Interpretation of const', function() {
     interpretConst(schema, model);
     expect(model.enum).toEqual([schema.const]);
     expect(inferTypeFromValue).toHaveBeenNthCalledWith(1, 'test');
-    expect(model.type).toEqual("string");
+    expect(model.setType).toHaveBeenNthCalledWith(1, "string");
   });
   test('should not infer unknown type', function() {
     (inferTypeFromValue as jest.Mock).mockReturnValue(undefined);
@@ -46,7 +40,7 @@ describe('Interpretation of const', function() {
     const model = new CommonModel();
     interpretConst(schema, model);
     expect(model.enum).toEqual([schema.const]);
-    expect(model.type).toBeUndefined();
+    expect(model.setType).not.toHaveBeenCalled();
     expect(inferTypeFromValue).toHaveBeenNthCalledWith(1, 'test');
   });
 });
