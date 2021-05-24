@@ -188,7 +188,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
   /**
    * This function returns an array of `$id`s from all the CommonModel's it immediate depends on.
    */
-  getImmediateDependencies(): string[] {
+  getNearestDependencies(): string[] {
     const dependsOn = [];
     if (this.additionalProperties instanceof CommonModel) {
       const additionalPropertiesRef = (this.additionalProperties as CommonModel).$ref;

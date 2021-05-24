@@ -719,21 +719,21 @@ describe('CommonModel', function() {
       });
     });
 
-    describe('getImmediateDependencies', function() {
+    describe('getNearestDependencies', function() {
       test('should work with array of items', function() {
         const doc = { items: [{ $ref: "1" }] };
         const d = CommonModel.toCommonModel(doc);
-        expect(d.getImmediateDependencies()).toEqual(["1"]);
+        expect(d.getNearestDependencies()).toEqual(["1"]);
       });
       test('check that all dependencies are returned', function() {
         const doc = { additionalProperties: { $ref: "1" }, extend: ["2"], items: { $ref: "3" }, properties: { testProp: { $ref: "4" } }  };
         const d = CommonModel.toCommonModel(doc);
-        expect(d.getImmediateDependencies()).toEqual(["1", "2", "3", "4"]);
+        expect(d.getNearestDependencies()).toEqual(["1", "2", "3", "4"]);
       });
       test('check that no dependencies is returned if there are none', function() {
         const doc = {  };
         const d = CommonModel.toCommonModel(doc);
-        expect(d.getImmediateDependencies()).toEqual([]);
+        expect(d.getNearestDependencies()).toEqual([]);
       });
     });
   });
