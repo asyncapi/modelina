@@ -52,13 +52,13 @@ export class Simplifier {
     }
     this.ensureModelsAreSplit(model);
     //Ensure current model is not part of the iterated list since we could have circular schemas
-    if (this.iteratedModels[`${model.$id}`] !== undefined) {
-      delete this.iteratedModels[`${model.$id}`];
+    if (this.iteratedModels[String(model.$id)] !== undefined) {
+      delete this.iteratedModels[String(model.$id)];
     }
     const modelsToReturn = Object.values(this.iteratedModels);
     //Add models to ensure we remember which has been iterated 
     if (isModelObject(model)) {
-      this.iteratedModels[`${model.$id}`] = model;
+      this.iteratedModels[String(model.$id)] = model;
     }
     return [model, ...modelsToReturn];
   }
@@ -123,7 +123,7 @@ export class Simplifier {
     if (isModelObject(model)) {
       const switchRootModel = new CommonModel();
       switchRootModel.$ref = model.$id;
-      this.iteratedModels[`${model.$id}`] = model;
+      this.iteratedModels[String(model.$id)] = model;
       return switchRootModel;
     }
     return model;
@@ -139,7 +139,7 @@ export class Simplifier {
     if (model.properties) {
       const existingProperties = model.properties;
       for (const [prop, propSchema] of Object.entries(existingProperties)) {
-        model.properties[`${prop}`] = this.splitModels(propSchema);
+        model.properties[String(prop)] = this.splitModels(propSchema);
       }
     }
     if (model.items) {
@@ -153,7 +153,7 @@ export class Simplifier {
     if (model.patternProperties) {
       const existingPatternProperties = model.patternProperties;
       for (const [pattern, patternModel] of Object.entries(existingPatternProperties)) {
-        model.patternProperties[`${pattern}`] = this.splitModels(patternModel);
+        model.patternProperties[String(pattern)] = this.splitModels(patternModel);
       }
     }
   }

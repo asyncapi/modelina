@@ -48,10 +48,10 @@ export default function simplifyPatternProperties(schema: Schema | boolean, simp
 function addToPatterns(pattern: string, patternModel: CommonModel, schema: Schema, currentModel: Output) {
   if (currentModel === undefined) return;
   //If the pattern already exist, merge the two
-  if (currentModel[`${pattern}`] !== undefined) {
-    currentModel[`${pattern}`] = CommonModel.mergeCommonModels(currentModel[`${pattern}`], patternModel, schema);
+  if (currentModel[String(pattern)] !== undefined) {
+    currentModel[String(pattern)] = CommonModel.mergeCommonModels(currentModel[String(pattern)], patternModel, schema);
   } else {
-    currentModel[`${pattern}`] = patternModel;
+    currentModel[String(pattern)] = patternModel;
   }
 }
 /**
