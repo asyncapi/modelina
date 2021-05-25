@@ -12,7 +12,7 @@ The main functionality is located in the `Interpreter` class. This class ensures
 The order of transformation:
 - [type](#determining-the-type-for-the-model)
 - `required` are interpreted as is.
-- `properties` are interpreted as is, where duplicate properties for the model are merged.
+- `properties` are interpreted as is, where duplicate `properties` for the model are merged.
 - [allOf](#allOf-sub-schemas)
 - `enum` are interpreted as is, where each `enums`.
 - `const` interpretation overwrite already interpreted `enums`.
@@ -20,12 +20,16 @@ The order of transformation:
 - `additionalProperties` are interpreted as is, where duplicate additionalProperties for the model are merged together. If the schema does not define additionalProperties it defaults to `true` schema.
 - `patternProperties` are interpreted as is, where duplicate patterns for the model are merged together.
 - [oneOf/anyOf/then/else](#Processing-sub-schemas)
-- [not](#processing-not-schemas)
+- [not](#interpreting-not-schemas)
 
-## Not schemas
-`not` schemas infer the form for which the model properties should not take. 
+## Interpreting not schemas
+`not` schemas infer the form for which the model should not take by recursively interpret the `not` schema, and remove certain model properties when encountered.
 
-If the interpreter encounter nested `not` schema it interprets that schema as usual and merge it together with the current interpreted model. 
+Currently the following `not` model properties are interpreted:
+- `type`
+- `enum`
+
+**Restriction** you cannot use nested `not` schemas to infer new model properties, it can only be used to re-allow them.
 
 ## allOf sub schemas
 `allOf` are a bit different then the other [combination keywords](#Processing-sub-schemas) since it can imply inheritance. 
@@ -42,7 +46,7 @@ To determine the types for the model we use the following interpretation (and in
 
 ## Processing sub schemas
 The following JSON Schema keywords are merged with the already interpreted model:
-- oneOf
-- anyOf
-- then
-- else
+- `oneOf`
+- `anyOf`
+- `then`
+- `else`

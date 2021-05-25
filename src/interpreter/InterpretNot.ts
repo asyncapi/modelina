@@ -11,13 +11,14 @@ import { Interpreter, InterpreterOptions } from './Interpreter';
  * @param model
  * @param interpreter
  */
-export default function interpretNot(schema: Schema, model: CommonModel, interpreter: Interpreter, interpreterOptions: InterpreterOptions) {
+export default function interpretNot(schema: Schema, model: CommonModel, interpreter: Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions) {
   if (schema.not === undefined) return;
   if (typeof schema.not === 'object') {
     const notSchema = schema.not;
-    const newInterpreterOptions = {
+    const newInterpreterOptions: InterpreterOptions = {
       ...interpreterOptions, 
-      splitModels: false
+      splitModels: false,
+      allowInheritance: false
     };
     const interpretedModels = interpreter.interpret(notSchema, newInterpreterOptions);
     if (interpretedModels.length > 0) {

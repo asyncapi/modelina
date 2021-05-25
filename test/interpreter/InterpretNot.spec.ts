@@ -36,6 +36,15 @@ describe('Interpretation of not', function() {
     expect(interpreter.interpret).not.toHaveBeenCalled();
     expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });
+
+  test('should ignore model if interpreter cannot interpret not schema', () => {
+    const schema: any = { not: { } };
+    const model = new CommonModel();
+    const interpreter = new Interpreter();
+    interpretedReturnModels.pop();
+    interpretNot(schema, model, interpreter, interpreterOptions);
+    expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
+  });
   test('should warn about true schemas', function() {
     const schema: any = { not: true};
     const model = new CommonModel();
@@ -63,7 +72,7 @@ describe('Interpretation of not', function() {
       model.enum = ["value"];
       const interpreter = new Interpreter();
       interpretNot(schema, model, interpreter, interpreterOptions);
-      const expectedInterpreterOptions = {...interpreterOptions, splitModels: false};
+      const expectedInterpreterOptions = {...interpreterOptions, splitModels: false, allowInheritance: false};
       expect(interpreter.interpret).toHaveBeenNthCalledWith(1, schema.not, expectedInterpreterOptions);
       expect(model.enum).toEqual(["value"]);
     });
@@ -76,7 +85,7 @@ describe('Interpretation of not', function() {
       model.type = "string";
       const interpreter = new Interpreter();
       interpretNot(schema, model, interpreter, interpreterOptions);
-      const expectedInterpreterOptions = {...interpreterOptions, splitModels: false};
+      const expectedInterpreterOptions = {...interpreterOptions, splitModels: false, allowInheritance: false};
       expect(interpreter.interpret).toHaveBeenNthCalledWith(1, schema.not, expectedInterpreterOptions);
       expect(model.type).toEqual("string");
     });
@@ -91,7 +100,7 @@ describe('Interpretation of not', function() {
       model.enum = ["value"];
       const interpreter = new Interpreter();
       interpretNot(schema, model, interpreter, interpreterOptions);
-      const expectedInterpreterOptions = {...interpreterOptions, splitModels: false};
+      const expectedInterpreterOptions = {...interpreterOptions, splitModels: false, allowInheritance: false};
       expect(interpreter.interpret).toHaveBeenNthCalledWith(1, schema.not, expectedInterpreterOptions);
       expect(model.enum).toBeUndefined();
     });
@@ -104,7 +113,7 @@ describe('Interpretation of not', function() {
       model.enum = ["value", "value2"];
       const interpreter = new Interpreter();
       interpretNot(schema, model, interpreter, interpreterOptions);
-      const expectedInterpreterOptions = {...interpreterOptions, splitModels: false};
+      const expectedInterpreterOptions = {...interpreterOptions, splitModels: false, allowInheritance: false};
       expect(interpreter.interpret).toHaveBeenNthCalledWith(1, schema.not, expectedInterpreterOptions);
       expect(model.enum).toEqual(["value2"]);
     });
@@ -117,7 +126,7 @@ describe('Interpretation of not', function() {
       model.enum = ["value2"];
       const interpreter = new Interpreter();
       interpretNot(schema, model, interpreter, interpreterOptions);
-      const expectedInterpreterOptions = {...interpreterOptions, splitModels: false};
+      const expectedInterpreterOptions = {...interpreterOptions, splitModels: false, allowInheritance: false};
       expect(interpreter.interpret).toHaveBeenNthCalledWith(1, schema.not, expectedInterpreterOptions);
       expect(model.enum).toEqual(["value2"]);
     });
@@ -130,7 +139,7 @@ describe('Interpretation of not', function() {
       model.enum = ["value", "value2", "value3"];
       const interpreter = new Interpreter();
       interpretNot(schema, model, interpreter, interpreterOptions);
-      const expectedInterpreterOptions = {...interpreterOptions, splitModels: false};
+      const expectedInterpreterOptions = {...interpreterOptions, splitModels: false, allowInheritance: false};
       expect(interpreter.interpret).toHaveBeenNthCalledWith(1, schema.not, expectedInterpreterOptions);
       expect(model.enum).toEqual(["value3"]);
     });
@@ -145,7 +154,7 @@ describe('Interpretation of not', function() {
       model.type = "string";
       const interpreter = new Interpreter();
       interpretNot(schema, model, interpreter, interpreterOptions);
-      const expectedInterpreterOptions = {...interpreterOptions, splitModels: false};
+      const expectedInterpreterOptions = {...interpreterOptions, splitModels: false, allowInheritance: false};
       expect(interpreter.interpret).toHaveBeenNthCalledWith(1, schema.not, expectedInterpreterOptions);
       expect(model.type).toBeUndefined();
     });
@@ -158,7 +167,7 @@ describe('Interpretation of not', function() {
       model.type = ["string", "number"];
       const interpreter = new Interpreter();
       interpretNot(schema, model, interpreter, interpreterOptions);
-      const expectedInterpreterOptions = {...interpreterOptions, splitModels: false};
+      const expectedInterpreterOptions = {...interpreterOptions, splitModels: false, allowInheritance: false};
       expect(interpreter.interpret).toHaveBeenNthCalledWith(1, schema.not, expectedInterpreterOptions);
       expect(model.type).toEqual("number");
     });
@@ -171,7 +180,7 @@ describe('Interpretation of not', function() {
       model.type = "number";
       const interpreter = new Interpreter();
       interpretNot(schema, model, interpreter, interpreterOptions);
-      const expectedInterpreterOptions = {...interpreterOptions, splitModels: false};
+      const expectedInterpreterOptions = {...interpreterOptions, splitModels: false, allowInheritance: false};
       expect(interpreter.interpret).toHaveBeenNthCalledWith(1, schema.not, expectedInterpreterOptions);
       expect(model.type).toEqual("number");
     });
@@ -184,7 +193,7 @@ describe('Interpretation of not', function() {
       model.type = ["number", "string", "integer"];
       const interpreter = new Interpreter();
       interpretNot(schema, model, interpreter, interpreterOptions);
-      const expectedInterpreterOptions = {...interpreterOptions, splitModels: false};
+      const expectedInterpreterOptions = {...interpreterOptions, splitModels: false, allowInheritance: false};
       expect(interpreter.interpret).toHaveBeenNthCalledWith(1, schema.not, expectedInterpreterOptions);
       expect(model.type).toEqual("integer");
     });
