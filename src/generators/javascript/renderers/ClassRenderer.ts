@@ -67,7 +67,7 @@ ${renderer.indent(body)}
   },
   property({ propertyName }) {
     propertyName = FormatHelpers.toCamelCase(propertyName);
-    return propertyName;
+    return `${propertyName};`;
   },
   getter({ propertyName }) {
     propertyName = FormatHelpers.toCamelCase(propertyName);

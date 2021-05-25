@@ -31,7 +31,7 @@ ${this.indent(this.renderBlock(content, 2))}
     }
 
     const content = items.join(', ');
-    return String(content);
+    return `${content};`;
   }
 
   normalizeKey(value: any): string {
