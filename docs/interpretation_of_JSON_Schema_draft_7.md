@@ -29,7 +29,9 @@ Currently the following `not` model properties are interpreted:
 - `type`
 - `enum`
 
-**Restriction** you cannot use nested `not` schemas to infer new model properties, it can only be used to re-allow them.
+**Restrictions** 
+- You cannot use nested `not` schemas to infer new model properties, it can only be used to re-allow them.
+- boolean `not` schemas are not applied.
 
 ## allOf sub schemas
 `allOf` are a bit different then the other [combination keywords](#Processing-sub-schemas) since it can imply inheritance. 

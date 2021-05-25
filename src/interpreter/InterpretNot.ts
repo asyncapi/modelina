@@ -24,9 +24,9 @@ export default function interpretNot(schema: Schema, model: CommonModel, interpr
     if (interpretedModels.length > 0) {
       const interpretedModel = interpretedModels[0];
       if (interpretedModel.type !== undefined) model.removeType(interpretedModel.type);
-      model.removeEnum(interpretedModel.enum);
+      if (interpretedModel.enum !== undefined) model.removeEnum(interpretedModel.enum);
     }
-  } else if (schema.not === true) {
-    Logger.warn(`Encountered true not schema. Which rejects everything for ${model.$id}. This schema are not applied!`, schema);
+  } else if (typeof schema.not === 'boolean') {
+    Logger.warn(`Encountered boolean not schema for model ${model.$id}. This schema are not applied!`, schema);
   }
 }

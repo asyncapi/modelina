@@ -48,19 +48,11 @@ describe('Interpretation of not', function() {
   test('should warn about true schemas', function() {
     const schema: any = { not: true};
     const model = new CommonModel();
-    model.type = ["string"];
-    const interpreter = new Interpreter();
-    interpretNot(schema, model, interpreter, interpreterOptions);
-    expect(interpreter.interpret).not.toHaveBeenCalled();
-    expect(Logger.warn).toHaveBeenCalled();
-  });
-  test('should handle false schemas', function() {
-    const schema: any = { not: false};
-    const model = new CommonModel();
     const interpreter = new Interpreter();
     interpretNot(schema, model, interpreter, interpreterOptions);
     expect(interpreter.interpret).not.toHaveBeenCalled();
     expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
+    expect(Logger.warn).toHaveBeenCalled();
   });
   describe('double negate', function() {
 
