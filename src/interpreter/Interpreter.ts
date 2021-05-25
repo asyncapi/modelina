@@ -112,7 +112,8 @@ export class Interpreter {
         this.combineSchemas(forEachSchema, currentModel, rootSchema, interpreterOptions);
       });
     } else {
-      const models = this.interpret(schema, interpreterOptions = {...interpreterOptions, splitModels: false});
+      interpreterOptions = {...interpreterOptions, splitModels: false};
+      const models = this.interpret(schema, interpreterOptions);
       if (models.length > 0) {
         CommonModel.mergeCommonModels(currentModel, models[0], rootSchema);
       }
