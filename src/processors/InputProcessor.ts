@@ -41,7 +41,7 @@ export class InputProcessor {
    */
   async process(input: any): Promise<CommonInputModel> {
     for (const [type, processor] of this.processors) {
-      if (type === 'default') continue;
+      if (type === 'default') {continue;}
       if (processor.shouldProcess(input)) {
         return processor.process(input);
       }

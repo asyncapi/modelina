@@ -15,7 +15,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
    * @param input 
    */
   async process(input: any): Promise<CommonInputModel> {
-    if (!this.shouldProcess(input)) throw new Error('Input is not an AsyncAPI document so it cannot be processed.');
+    if (!this.shouldProcess(input)) {throw new Error('Input is not an AsyncAPI document so it cannot be processed.');}
     Logger.debug('Processing input as an AsyncAPI document');
     let doc: AsyncAPIDocument;
     const common = new CommonInputModel();
@@ -46,7 +46,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     schema: AsyncAPISchema | boolean,
     alreadyIteratedSchemas: Map<string, Schema> = new Map()
   ): Schema | boolean {
-    if (typeof schema === 'boolean') return schema;
+    if (typeof schema === 'boolean') {return schema;}
     const schemaUid = schema.uid();
     if (alreadyIteratedSchemas.has(schemaUid)) {
       return alreadyIteratedSchemas.get(schemaUid) as Schema; 

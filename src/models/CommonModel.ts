@@ -29,7 +29,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
    */
   getFromSchema<K extends keyof Schema>(key: K) {
     const schema = this.originalSchema || {};
-    if (typeof schema === 'boolean') return undefined;
+    if (typeof schema === 'boolean') {return undefined;}
     return schema[String(key)];
   }
 
@@ -107,7 +107,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * @param enumValue 
    */
   addEnum(enumValue: any) {
-    if (this.enum === undefined) this.enum = [];
+    if (this.enum === undefined) {this.enum = [];}
     if (!this.enum.includes(enumValue)) {
       this.enum.push(enumValue);
     }
@@ -122,7 +122,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * @param schema schema to the corresponding property model
    */
   addProperty(propertyName: string, propertyModel: CommonModel, schema: Schema) {
-    if (this.properties === undefined) this.properties = {};
+    if (this.properties === undefined) {this.properties = {};}
     if (this.properties[`${propertyName}`] !== undefined) {
       Logger.warn(`While trying to add property to model, duplicate properties found. Merging models together for property ${propertyName}`, propertyModel, schema, this);
       this.properties[`${propertyName}`] = CommonModel.mergeCommonModels(this.properties[`${propertyName}`], propertyModel, schema);
@@ -156,7 +156,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * @param schema schema to the corresponding property model
    */
   addPatternProperty(pattern: string, patternModel: CommonModel, schema: Schema) {
-    if (this.patternProperties ===  undefined) this.patternProperties = {};
+    if (this.patternProperties ===  undefined) {this.patternProperties = {};}
     if (this.patternProperties[`${pattern}`] !== undefined) {
       Logger.warn(`While trying to add patternProperty to model, duplicate patterns found. Merging pattern models together for pattern ${pattern}`, patternModel, schema, this);
       this.patternProperties[`${pattern}`] = CommonModel.mergeCommonModels(this.patternProperties[`${pattern}`], patternModel, schema);
@@ -314,7 +314,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
    */
   private static mergeItems(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
     const merge = (models: CommonModel | CommonModel[] | undefined): CommonModel | undefined => {
-      if (!Array.isArray(models)) return models;
+      if (!Array.isArray(models)) {return models;}
       let mergedItemsModel: CommonModel | undefined = undefined;
       models.forEach((model, index) => { 
         Logger.warn(`Found duplicate items at index ${index} for model. Model item for ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalSchema);
@@ -378,9 +378,9 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * @param alreadyIteratedModels
    */
   static mergeCommonModels(mergeTo: CommonModel | undefined, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()): CommonModel {
-    if (mergeTo === undefined) return mergeFrom;
+    if (mergeTo === undefined) {return mergeFrom;}
     Logger.debug(`Merging model ${mergeFrom.$id || 'unknown'} into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalSchema);
-    if (alreadyIteratedModels.has(mergeFrom)) return alreadyIteratedModels.get(mergeFrom) as CommonModel;
+    if (alreadyIteratedModels.has(mergeFrom)) {return alreadyIteratedModels.get(mergeFrom) as CommonModel;}
     alreadyIteratedModels.set(mergeFrom, mergeTo);
 
     CommonModel.mergeAdditionalProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels);

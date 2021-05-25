@@ -10,7 +10,7 @@ import { Interpreter } from './Interpreter';
  * @param interpreter
  */
 export default function interpretPatternProperties(schema: Schema | boolean, model: CommonModel, interpreter : Interpreter) {
-  if (typeof schema === 'boolean') return;
+  if (typeof schema === 'boolean') {return;}
   for (const [pattern, patternSchema] of Object.entries(schema.patternProperties || {})) {
     const newModels = interpreter.interpret(patternSchema);
     if (newModels.length > 0) {

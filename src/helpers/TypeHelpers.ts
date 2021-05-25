@@ -16,10 +16,10 @@ export class TypeHelpers {
    * @returns {ModelKind}
    */
   static extractKind(model: CommonModel): ModelKind {
-    if (model.type === 'object') return ModelKind.OBJECT;
-    if (model.type === 'array') return ModelKind.ARRAY;
-    if (Array.isArray(model.enum)) return ModelKind.ENUM;
-    if (Array.isArray(model.type)) return ModelKind.UNION;
+    if (model.type === 'object') {return ModelKind.OBJECT;}
+    if (model.type === 'array') {return ModelKind.ARRAY;}
+    if (Array.isArray(model.enum)) {return ModelKind.ENUM;}
+    if (Array.isArray(model.type)) {return ModelKind.UNION;}
     return ModelKind.PRIMITIVE;
   }
 }

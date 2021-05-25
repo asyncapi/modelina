@@ -91,7 +91,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     name?: string,
     isRoot?: boolean,
   ): Schema | boolean {
-    if (typeof schema === 'boolean') return schema;
+    if (typeof schema === 'boolean') {return schema;}
 
     schema = Object.assign({}, schema);
     if (isRoot) {

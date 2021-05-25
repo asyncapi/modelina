@@ -14,7 +14,7 @@ type Output = CommonModel | undefined;
  */
 export default function simplifyItems(schema: Schema | boolean, simplifier : Simplifier, seenSchemas: Map<any, Output> = new Map()) : Output {
   if (typeof schema !== 'boolean') {
-    if (seenSchemas.has(schema)) return seenSchemas.get(schema);
+    if (seenSchemas.has(schema)) {return seenSchemas.get(schema);}
     const output: Output = new CommonModel();
     seenSchemas.set(schema, output);
 
@@ -52,7 +52,7 @@ export default function simplifyItems(schema: Schema | boolean, simplifier : Sim
  * @param seenSchemas schemas which we already have outputs for
  */
 function combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | undefined, currentOutput: Output, simplifier : Simplifier, seenSchemas: Map<any, Output>) {
-  if (typeof schema !== 'object') return;
+  if (typeof schema !== 'object') {return;}
   if (Array.isArray(schema)) {
     schema.forEach((itemSchema) => {
       combineSchemas(itemSchema, currentOutput, simplifier, seenSchemas);

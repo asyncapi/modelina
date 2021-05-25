@@ -8,7 +8,7 @@ type Output =  string[] | undefined;
  * @param schema to find extends of
  */
 export default function simplifyExtend(schema: Schema | boolean, simplifier : Simplifier) : Output {
-  if (!simplifier.options.allowInheritance || typeof schema === 'boolean') return undefined;
+  if (!simplifier.options.allowInheritance || typeof schema === 'boolean') {return undefined;}
   const extendingModels: string[] = [];
   for (const allOfSchema of (schema.allOf || [])) {
     if (typeof allOfSchema !== 'boolean') {

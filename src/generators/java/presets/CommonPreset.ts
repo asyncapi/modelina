@@ -100,9 +100,9 @@ export const JAVA_COMMON_PRESET: JavaPreset = {
       options = options || {};
       const blocks: string[] = [];
       
-      if (options.equal === undefined || options.equal === true) blocks.push(renderEqual({ renderer, model }));
-      if (options.hashCode === undefined || options.hashCode === true) blocks.push(renderHashCode({ renderer, model }));
-      if (options.classToString === undefined || options.classToString === true) blocks.push(renderToString({ renderer, model }));
+      if (options.equal === undefined || options.equal === true) {blocks.push(renderEqual({ renderer, model }));}
+      if (options.hashCode === undefined || options.hashCode === true) {blocks.push(renderHashCode({ renderer, model }));}
+      if (options.classToString === undefined || options.classToString === true) {blocks.push(renderToString({ renderer, model }));}
 
       return renderer.renderBlock([content, ...blocks], 2);
     },

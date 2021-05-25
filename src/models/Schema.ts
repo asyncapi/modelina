@@ -52,7 +52,7 @@ export class Schema extends CommonSchema<Schema | boolean> {
      */
     // eslint-disable-next-line sonarjs/cognitive-complexity
     static toSchema(object: Schema | boolean, seenSchemas: Map<any, Schema> = new Map()): Schema | boolean {
-      if (typeof object === 'boolean') return object;
+      if (typeof object === 'boolean') {return object;}
       if (seenSchemas.has(object)) {
         return seenSchemas.get(object) as Schema;
       }

@@ -105,7 +105,7 @@ export class Interpreter {
    * @param currentModel the current output
    */
   combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | undefined, currentModel: CommonModel, rootSchema: Schema) {
-    if (typeof schema !== 'object') return;
+    if (typeof schema !== 'object') {return;}
     if (Array.isArray(schema)) {
       schema.forEach((forEachSchema) => {
         this.combineSchemas(forEachSchema, currentModel, rootSchema);
