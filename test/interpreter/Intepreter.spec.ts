@@ -169,7 +169,7 @@ describe('Interpreter', function() {
     const schema = {};
     const interpreter = new Interpreter();
     interpreter.interpret(schema);
-    expect(interpretProperties).toHaveBeenNthCalledWith(1, schema, expect.anything(), interpreter);
+    expect(interpretProperties).toHaveBeenNthCalledWith(1, schema, expect.anything(), interpreter, Interpreter.defaultInterpreterOptions);
   });
 
   test('should always try to interpret const', function() {
@@ -188,25 +188,25 @@ describe('Interpreter', function() {
     const schema = {};
     const interpreter = new Interpreter();
     interpreter.interpret(schema);
-    expect(interpretAllOf).toHaveBeenNthCalledWith(1, schema, expect.anything(), expect.anything());
+    expect(interpretAllOf).toHaveBeenNthCalledWith(1, schema, expect.anything(), expect.anything(), Interpreter.defaultInterpreterOptions);
   });
   test('should always try to interpret items', function() {
     const schema = {};
     const interpreter = new Interpreter();
     interpreter.interpret(schema);
-    expect(interpretItems).toHaveBeenNthCalledWith(1, schema, expect.anything(), interpreter);
+    expect(interpretItems).toHaveBeenNthCalledWith(1, schema, expect.anything(), interpreter, Interpreter.defaultInterpreterOptions);
   });
   test('should always try to interpret additionalProperties', function() {
     const schema = {};
     const interpreter = new Interpreter();
     interpreter.interpret(schema);
-    expect(interpretAdditionalProperties).toHaveBeenNthCalledWith(1, schema, expect.anything(), interpreter);
+    expect(interpretAdditionalProperties).toHaveBeenNthCalledWith(1, schema, expect.anything(), interpreter, Interpreter.defaultInterpreterOptions);
   });
   test('should always try to interpret not', function() {
     const schema = {};
     const interpreter = new Interpreter();
     interpreter.interpret(schema);
-    expect(interpretNot).toHaveBeenNthCalledWith(1, schema, expect.anything(), interpreter);
+    expect(interpretNot).toHaveBeenNthCalledWith(1, schema, expect.anything(), interpreter, Interpreter.defaultInterpreterOptions);
   });
 
   test('should support primitive roots', function() {
