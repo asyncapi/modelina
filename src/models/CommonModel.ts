@@ -57,9 +57,9 @@ export class CommonModel extends CommonSchema<CommonModel> {
    */
   addTypes(types: string[] | string) {
     if (Array.isArray(types)) {
-      types.forEach((value) => {
-        this.addTypes(value);
-      });
+      for (const type of types) {
+        this.addTypes(type);
+      }
     } else if (this.type === undefined) {
       this.type = types;
     } else if (!Array.isArray(this.type) && this.type !== types) {
@@ -312,14 +312,15 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * @param originalSchema 
    * @param alreadyIteratedModels
    */
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   private static mergeItems(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
     const merge = (models: CommonModel | CommonModel[] | undefined): CommonModel | undefined => {
       if (!Array.isArray(models)) return models;
       let mergedItemsModel: CommonModel | undefined = undefined;
-      models.forEach((model, index) => { 
+      for (const [index, model] of models.entries()) {
         Logger.warn(`Found duplicate items at index ${index} for model. Model item for ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalSchema);
         mergedItemsModel = CommonModel.mergeCommonModels(mergedItemsModel, model, originalSchema, alreadyIteratedModels); 
-      });
+      }
       return mergedItemsModel;
     };
     if (mergeFrom.items !== undefined) {
@@ -359,11 +360,11 @@ export class CommonModel extends CommonSchema<CommonModel> {
     if (mergeFrom.type !== undefined) {
       if (mergeTo.type === undefined) {
         mergeTo.type = mergeFrom.type;
-      } else {
-        if (Array.isArray(mergeFrom.type)) {
-          mergeFrom.type.forEach(addToType);
-          return;
+      } else if (Array.isArray(mergeFrom.type)) {
+        for (const type of mergeFrom.type) {
+          addToType(type);
         }
+      } else {
         addToType(mergeFrom.type);
       }
     }

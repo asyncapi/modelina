@@ -107,9 +107,9 @@ export class Interpreter {
   combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | undefined, currentModel: CommonModel, rootSchema: Schema) {
     if (typeof schema !== 'object') return;
     if (Array.isArray(schema)) {
-      schema.forEach((forEachSchema) => {
+      for (const forEachSchema of schema) {
         this.combineSchemas(forEachSchema, currentModel, rootSchema);
-      });
+      }
     } else {
       const models = this.interpret(schema, false);
       if (models.length > 0) {
