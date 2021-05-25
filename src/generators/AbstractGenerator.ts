@@ -40,9 +40,9 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
   }
 
   public async generate(input: any): Promise<OutputModel[]> {
-    if (input instanceof CommonInputModel) 
+    if (input instanceof CommonInputModel) {
       return this.generateModels(input);
-    
+    }
     const model = await this.process(input);
     return this.generateModels(model);
   }
@@ -60,19 +60,22 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
     const filteredPresets: Array<[Preset, unknown]> = [];
 
     const defaultPreset = this.options.defaultPreset;
-    if (defaultPreset !== undefined) 
+    if (defaultPreset !== undefined) {
       filteredPresets.push([defaultPreset[String(presetType)], undefined]);
+    }
 
     const presets = this.options.presets || [];
     presets.forEach(p => {
       if (isPresetWithOptions(p)) {
         const preset = p.preset[String(presetType)];
-        if (preset) 
+        if (preset) {
           filteredPresets.push([preset, p.options]);
+        }
       } else {
         const preset = p[String(presetType)];
-        if (preset) 
+        if (preset) {
           filteredPresets.push([preset, undefined]);
+        }
       }
     });
 

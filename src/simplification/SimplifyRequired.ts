@@ -13,9 +13,9 @@ export default function simplifyRequired(schema: Schema | boolean, seenSchemas: 
   if (
     typeof schema === 'boolean' ||
     seenSchemas.has(schema)
-  ) 
+  ) {
     return undefined;
-  
+  }
   seenSchemas.add(schema);
 
   let required: Output = schema.required;
@@ -35,15 +35,16 @@ export default function simplifyRequired(schema: Schema | boolean, seenSchemas: 
   handler(schema.oneOf);
   handler(schema.anyOf);
 
-  if (schema.then) 
+  if (schema.then) {
     addRequired(simplifyRequired(schema.then, seenSchemas));
-  
-  if (schema.else) 
+  }
+  if (schema.else) {
     addRequired(simplifyRequired(schema.else, seenSchemas));
+  }
 
   // remove duplication
-  if (Array.isArray(required)) 
+  if (Array.isArray(required)) {
     return [...new Set(required)];
-  
+  }
   return undefined;
 }

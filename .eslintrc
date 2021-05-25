@@ -27,7 +27,7 @@
     "no-process-exit": 0,
     "no-warning-comments": 0,
     "no-loop-func": "error",
-    "curly": ["error", "multi-or-nest"],
+    "curly": ["error"],
     "no-multi-spaces": 0,
     "no-alert": 0,
     "consistent-return": 0,

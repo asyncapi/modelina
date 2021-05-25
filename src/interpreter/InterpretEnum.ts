@@ -14,8 +14,9 @@ export default function interpretEnum(schema: Schema, model: CommonModel) {
   for (const enumValue of schema.enum) {
     if (schema.type === undefined) {
       const inferredType = inferTypeFromValue(enumValue);
-      if (inferredType !== undefined) 
+      if (inferredType !== undefined) {
         model.addTypes(inferredType);
+      }
     }
     model.addEnum(enumValue);
   }

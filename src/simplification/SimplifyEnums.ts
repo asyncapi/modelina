@@ -13,8 +13,9 @@ export default function simplifyEnums(schema: Schema | boolean, seenSchemas: Map
     let enums: any[] = [];
     seenSchemas.set(schema, enums);
 
-    if (schema.enum) 
+    if (schema.enum) {
       addToEnums(schema.enum, enums);
+    }
 
     //If we encounter combination schemas ensure we recursively find the enums
     handleCombinationSchemas(schema.allOf, enums, seenSchemas);
@@ -22,15 +23,17 @@ export default function simplifyEnums(schema: Schema | boolean, seenSchemas: Map
     handleCombinationSchemas(schema.anyOf, enums, seenSchemas);
 
     //If we encounter combination schemas ensure we recursively find the enums
-    if (schema.then) 
+    if (schema.then) {
       addToEnums(simplifyEnums(schema.then, seenSchemas), enums);
-    
-    if (schema.else) 
+    }
+    if (schema.else) {
       addToEnums(simplifyEnums(schema.else, seenSchemas), enums);
+    }
 
     //If const is defined overwrite any already determined enums
-    if (schema.const !== undefined) 
+    if (schema.const !== undefined) {
       enums = [schema.const];
+    }
 
     ensureNotEnumsAreRemoved(schema, enums, seenSchemas);
     return enums;
@@ -51,8 +54,9 @@ function ensureNotEnumsAreRemoved(schema: Schema, existingEnums: any[], seenSche
     if (notEnums !== undefined) {
       notEnums.forEach((notEnum) => {
         //If it exist remove it
-        if (existingEnums.includes(notEnum)) 
+        if (existingEnums.includes(notEnum)) {
           existingEnums.splice(existingEnums.indexOf(notEnum), 1);
+        }
       });
     }
   }
@@ -80,8 +84,9 @@ function handleCombinationSchemas(schemas: (Schema | boolean)[] = [], existingEn
 function addToEnums(enumsToCheck: any[] | undefined, existingEnums: any[]) {
   if (enumsToCheck === undefined) return;
   enumsToCheck.forEach((value) => {
-    if (!existingEnums.includes(value)) 
+    if (!existingEnums.includes(value)) {
       existingEnums.push(value);
+    }
   });
 }
 

@@ -18,7 +18,8 @@ export default function interpretConst(schema: Schema, model: CommonModel) {
   //If schema does not contain type interpret the schema
   if (schema.type === undefined) {
     const inferredType = inferTypeFromValue(schemaConst);
-    if (inferredType !== undefined) 
+    if (inferredType !== undefined) {
       model.setType(inferredType);
+    }
   }
 }

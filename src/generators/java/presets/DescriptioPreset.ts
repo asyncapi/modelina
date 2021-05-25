@@ -9,8 +9,9 @@ function renderDescription({ renderer, content, item }: {
   content: string,
   item: CommonModel,
 }): string {
-  if (!(item instanceof CommonModel)) 
+  if (!(item instanceof CommonModel)) {
     return content;
+  }
 
   let desc = item.getFromSchema('description');
   const examples = item.getFromSchema('examples');

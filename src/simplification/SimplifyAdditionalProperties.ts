@@ -12,12 +12,13 @@ type Output = CommonModel | undefined;
 export default function simplifyAdditionalProperties(schema: Schema | boolean, simplifier : Simplifier, commonModel: CommonModel) : Output {
   let additionalProperties: Output;
   if (typeof schema !== 'boolean' && isModelObject(commonModel)) {
-    if (schema.additionalProperties === false) 
+    if (schema.additionalProperties === false) {
       additionalProperties = undefined;
-    else {
+    } else {
       const newModels = simplifier.simplify(schema.additionalProperties || true);
-      if (newModels.length > 0) 
+      if (newModels.length > 0) {
         additionalProperties = newModels[0];
+      }
     }
   }
   return additionalProperties;

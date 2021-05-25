@@ -24,8 +24,9 @@ export default function simplifyItems(schema: Schema | boolean, simplifier : Sim
         schema.items.forEach((value) => {
           mergeWithCurrentModel(simplifier.simplify(value)[0], schema, output);
         });
-      } else 
+      } else {
         mergeWithCurrentModel(simplifier.simplify(schema.items)[0], schema, output);
+      }
     }
 
     //If we encounter combination schemas ensure we recursively find the items
@@ -58,8 +59,9 @@ function combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | unde
     });
   } else {
     const simplifiedItems = simplifyItems(schema, simplifier, seenSchemas);
-    if (simplifiedItems !== undefined) 
+    if (simplifiedItems !== undefined) {
       mergeWithCurrentModel(simplifiedItems, schema, currentOutput);
+    }
   }
 }
 

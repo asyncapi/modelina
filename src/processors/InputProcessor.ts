@@ -42,13 +42,14 @@ export class InputProcessor {
   async process(input: any): Promise<CommonInputModel> {
     for (const [type, processor] of this.processors) {
       if (type === 'default') continue;
-      if (processor.shouldProcess(input)) 
+      if (processor.shouldProcess(input)) {
         return processor.process(input);
+      }
     }
     const defaultProcessor = this.processors.get('default');
-    if (defaultProcessor !== undefined) 
+    if (defaultProcessor !== undefined) {
       return defaultProcessor.process(input);
-    
+    }
     throw new Error('No default processor found');
   }
 }

@@ -53,8 +53,9 @@ export class Schema extends CommonSchema<Schema | boolean> {
     // eslint-disable-next-line sonarjs/cognitive-complexity
     static toSchema(object: Schema | boolean, seenSchemas: Map<any, Schema> = new Map()): Schema | boolean {
       if (typeof object === 'boolean') return object;
-      if (seenSchemas.has(object)) 
+      if (seenSchemas.has(object)) {
         return seenSchemas.get(object) as Schema;
+      }
 
       let schema = new Schema();
       schema = Object.assign(schema, object as Schema);
@@ -62,48 +63,53 @@ export class Schema extends CommonSchema<Schema | boolean> {
       schema = CommonSchema.transformSchema(schema, Schema.toSchema, seenSchemas);
 
       // Transform JSON Schema properties which contain nested schemas into an instance of Schema
-      if (schema.allOf !== undefined) 
+      if (schema.allOf !== undefined) {
         schema.allOf = schema.allOf.map((item) => Schema.toSchema(item, seenSchemas));
-      
-      if (schema.oneOf !== undefined) 
+      }
+      if (schema.oneOf !== undefined) {
         schema.oneOf = schema.oneOf.map((item) => Schema.toSchema(item, seenSchemas));
-      
-      if (schema.anyOf !== undefined) 
+      }
+      if (schema.anyOf !== undefined) {
         schema.anyOf = schema.anyOf.map((item) => Schema.toSchema(item, seenSchemas));
+      }
 
-      if (schema.not !== undefined) 
+      if (schema.not !== undefined) {
         schema.not = Schema.toSchema(schema.not, seenSchemas);
+      }
 
       if (typeof schema.additionalItems === 'object' &&
-            schema.additionalItems !== null) 
+            schema.additionalItems !== null) {
         schema.additionalItems = Schema.toSchema(schema.additionalItems, seenSchemas);
-      
-      if (schema.contains !== undefined) 
+      }
+      if (schema.contains !== undefined) {
         schema.contains = Schema.toSchema(schema.contains, seenSchemas);
-      
+      }
       if (schema.dependencies !== undefined) {
         const dependencies: { [key: string]: Schema | boolean | string[] } = {};
         Object.entries(schema.dependencies).forEach(([propertyName, property]) => {
           //We only care about object dependencies
-          if (typeof property === 'object' && !Array.isArray(property)) 
+          if (typeof property === 'object' && !Array.isArray(property)) {
             dependencies[String(propertyName)] = Schema.toSchema(property, seenSchemas);
-          else 
+          } else {
             dependencies[String(propertyName)] = property as string[];
+          }
         });
         schema.dependencies = dependencies;
       }
 
-      if (schema.propertyNames !== undefined) 
+      if (schema.propertyNames !== undefined) {
         schema.propertyNames = Schema.toSchema(schema.propertyNames, seenSchemas);
+      }
       
-      if (schema.if !== undefined) 
+      if (schema.if !== undefined) {
         schema.if = Schema.toSchema(schema.if, seenSchemas);
-      
-      if (schema.then !== undefined) 
+      }
+      if (schema.then !== undefined) {
         schema.then = Schema.toSchema(schema.then, seenSchemas);
-      
-      if (schema.else !== undefined) 
+      }
+      if (schema.else !== undefined) {
         schema.else = Schema.toSchema(schema.else, seenSchemas);
+      }
 
       if (schema.definitions !== undefined) {
         const definitions: { [key: string]: Schema | boolean } = {};

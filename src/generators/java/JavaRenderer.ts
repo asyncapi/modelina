@@ -20,12 +20,12 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
   }
 
   renderType(model: CommonModel | CommonModel[]): string {
-    if (Array.isArray(model) || Array.isArray(model.type)) 
+    if (Array.isArray(model) || Array.isArray(model.type)) {
       return 'Object'; // fallback
-    
-    if (model.$ref !== undefined) 
+    }
+    if (model.$ref !== undefined) {
       return FormatHelpers.toPascalCase(model.$ref);
-    
+    }
     const format = model.getFromSchema('format');
     return this.toClassType(this.toJavaType(format || model.type, model));
   }
@@ -97,13 +97,14 @@ ${lines.map(line => ` * ${line}`).join('\n')}
     if (value !== undefined) {
       if (typeof value === 'object') {
         values = Object.entries(value || {}).map(([paramName, value]) => {
-          if (paramName && value !== undefined) 
+          if (paramName && value !== undefined) {
             return `${paramName}=${value}`;
-          
+          }
           return value;
         }).filter(v => v !== undefined).join(', ');
-      } else 
+      } else {
         values = `${value}`;
+      }
     }
     return values !== undefined ? `${name}(${values})` : name;
   }

@@ -21,8 +21,9 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         case 'http://json-schema.org/draft-07/schema#':
           return this.processDraft7(input);
         }
-      } else 
+      } else {
         return this.processDraft7(input);
+      }
     }
     throw new Error('Input is not a JSON Schema, so it cannot be processed.');
   }
@@ -99,59 +100,60 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       name = '';
     } else if (name && !schema[this.MODELGEN_INFFERED_NAME]) {
       let occurrence = namesStack[String(name)];
-      if (occurrence === undefined) 
+      if (occurrence === undefined) {
         namesStack[String(name)] = 0;
-      else 
+      } else {
         occurrence++;
-      
+      }
       const inferredName = occurrence ? `${name}_${occurrence}` : name;
       schema[this.MODELGEN_INFFERED_NAME] = inferredName;
     }
 
-    if (schema.allOf !== undefined) 
+    if (schema.allOf !== undefined) {
       schema.allOf = schema.allOf.map((item, idx) => this.reflectSchemaNames(item, namesStack, this.ensureNamePattern(name, 'allOf', idx)));
-    
-    if (schema.oneOf !== undefined) 
+    }
+    if (schema.oneOf !== undefined) {
       schema.oneOf = schema.oneOf.map((item, idx) => this.reflectSchemaNames(item, namesStack, this.ensureNamePattern(name, 'oneOf', idx)));
-    
-    if (schema.anyOf !== undefined) 
+    }
+    if (schema.anyOf !== undefined) {
       schema.anyOf = schema.anyOf.map((item, idx) => this.reflectSchemaNames(item, namesStack, this.ensureNamePattern(name, 'anyOf', idx)));
-    
-    if (schema.not !== undefined) 
+    }
+    if (schema.not !== undefined) {
       schema.not = this.reflectSchemaNames(schema.not, namesStack, this.ensureNamePattern(name, 'not'));
-    
+    }
     if (
       typeof schema.additionalItems === 'object' &&
       schema.additionalItems !== null
-    ) 
+    ) {
       schema.additionalItems = this.reflectSchemaNames(schema.additionalItems, namesStack, this.ensureNamePattern(name, 'additionalItem'));
-    
-    if (schema.contains !== undefined) 
+    }
+    if (schema.contains !== undefined) {
       schema.contains = this.reflectSchemaNames(schema.contains, namesStack, this.ensureNamePattern(name, 'contain'));
-    
-    if (schema.propertyNames !== undefined) 
+    }
+    if (schema.propertyNames !== undefined) {
       schema.propertyNames = this.reflectSchemaNames(schema.propertyNames, namesStack, this.ensureNamePattern(name, 'propertyName'));
-    
-    if (schema.if !== undefined) 
+    }
+    if (schema.if !== undefined) {
       schema.if = this.reflectSchemaNames(schema.if, namesStack, this.ensureNamePattern(name, 'if'));
-    
-    if (schema.then !== undefined) 
+    }
+    if (schema.then !== undefined) {
       schema.then = this.reflectSchemaNames(schema.then, namesStack, this.ensureNamePattern(name, 'then'));
-    
-    if (schema.else !== undefined) 
+    }
+    if (schema.else !== undefined) {
       schema.else = this.reflectSchemaNames(schema.else, namesStack, this.ensureNamePattern(name, 'else'));
-    
+    }
     if (
       typeof schema.additionalProperties === 'object' && 
       schema.additionalProperties !== null
-    ) 
+    ) {
       schema.additionalProperties = this.reflectSchemaNames(schema.additionalProperties, namesStack, this.ensureNamePattern(name, 'additionalProperty'));
-    
+    }
     if (schema.items !== undefined) {
-      if (Array.isArray(schema.items)) 
+      if (Array.isArray(schema.items)) {
         schema.items = schema.items.map((item, idx) => this.reflectSchemaNames(item, namesStack, this.ensureNamePattern(name, 'item', idx)));
-      else 
+      } else {
         schema.items = this.reflectSchemaNames(schema.items, namesStack, this.ensureNamePattern(name, 'item'));
+      }
     }
 
     if (schema.properties !== undefined) {
@@ -164,10 +166,11 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     if (schema.dependencies !== undefined) {
       const dependencies: { [key: string]: Schema | boolean | string[] } = {};
       Object.entries(schema.dependencies).forEach(([dependencyName, dependency]) => {
-        if (typeof dependency === 'object' && !Array.isArray(dependency)) 
+        if (typeof dependency === 'object' && !Array.isArray(dependency)) {
           dependencies[String(dependencyName)] = this.reflectSchemaNames(dependency, namesStack, this.ensureNamePattern(name, dependencyName));
-        else 
+        } else {
           dependencies[String(dependencyName)] = dependency as string[];
+        }
       });
       schema.dependencies = dependencies;
     }
@@ -197,9 +200,9 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    */
   private static ensureNamePattern(previousName: string | undefined, ...newParts: any[]): string {
     const pattern = newParts.map(part => `${part}`).join('_');
-    if (!previousName) 
+    if (!previousName) {
       return pattern;
-    
+    }
     return `${previousName}_${pattern}`;
   }
 
@@ -213,12 +216,13 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     const commonModelsMap: Record<string, CommonModel> = {};
     commonModels.forEach(value => {
       if (value.$id) {
-        if (commonModelsMap[value.$id] !== undefined) 
+        if (commonModelsMap[value.$id] !== undefined) {
           Logger.warn(`Overwriting existing model with $id ${value.$id}, are there two models with the same id present?`, value);
-        
+        }
         commonModelsMap[value.$id] = value;
-      } else 
+      } else {
         Logger.debug('Model did not have $id, ignoring.', value);
+      }
     });
     return commonModelsMap;
   }
