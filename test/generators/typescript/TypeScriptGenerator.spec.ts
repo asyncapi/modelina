@@ -198,7 +198,7 @@ ${content}`;
       {
         interface: {
           self({ content }) {
-            return `${content}`;
+            return content;
           },
         }
       }
@@ -249,7 +249,7 @@ ${content}`;
       {
         enum: {
           self({ content }) {
-            return `${content}`;
+            return content;
           },
         }
       }

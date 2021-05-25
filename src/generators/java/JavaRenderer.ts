@@ -103,7 +103,7 @@ ${lines.map(line => ` * ${line}`).join('\n')}
           return value;
         }).filter(v => v !== undefined).join(', ');
       } else {
-        values = `${value}`;
+        values = value;
       }
     }
     return values !== undefined ? `${name}(${values})` : name;
