@@ -188,18 +188,16 @@ export class CommonModel extends CommonSchema<CommonModel> {
   /**
    * This function returns an array of `$id`s from all the CommonModel's it immediate depends on.
    */
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   getNearestDependencies(): string[] {
     const dependsOn = [];
-    if (this.additionalProperties instanceof CommonModel) {
-      const additionalPropertiesRef = (this.additionalProperties as CommonModel).$ref;
-      if (additionalPropertiesRef !== undefined) {
-        dependsOn.push(additionalPropertiesRef);
-      }
+    if (this.additionalProperties !== undefined && 
+      this.additionalProperties instanceof CommonModel && 
+      this.additionalProperties.$ref !== undefined) {
+      dependsOn.push(this.additionalProperties.$ref);
     }
     if (this.extend !== undefined) {
-      for (const extendedSchema of this.extend) {
-        dependsOn.push(extendedSchema);
-      }
+      dependsOn.push(...this.extend);
     }
     if (this.items !== undefined) {
       const items = Array.isArray(this.items) ? this.items : [this.items];
@@ -215,6 +213,12 @@ export class CommonModel extends CommonSchema<CommonModel> {
         .filter((propertyModel: CommonModel) => propertyModel.$ref !== undefined)
         .map((propertyModel: CommonModel) => `${propertyModel.$ref}`);
       dependsOn.push(...referencedProperties);
+    }
+    if (this.patternProperties !== undefined && Object.keys(this.patternProperties).length) {
+      const referencedPatternProperties = Object.values(this.patternProperties)
+        .filter((patternPropertyModel: CommonModel) => patternPropertyModel.$ref !== undefined)
+        .map((patternPropertyModel: CommonModel) => `${patternPropertyModel.$ref}`);
+      dependsOn.push(...referencedPatternProperties);
     }
     return dependsOn;
   }
