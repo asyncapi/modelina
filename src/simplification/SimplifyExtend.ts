@@ -1,6 +1,6 @@
 import { CommonModel, Schema } from 'models';
 import { Simplifier } from './Simplifier';
-type Output =  string[] | undefined;
+type Output = string[] | undefined;
 
 /**
  * Find out which CommonModels we should extend

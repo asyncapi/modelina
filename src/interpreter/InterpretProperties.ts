@@ -9,7 +9,7 @@ import { Interpreter, InterpreterOptions } from './Interpreter';
  * @param model
  * @param interpreter
  */
-export default function interpretProperties(schema: Schema, model: CommonModel, interpreter : Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions) {
+export default function interpretProperties(schema: Schema, model: CommonModel, interpreter : Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
   if (schema.properties === undefined) {return;}
   model.addTypes('object');
   

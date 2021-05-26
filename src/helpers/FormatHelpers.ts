@@ -100,7 +100,7 @@ export class FormatHelpers {
    * @param {Array<Any>} examples to render
    * @returns {string}
    */
-  static renderJSONExamples(examples: any[]): string {
+  static renderJSONExamples(examples: unknown[]): string {
     let renderedExamples = '';
     if (Array.isArray(examples)) {
       examples.forEach(example => {

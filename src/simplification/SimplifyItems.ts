@@ -12,7 +12,7 @@ type Output = CommonModel | undefined;
  * @param simplifier the simplifier instance 
  * @param seenSchemas already seen schemas and their corresponding output, this is to avoid circular schemas
  */
-export default function simplifyItems(schema: Schema | boolean, simplifier : Simplifier, seenSchemas: Map<any, Output> = new Map()) : Output {
+export default function simplifyItems(schema: Schema | boolean, simplifier : Simplifier, seenSchemas: Map<unknown, Output> = new Map()) : Output {
   if (typeof schema !== 'boolean') {
     if (seenSchemas.has(schema)) {return seenSchemas.get(schema);}
     const output: Output = new CommonModel();
@@ -51,7 +51,7 @@ export default function simplifyItems(schema: Schema | boolean, simplifier : Sim
  * @param simplifier the simplifier to use
  * @param seenSchemas schemas which we already have outputs for
  */
-function combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | undefined, currentOutput: Output, simplifier : Simplifier, seenSchemas: Map<any, Output>) {
+function combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | undefined, currentOutput: Output, simplifier : Simplifier, seenSchemas: Map<unknown, Output>) {
   if (typeof schema !== 'object') {return;}
   if (Array.isArray(schema)) {
     schema.forEach((itemSchema) => {

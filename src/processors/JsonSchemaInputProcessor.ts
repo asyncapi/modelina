@@ -14,7 +14,8 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  async process(input: any): Promise<CommonInputModel> {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  process(input: any): Promise<CommonInputModel> {
     if (this.shouldProcess(input)) {
       if (input.$schema !== undefined) {
         switch (input.$schema) {
@@ -33,6 +34,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   shouldProcess(input: any): boolean {
     if (input.$schema !== undefined) {
       switch (input.$schema) {
@@ -198,7 +200,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * @param previousName to concatenate with
    * @param newParts
    */
-  private static ensureNamePattern(previousName: string | undefined, ...newParts: any[]): string {
+  private static ensureNamePattern(previousName: string | undefined, ...newParts: unknown[]): string {
     const pattern = newParts.map(part => `${part}`).join('_');
     if (!previousName) {
       return pattern;

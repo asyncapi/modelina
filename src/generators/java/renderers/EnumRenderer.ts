@@ -34,7 +34,7 @@ ${this.indent(this.renderBlock(content, 2))}
     return `${content};`;
   }
 
-  normalizeKey(value: any): string {
+  normalizeKey(value: unknown): string {
     switch (typeof value) {
     case 'bigint':
     case 'number': {
@@ -43,20 +43,20 @@ ${this.indent(this.renderBlock(content, 2))}
     case 'boolean': {
       return FormatHelpers.toConstantCase(`boolean ${value}`);
     }
-    default: return FormatHelpers.toConstantCase(value);
+    default: return FormatHelpers.toConstantCase(String(value));
     }
   }
 
-  normalizeValue(value: any): string {
+  normalizeValue(value: unknown): string {
     switch (typeof value) {
     case 'string': {
       return `"${value}"`;
     }
-    default: return value;
+    default: return String(value);
     }
   }
 
-  async runItemPreset(item: any): Promise<string> {
+  runItemPreset(item: unknown): Promise<string> {
     return this.runPreset('item', { item });
   }
 }

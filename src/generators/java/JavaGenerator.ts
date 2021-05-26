@@ -25,7 +25,7 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions> {
     super('Java', JavaGenerator.defaultOptions, options);
   }
 
-  async render(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
+  render(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const kind = TypeHelpers.extractKind(model);
     switch (kind) {
     case ModelKind.ENUM: {
@@ -35,13 +35,13 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions> {
     }
   }
 
-  async renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
+  renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const presets = this.getPresets('class');
     const renderer = new ClassRenderer(this.options, presets, model, inputModel);
     return renderer.runSelfPreset();
   }
 
-  async renderEnum(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
+  renderEnum(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const presets = this.getPresets('enum'); 
     const renderer = new EnumRenderer(this.options, presets, model, inputModel);
     return renderer.runSelfPreset();

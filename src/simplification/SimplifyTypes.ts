@@ -7,7 +7,7 @@ type Output = string[] | string | undefined;
  * @param schema to find the simplified types for
  * @param seenSchemas already seen schemas and their corresponding output, this is to avoid circular schemas
  */
-export default function simplifyTypes(schema: Schema | boolean, seenSchemas: Map<any, Output> = new Map()): Output {
+export default function simplifyTypes(schema: Schema | boolean, seenSchemas: Map<unknown, Output> = new Map()): Output {
   //If we find absence of data format ensure all types are returned
   if (typeof schema === 'boolean') {
     return ['object', 'string', 'number', 'array', 'boolean', 'null', 'integer'];
@@ -57,7 +57,7 @@ export default function simplifyTypes(schema: Schema | boolean, seenSchemas: Map
  * 
  * @param value to infer type of
  */
-function inferTypeFromValue(value: any) {
+function inferTypeFromValue(value: unknown) {
   if (Array.isArray(value)) {
     return 'array';
   }
@@ -80,7 +80,7 @@ function inferTypeFromValue(value: any) {
 function inferTypes(schema: Schema | boolean, currentOutput: Output) {
   if (typeof schema === 'object' && Array.isArray(currentOutput)) {
     if (schema.enum) {
-      schema.enum.forEach((value: any) => {
+      schema.enum.forEach((value: unknown) => {
         const inferredType = inferTypeFromValue(value);
         if (inferredType !== undefined) {
           addToTypes(inferredType, currentOutput);
@@ -106,7 +106,7 @@ function inferTypes(schema: Schema | boolean, currentOutput: Output) {
  * @param currentOutput the current output
  * @param seenSchemas schemas which we already have outputs for
  */
-function inferNotTypes(schema: Schema | boolean, currentOutput: Output, seenSchemas: Map<any, Output>) {
+function inferNotTypes(schema: Schema | boolean, currentOutput: Output, seenSchemas: Map<unknown, Output>) {
   if (typeof schema === 'object' && schema.not && Array.isArray(currentOutput)) {
     if (currentOutput.length === 0) {currentOutput.push('object', 'string', 'number', 'array', 'boolean', 'null', 'integer');}
     const notTypes = simplifyTypes(schema.not, seenSchemas);
@@ -150,7 +150,7 @@ function addToTypes(typesToAdd: Output, currentOutput: Output) {
  * @param currentOutput the current output
  * @param seenSchemas schemas which we already have outputs for
  */
-function combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | undefined, currentOutput: Output, seenSchemas: Map<any, Output>) {
+function combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | undefined, currentOutput: Output, seenSchemas: Map<unknown, Output>) {
   if (typeof schema === 'object') {
     if (Array.isArray(schema)) {
       schema.forEach((itemSchema) => {

@@ -21,7 +21,7 @@ export class InputProcessor {
    * @param type of processor
    * @param processor
    */
-  setProcessor(type: string, processor: AbstractInputProcessor) {
+  setProcessor(type: string, processor: AbstractInputProcessor): void {
     this.processors.set(type, processor);
   }
 
@@ -39,7 +39,7 @@ export class InputProcessor {
    * @param input to process
    * @param type of processor to use
    */
-  async process(input: any): Promise<CommonInputModel> {
+  process(input: unknown): Promise<CommonInputModel> {
     for (const [type, processor] of this.processors) {
       if (type === 'default') {continue;}
       if (processor.shouldProcess(input)) {

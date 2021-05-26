@@ -27,17 +27,17 @@ export class JavaScriptGenerator extends AbstractGenerator<JavaScriptOptions> {
     super('JavaScript', JavaScriptGenerator.defaultOptions, options);
   }
 
-  async render(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
+  render(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const kind = TypeHelpers.extractKind(model);
     switch (kind) {
     case ModelKind.OBJECT: {
       return this.renderClass(model, inputModel);
     }
-    default: return '';
+    default: return Promise.resolve('');
     }
   }
 
-  async renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
+  renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const presets = this.getPresets('class'); 
     const renderer = new ClassRenderer(this.options, presets, model, inputModel);
     return renderer.runSelfPreset();

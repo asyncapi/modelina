@@ -33,7 +33,7 @@ ${this.indent(this.renderBlock(content, 2))}
     return this.renderBlock(items);
   }
 
-  runItemPreset(item: any): Promise<string> {
+  runItemPreset(item: unknown): Promise<string> {
     return this.runPreset('item', { item });
   }
 }

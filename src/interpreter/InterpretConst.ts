@@ -9,7 +9,7 @@ import { inferTypeFromValue } from './Utils';
  * @param schema 
  * @param model
  */
-export default function interpretConst(schema: Schema, model: CommonModel) {
+export default function interpretConst(schema: Schema, model: CommonModel): void {
   if (schema.const === undefined) {return;}
   
   const schemaConst = schema.const;

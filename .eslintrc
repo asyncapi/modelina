@@ -15,9 +15,7 @@
   "rules": {
     "strict": 0,
     "eol-last": ["error", "always"],
-    "@typescript-eslint/no-explicit-any": ["error", {
-      "fixToUnknown": true
-    }],
+    "@typescript-eslint/no-explicit-any": 0,
     "require-await": "error",
     "@typescript-eslint/explicit-module-boundary-types": "error",
     "sonarjs/no-small-switch": "off",
@@ -34,7 +32,7 @@
     ],
     "func-style": 0,
     "max-nested-callbacks": ["error", 3],
-    "camelcase": 2,
+    "camelcase": 0,
     "no-debugger": 1,
     "no-empty": 1,
     "no-invalid-regexp": 1,
@@ -190,13 +188,15 @@
   },
   "overrides": [
     {
-        "files": "*.spec.ts",
-        "rules": {
-          "no-undef": "off",
-          "security/detect-non-literal-fs-filename": "off",
-          "sonarjs/no-duplicate-string": "off",
-          "security/detect-object-injection": "off"
-        }
+      "files": "*.spec.ts",
+      "rules": {
+        "no-undef": "off",
+        "security/detect-non-literal-fs-filename": "off",
+        "sonarjs/no-duplicate-string": "off",
+        "security/detect-object-injection": "off",
+        "max-nested-callbacks": "off",
+        "sonarjs/no-identical-functions": "off"
+      }
     }
   ]
 }

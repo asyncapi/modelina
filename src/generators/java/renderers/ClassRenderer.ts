@@ -23,7 +23,7 @@ ${this.indent(this.renderBlock(content, 2))}
 }`;
   }
 
-  async runCtorPreset(): Promise<string> {
+  runCtorPreset(): Promise<string> {
     return this.runPreset('ctor');
   }
 
@@ -39,7 +39,7 @@ ${this.indent(this.renderBlock(content, 2))}
     return this.renderBlock(content);
   }
 
-  async runPropertyPreset(propertyName: string, property: CommonModel): Promise<string> {
+  runPropertyPreset(propertyName: string, property: CommonModel): Promise<string> {
     return this.runPreset('property', { propertyName, property });
   }
 
@@ -56,11 +56,11 @@ ${this.indent(this.renderBlock(content, 2))}
     return this.renderBlock(content, 2);
   }
 
-  async runGetterPreset(propertyName: string, property: CommonModel): Promise<string> {
+  runGetterPreset(propertyName: string, property: CommonModel): Promise<string> {
     return this.runPreset('getter', { propertyName, property });
   }
 
-  async runSetterPreset(propertyName: string, property: CommonModel): Promise<string> {
+  runSetterPreset(propertyName: string, property: CommonModel): Promise<string> {
     return this.runPreset('setter', { propertyName, property });
   }
 }

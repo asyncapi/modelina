@@ -105,7 +105,7 @@ export class Interpreter {
    * @param schema to go through
    * @param currentModel the current output
    */
-  combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | undefined, currentModel: CommonModel, rootSchema: Schema, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions) {
+  combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | undefined, currentModel: CommonModel, rootSchema: Schema, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
     if (typeof schema !== 'object') {return;}
     if (Array.isArray(schema)) {
       schema.forEach((forEachSchema) => {
@@ -143,7 +143,7 @@ export class Interpreter {
    * @param model to ensure are split
    * @param models which are already split
    */
-  ensureModelsAreSplit(model: CommonModel) {
+  ensureModelsAreSplit(model: CommonModel): void {
     // eslint-disable-next-line sonarjs/no-collapsible-if
     if (model.properties) {
       const existingProperties = model.properties;

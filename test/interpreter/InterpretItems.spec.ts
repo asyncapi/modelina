@@ -20,8 +20,8 @@ describe('Interpretation of', () => {
   });
   afterAll(() => {
     jest.restoreAllMocks();
-  })
-  test('should not do anything if schema does not contain items', function() {
+  });
+  test('should not do anything if schema does not contain items', () => {
     const schema = {};
     const model = new CommonModel();
     const interpreter = new Interpreter();
@@ -31,7 +31,7 @@ describe('Interpretation of', () => {
   });
 
   test('should ignore model if interpreter cannot interpret item schema', () => {
-    const schema: any = { items: { type: 'string' } };
+    const schema: unknown = { items: { type: 'string' } };
     const model = new CommonModel();
     const interpreter = new Interpreter();
     mockedReturnModels.pop();
@@ -41,7 +41,7 @@ describe('Interpretation of', () => {
   });
   describe('single item schemas', () => {
     test('should set items', () => {
-      const schema: any = { items: { type: 'string' } };
+      const schema: unknown = { items: { type: 'string' } };
       const model = new CommonModel();
       const interpreter = new Interpreter();
       interpretItems(schema, model, interpreter);
@@ -49,7 +49,7 @@ describe('Interpretation of', () => {
       expect(model.addItem).toHaveBeenNthCalledWith(1, mockedReturnModels[0], schema);
     });
     test('should infer type of model', () => {
-      const schema: any = { items: { type: 'string' } };
+      const schema: unknown = { items: { type: 'string' } };
       const model = new CommonModel();
       const interpreter = new Interpreter();
       interpretItems(schema, model, interpreter);
@@ -58,7 +58,7 @@ describe('Interpretation of', () => {
   });
   describe('multiple item schemas', () => {
     test('should set items', () => {
-      const schema: any = { items: [{ type: 'string' }, { type: 'number' }] };
+      const schema: unknown = { items: [{ type: 'string' }, { type: 'number' }] };
       const model = new CommonModel();
       const interpreter = new Interpreter();
       interpretItems(schema, model, interpreter);
@@ -67,7 +67,7 @@ describe('Interpretation of', () => {
       expect(model.addItem).toHaveBeenNthCalledWith(1, mockedReturnModels[0], schema);
     });
     test('should infer type of model', () => {
-      const schema: any = { items: [{ type: 'string' }, { type: 'number' }] };
+      const schema: unknown = { items: [{ type: 'string' }, { type: 'number' }] };
       const model = new CommonModel();
       const interpreter = new Interpreter();
       interpretItems(schema, model, interpreter);

@@ -1,20 +1,20 @@
 import { JavaGenerator, JAVA_CONSTRAINTS_PRESET } from '../../../../src/generators'; 
 
-describe('JAVA_DESCRIPTION_PRESET', function() {
+describe('JAVA_DESCRIPTION_PRESET', () => {
   let generator: JavaGenerator;
   beforeEach(() => {
     generator = new JavaGenerator({ presets: [JAVA_CONSTRAINTS_PRESET] });
   });
 
-  test('should render constaints annotations', async function() {
+  test('should render constaints annotations', async () => {
     const doc = {
-      $id: "Clazz",
-      type: "object",
+      $id: 'Clazz',
+      type: 'object',
       properties: {
-        min_number_prop:  { type: "number", minimum: 0 },
-        max_number_prop:  { type: "number", exclusiveMaximum: 100 },
-        array_prop:       { type: "array", minItems: 2, maxItems: 3, },
-        string_prop:      { type: "string", pattern: "^I_", minLength: 3 }
+        min_number_prop: { type: 'number', minimum: 0 },
+        max_number_prop: { type: 'number', exclusiveMaximum: 100 },
+        array_prop: { type: 'array', minItems: 2, maxItems: 3, },
+        string_prop: { type: 'string', pattern: '^I_', minLength: 3 }
       },
       required: ['min_number_prop', 'max_number_prop']
     };
@@ -45,9 +45,9 @@ describe('JAVA_DESCRIPTION_PRESET', function() {
 }`;
 
     const inputModel = await generator.process(doc);
-    const model = inputModel.models["Clazz"];
+    const model = inputModel.models['Clazz'];
 
-    let classModel = await generator.renderClass(model, inputModel);
+    const classModel = await generator.renderClass(model, inputModel);
     expect(classModel).toEqual(expected);
   });
 });

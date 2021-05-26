@@ -26,10 +26,10 @@ describe('Simplification of items', () => {
   });
   afterAll(() => {
     jest.restoreAllMocks();
-  })
+  });
   describe('as is', () => {
     test('should return item', () => {
-      const schema: any = { items: { type: 'string' } };
+      const schema: unknown = { items: { type: 'string' } };
       const simplifier = new Simplifier();
       const items = simplifyItems(schema, simplifier);
       expect(items).toBeUndefined();
@@ -128,11 +128,11 @@ describe('Simplification of items', () => {
     expect(mockMergeCommonModels).toHaveBeenCalledTimes(1);
   });
 
-  test('should return already seen schemas', function() {
-    const alreadySeen = new Map<any, CommonModel | undefined>();
-    const schema = {$id: "test"};
+  test('should return already seen schemas', () => {
+    const alreadySeen = new Map<unknown, CommonModel | undefined>();
+    const schema = {$id: 'test'};
     const model = new CommonModel();
-    model.$id = "test2";
+    model.$id = 'test2';
     alreadySeen.set(schema, model);
     const simplifier = new Simplifier();
     const output = simplifyItems(schema, simplifier, alreadySeen);

@@ -3,10 +3,10 @@
  * Logging interface for the model generation library
  */
 export interface ModelLoggingInterface {
-  debug(message?: any, ...optionalParams: any[]): void;
-  info(message?: any, ...optionalParams: any[]): void;
-  warn(message?: any, ...optionalParams: any[]): void;
-  error(message?: any, ...optionalParams: any[]): void;
+  debug(message?: unknown, ...optionalParams: unknown[]): void;
+  info(message?: unknown, ...optionalParams: unknown[]): void;
+  warn(message?: unknown, ...optionalParams: unknown[]): void;
+  error(message?: unknown, ...optionalParams: unknown[]): void;
 }
 
 /**
@@ -17,22 +17,22 @@ export interface ModelLoggingInterface {
 export class LoggerClass implements ModelLoggingInterface {
   private logger?: ModelLoggingInterface = undefined;
 
-  debug(message?: any, ...optionalParams: any[]): void {
+  debug(message?: unknown, ...optionalParams: unknown[]): void {
     if (this.logger) {
       this.logger.debug(message, ...optionalParams);
     }
   }
-  info(message?: any, ...optionalParams: any[]): void {
+  info(message?: unknown, ...optionalParams: unknown[]): void {
     if (this.logger) {
       this.logger.info(message, ...optionalParams);
     }
   }
-  warn(message?: any, ...optionalParams: any[]): void {
+  warn(message?: unknown, ...optionalParams: unknown[]): void {
     if (this.logger) {
       this.logger.warn(message, ...optionalParams);
     }
   }
-  error(message?: any, ...optionalParams: any[]): void {
+  error(message?: unknown, ...optionalParams: unknown[]): void {
     if (this.logger) {
       this.logger.error(message, ...optionalParams);
     }
@@ -43,7 +43,7 @@ export class LoggerClass implements ModelLoggingInterface {
    * 
    * @param logger to add
    */
-  setLogger(logger?: ModelLoggingInterface) {
+  setLogger(logger?: ModelLoggingInterface): void {
     this.logger = logger;
   }
 }

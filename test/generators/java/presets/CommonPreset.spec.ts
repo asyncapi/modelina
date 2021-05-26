@@ -1,13 +1,13 @@
 import { JavaGenerator, JAVA_COMMON_PRESET } from '../../../../src/generators'; 
 
-describe('JAVA_COMMON_PRESET', function() {
-  test('should render common function in class by common preset', async function() {
+describe('JAVA_COMMON_PRESET', () => {
+  test('should render common function in class by common preset', async () => {
     const doc = {
-      $id: "Clazz",
-      type: "object",
+      $id: 'Clazz',
+      type: 'object',
       properties: {
-        stringProp:  { type: "string" },
-        numberProp:  { type: "number" },
+        stringProp: { type: 'string' },
+        numberProp: { type: 'number' },
       },
     };
     const expected = `public class Clazz {
@@ -61,19 +61,19 @@ describe('JAVA_COMMON_PRESET', function() {
 
     const generator = new JavaGenerator({ presets: [JAVA_COMMON_PRESET] });
     const inputModel = await generator.process(doc);
-    const model = inputModel.models["Clazz"];
+    const model = inputModel.models['Clazz'];
 
-    let classModel = await generator.renderClass(model, inputModel);
+    const classModel = await generator.renderClass(model, inputModel);
     expect(classModel).toEqual(expected);
   });
 
-  test('should skip rendering of disabled functions', async function() {
+  test('should skip rendering of disabled functions', async () => {
     const doc = {
-      $id: "Clazz",
-      type: "object",
+      $id: 'Clazz',
+      type: 'object',
       properties: {
-        stringProp:  { type: "string" },
-        numberProp:  { type: "number" },
+        stringProp: { type: 'string' },
+        numberProp: { type: 'number' },
       },
     };
     const expected = `public class Clazz {
@@ -100,9 +100,9 @@ describe('JAVA_COMMON_PRESET', function() {
       }
     }] });
     const inputModel = await generator.process(doc);
-    const model = inputModel.models["Clazz"];
+    const model = inputModel.models['Clazz'];
 
-    let classModel = await generator.renderClass(model, inputModel);
+    const classModel = await generator.renderClass(model, inputModel);
     expect(classModel).toEqual(expected);
   });
 });

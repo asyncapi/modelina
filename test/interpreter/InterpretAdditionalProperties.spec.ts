@@ -23,36 +23,36 @@ describe('Interpretation of additionalProperties', () => {
     jest.restoreAllMocks();
   });
   test('should try and interpret additionalProperties schema', () => {
-    const schema: any = { additionalProperties: { type: 'string' } };
+    const schema: unknown = { additionalProperties: { type: 'string' } };
     const model = new CommonModel();
-    model.type = "object";
+    model.type = 'object';
     const interpreter = new Interpreter();
     interpretAdditionalProperties(schema, model, interpreter);
     expect(interpreter.interpret).toHaveBeenNthCalledWith(1, { type: 'string' }, Interpreter.defaultInterpreterOptions);
     expect(model.addAdditionalProperty).toHaveBeenNthCalledWith(1, mockedReturnModels[0], schema);
   });
   test('should ignore model if interpreter cannot interpret additionalProperty schema', () => {
-    const schema: any = { };
+    const schema: unknown = { };
     const model = new CommonModel();
-    model.type = "object";
+    model.type = 'object';
     const interpreter = new Interpreter();
     mockedReturnModels.pop();
     interpretAdditionalProperties(schema, model, interpreter);
     expect(model.addAdditionalProperty).not.toHaveBeenCalled();
   });
   test('should only work if model is object type', () => {
-    const schema: any = { };
+    const schema: unknown = { };
     const model = new CommonModel();
-    model.type = "string";
+    model.type = 'string';
     const interpreter = new Interpreter();
     interpretAdditionalProperties(schema, model, interpreter);
     expect(interpreter.interpret).not.toHaveBeenCalled();
     expect(model.addAdditionalProperty).not.toHaveBeenCalled();
   });
   test('should default to true', () => {
-    const schema: any = { };
+    const schema: unknown = { };
     const model = new CommonModel();
-    model.type = "object";
+    model.type = 'object';
     const interpreter = new Interpreter();
     interpretAdditionalProperties(schema, model, interpreter);
     expect(interpreter.interpret).toHaveBeenNthCalledWith(1, true, Interpreter.defaultInterpreterOptions);

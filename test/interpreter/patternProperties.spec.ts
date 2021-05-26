@@ -24,13 +24,13 @@ describe('Interpretation of patternProperties', () => {
     jest.restoreAllMocks();
   });
 
-  test('should not do anything if schema does not contain patternProperties', function() {
+  test('should not do anything if schema does not contain patternProperties', () => {
     const model = new CommonModel();
     const interpreter = new Interpreter();
     interpretPatternProperties({}, model, interpreter);
     expect(model.addPatternProperty).not.toHaveBeenCalled();
   });
-  test('should not do anything if schema is boolean', function() {
+  test('should not do anything if schema is boolean', () => {
     const model = new CommonModel();
     const interpreter = new Interpreter();
     interpretPatternProperties(true, model, interpreter);
@@ -38,16 +38,16 @@ describe('Interpretation of patternProperties', () => {
   });
 
   test('should ignore model if interpreter cannot interpret patternProperties schema', () => {
-    const schema: any = { patternProperties: { 'pattern': { type: 'string' } } };
+    const schema: unknown = { patternProperties: { pattern: { type: 'string' } } };
     const model = new CommonModel();
-    model.type = "object";
+    model.type = 'object';
     const interpreter = new Interpreter();
     mockedReturnModels.pop();
     interpretPatternProperties(schema, model, interpreter);
     expect(model.addPatternProperty).not.toHaveBeenCalled();
   });
   test('should use as is', () => {
-    const schema: any = { patternProperties: { 'pattern': { type: 'string' } } };
+    const schema: unknown = { patternProperties: { pattern: { type: 'string' } } };
     const model = new CommonModel();
     const interpreter = new Interpreter();
     interpretPatternProperties(schema, model, interpreter);
