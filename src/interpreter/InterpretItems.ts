@@ -32,7 +32,7 @@ function interpretArrayItems(rootSchema: Schema, itemSchemas: (Schema | boolean)
       interpretArrayItems(rootSchema, itemSchema, model, interpreter, interpreterOptions);
     }
   } else {
-    const itemModels = interpreter.interpret(itemSchemas);
+    const itemModels = interpreter.interpret(itemSchemas, interpreterOptions);
     if (itemModels.length > 0) {
       model.addItem(itemModels[0], rootSchema);
     }

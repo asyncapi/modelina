@@ -18,7 +18,7 @@ export default function interpretAllOf(schema: Schema, model: CommonModel, inter
   if (schema.allOf === undefined) return;
 
   for (const allOfSchema of schema.allOf) {  
-    const interpretedModels = interpreter.interpret(allOfSchema);
+    const interpretedModels = interpreter.interpret(allOfSchema, interpreterOptions);
     if (interpretedModels.length === 0) continue;
     const interpretedModel = interpretedModels[0];
     if (isModelObject(interpretedModel) && interpreterOptions.allowInheritance === true) {

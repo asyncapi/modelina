@@ -56,6 +56,7 @@ describe('Interpretation of allOf', () => {
     interpreterOptions.allowInheritance = false;
     const interpreter = new Interpreter();
     interpretAllOf(schema, model, interpreter, interpreterOptions);
+    expect(interpreter.interpret).toHaveBeenNthCalledWith(1, {}, interpreterOptions);
     expect(interpreter.combineSchemas).toHaveBeenNthCalledWith(1, schema.allOf[0], model, schema, interpreterOptions);
     expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });

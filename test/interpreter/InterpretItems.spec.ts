@@ -45,7 +45,7 @@ describe('Interpretation of', () => {
       const model = new CommonModel();
       const interpreter = new Interpreter();
       interpretItems(schema, model, interpreter);
-      expect(interpreter.interpret).toHaveBeenNthCalledWith(1, { type: 'string' });
+      expect(interpreter.interpret).toHaveBeenNthCalledWith(1, { type: 'string' }, Interpreter.defaultInterpreterOptions);
       expect(model.addItem).toHaveBeenNthCalledWith(1, mockedReturnModels[0], schema);
     });
     test('should infer type of model', () => {
@@ -62,8 +62,8 @@ describe('Interpretation of', () => {
       const model = new CommonModel();
       const interpreter = new Interpreter();
       interpretItems(schema, model, interpreter);
-      expect(interpreter.interpret).toHaveBeenNthCalledWith(1, { type: 'string' });
-      expect(interpreter.interpret).toHaveBeenNthCalledWith(2, { type: 'number' });
+      expect(interpreter.interpret).toHaveBeenNthCalledWith(1, { type: 'string' }, Interpreter.defaultInterpreterOptions);
+      expect(interpreter.interpret).toHaveBeenNthCalledWith(2, { type: 'number' }, Interpreter.defaultInterpreterOptions);
       expect(model.addItem).toHaveBeenNthCalledWith(1, mockedReturnModels[0], schema);
     });
     test('should infer type of model', () => {
