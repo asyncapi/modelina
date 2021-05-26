@@ -1,9 +1,9 @@
 import { AbstractInputProcessor } from './AbstractInputProcessor';
-import { simplify } from '../simplification/Simplifier';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import path from 'path';
 import { Schema, CommonModel, CommonInputModel} from '../models';
 import { Logger } from '../utils';
+import { Interpreter } from '../interpreter/Interpreter';
 
 /**
  * Class for processing JSON Schema
@@ -212,7 +212,8 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * @param schema to simplify to common model
    */
   static convertSchemaToCommonModel(schema: Schema | boolean): Record<string, CommonModel> {
-    const commonModels = simplify(schema);
+    const interpreter = new Interpreter();
+    const commonModels = interpreter.interpret(schema);
     const commonModelsMap: Record<string, CommonModel> = {};
     commonModels.forEach(value => {
       if (value.$id) {
@@ -221,7 +222,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         }
         commonModelsMap[value.$id] = value;
       } else {
-        Logger.debug('Model did not have $id, ignoring.', value);
+        Logger.warn('Model did not have $id, ignoring.', value);
       }
     });
     return commonModelsMap;
