@@ -40,6 +40,31 @@
 ## Functions
 
 <dl>
+<dt><a href="#interpretAdditionalProperties">interpretAdditionalProperties(schema, model, interpreter)</a></dt>
+<dd><p>Interpreter function for JSON Schema draft 7 additionalProperties keyword.</p>
+</dd>
+<dt><a href="#interpretAllOf">interpretAllOf(schema, model, interpreter)</a></dt>
+<dd><p>Interpreter function for JSON Schema draft 7 allOf keyword.</p>
+<p>It either merges allOf schemas into existing model or if allowed, create inheritance.</p>
+</dd>
+<dt><a href="#interpretConst">interpretConst(schema, model)</a></dt>
+<dd><p>Interpreter function for JSON Schema draft 7 const keyword.</p>
+</dd>
+<dt><a href="#interpretEnum">interpretEnum(schema, model)</a></dt>
+<dd><p>Interpreter function for JSON Schema draft 7 enum keyword</p>
+</dd>
+<dt><a href="#interpretItems">interpretItems(schema, model, interpreter)</a></dt>
+<dd><p>Interpreter function for JSON Schema draft 7 items keyword.</p>
+</dd>
+<dt><a href="#interpretArrayItems">interpretArrayItems(rootSchema, itemSchemas, model, interpreter)</a></dt>
+<dd><p>Internal function to process all item schemas</p>
+</dd>
+<dt><a href="#interpretNot">interpretNot(schema, model, interpreter)</a></dt>
+<dd><p>Interpreter function for JSON Schema draft 7 not keyword.</p>
+</dd>
+<dt><a href="#interpretPatternProperties">interpretPatternProperties(schema, model, interpreter)</a></dt>
+<dd><p>Interpreter function for JSON Schema draft 7 patternProperties keyword.</p>
+</dd>
 <dt><a href="#interpretProperties">interpretProperties(schema, model, interpreter)</a></dt>
 <dd><p>Interpreter function for interpreting JSON Schema draft 7 properties keyword.</p>
 </dd>
@@ -176,11 +201,18 @@ Common internal representation for a model.
 * [CommonModel](#CommonModel) ⇐ [<code>CommonSchema&lt;CommonModel&gt;</code>](#CommonModel)
     * _instance_
         * [.getFromSchema(key)](#CommonModel+getFromSchema) ⇒ <code>any</code>
-        * [.setType(types)](#CommonModel+setType)
+        * [.setType(type)](#CommonModel+setType)
+        * [.removeType(types)](#CommonModel+removeType)
         * [.addTypes(types)](#CommonModel+addTypes)
         * [.isRequired(propertyName)](#CommonModel+isRequired) ⇒ <code>boolean</code>
+        * [.addItem(itemModel, schema)](#CommonModel+addItem)
+        * [.addEnum(enumValue)](#CommonModel+addEnum)
+        * [.removeEnum(enumValue)](#CommonModel+removeEnum)
         * [.addProperty(propertyName, propertyModel, schema)](#CommonModel+addProperty)
-        * [.getImmediateDependencies()](#CommonModel+getImmediateDependencies)
+        * [.addAdditionalProperty(additionalPropertiesModel, schema)](#CommonModel+addAdditionalProperty)
+        * [.addPatternProperty(pattern, patternModel, schema)](#CommonModel+addPatternProperty)
+        * [.addExtendedModel(extendedModel)](#CommonModel+addExtendedModel)
+        * [.getNearestDependencies()](#CommonModel+getNearestDependencies)
     * _static_
         * [.toCommonModel(object)](#CommonModel.toCommonModel) ⇒
         * [.mergeProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)](#CommonModel.mergeProperties)
@@ -203,14 +235,25 @@ Retrieves data from originalSchema by given key
 
 <a name="CommonModel+setType"></a>
 
-### commonModel.setType(types)
+### commonModel.setType(type)
 Set the types of the model
 
 **Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
 
-| Param | Description |
-| --- | --- |
-| types | to set the model type to |
+| Param |
+| --- |
+| type | 
+
+<a name="CommonModel+removeType"></a>
+
+### commonModel.removeType(types)
+Removes type(s) from model type
+
+**Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
+
+| Param |
+| --- |
+| types | 
 
 <a name="CommonModel+addTypes"></a>
 
@@ -236,6 +279,44 @@ Checks if given property name is required in object
 | --- | --- |
 | propertyName | given property name |
 
+<a name="CommonModel+addItem"></a>
+
+### commonModel.addItem(itemModel, schema)
+Adds an item to the model.
+
+If items already exist the two are merged.
+
+**Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
+
+| Param | Description |
+| --- | --- |
+| itemModel |  |
+| schema | schema to the corresponding property model |
+
+<a name="CommonModel+addEnum"></a>
+
+### commonModel.addEnum(enumValue)
+Add enum value to the model.
+
+Ensures no duplicates are added.
+
+**Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
+
+| Param |
+| --- |
+| enumValue | 
+
+<a name="CommonModel+removeEnum"></a>
+
+### commonModel.removeEnum(enumValue)
+Remove enum from model.
+
+**Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
+
+| Param |
+| --- |
+| enumValue | 
+
 <a name="CommonModel+addProperty"></a>
 
 ### commonModel.addProperty(propertyName, propertyModel, schema)
@@ -250,9 +331,49 @@ If the property already exist the two are merged.
 | propertyModel |  |
 | schema | schema to the corresponding property model |
 
-<a name="CommonModel+getImmediateDependencies"></a>
+<a name="CommonModel+addAdditionalProperty"></a>
 
-### commonModel.getImmediateDependencies()
+### commonModel.addAdditionalProperty(additionalPropertiesModel, schema)
+Adds additionalProperty to the model.
+If another model already are added the two are merged.
+
+**Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
+
+| Param |
+| --- |
+| additionalPropertiesModel | 
+| schema | 
+
+<a name="CommonModel+addPatternProperty"></a>
+
+### commonModel.addPatternProperty(pattern, patternModel, schema)
+Adds a patternProperty to the model.
+If the pattern already exist the two models are merged.
+
+**Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
+
+| Param | Description |
+| --- | --- |
+| pattern |  |
+| patternModel |  |
+| schema | schema to the corresponding property model |
+
+<a name="CommonModel+addExtendedModel"></a>
+
+### commonModel.addExtendedModel(extendedModel)
+Adds another model this model should extend.
+
+It is only allowed to extend if the other model have $id and is not already being extended.
+
+**Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
+
+| Param |
+| --- |
+| extendedModel | 
+
+<a name="CommonModel+getNearestDependencies"></a>
+
+### commonModel.getNearestDependencies()
 This function returns an array of `$id`s from all the CommonModel's it immediate depends on.
 
 **Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
@@ -602,6 +723,111 @@ Sets the logger to use for the model generation library
 | Param | Description |
 | --- | --- |
 | logger | to add |
+
+<a name="interpretAdditionalProperties"></a>
+
+## interpretAdditionalProperties(schema, model, interpreter)
+Interpreter function for JSON Schema draft 7 additionalProperties keyword.
+
+**Kind**: global function  
+
+| Param |
+| --- |
+| schema | 
+| model | 
+| interpreter | 
+
+<a name="interpretAllOf"></a>
+
+## interpretAllOf(schema, model, interpreter)
+Interpreter function for JSON Schema draft 7 allOf keyword.
+
+It either merges allOf schemas into existing model or if allowed, create inheritance.
+
+**Kind**: global function  
+
+| Param |
+| --- |
+| schema | 
+| model | 
+| interpreter | 
+
+<a name="interpretConst"></a>
+
+## interpretConst(schema, model)
+Interpreter function for JSON Schema draft 7 const keyword.
+
+**Kind**: global function  
+
+| Param |
+| --- |
+| schema | 
+| model | 
+
+<a name="interpretEnum"></a>
+
+## interpretEnum(schema, model)
+Interpreter function for JSON Schema draft 7 enum keyword
+
+**Kind**: global function  
+
+| Param |
+| --- |
+| schema | 
+| model | 
+
+<a name="interpretItems"></a>
+
+## interpretItems(schema, model, interpreter)
+Interpreter function for JSON Schema draft 7 items keyword.
+
+**Kind**: global function  
+
+| Param |
+| --- |
+| schema | 
+| model | 
+| interpreter | 
+
+<a name="interpretArrayItems"></a>
+
+## interpretArrayItems(rootSchema, itemSchemas, model, interpreter)
+Internal function to process all item schemas
+
+**Kind**: global function  
+
+| Param |
+| --- |
+| rootSchema | 
+| itemSchemas | 
+| model | 
+| interpreter | 
+
+<a name="interpretNot"></a>
+
+## interpretNot(schema, model, interpreter)
+Interpreter function for JSON Schema draft 7 not keyword.
+
+**Kind**: global function  
+
+| Param |
+| --- |
+| schema | 
+| model | 
+| interpreter | 
+
+<a name="interpretPatternProperties"></a>
+
+## interpretPatternProperties(schema, model, interpreter)
+Interpreter function for JSON Schema draft 7 patternProperties keyword.
+
+**Kind**: global function  
+
+| Param |
+| --- |
+| schema | 
+| model | 
+| interpreter | 
 
 <a name="interpretProperties"></a>
 
