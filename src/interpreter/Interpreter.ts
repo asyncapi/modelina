@@ -64,6 +64,7 @@ export class Interpreter {
    * 
    * @param model 
    * @param schema 
+   * @param options to control the interpret process
    */
   private interpretSchema(model: CommonModel, schema: Schema | boolean, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions) {
     if (schema === true) {
@@ -104,6 +105,7 @@ export class Interpreter {
    * 
    * @param schema to go through
    * @param currentModel the current output
+   * @param options to control the interpret process
    */
   combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | undefined, currentModel: CommonModel, rootSchema: Schema, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions) {
     if (typeof schema !== 'object') return;

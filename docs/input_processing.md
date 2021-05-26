@@ -1,34 +1,62 @@
-# Input processing
-The input process is about processing any input into our internal model representation `CommonInputModel`. This most likely have to be done using different methods based on which kind of input it is.
+# Interpretation of JSON Schema draft 7 to CommonModel
 
-As of now two inputs are supported:
-- JSON Schema Draft 7
-- AsyncAPI version 2.0.0
+The library transforms JSON Schema from data validation rules to data definitions (`CommonModel`(s)). 
 
-## Internal model representation
+The algorithm tries to get to a model whose data can be validated against the JSON schema document. 
 
-![Class diagram](./assets/class_diagram.png)
+We only provide the underlying structure of the schema file for the model, where formats such as `maxItems`, `uniqueItems`, `multipleOf`, etc, are not transformed.
 
-As seen on the class diagram the `InputProcessor` is our main point of entry for processing input data. 
+## Interpreter 
+The main functionality is located in the `Interpreter` class. This class ensures to recursively create (or retrieve from a cache) a `CommonModel` representation of a Schema. We have tried to keep the functionality split out into separate functions to reduce complexity and ensure it is easy to maintain. 
 
-It uses the defined input processors (`AsyncAPIInputProcessor`, `JsonSchemaInputProcessor`, ...) by first calling `shouldProcess` function of each and if the function returns true it calls the `process` function. 
+The order of transformation:
+- `true` boolean schema infers all model types (`object`, `string`, `number`, `array`, `boolean`, `null`, `integer`) schemas.
+- `type` infers the initial model type.
+- `required` are interpreted as is.
+- `patternProperties` are interpreted as is, where duplicate patterns for the model are [merged](#Merging-models).
+- `additionalProperties` are interpreted as is, where duplicate additionalProperties for the model are [merged](#Merging-models). If the schema does not define `additionalProperties` it defaults to `true` schema.
+- `items` are interpreted as is, where more than 1 item are [merged](#Merging-models).
+- `properties` are interpreted as is, where duplicate `properties` for the model are [merged](#Merging-models). Usage of `properties` infers `object` model type.
+- [allOf](#allOf-sub-schemas)
+- `enum` is interpreted as is, where each `enum`. Usage of `enum` infers the enumerator value type to the model, but only if the schema does not have `type` specified.
+- `const` interpretation overwrite already interpreted `enum`. Usage of `const` infers the constant value type to the model, but only if the schema does not have `type` specified.
+- [oneOf/anyOf/then/else](#Processing-sub-schemas)
+- [not](#interpreting-not-schemas)
 
-If no processes returns true it defaults to `JsonSchemaInputProcessor`. 
+## Interpreting not schemas
+`not` schemas infer the form for which the model should not take by recursively interpret the `not` schema. It removes certain model properties when encountered.
 
-The `process` function are expected to return `CommonInputModel` which is a wrapper for the core data representation of `CommonModel`. 
+Currently, the following `not` model properties are interpreted:
+- `type`
+- `enum`
 
-This is done to ensure we can return multiple models for any input to allow for references, inheritance etc. 
+**Restrictions** 
+- You cannot use nested `not` schemas to infer new model properties, it can only be used to re-allow them.
+- boolean `not` schemas are not applied.
 
-As said the core internal representation of a data model is `CommonModel`. This contains the data definition by using known keywords from JSON Schema, but instead of it representing a validation rules it represent data definition. The explanation for the `CommonModel` properties can be found [here](../API.md#CommonModel).
-## AsyncAPI
-At the moment the library only supports the whole AsyncAPI file as input where it generates models for all defined message payloads. If any other kind of AsyncAPI input is wanted please create a [feature request](https://github.com/asyncapi/generator-model-sdk/issues/new?assignees=&labels=enhancement&template=enhancement.md)!
+## allOf sub schemas
+`allOf` is a bit different than the other [combination keywords](#Processing-sub-schemas) since it can imply inheritance. 
 
-The AsyncAPI input processor expects that the property `asyncapi` is defined in order to know it should be processed using this.
+So dependant on whether the interpreter option `allowInheritance` is true or false we interpret it as inheritance or [merge](#Merging-models) the models.
 
-The payload, since it is of type JSON Schema, is then passed to the [JSON Schema processor](#JSON-Schema) which handle the rest of the processing.
+## Processing sub schemas
+The following JSON Schema keywords are [merged](#Merging-models) with the already interpreted model:
+- `oneOf`
+- `anyOf`
+- `then`
+- `else`
 
 
-## JSON Schema
-For us to convert JSON Schema into `CommonInputModel` we use a process we call the simplification process. This means that we simplify data validation rules (`Schema` or Boolean) into data definitions (`CommonModel`). This process is quite complex and needs it own section for explaining how it works.
+## Merging models
+Because of the recursive nature of the interpreter (and the nested behavior of JSON Schema) it happens that two models needs to be merged together.
 
-Read [this](./docs/simplification.md) document for more information.
+If only one side has a property defined, it is used as is, if both have it defined they are merged based on the following logic:
+- `additionalProperties` if both models contain it the two are recursively merged together. 
+- `patternProperties` if both models contain a pattern the corresponding models are recursively merged together. 
+- `properties` if both models contain the same property the corresponding models are recursively merged together. 
+- `items` if both models contain items they are recursively merged together.
+- `types` if both models contain types they are merged together, duplicate types are removed.
+- `enum` if both models contain enums they are merged together, duplicate enums are removed.
+- `required` if both models contain required properties they are merged together, duplicate required properties are removed.
+- `$id`, `$ref`, `extend` uses left model value if present otherwise right model value if present.
+- `originalSchema` are overwritten.
