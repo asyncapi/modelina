@@ -53,7 +53,7 @@ export class Interpreter {
     if (options.splitModels === true) {
       this.ensureModelsAreSplit(model);
       if (isModelObject(model)) {
-        this.iteratedModels[`${model.$id}`] = model;
+        this.iteratedModels[String(model.$id)] = model;
       }
     }
     return [model, ...modelsToReturn];
@@ -131,7 +131,7 @@ export class Interpreter {
       Logger.info(`Splitting model ${model.$id || 'unknown'} since it should be on its own`);
       const switchRootModel = new CommonModel();
       switchRootModel.$ref = model.$id;
-      this.iteratedModels[`${model.$id}`] = model;
+      this.iteratedModels[String(model.$id)] = model;
       return switchRootModel;
     }
     return model;
@@ -148,7 +148,7 @@ export class Interpreter {
     if (model.properties) {
       const existingProperties = model.properties;
       for (const [prop, propSchema] of Object.entries(existingProperties)) {
-        model.properties[`${prop}`] = this.splitModels(propSchema);
+        model.properties[String(prop)] = this.splitModels(propSchema);
       }
     }
   }

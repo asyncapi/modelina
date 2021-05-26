@@ -52,7 +52,7 @@ ${this.indent(this.renderBlock(content, 2))}
     case 'string': {
       return `"${value}"`;
     }
-    default: return `${value}`;
+    default: return value;
     }
   }
 
