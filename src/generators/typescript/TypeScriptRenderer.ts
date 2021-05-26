@@ -48,6 +48,13 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
     case 'boolean':
       return 'boolean';
     case 'array': {
+      //Check and see if it should be rendered as tuples or array 
+      if (Array.isArray(model.items)) {
+        const types = model.items.map((item) => {
+          return this.renderType(item);
+        });
+        return `[${types}]`;
+      } 
       const types = model.items ? this.renderType(model.items) : 'unknown';
       return `Array<${types}>`;
     }

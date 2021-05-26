@@ -112,7 +112,8 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * If items already exist the two are merged.
    * 
    * @param itemModel 
-   * @param schema schema to the corresponding property model
+   * @param schema 
+   * @param addAsArray
    */
   addItem(itemModel: CommonModel, schema: Schema) {
     if (this.items !== undefined) {
@@ -120,6 +121,21 @@ export class CommonModel extends CommonSchema<CommonModel> {
       this.items = CommonModel.mergeCommonModels(this.items as CommonModel, itemModel, schema);
     } else {
       this.items = itemModel;
+    }
+  }
+
+  addItemTuple(itemModel: CommonModel, schema: Schema, index: number) {
+    let modelItems = this.items;
+    if (!Array.isArray(modelItems)) {
+      Logger.warn('Trying to add item tuple to a non-tuple item, will drop existing item', itemModel, schema, index);
+      modelItems = [];
+    }
+    const existingModelAtIndex = modelItems[Number(index)];
+    if (existingModelAtIndex !== undefined) {
+      Logger.warn('Trying to add item tuple at index ${index} but it was already occupied, merging models', itemModel, schema, index);
+      modelItems[Number(index)] = CommonModel.mergeCommonModels(existingModelAtIndex, itemModel, schema);
+    } else {
+      modelItems[Number(index)] = itemModel;
     }
   }
 
@@ -359,7 +375,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
   }
 
   /**
-   * Merge items together so only one CommonModel remains.
+   * Merge items together so only one .
    * 
    * @param mergeTo 
    * @param mergeFrom 
@@ -372,14 +388,28 @@ export class CommonModel extends CommonSchema<CommonModel> {
       let mergedItemsModel: CommonModel | undefined = undefined;
       models.forEach((model, index) => { 
         Logger.warn(`Found duplicate items at index ${index} for model. Model item for ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalSchema);
-        mergedItemsModel = CommonModel.mergeCommonModels(mergedItemsModel, model, originalSchema, alreadyIteratedModels); 
+        mergedItemsModel = 
       });
       return mergedItemsModel;
     };
+    if(mergeTo.items === undefined) {
+      mergeTo.items = mergeFrom.items;
+      return;
+    }
+    let mergeToItems = mergeTo.items;
+    if (Array.isArray(mergeFrom.items) && !Array.isArray(mergeToItems)) {
+      Logger.warn(`Trying to merge two model items together where one is tuple and the other is simple array, preferring tuple over array`);
+      mergeToItems = [mergeToItems];
+    }
+
     if (mergeFrom.items !== undefined) {
-      //Incase of arrays, merge them into a single model
-      const mergeFromItemsModel = merge(mergeFrom.items);
-      const mergeToItemsModel = merge(mergeTo.items);
+      if (Array.isArray(mergeFrom.items)) {
+        for (const [index, tupleModel] of mergeFrom.items.entries()) {
+          CommonModel.mergeCommonModels(mergeToItems[index], tupleModel, originalSchema, alreadyIteratedModels); 
+        }
+      } else {
+
+      }
       if (mergeFromItemsModel !== undefined) {
         if (mergeToItemsModel === undefined) {
           mergeTo.items = mergeFromItemsModel;
@@ -388,8 +418,6 @@ export class CommonModel extends CommonSchema<CommonModel> {
           mergeTo.items = CommonModel.mergeCommonModels(mergeToItemsModel, mergeFromItemsModel, originalSchema, alreadyIteratedModels);
         }
       }
-    } else if (mergeTo.items !== undefined) {
-      mergeTo.items = merge(mergeTo.items);
     }
   }
 
