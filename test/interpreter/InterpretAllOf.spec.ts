@@ -3,17 +3,15 @@ import { CommonModel } from '../../src/models/CommonModel';
 import { Interpreter } from '../../src/interpreter/Interpreter';
 import { isModelObject } from '../../src/interpreter/Utils';
 import interpretAllOf from '../../src/interpreter/InterpretAllOf';
-import { SimplificationOptions } from '../../src/models/SimplificationOptions';
 
-let interpreterOptions: SimplificationOptions = {};
+let interpreterOptions = Interpreter.defaultInterpreterOptions;
 let interpretedReturnModels = [new CommonModel()];
 jest.mock('../../src/interpreter/Interpreter', () => {
   return {
     Interpreter: jest.fn().mockImplementation(() => {
       return {
         interpret: jest.fn().mockImplementation(() => {return interpretedReturnModels}),
-        combineSchemas: jest.fn(),
-        options: interpreterOptions
+        combineSchemas: jest.fn()
       };
     })
   };
@@ -56,9 +54,9 @@ describe('Interpretation of allOf', () => {
     const model = new CommonModel();
     const schema = { allOf: [{}] };
     interpreterOptions.allowInheritance = false;
-    const interpreter = new Interpreter(interpreterOptions);
-    interpretAllOf(schema, model, interpreter);
-    expect(interpreter.combineSchemas).toHaveBeenNthCalledWith(1, schema.allOf[0], model, schema);
+    const interpreter = new Interpreter();
+    interpretAllOf(schema, model, interpreter, interpreterOptions);
+    expect(interpreter.combineSchemas).toHaveBeenNthCalledWith(1, schema.allOf[0], model, schema, interpreterOptions);
     expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });
 
@@ -66,16 +64,16 @@ describe('Interpretation of allOf', () => {
     const model = new CommonModel();
     const schema = { allOf: [{}] };
     interpretedReturnModels.pop();
-    const interpreter = new Interpreter(interpreterOptions);
-    interpretAllOf(schema, model, interpreter);
+    const interpreter = new Interpreter();
+    interpretAllOf(schema, model, interpreter, interpreterOptions);
     expect(interpreter.combineSchemas).not.toHaveBeenCalled();
     expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });
   test('should handle empty allOf array', function() {
     const model = new CommonModel();
     const schema = { allOf: [] };
-    const interpreter = new Interpreter(interpreterOptions);
-    interpretAllOf(schema, model, interpreter);
+    const interpreter = new Interpreter();
+    interpretAllOf(schema, model, interpreter, interpreterOptions);
     expect(interpreter.combineSchemas).not.toHaveBeenCalled();
     expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });
@@ -84,8 +82,8 @@ describe('Interpretation of allOf', () => {
     const schema = { allOf: [{type: "object", $id: "test"}] };
     interpretedReturnModels[0].$id = "test";
     mockedIsModelObjectReturn = true;
-    const interpreter = new Interpreter(interpreterOptions);
-    interpretAllOf(schema, model, interpreter);
+    const interpreter = new Interpreter();
+    interpretAllOf(schema, model, interpreter, interpreterOptions);
     expect(interpreter.combineSchemas).not.toHaveBeenCalled();
     expect(isModelObject).toHaveBeenCalled();
     expect(model.addExtendedModel).toHaveBeenCalledWith(interpretedReturnModels[0]);

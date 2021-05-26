@@ -30,7 +30,7 @@ describe('Interpretation of', () => {
     expect(model.addItem).not.toHaveBeenCalled();
   });
 
-  test('should ignore model if interpreter cannot interpret property schema', () => {
+  test('should ignore model if interpreter cannot interpret item schema', () => {
     const schema: any = { items: { type: 'string' } };
     const model = new CommonModel();
     const interpreter = new Interpreter();
