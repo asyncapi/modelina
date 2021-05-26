@@ -36,15 +36,39 @@ export class CommonModel extends CommonSchema<CommonModel> {
   /**
    * Set the types of the model
    * 
-   * @param types to set the model type to
+   * @param type
    */
-  setType(types : string | string[]) {
-    if (!Array.isArray(types) || types.length > 1) {
-      this.type = types;
-    } else if (types.length === 0) {
-      this.type = undefined;
-    } else if (types.length === 1) {
-      this.type = types[0];
+  setType(type : string | string[] | undefined) {
+    if (Array.isArray(type)) {
+      if (type.length === 0) {
+        this.type = undefined;
+        return;
+      } else if (type.length === 1) {
+        this.type = type[0];
+        return;
+      }
+    } 
+    this.type = type;
+  }
+  
+  /**
+   * Removes type(s) from model type
+   * 
+   * @param types 
+   */
+  removeType(typesToRemove : string | string[]) {
+    if (Array.isArray(typesToRemove)) {
+      for (const type of typesToRemove) {
+        this.removeType(type);
+      }
+    } else if (this.type !== undefined && this.type.includes(typesToRemove)) {
+      if (Array.isArray(this.type)) {
+        this.setType(this.type.filter((el) => {
+          return el !== typesToRemove;
+        }));
+      } else {
+        this.setType(undefined);
+      }
     }
   }
 
@@ -110,6 +134,29 @@ export class CommonModel extends CommonSchema<CommonModel> {
     if (this.enum === undefined) this.enum = [];
     if (!this.enum.includes(enumValue)) {
       this.enum.push(enumValue);
+    }
+  }
+
+  /**
+   * Remove enum from model.
+   * 
+   * @param enumValue 
+   */
+  removeEnum(enumsToRemove: any | any[]) {
+    if (this.enum === undefined || enumsToRemove === undefined) return;
+    if (Array.isArray(enumsToRemove)) {
+      enumsToRemove.forEach((enumToRemove) => {
+        this.removeEnum(enumToRemove);
+      });
+      return;
+    }
+    const filteredEnums = this.enum.filter((el) => {
+      return enumsToRemove !== el;
+    });
+    if (filteredEnums.length === 0) {
+      this.enum = undefined;
+    } else {
+      this.enum = filteredEnums;
     }
   }
 

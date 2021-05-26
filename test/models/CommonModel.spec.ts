@@ -698,6 +698,48 @@ describe('CommonModel', function() {
       expect(model.type).toEqual(['type1', 'type2']);
     });
   });
+
+  describe('removeType', function() {
+    test('should remove single type', function() {
+      const model = new CommonModel(); 
+      model.addTypes('type1');
+      model.removeType('type1');
+      expect(model.type).toBeUndefined();
+    });
+    test('should not remove non matching type', function() {
+      const model = new CommonModel(); 
+      model.addTypes('type');
+      model.removeType('type1');
+      expect(model.type).toEqual('type');
+    });
+    test('should remove multiple types', function() {
+      const model = new CommonModel(); 
+      model.addTypes(['type1', 'type2']);
+      model.removeType(['type1', 'type2']);
+      expect(model.type).toBeUndefined();
+    });
+  });
+  describe('removeEnum', function() {
+    test('should remove single enum', function() {
+      const model = new CommonModel(); 
+      model.addEnum('enum1');
+      model.removeEnum('enum1');
+      expect(model.enum).toBeUndefined();
+    });
+    test('should not remove non matching enum', function() {
+      const model = new CommonModel(); 
+      model.addEnum('enum');
+      model.removeEnum('enum1');
+      expect(model.enum).toEqual(['enum']);
+    });
+    test('should remove multiple enums', function() {
+      const model = new CommonModel(); 
+      model.addEnum('enum1');
+      model.addEnum('enum2');
+      model.removeEnum(['enum1', 'enum2']);
+      expect(model.enum).toBeUndefined();
+    });
+  });
   describe('helpers', function() {
     describe('getFromSchema', function() {
       test('should work', function() {
