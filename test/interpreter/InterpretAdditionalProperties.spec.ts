@@ -28,7 +28,7 @@ describe('Interpretation of additionalProperties', () => {
     model.type = "object";
     const interpreter = new Interpreter();
     interpretAdditionalProperties(schema, model, interpreter);
-    expect(interpreter.interpret).toHaveBeenNthCalledWith(1, { type: 'string' });
+    expect(interpreter.interpret).toHaveBeenNthCalledWith(1, { type: 'string' }, Interpreter.defaultInterpreterOptions);
     expect(model.addAdditionalProperty).toHaveBeenNthCalledWith(1, mockedReturnModels[0], schema);
   });
   test('should ignore model if interpreter cannot interpret additionalProperty schema', () => {
@@ -55,7 +55,7 @@ describe('Interpretation of additionalProperties', () => {
     model.type = "object";
     const interpreter = new Interpreter();
     interpretAdditionalProperties(schema, model, interpreter);
-    expect(interpreter.interpret).toHaveBeenNthCalledWith(1, true);
+    expect(interpreter.interpret).toHaveBeenNthCalledWith(1, true, Interpreter.defaultInterpreterOptions);
     expect(model.addAdditionalProperty).toHaveBeenNthCalledWith(1, mockedReturnModels[0], schema);
   });
 });

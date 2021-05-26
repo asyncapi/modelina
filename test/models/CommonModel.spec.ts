@@ -698,6 +698,48 @@ describe('CommonModel', function() {
       expect(model.type).toEqual(['type1', 'type2']);
     });
   });
+
+  describe('removeType', function() {
+    test('should remove single type', function() {
+      const model = new CommonModel(); 
+      model.addTypes('type1');
+      model.removeType('type1');
+      expect(model.type).toBeUndefined();
+    });
+    test('should not remove non matching type', function() {
+      const model = new CommonModel(); 
+      model.addTypes('type');
+      model.removeType('type1');
+      expect(model.type).toEqual('type');
+    });
+    test('should remove multiple types', function() {
+      const model = new CommonModel(); 
+      model.addTypes(['type1', 'type2']);
+      model.removeType(['type1', 'type2']);
+      expect(model.type).toBeUndefined();
+    });
+  });
+  describe('removeEnum', function() {
+    test('should remove single enum', function() {
+      const model = new CommonModel(); 
+      model.addEnum('enum1');
+      model.removeEnum('enum1');
+      expect(model.enum).toBeUndefined();
+    });
+    test('should not remove non matching enum', function() {
+      const model = new CommonModel(); 
+      model.addEnum('enum');
+      model.removeEnum('enum1');
+      expect(model.enum).toEqual(['enum']);
+    });
+    test('should remove multiple enums', function() {
+      const model = new CommonModel(); 
+      model.addEnum('enum1');
+      model.addEnum('enum2');
+      model.removeEnum(['enum1', 'enum2']);
+      expect(model.enum).toBeUndefined();
+    });
+  });
   describe('helpers', function() {
     describe('getFromSchema', function() {
       test('should work', function() {
@@ -719,16 +761,21 @@ describe('CommonModel', function() {
       });
     });
 
-    describe('getImmediateDependencies', function() {
-      test('check that all dependencies are returned', function() {
-        const doc = { additionalProperties: { $ref: "1" }, extend: ["2"], items: { $ref: "3" }, properties: { testProp: { $ref: "4" } }  };
+    describe('getNearestDependencies', function() {
+      test('should work with array of items', function() {
+        const doc = { items: [{ $ref: "1" }] };
         const d = CommonModel.toCommonModel(doc);
-        expect(d.getImmediateDependencies()).toEqual(["1", "2", "3", "4"]);
+        expect(d.getNearestDependencies()).toEqual(["1"]);
+      });
+      test('check that all dependencies are returned', function() {
+        const doc = { additionalProperties: { $ref: "1" }, extend: ["2"], items: { $ref: "3" }, properties: { testProp: { $ref: "4" } }, patternProperties: {testPattern: {$ref: "5"}}  };
+        const d = CommonModel.toCommonModel(doc);
+        expect(d.getNearestDependencies()).toEqual(["1", "2", "3", "4", "5"]);
       });
       test('check that no dependencies is returned if there are none', function() {
         const doc = {  };
         const d = CommonModel.toCommonModel(doc);
-        expect(d.getImmediateDependencies()).toEqual([]);
+        expect(d.getNearestDependencies()).toEqual([]);
       });
     });
   });

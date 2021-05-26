@@ -1,5 +1,4 @@
 import { CommonModel, Schema } from '../models';
-import { SimplificationOptions } from '../models/SimplificationOptions';
 import { interpretName, isModelObject } from './Utils';
 import interpretProperties from './InterpretProperties';
 import interpretAllOf from './InterpretAllOf';
@@ -9,9 +8,15 @@ import interpretAdditionalProperties from './InterpretAdditionalProperties';
 import interpretItems from './InterpretItems';
 import interpretPatternProperties from './InterpretPatternProperties';
 import { Logger } from '../utils';
+import interpretNot from './InterpretNot';
 
+export type InterpreterOptions = {
+  splitModels?: boolean,
+  allowInheritance?: boolean
+} 
 export class Interpreter {
-  static defaultOptions: SimplificationOptions = {
+  static defaultInterpreterOptions: InterpreterOptions = {
+    splitModels: true,
     allowInheritance: false
   }
 
@@ -19,12 +24,6 @@ export class Interpreter {
   private seenSchemas: Map<Schema | boolean, CommonModel> = new Map();
   private iteratedModels: Record<string, CommonModel> = {};
   
-  constructor(
-    readonly options: SimplificationOptions = Interpreter.defaultOptions,
-  ) {
-    this.options = { ...Interpreter.defaultOptions, ...options };
-  }
-
   /**
    * Transforms a schema into instances of CommonModel by processing all JSON Schema draft 7 keywords and infers the model definition.
    *  
@@ -33,9 +32,9 @@ export class Interpreter {
    * Index > 0 will always be the separated models that the interpreter determines are fit to be on their own.
    * 
    * @param schema
-   * @param splitModels should it split up models
+   * @param options to control the interpret process
    */
-  interpret(schema: Schema | boolean, splitModels = true): CommonModel[] {
+  interpret(schema: Schema | boolean, options: InterpreterOptions = Interpreter.defaultInterpreterOptions): CommonModel[] {
     const modelsToReturn = Object.values(this.iteratedModels);
     if (this.seenSchemas.has(schema)) {
       const cachedModel = this.seenSchemas.get(schema); 
@@ -50,11 +49,11 @@ export class Interpreter {
     const model = new CommonModel();
     model.originalSchema = Schema.toSchema(schema);
     this.seenSchemas.set(schema, model);
-    this.interpretSchema(model, schema);
-    if (splitModels) {
+    this.interpretSchema(model, schema, options);
+    if (options.splitModels === true) {
       this.ensureModelsAreSplit(model);
       if (isModelObject(model)) {
-        this.iteratedModels[`${model.$id}`] = model;
+        this.iteratedModels[String(model.$id)] = model;
       }
     }
     return [model, ...modelsToReturn];
@@ -66,7 +65,7 @@ export class Interpreter {
    * @param model 
    * @param schema 
    */
-  private interpretSchema(model: CommonModel, schema: Schema | boolean) {
+  private interpretSchema(model: CommonModel, schema: Schema | boolean, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions) {
     if (schema === true) {
       model.setType(['object', 'string', 'number', 'array', 'boolean', 'null', 'integer']);
     } else if (typeof schema === 'object') {
@@ -83,18 +82,20 @@ export class Interpreter {
 
       model.required = schema.required || model.required;
       
-      interpretPatternProperties(schema, model, this);
-      interpretAdditionalProperties(schema, model, this);
-      interpretItems(schema, model, this);
-      interpretProperties(schema, model, this);
-      interpretAllOf(schema, model, this);
+      interpretPatternProperties(schema, model, this, interpreterOptions);
+      interpretAdditionalProperties(schema, model, this, interpreterOptions);
+      interpretItems(schema, model, this, interpreterOptions);
+      interpretProperties(schema, model, this, interpreterOptions);
+      interpretAllOf(schema, model, this, interpreterOptions);
       interpretConst(schema, model);
       interpretEnum(schema, model);
 
-      this.combineSchemas(schema.oneOf, model, schema);
-      this.combineSchemas(schema.anyOf, model, schema);
-      this.combineSchemas(schema.then, model, schema);
-      this.combineSchemas(schema.else, model, schema);
+      this.combineSchemas(schema.oneOf, model, schema, interpreterOptions);
+      this.combineSchemas(schema.anyOf, model, schema, interpreterOptions);
+      this.combineSchemas(schema.then, model, schema, interpreterOptions);
+      this.combineSchemas(schema.else, model, schema, interpreterOptions);
+
+      interpretNot(schema, model, this, interpreterOptions);
     }
   }
 
@@ -104,14 +105,15 @@ export class Interpreter {
    * @param schema to go through
    * @param currentModel the current output
    */
-  combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | undefined, currentModel: CommonModel, rootSchema: Schema) {
+  combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | undefined, currentModel: CommonModel, rootSchema: Schema, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions) {
     if (typeof schema !== 'object') {return;}
     if (Array.isArray(schema)) {
       schema.forEach((forEachSchema) => {
-        this.combineSchemas(forEachSchema, currentModel, rootSchema);
+        this.combineSchemas(forEachSchema, currentModel, rootSchema, interpreterOptions);
       });
     } else {
-      const models = this.interpret(schema, false);
+      interpreterOptions = {...interpreterOptions, splitModels: false};
+      const models = this.interpret(schema, interpreterOptions);
       if (models.length > 0) {
         CommonModel.mergeCommonModels(currentModel, models[0], rootSchema);
       }
@@ -129,7 +131,7 @@ export class Interpreter {
       Logger.info(`Splitting model ${model.$id || 'unknown'} since it should be on its own`);
       const switchRootModel = new CommonModel();
       switchRootModel.$ref = model.$id;
-      this.iteratedModels[`${model.$id}`] = model;
+      this.iteratedModels[String(model.$id)] = model;
       return switchRootModel;
     }
     return model;
@@ -146,7 +148,7 @@ export class Interpreter {
     if (model.properties) {
       const existingProperties = model.properties;
       for (const [prop, propSchema] of Object.entries(existingProperties)) {
-        model.properties[`${prop}`] = this.splitModels(propSchema);
+        model.properties[String(prop)] = this.splitModels(propSchema);
       }
     }
   }

@@ -1,7 +1,7 @@
 
 import { CommonModel } from '../models/CommonModel';
 import { Schema } from '../models/Schema';
-import { Interpreter } from './Interpreter';
+import { Interpreter, InterpreterOptions } from './Interpreter';
 
 /**
  * Interpreter function for JSON Schema draft 7 items keyword.
@@ -10,10 +10,10 @@ import { Interpreter } from './Interpreter';
  * @param model 
  * @param interpreter 
  */
-export default function interpretItems(schema: Schema, model: CommonModel, interpreter : Interpreter) {
+export default function interpretItems(schema: Schema, model: CommonModel, interpreter : Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions) {
   if (schema.items === undefined) {return;}
   model.addTypes('array');
-  interpretArrayItems(schema, schema.items, model, interpreter);
+  interpretArrayItems(schema, schema.items, model, interpreter, interpreterOptions);
 }
 
 /**
@@ -24,10 +24,10 @@ export default function interpretItems(schema: Schema, model: CommonModel, inter
  * @param model 
  * @param interpreter 
  */
-function interpretArrayItems(rootSchema: Schema, itemSchemas: (Schema | boolean)[] | (Schema | boolean), model: CommonModel, interpreter : Interpreter) {
+function interpretArrayItems(rootSchema: Schema, itemSchemas: (Schema | boolean)[] | (Schema | boolean), model: CommonModel, interpreter : Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions) {
   if (Array.isArray(itemSchemas)) {
     for (const itemSchema of itemSchemas) {
-      interpretArrayItems(rootSchema, itemSchema, model, interpreter);
+      interpretArrayItems(rootSchema, itemSchema, model, interpreter, interpreterOptions);
     }
   } else {
     const itemModels = interpreter.interpret(itemSchemas);

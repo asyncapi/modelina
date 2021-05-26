@@ -36,15 +36,39 @@ export class CommonModel extends CommonSchema<CommonModel> {
   /**
    * Set the types of the model
    * 
-   * @param types to set the model type to
+   * @param type
    */
-  setType(types : string | string[]) {
-    if (!Array.isArray(types) || types.length > 1) {
-      this.type = types;
-    } else if (types.length === 0) {
-      this.type = undefined;
-    } else if (types.length === 1) {
-      this.type = types[0];
+  setType(type : string | string[] | undefined) {
+    if (Array.isArray(type)) {
+      if (type.length === 0) {
+        this.type = undefined;
+        return;
+      } else if (type.length === 1) {
+        this.type = type[0];
+        return;
+      }
+    } 
+    this.type = type;
+  }
+  
+  /**
+   * Removes type(s) from model type
+   * 
+   * @param types 
+   */
+  removeType(typesToRemove : string | string[]) {
+    if (Array.isArray(typesToRemove)) {
+      for (const type of typesToRemove) {
+        this.removeType(type);
+      }
+    } else if (this.type !== undefined && this.type.includes(typesToRemove)) {
+      if (Array.isArray(this.type)) {
+        this.setType(this.type.filter((el) => {
+          return el !== typesToRemove;
+        }));
+      } else {
+        this.setType(undefined);
+      }
     }
   }
 
@@ -114,6 +138,29 @@ export class CommonModel extends CommonSchema<CommonModel> {
   }
 
   /**
+   * Remove enum from model.
+   * 
+   * @param enumValue 
+   */
+  removeEnum(enumsToRemove: any | any[]) {
+    if (this.enum === undefined || enumsToRemove === undefined) return;
+    if (Array.isArray(enumsToRemove)) {
+      enumsToRemove.forEach((enumToRemove) => {
+        this.removeEnum(enumToRemove);
+      });
+      return;
+    }
+    const filteredEnums = this.enum.filter((el) => {
+      return enumsToRemove !== el;
+    });
+    if (filteredEnums.length === 0) {
+      this.enum = undefined;
+    } else {
+      this.enum = filteredEnums;
+    }
+  }
+
+  /**
    * Adds a property to the model.
    * If the property already exist the two are merged.
    * 
@@ -125,9 +172,9 @@ export class CommonModel extends CommonSchema<CommonModel> {
     if (this.properties === undefined) {this.properties = {};}
     if (this.properties[`${propertyName}`] !== undefined) {
       Logger.warn(`While trying to add property to model, duplicate properties found. Merging models together for property ${propertyName}`, propertyModel, schema, this);
-      this.properties[`${propertyName}`] = CommonModel.mergeCommonModels(this.properties[`${propertyName}`], propertyModel, schema);
+      this.properties[String(propertyName)] = CommonModel.mergeCommonModels(this.properties[String(propertyName)], propertyModel, schema);
     } else {
-      this.properties[`${propertyName}`] = propertyModel;
+      this.properties[String(propertyName)] = propertyModel;
     }
   }
 
@@ -159,9 +206,9 @@ export class CommonModel extends CommonSchema<CommonModel> {
     if (this.patternProperties ===  undefined) {this.patternProperties = {};}
     if (this.patternProperties[`${pattern}`] !== undefined) {
       Logger.warn(`While trying to add patternProperty to model, duplicate patterns found. Merging pattern models together for pattern ${pattern}`, patternModel, schema, this);
-      this.patternProperties[`${pattern}`] = CommonModel.mergeCommonModels(this.patternProperties[`${pattern}`], patternModel, schema);
+      this.patternProperties[String(pattern)] = CommonModel.mergeCommonModels(this.patternProperties[String(pattern)], patternModel, schema);
     } else {
-      this.patternProperties[`${pattern}`] = patternModel;
+      this.patternProperties[String(pattern)] = patternModel;
     }
   }
   
@@ -188,30 +235,37 @@ export class CommonModel extends CommonSchema<CommonModel> {
   /**
    * This function returns an array of `$id`s from all the CommonModel's it immediate depends on.
    */
-  getImmediateDependencies(): string[] {
+  // eslint-disable-next-line sonarjs/cognitive-complexity
+  getNearestDependencies(): string[] {
     const dependsOn = [];
-    if (this.additionalProperties instanceof CommonModel) {
-      const additionalPropertiesRef = (this.additionalProperties as CommonModel).$ref;
-      if (additionalPropertiesRef !== undefined) {
-        dependsOn.push(additionalPropertiesRef);
-      }
+    if (this.additionalProperties !== undefined && 
+      this.additionalProperties instanceof CommonModel && 
+      this.additionalProperties.$ref !== undefined) {
+      dependsOn.push(this.additionalProperties.$ref);
     }
     if (this.extend !== undefined) {
-      for (const extendedSchema of this.extend) {
-        dependsOn.push(extendedSchema);
-      }
+      dependsOn.push(...this.extend);
     }
-    if (this.items instanceof CommonModel) {
-      const itemsRef = (this.items as CommonModel).$ref;
-      if (itemsRef !== undefined) {
-        dependsOn.push(itemsRef);
-      }
+    if (this.items !== undefined) {
+      const items = Array.isArray(this.items) ? this.items : [this.items];
+      items.forEach((item) => {
+        const itemRef = item.$ref;
+        if (itemRef !== undefined) {
+          dependsOn.push(itemRef);
+        }
+      });
     }
     if (this.properties !== undefined && Object.keys(this.properties).length) {
       const referencedProperties = Object.values(this.properties)
         .filter((propertyModel: CommonModel) => propertyModel.$ref !== undefined)
-        .map((propertyModel: CommonModel) => `${propertyModel.$ref}`);
+        .map((propertyModel: CommonModel) => String(propertyModel.$ref));
       dependsOn.push(...referencedProperties);
+    }
+    if (this.patternProperties !== undefined && Object.keys(this.patternProperties).length) {
+      const referencedPatternProperties = Object.values(this.patternProperties)
+        .filter((patternPropertyModel: CommonModel) => patternPropertyModel.$ref !== undefined)
+        .map((patternPropertyModel: CommonModel) => String(patternPropertyModel.$ref));
+      dependsOn.push(...referencedPatternProperties);
     }
     return dependsOn;
   }
@@ -247,9 +301,9 @@ export class CommonModel extends CommonSchema<CommonModel> {
         mergeTo.properties = mergeFromProperties;
       } else {
         for (const [propName, prop] of Object.entries(mergeFromProperties)) {
-          if (mergeToProperties[`${propName}`] !== undefined) {
+          if (mergeToProperties[String(propName)] !== undefined) {
             Logger.warn(`Found duplicate properties ${propName} for model. Model property from ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalSchema);
-            mergeToProperties[`${propName}`] = CommonModel.mergeCommonModels(mergeToProperties[`${propName}`], prop, originalSchema, alreadyIteratedModels);
+            mergeToProperties[String(propName)] = CommonModel.mergeCommonModels(mergeToProperties[String(propName)], prop, originalSchema, alreadyIteratedModels);
           } else {
             mergeToProperties[String(propName)] = prop;
           }
