@@ -4,7 +4,7 @@
 export class CommonSchema<T> {
     $id?: string;
     type?: string | string[];
-    enum?: unknown[];
+    enum?: any[];
     items?: T | T[];
     properties?: { [key: string]: T; };
     additionalProperties?: T;
@@ -21,7 +21,7 @@ export class CommonSchema<T> {
      * @param schema to be transformed
      * @param transformationSchemaCallback callback to transform nested schemas
      */
-    static transformSchema<T extends CommonSchema<T | boolean>>(schema: T, transformationSchemaCallback: (object: T | boolean, seenSchemas: Map<unknown, T>) => T | boolean, seenSchemas: Map<unknown, T> = new Map()) : T {
+    static transformSchema<T extends CommonSchema<T | boolean>>(schema: T, transformationSchemaCallback: (object: T | boolean, seenSchemas: Map<any, T>) => T | boolean, seenSchemas: Map<any, T> = new Map()) : T {
       if (schema.items !== undefined) {
         if (Array.isArray(schema.items)) {
           schema.items = schema.items.map((item) => transformationSchemaCallback(item, seenSchemas));

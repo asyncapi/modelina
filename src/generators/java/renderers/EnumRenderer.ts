@@ -47,7 +47,7 @@ ${this.indent(this.renderBlock(content, 2))}
     }
   }
 
-  normalizeValue(value: unknown): string {
+  normalizeValue(value: any): string {
     switch (typeof value) {
     case 'string': {
       return `"${value}"`;
@@ -56,7 +56,7 @@ ${this.indent(this.renderBlock(content, 2))}
     }
   }
 
-  runItemPreset(item: unknown): Promise<string> {
+  runItemPreset(item: any): Promise<string> {
     return this.runPreset('item', { item });
   }
 }

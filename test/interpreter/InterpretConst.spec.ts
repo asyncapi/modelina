@@ -34,7 +34,7 @@ describe('Interpretation of const', () => {
     expect(inferTypeFromValue).toHaveBeenNthCalledWith(1, 'test');
     expect(model.setType).toHaveBeenNthCalledWith(1, 'string');
   });
-  test('should not infer unknown type', () => {
+  test('should not infer any type', () => {
     (inferTypeFromValue as jest.Mock).mockReturnValue(undefined);
     const schema: any = { const: 'test'};
     const model = new CommonModel();

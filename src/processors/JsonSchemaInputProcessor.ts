@@ -14,7 +14,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  process(input: any): Promise<CommonInputModel> {
+  process(input: Record<string, any>): Promise<CommonInputModel> {
     if (this.shouldProcess(input)) {
       if (input.$schema !== undefined) {
         switch (input.$schema) {
@@ -33,7 +33,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  shouldProcess(input: any): boolean {
+  shouldProcess(input: Record<string, any>): boolean {
     if (input.$schema !== undefined) {
       switch (input.$schema) {
       case 'http://json-schema.org/draft-07/schema#':
@@ -50,9 +50,9 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input to process as draft 7
    */
-  private async processDraft7(input: any) : Promise<CommonInputModel> {
+  private async processDraft7(input: Record<string, any>) : Promise<CommonInputModel> {
     Logger.debug('Processing input as an AsyncAPI document');
-    input = JsonSchemaInputProcessor.reflectSchemaNames(input, undefined, 'root', true);
+    input = JsonSchemaInputProcessor.reflectSchemaNames(input, undefined, 'root', true) as Record<string, any>;
     const refParser = new $RefParser;
     const commonInputModel = new CommonInputModel();
     // eslint-disable-next-line no-undef
@@ -198,7 +198,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * @param previousName to concatenate with
    * @param newParts
    */
-  private static ensureNamePattern(previousName: string | undefined, ...newParts: unknown[]): string {
+  private static ensureNamePattern(previousName: string | undefined, ...newParts: any[]): string {
     const pattern = newParts.map(part => `${part}`).join('_');
     if (!previousName) {
       return pattern;

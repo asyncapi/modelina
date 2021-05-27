@@ -27,7 +27,7 @@ export class Schema extends CommonSchema<Schema | boolean> {
     not?: (Schema | boolean);
     additionalItems?: boolean | Schema;
     contains?: (Schema | boolean);
-    const?: unknown;
+    const?: any;
     dependencies?: { [key: string]: Schema | boolean | string[]; };
     propertyNames?: Schema | boolean;
     if?: Schema | boolean;
@@ -38,11 +38,11 @@ export class Schema extends CommonSchema<Schema | boolean> {
     contentMediaType?: string; //Enum?
     definitions?: { [key: string]: Schema | boolean; };
     description?: string;
-    default?: unknown;
+    default?: any;
     readOnly?: boolean;
     writeOnly?: boolean;
-    examples?: unknown[];
-    [k: string]: unknown; // eslint-disable-line no-undef
+    examples?: any[];
+    [k: string]: any; // eslint-disable-line no-undef
 
     /**
      * Transform object into a type of Schema.
@@ -51,7 +51,7 @@ export class Schema extends CommonSchema<Schema | boolean> {
      * @returns CommonModel instance of the object
      */
     // eslint-disable-next-line sonarjs/cognitive-complexity
-    static toSchema(object: Schema | boolean, seenSchemas: Map<unknown, Schema> = new Map()): Schema | boolean {
+    static toSchema(object: Schema | boolean, seenSchemas: Map<any, Schema> = new Map()): Schema | boolean {
       if (typeof object === 'boolean') {return object;}
       if (seenSchemas.has(object)) {
         return seenSchemas.get(object) as Schema;

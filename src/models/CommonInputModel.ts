@@ -5,5 +5,5 @@ import { CommonModel } from './CommonModel';
  */
 export class CommonInputModel {
   models: {[key: string]: CommonModel} = {};
-  originalInput: unknown = {};
+  originalInput: any = {};
 }

@@ -8,7 +8,7 @@ import { FormatHelpers, IndentationTypes } from '../helpers';
 export abstract class AbstractRenderer<O extends CommonGeneratorOptions = CommonGeneratorOptions> {
   constructor(
     protected readonly options: O,
-    protected readonly presets: Array<[Preset, unknown]>,
+    protected readonly presets: Array<[Preset, any]>,
     protected readonly model: CommonModel, 
     protected readonly inputModel: CommonInputModel,
   ) {}

@@ -56,8 +56,8 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
     return Promise.all(renders);
   }
 
-  protected getPresets(presetType: string): Array<[Preset, unknown]> {
-    const filteredPresets: Array<[Preset, unknown]> = [];
+  protected getPresets(presetType: string): Array<[Preset, any]> {
+    const filteredPresets: Array<[Preset, any]> = [];
 
     const defaultPreset = this.options.defaultPreset;
     if (defaultPreset !== undefined) {

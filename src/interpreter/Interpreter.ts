@@ -128,7 +128,7 @@ export class Interpreter {
   */
   private splitModels(model: CommonModel): CommonModel {
     if (isModelObject(model)) {
-      Logger.info(`Splitting model ${model.$id || 'unknown'} since it should be on its own`);
+      Logger.info(`Splitting model ${model.$id || 'any'} since it should be on its own`);
       const switchRootModel = new CommonModel();
       switchRootModel.$ref = model.$id;
       this.iteratedModels[String(model.$id)] = model;

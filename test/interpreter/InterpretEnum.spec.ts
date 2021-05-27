@@ -31,7 +31,7 @@ describe('Interpretation of enum', () => {
     expect(model.addTypes).not.toHaveBeenCalled();
     expect(model.addEnum).not.toHaveBeenCalled();
   });
-  test('should not infer type from unknown value type', () => {
+  test('should not infer type from any value type', () => {
     (inferTypeFromValue as jest.Mock).mockReturnValue(undefined);
     const schema: any = { enum: ['test']};
     const model = new CommonModel();
