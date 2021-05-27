@@ -204,9 +204,9 @@ describe('Schema', () => {
       expect(typeof d).toEqual('object');
       expect(d.allOf).not.toBeUndefined();
       expect(Array.isArray(d.allOf)).toEqual(true);
-      d.allOf?.forEach((s, i) => {
+      d.allOf!.forEach((s, i) => {
         expect(s.constructor.name).toEqual('Schema');
-        expect(s).toEqual(doc.allOf[i]);
+        expect(s).toEqual((doc.allOf as Schema[])[i]);
       });
     });
   });
@@ -218,9 +218,9 @@ describe('Schema', () => {
       expect(typeof d).toEqual('object');
       expect(d.oneOf).not.toBeUndefined();
       expect(Array.isArray(d.oneOf)).toEqual(true);
-      d.oneOf?.forEach((s, i) => {
+      d.oneOf!.forEach((s, i) => {
         expect(s.constructor.name).toEqual('Schema');
-        expect(s).toEqual(doc.oneOf[i]);
+        expect(s).toEqual((doc.oneOf as Schema[])[i]);
       });
     });
   });
@@ -232,9 +232,9 @@ describe('Schema', () => {
       expect(typeof d).toEqual('object');
       expect(d.anyOf).not.toBeUndefined();
       expect(Array.isArray(d.anyOf)).toEqual(true);
-      d.anyOf?.forEach((s, i) => {
+      d.anyOf!.forEach((s, i) => {
         expect(s.constructor.name).toEqual('Schema');
-        expect(s).toEqual(doc.anyOf[i]);
+        expect(s).toEqual((doc.anyOf as Schema[])[i]);
       });
     });
   });
@@ -245,7 +245,7 @@ describe('Schema', () => {
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.not).not.toBeUndefined();
-      expect(d.not?.constructor.name).toEqual('Schema');
+      expect(d.not!.constructor.name).toEqual('Schema');
       expect(d.not).toEqual(doc.not);
     });
   });
@@ -256,7 +256,7 @@ describe('Schema', () => {
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.items).not.toBeUndefined();
-      expect(d.items?.constructor.name).toEqual('Schema');
+      expect(d.items!.constructor.name).toEqual('Schema');
       expect(d.items).toEqual(doc.items);
     });
     
@@ -268,7 +268,7 @@ describe('Schema', () => {
       expect(Array.isArray(d.items)).toEqual(true);
       (d.items as Schema[]).forEach((s, i) => {
         expect(s.constructor.name).toEqual('Schema');
-        expect(s).toEqual(doc.items[i]);
+        expect(s).toEqual((doc.items as Schema[])[i]);
       });
     });
   });
@@ -280,10 +280,10 @@ describe('Schema', () => {
       expect(typeof d).toEqual('object');
       expect(typeof d.properties).toEqual('object');
       expect(d.properties).not.toBeUndefined();
-      Object.keys(d.properties).forEach(key => {
-        const s = d.properties[key];
+      Object.keys(d.properties!).forEach(key => {
+        const s = d.properties![key];
         expect(s.constructor.name).toEqual('Schema');
-        expect((s as Schema).type).toEqual((doc.properties[key] as Schema).type);
+        expect((s as Schema).type).toEqual('string');
       });
     });
   });
@@ -294,7 +294,7 @@ describe('Schema', () => {
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.additionalProperties).not.toBeUndefined();
-      expect(d.additionalProperties?.constructor.name).toEqual('Schema');
+      expect(d.additionalProperties!.constructor.name).toEqual('Schema');
       expect(d.additionalProperties).toEqual(doc.additionalProperties);
     });
     
@@ -321,7 +321,7 @@ describe('Schema', () => {
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.additionalItems).not.toBeUndefined();
-      expect(d.additionalItems?.constructor.name).toEqual('Schema');
+      expect(d.additionalItems!.constructor.name).toEqual('Schema');
       expect(d.additionalItems).toEqual(doc.additionalItems);
     });
     
@@ -332,11 +332,11 @@ describe('Schema', () => {
       expect(d.additionalItems).toEqual(undefined);
     });
     
-    test('should return undefined when null', () => {
-      const doc: Schema = { additionalItems: null };
+    test('should return undefined when undefined', () => {
+      const doc: Schema = { additionalItems: undefined };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
-      expect(d.additionalItems).toEqual(null);
+      expect(d.additionalItems).toEqual(undefined);
     });
   });
 
@@ -347,10 +347,10 @@ describe('Schema', () => {
       expect(typeof d).toEqual('object');
       expect(d.patternProperties).not.toBeUndefined();
       expect(typeof d.patternProperties).toEqual('object');
-      Object.keys(d.patternProperties).forEach(key => {
-        const s = d.patternProperties[key];
+      Object.keys(d.patternProperties!).forEach(key => {
+        const s = d.patternProperties![key];
         expect(s.constructor.name).toEqual('Schema');
-        expect((s as Schema).type).toEqual((doc.patternProperties[key] as Schema).type);
+        expect((s as Schema).type).toEqual('string');
       });
     });
   });
@@ -398,7 +398,7 @@ describe('Schema', () => {
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.contains).not.toBeUndefined();
-      expect(d.contains?.constructor.name).toEqual('Schema');
+      expect(d.contains!.constructor.name).toEqual('Schema');
       expect(d.contains).toEqual(doc.contains);
     });
   });
@@ -410,10 +410,10 @@ describe('Schema', () => {
       expect(typeof d).toEqual('object');
       expect(d.dependencies).not.toBeUndefined();
       expect(typeof d.dependencies).toEqual('object');
-      Object.keys(d.dependencies).forEach(key => {
-        const v = d.dependencies[key];
+      Object.keys(d.dependencies!).forEach(key => {
+        const v = d.dependencies![key];
         expect(Array.isArray(v)).toEqual(true);
-        expect(v).toEqual(doc.dependencies[key]);
+        expect(v).toEqual(doc.dependencies![key]);
       });
     });
     
@@ -423,10 +423,10 @@ describe('Schema', () => {
       expect(typeof d).toEqual('object');
       expect(d.dependencies).not.toBeUndefined();
       expect(typeof d.dependencies).toEqual('object');
-      Object.keys(d.dependencies).forEach(key => {
-        const s = d.dependencies[key];
+      Object.keys(d.dependencies!).forEach(key => {
+        const s = d.dependencies![key];
         expect(s.constructor.name).toEqual('Schema');
-        // expect(s).toEqual(doc.dependencies![key]);
+        expect(s).toEqual(doc.dependencies![key]);
       });
     });
   });
@@ -437,7 +437,7 @@ describe('Schema', () => {
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.propertyNames).not.toBeUndefined();
-      expect(d.propertyNames?.constructor.name).toEqual('Schema');
+      expect(d.propertyNames!.constructor.name).toEqual('Schema');
       expect(d.propertyNames).toEqual(doc.propertyNames);
     });
   });
@@ -448,7 +448,7 @@ describe('Schema', () => {
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.if).not.toBeUndefined();
-      expect(d.if?.constructor.name).toEqual('Schema');
+      expect(d.if!.constructor.name).toEqual('Schema');
       expect(d.if).toEqual(doc.if);
     });
   });
@@ -459,7 +459,7 @@ describe('Schema', () => {
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.then).not.toBeUndefined();
-      expect(d.then?.constructor.name).toEqual('Schema');
+      expect(d.then!.constructor.name).toEqual('Schema');
       expect(d.then).toEqual(doc.then);
     });
   });
@@ -470,7 +470,7 @@ describe('Schema', () => {
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.else).not.toBeUndefined();
-      expect(d.else?.constructor.name).toEqual('Schema');
+      expect(d.else!.constructor.name).toEqual('Schema');
       expect(d.else).toEqual(doc.else);
     });
   });
@@ -526,10 +526,10 @@ describe('Schema', () => {
       expect(typeof d).toEqual('object');
       expect(d.definitions).not.toBeUndefined();
       expect(typeof d.definitions).toEqual('object');
-      Object.keys(d.definitions).forEach(key => {
-        const s = d.definitions[key];
+      Object.keys(d.definitions!).forEach(key => {
+        const s = d.definitions![key];
         expect(s.constructor.name).toEqual('Schema');
-        expect((s as Schema).type).toEqual((doc.definitions[key] as Schema).type);
+        expect((s as Schema).type).toEqual('string');
       });
     });
   });
@@ -606,9 +606,9 @@ describe('Schema', () => {
       expect(typeof d).toEqual('object');
       const d2 = Schema.toSchema(d) as Schema;
       expect(typeof d2).toEqual('object');
-      (d.properties['test'] as Schema).$id = 'test';
-      expect((d.properties['test'] as Schema).$id).toEqual('test');
-      expect((d2.properties['test'] as Schema).$id).not.toEqual('test');
+      (d.properties!['test'] as Schema).$id = 'test';
+      expect((d.properties!['test'] as Schema).$id).toEqual('test');
+      expect((d2.properties!['test'] as Schema).$id).not.toEqual('test');
     });
     
     test('should never return the same instance of items', () => {
@@ -629,9 +629,9 @@ describe('Schema', () => {
       expect(typeof d).toEqual('object');
       const d2 = Schema.toSchema(d) as Schema;
       expect(typeof d2).toEqual('object');
-      (d.dependencies['test'] as Schema).$id = 'test';
-      expect((d.dependencies['test'] as Schema).$id).toEqual('test');
-      expect((d2.dependencies['test'] as Schema).$id).not.toEqual('test');
+      (d.dependencies!['test'] as Schema).$id = 'test';
+      expect((d.dependencies!['test'] as Schema).$id).toEqual('test');
+      expect((d2.dependencies!['test'] as Schema).$id).not.toEqual('test');
     });
     test('should never return the same instance of properties', () => {
       const doc: Schema = { type: 'object', patternProperties: { '^S_': { type: 'string' }}};
@@ -639,9 +639,9 @@ describe('Schema', () => {
       expect(typeof d).toEqual('object');
       const d2 = Schema.toSchema(d) as Schema;
       expect(typeof d2).toEqual('object');
-      (d.patternProperties['^S_'] as Schema).$id = 'test';
-      expect((d.patternProperties['^S_'] as Schema).$id).toEqual('test');
-      expect((d2.patternProperties['^S_'] as Schema).$id).not.toEqual('test');
+      (d.patternProperties!['^S_'] as Schema).$id = 'test';
+      expect((d.patternProperties!['^S_'] as Schema).$id).toEqual('test');
+      expect((d2.patternProperties!['^S_'] as Schema).$id).not.toEqual('test');
     });
     test('should never return the same instance of definitions', () => {
       const doc: Schema = { definitions: { test: { type: 'string' }}};
@@ -649,9 +649,9 @@ describe('Schema', () => {
       expect(typeof d).toEqual('object');
       const d2 = Schema.toSchema(d) as Schema;
       expect(typeof d2).toEqual('object');
-      (d.definitions['test'] as Schema).$id = 'test';
-      expect((d.definitions['test'] as Schema).$id).toEqual('test');
-      expect((d2.definitions['test'] as Schema).$id).not.toEqual('test');
+      (d.definitions!['test'] as Schema).$id = 'test';
+      expect((d.definitions!['test'] as Schema).$id).toEqual('test');
+      expect((d2.definitions!['test'] as Schema).$id).not.toEqual('test');
     });
   });
 });

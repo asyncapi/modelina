@@ -8,7 +8,7 @@ import {simplify} from '../../src/simplification/Simplifier';
  */
 describe('Simplification', () => {
   test('should return empty models if false schema', () => {
-    const schema: unknown = false;
+    const schema: any = false;
     const models = simplify(schema);
     expect(models).toHaveLength(0);
   });

@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import {parse, AsyncAPIDocument, Schema as AsyncAPISchema} from '@asyncapi/parser';
 
 import { AbstractInputProcessor } from './AbstractInputProcessor';
@@ -15,7 +14,6 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   async process(input: any): Promise<CommonInputModel> {
     if (!this.shouldProcess(input)) {throw new Error('Input is not an AsyncAPI document so it cannot be processed.');}
     Logger.debug('Processing input as an AsyncAPI document');
@@ -145,11 +143,10 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
 	 * 
 	 * @param input 
 	 */
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   shouldProcess(input: any) : boolean {
     //Check if we got a parsed document from out parser
     //Check if we just got provided a pure object
-    if (typeof input === 'object' && (AsyncAPIInputProcessor.isFromParser(input) || input.asyncapi !== undefined)) {
+    if (typeof input === 'object' && (AsyncAPIInputProcessor.isFromParser(input) || (input as Record<string, unknown>).asyncapi !== undefined)) {
       return true;
     }
     return false;
@@ -160,10 +157,9 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  static isFromParser(input: any) {
-    if (input._json !== undefined && 
-      input._json.asyncapi !== undefined && 
+  static isFromParser(input: any): boolean {
+    // eslint-disable-next-line no-underscore-dangle
+    if (input._json !== undefined && input._json.asyncapi !== undefined && 
       typeof input.version === 'function') {
       return true;
     }

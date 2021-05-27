@@ -7,9 +7,8 @@ describe('AbstractGenerator', () => {
       super('TestGenerator', {});
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    render(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
-      return Promise.resolve(model.$id || 'rendered content');
+    render(model: CommonModel, inputModel: CommonInputModel): any {
+      return model.$id || 'rendered content';
     }
   }
 
@@ -19,7 +18,7 @@ describe('AbstractGenerator', () => {
   });
 
   test('should `generate` function return OutputModels', async () => {
-    const doc: unknown = { $id: 'test' };
+    const doc: any = { $id: 'test' };
     const outputModels = await generator.generate(doc);
 
     expect(outputModels[0].result).toEqual('test');
@@ -35,7 +34,7 @@ describe('AbstractGenerator', () => {
   });
 
   test('should `process` function return CommonInputModel', async () => {
-    const doc: unknown = { $id: 'test' };
+    const doc: any = { $id: 'test' };
     const commonInputModel = await generator.process(doc);
     const keys = Object.keys(commonInputModel.models);
 
@@ -49,7 +48,7 @@ describe('AbstractGenerator', () => {
   });
 
   test('should `render` function return renderer model', async () => {
-    const doc: unknown = { $id: 'SomeModel' };
+    const doc: any = { $id: 'SomeModel' };
     const commonInputModel = await generator.process(doc);
     const keys = Object.keys(commonInputModel.models);
     const renderedContent = await generator.render(commonInputModel.models[keys[0]], commonInputModel);
@@ -63,9 +62,8 @@ describe('AbstractGenerator', () => {
         constructor() {
           super('TestGenerator', {presets: [{preset: {test: 'test2'}, options: {}}]});
         }
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        render(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
-          return Promise.resolve(model.$id || 'rendered content');
+        render(model: CommonModel, inputModel: CommonInputModel): any {
+          return model.$id || 'rendered content';
         }
         testGetPresets(string: string) {
           return this.getPresets(string);

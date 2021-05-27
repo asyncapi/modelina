@@ -195,7 +195,7 @@ describe('JsonSchemaInputProcessor', () => {
           },
         ]
       };
-      const expected = JsonSchemaInputProcessor.reflectSchemaNames(schema, undefined, 'root', true) as unknown;
+      const expected = JsonSchemaInputProcessor.reflectSchemaNames(schema, undefined, 'root', true) as any;
 
       // root
       expect(expected['x-modelgen-inferred-name']).toEqual('root');

@@ -17,7 +17,7 @@
     "eol-last": ["error", "always"],
     "@typescript-eslint/no-explicit-any": 0,
     "require-await": "error",
-    "@typescript-eslint/explicit-module-boundary-types": "error",
+    "@typescript-eslint/explicit-module-boundary-types": ["error", {"allowArgumentsExplicitlyTypedAsAny": true}],
     "sonarjs/no-small-switch": "off",
     "no-underscore-dangle": "error",
     "no-process-exit": "error",
@@ -195,7 +195,9 @@
         "sonarjs/no-duplicate-string": "off",
         "security/detect-object-injection": "off",
         "max-nested-callbacks": "off",
-        "sonarjs/no-identical-functions": "off"
+        "sonarjs/no-identical-functions": "off",
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/no-unused-vars": "off"
       }
     }
   ]

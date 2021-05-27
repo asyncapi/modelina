@@ -121,7 +121,7 @@ describe('Simplification of properties', () => {
     expect(simplifier.simplify).toHaveBeenCalledTimes(2);
   });
   test('should return already seen schemas', () => {
-    const alreadySeen = new Map<unknown, Record<string, CommonModel>>();
+    const alreadySeen = new Map<any, Record<string, CommonModel>>();
     const schema = {$id: 'test'};
     const model = new CommonModel();
     model.$id = 'test2';

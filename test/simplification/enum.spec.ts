@@ -8,12 +8,12 @@ import simplifyEnums from '../../src/simplification/SimplifyEnums';
  */
 describe('Simplification of enum', () => {
   test('should return undefined when boolean', () => {
-    const schema: unknown = true;
+    const schema: any = true;
     const enums = simplifyEnums(schema);
     expect(enums).toBeUndefined();
   });
   test('should return as is', () => {
-    const schema: unknown = { enum: ['test']};
+    const schema: any = { enum: ['test']};
     const enums = simplifyEnums(schema);
     expect(enums).not.toBeUndefined();
     expect(enums).toEqual(['test']);
@@ -23,14 +23,14 @@ describe('Simplification of enum', () => {
       const schemaString = fs.readFileSync(path.resolve(__dirname, './enums/allOf.json'), 'utf8');
       const schema = JSON.parse(schemaString);
       const enums = simplifyEnums(schema);
-      expect((enums as unknown[]).sort()).toEqual(['test1', 'test2'].sort());
+      expect((enums as any[]).sort()).toEqual(['test1', 'test2'].sort());
     });
     test('with nested schema', () => {
       const schemaString = fs.readFileSync(path.resolve(__dirname, './enums/allOfNested.json'), 'utf8');
       const schema = JSON.parse(schemaString);
       const enums = simplifyEnums(schema);
       expect(enums).not.toBeUndefined();
-      expect((enums as unknown[]).sort()).toEqual(['test1', 'test2', 'test3'].sort());
+      expect((enums as any[]).sort()).toEqual(['test1', 'test2', 'test3'].sort());
     });
   });
 
@@ -40,14 +40,14 @@ describe('Simplification of enum', () => {
       const schema = JSON.parse(schemaString);
       const enums = simplifyEnums(schema);
       expect(enums).not.toBeUndefined();
-      expect((enums as unknown[]).sort()).toEqual(['test1', 'test2'].sort());
+      expect((enums as any[]).sort()).toEqual(['test1', 'test2'].sort());
     });
     test('with nested schema', () => {
       const schemaString = fs.readFileSync(path.resolve(__dirname, './enums/oneOfNested.json'), 'utf8');
       const schema = JSON.parse(schemaString);
       const enums = simplifyEnums(schema);
       expect(enums).not.toBeUndefined();
-      expect((enums as unknown[]).sort()).toEqual(['test1', 'test2', 'test3'].sort());
+      expect((enums as any[]).sort()).toEqual(['test1', 'test2', 'test3'].sort());
     });
   });
 
@@ -57,14 +57,14 @@ describe('Simplification of enum', () => {
       const schema = JSON.parse(schemaString);
       const enums = simplifyEnums(schema);
       expect(enums).not.toBeUndefined();
-      expect((enums as unknown[]).sort()).toEqual(['test1', 'test2'].sort());
+      expect((enums as any[]).sort()).toEqual(['test1', 'test2'].sort());
     });
     test('with nested schema', () => {
       const schemaString = fs.readFileSync(path.resolve(__dirname, './enums/anyOfNested.json'), 'utf8');
       const schema = JSON.parse(schemaString);
       const enums = simplifyEnums(schema);
       expect(enums).not.toBeUndefined();
-      expect((enums as unknown[]).sort()).toEqual(['test1', 'test2', 'test3'].sort());
+      expect((enums as any[]).sort()).toEqual(['test1', 'test2', 'test3'].sort());
     });
   });
   describe('from conditional if/then/else ', () => {
@@ -73,14 +73,14 @@ describe('Simplification of enum', () => {
       const schema = JSON.parse(schemaString);
       const enums = simplifyEnums(schema);
       expect(enums).not.toBeUndefined();
-      expect((enums as unknown[]).sort()).toEqual(['test1', 'test2'].sort());
+      expect((enums as any[]).sort()).toEqual(['test1', 'test2'].sort());
     });
     test('with nested schema', () => {
       const schemaString = fs.readFileSync(path.resolve(__dirname, './enums/conditionalNested.json'), 'utf8');
       const schema = JSON.parse(schemaString);
       const enums = simplifyEnums(schema);
       expect(enums).not.toBeUndefined();
-      expect((enums as unknown[]).sort()).toEqual(['test1', 'test2', 'test3', 'test4'].sort());
+      expect((enums as any[]).sort()).toEqual(['test1', 'test2', 'test3', 'test4'].sort());
     });
   });
   describe('from const', () => {
@@ -120,7 +120,7 @@ describe('Simplification of enum', () => {
       const schema = JSON.parse(schemaString);
       const enums = simplifyEnums(schema);
       expect(enums).not.toBeUndefined();
-      expect((enums as unknown[]).sort()).toEqual([1234].sort());
+      expect((enums as any[]).sort()).toEqual([1234].sort());
     });
   });
   describe('from not', () => {
@@ -129,12 +129,12 @@ describe('Simplification of enum', () => {
       const schema = JSON.parse(schemaString);
       const enums = simplifyEnums(schema);
       expect(enums).not.toBeUndefined();
-      expect((enums as unknown[]).sort()).toEqual(['test2'].sort());
+      expect((enums as any[]).sort()).toEqual(['test2'].sort());
     });
   });
 
   test('should return already seen schemas', () => {
-    const alreadySeen = new Map<unknown, unknown[] | undefined>();
+    const alreadySeen = new Map<any, any[] | undefined>();
     const schema = {$id: 'test'};
     alreadySeen.set(schema, ['output']);
     const output = simplifyEnums(schema, alreadySeen);

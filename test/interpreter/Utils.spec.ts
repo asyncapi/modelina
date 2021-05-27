@@ -78,7 +78,7 @@ describe('utils', () => {
       expect(inferredType).toEqual('null');
     });
     test('should infer array', () => {
-      const value: unknown[] = [];
+      const value: any[] = [];
       const inferredType = inferTypeFromValue(value);
       expect(inferredType).toEqual('array');
     });

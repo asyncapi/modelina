@@ -6,7 +6,7 @@ import SimplifyName from '../../src/simplification/SimplifyName';
  */
 describe('Simplification of names', () => {
   test('should return undefined with boolean', () => {
-    const schema: unknown = true;
+    const schema: any = true;
     const name = SimplifyName(schema);
     expect(name).toBeUndefined();
   });

@@ -23,7 +23,7 @@ describe('Interpretation of additionalProperties', () => {
     jest.restoreAllMocks();
   });
   test('should try and interpret additionalProperties schema', () => {
-    const schema: unknown = { additionalProperties: { type: 'string' } };
+    const schema: any = { additionalProperties: { type: 'string' } };
     const model = new CommonModel();
     model.type = 'object';
     const interpreter = new Interpreter();
@@ -32,7 +32,7 @@ describe('Interpretation of additionalProperties', () => {
     expect(model.addAdditionalProperty).toHaveBeenNthCalledWith(1, mockedReturnModels[0], schema);
   });
   test('should ignore model if interpreter cannot interpret additionalProperty schema', () => {
-    const schema: unknown = { };
+    const schema: any = { };
     const model = new CommonModel();
     model.type = 'object';
     const interpreter = new Interpreter();
@@ -41,7 +41,7 @@ describe('Interpretation of additionalProperties', () => {
     expect(model.addAdditionalProperty).not.toHaveBeenCalled();
   });
   test('should only work if model is object type', () => {
-    const schema: unknown = { };
+    const schema: any = { };
     const model = new CommonModel();
     model.type = 'string';
     const interpreter = new Interpreter();
@@ -50,7 +50,7 @@ describe('Interpretation of additionalProperties', () => {
     expect(model.addAdditionalProperty).not.toHaveBeenCalled();
   });
   test('should default to true', () => {
-    const schema: unknown = { };
+    const schema: any = { };
     const model = new CommonModel();
     model.type = 'object';
     const interpreter = new Interpreter();

@@ -62,7 +62,7 @@ describe('AsyncAPIInputProcessor', () => {
       const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/schema_name_reflection.json'), 'utf8');
       const doc = await parse(basicDocString);
       const schema = doc.channels()['/user/signedup'].subscribe().message().payload();
-      const expected = AsyncAPIInputProcessor.convertToInternalSchema(schema) as unknown;
+      const expected = AsyncAPIInputProcessor.convertToInternalSchema(schema) as any;
 
       // root
       expect(expected['x-modelgen-inferred-name']).toEqual('MainSchema');

@@ -37,7 +37,7 @@ describe('Interpretation of properties', () => {
     expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });
   test('should ignore model if interpreter cannot interpret property schema', () => {
-    const schema: unknown = { properties: { property1: { type: 'string' } } };
+    const schema: any = { properties: { property1: { type: 'string' } } };
     const model = new CommonModel();
     const interpreter = new Interpreter();
     interpretedReturnModels.pop();
@@ -45,14 +45,14 @@ describe('Interpretation of properties', () => {
     expect(model.addProperty).not.toHaveBeenCalled();
   });
   test('should infer type of model', () => {
-    const schema: unknown = { properties: { property1: { type: 'string' } } };
+    const schema: any = { properties: { property1: { type: 'string' } } };
     const model = new CommonModel();
     const interpreter = new Interpreter();
     interpretProperties(schema, model, interpreter);
     expect(model.addTypes).toHaveBeenNthCalledWith(1, 'object');
   });
   test('should go trough properties and add it to model', () => {
-    const schema: unknown = { properties: { property1: { type: 'string' } } };
+    const schema: any = { properties: { property1: { type: 'string' } } };
     const interpretedModel = new CommonModel();
     interpretedReturnModels = [interpretedModel];
     const model = new CommonModel();

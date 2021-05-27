@@ -14,7 +14,6 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   process(input: any): Promise<CommonInputModel> {
     if (this.shouldProcess(input)) {
       if (input.$schema !== undefined) {
@@ -26,7 +25,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         return this.processDraft7(input);
       }
     }
-    throw new Error('Input is not a JSON Schema, so it cannot be processed.');
+    return Promise.reject(new Error('Input is not a JSON Schema, so it cannot be processed.'));
   }
 
   /**
@@ -34,7 +33,6 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   shouldProcess(input: any): boolean {
     if (input.$schema !== undefined) {
       switch (input.$schema) {

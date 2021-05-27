@@ -15,16 +15,15 @@ describe('InputProcessor', () => {
   });
   
   class TempProcessor extends AbstractInputProcessor {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    process(input: unknown): Promise<CommonInputModel> { return Promise.resolve(new CommonInputModel()); }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    shouldProcess(input: unknown): boolean { return true; }
+    process(input: any): Promise<CommonInputModel> { return Promise.resolve(new CommonInputModel()); }
+    shouldProcess(input: any): boolean { return true; }
   }
   test('should add processor to map', () => {
     const testProcessor = new TempProcessor();
     const processor = new InputProcessor();
     processor.setProcessor('some_key', testProcessor);
-    const foundProcessor = processor.getProcessors().get('some_key');
+    const processors = processor.getProcessors();
+    const foundProcessor = processors.get('some_key');
     expect(foundProcessor).toEqual(testProcessor);
   });
   test('overwriting processor should use new and not old', () => {

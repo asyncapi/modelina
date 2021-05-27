@@ -1,9 +1,9 @@
+
 import { CommonModel } from '../../src/models/CommonModel';
 import { Interpreter } from '../../src/interpreter/Interpreter';
 import interpretNot from '../../src/interpreter/InterpretNot';
 import {inferTypeFromValue} from '../../src/interpreter/Utils';
 import { Logger } from '../../src/utils';
-import { Schema } from '../../src/models';
 jest.mock('../../src/interpreter/Utils');
 jest.mock('../../src/utils');
 let interpreterOptions = Interpreter.defaultInterpreterOptions;
@@ -29,7 +29,7 @@ describe('Interpretation of not', () => {
   });
 
   test('should not do anything if not is not defined', () => {
-    const schema: Schema = {};
+    const schema: any = {};
     const model = new CommonModel();
     const interpreter = new Interpreter();
     interpretNot(schema, model, interpreter, interpreterOptions);
@@ -38,7 +38,7 @@ describe('Interpretation of not', () => {
   });
 
   test('should ignore model if interpreter cannot interpret not schema', () => {
-    const schema: Schema = { not: { } };
+    const schema: any = { not: { } };
     const model = new CommonModel();
     const interpreter = new Interpreter();
     interpretedReturnModels.pop();
@@ -46,7 +46,7 @@ describe('Interpretation of not', () => {
     expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });
   test('should warn about true schemas', () => {
-    const schema: Schema = { not: true};
+    const schema: any = { not: true};
     const model = new CommonModel();
     const interpreter = new Interpreter();
     interpretNot(schema, model, interpreter, interpreterOptions);
@@ -56,7 +56,7 @@ describe('Interpretation of not', () => {
   });
   describe('double negate', () => {
     test('should double negate enum', () => {
-      const schema: Schema = { not: { enum: ['value'], not: { enum: ['value'] } }};
+      const schema: any = { not: { enum: ['value'], not: { enum: ['value'] } }};
       const notModel = new CommonModel();
       interpretedReturnModels = [notModel];
       const model = new CommonModel();
@@ -69,7 +69,7 @@ describe('Interpretation of not', () => {
     });
 
     test('should double negate types', () => {
-      const schema: Schema = { not: { type: 'string', not: { type: 'string' }}};
+      const schema: any = { not: { type: 'string', not: { type: 'string' }}};
       const notModel = new CommonModel();
       interpretedReturnModels = [notModel];
       const model = new CommonModel();
@@ -83,9 +83,9 @@ describe('Interpretation of not', () => {
   });
   describe('enums', () => {
     test('should remove already existing inferred enums', () => {
-      const schema: Schema = { not: { enum: ['value'] }};
+      const schema: any = { not: { enum: ['value'] }};
       const notModel = new CommonModel();
-      notModel.enum = (schema.not as Schema).enum;
+      notModel.enum = schema.not.enum;
       interpretedReturnModels = [notModel];
       const model = new CommonModel();
       model.enum = ['value'];
@@ -96,9 +96,9 @@ describe('Interpretation of not', () => {
       expect(model.enum).toBeUndefined();
     });
     test('should handle negating only existing enum', () => {
-      const schema: Schema = { not: { enum: ['value'] }};
+      const schema: any = { not: { enum: ['value'] }};
       const notModel = new CommonModel();
-      notModel.enum = (schema.not as Schema).enum;
+      notModel.enum = schema.not.enum;
       interpretedReturnModels = [notModel];
       const model = new CommonModel();
       model.enum = ['value', 'value2'];
@@ -109,9 +109,9 @@ describe('Interpretation of not', () => {
       expect(model.enum).toEqual(['value2']);
     });
     test('should not negating non existing enum', () => {
-      const schema: Schema = { not: { enum: ['value'] }};
+      const schema: any = { not: { enum: ['value'] }};
       const notModel = new CommonModel();
-      notModel.enum = (schema.not as Schema).enum;
+      notModel.enum = schema.not.enum;
       interpretedReturnModels = [notModel];
       const model = new CommonModel();
       model.enum = ['value2'];
@@ -122,9 +122,9 @@ describe('Interpretation of not', () => {
       expect(model.enum).toEqual(['value2']);
     });
     test('should handle multiple negated enums', () => {
-      const schema: Schema = { not: { enum: ['value', 'value2'] }};
+      const schema: any = { not: { enum: ['value', 'value2'] }};
       const notModel = new CommonModel();
-      notModel.enum = (schema.not as Schema).enum;
+      notModel.enum = schema.not.enum;
       interpretedReturnModels = [notModel];
       const model = new CommonModel();
       model.enum = ['value', 'value2', 'value3'];
@@ -137,9 +137,9 @@ describe('Interpretation of not', () => {
   });
   describe('types', () => {
     test('should handle negating only existing type', () => {
-      const schema: Schema = { not: { type: 'string' }};
+      const schema: any = { not: { type: 'string' }};
       const notModel = new CommonModel();
-      notModel.type = (schema.not as Schema).type;
+      notModel.type = schema.not.type;
       interpretedReturnModels = [notModel];
       const model = new CommonModel();
       model.type = 'string';
@@ -150,9 +150,9 @@ describe('Interpretation of not', () => {
       expect(model.type).toBeUndefined();
     });
     test('should remove already existing inferred type', () => {
-      const schema: Schema = { not: { type: 'string' }};
+      const schema: any = { not: { type: 'string' }};
       const notModel = new CommonModel();
-      notModel.type = (schema.not as Schema).type;
+      notModel.type = schema.not.type;
       interpretedReturnModels = [notModel];
       const model = new CommonModel();
       model.type = ['string', 'number'];
@@ -163,9 +163,9 @@ describe('Interpretation of not', () => {
       expect(model.type).toEqual('number');
     });
     test('should not negating non existing type', () => {
-      const schema: Schema = { not: { type: 'string' }};
+      const schema: any = { not: { type: 'string' }};
       const notModel = new CommonModel();
-      notModel.type = (schema.not as Schema).type;
+      notModel.type = schema.not.type;
       interpretedReturnModels = [notModel];
       const model = new CommonModel();
       model.type = 'number';
@@ -176,9 +176,9 @@ describe('Interpretation of not', () => {
       expect(model.type).toEqual('number');
     });
     test('should handle multiple negated types', () => {
-      const schema: Schema = { not: { type: ['string', 'number'] }};
+      const schema: any = { not: { type: ['string', 'number'] }};
       const notModel = new CommonModel();
-      notModel.type = (schema.not as Schema).type;
+      notModel.type = schema.not.type;
       interpretedReturnModels = [notModel];
       const model = new CommonModel();
       model.type = ['number', 'string', 'integer'];

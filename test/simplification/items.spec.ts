@@ -29,7 +29,7 @@ describe('Simplification of items', () => {
   });
   describe('as is', () => {
     test('should return item', () => {
-      const schema: unknown = { items: { type: 'string' } };
+      const schema: any = { items: { type: 'string' } };
       const simplifier = new Simplifier();
       const items = simplifyItems(schema, simplifier);
       expect(items).toBeUndefined();
@@ -129,7 +129,7 @@ describe('Simplification of items', () => {
   });
 
   test('should return already seen schemas', () => {
-    const alreadySeen = new Map<unknown, CommonModel | undefined>();
+    const alreadySeen = new Map<any, CommonModel | undefined>();
     const schema = {$id: 'test'};
     const model = new CommonModel();
     model.$id = 'test2';

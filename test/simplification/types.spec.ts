@@ -9,39 +9,39 @@ import simplifyTypes from '../../src/simplification/SimplifyTypes';
 describe('Simplification of types', () => {
   describe('as is', () => {
     test('should return number type', () => {
-      const schema: unknown = { type: 'number' };
+      const schema: any = { type: 'number' };
       const types = simplifyTypes(schema);
       expect(types).toEqual('number');
     });
     test('should return object type', () => {
-      const schema: unknown = { type: 'object' };
+      const schema: any = { type: 'object' };
       const types = simplifyTypes(schema);
       expect(types).toEqual('object');
     });
     test('should return array type', () => {
-      const schema: unknown = { type: 'array' };
+      const schema: any = { type: 'array' };
       const types = simplifyTypes(schema);
       expect(types).toEqual('array');
     });
     test('should return null type', () => {
-      const schema: unknown = { type: 'null' };
+      const schema: any = { type: 'null' };
       const types = simplifyTypes(schema);
       expect(types).toEqual('null');
     });
     test('should return boolean type', () => {
-      const schema: unknown = { type: 'boolean' };
+      const schema: any = { type: 'boolean' };
       const types = simplifyTypes(schema);
       expect(types).toEqual('boolean');
     });
     test('should return string type', () => {
-      const schema: unknown = { type: 'string' };
+      const schema: any = { type: 'string' };
       const types = simplifyTypes(schema);
       expect(types).toEqual('string');
     });
   });
   describe('absence of types', () => {
     test('should if true return all types', () => {
-      const schema: unknown = true;
+      const schema: any = true;
       const types = simplifyTypes(schema);
       expect(types).toEqual(['object', 'string', 'number', 'array', 'boolean', 'null',
         'integer']);
@@ -219,7 +219,7 @@ describe('Simplification of types', () => {
     });
   });
   test('should return already seen schemas', () => {
-    const alreadySeen = new Map<unknown, string[] | string | undefined>();
+    const alreadySeen = new Map<any, string[] | string | undefined>();
     const schema = {$id: 'test'};
     alreadySeen.set(schema, 'output');
     const output = simplifyTypes(schema, alreadySeen);

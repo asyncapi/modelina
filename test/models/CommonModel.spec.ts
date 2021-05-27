@@ -3,7 +3,7 @@ import { Schema } from '../../src/models/Schema';
 describe('CommonModel', () => {
   describe('$id', () => {
     test('should return a string', () => {
-      const doc: Schema = { $id: 'test' };
+      const doc: any = { $id: 'test' };
       const d = CommonModel.toCommonModel(doc);
       expect(d.$id).not.toBeUndefined();
       expect(typeof d.$id).toEqual('string');
@@ -13,7 +13,7 @@ describe('CommonModel', () => {
 
   describe('enum', () => {
     test('should return a number', () => {
-      const doc: Schema = { type: 'string', enum: ['test'] };
+      const doc: any = { type: 'string', enum: ['test'] };
       const d = CommonModel.toCommonModel(doc);
       expect(d.enum).not.toBeUndefined();
       expect(Array.isArray(d.enum)).toEqual(true);
@@ -23,7 +23,7 @@ describe('CommonModel', () => {
 
   describe('type', () => {
     test('should return a string', () => {
-      const doc: Schema = { type: 'string' };
+      const doc: any = { type: 'string' };
       const d = CommonModel.toCommonModel(doc);
       expect(d.type).not.toBeUndefined();
       expect(typeof d.type).toEqual('string');
@@ -31,7 +31,7 @@ describe('CommonModel', () => {
     });
     
     test('should return an array of strings', () => {
-      const doc: Schema = { type: ['number', 'string'] };
+      const doc: any = { type: ['number', 'string'] };
       const d = CommonModel.toCommonModel(doc);
       expect(d.type).not.toBeUndefined();
       expect(Array.isArray(d.type)).toEqual(true);
@@ -41,15 +41,15 @@ describe('CommonModel', () => {
 
   describe('items', () => {
     it('should return a CommonModel object', () => {
-      const doc: Schema = { items: { type: 'string' } };
+      const doc: any = { items: { type: 'string' } };
       const d = CommonModel.toCommonModel(doc);
       expect(d.items).not.toBeUndefined();
-      expect(d.items?.constructor.name).toEqual('CommonModel');
+      expect(d.items!.constructor.name).toEqual('CommonModel');
       expect(d.items).toEqual(doc.items);
     });
     
     test('should return an array of CommonModel objects', () => {
-      const doc: Schema = { items: [{ type: 'string' }, { type: 'number' }] };
+      const doc: any = { items: [{ type: 'string' }, { type: 'number' }] };
       const d = CommonModel.toCommonModel(doc);
       expect(d.items).not.toBeUndefined();
       expect(Array.isArray(d.items)).toEqual(true);
@@ -62,12 +62,12 @@ describe('CommonModel', () => {
 
   describe('properties', () => {
     test('should return a map of CommonModel objects', () => {
-      const doc: Schema = { properties: { test: { type: 'string' } } };
+      const doc: any = { properties: { test: { type: 'string' } } };
       const d = CommonModel.toCommonModel(doc);
       expect(d.properties).not.toBeUndefined();
       expect(typeof d.properties).toEqual('object');
-      Object.keys(d.properties).forEach(key => {
-        const s = d.properties[key];
+      Object.keys(d.properties!).forEach(key => {
+        const s = d.properties![key];
         expect(s.constructor.name).toEqual('CommonModel');
         expect(s).toEqual(doc.properties[key]);
       });
@@ -76,15 +76,15 @@ describe('CommonModel', () => {
 
   describe('additionalProperties', () => {
     test('should return a CommonModel object', () => {
-      const doc: Schema = { additionalProperties: { type: 'string' } };
+      const doc: any = { additionalProperties: { type: 'string' } };
       const d = CommonModel.toCommonModel(doc);
       expect(d.additionalProperties).not.toBeUndefined();
-      expect(d.additionalProperties.constructor.name).toEqual('CommonModel');
-      expect(d.additionalProperties).toEqual(doc.additionalProperties);
+      expect(d.additionalProperties!.constructor.name).toEqual('CommonModel');
+      expect(d.additionalProperties!).toEqual(doc.additionalProperties);
     });
     
     test('should return a boolean', () => {
-      const doc: Schema = { additionalProperties: true };
+      const doc: any = { additionalProperties: true };
       const d = CommonModel.toCommonModel(doc);
       expect(d.additionalProperties).not.toBeUndefined();
       expect(typeof d.additionalProperties).toEqual('boolean');
@@ -92,7 +92,7 @@ describe('CommonModel', () => {
     });
     
     test('should return undefined when not defined', () => {
-      const doc: Schema = {};
+      const doc: any = {};
       const d = CommonModel.toCommonModel(doc);
       expect(d.additionalProperties).toEqual(undefined);
     });
@@ -100,7 +100,7 @@ describe('CommonModel', () => {
 
   describe('$ref', () => {
     test('should return a string ', () => {
-      const doc: Schema = { $ref: 'some/reference' };
+      const doc: any = { $ref: 'some/reference' };
       const d = CommonModel.toCommonModel(doc);
       expect(d.$ref).not.toBeUndefined();
       expect(typeof d.$ref).toEqual('string');
@@ -109,7 +109,7 @@ describe('CommonModel', () => {
   });
   describe('extend', () => {
     test('should return a string ', () => {
-      const doc: Schema = { extend: 'reference' };
+      const doc: any = { extend: 'reference' };
       const d = CommonModel.toCommonModel(doc);
       expect(d.extend).not.toBeUndefined();
       expect(typeof d.extend).toEqual('string');
@@ -118,24 +118,24 @@ describe('CommonModel', () => {
   });
   describe('originalSchema', () => {
     test('should return a schema', () => {
-      const doc: Schema = { originalSchema: { type: 'string', minLength: 2 } };
+      const doc: any = { originalSchema: { type: 'string', minLength: 2 } };
       const d = CommonModel.toCommonModel(doc);
       expect(d.originalSchema).not.toBeUndefined();
-      expect(d.originalSchema.constructor.name).toEqual('Schema');
+      expect(d.originalSchema!.constructor.name).toEqual('Schema');
       expect(d.originalSchema).toEqual(doc.originalSchema);
     });
   });
   describe('toCommonModel', () => {
     test('should never return the same instance of properties', () => {
-      const doc: Schema = { type: 'string', properties: {test: {type: 'string'}} };
+      const doc: any = { type: 'string', properties: {test: {type: 'string'}} };
       const d = CommonModel.toCommonModel(doc);
       const d2 = CommonModel.toCommonModel(d);
-      d.properties['test'].$id = 'test';
-      expect(d.properties['test'].$id).toEqual('test');
-      expect(d2.properties['test'].$id).not.toEqual('test');
+      d.properties!['test'].$id = 'test';
+      expect(d.properties!['test'].$id).toEqual('test');
+      expect(d2.properties!['test'].$id).not.toEqual('test');
     });
     test('should never return the same instance of items', () => {
-      const doc: Schema = { type: 'string', items: [{type: 'string'}] };
+      const doc: any = { type: 'string', items: [{type: 'string'}] };
       const d = CommonModel.toCommonModel(doc);
       const d2 = CommonModel.toCommonModel(d);
       const d_items : CommonModel[] = d.items as CommonModel[];
@@ -158,8 +158,8 @@ describe('CommonModel', () => {
       };
       doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
       expect(doc1.properties).not.toBeUndefined();
-      expect(doc1.properties['recursive']).not.toBeUndefined();
-      expect(doc1.properties['recursive']).toEqual(doc1);
+      expect(doc1.properties!['recursive']).not.toBeUndefined();
+      expect(doc1.properties!['recursive']).toEqual(doc1);
     });
     describe('$id', () => {
       test('should be merged when only right side is defined', () => {

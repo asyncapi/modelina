@@ -2,7 +2,7 @@ import { CommonInputModel, CommonModel, ToOutputModelArg, OutputModel } from '..
 
 describe('OutputModel', () => {
   test('should return an OutputModel', () => {
-    const doc: unknown = { $id: 'test' };
+    const doc: any = { $id: 'test' };
     const commonModel = CommonModel.toCommonModel(doc);
 
     const ioutput: ToOutputModelArg = {
@@ -20,7 +20,7 @@ describe('OutputModel', () => {
   });
 
   test('should return an array of OutputModel', () => {
-    const doc: unknown = { $id: 'test' };
+    const doc: any = { $id: 'test' };
     const commonModel = CommonModel.toCommonModel(doc);
 
     const ioutput: ToOutputModelArg = {

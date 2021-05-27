@@ -38,7 +38,7 @@ describe('Interpretation of patternProperties', () => {
   });
 
   test('should ignore model if interpreter cannot interpret patternProperties schema', () => {
-    const schema: unknown = { patternProperties: { pattern: { type: 'string' } } };
+    const schema: any = { patternProperties: { pattern: { type: 'string' } } };
     const model = new CommonModel();
     model.type = 'object';
     const interpreter = new Interpreter();
@@ -47,7 +47,7 @@ describe('Interpretation of patternProperties', () => {
     expect(model.addPatternProperty).not.toHaveBeenCalled();
   });
   test('should use as is', () => {
-    const schema: unknown = { patternProperties: { pattern: { type: 'string' } } };
+    const schema: any = { patternProperties: { pattern: { type: 'string' } } };
     const model = new CommonModel();
     const interpreter = new Interpreter();
     interpretPatternProperties(schema, model, interpreter);
