@@ -25,7 +25,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * Retrieves data from originalSchema by given key
    * 
    * @param key given key
-   * @returns {any}
+   * @returns
    */
   getFromSchema<K extends keyof Schema>(key: K): any {
     const schema = this.originalSchema || {};
@@ -97,7 +97,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * Checks if given property name is required in object
    * 
    * @param propertyName given property name
-   * @returns {boolean}
+   * @returns
    */
   isRequired(propertyName: string): boolean {
     if (this.required === undefined) {

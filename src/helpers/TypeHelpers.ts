@@ -12,8 +12,8 @@ export enum ModelKind {
 export class TypeHelpers {
   /**
    * Returns the type (object | array | union | enum | primitive) of the model
-   * @param {CommonModel} model to check
-   * @returns {ModelKind}
+   * @param model to check
+   * @returns 
    */
   static extractKind(model: CommonModel): ModelKind {
     if (model.type === 'object') {return ModelKind.OBJECT;}

@@ -35,11 +35,11 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
 
   public abstract render(model: CommonModel, inputModel: CommonInputModel): Promise<string>;
 
-  public async process(input: unknown): Promise<CommonInputModel> {
+  public async process(input: any): Promise<CommonInputModel> {
     return await InputProcessor.processor.process(input);
   }
 
-  public async generate(input: unknown): Promise<OutputModel[]> {
+  public async generate(input: any): Promise<OutputModel[]> {
     if (input instanceof CommonInputModel) {
       return this.generateModels(input);
     }

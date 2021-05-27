@@ -14,8 +14,8 @@ export enum IndentationTypes {
 export class FormatHelpers {
   /**
    * Upper first char in given string value.
-   * @param {string} value to change
-   * @returns {string}
+   * @param value to change
+   * @returns 
    */
   static upperFirst(value: string): string {
     return value.charAt(0).toUpperCase() + value.slice(1);
@@ -23,36 +23,36 @@ export class FormatHelpers {
 
   /**
    * Transform into a string with the separator denoted by the next word capitalized.
-   * @param {string} value to transform
-   * @returns {string}
+   * @param value to transform
+   * @returns
    */
   static toCamelCase = camelCase;
 
   /**
    * Transform into a string of capitalized words without separators.
-   * @param {string} value to transform
-   * @returns {string}
+   * @param value to transform
+   * @returns 
    */
   static toPascalCase = pascalCase;
 
   /**
    * Transform into a lower cased string with dashes between words.
-   * @param {string} value to transform
-   * @returns {string}
+   * @param value to transform
+   * @returns
    */
   static toParamCase = paramCase;
 
   /**
    * Transform into upper case string with an underscore between words.
-   * @param {string} value to transform
-   * @returns {string}
+   * @param value to transform
+   * @returns
    */
   static toConstantCase = constantCase;
 
   /**
    * Ensures breaking text into new lines according to newline char (`\n`) in text.
-   * @param {(string | string[])} lines to breaks
-   * @returns {string[]}
+   * @param lines to breaks
+   * @returns
    */
   static breakLines(lines: string | string[]): string[] {
     lines = Array.isArray(lines) ? lines : [lines];
@@ -61,10 +61,10 @@ export class FormatHelpers {
 
   /**
    * Ensures indentations are prepended to content.
-   * @param {string} content to prepend the indentation.
-   * @param {number} size the number of indendations to use. 1 by default
-   * @param {IndentationTypes} type the type of indendations to use. SPACES by default.
-   * @returns {string}
+   * @param content to prepend the indentation.
+   * @param size the number of indendations to use. 1 by default
+   * @param type the type of indendations to use. SPACES by default.
+   * @returns
    */
   static indent(content = '', size = 1, type: IndentationTypes = IndentationTypes.SPACES): string {
     if (size < 1) {
@@ -85,9 +85,9 @@ export class FormatHelpers {
   /**
    * Get the indendation string based on how many and which type of indentation are requested.
    * @private
-   * @param {number} size the number of indendations to use
-   * @param {IndentationTypes} type the type of indendations to use. SPACES by default.
-   * @returns {string}
+   * @param size the number of indendations to use
+   * @param type the type of indendations to use. SPACES by default.
+   * @returns
    */
   private static getIndentation(size = 0, type: IndentationTypes = IndentationTypes.SPACES): string {
     const whitespaceChar = type === IndentationTypes.SPACES ? ' ' : '\t';
@@ -97,8 +97,8 @@ export class FormatHelpers {
   /**
    * Render given JSON Schema example to string
    * 
-   * @param {Array<Any>} examples to render
-   * @returns {string}
+   * @param examples to render
+   * @returns 
    */
   static renderJSONExamples(examples: unknown[]): string {
     let renderedExamples = '';
