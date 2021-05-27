@@ -48,7 +48,7 @@ The following JSON Schema keywords are [merged](#Merging-models) with the alread
 
 
 ## Merging models
-Because of the recursive nature of the interpreter (and the nested behavior of JSON Schema) it happens that two models needs to be merged together.
+Because of the recursive nature of the interpreter (and the nested nature of JSON Schema) it happens that two models needs to be merged together.
 
 If only one side has a property defined, it is used as is, if both have it defined they are merged based on the following logic:
 - `additionalProperties` if both models contain it the two are recursively merged together. 
