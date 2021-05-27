@@ -51,7 +51,7 @@ describe('Interpretation of patternProperties', () => {
     const model = new CommonModel();
     const interpreter = new Interpreter();
     interpretPatternProperties(schema, model, interpreter);
-    expect(interpreter.interpret).toHaveBeenNthCalledWith(1, { type: 'string' });
+    expect(interpreter.interpret).toHaveBeenNthCalledWith(1, { type: 'string' }, Interpreter.defaultInterpreterOptions);
     expect(model.addPatternProperty).toHaveBeenNthCalledWith(1, 'pattern', mockedReturnModels[0], schema);
   });
 });

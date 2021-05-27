@@ -59,7 +59,7 @@ describe('Interpretation of properties', () => {
     const model = new CommonModel();
     const interpreter = new Interpreter();
     interpretProperties(schema, model, interpreter);
-    expect(interpreter.interpret).toHaveBeenNthCalledWith(1, { type: 'string' });
+    expect(interpreter.interpret).toHaveBeenNthCalledWith(1, { type: 'string' }, Interpreter.defaultInterpreterOptions);
     expect(model.addProperty).toHaveBeenNthCalledWith(1, "property1", interpretedModel, schema);
   });
 });
