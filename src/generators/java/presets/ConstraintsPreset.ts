@@ -9,7 +9,7 @@ import { CommonModel } from '../../../models';
  */
 export const JAVA_CONSTRAINTS_PRESET: JavaPreset = {
   class: {
-    getter({ renderer, model, propertyName, property, content }) {
+    getter({ renderer, model, propertyName, property, content }): string {
       if (!(property instanceof CommonModel)) {
         return content;
       }

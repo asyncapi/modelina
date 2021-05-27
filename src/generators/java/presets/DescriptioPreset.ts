@@ -36,15 +36,15 @@ function renderDescription({ renderer, content, item }: {
  */
 export const JAVA_DESCRIPTION_PRESET: JavaPreset = {
   class: {
-    self({ renderer, model, content }) {
+    self({ renderer, model, content }): string {
       return renderDescription({ renderer, content, item: model });
     },
-    getter({ renderer, property, content }) {
+    getter({ renderer, property, content }): string {
       return renderDescription({ renderer, content, item: property });
     }
   },
   enum: {
-    self({ renderer, model, content }) {
+    self({ renderer, model, content }): string {
       return renderDescription({ renderer, content, item: model });
     },
   }

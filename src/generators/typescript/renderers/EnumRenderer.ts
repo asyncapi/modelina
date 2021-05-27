@@ -39,10 +39,10 @@ ${this.indent(this.renderBlock(content, 2))}
 }
 
 export const TS_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
-  async self({ renderer }) {
+  async self({ renderer }): Promise<string> {
     return `export ${await renderer.defaultSelf()}`;
   },
-  item({ item }) {
+  item({ item }): string {
     return `${FormatHelpers.toConstantCase(`${item}`)} = "${item}",`;
   }
 };

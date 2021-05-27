@@ -32,7 +32,7 @@ export class TypeRenderer extends TypeScriptRenderer {
 }
 
 export const TS_DEFAULT_TYPE_PRESET: TypePreset<TypeRenderer> = {
-  async self({ renderer }) {
+  async self({ renderer }): Promise<string> {
     return `export ${await renderer.defaultSelf()}`;
   },
 };

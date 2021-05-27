@@ -96,7 +96,7 @@ private String toIndentedString(Object o) {
  */
 export const JAVA_COMMON_PRESET: JavaPreset = {
   class: {
-    additionalContent({ renderer, model, content, options }) {
+    additionalContent({ renderer, model, content, options }): string {
       options = options || {};
       const blocks: string[] = [];
       
