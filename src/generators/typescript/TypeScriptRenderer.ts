@@ -12,7 +12,7 @@ import { CommonModel, CommonInputModel, Preset } from '../../models';
 export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOptions> {
   constructor(
     options: TypeScriptOptions,
-    presets: Array<[Preset, any]>,
+    presets: Array<[Preset, unknown]>,
     model: CommonModel, 
     inputModel: CommonInputModel,
   ) {
@@ -48,7 +48,7 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
     case 'boolean':
       return 'boolean';
     case 'array': {
-      const types = model.items ? this.renderType(model.items) : 'any';
+      const types = model.items ? this.renderType(model.items) : 'unknown';
       return `Array<${types}>`;
     }
     default: return type;

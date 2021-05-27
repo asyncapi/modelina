@@ -12,7 +12,7 @@ import { FormatHelpers } from '../../helpers';
 export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
   constructor(
     options: JavaOptions,
-    presets: Array<[Preset, any]>,
+    presets: Array<[Preset, unknown]>,
     model: CommonModel, 
     inputModel: CommonInputModel,
   ) {

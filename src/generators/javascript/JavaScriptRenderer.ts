@@ -12,7 +12,7 @@ import { CommonModel, CommonInputModel, Preset } from '../../models';
 export abstract class JavaScriptRenderer extends AbstractRenderer<JavaScriptOptions> {
   constructor(
     options: JavaScriptOptions,
-    presets: Array<[Preset, any]>,
+    presets: Array<[Preset, unknown]>,
     model: CommonModel, 
     inputModel: CommonInputModel,
   ) {

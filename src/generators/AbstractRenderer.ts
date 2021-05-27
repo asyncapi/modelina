@@ -8,7 +8,7 @@ import { FormatHelpers, IndentationTypes } from '../helpers';
 export abstract class AbstractRenderer<O extends CommonGeneratorOptions = CommonGeneratorOptions> {
   constructor(
     protected readonly options: O,
-    protected readonly presets: Array<[Preset, any]>,
+    protected readonly presets: Array<[Preset, unknown]>,
     protected readonly model: CommonModel, 
     protected readonly inputModel: CommonInputModel,
   ) {}
@@ -42,7 +42,7 @@ export abstract class AbstractRenderer<O extends CommonGeneratorOptions = Common
 
   async runPreset(
     functionName: string,
-    params: any = {},
+    params: Record<string, unknown> = {},
   ): Promise<string> {
     let content = '';
     for (const [preset, options] of this.presets) {

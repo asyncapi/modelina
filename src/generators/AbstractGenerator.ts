@@ -35,11 +35,11 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
 
   public abstract render(model: CommonModel, inputModel: CommonInputModel): Promise<string>;
 
-  public async process(input: any): Promise<CommonInputModel> {
+  public async process(input: Record<string, unknown>): Promise<CommonInputModel> {
     return await InputProcessor.processor.process(input);
   }
 
-  public async generate(input: any): Promise<OutputModel[]> {
+  public async generate(input: Record<string, unknown>): Promise<OutputModel[]> {
     if (input instanceof CommonInputModel) {
       return this.generateModels(input);
     }
@@ -56,8 +56,8 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
     return Promise.all(renders);
   }
 
-  protected getPresets(presetType: string): Array<[Preset, any]> {
-    const filteredPresets: Array<[Preset, any]> = [];
+  protected getPresets(presetType: string): Array<[Preset, unknown]> {
+    const filteredPresets: Array<[Preset, unknown]> = [];
 
     const defaultPreset = this.options.defaultPreset;
     if (defaultPreset !== undefined) {

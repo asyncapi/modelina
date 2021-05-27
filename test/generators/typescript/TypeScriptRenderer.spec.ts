@@ -18,7 +18,7 @@ describe('TypeScriptRenderer', () => {
   });
 
   describe('toTsType()', () => {
-    test('Should render any type', () => {
+    test('Should render unknown type', () => {
       expect(renderer.toTsType(undefined, new CommonModel())).toEqual('any');
     });
     test('Should render number type', () => {
