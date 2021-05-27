@@ -1,16 +1,16 @@
 import { Schema } from 'models/Schema';
 
-type Output = unknown[] | undefined;
+type Output = any[] | undefined;
 /**
  * Find the enums for a simplified version of a schema
  * 
  * @param schema to find the simplified enums for
  * @param seenSchemas already seen schemas and their corresponding output, this is to avoid circular schemas
  */
-export default function simplifyEnums(schema: Schema | boolean, seenSchemas: Map<unknown, Output> = new Map()): Output {
+export default function simplifyEnums(schema: Schema | boolean, seenSchemas: Map<any, Output> = new Map()): Output {
   if (typeof schema !== 'boolean') {
     if (seenSchemas.has(schema)) {return seenSchemas.get(schema);}
-    let enums: unknown[] = [];
+    let enums: any[] = [];
     seenSchemas.set(schema, enums);
 
     if (schema.enum) {
@@ -48,7 +48,7 @@ export default function simplifyEnums(schema: Schema | boolean, seenSchemas: Map
  * @param existingEnums which have already been found
  * @param seenSchemas already seen schemas and their respectable output
  */
-function ensureNotEnumsAreRemoved(schema: Schema, existingEnums: unknown[], seenSchemas: Map<unknown, Output>) {
+function ensureNotEnumsAreRemoved(schema: Schema, existingEnums: any[], seenSchemas: Map<any, Output>) {
   if (schema.not) {
     const notEnums = simplifyEnums(schema.not, seenSchemas);
     if (notEnums !== undefined) {
@@ -69,7 +69,7 @@ function ensureNotEnumsAreRemoved(schema: Schema, existingEnums: unknown[], seen
  * @param existingEnums which have already been found
  * @param seenSchemas already seen schemas and their respectable output
  */
-function handleCombinationSchemas(schemas: (Schema | boolean)[] = [], existingEnums: unknown[], seenSchemas: Map<unknown, Output>) {
+function handleCombinationSchemas(schemas: (Schema | boolean)[] = [], existingEnums: any[], seenSchemas: Map<any, Output>) {
   schemas.forEach((schema) => {
     addToEnums(simplifyEnums(schema, seenSchemas), existingEnums);
   });
@@ -81,7 +81,7 @@ function handleCombinationSchemas(schemas: (Schema | boolean)[] = [], existingEn
  * @param enumsToCheck
  * @param existingEnums 
  */
-function addToEnums(enumsToCheck: unknown[] | undefined, existingEnums: unknown[]) {
+function addToEnums(enumsToCheck: any[] | undefined, existingEnums: any[]) {
   if (enumsToCheck === undefined) {return;}
   enumsToCheck.forEach((value) => {
     if (!existingEnums.includes(value)) {

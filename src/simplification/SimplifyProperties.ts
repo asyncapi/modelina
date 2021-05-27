@@ -11,7 +11,7 @@ type Output = Record<string, CommonModel> | undefined;
  * @param simplifier the simplifier instance 
  * @param seenSchemas already seen schemas and their corresponding output, this is to avoid circular schemas
  */
-export default function simplifyProperties(schema: Schema | boolean, simplifier : Simplifier, seenSchemas: Map<unknown, Output> = new Map()): Output {
+export default function simplifyProperties(schema: Schema | boolean, simplifier : Simplifier, seenSchemas: Map<any, Output> = new Map()): Output {
   if (typeof schema !== 'boolean') {
     if (seenSchemas.has(schema)) {return seenSchemas.get(schema);}
     const output: Output = {};
@@ -68,7 +68,7 @@ function addToProperty(propName: string, propModel: CommonModel, schema: Schema,
  * @param seenSchemas which we already have outputs for
  * @param rootSchema we are combining schemas for
  */
-function combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | undefined, currentModel: Output, simplifier : Simplifier, seenSchemas: Map<unknown, Output>, rootSchema : Schema) {
+function combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | undefined, currentModel: Output, simplifier : Simplifier, seenSchemas: Map<any, Output>, rootSchema : Schema) {
   if (typeof schema !== 'object') {return;}
   if (Array.isArray(schema)) {
     schema.forEach((combinationSchema) => {

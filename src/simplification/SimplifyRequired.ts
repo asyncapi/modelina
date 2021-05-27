@@ -8,7 +8,7 @@ type Output = string[] | undefined;
  * @param schema to find the simplified required array for
  * @param seenSchemas already seen schemas, this is to avoid circular schemas
  */
-export default function simplifyRequired(schema: Schema | boolean, seenSchemas: Set<unknown> = new Set()): Output {
+export default function simplifyRequired(schema: Schema | boolean, seenSchemas: Set<any> = new Set()): Output {
   // use Set, because we don't need cache any reference to previous simplified values
   if (
     typeof schema === 'boolean' ||

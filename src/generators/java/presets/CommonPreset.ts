@@ -12,8 +12,6 @@ export interface JavaCommonPresetOptions {
 
 /**
  * Render `equal` function based on model's properties
- * 
- * @returns {string}
  */
 function renderEqual({ renderer, model }: {
   renderer: JavaRenderer,
@@ -42,8 +40,6 @@ ${renderer.indent(equalProperties, 6)};
 
 /**
  * Render `hashCode` function based on model's properties
- * 
- * @returns {string}
  */
 function renderHashCode({ renderer, model }: {
   renderer: JavaRenderer,
@@ -60,8 +56,6 @@ public int hashCode() {
 
 /**
  * Render `toString` function based on model's properties
- * 
- * @returns {string}
  */
 function renderToString({ renderer, model }: {
   renderer: JavaRenderer,
