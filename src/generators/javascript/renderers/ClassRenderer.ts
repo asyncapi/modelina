@@ -53,7 +53,7 @@ export const JS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
-  ctor({ renderer, model }): string {
+  ctor({ renderer, model }) {
     const properties = model.properties || {};
     const assigments = Object.keys(properties).map(property => {
       property = FormatHelpers.toCamelCase(property);
@@ -65,15 +65,15 @@ export const JS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
 ${renderer.indent(body)}
 }`;
   },
-  property({ propertyName }): string {
+  property({ propertyName }) {
     propertyName = FormatHelpers.toCamelCase(propertyName);
     return `${propertyName};`;
   },
-  getter({ propertyName }): string {
+  getter({ propertyName }) {
     propertyName = FormatHelpers.toCamelCase(propertyName);
     return `get ${propertyName}() { return this.${propertyName}; }`;
   },
-  setter({ propertyName }): string {
+  setter({ propertyName }) {
     propertyName = FormatHelpers.toCamelCase(propertyName);
     return `set ${propertyName}(${propertyName}) { this.${propertyName} = ${propertyName}; }`;
   },

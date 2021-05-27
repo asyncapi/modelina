@@ -34,17 +34,18 @@ function renderDescription({ renderer, content, item }: {
  * 
  * @implements {JavaPreset}
  */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 export const JAVA_DESCRIPTION_PRESET: JavaPreset = {
   class: {
-    self({ renderer, model, content }): string {
+    self({ renderer, model, content }) {
       return renderDescription({ renderer, content, item: model });
     },
-    getter({ renderer, property, content }): string {
+    getter({ renderer, property, content }) {
       return renderDescription({ renderer, content, item: property });
     }
   },
   enum: {
-    self({ renderer, model, content }): string {
+    self({ renderer, model, content }) {
       return renderDescription({ renderer, content, item: model });
     },
   }

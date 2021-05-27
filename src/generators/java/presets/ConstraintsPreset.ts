@@ -7,9 +7,10 @@ import { CommonModel } from '../../../models';
  * 
  * @implements {JavaPreset}
  */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 export const JAVA_CONSTRAINTS_PRESET: JavaPreset = {
   class: {
-    getter({ renderer, model, propertyName, property, content }): string {
+    getter({ renderer, model, propertyName, property, content }) {
       if (!(property instanceof CommonModel)) {
         return content;
       }

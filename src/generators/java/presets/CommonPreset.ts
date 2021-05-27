@@ -97,7 +97,7 @@ private String toIndentedString(Object o) {
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 export const JAVA_COMMON_PRESET: JavaPreset = {
   class: {
-    additionalContent({ renderer, model, content, options }): string {
+    additionalContent({ renderer, model, content, options }) {
       options = options || {};
       const blocks: string[] = [];
       
