@@ -17,7 +17,7 @@
     "eol-last": ["error", "always"],
     "@typescript-eslint/no-explicit-any": 0,
     "require-await": "error",
-    "@typescript-eslint/explicit-module-boundary-types": ["error", {"allowArgumentsExplicitlyTypedAsAny": true}],
+    "@typescript-eslint/explicit-module-boundary-types": ["error", {"allowArgumentsExplicitlyTypedAsAny": true, "allowTypedFunctionExpressions": true}],
     "sonarjs/no-small-switch": "off",
     "no-underscore-dangle": "error",
     "no-process-exit": "error",

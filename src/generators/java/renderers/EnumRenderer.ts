@@ -34,7 +34,7 @@ ${this.indent(this.renderBlock(content, 2))}
     return `${content};`;
   }
 
-  normalizeKey(value: unknown): string {
+  normalizeKey(value: any): string {
     switch (typeof value) {
     case 'bigint':
     case 'number': {
