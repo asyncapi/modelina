@@ -56,7 +56,8 @@
   "scripts": {
     "start": "tsc --watch",
     "build": "tsc",
-    "test": "cross-env CI=true jest --coverage",
+    "test": "cross-env CI=true jest --coverage --testPathIgnorePatterns ./test/blackbox",
+    "test:blackbox": "cross-env CI=true jest ./test/blackbox",
     "test:watch": "jest --watch",
     "docs": "npm run docs:markdown",
     "docs:markdown": "jsdoc2md lib/index.js -f lib/**/*.js > API.md",
@@ -68,11 +69,7 @@
     "generate:readme:toc": "markdown-toc -i README.md",
     "generate:assets": "npm run build && npm run docs",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION",
-    "prepublishOnly": "npm run build",
-    "ci:blackbox:generate": "node ./test/CI-blackbox/renderer.js",
-    "ci:blackbox:js:test": "node ./test/CI-blackbox/js/output.js", 
-    "ci:blackbox:ts:test": "tsc -t es5 ./test/CI-blackbox/ts/output.ts && node ./test/CI-blackbox/ts/output.js",
-    "ci:blackbox:java:test": "javac ./test/CI-blackbox/java/*.java"
+    "prepublishOnly": "npm run build"
   },
   "publishConfig": {
     "access": "public"

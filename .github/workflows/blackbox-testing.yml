@@ -4,45 +4,9 @@ on:
   pull_request:
     types: [opened, reopened, synchronize, ready_for_review]
 jobs:
-  test-typescript:
+  test:
     if: github.event.pull_request.draft == false
     name: TypeScript ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Setup Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14
-      - name: Build library
-        run: npm install && npm run build
-      - name: Test output
-        run: npm run ci:blackbox:generate -- ts
-  test-javascript:
-    if: github.event.pull_request.draft == false
-    name: JavaScript ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Setup Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14
-      - name: Build library
-        run: npm install && npm run build
-      - name: Test output
-        run: npm run ci:blackbox:generate -- js
-  test-java:
-    if: github.event.pull_request.draft == false
-    name: Java ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -61,4 +25,4 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
       - name: Test output
-        run: npm run ci:blackbox:generate -- java
+        run: npm run test:blackbox
