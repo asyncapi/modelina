@@ -14,7 +14,7 @@
   ],
   "rules": {
     "strict": 0,
-    "eol-last": ["error", "always"],
+    //"eol-last": ["error", "always"],
     "@typescript-eslint/no-explicit-any": 0,
     "require-await": "error",
     "@typescript-eslint/explicit-module-boundary-types": ["error", {"allowArgumentsExplicitlyTypedAsAny": true}],
