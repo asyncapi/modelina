@@ -13,7 +13,7 @@ export class TypeHelpers {
   /**
    * Returns the type (object | array | union | enum | primitive) of the model
    * @param model to check
-   * @returns 
+   * @returns {ModelKind}
    */
   static extractKind(model: CommonModel): ModelKind {
     if (model.type === 'object') {return ModelKind.OBJECT;}

@@ -40,6 +40,27 @@
 ## Functions
 
 <dl>
+<dt><a href="#toCommonModel">toCommonModel(object)</a> ⇒</dt>
+<dd><p>Transform object into a type of CommonModel.</p>
+</dd>
+<dt><a href="#mergeProperties">mergeProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)</a></dt>
+<dd><p>Merge two common model properties together</p>
+</dd>
+<dt><a href="#mergeAdditionalProperties">mergeAdditionalProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)</a></dt>
+<dd><p>Merge two common model additional properties together</p>
+</dd>
+<dt><a href="#mergePatternProperties">mergePatternProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)</a></dt>
+<dd><p>Merge two common model pattern properties together</p>
+</dd>
+<dt><a href="#mergeItems">mergeItems(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)</a></dt>
+<dd><p>Merge items together so only one CommonModel remains.</p>
+</dd>
+<dt><a href="#mergeTypes">mergeTypes(mergeTo, mergeFrom)</a></dt>
+<dd><p>Merge types together</p>
+</dd>
+<dt><a href="#mergeCommonModels">mergeCommonModels(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)</a></dt>
+<dd><p>Only merge if left side is undefined and right side is sat OR both sides are defined</p>
+</dd>
 <dt><a href="#interpretAdditionalProperties">interpretAdditionalProperties(schema, model, interpreter)</a></dt>
 <dd><p>Interpreter function for JSON Schema draft 7 additionalProperties keyword.</p>
 </dd>
@@ -75,6 +96,43 @@
 <dd><p>Infers the JSON Schema type from value</p>
 </dd>
 <dt><a href="#interpretName">interpretName(schema)</a></dt>
+<dd><p>Find the name for simplified version of schema</p>
+</dd>
+<dt><a href="#simplify">simplify(schema)</a></dt>
+<dd><p>This is the default wrapper for the simplifier class which always create a new instance of the simplifier.</p>
+</dd>
+<dt><a href="#simplifyAdditionalProperties">simplifyAdditionalProperties(schema)</a></dt>
+<dd><p>Simplifier function for finding the simplified version of additional properties</p>
+</dd>
+<dt><a href="#simplifyConst">simplifyConst(schema, simplifier, seenSchemas)</a></dt>
+<dd><p>Process JSON Schema draft 7 enums</p>
+</dd>
+<dt><a href="#simplifyEnums">simplifyEnums(schema, simplifier, seenSchemas)</a></dt>
+<dd><p>Process JSON Schema draft 7 enums</p>
+</dd>
+<dt><a href="#simplifyItems">simplifyItems(schema, simplifier, seenSchemas)</a></dt>
+<dd><p>Process JSON Schema draft 7 items</p>
+</dd>
+<dt><a href="#simplifyNot">simplifyNot(schema, simplifier, seenSchemas)</a></dt>
+<dd><p>Process JSON Schema draft 7 not keywords</p>
+<p>This should negate already simplified keywords</p>
+</dd>
+<dt><a href="#inferNotEnums">inferNotEnums(notSchema, model)</a></dt>
+<dd><p>Infer all enums which the model should NOT contain.</p>
+</dd>
+<dt><a href="#simplifyPatternProperties">simplifyPatternProperties(schema)</a></dt>
+<dd><p>Find out which common models we should extend</p>
+</dd>
+<dt><a href="#simplifyProperties">simplifyProperties(schema, model, simplifier)</a></dt>
+<dd><p>Simplifier function for finding the simplified version of properties for a model.</p>
+</dd>
+<dt><a href="#isModelObject">isModelObject()</a></dt>
+<dd><p>check if CommonModel is a separate model or a simple model.</p>
+</dd>
+<dt><a href="#inferTypeFromValue">inferTypeFromValue(value)</a></dt>
+<dd><p>Infers the JSON Schema type from value</p>
+</dd>
+<dt><a href="#simplifyName">simplifyName(schema)</a></dt>
 <dd><p>Find the name for simplified version of schema</p>
 </dd>
 <dt><a href="#simplify">simplify(schema)</a></dt>
@@ -724,6 +782,100 @@ Sets the logger to use for the model generation library
 | --- | --- |
 | logger | to add |
 
+<a name="toCommonModel"></a>
+
+## toCommonModel(object) ⇒
+Transform object into a type of CommonModel.
+
+**Kind**: global function  
+**Returns**: CommonModel instance of the object  
+
+| Param | Description |
+| --- | --- |
+| object | to transform |
+
+<a name="mergeProperties"></a>
+
+## mergeProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)
+Merge two common model properties together
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| mergeTo | CommonModel to merge properties into |
+| mergeFrom | CommonModel to merge properties from |
+| originalSchema | schema to use as original schema |
+| alreadyIteratedModels | to handle circular models correctly |
+
+<a name="mergeAdditionalProperties"></a>
+
+## mergeAdditionalProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)
+Merge two common model additional properties together
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| mergeTo | CommonModel to merge additional properties into |
+| mergeFrom | CommonModel to merge additional properties from |
+| originalSchema | schema to use as original schema |
+| alreadyIteratedModels | to handle circular models correctly |
+
+<a name="mergePatternProperties"></a>
+
+## mergePatternProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)
+Merge two common model pattern properties together
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| mergeTo | CommonModel to merge pattern properties into |
+| mergeFrom | CommonModel to merge pattern properties from |
+| originalSchema | schema to use as original schema |
+| alreadyIteratedModels | to handle circular models correctly |
+
+<a name="mergeItems"></a>
+
+## mergeItems(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)
+Merge items together so only one CommonModel remains.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| mergeTo | CommonModel to merge items into |
+| mergeFrom | CommonModel to merge items from |
+| originalSchema | schema to use as original schema |
+| alreadyIteratedModels | to handle circular models correctly |
+
+<a name="mergeTypes"></a>
+
+## mergeTypes(mergeTo, mergeFrom)
+Merge types together
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| mergeTo | CommonModel to merge types into |
+| mergeFrom | CommonModel to merge from |
+
+<a name="mergeCommonModels"></a>
+
+## mergeCommonModels(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)
+Only merge if left side is undefined and right side is sat OR both sides are defined
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| mergeTo | CommonModel to merge into |
+| mergeFrom | CommonModel to merge values from |
+| originalSchema | schema to use as original schema |
+| alreadyIteratedModels | to handle circular models correctly |
+
 <a name="interpretAdditionalProperties"></a>
 
 ## interpretAdditionalProperties(schema, model, interpreter)
@@ -862,6 +1014,146 @@ Infers the JSON Schema type from value
 <a name="interpretName"></a>
 
 ## interpretName(schema)
+Find the name for simplified version of schema
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema | to find the name |
+
+<a name="simplify"></a>
+
+## simplify(schema)
+This is the default wrapper for the simplifier class which always create a new instance of the simplifier.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema | to simplify |
+
+<a name="simplifyAdditionalProperties"></a>
+
+## simplifyAdditionalProperties(schema)
+Simplifier function for finding the simplified version of additional properties
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema | to find extends of |
+
+<a name="simplifyConst"></a>
+
+## simplifyConst(schema, simplifier, seenSchemas)
+Process JSON Schema draft 7 enums
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema | to find the simplified items for |
+| simplifier | the simplifier instance |
+| seenSchemas | already seen schemas and their corresponding output, this is to avoid circular schemas |
+
+<a name="simplifyEnums"></a>
+
+## simplifyEnums(schema, simplifier, seenSchemas)
+Process JSON Schema draft 7 enums
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema | to find the simplified items for |
+| simplifier | the simplifier instance |
+| seenSchemas | already seen schemas and their corresponding output, this is to avoid circular schemas |
+
+<a name="simplifyItems"></a>
+
+## simplifyItems(schema, simplifier, seenSchemas)
+Process JSON Schema draft 7 items
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema | to find the simplified items for |
+| simplifier | the simplifier instance |
+| seenSchemas | already seen schemas and their corresponding output, this is to avoid circular schemas |
+
+<a name="simplifyNot"></a>
+
+## simplifyNot(schema, simplifier, seenSchemas)
+Process JSON Schema draft 7 not keywords
+
+This should negate already simplified keywords
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema | to find the simplified items for |
+| simplifier | the simplifier instance |
+| seenSchemas | already seen schemas and their corresponding output, this is to avoid circular schemas |
+
+<a name="inferNotEnums"></a>
+
+## inferNotEnums(notSchema, model)
+Infer all enums which the model should NOT contain.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| notSchema |  |
+| model | current simplified model |
+
+<a name="simplifyPatternProperties"></a>
+
+## simplifyPatternProperties(schema)
+Find out which common models we should extend
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema | to find extends of |
+
+<a name="simplifyProperties"></a>
+
+## simplifyProperties(schema, model, simplifier)
+Simplifier function for finding the simplified version of properties for a model.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema | the schema to simplify properties for |
+| model | the model to simplify properties into |
+| simplifier | the simplifier instance |
+
+<a name="isModelObject"></a>
+
+## isModelObject()
+check if CommonModel is a separate model or a simple model.
+
+**Kind**: global function  
+<a name="inferTypeFromValue"></a>
+
+## inferTypeFromValue(value)
+Infers the JSON Schema type from value
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| value | to infer type of |
+
+<a name="simplifyName"></a>
+
+## simplifyName(schema)
 Find the name for simplified version of schema
 
 **Kind**: global function  
