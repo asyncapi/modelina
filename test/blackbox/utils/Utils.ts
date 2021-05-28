@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable security/detect-non-literal-fs-filename */
 import {promises as fs} from 'fs';
 import * as path from 'path';
 import { AbstractGenerator, FormatHelpers, OutputModel } from '../../../src';
@@ -11,7 +13,7 @@ const promiseExec = promisify(exec);
  * @param absolutePathToFile 
  * @param generator  
  */
- export async function generateModels(absolutePathToFile: string, generator: AbstractGenerator): Promise<OutputModel[]> {
+export async function generateModels(absolutePathToFile: string, generator: AbstractGenerator): Promise<OutputModel[]> {
   const inputFileContent = await fs.readFile(absolutePathToFile);
   const input = JSON.parse(String(inputFileContent));
   return generator.generate(input);
@@ -21,10 +23,10 @@ const promiseExec = promisify(exec);
  * 
  * @param command 
  */
- export async function execCommand(command: string) {
+export async function execCommand(command: string) : Promise<void> {
   try {
     const { stderr } = await promiseExec(command);
-    if(stderr !== '') {
+    if (stderr !== '') {
       Promise.reject(stderr);
     }
   } catch (e) {
@@ -41,13 +43,11 @@ const promiseExec = promisify(exec);
 export async function renderModelsToSeparateFiles(generatedModels: OutputModel[], outputPath: string): Promise<void> {
   await fs.rm(outputPath, { recursive: true, force: true });
   await fs.mkdir(outputPath, { recursive: true });
-  for(const outputModel of generatedModels) {
+  for (const outputModel of generatedModels) {
     const outputFilePath = path.resolve(outputPath, `${FormatHelpers.toPascalCase(outputModel.model.$id || 'undefined')}.java`);
     await fs.writeFile(outputFilePath, outputModel.result);
   }
 }
-
-
 
 /**
  * Render all models to a single file

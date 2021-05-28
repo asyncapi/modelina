@@ -1,26 +1,24 @@
-import {promises as fs} from 'fs';
-
 import * as path from 'path';
 import { TypeScriptGenerator, JavaGenerator, JavaScriptGenerator } from '../../src';
 import { execCommand, generateModels, renderModels } from './utils/Utils';
 import { renderModelsToSeparateFiles } from './utils/Utils';
 const fileToGenerate = path.resolve(__dirname, './docs/dummy.json');
-describe('Dummy JSON Schema file', function() {
+describe('Dummy JSON Schema file', () => {
   jest.setTimeout(100000);
   describe('should be able to generate and compile Java', () => {
-    test('class', async function() {
+    test('class', async () => {
       const generator = new JavaGenerator();
       const generatedModels = await generateModels(fileToGenerate, generator);
       expect(generatedModels).not.toHaveLength(0);
       const renderOutputPath = path.resolve(__dirname, './output/java');
       await renderModelsToSeparateFiles(generatedModels, renderOutputPath);
-      const compileCommand = `javac ${path.resolve(renderOutputPath, '*.java')}`
+      const compileCommand = `javac ${path.resolve(renderOutputPath, '*.java')}`;
       await execCommand(compileCommand);
     });
   });
 
   describe('should be able to generate and transpile TS', () => {
-    test('class', async function() {
+    test('class', async () => {
       const generator = new TypeScriptGenerator();
       const generatedModels = await generateModels(fileToGenerate, generator);
       expect(generatedModels).not.toHaveLength(0);
@@ -31,7 +29,7 @@ describe('Dummy JSON Schema file', function() {
       await execCommand(transpileAndRunCommand);
     });
 
-    test('interface', async function() {
+    test('interface', async () => {
       const generator = new TypeScriptGenerator({modelType: 'interface'});
       const generatedModels = await generateModels(fileToGenerate, generator);
       expect(generatedModels).not.toHaveLength(0);
@@ -44,7 +42,7 @@ describe('Dummy JSON Schema file', function() {
   });
 
   describe('should be able to generate JS', () => {
-    test('class', async function() {
+    test('class', async () => {
       const generator = new JavaScriptGenerator();
       const generatedModels = await generateModels(fileToGenerate, generator);
       expect(generatedModels).not.toHaveLength(0);
