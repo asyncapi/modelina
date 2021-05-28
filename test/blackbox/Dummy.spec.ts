@@ -6,6 +6,7 @@ import { execCommand, generateModels, renderModels } from './utils/Utils';
 import { renderModelsToSeparateFiles } from './utils/Utils';
 const fileToGenerate = path.resolve(__dirname, './docs/dummy.json');
 describe('Dummy JSON Schema file', function() {
+  jest.setTimeout(100000);
   describe('should be able to generate and compile Java', () => {
     test('class', async function() {
       const generator = new JavaGenerator();

@@ -57,7 +57,7 @@
     "start": "tsc --watch",
     "build": "tsc",
     "test": "cross-env CI=true jest --coverage --testPathIgnorePatterns ./test/blackbox",
-    "test:blackbox": "cross-env CI=true jest --testTimeout=100000 ./test/blackbox",
+    "test:blackbox": "cross-env CI=true jest ./test/blackbox",
     "test:watch": "jest --watch",
     "docs": "npm run docs:markdown",
     "docs:markdown": "jsdoc2md lib/index.js -f lib/**/*.js > API.md",
