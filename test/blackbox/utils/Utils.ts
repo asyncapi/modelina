@@ -11,10 +11,10 @@ const promiseExec = promisify(exec);
  * @param absolutePathToFile 
  * @param generator  
  */
- export async function generateModels(absolutePathToFile: string, generator: AbstractGenerator) {
+ export async function generateModels(absolutePathToFile: string, generator: AbstractGenerator): Promise<OutputModel[]> {
   const inputFileContent = await fs.readFile(absolutePathToFile);
   const input = JSON.parse(String(inputFileContent));
-  return await generator.generate(input);
+  return generator.generate(input);
 }
 /**
  * Execute a command and if any errors occur reject the promise.
@@ -38,7 +38,7 @@ const promiseExec = promisify(exec);
  * @param generatedModels to write to file
  * @param outputPath absolute path to output directory
  */
-export async function renderModelsToSeparateFiles(generatedModels: OutputModel[], outputPath: string) {
+export async function renderModelsToSeparateFiles(generatedModels: OutputModel[], outputPath: string): Promise<void> {
   await fs.rm(outputPath, { recursive: true, force: true });
   await fs.mkdir(outputPath, { recursive: true });
   for(const outputModel of generatedModels) {
@@ -55,7 +55,7 @@ export async function renderModelsToSeparateFiles(generatedModels: OutputModel[]
  * @param models to write to file
  * @param outputPath path to output
  */
-export async function renderModels(generatedModels: OutputModel[], outputPath: string) {
+export async function renderModels(generatedModels: OutputModel[], outputPath: string): Promise<void> {
   const outputDir = path.resolve(__dirname, path.dirname(outputPath));
   await fs.rm(outputDir, { recursive: true, force: true });
   await fs.mkdir(outputDir, { recursive: true });
