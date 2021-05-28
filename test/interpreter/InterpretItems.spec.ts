@@ -20,8 +20,8 @@ describe('Interpretation of', () => {
   });
   afterAll(() => {
     jest.restoreAllMocks();
-  })
-  test('should not do anything if schema does not contain items', function() {
+  });
+  test('should not do anything if schema does not contain items', () => {
     const schema = {};
     const model = new CommonModel();
     const interpreter = new Interpreter();

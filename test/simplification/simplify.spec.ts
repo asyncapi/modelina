@@ -2,20 +2,17 @@ import * as fs from 'fs';
 import * as path from 'path';
 import {simplify} from '../../src/simplification/Simplifier';
 
-
-
 /**
  * Some of these test are purely theoretical and have little if any merit 
  * on a JSON Schema which actually makes sense but are used to test the principles.
  */
-describe('Simplification', function() {
-
-  test('should return empty models if false schema', function () {
+describe('Simplification', () => {
+  test('should return empty models if false schema', () => {
     const schema: any = false;
     const models = simplify(schema);
     expect(models).toHaveLength(0);
   });
-  test('should return as is', function() {
+  test('should return as is', () => {
     const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './simplify/multipleObjects.json'), 'utf8');
     const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './simplify/expected/multipleObjects.json'), 'utf8');
     const schema = JSON.parse(inputSchemaString);
@@ -27,21 +24,21 @@ describe('Simplification', function() {
     expect(schema.$id).toBeUndefined();
   });
 
-  test('should support array roots', function() {
-    const actualModels = simplify({ "type": "array", "items": [{ "type": "string" }, { "type": "number" }] });
+  test('should support array roots', () => {
+    const actualModels = simplify({ type: 'array', items: [{ type: 'string' }, { type: 'number' }] });
     const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './simplify/expected/array_root.json'), 'utf8');
     const expectedModel = JSON.parse(expectedSchemaString);
     expect(actualModels).not.toBeUndefined();
     expect(actualModels[0]).toEqual(expectedModel);
   });
-  test('should support primitive roots', function() {
-    const actualModels = simplify({ "type": "string" });
+  test('should support primitive roots', () => {
+    const actualModels = simplify({ type: 'string' });
     expect(actualModels).not.toBeUndefined();
     expect(actualModels[0]).toEqual({
-      "originalSchema":{
-        "type":"string"
+      originalSchema: {
+        type: 'string'
       },
-      "type":"string"
+      type: 'string'
     });
   });
 });

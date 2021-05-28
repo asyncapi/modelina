@@ -10,7 +10,7 @@ type Output = Record<string, CommonModel> | undefined;
  */
 export default function simplifyPatternProperties(schema: Schema | boolean, simplifier : Simplifier, seenSchemas: Map<any, Output> = new Map()) : Output {
   if (typeof schema !== 'boolean') {
-    if (seenSchemas.has(schema)) return seenSchemas.get(schema);
+    if (seenSchemas.has(schema)) {return seenSchemas.get(schema);}
     const output: Output = {};
     seenSchemas.set(schema, output);
   
@@ -46,7 +46,7 @@ export default function simplifyPatternProperties(schema: Schema | boolean, simp
  * @param currentModel the current output
  */
 function addToPatterns(pattern: string, patternModel: CommonModel, schema: Schema, currentModel: Output) {
-  if (currentModel === undefined) return;
+  if (currentModel === undefined) {return;}
   //If the pattern already exist, merge the two
   if (currentModel[String(pattern)] !== undefined) {
     currentModel[String(pattern)] = CommonModel.mergeCommonModels(currentModel[String(pattern)], patternModel, schema);
@@ -64,7 +64,7 @@ function addToPatterns(pattern: string, patternModel: CommonModel, schema: Schem
  * @param rootSchema we are combining schemas for
  */
 function combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | undefined, currentModel: Output, simplifier : Simplifier, seenSchemas: Map<any, Output>, rootSchema : Schema) {
-  if (typeof schema !== 'object') return;
+  if (typeof schema !== 'object') {return;}
   if (Array.isArray(schema)) {
     schema.forEach((combinationSchema) => {
       combineSchemas(combinationSchema, currentModel, simplifier, seenSchemas, rootSchema);

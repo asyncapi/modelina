@@ -13,7 +13,7 @@ export default function simplifyTypes(schema: Schema | boolean, seenSchemas: Map
     return ['object', 'string', 'number', 'array', 'boolean', 'null', 'integer'];
   }
   const types: Output = [];
-  if (seenSchemas.has(schema)) return seenSchemas.get(schema);
+  if (seenSchemas.has(schema)) {return seenSchemas.get(schema);}
   seenSchemas.set(schema, types);
 
   addToTypes(schema.type, types);
@@ -108,11 +108,11 @@ function inferTypes(schema: Schema | boolean, currentOutput: Output) {
  */
 function inferNotTypes(schema: Schema | boolean, currentOutput: Output, seenSchemas: Map<any, Output>) {
   if (typeof schema === 'object' && schema.not && Array.isArray(currentOutput)) {
-    if (currentOutput.length === 0) currentOutput.push('object', 'string', 'number', 'array', 'boolean', 'null', 'integer');
+    if (currentOutput.length === 0) {currentOutput.push('object', 'string', 'number', 'array', 'boolean', 'null', 'integer');}
     const notTypes = simplifyTypes(schema.not, seenSchemas);
     // Cut any not types from the existing output.
     const tryAndCutRemainingArray = (notType: string | string[] | undefined) => {
-      if (notType === undefined) return;
+      if (notType === undefined) {return;}
       if (Array.isArray(notType)) {
         notType.forEach((notType) => {
           tryAndCutRemainingArray(notType);
