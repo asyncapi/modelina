@@ -1,14 +1,14 @@
 import { CommonInputModel, CommonModel, ToOutputModelArg, OutputModel } from '../../src/models'; 
 
-describe('OutputModel', function() {
-  test('should return an OutputModel', function() {
+describe('OutputModel', () => {
+  test('should return an OutputModel', () => {
     const doc: any = { $id: 'test' };
     const commonModel = CommonModel.toCommonModel(doc);
 
     const ioutput: ToOutputModelArg = {
-      result: "result",
+      result: 'result',
       model: commonModel,
-      modelName: "someModel",
+      modelName: 'someModel',
       inputModel: new CommonInputModel(),
     };
     const output = OutputModel.toOutputModel(ioutput);
@@ -19,14 +19,14 @@ describe('OutputModel', function() {
     expect(output.inputModel).toEqual(ioutput.inputModel);
   });
 
-  test('should return an array of OutputModel', function() {
+  test('should return an array of OutputModel', () => {
     const doc: any = { $id: 'test' };
     const commonModel = CommonModel.toCommonModel(doc);
 
     const ioutput: ToOutputModelArg = {
-      result: "result",
+      result: 'result',
       model: commonModel,
-      modelName: "someModel",
+      modelName: 'someModel',
       inputModel: new CommonInputModel(),
     };
     const output = OutputModel.toOutputModel([ioutput, ioutput]);

@@ -21,7 +21,7 @@ export function isModelObject(model: CommonModel) : boolean {
  * 
  * @param value to infer type of
  */
-export function inferTypeFromValue(value: any) {
+export function inferTypeFromValue(value: any): string {
   if (Array.isArray(value)) {
     return 'array';
   }

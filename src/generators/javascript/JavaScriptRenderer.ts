@@ -39,7 +39,7 @@ ${content}
     return this.renderBlock(content);
   }
 
-  async runPropertyPreset(propertyName: string, property: CommonModel): Promise<string> {
+  runPropertyPreset(propertyName: string, property: CommonModel): Promise<string> {
     return this.runPreset('property', { propertyName, property });
   }
 }

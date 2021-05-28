@@ -9,8 +9,8 @@ import { inferTypeFromValue } from './Utils';
  * @param schema 
  * @param model
  */
-export default function interpretEnum(schema: Schema, model: CommonModel) {
-  if (schema.enum === undefined) return;
+export default function interpretEnum(schema: Schema, model: CommonModel): void {
+  if (schema.enum === undefined) {return;}
   for (const enumValue of schema.enum) {
     if (schema.type === undefined) {
       const inferredType = inferTypeFromValue(enumValue);

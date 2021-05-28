@@ -50,10 +50,10 @@ ${this.indent(this.renderBlock(content, 2))}
 }
 
 export const TS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
-  async self({ renderer }) {
+  async self({ renderer }): Promise<string> {
     return `export ${await renderer.defaultSelf()}`;
   },
-  ctor({ renderer, model }) {
+  ctor({ renderer, model }) : string {
     const properties = model.properties || {};
     const assigments = Object.keys(properties).map(property => {
       property = FormatHelpers.toCamelCase(property);
@@ -71,16 +71,16 @@ ${renderer.indent(renderer.renderBlock(ctorProperties))}
 ${renderer.indent(renderer.renderBlock(assigments))}
 }`;
   },
-  property({ renderer, propertyName, property }) {
+  property({ renderer, propertyName, property }): string {
     return `private _${renderer.renderProperty(propertyName, property)}`;
   },
-  getter({ renderer, model, propertyName, property }) {
+  getter({ renderer, model, propertyName, property }): string {
     const isRequired = model.isRequired(propertyName);
     const formattedName = FormatHelpers.toCamelCase(propertyName);
     const signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });
     return `get ${formattedName}()${signature} { return this._${formattedName}; }`;
   },
-  setter({ renderer, model, propertyName, property }) {
+  setter({ renderer, model, propertyName, property }): string {
     const isRequired = model.isRequired(propertyName);
     const formattedName = FormatHelpers.toCamelCase(propertyName);
     const signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });

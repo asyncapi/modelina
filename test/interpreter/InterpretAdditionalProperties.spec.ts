@@ -25,7 +25,7 @@ describe('Interpretation of additionalProperties', () => {
   test('should try and interpret additionalProperties schema', () => {
     const schema: any = { additionalProperties: { type: 'string' } };
     const model = new CommonModel();
-    model.type = "object";
+    model.type = 'object';
     const interpreter = new Interpreter();
     interpretAdditionalProperties(schema, model, interpreter);
     expect(interpreter.interpret).toHaveBeenNthCalledWith(1, { type: 'string' }, Interpreter.defaultInterpreterOptions);
@@ -34,7 +34,7 @@ describe('Interpretation of additionalProperties', () => {
   test('should ignore model if interpreter cannot interpret additionalProperty schema', () => {
     const schema: any = { };
     const model = new CommonModel();
-    model.type = "object";
+    model.type = 'object';
     const interpreter = new Interpreter();
     mockedReturnModels.pop();
     interpretAdditionalProperties(schema, model, interpreter);
@@ -43,7 +43,7 @@ describe('Interpretation of additionalProperties', () => {
   test('should only work if model is object type', () => {
     const schema: any = { };
     const model = new CommonModel();
-    model.type = "string";
+    model.type = 'string';
     const interpreter = new Interpreter();
     interpretAdditionalProperties(schema, model, interpreter);
     expect(interpreter.interpret).not.toHaveBeenCalled();
@@ -52,7 +52,7 @@ describe('Interpretation of additionalProperties', () => {
   test('should default to true', () => {
     const schema: any = { };
     const model = new CommonModel();
-    model.type = "object";
+    model.type = 'object';
     const interpreter = new Interpreter();
     interpretAdditionalProperties(schema, model, interpreter);
     expect(interpreter.interpret).toHaveBeenNthCalledWith(1, true, Interpreter.defaultInterpreterOptions);

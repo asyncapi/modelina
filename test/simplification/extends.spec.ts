@@ -6,8 +6,8 @@ import { simplify } from '../../src/simplification/Simplifier';
  * Some of these test are purely theoretical and have little if any merit 
  * on a JSON Schema which actually makes sense but are used to test the principles.
  */
-describe('Simplification to extend', function() {
-  test('should support simple extend', function() {
+describe('Simplification to extend', () => {
+  test('should support simple extend', () => {
     const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/extend.json'), 'utf8');
     const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/expected/extend.json'), 'utf8');
     const schema = JSON.parse(inputSchemaString);
@@ -17,7 +17,7 @@ describe('Simplification to extend', function() {
     expect(schema.$id).toBeUndefined();
   });
   
-  test('should support advanced extend with nested objects', function() {
+  test('should support advanced extend with nested objects', () => {
     const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/extendMultipleObjects.json'), 'utf8');
     const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/expected/extendMultipleObjects.json'), 'utf8');
     const schema = JSON.parse(inputSchemaString);
@@ -27,7 +27,7 @@ describe('Simplification to extend', function() {
     expect(schema.$id).toBeUndefined();
   });
 
-  test('should support advanced extend with nested objects and properties', function() {
+  test('should support advanced extend with nested objects and properties', () => {
     const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/extendWithProperties.json'), 'utf8');
     const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/expected/extendWithProperties.json'), 'utf8');
     const schema = JSON.parse(inputSchemaString);
@@ -37,7 +37,7 @@ describe('Simplification to extend', function() {
     expect(schema.$id).toBeUndefined();
   });
 
-  test('should support nested extends', function() {
+  test('should support nested extends', () => {
     const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/nestedExtends.json'), 'utf8');
     const expectedSchemaString = fs.readFileSync(path.resolve(__dirname, './extends/expected/nestedExtends.json'), 'utf8');
     const schema = JSON.parse(inputSchemaString);
