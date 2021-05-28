@@ -26,23 +26,23 @@ export abstract class AbstractRenderer<O extends CommonGeneratorOptions = Common
     content: string, 
     size?: number, 
     type?: IndentationTypes,
-  ) {
+  ): string {
     size = size || this.options.indentation?.size;
     type = type || this.options.indentation?.type;
     return FormatHelpers.indent(content, size, type);
   }
 
-  async runSelfPreset(): Promise<string> {
+  runSelfPreset(): Promise<string> {
     return this.runPreset('self');
   }
 
-  async runAdditionalContentPreset(): Promise<string> {
+  runAdditionalContentPreset(): Promise<string> {
     return this.runPreset('additionalContent');
   }
 
   async runPreset(
     functionName: string,
-    params: object = {},
+    params: Record<string, unknown> = {},
   ): Promise<string> {
     let content = '';
     for (const [preset, options] of this.presets) {

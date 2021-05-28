@@ -1,19 +1,19 @@
 import { JavaGenerator, JAVA_DESCRIPTION_PRESET } from '../../../../src/generators'; 
 
-describe('JAVA_DESCRIPTION_PRESET', function() {
+describe('JAVA_DESCRIPTION_PRESET', () => {
   let generator: JavaGenerator;
   beforeEach(() => {
     generator = new JavaGenerator({ presets: [JAVA_DESCRIPTION_PRESET] });
   });
 
-  test('should render description and examples for class', async function() {
+  test('should render description and examples for class', async () => {
     const doc = {
-      $id: "Clazz",
-      type: "object",
-      description: "Description for class",
-      examples: [{ prop: "value" }],
+      $id: 'Clazz',
+      type: 'object',
+      description: 'Description for class',
+      examples: [{ prop: 'value' }],
       properties: {
-        prop:    { type: "string", description: "Description for prop", examples: ["exampleValue"] },
+        prop: { type: 'string', description: 'Description for prop', examples: ['exampleValue'] },
       },
     };
     const expected = `/**
@@ -32,17 +32,17 @@ public class Clazz {
 }`;
 
     const inputModel = await generator.process(doc);
-    const model = inputModel.models["Clazz"];
+    const model = inputModel.models['Clazz'];
 
-    let classModel = await generator.renderClass(model, inputModel);
+    const classModel = await generator.renderClass(model, inputModel);
     expect(classModel).toEqual(expected);
   });
 
-  test('should render description and examples for enum', async function() {
+  test('should render description and examples for enum', async () => {
     const doc = {
-      $id: "Enum",
-      type: "string",
-      description: "Description for enum",
+      $id: 'Enum',
+      type: 'string',
+      description: 'Description for enum',
       examples: ['value'],
       enum: [
         'on',
@@ -84,9 +84,9 @@ public enum Enum {
 }`;
 
     const inputModel = await generator.process(doc);
-    const model = inputModel.models["Enum"];
+    const model = inputModel.models['Enum'];
 
-    let enumModel = await generator.renderEnum(model, inputModel);
+    const enumModel = await generator.renderEnum(model, inputModel);
     expect(enumModel).toEqual(expected);
   });
 });

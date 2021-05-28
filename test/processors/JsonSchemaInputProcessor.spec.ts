@@ -28,7 +28,7 @@ describe('JsonSchemaInputProcessor', function () {
   afterAll(() => {
     jest.restoreAllMocks();
   });
-  describe('process()', function () {
+  describe('process()', () => {
     const getCommonInput = async (inputSchemaPath: string) => {
       const inputSchemaString = fs.readFileSync(path.resolve(__dirname, inputSchemaPath), 'utf8');
       const inputSchema = JSON.parse(inputSchemaString);
@@ -42,7 +42,7 @@ describe('JsonSchemaInputProcessor', function () {
         .rejects
         .toThrow('Input is not a JSON Schema, so it cannot be processed.');
     });
-    test('should process normal schema', async function () {
+    test('should process normal schema', async () => {
       const inputSchemaPath = './JsonSchemaInputProcessor/basic.json';
       const {commonInputModel, inputSchema} = await getCommonInput(inputSchemaPath);
       expect(commonInputModel).toMatchObject({models: {"test" : {$id: "test"}}, originalInput: inputSchema});
@@ -50,7 +50,7 @@ describe('JsonSchemaInputProcessor', function () {
       const functionArgConvertSchemaToCommonModel = (JsonSchemaInputProcessor.convertSchemaToCommonModel as jest.Mock).mock.calls[0][0];
       expect(functionArgConvertSchemaToCommonModel).toMatchObject(inputSchema);
     });
-    test('should be able to use $ref', async function () {
+    test('should be able to use $ref', async () => {
       const inputSchemaPath = './JsonSchemaInputProcessor/references.json';
       const {commonInputModel, inputSchema} = await getCommonInput(inputSchemaPath);
       const expectedResolvedInput = {...inputSchema, properties: { "street_address": { "type": "string" }}};
@@ -59,7 +59,7 @@ describe('JsonSchemaInputProcessor', function () {
       const functionArgConvertSchemaToCommonModel = (JsonSchemaInputProcessor.convertSchemaToCommonModel as jest.Mock).mock.calls[0][0];
       expect(functionArgConvertSchemaToCommonModel).toMatchObject(expectedResolvedInput);
     });
-    test('should be able to use $ref when circular', async function () {
+    test('should be able to use $ref when circular', async () => {
       const inputSchemaPath = './JsonSchemaInputProcessor/references_circular.json';
       const {commonInputModel, inputSchema} = await getCommonInput(inputSchemaPath);
       const expectedResolvedInput = {...inputSchema, definitions: {}, properties: { "street_address": { type: "object", properties: { "floor": { type: "object", properties: {} } }}}};
@@ -68,22 +68,22 @@ describe('JsonSchemaInputProcessor', function () {
       const functionArgConvertSchemaToCommonModel = (JsonSchemaInputProcessor.convertSchemaToCommonModel as jest.Mock).mock.calls[0][0];
       expect(functionArgConvertSchemaToCommonModel).toMatchObject(expectedResolvedInput);
     });
-    test('should fail correctly when reference cannot be resolved', async function () {
+    test('should fail correctly when reference cannot be resolved', async () => {
       const inputSchemaPath = './JsonSchemaInputProcessor/wrong_references.json';
       const inputSchemaString = fs.readFileSync(path.resolve(__dirname, inputSchemaPath), 'utf8');
       const inputSchema = JSON.parse(inputSchemaString);
       const processor = new JsonSchemaInputProcessor();
-      await expect(processor.process(inputSchema)).rejects.toThrow("Could not dereference $ref in input, is all the references correct?");
+      await expect(processor.process(inputSchema)).rejects.toThrow('Could not dereference $ref in input, is all the references correct?');
     });
   });
 
-  describe('shouldProcess()', function () {
-    test('should process input with correct $schema', async function () {
+  describe('shouldProcess()', () => {
+    test('should process input with correct $schema', () => {
       const processor = new JsonSchemaInputProcessor();
       const shouldProcess = processor.shouldProcess({$schema: 'http://json-schema.org/draft-07/schema#'});
       expect(shouldProcess).toEqual(true);
     });
-    test('should not process input with wrong $schema', async function () {
+    test('should not process input with wrong $schema', () => {
       const processor = new JsonSchemaInputProcessor();
       const shouldProcess = processor.shouldProcess({$schema: 'http://json-schema.org/draft-99/schema#'});
       expect(shouldProcess).toEqual(false);
@@ -116,9 +116,9 @@ describe('JsonSchemaInputProcessor', function () {
       const {commonInputModel} = getCommonInput(inputSchemaPath);
       expect(commonInputModel).toEqual({"test" : {$id: "test"}});
     });
-    test('should not contain duplicate models', async function () {
+    test('should not contain duplicate models', () => {
       const model1 = new CommonModel();
-      model1.$id = "same";
+      model1.$id = 'same';
       const model2 = new CommonModel();
       model2.$id = "same";
       mockedReturnModels = [model1, model2];
@@ -128,79 +128,79 @@ describe('JsonSchemaInputProcessor', function () {
     });
   });
 
-  describe('reflectSchemaName()', function () {
-    test('should work', async function () {
+  describe('reflectSchemaName()', () => {
+    test('should work', () => {
       const schema = {
         properties: {
           prop: {
-            type: "string",
+            type: 'string',
           },
           allOfCase: {
             allOf: [
               {
-                type: "string",
+                type: 'string',
               },
               {
-                type: "string",
+                type: 'string',
               },
             ],
           },
           object: {
-            type: "object",
+            type: 'object',
             properties: {
               prop: {
-                type: "string",
+                type: 'string',
               },
             }
           },
           propWithObject: {
-            type: "object",
+            type: 'object',
             properties: {
               propWithObject: {
-                type: "object",
+                type: 'object',
               }
             }
           },
         },
         patternProperties: {
           patternProp: {
-            type: "string",
+            type: 'string',
           }
         },
         dependencies: {
           dep: {
-            type: "string",
+            type: 'string',
           },
         },
         definitions: {
           def: {
-            type: "string",
+            type: 'string',
           },
           oneOfCase: {
             oneOf: [
               {
-                type: "string",
+                type: 'string',
               },
               {
-                type: "string",
+                type: 'string',
               },
             ],
           },
         },
         anyOf: [
           {
-            type: "string",
+            type: 'string',
           },
           {
-            type: "object",
+            type: 'object',
             properties: {
               prop: {
-                type: "string",
+                type: 'string',
               },
             }
           },
         ]
-      }
+      };
       const expected = JsonSchemaInputProcessor.reflectSchemaNames(schema, undefined, 'root', true) as any;
 
       // root

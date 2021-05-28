@@ -11,8 +11,8 @@ import { isModelObject } from './Utils';
  * @param interpreter
  * @param options to control the interpret process
  */
-export default function interpretAdditionalProperties(schema: Schema, model: CommonModel, interpreter : Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions) {
-  if (!isModelObject(model)) return;
+export default function interpretAdditionalProperties(schema: Schema, model: CommonModel, interpreter : Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
+  if (!isModelObject(model)) {return;}
   const newModels = interpreter.interpret(schema.additionalProperties || true, interpreterOptions);
   if (newModels.length > 0) {
     model.addAdditionalProperty(newModels[0], schema);

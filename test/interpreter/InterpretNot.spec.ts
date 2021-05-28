@@ -12,15 +12,15 @@ jest.mock('../../src/interpreter/Interpreter', () => {
   return {
     Interpreter: jest.fn().mockImplementation(() => {
       return {
-        interpret: jest.fn().mockImplementation(() => {return interpretedReturnModels})
+        interpret: jest.fn().mockImplementation(() => {return interpretedReturnModels;})
       };
     })
   };
 });
-describe('Interpretation of not', function() {
+describe('Interpretation of not', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    (inferTypeFromValue as jest.Mock).mockImplementation(()=>{});
+    (inferTypeFromValue as jest.Mock).mockImplementation(() => {return;});
     interpretedReturnModels = [new CommonModel()];
     interpreterOptions = Interpreter.defaultInterpreterOptions;
   });
@@ -28,7 +28,7 @@ describe('Interpretation of not', function() {
     jest.restoreAllMocks();
   });
 
-  test('should not do anything if not is not defined', function() {
+  test('should not do anything if not is not defined', () => {
     const schema: any = {};
     const model = new CommonModel();
     const interpreter = new Interpreter();
@@ -45,7 +45,7 @@ describe('Interpretation of not', function() {
     interpretNot(schema, model, interpreter, interpreterOptions);
     expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });
-  test('should warn about true schemas', function() {
+  test('should warn about true schemas', () => {
     const schema: any = { not: true};
     const model = new CommonModel();
     const interpreter = new Interpreter();
@@ -54,140 +54,139 @@ describe('Interpretation of not', function() {
     expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
     expect(Logger.warn).toHaveBeenCalled();
   });
-  describe('double negate', function() {
-
-    test('should double negate enum', function() {
-      const schema: any = { not: { enum: ["value"], not: { enum: ["value"] } }};
+  describe('double negate', () => {
+    test('should double negate enum', () => {
+      const schema: any = { not: { enum: ['value'], not: { enum: ['value'] } }};
       const notModel = new CommonModel();
       interpretedReturnModels = [notModel];
       const model = new CommonModel();
-      model.enum = ["value"];
+      model.enum = ['value'];
       const interpreter = new Interpreter();
       interpretNot(schema, model, interpreter, interpreterOptions);
       const expectedInterpreterOptions = {...interpreterOptions, splitModels: false, allowInheritance: false};
       expect(interpreter.interpret).toHaveBeenNthCalledWith(1, schema.not, expectedInterpreterOptions);
-      expect(model.enum).toEqual(["value"]);
+      expect(model.enum).toEqual(['value']);
     });
 
-    test('should double negate types', function() {
-      const schema: any = { not: { type: "string", not: { type: "string" }}};
+    test('should double negate types', () => {
+      const schema: any = { not: { type: 'string', not: { type: 'string' }}};
       const notModel = new CommonModel();
       interpretedReturnModels = [notModel];
       const model = new CommonModel();
-      model.type = "string";
+      model.type = 'string';
       const interpreter = new Interpreter();
       interpretNot(schema, model, interpreter, interpreterOptions);
       const expectedInterpreterOptions = {...interpreterOptions, splitModels: false, allowInheritance: false};
       expect(interpreter.interpret).toHaveBeenNthCalledWith(1, schema.not, expectedInterpreterOptions);
-      expect(model.type).toEqual("string");
+      expect(model.type).toEqual('string');
     });
   });
-  describe('enums', function() {
-    test('should remove already existing inferred enums', function() {
-      const schema: any = { not: { enum: ["value"] }};
+  describe('enums', () => {
+    test('should remove already existing inferred enums', () => {
+      const schema: any = { not: { enum: ['value'] }};
       const notModel = new CommonModel();
       notModel.enum = schema.not.enum;
       interpretedReturnModels = [notModel];
       const model = new CommonModel();
-      model.enum = ["value"];
+      model.enum = ['value'];
       const interpreter = new Interpreter();
       interpretNot(schema, model, interpreter, interpreterOptions);
       const expectedInterpreterOptions = {...interpreterOptions, splitModels: false, allowInheritance: false};
       expect(interpreter.interpret).toHaveBeenNthCalledWith(1, schema.not, expectedInterpreterOptions);
       expect(model.enum).toBeUndefined();
     });
-    test('should handle negating only existing enum', function() {
-      const schema: any = { not: { enum: ["value"] }};
+    test('should handle negating only existing enum', () => {
+      const schema: any = { not: { enum: ['value'] }};
       const notModel = new CommonModel();
       notModel.enum = schema.not.enum;
       interpretedReturnModels = [notModel];
       const model = new CommonModel();
-      model.enum = ["value", "value2"];
+      model.enum = ['value', 'value2'];
       const interpreter = new Interpreter();
       interpretNot(schema, model, interpreter, interpreterOptions);
       const expectedInterpreterOptions = {...interpreterOptions, splitModels: false, allowInheritance: false};
       expect(interpreter.interpret).toHaveBeenNthCalledWith(1, schema.not, expectedInterpreterOptions);
-      expect(model.enum).toEqual(["value2"]);
+      expect(model.enum).toEqual(['value2']);
     });
-    test('should not negating non existing enum', function() {
-      const schema: any = { not: { enum: ["value"] }};
+    test('should not negating non existing enum', () => {
+      const schema: any = { not: { enum: ['value'] }};
       const notModel = new CommonModel();
       notModel.enum = schema.not.enum;
       interpretedReturnModels = [notModel];
       const model = new CommonModel();
-      model.enum = ["value2"];
+      model.enum = ['value2'];
       const interpreter = new Interpreter();
       interpretNot(schema, model, interpreter, interpreterOptions);
       const expectedInterpreterOptions = {...interpreterOptions, splitModels: false, allowInheritance: false};
       expect(interpreter.interpret).toHaveBeenNthCalledWith(1, schema.not, expectedInterpreterOptions);
-      expect(model.enum).toEqual(["value2"]);
+      expect(model.enum).toEqual(['value2']);
     });
-    test('should handle multiple negated enums', function() {
-      const schema: any = { not: { enum: ["value", "value2"] }};
+    test('should handle multiple negated enums', () => {
+      const schema: any = { not: { enum: ['value', 'value2'] }};
       const notModel = new CommonModel();
       notModel.enum = schema.not.enum;
       interpretedReturnModels = [notModel];
       const model = new CommonModel();
-      model.enum = ["value", "value2", "value3"];
+      model.enum = ['value', 'value2', 'value3'];
       const interpreter = new Interpreter();
       interpretNot(schema, model, interpreter, interpreterOptions);
       const expectedInterpreterOptions = {...interpreterOptions, splitModels: false, allowInheritance: false};
       expect(interpreter.interpret).toHaveBeenNthCalledWith(1, schema.not, expectedInterpreterOptions);
-      expect(model.enum).toEqual(["value3"]);
+      expect(model.enum).toEqual(['value3']);
     });
   });
-  describe('types', function() {
-    test('should handle negating only existing type', function() {
-      const schema: any = { not: { type: "string" }};
+  describe('types', () => {
+    test('should handle negating only existing type', () => {
+      const schema: any = { not: { type: 'string' }};
       const notModel = new CommonModel();
       notModel.type = schema.not.type;
       interpretedReturnModels = [notModel];
       const model = new CommonModel();
-      model.type = "string";
+      model.type = 'string';
       const interpreter = new Interpreter();
       interpretNot(schema, model, interpreter, interpreterOptions);
       const expectedInterpreterOptions = {...interpreterOptions, splitModels: false, allowInheritance: false};
       expect(interpreter.interpret).toHaveBeenNthCalledWith(1, schema.not, expectedInterpreterOptions);
       expect(model.type).toBeUndefined();
     });
-    test('should remove already existing inferred type', function() {
-      const schema: any = { not: { type: "string" }};
+    test('should remove already existing inferred type', () => {
+      const schema: any = { not: { type: 'string' }};
       const notModel = new CommonModel();
       notModel.type = schema.not.type;
       interpretedReturnModels = [notModel];
       const model = new CommonModel();
-      model.type = ["string", "number"];
+      model.type = ['string', 'number'];
       const interpreter = new Interpreter();
       interpretNot(schema, model, interpreter, interpreterOptions);
       const expectedInterpreterOptions = {...interpreterOptions, splitModels: false, allowInheritance: false};
       expect(interpreter.interpret).toHaveBeenNthCalledWith(1, schema.not, expectedInterpreterOptions);
-      expect(model.type).toEqual("number");
+      expect(model.type).toEqual('number');
     });
-    test('should not negating non existing type', function() {
-      const schema: any = { not: { type: "string" }};
+    test('should not negating non existing type', () => {
+      const schema: any = { not: { type: 'string' }};
       const notModel = new CommonModel();
       notModel.type = schema.not.type;
       interpretedReturnModels = [notModel];
       const model = new CommonModel();
-      model.type = "number";
+      model.type = 'number';
       const interpreter = new Interpreter();
       interpretNot(schema, model, interpreter, interpreterOptions);
       const expectedInterpreterOptions = {...interpreterOptions, splitModels: false, allowInheritance: false};
       expect(interpreter.interpret).toHaveBeenNthCalledWith(1, schema.not, expectedInterpreterOptions);
-      expect(model.type).toEqual("number");
+      expect(model.type).toEqual('number');
     });
-    test('should handle multiple negated types', function() {
-      const schema: any = { not: { type: ["string", "number"] }};
+    test('should handle multiple negated types', () => {
+      const schema: any = { not: { type: ['string', 'number'] }};
       const notModel = new CommonModel();
       notModel.type = schema.not.type;
       interpretedReturnModels = [notModel];
       const model = new CommonModel();
-      model.type = ["number", "string", "integer"];
+      model.type = ['number', 'string', 'integer'];
       const interpreter = new Interpreter();
       interpretNot(schema, model, interpreter, interpreterOptions);
       const expectedInterpreterOptions = {...interpreterOptions, splitModels: false, allowInheritance: false};
       expect(interpreter.interpret).toHaveBeenNthCalledWith(1, schema.not, expectedInterpreterOptions);
-      expect(model.type).toEqual("integer");
+      expect(model.type).toEqual('integer');
     });
   });
 });

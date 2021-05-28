@@ -107,8 +107,8 @@ export class Interpreter {
    * @param currentModel the current output
    * @param options to control the interpret process
    */
-  combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | undefined, currentModel: CommonModel, rootSchema: Schema, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions) {
-    if (typeof schema !== 'object') return;
+  combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | undefined, currentModel: CommonModel, rootSchema: Schema, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
+    if (typeof schema !== 'object') {return;}
     if (Array.isArray(schema)) {
       schema.forEach((forEachSchema) => {
         this.combineSchemas(forEachSchema, currentModel, rootSchema, interpreterOptions);
@@ -130,7 +130,7 @@ export class Interpreter {
   */
   private splitModels(model: CommonModel): CommonModel {
     if (isModelObject(model)) {
-      Logger.info(`Splitting model ${model.$id || 'unknown'} since it should be on its own`);
+      Logger.info(`Splitting model ${model.$id || 'any'} since it should be on its own`);
       const switchRootModel = new CommonModel();
       switchRootModel.$ref = model.$id;
       this.iteratedModels[String(model.$id)] = model;
@@ -145,7 +145,7 @@ export class Interpreter {
    * @param model to ensure are split
    * @param models which are already split
    */
-  ensureModelsAreSplit(model: CommonModel) {
+  ensureModelsAreSplit(model: CommonModel): void {
     // eslint-disable-next-line sonarjs/no-collapsible-if
     if (model.properties) {
       const existingProperties = model.properties;

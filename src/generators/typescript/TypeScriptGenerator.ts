@@ -35,11 +35,11 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions> {
     super('TypeScript', TypeScriptGenerator.defaultOptions, options);
   }
 
-  async render(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
+  render(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const kind = TypeHelpers.extractKind(model);
     switch (kind) {
     case ModelKind.OBJECT: {
-      return this.rendeModelType(model, inputModel);
+      return this.renderModelType(model, inputModel);
     }
     case ModelKind.ENUM: {
       return this.renderEnum(model, inputModel);
@@ -48,31 +48,31 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions> {
     }
   }
 
-  async renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
+  renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const presets = this.getPresets('class'); 
     const renderer = new ClassRenderer(this.options, presets, model, inputModel);
     return renderer.runSelfPreset();
   }
 
-  async renderInterface(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
+  renderInterface(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const presets = this.getPresets('interface'); 
     const renderer = new InterfaceRenderer(this.options, presets, model, inputModel);
     return renderer.runSelfPreset();
   }
 
-  async renderEnum(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
+  renderEnum(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const presets = this.getPresets('enum'); 
     const renderer = new EnumRenderer(this.options, presets, model, inputModel);
     return renderer.runSelfPreset();
   }
 
-  async renderType(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
+  renderType(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const presets = this.getPresets('type'); 
     const renderer = new TypeRenderer(this.options, presets, model, inputModel);
     return renderer.runSelfPreset();
   }
 
-  private rendeModelType(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
+  private renderModelType(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const modelType = this.options.modelType;
     switch (modelType) {
     case 'interface': {
