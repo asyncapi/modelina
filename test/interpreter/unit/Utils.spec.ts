@@ -1,14 +1,8 @@
 
-import { CommonModel } from '../../src/models/CommonModel';
-import { interpretName, inferTypeFromValue, isModelObject } from '../../src/interpreter/Utils';
+import { CommonModel } from '../../../src/models/CommonModel';
+import { interpretName, inferTypeFromValue, isModelObject } from '../../../src/interpreter/Utils';
 
 describe('utils', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-  afterAll(() => {
-    jest.restoreAllMocks();
-  });
   describe('isModelObject', () => {
     test('should return true if model type is object', () => {
       const model = new CommonModel();

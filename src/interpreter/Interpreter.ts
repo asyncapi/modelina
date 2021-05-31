@@ -35,11 +35,10 @@ export class Interpreter {
    * @param options to control the interpret process
    */
   interpret(schema: Schema | boolean, options: InterpreterOptions = Interpreter.defaultInterpreterOptions): CommonModel[] {
-    const modelsToReturn = Object.values(this.iteratedModels);
     if (this.seenSchemas.has(schema)) {
       const cachedModel = this.seenSchemas.get(schema); 
       if (cachedModel !== undefined) {
-        return [cachedModel, ...modelsToReturn];
+        return [cachedModel, ...Object.values(this.iteratedModels)];
       }
     }
     //If it is a false validation schema return no CommonModel
@@ -50,6 +49,7 @@ export class Interpreter {
     model.originalSchema = Schema.toSchema(schema);
     this.seenSchemas.set(schema, model);
     this.interpretSchema(model, schema, options);
+    const modelsToReturn = Object.values(this.iteratedModels);
     if (options.splitModels === true) {
       this.ensureModelsAreSplit(model);
       if (isModelObject(model)) {
