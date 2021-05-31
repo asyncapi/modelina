@@ -91,44 +91,54 @@ export class Interpreter {
       interpretConst(schema, model);
       interpretEnum(schema, model);
 
-      this.combineSchemas(schema.oneOf, model, schema, interpreterOptions);
-      this.combineSchemas(schema.anyOf, model, schema, interpreterOptions);
-      this.combineSchemas(schema.then, model, schema, interpreterOptions);
-      this.combineSchemas(schema.else, model, schema, interpreterOptions);
+      this.interpretAndCombineMultipleSchemas(schema.oneOf, model, schema, interpreterOptions);
+      this.interpretAndCombineMultipleSchemas(schema.anyOf, model, schema, interpreterOptions);
+      this.interpretAndCombineSchema(schema.then, model, schema, interpreterOptions);
+      this.interpretAndCombineSchema(schema.else, model, schema, interpreterOptions);
 
       interpretNot(schema, model, this, interpreterOptions);
     }
   }
 
   /**
-   * Go through schema(s) and combine the interpreted models together.
+   * Go through a schema and combine the interpreted models together.
    * 
    * @param schema to go through
    * @param currentModel the current output
+   * @param rootSchema the root schema to use as original schema when merged
    * @param options to control the interpret process
    */
-  combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | undefined, currentModel: CommonModel, rootSchema: Schema, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
+  interpretAndCombineSchema(schema: (Schema | boolean) | undefined, currentModel: CommonModel, rootSchema: Schema, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
     if (typeof schema !== 'object') {return;}
-    if (Array.isArray(schema)) {
-      schema.forEach((forEachSchema) => {
-        this.combineSchemas(forEachSchema, currentModel, rootSchema, interpreterOptions);
-      });
-    } else {
-      interpreterOptions = {...interpreterOptions, splitModels: false};
-      const models = this.interpret(schema, interpreterOptions);
-      if (models.length > 0) {
-        CommonModel.mergeCommonModels(currentModel, models[0], rootSchema);
-      }
+    interpreterOptions = {...interpreterOptions, splitModels: false};
+    const models = this.interpret(schema, interpreterOptions);
+    if (models.length > 0) {
+      CommonModel.mergeCommonModels(currentModel, models[0], rootSchema);
     }
   }
 
   /**
-  * This function splits up a model if needed and add the new model to the list of models.
+   * Go through multiple schemas and combine the interpreted models together.
+   * 
+   * @param schema to go through
+   * @param currentModel the current output
+   * @param rootSchema the root schema to use as original schema when merged
+   * @param options to control the interpret process
+   */
+  interpretAndCombineMultipleSchemas(schema: (Schema | boolean)[] | undefined, currentModel: CommonModel, rootSchema: Schema, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
+    if (Array.isArray(schema)) {
+      schema.forEach((forEachSchema) => {
+        this.interpretAndCombineSchema(forEachSchema, currentModel, rootSchema, interpreterOptions);
+      });
+    }
+  }
+
+  /**
+  * This function splits up a model if it is determined it should.
   * 
   * @param model check if it should be split up
-  * @param models which have already been split up
   */
-  private splitModels(model: CommonModel): CommonModel {
+  private tryAndSplitModels(model: CommonModel): CommonModel {
     if (isModelObject(model)) {
       Logger.info(`Splitting model ${model.$id || 'any'} since it should be on its own`);
       const switchRootModel = new CommonModel();
@@ -140,18 +150,36 @@ export class Interpreter {
   }
 
   /**
-   * Split up all models which should and use ref instead.
+   * Split up all model which should be and use $ref instead.
    * 
-   * @param model to ensure are split
-   * @param models which are already split
+   * @param model
    */
   ensureModelsAreSplit(model: CommonModel): void {
-    // eslint-disable-next-line sonarjs/no-collapsible-if
     if (model.properties) {
       const existingProperties = model.properties;
-      for (const [prop, propSchema] of Object.entries(existingProperties)) {
-        model.properties[String(prop)] = this.splitModels(propSchema);
+      for (const [property, propertyModel] of Object.entries(existingProperties)) {
+        model.properties[String(property)] = this.tryAndSplitModels(propertyModel);
       }
+    }
+    if (model.patternProperties) {
+      const existingPatternProperties = model.patternProperties;
+      for (const [pattern, patternModel] of Object.entries(existingPatternProperties)) {
+        model.patternProperties[String(pattern)] = this.tryAndSplitModels(patternModel);
+      }
+    }
+    if (model.additionalProperties) {
+      model.additionalProperties = this.tryAndSplitModels(model.additionalProperties);
+    }
+    if (model.items) {
+      let existingItems = model.items;
+      if (Array.isArray(existingItems)) {
+        for (const [itemIndex, itemModel] of existingItems.entries()) {
+          existingItems[Number(itemIndex)] = this.tryAndSplitModels(itemModel);
+        }
+      } else {
+        existingItems = this.tryAndSplitModels(existingItems);
+      }
+      model.items = existingItems;
     }
   }
 }

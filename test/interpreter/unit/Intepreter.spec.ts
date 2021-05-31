@@ -119,7 +119,7 @@ describe('Interpreter', () => {
       const expectedSimplifiedModel = new CommonModel();
       expectedSimplifiedModel.required = ['test'];
       expectedSimplifiedModel.originalSchema = schema;
-      interpreter.combineSchemas(schema, model, schema);
+      interpreter.interpretAndCombineSchema(schema, model, schema);
       expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, model, expectedSimplifiedModel, schema);
     });
     test('should combine multiple schema with model', () => {
@@ -129,7 +129,7 @@ describe('Interpreter', () => {
       const expectedSimplifiedModel = new CommonModel();
       expectedSimplifiedModel.required = ['test'];
       expectedSimplifiedModel.originalSchema = schema;
-      interpreter.combineSchemas([schema], model, schema);
+      interpreter.interpretAndCombineMultipleSchemas([schema], model, schema);
       expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, model, expectedSimplifiedModel, schema);
     });
   });
@@ -147,6 +147,44 @@ describe('Interpreter', () => {
       interpreter.ensureModelsAreSplit(model);
       expect(isModelObject).toHaveBeenNthCalledWith(1, propertyModel);
       expect(model.properties.test.$ref).toEqual('test');
+    });
+    test('should split models if items contains model object', () => {
+      mockedIsModelObjectReturn = true;
+      const itemModel = new CommonModel();
+      itemModel.type = 'object';
+      itemModel.$id = 'test';
+      const model = new CommonModel();
+      model.items = itemModel;
+      const interpreter = new Interpreter();
+      interpreter.ensureModelsAreSplit(model);
+      expect(isModelObject).toHaveBeenNthCalledWith(1, itemModel);
+      expect(model.items.$ref).toEqual('test');
+    });
+    test('should split models if patternProperties contains model object', () => {
+      mockedIsModelObjectReturn = true;
+      const patternModel = new CommonModel();
+      patternModel.type = 'object';
+      patternModel.$id = 'test';
+      const model = new CommonModel();
+      model.patternProperties = {
+        testPattern: patternModel
+      };
+      const interpreter = new Interpreter();
+      interpreter.ensureModelsAreSplit(model);
+      expect(isModelObject).toHaveBeenNthCalledWith(1, patternModel);
+      expect(model.patternProperties.testPattern.$ref).toEqual('test');
+    });
+    test('should split models if additionalProperties contains model object', () => {
+      mockedIsModelObjectReturn = true;
+      const additionalPropertyModel = new CommonModel();
+      additionalPropertyModel.type = 'object';
+      additionalPropertyModel.$id = 'test';
+      const model = new CommonModel();
+      model.additionalProperties = additionalPropertyModel;
+      const interpreter = new Interpreter();
+      interpreter.ensureModelsAreSplit(model);
+      expect(isModelObject).toHaveBeenNthCalledWith(1, additionalPropertyModel);
+      expect(model.additionalProperties.$ref).toEqual('test');
     });
     test('should not split models if it is not considered model object', () => {
       mockedIsModelObjectReturn = false;
