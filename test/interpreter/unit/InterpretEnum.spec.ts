@@ -1,8 +1,8 @@
-import { CommonModel } from '../../src/models/CommonModel';
-import interpretEnum from '../../src/interpreter/InterpretEnum';
-import {inferTypeFromValue} from '../../src/interpreter/Utils';
-jest.mock('../../src/interpreter/Utils');
-jest.mock('../../src/models/CommonModel');
+import { CommonModel } from '../../../src/models/CommonModel';
+import interpretEnum from '../../../src/interpreter/InterpretEnum';
+import {inferTypeFromValue} from '../../../src/interpreter/Utils';
+jest.mock('../../../src/interpreter/Utils');
+jest.mock('../../../src/models/CommonModel');
 
 describe('Interpretation of enum', () => {
   beforeEach(() => {

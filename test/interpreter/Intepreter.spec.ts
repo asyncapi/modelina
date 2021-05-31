@@ -1,7 +1,7 @@
 import { CommonModel } from '../../src';
 import { Interpreter } from '../../src/interpreter/Interpreter';
 
-describe('Interpreter', () => {
+describe('Integration test for interpreter', () => {
   test('should return multiple separate models', () => {
     const schema = {
       $id: 'schema1',

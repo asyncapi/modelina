@@ -1,12 +1,12 @@
 /* eslint-disable no-undef */
-import { CommonModel } from '../../src/models/CommonModel';
-import { Interpreter } from '../../src/interpreter/Interpreter';
-import { isModelObject } from '../../src/interpreter/Utils';
-import interpretAllOf from '../../src/interpreter/InterpretAllOf';
+import { CommonModel } from '../../../src/models/CommonModel';
+import { Interpreter } from '../../../src/interpreter/Interpreter';
+import { isModelObject } from '../../../src/interpreter/Utils';
+import interpretAllOf from '../../../src/interpreter/InterpretAllOf';
 
 let interpreterOptions = Interpreter.defaultInterpreterOptions;
 let interpretedReturnModels = [new CommonModel()];
-jest.mock('../../src/interpreter/Interpreter', () => {
+jest.mock('../../../src/interpreter/Interpreter', () => {
   return {
     Interpreter: jest.fn().mockImplementation(() => {
       return {
@@ -16,9 +16,9 @@ jest.mock('../../src/interpreter/Interpreter', () => {
     })
   };
 });
-jest.mock('../../src/models/CommonModel');
+jest.mock('../../../src/models/CommonModel');
 let mockedIsModelObjectReturn = false;
-jest.mock('../../src/interpreter/Utils', () => {
+jest.mock('../../../src/interpreter/Utils', () => {
   return {
     isModelObject: jest.fn().mockImplementation(() => {
       return mockedIsModelObjectReturn;

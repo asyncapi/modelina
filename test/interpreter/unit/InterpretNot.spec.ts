@@ -1,14 +1,14 @@
 
-import { CommonModel } from '../../src/models/CommonModel';
-import { Interpreter } from '../../src/interpreter/Interpreter';
-import interpretNot from '../../src/interpreter/InterpretNot';
-import {inferTypeFromValue} from '../../src/interpreter/Utils';
-import { Logger } from '../../src/utils';
-jest.mock('../../src/interpreter/Utils');
-jest.mock('../../src/utils');
+import { CommonModel } from '../../../src/models/CommonModel';
+import { Interpreter } from '../../../src/interpreter/Interpreter';
+import interpretNot from '../../../src/interpreter/InterpretNot';
+import {inferTypeFromValue} from '../../../src/interpreter/Utils';
+import { Logger } from '../../../src/utils';
+jest.mock('../../../src/interpreter/Utils');
+jest.mock('../../../src/utils');
 let interpreterOptions = Interpreter.defaultInterpreterOptions;
 let interpretedReturnModels = [new CommonModel()];
-jest.mock('../../src/interpreter/Interpreter', () => {
+jest.mock('../../../src/interpreter/Interpreter', () => {
   return {
     Interpreter: jest.fn().mockImplementation(() => {
       return {

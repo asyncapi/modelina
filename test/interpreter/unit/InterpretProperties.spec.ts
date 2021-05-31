@@ -1,9 +1,9 @@
 /* eslint-disable no-undef */
-import { CommonModel } from '../../src/models/CommonModel';
-import { Interpreter } from '../../src/interpreter/Interpreter';
-import interpretProperties from '../../src/interpreter/InterpretProperties';
+import { CommonModel } from '../../../src/models/CommonModel';
+import { Interpreter } from '../../../src/interpreter/Interpreter';
+import interpretProperties from '../../../src/interpreter/InterpretProperties';
 let interpretedReturnModels = [new CommonModel()];
-jest.mock('../../src/interpreter/Interpreter', () => {
+jest.mock('../../../src/interpreter/Interpreter', () => {
   return {
     Interpreter: jest.fn().mockImplementation(() => {
       return {
@@ -14,7 +14,7 @@ jest.mock('../../src/interpreter/Interpreter', () => {
     })
   };
 });
-jest.mock('../../src/models/CommonModel');
+jest.mock('../../../src/models/CommonModel');
 CommonModel.mergeCommonModels = jest.fn();
 /**
  * Some of these test are purely theoretical and have little if any merit 

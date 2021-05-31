@@ -1,10 +1,10 @@
 /* eslint-disable no-undef */
-import { CommonModel } from '../../src/models/CommonModel';
-import { Interpreter } from '../../src/interpreter/Interpreter';
-import interpretAdditionalProperties from '../../src/interpreter/InterpretAdditionalProperties';
+import { CommonModel } from '../../../src/models/CommonModel';
+import { Interpreter } from '../../../src/interpreter/Interpreter';
+import interpretAdditionalProperties from '../../../src/interpreter/InterpretAdditionalProperties';
 
 let mockedReturnModels = [new CommonModel()];
-jest.mock('../../src/interpreter/Interpreter', () => {
+jest.mock('../../../src/interpreter/Interpreter', () => {
   return {
     Interpreter: jest.fn().mockImplementation(() => {
       return {
@@ -13,7 +13,7 @@ jest.mock('../../src/interpreter/Interpreter', () => {
     })
   };
 });
-jest.mock('../../src/models/CommonModel');
+jest.mock('../../../src/models/CommonModel');
 describe('Interpretation of additionalProperties', () => {
   beforeEach(() => {
     jest.clearAllMocks();

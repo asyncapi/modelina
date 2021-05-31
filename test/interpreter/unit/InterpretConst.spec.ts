@@ -1,9 +1,9 @@
 
-import { CommonModel } from '../../src/models/CommonModel';
-import interpretConst from '../../src/interpreter/InterpretConst';
-import {inferTypeFromValue} from '../../src/interpreter/Utils';
-jest.mock('../../src/interpreter/Utils');
-jest.mock('../../src/models/CommonModel');
+import { CommonModel } from '../../../src/models/CommonModel';
+import interpretConst from '../../../src/interpreter/InterpretConst';
+import {inferTypeFromValue} from '../../../src/interpreter/Utils';
+jest.mock('../../../src/interpreter/Utils');
+jest.mock('../../../src/models/CommonModel');
 describe('Interpretation of const', () => {
   beforeEach(() => {
     jest.clearAllMocks();

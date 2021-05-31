@@ -1,9 +1,9 @@
 /* eslint-disable no-undef */
-import { CommonModel } from '../../src/models/CommonModel';
-import { Interpreter } from '../../src/interpreter/Interpreter';
-import interpretItems from '../../src/interpreter/InterpretItems';
+import { CommonModel } from '../../../src/models/CommonModel';
+import { Interpreter } from '../../../src/interpreter/Interpreter';
+import interpretItems from '../../../src/interpreter/InterpretItems';
 let mockedReturnModels = [new CommonModel()];
-jest.mock('../../src/interpreter/Interpreter', () => {
+jest.mock('../../../src/interpreter/Interpreter', () => {
   return {
     Interpreter: jest.fn().mockImplementation(() => {
       return {
@@ -12,7 +12,7 @@ jest.mock('../../src/interpreter/Interpreter', () => {
     })
   };
 });
-jest.mock('../../src/models/CommonModel');
+jest.mock('../../../src/models/CommonModel');
 describe('Interpretation of', () => {
   beforeEach(() => {
     jest.clearAllMocks();

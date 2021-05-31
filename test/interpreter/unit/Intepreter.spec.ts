@@ -10,7 +10,7 @@ import interpretNot from '../../../src/interpreter/InterpretNot';
 import { CommonModel, Schema } from '../../../src/models';
 
 let mockedIsModelObjectReturn = false;
-jest.mock('../../src/interpreter/Utils', () => {
+jest.mock('../../../src/interpreter/Utils', () => {
   return {
     interpretName: jest.fn(),
     isModelObject: jest.fn().mockImplementation(() => {
@@ -18,13 +18,13 @@ jest.mock('../../src/interpreter/Utils', () => {
     })
   };
 });
-jest.mock('../../src/interpreter/InterpretProperties');
-jest.mock('../../src/interpreter/InterpretConst');
-jest.mock('../../src/interpreter/InterpretEnum');
-jest.mock('../../src/interpreter/InterpretAllOf');
-jest.mock('../../src/interpreter/InterpretItems');
-jest.mock('../../src/interpreter/InterpretAdditionalProperties');
-jest.mock('../../src/interpreter/InterpretNot');
+jest.mock('../../../src/interpreter/InterpretProperties');
+jest.mock('../../../src/interpreter/InterpretConst');
+jest.mock('../../../src/interpreter/InterpretEnum');
+jest.mock('../../../src/interpreter/InterpretAllOf');
+jest.mock('../../../src/interpreter/InterpretItems');
+jest.mock('../../../src/interpreter/InterpretAdditionalProperties');
+jest.mock('../../../src/interpreter/InterpretNot');
 CommonModel.mergeCommonModels = jest.fn();
 /**
  * Some of these test are purely theoretical and have little if any merit 
