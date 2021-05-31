@@ -2,7 +2,7 @@ import { CommonModel } from '../../src';
 import { Interpreter } from '../../src/interpreter/Interpreter';
 
 describe('Interpreter', () => {
-  test('should return empty models if false schema', () => {
+  test('should return multiple separate models', () => {
     const schema = {
       $id: 'schema1',
       properties: {
