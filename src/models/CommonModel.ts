@@ -124,19 +124,29 @@ export class CommonModel extends CommonSchema<CommonModel> {
     }
   }
 
-  addItemTuple(itemModel: CommonModel, schema: Schema, index: number) {
+  /**
+   * Adds a tuple to the model.
+   * 
+   * If a item already exist it will be merged.
+   * 
+   * @param tupleModel 
+   * @param schema 
+   * @param index 
+   */
+  addItemTuple(tupleModel: CommonModel, schema: Schema, index: number): void {
     let modelItems = this.items;
     if (!Array.isArray(modelItems)) {
-      Logger.warn('Trying to add item tuple to a non-tuple item, will drop existing item', itemModel, schema, index);
+      Logger.warn('Trying to add item tuple to a non-tuple item, will drop existing item model', tupleModel, schema, index);
       modelItems = [];
     }
     const existingModelAtIndex = modelItems[Number(index)];
     if (existingModelAtIndex !== undefined) {
-      Logger.warn('Trying to add item tuple at index ${index} but it was already occupied, merging models', itemModel, schema, index);
-      modelItems[Number(index)] = CommonModel.mergeCommonModels(existingModelAtIndex, itemModel, schema);
+      Logger.warn('Trying to add item tuple at index ${index} but it was already occupied, merging models', tupleModel, schema, index);
+      modelItems[Number(index)] = CommonModel.mergeCommonModels(existingModelAtIndex, tupleModel, schema);
     } else {
-      modelItems[Number(index)] = itemModel;
+      modelItems[Number(index)] = tupleModel;
     }
+    this.items = modelItems;
   }
 
   /**
@@ -383,40 +393,38 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * @param alreadyIteratedModels
    */
   private static mergeItems(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
-    const merge = (models: CommonModel | CommonModel[] | undefined): CommonModel | undefined => {
-      if (!Array.isArray(models)) {return models;}
-      let mergedItemsModel: CommonModel | undefined = undefined;
-      models.forEach((model, index) => { 
-        Logger.warn(`Found duplicate items at index ${index} for model. Model item for ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalSchema);
-        mergedItemsModel = 
-      });
-      return mergedItemsModel;
-    };
-    if(mergeTo.items === undefined) {
+    if (mergeFrom.items === undefined) { return; }
+    if (Array.isArray(mergeFrom.items) && mergeFrom.items.length === 0) { return; }
+    if (mergeTo.items === undefined) {
       mergeTo.items = mergeFrom.items;
       return;
     }
-    let mergeToItems = mergeTo.items;
-    if (Array.isArray(mergeFrom.items) && !Array.isArray(mergeToItems)) {
-      Logger.warn(`Trying to merge two model items together where one is tuple and the other is simple array, preferring tuple over array`);
-      mergeToItems = [mergeToItems];
+
+    //mergeFrom and mergeTo is not tuple
+    if (!Array.isArray(mergeFrom.items) && !Array.isArray(mergeTo.items)) {
+      mergeTo.items = CommonModel.mergeCommonModels(mergeTo.items, mergeFrom.items, originalSchema, alreadyIteratedModels); 
     }
 
-    if (mergeFrom.items !== undefined) {
-      if (Array.isArray(mergeFrom.items)) {
-        for (const [index, tupleModel] of mergeFrom.items.entries()) {
-          CommonModel.mergeCommonModels(mergeToItems[index], tupleModel, originalSchema, alreadyIteratedModels); 
-        }
-      } else {
-
+    //mergeFrom and mergeTo is tuple
+    const mergeToItems = mergeTo.items;
+    if (Array.isArray(mergeFrom.items) && Array.isArray(mergeToItems)) {
+      for (const [index, mergeFromTupleModel] of mergeFrom.items.entries()) {
+        (mergeTo.items as CommonModel[])[Number(index)] = CommonModel.mergeCommonModels(mergeToItems[Number(index)], mergeFromTupleModel, originalSchema, alreadyIteratedModels); 
       }
-      if (mergeFromItemsModel !== undefined) {
-        if (mergeToItemsModel === undefined) {
-          mergeTo.items = mergeFromItemsModel;
-        } else {
-          Logger.warn(`Found duplicate item for model. Model item for ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalSchema);
-          mergeTo.items = CommonModel.mergeCommonModels(mergeToItemsModel, mergeFromItemsModel, originalSchema, alreadyIteratedModels);
-        }
+    }
+
+    //mergeFrom is not tuple && mergeTo is
+    if (Array.isArray(mergeFrom.items) && !Array.isArray(mergeTo.items)) {
+      const mergeToModel = mergeTo.items;
+      mergeTo.items = [];
+      for (const [index, mergeFromTupleModel] of mergeFrom.items.entries()) {
+        mergeTo.items[Number(index)] = CommonModel.mergeCommonModels(mergeToModel, mergeFromTupleModel, originalSchema, alreadyIteratedModels); 
+      }
+    }
+    //mergeFrom is tuple && mergeTo is not
+    if (!Array.isArray(mergeFrom.items) && Array.isArray(mergeTo.items)) {
+      for (const [index, mergeToTupleModel] of mergeTo.items.entries()) {
+        mergeTo.items[Number(index)] = CommonModel.mergeCommonModels(mergeToTupleModel, mergeFrom.items, originalSchema, alreadyIteratedModels); 
       }
     }
   }

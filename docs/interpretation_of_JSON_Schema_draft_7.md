@@ -9,19 +9,22 @@ We only provide the underlying structure of the schema file for the model, where
 ## Interpreter 
 The main functionality is located in the `Interpreter` class. This class ensures to recursively create (or retrieve from a cache) a `CommonModel` representation of a Schema. We have tried to keep the functionality split out into separate functions to reduce complexity and ensure it is easy to maintain. 
 
-The order of transformation:
+The order of interpretation:
 - `true` boolean schema infers all model types (`object`, `string`, `number`, `array`, `boolean`, `null`, `integer`) schemas.
 - `type` infers the initial model type.
 - `required` are interpreted as is.
 - `patternProperties` are interpreted as is, where duplicate patterns for the model are [merged](#Merging-models).
 - `additionalProperties` are interpreted as is, where duplicate additionalProperties for the model are [merged](#Merging-models). If the schema does not define `additionalProperties` it defaults to `true` schema.
-- `items` are interpreted as is, where more than 1 item are [merged](#Merging-models).
-- `properties` are interpreted as is, where duplicate `properties` for the model are [merged](#Merging-models). Usage of `properties` infers `object` model type.
+- `items` are interpreted as ether tuples or simple array, where more than 1 item are [merged](#Merging-models). Usage of `items` infers `array` model type.
 - [allOf](#allOf-sub-schemas)
+- [items](#interpreting-item-schemas)
+- `properties` are interpreted as is, where duplicate `properties` for the model are [merged](#Merging-models). Usage of `properties` infers `object` model type.
 - `enum` is interpreted as is, where each `enum`. Usage of `enum` infers the enumerator value type to the model, but only if the schema does not have `type` specified.
 - `const` interpretation overwrite already interpreted `enum`. Usage of `const` infers the constant value type to the model, but only if the schema does not have `type` specified.
 - [oneOf/anyOf/then/else](#Processing-sub-schemas)
 - [not](#interpreting-not-schemas)
+## Interpreting item schemas
+
 
 ## Interpreting not schemas
 `not` schemas infer the form for which the model should not take by recursively interpret the `not` schema. It removes certain model properties when encountered.
