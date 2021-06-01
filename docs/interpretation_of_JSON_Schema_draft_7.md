@@ -9,7 +9,7 @@ We only provide the underlying structure of the schema file for the model, where
 ## Interpreter 
 The main functionality is located in the `Interpreter` class. This class ensures to recursively create (or retrieve from a cache) a `CommonModel` representation of a Schema. We have tried to keep the functionality split out into separate functions to reduce complexity and ensure it is easy to maintain. 
 
-The order of transformation:
+The order of interpretation:
 - `true` boolean schema infers all model types (`object`, `string`, `number`, `array`, `boolean`, `null`, `integer`) schemas.
 - `type` infers the initial model type.
 - `required` are interpreted as is.
