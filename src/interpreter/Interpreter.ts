@@ -138,7 +138,7 @@ export class Interpreter {
   * 
   * @param model check if it should be split up
   */
-  private tryAndSplitModels(model: CommonModel): CommonModel {
+  private trySplitModels(model: CommonModel): CommonModel {
     if (isModelObject(model)) {
       Logger.info(`Splitting model ${model.$id || 'any'} since it should be on its own`);
       const switchRootModel = new CommonModel();
@@ -158,26 +158,26 @@ export class Interpreter {
     if (model.properties) {
       const existingProperties = model.properties;
       for (const [property, propertyModel] of Object.entries(existingProperties)) {
-        model.properties[String(property)] = this.tryAndSplitModels(propertyModel);
+        model.properties[String(property)] = this.trySplitModels(propertyModel);
       }
     }
     if (model.patternProperties) {
       const existingPatternProperties = model.patternProperties;
       for (const [pattern, patternModel] of Object.entries(existingPatternProperties)) {
-        model.patternProperties[String(pattern)] = this.tryAndSplitModels(patternModel);
+        model.patternProperties[String(pattern)] = this.trySplitModels(patternModel);
       }
     }
     if (model.additionalProperties) {
-      model.additionalProperties = this.tryAndSplitModels(model.additionalProperties);
+      model.additionalProperties = this.trySplitModels(model.additionalProperties);
     }
     if (model.items) {
       let existingItems = model.items;
       if (Array.isArray(existingItems)) {
         for (const [itemIndex, itemModel] of existingItems.entries()) {
-          existingItems[Number(itemIndex)] = this.tryAndSplitModels(itemModel);
+          existingItems[Number(itemIndex)] = this.trySplitModels(itemModel);
         }
       } else {
-        existingItems = this.tryAndSplitModels(existingItems);
+        existingItems = this.trySplitModels(existingItems);
       }
       model.items = existingItems;
     }
