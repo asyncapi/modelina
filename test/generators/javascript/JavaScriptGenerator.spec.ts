@@ -1,25 +1,25 @@
 import { JavaScriptGenerator } from '../../../src/generators'; 
 
-describe('JavaScriptGenerator', function() {
+describe('JavaScriptGenerator', () => {
   let generator: JavaScriptGenerator;
   beforeEach(() => {
     generator = new JavaScriptGenerator();
   });
 
-  test('should render `class` type', async function() {
+  test('should render `class` type', async () => {
     const doc = {
-      $id: "Address",
-      type: "object",
+      $id: 'Address',
+      type: 'object',
       properties: {
-        street_name:    { type: "string" },
-        city:           { type: "string", description: "City description" },
-        state:          { type: "string" },
-        house_number:   { type: "number" },
-        marriage:       { type: "boolean", description: "Status if marriage live in given house" },
-        members:        { oneOf: [{ type: "string" }, { type: "number" }, { type: "boolean" }], },
-        array_type:     { type: "array", items: [{ type: "string" }, { type: "number" }] },
+        street_name: { type: 'string' },
+        city: { type: 'string', description: 'City description' },
+        state: { type: 'string' },
+        house_number: { type: 'number' },
+        marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
+        members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
+        array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
       },
-      required: ["street_name", "city", "state", "house_number", "array_type"],
+      required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
     };
     const expected = `class Address {
   streetName;
@@ -63,7 +63,7 @@ describe('JavaScriptGenerator', function() {
 }`;
 
     const inputModel = await generator.process(doc);
-    const model = inputModel.models["Address"];
+    const model = inputModel.models['Address'];
 
     let classModel = await generator.renderClass(model, inputModel);
     expect(classModel).toEqual(expected);
@@ -72,26 +72,26 @@ describe('JavaScriptGenerator', function() {
     expect(classModel).toEqual(expected);
   });
 
-  test('should not render another type than `object`', async function() {
+  test('should not render another type than `object`', async () => {
     const doc = {
-      $id: "AnyType",
-      type: ["string", "number"],
+      $id: 'AnyType',
+      type: ['string', 'number'],
     };
-    const expected = ``;
+    const expected = '';
 
     const inputModel = await generator.process(doc);
-    const model = inputModel.models["AnyType"];
+    const model = inputModel.models['AnyType'];
 
     const anyModel = await generator.render(model, inputModel);
     expect(anyModel).toEqual(expected);
   });
 
-  test('should work custom preset for `class` type', async function() {
+  test('should work custom preset for `class` type', async () => {
     const doc = {
-      $id: "CustomClass",
-      type: "object",
+      $id: 'CustomClass',
+      type: 'object',
       properties: {
-        property: { type: "string" },
+        property: { type: 'string' },
       }
     };
     const expected = `export class CustomClass {
@@ -120,17 +120,17 @@ describe('JavaScriptGenerator', function() {
 }`;
           },
           getter() {
-            return `get property() { return this.#property; }`;
+            return 'get property() { return this.#property; }';
           },
           setter() {
-            return `set property(property) { this.#property = property; }`;
+            return 'set property(property) { this.#property = property; }';
           },
         }
       }
     ] });
 
     const inputModel = await generator.process(doc);
-    const model = inputModel.models["CustomClass"];
+    const model = inputModel.models['CustomClass'];
     
     const classModel = await generator.render(model, inputModel);
     expect(classModel).toEqual(expected);

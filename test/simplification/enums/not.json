@@ -1,6 +1,0 @@
-{
-    "enum": ["test", "test2"],
-    "not": {
-        "enum": ["test"]
-    }
-}

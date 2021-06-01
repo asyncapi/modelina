@@ -15,13 +15,13 @@ export class TypeRenderer extends TypeScriptRenderer {
     return `type ${formattedName} = ${body};`;
   }
 
-  async renderTypeBody(): Promise<string> {
+  renderTypeBody(): Promise<string> {
     const kind = TypeHelpers.extractKind(this.model);
     switch (kind) {
     case ModelKind.ENUM: {
-      return this.renderEnum();
+      return Promise.resolve(this.renderEnum());
     }
-    default: return this.renderType(this.model);
+    default: return Promise.resolve(this.renderType(this.model));
     }
   }
   

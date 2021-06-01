@@ -12,8 +12,6 @@ export interface JavaCommonPresetOptions {
 
 /**
  * Render `equal` function based on model's properties
- * 
- * @returns {string}
  */
 function renderEqual({ renderer, model }: {
   renderer: JavaRenderer,
@@ -42,8 +40,6 @@ ${renderer.indent(equalProperties, 6)};
 
 /**
  * Render `hashCode` function based on model's properties
- * 
- * @returns {string}
  */
 function renderHashCode({ renderer, model }: {
   renderer: JavaRenderer,
@@ -60,8 +56,6 @@ public int hashCode() {
 
 /**
  * Render `toString` function based on model's properties
- * 
- * @returns {string}
  */
 function renderToString({ renderer, model }: {
   renderer: JavaRenderer,
@@ -94,15 +88,16 @@ private String toIndentedString(Object o) {
  * 
  * @implements {JavaPreset}
  */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 export const JAVA_COMMON_PRESET: JavaPreset = {
   class: {
     additionalContent({ renderer, model, content, options }) {
       options = options || {};
       const blocks: string[] = [];
       
-      if (options.equal === undefined || options.equal === true) blocks.push(renderEqual({ renderer, model }));
-      if (options.hashCode === undefined || options.hashCode === true) blocks.push(renderHashCode({ renderer, model }));
-      if (options.classToString === undefined || options.classToString === true) blocks.push(renderToString({ renderer, model }));
+      if (options.equal === undefined || options.equal === true) {blocks.push(renderEqual({ renderer, model }));}
+      if (options.hashCode === undefined || options.hashCode === true) {blocks.push(renderHashCode({ renderer, model }));}
+      if (options.classToString === undefined || options.classToString === true) {blocks.push(renderToString({ renderer, model }));}
 
       return renderer.renderBlock([content, ...blocks], 2);
     },

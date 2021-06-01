@@ -1,9 +1,9 @@
 import { AbstractInputProcessor } from './AbstractInputProcessor';
-import { simplify } from '../simplification/Simplifier';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import path from 'path';
 import { Schema, CommonModel, CommonInputModel} from '../models';
 import { Logger } from '../utils';
+import { Interpreter } from '../interpreter/Interpreter';
 
 /**
  * Class for processing JSON Schema
@@ -14,7 +14,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  async process(input: any): Promise<CommonInputModel> {
+  process(input: Record<string, any>): Promise<CommonInputModel> {
     if (this.shouldProcess(input)) {
       if (input.$schema !== undefined) {
         switch (input.$schema) {
@@ -25,7 +25,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         return this.processDraft7(input);
       }
     }
-    throw new Error('Input is not a JSON Schema, so it cannot be processed.');
+    return Promise.reject(new Error('Input is not a JSON Schema, so it cannot be processed.'));
   }
 
   /**
@@ -33,7 +33,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  shouldProcess(input: any): boolean {
+  shouldProcess(input: Record<string, any>): boolean {
     if (input.$schema !== undefined) {
       switch (input.$schema) {
       case 'http://json-schema.org/draft-07/schema#':
@@ -50,9 +50,9 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input to process as draft 7
    */
-  private async processDraft7(input: any) : Promise<CommonInputModel> {
+  private async processDraft7(input: Record<string, any>) : Promise<CommonInputModel> {
     Logger.debug('Processing input as an AsyncAPI document');
-    input = JsonSchemaInputProcessor.reflectSchemaNames(input, undefined, 'root', true);
+    input = JsonSchemaInputProcessor.reflectSchemaNames(input, undefined, 'root', true) as Record<string, any>;
     const refParser = new $RefParser;
     const commonInputModel = new CommonInputModel();
     // eslint-disable-next-line no-undef
@@ -91,7 +91,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     name?: string,
     isRoot?: boolean,
   ): Schema | boolean {
-    if (typeof schema === 'boolean') return schema;
+    if (typeof schema === 'boolean') {return schema;}
 
     schema = Object.assign({}, schema);
     if (isRoot) {
@@ -212,7 +212,8 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * @param schema to simplify to common model
    */
   static convertSchemaToCommonModel(schema: Schema | boolean): Record<string, CommonModel> {
-    const commonModels = simplify(schema);
+    const interpreter = new Interpreter();
+    const commonModels = interpreter.interpret(schema);
     const commonModelsMap: Record<string, CommonModel> = {};
     commonModels.forEach(value => {
       if (value.$id) {
@@ -221,7 +222,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         }
         commonModelsMap[value.$id] = value;
       } else {
-        Logger.debug('Model did not have $id, ignoring.', value);
+        Logger.warn('Model did not have $id, ignoring.', value);
       }
     });
     return commonModelsMap;

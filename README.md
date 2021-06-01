@@ -144,11 +144,7 @@ generator.generate({$schema: 'http://json-schema.org/draft-07/schema#'});
 There are multiple ways to customize the library both in terms of processing, logging and output generation, check the [customization document](./docs/customization.md).
 
 ## Development
-
-1. Setup project by installing dependencies `npm install`
-2. Write code and tests.
-3. Make sure all tests pass `npm test`
-4. Make sure code is well formatted and secure `npm run lint`
+To setup your development environment please read the [development](./docs/development.md) document.
 
 ## Contributing
 
