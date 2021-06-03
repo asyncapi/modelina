@@ -1,16 +1,16 @@
 import { TypeScriptGenerator } from '../../../src/generators'; 
 
-describe('TypeScriptGenerator', function() {
+describe('TypeScriptGenerator', () => {
   let generator: TypeScriptGenerator;
   beforeEach(() => {
     generator = new TypeScriptGenerator();
   });
-  test('should render union property type', async function() {
+  test('should render union property type', async () => {
     const doc = {
-      $id: "_address",
-      type: "object",
+      $id: '_address',
+      type: 'object',
       properties: {
-        state:          { type: "string", enum: ["Texas", "Alabama", "California", "other"] }
+        state: { type: 'string', enum: ['Texas', 'Alabama', 'California', 'other'] }
       }
     };
     const expected = `export class Address {
@@ -27,7 +27,7 @@ describe('TypeScriptGenerator', function() {
 }`;
 
     const inputModel = await generator.process(doc);
-    const model = inputModel.models["_address"];
+    const model = inputModel.models['_address'];
 
     let classModel = await generator.renderClass(model, inputModel);
     expect(classModel).toEqual(expected);
@@ -35,20 +35,20 @@ describe('TypeScriptGenerator', function() {
     classModel = await generator.render(model, inputModel);
     expect(classModel).toEqual(expected);
   });
-  test('should render `class` type', async function() {
+  test('should render `class` type', async () => {
     const doc = {
-      $id: "_address",
-      type: "object",
+      $id: '_address',
+      type: 'object',
       properties: {
-        street_name:    { type: "string" },
-        city:           { type: "string", description: "City description" },
-        state:          { type: "string" },
-        house_number:   { type: "number" },
-        marriage:       { type: "boolean", description: "Status if marriage live in given house" },
-        members:        { oneOf: [{ type: "string" }, { type: "number" }, { type: "boolean" }], },
-        array_type:     { type: "array", items: [{ type: "string" }, { type: "number" }] },
+        street_name: { type: 'string' },
+        city: { type: 'string', description: 'City description' },
+        state: { type: 'string' },
+        house_number: { type: 'number' },
+        marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
+        members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
+        array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
       },
-      required: ["street_name", "city", "state", "house_number", "array_type"],
+      required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
     };
     const expected = `export class Address {
   private _streetName: string;
@@ -107,7 +107,7 @@ describe('TypeScriptGenerator', function() {
 }`;
 
     const inputModel = await generator.process(doc);
-    const model = inputModel.models["_address"];
+    const model = inputModel.models['_address'];
 
     let classModel = await generator.renderClass(model, inputModel);
     expect(classModel).toEqual(expected);
@@ -116,12 +116,12 @@ describe('TypeScriptGenerator', function() {
     expect(classModel).toEqual(expected);
   });
 
-  test('should work custom preset for `class` type', async function() {
+  test('should work custom preset for `class` type', async () => {
     const doc = {
-      $id: "CustomClass",
-      type: "object",
+      $id: 'CustomClass',
+      type: 'object',
       properties: {
-        property: { type: "string" },
+        property: { type: 'string' },
       }
     };
     const expected = `export class CustomClass {
@@ -156,26 +156,26 @@ ${content}`;
     ] });
 
     const inputModel = await generator.process(doc);
-    const model = inputModel.models["CustomClass"];
+    const model = inputModel.models['CustomClass'];
     
     const classModel = await generator.render(model, inputModel);
     expect(classModel).toEqual(expected);
   });
 
-  test('should render `interface` type', async function() {
+  test('should render `interface` type', async () => {
     const doc = {
-      $id: "Address",
-      type: "object",
+      $id: 'Address',
+      type: 'object',
       properties: {
-        street_name:    { type: "string" },
-        city:           { type: "string", description: "City description" },
-        state:          { type: "string" },
-        house_number:   { type: "number" },
-        marriage:       { type: "boolean", description: "Status if marriage live in given house" },
-        members:        { oneOf: [{ type: "string" }, { type: "number" }, { type: "boolean" }], },
-        array_type:     { type: "array", items: [{ type: "string" }, { type: "number" }] },
+        street_name: { type: 'string' },
+        city: { type: 'string', description: 'City description' },
+        state: { type: 'string' },
+        house_number: { type: 'number' },
+        marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
+        members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
+        array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
       },
-      required: ["street_name", "city", "state", "house_number", "array_type"],
+      required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
     };
     const expected = `export interface Address {
   streetName: string;
@@ -188,20 +188,20 @@ ${content}`;
   additionalProperties: Record<string, object | string | number | Array<unknown> | boolean | null>;
 }`;
 
-    const interfaceGenerator = new TypeScriptGenerator({modelType: "interface"});
+    const interfaceGenerator = new TypeScriptGenerator({modelType: 'interface'});
     const inputModel = await interfaceGenerator.process(doc);
-    const model = inputModel.models["Address"];
+    const model = inputModel.models['Address'];
 
-    let interfaceModel = await interfaceGenerator.render(model, inputModel);
+    const interfaceModel = await interfaceGenerator.render(model, inputModel);
     expect(interfaceModel).toEqual(expected);
   });
 
-  test('should work custom preset for `interface` type', async function() {
+  test('should work custom preset for `interface` type', async () => {
     const doc = {
-      $id: "CustomInterface",
-      type: "object",
+      $id: 'CustomInterface',
+      type: 'object',
       properties: {
-        property: { type: "string" },
+        property: { type: 'string' },
       }
     };
     const expected = `export interface CustomInterface {
@@ -213,24 +213,24 @@ ${content}`;
       {
         interface: {
           self({ content }) {
-            return `${content}`;
+            return content;
           },
         }
       }
     ] });
 
     const inputModel = await generator.process(doc);
-    const model = inputModel.models["CustomInterface"];
+    const model = inputModel.models['CustomInterface'];
 
     const interfaceModel = await generator.renderInterface(model, inputModel);
     expect(interfaceModel).toEqual(expected);
   });
 
-  test('should render `enum` type', async function() {
+  test('should render `enum` type', async () => {
     const doc = {
-      $id: "States",
-      type: "string",
-      enum: ["Texas", "Alabama", "California"],
+      $id: 'States',
+      type: 'string',
+      enum: ['Texas', 'Alabama', 'California'],
     };
     const expected = `export enum States {
   TEXAS = "Texas",
@@ -239,7 +239,7 @@ ${content}`;
 }`;
 
     const inputModel = await generator.process(doc);
-    const model = inputModel.models["States"];
+    const model = inputModel.models['States'];
 
     let enumModel = await generator.render(model, inputModel);
     expect(enumModel).toEqual(expected);
@@ -248,11 +248,11 @@ ${content}`;
     expect(enumModel).toEqual(expected);
   });
 
-  test('should work custom preset for `enum` type', async function() {
+  test('should work custom preset for `enum` type', async () => {
     const doc = {
-      $id: "CustomEnum",
-      type: "string",
-      enum: ["Texas", "Alabama", "California"],
+      $id: 'CustomEnum',
+      type: 'string',
+      enum: ['Texas', 'Alabama', 'California'],
     };
     const expected = `export enum CustomEnum {
   TEXAS = "Texas",
@@ -264,14 +264,14 @@ ${content}`;
       {
         enum: {
           self({ content }) {
-            return `${content}`;
+            return content;
           },
         }
       }
     ] });
 
     const inputModel = await generator.process(doc);
-    const model = inputModel.models["CustomEnum"];
+    const model = inputModel.models['CustomEnum'];
     
     let enumModel = await generator.render(model, inputModel);
     expect(enumModel).toEqual(expected);
@@ -280,15 +280,15 @@ ${content}`;
     expect(enumModel).toEqual(expected);
   });
 
-  test('should render `type` type - primitive', async function() {
+  test('should render `type` type - primitive', async () => {
     const doc = {
-      $id: "TypePrimitive",
-      type: "string",
+      $id: 'TypePrimitive',
+      type: 'string',
     };
-    const expected = `export type TypePrimitive = string;`
+    const expected = 'export type TypePrimitive = string;';
 
     const inputModel = await generator.process(doc);
-    const model = inputModel.models["TypePrimitive"];
+    const model = inputModel.models['TypePrimitive'];
 
     let primitiveModel = await generator.renderType(model, inputModel);
     expect(primitiveModel).toEqual(expected);
@@ -297,68 +297,67 @@ ${content}`;
     expect(primitiveModel).toEqual(expected);
   });
 
-  test('should render `type` type - enum', async function() {
+  test('should render `type` type - enum', async () => {
     const doc = {
-      $id: "TypeEnum",
-      enum: ["Texas", "Alabama", "California", 0, 1, false, true],
+      $id: 'TypeEnum',
+      enum: ['Texas', 'Alabama', 'California', 0, 1, false, true],
     };
-    const expected = `export type TypeEnum = "Texas" | "Alabama" | "California" | 0 | 1 | false | true;`
+    const expected = 'export type TypeEnum = "Texas" | "Alabama" | "California" | 0 | 1 | false | true;';
 
     const inputModel = await generator.process(doc);
-    const model = inputModel.models["TypeEnum"];
+    const model = inputModel.models['TypeEnum'];
 
     const enumModel = await generator.renderType(model, inputModel);
     expect(enumModel).toEqual(expected);
   });
 
-  test('should render `type` type - union', async function() {
+  test('should render `type` type - union', async () => {
     const doc = {
-      $id: "TypeUnion",
-      type: ["string", "number", "boolean"],
+      $id: 'TypeUnion',
+      type: ['string', 'number', 'boolean'],
     };
-    const expected = `export type TypeUnion = string | number | boolean;`
+    const expected = 'export type TypeUnion = string | number | boolean;';
 
     const inputModel = await generator.process(doc);
-    const model = inputModel.models["TypeUnion"];
+    const model = inputModel.models['TypeUnion'];
 
     const unionModel = await generator.renderType(model, inputModel);
     expect(unionModel).toEqual(expected);
   });
 
-  test('should render `type` type - array of primitive type', async function() {
+  test('should render `type` type - array of primitive type', async () => {
     const doc = {
-      $id: "TypeArray",
-      type: "array",
+      $id: 'TypeArray',
+      type: 'array',
       items: {
-        $id: "StringArray",
-        type: "string",
+        $id: 'StringArray',
+        type: 'string',
       }
     };
-    const expected = `export type TypeArray = Array<string>;`
+    const expected = 'export type TypeArray = Array<string>;';
 
     const inputModel = await generator.process(doc);
-    const model = inputModel.models["TypeArray"];
+    const model = inputModel.models['TypeArray'];
 
     const arrayModel = await generator.renderType(model, inputModel);
     expect(arrayModel).toEqual(expected);
   });
 
-  test('should render `type` type - array of union type', async function() {
+  test('should render `type` type - array of union type', async () => {
     const doc = {
-      $id: "TypeArray",
-      type: "array",
+      $id: 'TypeArray',
+      type: 'array',
       items: {
-        $id: "StringArray",
-        type: ["string", "number", "boolean"],
+        $id: 'StringArray',
+        type: ['string', 'number', 'boolean'],
       }
     };
-    const expected = `export type TypeArray = Array<string | number | boolean>;`
+    const expected = 'export type TypeArray = Array<string | number | boolean>;';
 
     const inputModel = await generator.process(doc);
-    const model = inputModel.models["TypeArray"];
+    const model = inputModel.models['TypeArray'];
 
     const arrayModel = await generator.renderType(model, inputModel);
     expect(arrayModel).toEqual(expected);
   });
-
 });

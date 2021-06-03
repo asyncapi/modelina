@@ -7,6 +7,6 @@ import { Schema } from '../models/Schema';
  */
 export default function simplifyName(schema: Schema | boolean): string | undefined {
   if (typeof schema === 'object') {
-    return schema.title || schema.$id || schema['x-modelgen-inferred-name'];
+    return schema.title || schema.$id || (schema as any)['x-modelgen-inferred-name'];
   }
 }

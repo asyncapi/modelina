@@ -43,7 +43,7 @@ export class LoggerClass implements ModelLoggingInterface {
    * 
    * @param logger to add
    */
-  setLogger(logger?: ModelLoggingInterface) {
+  setLogger(logger?: ModelLoggingInterface): void {
     this.logger = logger;
   }
 }

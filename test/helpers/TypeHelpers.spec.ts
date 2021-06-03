@@ -1,25 +1,25 @@
 import { TypeHelpers, ModelKind } from '../../src/helpers'; 
 import { CommonModel } from '../../src/models';
 
-describe('TypeHelpers', function() {
-  describe('extractKind', function() {
-    test('should return object', function() {
+describe('TypeHelpers', () => {
+  describe('extractKind', () => {
+    test('should return object', () => {
       const model = new CommonModel();
-      model.type = "object";
+      model.type = 'object';
       const kind = TypeHelpers.extractKind(model);
   
       expect(kind).toEqual(ModelKind.OBJECT);
     });
 
-    test('should return array', function() {
+    test('should return array', () => {
       const model = new CommonModel();
-      model.type = "array";
+      model.type = 'array';
       const kind = TypeHelpers.extractKind(model);
   
       expect(kind).toEqual(ModelKind.ARRAY);
     });
 
-    test('should return enum', function() {
+    test('should return enum', () => {
       const model = new CommonModel();
       model.type = 'string';
       model.enum = ['someValue1', 'someValue2'];
@@ -28,7 +28,7 @@ describe('TypeHelpers', function() {
       expect(kind).toEqual(ModelKind.ENUM);
     });
 
-    test('should return union', function() {
+    test('should return union', () => {
       const model = new CommonModel();
       model.type = ['number', 'string'];
       const kind = TypeHelpers.extractKind(model);
@@ -36,8 +36,8 @@ describe('TypeHelpers', function() {
       expect(kind).toEqual(ModelKind.UNION);
     });
 
-    test('should return primitive', function() {
-      let model = new CommonModel();
+    test('should return primitive', () => {
+      const model = new CommonModel();
       model.type = 'string';
       let kind = TypeHelpers.extractKind(model);
       expect(kind).toEqual(ModelKind.PRIMITIVE);

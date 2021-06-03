@@ -14,7 +14,7 @@ jest.mock('../../src/simplification/Simplifier', () => {
 describe('Simplification to additionalProperties', () => {
   afterAll(() => {
     jest.restoreAllMocks();
-  })
+  });
   test('should always return undefined if type is not object', () => {
     const schema = {type: 'string'};
     const simplifier = new Simplifier();

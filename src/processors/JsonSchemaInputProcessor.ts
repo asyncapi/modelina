@@ -14,7 +14,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  async process(input: any): Promise<CommonInputModel> {
+  process(input: Record<string, any>): Promise<CommonInputModel> {
     if (this.shouldProcess(input)) {
       if (input.$schema !== undefined) {
         switch (input.$schema) {
@@ -25,7 +25,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         return this.processDraft7(input);
       }
     }
-    throw new Error('Input is not a JSON Schema, so it cannot be processed.');
+    return Promise.reject(new Error('Input is not a JSON Schema, so it cannot be processed.'));
   }
 
   /**
@@ -33,7 +33,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  shouldProcess(input: any): boolean {
+  shouldProcess(input: Record<string, any>): boolean {
     if (input.$schema !== undefined) {
       switch (input.$schema) {
       case 'http://json-schema.org/draft-07/schema#':
@@ -50,9 +50,9 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input to process as draft 7
    */
-  private async processDraft7(input: any) : Promise<CommonInputModel> {
+  private async processDraft7(input: Record<string, any>) : Promise<CommonInputModel> {
     Logger.debug('Processing input as an AsyncAPI document');
-    input = JsonSchemaInputProcessor.reflectSchemaNames(input, undefined, 'root', true);
+    input = JsonSchemaInputProcessor.reflectSchemaNames(input, undefined, 'root', true) as Record<string, any>;
     const refParser = new $RefParser;
     const commonInputModel = new CommonInputModel();
     // eslint-disable-next-line no-undef
@@ -91,17 +91,17 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     name?: string,
     isRoot?: boolean,
   ): Schema | boolean {
-    if (typeof schema === 'boolean') return schema;
+    if (typeof schema === 'boolean') {return schema;}
 
     schema = Object.assign({}, schema);
     if (isRoot) {
-      namesStack[`${name}`] = 0;
+      namesStack[String(name)] = 0;
       schema[this.MODELGEN_INFFERED_NAME] = name;
       name = '';
     } else if (name && !schema[this.MODELGEN_INFFERED_NAME]) {
-      let occurrence = namesStack[`${name}`];
+      let occurrence = namesStack[String(name)];
       if (occurrence === undefined) {
-        namesStack[`${name}`] = 0;
+        namesStack[String(name)] = 0;
       } else {
         occurrence++;
       }
@@ -159,7 +159,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     if (schema.properties !== undefined) {
       const properties : {[key: string]: Schema | boolean} = {};
       Object.entries(schema.properties).forEach(([propertyName, propertySchema]) => {
-        properties[`${propertyName}`] = this.reflectSchemaNames(propertySchema, namesStack, this.ensureNamePattern(name, propertyName));
+        properties[String(propertyName)] = this.reflectSchemaNames(propertySchema, namesStack, this.ensureNamePattern(name, propertyName));
       });
       schema.properties = properties;
     }
@@ -167,9 +167,9 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       const dependencies: { [key: string]: Schema | boolean | string[] } = {};
       Object.entries(schema.dependencies).forEach(([dependencyName, dependency]) => {
         if (typeof dependency === 'object' && !Array.isArray(dependency)) {
-          dependencies[`${dependencyName}`] = this.reflectSchemaNames(dependency, namesStack, this.ensureNamePattern(name, dependencyName));
+          dependencies[String(dependencyName)] = this.reflectSchemaNames(dependency, namesStack, this.ensureNamePattern(name, dependencyName));
         } else {
-          dependencies[`${dependencyName}`] = dependency as string[];
+          dependencies[String(dependencyName)] = dependency as string[];
         }
       });
       schema.dependencies = dependencies;
@@ -177,14 +177,14 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     if (schema.patternProperties !== undefined) {
       const patternProperties: { [key: string]: Schema | boolean } = {};
       Object.entries(schema.patternProperties).forEach(([patternPropertyName, patternProperty], idx) => {
-        patternProperties[`${patternPropertyName}`] = this.reflectSchemaNames(patternProperty, namesStack, this.ensureNamePattern(name, 'pattern_property', idx));
+        patternProperties[String(patternPropertyName)] = this.reflectSchemaNames(patternProperty, namesStack, this.ensureNamePattern(name, 'pattern_property', idx));
       });
       schema.patternProperties = patternProperties;
     }
     if (schema.definitions !== undefined) {
       const definitions: { [key: string]: Schema | boolean } = {};
       Object.entries(schema.definitions).forEach(([definitionName, definition]) => {
-        definitions[`${definitionName}`] = this.reflectSchemaNames(definition, namesStack, this.ensureNamePattern(name, definitionName));
+        definitions[String(definitionName)] = this.reflectSchemaNames(definition, namesStack, this.ensureNamePattern(name, definitionName));
       });
       schema.definitions = definitions;
     }

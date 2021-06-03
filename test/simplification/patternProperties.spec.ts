@@ -41,7 +41,7 @@ const expectFunction = (inputSchemaPath: string, expectedPropertiesPath: string,
 describe('Simplification of patternProperties', () => {
   afterAll(() => {
     jest.restoreAllMocks();
-  })
+  });
   test('should return as is', () => {
     const inputSchemaPath = './patternProperties/basic.json';
     const expectedPropertiesPath = './patternProperties/expected/basic.json';
@@ -120,14 +120,14 @@ describe('Simplification of patternProperties', () => {
     const simplifier = expectFunction(inputSchemaPath, expectedPropertiesPath);
     expect(simplifier.simplify).toHaveBeenCalledTimes(2);
   });
-  test('should return already seen schemas', function() {
+  test('should return already seen schemas', () => {
     const alreadySeen = new Map<any, Record<string, CommonModel>>();
-    const schema = {$id: "test"};
+    const schema = {$id: 'test'};
     const model = new CommonModel();
-    model.$id = "test2";
-    alreadySeen.set(schema, {"testProp": model});
+    model.$id = 'test2';
+    alreadySeen.set(schema, {testProp: model});
     const simplifier = new Simplifier();
     const output = simplifyPatternProperties(schema, simplifier, alreadySeen);
-    expect(output).toEqual({"testProp": model});
+    expect(output).toEqual({testProp: model});
   });
 });

@@ -6,7 +6,7 @@ import { JsonSchemaInputProcessor } from '../../src/processors/JsonSchemaInputPr
 import { AsyncAPIInputProcessor } from '../../src/processors/AsyncAPIInputProcessor';
 import { AbstractInputProcessor } from '../../src/processors';
 
-describe('InputProcessor', function () {
+describe('InputProcessor', () => {
   beforeEach(() => {
     jest.resetAllMocks();
   });
@@ -14,18 +14,19 @@ describe('InputProcessor', function () {
     jest.restoreAllMocks();
   });
   
-  class TempProcessor extends AbstractInputProcessor{
+  class TempProcessor extends AbstractInputProcessor {
     process(input: any): Promise<CommonInputModel> { return Promise.resolve(new CommonInputModel()); }
     shouldProcess(input: any): boolean { return true; }
   }
-  test('should add processor to map', async function () {
+  test('should add processor to map', () => {
     const testProcessor = new TempProcessor();
     const processor = new InputProcessor();
     processor.setProcessor('some_key', testProcessor);
-    const foundProcessor = processor.getProcessors().get('some_key');
+    const processors = processor.getProcessors();
+    const foundProcessor = processors.get('some_key');
     expect(foundProcessor).toEqual(testProcessor);
   });
-  test('overwriting processor should use new and not old', async function () {
+  test('overwriting processor should use new and not old', () => {
     const testProcessor = new TempProcessor();
     const processor = new InputProcessor();
     const oldDefaultProcessor = processor.getProcessors().get('default');
@@ -35,7 +36,7 @@ describe('InputProcessor', function () {
     expect(oldDefaultProcessor?.constructor).toEqual(oldDefaultProcessor?.constructor);
     expect(currentDefaultProcessor?.constructor).toEqual(currentDefaultProcessor?.constructor);
   });
-  describe('process()', function () {
+  describe('process()', () => {
     const getProcessors = () => {
       const asyncInputProcessor = new AsyncAPIInputProcessor();
       jest.spyOn(asyncInputProcessor, 'shouldProcess');
@@ -46,9 +47,9 @@ describe('InputProcessor', function () {
       const processor = new InputProcessor();
       processor.setProcessor('asyncapi', asyncInputProcessor);
       processor.setProcessor('default', defaultInputProcessor);
-      return {processor, asyncInputProcessor, defaultInputProcessor}
-    }
-    test('should throw error when no default processor found', async function () {
+      return {processor, asyncInputProcessor, defaultInputProcessor};
+    };
+    test('should throw error when no default processor found', async () => {
       const processor = new InputProcessor();
       const map = processor.getProcessors();
       map.delete('default');
@@ -56,7 +57,7 @@ describe('InputProcessor', function () {
         .rejects
         .toThrow('No default processor found');
     });
-    test('should be able to process default JSON schema input', async function () {
+    test('should be able to process default JSON schema input', async () => {
       const {processor, asyncInputProcessor, defaultInputProcessor} = getProcessors(); 
       const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './JsonSchemaInputProcessor/basic.json'), 'utf8');
       const inputSchema = JSON.parse(inputSchemaString);
@@ -67,7 +68,7 @@ describe('InputProcessor', function () {
       expect(defaultInputProcessor.shouldProcess).toHaveBeenNthCalledWith(1, inputSchema);
     });
 
-    test('should be able to process AsyncAPI schema input', async function () {
+    test('should be able to process AsyncAPI schema input', async () => {
       const {processor, asyncInputProcessor, defaultInputProcessor} = getProcessors(); 
       const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'), 'utf8');
       const inputSchema = JSON.parse(inputSchemaString);

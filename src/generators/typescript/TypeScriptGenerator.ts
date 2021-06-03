@@ -40,11 +40,11 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions> {
    * @param model to render
    * @param inputModel contains meta information about all models
    */
-  async render(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
+  render(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const kind = TypeHelpers.extractKind(model);
     switch (kind) {
     case ModelKind.OBJECT: {
-      return this.rendeModelType(model, inputModel);
+      return this.renderModelType(model, inputModel);
     }
     case ModelKind.ENUM: {
       return this.renderEnum(model, inputModel);
@@ -58,7 +58,7 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions> {
    * @param model to render
    * @param inputModel contains meta information about all models
    */
-  async renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
+  renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const presets = this.getPresets('class'); 
     const renderer = new ClassRenderer(this.options, presets, model, inputModel);
     return renderer.runSelfPreset();
@@ -69,7 +69,7 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions> {
    * @param model to render
    * @param inputModel contains meta information about all models
    */
-  async renderInterface(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
+  renderInterface(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const presets = this.getPresets('interface'); 
     const renderer = new InterfaceRenderer(this.options, presets, model, inputModel);
     return renderer.runSelfPreset();
@@ -80,7 +80,7 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions> {
    * @param model to render
    * @param inputModel contains meta information about all models
    */
-  async renderEnum(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
+  renderEnum(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const presets = this.getPresets('enum'); 
     const renderer = new EnumRenderer(this.options, presets, model, inputModel);
     return renderer.runSelfPreset();
@@ -92,7 +92,7 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions> {
    * @param model to render
    * @param inputModel contains meta information about all models
    */
-  async renderType(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
+  renderType(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const presets = this.getPresets('type'); 
     const renderer = new TypeRenderer(this.options, presets, model, inputModel);
     return renderer.runSelfPreset();

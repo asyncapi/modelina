@@ -1,6 +1,6 @@
 import { CommonModel, Schema } from 'models';
 import { Simplifier } from './Simplifier';
-type Output =  string[] | undefined;
+type Output = string[] | undefined;
 
 /**
  * Find out which CommonModels we should extend
@@ -8,7 +8,7 @@ type Output =  string[] | undefined;
  * @param schema to find extends of
  */
 export default function simplifyExtend(schema: Schema | boolean, simplifier : Simplifier) : Output {
-  if (!simplifier.options.allowInheritance || typeof schema === 'boolean') return undefined;
+  if (!simplifier.options.allowInheritance || typeof schema === 'boolean') {return undefined;}
   const extendingModels: string[] = [];
   for (const allOfSchema of (schema.allOf || [])) {
     if (typeof allOfSchema !== 'boolean') {

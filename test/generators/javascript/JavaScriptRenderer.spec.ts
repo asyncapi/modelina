@@ -3,15 +3,15 @@ import { CommonInputModel, CommonModel } from '../../../src/models';
 class MockJavaScriptRenderer extends JavaScriptRenderer {
 
 }
-describe('JavaScriptRenderer', function() {
+describe('JavaScriptRenderer', () => {
   let renderer: JavaScriptRenderer;
   beforeEach(() => {
     renderer = new MockJavaScriptRenderer({}, [], new CommonModel(), new CommonInputModel());
   });
 
-  describe('renderComments()', function() {
-    test('Should be able to render comments', function() {
-      expect(renderer.renderComments("someComment")).toEqual(`/**
+  describe('renderComments()', () => {
+    test('Should be able to render comments', () => {
+      expect(renderer.renderComments('someComment')).toEqual(`/**
  * someComment
  */`);
     });

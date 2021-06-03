@@ -34,6 +34,7 @@ function renderDescription({ renderer, content, item }: {
  * 
  * @implements {JavaPreset}
  */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 export const JAVA_DESCRIPTION_PRESET: JavaPreset = {
   class: {
     self({ renderer, model, content }) {

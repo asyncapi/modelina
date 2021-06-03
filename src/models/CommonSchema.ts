@@ -32,7 +32,7 @@ export class CommonSchema<T> {
       if (schema.properties !== undefined) {
         const properties : {[key: string]: T | boolean} = {};
         Object.entries(schema.properties).forEach(([propertyName, propertySchema]) => {
-          properties[`${propertyName}`] = transformationSchemaCallback(propertySchema, seenSchemas);
+          properties[String(propertyName)] = transformationSchemaCallback(propertySchema, seenSchemas);
         });
         schema.properties = properties;
       }
@@ -44,7 +44,7 @@ export class CommonSchema<T> {
             schema.patternProperties !== undefined) {
         const patternProperties : {[key: string]: T | boolean} = {};
         Object.entries(schema.patternProperties).forEach(([pattern, patternSchema]) => {
-          patternProperties[`${pattern}`] = transformationSchemaCallback(patternSchema, seenSchemas);
+          patternProperties[String(pattern)] = transformationSchemaCallback(patternSchema, seenSchemas);
         });
         schema.patternProperties = patternProperties;
       }

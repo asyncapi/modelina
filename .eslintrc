@@ -1,5 +1,4 @@
 {
-  "root": true,
   "parser": "@typescript-eslint/parser",
   "plugins": [
     "@typescript-eslint",
@@ -15,26 +14,24 @@
   ],
   "rules": {
     "strict": 0,
-    "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "eol-last": ["error", "always"],
+    "@typescript-eslint/no-explicit-any": 0,
+    "require-await": "error",
+    "@typescript-eslint/explicit-module-boundary-types": ["error", {"allowArgumentsExplicitlyTypedAsAny": true}],
     "sonarjs/no-small-switch": "off",
-    "@typescript-eslint/ban-types": "off",
-    "no-underscore-dangle": 0,
-    "no-prototype-builtins": 0,
-    "no-dupe-class-members": 0,
-    "no-mixed-requires": 0,
-    "no-process-exit": 0,
-    "no-warning-comments": 0,
-    "curly": 0,
-    "no-multi-spaces": 0,
-    "no-alert": 0,
+    "no-underscore-dangle": "error",
+    "no-process-exit": "error",
+    "no-warning-comments": "error",
+    "no-loop-func": "error",
+    "curly": ["error"],
+    "no-multi-spaces": "error",
     "consistent-return": 0,
     "consistent-this": [
       0,
       "self"
     ],
     "func-style": 0,
-    "max-nested-callbacks": 0,
+    "max-nested-callbacks": ["error", 3],
     "camelcase": 0,
     "no-debugger": 1,
     "no-empty": 1,
@@ -162,7 +159,9 @@
         "nonwords": false
       }
     ],
+    "no-console": "error",
     "wrap-regex": 2,
+    //"linebreak-style": ["error", "unix"],
     "linebreak-style": 0,
     "semi": [
       2,
@@ -187,5 +186,20 @@
     "prefer-const": 2,
     "prefer-spread": 2,
     "prefer-template": 2
-  }
+  },
+  "overrides": [
+    {
+      "files": "*.spec.ts",
+      "rules": {
+        "no-undef": "off",
+        "security/detect-non-literal-fs-filename": "off",
+        "sonarjs/no-duplicate-string": "off",
+        "security/detect-object-injection": "off",
+        "max-nested-callbacks": "off",
+        "sonarjs/no-identical-functions": "off",
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/no-unused-vars": "off"
+      }
+    }
+  ]
 }

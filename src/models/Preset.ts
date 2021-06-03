@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { AbstractRenderer } from '../generators/AbstractRenderer';
 import { CommonInputModel } from './CommonInputModel';
 import { CommonModel } from './CommonModel';

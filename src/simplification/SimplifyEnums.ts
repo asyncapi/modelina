@@ -9,7 +9,7 @@ type Output = any[] | undefined;
  */
 export default function simplifyEnums(schema: Schema | boolean, seenSchemas: Map<any, Output> = new Map()): Output {
   if (typeof schema !== 'boolean') {
-    if (seenSchemas.has(schema)) return seenSchemas.get(schema);
+    if (seenSchemas.has(schema)) {return seenSchemas.get(schema);}
     let enums: any[] = [];
     seenSchemas.set(schema, enums);
 
@@ -82,7 +82,7 @@ function handleCombinationSchemas(schemas: (Schema | boolean)[] = [], existingEn
  * @param existingEnums 
  */
 function addToEnums(enumsToCheck: any[] | undefined, existingEnums: any[]) {
-  if (enumsToCheck === undefined) return;
+  if (enumsToCheck === undefined) {return;}
   enumsToCheck.forEach((value) => {
     if (!existingEnums.includes(value)) {
       existingEnums.push(value);

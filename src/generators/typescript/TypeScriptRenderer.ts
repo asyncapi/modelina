@@ -132,7 +132,7 @@ ${lines.map(line => ` * ${line}`).join('\n')}
     return `${name}${signature};`;
   }
 
-  async runPropertyPreset(propertyName: string, property: CommonModel): Promise<string> {
+  runPropertyPreset(propertyName: string, property: CommonModel): Promise<string> {
     return this.runPreset('property', { propertyName, property });
   }
 }
