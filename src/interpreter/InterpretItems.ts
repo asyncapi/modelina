@@ -30,9 +30,9 @@ function interpretArrayItems(rootSchema: Schema, itemSchemas: (Schema | boolean)
       interpretArrayItems(rootSchema, itemSchema, model, interpreter, interpreterOptions);
     }
   } else {
-    const itemModels = interpreter.interpret(itemSchemas);
-    if (itemModels.length > 0) {
-      model.addItem(itemModels[0], rootSchema);
+    const itemModel = interpreter.interpret(itemSchemas);
+    if (itemModel !== undefined) {
+      model.addItem(itemModel, rootSchema);
     }
   }
 }
