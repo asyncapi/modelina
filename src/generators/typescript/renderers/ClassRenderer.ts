@@ -12,8 +12,9 @@ export class ClassRenderer extends TypeScriptRenderer {
   public async defaultSelf(): Promise<string> {
     const content = [
       await this.renderProperties(),
+      await this.renderAdditionalProperties(),
       await this.runCtorPreset(),
-      await this.renderAccessors(),
+      await this.renderPropertyAccessors(),
       await this.runAdditionalContentPreset(),
     ];
 
@@ -27,7 +28,7 @@ ${this.indent(this.renderBlock(content, 2))}
     return this.runPreset('ctor');
   }
 
-  async renderAccessors(): Promise<string> {
+  async renderPropertyAccessors(): Promise<string> {
     const properties = this.model.properties || {};
     const content: string[] = [];
 
@@ -73,6 +74,9 @@ ${renderer.indent(renderer.renderBlock(assigments))}
   },
   property({ renderer, propertyName, property }): string {
     return `private _${renderer.renderProperty(propertyName, property)}`;
+  },
+  additionalProperties({ renderer, additionalPropertyModel }): string {
+    return `private _${renderer.renderAdditionalProperty(additionalPropertyModel)}`;
   },
   getter({ renderer, model, propertyName, property }): string {
     const isRequired = model.isRequired(propertyName);

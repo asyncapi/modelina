@@ -3,6 +3,7 @@ import { TypeScriptOptions } from './TypeScriptGenerator';
 
 import { FormatHelpers } from '../../helpers';
 import { CommonModel, CommonInputModel, Preset } from '../../models';
+import { findPropertyNameForAdditionalProperties } from '../../helpers/NameHelper';
 
 /**
  * Common renderer for TypeScript types
@@ -80,6 +81,10 @@ ${lines.map(line => ` * ${line}`).join('\n')}
  */`;
   }
 
+  /**
+   * Render all the properties for model
+   * @returns 
+   */
   async renderProperties(): Promise<string> {
     const properties = this.model.properties || {};
     const content: string[] = [];
@@ -92,6 +97,23 @@ ${lines.map(line => ` * ${line}`).join('\n')}
     return this.renderBlock(content);
   }
 
+  renderAdditionalProperties(): Promise<string> {
+    const additionalPropertiesModel = this.model.additionalProperties;
+    if (additionalPropertiesModel !== undefined) {
+      return this.runAdditionalPropertyPreset(additionalPropertiesModel);
+    }
+    return Promise.resolve('');
+  }
+  renderAdditionalProperty(additionalPropertyModel: CommonModel): string {
+    if (additionalPropertyModel !== undefined) {
+      const propertyName = findPropertyNameForAdditionalProperties(this.model);
+      let additionalPropertyType = this.renderType(additionalPropertyModel);
+      additionalPropertyType = `${additionalPropertyType} | undefined`;
+      return `${propertyName}?: Map<string, ${additionalPropertyType}>;`;
+    }
+    return '';
+  }
+
   renderProperty(propertyName: string, property: CommonModel): string {
     const name = FormatHelpers.toCamelCase(propertyName);
     const signature = this.renderTypeSignature(property, { isRequired: this.model.isRequired(propertyName) });
@@ -100,5 +122,8 @@ ${lines.map(line => ` * ${line}`).join('\n')}
 
   runPropertyPreset(propertyName: string, property: CommonModel): Promise<string> {
     return this.runPreset('property', { propertyName, property });
+  }
+  runAdditionalPropertyPreset(additionalPropertyModel: CommonModel): Promise<string> {
+    return this.runPreset('additionalProperties', { additionalPropertyModel });
   }
 }

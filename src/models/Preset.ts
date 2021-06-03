@@ -20,16 +20,21 @@ export interface PropertyArgs {
   propertyName: string;
   property: CommonModel;
 }
+export interface AdditionalPropertyArgs {
+  additionalPropertyModel: CommonModel;
+}
 
 export interface ClassPreset<R extends AbstractRenderer, O extends object = any> extends CommonPreset<R, O> {
   ctor?: (args: PresetArgs<R, O>) => Promise<string> | string;
   property?: (args: PresetArgs<R, O> & PropertyArgs) => Promise<string> | string;
+  additionalProperties?: (args: PresetArgs<R, O> & AdditionalPropertyArgs) => Promise<string> | string;
   getter?: (args: PresetArgs<R, O> & PropertyArgs) => Promise<string> | string;
   setter?: (args: PresetArgs<R, O> & PropertyArgs) => Promise<string> | string;
 }
 
 export interface InterfacePreset<R extends AbstractRenderer, O extends object = any> extends CommonPreset<R, O> {
   property?: (args: PresetArgs<R, O> & PropertyArgs) => Promise<string> | string;
+  additionalProperties?: (args: PresetArgs<R, O> & AdditionalPropertyArgs) => Promise<string> | string;
 }
 
 export interface EnumArgs {

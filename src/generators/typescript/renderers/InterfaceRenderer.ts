@@ -12,6 +12,7 @@ export class InterfaceRenderer extends TypeScriptRenderer {
   async defaultSelf(): Promise<string> {
     const content = [
       await this.renderProperties(),
+      await this.renderAdditionalProperties(),
       await this.runAdditionalContentPreset(),
     ];
 
@@ -28,5 +29,8 @@ export const TS_DEFAULT_INTERFACE_PRESET: InterfacePreset<InterfaceRenderer> = {
   },
   property({ renderer, propertyName, property }) {
     return renderer.renderProperty(propertyName, property);
+  },
+  additionalProperties({ renderer, additionalPropertyModel }) {
+    return renderer.renderAdditionalProperty(additionalPropertyModel);
   },
 };
