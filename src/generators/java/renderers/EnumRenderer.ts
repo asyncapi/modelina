@@ -43,7 +43,7 @@ ${this.indent(this.renderBlock(content, 2))}
     case 'boolean': {
       return FormatHelpers.toConstantCase(`boolean ${value}`);
     }
-    default: return FormatHelpers.toConstantCase(value);
+    default: return FormatHelpers.toConstantCase(String(value));
     }
   }
 
@@ -52,11 +52,11 @@ ${this.indent(this.renderBlock(content, 2))}
     case 'string': {
       return `"${value}"`;
     }
-    default: return `${value}`;
+    default: return String(value);
     }
   }
 
-  async runItemPreset(item: any): Promise<string> {
+  runItemPreset(item: any): Promise<string> {
     return this.runPreset('item', { item });
   }
 }

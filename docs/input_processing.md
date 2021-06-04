@@ -1,6 +1,3 @@
-# Input processing
-The input process is about processing any input into our internal model representation `CommonInputModel`. This most likely have to be done using different methods based on which kind of input it is.
-
 As of now two inputs are supported:
 - JSON Schema Draft 7
 - AsyncAPI version 2.0.0
@@ -20,6 +17,7 @@ The `process` function are expected to return `CommonInputModel` which is a wrap
 This is done to ensure we can return multiple models for any input to allow for references, inheritance etc. 
 
 As said the core internal representation of a data model is `CommonModel`. This contains the data definition by using known keywords from JSON Schema, but instead of it representing a validation rules it represent data definition. The explanation for the `CommonModel` properties can be found [here](../API.md#CommonModel).
+
 ## AsyncAPI
 At the moment the library only supports the whole AsyncAPI file as input where it generates models for all defined message payloads. If any other kind of AsyncAPI input is wanted please create a [feature request](https://github.com/asyncapi/generator-model-sdk/issues/new?assignees=&labels=enhancement&template=enhancement.md)!
 
@@ -29,6 +27,6 @@ The payload, since it is of type JSON Schema, is then passed to the [JSON Schema
 
 
 ## JSON Schema
-For us to convert JSON Schema into `CommonInputModel` we use a process we call the simplification process. This means that we simplify data validation rules (`Schema` or Boolean) into data definitions (`CommonModel`). This process is quite complex and needs it own section for explaining how it works.
+For us to convert JSON Schema into `CommonInputModel` we use a process we call the interpreter process. This means that we interpret the JSON Schema validation rules (`Schema` or Boolean) into data definitions (`CommonModel`). This process is quite complex and needs it own section for explaining how it works.
 
-Read [this](./docs/simplification.md) document for more information.
+Read [this](./docs/interpretation_of_JSON_Schema_draft_7.md) document for more information.

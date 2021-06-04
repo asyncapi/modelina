@@ -1,14 +1,14 @@
 import { AbstractGenerator } from '../../src/generators'; 
 import { CommonInputModel, CommonModel } from '../../src/models';
 
-describe('AbstractGenerator', function() {
+describe('AbstractGenerator', () => {
   class TestGenerator extends AbstractGenerator {
     constructor() {
-      super("TestGenerator", {});
+      super('TestGenerator', {});
     }
 
     render(model: CommonModel, inputModel: CommonInputModel): any {
-      return model.$id || "rendered content";
+      return model.$id || 'rendered content';
     }
   }
 
@@ -17,23 +17,23 @@ describe('AbstractGenerator', function() {
     generator = new TestGenerator();
   });
 
-  test('should `generate` function return OutputModels', async function() {
+  test('should `generate` function return OutputModels', async () => {
     const doc: any = { $id: 'test' };
     const outputModels = await generator.generate(doc);
 
     expect(outputModels[0].result).toEqual('test');
   });
 
-  test('generate() should process CommonInputModel instance', async function() {
+  test('generate() should process CommonInputModel instance', async () => {
     const cim = new CommonInputModel();
     const model = new CommonModel();
-    model.$id = "test";
+    model.$id = 'test';
     cim.models[model.$id] = model;
     const outputModels = await generator.generate(cim);
     expect(outputModels[0].result).toEqual('test');
   });
 
-  test('should `process` function return CommonInputModel', async function() {
+  test('should `process` function return CommonInputModel', async () => {
     const doc: any = { $id: 'test' };
     const commonInputModel = await generator.process(doc);
     const keys = Object.keys(commonInputModel.models);
@@ -47,30 +47,30 @@ describe('AbstractGenerator', function() {
     });
   });
 
-  test('should `render` function return renderer model', async function() {
+  test('should `render` function return renderer model', async () => {
     const doc: any = { $id: 'SomeModel' };
     const commonInputModel = await generator.process(doc);
     const keys = Object.keys(commonInputModel.models);
     const renderedContent = await generator.render(commonInputModel.models[keys[0]], commonInputModel);
 
-    expect(renderedContent).toEqual("SomeModel");
+    expect(renderedContent).toEqual('SomeModel');
   });
 
-  describe('getPresets()', function() {
-    test('getPresets()', async function() {
+  describe('getPresets()', () => {
+    test('getPresets()', () => {
       class GeneratorWithPresets extends AbstractGenerator {
         constructor() {
-          super("TestGenerator", {presets: [{"preset": {"test": "test2"}, "options": {}}]});
+          super('TestGenerator', {presets: [{preset: {test: 'test2'}, options: {}}]});
         }
         render(model: CommonModel, inputModel: CommonInputModel): any {
-          return model.$id || "rendered content";
+          return model.$id || 'rendered content';
         }
-        testGetPresets(string: string){
+        testGetPresets(string: string) {
           return this.getPresets(string);
         }
       }
-      let newGenerator = new GeneratorWithPresets();
-      expect(newGenerator.testGetPresets("test")).toEqual([["test2", {}]]);
+      const newGenerator = new GeneratorWithPresets();
+      expect(newGenerator.testGetPresets('test')).toEqual([['test2', {}]]);
     });
   });
 });

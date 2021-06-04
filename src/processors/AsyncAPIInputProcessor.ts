@@ -14,15 +14,16 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  async process(input: any): Promise<CommonInputModel> {
-    if (!this.shouldProcess(input)) throw new Error('Input is not an AsyncAPI document so it cannot be processed.');
+  async process(input: Record<string, any>): Promise<CommonInputModel> {
+    if (!this.shouldProcess(input)) {throw new Error('Input is not an AsyncAPI document so it cannot be processed.');}
+
     Logger.debug('Processing input as an AsyncAPI document');
     let doc: AsyncAPIDocument;
     const common = new CommonInputModel();
     if (!AsyncAPIInputProcessor.isFromParser(input)) {
-      doc = await parse(input);
+      doc = await parse(input as any);
     } else {
-      doc = input;
+      doc = input as AsyncAPIDocument;
     }
     common.originalInput = doc;
     
@@ -46,7 +47,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     schema: AsyncAPISchema | boolean,
     alreadyIteratedSchemas: Map<string, Schema> = new Map()
   ): Schema | boolean {
-    if (typeof schema === 'boolean') return schema;
+    if (typeof schema === 'boolean') {return schema;}
     const schemaUid = schema.uid();
     if (alreadyIteratedSchemas.has(schemaUid)) {
       return alreadyIteratedSchemas.get(schemaUid) as Schema; 
@@ -143,10 +144,10 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
 	 * 
 	 * @param input 
 	 */
-  shouldProcess(input: any) : boolean {
+  shouldProcess(input: Record<string, any>) : boolean {
     //Check if we got a parsed document from out parser
     //Check if we just got provided a pure object
-    if (typeof input === 'object' && (AsyncAPIInputProcessor.isFromParser(input) || input.asyncapi !== undefined)) {
+    if (AsyncAPIInputProcessor.isFromParser(input) || input.asyncapi !== undefined) {
       return true;
     }
     return false;
@@ -157,9 +158,8 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  static isFromParser(input: any) {
-    if (input._json !== undefined && 
-      input._json.asyncapi !== undefined && 
+  static isFromParser(input: Record<string, any>): boolean {
+    if (input['_json'] !== undefined && input['_json'].asyncapi !== undefined && 
       typeof input.version === 'function') {
       return true;
     }
