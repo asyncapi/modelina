@@ -12,18 +12,19 @@ import { isModelObject } from './Utils';
  * @param schema 
  * @param model 
  * @param interpreter 
+ * @param options to control the interpret process
  */
 export default function interpretAllOf(schema: Schema, model: CommonModel, interpreter : Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
   if (schema.allOf === undefined) {return;}
   for (const allOfSchema of schema.allOf) {  
-    const allOfModel = interpreter.interpret(allOfSchema);
+    const allOfModel = interpreter.interpret(allOfSchema, interpreterOptions);
     if (allOfModel === undefined) {continue;}
     if (isModelObject(allOfModel) && interpreterOptions.allowInheritance === true) {
       Logger.info(`Processing allOf, inheritance is enabled, ${model.$id} inherits from ${allOfModel.$id}`, model, allOfModel);
       model.addExtendedModel(allOfModel);
     } else {
-      Logger.info('Processing allOf, inheritance is not enabled. AllOf model is merged together with already interpreted model', model, allOfModel);
-      interpreter.combineSchemas(allOfSchema, model, schema, interpreterOptions);
+      Logger.info('Processing allOf, inheritance is not enabled. AllOf model is merged together with already interpreted model', model, interpretedModel);
+      interpreter.interpretAndCombineSchema(allOfSchema, model, schema, interpreterOptions);
     }
   }
 }

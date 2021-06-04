@@ -51,6 +51,7 @@ export class Interpreter {
    * 
    * @param model 
    * @param schema 
+   * @param options to control the interpret process
    */
   private interpretSchema(model: CommonModel, schema: Schema | boolean, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions) {
     if (schema === true) {
@@ -77,33 +78,45 @@ export class Interpreter {
       interpretConst(schema, model);
       interpretEnum(schema, model);
 
-      this.combineSchemas(schema.oneOf, model, schema, interpreterOptions);
-      this.combineSchemas(schema.anyOf, model, schema, interpreterOptions);
-      this.combineSchemas(schema.then, model, schema, interpreterOptions);
-      this.combineSchemas(schema.else, model, schema, interpreterOptions);
+      this.interpretAndCombineMultipleSchemas(schema.oneOf, model, schema, interpreterOptions);
+      this.interpretAndCombineMultipleSchemas(schema.anyOf, model, schema, interpreterOptions);
+      this.interpretAndCombineSchema(schema.then, model, schema, interpreterOptions);
+      this.interpretAndCombineSchema(schema.else, model, schema, interpreterOptions);
 
       interpretNot(schema, model, this, interpreterOptions);
     }
   }
 
   /**
-   * Go through schema(s) and combine the interpreted models together.
+   * Go through a schema and combine the interpreted models together.
    * 
    * @param schema to go through
    * @param currentModel the current output
+   * @param rootSchema the root schema to use as original schema when merged
+   * @param options to control the interpret process
    */
-  combineSchemas(schema: (Schema | boolean) | (Schema | boolean)[] | undefined, currentModel: CommonModel, rootSchema: Schema, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
+  interpretAndCombineSchema(schema: (Schema | boolean) | undefined, currentModel: CommonModel, rootSchema: Schema, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
     if (typeof schema !== 'object') {return;}
+    interpreterOptions = {...interpreterOptions, splitModels: false};
+    const models = this.interpret(schema, interpreterOptions);
+    if (models.length > 0) {
+      CommonModel.mergeCommonModels(currentModel, models[0], rootSchema);
+    }
+  }
+
+  /**
+   * Go through multiple schemas and combine the interpreted models together.
+   * 
+   * @param schema to go through
+   * @param currentModel the current output
+   * @param rootSchema the root schema to use as original schema when merged
+   * @param options to control the interpret process
+   */
+  interpretAndCombineMultipleSchemas(schema: (Schema | boolean)[] | undefined, currentModel: CommonModel, rootSchema: Schema, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
     if (Array.isArray(schema)) {
       schema.forEach((forEachSchema) => {
-        this.combineSchemas(forEachSchema, currentModel, rootSchema, interpreterOptions);
+        this.interpretAndCombineSchema(forEachSchema, currentModel, rootSchema, interpreterOptions);
       });
-    } else {
-      interpreterOptions = {...interpreterOptions, splitModels: false};
-      const model = this.interpret(schema, interpreterOptions);
-      if (model !== undefined) {
-        CommonModel.mergeCommonModels(currentModel, model, rootSchema);
-      }
     }
   }
 }

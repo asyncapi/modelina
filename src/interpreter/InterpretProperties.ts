@@ -8,6 +8,7 @@ import { Interpreter, InterpreterOptions } from './Interpreter';
  * @param schema
  * @param model
  * @param interpreter
+ * @param options to control the interpret process
  */
 export default function interpretProperties(schema: Schema, model: CommonModel, interpreter : Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
   if (schema.properties === undefined) {return;}

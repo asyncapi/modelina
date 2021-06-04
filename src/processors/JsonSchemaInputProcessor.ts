@@ -225,7 +225,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         }
         commonModelsMap[value.$id] = value;
       } else {
-        Logger.debug('Model did not have $id, ignoring.', value);
+        Logger.warn('Model did not have $id, ignoring.', value);
       }
     });
     return commonModelsMap;

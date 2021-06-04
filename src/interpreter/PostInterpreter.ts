@@ -14,7 +14,7 @@ export function postProcessModel(model: CommonModel): CommonModel[] {
  * @param model check if it should be split up
  * @param models which have already been split up
  */
-function splitModels(model: CommonModel, iteratedModels: CommonModel[]): CommonModel {
+function trySplitModels(model: CommonModel, iteratedModels: CommonModel[]): CommonModel {
   if (isModelObject(model)) {
     Logger.info(`Splitting model ${model.$id || 'any'} since it should be on its own`);
     const switchRootModel = new CommonModel();
@@ -36,8 +36,28 @@ function ensureModelsAreSplit(model: CommonModel, iteratedModels: CommonModel[] 
   if (model.properties) {
     const existingProperties = model.properties;
     for (const [prop, propSchema] of Object.entries(existingProperties)) {
-      model.properties[String(prop)] = splitModels(propSchema, iteratedModels);
+      model.properties[String(prop)] = trySplitModels(propSchema, iteratedModels);
     }
+  }
+  if (model.patternProperties) {
+    const existingPatternProperties = model.patternProperties;
+    for (const [pattern, patternModel] of Object.entries(existingPatternProperties)) {
+      model.patternProperties[String(pattern)] = trySplitModels(patternModel, iteratedModels);
+    }
+  }
+  if (model.additionalProperties) {
+    model.additionalProperties = trySplitModels(model.additionalProperties, iteratedModels);
+  }
+  if (model.items) {
+    let existingItems = model.items;
+    if (Array.isArray(existingItems)) {
+      for (const [itemIndex, itemModel] of existingItems.entries()) {
+        existingItems[Number(itemIndex)] = trySplitModels(itemModel, iteratedModels);
+      }
+    } else {
+      existingItems = trySplitModels(existingItems, iteratedModels);
+    }
+    model.items = existingItems;
   }
   iteratedModels.push(model);
 }
