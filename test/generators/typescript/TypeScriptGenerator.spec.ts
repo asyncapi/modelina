@@ -58,7 +58,7 @@ describe('TypeScriptGenerator', () => {
   private _houseNumber: number;
   private _marriage?: boolean;
   private _members?: string | number | boolean;
-  private _tupleType?: [string,number];
+  private _tupleType?: [string, number];
   private _arrayType: Array<string>;
 
   constructor(input: {
@@ -68,7 +68,7 @@ describe('TypeScriptGenerator', () => {
     houseNumber: number,
     marriage?: boolean,
     members?: string | number | boolean,
-    tupleType?: [string,number],
+    tupleType?: [string, number],
     arrayType: Array<string>,
   }) {
     this._streetName = input.streetName;
@@ -99,8 +99,8 @@ describe('TypeScriptGenerator', () => {
   get members(): string | number | boolean | undefined { return this._members; }
   set members(members: string | number | boolean | undefined) { this._members = members; }
 
-  get tupleType(): [string,number] | undefined { return this._tupleType; }
-  set tupleType(tupleType: [string,number] | undefined) { this._tupleType = tupleType; }
+  get tupleType(): [string, number] | undefined { return this._tupleType; }
+  set tupleType(tupleType: [string, number] | undefined) { this._tupleType = tupleType; }
 
   get arrayType(): Array<string> { return this._arrayType; }
   set arrayType(arrayType: Array<string>) { this._arrayType = arrayType; }
@@ -179,7 +179,7 @@ ${content}`;
   houseNumber: number;
   marriage?: boolean;
   members?: string | number | boolean;
-  tupleType?: [string,number];
+  tupleType?: [string, number];
   arrayType: Array<string>;
 }`;
 

@@ -35,6 +35,11 @@ describe('TypeScriptRenderer', () => {
       model.items = [CommonModel.toCommonModel({type: 'number'})];
       expect(renderer.toTsType('array', model)).toEqual('[number]');
     });
+    test('Should render multiple tuples', () => {
+      const model = new CommonModel();
+      model.items = [CommonModel.toCommonModel({type: 'number'}), CommonModel.toCommonModel({type: 'string'})];
+      expect(renderer.toTsType('array', model)).toEqual('[number, string]');
+    });
   });
   describe('renderType()', () => {
     test('Should render refs with pascal case', () => {
