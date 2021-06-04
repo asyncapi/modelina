@@ -23,7 +23,7 @@ export default function interpretAllOf(schema: Schema, model: CommonModel, inter
       Logger.info(`Processing allOf, inheritance is enabled, ${model.$id} inherits from ${allOfModel.$id}`, model, allOfModel);
       model.addExtendedModel(allOfModel);
     } else {
-      Logger.info('Processing allOf, inheritance is not enabled. AllOf model is merged together with already interpreted model', model, interpretedModel);
+      Logger.info('Processing allOf, inheritance is not enabled. AllOf model is merged together with already interpreted model', model, allOfModel);
       interpreter.interpretAndCombineSchema(allOfSchema, model, schema, interpreterOptions);
     }
   }

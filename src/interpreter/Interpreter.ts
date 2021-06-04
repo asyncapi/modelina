@@ -98,9 +98,9 @@ export class Interpreter {
   interpretAndCombineSchema(schema: (Schema | boolean) | undefined, currentModel: CommonModel, rootSchema: Schema, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
     if (typeof schema !== 'object') {return;}
     interpreterOptions = {...interpreterOptions, splitModels: false};
-    const models = this.interpret(schema, interpreterOptions);
-    if (models.length > 0) {
-      CommonModel.mergeCommonModels(currentModel, models[0], rootSchema);
+    const model = this.interpret(schema, interpreterOptions);
+    if (model !== undefined) {
+      CommonModel.mergeCommonModels(currentModel, model, rootSchema);
     }
   }
 
