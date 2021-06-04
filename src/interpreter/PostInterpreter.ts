@@ -2,7 +2,7 @@ import { CommonModel } from '../models';
 import { Logger } from '../utils';
 import { isModelObject } from './Utils';
 
-export function postProcessModel(model: CommonModel): CommonModel[] {
+export function postInterpretModel(model: CommonModel): CommonModel[] {
   const iteratedModels: CommonModel[] = [];
   ensureModelsAreSplit(model, iteratedModels);
   return iteratedModels;
