@@ -1,6 +1,6 @@
 {
   "name": "@asyncapi/generator-model-sdk",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "description": "The Model SDK for generating data models",
   "license": "Apache-2.0",
   "homepage": "https://github.com/asyncapi/generator-model-sdk",
