@@ -103,7 +103,7 @@ export class FormatHelpers {
   static renderJSONExamples(examples: any[]): string {
     let renderedExamples = '';
     if (Array.isArray(examples)) {
-      examples.forEach(example => {
+      for (const example of examples) {
         if (renderedExamples !== '') {renderedExamples += ', ';}
         if (typeof example === 'object') {
           try {
@@ -114,7 +114,7 @@ export class FormatHelpers {
         } else {
           renderedExamples += example;
         }
-      });
+      }
     }
     return renderedExamples;
   }

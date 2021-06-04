@@ -53,10 +53,10 @@ describe('CommonModel', () => {
       const d = CommonModel.toCommonModel(doc);
       expect(d.items).not.toBeUndefined();
       expect(Array.isArray(d.items)).toEqual(true);
-      (d.items as CommonModel[]).forEach((s, i) => {
+      for (const [i, s] of (d.items as CommonModel[]).entries()) {
         expect(s.constructor.name).toEqual('CommonModel');
         expect(s).toEqual(doc.items[i]);
-      });
+      }
     });
   });
 
@@ -66,11 +66,11 @@ describe('CommonModel', () => {
       const d = CommonModel.toCommonModel(doc);
       expect(d.properties).not.toBeUndefined();
       expect(typeof d.properties).toEqual('object');
-      Object.keys(d.properties!).forEach(key => {
+      for (const key of Object.keys(d.properties!)) {
         const s = d.properties![key];
         expect(s.constructor.name).toEqual('CommonModel');
         expect(s).toEqual(doc.properties[key]);
-      });
+      }
     });
   });
 
