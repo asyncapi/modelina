@@ -1,7 +1,7 @@
 import { JavaRenderer } from '../JavaRenderer';
 
 import { CommonModel, ClassPreset } from '../../../models';
-import { FormatHelpers } from '../../../helpers';
+import { FormatHelpers, findPropertyNameForAdditionalProperties } from '../../../helpers';
 
 /**
  * Renderer for Java's `class` type
@@ -12,6 +12,7 @@ export class ClassRenderer extends JavaRenderer {
   async defaultSelf(): Promise<string> {
     const content = [
       await this.renderProperties(),
+      await this.renderAdditionalProperties(),
       await this.runCtorPreset(),
       await this.renderAccessors(),
       await this.runAdditionalContentPreset(),
@@ -25,6 +26,19 @@ ${this.indent(this.renderBlock(content, 2))}
 
   runCtorPreset(): Promise<string> {
     return this.runPreset('ctor');
+  }
+
+  /**
+   * Renders any additionalProperties if they are present, by calling the additionalProperty preset.
+   * 
+   * @returns 
+   */
+  renderAdditionalProperties(): Promise<string> {
+    const additionalPropertiesModel = this.model.additionalProperties;
+    if (additionalPropertiesModel !== undefined) {
+      return this.runAdditionalPropertyPreset(additionalPropertiesModel);
+    }
+    return Promise.resolve('');
   }
 
   async renderProperties(): Promise<string> {
@@ -41,6 +55,9 @@ ${this.indent(this.renderBlock(content, 2))}
 
   runPropertyPreset(propertyName: string, property: CommonModel): Promise<string> {
     return this.runPreset('property', { propertyName, property });
+  }
+  runAdditionalPropertyPreset(additionalPropertyModel: CommonModel): Promise<string> {
+    return this.runPreset('additionalProperties', { additionalPropertyModel });
   }
 
   async renderAccessors(): Promise<string> {
@@ -72,6 +89,10 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
   property({ renderer, propertyName, property }) {
     propertyName = FormatHelpers.toCamelCase(propertyName);
     return `private ${renderer.renderType(property)} ${propertyName};`;
+  },
+  additionalProperties({ renderer, model, additionalPropertyModel }) {
+    const propertyName = findPropertyNameForAdditionalProperties(model);
+    return `private Map<string, ${renderer.renderType(additionalPropertyModel)}> ${propertyName};`;
   },
   getter({ renderer, propertyName, property }) {
     propertyName = FormatHelpers.toCamelCase(propertyName);

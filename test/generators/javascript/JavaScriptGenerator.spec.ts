@@ -30,6 +30,8 @@ describe('JavaScriptGenerator', () => {
   members;
   arrayType;
 
+  additionalProperties;
+
   constructor(input) {
     this.streetName = input.streetName;
     this.city = input.city;
@@ -113,6 +115,9 @@ describe('JavaScriptGenerator', () => {
           },
           property({ content }) {
             return `#${content}`;
+          },
+          additionalProperties() {
+            return '';
           },
           ctor() {
             return `constructor(input) {

@@ -16,6 +16,8 @@ describe('TypeScriptGenerator', () => {
     const expected = `export class Address {
   private _state?: "Texas" | "Alabama" | "California" | "other";
 
+  private _additionalProperties?: Map<string, object | string | number | Array<unknown> | boolean | null | number>;
+
   constructor(input: {
     state?: "Texas" | "Alabama" | "California" | "other",
   }) {
@@ -58,6 +60,8 @@ describe('TypeScriptGenerator', () => {
   private _marriage?: boolean;
   private _members?: string | number | boolean;
   private _arrayType: Array<string | number>;
+
+  private _additionalProperties?: Map<string, object | string | number | Array<unknown> | boolean | null | number>;
 
   constructor(input: {
     streetName: string,
@@ -121,6 +125,8 @@ describe('TypeScriptGenerator', () => {
   @JsonProperty("property")
   private _property?: string;
 
+  private _additionalProperties?: Map<string, object | string | number | Array<unknown> | boolean | null | number>;
+
   constructor(input: {
     property?: string,
   }) {
@@ -172,6 +178,8 @@ ${content}`;
   marriage?: boolean;
   members?: string | number | boolean;
   arrayType: Array<string | number>;
+
+  additionalProperties?: Map<string, object | string | number | Array<unknown> | boolean | null | number>;
 }`;
 
     const interfaceGenerator = new TypeScriptGenerator({modelType: 'interface'});
@@ -192,6 +200,8 @@ ${content}`;
     };
     const expected = `export interface CustomInterface {
   property?: string;
+
+  additionalProperties?: Map<string, object | string | number | Array<unknown> | boolean | null | number>;
 }`;
 
     generator = new TypeScriptGenerator({ presets: [

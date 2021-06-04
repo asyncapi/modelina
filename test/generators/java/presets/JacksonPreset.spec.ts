@@ -19,6 +19,8 @@ describe('JAVA_DESCRIPTION_PRESET', () => {
   private Double minNumberProp;
   private Double maxNumberProp;
 
+  private Map<string, Object> additionalProperties;
+
   @JsonProperty("min_number_prop")
   public Double getMinNumberProp() { return this.minNumberProp; }
   public void setMinNumberProp(Double minNumberProp) { this.minNumberProp = minNumberProp; }

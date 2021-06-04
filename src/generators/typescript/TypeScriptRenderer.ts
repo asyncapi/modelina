@@ -82,7 +82,8 @@ ${lines.map(line => ` * ${line}`).join('\n')}
   }
 
   /**
-   * Render all the properties for model
+   * Render all the properties for the model by calling the property preset per property.
+   * 
    * @returns 
    */
   async renderProperties(): Promise<string> {
@@ -97,6 +98,11 @@ ${lines.map(line => ` * ${line}`).join('\n')}
     return this.renderBlock(content);
   }
 
+  /**
+   * Renders any additionalProperties if they are present, by calling the additionalProperty preset.
+   * 
+   * @returns 
+   */
   renderAdditionalProperties(): Promise<string> {
     const additionalPropertiesModel = this.model.additionalProperties;
     if (additionalPropertiesModel !== undefined) {
@@ -104,14 +110,17 @@ ${lines.map(line => ` * ${line}`).join('\n')}
     }
     return Promise.resolve('');
   }
+
+  /**
+   * Renders the additionalProperty property.
+   * 
+   * @param additionalPropertyModel 
+   * @returns 
+   */
   renderAdditionalProperty(additionalPropertyModel: CommonModel): string {
-    if (additionalPropertyModel !== undefined) {
-      const propertyName = findPropertyNameForAdditionalProperties(this.model);
-      let additionalPropertyType = this.renderType(additionalPropertyModel);
-      additionalPropertyType = `${additionalPropertyType} | undefined`;
-      return `${propertyName}?: Map<string, ${additionalPropertyType}>;`;
-    }
-    return '';
+    const propertyName = findPropertyNameForAdditionalProperties(this.model);
+    const additionalPropertyType = this.renderType(additionalPropertyModel);
+    return `${propertyName}?: Map<string, ${additionalPropertyType}>;`;
   }
 
   renderProperty(propertyName: string, property: CommonModel): string {

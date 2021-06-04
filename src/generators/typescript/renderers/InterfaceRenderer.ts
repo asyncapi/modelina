@@ -32,5 +32,5 @@ export const TS_DEFAULT_INTERFACE_PRESET: InterfacePreset<InterfaceRenderer> = {
   },
   additionalProperties({ renderer, additionalPropertyModel }) {
     return renderer.renderAdditionalProperty(additionalPropertyModel);
-  },
+  }
 };

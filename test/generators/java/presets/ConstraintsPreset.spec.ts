@@ -24,6 +24,8 @@ describe('JAVA_DESCRIPTION_PRESET', () => {
   private Object[] arrayProp;
   private String stringProp;
 
+  private Map<string, Object> additionalProperties;
+
   @NotNull
   @Min(0)
   public Double getMinNumberProp() { return this.minNumberProp; }

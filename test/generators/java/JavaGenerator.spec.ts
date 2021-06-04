@@ -30,6 +30,8 @@ describe('JavaGenerator', () => {
   private Object members;
   private Object[] arrayType;
 
+  private Map<string, Object> additionalProperties;
+
   public String getStreetName() { return this.streetName; }
   public void setStreetName(String streetName) { this.streetName = streetName; }
 
@@ -73,6 +75,8 @@ describe('JavaGenerator', () => {
     const expected = `public class CustomClass {
   @JsonProperty("property")
   private String property;
+
+  private Map<string, Object> additionalProperties;
 
   @JsonProperty("property")
   public String getProperty() { return this.property; }

@@ -2,6 +2,7 @@ import { JavaScriptRenderer } from '../JavaScriptRenderer';
 
 import { CommonModel, ClassPreset } from '../../../models';
 import { FormatHelpers } from '../../../helpers';
+import { findPropertyNameForAdditionalProperties } from '../../../helpers/NameHelper';
 
 /**
  * Renderer for JavaScript's `class` type
@@ -12,6 +13,7 @@ export class ClassRenderer extends JavaScriptRenderer {
   public async defaultSelf(): Promise<string> {
     const content = [
       await this.renderProperties(),
+      await this.renderAdditionalProperties(),
       await this.runCtorPreset(),
       await this.renderAccessors(),
       await this.runAdditionalContentPreset(),
@@ -67,6 +69,10 @@ ${renderer.indent(body)}
   },
   property({ propertyName }) {
     propertyName = FormatHelpers.toCamelCase(propertyName);
+    return `${propertyName};`;
+  },
+  additionalProperties({ model }) {
+    const propertyName = findPropertyNameForAdditionalProperties(model);
     return `${propertyName};`;
   },
   getter({ propertyName }) {

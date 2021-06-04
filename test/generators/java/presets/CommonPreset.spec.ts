@@ -14,6 +14,8 @@ describe('JAVA_COMMON_PRESET', () => {
   private String stringProp;
   private Double numberProp;
 
+  private Map<string, Object> additionalProperties;
+
   public String getStringProp() { return this.stringProp; }
   public void setStringProp(String stringProp) { this.stringProp = stringProp; }
 
@@ -79,6 +81,8 @@ describe('JAVA_COMMON_PRESET', () => {
     const expected = `public class Clazz {
   private String stringProp;
   private Double numberProp;
+
+  private Map<string, Object> additionalProperties;
 
   public String getStringProp() { return this.stringProp; }
   public void setStringProp(String stringProp) { this.stringProp = stringProp; }
