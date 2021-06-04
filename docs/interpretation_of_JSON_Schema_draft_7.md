@@ -23,7 +23,6 @@ The order of interpretation:
 - [oneOf/anyOf/then/else](#Processing-sub-schemas)
 - [not](#interpreting-not-schemas)
 
-
 ## Interpreting not schemas
 `not` schemas infer the form for which the model should not take by recursively interpret the `not` schema. It removes certain model properties when encountered.
 

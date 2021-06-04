@@ -392,6 +392,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * @param originalSchema 
    * @param alreadyIteratedModels
    */
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   private static mergeItems(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
     if (mergeFrom.items === undefined) { return; }
     if (Array.isArray(mergeFrom.items) && mergeFrom.items.length === 0) { return; }
