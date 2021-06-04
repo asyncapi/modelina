@@ -145,9 +145,9 @@ export class CommonModel extends CommonSchema<CommonModel> {
   removeEnum(enumsToRemove: any | any[]): void {
     if (this.enum === undefined || enumsToRemove === undefined) {return;}
     if (Array.isArray(enumsToRemove)) {
-      enumsToRemove.forEach((enumToRemove) => {
+      for (const enumToRemove of enumsToRemove) {
         this.removeEnum(enumToRemove);
-      });
+      }
       return;
     }
     const filteredEnums = this.enum.filter((el) => {
@@ -248,12 +248,12 @@ export class CommonModel extends CommonSchema<CommonModel> {
     }
     if (this.items !== undefined) {
       const items = Array.isArray(this.items) ? this.items : [this.items];
-      items.forEach((item) => {
+      for (const item of items) {
         const itemRef = item.$ref;
         if (itemRef !== undefined) {
           dependsOn.push(itemRef);
         }
-      });
+      }
     }
     if (this.properties !== undefined && Object.keys(this.properties).length) {
       const referencedProperties = Object.values(this.properties)

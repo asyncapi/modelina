@@ -176,7 +176,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     }
     if (schema.patternProperties !== undefined) {
       const patternProperties: { [key: string]: Schema | boolean } = {};
-      for (const [patternPropertyName, patternProperty] of Object.entries(schema.patternProperties)) {
+      for (const [idx, [patternPropertyName, patternProperty]] of Object.entries(Object.entries(schema.patternProperties))) {
         patternProperties[String(patternPropertyName)] = this.reflectSchemaNames(patternProperty, namesStack, this.ensureNamePattern(name, 'pattern_property', idx));
       }
       schema.patternProperties = patternProperties;
@@ -222,7 +222,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         }
         commonModelsMap[commonModel.$id] = commonModel;
       } else {
-        Logger.warn('Model did not have $id, ignoring.', value);
+        Logger.warn('Model did not have $id, ignoring.', commonModel);
       }
     }
     return commonModelsMap;
