@@ -385,7 +385,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
   }
 
   /**
-   * Merge items together so only one .
+   * Merge items together, prefer tuples over simple array since it is more strict.
    * 
    * @param mergeTo 
    * @param mergeFrom 
