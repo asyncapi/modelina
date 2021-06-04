@@ -16,14 +16,12 @@ The order of interpretation:
 - `patternProperties` are interpreted as is, where duplicate patterns for the model are [merged](#Merging-models).
 - `additionalProperties` are interpreted as is, where duplicate additionalProperties for the model are [merged](#Merging-models). If the schema does not define `additionalProperties` it defaults to `true` schema.
 - `items` are interpreted as ether tuples or simple array, where more than 1 item are [merged](#Merging-models). Usage of `items` infers `array` model type.
-- [allOf](#allOf-sub-schemas)
-- [items](#interpreting-item-schemas)
 - `properties` are interpreted as is, where duplicate `properties` for the model are [merged](#Merging-models). Usage of `properties` infers `object` model type.
+- [allOf](#allOf-sub-schemas)
 - `enum` is interpreted as is, where each `enum`. Usage of `enum` infers the enumerator value type to the model, but only if the schema does not have `type` specified.
 - `const` interpretation overwrite already interpreted `enum`. Usage of `const` infers the constant value type to the model, but only if the schema does not have `type` specified.
 - [oneOf/anyOf/then/else](#Processing-sub-schemas)
 - [not](#interpreting-not-schemas)
-## Interpreting item schemas
 
 
 ## Interpreting not schemas
