@@ -32,7 +32,7 @@ export class Interpreter {
    * Index > 0 will always be the separated models that the interpreter determines are fit to be on their own.
    * 
    * @param schema
-   * @param options to control the interpret process
+   * @param interpreterOptions to control the interpret process
    */
   interpret(schema: Schema | boolean, options: InterpreterOptions = Interpreter.defaultInterpreterOptions): CommonModel[] {
     if (this.seenSchemas.has(schema)) {
@@ -64,7 +64,7 @@ export class Interpreter {
    * 
    * @param model 
    * @param schema 
-   * @param options to control the interpret process
+   * @param interpreterOptions to control the interpret process
    */
   private interpretSchema(model: CommonModel, schema: Schema | boolean, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions) {
     if (schema === true) {
@@ -106,7 +106,7 @@ export class Interpreter {
    * @param schema to go through
    * @param currentModel the current output
    * @param rootSchema the root schema to use as original schema when merged
-   * @param options to control the interpret process
+   * @param interpreterOptions to control the interpret process
    */
   interpretAndCombineSchema(schema: (Schema | boolean) | undefined, currentModel: CommonModel, rootSchema: Schema, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
     if (typeof schema !== 'object') {return;}
@@ -123,7 +123,7 @@ export class Interpreter {
    * @param schema to go through
    * @param currentModel the current output
    * @param rootSchema the root schema to use as original schema when merged
-   * @param options to control the interpret process
+   * @param interpreterOptions to control the interpret process
    */
   interpretAndCombineMultipleSchemas(schema: (Schema | boolean)[] | undefined, currentModel: CommonModel, rootSchema: Schema, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
     if (Array.isArray(schema)) {

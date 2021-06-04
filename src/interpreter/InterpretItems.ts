@@ -9,7 +9,7 @@ import { Interpreter, InterpreterOptions } from './Interpreter';
  * @param schema 
  * @param model 
  * @param interpreter 
- * @param options to control the interpret process
+ * @param interpreterOptions to control the interpret process
  */
 export default function interpretItems(schema: Schema, model: CommonModel, interpreter : Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
   if (schema.items === undefined) {return;}
@@ -24,7 +24,7 @@ export default function interpretItems(schema: Schema, model: CommonModel, inter
  * @param itemSchemas 
  * @param model 
  * @param interpreter 
- * @param options to control the interpret process
+ * @param interpreterOptions to control the interpret process
  */
 function interpretArrayItems(rootSchema: Schema, itemSchemas: (Schema | boolean)[] | (Schema | boolean), model: CommonModel, interpreter : Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
   if (Array.isArray(itemSchemas)) {

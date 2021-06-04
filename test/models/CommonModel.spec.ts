@@ -377,6 +377,33 @@ describe('CommonModel', () => {
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
         expect(doc1.items).toMatchObject({type: ['number', 'string']});
       });
+      test('should not do anything if right side is an empty array', () => {
+        const doc: Schema = { };
+        let doc1 = CommonModel.toCommonModel(doc);
+        const doc2 = CommonModel.toCommonModel(doc);
+        doc2.items = [];
+        doc1.items = CommonModel.toCommonModel({type: 'number'});
+        doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
+        expect(doc1.items).toMatchObject({type: 'number'});
+      });
+      test('Should handle left side is a tuple and right side is not', () => {
+        const doc: Schema = { };
+        let doc1 = CommonModel.toCommonModel(doc);
+        const doc2 = CommonModel.toCommonModel(doc);
+        doc2.items = CommonModel.toCommonModel({type: 'string'});
+        doc1.items = [CommonModel.toCommonModel({type: 'number'})];
+        doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
+        expect(doc1.items).toMatchObject([{type: ['number', 'string']}]);
+      });
+      test('Should handle right side is a tuple and left side is not', () => {
+        const doc: Schema = { };
+        let doc1 = CommonModel.toCommonModel(doc);
+        const doc2 = CommonModel.toCommonModel(doc);
+        doc2.items = [CommonModel.toCommonModel({type: 'string'})];
+        doc1.items = CommonModel.toCommonModel({type: 'number'});
+        doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
+        expect(doc1.items).toMatchObject([{type: ['number', 'string']}]);
+      });
       test('should be merged when both sides are defined as array of schemas with different lengths', () => {
         const doc: Schema = { };
         let doc1 = CommonModel.toCommonModel(doc);

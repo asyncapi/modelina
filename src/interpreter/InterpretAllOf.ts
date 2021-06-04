@@ -12,7 +12,7 @@ import { isModelObject } from './Utils';
  * @param schema 
  * @param model 
  * @param interpreter 
- * @param options to control the interpret process
+ * @param interpreterOptions to control the interpret process
  */
 export default function interpretAllOf(schema: Schema, model: CommonModel, interpreter : Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
   if (schema.allOf === undefined) {return;}

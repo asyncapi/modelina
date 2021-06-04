@@ -399,29 +399,28 @@ export class CommonModel extends CommonSchema<CommonModel> {
       mergeTo.items = mergeFrom.items;
       return;
     }
+    const mergeToItems = mergeTo.items;
 
     //mergeFrom and mergeTo is not tuple
-    if (!Array.isArray(mergeFrom.items) && !Array.isArray(mergeTo.items)) {
-      mergeTo.items = CommonModel.mergeCommonModels(mergeTo.items, mergeFrom.items, originalSchema, alreadyIteratedModels); 
+    if (!Array.isArray(mergeFrom.items) && !Array.isArray(mergeToItems)) {
+      mergeTo.items = CommonModel.mergeCommonModels(mergeToItems, mergeFrom.items, originalSchema, alreadyIteratedModels); 
     }
 
     //mergeFrom and mergeTo is tuple
-    const mergeToItems = mergeTo.items;
     if (Array.isArray(mergeFrom.items) && Array.isArray(mergeToItems)) {
       for (const [index, mergeFromTupleModel] of mergeFrom.items.entries()) {
         (mergeTo.items as CommonModel[])[Number(index)] = CommonModel.mergeCommonModels(mergeToItems[Number(index)], mergeFromTupleModel, originalSchema, alreadyIteratedModels); 
       }
     }
 
-    //mergeFrom is not tuple && mergeTo is
-    if (Array.isArray(mergeFrom.items) && !Array.isArray(mergeTo.items)) {
-      const mergeToModel = mergeTo.items;
+    //mergeFrom is a tuple && mergeTo is not
+    if (Array.isArray(mergeFrom.items) && !Array.isArray(mergeToItems)) {
       mergeTo.items = [];
       for (const [index, mergeFromTupleModel] of mergeFrom.items.entries()) {
-        mergeTo.items[Number(index)] = CommonModel.mergeCommonModels(mergeToModel, mergeFromTupleModel, originalSchema, alreadyIteratedModels); 
+        mergeTo.items[Number(index)] = CommonModel.mergeCommonModels(mergeToItems, mergeFromTupleModel, originalSchema, alreadyIteratedModels); 
       }
     }
-    //mergeFrom is tuple && mergeTo is not
+    //mergeFrom is not tuple && mergeTo is
     if (!Array.isArray(mergeFrom.items) && Array.isArray(mergeTo.items)) {
       for (const [index, mergeToTupleModel] of mergeTo.items.entries()) {
         mergeTo.items[Number(index)] = CommonModel.mergeCommonModels(mergeToTupleModel, mergeFrom.items, originalSchema, alreadyIteratedModels); 
