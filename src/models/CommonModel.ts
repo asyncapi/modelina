@@ -414,19 +414,11 @@ export class CommonModel extends CommonSchema<CommonModel> {
       }
     }
 
-    //mergeFrom is a tuple && mergeTo is not
+    //mergeFrom is a tuple && mergeTo is not, use as is
     if (Array.isArray(mergeFrom.items) && !Array.isArray(mergeToItems)) {
-      mergeTo.items = [];
-      for (const [index, mergeFromTupleModel] of mergeFrom.items.entries()) {
-        mergeTo.items[Number(index)] = CommonModel.mergeCommonModels(mergeToItems, mergeFromTupleModel, originalSchema, alreadyIteratedModels); 
-      }
+      mergeTo.items = mergeFrom.items;
     }
-    //mergeFrom is not tuple && mergeTo is
-    if (!Array.isArray(mergeFrom.items) && Array.isArray(mergeTo.items)) {
-      for (const [index, mergeToTupleModel] of mergeTo.items.entries()) {
-        mergeTo.items[Number(index)] = CommonModel.mergeCommonModels(mergeToTupleModel, mergeFrom.items, originalSchema, alreadyIteratedModels); 
-      }
-    }
+    //mergeFrom is not tuple && mergeTo is, do nothing
   }
 
   /**

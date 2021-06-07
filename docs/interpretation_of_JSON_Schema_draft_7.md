@@ -57,7 +57,7 @@ If only one side has a property defined, it is used as is, if both have it defin
 - `items` are merged together based on a couple of rules:
     - If both models are simple arrays those item models are merged together as is.
     - If both models are tuple arrays each tuple model (at specific index) is merged together.
-    - If either one side is different from the other, the simple array is merged together with each tuple model.
+    - If either one side is different from the other, the tuple schemas is prioritized as it is more restrictive.
 - `types` if both models contain types they are merged together, duplicate types are removed.
 - `enum` if both models contain enums they are merged together, duplicate enums are removed.
 - `required` if both models contain required properties they are merged together, duplicate required properties are removed.
