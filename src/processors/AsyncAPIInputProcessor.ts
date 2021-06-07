@@ -27,11 +27,11 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     }
     common.originalInput = doc;
     
-    doc.allMessages().forEach((message) => {
+    for (const [, message] of doc.allMessages()) {
       const schema = AsyncAPIInputProcessor.convertToInternalSchema(message.payload());
       const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema);
       common.models = {...common.models, ...commonModels};
-    });
+    }
     return common;
   }
 
@@ -106,34 +106,34 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
 
     if (schema.properties() !== null && Object.keys(schema.properties()).length) {
       const properties : {[key: string]: Schema | boolean} = {};
-      Object.entries(schema.properties()).forEach(([propertyName, propertySchema]) => {
+      for (const [propertyName, propertySchema] of Object.entries(schema.properties())) {
         properties[String(propertyName)] = this.convertToInternalSchema(propertySchema, alreadyIteratedSchemas);
-      });
+      }
       convertedSchema.properties = properties;
     }
     if (schema.dependencies() !== null && Object.keys(schema.dependencies()).length) {
       const dependencies: { [key: string]: Schema | boolean | string[] } = {};
-      Object.entries(schema.dependencies()).forEach(([dependencyName, dependency]) => {
+      for (const [dependencyName, dependency] of Object.entries(schema.dependencies())) {
         if (typeof dependency === 'object' && !Array.isArray(dependency)) {
           dependencies[String(dependencyName)] = this.convertToInternalSchema(dependency, alreadyIteratedSchemas);
         } else {
           dependencies[String(dependencyName)] = dependency as string[];
         }
-      });
+      }
       convertedSchema.dependencies = dependencies;
     }
     if (schema.patternProperties() !== null && Object.keys(schema.patternProperties()).length) {
       const patternProperties: { [key: string]: Schema | boolean } = {};
-      Object.entries(schema.patternProperties()).forEach(([patternPropertyName, patternProperty]) => {
+      for (const [patternPropertyName, patternProperty] of Object.entries(schema.patternProperties())) {
         patternProperties[String(patternPropertyName)] = this.convertToInternalSchema(patternProperty, alreadyIteratedSchemas);
-      });
+      }
       convertedSchema.patternProperties = patternProperties;
     }
     if (schema.definitions() !== null && Object.keys(schema.definitions()).length) {
       const definitions: { [key: string]: Schema | boolean } = {};
-      Object.entries(schema.definitions()).forEach(([definitionName, definition]) => {
+      for (const [definitionName, definition] of Object.entries(schema.definitions())) {
         definitions[String(definitionName)] = this.convertToInternalSchema(definition, alreadyIteratedSchemas);
-      });
+      }
       convertedSchema.definitions = definitions;
     }
 

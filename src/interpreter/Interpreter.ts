@@ -126,10 +126,9 @@ export class Interpreter {
    * @param interpreterOptions to control the interpret process
    */
   interpretAndCombineMultipleSchemas(schema: (Schema | boolean)[] | undefined, currentModel: CommonModel, rootSchema: Schema, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
-    if (Array.isArray(schema)) {
-      schema.forEach((forEachSchema) => {
-        this.interpretAndCombineSchema(forEachSchema, currentModel, rootSchema, interpreterOptions);
-      });
+    if (!Array.isArray(schema)) { return; }
+    for (const forEachSchema of schema) {
+      this.interpretAndCombineSchema(forEachSchema, currentModel, rootSchema, interpreterOptions);
     }
   }
 

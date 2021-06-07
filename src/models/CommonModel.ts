@@ -81,9 +81,9 @@ export class CommonModel extends CommonSchema<CommonModel> {
    */
   addTypes(types: string[] | string): void {
     if (Array.isArray(types)) {
-      types.forEach((value) => {
-        this.addTypes(value);
-      });
+      for (const type of types) {
+        this.addTypes(type);
+      }
     } else if (this.type === undefined) {
       this.type = types;
     } else if (!Array.isArray(this.type) && this.type !== types) {
@@ -171,9 +171,9 @@ export class CommonModel extends CommonSchema<CommonModel> {
   removeEnum(enumsToRemove: any | any[]): void {
     if (this.enum === undefined || enumsToRemove === undefined) {return;}
     if (Array.isArray(enumsToRemove)) {
-      enumsToRemove.forEach((enumToRemove) => {
+      for (const enumToRemove of enumsToRemove) {
         this.removeEnum(enumToRemove);
-      });
+      }
       return;
     }
     const filteredEnums = this.enum.filter((el) => {
@@ -274,12 +274,12 @@ export class CommonModel extends CommonSchema<CommonModel> {
     }
     if (this.items !== undefined) {
       const items = Array.isArray(this.items) ? this.items : [this.items];
-      items.forEach((item) => {
+      for (const item of items) {
         const itemRef = item.$ref;
         if (itemRef !== undefined) {
           dependsOn.push(itemRef);
         }
-      });
+      }
     }
     if (this.properties !== undefined && Object.keys(this.properties).length) {
       const referencedProperties = Object.values(this.properties)
@@ -441,11 +441,11 @@ export class CommonModel extends CommonSchema<CommonModel> {
     if (mergeFrom.type !== undefined) {
       if (mergeTo.type === undefined) {
         mergeTo.type = mergeFrom.type;
-      } else {
-        if (Array.isArray(mergeFrom.type)) {
-          mergeFrom.type.forEach(addToType);
-          return;
+      } else if (Array.isArray(mergeFrom.type)) {
+        for (const type of mergeFrom.type) {
+          addToType(type);
         }
+      } else {
         addToType(mergeFrom.type);
       }
     }
