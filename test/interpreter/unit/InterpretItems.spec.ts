@@ -64,7 +64,8 @@ describe('Interpretation of', () => {
       interpretItems(schema, model, interpreter);
       expect(interpreter.interpret).toHaveBeenNthCalledWith(1, { type: 'string' }, Interpreter.defaultInterpreterOptions);
       expect(interpreter.interpret).toHaveBeenNthCalledWith(2, { type: 'number' }, Interpreter.defaultInterpreterOptions);
-      expect(model.addItem).toHaveBeenNthCalledWith(1, mockedReturnModels[0], schema);
+      expect(model.addItemTuple).toHaveBeenNthCalledWith(1, mockedReturnModels[0], schema, 0);
+      expect(model.addItemTuple).toHaveBeenNthCalledWith(2, mockedReturnModels[0], schema, 1);
     });
     test('should infer type of model', () => {
       const schema: any = { items: [{ type: 'string' }, { type: 'number' }] };

@@ -26,7 +26,7 @@ export class Interpreter {
    * Transforms a schema into instances of CommonModel by processing all JSON Schema draft 7 keywords and infers the model definition.
    * 
    * @param schema
-   * @param options to control the interpret process
+   * @param interpreterOptions to control the interpret process
    */
   interpret(schema: Schema | boolean, options: InterpreterOptions = Interpreter.defaultInterpreterOptions): CommonModel | undefined {
     if (this.seenSchemas.has(schema)) {
@@ -51,7 +51,7 @@ export class Interpreter {
    * 
    * @param model 
    * @param schema 
-   * @param options to control the interpret process
+   * @param interpreterOptions to control the interpret process
    */
   private interpretSchema(model: CommonModel, schema: Schema | boolean, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions) {
     if (schema === true) {
@@ -93,7 +93,7 @@ export class Interpreter {
    * @param schema to go through
    * @param currentModel the current output
    * @param rootSchema the root schema to use as original schema when merged
-   * @param options to control the interpret process
+   * @param interpreterOptions to control the interpret process
    */
   interpretAndCombineSchema(schema: (Schema | boolean) | undefined, currentModel: CommonModel, rootSchema: Schema, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
     if (typeof schema !== 'object') {return;}
@@ -110,13 +110,12 @@ export class Interpreter {
    * @param schema to go through
    * @param currentModel the current output
    * @param rootSchema the root schema to use as original schema when merged
-   * @param options to control the interpret process
+   * @param interpreterOptions to control the interpret process
    */
   interpretAndCombineMultipleSchemas(schema: (Schema | boolean)[] | undefined, currentModel: CommonModel, rootSchema: Schema, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
-    if (Array.isArray(schema)) {
-      schema.forEach((forEachSchema) => {
-        this.interpretAndCombineSchema(forEachSchema, currentModel, rootSchema, interpreterOptions);
-      });
+    if (!Array.isArray(schema)) { return; }
+    for (const forEachSchema of schema) {
+      this.interpretAndCombineSchema(forEachSchema, currentModel, rootSchema, interpreterOptions);
     }
   }
 }

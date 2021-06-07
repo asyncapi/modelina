@@ -65,7 +65,7 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
     }
 
     const presets = this.options.presets || [];
-    presets.forEach(p => {
+    for (const p of presets) {
       if (isPresetWithOptions(p)) {
         const preset = p.preset[String(presetType)];
         if (preset) {
@@ -77,7 +77,7 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
           filteredPresets.push([preset, undefined]);
         }
       }
-    });
+    }
 
     return filteredPresets;
   }

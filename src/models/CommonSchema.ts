@@ -31,9 +31,9 @@ export class CommonSchema<T> {
       }
       if (schema.properties !== undefined) {
         const properties : {[key: string]: T | boolean} = {};
-        Object.entries(schema.properties).forEach(([propertyName, propertySchema]) => {
+        for (const [propertyName, propertySchema] of Object.entries(schema.properties)) {
           properties[String(propertyName)] = transformationSchemaCallback(propertySchema, seenSchemas);
-        });
+        }
         schema.properties = properties;
       }
       if (typeof schema.additionalProperties === 'object' && 
@@ -43,9 +43,9 @@ export class CommonSchema<T> {
       if (typeof schema.patternProperties === 'object' && 
             schema.patternProperties !== undefined) {
         const patternProperties : {[key: string]: T | boolean} = {};
-        Object.entries(schema.patternProperties).forEach(([pattern, patternSchema]) => {
+        for (const [pattern, patternSchema] of Object.entries(schema.patternProperties)) {
           patternProperties[String(pattern)] = transformationSchemaCallback(patternSchema, seenSchemas);
-        });
+        }
         schema.patternProperties = patternProperties;
       }
       return schema;

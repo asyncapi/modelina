@@ -15,7 +15,7 @@ The order of interpretation:
 - `required` are interpreted as is.
 - `patternProperties` are interpreted as is, where duplicate patterns for the model are [merged](#Merging-models).
 - `additionalProperties` are interpreted as is, where duplicate additionalProperties for the model are [merged](#Merging-models). If the schema does not define `additionalProperties` it defaults to `true` schema.
-- `items` are interpreted as is, where more than 1 item are [merged](#Merging-models).
+- `items` are interpreted as ether tuples or simple array, where more than 1 item are [merged](#Merging-models). Usage of `items` infers `array` model type.
 - `properties` are interpreted as is, where duplicate `properties` for the model are [merged](#Merging-models). Usage of `properties` infers `object` model type.
 - [allOf](#allOf-sub-schemas)
 - `enum` is interpreted as is, where each `enum`. Usage of `enum` infers the enumerator value type to the model, but only if the schema does not have `type` specified.
@@ -54,7 +54,10 @@ If only one side has a property defined, it is used as is, if both have it defin
 - `additionalProperties` if both models contain it the two are recursively merged together. 
 - `patternProperties` if both models contain a pattern the corresponding models are recursively merged together. 
 - `properties` if both models contain the same property the corresponding models are recursively merged together. 
-- `items` if both models contain items they are recursively merged together.
+- `items` are merged together based on a couple of rules:
+    - If both models are simple arrays those item models are merged together as is.
+    - If both models are tuple arrays each tuple model (at specific index) is merged together.
+    - If either one side is different from the other, the tuple schemas is prioritized as it is more restrictive.
 - `types` if both models contain types they are merged together, duplicate types are removed.
 - `enum` if both models contain enums they are merged together, duplicate enums are removed.
 - `required` if both models contain required properties they are merged together, duplicate required properties are removed.
