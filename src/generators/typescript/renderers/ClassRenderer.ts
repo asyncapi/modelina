@@ -56,7 +56,7 @@ export const TS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
   },
   ctor({ renderer, model }) : string {
     const properties = model.properties || {};
-    const assigments = Object.keys(properties).map(property => {
+    const assignments = Object.keys(properties).map(property => {
       property = FormatHelpers.toCamelCase(property);
       return `this._${property} = input.${property};`;
     });
@@ -69,7 +69,7 @@ export const TS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
     return `constructor(input: {
 ${renderer.indent(renderer.renderBlock(ctorProperties))}
 }) {
-${renderer.indent(renderer.renderBlock(assigments))}
+${renderer.indent(renderer.renderBlock(assignments))}
 }`;
   },
   property({ renderer, propertyName, property }): string {
