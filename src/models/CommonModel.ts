@@ -414,7 +414,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
       }
     }
 
-    //mergeFrom is a tuple && mergeTo is not, use as is
+    //mergeFrom is a tuple && mergeTo is not, use mergeFrom items (the tuple is prioritized)
     if (Array.isArray(mergeFrom.items) && !Array.isArray(mergeToItems)) {
       mergeTo.items = mergeFrom.items;
     }
