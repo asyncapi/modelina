@@ -19,7 +19,7 @@ This is done to ensure we can return multiple models for any input to allow for 
 As said the core internal representation of a data model is `CommonModel`. This contains the data definition by using known keywords from JSON Schema, but instead of it representing a validation rules it represent data definition. The explanation for the `CommonModel` properties can be found [here](../API.md#CommonModel).
 
 ## AsyncAPI
-At the moment the library only supports the whole AsyncAPI file as input where it generates models for all defined message payloads. If any other kind of AsyncAPI input is wanted please create a [feature request](https://github.com/asyncapi/generator-model-sdk/issues/new?assignees=&labels=enhancement&template=enhancement.md)!
+At the moment the library only supports the whole AsyncAPI file as input where it generates models for all defined message payloads. If any other kind of AsyncAPI input is wanted please create a [feature request](https://github.com/asyncapi/modelina/issues/new?assignees=&labels=enhancement&template=enhancement.md)!
 
 The AsyncAPI input processor expects that the property `asyncapi` is defined in order to know it should be processed using this.
 

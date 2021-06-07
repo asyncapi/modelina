@@ -11,7 +11,7 @@ The library uses 4 different logging levels:
 This is an example integration of how to add a custom logger to the library:
 
 ```ts
-import {ModelLoggingInterface, Logger} from '@asyncapi/generator-model-sdk'; 
+import {ModelLoggingInterface, Logger} from '@asyncapi/modelina'; 
 const customLogger: ModelLoggingInterface = {
     debug: (msg: string) => { console.log(msg) },
     info: (msg: string) => { console.log(msg) },
