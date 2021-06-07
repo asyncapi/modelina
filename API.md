@@ -40,10 +40,10 @@
 ## Functions
 
 <dl>
-<dt><a href="#interpretAdditionalProperties">interpretAdditionalProperties(schema, model, interpreter, options)</a></dt>
+<dt><a href="#interpretAdditionalProperties">interpretAdditionalProperties(schema, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for JSON Schema draft 7 additionalProperties keyword.</p>
 </dd>
-<dt><a href="#interpretAllOf">interpretAllOf(schema, model, interpreter, options)</a></dt>
+<dt><a href="#interpretAllOf">interpretAllOf(schema, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for JSON Schema draft 7 allOf keyword.</p>
 <p>It either merges allOf schemas into existing model or if allowed, create inheritance.</p>
 </dd>
@@ -53,19 +53,19 @@
 <dt><a href="#interpretEnum">interpretEnum(schema, model)</a></dt>
 <dd><p>Interpreter function for JSON Schema draft 7 enum keyword</p>
 </dd>
-<dt><a href="#interpretItems">interpretItems(schema, model, interpreter, options)</a></dt>
+<dt><a href="#interpretItems">interpretItems(schema, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for JSON Schema draft 7 items keyword.</p>
 </dd>
-<dt><a href="#interpretArrayItems">interpretArrayItems(rootSchema, itemSchemas, model, interpreter, options)</a></dt>
+<dt><a href="#interpretArrayItems">interpretArrayItems(rootSchema, itemSchemas, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Internal function to process all item schemas</p>
 </dd>
-<dt><a href="#interpretNot">interpretNot(schema, model, interpreter, options)</a></dt>
+<dt><a href="#interpretNot">interpretNot(schema, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for JSON Schema draft 7 not keyword.</p>
 </dd>
-<dt><a href="#interpretPatternProperties">interpretPatternProperties(schema, model, interpreter, options)</a></dt>
+<dt><a href="#interpretPatternProperties">interpretPatternProperties(schema, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for JSON Schema draft 7 patternProperties keyword.</p>
 </dd>
-<dt><a href="#interpretProperties">interpretProperties(schema, model, interpreter, options)</a></dt>
+<dt><a href="#interpretProperties">interpretProperties(schema, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for interpreting JSON Schema draft 7 properties keyword.</p>
 </dd>
 <dt><a href="#isModelObject">isModelObject()</a></dt>
@@ -127,7 +127,8 @@ Common internal representation for a model.
         * [.removeType(types)](#CommonModel+removeType)
         * [.addTypes(types)](#CommonModel+addTypes)
         * [.isRequired(propertyName)](#CommonModel+isRequired) ⇒ <code>boolean</code>
-        * [.addItem(itemModel, schema)](#CommonModel+addItem)
+        * [.addItem(itemModel, schema, addAsArray)](#CommonModel+addItem)
+        * [.addItemTuple(tupleModel, schema, index)](#CommonModel+addItemTuple)
         * [.addEnum(enumValue)](#CommonModel+addEnum)
         * [.removeEnum(enumValue)](#CommonModel+removeEnum)
         * [.addProperty(propertyName, propertyModel, schema)](#CommonModel+addProperty)
@@ -203,17 +204,33 @@ Checks if given property name is required in object
 
 <a name="CommonModel+addItem"></a>
 
-### commonModel.addItem(itemModel, schema)
+### commonModel.addItem(itemModel, schema, addAsArray)
 Adds an item to the model.
 
 If items already exist the two are merged.
 
 **Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
 
-| Param | Description |
-| --- | --- |
-| itemModel |  |
-| schema | schema to the corresponding property model |
+| Param |
+| --- |
+| itemModel | 
+| schema | 
+| addAsArray | 
+
+<a name="CommonModel+addItemTuple"></a>
+
+### commonModel.addItemTuple(tupleModel, schema, index)
+Adds a tuple to the model.
+
+If a item already exist it will be merged.
+
+**Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
+
+| Param |
+| --- |
+| tupleModel | 
+| schema | 
+| index | 
 
 <a name="CommonModel+addEnum"></a>
 
@@ -356,7 +373,7 @@ Merge two common model pattern properties together
 <a name="CommonModel.mergeItems"></a>
 
 ### CommonModel.mergeItems(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)
-Merge items together so only one CommonModel remains.
+Merge items together, prefer tuples over simple array since it is more strict.
 
 **Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
 
@@ -648,7 +665,7 @@ Sets the logger to use for the model generation library
 
 <a name="interpretAdditionalProperties"></a>
 
-## interpretAdditionalProperties(schema, model, interpreter, options)
+## interpretAdditionalProperties(schema, model, interpreter, interpreterOptions)
 Interpreter function for JSON Schema draft 7 additionalProperties keyword.
 
 **Kind**: global function  
@@ -658,11 +675,11 @@ Interpreter function for JSON Schema draft 7 additionalProperties keyword.
 | schema |  |
 | model |  |
 | interpreter |  |
-| options | to control the interpret process |
+| interpreterOptions | to control the interpret process |
 
 <a name="interpretAllOf"></a>
 
-## interpretAllOf(schema, model, interpreter, options)
+## interpretAllOf(schema, model, interpreter, interpreterOptions)
 Interpreter function for JSON Schema draft 7 allOf keyword.
 
 It either merges allOf schemas into existing model or if allowed, create inheritance.
@@ -674,7 +691,7 @@ It either merges allOf schemas into existing model or if allowed, create inherit
 | schema |  |
 | model |  |
 | interpreter |  |
-| options | to control the interpret process |
+| interpreterOptions | to control the interpret process |
 
 <a name="interpretConst"></a>
 
@@ -702,7 +719,7 @@ Interpreter function for JSON Schema draft 7 enum keyword
 
 <a name="interpretItems"></a>
 
-## interpretItems(schema, model, interpreter, options)
+## interpretItems(schema, model, interpreter, interpreterOptions)
 Interpreter function for JSON Schema draft 7 items keyword.
 
 **Kind**: global function  
@@ -712,11 +729,11 @@ Interpreter function for JSON Schema draft 7 items keyword.
 | schema |  |
 | model |  |
 | interpreter |  |
-| options | to control the interpret process |
+| interpreterOptions | to control the interpret process |
 
 <a name="interpretArrayItems"></a>
 
-## interpretArrayItems(rootSchema, itemSchemas, model, interpreter, options)
+## interpretArrayItems(rootSchema, itemSchemas, model, interpreter, interpreterOptions)
 Internal function to process all item schemas
 
 **Kind**: global function  
@@ -727,11 +744,11 @@ Internal function to process all item schemas
 | itemSchemas |  |
 | model |  |
 | interpreter |  |
-| options | to control the interpret process |
+| interpreterOptions | to control the interpret process |
 
 <a name="interpretNot"></a>
 
-## interpretNot(schema, model, interpreter, options)
+## interpretNot(schema, model, interpreter, interpreterOptions)
 Interpreter function for JSON Schema draft 7 not keyword.
 
 **Kind**: global function  
@@ -741,11 +758,11 @@ Interpreter function for JSON Schema draft 7 not keyword.
 | schema |  |
 | model |  |
 | interpreter |  |
-| options | to control the interpret process |
+| interpreterOptions | to control the interpret process |
 
 <a name="interpretPatternProperties"></a>
 
-## interpretPatternProperties(schema, model, interpreter, options)
+## interpretPatternProperties(schema, model, interpreter, interpreterOptions)
 Interpreter function for JSON Schema draft 7 patternProperties keyword.
 
 **Kind**: global function  
@@ -755,11 +772,11 @@ Interpreter function for JSON Schema draft 7 patternProperties keyword.
 | schema |  |
 | model |  |
 | interpreter |  |
-| options | to control the interpret process |
+| interpreterOptions | to control the interpret process |
 
 <a name="interpretProperties"></a>
 
-## interpretProperties(schema, model, interpreter, options)
+## interpretProperties(schema, model, interpreter, interpreterOptions)
 Interpreter function for interpreting JSON Schema draft 7 properties keyword.
 
 **Kind**: global function  
@@ -769,7 +786,7 @@ Interpreter function for interpreting JSON Schema draft 7 properties keyword.
 | schema |  |
 | model |  |
 | interpreter |  |
-| options | to control the interpret process |
+| interpreterOptions | to control the interpret process |
 
 <a name="isModelObject"></a>
 
