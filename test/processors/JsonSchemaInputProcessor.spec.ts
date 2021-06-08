@@ -59,21 +59,25 @@ describe('JsonSchemaInputProcessor', () => {
     });
     test('should be able to use $ref', async () => {
       const inputSchemaPath = './JsonSchemaInputProcessor/references.json';
+
       const {commonInputModel, inputSchema} = await getCommonInput(inputSchemaPath);
+
       const expectedResolvedInput = {...inputSchema, properties: { street_address: { type: 'string' }}};
+      const functionArgConvertSchemaToCommonModel = (JsonSchemaInputProcessor.convertSchemaToCommonModel as jest.Mock).mock.calls[0][0];
       expect(commonInputModel).toMatchObject({models: {test: {$id: 'test'}}, originalInput: inputSchema});
       expect(JsonSchemaInputProcessor.convertSchemaToCommonModel).toHaveBeenCalledTimes(1);
-      const functionArgConvertSchemaToCommonModel = (JsonSchemaInputProcessor.convertSchemaToCommonModel as jest.Mock).mock.calls[0][0];
       expect(functionArgConvertSchemaToCommonModel).toMatchObject(expectedResolvedInput);
       expect(postInterpretModel).toHaveBeenCalledTimes(1);
     });
     test('should be able to use $ref when circular', async () => {
       const inputSchemaPath = './JsonSchemaInputProcessor/references_circular.json';
+
       const {commonInputModel, inputSchema} = await getCommonInput(inputSchemaPath);
+
       const expectedResolvedInput = {...inputSchema, definitions: {}, properties: { street_address: { type: 'object', properties: { floor: { type: 'object', properties: {} } }}}};
+      const functionArgConvertSchemaToCommonModel = (JsonSchemaInputProcessor.convertSchemaToCommonModel as jest.Mock).mock.calls[0][0];
       expect(commonInputModel).toMatchObject({models: {test: {$id: 'test'}}, originalInput: inputSchema});
       expect(JsonSchemaInputProcessor.convertSchemaToCommonModel).toHaveBeenCalledTimes(1);
-      const functionArgConvertSchemaToCommonModel = (JsonSchemaInputProcessor.convertSchemaToCommonModel as jest.Mock).mock.calls[0][0];
       expect(functionArgConvertSchemaToCommonModel).toMatchObject(expectedResolvedInput);
       expect(postInterpretModel).toHaveBeenCalledTimes(1);
     });
