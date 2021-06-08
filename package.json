@@ -66,7 +66,7 @@
     "test:blackbox": "cross-env CI=true jest ./test/blackbox",
     "test:watch": "jest --watch",
     "docs": "npm run docs:markdown",
-    "docs:markdown": "jsdoc2md lib/index.js -f lib/**/*.js > API.md",
+    "docs:markdown": "jsdoc2md lib/cjs/index.js -f lib/cjs/**/*.js > API.md",
     "lint": "eslint --max-warnings 0 --config .eslintrc .",
     "lint:fix": "eslint --max-warnings 0 --config .eslintrc . --fix",
     "get:version": "echo $npm_package_version",
