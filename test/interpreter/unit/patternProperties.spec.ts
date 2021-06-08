@@ -3,22 +3,12 @@ import { CommonModel } from '../../../src/models/CommonModel';
 import { Interpreter } from '../../../src/interpreter/Interpreter';
 import interpretPatternProperties from '../../../src/interpreter/InterpretPatternProperties';
 
-let mockedReturnModel: CommonModel | undefined = new CommonModel();
-jest.mock('../../../src/interpreter/Interpreter', () => {
-  return {
-    Interpreter: jest.fn().mockImplementation(() => {
-      return {
-        interpret: jest.fn().mockImplementation(() => {return mockedReturnModel;})
-      };
-    })
-  };
-});
+jest.mock('../../../src/interpreter/Interpreter');
 jest.mock('../../../src/models/CommonModel');
 
 describe('Interpretation of patternProperties', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockedReturnModel = new CommonModel();
   });
   afterAll(() => {
     jest.restoreAllMocks();
@@ -27,13 +17,21 @@ describe('Interpretation of patternProperties', () => {
   test('should not do anything if schema does not contain patternProperties', () => {
     const model = new CommonModel();
     const interpreter = new Interpreter();
+    const mockedReturnModel = new CommonModel();
+    (interpreter.interpret as jest.Mock).mockReturnValue(mockedReturnModel);
+
     interpretPatternProperties({}, model, interpreter);
+
     expect(model.addPatternProperty).not.toHaveBeenCalled();
   });
   test('should not do anything if schema is boolean', () => {
     const model = new CommonModel();
     const interpreter = new Interpreter();
+    const mockedReturnModel = new CommonModel();
+    (interpreter.interpret as jest.Mock).mockReturnValue(mockedReturnModel);
+
     interpretPatternProperties(true, model, interpreter);
+
     expect(model.addPatternProperty).not.toHaveBeenCalled();
   });
 
@@ -42,15 +40,21 @@ describe('Interpretation of patternProperties', () => {
     const model = new CommonModel();
     model.type = 'object';
     const interpreter = new Interpreter();
-    mockedReturnModel = undefined;
+    (interpreter.interpret as jest.Mock).mockReturnValue(undefined);
+
     interpretPatternProperties(schema, model, interpreter);
+
     expect(model.addPatternProperty).not.toHaveBeenCalled();
   });
   test('should use as is', () => {
     const schema: any = { patternProperties: { pattern: { type: 'string' } } };
     const model = new CommonModel();
     const interpreter = new Interpreter();
+    const mockedReturnModel = new CommonModel();
+    (interpreter.interpret as jest.Mock).mockReturnValue(mockedReturnModel);
+
     interpretPatternProperties(schema, model, interpreter);
+    
     expect(interpreter.interpret).toHaveBeenNthCalledWith(1, { type: 'string' }, Interpreter.defaultInterpreterOptions);
     expect(model.addPatternProperty).toHaveBeenNthCalledWith(1, 'pattern', mockedReturnModel, schema);
   });
