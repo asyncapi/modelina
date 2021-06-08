@@ -1,6 +1,6 @@
 import { CommonModel } from '../models';
 import { Logger } from '../utils';
-import { isModelObject } from './Utils';
+import { isEnum, isModelObject } from './Utils';
 /**
  * Post process the interpreted model. By applying the following:
  * - Ensure models are split as required
@@ -21,7 +21,7 @@ export function postInterpretModel(model: CommonModel): CommonModel[] {
  * @param models which have already been split up
  */
 function trySplitModels(model: CommonModel, iteratedModels: CommonModel[]): CommonModel {
-  if (isModelObject(model)) {
+  if (isModelObject(model) || isEnum(model)) {
     Logger.info(`Splitting model ${model.$id || 'any'} since it should be on its own`);
     const switchRootModel = new CommonModel();
     switchRootModel.$ref = model.$id;
