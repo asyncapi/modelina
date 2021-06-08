@@ -38,6 +38,7 @@ This package is under development and it has not reached version 1.0.0 yet, whic
 - [Customization](#customization)
 - [Development](#development)
 - [Contributing](#contributing)
+- [Contributors ✨](#contributors-%E2%9C%A8)
 
 <!-- tocstop -->
 
