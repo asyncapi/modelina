@@ -3,7 +3,33 @@ import { postInterpretModel } from '../../src/interpreter/PostInterpreter';
 import { isModelObject } from '../../src/interpreter/Utils';
 jest.mock('../../src/interpreter/Utils');
 describe('PostInterpreter', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
   describe('postInterpretModel()', () => {
+    test('should handle recursive models', () => {
+      const model = CommonModel.toCommonModel({
+        $id: 'schema1',
+        properties: { }
+      });
+      model.properties!['recursive'] = model;
+      (isModelObject as jest.Mock).mockReturnValue(true);
+
+      const postProcessedModels = postInterpretModel(model);
+
+      const expectedSchema1Model = new CommonModel();
+      expectedSchema1Model.$id = 'schema1';
+      expectedSchema1Model.properties = {
+        recursive: CommonModel.toCommonModel({
+          $ref: 'schema1'
+        })
+      };
+      expect(postProcessedModels).toHaveLength(1);
+      expect(postProcessedModels[0]).toMatchObject(expectedSchema1Model);
+    });
     test('should split models if properties contains model object', () => {
       const rawModel = {
         $id: 'schema1',

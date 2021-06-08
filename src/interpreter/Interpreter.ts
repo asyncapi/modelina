@@ -10,12 +10,10 @@ import interpretPatternProperties from './InterpretPatternProperties';
 import interpretNot from './InterpretNot';
 
 export type InterpreterOptions = {
-  splitModels?: boolean,
   allowInheritance?: boolean
 } 
 export class Interpreter {
   static defaultInterpreterOptions: InterpreterOptions = {
-    splitModels: true,
     allowInheritance: false
   }
 
@@ -97,7 +95,6 @@ export class Interpreter {
    */
   interpretAndCombineSchema(schema: (Schema | boolean) | undefined, currentModel: CommonModel, rootSchema: Schema, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
     if (typeof schema !== 'object') {return;}
-    interpreterOptions = {...interpreterOptions, splitModels: false};
     const model = this.interpret(schema, interpreterOptions);
     if (model !== undefined) {
       CommonModel.mergeCommonModels(currentModel, model, rootSchema);

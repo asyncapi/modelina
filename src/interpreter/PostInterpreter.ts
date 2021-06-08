@@ -6,7 +6,6 @@ import { isEnum, isModelObject } from './Utils';
  * - Ensure models are split as required
  * 
  * @param model 
- * @returns 
  */
 export function postInterpretModel(model: CommonModel): CommonModel[] {
   const iteratedModels: CommonModel[] = [];
@@ -18,7 +17,7 @@ export function postInterpretModel(model: CommonModel): CommonModel[] {
  * This function splits up a model if needed and add the new model to the list of models.
  * 
  * @param model check if it should be split up
- * @param models which have already been split up
+ * @param iteratedModels which have already been split up
  */
 function trySplitModels(model: CommonModel, iteratedModels: CommonModel[]): CommonModel {
   if (isModelObject(model) || isEnum(model)) {
@@ -35,10 +34,12 @@ function trySplitModels(model: CommonModel, iteratedModels: CommonModel[]): Comm
  * Split up all models which should and use ref instead.
  * 
  * @param model to ensure are split
- * @param models which are already split
+ * @param iteratedModels which are already split
  */
 function ensureModelsAreSplit(model: CommonModel, iteratedModels: CommonModel[]): void {
   // eslint-disable-next-line sonarjs/no-collapsible-if
+  if (iteratedModels.includes(model)) { return; }
+
   iteratedModels.push(model);
   if (model.properties) {
     const existingProperties = model.properties;

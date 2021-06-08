@@ -9,11 +9,7 @@ import interpretAdditionalProperties from '../../../src/interpreter/InterpretAdd
 import interpretNot from '../../../src/interpreter/InterpretNot';
 import { CommonModel, Schema } from '../../../src/models';
 
-jest.mock('../../../src/interpreter/Utils', () => {
-  return {
-    interpretName: jest.fn()
-  };
-});
+jest.mock('../../../src/interpreter/Utils');
 jest.mock('../../../src/interpreter/InterpretProperties');
 jest.mock('../../../src/interpreter/InterpretConst');
 jest.mock('../../../src/interpreter/InterpretEnum');
