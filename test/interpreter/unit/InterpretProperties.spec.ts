@@ -2,13 +2,13 @@
 import { CommonModel } from '../../../src/models/CommonModel';
 import { Interpreter } from '../../../src/interpreter/Interpreter';
 import interpretProperties from '../../../src/interpreter/InterpretProperties';
-let interpretedReturnModels = [new CommonModel()];
+let mockedReturnModel: CommonModel | undefined = new CommonModel();
 jest.mock('../../../src/interpreter/Interpreter', () => {
   return {
     Interpreter: jest.fn().mockImplementation(() => {
       return {
         interpret: jest.fn().mockImplementation(() => { 
-          return interpretedReturnModels; 
+          return mockedReturnModel; 
         })
       };
     })
@@ -23,7 +23,7 @@ CommonModel.mergeCommonModels = jest.fn();
 describe('Interpretation of properties', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    interpretedReturnModels = [new CommonModel()];
+    mockedReturnModel = new CommonModel();
   });
   afterAll(() => {
     jest.restoreAllMocks();
@@ -40,7 +40,7 @@ describe('Interpretation of properties', () => {
     const schema: any = { properties: { property1: { type: 'string' } } };
     const model = new CommonModel();
     const interpreter = new Interpreter();
-    interpretedReturnModels.pop();
+    mockedReturnModel = undefined;
     interpretProperties(schema, model, interpreter);
     expect(model.addProperty).not.toHaveBeenCalled();
   });
@@ -54,7 +54,7 @@ describe('Interpretation of properties', () => {
   test('should go trough properties and add it to model', () => {
     const schema: any = { properties: { property1: { type: 'string' } } };
     const interpretedModel = new CommonModel();
-    interpretedReturnModels = [interpretedModel];
+    mockedReturnModel = interpretedModel;
     const model = new CommonModel();
     const interpreter = new Interpreter();
     interpretProperties(schema, model, interpreter);

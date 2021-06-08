@@ -19,7 +19,7 @@ function trySplitModels(model: CommonModel, iteratedModels: CommonModel[]): Comm
     Logger.info(`Splitting model ${model.$id || 'any'} since it should be on its own`);
     const switchRootModel = new CommonModel();
     switchRootModel.$ref = model.$id;
-    iteratedModels.push(model);
+    ensureModelsAreSplit(model, iteratedModels);
     return switchRootModel;
   }
   return model;
@@ -33,6 +33,7 @@ function trySplitModels(model: CommonModel, iteratedModels: CommonModel[]): Comm
  */
 function ensureModelsAreSplit(model: CommonModel, iteratedModels: CommonModel[] = []): void {
   // eslint-disable-next-line sonarjs/no-collapsible-if
+  iteratedModels.push(model);
   if (model.properties) {
     const existingProperties = model.properties;
     for (const [prop, propSchema] of Object.entries(existingProperties)) {
@@ -49,15 +50,10 @@ function ensureModelsAreSplit(model: CommonModel, iteratedModels: CommonModel[] 
     model.additionalProperties = trySplitModels(model.additionalProperties, iteratedModels);
   }
   if (model.items) {
-    let existingItems = model.items;
-    if (Array.isArray(existingItems)) {
-      for (const [itemIndex, itemModel] of existingItems.entries()) {
-        existingItems[Number(itemIndex)] = trySplitModels(itemModel, iteratedModels);
-      }
-    } else {
-      existingItems = trySplitModels(existingItems, iteratedModels);
+    const existingItems = Array.isArray(model.items) ? model.items : [model.items];
+    for (const [itemIndex, itemModel] of existingItems.entries()) {
+      existingItems[Number(itemIndex)] = trySplitModels(itemModel, iteratedModels);
     }
     model.items = existingItems;
   }
-  iteratedModels.push(model);
 }

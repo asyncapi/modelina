@@ -7,12 +7,12 @@ import { Logger } from '../../../src/utils';
 jest.mock('../../../src/interpreter/Utils');
 jest.mock('../../../src/utils');
 let interpreterOptions = Interpreter.defaultInterpreterOptions;
-let interpretedReturnModels = [new CommonModel()];
+let mockedReturnModel: CommonModel | undefined = new CommonModel();
 jest.mock('../../../src/interpreter/Interpreter', () => {
   return {
     Interpreter: jest.fn().mockImplementation(() => {
       return {
-        interpret: jest.fn().mockImplementation(() => {return interpretedReturnModels;})
+        interpret: jest.fn().mockImplementation(() => {return mockedReturnModel;})
       };
     })
   };
@@ -21,7 +21,7 @@ describe('Interpretation of not', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     (inferTypeFromValue as jest.Mock).mockImplementation(() => {return;});
-    interpretedReturnModels = [new CommonModel()];
+    mockedReturnModel = new CommonModel();
     interpreterOptions = Interpreter.defaultInterpreterOptions;
   });
   afterAll(() => {
@@ -41,7 +41,7 @@ describe('Interpretation of not', () => {
     const schema: any = { not: { } };
     const model = new CommonModel();
     const interpreter = new Interpreter();
-    interpretedReturnModels.pop();
+    mockedReturnModel = undefined;
     interpretNot(schema, model, interpreter, interpreterOptions);
     expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });
@@ -58,7 +58,7 @@ describe('Interpretation of not', () => {
     test('should double negate enum', () => {
       const schema: any = { not: { enum: ['value'], not: { enum: ['value'] } }};
       const notModel = new CommonModel();
-      interpretedReturnModels = [notModel];
+      mockedReturnModel = notModel;
       const model = new CommonModel();
       model.enum = ['value'];
       const interpreter = new Interpreter();
@@ -71,7 +71,7 @@ describe('Interpretation of not', () => {
     test('should double negate types', () => {
       const schema: any = { not: { type: 'string', not: { type: 'string' }}};
       const notModel = new CommonModel();
-      interpretedReturnModels = [notModel];
+      mockedReturnModel = notModel;
       const model = new CommonModel();
       model.type = 'string';
       const interpreter = new Interpreter();
@@ -86,7 +86,7 @@ describe('Interpretation of not', () => {
       const schema: any = { not: { enum: ['value'] }};
       const notModel = new CommonModel();
       notModel.enum = schema.not.enum;
-      interpretedReturnModels = [notModel];
+      mockedReturnModel = notModel;
       const model = new CommonModel();
       model.enum = ['value'];
       const interpreter = new Interpreter();
@@ -99,7 +99,7 @@ describe('Interpretation of not', () => {
       const schema: any = { not: { enum: ['value'] }};
       const notModel = new CommonModel();
       notModel.enum = schema.not.enum;
-      interpretedReturnModels = [notModel];
+      mockedReturnModel = notModel;
       const model = new CommonModel();
       model.enum = ['value', 'value2'];
       const interpreter = new Interpreter();
@@ -112,7 +112,7 @@ describe('Interpretation of not', () => {
       const schema: any = { not: { enum: ['value'] }};
       const notModel = new CommonModel();
       notModel.enum = schema.not.enum;
-      interpretedReturnModels = [notModel];
+      mockedReturnModel = notModel;
       const model = new CommonModel();
       model.enum = ['value2'];
       const interpreter = new Interpreter();
@@ -125,7 +125,7 @@ describe('Interpretation of not', () => {
       const schema: any = { not: { enum: ['value', 'value2'] }};
       const notModel = new CommonModel();
       notModel.enum = schema.not.enum;
-      interpretedReturnModels = [notModel];
+      mockedReturnModel = notModel;
       const model = new CommonModel();
       model.enum = ['value', 'value2', 'value3'];
       const interpreter = new Interpreter();
@@ -140,7 +140,7 @@ describe('Interpretation of not', () => {
       const schema: any = { not: { type: 'string' }};
       const notModel = new CommonModel();
       notModel.type = schema.not.type;
-      interpretedReturnModels = [notModel];
+      mockedReturnModel = notModel;
       const model = new CommonModel();
       model.type = 'string';
       const interpreter = new Interpreter();
@@ -153,7 +153,7 @@ describe('Interpretation of not', () => {
       const schema: any = { not: { type: 'string' }};
       const notModel = new CommonModel();
       notModel.type = schema.not.type;
-      interpretedReturnModels = [notModel];
+      mockedReturnModel = notModel;
       const model = new CommonModel();
       model.type = ['string', 'number'];
       const interpreter = new Interpreter();
@@ -166,7 +166,7 @@ describe('Interpretation of not', () => {
       const schema: any = { not: { type: 'string' }};
       const notModel = new CommonModel();
       notModel.type = schema.not.type;
-      interpretedReturnModels = [notModel];
+      mockedReturnModel = notModel;
       const model = new CommonModel();
       model.type = 'number';
       const interpreter = new Interpreter();
@@ -179,7 +179,7 @@ describe('Interpretation of not', () => {
       const schema: any = { not: { type: ['string', 'number'] }};
       const notModel = new CommonModel();
       notModel.type = schema.not.type;
-      interpretedReturnModels = [notModel];
+      mockedReturnModel = notModel;
       const model = new CommonModel();
       model.type = ['number', 'string', 'integer'];
       const interpreter = new Interpreter();

@@ -5,12 +5,12 @@ import { isModelObject } from '../../../src/interpreter/Utils';
 import interpretAllOf from '../../../src/interpreter/InterpretAllOf';
 
 let interpreterOptions = Interpreter.defaultInterpreterOptions;
-let interpretedReturnModels = [new CommonModel()];
+let mockedReturnModel: CommonModel | undefined = new CommonModel();
 jest.mock('../../../src/interpreter/Interpreter', () => {
   return {
     Interpreter: jest.fn().mockImplementation(() => {
       return {
-        interpret: jest.fn().mockImplementation(() => {return interpretedReturnModels;}),
+        interpret: jest.fn().mockImplementation(() => {return mockedReturnModel;}),
         interpretAndCombineSchema: jest.fn()
       };
     })
@@ -34,7 +34,7 @@ describe('Interpretation of allOf', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     interpreterOptions = {allowInheritance: true};
-    interpretedReturnModels = [new CommonModel()];
+    mockedReturnModel = new CommonModel();
     mockedIsModelObjectReturn = false;
   });
   afterAll(() => {
@@ -63,7 +63,7 @@ describe('Interpretation of allOf', () => {
   test('should ignore model if interpreter cannot interpret schema', () => {
     const model = new CommonModel();
     const schema = { allOf: [{}] };
-    interpretedReturnModels.pop();
+    mockedReturnModel = undefined;
     const interpreter = new Interpreter();
     interpretAllOf(schema, model, interpreter, interpreterOptions);
     expect(interpreter.interpretAndCombineSchema).not.toHaveBeenCalled();
@@ -80,12 +80,12 @@ describe('Interpretation of allOf', () => {
   test('should extend model', () => {
     const model = new CommonModel();
     const schema = { allOf: [{type: 'object', $id: 'test'}] };
-    interpretedReturnModels[0].$id = 'test';
+    (mockedReturnModel as CommonModel).$id = 'test';
     mockedIsModelObjectReturn = true;
     const interpreter = new Interpreter();
     interpretAllOf(schema, model, interpreter, interpreterOptions);
     expect(interpreter.interpretAndCombineSchema).not.toHaveBeenCalled();
     expect(isModelObject).toHaveBeenCalled();
-    expect(model.addExtendedModel).toHaveBeenCalledWith(interpretedReturnModels[0]);
+    expect(model.addExtendedModel).toHaveBeenCalledWith(mockedReturnModel);
   });
 });

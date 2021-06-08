@@ -30,8 +30,8 @@ function interpretArrayItems(rootSchema: Schema, itemSchemas: (Schema | boolean)
   if (Array.isArray(itemSchemas)) {
     for (const [index, itemSchema] of itemSchemas.entries()) {
       const itemModel = interpreter.interpret(itemSchema, interpreterOptions);
-      if (itemModel.length > 0) {
-        model.addItemTuple(itemModel[0], rootSchema, index);
+      if (itemModel !== undefined) {
+        model.addItemTuple(itemModel, rootSchema, index);
       }
     }
   } else {
