@@ -7,7 +7,6 @@ const interpreterOptionsAllowInheritance = {allowInheritance: true};
 jest.mock('../../../src/interpreter/Interpreter');
 jest.mock('../../../src/models/CommonModel');
 jest.mock('../../../src/interpreter/Utils');
-
 CommonModel.mergeCommonModels = jest.fn();
 /**
  * Some of these test are purely theoretical and have little if any merit 
@@ -24,7 +23,6 @@ describe('Interpretation of allOf', () => {
   test('should not do anything if schema does not contain allOf', () => {
     const model = new CommonModel();
     const interpreter = new Interpreter();
-
     (interpreter.interpret as jest.Mock).mockReturnValue(new CommonModel());
     (isModelObject as jest.Mock).mockReturnValue(false);
 
@@ -38,7 +36,6 @@ describe('Interpretation of allOf', () => {
     const model = new CommonModel();
     const schema = { allOf: [{}] };
     const interpreter = new Interpreter();
-
     (interpreter.interpret as jest.Mock).mockReturnValue(new CommonModel());
     (isModelObject as jest.Mock).mockReturnValue(false);
 
@@ -53,7 +50,6 @@ describe('Interpretation of allOf', () => {
     const model = new CommonModel();
     const schema = { allOf: [{}] };
     const interpreter = new Interpreter();
-
     (interpreter.interpret as jest.Mock).mockReturnValue(undefined);
     (isModelObject as jest.Mock).mockReturnValue(false);
 
@@ -66,7 +62,6 @@ describe('Interpretation of allOf', () => {
     const model = new CommonModel();
     const schema = { allOf: [] };
     const interpreter = new Interpreter();
-    
     (interpreter.interpret as jest.Mock).mockReturnValue(new CommonModel());
     (isModelObject as jest.Mock).mockReturnValue(false);
 
@@ -81,7 +76,6 @@ describe('Interpretation of allOf', () => {
     const interpreter = new Interpreter();
     const interpretedModel = new CommonModel();
     interpretedModel.$id = 'test';
-    
     (isModelObject as jest.Mock).mockReturnValue(true);
     (interpreter.interpret as jest.Mock).mockReturnValue(interpretedModel);
 

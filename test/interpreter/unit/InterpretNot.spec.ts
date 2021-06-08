@@ -4,9 +4,9 @@ import { Interpreter } from '../../../src/interpreter/Interpreter';
 import interpretNot from '../../../src/interpreter/InterpretNot';
 import {inferTypeFromValue} from '../../../src/interpreter/Utils';
 import { Logger } from '../../../src/utils';
+let interpreterOptions = Interpreter.defaultInterpreterOptions;
 jest.mock('../../../src/interpreter/Utils');
 jest.mock('../../../src/utils');
-let interpreterOptions = Interpreter.defaultInterpreterOptions;
 jest.mock('../../../src/interpreter/Interpreter');
 describe('Interpretation of not', () => {
   beforeEach(() => {
