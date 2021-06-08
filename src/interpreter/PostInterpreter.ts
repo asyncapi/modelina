@@ -6,7 +6,6 @@ import { isModelObject } from './Utils';
  * - Ensure models are split as required
  * 
  * @param model 
- * @returns 
  */
 export function postInterpretModel(model: CommonModel): CommonModel[] {
   const iteratedModels: CommonModel[] = [];
