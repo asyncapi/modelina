@@ -17,8 +17,7 @@ export default function interpretNot(schema: Schema, model: CommonModel, interpr
   if (typeof schema.not === 'object') {
     const notSchema = schema.not;
     const newInterpreterOptions: InterpreterOptions = {
-      ...interpreterOptions, 
-      splitModels: false,
+      ...interpreterOptions,
       allowInheritance: false
     };
     const notModel = interpreter.interpret(notSchema, newInterpreterOptions);
