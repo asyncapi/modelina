@@ -1,7 +1,13 @@
 import { CommonModel } from '../models';
 import { Logger } from '../utils';
 import { isModelObject } from './Utils';
-
+/**
+ * Post process the interpreted model. By applying the following:
+ * - Ensure models are split as required
+ * 
+ * @param model 
+ * @returns 
+ */
 export function postInterpretModel(model: CommonModel): CommonModel[] {
   const iteratedModels: CommonModel[] = [];
   ensureModelsAreSplit(model, iteratedModels);
@@ -31,7 +37,7 @@ function trySplitModels(model: CommonModel, iteratedModels: CommonModel[]): Comm
  * @param model to ensure are split
  * @param models which are already split
  */
-function ensureModelsAreSplit(model: CommonModel, iteratedModels: CommonModel[] = []): void {
+function ensureModelsAreSplit(model: CommonModel, iteratedModels: CommonModel[]): void {
   // eslint-disable-next-line sonarjs/no-collapsible-if
   iteratedModels.push(model);
   if (model.properties) {
@@ -50,9 +56,13 @@ function ensureModelsAreSplit(model: CommonModel, iteratedModels: CommonModel[] 
     model.additionalProperties = trySplitModels(model.additionalProperties, iteratedModels);
   }
   if (model.items) {
-    const existingItems = Array.isArray(model.items) ? model.items : [model.items];
-    for (const [itemIndex, itemModel] of existingItems.entries()) {
-      existingItems[Number(itemIndex)] = trySplitModels(itemModel, iteratedModels);
+    let existingItems = model.items;
+    if (Array.isArray(existingItems)) {
+      for (const [itemIndex, itemModel] of existingItems.entries()) {
+        existingItems[Number(itemIndex)] = trySplitModels(itemModel, iteratedModels);
+      }
+    } else {
+      existingItems = trySplitModels(existingItems, iteratedModels);
     }
     model.items = existingItems;
   }

@@ -3,28 +3,11 @@ import { CommonModel } from '../../../src/models/CommonModel';
 import { Interpreter } from '../../../src/interpreter/Interpreter';
 import { isModelObject } from '../../../src/interpreter/Utils';
 import interpretAllOf from '../../../src/interpreter/InterpretAllOf';
-
-let interpreterOptions = Interpreter.defaultInterpreterOptions;
-let mockedReturnModel: CommonModel | undefined = new CommonModel();
-jest.mock('../../../src/interpreter/Interpreter', () => {
-  return {
-    Interpreter: jest.fn().mockImplementation(() => {
-      return {
-        interpret: jest.fn().mockImplementation(() => {return mockedReturnModel;}),
-        interpretAndCombineSchema: jest.fn()
-      };
-    })
-  };
-});
+const interpreterOptionsAllowInheritance = {allowInheritance: true};
+jest.mock('../../../src/interpreter/Interpreter');
 jest.mock('../../../src/models/CommonModel');
-let mockedIsModelObjectReturn = false;
-jest.mock('../../../src/interpreter/Utils', () => {
-  return {
-    isModelObject: jest.fn().mockImplementation(() => {
-      return mockedIsModelObjectReturn;
-    })
-  };
-});
+jest.mock('../../../src/interpreter/Utils');
+
 CommonModel.mergeCommonModels = jest.fn();
 /**
  * Some of these test are purely theoretical and have little if any merit 
@@ -33,9 +16,6 @@ CommonModel.mergeCommonModels = jest.fn();
 describe('Interpretation of allOf', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    interpreterOptions = {allowInheritance: true};
-    mockedReturnModel = new CommonModel();
-    mockedIsModelObjectReturn = false;
   });
   afterAll(() => {
     jest.restoreAllMocks();
@@ -44,7 +24,12 @@ describe('Interpretation of allOf', () => {
   test('should not do anything if schema does not contain allOf', () => {
     const model = new CommonModel();
     const interpreter = new Interpreter();
+
+    (interpreter.interpret as jest.Mock).mockReturnValue(new CommonModel());
+    (isModelObject as jest.Mock).mockReturnValue(false);
+
     interpretAllOf({}, model, interpreter);
+
     expect(interpreter.interpretAndCombineSchema).not.toHaveBeenCalled();
     expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });
@@ -52,20 +37,28 @@ describe('Interpretation of allOf', () => {
   test('should combine schemas if inheritance is disabled', () => {
     const model = new CommonModel();
     const schema = { allOf: [{}] };
-    interpreterOptions.allowInheritance = false;
     const interpreter = new Interpreter();
-    interpretAllOf(schema, model, interpreter, interpreterOptions);
-    expect(interpreter.interpret).toHaveBeenNthCalledWith(1, {}, interpreterOptions);
-    expect(interpreter.interpretAndCombineSchema).toHaveBeenNthCalledWith(1, schema.allOf[0], model, schema, interpreterOptions);
+
+    (interpreter.interpret as jest.Mock).mockReturnValue(new CommonModel());
+    (isModelObject as jest.Mock).mockReturnValue(false);
+
+    interpretAllOf(schema, model, interpreter, {allowInheritance: false});
+
+    expect(interpreter.interpret).toHaveBeenNthCalledWith(1, {}, {allowInheritance: false});
+    expect(interpreter.interpretAndCombineSchema).toHaveBeenNthCalledWith(1, schema.allOf[0], model, schema, {allowInheritance: false});
     expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });
 
   test('should ignore model if interpreter cannot interpret schema', () => {
     const model = new CommonModel();
     const schema = { allOf: [{}] };
-    mockedReturnModel = undefined;
     const interpreter = new Interpreter();
-    interpretAllOf(schema, model, interpreter, interpreterOptions);
+
+    (interpreter.interpret as jest.Mock).mockReturnValue(undefined);
+    (isModelObject as jest.Mock).mockReturnValue(false);
+
+    interpretAllOf(schema, model, interpreter, interpreterOptionsAllowInheritance);
+
     expect(interpreter.interpretAndCombineSchema).not.toHaveBeenCalled();
     expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });
@@ -73,19 +66,29 @@ describe('Interpretation of allOf', () => {
     const model = new CommonModel();
     const schema = { allOf: [] };
     const interpreter = new Interpreter();
-    interpretAllOf(schema, model, interpreter, interpreterOptions);
+    
+    (interpreter.interpret as jest.Mock).mockReturnValue(new CommonModel());
+    (isModelObject as jest.Mock).mockReturnValue(false);
+
+    interpretAllOf(schema, model, interpreter, interpreterOptionsAllowInheritance);
+
     expect(interpreter.interpretAndCombineSchema).not.toHaveBeenCalled();
     expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });
   test('should extend model', () => {
     const model = new CommonModel();
     const schema = { allOf: [{type: 'object', $id: 'test'}] };
-    (mockedReturnModel as CommonModel).$id = 'test';
-    mockedIsModelObjectReturn = true;
     const interpreter = new Interpreter();
-    interpretAllOf(schema, model, interpreter, interpreterOptions);
+    const interpretedModel = new CommonModel();
+    interpretedModel.$id = 'test';
+    
+    (isModelObject as jest.Mock).mockReturnValue(true);
+    (interpreter.interpret as jest.Mock).mockReturnValue(interpretedModel);
+
+    interpretAllOf(schema, model, interpreter, interpreterOptionsAllowInheritance);
+
     expect(interpreter.interpretAndCombineSchema).not.toHaveBeenCalled();
     expect(isModelObject).toHaveBeenCalled();
-    expect(model.addExtendedModel).toHaveBeenCalledWith(mockedReturnModel);
+    expect(model.addExtendedModel).toHaveBeenCalledWith(interpretedModel);
   });
 });
