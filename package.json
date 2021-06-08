@@ -21,8 +21,9 @@
   "author": {
     "name": "The AsyncAPI maintainers"
   },
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "types": "lib/types/index.d.ts",
   "files": [
     "/lib",
     "./README.md",
@@ -57,6 +58,10 @@
   "scripts": {
     "start": "tsc --watch",
     "build": "tsc",
+    "build:prod": "npm run build:cjs && npm run build:esm && npm run build:types",
+    "build:cjs": "tsc",
+    "build:esm": "tsc --module ESNext --outDir ./lib/esm",
+    "build:types": "tsc --declaration --emitDeclarationOnly --declarationMap --outDir ./lib/types",
     "test": "cross-env CI=true jest --coverage --testPathIgnorePatterns ./test/blackbox",
     "test:blackbox": "cross-env CI=true jest ./test/blackbox",
     "test:watch": "jest --watch",
@@ -68,7 +73,7 @@
     "get:name": "echo $npm_package_name",
     "release": "semantic-release",
     "generate:readme:toc": "markdown-toc -i README.md",
-    "generate:assets": "npm run build && npm run docs",
+    "generate:assets": "npm run build:prod && npm run docs && npm run generate:readme:toc",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION",
     "prepublishOnly": "npm run build"
   },

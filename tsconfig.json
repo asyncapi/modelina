@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "outDir": "./lib",
+    "outDir": "./lib/cjs",
     "baseUrl": "./src",
-    "declaration": true,
+    "declaration": false,
     "target": "es6",
     "lib": [
       "esnext"
@@ -15,7 +15,7 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "module": "commonjs",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true
