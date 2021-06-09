@@ -10,7 +10,7 @@ describe('Dummy JSON Schema file', () => {
       const generator = new JavaGenerator();
       const generatedModels = await generateModels(fileToGenerate, generator);
       expect(generatedModels).not.toHaveLength(0);
-      const renderOutputPath = path.resolve(__dirname, './output/java');
+      const renderOutputPath = path.resolve(__dirname, './output/java/class');
       await renderModelsToSeparateFiles(generatedModels, renderOutputPath);
       const compileCommand = `javac ${path.resolve(renderOutputPath, '*.java')}`;
       await execCommand(compileCommand);
@@ -22,9 +22,9 @@ describe('Dummy JSON Schema file', () => {
       const generator = new TypeScriptGenerator();
       const generatedModels = await generateModels(fileToGenerate, generator);
       expect(generatedModels).not.toHaveLength(0);
-      const renderOutputPath = path.resolve(__dirname, './output/ts/output.ts');
+      const renderOutputPath = path.resolve(__dirname, './output/ts/class/output.ts');
       await renderModels(generatedModels, renderOutputPath);
-      const transpiledOutputPath = path.resolve(__dirname, './output/ts/output.js');
+      const transpiledOutputPath = path.resolve(__dirname, './output/ts/class/output.js');
       const transpileAndRunCommand = `tsc -t es5 ${renderOutputPath} && node ${transpiledOutputPath}`;
       await execCommand(transpileAndRunCommand);
     });
@@ -33,9 +33,9 @@ describe('Dummy JSON Schema file', () => {
       const generator = new TypeScriptGenerator({modelType: 'interface'});
       const generatedModels = await generateModels(fileToGenerate, generator);
       expect(generatedModels).not.toHaveLength(0);
-      const renderOutputPath = path.resolve(__dirname, './output/ts/output.ts');
+      const renderOutputPath = path.resolve(__dirname, './output/ts/interface/output.ts');
       await renderModels(generatedModels, renderOutputPath);
-      const transpiledOutputPath = path.resolve(__dirname, './output/ts/output.js');
+      const transpiledOutputPath = path.resolve(__dirname, './output/ts/interface/output.js');
       const transpileAndRunCommand = `tsc -t es5 ${renderOutputPath} && node ${transpiledOutputPath}`;
       await execCommand(transpileAndRunCommand);
     });
@@ -46,7 +46,7 @@ describe('Dummy JSON Schema file', () => {
       const generator = new JavaScriptGenerator();
       const generatedModels = await generateModels(fileToGenerate, generator);
       expect(generatedModels).not.toHaveLength(0);
-      const renderOutputPath = path.resolve(__dirname, './output/js/output.js');
+      const renderOutputPath = path.resolve(__dirname, './output/js/class/output.js');
       await renderModels(generatedModels, renderOutputPath);
       const transpileAndRunCommand = `node ${renderOutputPath}`;
       await execCommand(transpileAndRunCommand);
