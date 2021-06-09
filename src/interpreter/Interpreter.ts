@@ -1,5 +1,5 @@
 import { CommonModel, Schema } from '../models';
-import { interpretName } from './Utils';
+import { interpretName, isEnum, isModelObject } from './Utils';
 import interpretProperties from './InterpretProperties';
 import interpretAllOf from './InterpretAllOf';
 import interpretConst from './InterpretConst';
@@ -60,7 +60,7 @@ export class Interpreter {
       }
 
       //All schemas of type object MUST have ids
-      if (model.type !== undefined && model.type.includes('object')) {
+      if (isModelObject(model) || isEnum(model)) {
         model.$id = interpretName(schema) || `anonymSchema${this.anonymCounter++}`;
       } else if (schema.$id !== undefined) {
         model.$id = interpretName(schema);
