@@ -4,7 +4,6 @@ import { CommonModel } from '../models/CommonModel';
  * Check if CommonModel is an enum
  * 
  * @param model 
- * @returns 
  */
 export function isEnum(model: CommonModel) : boolean {
   if (model.enum !== undefined) {
@@ -16,7 +15,6 @@ export function isEnum(model: CommonModel) : boolean {
 /**
  * Check if CommonModel is a separate model or a simple model.
  * @param model 
- * @returns 
  */
 export function isModelObject(model: CommonModel) : boolean {
   if (model.type !== undefined) {
@@ -33,7 +31,6 @@ export function isModelObject(model: CommonModel) : boolean {
  * Infers the JSON Schema type from value
  * 
  * @param value to infer type of
- * @returns 
  */
 export function inferTypeFromValue(value: any): string {
   if (Array.isArray(value)) {
@@ -53,7 +50,6 @@ export function inferTypeFromValue(value: any): string {
  * Find the name for simplified version of schema
  * 
  * @param schema to find the name
- * @returns 
  */
 export function interpretName(schema: any | boolean): string | undefined {
   if (schema && typeof schema === 'object') {
