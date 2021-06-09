@@ -1,5 +1,5 @@
 import {Interpreter} from '../../../src/interpreter/Interpreter';
-import {isModelObject, interpretName} from '../../../src/interpreter/Utils';
+import {interpretName} from '../../../src/interpreter/Utils';
 import interpretProperties from '../../../src/interpreter/InterpretProperties';
 import interpretConst from '../../../src/interpreter/InterpretConst';
 import interpretEnum from '../../../src/interpreter/InterpretEnum';
@@ -9,15 +9,7 @@ import interpretAdditionalProperties from '../../../src/interpreter/InterpretAdd
 import interpretNot from '../../../src/interpreter/InterpretNot';
 import { CommonModel, Schema } from '../../../src/models';
 
-let mockedIsModelObjectReturn = false;
-jest.mock('../../../src/interpreter/Utils', () => {
-  return {
-    interpretName: jest.fn(),
-    isModelObject: jest.fn().mockImplementation(() => {
-      return mockedIsModelObjectReturn;
-    })
-  };
-});
+jest.mock('../../../src/interpreter/Utils');
 jest.mock('../../../src/interpreter/InterpretProperties');
 jest.mock('../../../src/interpreter/InterpretConst');
 jest.mock('../../../src/interpreter/InterpretEnum');
@@ -33,73 +25,62 @@ CommonModel.mergeCommonModels = jest.fn();
 describe('Interpreter', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockedIsModelObjectReturn = false;
   });
   afterAll(() => {
     jest.restoreAllMocks();
   });
-  test('should return empty models if false schema', () => {
+  test('should return empty model if false schema', () => {
     const schema = false;
     const interpreter = new Interpreter();
-    const models = interpreter.interpret(schema);
-    expect(models).toHaveLength(0);
+    const model = interpreter.interpret(schema);
+    expect(model).toBeUndefined();
   });
   test('should inherit types from schema', () => {
     const schema = {
       type: ['string', 'number']
     };
     const interpreter = new Interpreter();
-    const models = interpreter.interpret(schema);
-    expect(models).toHaveLength(1);
-    expect(models[0].type).toEqual(['string', 'number']);
+    const model = interpreter.interpret(schema);
+    expect(model).not.toBeUndefined();
+    expect(model?.type).toEqual(['string', 'number']);
   });
   test('should inherit type from schema', () => {
     const schema = {
       type: 'string'
     };
     const interpreter = new Interpreter();
-    const models = interpreter.interpret(schema);
-    expect(models).toHaveLength(1);
-    expect(models[0].type).toEqual('string');
+    const model = interpreter.interpret(schema);
+    expect(model).not.toBeUndefined();
+    expect(model?.type).toEqual('string');
   });
   test('should return model with all types if true schema', () => {
     const schema = true;
     const interpreter = new Interpreter();
-    const models = interpreter.interpret(schema);
-    expect(models).toHaveLength(1);
-    expect(models[0].type).toEqual(['object', 'string', 'number', 'array', 'boolean', 'null', 'integer']);
+    const model = interpreter.interpret(schema);
+    expect(model).not.toBeUndefined();
+    expect(model?.type).toEqual(['object', 'string', 'number', 'array', 'boolean', 'null', 'integer']);
   });
   test('should set id of model if object', () => {
     const schema = { type: 'object' };
     const interpreter = new Interpreter();
-    const models = interpreter.interpret(schema);
-    expect(models).toHaveLength(1);
+    const model = interpreter.interpret(schema);
+    expect(model).not.toBeUndefined();
     expect(interpretName).toHaveBeenNthCalledWith(1, schema);
-    expect(models[0].$id).toEqual('anonymSchema1');
+    expect(model?.$id).toEqual('anonymSchema1');
   });
   test('should set custom id of model if object', () => {
     const schema = { $id: 'test' };
     const interpreter = new Interpreter();
-    const models = interpreter.interpret(schema);
-    expect(models).toHaveLength(1);
+    const model = interpreter.interpret(schema);
+    expect(model).not.toBeUndefined();
     expect(interpretName).toHaveBeenNthCalledWith(1, schema);
   });
   test('should set required list of properties', () => {
     const schema = { required: ['test'] };
     const interpreter = new Interpreter();
-    const models = interpreter.interpret(schema);
-    expect(models).toHaveLength(1);
-    expect(models[0].required).toEqual(schema.required);
-  });
-  test('should split models', () => {
-    const schema = { 
-      $id: 'root',
-      properties: { }
-    };
-    mockedIsModelObjectReturn = true;
-    const interpreter = new Interpreter();
-    const models = interpreter.interpret(schema);
-    expect(models).toHaveLength(1);
+    const model = interpreter.interpret(schema);
+    expect(model).not.toBeUndefined();
+    expect(model?.required).toEqual(schema.required);
   });
 
   test('should support recursive schemas', () => {
@@ -107,9 +88,9 @@ describe('Interpreter', () => {
     const schema2 = { anyOf: [schema1] };
     schema1.anyOf = [schema2];
     const interpreter = new Interpreter();
-    const models = interpreter.interpret(schema1);
-    expect(models).toHaveLength(1);
-    expect(models[0]).toEqual({originalSchema: schema1});
+    const model = interpreter.interpret(schema1);
+    expect(model).not.toBeUndefined();
+    expect(model).toEqual({originalSchema: schema1});
   });
   describe('combineSchemas', () => {
     test('should combine single schema with model', () => {
@@ -133,75 +114,6 @@ describe('Interpreter', () => {
       expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, model, expectedSimplifiedModel, schema);
     });
   });
-  describe('ensureModelsAreSplit', () => {
-    test('should split models if properties contains model object', () => {
-      mockedIsModelObjectReturn = true;
-      const propertyModel = new CommonModel();
-      propertyModel.type = 'object';
-      propertyModel.$id = 'test';
-      const model = new CommonModel();
-      model.properties = {
-        test: propertyModel
-      };
-      const interpreter = new Interpreter();
-      interpreter.ensureModelsAreSplit(model);
-      expect(isModelObject).toHaveBeenNthCalledWith(1, propertyModel);
-      expect(model.properties.test.$ref).toEqual('test');
-    });
-    test('should split models if items contains model object', () => {
-      mockedIsModelObjectReturn = true;
-      const itemModel = new CommonModel();
-      itemModel.type = 'object';
-      itemModel.$id = 'test';
-      const model = new CommonModel();
-      model.items = itemModel;
-      const interpreter = new Interpreter();
-      interpreter.ensureModelsAreSplit(model);
-      expect(isModelObject).toHaveBeenNthCalledWith(1, itemModel);
-      expect(model.items.$ref).toEqual('test');
-    });
-    test('should split models if patternProperties contains model object', () => {
-      mockedIsModelObjectReturn = true;
-      const patternModel = new CommonModel();
-      patternModel.type = 'object';
-      patternModel.$id = 'test';
-      const model = new CommonModel();
-      model.patternProperties = {
-        testPattern: patternModel
-      };
-      const interpreter = new Interpreter();
-      interpreter.ensureModelsAreSplit(model);
-      expect(isModelObject).toHaveBeenNthCalledWith(1, patternModel);
-      expect(model.patternProperties.testPattern.$ref).toEqual('test');
-    });
-    test('should split models if additionalProperties contains model object', () => {
-      mockedIsModelObjectReturn = true;
-      const additionalPropertyModel = new CommonModel();
-      additionalPropertyModel.type = 'object';
-      additionalPropertyModel.$id = 'test';
-      const model = new CommonModel();
-      model.additionalProperties = additionalPropertyModel;
-      const interpreter = new Interpreter();
-      interpreter.ensureModelsAreSplit(model);
-      expect(isModelObject).toHaveBeenNthCalledWith(1, additionalPropertyModel);
-      expect(model.additionalProperties.$ref).toEqual('test');
-    });
-    test('should not split models if it is not considered model object', () => {
-      mockedIsModelObjectReturn = false;
-      const propertyModel = new CommonModel();
-      propertyModel.type = 'object';
-      propertyModel.$id = 'test';
-      const model = new CommonModel();
-      model.properties = {
-        test: propertyModel
-      };
-      const interpreter = new Interpreter();
-      interpreter.ensureModelsAreSplit(model);
-      expect(isModelObject).toHaveBeenNthCalledWith(1, propertyModel);
-      expect(model.properties.test).toEqual(propertyModel);
-    });
-  });
-
   test('should always try to interpret properties', () => {
     const schema = {};
     const interpreter = new Interpreter();
@@ -249,9 +161,9 @@ describe('Interpreter', () => {
   test('should support primitive roots', () => {
     const schema = { type: 'string' };
     const interpreter = new Interpreter();
-    const actualModels = interpreter.interpret(schema);
-    expect(actualModels).not.toBeUndefined();
-    expect(actualModels[0]).toEqual({
+    const actualModel = interpreter.interpret(schema);
+    expect(actualModel).not.toBeUndefined();
+    expect(actualModel).toEqual({
       originalSchema: {
         type: 'string'
       },

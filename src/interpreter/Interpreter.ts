@@ -1,5 +1,5 @@
 import { CommonModel, Schema } from '../models';
-import { interpretName, isModelObject } from './Utils';
+import { interpretName } from './Utils';
 import interpretProperties from './InterpretProperties';
 import interpretAllOf from './InterpretAllOf';
 import interpretConst from './InterpretConst';
@@ -7,56 +7,41 @@ import interpretEnum from './InterpretEnum';
 import interpretAdditionalProperties from './InterpretAdditionalProperties';
 import interpretItems from './InterpretItems';
 import interpretPatternProperties from './InterpretPatternProperties';
-import { Logger } from '../utils';
 import interpretNot from './InterpretNot';
 
 export type InterpreterOptions = {
-  splitModels?: boolean,
   allowInheritance?: boolean
 } 
 export class Interpreter {
   static defaultInterpreterOptions: InterpreterOptions = {
-    splitModels: true,
     allowInheritance: false
   }
 
   private anonymCounter = 1;
   private seenSchemas: Map<Schema | boolean, CommonModel> = new Map();
-  private iteratedModels: Record<string, CommonModel> = {};
   
   /**
    * Transforms a schema into instances of CommonModel by processing all JSON Schema draft 7 keywords and infers the model definition.
-   *  
-   * length == 0 means no model can be generated from the schema
-   * Index 0 will always be the root schema CommonModel representation.
-   * Index > 0 will always be the separated models that the interpreter determines are fit to be on their own.
    * 
    * @param schema
    * @param interpreterOptions to control the interpret process
    */
-  interpret(schema: Schema | boolean, options: InterpreterOptions = Interpreter.defaultInterpreterOptions): CommonModel[] {
+  interpret(schema: Schema | boolean, options: InterpreterOptions = Interpreter.defaultInterpreterOptions): CommonModel | undefined {
     if (this.seenSchemas.has(schema)) {
       const cachedModel = this.seenSchemas.get(schema); 
       if (cachedModel !== undefined) {
-        return [cachedModel, ...Object.values(this.iteratedModels)];
+        return cachedModel;
       }
     }
     //If it is a false validation schema return no CommonModel
     if (schema === false) {
-      return [];
+      return undefined;
     } 
     const model = new CommonModel();
     model.originalSchema = Schema.toSchema(schema);
     this.seenSchemas.set(schema, model);
     this.interpretSchema(model, schema, options);
-    const modelsToReturn = Object.values(this.iteratedModels);
-    if (options.splitModels === true) {
-      this.ensureModelsAreSplit(model);
-      if (isModelObject(model)) {
-        this.iteratedModels[String(model.$id)] = model;
-      }
-    }
-    return [model, ...modelsToReturn];
+    return model;
   }
 
   /**
@@ -110,10 +95,9 @@ export class Interpreter {
    */
   interpretAndCombineSchema(schema: (Schema | boolean) | undefined, currentModel: CommonModel, rootSchema: Schema, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
     if (typeof schema !== 'object') {return;}
-    interpreterOptions = {...interpreterOptions, splitModels: false};
-    const models = this.interpret(schema, interpreterOptions);
-    if (models.length > 0) {
-      CommonModel.mergeCommonModels(currentModel, models[0], rootSchema);
+    const model = this.interpret(schema, interpreterOptions);
+    if (model !== undefined) {
+      CommonModel.mergeCommonModels(currentModel, model, rootSchema);
     }
   }
 
@@ -129,56 +113,6 @@ export class Interpreter {
     if (!Array.isArray(schema)) { return; }
     for (const forEachSchema of schema) {
       this.interpretAndCombineSchema(forEachSchema, currentModel, rootSchema, interpreterOptions);
-    }
-  }
-
-  /**
-  * This function splits up a model if it is determined it should.
-  * 
-  * @param model check if it should be split up
-  */
-  private trySplitModels(model: CommonModel): CommonModel {
-    if (isModelObject(model)) {
-      Logger.info(`Splitting model ${model.$id || 'any'} since it should be on its own`);
-      const switchRootModel = new CommonModel();
-      switchRootModel.$ref = model.$id;
-      this.iteratedModels[String(model.$id)] = model;
-      return switchRootModel;
-    }
-    return model;
-  }
-
-  /**
-   * Split up all model which should be and use $ref instead.
-   * 
-   * @param model
-   */
-  ensureModelsAreSplit(model: CommonModel): void {
-    if (model.properties) {
-      const existingProperties = model.properties;
-      for (const [property, propertyModel] of Object.entries(existingProperties)) {
-        model.properties[String(property)] = this.trySplitModels(propertyModel);
-      }
-    }
-    if (model.patternProperties) {
-      const existingPatternProperties = model.patternProperties;
-      for (const [pattern, patternModel] of Object.entries(existingPatternProperties)) {
-        model.patternProperties[String(pattern)] = this.trySplitModels(patternModel);
-      }
-    }
-    if (model.additionalProperties) {
-      model.additionalProperties = this.trySplitModels(model.additionalProperties);
-    }
-    if (model.items) {
-      let existingItems = model.items;
-      if (Array.isArray(existingItems)) {
-        for (const [itemIndex, itemModel] of existingItems.entries()) {
-          existingItems[Number(itemIndex)] = this.trySplitModels(itemModel);
-        }
-      } else {
-        existingItems = this.trySplitModels(existingItems);
-      }
-      model.items = existingItems;
     }
   }
 }

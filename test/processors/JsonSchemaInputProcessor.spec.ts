@@ -3,7 +3,9 @@ import * as path from 'path';
 import { JsonSchemaInputProcessor } from '../../src/processors/JsonSchemaInputProcessor';
 import { CommonModel, Schema } from '../../src/models';
 import { Logger } from '../../src/utils';
+import { postInterpretModel } from '../../src/interpreter/PostInterpreter';
 jest.mock('../../src/interpreter/Interpreter');
+jest.mock('../../src/interpreter/PostInterpreter');
 jest.mock('../../src/utils/LoggingInterface');
 jest.spyOn(JsonSchemaInputProcessor, 'convertSchemaToCommonModel');
 
@@ -12,9 +14,14 @@ jest.mock('../../src/interpreter/Interpreter', () => {
   return {
     Interpreter: jest.fn().mockImplementation(() => {
       return {
-        interpret: jest.fn().mockReturnValue(mockedReturnModels)
+        interpret: jest.fn().mockImplementation(() => {return mockedReturnModels[0];})
       };
     })
+  };
+});
+jest.mock('../../src/interpreter/PostInterpreter', () => {
+  return {
+    postInterpretModel: jest.fn().mockImplementation(() => {return mockedReturnModels;})
   };
 });
 describe('JsonSchemaInputProcessor', () => {
@@ -48,24 +55,31 @@ describe('JsonSchemaInputProcessor', () => {
       expect(JsonSchemaInputProcessor.convertSchemaToCommonModel).toHaveBeenCalledTimes(1);
       const functionArgConvertSchemaToCommonModel = (JsonSchemaInputProcessor.convertSchemaToCommonModel as jest.Mock).mock.calls[0][0];
       expect(functionArgConvertSchemaToCommonModel).toMatchObject(inputSchema);
+      expect(postInterpretModel).toHaveBeenCalledTimes(1);
     });
     test('should be able to use $ref', async () => {
       const inputSchemaPath = './JsonSchemaInputProcessor/references.json';
+
       const {commonInputModel, inputSchema} = await getCommonInput(inputSchemaPath);
+
       const expectedResolvedInput = {...inputSchema, properties: { street_address: { type: 'string' }}};
+      const functionArgConvertSchemaToCommonModel = (JsonSchemaInputProcessor.convertSchemaToCommonModel as jest.Mock).mock.calls[0][0];
       expect(commonInputModel).toMatchObject({models: {test: {$id: 'test'}}, originalInput: inputSchema});
       expect(JsonSchemaInputProcessor.convertSchemaToCommonModel).toHaveBeenCalledTimes(1);
-      const functionArgConvertSchemaToCommonModel = (JsonSchemaInputProcessor.convertSchemaToCommonModel as jest.Mock).mock.calls[0][0];
       expect(functionArgConvertSchemaToCommonModel).toMatchObject(expectedResolvedInput);
+      expect(postInterpretModel).toHaveBeenCalledTimes(1);
     });
     test('should be able to use $ref when circular', async () => {
       const inputSchemaPath = './JsonSchemaInputProcessor/references_circular.json';
+
       const {commonInputModel, inputSchema} = await getCommonInput(inputSchemaPath);
+
       const expectedResolvedInput = {...inputSchema, definitions: {}, properties: { street_address: { type: 'object', properties: { floor: { type: 'object', properties: {} } }}}};
+      const functionArgConvertSchemaToCommonModel = (JsonSchemaInputProcessor.convertSchemaToCommonModel as jest.Mock).mock.calls[0][0];
       expect(commonInputModel).toMatchObject({models: {test: {$id: 'test'}}, originalInput: inputSchema});
       expect(JsonSchemaInputProcessor.convertSchemaToCommonModel).toHaveBeenCalledTimes(1);
-      const functionArgConvertSchemaToCommonModel = (JsonSchemaInputProcessor.convertSchemaToCommonModel as jest.Mock).mock.calls[0][0];
       expect(functionArgConvertSchemaToCommonModel).toMatchObject(expectedResolvedInput);
+      expect(postInterpretModel).toHaveBeenCalledTimes(1);
     });
     test('should fail correctly when reference cannot be resolved', async () => {
       const inputSchemaPath = './JsonSchemaInputProcessor/wrong_references.json';

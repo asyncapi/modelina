@@ -17,15 +17,13 @@ export default function interpretNot(schema: Schema, model: CommonModel, interpr
   if (typeof schema.not === 'object') {
     const notSchema = schema.not;
     const newInterpreterOptions: InterpreterOptions = {
-      ...interpreterOptions, 
-      splitModels: false,
+      ...interpreterOptions,
       allowInheritance: false
     };
-    const interpretedModels = interpreter.interpret(notSchema, newInterpreterOptions);
-    if (interpretedModels.length > 0) {
-      const interpretedModel = interpretedModels[0];
-      if (interpretedModel.type !== undefined) {model.removeType(interpretedModel.type);}
-      if (interpretedModel.enum !== undefined) {model.removeEnum(interpretedModel.enum);}
+    const notModel = interpreter.interpret(notSchema, newInterpreterOptions);
+    if (notModel !== undefined) {
+      if (notModel.type !== undefined) {model.removeType(notModel.type);}
+      if (notModel.enum !== undefined) {model.removeEnum(notModel.enum);}
     }
   } else if (typeof schema.not === 'boolean') {
     Logger.warn(`Encountered boolean not schema for model ${model.$id}. This schema are not applied!`, schema);

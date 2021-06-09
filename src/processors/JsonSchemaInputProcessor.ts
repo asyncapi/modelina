@@ -3,6 +3,7 @@ import $RefParser from '@apidevtools/json-schema-ref-parser';
 import path from 'path';
 import { Schema, CommonModel, CommonInputModel} from '../models';
 import { Logger } from '../utils';
+import { postInterpretModel } from '../interpreter/PostInterpreter';
 import { Interpreter } from '../interpreter/Interpreter';
 
 /**
@@ -212,9 +213,11 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * @param schema to simplify to common model
    */
   static convertSchemaToCommonModel(schema: Schema | boolean): Record<string, CommonModel> {
-    const interpreter = new Interpreter();
-    const commonModels = interpreter.interpret(schema);
     const commonModelsMap: Record<string, CommonModel> = {};
+    const interpreter = new Interpreter();
+    const model = interpreter.interpret(schema);
+    if (model === undefined) { return commonModelsMap; }
+    const commonModels = postInterpretModel(model);
     for (const commonModel of commonModels) {
       if (commonModel.$id) {
         if (commonModelsMap[commonModel.$id] !== undefined) {
