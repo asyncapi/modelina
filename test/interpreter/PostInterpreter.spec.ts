@@ -1,6 +1,6 @@
 import { CommonModel } from '../../src';
 import { postInterpretModel } from '../../src/interpreter/PostInterpreter';
-import { isModelObject } from '../../src/interpreter/Utils';
+import { isEnum, isModelObject } from '../../src/interpreter/Utils';
 jest.mock('../../src/interpreter/Utils');
 describe('PostInterpreter', () => {
   beforeEach(() => {
@@ -33,20 +33,17 @@ describe('PostInterpreter', () => {
     test('should split models on enums', () => {
       const rawModel = {
         $id: 'schema1',
-        enum: {
+        properties: {
           testProp: {
-            type: 'array',
-            items: {
-              $id: 'schema2',
-              type: 'object'
-            }
+            $id: 'schema2',
+            enum: [
+              'test'
+            ]
           }
         }
       };
       const model = CommonModel.toCommonModel(rawModel);
-      (isModelObject as jest.Mock)
-        .mockReturnValueOnce(false)
-        .mockReturnValueOnce(true);
+      (isEnum as jest.Mock).mockReturnValue(true);
 
       const postProcessedModels = postInterpretModel(model);
 
@@ -54,26 +51,19 @@ describe('PostInterpreter', () => {
         $id: 'schema1',
         properties: {
           testProp: {
-            type: 'array',
-            items: {
-              $ref: 'schema2'
-            }
+            $ref: 'schema2'
           }
         }
       });
       const expectedSchema2Model = CommonModel.toCommonModel({
         $id: 'schema2',
-        type: 'object'
+        enum: [
+          'test'
+        ]
       });
 
       expect(postProcessedModels).toHaveLength(2);
-      expect(isModelObject).toHaveBeenNthCalledWith(1, expect.objectContaining({
-        type: 'array'
-      }));
-      expect(isModelObject).toHaveBeenNthCalledWith(2, {
-        $id: 'schema2',
-        type: 'object'
-      });
+      expect(isEnum).toHaveBeenNthCalledWith(1, expectedSchema2Model);
       expect(postProcessedModels[0]).toMatchObject(expectedSchema1Model);
       expect(postProcessedModels[1]).toMatchObject(expectedSchema2Model);
     });

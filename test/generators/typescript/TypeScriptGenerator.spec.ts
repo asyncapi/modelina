@@ -13,18 +13,19 @@ describe('TypeScriptGenerator', () => {
         state: { type: 'string', enum: ['Texas', 'Alabama', 'California', 'other'] }
       }
     };
-    const expected = `export class Address {
-  private _state?: "Texas" | "Alabama" | "California" | "other";
+    const expected = `
+    'export class Address {
+  private _state?: State;
 
   constructor(input: {
-    state?: "Texas" | "Alabama" | "California" | "other",
+    state?: State,
   }) {
     this._state = input.state;
   }
 
-  get state(): "Texas" | "Alabama" | "California" | "other" | undefined { return this._state; }
-  set state(state: "Texas" | "Alabama" | "California" | "other" | undefined) { this._state = state; }
-}`;
+  get state(): State | undefined { return this._state; }
+  set state(state: State | undefined) { this._state = state; }
+}'`;
 
     const inputModel = await generator.process(doc);
     const model = inputModel.models['_address'];

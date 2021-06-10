@@ -1,5 +1,5 @@
 import {Interpreter} from '../../../src/interpreter/Interpreter';
-import {interpretName} from '../../../src/interpreter/Utils';
+import {interpretName, isEnum, isModelObject} from '../../../src/interpreter/Utils';
 import interpretProperties from '../../../src/interpreter/InterpretProperties';
 import interpretConst from '../../../src/interpreter/InterpretConst';
 import interpretEnum from '../../../src/interpreter/InterpretEnum';
@@ -60,10 +60,20 @@ describe('Interpreter', () => {
     expect(model).not.toBeUndefined();
     expect(model?.type).toEqual(['object', 'string', 'number', 'array', 'boolean', 'null', 'integer']);
   });
+  test('should set id of model if enum', () => {
+    const schema = { enum: ['value'] };
+    const interpreter = new Interpreter();
+    (isEnum as jest.Mock).mockReturnValue(true);
+    const model = interpreter.interpret(schema);
+    expect(model).not.toBeUndefined();
+    expect(interpretName).toHaveBeenNthCalledWith(1, schema);
+    expect(model?.$id).toEqual('anonymSchema1');
+  });
   test('should set id of model if object', () => {
     const schema = { type: 'object' };
     const interpreter = new Interpreter();
     const model = interpreter.interpret(schema);
+    (isModelObject as jest.Mock).mockReturnValue(true);
     expect(model).not.toBeUndefined();
     expect(interpretName).toHaveBeenNthCalledWith(1, schema);
     expect(model?.$id).toEqual('anonymSchema1');
