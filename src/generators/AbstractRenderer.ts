@@ -11,6 +11,7 @@ export abstract class AbstractRenderer<O extends CommonGeneratorOptions = Common
     protected readonly presets: Array<[Preset, unknown]>,
     protected readonly model: CommonModel, 
     protected readonly inputModel: CommonInputModel,
+    public dependencies: string[] = []
   ) {}
 
   renderLine(line: string): string {
@@ -36,15 +37,18 @@ export abstract class AbstractRenderer<O extends CommonGeneratorOptions = Common
     return this.runPreset('self');
   }
 
+  runDependenciesPreset(): Promise<string[]> {
+    return this.runPreset<string[]>('dependencies');
+  }
+
   runAdditionalContentPreset(): Promise<string> {
     return this.runPreset('additionalContent');
   }
-
-  async runPreset(
+  async runPreset<RT = string>(
     functionName: string,
     params: Record<string, unknown> = {},
-  ): Promise<string> {
-    let content = '';
+  ): Promise<RT> {
+    let content;
     for (const [preset, options] of this.presets) {
       if (typeof preset[String(functionName)] === 'function') {
         content = await preset[String(functionName)]({ 

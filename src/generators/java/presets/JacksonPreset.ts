@@ -5,9 +5,11 @@ import { JavaPreset } from '../JavaPreset';
  * 
  * @implements {JavaPreset}
  */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 export const JAVA_JACKSON_PRESET: JavaPreset = {
   class: {
+    dependencies() {
+      return ['com.fasterxml.jackson.annotations.*'];
+    },
     getter({ renderer, propertyName, content }) {
       const annotation = renderer.renderAnnotation('JsonProperty', `"${propertyName}"`);
       return renderer.renderBlock([annotation, content]);

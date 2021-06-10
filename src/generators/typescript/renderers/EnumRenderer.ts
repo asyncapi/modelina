@@ -12,8 +12,10 @@ export class EnumRenderer extends TypeScriptRenderer {
   async defaultSelf(): Promise<string> {
     const content = [
       await this.renderItems(),
-      await this.runAdditionalContentPreset(),
+      await this.runAdditionalContentPreset()
     ];
+
+    this.dependencies = await this.runDependenciesPreset();
 
     const formattedName = this.model.$id && FormatHelpers.toPascalCase(this.model.$id);
     return `enum ${formattedName} {

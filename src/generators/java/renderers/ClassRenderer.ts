@@ -17,6 +17,8 @@ export class ClassRenderer extends JavaRenderer {
       await this.runAdditionalContentPreset(),
     ];
 
+    this.dependencies = await this.runDependenciesPreset();
+    
     const formattedName = this.model.$id && FormatHelpers.toPascalCase(this.model.$id);
     return `public class ${formattedName} {
 ${this.indent(this.renderBlock(content, 2))}

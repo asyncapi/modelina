@@ -14,8 +14,10 @@ export class ClassRenderer extends TypeScriptRenderer {
       await this.renderProperties(),
       await this.runCtorPreset(),
       await this.renderAccessors(),
-      await this.runAdditionalContentPreset(),
+      await this.runAdditionalContentPreset()
     ];
+
+    this.dependencies = await this.runDependenciesPreset();
 
     const formattedName = this.model.$id && FormatHelpers.toPascalCase(this.model.$id);
     return `class ${formattedName} {

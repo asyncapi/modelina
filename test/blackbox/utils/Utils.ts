@@ -40,12 +40,16 @@ export async function execCommand(command: string) : Promise<void> {
  * @param generatedModels to write to file
  * @param outputPath absolute path to output directory
  */
-export async function renderModelsToSeparateFiles(generatedModels: OutputModel[], outputPath: string): Promise<void> {
+export async function renderJavaModelsToSeparateFiles(generatedModels: OutputModel[], outputPath: string): Promise<void> {
   await fs.rm(outputPath, { recursive: true, force: true });
   await fs.mkdir(outputPath, { recursive: true });
   for (const outputModel of generatedModels) {
     const outputFilePath = path.resolve(outputPath, `${FormatHelpers.toPascalCase(outputModel.model.$id || 'undefined')}.java`);
-    await fs.writeFile(outputFilePath, outputModel.result);
+    const outputContent = `
+${outputModel.dependencies.map((dependency) => { return `import ${dependency}`; }).join('\n')}
+${outputModel.result}
+`;
+    await fs.writeFile(outputFilePath, outputContent);
   }
 }
 
