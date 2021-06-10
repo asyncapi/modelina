@@ -15,6 +15,7 @@ export interface CommonPreset<R extends AbstractRenderer, O extends object = any
   self?: (args: PresetArgs<R, O>) => Promise<string> | string;
   additionalContent?: (args: PresetArgs<R, O>) => Promise<string> | string;
 }
+
 export enum PropertyType {
   property,
   additionalProperty,

@@ -2,7 +2,6 @@ import { JavaScriptRenderer } from '../JavaScriptRenderer';
 
 import { CommonModel, ClassPreset } from '../../../models';
 import { FormatHelpers } from '../../../helpers';
-import { findPropertyNameForAdditionalProperties } from '../../../helpers/NameHelper';
 
 /**
  * Renderer for JavaScript's `class` type
