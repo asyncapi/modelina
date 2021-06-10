@@ -48,7 +48,8 @@ describe('TypeScriptGenerator', () => {
         house_number: { type: 'number' },
         marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
         members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
-        array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
+        tuple_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
+        array_type: { type: 'array', items: { type: 'string' } },
       },
       required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
     };
@@ -59,7 +60,8 @@ describe('TypeScriptGenerator', () => {
   private _houseNumber: number;
   private _marriage?: boolean;
   private _members?: string | number | boolean;
-  private _arrayType: Array<string | number>;
+  private _tupleType?: [string, number];
+  private _arrayType: Array<string>;
 
   private _additionalProperties?: Map<string, object | string | number | Array<unknown> | boolean | null | number>;
 
@@ -70,7 +72,8 @@ describe('TypeScriptGenerator', () => {
     houseNumber: number,
     marriage?: boolean,
     members?: string | number | boolean,
-    arrayType: Array<string | number>,
+    tupleType?: [string, number],
+    arrayType: Array<string>,
   }) {
     this._streetName = input.streetName;
     this._city = input.city;
@@ -78,6 +81,7 @@ describe('TypeScriptGenerator', () => {
     this._houseNumber = input.houseNumber;
     this._marriage = input.marriage;
     this._members = input.members;
+    this._tupleType = input.tupleType;
     this._arrayType = input.arrayType;
   }
 
@@ -99,8 +103,11 @@ describe('TypeScriptGenerator', () => {
   get members(): string | number | boolean | undefined { return this._members; }
   set members(members: string | number | boolean | undefined) { this._members = members; }
 
-  get arrayType(): Array<string | number> { return this._arrayType; }
-  set arrayType(arrayType: Array<string | number>) { this._arrayType = arrayType; }
+  get tupleType(): [string, number] | undefined { return this._tupleType; }
+  set tupleType(tupleType: [string, number] | undefined) { this._tupleType = tupleType; }
+
+  get arrayType(): Array<string> { return this._arrayType; }
+  set arrayType(arrayType: Array<string>) { this._arrayType = arrayType; }
 }`;
 
     const inputModel = await generator.process(doc);
@@ -166,7 +173,8 @@ ${content}`;
         house_number: { type: 'number' },
         marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
         members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
-        array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
+        tuple_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
+        array_type: { type: 'array', items: { type: 'string' } },
       },
       required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
     };
@@ -177,8 +185,9 @@ ${content}`;
   houseNumber: number;
   marriage?: boolean;
   members?: string | number | boolean;
-  arrayType: Array<string | number>;
-
+  tupleType?: [string, number];
+  arrayType: Array<string>;
+  
   additionalProperties?: Map<string, object | string | number | Array<unknown> | boolean | null | number>;
 }`;
 

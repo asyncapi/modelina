@@ -8,15 +8,16 @@ import { Interpreter, InterpreterOptions } from './Interpreter';
  * @param schema
  * @param model
  * @param interpreter
+ * @param interpreterOptions to control the interpret process
  */
 export default function interpretProperties(schema: Schema, model: CommonModel, interpreter : Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
   if (schema.properties === undefined) {return;}
   model.addTypes('object');
   
   for (const [propertyName, propertySchema] of Object.entries(schema.properties)) {
-    const propertyModels = interpreter.interpret(propertySchema, interpreterOptions);
-    if (propertyModels.length > 0) {
-      model.addProperty(propertyName, propertyModels[0], schema);
+    const propertyModel = interpreter.interpret(propertySchema, interpreterOptions);
+    if (propertyModel !== undefined) {
+      model.addProperty(propertyName, propertyModel, schema);
     }
   }
 }

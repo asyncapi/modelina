@@ -28,7 +28,7 @@ Each language has different model types, which results in different implementabl
 Below is a custom preset written for TypeScript language, which adds a description to each interface's property and to the model itself as a JavaScript comment.
 
 ```ts
-import { TypeScriptGenerator } from '@asyncapi/generator-model-sdk';
+import { TypeScriptGenerator } from '@asyncapi/modelina';
 
 function renderDesc({ renderer, content, model }) {
   const desc = model.getFromSchema('description');

@@ -9,6 +9,7 @@ import { Interpreter, InterpreterOptions } from './Interpreter';
  * @param schema 
  * @param model 
  * @param interpreter 
+ * @param interpreterOptions to control the interpret process
  */
 export default function interpretItems(schema: Schema, model: CommonModel, interpreter : Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
   if (schema.items === undefined) {return;}
@@ -23,16 +24,20 @@ export default function interpretItems(schema: Schema, model: CommonModel, inter
  * @param itemSchemas 
  * @param model 
  * @param interpreter 
+ * @param interpreterOptions to control the interpret process
  */
 function interpretArrayItems(rootSchema: Schema, itemSchemas: (Schema | boolean)[] | (Schema | boolean), model: CommonModel, interpreter : Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
   if (Array.isArray(itemSchemas)) {
-    for (const itemSchema of itemSchemas) {
-      interpretArrayItems(rootSchema, itemSchema, model, interpreter, interpreterOptions);
+    for (const [index, itemSchema] of itemSchemas.entries()) {
+      const itemModel = interpreter.interpret(itemSchema, interpreterOptions);
+      if (itemModel !== undefined) {
+        model.addItemTuple(itemModel, rootSchema, index);
+      }
     }
   } else {
-    const itemModels = interpreter.interpret(itemSchemas);
-    if (itemModels.length > 0) {
-      model.addItem(itemModels[0], rootSchema);
+    const itemModel = interpreter.interpret(itemSchemas, interpreterOptions);
+    if (itemModel !== undefined) {
+      model.addItem(itemModel, rootSchema);
     }
   }
 }

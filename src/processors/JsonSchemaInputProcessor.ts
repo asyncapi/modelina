@@ -1,9 +1,10 @@
 import { AbstractInputProcessor } from './AbstractInputProcessor';
-import { simplify } from '../simplification/Simplifier';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import path from 'path';
 import { Schema, CommonModel, CommonInputModel} from '../models';
 import { Logger } from '../utils';
+import { postInterpretModel } from '../interpreter/PostInterpreter';
+import { Interpreter } from '../interpreter/Interpreter';
 
 /**
  * Class for processing JSON Schema
@@ -158,34 +159,34 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
 
     if (schema.properties !== undefined) {
       const properties : {[key: string]: Schema | boolean} = {};
-      Object.entries(schema.properties).forEach(([propertyName, propertySchema]) => {
+      for (const [propertyName, propertySchema] of Object.entries(schema.properties)) {
         properties[String(propertyName)] = this.reflectSchemaNames(propertySchema, namesStack, this.ensureNamePattern(name, propertyName));
-      });
+      }
       schema.properties = properties;
     }
     if (schema.dependencies !== undefined) {
       const dependencies: { [key: string]: Schema | boolean | string[] } = {};
-      Object.entries(schema.dependencies).forEach(([dependencyName, dependency]) => {
+      for (const [dependencyName, dependency] of Object.entries(schema.dependencies)) {
         if (typeof dependency === 'object' && !Array.isArray(dependency)) {
           dependencies[String(dependencyName)] = this.reflectSchemaNames(dependency, namesStack, this.ensureNamePattern(name, dependencyName));
         } else {
           dependencies[String(dependencyName)] = dependency as string[];
         }
-      });
+      }
       schema.dependencies = dependencies;
     }
     if (schema.patternProperties !== undefined) {
       const patternProperties: { [key: string]: Schema | boolean } = {};
-      Object.entries(schema.patternProperties).forEach(([patternPropertyName, patternProperty], idx) => {
+      for (const [idx, [patternPropertyName, patternProperty]] of Object.entries(Object.entries(schema.patternProperties))) {
         patternProperties[String(patternPropertyName)] = this.reflectSchemaNames(patternProperty, namesStack, this.ensureNamePattern(name, 'pattern_property', idx));
-      });
+      }
       schema.patternProperties = patternProperties;
     }
     if (schema.definitions !== undefined) {
       const definitions: { [key: string]: Schema | boolean } = {};
-      Object.entries(schema.definitions).forEach(([definitionName, definition]) => {
+      for (const [definitionName, definition] of Object.entries(schema.definitions)) {
         definitions[String(definitionName)] = this.reflectSchemaNames(definition, namesStack, this.ensureNamePattern(name, definitionName));
-      });
+      }
       schema.definitions = definitions;
     }
 
@@ -212,18 +213,21 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * @param schema to simplify to common model
    */
   static convertSchemaToCommonModel(schema: Schema | boolean): Record<string, CommonModel> {
-    const commonModels = simplify(schema);
     const commonModelsMap: Record<string, CommonModel> = {};
-    commonModels.forEach(value => {
-      if (value.$id) {
-        if (commonModelsMap[value.$id] !== undefined) {
-          Logger.warn(`Overwriting existing model with $id ${value.$id}, are there two models with the same id present?`, value);
+    const interpreter = new Interpreter();
+    const model = interpreter.interpret(schema);
+    if (model === undefined) { return commonModelsMap; }
+    const commonModels = postInterpretModel(model);
+    for (const commonModel of commonModels) {
+      if (commonModel.$id) {
+        if (commonModelsMap[commonModel.$id] !== undefined) {
+          Logger.warn(`Overwriting existing model with $id ${commonModel.$id}, are there two models with the same id present?`, commonModel);
         }
-        commonModelsMap[value.$id] = value;
+        commonModelsMap[commonModel.$id] = commonModel;
       } else {
-        Logger.debug('Model did not have $id, ignoring.', value);
+        Logger.warn('Model did not have $id, ignoring.', commonModel);
       }
-    });
+    }
     return commonModelsMap;
   }
 }

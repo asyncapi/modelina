@@ -204,10 +204,10 @@ describe('Schema', () => {
       expect(typeof d).toEqual('object');
       expect(d.allOf).not.toBeUndefined();
       expect(Array.isArray(d.allOf)).toEqual(true);
-      d.allOf!.forEach((s, i) => {
+      for (const [i, s] of d.allOf!.entries()) {
         expect(s.constructor.name).toEqual('Schema');
         expect(s).toEqual((doc.allOf as Schema[])[i]);
-      });
+      }
     });
   });
 
@@ -218,10 +218,10 @@ describe('Schema', () => {
       expect(typeof d).toEqual('object');
       expect(d.oneOf).not.toBeUndefined();
       expect(Array.isArray(d.oneOf)).toEqual(true);
-      d.oneOf!.forEach((s, i) => {
+      for (const [i, s] of d.oneOf!.entries()) {
         expect(s.constructor.name).toEqual('Schema');
         expect(s).toEqual((doc.oneOf as Schema[])[i]);
-      });
+      }
     });
   });
 
@@ -232,10 +232,10 @@ describe('Schema', () => {
       expect(typeof d).toEqual('object');
       expect(d.anyOf).not.toBeUndefined();
       expect(Array.isArray(d.anyOf)).toEqual(true);
-      d.anyOf!.forEach((s, i) => {
+      for (const [i, s] of d.anyOf!.entries()) {
         expect(s.constructor.name).toEqual('Schema');
         expect(s).toEqual((doc.anyOf as Schema[])[i]);
-      });
+      }
     });
   });
 
@@ -266,10 +266,10 @@ describe('Schema', () => {
       expect(typeof d).toEqual('object');
       expect(d.items).not.toBeUndefined();
       expect(Array.isArray(d.items)).toEqual(true);
-      (d.items as Schema[]).forEach((s, i) => {
+      for (const [i, s] of (d.items as Schema[]).entries()) {
         expect(s.constructor.name).toEqual('Schema');
         expect(s).toEqual((doc.items as Schema[])[i]);
-      });
+      }
     });
   });
 
@@ -280,11 +280,11 @@ describe('Schema', () => {
       expect(typeof d).toEqual('object');
       expect(typeof d.properties).toEqual('object');
       expect(d.properties).not.toBeUndefined();
-      Object.keys(d.properties!).forEach(key => {
+      for (const key of Object.keys(d.properties!)) {
         const s = d.properties![key];
         expect(s.constructor.name).toEqual('Schema');
         expect((s as Schema).type).toEqual('string');
-      });
+      }
     });
   });
 
@@ -347,11 +347,11 @@ describe('Schema', () => {
       expect(typeof d).toEqual('object');
       expect(d.patternProperties).not.toBeUndefined();
       expect(typeof d.patternProperties).toEqual('object');
-      Object.keys(d.patternProperties!).forEach(key => {
+      for (const key of Object.keys(d.patternProperties!)) {
         const s = d.patternProperties![key];
         expect(s.constructor.name).toEqual('Schema');
         expect((s as Schema).type).toEqual('string');
-      });
+      }
     });
   });
 
@@ -410,11 +410,11 @@ describe('Schema', () => {
       expect(typeof d).toEqual('object');
       expect(d.dependencies).not.toBeUndefined();
       expect(typeof d.dependencies).toEqual('object');
-      Object.keys(d.dependencies!).forEach(key => {
+      for (const key of Object.keys(d.dependencies!)) {
         const v = d.dependencies![key];
         expect(Array.isArray(v)).toEqual(true);
         expect(v).toEqual(doc.dependencies![key]);
-      });
+      }
     });
     
     test('should return a map with a Schema value', () => {
@@ -423,11 +423,11 @@ describe('Schema', () => {
       expect(typeof d).toEqual('object');
       expect(d.dependencies).not.toBeUndefined();
       expect(typeof d.dependencies).toEqual('object');
-      Object.keys(d.dependencies!).forEach(key => {
+      for (const key of Object.keys(d.dependencies!)) {
         const s = d.dependencies![key];
         expect(s.constructor.name).toEqual('Schema');
         expect(s).toEqual(doc.dependencies![key]);
-      });
+      }
     });
   });
 
@@ -526,11 +526,11 @@ describe('Schema', () => {
       expect(typeof d).toEqual('object');
       expect(d.definitions).not.toBeUndefined();
       expect(typeof d.definitions).toEqual('object');
-      Object.keys(d.definitions!).forEach(key => {
+      for (const key of Object.keys(d.definitions!)) {
         const s = d.definitions![key];
         expect(s.constructor.name).toEqual('Schema');
         expect((s as Schema).type).toEqual('string');
-      });
+      }
     });
   });
 

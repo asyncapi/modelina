@@ -40,10 +40,10 @@
 ## Functions
 
 <dl>
-<dt><a href="#interpretAdditionalProperties">interpretAdditionalProperties(schema, model, interpreter)</a></dt>
+<dt><a href="#interpretAdditionalProperties">interpretAdditionalProperties(schema, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for JSON Schema draft 7 additionalProperties keyword.</p>
 </dd>
-<dt><a href="#interpretAllOf">interpretAllOf(schema, model, interpreter)</a></dt>
+<dt><a href="#interpretAllOf">interpretAllOf(schema, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for JSON Schema draft 7 allOf keyword.</p>
 <p>It either merges allOf schemas into existing model or if allowed, create inheritance.</p>
 </dd>
@@ -53,20 +53,32 @@
 <dt><a href="#interpretEnum">interpretEnum(schema, model)</a></dt>
 <dd><p>Interpreter function for JSON Schema draft 7 enum keyword</p>
 </dd>
-<dt><a href="#interpretItems">interpretItems(schema, model, interpreter)</a></dt>
+<dt><a href="#interpretItems">interpretItems(schema, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for JSON Schema draft 7 items keyword.</p>
 </dd>
-<dt><a href="#interpretArrayItems">interpretArrayItems(rootSchema, itemSchemas, model, interpreter)</a></dt>
+<dt><a href="#interpretArrayItems">interpretArrayItems(rootSchema, itemSchemas, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Internal function to process all item schemas</p>
 </dd>
-<dt><a href="#interpretNot">interpretNot(schema, model, interpreter)</a></dt>
+<dt><a href="#interpretNot">interpretNot(schema, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for JSON Schema draft 7 not keyword.</p>
 </dd>
-<dt><a href="#interpretPatternProperties">interpretPatternProperties(schema, model, interpreter)</a></dt>
+<dt><a href="#interpretPatternProperties">interpretPatternProperties(schema, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for JSON Schema draft 7 patternProperties keyword.</p>
 </dd>
-<dt><a href="#interpretProperties">interpretProperties(schema, model, interpreter)</a></dt>
+<dt><a href="#interpretProperties">interpretProperties(schema, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for interpreting JSON Schema draft 7 properties keyword.</p>
+</dd>
+<dt><a href="#postInterpretModel">postInterpretModel(model)</a></dt>
+<dd><p>Post process the interpreted model. By applying the following:</p>
+<ul>
+<li>Ensure models are split as required</li>
+</ul>
+</dd>
+<dt><a href="#trySplitModels">trySplitModels(model, iteratedModels)</a></dt>
+<dd><p>This function splits up a model if needed and add the new model to the list of models.</p>
+</dd>
+<dt><a href="#ensureModelsAreSplit">ensureModelsAreSplit(model, iteratedModels)</a></dt>
+<dd><p>Split up all models which should and use ref instead.</p>
 </dd>
 <dt><a href="#isModelObject">isModelObject()</a></dt>
 <dd><p>check if CommonModel is a separate model or a simple model.</p>
@@ -76,84 +88,6 @@
 </dd>
 <dt><a href="#interpretName">interpretName(schema)</a></dt>
 <dd><p>Find the name for simplified version of schema</p>
-</dd>
-<dt><a href="#simplify">simplify(schema)</a></dt>
-<dd><p>This is the default wrapper for the simplifier class which always create a new instance of the simplifier.</p>
-</dd>
-<dt><a href="#simplifyAdditionalProperties">simplifyAdditionalProperties(schema)</a></dt>
-<dd><p>Simplifier function for finding the simplified version of additional properties</p>
-</dd>
-<dt><a href="#simplifyEnums">simplifyEnums(schema, seenSchemas)</a></dt>
-<dd><p>Find the enums for a simplified version of a schema</p>
-</dd>
-<dt><a href="#ensureNotEnumsAreRemoved">ensureNotEnumsAreRemoved(schema, existingEnums, seenSchemas)</a></dt>
-<dd><p>Ensure enums in not are never included.</p>
-</dd>
-<dt><a href="#handleCombinationSchemas">handleCombinationSchemas(schemas, existingEnums, seenSchemas)</a></dt>
-<dd><p>Ensuring all enums inside combination schemas are added</p>
-</dd>
-<dt><a href="#addToEnums">addToEnums(enumsToCheck, existingEnums)</a></dt>
-<dd><p>Tries to add enums if they don&#39;t already exist</p>
-</dd>
-<dt><a href="#simplifyExtend">simplifyExtend(schema)</a></dt>
-<dd><p>Find out which CommonModels we should extend</p>
-</dd>
-<dt><a href="#tryAddExtends">tryAddExtends(simplifiedModels, extendingSchemas)</a></dt>
-<dd><p>Figure out if the simplified models should be extended</p>
-</dd>
-<dt><a href="#simplifyItems">simplifyItems(schema, simplifier, seenSchemas)</a></dt>
-<dd><p>Find the items for a simplified version of a schema</p>
-</dd>
-<dt><a href="#combineSchemas">combineSchemas(schema, currentOutput, simplifier, seenSchemas)</a></dt>
-<dd><p>Go through schema(s) and combine the simplified items together.</p>
-</dd>
-<dt><a href="#mergeWithCurrentModel">mergeWithCurrentModel(model, schema, currentOutput)</a></dt>
-<dd><p>Merge common models together</p>
-</dd>
-<dt><a href="#simplifyName">simplifyName(schema)</a></dt>
-<dd><p>Find the name for simplified version of schema</p>
-</dd>
-<dt><a href="#simplifyPatternProperties">simplifyPatternProperties(schema)</a></dt>
-<dd><p>Find out which common models we should extend</p>
-</dd>
-<dt><a href="#addToPatterns">addToPatterns(pattern, patternModel, schema, currentModel)</a></dt>
-<dd><p>Adds a pattern to the model</p>
-</dd>
-<dt><a href="#combineSchemas">combineSchemas(schema, currentModel, simplifier, seenSchemas, rootSchema)</a></dt>
-<dd><p>Go through schema(s) and combine the simplified properties together.</p>
-</dd>
-<dt><a href="#simplifyProperties">simplifyProperties(schema, simplifier, seenSchemas)</a></dt>
-<dd><p>Simplifier function for finding the simplified version of properties.</p>
-</dd>
-<dt><a href="#addToProperty">addToProperty(propName, propModel, schema, currentModel)</a></dt>
-<dd><p>Adds a property to the model</p>
-</dd>
-<dt><a href="#combineSchemas">combineSchemas(schema, currentModel, simplifier, seenSchemas, rootSchema)</a></dt>
-<dd><p>Go through schema(s) and combine the simplified properties together.</p>
-</dd>
-<dt><a href="#simplifyRequired">simplifyRequired(schema, seenSchemas)</a></dt>
-<dd><p>Find the required array for a simplified version of a schema</p>
-</dd>
-<dt><a href="#simplifyTypes">simplifyTypes(schema, seenSchemas)</a></dt>
-<dd><p>Find the types for a simplified version of a schema</p>
-</dd>
-<dt><a href="#inferTypeFromValue">inferTypeFromValue(value)</a></dt>
-<dd><p>Infers the JSON Schema type from value</p>
-</dd>
-<dt><a href="#inferTypes">inferTypes(schema, currentOutput)</a></dt>
-<dd><p>Infer types from enum and const values.</p>
-</dd>
-<dt><a href="#inferNotTypes">inferNotTypes(schema, currentOutput, seenSchemas)</a></dt>
-<dd><p>Infer which types the model should NOT be included.</p>
-</dd>
-<dt><a href="#addToTypes">addToTypes(typesToAdd, currentOutput)</a></dt>
-<dd><p>Adds missing types to the array.</p>
-</dd>
-<dt><a href="#combineSchemas">combineSchemas(schema, currentOutput, seenSchemas)</a></dt>
-<dd><p>Go through schema(s) and combine the simplified types together.</p>
-</dd>
-<dt><a href="#isModelObject">isModelObject()</a></dt>
-<dd><p>check if CommonModel is a separate model or a simple model.</p>
 </dd>
 </dl>
 
@@ -205,7 +139,8 @@ Common internal representation for a model.
         * [.removeType(types)](#CommonModel+removeType)
         * [.addTypes(types)](#CommonModel+addTypes)
         * [.isRequired(propertyName)](#CommonModel+isRequired) ⇒ <code>boolean</code>
-        * [.addItem(itemModel, schema)](#CommonModel+addItem)
+        * [.addItem(itemModel, schema, addAsArray)](#CommonModel+addItem)
+        * [.addItemTuple(tupleModel, schema, index)](#CommonModel+addItemTuple)
         * [.addEnum(enumValue)](#CommonModel+addEnum)
         * [.removeEnum(enumValue)](#CommonModel+removeEnum)
         * [.addProperty(propertyName, propertyModel, schema)](#CommonModel+addProperty)
@@ -281,17 +216,33 @@ Checks if given property name is required in object
 
 <a name="CommonModel+addItem"></a>
 
-### commonModel.addItem(itemModel, schema)
+### commonModel.addItem(itemModel, schema, addAsArray)
 Adds an item to the model.
 
 If items already exist the two are merged.
 
 **Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
 
-| Param | Description |
-| --- | --- |
-| itemModel |  |
-| schema | schema to the corresponding property model |
+| Param |
+| --- |
+| itemModel | 
+| schema | 
+| addAsArray | 
+
+<a name="CommonModel+addItemTuple"></a>
+
+### commonModel.addItemTuple(tupleModel, schema, index)
+Adds a tuple to the model.
+
+If a item already exist it will be merged.
+
+**Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
+
+| Param |
+| --- |
+| tupleModel | 
+| schema | 
+| index | 
 
 <a name="CommonModel+addEnum"></a>
 
@@ -434,7 +385,7 @@ Merge two common model pattern properties together
 <a name="CommonModel.mergeItems"></a>
 
 ### CommonModel.mergeItems(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)
-Merge items together so only one CommonModel remains.
+Merge items together, prefer tuples over simple array since it is more strict.
 
 **Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
 
@@ -726,31 +677,33 @@ Sets the logger to use for the model generation library
 
 <a name="interpretAdditionalProperties"></a>
 
-## interpretAdditionalProperties(schema, model, interpreter)
+## interpretAdditionalProperties(schema, model, interpreter, interpreterOptions)
 Interpreter function for JSON Schema draft 7 additionalProperties keyword.
 
 **Kind**: global function  
 
-| Param |
-| --- |
-| schema | 
-| model | 
-| interpreter | 
+| Param | Description |
+| --- | --- |
+| schema |  |
+| model |  |
+| interpreter |  |
+| interpreterOptions | to control the interpret process |
 
 <a name="interpretAllOf"></a>
 
-## interpretAllOf(schema, model, interpreter)
+## interpretAllOf(schema, model, interpreter, interpreterOptions)
 Interpreter function for JSON Schema draft 7 allOf keyword.
 
 It either merges allOf schemas into existing model or if allowed, create inheritance.
 
 **Kind**: global function  
 
-| Param |
-| --- |
-| schema | 
-| model | 
-| interpreter | 
+| Param | Description |
+| --- | --- |
+| schema |  |
+| model |  |
+| interpreter |  |
+| interpreterOptions | to control the interpret process |
 
 <a name="interpretConst"></a>
 
@@ -778,69 +731,110 @@ Interpreter function for JSON Schema draft 7 enum keyword
 
 <a name="interpretItems"></a>
 
-## interpretItems(schema, model, interpreter)
+## interpretItems(schema, model, interpreter, interpreterOptions)
 Interpreter function for JSON Schema draft 7 items keyword.
 
 **Kind**: global function  
 
-| Param |
-| --- |
-| schema | 
-| model | 
-| interpreter | 
+| Param | Description |
+| --- | --- |
+| schema |  |
+| model |  |
+| interpreter |  |
+| interpreterOptions | to control the interpret process |
 
 <a name="interpretArrayItems"></a>
 
-## interpretArrayItems(rootSchema, itemSchemas, model, interpreter)
+## interpretArrayItems(rootSchema, itemSchemas, model, interpreter, interpreterOptions)
 Internal function to process all item schemas
 
 **Kind**: global function  
 
-| Param |
-| --- |
-| rootSchema | 
-| itemSchemas | 
-| model | 
-| interpreter | 
+| Param | Description |
+| --- | --- |
+| rootSchema |  |
+| itemSchemas |  |
+| model |  |
+| interpreter |  |
+| interpreterOptions | to control the interpret process |
 
 <a name="interpretNot"></a>
 
-## interpretNot(schema, model, interpreter)
+## interpretNot(schema, model, interpreter, interpreterOptions)
 Interpreter function for JSON Schema draft 7 not keyword.
 
 **Kind**: global function  
 
-| Param |
-| --- |
-| schema | 
-| model | 
-| interpreter | 
+| Param | Description |
+| --- | --- |
+| schema |  |
+| model |  |
+| interpreter |  |
+| interpreterOptions | to control the interpret process |
 
 <a name="interpretPatternProperties"></a>
 
-## interpretPatternProperties(schema, model, interpreter)
+## interpretPatternProperties(schema, model, interpreter, interpreterOptions)
 Interpreter function for JSON Schema draft 7 patternProperties keyword.
 
 **Kind**: global function  
 
-| Param |
-| --- |
-| schema | 
-| model | 
-| interpreter | 
+| Param | Description |
+| --- | --- |
+| schema |  |
+| model |  |
+| interpreter |  |
+| interpreterOptions | to control the interpret process |
 
 <a name="interpretProperties"></a>
 
-## interpretProperties(schema, model, interpreter)
+## interpretProperties(schema, model, interpreter, interpreterOptions)
 Interpreter function for interpreting JSON Schema draft 7 properties keyword.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema |  |
+| model |  |
+| interpreter |  |
+| interpreterOptions | to control the interpret process |
+
+<a name="postInterpretModel"></a>
+
+## postInterpretModel(model)
+Post process the interpreted model. By applying the following:
+- Ensure models are split as required
 
 **Kind**: global function  
 
 | Param |
 | --- |
-| schema | 
 | model | 
-| interpreter | 
+
+<a name="trySplitModels"></a>
+
+## trySplitModels(model, iteratedModels)
+This function splits up a model if needed and add the new model to the list of models.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| model | check if it should be split up |
+| iteratedModels | which have already been split up |
+
+<a name="ensureModelsAreSplit"></a>
+
+## ensureModelsAreSplit(model, iteratedModels)
+Split up all models which should and use ref instead.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| model | to ensure are split |
+| iteratedModels | which are already split |
 
 <a name="isModelObject"></a>
 
@@ -870,322 +864,3 @@ Find the name for simplified version of schema
 | --- | --- |
 | schema | to find the name |
 
-<a name="simplify"></a>
-
-## simplify(schema)
-This is the default wrapper for the simplifier class which always create a new instance of the simplifier.
-
-**Kind**: global function  
-
-| Param | Description |
-| --- | --- |
-| schema | to simplify |
-
-<a name="simplifyAdditionalProperties"></a>
-
-## simplifyAdditionalProperties(schema)
-Simplifier function for finding the simplified version of additional properties
-
-**Kind**: global function  
-
-| Param | Description |
-| --- | --- |
-| schema | to find extends of |
-
-<a name="simplifyEnums"></a>
-
-## simplifyEnums(schema, seenSchemas)
-Find the enums for a simplified version of a schema
-
-**Kind**: global function  
-
-| Param | Description |
-| --- | --- |
-| schema | to find the simplified enums for |
-| seenSchemas | already seen schemas and their corresponding output, this is to avoid circular schemas |
-
-<a name="ensureNotEnumsAreRemoved"></a>
-
-## ensureNotEnumsAreRemoved(schema, existingEnums, seenSchemas)
-Ensure enums in not are never included.
-
-**Kind**: global function  
-
-| Param | Description |
-| --- | --- |
-| schema | currently searching in |
-| existingEnums | which have already been found |
-| seenSchemas | already seen schemas and their respectable output |
-
-<a name="handleCombinationSchemas"></a>
-
-## handleCombinationSchemas(schemas, existingEnums, seenSchemas)
-Ensuring all enums inside combination schemas are added
-
-**Kind**: global function  
-
-| Param | Description |
-| --- | --- |
-| schemas | to search in |
-| existingEnums | which have already been found |
-| seenSchemas | already seen schemas and their respectable output |
-
-<a name="addToEnums"></a>
-
-## addToEnums(enumsToCheck, existingEnums)
-Tries to add enums if they don't already exist
-
-**Kind**: global function  
-
-| Param |
-| --- |
-| enumsToCheck | 
-| existingEnums | 
-
-<a name="simplifyExtend"></a>
-
-## simplifyExtend(schema)
-Find out which CommonModels we should extend
-
-**Kind**: global function  
-
-| Param | Description |
-| --- | --- |
-| schema | to find extends of |
-
-<a name="tryAddExtends"></a>
-
-## tryAddExtends(simplifiedModels, extendingSchemas)
-Figure out if the simplified models should be extended
-
-**Kind**: global function  
-
-| Param | Description |
-| --- | --- |
-| simplifiedModels | to check if we need to extend |
-| extendingSchemas | already extended CommonModels |
-
-<a name="simplifyItems"></a>
-
-## simplifyItems(schema, simplifier, seenSchemas)
-Find the items for a simplified version of a schema
-
-**Kind**: global function  
-
-| Param | Description |
-| --- | --- |
-| schema | to find the simplified items for |
-| simplifier | the simplifier instance |
-| seenSchemas | already seen schemas and their corresponding output, this is to avoid circular schemas |
-
-<a name="combineSchemas"></a>
-
-## combineSchemas(schema, currentOutput, simplifier, seenSchemas)
-Go through schema(s) and combine the simplified items together.
-
-**Kind**: global function  
-
-| Param | Description |
-| --- | --- |
-| schema | to go through |
-| currentOutput | the current output |
-| simplifier | the simplifier to use |
-| seenSchemas | schemas which we already have outputs for |
-
-<a name="mergeWithCurrentModel"></a>
-
-## mergeWithCurrentModel(model, schema, currentOutput)
-Merge common models together
-
-**Kind**: global function  
-
-| Param | Description |
-| --- | --- |
-| model | to merge from |
-| schema | it is from |
-| currentOutput | to merge into |
-
-<a name="simplifyName"></a>
-
-## simplifyName(schema)
-Find the name for simplified version of schema
-
-**Kind**: global function  
-
-| Param | Description |
-| --- | --- |
-| schema | to find the name |
-
-<a name="simplifyPatternProperties"></a>
-
-## simplifyPatternProperties(schema)
-Find out which common models we should extend
-
-**Kind**: global function  
-
-| Param | Description |
-| --- | --- |
-| schema | to find extends of |
-
-<a name="addToPatterns"></a>
-
-## addToPatterns(pattern, patternModel, schema, currentModel)
-Adds a pattern to the model
-
-**Kind**: global function  
-
-| Param | Description |
-| --- | --- |
-| pattern | for the model |
-| patternModel | the corresponding model for the pattern |
-| schema | for the model |
-| currentModel | the current output |
-
-<a name="combineSchemas"></a>
-
-## combineSchemas(schema, currentModel, simplifier, seenSchemas, rootSchema)
-Go through schema(s) and combine the simplified properties together.
-
-**Kind**: global function  
-
-| Param | Description |
-| --- | --- |
-| schema | to go through |
-| currentModel | the current output |
-| simplifier | to use |
-| seenSchemas | which we already have outputs for |
-| rootSchema | we are combining schemas for |
-
-<a name="simplifyProperties"></a>
-
-## simplifyProperties(schema, simplifier, seenSchemas)
-Simplifier function for finding the simplified version of properties.
-
-**Kind**: global function  
-
-| Param | Description |
-| --- | --- |
-| schema | the schema to simplify properties for |
-| simplifier | the simplifier instance |
-| seenSchemas | already seen schemas and their corresponding output, this is to avoid circular schemas |
-
-<a name="addToProperty"></a>
-
-## addToProperty(propName, propModel, schema, currentModel)
-Adds a property to the model
-
-**Kind**: global function  
-
-| Param | Description |
-| --- | --- |
-| propName | name of the property |
-| propModel | the corresponding model |
-| schema | for the model |
-| currentModel | the current output |
-
-<a name="combineSchemas"></a>
-
-## combineSchemas(schema, currentModel, simplifier, seenSchemas, rootSchema)
-Go through schema(s) and combine the simplified properties together.
-
-**Kind**: global function  
-
-| Param | Description |
-| --- | --- |
-| schema | to go through |
-| currentModel | the current output |
-| simplifier | to use |
-| seenSchemas | which we already have outputs for |
-| rootSchema | we are combining schemas for |
-
-<a name="simplifyRequired"></a>
-
-## simplifyRequired(schema, seenSchemas)
-Find the required array for a simplified version of a schema
-
-**Kind**: global function  
-
-| Param | Description |
-| --- | --- |
-| schema | to find the simplified required array for |
-| seenSchemas | already seen schemas, this is to avoid circular schemas |
-
-<a name="simplifyTypes"></a>
-
-## simplifyTypes(schema, seenSchemas)
-Find the types for a simplified version of a schema
-
-**Kind**: global function  
-
-| Param | Description |
-| --- | --- |
-| schema | to find the simplified types for |
-| seenSchemas | already seen schemas and their corresponding output, this is to avoid circular schemas |
-
-<a name="inferTypeFromValue"></a>
-
-## inferTypeFromValue(value)
-Infers the JSON Schema type from value
-
-**Kind**: global function  
-
-| Param | Description |
-| --- | --- |
-| value | to infer type of |
-
-<a name="inferTypes"></a>
-
-## inferTypes(schema, currentOutput)
-Infer types from enum and const values.
-
-**Kind**: global function  
-
-| Param | Description |
-| --- | --- |
-| schema | to go through |
-| currentOutput | the current output |
-
-<a name="inferNotTypes"></a>
-
-## inferNotTypes(schema, currentOutput, seenSchemas)
-Infer which types the model should NOT be included.
-
-**Kind**: global function  
-
-| Param | Description |
-| --- | --- |
-| schema | to go through |
-| currentOutput | the current output |
-| seenSchemas | schemas which we already have outputs for |
-
-<a name="addToTypes"></a>
-
-## addToTypes(typesToAdd, currentOutput)
-Adds missing types to the array.
-
-**Kind**: global function  
-
-| Param | Description |
-| --- | --- |
-| typesToAdd | which types we should try and add to the existing output |
-| currentOutput | the current output |
-
-<a name="combineSchemas"></a>
-
-## combineSchemas(schema, currentOutput, seenSchemas)
-Go through schema(s) and combine the simplified types together.
-
-**Kind**: global function  
-
-| Param | Description |
-| --- | --- |
-| schema | to go through |
-| currentOutput | the current output |
-| seenSchemas | schemas which we already have outputs for |
-
-<a name="isModelObject"></a>
-
-## isModelObject()
-check if CommonModel is a separate model or a simple model.
-
-**Kind**: global function  

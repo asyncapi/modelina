@@ -53,10 +53,10 @@ describe('CommonModel', () => {
       const d = CommonModel.toCommonModel(doc);
       expect(d.items).not.toBeUndefined();
       expect(Array.isArray(d.items)).toEqual(true);
-      (d.items as CommonModel[]).forEach((s, i) => {
+      for (const [i, s] of (d.items as CommonModel[]).entries()) {
         expect(s.constructor.name).toEqual('CommonModel');
         expect(s).toEqual(doc.items[i]);
-      });
+      }
     });
   });
 
@@ -66,11 +66,11 @@ describe('CommonModel', () => {
       const d = CommonModel.toCommonModel(doc);
       expect(d.properties).not.toBeUndefined();
       expect(typeof d.properties).toEqual('object');
-      Object.keys(d.properties!).forEach(key => {
+      for (const key of Object.keys(d.properties!)) {
         const s = d.properties![key];
         expect(s.constructor.name).toEqual('CommonModel');
         expect(s).toEqual(doc.properties[key]);
-      });
+      }
     });
   });
 
@@ -349,23 +349,22 @@ describe('CommonModel', () => {
         const doc: Schema = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
-        doc2.items = [CommonModel.toCommonModel({type: 'string'})];
+        doc2.items = CommonModel.toCommonModel({type: 'string'});
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
-        expect(doc1.items).toEqual(doc2.items[0]);
+        expect(doc1.items).toEqual(doc2.items);
       });
       test('should be merged when only left side is defined', () => {
         const doc: Schema = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
-        doc1.items = [CommonModel.toCommonModel({type: 'string'}), CommonModel.toCommonModel({type: 'number'})];
+        doc1.items = CommonModel.toCommonModel({type: 'string'});
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
-        expect(doc1.items).toEqual({type: ['string', 'number'], originalSchema: {}});
+        expect(doc1.items).toMatchObject({type: 'string'});
       });
       test('should handle empty items', () => {
         const doc: Schema = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
-        doc1.items = [];
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
         expect(doc1.items).toBeUndefined();
       });
@@ -376,7 +375,34 @@ describe('CommonModel', () => {
         doc2.items = CommonModel.toCommonModel({type: 'string'});
         doc1.items = CommonModel.toCommonModel({type: 'number'});
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
-        expect(doc1.items).toEqual({type: ['number', 'string'], originalSchema: {}});
+        expect(doc1.items).toMatchObject({type: ['number', 'string']});
+      });
+      test('should not do anything if right side is an empty array', () => {
+        const doc: Schema = { };
+        let doc1 = CommonModel.toCommonModel(doc);
+        const doc2 = CommonModel.toCommonModel(doc);
+        doc2.items = [];
+        doc1.items = CommonModel.toCommonModel({type: 'number'});
+        doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
+        expect(doc1.items).toMatchObject({type: 'number'});
+      });
+      test('Should handle left side is a tuple and right side is not', () => {
+        const doc: Schema = { };
+        let doc1 = CommonModel.toCommonModel(doc);
+        const doc2 = CommonModel.toCommonModel(doc);
+        doc2.items = CommonModel.toCommonModel({type: 'string'});
+        doc1.items = [CommonModel.toCommonModel({type: 'number'})];
+        doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
+        expect(doc1.items).toMatchObject([{type: 'number'}]);
+      });
+      test('Should handle right side is a tuple and left side is not', () => {
+        const doc: Schema = { };
+        let doc1 = CommonModel.toCommonModel(doc);
+        const doc2 = CommonModel.toCommonModel(doc);
+        doc2.items = [CommonModel.toCommonModel({type: 'string'})];
+        doc1.items = CommonModel.toCommonModel({type: 'number'});
+        doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
+        expect(doc1.items).toMatchObject([{type: 'string'}]);
       });
       test('should be merged when both sides are defined as array of schemas with different lengths', () => {
         const doc: Schema = { };
@@ -385,7 +411,7 @@ describe('CommonModel', () => {
         doc2.items = [CommonModel.toCommonModel({type: 'string'}), CommonModel.toCommonModel({type: 'boolean'})];
         doc1.items = [CommonModel.toCommonModel({type: 'number'})];
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
-        expect(doc1.items).toEqual({originalSchema: {}, type: ['number', 'string', 'boolean']});
+        expect(doc1.items).toMatchObject([{type: ['number', 'string']}, {type: 'boolean'}]);
       });
       test('should not change if nothing is defined', () => {
         const doc: Schema = { };
@@ -518,6 +544,32 @@ describe('CommonModel', () => {
       model.addItem(itemModel, {});
       model.addItem(itemModel, {});
       expect(model.items).toEqual(itemModel);
+      expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, itemModel, itemModel, {});
+    });
+  });
+  describe('addItemTuple', () => {
+    beforeAll(() => {
+      jest.spyOn(CommonModel, 'mergeCommonModels');
+    });
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+    test('should add tuple item to model', () => {
+      const itemModel = new CommonModel();
+      itemModel.$id = 'test'; 
+      const model = new CommonModel(); 
+      model.addItemTuple(itemModel, {}, 0);
+      expect(model.items).toEqual([itemModel]);
+      expect(CommonModel.mergeCommonModels).not.toHaveBeenCalled();
+    });
+    test('should merge tuple item if same index', () => {
+      const itemModel = new CommonModel();
+      itemModel.$id = 'test'; 
+      const model = new CommonModel();
+      model.items = itemModel;
+      model.addItemTuple(itemModel, {}, 0);
+      model.addItemTuple(itemModel, {}, 0);
+      expect(model.items).toEqual([itemModel]);
       expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, itemModel, itemModel, {});
     });
   });

@@ -8,13 +8,14 @@ import { Interpreter, InterpreterOptions } from './Interpreter';
  * @param schema
  * @param model
  * @param interpreter
+ * @param interpreterOptions to control the interpret process
  */
 export default function interpretPatternProperties(schema: Schema | boolean, model: CommonModel, interpreter : Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
   if (typeof schema === 'boolean') {return;}
   for (const [pattern, patternSchema] of Object.entries(schema.patternProperties || {})) {
-    const newModels = interpreter.interpret(patternSchema, interpreterOptions);
-    if (newModels.length > 0) {
-      model.addPatternProperty(pattern, newModels[0], schema);
+    const patternModel = interpreter.interpret(patternSchema, interpreterOptions);
+    if (patternModel !== undefined) {
+      model.addPatternProperty(pattern, patternModel, schema);
     }
   }
 }
