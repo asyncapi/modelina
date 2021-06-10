@@ -4,7 +4,7 @@ import { isEnum, isModelObject } from '../../src/interpreter/Utils';
 jest.mock('../../src/interpreter/Utils');
 describe('PostInterpreter', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
   });
   afterAll(() => {
     jest.restoreAllMocks();

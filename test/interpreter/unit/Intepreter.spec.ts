@@ -24,7 +24,7 @@ CommonModel.mergeCommonModels = jest.fn();
  */
 describe('Interpreter', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
   });
   afterAll(() => {
     jest.restoreAllMocks();
@@ -72,8 +72,8 @@ describe('Interpreter', () => {
   test('should set id of model if object', () => {
     const schema = { type: 'object' };
     const interpreter = new Interpreter();
-    const model = interpreter.interpret(schema);
     (isModelObject as jest.Mock).mockReturnValue(true);
+    const model = interpreter.interpret(schema);
     expect(model).not.toBeUndefined();
     expect(interpretName).toHaveBeenNthCalledWith(1, schema);
     expect(model?.$id).toEqual('anonymSchema1');

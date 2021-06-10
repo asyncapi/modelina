@@ -13,8 +13,7 @@ describe('TypeScriptGenerator', () => {
         state: { type: 'string', enum: ['Texas', 'Alabama', 'California', 'other'] }
       }
     };
-    const expected = `
-    'export class Address {
+    const expected = `export class Address {
   private _state?: State;
 
   constructor(input: {
@@ -25,7 +24,7 @@ describe('TypeScriptGenerator', () => {
 
   get state(): State | undefined { return this._state; }
   set state(state: State | undefined) { this._state = state; }
-}'`;
+}`;
 
     const inputModel = await generator.process(doc);
     const model = inputModel.models['_address'];
