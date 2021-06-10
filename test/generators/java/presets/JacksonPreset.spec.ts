@@ -18,7 +18,6 @@ describe('JAVA_DESCRIPTION_PRESET', () => {
     const expected = `public class Clazz {
   private Double minNumberProp;
   private Double maxNumberProp;
-
   private Map<string, Object> additionalProperties;
 
   @JsonProperty("min_number_prop")

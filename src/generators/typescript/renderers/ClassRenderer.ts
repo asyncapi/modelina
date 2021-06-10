@@ -1,6 +1,6 @@
 import { TypeScriptRenderer } from '../TypeScriptRenderer';
 
-import { CommonModel, ClassPreset } from '../../../models';
+import { CommonModel, ClassPreset, PropertyType } from '../../../models';
 import { FormatHelpers } from '../../../helpers';
 
 /**
@@ -12,7 +12,6 @@ export class ClassRenderer extends TypeScriptRenderer {
   public async defaultSelf(): Promise<string> {
     const content = [
       await this.renderProperties(),
-      await this.renderAdditionalProperties(),
       await this.runCtorPreset(),
       await this.renderPropertyAccessors(),
       await this.runAdditionalContentPreset(),
@@ -41,12 +40,12 @@ ${this.indent(this.renderBlock(content, 2))}
     return this.renderBlock(content, 2);
   }
 
-  runGetterPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset('getter', { propertyName, property });
+  runGetterPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
+    return this.runPreset('getter', { propertyName, property, type });
   }
 
-  runSetterPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset('setter', { propertyName, property });
+  runSetterPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
+    return this.runPreset('setter', { propertyName, property, type });
   }
 }
 
@@ -72,11 +71,8 @@ ${renderer.indent(renderer.renderBlock(ctorProperties))}
 ${renderer.indent(renderer.renderBlock(assignments))}
 }`;
   },
-  property({ renderer, propertyName, property }): string {
-    return `private _${renderer.renderProperty(propertyName, property)}`;
-  },
-  additionalProperties({ renderer, additionalPropertyModel }): string {
-    return `private _${renderer.renderAdditionalProperty(additionalPropertyModel)}`;
+  property({ renderer, propertyName, property, type }): string {
+    return `private _${renderer.renderProperty(propertyName, property, type)}`;
   },
   getter({ renderer, model, propertyName, property }): string {
     const isRequired = model.isRequired(propertyName);

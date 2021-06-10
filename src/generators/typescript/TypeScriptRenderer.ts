@@ -2,7 +2,7 @@ import { AbstractRenderer } from '../AbstractRenderer';
 import { TypeScriptOptions } from './TypeScriptGenerator';
 
 import { FormatHelpers } from '../../helpers';
-import { CommonModel, CommonInputModel, Preset } from '../../models';
+import { CommonModel, CommonInputModel, Preset, PropertyType } from '../../models';
 import { findPropertyNameForAdditionalProperties } from '../../helpers/NameHelper';
 
 /**
@@ -98,48 +98,35 @@ ${lines.map(line => ` * ${line}`).join('\n')}
     const content: string[] = [];
 
     for (const [propertyName, property] of Object.entries(properties)) {
-      const rendererProperty = await this.runPropertyPreset(propertyName, property);
+      const rendererProperty = await this.runPropertyPreset(propertyName, property, PropertyType.property);
       content.push(rendererProperty);
+    }
+
+    if (this.model.additionalProperties !== undefined) {
+      const propertyName = findPropertyNameForAdditionalProperties(this.model);
+      const additionalProperty = await this.runPropertyPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
+      if (additionalProperty) {
+        content.push(additionalProperty);
+      }
     }
 
     return this.renderBlock(content);
   }
 
-  /**
-   * Renders any additionalProperties if they are present, by calling the additionalProperty preset.
-   * 
-   * @returns 
-   */
-  renderAdditionalProperties(): Promise<string> {
-    const additionalPropertiesModel = this.model.additionalProperties;
-    if (additionalPropertiesModel !== undefined) {
-      return this.runAdditionalPropertyPreset(additionalPropertiesModel);
-    }
-    return Promise.resolve('');
-  }
-
-  /**
-   * Renders the additionalProperty property.
-   * 
-   * @param additionalPropertyModel 
-   * @returns 
-   */
-  renderAdditionalProperty(additionalPropertyModel: CommonModel): string {
-    const propertyName = findPropertyNameForAdditionalProperties(this.model);
-    const additionalPropertyType = this.renderType(additionalPropertyModel);
-    return `${propertyName}?: Map<string, ${additionalPropertyType}>;`;
-  }
-
-  renderProperty(propertyName: string, property: CommonModel): string {
+  renderProperty(propertyName: string, model: CommonModel, type: PropertyType = PropertyType.property): string {
     const name = FormatHelpers.toCamelCase(propertyName);
-    const signature = this.renderTypeSignature(property, { isRequired: this.model.isRequired(propertyName) });
-    return `${name}${signature};`;
+
+    if (type === PropertyType.property) {
+      const signature = this.renderTypeSignature(model, { isRequired: this.model.isRequired(propertyName) });
+      return `${name}${signature};`;
+    } else if (type === PropertyType.additionalProperty) {
+      const additionalPropertyType = this.renderType(model);
+      return `${propertyName}?: Map<string, ${additionalPropertyType}>;`;
+    }
+    return '';
   }
 
-  runPropertyPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset('property', { propertyName, property });
-  }
-  runAdditionalPropertyPreset(additionalPropertyModel: CommonModel): Promise<string> {
-    return this.runPreset('additionalProperties', { additionalPropertyModel });
+  runPropertyPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
+    return this.runPreset('property', { propertyName, property, type });
   }
 }

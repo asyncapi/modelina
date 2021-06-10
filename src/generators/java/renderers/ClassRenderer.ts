@@ -1,6 +1,6 @@
 import { JavaRenderer } from '../JavaRenderer';
 
-import { CommonModel, ClassPreset } from '../../../models';
+import { CommonModel, ClassPreset, PropertyType } from '../../../models';
 import { FormatHelpers, findPropertyNameForAdditionalProperties } from '../../../helpers';
 
 /**
@@ -12,7 +12,6 @@ export class ClassRenderer extends JavaRenderer {
   async defaultSelf(): Promise<string> {
     const content = [
       await this.renderProperties(),
-      await this.renderAdditionalProperties(),
       await this.runCtorPreset(),
       await this.renderAccessors(),
       await this.runAdditionalContentPreset(),
@@ -28,19 +27,6 @@ ${this.indent(this.renderBlock(content, 2))}
     return this.runPreset('ctor');
   }
 
-  /**
-   * Renders any additionalProperties if they are present, by calling the additionalProperty preset.
-   * 
-   * @returns 
-   */
-  renderAdditionalProperties(): Promise<string> {
-    const additionalPropertiesModel = this.model.additionalProperties;
-    if (additionalPropertiesModel !== undefined) {
-      return this.runAdditionalPropertyPreset(additionalPropertiesModel);
-    }
-    return Promise.resolve('');
-  }
-
   async renderProperties(): Promise<string> {
     const properties = this.model.properties || {};
     const content: string[] = [];
@@ -49,15 +35,20 @@ ${this.indent(this.renderBlock(content, 2))}
       const rendererProperty = await this.runPropertyPreset(propertyName, property);
       content.push(rendererProperty);
     }
+    
+    if (this.model.additionalProperties !== undefined) {
+      const propertyName = findPropertyNameForAdditionalProperties(this.model);
+      const additionalProperty = await this.runPropertyPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
+      if (additionalProperty) {
+        content.push(additionalProperty);
+      }
+    }
 
     return this.renderBlock(content);
   }
 
-  runPropertyPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset('property', { propertyName, property });
-  }
-  runAdditionalPropertyPreset(additionalPropertyModel: CommonModel): Promise<string> {
-    return this.runPreset('additionalProperties', { additionalPropertyModel });
+  runPropertyPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
+    return this.runPreset('property', { propertyName, property, type});
   }
 
   async renderAccessors(): Promise<string> {
@@ -69,7 +60,6 @@ ${this.indent(this.renderBlock(content, 2))}
       const setter = await this.runSetterPreset(propertyName, property);
       content.push(this.renderBlock([getter, setter]));
     }
-
     return this.renderBlock(content, 2);
   }
 
@@ -86,13 +76,14 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
-  property({ renderer, propertyName, property }) {
+  property({ renderer, propertyName, property, type }) {
     propertyName = FormatHelpers.toCamelCase(propertyName);
-    return `private ${renderer.renderType(property)} ${propertyName};`;
-  },
-  additionalProperties({ renderer, model, additionalPropertyModel }) {
-    const propertyName = findPropertyNameForAdditionalProperties(model);
-    return `private Map<string, ${renderer.renderType(additionalPropertyModel)}> ${propertyName};`;
+    if (type === PropertyType.property) {
+      return `private ${renderer.renderType(property)} ${propertyName};`;
+    } else if (type === PropertyType.additionalProperty) {
+      return `private Map<string, ${renderer.renderType(property)}> ${propertyName};`;
+    }
+    return '';
   },
   getter({ renderer, propertyName, property }) {
     propertyName = FormatHelpers.toCamelCase(propertyName);

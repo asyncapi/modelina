@@ -15,7 +15,6 @@ describe('TypeScriptGenerator', () => {
     };
     const expected = `export class Address {
   private _state?: "Texas" | "Alabama" | "California" | "other";
-
   private _additionalProperties?: Map<string, object | string | number | Array<unknown> | boolean | null | number>;
 
   constructor(input: {
@@ -62,7 +61,6 @@ describe('TypeScriptGenerator', () => {
   private _members?: string | number | boolean;
   private _tupleType?: [string, number];
   private _arrayType: Array<string>;
-
   private _additionalProperties?: Map<string, object | string | number | Array<unknown> | boolean | null | number>;
 
   constructor(input: {
@@ -131,7 +129,7 @@ describe('TypeScriptGenerator', () => {
     const expected = `export class CustomClass {
   @JsonProperty("property")
   private _property?: string;
-
+  @JsonProperty("additionalProperties")
   private _additionalProperties?: Map<string, object | string | number | Array<unknown> | boolean | null | number>;
 
   constructor(input: {
@@ -187,7 +185,6 @@ ${content}`;
   members?: string | number | boolean;
   tupleType?: [string, number];
   arrayType: Array<string>;
-  
   additionalProperties?: Map<string, object | string | number | Array<unknown> | boolean | null | number>;
 }`;
 
@@ -209,7 +206,6 @@ ${content}`;
     };
     const expected = `export interface CustomInterface {
   property?: string;
-
   additionalProperties?: Map<string, object | string | number | Array<unknown> | boolean | null | number>;
 }`;
 

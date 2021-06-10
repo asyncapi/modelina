@@ -29,7 +29,6 @@ describe('JavaGenerator', () => {
   private Boolean marriage;
   private Object members;
   private Object[] arrayType;
-
   private Map<string, Object> additionalProperties;
 
   public String getStreetName() { return this.streetName; }
@@ -75,7 +74,7 @@ describe('JavaGenerator', () => {
     const expected = `public class CustomClass {
   @JsonProperty("property")
   private String property;
-
+  @JsonProperty("additionalProperties")
   private Map<string, Object> additionalProperties;
 
   @JsonProperty("property")

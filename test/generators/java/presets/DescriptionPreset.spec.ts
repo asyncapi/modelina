@@ -22,7 +22,6 @@ describe('JAVA_DESCRIPTION_PRESET', () => {
  */
 public class Clazz {
   private String prop;
-
   private Map<string, Object> additionalProperties;
 
   /**

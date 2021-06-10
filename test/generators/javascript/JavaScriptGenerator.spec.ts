@@ -29,7 +29,6 @@ describe('JavaScriptGenerator', () => {
   marriage;
   members;
   arrayType;
-
   additionalProperties;
 
   constructor(input) {
@@ -98,6 +97,7 @@ describe('JavaScriptGenerator', () => {
     };
     const expected = `export class CustomClass {
   #property;
+  #additionalProperties;
 
   constructor(input) {
     this.#property = input.property;
@@ -115,9 +115,6 @@ describe('JavaScriptGenerator', () => {
           },
           property({ content }) {
             return `#${content}`;
-          },
-          additionalProperties() {
-            return '';
           },
           ctor() {
             return `constructor(input) {

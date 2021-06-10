@@ -60,11 +60,4 @@ describe('TypeScriptRenderer', () => {
       expect(renderer.renderType(model)).toEqual('"enum1" | "enum2" | 9');
     });
   });
-
-  describe('renderAdditionalProperty()', () => {
-    test('should render additionalProperty if present', () => {
-      const additionalPropertyModel = CommonModel.toCommonModel({type: 'string'});
-      expect(renderer.renderAdditionalProperty(additionalPropertyModel)).toEqual('additionalProperties?: Map<string, string>;');
-    });
-  });
 });

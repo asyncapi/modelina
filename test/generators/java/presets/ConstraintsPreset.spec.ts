@@ -23,7 +23,6 @@ describe('JAVA_DESCRIPTION_PRESET', () => {
   private Double maxNumberProp;
   private Object[] arrayProp;
   private String stringProp;
-
   private Map<string, Object> additionalProperties;
 
   @NotNull
