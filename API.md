@@ -68,6 +68,18 @@
 <dt><a href="#interpretProperties">interpretProperties(schema, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for interpreting JSON Schema draft 7 properties keyword.</p>
 </dd>
+<dt><a href="#postInterpretModel">postInterpretModel(model)</a></dt>
+<dd><p>Post process the interpreted model. By applying the following:</p>
+<ul>
+<li>Ensure models are split as required</li>
+</ul>
+</dd>
+<dt><a href="#trySplitModels">trySplitModels(model, iteratedModels)</a></dt>
+<dd><p>This function splits up a model if needed and add the new model to the list of models.</p>
+</dd>
+<dt><a href="#ensureModelsAreSplit">ensureModelsAreSplit(model, iteratedModels)</a></dt>
+<dd><p>Split up all models which should and use ref instead.</p>
+</dd>
 <dt><a href="#isModelObject">isModelObject()</a></dt>
 <dd><p>check if CommonModel is a separate model or a simple model.</p>
 </dd>
@@ -787,6 +799,42 @@ Interpreter function for interpreting JSON Schema draft 7 properties keyword.
 | model |  |
 | interpreter |  |
 | interpreterOptions | to control the interpret process |
+
+<a name="postInterpretModel"></a>
+
+## postInterpretModel(model)
+Post process the interpreted model. By applying the following:
+- Ensure models are split as required
+
+**Kind**: global function  
+
+| Param |
+| --- |
+| model | 
+
+<a name="trySplitModels"></a>
+
+## trySplitModels(model, iteratedModels)
+This function splits up a model if needed and add the new model to the list of models.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| model | check if it should be split up |
+| iteratedModels | which have already been split up |
+
+<a name="ensureModelsAreSplit"></a>
+
+## ensureModelsAreSplit(model, iteratedModels)
+Split up all models which should and use ref instead.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| model | to ensure are split |
+| iteratedModels | which are already split |
 
 <a name="isModelObject"></a>
 
