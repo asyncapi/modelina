@@ -8,9 +8,9 @@ import { isModelObject } from './Utils';
  * @param model 
  */
 export function postInterpretModel(model: CommonModel): CommonModel[] {
-  const iteratedModels: CommonModel[] = [];
-  ensureModelsAreSplit(model, iteratedModels);
-  return iteratedModels;
+  const splitModels: CommonModel[] = [model];
+  ensureModelsAreSplit(model, splitModels);
+  return splitModels;
 }
 
 /**
@@ -19,15 +19,19 @@ export function postInterpretModel(model: CommonModel): CommonModel[] {
  * @param model check if it should be split up
  * @param iteratedModels which have already been split up
  */
-function trySplitModels(model: CommonModel, iteratedModels: CommonModel[]): CommonModel {
+function trySplitModels(model: CommonModel, splitModels: CommonModel[], iteratedModels: CommonModel[]): CommonModel {
+  let modelToReturn: CommonModel = model;
   if (isModelObject(model)) {
     Logger.info(`Splitting model ${model.$id || 'any'} since it should be on its own`);
     const switchRootModel = new CommonModel();
     switchRootModel.$ref = model.$id;
-    ensureModelsAreSplit(model, iteratedModels);
-    return switchRootModel;
+    modelToReturn = switchRootModel;
+    if (!splitModels.includes(model)) {
+      splitModels.push(model);
+    }
   }
-  return model;
+  ensureModelsAreSplit(model, splitModels, iteratedModels);
+  return modelToReturn;
 }
 
 /**
@@ -36,34 +40,33 @@ function trySplitModels(model: CommonModel, iteratedModels: CommonModel[]): Comm
  * @param model to ensure are split
  * @param iteratedModels which are already split
  */
-function ensureModelsAreSplit(model: CommonModel, iteratedModels: CommonModel[]): void {
+function ensureModelsAreSplit(model: CommonModel, splitModels: CommonModel[], iteratedModels: CommonModel[] = []): void {
   // eslint-disable-next-line sonarjs/no-collapsible-if
   if (iteratedModels.includes(model)) { return; }
-
   iteratedModels.push(model);
   if (model.properties) {
     const existingProperties = model.properties;
     for (const [prop, propSchema] of Object.entries(existingProperties)) {
-      model.properties[String(prop)] = trySplitModels(propSchema, iteratedModels);
+      model.properties[String(prop)] = trySplitModels(propSchema, splitModels, iteratedModels);
     }
   }
   if (model.patternProperties) {
     const existingPatternProperties = model.patternProperties;
     for (const [pattern, patternModel] of Object.entries(existingPatternProperties)) {
-      model.patternProperties[String(pattern)] = trySplitModels(patternModel, iteratedModels);
+      model.patternProperties[String(pattern)] = trySplitModels(patternModel, splitModels, iteratedModels);
     }
   }
   if (model.additionalProperties) {
-    model.additionalProperties = trySplitModels(model.additionalProperties, iteratedModels);
+    model.additionalProperties = trySplitModels(model.additionalProperties, splitModels, iteratedModels);
   }
   if (model.items) {
     let existingItems = model.items;
     if (Array.isArray(existingItems)) {
       for (const [itemIndex, itemModel] of existingItems.entries()) {
-        existingItems[Number(itemIndex)] = trySplitModels(itemModel, iteratedModels);
+        existingItems[Number(itemIndex)] = trySplitModels(itemModel, splitModels, iteratedModels);
       }
     } else {
-      existingItems = trySplitModels(existingItems, iteratedModels);
+      existingItems = trySplitModels(existingItems, splitModels, iteratedModels);
     }
     model.items = existingItems;
   }
