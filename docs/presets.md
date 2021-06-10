@@ -135,7 +135,6 @@ Below is a list of supported languages with their model types and corresponding 
 |---|---|---|
 | `ctor` | A method to extend rendered constructor for a given class. | - |
 | `property` | A method to extend rendered given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
-| `additionalProperties` | A method to extend rendered additional properties. | `additionalPropertyModel` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
 | `setter` | A method to extend setter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
 | `getter` | A method to extend getter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
 
@@ -153,7 +152,6 @@ Below is a list of supported languages with their model types and corresponding 
 |---|---|---|
 | `ctor` | A method to extend rendered constructor for a given class. | - |
 | `property` | A method to extend rendered given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
-| `additionalProperties` | A method to extend rendered additional properties. | `additionalPropertyModel` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
 | `setter` | A method to extend setter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
 | `getter` | A method to extend getter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
 
@@ -165,7 +163,6 @@ Below is a list of supported languages with their model types and corresponding 
 |---|---|---|
 | `ctor` | A method to extend rendered constructor for a given class. | - |
 | `property` | A method to extend rendered given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
-| `additionalProperties` | A method to extend rendered additional properties. | `additionalPropertyModel` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
 | `setter` | A method to extend setter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
 | `getter` | A method to extend getter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
 
@@ -174,7 +171,6 @@ Below is a list of supported languages with their model types and corresponding 
 | Method | Description | Additional arguments |
 |---|---|---|
 | `property` | A method to extend rendered given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
-| `additionalProperties` | A method to extend rendered additional properties. | `additionalPropertyModel` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
 
 #### **Enum**
 
