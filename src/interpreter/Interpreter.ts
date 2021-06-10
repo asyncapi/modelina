@@ -59,6 +59,7 @@ export class Interpreter {
         model.addTypes(schema.type);
       }
       model.required = schema.required || model.required;
+
       interpretPatternProperties(schema, model, this, interpreterOptions);
       interpretAdditionalProperties(schema, model, this, interpreterOptions);
       interpretItems(schema, model, this, interpreterOptions);
@@ -66,10 +67,12 @@ export class Interpreter {
       interpretAllOf(schema, model, this, interpreterOptions);
       interpretConst(schema, model);
       interpretEnum(schema, model);
+
       this.interpretAndCombineMultipleSchemas(schema.oneOf, model, schema, interpreterOptions);
       this.interpretAndCombineMultipleSchemas(schema.anyOf, model, schema, interpreterOptions);
       this.interpretAndCombineSchema(schema.then, model, schema, interpreterOptions);
       this.interpretAndCombineSchema(schema.else, model, schema, interpreterOptions);
+
       interpretNot(schema, model, this, interpreterOptions);
 
       //All schemas of type model object or enum MUST have ids
