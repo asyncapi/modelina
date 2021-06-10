@@ -6,7 +6,7 @@ jest.mock('../../../src/interpreter/Utils');
 jest.mock('../../../src/models/CommonModel');
 describe('Interpretation of const', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
   });
   afterAll(() => {
     jest.restoreAllMocks();
