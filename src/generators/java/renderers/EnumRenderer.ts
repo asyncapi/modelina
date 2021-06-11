@@ -48,12 +48,10 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 
   normalizeValue(value: any): string {
-    switch (typeof value) {
-    case 'string': {
+    if (value === 'string') {
       return `"${value}"`;
     }
-    default: return String(value);
-    }
+    return String(value);
   }
 
   runItemPreset(item: any): Promise<string> {
