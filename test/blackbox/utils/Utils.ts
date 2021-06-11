@@ -46,7 +46,7 @@ export async function renderJavaModelsToSeparateFiles(generatedModels: OutputMod
   for (const outputModel of generatedModels) {
     const outputFilePath = path.resolve(outputPath, `${FormatHelpers.toPascalCase(outputModel.model.$id || 'undefined')}.java`);
     const outputContent = `
-${outputModel.dependencies.map((dependency) => { return `import ${dependency}`; }).join('\n')}
+${outputModel.dependencies.join('\n')}
 ${outputModel.result}
 `;
     await fs.writeFile(outputFilePath, outputContent);

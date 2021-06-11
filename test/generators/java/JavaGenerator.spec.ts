@@ -153,7 +153,7 @@ describe('JavaGenerator', () => {
     const model = inputModel.models['States'];
 
     let enumModel = await generator.renderEnum(model, inputModel);
-    const expectedDependencies = ['com.fasterxml.jackson.annotations.*'];
+    const expectedDependencies = ['import com.fasterxml.jackson.annotations.*;'];
     expect(enumModel.result).toEqual(expected);
     expect(enumModel.dependencies).toEqual(expectedDependencies);
 
@@ -202,7 +202,7 @@ describe('JavaGenerator', () => {
     const model = inputModel.models['Numbers'];
 
     let enumModel = await generator.renderEnum(model, inputModel);
-    const expectedDependencies = ['com.fasterxml.jackson.annotations.*'];
+    const expectedDependencies = ['import com.fasterxml.jackson.annotations.*;'];
     expect(enumModel.result).toEqual(expected);
     expect(enumModel.dependencies).toEqual(expectedDependencies);
 
@@ -251,7 +251,7 @@ describe('JavaGenerator', () => {
     const model = inputModel.models['Union'];
 
     let enumModel = await generator.renderEnum(model, inputModel);
-    const expectedDependencies = ['com.fasterxml.jackson.annotations.*'];
+    const expectedDependencies = ['import com.fasterxml.jackson.annotations.*;'];
     expect(enumModel.result).toEqual(expected);
     expect(enumModel.dependencies).toEqual(expectedDependencies);
 
@@ -312,7 +312,7 @@ public enum CustomEnum {
     const model = inputModel.models['CustomEnum'];
     
     let enumModel = await generator.render(model, inputModel);
-    const expectedDependencies = ['com.fasterxml.jackson.annotations.*'];
+    const expectedDependencies = ['import com.fasterxml.jackson.annotations.*;'];
     expect(enumModel.result).toEqual(expected);
     expect(enumModel.dependencies).toEqual(expectedDependencies);
     

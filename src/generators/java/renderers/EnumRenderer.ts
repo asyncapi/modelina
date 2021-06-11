@@ -14,8 +14,6 @@ export class EnumRenderer extends JavaRenderer {
       await this.runAdditionalContentPreset()
     ];
 
-    this.dependencies = await this.runDependenciesPreset();
-
     const formattedName = this.model.$id && FormatHelpers.toPascalCase(this.model.$id);
     return `public enum ${formattedName} {
 ${this.indent(this.renderBlock(content, 2))}
@@ -64,10 +62,8 @@ ${this.indent(this.renderBlock(content, 2))}
 
 export const JAVA_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
   self({ renderer }) {
+    renderer.addUniqueDependency('import com.fasterxml.jackson.annotations.*;');
     return renderer.defaultSelf();
-  },
-  dependencies() {
-    return ['com.fasterxml.jackson.annotations.*'];
   },
   item({ renderer, item }) {
     const key = renderer.normalizeKey(item);

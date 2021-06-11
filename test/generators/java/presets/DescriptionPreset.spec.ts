@@ -36,6 +36,7 @@ public class Clazz {
 
     const classModel = await generator.renderClass(model, inputModel);
     expect(classModel.result).toEqual(expected);
+    expect(classModel.dependencies).toEqual([]);
   });
 
   test('should render description and examples for enum', async () => {
@@ -88,6 +89,6 @@ public enum Enum {
 
     const enumModel = await generator.renderEnum(model, inputModel);
     expect(enumModel.result).toEqual(expected);
-    expect(enumModel.dependencies).toEqual(['com.fasterxml.jackson.annotations.*']);
+    expect(enumModel.dependencies).toEqual(['import com.fasterxml.jackson.annotations.*;']);
   });
 });

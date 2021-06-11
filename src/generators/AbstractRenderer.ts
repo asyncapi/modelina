@@ -14,6 +14,18 @@ export abstract class AbstractRenderer<O extends CommonGeneratorOptions = Common
     public dependencies: string[] = []
   ) {}
 
+  /**
+   * Adds a dependency while ensuring that only one dependency is preset at a time.
+   * 
+   * @param dependency complete dependency string so it can be rendered as is.
+   */
+  addUniqueDependency(dependency: string): void {
+    this.dependencies = this.dependencies || [];
+    if (!this.dependencies.includes(dependency)) {
+      this.dependencies.push(dependency);
+    }
+  }
+
   renderLine(line: string): string {
     return `${line}\n`;
   }
@@ -36,11 +48,7 @@ export abstract class AbstractRenderer<O extends CommonGeneratorOptions = Common
   runSelfPreset(): Promise<string> {
     return this.runPreset('self');
   }
-
-  runDependenciesPreset(): Promise<string[]> {
-    return this.runPreset<string[]>('dependencies');
-  }
-
+  
   runAdditionalContentPreset(): Promise<string> {
     return this.runPreset('additionalContent');
   }

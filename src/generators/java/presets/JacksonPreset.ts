@@ -7,8 +7,9 @@ import { JavaPreset } from '../JavaPreset';
  */
 export const JAVA_JACKSON_PRESET: JavaPreset = {
   class: {
-    dependencies() {
-      return ['com.fasterxml.jackson.annotations.*'];
+    self({renderer, content}) {
+      renderer.addUniqueDependency('import com.fasterxml.jackson.annotations.*;');
+      return content;
     },
     getter({ renderer, propertyName, content }) {
       const annotation = renderer.renderAnnotation('JsonProperty', `"${propertyName}"`);
