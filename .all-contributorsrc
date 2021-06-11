@@ -83,6 +83,15 @@
       "contributions": [
         "review"
       ]
+    },
+    {
+      "login": "Blakelist7",
+      "name": "Kanwal Singh",
+      "avatar_url": "https://avatars.githubusercontent.com/u/54525960?v=4",
+      "profile": "https://github.com/Blakelist7",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
