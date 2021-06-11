@@ -48,7 +48,7 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 
   normalizeValue(value: any): string {
-    if (value === 'string') {
+    if (typeof value === 'string') {
       return `"${value}"`;
     }
     return String(value);
