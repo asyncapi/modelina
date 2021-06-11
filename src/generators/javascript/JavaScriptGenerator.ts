@@ -29,12 +29,10 @@ export class JavaScriptGenerator extends AbstractGenerator<JavaScriptOptions> {
 
   render(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
     const kind = TypeHelpers.extractKind(model);
-    switch (kind) {
-    case ModelKind.OBJECT: {
+    if (kind === ModelKind.OBJECT) {
       return this.renderClass(model, inputModel);
     }
-    default: return Promise.resolve('');
-    }
+    return Promise.resolve('');
   }
 
   renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
