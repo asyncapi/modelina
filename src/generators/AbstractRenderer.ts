@@ -19,7 +19,7 @@ export abstract class AbstractRenderer<O extends CommonGeneratorOptions = Common
    * 
    * @param dependency complete dependency string so it can be rendered as is.
    */
-  addUniqueDependency(dependency: string): void {
+  addDependency(dependency: string): void {
     this.dependencies = this.dependencies || [];
     if (!this.dependencies.includes(dependency)) {
       this.dependencies.push(dependency);
