@@ -39,9 +39,7 @@ ${content}
     if (this.model.additionalProperties !== undefined) {
       const propertyName = findPropertyNameForAdditionalProperties(this.model);
       const additionalProperty = await this.runPropertyPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
-      if (additionalProperty) {
-        content.push(additionalProperty);
-      }
+      content.push(additionalProperty);
     }
     return this.renderBlock(content);
   }

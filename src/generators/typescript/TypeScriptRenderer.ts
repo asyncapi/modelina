@@ -98,30 +98,28 @@ ${lines.map(line => ` * ${line}`).join('\n')}
     const content: string[] = [];
 
     for (const [propertyName, property] of Object.entries(properties)) {
-      const rendererProperty = await this.runPropertyPreset(propertyName, property, PropertyType.property);
+      const rendererProperty = await this.runPropertyPreset(propertyName, property);
       content.push(rendererProperty);
     }
 
     if (this.model.additionalProperties !== undefined) {
       const propertyName = findPropertyNameForAdditionalProperties(this.model);
       const additionalProperty = await this.runPropertyPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
-      if (additionalProperty) {
-        content.push(additionalProperty);
-      }
+      content.push(additionalProperty);
     }
 
     return this.renderBlock(content);
   }
 
-  renderProperty(propertyName: string, model: CommonModel, type: PropertyType = PropertyType.property): string {
+  renderProperty(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): string {
     const name = FormatHelpers.toCamelCase(propertyName);
     
     if (type === PropertyType.property) {
-      const signature = this.renderTypeSignature(model, { isRequired: this.model.isRequired(propertyName) });
+      const signature = this.renderTypeSignature(property, { isRequired: this.model.isRequired(propertyName) });
       return `${name}${signature};`;
     } else if (type === PropertyType.additionalProperty) {
-      const additionalPropertyType = this.renderType(model);
-      return `${propertyName}?: Map<string, ${additionalPropertyType}>;`;
+      const additionalPropertyType = this.renderType(property);
+      return `${name}?: Map<string, ${additionalPropertyType}>;`;
     }
     return '';
   }
