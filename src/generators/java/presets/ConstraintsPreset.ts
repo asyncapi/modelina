@@ -9,8 +9,9 @@ import { CommonModel } from '../../../models';
  */
 export const JAVA_CONSTRAINTS_PRESET: JavaPreset = {
   class: {
-    self({renderer}) {
+    self({renderer, content}) {
       renderer.addDependency('import javax.validation.constraints.*;');
+      return content;
     },
     getter({ renderer, model, propertyName, property, content }) {
       if (!(property instanceof CommonModel)) {
