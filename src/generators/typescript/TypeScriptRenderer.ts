@@ -3,7 +3,7 @@ import { TypeScriptOptions } from './TypeScriptGenerator';
 
 import { FormatHelpers } from '../../helpers';
 import { CommonModel, CommonInputModel, Preset, PropertyType } from '../../models';
-import { findPropertyNameForAdditionalProperties } from '../../helpers/NameHelper';
+import { findPropertyNameForAdditionalProperties } from '../../helpers/NameHelpers';
 
 /**
  * Common renderer for TypeScript types

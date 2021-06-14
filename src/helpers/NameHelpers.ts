@@ -10,12 +10,8 @@ import { CommonModel } from 'models';
  * @returns 
  */
 export function findPropertyNameForAdditionalProperties(rootModel: CommonModel, additionalPropertyName = 'additionalProperties'): string {
-  if (rootModel.properties !== undefined) {
-    for (const propertyName of Object.keys(rootModel.properties)) {
-      if (propertyName === additionalPropertyName) {
-        return findPropertyNameForAdditionalProperties(rootModel, `_${additionalPropertyName}`);
-      }
-    }
+  if (Object.keys(rootModel.properties || {}).includes(additionalPropertyName)) {
+    return findPropertyNameForAdditionalProperties(rootModel, `_${additionalPropertyName}`);
   }
   return additionalPropertyName;
 }
