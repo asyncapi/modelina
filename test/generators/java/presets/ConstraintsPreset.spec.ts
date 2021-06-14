@@ -43,6 +43,9 @@ describe('JAVA_DESCRIPTION_PRESET', () => {
   @Size(min=3)
   public String getStringProp() { return this.stringProp; }
   public void setStringProp(String stringProp) { this.stringProp = stringProp; }
+
+  public Map<string, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<string, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }`;
 
     const inputModel = await generator.process(doc);

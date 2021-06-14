@@ -21,6 +21,9 @@ describe('JAVA_COMMON_PRESET', () => {
   public Double getNumberProp() { return this.numberProp; }
   public void setNumberProp(Double numberProp) { this.numberProp = numberProp; }
 
+  public Map<string, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<string, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -87,6 +90,9 @@ describe('JAVA_COMMON_PRESET', () => {
 
   public Double getNumberProp() { return this.numberProp; }
   public void setNumberProp(Double numberProp) { this.numberProp = numberProp; }
+
+  public Map<string, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<string, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
   @Override
   public int hashCode() {

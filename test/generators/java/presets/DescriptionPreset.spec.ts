@@ -30,6 +30,9 @@ public class Clazz {
    */
   public String getProp() { return this.prop; }
   public void setProp(String prop) { this.prop = prop; }
+
+  public Map<string, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<string, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }`;
 
     const inputModel = await generator.process(doc);

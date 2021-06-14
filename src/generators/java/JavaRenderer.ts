@@ -19,6 +19,11 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
     super(options, presets, model, inputModel);
   }
 
+  /**
+   * Renders model(s) to Java type(s).
+   * 
+   * @param model
+   */
   renderType(model: CommonModel | CommonModel[]): string {
     if (Array.isArray(model) || Array.isArray(model.type)) {
       return 'Object'; // fallback
@@ -30,6 +35,11 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
     return this.toClassType(this.toJavaType(format || model.type, model));
   }
 
+  /**
+   * Returns the Java corresponding type from CommonModel type or JSON schema format
+   * @param type 
+   * @param model 
+   */
   toJavaType(type: string | undefined, model: CommonModel): string {
     switch (type) {
     case 'integer':

@@ -27,6 +27,9 @@ describe('JAVA_DESCRIPTION_PRESET', () => {
   @JsonProperty("max_number_prop")
   public Double getMaxNumberProp() { return this.maxNumberProp; }
   public void setMaxNumberProp(Double maxNumberProp) { this.maxNumberProp = maxNumberProp; }
+
+  public Map<string, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<string, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }`;
 
     const inputModel = await generator.process(doc);

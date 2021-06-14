@@ -1,7 +1,7 @@
 import { TypeScriptRenderer } from '../TypeScriptRenderer';
 
 import { CommonModel, ClassPreset, PropertyType } from '../../../models';
-import { FormatHelpers } from '../../../helpers';
+import { findPropertyNameForAdditionalProperties, FormatHelpers } from '../../../helpers';
 
 /**
  * Renderer for TypeScript's `class` type
@@ -34,6 +34,12 @@ ${this.indent(this.renderBlock(content, 2))}
     for (const [propertyName, property] of Object.entries(properties)) {
       const getter = await this.runGetterPreset(propertyName, property);
       const setter = await this.runSetterPreset(propertyName, property);
+      content.push(this.renderBlock([getter, setter]));
+    }
+    if (this.model.additionalProperties !== undefined) {
+      const propertyName = findPropertyNameForAdditionalProperties(this.model);
+      const getter = await this.runGetterPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
+      const setter = await this.runSetterPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
       content.push(this.renderBlock([getter, setter]));
     }
 
@@ -74,17 +80,28 @@ ${renderer.indent(renderer.renderBlock(assignments))}
   property({ renderer, propertyName, property, type }): string {
     return `private _${renderer.renderProperty(propertyName, property, type)}`;
   },
-  getter({ renderer, model, propertyName, property }): string {
+  getter({ renderer, model, propertyName, property, type }): string {
     const isRequired = model.isRequired(propertyName);
-    const formattedName = FormatHelpers.toCamelCase(propertyName);
-    const signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });
-    return `get ${formattedName}()${signature} { return this._${formattedName}; }`;
+    propertyName = FormatHelpers.toCamelCase(propertyName);
+    let signature = ''; 
+    if (type === PropertyType.property) {
+      signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });
+    } else if (type === PropertyType.additionalProperty) {
+      const additionalPropertyType = renderer.renderType(property);
+      signature = `: Map<string, ${additionalPropertyType}> | undefined`;
+    }
+    return `get ${propertyName}()${signature} { return this._${propertyName}; }`;
   },
-  setter({ renderer, model, propertyName, property }): string {
+  setter({ renderer, model, propertyName, property, type }): string {
     const isRequired = model.isRequired(propertyName);
-    const formattedName = FormatHelpers.toCamelCase(propertyName);
-    const signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });
-    const arg = `${formattedName}${signature}`;
-    return `set ${formattedName}(${arg}) { this._${formattedName} = ${formattedName}; }`;
+    propertyName = FormatHelpers.toCamelCase(propertyName);
+    let signature = ''; 
+    if (type === PropertyType.property) {
+      signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });
+    } else if (type === PropertyType.additionalProperty) {
+      const additionalPropertyType = renderer.renderType(property);
+      signature = `: Map<string, ${additionalPropertyType}> | undefined`;
+    }
+    return `set ${propertyName}(${propertyName}${signature}) { this._${propertyName} = ${propertyName}; }`;
   },
 };

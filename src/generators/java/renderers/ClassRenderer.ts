@@ -39,9 +39,7 @@ ${this.indent(this.renderBlock(content, 2))}
     if (this.model.additionalProperties !== undefined) {
       const propertyName = findPropertyNameForAdditionalProperties(this.model);
       const additionalProperty = await this.runPropertyPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
-      if (additionalProperty) {
-        content.push(additionalProperty);
-      }
+      content.push(additionalProperty);
     }
 
     return this.renderBlock(content);
@@ -60,15 +58,23 @@ ${this.indent(this.renderBlock(content, 2))}
       const setter = await this.runSetterPreset(propertyName, property);
       content.push(this.renderBlock([getter, setter]));
     }
+
+    if (this.model.additionalProperties !== undefined) {
+      const propertyName = findPropertyNameForAdditionalProperties(this.model);
+      const getter = await this.runGetterPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
+      const setter = await this.runSetterPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
+      content.push(this.renderBlock([getter, setter]));
+    }
+
     return this.renderBlock(content, 2);
   }
 
-  runGetterPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset('getter', { propertyName, property });
+  runGetterPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
+    return this.runPreset('getter', { propertyName, property, type });
   }
 
-  runSetterPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset('setter', { propertyName, property });
+  runSetterPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
+    return this.runPreset('setter', { propertyName, property, type });
   }
 }
 
@@ -78,23 +84,28 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
   },
   property({ renderer, propertyName, property, type }) {
     propertyName = FormatHelpers.toCamelCase(propertyName);
-    if (type === PropertyType.property) {
-      return `private ${renderer.renderType(property)} ${propertyName};`;
-    } else if (type === PropertyType.additionalProperty) {
-      return `private Map<string, ${renderer.renderType(property)}> ${propertyName};`;
+    let propertyType = renderer.renderType(property);
+    if (type === PropertyType.additionalProperty) {
+      propertyType = `Map<string, ${propertyType}>`;
     }
-    return '';
+    return `private ${propertyType} ${propertyName};`;
   },
-  getter({ renderer, propertyName, property }) {
+  getter({ renderer, propertyName, property, type }) {
     propertyName = FormatHelpers.toCamelCase(propertyName);
-    const getterName = FormatHelpers.toPascalCase(propertyName);
-    const type = renderer.renderType(property);
-    return `public ${type} get${getterName}() { return this.${propertyName}; }`;
+    const getterName = `get${FormatHelpers.toPascalCase(propertyName)}`;
+    let getterType = renderer.renderType(property);
+    if (type === PropertyType.additionalProperty) {
+      getterType = `Map<string, ${getterType}>`;
+    }
+    return `public ${getterType} ${getterName}() { return this.${propertyName}; }`;
   },
-  setter({ renderer, propertyName, property }) {
+  setter({ renderer, propertyName, property, type }) {
     propertyName = FormatHelpers.toCamelCase(propertyName);
     const setterName = FormatHelpers.toPascalCase(propertyName);
-    const type = renderer.renderType(property);
-    return `public void set${setterName}(${type} ${propertyName}) { this.${propertyName} = ${propertyName}; }`;
+    let setterType = renderer.renderType(property);
+    if (type === PropertyType.additionalProperty) {
+      setterType = `Map<string, ${setterType}>`;
+    }
+    return `public void set${setterName}(${setterType} ${propertyName}) { this.${propertyName} = ${propertyName}; }`;
   },
 };

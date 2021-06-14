@@ -25,6 +25,9 @@ describe('TypeScriptGenerator', () => {
 
   get state(): "Texas" | "Alabama" | "California" | "other" | undefined { return this._state; }
   set state(state: "Texas" | "Alabama" | "California" | "other" | undefined) { this._state = state; }
+
+  get additionalProperties(): Map<string, object | string | number | Array<unknown> | boolean | null | number> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, object | string | number | Array<unknown> | boolean | null | number> | undefined) { this._additionalProperties = additionalProperties; }
 }`;
 
     const inputModel = await generator.process(doc);
@@ -106,6 +109,9 @@ describe('TypeScriptGenerator', () => {
 
   get arrayType(): Array<string> { return this._arrayType; }
   set arrayType(arrayType: Array<string>) { this._arrayType = arrayType; }
+
+  get additionalProperties(): Map<string, object | string | number | Array<unknown> | boolean | null | number> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, object | string | number | Array<unknown> | boolean | null | number> | undefined) { this._additionalProperties = additionalProperties; }
 }`;
 
     const inputModel = await generator.process(doc);
@@ -140,6 +146,9 @@ describe('TypeScriptGenerator', () => {
 
   get property(): string | undefined { return this._property; }
   set property(property: string | undefined) { this._property = property; }
+
+  get additionalProperties(): Map<string, object | string | number | Array<unknown> | boolean | null | number> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, object | string | number | Array<unknown> | boolean | null | number> | undefined) { this._additionalProperties = additionalProperties; }
 }`;
 
     generator = new TypeScriptGenerator({ presets: [

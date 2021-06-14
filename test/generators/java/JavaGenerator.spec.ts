@@ -51,6 +51,9 @@ describe('JavaGenerator', () => {
 
   public Object[] getArrayType() { return this.arrayType; }
   public void setArrayType(Object[] arrayType) { this.arrayType = arrayType; }
+
+  public Map<string, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<string, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }`;
 
     const inputModel = await generator.process(doc);
@@ -81,6 +84,11 @@ describe('JavaGenerator', () => {
   public String getProperty() { return this.property; }
   @JsonProperty("property")
   public void setProperty(String property) { this.property = property; }
+
+  @JsonProperty("additionalProperties")
+  public Map<string, Object> getAdditionalProperties() { return this.additionalProperties; }
+  @JsonProperty("additionalProperties")
+  public void setAdditionalProperties(Map<string, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }`;
 
     generator = new JavaGenerator({ presets: [
@@ -88,15 +96,18 @@ describe('JavaGenerator', () => {
         class: {
           property({ renderer, propertyName, content }) {
             const annotation = renderer.renderAnnotation('JsonProperty', `"${propertyName}"`);
-            return `${annotation}\n${content}`;
+            return `${annotation}
+${content}`;
           },
           getter({ renderer, propertyName, content }) {
             const annotation = renderer.renderAnnotation('JsonProperty', `"${propertyName}"`);
-            return `${annotation}\n${content}`;
+            return `${annotation}
+${content}`;
           },
           setter({ renderer, propertyName, content }) {
             const annotation = renderer.renderAnnotation('JsonProperty', `"${propertyName}"`);
-            return `${annotation}\n${content}`;
+            return `${annotation}
+${content}`;
           },
         }
       }
@@ -292,7 +303,8 @@ public enum CustomEnum {
         enum: {
           self({ renderer, content }) {
             const annotation = renderer.renderAnnotation('EnumAnnotation');
-            return `${annotation}\n${content}`;
+            return `${annotation}
+${content}`;
           },
         }
       }
