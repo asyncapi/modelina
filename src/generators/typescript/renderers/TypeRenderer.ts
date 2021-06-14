@@ -17,12 +17,10 @@ export class TypeRenderer extends TypeScriptRenderer {
 
   renderTypeBody(): Promise<string> {
     const kind = TypeHelpers.extractKind(this.model);
-    switch (kind) {
-    case ModelKind.ENUM: {
+    if (kind === ModelKind.ENUM) {
       return Promise.resolve(this.renderEnum());
     }
-    default: return Promise.resolve(this.renderType(this.model));
-    }
+    return Promise.resolve(this.renderType(this.model));
   }
   
   renderEnum(): string {

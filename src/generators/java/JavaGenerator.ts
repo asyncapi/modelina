@@ -25,12 +25,10 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions> {
 
   render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const kind = TypeHelpers.extractKind(model);
-    switch (kind) {
-    case ModelKind.ENUM: {
+    if (kind === ModelKind.ENUM) {
       return this.renderEnum(model, inputModel);
     }
-    default: return this.renderClass(model, inputModel);
-    }
+    return this.renderClass(model, inputModel);
   }
 
   async renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {

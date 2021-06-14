@@ -76,11 +76,9 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions> {
 
   private renderModelType(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const modelType = this.options.modelType;
-    switch (modelType) {
-    case 'interface': {
+    if (modelType === 'interface') {
       return this.renderInterface(model, inputModel);
     }
-    default: return this.renderClass(model, inputModel);
-    }
+    return this.renderClass(model, inputModel);
   }
 }
