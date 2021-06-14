@@ -30,6 +30,17 @@ describe('AbstractRenderer', () => {
     expect(content).toEqual('Test1\nTest2');
   });
 
+  describe('addUniqueDependency()', () => {
+    test('should add dependency', () => {
+      renderer.addUniqueDependency('test');
+      expect(renderer.dependencies).toEqual(['test']);
+    });
+    test('should not add duplicate dependency', () => {
+      renderer.addUniqueDependency('test');
+      renderer.addUniqueDependency('test');
+      expect(renderer.dependencies).toEqual(['test']);
+    });
+  });
   describe('indent()', () => {
     test('should render text with indentation', () => {
       const content = renderer.indent('Test');

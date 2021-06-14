@@ -1,6 +1,6 @@
 export interface ToRenderOutputArg {
   result: string;
-  dependencies: string[];
+  dependencies?: string[];
 }
 
 /**
@@ -12,12 +12,7 @@ export class RenderOutput {
     public readonly dependencies: string[] = []
   ) {}
 
-  static toRenderOutput(args: ToRenderOutputArg): RenderOutput;
-  static toRenderOutput(args: Array<ToRenderOutputArg>): Array<RenderOutput>;
-  static toRenderOutput(args: ToRenderOutputArg | Array<ToRenderOutputArg>): RenderOutput | Array<RenderOutput> {
-    if (Array.isArray(args)) {
-      return args.map(arg => new this(arg.result, arg.dependencies));
-    }
+  static toRenderOutput(args: ToRenderOutputArg): RenderOutput {
     return new this(args.result, args.dependencies);
   }
 }

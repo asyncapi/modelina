@@ -115,7 +115,6 @@ const generator = new TypeScriptGenerator({ defaultPreset: DEFAULT_PRESET });
 For each model type, you can implement two basic methods:
 
 - `self` - the method for extending the model shape.
-- `dependencies` - the method for adding dependencies for the model.
 - `additionalContent` - the method which adds additional content to the model.
 
 Each customization method receives the following arguments:
