@@ -91,7 +91,6 @@ private String toIndentedString(Object o) {
  * 
  * @implements {JavaPreset}
  */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 export const JAVA_COMMON_PRESET: JavaPreset = {
   class: {
     additionalContent({ renderer, model, content, options }) {
