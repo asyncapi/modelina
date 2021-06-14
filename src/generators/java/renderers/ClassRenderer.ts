@@ -1,7 +1,7 @@
 import { JavaRenderer } from '../JavaRenderer';
-
 import { CommonModel, ClassPreset } from '../../../models';
 import { FormatHelpers } from '../../../helpers';
+import { GetPropertyName } from '../helpers/PropertyHelper';
 
 /**
  * Renderer for Java's `class` type
@@ -69,18 +69,18 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
-  property({ renderer, propertyName, property }) {
-    propertyName = FormatHelpers.toCamelCase(propertyName);
+  property({ renderer, propertyName, property, model }) {
+    propertyName = GetPropertyName(model, propertyName);
     return `private ${renderer.renderType(property)} ${propertyName};`;
   },
-  getter({ renderer, propertyName, property }) {
-    propertyName = FormatHelpers.toCamelCase(propertyName);
+  getter({ renderer, propertyName, property, model }) {
+    propertyName = GetPropertyName(model, propertyName);
     const getterName = FormatHelpers.toPascalCase(propertyName);
     const type = renderer.renderType(property);
     return `public ${type} get${getterName}() { return this.${propertyName}; }`;
   },
-  setter({ renderer, propertyName, property }) {
-    propertyName = FormatHelpers.toCamelCase(propertyName);
+  setter({ renderer, propertyName, property, model }) {
+    propertyName = GetPropertyName(model, propertyName);
     const setterName = FormatHelpers.toPascalCase(propertyName);
     const type = renderer.renderType(property);
     return `public void set${setterName}(${type} ${propertyName}) { this.${propertyName} = ${propertyName}; }`;

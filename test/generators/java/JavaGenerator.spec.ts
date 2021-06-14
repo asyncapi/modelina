@@ -6,6 +6,35 @@ describe('JavaGenerator', () => {
     generator = new JavaGenerator();
   });
 
+  test('should not render reserved keyword', async () => {
+    const doc = {
+      $id: 'Address',
+      type: 'object',
+      properties: {
+        enum: { type: 'string' },
+        _enum: { type: 'string' }
+      }
+    };
+    const expected = `public class Address {
+  private String _enum;
+  private String __enum;
+
+  public String getEnum() { return this.__enum; }
+  public void setEnum(String __enum) { this.__enum = __enum; }
+
+  public String get_Enum() { return this._enum; }
+  public void set_Enum(String _enum) { this._enum = _enum; }
+}`;
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models['Address'];
+
+    let classModel = await generator.renderClass(model, inputModel);
+    expect(classModel).toEqual(expected);
+
+    classModel = await generator.render(model, inputModel);
+    expect(classModel).toEqual(expected);
+  });
   test('should render `class` type', async () => {
     const doc = {
       $id: 'Address',
