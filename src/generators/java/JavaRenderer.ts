@@ -59,8 +59,8 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
     case 'binary':
       return 'byte[]';
     case 'array': {
-      const newtype = model?.items ? this.renderType(model.items) : 'Object';
-      return `${newtype}[]`;
+      const newType = model?.items ? this.renderType(model.items) : 'Object';
+      return `${newType}[]`;
     }
     default:
       return 'Object';
@@ -97,11 +97,11 @@ ${newLiteral}
     let values = undefined;
     if (value !== undefined) {
       if (typeof value === 'object') {
-        values = Object.entries(value || {}).map(([paramName, newvalue]) => {
-          if (paramName && newvalue !== undefined) {
-            return `${paramName}=${newvalue}`;
+        values = Object.entries(value || {}).map(([paramName, newValue]) => {
+          if (paramName && newValue !== undefined) {
+            return `${paramName}=${newValue}`;
           }
-          return newvalue;
+          return newValue;
         }).filter(v => v !== undefined).join(', ');
       } else {
         values = value;
