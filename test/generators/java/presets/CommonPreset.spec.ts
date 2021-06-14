@@ -35,12 +35,13 @@ describe('JAVA_COMMON_PRESET', () => {
     Clazz self = (Clazz) o;
       return 
         Objects.equals(this.stringProp, self.stringProp) &&
-        Objects.equals(this.numberProp, self.numberProp);
+        Objects.equals(this.numberProp, self.numberProp) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(stringProp, numberProp);
+    return Objects.hash(stringProp, numberProp, additionalProperties);
   }
 
   @Override
@@ -48,6 +49,7 @@ describe('JAVA_COMMON_PRESET', () => {
     return "class Clazz {\\n" +   
       "    stringProp: " + toIndentedString(stringProp) + "\\n" +
       "    numberProp: " + toIndentedString(numberProp) + "\\n" +
+      "    additionalProperties: " + toIndentedString(additionalProperties) + "\\n" +
     "}";
   }
 
@@ -96,7 +98,7 @@ describe('JAVA_COMMON_PRESET', () => {
 
   @Override
   public int hashCode() {
-    return Objects.hash(stringProp, numberProp);
+    return Objects.hash(stringProp, numberProp, additionalProperties);
   }
 }`;
 
