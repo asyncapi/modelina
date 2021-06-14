@@ -97,7 +97,8 @@ const generator = new TypeScriptGenerator({ presets: [
 ```
 
 ## Adding new dependencies
-Each preset hook has the possibility of adding its own dependencies that needs to be rendered. It can be done through the `renderer` argument.
+
+Each preset hook has the possibility of adding its own dependencies that needs to be rendered for the given model. It can be done through the `addDependency` function from `renderer` property.
 
 ```ts
 ...
