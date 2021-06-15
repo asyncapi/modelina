@@ -7,6 +7,7 @@ import interpretAllOf from '../../../src/interpreter/InterpretAllOf';
 import interpretItems from '../../../src/interpreter/InterpretItems';
 import interpretAdditionalProperties from '../../../src/interpreter/InterpretAdditionalProperties';
 import interpretNot from '../../../src/interpreter/InterpretNot';
+import interpretDependencies from '../../../src/interpreter/InterpretDependencies';
 import { CommonModel, Schema } from '../../../src/models';
 
 jest.mock('../../../src/interpreter/Utils');
@@ -17,6 +18,7 @@ jest.mock('../../../src/interpreter/InterpretAllOf');
 jest.mock('../../../src/interpreter/InterpretItems');
 jest.mock('../../../src/interpreter/InterpretAdditionalProperties');
 jest.mock('../../../src/interpreter/InterpretNot');
+jest.mock('../../../src/interpreter/InterpretDependencies');
 CommonModel.mergeCommonModels = jest.fn();
 /**
  * Some of these test are purely theoretical and have little if any merit 
@@ -157,7 +159,12 @@ describe('Interpreter', () => {
     interpreter.interpret(schema);
     expect(interpretNot).toHaveBeenNthCalledWith(1, schema, expect.anything(), interpreter, Interpreter.defaultInterpreterOptions);
   });
-
+  test('should always try to interpret dependencies', () => {
+    const schema = {};
+    const interpreter = new Interpreter();
+    interpreter.interpret(schema);
+    expect(interpretDependencies).toHaveBeenNthCalledWith(1, schema, expect.anything(), expect.anything(), Interpreter.defaultInterpreterOptions);
+  });
   test('should support primitive roots', () => {
     const schema = { type: 'string' };
     const interpreter = new Interpreter();
