@@ -3,11 +3,9 @@ import {
   CommonGeneratorOptions,
   defaultGeneratorOptions,
 } from '../AbstractGenerator';
-import { CommonModel, CommonInputModel } from '../../models';
+import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
 import { TypeHelpers, ModelKind } from '../../helpers';
-
 import { TypeScriptPreset, TS_DEFAULT_PRESET } from './TypeScriptPreset';
-
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { InterfaceRenderer } from './renderers/InterfaceRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
@@ -35,7 +33,7 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions> {
     super('TypeScript', TypeScriptGenerator.defaultOptions, options);
   }
 
-  render(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
+  render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const kind = TypeHelpers.extractKind(model);
     switch (kind) {
     case ModelKind.OBJECT: {
@@ -48,37 +46,39 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions> {
     }
   }
 
-  renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
+  async renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const presets = this.getPresets('class'); 
     const renderer = new ClassRenderer(this.options, presets, model, inputModel);
-    return renderer.runSelfPreset();
+    const result = await renderer.runSelfPreset();
+    return RenderOutput.toRenderOutput({result, dependencies: renderer.dependencies});
   }
 
-  renderInterface(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
+  async renderInterface(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const presets = this.getPresets('interface'); 
     const renderer = new InterfaceRenderer(this.options, presets, model, inputModel);
-    return renderer.runSelfPreset();
+    const result = await renderer.runSelfPreset();
+    return RenderOutput.toRenderOutput({result, dependencies: renderer.dependencies});
   }
 
-  renderEnum(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
+  async renderEnum(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const presets = this.getPresets('enum'); 
     const renderer = new EnumRenderer(this.options, presets, model, inputModel);
-    return renderer.runSelfPreset();
+    const result = await renderer.runSelfPreset();
+    return RenderOutput.toRenderOutput({result, dependencies: renderer.dependencies});
   }
 
-  renderType(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
+  async renderType(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const presets = this.getPresets('type'); 
     const renderer = new TypeRenderer(this.options, presets, model, inputModel);
-    return renderer.runSelfPreset();
+    const result = await renderer.runSelfPreset();
+    return RenderOutput.toRenderOutput({result, dependencies: renderer.dependencies});
   }
 
-  private renderModelType(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
+  private renderModelType(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const modelType = this.options.modelType;
-    switch (modelType) {
-    case 'interface': {
+    if (modelType === 'interface') {
       return this.renderInterface(model, inputModel);
     }
-    default: return this.renderClass(model, inputModel);
-    }
+    return this.renderClass(model, inputModel);
   }
 }

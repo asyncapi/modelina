@@ -1,7 +1,7 @@
 import * as path from 'path';
 import { TypeScriptGenerator, JavaGenerator, JavaScriptGenerator } from '../../src';
 import { execCommand, generateModels, renderModels } from './utils/Utils';
-import { renderModelsToSeparateFiles } from './utils/Utils';
+import { renderJavaModelsToSeparateFiles } from './utils/Utils';
 const fileToGenerate = path.resolve(__dirname, './docs/dummy.json');
 describe('Dummy JSON Schema file', () => {
   jest.setTimeout(100000);

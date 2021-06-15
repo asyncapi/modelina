@@ -96,6 +96,19 @@ const generator = new TypeScriptGenerator({ presets: [
 ] });
 ```
 
+## Adding new dependencies
+
+Each preset hook has the possibility of adding its own dependencies that needs to be rendered for the given model. It can be done through the `addDependency` function from `renderer` property.
+
+```ts
+...
+self({ renderer, content }) {
+  renderer.addDependency('import java.util.*;');
+  return content;
+}
+...
+```
+
 ## Overriding the default preset
 
 Each implemented generator for appropriate language must have defined the default preset. However, we can override it by passing it as the `defaultPreset` parameter in the generator options. Check the example for TypeScript generator:

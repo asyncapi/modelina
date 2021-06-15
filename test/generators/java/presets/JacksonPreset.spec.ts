@@ -32,6 +32,7 @@ describe('JAVA_DESCRIPTION_PRESET', () => {
     const model = inputModel.models['Clazz'];
 
     const classModel = await generator.renderClass(model, inputModel);
-    expect(classModel).toEqual(expected);
+    expect(classModel.result).toEqual(expected);
+    expect(classModel.dependencies).toEqual(['import com.fasterxml.jackson.annotations.*;']);
   });
 });

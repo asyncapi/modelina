@@ -30,10 +30,12 @@ describe('TypeScriptGenerator', () => {
     const model = inputModel.models['_address'];
 
     let classModel = await generator.renderClass(model, inputModel);
-    expect(classModel).toEqual(expected);
+    expect(classModel.result).toEqual(expected);
+    expect(classModel.dependencies).toEqual([]);
 
     classModel = await generator.render(model, inputModel);
-    expect(classModel).toEqual(expected);
+    expect(classModel.result).toEqual(expected);
+    expect(classModel.dependencies).toEqual([]);
   });
   test('should render `class` type', async () => {
     const doc = {
@@ -110,10 +112,12 @@ describe('TypeScriptGenerator', () => {
     const model = inputModel.models['_address'];
 
     let classModel = await generator.renderClass(model, inputModel);
-    expect(classModel).toEqual(expected);
+    expect(classModel.result).toEqual(expected);
+    expect(classModel.dependencies).toEqual([]);
 
     classModel = await generator.render(model, inputModel);
-    expect(classModel).toEqual(expected);
+    expect(classModel.result).toEqual(expected);
+    expect(classModel.dependencies).toEqual([]);
   });
 
   test('should work custom preset for `class` type', async () => {
@@ -153,7 +157,8 @@ ${content}`;
     const model = inputModel.models['CustomClass'];
     
     const classModel = await generator.render(model, inputModel);
-    expect(classModel).toEqual(expected);
+    expect(classModel.result).toEqual(expected);
+    expect(classModel.dependencies).toEqual([]);
   });
 
   test('should render `interface` type', async () => {
@@ -188,7 +193,8 @@ ${content}`;
     const model = inputModel.models['Address'];
 
     const interfaceModel = await interfaceGenerator.render(model, inputModel);
-    expect(interfaceModel).toEqual(expected);
+    expect(interfaceModel.result).toEqual(expected);
+    expect(interfaceModel.dependencies).toEqual([]);
   });
 
   test('should work custom preset for `interface` type', async () => {
@@ -217,7 +223,8 @@ ${content}`;
     const model = inputModel.models['CustomInterface'];
 
     const interfaceModel = await generator.renderInterface(model, inputModel);
-    expect(interfaceModel).toEqual(expected);
+    expect(interfaceModel.result).toEqual(expected);
+    expect(interfaceModel.dependencies).toEqual([]);
   });
 
   test('should render `enum` type', async () => {
@@ -236,10 +243,12 @@ ${content}`;
     const model = inputModel.models['States'];
 
     let enumModel = await generator.render(model, inputModel);
-    expect(enumModel).toEqual(expected);
+    expect(enumModel.result).toEqual(expected);
+    expect(enumModel.dependencies).toEqual([]);
     
     enumModel = await generator.renderEnum(model, inputModel);
-    expect(enumModel).toEqual(expected);
+    expect(enumModel.result).toEqual(expected);
+    expect(enumModel.dependencies).toEqual([]);
   });
 
   test('should work custom preset for `enum` type', async () => {
@@ -268,10 +277,12 @@ ${content}`;
     const model = inputModel.models['CustomEnum'];
     
     let enumModel = await generator.render(model, inputModel);
-    expect(enumModel).toEqual(expected);
+    expect(enumModel.result).toEqual(expected);
+    expect(enumModel.dependencies).toEqual([]);
     
     enumModel = await generator.renderEnum(model, inputModel);
-    expect(enumModel).toEqual(expected);
+    expect(enumModel.result).toEqual(expected);
+    expect(enumModel.dependencies).toEqual([]);
   });
 
   test('should render `type` type - primitive', async () => {
@@ -285,10 +296,12 @@ ${content}`;
     const model = inputModel.models['TypePrimitive'];
 
     let primitiveModel = await generator.renderType(model, inputModel);
-    expect(primitiveModel).toEqual(expected);
+    expect(primitiveModel.result).toEqual(expected);
+    expect(primitiveModel.dependencies).toEqual([]);
 
     primitiveModel = await generator.render(model, inputModel);
-    expect(primitiveModel).toEqual(expected);
+    expect(primitiveModel.result).toEqual(expected);
+    expect(primitiveModel.dependencies).toEqual([]);
   });
 
   test('should render `type` type - enum', async () => {
@@ -302,7 +315,8 @@ ${content}`;
     const model = inputModel.models['TypeEnum'];
 
     const enumModel = await generator.renderType(model, inputModel);
-    expect(enumModel).toEqual(expected);
+    expect(enumModel.result).toEqual(expected);
+    expect(enumModel.dependencies).toEqual([]);
   });
 
   test('should render `type` type - union', async () => {
@@ -316,7 +330,8 @@ ${content}`;
     const model = inputModel.models['TypeUnion'];
 
     const unionModel = await generator.renderType(model, inputModel);
-    expect(unionModel).toEqual(expected);
+    expect(unionModel.result).toEqual(expected);
+    expect(unionModel.dependencies).toEqual([]);
   });
 
   test('should render `type` type - array of primitive type', async () => {
@@ -334,7 +349,8 @@ ${content}`;
     const model = inputModel.models['TypeArray'];
 
     const arrayModel = await generator.renderType(model, inputModel);
-    expect(arrayModel).toEqual(expected);
+    expect(arrayModel.result).toEqual(expected);
+    expect(arrayModel.dependencies).toEqual([]);
   });
 
   test('should render `type` type - array of union type', async () => {
@@ -352,6 +368,7 @@ ${content}`;
     const model = inputModel.models['TypeArray'];
 
     const arrayModel = await generator.renderType(model, inputModel);
-    expect(arrayModel).toEqual(expected);
+    expect(arrayModel.result).toEqual(expected);
+    expect(arrayModel.dependencies).toEqual([]);
   });
 });

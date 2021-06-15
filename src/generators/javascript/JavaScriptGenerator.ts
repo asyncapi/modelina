@@ -3,7 +3,7 @@ import {
   CommonGeneratorOptions,
   defaultGeneratorOptions,
 } from '../AbstractGenerator';
-import { CommonModel, CommonInputModel } from '../../models';
+import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
 import { TypeHelpers, ModelKind } from '../../helpers';
 
 import { JavaScriptPreset, JS_DEFAULT_PRESET } from './JavaScriptPreset';
@@ -27,19 +27,18 @@ export class JavaScriptGenerator extends AbstractGenerator<JavaScriptOptions> {
     super('JavaScript', JavaScriptGenerator.defaultOptions, options);
   }
 
-  render(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
+  render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const kind = TypeHelpers.extractKind(model);
-    switch (kind) {
-    case ModelKind.OBJECT: {
+    if (kind === ModelKind.OBJECT) {
       return this.renderClass(model, inputModel);
     }
-    default: return Promise.resolve('');
-    }
+    return Promise.resolve(RenderOutput.toRenderOutput({result: '', dependencies: []}));
   }
 
-  renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<string> {
+  async renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const presets = this.getPresets('class'); 
     const renderer = new ClassRenderer(this.options, presets, model, inputModel);
-    return renderer.runSelfPreset();
+    const result = await renderer.runSelfPreset();
+    return RenderOutput.toRenderOutput({result, dependencies: renderer.dependencies});
   }
 }
