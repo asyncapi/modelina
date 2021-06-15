@@ -11,9 +11,9 @@ describe('Dummy JSON Schema file', () => {
       const generatedModels = await generateModels(fileToGenerate, generator);
       expect(generatedModels).not.toHaveLength(0);
       const renderOutputPath = path.resolve(__dirname, './output/java/class');
-      const jacksonPath = path.resolve(__dirname, './dependencies/java/jackson-annotations-2.12.3.jar');
-      await renderModelsToSeparateFiles(generatedModels, renderOutputPath);
-      const compileCommand = `javac  -cp ".:${jacksonPath}" ${path.resolve(renderOutputPath, '*.java')}`;
+      const dependencyPath = path.resolve(__dirname, './dependencies/java/*');
+      await renderJavaModelsToSeparateFiles(generatedModels, renderOutputPath);
+      const compileCommand = `javac  -cp ${dependencyPath} ${path.resolve(renderOutputPath, '*.java')}`;
       await execCommand(compileCommand);
     });
   });
