@@ -1,6 +1,6 @@
 import { JavaGenerator, JAVA_CONSTRAINTS_PRESET } from '../../../../src/generators'; 
 
-describe('JAVA_DESCRIPTION_PRESET', () => {
+describe('JAVA_CONSTRAINTS_PRESET', () => {
   let generator: JavaGenerator;
   beforeEach(() => {
     generator = new JavaGenerator({ presets: [JAVA_CONSTRAINTS_PRESET] });
@@ -48,6 +48,7 @@ describe('JAVA_DESCRIPTION_PRESET', () => {
     const model = inputModel.models['Clazz'];
 
     const classModel = await generator.renderClass(model, inputModel);
-    expect(classModel).toEqual(expected);
+    expect(classModel.result).toEqual(expected);
+    expect(classModel.dependencies).toEqual(['import javax.validation.constraints.*;']);
   });
 });

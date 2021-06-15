@@ -2,6 +2,7 @@ import { CommonInputModel, CommonModel, OutputModel, Preset, Presets } from '../
 import { InputProcessor } from '../processors';
 import { IndentationTypes } from '../helpers';
 import { isPresetWithOptions } from '../utils';
+import { RenderOutput } from 'models/RenderOutput';
 
 export interface CommonGeneratorOptions<P extends Preset = Preset> {
   indentation?: {
@@ -33,7 +34,7 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
     this.options = this.mergeOptions(defaultOptions, passedOptions);
   }
 
-  public abstract render(model: CommonModel, inputModel: CommonInputModel): Promise<string>;
+  public abstract render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput>;
 
   public async process(input: Record<string, unknown>): Promise<CommonInputModel> {
     return await InputProcessor.processor.process(input);
@@ -50,8 +51,8 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
   protected generateModels(inputModel: CommonInputModel): Promise<OutputModel[]> {
     const models = inputModel.models;
     const renders = Object.entries(models).map(async ([modelName, model]) => {
-      const result = await this.render(model, inputModel);
-      return OutputModel.toOutputModel({ result, model, modelName, inputModel });
+      const renderedOutput = await this.render(model, inputModel);
+      return OutputModel.toOutputModel({ result: renderedOutput.result, model, modelName, inputModel, dependencies: renderedOutput.dependencies});
     });
     return Promise.all(renders);
   }
