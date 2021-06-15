@@ -13,6 +13,7 @@ export default function interpretDependencies(schema: Schema, model: CommonModel
   for (const dependency of Object.values(schema.dependencies)) {
     // Only handle schema dependency and skip property dependencies
     if (!Array.isArray(dependency)) {
+      interpreter.interpretAndCombineSchema(dependency, model, schema, interpreterOptions);
     }
   }
 }
