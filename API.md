@@ -19,6 +19,9 @@
 <dt><a href="#OutputModel">OutputModel</a></dt>
 <dd><p>Common representation for the output model.</p>
 </dd>
+<dt><a href="#RenderOutput">RenderOutput</a></dt>
+<dd><p>Common representation for the rendered output.</p>
+</dd>
 <dt><a href="#Schema">Schema</a> ⇐ <code><a href="#Schema">CommonSchema&lt;Schema&gt;</a></code></dt>
 <dd><p>JSON Schema Draft 7 model</p>
 </dd>
@@ -103,6 +106,17 @@ Abstract generator which must be implemented by each language
 Abstract renderer with common helper methods
 
 **Kind**: global class  
+<a name="AbstractRenderer+addDependency"></a>
+
+### abstractRenderer.addDependency(dependency)
+Adds a dependency while ensuring that only one dependency is preset at a time.
+
+**Kind**: instance method of [<code>AbstractRenderer</code>](#AbstractRenderer)  
+
+| Param | Description |
+| --- | --- |
+| dependency | complete dependency string so it can be rendered as is. |
+
 <a name="CommonInputModel"></a>
 
 ## CommonInputModel
@@ -447,6 +461,12 @@ convert nested schemas into their corresponding class.
 
 ## OutputModel
 Common representation for the output model.
+
+**Kind**: global class  
+<a name="RenderOutput"></a>
+
+## RenderOutput
+Common representation for the rendered output.
 
 **Kind**: global class  
 <a name="Schema"></a>
