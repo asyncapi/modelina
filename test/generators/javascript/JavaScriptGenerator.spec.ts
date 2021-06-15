@@ -66,10 +66,12 @@ describe('JavaScriptGenerator', () => {
     const model = inputModel.models['Address'];
 
     let classModel = await generator.renderClass(model, inputModel);
-    expect(classModel).toEqual(expected);
+    expect(classModel.result).toEqual(expected);
+    expect(classModel.dependencies).toEqual([]);
 
     classModel = await generator.render(model, inputModel);
-    expect(classModel).toEqual(expected);
+    expect(classModel.result).toEqual(expected);
+    expect(classModel.dependencies).toEqual([]);
   });
 
   test('should not render another type than `object`', async () => {
@@ -83,7 +85,8 @@ describe('JavaScriptGenerator', () => {
     const model = inputModel.models['AnyType'];
 
     const anyModel = await generator.render(model, inputModel);
-    expect(anyModel).toEqual(expected);
+    expect(anyModel.result).toEqual(expected);
+    expect(anyModel.dependencies).toEqual([]);
   });
 
   test('should work custom preset for `class` type', async () => {
@@ -124,7 +127,7 @@ describe('JavaScriptGenerator', () => {
           },
           setter() {
             return 'set property(property) { this.#property = property; }';
-          },
+          }
         }
       }
     ] });
@@ -133,6 +136,7 @@ describe('JavaScriptGenerator', () => {
     const model = inputModel.models['CustomClass'];
     
     const classModel = await generator.render(model, inputModel);
-    expect(classModel).toEqual(expected);
+    expect(classModel.result).toEqual(expected);
+    expect(classModel.dependencies).toEqual([]);
   });
 });

@@ -1,5 +1,5 @@
 import { AbstractGenerator } from '../../src/generators'; 
-import { CommonInputModel, CommonModel } from '../../src/models';
+import { CommonInputModel, CommonModel, RenderOutput } from '../../src/models';
 
 describe('AbstractGenerator', () => {
   class TestGenerator extends AbstractGenerator {
@@ -8,7 +8,7 @@ describe('AbstractGenerator', () => {
     }
 
     render(model: CommonModel, inputModel: CommonInputModel): any {
-      return model.$id || 'rendered content';
+      return RenderOutput.toRenderOutput({result: model.$id || 'rendered content', dependencies: []});
     }
   }
 
@@ -53,7 +53,8 @@ describe('AbstractGenerator', () => {
     const keys = Object.keys(commonInputModel.models);
     const renderedContent = await generator.render(commonInputModel.models[keys[0]], commonInputModel);
 
-    expect(renderedContent).toEqual('SomeModel');
+    expect(renderedContent.result).toEqual('SomeModel');
+    expect(renderedContent.dependencies).toEqual([]);
   });
 
   describe('getPresets()', () => {
@@ -62,9 +63,8 @@ describe('AbstractGenerator', () => {
         constructor() {
           super('TestGenerator', {presets: [{preset: {test: 'test2'}, options: {}}]});
         }
-        render(model: CommonModel, inputModel: CommonInputModel): any {
-          return model.$id || 'rendered content';
-        }
+        render(model: CommonModel, inputModel: CommonInputModel): any { return; }
+
         testGetPresets(string: string) {
           return this.getPresets(string);
         }
