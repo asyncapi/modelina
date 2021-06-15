@@ -11,9 +11,8 @@ import { Interpreter, InterpreterOptions } from './Interpreter';
 export default function interpretDependencies(schema: Schema, model: CommonModel, interpreter: Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
   if (schema.dependencies === undefined) {return;}
   for (const dependency of Object.values(schema.dependencies)) {
+    // Only handle schema dependency and skip property dependencies
     if (!Array.isArray(dependency)) {
-      //Schema dependency
-      interpreter.interpretAndCombineSchema(dependency, model, schema, interpreterOptions);
     }
   }
 }
