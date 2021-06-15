@@ -1,4 +1,3 @@
-
 import { CommonModel } from '../models/CommonModel';
 import { Schema } from '../models/Schema';
 import { Interpreter, InterpreterOptions } from './Interpreter';
