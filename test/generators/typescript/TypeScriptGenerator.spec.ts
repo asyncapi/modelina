@@ -5,38 +5,6 @@ describe('TypeScriptGenerator', () => {
   beforeEach(() => {
     generator = new TypeScriptGenerator();
   });
-  test('should render union property type', async () => {
-    const doc = {
-      $id: '_address',
-      type: 'object',
-      properties: {
-        state: { type: 'string', enum: ['Texas', 'Alabama', 'California', 'other'] }
-      }
-    };
-    const expected = `export class Address {
-  private _state?: State;
-
-  constructor(input: {
-    state?: State,
-  }) {
-    this._state = input.state;
-  }
-
-  get state(): State | undefined { return this._state; }
-  set state(state: State | undefined) { this._state = state; }
-}`;
-
-    const inputModel = await generator.process(doc);
-    const model = inputModel.models['_address'];
-
-    let classModel = await generator.renderClass(model, inputModel);
-    expect(classModel.result).toEqual(expected);
-    expect(classModel.dependencies).toEqual([]);
-
-    classModel = await generator.render(model, inputModel);
-    expect(classModel.result).toEqual(expected);
-    expect(classModel.dependencies).toEqual([]);
-  });
   test('should render `class` type', async () => {
     const doc = {
       $id: '_address',
