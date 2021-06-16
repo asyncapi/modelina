@@ -70,8 +70,9 @@ describe('JAVA_COMMON_PRESET', () => {
     const model = inputModel.models['Clazz'];
 
     const classModel = await generator.renderClass(model, inputModel);
+    const expectedDependencies = ['import java.util.Map;'];
     expect(classModel.result).toEqual(expected);
-    expect(classModel.dependencies).toEqual(['import java.util.Map;']);
+    expect(classModel.dependencies).toEqual(expectedDependencies);
   });
 
   test('should skip rendering of disabled functions', async () => {
@@ -114,7 +115,8 @@ describe('JAVA_COMMON_PRESET', () => {
     const model = inputModel.models['Clazz'];
 
     const classModel = await generator.renderClass(model, inputModel);
+    const expectedDependencies = ['import java.util.Map;'];
     expect(classModel.result).toEqual(expected);
-    expect(classModel.dependencies).toEqual(['import java.util.Map;']);
+    expect(classModel.dependencies).toEqual(expectedDependencies);
   });
 });

@@ -39,8 +39,9 @@ public class Clazz {
     const model = inputModel.models['Clazz'];
 
     const classModel = await generator.renderClass(model, inputModel);
+    const expectedDependencies = ['import java.util.Map;'];
     expect(classModel.result).toEqual(expected);
-    expect(classModel.dependencies).toEqual(['import java.util.Map;']);
+    expect(classModel.dependencies).toEqual(expectedDependencies);
   });
 
   test('should render description and examples for enum', async () => {
