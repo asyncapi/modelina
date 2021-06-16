@@ -6,7 +6,7 @@ jest.mock('../../../src/models/CommonModel');
 
 describe('Interpretation of enum', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
   });
   afterAll(() => {
     jest.restoreAllMocks();

@@ -1,5 +1,5 @@
 import { CommonModel, Schema } from '../models';
-import { interpretName } from './Utils';
+import { interpretName, isEnum, isModelObject } from './Utils';
 import interpretProperties from './InterpretProperties';
 import interpretAllOf from './InterpretAllOf';
 import interpretConst from './InterpretConst';
@@ -59,16 +59,8 @@ export class Interpreter {
       if (schema.type !== undefined) {
         model.addTypes(schema.type);
       }
-
-      //All schemas of type object MUST have ids
-      if (model.type !== undefined && model.type.includes('object')) {
-        model.$id = interpretName(schema) || `anonymSchema${this.anonymCounter++}`;
-      } else if (schema.$id !== undefined) {
-        model.$id = interpretName(schema);
-      }
-
       model.required = schema.required || model.required;
-      
+
       interpretPatternProperties(schema, model, this, interpreterOptions);
       interpretAdditionalProperties(schema, model, this, interpreterOptions);
       interpretItems(schema, model, this, interpreterOptions);
@@ -84,6 +76,13 @@ export class Interpreter {
       this.interpretAndCombineSchema(schema.else, model, schema, interpreterOptions);
 
       interpretNot(schema, model, this, interpreterOptions);
+
+      //All schemas of type model object or enum MUST have ids
+      if (isModelObject(model) === true || isEnum(model) === true) {
+        model.$id = interpretName(schema) || `anonymSchema${this.anonymCounter++}`;
+      } else if (schema.$id !== undefined) {
+        model.$id = interpretName(schema);
+      }
     }
   }
 

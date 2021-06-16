@@ -94,6 +94,6 @@ public enum Enum {
 
     const enumModel = await generator.renderEnum(model, inputModel);
     expect(enumModel.result).toEqual(expected);
-    expect(enumModel.dependencies).toEqual(['import com.fasterxml.jackson.annotations.*;']);
+    expect(enumModel.dependencies).toEqual(['import com.fasterxml.jackson.annotation.*;']);
   });
 });

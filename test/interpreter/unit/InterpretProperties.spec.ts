@@ -11,7 +11,7 @@ CommonModel.mergeCommonModels = jest.fn();
  */
 describe('Interpretation of properties', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
   });
   afterAll(() => {
     jest.restoreAllMocks();
