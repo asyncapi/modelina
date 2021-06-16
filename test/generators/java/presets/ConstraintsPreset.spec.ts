@@ -23,7 +23,7 @@ describe('JAVA_CONSTRAINTS_PRESET', () => {
   private Double maxNumberProp;
   private Object[] arrayProp;
   private String stringProp;
-  private Map<string, Object> additionalProperties;
+  private Map<String, Object> additionalProperties;
 
   @NotNull
   @Min(0)
@@ -44,8 +44,8 @@ describe('JAVA_CONSTRAINTS_PRESET', () => {
   public String getStringProp() { return this.stringProp; }
   public void setStringProp(String stringProp) { this.stringProp = stringProp; }
 
-  public Map<string, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<string, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }`;
 
     const inputModel = await generator.process(doc);

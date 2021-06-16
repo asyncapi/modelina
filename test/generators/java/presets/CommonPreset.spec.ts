@@ -13,7 +13,7 @@ describe('JAVA_COMMON_PRESET', () => {
     const expected = `public class Clazz {
   private String stringProp;
   private Double numberProp;
-  private Map<string, Object> additionalProperties;
+  private Map<String, Object> additionalProperties;
 
   public String getStringProp() { return this.stringProp; }
   public void setStringProp(String stringProp) { this.stringProp = stringProp; }
@@ -21,8 +21,8 @@ describe('JAVA_COMMON_PRESET', () => {
   public Double getNumberProp() { return this.numberProp; }
   public void setNumberProp(Double numberProp) { this.numberProp = numberProp; }
 
-  public Map<string, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<string, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
   @Override
   public boolean equals(Object o) {
@@ -86,7 +86,7 @@ describe('JAVA_COMMON_PRESET', () => {
     const expected = `public class Clazz {
   private String stringProp;
   private Double numberProp;
-  private Map<string, Object> additionalProperties;
+  private Map<String, Object> additionalProperties;
 
   public String getStringProp() { return this.stringProp; }
   public void setStringProp(String stringProp) { this.stringProp = stringProp; }
@@ -94,8 +94,8 @@ describe('JAVA_COMMON_PRESET', () => {
   public Double getNumberProp() { return this.numberProp; }
   public void setNumberProp(Double numberProp) { this.numberProp = numberProp; }
 
-  public Map<string, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<string, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
   @Override
   public int hashCode() {

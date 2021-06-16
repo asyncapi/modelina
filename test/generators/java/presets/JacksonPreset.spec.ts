@@ -18,7 +18,7 @@ describe('JAVA_DESCRIPTION_PRESET', () => {
     const expected = `public class Clazz {
   private Double minNumberProp;
   private Double maxNumberProp;
-  private Map<string, Object> additionalProperties;
+  private Map<String, Object> additionalProperties;
 
   @JsonProperty("min_number_prop")
   public Double getMinNumberProp() { return this.minNumberProp; }
@@ -28,8 +28,8 @@ describe('JAVA_DESCRIPTION_PRESET', () => {
   public Double getMaxNumberProp() { return this.maxNumberProp; }
   public void setMaxNumberProp(Double maxNumberProp) { this.maxNumberProp = maxNumberProp; }
 
-  public Map<string, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<string, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }`;
 
     const inputModel = await generator.process(doc);

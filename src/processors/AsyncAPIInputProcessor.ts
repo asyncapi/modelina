@@ -45,7 +45,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
   // eslint-disable-next-line sonarjs/cognitive-complexity
   static convertToInternalSchema(
     schema: AsyncAPISchema | boolean,
-    alreadyIteratedSchemas: Map<string, Schema> = new Map()
+    alreadyIteratedSchemas: Map<String, Schema> = new Map()
   ): Schema | boolean {
     if (typeof schema === 'boolean') {return schema;}
     const schemaUid = schema.uid();

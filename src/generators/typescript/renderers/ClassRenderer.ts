@@ -88,7 +88,7 @@ ${renderer.indent(renderer.renderBlock(assignments))}
       signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });
     } else if (type === PropertyType.additionalProperty) {
       const additionalPropertyType = renderer.renderType(property);
-      signature = `: Map<string, ${additionalPropertyType}> | undefined`;
+      signature = `: Map<String, ${additionalPropertyType}> | undefined`;
     }
     return `get ${propertyName}()${signature} { return this._${propertyName}; }`;
   },
@@ -100,7 +100,7 @@ ${renderer.indent(renderer.renderBlock(assignments))}
       signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });
     } else if (type === PropertyType.additionalProperty) {
       const additionalPropertyType = renderer.renderType(property);
-      signature = `: Map<string, ${additionalPropertyType}> | undefined`;
+      signature = `: Map<String, ${additionalPropertyType}> | undefined`;
     }
     return `set ${propertyName}(${propertyName}${signature}) { this._${propertyName} = ${propertyName}; }`;
   },

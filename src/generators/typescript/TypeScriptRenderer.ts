@@ -119,7 +119,7 @@ ${lines.map(line => ` * ${line}`).join('\n')}
       return `${name}${signature};`;
     } else if (type === PropertyType.additionalProperty) {
       const additionalPropertyType = this.renderType(property);
-      return `${name}?: Map<string, ${additionalPropertyType}>;`;
+      return `${name}?: Map<String, ${additionalPropertyType}>;`;
     }
     return '';
   }

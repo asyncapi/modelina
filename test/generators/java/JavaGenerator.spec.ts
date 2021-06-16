@@ -29,7 +29,7 @@ describe('JavaGenerator', () => {
   private Boolean marriage;
   private Object members;
   private Object[] arrayType;
-  private Map<string, Object> additionalProperties;
+  private Map<String, Object> additionalProperties;
 
   public String getStreetName() { return this.streetName; }
   public void setStreetName(String streetName) { this.streetName = streetName; }
@@ -52,8 +52,8 @@ describe('JavaGenerator', () => {
   public Object[] getArrayType() { return this.arrayType; }
   public void setArrayType(Object[] arrayType) { this.arrayType = arrayType; }
 
-  public Map<string, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<string, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }`;
 
     const inputModel = await generator.process(doc);
@@ -80,7 +80,7 @@ describe('JavaGenerator', () => {
   @JsonProperty("property")
   private String property;
   @JsonProperty("additionalProperties")
-  private Map<string, Object> additionalProperties;
+  private Map<String, Object> additionalProperties;
 
   @JsonProperty("property")
   public String getProperty() { return this.property; }
@@ -88,9 +88,9 @@ describe('JavaGenerator', () => {
   public void setProperty(String property) { this.property = property; }
 
   @JsonProperty("additionalProperties")
-  public Map<string, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   @JsonProperty("additionalProperties")
-  public void setAdditionalProperties(Map<string, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }`;
 
     generator = new JavaGenerator({ presets: [
