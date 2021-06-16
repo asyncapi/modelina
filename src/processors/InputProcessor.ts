@@ -8,7 +8,7 @@ import { CommonInputModel } from '../models/CommonInputModel';
  */
 export class InputProcessor {
   public static processor: InputProcessor = new InputProcessor();
-  private processors: Map<String, AbstractInputProcessor> = new Map();
+  private processors: Map<string, AbstractInputProcessor> = new Map();
 
   constructor() {
     this.setProcessor('asyncapi', new AsyncAPIInputProcessor()); 
@@ -29,7 +29,7 @@ export class InputProcessor {
    * 
    * @returns all processors
    */
-  getProcessors() : Map<String, AbstractInputProcessor> {
+  getProcessors() : Map<string, AbstractInputProcessor> {
     return this.processors;
   }
 
