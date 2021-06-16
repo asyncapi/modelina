@@ -19,7 +19,7 @@ export default function interpretAllOf(schema: Schema, model: CommonModel, inter
   for (const allOfSchema of schema.allOf) {  
     const allOfModel = interpreter.interpret(allOfSchema, interpreterOptions);
     if (allOfModel === undefined) {continue;}
-    if (isModelObject(allOfModel) && interpreterOptions.allowInheritance === true) {
+    if (isModelObject(allOfModel) === true && interpreterOptions.allowInheritance === true) {
       Logger.info(`Processing allOf, inheritance is enabled, ${model.$id} inherits from ${allOfModel.$id}`, model, allOfModel);
       model.addExtendedModel(allOfModel);
     } else {

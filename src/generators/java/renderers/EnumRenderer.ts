@@ -60,7 +60,7 @@ ${this.indent(this.renderBlock(content, 2))}
 
 export const JAVA_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
   self({ renderer }) {
-    renderer.addDependency('import com.fasterxml.jackson.annotations.*;');
+    renderer.addDependency('import com.fasterxml.jackson.annotation.*;');
     return renderer.defaultSelf();
   },
   item({ renderer, item }) {

@@ -1,10 +1,10 @@
 import { CommonModel } from '../../src';
 import { postInterpretModel } from '../../src/interpreter/PostInterpreter';
-import { isModelObject } from '../../src/interpreter/Utils';
+import { isEnum, isModelObject } from '../../src/interpreter/Utils';
 jest.mock('../../src/interpreter/Utils');
 describe('PostInterpreter', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
   });
   afterAll(() => {
     jest.restoreAllMocks();
@@ -29,6 +29,43 @@ describe('PostInterpreter', () => {
       };
       expect(postProcessedModels).toHaveLength(1);
       expect(postProcessedModels[0]).toMatchObject(expectedSchema1Model);
+    });
+    test('should split models on enums', () => {
+      const rawModel = {
+        $id: 'schema1',
+        properties: {
+          testProp: {
+            $id: 'schema2',
+            enum: [
+              'test'
+            ]
+          }
+        }
+      };
+      const model = CommonModel.toCommonModel(rawModel);
+      (isEnum as jest.Mock).mockReturnValue(true);
+
+      const postProcessedModels = postInterpretModel(model);
+
+      const expectedSchema1Model = CommonModel.toCommonModel({
+        $id: 'schema1',
+        properties: {
+          testProp: {
+            $ref: 'schema2'
+          }
+        }
+      });
+      const expectedSchema2Model = CommonModel.toCommonModel({
+        $id: 'schema2',
+        enum: [
+          'test'
+        ]
+      });
+
+      expect(postProcessedModels).toHaveLength(2);
+      expect(isEnum).toHaveBeenNthCalledWith(1, expectedSchema2Model);
+      expect(postProcessedModels[0]).toMatchObject(expectedSchema1Model);
+      expect(postProcessedModels[1]).toMatchObject(expectedSchema2Model);
     });
     test('should split models when nested models occur', () => {
       const rawModel = {
