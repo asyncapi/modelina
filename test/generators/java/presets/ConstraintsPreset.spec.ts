@@ -53,6 +53,6 @@ describe('JAVA_CONSTRAINTS_PRESET', () => {
 
     const classModel = await generator.renderClass(model, inputModel);
     expect(classModel.result).toEqual(expected);
-    expect(classModel.dependencies).toEqual(['import javax.validation.constraints.*;']);
+    expect(classModel.dependencies).toEqual(['import java.util.Map;', 'import javax.validation.constraints.*;']);
   });
 });

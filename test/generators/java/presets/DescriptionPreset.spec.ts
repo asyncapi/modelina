@@ -40,7 +40,7 @@ public class Clazz {
 
     const classModel = await generator.renderClass(model, inputModel);
     expect(classModel.result).toEqual(expected);
-    expect(classModel.dependencies).toEqual([]);
+    expect(classModel.dependencies).toEqual(['import java.util.Map;']);
   });
 
   test('should render description and examples for enum', async () => {

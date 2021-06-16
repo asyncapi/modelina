@@ -60,12 +60,13 @@ describe('JavaGenerator', () => {
     const model = inputModel.models['Address'];
 
     let classModel = await generator.renderClass(model, inputModel);
+    const expectedDependencies = ['import java.util.Map;'];
     expect(classModel.result).toEqual(expected);
-    expect(classModel.dependencies).toEqual([]);
+    expect(classModel.dependencies).toEqual(expectedDependencies);
 
     classModel = await generator.render(model, inputModel);
     expect(classModel.result).toEqual(expected);
-    expect(classModel.dependencies).toEqual([]);
+    expect(classModel.dependencies).toEqual(expectedDependencies);
   });
 
   test('should work custom preset for `class` type', async () => {
@@ -119,12 +120,13 @@ ${content}`;
     const model = inputModel.models['CustomClass'];
 
     let classModel = await generator.renderClass(model, inputModel);
+    const expectedDependencies = ['import java.util.Map;'];
     expect(classModel.result).toEqual(expected);
-    expect(classModel.dependencies).toEqual([]);
+    expect(classModel.dependencies).toEqual(expectedDependencies);
 
     classModel = await generator.render(model, inputModel);
     expect(classModel.result).toEqual(expected);
-    expect(classModel.dependencies).toEqual([]);
+    expect(classModel.dependencies).toEqual(expectedDependencies);
   });
 
   test('should render `enum` type (string type)', async () => {
