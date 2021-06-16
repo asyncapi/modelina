@@ -13,8 +13,8 @@ export class ClassRenderer extends TypeScriptRenderer {
     const content = [
       await this.renderProperties(),
       await this.runCtorPreset(),
-      await this.renderPropertyAccessors(),
-      await this.runAdditionalContentPreset(),
+      await this.renderAccessors(),
+      await this.runAdditionalContentPreset()
     ];
 
     const formattedName = this.model.$id && FormatHelpers.toPascalCase(this.model.$id);
@@ -27,7 +27,7 @@ ${this.indent(this.renderBlock(content, 2))}
     return this.runPreset('ctor');
   }
 
-  async renderPropertyAccessors(): Promise<string> {
+  async renderAccessors(): Promise<string> {
     const properties = this.model.properties || {};
     const content: string[] = [];
 

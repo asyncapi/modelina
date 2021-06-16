@@ -12,7 +12,7 @@ export class InterfaceRenderer extends TypeScriptRenderer {
   async defaultSelf(): Promise<string> {
     const content = [
       await this.renderProperties(),
-      await this.runAdditionalContentPreset(),
+      await this.runAdditionalContentPreset()
     ];
 
     const formattedName = this.model.$id && FormatHelpers.toPascalCase(this.model.$id);

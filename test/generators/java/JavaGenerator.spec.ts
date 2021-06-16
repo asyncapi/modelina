@@ -60,10 +60,12 @@ describe('JavaGenerator', () => {
     const model = inputModel.models['Address'];
 
     let classModel = await generator.renderClass(model, inputModel);
-    expect(classModel).toEqual(expected);
+    expect(classModel.result).toEqual(expected);
+    expect(classModel.dependencies).toEqual([]);
 
     classModel = await generator.render(model, inputModel);
-    expect(classModel).toEqual(expected);
+    expect(classModel.result).toEqual(expected);
+    expect(classModel.dependencies).toEqual([]);
   });
 
   test('should work custom preset for `class` type', async () => {
@@ -117,10 +119,12 @@ ${content}`;
     const model = inputModel.models['CustomClass'];
 
     let classModel = await generator.renderClass(model, inputModel);
-    expect(classModel).toEqual(expected);
+    expect(classModel.result).toEqual(expected);
+    expect(classModel.dependencies).toEqual([]);
 
     classModel = await generator.render(model, inputModel);
-    expect(classModel).toEqual(expected);
+    expect(classModel.result).toEqual(expected);
+    expect(classModel.dependencies).toEqual([]);
   });
 
   test('should render `enum` type (string type)', async () => {
@@ -163,10 +167,13 @@ ${content}`;
     const model = inputModel.models['States'];
 
     let enumModel = await generator.renderEnum(model, inputModel);
-    expect(enumModel).toEqual(expected);
+    const expectedDependencies = ['import com.fasterxml.jackson.annotations.*;'];
+    expect(enumModel.result).toEqual(expected);
+    expect(enumModel.dependencies).toEqual(expectedDependencies);
 
     enumModel = await generator.render(model, inputModel);
-    expect(enumModel).toEqual(expected);
+    expect(enumModel.result).toEqual(expected);
+    expect(enumModel.dependencies).toEqual(expectedDependencies);
   });
 
   test('should render `enum` type (integer type)', async () => {
@@ -209,10 +216,13 @@ ${content}`;
     const model = inputModel.models['Numbers'];
 
     let enumModel = await generator.renderEnum(model, inputModel);
-    expect(enumModel).toEqual(expected);
+    const expectedDependencies = ['import com.fasterxml.jackson.annotations.*;'];
+    expect(enumModel.result).toEqual(expected);
+    expect(enumModel.dependencies).toEqual(expectedDependencies);
 
     enumModel = await generator.render(model, inputModel);
-    expect(enumModel).toEqual(expected);
+    expect(enumModel.result).toEqual(expected);
+    expect(enumModel.dependencies).toEqual(expectedDependencies);
   });
 
   test('should render `enum` type (union type)', async () => {
@@ -255,10 +265,13 @@ ${content}`;
     const model = inputModel.models['Union'];
 
     let enumModel = await generator.renderEnum(model, inputModel);
-    expect(enumModel).toEqual(expected);
+    const expectedDependencies = ['import com.fasterxml.jackson.annotations.*;'];
+    expect(enumModel.result).toEqual(expected);
+    expect(enumModel.dependencies).toEqual(expectedDependencies);
 
     enumModel = await generator.render(model, inputModel);
-    expect(enumModel).toEqual(expected);
+    expect(enumModel.result).toEqual(expected);
+    expect(enumModel.dependencies).toEqual(expectedDependencies);
   });
 
   test('should work custom preset for `enum` type', async () => {
@@ -314,9 +327,12 @@ ${content}`;
     const model = inputModel.models['CustomEnum'];
     
     let enumModel = await generator.render(model, inputModel);
-    expect(enumModel).toEqual(expected);
+    const expectedDependencies = ['import com.fasterxml.jackson.annotations.*;'];
+    expect(enumModel.result).toEqual(expected);
+    expect(enumModel.dependencies).toEqual(expectedDependencies);
     
     enumModel = await generator.renderEnum(model, inputModel);
-    expect(enumModel).toEqual(expected);
+    expect(enumModel.result).toEqual(expected);
+    expect(enumModel.dependencies).toEqual(expectedDependencies);
   });
 });

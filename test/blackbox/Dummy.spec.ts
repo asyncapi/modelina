@@ -1,7 +1,7 @@
 import * as path from 'path';
 import { TypeScriptGenerator, JavaGenerator, JavaScriptGenerator } from '../../src';
 import { execCommand, generateModels, renderModels } from './utils/Utils';
-import { renderModelsToSeparateFiles } from './utils/Utils';
+import { renderJavaModelsToSeparateFiles } from './utils/Utils';
 const fileToGenerate = path.resolve(__dirname, './docs/dummy.json');
 describe('Dummy JSON Schema file', () => {
   jest.setTimeout(100000);
@@ -11,7 +11,7 @@ describe('Dummy JSON Schema file', () => {
       const generatedModels = await generateModels(fileToGenerate, generator);
       expect(generatedModels).not.toHaveLength(0);
       const renderOutputPath = path.resolve(__dirname, './output/java');
-      await renderModelsToSeparateFiles(generatedModels, renderOutputPath);
+      await renderJavaModelsToSeparateFiles(generatedModels, renderOutputPath);
       const compileCommand = `javac ${path.resolve(renderOutputPath, '*.java')}`;
       await execCommand(compileCommand);
     });
