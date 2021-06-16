@@ -90,8 +90,6 @@ ${lines.map(line => ` * ${line}`).join('\n')}
 
   /**
    * Render all the properties for the model by calling the property preset per property.
-   * 
-   * @returns 
    */
   async renderProperties(): Promise<string> {
     const properties = this.model.properties || {};
