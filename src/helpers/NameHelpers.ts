@@ -7,7 +7,6 @@ import { CommonModel } from 'models';
  * 
  * @param rootModel 
  * @param additionalPropertyName 
- * @returns 
  */
 export function findPropertyNameForAdditionalProperties(rootModel: CommonModel, additionalPropertyName = 'additionalProperties'): string {
   if (Object.keys(rootModel.properties || {}).includes(additionalPropertyName)) {
