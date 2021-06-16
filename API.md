@@ -53,6 +53,9 @@
 <dt><a href="#interpretConst">interpretConst(schema, model)</a></dt>
 <dd><p>Interpreter function for JSON Schema draft 7 const keyword.</p>
 </dd>
+<dt><a href="#interpretDependencies">interpretDependencies(schema, model)</a></dt>
+<dd><p>Interpreter function for JSON Schema draft 7 dependencies keyword.</p>
+</dd>
 <dt><a href="#interpretEnum">interpretEnum(schema, model)</a></dt>
 <dd><p>Interpreter function for JSON Schema draft 7 enum keyword</p>
 </dd>
@@ -83,8 +86,11 @@
 <dt><a href="#ensureModelsAreSplit">ensureModelsAreSplit(model, iteratedModels)</a></dt>
 <dd><p>Split up all models which should and use ref instead.</p>
 </dd>
-<dt><a href="#isModelObject">isModelObject()</a></dt>
-<dd><p>check if CommonModel is a separate model or a simple model.</p>
+<dt><a href="#isEnum">isEnum(model)</a></dt>
+<dd><p>Check if CommonModel is an enum</p>
+</dd>
+<dt><a href="#isModelObject">isModelObject(model)</a></dt>
+<dd><p>Check if CommonModel is a separate model or a simple model.</p>
 </dd>
 <dt><a href="#inferTypeFromValue">inferTypeFromValue(value)</a></dt>
 <dd><p>Infers the JSON Schema type from value</p>
@@ -737,6 +743,18 @@ Interpreter function for JSON Schema draft 7 const keyword.
 | schema | 
 | model | 
 
+<a name="interpretDependencies"></a>
+
+## interpretDependencies(schema, model)
+Interpreter function for JSON Schema draft 7 dependencies keyword.
+
+**Kind**: global function  
+
+| Param |
+| --- |
+| schema | 
+| model | 
+
 <a name="interpretEnum"></a>
 
 ## interpretEnum(schema, model)
@@ -856,12 +874,28 @@ Split up all models which should and use ref instead.
 | model | to ensure are split |
 | iteratedModels | which are already split |
 
-<a name="isModelObject"></a>
+<a name="isEnum"></a>
 
-## isModelObject()
-check if CommonModel is a separate model or a simple model.
+## isEnum(model)
+Check if CommonModel is an enum
 
 **Kind**: global function  
+
+| Param |
+| --- |
+| model | 
+
+<a name="isModelObject"></a>
+
+## isModelObject(model)
+Check if CommonModel is a separate model or a simple model.
+
+**Kind**: global function  
+
+| Param |
+| --- |
+| model | 
+
 <a name="inferTypeFromValue"></a>
 
 ## inferTypeFromValue(value)
