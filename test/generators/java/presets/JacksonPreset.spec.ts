@@ -36,7 +36,7 @@ describe('JAVA_DESCRIPTION_PRESET', () => {
     const model = inputModel.models['Clazz'];
 
     const classModel = await generator.renderClass(model, inputModel);
-    const expectedDependencies = ['import java.util.Map;', 'import com.fasterxml.jackson.annotations.*;'];
+    const expectedDependencies = ['import java.util.Map;', 'import com.fasterxml.jackson.annotation.*;'];
     expect(classModel.result).toEqual(expected);
     expect(classModel.dependencies).toEqual(expectedDependencies);
   });
