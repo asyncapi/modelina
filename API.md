@@ -40,9 +40,21 @@
 </dd>
 </dl>
 
+## Members
+
+<dl>
+<dt><a href="#DefaultPropertyNames">DefaultPropertyNames</a></dt>
+<dd><p>Default property names for different aspects of the common model</p>
+</dd>
+</dl>
+
 ## Functions
 
 <dl>
+<dt><a href="#getUniquePropertyName">getUniquePropertyName(rootModel, propertyName)</a></dt>
+<dd><p>Recursively find the proper property name for additionalProperties</p>
+<p>This function ensures that the property name for additionalProperties is unique</p>
+</dd>
 <dt><a href="#interpretAdditionalProperties">interpretAdditionalProperties(schema, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for JSON Schema draft 7 additionalProperties keyword.</p>
 </dd>
@@ -700,6 +712,26 @@ Sets the logger to use for the model generation library
 | Param | Description |
 | --- | --- |
 | logger | to add |
+
+<a name="DefaultPropertyNames"></a>
+
+## DefaultPropertyNames
+Default property names for different aspects of the common model
+
+**Kind**: global variable  
+<a name="getUniquePropertyName"></a>
+
+## getUniquePropertyName(rootModel, propertyName)
+Recursively find the proper property name for additionalProperties
+
+This function ensures that the property name for additionalProperties is unique
+
+**Kind**: global function  
+
+| Param |
+| --- |
+| rootModel | 
+| propertyName | 
 
 <a name="interpretAdditionalProperties"></a>
 
