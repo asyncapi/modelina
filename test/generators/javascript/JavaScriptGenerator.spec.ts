@@ -29,6 +29,7 @@ describe('JavaScriptGenerator', () => {
   marriage;
   members;
   arrayType;
+  additionalProperties;
 
   constructor(input) {
     this.streetName = input.streetName;
@@ -99,6 +100,7 @@ describe('JavaScriptGenerator', () => {
     };
     const expected = `export class CustomClass {
   #property;
+  #additionalProperties;
 
   constructor(input) {
     this.#property = input.property;

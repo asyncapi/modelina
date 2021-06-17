@@ -23,6 +23,7 @@ describe('JAVA_CONSTRAINTS_PRESET', () => {
   private Double maxNumberProp;
   private Object[] arrayProp;
   private String stringProp;
+  private Map<String, Object> additionalProperties;
 
   @NotNull
   @Min(0)
@@ -42,13 +43,17 @@ describe('JAVA_CONSTRAINTS_PRESET', () => {
   @Size(min=3)
   public String getStringProp() { return this.stringProp; }
   public void setStringProp(String stringProp) { this.stringProp = stringProp; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }`;
 
     const inputModel = await generator.process(doc);
     const model = inputModel.models['Clazz'];
 
     const classModel = await generator.renderClass(model, inputModel);
+    const expectedDependencies = ['import java.util.Map;', 'import javax.validation.constraints.*;'];
     expect(classModel.result).toEqual(expected);
-    expect(classModel.dependencies).toEqual(['import javax.validation.constraints.*;']);
+    expect(classModel.dependencies).toEqual(expectedDependencies);
   });
 });

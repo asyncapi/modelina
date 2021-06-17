@@ -22,6 +22,7 @@ describe('JAVA_DESCRIPTION_PRESET', () => {
  */
 public class Clazz {
   private String prop;
+  private Map<String, Object> additionalProperties;
 
   /**
    * Description for prop
@@ -29,14 +30,18 @@ public class Clazz {
    */
   public String getProp() { return this.prop; }
   public void setProp(String prop) { this.prop = prop; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }`;
 
     const inputModel = await generator.process(doc);
     const model = inputModel.models['Clazz'];
 
     const classModel = await generator.renderClass(model, inputModel);
+    const expectedDependencies = ['import java.util.Map;'];
     expect(classModel.result).toEqual(expected);
-    expect(classModel.dependencies).toEqual([]);
+    expect(classModel.dependencies).toEqual(expectedDependencies);
   });
 
   test('should render description and examples for enum', async () => {

@@ -30,6 +30,7 @@ describe('TypeScriptGenerator', () => {
   private _members?: string | number | boolean;
   private _tupleType?: [string, number];
   private _arrayType: Array<string>;
+  private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null | number>;
 
   constructor(input: {
     streetName: string,
@@ -74,6 +75,9 @@ describe('TypeScriptGenerator', () => {
 
   get arrayType(): Array<string> { return this._arrayType; }
   set arrayType(arrayType: Array<string>) { this._arrayType = arrayType; }
+
+  get additionalProperties(): Map<String, object | string | number | Array<unknown> | boolean | null | number> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<String, object | string | number | Array<unknown> | boolean | null | number> | undefined) { this._additionalProperties = additionalProperties; }
 }`;
 
     const inputModel = await generator.process(doc);
@@ -99,6 +103,8 @@ describe('TypeScriptGenerator', () => {
     const expected = `export class CustomClass {
   @JsonProperty("property")
   private _property?: string;
+  @JsonProperty("additionalProperties")
+  private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null | number>;
 
   constructor(input: {
     property?: string,
@@ -108,6 +114,9 @@ describe('TypeScriptGenerator', () => {
 
   get property(): string | undefined { return this._property; }
   set property(property: string | undefined) { this._property = property; }
+
+  get additionalProperties(): Map<String, object | string | number | Array<unknown> | boolean | null | number> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<String, object | string | number | Array<unknown> | boolean | null | number> | undefined) { this._additionalProperties = additionalProperties; }
 }`;
 
     generator = new TypeScriptGenerator({ presets: [
@@ -154,6 +163,7 @@ ${content}`;
   members?: string | number | boolean;
   tupleType?: [string, number];
   arrayType: Array<string>;
+  additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null | number>;
 }`;
 
     const interfaceGenerator = new TypeScriptGenerator({modelType: 'interface'});
@@ -175,6 +185,7 @@ ${content}`;
     };
     const expected = `export interface CustomInterface {
   property?: string;
+  additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null | number>;
 }`;
 
     generator = new TypeScriptGenerator({ presets: [
