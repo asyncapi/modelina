@@ -29,6 +29,7 @@ describe('JavaGenerator', () => {
   private Boolean marriage;
   private Object members;
   private Object[] arrayType;
+  private Map<String, Object> additionalProperties;
 
   public String getStreetName() { return this.streetName; }
   public void setStreetName(String streetName) { this.streetName = streetName; }
@@ -50,18 +51,22 @@ describe('JavaGenerator', () => {
 
   public Object[] getArrayType() { return this.arrayType; }
   public void setArrayType(Object[] arrayType) { this.arrayType = arrayType; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }`;
 
     const inputModel = await generator.process(doc);
     const model = inputModel.models['Address'];
 
     let classModel = await generator.renderClass(model, inputModel);
+    const expectedDependencies = ['import java.util.Map;'];
     expect(classModel.result).toEqual(expected);
-    expect(classModel.dependencies).toEqual([]);
+    expect(classModel.dependencies).toEqual(expectedDependencies);
 
     classModel = await generator.render(model, inputModel);
     expect(classModel.result).toEqual(expected);
-    expect(classModel.dependencies).toEqual([]);
+    expect(classModel.dependencies).toEqual(expectedDependencies);
   });
 
   test('should work custom preset for `class` type', async () => {
@@ -75,11 +80,18 @@ describe('JavaGenerator', () => {
     const expected = `public class CustomClass {
   @JsonProperty("property")
   private String property;
+  @JsonProperty("additionalProperties")
+  private Map<String, Object> additionalProperties;
 
   @JsonProperty("property")
   public String getProperty() { return this.property; }
   @JsonProperty("property")
   public void setProperty(String property) { this.property = property; }
+
+  @JsonProperty("additionalProperties")
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  @JsonProperty("additionalProperties")
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }`;
 
     generator = new JavaGenerator({ presets: [
@@ -105,12 +117,13 @@ describe('JavaGenerator', () => {
     const model = inputModel.models['CustomClass'];
 
     let classModel = await generator.renderClass(model, inputModel);
+    const expectedDependencies = ['import java.util.Map;'];
     expect(classModel.result).toEqual(expected);
-    expect(classModel.dependencies).toEqual([]);
+    expect(classModel.dependencies).toEqual(expectedDependencies);
 
     classModel = await generator.render(model, inputModel);
     expect(classModel.result).toEqual(expected);
-    expect(classModel.dependencies).toEqual([]);
+    expect(classModel.dependencies).toEqual(expectedDependencies);
   });
 
   test('should render `enum` type (string type)', async () => {

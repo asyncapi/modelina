@@ -2,7 +2,8 @@ import { AbstractRenderer } from '../AbstractRenderer';
 import { TypeScriptOptions } from './TypeScriptGenerator';
 
 import { FormatHelpers } from '../../helpers';
-import { CommonModel, CommonInputModel, Preset } from '../../models';
+import { CommonModel, CommonInputModel, Preset, PropertyType } from '../../models';
+import { DefaultPropertyNames, getUniquePropertyName } from '../../helpers/NameHelpers';
 
 /**
  * Common renderer for TypeScript types
@@ -87,6 +88,9 @@ ${lines.map(line => ` * ${line}`).join('\n')}
  */`;
   }
 
+  /**
+   * Render all the properties for the model by calling the property preset per property.
+   */
   async renderProperties(): Promise<string> {
     const properties = this.model.properties || {};
     const content: string[] = [];
@@ -96,16 +100,31 @@ ${lines.map(line => ` * ${line}`).join('\n')}
       content.push(rendererProperty);
     }
 
+    if (this.model.additionalProperties !== undefined) {
+      const propertyName = getUniquePropertyName(this.model, DefaultPropertyNames.additionalProperties);
+      const additionalProperty = await this.runPropertyPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
+      content.push(additionalProperty);
+    }
+
     return this.renderBlock(content);
   }
 
-  renderProperty(propertyName: string, property: CommonModel): string {
+  renderProperty(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): string {
     const name = FormatHelpers.toCamelCase(propertyName);
-    const signature = this.renderTypeSignature(property, { isRequired: this.model.isRequired(propertyName) });
-    return `${name}${signature};`;
+    let signature: string;
+    switch (type) {
+    case PropertyType.property:
+      signature = this.renderTypeSignature(property, { isRequired: this.model.isRequired(propertyName) });
+      return `${name}${signature};`;
+    case PropertyType.additionalProperty:
+      signature = this.renderType(property);
+      return `${name}?: Map<String, ${signature}>;`;
+    default:
+      return '';
+    }
   }
 
-  runPropertyPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset('property', { propertyName, property });
+  runPropertyPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
+    return this.runPreset('property', { propertyName, property, type });
   }
 }

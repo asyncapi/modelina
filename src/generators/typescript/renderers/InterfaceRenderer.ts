@@ -26,7 +26,7 @@ export const TS_DEFAULT_INTERFACE_PRESET: InterfacePreset<InterfaceRenderer> = {
   async self({ renderer }) {
     return `export ${await renderer.defaultSelf()}`;
   },
-  property({ renderer, propertyName, property }) {
-    return renderer.renderProperty(propertyName, property);
-  },
+  property({ renderer, propertyName, property, type }) {
+    return renderer.renderProperty(propertyName, property, type);
+  }
 };

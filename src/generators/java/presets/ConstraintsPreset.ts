@@ -1,7 +1,4 @@
 import { JavaPreset } from '../JavaPreset';
-
-import { CommonModel } from '../../../models';
-
 /**
  * Preset which extends class's getters with annotations from `javax.validation.constraints` package
  * 
@@ -14,9 +11,6 @@ export const JAVA_CONSTRAINTS_PRESET: JavaPreset = {
       return content;
     },
     getter({ renderer, model, propertyName, property, content }) {
-      if (!(property instanceof CommonModel)) {
-        return content;
-      }
       const annotations: string[] = [];
       
       const isRequired = model.isRequired(propertyName);
