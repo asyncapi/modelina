@@ -99,18 +99,15 @@ describe('JavaGenerator', () => {
         class: {
           property({ renderer, propertyName, content }) {
             const annotation = renderer.renderAnnotation('JsonProperty', `"${propertyName}"`);
-            return `${annotation}
-${content}`;
+            return `${annotation}\n${content}`;
           },
           getter({ renderer, propertyName, content }) {
             const annotation = renderer.renderAnnotation('JsonProperty', `"${propertyName}"`);
-            return `${annotation}
-${content}`;
+            return `${annotation}\n${content}`;
           },
           setter({ renderer, propertyName, content }) {
             const annotation = renderer.renderAnnotation('JsonProperty', `"${propertyName}"`);
-            return `${annotation}
-${content}`;
+            return `${annotation}\n${content}`;
           },
         }
       }
@@ -318,8 +315,7 @@ public enum CustomEnum {
         enum: {
           self({ renderer, content }) {
             const annotation = renderer.renderAnnotation('EnumAnnotation');
-            return `${annotation}
-${content}`;
+            return `${annotation}\n${content}`;
           },
         }
       }
