@@ -111,15 +111,18 @@ ${lines.map(line => ` * ${line}`).join('\n')}
 
   renderProperty(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): string {
     const name = FormatHelpers.toCamelCase(propertyName);
-    
-    if (type === PropertyType.property) {
-      const signature = this.renderTypeSignature(property, { isRequired: this.model.isRequired(propertyName) });
+    let signature: string;
+    switch (type) {
+    case PropertyType.property:
+      signature = this.renderTypeSignature(property, { isRequired: this.model.isRequired(propertyName) });
       return `${name}${signature};`;
-    } else if (type === PropertyType.additionalProperty) {
-      const additionalPropertyType = this.renderType(property);
-      return `${name}?: Map<String, ${additionalPropertyType}>;`;
+      break;
+    case PropertyType.additionalProperty:
+      signature = this.renderType(property);
+      return `${name}?: Map<String, ${signature}>;`;
+    default:
+      return '';
     }
-    return '';
   }
 
   runPropertyPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
