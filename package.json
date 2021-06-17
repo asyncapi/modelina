@@ -31,7 +31,7 @@
   ],
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.7",
-    "@asyncapi/parser": "^1.5.1",
+    "@asyncapi/parser": "^1.5.2",
     "change-case": "^4.1.2"
   },
   "devDependencies": {
