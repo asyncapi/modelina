@@ -1,7 +1,7 @@
 import { AbstractRenderer } from '../AbstractRenderer';
 import { JavaScriptOptions } from './JavaScriptGenerator';
 
-import { findPropertyNameForAdditionalProperties, FormatHelpers } from '../../helpers';
+import { getUniquePropertyName, FormatHelpers, DefaultPropertyNames } from '../../helpers';
 import { CommonModel, CommonInputModel, Preset, PropertyType } from '../../models';
 
 /**
@@ -37,7 +37,7 @@ ${content}
     }
 
     if (this.model.additionalProperties !== undefined) {
-      const propertyName = findPropertyNameForAdditionalProperties(this.model);
+      const propertyName = getUniquePropertyName(this.model, DefaultPropertyNames.additionalProperties);
       const additionalProperty = await this.runPropertyPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
       content.push(additionalProperty);
     }

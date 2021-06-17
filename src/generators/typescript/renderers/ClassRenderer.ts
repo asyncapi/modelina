@@ -1,7 +1,7 @@
 import { TypeScriptRenderer } from '../TypeScriptRenderer';
 
 import { CommonModel, ClassPreset, PropertyType } from '../../../models';
-import { findPropertyNameForAdditionalProperties, FormatHelpers } from '../../../helpers';
+import { getUniquePropertyName, FormatHelpers, DefaultPropertyNames } from '../../../helpers';
 
 /**
  * Renderer for TypeScript's `class` type
@@ -37,7 +37,7 @@ ${this.indent(this.renderBlock(content, 2))}
       content.push(this.renderBlock([getter, setter]));
     }
     if (this.model.additionalProperties !== undefined) {
-      const propertyName = findPropertyNameForAdditionalProperties(this.model);
+      const propertyName = getUniquePropertyName(this.model, DefaultPropertyNames.additionalProperties);
       const getter = await this.runGetterPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
       const setter = await this.runSetterPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
       content.push(this.renderBlock([getter, setter]));

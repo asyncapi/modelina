@@ -1,7 +1,7 @@
 import { JavaRenderer } from '../JavaRenderer';
 
 import { CommonModel, ClassPreset, PropertyType } from '../../../models';
-import { FormatHelpers, findPropertyNameForAdditionalProperties } from '../../../helpers';
+import { DefaultPropertyNames, FormatHelpers, getUniquePropertyName } from '../../../helpers';
 
 /**
  * Renderer for Java's `class` type
@@ -41,7 +41,7 @@ ${this.indent(this.renderBlock(content, 2))}
     }
     
     if (this.model.additionalProperties !== undefined) {
-      const propertyName = findPropertyNameForAdditionalProperties(this.model);
+      const propertyName = getUniquePropertyName(this.model, DefaultPropertyNames.additionalProperties);
       const additionalProperty = await this.runPropertyPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
       content.push(additionalProperty);
     }
@@ -64,7 +64,7 @@ ${this.indent(this.renderBlock(content, 2))}
     }
 
     if (this.model.additionalProperties !== undefined) {
-      const propertyName = findPropertyNameForAdditionalProperties(this.model);
+      const propertyName = getUniquePropertyName(this.model, DefaultPropertyNames.additionalProperties);
       const getter = await this.runGetterPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
       const setter = await this.runSetterPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
       content.push(this.renderBlock([getter, setter]));

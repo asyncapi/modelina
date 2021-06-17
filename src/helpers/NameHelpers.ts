@@ -1,16 +1,23 @@
 import { CommonModel } from 'models';
 
 /**
+ * Default property names for different aspects of the common model
+ */
+export enum DefaultPropertyNames {
+  additionalProperties = 'additionalProperties'
+}
+
+/**
  * Recursively find the proper property name for additionalProperties
  * 
  * This function ensures that the property name for additionalProperties is unique 
  * 
  * @param rootModel 
- * @param additionalPropertyName 
+ * @param propertyName 
  */
-export function findPropertyNameForAdditionalProperties(rootModel: CommonModel, additionalPropertyName = 'additionalProperties'): string {
-  if (Object.keys(rootModel.properties || {}).includes(additionalPropertyName)) {
-    return findPropertyNameForAdditionalProperties(rootModel, `_${additionalPropertyName}`);
+export function getUniquePropertyName(rootModel: CommonModel, propertyName: string): string {
+  if (Object.keys(rootModel.properties || {}).includes(propertyName)) {
+    return getUniquePropertyName(rootModel, `_${propertyName}`);
   }
-  return additionalPropertyName;
+  return propertyName;
 }

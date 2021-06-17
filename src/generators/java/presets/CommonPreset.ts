@@ -1,7 +1,7 @@
 import { JavaRenderer } from '../JavaRenderer';
 import { JavaPreset } from '../JavaPreset';
 
-import { findPropertyNameForAdditionalProperties, FormatHelpers } from '../../../helpers';
+import { getUniquePropertyName, FormatHelpers, DefaultPropertyNames } from '../../../helpers';
 import { CommonModel } from '../../../models';
 
 export interface JavaCommonPresetOptions {
@@ -19,7 +19,7 @@ function renderEqual({ renderer, model }: {
 }): string {
   const formattedModelName = model.$id && FormatHelpers.toPascalCase(model.$id);
   const properties = model.properties || {};
-  const propertyKeys = [...Object.keys(properties), findPropertyNameForAdditionalProperties(model)];
+  const propertyKeys = [...Object.keys(properties), getUniquePropertyName(model, DefaultPropertyNames.additionalProperties)];
   const equalProperties = propertyKeys.map(prop => {
     const camelCasedProp = FormatHelpers.toCamelCase(prop);
     return `Objects.equals(this.${camelCasedProp}, self.${camelCasedProp})`;
@@ -47,7 +47,7 @@ function renderHashCode({ renderer, model }: {
   model: CommonModel,
 }): string {
   const properties = model.properties || {};
-  const propertyKeys = [...Object.keys(properties), findPropertyNameForAdditionalProperties(model)];
+  const propertyKeys = [...Object.keys(properties), getUniquePropertyName(model, DefaultPropertyNames.additionalProperties)];
   const hashProperties = propertyKeys.map(prop => FormatHelpers.toCamelCase(prop)).join(', ');
 
   return `${renderer.renderAnnotation('Override')}
@@ -65,7 +65,7 @@ function renderToString({ renderer, model }: {
 }): string {
   const formattedModelName = model.$id && FormatHelpers.toPascalCase(model.$id);
   const properties = model.properties || {};
-  const propertyKeys = [...Object.keys(properties), findPropertyNameForAdditionalProperties(model)];
+  const propertyKeys = [...Object.keys(properties), getUniquePropertyName(model, DefaultPropertyNames.additionalProperties)];
   const toStringProperties = propertyKeys.map(prop => 
     `"    ${prop}: " + toIndentedString(${FormatHelpers.toCamelCase(prop)}) + "\\n" +`
   );

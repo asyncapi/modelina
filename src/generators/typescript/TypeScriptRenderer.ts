@@ -3,7 +3,7 @@ import { TypeScriptOptions } from './TypeScriptGenerator';
 
 import { FormatHelpers } from '../../helpers';
 import { CommonModel, CommonInputModel, Preset, PropertyType } from '../../models';
-import { findPropertyNameForAdditionalProperties } from '../../helpers/NameHelpers';
+import { DefaultPropertyNames, getUniquePropertyName } from '../../helpers/NameHelpers';
 
 /**
  * Common renderer for TypeScript types
@@ -101,7 +101,7 @@ ${lines.map(line => ` * ${line}`).join('\n')}
     }
 
     if (this.model.additionalProperties !== undefined) {
-      const propertyName = findPropertyNameForAdditionalProperties(this.model);
+      const propertyName = getUniquePropertyName(this.model, DefaultPropertyNames.additionalProperties);
       const additionalProperty = await this.runPropertyPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
       content.push(additionalProperty);
     }
