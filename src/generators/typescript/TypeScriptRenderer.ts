@@ -116,7 +116,6 @@ ${lines.map(line => ` * ${line}`).join('\n')}
     case PropertyType.property:
       signature = this.renderTypeSignature(property, { isRequired: this.model.isRequired(propertyName) });
       return `${name}${signature};`;
-      break;
     case PropertyType.additionalProperty:
       signature = this.renderType(property);
       return `${name}?: Map<String, ${signature}>;`;
