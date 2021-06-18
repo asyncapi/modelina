@@ -25,7 +25,6 @@ export class Schema extends CommonSchema<Schema | boolean> {
     oneOf?: (Schema | boolean)[];
     anyOf?: (Schema | boolean)[];
     not?: (Schema | boolean);
-    additionalItems?: boolean | Schema;
     contains?: (Schema | boolean);
     const?: any;
     dependencies?: { [key: string]: Schema | boolean | string[]; };

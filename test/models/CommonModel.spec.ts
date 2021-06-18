@@ -98,6 +98,30 @@ describe('CommonModel', () => {
     });
   });
 
+  describe('additionalItems', () => {
+    test('should return a Schema object', () => {
+      const doc: Schema = { additionalItems: { type: 'string' } };
+      const d = Schema.toSchema(doc) as Schema;
+      expect(typeof d).toEqual('object');
+      expect(d.additionalItems).not.toBeUndefined();
+      expect(d.additionalItems!.constructor.name).toEqual('Schema');
+      expect(d.additionalItems).toEqual(doc.additionalItems);
+    });
+    
+    test('should return undefined when not defined', () => {
+      const doc: Schema = {};
+      const d = Schema.toSchema(doc) as Schema;
+      expect(typeof d).toEqual('object');
+      expect(d.additionalItems).toEqual(undefined);
+    });
+    
+    test('should return undefined when undefined', () => {
+      const doc: Schema = { additionalItems: undefined };
+      const d = Schema.toSchema(doc) as Schema;
+      expect(typeof d).toEqual('object');
+      expect(d.additionalItems).toEqual(undefined);
+    });
+  });
   describe('$ref', () => {
     test('should return a string ', () => {
       const doc: any = { $ref: 'some/reference' };
@@ -681,6 +705,32 @@ describe('CommonModel', () => {
       model.addAdditionalProperty(additionalPropertiesModel, {});
       expect(model.additionalProperties).toEqual(additionalPropertiesModel);
       expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, additionalPropertiesModel, additionalPropertiesModel, {});
+    });
+  });
+
+  describe('addAdditionalItems', () => {
+    beforeAll(() => {
+      jest.spyOn(CommonModel, 'mergeCommonModels');
+    });
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+    test('should add additionalItems to model', () => {
+      const additionalItemsModel = new CommonModel();
+      additionalItemsModel.$id = 'test'; 
+      const model = new CommonModel(); 
+      model.addAdditionalItems(additionalItemsModel, {});
+      expect(model.additionalItems).toEqual(additionalItemsModel);
+      expect(CommonModel.mergeCommonModels).not.toHaveBeenCalled();
+    });
+    test('should merge additionalItems together', () => {
+      const additionalItemsModel = new CommonModel();
+      additionalItemsModel.$id = 'test'; 
+      const model = new CommonModel(); 
+      model.addAdditionalItems(additionalItemsModel, {});
+      model.addAdditionalItems(additionalItemsModel, {});
+      expect(model.additionalItems).toEqual(additionalItemsModel);
+      expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, additionalItemsModel, additionalItemsModel, {});
     });
   });
   describe('addPatternProperty', () => {

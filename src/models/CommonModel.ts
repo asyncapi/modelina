@@ -206,7 +206,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
 
   /**
    * Adds additionalProperty to the model.
-   * If another model already are added the two are merged.
+   * If another model already exist the two are merged.
    * 
    * @param additionalPropertiesModel 
    * @param schema 
@@ -217,6 +217,22 @@ export class CommonModel extends CommonSchema<CommonModel> {
       this.additionalProperties = CommonModel.mergeCommonModels(this.additionalProperties, additionalPropertiesModel, schema);
     } else {
       this.additionalProperties = additionalPropertiesModel;
+    }
+  }
+
+  /**
+   * Adds additionalItems to the model.
+   * If another model already exist the two are merged.
+   * 
+   * @param additionalItemsModel 
+   * @param schema 
+   */
+  addAdditionalItems(additionalItemsModel: CommonModel, schema: Schema): void {
+    if (this.additionalItems !== undefined) {
+      Logger.warn('While trying to add additionalItems to model, but it is already present, merging models together', additionalItemsModel, schema, this);
+      this.additionalItems = CommonModel.mergeCommonModels(this.additionalItems, additionalItemsModel, schema);
+    } else {
+      this.additionalItems = additionalItemsModel;
     }
   }
   
