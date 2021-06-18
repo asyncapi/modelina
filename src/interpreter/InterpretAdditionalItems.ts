@@ -12,7 +12,7 @@ import { Interpreter, InterpreterOptions } from './Interpreter';
  */
 export default function interpretAdditionalItems(schema: Schema, model: CommonModel, interpreter : Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
   if (model.type?.includes('array') === false) {return;}
-  const additionalItemsModel = interpreter.interpret(schema.additionalItems || true, interpreterOptions);
+  const additionalItemsModel = interpreter.interpret(schema.additionalItems === undefined ? true : schema.additionalItems, interpreterOptions);
   if (additionalItemsModel !== undefined) {
     model.addAdditionalItems(additionalItemsModel, schema);
   }

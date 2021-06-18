@@ -35,6 +35,18 @@ describe('Interpretation of additionalProperties', () => {
 
     expect(model.addAdditionalProperty).not.toHaveBeenCalled();
   });
+  test('should be able to define additionalProperties as false', () => {
+    const schema: any = { additionalProperties: false };
+    const model = new CommonModel();
+    model.type = 'object';
+    const interpreter = new Interpreter();
+    (interpreter.interpret as jest.Mock).mockReturnValue(undefined);
+
+    interpretAdditionalProperties(schema, model, interpreter);
+
+    expect(interpreter.interpret).toHaveBeenNthCalledWith(1, false, Interpreter.defaultInterpreterOptions);
+    expect(model.addAdditionalProperty).not.toHaveBeenCalled();
+  });
   test('should only work if model is object type', () => {
     const schema: any = { };
     const model = new CommonModel();

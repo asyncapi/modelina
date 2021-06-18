@@ -24,7 +24,7 @@ describe('Interpretation of additionalItems', () => {
     expect(interpreter.interpret).toHaveBeenNthCalledWith(1, { type: 'string' }, Interpreter.defaultInterpreterOptions);
     expect(model.addAdditionalItems).toHaveBeenNthCalledWith(1, mockedReturnModel, schema);
   });
-  test('should ignore model if interpreter cannot interpret additionalProperty schema', () => {
+  test('should ignore model if interpreter cannot interpret additionalItems schema', () => {
     const schema: any = { };
     const model = new CommonModel();
     model.type = 'array';
@@ -33,6 +33,18 @@ describe('Interpretation of additionalItems', () => {
 
     interpretAdditionalItems(schema, model, interpreter);
 
+    expect(model.addAdditionalItems).not.toHaveBeenCalled();
+  });
+  test('should be able to define additionalItems as false', () => {
+    const schema: any = { additionalItems: false };
+    const model = new CommonModel();
+    model.type = 'array';
+    const interpreter = new Interpreter();
+    (interpreter.interpret as jest.Mock).mockReturnValue(undefined);
+
+    interpretAdditionalItems(schema, model, interpreter);
+
+    expect(interpreter.interpret).toHaveBeenNthCalledWith(1, false, Interpreter.defaultInterpreterOptions);
     expect(model.addAdditionalItems).not.toHaveBeenCalled();
   });
   test('should only work if model is array type', () => {

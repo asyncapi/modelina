@@ -280,9 +280,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
   // eslint-disable-next-line sonarjs/cognitive-complexity
   getNearestDependencies(): string[] {
     const dependsOn = [];
-    if (this.additionalProperties !== undefined && 
-      this.additionalProperties instanceof CommonModel && 
-      this.additionalProperties.$ref !== undefined) {
+    if (this.additionalProperties?.$ref !== undefined) {
       dependsOn.push(this.additionalProperties.$ref);
     }
     if (this.extend !== undefined) {
@@ -309,9 +307,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
         .map((patternPropertyModel: CommonModel) => String(patternPropertyModel.$ref));
       dependsOn.push(...referencedPatternProperties);
     }
-    if (this.additionalItems !== undefined && 
-      this.additionalItems instanceof CommonModel && 
-      this.additionalItems.$ref !== undefined) {
+    if (this.additionalItems?.$ref !== undefined) {
       dependsOn.push(this.additionalItems.$ref);
     }
     return dependsOn;
