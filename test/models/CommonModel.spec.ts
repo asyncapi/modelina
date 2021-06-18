@@ -1,5 +1,4 @@
-import {CommonModel} from '../../src/models/CommonModel'; 
-import { Schema } from '../../src/models/Schema';
+import {CommonModel} from '../../src/models/CommonModel';
 describe('CommonModel', () => {
   describe('$id', () => {
     test('should return a string', () => {
@@ -101,23 +100,23 @@ describe('CommonModel', () => {
   describe('additionalItems', () => {
     test('should return a Schema object', () => {
       const doc: any = { additionalItems: { type: 'string' } };
-      const d = Schema.toSchema(doc) as Schema;
+      const d = CommonModel.toCommonModel(doc);
       expect(typeof d).toEqual('object');
       expect(d.additionalItems).not.toBeUndefined();
-      expect(d.additionalItems!.constructor.name).toEqual('Schema');
+      expect(d.additionalItems!.constructor.name).toEqual('CommonModel');
       expect(d.additionalItems).toEqual(doc.additionalItems);
     });
     
     test('should return undefined when not defined', () => {
       const doc: any = {};
-      const d = Schema.toSchema(doc) as Schema;
+      const d = CommonModel.toCommonModel(doc);
       expect(typeof d).toEqual('object');
       expect(d.additionalItems).toEqual(undefined);
     });
     
     test('should return undefined when undefined', () => {
       const doc: any = { additionalItems: undefined };
-      const d = Schema.toSchema(doc) as Schema;
+      const d = CommonModel.toCommonModel(doc);
       expect(typeof d).toEqual('object');
       expect(d.additionalItems).toEqual(undefined);
     });
