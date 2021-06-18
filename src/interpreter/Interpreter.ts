@@ -9,6 +9,7 @@ import interpretItems from './InterpretItems';
 import interpretPatternProperties from './InterpretPatternProperties';
 import interpretNot from './InterpretNot';
 import interpretDependencies from './InterpretDependencies';
+import interpretAdditionalItems from './InterpretAdditionalItems';
 
 export type InterpreterOptions = {
   allowInheritance?: boolean
@@ -63,6 +64,7 @@ export class Interpreter {
 
       interpretPatternProperties(schema, model, this, interpreterOptions);
       interpretAdditionalProperties(schema, model, this, interpreterOptions);
+      interpretAdditionalItems(schema, model, this, interpreterOptions);
       interpretItems(schema, model, this, interpreterOptions);
       interpretProperties(schema, model, this, interpreterOptions);
       interpretAllOf(schema, model, this, interpreterOptions);
