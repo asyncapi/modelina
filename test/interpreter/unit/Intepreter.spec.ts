@@ -6,6 +6,7 @@ import interpretEnum from '../../../src/interpreter/InterpretEnum';
 import interpretAllOf from '../../../src/interpreter/InterpretAllOf';
 import interpretItems from '../../../src/interpreter/InterpretItems';
 import interpretAdditionalProperties from '../../../src/interpreter/InterpretAdditionalProperties';
+import interpretAdditionalItems from '../../../src/interpreter/InterpretAdditionalItems';
 import interpretNot from '../../../src/interpreter/InterpretNot';
 import interpretDependencies from '../../../src/interpreter/InterpretDependencies';
 import { CommonModel, Schema } from '../../../src/models';
@@ -19,6 +20,7 @@ jest.mock('../../../src/interpreter/InterpretItems');
 jest.mock('../../../src/interpreter/InterpretAdditionalProperties');
 jest.mock('../../../src/interpreter/InterpretNot');
 jest.mock('../../../src/interpreter/InterpretDependencies');
+jest.mock('../../../src/interpreter/InterpretAdditionalItems');
 CommonModel.mergeCommonModels = jest.fn();
 /**
  * Some of these test are purely theoretical and have little if any merit 
@@ -174,6 +176,12 @@ describe('Interpreter', () => {
     const interpreter = new Interpreter();
     interpreter.interpret(schema);
     expect(interpretDependencies).toHaveBeenNthCalledWith(1, schema, expect.anything(), expect.anything(), Interpreter.defaultInterpreterOptions);
+  });
+  test('should always try to interpret additionalItems', () => {
+    const schema = {};
+    const interpreter = new Interpreter();
+    interpreter.interpret(schema);
+    expect(interpretAdditionalItems).toHaveBeenNthCalledWith(1, schema, expect.anything(), expect.anything(), Interpreter.defaultInterpreterOptions);
   });
   test('should support primitive roots', () => {
     const schema = { type: 'string' };

@@ -15,6 +15,7 @@ The order of interpretation:
 - `required` are interpreted as is.
 - `patternProperties` are interpreted as is, where duplicate patterns for the model are [merged](#Merging-models).
 - `additionalProperties` are interpreted as is, where duplicate additionalProperties for the model are [merged](#Merging-models). If the schema does not define `additionalProperties` it defaults to `true` schema.
+- `additionalItems` are interpreted as is, where duplicate additionalItems for the model are [merged](#Merging-models). If the schema does not define `additionalItems` it defaults to `true` schema.
 - `items` are interpreted as ether tuples or simple array, where more than 1 item are [merged](#Merging-models). Usage of `items` infers `array` model type.
 - `properties` are interpreted as is, where duplicate `properties` for the model are [merged](#Merging-models). Usage of `properties` infers `object` model type.
 - [allOf](#allOf-sub-schemas)
@@ -46,7 +47,6 @@ The following JSON Schema keywords are [merged](#Merging-models) with the alread
 - `anyOf`
 - `then`
 - `else`
-
 
 ## Merging models
 Because of the recursive nature of the interpreter (and the nested nature of JSON Schema) it happens that two models needs to be merged together. 

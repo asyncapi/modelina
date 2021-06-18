@@ -13,7 +13,7 @@ import { isModelObject } from './Utils';
  */
 export default function interpretAdditionalProperties(schema: Schema, model: CommonModel, interpreter : Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
   if (isModelObject(model) === false) {return;}
-  const additionalPropertiesModel = interpreter.interpret(schema.additionalProperties || true, interpreterOptions);
+  const additionalPropertiesModel = interpreter.interpret(schema.additionalProperties === undefined ? true : schema.additionalProperties, interpreterOptions);
   if (additionalPropertiesModel !== undefined) {
     model.addAdditionalProperty(additionalPropertiesModel, schema);
   }

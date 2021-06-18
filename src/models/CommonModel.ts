@@ -206,7 +206,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
 
   /**
    * Adds additionalProperty to the model.
-   * If another model already are added the two are merged.
+   * If another model already exist the two are merged.
    * 
    * @param additionalPropertiesModel 
    * @param schema 
@@ -217,6 +217,22 @@ export class CommonModel extends CommonSchema<CommonModel> {
       this.additionalProperties = CommonModel.mergeCommonModels(this.additionalProperties, additionalPropertiesModel, schema);
     } else {
       this.additionalProperties = additionalPropertiesModel;
+    }
+  }
+
+  /**
+   * Adds additionalItems to the model.
+   * If another model already exist the two are merged.
+   * 
+   * @param additionalItemsModel 
+   * @param schema 
+   */
+  addAdditionalItems(additionalItemsModel: CommonModel, schema: Schema): void {
+    if (this.additionalItems !== undefined) {
+      Logger.warn('While trying to add additionalItems to model, but it is already present, merging models together', additionalItemsModel, schema, this);
+      this.additionalItems = CommonModel.mergeCommonModels(this.additionalItems, additionalItemsModel, schema);
+    } else {
+      this.additionalItems = additionalItemsModel;
     }
   }
   
@@ -264,9 +280,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
   // eslint-disable-next-line sonarjs/cognitive-complexity
   getNearestDependencies(): string[] {
     const dependsOn = [];
-    if (this.additionalProperties !== undefined && 
-      this.additionalProperties instanceof CommonModel && 
-      this.additionalProperties.$ref !== undefined) {
+    if (this.additionalProperties?.$ref !== undefined) {
       dependsOn.push(this.additionalProperties.$ref);
     }
     if (this.extend !== undefined) {
@@ -292,6 +306,9 @@ export class CommonModel extends CommonSchema<CommonModel> {
         .filter((patternPropertyModel: CommonModel) => patternPropertyModel.$ref !== undefined)
         .map((patternPropertyModel: CommonModel) => String(patternPropertyModel.$ref));
       dependsOn.push(...referencedPatternProperties);
+    }
+    if (this.additionalItems?.$ref !== undefined) {
+      dependsOn.push(this.additionalItems.$ref);
     }
     return dependsOn;
   }
@@ -338,7 +355,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
     }
   }
   /**
-   * Merge two common model additional properties together 
+   * Merge two common model additionalProperties together 
    * 
    * @param mergeTo 
    * @param mergeFrom 
@@ -354,6 +371,26 @@ export class CommonModel extends CommonSchema<CommonModel> {
       } else {
         Logger.warn(`Found duplicate additionalProperties for model. additionalProperties from ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalSchema);
         mergeTo.additionalProperties = CommonModel.mergeCommonModels(mergeToAdditionalProperties, mergeFromAdditionalProperties, originalSchema, alreadyIteratedModels);
+      }
+    }
+  }
+  /**
+   * Merge two common model additionalItems together 
+   * 
+   * @param mergeTo 
+   * @param mergeFrom 
+   * @param originalSchema 
+   * @param alreadyIteratedModels
+   */
+  private static mergeAdditionalItems(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
+    const mergeToAdditionalItems = mergeTo.additionalItems;
+    const mergeFromAdditionalItems= mergeFrom.additionalItems;
+    if (mergeFromAdditionalItems !== undefined) {
+      if (mergeToAdditionalItems === undefined) {
+        mergeTo.additionalItems = mergeFromAdditionalItems;
+      } else {
+        Logger.warn(`Found duplicate additionalItems for model. additionalItems from ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalSchema);
+        mergeTo.additionalItems = CommonModel.mergeCommonModels(mergeToAdditionalItems, mergeFromAdditionalItems, originalSchema, alreadyIteratedModels);
       }
     }
   }
@@ -466,6 +503,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
     alreadyIteratedModels.set(mergeFrom, mergeTo);
 
     CommonModel.mergeAdditionalProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels);
+    CommonModel.mergeAdditionalItems(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels);
     CommonModel.mergePatternProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels);
     CommonModel.mergeProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels);
     CommonModel.mergeItems(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels);
