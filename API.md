@@ -55,6 +55,9 @@
 <dd><p>Recursively find the proper property name for additionalProperties</p>
 <p>This function ensures that the property name for additionalProperties is unique</p>
 </dd>
+<dt><a href="#interpretAdditionalItems">interpretAdditionalItems(schema, model, interpreter, interpreterOptions)</a></dt>
+<dd><p>Interpreter function for JSON Schema draft 7 additionalProperties keyword.</p>
+</dd>
 <dt><a href="#interpretAdditionalProperties">interpretAdditionalProperties(schema, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for JSON Schema draft 7 additionalProperties keyword.</p>
 </dd>
@@ -177,6 +180,7 @@ Common internal representation for a model.
         * [.removeEnum(enumValue)](#CommonModel+removeEnum)
         * [.addProperty(propertyName, propertyModel, schema)](#CommonModel+addProperty)
         * [.addAdditionalProperty(additionalPropertiesModel, schema)](#CommonModel+addAdditionalProperty)
+        * [.addAdditionalItems(additionalItemsModel, schema)](#CommonModel+addAdditionalItems)
         * [.addPatternProperty(pattern, patternModel, schema)](#CommonModel+addPatternProperty)
         * [.addExtendedModel(extendedModel)](#CommonModel+addExtendedModel)
         * [.getNearestDependencies()](#CommonModel+getNearestDependencies)
@@ -184,6 +188,7 @@ Common internal representation for a model.
         * [.toCommonModel(object)](#CommonModel.toCommonModel) ⇒
         * [.mergeProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)](#CommonModel.mergeProperties)
         * [.mergeAdditionalProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)](#CommonModel.mergeAdditionalProperties)
+        * [.mergeAdditionalItems(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)](#CommonModel.mergeAdditionalItems)
         * [.mergePatternProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)](#CommonModel.mergePatternProperties)
         * [.mergeItems(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)](#CommonModel.mergeItems)
         * [.mergeTypes(mergeTo, mergeFrom)](#CommonModel.mergeTypes)
@@ -318,13 +323,26 @@ If the property already exist the two are merged.
 
 ### commonModel.addAdditionalProperty(additionalPropertiesModel, schema)
 Adds additionalProperty to the model.
-If another model already are added the two are merged.
+If another model already exist the two are merged.
 
 **Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
 
 | Param |
 | --- |
 | additionalPropertiesModel | 
+| schema | 
+
+<a name="CommonModel+addAdditionalItems"></a>
+
+### commonModel.addAdditionalItems(additionalItemsModel, schema)
+Adds additionalItems to the model.
+If another model already exist the two are merged.
+
+**Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
+
+| Param |
+| --- |
+| additionalItemsModel | 
 | schema | 
 
 <a name="CommonModel+addPatternProperty"></a>
@@ -389,7 +407,21 @@ Merge two common model properties together
 <a name="CommonModel.mergeAdditionalProperties"></a>
 
 ### CommonModel.mergeAdditionalProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)
-Merge two common model additional properties together
+Merge two common model additionalProperties together
+
+**Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
+
+| Param |
+| --- |
+| mergeTo | 
+| mergeFrom | 
+| originalSchema | 
+| alreadyIteratedModels | 
+
+<a name="CommonModel.mergeAdditionalItems"></a>
+
+### CommonModel.mergeAdditionalItems(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)
+Merge two common model additionalItems together
 
 **Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
 
@@ -732,6 +764,20 @@ This function ensures that the property name for additionalProperties is unique
 | --- |
 | rootModel | 
 | propertyName | 
+
+<a name="interpretAdditionalItems"></a>
+
+## interpretAdditionalItems(schema, model, interpreter, interpreterOptions)
+Interpreter function for JSON Schema draft 7 additionalProperties keyword.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema |  |
+| model |  |
+| interpreter |  |
+| interpreterOptions | to control the interpret process |
 
 <a name="interpretAdditionalProperties"></a>
 
