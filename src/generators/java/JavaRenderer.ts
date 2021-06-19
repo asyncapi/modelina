@@ -69,7 +69,15 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
     case 'binary':
       return 'byte[]';
     case 'array': {
-      const newType = model?.items ? this.renderType(model.items) : 'Object';
+      let arrayItemModel = model.items;
+      //If tuples and additionalItems make sure to find the appropriate type by merging all the tuples and additionalItems model together to find the combined type.
+      if (Array.isArray(model.items) && model.additionalItems !== undefined) {
+        arrayItemModel = model.items.reduce((prevModel, currentModel) => {
+          return CommonModel.mergeCommonModels(CommonModel.toCommonModel(prevModel), CommonModel.toCommonModel(currentModel), {});
+        });
+        arrayItemModel = CommonModel.mergeCommonModels(arrayItemModel, model.additionalItems, {});
+      }
+      const newType = arrayItemModel ? this.renderType(arrayItemModel) : 'Object';
       return `${newType}[]`;
     }
     default:
