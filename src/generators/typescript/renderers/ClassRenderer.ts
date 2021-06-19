@@ -1,7 +1,7 @@
 import { TypeScriptRenderer } from '../TypeScriptRenderer';
 
-import { CommonModel, ClassPreset } from '../../../models';
-import { FormatHelpers } from '../../../helpers';
+import { CommonModel, ClassPreset, PropertyType } from '../../../models';
+import { getUniquePropertyName, FormatHelpers, DefaultPropertyNames } from '../../../helpers';
 
 /**
  * Renderer for TypeScript's `class` type
@@ -14,7 +14,7 @@ export class ClassRenderer extends TypeScriptRenderer {
       await this.renderProperties(),
       await this.runCtorPreset(),
       await this.renderAccessors(),
-      await this.runAdditionalContentPreset(),
+      await this.runAdditionalContentPreset()
     ];
 
     const formattedName = this.model.$id && FormatHelpers.toPascalCase(this.model.$id);
@@ -36,16 +36,22 @@ ${this.indent(this.renderBlock(content, 2))}
       const setter = await this.runSetterPreset(propertyName, property);
       content.push(this.renderBlock([getter, setter]));
     }
+    if (this.model.additionalProperties !== undefined) {
+      const propertyName = getUniquePropertyName(this.model, DefaultPropertyNames.additionalProperties);
+      const getter = await this.runGetterPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
+      const setter = await this.runSetterPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
+      content.push(this.renderBlock([getter, setter]));
+    }
 
     return this.renderBlock(content, 2);
   }
 
-  runGetterPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset('getter', { propertyName, property });
+  runGetterPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
+    return this.runPreset('getter', { propertyName, property, type });
   }
 
-  runSetterPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset('setter', { propertyName, property });
+  runSetterPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
+    return this.runPreset('setter', { propertyName, property, type });
   }
 }
 
@@ -55,7 +61,7 @@ export const TS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
   },
   ctor({ renderer, model }) : string {
     const properties = model.properties || {};
-    const assigments = Object.keys(properties).map(property => {
+    const assignments = Object.keys(properties).map(property => {
       property = FormatHelpers.toCamelCase(property);
       return `this._${property} = input.${property};`;
     });
@@ -68,23 +74,34 @@ export const TS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
     return `constructor(input: {
 ${renderer.indent(renderer.renderBlock(ctorProperties))}
 }) {
-${renderer.indent(renderer.renderBlock(assigments))}
+${renderer.indent(renderer.renderBlock(assignments))}
 }`;
   },
-  property({ renderer, propertyName, property }): string {
-    return `private _${renderer.renderProperty(propertyName, property)}`;
+  property({ renderer, propertyName, property, type }): string {
+    return `private _${renderer.renderProperty(propertyName, property, type)}`;
   },
-  getter({ renderer, model, propertyName, property }): string {
+  getter({ renderer, model, propertyName, property, type }): string {
     const isRequired = model.isRequired(propertyName);
-    const formattedName = FormatHelpers.toCamelCase(propertyName);
-    const signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });
-    return `get ${formattedName}()${signature} { return this._${formattedName}; }`;
+    propertyName = FormatHelpers.toCamelCase(propertyName);
+    let signature = ''; 
+    if (type === PropertyType.property) {
+      signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });
+    } else if (type === PropertyType.additionalProperty) {
+      const additionalPropertyType = renderer.renderType(property);
+      signature = `: Map<String, ${additionalPropertyType}> | undefined`;
+    }
+    return `get ${propertyName}()${signature} { return this._${propertyName}; }`;
   },
-  setter({ renderer, model, propertyName, property }): string {
+  setter({ renderer, model, propertyName, property, type }): string {
     const isRequired = model.isRequired(propertyName);
-    const formattedName = FormatHelpers.toCamelCase(propertyName);
-    const signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });
-    const arg = `${formattedName}${signature}`;
-    return `set ${formattedName}(${arg}) { this._${formattedName} = ${formattedName}; }`;
+    propertyName = FormatHelpers.toCamelCase(propertyName);
+    let signature = ''; 
+    if (type === PropertyType.property) {
+      signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });
+    } else if (type === PropertyType.additionalProperty) {
+      const additionalPropertyType = renderer.renderType(property);
+      signature = `: Map<String, ${additionalPropertyType}> | undefined`;
+    }
+    return `set ${propertyName}(${propertyName}${signature}) { this._${propertyName} = ${propertyName}; }`;
   },
 };

@@ -1,12 +1,14 @@
 import {Interpreter} from '../../../src/interpreter/Interpreter';
-import {interpretName} from '../../../src/interpreter/Utils';
+import {interpretName, isEnum, isModelObject} from '../../../src/interpreter/Utils';
 import interpretProperties from '../../../src/interpreter/InterpretProperties';
 import interpretConst from '../../../src/interpreter/InterpretConst';
 import interpretEnum from '../../../src/interpreter/InterpretEnum';
 import interpretAllOf from '../../../src/interpreter/InterpretAllOf';
 import interpretItems from '../../../src/interpreter/InterpretItems';
 import interpretAdditionalProperties from '../../../src/interpreter/InterpretAdditionalProperties';
+import interpretAdditionalItems from '../../../src/interpreter/InterpretAdditionalItems';
 import interpretNot from '../../../src/interpreter/InterpretNot';
+import interpretDependencies from '../../../src/interpreter/InterpretDependencies';
 import { CommonModel, Schema } from '../../../src/models';
 
 jest.mock('../../../src/interpreter/Utils');
@@ -17,6 +19,8 @@ jest.mock('../../../src/interpreter/InterpretAllOf');
 jest.mock('../../../src/interpreter/InterpretItems');
 jest.mock('../../../src/interpreter/InterpretAdditionalProperties');
 jest.mock('../../../src/interpreter/InterpretNot');
+jest.mock('../../../src/interpreter/InterpretDependencies');
+jest.mock('../../../src/interpreter/InterpretAdditionalItems');
 CommonModel.mergeCommonModels = jest.fn();
 /**
  * Some of these test are purely theoretical and have little if any merit 
@@ -24,7 +28,7 @@ CommonModel.mergeCommonModels = jest.fn();
  */
 describe('Interpreter', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
   });
   afterAll(() => {
     jest.restoreAllMocks();
@@ -60,9 +64,19 @@ describe('Interpreter', () => {
     expect(model).not.toBeUndefined();
     expect(model?.type).toEqual(['object', 'string', 'number', 'array', 'boolean', 'null', 'integer']);
   });
+  test('should set id of model if enum', () => {
+    const schema = { enum: ['value'] };
+    const interpreter = new Interpreter();
+    (isEnum as jest.Mock).mockReturnValue(true);
+    const model = interpreter.interpret(schema);
+    expect(model).not.toBeUndefined();
+    expect(interpretName).toHaveBeenNthCalledWith(1, schema);
+    expect(model?.$id).toEqual('anonymSchema1');
+  });
   test('should set id of model if object', () => {
     const schema = { type: 'object' };
     const interpreter = new Interpreter();
+    (isModelObject as jest.Mock).mockReturnValue(true);
     const model = interpreter.interpret(schema);
     expect(model).not.toBeUndefined();
     expect(interpretName).toHaveBeenNthCalledWith(1, schema);
@@ -157,7 +171,18 @@ describe('Interpreter', () => {
     interpreter.interpret(schema);
     expect(interpretNot).toHaveBeenNthCalledWith(1, schema, expect.anything(), interpreter, Interpreter.defaultInterpreterOptions);
   });
-
+  test('should always try to interpret dependencies', () => {
+    const schema = {};
+    const interpreter = new Interpreter();
+    interpreter.interpret(schema);
+    expect(interpretDependencies).toHaveBeenNthCalledWith(1, schema, expect.anything(), expect.anything(), Interpreter.defaultInterpreterOptions);
+  });
+  test('should always try to interpret additionalItems', () => {
+    const schema = {};
+    const interpreter = new Interpreter();
+    interpreter.interpret(schema);
+    expect(interpretAdditionalItems).toHaveBeenNthCalledWith(1, schema, expect.anything(), expect.anything(), Interpreter.defaultInterpreterOptions);
+  });
   test('should support primitive roots', () => {
     const schema = { type: 'string' };
     const interpreter = new Interpreter();

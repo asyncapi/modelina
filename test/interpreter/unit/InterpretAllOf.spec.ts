@@ -14,7 +14,7 @@ CommonModel.mergeCommonModels = jest.fn();
  */
 describe('Interpretation of allOf', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
   });
   afterAll(() => {
     jest.restoreAllMocks();

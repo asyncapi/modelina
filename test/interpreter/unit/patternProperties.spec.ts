@@ -8,7 +8,7 @@ jest.mock('../../../src/models/CommonModel');
 
 describe('Interpretation of patternProperties', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
   });
   afterAll(() => {
     jest.restoreAllMocks();

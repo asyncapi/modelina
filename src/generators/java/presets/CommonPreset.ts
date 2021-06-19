@@ -1,7 +1,7 @@
 import { JavaRenderer } from '../JavaRenderer';
 import { JavaPreset } from '../JavaPreset';
 
-import { FormatHelpers } from '../../../helpers';
+import { getUniquePropertyName, FormatHelpers, DefaultPropertyNames } from '../../../helpers';
 import { CommonModel } from '../../../models';
 
 export interface JavaCommonPresetOptions {
@@ -19,7 +19,8 @@ function renderEqual({ renderer, model }: {
 }): string {
   const formattedModelName = model.$id && FormatHelpers.toPascalCase(model.$id);
   const properties = model.properties || {};
-  const equalProperties = Object.keys(properties).map(prop => {
+  const propertyKeys = [...Object.keys(properties), getUniquePropertyName(model, DefaultPropertyNames.additionalProperties)];
+  const equalProperties = propertyKeys.map(prop => {
     const camelCasedProp = FormatHelpers.toCamelCase(prop);
     return `Objects.equals(this.${camelCasedProp}, self.${camelCasedProp})`;
   }).join(' &&\n');
@@ -46,7 +47,8 @@ function renderHashCode({ renderer, model }: {
   model: CommonModel,
 }): string {
   const properties = model.properties || {};
-  const hashProperties = Object.keys(properties).map(prop => FormatHelpers.toCamelCase(prop)).join(', ');
+  const propertyKeys = [...Object.keys(properties), getUniquePropertyName(model, DefaultPropertyNames.additionalProperties)];
+  const hashProperties = propertyKeys.map(prop => FormatHelpers.toCamelCase(prop)).join(', ');
 
   return `${renderer.renderAnnotation('Override')}
 public int hashCode() {
@@ -63,7 +65,8 @@ function renderToString({ renderer, model }: {
 }): string {
   const formattedModelName = model.$id && FormatHelpers.toPascalCase(model.$id);
   const properties = model.properties || {};
-  const toStringProperties = Object.keys(properties).map(prop => 
+  const propertyKeys = [...Object.keys(properties), getUniquePropertyName(model, DefaultPropertyNames.additionalProperties)];
+  const toStringProperties = propertyKeys.map(prop => 
     `"    ${prop}: " + toIndentedString(${FormatHelpers.toCamelCase(prop)}) + "\\n" +`
   );
 
@@ -88,7 +91,6 @@ private String toIndentedString(Object o) {
  * 
  * @implements {JavaPreset}
  */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 export const JAVA_COMMON_PRESET: JavaPreset = {
   class: {
     additionalContent({ renderer, model, content, options }) {

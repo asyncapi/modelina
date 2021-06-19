@@ -11,7 +11,19 @@ export abstract class AbstractRenderer<O extends CommonGeneratorOptions = Common
     protected readonly presets: Array<[Preset, unknown]>,
     protected readonly model: CommonModel, 
     protected readonly inputModel: CommonInputModel,
+    public dependencies: string[] = []
   ) {}
+
+  /**
+   * Adds a dependency while ensuring that only one dependency is preset at a time.
+   * 
+   * @param dependency complete dependency string so it can be rendered as is.
+   */
+  addDependency(dependency: string): void {
+    if (!this.dependencies.includes(dependency)) {
+      this.dependencies.push(dependency);
+    }
+  }
 
   renderLine(line: string): string {
     return `${line}\n`;
@@ -35,16 +47,15 @@ export abstract class AbstractRenderer<O extends CommonGeneratorOptions = Common
   runSelfPreset(): Promise<string> {
     return this.runPreset('self');
   }
-
+  
   runAdditionalContentPreset(): Promise<string> {
     return this.runPreset('additionalContent');
   }
-
-  async runPreset(
+  async runPreset<RT = string>(
     functionName: string,
     params: Record<string, unknown> = {},
-  ): Promise<string> {
-    let content = '';
+  ): Promise<RT> {
+    let content;
     for (const [preset, options] of this.presets) {
       if (typeof preset[String(functionName)] === 'function') {
         content = await preset[String(functionName)]({ 

@@ -1,6 +1,5 @@
 import { JavaRenderer } from '../JavaRenderer';
 import { JavaPreset } from '../JavaPreset';
-
 import { FormatHelpers } from '../../../helpers';
 import { CommonModel } from '../../../models';
 
@@ -9,10 +8,6 @@ function renderDescription({ renderer, content, item }: {
   content: string,
   item: CommonModel,
 }): string {
-  if (!(item instanceof CommonModel)) {
-    return content;
-  }
-
   let desc = item.getFromSchema('description');
   const examples = item.getFromSchema('examples');
 
@@ -34,7 +29,6 @@ function renderDescription({ renderer, content, item }: {
  * 
  * @implements {JavaPreset}
  */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 export const JAVA_DESCRIPTION_PRESET: JavaPreset = {
   class: {
     self({ renderer, model, content }) {

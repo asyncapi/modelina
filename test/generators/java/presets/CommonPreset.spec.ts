@@ -13,12 +13,16 @@ describe('JAVA_COMMON_PRESET', () => {
     const expected = `public class Clazz {
   private String stringProp;
   private Double numberProp;
+  private Map<String, Object> additionalProperties;
 
   public String getStringProp() { return this.stringProp; }
   public void setStringProp(String stringProp) { this.stringProp = stringProp; }
 
   public Double getNumberProp() { return this.numberProp; }
   public void setNumberProp(Double numberProp) { this.numberProp = numberProp; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
   @Override
   public boolean equals(Object o) {
@@ -31,12 +35,13 @@ describe('JAVA_COMMON_PRESET', () => {
     Clazz self = (Clazz) o;
       return 
         Objects.equals(this.stringProp, self.stringProp) &&
-        Objects.equals(this.numberProp, self.numberProp);
+        Objects.equals(this.numberProp, self.numberProp) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(stringProp, numberProp);
+    return Objects.hash(stringProp, numberProp, additionalProperties);
   }
 
   @Override
@@ -44,6 +49,7 @@ describe('JAVA_COMMON_PRESET', () => {
     return "class Clazz {\\n" +   
       "    stringProp: " + toIndentedString(stringProp) + "\\n" +
       "    numberProp: " + toIndentedString(numberProp) + "\\n" +
+      "    additionalProperties: " + toIndentedString(additionalProperties) + "\\n" +
     "}";
   }
 
@@ -64,7 +70,9 @@ describe('JAVA_COMMON_PRESET', () => {
     const model = inputModel.models['Clazz'];
 
     const classModel = await generator.renderClass(model, inputModel);
-    expect(classModel).toEqual(expected);
+    const expectedDependencies = ['import java.util.Map;'];
+    expect(classModel.result).toEqual(expected);
+    expect(classModel.dependencies).toEqual(expectedDependencies);
   });
 
   test('should skip rendering of disabled functions', async () => {
@@ -79,6 +87,7 @@ describe('JAVA_COMMON_PRESET', () => {
     const expected = `public class Clazz {
   private String stringProp;
   private Double numberProp;
+  private Map<String, Object> additionalProperties;
 
   public String getStringProp() { return this.stringProp; }
   public void setStringProp(String stringProp) { this.stringProp = stringProp; }
@@ -86,9 +95,12 @@ describe('JAVA_COMMON_PRESET', () => {
   public Double getNumberProp() { return this.numberProp; }
   public void setNumberProp(Double numberProp) { this.numberProp = numberProp; }
 
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
   @Override
   public int hashCode() {
-    return Objects.hash(stringProp, numberProp);
+    return Objects.hash(stringProp, numberProp, additionalProperties);
   }
 }`;
 
@@ -103,6 +115,8 @@ describe('JAVA_COMMON_PRESET', () => {
     const model = inputModel.models['Clazz'];
 
     const classModel = await generator.renderClass(model, inputModel);
-    expect(classModel).toEqual(expected);
+    const expectedDependencies = ['import java.util.Map;'];
+    expect(classModel.result).toEqual(expected);
+    expect(classModel.dependencies).toEqual(expectedDependencies);
   });
 });

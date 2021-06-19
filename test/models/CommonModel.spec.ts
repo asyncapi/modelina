@@ -98,6 +98,30 @@ describe('CommonModel', () => {
     });
   });
 
+  describe('additionalItems', () => {
+    test('should return a Schema object', () => {
+      const doc: Schema = { additionalItems: { type: 'string' } };
+      const d = Schema.toSchema(doc) as Schema;
+      expect(typeof d).toEqual('object');
+      expect(d.additionalItems).not.toBeUndefined();
+      expect(d.additionalItems!.constructor.name).toEqual('Schema');
+      expect(d.additionalItems).toEqual(doc.additionalItems);
+    });
+    
+    test('should return undefined when not defined', () => {
+      const doc: Schema = {};
+      const d = Schema.toSchema(doc) as Schema;
+      expect(typeof d).toEqual('object');
+      expect(d.additionalItems).toEqual(undefined);
+    });
+    
+    test('should return undefined when undefined', () => {
+      const doc: Schema = { additionalItems: undefined };
+      const d = Schema.toSchema(doc) as Schema;
+      expect(typeof d).toEqual('object');
+      expect(d.additionalItems).toEqual(undefined);
+    });
+  });
   describe('$ref', () => {
     test('should return a string ', () => {
       const doc: any = { $ref: 'some/reference' };
@@ -480,7 +504,33 @@ describe('CommonModel', () => {
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
-        expect(doc1.patternProperties).toBeUndefined();
+        expect(doc1.additionalProperties).toBeUndefined();
+      });
+    });
+    describe('additionalItems', () => {
+      test('should be merged when only right side is defined', () => {
+        const doc: Schema = { };
+        let doc1 = CommonModel.toCommonModel(doc);
+        const doc2 = CommonModel.toCommonModel(doc);
+        doc2.additionalItems = CommonModel.toCommonModel({type: 'string'});
+        doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
+        expect(doc1.additionalItems).toEqual(doc2.additionalItems);
+      });
+      test('should be merged together when both sides are defined', () => {
+        const doc: Schema = { };
+        let doc1 = CommonModel.toCommonModel(doc);
+        const doc2 = CommonModel.toCommonModel(doc);
+        doc2.additionalItems = CommonModel.toCommonModel({type: 'string'});
+        doc1.additionalItems = CommonModel.toCommonModel({type: 'number'});
+        doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
+        expect(doc1.additionalItems).toEqual({type: ['number', 'string'], originalSchema: {}});
+      });
+      test('should not change if nothing is defined', () => {
+        const doc: Schema = { };
+        let doc1 = CommonModel.toCommonModel(doc);
+        const doc2 = CommonModel.toCommonModel(doc);
+        doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
+        expect(doc1.additionalItems).toBeUndefined();
       });
     });
 
@@ -683,6 +733,32 @@ describe('CommonModel', () => {
       expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, additionalPropertiesModel, additionalPropertiesModel, {});
     });
   });
+
+  describe('addAdditionalItems', () => {
+    beforeAll(() => {
+      jest.spyOn(CommonModel, 'mergeCommonModels');
+    });
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+    test('should add additionalItems to model', () => {
+      const additionalItemsModel = new CommonModel();
+      additionalItemsModel.$id = 'test'; 
+      const model = new CommonModel(); 
+      model.addAdditionalItems(additionalItemsModel, {});
+      expect(model.additionalItems).toEqual(additionalItemsModel);
+      expect(CommonModel.mergeCommonModels).not.toHaveBeenCalled();
+    });
+    test('should merge additionalItems together', () => {
+      const additionalItemsModel = new CommonModel();
+      additionalItemsModel.$id = 'test'; 
+      const model = new CommonModel(); 
+      model.addAdditionalItems(additionalItemsModel, {});
+      model.addAdditionalItems(additionalItemsModel, {});
+      expect(model.additionalItems).toEqual(additionalItemsModel);
+      expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, additionalItemsModel, additionalItemsModel, {});
+    });
+  });
   describe('addPatternProperty', () => {
     beforeAll(() => {
       jest.spyOn(CommonModel, 'mergeCommonModels');
@@ -819,9 +895,9 @@ describe('CommonModel', () => {
         expect(d.getNearestDependencies()).toEqual(['1']);
       });
       test('check that all dependencies are returned', () => {
-        const doc = { additionalProperties: { $ref: '1' }, extend: ['2'], items: { $ref: '3' }, properties: { testProp: { $ref: '4' } }, patternProperties: {testPattern: {$ref: '5'}} };
+        const doc = { additionalProperties: { $ref: '1' }, extend: ['2'], items: { $ref: '3' }, properties: { testProp: { $ref: '4' } }, patternProperties: {testPattern: {$ref: '5'}}, additionalItems: { $ref: '6' } };
         const d = CommonModel.toCommonModel(doc);
-        expect(d.getNearestDependencies()).toEqual(['1', '2', '3', '4', '5']);
+        expect(d.getNearestDependencies()).toEqual(['1', '2', '3', '4', '5', '6']);
       });
       test('check that no dependencies is returned if there are none', () => {
         const doc = { };

@@ -1,7 +1,20 @@
 import { CommonModel } from '../models/CommonModel';
 
 /**
- * check if CommonModel is a separate model or a simple model.
+ * Check if CommonModel is an enum
+ * 
+ * @param model 
+ */
+export function isEnum(model: CommonModel) : boolean {
+  if (model.enum !== undefined) {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Check if CommonModel is a separate model or a simple model.
+ * @param model 
  */
 export function isModelObject(model: CommonModel) : boolean {
   if (model.type !== undefined) {

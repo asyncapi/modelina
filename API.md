@@ -19,6 +19,9 @@
 <dt><a href="#OutputModel">OutputModel</a></dt>
 <dd><p>Common representation for the output model.</p>
 </dd>
+<dt><a href="#RenderOutput">RenderOutput</a></dt>
+<dd><p>Common representation for the rendered output.</p>
+</dd>
 <dt><a href="#Schema">Schema</a> ⇐ <code><a href="#Schema">CommonSchema&lt;Schema&gt;</a></code></dt>
 <dd><p>JSON Schema Draft 7 model</p>
 </dd>
@@ -37,9 +40,24 @@
 </dd>
 </dl>
 
+## Members
+
+<dl>
+<dt><a href="#DefaultPropertyNames">DefaultPropertyNames</a></dt>
+<dd><p>Default property names for different aspects of the common model</p>
+</dd>
+</dl>
+
 ## Functions
 
 <dl>
+<dt><a href="#getUniquePropertyName">getUniquePropertyName(rootModel, propertyName)</a></dt>
+<dd><p>Recursively find the proper property name for additionalProperties</p>
+<p>This function ensures that the property name for additionalProperties is unique</p>
+</dd>
+<dt><a href="#interpretAdditionalItems">interpretAdditionalItems(schema, model, interpreter, interpreterOptions)</a></dt>
+<dd><p>Interpreter function for JSON Schema draft 7 additionalProperties keyword.</p>
+</dd>
 <dt><a href="#interpretAdditionalProperties">interpretAdditionalProperties(schema, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for JSON Schema draft 7 additionalProperties keyword.</p>
 </dd>
@@ -49,6 +67,9 @@
 </dd>
 <dt><a href="#interpretConst">interpretConst(schema, model)</a></dt>
 <dd><p>Interpreter function for JSON Schema draft 7 const keyword.</p>
+</dd>
+<dt><a href="#interpretDependencies">interpretDependencies(schema, model)</a></dt>
+<dd><p>Interpreter function for JSON Schema draft 7 dependencies keyword.</p>
 </dd>
 <dt><a href="#interpretEnum">interpretEnum(schema, model)</a></dt>
 <dd><p>Interpreter function for JSON Schema draft 7 enum keyword</p>
@@ -80,8 +101,11 @@
 <dt><a href="#ensureModelsAreSplit">ensureModelsAreSplit(model, iteratedModels)</a></dt>
 <dd><p>Split up all models which should and use ref instead.</p>
 </dd>
-<dt><a href="#isModelObject">isModelObject()</a></dt>
-<dd><p>check if CommonModel is a separate model or a simple model.</p>
+<dt><a href="#isEnum">isEnum(model)</a></dt>
+<dd><p>Check if CommonModel is an enum</p>
+</dd>
+<dt><a href="#isModelObject">isModelObject(model)</a></dt>
+<dd><p>Check if CommonModel is a separate model or a simple model.</p>
 </dd>
 <dt><a href="#inferTypeFromValue">inferTypeFromValue(value)</a></dt>
 <dd><p>Infers the JSON Schema type from value</p>
@@ -103,6 +127,17 @@ Abstract generator which must be implemented by each language
 Abstract renderer with common helper methods
 
 **Kind**: global class  
+<a name="AbstractRenderer+addDependency"></a>
+
+### abstractRenderer.addDependency(dependency)
+Adds a dependency while ensuring that only one dependency is preset at a time.
+
+**Kind**: instance method of [<code>AbstractRenderer</code>](#AbstractRenderer)  
+
+| Param | Description |
+| --- | --- |
+| dependency | complete dependency string so it can be rendered as is. |
+
 <a name="CommonInputModel"></a>
 
 ## CommonInputModel
@@ -145,6 +180,7 @@ Common internal representation for a model.
         * [.removeEnum(enumValue)](#CommonModel+removeEnum)
         * [.addProperty(propertyName, propertyModel, schema)](#CommonModel+addProperty)
         * [.addAdditionalProperty(additionalPropertiesModel, schema)](#CommonModel+addAdditionalProperty)
+        * [.addAdditionalItems(additionalItemsModel, schema)](#CommonModel+addAdditionalItems)
         * [.addPatternProperty(pattern, patternModel, schema)](#CommonModel+addPatternProperty)
         * [.addExtendedModel(extendedModel)](#CommonModel+addExtendedModel)
         * [.getNearestDependencies()](#CommonModel+getNearestDependencies)
@@ -152,6 +188,7 @@ Common internal representation for a model.
         * [.toCommonModel(object)](#CommonModel.toCommonModel) ⇒
         * [.mergeProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)](#CommonModel.mergeProperties)
         * [.mergeAdditionalProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)](#CommonModel.mergeAdditionalProperties)
+        * [.mergeAdditionalItems(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)](#CommonModel.mergeAdditionalItems)
         * [.mergePatternProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)](#CommonModel.mergePatternProperties)
         * [.mergeItems(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)](#CommonModel.mergeItems)
         * [.mergeTypes(mergeTo, mergeFrom)](#CommonModel.mergeTypes)
@@ -286,13 +323,26 @@ If the property already exist the two are merged.
 
 ### commonModel.addAdditionalProperty(additionalPropertiesModel, schema)
 Adds additionalProperty to the model.
-If another model already are added the two are merged.
+If another model already exist the two are merged.
 
 **Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
 
 | Param |
 | --- |
 | additionalPropertiesModel | 
+| schema | 
+
+<a name="CommonModel+addAdditionalItems"></a>
+
+### commonModel.addAdditionalItems(additionalItemsModel, schema)
+Adds additionalItems to the model.
+If another model already exist the two are merged.
+
+**Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
+
+| Param |
+| --- |
+| additionalItemsModel | 
 | schema | 
 
 <a name="CommonModel+addPatternProperty"></a>
@@ -357,7 +407,21 @@ Merge two common model properties together
 <a name="CommonModel.mergeAdditionalProperties"></a>
 
 ### CommonModel.mergeAdditionalProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)
-Merge two common model additional properties together
+Merge two common model additionalProperties together
+
+**Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
+
+| Param |
+| --- |
+| mergeTo | 
+| mergeFrom | 
+| originalSchema | 
+| alreadyIteratedModels | 
+
+<a name="CommonModel.mergeAdditionalItems"></a>
+
+### CommonModel.mergeAdditionalItems(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)
+Merge two common model additionalItems together
 
 **Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
 
@@ -447,6 +511,12 @@ convert nested schemas into their corresponding class.
 
 ## OutputModel
 Common representation for the output model.
+
+**Kind**: global class  
+<a name="RenderOutput"></a>
+
+## RenderOutput
+Common representation for the rendered output.
 
 **Kind**: global class  
 <a name="Schema"></a>
@@ -675,6 +745,40 @@ Sets the logger to use for the model generation library
 | --- | --- |
 | logger | to add |
 
+<a name="DefaultPropertyNames"></a>
+
+## DefaultPropertyNames
+Default property names for different aspects of the common model
+
+**Kind**: global variable  
+<a name="getUniquePropertyName"></a>
+
+## getUniquePropertyName(rootModel, propertyName)
+Recursively find the proper property name for additionalProperties
+
+This function ensures that the property name for additionalProperties is unique
+
+**Kind**: global function  
+
+| Param |
+| --- |
+| rootModel | 
+| propertyName | 
+
+<a name="interpretAdditionalItems"></a>
+
+## interpretAdditionalItems(schema, model, interpreter, interpreterOptions)
+Interpreter function for JSON Schema draft 7 additionalProperties keyword.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema |  |
+| model |  |
+| interpreter |  |
+| interpreterOptions | to control the interpret process |
+
 <a name="interpretAdditionalProperties"></a>
 
 ## interpretAdditionalProperties(schema, model, interpreter, interpreterOptions)
@@ -709,6 +813,18 @@ It either merges allOf schemas into existing model or if allowed, create inherit
 
 ## interpretConst(schema, model)
 Interpreter function for JSON Schema draft 7 const keyword.
+
+**Kind**: global function  
+
+| Param |
+| --- |
+| schema | 
+| model | 
+
+<a name="interpretDependencies"></a>
+
+## interpretDependencies(schema, model)
+Interpreter function for JSON Schema draft 7 dependencies keyword.
 
 **Kind**: global function  
 
@@ -836,12 +952,28 @@ Split up all models which should and use ref instead.
 | model | to ensure are split |
 | iteratedModels | which are already split |
 
-<a name="isModelObject"></a>
+<a name="isEnum"></a>
 
-## isModelObject()
-check if CommonModel is a separate model or a simple model.
+## isEnum(model)
+Check if CommonModel is an enum
 
 **Kind**: global function  
+
+| Param |
+| --- |
+| model | 
+
+<a name="isModelObject"></a>
+
+## isModelObject(model)
+Check if CommonModel is a separate model or a simple model.
+
+**Kind**: global function  
+
+| Param |
+| --- |
+| model | 
+
 <a name="inferTypeFromValue"></a>
 
 ## inferTypeFromValue(value)

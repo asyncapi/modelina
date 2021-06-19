@@ -19,6 +19,11 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
     super(options, presets, model, inputModel);
   }
 
+  /**
+   * Renders model(s) to Java type(s).
+   * 
+   * @param model
+   */
   renderType(model: CommonModel | CommonModel[]): string {
     if (Array.isArray(model) || Array.isArray(model.type)) {
       return 'Object'; // fallback
@@ -30,6 +35,11 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
     return this.toClassType(this.toJavaType(format || model.type, model));
   }
 
+  /**
+   * Returns the Java corresponding type from CommonModel type or JSON schema format
+   * @param type 
+   * @param model 
+   */
   toJavaType(type: string | undefined, model: CommonModel): string {
     switch (type) {
     case 'integer':
@@ -59,8 +69,8 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
     case 'binary':
       return 'byte[]';
     case 'array': {
-      const type = model?.items ? this.renderType(model.items) : 'Object';
-      return `${type}[]`;
+      const newType = model?.items ? this.renderType(model.items) : 'Object';
+      return `${newType}[]`;
     }
     default:
       return 'Object';
@@ -86,8 +96,9 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
 
   renderComments(lines: string | string[]): string {
     lines = FormatHelpers.breakLines(lines);
+    const newLiteral = lines.map(line => ` * ${line}`).join('\n');
     return `/**
-${lines.map(line => ` * ${line}`).join('\n')}
+${newLiteral}
  */`;
   }
 
@@ -96,11 +107,11 @@ ${lines.map(line => ` * ${line}`).join('\n')}
     let values = undefined;
     if (value !== undefined) {
       if (typeof value === 'object') {
-        values = Object.entries(value || {}).map(([paramName, value]) => {
-          if (paramName && value !== undefined) {
-            return `${paramName}=${value}`;
+        values = Object.entries(value || {}).map(([paramName, newValue]) => {
+          if (paramName && newValue !== undefined) {
+            return `${paramName}=${newValue}`;
           }
-          return value;
+          return newValue;
         }).filter(v => v !== undefined).join(', ');
       } else {
         values = value;

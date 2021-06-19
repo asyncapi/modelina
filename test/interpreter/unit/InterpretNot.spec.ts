@@ -10,7 +10,7 @@ jest.mock('../../../src/utils');
 jest.mock('../../../src/interpreter/Interpreter');
 describe('Interpretation of not', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
     (inferTypeFromValue as jest.Mock).mockImplementation(() => {return;});
     interpreterOptions = Interpreter.defaultInterpreterOptions;
   });

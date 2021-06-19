@@ -1,8 +1,8 @@
 import { AbstractRenderer } from '../AbstractRenderer';
 import { JavaScriptOptions } from './JavaScriptGenerator';
 
-import { FormatHelpers } from '../../helpers';
-import { CommonModel, CommonInputModel, Preset } from '../../models';
+import { getUniquePropertyName, FormatHelpers, DefaultPropertyNames } from '../../helpers';
+import { CommonModel, CommonInputModel, Preset, PropertyType } from '../../models';
 
 /**
  * Common renderer for JavaScript types
@@ -36,10 +36,15 @@ ${content}
       content.push(rendererProperty);
     }
 
+    if (this.model.additionalProperties !== undefined) {
+      const propertyName = getUniquePropertyName(this.model, DefaultPropertyNames.additionalProperties);
+      const additionalProperty = await this.runPropertyPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
+      content.push(additionalProperty);
+    }
     return this.renderBlock(content);
   }
 
-  runPropertyPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset('property', { propertyName, property });
+  runPropertyPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
+    return this.runPreset('property', { propertyName, property, type});
   }
 }

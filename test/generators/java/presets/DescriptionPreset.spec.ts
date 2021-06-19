@@ -22,6 +22,7 @@ describe('JAVA_DESCRIPTION_PRESET', () => {
  */
 public class Clazz {
   private String prop;
+  private Map<String, Object> additionalProperties;
 
   /**
    * Description for prop
@@ -29,13 +30,18 @@ public class Clazz {
    */
   public String getProp() { return this.prop; }
   public void setProp(String prop) { this.prop = prop; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }`;
 
     const inputModel = await generator.process(doc);
     const model = inputModel.models['Clazz'];
 
     const classModel = await generator.renderClass(model, inputModel);
-    expect(classModel).toEqual(expected);
+    const expectedDependencies = ['import java.util.Map;'];
+    expect(classModel.result).toEqual(expected);
+    expect(classModel.dependencies).toEqual(expectedDependencies);
   });
 
   test('should render description and examples for enum', async () => {
@@ -87,6 +93,7 @@ public enum Enum {
     const model = inputModel.models['Enum'];
 
     const enumModel = await generator.renderEnum(model, inputModel);
-    expect(enumModel).toEqual(expected);
+    expect(enumModel.result).toEqual(expected);
+    expect(enumModel.dependencies).toEqual(['import com.fasterxml.jackson.annotation.*;']);
   });
 });

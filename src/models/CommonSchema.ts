@@ -11,6 +11,7 @@ export class CommonSchema<T> {
     patternProperties?: { [key: string]: T; };
     $ref?: string;
     required?: string[];
+    additionalItems?: T;
     
     /**
      * Function to transform nested schemas into type of generic extended class
@@ -39,6 +40,10 @@ export class CommonSchema<T> {
       if (typeof schema.additionalProperties === 'object' && 
             schema.additionalProperties !== undefined) {
         schema.additionalProperties = transformationSchemaCallback(schema.additionalProperties, seenSchemas);
+      }
+      if (typeof schema.additionalItems === 'object' && 
+            schema.additionalItems !== undefined) {
+        schema.additionalItems = transformationSchemaCallback(schema.additionalItems, seenSchemas);
       }
       if (typeof schema.patternProperties === 'object' && 
             schema.patternProperties !== undefined) {

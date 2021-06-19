@@ -1,6 +1,5 @@
 import { JavaRenderer } from '../JavaRenderer';
-
-import { EnumPreset } from '../../../models';
+import { EnumPreset} from '../../../models';
 import { FormatHelpers } from '../../../helpers';
 
 /**
@@ -12,7 +11,7 @@ export class EnumRenderer extends JavaRenderer {
   async defaultSelf(): Promise<string> {
     const content = [
       await this.renderItems(),
-      await this.runAdditionalContentPreset(),
+      await this.runAdditionalContentPreset()
     ];
 
     const formattedName = this.model.$id && FormatHelpers.toPascalCase(this.model.$id);
@@ -61,6 +60,7 @@ ${this.indent(this.renderBlock(content, 2))}
 
 export const JAVA_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
   self({ renderer }) {
+    renderer.addDependency('import com.fasterxml.jackson.annotation.*;');
     return renderer.defaultSelf();
   },
   item({ renderer, item }) {

@@ -1,8 +1,21 @@
 
 import { CommonModel } from '../../../src/models/CommonModel';
-import { interpretName, inferTypeFromValue, isModelObject } from '../../../src/interpreter/Utils';
+import { interpretName, inferTypeFromValue, isModelObject, isEnum } from '../../../src/interpreter/Utils';
 
 describe('utils', () => {
+  describe('isEnum', () => {
+    test('should return true if model has enum', () => {
+      const model = new CommonModel();
+      model.enum = [];
+      const isModel = isEnum(model);
+      expect(isModel).toEqual(true);
+    });
+    test('should return false if model does not have', () => {
+      const model = new CommonModel();
+      const isModel = isEnum(model);
+      expect(isModel).toEqual(false);
+    });
+  });
   describe('isModelObject', () => {
     test('should return true if model type is object', () => {
       const model = new CommonModel();

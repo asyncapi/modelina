@@ -1,6 +1,7 @@
 import { JavaRenderer } from '../JavaRenderer';
-import { CommonModel, ClassPreset } from '../../../models';
-import { FormatHelpers } from '../../../helpers';
+
+import { CommonModel, ClassPreset, PropertyType } from '../../../models';
+import { DefaultPropertyNames, FormatHelpers, getUniquePropertyName } from '../../../helpers';
 import { GetPropertyName } from '../helpers/PropertyHelper';
 
 /**
@@ -17,6 +18,10 @@ export class ClassRenderer extends JavaRenderer {
       await this.runAdditionalContentPreset(),
     ];
 
+    if (this.model.additionalProperties !== undefined) {
+      this.addDependency('import java.util.Map;');
+    }
+    
     const formattedName = this.model.$id && FormatHelpers.toPascalCase(this.model.$id);
     return `public class ${formattedName} {
 ${this.indent(this.renderBlock(content, 2))}
@@ -35,12 +40,18 @@ ${this.indent(this.renderBlock(content, 2))}
       const rendererProperty = await this.runPropertyPreset(propertyName, property);
       content.push(rendererProperty);
     }
+    
+    if (this.model.additionalProperties !== undefined) {
+      const propertyName = getUniquePropertyName(this.model, DefaultPropertyNames.additionalProperties);
+      const additionalProperty = await this.runPropertyPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
+      content.push(additionalProperty);
+    }
 
     return this.renderBlock(content);
   }
 
-  runPropertyPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset('property', { propertyName, property });
+  runPropertyPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
+    return this.runPreset('property', { propertyName, property, type});
   }
 
   async renderAccessors(): Promise<string> {
@@ -53,15 +64,22 @@ ${this.indent(this.renderBlock(content, 2))}
       content.push(this.renderBlock([getter, setter]));
     }
 
+    if (this.model.additionalProperties !== undefined) {
+      const propertyName = getUniquePropertyName(this.model, DefaultPropertyNames.additionalProperties);
+      const getter = await this.runGetterPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
+      const setter = await this.runSetterPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
+      content.push(this.renderBlock([getter, setter]));
+    }
+
     return this.renderBlock(content, 2);
   }
 
-  runGetterPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset('getter', { propertyName, property });
+  runGetterPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
+    return this.runPreset('getter', { propertyName, property, type });
   }
 
-  runSetterPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset('setter', { propertyName, property });
+  runSetterPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
+    return this.runPreset('setter', { propertyName, property, type });
   }
 }
 
@@ -69,20 +87,30 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
-  property({ renderer, propertyName, property, model }) {
+  property({ renderer, propertyName, property, type, model }) {
     propertyName = GetPropertyName(model, propertyName);
-    return `private ${renderer.renderType(property)} ${propertyName};`;
+    let propertyType = renderer.renderType(property);
+    if (type === PropertyType.additionalProperty) {
+      propertyType = `Map<String, ${propertyType}>`;
+    }
+    return `private ${propertyType} ${propertyName};`;
   },
-  getter({ renderer, propertyName, property, model }) {
+  getter({ renderer, propertyName, property, type, model }) {
     propertyName = GetPropertyName(model, propertyName);
-    const getterName = FormatHelpers.toPascalCase(propertyName);
-    const type = renderer.renderType(property);
-    return `public ${type} get${getterName}() { return this.${propertyName}; }`;
+    const getterName = `get${FormatHelpers.toPascalCase(propertyName)}`;
+    let getterType = renderer.renderType(property);
+    if (type === PropertyType.additionalProperty) {
+      getterType = `Map<String, ${getterType}>`;
+    }
+    return `public ${getterType} ${getterName}() { return this.${propertyName}; }`;
   },
-  setter({ renderer, propertyName, property, model }) {
+  setter({ renderer, propertyName, property, type, model }) {
     propertyName = GetPropertyName(model, propertyName);
     const setterName = FormatHelpers.toPascalCase(propertyName);
-    const type = renderer.renderType(property);
-    return `public void set${setterName}(${type} ${propertyName}) { this.${propertyName} = ${propertyName}; }`;
+    let setterType = renderer.renderType(property);
+    if (type === PropertyType.additionalProperty) {
+      setterType = `Map<String, ${setterType}>`;
+    }
+    return `public void set${setterName}(${setterType} ${propertyName}) { this.${propertyName} = ${propertyName}; }`;
   },
 };

@@ -1,5 +1,5 @@
 import { CommonModel, Schema } from '../models';
-import { interpretName } from './Utils';
+import { interpretName, isEnum, isModelObject } from './Utils';
 import interpretProperties from './InterpretProperties';
 import interpretAllOf from './InterpretAllOf';
 import interpretConst from './InterpretConst';
@@ -8,6 +8,8 @@ import interpretAdditionalProperties from './InterpretAdditionalProperties';
 import interpretItems from './InterpretItems';
 import interpretPatternProperties from './InterpretPatternProperties';
 import interpretNot from './InterpretNot';
+import interpretDependencies from './InterpretDependencies';
+import interpretAdditionalItems from './InterpretAdditionalItems';
 
 export type InterpreterOptions = {
   allowInheritance?: boolean
@@ -58,21 +60,15 @@ export class Interpreter {
       if (schema.type !== undefined) {
         model.addTypes(schema.type);
       }
-
-      //All schemas of type object MUST have ids
-      if (model.type !== undefined && model.type.includes('object')) {
-        model.$id = interpretName(schema) || `anonymSchema${this.anonymCounter++}`;
-      } else if (schema.$id !== undefined) {
-        model.$id = interpretName(schema);
-      }
-
       model.required = schema.required || model.required;
-      
+
       interpretPatternProperties(schema, model, this, interpreterOptions);
       interpretAdditionalProperties(schema, model, this, interpreterOptions);
+      interpretAdditionalItems(schema, model, this, interpreterOptions);
       interpretItems(schema, model, this, interpreterOptions);
       interpretProperties(schema, model, this, interpreterOptions);
       interpretAllOf(schema, model, this, interpreterOptions);
+      interpretDependencies(schema, model, this, interpreterOptions);
       interpretConst(schema, model);
       interpretEnum(schema, model);
 
@@ -82,6 +78,13 @@ export class Interpreter {
       this.interpretAndCombineSchema(schema.else, model, schema, interpreterOptions);
 
       interpretNot(schema, model, this, interpreterOptions);
+
+      //All schemas of type model object or enum MUST have ids
+      if (isModelObject(model) === true || isEnum(model) === true) {
+        model.$id = interpretName(schema) || `anonymSchema${this.anonymCounter++}`;
+      } else if (schema.$id !== undefined) {
+        model.$id = interpretName(schema);
+      }
     }
   }
 

@@ -15,9 +15,11 @@ The order of interpretation:
 - `required` are interpreted as is.
 - `patternProperties` are interpreted as is, where duplicate patterns for the model are [merged](#Merging-models).
 - `additionalProperties` are interpreted as is, where duplicate additionalProperties for the model are [merged](#Merging-models). If the schema does not define `additionalProperties` it defaults to `true` schema.
+- `additionalItems` are interpreted as is, where duplicate additionalItems for the model are [merged](#Merging-models). If the schema does not define `additionalItems` it defaults to `true` schema.
 - `items` are interpreted as ether tuples or simple array, where more than 1 item are [merged](#Merging-models). Usage of `items` infers `array` model type.
 - `properties` are interpreted as is, where duplicate `properties` for the model are [merged](#Merging-models). Usage of `properties` infers `object` model type.
 - [allOf](#allOf-sub-schemas)
+- `dependencies` only apply to schema dependencies, since property dependencies adds nothing to the underlying model. Any schema dependencies are interpreted and then [merged](#Merging-models) together with the current interpreted model.
 - `enum` is interpreted as is, where each `enum`. Usage of `enum` infers the enumerator value type to the model, but only if the schema does not have `type` specified.
 - `const` interpretation overwrite already interpreted `enum`. Usage of `const` infers the constant value type to the model, but only if the schema does not have `type` specified.
 - [oneOf/anyOf/then/else](#Processing-sub-schemas)
@@ -45,7 +47,6 @@ The following JSON Schema keywords are [merged](#Merging-models) with the alread
 - `anyOf`
 - `then`
 - `else`
-
 
 ## Merging models
 Because of the recursive nature of the interpreter (and the nested nature of JSON Schema) it happens that two models needs to be merged together. 
