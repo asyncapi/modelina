@@ -2,6 +2,7 @@ import { TypeScriptRenderer } from '../TypeScriptRenderer';
 
 import { CommonModel, ClassPreset, PropertyType } from '../../../models';
 import { getUniquePropertyName, FormatHelpers, DefaultPropertyNames } from '../../../helpers';
+import { getAllowedPropertyName } from '../helpers/PropertyHelper';
 
 /**
  * Renderer for TypeScript's `class` type
@@ -61,13 +62,14 @@ export const TS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
   },
   ctor({ renderer, model }) : string {
     const properties = model.properties || {};
-    const assignments = Object.keys(properties).map(property => {
-      property = FormatHelpers.toCamelCase(property);
-      return `this._${property} = input.${property};`;
+    const assignments = Object.keys(properties).map(propertyName => {
+      const realizedPropertyName = getAllowedPropertyName(model, propertyName);
+      return `this._${realizedPropertyName} = input.${propertyName};`;
     });
     const ctorProperties: string[] = [];
     for (const [propertyName, property] of Object.entries(properties)) {
-      const rendererProperty = renderer.renderProperty(propertyName, property).replace(';', ',');
+      const realizedPropertyName = getAllowedPropertyName(model, propertyName);
+      const rendererProperty = renderer.renderProperty(realizedPropertyName, property).replace(';', ',');
       ctorProperties.push(rendererProperty);
     }
 
@@ -77,12 +79,13 @@ ${renderer.indent(renderer.renderBlock(ctorProperties))}
 ${renderer.indent(renderer.renderBlock(assignments))}
 }`;
   },
-  property({ renderer, propertyName, property, type }): string {
+  property({ renderer, propertyName, property, type, model }): string {
+    propertyName = GetPropertyName(model, propertyName);
     return `private _${renderer.renderProperty(propertyName, property, type)}`;
   },
   getter({ renderer, model, propertyName, property, type }): string {
     const isRequired = model.isRequired(propertyName);
-    propertyName = FormatHelpers.toCamelCase(propertyName);
+    propertyName = GetPropertyName(model, propertyName);
     let signature = ''; 
     if (type === PropertyType.property) {
       signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });
@@ -94,7 +97,7 @@ ${renderer.indent(renderer.renderBlock(assignments))}
   },
   setter({ renderer, model, propertyName, property, type }): string {
     const isRequired = model.isRequired(propertyName);
-    propertyName = FormatHelpers.toCamelCase(propertyName);
+    propertyName = GetPropertyName(model, propertyName);
     let signature = ''; 
     if (type === PropertyType.property) {
       signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });

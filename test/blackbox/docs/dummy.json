@@ -21,6 +21,9 @@
     "item2"
   ],
   "properties": {
+    "enum": {
+      "type": "string"
+    },
     "prop1": {
       "type": "integer",
       "minimum": 0,
