@@ -336,7 +336,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * @param originalSchema 
    * @param alreadyIteratedModels
    */
-  private static mergeProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
+  private static mergeProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema | boolean, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
     const mergeToProperties = mergeTo.properties;
     const mergeFromProperties = mergeFrom.properties;
     if (mergeFromProperties !== undefined) {
@@ -362,7 +362,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * @param originalSchema 
    * @param alreadyIteratedModels
    */
-  private static mergeAdditionalProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
+  private static mergeAdditionalProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema | boolean, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
     const mergeToAdditionalProperties = mergeTo.additionalProperties;
     const mergeFromAdditionalProperties = mergeFrom.additionalProperties;
     if (mergeFromAdditionalProperties !== undefined) {
@@ -382,7 +382,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * @param originalSchema 
    * @param alreadyIteratedModels
    */
-  private static mergeAdditionalItems(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
+  private static mergeAdditionalItems(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema | boolean, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
     const mergeToAdditionalItems = mergeTo.additionalItems;
     const mergeFromAdditionalItems= mergeFrom.additionalItems;
     if (mergeFromAdditionalItems !== undefined) {
@@ -402,7 +402,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * @param originalSchema 
    * @param alreadyIteratedModels
    */
-  private static mergePatternProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
+  private static mergePatternProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema | boolean, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
     const mergeToPatternProperties = mergeTo.patternProperties;
     const mergeFromPatternProperties = mergeFrom.patternProperties;
     if (mergeFromPatternProperties !== undefined) {
@@ -430,7 +430,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * @param alreadyIteratedModels
    */
   // eslint-disable-next-line sonarjs/cognitive-complexity
-  private static mergeItems(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
+  private static mergeItems(mergeTo: CommonModel, mergeFrom: CommonModel, originalSchema: Schema | boolean, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
     if (mergeFrom.items === undefined) { return; }
     if (Array.isArray(mergeFrom.items) && mergeFrom.items.length === 0) { return; }
     if (mergeTo.items === undefined) {
@@ -496,7 +496,7 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * @param originalSchema 
    * @param alreadyIteratedModels
    */
-  static mergeCommonModels(mergeTo: CommonModel | undefined, mergeFrom: CommonModel, originalSchema: Schema, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()): CommonModel {
+  static mergeCommonModels(mergeTo: CommonModel | undefined, mergeFrom: CommonModel, originalSchema: Schema | boolean, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()): CommonModel {
     if (mergeTo === undefined) {return mergeFrom;}
     Logger.debug(`Merging model ${mergeFrom.$id || 'unknown'} into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalSchema);
     if (alreadyIteratedModels.has(mergeFrom)) {return alreadyIteratedModels.get(mergeFrom) as CommonModel;}

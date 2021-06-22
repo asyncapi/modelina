@@ -54,8 +54,9 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
         const types = model.items.map((item) => {
           return this.renderType(item);
         });
-        return `[${types.join(', ')}]`;
-      } 
+        const additionalTypes = model.additionalItems ? `, ...(${this.renderType(model.additionalItems)})[]` : '';
+        return `[${types.join(', ')}${additionalTypes}]`;
+      }
       const arrayType = model.items ? this.renderType(model.items) : 'unknown';
       return `Array<${arrayType}>`;
     }
