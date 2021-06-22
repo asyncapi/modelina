@@ -1,6 +1,5 @@
 import { AbstractRenderer } from '../AbstractRenderer';
 import { JavaGenerator, JavaOptions } from './JavaGenerator';
-
 import { CommonModel, CommonInputModel, Preset } from '../../models';
 import { FormatHelpers, ModelKind, TypeHelpers } from '../../helpers';
 

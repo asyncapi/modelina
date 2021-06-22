@@ -13,7 +13,6 @@ export class EnumRenderer extends JavaRenderer {
       await this.renderItems(),
       await this.runAdditionalContentPreset()
     ];
-    
     const formattedName = this.nameType(this.model.$id);
     return `public enum ${formattedName} {
 ${this.indent(this.renderBlock(content, 2))}
