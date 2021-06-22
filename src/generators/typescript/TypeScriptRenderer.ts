@@ -1,5 +1,5 @@
 import { AbstractRenderer } from '../AbstractRenderer';
-import { TypeScriptOptions } from './TypeScriptGenerator';
+import { TypeScriptGenerator, TypeScriptOptions } from './TypeScriptGenerator';
 
 import { FormatHelpers } from '../../helpers';
 import { CommonModel, CommonInputModel, Preset, PropertyType } from '../../models';
@@ -10,14 +10,15 @@ import { DefaultPropertyNames, getUniquePropertyName } from '../../helpers/NameH
  * 
  * @extends AbstractRenderer
  */
-export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOptions> {
+export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOptions, TypeScriptGenerator> {
   constructor(
     options: TypeScriptOptions,
+    generator: TypeScriptGenerator,
     presets: Array<[Preset, unknown]>,
     model: CommonModel, 
     inputModel: CommonInputModel,
   ) {
-    super(options, presets, model, inputModel);
+    super(options, generator, presets, model, inputModel);
   }
 
   renderType(model: CommonModel | CommonModel[]): string {
@@ -28,7 +29,7 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
       return model.enum.map(value => typeof value === 'string' ? `"${value}"` : value).join(' | ');
     }
     if (model.$ref !== undefined) {
-      return FormatHelpers.toPascalCase(model.$ref);
+      return this.nameType(model.$ref);
     }
     if (Array.isArray(model.type)) {
       return model.type.map(t => this.toTsType(t, model)).join(' | ');
@@ -111,15 +112,15 @@ ${lines.map(line => ` * ${line}`).join('\n')}
   }
 
   renderProperty(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): string {
-    const name = FormatHelpers.toCamelCase(propertyName);
+    const formattedPropertyName = this.nameProperty(propertyName, property);
     let signature: string;
     switch (type) {
     case PropertyType.property:
       signature = this.renderTypeSignature(property, { isRequired: this.model.isRequired(propertyName) });
-      return `${name}${signature};`;
+      return `${formattedPropertyName}${signature};`;
     case PropertyType.additionalProperty:
       signature = this.renderType(property);
-      return `${name}?: Map<String, ${signature}>;`;
+      return `${formattedPropertyName}?: Map<String, ${signature}>;`;
     default:
       return '';
     }

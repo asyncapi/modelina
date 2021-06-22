@@ -15,7 +15,7 @@ export class EnumRenderer extends TypeScriptRenderer {
       await this.runAdditionalContentPreset()
     ];
 
-    const formattedName = this.model.$id && FormatHelpers.toPascalCase(this.model.$id);
+    const formattedName = this.nameType(this.model.$id);
     return `enum ${formattedName} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;

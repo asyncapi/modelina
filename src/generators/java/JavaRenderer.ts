@@ -1,22 +1,23 @@
 import { AbstractRenderer } from '../AbstractRenderer';
-import { JavaOptions } from './JavaGenerator';
+import { JavaGenerator, JavaOptions } from './JavaGenerator';
 
 import { CommonModel, CommonInputModel, Preset } from '../../models';
-import { FormatHelpers } from '../../helpers';
+import { FormatHelpers, ModelKind, TypeHelpers } from '../../helpers';
 
 /**
  * Common renderer for Java types
  * 
  * @extends AbstractRenderer
  */
-export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
+export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGenerator> {
   constructor(
     options: JavaOptions,
+    generator: JavaGenerator,
     presets: Array<[Preset, unknown]>,
     model: CommonModel, 
     inputModel: CommonInputModel,
   ) {
-    super(options, presets, model, inputModel);
+    super(options, generator, presets, model, inputModel);
   }
 
   /**
@@ -29,10 +30,16 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
       return 'Object'; // fallback
     }
     if (model.$ref !== undefined) {
-      return FormatHelpers.toPascalCase(model.$ref);
+      return this.nameType(model.$ref, model);
     }
-    const format = model.getFromSchema('format');
-    return this.toClassType(this.toJavaType(format || model.type, model));
+    if (
+      TypeHelpers.extractKind(model) === ModelKind.PRIMITIVE ||
+      TypeHelpers.extractKind(model) === ModelKind.ARRAY
+    ) {
+      const format = model.getFromSchema('format');
+      return this.toClassType(this.toJavaType(format || model.type, model));
+    }
+    return this.nameType(model.$id, model);
   }
 
   /**
@@ -69,8 +76,11 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
     case 'binary':
       return 'byte[]';
     case 'array': {
-      const newType = model?.items ? this.renderType(model.items) : 'Object';
-      return `${newType}[]`;
+      const type = model.items ? this.renderType(model.items) : 'Object';
+      if (this.options.collectionType && this.options.collectionType === 'List') {
+        return `List<${type}>`;
+      }
+      return `${type}[]`;
     }
     default:
       return 'Object';

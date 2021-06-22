@@ -1,18 +1,16 @@
 import { AbstractRenderer } from '../../src/generators'; 
 import { IndentationTypes } from '../../src/helpers';
-import { CommonInputModel, CommonModel } from '../../src/models';
+import { CommonInputModel, CommonModel, RenderOutput } from '../../src/models';
+import { testOptions, TestGenerator } from './AbstractGenerator.spec';
 
 describe('AbstractRenderer', () => {
   class TestRenderer extends AbstractRenderer {
     constructor() {
-      super({
-        indentation: {
-          type: IndentationTypes.SPACES,
-          size: 2,
-        },
-      }, [], new CommonModel(), new CommonInputModel());
+      super(testOptions, new TestGenerator(), [], new CommonModel(), new CommonInputModel());
     }
-    render() { return ''; }
+    render(): Promise<RenderOutput> {
+      return Promise.resolve(RenderOutput.toRenderOutput({result: ''}));
+    }
   }
 
   let renderer: TestRenderer;
@@ -30,6 +28,14 @@ describe('AbstractRenderer', () => {
     expect(content).toEqual('Test1\nTest2');
   });
 
+  test('can use generator inside renderer', async () => {
+    const generator = renderer.generator;
+    const doc: any = { $id: 'test' };
+    const outputModels = await generator.generate(doc);
+
+    expect(outputModels[0].result).toEqual('test');
+  });
+  
   describe('addDependency()', () => {
     test('should add dependency', () => {
       renderer.addDependency('test');
@@ -41,6 +47,21 @@ describe('AbstractRenderer', () => {
       expect(renderer.dependencies).toEqual(['test']);
     });
   });
+
+  describe('nameType()', () => {
+    test('should name the type', () => {
+      const name = renderer.nameType('someType');
+      expect(name).toEqual('type__someType');
+    });
+  });
+  
+  describe('nameProperty()', () => {
+    test('should name the property', () => {
+      const name = renderer.nameProperty('someProperty');
+      expect(name).toEqual('property__someProperty');
+    });
+  });
+
   describe('indent()', () => {
     test('should render text with indentation', () => {
       const content = renderer.indent('Test');

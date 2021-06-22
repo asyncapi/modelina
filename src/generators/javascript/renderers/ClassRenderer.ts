@@ -55,9 +55,9 @@ export const JS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
   },
   ctor({ renderer, model }) {
     const properties = model.properties || {};
-    const assigments = Object.keys(properties).map(property => {
-      property = FormatHelpers.toCamelCase(property);
-      return `this.${property} = input.${property};`;
+    const assigments = Object.entries(properties).map(([propertyName, property]) => {
+      propertyName = renderer.nameProperty(propertyName, property);
+      return `this.${propertyName} = input.${propertyName};`;
     });
     const body = renderer.renderBlock(assigments);
 
@@ -65,16 +65,16 @@ export const JS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
 ${renderer.indent(body)}
 }`;
   },
-  property({ propertyName }) {
-    propertyName = FormatHelpers.toCamelCase(propertyName);
+  property({ renderer, propertyName, property }) {
+    propertyName = renderer.nameProperty(propertyName, property);
     return `${propertyName};`;
   },
-  getter({ propertyName }) {
-    propertyName = FormatHelpers.toCamelCase(propertyName);
+  getter({ renderer, propertyName, property }) {
+    propertyName = renderer.nameProperty(propertyName, property);
     return `get ${propertyName}() { return this.${propertyName}; }`;
   },
-  setter({ propertyName }) {
-    propertyName = FormatHelpers.toCamelCase(propertyName);
+  setter({ renderer, propertyName, property }) {
+    propertyName = renderer.nameProperty(propertyName, property);
     return `set ${propertyName}(${propertyName}) { this.${propertyName} = ${propertyName}; }`;
   },
 };

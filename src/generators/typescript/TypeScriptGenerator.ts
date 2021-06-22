@@ -48,28 +48,28 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions> {
 
   async renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const presets = this.getPresets('class'); 
-    const renderer = new ClassRenderer(this.options, presets, model, inputModel);
+    const renderer = new ClassRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
     return RenderOutput.toRenderOutput({result, dependencies: renderer.dependencies});
   }
 
   async renderInterface(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const presets = this.getPresets('interface'); 
-    const renderer = new InterfaceRenderer(this.options, presets, model, inputModel);
+    const renderer = new InterfaceRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
     return RenderOutput.toRenderOutput({result, dependencies: renderer.dependencies});
   }
 
   async renderEnum(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const presets = this.getPresets('enum'); 
-    const renderer = new EnumRenderer(this.options, presets, model, inputModel);
+    const renderer = new EnumRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
     return RenderOutput.toRenderOutput({result, dependencies: renderer.dependencies});
   }
 
   async renderType(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const presets = this.getPresets('type'); 
-    const renderer = new TypeRenderer(this.options, presets, model, inputModel);
+    const renderer = new TypeRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
     return RenderOutput.toRenderOutput({result, dependencies: renderer.dependencies});
   }

@@ -1,6 +1,6 @@
 import { CommonInputModel, CommonModel, OutputModel, Preset, Presets } from '../models';
 import { InputProcessor } from '../processors';
-import { IndentationTypes } from '../helpers';
+import { FormatHelpers, IndentationTypes } from '../helpers';
 import { isPresetWithOptions } from '../utils';
 import { RenderOutput } from 'models/RenderOutput';
 
@@ -9,15 +9,29 @@ export interface CommonGeneratorOptions<P extends Preset = Preset> {
     type: IndentationTypes;
     size: number;
   };
+  namingConvention?: {
+    type?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel }) => string;
+    property?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel, property?: CommonModel }) => string;
+  };
   defaultPreset?: P;
   presets?: Presets<P>;
 }
 
-export const defaultGeneratorOptions = {
+export const defaultGeneratorOptions: CommonGeneratorOptions = {
   indentation: {
     type: IndentationTypes.SPACES,
     size: 2,
   },
+  namingConvention: {
+    type: (name: string | undefined) => {
+      if (!name) {return '';}
+      return FormatHelpers.toPascalCase(name);
+    },
+    property: (name: string | undefined) => {
+      if (!name) {return '';}
+      return FormatHelpers.toCamelCase(name);
+    }
+  }
 };
 
 /**
@@ -88,6 +102,11 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
       ...defaultGeneratorOptions,
       ...defaultOptions,
       ...passedOptions,
+      namingConvention: {
+        ...(defaultGeneratorOptions.namingConvention || {}),
+        ...(defaultOptions.namingConvention || {}),
+        ...(passedOptions.namingConvention || {}),
+      }
     };
   }
 }

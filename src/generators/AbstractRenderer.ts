@@ -1,13 +1,17 @@
-import { CommonGeneratorOptions } from './AbstractGenerator';
+import { AbstractGenerator, CommonGeneratorOptions } from './AbstractGenerator';
 import { CommonModel, CommonInputModel, Preset } from '../models';
 import { FormatHelpers, IndentationTypes } from '../helpers';
 
 /**
  * Abstract renderer with common helper methods
  */
-export abstract class AbstractRenderer<O extends CommonGeneratorOptions = CommonGeneratorOptions> {
+export abstract class AbstractRenderer<
+  O extends CommonGeneratorOptions = CommonGeneratorOptions,
+  G extends AbstractGenerator = AbstractGenerator
+> {
   constructor(
     protected readonly options: O,
+    readonly generator: G,
     protected readonly presets: Array<[Preset, unknown]>,
     protected readonly model: CommonModel, 
     protected readonly inputModel: CommonInputModel,
@@ -32,6 +36,20 @@ export abstract class AbstractRenderer<O extends CommonGeneratorOptions = Common
   renderBlock(lines: string[], newLines = 1): string {
     const n = Array(newLines).fill('\n').join('');
     return lines.filter(Boolean).join(n);
+  }
+
+  nameType(name: string | undefined, model?: CommonModel): string {
+    name = name || '';
+    return this.options?.namingConvention?.type 
+      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel })
+      : name;
+  }
+
+  nameProperty(name: string | undefined, property?: CommonModel): string {
+    name = name || '';
+    return this.options?.namingConvention?.property 
+      ? this.options.namingConvention.property(name, { model: this.model, inputModel: this.inputModel, property })
+      : name;
   }
 
   indent(
