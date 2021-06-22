@@ -6,7 +6,7 @@ import {
 import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
 import { TypeHelpers, ModelKind } from '../../helpers';
 import { GoPreset, GO_DEFAULT_PRESET } from './GoPreset';
-import { StructRenderer } from './renderers/StructRenderer'
+import { StructRenderer } from './renderers/StructRenderer';
 
 export type GoOptions = CommonGeneratorOptions<GoPreset>
 
