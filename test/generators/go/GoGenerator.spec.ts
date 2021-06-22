@@ -28,7 +28,7 @@ type Address struct {
   State string
   HouseNumber int
   Marriage bool
-  Members interface{}
+  Members []interface{}
   TupleType []interface{}
   ArrayType []string
 }`;
