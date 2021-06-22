@@ -1,4 +1,4 @@
-import { AbstractGenerator } from '../../src/generators'; 
+import { AbstractGenerator, defaultGeneratorOptions } from '../../src/generators'; 
 import { IndentationTypes } from '../../src/helpers';
 import { CommonInputModel, CommonModel, RenderOutput } from '../../src/models';
 
@@ -26,6 +26,35 @@ export class TestGenerator extends AbstractGenerator {
   }
 }
 describe('AbstractGenerator', () => {
+  describe('defaultGeneratorOptions', () => {
+    describe('namingConvention', () => {
+      const defaultCtx = {model: CommonModel.toCommonModel({}), inputModel: new CommonInputModel()};
+      describe('type', () => {
+        test('should handle undefined', () => {
+          const name = undefined;
+          const formattedName = defaultGeneratorOptions!.namingConvention!.type!(name, defaultCtx);
+          expect(formattedName).toEqual('');
+        });
+        test('Should default name to pascal case', () => {
+          const name = 'some_not Pascal string';
+          const formattedName = defaultGeneratorOptions!.namingConvention!.type!(name, defaultCtx);
+          expect(formattedName).toEqual('SomeNotPascalString');
+        });
+      });
+      describe('property', () => {
+        test('should handle undefined', () => {
+          const name = undefined;
+          const formattedName = defaultGeneratorOptions!.namingConvention!.property!(name, defaultCtx);
+          expect(formattedName).toEqual('');
+        });
+        test('Should default name to camel case', () => {
+          const name = 'some_not Pascal string';
+          const formattedName = defaultGeneratorOptions!.namingConvention!.property!(name, defaultCtx);
+          expect(formattedName).toEqual('someNotPascalString');
+        });
+      });
+    });
+  });
   let generator: TestGenerator;
   beforeEach(() => {
     generator = new TestGenerator();
