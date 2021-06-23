@@ -47,6 +47,11 @@
       "$ref": "#/definitions/dummyObject"
     }
   },
+  "patternProperties": {
+    "S_pattern": {
+      "type": "string"
+    }
+  },
   "definitions": {
     "dummyInfo": {
       "type": "object",
