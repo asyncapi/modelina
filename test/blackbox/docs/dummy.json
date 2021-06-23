@@ -43,6 +43,9 @@
     "dummyArrayWithArray": {
       "$ref": "#/definitions/dummyArrayWithArray"
     },
+    "dummyArrayWithArrayNoAdditionalItems": {
+      "$ref": "#/definitions/dummyArrayWithArrayNoAdditionalItems"
+    },
     "dummyObject": {
       "$ref": "#/definitions/dummyObject"
     }
@@ -85,7 +88,23 @@
         {
           "type": "number"
         }
-      ]
+      ],
+      "additionalItems": true
+    },
+    "dummyArrayWithArrayNoAdditionalItems": {
+      "type": "array",
+      "items": [
+        {
+          "$ref": "#/definitions/dummyInfo"
+        },
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        }
+      ],
+      "additionalItems": false
     },
     "dummyObject": {
       "type": "object",
