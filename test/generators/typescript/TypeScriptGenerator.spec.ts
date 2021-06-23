@@ -20,6 +20,11 @@ describe('TypeScriptGenerator', () => {
         tuple_type_with_additional_items: { type: 'array', items: [{ type: 'string' }, { type: 'number' }], additionalItems: true },
         array_type: { type: 'array', items: { type: 'string' } },
       },
+      patternProperties: {
+        S_test: {
+          type: 'string'
+        }
+      },
       required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
     };
     const expected = `export class Address {
@@ -33,6 +38,7 @@ describe('TypeScriptGenerator', () => {
   private _tupleTypeWithAdditionalItems?: [string, number, ...(object | string | number | Array<unknown> | boolean | null | number)[]];
   private _arrayType: Array<string>;
   private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null | number>;
+  private _sTestPatternProperty?: Map<String, string>;
 
   constructor(input: {
     streetName: string,
@@ -85,6 +91,9 @@ describe('TypeScriptGenerator', () => {
 
   get additionalProperties(): Map<String, object | string | number | Array<unknown> | boolean | null | number> | undefined { return this._additionalProperties; }
   set additionalProperties(additionalProperties: Map<String, object | string | number | Array<unknown> | boolean | null | number> | undefined) { this._additionalProperties = additionalProperties; }
+
+  get sTestPatternProperty(): Map<String, string> | undefined { return this._sTestPatternProperty; }
+  set sTestPatternProperty(sTestPatternProperty: Map<String, string> | undefined) { this._sTestPatternProperty = sTestPatternProperty; }
 }`;
 
     const inputModel = await generator.process(doc);
@@ -160,6 +169,11 @@ ${content}`;
         tuple_type_with_additional_items: { type: 'array', items: [{ type: 'string' }, { type: 'number' }], additionalItems: true },
         array_type: { type: 'array', items: { type: 'string' } },
       },
+      patternProperties: {
+        S_test: {
+          type: 'string'
+        }
+      },
       required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
     };
     const expected = `export interface Address {
@@ -173,6 +187,7 @@ ${content}`;
   tupleTypeWithAdditionalItems?: [string, number, ...(object | string | number | Array<unknown> | boolean | null | number)[]];
   arrayType: Array<string>;
   additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null | number>;
+  sTestPatternProperty?: Map<String, string>;
 }`;
 
     const interfaceGenerator = new TypeScriptGenerator({modelType: 'interface'});
