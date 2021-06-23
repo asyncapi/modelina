@@ -1,6 +1,8 @@
 import { 
   AbstractGenerator, 
   CommonGeneratorOptions,
+  CommonNamingConvention,
+  CommonNamingConventionImplementation,
   defaultGeneratorOptions,
 } from '../AbstractGenerator';
 import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
@@ -10,12 +12,14 @@ import { ClassRenderer } from './renderers/ClassRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 export interface JavaOptions extends CommonGeneratorOptions<JavaPreset> {
   collectionType?: 'List' | 'Array';
+  namingConvention?: CommonNamingConvention;
 }
 export class JavaGenerator extends AbstractGenerator<JavaOptions> {
   static defaultOptions: JavaOptions = {
     ...defaultGeneratorOptions,
     defaultPreset: JAVA_DEFAULT_PRESET,     
     collectionType: 'Array',
+    namingConvention: CommonNamingConventionImplementation
   };
 
   constructor(

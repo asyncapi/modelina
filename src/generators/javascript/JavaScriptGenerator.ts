@@ -1,16 +1,18 @@
 import { 
   AbstractGenerator, 
   CommonGeneratorOptions,
+  CommonNamingConvention,
+  CommonNamingConventionImplementation,
   defaultGeneratorOptions,
 } from '../AbstractGenerator';
 import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
 import { TypeHelpers, ModelKind } from '../../helpers';
-
 import { JavaScriptPreset, JS_DEFAULT_PRESET } from './JavaScriptPreset';
 
 import { ClassRenderer } from './renderers/ClassRenderer';
-
-export type JavaScriptOptions = CommonGeneratorOptions<JavaScriptPreset>
+export interface JavaScriptOptions extends CommonGeneratorOptions<JavaScriptPreset> {
+  namingConvention?: CommonNamingConvention
+}
 
 /**
  * Generator for JavaScript
@@ -19,6 +21,7 @@ export class JavaScriptGenerator extends AbstractGenerator<JavaScriptOptions> {
   static defaultOptions: JavaScriptOptions = {
     ...defaultGeneratorOptions,
     defaultPreset: JS_DEFAULT_PRESET,
+    namingConvention: CommonNamingConventionImplementation
   };
 
   constructor(

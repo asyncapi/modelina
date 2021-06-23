@@ -48,20 +48,6 @@ describe('AbstractRenderer', () => {
     });
   });
 
-  describe('nameType()', () => {
-    test('should name the type', () => {
-      const name = renderer.nameType('someType');
-      expect(name).toEqual('type__someType');
-    });
-  });
-  
-  describe('nameProperty()', () => {
-    test('should name the property', () => {
-      const name = renderer.nameProperty('someProperty');
-      expect(name).toEqual('property__someProperty');
-    });
-  });
-
   describe('indent()', () => {
     test('should render text with indentation', () => {
       const content = renderer.indent('Test');

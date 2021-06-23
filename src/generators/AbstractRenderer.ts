@@ -38,32 +38,6 @@ export abstract class AbstractRenderer<
     return lines.filter(Boolean).join(n);
   }
 
-  /**
-   * Renders the name of a type based on provided generator option naming convention type callback.
-   * 
-   * This is used to render names of models (example TS class) and then later used if that class is referenced from other models.
-   * 
-   * @param name 
-   * @param model 
-   */
-  nameType(name: string | undefined, model?: CommonModel): string {
-    return this.options?.namingConvention?.type 
-      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel })
-      : name || '';
-  }
-
-  /**
-   * Renders the name of a property based on provided generator option naming convention property callback.
-   * 
-   * @param propertyName 
-   * @param property
-   */
-  nameProperty(propertyName: string | undefined, property?: CommonModel): string {
-    return this.options?.namingConvention?.property 
-      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property })
-      : propertyName || '';
-  }
-
   indent(
     content: string, 
     size?: number, 
@@ -81,6 +55,7 @@ export abstract class AbstractRenderer<
   runAdditionalContentPreset(): Promise<string> {
     return this.runPreset('additionalContent');
   }
+  
   async runPreset<RT = string>(
     functionName: string,
     params: Record<string, unknown> = {},

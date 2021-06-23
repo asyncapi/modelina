@@ -1,6 +1,8 @@
 import { 
   AbstractGenerator, 
   CommonGeneratorOptions,
+  CommonNamingConvention,
+  CommonNamingConventionImplementation,
   defaultGeneratorOptions,
 } from '../AbstractGenerator';
 import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
@@ -12,8 +14,9 @@ import { EnumRenderer } from './renderers/EnumRenderer';
 import { TypeRenderer } from './renderers/TypeRenderer';
 
 export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPreset> {
-  renderTypes?: boolean
+  renderTypes?: boolean;
   modelType?: 'class' | 'interface';
+  namingConvention?: CommonNamingConvention;
 }
 
 /**
@@ -25,6 +28,7 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions> {
     renderTypes: true,
     modelType: 'class',
     defaultPreset: TS_DEFAULT_PRESET,
+    namingConvention: CommonNamingConventionImplementation
   };
 
   constructor(

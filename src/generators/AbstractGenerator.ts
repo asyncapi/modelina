@@ -9,28 +9,29 @@ export interface CommonGeneratorOptions<P extends Preset = Preset> {
     type: IndentationTypes;
     size: number;
   };
-  namingConvention?: {
-    type?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel }) => string;
-    property?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel, property?: CommonModel }) => string;
-  };
   defaultPreset?: P;
   presets?: Presets<P>;
 }
+
+export type CommonNamingConvention = {
+  type?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel }) => string;
+  property?: (test: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel, property?: CommonModel }) => string;
+};
+export const CommonNamingConventionImplementation: CommonNamingConvention = {
+  type: (name: string | undefined) => {
+    if (!name) {return '';}
+    return FormatHelpers.toPascalCase(name);
+  },
+  property: (test: string | undefined) => {
+    if (!test) {return '';}
+    return FormatHelpers.toCamelCase(test);
+  }
+};
 
 export const defaultGeneratorOptions: CommonGeneratorOptions = {
   indentation: {
     type: IndentationTypes.SPACES,
     size: 2,
-  },
-  namingConvention: {
-    type: (name: string | undefined) => {
-      if (!name) {return '';}
-      return FormatHelpers.toPascalCase(name);
-    },
-    property: (name: string | undefined) => {
-      if (!name) {return '';}
-      return FormatHelpers.toCamelCase(name);
-    }
   }
 };
 
@@ -101,12 +102,7 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
     return {
       ...defaultGeneratorOptions,
       ...defaultOptions,
-      ...passedOptions,
-      namingConvention: {
-        ...(defaultGeneratorOptions.namingConvention || {}),
-        ...(defaultOptions.namingConvention || {}),
-        ...(passedOptions.namingConvention || {}),
-      }
+      ...passedOptions
     };
   }
 }

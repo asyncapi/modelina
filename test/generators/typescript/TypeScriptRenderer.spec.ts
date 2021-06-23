@@ -7,7 +7,7 @@ class MockTypeScriptRenderer extends TypeScriptRenderer {
 describe('TypeScriptRenderer', () => {
   let renderer: TypeScriptRenderer;
   beforeEach(() => {
-    renderer = new MockTypeScriptRenderer(defaultGeneratorOptions, new TypeScriptGenerator(), [], new CommonModel(), new CommonInputModel());
+    renderer = new MockTypeScriptRenderer(TypeScriptGenerator.defaultOptions, new TypeScriptGenerator(), [], new CommonModel(), new CommonInputModel());
   });
 
   describe('renderComments()', () => {
