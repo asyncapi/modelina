@@ -10,6 +10,20 @@ describe('TypeScriptRenderer', () => {
     renderer = new MockTypeScriptRenderer(TypeScriptGenerator.defaultOptions, new TypeScriptGenerator(), [], new CommonModel(), new CommonInputModel());
   });
 
+  describe('nameType()', () => {
+    test('should name the type', () => {
+      const name = renderer.nameType('type__someType');
+      expect(name).toEqual('someType');
+    });
+  });
+  
+  describe('nameProperty()', () => {
+    test('should name the property', () => {
+      const name = renderer.nameProperty('property__someProperty');
+      expect(name).toEqual('someProperty');
+    });
+  });
+
   describe('renderComments()', () => {
     test('Should be able to render comments', () => {
       expect(renderer.renderComments('someComment')).toEqual(`/**

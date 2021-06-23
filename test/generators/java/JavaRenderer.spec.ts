@@ -10,6 +10,20 @@ describe('JavaRenderer', () => {
     renderer = new MockJavaRenderer(JavaGenerator.defaultOptions, new JavaGenerator(), [], new CommonModel(), new CommonInputModel());
   });
 
+  describe('nameType()', () => {
+    test('should name the type', () => {
+      const name = renderer.nameType('type__someType');
+      expect(name).toEqual('someType');
+    });
+  });
+  
+  describe('nameProperty()', () => {
+    test('should name the property', () => {
+      const name = renderer.nameProperty('property__someProperty');
+      expect(name).toEqual('someProperty');
+    });
+  });
+
   describe('renderType()', () => {
     test('Should render refs with pascal case', () => {
       const model = new CommonModel();
