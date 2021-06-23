@@ -38,6 +38,32 @@ describe('JavaRenderer', () => {
     test('Should be able to return byte array', () => {
       expect(renderer.toJavaType('binary', new CommonModel())).toEqual('byte[]');
     });
+    test('Should render matching tuple types as is', () => {
+      const model = CommonModel.toCommonModel({
+        items: [
+          {
+            type: 'string'
+          },
+          {
+            type: 'string'
+          }
+        ]
+      });
+      expect(renderer.toJavaType('array', model)).toEqual('String[]');
+    });
+    test('Should render mismatching tuple types as Object', () => {
+      const model = CommonModel.toCommonModel({ 
+        items: [
+          {
+            type: 'string'
+          },
+          {
+            type: 'number'
+          }
+        ]
+      });
+      expect(renderer.toJavaType('array', model)).toEqual('Object[]');
+    });
     test('Should render matching tuple and additionalItem types', () => {
       const model = CommonModel.toCommonModel({
         items: [
