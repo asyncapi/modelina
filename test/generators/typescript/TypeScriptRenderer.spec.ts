@@ -13,14 +13,14 @@ describe('TypeScriptRenderer', () => {
   describe('nameType()', () => {
     test('should name the type', () => {
       const name = renderer.nameType('type__someType');
-      expect(name).toEqual('someType');
+      expect(name).toEqual('TypeSomeType');
     });
   });
   
   describe('nameProperty()', () => {
     test('should name the property', () => {
       const name = renderer.nameProperty('property__someProperty');
-      expect(name).toEqual('someProperty');
+      expect(name).toEqual('propertySomeProperty');
     });
   });
 

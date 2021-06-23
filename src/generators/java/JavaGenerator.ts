@@ -1,12 +1,10 @@
 import { 
   AbstractGenerator, 
   CommonGeneratorOptions,
-  CommonNamingConvention,
-  CommonNamingConventionImplementation,
   defaultGeneratorOptions,
 } from '../AbstractGenerator';
 import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
-import { ModelKind, TypeHelpers } from '../../helpers';
+import { CommonNamingConvention, CommonNamingConventionImplementation, ModelKind, TypeHelpers } from '../../helpers';
 import { JavaPreset, JAVA_DEFAULT_PRESET } from './JavaPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';

@@ -1,4 +1,4 @@
-import { AbstractGenerator, CommonNamingConventionImplementation, defaultGeneratorOptions } from '../../src/generators'; 
+import { AbstractGenerator } from '../../src/generators'; 
 import { IndentationTypes } from '../../src/helpers';
 import { CommonInputModel, CommonModel, RenderOutput } from '../../src/models';
 
@@ -6,14 +6,6 @@ export const testOptions = {
   indentation: {
     type: IndentationTypes.SPACES,
     size: 2,
-  },
-  namingConvention: {
-    type: (name: string | undefined): string => {
-      return `type__${name || ''}`;
-    },
-    property: (name: string | undefined): string => {
-      return `property__${name || ''}`;
-    }
   }
 };
 export class TestGenerator extends AbstractGenerator {
@@ -26,33 +18,6 @@ export class TestGenerator extends AbstractGenerator {
   }
 }
 describe('AbstractGenerator', () => {
-  describe('CommonNamingConventionImplementation', () => {
-    const defaultCtx = {model: CommonModel.toCommonModel({}), inputModel: new CommonInputModel()};
-    describe('type', () => {
-      test('should handle undefined', () => {
-        const name = undefined;
-        const formattedName = CommonNamingConventionImplementation.type!(name, defaultCtx);
-        expect(formattedName).toEqual('');
-      });
-      test('Should default name to pascal case', () => {
-        const name = 'some_not Pascal string';
-        const formattedName = CommonNamingConventionImplementation!.type!(name, defaultCtx);
-        expect(formattedName).toEqual('SomeNotPascalString');
-      });
-    });
-    describe('property', () => {
-      test('should handle undefined', () => {
-        const name = undefined;
-        const formattedName = CommonNamingConventionImplementation!.property!(name, defaultCtx);
-        expect(formattedName).toEqual('');
-      });
-      test('Should default name to camel case', () => {
-        const name = 'some_not Pascal string';
-        const formattedName = CommonNamingConventionImplementation!.property!(name, defaultCtx);
-        expect(formattedName).toEqual('someNotPascalString');
-      });
-    });
-  });
   let generator: TestGenerator;
   beforeEach(() => {
     generator = new TestGenerator();

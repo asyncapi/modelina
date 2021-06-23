@@ -1,12 +1,10 @@
 import { 
   AbstractGenerator, 
   CommonGeneratorOptions,
-  CommonNamingConvention,
-  CommonNamingConventionImplementation,
   defaultGeneratorOptions,
 } from '../AbstractGenerator';
 import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
-import { TypeHelpers, ModelKind } from '../../helpers';
+import { TypeHelpers, ModelKind, CommonNamingConvention, CommonNamingConventionImplementation } from '../../helpers';
 import { JavaScriptPreset, JS_DEFAULT_PRESET } from './JavaScriptPreset';
 
 import { ClassRenderer } from './renderers/ClassRenderer';
