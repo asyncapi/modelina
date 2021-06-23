@@ -13,10 +13,24 @@ export interface CommonGeneratorOptions<P extends Preset = Preset> {
   presets?: Presets<P>;
 }
 
+export const defaultGeneratorOptions: CommonGeneratorOptions = {
+  indentation: {
+    type: IndentationTypes.SPACES,
+    size: 2,
+  }
+};
+
+/**
+ * The common naming convention type shared between generators for different languages.
+ */
 export type CommonNamingConvention = {
   type?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel }) => string;
   property?: (test: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel, property?: CommonModel }) => string;
 };
+
+/**
+ * A CommonNamingConvention implementation shared between generators for different languages.
+ */
 export const CommonNamingConventionImplementation: CommonNamingConvention = {
   type: (name: string | undefined) => {
     if (!name) {return '';}
@@ -25,13 +39,6 @@ export const CommonNamingConventionImplementation: CommonNamingConvention = {
   property: (test: string | undefined) => {
     if (!test) {return '';}
     return FormatHelpers.toCamelCase(test);
-  }
-};
-
-export const defaultGeneratorOptions: CommonGeneratorOptions = {
-  indentation: {
-    type: IndentationTypes.SPACES,
-    size: 2,
   }
 };
 
