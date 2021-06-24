@@ -48,7 +48,7 @@
     }
   },
   "patternProperties": {
-    "S_pattern": {
+    "^S(.?*)pattern&": {
       "type": "string"
     }
   },
