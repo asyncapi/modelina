@@ -73,7 +73,7 @@ The generation process uses the predefined `CommonModel`s from the input stage t
 
 Check out [the example](#example) to see how to use the library and [generators document](./docs/generators.md) for more info.
 
-> **NOTE**: Each implemented language has different options, dictated by the nature of the language, so the output can vary in support between languages.
+> **NOTE**: Each implemented language has different options, dictated by the nature of the language.
 
 ## Example
 

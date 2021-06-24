@@ -1,12 +1,8 @@
 # Input process
 
-The [InputProcessor](../src/processors/InputProcessor.ts) is our main point of entry for processing input data. It uses the defined input processors (`AsyncAPIInputProcessor`, `JsonSchemaInputProcessor`, ...) by first calling `shouldProcess` function for each input processor to figure out if the input data should be processed. Once a processor have been found it 
+The [InputProcessor](../src/processors/InputProcessor.ts) is our main point of entry for processing input data. It uses the defined input processors (`AsyncAPIInputProcessor`, `JsonSchemaInputProcessor`, ...) by first calling `shouldProcess` function for each input processor to figure out if the input data should be processed by the respective processor. If it should the `process` function is then called. It uses a first-come, first-serve principle, where the first processor that accepts the input process's it. If no processor accepts the input it defaults to `JsonSchemaInputProcessor`. 
 
-If no processes returns true it defaults to `JsonSchemaInputProcessor`. 
-
-The `process` function are expected to return `CommonInputModel` which is a wrapper for the core data representation of `CommonModel`. 
-
-This is done to ensure we can return multiple models for any input to allow for references, inheritance etc. 
+The `process` function are expected to return `CommonInputModel` which is a wrapper for the core data representation of `CommonModel`. This is done to ensure we can return multiple models for any input to allow for references, inheritance etc. 
 
 As said the core internal representation of a data model is `CommonModel`. This contains the data definition by using known keywords from JSON Schema, but instead of it representing a validation rules it represent data definition. The explanation for the `CommonModel` properties can be found [here](../API.md##CommonModel).
 
