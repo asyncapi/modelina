@@ -11,6 +11,6 @@ To setup the environment follow these steps:
 ## Blackbox testing
 The blackbox testing have some different requirements in order to successfully run:
 - To to run the `java` blackbox tests, you need to have JDK installed.
-- To to run the `ts` blackbox tests, you need to have TypeScript installed globally `npm install -g typescript`.
+- To to run the `ts` blackbox tests, you need to have TypeScript installed globally - `npm install -g typescript`.
 
 By default the blackbox tests are not run with the regular `npm run test`, but can be run with `npm run test:blackbox`.
