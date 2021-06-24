@@ -111,5 +111,5 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
       setterType = `Map<String, ${setterType}>`;
     }
     return `public void set${setterName}(${setterType} ${propertyName}) { this.${propertyName} = ${propertyName}; }`;
-  },
+  }
 };
