@@ -21,7 +21,7 @@ describe('TypeScriptGenerator', () => {
         array_type: { type: 'array', items: { type: 'string' } },
       },
       patternProperties: {
-        S_test: {
+        '^S(.?*)test&': {
           type: 'string'
         }
       },
@@ -170,7 +170,7 @@ ${content}`;
         array_type: { type: 'array', items: { type: 'string' } },
       },
       patternProperties: {
-        S_test: {
+        '^S(.?*)test&': {
           type: 'string'
         }
       },
