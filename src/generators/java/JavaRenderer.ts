@@ -69,7 +69,18 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
     case 'binary':
       return 'byte[]';
     case 'array': {
-      const newType = model?.items ? this.renderType(model.items) : 'Object';
+      let arrayItemModel = model.items;
+      //Since Java dont support tuples, lets make sure that we combine the tuple types to find the appropriate array type 
+      if (Array.isArray(model.items)) {
+        arrayItemModel = model.items.reduce((prevModel, currentModel) => {
+          return CommonModel.mergeCommonModels(CommonModel.toCommonModel(prevModel), CommonModel.toCommonModel(currentModel), {});
+        });
+        //If tuples and additionalItems make sure to find the appropriate type by merging all the tuples and additionalItems model together to find the combined type.
+        if (model.additionalItems !== undefined) {
+          arrayItemModel = CommonModel.mergeCommonModels(arrayItemModel, model.additionalItems, {});
+        }
+      }
+      const newType = arrayItemModel ? this.renderType(arrayItemModel) : 'Object';
       return `${newType}[]`;
     }
     default:
