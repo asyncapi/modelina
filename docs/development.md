@@ -5,7 +5,7 @@ These are some of the development guidelines and help to setup the library for d
 To setup the environment follow these steps:
 1. Setup the project by first installing the dependencies `npm install`
 1. Make sure the tests pass by running `npm run test` script
-    - [blackbox testing](##Blackbox-testing) are excluded when running the `test` script because it require some extra setup.
+    - [blackbox testing](#blackbox-testing) are excluded when running the `test` script because it require some extra setup.
 1. Make sure code is well formatted and secure `npm run lint`
 
 ## Blackbox testing
