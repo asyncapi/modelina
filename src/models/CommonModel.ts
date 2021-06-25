@@ -12,6 +12,7 @@ import { Schema } from './Schema';
  * @property {CommonModel | CommonModel[]} items defines the type for `array` models as `CommonModel`.
  * @property {Record<string, CommonModel>} properties defines the properties and its expected types as `CommonModel`.
  * @property {CommonModel} additionalProperties are used to define if any extra properties are allowed, also defined as a  `CommonModel`.
+ * @property {Record<string, CommonModel>} patternProperties are used for any extra properties that matches a specific pattern to be of specific type.
  * @property {string} $ref is a reference to another `CommonModel` by using`$id` as a simple string.
  * @property {string[]} required list of required properties.
  * @property {string[]} extend list of other `CommonModel`s this model extends, is an array of `$id` strings.
