@@ -4,7 +4,7 @@ The [InputProcessor](../src/processors/InputProcessor.ts) is our main point of e
 
 The `process` function are expected to return `CommonInputModel` which is a wrapper for the core data representation of `CommonModel`. This is done to ensure we can return multiple models for any input to allow for references, inheritance etc. 
 
-As said the core internal representation of a data model is `CommonModel`. It contains the data definition by using known keywords from JSON Schema, but instead of it representing a validation rules it represents the data definition for the model. The explanation for the `CommonModel` properties can be found [here](../API.md##CommonModel).
+As said the core internal representation of a data model is `CommonModel`. It contains the data definition by using known keywords from JSON Schema, but instead of it representing a validation rules it represents the data definition for the model. The explanation for the `CommonModel` properties can be found [here](../API.md#CommonModel).
 
 ## AsyncAPI
 At the moment the library only supports the whole AsyncAPI file as input where it generates models for all defined message payloads. If any other kind of AsyncAPI input is wanted please create a [feature request](https://github.com/asyncapi/modelina/issues/new?assignees=&labels=enhancement&template=enhancement.md).
