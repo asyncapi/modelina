@@ -9,6 +9,7 @@ import { Logger } from '../utils';
  * Class for processing AsyncAPI inputs
  */
 export class AsyncAPIInputProcessor extends AbstractInputProcessor {
+  static supportedVersions = ['2.0.0', '2.1.0'];
   /**
    * Process the input as an AsyncAPI document
    * 
@@ -146,7 +147,8 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
 	 */
   shouldProcess(input: Record<string, any>) : boolean {
     const version = this.tryGetVersionOfDocument(input);
-    return supportedVersions.includes(version);
+    if (!version) {return false;}
+    return AsyncAPIInputProcessor.supportedVersions.includes(version);
   }
 
   /**
