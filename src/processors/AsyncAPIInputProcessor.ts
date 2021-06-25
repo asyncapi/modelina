@@ -146,12 +146,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
 	 */
   shouldProcess(input: Record<string, any>) : boolean {
     const version = this.tryGetVersionOfDocument(input);
-    if (version === undefined) { return false; }
-    const supportedVersions = ['2.0.0', '2.1.0'];
-    if (supportedVersions.includes(version)) {
-      return true;
-    }
-    return false;
+    return supportedVersions.includes(version);
   }
 
   /**
