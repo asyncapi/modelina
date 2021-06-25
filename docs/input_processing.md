@@ -13,7 +13,6 @@ The AsyncAPI input processor expects that the property `asyncapi` is defined in 
 
 The payload, since it is of type JSON Schema, is then passed to the [JSON Schema processor](#JSON-Schema) which handle the rest of the processing.
 
-
 ## JSON Schema
 For us to convert JSON Schema into `CommonInputModel` we use a process we call the interpreter process. This means that we interpret the JSON Schema validation rules (`Schema` or Boolean) into data definitions (`CommonModel`). This process is quite complex and needs it own section for explaining how it works.
 
