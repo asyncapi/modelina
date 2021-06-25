@@ -4,7 +4,7 @@ The library transforms JSON Schema from data validation rules to data definition
 
 The algorithm tries to get to a model whose data can be validated against the JSON schema document. 
 
-As of now we only provide the underlying structure of the schema file for the model, where constraints/annotations such as `maxItems`, `uniqueItems`, `multipleOf`, etc, are not interpreted.
+As of now we only provide the underlying structure of the schema file for the model, where constraints/annotations such as `maxItems`, `uniqueItems`, `multipleOf`, etc. are not interpreted.
 
 ## Interpreter 
 The main functionality is located in the `Interpreter` class. This class ensures to recursively create (or retrieve from a cache) a `CommonModel` representation of a Schema. We have tried to keep the functionality split out into separate functions to reduce complexity and ensure it is easy to maintain. 
