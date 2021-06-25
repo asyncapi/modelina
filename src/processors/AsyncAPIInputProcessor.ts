@@ -163,10 +163,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     if (AsyncAPIInputProcessor.isFromParser(input)) {
       return input.version();
     }
-    if (input.asyncapi !== undefined) {
-      return input.asyncapi;
-    }
-    return undefined;
+    return input && input.asyncapi;
   }
 
   /**
