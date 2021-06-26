@@ -45,9 +45,9 @@ ${this.indent(this.renderBlock(content, 2))}
 
     if (this.model.patternProperties !== undefined) {
       for (const [pattern, patternModel] of Object.entries(this.model.patternProperties)) {
-        const propertyName = getUniquePropertyName(this.model, `${pattern}${DefaultPropertyNames.patternProperty}`);
-        const getter = await this.runGetterPreset(propertyName, patternModel, PropertyType.patternProperty);
-        const setter = await this.runSetterPreset(propertyName, patternModel, PropertyType.patternProperty);
+        const propertyName = getUniquePropertyName(this.model, `${pattern}${DefaultPropertyNames.patternProperties}`);
+        const getter = await this.runGetterPreset(propertyName, patternModel, PropertyType.patternProperties);
+        const setter = await this.runSetterPreset(propertyName, patternModel, PropertyType.patternProperties);
         content.push(this.renderBlock([getter, setter]));
       }
     }
@@ -95,7 +95,7 @@ ${renderer.indent(renderer.renderBlock(assignments))}
     let signature = ''; 
     if (type === PropertyType.property) {
       signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });
-    } else if (type === PropertyType.additionalProperty || type === PropertyType.patternProperty) {
+    } else if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
       const mapType = renderer.renderType(property);
       signature = `: Map<String, ${mapType}> | undefined`;
     }
@@ -107,7 +107,7 @@ ${renderer.indent(renderer.renderBlock(assignments))}
     let signature = ''; 
     if (type === PropertyType.property) {
       signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });
-    } else if (type === PropertyType.additionalProperty || type === PropertyType.patternProperty) {
+    } else if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
       const mapType = renderer.renderType(property);
       signature = `: Map<String, ${mapType}> | undefined`;
     }

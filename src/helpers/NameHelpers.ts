@@ -5,7 +5,7 @@ import { CommonModel } from 'models';
  */
 export enum DefaultPropertyNames {
   additionalProperties = 'additionalProperties',
-  patternProperty = 'PatternProperty'
+  patternProperties = 'PatternProperties'
 }
 
 /**

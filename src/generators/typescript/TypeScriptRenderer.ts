@@ -109,8 +109,8 @@ ${lines.map(line => ` * ${line}`).join('\n')}
 
     if (this.model.patternProperties !== undefined) {
       for (const [pattern, patternModel] of Object.entries(this.model.patternProperties)) {
-        const propertyName = getUniquePropertyName(this.model, `${pattern}${DefaultPropertyNames.patternProperty}`);
-        const renderedPatternProperty = await this.runPropertyPreset(propertyName, patternModel, PropertyType.patternProperty);
+        const propertyName = getUniquePropertyName(this.model, `${pattern}${DefaultPropertyNames.patternProperties}`);
+        const renderedPatternProperty = await this.runPropertyPreset(propertyName, patternModel, PropertyType.patternProperties);
         content.push(renderedPatternProperty);
       }
     }
@@ -126,7 +126,7 @@ ${lines.map(line => ` * ${line}`).join('\n')}
       signature = this.renderTypeSignature(property, { isRequired: this.model.isRequired(propertyName) });
       return `${name}${signature};`;
     case PropertyType.additionalProperty:
-    case PropertyType.patternProperty:
+    case PropertyType.patternProperties:
       signature = this.renderType(property);
       return `${name}?: Map<String, ${signature}>;`;
     default:
