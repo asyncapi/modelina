@@ -38,7 +38,7 @@ describe('TypeScriptGenerator', () => {
   private _tupleTypeWithAdditionalItems?: [string, number, ...(object | string | number | Array<unknown> | boolean | null | number)[]];
   private _arrayType: Array<string>;
   private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null | number>;
-  private _sTestPatternProperty?: Map<String, string>;
+  private _sTestPatternProperties?: Map<String, string>;
 
   constructor(input: {
     streetName: string,
@@ -92,8 +92,8 @@ describe('TypeScriptGenerator', () => {
   get additionalProperties(): Map<String, object | string | number | Array<unknown> | boolean | null | number> | undefined { return this._additionalProperties; }
   set additionalProperties(additionalProperties: Map<String, object | string | number | Array<unknown> | boolean | null | number> | undefined) { this._additionalProperties = additionalProperties; }
 
-  get sTestPatternProperty(): Map<String, string> | undefined { return this._sTestPatternProperty; }
-  set sTestPatternProperty(sTestPatternProperty: Map<String, string> | undefined) { this._sTestPatternProperty = sTestPatternProperty; }
+  get sTestPatternProperties(): Map<String, string> | undefined { return this._sTestPatternProperties; }
+  set sTestPatternProperties(sTestPatternProperties: Map<String, string> | undefined) { this._sTestPatternProperties = sTestPatternProperties; }
 }`;
 
     const inputModel = await generator.process(doc);
@@ -187,7 +187,7 @@ ${content}`;
   tupleTypeWithAdditionalItems?: [string, number, ...(object | string | number | Array<unknown> | boolean | null | number)[]];
   arrayType: Array<string>;
   additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null | number>;
-  sTestPatternProperty?: Map<String, string>;
+  sTestPatternProperties?: Map<String, string>;
 }`;
 
     const interfaceGenerator = new TypeScriptGenerator({modelType: 'interface'});
