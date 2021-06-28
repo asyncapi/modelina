@@ -16,10 +16,17 @@ export class StructRenderer extends GoRenderer {
     ];
 
     const formattedName = this.model.$id && FormatHelpers.toPascalCase(this.model.$id, { transform: pascalCaseTransformMerge });
-    return `// ${formattedName} represents a ${formattedName} model.
+    const doc = this.renderComments(`${formattedName} represents a ${formattedName} model.`);
+    
+    return `${doc}
 type ${formattedName} struct {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
+  }
+  
+  renderComments(lines: string | string[]): string {
+    lines = FormatHelpers.breakLines(lines);
+    return lines.map(line => `// ${line}`).join('\n');
   }
 }
 
