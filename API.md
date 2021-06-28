@@ -161,6 +161,7 @@ Common internal representation for a model.
 | items | [<code>CommonModel</code>](#CommonModel) \| [<code>Array.&lt;CommonModel&gt;</code>](#CommonModel) | defines the type for `array` models as `CommonModel`. |
 | properties | <code>Record.&lt;string, CommonModel&gt;</code> | defines the properties and its expected types as `CommonModel`. |
 | additionalProperties | [<code>CommonModel</code>](#CommonModel) | are used to define if any extra properties are allowed, also defined as a  `CommonModel`. |
+| patternProperties | <code>Record.&lt;string, CommonModel&gt;</code> | are used for any extra properties that matches a specific pattern to be of specific type. |
 | $ref | <code>string</code> | is a reference to another `CommonModel` by using`$id` as a simple string. |
 | required | <code>Array.&lt;string&gt;</code> | list of required properties. |
 | extend | <code>Array.&lt;string&gt;</code> | list of other `CommonModel`s this model extends, is an array of `$id` strings. |
