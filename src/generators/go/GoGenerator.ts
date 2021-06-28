@@ -25,12 +25,12 @@ export class GoGenerator extends AbstractGenerator<GoOptions> {
     super('Go', GoGenerator.defaultOptions, options);
   }
 
-  async render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
+  render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const kind = TypeHelpers.extractKind(model);
     if (kind === ModelKind.OBJECT) {
       return this.renderStruct(model, inputModel);
     }
-    return RenderOutput.toRenderOutput({ result: '', dependencies: [] });
+    return Promise.resolve(RenderOutput.toRenderOutput({ result: '', dependencies: [] }));
   }
 
   async renderStruct(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
