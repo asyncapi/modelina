@@ -56,8 +56,9 @@ export abstract class GoRenderer extends AbstractRenderer<GoOptions> {
     case 'string':
       return 'string';
     case 'integer':
-    case 'number':
       return 'int';
+    case 'number':
+      return 'float64';
     case 'boolean':
       return 'bool';
     case 'object':
