@@ -34,6 +34,9 @@ describe('GoRenderer', () => {
       model.items = [CommonModel.toCommonModel({ type: 'number' }), CommonModel.toCommonModel({ type: 'string' })];
       expect(renderer.toGoType('array', model)).toEqual('[]interface{}');
     });
+    test('Should render object as interface type', () => {
+      expect(renderer.toGoType('object', new CommonModel())).toEqual('interface{}');
+    });
   });
   describe('renderType()', () => {
     test('Should render refs with pascal case (no _ prefix before numbers)', () => {

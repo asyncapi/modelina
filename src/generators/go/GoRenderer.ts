@@ -62,7 +62,7 @@ export abstract class GoRenderer extends AbstractRenderer<GoOptions> {
     case 'boolean':
       return 'bool';
     case 'object':
-      return 'struct{}';
+      return 'interface{}';
     case 'array': {
       if (Array.isArray(model.items)) {
         return model.items.length > 1? '[]interface{}' : `[]${this.renderType(model.items[0])}`;
