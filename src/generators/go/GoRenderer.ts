@@ -47,6 +47,7 @@ export abstract class GoRenderer extends AbstractRenderer<GoOptions> {
     return this.toGoType(model.type, model);
   }
 
+  /* eslint-disable sonarjs/no-duplicate-string */
   toGoType(type: string | undefined, model: CommonModel): string {
     if (type === undefined) {
       return 'interface{}';
