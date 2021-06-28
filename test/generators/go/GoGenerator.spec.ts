@@ -37,11 +37,11 @@ type Address struct {
     const model = inputModel.models['_address'];
 
     let structModel = await generator.renderStruct(model, inputModel);
-    expect(classModel.result).toEqual(expected);
-    expect(classModel.dependencies).toEqual([]);
+    expect(structModel.result).toEqual(expected);
+    expect(structModel.dependencies).toEqual([]);
 
     structModel = await generator.render(model, inputModel);
-    expect(classModel.result).toEqual(expected);
-    expect(classModel.dependencies).toEqual([]);
+    expect(structModel.result).toEqual(expected);
+    expect(structModel.dependencies).toEqual([]);
   });
 });
