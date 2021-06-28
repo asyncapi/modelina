@@ -26,7 +26,7 @@ type Address struct {
   StreetName string
   City string
   State string
-  HouseNumber int
+  HouseNumber float64
   Marriage bool
   Members []interface{}
   TupleType []interface{}

@@ -10,22 +10,24 @@ describe('GoRenderer', () => {
   });
 
   describe('toGoType()', () => {
-    test('Should render interface type', () => {
+    test('Should render undefined as interface type', () => {
       expect(renderer.toGoType(undefined, new CommonModel())).toEqual('interface{}');
     });
-    test('Should render int type', () => {
+    test('Should render integer as int type', () => {
       expect(renderer.toGoType('integer', new CommonModel())).toEqual('int');
-      expect(renderer.toGoType('number', new CommonModel())).toEqual('int');
     });
-    test('Should render array type', () => {
+    test('Should render number as float64 type', () => {
+      expect(renderer.toGoType('number', new CommonModel())).toEqual('float64');
+    });
+    test('Should render array as slice of the type', () => {
       const model = new CommonModel();
       model.items = CommonModel.toCommonModel({ type: 'number' });
-      expect(renderer.toGoType('array', model)).toEqual('[]int');
+      expect(renderer.toGoType('array', model)).toEqual('[]float64');
     });
     test('Should render tuple with one type as slice of that type', () => {
       const model = new CommonModel();
       model.items = [CommonModel.toCommonModel({ type: 'number' })];
-      expect(renderer.toGoType('array', model)).toEqual('[]int');
+      expect(renderer.toGoType('array', model)).toEqual('[]float64');
     });
     test('Should render tuple with multiple types as slice of interface{}', () => {
       const model = new CommonModel();
@@ -41,7 +43,7 @@ describe('GoRenderer', () => {
     });
     test('Should render union types with one type as slice of that type', () => {
       const model = CommonModel.toCommonModel({ type: ['number'] });
-      expect(renderer.renderType(model)).toEqual('[]int');
+      expect(renderer.renderType(model)).toEqual('[]float64');
     });
     test('Should render union types with multiple types as slice of interface', () => {
       const model = CommonModel.toCommonModel({ type: ['number', 'string'] });
