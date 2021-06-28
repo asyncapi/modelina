@@ -44,4 +44,35 @@ type Address struct {
     expect(structModel.result).toEqual(expected);
     expect(structModel.dependencies).toEqual([]);
   });
+
+  test('should work custom preset for `struct` type', async () => {
+    const doc = {
+      $id: 'CustomStruct',
+      type: 'object',
+      properties: {
+        property: { type: 'string' },
+      }
+    };
+    const expected = `// CustomStruct represents a CustomStruct model.
+type CustomStruct struct {
+  property string
+}`;
+
+    generator = new GoGenerator({ presets: [
+      {
+        struct: {
+          field({ fieldName, field, renderer }) {
+            return `${fieldName} ${renderer.renderType(field)}`; // private fields
+          },
+        }
+      }
+    ] });
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models['CustomStruct'];
+    
+    const structModel = await generator.render(model, inputModel);
+    expect(structModel.result).toEqual(expected);
+    expect(structModel.dependencies).toEqual([]);
+  });
 });
