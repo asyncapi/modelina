@@ -18,7 +18,8 @@ export interface CommonPreset<R extends AbstractRenderer, O extends object = any
 
 export enum PropertyType {
   property,
-  additionalProperty
+  additionalProperty,
+  patternProperties
 }
 export interface PropertyArgs {
   propertyName: string;

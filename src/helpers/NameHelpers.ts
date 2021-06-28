@@ -5,7 +5,8 @@ import { CommonInputModel, CommonModel } from '../models';
  * Default property names for different aspects of the common model
  */
 export enum DefaultPropertyNames {
-  additionalProperties = 'additionalProperties'
+  additionalProperties = 'additionalProperties',
+  patternProperties = 'PatternProperties'
 }
 
 /**
