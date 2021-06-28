@@ -1,4 +1,4 @@
-import { GoGenerator } from '../../../src/generators';
+import { GoGenerator } from '../../../src/generators/go/GoGenerator';
 
 describe('GoGenerator', () => {
   let generator: GoGenerator;
