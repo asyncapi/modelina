@@ -9,6 +9,7 @@ import { Logger } from '../utils';
  * Class for processing AsyncAPI inputs
  */
 export class AsyncAPIInputProcessor extends AbstractInputProcessor {
+  static supportedVersions = ['2.0.0', '2.1.0'];
   /**
    * Process the input as an AsyncAPI document
    * 
@@ -145,12 +146,21 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
 	 * @param input 
 	 */
   shouldProcess(input: Record<string, any>) : boolean {
-    //Check if we got a parsed document from out parser
-    //Check if we just got provided a pure object
-    if (AsyncAPIInputProcessor.isFromParser(input) || input.asyncapi !== undefined) {
-      return true;
+    const version = this.tryGetVersionOfDocument(input);
+    if (!version) {return false;}
+    return AsyncAPIInputProcessor.supportedVersions.includes(version);
+  }
+
+  /**
+   * Try to find the AsyncAPI version from the input. If it cannot undefined are returned, if it can, the version is returned.
+   * 
+   * @param input 
+   */
+  tryGetVersionOfDocument(input: Record<string, any>) : string | undefined {
+    if (AsyncAPIInputProcessor.isFromParser(input)) {
+      return input.version();
     }
-    return false;
+    return input && input.asyncapi;
   }
 
   /**
