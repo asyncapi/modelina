@@ -1,3 +1,4 @@
+import { GoGenerator } from '../../../src/generators/go/GoGenerator';
 import { GoRenderer } from '../../../src/generators/go/GoRenderer';
 import { CommonInputModel, CommonModel } from '../../../src/models';
 class MockGoRenderer extends GoRenderer {
@@ -6,7 +7,7 @@ class MockGoRenderer extends GoRenderer {
 describe('GoRenderer', () => {
   let renderer: MockGoRenderer;
   beforeEach(() => {
-    renderer = new MockGoRenderer({}, [], new CommonModel(), new CommonInputModel());
+    renderer = new MockGoRenderer({}, new GoGenerator(), [], new CommonModel(), new CommonInputModel());
   });
 
   describe('toGoType()', () => {

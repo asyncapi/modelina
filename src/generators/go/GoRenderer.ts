@@ -1,5 +1,5 @@
 import { AbstractRenderer } from '../AbstractRenderer';
-import { GoOptions } from './GoGenerator';
+import { GoGenerator, GoOptions } from './GoGenerator';
 import { CommonModel, CommonInputModel, Preset } from '../../models';
 import { FormatHelpers } from '../../helpers/FormatHelpers';
 import { pascalCaseTransformMerge } from 'pascal-case';
@@ -12,11 +12,12 @@ import { pascalCaseTransformMerge } from 'pascal-case';
 export abstract class GoRenderer extends AbstractRenderer<GoOptions> {
   constructor(
     options: GoOptions,
+    generator: GoGenerator,
     presets: Array<[Preset, unknown]>,
     model: CommonModel,
     inputModel: CommonInputModel,
   ) {
-    super(options, presets, model, inputModel);
+    super(options, generator, presets, model, inputModel);
   }
 
   async renderFields(): Promise<string> {

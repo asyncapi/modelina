@@ -35,7 +35,7 @@ export class GoGenerator extends AbstractGenerator<GoOptions> {
 
   async renderStruct(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const presets = this.getPresets('struct');
-    const renderer = new StructRenderer(this.options, presets, model, inputModel);
+    const renderer = new StructRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
     return RenderOutput.toRenderOutput({ result, dependencies: renderer.dependencies });
   }
