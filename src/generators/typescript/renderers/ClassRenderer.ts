@@ -43,6 +43,15 @@ ${this.indent(this.renderBlock(content, 2))}
       content.push(this.renderBlock([getter, setter]));
     }
 
+    if (this.model.patternProperties !== undefined) {
+      for (const [pattern, patternModel] of Object.entries(this.model.patternProperties)) {
+        const propertyName = getUniquePropertyName(this.model, `${pattern}${DefaultPropertyNames.patternProperties}`);
+        const getter = await this.runGetterPreset(propertyName, patternModel, PropertyType.patternProperties);
+        const setter = await this.runSetterPreset(propertyName, patternModel, PropertyType.patternProperties);
+        content.push(this.renderBlock([getter, setter]));
+      }
+    }
+
     return this.renderBlock(content, 2);
   }
 
@@ -86,9 +95,9 @@ ${renderer.indent(renderer.renderBlock(assignments))}
     let signature = ''; 
     if (type === PropertyType.property) {
       signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });
-    } else if (type === PropertyType.additionalProperty) {
-      const additionalPropertyType = renderer.renderType(property);
-      signature = `: Map<String, ${additionalPropertyType}> | undefined`;
+    } else if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
+      const mapType = renderer.renderType(property);
+      signature = `: Map<String, ${mapType}> | undefined`;
     }
     return `get ${propertyName}()${signature} { return this._${propertyName}; }`;
   },
@@ -98,9 +107,9 @@ ${renderer.indent(renderer.renderBlock(assignments))}
     let signature = ''; 
     if (type === PropertyType.property) {
       signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });
-    } else if (type === PropertyType.additionalProperty) {
-      const additionalPropertyType = renderer.renderType(property);
-      signature = `: Map<String, ${additionalPropertyType}> | undefined`;
+    } else if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
+      const mapType = renderer.renderType(property);
+      signature = `: Map<String, ${mapType}> | undefined`;
     }
     return `set ${propertyName}(${propertyName}${signature}) { this._${propertyName} = ${propertyName}; }`;
   },
