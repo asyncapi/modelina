@@ -2,29 +2,48 @@ import * as fs from 'fs';
 import * as path from 'path';
 import {parse} from '@asyncapi/parser';
 import {AsyncAPIInputProcessor} from '../../src/processors/AsyncAPIInputProcessor';
+const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'), 'utf8');
 
 describe('AsyncAPIInputProcessor', () => {
-  describe('isAsyncAPI()', () => {
+  describe('shouldProcess()', () => {
     const processor = new AsyncAPIInputProcessor();
     test('should be able to detect pure object', () => {
-      const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'), 'utf8');
       const basicDoc = JSON.parse(basicDocString);
       expect(processor.shouldProcess(basicDoc)).toEqual(true);
     });
     test('should be able to detect parsed object', async () => {
-      const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'), 'utf8');
       const parsedObject = await parse(basicDocString);
       expect(processor.shouldProcess(parsedObject)).toEqual(true);
+    });
+    test('should be able to process AsyncAPI 2.0.0', () => {
+      const parsedObject = {asyncapi: '2.0.0'};
+      expect(processor.shouldProcess(parsedObject)).toEqual(true);
+    });
+    test('should be able to process AsyncAPI 2.1.0', () => {
+      const parsedObject = {asyncapi: '2.1.0'};
+      expect(processor.shouldProcess(parsedObject)).toEqual(true);
+    });
+  });
+  describe('tryGetVersionOfDocument()', () => {
+    const processor = new AsyncAPIInputProcessor();
+    test('should be able to find AsyncAPI version from object', () => {
+      const basicDoc = JSON.parse(basicDocString);
+      expect(processor.tryGetVersionOfDocument(basicDoc)).toEqual('2.0.0');
+    });
+    test('should not be able to find AsyncAPI version if not present', () => {
+      expect(processor.tryGetVersionOfDocument({})).toBeUndefined();
+    });
+    test('should be able to find AsyncAPI version from parsed document', async () => {
+      const parsedObject = await parse(basicDocString);
+      expect(processor.tryGetVersionOfDocument(parsedObject)).toEqual('2.0.0');
     });
   });
   describe('isFromParser()', () => {
     test('should be able to detect pure object', () => {
-      const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'), 'utf8');
       const basicDoc = JSON.parse(basicDocString);
       expect(AsyncAPIInputProcessor.isFromParser(basicDoc)).toEqual(false);
     });
     test('should be able to detect parsed object', async () => {
-      const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'), 'utf8');
       const parsedObject = await parse(basicDocString);
       expect(AsyncAPIInputProcessor.isFromParser(parsedObject)).toEqual(true);
     });
@@ -38,7 +57,6 @@ describe('AsyncAPIInputProcessor', () => {
         .toThrow('Input is not an AsyncAPI document so it cannot be processed.');
     });
     test('should be able to process pure object', async () => {
-      const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'), 'utf8');
       const expectedCommonInputModelString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/commonInputModel/basic.json'), 'utf8');
       const basicDoc = JSON.parse(basicDocString);
       const expectedCommonInputModel = JSON.parse(expectedCommonInputModelString);
@@ -47,7 +65,6 @@ describe('AsyncAPIInputProcessor', () => {
       expect(commonInputModel).toMatchObject(expectedCommonInputModel);
     });
     test('should be able to process parsed objects', async () => {
-      const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'), 'utf8');
       const expectedCommonInputModelString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/commonInputModel/basic.json'), 'utf8');
       const expectedCommonInputModel = JSON.parse(expectedCommonInputModelString);
       const parsedObject = await parse(basicDocString);
