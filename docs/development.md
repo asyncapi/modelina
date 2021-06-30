@@ -5,9 +5,9 @@ These are some of the development guidelines and help to setup the library for d
 A [Dockerfile](../Dockerfile) is provided and can be used for running test suites or any other command.
 You can either build the image and run the needed commands manually or rather use any of the following npm scripts:
 
-- `npm run build:docker` builds the docker image with the tag `asyncapi/modelina` (the rest of the scripts run this one as well).
-- `npm run test:docker` runs the main test suite.
-- `npm run test:docker:blackbox` runs the blackbox test suite.
+- `npm run docker:build` builds the docker image with the tag `asyncapi/modelina` (the rest of the scripts run this one as well).
+- `npm run docker:test` runs the main test suite.
+- `npm run docker:test:blackbox` runs the blackbox test suite.
 
 ## Environment setup
 
