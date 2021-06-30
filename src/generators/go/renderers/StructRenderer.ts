@@ -34,16 +34,7 @@ export const GO_DEFAULT_STRUCT_PRESET: StructPreset<StructRenderer> = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
-  ctor() {
-    return 'thisShoulBeAConstructor';
-  },
   field({ fieldName, field, renderer }) {
     return `${FormatHelpers.toPascalCase(fieldName, { transform: pascalCaseTransformMerge }) } ${ renderer.renderType(field)}`;
-  },
-  getter() {
-    return 'getterFunc';
-  },
-  setter() {
-    return 'setterFunc';
   },
 };

@@ -9,10 +9,7 @@ export interface FieldArgs {
 }
 
 export interface StructPreset<R extends AbstractRenderer, O extends object = any> extends CommonPreset<R, O> {
-  ctor?: (args: PresetArgs<R, O>) => Promise<string> | string;
   field?: (args: PresetArgs<R, O> & FieldArgs) => Promise<string> | string;
-  getter?: (args: PresetArgs<R, O> & FieldArgs) => Promise<string> | string;
-  setter?: (args: PresetArgs<R, O> & FieldArgs) => Promise<string> | string;
 }
 
 export type GoPreset = Preset<{
