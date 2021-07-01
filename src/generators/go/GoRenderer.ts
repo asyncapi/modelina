@@ -37,7 +37,7 @@ export abstract class GoRenderer extends AbstractRenderer<GoOptions> {
 
   renderType(model: CommonModel): string {
     if (model.$ref !== undefined) {
-      return FormatHelpers.toPascalCase(model.$ref, { transform: pascalCaseTransformMerge });
+      return `*${FormatHelpers.toPascalCase(model.$ref, { transform: pascalCaseTransformMerge })}`;
     }
 
     if (Array.isArray(model.type)) {
