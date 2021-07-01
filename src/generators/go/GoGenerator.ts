@@ -7,6 +7,8 @@ import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
 import { TypeHelpers, ModelKind } from '../../helpers';
 import { GoPreset, GO_DEFAULT_PRESET } from './GoPreset';
 import { StructRenderer } from './renderers/StructRenderer';
+import { FormatHelpers } from '../../helpers/FormatHelpers';
+import { pascalCaseTransformMerge } from 'pascal-case';
 
 export type GoOptions = CommonGeneratorOptions<GoPreset>
 
@@ -27,9 +29,15 @@ export class GoGenerator extends AbstractGenerator<GoOptions> {
 
   render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const kind = TypeHelpers.extractKind(model);
-    if (kind === ModelKind.OBJECT) {
-      return this.renderStruct(model, inputModel);
+    switch (kind) {
+      case ModelKind.OBJECT:
+        return this.renderStruct(model, inputModel);
+      case ModelKind.ENUM:
+        let typeName = model.$id && FormatHelpers.toPascalCase(model.$id, { transform: pascalCaseTransformMerge })
+        let result = `// ${typeName} represents an enum\ntype ${typeName} interface{}`
+        return Promise.resolve(RenderOutput.toRenderOutput({ result: result, dependencies: [] }));
     }
+
     return Promise.resolve(RenderOutput.toRenderOutput({ result: '', dependencies: [] }));
   }
 
