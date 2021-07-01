@@ -30,12 +30,14 @@ export class GoGenerator extends AbstractGenerator<GoOptions> {
   render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const kind = TypeHelpers.extractKind(model);
     switch (kind) {
-      case ModelKind.OBJECT:
-        return this.renderStruct(model, inputModel);
-      case ModelKind.ENUM:
-        let typeName = model.$id && FormatHelpers.toPascalCase(model.$id, { transform: pascalCaseTransformMerge })
-        let result = `// ${typeName} represents an enum\ntype ${typeName} interface{}`
-        return Promise.resolve(RenderOutput.toRenderOutput({ result: result, dependencies: [] }));
+    case ModelKind.OBJECT: {
+      return this.renderStruct(model, inputModel);
+    }
+    case ModelKind.ENUM: {
+      const typeName = model.$id && FormatHelpers.toPascalCase(model.$id, { transform: pascalCaseTransformMerge });
+      const result = `// ${typeName} represents an enum\ntype ${typeName} interface{}`;
+      return Promise.resolve(RenderOutput.toRenderOutput({ result, dependencies: [] }));
+    }
     }
 
     return Promise.resolve(RenderOutput.toRenderOutput({ result: '', dependencies: [] }));

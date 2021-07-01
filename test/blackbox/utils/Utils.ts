@@ -67,7 +67,7 @@ export async function renderModels(generatedModels: OutputModel[], outputPath: s
     return model.result;
   });
 
-  const stringOutput = headers ? `${headers.join('\n')}\n\n${output.join('\n')}` : output.join('\n')
+  const stringOutput = headers ? `${headers.join('\n')}\n\n${output.join('\n')}` : output.join('\n');
   const outputFilePath = path.resolve(__dirname, outputPath);
   await fs.writeFile(outputFilePath, stringOutput);
 }
