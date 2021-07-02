@@ -23,11 +23,6 @@ type ${formattedName} struct {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
   }
-  
-  renderComments(lines: string | string[]): string {
-    lines = FormatHelpers.breakLines(lines);
-    return lines.map(line => `// ${line}`).join('\n');
-  }
 }
 
 export const GO_DEFAULT_STRUCT_PRESET: StructPreset<StructRenderer> = {

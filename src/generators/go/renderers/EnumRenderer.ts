@@ -29,11 +29,6 @@ type ${formattedName} ${type}`;
     const globalType = type === 'interface{}' ? 'mixed types' : type;
     return this.renderComments(`${name} represents an enum of ${globalType}.`);
   }
-
-  renderComments(lines: string | string[]): string {
-    lines = FormatHelpers.breakLines(lines);
-    return lines.map(line => `// ${line}`).join('\n');
-  }
 }
 
 export const GO_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
