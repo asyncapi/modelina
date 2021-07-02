@@ -193,3 +193,11 @@ Below is a list of supported languages with their model types and corresponding 
 #### **Type**
 
 There are no additional methods.
+
+### Go
+
+#### **Struct**
+
+| Method | Description | Additional arguments |
+|---|---|---|
+| `field` | A method to extend rendered given field. | `fieldName` as a name of a given field, `field` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |

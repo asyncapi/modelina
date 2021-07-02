@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { TypeScriptGenerator, JavaGenerator, JavaScriptGenerator } from '../../src';
+import { TypeScriptGenerator, JavaGenerator, JavaScriptGenerator, GoGenerator } from '../../src';
 import { execCommand, generateModels, renderModels } from './utils/Utils';
 import { renderJavaModelsToSeparateFiles } from './utils/Utils';
 const fileToGenerate = path.resolve(__dirname, './docs/dummy.json');
@@ -51,6 +51,18 @@ describe('Dummy JSON Schema file', () => {
       await renderModels(generatedModels, renderOutputPath);
       const transpileAndRunCommand = `node ${renderOutputPath}`;
       await execCommand(transpileAndRunCommand);
+    });
+  });
+
+  describe('should be able to generate Go', () => {
+    test('struct', async () => {
+      const generator = new GoGenerator();
+      const generatedModels = await generateModels(fileToGenerate, generator);
+      expect(generatedModels).not.toHaveLength(0);
+      const renderOutputPath = path.resolve(__dirname, './output/go/struct/main.go');
+      await renderModels(generatedModels, renderOutputPath, ['package main\n', 'func main() {}']);
+      const compileCommand = `go build -o ${renderOutputPath.replace('.go', '')} ${renderOutputPath}`;
+      await execCommand(compileCommand);
     });
   });
 });

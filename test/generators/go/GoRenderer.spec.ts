@@ -42,7 +42,7 @@ describe('GoRenderer', () => {
     test('Should render refs with pascal case (no _ prefix before numbers)', () => {
       const model = new CommonModel();
       model.$ref = '<anonymous-schema-1>';
-      expect(renderer.renderType(model)).toEqual('AnonymousSchema1');
+      expect(renderer.renderType(model)).toEqual('*AnonymousSchema1');
     });
     test('Should render union types with one type as slice of that type', () => {
       const model = CommonModel.toCommonModel({ type: ['number'] });

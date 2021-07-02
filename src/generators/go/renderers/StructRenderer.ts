@@ -23,27 +23,13 @@ type ${formattedName} struct {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
   }
-  
-  renderComments(lines: string | string[]): string {
-    lines = FormatHelpers.breakLines(lines);
-    return lines.map(line => `// ${line}`).join('\n');
-  }
 }
 
 export const GO_DEFAULT_STRUCT_PRESET: StructPreset<StructRenderer> = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
-  ctor() {
-    return 'thisShoulBeAConstructor';
-  },
   field({ fieldName, field, renderer }) {
     return `${FormatHelpers.toPascalCase(fieldName, { transform: pascalCaseTransformMerge }) } ${ renderer.renderType(field)}`;
-  },
-  getter() {
-    return 'getterFunc';
-  },
-  setter() {
-    return 'setterFunc';
   },
 };
