@@ -1,7 +1,6 @@
 import { GoRenderer } from '../GoRenderer';
-import { EnumPreset} from '../../../models';
+import { EnumPreset, CommonModel } from '../../../models';
 import { FormatHelpers } from '../../../helpers';
-import { CommonModel } from '../../../models';
 
 /**
  * Renderer for Go's `enum` type
