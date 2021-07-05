@@ -59,13 +59,15 @@ ${outputModel.result}
  * @param models to write to file
  * @param outputPath path to output
  */
-export async function renderModels(generatedModels: OutputModel[], outputPath: string): Promise<void> {
+export async function renderModels(generatedModels: OutputModel[], outputPath: string, headers?: string[]): Promise<void> {
   const outputDir = path.resolve(__dirname, path.dirname(outputPath));
   await fs.rm(outputDir, { recursive: true, force: true });
   await fs.mkdir(outputDir, { recursive: true });
   const output = generatedModels.map((model) => {
     return model.result;
   });
+
+  const stringOutput = headers ? `${headers.join('\n')}\n\n${output.join('\n')}` : output.join('\n');
   const outputFilePath = path.resolve(__dirname, outputPath);
-  await fs.writeFile(outputFilePath, output.join('\n'));
+  await fs.writeFile(outputFilePath, stringOutput);
 }

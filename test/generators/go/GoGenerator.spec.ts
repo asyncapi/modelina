@@ -1,4 +1,4 @@
-import { GoGenerator } from '../../../src/generators/go/GoGenerator';
+import { GoGenerator } from '../../../src/generators';
 
 describe('GoGenerator', () => {
   let generator: GoGenerator;
@@ -74,5 +74,71 @@ type CustomStruct struct {
     const structModel = await generator.render(model, inputModel);
     expect(structModel.result).toEqual(expected);
     expect(structModel.dependencies).toEqual([]);
+  });
+
+  describe.each([
+    {
+      name: 'with enums sharing same type',
+      doc: {
+        $id: 'States',
+        type: 'string',
+        enum: ['Texas', 'Alabama', 'California'],
+      },
+      expected: `// States represents an enum of string.
+type States string`,
+    },
+    {
+      name: 'with enums of mixed types',
+      doc: {
+        $id: 'Things',
+        enum: ['Texas', 1, false],
+      },
+      expected: `// Things represents an enum of mixed types.
+type Things interface{}`,
+    },
+  ])('should render `enum` type $name', ({doc, expected}) => {
+    test('should not be empty', async () => {
+      const inputModel = await generator.process(doc);
+      const model = inputModel.models[doc.$id];
+
+      let enumModel = await generator.render(model, inputModel);
+      expect(enumModel.result).toEqual(expected);
+      expect(enumModel.dependencies).toEqual([]);
+        
+      enumModel = await generator.renderEnum(model, inputModel);
+      expect(enumModel.result).toEqual(expected);
+      expect(enumModel.dependencies).toEqual([]);
+    });
+  });
+
+  test('should work custom preset for `enum` type', async () => {
+    const doc = {
+      $id: 'CustomEnum',
+      type: 'string',
+      enum: ['Texas', 'Alabama', 'California'],
+    };
+    const expected = `// CustomEnum represents an enum of string.
+type CustomEnum string`;
+
+    generator = new GoGenerator({ presets: [
+      {
+        enum: {
+          self({ content }) {
+            return content;
+          },
+        }
+      }
+    ] });
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models['CustomEnum'];
+    
+    let enumModel = await generator.render(model, inputModel);
+    expect(enumModel.result).toEqual(expected);
+    expect(enumModel.dependencies).toEqual([]);
+    
+    enumModel = await generator.renderEnum(model, inputModel);
+    expect(enumModel.result).toEqual(expected);
+    expect(enumModel.dependencies).toEqual([]);
   });
 });

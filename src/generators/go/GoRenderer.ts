@@ -38,7 +38,7 @@ export abstract class GoRenderer extends AbstractRenderer<GoOptions> {
 
   renderType(model: CommonModel): string {
     if (model.$ref !== undefined) {
-      return FormatHelpers.toPascalCase(model.$ref, { transform: pascalCaseTransformMerge });
+      return `*${FormatHelpers.toPascalCase(model.$ref, { transform: pascalCaseTransformMerge })}`;
     }
 
     if (Array.isArray(model.type)) {
@@ -46,6 +46,11 @@ export abstract class GoRenderer extends AbstractRenderer<GoOptions> {
     }
 
     return this.toGoType(model.type, model);
+  }
+
+  renderComments(lines: string | string[]): string {
+    lines = FormatHelpers.breakLines(lines);
+    return lines.map(line => `// ${line}`).join('\n');
   }
 
   /* eslint-disable sonarjs/no-duplicate-string */

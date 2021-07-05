@@ -7,6 +7,7 @@
 - [JavaScript](../src/generators/javascript/JavaScriptGenerator.ts),
 - [TypeScript](../src/generators/typescript/TypeScriptGenerator.ts),
 - [Java](../src/generators/java/JavaGenerator.ts).
+- [Go](../src/generators/go/GoGenerator.ts).
 
 ## Generator's options
 
