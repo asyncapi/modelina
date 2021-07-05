@@ -1,5 +1,4 @@
 import { TypeScriptRenderer } from '../TypeScriptRenderer';
-
 import { CommonModel, ClassPreset, PropertyType } from '../../../models';
 import { getUniquePropertyName, FormatHelpers, DefaultPropertyNames } from '../../../helpers';
 import { getAllowedPropertyName } from '../helpers/PropertyHelper';
@@ -18,7 +17,7 @@ export class ClassRenderer extends TypeScriptRenderer {
       await this.runAdditionalContentPreset()
     ];
 
-    const formattedName = this.model.$id && FormatHelpers.toPascalCase(this.model.$id);
+    const formattedName = this.nameType(this.model.$id);
     return `class ${formattedName} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
@@ -44,6 +43,15 @@ ${this.indent(this.renderBlock(content, 2))}
       content.push(this.renderBlock([getter, setter]));
     }
 
+    if (this.model.patternProperties !== undefined) {
+      for (const [pattern, patternModel] of Object.entries(this.model.patternProperties)) {
+        const propertyName = getUniquePropertyName(this.model, `${pattern}${DefaultPropertyNames.patternProperties}`);
+        const getter = await this.runGetterPreset(propertyName, patternModel, PropertyType.patternProperties);
+        const setter = await this.runSetterPreset(propertyName, patternModel, PropertyType.patternProperties);
+        content.push(this.renderBlock([getter, setter]));
+      }
+    }
+
     return this.renderBlock(content, 2);
   }
 
@@ -62,16 +70,13 @@ export const TS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
   },
   ctor({ renderer, model }) : string {
     const properties = model.properties || {};
-    const assignments = Object.keys(properties).map(propertyName => {
-      const realizedPropertyName = getAllowedPropertyName(model, propertyName);
-      return `this._${realizedPropertyName} = input.${propertyName};`;
+    const assignments = Object.entries(properties).map(([propertyName, property]) => {
+      propertyName = renderer.nameProperty(propertyName, property);
+      return `this._${propertyName} = input.${propertyName};`;
     });
-    const ctorProperties: string[] = [];
-    for (const [propertyName, property] of Object.entries(properties)) {
-      const realizedPropertyName = getAllowedPropertyName(model, propertyName);
-      const rendererProperty = renderer.renderProperty(realizedPropertyName, property).replace(';', ',');
-      ctorProperties.push(rendererProperty);
-    }
+    const ctorProperties = Object.entries(properties).map(([propertyName, property]) => {
+      return renderer.renderProperty(propertyName, property).replace(';', ',');
+    });
 
     return `constructor(input: {
 ${renderer.indent(renderer.renderBlock(ctorProperties))}
@@ -85,25 +90,25 @@ ${renderer.indent(renderer.renderBlock(assignments))}
   },
   getter({ renderer, model, propertyName, property, type }): string {
     const isRequired = model.isRequired(propertyName);
-    propertyName = GetPropertyName(model, propertyName);
+    propertyName = renderer.nameProperty(propertyName, property);
     let signature = ''; 
     if (type === PropertyType.property) {
       signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });
-    } else if (type === PropertyType.additionalProperty) {
-      const additionalPropertyType = renderer.renderType(property);
-      signature = `: Map<String, ${additionalPropertyType}> | undefined`;
+    } else if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
+      const mapType = renderer.renderType(property);
+      signature = `: Map<String, ${mapType}> | undefined`;
     }
     return `get ${propertyName}()${signature} { return this._${propertyName}; }`;
   },
   setter({ renderer, model, propertyName, property, type }): string {
     const isRequired = model.isRequired(propertyName);
-    propertyName = GetPropertyName(model, propertyName);
+    propertyName = renderer.nameProperty(propertyName, property);
     let signature = ''; 
     if (type === PropertyType.property) {
       signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });
-    } else if (type === PropertyType.additionalProperty) {
-      const additionalPropertyType = renderer.renderType(property);
-      signature = `: Map<String, ${additionalPropertyType}> | undefined`;
+    } else if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
+      const mapType = renderer.renderType(property);
+      signature = `: Map<String, ${mapType}> | undefined`;
     }
     return `set ${propertyName}(${propertyName}${signature}) { this._${propertyName} = ${propertyName}; }`;
   },

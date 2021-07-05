@@ -1,5 +1,5 @@
 import { AbstractRenderer } from '../AbstractRenderer';
-import { TypeScriptOptions } from './TypeScriptGenerator';
+import { TypeScriptGenerator, TypeScriptOptions } from './TypeScriptGenerator';
 
 import { FormatHelpers } from '../../helpers';
 import { CommonModel, CommonInputModel, Preset, PropertyType } from '../../models';
@@ -10,14 +10,41 @@ import { DefaultPropertyNames, getUniquePropertyName } from '../../helpers/NameH
  * 
  * @extends AbstractRenderer
  */
-export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOptions> {
+export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOptions, TypeScriptGenerator> {
   constructor(
     options: TypeScriptOptions,
+    generator: TypeScriptGenerator,
     presets: Array<[Preset, unknown]>,
     model: CommonModel, 
     inputModel: CommonInputModel,
   ) {
-    super(options, presets, model, inputModel);
+    super(options, generator, presets, model, inputModel);
+  }
+
+  /**
+   * Renders the name of a type based on provided generator option naming convention type function.
+   * 
+   * This is used to render names of models (example TS class) and then later used if that class is referenced from other models.
+   * 
+   * @param name 
+   * @param model 
+   */
+  nameType(name: string | undefined, model?: CommonModel): string {
+    return this.options?.namingConvention?.type 
+      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel })
+      : name || '';
+  }
+
+  /**
+   * Renders the name of a property based on provided generator option naming convention property function.
+   * 
+   * @param propertyName 
+   * @param property
+   */
+  nameProperty(propertyName: string | undefined, property?: CommonModel): string {
+    return this.options?.namingConvention?.property 
+      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property })
+      : propertyName || '';
   }
 
   renderType(model: CommonModel | CommonModel[]): string {
@@ -28,7 +55,7 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
       return model.enum.map(value => typeof value === 'string' ? `"${value}"` : value).join(' | ');
     }
     if (model.$ref !== undefined) {
-      return FormatHelpers.toPascalCase(model.$ref);
+      return this.nameType(model.$ref);
     }
     if (Array.isArray(model.type)) {
       return model.type.map(t => this.toTsType(t, model)).join(' | ');
@@ -107,19 +134,28 @@ ${lines.map(line => ` * ${line}`).join('\n')}
       content.push(additionalProperty);
     }
 
+    if (this.model.patternProperties !== undefined) {
+      for (const [pattern, patternModel] of Object.entries(this.model.patternProperties)) {
+        const propertyName = getUniquePropertyName(this.model, `${pattern}${DefaultPropertyNames.patternProperties}`);
+        const renderedPatternProperty = await this.runPropertyPreset(propertyName, patternModel, PropertyType.patternProperties);
+        content.push(renderedPatternProperty);
+      }
+    }
+
     return this.renderBlock(content);
   }
 
   renderProperty(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): string {
-    const name = FormatHelpers.toCamelCase(propertyName);
+    const formattedPropertyName = this.nameProperty(propertyName, property);
     let signature: string;
     switch (type) {
     case PropertyType.property:
       signature = this.renderTypeSignature(property, { isRequired: this.model.isRequired(propertyName) });
-      return `${name}${signature};`;
+      return `${formattedPropertyName}${signature};`;
     case PropertyType.additionalProperty:
+    case PropertyType.patternProperties:
       signature = this.renderType(property);
-      return `${name}?: Map<String, ${signature}>;`;
+      return `${formattedPropertyName}?: Map<String, ${signature}>;`;
     default:
       return '';
     }

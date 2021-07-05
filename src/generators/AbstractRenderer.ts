@@ -1,13 +1,17 @@
-import { CommonGeneratorOptions } from './AbstractGenerator';
+import { AbstractGenerator, CommonGeneratorOptions } from './AbstractGenerator';
 import { CommonModel, CommonInputModel, Preset } from '../models';
 import { FormatHelpers, IndentationTypes } from '../helpers';
 
 /**
  * Abstract renderer with common helper methods
  */
-export abstract class AbstractRenderer<O extends CommonGeneratorOptions = CommonGeneratorOptions> {
+export abstract class AbstractRenderer<
+  O extends CommonGeneratorOptions = CommonGeneratorOptions,
+  G extends AbstractGenerator = AbstractGenerator
+> {
   constructor(
     protected readonly options: O,
+    readonly generator: G,
     protected readonly presets: Array<[Preset, unknown]>,
     protected readonly model: CommonModel, 
     protected readonly inputModel: CommonInputModel,
@@ -51,6 +55,7 @@ export abstract class AbstractRenderer<O extends CommonGeneratorOptions = Common
   runAdditionalContentPreset(): Promise<string> {
     return this.runPreset('additionalContent');
   }
+  
   async runPreset<RT = string>(
     functionName: string,
     params: Record<string, unknown> = {},

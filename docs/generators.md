@@ -7,6 +7,7 @@
 - [JavaScript](../src/generators/javascript/JavaScriptGenerator.ts),
 - [TypeScript](../src/generators/typescript/TypeScriptGenerator.ts),
 - [Java](../src/generators/java/JavaGenerator.ts).
+- [Go](../src/generators/go/GoGenerator.ts).
 
 ## Generator's options
 
@@ -36,6 +37,34 @@ Below is a list of additional options available for a given generator.
 |---|---|---|---|
 | `renderTypes` | Boolean | Render signature for types. | `true` |
 | `modelType` | String | It indicates which model type should be rendered for the `object` type. Its value can be either `interface` or `class`. | `class` |
+| `namingConvention` | Object | Options for naming conventions. | - |
+| `namingConvention.type` | Function | A function that returns the format of the type. | _Returns pascal cased name_ |
+| `namingConvention.property` | Function | A function that returns the format of the property. | _Returns camel cased name_ |
+
+### [Java](../src/generators/java/JavaGenerator.ts)
+
+| Option | Type | Description | Default value |
+|---|---|---|---|
+| `collectionType` | String | It indicates with which signature should be rendered the `array` type. Its value can be either `List` (`List<{type}>`) or `Array` (`{type}[]`). | `List` |
+| `namingConvention` | Object | Options for naming conventions. | - |
+| `namingConvention.type` | Function | A function that returns the format of the type. | _Returns pascal cased name_ |
+| `namingConvention.property` | Function | A function that returns the format of the property. | _Returns camel cased name_ |
+
+### [JavaScript](../src/generators/javascript/JavaScriptGenerator.ts)
+
+| Option | Type | Description | Default value |
+|---|---|---|---|
+| `namingConvention` | Object | Options for naming conventions. | - |
+| `namingConvention.type` | Function | A function that returns the format of the type. | _Returns pascal cased name_ |
+| `namingConvention.property` | Function | A function that returns the format of the property. | _Returns camel cased name_ |
+
+### [Go](../src/generators/javascript/GoGenerator.ts)
+
+| Option | Type | Description | Default value |
+|---|---|---|---|
+| `namingConvention` | Object | Options for naming conventions. | - |
+| `namingConvention.type` | Function | A function that returns the format of the type. | _Returns pascal cased name_ |
+| `namingConvention.field` | Function | A function that returns the format of the field. | _Returns pascal cased name_ |
 
 ## Custom generator
 

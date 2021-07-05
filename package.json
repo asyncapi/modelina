@@ -1,6 +1,6 @@
 {
   "name": "@asyncapi/modelina",
-  "version": "0.13.0",
+  "version": "0.19.0",
   "description": "The Model SDK for generating data models",
   "license": "Apache-2.0",
   "homepage": "https://github.com/asyncapi/modelina",
@@ -31,7 +31,7 @@
   ],
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.7",
-    "@asyncapi/parser": "^1.5.2",
+    "@asyncapi/parser": "^1.7.0",
     "change-case": "^4.1.2"
   },
   "devDependencies": {
@@ -62,6 +62,9 @@
     "build:cjs": "tsc",
     "build:esm": "tsc --project tsconfig.json --module ESNext --outDir ./lib/esm",
     "build:types": "tsc --project tsconfig.json --declaration --emitDeclarationOnly --declarationMap --outDir ./lib/types",
+    "docker:build": "docker build -q -t asyncapi/modelina .",
+    "docker:test": "npm run docker:build && docker run asyncapi/modelina npm run test",
+    "docker:test:blackbox": "npm run docker:build && docker run asyncapi/modelina npm run test:blackbox",
     "test": "cross-env CI=true jest --coverage --testPathIgnorePatterns ./test/blackbox",
     "test:blackbox": "cross-env CI=true jest ./test/blackbox",
     "test:watch": "jest --watch",

@@ -1,3 +1,4 @@
+import { defaultGeneratorOptions, JavaGenerator } from '../../../src/generators';
 import { JavaRenderer } from '../../../src/generators/java/JavaRenderer';
 import { CommonInputModel, CommonModel } from '../../../src/models';
 class MockJavaRenderer extends JavaRenderer {
@@ -6,9 +7,22 @@ class MockJavaRenderer extends JavaRenderer {
 describe('JavaRenderer', () => {
   let renderer: JavaRenderer;
   beforeEach(() => {
-    renderer = new MockJavaRenderer({}, [], new CommonModel(), new CommonInputModel());
+    renderer = new MockJavaRenderer(JavaGenerator.defaultOptions, new JavaGenerator(), [], new CommonModel(), new CommonInputModel());
   });
 
+  describe('nameType()', () => {
+    test('should name the type', () => {
+      const name = renderer.nameType('type__someType');
+      expect(name).toEqual('TypeSomeType');
+    });
+  });
+  
+  describe('nameProperty()', () => {
+    test('should name the property', () => {
+      const name = renderer.nameProperty('property__someProperty');
+      expect(name).toEqual('propertySomeProperty');
+    });
+  });
   describe('renderType()', () => {
     test('Should render refs with pascal case', () => {
       const model = new CommonModel();
@@ -37,6 +51,58 @@ describe('JavaRenderer', () => {
     });
     test('Should be able to return byte array', () => {
       expect(renderer.toJavaType('binary', new CommonModel())).toEqual('byte[]');
+    });
+    test('Should render matching tuple types as is', () => {
+      const model = CommonModel.toCommonModel({
+        items: [
+          {
+            type: 'string'
+          },
+          {
+            type: 'string'
+          }
+        ]
+      });
+      expect(renderer.toJavaType('array', model)).toEqual('String[]');
+    });
+    test('Should render mismatching tuple types as Object', () => {
+      const model = CommonModel.toCommonModel({ 
+        items: [
+          {
+            type: 'string'
+          },
+          {
+            type: 'number'
+          }
+        ]
+      });
+      expect(renderer.toJavaType('array', model)).toEqual('Object[]');
+    });
+    test('Should render matching tuple and additionalItem types', () => {
+      const model = CommonModel.toCommonModel({
+        items: [
+          {
+            type: 'string'
+          }
+        ],
+        additionalItems: {
+          type: 'string'
+        }
+      });
+      expect(renderer.toJavaType('array', model)).toEqual('String[]');
+    });
+    test('Should render Object for tuple and additionalItem type mismatch', () => {
+      const model = CommonModel.toCommonModel({
+        items: [
+          {
+            type: 'string'
+          }
+        ],
+        additionalItems: {
+          type: 'number'
+        }
+      });
+      expect(renderer.toJavaType('array', model)).toEqual('Object[]');
     });
   });
 

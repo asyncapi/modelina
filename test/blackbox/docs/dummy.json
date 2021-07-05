@@ -50,6 +50,11 @@
       "$ref": "#/definitions/dummyObject"
     }
   },
+  "patternProperties": {
+    "^S(.?*)pattern&": {
+      "type": "string"
+    }
+  },
   "definitions": {
     "dummyInfo": {
       "type": "object",

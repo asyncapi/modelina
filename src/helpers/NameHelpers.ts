@@ -1,16 +1,18 @@
-import { CommonModel } from 'models';
+import { FormatHelpers } from '../helpers';
+import { CommonInputModel, CommonModel } from '../models';
 
 /**
  * Default property names for different aspects of the common model
  */
 export enum DefaultPropertyNames {
-  additionalProperties = 'additionalProperties'
+  additionalProperties = 'additionalProperties',
+  patternProperties = 'PatternProperties'
 }
 
 /**
- * Recursively find the proper property name for additionalProperties
+ * Recursively find the proper property name.
  * 
- * This function ensures that the property name for additionalProperties is unique 
+ * This function ensures that the property name is unique for the model
  * 
  * @param rootModel 
  * @param propertyName 
@@ -21,3 +23,25 @@ export function getUniquePropertyName(rootModel: CommonModel, propertyName: stri
   }
   return propertyName;
 }
+
+/**
+ * The common naming convention type shared between generators for different languages.
+ */
+export type CommonNamingConvention = {
+  type?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel }) => string;
+  property?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel, property?: CommonModel }) => string;
+};
+
+/**
+ * A CommonNamingConvention implementation shared between generators for different languages.
+ */
+export const CommonNamingConventionImplementation: CommonNamingConvention = {
+  type: (name: string | undefined) => {
+    if (!name) {return '';}
+    return FormatHelpers.toPascalCase(name);
+  },
+  property: (name: string | undefined) => {
+    if (!name) {return '';}
+    return FormatHelpers.toCamelCase(name);
+  }
+};
