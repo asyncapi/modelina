@@ -36,7 +36,7 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
   }
 
   /**
-   * Renders the name of a property based on provided generator option naming convention property callback.
+   * Renders the name of a property based on provided generator option naming convention property function.
    * 
    * @param propertyName 
    * @param property
