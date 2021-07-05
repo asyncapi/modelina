@@ -21,7 +21,7 @@ export abstract class JavaScriptRenderer extends AbstractRenderer<JavaScriptOpti
   }
 
   /**
-   * Renders the name of a type based on provided generator option naming convention type callback.
+   * Renders the name of a type based on provided generator option naming convention type function.
    * 
    * This is used to render names of models (example TS class) and then later used if that class is referenced from other models.
    * 
@@ -35,7 +35,7 @@ export abstract class JavaScriptRenderer extends AbstractRenderer<JavaScriptOpti
   }
 
   /**
-   * Renders the name of a property based on provided generator option naming convention property callback.
+   * Renders the name of a property based on provided generator option naming convention property function.
    * 
    * @param propertyName 
    * @param property

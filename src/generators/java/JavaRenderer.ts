@@ -20,7 +20,7 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
   }
 
   /**
-   * Renders the name of a type based on provided generator option naming convention type callback.
+   * Renders the name of a type based on provided generator option naming convention type function.
    * 
    * This is used to render names of models (example TS class) and then later used if that class is referenced from other models.
    * 
@@ -34,7 +34,7 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
   }
 
   /**
-   * Renders the name of a property based on provided generator option naming convention property callback.
+   * Renders the name of a property based on provided generator option naming convention property function.
    * 
    * @param propertyName 
    * @param property
@@ -57,9 +57,10 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
     if (model.$ref !== undefined) {
       return this.nameType(model.$ref, model);
     }
+    const kind = TypeHelpers.extractKind(model);
     if (
-      TypeHelpers.extractKind(model) === ModelKind.PRIMITIVE ||
-      TypeHelpers.extractKind(model) === ModelKind.ARRAY
+      kind === ModelKind.PRIMITIVE ||
+      kind === ModelKind.ARRAY
     ) {
       const format = model.getFromSchema('format');
       return this.toClassType(this.toJavaType(format || model.type, model));
