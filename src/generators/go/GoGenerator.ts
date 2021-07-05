@@ -4,12 +4,37 @@ import {
   defaultGeneratorOptions,
 } from '../AbstractGenerator';
 import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
-import { TypeHelpers, ModelKind } from '../../helpers';
+import { TypeHelpers, ModelKind, FormatHelpers } from '../../helpers';
 import { GoPreset, GO_DEFAULT_PRESET } from './GoPreset';
 import { StructRenderer } from './renderers/StructRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
+import { pascalCaseTransformMerge } from 'pascal-case';
 
-export type GoOptions = CommonGeneratorOptions<GoPreset>
+/**
+ * The Go naming convention type
+ */
+export type GoNamingConvention = {
+  type?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel }) => string;
+  field?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel, field?: CommonModel }) => string;
+};
+
+/**
+ * A GoNamingConvention implementation for Go
+ */
+export const GoNamingConventionImplementation: GoNamingConvention = {
+  type: (name: string | undefined) => {
+    if (!name) {return '';}
+    return FormatHelpers.toPascalCase(name, { transform: pascalCaseTransformMerge });
+  },
+  field: (fieldName: string | undefined) => {
+    if (!fieldName) {return '';}
+    return FormatHelpers.toPascalCase(fieldName, { transform: pascalCaseTransformMerge });
+  }
+};
+
+export interface GoOptions extends CommonGeneratorOptions<GoPreset> {
+  namingConvention?: GoNamingConvention;
+}
 
 /**
  * Generator for Go
@@ -18,6 +43,7 @@ export class GoGenerator extends AbstractGenerator<GoOptions> {
   static defaultOptions: GoOptions = {
     ...defaultGeneratorOptions,
     defaultPreset: GO_DEFAULT_PRESET,
+    namingConvention: GoNamingConventionImplementation
   };
 
   constructor(

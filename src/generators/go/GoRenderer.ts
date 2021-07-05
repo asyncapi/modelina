@@ -2,7 +2,6 @@ import { AbstractRenderer } from '../AbstractRenderer';
 import { GoGenerator, GoOptions } from './GoGenerator';
 import { CommonModel, CommonInputModel, Preset } from '../../models';
 import { FormatHelpers } from '../../helpers/FormatHelpers';
-import { pascalCaseTransformMerge } from 'pascal-case';
 
 /**
  * Common renderer for Go types
@@ -32,13 +31,40 @@ export abstract class GoRenderer extends AbstractRenderer<GoOptions> {
     return this.renderBlock(content);
   }
 
+  /**
+   * Renders the name of a type based on provided generator option naming convention type function.
+   * 
+   * This is used to render names of models and then later used if that class is referenced from other models.
+   * 
+   * @param name 
+   * @param model 
+   */
+  nameType(name: string | undefined, model?: CommonModel): string {
+    return this.options?.namingConvention?.type 
+      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel })
+      : name || '';
+  }
+
+  /**
+   * Renders the name of a field based on provided generator option naming convention field function.
+   * 
+   * @param fieldName 
+   * @param property
+   */
+  nameField(fieldName: string | undefined, field?: CommonModel): string {
+    return this.options?.namingConvention?.field 
+      ? this.options.namingConvention.field(fieldName, { model: this.model, inputModel: this.inputModel, field })
+      : fieldName || '';
+  }
+
   runFieldPreset(fieldName: string, field: CommonModel): Promise<string> {
     return this.runPreset('field', { fieldName, field });
   }
 
   renderType(model: CommonModel): string {
     if (model.$ref !== undefined) {
-      return `*${FormatHelpers.toPascalCase(model.$ref, { transform: pascalCaseTransformMerge })}`;
+      const formattedRef = this.nameType(model.$ref);
+      return `*${formattedRef}`;
     }
 
     if (Array.isArray(model.type)) {

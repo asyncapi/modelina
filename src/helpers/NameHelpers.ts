@@ -10,9 +10,9 @@ export enum DefaultPropertyNames {
 }
 
 /**
- * Recursively find the proper property name for additionalProperties
+ * Recursively find the proper property name.
  * 
- * This function ensures that the property name for additionalProperties is unique 
+ * This function ensures that the property name is unique for the model
  * 
  * @param rootModel 
  * @param propertyName 
@@ -29,7 +29,7 @@ export function getUniquePropertyName(rootModel: CommonModel, propertyName: stri
  */
 export type CommonNamingConvention = {
   type?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel }) => string;
-  property?: (test: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel, property?: CommonModel }) => string;
+  property?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel, property?: CommonModel }) => string;
 };
 
 /**
@@ -40,8 +40,8 @@ export const CommonNamingConventionImplementation: CommonNamingConvention = {
     if (!name) {return '';}
     return FormatHelpers.toPascalCase(name);
   },
-  property: (test: string | undefined) => {
-    if (!test) {return '';}
-    return FormatHelpers.toCamelCase(test);
+  property: (name: string | undefined) => {
+    if (!name) {return '';}
+    return FormatHelpers.toCamelCase(name);
   }
 };
