@@ -58,6 +58,14 @@ Below is a list of additional options available for a given generator.
 | `namingConvention.type` | Function | A function that returns the format of the type. | _Returns pascal cased name_ |
 | `namingConvention.property` | Function | A function that returns the format of the property. | _Returns camel cased name_ |
 
+### [Go](../src/generators/javascript/GoGenerator.ts)
+
+| Option | Type | Description | Default value |
+|---|---|---|---|
+| `namingConvention` | Object | Options for naming conventions. | - |
+| `namingConvention.type` | Function | A function that returns the format of the type. | _Returns pascal cased name_ |
+| `namingConvention.field` | Function | A function that returns the format of the field. | _Returns pascal cased name_ |
+
 ## Custom generator
 
 The minimum set of required actions to create a new generator are:
