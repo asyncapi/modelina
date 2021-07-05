@@ -1,6 +1,5 @@
 import { GoRenderer } from '../GoRenderer';
 import { EnumPreset, CommonModel } from '../../../models';
-import { FormatHelpers } from '../../../helpers';
 
 /**
  * Renderer for Go's `enum` type
@@ -9,7 +8,7 @@ import { FormatHelpers } from '../../../helpers';
  */
 export class EnumRenderer extends GoRenderer {
   public defaultSelf(): string {
-    const formattedName = this.model.$id && FormatHelpers.toPascalCase(this.model.$id);
+    const formattedName = this.nameType(this.model.$id);
     const type = this.enumType(this.model);
     const doc = formattedName && this.renderCommentForEnumType(formattedName, type);
 
