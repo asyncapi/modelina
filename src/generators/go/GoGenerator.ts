@@ -55,12 +55,10 @@ export class GoGenerator extends AbstractGenerator<GoOptions> {
   render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const kind = TypeHelpers.extractKind(model);
     switch (kind) {
-    case ModelKind.OBJECT: {
+    case ModelKind.OBJECT: 
       return this.renderStruct(model, inputModel);
-    }
-    case ModelKind.ENUM: {
+    case ModelKind.ENUM: 
       return this.renderEnum(model, inputModel);
-    }
     }
 
     return Promise.resolve(RenderOutput.toRenderOutput({ result: '', dependencies: [] }));
