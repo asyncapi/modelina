@@ -42,7 +42,7 @@ export class GoGenerator extends AbstractGenerator<GoOptions> {
 
   async renderEnum(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const presets = this.getPresets('enum');
-    const renderer = new EnumRenderer(this.options, presets, model, inputModel);
+    const renderer = new EnumRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
     return RenderOutput.toRenderOutput({ result, dependencies: renderer.dependencies });
   }
