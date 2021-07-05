@@ -3,6 +3,8 @@ import { GoOptions } from './GoGenerator';
 import { CommonModel, CommonInputModel, Preset } from '../../models';
 import { FormatHelpers } from '../../helpers/FormatHelpers';
 import { pascalCaseTransformMerge } from 'pascal-case';
+import { DefaultPropertyNames, getUniquePropertyName } from '../../helpers';
+import { FieldType } from './GoPreset';
 
 /**
  * Common renderer for Go types
@@ -28,11 +30,24 @@ export abstract class GoRenderer extends AbstractRenderer<GoOptions> {
       content.push(renderField);
     }
 
+    if (this.model.additionalProperties !== undefined) {
+      const propertyName = getUniquePropertyName(this.model, DefaultPropertyNames.additionalProperties);
+      const additionalProperty = await this.runFieldPreset(propertyName, this.model.additionalProperties, FieldType.additionalProperty);
+      content.push(additionalProperty);
+    }
+
+    if (this.model.patternProperties !== undefined) {
+      for (const [pattern, patternModel] of Object.entries(this.model.patternProperties)) {
+        const propertyName = getUniquePropertyName(this.model, `${pattern}${DefaultPropertyNames.patternProperties}`);
+        const renderedPatternProperty = await this.runFieldPreset(propertyName, patternModel, FieldType.patternProperties);
+        content.push(renderedPatternProperty);
+      }
+    }
     return this.renderBlock(content);
   }
 
-  runFieldPreset(fieldName: string, field: CommonModel): Promise<string> {
-    return this.runPreset('field', { fieldName, field });
+  runFieldPreset(fieldName: string, field: CommonModel, type: FieldType = FieldType.field): Promise<string> {
+    return this.runPreset('field', { fieldName, field, type});
   }
 
   renderType(model: CommonModel): string {

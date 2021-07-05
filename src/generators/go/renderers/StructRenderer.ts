@@ -1,5 +1,5 @@
 import { GoRenderer } from '../GoRenderer';
-import { StructPreset } from '../GoPreset';
+import { FieldType, StructPreset } from '../GoPreset';
 import { FormatHelpers } from '../../../helpers/FormatHelpers';
 import { pascalCaseTransformMerge } from 'pascal-case';
 
@@ -29,7 +29,11 @@ export const GO_DEFAULT_STRUCT_PRESET: StructPreset<StructRenderer> = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
-  field({ fieldName, field, renderer }) {
-    return `${FormatHelpers.toPascalCase(fieldName, { transform: pascalCaseTransformMerge }) } ${ renderer.renderType(field)}`;
+  field({ fieldName, field, renderer, type }) {
+    let fieldType = renderer.renderType(field);
+    if (type === FieldType.additionalProperty || type === FieldType.patternProperties) {
+      fieldType = `map[string]${fieldType}`; 
+    }
+    return `${FormatHelpers.toPascalCase(fieldName, { transform: pascalCaseTransformMerge }) } ${ fieldType }`;
   },
 };
