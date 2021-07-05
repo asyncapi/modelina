@@ -1,24 +1,50 @@
 import { AbstractRenderer } from '../AbstractRenderer';
-import { JavaOptions } from './JavaGenerator';
-
+import { JavaGenerator, JavaOptions } from './JavaGenerator';
 import { CommonModel, CommonInputModel, Preset } from '../../models';
-import { FormatHelpers } from '../../helpers';
+import { FormatHelpers, ModelKind, TypeHelpers } from '../../helpers';
 
 /**
  * Common renderer for Java types
  * 
  * @extends AbstractRenderer
  */
-export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
+export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGenerator> {
   constructor(
     options: JavaOptions,
+    generator: JavaGenerator,
     presets: Array<[Preset, unknown]>,
     model: CommonModel, 
     inputModel: CommonInputModel,
   ) {
-    super(options, presets, model, inputModel);
+    super(options, generator, presets, model, inputModel);
   }
 
+  /**
+   * Renders the name of a type based on provided generator option naming convention type function.
+   * 
+   * This is used to render names of models (example TS class) and then later used if that class is referenced from other models.
+   * 
+   * @param name 
+   * @param model 
+   */
+  nameType(name: string | undefined, model?: CommonModel): string {
+    return this.options?.namingConvention?.type 
+      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel })
+      : name || '';
+  }
+
+  /**
+   * Renders the name of a property based on provided generator option naming convention property function.
+   * 
+   * @param propertyName 
+   * @param property
+   */
+  nameProperty(propertyName: string | undefined, property?: CommonModel): string {
+    return this.options?.namingConvention?.property 
+      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property })
+      : propertyName || '';
+  }
+  
   /**
    * Renders model(s) to Java type(s).
    * 
@@ -29,10 +55,17 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
       return 'Object'; // fallback
     }
     if (model.$ref !== undefined) {
-      return FormatHelpers.toPascalCase(model.$ref);
+      return this.nameType(model.$ref, model);
     }
-    const format = model.getFromSchema('format');
-    return this.toClassType(this.toJavaType(format || model.type, model));
+    const kind = TypeHelpers.extractKind(model);
+    if (
+      kind === ModelKind.PRIMITIVE ||
+      kind === ModelKind.ARRAY
+    ) {
+      const format = model.getFromSchema('format');
+      return this.toClassType(this.toJavaType(format || model.type, model));
+    }
+    return this.nameType(model.$id, model);
   }
 
   /**
@@ -81,6 +114,9 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions> {
         }
       }
       const newType = arrayItemModel ? this.renderType(arrayItemModel) : 'Object';
+      if (this.options.collectionType && this.options.collectionType === 'List') {
+        return `List<${newType}>`;
+      }
       return `${newType}[]`;
     }
     default:

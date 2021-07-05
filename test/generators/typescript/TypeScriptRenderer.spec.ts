@@ -1,3 +1,4 @@
+import { defaultGeneratorOptions, TypeScriptGenerator } from '../../../src/generators';
 import { TypeScriptRenderer } from '../../../src/generators/typescript/TypeScriptRenderer';
 import { CommonInputModel, CommonModel } from '../../../src/models';
 class MockTypeScriptRenderer extends TypeScriptRenderer {
@@ -6,7 +7,21 @@ class MockTypeScriptRenderer extends TypeScriptRenderer {
 describe('TypeScriptRenderer', () => {
   let renderer: TypeScriptRenderer;
   beforeEach(() => {
-    renderer = new MockTypeScriptRenderer({}, [], new CommonModel(), new CommonInputModel());
+    renderer = new MockTypeScriptRenderer(TypeScriptGenerator.defaultOptions, new TypeScriptGenerator(), [], new CommonModel(), new CommonInputModel());
+  });
+
+  describe('nameType()', () => {
+    test('should name the type', () => {
+      const name = renderer.nameType('type__someType');
+      expect(name).toEqual('TypeSomeType');
+    });
+  });
+  
+  describe('nameProperty()', () => {
+    test('should name the property', () => {
+      const name = renderer.nameProperty('property__someProperty');
+      expect(name).toEqual('propertySomeProperty');
+    });
   });
 
   describe('renderComments()', () => {

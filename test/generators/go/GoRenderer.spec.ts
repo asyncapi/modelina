@@ -1,3 +1,4 @@
+import { GoGenerator } from '../../../src/generators/go/GoGenerator';
 import { GoRenderer } from '../../../src/generators/go/GoRenderer';
 import { CommonInputModel, CommonModel } from '../../../src/models';
 class MockGoRenderer extends GoRenderer {
@@ -6,7 +7,7 @@ class MockGoRenderer extends GoRenderer {
 describe('GoRenderer', () => {
   let renderer: MockGoRenderer;
   beforeEach(() => {
-    renderer = new MockGoRenderer({}, [], new CommonModel(), new CommonInputModel());
+    renderer = new MockGoRenderer(GoGenerator.defaultOptions, new GoGenerator(), [], new CommonModel(), new CommonInputModel());
   });
 
   describe('toGoType()', () => {
@@ -38,19 +39,34 @@ describe('GoRenderer', () => {
       expect(renderer.toGoType('object', new CommonModel())).toEqual('interface{}');
     });
   });
+  describe('nameType()', () => {
+    test('Should call naming convention', () => {
+      const name = renderer.nameType('type__someType');
+      expect(name).toEqual('TypeSomeType');
+    });
+  });
+  describe('nameField()', () => {
+    test('Should call naming convention', () => {
+      const name = renderer.nameField('field__someField');
+      expect(name).toEqual('FieldSomeField');
+    });
+  });
   describe('renderType()', () => {
-    test('Should render refs with pascal case (no _ prefix before numbers)', () => {
+    test('Should render refs using type naming convention', () => {
       const model = new CommonModel();
       model.$ref = '<anonymous-schema-1>';
-      expect(renderer.renderType(model)).toEqual('*AnonymousSchema1');
+      const renderedType = renderer.renderType(model);
+      expect(renderedType).toEqual('*AnonymousSchema1');
     });
     test('Should render union types with one type as slice of that type', () => {
       const model = CommonModel.toCommonModel({ type: ['number'] });
-      expect(renderer.renderType(model)).toEqual('[]float64');
+      const renderedType = renderer.renderType(model);
+      expect(renderedType).toEqual('[]float64');
     });
     test('Should render union types with multiple types as slice of interface', () => {
       const model = CommonModel.toCommonModel({ type: ['number', 'string'] });
-      expect(renderer.renderType(model)).toEqual('[]interface{}');
+      const renderedType = renderer.renderType(model);
+      expect(renderedType).toEqual('[]interface{}');
     });
   });
 });

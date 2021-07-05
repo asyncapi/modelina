@@ -13,11 +13,11 @@ export interface CommonGeneratorOptions<P extends Preset = Preset> {
   presets?: Presets<P>;
 }
 
-export const defaultGeneratorOptions = {
+export const defaultGeneratorOptions: CommonGeneratorOptions = {
   indentation: {
     type: IndentationTypes.SPACES,
     size: 2,
-  },
+  }
 };
 
 /**
@@ -87,7 +87,7 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
     return {
       ...defaultGeneratorOptions,
       ...defaultOptions,
-      ...passedOptions,
+      ...passedOptions
     };
   }
 }
