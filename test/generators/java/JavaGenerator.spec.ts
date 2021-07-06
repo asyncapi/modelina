@@ -342,4 +342,31 @@ public enum CustomEnum {
     expect(enumModel.result).toEqual(expected);
     expect(enumModel.dependencies).toEqual(expectedDependencies);
   });
+
+  test('should render List type for collections', async () => {
+    const doc = {
+      $id: 'CustomClass',
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        arrayType: { type: 'array' },
+      }
+    };
+    const expected = `public class CustomClass {
+  private List<Object> arrayType;
+
+  public List<Object> getArrayType() { return this.arrayType; }
+  public void setArrayType(List<Object> arrayType) { this.arrayType = arrayType; }
+}`;
+    const expectedDependencies = ['import java.util.List;'];
+
+    generator = new JavaGenerator({ collectionType: 'List' });
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models['CustomClass'];
+
+    const classModel = await generator.render(model, inputModel);
+    expect(classModel.result).toEqual(expected);
+    expect(classModel.dependencies).toEqual(expectedDependencies);
+  });
 });

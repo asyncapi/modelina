@@ -17,11 +17,14 @@ export class ClassRenderer extends JavaRenderer {
       await this.runAdditionalContentPreset(),
     ];
 
+    if (this.options?.collectionType === 'List') {
+      this.addDependency('import java.util.List;');
+    }
     if (this.model.additionalProperties !== undefined) {
       this.addDependency('import java.util.Map;');
     }
     
-    const formattedName = this.model.$id && FormatHelpers.toPascalCase(this.model.$id);
+    const formattedName = this.nameType(this.model.$id);
     return `public class ${formattedName} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
@@ -104,7 +107,7 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
     return renderer.defaultSelf();
   },
   property({ renderer, propertyName, property, type }) {
-    propertyName = FormatHelpers.toCamelCase(propertyName);
+    propertyName = renderer.nameProperty(propertyName, property);
     let propertyType = renderer.renderType(property);
     if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
       propertyType = `Map<String, ${propertyType}>`;
@@ -112,7 +115,7 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
     return `private ${propertyType} ${propertyName};`;
   },
   getter({ renderer, propertyName, property, type }) {
-    propertyName = FormatHelpers.toCamelCase(propertyName);
+    propertyName = renderer.nameProperty(propertyName, property);
     const getterName = `get${FormatHelpers.toPascalCase(propertyName)}`;
     let getterType = renderer.renderType(property);
     if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
@@ -121,7 +124,7 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
     return `public ${getterType} ${getterName}() { return this.${propertyName}; }`;
   },
   setter({ renderer, propertyName, property, type }) {
-    propertyName = FormatHelpers.toCamelCase(propertyName);
+    propertyName = renderer.nameProperty(propertyName, property);
     const setterName = FormatHelpers.toPascalCase(propertyName);
     let setterType = renderer.renderType(property);
     if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
