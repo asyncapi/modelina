@@ -65,11 +65,8 @@ Read more about the input process [here](./docs/input_processing.md).
 
 ### The generation process
 
-The generation process uses the predefined `CommonModel`s from the input stage to easily generate models regardless of input. The package supports the following output languages:
-
-- JavaScript
-- TypeScript
-- Java
+The generation process uses the predefined `CommonModel`s from the input stage to easily generate models regardless of input. 
+The list of supported output languages can be found [here](./docs/generators.md#supported-languages).
 
 Check out [the example](#example) to see how to use the library and [generators document](./docs/generators.md) for more info.
 
