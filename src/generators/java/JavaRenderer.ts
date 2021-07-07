@@ -3,6 +3,9 @@ import { JavaGenerator, JavaOptions } from './JavaGenerator';
 import { CommonModel, CommonInputModel, Preset } from '../../models';
 import { FormatHelpers, ModelKind, TypeHelpers } from '../../helpers';
 
+/**
+ * List of reserved java keywords that may not be rendered as is.
+ */
 export const ReservedJavaKeywordList = [
   'abstract', 
   'continue', 

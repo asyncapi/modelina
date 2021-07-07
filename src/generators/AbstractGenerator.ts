@@ -22,7 +22,7 @@ export const defaultGeneratorOptions: CommonGeneratorOptions = {
     type: IndentationTypes.SPACES,
     size: 2,
   },
-  reservedPropertyWord: 'Reserved'
+  reservedPropertyWord: 'reserved'
 };
 
 /**

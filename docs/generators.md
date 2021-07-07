@@ -24,6 +24,7 @@ Default options contain:
 | Option | Type | Description | Default value |
 |---|---|---|---|
 | `indentation` | Object | Options for indentation. | - |
+| `reservedPropertyWord` | String | Word or character to append to property name when reserved keywords or duplicate property names are encountered. | 'reserved' |
 | `indentation.type` | String | Type of indentation. Its value can be either `SPACES` or `TABS`. | `SPACES` |
 | `indentation.size` | String | Size of indentation. | 2 |
 | `defaultPreset` | Object | Default preset for generator. For more information, read [customization](./customization.md) document. | _Implemented by generator_ |
