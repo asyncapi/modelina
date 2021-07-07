@@ -83,7 +83,6 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
    * 
    * @param originalPropertyName 
    * @param propertyName 
-   * @returns 
    */
   getRealizedPropertyName(originalPropertyName: string, propertyName: string = originalPropertyName): string {
     if (JavaRenderer.isReservedJavaKeyword(propertyName)) {
