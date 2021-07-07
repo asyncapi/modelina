@@ -102,7 +102,8 @@ generate();
 ```
 
 Output:
-```js
+
+```ts
 export interface Address {
   streetName: string;
   city: string;
