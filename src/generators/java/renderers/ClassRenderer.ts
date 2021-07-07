@@ -49,6 +49,14 @@ ${this.indent(this.renderBlock(content, 2))}
       content.push(additionalProperty);
     }
 
+    if (this.model.patternProperties !== undefined) {
+      for (const [pattern, patternModel] of Object.entries(this.model.patternProperties)) {
+        const propertyName = getUniquePropertyName(this.model, `${pattern}${DefaultPropertyNames.patternProperties}`);
+        const renderedPatternProperty = await this.runPropertyPreset(propertyName, patternModel, PropertyType.patternProperties);
+        content.push(renderedPatternProperty);
+      }
+    }
+
     return this.renderBlock(content);
   }
 
@@ -73,6 +81,15 @@ ${this.indent(this.renderBlock(content, 2))}
       content.push(this.renderBlock([getter, setter]));
     }
 
+    if (this.model.patternProperties !== undefined) {
+      for (const [pattern, patternModel] of Object.entries(this.model.patternProperties)) {
+        const propertyName = getUniquePropertyName(this.model, `${pattern}${DefaultPropertyNames.patternProperties}`);
+        const getter = await this.runGetterPreset(propertyName, patternModel, PropertyType.patternProperties);
+        const setter = await this.runSetterPreset(propertyName, patternModel, PropertyType.patternProperties);
+        content.push(this.renderBlock([getter, setter]));
+      }
+    }
+
     return this.renderBlock(content, 2);
   }
 
@@ -92,7 +109,7 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
   property({ renderer, propertyName, property, type }) {
     propertyName = renderer.nameProperty(propertyName, property);
     let propertyType = renderer.renderType(property);
-    if (type === PropertyType.additionalProperty) {
+    if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
       propertyType = `Map<String, ${propertyType}>`;
     }
     return `private ${propertyType} ${propertyName};`;
@@ -101,7 +118,7 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
     propertyName = renderer.nameProperty(propertyName, property);
     const getterName = `get${FormatHelpers.toPascalCase(propertyName)}`;
     let getterType = renderer.renderType(property);
-    if (type === PropertyType.additionalProperty) {
+    if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
       getterType = `Map<String, ${getterType}>`;
     }
     return `public ${getterType} ${getterName}() { return this.${propertyName}; }`;
@@ -110,7 +127,7 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
     propertyName = renderer.nameProperty(propertyName, property);
     const setterName = FormatHelpers.toPascalCase(propertyName);
     let setterType = renderer.renderType(property);
-    if (type === PropertyType.additionalProperty) {
+    if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
       setterType = `Map<String, ${setterType}>`;
     }
     return `public void set${setterName}(${setterType} ${propertyName}) { this.${propertyName} = ${propertyName}; }`;

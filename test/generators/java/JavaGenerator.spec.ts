@@ -19,6 +19,11 @@ describe('JavaGenerator', () => {
         members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
         array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
       },
+      patternProperties: {
+        '^S(.?*)test&': {
+          type: 'string'
+        }
+      },
       required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
     };
     const expected = `public class Address {
@@ -30,6 +35,7 @@ describe('JavaGenerator', () => {
   private Object members;
   private Object[] arrayType;
   private Map<String, Object> additionalProperties;
+  private Map<String, String> sTestPatternProperties;
 
   public String getStreetName() { return this.streetName; }
   public void setStreetName(String streetName) { this.streetName = streetName; }
@@ -54,6 +60,9 @@ describe('JavaGenerator', () => {
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  public Map<String, String> getSTestPatternProperties() { return this.sTestPatternProperties; }
+  public void setSTestPatternProperties(Map<String, String> sTestPatternProperties) { this.sTestPatternProperties = sTestPatternProperties; }
 }`;
 
     const inputModel = await generator.process(doc);
