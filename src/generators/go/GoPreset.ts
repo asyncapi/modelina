@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { AbstractRenderer } from '../AbstractRenderer';
-import { Preset, CommonModel, CommonPreset, PresetArgs, EnumPreset, PropertyType } from '../../models';
+import { Preset, CommonModel, CommonPreset, PresetArgs, EnumPreset } from '../../models';
 import { StructRenderer, GO_DEFAULT_STRUCT_PRESET } from './renderers/StructRenderer';
 import { EnumRenderer, GO_DEFAULT_ENUM_PRESET } from './renderers/EnumRenderer';
 

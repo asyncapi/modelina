@@ -2,7 +2,6 @@ import { AbstractRenderer } from '../AbstractRenderer';
 import { GoGenerator, GoOptions } from './GoGenerator';
 import { CommonModel, CommonInputModel, Preset } from '../../models';
 import { FormatHelpers } from '../../helpers/FormatHelpers';
-import { pascalCaseTransformMerge } from 'camel-case';
 import { DefaultPropertyNames, getUniquePropertyName } from '../../helpers';
 import { FieldType } from './GoPreset';
 
@@ -73,7 +72,7 @@ export abstract class GoRenderer extends AbstractRenderer<GoOptions> {
       : fieldName || '';
   }
 
-  runFieldPreset(fieldName: string, field: CommonModel): Promise<string> {
+  runFieldPreset(fieldName: string, field: CommonModel, type: FieldType = FieldType.field): Promise<string> {
     return this.runPreset('field', { fieldName, field, type });
   }
 
