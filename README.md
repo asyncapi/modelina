@@ -93,19 +93,35 @@ const doc = {
   required: ["street_name", "city", "state", "house_number", "state"],
 };
 
-const interfaceModel = await generator.generate(doc);
+async function generate() {
+  const models = await generator.generate(doc);
+  models.forEach(function (model) {
+    console.log(model.result);
+  }); 
+}
 
-// interfaceModel[0] should have the shape:
-interface Address {
+generate();
+```
+
+Output:
+```js
+export interface Address {
   streetName: string;
   city: string;
-  state: string;
   houseNumber: number;
   marriage?: boolean;
   petNames?: Array<string>;
-  state?: "Texas" | "Alabama" | "California" | "other";
+  state: State;
+  additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null | number>;
+}
+export enum State {
+  TEXAS = "Texas",
+  ALABAMA = "Alabama",
+  CALIFORNIA = "California",
+  OTHER = "other",
 }
 ```
+
 ## Supported input
 
 These are the supported inputs.
