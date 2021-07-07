@@ -12,19 +12,19 @@ describe('JavaGenerator', () => {
       type: 'object',
       properties: {
         enum: { type: 'string' },
-        ReservedEnum: { type: 'string' }
+        reservedEnum: { type: 'string' }
       },
       additionalProperties: false
     };
     const expected = `public class Address {
-  private String _enum;
-  private String __enum;
+  private String reservedReservedEnum;
+  private String reservedEnum;
 
-  public String getEnum() { return this.__enum; }
-  public void setEnum(String __enum) { this.__enum = __enum; }
+  public String getEnum() { return this.reservedReservedEnum; }
+  public void setEnum(String reservedReservedEnum) { this.reservedReservedEnum = reservedReservedEnum; }
 
-  public String get_Enum() { return this._enum; }
-  public void set_Enum(String _enum) { this._enum = _enum; }
+  public String getReservedEnum() { return this.reservedEnum; }
+  public void setReservedEnum(String reservedEnum) { this.reservedEnum = reservedEnum; }
 }`;
 
     const inputModel = await generator.process(doc);
@@ -34,7 +34,7 @@ describe('JavaGenerator', () => {
     expect(classModel.result).toEqual(expected);
 
     classModel = await generator.render(model, inputModel);
-    expect(classModel).toEqual(expected);
+    expect(classModel.result).toEqual(expected);
   });
   test('should render `class` type', async () => {
     const doc = {

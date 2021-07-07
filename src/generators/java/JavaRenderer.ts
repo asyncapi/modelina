@@ -84,12 +84,15 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
    */
   getRealizedPropertyName(originalPropertyName: string, propertyName: string = originalPropertyName): string {
     if (JavaRenderer.isReservedJavaKeyword(propertyName)) {
-      propertyName = `${this.options.reservedPropertyWord}${propertyName}`;
-    }
-    const propertyList = [...Object.keys(this.model.properties || {})];
-    if ((originalPropertyName !== propertyName && propertyList.includes(propertyName))) {
-      propertyName = `${this.options.reservedPropertyWord}${propertyName}`;
-      return this.getRealizedPropertyName(originalPropertyName, propertyName);
+      propertyName = `${this.options.reservedPropertyWord}_${propertyName}`;
+
+      //Make sure that the found property name is not part of one of the other properties that is being rendered
+      const formattedPropertyName = this.nameProperty(propertyName);
+      const propertyList = [...Object.keys(this.model.properties || {})];
+      if ((originalPropertyName !== formattedPropertyName && propertyList.includes(formattedPropertyName))) {
+        propertyName = `${this.options.reservedPropertyWord}_${propertyName}`;
+        return this.getRealizedPropertyName(originalPropertyName, propertyName);
+      }
     }
     return propertyName;
   }
@@ -117,7 +120,7 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
   nameProperty(propertyName: string, property?: CommonModel): string {
     const realizedPropertyName = this.getRealizedPropertyName(propertyName);
     return this.options?.namingConvention?.property 
-      ? this.options.namingConvention.property(realizedPropertyName, { model: this.model, inputModel: this.inputModel, property })
+      ? this.options.namingConvention.property(realizedPropertyName, { model: this.model, inputModel: this.inputModel, property, modelPropertyName: propertyName })
       : realizedPropertyName || '';
   }
   

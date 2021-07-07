@@ -9,6 +9,9 @@ export interface CommonGeneratorOptions<P extends Preset = Preset> {
     type: IndentationTypes;
     size: number;
   };
+  /**
+   * Word or character to append to property name when reserved or duplicate name are encountered
+   */
   reservedPropertyWord?: string;
   defaultPreset?: P;
   presets?: Presets<P>;

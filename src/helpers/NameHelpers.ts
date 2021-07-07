@@ -28,7 +28,7 @@ export function getUniquePropertyName(rootModel: CommonModel, propertyName: stri
  * The common naming convention context type.
  */
 export type CommonTypeNamingConventionCtx = { model: CommonModel, inputModel: CommonInputModel};
-export type CommonPropertyNamingConventionCtx = { model: CommonModel, inputModel: CommonInputModel, property?: CommonModel};
+export type CommonPropertyNamingConventionCtx = { model: CommonModel, inputModel: CommonInputModel, property?: CommonModel, modelPropertyName?: string};
 
 /**
  * The common naming convention type shared between generators for different languages.
