@@ -1,7 +1,6 @@
 import { TypeScriptRenderer } from '../TypeScriptRenderer';
 import { CommonModel, ClassPreset, PropertyType } from '../../../models';
-import { getUniquePropertyName, FormatHelpers, DefaultPropertyNames } from '../../../helpers';
-import { getAllowedPropertyName } from '../helpers/PropertyHelper';
+import { getUniquePropertyName, DefaultPropertyNames } from '../../../helpers';
 
 /**
  * Renderer for TypeScript's `class` type
@@ -84,8 +83,7 @@ ${renderer.indent(renderer.renderBlock(ctorProperties))}
 ${renderer.indent(renderer.renderBlock(assignments))}
 }`;
   },
-  property({ renderer, propertyName, property, type, model }): string {
-    propertyName = GetPropertyName(model, propertyName);
+  property({ renderer, propertyName, property, type }): string {
     return `private _${renderer.renderProperty(propertyName, property, type)}`;
   },
   getter({ renderer, model, propertyName, property, type }): string {
