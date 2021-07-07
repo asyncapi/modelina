@@ -85,7 +85,6 @@ const doc = {
   properties: {
     street_name:    { type: "string" },
     city:           { type: "string", description: "City description" },
-    state:          { type: "string" },
     house_number:   { type: "number" },
     marriage:       { type: "boolean", description: "Status if marriage live in given house" },
     pet_names:      { type: "array", items: { type: "string" } },
