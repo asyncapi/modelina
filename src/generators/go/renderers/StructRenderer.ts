@@ -14,8 +14,8 @@ export class StructRenderer extends GoRenderer {
       await this.renderFields(),
       await this.runAdditionalContentPreset()
     ];
-
-    const formattedName = this.model.$id && FormatHelpers.toPascalCase(this.model.$id, { transform: pascalCaseTransformMerge });
+    
+    const formattedName = this.nameType(this.model.$id);
     const doc = this.renderComments(`${formattedName} represents a ${formattedName} model.`);
     
     return `${doc}
@@ -30,10 +30,11 @@ export const GO_DEFAULT_STRUCT_PRESET: StructPreset<StructRenderer> = {
     return renderer.defaultSelf();
   },
   field({ fieldName, field, renderer, type }) {
+    fieldName = renderer.nameField(fieldName, field);
     let fieldType = renderer.renderType(field);
     if (type === FieldType.additionalProperty || type === FieldType.patternProperties) {
       fieldType = `map[string]${fieldType}`; 
     }
-    return `${FormatHelpers.toPascalCase(fieldName, { transform: pascalCaseTransformMerge }) } ${ fieldType }`;
+    return `${ fieldName } ${ fieldType }`;
   },
 };

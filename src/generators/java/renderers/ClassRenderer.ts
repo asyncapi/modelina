@@ -17,11 +17,14 @@ export class ClassRenderer extends JavaRenderer {
       await this.runAdditionalContentPreset(),
     ];
 
+    if (this.options?.collectionType === 'List') {
+      this.addDependency('import java.util.List;');
+    }
     if (this.model.additionalProperties !== undefined) {
       this.addDependency('import java.util.Map;');
     }
     
-    const formattedName = this.model.$id && FormatHelpers.toPascalCase(this.model.$id);
+    const formattedName = this.nameType(this.model.$id);
     return `public class ${formattedName} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
@@ -44,6 +47,14 @@ ${this.indent(this.renderBlock(content, 2))}
       const propertyName = getUniquePropertyName(this.model, DefaultPropertyNames.additionalProperties);
       const additionalProperty = await this.runPropertyPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
       content.push(additionalProperty);
+    }
+
+    if (this.model.patternProperties !== undefined) {
+      for (const [pattern, patternModel] of Object.entries(this.model.patternProperties)) {
+        const propertyName = getUniquePropertyName(this.model, `${pattern}${DefaultPropertyNames.patternProperties}`);
+        const renderedPatternProperty = await this.runPropertyPreset(propertyName, patternModel, PropertyType.patternProperties);
+        content.push(renderedPatternProperty);
+      }
     }
 
     return this.renderBlock(content);
@@ -70,6 +81,15 @@ ${this.indent(this.renderBlock(content, 2))}
       content.push(this.renderBlock([getter, setter]));
     }
 
+    if (this.model.patternProperties !== undefined) {
+      for (const [pattern, patternModel] of Object.entries(this.model.patternProperties)) {
+        const propertyName = getUniquePropertyName(this.model, `${pattern}${DefaultPropertyNames.patternProperties}`);
+        const getter = await this.runGetterPreset(propertyName, patternModel, PropertyType.patternProperties);
+        const setter = await this.runSetterPreset(propertyName, patternModel, PropertyType.patternProperties);
+        content.push(this.renderBlock([getter, setter]));
+      }
+    }
+
     return this.renderBlock(content, 2);
   }
 
@@ -87,27 +107,27 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
     return renderer.defaultSelf();
   },
   property({ renderer, propertyName, property, type }) {
-    propertyName = FormatHelpers.toCamelCase(propertyName);
+    propertyName = renderer.nameProperty(propertyName, property);
     let propertyType = renderer.renderType(property);
-    if (type === PropertyType.additionalProperty) {
+    if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
       propertyType = `Map<String, ${propertyType}>`;
     }
     return `private ${propertyType} ${propertyName};`;
   },
   getter({ renderer, propertyName, property, type }) {
-    propertyName = FormatHelpers.toCamelCase(propertyName);
+    propertyName = renderer.nameProperty(propertyName, property);
     const getterName = `get${FormatHelpers.toPascalCase(propertyName)}`;
     let getterType = renderer.renderType(property);
-    if (type === PropertyType.additionalProperty) {
+    if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
       getterType = `Map<String, ${getterType}>`;
     }
     return `public ${getterType} ${getterName}() { return this.${propertyName}; }`;
   },
   setter({ renderer, propertyName, property, type }) {
-    propertyName = FormatHelpers.toCamelCase(propertyName);
+    propertyName = renderer.nameProperty(propertyName, property);
     const setterName = FormatHelpers.toPascalCase(propertyName);
     let setterType = renderer.renderType(property);
-    if (type === PropertyType.additionalProperty) {
+    if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
       setterType = `Map<String, ${setterType}>`;
     }
     return `public void set${setterName}(${setterType} ${propertyName}) { this.${propertyName} = ${propertyName}; }`;

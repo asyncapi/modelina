@@ -1,5 +1,5 @@
 import { AbstractRenderer } from '../AbstractRenderer';
-import { JavaScriptOptions } from './JavaScriptGenerator';
+import { JavaScriptGenerator, JavaScriptOptions } from './JavaScriptGenerator';
 
 import { getUniquePropertyName, FormatHelpers, DefaultPropertyNames } from '../../helpers';
 import { CommonModel, CommonInputModel, Preset, PropertyType } from '../../models';
@@ -9,14 +9,41 @@ import { CommonModel, CommonInputModel, Preset, PropertyType } from '../../model
  * 
  * @extends AbstractRenderer
  */
-export abstract class JavaScriptRenderer extends AbstractRenderer<JavaScriptOptions> {
+export abstract class JavaScriptRenderer extends AbstractRenderer<JavaScriptOptions, JavaScriptGenerator> {
   constructor(
     options: JavaScriptOptions,
+    generator: JavaScriptGenerator,
     presets: Array<[Preset, unknown]>,
     model: CommonModel, 
     inputModel: CommonInputModel,
   ) {
-    super(options, presets, model, inputModel);
+    super(options, generator, presets, model, inputModel);
+  }
+
+  /**
+   * Renders the name of a type based on provided generator option naming convention type function.
+   * 
+   * This is used to render names of models (example TS class) and then later used if that class is referenced from other models.
+   * 
+   * @param name 
+   * @param model 
+   */
+  nameType(name: string | undefined, model?: CommonModel): string {
+    return this.options?.namingConvention?.type 
+      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel })
+      : name || '';
+  }
+
+  /**
+   * Renders the name of a property based on provided generator option naming convention property function.
+   * 
+   * @param propertyName 
+   * @param property
+   */
+  nameProperty(propertyName: string | undefined, property?: CommonModel): string {
+    return this.options?.namingConvention?.property 
+      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property })
+      : propertyName || '';
   }
 
   renderComments(lines: string | string[]): string {

@@ -1,6 +1,6 @@
 import { JavaGenerator, JAVA_JACKSON_PRESET } from '../../../../src/generators'; 
 
-describe('JAVA_DESCRIPTION_PRESET', () => {
+describe('JAVA_JACKSON_PRESET', () => {
   let generator: JavaGenerator;
   beforeEach(() => {
     generator = new JavaGenerator({ presets: [JAVA_JACKSON_PRESET] });

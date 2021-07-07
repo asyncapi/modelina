@@ -46,14 +46,17 @@
 <dt><a href="#DefaultPropertyNames">DefaultPropertyNames</a></dt>
 <dd><p>Default property names for different aspects of the common model</p>
 </dd>
+<dt><a href="#CommonNamingConventionImplementation">CommonNamingConventionImplementation</a></dt>
+<dd><p>A CommonNamingConvention implementation shared between generators for different languages.</p>
+</dd>
 </dl>
 
 ## Functions
 
 <dl>
 <dt><a href="#getUniquePropertyName">getUniquePropertyName(rootModel, propertyName)</a></dt>
-<dd><p>Recursively find the proper property name for additionalProperties</p>
-<p>This function ensures that the property name for additionalProperties is unique</p>
+<dd><p>Recursively find the proper property name.</p>
+<p>This function ensures that the property name is unique for the model</p>
 </dd>
 <dt><a href="#interpretAdditionalItems">interpretAdditionalItems(schema, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for JSON Schema draft 7 additionalProperties keyword.</p>
@@ -764,12 +767,18 @@ Sets the logger to use for the model generation library
 Default property names for different aspects of the common model
 
 **Kind**: global variable  
+<a name="CommonNamingConventionImplementation"></a>
+
+## CommonNamingConventionImplementation
+A CommonNamingConvention implementation shared between generators for different languages.
+
+**Kind**: global variable  
 <a name="getUniquePropertyName"></a>
 
 ## getUniquePropertyName(rootModel, propertyName)
-Recursively find the proper property name for additionalProperties
+Recursively find the proper property name.
 
-This function ensures that the property name for additionalProperties is unique
+This function ensures that the property name is unique for the model
 
 **Kind**: global function  
 

@@ -4,17 +4,20 @@ import {
   defaultGeneratorOptions,
 } from '../AbstractGenerator';
 import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
-import { ModelKind, TypeHelpers } from '../../helpers';
+import { CommonNamingConvention, CommonNamingConventionImplementation, ModelKind, TypeHelpers } from '../../helpers';
 import { JavaPreset, JAVA_DEFAULT_PRESET } from './JavaPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
-
-export type JavaOptions = CommonGeneratorOptions<JavaPreset>
-
+export interface JavaOptions extends CommonGeneratorOptions<JavaPreset> {
+  collectionType?: 'List' | 'Array';
+  namingConvention?: CommonNamingConvention;
+}
 export class JavaGenerator extends AbstractGenerator<JavaOptions> {
   static defaultOptions: JavaOptions = {
     ...defaultGeneratorOptions,
-    defaultPreset: JAVA_DEFAULT_PRESET,
+    defaultPreset: JAVA_DEFAULT_PRESET,     
+    collectionType: 'Array',
+    namingConvention: CommonNamingConventionImplementation
   };
 
   constructor(
@@ -33,14 +36,14 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions> {
 
   async renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const presets = this.getPresets('class');
-    const renderer = new ClassRenderer(this.options, presets, model, inputModel);
+    const renderer = new ClassRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
     return RenderOutput.toRenderOutput({result, dependencies: renderer.dependencies});
   }
 
   async renderEnum(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const presets = this.getPresets('enum'); 
-    const renderer = new EnumRenderer(this.options, presets, model, inputModel);
+    const renderer = new EnumRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
     return RenderOutput.toRenderOutput({result, dependencies: renderer.dependencies});
   }

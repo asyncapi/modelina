@@ -19,6 +19,11 @@ describe('JavaGenerator', () => {
         members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
         array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
       },
+      patternProperties: {
+        '^S(.?*)test&': {
+          type: 'string'
+        }
+      },
       required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
     };
     const expected = `public class Address {
@@ -30,6 +35,7 @@ describe('JavaGenerator', () => {
   private Object members;
   private Object[] arrayType;
   private Map<String, Object> additionalProperties;
+  private Map<String, String> sTestPatternProperties;
 
   public String getStreetName() { return this.streetName; }
   public void setStreetName(String streetName) { this.streetName = streetName; }
@@ -54,6 +60,9 @@ describe('JavaGenerator', () => {
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  public Map<String, String> getSTestPatternProperties() { return this.sTestPatternProperties; }
+  public void setSTestPatternProperties(Map<String, String> sTestPatternProperties) { this.sTestPatternProperties = sTestPatternProperties; }
 }`;
 
     const inputModel = await generator.process(doc);
@@ -332,5 +341,32 @@ public enum CustomEnum {
     enumModel = await generator.renderEnum(model, inputModel);
     expect(enumModel.result).toEqual(expected);
     expect(enumModel.dependencies).toEqual(expectedDependencies);
+  });
+
+  test('should render List type for collections', async () => {
+    const doc = {
+      $id: 'CustomClass',
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        arrayType: { type: 'array' },
+      }
+    };
+    const expected = `public class CustomClass {
+  private List<Object> arrayType;
+
+  public List<Object> getArrayType() { return this.arrayType; }
+  public void setArrayType(List<Object> arrayType) { this.arrayType = arrayType; }
+}`;
+    const expectedDependencies = ['import java.util.List;'];
+
+    generator = new JavaGenerator({ collectionType: 'List' });
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models['CustomClass'];
+
+    const classModel = await generator.render(model, inputModel);
+    expect(classModel.result).toEqual(expected);
+    expect(classModel.dependencies).toEqual(expectedDependencies);
   });
 });
