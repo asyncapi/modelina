@@ -1,7 +1,5 @@
 import { GoRenderer } from '../GoRenderer';
 import { FieldType, StructPreset } from '../GoPreset';
-import { FormatHelpers } from '../../../helpers/FormatHelpers';
-import { pascalCaseTransformMerge } from 'pascal-case';
 
 /**
  * Renderer for Go's `struct` type
