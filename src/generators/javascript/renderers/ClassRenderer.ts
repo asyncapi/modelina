@@ -1,7 +1,7 @@
 import { JavaScriptRenderer } from '../JavaScriptRenderer';
 
-import { CommonModel, ClassPreset } from '../../../models';
-import { FormatHelpers } from '../../../helpers';
+import { CommonModel, ClassPreset, PropertyType } from '../../../models';
+import { DefaultPropertyNames, FormatHelpers, getUniquePropertyName } from '../../../helpers';
 
 /**
  * Renderer for JavaScript's `class` type
@@ -37,15 +37,31 @@ ${this.indent(this.renderBlock(content, 2))}
       content.push(this.renderBlock([getter, setter]));
     }
 
+    if (this.model.additionalProperties !== undefined) {
+      const propertyName = getUniquePropertyName(this.model, DefaultPropertyNames.additionalProperties);
+      const getter = await this.runGetterPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
+      const setter = await this.runSetterPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
+      content.push(this.renderBlock([getter, setter]));
+    }
+
+    if (this.model.patternProperties !== undefined) {
+      for (const [pattern, patternModel] of Object.entries(this.model.patternProperties)) {
+        const propertyName = getUniquePropertyName(this.model, `${pattern}${DefaultPropertyNames.patternProperties}`);
+        const getter = await this.runGetterPreset(propertyName, patternModel, PropertyType.patternProperties);
+        const setter = await this.runSetterPreset(propertyName, patternModel, PropertyType.patternProperties);
+        content.push(this.renderBlock([getter, setter]));
+      }
+    }
+
     return this.renderBlock(content, 2);
   }
 
-  runGetterPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset('getter', { propertyName, property });
+  runGetterPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
+    return this.runPreset('getter', { propertyName, property, type });
   }
 
-  runSetterPreset(propertyName: string, property: CommonModel): Promise<string> {
-    return this.runPreset('setter', { propertyName, property });
+  runSetterPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
+    return this.runPreset('setter', { propertyName, property, type });
   }
 }
 

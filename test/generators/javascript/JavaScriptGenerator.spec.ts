@@ -61,6 +61,9 @@ describe('JavaScriptGenerator', () => {
 
   get arrayType() { return this.arrayType; }
   set arrayType(arrayType) { this.arrayType = arrayType; }
+
+  get additionalProperties() { return this.additionalProperties; }
+  set additionalProperties(additionalProperties) { this.additionalProperties = additionalProperties; }
 }`;
 
     const inputModel = await generator.process(doc);
@@ -96,11 +99,11 @@ describe('JavaScriptGenerator', () => {
       type: 'object',
       properties: {
         property: { type: 'string' },
-      }
+      },
+      additionalProperties: false
     };
     const expected = `export class CustomClass {
   #property;
-  #additionalProperties;
 
   constructor(input) {
     this.#property = input.property;
