@@ -95,9 +95,7 @@ const doc = {
 
 async function generate() {
   const models = await generator.generate(doc);
-  models.forEach(function (model) {
-    console.log(model.result);
-  }); 
+  models.forEach(model => console.log(model.result)); 
 }
 
 generate();
