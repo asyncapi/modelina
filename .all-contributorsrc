@@ -40,7 +40,9 @@
       "contributions": [
         "bug",
         "code",
-        "test"
+        "test",
+        "doc",
+        "review"
       ]
     },
     {
