@@ -12,8 +12,9 @@ describe('JavaGenerator', () => {
       type: 'object',
       properties: {
         enum: { type: 'string' },
-        _enum: { type: 'string' }
-      }
+        ReservedEnum: { type: 'string' }
+      },
+      additionalProperties: false
     };
     const expected = `public class Address {
   private String _enum;
@@ -30,7 +31,7 @@ describe('JavaGenerator', () => {
     const model = inputModel.models['Address'];
 
     let classModel = await generator.renderClass(model, inputModel);
-    expect(classModel).toEqual(expected);
+    expect(classModel.result).toEqual(expected);
 
     classModel = await generator.render(model, inputModel);
     expect(classModel).toEqual(expected);

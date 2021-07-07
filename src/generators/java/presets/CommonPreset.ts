@@ -17,7 +17,7 @@ function renderEqual({ renderer, model }: {
   renderer: JavaRenderer,
   model: CommonModel,
 }): string {
-  const formattedModelName = renderer.nameType(model.$id);
+  const formattedModelName = renderer.nameType(`${model.$id}`);
   const properties = model.properties || {};
   const propertyKeys = [...Object.keys(properties), getUniquePropertyName(model, DefaultPropertyNames.additionalProperties)];
   const equalProperties = propertyKeys.map(prop => {
@@ -63,7 +63,7 @@ function renderToString({ renderer, model }: {
   renderer: JavaRenderer,
   model: CommonModel,
 }): string {
-  const formattedModelName = renderer.nameType(model.$id);
+  const formattedModelName = renderer.nameType(`${model.$id}`);
   const properties = model.properties || {};
   const propertyKeys = [...Object.keys(properties), getUniquePropertyName(model, DefaultPropertyNames.additionalProperties)];
   const toStringProperties = propertyKeys.map(prop => 

@@ -2,7 +2,6 @@ import { JavaRenderer } from '../JavaRenderer';
 
 import { CommonModel, ClassPreset, PropertyType } from '../../../models';
 import { DefaultPropertyNames, FormatHelpers, getUniquePropertyName } from '../../../helpers';
-import { getAllowedPropertyName } from '../helpers/PropertyHelper';
 
 /**
  * Renderer for Java's `class` type
@@ -25,7 +24,7 @@ export class ClassRenderer extends JavaRenderer {
       this.addDependency('import java.util.Map;');
     }
     
-    const formattedName = this.nameType(this.model.$id);
+    const formattedName = this.nameType(`${this.model.$id}`);
     return `public class ${formattedName} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;

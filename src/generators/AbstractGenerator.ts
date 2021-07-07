@@ -9,6 +9,7 @@ export interface CommonGeneratorOptions<P extends Preset = Preset> {
     type: IndentationTypes;
     size: number;
   };
+  reservedPropertyWord?: string;
   defaultPreset?: P;
   presets?: Presets<P>;
 }
@@ -17,7 +18,8 @@ export const defaultGeneratorOptions: CommonGeneratorOptions = {
   indentation: {
     type: IndentationTypes.SPACES,
     size: 2,
-  }
+  },
+  reservedPropertyWord: 'Reserved'
 };
 
 /**

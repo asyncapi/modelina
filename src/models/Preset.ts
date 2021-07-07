@@ -24,7 +24,8 @@ export enum PropertyType {
 export interface PropertyArgs {
   propertyName: string;
   property: CommonModel;
-  type: PropertyType
+  type: PropertyType;
+  modelPropertyName: string;
 }
 
 export interface ClassPreset<R extends AbstractRenderer, O extends object = any> extends CommonPreset<R, O> {

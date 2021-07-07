@@ -3,6 +3,58 @@ import { JavaGenerator, JavaOptions } from './JavaGenerator';
 import { CommonModel, CommonInputModel, Preset } from '../../models';
 import { FormatHelpers, ModelKind, TypeHelpers } from '../../helpers';
 
+export const ReservedJavaKeywordList = [
+  'abstract', 
+  'continue', 
+  'for', 
+  'new', 
+  'switch  assert', 
+  'default', 
+  'goto', 
+  'package', 
+  'synchronized', 
+  'boolean', 
+  'do', 
+  'if', 
+  'private', 
+  'this', 
+  'break', 
+  'double', 
+  'implements', 
+  'protected', 
+  'throw', 
+  'byte', 
+  'else', 
+  'import', 
+  'public', 
+  'throws', 
+  'case', 
+  'enum', 
+  'instanceof', 
+  'return', 
+  'transient', 
+  'catch', 
+  'extends', 
+  'int', 
+  'short', 
+  'try', 
+  'char', 
+  'final', 
+  'interface', 
+  'static', 
+  'void', 
+  'class', 
+  'finally', 
+  'long', 
+  'strictfp', 
+  'volatile', 
+  'const', 
+  'float', 
+  'native', 
+  'super', 
+  'while'
+];
+
 /**
  * Common renderer for Java types
  * 
@@ -18,6 +70,29 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
   ) {
     super(options, generator, presets, model, inputModel);
   }
+  
+  static isReservedJavaKeyword(word: string): boolean {
+    return ReservedJavaKeywordList.includes(word);
+  }
+
+  /**
+   * Recursive function to find a realized property name for a CommonModel that can be rendered.
+   * 
+   * @param originalPropertyName 
+   * @param propertyName 
+   * @returns 
+   */
+  getRealizedPropertyName(originalPropertyName: string, propertyName: string = originalPropertyName): string {
+    if (JavaRenderer.isReservedJavaKeyword(propertyName)) {
+      propertyName = `${this.options.reservedPropertyWord}${propertyName}`;
+    }
+    const propertyList = [...Object.keys(this.model.properties || {})];
+    if ((originalPropertyName !== propertyName && propertyList.includes(propertyName))) {
+      propertyName = `${this.options.reservedPropertyWord}${propertyName}`;
+      return this.getRealizedPropertyName(originalPropertyName, propertyName);
+    }
+    return propertyName;
+  }
 
   /**
    * Renders the name of a type based on provided generator option naming convention type function.
@@ -27,7 +102,7 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
    * @param name 
    * @param model 
    */
-  nameType(name: string | undefined, model?: CommonModel): string {
+  nameType(name: string, model?: CommonModel): string {
     return this.options?.namingConvention?.type 
       ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel })
       : name || '';
@@ -39,10 +114,11 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
    * @param propertyName 
    * @param property
    */
-  nameProperty(propertyName: string | undefined, property?: CommonModel): string {
+  nameProperty(propertyName: string, property?: CommonModel): string {
+    const realizedPropertyName = this.getRealizedPropertyName(propertyName);
     return this.options?.namingConvention?.property 
-      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property })
-      : propertyName || '';
+      ? this.options.namingConvention.property(realizedPropertyName, { model: this.model, inputModel: this.inputModel, property })
+      : realizedPropertyName || '';
   }
   
   /**
@@ -65,7 +141,7 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
       const format = model.getFromSchema('format');
       return this.toClassType(this.toJavaType(format || model.type, model));
     }
-    return this.nameType(model.$id, model);
+    return this.nameType(`${model.$id}`, model);
   }
 
   /**

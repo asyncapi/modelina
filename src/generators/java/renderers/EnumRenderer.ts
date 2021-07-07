@@ -13,7 +13,7 @@ export class EnumRenderer extends JavaRenderer {
       await this.renderItems(),
       await this.runAdditionalContentPreset()
     ];
-    const formattedName = this.nameType(this.model.$id);
+    const formattedName = this.nameType(`${this.model.$id}`);
     return `public enum ${formattedName} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
@@ -68,7 +68,7 @@ export const JAVA_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
     return `${key}(${value})`;
   },
   additionalContent({ renderer, model }) {
-    const enumName = renderer.nameType(model.$id);
+    const enumName = renderer.nameType(`${model.$id}`);
     const type = Array.isArray(model.type) ? 'Object' : model.type;
     const classType = renderer.toClassType(renderer.toJavaType(type, model));
 

@@ -25,11 +25,17 @@ export function getUniquePropertyName(rootModel: CommonModel, propertyName: stri
 }
 
 /**
+ * The common naming convention context type.
+ */
+export type CommonTypeNamingConventionCtx = { model: CommonModel, inputModel: CommonInputModel};
+export type CommonPropertyNamingConventionCtx = { model: CommonModel, inputModel: CommonInputModel, property?: CommonModel};
+
+/**
  * The common naming convention type shared between generators for different languages.
  */
 export type CommonNamingConvention = {
-  type?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel }) => string;
-  property?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel, property?: CommonModel }) => string;
+  type?: (name: string | undefined , ctx: CommonTypeNamingConventionCtx) => string;
+  property?: (name: string | undefined, ctx: CommonPropertyNamingConventionCtx) => string;
 };
 
 /**
