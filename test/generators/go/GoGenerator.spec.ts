@@ -22,7 +22,12 @@ describe('GoGenerator', () => {
       required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
       additionalProperties: {
         type: 'string'
-      }
+      },
+      patternProperties: {
+        '^S(.?*)test&': {
+          type: 'string'
+        }
+      },
     };
     const expected = `// Address represents a Address model.
 type Address struct {
@@ -35,6 +40,7 @@ type Address struct {
   TupleType []interface{}
   ArrayType []string
   AdditionalProperties map[string]string
+  STestPatternProperties map[string]string
 }`;
 
     const inputModel = await generator.process(doc);
