@@ -8,7 +8,7 @@ import { TypeHelpers, ModelKind, FormatHelpers } from '../../helpers';
 import { GoPreset, GO_DEFAULT_PRESET } from './GoPreset';
 import { StructRenderer } from './renderers/StructRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
-import { pascalCaseTransformMerge } from 'pascal-case';
+import { pascalCaseTransformMerge } from 'change-case';
 
 /**
  * The Go naming convention type
