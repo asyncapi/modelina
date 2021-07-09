@@ -19,6 +19,11 @@ describe('JavaScriptGenerator', () => {
         members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
         array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
       },
+      patternProperties: {
+        '^S(.?*)test&': {
+          type: 'string'
+        }
+      },
       required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
     };
     const expected = `class Address {
@@ -30,6 +35,7 @@ describe('JavaScriptGenerator', () => {
   members;
   arrayType;
   additionalProperties;
+  sTestPatternProperties;
 
   constructor(input) {
     this.streetName = input.streetName;
@@ -64,6 +70,9 @@ describe('JavaScriptGenerator', () => {
 
   get additionalProperties() { return this.additionalProperties; }
   set additionalProperties(additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  get sTestPatternProperties() { return this.sTestPatternProperties; }
+  set sTestPatternProperties(sTestPatternProperties) { this.sTestPatternProperties = sTestPatternProperties; }
 }`;
 
     const inputModel = await generator.process(doc);
