@@ -20,6 +20,14 @@ describe('GoGenerator', () => {
         array_type: { type: 'array', items: { type: 'string' } },
       },
       required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+      additionalProperties: {
+        type: 'string'
+      },
+      patternProperties: {
+        '^S(.?*)test&': {
+          type: 'string'
+        }
+      },
     };
     const expected = `// Address represents a Address model.
 type Address struct {
@@ -31,6 +39,8 @@ type Address struct {
   Members []interface{}
   TupleType []interface{}
   ArrayType []string
+  AdditionalProperties map[string]string
+  STestPatternProperties map[string]string
 }`;
 
     const inputModel = await generator.process(doc);
@@ -51,11 +61,15 @@ type Address struct {
       type: 'object',
       properties: {
         property: { type: 'string' },
+      },
+      additionalProperties: {
+        type: 'string'
       }
     };
     const expected = `// CustomStruct represents a CustomStruct model.
 type CustomStruct struct {
   property string
+  additionalProperties string
 }`;
 
     generator = new GoGenerator({ presets: [
