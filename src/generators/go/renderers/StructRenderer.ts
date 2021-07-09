@@ -1,5 +1,5 @@
 import { GoRenderer } from '../GoRenderer';
-import { StructPreset } from '../GoPreset';
+import { FieldType, StructPreset } from '../GoPreset';
 
 /**
  * Renderer for Go's `struct` type
@@ -27,8 +27,12 @@ export const GO_DEFAULT_STRUCT_PRESET: StructPreset<StructRenderer> = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
-  field({ fieldName, field, renderer }) {
+  field({ fieldName, field, renderer, type }) {
     fieldName = renderer.nameField(fieldName, field);
-    return `${ fieldName } ${ renderer.renderType(field)}`;
+    let fieldType = renderer.renderType(field);
+    if (type === FieldType.additionalProperty || type === FieldType.patternProperties) {
+      fieldType = `map[string]${fieldType}`; 
+    }
+    return `${ fieldName } ${ fieldType }`;
   },
 };
