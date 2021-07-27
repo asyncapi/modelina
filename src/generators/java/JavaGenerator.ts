@@ -12,6 +12,7 @@ export interface JavaOptions extends CommonGeneratorOptions<JavaPreset> {
   collectionType?: 'List' | 'Array';
   namingConvention?: CommonNamingConvention;
 }
+
 export class JavaGenerator extends AbstractGenerator<JavaOptions> {
   static defaultOptions: JavaOptions = {
     ...defaultGeneratorOptions,

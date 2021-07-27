@@ -48,7 +48,7 @@ Below is a list of additional options available for a given generator.
 | `collectionType` | String | It indicates with which signature should be rendered the `array` type. Its value can be either `List` (`List<{type}>`) or `Array` (`{type}[]`). | `List` |
 | `namingConvention` | Object | Options for naming conventions. | - |
 | `namingConvention.type` | Function | A function that returns the format of the type. | _Returns pascal cased name_ |
-| `namingConvention.property` | Function | A function that returns the format of the property. | _Returns camel cased name_ |
+| `namingConvention.property` | Function | A function that returns the format of the property. | _Returns camel cased name, and ensures that names of properties does not clash against reserved keywords_ |
 
 ### [JavaScript](../src/generators/javascript/JavaScriptGenerator.ts)
 

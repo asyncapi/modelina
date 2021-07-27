@@ -6,6 +6,36 @@ describe('JavaGenerator', () => {
     generator = new JavaGenerator();
   });
 
+  test('should not render reserved keyword', async () => {
+    const doc = {
+      $id: 'Address',
+      type: 'object',
+      properties: {
+        enum: { type: 'string' },
+        reservedEnum: { type: 'string' }
+      },
+      additionalProperties: false
+    };
+    const expected = `public class Address {
+  private String reservedReservedEnum;
+  private String reservedEnum;
+
+  public String getEnum() { return this.reservedReservedEnum; }
+  public void setEnum(String reservedReservedEnum) { this.reservedReservedEnum = reservedReservedEnum; }
+
+  public String getReservedEnum() { return this.reservedEnum; }
+  public void setReservedEnum(String reservedEnum) { this.reservedEnum = reservedEnum; }
+}`;
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models['Address'];
+
+    let classModel = await generator.renderClass(model, inputModel);
+    expect(classModel.result).toEqual(expected);
+
+    classModel = await generator.render(model, inputModel);
+    expect(classModel.result).toEqual(expected);
+  });
   test('should render `class` type', async () => {
     const doc = {
       $id: 'Address',

@@ -15,7 +15,7 @@ describe('NameHelpers', () => {
 
       const additionalPropertiesName = getUniquePropertyName(model, DefaultPropertyNames.additionalProperties);
       
-      expect(additionalPropertiesName).toEqual('_additionalProperties');
+      expect(additionalPropertiesName).toEqual('reserved_additionalProperties');
     });
   });
 
