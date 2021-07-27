@@ -34,7 +34,7 @@ export type CommonPropertyNamingConventionCtx = { model: CommonModel, inputModel
  * The common naming convention type shared between generators for different languages.
  */
 export type CommonNamingConvention = {
-  type?: (name: string | undefined , ctx: CommonTypeNamingConventionCtx) => string;
+  type?: (name: string | undefined, ctx: CommonTypeNamingConventionCtx) => string;
   property?: (name: string | undefined, ctx: CommonPropertyNamingConventionCtx) => string;
 };
 

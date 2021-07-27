@@ -86,9 +86,9 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
    * @param name 
    * @param model 
    */
-  nameType(name: string, model?: CommonModel): string {
+  nameType(name: string | undefined, model?: CommonModel): string {
     return this.options?.namingConvention?.type 
-      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel, isReservedKeyword: JavaRenderer.isReservedJavaKeyword(name) })
+      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel, isReservedKeyword: JavaRenderer.isReservedJavaKeyword(`${name}`) })
       : name || '';
   }
 
@@ -98,9 +98,9 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
    * @param propertyName 
    * @param property
    */
-  nameProperty(propertyName: string, property?: CommonModel): string {
+  nameProperty(propertyName: string | undefined, property?: CommonModel): string {
     return this.options?.namingConvention?.property 
-      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property, modelPropertyName: propertyName, isReservedKeyword: JavaRenderer.isReservedJavaKeyword(propertyName) })
+      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property, modelPropertyName: propertyName, isReservedKeyword: JavaRenderer.isReservedJavaKeyword(`${propertyName}`) })
       : propertyName || '';
   }
   
@@ -124,7 +124,7 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
       const format = model.getFromSchema('format');
       return this.toClassType(this.toJavaType(format || model.type, model));
     }
-    return this.nameType(`${model.$id}`, model);
+    return this.nameType(model.$id, model);
   }
 
   /**
