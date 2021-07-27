@@ -24,7 +24,6 @@ Default options contain:
 | Option | Type | Description | Default value |
 |---|---|---|---|
 | `indentation` | Object | Options for indentation. | - |
-| `reservedPropertyWord` | String | Word or character to append to property name when reserved keywords or duplicate property names are encountered. | 'reserved' |
 | `indentation.type` | String | Type of indentation. Its value can be either `SPACES` or `TABS`. | `SPACES` |
 | `indentation.size` | String | Size of indentation. | 2 |
 | `defaultPreset` | Object | Default preset for generator. For more information, read [customization](./customization.md) document. | _Implemented by generator_ |
@@ -49,7 +48,7 @@ Below is a list of additional options available for a given generator.
 | `collectionType` | String | It indicates with which signature should be rendered the `array` type. Its value can be either `List` (`List<{type}>`) or `Array` (`{type}[]`). | `List` |
 | `namingConvention` | Object | Options for naming conventions. | - |
 | `namingConvention.type` | Function | A function that returns the format of the type. | _Returns pascal cased name_ |
-| `namingConvention.property` | Function | A function that returns the format of the property. | _Returns camel cased name_ |
+| `namingConvention.property` | Function | A function that returns the format of the property. | _Returns camel cased name, and ensures that names of properties does not clash against reserved keywords_ |
 
 ### [JavaScript](../src/generators/javascript/JavaScriptGenerator.ts)
 
