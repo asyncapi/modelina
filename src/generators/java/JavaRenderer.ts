@@ -100,7 +100,7 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
    */
   nameProperty(propertyName: string | undefined, property?: CommonModel): string {
     return this.options?.namingConvention?.property 
-      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property, modelPropertyName: propertyName, isReservedKeyword: JavaRenderer.isReservedJavaKeyword(`${propertyName}`) })
+      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property, isReservedKeyword: JavaRenderer.isReservedJavaKeyword(`${propertyName}`) })
       : propertyName || '';
   }
   
