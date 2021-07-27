@@ -79,27 +79,6 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
   }
 
   /**
-   * Recursive function to find a realized property name for a CommonModel that can be rendered.
-   * 
-   * @param originalPropertyName 
-   * @param propertyName 
-   */
-  getRealizedPropertyName(originalPropertyName: string, propertyName: string = originalPropertyName): string {
-    if (JavaRenderer.isReservedJavaKeyword(propertyName)) {
-      propertyName = `${this.options.reservedPropertyWord}_${propertyName}`;
-
-      //Make sure that the found property name is not part of one of the other properties that is being rendered
-      const formattedPropertyName = this.nameProperty(propertyName);
-      const propertyList = [...Object.keys(this.model.properties || {})];
-      if ((originalPropertyName !== formattedPropertyName && propertyList.includes(formattedPropertyName))) {
-        propertyName = `${this.options.reservedPropertyWord}_${propertyName}`;
-        return this.getRealizedPropertyName(originalPropertyName, propertyName);
-      }
-    }
-    return propertyName;
-  }
-
-  /**
    * Renders the name of a type based on provided generator option naming convention type function.
    * 
    * This is used to render names of models (example TS class) and then later used if that class is referenced from other models.
@@ -109,7 +88,7 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
    */
   nameType(name: string, model?: CommonModel): string {
     return this.options?.namingConvention?.type 
-      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel })
+      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel, isReservedKeyword: JavaRenderer.isReservedJavaKeyword(name) })
       : name || '';
   }
 
@@ -120,10 +99,9 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
    * @param property
    */
   nameProperty(propertyName: string, property?: CommonModel): string {
-    const realizedPropertyName = this.getRealizedPropertyName(propertyName);
     return this.options?.namingConvention?.property 
-      ? this.options.namingConvention.property(realizedPropertyName, { model: this.model, inputModel: this.inputModel, property, modelPropertyName: propertyName })
-      : realizedPropertyName || '';
+      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property, modelPropertyName: propertyName, isReservedKeyword: JavaRenderer.isReservedJavaKeyword(propertyName) })
+      : propertyName || '';
   }
   
   /**

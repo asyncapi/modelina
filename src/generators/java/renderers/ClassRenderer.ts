@@ -94,11 +94,11 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 
   runGetterPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
-    return this.runPreset('getter', { propertyName, property, type });
+    return this.runPreset('getter', { propertyName, property, type});
   }
 
   runSetterPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
-    return this.runPreset('setter', { propertyName, property, type });
+    return this.runPreset('setter', { propertyName, property, type});
   }
 }
 

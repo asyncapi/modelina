@@ -19,7 +19,7 @@ export enum DefaultPropertyNames {
  */
 export function getUniquePropertyName(rootModel: CommonModel, propertyName: string): string {
   if (Object.keys(rootModel.properties || {}).includes(propertyName)) {
-    return getUniquePropertyName(rootModel, `_${propertyName}`);
+    return getUniquePropertyName(rootModel, `reserved_${propertyName}`);
   }
   return propertyName;
 }
@@ -27,8 +27,8 @@ export function getUniquePropertyName(rootModel: CommonModel, propertyName: stri
 /**
  * The common naming convention context type.
  */
-export type CommonTypeNamingConventionCtx = { model: CommonModel, inputModel: CommonInputModel};
-export type CommonPropertyNamingConventionCtx = { model: CommonModel, inputModel: CommonInputModel, property?: CommonModel, modelPropertyName?: string};
+export type CommonTypeNamingConventionCtx = { model: CommonModel, inputModel: CommonInputModel, isReservedKeyword?: boolean};
+export type CommonPropertyNamingConventionCtx = { model: CommonModel, inputModel: CommonInputModel, property?: CommonModel, modelPropertyName?: string, isReservedKeyword?: boolean};
 
 /**
  * The common naming convention type shared between generators for different languages.
@@ -42,12 +42,24 @@ export type CommonNamingConvention = {
  * A CommonNamingConvention implementation shared between generators for different languages.
  */
 export const CommonNamingConventionImplementation: CommonNamingConvention = {
-  type: (name: string | undefined) => {
+  type: (name, ctx) => {
     if (!name) {return '';}
+    if (ctx.isReservedKeyword) { 
+      name = `reserved_${name}`;
+    }
     return FormatHelpers.toPascalCase(name);
   },
-  property: (name: string | undefined) => {
+  property: (name, ctx) => {
     if (!name) {return '';}
+    if (ctx.isReservedKeyword) { 
+      // If name is considered reserved, make sure we rename it appropriately
+      // and make sure no clashes occur.
+      name = FormatHelpers.toCamelCase(`reserved_${name}`);
+      if (Object.keys(ctx.model.properties || {}).includes(name)) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        return CommonNamingConventionImplementation.property!(name, ctx);
+      }
+    }
     return FormatHelpers.toCamelCase(name);
   }
 };
