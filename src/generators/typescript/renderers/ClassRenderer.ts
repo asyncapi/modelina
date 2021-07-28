@@ -71,8 +71,7 @@ export const TS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
     const properties = model.properties || {};
     const assignments = Object.entries(properties).map(([propertyName, property]) => {
       propertyName = renderer.nameProperty(propertyName, property);
-      const safePropertyName = renderer.nameProperty(propertyName, property);
-      return `this._${propertyName} = input.${safePropertyName};`;
+      return `this._${propertyName} = input.${propertyName};`;
     });
     const ctorProperties = Object.entries(properties).map(([propertyName, property]) => {
       return renderer.renderProperty(propertyName, property).replace(';', ',');
