@@ -68,7 +68,6 @@ export const ReservedTypeScriptKeywords = [
   'static',
   'yield'
 ];
-
 /**
  * Common renderer for TypeScript types
  * 
@@ -85,6 +84,10 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
     super(options, generator, presets, model, inputModel);
   }
 
+  static isReservedTypeScriptKeyword(word: string): boolean {
+    return ReservedTypeScriptKeywords.includes(word);
+  }
+
   /**
    * Renders the name of a type based on provided generator option naming convention type function.
    * 
@@ -95,7 +98,7 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
    */
   nameType(name: string | undefined, model?: CommonModel): string {
     return this.options?.namingConvention?.type 
-      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel })
+      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel, isReservedKeyword: TypeScriptRenderer.isReservedTypeScriptKeyword(`${name}`)})
       : name || '';
   }
 
@@ -105,9 +108,9 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
    * @param propertyName 
    * @param property
    */
-  nameProperty(propertyName: string | undefined, property?: CommonModel): string {
+  nameProperty(propertyName: string | undefined, property?: CommonModel, checkReserved = true): string {
     return this.options?.namingConvention?.property 
-      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property })
+      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property, isReservedKeyword: checkReserved ? TypeScriptRenderer.isReservedTypeScriptKeyword(`${propertyName}`) : false })
       : propertyName || '';
   }
 
@@ -209,8 +212,8 @@ ${lines.map(line => ` * ${line}`).join('\n')}
     return this.renderBlock(content);
   }
 
-  renderProperty(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): string {
-    const formattedPropertyName = this.nameProperty(propertyName, property);
+  renderProperty(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property, checkReserved = true): string {
+    const formattedPropertyName = this.nameProperty(propertyName, property, checkReserved);
     let signature: string;
     switch (type) {
     case PropertyType.property:

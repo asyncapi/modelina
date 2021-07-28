@@ -5,6 +5,67 @@ describe('TypeScriptGenerator', () => {
   beforeEach(() => {
     generator = new TypeScriptGenerator();
   });
+
+  test('should not render `interface` with reserved keyword', async () => {
+    const doc = {
+      $id: 'Address',
+      type: 'object',
+      properties: {
+        enum: { type: 'string' },
+        reservedEnum: { type: 'string' }
+      },
+      additionalProperties: false
+    };
+    const expected = `export interface Address {
+  enum?: string;
+  reservedEnum?: string;
+}`;
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models['Address'];
+
+    const interfaceModel = await generator.renderInterface(model, inputModel);
+    expect(interfaceModel.result).toEqual(expected);
+  });
+  test('should not render `class` with reserved keyword', async () => {
+    const doc = {
+      $id: 'Address',
+      type: 'object',
+      properties: {
+        enum: { type: 'string' },
+        reservedEnum: { type: 'string' }
+      },
+      additionalProperties: false
+    };
+    const expected = `export class Address {
+  private _enum?: string;
+  private _reservedEnum?: string;
+
+  constructor(input: {
+    reservedReservedEnum?: string,
+    reservedEnum?: string,
+  }) {
+    this._enum = input.reservedReservedEnum;
+    this._reservedEnum = input.reservedEnum;
+  }
+
+  get enum(): string | undefined { return this._enum; }
+  set enum(reservedReservedEnum: string | undefined) { this._enum = reservedReservedEnum; }
+
+  get reservedEnum(): string | undefined { return this._reservedEnum; }
+  set reservedEnum(reservedEnum: string | undefined) { this._reservedEnum = reservedEnum; }
+}`;
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models['Address'];
+
+    let classModel = await generator.renderClass(model, inputModel);
+    expect(classModel.result).toEqual(expected);
+
+    classModel = await generator.render(model, inputModel);
+    expect(classModel.result).toEqual(expected);
+  });
+
   test('should render `class` type', async () => {
     const doc = {
       $id: '_address',

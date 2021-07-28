@@ -70,8 +70,9 @@ export const TS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
   ctor({ renderer, model }) : string {
     const properties = model.properties || {};
     const assignments = Object.entries(properties).map(([propertyName, property]) => {
-      propertyName = renderer.nameProperty(propertyName, property);
-      return `this._${propertyName} = input.${propertyName};`;
+      propertyName = renderer.nameProperty(propertyName, property, false);
+      const safePropertyName = renderer.nameProperty(propertyName, property);
+      return `this._${propertyName} = input.${safePropertyName};`;
     });
     const ctorProperties = Object.entries(properties).map(([propertyName, property]) => {
       return renderer.renderProperty(propertyName, property).replace(';', ',');
@@ -84,11 +85,11 @@ ${renderer.indent(renderer.renderBlock(assignments))}
 }`;
   },
   property({ renderer, propertyName, property, type }): string {
-    return `private _${renderer.renderProperty(propertyName, property, type)}`;
+    return `private _${renderer.renderProperty(propertyName, property, type, false)}`;
   },
   getter({ renderer, model, propertyName, property, type }): string {
     const isRequired = model.isRequired(propertyName);
-    propertyName = renderer.nameProperty(propertyName, property);
+    propertyName = renderer.nameProperty(propertyName, property, false);
     let signature = ''; 
     if (type === PropertyType.property) {
       signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });
@@ -100,7 +101,8 @@ ${renderer.indent(renderer.renderBlock(assignments))}
   },
   setter({ renderer, model, propertyName, property, type }): string {
     const isRequired = model.isRequired(propertyName);
-    propertyName = renderer.nameProperty(propertyName, property);
+    propertyName = renderer.nameProperty(propertyName, property, false);
+    const safePropertyName = renderer.nameProperty(propertyName, property);
     let signature = ''; 
     if (type === PropertyType.property) {
       signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });
@@ -108,6 +110,6 @@ ${renderer.indent(renderer.renderBlock(assignments))}
       const mapType = renderer.renderType(property);
       signature = `: Map<String, ${mapType}> | undefined`;
     }
-    return `set ${propertyName}(${propertyName}${signature}) { this._${propertyName} = ${propertyName}; }`;
+    return `set ${propertyName}(${safePropertyName}${signature}) { this._${propertyName} = ${safePropertyName}; }`;
   },
 };
