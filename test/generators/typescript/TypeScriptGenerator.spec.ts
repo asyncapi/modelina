@@ -17,7 +17,7 @@ describe('TypeScriptGenerator', () => {
       additionalProperties: false
     };
     const expected = `export interface Address {
-  enum?: string;
+  reservedReservedEnum?: string;
   reservedEnum?: string;
 }`;
 
@@ -38,19 +38,19 @@ describe('TypeScriptGenerator', () => {
       additionalProperties: false
     };
     const expected = `export class Address {
-  private _enum?: string;
+  private _reservedReservedEnum?: string;
   private _reservedEnum?: string;
 
   constructor(input: {
     reservedReservedEnum?: string,
     reservedEnum?: string,
   }) {
-    this._enum = input.reservedReservedEnum;
+    this._reservedReservedEnum = input.reservedReservedEnum;
     this._reservedEnum = input.reservedEnum;
   }
 
-  get enum(): string | undefined { return this._enum; }
-  set enum(reservedReservedEnum: string | undefined) { this._enum = reservedReservedEnum; }
+  get reservedReservedEnum(): string | undefined { return this._reservedReservedEnum; }
+  set reservedReservedEnum(reservedReservedEnum: string | undefined) { this._reservedReservedEnum = reservedReservedEnum; }
 
   get reservedEnum(): string | undefined { return this._reservedEnum; }
   set reservedEnum(reservedEnum: string | undefined) { this._reservedEnum = reservedEnum; }

@@ -108,9 +108,9 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
    * @param propertyName 
    * @param property
    */
-  nameProperty(propertyName: string | undefined, property?: CommonModel, checkReserved = true): string {
+  nameProperty(propertyName: string | undefined, property?: CommonModel): string {
     return this.options?.namingConvention?.property 
-      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property, isReservedKeyword: checkReserved ? TypeScriptRenderer.isReservedTypeScriptKeyword(`${propertyName}`) : false })
+      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property, isReservedKeyword: TypeScriptRenderer.isReservedTypeScriptKeyword(`${propertyName}`) })
       : propertyName || '';
   }
 
@@ -212,8 +212,8 @@ ${lines.map(line => ` * ${line}`).join('\n')}
     return this.renderBlock(content);
   }
 
-  renderProperty(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property, checkReserved = true): string {
-    const formattedPropertyName = this.nameProperty(propertyName, property, checkReserved);
+  renderProperty(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): string {
+    const formattedPropertyName = this.nameProperty(propertyName, property);
     let signature: string;
     switch (type) {
     case PropertyType.property:
