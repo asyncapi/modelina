@@ -6,27 +6,6 @@ describe('TypeScriptGenerator', () => {
     generator = new TypeScriptGenerator();
   });
 
-  test('should not render `interface` with reserved keyword', async () => {
-    const doc = {
-      $id: 'Address',
-      type: 'object',
-      properties: {
-        enum: { type: 'string' },
-        reservedEnum: { type: 'string' }
-      },
-      additionalProperties: false
-    };
-    const expected = `export interface Address {
-  reservedReservedEnum?: string;
-  reservedEnum?: string;
-}`;
-
-    const inputModel = await generator.process(doc);
-    const model = inputModel.models['Address'];
-
-    const interfaceModel = await generator.renderInterface(model, inputModel);
-    expect(interfaceModel.result).toEqual(expected);
-  });
   test('should not render `class` with reserved keyword', async () => {
     const doc = {
       $id: 'Address',
