@@ -68,7 +68,6 @@ export const ReservedTypeScriptKeywords = [
   'static',
   'yield'
 ];
-
 /**
  * Common renderer for TypeScript types
  * 
@@ -85,6 +84,10 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
     super(options, generator, presets, model, inputModel);
   }
 
+  static isReservedTypeScriptKeyword(word: string): boolean {
+    return ReservedTypeScriptKeywords.includes(word);
+  }
+
   /**
    * Renders the name of a type based on provided generator option naming convention type function.
    * 
@@ -95,7 +98,7 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
    */
   nameType(name: string | undefined, model?: CommonModel): string {
     return this.options?.namingConvention?.type 
-      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel })
+      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel, isReservedKeyword: TypeScriptRenderer.isReservedTypeScriptKeyword(`${name}`)})
       : name || '';
   }
 
@@ -107,7 +110,7 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
    */
   nameProperty(propertyName: string | undefined, property?: CommonModel): string {
     return this.options?.namingConvention?.property 
-      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property })
+      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property, isReservedKeyword: TypeScriptRenderer.isReservedTypeScriptKeyword(`${propertyName}`) })
       : propertyName || '';
   }
 
