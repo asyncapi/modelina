@@ -2,61 +2,7 @@ import { AbstractRenderer } from '../AbstractRenderer';
 import { JavaGenerator, JavaOptions } from './JavaGenerator';
 import { CommonModel, CommonInputModel, Preset } from '../../models';
 import { FormatHelpers, ModelKind, TypeHelpers } from '../../helpers';
-
-/**
- * List of reserved java keywords that may not be rendered as is.
- */
-export const ReservedJavaKeywordList = [
-  'abstract', 
-  'continue', 
-  'for', 
-  'new', 
-  'switch  assert', 
-  'default', 
-  'goto', 
-  'package', 
-  'synchronized', 
-  'boolean', 
-  'do', 
-  'if', 
-  'private', 
-  'this', 
-  'break', 
-  'double', 
-  'implements', 
-  'protected', 
-  'throw', 
-  'byte', 
-  'else', 
-  'import', 
-  'public', 
-  'throws', 
-  'case', 
-  'enum', 
-  'instanceof', 
-  'return', 
-  'transient', 
-  'catch', 
-  'extends', 
-  'int', 
-  'short', 
-  'try', 
-  'char', 
-  'final', 
-  'interface', 
-  'static', 
-  'void', 
-  'class', 
-  'finally', 
-  'long', 
-  'strictfp', 
-  'volatile', 
-  'const', 
-  'float', 
-  'native', 
-  'super', 
-  'while'
-];
+import { isReservedJavaKeyword } from './Constants';
 
 /**
  * Common renderer for Java types
@@ -73,10 +19,6 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
   ) {
     super(options, generator, presets, model, inputModel);
   }
-  
-  static isReservedJavaKeyword(word: string): boolean {
-    return ReservedJavaKeywordList.includes(word);
-  }
 
   /**
    * Renders the name of a type based on provided generator option naming convention type function.
@@ -88,7 +30,7 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
    */
   nameType(name: string | undefined, model?: CommonModel): string {
     return this.options?.namingConvention?.type 
-      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel, isReservedKeyword: JavaRenderer.isReservedJavaKeyword(`${name}`) })
+      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel, isReservedKeyword: isReservedJavaKeyword(`${name}`) })
       : name || '';
   }
 
@@ -100,7 +42,7 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
    */
   nameProperty(propertyName: string | undefined, property?: CommonModel): string {
     return this.options?.namingConvention?.property 
-      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property, isReservedKeyword: JavaRenderer.isReservedJavaKeyword(`${propertyName}`) })
+      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property, isReservedKeyword: isReservedJavaKeyword(`${propertyName}`) })
       : propertyName || '';
   }
   

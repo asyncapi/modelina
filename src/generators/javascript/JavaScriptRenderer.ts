@@ -1,8 +1,8 @@
 import { AbstractRenderer } from '../AbstractRenderer';
 import { JavaScriptGenerator, JavaScriptOptions } from './JavaScriptGenerator';
-
 import { getUniquePropertyName, FormatHelpers, DefaultPropertyNames } from '../../helpers';
 import { CommonModel, CommonInputModel, Preset, PropertyType } from '../../models';
+import { isReservedJavaScriptKeyword } from './Constants';
 
 /**
  * Common renderer for JavaScript types
@@ -30,7 +30,7 @@ export abstract class JavaScriptRenderer extends AbstractRenderer<JavaScriptOpti
    */
   nameType(name: string | undefined, model?: CommonModel): string {
     return this.options?.namingConvention?.type 
-      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel })
+      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel, isReservedKeyword: isReservedJavaScriptKeyword(`${name}`) })
       : name || '';
   }
 
@@ -42,7 +42,7 @@ export abstract class JavaScriptRenderer extends AbstractRenderer<JavaScriptOpti
    */
   nameProperty(propertyName: string | undefined, property?: CommonModel): string {
     return this.options?.namingConvention?.property 
-      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property })
+      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property, isReservedKeyword: isReservedJavaScriptKeyword(`${propertyName}`) })
       : propertyName || '';
   }
 

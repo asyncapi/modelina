@@ -6,6 +6,41 @@ describe('JavaScriptGenerator', () => {
     generator = new JavaScriptGenerator();
   });
 
+  test('should not render `class` with reserved keyword', async () => {
+    const doc = {
+      $id: 'Address',
+      type: 'object',
+      properties: {
+        enum: { type: 'string' },
+        reservedEnum: { type: 'string' }
+      },
+      additionalProperties: false
+    };
+    const expected = `class Address {
+  reservedReservedEnum;
+  reservedEnum;
+
+  constructor(input) {
+    this.reservedReservedEnum = input.reservedReservedEnum;
+    this.reservedEnum = input.reservedEnum;
+  }
+
+  get reservedReservedEnum() { return this.reservedReservedEnum; }
+  set reservedReservedEnum(reservedReservedEnum) { this.reservedReservedEnum = reservedReservedEnum; }
+
+  get reservedEnum() { return this.reservedEnum; }
+  set reservedEnum(reservedEnum) { this.reservedEnum = reservedEnum; }
+}`;
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models['Address'];
+
+    let classModel = await generator.renderClass(model, inputModel);
+    expect(classModel.result).toEqual(expected);
+
+    classModel = await generator.render(model, inputModel);
+    expect(classModel.result).toEqual(expected);
+  });
   test('should render `class` type', async () => {
     const doc = {
       $id: 'Address',
