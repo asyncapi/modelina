@@ -1,203 +1,9 @@
 import { AbstractRenderer } from '../AbstractRenderer';
 import { JavaScriptGenerator, JavaScriptOptions } from './JavaScriptGenerator';
-
 import { getUniquePropertyName, FormatHelpers, DefaultPropertyNames } from '../../helpers';
 import { CommonModel, CommonInputModel, Preset, PropertyType } from '../../models';
-//Based on https://www.w3schools.com/js/js_reserved.asp
-const reservedJavaScriptKeywords = [
-  //Standard reserved keywords
-  'abstract',
-  'arguments',
-  'await',
-  'boolean',
-  'break',
-  'byte',
-  'case',
-  'catch',
-  'char',
-  'class',
-  'const',
-  'continue',
-  'debugger',
-  'default',
-  'delete',
-  'do',
-  'double',
-  'else',
-  'enum',
-  'eval',
-  'export',
-  'extends',
-  'false',
-  'final',
-  'finally',
-  'float',
-  'for',
-  'function',
-  'goto',
-  'if',
-  'implements',
-  'import',
-  'in',
-  'instanceof',
-  'int',
-  'interface',
-  'let',
-  'long',
-  'native',
-  'new',
-  'null',
-  'package',
-  'private',
-  'protected',
-  'public',
-  'return',
-  'short',
-  'static',
-  'super',
-  'switch',
-  'synchronized',
-  'this',
-  'throw',
-  'throws',
-  'transient',
-  'true',
-  'try',
-  'typeof',
-  'var',
-  'void',
-  'volatile',
-  'while',
-  'with',
-  'yield',
-  // Reserved for > ECMAScript 5/6
-  'abstract', 
-  'boolean', 
-  'byte', 
-  'char',
-  'double', 
-  'final', 
-  'float', 
-  'goto',
-  'int', 
-  'long', 
-  'native', 
-  'short',
-  'synchronized', 
-  'throws', 
-  'transient', 
-  'volatile',
-  //Reserved built-in objects, properties and methods
-  'hasOwnProperty', 
-  'Infinity', 
-  'isFinite', 
-  'isNaN',
-  'isPrototypeOf', 
-  'length', 
-  'Math', 
-  'NaN',
-  'name', 
-  'Number', 
-  'Object', 
-  'prototype',
-  'String', 
-  'toString', 
-  'undefined', 
-  'valueOf',
-  //Java reserved words
-  'getClass', 
-  'java', 
-  'JavaArray', 
-  'javaClass',
-  'JavaObject', 
-  'JavaPackage',
-  //Other reserved words
-  'alert', 
-  'all', 
-  'anchor', 
-  'anchors',
-  'area', 
-  'assign', 
-  'blur', 
-  'button',
-  'checkbox', 
-  'clearInterval', 
-  'clearTimeout', 
-  'clientInformation',
-  'close', 
-  'closed', 
-  'confirm', 
-  'constructor',
-  'crypto', 
-  'decodeURI', 
-  'decodeURIComponent', 
-  'defaultStatus',
-  'document', 
-  'element', 
-  'elements', 
-  'embed',
-  'embeds', 
-  'encodeURI', 
-  'encodeURIComponent', 
-  'escape',
-  'event', 
-  'fileUpload', 
-  'focus', 
-  'form',
-  'forms', 
-  'frame', 
-  'innerHeight', 
-  'innerWidth',
-  'layer', 
-  'layers', 
-  'link', 
-  'location',
-  'mimeTypes', 
-  'navigate', 
-  'navigator', 
-  'frames',
-  'frameRate', 
-  'hidden', 
-  'history', 
-  'image',
-  'images', 
-  'offscreenBuffering', 
-  'open', 
-  'opener',
-  'option', 
-  'outerHeight', 
-  'outerWidth', 
-  'packages',
-  'pageXOffset', 
-  'pageYOffset', 
-  'parent', 
-  'parseFloat',
-  'parseInt', 
-  'password', 
-  'pkcs11', 
-  'plugin',
-  'prompt', 
-  'propertyIsEnum', 
-  'radio', 
-  'reset',
-  'screenX', 
-  'screenY', 
-  'scroll', 
-  'secure',
-  'select', 
-  'self', 
-  'setInterval', 
-  'setTimeout',
-  'status', 
-  'submit', 
-  'taint', 
-  'text',
-  'textarea', 
-  'top', 
-  'unescape', 
-  'untaint',
-  'window'
-];
+import { isReservedJavaScriptKeyword } from './Constants';
+
 /**
  * Common renderer for JavaScript types
  * 
@@ -214,10 +20,6 @@ export abstract class JavaScriptRenderer extends AbstractRenderer<JavaScriptOpti
     super(options, generator, presets, model, inputModel);
   }
 
-  static isReservedJavaScriptKeyword(word: string): boolean {
-    return reservedJavaScriptKeywords.includes(word);
-  }
-
   /**
    * Renders the name of a type based on provided generator option naming convention type function.
    * 
@@ -228,7 +30,7 @@ export abstract class JavaScriptRenderer extends AbstractRenderer<JavaScriptOpti
    */
   nameType(name: string | undefined, model?: CommonModel): string {
     return this.options?.namingConvention?.type 
-      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel, isReservedKeyword: JavaScriptRenderer.isReservedJavaScriptKeyword(`${name}`) })
+      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel, isReservedKeyword: isReservedJavaScriptKeyword(`${name}`) })
       : name || '';
   }
 
@@ -240,7 +42,7 @@ export abstract class JavaScriptRenderer extends AbstractRenderer<JavaScriptOpti
    */
   nameProperty(propertyName: string | undefined, property?: CommonModel): string {
     return this.options?.namingConvention?.property 
-      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property, isReservedKeyword: JavaScriptRenderer.isReservedJavaScriptKeyword(`${propertyName}`) })
+      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property, isReservedKeyword: isReservedJavaScriptKeyword(`${propertyName}`) })
       : propertyName || '';
   }
 

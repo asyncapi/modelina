@@ -4,70 +4,8 @@ import { TypeScriptGenerator, TypeScriptOptions } from './TypeScriptGenerator';
 import { FormatHelpers } from '../../helpers';
 import { CommonModel, CommonInputModel, Preset, PropertyType } from '../../models';
 import { DefaultPropertyNames, getUniquePropertyName } from '../../helpers/NameHelpers';
+import { isReservedTypeScriptKeyword } from './Constants';
 
-export const ReservedTypeScriptKeywords = [
-  'break',
-  'case',
-  'catch',
-  'class',
-  'const',
-  'continue',
-  'debugger',
-  'default',
-  'delete',
-  'do',
-  'else',
-  'enum',
-  'export',
-  'extends',
-  'false',
-  'finally',
-  'for',
-  'function',
-  'if',
-  'import',
-  'in',
-  'instanceof',
-  'new',
-  'null',
-  'return',
-  'super',
-  'switch',
-  'this',
-  'throw',
-  'true',
-  'try',
-  'typeof',
-  'var',
-  'void',
-  'while',
-  'with',
-  'any',
-  'boolean',
-  'constructor',
-  'declare',
-  'get',
-  'module',
-  'require',
-  'number',
-  'set',
-  'string',
-  'symbol',
-  'type',
-  'from',
-  'of',
-  // Strict mode reserved words
-  'as',
-  'implements',
-  'interface',
-  'let',
-  'package',
-  'private',
-  'protected',
-  'public',
-  'static',
-  'yield'
-];
 /**
  * Common renderer for TypeScript types
  * 
@@ -84,10 +22,6 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
     super(options, generator, presets, model, inputModel);
   }
 
-  static isReservedTypeScriptKeyword(word: string): boolean {
-    return ReservedTypeScriptKeywords.includes(word);
-  }
-
   /**
    * Renders the name of a type based on provided generator option naming convention type function.
    * 
@@ -98,7 +32,7 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
    */
   nameType(name: string | undefined, model?: CommonModel): string {
     return this.options?.namingConvention?.type 
-      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel, isReservedKeyword: TypeScriptRenderer.isReservedTypeScriptKeyword(`${name}`)})
+      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel, isReservedKeyword: isReservedTypeScriptKeyword(`${name}`)})
       : name || '';
   }
 
@@ -110,7 +44,7 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
    */
   nameProperty(propertyName: string | undefined, property?: CommonModel): string {
     return this.options?.namingConvention?.property 
-      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property, isReservedKeyword: TypeScriptRenderer.isReservedTypeScriptKeyword(`${propertyName}`) })
+      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property, isReservedKeyword: isReservedTypeScriptKeyword(`${propertyName}`) })
       : propertyName || '';
   }
 
