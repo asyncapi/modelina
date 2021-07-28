@@ -39,7 +39,7 @@ Below is a list of additional options available for a given generator.
 | `modelType` | String | It indicates which model type should be rendered for the `object` type. Its value can be either `interface` or `class`. | `class` |
 | `namingConvention` | Object | Options for naming conventions. | - |
 | `namingConvention.type` | Function | A function that returns the format of the type. | _Returns pascal cased name, and ensures that reserved keywords are never rendered__ |
-| `namingConvention.property` | Function | A function that returns the format of the property. | _Returns camel cased name, and ensures that names of properties does not clash against reserved keywords_ |
+| `namingConvention.property` | Function | A function that returns the format of the property. | _Returns camel cased name, and ensures that names of properties does not clash against reserved keywords for TS, as well as JS to ensure painless transpilation_ |
 
 ### [Java](../src/generators/java/JavaGenerator.ts)
 
