@@ -3,7 +3,89 @@ import { JavaScriptGenerator, JavaScriptOptions } from './JavaScriptGenerator';
 
 import { getUniquePropertyName, FormatHelpers, DefaultPropertyNames } from '../../helpers';
 import { CommonModel, CommonInputModel, Preset, PropertyType } from '../../models';
-
+const reservedJavaScriptKeywords = [
+  'abstract',
+  'arguments',
+  'await',
+  'boolean',
+  'break',
+  'byte',
+  'case',
+  'catch',
+  'char',
+  'class',
+  'const',
+  'continue',
+  'debugger',
+  'default',
+  'delete',
+  'do',
+  'double',
+  'else',
+  'enum',
+  'eval',
+  'export',
+  'extends',
+  'false',
+  'final',
+  'finally',
+  'float',
+  'for',
+  'function',
+  'goto',
+  'if',
+  'implements',
+  'import',
+  'in',
+  'instanceof',
+  'int',
+  'interface',
+  'let',
+  'long',
+  'native',
+  'new',
+  'null',
+  'package',
+  'private',
+  'protected',
+  'public',
+  'return',
+  'short',
+  'static',
+  'super',
+  'switch',
+  'synchronized',
+  'this',
+  'throw',
+  'throws',
+  'transient',
+  'true',
+  'try',
+  'typeof',
+  'var',
+  'void',
+  'volatile',
+  'while',
+  'with',
+  'yield',
+  // Reserved for > ECMAScript 5/6
+  'abstract', 
+  'boolean', 
+  'byte', 
+  'char',
+  'double', 
+  'final', 
+  'float', 
+  'goto',
+  'int', 
+  'long', 
+  'native', 
+  'short',
+  'synchronized', 
+  'throws', 
+  'transient', 
+  'volatile'
+];
 /**
  * Common renderer for JavaScript types
  * 
@@ -20,6 +102,10 @@ export abstract class JavaScriptRenderer extends AbstractRenderer<JavaScriptOpti
     super(options, generator, presets, model, inputModel);
   }
 
+  static isReservedJavaScriptKeyword(word: string): boolean {
+    return reservedJavaScriptKeywords.includes(word);
+  }
+
   /**
    * Renders the name of a type based on provided generator option naming convention type function.
    * 
@@ -30,7 +116,7 @@ export abstract class JavaScriptRenderer extends AbstractRenderer<JavaScriptOpti
    */
   nameType(name: string | undefined, model?: CommonModel): string {
     return this.options?.namingConvention?.type 
-      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel })
+      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel, isReservedKeyword: JavaScriptRenderer.isReservedJavaScriptKeyword(`${name}`) })
       : name || '';
   }
 
@@ -42,7 +128,7 @@ export abstract class JavaScriptRenderer extends AbstractRenderer<JavaScriptOpti
    */
   nameProperty(propertyName: string | undefined, property?: CommonModel): string {
     return this.options?.namingConvention?.property 
-      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property })
+      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property, isReservedKeyword: JavaScriptRenderer.isReservedJavaScriptKeyword(`${propertyName}`) })
       : propertyName || '';
   }
 

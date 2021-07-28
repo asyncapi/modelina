@@ -55,8 +55,8 @@ Below is a list of additional options available for a given generator.
 | Option | Type | Description | Default value |
 |---|---|---|---|
 | `namingConvention` | Object | Options for naming conventions. | - |
-| `namingConvention.type` | Function | A function that returns the format of the type. | _Returns pascal cased name_ |
-| `namingConvention.property` | Function | A function that returns the format of the property. | _Returns camel cased name_ |
+| `namingConvention.type` | Function | A function that returns the format of the type. | _Returns pascal cased name, and ensures that reserved keywords are never rendered_ |
+| `namingConvention.property` | Function | A function that returns the format of the property. | _Returns camel cased name, and ensures that names of properties does not clash against reserved keywords_ |
 
 ### [Go](../src/generators/javascript/GoGenerator.ts)
 
