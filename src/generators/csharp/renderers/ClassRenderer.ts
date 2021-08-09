@@ -1,6 +1,7 @@
 import { CSharpRenderer } from '../CSharpRenderer';
 import { ClassPreset, CommonModel, PropertyType } from '../../../models';
-import { DefaultPropertyNames, FormatHelpers, getUniquePropertyName } from '../../../helpers';
+import { DefaultPropertyNames, getUniquePropertyName } from '../../../helpers';
+import { pascalCase } from 'change-case';
 
 /**
  * Renderer for CSharp's `struct` type
@@ -55,26 +56,32 @@ ${this.indent(this.renderBlock(content, 2))}
   async renderAccessors(): Promise<string> {
     const properties = this.model.properties || {};
     const content: string[] = [];
+    const accessorFactory = async (property: CommonModel, propertyName: string, type: PropertyType) => {
+      const formattedPropertyName = pascalCase(this.nameProperty(propertyName, property));
+      let propertyType = this.renderType(property);
+      if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
+        propertyType = `Dictionary<string, ${propertyType}>`;
+      }
+      return `public ${propertyType} ${formattedPropertyName} 
+{
+  ${await this.runGetterPreset(propertyName, property, type)}
+  ${await this.runSetterPreset(propertyName, property, type)}
+}`;
+    };
 
     for (const [propertyName, property] of Object.entries(properties)) {
-      const getter = await this.runGetterPreset(propertyName, property);
-      const setter = await this.runSetterPreset(propertyName, property);
-      content.push(this.renderBlock([getter, setter]));
+      content.push(await accessorFactory(property, propertyName, PropertyType.property));
     }
 
     if (this.model.additionalProperties !== undefined) {
       const propertyName = getUniquePropertyName(this.model, DefaultPropertyNames.additionalProperties);
-      const getter = await this.runGetterPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
-      const setter = await this.runSetterPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
-      content.push(this.renderBlock([getter, setter]));
+      content.push(await accessorFactory(this.model.additionalProperties, propertyName, PropertyType.additionalProperty));
     }
 
     if (this.model.patternProperties !== undefined) {
       for (const [pattern, patternModel] of Object.entries(this.model.patternProperties)) {
         const propertyName = getUniquePropertyName(this.model, `${pattern}${DefaultPropertyNames.patternProperties}`);
-        const getter = await this.runGetterPreset(propertyName, patternModel, PropertyType.patternProperties);
-        const setter = await this.runSetterPreset(propertyName, patternModel, PropertyType.patternProperties);
-        content.push(this.renderBlock([getter, setter]));
+        content.push(await accessorFactory(patternModel, propertyName, PropertyType.patternProperties));
       }
     }
 
@@ -106,26 +113,16 @@ export const CSHARP_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
     propertyName = renderer.nameProperty(propertyName, property);
     let propertyType = renderer.renderType(property);
     if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
-      propertyType = `Dictionary<String, ${propertyType}>`;
+      propertyType = `Dictionary<string, ${propertyType}>`;
     }
     return `private ${propertyType} ${propertyName};`;
   },
-  getter({ renderer, propertyName, property, type }) {
+  getter({ renderer, propertyName, property }) {
     const formattedPropertyName = renderer.nameProperty(propertyName, property);
-    const getterName = `get${FormatHelpers.toPascalCase(propertyName)}`;
-    let getterType = renderer.renderType(property);
-    if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
-      getterType = `Dictionary<String, ${getterType}>`;
-    }
-    return `public ${getterType} ${getterName}() { return this.${formattedPropertyName}; }`;
+    return `get { return ${formattedPropertyName}; }`;
   },
-  setter({ renderer, propertyName, property, type }) {
+  setter({ renderer, propertyName, property }) {
     const formattedPropertyName = renderer.nameProperty(propertyName, property);
-    const setterName = FormatHelpers.toPascalCase(propertyName);
-    let setterType = renderer.renderType(property);
-    if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
-      setterType = `Dictionary<String, ${setterType}>`;
-    }
-    return `public void set${setterName}(${setterType} ${formattedPropertyName}) { this.${formattedPropertyName} = ${formattedPropertyName}; }`;
+    return `set { ${formattedPropertyName} = value; }`;
   }
 };

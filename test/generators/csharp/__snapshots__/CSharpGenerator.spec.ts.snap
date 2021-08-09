@@ -5,11 +5,17 @@ exports[`CSharpGenerator should not render reserved keyword 1`] = `
   private string reservedReservedEnum;
   private string reservedEnum;
 
-  public string getEnum() { return this.reservedReservedEnum; }
-  public void setEnum(string reservedReservedEnum) { this.reservedReservedEnum = reservedReservedEnum; }
+  public string ReservedReservedEnum 
+  {
+    get { return reservedReservedEnum; }
+    set { reservedReservedEnum = value; }
+  }
 
-  public string getReservedEnum() { return this.reservedEnum; }
-  public void setReservedEnum(string reservedEnum) { this.reservedEnum = reservedEnum; }
+  public string ReservedEnum 
+  {
+    get { return reservedEnum; }
+    set { reservedEnum = value; }
+  }
 }"
 `;
 
@@ -18,11 +24,17 @@ exports[`CSharpGenerator should not render reserved keyword 2`] = `
   private string reservedReservedEnum;
   private string reservedEnum;
 
-  public string getEnum() { return this.reservedReservedEnum; }
-  public void setEnum(string reservedReservedEnum) { this.reservedReservedEnum = reservedReservedEnum; }
+  public string ReservedReservedEnum 
+  {
+    get { return reservedReservedEnum; }
+    set { reservedReservedEnum = value; }
+  }
 
-  public string getReservedEnum() { return this.reservedEnum; }
-  public void setReservedEnum(string reservedEnum) { this.reservedEnum = reservedEnum; }
+  public string ReservedEnum 
+  {
+    get { return reservedEnum; }
+    set { reservedEnum = value; }
+  }
 }"
 `;
 
@@ -36,38 +48,68 @@ exports[`CSharpGenerator should render \`class\` type 1`] = `
   private dynamic members;
   private dynamic[] tupleType;
   private string[] arrayType;
-  private Dictionary<String, string> additionalProperties;
-  private Dictionary<String, string> sTestPatternProperties;
+  private Dictionary<string, string> additionalProperties;
+  private Dictionary<string, string> sTestPatternProperties;
 
-  public string getStreetName() { return this.streetName; }
-  public void setStreetName(string streetName) { this.streetName = streetName; }
+  public string StreetName 
+  {
+    get { return streetName; }
+    set { streetName = value; }
+  }
 
-  public string getCity() { return this.city; }
-  public void setCity(string city) { this.city = city; }
+  public string City 
+  {
+    get { return city; }
+    set { city = value; }
+  }
 
-  public string getState() { return this.state; }
-  public void setState(string state) { this.state = state; }
+  public string State 
+  {
+    get { return state; }
+    set { state = value; }
+  }
 
-  public float getHouseNumber() { return this.houseNumber; }
-  public void setHouseNumber(float houseNumber) { this.houseNumber = houseNumber; }
+  public float HouseNumber 
+  {
+    get { return houseNumber; }
+    set { houseNumber = value; }
+  }
 
-  public bool getMarriage() { return this.marriage; }
-  public void setMarriage(bool marriage) { this.marriage = marriage; }
+  public bool Marriage 
+  {
+    get { return marriage; }
+    set { marriage = value; }
+  }
 
-  public dynamic getMembers() { return this.members; }
-  public void setMembers(dynamic members) { this.members = members; }
+  public dynamic Members 
+  {
+    get { return members; }
+    set { members = value; }
+  }
 
-  public dynamic[] getTupleType() { return this.tupleType; }
-  public void setTupleType(dynamic[] tupleType) { this.tupleType = tupleType; }
+  public dynamic[] TupleType 
+  {
+    get { return tupleType; }
+    set { tupleType = value; }
+  }
 
-  public string[] getArrayType() { return this.arrayType; }
-  public void setArrayType(string[] arrayType) { this.arrayType = arrayType; }
+  public string[] ArrayType 
+  {
+    get { return arrayType; }
+    set { arrayType = value; }
+  }
 
-  public Dictionary<String, string> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Dictionary<String, string> additionalProperties) { this.additionalProperties = additionalProperties; }
+  public Dictionary<string, string> AdditionalProperties 
+  {
+    get { return additionalProperties; }
+    set { additionalProperties = value; }
+  }
 
-  public Dictionary<String, string> getSTestPatternProperties() { return this.sTestPatternProperties; }
-  public void setSTestPatternProperties(Dictionary<String, string> sTestPatternProperties) { this.sTestPatternProperties = sTestPatternProperties; }
+  public Dictionary<string, string> STestPatternProperties 
+  {
+    get { return sTestPatternProperties; }
+    set { sTestPatternProperties = value; }
+  }
 }"
 `;
 
@@ -81,61 +123,91 @@ exports[`CSharpGenerator should render \`class\` type 2`] = `
   private dynamic members;
   private dynamic[] tupleType;
   private string[] arrayType;
-  private Dictionary<String, string> additionalProperties;
-  private Dictionary<String, string> sTestPatternProperties;
+  private Dictionary<string, string> additionalProperties;
+  private Dictionary<string, string> sTestPatternProperties;
 
-  public string getStreetName() { return this.streetName; }
-  public void setStreetName(string streetName) { this.streetName = streetName; }
+  public string StreetName 
+  {
+    get { return streetName; }
+    set { streetName = value; }
+  }
 
-  public string getCity() { return this.city; }
-  public void setCity(string city) { this.city = city; }
+  public string City 
+  {
+    get { return city; }
+    set { city = value; }
+  }
 
-  public string getState() { return this.state; }
-  public void setState(string state) { this.state = state; }
+  public string State 
+  {
+    get { return state; }
+    set { state = value; }
+  }
 
-  public float getHouseNumber() { return this.houseNumber; }
-  public void setHouseNumber(float houseNumber) { this.houseNumber = houseNumber; }
+  public float HouseNumber 
+  {
+    get { return houseNumber; }
+    set { houseNumber = value; }
+  }
 
-  public bool getMarriage() { return this.marriage; }
-  public void setMarriage(bool marriage) { this.marriage = marriage; }
+  public bool Marriage 
+  {
+    get { return marriage; }
+    set { marriage = value; }
+  }
 
-  public dynamic getMembers() { return this.members; }
-  public void setMembers(dynamic members) { this.members = members; }
+  public dynamic Members 
+  {
+    get { return members; }
+    set { members = value; }
+  }
 
-  public dynamic[] getTupleType() { return this.tupleType; }
-  public void setTupleType(dynamic[] tupleType) { this.tupleType = tupleType; }
+  public dynamic[] TupleType 
+  {
+    get { return tupleType; }
+    set { tupleType = value; }
+  }
 
-  public string[] getArrayType() { return this.arrayType; }
-  public void setArrayType(string[] arrayType) { this.arrayType = arrayType; }
+  public string[] ArrayType 
+  {
+    get { return arrayType; }
+    set { arrayType = value; }
+  }
 
-  public Dictionary<String, string> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Dictionary<String, string> additionalProperties) { this.additionalProperties = additionalProperties; }
+  public Dictionary<string, string> AdditionalProperties 
+  {
+    get { return additionalProperties; }
+    set { additionalProperties = value; }
+  }
 
-  public Dictionary<String, string> getSTestPatternProperties() { return this.sTestPatternProperties; }
-  public void setSTestPatternProperties(Dictionary<String, string> sTestPatternProperties) { this.sTestPatternProperties = sTestPatternProperties; }
+  public Dictionary<string, string> STestPatternProperties 
+  {
+    get { return sTestPatternProperties; }
+    set { sTestPatternProperties = value; }
+  }
 }"
 `;
 
 exports[`CSharpGenerator should render \`enum\` type $name should not be empty 1`] = `
-"enum States {
+"public enum States {
   Texas, Alabama, California
 }"
 `;
 
 exports[`CSharpGenerator should render \`enum\` type $name should not be empty 2`] = `
-"enum States {
+"public enum States {
   Texas, Alabama, California
 }"
 `;
 
 exports[`CSharpGenerator should render \`enum\` type $name should not be empty 3`] = `
-"enum Things {
+"public enum Things {
   Texas, Number_1, False
 }"
 `;
 
 exports[`CSharpGenerator should render \`enum\` type $name should not be empty 4`] = `
-"enum Things {
+"public enum Things {
   Texas, Number_1, False
 }"
 `;
@@ -145,22 +217,28 @@ exports[`CSharpGenerator should work custom preset for \`class\` type 1`] = `
   private property string
   private additionalProperties string
 
-  public string getProperty() { return this.property; }
-  public void setProperty(string property) { this.property = property; }
+  public string Property 
+  {
+    get { return property; }
+    set { property = value; }
+  }
 
-  public Dictionary<String, string> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Dictionary<String, string> additionalProperties) { this.additionalProperties = additionalProperties; }
+  public Dictionary<string, string> AdditionalProperties 
+  {
+    get { return additionalProperties; }
+    set { additionalProperties = value; }
+  }
 }"
 `;
 
 exports[`CSharpGenerator should work custom preset for \`enum\` type 1`] = `
-"enum CustomEnum {
+"public enum CustomEnum {
   Texas, Alabama, California
 }"
 `;
 
 exports[`CSharpGenerator should work custom preset for \`enum\` type 2`] = `
-"enum CustomEnum {
+"public enum CustomEnum {
   Texas, Alabama, California
 }"
 `;

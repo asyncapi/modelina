@@ -13,7 +13,7 @@ export class EnumRenderer extends CSharpRenderer {
       await this.renderItems(),
     ];
     const formattedName = this.nameType(this.model.$id);
-    return `enum ${formattedName} {
+    return `public enum ${formattedName} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
   }
