@@ -32,7 +32,6 @@
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.7",
     "@asyncapi/parser": "^1.7.0",
-    "ajv": "^6.12.6",
     "change-case": "^4.1.2"
   },
   "devDependencies": {
@@ -43,6 +42,7 @@
     "@types/jest": "^26.0.15",
     "@typescript-eslint/eslint-plugin": "^4.15.0",
     "@typescript-eslint/parser": "^4.15.0",
+    "ajv": "^6.12.6",
     "conventional-changelog-conventionalcommits": "^4.5.0",
     "cross-env": "^7.0.2",
     "eslint": "^7.19.0",
