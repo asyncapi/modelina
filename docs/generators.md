@@ -8,6 +8,7 @@
 - [TypeScript](../src/generators/typescript/TypeScriptGenerator.ts),
 - [Java](../src/generators/java/JavaGenerator.ts).
 - [Go](../src/generators/go/GoGenerator.ts).
+- [C#](../src/generators/csharp/CSharpGenerator.ts).
 
 ## Generator's options
 
@@ -65,6 +66,14 @@ Below is a list of additional options available for a given generator.
 | `namingConvention` | Object | Options for naming conventions. | - |
 | `namingConvention.type` | Function | A function that returns the format of the type. | _Returns pascal cased name_ |
 | `namingConvention.field` | Function | A function that returns the format of the field. | _Returns pascal cased name_ |
+
+### [C#](../src/generators/csharp/CSharpGenerator.ts)
+
+| Option | Type | Description | Default value |
+|---|---|---|---|$
+| `namingConvention` | Object | Options for naming conventions. | - |
+| `namingConvention.type` | Function | A function that returns the format of the type. | _Returns pascal cased name, and ensures that reserved keywords are never rendered__ |
+| `namingConvention.property` | Function | A function that returns the format of the property. | _Returns camel cased name, and ensures that names of properties does not clash against reserved keywords_ |
 
 ## Custom generator
 
