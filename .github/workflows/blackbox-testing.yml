@@ -24,5 +24,8 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '11'
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
       - name: Test output
         run: npm run test:blackbox
