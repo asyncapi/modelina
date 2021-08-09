@@ -32,6 +32,7 @@
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.7",
     "@asyncapi/parser": "^1.7.0",
+    "ajv": "^6.12.6",
     "change-case": "^4.1.2"
   },
   "devDependencies": {
@@ -66,6 +67,7 @@
     "docker:test": "npm run docker:build && docker run asyncapi/modelina npm run test",
     "docker:test:blackbox": "npm run docker:build && docker run asyncapi/modelina npm run test:blackbox",
     "test": "cross-env CI=true jest --coverage --testPathIgnorePatterns ./test/blackbox",
+    "test:snapshot": "npm run test -- --updateSnapshot",
     "test:blackbox": "cross-env CI=true jest ./test/blackbox",
     "test:watch": "jest --watch",
     "docs": "npm run docs:markdown",
