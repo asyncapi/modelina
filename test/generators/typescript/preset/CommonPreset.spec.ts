@@ -1,6 +1,4 @@
 import { TypeScriptGenerator, TS_COMMON_PRESET } from '../../../../src/generators'; 
-import Ajv from 'ajv';
-
 describe('TS_COMMON_PRESET', () => {
   test('should render un/marshal code', async () => {
     const doc = {
