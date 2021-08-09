@@ -25,6 +25,6 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
       - name: Setup csc.exe
-        uses: yoavain/Setup-CSC@v5
+        uses: yoavain/Setup-CSC@v7
       - name: Test output
         run: npm run test:blackbox
