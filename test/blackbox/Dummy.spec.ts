@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { TypeScriptGenerator, JavaGenerator, JavaScriptGenerator, GoGenerator } from '../../src';
+import { TypeScriptGenerator, JavaGenerator, JavaScriptGenerator, GoGenerator, CSharpGenerator } from '../../src';
 import { execCommand, generateModels, renderModels } from './utils/Utils';
 import { renderJavaModelsToSeparateFiles } from './utils/Utils';
 const fileToGenerate = path.resolve(__dirname, './docs/dummy.json');
@@ -15,6 +15,15 @@ describe('Dummy JSON Schema file', () => {
       await renderJavaModelsToSeparateFiles(generatedModels, renderOutputPath);
       const compileCommand = `javac  -cp ${dependencyPath} ${path.resolve(renderOutputPath, '*.java')}`;
       await execCommand(compileCommand);
+    });
+  });
+  describe('should be able to generate and compile C#', () => {
+    test('class', async () => {
+      const generator = new CSharpGenerator();
+      const generatedModels = await generateModels(fileToGenerate, generator);
+      expect(generatedModels).not.toHaveLength(0);
+      const renderOutputPath = path.resolve(__dirname, './output/csharp/class.cs');
+      await renderModels(generatedModels, renderOutputPath);
     });
   });
 
