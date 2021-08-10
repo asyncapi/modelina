@@ -10,6 +10,7 @@ export interface TypeScriptCommonPresetOptions {
 function realizePropertyFactory(prop: string) {
   return `$\{typeof ${prop} === 'number' || typeof ${prop} === 'boolean' ? ${prop} : JSON.stringify(${prop})}`;
 }
+
 function renderMarshalProperties(model: CommonModel, renderer: TypeScriptRenderer) {
   const properties = model.properties || {};
   const propertyKeys = [...Object.entries(properties)];
@@ -25,6 +26,7 @@ function renderMarshalProperties(model: CommonModel, renderer: TypeScriptRendere
   });
   return marshalProperties.join('\n');
 }
+
 function renderMarshalPatternProperties(model: CommonModel, renderer: TypeScriptRenderer) {
   let marshalPatternProperties = '';
   if (model.patternProperties !== undefined) {
@@ -44,6 +46,7 @@ function renderMarshalPatternProperties(model: CommonModel, renderer: TypeScript
   }
   return marshalPatternProperties;
 }
+
 function renderMarshalAdditionalProperties(model: CommonModel, renderer: TypeScriptRenderer) {
   let marshalAdditionalProperties = '';
   if (model.additionalProperties !== undefined) {
@@ -61,6 +64,7 @@ function renderMarshalAdditionalProperties(model: CommonModel, renderer: TypeScr
   }
   return marshalAdditionalProperties;
 }
+
 /**
  * Render `marshal` function based on model
  */
@@ -122,6 +126,7 @@ function renderUnmarshalAdditionalProperties(model: CommonModel, renderer: TypeS
   }
   return {unmarshalAdditionalProperties, setAdditionalPropertiesMap};
 }
+
 /**
  * Render `unmarshal` function based on model
  */
