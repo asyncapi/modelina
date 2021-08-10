@@ -1,12 +1,11 @@
 import { TypeScriptRenderer } from '../TypeScriptRenderer';
 import { TypeScriptPreset } from '../TypeScriptPreset';
 
-import { getUniquePropertyName, FormatHelpers, DefaultPropertyNames } from '../../../helpers';
+import { getUniquePropertyName, DefaultPropertyNames } from '../../../helpers';
 import { CommonModel } from '../../../models';
 
 export interface TypeScriptCommonPresetOptions {
-  marshal: boolean;
-  unmarshal: boolean;
+  marshalling: boolean;
 }
 
 /**
@@ -16,14 +15,17 @@ function renderMarshal({ renderer, model }: {
   renderer: TypeScriptRenderer,
   model: CommonModel,
 }): string {
+  const realizePropertyFactory = (prop: string) => {
+    return `$\{typeof ${prop} === 'number' || typeof ${prop} === 'boolean' ? ${prop} : JSON.stringify(${prop})}`;
+  };
   const properties = model.properties || {};
   const propertyKeys = [...Object.entries(properties)];
   const marshalProperties = propertyKeys.map(([prop, propModel]) => {
-    const camelCasedProp = FormatHelpers.toCamelCase(prop);
-    const propMarshalReference = `json += \`"${camelCasedProp}": $\{this.${camelCasedProp}.marshal()},\`;`;
-    const propMarshal = `json += \`"${camelCasedProp}": $\{JSON.stringify(this.${camelCasedProp})},\`;`;
+    const formattedPropertyName = renderer.nameProperty(prop, propModel);
+    const propMarshalReference = `json += \`"${prop}": $\{this.${formattedPropertyName}.marshal()},\`;`;
+    const propMarshal = `json += \`"${prop}": ${realizePropertyFactory(`this.${formattedPropertyName}`)},\`;`;
     const propMarshalCode = propModel.$ref !== undefined ? propMarshalReference : propMarshal;
-    return `if(this.${camelCasedProp} !== undefined) {
+    return `if(this.${formattedPropertyName} !== undefined) {
   ${propMarshalCode} 
 }`;
   }).join('\n');
@@ -37,7 +39,7 @@ function renderMarshal({ renderer, model }: {
   for (const [key, value] of this.${patternPropertyName}.entries()) {
     //Only render pattern properties which are not already a property
     if(Object.keys(this).includes(String(key))) continue;
-    ${patternModel.$ref !== undefined ? 'json += `"${key}": ${value.marshal()},`;' : 'json += `"${key}": ${JSON.stringify(value)},`;'}    
+    ${patternModel.$ref !== undefined ? 'json += `"${key}": ${value.marshal()},`;' : `json += \`"$\{key}": ${realizePropertyFactory('value')},\`;`}
   }
 }`;
     }
@@ -51,7 +53,7 @@ function renderMarshal({ renderer, model }: {
   for (const [key, value] of this.${additionalPropertyName}.entries()) {
     //Only render additionalProperties which are not already a property
     if(Object.keys(this).includes(String(key))) continue;
-    ${model.additionalProperties.$ref !== undefined ? 'json += `"${key}": ${value.marshal()},`;' : 'json += `"${key}": ${JSON.stringify(value)},`;'}    
+    ${model.additionalProperties.$ref !== undefined ? 'json += `"${key}": ${value.marshal()},`;' : `json += \`"$\{key}": ${realizePropertyFactory('value')},\`;`}    
   }
 }`;
   }
@@ -78,20 +80,22 @@ function renderUnmarshal({ renderer, model }: {
   const properties = model.properties || {};
   const propertyKeys = [...Object.entries(properties)];
   const unmarshalProperties = propertyKeys.map(([prop, propModel]) => {
-    const camelCasedProp = FormatHelpers.toCamelCase(prop);
-    const propUnmarshal = propModel.$ref !== undefined ? `${renderer.nameType(propModel.$ref)}.unmarshal(obj.${camelCasedProp})` : `obj.${camelCasedProp}`;
-    return `if (obj.${camelCasedProp} !== undefined) {
-  instance.${camelCasedProp} = ${propUnmarshal};
+    const formattedPropertyName = renderer.nameProperty(prop, propModel);
+    const propUnmarshal = propModel.$ref !== undefined ? `${renderer.nameType(propModel.$ref)}.unmarshal(obj["${prop}"])` : `obj["${prop}"]`;
+    return `if (obj["${prop}"] !== undefined) {
+  instance.${formattedPropertyName} = ${propUnmarshal};
 }`;
   }).join('\n');
 
   let unmarshalPatternProperties = '';
+  let setPatternPropertiesMap = '';
   if (model.patternProperties !== undefined) {
     for (const [pattern, patternModel] of Object.entries(model.patternProperties)) {
       let patternPropertyName = getUniquePropertyName(model, `${pattern}${DefaultPropertyNames.patternProperties}`);
       patternPropertyName = renderer.nameProperty(patternPropertyName, patternModel);
-      unmarshalPatternProperties += `if (key.match(new RegExp('${pattern}'))) {
-  if (instance.${patternPropertyName} === undefined) {instance.${patternPropertyName} = new Map();}
+      setPatternPropertiesMap = `if (instance.${patternPropertyName} === undefined) {instance.${patternPropertyName} = new Map();}`;
+      unmarshalPatternProperties += `//Check all pattern properties
+if (key.match(new RegExp('${pattern}'))) {
   instance.${patternPropertyName}.set(key, value as any);
   continue;
 }`;
@@ -99,26 +103,27 @@ function renderUnmarshal({ renderer, model }: {
   }  
 
   let unmarshalAdditionalProperties = '';
+  let setAdditionalPropertiesMap = '';
   if (model.additionalProperties !== undefined) {
     let additionalPropertyName = getUniquePropertyName(model, DefaultPropertyNames.additionalProperties);
     additionalPropertyName = renderer.nameProperty(additionalPropertyName, model.additionalProperties);
     const additionalPropertiesCast = model.additionalProperties.$ref !== undefined ? `${renderer.nameType(model.$id)}.unmarshal(value)` : 'value as any';
-    unmarshalAdditionalProperties = `if (instance.${additionalPropertyName} === undefined) {instance.${additionalPropertyName} = new Map();}
-instance.${additionalPropertyName}.set(key, ${additionalPropertiesCast});`;
+    setAdditionalPropertiesMap = `if (instance.${additionalPropertyName} === undefined) {instance.${additionalPropertyName} = new Map();}`;
+    unmarshalAdditionalProperties = `instance.${additionalPropertyName}.set(key, ${additionalPropertiesCast});`;
   }
   const formattedModelName = renderer.nameType(model.$id);
   const propertyNames = Object.keys(properties).map((prop => `"${prop}"`));
   return `public static unmarshal(json: string | object): ${formattedModelName} {
   const obj = typeof json === "object" ? json : JSON.parse(json);
-  const instance = new ${formattedModelName}({});
+  const instance = new ${formattedModelName}({} as any);
 
 ${renderer.indent(unmarshalProperties)}
 
   //Not part of core properties
+  ${setPatternPropertiesMap}
+  ${setAdditionalPropertiesMap}
   for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![${propertyNames}].includes(key);}))) {
-    //Check all pattern properties
 ${renderer.indent(unmarshalPatternProperties, 4)}
-
 ${renderer.indent(unmarshalAdditionalProperties, 4)}
   }
   return instance;
@@ -136,8 +141,10 @@ export const TS_COMMON_PRESET: TypeScriptPreset = {
       options = options || {};
       const blocks: string[] = [];
       
-      if (options.marshal === undefined || options.marshal === true) {blocks.push(renderMarshal({ renderer, model }));}
-      if (options.unmarshal === undefined || options.unmarshal === true) {blocks.push(renderUnmarshal({ renderer, model }));}
+      if (options.marshalling === true) {
+        blocks.push(renderMarshal({ renderer, model }));
+        blocks.push(renderUnmarshal({ renderer, model }));
+      }
       
       return renderer.renderBlock([content, ...blocks], 2);
     },

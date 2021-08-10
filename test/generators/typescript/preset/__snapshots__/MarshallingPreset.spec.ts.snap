@@ -1,15 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TS_COMMON_PRESET should render un/marshal code 1`] = `
+exports[`Marshalling preset should render un/marshal code 1`] = `
 "export class Test {
-  private _stringProp?: string;
+  private _stringProp: string;
   private _numberProp?: number;
   private _objectProp?: NestedTest;
   private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null | number>;
   private _sTestPatternProperties?: Map<String, string>;
 
   constructor(input: {
-    stringProp?: string,
+    stringProp: string,
     numberProp?: number,
     objectProp?: NestedTest,
   }) {
@@ -18,8 +18,8 @@ exports[`TS_COMMON_PRESET should render un/marshal code 1`] = `
     this._objectProp = input.objectProp;
   }
 
-  get stringProp(): string | undefined { return this._stringProp; }
-  set stringProp(stringProp: string | undefined) { this._stringProp = stringProp; }
+  get stringProp(): string { return this._stringProp; }
+  set stringProp(stringProp: string) { this._stringProp = stringProp; }
 
   get numberProp(): number | undefined { return this._numberProp; }
   set numberProp(numberProp: number | undefined) { this._numberProp = numberProp; }
@@ -36,10 +36,10 @@ exports[`TS_COMMON_PRESET should render un/marshal code 1`] = `
   public marshal() : string {
     let json = '{'
     if(this.stringProp !== undefined) {
-      json += \`\\"stringProp\\": \${JSON.stringify(this.stringProp)},\`; 
+      json += \`\\"string prop\\": \${typeof this.stringProp === 'number' || typeof this.stringProp === 'boolean' ? this.stringProp : JSON.stringify(this.stringProp)},\`; 
     }
     if(this.numberProp !== undefined) {
-      json += \`\\"numberProp\\": \${JSON.stringify(this.numberProp)},\`; 
+      json += \`\\"numberProp\\": \${typeof this.numberProp === 'number' || typeof this.numberProp === 'boolean' ? this.numberProp : JSON.stringify(this.numberProp)},\`; 
     }
     if(this.objectProp !== undefined) {
       json += \`\\"objectProp\\": \${this.objectProp.marshal()},\`; 
@@ -49,7 +49,7 @@ exports[`TS_COMMON_PRESET should render un/marshal code 1`] = `
       for (const [key, value] of this.sTestPatternProperties.entries()) {
         //Only render pattern properties which are not already a property
         if(Object.keys(this).includes(String(key))) continue;
-        json += \`\\"\${key}\\": \${JSON.stringify(value)},\`;    
+        json += \`\\"\${key}\\": \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;
       }
     }
 
@@ -57,7 +57,7 @@ exports[`TS_COMMON_PRESET should render un/marshal code 1`] = `
       for (const [key, value] of this.additionalProperties.entries()) {
         //Only render additionalProperties which are not already a property
         if(Object.keys(this).includes(String(key))) continue;
-        json += \`\\"\${key}\\": \${JSON.stringify(value)},\`;    
+        json += \`\\"\${key}\\": \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;    
       }
     }
 
@@ -67,28 +67,27 @@ exports[`TS_COMMON_PRESET should render un/marshal code 1`] = `
 
   public static unmarshal(json: string | object): Test {
     const obj = typeof json === \\"object\\" ? json : JSON.parse(json);
-    const instance = new Test({});
+    const instance = new Test({} as any);
 
-    if (obj.stringProp !== undefined) {
-      instance.stringProp = obj.stringProp;
+    if (obj[\\"string prop\\"] !== undefined) {
+      instance.stringProp = obj[\\"string prop\\"];
     }
-    if (obj.numberProp !== undefined) {
-      instance.numberProp = obj.numberProp;
+    if (obj[\\"numberProp\\"] !== undefined) {
+      instance.numberProp = obj[\\"numberProp\\"];
     }
-    if (obj.objectProp !== undefined) {
-      instance.objectProp = NestedTest.unmarshal(obj.objectProp);
+    if (obj[\\"objectProp\\"] !== undefined) {
+      instance.objectProp = NestedTest.unmarshal(obj[\\"objectProp\\"]);
     }
 
     //Not part of core properties
-    for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"stringProp\\",\\"numberProp\\",\\"objectProp\\"].includes(key);}))) {
+    if (instance.sTestPatternProperties === undefined) {instance.sTestPatternProperties = new Map();}
+    if (instance.additionalProperties === undefined) {instance.additionalProperties = new Map();}
+    for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"string prop\\",\\"numberProp\\",\\"objectProp\\"].includes(key);}))) {
       //Check all pattern properties
       if (key.match(new RegExp('^S(.?)test'))) {
-        if (instance.sTestPatternProperties === undefined) {instance.sTestPatternProperties = new Map();}
         instance.sTestPatternProperties.set(key, value as any);
         continue;
       }
-
-      if (instance.additionalProperties === undefined) {instance.additionalProperties = new Map();}
       instance.additionalProperties.set(key, value as any);
     }
     return instance;
@@ -96,7 +95,7 @@ exports[`TS_COMMON_PRESET should render un/marshal code 1`] = `
 }"
 `;
 
-exports[`TS_COMMON_PRESET should render un/marshal code 2`] = `
+exports[`Marshalling preset should render un/marshal code 2`] = `
 "export class NestedTest {
   private _stringProp?: string;
   private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null | number>;
@@ -116,7 +115,7 @@ exports[`TS_COMMON_PRESET should render un/marshal code 2`] = `
   public marshal() : string {
     let json = '{'
     if(this.stringProp !== undefined) {
-      json += \`\\"stringProp\\": \${JSON.stringify(this.stringProp)},\`; 
+      json += \`\\"stringProp\\": \${typeof this.stringProp === 'number' || typeof this.stringProp === 'boolean' ? this.stringProp : JSON.stringify(this.stringProp)},\`; 
     }
 
   
@@ -125,7 +124,7 @@ exports[`TS_COMMON_PRESET should render un/marshal code 2`] = `
       for (const [key, value] of this.additionalProperties.entries()) {
         //Only render additionalProperties which are not already a property
         if(Object.keys(this).includes(String(key))) continue;
-        json += \`\\"\${key}\\": \${JSON.stringify(value)},\`;    
+        json += \`\\"\${key}\\": \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;    
       }
     }
 
@@ -135,18 +134,17 @@ exports[`TS_COMMON_PRESET should render un/marshal code 2`] = `
 
   public static unmarshal(json: string | object): NestedTest {
     const obj = typeof json === \\"object\\" ? json : JSON.parse(json);
-    const instance = new NestedTest({});
+    const instance = new NestedTest({} as any);
 
-    if (obj.stringProp !== undefined) {
-      instance.stringProp = obj.stringProp;
+    if (obj[\\"stringProp\\"] !== undefined) {
+      instance.stringProp = obj[\\"stringProp\\"];
     }
 
     //Not part of core properties
+  
+    if (instance.additionalProperties === undefined) {instance.additionalProperties = new Map();}
     for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"stringProp\\"].includes(key);}))) {
-      //Check all pattern properties
     
-
-      if (instance.additionalProperties === undefined) {instance.additionalProperties = new Map();}
       instance.additionalProperties.set(key, value as any);
     }
     return instance;
