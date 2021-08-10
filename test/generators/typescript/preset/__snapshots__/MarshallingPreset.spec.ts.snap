@@ -44,7 +44,6 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
     if(this.objectProp !== undefined) {
       json += \`\\"objectProp\\": \${this.objectProp.marshal()},\`; 
     }
-
     if(this.sTestPatternProperties !== undefined) { 
       for (const [key, value] of this.sTestPatternProperties.entries()) {
         //Only render pattern properties which are not already a property
@@ -52,7 +51,6 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
         json += \`\\"\${key}\\": \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;
       }
     }
-
     if(this.additionalProperties !== undefined) { 
       for (const [key, value] of this.additionalProperties.entries()) {
         //Only render additionalProperties which are not already a property
@@ -117,9 +115,7 @@ exports[`Marshalling preset should render un/marshal code 2`] = `
     if(this.stringProp !== undefined) {
       json += \`\\"stringProp\\": \${typeof this.stringProp === 'number' || typeof this.stringProp === 'boolean' ? this.stringProp : JSON.stringify(this.stringProp)},\`; 
     }
-
   
-
     if(this.additionalProperties !== undefined) { 
       for (const [key, value] of this.additionalProperties.entries()) {
         //Only render additionalProperties which are not already a property

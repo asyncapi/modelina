@@ -1,6 +1,5 @@
 import { TypeScriptRenderer } from '../TypeScriptRenderer';
 import { TypeScriptPreset } from '../TypeScriptPreset';
-
 import { getUniquePropertyName, DefaultPropertyNames } from '../../../helpers';
 import { CommonModel } from '../../../models';
 
@@ -8,16 +7,10 @@ export interface TypeScriptCommonPresetOptions {
   marshalling: boolean;
 }
 
-/**
- * Render `marshal` function based on model
- */
-function renderMarshal({ renderer, model }: {
-  renderer: TypeScriptRenderer,
-  model: CommonModel,
-}): string {
-  const realizePropertyFactory = (prop: string) => {
-    return `$\{typeof ${prop} === 'number' || typeof ${prop} === 'boolean' ? ${prop} : JSON.stringify(${prop})}`;
-  };
+function realizePropertyFactory(prop: string) {
+  return `$\{typeof ${prop} === 'number' || typeof ${prop} === 'boolean' ? ${prop} : JSON.stringify(${prop})}`;
+}
+function renderMarshalProperties(model: CommonModel, renderer: TypeScriptRenderer) {
   const properties = model.properties || {};
   const propertyKeys = [...Object.entries(properties)];
   const marshalProperties = propertyKeys.map(([prop, propModel]) => {
@@ -28,8 +21,10 @@ function renderMarshal({ renderer, model }: {
     return `if(this.${formattedPropertyName} !== undefined) {
   ${propMarshalCode} 
 }`;
-  }).join('\n');
-
+  });
+  return marshalProperties.join('\n');
+}
+function renderMarshalPatternProperties(model: CommonModel, renderer: TypeScriptRenderer) {
   let marshalPatternProperties = '';
   if (model.patternProperties !== undefined) {
     for (const [pattern, patternModel] of Object.entries(model.patternProperties)) {
@@ -43,8 +38,10 @@ function renderMarshal({ renderer, model }: {
   }
 }`;
     }
-  }  
-
+  }
+  return marshalPatternProperties;
+}
+function renderMarshalAdditionalProperties(model: CommonModel, renderer: TypeScriptRenderer) {
   let marshalAdditionalProperties = '';
   if (model.additionalProperties !== undefined) {
     let additionalPropertyName = getUniquePropertyName(model, DefaultPropertyNames.additionalProperties);
@@ -57,26 +54,27 @@ function renderMarshal({ renderer, model }: {
   }
 }`;
   }
+  return marshalAdditionalProperties;
+}
+/**
+ * Render `marshal` function based on model
+ */
+function renderMarshal({ renderer, model }: {
+  renderer: TypeScriptRenderer,
+  model: CommonModel,
+}): string {
   return `public marshal() : string {
   let json = '{'
-${renderer.indent(marshalProperties)}
-
-${renderer.indent(marshalPatternProperties)}
-
-${renderer.indent(marshalAdditionalProperties)}
+${renderer.indent(renderMarshalProperties(model, renderer))}
+${renderer.indent(renderMarshalPatternProperties(model, renderer))}
+${renderer.indent(renderMarshalAdditionalProperties(model, renderer))}
 
   //Remove potential last comma 
   return \`$\{json.charAt(json.length-1) === ',' ? json.slice(0, json.length-1) : json}}\`;
 }`;
 } 
 
-/**
- * Render `unmarshal` function based on model
- */
-function renderUnmarshal({ renderer, model }: {
-  renderer: TypeScriptRenderer,
-  model: CommonModel,
-}): string {
+function renderUnmarshalProperties(model: CommonModel, renderer: TypeScriptRenderer) {
   const properties = model.properties || {};
   const propertyKeys = [...Object.entries(properties)];
   const unmarshalProperties = propertyKeys.map(([prop, propModel]) => {
@@ -85,8 +83,11 @@ function renderUnmarshal({ renderer, model }: {
     return `if (obj["${prop}"] !== undefined) {
   instance.${formattedPropertyName} = ${propUnmarshal};
 }`;
-  }).join('\n');
+  });
+  return unmarshalProperties.join('\n');
+}
 
+function renderUnmarshalPatternProperties(model: CommonModel, renderer: TypeScriptRenderer) {
   let unmarshalPatternProperties = '';
   let setPatternPropertiesMap = '';
   if (model.patternProperties !== undefined) {
@@ -100,8 +101,11 @@ if (key.match(new RegExp('${pattern}'))) {
   continue;
 }`;
     }
-  }  
+  }
+  return {unmarshalPatternProperties, setPatternPropertiesMap};
+}
 
+function renderUnmarshalAdditionalProperties(model: CommonModel, renderer: TypeScriptRenderer) {
   let unmarshalAdditionalProperties = '';
   let setAdditionalPropertiesMap = '';
   if (model.additionalProperties !== undefined) {
@@ -111,13 +115,25 @@ if (key.match(new RegExp('${pattern}'))) {
     setAdditionalPropertiesMap = `if (instance.${additionalPropertyName} === undefined) {instance.${additionalPropertyName} = new Map();}`;
     unmarshalAdditionalProperties = `instance.${additionalPropertyName}.set(key, ${additionalPropertiesCast});`;
   }
+  return {unmarshalAdditionalProperties, setAdditionalPropertiesMap};
+}
+/**
+ * Render `unmarshal` function based on model
+ */
+function renderUnmarshal({ renderer, model }: {
+  renderer: TypeScriptRenderer,
+  model: CommonModel,
+}): string {
+  const properties = model.properties || {};
+  const {unmarshalPatternProperties, setPatternPropertiesMap} = renderUnmarshalPatternProperties(model, renderer);
+  const {unmarshalAdditionalProperties, setAdditionalPropertiesMap} = renderUnmarshalAdditionalProperties(model, renderer);
   const formattedModelName = renderer.nameType(model.$id);
   const propertyNames = Object.keys(properties).map((prop => `"${prop}"`));
   return `public static unmarshal(json: string | object): ${formattedModelName} {
   const obj = typeof json === "object" ? json : JSON.parse(json);
   const instance = new ${formattedModelName}({} as any);
 
-${renderer.indent(unmarshalProperties)}
+${renderer.indent(renderUnmarshalProperties(model, renderer))}
 
   //Not part of core properties
   ${setPatternPropertiesMap}
