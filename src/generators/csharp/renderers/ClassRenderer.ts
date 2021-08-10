@@ -61,8 +61,8 @@ ${this.indent(this.renderBlock(content, 2))}
     }
     return `public ${propertyType} ${formattedAccessorName} 
 {
-${await this.runGetterPreset(propertyName, property, type)}
-${await this.runSetterPreset(propertyName, property, type)}
+  ${await this.runGetterPreset(propertyName, property, type)}
+  ${await this.runSetterPreset(propertyName, property, type)}
 }`;
   }
   async renderAccessors(): Promise<string> {
