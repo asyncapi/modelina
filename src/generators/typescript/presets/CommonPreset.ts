@@ -15,8 +15,9 @@ function renderMarshalProperties(model: CommonModel, renderer: TypeScriptRendere
   const propertyKeys = [...Object.entries(properties)];
   const marshalProperties = propertyKeys.map(([prop, propModel]) => {
     const formattedPropertyName = renderer.nameProperty(prop, propModel);
+    const modelInstanceVariable = `this.${formattedPropertyName}`;
     const propMarshalReference = `json += \`"${prop}": $\{this.${formattedPropertyName}.marshal()},\`;`;
-    const propMarshal = `json += \`"${prop}": ${realizePropertyFactory(`this.${formattedPropertyName}`)},\`;`;
+    const propMarshal = `json += \`"${prop}": ${realizePropertyFactory(modelInstanceVariable)},\`;`;
     const propMarshalCode = propModel.$ref !== undefined ? propMarshalReference : propMarshal;
     return `if(this.${formattedPropertyName} !== undefined) {
   ${propMarshalCode} 
@@ -30,11 +31,13 @@ function renderMarshalPatternProperties(model: CommonModel, renderer: TypeScript
     for (const [pattern, patternModel] of Object.entries(model.patternProperties)) {
       let patternPropertyName = getUniquePropertyName(model, `${pattern}${DefaultPropertyNames.patternProperties}`);
       patternPropertyName = renderer.nameProperty(patternPropertyName, patternModel);
+      const patternPropertyMarshalReference = 'json += `"${key}": ${value.marshal()},`;';
+      const patternPropertyMarshal = `json += \`"$\{key}": ${realizePropertyFactory('value')},\`;`;
       marshalPatternProperties += `if(this.${patternPropertyName} !== undefined) { 
   for (const [key, value] of this.${patternPropertyName}.entries()) {
     //Only render pattern properties which are not already a property
     if(Object.keys(this).includes(String(key))) continue;
-    ${patternModel.$ref !== undefined ? 'json += `"${key}": ${value.marshal()},`;' : `json += \`"$\{key}": ${realizePropertyFactory('value')},\`;`}
+    ${patternModel.$ref !== undefined ? patternPropertyMarshalReference : patternPropertyMarshal}
   }
 }`;
     }
@@ -46,11 +49,13 @@ function renderMarshalAdditionalProperties(model: CommonModel, renderer: TypeScr
   if (model.additionalProperties !== undefined) {
     let additionalPropertyName = getUniquePropertyName(model, DefaultPropertyNames.additionalProperties);
     additionalPropertyName = renderer.nameProperty(additionalPropertyName, model.additionalProperties);
+    const additionalPropertyMarshalReference = 'json += `"${key}": ${value.marshal()},`;';
+    const additionalPropertyMarshal = `json += \`"$\{key}": ${realizePropertyFactory('value')},\`;`;
     marshalAdditionalProperties = `if(this.${additionalPropertyName} !== undefined) { 
   for (const [key, value] of this.${additionalPropertyName}.entries()) {
     //Only render additionalProperties which are not already a property
     if(Object.keys(this).includes(String(key))) continue;
-    ${model.additionalProperties.$ref !== undefined ? 'json += `"${key}": ${value.marshal()},`;' : `json += \`"$\{key}": ${realizePropertyFactory('value')},\`;`}    
+    ${model.additionalProperties.$ref !== undefined ? additionalPropertyMarshalReference : additionalPropertyMarshal}    
   }
 }`;
   }
