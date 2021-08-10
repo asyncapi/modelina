@@ -53,35 +53,35 @@ ${this.indent(this.renderBlock(content, 2))}
     return this.renderBlock(content);
   }
 
+  async accessorFactory(property: CommonModel, propertyName: string, type: PropertyType): Promise<string> {
+    const formattedAccessorName = pascalCase(this.nameProperty(propertyName, property));
+    let propertyType = this.renderType(property);
+    if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
+      propertyType = `Dictionary<string, ${propertyType}>`;
+    }
+    return `public ${propertyType} ${formattedAccessorName} 
+{
+${await this.runGetterPreset(propertyName, property, type)}
+${await this.runSetterPreset(propertyName, property, type)}
+}`;
+  }
   async renderAccessors(): Promise<string> {
     const properties = this.model.properties || {};
     const content: string[] = [];
-    const accessorFactory = async (property: CommonModel, propertyName: string, type: PropertyType) => {
-      const formattedAccessorName = pascalCase(this.nameProperty(propertyName, property));
-      let propertyType = this.renderType(property);
-      if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
-        propertyType = `Dictionary<string, ${propertyType}>`;
-      }
-      return `public ${propertyType} ${formattedAccessorName} 
-{
-  ${await this.runGetterPreset(propertyName, property, type)}
-  ${await this.runSetterPreset(propertyName, property, type)}
-}`;
-    };
 
     for (const [propertyName, property] of Object.entries(properties)) {
-      content.push(await accessorFactory(property, propertyName, PropertyType.property));
+      content.push(await this.accessorFactory(property, propertyName, PropertyType.property));
     }
 
     if (this.model.additionalProperties !== undefined) {
       const propertyName = getUniquePropertyName(this.model, DefaultPropertyNames.additionalProperties);
-      content.push(await accessorFactory(this.model.additionalProperties, propertyName, PropertyType.additionalProperty));
+      content.push(await this.accessorFactory(this.model.additionalProperties, propertyName, PropertyType.additionalProperty));
     }
 
     if (this.model.patternProperties !== undefined) {
       for (const [pattern, patternModel] of Object.entries(this.model.patternProperties)) {
         const propertyName = getUniquePropertyName(this.model, `${pattern}${DefaultPropertyNames.patternProperties}`);
-        content.push(await accessorFactory(patternModel, propertyName, PropertyType.patternProperties));
+        content.push(await this.accessorFactory(patternModel, propertyName, PropertyType.patternProperties));
       }
     }
 
