@@ -57,12 +57,12 @@ ${this.indent(this.renderBlock(content, 2))}
     const properties = this.model.properties || {};
     const content: string[] = [];
     const accessorFactory = async (property: CommonModel, propertyName: string, type: PropertyType) => {
-      const formattedPropertyName = pascalCase(this.nameProperty(propertyName, property));
+      const formattedAccessorName = pascalCase(this.nameProperty(propertyName, property));
       let propertyType = this.renderType(property);
       if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
         propertyType = `Dictionary<string, ${propertyType}>`;
       }
-      return `public ${propertyType} ${formattedPropertyName} 
+      return `public ${propertyType} ${formattedAccessorName} 
 {
   ${await this.runGetterPreset(propertyName, property, type)}
   ${await this.runSetterPreset(propertyName, property, type)}
