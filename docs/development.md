@@ -15,6 +15,7 @@ To setup the environment follow these steps:
 1. Setup the project by first installing the dependencies `npm install`
 2. Make sure the tests pass by running `npm run test` script
     - [blackbox testing](#blackbox-testing) are excluded when running the `test` script because it require some extra setup. Please refer to [Blackbox testing section](#blackbox-testing) below.
+    - You can update snapshots by running `npm run test:snapshots`
 3. Make sure code is well formatted and secure `npm run lint`
 
 ## Blackbox testing
