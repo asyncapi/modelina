@@ -30,7 +30,8 @@ export async function execCommand(command: string) : Promise<void> {
       Promise.reject(stderr);
     }
   } catch (e) {
-    Promise.reject(e);
+    const wrapperError = new Error(`Error: ${e.stack}; Stdout: ${e.stdout}`);
+    Promise.reject(wrapperError);
   }
 }
 
@@ -40,11 +41,11 @@ export async function execCommand(command: string) : Promise<void> {
  * @param generatedModels to write to file
  * @param outputPath absolute path to output directory
  */
-export async function renderJavaModelsToSeparateFiles(generatedModels: OutputModel[], outputPath: string): Promise<void> {
+export async function renderModelsToSeparateFiles(generatedModels: OutputModel[], outputPath: string, extension: string): Promise<void> {
   await fs.rm(outputPath, { recursive: true, force: true });
   await fs.mkdir(outputPath, { recursive: true });
   for (const outputModel of generatedModels) {
-    const outputFilePath = path.resolve(outputPath, `${FormatHelpers.toPascalCase(outputModel.model.$id || 'undefined')}.java`);
+    const outputFilePath = path.resolve(outputPath, `${FormatHelpers.toPascalCase(outputModel.model.$id || 'undefined')}.${extension}`);
     const outputContent = `
 ${outputModel.dependencies.join('\n')}
 ${outputModel.result}

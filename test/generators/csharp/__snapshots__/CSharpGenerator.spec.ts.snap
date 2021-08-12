@@ -1,0 +1,244 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CSharpGenerator should not render reserved keyword 1`] = `
+"public class Address {
+  private string reservedReservedEnum;
+  private string reservedEnum;
+
+  public string ReservedReservedEnum 
+  {
+    get { return reservedReservedEnum; }
+    set { reservedReservedEnum = value; }
+  }
+
+  public string ReservedEnum 
+  {
+    get { return reservedEnum; }
+    set { reservedEnum = value; }
+  }
+}"
+`;
+
+exports[`CSharpGenerator should not render reserved keyword 2`] = `
+"public class Address {
+  private string reservedReservedEnum;
+  private string reservedEnum;
+
+  public string ReservedReservedEnum 
+  {
+    get { return reservedReservedEnum; }
+    set { reservedReservedEnum = value; }
+  }
+
+  public string ReservedEnum 
+  {
+    get { return reservedEnum; }
+    set { reservedEnum = value; }
+  }
+}"
+`;
+
+exports[`CSharpGenerator should render \`class\` type 1`] = `
+"public class Address {
+  private string streetName;
+  private string city;
+  private string state;
+  private float houseNumber;
+  private bool marriage;
+  private dynamic members;
+  private dynamic[] tupleType;
+  private string[] arrayType;
+  private Dictionary<string, string> additionalProperties;
+  private Dictionary<string, string> sTestPatternProperties;
+
+  public string StreetName 
+  {
+    get { return streetName; }
+    set { streetName = value; }
+  }
+
+  public string City 
+  {
+    get { return city; }
+    set { city = value; }
+  }
+
+  public string State 
+  {
+    get { return state; }
+    set { state = value; }
+  }
+
+  public float HouseNumber 
+  {
+    get { return houseNumber; }
+    set { houseNumber = value; }
+  }
+
+  public bool Marriage 
+  {
+    get { return marriage; }
+    set { marriage = value; }
+  }
+
+  public dynamic Members 
+  {
+    get { return members; }
+    set { members = value; }
+  }
+
+  public dynamic[] TupleType 
+  {
+    get { return tupleType; }
+    set { tupleType = value; }
+  }
+
+  public string[] ArrayType 
+  {
+    get { return arrayType; }
+    set { arrayType = value; }
+  }
+
+  public Dictionary<string, string> AdditionalProperties 
+  {
+    get { return additionalProperties; }
+    set { additionalProperties = value; }
+  }
+
+  public Dictionary<string, string> STestPatternProperties 
+  {
+    get { return sTestPatternProperties; }
+    set { sTestPatternProperties = value; }
+  }
+}"
+`;
+
+exports[`CSharpGenerator should render \`class\` type 2`] = `
+"public class Address {
+  private string streetName;
+  private string city;
+  private string state;
+  private float houseNumber;
+  private bool marriage;
+  private dynamic members;
+  private dynamic[] tupleType;
+  private string[] arrayType;
+  private Dictionary<string, string> additionalProperties;
+  private Dictionary<string, string> sTestPatternProperties;
+
+  public string StreetName 
+  {
+    get { return streetName; }
+    set { streetName = value; }
+  }
+
+  public string City 
+  {
+    get { return city; }
+    set { city = value; }
+  }
+
+  public string State 
+  {
+    get { return state; }
+    set { state = value; }
+  }
+
+  public float HouseNumber 
+  {
+    get { return houseNumber; }
+    set { houseNumber = value; }
+  }
+
+  public bool Marriage 
+  {
+    get { return marriage; }
+    set { marriage = value; }
+  }
+
+  public dynamic Members 
+  {
+    get { return members; }
+    set { members = value; }
+  }
+
+  public dynamic[] TupleType 
+  {
+    get { return tupleType; }
+    set { tupleType = value; }
+  }
+
+  public string[] ArrayType 
+  {
+    get { return arrayType; }
+    set { arrayType = value; }
+  }
+
+  public Dictionary<string, string> AdditionalProperties 
+  {
+    get { return additionalProperties; }
+    set { additionalProperties = value; }
+  }
+
+  public Dictionary<string, string> STestPatternProperties 
+  {
+    get { return sTestPatternProperties; }
+    set { sTestPatternProperties = value; }
+  }
+}"
+`;
+
+exports[`CSharpGenerator should render \`enum\` type $name should not be empty 1`] = `
+"public enum States {
+  Texas, Alabama, California
+}"
+`;
+
+exports[`CSharpGenerator should render \`enum\` type $name should not be empty 2`] = `
+"public enum States {
+  Texas, Alabama, California
+}"
+`;
+
+exports[`CSharpGenerator should render \`enum\` type $name should not be empty 3`] = `
+"public enum Things {
+  Texas, Number_1, False
+}"
+`;
+
+exports[`CSharpGenerator should render \`enum\` type $name should not be empty 4`] = `
+"public enum Things {
+  Texas, Number_1, False
+}"
+`;
+
+exports[`CSharpGenerator should work custom preset for \`class\` type 1`] = `
+"public class CustomClass {
+  private property string
+  private additionalProperties string
+
+  public string Property 
+  {
+    get { return property; }
+    set { property = value; }
+  }
+
+  public Dictionary<string, string> AdditionalProperties 
+  {
+    get { return additionalProperties; }
+    set { additionalProperties = value; }
+  }
+}"
+`;
+
+exports[`CSharpGenerator should work custom preset for \`enum\` type 1`] = `
+"public enum CustomEnum {
+  Texas, Alabama, California
+}"
+`;
+
+exports[`CSharpGenerator should work custom preset for \`enum\` type 2`] = `
+"public enum CustomEnum {
+  Texas, Alabama, California
+}"
+`;

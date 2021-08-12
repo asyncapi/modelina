@@ -1,7 +1,6 @@
 import * as path from 'path';
-import { TypeScriptGenerator, JavaGenerator, JavaScriptGenerator, GoGenerator } from '../../src';
-import { execCommand, generateModels, renderModels } from './utils/Utils';
-import { renderJavaModelsToSeparateFiles } from './utils/Utils';
+import { TypeScriptGenerator, JavaGenerator, JavaScriptGenerator, GoGenerator, CSharpGenerator } from '../../src';
+import { execCommand, generateModels, renderModels, renderModelsToSeparateFiles } from './utils/Utils';
 const fileToGenerate = path.resolve(__dirname, './docs/dummy.json');
 describe('Dummy JSON Schema file', () => {
   jest.setTimeout(100000);
@@ -12,8 +11,19 @@ describe('Dummy JSON Schema file', () => {
       expect(generatedModels).not.toHaveLength(0);
       const renderOutputPath = path.resolve(__dirname, './output/java/class');
       const dependencyPath = path.resolve(__dirname, './dependencies/java/*');
-      await renderJavaModelsToSeparateFiles(generatedModels, renderOutputPath);
+      await renderModelsToSeparateFiles(generatedModels, renderOutputPath, 'java');
       const compileCommand = `javac  -cp ${dependencyPath} ${path.resolve(renderOutputPath, '*.java')}`;
+      await execCommand(compileCommand);
+    });
+  });
+  describe('should be able to generate and compile C#', () => {
+    test('class', async () => {
+      const generator = new CSharpGenerator();
+      const generatedModels = await generateModels(fileToGenerate, generator);
+      expect(generatedModels).not.toHaveLength(0);
+      const renderOutputPath = path.resolve(__dirname, './output/csharp');
+      await renderModelsToSeparateFiles(generatedModels, renderOutputPath, 'cs');
+      const compileCommand = `csc /target:library /out:${path.resolve(renderOutputPath, './compiled.dll')} ${path.resolve(renderOutputPath, '*.cs')}`;
       await execCommand(compileCommand);
     });
   });

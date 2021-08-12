@@ -201,3 +201,21 @@ There are no additional methods.
 | Method | Description | Additional arguments |
 |---|---|---|
 | `field` | A method to extend rendered given field. | `fieldName` as a name of a given field, `field` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
+
+
+### C#
+
+#### **Class**
+
+| Method | Description | Additional arguments |
+|---|---|---|
+| `ctor` | A method to extend rendered constructor for a given class. | - |
+| `property` | A method to extend rendered given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
+| `setter` | A method to extend setter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
+| `getter` | A method to extend getter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
+
+#### **Enum**
+
+| Method | Description | Additional arguments |
+|---|---|---|
+| `item` | A method to extend enum's item. | an `item` containing the value of enum's item. |

@@ -1,5 +1,4 @@
 import { Preset, ClassPreset, EnumPreset } from '../../models';
-
 import { ClassRenderer, JAVA_DEFAULT_CLASS_PRESET } from './renderers/ClassRenderer';
 import { EnumRenderer, JAVA_DEFAULT_ENUM_PRESET } from './renderers/EnumRenderer';
 
