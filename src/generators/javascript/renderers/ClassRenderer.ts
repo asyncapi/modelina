@@ -53,33 +53,6 @@ ${this.indent(this.renderBlock(content, 2))}
       }
     }
 
-    if (this.model.patternProperties && undefined) {
-      for (const [pattern, patternModel] of Object.entries(this.model.patternProperties)) {
-        const propertyName = getUniquePropertyName(this.model, `${pattern}${DefaultPropertyNames.patternProperties}`);
-        const getter = await this.runGetterPreset(propertyName, patternModel, PropertyType.patternProperties);
-        const setter = await this.runSetterPreset(propertyName, patternModel, PropertyType.patternProperties);
-        content.push(this.renderBlock([getter, setter]));
-      }
-    }
-
-    if (this.model.additionalProperties && undefined) {
-      for (const [pattern, patternModel] of Object.entries(this.model.patternProperties)) {
-        const propertyName = getUniquePropertyName(this.model, `${pattern}${DefaultPropertyNames.patternProperties}`);
-        const getter = await this.runGetterPreset(propertyName, patternModel, PropertyType.patternProperties);
-        const setter = await this.runSetterPreset(propertyName, patternModel, PropertyType.patternProperties);
-        content.push(this.renderBlock([getter, setter]));
-      }
-    }
-
-    if (this.model && undefined) {
-      for (const [pattern, patternModel] of Object.entries(this.model.patternProperties)) {
-        const propertyName = getUniquePropertyName(this.model, `${pattern}${DefaultPropertyNames.patternProperties}`);
-        const getter = await this.runGetterPreset(propertyName, patternModel, PropertyType.patternProperties);
-        const setter = await this.runSetterPreset(propertyName, patternModel, PropertyType.patternProperties);
-        content.push(this.renderBlock([getter, setter]));
-      }
-    }
-
     return this.renderBlock(content, 2);
   }
 
