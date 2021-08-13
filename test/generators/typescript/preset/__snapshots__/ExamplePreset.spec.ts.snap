@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Marshalling preset should render un/marshal code 1`] = `
+"export class Test {
+  private _stringProp: string;
+  private _numberProp?: number;
+  private _objectProp?: NestedTest;
+  private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null | number>;
+  private _sTestPatternProperties?: Map<String, string>;
+
+  constructor(input: {
+    stringProp: string,
+    numberProp?: number,
+    objectProp?: NestedTest,
+  }) {
+    this._stringProp = input.stringProp;
+    this._numberProp = input.numberProp;
+    this._objectProp = input.objectProp;
+  }
+
+  get stringProp(): string { return this._stringProp; }
+  set stringProp(stringProp: string) { this._stringProp = stringProp; }
+
+  get numberProp(): number | undefined { return this._numberProp; }
+  set numberProp(numberProp: number | undefined) { this._numberProp = numberProp; }
+
+  get objectProp(): NestedTest | undefined { return this._objectProp; }
+  set objectProp(objectProp: NestedTest | undefined) { this._objectProp = objectProp; }
+
+  get additionalProperties(): Map<String, object | string | number | Array<unknown> | boolean | null | number> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<String, object | string | number | Array<unknown> | boolean | null | number> | undefined) { this._additionalProperties = additionalProperties; }
+
+  get sTestPatternProperties(): Map<String, string> | undefined { return this._sTestPatternProperties; }
+  set sTestPatternProperties(sTestPatternProperties: Map<String, string> | undefined) { this._sTestPatternProperties = sTestPatternProperties; }
+
+  public static example(): Test {
+    const instance = new Test({} as any);
+    instance.stringProp = \\"string\\";
+  instance.numberProp = 0;
+  instance.objectProp = NestedTest.example();
+    return instance;
+  }
+}"
+`;
+
+exports[`Marshalling preset should render un/marshal code 2`] = `
+"export class NestedTest {
+  private _stringProp?: string;
+  private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null | number>;
+
+  constructor(input: {
+    stringProp?: string,
+  }) {
+    this._stringProp = input.stringProp;
+  }
+
+  get stringProp(): string | undefined { return this._stringProp; }
+  set stringProp(stringProp: string | undefined) { this._stringProp = stringProp; }
+
+  get additionalProperties(): Map<String, object | string | number | Array<unknown> | boolean | null | number> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<String, object | string | number | Array<unknown> | boolean | null | number> | undefined) { this._additionalProperties = additionalProperties; }
+
+  public static example(): NestedTest {
+    const instance = new NestedTest({} as any);
+    instance.stringProp = \\"string\\";
+    return instance;
+  }
+}"
+`;

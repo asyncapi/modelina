@@ -5,6 +5,7 @@ import { CommonModel } from '../../../models';
 
 export interface TypeScriptCommonPresetOptions {
   marshalling: boolean;
+  example: boolean;
 }
 
 function realizePropertyFactory(prop: string) {
@@ -157,7 +158,79 @@ ${renderer.indent(unmarshalAdditionalProperties, 4)}
 } 
 
 /**
- * Preset which adds `marshal`, `unmarshal` functions to class. 
+ * LAZY implementation, find first acceptable value
+ * 
+ * @param model 
+ */
+function renderValueFromModel(model: CommonModel, renderer: TypeScriptRenderer): string | undefined {
+  if (model.enum !== undefined) {
+    return model.enum.map(value => typeof value === 'string' ? `"${value}"` : value).join(' | ');
+  }
+  if (model.$ref !== undefined) {
+    return `${renderer.nameType(model.$ref)}.example()`;
+  }
+  if (Array.isArray(model.type)) {
+    return renderValueFromType(model.type[0], model, renderer);
+  }
+  return renderValueFromType(model.type, model, renderer);
+}
+
+function renderValueFromType(modelType: string | undefined, model: CommonModel, renderer: TypeScriptRenderer) : string | undefined {
+  if (modelType === undefined) {
+    return undefined;
+  }
+  switch (modelType) { 
+  case 'string':
+    return '"string"';
+  case 'integer':
+  case 'number':
+    return '0';
+  case 'boolean':
+    return 'true';
+  case 'array': {
+    if (model.items === undefined) {
+      return undefined;
+    }
+    //Check and see if it should be rendered as tuples 
+    if (Array.isArray(model.items)) {
+      const arrayValues = model.items.map((item) => {
+        return renderValueFromModel(item, renderer);
+      });
+      return `[${arrayValues.join(', ')}]`;
+    } 
+    const arrayType = renderValueFromModel(model.items, renderer);
+    return `[${arrayType}]`;
+  }
+  }
+  return undefined;
+}
+/**
+ * Render `example` function based on model
+ */
+function renderExample({ renderer, model }: {
+  renderer: TypeScriptRenderer,
+  model: CommonModel,
+}): string {
+  const properties = model.properties || {};
+  const setProperties = [];
+  for (const [propertyName, property] of Object.entries(properties)) {
+    const formattedPropertyName = renderer.nameProperty(propertyName, property);
+    const potentialRenderedValue = renderValueFromModel(property, renderer);
+    if (potentialRenderedValue === undefined) { 
+      continue; 
+    }
+    setProperties.push(`instance.${formattedPropertyName} = ${potentialRenderedValue};`);
+  }
+  const formattedModelName = renderer.nameType(model.$id);
+  return `public static example(): ${formattedModelName} {
+  const instance = new ${formattedModelName}({} as any);
+  ${setProperties.join('\n')}
+  return instance;
+}`;
+} 
+
+/**
+ * Preset which adds `marshal`, `unmarshal`, `example` functions to class. 
  * 
  * @implements {TypeScriptPreset}
  */
@@ -170,6 +243,10 @@ export const TS_COMMON_PRESET: TypeScriptPreset = {
       if (options.marshalling === true) {
         blocks.push(renderMarshal({ renderer, model }));
         blocks.push(renderUnmarshal({ renderer, model }));
+      }
+
+      if (options.example === true) {
+        blocks.push(renderExample({ renderer, model }));
       }
       
       return renderer.renderBlock([content, ...blocks], 2);

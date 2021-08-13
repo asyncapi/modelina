@@ -10,7 +10,6 @@ import { ClassRenderer } from './renderers/ClassRenderer';
 import { InterfaceRenderer } from './renderers/InterfaceRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { TypeRenderer } from './renderers/TypeRenderer';
-import { ClassExampleRenderer } from './renderers/ClassExampleRenderer';
 
 export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPreset> {
   renderTypes?: boolean;
@@ -47,13 +46,6 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions> {
     }
     default: return this.renderType(model, inputModel);
     }
-  }
-
-  async renderExampleClass(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
-    const presets = this.getPresets('classExample'); 
-    const renderer = new ClassExampleRenderer(this.options, this, presets, model, inputModel);
-    const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({result, dependencies: renderer.dependencies});
   }
 
   async renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
