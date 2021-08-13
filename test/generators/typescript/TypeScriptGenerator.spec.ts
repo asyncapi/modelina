@@ -45,6 +45,48 @@ describe('TypeScriptGenerator', () => {
     expect(classModel.result).toEqual(expected);
   });
 
+  test('should render `class` example', async () => {
+    const doc = {
+      $id: '_address',
+      type: 'object',
+      properties: {
+        street_name: { type: 'string' },
+        city: { type: 'string', description: 'City description' },
+        state: { type: 'string' },
+        house_number: { type: 'number' },
+        marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
+        members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
+        tuple_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }], additionalItems: false },
+        tuple_type_with_additional_items: { type: 'array', items: [{ type: 'string' }, { type: 'number' }], additionalItems: true },
+        array_type: { type: 'array', items: { type: 'string' } },
+      },
+      patternProperties: {
+        '^S(.?*)test&': {
+          type: 'string'
+        }
+      },
+      required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+    };
+    const expected = `const exampleAddress = new Address();
+exampleAddress.streetName = "string";
+exampleAddress.city = "string";
+exampleAddress.state = "string";
+exampleAddress.houseNumber = 0;
+exampleAddress.marriage = true;
+exampleAddress.members = "string";
+exampleAddress.tupleType = ["string", 0];
+exampleAddress.tupleTypeWithAdditionalItems = ["string", 0];
+exampleAddress.arrayType = ["string"];
+`;
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models['_address'];
+
+    const exampleClassModel = await generator.renderExampleClass(model, inputModel);
+    expect(exampleClassModel.result).toEqual(expected);
+    expect(exampleClassModel.dependencies).toEqual([]);
+  });
+
   test('should render `class` type', async () => {
     const doc = {
       $id: '_address',

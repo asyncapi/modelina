@@ -50,12 +50,12 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions> {
   }
 
   async renderExampleClass(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
-    const presets = this.getPresets('class'); 
+    const presets = this.getPresets('classExample'); 
     const renderer = new ClassExampleRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
     return RenderOutput.toRenderOutput({result, dependencies: renderer.dependencies});
   }
-  
+
   async renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const presets = this.getPresets('class'); 
     const renderer = new ClassRenderer(this.options, this, presets, model, inputModel);

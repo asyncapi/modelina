@@ -1,5 +1,5 @@
 import { TypeScriptRenderer } from '../TypeScriptRenderer';
-import { CommonModel, ClassPreset } from '../../../models';
+import { CommonModel, InterfacePreset, PropertyType } from '../../../models';
 
 /**
  * Renderer for TypeScript's `example` type
@@ -15,7 +15,7 @@ export class ClassExampleRenderer extends TypeScriptRenderer {
 
     const formattedName = this.nameType(this.model.$id);
     return `const example${formattedName} = new ${formattedName}();
-    ${content}`;
+${content.join('\n')}`;
   }
 
   /**
@@ -59,21 +59,25 @@ export class ClassExampleRenderer extends TypeScriptRenderer {
         });
         return `[${arrayValues.join(', ')}]`;
       } 
-      const arrayType = this.renderType(model.items);
-      return `Array<${arrayType}>`;
+      const arrayType = this.renderValueFromModel(model.items);
+      return `[${arrayType}]`;
     }
     }
     return undefined;
   }
 }
-export const TS_DEFAULT_EXAMPLE_CLASS_PRESET: ClassPreset<ClassExampleRenderer> = {
-  property({ renderer, propertyName, property, model }): string {
+export const TS_DEFAULT_CLASS_EXAMPLE_PRESET: InterfacePreset<ClassExampleRenderer> = {
+  async self({ renderer }) {
+    return await renderer.defaultSelf();
+  },
+  property({ renderer, propertyName, property, model, type }): string {
+    if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) { return ''; }
     const formattedPropertyName = renderer.nameProperty(propertyName, property);
     const formattedName = renderer.nameType(model.$id);
     const potentialRenderedValue = renderer.renderValueFromModel(property);
     if (potentialRenderedValue === undefined) { 
       return ''; 
     }
-    return `example${formattedName}.${formattedPropertyName} = ${potentialRenderedValue}`;
+    return `example${formattedName}.${formattedPropertyName} = ${potentialRenderedValue};`;
   }
 };
