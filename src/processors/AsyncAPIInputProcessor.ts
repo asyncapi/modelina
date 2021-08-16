@@ -2,7 +2,7 @@ import {parse, AsyncAPIDocument, Schema as AsyncAPISchema} from '@asyncapi/parse
 
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
-import { CommonInputModel, Schema } from '../models';
+import { CommonInputModel, ProcessOptions, Schema } from '../models';
 import { Logger } from '../utils';
 
 /**
@@ -15,14 +15,14 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  async process(input: Record<string, any>): Promise<CommonInputModel> {
+  async process(input: Record<string, any>, options?: ProcessOptions): Promise<CommonInputModel> {
     if (!this.shouldProcess(input)) {throw new Error('Input is not an AsyncAPI document so it cannot be processed.');}
 
     Logger.debug('Processing input as an AsyncAPI document');
     let doc: AsyncAPIDocument;
     const common = new CommonInputModel();
     if (!AsyncAPIInputProcessor.isFromParser(input)) {
-      doc = await parse(input as any);
+      doc = await parse(input as any, options?.asyncapi);
     } else {
       doc = input as AsyncAPIDocument;
     }
