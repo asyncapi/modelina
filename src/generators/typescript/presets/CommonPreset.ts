@@ -1,6 +1,6 @@
 import { TypeScriptRenderer } from '../TypeScriptRenderer';
 import { TypeScriptPreset } from '../TypeScriptPreset';
-import { getUniquePropertyName, DefaultPropertyNames } from '../../../helpers';
+import { getUniquePropertyName, DefaultPropertyNames, TypeHelpers, ModelKind } from '../../../helpers';
 import { CommonModel } from '../../../models';
 
 export interface TypeScriptCommonPresetOptions {
@@ -17,7 +17,11 @@ function renderMarshalProperties(model: CommonModel, renderer: TypeScriptRendere
   const marshalProperties = propertyKeys.map(([prop, propModel]) => {
     const formattedPropertyName = renderer.nameProperty(prop, propModel);
     const modelInstanceVariable = `this.${formattedPropertyName}`;
-    const propMarshalReference = `json += \`"${prop}": $\{this.${formattedPropertyName}.marshal()},\`;`;
+    let propMarshalReference = `json += \`"${prop}": $\{this.${formattedPropertyName}.marshal()},\`;`;
+    const propertyModelKind = TypeHelpers.extractKind(propModel);
+    if (propertyModelKind === ModelKind.ENUM) {
+      propMarshalReference = `json += \`"${prop}": ${realizePropertyFactory(modelInstanceVariable)},\`;`;
+    }
     const propMarshal = `json += \`"${prop}": ${realizePropertyFactory(modelInstanceVariable)},\`;`;
     const propMarshalCode = propModel.$ref !== undefined ? propMarshalReference : propMarshal;
     return `if(this.${formattedPropertyName} !== undefined) {
@@ -130,7 +134,7 @@ function renderUnmarshalAdditionalProperties(model: CommonModel, renderer: TypeS
 /**
  * Render `unmarshal` function based on model
  */
-function renderUnmarshal({ renderer, model }: {
+function renderUnmarshal({ renderer, model, inputModel }: {
   renderer: TypeScriptRenderer,
   model: CommonModel,
 }): string {
@@ -163,13 +167,13 @@ ${renderer.indent(unmarshalAdditionalProperties, 4)}
  */
 export const TS_COMMON_PRESET: TypeScriptPreset = {
   class: {
-    additionalContent({ renderer, model, content, options }) {
+    additionalContent({ renderer, model, content, options, inputModel }) {
       options = options || {};
       const blocks: string[] = [];
       
       if (options.marshalling === true) {
-        blocks.push(renderMarshal({ renderer, model }));
-        blocks.push(renderUnmarshal({ renderer, model }));
+        blocks.push(renderMarshal({ renderer, model, inputModel }));
+        blocks.push(renderUnmarshal({ renderer, model, inputModel }));
       }
       
       return renderer.renderBlock([content, ...blocks], 2);

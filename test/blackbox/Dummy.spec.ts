@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { TypeScriptGenerator, JavaGenerator, JavaScriptGenerator, GoGenerator, CSharpGenerator } from '../../src';
+import { TypeScriptGenerator, JavaGenerator, JavaScriptGenerator, GoGenerator, CSharpGenerator, TS_COMMON_PRESET } from '../../src';
 import { execCommand, generateModels, renderModels, renderModelsToSeparateFiles } from './utils/Utils';
 const fileToGenerate = path.resolve(__dirname, './docs/dummy.json');
 describe('Dummy JSON Schema file', () => {
@@ -30,7 +30,16 @@ describe('Dummy JSON Schema file', () => {
 
   describe('should be able to generate and transpile TS', () => {
     test('class', async () => {
-      const generator = new TypeScriptGenerator();
+      const generator = new TypeScriptGenerator({ 
+        presets: [
+          {
+            preset: TS_COMMON_PRESET,
+            options: {
+              marshalling: true
+            }
+          }
+        ]
+      });
       const generatedModels = await generateModels(fileToGenerate, generator);
       expect(generatedModels).not.toHaveLength(0);
       const renderOutputPath = path.resolve(__dirname, './output/ts/class/output.ts');
