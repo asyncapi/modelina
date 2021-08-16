@@ -1,6 +1,6 @@
-export interface AsyncapiProcessOptions {
+export interface AsyncapiProcessorOption {
   path?: string
 }
-export interface ProcessOptions {
-  asyncapi?: AsyncapiProcessOptions
+export interface ProcessorOption {
+  asyncapi?: AsyncapiProcessorOption
 }
