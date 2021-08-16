@@ -2,7 +2,7 @@ import { CommonInputModel, CommonModel, OutputModel, Preset, Presets } from '../
 import { InputProcessor } from '../processors';
 import { IndentationTypes } from '../helpers';
 import { isPresetWithOptions } from '../utils';
-import { RenderOutput, ProcessorOption } from '../models';
+import { RenderOutput, ProcessorOptions } from '../models';
 export interface CommonGeneratorOptions<P extends Preset = Preset> {
   indentation?: {
     type: IndentationTypes;
@@ -10,7 +10,7 @@ export interface CommonGeneratorOptions<P extends Preset = Preset> {
   };
   defaultPreset?: P;
   presets?: Presets<P>;
-  processorOption?: ProcessorOption
+  processorOption?: ProcessorOptions
 }
 
 export const defaultGeneratorOptions: CommonGeneratorOptions = {

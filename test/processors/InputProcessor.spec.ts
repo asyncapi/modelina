@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { CommonInputModel, ProcessorOption } from '../../src/models';
+import { CommonInputModel, ProcessorOptions } from '../../src/models';
 import { InputProcessor } from '../../src/processors/InputProcessor';
 import { JsonSchemaInputProcessor } from '../../src/processors/JsonSchemaInputProcessor';
 import { AsyncAPIInputProcessor } from '../../src/processors/AsyncAPIInputProcessor';
@@ -80,7 +80,7 @@ describe('InputProcessor', () => {
     });
     test('should be able to process AsyncAPI schema input with options', async () => {
       const {processor, asyncInputProcessor, defaultInputProcessor} = getProcessors(); 
-      const options: ProcessorOption = {
+      const options: ProcessorOptions = {
         asyncapi: {
           path: 'test'
         }
