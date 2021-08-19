@@ -9,7 +9,7 @@ export interface CommonGeneratorOptions<P extends Preset = Preset> {
   };
   defaultPreset?: P;
   presets?: Presets<P>;
-  processorOption?: ProcessorOptions
+  processorOptions?: ProcessorOptions
 }
 
 export const defaultGeneratorOptions: CommonGeneratorOptions = {
@@ -36,7 +36,7 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
   public abstract render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput>;
 
   public process(input: Record<string, unknown>): Promise<CommonInputModel> {
-    return InputProcessor.processor.process(input, this.options.processorOption);
+    return InputProcessor.processor.process(input, this.options.processorOptions);
   }
 
   public async generate(input: Record<string, unknown> | CommonInputModel): Promise<OutputModel[]> {

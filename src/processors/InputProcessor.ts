@@ -37,7 +37,7 @@ export class InputProcessor {
    * The processor code which delegates the processing to the correct implementation.
    * 
    * @param input to process
-   * @param options passed to the parsers
+   * @param options passed to the processors
    */
   process(input: Record<string, any>, options?: ProcessorOptions): Promise<CommonInputModel> {
     for (const [type, processor] of this.processors) {
