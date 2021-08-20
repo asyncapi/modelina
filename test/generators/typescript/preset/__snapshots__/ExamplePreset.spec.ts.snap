@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Marshalling preset should render un/marshal code 1`] = `
+exports[`Example function generation should render example function for model 1`] = `
 "export class Test {
   private _stringProp: string;
   private _numberProp?: number;
@@ -35,13 +35,15 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
 
   public static example(): Test {
     const instance = new Test({} as any);
-    instance.stringProp = \\"string\\";instance.numberProp = 0;instance.objectProp = NestedTest.example();
+    instance.stringProp = \\"string\\";
+    instance.numberProp = 0;
+    instance.objectProp = NestedTest.example();
     return instance;
   }
 }"
 `;
 
-exports[`Marshalling preset should render un/marshal code 2`] = `
+exports[`Example function generation should render example function for model 2`] = `
 "export class NestedTest {
   private _stringProp?: string;
   private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null | number>;

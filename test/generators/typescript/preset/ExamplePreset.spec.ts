@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import { TypeScriptGenerator, TS_COMMON_PRESET } from '../../../../src/generators';
 const doc = {
   $id: 'Test',
@@ -17,8 +15,8 @@ const doc = {
     }
   },
 };
-describe('Marshalling preset', () => {
-  test('should render un/marshal code', async () => {
+describe('Example function generation', () => {
+  test('should render example function for model', async () => {
     const generator = new TypeScriptGenerator({ 
       presets: [
         {
@@ -36,7 +34,7 @@ describe('Marshalling preset', () => {
     const testClass = await generator.renderClass(testModel, inputModel);
     const nestedTestClass = await generator.renderClass(nestedTestModel, inputModel);
 
-    expect(testClass.result).toMatchSnapshot();
+    expect(testClass.result).toMatchSnapshot(); 
     expect(nestedTestClass.result).toMatchSnapshot();
   });
 });
