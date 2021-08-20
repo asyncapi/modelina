@@ -35,9 +35,7 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
 
   public static example(): Test {
     const instance = new Test({} as any);
-    instance.stringProp = \\"string\\";
-  instance.numberProp = 0;
-  instance.objectProp = NestedTest.example();
+    instance.stringProp = \\"string\\";instance.numberProp = 0;instance.objectProp = NestedTest.example();
     return instance;
   }
 }"

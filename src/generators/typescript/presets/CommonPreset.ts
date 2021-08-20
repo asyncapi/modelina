@@ -205,7 +205,7 @@ function renderValueFromType(modelType: string | undefined, model: CommonModel, 
   return undefined;
 }
 /**
- * Render `example` function based on model
+ * Render `example` function based on model properties
  */
 function renderExample({ renderer, model }: {
   renderer: TypeScriptRenderer,
@@ -217,6 +217,7 @@ function renderExample({ renderer, model }: {
     const formattedPropertyName = renderer.nameProperty(propertyName, property);
     const potentialRenderedValue = renderValueFromModel(property, renderer);
     if (potentialRenderedValue === undefined) { 
+      //Unable to determine example value, skip property.
       continue; 
     }
     setProperties.push(`instance.${formattedPropertyName} = ${potentialRenderedValue};`);
@@ -224,7 +225,7 @@ function renderExample({ renderer, model }: {
   const formattedModelName = renderer.nameType(model.$id);
   return `public static example(): ${formattedModelName} {
   const instance = new ${formattedModelName}({} as any);
-  ${setProperties.join('\n')}
+  ${renderer.renderBlock(setProperties, 0)}
   return instance;
 }`;
 } 
