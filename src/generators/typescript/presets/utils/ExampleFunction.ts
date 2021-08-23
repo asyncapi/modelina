@@ -5,6 +5,7 @@ import { CommonModel } from '../../../../models';
  * Inferring first acceptable value from the model.
  * 
  * @param model 
+ * @param renderer 
  */
 export function renderValueFromModel(model: CommonModel, renderer: TypeScriptRenderer): string | undefined {
   if (Array.isArray(model.enum) && model.enum.length > 0) {
