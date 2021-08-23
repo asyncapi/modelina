@@ -2,7 +2,7 @@ import { TypeScriptRenderer } from '../../TypeScriptRenderer';
 import { CommonModel } from '../../../../models';
 
 /**
- * LAZY implementation, find first acceptable value
+ * Inferring first acceptable value from the model.
  * 
  * @param model 
  */
@@ -52,7 +52,7 @@ export function renderValueFromType(modelType: string | undefined, model: Common
   return undefined;
 }
 /**
- * Render `example` function based on model properties
+ * Render `example` function based on model properties.
  */
 export default function renderExampleFunction({ renderer, model }: {
   renderer: TypeScriptRenderer,
