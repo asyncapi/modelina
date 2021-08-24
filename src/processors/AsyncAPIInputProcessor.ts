@@ -1,5 +1,4 @@
 import {parse, AsyncAPIDocument, Schema as AsyncAPISchema} from '@asyncapi/parser';
-
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
 import { CommonInputModel, ProcessorOptions, Schema } from '../models';
@@ -10,6 +9,7 @@ import { Logger } from '../utils';
  */
 export class AsyncAPIInputProcessor extends AbstractInputProcessor {
   static supportedVersions = ['2.0.0', '2.1.0'];
+
   /**
    * Process the input as an AsyncAPI document
    * 
