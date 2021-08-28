@@ -1,11 +1,11 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { CommonInputModel } from '../../src/models';
+import { CommonInputModel, ProcessorOptions } from '../../src/models';
 import { InputProcessor } from '../../src/processors/InputProcessor';
 import { JsonSchemaInputProcessor } from '../../src/processors/JsonSchemaInputProcessor';
 import { AsyncAPIInputProcessor } from '../../src/processors/AsyncAPIInputProcessor';
 import { AbstractInputProcessor } from '../../src/processors';
-
+import AsyncAPIParser from '@asyncapi/parser';
 describe('InputProcessor', () => {
   beforeEach(() => {
     jest.resetAllMocks();
@@ -64,7 +64,7 @@ describe('InputProcessor', () => {
       await processor.process(inputSchema);
       expect(asyncInputProcessor.process).not.toHaveBeenCalled();
       expect(asyncInputProcessor.shouldProcess).toHaveBeenNthCalledWith(1, inputSchema);
-      expect(defaultInputProcessor.process).toHaveBeenNthCalledWith(1, inputSchema);
+      expect(defaultInputProcessor.process).toHaveBeenNthCalledWith(1, inputSchema, undefined);
       expect(defaultInputProcessor.shouldProcess).toHaveBeenNthCalledWith(1, inputSchema);
     });
 
@@ -73,8 +73,25 @@ describe('InputProcessor', () => {
       const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'), 'utf8');
       const inputSchema = JSON.parse(inputSchemaString);
       await processor.process(inputSchema);
-      expect(asyncInputProcessor.process).toHaveBeenNthCalledWith(1, inputSchema);
+      expect(asyncInputProcessor.process).toHaveBeenNthCalledWith(1, inputSchema, undefined);
       expect(asyncInputProcessor.shouldProcess).toHaveBeenNthCalledWith(1, inputSchema);
+      expect(defaultInputProcessor.process).not.toHaveBeenCalled();
+      expect(defaultInputProcessor.shouldProcess).not.toHaveBeenCalled();
+    });
+    test('should be able to process AsyncAPI schema input with options', async () => {
+      const {processor, asyncInputProcessor, defaultInputProcessor} = getProcessors(); 
+      const spy = jest.spyOn(AsyncAPIParser, 'parse');
+      const options: ProcessorOptions = {
+        asyncapi: {
+          path: 'test'
+        }
+      };
+      const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'), 'utf8');
+      const inputSchema = JSON.parse(inputSchemaString);
+      await processor.process(inputSchema, options);
+      expect(asyncInputProcessor.process).toHaveBeenNthCalledWith(1, inputSchema, options);
+      expect(asyncInputProcessor.shouldProcess).toHaveBeenNthCalledWith(1, inputSchema);
+      expect(spy).toHaveBeenNthCalledWith(1, inputSchema, expect.objectContaining(options.asyncapi));
       expect(defaultInputProcessor.process).not.toHaveBeenCalled();
       expect(defaultInputProcessor.shouldProcess).not.toHaveBeenCalled();
     });
