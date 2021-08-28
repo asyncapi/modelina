@@ -1,9 +1,8 @@
-/* eslint-disable no-unused-vars */
 import { 
   camelCase,
   pascalCase,
   paramCase,
-  constantCase,
+  constantCase
 } from 'change-case';
 
 export enum IndentationTypes {
