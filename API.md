@@ -624,7 +624,7 @@ Main input processor which figures out the type of input it receives and delegat
 * [InputProcessor](#InputProcessor)
     * [.setProcessor(type, processor)](#InputProcessor+setProcessor)
     * [.getProcessors()](#InputProcessor+getProcessors) ⇒
-    * [.process(input, type)](#InputProcessor+process)
+    * [.process(input, options)](#InputProcessor+process)
 
 <a name="InputProcessor+setProcessor"></a>
 
@@ -645,7 +645,7 @@ Set a processor.
 **Returns**: all processors  
 <a name="InputProcessor+process"></a>
 
-### inputProcessor.process(input, type)
+### inputProcessor.process(input, options)
 The processor code which delegates the processing to the correct implementation.
 
 **Kind**: instance method of [<code>InputProcessor</code>](#InputProcessor)  
@@ -653,7 +653,7 @@ The processor code which delegates the processing to the correct implementation.
 | Param | Description |
 | --- | --- |
 | input | to process |
-| type | of processor to use |
+| options | passed to the processors |
 
 <a name="JsonSchemaInputProcessor"></a>
 
