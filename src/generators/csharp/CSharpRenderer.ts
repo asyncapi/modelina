@@ -76,11 +76,11 @@ export abstract class CSharpRenderer extends AbstractRenderer<CSharpOptions> {
     case 'string':
       return 'string';
     case 'integer':
-      return 'int';
+      return 'int?';
     case 'number':
-      return 'float';
+      return 'float?';
     case 'boolean':
-      return 'bool';
+      return 'bool?';
     case 'object':
       return 'object';
     case 'array': {

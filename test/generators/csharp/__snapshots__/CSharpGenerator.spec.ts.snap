@@ -43,8 +43,8 @@ exports[`CSharpGenerator should render \`class\` type 1`] = `
   private string streetName;
   private string city;
   private string state;
-  private float houseNumber;
-  private bool marriage;
+  private float? houseNumber;
+  private bool? marriage;
   private dynamic members;
   private dynamic[] tupleType;
   private string[] arrayType;
@@ -69,13 +69,13 @@ exports[`CSharpGenerator should render \`class\` type 1`] = `
     set { state = value; }
   }
 
-  public float HouseNumber 
+  public float? HouseNumber 
   {
     get { return houseNumber; }
     set { houseNumber = value; }
   }
 
-  public bool Marriage 
+  public bool? Marriage 
   {
     get { return marriage; }
     set { marriage = value; }
@@ -118,8 +118,8 @@ exports[`CSharpGenerator should render \`class\` type 2`] = `
   private string streetName;
   private string city;
   private string state;
-  private float houseNumber;
-  private bool marriage;
+  private float? houseNumber;
+  private bool? marriage;
   private dynamic members;
   private dynamic[] tupleType;
   private string[] arrayType;
@@ -144,13 +144,13 @@ exports[`CSharpGenerator should render \`class\` type 2`] = `
     set { state = value; }
   }
 
-  public float HouseNumber 
+  public float? HouseNumber 
   {
     get { return houseNumber; }
     set { houseNumber = value; }
   }
 
-  public bool Marriage 
+  public bool? Marriage 
   {
     get { return marriage; }
     set { marriage = value; }
