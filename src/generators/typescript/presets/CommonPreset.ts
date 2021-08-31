@@ -2,9 +2,11 @@ import { TypeScriptRenderer } from '../TypeScriptRenderer';
 import { TypeScriptPreset } from '../TypeScriptPreset';
 import { getUniquePropertyName, DefaultPropertyNames, TypeHelpers, ModelKind } from '../../../helpers';
 import { CommonModel } from '../../../models';
+import renderExampleFunction from './utils/ExampleFunction';
 
 export interface TypeScriptCommonPresetOptions {
   marshalling: boolean;
+  example: boolean;
 }
 
 function realizePropertyFactory(prop: string) {
@@ -161,7 +163,7 @@ ${renderer.indent(unmarshalAdditionalProperties, 4)}
 } 
 
 /**
- * Preset which adds `marshal`, `unmarshal` functions to class. 
+ * Preset which adds `marshal`, `unmarshal`, `example` functions to class. 
  * 
  * @implements {TypeScriptPreset}
  */
@@ -174,6 +176,10 @@ export const TS_COMMON_PRESET: TypeScriptPreset = {
       if (options.marshalling === true) {
         blocks.push(renderMarshal({ renderer, model, inputModel }));
         blocks.push(renderUnmarshal({ renderer, model, inputModel }));
+      }
+
+      if (options.example === true) {
+        blocks.push(renderExampleFunction({ renderer, model }));
       }
       
       return renderer.renderBlock([content, ...blocks], 2);

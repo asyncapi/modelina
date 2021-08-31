@@ -1,7 +1,7 @@
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { AsyncAPIInputProcessor } from './AsyncAPIInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
-import { CommonInputModel } from '../models/CommonInputModel';
+import { ProcessorOptions, CommonInputModel } from '../models';
 
 /**
  * Main input processor which figures out the type of input it receives and delegates the processing into separate individual processors.
@@ -37,18 +37,18 @@ export class InputProcessor {
    * The processor code which delegates the processing to the correct implementation.
    * 
    * @param input to process
-   * @param type of processor to use
+   * @param options passed to the processors
    */
-  process(input: Record<string, any>): Promise<CommonInputModel> {
+  process(input: Record<string, any>, options?: ProcessorOptions): Promise<CommonInputModel> {
     for (const [type, processor] of this.processors) {
       if (type === 'default') {continue;}
       if (processor.shouldProcess(input)) {
-        return processor.process(input);
+        return processor.process(input, options);
       }
     }
     const defaultProcessor = this.processors.get('default');
     if (defaultProcessor !== undefined) {
-      return defaultProcessor.process(input);
+      return defaultProcessor.process(input, options);
     }
     return Promise.reject(new Error('No default processor found'));
   }
