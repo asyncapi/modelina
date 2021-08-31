@@ -136,7 +136,7 @@ function renderUnmarshalAdditionalProperties(model: CommonModel, renderer: TypeS
 /**
  * Render `unmarshal` function based on model
  */
-function renderUnmarshal({ renderer, model, inputModel }: {
+function renderUnmarshal({ renderer, model }: {
   renderer: TypeScriptRenderer,
   model: CommonModel,
 }): string {
@@ -169,13 +169,13 @@ ${renderer.indent(unmarshalAdditionalProperties, 4)}
  */
 export const TS_COMMON_PRESET: TypeScriptPreset = {
   class: {
-    additionalContent({ renderer, model, content, options, inputModel }) {
+    additionalContent({ renderer, model, content, options }) {
       options = options || {};
       const blocks: string[] = [];
       
       if (options.marshalling === true) {
-        blocks.push(renderMarshal({ renderer, model, inputModel }));
-        blocks.push(renderUnmarshal({ renderer, model, inputModel }));
+        blocks.push(renderMarshal({ renderer, model }));
+        blocks.push(renderUnmarshal({ renderer, model }));
       }
 
       if (options.example === true) {
