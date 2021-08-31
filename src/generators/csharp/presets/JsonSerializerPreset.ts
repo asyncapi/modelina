@@ -1,8 +1,7 @@
 import { CSharpRenderer } from '../CSharpRenderer';
 import { CSharpPreset } from '../CSharpPreset';
-import { getUniquePropertyName, DefaultPropertyNames } from '../../../helpers';
+import { getUniquePropertyName, DefaultPropertyNames, FormatHelpers } from '../../../helpers';
 import { CommonModel } from '../../../models';
-import { FormatHelpers } from '../../../helpers';
 
 function renderMarshalAdditionalProperties(model: CommonModel, renderer: CSharpRenderer) {
   const marshalAdditionalProperties = '';
@@ -65,17 +64,8 @@ if(value.${patternPropertyName} != null) {
   }
   return marshalPatternProperties;
 }
-/**
- * Render `marshal` function based on model
- */
-function renderMarshal({ renderer, model }: {
-  renderer: CSharpRenderer,
-  model: CommonModel,
-}): string {
-  const formattedModelName = renderer.nameType(model.$id);
-  const marshalProperties = renderMarshalProperties(model, renderer);
-  const marshalPatternProperties = renderMarshalPatternProperties(model, renderer);
-  const marshalAdditionalProperties = renderMarshalAdditionalProperties(model, renderer);
+
+function renderPropertiesList(model: CommonModel, renderer: CSharpRenderer) {
   const propertyFilter: string[] = [];
   if (model.additionalProperties !== undefined) {
     let additionalPropertyName = getUniquePropertyName(model, DefaultPropertyNames.additionalProperties);
@@ -87,6 +77,26 @@ function renderMarshal({ renderer, model }: {
     patternPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(patternPropertyName, patternModel));
     propertyFilter.push(`prop.Name != "${patternPropertyName}"`);
   }
+  let propertiesList = 'var properties = value.GetType().GetProperties();';
+  if (propertyFilter.length > 0) {
+    renderer.addDependency('using System.Linq;');
+    propertiesList = `var properties = value.GetType().GetProperties().Where(prop => ${propertyFilter.join(' && ')});`;
+  }
+  return propertiesList;
+}
+/**
+ * Render `marshal` function based on model
+ */
+function renderMarshal({ renderer, model }: {
+  renderer: CSharpRenderer,
+  model: CommonModel,
+}): string {
+  const formattedModelName = renderer.nameType(model.$id);
+  const marshalProperties = renderMarshalProperties(model, renderer);
+  const marshalPatternProperties = renderMarshalPatternProperties(model, renderer);
+  const marshalAdditionalProperties = renderMarshalAdditionalProperties(model, renderer);
+  const propertiesList = renderPropertiesList(model, renderer);
+
   return `public override void Write(Utf8JsonWriter writer, ${formattedModelName} value, JsonSerializerOptions options)
 {
   if (value == null)
@@ -94,7 +104,7 @@ function renderMarshal({ renderer, model }: {
     JsonSerializer.Serialize(writer, null);
     return;
   }
-  ${propertyFilter.length === 0 ? 'var properties = value.GetType().GetProperties();': `var properties = value.GetType().GetProperties().Where(prop => ${propertyFilter.join(' && ')});`}
+  ${propertiesList}
   
   writer.WriteStartObject();
 
@@ -212,7 +222,6 @@ export const CSHARP_JSON_SERIALIZER_PRESET: CSharpPreset = {
       renderer.addDependency('using System.Text.Json;');
       renderer.addDependency('using System.Text.Json.Serialization;');
       renderer.addDependency('using System.Text.RegularExpressions;');
-      renderer.addDependency('using System.Linq;');
       
       const formattedModelName = renderer.nameType(model.$id);
       const unmarshal = renderUnmarshal({renderer, model});
