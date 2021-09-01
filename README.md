@@ -28,6 +28,7 @@ This package is under development and it has not reached version 1.0.0 yet, whic
 <!-- toc -->
 
 - [Usage](#usage)
+- [Features](#features)
 - [Roadmap](#roadmap)
 - [Customization](#customization)
 - [Development](#development)
