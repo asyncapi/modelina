@@ -6,8 +6,9 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
   private _enumProp?: EnumTest;
   private _numberProp?: number;
   private _objectProp?: NestedTest;
-  private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null | number>;
+  private _additionalProperties?: Map<String, NestedTest>;
   private _sTestPatternProperties?: Map<String, string>;
+  private _sAnotherTestPatternProperties?: Map<String, NestedTest>;
 
   constructor(input: {
     stringProp: string,
@@ -33,11 +34,14 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
   get objectProp(): NestedTest | undefined { return this._objectProp; }
   set objectProp(objectProp: NestedTest | undefined) { this._objectProp = objectProp; }
 
-  get additionalProperties(): Map<String, object | string | number | Array<unknown> | boolean | null | number> | undefined { return this._additionalProperties; }
-  set additionalProperties(additionalProperties: Map<String, object | string | number | Array<unknown> | boolean | null | number> | undefined) { this._additionalProperties = additionalProperties; }
+  get additionalProperties(): Map<String, NestedTest> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<String, NestedTest> | undefined) { this._additionalProperties = additionalProperties; }
 
   get sTestPatternProperties(): Map<String, string> | undefined { return this._sTestPatternProperties; }
   set sTestPatternProperties(sTestPatternProperties: Map<String, string> | undefined) { this._sTestPatternProperties = sTestPatternProperties; }
+
+  get sAnotherTestPatternProperties(): Map<String, NestedTest> | undefined { return this._sAnotherTestPatternProperties; }
+  set sAnotherTestPatternProperties(sAnotherTestPatternProperties: Map<String, NestedTest> | undefined) { this._sAnotherTestPatternProperties = sAnotherTestPatternProperties; }
 
   public marshal() : string {
     let json = '{'
@@ -59,12 +63,18 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
         if(Object.keys(this).includes(String(key))) continue;
         json += \`\\"\${key}\\": \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;
       }
+    }if(this.sAnotherTestPatternProperties !== undefined) { 
+      for (const [key, value] of this.sAnotherTestPatternProperties.entries()) {
+        //Only render pattern properties which are not already a property
+        if(Object.keys(this).includes(String(key))) continue;
+        json += \`\\"\${key}\\": \${value.marshal()},\`;
+      }
     }
     if(this.additionalProperties !== undefined) { 
       for (const [key, value] of this.additionalProperties.entries()) {
         //Only render additionalProperties which are not already a property
         if(Object.keys(this).includes(String(key))) continue;
-        json += \`\\"\${key}\\": \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;    
+        json += \`\\"\${key}\\": \${value.marshal()},\`;
       }
     }
 
@@ -91,14 +101,20 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
 
     //Not part of core properties
     if (instance.sTestPatternProperties === undefined) {instance.sTestPatternProperties = new Map();}
+  if (instance.sAnotherTestPatternProperties === undefined) {instance.sAnotherTestPatternProperties = new Map();}
+
     if (instance.additionalProperties === undefined) {instance.additionalProperties = new Map();}
     for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"string prop\\",\\"enumProp\\",\\"numberProp\\",\\"objectProp\\"].includes(key);}))) {
       //Check all pattern properties
       if (key.match(new RegExp('^S(.?)test'))) {
         instance.sTestPatternProperties.set(key, value as any);
         continue;
+      }//Check all pattern properties
+      if (key.match(new RegExp('^S(.?)AnotherTest'))) {
+        instance.sAnotherTestPatternProperties.set(key, NestedTest.unmarshal(value as any));
+        continue;
       }
-      instance.additionalProperties.set(key, value as any);
+      instance.additionalProperties.set(key, NestedTest.unmarshal(value as any));
     }
     return instance;
   }
@@ -132,7 +148,7 @@ exports[`Marshalling preset should render un/marshal code 2`] = `
       for (const [key, value] of this.additionalProperties.entries()) {
         //Only render additionalProperties which are not already a property
         if(Object.keys(this).includes(String(key))) continue;
-        json += \`\\"\${key}\\": \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;    
+        json += \`\\"\${key}\\": \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;
       }
     }
 

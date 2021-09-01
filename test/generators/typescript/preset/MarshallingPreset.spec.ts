@@ -3,20 +3,24 @@
 import { TypeScriptGenerator, TS_COMMON_PRESET } from '../../../../src/generators'; 
 import Ajv from 'ajv';
 const doc = {
+  definitions: {
+    'NestedTest': {
+      type: 'object', $id: 'NestedTest', properties: {stringProp: { type: 'string' }}
+    }
+  },
   $id: 'Test',
   type: 'object',
-  additionalProperties: true,
+  additionalProperties: {$ref: '#/definitions/NestedTest'},
   required: ['string prop'],
   properties: {
     'string prop': { type: 'string' },
     enumProp: { $id: 'EnumTest', enum: ['Some enum String']},
     numberProp: { type: 'number' },
-    objectProp: { type: 'object', $id: 'NestedTest', properties: {stringProp: { type: 'string' }}}
+    objectProp: { $ref: '#/definitions/NestedTest' }
   },
   patternProperties: {
-    '^S(.?)test': {
-      type: 'string'
-    }
+    '^S(.?)test': { type: 'string' },
+    '^S(.?)AnotherTest': { $ref: '#/definitions/NestedTest' },
   },
 };
 describe('Marshalling preset', () => {
@@ -73,7 +77,7 @@ describe('Marshalling preset', () => {
           for (const [key, value] of this.additionalProperties.entries()) {
             //Only render additionalProperties which are not already a property
             if(Object.keys(this).includes(String(key))) continue;
-            json += `"${key}": ${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},`;    
+            json += `"${key}": ${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},`;
           }
         }
     
@@ -86,7 +90,7 @@ describe('Marshalling preset', () => {
         const instance = new NestedTest({} as any);
     
         if (obj["stringProp"] !== undefined) {
-          instance.stringProp = obj["stringProp"];
+          instance.stringProp = obj["stringProp"] as any;
         }
     
         //Not part of core properties
@@ -104,8 +108,9 @@ describe('Marshalling preset', () => {
       private _enumProp?: EnumTest;
       private _numberProp?: number;
       private _objectProp?: NestedTest;
-      private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null | number>;
+      private _additionalProperties?: Map<String, NestedTest>;
       private _sTestPatternProperties?: Map<String, string>;
+      private _sAnotherTestPatternProperties?: Map<String, NestedTest>;
     
       constructor(input: {
         stringProp: string,
@@ -131,11 +136,14 @@ describe('Marshalling preset', () => {
       get objectProp(): NestedTest | undefined { return this._objectProp; }
       set objectProp(objectProp: NestedTest | undefined) { this._objectProp = objectProp; }
     
-      get additionalProperties(): Map<String, object | string | number | Array<unknown> | boolean | null | number> | undefined { return this._additionalProperties; }
-      set additionalProperties(additionalProperties: Map<String, object | string | number | Array<unknown> | boolean | null | number> | undefined) { this._additionalProperties = additionalProperties; }
+      get additionalProperties(): Map<String, NestedTest> | undefined { return this._additionalProperties; }
+      set additionalProperties(additionalProperties: Map<String, NestedTest> | undefined) { this._additionalProperties = additionalProperties; }
     
       get sTestPatternProperties(): Map<String, string> | undefined { return this._sTestPatternProperties; }
       set sTestPatternProperties(sTestPatternProperties: Map<String, string> | undefined) { this._sTestPatternProperties = sTestPatternProperties; }
+    
+      get sAnotherTestPatternProperties(): Map<String, NestedTest> | undefined { return this._sAnotherTestPatternProperties; }
+      set sAnotherTestPatternProperties(sTest2PatternProperties: Map<String, NestedTest> | undefined) { this._sAnotherTestPatternProperties = sTest2PatternProperties; }
     
       public marshal() : string {
         let json = '{'
@@ -157,12 +165,18 @@ describe('Marshalling preset', () => {
             if(Object.keys(this).includes(String(key))) continue;
             json += `"${key}": ${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},`;
           }
+        }if(this.sAnotherTestPatternProperties !== undefined) { 
+          for (const [key, value] of this.sAnotherTestPatternProperties.entries()) {
+            //Only render pattern properties which are not already a property
+            if(Object.keys(this).includes(String(key))) continue;
+            json += `"${key}": ${value.marshal()},`;
+          }
         }
         if(this.additionalProperties !== undefined) { 
           for (const [key, value] of this.additionalProperties.entries()) {
             //Only render additionalProperties which are not already a property
             if(Object.keys(this).includes(String(key))) continue;
-            json += `"${key}": ${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},`;    
+            json += `"${key}": ${value.marshal()},`;
           }
         }
     
@@ -189,14 +203,20 @@ describe('Marshalling preset', () => {
     
         //Not part of core properties
         if (instance.sTestPatternProperties === undefined) {instance.sTestPatternProperties = new Map();}
+      if (instance.sAnotherTestPatternProperties === undefined) {instance.sAnotherTestPatternProperties = new Map();}
+    
         if (instance.additionalProperties === undefined) {instance.additionalProperties = new Map();}
         for (const [key, value] of Object.entries(obj).filter((([key,]) => {return !["string prop","enumProp","numberProp","objectProp"].includes(key);}))) {
           //Check all pattern properties
           if (key.match(new RegExp('^S(.?)test'))) {
             instance.sTestPatternProperties.set(key, value as any);
             continue;
+          }//Check all pattern properties
+          if (key.match(new RegExp('^S(.?)AnotherTest'))) {
+            instance.sAnotherTestPatternProperties.set(key, NestedTest.unmarshal(value as any));
+            continue;
           }
-          instance.additionalProperties.set(key, value as any);
+          instance.additionalProperties.set(key, NestedTest.unmarshal(value as any));
         }
         return instance;
       }
@@ -204,18 +224,21 @@ describe('Marshalling preset', () => {
     const ajv = new Ajv();
     const nestedTestInstance = new NestedTest({stringProp: "SomeTestString"});
     nestedTestInstance.additionalProperties = new Map();
+    nestedTestInstance.additionalProperties.set("someProp", "someValue");
     const testInstance = new Test({numberProp: 0, stringProp: "SomeTestString", objectProp: nestedTestInstance, enumProp: EnumTest.SOME_ENUM_STRING});
     testInstance.additionalProperties = new Map();
-    testInstance.additionalProperties.set('additionalProp', ['Some test value']);
+    testInstance.additionalProperties.set('additionalProp', nestedTestInstance);
     testInstance.sTestPatternProperties = new Map();
     testInstance.sTestPatternProperties.set('Stest', 'Some pattern value');
+    testInstance.sAnotherTestPatternProperties = new Map();
+    testInstance.sAnotherTestPatternProperties.set('SAnotherTest', nestedTestInstance);
 
 
     const marshalContent = testInstance.marshal();
     const unmarshalInstance = Test.unmarshal(marshalContent);
     const validationResult = ajv.validate(doc, JSON.parse(marshalContent));
 
-    expect(marshalContent).toEqual("{\"string prop\": \"SomeTestString\",\"enumProp\": \"Some enum String\",\"numberProp\": 0,\"objectProp\": {\"stringProp\": \"SomeTestString\"},\"Stest\": \"Some pattern value\",\"additionalProp\": [\"Some test value\"]}");
+    expect(marshalContent).toEqual("{\"string prop\": \"SomeTestString\",\"enumProp\": \"Some enum String\",\"numberProp\": 0,\"objectProp\": {\"stringProp\": \"SomeTestString\",\"someProp\": \"someValue\"},\"Stest\": \"Some pattern value\",\"SAnotherTest\": {\"stringProp\": \"SomeTestString\",\"someProp\": \"someValue\"},\"additionalProp\": {\"stringProp\": \"SomeTestString\",\"someProp\": \"someValue\"}}");
     expect(validationResult).toEqual(true);
     expect(unmarshalInstance).toEqual(testInstance);
   });
