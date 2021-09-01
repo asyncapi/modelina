@@ -3,6 +3,7 @@
 exports[`Marshalling preset should render un/marshal code 1`] = `
 "export class Test {
   private _stringProp: string;
+  private _enumProp?: EnumTest;
   private _numberProp?: number;
   private _objectProp?: NestedTest;
   private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null | number>;
@@ -10,16 +11,21 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
 
   constructor(input: {
     stringProp: string,
+    enumProp?: EnumTest,
     numberProp?: number,
     objectProp?: NestedTest,
   }) {
     this._stringProp = input.stringProp;
+    this._enumProp = input.enumProp;
     this._numberProp = input.numberProp;
     this._objectProp = input.objectProp;
   }
 
   get stringProp(): string { return this._stringProp; }
   set stringProp(stringProp: string) { this._stringProp = stringProp; }
+
+  get enumProp(): EnumTest | undefined { return this._enumProp; }
+  set enumProp(enumProp: EnumTest | undefined) { this._enumProp = enumProp; }
 
   get numberProp(): number | undefined { return this._numberProp; }
   set numberProp(numberProp: number | undefined) { this._numberProp = numberProp; }
@@ -37,6 +43,9 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
     let json = '{'
     if(this.stringProp !== undefined) {
       json += \`\\"string prop\\": \${typeof this.stringProp === 'number' || typeof this.stringProp === 'boolean' ? this.stringProp : JSON.stringify(this.stringProp)},\`; 
+    }
+    if(this.enumProp !== undefined) {
+      json += \`\\"enumProp\\": \${typeof this.enumProp === 'number' || typeof this.enumProp === 'boolean' ? this.enumProp : JSON.stringify(this.enumProp)},\`; 
     }
     if(this.numberProp !== undefined) {
       json += \`\\"numberProp\\": \${typeof this.numberProp === 'number' || typeof this.numberProp === 'boolean' ? this.numberProp : JSON.stringify(this.numberProp)},\`; 
@@ -70,6 +79,9 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
     if (obj[\\"string prop\\"] !== undefined) {
       instance.stringProp = obj[\\"string prop\\"];
     }
+    if (obj[\\"enumProp\\"] !== undefined) {
+      instance.enumProp = obj[\\"enumProp\\"];
+    }
     if (obj[\\"numberProp\\"] !== undefined) {
       instance.numberProp = obj[\\"numberProp\\"];
     }
@@ -80,7 +92,7 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
     //Not part of core properties
     if (instance.sTestPatternProperties === undefined) {instance.sTestPatternProperties = new Map();}
     if (instance.additionalProperties === undefined) {instance.additionalProperties = new Map();}
-    for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"string prop\\",\\"numberProp\\",\\"objectProp\\"].includes(key);}))) {
+    for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"string prop\\",\\"enumProp\\",\\"numberProp\\",\\"objectProp\\"].includes(key);}))) {
       //Check all pattern properties
       if (key.match(new RegExp('^S(.?)test'))) {
         instance.sTestPatternProperties.set(key, value as any);

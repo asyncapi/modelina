@@ -30,22 +30,13 @@ describe('Dummy JSON Schema file', () => {
 
   describe('should be able to generate and transpile TS', () => {
     test('class', async () => {
-      const generator = new TypeScriptGenerator({ 
-        presets: [
-          {
-            preset: TS_COMMON_PRESET,
-            options: {
-              marshalling: true
-            }
-          }
-        ]
-      });
+      const generator = new TypeScriptGenerator();
       const generatedModels = await generateModels(fileToGenerate, generator);
       expect(generatedModels).not.toHaveLength(0);
       const renderOutputPath = path.resolve(__dirname, './output/ts/class/output.ts');
       await renderModels(generatedModels, renderOutputPath);
       const transpiledOutputPath = path.resolve(__dirname, './output/ts/class/output.js');
-      const transpileAndRunCommand = `tsc -t es5 ${renderOutputPath} && node ${transpiledOutputPath}`;
+      const transpileAndRunCommand = `tsc --downlevelIteration -t es5 ${renderOutputPath} && node ${transpiledOutputPath}`;
       await execCommand(transpileAndRunCommand);
     });
 

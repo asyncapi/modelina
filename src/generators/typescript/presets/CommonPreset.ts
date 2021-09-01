@@ -1,7 +1,7 @@
 import { TypeScriptRenderer } from '../TypeScriptRenderer';
 import { TypeScriptPreset } from '../TypeScriptPreset';
 import { getUniquePropertyName, DefaultPropertyNames, TypeHelpers, ModelKind } from '../../../helpers';
-import { CommonModel } from '../../../models';
+import { CommonInputModel, CommonModel } from '../../../models';
 import renderExampleFunction from './utils/ExampleFunction';
 
 export interface TypeScriptCommonPresetOptions {
@@ -13,19 +13,22 @@ function realizePropertyFactory(prop: string) {
   return `$\{typeof ${prop} === 'number' || typeof ${prop} === 'boolean' ? ${prop} : JSON.stringify(${prop})}`;
 }
 
-function renderMarshalProperties(model: CommonModel, renderer: TypeScriptRenderer) {
+function renderMarshalProperties(model: CommonModel, renderer: TypeScriptRenderer, inputModel: CommonInputModel) {
   const properties = model.properties || {};
   const propertyKeys = [...Object.entries(properties)];
   const marshalProperties = propertyKeys.map(([prop, propModel]) => {
     const formattedPropertyName = renderer.nameProperty(prop, propModel);
     const modelInstanceVariable = `this.${formattedPropertyName}`;
-    let propMarshalReference = `json += \`"${prop}": $\{this.${formattedPropertyName}.marshal()},\`;`;
-    const propertyModelKind = TypeHelpers.extractKind(propModel);
-    if (propertyModelKind === ModelKind.ENUM) {
-      propMarshalReference = `json += \`"${prop}": ${realizePropertyFactory(modelInstanceVariable)},\`;`;
+    let propMarshal = `json += \`"${prop}": ${realizePropertyFactory(modelInstanceVariable)},\`;`;
+    if (propModel.$ref) {
+      const resolvedModel = inputModel.models[propModel.$ref];
+      const propertyModelKind = TypeHelpers.extractKind(resolvedModel);
+      //Referenced enums only need standard marshalling, so lets filter those away
+      if (propertyModelKind !== ModelKind.ENUM) {
+        propMarshal = `json += \`"${prop}": $\{this.${formattedPropertyName}.marshal()},\`;`;
+      }
     }
-    const propMarshal = `json += \`"${prop}": ${realizePropertyFactory(modelInstanceVariable)},\`;`;
-    const propMarshalCode = propModel.$ref !== undefined ? propMarshalReference : propMarshal;
+    const propMarshalCode = propMarshal;
     return `if(this.${formattedPropertyName} !== undefined) {
   ${propMarshalCode} 
 }`;
@@ -74,13 +77,14 @@ function renderMarshalAdditionalProperties(model: CommonModel, renderer: TypeScr
 /**
  * Render `marshal` function based on model
  */
-function renderMarshal({ renderer, model }: {
+function renderMarshal({ renderer, model, inputModel }: {
   renderer: TypeScriptRenderer,
   model: CommonModel,
+  inputModel: CommonInputModel
 }): string {
   return `public marshal() : string {
   let json = '{'
-${renderer.indent(renderMarshalProperties(model, renderer))}
+${renderer.indent(renderMarshalProperties(model, renderer, inputModel))}
 ${renderer.indent(renderMarshalPatternProperties(model, renderer))}
 ${renderer.indent(renderMarshalAdditionalProperties(model, renderer))}
 
@@ -89,12 +93,20 @@ ${renderer.indent(renderMarshalAdditionalProperties(model, renderer))}
 }`;
 } 
 
-function renderUnmarshalProperties(model: CommonModel, renderer: TypeScriptRenderer) {
+function renderUnmarshalProperties(model: CommonModel, renderer: TypeScriptRenderer, inputModel: CommonInputModel) {
   const properties = model.properties || {};
   const propertyKeys = [...Object.entries(properties)];
   const unmarshalProperties = propertyKeys.map(([prop, propModel]) => {
     const formattedPropertyName = renderer.nameProperty(prop, propModel);
-    const propUnmarshal = propModel.$ref !== undefined ? `${renderer.nameType(propModel.$ref)}.unmarshal(obj["${prop}"])` : `obj["${prop}"]`;
+    let propUnmarshal = `obj["${prop}"]`;
+    if (propModel.$ref) {
+      const resolvedModel = inputModel.models[propModel.$ref];
+      const propertyModelKind = TypeHelpers.extractKind(resolvedModel);
+      //Referenced enums only need standard marshalling, so lets filter those away
+      if (propertyModelKind !== ModelKind.ENUM) {
+        propUnmarshal = `${renderer.nameType(propModel.$ref)}.unmarshal(obj["${prop}"])`;
+      }
+    }
     return `if (obj["${prop}"] !== undefined) {
   instance.${formattedPropertyName} = ${propUnmarshal};
 }`;
@@ -136,9 +148,10 @@ function renderUnmarshalAdditionalProperties(model: CommonModel, renderer: TypeS
 /**
  * Render `unmarshal` function based on model
  */
-function renderUnmarshal({ renderer, model }: {
+function renderUnmarshal({ renderer, model, inputModel }: {
   renderer: TypeScriptRenderer,
   model: CommonModel,
+  inputModel: CommonInputModel
 }): string {
   const properties = model.properties || {};
   const {unmarshalPatternProperties, setPatternPropertiesMap} = renderUnmarshalPatternProperties(model, renderer);
@@ -149,7 +162,7 @@ function renderUnmarshal({ renderer, model }: {
   const obj = typeof json === "object" ? json : JSON.parse(json);
   const instance = new ${formattedModelName}({} as any);
 
-${renderer.indent(renderUnmarshalProperties(model, renderer))}
+${renderer.indent(renderUnmarshalProperties(model, renderer, inputModel))}
 
   //Not part of core properties
   ${setPatternPropertiesMap}
@@ -169,13 +182,13 @@ ${renderer.indent(unmarshalAdditionalProperties, 4)}
  */
 export const TS_COMMON_PRESET: TypeScriptPreset = {
   class: {
-    additionalContent({ renderer, model, content, options }) {
+    additionalContent({ renderer, model, content, options, inputModel }) {
       options = options || {};
       const blocks: string[] = [];
       
       if (options.marshalling === true) {
-        blocks.push(renderMarshal({ renderer, model }));
-        blocks.push(renderUnmarshal({ renderer, model }));
+        blocks.push(renderMarshal({ renderer, model, inputModel }));
+        blocks.push(renderUnmarshal({ renderer, model, inputModel }));
       }
 
       if (options.example === true) {
