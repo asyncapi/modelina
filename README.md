@@ -19,7 +19,7 @@ Modelina is used to generate different data models, such as Java, TypeScript cla
 
 ## :loudspeaker: ATTENTION:
 
-This package is under development and it has not reached version 1.0.0 yet, which means its API might get breaking changes without prior notice. Once it reaches its first stable version, we'll follow semantic versioning.
+This package is under development and it has not reached version 1.0.0 yet, which means its API might contain breaking changes without prior notice. Once it reaches its first stable version, we'll follow semantic versioning. So please use tests to ensure expected output or hardcode version used.
 
 ---
 
@@ -123,7 +123,7 @@ There are so many different possibilities with this library, that listing everyt
 </table>
 
 ## Roadmap
-- [Reach stable version 1.0](https://github.com/asyncapi/modelina/milestone/3)
+- [Reach version 1.0](https://github.com/asyncapi/modelina/milestone/3)
 
 ## Customization
 

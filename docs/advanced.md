@@ -14,6 +14,9 @@
 - [Adding logging to the library](#adding-logging-to-the-library)
 - [Adding logging to the library](#adding-logging-to-the-library-1)
   * [Example usage](#example-usage)
+- [Change the generated indentation type and size](#change-the-generated-indentation-type-and-size)
+- [Change the naming format for properties](#change-the-naming-format-for-properties)
+- [Change the naming format for data models](#change-the-naming-format-for-data-models)
 
 <!-- tocstop -->
 
@@ -68,3 +71,12 @@ Logger.setLogger(customLogger);
 // const generator = new TypeScriptGenerator({ modelType: 'interface' });
 // const interfaceModel = await generator.generate(...);
 ```
+
+## Change the generated indentation type and size
+TODO 
+
+## Change the naming format for properties
+TODO 
+
+## Change the naming format for data models
+TODO
