@@ -5,7 +5,7 @@
   Modelina
 </h5>
 <p align="center">
-  <em>The official SDK for generating data models from JSON Schema and AsyncAPI spec</em>
+  <em>The official SDK for generating data models from AsyncAPI and other inputs</em>
 </p>
 
 [![Coverage Status](https://coveralls.io/repos/github/asyncapi/modelina/badge.svg?branch=master)](https://coveralls.io/github/asyncapi/modelina?branch=master)
@@ -13,7 +13,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-AsyncAPI Model SDK is a set of classes/functions for generating data models from JSON Schema and AsyncAPI spec.
+Modelina is used to generate different data models, such as Java, TypeScript classes, Go Structs, etc, for AsyncAPI message payloads among other supported inputs.
 
 ---
 
@@ -27,14 +27,8 @@ This package is under development and it has not reached version 1.0.0 yet, whic
 
 <!-- toc -->
 
-- [Installation](#installation)
-- [How it works](#how-it-works)
-  * [The input process](#the-input-process)
-  * [The generation process](#the-generation-process)
-- [Example](#example)
-- [Supported input](#supported-input)
-  * [AsyncAPI input](#asyncapi-input)
-  * [JSON Schema input](#json-schema-input)
+- [Usage](#usage)
+- [Roadmap](#roadmap)
 - [Customization](#customization)
 - [Development](#development)
 - [Contributing](#contributing)
@@ -42,38 +36,14 @@ This package is under development and it has not reached version 1.0.0 yet, whic
 
 <!-- tocstop -->
 
-## Installation
-
+## Usage
 Run this command to install the SDK in your project:
 
 ```bash
 npm install --save @asyncapi/modelina
 ```
 
-## How it works
-
-The process of creating data models from input data consists of 2 processes, the input and generation process.
-
-### The input process
-
-The input process ensures that any supported input is handled correctly, the basics are that any input needs to be converted into our internal model representation `CommonModel`. The following inputs are supported:
-
-- [JSON Schema Draft 7](#JSON-Schema-input), this is the default inferred input if we cannot find another input processor.
-- [AsyncAPI version 2.0.0 and 2.1.0](#AsyncAPI-input)
-
-Read more about the input process [here](./docs/input_processing.md).
-
-### The generation process
-
-The generation process uses the predefined `CommonModel`s from the input stage to easily generate models regardless of input. 
-The list of supported output languages can be found [here](./docs/generators.md#supported-languages).
-
-Check out [the example](#example) to see how to use the library and [generators document](./docs/generators.md) for more info.
-
-> **NOTE**: Each implemented language has different options, dictated by the nature of the language.
-
-## Example
-
+You can then choose between all the generators, for example using the TypeScript generator, as in this example:
 ```js
 import { TypeScriptGenerator } from '@asyncapi/modelina';
 
@@ -120,36 +90,39 @@ export enum State {
   OTHER = "other",
 }
 ```
+## Features
+There are so many different possibilities with this library, that listing everything is impossible, this table will give you a short overview of features. If you want the full list of features please click the link to the specific language.
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <th>Supported language</th>
+    <th>Features</th>
+  </tr>
+  <tr>
+    <td><a href="./docs/usage.md#generate-java-models">Java</a></td>
+    <td>Class and enum generation, with features such as generation of equals, hashCode, toString, Jackson annotation, custom indentation type and size, etc</td>
+  </tr>
+  <tr>
+    <td><a href="./docs/usage.md#generate-typescript-models">TypeScript</a></td>
+    <td>Class, interface and enum generation, with features such as generation of example code, un/marshal functions, custom indentation type and size, etc</td>
+  </tr>
+  <tr>
+    <td><a href="./docs/usage.md#generate-c#-models">C#</a></td>
+    <td>Class and enum generation, with features such as generation of example code, serializer and deserializer functions, custom indentation type and size, etc</td>
+  </tr>
+  <tr>
+    <td><a href="./docs/usage.md#generate-go-models">Go</a></td>
+    <td>Struct and enum generation, with features such as custom indentation type and size, etc</td>
+  </tr>
+  <tr>
+    <td><a href="./docs/usage.md#generate-javascript-models">JavaScript</a></td>
+    <td>Class generation, with features such as custom indentation type and size, etc</td>
+  </tr>
+</table>
 
-## Supported input
-
-These are the supported inputs.
-
-### AsyncAPI input
-
-The library expects the `asyncapi` property for the document to be sat in order to understand the input format.
-
-- Generate from a [parsed AsyncAPI document](https://github.com/asyncapi/parser-js):
-
-```js
-const parser = require('@asyncapi/parser');
-const doc = await parser.parse(`{asyncapi: '2.0.0'}`);
-generator.generate(doc);
-```
-
-- Generate from a pure JS object:
-
-```js
-generator.generate({asyncapi: '2.0.0'});
-```
-
-### JSON Schema input
-
-- Generate from a pure JS object:
-
-```js
-generator.generate({$schema: 'http://json-schema.org/draft-07/schema#'});
-```
+## Roadmap
+- [Reach stable version 1.0](https://github.com/asyncapi/modelina/milestone/3)
 
 ## Customization
 
