@@ -1,9 +1,5 @@
-export interface AsyncapiProcessorOptions {
-  path?: string
-  parse?: any;
-  resolve?: any;
-  applyTraits?: any;
-}
+import { ParserOptions } from '@asyncapi/parser';
+
 export interface ProcessorOptions {
-  asyncapi?: AsyncapiProcessorOptions
+  asyncapi?: ParserOptions
 }
