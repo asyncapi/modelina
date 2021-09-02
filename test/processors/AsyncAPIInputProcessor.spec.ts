@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import {parse} from '@asyncapi/parser';
+import {parse, ParserOptions} from '@asyncapi/parser';
 import {AsyncAPIInputProcessor} from '../../src/processors/AsyncAPIInputProcessor';
 const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'), 'utf8');
 
@@ -12,7 +12,7 @@ describe('AsyncAPIInputProcessor', () => {
       expect(processor.shouldProcess(basicDoc)).toEqual(true);
     });
     test('should be able to detect parsed object', async () => {
-      const parsedObject = await parse(basicDocString);
+      const parsedObject = await parse(basicDocString, {} as ParserOptions);
       expect(processor.shouldProcess(parsedObject)).toEqual(true);
     });
     test('should be able to process AsyncAPI 2.0.0', () => {
@@ -34,7 +34,7 @@ describe('AsyncAPIInputProcessor', () => {
       expect(processor.tryGetVersionOfDocument({})).toBeUndefined();
     });
     test('should be able to find AsyncAPI version from parsed document', async () => {
-      const parsedObject = await parse(basicDocString);
+      const parsedObject = await parse(basicDocString, {} as ParserOptions);
       expect(processor.tryGetVersionOfDocument(parsedObject)).toEqual('2.0.0');
     });
   });
@@ -44,7 +44,7 @@ describe('AsyncAPIInputProcessor', () => {
       expect(AsyncAPIInputProcessor.isFromParser(basicDoc)).toEqual(false);
     });
     test('should be able to detect parsed object', async () => {
-      const parsedObject = await parse(basicDocString);
+      const parsedObject = await parse(basicDocString, {} as ParserOptions);
       expect(AsyncAPIInputProcessor.isFromParser(parsedObject)).toEqual(true);
     });
   });
@@ -67,7 +67,7 @@ describe('AsyncAPIInputProcessor', () => {
     test('should be able to process parsed objects', async () => {
       const expectedCommonInputModelString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/commonInputModel/basic.json'), 'utf8');
       const expectedCommonInputModel = JSON.parse(expectedCommonInputModelString);
-      const parsedObject = await parse(basicDocString);
+      const parsedObject = await parse(basicDocString, {} as ParserOptions);
       const processor = new AsyncAPIInputProcessor();
       const commonInputModel = await processor.process(parsedObject);
       expect(commonInputModel).toMatchObject(expectedCommonInputModel);
@@ -77,7 +77,7 @@ describe('AsyncAPIInputProcessor', () => {
   describe('convertToInternalSchema()', () => {
     test('should work', async () => {
       const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/schema_name_reflection.json'), 'utf8');
-      const doc = await parse(basicDocString);
+      const doc = await parse(basicDocString, {} as ParserOptions);
       const schema = doc.channels()['/user/signedup'].subscribe().message().payload();
       const expected = AsyncAPIInputProcessor.convertToInternalSchema(schema) as any;
 
