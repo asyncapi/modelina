@@ -36,7 +36,7 @@ describe('Dummy JSON Schema file', () => {
       const renderOutputPath = path.resolve(__dirname, './output/ts/class/output.ts');
       await renderModels(generatedModels, renderOutputPath);
       const transpiledOutputPath = path.resolve(__dirname, './output/ts/class/output.js');
-      const transpileAndRunCommand = `tsc -t es5 ${renderOutputPath} && node ${transpiledOutputPath}`;
+      const transpileAndRunCommand = `tsc --downlevelIteration -t es5 ${renderOutputPath} && node ${transpiledOutputPath}`;
       await execCommand(transpileAndRunCommand);
     });
 
