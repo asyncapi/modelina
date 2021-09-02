@@ -5,7 +5,7 @@
   <em><b>Modelina</b>
 </h5>
 <p align="center">
-   Is the official AsyncAPI SDK used to generate different data models (i.e. Java, TypeScript classes, Go Structs, etc) for AsyncAPI message payloads among other supported inputs.</em>
+   Modelina is the official AsyncAPI SDK used to generate different data models (i.e. Java/TypeScript classes, Go Structs, etc) for AsyncAPI documents, among other supported inputs.</em>
 </p>
 
 [![Coverage Status](https://coveralls.io/repos/github/asyncapi/modelina/badge.svg?branch=master)](https://coveralls.io/github/asyncapi/modelina?branch=master)
