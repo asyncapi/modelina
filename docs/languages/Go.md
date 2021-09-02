@@ -1,4 +1,4 @@
 # Go
-There are special use-cases that each language support, therefore this document is for anything related to the Go models.
+There are special use-cases that each language supports; this document pertains to **Go models**.
 
-At the moment the Go models have no specific features.
+At the moment, Go models have no specific features.

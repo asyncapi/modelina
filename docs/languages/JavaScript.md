@@ -1,4 +1,4 @@
 # JavaScript
-There are special use-cases that each language support, therefore this document is for anything related to the JavaScript models.
+There are special use-cases that each language supports; this document pertains to **JavaScript models**.
 
-At the moment the JavaScript models have no specific features.
+At the moment, JavaScript models have no specific features.

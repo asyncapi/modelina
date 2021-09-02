@@ -1,5 +1,5 @@
 # Java
-There are special use-cases that each language support, therefore this document is for anything related to the Java models.
+There are special use-cases that each language supports; this document pertains to **Java models**.
 
 <!-- toc is generated with GitHub Actions do not remove toc markers -->
 

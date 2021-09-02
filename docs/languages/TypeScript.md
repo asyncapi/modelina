@@ -1,5 +1,5 @@
 # TypeScript
-There are special use-cases that each language support, therefore this document is for anything related to the TypeScript models.
+There are special use-cases that each language supports; this document pertains to **TypeScript models**.
 
 <!-- toc is generated with GitHub Actions do not remove toc markers -->
 

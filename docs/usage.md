@@ -1,5 +1,5 @@
 # Usages
-Modelina can be used in many different contexts and has many features all depending on the output language, this document will show you the very basic usages of the library. 
+Modelina can be used in many different contexts and has many features, all depending on the output language. This document will walk you through you the library's basic usages.
 
 For more advanced use-cases, please check out the [advanced document](./advanced.md).
 
@@ -25,7 +25,7 @@ TODO
 
 ## Generate models from AsyncAPI documents
 
-The library expects the `asyncapi` property for the document to be sat in order to understand the input format.
+The library expects the `asyncapi` property for the document to be set in order to understand the input format.
 
 - Generate from a [parsed AsyncAPI document](https://github.com/asyncapi/parser-js):
 
@@ -46,7 +46,7 @@ generator.generate({asyncapi: '2.1.0', ...});
 ```
 
 ## Generate models from JSON Schema draft 7 documents
-The library expects the `$schema` property for the document to be sat in order to understand the input format, by default if no other inputs are detected, it defaults to JSON Schema draft 7.
+The library expects the `$schema` property for the document to be set in order to understand the input format. By default, if no other inputs are detected, it defaults to `JSON Schema draft 7`.
 
 - Generate from a pure JS object:
 

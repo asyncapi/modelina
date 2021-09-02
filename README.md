@@ -2,10 +2,10 @@
   <br>
   <a href="https://www.asyncapi.org"><img src="https://github.com/asyncapi/parser-nodejs/raw/master/assets/logo.png" alt="AsyncAPI logo" width="200"></a>
   <br>
-  Modelina
+  <em><b>Modelina</b>
 </h5>
 <p align="center">
-  <em>The official SDK for generating data models from AsyncAPI and other inputs</em>
+   Is the official AsyncAPI SDK used to generate different data models (i.e. Java, TypeScript classes, Go Structs, etc) for AsyncAPI message payloads among other supported inputs.</em>
 </p>
 
 [![Coverage Status](https://coveralls.io/repos/github/asyncapi/modelina/badge.svg?branch=master)](https://coveralls.io/github/asyncapi/modelina?branch=master)
@@ -13,13 +13,11 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-Modelina is used to generate different data models, such as Java, TypeScript classes, Go Structs, etc, for AsyncAPI message payloads among other supported inputs.
-
 ---
 
 ## :loudspeaker: ATTENTION:
 
-This package is under development and it has not reached version 1.0.0 yet, which means its API might contain breaking changes without prior notice. Once it reaches its first stable version, we'll follow semantic versioning. So please use tests to ensure expected output or hardcode version used.
+This package is still under development and has not reached version 1.0.0 yet. This means that its API may contain breaking changes until we're able to deploy the first stable version and begin semantic versioning. Please use tests to ensure expected outputs or to hardcode the version.
 
 ---
 
@@ -27,24 +25,26 @@ This package is under development and it has not reached version 1.0.0 yet, whic
 
 <!-- toc -->
 
-- [Usage](#usage)
+- [Installation](#installation)
 - [Features](#features)
 - [Roadmap](#roadmap)
-- [Customization](#customization)
+- [Documentation](#documentation)
 - [Development](#development)
 - [Contributing](#contributing)
 - [Contributors ✨](#contributors-%E2%9C%A8)
 
 <!-- tocstop -->
 
-## Usage
-Run this command to install the SDK in your project:
+## Installation
+Run this command to install Modelina in your project:
 
 ```bash
 npm install --save @asyncapi/modelina
 ```
 
-You can then choose between all the generators, for example using the TypeScript generator, as in this example:
+Once you've successfully installed Modelina in your project, it's time to select your generator.
+
+Below is an example of using the TypeScript generator:
 ```js
 import { TypeScriptGenerator } from '@asyncapi/modelina';
 
@@ -91,43 +91,47 @@ export enum State {
 }
 ```
 ## Features
-There are so many different possibilities with this library, that listing everything is impossible, this table will give you a short overview of features. If you want the full list of features please click the link to the specific language.
+The following table provides a short summary of available features for supported output languages.
+
+To see the complete feature list for each language, please click the individual links for each language.
+
+
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <th>Supported language</th>
+    <th>Supported languages</th>
     <th>Features</th>
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-java-models">Java</a></td>
-    <td>Class and enum generation, with features such as generation of equals, hashCode, toString, Jackson annotation, custom indentation type and size, etc</td>
+    <td>Class and enum generation: <em>generation of equals, hashCode, toString, Jackson annotation, custom indentation type and size, etc</em></td>
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-typescript-models">TypeScript</a></td>
-    <td>Class, interface and enum generation, with features such as generation of example code, un/marshal functions, custom indentation type and size, etc</td>
+    <td>Class, interface and enum generation: <em>generation of example code, un/marshal functions, custom indentation type and size, etc</em></td>
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-c#-models">C#</a></td>
-    <td>Class and enum generation, with features such as generation of example code, serializer and deserializer functions, custom indentation type and size, etc</td>
+    <td>Class and enum generation: <em>generation of example code, serializer and deserializer functions, custom indentation type and size, etc</em></td>
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-go-models">Go</a></td>
-    <td>Struct and enum generation, with features such as custom indentation type and size, etc</td>
+    <td>Struct and enum generation: <em>custom indentation type and size, etc </em></td>
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-javascript-models">JavaScript</a></td>
-    <td>Class generation, with features such as custom indentation type and size, etc</td>
+    <td>Class generation: <em>custom indentation type and size, etc</em></td>
   </tr>
 </table>
 
 ## Roadmap
 - [Reach version 1.0](https://github.com/asyncapi/modelina/milestone/3)
 
-## Customization
+## Documentation
+There are many ways to utilize 
 
-There are multiple ways to customize the library both in terms of processing, logging and output generation, check the [customization document](./docs/customization.md).
-
+To setup your development environment please read the [development](./docs/development.md) document.
 ## Development
 To setup your development environment please read the [development](./docs/development.md) document.
 

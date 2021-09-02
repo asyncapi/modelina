@@ -1,4 +1,4 @@
-## All the integrations
+## Integrations
 
 <!-- toc is generated with GitHub Actions do not remove toc markers -->
 

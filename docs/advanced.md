@@ -7,11 +7,11 @@
 - [Generate each model in the same file](#generate-each-model-in-the-same-file)
 - [Generate a model in separate files](#generate-a-model-in-separate-files)
 - [Include a custom function in the data model](#include-a-custom-function-in-the-data-model)
-- [## Use the models for data transfer](#%23%23-use-the-models-for-data-transfer)
+- [Use the models for data transfer](#use-the-models-for-data-transfer)
 - [Extend the logic of an existing renderer](#extend-the-logic-of-an-existing-renderer)
 - [Build your own model renderer](#build-your-own-model-renderer)
 - [Create your own models from the ground up, instead of a supported input](#create-your-own-models-from-the-ground-up-instead-of-a-supported-input)
-- [Adding logging to the library](#adding-logging-to-the-library)
+- [Add logging to library](#add-logging-to-library)
   * [Example usage](#example-usage)
 - [Change the generated indentation type and size](#change-the-generated-indentation-type-and-size)
 - [Change the naming format for properties](#change-the-naming-format-for-properties)
@@ -28,7 +28,7 @@ TODO
 ## Include a custom function in the data model
 TODO 
 
-## ## Use the models for data transfer
+## Use the models for data transfer
 TODO 
 
 ## Extend the logic of an existing renderer
@@ -41,17 +41,19 @@ TODO
 TODO 
 
 
-## Adding logging to the library
-When you are generating models this library uses a detached logging module so you can integrate your own logging implementation based on your needs. By default nothing is logged to console or otherwise.
+## Add logging to library
+When you generate models, by default, nothing is logged to the console or elsewhere.
+
+If you want to integrate a logging implementation specific to your needs, this library allows you to implement a detached logging module.
 
 The library uses 4 different logging levels:
-- `debug`, for any very specific details only relevant to debugging.
-- `info`, for any general information relevant to the user.
-- `warn`, for any warnings that the user might need if the output is not as expected.
-- `error`, for any errors that occur in the library.
+- `debug`: for specific details only relevant to debugging
+- `info`: for general information relevant to the user
+- `warn`: for warnings a user may need if the output is not as expected
+- `error`: for errors that occur in the library
 
 ### Example usage
-This is an example integration of how to add a custom logger to the library:
+Below is an example integration for adding a custom logger to the library:
 
 ```ts
 import {ModelLoggingInterface, Logger} from '@asyncapi/modelina'; 
