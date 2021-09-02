@@ -129,9 +129,8 @@ To see the complete feature list for each language, please click the individual 
 - [Reach version 1.0](https://github.com/asyncapi/modelina/milestone/3)
 
 ## Documentation
-There are many ways to utilize 
+The documentation for this library can all be found under the documentation [README](./docs/README.md).
 
-To setup your development environment please read the [development](./docs/development.md) document.
 ## Development
 To setup your development environment please read the [development](./docs/development.md) document.
 

@@ -1,4 +1,5 @@
 # Advanced use-cases for Modelina
+This document contains many of the advanced use-cases that you may stumble upon when pushing the limits of Modelina.
 
 <!-- toc is generated with GitHub Actions do not remove toc markers -->
 

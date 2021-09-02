@@ -1,4 +1,4 @@
-# Development guideline
+# Development
 These are some of the development guidelines and help to setup the library for development.
 
 ## Docker
