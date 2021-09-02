@@ -5,7 +5,7 @@ import { InputProcessor } from '../../src/processors/InputProcessor';
 import { JsonSchemaInputProcessor } from '../../src/processors/JsonSchemaInputProcessor';
 import { AsyncAPIInputProcessor } from '../../src/processors/AsyncAPIInputProcessor';
 import { AbstractInputProcessor } from '../../src/processors';
-import AsyncAPIParser from '@asyncapi/parser';
+import AsyncAPIParser, { ParserError, ParserOptions } from '@asyncapi/parser';
 describe('InputProcessor', () => {
   beforeEach(() => {
     jest.resetAllMocks();
@@ -84,7 +84,7 @@ describe('InputProcessor', () => {
       const options: ProcessorOptions = {
         asyncapi: {
           path: 'test'
-        }
+        } as ParserOptions
       };
       const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'), 'utf8');
       const inputSchema = JSON.parse(inputSchemaString);
