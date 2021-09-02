@@ -43,6 +43,15 @@ export const TS_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
     return `export ${await renderer.defaultSelf()}`;
   },
   item({ item }): string {
-    return `${FormatHelpers.toConstantCase(`${item}`)} = "${item}",`;
+    let key = `${item}`;
+    let value: any = `"${item}"`;
+    if (typeof item === 'number' || typeof item === 'bigint') {
+      key = `NUMBER_${item}`;
+      value = item;
+    } else if (typeof item === 'object') {
+      key = JSON.stringify(item);
+      value = `'${JSON.stringify(item)}'`;
+    }
+    return `${FormatHelpers.toConstantCase(key)} = ${value},`;
   }
 };

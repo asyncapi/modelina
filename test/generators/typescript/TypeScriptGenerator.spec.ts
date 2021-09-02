@@ -294,6 +294,30 @@ ${content}`;
     expect(enumModel.dependencies).toEqual([]);
   });
 
+  test('should render mixed `enum` values', async () => {
+    const doc = {
+      $id: 'States',
+      enum: [2, 'test', true, {test: 'test'}]
+    };
+    const expected = `export enum States {
+  NUMBER_2 = 2,
+  TEST = "test",
+  TRUE = "true",
+  TEST_TEST = '{"test":"test"}',
+}`;
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models['States'];
+
+    let enumModel = await generator.render(model, inputModel);
+    expect(enumModel.result).toEqual(expected);
+    expect(enumModel.dependencies).toEqual([]);
+    
+    enumModel = await generator.renderEnum(model, inputModel);
+    expect(enumModel.result).toEqual(expected);
+    expect(enumModel.dependencies).toEqual([]);
+  });
+
   test('should work custom preset for `enum` type', async () => {
     const doc = {
       $id: 'CustomEnum',
