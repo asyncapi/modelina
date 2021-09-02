@@ -1,4 +1,4 @@
-import {parse, AsyncAPIDocument, Schema as AsyncAPISchema} from '@asyncapi/parser';
+import {parse, AsyncAPIDocument, Schema as AsyncAPISchema, ParserOptions} from '@asyncapi/parser';
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
 import { CommonInputModel, ProcessorOptions, Schema } from '../models';
@@ -22,7 +22,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     let doc: AsyncAPIDocument;
     const common = new CommonInputModel();
     if (!AsyncAPIInputProcessor.isFromParser(input)) {
-      doc = await parse(input as any, options?.asyncapi);
+      doc = await parse(input as any, options?.asyncapi || {} as ParserOptions);
     } else {
       doc = input as AsyncAPIDocument;
     }
