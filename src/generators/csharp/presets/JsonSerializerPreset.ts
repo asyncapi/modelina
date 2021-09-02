@@ -218,7 +218,7 @@ ${renderer.indent(unmarshalAdditionalProperties, 4)}
  */
 export const CSHARP_JSON_SERIALIZER_PRESET: CSharpPreset = {
   class: {
-    async self({ renderer, model}) {
+    self({ renderer, model, content }) {
       renderer.addDependency('using System.Text.Json;');
       renderer.addDependency('using System.Text.Json.Serialization;');
       renderer.addDependency('using System.Text.RegularExpressions;');
@@ -228,7 +228,7 @@ export const CSHARP_JSON_SERIALIZER_PRESET: CSharpPreset = {
       const marshal = renderMarshal({renderer, model});
 
       return `[JsonConverter(typeof(${formattedModelName}Converter))]
-${await renderer.defaultSelf()}
+${content}
 
 internal class ${formattedModelName}Converter : JsonConverter<${formattedModelName}>
 {
