@@ -39,7 +39,7 @@ This package is still under development and has not reached version 1.0.0 yet. T
 Run this command to install Modelina in your project:
 
 ```bash
-npm install --save @asyncapi/modelina
+npm install @asyncapi/modelina
 ```
 
 Once you've successfully installed Modelina in your project, it's time to select your generator.
