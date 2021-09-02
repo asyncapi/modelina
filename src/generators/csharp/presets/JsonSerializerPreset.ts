@@ -3,8 +3,8 @@ import { CSharpPreset } from '../CSharpPreset';
 import { getUniquePropertyName, DefaultPropertyNames, FormatHelpers } from '../../../helpers';
 import { CommonModel } from '../../../models';
 
-function renderMarshalAdditionalProperties(model: CommonModel, renderer: CSharpRenderer) {
-  const marshalAdditionalProperties = '';
+function renderSerializeAdditionalProperties(model: CommonModel, renderer: CSharpRenderer) {
+  const serializeAdditionalProperties = '';
   if (model.additionalProperties !== undefined) {
     let additionalPropertyName = getUniquePropertyName(model, DefaultPropertyNames.additionalProperties);
     additionalPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(additionalPropertyName, model.additionalProperties));
@@ -23,30 +23,30 @@ if (value.AdditionalProperties != null) {
   }
 }`;
   }
-  return marshalAdditionalProperties;
+  return serializeAdditionalProperties;
 }
 
-function renderMarshalProperties(model: CommonModel, renderer: CSharpRenderer) {
-  let marshalProperties = '';
+function renderSerializeProperties(model: CommonModel, renderer: CSharpRenderer) {
+  let serializeProperties = '';
   if (model.properties !== undefined) {
     for (const [propertyName, propertyModel] of Object.entries(model.properties)) {
       const formattedPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(propertyName, propertyModel));
-      marshalProperties += `if(value.${formattedPropertyName} != null) { 
+      serializeProperties += `if(value.${formattedPropertyName} != null) { 
   // write property name and let the serializer serialize the value itself
   writer.WritePropertyName("${propertyName}");
   JsonSerializer.Serialize(writer, value.${formattedPropertyName});
 }\n`;
     }
   }
-  return marshalProperties;
+  return serializeProperties;
 }
-function renderMarshalPatternProperties(model: CommonModel, renderer: CSharpRenderer) {
-  let marshalPatternProperties = '';
+function renderSerializePatternProperties(model: CommonModel, renderer: CSharpRenderer) {
+  let serializePatternProperties = '';
   if (model.patternProperties !== undefined) {
     for (const [pattern, patternModel] of Object.entries(model.patternProperties)) {
       let patternPropertyName = getUniquePropertyName(model, `${pattern}${DefaultPropertyNames.patternProperties}`);
       patternPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(patternPropertyName, patternModel));
-      marshalPatternProperties += `// Unwrap pattern properties in object
+      serializePatternProperties += `// Unwrap pattern properties in object
 if(value.${patternPropertyName} != null) { 
   foreach (var patternProp in value.${patternPropertyName})
   {
@@ -62,7 +62,7 @@ if(value.${patternPropertyName} != null) {
 }`;
     }
   }
-  return marshalPatternProperties;
+  return serializePatternProperties;
 }
 
 function renderPropertiesList(model: CommonModel, renderer: CSharpRenderer) {
@@ -85,16 +85,16 @@ function renderPropertiesList(model: CommonModel, renderer: CSharpRenderer) {
   return propertiesList;
 }
 /**
- * Render `marshal` function based on model
+ * Render `serialize` function based on model
  */
-function renderMarshal({ renderer, model }: {
+function renderSerialize({ renderer, model }: {
   renderer: CSharpRenderer,
   model: CommonModel,
 }): string {
   const formattedModelName = renderer.nameType(model.$id);
-  const marshalProperties = renderMarshalProperties(model, renderer);
-  const marshalPatternProperties = renderMarshalPatternProperties(model, renderer);
-  const marshalAdditionalProperties = renderMarshalAdditionalProperties(model, renderer);
+  const serializeProperties = renderSerializeProperties(model, renderer);
+  const serializePatternProperties = renderSerializePatternProperties(model, renderer);
+  const serializeAdditionalProperties = renderSerializeAdditionalProperties(model, renderer);
   const propertiesList = renderPropertiesList(model, renderer);
 
   return `public override void Write(Utf8JsonWriter writer, ${formattedModelName} value, JsonSerializerOptions options)
@@ -108,19 +108,19 @@ function renderMarshal({ renderer, model }: {
   
   writer.WriteStartObject();
 
-${renderer.indent(marshalProperties)}
+${renderer.indent(serializeProperties)}
 
-${renderer.indent(marshalPatternProperties)}
+${renderer.indent(serializePatternProperties)}
 
-${renderer.indent(marshalAdditionalProperties)}
+${renderer.indent(serializeAdditionalProperties)}
 
   writer.WriteEndObject();
 }`;
 } 
 
-function renderUnmarshalProperties(model: CommonModel, renderer: CSharpRenderer) {
+function renderDeserializeProperties(model: CommonModel, renderer: CSharpRenderer) {
   const propertyEntries = Object.entries(model.properties || {});
-  const unmarshalProperties = propertyEntries.map(([prop, propModel]) => {
+  const deserializeProperties = propertyEntries.map(([prop, propModel]) => {
     const formattedPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(prop, propModel));
     const propertyModelType = renderer.renderType(propModel);
     return `if (propertyName == "${prop}")
@@ -130,10 +130,10 @@ function renderUnmarshalProperties(model: CommonModel, renderer: CSharpRenderer)
   continue;
 }`;
   });
-  return unmarshalProperties.join('\n');
+  return deserializeProperties.join('\n');
 }
 
-function renderUnmarshalPatternProperties(model: CommonModel, renderer: CSharpRenderer) {
+function renderDeserializePatternProperties(model: CommonModel, renderer: CSharpRenderer) {
   if (model.patternProperties === undefined) {
     return '';
   }
@@ -153,7 +153,7 @@ if (match.Success)
   return patternProperties.join('\n');
 }
 
-function renderUnmarshalAdditionalProperties(model: CommonModel, renderer: CSharpRenderer) {
+function renderDeserializeAdditionalProperties(model: CommonModel, renderer: CSharpRenderer) {
   if (model.additionalProperties === undefined) {
     return ''; 
   }
@@ -167,16 +167,16 @@ continue;`;
 }
 
 /**
- * Render `unmarshal` function based on model
+ * Render `deserialize` function based on model
  */
-function renderUnmarshal({ renderer, model }: {
+function renderDeserialize({ renderer, model }: {
   renderer: CSharpRenderer,
   model: CommonModel,
 }): string {
   const formattedModelName = renderer.nameType(model.$id);
-  const unmarshalProperties = renderUnmarshalProperties(model, renderer);
-  const unmarshalPatternProperties = renderUnmarshalPatternProperties(model, renderer);
-  const unmarshalAdditionalProperties = renderUnmarshalAdditionalProperties(model, renderer);
+  const deserializeProperties = renderDeserializeProperties(model, renderer);
+  const deserializePatternProperties = renderDeserializePatternProperties(model, renderer);
+  const deserializeAdditionalProperties = renderDeserializeAdditionalProperties(model, renderer);
   return `public override ${formattedModelName} Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
 {
   if (reader.TokenType != JsonTokenType.StartObject)
@@ -200,11 +200,11 @@ function renderUnmarshal({ renderer, model }: {
     }
 
     string propertyName = reader.GetString();
-${renderer.indent(unmarshalProperties, 4)}
+${renderer.indent(deserializeProperties, 4)}
 
-${renderer.indent(unmarshalPatternProperties, 4)}
+${renderer.indent(deserializePatternProperties, 4)}
 
-${renderer.indent(unmarshalAdditionalProperties, 4)}
+${renderer.indent(deserializeAdditionalProperties, 4)}
   }
   
   throw new JsonException();
@@ -212,7 +212,7 @@ ${renderer.indent(unmarshalAdditionalProperties, 4)}
 } 
 
 /**
- * Preset which adds `marshal` and `unmarshal` functions to class. 
+ * Preset which adds `serialize` and `deserialize` functions to class. 
  * 
  * @implements {CSharpPreset}
  */
@@ -224,8 +224,8 @@ export const CSHARP_JSON_SERIALIZER_PRESET: CSharpPreset = {
       renderer.addDependency('using System.Text.RegularExpressions;');
       
       const formattedModelName = renderer.nameType(model.$id);
-      const unmarshal = renderUnmarshal({renderer, model});
-      const marshal = renderMarshal({renderer, model});
+      const deserialize = renderDeserialize({renderer, model});
+      const serialize = renderSerialize({renderer, model});
 
       return `[JsonConverter(typeof(${formattedModelName}Converter))]
 ${content}
@@ -237,8 +237,8 @@ internal class ${formattedModelName}Converter : JsonConverter<${formattedModelNa
     // this converter can be applied to any type
     return true;
   }
-${renderer.indent(unmarshal)}
-${renderer.indent(marshal)}
+${renderer.indent(deserialize)}
+${renderer.indent(serialize)}
 
 }
 `;
