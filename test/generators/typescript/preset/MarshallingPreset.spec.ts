@@ -14,7 +14,7 @@ const doc = {
   required: ['string prop'],
   properties: {
     'string prop': { type: 'string' },
-    enumProp: { $id: 'EnumTest', enum: ['Some enum String']},
+    enumProp: { $id: 'EnumTest', enum: ['Some enum String', "some other enum string"]},
     numberProp: { type: 'number' },
     objectProp: { $ref: '#/definitions/NestedTest' }
   },
@@ -50,6 +50,7 @@ describe('Marshalling preset', () => {
   test('should provide a two way conversion', async () => {
     enum EnumTest {
       SOME_ENUM_STRING = "Some enum String",
+      SOME_OTHER_ENUM_STRING = "some other enum string"
     }
     class NestedTest {
       private _stringProp?: string;
