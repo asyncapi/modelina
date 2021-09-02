@@ -48,8 +48,6 @@ You can then choose between all the generators, for example using the TypeScript
 ```js
 import { TypeScriptGenerator } from '@asyncapi/modelina';
 
-const generator = new TypeScriptGenerator({ modelType: 'interface' });
-
 const doc = {
   $id: "Address",
   type: "object",
@@ -65,6 +63,7 @@ const doc = {
 };
 
 async function generate() {
+  const generator = new TypeScriptGenerator({ modelType: 'interface' });
   const models = await generator.generate(doc);
   models.forEach(model => console.log(model.result)); 
 }
