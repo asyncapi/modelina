@@ -60,8 +60,6 @@ ${this.indent(this.renderBlock(content, 2))}
     let normalizedValue;
     switch (typeof value) {
     case 'string':
-      normalizedValue = `"${value}"`;
-      break;
     case 'boolean':
       normalizedValue = `"${value}"`;
       break;
