@@ -4,14 +4,14 @@
 
 <!-- toc -->
 
-- [Usage (`./usage.md`)](#usage-usagemd)
-- [Advanced (`./advanced.md`)](#advanced-advancedmd)
-- [Integration (`./integration.md`)](#integration-integrationmd)
-- [Development (`./development.md`)](#development-developmentmd)
-- [Input processing (`./input_processing.md`)](#input-processing-input_processingmd)
-- [Generators (`./generators.md`)](#generators-generatorsmd)
-- [Presets (`./presets.md`)](#presets-presetsmd)
-- [Interpretation of JSON Schema draft 7 (`./interpretation_of_JSON_Schema_draft_7.md`)](#interpretation-of-json-schema-draft-7-interpretation_of_json_schema_draft_7md)
+- [Usage](#usage)
+- [Advanced](#advanced)
+- [Integration](#integration)
+- [Development](#development)
+- [Input processing](#input-processing)
+- [Generators](#generators)
+- [Presets](#presets)
+- [Interpretation of JSON Schema draft 7](#interpretation-of-json-schema-draft-7)
 - [Languages](#languages)
 
 <!-- tocstop -->
