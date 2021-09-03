@@ -27,6 +27,7 @@ This package is under development and it has not reached version 1.0.0 yet, whic
 
 <!-- toc -->
 
+- [Requirement](#requirement)
 - [Installation](#installation)
 - [How it works](#how-it-works)
   * [The input process](#the-input-process)
@@ -41,6 +42,11 @@ This package is under development and it has not reached version 1.0.0 yet, whic
 - [Contributors ✨](#contributors-%E2%9C%A8)
 
 <!-- tocstop -->
+
+## Requirement
+- Because of different features depending on from node, we require version >= v14
+
+Feel free to submit an issue if you require this project in other use-cases.
 
 ## Installation
 
