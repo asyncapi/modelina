@@ -44,7 +44,8 @@ This package is under development and it has not reached version 1.0.0 yet, whic
 <!-- tocstop -->
 
 ## Requirement
-- Because of different features depending on from node, we require version >= v14
+
+- [NodeJS](https://nodejs.org/en/) >= 14
 
 Feel free to submit an issue if you require this project in other use-cases.
 
