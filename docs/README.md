@@ -18,34 +18,34 @@
 
 This document gives the overview of all the available documentation for Modelina.
 
-### [Usage (`./usage.md`)](./usage.md)
-Contains the very simple use-cases that you encounter when using Modelina.
+### [Usage](./usage.md)
+Contains simple use-cases that you'll encounter when using Modelina.
 
-### [Advanced (`./advanced.md`)](./advanced.md)
+### [Advanced](./advanced.md)
 Contains many of the advanced use-cases that you may stumble upon when pushing the limits of Modelina.
 
-### [Integration (`./integration.md`)](./integration.md)
-Contains many advanced ways to integrate Modelina such as in a website.
+### [Integration](./integration.md)
+Contains many advanced ways to integrate Modelina _(i.e. websites)_. 
 
-### [Development (`./development.md`)](./development.md)
+### [Development](./development.md)
 Explains how to setup the project for development. 
 
-### [Input processing (`./input_processing.md`)](./input_processing.md)
-Goes into detail how the input processing works.
+### [Input processing](./input_processing.md)
+Details how input processing works.
 
-### [Generators (`./generators.md`)](./generators.md)
-Goes into detail on the different generator options that is supported.
+### [Generators](./generators.md)
+Details which different generator options are supported.
 
-### [Presets (`./presets.md`)](./presets.md)
-Goes more in depth how the preset system works, which enable full customization fo the generators.
+### [Presets](./presets.md)
+Goes more in-depth into how the preset system works, which enables full customization of generators.
 
-### [Interpretation of JSON Schema draft 7 (`./interpretation_of_JSON_Schema_draft_7.md`)](./interpretation_of_JSON_Schema_draft_7.md)
+### [Interpretation of JSON Schema draft 7](./interpretation_of_JSON_Schema_draft_7.md)
 Explains how a JSON Schema draft 7 is interpreted to a data model.
 
 ### Languages
-Each language will have their own limitations, corner cases, and features, therefore each language have their own documentation.
-- [C# (`./languages/C#.md`)](./languages/C#.md)
-- [Go (`./languages/Go.md`)](./languages/Go.md)
-- [Java (`./languages/Java.md`)](./languages/Java.md)
-- [JavaScript (`./languages/JavaScript.md`)](./languages/JavaScript.md)
-- [TypeScript (`./languages/TypeScript.md`)](./languages/TypeScript.md)
+Each language has its own limitations, corner cases, and features; thus, each language has separate documentation.
+- [C#](./languages/C#.md)
+- [Go](./languages/Go.md)
+- [Java](./languages/Java.md)
+- [JavaScript](./languages/JavaScript.md)
+- [TypeScript](./languages/TypeScript.md)
