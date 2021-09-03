@@ -202,13 +202,13 @@ exports[`CSharpGenerator should render \`enum\` type $name should not be empty 2
 
 exports[`CSharpGenerator should render \`enum\` type $name should not be empty 3`] = `
 "public enum Things {
-  Test, Number_1, False, ObjectObject
+  Texas, Number_1, False, ObjectObject
 }"
 `;
 
 exports[`CSharpGenerator should render \`enum\` type $name should not be empty 4`] = `
 "public enum Things {
-  Test, Number_1, False, ObjectObject
+  Texas, Number_1, False, ObjectObject
 }"
 `;
 
