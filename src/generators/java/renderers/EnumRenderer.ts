@@ -53,7 +53,7 @@ ${this.indent(this.renderBlock(content, 2))}
       return `"${value}"`;
     }
     if (typeof value === 'object') {
-      return `"${JSON.stringify(value).replaceAll('"', '\\"')}"`;
+      return `"${JSON.stringify(value).replace(/"/g, '\\"')}"`;
     }
     return String(value);
   }
