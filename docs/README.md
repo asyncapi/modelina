@@ -40,7 +40,7 @@ Details which different generator options are supported.
 Goes more in-depth into how the preset system works, which enables full customization of generators.
 
 ### [Interpretation of JSON Schema draft 7](./interpretation_of_JSON_Schema_draft_7.md)
-Explains how a JSON Schema draft 7 is interpreted to a data model.
+Explains how a JSON Schema draft 7 schema is interpreted to a data model.
 
 ### Languages
 Each language has its own limitations, corner cases, and features; thus, each language has separate documentation.
