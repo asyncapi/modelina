@@ -70,7 +70,7 @@ export abstract class AbstractRenderer<
           options, 
           model: this.model, 
           inputModel: this.inputModel
-        });
+        }) || content;
       }
     }
     return content;

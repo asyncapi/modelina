@@ -5,8 +5,8 @@ import { testOptions, TestGenerator } from './AbstractGenerator.spec';
 
 describe('AbstractRenderer', () => {
   class TestRenderer extends AbstractRenderer {
-    constructor() {
-      super(testOptions, new TestGenerator(), [], new CommonModel(), new CommonInputModel());
+    constructor(presets = []) {
+      super(testOptions, new TestGenerator(), presets, new CommonModel(), new CommonInputModel());
     }
     render(): Promise<RenderOutput> {
       return Promise.resolve(RenderOutput.toRenderOutput({result: ''}));
@@ -56,6 +56,15 @@ describe('AbstractRenderer', () => {
     test('should render indentation  with options', () => {
       const content = renderer.indent('Test', 4, IndentationTypes.SPACES);
       expect(content).toEqual('    Test');
+    });
+  });
+
+  describe('runSelfPreset()', () => {
+    test('should not call incorrect preset', async () => {
+      const presetCallback = jest.fn();
+      const tempRenderer = new TestRenderer({{self: presetCallback as never} , {}} as never]);
+      await tempRenderer.runSelfPreset();
+      expect(presetCallback).not.toHaveBeenCalled();
     });
   });
 });
