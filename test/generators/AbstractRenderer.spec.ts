@@ -60,11 +60,73 @@ describe('AbstractRenderer', () => {
   });
 
   describe('runSelfPreset()', () => {
+    test('should call correct preset', async () => {
+      const presetCallback = jest.fn();
+      const tempRenderer = new TestRenderer([
+        [{
+          self: presetCallback as never
+        } as never, {} as never] as never
+      ]);
+      await tempRenderer.runSelfPreset();
+      expect(presetCallback).toHaveBeenCalled();
+    });
     test('should not call incorrect preset', async () => {
       const presetCallback = jest.fn();
-      const tempRenderer = new TestRenderer({{self: presetCallback as never} , {}} as never]);
+      
+      const tempRenderer = new TestRenderer([
+        [{
+          none_self: presetCallback as never
+        } as never, {} as never] as never
+      ]);
       await tempRenderer.runSelfPreset();
       expect(presetCallback).not.toHaveBeenCalled();
+    });
+  });
+  describe('runAdditionalContentPreset()', () => {
+    test('should call correct preset', async () => {
+      const presetCallback = jest.fn();
+      const tempRenderer = new TestRenderer([
+        [{
+          additionalContent: presetCallback as never
+        } as never, {} as never] as never
+      ]);
+      await tempRenderer.runAdditionalContentPreset();
+      expect(presetCallback).toHaveBeenCalled();
+    });
+    test('should not call incorrect preset', async () => {
+      const presetCallback = jest.fn();
+      
+      const tempRenderer = new TestRenderer([
+        [{
+          none_additionalContent: presetCallback as never
+        } as never, {} as never] as never
+      ]);
+      await tempRenderer.runAdditionalContentPreset();
+      expect(presetCallback).not.toHaveBeenCalled();
+    });
+  });
+  describe('runPreset()', () => {
+    test('should call correct preset', async () => {
+      const preset1Callback = jest.fn();
+      const preset2Callback = jest.fn();
+      const tempRenderer = new TestRenderer([
+        [{
+          test: preset1Callback.mockReturnValue('value') as never
+        } as never, {} as never] as never,
+        [{
+          test: preset2Callback.mockReturnValue(undefined) as never
+        } as never, {} as never] as never,
+        [{
+          test: preset2Callback.mockReturnValue('') as never
+        } as never, {} as never] as never,
+        [{
+          test: preset2Callback.mockReturnValue(null) as never
+        } as never, {} as never] as never
+      ]);
+      const content = await tempRenderer.runPreset('test');
+      expect(content).toEqual('value');
+      expect(preset1Callback).toHaveBeenCalled();
+      expect(preset2Callback).toHaveBeenCalled();
     });
   });
 });
