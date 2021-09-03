@@ -27,7 +27,7 @@ This package is under development and it has not reached version 1.0.0 yet, whic
 
 <!-- toc -->
 
-- [Requirement](#requirement)
+- [Requirements](#requirements)
 - [Installation](#installation)
 - [How it works](#how-it-works)
   * [The input process](#the-input-process)
@@ -43,7 +43,7 @@ This package is under development and it has not reached version 1.0.0 yet, whic
 
 <!-- tocstop -->
 
-## Requirement
+## Requirements
 
 - [NodeJS](https://nodejs.org/en/) >= 14
 
