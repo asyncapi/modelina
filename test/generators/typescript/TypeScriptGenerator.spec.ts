@@ -294,7 +294,7 @@ ${content}`;
     expect(enumModel.dependencies).toEqual([]);
   });
 
-  test('should render mixed `enum` values', async () => {
+  test('should render union `enum` values', async () => {
     const doc = {
       $id: 'States',
       enum: [2, 'test', true, {test: 'test'}]

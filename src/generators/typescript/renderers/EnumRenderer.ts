@@ -36,22 +36,59 @@ ${this.indent(this.renderBlock(content, 2))}
   runItemPreset(item: any): Promise<string> {
     return this.runPreset('item', { item });
   }
+
+  normalizeKey(value: any): any {
+    let key;
+    switch (typeof value) {
+    case 'bigint':
+    case 'number': {
+      key = `number ${value}`;
+      break;
+    }
+    case 'object': {
+      key = JSON.stringify(value);
+      break;
+    }
+    default: {
+      key = String(value);
+    }
+    }
+    return FormatHelpers.toConstantCase(key);
+  }
+
+  normalizeValue(value: any): any {
+    let normalizedValue;
+    switch (typeof value) {
+    case 'string':
+      normalizedValue = `"${value}"`;
+      break;
+    case 'boolean':
+      normalizedValue = `"${value}"`;
+      break;
+    case 'bigint':
+    case 'number': {
+      normalizedValue = value;
+      break;
+    }
+    case 'object': {
+      normalizedValue = `'${JSON.stringify(value)}'`;
+      break;
+    }
+    default: {
+      normalizedValue = String(value);
+    }
+    }
+    return normalizedValue;
+  }
 }
 
 export const TS_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
   async self({ renderer }) {
     return `export ${await renderer.defaultSelf()}`;
   },
-  item({ item }): string {
-    let key = `${item}`;
-    let value: any = `"${item}"`;
-    if (typeof item === 'number' || typeof item === 'bigint') {
-      key = `NUMBER_${item}`;
-      value = item;
-    } else if (typeof item === 'object') {
-      key = JSON.stringify(item);
-      value = `'${JSON.stringify(item)}'`;
-    }
-    return `${FormatHelpers.toConstantCase(key)} = ${value},`;
+  item({ item, renderer }): string {
+    const key = renderer.normalizeKey(item);
+    const value = renderer.normalizeValue(item);
+    return `${key} = ${value},`;
   }
 };
