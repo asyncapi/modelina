@@ -7,6 +7,9 @@
   "bugs": {
     "url": "https://github.com/asyncapi/modelina/issues"
   },
+  "engines": {
+    "node": ">=14"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/asyncapi/modelina.git"
