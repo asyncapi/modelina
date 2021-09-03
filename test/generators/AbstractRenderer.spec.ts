@@ -1,8 +1,7 @@
 import { AbstractRenderer } from '../../src/generators'; 
 import { IndentationTypes } from '../../src/helpers';
 import { CommonInputModel, CommonModel, RenderOutput } from '../../src/models';
-import { testOptions, TestGenerator } from './AbstractGenerator.spec';
-
+import { testOptions, TestGenerator } from './AbstractGenerator.spec'
 describe('AbstractRenderer', () => {
   class TestRenderer extends AbstractRenderer {
     constructor() {
