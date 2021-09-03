@@ -25,6 +25,7 @@ This package is still under development and has not reached version 1.0.0 yet. T
 
 <!-- toc -->
 
+- [Requirements](#requirements)
 - [Installation](#installation)
 - [Features](#features)
 - [Roadmap](#roadmap)
@@ -34,6 +35,12 @@ This package is still under development and has not reached version 1.0.0 yet. T
 - [Contributors ✨](#contributors-%E2%9C%A8)
 
 <!-- tocstop -->
+
+## Requirements
+
+- [NodeJS](https://nodejs.org/en/) >= 14
+
+Feel free to submit an issue if you require this project in other use-cases.
 
 ## Installation
 Run this command to install Modelina in your project:
