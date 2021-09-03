@@ -41,6 +41,9 @@ ${this.indent(this.renderBlock(content, 2))}
     case 'boolean': {
       return FormatHelpers.toConstantCase(`boolean ${value}`);
     }
+    case 'object': {
+      return FormatHelpers.toConstantCase(JSON.stringify(value));
+    }
     default: return FormatHelpers.toConstantCase(String(value));
     }
   }
@@ -48,6 +51,9 @@ ${this.indent(this.renderBlock(content, 2))}
   normalizeValue(value: any): string {
     if (typeof value === 'string') {
       return `"${value}"`;
+    }
+    if (typeof value === 'object') {
+      return `"${JSON.stringify(value).replace(/"/g, '\\"')}"`;
     }
     return String(value);
   }
