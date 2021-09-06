@@ -4,15 +4,16 @@ import { getUniquePropertyName, DefaultPropertyNames, FormatHelpers, TypeHelpers
 import { CommonInputModel, CommonModel } from '../../../models';
 
 function renderSerializeProperty(modelInstanceVariable: string, model: CommonModel, inputModel: CommonInputModel) {
+  let value = modelInstanceVariable;
   if (model.$ref) {
     const resolvedModel = inputModel.models[model.$ref];
     const propertyModelKind = TypeHelpers.extractKind(resolvedModel);
     //Referenced enums only need standard marshalling, so lets filter those away
     if (propertyModelKind !== ModelKind.ENUM) {
-      return `$\{${modelInstanceVariable}.marshal()}`;
+      value = `${modelInstanceVariable}.marshal()`;
     }
   }
-  return `JsonSerializer.Serialize(writer, ${modelInstanceVariable});`;
+  return `JsonSerializer.Serialize(writer, ${value});`;
 }
 
 function renderSerializeAdditionalProperties(model: CommonModel, renderer: CSharpRenderer) {
