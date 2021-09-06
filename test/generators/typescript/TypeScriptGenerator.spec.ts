@@ -75,9 +75,9 @@ describe('TypeScriptGenerator', () => {
   private _marriage?: boolean;
   private _members?: string | number | boolean;
   private _tupleType?: [string, number];
-  private _tupleTypeWithAdditionalItems?: [string, number, ...(object | string | number | Array<unknown> | boolean | null | number)[]];
+  private _tupleTypeWithAdditionalItems?: [string, number, ...(object | string | number | Array<unknown> | boolean | null)[]];
   private _arrayType: Array<string>;
-  private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null | number>;
+  private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null>;
   private _sTestPatternProperties?: Map<String, string>;
 
   constructor(input: {
@@ -88,7 +88,7 @@ describe('TypeScriptGenerator', () => {
     marriage?: boolean,
     members?: string | number | boolean,
     tupleType?: [string, number],
-    tupleTypeWithAdditionalItems?: [string, number, ...(object | string | number | Array<unknown> | boolean | null | number)[]],
+    tupleTypeWithAdditionalItems?: [string, number, ...(object | string | number | Array<unknown> | boolean | null)[]],
     arrayType: Array<string>,
   }) {
     this._streetName = input.streetName;
@@ -123,14 +123,14 @@ describe('TypeScriptGenerator', () => {
   get tupleType(): [string, number] | undefined { return this._tupleType; }
   set tupleType(tupleType: [string, number] | undefined) { this._tupleType = tupleType; }
 
-  get tupleTypeWithAdditionalItems(): [string, number, ...(object | string | number | Array<unknown> | boolean | null | number)[]] | undefined { return this._tupleTypeWithAdditionalItems; }
-  set tupleTypeWithAdditionalItems(tupleTypeWithAdditionalItems: [string, number, ...(object | string | number | Array<unknown> | boolean | null | number)[]] | undefined) { this._tupleTypeWithAdditionalItems = tupleTypeWithAdditionalItems; }
+  get tupleTypeWithAdditionalItems(): [string, number, ...(object | string | number | Array<unknown> | boolean | null)[]] | undefined { return this._tupleTypeWithAdditionalItems; }
+  set tupleTypeWithAdditionalItems(tupleTypeWithAdditionalItems: [string, number, ...(object | string | number | Array<unknown> | boolean | null)[]] | undefined) { this._tupleTypeWithAdditionalItems = tupleTypeWithAdditionalItems; }
 
   get arrayType(): Array<string> { return this._arrayType; }
   set arrayType(arrayType: Array<string>) { this._arrayType = arrayType; }
 
-  get additionalProperties(): Map<String, object | string | number | Array<unknown> | boolean | null | number> | undefined { return this._additionalProperties; }
-  set additionalProperties(additionalProperties: Map<String, object | string | number | Array<unknown> | boolean | null | number> | undefined) { this._additionalProperties = additionalProperties; }
+  get additionalProperties(): Map<String, object | string | number | Array<unknown> | boolean | null> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<String, object | string | number | Array<unknown> | boolean | null> | undefined) { this._additionalProperties = additionalProperties; }
 
   get sTestPatternProperties(): Map<String, string> | undefined { return this._sTestPatternProperties; }
   set sTestPatternProperties(sTestPatternProperties: Map<String, string> | undefined) { this._sTestPatternProperties = sTestPatternProperties; }
@@ -160,7 +160,7 @@ describe('TypeScriptGenerator', () => {
   @JsonProperty("property")
   private _property?: string;
   @JsonProperty("additionalProperties")
-  private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null | number>;
+  private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null>;
 
   constructor(input: {
     property?: string,
@@ -171,8 +171,8 @@ describe('TypeScriptGenerator', () => {
   get property(): string | undefined { return this._property; }
   set property(property: string | undefined) { this._property = property; }
 
-  get additionalProperties(): Map<String, object | string | number | Array<unknown> | boolean | null | number> | undefined { return this._additionalProperties; }
-  set additionalProperties(additionalProperties: Map<String, object | string | number | Array<unknown> | boolean | null | number> | undefined) { this._additionalProperties = additionalProperties; }
+  get additionalProperties(): Map<String, object | string | number | Array<unknown> | boolean | null> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<String, object | string | number | Array<unknown> | boolean | null> | undefined) { this._additionalProperties = additionalProperties; }
 }`;
 
     generator = new TypeScriptGenerator({ presets: [
@@ -224,9 +224,9 @@ ${content}`;
   marriage?: boolean;
   members?: string | number | boolean;
   tupleType?: [string, number];
-  tupleTypeWithAdditionalItems?: [string, number, ...(object | string | number | Array<unknown> | boolean | null | number)[]];
+  tupleTypeWithAdditionalItems?: [string, number, ...(object | string | number | Array<unknown> | boolean | null)[]];
   arrayType: Array<string>;
-  additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null | number>;
+  additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null>;
   sTestPatternProperties?: Map<String, string>;
 }`;
 
@@ -249,7 +249,7 @@ ${content}`;
     };
     const expected = `export interface CustomInterface {
   property?: string;
-  additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null | number>;
+  additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null>;
 }`;
 
     generator = new TypeScriptGenerator({ presets: [
