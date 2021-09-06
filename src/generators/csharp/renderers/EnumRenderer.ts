@@ -9,13 +9,23 @@ import { pascalCase } from 'change-case';
  */
 export class EnumRenderer extends CSharpRenderer {
   async defaultSelf(): Promise<string> {
-    const content = [
-      await this.renderItems(),
-    ];
+    const enumItems = await this.renderItems();
     const formattedName = this.nameType(this.model.$id);
+    const caseItemValues = await this.renderCaseItemValues();
     return `public enum ${formattedName} {
-${this.indent(this.renderBlock(content, 2))}
-}`;
+${this.indent(enumItems)}
+}
+public static class ${formattedName}Extensions {
+  public static dynamic GetValue(this ${formattedName} val)
+  {
+    switch (val)
+    {
+${this.indent(caseItemValues, 6)}
+    }
+    return null;
+  }
+}
+`;
   }
 
   async renderItems(): Promise<string> {
@@ -28,6 +38,34 @@ ${this.indent(this.renderBlock(content, 2))}
     }
 
     const content = items.join(', ');
+    return `${content}`;
+  }
+
+  async renderCaseItemValues(): Promise<string> {
+    const enums = this.model.enum || [];
+    const items: string[] = [];
+    const formattedName = this.nameType(this.model.$id);
+
+    for (const enumValue of enums) {
+      const renderedItem = await this.runItemPreset(enumValue);
+      let value: any;
+      switch (typeof enumValue) {
+      case 'number':
+      case 'bigint':
+      case 'boolean':
+        value = enumValue;
+        break;
+      case 'object': 
+        value = `"${JSON.stringify(enumValue).replaceAll('"', '\\"')}"`;
+        break;
+      default:
+        value = `"${enumValue}"`;
+        break;
+      }
+      items.push(`case ${formattedName}.${renderedItem}: return ${value};`);
+    }
+    
+    const content = items.join('\n');
     return `${content}`;
   }
 

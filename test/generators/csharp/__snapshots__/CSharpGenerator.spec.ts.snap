@@ -191,25 +191,79 @@ exports[`CSharpGenerator should render \`class\` type 2`] = `
 exports[`CSharpGenerator should render \`enum\` type $name should not be empty 1`] = `
 "public enum States {
   Texas, Alabama, California
-}"
+}
+public static class StatesExtensions {
+  public static dynamic GetValue(this States val)
+  {
+    switch (val)
+    {
+      case States.Texas: return \\"Texas\\";
+      case States.Alabama: return \\"Alabama\\";
+      case States.California: return \\"California\\";
+    }
+    return null;
+  }
+}
+"
 `;
 
 exports[`CSharpGenerator should render \`enum\` type $name should not be empty 2`] = `
 "public enum States {
   Texas, Alabama, California
-}"
+}
+public static class StatesExtensions {
+  public static dynamic GetValue(this States val)
+  {
+    switch (val)
+    {
+      case States.Texas: return \\"Texas\\";
+      case States.Alabama: return \\"Alabama\\";
+      case States.California: return \\"California\\";
+    }
+    return null;
+  }
+}
+"
 `;
 
 exports[`CSharpGenerator should render \`enum\` type $name should not be empty 3`] = `
 "public enum Things {
   Texas, Number_1, False, TestTest
-}"
+}
+public static class ThingsExtensions {
+  public static dynamic GetValue(this Things val)
+  {
+    switch (val)
+    {
+      case Things.Texas: return \\"Texas\\";
+      case Things.Number_1: return 1;
+      case Things.False: return false;
+      case Things.TestTest: return \\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\";
+    }
+    return null;
+  }
+}
+"
 `;
 
 exports[`CSharpGenerator should render \`enum\` type $name should not be empty 4`] = `
 "public enum Things {
   Texas, Number_1, False, TestTest
-}"
+}
+public static class ThingsExtensions {
+  public static dynamic GetValue(this Things val)
+  {
+    switch (val)
+    {
+      case Things.Texas: return \\"Texas\\";
+      case Things.Number_1: return 1;
+      case Things.False: return false;
+      case Things.TestTest: return \\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\";
+    }
+    return null;
+  }
+}
+"
 `;
 
 exports[`CSharpGenerator should work custom preset for \`class\` type 1`] = `
@@ -234,11 +288,37 @@ exports[`CSharpGenerator should work custom preset for \`class\` type 1`] = `
 exports[`CSharpGenerator should work custom preset for \`enum\` type 1`] = `
 "public enum CustomEnum {
   Texas, Alabama, California
-}"
+}
+public static class CustomEnumExtensions {
+  public static dynamic GetValue(this CustomEnum val)
+  {
+    switch (val)
+    {
+      case CustomEnum.Texas: return \\"Texas\\";
+      case CustomEnum.Alabama: return \\"Alabama\\";
+      case CustomEnum.California: return \\"California\\";
+    }
+    return null;
+  }
+}
+"
 `;
 
 exports[`CSharpGenerator should work custom preset for \`enum\` type 2`] = `
 "public enum CustomEnum {
   Texas, Alabama, California
-}"
+}
+public static class CustomEnumExtensions {
+  public static dynamic GetValue(this CustomEnum val)
+  {
+    switch (val)
+    {
+      case CustomEnum.Texas: return \\"Texas\\";
+      case CustomEnum.Alabama: return \\"Alabama\\";
+      case CustomEnum.California: return \\"California\\";
+    }
+    return null;
+  }
+}
+"
 `;
