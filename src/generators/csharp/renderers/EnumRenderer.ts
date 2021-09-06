@@ -56,7 +56,7 @@ ${this.indent(caseItemValues, 6)}
         value = enumValue;
         break;
       case 'object': 
-        value = `"${JSON.stringify(enumValue).replaceAll('"', '\\"')}"`;
+        value = `"${JSON.stringify(enumValue).replace(/"/g, '\\"')}"`;
         break;
       default:
         value = `"${enumValue}"`;
