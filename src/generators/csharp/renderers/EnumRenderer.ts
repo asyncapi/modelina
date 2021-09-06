@@ -56,21 +56,16 @@ ${this.indent(toEnumCaseItemValues, 6)}
    * Some enum values require custom value conversion
    */
   getEnumValue(enumValue: any): any {
-    let value: any;
     switch (typeof enumValue) {
     case 'number':
     case 'bigint':
     case 'boolean':
       return enumValue;
-      break;
     case 'object': 
-      value = `"${JSON.stringify(enumValue).replace(/"/g, '\\"')}"`;
-      break;
+      return `"${JSON.stringify(enumValue).replace(/"/g, '\\"')}"`;
     default:
-      value = `"${enumValue}"`;
-      break;
+      return `"${enumValue}"`;
     }
-    return value;
   }
 
   async toEnumCaseItemValues(): Promise<string> {
