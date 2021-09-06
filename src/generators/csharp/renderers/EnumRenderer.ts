@@ -11,20 +11,31 @@ export class EnumRenderer extends CSharpRenderer {
   async defaultSelf(): Promise<string> {
     const enumItems = await this.renderItems();
     const formattedName = this.nameType(this.model.$id);
-    const caseItemValues = await this.renderCaseItemValues();
+    const getValueCaseItemValues = await this.getValueCaseItemValues();
+    const toEnumCaseItemValues = await this.toEnumCaseItemValues();
     return `public enum ${formattedName} {
 ${this.indent(enumItems)}
 }
 public static class ${formattedName}Extensions {
-  public static dynamic GetValue(this ${formattedName} val)
+  public static dynamic GetValue(this ${formattedName} enumValue)
   {
-    switch (val)
+    switch (enumValue)
     {
-${this.indent(caseItemValues, 6)}
+${this.indent(getValueCaseItemValues, 6)}
+    }
+    return null;
+  }
+
+  public static ${formattedName}? To${formattedName}(dynamic value)
+  {
+    switch (value)
+    {
+${this.indent(toEnumCaseItemValues, 6)}
     }
     return null;
   }
 }
+
 `;
   }
 
@@ -41,27 +52,49 @@ ${this.indent(caseItemValues, 6)}
     return `${content}`;
   }
 
-  async renderCaseItemValues(): Promise<string> {
+  /**
+   * Some enum values require custom value conversion
+   */
+  getEnumValue(enumValue: any): any {
+    let value: any;
+    switch (typeof enumValue) {
+    case 'number':
+    case 'bigint':
+    case 'boolean':
+      return enumValue;
+      break;
+    case 'object': 
+      value = `"${JSON.stringify(enumValue).replace(/"/g, '\\"')}"`;
+      break;
+    default:
+      value = `"${enumValue}"`;
+      break;
+    }
+    return value;
+  }
+
+  async toEnumCaseItemValues(): Promise<string> {
     const enums = this.model.enum || [];
     const items: string[] = [];
     const formattedName = this.nameType(this.model.$id);
 
     for (const enumValue of enums) {
       const renderedItem = await this.runItemPreset(enumValue);
-      let value: any;
-      switch (typeof enumValue) {
-      case 'number':
-      case 'bigint':
-      case 'boolean':
-        value = enumValue;
-        break;
-      case 'object': 
-        value = `"${JSON.stringify(enumValue).replace(/"/g, '\\"')}"`;
-        break;
-      default:
-        value = `"${enumValue}"`;
-        break;
-      }
+      const value = this.getEnumValue(enumValue);
+      items.push(`case ${value}: return ${formattedName}.${renderedItem};`);
+    }
+    
+    const content = items.join('\n');
+    return `${content}`;
+  }
+  async getValueCaseItemValues(): Promise<string> {
+    const enums = this.model.enum || [];
+    const items: string[] = [];
+    const formattedName = this.nameType(this.model.$id);
+
+    for (const enumValue of enums) {
+      const renderedItem = await this.runItemPreset(enumValue);
+      const value = this.getEnumValue(enumValue);
       items.push(`case ${formattedName}.${renderedItem}: return ${value};`);
     }
     
