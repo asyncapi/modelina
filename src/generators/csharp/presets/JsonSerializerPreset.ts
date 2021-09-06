@@ -1,7 +1,19 @@
 import { CSharpRenderer } from '../CSharpRenderer';
 import { CSharpPreset } from '../CSharpPreset';
-import { getUniquePropertyName, DefaultPropertyNames, FormatHelpers } from '../../../helpers';
-import { CommonModel } from '../../../models';
+import { getUniquePropertyName, DefaultPropertyNames, FormatHelpers, TypeHelpers, ModelKind } from '../../../helpers';
+import { CommonInputModel, CommonModel } from '../../../models';
+
+function renderSerializeProperty(modelInstanceVariable: string, model: CommonModel, inputModel: CommonInputModel) {
+  if (model.$ref) {
+    const resolvedModel = inputModel.models[model.$ref];
+    const propertyModelKind = TypeHelpers.extractKind(resolvedModel);
+    //Referenced enums only need standard marshalling, so lets filter those away
+    if (propertyModelKind !== ModelKind.ENUM) {
+      return `$\{${modelInstanceVariable}.marshal()}`;
+    }
+  }
+  return `JsonSerializer.Serialize(writer, ${modelInstanceVariable});`;
+}
 
 function renderSerializeAdditionalProperties(model: CommonModel, renderer: CSharpRenderer) {
   const serializeAdditionalProperties = '';
@@ -18,8 +30,7 @@ if (value.AdditionalProperties != null) {
         continue;
     }
     // write property name and let the serializer serialize the value itself
-    writer.WritePropertyName(additionalProperty.Key);
-    JsonSerializer.Serialize(writer, additionalProperty.Value);
+
   }
 }`;
   }
