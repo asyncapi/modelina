@@ -49,54 +49,8 @@ Run this command to install Modelina in your project:
 npm install @asyncapi/modelina
 ```
 
-Once you've successfully installed Modelina in your project, it's time to select your generator.
+Once you've successfully installed Modelina in your project, it's time to select your generator. Check out the [examples](#examples) for the specific code.
 
-Below is an example of using the TypeScript generator:
-```js
-import { TypeScriptGenerator } from '@asyncapi/modelina';
-
-const doc = {
-  $id: "Address",
-  type: "object",
-  properties: {
-    street_name:    { type: "string" },
-    city:           { type: "string", description: "City description" },
-    house_number:   { type: "number" },
-    marriage:       { type: "boolean", description: "Status if marriage live in given house" },
-    pet_names:      { type: "array", items: { type: "string" } },
-    state:          { type: "string", enum: ["Texas", "Alabama", "California", "other"] },
-  },
-  required: ["street_name", "city", "state", "house_number", "state"],
-};
-
-async function generate() {
-  const generator = new TypeScriptGenerator({ modelType: 'interface' });
-  const models = await generator.generate(doc);
-  models.forEach(model => console.log(model.result)); 
-}
-
-generate();
-```
-
-Output:
-
-```ts
-export interface Address {
-  streetName: string;
-  city: string;
-  houseNumber: number;
-  marriage?: boolean;
-  petNames?: Array<string>;
-  state: State;
-  additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null | number>;
-}
-export enum State {
-  TEXAS = "Texas",
-  ALABAMA = "Alabama",
-  CALIFORNIA = "California",
-  OTHER = "other",
-}
-```
 ## Features
 The following table provides a short summary of available features for supported output languages.
 
@@ -137,6 +91,9 @@ To see the complete feature list for each language, please click the individual 
 
 ## Documentation
 The documentation for this library can all be found under the documentation [README](./docs/README.md).
+
+## Examples
+We have gathered all the examples, in a separate folder to ensure consistency, they can be found under the [example folder](./examples). 
 
 ## Development
 To setup your development environment please read the [development](./docs/development.md) document.
