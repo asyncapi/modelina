@@ -41,11 +41,13 @@ describe('TypeScriptRenderer', () => {
   });
 
   describe('toTsType()', () => {
+    test('should not render duplicate types', () => {
+      expect(renderer.toTsType(undefined, new CommonModel())).toEqual('any');
+    });
     test('Should render unknown type', () => {
       expect(renderer.toTsType(undefined, new CommonModel())).toEqual('any');
     });
     test('Should render number type', () => {
-      expect(renderer.toTsType('integer', new CommonModel())).toEqual('number');
       expect(renderer.toTsType('number', new CommonModel())).toEqual('number');
     });
     test('Should render array type', () => {
@@ -87,6 +89,11 @@ describe('TypeScriptRenderer', () => {
       const model = new CommonModel();
       model.enum = ['enum1', 'enum2', 9];
       expect(renderer.renderType(model)).toEqual('"enum1" | "enum2" | 9');
+    });
+    test('should not render duplicate types', () => {
+      const model = new CommonModel();
+      model.type = ['integer', 'number'];
+      expect(renderer.renderType(model)).toEqual('number');
     });
   });
 });
