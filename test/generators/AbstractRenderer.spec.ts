@@ -106,7 +106,34 @@ describe('AbstractRenderer', () => {
     });
   });
   describe('runPreset()', () => {
-    test('should call correct preset', async () => {
+    test('should use string', async () => {
+      const preset1Callback = jest.fn();
+      const tempRenderer = new TestRenderer([
+        [{
+          test: preset1Callback.mockReturnValue('value') as never
+        } as never, {} as never] as never,
+      ]);
+      const content = await tempRenderer.runPreset('test');
+      expect(content).toEqual('value');
+      expect(preset1Callback).toHaveBeenCalled();
+    });
+    test('should overwrite previous preset', async () => {
+      const preset1Callback = jest.fn();
+      const preset2Callback = jest.fn();
+      const tempRenderer = new TestRenderer([
+        [{
+          test: preset1Callback.mockReturnValue('value') as never
+        } as never, {} as never] as never,
+        [{
+          test: preset1Callback.mockReturnValue('value2') as never
+        } as never, {} as never] as never,
+      ]);
+      const content = await tempRenderer.runPreset('test');
+      expect(content).toEqual('value2');
+      expect(preset1Callback).toHaveBeenCalled();
+      expect(preset2Callback).toHaveBeenCalled();
+    });
+    test('should not use previous preset if undefined returned', async () => {
       const preset1Callback = jest.fn();
       const preset2Callback = jest.fn();
       const tempRenderer = new TestRenderer([
@@ -115,16 +142,42 @@ describe('AbstractRenderer', () => {
         } as never, {} as never] as never,
         [{
           test: preset2Callback.mockReturnValue(undefined) as never
-        } as never, {} as never] as never,
+        } as never, {} as never] as never
+      ]);
+      const content = await tempRenderer.runPreset('test');
+      expect(content).toEqual('');
+      expect(preset1Callback).toHaveBeenCalled();
+      expect(preset2Callback).toHaveBeenCalled();
+    });
+    test('should not use previous preset if null returned', async () => {
+      const preset1Callback = jest.fn();
+      const preset2Callback = jest.fn();
+      const tempRenderer = new TestRenderer([
         [{
-          test: preset2Callback.mockReturnValue('') as never
+          test: preset1Callback.mockReturnValue('value') as never
         } as never, {} as never] as never,
         [{
           test: preset2Callback.mockReturnValue(null) as never
         } as never, {} as never] as never
       ]);
       const content = await tempRenderer.runPreset('test');
-      expect(content).toEqual('value');
+      expect(content).toEqual('');
+      expect(preset1Callback).toHaveBeenCalled();
+      expect(preset2Callback).toHaveBeenCalled();
+    });
+    test('should not use previous preset if empty string returned', async () => {
+      const preset1Callback = jest.fn();
+      const preset2Callback = jest.fn();
+      const tempRenderer = new TestRenderer([
+        [{
+          test: preset1Callback.mockReturnValue('value') as never
+        } as never, {} as never] as never,
+        [{
+          test: preset2Callback.mockReturnValue('') as never
+        } as never, {} as never] as never
+      ]);
+      const content = await tempRenderer.runPreset('test');
+      expect(content).toEqual('');
       expect(preset1Callback).toHaveBeenCalled();
       expect(preset2Callback).toHaveBeenCalled();
     });

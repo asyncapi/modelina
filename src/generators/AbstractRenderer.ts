@@ -60,17 +60,22 @@ export abstract class AbstractRenderer<
     functionName: string,
     params: Record<string, unknown> = {},
   ): Promise<RT> {
-    let content;
+    let content = '';
     for (const [preset, options] of this.presets) {
       if (typeof preset[String(functionName)] === 'function') {
-        content = await preset[String(functionName)]({ 
+        const presetRenderedContent: any = await preset[String(functionName)]({ 
           ...params, 
           renderer: this, 
           content, 
           options, 
           model: this.model, 
           inputModel: this.inputModel
-        }) || content;
+        });
+        if (typeof presetRenderedContent === 'string' && presetRenderedContent !== undefined) {
+          content = presetRenderedContent;
+          continue;
+        }
+        content = '';
       }
     }
     return content;
