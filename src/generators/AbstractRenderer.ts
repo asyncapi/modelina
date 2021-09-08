@@ -71,11 +71,11 @@ export abstract class AbstractRenderer<
           model: this.model, 
           inputModel: this.inputModel
         });
-        if (presetRenderedContent === undefined || presetRenderedContent === null || typeof presetRenderedContent !== 'string') {
+        if (typeof presetRenderedContent === 'string') {
+          content = presetRenderedContent;
+        } else {
           content = '';
-          continue;
-        } 
-        content = presetRenderedContent;
+        }
       }
     }
     return content;
