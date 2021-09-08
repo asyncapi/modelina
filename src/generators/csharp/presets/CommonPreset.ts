@@ -19,6 +19,9 @@ function renderEqual({ renderer, model }: {
   const formattedModelName = renderer.nameType(model.$id);
   const properties = model.properties || {};
   const propertyKeys = [...Object.keys(properties), getUniquePropertyName(model, DefaultPropertyNames.additionalProperties)];
+  for (const [pattern, patternModel] of Object.entries(model.patternProperties || {})) {
+    propertyKeys.push(getUniquePropertyName(patternModel, `${pattern}${DefaultPropertyNames.patternProperties}`));
+  }
   const equalProperties = propertyKeys.map(prop => {
     const accessorMethodProp = FormatHelpers.upperFirst(renderer.nameProperty(prop));
     return `${accessorMethodProp} == model.${accessorMethodProp}`;
@@ -40,6 +43,9 @@ function renderHashCode({ renderer, model }: {
 }): string {
   const properties = model.properties || {};
   const propertyKeys = [...Object.keys(properties), getUniquePropertyName(model, DefaultPropertyNames.additionalProperties)];
+  for (const [pattern, patternModel] of Object.entries(model.patternProperties || {})) {
+    propertyKeys.push(getUniquePropertyName(patternModel, `${pattern}${DefaultPropertyNames.patternProperties}`));
+  }
   const hashProperties = propertyKeys.map(prop => FormatHelpers.upperFirst(renderer.nameProperty(prop))).join(', ');
 
   return `public override int GetHashCode()

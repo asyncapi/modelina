@@ -44,7 +44,8 @@ exports[`CSHARP_COMMON_PRESET should render Equals support function 1`] = `
       StringProp == model.StringProp &&
       NumberProp == model.NumberProp &&
       ObjectProp == model.ObjectProp &&
-      AdditionalProperties == model.AdditionalProperties;
+      AdditionalProperties == model.AdditionalProperties &&
+      STestPatternProperties == model.STestPatternProperties;
   }
 }"
 `;
@@ -115,7 +116,7 @@ exports[`CSHARP_COMMON_PRESET should render GetHashCode support function 1`] = `
 
   public override int GetHashCode()
   {
-    return HashCode.Combine(StringProp, NumberProp, ObjectProp, AdditionalProperties);
+    return HashCode.Combine(StringProp, NumberProp, ObjectProp, AdditionalProperties, STestPatternProperties);
   }
 
 }"
