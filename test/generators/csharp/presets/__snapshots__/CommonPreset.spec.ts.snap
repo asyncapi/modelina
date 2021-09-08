@@ -1,0 +1,147 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CSHARP_COMMON_PRESET should render Equals support function 1`] = `
+"public class Test {
+  private string stringProp;
+  private float? numberProp;
+  private NestedTest objectProp;
+  private Dictionary<string, dynamic> additionalProperties;
+  private Dictionary<string, string> sTestPatternProperties;
+
+  public string StringProp 
+  {
+    get { return stringProp; }
+    set { stringProp = value; }
+  }
+
+  public float? NumberProp 
+  {
+    get { return numberProp; }
+    set { numberProp = value; }
+  }
+
+  public NestedTest ObjectProp 
+  {
+    get { return objectProp; }
+    set { objectProp = value; }
+  }
+
+  public Dictionary<string, dynamic> AdditionalProperties 
+  {
+    get { return additionalProperties; }
+    set { additionalProperties = value; }
+  }
+
+  public Dictionary<string, string> STestPatternProperties 
+  {
+    get { return sTestPatternProperties; }
+    set { sTestPatternProperties = value; }
+  }
+
+  public override bool Equals(object obj)
+  {
+    return obj is Test model &&
+      StringProp == model.StringProp &&
+      NumberProp == model.NumberProp &&
+      ObjectProp == model.ObjectProp &&
+      AdditionalProperties == model.AdditionalProperties;
+  }
+}"
+`;
+
+exports[`CSHARP_COMMON_PRESET should render Equals support function 2`] = `
+"public class NestedTest {
+  private string stringProp;
+  private Dictionary<string, dynamic> additionalProperties;
+
+  public string StringProp 
+  {
+    get { return stringProp; }
+    set { stringProp = value; }
+  }
+
+  public Dictionary<string, dynamic> AdditionalProperties 
+  {
+    get { return additionalProperties; }
+    set { additionalProperties = value; }
+  }
+
+  public override bool Equals(object obj)
+  {
+    return obj is NestedTest model &&
+      StringProp == model.StringProp &&
+      AdditionalProperties == model.AdditionalProperties;
+  }
+}"
+`;
+
+exports[`CSHARP_COMMON_PRESET should render GetHashCode support function 1`] = `
+"public class Test {
+  private string stringProp;
+  private float? numberProp;
+  private NestedTest objectProp;
+  private Dictionary<string, dynamic> additionalProperties;
+  private Dictionary<string, string> sTestPatternProperties;
+
+  public string StringProp 
+  {
+    get { return stringProp; }
+    set { stringProp = value; }
+  }
+
+  public float? NumberProp 
+  {
+    get { return numberProp; }
+    set { numberProp = value; }
+  }
+
+  public NestedTest ObjectProp 
+  {
+    get { return objectProp; }
+    set { objectProp = value; }
+  }
+
+  public Dictionary<string, dynamic> AdditionalProperties 
+  {
+    get { return additionalProperties; }
+    set { additionalProperties = value; }
+  }
+
+  public Dictionary<string, string> STestPatternProperties 
+  {
+    get { return sTestPatternProperties; }
+    set { sTestPatternProperties = value; }
+  }
+
+  public override int GetHashCode()
+  {
+    return HashCode.Combine(StringProp, NumberProp, ObjectProp, AdditionalProperties);
+  }
+
+}"
+`;
+
+exports[`CSHARP_COMMON_PRESET should render GetHashCode support function 2`] = `
+"public class NestedTest {
+  private string stringProp;
+  private Dictionary<string, dynamic> additionalProperties;
+
+  public string StringProp 
+  {
+    get { return stringProp; }
+    set { stringProp = value; }
+  }
+
+  public Dictionary<string, dynamic> AdditionalProperties 
+  {
+    get { return additionalProperties; }
+    set { additionalProperties = value; }
+  }
+
+  public override int GetHashCode()
+  {
+    return HashCode.Combine(StringProp, AdditionalProperties);
+  }
+
+}"
+`;
