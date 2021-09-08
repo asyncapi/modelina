@@ -1,5 +1,5 @@
 {
-  "name": "typescript-interface",
+  "name": "asyncapi-from-object",
   "version": "0.0.1",
   "license": "Apache-2.0",
   "homepage": "https://github.com/asyncapi/modelina",
@@ -13,6 +13,6 @@
     "ts-jest": "^26.4.4"
   },
   "scripts": {
-    "test": "cross-env CI=true jest --config=../../jest.config.js ./examples/typescript-interface/index.spec.ts"
+    "test": "cross-env CI=true jest --config=../../jest.config.js ./examples/asyncapi-from-object/index.spec.ts"
   }
 }

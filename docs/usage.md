@@ -25,36 +25,20 @@ TODO
 
 ## Generate models from AsyncAPI documents
 
+There are two ways to generate models for an AsyncAPI document.
+
+- [Generate from a parsed AsyncAPI document](../examples/asyncapi-from-parser)
+- [Generate from a pure JS object](../examples/asyncapi-from-object)
+
 The library expects the `asyncapi` property for the document to be set in order to understand the input format.
 
-- Generate from a [parsed AsyncAPI document](https://github.com/asyncapi/parser-js):
-
-```ts
-import { TypeScriptGenerator } from '@asyncapi/modelina';
-import { parse } from '@asyncapi/parser';
-const doc = await parse(`{asyncapi: '2.1.0', ...}`);
-const generator = new TypeScriptGenerator();
-generator.generate(doc as any);
-```
-
-- Generate from a pure JS object:
-
-```ts
-import { TypeScriptGenerator } from '@asyncapi/modelina';
-const generator = new TypeScriptGenerator();
-generator.generate({asyncapi: '2.1.0', ...});
-```
-
 ## Generate models from JSON Schema draft 7 documents
+
+There are one way to generate models from a JSON Schema draft 7 document.
+
+- [Generate from a pure JS object](../examples/json-schema-draft7-from-object)
+
 The library expects the `$schema` property for the document to be set in order to understand the input format. By default, if no other inputs are detected, it defaults to `JSON Schema draft 7`.
-
-- Generate from a pure JS object:
-
-```ts
-import { TypeScriptGenerator } from '@asyncapi/modelina';
-const generator = new TypeScriptGenerator();
-generator.generate({$schema: 'http://json-schema.org/draft-07/schema#', ...});
-```
 
 ## Generate Go models
 TODO 
