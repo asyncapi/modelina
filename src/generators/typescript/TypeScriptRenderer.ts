@@ -59,7 +59,7 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
       return this.nameType(model.$ref);
     }
     if (Array.isArray(model.type)) {
-      return model.type.map(t => this.toTsType(t, model)).join(' | ');
+      return [... new Set(model.type.map(t => this.toTsType(t, model)))].join(' | ');
     }
     return this.toTsType(model.type, model);
   }
