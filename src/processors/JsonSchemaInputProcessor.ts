@@ -63,7 +63,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     Logger.debug(`Trying to dereference all $ref instances from input, using option ${JSON.stringify(deRefOption)}.`);
     try {
       await refParser.dereference(localPath, input, deRefOption);
-    } catch (e) {
+    } catch (e: any) {
       const errorMessage = `Could not dereference $ref in input, is all the references correct? ${e.message}`;
       Logger.error(errorMessage, e);
       throw new Error(errorMessage);
