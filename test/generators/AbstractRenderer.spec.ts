@@ -125,7 +125,7 @@ describe('AbstractRenderer', () => {
           test: preset1Callback.mockReturnValue('value') as never
         } as never, {} as never] as never,
         [{
-          test: preset1Callback.mockReturnValue('value2') as never
+          test: preset2Callback.mockReturnValue('value2') as never
         } as never, {} as never] as never,
       ]);
       const content = await tempRenderer.runPreset('test');
@@ -180,6 +180,11 @@ describe('AbstractRenderer', () => {
       expect(content).toEqual('');
       expect(preset1Callback).toHaveBeenCalled();
       expect(preset2Callback).toHaveBeenCalled();
+    });
+    test('should default to empty string with no presets', async () => {
+      const tempRenderer = new TestRenderer([]);
+      const content = await tempRenderer.runPreset('test');
+      expect(content).toEqual('');
     });
   });
 });

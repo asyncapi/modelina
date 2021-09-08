@@ -56,10 +56,10 @@ export abstract class AbstractRenderer<
     return this.runPreset('additionalContent');
   }
   
-  async runPreset<RT = string>(
+  async runPreset(
     functionName: string,
     params: Record<string, unknown> = {},
-  ): Promise<RT> {
+  ): Promise<string> {
     let content = '';
     for (const [preset, options] of this.presets) {
       if (typeof preset[String(functionName)] === 'function') {
@@ -71,11 +71,11 @@ export abstract class AbstractRenderer<
           model: this.model, 
           inputModel: this.inputModel
         });
-        if (typeof presetRenderedContent === 'string' && presetRenderedContent !== undefined) {
-          content = presetRenderedContent;
+        if (presetRenderedContent === undefined || presetRenderedContent === null) {
+          content = '';
           continue;
-        }
-        content = '';
+        } 
+        content = presetRenderedContent;
       }
     }
     return content;
