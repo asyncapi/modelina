@@ -117,6 +117,17 @@ describe('AbstractRenderer', () => {
       expect(content).toEqual('value');
       expect(preset1Callback).toHaveBeenCalled();
     });
+    test('should not render non-string values', async () => {
+      const preset1Callback = jest.fn();
+      const tempRenderer = new TestRenderer([
+        [{
+          test: preset1Callback.mockReturnValue(213) as never
+        } as never, {} as never] as never,
+      ]);
+      const content = await tempRenderer.runPreset('test');
+      expect(content).toEqual('');
+      expect(preset1Callback).toHaveBeenCalled();
+    });
     test('should overwrite previous preset', async () => {
       const preset1Callback = jest.fn();
       const preset2Callback = jest.fn();

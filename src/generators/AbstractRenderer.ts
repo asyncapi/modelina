@@ -71,7 +71,7 @@ export abstract class AbstractRenderer<
           model: this.model, 
           inputModel: this.inputModel
         });
-        if (presetRenderedContent === undefined || presetRenderedContent === null) {
+        if (presetRenderedContent === undefined || presetRenderedContent === null || typeof presetRenderedContent !== 'string') {
           content = '';
           continue;
         } 
