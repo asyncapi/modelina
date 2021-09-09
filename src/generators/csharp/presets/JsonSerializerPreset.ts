@@ -138,7 +138,7 @@ function renderDeserializeProperty(type: string, model: CommonModel, inputModel:
     const propertyModelKind = TypeHelpers.extractKind(resolvedModel);
     //Referenced enums is the only one who need custom serialization
     if (propertyModelKind === ModelKind.ENUM) {
-      return `${type}Extension.to${type}(JsonSerializer.Deserialize<dynamic>(ref reader, options))`;
+      return `${type}Extension.To${type}(JsonSerializer.Deserialize<dynamic>(ref reader, options))`;
     }
   }
   return `JsonSerializer.Deserialize<${type}>(ref reader, options)`;
@@ -151,7 +151,7 @@ function renderDeserializeProperties(model: CommonModel, renderer: CSharpRendere
     const propertyModelType = renderer.renderType(propModel);
     return `if (propertyName == "${prop}")
 {
-  var value = ${renderDeserializeProperty(propertyModelType, model, inputModel)};
+  var value = ${renderDeserializeProperty(propertyModelType, propModel, inputModel)};
   instance.${formattedPropertyName} = value;
   continue;
 }`;
@@ -171,7 +171,7 @@ function renderDeserializePatternProperties(model: CommonModel, renderer: CSharp
 var match = Regex.Match(propertyName, @"${pattern}");
 if (match.Success)
 {
-  var deserializedValue = ${renderDeserializeProperty(patternPropertyType, model, inputModel)};
+  var deserializedValue = ${renderDeserializeProperty(patternPropertyType, patternModel, inputModel)};
   instance.${patternPropertyName}.Add(propertyName, deserializedValue);
   continue;
 }`;
@@ -187,7 +187,7 @@ function renderDeserializeAdditionalProperties(model: CommonModel, renderer: CSh
   additionalPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(additionalPropertyName, model.additionalProperties));
   const additionalPropertyType = renderer.renderType(model.additionalProperties);
   return `if(instance.${additionalPropertyName} == null) { instance.${additionalPropertyName} = new Dictionary<string, ${additionalPropertyType}>(); }
-var deserializedValue = ${renderDeserializeProperty(additionalPropertyType, model, inputModel)};
+var deserializedValue = ${renderDeserializeProperty(additionalPropertyType, model.additionalProperties, inputModel)};
 instance.${additionalPropertyName}.Add(propertyName, deserializedValue);
 continue;`;
 }
