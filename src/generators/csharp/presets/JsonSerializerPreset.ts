@@ -44,10 +44,11 @@ function renderSerializeProperties(model: CommonModel, renderer: CSharpRenderer,
   if (model.properties !== undefined) {
     for (const [propertyName, propertyModel] of Object.entries(model.properties)) {
       const formattedPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(propertyName, propertyModel));
-      serializeProperties += `if(value.${formattedPropertyName} != null) { 
+      const modelInstanceVariable = `value.${formattedPropertyName}`;
+      serializeProperties += `if(${modelInstanceVariable} != null) { 
   // write property name and let the serializer serialize the value itself
   writer.WritePropertyName("${propertyName}");
-  ${renderSerializeProperty(`value.${formattedPropertyName}`, propertyModel, inputModel)}
+  ${renderSerializeProperty(modelInstanceVariable, propertyModel, inputModel)}
 }\n`;
     }
   }
