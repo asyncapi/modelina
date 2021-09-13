@@ -1,9 +1,22 @@
 import { CSharpRenderer } from '../CSharpRenderer';
 import { CSharpPreset } from '../CSharpPreset';
-import { getUniquePropertyName, DefaultPropertyNames, FormatHelpers } from '../../../helpers';
-import { CommonModel } from '../../../models';
+import { getUniquePropertyName, DefaultPropertyNames, FormatHelpers, TypeHelpers, ModelKind } from '../../../helpers';
+import { CommonInputModel, CommonModel } from '../../../models';
 
-function renderSerializeAdditionalProperties(model: CommonModel, renderer: CSharpRenderer) {
+function renderSerializeProperty(modelInstanceVariable: string, model: CommonModel, inputModel: CommonInputModel) {
+  let value = modelInstanceVariable;
+  if (model.$ref) {
+    const resolvedModel = inputModel.models[model.$ref];
+    const propertyModelKind = TypeHelpers.extractKind(resolvedModel);
+    //Referenced enums is the only one who need custom serialization
+    if (propertyModelKind === ModelKind.ENUM) {
+      value = `${value}.GetValue()`;
+    }
+  }
+  return `JsonSerializer.Serialize(writer, ${value});`;
+}
+
+function renderSerializeAdditionalProperties(model: CommonModel, renderer: CSharpRenderer, inputModel: CommonInputModel) {
   const serializeAdditionalProperties = '';
   if (model.additionalProperties !== undefined) {
     let additionalPropertyName = getUniquePropertyName(model, DefaultPropertyNames.additionalProperties);
@@ -19,28 +32,29 @@ if (value.AdditionalProperties != null) {
     }
     // write property name and let the serializer serialize the value itself
     writer.WritePropertyName(additionalProperty.Key);
-    JsonSerializer.Serialize(writer, additionalProperty.Value);
+    ${renderSerializeProperty('additionalProperty.Value', model.additionalProperties, inputModel)}
   }
 }`;
   }
   return serializeAdditionalProperties;
 }
 
-function renderSerializeProperties(model: CommonModel, renderer: CSharpRenderer) {
+function renderSerializeProperties(model: CommonModel, renderer: CSharpRenderer, inputModel: CommonInputModel) {
   let serializeProperties = '';
   if (model.properties !== undefined) {
     for (const [propertyName, propertyModel] of Object.entries(model.properties)) {
       const formattedPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(propertyName, propertyModel));
-      serializeProperties += `if(value.${formattedPropertyName} != null) { 
+      const modelInstanceVariable = `value.${formattedPropertyName}`;
+      serializeProperties += `if(${modelInstanceVariable} != null) { 
   // write property name and let the serializer serialize the value itself
   writer.WritePropertyName("${propertyName}");
-  JsonSerializer.Serialize(writer, value.${formattedPropertyName});
+  ${renderSerializeProperty(modelInstanceVariable, propertyModel, inputModel)}
 }\n`;
     }
   }
   return serializeProperties;
 }
-function renderSerializePatternProperties(model: CommonModel, renderer: CSharpRenderer) {
+function renderSerializePatternProperties(model: CommonModel, renderer: CSharpRenderer, inputModel: CommonInputModel) {
   let serializePatternProperties = '';
   if (model.patternProperties !== undefined) {
     for (const [pattern, patternModel] of Object.entries(model.patternProperties)) {
@@ -57,7 +71,7 @@ if(value.${patternPropertyName} != null) {
     }
     // write property name and let the serializer serialize the value itself
     writer.WritePropertyName(patternProp.Key);
-    JsonSerializer.Serialize(writer, patternProp.Value);
+    ${renderSerializeProperty('patternProp.Value', patternModel, inputModel)}
   }
 }`;
     }
@@ -87,14 +101,15 @@ function renderPropertiesList(model: CommonModel, renderer: CSharpRenderer) {
 /**
  * Render `serialize` function based on model
  */
-function renderSerialize({ renderer, model }: {
+function renderSerialize({ renderer, model, inputModel }: {
   renderer: CSharpRenderer,
   model: CommonModel,
+  inputModel: CommonInputModel
 }): string {
   const formattedModelName = renderer.nameType(model.$id);
-  const serializeProperties = renderSerializeProperties(model, renderer);
-  const serializePatternProperties = renderSerializePatternProperties(model, renderer);
-  const serializeAdditionalProperties = renderSerializeAdditionalProperties(model, renderer);
+  const serializeProperties = renderSerializeProperties(model, renderer, inputModel);
+  const serializePatternProperties = renderSerializePatternProperties(model, renderer, inputModel);
+  const serializeAdditionalProperties = renderSerializeAdditionalProperties(model, renderer, inputModel);
   const propertiesList = renderPropertiesList(model, renderer);
 
   return `public override void Write(Utf8JsonWriter writer, ${formattedModelName} value, JsonSerializerOptions options)
@@ -118,14 +133,26 @@ ${renderer.indent(serializeAdditionalProperties)}
 }`;
 } 
 
-function renderDeserializeProperties(model: CommonModel, renderer: CSharpRenderer) {
+function renderDeserializeProperty(type: string, model: CommonModel, inputModel: CommonInputModel) {
+  if (model.$ref) {
+    const resolvedModel = inputModel.models[model.$ref];
+    const propertyModelKind = TypeHelpers.extractKind(resolvedModel);
+    //Referenced enums is the only one who need custom serialization
+    if (propertyModelKind === ModelKind.ENUM) {
+      return `${type}Extension.To${type}(JsonSerializer.Deserialize<dynamic>(ref reader, options))`;
+    }
+  }
+  return `JsonSerializer.Deserialize<${type}>(ref reader, options)`;
+}
+
+function renderDeserializeProperties(model: CommonModel, renderer: CSharpRenderer, inputModel: CommonInputModel) {
   const propertyEntries = Object.entries(model.properties || {});
   const deserializeProperties = propertyEntries.map(([prop, propModel]) => {
     const formattedPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(prop, propModel));
     const propertyModelType = renderer.renderType(propModel);
     return `if (propertyName == "${prop}")
 {
-  var value = JsonSerializer.Deserialize<${propertyModelType}>(ref reader, options);
+  var value = ${renderDeserializeProperty(propertyModelType, propModel, inputModel)};
   instance.${formattedPropertyName} = value;
   continue;
 }`;
@@ -133,7 +160,7 @@ function renderDeserializeProperties(model: CommonModel, renderer: CSharpRendere
   return deserializeProperties.join('\n');
 }
 
-function renderDeserializePatternProperties(model: CommonModel, renderer: CSharpRenderer) {
+function renderDeserializePatternProperties(model: CommonModel, renderer: CSharpRenderer, inputModel: CommonInputModel) {
   if (model.patternProperties === undefined) {
     return '';
   }
@@ -145,7 +172,7 @@ function renderDeserializePatternProperties(model: CommonModel, renderer: CSharp
 var match = Regex.Match(propertyName, @"${pattern}");
 if (match.Success)
 {
-  var deserializedValue = JsonSerializer.Deserialize<${patternPropertyType}>(ref reader, options);
+  var deserializedValue = ${renderDeserializeProperty(patternPropertyType, patternModel, inputModel)};
   instance.${patternPropertyName}.Add(propertyName, deserializedValue);
   continue;
 }`;
@@ -153,7 +180,7 @@ if (match.Success)
   return patternProperties.join('\n');
 }
 
-function renderDeserializeAdditionalProperties(model: CommonModel, renderer: CSharpRenderer) {
+function renderDeserializeAdditionalProperties(model: CommonModel, renderer: CSharpRenderer, inputModel: CommonInputModel) {
   if (model.additionalProperties === undefined) {
     return ''; 
   }
@@ -161,7 +188,7 @@ function renderDeserializeAdditionalProperties(model: CommonModel, renderer: CSh
   additionalPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(additionalPropertyName, model.additionalProperties));
   const additionalPropertyType = renderer.renderType(model.additionalProperties);
   return `if(instance.${additionalPropertyName} == null) { instance.${additionalPropertyName} = new Dictionary<string, ${additionalPropertyType}>(); }
-var deserializedValue = JsonSerializer.Deserialize<${additionalPropertyType}>(ref reader, options);
+var deserializedValue = ${renderDeserializeProperty(additionalPropertyType, model.additionalProperties, inputModel)};
 instance.${additionalPropertyName}.Add(propertyName, deserializedValue);
 continue;`;
 }
@@ -169,14 +196,15 @@ continue;`;
 /**
  * Render `deserialize` function based on model
  */
-function renderDeserialize({ renderer, model }: {
+function renderDeserialize({ renderer, model, inputModel }: {
   renderer: CSharpRenderer,
   model: CommonModel,
+  inputModel: CommonInputModel
 }): string {
   const formattedModelName = renderer.nameType(model.$id);
-  const deserializeProperties = renderDeserializeProperties(model, renderer);
-  const deserializePatternProperties = renderDeserializePatternProperties(model, renderer);
-  const deserializeAdditionalProperties = renderDeserializeAdditionalProperties(model, renderer);
+  const deserializeProperties = renderDeserializeProperties(model, renderer, inputModel);
+  const deserializePatternProperties = renderDeserializePatternProperties(model, renderer, inputModel);
+  const deserializeAdditionalProperties = renderDeserializeAdditionalProperties(model, renderer, inputModel);
   return `public override ${formattedModelName} Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
 {
   if (reader.TokenType != JsonTokenType.StartObject)
@@ -218,14 +246,14 @@ ${renderer.indent(deserializeAdditionalProperties, 4)}
  */
 export const CSHARP_JSON_SERIALIZER_PRESET: CSharpPreset = {
   class: {
-    self({ renderer, model, content }) {
+    self({ renderer, model, content, inputModel}) {
       renderer.addDependency('using System.Text.Json;');
       renderer.addDependency('using System.Text.Json.Serialization;');
       renderer.addDependency('using System.Text.RegularExpressions;');
       
       const formattedModelName = renderer.nameType(model.$id);
-      const deserialize = renderDeserialize({renderer, model});
-      const serialize = renderSerialize({renderer, model});
+      const deserialize = renderDeserialize({renderer, model, inputModel});
+      const serialize = renderSerialize({renderer, model, inputModel});
 
       return `[JsonConverter(typeof(${formattedModelName}Converter))]
 ${content}

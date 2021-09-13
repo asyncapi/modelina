@@ -7,6 +7,7 @@ const doc = {
   properties: {
     'string prop': { type: 'string' },
     numberProp: { type: 'number' },
+    enumProp: { $id: 'EnumTest', enum: ['Some enum String', true, {test: 'test'}, 2]},
     objectProp: { type: 'object', $id: 'NestedTest', properties: {stringProp: { type: 'string' }}}
   },
   patternProperties: {
@@ -23,13 +24,15 @@ describe('JSON serializer preset', () => {
       ]
     });
     const inputModel = await generator.process(doc);
-    const testModel = inputModel.models['Test'];
     const nestedTestModel = inputModel.models['NestedTest'];
+    const testModel = inputModel.models['Test'];
+    const enumModel = inputModel.models['EnumTest'];
 
-    const testClass = await generator.renderClass(testModel, inputModel);
     const nestedTestClass = await generator.renderClass(nestedTestModel, inputModel);
-
-    expect(testClass.result).toMatchSnapshot();
+    const testClass = await generator.renderClass(testModel, inputModel);
+    const enumEnum = await generator.renderEnum(enumModel, inputModel);
     expect(nestedTestClass.result).toMatchSnapshot();
+    expect(testClass.result).toMatchSnapshot();
+    expect(enumEnum.result).toMatchSnapshot();
   });
 });
