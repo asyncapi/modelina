@@ -1,16 +1,18 @@
 
+import { Draft4Schema } from '../models/Draft4Schema';
 import { CommonModel } from '../models/CommonModel';
-import { Schema } from '../models/Schema';
+import { interpreterSchemaType } from './Interpreter';
 import { inferTypeFromValue } from './Utils';
 
 /**
- * Interpreter function for JSON Schema draft 7 const keyword.
+ * Interpreter function for const keyword.
  * 
  * @param schema 
  * @param model
  */
-export default function interpretConst(schema: Schema, model: CommonModel): void {
-  if (schema.const === undefined) {return;}
+export default function interpretConst(schema: interpreterSchemaType, model: CommonModel): void {
+  //Draft 4 does not include const keyword
+  if (schema instanceof Draft4Schema || typeof schema === 'boolean' || schema.const === undefined) {return;}
   
   const schemaConst = schema.const;
   model.enum = [schemaConst];

@@ -2,7 +2,7 @@ import {CommonModel} from '../../src/models/CommonModel';
 describe('CommonModel', () => {
   describe('$id', () => {
     test('should return a string', () => {
-      const doc: any = { $id: 'test' };
+      const doc = { $id: 'test' };
       const d = CommonModel.toCommonModel(doc);
       expect(d.$id).not.toBeUndefined();
       expect(typeof d.$id).toEqual('string');
@@ -12,7 +12,7 @@ describe('CommonModel', () => {
 
   describe('enum', () => {
     test('should return a number', () => {
-      const doc: any = { type: 'string', enum: ['test'] };
+      const doc = { type: 'string', enum: ['test'] };
       const d = CommonModel.toCommonModel(doc);
       expect(d.enum).not.toBeUndefined();
       expect(Array.isArray(d.enum)).toEqual(true);
@@ -22,7 +22,7 @@ describe('CommonModel', () => {
 
   describe('type', () => {
     test('should return a string', () => {
-      const doc: any = { type: 'string' };
+      const doc = { type: 'string' };
       const d = CommonModel.toCommonModel(doc);
       expect(d.type).not.toBeUndefined();
       expect(typeof d.type).toEqual('string');
@@ -30,7 +30,7 @@ describe('CommonModel', () => {
     });
     
     test('should return an array of strings', () => {
-      const doc: any = { type: ['number', 'string'] };
+      const doc = { type: ['number', 'string'] };
       const d = CommonModel.toCommonModel(doc);
       expect(d.type).not.toBeUndefined();
       expect(Array.isArray(d.type)).toEqual(true);
@@ -40,15 +40,15 @@ describe('CommonModel', () => {
 
   describe('items', () => {
     it('should return a CommonModel object', () => {
-      const doc: any = { items: { type: 'string' } };
+      const doc = { items: { type: 'string' } };
       const d = CommonModel.toCommonModel(doc);
       expect(d.items).not.toBeUndefined();
-      expect(d.items!.constructor.name).toEqual('CommonModel');
+      expect(d.items instanceof CommonModel).toEqual(true);
       expect(d.items).toEqual(doc.items);
     });
     
     test('should return an array of CommonModel objects', () => {
-      const doc: any = { items: [{ type: 'string' }, { type: 'number' }] };
+      const doc = { items: [{ type: 'string' }, { type: 'number' }] };
       const d = CommonModel.toCommonModel(doc);
       expect(d.items).not.toBeUndefined();
       expect(Array.isArray(d.items)).toEqual(true);
@@ -61,21 +61,22 @@ describe('CommonModel', () => {
 
   describe('properties', () => {
     test('should return a map of CommonModel objects', () => {
-      const doc: any = { properties: { test: { type: 'string' } } };
+      const doc = { properties: { test: { type: 'string' } } };
       const d = CommonModel.toCommonModel(doc);
       expect(d.properties).not.toBeUndefined();
       expect(typeof d.properties).toEqual('object');
       for (const key of Object.keys(d.properties!)) {
         const s = d.properties![key];
-        expect(s.constructor.name).toEqual('CommonModel');
-        expect(s).toEqual(doc.properties[key]);
+        expect(s).not.toBeUndefined();
+        expect(s!.constructor.name).toEqual('CommonModel');
+        expect(s).toEqual((doc.properties as Record<string, any>)[key]);
       }
     });
   });
 
   describe('additionalProperties', () => {
     test('should return a CommonModel object', () => {
-      const doc: any = { additionalProperties: { type: 'string' } };
+      const doc = { additionalProperties: { type: 'string' } };
       const d = CommonModel.toCommonModel(doc);
       expect(d.additionalProperties).not.toBeUndefined();
       expect(d.additionalProperties!.constructor.name).toEqual('CommonModel');
@@ -83,7 +84,7 @@ describe('CommonModel', () => {
     });
     
     test('should return a boolean', () => {
-      const doc: any = { additionalProperties: true };
+      const doc = { additionalProperties: true };
       const d = CommonModel.toCommonModel(doc);
       expect(d.additionalProperties).not.toBeUndefined();
       expect(typeof d.additionalProperties).toEqual('boolean');
@@ -91,15 +92,15 @@ describe('CommonModel', () => {
     });
     
     test('should return undefined when not defined', () => {
-      const doc: any = {};
+      const doc = {};
       const d = CommonModel.toCommonModel(doc);
       expect(d.additionalProperties).toEqual(undefined);
     });
   });
 
   describe('additionalItems', () => {
-    test('should return a Schema object', () => {
-      const doc: any = { additionalItems: { type: 'string' } };
+    test('should return a CommonModel object', () => {
+      const doc = { additionalItems: { type: 'string' } };
       const d = CommonModel.toCommonModel(doc);
       expect(typeof d).toEqual('object');
       expect(d.additionalItems).not.toBeUndefined();
@@ -108,14 +109,14 @@ describe('CommonModel', () => {
     });
     
     test('should return undefined when not defined', () => {
-      const doc: any = {};
+      const doc = {};
       const d = CommonModel.toCommonModel(doc);
       expect(typeof d).toEqual('object');
       expect(d.additionalItems).toEqual(undefined);
     });
     
     test('should return undefined when undefined', () => {
-      const doc: any = { additionalItems: undefined };
+      const doc = { additionalItems: undefined };
       const d = CommonModel.toCommonModel(doc);
       expect(typeof d).toEqual('object');
       expect(d.additionalItems).toEqual(undefined);
@@ -123,7 +124,7 @@ describe('CommonModel', () => {
   });
   describe('$ref', () => {
     test('should return a string ', () => {
-      const doc: any = { $ref: 'some/reference' };
+      const doc = { $ref: 'some/reference' };
       const d = CommonModel.toCommonModel(doc);
       expect(d.$ref).not.toBeUndefined();
       expect(typeof d.$ref).toEqual('string');
@@ -132,25 +133,25 @@ describe('CommonModel', () => {
   });
   describe('extend', () => {
     test('should return a string ', () => {
-      const doc: any = { extend: 'reference' };
+      const doc = { extend: 'reference' };
       const d = CommonModel.toCommonModel(doc);
       expect(d.extend).not.toBeUndefined();
       expect(typeof d.extend).toEqual('string');
       expect(d.extend).toEqual(doc.extend);
     });
   });
-  describe('originalSchema', () => {
+  describe('originalInput', () => {
     test('should return a schema', () => {
-      const doc: any = { originalSchema: { type: 'string', minLength: 2 } };
+      const doc = { originalInput: { type: 'string', minLength: 2 } };
       const d = CommonModel.toCommonModel(doc);
-      expect(d.originalSchema).not.toBeUndefined();
-      expect(d.originalSchema!.constructor.name).toEqual('Schema');
-      expect(d.originalSchema).toEqual(doc.originalSchema);
+      expect(d.originalInput).not.toBeUndefined();
+      expect(d.originalInput!.constructor.name).toEqual('Schema');
+      expect(d.originalInput).toEqual(doc.originalInput);
     });
   });
   describe('toCommonModel', () => {
     test('should never return the same instance of properties', () => {
-      const doc: any = { type: 'string', properties: {test: {type: 'string'}} };
+      const doc = { type: 'string', properties: {test: {type: 'string'}} };
       const d = CommonModel.toCommonModel(doc);
       const d2 = CommonModel.toCommonModel(d);
       d.properties!['test'].$id = 'test';
@@ -158,7 +159,7 @@ describe('CommonModel', () => {
       expect(d2.properties!['test'].$id).not.toEqual('test');
     });
     test('should never return the same instance of items', () => {
-      const doc: any = { type: 'string', items: [{type: 'string'}] };
+      const doc = { type: 'string', items: [{type: 'string'}] };
       const d = CommonModel.toCommonModel(doc);
       const d2 = CommonModel.toCommonModel(d);
       const d_items : CommonModel[] = d.items as CommonModel[];
@@ -170,7 +171,7 @@ describe('CommonModel', () => {
   });
   describe('mergeCommonModels', () => {
     test('should handle recursive models', () => {
-      const doc: any = { };
+      const doc = { };
       let doc1 = CommonModel.toCommonModel(doc);
       doc1.properties = {
         recursive: doc1
@@ -186,7 +187,7 @@ describe('CommonModel', () => {
     });
     describe('$id', () => {
       test('should be merged when only right side is defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc2.$id = 'test';
@@ -194,7 +195,7 @@ describe('CommonModel', () => {
         expect(doc1.$id).toEqual(doc2.$id);
       });
       test('should not be merged when both sides are defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc2.$id = 'test';
@@ -204,7 +205,7 @@ describe('CommonModel', () => {
         expect(doc1.$id).toEqual('temp');
       });
       test('should not change if nothing is defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
@@ -213,7 +214,7 @@ describe('CommonModel', () => {
     });
     describe('required', () => {
       test('should contain the same if right side is not defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc1.required = ['test'];
@@ -221,7 +222,7 @@ describe('CommonModel', () => {
         expect(doc1.required).toEqual(['test']);
       });
       test('should be merged when only right side is defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc2.required = ['test'];
@@ -229,7 +230,7 @@ describe('CommonModel', () => {
         expect(doc1.required).toEqual(doc2.required);
       });
       test('should be merged when both sides are defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc1.required = ['test'];
@@ -238,7 +239,7 @@ describe('CommonModel', () => {
         expect(doc1.required).toEqual(['test', 'test2']);
       });
       test('should only contain one if duplicate', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc1.required = ['test'];
@@ -247,7 +248,7 @@ describe('CommonModel', () => {
         expect(doc1.required).toEqual(['test']);
       });
       test('should not change if nothing is defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
@@ -256,7 +257,7 @@ describe('CommonModel', () => {
     });
     describe('$ref', () => {
       test('should be merged when only right side is defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc2.$ref = 'test';
@@ -264,7 +265,7 @@ describe('CommonModel', () => {
         expect(doc1.$ref).toEqual(doc2.$ref);
       });
       test('should be merged when both sides are defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc2.$id = 'test';
@@ -273,7 +274,7 @@ describe('CommonModel', () => {
         expect(doc1.$ref).toEqual(doc2.$ref);
       });
       test('should not change if nothing is defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
@@ -282,7 +283,7 @@ describe('CommonModel', () => {
     });
     describe('extend', () => {
       test('should be merged when only right side is defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc2.extend = ['test'];
@@ -290,7 +291,7 @@ describe('CommonModel', () => {
         expect(doc1.extend).toEqual(doc2.extend);
       });
       test('should be merged when both sides are defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc2.$id = 'test';
@@ -299,7 +300,7 @@ describe('CommonModel', () => {
         expect(doc1.extend).toEqual(doc2.extend);
       });
       test('should not change if nothing is defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
@@ -308,7 +309,7 @@ describe('CommonModel', () => {
     });
     describe('type', () => {
       test('should be merged when only right side is defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc2.type = ['string'];
@@ -316,7 +317,7 @@ describe('CommonModel', () => {
         expect(doc1.type).toEqual(doc2.type);
       });
       test('should be merged when both sides are defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc2.type = ['string'];
@@ -325,7 +326,7 @@ describe('CommonModel', () => {
         expect(doc1.type).toEqual(['number', 'string']);
       });
       test('should not change if nothing is defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
@@ -334,7 +335,7 @@ describe('CommonModel', () => {
     });
     describe('enum', () => {
       test('should be merged when only right side is defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc2.enum = ['string'];
@@ -342,7 +343,7 @@ describe('CommonModel', () => {
         expect(doc1.enum).toEqual(doc2.enum);
       });
       test('Should not contain duplicate values', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc2.enum = ['string'];
@@ -351,7 +352,7 @@ describe('CommonModel', () => {
         expect(doc1.enum).toEqual(['string']);
       });
       test('should be merged when both sides are defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc2.enum = ['string'];
@@ -360,7 +361,7 @@ describe('CommonModel', () => {
         expect(doc1.enum).toEqual(['number', 'string']);
       });
       test('should not change if nothing is defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
@@ -369,7 +370,7 @@ describe('CommonModel', () => {
     });
     describe('items', () => {
       test('should be merged when only right side is defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc2.items = CommonModel.toCommonModel({type: 'string'});
@@ -377,7 +378,7 @@ describe('CommonModel', () => {
         expect(doc1.items).toEqual(doc2.items);
       });
       test('should be merged when only left side is defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc1.items = CommonModel.toCommonModel({type: 'string'});
@@ -385,14 +386,14 @@ describe('CommonModel', () => {
         expect(doc1.items).toMatchObject({type: 'string'});
       });
       test('should handle empty items', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
         expect(doc1.items).toBeUndefined();
       });
       test('should be merged when both sides are defined as schemas', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc2.items = CommonModel.toCommonModel({type: 'string'});
@@ -401,7 +402,7 @@ describe('CommonModel', () => {
         expect(doc1.items).toMatchObject({type: ['number', 'string']});
       });
       test('should not do anything if right side is an empty array', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc2.items = [];
@@ -410,7 +411,7 @@ describe('CommonModel', () => {
         expect(doc1.items).toMatchObject({type: 'number'});
       });
       test('Should handle left side is a tuple and right side is not', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc2.items = CommonModel.toCommonModel({type: 'string'});
@@ -419,7 +420,7 @@ describe('CommonModel', () => {
         expect(doc1.items).toMatchObject([{type: 'number'}]);
       });
       test('Should handle right side is a tuple and left side is not', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc2.items = [CommonModel.toCommonModel({type: 'string'})];
@@ -428,7 +429,7 @@ describe('CommonModel', () => {
         expect(doc1.items).toMatchObject([{type: 'string'}]);
       });
       test('should be merged when both sides are defined as array of schemas with different lengths', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc2.items = [CommonModel.toCommonModel({type: 'string'}), CommonModel.toCommonModel({type: 'boolean'})];
@@ -437,7 +438,7 @@ describe('CommonModel', () => {
         expect(doc1.items).toMatchObject([{type: ['number', 'string']}, {type: 'boolean'}]);
       });
       test('should not change if nothing is defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
@@ -447,7 +448,7 @@ describe('CommonModel', () => {
 
     describe('properties', () => {
       test('should be merged when only right side is defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc2.properties = {testProp: CommonModel.toCommonModel({type: 'string'})};
@@ -455,7 +456,7 @@ describe('CommonModel', () => {
         expect(doc1.properties).toEqual(doc2.properties);
       });
       test('should be merged when both sides are defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc2.properties = {testProp: CommonModel.toCommonModel({type: 'string'})};
@@ -464,16 +465,16 @@ describe('CommonModel', () => {
         expect(doc1.properties).toEqual({testProp: {type: 'string'}, testProp2: {type: 'number'}});
       });
       test('should be merged together when both sides are defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc2.properties = {testProp: CommonModel.toCommonModel({type: 'string'})};
         doc1.properties = {testProp: CommonModel.toCommonModel({type: 'number'})};
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
-        expect(doc1.properties).toEqual({testProp: {type: ['number', 'string'], originalSchema: {}}});
+        expect(doc1.properties).toEqual({testProp: {type: ['number', 'string'], originalInput: {}}});
       });
       test('should not change if nothing is defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
@@ -482,7 +483,7 @@ describe('CommonModel', () => {
     });
     describe('additionalProperties', () => {
       test('should be merged when only right side is defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc2.additionalProperties = CommonModel.toCommonModel({type: 'string'});
@@ -490,16 +491,16 @@ describe('CommonModel', () => {
         expect(doc1.additionalProperties).toEqual(doc2.additionalProperties);
       });
       test('should be merged together when both sides are defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc2.additionalProperties = CommonModel.toCommonModel({type: 'string'});
         doc1.additionalProperties = CommonModel.toCommonModel({type: 'number'});
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
-        expect(doc1.additionalProperties).toEqual({type: ['number', 'string'], originalSchema: {}});
+        expect(doc1.additionalProperties).toEqual({type: ['number', 'string'], originalInput: {}});
       });
       test('should not change if nothing is defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
@@ -508,7 +509,7 @@ describe('CommonModel', () => {
     });
     describe('additionalItems', () => {
       test('should be merged when only right side is defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc2.additionalItems = CommonModel.toCommonModel({type: 'string'});
@@ -516,16 +517,16 @@ describe('CommonModel', () => {
         expect(doc1.additionalItems).toEqual(doc2.additionalItems);
       });
       test('should be merged together when both sides are defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc2.additionalItems = CommonModel.toCommonModel({type: 'string'});
         doc1.additionalItems = CommonModel.toCommonModel({type: 'number'});
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
-        expect(doc1.additionalItems).toEqual({type: ['number', 'string'], originalSchema: {}});
+        expect(doc1.additionalItems).toEqual({type: ['number', 'string'], originalInput: {}});
       });
       test('should not change if nothing is defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
@@ -535,7 +536,7 @@ describe('CommonModel', () => {
 
     describe('patternProperties', () => {
       test('should be merged when only right side is defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc2.patternProperties = {pattern1: CommonModel.toCommonModel({type: 'string'})};
@@ -543,7 +544,7 @@ describe('CommonModel', () => {
         expect(doc1.patternProperties).toEqual(doc2.patternProperties);
       });
       test('should be merged when both sides are defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc2.patternProperties = {pattern1: CommonModel.toCommonModel({type: 'string'})};
@@ -552,16 +553,16 @@ describe('CommonModel', () => {
         expect(doc1.patternProperties).toEqual({pattern1: {type: 'string'}, pattern2: {type: 'number'}});
       });
       test('should be merged together when both sides are defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc2.patternProperties = {pattern1: CommonModel.toCommonModel({type: 'string'})};
         doc1.patternProperties = {pattern1: CommonModel.toCommonModel({type: 'number'})};
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
-        expect(doc1.patternProperties).toEqual({pattern1: {type: ['number', 'string'], originalSchema: {}}});
+        expect(doc1.patternProperties).toEqual({pattern1: {type: ['number', 'string'], originalInput: {}}});
       });
       test('should not change if nothing is defined', () => {
-        const doc: any = { };
+        const doc = { };
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
@@ -871,7 +872,7 @@ describe('CommonModel', () => {
       test('should work', () => {
         const doc = { type: 'string', description: 'Some description' };
         const d = CommonModel.toCommonModel(doc);
-        d.originalSchema = doc;
+        d.originalInput = doc;
         const desc = d.getFromSchema('description');
         expect(desc).toEqual(doc.description);
       });

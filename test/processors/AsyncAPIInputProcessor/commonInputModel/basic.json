@@ -1,7 +1,7 @@
 {
   "models":{
     "<anonymous-schema-1>":{
-      "originalSchema":{
+      "originalInput":{
         "type":"object",
         "properties":{
           "email":{
@@ -16,7 +16,7 @@
       "$id":"<anonymous-schema-1>",
       "properties":{
         "email":{
-          "originalSchema":{
+          "originalInput":{
             "type":"string",
             "format":"email",
             "x-modelgen-inferred-name": "<anonymous-schema-2>"
@@ -25,7 +25,7 @@
         }
       },
       "additionalProperties":{
-        "originalSchema":true,
+        "originalInput":true,
         "type":[
           "object",
           "string",

@@ -3,6 +3,7 @@ import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
 import { CommonInputModel, ProcessorOptions, Schema } from '../models';
 import { Logger } from '../utils';
+import { AsyncAPI2_0Schema } from '../models/AsyncAPI2_0Schema';
 
 /**
  * Class for processing AsyncAPI inputs
@@ -38,22 +39,22 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
 
   /**
    * 
-   * Reflect the name of the schema and save it to `x-modelgen-inferred-name` extension. 
-   * This keeps the the id of the model deterministic if used in conjunction with other AsyncAPI tools such as the generator.
+   * Converts an AsyncAPI schema to the Common schema format.
    * 
-   * @param schema to reflect name for
+   * @param schema to convert
+   * @param alreadyIteratedSchemas used to enable recursive schemas
    */
   // eslint-disable-next-line sonarjs/cognitive-complexity
   static convertToInternalSchema(
     schema: AsyncAPISchema | boolean,
-    alreadyIteratedSchemas: Map<string, Schema> = new Map()
-  ): Schema | boolean {
+    alreadyIteratedSchemas: Map<string, AsyncAPI2_0Schema | boolean> = new Map()
+  ): AsyncAPI2_0Schema | boolean {
     if (typeof schema === 'boolean') {return schema;}
     const schemaUid = schema.uid();
     if (alreadyIteratedSchemas.has(schemaUid)) {
-      return alreadyIteratedSchemas.get(schemaUid) as Schema; 
+      return alreadyIteratedSchemas.get(schemaUid) as any; 
     }
-    let convertedSchema = new Schema();
+    let convertedSchema = new AsyncAPI2_0Schema();
     alreadyIteratedSchemas.set(schemaUid, convertedSchema);
     convertedSchema = Object.assign({}, schema.json());
     convertedSchema[this.MODELGEN_INFFERED_NAME] = schemaUid;
