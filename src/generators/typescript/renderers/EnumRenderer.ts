@@ -42,7 +42,7 @@ ${this.indent(this.renderBlock(content, 2))}
     switch (typeof value) {
     case 'bigint':
     case 'number': {
-      key = `number ${value}`;
+      key = `number_${value}`;
       break;
     }
     case 'object': {
@@ -51,6 +51,10 @@ ${this.indent(this.renderBlock(content, 2))}
     }
     default: {
       key = String(value);
+      //Ensure no special char can be the beginning letter 
+      if (!(/^[a-zA-Z]+$/).test(key.charAt(0))) {
+        key = `String_${key}`;
+      }
     }
     }
     return FormatHelpers.toConstantCase(key);
@@ -87,6 +91,6 @@ export const TS_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
   item({ item, renderer }): string {
     const key = renderer.normalizeKey(item);
     const value = renderer.normalizeValue(item);
-    return `"${key}" = ${value},`;
+    return `${key} = ${value},`;
   }
 };
