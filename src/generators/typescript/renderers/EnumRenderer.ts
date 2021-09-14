@@ -87,6 +87,6 @@ export const TS_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
   item({ item, renderer }): string {
     const key = renderer.normalizeKey(item);
     const value = renderer.normalizeValue(item);
-    return `${key} = ${value},`;
+    return `"${key}" = ${value},`;
   }
 };
