@@ -48,27 +48,32 @@ export class Schema extends CommonSchema<Schema | boolean> {
     if (seenSchemas.has(object)) {
       return seenSchemas.get(object) as any;
     }
-    let schema = new Schema();
-    schema = Object.assign(schema, object);
+    const schema = new Schema();
     seenSchemas.set(object, schema);
     for (const [propName, prop] of Object.entries(object)) {
-      if (propName === 'default' ||
-        propName === 'examples' ||
-        propName === 'const' ||
-        propName === 'enums') { continue; }
-      if (Array.isArray(prop)) {
-        for (const [idx, propEntry] of prop.entries()) {
-          if (typeof propEntry === 'object') {
-            const convertedSchema = Schema.toSchema(propEntry, seenSchemas);
-            (schema as any)[String(propName)][Number(idx)] = convertedSchema;
-          } else {
-            (schema as any)[String(propName)][Number(idx)] = propEntry;
+      if (propName !== 'default' &&
+        propName !== 'examples' &&
+        propName !== 'const' &&
+        propName !== 'enums') { 
+        if (Array.isArray(prop)) {
+          (schema as any)[String(propName)] = [];
+          for (const [idx, propEntry] of prop.entries()) {
+            if (typeof propEntry === 'object') {
+              const convertedSchema = Schema.toSchema(propEntry, seenSchemas);
+              (schema as any)[String(propName)][Number(idx)] = convertedSchema;
+            } else {
+              (schema as any)[String(propName)][Number(idx)] = propEntry;
+            }
           }
+          continue;
+        } else if (typeof prop === 'object') {
+          (schema as any)[String(propName)] = undefined;
+          const convertedSchema = Schema.toSchema(prop, seenSchemas);
+          (schema as any)[String(propName)] = convertedSchema;
+          continue;
         }
-      } else if (typeof prop === 'object') {
-        const convertedSchema = Schema.toSchema(prop, seenSchemas);
-        (schema as any)[String(propName)] = convertedSchema;
       }
+      (schema as any)[String(propName)] = prop;
     }
     return schema;
   }

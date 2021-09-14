@@ -3,7 +3,7 @@ import {Schema} from '../../src/models/Schema';
 describe('Schema', () => {
   describe('multipleOf', () => {
     test('should return a number', () => {
-      const doc= { type: 'number', multipleOf: 1.0 };
+      const doc = { type: 'number', multipleOf: 1.0 };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.multipleOf).not.toBeUndefined();
@@ -14,7 +14,7 @@ describe('Schema', () => {
 
   describe('$id', () => {
     test('should return a string', () => {
-      const doc= { $id: 'test' };
+      const doc = { $id: 'test' };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.$id).not.toBeUndefined();
@@ -25,7 +25,7 @@ describe('Schema', () => {
   
   describe('maximum', () => {
     test('should return a number', () => {
-      const doc= { type: 'number', maximum: 10 };
+      const doc = { type: 'number', maximum: 10 };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.maximum).not.toBeUndefined();
@@ -36,7 +36,7 @@ describe('Schema', () => {
   
   describe('exclusiveMaximum', () => {
     test('should return a number', () => {
-      const doc= { type: 'number', exclusiveMaximum: 10 };
+      const doc = { type: 'number', exclusiveMaximum: 10 };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.exclusiveMaximum).not.toBeUndefined();
@@ -47,7 +47,7 @@ describe('Schema', () => {
   
   describe('minimum', () => {
     test('should return a number', () => {
-      const doc= { type: 'number', minimum: 10 };
+      const doc = { type: 'number', minimum: 10 };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.minimum).not.toBeUndefined();
@@ -58,7 +58,7 @@ describe('Schema', () => {
   
   describe('exclusiveMinimum', () => {
     test('should return a number', () => {
-      const doc= { type: 'number', exclusiveMinimum: 10 };
+      const doc = { type: 'number', exclusiveMinimum: 10 };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.exclusiveMinimum).not.toBeUndefined();
@@ -69,7 +69,7 @@ describe('Schema', () => {
   
   describe('maxLength', () => {
     test('should return a number', () => {
-      const doc= { type: 'string', maxLength: 10 };
+      const doc = { type: 'string', maxLength: 10 };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.maxLength).not.toBeUndefined();
@@ -80,7 +80,7 @@ describe('Schema', () => {
   
   describe('minLength', () => {
     test('should return a number', () => {
-      const doc= { type: 'string', minLength: 10 };
+      const doc = { type: 'string', minLength: 10 };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.minLength).not.toBeUndefined();
@@ -91,7 +91,7 @@ describe('Schema', () => {
   
   describe('pattern', () => {
     test('should return a string', () => {
-      const doc= { type: 'string', pattern: '^test' };
+      const doc = { type: 'string', pattern: '^test' };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.pattern).not.toBeUndefined();
@@ -102,7 +102,7 @@ describe('Schema', () => {
   
   describe('maxItems', () => {
     test('should return a number', () => {
-      const doc= { type: 'array', maxItems: 10 };
+      const doc = { type: 'array', maxItems: 10 };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.maxItems).not.toBeUndefined();
@@ -113,7 +113,7 @@ describe('Schema', () => {
   
   describe('minItems', () => {
     test('should return a number', () => {
-      const doc= { type: 'array', minItems: 10 };
+      const doc = { type: 'array', minItems: 10 };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.minItems).not.toBeUndefined();
@@ -124,7 +124,7 @@ describe('Schema', () => {
   
   describe('uniqueItems', () => {
     test('should return a boolean', () => {
-      const doc= { type: 'array', uniqueItems: true };
+      const doc = { type: 'array', uniqueItems: true };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.uniqueItems).not.toBeUndefined();
@@ -135,7 +135,7 @@ describe('Schema', () => {
 
   describe('maxProperties', () => {
     test('should return a number', () => {
-      const doc= { type: 'object', maxProperties: 10 };
+      const doc = { type: 'object', maxProperties: 10 };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.maxProperties).not.toBeUndefined();
@@ -146,7 +146,7 @@ describe('Schema', () => {
 
   describe('minProperties', () => {
     test('should return a number', () => {
-      const doc= { type: 'object', minProperties: 10 };
+      const doc = { type: 'object', minProperties: 10 };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.minProperties).not.toBeUndefined();
@@ -157,7 +157,7 @@ describe('Schema', () => {
 
   describe('required', () => {
     test('should return a number', () => {
-      const doc= { type: 'object', required: ['test'] };
+      const doc = { type: 'object', required: ['test'] };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.required).not.toBeUndefined();
@@ -168,7 +168,7 @@ describe('Schema', () => {
 
   describe('enum', () => {
     test('should return a number', () => {
-      const doc= { type: 'string', enum: ['test'] };
+      const doc = { type: 'string', enum: ['test'] };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.enum).not.toBeUndefined();
@@ -179,7 +179,7 @@ describe('Schema', () => {
 
   describe('type', () => {
     test('should return a string', () => {
-      const doc= { type: 'string' };
+      const doc = { type: 'string' };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.type).not.toBeUndefined();
@@ -188,7 +188,7 @@ describe('Schema', () => {
     });
     
     test('should return an array of strings', () => {
-      const doc= { type: ['number', 'string'] };
+      const doc = { type: ['number', 'string'] };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.type).not.toBeUndefined();
@@ -199,7 +199,7 @@ describe('Schema', () => {
 
   describe('allOf', () => {
     test('should return an array of Schema objects', () => {
-      const doc= { allOf: [{ type: 'string' }, { type: 'number' }] };
+      const doc = { allOf: [{ type: 'string' }, { type: 'number' }] };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.allOf).not.toBeUndefined();
@@ -213,7 +213,7 @@ describe('Schema', () => {
 
   describe('oneOf', () => {
     test('should return an array of Schema objects', () => {
-      const doc= { oneOf: [{ type: 'string' }, { type: 'number' }] };
+      const doc = { oneOf: [{ type: 'string' }, { type: 'number' }] };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.oneOf).not.toBeUndefined();
@@ -227,7 +227,7 @@ describe('Schema', () => {
 
   describe('anyOf', () => {
     test('should return an array of Schema objects', () => {
-      const doc= { anyOf: [{ type: 'string' }, { type: 'number' }] };
+      const doc = { anyOf: [{ type: 'string' }, { type: 'number' }] };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.anyOf).not.toBeUndefined();
@@ -241,7 +241,7 @@ describe('Schema', () => {
 
   describe('not', () => {
     test('should return a Schema object', () => {
-      const doc= { not: { type: 'string' } };
+      const doc = { not: { type: 'string' } };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.not).not.toBeUndefined();
@@ -252,7 +252,7 @@ describe('Schema', () => {
 
   describe('items', () => {
     test('should return a Schema object', () => {
-      const doc= { items: { type: 'string' } };
+      const doc = { items: { type: 'string' } };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.items).not.toBeUndefined();
@@ -261,7 +261,7 @@ describe('Schema', () => {
     });
     
     test('should return an array of Schema objects', () => {
-      const doc= { items: [{ type: 'string' }, { type: 'number' }] };
+      const doc = { items: [{ type: 'string' }, { type: 'number' }] };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.items).not.toBeUndefined();
@@ -275,7 +275,7 @@ describe('Schema', () => {
 
   describe('properties', () => {
     test('should return a map of Schema objects', () => {
-      const doc= { properties: { test: { type: 'string' } } };
+      const doc = { properties: { test: { type: 'string' } } };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(typeof d.properties).toEqual('object');
@@ -290,7 +290,7 @@ describe('Schema', () => {
 
   describe('additionalProperties', () => {
     test('should return a Schema object', () => {
-      const doc= { additionalProperties: { type: 'string' } };
+      const doc = { additionalProperties: { type: 'string' } };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.additionalProperties).not.toBeUndefined();
@@ -299,7 +299,7 @@ describe('Schema', () => {
     });
     
     test('should return a boolean', () => {
-      const doc= { additionalProperties: true };
+      const doc = { additionalProperties: true };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.additionalProperties).not.toBeUndefined();
@@ -308,7 +308,7 @@ describe('Schema', () => {
     });
     
     test('should return undefined when not defined', () => {
-      const doc= {};
+      const doc = {};
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.additionalProperties).toEqual(undefined);
@@ -317,7 +317,7 @@ describe('Schema', () => {
 
   describe('additionalItems', () => {
     test('should return a Schema object', () => {
-      const doc= { additionalItems: { type: 'string' } };
+      const doc = { additionalItems: { type: 'string' } };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.additionalItems).not.toBeUndefined();
@@ -326,14 +326,14 @@ describe('Schema', () => {
     });
     
     test('should return undefined when not defined', () => {
-      const doc= {};
+      const doc = {};
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.additionalItems).toEqual(undefined);
     });
     
     test('should return undefined when undefined', () => {
-      const doc= { additionalItems: undefined };
+      const doc = { additionalItems: undefined };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.additionalItems).toEqual(undefined);
@@ -342,7 +342,7 @@ describe('Schema', () => {
 
   describe('patternProperties', () => {
     test('should return a map of Schema objects', () => {
-      const doc= { patternProperties: { test: { type: 'string' } } };
+      const doc = { patternProperties: { test: { type: 'string' } } };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.patternProperties).not.toBeUndefined();
@@ -357,7 +357,7 @@ describe('Schema', () => {
 
   describe('const', () => {
     test('should return a number', () => {
-      const doc= { type: 'object', const: 10 };
+      const doc = { type: 'object', const: 10 };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.const).not.toBeUndefined();
@@ -366,7 +366,7 @@ describe('Schema', () => {
     });
     
     test('should return null', () => {
-      const doc= { type: 'object', const: null };
+      const doc = { type: 'object', const: null };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.const).not.toBeUndefined();
@@ -374,7 +374,7 @@ describe('Schema', () => {
     });
     
     test('should return an object', () => {
-      const doc= { type: 'object', const: { test: true } };
+      const doc = { type: 'object', const: { test: true } };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.const).not.toBeUndefined();
@@ -383,7 +383,7 @@ describe('Schema', () => {
     });
     
     test('should return an array', () => {
-      const doc= { type: 'object', const: ['test'] };
+      const doc = { type: 'object', const: ['test'] };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.const).not.toBeUndefined();
@@ -394,7 +394,7 @@ describe('Schema', () => {
 
   describe('contains', () => {
     test('should return a Schema object', () => {
-      const doc= { contains: { type: 'string' } };
+      const doc = { contains: { type: 'string' } };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.contains).not.toBeUndefined();
@@ -405,7 +405,7 @@ describe('Schema', () => {
 
   describe('dependencies', () => {
     test('should return a map with an array value', () => {
-      const doc= { properties: { test: { type: 'string' }, test2: { type: 'number' } }, dependencies: { test: ['test2'] } };
+      const doc = { properties: { test: { type: 'string' }, test2: { type: 'number' } }, dependencies: { test: ['test2'] } };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.dependencies).not.toBeUndefined();
@@ -413,12 +413,12 @@ describe('Schema', () => {
       for (const key of Object.keys(d.dependencies!)) {
         const v: any = d.dependencies![key];
         expect(Array.isArray(v)).toEqual(true);
-        expect(v).toEqual(doc.dependencies![key]);
+        expect(v).toEqual((doc.dependencies as Record<string, any>)[key]);
       }
     });
     
     test('should return a map with a Schema value', () => {
-      const doc= { properties: { test: { type: 'string' } }, dependencies: { test: { properties: { test2: { type: 'number' } } } } };
+      const doc = { properties: { test: { type: 'string' } }, dependencies: { test: { properties: { test2: { type: 'number' } } } } };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.dependencies).not.toBeUndefined();
@@ -426,14 +426,14 @@ describe('Schema', () => {
       for (const key of Object.keys(d.dependencies!)) {
         const s: any = d.dependencies![key];
         expect(s.constructor.name).toEqual('Schema');
-        expect(s).toEqual(doc.dependencies![key]);
+        expect(s).toEqual((doc.dependencies as Record<string, any>)[key]);
       }
     });
   });
 
   describe('propertyNames', () => {
     test('should return a Schema object', () => {
-      const doc= { propertyNames: { type: 'string' } };
+      const doc = { propertyNames: { type: 'string' } };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.propertyNames).not.toBeUndefined();
@@ -444,7 +444,7 @@ describe('Schema', () => {
 
   describe('if', () => {
     test('should return a Schema object', () => {
-      const doc= { if: { type: 'string' } };
+      const doc = { if: { type: 'string' } };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.if).not.toBeUndefined();
@@ -455,7 +455,7 @@ describe('Schema', () => {
 
   describe('then', () => {
     test('should return a Schema object', () => {
-      const doc= { then: { type: 'string' } };
+      const doc = { then: { type: 'string' } };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.then).not.toBeUndefined();
@@ -466,7 +466,7 @@ describe('Schema', () => {
   
   describe('else', () => {
     test('should return a Schema object', () => {
-      const doc= { else: { type: 'string' } };
+      const doc = { else: { type: 'string' } };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.else).not.toBeUndefined();
@@ -477,7 +477,7 @@ describe('Schema', () => {
 
   describe('format', () => {
     test('should return a string', () => {
-      const doc= { type: 'string', format: 'email' };
+      const doc = { type: 'string', format: 'email' };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.format).not.toBeUndefined();
@@ -488,7 +488,7 @@ describe('Schema', () => {
 
   describe('contentEncoding', () => {
     test('should return a string', () => {
-      const doc= { type: 'string', contentEncoding: 'base64' };
+      const doc = { type: 'string', contentEncoding: 'base64' };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.contentEncoding).not.toBeUndefined();
@@ -499,7 +499,7 @@ describe('Schema', () => {
 
   describe('contentMediaType', () => {
     test('should return a string', () => {
-      const doc= { type: 'string', contentMediaType: 'text/html' };
+      const doc = { type: 'string', contentMediaType: 'text/html' };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.contentMediaType).not.toBeUndefined();
@@ -510,7 +510,7 @@ describe('Schema', () => {
 
   describe('description', () => {
     test('should return a string', () => {
-      const doc= { description: 'some description'};
+      const doc = { description: 'some description'};
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.description).not.toBeUndefined();
@@ -521,7 +521,7 @@ describe('Schema', () => {
 
   describe('definitions', () => {
     test('should return a map of Schema objects', () => {
-      const doc= { definitions: { test: { type: 'string' } } };
+      const doc = { definitions: { test: { type: 'string' } } };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.definitions).not.toBeUndefined();
@@ -536,7 +536,7 @@ describe('Schema', () => {
 
   describe('title', () => {
     test('should return a string', () => {
-      const doc= { type: 'string', title: 'test' };
+      const doc = { type: 'string', title: 'test' };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.title).not.toBeUndefined();
@@ -547,7 +547,7 @@ describe('Schema', () => {
 
   describe('default', () => {
     test('should return a value', () => {
-      const doc= { type: 'string', default: 'test' };
+      const doc = { type: 'string', default: 'test' };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.default).not.toBeUndefined();
@@ -557,7 +557,7 @@ describe('Schema', () => {
 
   describe('readOnly', () => {
     test('should return a boolean', () => {
-      const doc= { type: 'string', readOnly: true };
+      const doc = { type: 'string', readOnly: true };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.readOnly).not.toBeUndefined();
@@ -568,7 +568,7 @@ describe('Schema', () => {
 
   describe('writeOnly', () => {
     test('should return a boolean', () => {
-      const doc= { type: 'string', writeOnly: true };
+      const doc = { type: 'string', writeOnly: true };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.writeOnly).not.toBeUndefined();
@@ -579,7 +579,7 @@ describe('Schema', () => {
 
   describe('$ref', () => {
     test('should return a string ', () => {
-      const doc= { $ref: 'some/reference'};
+      const doc = { $ref: 'some/reference'};
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.$ref).not.toBeUndefined();
@@ -590,7 +590,7 @@ describe('Schema', () => {
 
   describe('examples', () => {
     test('should return an array', () => {
-      const doc= { type: 'string', examples: ['test'] };
+      const doc = { type: 'string', examples: ['test'] };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       expect(d.examples).not.toBeUndefined();
@@ -601,7 +601,7 @@ describe('Schema', () => {
 
   describe('toSchema', () => {
     test('should never return the same instance of properties', () => {
-      const doc= { type: 'string', properties: {test: {type: 'string'}} };
+      const doc = { type: 'string', properties: {test: {type: 'string'}} };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       const d2 = Schema.toSchema(d) as Schema;
@@ -612,7 +612,7 @@ describe('Schema', () => {
     });
     
     test('should never return the same instance of items', () => {
-      const doc= { type: 'string', items: [{type: 'string'}] };
+      const doc = { type: 'string', items: [{type: 'string'}] };
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       const d2 = Schema.toSchema(d) as Schema;
@@ -624,7 +624,7 @@ describe('Schema', () => {
       expect(d2_items[0].$id).not.toEqual('test');
     });
     test('should never return the same instance of dependencies', () => {
-      const doc= { type: 'object', properties: {test: {type: 'string'}}, dependencies: {test: {properties: {test2: { type: 'string' }}}}};
+      const doc = { type: 'object', properties: {test: {type: 'string'}}, dependencies: {test: {properties: {test2: { type: 'string' }}}}};
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       const d2 = Schema.toSchema(d) as Schema;
@@ -633,8 +633,8 @@ describe('Schema', () => {
       expect((d.dependencies!['test'] as Schema).$id).toEqual('test');
       expect((d2.dependencies!['test'] as Schema).$id).not.toEqual('test');
     });
-    test('should never return the same instance of properties', () => {
-      const doc= { type: 'object', patternProperties: { '^S_': { type: 'string' }}};
+    test('should never return the same instance of pattern properties', () => {
+      const doc = { type: 'object', patternProperties: { '^S_': { type: 'string' }}};
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       const d2 = Schema.toSchema(d) as Schema;
@@ -644,7 +644,7 @@ describe('Schema', () => {
       expect((d2.patternProperties!['^S_'] as Schema).$id).not.toEqual('test');
     });
     test('should never return the same instance of definitions', () => {
-      const doc= { definitions: { test: { type: 'string' }}};
+      const doc = { definitions: { test: { type: 'string' }}};
       const d = Schema.toSchema(doc) as Schema;
       expect(typeof d).toEqual('object');
       const d2 = Schema.toSchema(d) as Schema;

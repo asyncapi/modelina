@@ -12,6 +12,7 @@ export class CommonSchema<T> {
   $ref?: string;
   required?: string[];
   additionalItems?: T;
+  
   /**
    * Function to transform nested schemas into type of generic extended class
    * 
@@ -31,9 +32,9 @@ export class CommonSchema<T> {
         for (const [idx, propEntry] of prop.entries()) {
           if (typeof propEntry === 'object') {
             const convertedSchema = transformationSchemaCallback(propEntry, seenSchemas);
-            (schema as any)[String(propName)][Number(idx)] = convertedSchema;
+            (buildSchema as any)[String(propName)][Number(idx)] = convertedSchema;
           } else {
-            (schema as any)[String(propName)][Number(idx)] = propEntry;
+            (buildSchema as any)[String(propName)][Number(idx)] = propEntry;
           }
         }
       }

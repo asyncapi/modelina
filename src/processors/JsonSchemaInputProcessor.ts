@@ -10,8 +10,6 @@ import { Draft4Schema } from '../models/Draft4Schema';
 import { Draft7Schema } from '../models/Draft7Schema';
 import { Swagger2_0Schema } from '../models/Swagger2_0Schema';
 import { AsyncAPI2_0Schema } from '../models/AsyncAPI2_0Schema';
-import { Draft6Schema } from '../models/Draft6Schema';
-import { OpenAPI3_0Schema } from '../models/OpenAPI3_0Schema';
 
 /**
  * Class for processing JSON Schema
@@ -210,7 +208,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     }
 
     if (!(schema instanceof Draft4Schema)) {
-      //Keywords introduced in d
+      //Keywords introduced in draft 6
       if (schema.contains !== undefined) {
         schema.contains = this.reflectSchemaNames(schema.contains, namesStack, this.ensureNamePattern(name, 'contain'));
       }
@@ -218,8 +216,8 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         schema.propertyNames = this.reflectSchemaNames(schema.propertyNames, namesStack, this.ensureNamePattern(name, 'propertyName'));
       }
 
-      if (!(schema instanceof Draft6Schema) && !(schema instanceof OpenAPI3_0Schema)) {
-        //Keywords introduced in d
+      if ((schema instanceof Draft7Schema) && !(schema instanceof AsyncAPI2_0Schema)) {
+        //Keywords introduced in Draft 7
         if (schema.if !== undefined) {
           schema.if = this.reflectSchemaNames(schema.if, namesStack, this.ensureNamePattern(name, 'if'));
         }

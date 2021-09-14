@@ -30,12 +30,33 @@ export class CommonModel extends CommonSchema<CommonModel> {
    */
   static toCommonModel(object: any, seenSchemas: Map<any, CommonModel> = new Map()): CommonModel {
     if (seenSchemas.has(object)) {
-      return seenSchemas.get(object) as CommonModel;
+      return seenSchemas.get(object) as any;
     }
-    let newCommonModel = new CommonModel();
-    newCommonModel = Object.assign(newCommonModel, object);
-    newCommonModel = CommonSchema.transformSchema(newCommonModel, object, CommonModel.toCommonModel) as CommonModel;
-    return newCommonModel;
+    const schema = new CommonModel();
+    seenSchemas.set(object, schema);
+    for (const [propName, prop] of Object.entries(object)) {
+      if (propName !== 'originalInput' &&
+        propName !== 'enum') { 
+        if (Array.isArray(prop)) {
+          (schema as any)[String(propName)] = [];
+          for (const [idx, propEntry] of prop.entries()) {
+            if (typeof propEntry === 'object') {
+              const convertedSchema = CommonModel.toCommonModel(propEntry, seenSchemas);
+              (schema as any)[String(propName)][Number(idx)] = convertedSchema;
+            } else {
+              (schema as any)[String(propName)][Number(idx)] = propEntry;
+            }
+          }
+          continue;
+        } else if (typeof prop === 'object') {
+          const convertedSchema = CommonModel.toCommonModel(prop, seenSchemas);
+          (schema as any)[String(propName)] = convertedSchema;
+          continue;
+        }
+      }
+      (schema as any)[String(propName)] = prop;
+    }
+    return schema;
   }
 
   /**

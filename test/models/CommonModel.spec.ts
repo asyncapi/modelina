@@ -141,11 +141,10 @@ describe('CommonModel', () => {
     });
   });
   describe('originalInput', () => {
-    test('should return a schema', () => {
+    test('should return the input as is', () => {
       const doc = { originalInput: { type: 'string', minLength: 2 } };
       const d = CommonModel.toCommonModel(doc);
       expect(d.originalInput).not.toBeUndefined();
-      expect(d.originalInput!.constructor.name).toEqual('Schema');
       expect(d.originalInput).toEqual(doc.originalInput);
     });
   });
