@@ -24,6 +24,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     if (this.shouldProcess(input)) {
       switch (input.$schema) {
       case 'http://json-schema.org/draft-07/schema#':
+      case 'http://json-schema.org/draft-07/schema':
         return this.processDraft7(input);
       case 'http://json-schema.org/draft-04/schema#':
         return this.processDraft4(input);
@@ -42,7 +43,8 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
   shouldProcess(input: Record<string, any>): boolean {
     if (input.$schema !== undefined) {
       if (input.$schema === 'http://json-schema.org/draft-04/schema#' || 
-      input.$schema === 'http://json-schema.org/draft-07/schema#') {
+      input.$schema === 'http://json-schema.org/draft-07/schema#' || 
+      input.$schema === 'http://json-schema.org/draft-07/schema') {
         return true;
       }
       return false;

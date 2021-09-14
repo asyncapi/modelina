@@ -53,7 +53,6 @@ export class Swagger2_0Schema {
   maxProperties?: number;
   minProperties?: number;
   allOf?: Swagger2_0Schema[];
-  dependencies?: { [key: string]: Swagger2_0Schema | string[]; };
   format?: string;
   definitions?: { [key: string]: Swagger2_0Schema; };
   description?: string;
@@ -65,7 +64,6 @@ export class Swagger2_0Schema {
   additionalProperties?: Swagger2_0Schema | boolean;
   $ref?: string;
   required?: string[];
-  additionalItems?: Swagger2_0Schema | boolean;
 
   //Draft 4 additions
   id?: string;

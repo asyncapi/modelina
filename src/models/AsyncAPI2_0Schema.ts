@@ -84,29 +84,33 @@ export class AsyncAPI2_0Schema {
     if (seenSchemas.has(object)) {
       return seenSchemas.get(object) as any;
     }
-    let schema = new AsyncAPI2_0Schema();
-    schema = Object.assign(schema, object);
+    const schema = new AsyncAPI2_0Schema();
     seenSchemas.set(object, schema);
     for (const [propName, prop] of Object.entries(object)) {
-      if (propName === 'default' ||
-        propName === 'examples' ||
-        propName === 'const' ||
-        propName === 'enums') { continue; }
-      if (propName === 'externalDocs') {
-        schema.externalDocs = AsyncAPI2_0ExternalDocumentation.toExternalDocumentation(prop);
-      } else if (Array.isArray(prop)) {
-        for (const [idx, propEntry] of prop.entries()) {
-          if (typeof propEntry === 'object') {
-            const convertedSchema = AsyncAPI2_0Schema.toSchema(propEntry, seenSchemas);
-            (schema as any)[String(propName)][Number(idx)] = convertedSchema;
-          } else {
-            (schema as any)[String(propName)][Number(idx)] = propEntry;
+      if (propName !== 'default' &&
+        propName !== 'examples' &&
+        propName !== 'const' &&
+        propName !== 'enums') { 
+        if (propName === 'externalDocs') {
+          schema.externalDocs = AsyncAPI2_0ExternalDocumentation.toExternalDocumentation(prop);
+        } else if (Array.isArray(prop)) {
+          (schema as any)[String(propName)] = [];
+          for (const [idx, propEntry] of prop.entries()) {
+            if (typeof propEntry === 'object') {
+              const convertedSchema = AsyncAPI2_0Schema.toSchema(propEntry, seenSchemas);
+              (schema as any)[String(propName)][Number(idx)] = convertedSchema;
+            } else {
+              (schema as any)[String(propName)][Number(idx)] = propEntry;
+            }
           }
+          continue;
+        } else if (typeof prop === 'object') {
+          const convertedSchema = AsyncAPI2_0Schema.toSchema(prop, seenSchemas);
+          (schema as any)[String(propName)] = convertedSchema;
+          continue;
         }
-      } else if (typeof prop === 'object') {
-        const convertedSchema = AsyncAPI2_0Schema.toSchema(prop, seenSchemas);
-        (schema as any)[String(propName)] = convertedSchema;
       }
+      (schema as any)[String(propName)] = prop;
     }
     return schema;
   }
