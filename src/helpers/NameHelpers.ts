@@ -45,7 +45,7 @@ export const CommonNamingConventionImplementation: CommonNamingConvention = {
   type: (name, ctx) => {
     if (!name) {return '';}
     let formattedName = FormatHelpers.toPascalCase(name);
-    if (ctx.isReservedKeywordCallback && ctx.isReservedKeywordCallback(formattedName)) { 
+    if (ctx.isReservedKeywordCallback !== undefined && ctx.isReservedKeywordCallback(formattedName)) { 
       formattedName = FormatHelpers.toPascalCase(`reserved_${formattedName}`);
     }
     return formattedName;
@@ -53,7 +53,7 @@ export const CommonNamingConventionImplementation: CommonNamingConvention = {
   property: (name, ctx) => {
     if (!name) {return '';}
     let formattedName = FormatHelpers.toCamelCase(name);
-    if (ctx.isReservedKeywordCallback && ctx.isReservedKeywordCallback(formattedName)) { 
+    if (ctx.isReservedKeywordCallback !== undefined && ctx.isReservedKeywordCallback(formattedName)) { 
       // If name is considered reserved, make sure we rename it appropriately
       // and make sure no clashes occur.
       formattedName = FormatHelpers.toCamelCase(`reserved_${formattedName}`);
