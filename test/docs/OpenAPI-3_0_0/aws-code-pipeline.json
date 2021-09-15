@@ -1,0 +1,1833 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+		"title": "AWS Code Pipeline API",
+		"description": "",
+		"termsOfService": "",
+		"version": "",
+		"contact": {
+			"name": "No Contact",
+			"url": "http://example.com",
+			"email": "email@example.com"
+		},
+		"license": {
+			"name": "No License",
+			"url": "http://example.com"
+		}
+	},
+	"servers": [{
+		"url": "https://codepipeline.sa-east-1.amazonaws.com"
+	}],
+	"paths": {
+		"/?Action=AcknowledgeJob": {
+			"get": {
+				"summary": " Acknowledge Job ",
+				"description": "Returns information about a specified job and whether that job has been received by\n            the job worker.",
+				"operationId": "acknowledgeJob",
+				"parameters": [{
+					"name": "DryRun",
+					"in": "query",
+					"description": "Checks whether you have the required permissions for the action, without actually making the      request, and provides an error response. If you have the required permissions, the error      response is DryRunOperation. Otherwise, it is      UnauthorizedOperation.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "SnapshotId",
+					"in": "query",
+					"description": "The ID of the EBS snapshot.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "jobId",
+					"in": "query",
+					"description": "The unique system-generated ID of the job for which you want to confirm            receipt.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "nonce",
+					"in": "query",
+					"description": "A system-generated random number that AWS CodePipeline uses to ensure that the job            is being worked on by only one job worker. Get this number from the response of the                PollForJobs request that returned this job.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"/?Action=AcknowledgeThirdPartyJob": {
+			"get": {
+				"summary": " Acknowledge Third Party Job ",
+				"description": "Confirms a job worker has received the specified job.",
+				"operationId": "acknowledgeThirdPartyJob",
+				"parameters": [{
+					"name": "DryRun",
+					"in": "query",
+					"description": "Checks whether you have the required permissions for the action, without actually making the      request, and provides an error response. If you have the required permissions, the error      response is DryRunOperation. Otherwise, it is      UnauthorizedOperation.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "VolumeId",
+					"in": "query",
+					"description": "The ID of the volume.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "clientToken",
+					"in": "query",
+					"description": "The clientToken portion of the clientId and clientToken pair used to verify that            the calling entity is allowed access to the job and its details.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "jobId",
+					"in": "query",
+					"description": "The unique system-generated ID of the job for which you want to confirm            receipt.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "nonce",
+					"in": "query",
+					"description": "A system-generated random number that AWS CodePipeline uses to ensure that the job            is being worked on by only one job worker. Get this number from the response of the                PollForJobs request that returned this job.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"/?Action=CreateCustomActionType": {
+			"get": {
+				"summary": " Create Custom Action Type ",
+				"description": "Creates a new custom action that can be used in all pipelines associated with the\n            AWS account.",
+				"operationId": "createCustomActionType",
+				"parameters": [{
+					"name": "Attribute",
+					"in": "query",
+					"description": "The snapshot attribute you would like to view.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "DryRun",
+					"in": "query",
+					"description": "Checks whether you have the required permissions for the action, without actually making the      request, and provides an error response. If you have the required permissions, the error      response is DryRunOperation. Otherwise, it is      UnauthorizedOperation.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "SnapshotId",
+					"in": "query",
+					"description": "The ID of the EBS snapshot.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "category",
+					"in": "query",
+					"description": "The category of the custom action, such as a build action or a test            action.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "configurationProperties",
+					"in": "query",
+					"description": "The configuration properties for the custom action.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "inputArtifactDetails",
+					"in": "query",
+					"description": "Returns information about the details of an artifact.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "outputArtifactDetails",
+					"in": "query",
+					"description": "Returns information about the details of an artifact.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "provider",
+					"in": "query",
+					"description": "The provider of the service used in the custom action, such as AWS            CodeDeploy.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "settings",
+					"in": "query",
+					"description": "Returns information about the settings for an action type.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "version",
+					"in": "query",
+					"description": "The version identifier of the custom action.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"/?Action=CreatePipeline": {
+			"get": {
+				"summary": " Create Pipeline ",
+				"description": "Creates a pipeline.",
+				"operationId": "createPipeline",
+				"parameters": [{
+					"name": "DryRun",
+					"in": "query",
+					"description": "Checks whether you have the required permissions for the action, without actually making the      request, and provides an error response. If you have the required permissions, the error      response is DryRunOperation. Otherwise, it is      UnauthorizedOperation.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "Filter.N",
+					"in": "query",
+					"description": "One or more filters.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "MaxResults",
+					"in": "query",
+					"description": "The maximum number of snapshot results returned by DescribeSnapshots in      paginated output. When this parameter is used, DescribeSnapshots only returns        MaxResults results in a single page along with a NextToken      response element. The remaining results of the initial request can be seen by sending another        DescribeSnapshots request with the returned NextToken value. This      value can be between 5 and 1000; if MaxResults is given a value larger than 1000,      only 1000 resul",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "NextToken",
+					"in": "query",
+					"description": "The NextToken value returned from a previous paginated        DescribeSnapshots request where MaxResults was used and the      results exceeded the value of that parameter. Pagination continues from the end of the      previous results that returned the NextToken value. This value is        null when there are no more results to return.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "Owner.N",
+					"in": "query",
+					"description": "Returns the snapshots owned by the specified owner. Multiple owners can be specified.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "RestorableBy.N",
+					"in": "query",
+					"description": "One or more AWS accounts IDs that can create volumes from the snapshot.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "SnapshotId.N",
+					"in": "query",
+					"description": "One or more snapshot IDs.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "pipeline",
+					"in": "query",
+					"description": "Represents the structure of actions and stages to be performed in the            pipeline.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"/?Action=DeleteCustomActionType": {
+			"get": {
+				"summary": " Delete Custom Action Type ",
+				"description": "Marks a custom action as deleted.",
+				"operationId": "deleteCustomActionType",
+				"parameters": [{
+					"name": "Attribute",
+					"in": "query",
+					"description": "The snapshot attribute you would like to view.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "DryRun",
+					"in": "query",
+					"description": "Checks whether you have the required permissions for the action, without actually making the      request, and provides an error response. If you have the required permissions, the error      response is DryRunOperation. Otherwise, it is      UnauthorizedOperation.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "VolumeId",
+					"in": "query",
+					"description": "The ID of the volume.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "category",
+					"in": "query",
+					"description": "The category of the custom action, such as a build action or a test            action.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "provider",
+					"in": "query",
+					"description": "The provider of the service used in the custom action, such as AWS            CodeDeploy.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "version",
+					"in": "query",
+					"description": "The version identifier of the custom action.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"/?Action=DeletePipeline": {
+			"get": {
+				"summary": " Delete Pipeline ",
+				"description": "Deletes the specified pipeline.",
+				"operationId": "deletePipeline",
+				"parameters": [{
+					"name": "DryRun",
+					"in": "query",
+					"description": "Checks whether you have the required permissions for the action, without actually making the      request, and provides an error response. If you have the required permissions, the error      response is DryRunOperation. Otherwise, it is      UnauthorizedOperation.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "Filter.N",
+					"in": "query",
+					"description": "One or more filters.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "MaxResults",
+					"in": "query",
+					"description": "The maximum number of snapshot results returned by DescribeSnapshots in      paginated output. When this parameter is used, DescribeSnapshots only returns        MaxResults results in a single page along with a NextToken      response element. The remaining results of the initial request can be seen by sending another        DescribeSnapshots request with the returned NextToken value. This      value can be between 5 and 1000; if MaxResults is given a value larger than 1000,      only 1000 resul",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "NextToken",
+					"in": "query",
+					"description": "The NextToken value returned from a previous paginated        DescribeSnapshots request where MaxResults was used and the      results exceeded the value of that parameter. Pagination continues from the end of the      previous results that returned the NextToken value. This value is        null when there are no more results to return.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "VolumeId.N",
+					"in": "query",
+					"description": "One or more volume IDs.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "name",
+					"in": "query",
+					"description": "The name of the pipeline to be deleted.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"/?Action=DisableStageTransition": {
+			"get": {
+				"summary": " Disable Stage Transition ",
+				"description": "Prevents artifacts in a pipeline from transitioning to the next stage in the\n            pipeline.",
+				"operationId": "disableStageTransition",
+				"parameters": [{
+					"name": "DryRun",
+					"in": "query",
+					"description": "Checks whether you have the required permissions for the action, without actually making the      request, and provides an error response. If you have the required permissions, the error      response is DryRunOperation. Otherwise, it is      UnauthorizedOperation.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "Filter.N",
+					"in": "query",
+					"description": "One or more filters.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "MaxResults",
+					"in": "query",
+					"description": "The maximum number of snapshot results returned by DescribeSnapshots in      paginated output. When this parameter is used, DescribeSnapshots only returns        MaxResults results in a single page along with a NextToken      response element. The remaining results of the initial request can be seen by sending another        DescribeSnapshots request with the returned NextToken value. This      value can be between 5 and 1000; if MaxResults is given a value larger than 1000,      only 1000 resul",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "NextToken",
+					"in": "query",
+					"description": "The NextToken value returned from a previous paginated        DescribeSnapshots request where MaxResults was used and the      results exceeded the value of that parameter. Pagination continues from the end of the      previous results that returned the NextToken value. This value is        null when there are no more results to return.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "VolumeId.N",
+					"in": "query",
+					"description": "One or more volume IDs.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "pipelineName",
+					"in": "query",
+					"description": "The name of the pipeline in which you want to disable the flow of artifacts from            one stage to another.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "reason",
+					"in": "query",
+					"description": "The reason given to the user why a stage is disabled, such as waiting for manual            approval or manual tests. This message is displayed in the pipeline console            UI.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "stageName",
+					"in": "query",
+					"description": "The name of the stage where you want to disable the inbound or outbound transition            of artifacts.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "transitionType",
+					"in": "query",
+					"description": "Specifies whether artifacts will be prevented from transitioning into the stage and            being processed by the actions in that stage (inbound), or prevented from transitioning            from the stage after they have been processed by the actions in that stage            (outbound).",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"/?Action=EnableStageTransition": {
+			"get": {
+				"summary": " Enable Stage Transition ",
+				"description": "Enables artifacts in a pipeline to transition to a stage in a pipeline.",
+				"operationId": "enableStageTransition",
+				"parameters": [{
+					"name": "Device",
+					"in": "query",
+					"description": "The device name.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "DryRun",
+					"in": "query",
+					"description": "Checks whether you have the required permissions for the action, without actually making the      request, and provides an error response. If you have the required permissions, the error      response is DryRunOperation. Otherwise, it is      UnauthorizedOperation.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "Force",
+					"in": "query",
+					"description": "Forces detachment if the previous detachment attempt did not occur cleanly (for example,      logging into an instance, unmounting the volume, and detaching normally). This option can lead      to data loss or a corrupted file system. Use this option only as a last resort to detach a      volume from a failed instance. The instance won't have an opportunity to flush file system      caches or file system metadata. If you use this option, you must perform file system check and      repair procedu",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "InstanceId",
+					"in": "query",
+					"description": "The ID of the instance.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "VolumeId",
+					"in": "query",
+					"description": "The ID of the volume.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "pipelineName",
+					"in": "query",
+					"description": "The name of the pipeline in which you want to disable the flow of artifacts from            one stage to another.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "stageName",
+					"in": "query",
+					"description": "The name of the stage where you want to disable the inbound or outbound transition            of artifacts.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "transitionType",
+					"in": "query",
+					"description": "Specifies whether artifacts will be prevented from transitioning into the stage and            being processed by the actions in that stage (inbound), or prevented from transitioning            from the stage after they have been processed by the actions in that stage            (outbound).",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"/?Action=GetJobDetails": {
+			"get": {
+				"summary": " Get Job Details ",
+				"description": "Returns information about a job.",
+				"operationId": "getJobDetails",
+				"parameters": [{
+					"name": "DryRun",
+					"in": "query",
+					"description": "Checks whether you have the required permissions for the action, without actually making the      request, and provides an error response. If you have the required permissions, the error      response is DryRunOperation. Otherwise, it is      UnauthorizedOperation.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "VolumeId",
+					"in": "query",
+					"description": "The ID of the volume.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "jobId",
+					"in": "query",
+					"description": "The unique system-generated ID of the job for which you want to confirm            receipt.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"/?Action=GetPipeline": {
+			"get": {
+				"summary": " Get Pipeline ",
+				"description": "Returns the metadata, structure, stages, and actions of a pipeline.",
+				"operationId": "getPipeline",
+				"parameters": [{
+					"name": "Attribute",
+					"in": "query",
+					"description": "The snapshot attribute you would like to view.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "CreateVolumePermission",
+					"in": "query",
+					"description": "A JSON representation of the snapshot attribute modification.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "DryRun",
+					"in": "query",
+					"description": "Checks whether you have the required permissions for the action, without actually making the      request, and provides an error response. If you have the required permissions, the error      response is DryRunOperation. Otherwise, it is      UnauthorizedOperation.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "OperationType",
+					"in": "query",
+					"description": "The type of operation to perform to the attribute.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "SnapshotId",
+					"in": "query",
+					"description": "The ID of the EBS snapshot.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "UserGroup.N",
+					"in": "query",
+					"description": "The group to modify for the snapshot.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "UserId.N",
+					"in": "query",
+					"description": "The account ID to modify for the snapshot.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "name",
+					"in": "query",
+					"description": "The name of the pipeline to be deleted.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "version",
+					"in": "query",
+					"description": "The version identifier of the custom action.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"/?Action=GetPipelineExecution": {
+			"get": {
+				"summary": " Get Pipeline Execution ",
+				"description": "Returns information about an execution of a pipeline, including details about\n            artifacts, the pipeline execution ID, and the name, version, and status of the\n            pipeline.",
+				"operationId": "getPipelineExecution",
+				"parameters": [{
+					"name": "AutoEnableIO",
+					"in": "query",
+					"description": "Indicates whether the volume should be auto-enabled for I/O operations.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "DryRun",
+					"in": "query",
+					"description": "Checks whether you have the required permissions for the action, without actually making the      request, and provides an error response. If you have the required permissions, the error      response is DryRunOperation. Otherwise, it is      UnauthorizedOperation.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "VolumeId",
+					"in": "query",
+					"description": "The ID of the volume.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "pipelineExecutionId",
+					"in": "query",
+					"description": "The ID of the pipeline execution about which you want to get execution            details.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "pipelineName",
+					"in": "query",
+					"description": "The name of the pipeline in which you want to disable the flow of artifacts from            one stage to another.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"/?Action=GetPipelineState": {
+			"get": {
+				"summary": " Get Pipeline State ",
+				"description": "Returns information about the state of a pipeline, including the stages and\n            actions.",
+				"operationId": "getPipelineState",
+				"parameters": [{
+					"name": "Attribute",
+					"in": "query",
+					"description": "The snapshot attribute you would like to view.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "DryRun",
+					"in": "query",
+					"description": "Checks whether you have the required permissions for the action, without actually making the      request, and provides an error response. If you have the required permissions, the error      response is DryRunOperation. Otherwise, it is      UnauthorizedOperation.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "SnapshotId",
+					"in": "query",
+					"description": "The ID of the EBS snapshot.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "name",
+					"in": "query",
+					"description": "The name of the pipeline to be deleted.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"/?Action=GetThirdPartyJobDetails": {
+			"get": {
+				"summary": " Get Third Party Job Details ",
+				"description": "Requests the details of a job for a third party action.",
+				"operationId": "getThirdPartyJobDetails",
+				"parameters": [{
+					"name": "Domain",
+					"in": "query",
+					"description": "Set to vpc to allocate the address for use with instances in a VPC.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "DryRun",
+					"in": "query",
+					"description": "Checks whether you have the required permissions for the action, without actually making the      request, and provides an error response. If you have the required permissions, the error      response is DryRunOperation. Otherwise, it is      UnauthorizedOperation.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "clientToken",
+					"in": "query",
+					"description": "The clientToken portion of the clientId and clientToken pair used to verify that            the calling entity is allowed access to the job and its details.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "jobId",
+					"in": "query",
+					"description": "The unique system-generated ID of the job for which you want to confirm            receipt.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"/?Action=ListActionTypes": {
+			"get": {
+				"summary": " List Action Types ",
+				"description": "Gets a summary of all AWS CodePipeline action types associated with your\n            account.",
+				"operationId": "listActionTypes",
+				"parameters": [{
+					"name": "AllocationId",
+					"in": "query",
+					"description": "[EC2-VPC] The allocation ID. This is required for EC2-VPC.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "AllowReassociation",
+					"in": "query",
+					"description": "[EC2-VPC] For a VPC in an EC2-Classic account, specify true to allow an Elastic IP address that is already associated with an instance or network interface to be reassociated with the specified instance or network interface. Otherwise, the operation fails. In a VPC in an EC2-VPC-only account, reassociation is automatic, therefore you can specify false to ensure the operation fails if the Elastic IP address is already associated with another resource.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "DryRun",
+					"in": "query",
+					"description": "Checks whether you have the required permissions for the action, without actually making the      request, and provides an error response. If you have the required permissions, the error      response is DryRunOperation. Otherwise, it is      UnauthorizedOperation.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "InstanceId",
+					"in": "query",
+					"description": "The ID of the instance.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "NetworkInterfaceId",
+					"in": "query",
+					"description": "[EC2-VPC] The ID of the network interface. If the instance has more than one network interface, you must specify a network interface ID.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "PrivateIpAddress",
+					"in": "query",
+					"description": "[EC2-VPC] The primary or secondary private IP address to associate with the Elastic IP address. If no private IP address is specified, the Elastic IP address is associated with the primary private IP address.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "PublicIp",
+					"in": "query",
+					"description": "The Elastic IP address. This is required for EC2-Classic.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "actionOwnerFilter",
+					"in": "query",
+					"description": "Filters the list of action types to those created by a specified entity.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "NextToken",
+					"in": "query",
+					"description": "The NextToken value returned from a previous paginated        DescribeSnapshots request where MaxResults was used and the      results exceeded the value of that parameter. Pagination continues from the end of the      previous results that returned the NextToken value. This value is        null when there are no more results to return.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"/?Action=ListPipelines": {
+			"get": {
+				"summary": " List Pipelines ",
+				"description": "Gets a summary of all of the pipelines associated with your account.",
+				"operationId": "listPipelines",
+				"parameters": [{
+					"name": "AllocationId.N",
+					"in": "query",
+					"description": "[EC2-VPC] One or more allocation IDs.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "DryRun",
+					"in": "query",
+					"description": "Checks whether you have the required permissions for the action, without actually making the      request, and provides an error response. If you have the required permissions, the error      response is DryRunOperation. Otherwise, it is      UnauthorizedOperation.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "Filter.N",
+					"in": "query",
+					"description": "One or more filters.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "PublicIp.N",
+					"in": "query",
+					"description": "[EC2-Classic] One or more Elastic IP addresses.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "NextToken",
+					"in": "query",
+					"description": "The NextToken value returned from a previous paginated        DescribeSnapshots request where MaxResults was used and the      results exceeded the value of that parameter. Pagination continues from the end of the      previous results that returned the NextToken value. This value is        null when there are no more results to return.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"/?Action=PollForJobs": {
+			"get": {
+				"summary": " Poll For Jobs ",
+				"description": "Returns information about any jobs for AWS CodePipeline to act upon.",
+				"operationId": "pollForJobs",
+				"parameters": [{
+					"name": "DryRun",
+					"in": "query",
+					"description": "Checks whether you have the required permissions for the action, without actually making the      request, and provides an error response. If you have the required permissions, the error      response is DryRunOperation. Otherwise, it is      UnauthorizedOperation.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "Filter.N",
+					"in": "query",
+					"description": "One or more filters.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "MaxResults",
+					"in": "query",
+					"description": "The maximum number of snapshot results returned by DescribeSnapshots in      paginated output. When this parameter is used, DescribeSnapshots only returns        MaxResults results in a single page along with a NextToken      response element. The remaining results of the initial request can be seen by sending another        DescribeSnapshots request with the returned NextToken value. This      value can be between 5 and 1000; if MaxResults is given a value larger than 1000,      only 1000 resul",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "NextToken",
+					"in": "query",
+					"description": "The NextToken value returned from a previous paginated        DescribeSnapshots request where MaxResults was used and the      results exceeded the value of that parameter. Pagination continues from the end of the      previous results that returned the NextToken value. This value is        null when there are no more results to return.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "PublicIp.N",
+					"in": "query",
+					"description": "[EC2-Classic] One or more Elastic IP addresses.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "actionTypeId",
+					"in": "query",
+					"description": "Represents information about an action type.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "maxBatchSize",
+					"in": "query",
+					"description": "The maximum number of jobs to return in a poll for jobs call.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "queryParam",
+					"in": "query",
+					"description": "A map of property names and values. For an action type with no queryable            properties, this value must be null or an empty map. For an action type with a queryable            property, you must supply that property as a key in the map. Only jobs whose action            configuration matches the mapped value will be returned.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"/?Action=PollForThirdPartyJobs": {
+			"get": {
+				"summary": " Poll For Third Party Jobs ",
+				"description": "Determines whether there are any third party jobs for a job worker to act on.",
+				"operationId": "pollForThirdPartyJobs",
+				"parameters": [{
+					"name": "AssociationId",
+					"in": "query",
+					"description": "[EC2-VPC] The association ID. Required for EC2-VPC.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "DryRun",
+					"in": "query",
+					"description": "Checks whether you have the required permissions for the action, without actually making the      request, and provides an error response. If you have the required permissions, the error      response is DryRunOperation. Otherwise, it is      UnauthorizedOperation.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "PublicIp",
+					"in": "query",
+					"description": "The Elastic IP address. This is required for EC2-Classic.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "actionTypeId",
+					"in": "query",
+					"description": "Represents information about an action type.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "maxBatchSize",
+					"in": "query",
+					"description": "The maximum number of jobs to return in a poll for jobs call.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"/?Action=PutActionRevision": {
+			"get": {
+				"summary": " Put Action Revision ",
+				"description": "Provides information to AWS CodePipeline about new revisions to a source.",
+				"operationId": "putActionRevision",
+				"parameters": [{
+					"name": "DryRun",
+					"in": "query",
+					"description": "Checks whether you have the required permissions for the action, without actually making the      request, and provides an error response. If you have the required permissions, the error      response is DryRunOperation. Otherwise, it is      UnauthorizedOperation.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "PublicIp",
+					"in": "query",
+					"description": "The Elastic IP address. This is required for EC2-Classic.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "actionName",
+					"in": "query",
+					"description": "The name of the action that will process the revision.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "actionRevision",
+					"in": "query",
+					"description": "Represents information about the version (or revision) of an action.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "pipelineName",
+					"in": "query",
+					"description": "The name of the pipeline in which you want to disable the flow of artifacts from            one stage to another.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "stageName",
+					"in": "query",
+					"description": "The name of the stage where you want to disable the inbound or outbound transition            of artifacts.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"/?Action=PutApprovalResult": {
+			"get": {
+				"summary": " Put Approval Result ",
+				"description": "Provides the response to a manual approval request to AWS CodePipeline.",
+				"operationId": "putApprovalResult",
+				"parameters": [{
+					"name": "AllocationId",
+					"in": "query",
+					"description": "[EC2-VPC] The allocation ID. This is required for EC2-VPC.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "DryRun",
+					"in": "query",
+					"description": "Checks whether you have the required permissions for the action, without actually making the      request, and provides an error response. If you have the required permissions, the error      response is DryRunOperation. Otherwise, it is      UnauthorizedOperation.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "PublicIp",
+					"in": "query",
+					"description": "The Elastic IP address. This is required for EC2-Classic.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "actionName",
+					"in": "query",
+					"description": "The name of the action that will process the revision.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "pipelineName",
+					"in": "query",
+					"description": "The name of the pipeline in which you want to disable the flow of artifacts from            one stage to another.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "result",
+					"in": "query",
+					"description": "Represents information about the result of the approval request.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "stageName",
+					"in": "query",
+					"description": "The name of the stage where you want to disable the inbound or outbound transition            of artifacts.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "token",
+					"in": "query",
+					"description": "The system-generated token used to identify a unique approval request. The token            for each open approval request can be obtained using the GetPipelineState action and is used to validate that the approval            request corresponding to this token is still valid.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"/?Action=PutJobFailureResult": {
+			"get": {
+				"summary": " Put Job Failure Result ",
+				"description": "Represents the failure of a job as returned to the pipeline by a job worker.",
+				"operationId": "putJobFailureResult",
+				"parameters": [{
+					"name": "DryRun",
+					"in": "query",
+					"description": "Checks whether you have the required permissions for the action, without actually making the      request, and provides an error response. If you have the required permissions, the error      response is DryRunOperation. Otherwise, it is      UnauthorizedOperation.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "PublicIp",
+					"in": "query",
+					"description": "The Elastic IP address. This is required for EC2-Classic.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "failureDetails",
+					"in": "query",
+					"description": "The details about the failure of a job.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "jobId",
+					"in": "query",
+					"description": "The unique system-generated ID of the job for which you want to confirm            receipt.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"/?Action=PutJobSuccessResult": {
+			"get": {
+				"summary": " Put Job Success Result ",
+				"description": "Represents the success of a job as returned to the pipeline by a job worker.",
+				"operationId": "putJobSuccessResult",
+				"parameters": [{
+					"name": "Ipv6AddressCount",
+					"in": "query",
+					"description": "The number of IPv6 addresses to assign to the network interface. Amazon EC2            automatically selects the IPv6 addresses from the subnet range. You can't use this            option if specifying specific IPv6 addresses.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "Ipv6Addresses.N",
+					"in": "query",
+					"description": "One or more specific IPv6 addresses to be assigned to the network interface. You can't use this option if you're specifying a number of IPv6 addresses.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "NetworkInterfaceId",
+					"in": "query",
+					"description": "[EC2-VPC] The ID of the network interface. If the instance has more than one network interface, you must specify a network interface ID.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "continuationToken",
+					"in": "query",
+					"description": "A token generated by a job worker, such as an AWS CodeDeploy deployment ID, that a            successful job provides to identify a custom action in progress. Future jobs will use            this token in order to identify the running instance of the action. It can be reused to            return additional information about the progress of the custom action. When the action            is complete, no continuation token should be supplied.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "currentRevision",
+					"in": "query",
+					"description": "The ID of the current revision of the artifact successfully worked upon by the            job.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "executionDetails",
+					"in": "query",
+					"description": "The execution details of the successful job, such as the actions taken by the job            worker.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "jobId",
+					"in": "query",
+					"description": "The unique system-generated ID of the job for which you want to confirm            receipt.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"/?Action=PutThirdPartyJobFailureResult": {
+			"get": {
+				"summary": " Put Third Party Job Failure Result ",
+				"description": "Represents the failure of a third party job as returned to the pipeline by a job\n            worker.",
+				"operationId": "putThirdPartyJobFailureResult",
+				"parameters": [{
+					"name": "AllowReassignment",
+					"in": "query",
+					"description": "Indicates whether to allow an IP address that is already assigned to another network interface or instance to be reassigned to the specified network interface.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "NetworkInterfaceId",
+					"in": "query",
+					"description": "[EC2-VPC] The ID of the network interface. If the instance has more than one network interface, you must specify a network interface ID.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "PrivateIpAddress.N",
+					"in": "query",
+					"description": "One or more IP addresses to be assigned as a secondary private IP address to the network interface. You can't specify this parameter when also specifying a number of secondary IP addresses.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "SecondaryPrivateIpAddressCount",
+					"in": "query",
+					"description": "The number of secondary IP addresses to assign to the network interface. You can't specify this parameter when also specifying private IP addresses.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "clientToken",
+					"in": "query",
+					"description": "The clientToken portion of the clientId and clientToken pair used to verify that            the calling entity is allowed access to the job and its details.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "failureDetails",
+					"in": "query",
+					"description": "The details about the failure of a job.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "jobId",
+					"in": "query",
+					"description": "The unique system-generated ID of the job for which you want to confirm            receipt.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"/?Action=PutThirdPartyJobSuccessResult": {
+			"get": {
+				"summary": " Put Third Party Job Success Result ",
+				"description": "Represents the success of a third party job as returned to the pipeline by a job\n            worker.",
+				"operationId": "putThirdPartyJobSuccessResult",
+				"parameters": [{
+					"name": "DeviceIndex",
+					"in": "query",
+					"description": "The index of the device for the network interface attachment.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "DryRun",
+					"in": "query",
+					"description": "Checks whether you have the required permissions for the action, without actually making the      request, and provides an error response. If you have the required permissions, the error      response is DryRunOperation. Otherwise, it is      UnauthorizedOperation.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "InstanceId",
+					"in": "query",
+					"description": "The ID of the instance.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "NetworkInterfaceId",
+					"in": "query",
+					"description": "[EC2-VPC] The ID of the network interface. If the instance has more than one network interface, you must specify a network interface ID.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "clientToken",
+					"in": "query",
+					"description": "The clientToken portion of the clientId and clientToken pair used to verify that            the calling entity is allowed access to the job and its details.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "continuationToken",
+					"in": "query",
+					"description": "A token generated by a job worker, such as an AWS CodeDeploy deployment ID, that a            successful job provides to identify a custom action in progress. Future jobs will use            this token in order to identify the running instance of the action. It can be reused to            return additional information about the progress of the custom action. When the action            is complete, no continuation token should be supplied.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "currentRevision",
+					"in": "query",
+					"description": "The ID of the current revision of the artifact successfully worked upon by the            job.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "executionDetails",
+					"in": "query",
+					"description": "The execution details of the successful job, such as the actions taken by the job            worker.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "jobId",
+					"in": "query",
+					"description": "The unique system-generated ID of the job for which you want to confirm            receipt.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"/?Action=RetryStageExecution": {
+			"get": {
+				"summary": " Retry Stage Execution ",
+				"description": "Resumes the pipeline execution by retrying the last failed actions in a\n            stage.",
+				"operationId": "retryStageExecution",
+				"parameters": [{
+					"name": "Description",
+					"in": "query",
+					"description": "A description for the network interface.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "DryRun",
+					"in": "query",
+					"description": "Checks whether you have the required permissions for the action, without actually making the      request, and provides an error response. If you have the required permissions, the error      response is DryRunOperation. Otherwise, it is      UnauthorizedOperation.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "Ipv6AddressCount",
+					"in": "query",
+					"description": "The number of IPv6 addresses to assign to the network interface. Amazon EC2            automatically selects the IPv6 addresses from the subnet range. You can't use this            option if specifying specific IPv6 addresses.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "Ipv6Addresses.N",
+					"in": "query",
+					"description": "One or more specific IPv6 addresses to be assigned to the network interface. You can't use this option if you're specifying a number of IPv6 addresses.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "PrivateIpAddress",
+					"in": "query",
+					"description": "[EC2-VPC] The primary or secondary private IP address to associate with the Elastic IP address. If no private IP address is specified, the Elastic IP address is associated with the primary private IP address.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "PrivateIpAddresses.N",
+					"in": "query",
+					"description": "One or more private IPv4 addresses.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "SecondaryPrivateIpAddressCount",
+					"in": "query",
+					"description": "The number of secondary IP addresses to assign to the network interface. You can't specify this parameter when also specifying private IP addresses.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "SecurityGroupId.N",
+					"in": "query",
+					"description": "The IDs of one or more security groups.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "SubnetId",
+					"in": "query",
+					"description": "The ID of the subnet to associate with the network interface.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "pipelineExecutionId",
+					"in": "query",
+					"description": "The ID of the pipeline execution about which you want to get execution            details.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "pipelineName",
+					"in": "query",
+					"description": "The name of the pipeline in which you want to disable the flow of artifacts from            one stage to another.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "retryMode",
+					"in": "query",
+					"description": "The scope of the retry attempt. Currently, the only supported value is            FAILED_ACTIONS.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "stageName",
+					"in": "query",
+					"description": "The name of the stage where you want to disable the inbound or outbound transition            of artifacts.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"/?Action=StartPipelineExecution": {
+			"get": {
+				"summary": " Start Pipeline Execution ",
+				"description": "Starts the specified pipeline.",
+				"operationId": "startPipelineExecution",
+				"parameters": [{
+					"name": "DryRun",
+					"in": "query",
+					"description": "Checks whether you have the required permissions for the action, without actually making the      request, and provides an error response. If you have the required permissions, the error      response is DryRunOperation. Otherwise, it is      UnauthorizedOperation.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "NetworkInterfaceId",
+					"in": "query",
+					"description": "[EC2-VPC] The ID of the network interface. If the instance has more than one network interface, you must specify a network interface ID.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "name",
+					"in": "query",
+					"description": "The name of the pipeline to be deleted.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"/?Action=UpdatePipeline": {
+			"get": {
+				"summary": " Update Pipeline ",
+				"description": "Updates a specified pipeline with edits or changes to its structure.",
+				"operationId": "updatePipeline",
+				"parameters": [{
+					"name": "Attribute",
+					"in": "query",
+					"description": "The snapshot attribute you would like to view.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "DryRun",
+					"in": "query",
+					"description": "Checks whether you have the required permissions for the action, without actually making the      request, and provides an error response. If you have the required permissions, the error      response is DryRunOperation. Otherwise, it is      UnauthorizedOperation.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "NetworkInterfaceId",
+					"in": "query",
+					"description": "[EC2-VPC] The ID of the network interface. If the instance has more than one network interface, you must specify a network interface ID.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "pipeline",
+					"in": "query",
+					"description": "Represents the structure of actions and stages to be performed in the            pipeline.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"DryRun": {
+				"type": "string",
+				"description": "Checks whether you have the required permissions for the action, without actually making the      request, and provides an error response. If you have the required permissions, the error      response is DryRunOperation. Otherwise, it is      UnauthorizedOperation."
+			},
+			"SnapshotId": {
+				"type": "string",
+				"description": "The ID of the EBS snapshot."
+			},
+			"jobId": {
+				"type": "string",
+				"description": "The unique system-generated ID of the job for which you want to confirm            receipt."
+			},
+			"nonce": {
+				"type": "string",
+				"description": "A system-generated random number that AWS CodePipeline uses to ensure that the job            is being worked on by only one job worker. Get this number from the response of the                PollForJobs request that returned this job."
+			},
+			"VolumeId": {
+				"type": "string",
+				"description": "The ID of the volume."
+			},
+			"clientToken": {
+				"type": "string",
+				"description": "The clientToken portion of the clientId and clientToken pair used to verify that            the calling entity is allowed access to the job and its details."
+			},
+			"Attribute": {
+				"type": "string",
+				"description": "The snapshot attribute you would like to view."
+			},
+			"category": {
+				"type": "string",
+				"description": "The category of the custom action, such as a build action or a test            action."
+			},
+			"configurationProperties": {
+				"type": "string",
+				"description": "The configuration properties for the custom action."
+			},
+			"inputArtifactDetails": {
+				"type": "string",
+				"description": "Returns information about the details of an artifact."
+			},
+			"outputArtifactDetails": {
+				"type": "string",
+				"description": "Returns information about the details of an artifact."
+			},
+			"provider": {
+				"type": "string",
+				"description": "The provider of the service used in the custom action, such as AWS            CodeDeploy."
+			},
+			"settings": {
+				"type": "string",
+				"description": "Returns information about the settings for an action type."
+			},
+			"version": {
+				"type": "string",
+				"description": "The version identifier of the custom action."
+			},
+			"Filter.N": {
+				"type": "string",
+				"description": "One or more filters."
+			},
+			"MaxResults": {
+				"type": "string",
+				"description": "The maximum number of snapshot results returned by DescribeSnapshots in      paginated output. When this parameter is used, DescribeSnapshots only returns        MaxResults results in a single page along with a NextToken      response element. The remaining results of the initial request can be seen by sending another        DescribeSnapshots request with the returned NextToken value. This      value can be between 5 and 1000; if MaxResults is given a value larger than 1000,      only 1000 results are returned. If this parameter is not used, then        DescribeSnapshots returns all results. You cannot specify this parameter and      the snapshot IDs parameter in the same request."
+			},
+			"NextToken": {
+				"type": "string",
+				"description": "The NextToken value returned from a previous paginated        DescribeSnapshots request where MaxResults was used and the      results exceeded the value of that parameter. Pagination continues from the end of the      previous results that returned the NextToken value. This value is        null when there are no more results to return."
+			},
+			"Owner.N": {
+				"type": "string",
+				"description": "Returns the snapshots owned by the specified owner. Multiple owners can be specified."
+			},
+			"RestorableBy.N": {
+				"type": "string",
+				"description": "One or more AWS accounts IDs that can create volumes from the snapshot."
+			},
+			"SnapshotId.N": {
+				"type": "string",
+				"description": "One or more snapshot IDs."
+			},
+			"pipeline": {
+				"type": "string",
+				"description": "Represents the structure of actions and stages to be performed in the            pipeline."
+			},
+			"VolumeId.N": {
+				"type": "string",
+				"description": "One or more volume IDs."
+			},
+			"name": {
+				"type": "string",
+				"description": "The name of the pipeline to be deleted."
+			},
+			"pipelineName": {
+				"type": "string",
+				"description": "The name of the pipeline in which you want to disable the flow of artifacts from            one stage to another."
+			},
+			"reason": {
+				"type": "string",
+				"description": "The reason given to the user why a stage is disabled, such as waiting for manual            approval or manual tests. This message is displayed in the pipeline console            UI."
+			},
+			"stageName": {
+				"type": "string",
+				"description": "The name of the stage where you want to disable the inbound or outbound transition            of artifacts."
+			},
+			"transitionType": {
+				"type": "string",
+				"description": "Specifies whether artifacts will be prevented from transitioning into the stage and            being processed by the actions in that stage (inbound), or prevented from transitioning            from the stage after they have been processed by the actions in that stage            (outbound)."
+			},
+			"Device": {
+				"type": "string",
+				"description": "The device name."
+			},
+			"Force": {
+				"type": "string",
+				"description": "Forces detachment if the previous detachment attempt did not occur cleanly (for example,      logging into an instance, unmounting the volume, and detaching normally). This option can lead      to data loss or a corrupted file system. Use this option only as a last resort to detach a      volume from a failed instance. The instance won't have an opportunity to flush file system      caches or file system metadata. If you use this option, you must perform file system check and      repair procedures."
+			},
+			"InstanceId": {
+				"type": "string",
+				"description": "The ID of the instance."
+			},
+			"CreateVolumePermission": {
+				"type": "string",
+				"description": "A JSON representation of the snapshot attribute modification."
+			},
+			"OperationType": {
+				"type": "string",
+				"description": "The type of operation to perform to the attribute."
+			},
+			"UserGroup.N": {
+				"type": "string",
+				"description": "The group to modify for the snapshot."
+			},
+			"UserId.N": {
+				"type": "string",
+				"description": "The account ID to modify for the snapshot."
+			},
+			"AutoEnableIO": {
+				"type": "string",
+				"description": "Indicates whether the volume should be auto-enabled for I/O operations."
+			},
+			"pipelineExecutionId": {
+				"type": "string",
+				"description": "The ID of the pipeline execution about which you want to get execution            details."
+			},
+			"Domain": {
+				"type": "string",
+				"description": "Set to vpc to allocate the address for use with instances in a VPC."
+			},
+			"AllocationId": {
+				"type": "string",
+				"description": "[EC2-VPC] The allocation ID. This is required for EC2-VPC."
+			},
+			"AllowReassociation": {
+				"type": "string",
+				"description": "[EC2-VPC] For a VPC in an EC2-Classic account, specify true to allow an Elastic IP address that is already associated with an instance or network interface to be reassociated with the specified instance or network interface. Otherwise, the operation fails. In a VPC in an EC2-VPC-only account, reassociation is automatic, therefore you can specify false to ensure the operation fails if the Elastic IP address is already associated with another resource."
+			},
+			"NetworkInterfaceId": {
+				"type": "string",
+				"description": "[EC2-VPC] The ID of the network interface. If the instance has more than one network interface, you must specify a network interface ID."
+			},
+			"PrivateIpAddress": {
+				"type": "string",
+				"description": "[EC2-VPC] The primary or secondary private IP address to associate with the Elastic IP address. If no private IP address is specified, the Elastic IP address is associated with the primary private IP address."
+			},
+			"PublicIp": {
+				"type": "string",
+				"description": "The Elastic IP address. This is required for EC2-Classic."
+			},
+			"actionOwnerFilter": {
+				"type": "string",
+				"description": "Filters the list of action types to those created by a specified entity."
+			},
+			"AllocationId.N": {
+				"type": "string",
+				"description": "[EC2-VPC] One or more allocation IDs."
+			},
+			"PublicIp.N": {
+				"type": "string",
+				"description": "[EC2-Classic] One or more Elastic IP addresses."
+			},
+			"actionTypeId": {
+				"type": "string",
+				"description": "Represents information about an action type."
+			},
+			"maxBatchSize": {
+				"type": "string",
+				"description": "The maximum number of jobs to return in a poll for jobs call."
+			},
+			"queryParam": {
+				"type": "string",
+				"description": "A map of property names and values. For an action type with no queryable            properties, this value must be null or an empty map. For an action type with a queryable            property, you must supply that property as a key in the map. Only jobs whose action            configuration matches the mapped value will be returned."
+			},
+			"AssociationId": {
+				"type": "string",
+				"description": "[EC2-VPC] The association ID. Required for EC2-VPC."
+			},
+			"actionName": {
+				"type": "string",
+				"description": "The name of the action that will process the revision."
+			},
+			"actionRevision": {
+				"type": "string",
+				"description": "Represents information about the version (or revision) of an action."
+			},
+			"result": {
+				"type": "string",
+				"description": "Represents information about the result of the approval request."
+			},
+			"token": {
+				"type": "string",
+				"description": "The system-generated token used to identify a unique approval request. The token            for each open approval request can be obtained using the GetPipelineState action and is used to validate that the approval            request corresponding to this token is still valid."
+			},
+			"failureDetails": {
+				"type": "string",
+				"description": "The details about the failure of a job."
+			},
+			"Ipv6AddressCount": {
+				"type": "string",
+				"description": "The number of IPv6 addresses to assign to the network interface. Amazon EC2            automatically selects the IPv6 addresses from the subnet range. You can't use this            option if specifying specific IPv6 addresses."
+			},
+			"Ipv6Addresses.N": {
+				"type": "string",
+				"description": "One or more specific IPv6 addresses to be assigned to the network interface. You can't use this option if you're specifying a number of IPv6 addresses."
+			},
+			"continuationToken": {
+				"type": "string",
+				"description": "A token generated by a job worker, such as an AWS CodeDeploy deployment ID, that a            successful job provides to identify a custom action in progress. Future jobs will use            this token in order to identify the running instance of the action. It can be reused to            return additional information about the progress of the custom action. When the action            is complete, no continuation token should be supplied."
+			},
+			"currentRevision": {
+				"type": "string",
+				"description": "The ID of the current revision of the artifact successfully worked upon by the            job."
+			},
+			"executionDetails": {
+				"type": "string",
+				"description": "The execution details of the successful job, such as the actions taken by the job            worker."
+			},
+			"AllowReassignment": {
+				"type": "string",
+				"description": "Indicates whether to allow an IP address that is already assigned to another network interface or instance to be reassigned to the specified network interface."
+			},
+			"PrivateIpAddress.N": {
+				"type": "string",
+				"description": "One or more IP addresses to be assigned as a secondary private IP address to the network interface. You can't specify this parameter when also specifying a number of secondary IP addresses."
+			},
+			"SecondaryPrivateIpAddressCount": {
+				"type": "string",
+				"description": "The number of secondary IP addresses to assign to the network interface. You can't specify this parameter when also specifying private IP addresses."
+			},
+			"DeviceIndex": {
+				"type": "string",
+				"description": "The index of the device for the network interface attachment."
+			},
+			"Description": {
+				"type": "string",
+				"description": "A description for the network interface."
+			},
+			"PrivateIpAddresses.N": {
+				"type": "string",
+				"description": "One or more private IPv4 addresses."
+			},
+			"SecurityGroupId.N": {
+				"type": "string",
+				"description": "The IDs of one or more security groups."
+			},
+			"SubnetId": {
+				"type": "string",
+				"description": "The ID of the subnet to associate with the network interface."
+			},
+			"retryMode": {
+				"type": "string",
+				"description": "The scope of the retry attempt. Currently, the only supported value is            FAILED_ACTIONS."
+			}
+		}
+	}
+}

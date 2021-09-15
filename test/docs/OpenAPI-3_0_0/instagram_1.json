@@ -1,0 +1,1282 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+		"title": "Instagram",
+		"description": "Description of Instagram RESTful API.\n\nCurrent limitations:\n  * Instagram service does not support [cross origin headers](https:\/\/developer.mozilla.org\/en-US\/docs\/Web\/HTTP\/Access_control_CORS)\n  for security reasons, therefore it is not possible to use Swagger UI and make API calls directly from browser.\n  * Modification API requests (`POST`, `DELETE`) require additional security [scopes](https:\/\/instagram.com\/developer\/authorization\/)\n  that are available for Apps [created on or after Nov 17, 2015](http:\/\/instagram.com\/developer\/review\/) and\n  started in [Sandbox Mode](http:\/\/instagram.com\/developer\/sandbox\/).\n  * Consider the [Instagram limitations](https:\/\/instagram.com\/developer\/limits\/) for API calls that depends on App Mode.\n\n**Warning:** For Apps [created on or after Nov 17, 2015](http:\/\/instagram.com\/developer\/changelog\/) API responses\ncontaining media objects no longer return the `data` field in `comments` and `likes` nodes.\n\nLast update: 2015-11-28\n",
+		"termsOfService": "https:\/\/instagram.com\/about\/legal\/terms\/api\/",
+		"version": "1.0.0",
+		"contact": {
+			"name": "No Contact",
+			"url": "http:\/\/example.com",
+			"email": "email@example.com"
+		},
+		"license": {
+			"name": "No License",
+			"url": "http:\/\/example.com"
+		}
+	},
+	"servers": [{
+		"url": "http:\/\/api.instagram.com\/v1"
+	}],
+	"paths": {
+		"\/geographies\/{geo-id}\/media\/recent": {
+			"get": {
+				"summary": "Get recent media from a custom geo-id.",
+				"description": "Get recent media from a geography subscription that you created.\n\n**Note:** You can only access Geographies that were explicitly created by your OAuth client. Check the\nGeography Subscriptions section of the [real-time updates page](https:\/\/instagram.com\/developer\/realtime\/).\nWhen you create a subscription to some geography that you define, you will be returned a unique `geo-id` that\ncan be used in this query. To backfill photos from the location covered by this geography, use the\n[media search ",
+				"operationId": "",
+				"parameters": [{
+					"name": "geo-id",
+					"in": "path",
+					"description": "The geography ID.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "count",
+					"in": "query",
+					"description": "Max number of media to return.",
+					"schema": {
+						"type": "integer"
+					}
+				},
+				{
+					"name": "min_id",
+					"in": "query",
+					"description": "Return media before this `min_id`.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"\/locations\/search": {
+			"get": {
+				"summary": "Search for a location by geographic coordinate.",
+				"description": "Search for a location by geographic coordinate.",
+				"operationId": "",
+				"parameters": [{
+					"name": "distance",
+					"in": "query",
+					"description": "Default is 1000m (distance=1000), max distance is 5000.",
+					"schema": {
+						"type": "integer"
+					}
+				},
+				{
+					"name": "facebook_places_id",
+					"in": "query",
+					"description": "Returns a location mapped off of a Facebook places id. If used, a Foursquare id and `lat`, `lng` are not required.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "foursquare_id",
+					"in": "query",
+					"description": "Returns a location mapped off of a foursquare v1 api location id. If used, you are not required to use\n`lat` and `lng`. Note that this method is deprecated; you should use the new foursquare IDs with V2 of their API.\n",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "lat",
+					"in": "query",
+					"description": "Latitude of the center search coordinate. If used, `lng` is required.",
+					"schema": {
+						"type": "number"
+					}
+				},
+				{
+					"name": "lng",
+					"in": "query",
+					"description": "Longitude of the center search coordinate. If used, `lat` is required.",
+					"schema": {
+						"type": "number"
+					}
+				},
+				{
+					"name": "foursquare_v2_id",
+					"in": "query",
+					"description": "Returns a location mapped off of a foursquare v2 api location id. If used, you are not required to use\n`lat` and `lng`.\n",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"\/locations\/{location-id}": {
+			"get": {
+				"summary": "Get information about a location.",
+				"description": "Get information about a location.",
+				"operationId": "",
+				"parameters": [{
+					"name": "location-id",
+					"in": "path",
+					"description": "The location ID.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"\/locations\/{location-id}\/media\/recent": {
+			"get": {
+				"summary": "Get a list of recent media objects from a given location.",
+				"description": "Get a list of recent media objects from a given location.",
+				"operationId": "",
+				"parameters": [{
+					"name": "location-id",
+					"in": "path",
+					"description": "The location ID.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "min_timestamp",
+					"in": "query",
+					"description": "Return media after this UNIX timestamp.",
+					"schema": {
+						"type": "integer"
+					}
+				},
+				{
+					"name": "max_timestamp",
+					"in": "query",
+					"description": "Return media before this UNIX timestamp.",
+					"schema": {
+						"type": "integer"
+					}
+				},
+				{
+					"name": "min_id",
+					"in": "query",
+					"description": "Return media before this `min_id`.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "max_id",
+					"in": "query",
+					"description": "Return media after this `max_id`.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"\/media\/popular": {
+			"get": {
+				"summary": "Get a list of currently popular media.",
+				"description": "Get a list of what media is most popular at the moment. Can return mix of `image` and `video` types.\n\n**Warning:** [Deprecated](http:\/\/instagram.com\/developer\/changelog\/) for Apps created **on or after** Nov 17, 2015\n",
+				"operationId": "",
+				"parameters": []
+			}
+		},
+		"\/media\/search": {
+			"get": {
+				"summary": "Search for media in a given area.",
+				"description": "Search for media in a given area. The default time span is set to 5 days. The time span must not exceed 7 days.\nDefaults time stamps cover the last 5 days. Can return mix of `image` and `video` types.\n",
+				"operationId": "",
+				"parameters": [{
+					"name": "lat",
+					"in": "query",
+					"description": "Latitude of the center search coordinate. If used, `lng` is required.",
+					"schema": {
+						"type": "number"
+					}
+				},
+				{
+					"name": "lng",
+					"in": "query",
+					"description": "Longitude of the center search coordinate. If used, `lat` is required.",
+					"schema": {
+						"type": "number"
+					}
+				},
+				{
+					"name": "min_timestamp",
+					"in": "query",
+					"description": "Return media after this UNIX timestamp.",
+					"schema": {
+						"type": "integer"
+					}
+				},
+				{
+					"name": "max_timestamp",
+					"in": "query",
+					"description": "Return media before this UNIX timestamp.",
+					"schema": {
+						"type": "integer"
+					}
+				},
+				{
+					"name": "distance",
+					"in": "query",
+					"description": "Default is 1000m (distance=1000), max distance is 5000.",
+					"schema": {
+						"type": "integer"
+					}
+				}]
+			}
+		},
+		"\/media\/shortcode\/{shortcode}": {
+			"get": {
+				"summary": "Get information about a media object.",
+				"description": "This endpoint returns the same response as `GET \/media\/{media-id}`.\n\nA media object's shortcode can be found in its shortlink URL. An example shortlink is\n`http:\/\/instagram.com\/p\/D\/`, its corresponding shortcode is `D`.\n",
+				"operationId": "",
+				"parameters": [{
+					"name": "shortcode",
+					"in": "path",
+					"description": "The short code of the media resource.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"\/media\/{media-id}": {
+			"get": {
+				"summary": "Get information about a media object.",
+				"description": "Get information about a media object. The returned type key will allow you to differentiate between image and\nvideo media.\n\n**Note:** if you authenticate with an OAuth Token, you will receive the user_has_liked key which quickly tells\nyou whether the current user has liked this media item.\n",
+				"operationId": "",
+				"parameters": [{
+					"name": "media-id",
+					"in": "path",
+					"description": "The ID of the media resource.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"\/media\/{media-id}\/comments": {
+			"get": {
+				"summary": "Get a list of recent comments on a media object.",
+				"description": "Get a list of recent comments on a media object.",
+				"operationId": "",
+				"parameters": [{
+					"name": "media-id",
+					"in": "path",
+					"description": "The ID of the media resource.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"\/media\/{media-id}\/comments\/{comment-id}": {
+			"delete": {
+				"summary": "Remove a comment.",
+				"description": "Remove a comment either on the authenticated user's media object or authored by the authenticated user.\n",
+				"operationId": "",
+				"parameters": [{
+					"name": "media-id",
+					"in": "path",
+					"description": "The ID of the media resource.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "comment-id",
+					"in": "path",
+					"description": "The ID of the comment entry.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"\/media\/{media-id}\/likes": {
+			"delete": {
+				"summary": "Remove a like on this media by the current user.",
+				"description": "Remove a like on this media by the currently authenticated user.",
+				"operationId": "",
+				"parameters": [{
+					"name": "media-id",
+					"in": "path",
+					"description": "The ID of the media resource.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"\/tags\/search": {
+			"get": {
+				"summary": "Search for tags by name.",
+				"description": "Search for tags by name.",
+				"operationId": "",
+				"parameters": [{
+					"name": "q",
+					"in": "query",
+					"description": "A valid tag name without a leading \\#. (eg. snowy, nofilter)",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"\/tags\/{tag-name}": {
+			"get": {
+				"summary": "Get information about a tag object.",
+				"description": "Get information about a tag object.",
+				"operationId": "",
+				"parameters": [{
+					"name": "tag-name",
+					"in": "path",
+					"description": "The tag name.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"\/tags\/{tag-name}\/media\/recent": {
+			"get": {
+				"summary": "Get a list of recently tagged media.",
+				"description": "Get a list of recently tagged media. Use the `max_tag_id` and `min_tag_id` parameters in the pagination\nresponse to paginate through these objects.\n",
+				"operationId": "",
+				"parameters": [{
+					"name": "tag-name",
+					"in": "path",
+					"description": "The tag name.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "count",
+					"in": "query",
+					"description": "Max number of media to return.",
+					"schema": {
+						"type": "integer"
+					}
+				},
+				{
+					"name": "min_tag_id",
+					"in": "query",
+					"description": "Return media before this `min_tag_id`.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "max_tag_id",
+					"in": "query",
+					"description": "Return media after this `max_tag_id`.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"\/users\/search": {
+			"get": {
+				"summary": "Search for a user by name.",
+				"description": "Search for a user by name.",
+				"operationId": "",
+				"parameters": [{
+					"name": "q",
+					"in": "query",
+					"description": "A valid tag name without a leading \\#. (eg. snowy, nofilter)",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "count",
+					"in": "query",
+					"description": "Max number of media to return.",
+					"schema": {
+						"type": "integer"
+					}
+				}]
+			}
+		},
+		"\/users\/self\/feed": {
+			"get": {
+				"summary": "See the authenticated user's feed.",
+				"description": "See the authenticated user's feed.\n\n**Warning:** [Deprecated](http:\/\/instagram.com\/developer\/changelog\/) for Apps created **on or after** Nov 17, 2015\n",
+				"operationId": "",
+				"parameters": [{
+					"name": "count",
+					"in": "query",
+					"description": "Max number of media to return.",
+					"schema": {
+						"type": "integer"
+					}
+				},
+				{
+					"name": "min_id",
+					"in": "query",
+					"description": "Return media before this `min_id`.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "max_id",
+					"in": "query",
+					"description": "Return media after this `max_id`.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"\/users\/self\/media\/liked": {
+			"get": {
+				"summary": "See the list of media liked by the authenticated user.",
+				"description": "See the list of media liked by the authenticated user. Private media is returned as long as the authenticated\nuser has permission to view that media. Liked media lists are only available for the currently authenticated\nuser.\n",
+				"operationId": "",
+				"parameters": [{
+					"name": "count",
+					"in": "query",
+					"description": "Max number of media to return.",
+					"schema": {
+						"type": "integer"
+					}
+				},
+				{
+					"name": "max_like_id",
+					"in": "query",
+					"description": "Return media liked before this id.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"\/users\/self\/requested-by": {
+			"get": {
+				"summary": "List the users who have requested this user's permission to follow.",
+				"description": "List the users who have requested this user's permission to follow.",
+				"operationId": "",
+				"parameters": []
+			}
+		},
+		"\/users\/{user-id}": {
+			"get": {
+				"summary": "Get basic information about a user.",
+				"description": "Get basic information about a user. To get information about the owner of the access token, you can use\n**self** instead of the `user-id`.\n\nSecurity scope `public_content` is required to read information about other users.\n",
+				"operationId": "",
+				"parameters": [{
+					"name": "user-id",
+					"in": "path",
+					"description": "The ID of a user to get information about, or **self** to retrieve information about authenticated user.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"\/users\/{user-id}\/followed-by": {
+			"get": {
+				"summary": "Get the list of users this user is followed by.",
+				"description": "Get the list of users this user is followed by. To get users followed by the owner of the access token, you\ncan use **self** instead of the `user-id`.\n",
+				"operationId": "",
+				"parameters": [{
+					"name": "user-id",
+					"in": "path",
+					"description": "The ID of a user to get information about, or **self** to retrieve information about authenticated user.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"\/users\/{user-id}\/follows": {
+			"get": {
+				"summary": "Get the list of users this user follows.",
+				"description": "Get the list of users this user follows. To get follows of the owner of the access token, you can use **self**\ninstead of the `user-id`.\n",
+				"operationId": "",
+				"parameters": [{
+					"name": "user-id",
+					"in": "path",
+					"description": "The ID of a user to get information about, or **self** to retrieve information about authenticated user.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"\/users\/{user-id}\/media\/recent": {
+			"get": {
+				"summary": "Get the most recent media published by a user.",
+				"description": "Get the most recent media published by a user. To get the most recent media published by the owner of the\naccess token, you can use **self** instead of the `user-id`.\n\nSecurity scope `public_content` is required to read information about other users.\n",
+				"operationId": "",
+				"parameters": [{
+					"name": "user-id",
+					"in": "path",
+					"description": "The ID of a user to get information about, or **self** to retrieve information about authenticated user.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "count",
+					"in": "query",
+					"description": "Max number of media to return.",
+					"schema": {
+						"type": "integer"
+					}
+				},
+				{
+					"name": "max_timestamp",
+					"in": "query",
+					"description": "Return media before this UNIX timestamp.",
+					"schema": {
+						"type": "integer"
+					}
+				},
+				{
+					"name": "min_timestamp",
+					"in": "query",
+					"description": "Return media after this UNIX timestamp.",
+					"schema": {
+						"type": "integer"
+					}
+				},
+				{
+					"name": "min_id",
+					"in": "query",
+					"description": "Return media before this `min_id`.",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "max_id",
+					"in": "query",
+					"description": "Return media after this `max_id`.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		},
+		"\/users\/{user-id}\/relationship": {
+			"get": {
+				"summary": "Get information about a relationship to another user.",
+				"description": "Get information about a relationship to another user.",
+				"operationId": "",
+				"parameters": [{
+					"name": "user-id",
+					"in": "path",
+					"description": "The ID of a user to get information about, or **self** to retrieve information about authenticated user.",
+					"schema": {
+						"type": "string"
+					}
+				}]
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"CaptionData": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"CaptionData": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"created_time": {
+				"type": "string",
+				"description": "Caption creation UNIX timestamp"
+			},
+			"from": {
+				"type": "object",
+				"description": "Reference"
+			},
+			"id": {
+				"type": "string",
+				"description": "ID of this caption"
+			},
+			"text": {
+				"type": "string",
+				"description": "Caption text"
+			},
+			"CommentEntry": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"CommentEntry": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"CommentsCollection": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"CommentsCollection": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"count": {
+				"type": "integer",
+				"description": "Nember of comments available, data does not necessary contain all comments"
+			},
+			"data": {
+				"type": "string",
+				"description": "No data - 'null'"
+			},
+			"CommentsResponse": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"CommentsResponse": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"meta": {
+				"type": "object",
+				"description": "Reference"
+			},
+			"CursorPaginationInfo": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"CursorPaginationInfo": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"next_cursor": {
+				"type": "string",
+				"description": "The cursor ID of the next page"
+			},
+			"next_url": {
+				"type": "string",
+				"description": "URL to retrieve next page of entries"
+			},
+			"IdPaginationInfo": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"IdPaginationInfo": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"next_max_id": {
+				"type": "string",
+				"description": "The max ID of the next page"
+			},
+			"ImageInfo": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"ImageInfo": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"height": {
+				"type": "integer",
+				"description": "Image\/video height in pixels"
+			},
+			"url": {
+				"type": "string",
+				"description": "URL of the image\/video resource"
+			},
+			"width": {
+				"type": "integer",
+				"description": "Image\/video width in pixels"
+			},
+			"ImagesData": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"ImagesData": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"low_resolution": {
+				"type": "",
+				"description": "Image in low resolution"
+			},
+			"standard_resolution": {
+				"type": "",
+				"description": "Image in standard resolution"
+			},
+			"thumbnail": {
+				"type": "",
+				"description": "Thumbnail of the image"
+			},
+			"LikesCollection": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"LikesCollection": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"LocationInfo": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"LocationInfo": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"latitude": {
+				"type": "number",
+				"description": "Location latitude"
+			},
+			"longitude": {
+				"type": "number",
+				"description": "Location longitude"
+			},
+			"name": {
+				"type": "string",
+				"description": "Location name"
+			},
+			"LocationInfoResponse": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"LocationInfoResponse": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"LocationSearchResponse": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"LocationSearchResponse": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"MediaEntry": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"MediaEntry": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"attribution": {
+				"type": "string",
+				"description": "??? Unknown ???"
+			},
+			"caption": {
+				"type": "",
+				"description": "Describes caption of this media"
+			},
+			"comments": {
+				"type": "",
+				"description": "Comments of this media entry"
+			},
+			"filter": {
+				"type": "string",
+				"description": "Filter of this media entry"
+			},
+			"images": {
+				"type": "",
+				"description": "Images data in different resolutions"
+			},
+			"likes": {
+				"type": "",
+				"description": "Likes of this media entry"
+			},
+			"link": {
+				"type": "string",
+				"description": "Fixed URL of this media entry"
+			},
+			"location": {
+				"type": "",
+				"description": "Location data for this media if available"
+			},
+			"tags": {
+				"type": "array",
+				"description": "List of tags assigned to this media"
+			},
+			"type": {
+				"type": "string",
+				"description": "Type of this media entry"
+			},
+			"user": {
+				"type": "object",
+				"description": "Reference"
+			},
+			"user_has_liked": {
+				"type": "boolean",
+				"description": "Indicates whether authenticated user has liked this media or not"
+			},
+			"users_in_photo": {
+				"type": "array",
+				"description": "Users located on this media entry"
+			},
+			"videos": {
+				"type": "",
+				"description": "Videos data in different resolutions, applied for 'video' type"
+			},
+			"MediaEntryResponse": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"MediaEntryResponse": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"MediaListResponse": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"MediaListResponse": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"pagination": {
+				"type": "object",
+				"description": "Reference"
+			},
+			"MediaSearchResponse": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"MediaSearchResponse": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"MetaData": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"MetaData": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"code": {
+				"type": "integer",
+				"description": "HTTP result code"
+			},
+			"Position": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"Position": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"x": {
+				"type": "number",
+				"description": "X position (horizontal)"
+			},
+			"y": {
+				"type": "number",
+				"description": "Y position (vertical)"
+			},
+			"RelationshipInfo": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"RelationshipInfo": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"incoming_status": {
+				"type": "string",
+				"description": "Status of incoming relationship"
+			},
+			"outgoing_status": {
+				"type": "string",
+				"description": "Status of outgoing relationship"
+			},
+			"target_user_is_private": {
+				"type": "boolean",
+				"description": "Indicates whether target user is private or not"
+			},
+			"RelationshipPostResponse": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"RelationshipPostResponse": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"RelationshipResponse": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"RelationshipResponse": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"RelationshipStatus": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"RelationshipStatus": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"StatusResponse": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"StatusResponse": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"TagInfo": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"TagInfo": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"media_count": {
+				"type": "integer",
+				"description": "Overall number of media entries taged with this name"
+			},
+			"TagInfoResponse": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"TagInfoResponse": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"TagMediaListResponse": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"TagMediaListResponse": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"TagPaginationInfo": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"TagPaginationInfo": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"deprecation_warning": {
+				"type": "string",
+				"description": "The deprication warning, if information is available"
+			},
+			"min_tag_id": {
+				"type": "string",
+				"description": "The min ID of a tag for the next page"
+			},
+			"next_max_tag_id": {
+				"type": "string",
+				"description": "The max ID of a tag for the next page"
+			},
+			"next_min_id": {
+				"type": "string",
+				"description": "Depricated. Use max_tag_id instead"
+			},
+			"TagSearchResponse": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"TagSearchResponse": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"UserCounts": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"UserCounts": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"followed_by": {
+				"type": "integer",
+				"description": "Number of followers of this user"
+			},
+			"follows": {
+				"type": "integer",
+				"description": "Number of users followed by this user"
+			},
+			"media": {
+				"type": "integer",
+				"description": "Number of user media"
+			},
+			"UserInPhoto": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"UserInPhoto": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"position": {
+				"type": "",
+				"description": "Position in photo"
+			},
+			"UserInfo": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"UserInfo": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"bio": {
+				"type": "string",
+				"description": "User biography"
+			},
+			"counts": {
+				"type": "",
+				"description": "User statistics (counters)"
+			},
+			"full_name": {
+				"type": "string",
+				"description": "User full name"
+			},
+			"profile_picture": {
+				"type": "string",
+				"description": "URL to user profile picture"
+			},
+			"username": {
+				"type": "string",
+				"description": "User name, nickname"
+			},
+			"website": {
+				"type": "string",
+				"description": "URL to user web-site"
+			},
+			"UserResponse": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"UserResponse": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"UserShortInfo": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"UserShortInfo": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"UsersInfoResponse": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"UsersInfoResponse": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"UsersPagingResponse": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"UsersPagingResponse": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"VideosData": {
+				"type": "object",
+				"description": "",
+				"properties": {
+					"VideosData": {
+						"type": "object",
+						"description": "",
+						"format": null
+					}
+				}
+			},
+			"geo-id": {
+				"type": "string",
+				"description": "The geography ID."
+			},
+			"min_id": {
+				"type": "string",
+				"description": "Return media before this `min_id`."
+			},
+			"distance": {
+				"type": "integer",
+				"description": "Default is 1000m (distance=1000), max distance is 5000."
+			},
+			"facebook_places_id": {
+				"type": "string",
+				"description": "Returns a location mapped off of a Facebook places id. If used, a Foursquare id and `lat`, `lng` are not required."
+			},
+			"foursquare_id": {
+				"type": "string",
+				"description": "Returns a location mapped off of a foursquare v1 api location id. If used, you are not required to use\n`lat` and `lng`. Note that this method is deprecated; you should use the new foursquare IDs with V2 of their API.\n"
+			},
+			"lat": {
+				"type": "number",
+				"description": "Latitude of the center search coordinate. If used, `lng` is required."
+			},
+			"lng": {
+				"type": "number",
+				"description": "Longitude of the center search coordinate. If used, `lat` is required."
+			},
+			"foursquare_v2_id": {
+				"type": "string",
+				"description": "Returns a location mapped off of a foursquare v2 api location id. If used, you are not required to use\n`lat` and `lng`.\n"
+			},
+			"location-id": {
+				"type": "string",
+				"description": "The location ID."
+			},
+			"min_timestamp": {
+				"type": "integer",
+				"description": "Return media after this UNIX timestamp."
+			},
+			"max_timestamp": {
+				"type": "integer",
+				"description": "Return media before this UNIX timestamp."
+			},
+			"max_id": {
+				"type": "string",
+				"description": "Return media after this `max_id`."
+			},
+			"shortcode": {
+				"type": "string",
+				"description": "The short code of the media resource."
+			},
+			"media-id": {
+				"type": "string",
+				"description": "The ID of the media resource."
+			},
+			"comment-id": {
+				"type": "string",
+				"description": "The ID of the comment entry."
+			},
+			"q": {
+				"type": "string",
+				"description": "A valid tag name without a leading \\#. (eg. snowy, nofilter)"
+			},
+			"tag-name": {
+				"type": "string",
+				"description": "The tag name."
+			},
+			"max_tag_id": {
+				"type": "string",
+				"description": "Return media after this `max_tag_id`."
+			},
+			"max_like_id": {
+				"type": "string",
+				"description": "Return media liked before this id."
+			},
+			"user-id": {
+				"type": "string",
+				"description": "The ID of a user to get information about, or **self** to retrieve information about authenticated user."
+			},
+			"action": {
+				"type": "string",
+				"description": "Type of action to apply for relationship with the user."
+			}
+		}
+	}
+}
