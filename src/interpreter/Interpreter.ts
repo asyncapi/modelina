@@ -12,13 +12,13 @@ import interpretDependencies from './InterpretDependencies';
 import interpretAdditionalItems from './InterpretAdditionalItems';
 import { Draft4Schema } from '../models/Draft4Schema';
 import { Draft7Schema } from '../models/Draft7Schema';
-import { Swagger2_0Schema } from '../models/Swagger2_0Schema';
-import { AsyncAPI2_0Schema } from '../models/AsyncAPI2_0Schema';
+import { Swagger2Schema } from '../models/Swagger2Schema';
+import { AsyncAPI2Schema } from '../models/AsyncAPI2Schema';
 
 export type InterpreterOptions = {
   allowInheritance?: boolean
 } 
-export type interpreterSchemaType = Draft4Schema | Draft7Schema | Swagger2_0Schema | AsyncAPI2_0Schema | boolean;
+export type interpreterSchemaType = Draft4Schema | Draft7Schema | Swagger2Schema | AsyncAPI2Schema | boolean;
 export class Interpreter {
   static defaultInterpreterOptions: InterpreterOptions = {
     allowInheritance: false

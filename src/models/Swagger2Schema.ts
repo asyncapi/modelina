@@ -36,7 +36,7 @@ export class Swagger2_0ExternalDocumentation {
  * 
  * https://swagger.io/specification/v2/#schemaObject
  */
-export class Swagger2_0Schema {
+export class Swagger2Schema {
   $schema?: string;
   title?: string;
   multipleOf?: number;
@@ -52,16 +52,16 @@ export class Swagger2_0Schema {
   uniqueItems?: boolean;
   maxProperties?: number;
   minProperties?: number;
-  allOf?: Swagger2_0Schema[];
+  allOf?: Swagger2Schema[];
   format?: string;
-  definitions?: { [key: string]: Swagger2_0Schema; };
+  definitions?: { [key: string]: Swagger2Schema; };
   description?: string;
   default?: any;
   type?: string | string[];
   enum?: any[];
-  items?: Swagger2_0Schema | Swagger2_0Schema[];
-  properties?: { [key: string]: Swagger2_0Schema; };
-  additionalProperties?: Swagger2_0Schema | boolean;
+  items?: Swagger2Schema | Swagger2Schema[];
+  properties?: { [key: string]: Swagger2Schema; };
+  additionalProperties?: Swagger2Schema | boolean;
   $ref?: string;
   required?: string[];
 
@@ -77,12 +77,12 @@ export class Swagger2_0Schema {
   //Extensions
   [k: string]: any; // eslint-disable-line no-undef
 
-  static toSchema(object: any, seenSchemas: Map<any, Swagger2_0Schema> = new Map()): Swagger2_0Schema | boolean {
+  static toSchema(object: any, seenSchemas: Map<any, Swagger2Schema> = new Map()): Swagger2Schema | boolean {
     if (typeof object === 'boolean') {return object;}
     if (seenSchemas.has(object)) {
       return seenSchemas.get(object) as any;
     }
-    let schema = new Swagger2_0Schema();
+    let schema = new Swagger2Schema();
     schema = Object.assign(schema, object);
     seenSchemas.set(object, schema);
     for (const [propName, prop] of Object.entries(object)) {
@@ -97,14 +97,14 @@ export class Swagger2_0Schema {
       } else if (Array.isArray(prop)) {
         for (const [idx, propEntry] of prop.entries()) {
           if (typeof propEntry === 'object') {
-            const convertedSchema = Swagger2_0Schema.toSchema(propEntry, seenSchemas);
+            const convertedSchema = Swagger2Schema.toSchema(propEntry, seenSchemas);
             (schema as any)[String(propName)][Number(idx)] = convertedSchema;
           } else {
             (schema as any)[String(propName)][Number(idx)] = propEntry;
           }
         }
       } else if (typeof prop === 'object') {
-        const convertedSchema = Swagger2_0Schema.toSchema(prop, seenSchemas);
+        const convertedSchema = Swagger2Schema.toSchema(prop, seenSchemas);
         (schema as any)[String(propName)] = convertedSchema;
       }
     }

@@ -8,8 +8,8 @@ import { Interpreter } from '../interpreter/Interpreter';
 import {OpenAPIV2} from 'openapi-types';
 import { Draft4Schema } from '../models/Draft4Schema';
 import { Draft7Schema } from '../models/Draft7Schema';
-import { Swagger2_0Schema } from '../models/Swagger2_0Schema';
-import { AsyncAPI2_0Schema } from '../models/AsyncAPI2_0Schema';
+import { Swagger2Schema } from '../models/Swagger2Schema';
+import { AsyncAPI2Schema } from '../models/AsyncAPI2Schema';
 
 /**
  * Class for processing JSON Schema
@@ -121,7 +121,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    */
   // eslint-disable-next-line sonarjs/cognitive-complexity
   static reflectSchemaNames(
-    schema: Draft4Schema | Draft7Schema | Swagger2_0Schema | AsyncAPI2_0Schema | boolean,
+    schema: Draft4Schema | Draft7Schema | Swagger2Schema | AsyncAPI2Schema | boolean,
     namesStack: Record<string, number>,
     name?: string,
     isRoot?: boolean,
@@ -218,7 +218,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         schema.propertyNames = this.reflectSchemaNames(schema.propertyNames, namesStack, this.ensureNamePattern(name, 'propertyName'));
       }
 
-      if ((schema instanceof Draft7Schema) && !(schema instanceof AsyncAPI2_0Schema)) {
+      if ((schema instanceof Draft7Schema) && !(schema instanceof AsyncAPI2Schema)) {
         //Keywords introduced in Draft 7
         if (schema.if !== undefined) {
           schema.if = this.reflectSchemaNames(schema.if, namesStack, this.ensureNamePattern(name, 'if'));
@@ -253,7 +253,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param schema to simplify to common model
    */
-  static convertSchemaToCommonModel(schema: Draft4Schema | Draft7Schema | Swagger2_0Schema | AsyncAPI2_0Schema | boolean): Record<string, CommonModel> {
+  static convertSchemaToCommonModel(schema: Draft4Schema | Draft7Schema | Swagger2Schema | AsyncAPI2Schema | boolean): Record<string, CommonModel> {
     const commonModelsMap: Record<string, CommonModel> = {};
     const interpreter = new Interpreter();
     const model = interpreter.interpret(schema);

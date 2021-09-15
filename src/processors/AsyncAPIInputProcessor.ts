@@ -3,7 +3,7 @@ import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
 import { CommonInputModel, ProcessorOptions, Schema } from '../models';
 import { Logger } from '../utils';
-import { AsyncAPI2_0Schema } from '../models/AsyncAPI2_0Schema';
+import { AsyncAPI2Schema } from '../models/AsyncAPI2Schema';
 
 /**
  * Class for processing AsyncAPI inputs
@@ -30,7 +30,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     common.originalInput = doc;
     
     for (const [, message] of doc.allMessages()) {
-      const schema = AsyncAPI2_0Schema.toSchema(message.payload());
+      const schema = AsyncAPI2Schema.toSchema(message.payload());
       const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema);
       common.models = {...common.models, ...commonModels};
     }

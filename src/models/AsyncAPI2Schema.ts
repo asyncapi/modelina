@@ -11,14 +11,14 @@ export class AsyncAPI2_0ExternalDocumentation {
 }
 
 /**
- * AsyncAPI 2.0 -> 2.1 schema model
+ * AsyncAPI 2.0 + 2.1 schema model
  * 
  * Based on Draft 7 with additions
  * 
  * https://www.asyncapi.com/docs/specifications/v2.0.0#schemaObject
  * https://www.asyncapi.com/docs/specifications/v2.1.0#schemaObject
  */
-export class AsyncAPI2_0Schema {
+export class AsyncAPI2Schema {
   $schema?: string;
   title?: string;
   multipleOf?: number;
@@ -32,24 +32,24 @@ export class AsyncAPI2_0Schema {
   uniqueItems?: boolean;
   maxProperties?: number;
   minProperties?: number;
-  allOf?: (AsyncAPI2_0Schema | boolean)[];
-  oneOf?: (AsyncAPI2_0Schema | boolean)[];
-  anyOf?: (AsyncAPI2_0Schema | boolean)[];
-  not?: (AsyncAPI2_0Schema | boolean);
-  dependencies?: { [key: string]: AsyncAPI2_0Schema | boolean | string[]; };
+  allOf?: (AsyncAPI2Schema | boolean)[];
+  oneOf?: (AsyncAPI2Schema | boolean)[];
+  anyOf?: (AsyncAPI2Schema | boolean)[];
+  not?: (AsyncAPI2Schema | boolean);
+  dependencies?: { [key: string]: AsyncAPI2Schema | boolean | string[]; };
   format?: string;
-  definitions?: { [key: string]: AsyncAPI2_0Schema | boolean; };
+  definitions?: { [key: string]: AsyncAPI2Schema | boolean; };
   description?: string;
   default?: any;
   type?: string | string[];
   enum?: any[];
-  items?: AsyncAPI2_0Schema | AsyncAPI2_0Schema[] | boolean;
-  properties?: { [key: string]: AsyncAPI2_0Schema | boolean; };
-  additionalProperties?: AsyncAPI2_0Schema | boolean;
-  patternProperties?: { [key: string]: AsyncAPI2_0Schema | boolean; };
+  items?: AsyncAPI2Schema | AsyncAPI2Schema[] | boolean;
+  properties?: { [key: string]: AsyncAPI2Schema | boolean; };
+  additionalProperties?: AsyncAPI2Schema | boolean;
+  patternProperties?: { [key: string]: AsyncAPI2Schema | boolean; };
   $ref?: string;
   required?: string[];
-  additionalItems?: AsyncAPI2_0Schema | boolean;
+  additionalItems?: AsyncAPI2Schema | boolean;
 
   //Draft 6 modifications
   exclusiveMaximum?: number;
@@ -57,16 +57,16 @@ export class AsyncAPI2_0Schema {
   //Draft 6 replacements
   $id?: string; //Replaces 'id'
   //Draft 6 additions
-  contains?: AsyncAPI2_0Schema | boolean;
+  contains?: AsyncAPI2Schema | boolean;
   const?: any;
-  propertyNames?: AsyncAPI2_0Schema | boolean;
+  propertyNames?: AsyncAPI2Schema | boolean;
   examples?: any[];
 
   //Draft 7 additions
   $comment?: string;
-  if?: AsyncAPI2_0Schema | boolean;
-  then?: AsyncAPI2_0Schema | boolean;
-  else?: AsyncAPI2_0Schema | boolean;
+  if?: AsyncAPI2Schema | boolean;
+  then?: AsyncAPI2Schema | boolean;
+  else?: AsyncAPI2Schema | boolean;
   readOnly?: boolean;
   writeOnly?: boolean;
   contentEncoding?: string;
@@ -79,12 +79,12 @@ export class AsyncAPI2_0Schema {
   //Extensions
   [k: string]: any; // eslint-disable-line no-undef
 
-  static toSchema(object: any, seenSchemas: Map<any, AsyncAPI2_0Schema> = new Map()): AsyncAPI2_0Schema | boolean {
+  static toSchema(object: any, seenSchemas: Map<any, AsyncAPI2Schema> = new Map()): AsyncAPI2Schema | boolean {
     if (typeof object === 'boolean') {return object;}
     if (seenSchemas.has(object)) {
       return seenSchemas.get(object) as any;
     }
-    const schema = new AsyncAPI2_0Schema();
+    const schema = new AsyncAPI2Schema();
     seenSchemas.set(object, schema);
     for (const [propName, prop] of Object.entries(object)) {
       if (propName !== 'default' &&
@@ -97,7 +97,7 @@ export class AsyncAPI2_0Schema {
           (schema as any)[String(propName)] = [];
           for (const [idx, propEntry] of prop.entries()) {
             if (typeof propEntry === 'object') {
-              const convertedSchema = AsyncAPI2_0Schema.toSchema(propEntry, seenSchemas);
+              const convertedSchema = AsyncAPI2Schema.toSchema(propEntry, seenSchemas);
               (schema as any)[String(propName)][Number(idx)] = convertedSchema;
             } else {
               (schema as any)[String(propName)][Number(idx)] = propEntry;
@@ -105,7 +105,7 @@ export class AsyncAPI2_0Schema {
           }
           continue;
         } else if (typeof prop === 'object') {
-          const convertedSchema = AsyncAPI2_0Schema.toSchema(prop, seenSchemas);
+          const convertedSchema = AsyncAPI2Schema.toSchema(prop, seenSchemas);
           (schema as any)[String(propName)] = convertedSchema;
           continue;
         }

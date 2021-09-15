@@ -21,6 +21,16 @@ import { Schema } from './Schema';
 export class CommonModel extends CommonSchema<CommonModel> {
   extend?: string[];
   originalInput?: any;
+  $id?: string;
+  type?: string | string[];
+  enum?: any[];
+  items?: CommonModel | CommonModel[];
+  properties?: { [key: string]: CommonModel; };
+  additionalProperties?: CommonModel;
+  patternProperties?: { [key: string]: CommonModel; };
+  $ref?: string;
+  required?: string[];
+  additionalItems?: CommonModel;
 
   /**
    * Transform object into a type of CommonModel.
