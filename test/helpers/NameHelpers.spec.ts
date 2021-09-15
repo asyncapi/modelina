@@ -21,7 +21,7 @@ describe('NameHelpers', () => {
 
   describe('CommonNamingConventionImplementation', () => {
     const isReservedKeyword = jest.fn().mockReturnValue(false);
-    const defaultCtx = {model: CommonModel.toCommonModel({}), inputModel: new CommonInputModel(), isReservedKeywordCallback: isReservedKeyword};
+    const defaultCtx = {model: CommonModel.toCommonModel({}), inputModel: new CommonInputModel(), reservedKeywordCallback: isReservedKeyword};
     describe('type', () => {
       test('should handle undefined', () => {
         const name = undefined;

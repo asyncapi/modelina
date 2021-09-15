@@ -27,8 +27,8 @@ export function getUniquePropertyName(rootModel: CommonModel, propertyName: stri
 /**
  * The common naming convention context type.
  */
-export type CommonTypeNamingConventionCtx = { model: CommonModel, inputModel: CommonInputModel, isReservedKeywordCallback?: (name: string) => boolean};
-export type CommonPropertyNamingConventionCtx = { model: CommonModel, inputModel: CommonInputModel, property?: CommonModel, isReservedKeywordCallback?: (name: string) => boolean};
+export type CommonTypeNamingConventionCtx = { model: CommonModel, inputModel: CommonInputModel, reservedKeywordCallback?: (name: string) => boolean};
+export type CommonPropertyNamingConventionCtx = { model: CommonModel, inputModel: CommonInputModel, property?: CommonModel, reservedKeywordCallback?: (name: string) => boolean};
 
 /**
  * The common naming convention type shared between generators for different languages.
@@ -45,7 +45,7 @@ export const CommonNamingConventionImplementation: CommonNamingConvention = {
   type: (name, ctx) => {
     if (!name) {return '';}
     let formattedName = FormatHelpers.toPascalCase(name);
-    if (ctx.isReservedKeywordCallback !== undefined && ctx.isReservedKeywordCallback(formattedName)) { 
+    if (ctx.reservedKeywordCallback !== undefined && ctx.reservedKeywordCallback(formattedName)) { 
       formattedName = FormatHelpers.toPascalCase(`reserved_${formattedName}`);
     }
     return formattedName;
@@ -53,7 +53,7 @@ export const CommonNamingConventionImplementation: CommonNamingConvention = {
   property: (name, ctx) => {
     if (!name) {return '';}
     let formattedName = FormatHelpers.toCamelCase(name);
-    if (ctx.isReservedKeywordCallback !== undefined && ctx.isReservedKeywordCallback(formattedName)) { 
+    if (ctx.reservedKeywordCallback !== undefined && ctx.reservedKeywordCallback(formattedName)) { 
       // If name is considered reserved, make sure we rename it appropriately
       // and make sure no clashes occur.
       formattedName = FormatHelpers.toCamelCase(`reserved_${formattedName}`);
