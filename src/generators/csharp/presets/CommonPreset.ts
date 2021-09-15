@@ -46,11 +46,13 @@ function renderHashCode({ renderer, model }: {
   for (const [pattern, patternModel] of Object.entries(model.patternProperties || {})) {
     propertyKeys.push(getUniquePropertyName(patternModel, `${pattern}${DefaultPropertyNames.patternProperties}`));
   }
-  const hashProperties = propertyKeys.map(prop => FormatHelpers.upperFirst(renderer.nameProperty(prop))).join(', ');
+  const hashProperties = propertyKeys.map(prop => `hash.Add(${FormatHelpers.upperFirst(renderer.nameProperty(prop))});`).join('\n');
 
   return `public override int GetHashCode()
 {
-  return HashCode.Combine(${hashProperties});
+  HashCode hash = new HashCode();
+  ${hashProperties}
+  return hash.ToHashCode();
 }
 `;
 } 
@@ -67,7 +69,10 @@ export const CSHARP_COMMON_PRESET: CSharpPreset = {
       const blocks: string[] = [];
       
       if (options.equal === undefined || options.equal === true) {blocks.push(renderEqual({ renderer, model }));}
-      if (options.hashCode === undefined || options.hashCode === true) {blocks.push(renderHashCode({ renderer, model }));}
+      if (options.hashCode === undefined || options.hashCode === true) {
+        renderer.addDependency('using System;');
+        blocks.push(renderHashCode({ renderer, model }));
+      }
 
       return renderer.renderBlock([content, ...blocks], 2);
     },
