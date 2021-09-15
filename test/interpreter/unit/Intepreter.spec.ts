@@ -9,7 +9,7 @@ import interpretAdditionalProperties from '../../../src/interpreter/InterpretAdd
 import interpretAdditionalItems from '../../../src/interpreter/InterpretAdditionalItems';
 import interpretNot from '../../../src/interpreter/InterpretNot';
 import interpretDependencies from '../../../src/interpreter/InterpretDependencies';
-import { CommonModel, Schema } from '../../../src/models';
+import { CommonModel } from '../../../src/models';
 import { Draft7Schema } from '../../../src/models/Draft7Schema';
 
 jest.mock('../../../src/interpreter/Utils');

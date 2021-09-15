@@ -4,7 +4,7 @@ import { CommonInputModel, ProcessorOptions } from '../models';
 import { Logger } from '../utils';
 import SwaggerParser from '@apidevtools/swagger-parser';
 import {OpenAPIV2} from 'openapi-types';
-import { Swagger2Schema } from '../models/Swagger2Schema';
+import { SwaggerV2Schema } from '../models/SwaggerV2Schema';
 
 /**
  * Class for processing Swagger inputs
@@ -65,9 +65,9 @@ export class SwaggerInputProcessor extends AbstractInputProcessor {
    */
   static convertToInternalSchema(
     schema: OpenAPIV2.SchemaObject,
-    name: string): Swagger2Schema | boolean {
+    name: string): SwaggerV2Schema {
     schema = JsonSchemaInputProcessor.reflectSchemaNames(schema, {}, name, true);
-    return Swagger2Schema.toSchema(schema);
+    return SwaggerV2Schema.toSchema(schema) as SwaggerV2Schema;
   }
 
   /**
