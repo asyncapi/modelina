@@ -112,7 +112,9 @@ export const CSHARP_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
       itemName = `Number_${itemName}`;
     } else if (typeof item === 'object') {
       itemName = `${JSON.stringify(item)}`;
-    }
+    } else if (!(/^[a-zA-Z]+$/).test(itemName.charAt(0))) {
+      itemName = `String_${itemName}`;
+    } 
 
     return pascalCase(itemName);
   },
