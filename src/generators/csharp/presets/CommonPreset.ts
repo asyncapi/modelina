@@ -18,19 +18,26 @@ function renderEqual({ renderer, model }: {
 }): string {
   const formattedModelName = renderer.nameType(model.$id);
   const properties = model.properties || {};
-  const propertyKeys = [...Object.keys(properties), getUniquePropertyName(model, DefaultPropertyNames.additionalProperties)];
+  const propertyKeys = Object.keys(properties);
+  if (model.additionalProperties) {
+    propertyKeys.push(getUniquePropertyName(model, DefaultPropertyNames.additionalProperties));
+  }
   for (const [pattern, patternModel] of Object.entries(model.patternProperties || {})) {
     propertyKeys.push(getUniquePropertyName(patternModel, `${pattern}${DefaultPropertyNames.patternProperties}`));
   }
   const equalProperties = propertyKeys.map(prop => {
     const accessorMethodProp = FormatHelpers.upperFirst(renderer.nameProperty(prop));
     return `${accessorMethodProp} == model.${accessorMethodProp}`;
-  }).join(' &&\n');
+  }).join(' && \n');
 
   return `public override bool Equals(object obj)
 {
-  return obj is ${formattedModelName} model &&
-${renderer.indent(equalProperties, 4)};
+  if(obj is ${formattedModelName} model)
+  {
+    if(ReferenceEquals(this, model)) { return true; }
+${renderer.indent(`return ${equalProperties !== '' ? equalProperties : 'true'}`, 4)};
+  }
+  return false;
 }`;
 } 
 
@@ -42,7 +49,10 @@ function renderHashCode({ renderer, model }: {
   model: CommonModel,
 }): string {
   const properties = model.properties || {};
-  const propertyKeys = [...Object.keys(properties), getUniquePropertyName(model, DefaultPropertyNames.additionalProperties)];
+  const propertyKeys = Object.keys(properties);
+  if (model.additionalProperties) {
+    propertyKeys.push(getUniquePropertyName(model, DefaultPropertyNames.additionalProperties));
+  }
   for (const [pattern, patternModel] of Object.entries(model.patternProperties || {})) {
     propertyKeys.push(getUniquePropertyName(patternModel, `${pattern}${DefaultPropertyNames.patternProperties}`));
   }
@@ -51,7 +61,7 @@ function renderHashCode({ renderer, model }: {
   return `public override int GetHashCode()
 {
   HashCode hash = new HashCode();
-  ${hashProperties}
+${renderer.indent(hashProperties, 2)}
   return hash.ToHashCode();
 }
 `;

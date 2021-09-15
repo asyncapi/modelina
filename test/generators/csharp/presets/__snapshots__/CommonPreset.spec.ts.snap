@@ -40,12 +40,16 @@ exports[`CSHARP_COMMON_PRESET should render Equals support function 1`] = `
 
   public override bool Equals(object obj)
   {
-    return obj is Test model &&
-      StringProp == model.StringProp &&
-      NumberProp == model.NumberProp &&
-      ObjectProp == model.ObjectProp &&
-      AdditionalProperties == model.AdditionalProperties &&
+    if(obj is Test model)
+    {
+      if(ReferenceEquals(this, model)) { return true; }
+      return StringProp == model.StringProp && 
+      NumberProp == model.NumberProp && 
+      ObjectProp == model.ObjectProp && 
+      AdditionalProperties == model.AdditionalProperties && 
       STestPatternProperties == model.STestPatternProperties;
+    }
+    return false;
   }
 }"
 `;
@@ -69,9 +73,13 @@ exports[`CSHARP_COMMON_PRESET should render Equals support function 2`] = `
 
   public override bool Equals(object obj)
   {
-    return obj is NestedTest model &&
-      StringProp == model.StringProp &&
+    if(obj is NestedTest model)
+    {
+      if(ReferenceEquals(this, model)) { return true; }
+      return StringProp == model.StringProp && 
       AdditionalProperties == model.AdditionalProperties;
+    }
+    return false;
   }
 }"
 `;
@@ -116,7 +124,13 @@ exports[`CSHARP_COMMON_PRESET should render GetHashCode support function 1`] = `
 
   public override int GetHashCode()
   {
-    return HashCode.Combine(StringProp, NumberProp, ObjectProp, AdditionalProperties, STestPatternProperties);
+    HashCode hash = new HashCode();
+    hash.Add(StringProp);
+    hash.Add(NumberProp);
+    hash.Add(ObjectProp);
+    hash.Add(AdditionalProperties);
+    hash.Add(STestPatternProperties);
+    return hash.ToHashCode();
   }
 
 }"
@@ -141,7 +155,10 @@ exports[`CSHARP_COMMON_PRESET should render GetHashCode support function 2`] = `
 
   public override int GetHashCode()
   {
-    return HashCode.Combine(StringProp, AdditionalProperties);
+    HashCode hash = new HashCode();
+    hash.Add(StringProp);
+    hash.Add(AdditionalProperties);
+    return hash.ToHashCode();
   }
 
 }"
