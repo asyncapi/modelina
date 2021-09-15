@@ -105,7 +105,7 @@ type States string`,
       name: 'with enums of mixed types',
       doc: {
         $id: 'Things',
-        enum: ['Texas', 1, false, {test: 'test'}],
+        enum: ['Texas', 1, '1', false, {test: 'test'}],
       },
       expected: `// Things represents an enum of mixed types.
 type Things interface{}`,
