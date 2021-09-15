@@ -25,17 +25,18 @@ function renderEqual({ renderer, model }: {
   for (const [pattern, patternModel] of Object.entries(model.patternProperties || {})) {
     propertyKeys.push(getUniquePropertyName(patternModel, `${pattern}${DefaultPropertyNames.patternProperties}`));
   }
-  const equalProperties = propertyKeys.map(prop => {
+  let equalProperties = propertyKeys.map(prop => {
     const accessorMethodProp = FormatHelpers.upperFirst(renderer.nameProperty(prop));
     return `${accessorMethodProp} == model.${accessorMethodProp}`;
   }).join(' && \n');
+  equalProperties = `return ${equalProperties !== '' ? equalProperties : 'true'}`;
 
   return `public override bool Equals(object obj)
 {
   if(obj is ${formattedModelName} model)
   {
     if(ReferenceEquals(this, model)) { return true; }
-${renderer.indent(`return ${equalProperties !== '' ? equalProperties : 'true'}`, 4)};
+${renderer.indent(equalProperties, 4)};
   }
   return false;
 }`;
