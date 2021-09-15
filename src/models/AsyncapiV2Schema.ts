@@ -4,8 +4,10 @@ export class AsyncapiV2ExternalDocumentation {
   //Extensions
   [k: string]: any; // eslint-disable-line no-undef
   static toExternalDocumentation(object: any): AsyncapiV2ExternalDocumentation {
-    let doc = new AsyncapiV2ExternalDocumentation();
-    doc = Object.assign(doc, object);
+    const doc = new AsyncapiV2ExternalDocumentation();
+    for (const [propName, prop] of Object.entries(object)) {
+      (doc as any)[String(propName)] = prop;
+    }
     return doc;
   }
 }
@@ -79,39 +81,58 @@ export class AsyncapiV2Schema {
   //Extensions
   [k: string]: any; // eslint-disable-line no-undef
 
-  static toSchema(object: any, seenSchemas: Map<any, AsyncapiV2Schema> = new Map()): AsyncapiV2Schema | boolean {
-    if (typeof object === 'boolean') {return object;}
+  /**
+   * Takes a deep copy of the input object and converts it to an instance of AsyncapiV2Schema.
+   * 
+   * @param object 
+   * @returns 
+   */
+  static toSchema(object: Record<string, unknown>): AsyncapiV2Schema {
+    const convertedSchema = AsyncapiV2Schema.internalToSchema(object);
+    if (convertedSchema instanceof AsyncapiV2Schema) {
+      return convertedSchema;
+    }
+    throw new Error('Could not convert input to expected copy of AsyncapiV2Schema');
+  }
+  private static internalToSchema(object: any, seenSchemas: Map<any, AsyncapiV2Schema> = new Map()): any {
+    // if primitive types return as is
+    if (null === object || 'object' !== typeof object) {
+      return object;
+    }
+
     if (seenSchemas.has(object)) {
       return seenSchemas.get(object) as any;
     }
-    const schema = new AsyncapiV2Schema();
-    seenSchemas.set(object, schema);
-    for (const [propName, prop] of Object.entries(object)) {
-      if (propName !== 'default' &&
-        propName !== 'examples' &&
-        propName !== 'const' &&
-        propName !== 'enums') { 
-        if (propName === 'externalDocs') {
-          schema.externalDocs = AsyncapiV2ExternalDocumentation.toExternalDocumentation(prop);
-        } else if (Array.isArray(prop)) {
-          (schema as any)[String(propName)] = [];
-          for (const [idx, propEntry] of prop.entries()) {
-            if (typeof propEntry === 'object') {
-              const convertedSchema = AsyncapiV2Schema.toSchema(propEntry, seenSchemas);
-              (schema as any)[String(propName)][Number(idx)] = convertedSchema;
-            } else {
-              (schema as any)[String(propName)][Number(idx)] = propEntry;
-            }
-          }
-          continue;
-        } else if (typeof prop === 'object') {
-          const convertedSchema = AsyncapiV2Schema.toSchema(prop, seenSchemas);
-          (schema as any)[String(propName)] = convertedSchema;
-          continue;
-        }
+
+    if (object instanceof Array) {
+      const copy: any = [];
+      for (let i = 0, len = object.length; i < len; i++) {
+        copy[Number(i)] = AsyncapiV2Schema.internalToSchema(object[Number(i)], seenSchemas);
       }
-      (schema as any)[String(propName)] = prop;
+      return copy;
     }
-    return schema;
+
+    if (object instanceof Object) {
+      const schema = new AsyncapiV2Schema();
+      seenSchemas.set(object, schema);
+      for (const [propName, prop] of Object.entries(object)) {
+        let copyProp = prop;
+
+        // Ignore value properties (those with `any` type) as they should be saved as is regardless of value
+        if (propName !== 'default' &&
+          propName !== 'examples' &&
+          propName !== 'const' &&
+          propName !== 'enums') { 
+          // Custom convert to External documentation instance
+          if (propName === 'externalDocs') {
+            schema.externalDocs = AsyncapiV2ExternalDocumentation.toExternalDocumentation(prop);
+            continue;
+          }
+          copyProp = AsyncapiV2Schema.internalToSchema(prop, seenSchemas);
+        }
+        (schema as any)[String(propName)] = copyProp;
+      }
+      return schema;
+    }
   }
 }
