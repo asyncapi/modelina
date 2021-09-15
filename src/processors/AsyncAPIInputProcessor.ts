@@ -1,7 +1,7 @@
 import {parse, AsyncAPIDocument, Schema as AsyncAPISchema, ParserOptions} from '@asyncapi/parser';
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
-import { CommonInputModel, ProcessorOptions, Schema } from '../models';
+import { CommonInputModel, ProcessorOptions } from '../models';
 import { Logger } from '../utils';
 import { AsyncAPI2Schema } from '../models/AsyncAPI2Schema';
 

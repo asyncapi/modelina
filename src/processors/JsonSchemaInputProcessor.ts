@@ -1,7 +1,7 @@
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import path from 'path';
-import { Schema, CommonModel, CommonInputModel} from '../models';
+import { CommonModel, CommonInputModel} from '../models';
 import { Logger } from '../utils';
 import { postInterpretModel } from '../interpreter/PostInterpreter';
 import { Interpreter } from '../interpreter/Interpreter';
@@ -64,7 +64,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     const commonInputModel = new CommonInputModel();
     // eslint-disable-next-line no-undef
     const localPath = `${process.cwd()}${path.sep}`;
-    commonInputModel.originalInput = Schema.toSchema(input);
+    commonInputModel.originalInput = input;
     const deRefOption: $RefParser.Options = {
       continueOnError: true,
       dereference: { circular: true },
@@ -187,7 +187,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       const dependencies: any = {};
       for (const [dependencyName, dependency] of Object.entries(schema.dependencies)) {
         if (typeof dependency === 'object' && !Array.isArray(dependency)) {
-          dependencies[String(dependencyName)] = JsonSchemaInputProcessor.reflectSchemaNames(dependency, namesStack, this.ensureNamePattern(name, dependencyName));
+          dependencies[String(dependencyName)] = JsonSchemaInputProcessor.reflectSchemaNames(dependency as any, namesStack, this.ensureNamePattern(name, dependencyName));
         } else {
           dependencies[String(dependencyName)] = dependency as string[];
         }

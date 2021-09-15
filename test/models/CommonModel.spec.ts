@@ -867,12 +867,12 @@ describe('CommonModel', () => {
     });
   });
   describe('helpers', () => {
-    describe('getFromSchema', () => {
+    describe('getFromOriginalInput', () => {
       test('should work', () => {
         const doc = { type: 'string', description: 'Some description' };
         const d = CommonModel.toCommonModel(doc);
         d.originalInput = doc;
-        const desc = d.getFromSchema('description');
+        const desc = d.getFromOriginalInput('description');
         expect(desc).toEqual(doc.description);
       });
     });

@@ -63,7 +63,7 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
       kind === ModelKind.PRIMITIVE ||
       kind === ModelKind.ARRAY
     ) {
-      const format = model.getFromSchema('format');
+      const format = model.getFromOriginalInput('format');
       return this.toClassType(this.toJavaType(format || model.type, model));
     }
     return this.nameType(model.$id, model);

@@ -1,24 +1,9 @@
 import { Logger } from '../utils';
-import { CommonSchema } from './CommonSchema';
-import { Schema } from './Schema';
 
 /**
  * Common internal representation for a model.
- * 
- * @extends CommonSchema<CommonModel>
- * @property {string} $id define the id/name of the model.
- * @property {string | string[]} type this is the different types for the model. All types from JSON Schema are used with no custom ones added.
- * @property {any[]} enum defines the different enums for the model, constant values are included here
- * @property {CommonModel | CommonModel[]} items defines the type for `array` models as `CommonModel`.
- * @property {Record<string, CommonModel>} properties defines the properties and its expected types as `CommonModel`.
- * @property {CommonModel} additionalProperties are used to define if any extra properties are allowed, also defined as a  `CommonModel`.
- * @property {Record<string, CommonModel>} patternProperties are used for any extra properties that matches a specific pattern to be of specific type.
- * @property {string} $ref is a reference to another `CommonModel` by using`$id` as a simple string.
- * @property {string[]} required list of required properties.
- * @property {string[]} extend list of other `CommonModel`s this model extends, is an array of `$id` strings.
- * @property {any} originalInput the actual input for which this model represent.
  */
-export class CommonModel extends CommonSchema<CommonModel> {
+export class CommonModel {
   extend?: string[];
   originalInput?: any;
   $id?: string;
@@ -75,10 +60,10 @@ export class CommonModel extends CommonSchema<CommonModel> {
    * @param key given key
    * @returns {any}
    */
-  getFromSchema<K extends keyof Schema>(key: K): any {
-    const schema = this.originalInput || {};
-    if (typeof schema === 'boolean') {return undefined;}
-    return schema[String(key)];
+  getFromOriginalInput<K extends keyof any>(key: K): any {
+    const input = this.originalInput || {};
+    if (typeof input === 'boolean') {return undefined;}
+    return input[String(key)];
   }
 
   /**

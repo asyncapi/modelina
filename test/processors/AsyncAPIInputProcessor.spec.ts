@@ -1,7 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import {parse, ParserOptions} from '@asyncapi/parser';
+import {AsyncAPIDocument, parse, ParserOptions} from '@asyncapi/parser';
 import {AsyncAPIInputProcessor} from '../../src/processors/AsyncAPIInputProcessor';
+import { AsyncAPI2Schema } from '../../src/models/AsyncAPI2Schema';
 const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'), 'utf8');
 
 describe('AsyncAPIInputProcessor', () => {
@@ -79,7 +80,7 @@ describe('AsyncAPIInputProcessor', () => {
       const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/schema_name_reflection.json'), 'utf8');
       const doc = await parse(basicDocString, {} as ParserOptions);
       const schema = doc.channels()['/user/signedup'].subscribe().message().payload();
-      const expected = AsyncAPIInputProcessor.convertToInternalSchema(schema) as any;
+      const expected = AsyncAPI2Schema.toSchema(doc) as AsyncAPI2Schema;
 
       // root
       expect(expected['x-modelgen-inferred-name']).toEqual('MainSchema');
@@ -87,12 +88,12 @@ describe('AsyncAPIInputProcessor', () => {
       // properties
       expect(expected.properties.prop['x-modelgen-inferred-name']).toEqual('<anonymous-schema-2>');
       expect(expected.properties.allOfCase['x-modelgen-inferred-name']).toEqual('<anonymous-schema-3>');
-      expect(expected.properties.allOfCase.allOf[0]['x-modelgen-inferred-name']).toEqual('<anonymous-schema-4>');
-      expect(expected.properties.allOfCase.allOf[1]['x-modelgen-inferred-name']).toEqual('<anonymous-schema-5>');
+      expect((expected.properties.allOfCase as AsyncAPI2Schema).allOf[0]['x-modelgen-inferred-name']).toEqual('<anonymous-schema-4>');
+      expect((expected.properties.allOfCase as AsyncAPI2Schema).allOf[1]['x-modelgen-inferred-name']).toEqual('<anonymous-schema-5>');
       expect(expected.properties.object['x-modelgen-inferred-name']).toEqual('<anonymous-schema-6>');
-      expect(expected.properties.object.properties.prop['x-modelgen-inferred-name']).toEqual('<anonymous-schema-7>');
+      expect((expected.properties.object as AsyncAPI2Schema).properties.prop['x-modelgen-inferred-name']).toEqual('<anonymous-schema-7>');
       expect(expected.properties.propWithObject['x-modelgen-inferred-name']).toEqual('<anonymous-schema-8>');
-      expect(expected.properties.propWithObject.properties.propWithObject['x-modelgen-inferred-name']).toEqual('<anonymous-schema-9>');
+      expect((expected.properties.propWithObject as AsyncAPI2Schema).properties.propWithObject['x-modelgen-inferred-name']).toEqual('<anonymous-schema-9>');
 
       // patternProperties
       expect(expected.patternProperties.patternProp['x-modelgen-inferred-name']).toEqual('<anonymous-schema-10>');
@@ -103,13 +104,13 @@ describe('AsyncAPIInputProcessor', () => {
       // definitions
       expect(expected.definitions.def['x-modelgen-inferred-name']).toEqual('<anonymous-schema-12>');
       expect(expected.definitions.oneOfCase['x-modelgen-inferred-name']).toEqual('<anonymous-schema-13>');
-      expect(expected.definitions.oneOfCase.oneOf[0]['x-modelgen-inferred-name']).toEqual('<anonymous-schema-14>');
-      expect(expected.definitions.oneOfCase.oneOf[1]['x-modelgen-inferred-name']).toEqual('<anonymous-schema-15>');
+      expect((expected.definitions.oneOfCase as AsyncAPI2Schema).oneOf[0]['x-modelgen-inferred-name']).toEqual('<anonymous-schema-14>');
+      expect((expected.definitions.oneOfCase as AsyncAPI2Schema).oneOf[1]['x-modelgen-inferred-name']).toEqual('<anonymous-schema-15>');
 
       // anyOf
       expect(expected.anyOf[0]['x-modelgen-inferred-name']).toEqual('<anonymous-schema-16>');
       expect(expected.anyOf[1]['x-modelgen-inferred-name']).toEqual('<anonymous-schema-17>');
-      expect(expected.anyOf[1].properties.prop['x-modelgen-inferred-name']).toEqual('<anonymous-schema-18>');
+      expect((expected.anyOf[1] as AsyncAPI2Schema).properties.prop['x-modelgen-inferred-name']).toEqual('<anonymous-schema-18>');
     });
   });
 });

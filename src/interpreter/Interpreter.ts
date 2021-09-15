@@ -1,4 +1,4 @@
-import { CommonModel, Schema } from '../models';
+import { CommonModel } from '../models';
 import { interpretName, isEnum, isModelObject } from './Utils';
 import interpretProperties from './InterpretProperties';
 import interpretAllOf from './InterpretAllOf';
