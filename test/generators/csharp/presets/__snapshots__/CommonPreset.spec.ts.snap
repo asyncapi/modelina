@@ -1,0 +1,165 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CSHARP_COMMON_PRESET should render Equals support function 1`] = `
+"public class Test {
+  private string stringProp;
+  private float? numberProp;
+  private NestedTest objectProp;
+  private Dictionary<string, dynamic> additionalProperties;
+  private Dictionary<string, string> sTestPatternProperties;
+
+  public string StringProp 
+  {
+    get { return stringProp; }
+    set { stringProp = value; }
+  }
+
+  public float? NumberProp 
+  {
+    get { return numberProp; }
+    set { numberProp = value; }
+  }
+
+  public NestedTest ObjectProp 
+  {
+    get { return objectProp; }
+    set { objectProp = value; }
+  }
+
+  public Dictionary<string, dynamic> AdditionalProperties 
+  {
+    get { return additionalProperties; }
+    set { additionalProperties = value; }
+  }
+
+  public Dictionary<string, string> STestPatternProperties 
+  {
+    get { return sTestPatternProperties; }
+    set { sTestPatternProperties = value; }
+  }
+
+  public override bool Equals(object obj)
+  {
+    if(obj is Test model)
+    {
+      if(ReferenceEquals(this, model)) { return true; }
+      return StringProp == model.StringProp && 
+      NumberProp == model.NumberProp && 
+      ObjectProp == model.ObjectProp && 
+      AdditionalProperties == model.AdditionalProperties && 
+      STestPatternProperties == model.STestPatternProperties;
+    }
+    return false;
+  }
+}"
+`;
+
+exports[`CSHARP_COMMON_PRESET should render Equals support function 2`] = `
+"public class NestedTest {
+  private string stringProp;
+  private Dictionary<string, dynamic> additionalProperties;
+
+  public string StringProp 
+  {
+    get { return stringProp; }
+    set { stringProp = value; }
+  }
+
+  public Dictionary<string, dynamic> AdditionalProperties 
+  {
+    get { return additionalProperties; }
+    set { additionalProperties = value; }
+  }
+
+  public override bool Equals(object obj)
+  {
+    if(obj is NestedTest model)
+    {
+      if(ReferenceEquals(this, model)) { return true; }
+      return StringProp == model.StringProp && 
+      AdditionalProperties == model.AdditionalProperties;
+    }
+    return false;
+  }
+}"
+`;
+
+exports[`CSHARP_COMMON_PRESET should render GetHashCode support function 1`] = `
+"public class Test {
+  private string stringProp;
+  private float? numberProp;
+  private NestedTest objectProp;
+  private Dictionary<string, dynamic> additionalProperties;
+  private Dictionary<string, string> sTestPatternProperties;
+
+  public string StringProp 
+  {
+    get { return stringProp; }
+    set { stringProp = value; }
+  }
+
+  public float? NumberProp 
+  {
+    get { return numberProp; }
+    set { numberProp = value; }
+  }
+
+  public NestedTest ObjectProp 
+  {
+    get { return objectProp; }
+    set { objectProp = value; }
+  }
+
+  public Dictionary<string, dynamic> AdditionalProperties 
+  {
+    get { return additionalProperties; }
+    set { additionalProperties = value; }
+  }
+
+  public Dictionary<string, string> STestPatternProperties 
+  {
+    get { return sTestPatternProperties; }
+    set { sTestPatternProperties = value; }
+  }
+
+  public override int GetHashCode()
+  {
+    HashCode hash = new HashCode();
+    hash.Add(StringProp);
+    hash.Add(NumberProp);
+    hash.Add(ObjectProp);
+    hash.Add(AdditionalProperties);
+    hash.Add(STestPatternProperties);
+    return hash.ToHashCode();
+  }
+
+}"
+`;
+
+exports[`CSHARP_COMMON_PRESET should render GetHashCode support function 2`] = `
+"public class NestedTest {
+  private string stringProp;
+  private Dictionary<string, dynamic> additionalProperties;
+
+  public string StringProp 
+  {
+    get { return stringProp; }
+    set { stringProp = value; }
+  }
+
+  public Dictionary<string, dynamic> AdditionalProperties 
+  {
+    get { return additionalProperties; }
+    set { additionalProperties = value; }
+  }
+
+  public override int GetHashCode()
+  {
+    HashCode hash = new HashCode();
+    hash.Add(StringProp);
+    hash.Add(AdditionalProperties);
+    return hash.ToHashCode();
+  }
+
+}"
+`;

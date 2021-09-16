@@ -30,7 +30,7 @@ export abstract class JavaScriptRenderer extends AbstractRenderer<JavaScriptOpti
    */
   nameType(name: string | undefined, model?: CommonModel): string {
     return this.options?.namingConvention?.type 
-      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel, isReservedKeyword: isReservedJavaScriptKeyword(`${name}`) })
+      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel, reservedKeywordCallback: isReservedJavaScriptKeyword })
       : name || '';
   }
 
@@ -42,7 +42,7 @@ export abstract class JavaScriptRenderer extends AbstractRenderer<JavaScriptOpti
    */
   nameProperty(propertyName: string | undefined, property?: CommonModel): string {
     return this.options?.namingConvention?.property 
-      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property, isReservedKeyword: isReservedJavaScriptKeyword(`${propertyName}`) })
+      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property, reservedKeywordCallback: isReservedJavaScriptKeyword })
       : propertyName || '';
   }
 

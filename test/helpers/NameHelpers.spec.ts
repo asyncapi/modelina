@@ -20,7 +20,8 @@ describe('NameHelpers', () => {
   });
 
   describe('CommonNamingConventionImplementation', () => {
-    const defaultCtx = {model: CommonModel.toCommonModel({}), inputModel: new CommonInputModel()};
+    const isReservedKeyword = jest.fn().mockReturnValue(false);
+    const defaultCtx = {model: CommonModel.toCommonModel({}), inputModel: new CommonInputModel(), reservedKeywordCallback: isReservedKeyword};
     describe('type', () => {
       test('should handle undefined', () => {
         const name = undefined;
@@ -43,6 +44,12 @@ describe('NameHelpers', () => {
         const name = 'some_not Pascal string';
         const formattedName = CommonNamingConventionImplementation!.property!(name, defaultCtx);
         expect(formattedName).toEqual('someNotPascalString');
+      });
+      test('Should return accurate reserved property name', () => {
+        const name = '$ref';
+        isReservedKeyword.mockReturnValueOnce(true);
+        const formattedName = CommonNamingConventionImplementation!.property!(name, defaultCtx);
+        expect(formattedName).toEqual('reservedRef');
       });
     });
   });
