@@ -32,16 +32,16 @@ export class SwaggerInputProcessor extends AbstractInputProcessor {
       formattedPathName = formattedPathName.replace(/\//, '');
       //Replace all segment separators '/'
       formattedPathName = formattedPathName.replace(/\//gm, '_');
-      this.convert(pathObject.get, `${formattedPathName}_get`, common);
-      this.convert(pathObject.put, `${formattedPathName}_put`, common);
-      this.convert(pathObject.post, `${formattedPathName}_post`, common);
-      this.convert(pathObject.options, `${formattedPathName}_options`, common);
-      this.convert(pathObject.head, `${formattedPathName}_head`, common);
-      this.convert(pathObject.patch, `${formattedPathName}_patch`, common);
+      this.processOperation(pathObject.get, `${formattedPathName}_get`, common);
+      this.processOperation(pathObject.put, `${formattedPathName}_put`, common);
+      this.processOperation(pathObject.post, `${formattedPathName}_post`, common);
+      this.processOperation(pathObject.options, `${formattedPathName}_options`, common);
+      this.processOperation(pathObject.head, `${formattedPathName}_head`, common);
+      this.processOperation(pathObject.patch, `${formattedPathName}_patch`, common);
     }
     return common;
   }
-  private convert(operation: OpenAPIV2.OperationObject | undefined, path: string, model: CommonInputModel) {
+  private processOperation(operation: OpenAPIV2.OperationObject | undefined, path: string, model: CommonInputModel) {
     if (operation) {
       const responses = operation.responses;
       for (const [responseName, response] of Object.entries(responses)) {
