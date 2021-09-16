@@ -13,6 +13,7 @@
     "ts-jest": "^26.4.4"
   },
   "scripts": {
-    "test": "cross-env CI=true jest --config=../../jest.config.js ./examples/custom-logging/index.spec.ts"
+    "start": "tsc index.ts && node index.js",
+    "test": "cross-env CI=true jest --config=../../jest.config.js ./examples/custom-logging/test"
   }
 }

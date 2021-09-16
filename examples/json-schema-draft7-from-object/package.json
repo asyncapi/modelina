@@ -13,6 +13,7 @@
     "ts-jest": "^26.4.4"
   },
   "scripts": {
+    "start": "tsc index.ts && node index.js",
     "test": "cross-env CI=true jest --config=../../jest.config.js ./examples/json-schema-draft7-from-object/index.spec.ts"
   }
 }

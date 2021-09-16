@@ -13,6 +13,8 @@
     "ts-jest": "^26.4.4"
   },
   "scripts": {
-    "test": "cross-env CI=true jest --config=../../jest.config.js ./examples/asyncapi-from-object/index.spec.ts"
+    "start": "node index.js",
+    "build": "tsc index.ts",
+    "test": "cross-env CI=true jest --config=../../jest.config.js ./examples/asyncapi-from-object/test"
   }
 }

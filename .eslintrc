@@ -199,5 +199,19 @@
         "@typescript-eslint/no-unused-vars": "off"
       }
     }
+    {
+      "files": "examples/*.ts",
+      "rules": {
+        "no-undef": "off",
+        "no-console": "off",
+        "security/detect-non-literal-fs-filename": "off",
+        "sonarjs/no-duplicate-string": "off",
+        "security/detect-object-injection": "off",
+        "max-nested-callbacks": "off",
+        "sonarjs/no-identical-functions": "off",
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/no-unused-vars": "off"
+      }
+    }
   ]
 }
