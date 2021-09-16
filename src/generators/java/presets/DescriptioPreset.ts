@@ -8,8 +8,8 @@ function renderDescription({ renderer, content, item }: {
   content: string,
   item: CommonModel,
 }): string {
-  let desc = item.getFromSchema('description');
-  const examples = item.getFromSchema('examples');
+  let desc = item.getFromOriginalInput('description');
+  const examples = item.getFromOriginalInput('examples');
 
   if (Array.isArray(examples)) {
     const renderedExamples = FormatHelpers.renderJSONExamples(examples);

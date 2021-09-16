@@ -1,4 +1,4 @@
-import { CommonModel, Schema } from '../models';
+import { CommonModel } from '../models';
 import { interpretName, isEnum, isModelObject } from './Utils';
 import interpretProperties from './InterpretProperties';
 import interpretAllOf from './InterpretAllOf';
@@ -10,17 +10,22 @@ import interpretPatternProperties from './InterpretPatternProperties';
 import interpretNot from './InterpretNot';
 import interpretDependencies from './InterpretDependencies';
 import interpretAdditionalItems from './InterpretAdditionalItems';
+import { Draft4Schema } from '../models/Draft4Schema';
+import { Draft7Schema } from '../models/Draft7Schema';
+import { SwaggerV2Schema } from '../models/SwaggerV2Schema';
+import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
 
 export type InterpreterOptions = {
   allowInheritance?: boolean
 } 
+export type interpreterSchemaType = Draft4Schema | Draft7Schema | SwaggerV2Schema | AsyncapiV2Schema | boolean;
 export class Interpreter {
   static defaultInterpreterOptions: InterpreterOptions = {
     allowInheritance: false
   }
 
   private anonymCounter = 1;
-  private seenSchemas: Map<Schema | boolean, CommonModel> = new Map();
+  private seenSchemas: Map<interpreterSchemaType, CommonModel> = new Map();
   
   /**
    * Transforms a schema into instances of CommonModel by processing all JSON Schema draft 7 keywords and infers the model definition.
@@ -28,7 +33,7 @@ export class Interpreter {
    * @param schema
    * @param interpreterOptions to control the interpret process
    */
-  interpret(schema: Schema | boolean, options: InterpreterOptions = Interpreter.defaultInterpreterOptions): CommonModel | undefined {
+  interpret(schema: interpreterSchemaType, options: InterpreterOptions = Interpreter.defaultInterpreterOptions): CommonModel | undefined {
     if (this.seenSchemas.has(schema)) {
       const cachedModel = this.seenSchemas.get(schema); 
       if (cachedModel !== undefined) {
@@ -40,7 +45,7 @@ export class Interpreter {
       return undefined;
     } 
     const model = new CommonModel();
-    model.originalSchema = Schema.toSchema(schema);
+    model.originalInput = schema;
     this.seenSchemas.set(schema, model);
     this.interpretSchema(model, schema, options);
     return model;
@@ -53,7 +58,7 @@ export class Interpreter {
    * @param schema 
    * @param interpreterOptions to control the interpret process
    */
-  private interpretSchema(model: CommonModel, schema: Schema | boolean, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions) {
+  private interpretSchema(model: CommonModel, schema: interpreterSchemaType, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions) {
     if (schema === true) {
       model.setType(['object', 'string', 'number', 'array', 'boolean', 'null', 'integer']);
     } else if (typeof schema === 'object') {
@@ -74,15 +79,17 @@ export class Interpreter {
 
       this.interpretAndCombineMultipleSchemas(schema.oneOf, model, schema, interpreterOptions);
       this.interpretAndCombineMultipleSchemas(schema.anyOf, model, schema, interpreterOptions);
-      this.interpretAndCombineSchema(schema.then, model, schema, interpreterOptions);
-      this.interpretAndCombineSchema(schema.else, model, schema, interpreterOptions);
+      if (!(schema instanceof Draft4Schema)) {
+        this.interpretAndCombineSchema(schema.then, model, schema, interpreterOptions);
+        this.interpretAndCombineSchema(schema.else, model, schema, interpreterOptions);
+      }
 
       interpretNot(schema, model, this, interpreterOptions);
 
       //All schemas of type model object or enum MUST have ids
       if (isModelObject(model) === true || isEnum(model) === true) {
         model.$id = interpretName(schema) || `anonymSchema${this.anonymCounter++}`;
-      } else if (schema.$id !== undefined) {
+      } else if ((!(schema instanceof Draft4Schema) && schema.$id !== undefined) || (schema instanceof Draft4Schema && schema.id !== undefined)) {
         model.$id = interpretName(schema);
       }
     }
@@ -96,7 +103,7 @@ export class Interpreter {
    * @param rootSchema the root schema to use as original schema when merged
    * @param interpreterOptions to control the interpret process
    */
-  interpretAndCombineSchema(schema: (Schema | boolean) | undefined, currentModel: CommonModel, rootSchema: Schema, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
+  interpretAndCombineSchema(schema: interpreterSchemaType, currentModel: CommonModel, rootSchema: any, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
     if (typeof schema !== 'object') {return;}
     const model = this.interpret(schema, interpreterOptions);
     if (model !== undefined) {
@@ -112,7 +119,7 @@ export class Interpreter {
    * @param rootSchema the root schema to use as original schema when merged
    * @param interpreterOptions to control the interpret process
    */
-  interpretAndCombineMultipleSchemas(schema: (Schema | boolean)[] | undefined, currentModel: CommonModel, rootSchema: Schema, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
+  interpretAndCombineMultipleSchemas(schema: interpreterSchemaType[] | undefined, currentModel: CommonModel, rootSchema: any, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
     if (!Array.isArray(schema)) { return; }
     for (const forEachSchema of schema) {
       this.interpretAndCombineSchema(forEachSchema, currentModel, rootSchema, interpreterOptions);

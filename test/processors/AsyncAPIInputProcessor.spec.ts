@@ -2,6 +2,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import {parse, ParserOptions} from '@asyncapi/parser';
 import {AsyncAPIInputProcessor} from '../../src/processors/AsyncAPIInputProcessor';
+import { AsyncapiV2Schema } from '../../src/models/AsyncapiV2Schema';
+import { JsonSchemaInputProcessor } from '../../src/processors';
 const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'), 'utf8');
 
 describe('AsyncAPIInputProcessor', () => {
@@ -74,7 +76,7 @@ describe('AsyncAPIInputProcessor', () => {
     });
   });
 
-  describe('convertToInternalSchema()', () => {
+  describe('reflectSchemaNames()', () => {
     test('should work', async () => {
       const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/schema_name_reflection.json'), 'utf8');
       const doc = await parse(basicDocString, {} as ParserOptions);

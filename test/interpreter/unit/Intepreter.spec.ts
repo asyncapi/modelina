@@ -9,7 +9,8 @@ import interpretAdditionalProperties from '../../../src/interpreter/InterpretAdd
 import interpretAdditionalItems from '../../../src/interpreter/InterpretAdditionalItems';
 import interpretNot from '../../../src/interpreter/InterpretNot';
 import interpretDependencies from '../../../src/interpreter/InterpretDependencies';
-import { CommonModel, Schema } from '../../../src/models';
+import { CommonModel } from '../../../src/models';
+import { Draft7Schema } from '../../../src/models/Draft7Schema';
 
 jest.mock('../../../src/interpreter/Utils');
 jest.mock('../../../src/interpreter/InterpretProperties');
@@ -98,13 +99,13 @@ describe('Interpreter', () => {
   });
 
   test('should support recursive schemas', () => {
-    const schema1: Schema = { };
+    const schema1: Draft7Schema = { };
     const schema2 = { anyOf: [schema1] };
     schema1.anyOf = [schema2];
     const interpreter = new Interpreter();
     const model = interpreter.interpret(schema1);
     expect(model).not.toBeUndefined();
-    expect(model).toEqual({originalSchema: schema1});
+    expect(model).toEqual({originalInput: schema1});
   });
   describe('combineSchemas', () => {
     test('should combine single schema with model', () => {
@@ -113,7 +114,7 @@ describe('Interpreter', () => {
       const model = new CommonModel();
       const expectedSimplifiedModel = new CommonModel();
       expectedSimplifiedModel.required = ['test'];
-      expectedSimplifiedModel.originalSchema = schema;
+      expectedSimplifiedModel.originalInput = schema;
       interpreter.interpretAndCombineSchema(schema, model, schema);
       expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, model, expectedSimplifiedModel, schema);
     });
@@ -123,7 +124,7 @@ describe('Interpreter', () => {
       const model = new CommonModel();
       const expectedSimplifiedModel = new CommonModel();
       expectedSimplifiedModel.required = ['test'];
-      expectedSimplifiedModel.originalSchema = schema;
+      expectedSimplifiedModel.originalInput = schema;
       interpreter.interpretAndCombineMultipleSchemas([schema], model, schema);
       expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, model, expectedSimplifiedModel, schema);
     });
@@ -189,7 +190,7 @@ describe('Interpreter', () => {
     const actualModel = interpreter.interpret(schema);
     expect(actualModel).not.toBeUndefined();
     expect(actualModel).toEqual({
-      originalSchema: {
+      originalInput: {
         type: 'string'
       },
       type: 'string'

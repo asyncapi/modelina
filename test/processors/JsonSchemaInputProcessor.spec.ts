@@ -1,9 +1,10 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { JsonSchemaInputProcessor } from '../../src/processors/JsonSchemaInputProcessor';
-import { CommonModel, Schema } from '../../src/models';
+import { CommonModel } from '../../src/models';
 import { Logger } from '../../src/utils';
 import { postInterpretModel } from '../../src/interpreter/PostInterpreter';
+import { Draft7Schema } from '../../src/models/Draft7Schema';
 jest.mock('../../src/interpreter/Interpreter');
 jest.mock('../../src/interpreter/PostInterpreter');
 jest.mock('../../src/utils/LoggingInterface');
@@ -121,7 +122,7 @@ describe('JsonSchemaInputProcessor', () => {
     const getCommonInput = (inputSchemaPath: string) => {
       const inputSchemaString = fs.readFileSync(path.resolve(__dirname, inputSchemaPath), 'utf8');
       const inferredSchema = JSON.parse(inputSchemaString);
-      const inputSchema = Schema.toSchema(inferredSchema);
+      const inputSchema = Draft7Schema.toSchema(inferredSchema);
       return {inputSchema, commonInputModel: JsonSchemaInputProcessor.convertSchemaToCommonModel(inputSchema)};
     };
     test('should simplify schema and return a set of common models', () => {
@@ -214,7 +215,7 @@ describe('JsonSchemaInputProcessor', () => {
           },
         ]
       };
-      const expected = JsonSchemaInputProcessor.reflectSchemaNames(schema, undefined, 'root', true) as any;
+      const expected = JsonSchemaInputProcessor.reflectSchemaNames(schema, {}, 'root', true) as any;
 
       // root
       expect(expected['x-modelgen-inferred-name']).toEqual('root');

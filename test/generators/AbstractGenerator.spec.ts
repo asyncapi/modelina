@@ -47,7 +47,7 @@ describe('AbstractGenerator', () => {
     expect(commonInputModel).toBeInstanceOf(CommonInputModel);
     expect(commonInputModel.models).toBeDefined();
     expect(keys).toHaveLength(1);
-    expect(commonInputModel.models[keys[0]].originalSchema).toEqual({
+    expect(commonInputModel.models[keys[0]].originalInput).toEqual({
       $id: 'test',
       'x-modelgen-inferred-name': 'root',
     });
