@@ -1,6 +1,6 @@
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
-import { CommonInputModel, ProcessorOptions } from '../models';
+import { CommonInputModel } from '../models';
 import { Logger } from '../utils';
 import SwaggerParser from '@apidevtools/swagger-parser';
 import {OpenAPIV2} from 'openapi-types';
@@ -17,13 +17,13 @@ export class SwaggerInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  async process(input: Record<string, any>, options?: ProcessorOptions): Promise<CommonInputModel> {
+  async process(input: Record<string, any>): Promise<CommonInputModel> {
     if (!this.shouldProcess(input)) {throw new Error('Input is not a Swagger document so it cannot be processed.');}
 
     Logger.debug('Processing input as a Swagger document');
     const common = new CommonInputModel();
+    common.originalInput = input;
     const api = await SwaggerParser.dereference(input as any) as OpenAPIV2.Document;
-    common.originalInput = api;
     const convert = (operation: OpenAPIV2.OperationObject | undefined, path: string) => {
       if (operation) {
         const responses = operation.responses;

@@ -55,32 +55,50 @@ export class Draft7Schema {
   contentEncoding?: string;
   contentMediaType?: string;
 
-  static toSchema(object: any, seenSchemas: Map<any, Draft7Schema> = new Map()): Draft7Schema | boolean {
-    if (typeof object === 'boolean') {return object;}
+  /**
+   * Takes a deep copy of the input object and converts it to an instance of Draft7Schema.
+   * 
+   * @param object 
+   * @returns 
+   */
+  static toSchema(object: Record<string, unknown>): Draft7Schema {
+    const convertedSchema = Draft7Schema.internalToSchema(object);
+    if (convertedSchema instanceof Draft7Schema) {
+      return convertedSchema;
+    }
+    throw new Error('Could not convert input to expected copy of Draft7Schema');
+  }
+  private static internalToSchema(object: any, seenSchemas: Map<any, Draft7Schema> = new Map()): any {
+    // if primitive types return as is
+    if (null === object || 'object' !== typeof object) {
+      return object;
+    }
+
     if (seenSchemas.has(object)) {
       return seenSchemas.get(object) as any;
     }
-    let schema = new Draft7Schema();
-    schema = Object.assign(schema, object);
+
+    if (object instanceof Array) {
+      const copy: any = [];
+      for (let i = 0, len = object.length; i < len; i++) {
+        copy[Number(i)] = Draft7Schema.internalToSchema(object[Number(i)], seenSchemas);
+      }
+      return copy;
+    }
+    //Nothing else left then to create an object
+    const schema = new Draft7Schema();
     seenSchemas.set(object, schema);
     for (const [propName, prop] of Object.entries(object)) {
-      if (propName === 'default' ||
-        propName === 'examples' ||
-        propName === 'const' ||
-        propName === 'enums') { continue; }
-      if (Array.isArray(prop)) {
-        for (const [idx, propEntry] of prop.entries()) {
-          if (typeof propEntry === 'object') {
-            const convertedSchema = Draft7Schema.toSchema(propEntry, seenSchemas);
-            (schema as any)[String(propName)][Number(idx)] = convertedSchema;
-          } else {
-            (schema as any)[String(propName)][Number(idx)] = propEntry;
-          }
-        }
-      } else if (typeof prop === 'object') {
-        const convertedSchema = Draft7Schema.toSchema(prop, seenSchemas);
-        (schema as any)[String(propName)] = convertedSchema;
+      let copyProp = prop;
+
+      // Ignore value properties (those with `any` type) as they should be saved as is regardless of value
+      if (propName !== 'default' &&
+        propName !== 'examples' &&
+        propName !== 'const' &&
+        propName !== 'enum') {
+        copyProp = Draft7Schema.internalToSchema(prop, seenSchemas);
       }
+      (schema as any)[String(propName)] = copyProp;
     }
     return schema;
   }

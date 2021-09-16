@@ -600,22 +600,34 @@ describe('Draft7Schema', () => {
   });
 
   describe('toSchema', () => {
+    test('should throw error when trying to convert non-object', () => {
+      const expectedError = 'Could not convert input to expected copy of Draft7Schema';
+      expect(() => { Draft7Schema.toSchema(1 as any); }).toThrow(expectedError);
+    });
+    test('should handle recursive schemas', () => {
+      const recursiveDoc = { type: 'object', properties: { } };
+      const doc = { type: 'object', properties: { test: recursiveDoc } };
+      (recursiveDoc.properties as any)['test'] = doc;
+      const d = Draft7Schema.toSchema(doc) as Draft7Schema;
+      expect(typeof d).toEqual('object');
+      const d2 = Draft7Schema.toSchema(d as any) as Draft7Schema;
+      expect(typeof d2).toEqual('object');
+    });
     test('should never return the same instance of properties', () => {
       const doc = { type: 'string', properties: {test: {type: 'string'}} };
       const d = Draft7Schema.toSchema(doc) as Draft7Schema;
       expect(typeof d).toEqual('object');
-      const d2 = Draft7Schema.toSchema(d) as Draft7Schema;
+      const d2 = Draft7Schema.toSchema(d as any) as Draft7Schema;
       expect(typeof d2).toEqual('object');
       (d.properties!['test'] as Draft7Schema).$id = 'test';
       expect((d.properties!['test'] as Draft7Schema).$id).toEqual('test');
       expect((d2.properties!['test'] as Draft7Schema).$id).not.toEqual('test');
     });
-    
     test('should never return the same instance of items', () => {
       const doc = { type: 'string', items: [{type: 'string'}] };
       const d = Draft7Schema.toSchema(doc) as Draft7Schema;
       expect(typeof d).toEqual('object');
-      const d2 = Draft7Schema.toSchema(d) as Draft7Schema;
+      const d2 = Draft7Schema.toSchema(d as any) as Draft7Schema;
       expect(typeof d2).toEqual('object');
       const d_items : Draft7Schema[] = d.items as Draft7Schema[];
       const d2_items : Draft7Schema[] = d2.items as Draft7Schema[];
@@ -623,35 +635,11 @@ describe('Draft7Schema', () => {
       expect(d_items[0].$id).toEqual('test');
       expect(d2_items[0].$id).not.toEqual('test');
     });
-    test('should never return the same instance of dependencies', () => {
-      const doc = { type: 'object', properties: {test: {type: 'string'}}, dependencies: {test: {properties: {test2: { type: 'string' }}}}};
+    test('should never convert value properties', () => {
+      const doc = { const: { test: { type: 'string'} } };
       const d = Draft7Schema.toSchema(doc) as Draft7Schema;
       expect(typeof d).toEqual('object');
-      const d2 = Draft7Schema.toSchema(d) as Draft7Schema;
-      expect(typeof d2).toEqual('object');
-      (d.dependencies!['test'] as Draft7Schema).$id = 'test';
-      expect((d.dependencies!['test'] as Draft7Schema).$id).toEqual('test');
-      expect((d2.dependencies!['test'] as Draft7Schema).$id).not.toEqual('test');
-    });
-    test('should never return the same instance of pattern properties', () => {
-      const doc = { type: 'object', patternProperties: { '^S_': { type: 'string' }}};
-      const d = Draft7Schema.toSchema(doc) as Draft7Schema;
-      expect(typeof d).toEqual('object');
-      const d2 = Draft7Schema.toSchema(d) as Draft7Schema;
-      expect(typeof d2).toEqual('object');
-      (d.patternProperties!['^S_'] as Draft7Schema).$id = 'test';
-      expect((d.patternProperties!['^S_'] as Draft7Schema).$id).toEqual('test');
-      expect((d2.patternProperties!['^S_'] as Draft7Schema).$id).not.toEqual('test');
-    });
-    test('should never return the same instance of definitions', () => {
-      const doc = { definitions: { test: { type: 'string' }}};
-      const d = Draft7Schema.toSchema(doc) as Draft7Schema;
-      expect(typeof d).toEqual('object');
-      const d2 = Draft7Schema.toSchema(d) as Draft7Schema;
-      expect(typeof d2).toEqual('object');
-      (d.definitions!['test'] as Draft7Schema).$id = 'test';
-      expect((d.definitions!['test'] as Draft7Schema).$id).toEqual('test');
-      expect((d2.definitions!['test'] as Draft7Schema).$id).not.toEqual('test');
+      expect(d.const instanceof Draft7Schema).toEqual(false);
     });
   });
 });

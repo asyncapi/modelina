@@ -111,28 +111,26 @@ export class AsyncapiV2Schema {
       }
       return copy;
     }
+    //Nothing else left then to create an object
+    const schema = new AsyncapiV2Schema();
+    seenSchemas.set(object, schema);
+    for (const [propName, prop] of Object.entries(object)) {
+      let copyProp = prop;
 
-    if (object instanceof Object) {
-      const schema = new AsyncapiV2Schema();
-      seenSchemas.set(object, schema);
-      for (const [propName, prop] of Object.entries(object)) {
-        let copyProp = prop;
-
-        // Ignore value properties (those with `any` type) as they should be saved as is regardless of value
-        if (propName !== 'default' &&
-          propName !== 'examples' &&
-          propName !== 'const' &&
-          propName !== 'enums') { 
-          // Custom convert to External documentation instance
-          if (propName === 'externalDocs') {
-            schema.externalDocs = AsyncapiV2ExternalDocumentation.toExternalDocumentation(prop);
-            continue;
-          }
-          copyProp = AsyncapiV2Schema.internalToSchema(prop, seenSchemas);
+      // Ignore value properties (those with `any` type) as they should be saved as is regardless of value
+      if (propName !== 'default' &&
+        propName !== 'examples' &&
+        propName !== 'const' &&
+        propName !== 'enum') { 
+        // Custom convert to External documentation instance
+        if (propName === 'externalDocs') {
+          schema.externalDocs = AsyncapiV2ExternalDocumentation.toExternalDocumentation(prop);
+          continue;
         }
-        (schema as any)[String(propName)] = copyProp;
+        copyProp = AsyncapiV2Schema.internalToSchema(prop, seenSchemas);
       }
-      return schema;
+      (schema as any)[String(propName)] = copyProp;
     }
+    return schema;
   }
 }

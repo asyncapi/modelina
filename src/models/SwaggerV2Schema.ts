@@ -77,36 +77,56 @@ export class SwaggerV2Schema {
   //Extensions
   [k: string]: any; // eslint-disable-line no-undef
 
-  static toSchema(object: any, seenSchemas: Map<any, SwaggerV2Schema> = new Map()): SwaggerV2Schema | boolean {
-    if (typeof object === 'boolean') {return object;}
+  /**
+   * Takes a deep copy of the input object and converts it to an instance of SwaggerV2Schema.
+   * 
+   * @param object 
+   * @returns 
+   */
+  static toSchema(object: Record<string, unknown>): SwaggerV2Schema {
+    const convertedSchema = SwaggerV2Schema.internalToSchema(object);
+    if (convertedSchema instanceof SwaggerV2Schema) {
+      return convertedSchema;
+    }
+    throw new Error('Could not convert input to expected copy of SwaggerV2Schema');
+  }
+  private static internalToSchema(object: any, seenSchemas: Map<any, SwaggerV2Schema> = new Map()): any {
+    // if primitive types return as is
+    if (null === object || 'object' !== typeof object) {
+      return object;
+    }
+
     if (seenSchemas.has(object)) {
       return seenSchemas.get(object) as any;
     }
-    let schema = new SwaggerV2Schema();
-    schema = Object.assign(schema, object);
+
+    if (object instanceof Array) {
+      const copy: any = [];
+      for (let i = 0, len = object.length; i < len; i++) {
+        copy[Number(i)] = SwaggerV2Schema.internalToSchema(object[Number(i)], seenSchemas);
+      }
+      return copy;
+    }
+    //Nothing else left then to create an object
+    const schema = new SwaggerV2Schema();
     seenSchemas.set(object, schema);
     for (const [propName, prop] of Object.entries(object)) {
-      if (propName === 'default' ||
-        propName === 'examples' ||
-        propName === 'const' ||
-        propName === 'enums') { continue; }
-      if (propName === 'xml') {
-        schema.xml = SwaggerV2Xml.toXml(prop);
-      } else if (propName === 'externalDocs') {
-        schema.externalDocs = SwaggerV2ExternalDocumentation.toExternalDocumentation(prop);
-      } else if (Array.isArray(prop)) {
-        for (const [idx, propEntry] of prop.entries()) {
-          if (typeof propEntry === 'object') {
-            const convertedSchema = SwaggerV2Schema.toSchema(propEntry, seenSchemas);
-            (schema as any)[String(propName)][Number(idx)] = convertedSchema;
-          } else {
-            (schema as any)[String(propName)][Number(idx)] = propEntry;
-          }
+      let copyProp = prop;
+
+      // Ignore value properties (those with `any` type) as they should be saved as is regardless of value
+      if (propName !== 'default' &&
+        propName !== 'enum') { 
+        // Custom convert to External documentation instance
+        if (propName === 'externalDocs') {
+          schema.externalDocs = SwaggerV2ExternalDocumentation.toExternalDocumentation(prop);
+          continue;
+        } else if (propName === 'xml') {
+          schema.xml = SwaggerV2Xml.toXml(prop);
+          continue;
         }
-      } else if (typeof prop === 'object') {
-        const convertedSchema = SwaggerV2Schema.toSchema(prop, seenSchemas);
-        (schema as any)[String(propName)] = convertedSchema;
+        copyProp = SwaggerV2Schema.internalToSchema(prop, seenSchemas);
       }
+      (schema as any)[String(propName)] = copyProp;
     }
     return schema;
   }
