@@ -61,7 +61,7 @@
     "recursive-install": "1.4.0"
   },
   "scripts": {
-    "postinstall": "./node_modules/.bin/npm-recursive-install --skip-root",
+    "postinstall": "npm run build &&./node_modules/.bin/npm-recursive-install --skip-root",
     "build": "tsc",
     "build:prod": "npm run build:cjs && npm run build:esm && npm run build:types",
     "build:cjs": "tsc",
