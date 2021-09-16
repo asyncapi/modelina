@@ -1,4 +1,4 @@
-import { TypeScriptGenerator, OutputModel } from '../../src';
+import { TypeScriptGenerator } from '@asyncapi/modelina';
 
 const generator = new TypeScriptGenerator({ modelType: 'interface' });
 const jsonSchemaDraft7 = {

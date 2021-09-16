@@ -17,6 +17,7 @@
     "test": "cross-env CI=true jest --config=../../jest.config.js ./examples/asyncapi-from-parser/test"
   },
   "dependencies": {
-    "@asyncapi/parser": "^1.8.2"
+    "@asyncapi/modelina": "file:../../lib",
+    "@asyncapi/parser": "^1.9.0"
   }
 }
