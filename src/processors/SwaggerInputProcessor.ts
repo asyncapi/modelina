@@ -24,21 +24,6 @@ export class SwaggerInputProcessor extends AbstractInputProcessor {
     const common = new CommonInputModel();
     common.originalInput = input;
     const api = await SwaggerParser.dereference(input as any) as OpenAPIV2.Document;
-    const convert = (operation: OpenAPIV2.OperationObject | undefined, path: string) => {
-      if (operation) {
-        const responses = operation.responses;
-        for (const [responseName, response] of Object.entries(responses)) {
-          if (response !== undefined) {
-            const getOperationResponseSchema = (response as OpenAPIV2.ResponseObject).schema;
-            if (getOperationResponseSchema !== undefined) { 
-              const swaggerSchema = SwaggerInputProcessor.convertToInternalSchema(getOperationResponseSchema, `${path}_${responseName}`);
-              const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(swaggerSchema);
-              common.models = {...common.models, ...commonModels};
-            }
-          }
-        }
-      }
-    };
 
     for (const [path, pathObject] of Object.entries(api.paths)) {
       //Remove all parameters from path
@@ -47,14 +32,29 @@ export class SwaggerInputProcessor extends AbstractInputProcessor {
       formattedPathName = formattedPathName.replace(/\//, '');
       //Replace all segment separators '/'
       formattedPathName = formattedPathName.replace(/\//gm, '_');
-      convert(pathObject.get, `${formattedPathName}_get`);
-      convert(pathObject.put, `${formattedPathName}_put`);
-      convert(pathObject.post, `${formattedPathName}_post`);
-      convert(pathObject.options, `${formattedPathName}_options`);
-      convert(pathObject.head, `${formattedPathName}_head`);
-      convert(pathObject.patch, `${formattedPathName}_patch`);
+      this.convert(pathObject.get, `${formattedPathName}_get`, common);
+      this.convert(pathObject.put, `${formattedPathName}_put`, common);
+      this.convert(pathObject.post, `${formattedPathName}_post`, common);
+      this.convert(pathObject.options, `${formattedPathName}_options`, common);
+      this.convert(pathObject.head, `${formattedPathName}_head`, common);
+      this.convert(pathObject.patch, `${formattedPathName}_patch`, common);
     }
     return common;
+  }
+  private convert(operation: OpenAPIV2.OperationObject | undefined, path: string, model: CommonInputModel) {
+    if (operation) {
+      const responses = operation.responses;
+      for (const [responseName, response] of Object.entries(responses)) {
+        if (response !== undefined) {
+          const getOperationResponseSchema = (response as OpenAPIV2.ResponseObject).schema;
+          if (getOperationResponseSchema !== undefined) { 
+            const swaggerSchema = SwaggerInputProcessor.convertToInternalSchema(getOperationResponseSchema, `${path}_${responseName}`);
+            const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(swaggerSchema);
+            model.models = {...model.models, ...commonModels};
+          }
+        }
+      }
+    }
   }
   
   /**
