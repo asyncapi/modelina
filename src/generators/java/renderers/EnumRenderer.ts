@@ -33,19 +33,30 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 
   normalizeKey(value: any): string {
+    let key;
     switch (typeof value) {
     case 'bigint':
     case 'number': {
-      return FormatHelpers.toConstantCase(`number ${value}`);
+      key = `number_${value}`;
+      break;
     }
     case 'boolean': {
-      return FormatHelpers.toConstantCase(`boolean ${value}`);
+      key = `boolean_${value}`;
+      break;
     }
     case 'object': {
-      return FormatHelpers.toConstantCase(JSON.stringify(value));
+      key = JSON.stringify(value);
+      break;
     }
-    default: return FormatHelpers.toConstantCase(String(value));
+    default: {
+      key = String(value);
+      //Ensure no special char can be the beginning letter 
+      if (!(/^[a-zA-Z]+$/).test(key.charAt(0))) {
+        key = `string_${key}`;
+      }
     }
+    }
+    return FormatHelpers.toConstantCase(key);
   }
 
   normalizeValue(value: any): string {

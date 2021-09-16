@@ -297,10 +297,11 @@ ${content}`;
   test('should render union `enum` values', async () => {
     const doc = {
       $id: 'States',
-      enum: [2, 'test', true, {test: 'test'}]
+      enum: [2, '2', 'test', true, {test: 'test'}]
     };
     const expected = `export enum States {
   NUMBER_2 = 2,
+  STRING_2 = "2",
   TEST = "test",
   TRUE = "true",
   TEST_TEST = '{"test":"test"}',
