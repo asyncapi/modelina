@@ -44,4 +44,52 @@ export class Draft6Schema {
   const?: any;
   propertyNames?: Draft6Schema | boolean;
   examples?: any[];
+
+  /**
+   * Takes a deep copy of the input object and converts it to an instance of Draft6Schema.
+   * 
+   * @param object 
+   * @returns 
+   */
+  static toSchema(object: Record<string, unknown>): Draft6Schema {
+    const convertedSchema = Draft6Schema.internalToSchema(object);
+    if (convertedSchema instanceof Draft6Schema) {
+      return convertedSchema;
+    }
+    throw new Error('Could not convert input to expected copy of Draft6Schema');
+  }
+  private static internalToSchema(object: any, seenSchemas: Map<any, Draft6Schema> = new Map()): any {
+    // if primitive types return as is
+    if (null === object || 'object' !== typeof object) {
+      return object;
+    }
+
+    if (seenSchemas.has(object)) {
+      return seenSchemas.get(object) as any;
+    }
+
+    if (object instanceof Array) {
+      const copy: any = [];
+      for (let i = 0, len = object.length; i < len; i++) {
+        copy[Number(i)] = Draft6Schema.internalToSchema(object[Number(i)], seenSchemas);
+      }
+      return copy;
+    }
+    //Nothing else left then to create an object
+    const schema = new Draft6Schema();
+    seenSchemas.set(object, schema);
+    for (const [propName, prop] of Object.entries(object)) {
+      let copyProp = prop;
+
+      // Ignore value properties (those with `any` type) as they should be saved as is regardless of value
+      if (propName !== 'default' &&
+        propName !== 'examples' &&
+        propName !== 'const' &&
+        propName !== 'enum') {
+        copyProp = Draft6Schema.internalToSchema(prop, seenSchemas);
+      }
+      (schema as any)[String(propName)] = copyProp;
+    }
+    return schema;
+  }
 }
