@@ -18,38 +18,47 @@ export class CommonModel {
   additionalItems?: CommonModel;
 
   /**
-   * Transform object into a type of CommonModel.
+   * Takes a deep copy of the input object and converts it to an instance of CommonModel.
    * 
    * @param object to transform
    * @returns CommonModel instance of the object
    */
-  static toCommonModel(object: any, seenSchemas: Map<any, CommonModel> = new Map()): CommonModel {
+  static toCommonModel(object: Record<string, unknown> | CommonModel): CommonModel {
+    const convertedSchema = CommonModel.internalToSchema(object);
+    if (convertedSchema instanceof CommonModel) {
+      return convertedSchema;
+    }
+    throw new Error('Could not convert input to expected copy of CommonModel');
+  }
+  private static internalToSchema(object: any, seenSchemas: Map<any, CommonModel> = new Map()): any {
+    // if primitive types return as is
+    if (null === object || 'object' !== typeof object) {
+      return object;
+    }
+
     if (seenSchemas.has(object)) {
       return seenSchemas.get(object) as any;
     }
+
+    if (object instanceof Array) {
+      const copy: any = [];
+      for (let i = 0, len = object.length; i < len; i++) {
+        copy[Number(i)] = CommonModel.internalToSchema(object[Number(i)], seenSchemas);
+      }
+      return copy;
+    }
+    //Nothing else left then to create an object
     const schema = new CommonModel();
     seenSchemas.set(object, schema);
     for (const [propName, prop] of Object.entries(object)) {
+      let copyProp = prop;
+
+      // Ignore value properties (those with `any` type) as they should be saved as is regardless of value
       if (propName !== 'originalInput' &&
-        propName !== 'enum') { 
-        if (Array.isArray(prop)) {
-          (schema as any)[String(propName)] = [];
-          for (const [idx, propEntry] of prop.entries()) {
-            if (typeof propEntry === 'object') {
-              const convertedSchema = CommonModel.toCommonModel(propEntry, seenSchemas);
-              (schema as any)[String(propName)][Number(idx)] = convertedSchema;
-            } else {
-              (schema as any)[String(propName)][Number(idx)] = propEntry;
-            }
-          }
-          continue;
-        } else if (typeof prop === 'object') {
-          const convertedSchema = CommonModel.toCommonModel(prop, seenSchemas);
-          (schema as any)[String(propName)] = convertedSchema;
-          continue;
-        }
+        propName !== 'enum') {
+        copyProp = CommonModel.internalToSchema(prop, seenSchemas);
       }
-      (schema as any)[String(propName)] = prop;
+      (schema as any)[String(propName)] = copyProp;
     }
     return schema;
   }
