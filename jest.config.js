@@ -18,6 +18,6 @@ module.exports = {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   testTimeout: 10000,
   collectCoverageFrom: [
-    "src/**"
+    'src/**'
   ]
 };

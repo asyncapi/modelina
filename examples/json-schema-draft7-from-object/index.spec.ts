@@ -1,7 +1,6 @@
 import {generate} from './index';
 
 describe('Should be able to process JSON Schema draft 7 object', () => {
-
   afterAll(() => {
     jest.clearAllMocks();
   });

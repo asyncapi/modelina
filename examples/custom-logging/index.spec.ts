@@ -2,7 +2,6 @@ import { Logger, ModelLoggingInterface } from '@asyncapi/modelina';
 import {generate} from './index';
 
 describe('Should be able to use custom logging interface', () => {
-
   afterAll(() => {
     jest.clearAllMocks();
   });
@@ -22,6 +21,5 @@ describe('Should be able to use custom logging interface', () => {
   email?: string;
 }`;
     expect(callbackMock).toBeCalledWith(expectedConsoleLog);
-
   });
 });

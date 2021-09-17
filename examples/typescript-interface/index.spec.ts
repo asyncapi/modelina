@@ -1,7 +1,6 @@
 import {generate} from './index';
 
 describe('Should be able to render typescript interface', () => {
-
   afterAll(() => {
     jest.clearAllMocks();
   });
