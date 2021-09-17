@@ -5,7 +5,6 @@ import { CommonModel, CommonInputModel} from '../models';
 import { Logger } from '../utils';
 import { postInterpretModel } from '../interpreter/PostInterpreter';
 import { Interpreter } from '../interpreter/Interpreter';
-import {OpenAPIV2} from 'openapi-types';
 import { Draft7Schema } from '../models/Draft7Schema';
 import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
 

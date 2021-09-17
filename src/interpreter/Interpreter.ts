@@ -26,7 +26,7 @@ export class Interpreter {
   private seenSchemas: Map<InterpreterSchemaType, CommonModel> = new Map();
   
   /**
-   * Transforms a schema into instances of CommonModel by processing all JSON Schema draft 7 keywords and infers the model definition.
+   * Transforms a schema into instances of CommonModel by processing all keywords from schema documents and infers the model definition.
    * 
    * @param schema
    * @param interpreterOptions to control the interpret process
@@ -50,7 +50,7 @@ export class Interpreter {
   }
 
   /**
-   * Function to interpret the JSON schema draft 7 into a CommonModel.
+   * Function to interpret a schema into a CommonModel.
    * 
    * @param model 
    * @param schema 

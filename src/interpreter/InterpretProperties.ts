@@ -2,7 +2,7 @@ import { CommonModel } from '../models/CommonModel';
 import { Interpreter, InterpreterOptions, InterpreterSchemaType } from './Interpreter';
 
 /**
- * Interpreter function for interpreting JSON Schema draft 7 properties keyword.
+ * Interpreter function for interpreting properties keyword.
  * 
  * @param schema
  * @param model
