@@ -85,7 +85,6 @@ export class AsyncapiV2Schema {
    * Takes a deep copy of the input object and converts it to an instance of AsyncapiV2Schema.
    * 
    * @param object 
-   * @returns 
    */
   static toSchema(object: Record<string, unknown>): AsyncapiV2Schema {
     const convertedSchema = AsyncapiV2Schema.internalToSchema(object);
