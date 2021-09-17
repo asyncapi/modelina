@@ -10,7 +10,6 @@ import interpretPatternProperties from './InterpretPatternProperties';
 import interpretNot from './InterpretNot';
 import interpretDependencies from './InterpretDependencies';
 import interpretAdditionalItems from './InterpretAdditionalItems';
-import { Draft4Schema } from '../models/Draft4Schema';
 import { Draft7Schema } from '../models/Draft7Schema';
 import { SwaggerV2Schema } from '../models/SwaggerV2Schema';
 import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
@@ -18,7 +17,7 @@ import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
 export type InterpreterOptions = {
   allowInheritance?: boolean
 } 
-export type interpreterSchemaType = Draft4Schema | Draft7Schema | SwaggerV2Schema | AsyncapiV2Schema | boolean;
+export type interpreterSchemaType = Draft7Schema | SwaggerV2Schema | AsyncapiV2Schema | boolean;
 export class Interpreter {
   static defaultInterpreterOptions: InterpreterOptions = {
     allowInheritance: false
@@ -81,17 +80,15 @@ export class Interpreter {
 
       this.interpretAndCombineMultipleSchemas(schema.oneOf, model, schema, interpreterOptions);
       this.interpretAndCombineMultipleSchemas(schema.anyOf, model, schema, interpreterOptions);
-      if (!(schema instanceof Draft4Schema)) {
-        this.interpretAndCombineSchema(schema.then, model, schema, interpreterOptions);
-        this.interpretAndCombineSchema(schema.else, model, schema, interpreterOptions);
-      }
+      this.interpretAndCombineSchema(schema.then, model, schema, interpreterOptions);
+      this.interpretAndCombineSchema(schema.else, model, schema, interpreterOptions);
 
       interpretNot(schema, model, this, interpreterOptions);
 
       //All schemas of type model object or enum MUST have ids
       if (isModelObject(model) === true || isEnum(model) === true) {
         model.$id = interpretName(schema) || `anonymSchema${this.anonymCounter++}`;
-      } else if ((!(schema instanceof Draft4Schema) && schema.$id !== undefined) || (schema instanceof Draft4Schema && schema.id !== undefined)) {
+      } else if (schema.$id !== undefined) {
         model.$id = interpretName(schema);
       }
     }
