@@ -28,7 +28,7 @@ const AsyncAPIDocument = {
   }
 };
 
-export async function generate(logCallback : (msg: string) => void): Promise<void> {
+export async function generate(logCallback: (msg: string) => void) {
   const models = await generator.generate(AsyncAPIDocument);
   for (const model of models) {
     logCallback(model.result);

@@ -1,5 +1,6 @@
-import {generate} from '../index';
-describe('Should be able to process a pure AsyncAPI object', () => {
+import {generate} from './index';
+
+describe('Should be able to process AsyncAPI object from parser', () => {
 
   afterAll(() => {
     jest.clearAllMocks();

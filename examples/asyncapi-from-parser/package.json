@@ -10,14 +10,15 @@
     "@types/jest": "^26.0.15",
     "cross-env": "^7.0.2",
     "jest": "^26.6.3",
-    "ts-jest": "^26.4.4"
+    "ts-jest": "^26.4.4",
+    "ts-node": "^10.2.1"
   },
   "scripts": {
-    "start": "tsc index.ts && node index.js",
-    "test": "cross-env CI=true jest --config=../../jest.config.js ./examples/asyncapi-from-parser/test"
+    "start": "ts-node index.ts",
+    "test": "cross-env CI=true jest --config=../../jest.config.js ./examples/asyncapi-from-object/index.spec.ts"
   },
   "dependencies": {
-    "@asyncapi/modelina": "file:../../lib",
-    "@asyncapi/parser": "^1.9.0"
+    "@asyncapi/modelina": "file:../../src",
+    "@asyncapi/parser": "1.9.0"
   }
 }

@@ -1,6 +1,6 @@
-import {generate} from '../index';
+import {generate} from './index';
 
-describe('Should be able to process JSON Schema draft 7 object', () => {
+describe('Should be able to render typescript interface', () => {
 
   afterAll(() => {
     jest.clearAllMocks();

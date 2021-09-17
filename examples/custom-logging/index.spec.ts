@@ -1,5 +1,5 @@
 import { Logger, ModelLoggingInterface } from '@asyncapi/modelina';
-import {generate} from '../index';
+import {generate} from './index';
 
 describe('Should be able to use custom logging interface', () => {
 

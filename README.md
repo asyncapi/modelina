@@ -2,10 +2,10 @@
   <br>
   <a href="https://www.asyncapi.org"><img src="https://github.com/asyncapi/parser-nodejs/raw/master/assets/logo.png" alt="AsyncAPI logo" width="200"></a>
   <br>
-  <em><b>Modelina</b>
+  <em><b>Modelina</b></em>
 </h5>
 <p align="center">
-   Modelina is the official AsyncAPI SDK used to generate different data models (i.e. Java/TypeScript classes, Go Structs, etc) for AsyncAPI documents, among other supported inputs.</em>
+  <em>Modelina is the official AsyncAPI SDK used to generate different data models (i.e. <a href="#outputs">Java/TypeScript classes, Go Structs, etc</a>) for <a href="#inputs">AsyncAPI documents, among other supported inputs </a>.</em>
 </p>
 
 [![Coverage Status](https://coveralls.io/repos/github/asyncapi/modelina/badge.svg?branch=master)](https://coveralls.io/github/asyncapi/modelina?branch=master)
@@ -56,12 +56,34 @@ The following table provides a short summary of available features for supported
 
 To see the complete feature list for each language, please click the individual links for each language.
 
-
+<a id="inputs"></a>
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <th>Supported languages</th>
+    <th>Supported inputs</th>
+    <th>description</th>
+  </tr>
+  <tr>
+    <td><a href="./docs/usage.md#generate-typescript-models">AsyncAPI</a></td>
+    <td>We support the following AsyncAPI versions: <em>2.0.0, 2.1.0</em>, which generates models for all the defined message payloads.</td>
+  </tr>
+  <tr>
+    <td><a href="./docs/usage.md#generate-java-models">JSON Schema</a></td>
+    <td>We support the following JSON Schema versions: <em>Draft-4, Draft-6, Draft-7</em></td>
+  </tr>
+  <tr>
+    <td><a href="./docs/usage.md#generate-c#-models">OpenAPI</a></td>
+    <td>We support the following OpenAPI versions: <em>Swagger 2.0, OpenAPI 3.0.x, OpenAPI 3.1</em>, which generates models for all defined responses.</td>
+  </tr>
+</table>
+
+<a id="outputs"></a>
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <th>Supported outputs</th>
     <th>Features</th>
   </tr>
   <tr>
