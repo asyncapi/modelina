@@ -2,10 +2,27 @@ import * as fs from 'fs';
 import * as path from 'path';
 import {parse, ParserOptions} from '@asyncapi/parser';
 import {AsyncAPIInputProcessor} from '../../src/processors/AsyncAPIInputProcessor';
-import { AsyncapiV2Schema } from '../../src/models/AsyncapiV2Schema';
-import { JsonSchemaInputProcessor } from '../../src/processors';
+import { CommonModel } from '../../src/models';
 const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'), 'utf8');
+jest.mock('../../src/interpreter/Interpreter');
+jest.mock('../../src/interpreter/PostInterpreter');
+jest.mock('../../src/utils/LoggingInterface');
 
+const mockedReturnModels = [new CommonModel()];
+jest.mock('../../src/interpreter/Interpreter', () => {
+  return {
+    Interpreter: jest.fn().mockImplementation(() => {
+      return {
+        interpret: jest.fn().mockImplementation(() => {return mockedReturnModels[0];})
+      };
+    })
+  };
+});
+jest.mock('../../src/interpreter/PostInterpreter', () => {
+  return {
+    postInterpretModel: jest.fn().mockImplementation(() => {return mockedReturnModels;})
+  };
+});
 describe('AsyncAPIInputProcessor', () => {
   describe('shouldProcess()', () => {
     const processor = new AsyncAPIInputProcessor();
@@ -59,24 +76,20 @@ describe('AsyncAPIInputProcessor', () => {
         .toThrow('Input is not an AsyncAPI document so it cannot be processed.');
     });
     test('should be able to process pure object', async () => {
-      const expectedCommonInputModelString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/commonInputModel/basic.json'), 'utf8');
       const basicDoc = JSON.parse(basicDocString);
-      const expectedCommonInputModel = JSON.parse(expectedCommonInputModelString);
       const processor = new AsyncAPIInputProcessor();
       const commonInputModel = await processor.process(basicDoc);
-      expect(commonInputModel).toMatchObject(expectedCommonInputModel);
+      expect(commonInputModel).toMatchSnapshot();
     });
     test('should be able to process parsed objects', async () => {
-      const expectedCommonInputModelString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/commonInputModel/basic.json'), 'utf8');
-      const expectedCommonInputModel = JSON.parse(expectedCommonInputModelString);
       const parsedObject = await parse(basicDocString, {} as ParserOptions);
       const processor = new AsyncAPIInputProcessor();
       const commonInputModel = await processor.process(parsedObject);
-      expect(commonInputModel).toMatchObject(expectedCommonInputModel);
+      expect(commonInputModel).toMatchSnapshot();
     });
   });
 
-  describe('reflectSchemaNames()', () => {
+  describe('convertToInternalSchema()', () => {
     test('should work', async () => {
       const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/schema_name_reflection.json'), 'utf8');
       const doc = await parse(basicDocString, {} as ParserOptions);

@@ -1,10 +1,9 @@
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
-import { CommonInputModel } from '../models';
+import { CommonInputModel, SwaggerV2Schema } from '../models';
 import { Logger } from '../utils';
 import SwaggerParser from '@apidevtools/swagger-parser';
-import {OpenAPIV2} from 'openapi-types';
-import { SwaggerV2Schema } from '../models/SwaggerV2Schema';
+import { OpenAPIV2 } from 'openapi-types';
 
 /**
  * Class for processing Swagger inputs
@@ -23,6 +22,8 @@ export class SwaggerInputProcessor extends AbstractInputProcessor {
     Logger.debug('Processing input as a Swagger document');
     const common = new CommonInputModel();
     common.originalInput = input;
+    
+    //Since we require that all references have been dereferenced, we cannot "simply" support already parsed inputs.
     const api = await SwaggerParser.dereference(input as any) as OpenAPIV2.Document;
 
     for (const [path, pathObject] of Object.entries(api.paths)) {
@@ -77,7 +78,7 @@ export class SwaggerInputProcessor extends AbstractInputProcessor {
 	 */
   shouldProcess(input: Record<string, any>) : boolean {
     const version = this.tryGetVersionOfDocument(input);
-    if (!version) {return false;}
+    if (!version) { return false; }
     return SwaggerInputProcessor.supportedVersions.includes(version);
   }
 

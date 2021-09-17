@@ -65,7 +65,9 @@ export class Interpreter {
       if (schema.type !== undefined) {
         model.addTypes(schema.type);
       }
-      model.required = schema.required || model.required;
+      if (schema.required !== undefined) {
+        model.required = schema.required;
+      }
 
       interpretPatternProperties(schema, model, this, interpreterOptions);
       interpretAdditionalProperties(schema, model, this, interpreterOptions);
