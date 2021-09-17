@@ -3,13 +3,13 @@ import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
 import { CommonInputModel, OpenapiV3Schema } from '../models';
 import { Logger } from '../utils';
 import SwaggerParser from '@apidevtools/swagger-parser';
-import {OpenAPIV3} from 'openapi-types';
+import { OpenAPIV3 } from 'openapi-types';
 
 /**
  * Class for processing OpenAPI V3.0.x inputs
  */
 export class OpenapiInputProcessor extends AbstractInputProcessor {
-  static supportedVersions = ['3.0.0', '3.0.1', '3.0.2', '3.0.3', '3.0.4'];
+  static supportedVersions = ['3.0.0', '3.0.1', '3.0.2', '3.0.3'];
 
   /**
    * Process the input as a OpenAPI V3.0.x document
