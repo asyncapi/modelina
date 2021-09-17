@@ -1,5 +1,5 @@
 import { CommonModel } from '../models/CommonModel';
-import { Interpreter, InterpreterOptions, interpreterSchemaType } from './Interpreter';
+import { Interpreter, InterpreterOptions, InterpreterSchemaType } from './Interpreter';
 
 /**
  * Interpreter function for dependencies keyword.
@@ -7,7 +7,7 @@ import { Interpreter, InterpreterOptions, interpreterSchemaType } from './Interp
  * @param schema 
  * @param model
  */
-export default function interpretDependencies(schema: interpreterSchemaType, model: CommonModel, interpreter: Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
+export default function interpretDependencies(schema: InterpreterSchemaType, model: CommonModel, interpreter: Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
   if (typeof schema === 'boolean' || schema.dependencies === undefined) {return;}
   for (const dependency of Object.values(schema.dependencies)) {
     // Only handle schema dependency and skip property dependencies

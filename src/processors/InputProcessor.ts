@@ -2,7 +2,6 @@ import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { AsyncAPIInputProcessor } from './AsyncAPIInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
 import { ProcessorOptions, CommonInputModel } from '../models';
-import { SwaggerInputProcessor } from './SwaggerInputProcessor';
 
 /**
  * Main input processor which figures out the type of input it receives and delegates the processing into separate individual processors.
@@ -13,7 +12,6 @@ export class InputProcessor {
 
   constructor() {
     this.setProcessor('asyncapi', new AsyncAPIInputProcessor()); 
-    this.setProcessor('swagger', new SwaggerInputProcessor()); 
     this.setProcessor('default', new JsonSchemaInputProcessor());
   }
   

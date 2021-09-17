@@ -16,14 +16,14 @@ import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
 export type InterpreterOptions = {
   allowInheritance?: boolean
 } 
-export type interpreterSchemaType = Draft7Schema | AsyncapiV2Schema | boolean;
+export type InterpreterSchemaType = Draft7Schema | AsyncapiV2Schema | boolean;
 export class Interpreter {
   static defaultInterpreterOptions: InterpreterOptions = {
     allowInheritance: false
   }
 
   private anonymCounter = 1;
-  private seenSchemas: Map<interpreterSchemaType, CommonModel> = new Map();
+  private seenSchemas: Map<InterpreterSchemaType, CommonModel> = new Map();
   
   /**
    * Transforms a schema into instances of CommonModel by processing all JSON Schema draft 7 keywords and infers the model definition.
@@ -31,7 +31,7 @@ export class Interpreter {
    * @param schema
    * @param interpreterOptions to control the interpret process
    */
-  interpret(schema: interpreterSchemaType, options: InterpreterOptions = Interpreter.defaultInterpreterOptions): CommonModel | undefined {
+  interpret(schema: InterpreterSchemaType, options: InterpreterOptions = Interpreter.defaultInterpreterOptions): CommonModel | undefined {
     if (this.seenSchemas.has(schema)) {
       const cachedModel = this.seenSchemas.get(schema); 
       if (cachedModel !== undefined) {
@@ -56,7 +56,7 @@ export class Interpreter {
    * @param schema 
    * @param interpreterOptions to control the interpret process
    */
-  private interpretSchema(model: CommonModel, schema: interpreterSchemaType, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions) {
+  private interpretSchema(model: CommonModel, schema: InterpreterSchemaType, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions) {
     if (schema === true) {
       model.setType(['object', 'string', 'number', 'array', 'boolean', 'null', 'integer']);
     } else if (typeof schema === 'object') {
@@ -101,7 +101,7 @@ export class Interpreter {
    * @param rootSchema the root schema to use as original schema when merged
    * @param interpreterOptions to control the interpret process
    */
-  interpretAndCombineSchema(schema: interpreterSchemaType, currentModel: CommonModel, rootSchema: any, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
+  interpretAndCombineSchema(schema: InterpreterSchemaType | undefined, currentModel: CommonModel, rootSchema: any, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
     if (typeof schema !== 'object') {return;}
     const model = this.interpret(schema, interpreterOptions);
     if (model !== undefined) {
@@ -117,7 +117,7 @@ export class Interpreter {
    * @param rootSchema the root schema to use as original schema when merged
    * @param interpreterOptions to control the interpret process
    */
-  interpretAndCombineMultipleSchemas(schema: interpreterSchemaType[] | undefined, currentModel: CommonModel, rootSchema: any, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
+  interpretAndCombineMultipleSchemas(schema: InterpreterSchemaType[] | undefined, currentModel: CommonModel, rootSchema: any, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
     if (!Array.isArray(schema)) { return; }
     for (const forEachSchema of schema) {
       this.interpretAndCombineSchema(forEachSchema, currentModel, rootSchema, interpreterOptions);

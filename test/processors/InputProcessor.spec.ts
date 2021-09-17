@@ -4,7 +4,7 @@ import { CommonInputModel, ProcessorOptions } from '../../src/models';
 import { InputProcessor } from '../../src/processors/InputProcessor';
 import { JsonSchemaInputProcessor } from '../../src/processors/JsonSchemaInputProcessor';
 import { AsyncAPIInputProcessor } from '../../src/processors/AsyncAPIInputProcessor';
-import { AbstractInputProcessor, SwaggerInputProcessor } from '../../src/processors';
+import { AbstractInputProcessor } from '../../src/processors';
 import AsyncAPIParser, { ParserOptions } from '@asyncapi/parser';
 describe('InputProcessor', () => {
   beforeEach(() => {
@@ -44,14 +44,10 @@ describe('InputProcessor', () => {
       const defaultInputProcessor = new JsonSchemaInputProcessor();
       jest.spyOn(defaultInputProcessor, 'shouldProcess');
       jest.spyOn(defaultInputProcessor, 'process');
-      const swaggerInputProcessor = new SwaggerInputProcessor();
-      jest.spyOn(swaggerInputProcessor, 'shouldProcess');
-      jest.spyOn(swaggerInputProcessor, 'process');
       const processor = new InputProcessor();
       processor.setProcessor('asyncapi', asyncInputProcessor);
-      processor.setProcessor('swagger', swaggerInputProcessor);
       processor.setProcessor('default', defaultInputProcessor);
-      return {processor, asyncInputProcessor, swaggerInputProcessor, defaultInputProcessor};
+      return {processor, asyncInputProcessor, defaultInputProcessor};
     };
     test('should throw error when no default processor found', async () => {
       const processor = new InputProcessor();
@@ -79,17 +75,6 @@ describe('InputProcessor', () => {
       await processor.process(inputSchema);
       expect(asyncInputProcessor.process).toHaveBeenNthCalledWith(1, inputSchema, undefined);
       expect(asyncInputProcessor.shouldProcess).toHaveBeenNthCalledWith(1, inputSchema);
-      expect(defaultInputProcessor.process).not.toHaveBeenCalled();
-      expect(defaultInputProcessor.shouldProcess).not.toHaveBeenCalled();
-    });
-
-    test('should be able to process Swagger (OpenAPI 2.0) input', async () => {
-      const {processor, swaggerInputProcessor, defaultInputProcessor} = getProcessors(); 
-      const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './swagger/petstore.json'), 'utf8');
-      const inputSchema = JSON.parse(inputSchemaString);
-      await processor.process(inputSchema);
-      expect(swaggerInputProcessor.process).toHaveBeenNthCalledWith(1, inputSchema, undefined);
-      expect(swaggerInputProcessor.shouldProcess).toHaveBeenNthCalledWith(1, inputSchema);
       expect(defaultInputProcessor.process).not.toHaveBeenCalled();
       expect(defaultInputProcessor.shouldProcess).not.toHaveBeenCalled();
     });

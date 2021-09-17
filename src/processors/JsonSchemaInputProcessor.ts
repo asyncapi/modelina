@@ -180,7 +180,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       schema.patternProperties = patternProperties;
     }
     if (schema.definitions !== undefined) {
-      const definitions: { [key: string]: OpenAPIV2.SchemaObject } = {};
+      const definitions: { [key: string]: any } = {};
       for (const [definitionName, definition] of Object.entries(schema.definitions)) {
         definitions[String(definitionName)] = JsonSchemaInputProcessor.reflectSchemaNames(definition, namesStack, this.ensureNamePattern(name, definitionName));
       }
