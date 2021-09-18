@@ -16,8 +16,5 @@
   "scripts": {
     "start": "ts-node index.ts",
     "test": "cross-env CI=true jest --config=../../jest.config.js ./examples/asyncapi-from-object/index.spec.ts"
-  },
-  "dependencies": {
-    "@asyncapi/modelina": "file:../../src"
   }
 }

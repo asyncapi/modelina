@@ -1,5 +1,5 @@
 import { parse } from '@asyncapi/parser';
-import { TypeScriptGenerator } from '@asyncapi/modelina';
+import { TypeScriptGenerator } from '../../src';
 
 const generator = new TypeScriptGenerator({ modelType: 'interface' });
 const AsyncAPIDocument = {

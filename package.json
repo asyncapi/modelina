@@ -57,11 +57,9 @@
     "markdown-toc": "^1.2.0",
     "semantic-release": "^17.4.2",
     "ts-jest": "^26.4.4",
-    "typescript": "^4.1.2",
-    "recursive-install": "1.4.0"
+    "typescript": "^4.1.2"
   },
   "scripts": {
-    "postinstall": "npm run build &&./node_modules/.bin/npm-recursive-install --skip-root",
     "build": "tsc",
     "build:prod": "npm run build:cjs && npm run build:esm && npm run build:types",
     "build:cjs": "tsc",
