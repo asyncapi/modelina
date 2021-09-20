@@ -1,20 +1,8 @@
 {
-  "name": "asyncapi-from-object",
-  "version": "0.0.1",
-  "license": "Apache-2.0",
-  "homepage": "https://github.com/asyncapi/modelina",
-  "bugs": {
-    "url": "https://github.com/asyncapi/modelina/issues"
-  },
-  "devDependencies": {
-    "@types/jest": "^26.0.15",
-    "cross-env": "^7.0.2",
-    "jest": "^26.6.3",
-    "ts-jest": "^26.4.4",
-    "ts-node": "^10.2.1"
-  },
+  "config" : { "example_name" : "asyncapi-from-object" },
   "scripts": {
-    "start": "ts-node index.ts",
-    "test": "cross-env CI=true jest --config=../../jest.config.js ./examples/asyncapi-from-object/index.spec.ts"
+    "install": "cd ../.. && npm i",
+    "start": "../../node_modules/.bin/ts-node --cwd ../../ ./examples/$npm_package_config_example_name/index.ts",
+    "test": "cross-env CI=true jest --config=../../jest.config.js ./examples/$npm_package_config_example_name/index.spec.ts"
   }
 }
