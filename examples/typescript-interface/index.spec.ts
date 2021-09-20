@@ -7,9 +7,6 @@ describe('Should be able to render typescript interface', () => {
   test('and should log expected output to console', async () => {
     const callbackMock = jest.fn();
     await generate(callbackMock);
-    const expectedConsoleLog = `export interface Root {
-  email?: string;
-}`;
-    expect(callbackMock).toBeCalledWith(expectedConsoleLog);
+    expect(callbackMock).toMatchSnapshot();
   });
 });

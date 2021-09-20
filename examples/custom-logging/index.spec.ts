@@ -17,9 +17,6 @@ describe('Should be able to use custom logging interface', () => {
     Logger.setLogger(customLogger);
 
     await generate(callbackMock);
-    const expectedConsoleLog = `export interface Root {
-  email?: string;
-}`;
-    expect(callbackMock).toBeCalledWith(expectedConsoleLog);
+    expect(callbackMock).toMatchSnapshot();
   });
 });
