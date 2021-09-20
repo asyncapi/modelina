@@ -44,7 +44,7 @@ Explains how a JSON Schema draft 7 schema is interpreted to a data model.
 
 ### Languages
 Each language has its own limitations, corner cases, and features; thus, each language has separate documentation.
-- [C#](./languages/C#.md)
+- [C#](./languages/Csharp.md)
 - [Go](./languages/Go.md)
 - [Java](./languages/Java.md)
 - [JavaScript](./languages/JavaScript.md)
