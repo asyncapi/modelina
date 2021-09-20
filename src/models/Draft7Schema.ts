@@ -74,7 +74,7 @@ export class Draft7Schema {
     }
 
     if (seenSchemas.has(object)) {
-      return seenSchemas.get(object) as any;
+      return seenSchemas.get(object);
     }
 
     if (object instanceof Array) {

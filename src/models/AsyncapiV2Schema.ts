@@ -100,7 +100,7 @@ export class AsyncapiV2Schema {
     }
 
     if (seenSchemas.has(object)) {
-      return seenSchemas.get(object) as any;
+      return seenSchemas.get(object);
     }
 
     if (object instanceof Array) {
