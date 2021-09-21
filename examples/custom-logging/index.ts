@@ -1,6 +1,6 @@
 import { TypeScriptGenerator, ModelLoggingInterface, Logger } from '../../src';
 
-const generator = new TypeScriptGenerator({ modelType: 'interface' });
+const generator = new TypeScriptGenerator();
 const jsonSchemaDraft7 = {
   $schema: 'http://json-schema.org/draft-07/schema#',
   type: 'object',

@@ -11,10 +11,12 @@ There are special use-cases that each language supports; this document pertains 
 
 <!-- tocstop -->
 
-## Generate an interface instead of class
-TODO
+## Generate an interface instead of classes
+Sometimes you don't care about classes, but rather have interfaces generated. This can be changed through the [modelType configuration](https://github.com/asyncapi/modelina/blob/master/docs/generators.md#typescript).
 
-## Generate un/marshal functions for each class
+Check out this [example out for a live demonstration](../../examples/typescript-interface).
+
+## Generate un/marshal functions for classes
 TODO
 
 ## Generate example data function

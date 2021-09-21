@@ -1,6 +1,6 @@
 import { TypeScriptGenerator } from '../../src';
 
-const generator = new TypeScriptGenerator({ modelType: 'interface' });
+const generator = new TypeScriptGenerator();
 const AsyncAPIDocument = {
   asyncapi: '2.1.0',
   info: {

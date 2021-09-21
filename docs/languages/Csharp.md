@@ -11,3 +11,6 @@ There are special use-cases that each language supports; this document pertains 
 
 ## Generate serializer and deserializer functionality
 TODO
+
+## Generate models with equals and GetHashCode methods
+TODO
