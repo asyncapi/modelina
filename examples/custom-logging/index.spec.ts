@@ -1,22 +1,17 @@
-import { Logger, ModelLoggingInterface } from '../../src';
+const spy = jest.spyOn(global.console, 'log').mockImplementation(() => { return; });
+jest.spyOn(global.console, 'debug').mockImplementation(() => { return; });
+jest.spyOn(global.console, 'info').mockImplementation(() => { return; });
+jest.spyOn(global.console, 'warn').mockImplementation(() => { return; });
+jest.spyOn(global.console, 'error').mockImplementation(() => { return; });
 import {generate} from './index';
-
 describe('Should be able to use custom logging interface', () => {
   afterAll(() => {
-    jest.clearAllMocks();
+    jest.restoreAllMocks();
   });
   
   test('and should log expected output to console', async () => {
-    const callbackMock = jest.fn();
-    const customLogger: ModelLoggingInterface = {
-      debug: jest.fn(),
-      info: jest.fn(),
-      warn: jest.fn(),
-      error: jest.fn()
-    };
-    Logger.setLogger(customLogger);
-
-    await generate(callbackMock);
-    expect(callbackMock).toMatchSnapshot();
+    await generate();
+    expect(spy.mock.calls.length).toEqual(2);
+    expect(spy.mock.calls[1]).toMatchSnapshot();
   });
 });

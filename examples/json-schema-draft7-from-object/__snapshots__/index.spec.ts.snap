@@ -1,19 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Should be able to process JSON Schema draft 7 object and should log expected output to console 1`] = `
-[MockFunction] {
-  "calls": Array [
-    Array [
-      "export interface Root {
+Array [
+  "export interface Root {
   email?: string;
 }",
-    ],
-  ],
-  "results": Array [
-    Object {
-      "type": "return",
-      "value": undefined,
-    },
-  ],
-}
+]
 `;
