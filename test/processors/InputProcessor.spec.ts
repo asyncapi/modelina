@@ -82,7 +82,7 @@ describe('InputProcessor', () => {
 
     test('should be able to process Swagger (OpenAPI 2.0) input', async () => {
       const {processor, swaggerInputProcessor, defaultInputProcessor} = getProcessors(); 
-      const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './swagger/petstore.json'), 'utf8');
+      const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './SwaggerInputProcessor/basic.json'), 'utf8');
       const inputSchema = JSON.parse(inputSchemaString);
       await processor.process(inputSchema);
       expect(swaggerInputProcessor.process).toHaveBeenNthCalledWith(1, inputSchema, undefined);

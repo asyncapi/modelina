@@ -26,8 +26,8 @@ export class SwaggerInputProcessor extends AbstractInputProcessor {
     //Since we require that all references have been dereferenced, we cannot "simply" support already parsed inputs.
     const api = await SwaggerParser.dereference(input as any) as OpenAPIV2.Document;
     for (const [path, pathObject] of Object.entries(api.paths)) {
-      //Remove all parameters from path
-      let formattedPathName = path.replace(/(\/)?\{(.*)\}/gm, '');
+      //Remove all special chars  from path
+      let formattedPathName = path.replace('{', '').replace('}', '');
       //Remove any pre-pending '/'
       formattedPathName = formattedPathName.replace(/\//, '');
       //Replace all segment separators '/'
