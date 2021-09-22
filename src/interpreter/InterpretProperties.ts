@@ -1,17 +1,16 @@
 import { CommonModel } from '../models/CommonModel';
-import { Schema } from '../models/Schema';
-import { Interpreter, InterpreterOptions } from './Interpreter';
+import { Interpreter, InterpreterOptions, InterpreterSchemaType } from './Interpreter';
 
 /**
- * Interpreter function for interpreting JSON Schema draft 7 properties keyword.
+ * Interpreter function for interpreting properties keyword.
  * 
  * @param schema
  * @param model
  * @param interpreter
  * @param interpreterOptions to control the interpret process
  */
-export default function interpretProperties(schema: Schema, model: CommonModel, interpreter : Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
-  if (schema.properties === undefined) {return;}
+export default function interpretProperties(schema: InterpreterSchemaType, model: CommonModel, interpreter : Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
+  if (typeof schema === 'boolean' || schema.properties === undefined) {return;}
   model.addTypes('object');
   
   for (const [propertyName, propertySchema] of Object.entries(schema.properties)) {
