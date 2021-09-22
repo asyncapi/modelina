@@ -1,10 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { CommonInputModel, ProcessorOptions } from '../../src/models';
-import { InputProcessor } from '../../src/processors/InputProcessor';
-import { JsonSchemaInputProcessor } from '../../src/processors/JsonSchemaInputProcessor';
-import { AsyncAPIInputProcessor } from '../../src/processors/AsyncAPIInputProcessor';
-import { AbstractInputProcessor } from '../../src/processors';
+import { AbstractInputProcessor, AsyncAPIInputProcessor, JsonSchemaInputProcessor, InputProcessor, SwaggerInputProcessor } from '../../src/processors';
 import AsyncAPIParser, { ParserOptions } from '@asyncapi/parser';
 describe('InputProcessor', () => {
   beforeEach(() => {

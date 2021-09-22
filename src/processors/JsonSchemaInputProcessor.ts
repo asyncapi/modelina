@@ -57,7 +57,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     Logger.debug('Processing input as a JSON Schema Draft 7 document');
     const commonInputModel = new CommonInputModel();
     commonInputModel.originalInput = input;
-    input = this.reflectSchemaNames(input, {}, 'root', true) as Record<string, any>;
+    input = JsonSchemaInputProcessor.reflectSchemaNames(input, {}, 'root', true) as Record<string, any>;
     await this.dereferenceInputs(input);
     const parsedSchema = Draft7Schema.toSchema(input);
     commonInputModel.models = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema);
