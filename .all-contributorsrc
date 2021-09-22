@@ -98,6 +98,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "alequetzalli",
+      "name": "Alejandra Quetzalli ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/19964402?v=4",
+      "profile": "http://www.alejandraquetzalli.com",
+      "contributions": [
+        "review",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
