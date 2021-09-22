@@ -6,6 +6,7 @@ const basicDoc = JSON.parse(fs.readFileSync(path.resolve(__dirname, './SwaggerIn
 jest.mock('../../src/interpreter/Interpreter');
 jest.mock('../../src/interpreter/PostInterpreter');
 jest.mock('../../src/utils/LoggingInterface');
+jest.spyOn(SwaggerInputProcessor, 'convertToInternalSchema');
 
 const mockedReturnModels = [new CommonModel()];
 jest.mock('../../src/interpreter/Interpreter', () => {
@@ -23,6 +24,9 @@ jest.mock('../../src/interpreter/PostInterpreter', () => {
   };
 });
 describe('SwaggerInputProcessor', () => {
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
   describe('shouldProcess()', () => {
     const processor = new SwaggerInputProcessor();
     test('should be able to detect pure object', () => {
@@ -54,6 +58,7 @@ describe('SwaggerInputProcessor', () => {
       const processor = new SwaggerInputProcessor();
       const commonInputModel = await processor.process(basicDoc);
       expect(commonInputModel).toMatchSnapshot();
+      expect((SwaggerInputProcessor.convertToInternalSchema as any as jest.SpyInstance).mock.calls).toMatchSnapshot();
     });
   });
 });
