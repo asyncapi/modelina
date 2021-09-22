@@ -106,7 +106,7 @@ describe('CSharpGenerator', () => {
       name: 'with enums of mixed types',
       doc: {
         $id: 'Things',
-        enum: ['Texas', 1, false, {test: 'test'}],
+        enum: ['Texas', '1', 1, false, {test: 'test'}],
       }
     },
   ])('should render `enum` type $name', ({doc}) => {

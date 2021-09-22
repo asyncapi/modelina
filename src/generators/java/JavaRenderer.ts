@@ -30,7 +30,7 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
    */
   nameType(name: string | undefined, model?: CommonModel): string {
     return this.options?.namingConvention?.type 
-      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel, isReservedKeyword: isReservedJavaKeyword(`${name}`) })
+      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel, reservedKeywordCallback: isReservedJavaKeyword })
       : name || '';
   }
 
@@ -42,7 +42,7 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
    */
   nameProperty(propertyName: string | undefined, property?: CommonModel): string {
     return this.options?.namingConvention?.property 
-      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property, isReservedKeyword: isReservedJavaKeyword(`${propertyName}`) })
+      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property, reservedKeywordCallback: isReservedJavaKeyword })
       : propertyName || '';
   }
   

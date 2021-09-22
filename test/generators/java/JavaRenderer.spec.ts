@@ -17,7 +17,7 @@ describe('JavaRenderer', () => {
     });
     test('should render reserved type keyword correctly', () => {
       const name = renderer.nameType('enum');
-      expect(name).toEqual('ReservedEnum');
+      expect(name).toEqual('Enum');
     });
   });
   

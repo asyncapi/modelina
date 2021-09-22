@@ -27,8 +27,8 @@ export function getUniquePropertyName(rootModel: CommonModel, propertyName: stri
 /**
  * The common naming convention context type.
  */
-export type CommonTypeNamingConventionCtx = { model: CommonModel, inputModel: CommonInputModel, isReservedKeyword?: boolean};
-export type CommonPropertyNamingConventionCtx = { model: CommonModel, inputModel: CommonInputModel, property?: CommonModel, isReservedKeyword?: boolean};
+export type CommonTypeNamingConventionCtx = { model: CommonModel, inputModel: CommonInputModel, reservedKeywordCallback?: (name: string) => boolean};
+export type CommonPropertyNamingConventionCtx = { model: CommonModel, inputModel: CommonInputModel, property?: CommonModel, reservedKeywordCallback?: (name: string) => boolean};
 
 /**
  * The common naming convention type shared between generators for different languages.
@@ -44,22 +44,24 @@ export type CommonNamingConvention = {
 export const CommonNamingConventionImplementation: CommonNamingConvention = {
   type: (name, ctx) => {
     if (!name) {return '';}
-    if (ctx.isReservedKeyword) { 
-      name = `reserved_${name}`;
+    let formattedName = FormatHelpers.toPascalCase(name);
+    if (ctx.reservedKeywordCallback !== undefined && ctx.reservedKeywordCallback(formattedName)) { 
+      formattedName = FormatHelpers.toPascalCase(`reserved_${formattedName}`);
     }
-    return FormatHelpers.toPascalCase(name);
+    return formattedName;
   },
   property: (name, ctx) => {
     if (!name) {return '';}
-    if (ctx.isReservedKeyword) { 
+    let formattedName = FormatHelpers.toCamelCase(name);
+    if (ctx.reservedKeywordCallback !== undefined && ctx.reservedKeywordCallback(formattedName)) { 
       // If name is considered reserved, make sure we rename it appropriately
       // and make sure no clashes occur.
-      name = FormatHelpers.toCamelCase(`reserved_${name}`);
-      if (Object.keys(ctx.model.properties || {}).includes(name)) {
+      formattedName = FormatHelpers.toCamelCase(`reserved_${formattedName}`);
+      if (Object.keys(ctx.model.properties || {}).includes(formattedName)) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        return CommonNamingConventionImplementation.property!(name, ctx);
+        return CommonNamingConventionImplementation.property!(`reserved_${formattedName}`, ctx);
       }
     }
-    return FormatHelpers.toCamelCase(name);
+    return formattedName;
   }
 };

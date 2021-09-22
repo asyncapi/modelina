@@ -267,10 +267,10 @@ describe('JavaGenerator', () => {
     const doc = {
       $id: 'Union',
       type: ['string', 'integer', 'boolean'],
-      enum: ['Texas', 'Alabama', 0, 1, true, {test: 'test'}],
+      enum: ['Texas', 'Alabama', 0, 1, '1', true, {test: 'test'}],
     };
     const expected = `public enum Union {
-  TEXAS("Texas"), ALABAMA("Alabama"), NUMBER_0(0), NUMBER_1(1), BOOLEAN_TRUE(true), TEST_TEST("{\\"test\\":\\"test\\"}");
+  TEXAS("Texas"), ALABAMA("Alabama"), NUMBER_0(0), NUMBER_1(1), STRING_1("1"), BOOLEAN_TRUE(true), TEST_TEST("{\\"test\\":\\"test\\"}");
 
   private Object value;
 
