@@ -36,7 +36,8 @@
     "@apidevtools/json-schema-ref-parser": "^9.0.7",
     "@apidevtools/swagger-parser": "^10.0.3",
     "@asyncapi/parser": "^1.9.0",
-    "change-case": "^4.1.2"
+    "change-case": "^4.1.2",
+    "openapi-types": "9.3.0"
   },
   "devDependencies": {
     "@semantic-release/commit-analyzer": "^8.0.1",
