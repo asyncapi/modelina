@@ -25,7 +25,6 @@ export class SwaggerInputProcessor extends AbstractInputProcessor {
     
     //Since we require that all references have been dereferenced, we cannot "simply" support already parsed inputs.
     const api = await SwaggerParser.dereference(input as any) as OpenAPIV2.Document;
-
     for (const [path, pathObject] of Object.entries(api.paths)) {
       //Remove all parameters from path
       let formattedPathName = path.replace(/(\/)?\{(.*)\}/gm, '');
@@ -68,7 +67,7 @@ export class SwaggerInputProcessor extends AbstractInputProcessor {
     schema: OpenAPIV2.SchemaObject,
     name: string): SwaggerV2Schema {
     schema = JsonSchemaInputProcessor.reflectSchemaNames(schema, {}, name, true);
-    return SwaggerV2Schema.toSchema(schema) as SwaggerV2Schema;
+    return SwaggerV2Schema.toSchema(schema);
   }
 
   /**
