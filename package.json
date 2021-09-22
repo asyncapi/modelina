@@ -57,10 +57,10 @@
     "markdown-toc": "^1.2.0",
     "semantic-release": "^17.4.2",
     "ts-jest": "^26.4.4",
+    "ts-node": "^10.2.1",
     "typescript": "^4.1.2"
   },
   "scripts": {
-    "start": "tsc --watch",
     "build": "tsc",
     "build:prod": "npm run build:cjs && npm run build:esm && npm run build:types",
     "build:cjs": "tsc",
@@ -69,8 +69,8 @@
     "docker:build": "docker build -t asyncapi/modelina .",
     "docker:test": "npm run docker:build && docker run asyncapi/modelina npm run test",
     "docker:test:blackbox": "npm run docker:build && docker run asyncapi/modelina npm run test:blackbox",
-    "test": "cross-env CI=true jest --coverage --testPathIgnorePatterns ./test/blackbox",
-    "test:snapshot": "npm run test -- --updateSnapshot",
+    "test": "cross-env CI=true jest --coverage --testPathIgnorePatterns ./test/blackbox --testPathIgnorePatterns ./examples/TEMPLATE",
+    "test:examples": "cross-env CI=true jest ./examples --testPathIgnorePatterns ./examples/TEMPLATE",
     "test:blackbox": "cross-env CI=true jest ./test/blackbox",
     "test:watch": "jest --watch",
     "docs": "npm run docs:markdown",
@@ -78,7 +78,7 @@
     "lint": "eslint --max-warnings 0 --config .eslintrc .",
     "lint:fix": "eslint --max-warnings 0 --config .eslintrc . --fix",
     "release": "semantic-release",
-    "generate:readme:toc": "markdown-toc -i README.md",
+    "generate:readme:toc": "markdown-toc -i README.md && markdown-toc -i ./docs/usage.md && markdown-toc -i ./docs/integration.md && markdown-toc -i ./docs/advanced.md && markdown-toc -i ./docs/languages/TypeScript.md && markdown-toc -i ./docs/languages/Java.md && markdown-toc -i ./docs/languages/Csharp.md && markdown-toc -i ./docs/README.md && markdown-toc -i ./docs/generators.md",
     "generate:assets": "npm run build:prod && npm run docs && npm run generate:readme:toc",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION",
     "prepublishOnly": "npm run build:prod && npm run generate:readme:toc"

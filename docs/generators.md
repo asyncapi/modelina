@@ -1,14 +1,20 @@
 # Generators
 
+<!-- toc is generated with GitHub Actions do not remove toc markers -->
+
+<!-- toc -->
+
+- [Generator's options](#generators-options)
+  * [TypeScript](#typescript)
+  * [Java](#java)
+  * [JavaScript](#javascript)
+  * [Go](#go)
+  * [C#](#c%23)
+- [Custom generator](#custom-generator)
+
+<!-- tocstop -->
+
 **Generators** are classes that are used to render models for a given language.
-
-## Supported languages
-
-- [JavaScript](../src/generators/javascript/JavaScriptGenerator.ts),
-- [TypeScript](../src/generators/typescript/TypeScriptGenerator.ts),
-- [Java](../src/generators/java/JavaGenerator.ts).
-- [Go](../src/generators/go/GoGenerator.ts).
-- [C#](../src/generators/csharp/CSharpGenerator.ts).
 
 ## Generator's options
 
