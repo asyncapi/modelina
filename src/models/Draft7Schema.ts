@@ -59,7 +59,6 @@ export class Draft7Schema {
    * Takes a deep copy of the input object and converts it to an instance of Draft7Schema.
    * 
    * @param object 
-   * @returns 
    */
   static toSchema(object: Record<string, unknown>): Draft7Schema {
     const convertedSchema = Draft7Schema.internalToSchema(object);
@@ -75,7 +74,7 @@ export class Draft7Schema {
     }
 
     if (seenSchemas.has(object)) {
-      return seenSchemas.get(object) as any;
+      return seenSchemas.get(object);
     }
 
     if (object instanceof Array) {
