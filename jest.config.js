@@ -16,5 +16,8 @@ module.exports = {
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.[jt]sx?$',
   // Module file extensions for importing
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  testTimeout: 10000
+  testTimeout: 10000,
+  collectCoverageFrom: [
+    'src/**'
+  ]
 };

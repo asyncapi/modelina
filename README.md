@@ -2,10 +2,10 @@
   <br>
   <a href="https://www.asyncapi.org"><img src="https://github.com/asyncapi/parser-nodejs/raw/master/assets/logo.png" alt="AsyncAPI logo" width="200"></a>
   <br>
-  Modelina
+  <em><b>Modelina</b></em>
 </h5>
 <p align="center">
-  <em>The official SDK for generating data models from JSON Schema and AsyncAPI spec</em>
+  <em>Modelina is the official AsyncAPI SDK used to generate different data models (i.e. <a href="#outputs">Java/TypeScript classes, Go Structs, etc</a>) for <a href="#inputs">AsyncAPI documents, among other supported inputs </a>.</em>
 </p>
 
 [![Coverage Status](https://coveralls.io/repos/github/asyncapi/modelina/badge.svg?branch=master)](https://coveralls.io/github/asyncapi/modelina?branch=master)
@@ -13,13 +13,11 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-AsyncAPI Model SDK is a set of classes/functions for generating data models from JSON Schema and AsyncAPI spec.
-
 ---
 
 ## :loudspeaker: ATTENTION:
 
-This package is under development and it has not reached version 1.0.0 yet, which means its API might get breaking changes without prior notice. Once it reaches its first stable version, we'll follow semantic versioning.
+This package is still under development and has not reached version 1.0.0 yet. This means that its API may contain breaking changes until we're able to deploy the first stable version and begin semantic versioning. Please use tests to ensure expected outputs or to hardcode the version.
 
 ---
 
@@ -29,14 +27,9 @@ This package is under development and it has not reached version 1.0.0 yet, whic
 
 - [Requirements](#requirements)
 - [Installation](#installation)
-- [How it works](#how-it-works)
-  * [The input process](#the-input-process)
-  * [The generation process](#the-generation-process)
-- [Example](#example)
-- [Supported input](#supported-input)
-  * [AsyncAPI input](#asyncapi-input)
-  * [JSON Schema input](#json-schema-input)
-- [Customization](#customization)
+- [Features](#features)
+- [Roadmap](#roadmap)
+- [Documentation](#documentation)
 - [Development](#development)
 - [Contributing](#contributing)
 - [Contributors ✨](#contributors-%E2%9C%A8)
@@ -50,117 +43,75 @@ This package is under development and it has not reached version 1.0.0 yet, whic
 Feel free to submit an issue if you require this project in other use-cases.
 
 ## Installation
-
-Run this command to install the SDK in your project:
+Run this command to install Modelina in your project:
 
 ```bash
-npm install --save @asyncapi/modelina
+npm install @asyncapi/modelina
 ```
 
-## How it works
+Once you've successfully installed Modelina in your project, it's time to select your generator. Check out the [examples](#examples) for the specific code.
 
-The process of creating data models from input data consists of 2 processes, the input and generation process.
+## Features
+The following table provides a short summary of available features for supported output languages.
 
-### The input process
+To see the complete feature list for each language, please click the individual links for each language.
 
-The input process ensures that any supported input is handled correctly, the basics are that any input needs to be converted into our internal model representation `CommonModel`. The following inputs are supported:
+<a id="inputs"></a>
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <th>Supported inputs</th>
+    <th>description</th>
+  </tr>
+  <tr>
+    <td><a href="./docs/usage.md#generate-typescript-models">AsyncAPI</a></td>
+    <td>We support the following AsyncAPI versions: <em>2.0.0, 2.1.0</em>, which generates models for all the defined message payloads.</td>
+  </tr>
+  <tr>
+    <td><a href="./docs/usage.md#generate-java-models">JSON Schema</a></td>
+    <td>We support the following JSON Schema versions: <em>Draft-7</em></td>
+  </tr>
+</table>
 
-- [JSON Schema Draft 7](#JSON-Schema-input), this is the default inferred input if we cannot find another input processor.
-- [AsyncAPI version 2.0.0 and 2.1.0](#AsyncAPI-input)
+<a id="outputs"></a>
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <th>Supported outputs</th>
+    <th>Features</th>
+  </tr>
+  <tr>
+    <td><a href="./docs/usage.md#generate-java-models">Java</a></td>
+    <td>Class and enum generation: <em>generation of equals, hashCode, toString, Jackson annotation, custom indentation type and size, etc</em></td>
+  </tr>
+  <tr>
+    <td><a href="./docs/usage.md#generate-typescript-models">TypeScript</a></td>
+    <td>Class, interface and enum generation: <em>generation of example code, un/marshal functions, custom indentation type and size, etc</em></td>
+  </tr>
+  <tr>
+    <td><a href="./docs/usage.md#generate-c#-models">C#</a></td>
+    <td>Class and enum generation: <em>generation of example code, serializer and deserializer functions, custom indentation type and size, etc</em></td>
+  </tr>
+  <tr>
+    <td><a href="./docs/usage.md#generate-go-models">Go</a></td>
+    <td>Struct and enum generation: <em>custom indentation type and size, etc </em></td>
+  </tr>
+  <tr>
+    <td><a href="./docs/usage.md#generate-javascript-models">JavaScript</a></td>
+    <td>Class generation: <em>custom indentation type and size, etc</em></td>
+  </tr>
+</table>
 
-Read more about the input process [here](./docs/input_processing.md).
+## Roadmap
+- [Reach version 1.0](https://github.com/asyncapi/modelina/milestone/3)
 
-### The generation process
+## Documentation
+The documentation for this library can all be found under the documentation [README](./docs/README.md).
 
-The generation process uses the predefined `CommonModel`s from the input stage to easily generate models regardless of input. 
-The list of supported output languages can be found [here](./docs/generators.md#supported-languages).
-
-Check out [the example](#example) to see how to use the library and [generators document](./docs/generators.md) for more info.
-
-> **NOTE**: Each implemented language has different options, dictated by the nature of the language.
-
-## Example
-
-```js
-import { TypeScriptGenerator } from '@asyncapi/modelina';
-
-const generator = new TypeScriptGenerator({ modelType: 'interface' });
-
-const doc = {
-  $id: "Address",
-  type: "object",
-  properties: {
-    street_name:    { type: "string" },
-    city:           { type: "string", description: "City description" },
-    house_number:   { type: "number" },
-    marriage:       { type: "boolean", description: "Status if marriage live in given house" },
-    pet_names:      { type: "array", items: { type: "string" } },
-    state:          { type: "string", enum: ["Texas", "Alabama", "California", "other"] },
-  },
-  required: ["street_name", "city", "state", "house_number", "state"],
-};
-
-async function generate() {
-  const models = await generator.generate(doc);
-  models.forEach(model => console.log(model.result)); 
-}
-
-generate();
-```
-
-Output:
-
-```ts
-export interface Address {
-  streetName: string;
-  city: string;
-  houseNumber: number;
-  marriage?: boolean;
-  petNames?: Array<string>;
-  state: State;
-  additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null | number>;
-}
-export enum State {
-  TEXAS = "Texas",
-  ALABAMA = "Alabama",
-  CALIFORNIA = "California",
-  OTHER = "other",
-}
-```
-
-## Supported input
-
-These are the supported inputs.
-
-### AsyncAPI input
-
-The library expects the `asyncapi` property for the document to be sat in order to understand the input format.
-
-- Generate from a [parsed AsyncAPI document](https://github.com/asyncapi/parser-js):
-
-```js
-const parser = require('@asyncapi/parser');
-const doc = await parser.parse(`{asyncapi: '2.0.0'}`);
-generator.generate(doc);
-```
-
-- Generate from a pure JS object:
-
-```js
-generator.generate({asyncapi: '2.0.0'});
-```
-
-### JSON Schema input
-
-- Generate from a pure JS object:
-
-```js
-generator.generate({$schema: 'http://json-schema.org/draft-07/schema#'});
-```
-
-## Customization
-
-There are multiple ways to customize the library both in terms of processing, logging and output generation, check the [customization document](./docs/customization.md).
+## Examples
+We have gathered all the examples, in a separate folder to ensure consistency, they can be found under the [example folder](./examples). 
 
 ## Development
 To setup your development environment please read the [development](./docs/development.md) document.
