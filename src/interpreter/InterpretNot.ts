@@ -1,17 +1,17 @@
 
 import { Logger } from '../utils';
 import { CommonModel } from '../models/CommonModel';
-import { Interpreter, InterpreterOptions, interpreterSchemaType } from './Interpreter';
+import { Interpreter, InterpreterOptions, InterpreterSchemaType } from './Interpreter';
 
 /**
- * Interpreter function for JSON Schema draft 7 not keyword.
+ * Interpreter function for not keyword.
  *   
  * @param schema
  * @param model
  * @param interpreter
  * @param interpreterOptions to control the interpret process
  */
-export default function interpretNot(schema: interpreterSchemaType, model: CommonModel, interpreter: Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
+export default function interpretNot(schema: InterpreterSchemaType, model: CommonModel, interpreter: Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
   if (typeof schema === 'boolean') {return;}
   if (schema.not === undefined) {return;}
   if (typeof schema.not === 'object') {

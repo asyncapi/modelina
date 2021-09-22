@@ -1,6 +1,6 @@
 import { Logger } from '../utils';
 import { CommonModel } from '../models/CommonModel';
-import { Interpreter, InterpreterOptions, interpreterSchemaType } from './Interpreter';
+import { Interpreter, InterpreterOptions, InterpreterSchemaType } from './Interpreter';
 import { isModelObject } from './Utils';
 
 /**
@@ -13,7 +13,7 @@ import { isModelObject } from './Utils';
  * @param interpreter 
  * @param interpreterOptions to control the interpret process
  */
-export default function interpretAllOf(schema: interpreterSchemaType, model: CommonModel, interpreter : Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
+export default function interpretAllOf(schema: InterpreterSchemaType, model: CommonModel, interpreter : Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
   if (typeof schema === 'boolean' || schema.allOf === undefined) {return;}
   for (const allOfSchema of schema.allOf) {  
     const allOfModel = interpreter.interpret(allOfSchema, interpreterOptions);

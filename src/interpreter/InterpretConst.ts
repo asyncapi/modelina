@@ -1,5 +1,5 @@
 import { CommonModel } from '../models/CommonModel';
-import { interpreterSchemaType } from './Interpreter';
+import { InterpreterSchemaType } from './Interpreter';
 import { inferTypeFromValue } from './Utils';
 
 /**
@@ -8,7 +8,7 @@ import { inferTypeFromValue } from './Utils';
  * @param schema 
  * @param model
  */
-export default function interpretConst(schema: interpreterSchemaType, model: CommonModel): void {
+export default function interpretConst(schema: InterpreterSchemaType, model: CommonModel): void {
   if (typeof schema === 'boolean' || schema.const === undefined) {return;}
   
   const schemaConst = schema.const;
