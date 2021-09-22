@@ -2,15 +2,15 @@ import * as path from 'path';
 import { TypeScriptGenerator, JavaGenerator, JavaScriptGenerator, GoGenerator, CSharpGenerator, TS_COMMON_PRESET } from '../../src';
 import { execCommand, generateModels, renderModels, renderModelsToSeparateFiles } from './utils/Utils';
 const filesToTest = [
-  {file: '../docs/AsyncAPI-2_0/dummy.json', outputDirectory: 'AsyncAPI-2_0/dummy'},
-  {file: '../docs/AsyncAPI-2_1/dummy.json', outputDirectory: 'AsyncAPI-2_1/dummy'},
-  {file: '../docs/JsonSchemaDraft-4/swagger-2_0.json', outputDirectory: 'JsonSchemaDraft-4/swagger-2_0'},
-  {file: '../docs/JsonSchemaDraft-7/asyncapi-2_0.json', outputDirectory: 'JsonSchemaDraft-7/asyncapi-2_0'},
-  {file: '../docs/JsonSchemaDraft-7/dummy.json', outputDirectory: 'JsonSchemaDraft-7/dummy'},
-  {file: '../docs/JsonSchemaDraft-7/github-action.json', outputDirectory: 'JsonSchemaDraft-7/github-action'},
-  {file: '../docs/JsonSchemaDraft-7/github-workflow.json', outputDirectory: 'JsonSchemaDraft-7/github-workflow'},
-  {file: '../docs/JsonSchemaDraft-7/gitlab-ci.json', outputDirectory: 'JsonSchemaDraft-7/gitlab-ci'},
-  {file: '../docs/Swagger-2_0/petstore.json', outputDirectory: 'Swagger-2_0/petstore'}
+  {file: './docs/AsyncAPI-2_0/dummy.json', outputDirectory: 'AsyncAPI-2_0/dummy'},
+  {file: './docs/AsyncAPI-2_0/zbos_mqtt-all-asyncapi.json', outputDirectory: 'AsyncAPI-2_0/zbos_mqtt-all-asyncapi'},
+  {file: './docs/AsyncAPI-2_1/dummy.json', outputDirectory: 'AsyncAPI-2_1/dummy'},
+  {file: './docs/JsonSchemaDraft-4/swagger-2_0.json', outputDirectory: 'JsonSchemaDraft-4/swagger-2_0'},
+  {file: './docs/JsonSchemaDraft-7/asyncapi-2_0.json', outputDirectory: 'JsonSchemaDraft-7/asyncapi-2_0'},
+  {file: './docs/JsonSchemaDraft-7/dummy.json', outputDirectory: 'JsonSchemaDraft-7/dummy'},
+  {file: './docs/JsonSchemaDraft-7/github-action.json', outputDirectory: 'JsonSchemaDraft-7/github-action'},
+  {file: './docs/JsonSchemaDraft-7/github-workflow.json', outputDirectory: 'JsonSchemaDraft-7/github-workflow'},
+  {file: './docs/JsonSchemaDraft-7/gitlab-ci.json', outputDirectory: 'JsonSchemaDraft-7/gitlab-ci'}
 ];
 
 describe.each(filesToTest)('Should be able to generate with inputs', ({file, outputDirectory}) => {
