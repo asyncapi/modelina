@@ -1,14 +1,10 @@
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import path from 'path';
-import { CommonModel, CommonInputModel} from '../models';
+import { CommonModel, CommonInputModel, Draft7Schema, SwaggerV2Schema, AsyncapiV2Schema } from '../models';
 import { Logger } from '../utils';
 import { postInterpretModel } from '../interpreter/PostInterpreter';
 import { Interpreter } from '../interpreter/Interpreter';
-import {OpenAPIV2} from 'openapi-types';
-import { Draft7Schema } from '../models/Draft7Schema';
-import { SwaggerV2Schema } from '../models/SwaggerV2Schema';
-import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
 
 /**
  * Class for processing JSON Schema

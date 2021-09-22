@@ -65,15 +65,15 @@ To see the complete feature list for each language, please click the individual 
     <th>description</th>
   </tr>
   <tr>
-    <td><a href="./docs/usage.md#generate-typescript-models">AsyncAPI</a></td>
+    <td><a href="./docs/usage.md">AsyncAPI</a></td>
     <td>We support the following AsyncAPI versions: <em>2.0.0, 2.1.0</em>, which generates models for all the defined message payloads.</td>
   </tr>
   <tr>
-    <td><a href="./docs/usage.md#generate-java-models">JSON Schema</a></td>
+    <td><a href="./docs/usage.md">JSON Schema</a></td>
     <td>We support the following JSON Schema versions: <em>Draft-7</em></td>
   </tr>
   <tr>
-    <td><a href="./docs/usage.md#generate-java-models">OpenAPI</a></td>
+    <td><a href="./docs/usage.md">OpenAPI</a></td>
     <td>We support the following OpenAPI versions: <em>Swagger 2.0</em></td>
   </tr>
 </table>

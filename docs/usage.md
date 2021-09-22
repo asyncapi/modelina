@@ -40,6 +40,9 @@ There are one way to generate models from a JSON Schema draft 7 document.
 
 The library expects the `$schema` property for the document to be set in order to understand the input format. By default, if no other inputs are detected, it defaults to `JSON Schema draft 7`.
 
+## Generate models from Swagger 2.0 documents
+TODO 
+
 ## Generate Go models
 TODO 
 

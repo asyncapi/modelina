@@ -59,7 +59,7 @@ export class SwaggerInputProcessor extends AbstractInputProcessor {
   }
   
   /**
-   * Converts a schema to the Common schema format.
+   * Converts a Swagger 2.0 Schema to the internal schema format.
    * 
    * @param schema to convert
    * @param name of the schema
@@ -83,7 +83,7 @@ export class SwaggerInputProcessor extends AbstractInputProcessor {
   }
 
   /**
-   * Try to find the AsyncAPI version from the input. If it cannot undefined are returned, if it can, the version is returned.
+   * Try to find the swagger version from the input. If it cannot, undefined are returned, if it can, the version is returned.
    * 
    * @param input 
    */
