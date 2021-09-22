@@ -81,7 +81,6 @@ export class SwaggerV2Schema {
    * Takes a deep copy of the input object and converts it to an instance of SwaggerV2Schema.
    * 
    * @param object 
-   * @returns 
    */
   static toSchema(object: Record<string, unknown>): SwaggerV2Schema {
     const convertedSchema = SwaggerV2Schema.internalToSchema(object);
