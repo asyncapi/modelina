@@ -70,11 +70,7 @@ To see the complete feature list for each language, please click the individual 
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-java-models">JSON Schema</a></td>
-    <td>We support the following JSON Schema versions: <em>Draft-4, Draft-6, Draft-7</em></td>
-  </tr>
-  <tr>
-    <td><a href="./docs/usage.md#generate-c#-models">OpenAPI</a></td>
-    <td>We support the following OpenAPI versions: <em>Swagger 2.0, OpenAPI 3.0.x, OpenAPI 3.1</em>, which generates models for all defined responses.</td>
+    <td>We support the following JSON Schema versions: <em>Draft-7</em></td>
   </tr>
 </table>
 
