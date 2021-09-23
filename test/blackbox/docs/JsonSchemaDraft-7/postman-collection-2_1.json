@@ -48,7 +48,7 @@
     "definitions": {
         "auth-attribute": {
             "type": "object",
-            "title": "Auth",
+            "title": "AuthAttribute",
             "$id": "#/definitions/auth-attribute",
             "description": "Represents an attribute for any authorization method provided by Postman. For example `username` and `password` are set as auth attributes for Basic Authentication method.",
             "properties": {
