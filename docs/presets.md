@@ -30,7 +30,7 @@ Below is a custom preset written for TypeScript language, which adds a descripti
 import { TypeScriptGenerator } from '@asyncapi/modelina';
 
 function renderDesc({ renderer, content, model }) {
-  const desc = model.getFromSchema('description');
+  const desc = model.getFromOriginalInput('description');
   if (desc) {
     const renderedDesc = renderer.renderComments(desc);
     return `${renderedDesc}\n${content}`;

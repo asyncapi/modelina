@@ -1,11 +1,10 @@
 import { Logger } from '../utils';
 import { CommonModel } from '../models/CommonModel';
-import { Schema } from '../models/Schema';
-import { Interpreter, InterpreterOptions } from './Interpreter';
+import { Interpreter, InterpreterOptions, InterpreterSchemaType } from './Interpreter';
 import { isModelObject } from './Utils';
 
 /**
- * Interpreter function for JSON Schema draft 7 allOf keyword.
+ * Interpreter function for allOf keyword.
  * 
  * It either merges allOf schemas into existing model or if allowed, create inheritance.
  * 
@@ -14,8 +13,8 @@ import { isModelObject } from './Utils';
  * @param interpreter 
  * @param interpreterOptions to control the interpret process
  */
-export default function interpretAllOf(schema: Schema, model: CommonModel, interpreter : Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
-  if (schema.allOf === undefined) {return;}
+export default function interpretAllOf(schema: InterpreterSchemaType, model: CommonModel, interpreter : Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
+  if (typeof schema === 'boolean' || schema.allOf === undefined) {return;}
   for (const allOfSchema of schema.allOf) {  
     const allOfModel = interpreter.interpret(allOfSchema, interpreterOptions);
     if (allOfModel === undefined) {continue;}

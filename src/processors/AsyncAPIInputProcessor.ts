@@ -1,8 +1,9 @@
 import {parse, AsyncAPIDocument, Schema as AsyncAPISchema, ParserOptions} from '@asyncapi/parser';
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
-import { CommonInputModel, ProcessorOptions, Schema } from '../models';
+import { CommonInputModel, ProcessorOptions } from '../models';
 import { Logger } from '../utils';
+import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
 
 /**
  * Class for processing AsyncAPI inputs
@@ -39,6 +40,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
   /**
    * 
    * Reflect the name of the schema and save it to `x-modelgen-inferred-name` extension. 
+   * 
    * This keeps the the id of the model deterministic if used in conjunction with other AsyncAPI tools such as the generator.
    * 
    * @param schema to reflect name for
@@ -46,14 +48,14 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
   // eslint-disable-next-line sonarjs/cognitive-complexity
   static convertToInternalSchema(
     schema: AsyncAPISchema | boolean,
-    alreadyIteratedSchemas: Map<string, Schema> = new Map()
-  ): Schema | boolean {
+    alreadyIteratedSchemas: Map<string, AsyncapiV2Schema> = new Map()
+  ): AsyncapiV2Schema | boolean {
     if (typeof schema === 'boolean') {return schema;}
     const schemaUid = schema.uid();
     if (alreadyIteratedSchemas.has(schemaUid)) {
-      return alreadyIteratedSchemas.get(schemaUid) as Schema; 
+      return alreadyIteratedSchemas.get(schemaUid) as AsyncapiV2Schema; 
     }
-    let convertedSchema = new Schema();
+    let convertedSchema = new AsyncapiV2Schema();
     alreadyIteratedSchemas.set(schemaUid, convertedSchema);
     convertedSchema = Object.assign({}, schema.json());
     convertedSchema[this.MODELGEN_INFFERED_NAME] = schemaUid;
@@ -106,14 +108,14 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     }
 
     if (schema.properties() !== null && Object.keys(schema.properties()).length) {
-      const properties : {[key: string]: Schema | boolean} = {};
+      const properties : {[key: string]: AsyncapiV2Schema | boolean} = {};
       for (const [propertyName, propertySchema] of Object.entries(schema.properties())) {
         properties[String(propertyName)] = this.convertToInternalSchema(propertySchema, alreadyIteratedSchemas);
       }
       convertedSchema.properties = properties;
     }
     if (schema.dependencies() !== null && Object.keys(schema.dependencies()).length) {
-      const dependencies: { [key: string]: Schema | boolean | string[] } = {};
+      const dependencies: { [key: string]: AsyncapiV2Schema | boolean | string[] } = {};
       for (const [dependencyName, dependency] of Object.entries(schema.dependencies())) {
         if (typeof dependency === 'object' && !Array.isArray(dependency)) {
           dependencies[String(dependencyName)] = this.convertToInternalSchema(dependency, alreadyIteratedSchemas);
@@ -124,14 +126,14 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       convertedSchema.dependencies = dependencies;
     }
     if (schema.patternProperties() !== null && Object.keys(schema.patternProperties()).length) {
-      const patternProperties: { [key: string]: Schema | boolean } = {};
+      const patternProperties: { [key: string]: AsyncapiV2Schema | boolean } = {};
       for (const [patternPropertyName, patternProperty] of Object.entries(schema.patternProperties())) {
         patternProperties[String(patternPropertyName)] = this.convertToInternalSchema(patternProperty, alreadyIteratedSchemas);
       }
       convertedSchema.patternProperties = patternProperties;
     }
     if (schema.definitions() !== null && Object.keys(schema.definitions()).length) {
-      const definitions: { [key: string]: Schema | boolean } = {};
+      const definitions: { [key: string]: AsyncapiV2Schema | boolean } = {};
       for (const [definitionName, definition] of Object.entries(schema.definitions())) {
         definitions[String(definitionName)] = this.convertToInternalSchema(definition, alreadyIteratedSchemas);
       }
@@ -164,7 +166,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
   }
 
   /**
-   * Figure out if input is from our parser.
+   * Figure out if input is from the AsyncAPI js parser.
    * 
    * @param input 
    */

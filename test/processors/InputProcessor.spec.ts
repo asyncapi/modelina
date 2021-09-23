@@ -5,7 +5,7 @@ import { InputProcessor } from '../../src/processors/InputProcessor';
 import { JsonSchemaInputProcessor } from '../../src/processors/JsonSchemaInputProcessor';
 import { AsyncAPIInputProcessor } from '../../src/processors/AsyncAPIInputProcessor';
 import { AbstractInputProcessor } from '../../src/processors';
-import AsyncAPIParser, { ParserError, ParserOptions } from '@asyncapi/parser';
+import AsyncAPIParser, { ParserOptions } from '@asyncapi/parser';
 describe('InputProcessor', () => {
   beforeEach(() => {
     jest.resetAllMocks();
@@ -59,7 +59,7 @@ describe('InputProcessor', () => {
     });
     test('should be able to process default JSON schema input', async () => {
       const {processor, asyncInputProcessor, defaultInputProcessor} = getProcessors(); 
-      const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './JsonSchemaInputProcessor/basic.json'), 'utf8');
+      const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './JsonSchemaInputProcessor/draft-7.json'), 'utf8');
       const inputSchema = JSON.parse(inputSchemaString);
       await processor.process(inputSchema);
       expect(asyncInputProcessor.process).not.toHaveBeenCalled();
@@ -78,6 +78,7 @@ describe('InputProcessor', () => {
       expect(defaultInputProcessor.process).not.toHaveBeenCalled();
       expect(defaultInputProcessor.shouldProcess).not.toHaveBeenCalled();
     });
+
     test('should be able to process AsyncAPI schema input with options', async () => {
       const {processor, asyncInputProcessor, defaultInputProcessor} = getProcessors(); 
       const spy = jest.spyOn(AsyncAPIParser, 'parse');
