@@ -66,7 +66,7 @@ export class SwaggerInputProcessor extends AbstractInputProcessor {
     for (const parameterObject of parameters || []) {
       const parameter = parameterObject as OpenAPIV2.Parameter;
       if (parameter.in === 'body') {
-        const bodyParameterSchema = parameter.schema as OpenAPIV2.SchemaObject;
+        const bodyParameterSchema = parameter.schema;
         const swaggerSchema = SwaggerInputProcessor.convertToInternalSchema(bodyParameterSchema, `${path}_body`);
         const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(swaggerSchema);
         inputModel.models = {...inputModel.models, ...commonModels};

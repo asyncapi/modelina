@@ -26,6 +26,14 @@
         }
       },
       "post": {
+        "parameters": [
+          { 
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/ApiResponse"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "successful operation",

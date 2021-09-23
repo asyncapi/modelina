@@ -115,6 +115,26 @@ CommonInputModel {
           },
         },
         "post": Object {
+          "parameters": Array [
+            Object {
+              "in": "body",
+              "schema": Object {
+                "properties": Object {
+                  "code": Object {
+                    "format": "int32",
+                    "type": "integer",
+                  },
+                  "message": Object {
+                    "type": "string",
+                  },
+                  "type": Object {
+                    "type": "string",
+                  },
+                },
+                "type": "object",
+              },
+            },
+          ],
           "responses": Object {
             "200": Object {
               "description": "successful operation",
@@ -220,6 +240,24 @@ Array [
       "type": "object",
     },
     "test_post_200",
+  ],
+  Array [
+    Object {
+      "properties": Object {
+        "code": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "message": Object {
+          "type": "string",
+        },
+        "type": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+    "test_post_body",
   ],
   Array [
     Object {
