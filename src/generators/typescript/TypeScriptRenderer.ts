@@ -65,9 +65,6 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
   }
 
   toTsType(type: string | undefined, model: CommonModel): string {
-    if (type === undefined) {
-      return 'any';
-    }
     switch (type) { 
     case 'string':
       return 'string';
@@ -88,7 +85,7 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
       const arrayType = model.items ? this.renderType(model.items) : 'unknown';
       return `Array<${arrayType}>`;
     }
-    default: return type;
+    default: return 'any';
     }
   }
 

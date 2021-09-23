@@ -1,20 +1,16 @@
 import * as path from 'path';
 import * as fs from 'fs';
-import { TypeScriptGenerator, JavaGenerator, JavaScriptGenerator, GoGenerator, CSharpGenerator, TS_COMMON_PRESET } from '../../src';
+import { TypeScriptGenerator, JavaGenerator, JavaScriptGenerator, GoGenerator, CSharpGenerator } from '../../src';
 import { execCommand, generateModels, renderModels, renderModelsToSeparateFiles } from './utils/Utils';
 const jsonSchemaPath = path.resolve(__dirname, './docs/JsonSchemaDraft-7');
 const jsonSchemaDraft7Files = fs.readdirSync(jsonSchemaPath).map((file) => { return { file: `./docs/JsonSchemaDraft-7/${file}`, outputDirectory: `JsonSchemaDraft-7/${path.parse(file).name}`};});
 
-// const filesToTest = [
-//   {file: './docs/AsyncAPI-2_0/dummy.json', outputDirectory: 'AsyncAPI-2_0/dummy'},
-//   {file: './docs/AsyncAPI-2_0/zbos_mqtt-all-asyncapi.json', outputDirectory: 'AsyncAPI-2_0/zbos_mqtt-all-asyncapi'},
-//   {file: './docs/AsyncAPI-2_1/dummy.json', outputDirectory: 'AsyncAPI-2_1/dummy'},
-//   ...jsonSchemaDraft7Files
-// ];
 const filesToTest = [
-  {file: './docs/JsonSchemaDraft-7/graphql-code-generator.json', outputDirectory: 'JsonSchemaDraft-7/graphql-code-generator'}
+  {file: './docs/AsyncAPI-2_0/dummy.json', outputDirectory: 'AsyncAPI-2_0/dummy'},
+  {file: './docs/AsyncAPI-2_0/zbos_mqtt-all-asyncapi.json', outputDirectory: 'AsyncAPI-2_0/zbos_mqtt-all-asyncapi'},
+  {file: './docs/AsyncAPI-2_1/dummy.json', outputDirectory: 'AsyncAPI-2_1/dummy'},
+  ...jsonSchemaDraft7Files
 ];
-console.log(filesToTest);
 describe.each(filesToTest)('Should be able to generate with inputs', ({file, outputDirectory}) => {
   jest.setTimeout(1000000);
   const fileToGenerate = path.resolve(__dirname, file);
