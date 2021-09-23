@@ -26,8 +26,8 @@ export class SwaggerInputProcessor extends AbstractInputProcessor {
     //Since we require that all references have been dereferenced, we cannot "simply" support already parsed inputs.
     const api = await SwaggerParser.dereference(input as any) as OpenAPIV2.Document;
     for (const [path, pathObject] of Object.entries(api.paths)) {
-      //Remove all special chars  from path
-      let formattedPathName = path.replace('{', '').replace('}', '');
+      //Remove all special chars from path
+      let formattedPathName = path.replace(/[^\w\s*]+/g, '');
       //Remove any pre-pending '/'
       formattedPathName = formattedPathName.replace(/\//, '');
       //Replace all segment separators '/'
@@ -41,18 +41,35 @@ export class SwaggerInputProcessor extends AbstractInputProcessor {
     }
     return common;
   }
-  private processOperation(operation: OpenAPIV2.OperationObject | undefined, path: string, model: CommonInputModel) {
+
+  private processOperation(operation: OpenAPIV2.OperationObject | undefined, path: string, inputModel: CommonInputModel) {
     if (operation) {
-      const responses = operation.responses;
-      for (const [responseName, response] of Object.entries(responses)) {
-        if (response !== undefined) {
-          const getOperationResponseSchema = (response as OpenAPIV2.ResponseObject).schema;
-          if (getOperationResponseSchema !== undefined) { 
-            const swaggerSchema = SwaggerInputProcessor.convertToInternalSchema(getOperationResponseSchema, `${path}_${responseName}`);
-            const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(swaggerSchema);
-            model.models = {...model.models, ...commonModels};
-          }
+      this.includeResponses(operation.responses, path, inputModel);
+      this.includeParameters(operation.parameters, path, inputModel);
+    }
+  }
+
+  private includeResponses(responses: OpenAPIV2.ResponsesObject, path: string, inputModel: CommonInputModel) {
+    for (const [responseName, response] of Object.entries(responses)) {
+      if (response !== undefined) {
+        const getOperationResponseSchema = (response as OpenAPIV2.ResponseObject).schema;
+        if (getOperationResponseSchema !== undefined) { 
+          const swaggerSchema = SwaggerInputProcessor.convertToInternalSchema(getOperationResponseSchema, `${path}_${responseName}`);
+          const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(swaggerSchema);
+          inputModel.models = {...inputModel.models, ...commonModels};
         }
+      }
+    }
+  }
+
+  private includeParameters(parameters: OpenAPIV2.Parameters | undefined, path: string, inputModel: CommonInputModel) {
+    for (const parameterObject of parameters || []) {
+      const parameter = parameterObject as OpenAPIV2.Parameter;
+      if (parameter.in === 'body') {
+        const bodyParameterSchema = parameter.schema as OpenAPIV2.SchemaObject;
+        const swaggerSchema = SwaggerInputProcessor.convertToInternalSchema(bodyParameterSchema, `${path}_body`);
+        const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(swaggerSchema);
+        inputModel.models = {...inputModel.models, ...commonModels};
       }
     }
   }

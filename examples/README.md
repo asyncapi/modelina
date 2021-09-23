@@ -6,5 +6,6 @@ This directory contains a series of self-contained examples that you can use as 
 - [asyncapi-from-object](./asyncapi-from-object) - A basic example where a AsyncAPI JS object is used to generate models.
 - [asyncapi-from-parser](./asyncapi-from-parser) - A basic example where a AsyncAPI JS object from the [parser-js](https://github.com/asyncapi/parser-js) is used to generate models.
 - [json-schema-draft7-from-object](./json-schema-draft7-from-object) - A basic example where a JSON Schema draft 7 JS object is used to generate models.
+- [swagger2.0-from-object](./swagger2.0-from-object) - A basic example where a Swagger 2.0 JS object is used to generate models.
 - [custom-logging](./custom-logging) - A basic example where a custom logger is used.
 - [TEMPLATE](./TEMPLATE) - A basic template used to create new examples.
