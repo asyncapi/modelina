@@ -13,7 +13,6 @@ This document contains many of the advanced use-cases that you may stumble upon 
 - [Build your own model renderer](#build-your-own-model-renderer)
 - [Create your own models from the ground up, instead of a supported input](#create-your-own-models-from-the-ground-up-instead-of-a-supported-input)
 - [Add logging to library](#add-logging-to-library)
-  * [Example usage](#example-usage)
 - [Change the generated indentation type and size](#change-the-generated-indentation-type-and-size)
 - [Change the naming format for properties](#change-the-naming-format-for-properties)
 - [Change the naming format for data models](#change-the-naming-format-for-data-models)

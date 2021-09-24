@@ -30,6 +30,7 @@ This package is still under development and has not reached version 1.0.0 yet. T
 - [Features](#features)
 - [Roadmap](#roadmap)
 - [Documentation](#documentation)
+- [Examples](#examples)
 - [Development](#development)
 - [Contributing](#contributing)
 - [Contributors ✨](#contributors-%E2%9C%A8)
