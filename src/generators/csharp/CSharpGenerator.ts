@@ -32,10 +32,12 @@ export class CSharpGenerator extends AbstractGenerator<CSharpOptions> {
   render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const kind = TypeHelpers.extractKind(model);
     switch (kind) {
+    case ModelKind.OBJECT: 
+      return this.renderClass(model, inputModel);
     case ModelKind.ENUM: 
       return this.renderEnum(model, inputModel);
     }
-    return this.renderClass(model, inputModel);
+    return Promise.resolve(RenderOutput.toRenderOutput({ result: '', dependencies: [] }));
   }
 
   async renderEnum(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
