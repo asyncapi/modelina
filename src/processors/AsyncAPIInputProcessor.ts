@@ -9,7 +9,7 @@ import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
  * Class for processing AsyncAPI inputs
  */
 export class AsyncAPIInputProcessor extends AbstractInputProcessor {
-  static supportedVersions = ['2.0.0', '2.1.0'];
+  static supportedVersions = ['2.0.0', '2.1.0', '2.2.0'];
 
   /**
    * Process the input as an AsyncAPI document
