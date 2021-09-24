@@ -1,0 +1,1363 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+		"title": "Spotify",
+		"description": "Our Web API lets your applications fetch data from the Spotify music catalog and manage user???s playlists and saved music. Based on simple REST principles, our Web API endpoints return metadata in JSON format about artists, albums, and tracks directly from the Spotify catalogue. The API also provides access to user-related data such as playlists and music saved in a ???Your Music??? library, subject to user???s authorization.",
+		"termsOfService": "",
+		"version": "v1",
+		"contact": {
+			"name": "No Contact",
+			"url": "http://example.com",
+			"email": "email@example.com"
+		},
+		"license": {
+			"name": "No License",
+			"url": "http://example.com"
+		}
+	},
+	"servers": [{
+		"url": "httpsapi.spotify.com/v1"
+	}],
+	"paths": {
+		"/albums": {
+			"get": {
+				"summary": "Get Albums",
+				"description": "[Get Several Albums](https://developer.spotify.com/web-api/get-several-albums/)n",
+				"operationId": "get-several-albumshttpsdeveloperspotifycomwebapigetseveralalbums",
+				"parameters": [{
+					"name": "ids",
+					"in": "query",
+					"description": "A comma-separated list of IDs",
+					"schema": {
+						"type": ""
+					}
+				},
+				{
+					"name": "market",
+					"in": "query",
+					"description": "The market (an ISO 3166-1 alpha-2 country code)",
+					"schema": {
+						"type": ""
+					}
+				}]
+			}
+		},
+		"/albums/{id}": {
+			"get": {
+				"summary": "Get Album",
+				"description": "[Get an Album](https://developer.spotify.com/web-api/get-album/)n",
+				"operationId": "get-an-albumhttpsdeveloperspotifycomwebapigetalbum",
+				"parameters": [{
+					"name": "id",
+					"in": "path",
+					"description": "The Spotify ID for the album",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "market",
+					"in": "query",
+					"description": "The market (an ISO 3166-1 alpha-2 country code)",
+					"schema": {
+						"type": ""
+					}
+				}]
+			}
+		},
+		"/albums/{id}/tracks": {
+			"get": {
+				"summary": "Get Album Tracks",
+				"description": "[Get an Album's Tracks](https://developer.spotify.com/web-api/get-albums-tracks/)n",
+				"operationId": "get-an-albums-trackshttpsdeveloperspotifycomwebapigetalbumstracks",
+				"parameters": [{
+					"name": "id",
+					"in": "path",
+					"description": "The Spotify ID for the album",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "limit",
+					"in": "query",
+					"description": "The maximum number of items to return",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "offset",
+					"in": "query",
+					"description": "The index of the first item to return",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "market",
+					"in": "query",
+					"description": "The market (an ISO 3166-1 alpha-2 country code)",
+					"schema": {
+						"type": ""
+					}
+				}]
+			}
+		},
+		"/artists": {
+			"get": {
+				"summary": "Get Artists",
+				"description": "[Get Several Artists](https://developer.spotify.com/web-api/get-several-artists/)n",
+				"operationId": "get-several-artistshttpsdeveloperspotifycomwebapigetseveralartists",
+				"parameters": [{
+					"name": "ids",
+					"in": "query",
+					"description": "A comma-separated list of IDs",
+					"schema": {
+						"type": ""
+					}
+				}]
+			}
+		},
+		"/artists/{id}": {
+			"get": {
+				"summary": "Get Artist",
+				"description": "[Get an Artist](https://developer.spotify.com/web-api/get-artist/)n",
+				"operationId": "get-an-artisthttpsdeveloperspotifycomwebapigetartist",
+				"parameters": [{
+					"name": "id",
+					"in": "path",
+					"description": "The Spotify ID for the album",
+					"schema": {
+						"type": "put"
+					}
+				}]
+			}
+		},
+		"/artists/{id}/albums": {
+			"get": {
+				"summary": "Get Artist Albums",
+				"description": "[Get an Artist's Albums](https://developer.spotify.com/web-api/get-artists-albums/)n",
+				"operationId": "get-an-artists-albumshttpsdeveloperspotifycomwebapigetartistsalbums",
+				"parameters": [{
+					"name": "id",
+					"in": "path",
+					"description": "The Spotify ID for the album",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "limit",
+					"in": "query",
+					"description": "The maximum number of items to return",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "offset",
+					"in": "query",
+					"description": "The index of the first item to return",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "album_type",
+					"in": "query",
+					"description": "Filter by album types",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "market",
+					"in": "query",
+					"description": "The market (an ISO 3166-1 alpha-2 country code)",
+					"schema": {
+						"type": ""
+					}
+				}]
+			}
+		},
+		"/artists/{id}/related-artists": {
+			"get": {
+				"summary": "Get Artist Related ARtists",
+				"description": "[Get an Artist's Related Artists](https://developer.spotify.com/web-api/get-related-artists/)n",
+				"operationId": "get-an-artists-related-artistshttpsdeveloperspotifycomwebapigetrelatedartists",
+				"parameters": [{
+					"name": "id",
+					"in": "path",
+					"description": "The Spotify ID for the album",
+					"schema": {
+						"type": "put"
+					}
+				}]
+			}
+		},
+		"/artists/{id}/top-tracks": {
+			"get": {
+				"summary": "Get Artist Top Tracks",
+				"description": "[Get an Artist's Top Tracks](https://developer.spotify.com/web-api/get-artists-top-tracks/)n",
+				"operationId": "get-an-artists-top-trackshttpsdeveloperspotifycomwebapigetartiststoptracks",
+				"parameters": [{
+					"name": "id",
+					"in": "path",
+					"description": "The Spotify ID for the album",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "country",
+					"in": "query",
+					"description": "The country (an ISO 3166-1 alpha-2 country code)",
+					"schema": {
+						"type": "put"
+					}
+				}]
+			}
+		},
+		"/browse/categories": {
+			"get": {
+				"summary": "Browse Categories",
+				"description": "[Get a List of Browse Categories](https://developer.spotify.com/web-api/get-list-categories/)n",
+				"operationId": "get-a-list-of-browse-categorieshttpsdeveloperspotifycomwebapigetlistcategories",
+				"parameters": [{
+					"name": "limit",
+					"in": "query",
+					"description": "The maximum number of items to return",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "offset",
+					"in": "query",
+					"description": "The index of the first item to return",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "country",
+					"in": "query",
+					"description": "The country (an ISO 3166-1 alpha-2 country code)",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "locale",
+					"in": "query",
+					"description": "The desired language, consisting of an ISO 639 language code and an ISO 3166-1 alpha-2 country code, joined by an underscore. For example: es_MX, meaning \"Spanish (Mexico)\".n",
+					"schema": {
+						"type": ""
+					}
+				},
+				{
+					"name": "Accept",
+					"in": "header",
+					"description": "It is used to set specified media type.",
+					"schema": {
+						"type": ""
+					}
+				}]
+			}
+		},
+		"/browse/categories/{category_id}": {
+			"get": {
+				"summary": "Browse Category",
+				"description": "[Get a Single Browse Category](https://developer.spotify.com/web-api/get-category/)n",
+				"operationId": "get-a-single-browse-categoryhttpsdeveloperspotifycomwebapigetcategory",
+				"parameters": [{
+					"name": "category_id",
+					"in": "path",
+					"description": "The Spotify ID of the category you wish to fetch.",
+					"schema": {
+						"type": ""
+					}
+				},
+				{
+					"name": "country",
+					"in": "query",
+					"description": "The country (an ISO 3166-1 alpha-2 country code)",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "locale",
+					"in": "query",
+					"description": "The desired language, consisting of an ISO 639 language code and an ISO 3166-1 alpha-2 country code, joined by an underscore. For example: es_MX, meaning \"Spanish (Mexico)\".n",
+					"schema": {
+						"type": ""
+					}
+				},
+				{
+					"name": "Accept",
+					"in": "header",
+					"description": "It is used to set specified media type.",
+					"schema": {
+						"type": ""
+					}
+				}]
+			}
+		},
+		"/browse/categories/{category_id}/playlists": {
+			"get": {
+				"summary": "Browse Category Playlists",
+				"description": "[Get a Category's playlists](https://developer.spotify.com/web-api/get-categorys-playlists/)n",
+				"operationId": "get-a-categorys-playlistshttpsdeveloperspotifycomwebapigetcategorysplaylists",
+				"parameters": [{
+					"name": "category_id",
+					"in": "path",
+					"description": "The Spotify ID of the category you wish to fetch.",
+					"schema": {
+						"type": ""
+					}
+				},
+				{
+					"name": "limit",
+					"in": "query",
+					"description": "The maximum number of items to return",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "offset",
+					"in": "query",
+					"description": "The index of the first item to return",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "country",
+					"in": "query",
+					"description": "The country (an ISO 3166-1 alpha-2 country code)",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "Accept",
+					"in": "header",
+					"description": "It is used to set specified media type.",
+					"schema": {
+						"type": ""
+					}
+				}]
+			}
+		},
+		"/browse/featured-playlists": {
+			"get": {
+				"summary": "Browse Featured Playlists",
+				"description": "[Get a List of Featured Playlists](https://developer.spotify.com/web-api/get-list-featured-playlists/)n",
+				"operationId": "get-a-list-of-featured-playlistshttpsdeveloperspotifycomwebapigetlistfeaturedplaylists",
+				"parameters": [{
+					"name": "limit",
+					"in": "query",
+					"description": "The maximum number of items to return",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "offset",
+					"in": "query",
+					"description": "The index of the first item to return",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "country",
+					"in": "query",
+					"description": "The country (an ISO 3166-1 alpha-2 country code)",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "locale",
+					"in": "query",
+					"description": "The desired language, consisting of an ISO 639 language code and an ISO 3166-1 alpha-2 country code, joined by an underscore. For example: es_MX, meaning \"Spanish (Mexico)\".n",
+					"schema": {
+						"type": ""
+					}
+				},
+				{
+					"name": "timestamp",
+					"in": "query",
+					"description": "A timestamp in ISO 8601 format (yyyy-MM-dd'T'HH:mm:ss) with the user's local time to get results tailored to a specific date and time in the day. If not provided, it defaults to the current UTC time. Example: \"2014-10-23T09:00:00\" for a user whose local time is 9AM.n",
+					"schema": {
+						"type": ""
+					}
+				},
+				{
+					"name": "Accept",
+					"in": "header",
+					"description": "It is used to set specified media type.",
+					"schema": {
+						"type": ""
+					}
+				}]
+			}
+		},
+		"/browse/new-releases": {
+			"get": {
+				"summary": "Browse New Releases",
+				"description": "[Get a List of New Releases](https://developer.spotify.com/web-api/get-list-new-releases/)n",
+				"operationId": "get-a-list-of-new-releaseshttpsdeveloperspotifycomwebapigetlistnewreleases",
+				"parameters": [{
+					"name": "limit",
+					"in": "query",
+					"description": "The maximum number of items to return",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "offset",
+					"in": "query",
+					"description": "The index of the first item to return",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "country",
+					"in": "query",
+					"description": "The country (an ISO 3166-1 alpha-2 country code)",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "Accept",
+					"in": "header",
+					"description": "It is used to set specified media type.",
+					"schema": {
+						"type": ""
+					}
+				}]
+			}
+		},
+		"/me": {
+			"get": {
+				"summary": "Get Me",
+				"description": "[Get Current User's Profile](https://developer.spotify.com/web-api/get-current-users-profile/)n",
+				"operationId": "get-current-users-profilehttpsdeveloperspotifycomwebapigetcurrentusersprofile",
+				"parameters": []
+			}
+		},
+		"/me/following": {
+			"delete": {
+				"summary": "Delete Following",
+				"description": "[Unfollow Artists or Users](https://developer.spotify.com/web-api/unfollow-artists-users/)n",
+				"operationId": "unfollow-artists-or-usershttpsdeveloperspotifycomwebapiunfollowartistsusers",
+				"parameters": [{
+					"name": "type",
+					"in": "query",
+					"description": "The type to unfollow.",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "ids",
+					"in": "query",
+					"description": "A comma-separated list of IDs",
+					"schema": {
+						"type": ""
+					}
+				}]
+			}
+		},
+		"/me/following/contains": {
+			"get": {
+				"summary": "Get Following contains",
+				"description": "[Check if Current User Follows Artists or Users](https://developer.spotify.com/web-api/check-current-user-follows/)n",
+				"operationId": "check-if-current-user-follows-artists-or-usershttpsdeveloperspotifycomwebapicheckcurrentuserfollows",
+				"parameters": [{
+					"name": "type",
+					"in": "query",
+					"description": "The type to unfollow.",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "ids",
+					"in": "query",
+					"description": "A comma-separated list of IDs",
+					"schema": {
+						"type": ""
+					}
+				}]
+			}
+		},
+		"/me/tracks": {
+			"delete": {
+				"summary": "Delete My Tracks",
+				"description": "[Remove Tracks for Current User](https://developer.spotify.com/web-api/remove-tracks-user/)n",
+				"operationId": "remove-tracks-for-current-userhttpsdeveloperspotifycomwebapiremovetracksuser",
+				"parameters": [{
+					"name": "ids",
+					"in": "query",
+					"description": "A comma-separated list of IDs",
+					"schema": {
+						"type": ""
+					}
+				},
+				{
+					"name": "Accept",
+					"in": "header",
+					"description": "It is used to set specified media type.",
+					"schema": {
+						"type": ""
+					}
+				}]
+			}
+		},
+		"/me/tracks/contains": {
+			"get": {
+				"summary": "Get My Track Contains",
+				"description": "[Check Current User's Saved Tracks](https://developer.spotify.com/web-api/check-users-saved-tracks/)n",
+				"operationId": "check-current-users-saved-trackshttpsdeveloperspotifycomwebapicheckuserssavedtracks",
+				"parameters": [{
+					"name": "ids",
+					"in": "query",
+					"description": "A comma-separated list of IDs",
+					"schema": {
+						"type": ""
+					}
+				}]
+			}
+		},
+		"/search": {
+			"get": {
+				"summary": "Search",
+				"description": "[Search for an Item](https://developer.spotify.com/web-api/search-item/)n",
+				"operationId": "search-for-an-itemhttpsdeveloperspotifycomwebapisearchitem",
+				"parameters": [{
+					"name": "limit",
+					"in": "query",
+					"description": "The maximum number of items to return",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "offset",
+					"in": "query",
+					"description": "The index of the first item to return",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "q",
+					"in": "query",
+					"description": "The search query's keywords (and optional field filters). The search is not case-sensitive: 'roadhouse' will match 'Roadhouse', 'roadHouse', etc. Keywords will be matched in any order unless surrounded by quotes, thus q=roadhouse&20blues will match both 'Blues Roadhouse' and 'Roadhouse of the Blues'. Quotation marks can be used to limit the match to a phrase: q=roadhouse&20blues will match 'My Roadhouse Blues' but not 'Roadhouse of the Blues'. By default, results are returned when a match is fou",
+					"schema": {
+						"type": ""
+					}
+				},
+				{
+					"name": "type",
+					"in": "query",
+					"description": "The type to unfollow.",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "market",
+					"in": "query",
+					"description": "The market (an ISO 3166-1 alpha-2 country code)",
+					"schema": {
+						"type": ""
+					}
+				}]
+			}
+		},
+		"/tracks": {
+			"get": {
+				"summary": "Get Tracks",
+				"description": "[Get Several Tracks](https://developer.spotify.com/web-api/get-several-tracks/)n",
+				"operationId": "get-several-trackshttpsdeveloperspotifycomwebapigetseveraltracks",
+				"parameters": [{
+					"name": "ids",
+					"in": "query",
+					"description": "A comma-separated list of IDs",
+					"schema": {
+						"type": ""
+					}
+				},
+				{
+					"name": "market",
+					"in": "query",
+					"description": "The market (an ISO 3166-1 alpha-2 country code)",
+					"schema": {
+						"type": ""
+					}
+				}]
+			}
+		},
+		"/tracks/{id}": {
+			"get": {
+				"summary": "Get Track",
+				"description": "[Get a Track](https://developer.spotify.com/web-api/get-track/)n",
+				"operationId": "get-a-trackhttpsdeveloperspotifycomwebapigettrack",
+				"parameters": [{
+					"name": "id",
+					"in": "path",
+					"description": "The Spotify ID for the album",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "market",
+					"in": "query",
+					"description": "The market (an ISO 3166-1 alpha-2 country code)",
+					"schema": {
+						"type": ""
+					}
+				}]
+			}
+		},
+		"/users/{user_id}": {
+			"get": {
+				"summary": "Get User",
+				"description": "[Get a User's Profile](https://developer.spotify.com/web-api/get-users-profile/)n",
+				"operationId": "get-a-users-profilehttpsdeveloperspotifycomwebapigetusersprofile",
+				"parameters": [{
+					"name": "user_id",
+					"in": "path",
+					"description": "The user's Spotify user ID.",
+					"schema": {
+						"type": ""
+					}
+				}]
+			}
+		},
+		"/users/{user_id}/playlists": {
+			"get": {
+				"summary": "Get User Playlists",
+				"description": "[Get a List of a User's Playlists](https://developer.spotify.com/web-api/get-list-users-playlists/)n",
+				"operationId": "get-a-list-of-a-users-playlistshttpsdeveloperspotifycomwebapigetlistusersplaylists",
+				"parameters": [{
+					"name": "user_id",
+					"in": "path",
+					"description": "The user's Spotify user ID.",
+					"schema": {
+						"type": ""
+					}
+				},
+				{
+					"name": "limit",
+					"in": "query",
+					"description": "The maximum number of items to return",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "offset",
+					"in": "query",
+					"description": "The index of the first item to return",
+					"schema": {
+						"type": "put"
+					}
+				},
+				{
+					"name": "Accept",
+					"in": "header",
+					"description": "It is used to set specified media type.",
+					"schema": {
+						"type": ""
+					}
+				}]
+			}
+		},
+		"/users/{user_id}/playlists/{playlist_id}": {
+			"get": {
+				"summary": "Get User Playlist",
+				"description": "[Get a Playlist](https://developer.spotify.com/web-api/get-playlist/)n",
+				"operationId": "get-a-playlisthttpsdeveloperspotifycomwebapigetplaylist",
+				"parameters": [{
+					"name": "user_id",
+					"in": "path",
+					"description": "The user's Spotify user ID.",
+					"schema": {
+						"type": ""
+					}
+				},
+				{
+					"name": "playlist_id",
+					"in": "path",
+					"description": "The Spotify playlist ID.",
+					"schema": {
+						"type": ""
+					}
+				},
+				{
+					"name": "fields",
+					"in": "query",
+					"description": "A comma-separated list of fields to filter query",
+					"schema": {
+						"type": ""
+					}
+				},
+				{
+					"name": "market",
+					"in": "query",
+					"description": "The market (an ISO 3166-1 alpha-2 country code)",
+					"schema": {
+						"type": ""
+					}
+				},
+				{
+					"name": "Accept",
+					"in": "header",
+					"description": "It is used to set specified media type.",
+					"schema": {
+						"type": ""
+					}
+				}]
+			}
+		},
+		"/users/{user_id}/playlists/{playlist_id}/followers": {
+			"delete": {
+				"summary": "Delete User Playlist Followers",
+				"description": "[Unfollow a Playlist](https://developer.spotify.com/web-api/unfollow-playlist/)n",
+				"operationId": "unfollow-a-playlisthttpsdeveloperspotifycomwebapiunfollowplaylist",
+				"parameters": [{
+					"name": "user_id",
+					"in": "path",
+					"description": "The user's Spotify user ID.",
+					"schema": {
+						"type": ""
+					}
+				},
+				{
+					"name": "playlist_id",
+					"in": "path",
+					"description": "The Spotify playlist ID.",
+					"schema": {
+						"type": ""
+					}
+				}]
+			}
+		},
+		"/users/{user_id}/playlists/{playlist_id}/followers/contains": {
+			"get": {
+				"summary": "Get User Playlist Followers Contains",
+				"description": "[Check if Users Follow a Playlist](https://developer.spotify.com/web-api/check-user-following-playlist/)n",
+				"operationId": "check-if-users-follow-a-playlisthttpsdeveloperspotifycomwebapicheckuserfollowingplaylist",
+				"parameters": [{
+					"name": "user_id",
+					"in": "path",
+					"description": "The user's Spotify user ID.",
+					"schema": {
+						"type": ""
+					}
+				},
+				{
+					"name": "playlist_id",
+					"in": "path",
+					"description": "The Spotify playlist ID.",
+					"schema": {
+						"type": ""
+					}
+				},
+				{
+					"name": "ids",
+					"in": "query",
+					"description": "A comma-separated list of IDs",
+					"schema": {
+						"type": ""
+					}
+				}]
+			}
+		},
+		"/users/{user_id}/playlists/{playlist_id}/tracks": {
+			"delete": {
+				"summary": "Delete User Playlist Tracks",
+				"description": "[Remove Tracks from a Playlist](https://developer.spotify.com/web-api/remove-tracks-playlist/)n",
+				"operationId": "remove-tracks-from-a-playlisthttpsdeveloperspotifycomwebapiremovetracksplaylist",
+				"parameters": [{
+					"name": "user_id",
+					"in": "path",
+					"description": "The user's Spotify user ID.",
+					"schema": {
+						"type": ""
+					}
+				},
+				{
+					"name": "playlist_id",
+					"in": "path",
+					"description": "The Spotify playlist ID.",
+					"schema": {
+						"type": ""
+					}
+				},
+				{
+					"name": "Accept",
+					"in": "header",
+					"description": "It is used to set specified media type.",
+					"schema": {
+						"type": ""
+					}
+				},
+				{
+					"name": "body",
+					"in": "body",
+					"description": "",
+					"schema": {
+						"type": ""
+					}
+				}]
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"album": {
+				"type": "object",
+				"description": null,
+				"properties": {
+					"album": {
+						"type": "object",
+						"description": null,
+						"format": null
+					}
+				}
+			},
+			"album_type": {
+				"type": "put",
+				"description": ""
+			},
+			"artists": {
+				"type": "put",
+				"description": ""
+			},
+			"available_markets": {
+				"type": "put",
+				"description": ""
+			},
+			"copyrights": {
+				"type": "put",
+				"description": ""
+			},
+			"external_ids": {
+				"type": "put",
+				"description": ""
+			},
+			"external_urls": {
+				"type": "put",
+				"description": ""
+			},
+			"genres": {
+				"type": "put",
+				"description": ""
+			},
+			"href": {
+				"type": "put",
+				"description": ""
+			},
+			"id": {
+				"type": "put",
+				"description": ""
+			},
+			"images": {
+				"type": "put",
+				"description": ""
+			},
+			"name": {
+				"type": "put",
+				"description": ""
+			},
+			"popularity": {
+				"type": "put",
+				"description": ""
+			},
+			"release_date": {
+				"type": "put",
+				"description": ""
+			},
+			"release_date_precision": {
+				"type": "put",
+				"description": ""
+			},
+			"type": {
+				"type": "put",
+				"description": ""
+			},
+			"uri": {
+				"type": "put",
+				"description": ""
+			},
+			"album-simple": {
+				"type": "object",
+				"description": null,
+				"properties": {
+					"album-simple": {
+						"type": "object",
+						"description": null,
+						"format": null
+					}
+				}
+			},
+			"album-simple-page": {
+				"type": "object",
+				"description": null,
+				"properties": {
+					"album-simple-page": {
+						"type": "object",
+						"description": null,
+						"format": null
+					}
+				}
+			},
+			"items": {
+				"type": "put",
+				"description": ""
+			},
+			"limit": {
+				"type": "put",
+				"description": ""
+			},
+			"next": {
+				"type": "put",
+				"description": ""
+			},
+			"offset": {
+				"type": "put",
+				"description": ""
+			},
+			"previous": {
+				"type": "put",
+				"description": ""
+			},
+			"total": {
+				"type": "put",
+				"description": ""
+			},
+			"album-track-page": {
+				"type": "object",
+				"description": null,
+				"properties": {
+					"album-track-page": {
+						"type": "object",
+						"description": null,
+						"format": null
+					}
+				}
+			},
+			"artist": {
+				"type": "object",
+				"description": null,
+				"properties": {
+					"artist": {
+						"type": "object",
+						"description": null,
+						"format": null
+					}
+				}
+			},
+			"artist-simple": {
+				"type": "object",
+				"description": null,
+				"properties": {
+					"artist-simple": {
+						"type": "object",
+						"description": null,
+						"format": null
+					}
+				}
+			},
+			"category": {
+				"type": "object",
+				"description": null,
+				"properties": {
+					"category": {
+						"type": "object",
+						"description": null,
+						"format": null
+					}
+				}
+			},
+			"icons": {
+				"type": "put",
+				"description": ""
+			},
+			"category-page": {
+				"type": "object",
+				"description": null,
+				"properties": {
+					"category-page": {
+						"type": "object",
+						"description": null,
+						"format": null
+					}
+				}
+			},
+			"current-user-profile": {
+				"type": "object",
+				"description": null,
+				"properties": {
+					"current-user-profile": {
+						"type": "object",
+						"description": null,
+						"format": null
+					}
+				}
+			},
+			"birthdate": {
+				"type": "put",
+				"description": ""
+			},
+			"country": {
+				"type": "put",
+				"description": ""
+			},
+			"displayName": {
+				"type": "put",
+				"description": ""
+			},
+			"email": {
+				"type": "put",
+				"description": ""
+			},
+			"product": {
+				"type": "put",
+				"description": ""
+			},
+			"featured-playlists": {
+				"type": "object",
+				"description": null,
+				"properties": {
+					"featured-playlists": {
+						"type": "object",
+						"description": null,
+						"format": null
+					}
+				}
+			},
+			"message": {
+				"type": "put",
+				"description": ""
+			},
+			"followers": {
+				"type": "put",
+				"description": "",
+				"properties": {
+					"followers": {
+						"type": "object",
+						"description": null,
+						"format": null
+					}
+				}
+			},
+			"image": {
+				"type": "object",
+				"description": null,
+				"properties": {
+					"image": {
+						"type": "object",
+						"description": null,
+						"format": null
+					}
+				}
+			},
+			"height": {
+				"type": "put",
+				"description": ""
+			},
+			"url": {
+				"type": "put",
+				"description": ""
+			},
+			"width": {
+				"type": "put",
+				"description": ""
+			},
+			"playlist": {
+				"type": "object",
+				"description": null,
+				"properties": {
+					"playlist": {
+						"type": "object",
+						"description": null,
+						"format": null
+					}
+				}
+			},
+			"collaborative": {
+				"type": "put",
+				"description": ""
+			},
+			"description": {
+				"type": "put",
+				"description": ""
+			},
+			"public": {
+				"type": "put",
+				"description": ""
+			},
+			"snapshot_id": {
+				"type": "put",
+				"description": ""
+			},
+			"playlist-simple": {
+				"type": "object",
+				"description": null,
+				"properties": {
+					"playlist-simple": {
+						"type": "object",
+						"description": null,
+						"format": null
+					}
+				}
+			},
+			"tracks": {
+				"type": "put",
+				"description": ""
+			},
+			"playlist-simple-page": {
+				"type": "object",
+				"description": null,
+				"properties": {
+					"playlist-simple-page": {
+						"type": "object",
+						"description": null,
+						"format": null
+					}
+				}
+			},
+			"playlist-snapshot": {
+				"type": "object",
+				"description": null,
+				"properties": {
+					"playlist-snapshot": {
+						"type": "object",
+						"description": null,
+						"format": null
+					}
+				}
+			},
+			"playlist-track": {
+				"type": "object",
+				"description": null,
+				"properties": {
+					"playlist-track": {
+						"type": "object",
+						"description": null,
+						"format": null
+					}
+				}
+			},
+			"added_at": {
+				"type": "put",
+				"description": ""
+			},
+			"is_local": {
+				"type": "put",
+				"description": ""
+			},
+			"playlist-track-page": {
+				"type": "object",
+				"description": null,
+				"properties": {
+					"playlist-track-page": {
+						"type": "object",
+						"description": null,
+						"format": null
+					}
+				}
+			},
+			"saved-track": {
+				"type": "object",
+				"description": null,
+				"properties": {
+					"saved-track": {
+						"type": "object",
+						"description": null,
+						"format": null
+					}
+				}
+			},
+			"saved-track-page": {
+				"type": "object",
+				"description": null,
+				"properties": {
+					"saved-track-page": {
+						"type": "object",
+						"description": null,
+						"format": null
+					}
+				}
+			},
+			"search": {
+				"type": "object",
+				"description": null,
+				"properties": {
+					"search": {
+						"type": "object",
+						"description": null,
+						"format": null
+					}
+				}
+			},
+			"albums": {
+				"type": "put",
+				"description": ""
+			},
+			"track": {
+				"type": "object",
+				"description": null,
+				"properties": {
+					"track": {
+						"type": "object",
+						"description": null,
+						"format": null
+					}
+				}
+			},
+			"disc_number": {
+				"type": "put",
+				"description": ""
+			},
+			"duration_ms": {
+				"type": "put",
+				"description": ""
+			},
+			"explicit": {
+				"type": "put",
+				"description": ""
+			},
+			"is_playable": {
+				"type": "put",
+				"description": ""
+			},
+			"linked_from": {
+				"type": "put",
+				"description": ""
+			},
+			"preview_url": {
+				"type": "put",
+				"description": ""
+			},
+			"track_number": {
+				"type": "put",
+				"description": ""
+			},
+			"track-simple": {
+				"type": "object",
+				"description": null,
+				"properties": {
+					"track-simple": {
+						"type": "object",
+						"description": null,
+						"format": null
+					}
+				}
+			},
+			"track-simple-page": {
+				"type": "object",
+				"description": null,
+				"properties": {
+					"track-simple-page": {
+						"type": "object",
+						"description": null,
+						"format": null
+					}
+				}
+			},
+			"user-followed": {
+				"type": "object",
+				"description": null,
+				"properties": {
+					"user-followed": {
+						"type": "object",
+						"description": null,
+						"format": null
+					}
+				}
+			},
+			"user-profile": {
+				"type": "object",
+				"description": null,
+				"properties": {
+					"user-profile": {
+						"type": "object",
+						"description": null,
+						"format": null
+					}
+				}
+			},
+			"ids": {
+				"type": "",
+				"description": "A comma-separated list of IDs"
+			},
+			"market": {
+				"type": "",
+				"description": "The market (an ISO 3166-1 alpha-2 country code)"
+			},
+			"locale": {
+				"type": "",
+				"description": "The desired language, consisting of an ISO 639 language code and an ISO 3166-1 alpha-2 country code, joined by an underscore. For example: es_MX, meaning \"Spanish (Mexico)\".n"
+			},
+			"Accept": {
+				"type": "",
+				"description": "It is used to set specified media type."
+			},
+			"category_id": {
+				"type": "",
+				"description": "The Spotify ID of the category you wish to fetch."
+			},
+			"timestamp": {
+				"type": "",
+				"description": "A timestamp in ISO 8601 format (yyyy-MM-dd'T'HH:mm:ss) with the user's local time to get results tailored to a specific date and time in the day. If not provided, it defaults to the current UTC time. Example: \"2014-10-23T09:00:00\" for a user whose local time is 9AM.n"
+			},
+			"after": {
+				"type": "",
+				"description": "The last artist ID retrieved from the previous request."
+			},
+			"q": {
+				"type": "",
+				"description": "The search query's keywords (and optional field filters). The search is not case-sensitive: 'roadhouse' will match 'Roadhouse', 'roadHouse', etc. Keywords will be matched in any order unless surrounded by quotes, thus q=roadhouse&20blues will match both 'Blues Roadhouse' and 'Roadhouse of the Blues'. Quotation marks can be used to limit the match to a phrase: q=roadhouse&20blues will match 'My Roadhouse Blues' but not 'Roadhouse of the Blues'. By default, results are returned when a match is found in any field of the target object type. Searches can be made more specific by specifying an album, artist or track field filter. For example q=album:gold%20artist:abba&type=album will search for albums with the text 'gold' in the album name and the text 'abba' in an artist name. Other possible field filters, depending on object types being searched, include year, genre, upc, and isrc. For example, q=damian%20genre:reggae-pop&type=artist. The asterisk (*) character can, with some limitations, be used as a wildcard (maximum: 2 per query). It will match a variable number of non-white-space characters. It cannot be used in a quoted phrase, in a field filter, or as the first character of the keyword string. Searching for playlists will return results matching the playlist's name and/or description."
+			},
+			"user_id": {
+				"type": "",
+				"description": "The user's Spotify user ID."
+			},
+			"body": {
+				"type": "",
+				"description": ""
+			},
+			"playlist_id": {
+				"type": "",
+				"description": "The Spotify playlist ID."
+			},
+			"fields": {
+				"type": "",
+				"description": "A comma-separated list of fields to filter query"
+			},
+			"position": {
+				"type": "",
+				"description": "The position to insert the tracks, a zero-based index"
+			},
+			"uris": {
+				"type": "",
+				"description": "A comma-separated list of Spotify track URIs to add. A maximum of 100 tracks can be added in one request."
+			}
+		}
+	}
+}
