@@ -68,10 +68,6 @@ export abstract class CSharpRenderer extends AbstractRenderer<CSharpOptions> {
   }
 
   toCSharpType(type: string | undefined, model: CommonModel): string {
-    if (type === undefined) {
-      return 'dynamic';
-    }
-
     switch (type) {
     case 'string':
       return 'string';
@@ -90,7 +86,7 @@ export abstract class CSharpRenderer extends AbstractRenderer<CSharpOptions> {
       const arrayType = model.items ? this.renderType(model.items) : 'dynamic';
       return `${arrayType}[]`;
     }
-    default: return type;
+    default: return 'dynamic';
     }
   }
 }

@@ -29,10 +29,13 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions> {
 
   render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const kind = TypeHelpers.extractKind(model);
-    if (kind === ModelKind.ENUM) {
+    //We dont support union in Go generator, however, if union is an object, we render it as a struct.
+    if (kind === ModelKind.OBJECT || (kind === ModelKind.UNION && model.type?.includes('object'))) {
+      return this.renderClass(model, inputModel);
+    } else if (kind === ModelKind.ENUM) {
       return this.renderEnum(model, inputModel);
     }
-    return this.renderClass(model, inputModel);
+    return Promise.resolve(RenderOutput.toRenderOutput({ result: '', dependencies: [] }));
   }
 
   async renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
