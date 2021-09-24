@@ -1,12 +1,24 @@
+/**
+ * Blackbox tests are the final line of defence, that takes different real-life example documents and generate their corresponding models in all supported languages.
+ * 
+ * For those languages where it is possible, the models are compiled/transpiled to ensure there are no syntax errors in generated models.
+ * 
+ */
+
 import * as path from 'path';
 import * as fs from 'fs';
 import { TypeScriptGenerator, JavaGenerator, JavaScriptGenerator, GoGenerator, CSharpGenerator } from '../../src';
 import { execCommand, generateModels, renderModels, renderModelsToSeparateFiles } from './utils/Utils';
-function readFilesInFolder(path) {
-  const fullPath = path.resolve(__dirname, `./docs/${path}`);
+
+/**
+ * Read all the files in the folder, and return the appropriate Jest `each` entries.
+ * @param folder 
+ */
+function readFilesInFolder(folder: string) {
+  const fullPath = path.resolve(__dirname, `./docs/${folder}`);
   return fs.readdirSync(fullPath).map(
     (file) => { 
-      return { file: `./docs/${path}/${file}`, outputDirectory: `${path}/${path.parse(file).name}`};
+      return { file: `./docs/${folder}/${file}`, outputDirectory: `${folder}/${path.parse(file).name}`};
     }
   );
 }
@@ -25,14 +37,15 @@ const filesToTest = [
     return file !== './docs/JsonSchemaDraft-7/graphql-code-generator.json';
   })
 ];
+
 describe.each(filesToTest)('Should be able to generate with inputs', ({file, outputDirectory}) => {
   jest.setTimeout(1000000);
-  const fileToGenerate = path.resolve(__dirname, file);
+  const fileToGenerateFor = path.resolve(__dirname, file);
   describe(file, () => {
     describe('should be able to generate and compile Java', () => {
       test('class', async () => {
         const generator = new JavaGenerator();
-        const generatedModels = await generateModels(fileToGenerate, generator);
+        const generatedModels = await generateModels(fileToGenerateFor, generator);
         expect(generatedModels).not.toHaveLength(0);
         const renderOutputPath = path.resolve(__dirname, `./output/${outputDirectory}/java/class`);
         const dependencyPath = path.resolve(__dirname, './dependencies/java/*');
@@ -44,7 +57,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
     describe('should be able to generate and compile C#', () => {
       test('class', async () => {
         const generator = new CSharpGenerator();
-        const generatedModels = await generateModels(fileToGenerate, generator);
+        const generatedModels = await generateModels(fileToGenerateFor, generator);
         expect(generatedModels).not.toHaveLength(0);
         const renderOutputPath = path.resolve(__dirname, `./output/${outputDirectory}/csharp`);
         await renderModelsToSeparateFiles(generatedModels, renderOutputPath, 'cs');
@@ -56,7 +69,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
     describe('should be able to generate and transpile TS', () => {
       test('class', async () => {
         const generator = new TypeScriptGenerator();
-        const generatedModels = await generateModels(fileToGenerate, generator);
+        const generatedModels = await generateModels(fileToGenerateFor, generator);
         expect(generatedModels).not.toHaveLength(0);
         const renderOutputPath = path.resolve(__dirname, `./output/${outputDirectory}/ts/class/output.ts`);
         await renderModels(generatedModels, renderOutputPath);
@@ -67,7 +80,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
 
       test('interface', async () => {
         const generator = new TypeScriptGenerator({modelType: 'interface'});
-        const generatedModels = await generateModels(fileToGenerate, generator);
+        const generatedModels = await generateModels(fileToGenerateFor, generator);
         expect(generatedModels).not.toHaveLength(0);
         const renderOutputPath = path.resolve(__dirname, `./output/${outputDirectory}/ts/interface/output.ts`);
         await renderModels(generatedModels, renderOutputPath);
@@ -80,7 +93,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
     describe('should be able to generate JS', () => {
       test('class', async () => {
         const generator = new JavaScriptGenerator();
-        const generatedModels = await generateModels(fileToGenerate, generator);
+        const generatedModels = await generateModels(fileToGenerateFor, generator);
         expect(generatedModels).not.toHaveLength(0);
         const renderOutputPath = path.resolve(__dirname, `./output/${outputDirectory}/js/class/output.js`);
         await renderModels(generatedModels, renderOutputPath);
@@ -92,7 +105,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
     describe('should be able to generate Go', () => {
       test('struct', async () => {
         const generator = new GoGenerator();
-        const generatedModels = await generateModels(fileToGenerate, generator);
+        const generatedModels = await generateModels(fileToGenerateFor, generator);
         expect(generatedModels).not.toHaveLength(0);
         const renderOutputPath = path.resolve(__dirname, `./output/${outputDirectory}/go/struct/main.go`);
         await renderModels(generatedModels, renderOutputPath, ['package main\n', 'func main() {}']);

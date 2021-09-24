@@ -64,8 +64,18 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
     return this.toTsType(model.type, model);
   }
 
+  /**
+   * JSON Schema types to TS
+   * 
+   * @param type 
+   * @param model
+   */
   toTsType(type: string | undefined, model: CommonModel): string {
     switch (type) { 
+    case 'null':
+      return 'null';
+    case 'object':
+      return 'object';
     case 'string':
       return 'string';
     case 'integer':
