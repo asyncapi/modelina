@@ -2,14 +2,28 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { TypeScriptGenerator, JavaGenerator, JavaScriptGenerator, GoGenerator, CSharpGenerator } from '../../src';
 import { execCommand, generateModels, renderModels, renderModelsToSeparateFiles } from './utils/Utils';
-const jsonSchemaPath = path.resolve(__dirname, './docs/JsonSchemaDraft-7');
-const jsonSchemaDraft7Files = fs.readdirSync(jsonSchemaPath).map((file) => { return { file: `./docs/JsonSchemaDraft-7/${file}`, outputDirectory: `JsonSchemaDraft-7/${path.parse(file).name}`};});
+function readFilesInFolder(path) {
+  const fullPath = path.resolve(__dirname, `./docs/${path}`);
+  return fs.readdirSync(fullPath).map(
+    (file) => { 
+      return { file: `./docs/${path}/${file}`, outputDirectory: `${path}/${path.parse(file).name}`};
+    }
+  );
+}
+const jsonSchemaDraft7Files = readFilesInFolder('JsonSchemaDraft-7');
+const AsyncAPIV2_0Files = readFilesInFolder('AsyncAPI-2_0');
+const AsyncAPIV2_1Files = readFilesInFolder('AsyncAPI-2_1');
 
 const filesToTest = [
-  {file: './docs/AsyncAPI-2_0/dummy.json', outputDirectory: 'AsyncAPI-2_0/dummy'},
-  {file: './docs/AsyncAPI-2_0/zbos_mqtt-all-asyncapi.json', outputDirectory: 'AsyncAPI-2_0/zbos_mqtt-all-asyncapi'},
-  {file: './docs/AsyncAPI-2_1/dummy.json', outputDirectory: 'AsyncAPI-2_1/dummy'},
-  ...jsonSchemaDraft7Files
+  ...AsyncAPIV2_0Files,
+  ...AsyncAPIV2_1Files,
+  ...jsonSchemaDraft7Files.filter(({file}) => { 
+    //Blocked by https://github.com/asyncapi/modelina/issues/388
+    return file !== './docs/JsonSchemaDraft-7/draft-7-core.json';
+  }).filter(({file}) => {
+    //Blocked by https://github.com/asyncapi/modelina/issues/390
+    return file !== './docs/JsonSchemaDraft-7/graphql-code-generator.json';
+  })
 ];
 describe.each(filesToTest)('Should be able to generate with inputs', ({file, outputDirectory}) => {
   jest.setTimeout(1000000);
