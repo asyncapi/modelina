@@ -1,5 +1,6 @@
 import { CommonInputModel, CommonModel, FileHelpers, OutputModel } from '../../../src';
 import { JavaGenerator } from '../../../src/generators'; 
+import * as path from 'path';
 
 describe('JavaGenerator', () => {
   let generator: JavaGenerator;
@@ -422,21 +423,26 @@ public enum CustomEnum {
       const expectedError = new Error('write error');
       jest.spyOn(FileHelpers, 'writeToFile').mockRejectedValue(expectedError);
       jest.spyOn(generator, 'generateFullOutput').mockResolvedValue([new OutputModel('content', new CommonModel(), '', new CommonInputModel(), [])]);
+      
       await expect(generator.generateToFile(doc, '/test/', 'SomePackage')).rejects.toEqual(expectedError);
       expect(generator.generateFullOutput).toHaveBeenCalledTimes(1);
       expect(FileHelpers.writeToFile).toHaveBeenCalledTimes(1);
     });
     test('should try and generate models to files', async () => {
       generator = new JavaGenerator();
+      const outputDir = './test';
+      const expectedOutputDirPath = path.resolve(outputDir);
+      const expectedWriteToFileParameters = [
+        'content',
+        `${expectedOutputDirPath }/Undefined.java`,
+      ];
       jest.spyOn(FileHelpers, 'writeToFile').mockResolvedValue(undefined);
       jest.spyOn(generator, 'generateFullOutput').mockResolvedValue([new OutputModel('content', new CommonModel(), '', new CommonInputModel(), [])]);
-      await generator.generateToFile(doc, '/test/', 'SomePackage');
+      
+      await generator.generateToFile(doc, expectedOutputDirPath, 'SomePackage');
       expect(generator.generateFullOutput).toHaveBeenCalledTimes(1);
       expect(FileHelpers.writeToFile).toHaveBeenCalledTimes(1);
-      expect((FileHelpers.writeToFile as jest.Mock).mock.calls[0]).toEqual([
-        'content',
-        '/test/Undefined.java',
-      ]);
+      expect((FileHelpers.writeToFile as jest.Mock).mock.calls[0]).toEqual(expectedWriteToFileParameters);
     });
   });
 
