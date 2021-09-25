@@ -432,9 +432,10 @@ public enum CustomEnum {
       generator = new JavaGenerator();
       const outputDir = './test';
       const expectedOutputDirPath = path.resolve(outputDir);
+      const expectedOutputFilePath = path.resolve(`${outputDir}/Undefined.java`);
       const expectedWriteToFileParameters = [
         'content',
-        `${expectedOutputDirPath }/Undefined.java`,
+        expectedOutputFilePath,
       ];
       jest.spyOn(FileHelpers, 'writeToFile').mockResolvedValue(undefined);
       jest.spyOn(generator, 'generateFullOutput').mockResolvedValue([new OutputModel('content', new CommonModel(), '', new CommonInputModel(), [])]);
