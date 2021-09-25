@@ -2,16 +2,18 @@ import * as path from 'path';
 import { TypeScriptGenerator, JavaGenerator, JavaScriptGenerator, GoGenerator, CSharpGenerator, TS_COMMON_PRESET } from '../../src';
 import { execCommand, generateModels, renderModels, renderModelsToSeparateFiles } from './utils/Utils';
 const fileToGenerate = path.resolve(__dirname, './docs/dummy.json');
+import {promises as fs} from 'fs';
 describe('Dummy JSON Schema file', () => {
   jest.setTimeout(100000);
   describe('should be able to generate and compile Java', () => {
     test('class', async () => {
       const generator = new JavaGenerator();
-      const generatedModels = await generateModels(fileToGenerate, generator);
-      expect(generatedModels).not.toHaveLength(0);
+      const inputFileContent = await fs.readFile(fileToGenerate);
+      const input = JSON.parse(String(inputFileContent));
       const renderOutputPath = path.resolve(__dirname, './output/java/class');
+      const generatedModels = await generator.generateToFile(input, renderOutputPath, 'somepackage');
+      expect(generatedModels).not.toHaveLength(0);
       const dependencyPath = path.resolve(__dirname, './dependencies/java/*');
-      await renderModelsToSeparateFiles(generatedModels, renderOutputPath, 'java');
       const compileCommand = `javac  -cp ${dependencyPath} ${path.resolve(renderOutputPath, '*.java')}`;
       await execCommand(compileCommand);
     });

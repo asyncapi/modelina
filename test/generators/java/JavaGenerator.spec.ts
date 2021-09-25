@@ -1,9 +1,13 @@
+import { FileHelpers } from '../../../src';
 import { JavaGenerator } from '../../../src/generators'; 
 
 describe('JavaGenerator', () => {
   let generator: JavaGenerator;
   beforeEach(() => {
     generator = new JavaGenerator();
+  });
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   test('should not render reserved keyword', async () => {
@@ -312,7 +316,7 @@ describe('JavaGenerator', () => {
     expect(enumModel.dependencies).toEqual(expectedDependencies);
   });
 
-  test('should work custom preset for `enum` type', async () => {
+  test('should render custom preset for `enum` type', async () => {
     const doc = {
       $id: 'CustomEnum',
       type: 'string',
@@ -398,5 +402,39 @@ public enum CustomEnum {
     const classModel = await generator.render(model, inputModel);
     expect(classModel.result).toEqual(expected);
     expect(classModel.dependencies).toEqual(expectedDependencies);
+  });
+  describe('generateToFile()', () => {
+    const doc = {
+      $id: 'CustomClass',
+      type: 'object',
+      additionalProperties: true,
+      properties: {
+        someProp: { type: 'string' },
+        someEnum: {
+          $id: 'CustomEnum',
+          type: 'string',
+          enum: ['Texas', 'Alabama', 'California'],
+        }
+      }
+    };
+    test('should throw accurate error if file cannot be written', async () => {
+      generator = new JavaGenerator();
+      const error = new Error('write error');
+      jest.spyOn(FileHelpers, 'writeToFile').mockRejectedValue(error);
+      await expect(generator.generateToFile(doc, '/test/', 'SomePackage')).rejects.toEqual(error);
+      expect(FileHelpers.writeToFile).toHaveBeenCalledTimes(1);
+    });
+    test('should be able to use reserved keywords as package name', async () => {
+      generator = new JavaGenerator();
+      await expect(generator.generateToFile(doc, '/test/', 'package')).rejects.toEqual('You cannot use reserved java keyword (package) as package name, please use another.');
+    });
+    test('should generate models to files', async () => {
+      generator = new JavaGenerator();
+      jest.spyOn(FileHelpers, 'writeToFile').mockResolvedValue(undefined);
+      await generator.generateToFile(doc, '/test/', 'SomePackage');
+      expect(FileHelpers.writeToFile).toHaveBeenCalledTimes(2);
+      expect((FileHelpers.writeToFile as jest.Mock).mock.calls[0]).toMatchSnapshot();
+      expect((FileHelpers.writeToFile as jest.Mock).mock.calls[1]).toMatchSnapshot();
+    });
   });
 });

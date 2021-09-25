@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`JavaGenerator generateToFile() should generate models to files 1`] = `
+Array [
+  "package SomePackage;
+import SomePackage.CustomEnum;
+import java.util.Map;
+public class CustomClass {
+  private String someProp;
+  private CustomEnum someEnum;
+  private Map<String, Object> additionalProperties;
+
+  public String getSomeProp() { return this.someProp; }
+  public void setSomeProp(String someProp) { this.someProp = someProp; }
+
+  public CustomEnum getSomeEnum() { return this.someEnum; }
+  public void setSomeEnum(CustomEnum someEnum) { this.someEnum = someEnum; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}
+",
+  "/test/CustomClass.java",
+]
+`;
+
+exports[`JavaGenerator generateToFile() should generate models to files 2`] = `
+Array [
+  "package SomePackage;
+
+import com.fasterxml.jackson.annotation.*;
+public enum CustomEnum {
+  TEXAS(\\"Texas\\"), ALABAMA(\\"Alabama\\"), CALIFORNIA(\\"California\\");
+
+  private String value;
+
+  CustomEnum(String value) {
+    this.value = value;
+  }
+    
+  @JsonValue
+  public String getValue() {
+    return value;
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+
+  @JsonCreator
+  public static CustomEnum fromValue(String value) {
+    for (CustomEnum e : CustomEnum.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+}
+",
+  "/test/CustomEnum.java",
+]
+`;
