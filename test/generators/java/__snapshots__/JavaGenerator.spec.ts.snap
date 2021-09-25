@@ -17,8 +17,7 @@ public class CustomClass {
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-}
-"
+}"
 `;
 
 exports[`JavaGenerator generateFullOutput() should generate models to files 2`] = `
@@ -53,6 +52,5 @@ public enum CustomEnum {
     }
     throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
   }
-}
-"
+}"
 `;

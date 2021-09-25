@@ -82,18 +82,14 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions> {
       return Promise.reject(`You cannot use reserved Java keyword (${packageName}) as package name, please use another.`);
     }
 
-    const fullOutputModels = [];
     const generatedModels = await this.generate(input);
-    for (const outputModel of generatedModels) {
+    return Promise.resolve(generatedModels.map((outputModel) => {
       const modelDependencies = outputModel.model.getNearestDependencies().map((dependencyModel) => { return `import ${packageName}.${FormatHelpers.toPascalCase(dependencyModel || 'undefined')};`;});
       const outputContent = `package ${packageName};
 ${modelDependencies.join('\n')}
 ${outputModel.dependencies.join('\n')}
-${outputModel.result}
-`; 
-      const newOutputModel = new OutputModel(outputContent, outputModel.model, outputModel.modelName, outputModel.inputModel, outputModel.dependencies);
-      fullOutputModels.push(newOutputModel);
-    }
-    return Promise.resolve(fullOutputModels);
+${outputModel.result}`; 
+      return new OutputModel(outputContent, outputModel.model, outputModel.modelName, outputModel.inputModel, outputModel.dependencies);
+    }));
   }
 }
