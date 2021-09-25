@@ -1,4 +1,4 @@
-import { FileHelpers } from '../../../src';
+import { CommonInputModel, CommonModel, FileHelpers, OutputModel } from '../../../src';
 import { JavaGenerator } from '../../../src/generators'; 
 
 describe('JavaGenerator', () => {
@@ -419,22 +419,52 @@ public enum CustomEnum {
     };
     test('should throw accurate error if file cannot be written', async () => {
       generator = new JavaGenerator();
-      const error = new Error('write error');
-      jest.spyOn(FileHelpers, 'writeToFile').mockRejectedValue(error);
-      await expect(generator.generateToFile(doc, '/test/', 'SomePackage')).rejects.toEqual(error);
+      const expectedError = new Error('write error');
+      jest.spyOn(FileHelpers, 'writeToFile').mockRejectedValue(expectedError);
+      jest.spyOn(generator, 'generateFullOutput').mockResolvedValue([new OutputModel('content', new CommonModel(), '', new CommonInputModel(), [])]);
+      await expect(generator.generateToFile(doc, '/test/', 'SomePackage')).rejects.toEqual(expectedError);
+      expect(generator.generateFullOutput).toHaveBeenCalledTimes(1);
       expect(FileHelpers.writeToFile).toHaveBeenCalledTimes(1);
     });
-    test('should be able to use reserved keywords as package name', async () => {
+    test('should try and generate models to files', async () => {
       generator = new JavaGenerator();
-      await expect(generator.generateToFile(doc, '/test/', 'package')).rejects.toEqual('You cannot use reserved java keyword (package) as package name, please use another.');
+      jest.spyOn(FileHelpers, 'writeToFile').mockResolvedValue(undefined);
+      jest.spyOn(generator, 'generateFullOutput').mockResolvedValue([new OutputModel('content', new CommonModel(), '', new CommonInputModel(), [])]);
+      await generator.generateToFile(doc, '/test/', 'SomePackage');
+      expect(generator.generateFullOutput).toHaveBeenCalledTimes(1);
+      expect(FileHelpers.writeToFile).toHaveBeenCalledTimes(1);
+      expect((FileHelpers.writeToFile as jest.Mock).mock.calls[0]).toEqual([
+        'content',
+        '/test/Undefined.java',
+      ]);
+    });
+  });
+
+  describe('generateFullOutput()', () => {
+    const doc = {
+      $id: 'CustomClass',
+      type: 'object',
+      additionalProperties: true,
+      properties: {
+        someProp: { type: 'string' },
+        someEnum: {
+          $id: 'CustomEnum',
+          type: 'string',
+          enum: ['Texas', 'Alabama', 'California'],
+        }
+      }
+    };
+    test('should not be able to use reserved keywords as package name', async () => {
+      generator = new JavaGenerator();
+      await expect(generator.generateFullOutput(doc, 'package')).rejects.toEqual('You cannot use reserved Java keyword (package) as package name, please use another.');
     });
     test('should generate models to files', async () => {
       generator = new JavaGenerator();
       jest.spyOn(FileHelpers, 'writeToFile').mockResolvedValue(undefined);
-      await generator.generateToFile(doc, '/test/', 'SomePackage');
-      expect(FileHelpers.writeToFile).toHaveBeenCalledTimes(2);
-      expect((FileHelpers.writeToFile as jest.Mock).mock.calls[0]).toMatchSnapshot();
-      expect((FileHelpers.writeToFile as jest.Mock).mock.calls[1]).toMatchSnapshot();
+      const output = await generator.generateFullOutput(doc, 'SomePackage');
+      expect(output).toHaveLength(2);
+      expect(output[0].result).toMatchSnapshot();
+      expect(output[1].result).toMatchSnapshot();
     });
   });
 });

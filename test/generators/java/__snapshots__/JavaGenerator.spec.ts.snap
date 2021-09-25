@@ -1,8 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`JavaGenerator generateToFile() should generate models to files 1`] = `
-Array [
-  "package SomePackage;
+exports[`JavaGenerator generateFullOutput() should generate models to files 1`] = `
+"package SomePackage;
 import SomePackage.CustomEnum;
 import java.util.Map;
 public class CustomClass {
@@ -19,14 +18,11 @@ public class CustomClass {
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }
-",
-  "/test/CustomClass.java",
-]
+"
 `;
 
-exports[`JavaGenerator generateToFile() should generate models to files 2`] = `
-Array [
-  "package SomePackage;
+exports[`JavaGenerator generateFullOutput() should generate models to files 2`] = `
+"package SomePackage;
 
 import com.fasterxml.jackson.annotation.*;
 public enum CustomEnum {
@@ -58,7 +54,5 @@ public enum CustomEnum {
     throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
   }
 }
-",
-  "/test/CustomEnum.java",
-]
+"
 `;
