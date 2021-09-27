@@ -1,6 +1,6 @@
 # BlackBox tests
 
-As we start to integrate more and more inputs, it is important that we test actual real inputs from users to ensure that the library behaves as expected. The best way I can see is to add them as BlackBox tests. The BlackBox tests are focused on catching syntax errors and not logical errors, although they can be manually used used for this.
+As we start to integrate more and more inputs, it is important that we test actual and real inputs from users to ensure the library behaves as expected. For now, the best way is to add them as BlackBox tests. The BlackBox tests are focused on catching syntax errors and not logical errors, although they can be manually used for this.
 
 The documents being tested can be found under [docs](./docs), which contain documents for the following input types:
 - [AsyncAPI 2.0](./docs/AsyncAPI-2_0)
