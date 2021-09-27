@@ -56,7 +56,7 @@ export class GoGenerator extends AbstractGenerator<GoOptions> {
     const kind = TypeHelpers.extractKind(model);
     switch (kind) {
     case ModelKind.UNION:
-      //We dont support union in Go generator, however, if union is an object, we render it as a struct.
+      // We don't support union in Go generator, however, if union is an object, we render it as a struct.
       if (!model.type?.includes('object')) {break;}
       return this.renderStruct(model, inputModel);
     case ModelKind.OBJECT: 
