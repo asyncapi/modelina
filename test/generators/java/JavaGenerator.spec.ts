@@ -463,7 +463,7 @@ public enum CustomEnum {
     };
     test('should not be able to use reserved keywords as package name', async () => {
       generator = new JavaGenerator();
-      await expect(generator.generateFullOutput(doc, 'package')).rejects.toEqual('You cannot use reserved Java keyword (package) as package name, please use another.');
+      await expect(generator.generateFullOutput(doc, 'package')).rejects.toEqual(new Error('You cannot use reserved Java keyword (package) as package name, please use another.'));
     });
     test('should generate models to files', async () => {
       generator = new JavaGenerator();

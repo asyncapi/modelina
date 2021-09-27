@@ -66,7 +66,7 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions> {
       const outputFilePath = path.resolve(outputDirectory, `${FormatHelpers.toPascalCase(outputModel.model.$id || 'undefined')}.java`);
       await FileHelpers.writeToFile(outputModel.result, outputFilePath);
     }
-    return Promise.resolve(generatedModels);
+    return generatedModels;
   }
 
   /**
@@ -79,17 +79,17 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions> {
    */
   public async generateFullOutput(input: Record<string, unknown> | CommonInputModel, packageName: string): Promise<OutputModel[]> {
     if (isReservedJavaKeyword(packageName)) {
-      return Promise.reject(`You cannot use reserved Java keyword (${packageName}) as package name, please use another.`);
+      throw new Error(`You cannot use reserved Java keyword (${packageName}) as package name, please use another.`);
     }
 
     const generatedModels = await this.generate(input);
-    return Promise.resolve(generatedModels.map((outputModel) => {
+    return generatedModels.map((outputModel) => {
       const modelDependencies = outputModel.model.getNearestDependencies().map((dependencyModel) => { return `import ${packageName}.${FormatHelpers.toPascalCase(dependencyModel || 'undefined')};`;});
       const outputContent = `package ${packageName};
 ${modelDependencies.join('\n')}
 ${outputModel.dependencies.join('\n')}
 ${outputModel.result}`; 
       return new OutputModel(outputContent, outputModel.model, outputModel.modelName, outputModel.inputModel, outputModel.dependencies);
-    }));
+    });
   }
 }
