@@ -29,7 +29,7 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions> {
 
   render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const kind = TypeHelpers.extractKind(model);
-    //We dont support union in Go generator, however, if union is an object, we render it as a struct.
+    // We don't support union in Java generator, however, if union is an object, we render it as a class.
     if (kind === ModelKind.OBJECT || (kind === ModelKind.UNION && model.type?.includes('object'))) {
       return this.renderClass(model, inputModel);
     } else if (kind === ModelKind.ENUM) {
