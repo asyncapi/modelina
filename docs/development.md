@@ -18,4 +18,4 @@ To setup the environment follow these steps:
 3. Make sure code is well formatted and secure `npm run lint`
 
 ## BlackBox testing
-We have a bunch of BlackBox tests, that are run separately to the `npm run test` script. Please refer to the [BlackBox documentation](../test/blackbox) for further information.
+We have several BlackBox tests that are run separately from the `npm run test` script. Please refer to the [BlackBox documentation](../test/blackbox) for further information.
