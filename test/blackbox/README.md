@@ -20,4 +20,4 @@ If you want to run the BlackBox tests locally, you have to install a couple of d
 - To to run the `C#` BlackBox tests, you need to have C# compiler installed globally. - https://www.mono-project.com/download/stable/
 - To to run the `Go` BlackBox tests, you need to have GoLang installed - https://golang.org/doc/install
 
-By default the BlackBox tests are not run with the regular `npm run test`, but can be run with `npm run test:blackbox`.
+By default, the BlackBox tests are not run with the regular `npm run test`, but can be run with `npm run test:blackbox`.
