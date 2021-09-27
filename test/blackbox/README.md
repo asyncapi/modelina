@@ -15,8 +15,9 @@ The tests can either be run by installing all dependencies locally, or running i
 To run the BlackBox tests through Docker, run the command `npm run docker:test:blackbox`.
 
 If you want to run the BlackBox tests locally, you have to install a couple of dependencies:
-- To to run the `java` BlackBox tests, you need to have JDK installed.
-- To to run the `ts` BlackBox tests, you need to have TypeScript installed globally - `npm install -g typescript`.
+- To to run the `Java` BlackBox tests, you need to have JDK installed.
+- To to run the `TypeScript` BlackBox tests, you need to have TypeScript installed globally - `npm install -g typescript`.
 - To to run the `C#` BlackBox tests, you need to have C# compiler installed globally. - https://www.mono-project.com/download/stable/
+- To to run the `Go` BlackBox tests, you need to have GoLang installed - https://golang.org/doc/install
 
 By default the BlackBox tests are not run with the regular `npm run test`, but can be run with `npm run test:blackbox`.
