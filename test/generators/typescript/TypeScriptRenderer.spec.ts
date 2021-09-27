@@ -50,10 +50,10 @@ describe('TypeScriptRenderer', () => {
     test('Should render number type', () => {
       expect(renderer.toTsType('number', new CommonModel())).toEqual('number');
     });
-    test('Should object type', () => {
+    test('Should render object type', () => {
       expect(renderer.toTsType('object', new CommonModel())).toEqual('object');
     });
-    test('Should null type', () => {
+    test('Should render null type', () => {
       expect(renderer.toTsType('null', new CommonModel())).toEqual('null');
     });
     test('Should render array type', () => {
