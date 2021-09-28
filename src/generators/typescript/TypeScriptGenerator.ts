@@ -3,7 +3,7 @@ import {
   CommonGeneratorOptions,
   defaultGeneratorOptions,
 } from '../AbstractGenerator';
-import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
+import { CommonModel, CommonInputModel, RenderOutput, OutputModel } from '../../models';
 import { TypeHelpers, ModelKind, CommonNamingConvention, CommonNamingConventionImplementation } from '../../helpers';
 import { TypeScriptPreset, TS_DEFAULT_PRESET } from './TypeScriptPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
@@ -16,11 +16,13 @@ export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPres
   modelType?: 'class' | 'interface';
   namingConvention?: CommonNamingConvention;
 }
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface TypeScriptRenderFullOptions { }
 
 /**
  * Generator for TypeScript
  */
-export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions> {
+export class TypeScriptGenerator extends AbstractGenerator<TypeScriptRenderFullOptions, TypeScriptOptions> {
   static defaultOptions: TypeScriptOptions = {
     ...defaultGeneratorOptions,
     renderTypes: true,
@@ -33,6 +35,14 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions> {
     options: TypeScriptOptions = TypeScriptGenerator.defaultOptions,
   ) {
     super('TypeScript', TypeScriptGenerator.defaultOptions, options);
+  }
+
+  public generateFile(): Promise<OutputModel[]> {
+    throw new Error('Method not implemented.');
+  }
+
+  public renderFull(): Promise<RenderOutput> {
+    throw new Error('Method not implemented.');
   }
 
   render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {

@@ -22,7 +22,7 @@ export const defaultGeneratorOptions: CommonGeneratorOptions = {
 /**
  * Abstract generator which must be implemented by each language
  */
-export abstract class AbstractGenerator<Options extends CommonGeneratorOptions = CommonGeneratorOptions> {
+export abstract class AbstractGenerator<RenderFullOptions, Options extends CommonGeneratorOptions = CommonGeneratorOptions> {
   protected options: Options;
   
   constructor(
@@ -34,26 +34,59 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
   }
 
   public abstract render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput>;
+  public abstract renderFull(model: CommonModel, inputModel: CommonInputModel, options: RenderFullOptions): Promise<RenderOutput>;
+  public abstract generateFile(input: Record<string, unknown> | CommonInputModel, outputDirectory: string, options: RenderFullOptions): Promise<OutputModel[]>;
 
   public process(input: Record<string, unknown>): Promise<CommonInputModel> {
     return InputProcessor.processor.process(input, this.options.processorOptions);
   }
 
-  public async generate(input: Record<string, unknown> | CommonInputModel): Promise<OutputModel[]> {
-    if (input instanceof CommonInputModel) {
-      return this.generateModels(input);
-    }
-    const model = await this.process(input);
-    return this.generateModels(model);
+  /**
+   * Generates the full output of a model, instead of a scattered model.
+   * 
+   * OutputModels result is no longer the model itself, but including package, package dependencies and model dependencies.
+   * 
+   * @param input 
+   * @param options to use for rendering full output
+   */
+  public async generateFull(input: Record<string, unknown> | CommonInputModel, options: RenderFullOptions): Promise<OutputModel[]> {
+    const inputModel = await this.processInput(input);
+    const renders = Object.entries(inputModel.models).map(async ([modelName, model]) => {
+      const renderedOutput = await this.renderFull(model, inputModel, options);
+      return OutputModel.toOutputModel({ result: renderedOutput.result, model, modelName, inputModel, dependencies: renderedOutput.dependencies});
+    });
+    return Promise.all(renders);
   }
 
-  protected generateModels(inputModel: CommonInputModel): Promise<OutputModel[]> {
-    const models = inputModel.models;
-    const renders = Object.entries(models).map(async ([modelName, model]) => {
+  /**
+   * Generates a scattered model where dependencies and rendered results are separated. 
+   * 
+   * @param input 
+   * @returns 
+   */
+  public async generate(input: Record<string, unknown> | CommonInputModel): Promise<OutputModel[]> {
+    const inputModel = await this.processInput(input);
+    const renders = Object.entries(inputModel.models).map(async ([modelName, model]) => {
       const renderedOutput = await this.render(model, inputModel);
       return OutputModel.toOutputModel({ result: renderedOutput.result, model, modelName, inputModel, dependencies: renderedOutput.dependencies});
     });
     return Promise.all(renders);
+  }
+
+  /**
+   * Process any of the input formats to the appropriate CommonInputModel type.
+   * 
+   * @param input 
+   * @returns 
+   */
+  private async processInput(input: Record<string, unknown> | CommonInputModel): Promise<CommonInputModel> {
+    let inputModel: CommonInputModel;
+    if (input instanceof CommonInputModel) {
+      inputModel = input;
+    } else {
+      inputModel = await this.process(input);
+    }
+    return inputModel;
   }
 
   protected getPresets(presetType: string): Array<[Preset, unknown]> {

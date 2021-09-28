@@ -3,19 +3,24 @@ import {
   CommonGeneratorOptions,
   defaultGeneratorOptions,
 } from '../AbstractGenerator';
-import { CommonModel, CommonInputModel, RenderOutput, OutputModel } from '../../models';
-import { CommonNamingConvention, CommonNamingConventionImplementation, ModelKind, TypeHelpers, FileHelpers, FormatHelpers } from '../../helpers';
+import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
+import { CommonNamingConvention, CommonNamingConventionImplementation, ModelKind, TypeHelpers, FormatHelpers, FileHelpers } from '../../helpers';
 import { JavaPreset, JAVA_DEFAULT_PRESET } from './JavaPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
-import * as path from 'path';
 import { isReservedJavaKeyword } from './Constants';
+import * as path from 'path';
 export interface JavaOptions extends CommonGeneratorOptions<JavaPreset> {
   collectionType?: 'List' | 'Array';
   namingConvention?: CommonNamingConvention;
 }
-
-export class JavaGenerator extends AbstractGenerator<JavaOptions> {
+export interface JavaRenderFullOptions {
+  packageName: string
+}
+export interface FileWriter {
+  write(content: string, toFile: string): Promise<void>; 
+}
+export class JavaGenerator extends AbstractGenerator<JavaRenderFullOptions, JavaOptions> {
   static defaultOptions: JavaOptions = {
     ...defaultGeneratorOptions,
     defaultPreset: JAVA_DEFAULT_PRESET,     
@@ -36,6 +41,38 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions> {
     }
     return this.renderClass(model, inputModel);
   }
+  async renderFull(model: CommonModel, inputModel: CommonInputModel, options: JavaRenderFullOptions): Promise<RenderOutput> {
+    if (isReservedJavaKeyword(options.packageName)) {
+      throw new Error(`You cannot use reserved Java keyword (${options.packageName}) as package name, please use another.`);
+    }
+
+    const outputModel = await this.render(model, inputModel);
+    const modelDependencies = model.getNearestDependencies().map((dependencyModel) => { return `import ${options.packageName}.${FormatHelpers.toPascalCase(dependencyModel)};`;});
+    const outputContent = `package ${options.packageName};
+${modelDependencies.join('\n')}
+${outputModel.dependencies.join('\n')}
+${outputModel.result}`; 
+    return RenderOutput.toRenderOutput({result: outputContent, dependencies: outputModel.dependencies});
+  }
+
+  /**
+   * Generates all the models to an output directory. 
+   * 
+   * This function is invasive, as it overwrite any existing files with the same name as the model.
+   * 
+   * @param input
+   * @param outputDirectory where you want the models generated to
+   * @param packageName to use for the models
+   */
+  public async generateFile(input: Record<string, unknown> | CommonInputModel, outputDirectory: string, options: JavaRenderFullOptions, fileWriter: FileWriter): Promise<OutputModel[]> {
+    let generatedModels = await this.generateFull(input, options);
+    generatedModels = generatedModels.filter((outputModel) => { return outputModel.model.$id !== undefined; });
+    for (const outputModel of generatedModels) {
+      const filePath = path.resolve(outputDirectory, `${outputModel.modelName}.java`);
+      await fileWriter.write(outputModel.result, filePath);
+    }
+    return generatedModels;
+  }
 
   async renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const presets = this.getPresets('class');
@@ -49,47 +86,5 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions> {
     const renderer = new EnumRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
     return RenderOutput.toRenderOutput({result, dependencies: renderer.dependencies});
-  }
-
-  /**
-   * Generates all the models to an output directory. 
-   * 
-   * This function is invasive, as it overwrite any existing files with the same name as the model.
-   * 
-   * @param input
-   * @param outputDirectory where you want the models generated to
-   * @param packageName for the models
-   */
-  public async generateToFile(input: Record<string, unknown> | CommonInputModel, outputDirectory: string, packageName: string): Promise<OutputModel[]> {
-    const generatedModels = await this.generateFullOutput(input, packageName);
-    for (const outputModel of generatedModels) {
-      const outputFilePath = path.resolve(outputDirectory, `${FormatHelpers.toPascalCase(outputModel.model.$id || 'undefined')}.java`);
-      await FileHelpers.writeToFile(outputModel.result, outputFilePath);
-    }
-    return generatedModels;
-  }
-
-  /**
-   * Generates the full output of a model, instead of a scattered model.
-   * 
-   * OutputModels result is no longer the model itself, but including package, package dependencies and model dependencies.
-   * 
-   * @param input 
-   * @param packageName for the models
-   */
-  public async generateFullOutput(input: Record<string, unknown> | CommonInputModel, packageName: string): Promise<OutputModel[]> {
-    if (isReservedJavaKeyword(packageName)) {
-      throw new Error(`You cannot use reserved Java keyword (${packageName}) as package name, please use another.`);
-    }
-
-    const generatedModels = await this.generate(input);
-    return generatedModels.map((outputModel) => {
-      const modelDependencies = outputModel.model.getNearestDependencies().map((dependencyModel) => { return `import ${packageName}.${FormatHelpers.toPascalCase(dependencyModel || 'undefined')};`;});
-      const outputContent = `package ${packageName};
-${modelDependencies.join('\n')}
-${outputModel.dependencies.join('\n')}
-${outputModel.result}`; 
-      return new OutputModel(outputContent, outputModel.model, outputModel.modelName, outputModel.inputModel, outputModel.dependencies);
-    });
   }
 }
