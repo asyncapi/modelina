@@ -25,10 +25,12 @@ function readFilesInFolder(folder: string) {
 const jsonSchemaDraft7Files = readFilesInFolder('JsonSchemaDraft-7');
 const AsyncAPIV2_0Files = readFilesInFolder('AsyncAPI-2_0');
 const AsyncAPIV2_1Files = readFilesInFolder('AsyncAPI-2_1');
+const AsyncAPIV2_2Files = readFilesInFolder('AsyncAPI-2_2');
 
 const filesToTest = [
   ...AsyncAPIV2_0Files,
   ...AsyncAPIV2_1Files,
+  ...AsyncAPIV2_2Files,
   ...jsonSchemaDraft7Files.filter(({file}) => { 
     //Blocked by https://github.com/asyncapi/modelina/issues/388
     return file !== './docs/JsonSchemaDraft-7/draft-7-core.json';
