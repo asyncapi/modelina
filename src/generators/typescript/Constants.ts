@@ -51,6 +51,7 @@ export const RESERVED_TYPESCRIPT_KEYWORDS = [
   'from',
   'of',
   // Strict mode reserved words
+  'arguments',
   'as',
   'implements',
   'interface',

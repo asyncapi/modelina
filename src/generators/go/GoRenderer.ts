@@ -96,10 +96,6 @@ export abstract class GoRenderer extends AbstractRenderer<GoOptions> {
 
   /* eslint-disable sonarjs/no-duplicate-string */
   toGoType(type: string | undefined, model: CommonModel): string {
-    if (type === undefined) {
-      return 'interface{}';
-    }
-
     switch (type) {
     case 'string':
       return 'string';
@@ -113,12 +109,12 @@ export abstract class GoRenderer extends AbstractRenderer<GoOptions> {
       return 'interface{}';
     case 'array': {
       if (Array.isArray(model.items)) {
-        return model.items.length > 1? '[]interface{}' : `[]${this.renderType(model.items[0])}`;
+        return model.items.length > 1 ? '[]interface{}' : `[]${this.renderType(model.items[0])}`;
       }
       const arrayType = model.items ? this.renderType(model.items) : 'interface{}';
       return `[]${arrayType}`;
     }
-    default: return type;
+    default: return 'interface{}';
     }
   }
 }
