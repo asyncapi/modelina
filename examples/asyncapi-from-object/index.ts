@@ -2,7 +2,7 @@ import { TypeScriptGenerator } from '../../src';
 
 const generator = new TypeScriptGenerator();
 const AsyncAPIDocument = {
-  asyncapi: '2.1.0',
+  asyncapi: '2.2.0',
   info: {
     title: 'example',
     version: '0.1.0'
