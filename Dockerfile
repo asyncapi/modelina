@@ -9,7 +9,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
     && apt-get install -yq nodejs 
 
 # Install golang
-RUN curl -fsSL https://golang.org/dl/go1.16.5.linux-amd64.tar.gz | tar -C /usr/local -xz
+RUN curl -fsSL https://golang.org/dl/go1.16.8.linux-amd64.tar.gz | tar -C /usr/local -xz
 ENV PATH="${PATH}:/usr/local/go/bin"
 
 # Install dotnet SDK
