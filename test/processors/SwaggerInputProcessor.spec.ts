@@ -29,12 +29,17 @@ describe('SwaggerInputProcessor', () => {
   });
   describe('shouldProcess()', () => {
     const processor = new SwaggerInputProcessor();
-    test('should be able to detect pure object', () => {
-      expect(processor.shouldProcess(basicDoc)).toEqual(true);
-    });
     test('should be able to process Swagger 2.0', () => {
       const parsedObject = {swagger: '2.0'};
       expect(processor.shouldProcess(parsedObject)).toEqual(true);
+    });
+    test('should not be able to process other swagger docs', () => {
+      const parsedObject = {swagger: '1.0'};
+      expect(processor.shouldProcess(parsedObject)).toEqual(false);
+    });
+    test('should not be able to process document without swagger version', () => {
+      const parsedObject = {};
+      expect(processor.shouldProcess(parsedObject)).toEqual(false);
     });
   });
   describe('tryGetVersionOfDocument()', () => {
