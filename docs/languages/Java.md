@@ -28,7 +28,9 @@ TODO
 TODO
 
 ## Include Javadoc for properties
-TODO
+When you want to generate models containing JavaDocs from description and examples, you can use the `JAVA_DESCRIPTION_PRESET` option.
+
+Check out this [example out for a live demonstration](../../examples/java-generate-javadoc).
 
 ## Include javax validation constraints annotations for properties
 TODO
