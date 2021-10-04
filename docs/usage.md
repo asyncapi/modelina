@@ -50,7 +50,9 @@ TODO
 TODO 
 
 ## Generate TypeScript models
-TODO 
+There are one way to generate models from object.
+
+- [Generate Data Model](../examples/generate-typescript-models)
 
 ## Generate JavaScript models
 TODO
