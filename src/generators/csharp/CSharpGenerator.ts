@@ -36,12 +36,15 @@ export class CSharpGenerator extends AbstractGenerator<any, CSharpOptions> {
   render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const kind = TypeHelpers.extractKind(model);
     switch (kind) {
+    case ModelKind.UNION:
+      //We dont support union in Csharp generator, however, if union is an object, we render it as a class.
+      if (!model.type?.includes('object')) {break;}
+      return this.renderClass(model, inputModel);
     case ModelKind.OBJECT: 
       return this.renderClass(model, inputModel);
     case ModelKind.ENUM: 
       return this.renderEnum(model, inputModel);
     }
-
     return Promise.resolve(RenderOutput.toRenderOutput({ result: '', dependencies: [] }));
   }
 

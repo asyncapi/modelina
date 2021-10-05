@@ -27,11 +27,12 @@ export async function execCommand(command: string) : Promise<void> {
   try {
     const { stderr } = await promiseExec(command);
     if (stderr !== '') {
-      Promise.reject(stderr);
+      return Promise.reject(stderr);
     }
+    return Promise.resolve();
   } catch (e) {
     const wrapperError = new Error(`Error: ${e.stack}; Stdout: ${e.stdout}`);
-    Promise.reject(wrapperError);
+    return Promise.reject(wrapperError);
   }
 }
 

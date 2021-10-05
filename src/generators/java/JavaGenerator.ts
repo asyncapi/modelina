@@ -32,10 +32,13 @@ export class JavaGenerator extends AbstractGenerator<JavaRenderFullOptions, Java
 
   render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const kind = TypeHelpers.extractKind(model);
-    if (kind === ModelKind.ENUM) {
+    // We don't support union in Java generator, however, if union is an object, we render it as a class.
+    if (kind === ModelKind.OBJECT || (kind === ModelKind.UNION && model.type?.includes('object'))) {
+      return this.renderClass(model, inputModel);
+    } else if (kind === ModelKind.ENUM) {
       return this.renderEnum(model, inputModel);
     }
-    return this.renderClass(model, inputModel);
+    return Promise.resolve(RenderOutput.toRenderOutput({ result: '', dependencies: [] }));
   }
   async renderFull(model: CommonModel, inputModel: CommonInputModel, options: JavaRenderFullOptions): Promise<RenderOutput> {
     if (isReservedJavaKeyword(options.packageName)) {
