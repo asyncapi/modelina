@@ -22,8 +22,20 @@ This document contains many of the advanced use-cases that you may stumble upon 
 ## Generate each model in the same file
 TODO 
 
-## Generate a model in separate files
-TODO 
+## Generate models to separate files
+
+The standard generator only allows you to generate the raw models which you can implement your own logic for generating the models to separate files. We have however create simple wrapper generators to use.
+
+The reason for splitting the functionality is because in certain environments, generating to a file is not needed.
+
+The file generators all follow the same pattern regardless of output language, which is the following format - `<language>FileGenerator`.
+
+
+Currently only supported for `Java`.
+
+> Not support in browsers.
+
+Check out this [example out for a live demonstration](../examples/generate-to-files).
 
 ## Include a custom function in the data model
 TODO 

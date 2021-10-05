@@ -1,24 +1,20 @@
 import { 
   AbstractGenerator, 
   CommonGeneratorOptions,
-  defaultGeneratorOptions,
+  defaultGeneratorOptions
 } from '../AbstractGenerator';
 import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
-import { CommonNamingConvention, CommonNamingConventionImplementation, ModelKind, TypeHelpers, FormatHelpers, FileHelpers } from '../../helpers';
+import { CommonNamingConvention, CommonNamingConventionImplementation, ModelKind, TypeHelpers, FormatHelpers } from '../../helpers';
 import { JavaPreset, JAVA_DEFAULT_PRESET } from './JavaPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { isReservedJavaKeyword } from './Constants';
-import * as path from 'path';
 export interface JavaOptions extends CommonGeneratorOptions<JavaPreset> {
   collectionType?: 'List' | 'Array';
   namingConvention?: CommonNamingConvention;
 }
 export interface JavaRenderFullOptions {
   packageName: string
-}
-export interface FileWriter {
-  write(content: string, toFile: string): Promise<void>; 
 }
 export class JavaGenerator extends AbstractGenerator<JavaRenderFullOptions, JavaOptions> {
   static defaultOptions: JavaOptions = {
@@ -53,25 +49,6 @@ ${modelDependencies.join('\n')}
 ${outputModel.dependencies.join('\n')}
 ${outputModel.result}`; 
     return RenderOutput.toRenderOutput({result: outputContent, dependencies: outputModel.dependencies});
-  }
-
-  /**
-   * Generates all the models to an output directory. 
-   * 
-   * This function is invasive, as it overwrite any existing files with the same name as the model.
-   * 
-   * @param input
-   * @param outputDirectory where you want the models generated to
-   * @param packageName to use for the models
-   */
-  public async generateFile(input: Record<string, unknown> | CommonInputModel, outputDirectory: string, options: JavaRenderFullOptions, fileWriter: FileWriter): Promise<OutputModel[]> {
-    let generatedModels = await this.generateFull(input, options);
-    generatedModels = generatedModels.filter((outputModel) => { return outputModel.model.$id !== undefined; });
-    for (const outputModel of generatedModels) {
-      const filePath = path.resolve(outputDirectory, `${outputModel.modelName}.java`);
-      await fileWriter.write(outputModel.result, filePath);
-    }
-    return generatedModels;
   }
 
   async renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {

@@ -1,7 +1,7 @@
 import {
   AbstractGenerator,
   CommonGeneratorOptions,
-  defaultGeneratorOptions,
+  defaultGeneratorOptions
 } from '../AbstractGenerator';
 import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
 import { TypeHelpers, ModelKind, FormatHelpers } from '../../helpers';
@@ -39,7 +39,7 @@ export interface GoOptions extends CommonGeneratorOptions<GoPreset> {
 /**
  * Generator for Go
  */
-export class GoGenerator extends AbstractGenerator<GoOptions> {
+export class GoGenerator extends AbstractGenerator<any, GoOptions> {
   static defaultOptions: GoOptions = {
     ...defaultGeneratorOptions,
     defaultPreset: GO_DEFAULT_PRESET,
@@ -62,6 +62,10 @@ export class GoGenerator extends AbstractGenerator<GoOptions> {
     }
 
     return Promise.resolve(RenderOutput.toRenderOutput({ result: '', dependencies: [] }));
+  }
+
+  renderFull(): Promise<RenderOutput> {
+    throw new Error('Method not implemented.');
   }
 
   async renderEnum(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {

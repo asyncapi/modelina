@@ -1,9 +1,9 @@
 import { 
   AbstractGenerator, 
   CommonGeneratorOptions,
-  defaultGeneratorOptions,
+  defaultGeneratorOptions
 } from '../AbstractGenerator';
-import { CommonModel, CommonInputModel, RenderOutput, OutputModel } from '../../models';
+import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
 import { TypeHelpers, ModelKind, CommonNamingConvention, CommonNamingConventionImplementation } from '../../helpers';
 import { TypeScriptPreset, TS_DEFAULT_PRESET } from './TypeScriptPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
@@ -37,11 +37,7 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptRenderFullO
     super('TypeScript', TypeScriptGenerator.defaultOptions, options);
   }
 
-  public generateFile(): Promise<OutputModel[]> {
-    throw new Error('Method not implemented.');
-  }
-
-  public renderFull(): Promise<RenderOutput> {
+  renderFull(): Promise<RenderOutput> {
     throw new Error('Method not implemented.');
   }
 

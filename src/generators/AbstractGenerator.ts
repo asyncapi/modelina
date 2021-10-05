@@ -35,7 +35,6 @@ export abstract class AbstractGenerator<RenderFullOptions, Options extends Commo
 
   public abstract render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput>;
   public abstract renderFull(model: CommonModel, inputModel: CommonInputModel, options: RenderFullOptions): Promise<RenderOutput>;
-  public abstract generateFile(input: Record<string, unknown> | CommonInputModel, outputDirectory: string, options: RenderFullOptions): Promise<OutputModel[]>;
 
   public process(input: Record<string, unknown>): Promise<CommonInputModel> {
     return InputProcessor.processor.process(input, this.options.processorOptions);
