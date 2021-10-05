@@ -50,9 +50,8 @@ TODO
 TODO 
 
 ## Generate TypeScript models
-There are one way to generate models from object.
-
-- [Generate Data Model](../examples/generate-typescript-models)
+Among many of the output languages we support, TypeScript is one of them. You can check out the [TypeScript documentation for more advanced use-cases](./languages/TypeScript.md).
+Check out this [example out for a basic live demonstration](../examples/generate-typescript-models).
 
 ## Generate JavaScript models
 TODO
