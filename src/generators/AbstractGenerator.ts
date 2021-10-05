@@ -61,7 +61,6 @@ export abstract class AbstractGenerator<RenderFullOptions, Options extends Commo
    * Generates a scattered model where dependencies and rendered results are separated. 
    * 
    * @param input 
-   * @returns 
    */
   public async generate(input: Record<string, unknown> | CommonInputModel): Promise<OutputModel[]> {
     const inputModel = await this.processInput(input);
@@ -76,7 +75,6 @@ export abstract class AbstractGenerator<RenderFullOptions, Options extends Commo
    * Process any of the input formats to the appropriate CommonInputModel type.
    * 
    * @param input 
-   * @returns 
    */
   private async processInput(input: Record<string, unknown> | CommonInputModel): Promise<CommonInputModel> {
     let inputModel: CommonInputModel;
