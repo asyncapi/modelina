@@ -14,7 +14,7 @@ const jsonSchemaDraft7 = {
 };
 
 export async function generate() : Promise<void> {
-  const outputFolder = './output';
+  const outputFolder = './examples/generate-to-files/output';
   const modelGenerationOptions = {
     packageName: 'TestPackageName'
   };
