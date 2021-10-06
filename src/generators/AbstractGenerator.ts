@@ -80,7 +80,7 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
     if (input instanceof CommonInputModel) {
       return input;
     }
-    return this.process(input);
+    return await this.process(input);
   }
 
   protected getPresets(presetType: string): Array<[Preset, unknown]> {
