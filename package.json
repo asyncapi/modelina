@@ -27,7 +27,7 @@
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
   "types": "lib/types/index.d.ts",
-  "sideEffects": ["./src/generators/*FileGenerator.ts", "./src/helpers/FileHelpers.ts"],
+  "sideEffects": false
   "files": [
     "/lib",
     "./README.md",
