@@ -6,7 +6,7 @@ This document contains many of the advanced use-cases that you may stumble upon 
 <!-- toc -->
 
 - [Generate each model in the same file](#generate-each-model-in-the-same-file)
-- [Generate a model in separate files](#generate-a-model-in-separate-files)
+- [Generate models to separate files](#generate-models-to-separate-files)
 - [Include a custom function in the data model](#include-a-custom-function-in-the-data-model)
 - [Use the models for data transfer](#use-the-models-for-data-transfer)
 - [Extend the logic of an existing renderer](#extend-the-logic-of-an-existing-renderer)
