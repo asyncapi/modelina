@@ -50,8 +50,7 @@ TODO
 TODO 
 
 ## Generate TypeScript models
-Among many of the output languages we support, TypeScript is one of them. You can check out the [TypeScript documentation for more advanced use-cases](./languages/TypeScript.md).
-Check out this [example out for a basic live demonstration](../examples/generate-typescript-models).
+TypeScript is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-typescript-models) and the following [TypeScript documentation for more advanced use-cases](./languages/TypeScript.md).
 
 ## Generate JavaScript models
 TODO
