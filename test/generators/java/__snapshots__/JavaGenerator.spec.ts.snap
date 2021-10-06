@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`JavaGenerator should render full output 1`] = `
+exports[`JavaGenerator should render models 1`] = `
 "package test.package;
-
+import test.package.OtherModel;
 import java.util.Map;
 public class Address {
   private String streetName;
@@ -12,6 +12,7 @@ public class Address {
   private Boolean marriage;
   private Object members;
   private Object[] arrayType;
+  private OtherModel otherModel;
   private Map<String, Object> additionalProperties;
   private Map<String, String> sTestPatternProperties;
 
@@ -36,10 +37,29 @@ public class Address {
   public Object[] getArrayType() { return this.arrayType; }
   public void setArrayType(Object[] arrayType) { this.arrayType = arrayType; }
 
+  public OtherModel getOtherModel() { return this.otherModel; }
+  public void setOtherModel(OtherModel otherModel) { this.otherModel = otherModel; }
+
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
   public Map<String, String> getSTestPatternProperties() { return this.sTestPatternProperties; }
   public void setSTestPatternProperties(Map<String, String> sTestPatternProperties) { this.sTestPatternProperties = sTestPatternProperties; }
+}"
+`;
+
+exports[`JavaGenerator should render models 2`] = `
+"package test.package;
+
+import java.util.Map;
+public class OtherModel {
+  private String streetName;
+  private Map<String, Object> additionalProperties;
+
+  public String getStreetName() { return this.streetName; }
+  public void setStreetName(String streetName) { this.streetName = streetName; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }"
 `;

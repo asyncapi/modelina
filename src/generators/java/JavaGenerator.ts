@@ -4,7 +4,7 @@ import {
   defaultGeneratorOptions
 } from '../AbstractGenerator';
 import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
-import { CommonNamingConvention, CommonNamingConventionImplementation, ModelKind, TypeHelpers, FormatHelpers } from '../../helpers';
+import { CommonNamingConvention, CommonNamingConventionImplementation, ModelKind, TypeHelpers } from '../../helpers';
 import { JavaPreset, JAVA_DEFAULT_PRESET } from './JavaPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
@@ -46,6 +46,7 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderComp
     }
     return Promise.resolve(RenderOutput.toRenderOutput({ result: '', dependencies: [] }));
   }
+
   /**
    * Render a complete model result where the model code, library and model dependencies are all bundled appropriately.
    * 
@@ -61,7 +62,10 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderComp
     }
 
     const outputModel = await this.render(model, inputModel);
-    const modelDependencies = model.getNearestDependencies().map((dependencyModel) => { return `import ${options.packageName}.${FormatHelpers.toPascalCase(dependencyModel)};`;});
+    const modelDependencies = model.getNearestDependencies().map((dependencyModelName) => { 
+      const formattedDependencyModelName = this.options.namingConvention?.type ? this.options.namingConvention.type(dependencyModelName, {inputModel, model: inputModel.models[String(dependencyModelName)], reservedKeywordCallback: isReservedJavaKeyword}) : dependencyModelName;
+      return `import ${options.packageName}.${formattedDependencyModelName};`;
+    });
     const outputContent = `package ${options.packageName};
 ${modelDependencies.join('\n')}
 ${outputModel.dependencies.join('\n')}
