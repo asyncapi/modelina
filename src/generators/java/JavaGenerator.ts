@@ -30,6 +30,12 @@ export class JavaGenerator extends AbstractGenerator<JavaRenderFullOptions, Java
     super('Java', JavaGenerator.defaultOptions, options);
   }
 
+  /**
+   * Render a scattered model, where the source code and library and model dependencies are separated.
+   * 
+   * @param model 
+   * @param inputModel 
+   */
   render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const kind = TypeHelpers.extractKind(model);
     // We don't support union in Java generator, however, if union is an object, we render it as a class.
@@ -40,6 +46,15 @@ export class JavaGenerator extends AbstractGenerator<JavaRenderFullOptions, Java
     }
     return Promise.resolve(RenderOutput.toRenderOutput({ result: '', dependencies: [] }));
   }
+  /**
+   * Render a complete model result where the model code, library and model dependencies are all bundled appropriately.
+   * 
+   * For Java you need to specify which package the model is placed under.
+   * 
+   * @param model 
+   * @param inputModel 
+   * @param options 
+   */
   async renderFull(model: CommonModel, inputModel: CommonInputModel, options: JavaRenderFullOptions): Promise<RenderOutput> {
     if (isReservedJavaKeyword(options.packageName)) {
       throw new Error(`You cannot use reserved Java keyword (${options.packageName}) as package name, please use another.`);
