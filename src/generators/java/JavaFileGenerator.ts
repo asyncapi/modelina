@@ -14,7 +14,7 @@ export class JavaFileGenerator extends JavaGenerator implements AbstractFileGene
    * @param options
    */
   public async generateToFiles(input: Record<string, unknown> | CommonInputModel, outputDirectory: string, options: JavaRenderCompleteModelOptions): Promise<OutputModel[]> {
-    let generatedModels = await this.generateCompleteModel(input, options);
+    let generatedModels = await this.generateCompleteModels(input, options);
     generatedModels = generatedModels.filter((outputModel) => { return outputModel.modelName !== undefined; });
     for (const outputModel of generatedModels) {
       const modelOutputFileName = this.options.namingConvention?.type ? this.options.namingConvention.type(outputModel.modelName, {inputModel: outputModel.inputModel, model: outputModel.model, reservedKeywordCallback: isReservedJavaKeyword}) : outputModel.modelName;

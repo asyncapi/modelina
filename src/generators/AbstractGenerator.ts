@@ -48,7 +48,7 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
    * @param input 
    * @param options to use for rendering full output
    */
-  public async generateCompleteModel(input: Record<string, unknown> | CommonInputModel, options: RenderCompleteModelOptions): Promise<OutputModel[]> {
+  public async generateCompleteModels(input: Record<string, unknown> | CommonInputModel, options: RenderCompleteModelOptions): Promise<OutputModel[]> {
     const inputModel = await this.processInput(input);
     const renders = Object.entries(inputModel.models).map(async ([modelName, model]) => {
       const renderedOutput = await this.renderCompleteModel(model, inputModel, options);

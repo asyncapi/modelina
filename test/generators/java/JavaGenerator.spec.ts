@@ -426,7 +426,7 @@ public enum CustomEnum {
       required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
     };
     const config = {packageName: 'test.package'};
-    const models = await generator.generateCompleteModel(doc, config);
+    const models = await generator.generateCompleteModels(doc, config);
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot();
   });
@@ -452,6 +452,6 @@ public enum CustomEnum {
     };
     const config = {packageName: 'package'};
     const expectedError = new Error('You cannot use reserved Java keyword (package) as package name, please use another.');
-    await expect(generator.generateCompleteModel(doc, config)).rejects.toEqual(expectedError);
+    await expect(generator.generateCompleteModels(doc, config)).rejects.toEqual(expectedError);
   });
 });
