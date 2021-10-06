@@ -9,8 +9,8 @@ There are special use-cases that each language supports; this document pertains 
 - [Include hashCode function for the class](#include-hashcode-function-for-the-class)
 - [Change the collection type for arrays](#change-the-collection-type-for-arrays)
 - [Include toString function for the class](#include-tostring-function-for-the-class)
-- [Include Javadoc for properties](#include-javadoc-for-properties)
-- [Include javax validation constraints annotations for properties](#include-javax-validation-constraints-annotations-for-properties)
+- [Include JavaDoc for properties](#include-javadoc-for-properties)
+- [Include Javax validation constraint annotations for properties](#include-javax-validation-constraint-annotations-for-properties)
 - [Include Jackson annotations for the class](#include-jackson-annotations-for-the-class)
 
 <!-- tocstop -->
