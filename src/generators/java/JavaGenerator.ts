@@ -13,10 +13,10 @@ export interface JavaOptions extends CommonGeneratorOptions<JavaPreset> {
   collectionType?: 'List' | 'Array';
   namingConvention?: CommonNamingConvention;
 }
-export interface JavaRenderFullOptions {
+export interface JavaRenderCompleteModelOptions {
   packageName: string
 }
-export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderFullOptions> {
+export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderCompleteModelOptions> {
   static defaultOptions: JavaOptions = {
     ...defaultGeneratorOptions,
     defaultPreset: JAVA_DEFAULT_PRESET,     
@@ -55,7 +55,7 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderFull
    * @param inputModel 
    * @param options used to render the full output
    */
-  async renderFull(model: CommonModel, inputModel: CommonInputModel, options: JavaRenderFullOptions): Promise<RenderOutput> {
+  async renderCompleteModel(model: CommonModel, inputModel: CommonInputModel, options: JavaRenderCompleteModelOptions): Promise<RenderOutput> {
     if (isReservedJavaKeyword(options.packageName)) {
       throw new Error(`You cannot use reserved Java keyword (${options.packageName}) as package name, please use another.`);
     }

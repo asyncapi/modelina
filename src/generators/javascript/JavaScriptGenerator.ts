@@ -28,7 +28,7 @@ export class JavaScriptGenerator extends AbstractGenerator<JavaScriptOptions> {
     super('JavaScript', JavaScriptGenerator.defaultOptions, options);
   }
 
-  renderFull(): Promise<RenderOutput> {
+  renderCompleteModel(): Promise<RenderOutput> {
     throw new Error('Method not implemented.');
   }
 

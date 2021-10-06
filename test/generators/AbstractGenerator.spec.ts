@@ -17,7 +17,7 @@ export class TestGenerator extends AbstractGenerator {
     return Promise.resolve(RenderOutput.toRenderOutput({result: model.$id || 'rendered content'}));
   }
 
-  renderFull(model: CommonModel, inputModel: CommonInputModel, options: any): Promise<RenderOutput> {
+  renderCompleteModel(model: CommonModel, inputModel: CommonInputModel, options: any): Promise<RenderOutput> {
     throw new Error('Method not implemented.');
   }
 }
@@ -80,7 +80,7 @@ describe('AbstractGenerator', () => {
           return this.getPresets(string);
         }
 
-        renderFull(model: CommonModel, inputModel: CommonInputModel, options: any): Promise<RenderOutput> {
+        renderCompleteModel(model: CommonModel, inputModel: CommonInputModel, options: any): Promise<RenderOutput> {
           throw new Error('Method not implemented.');
         }
       }

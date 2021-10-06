@@ -67,7 +67,7 @@ export class GoGenerator extends AbstractGenerator<GoOptions> {
     return Promise.resolve(RenderOutput.toRenderOutput({ result: '', dependencies: [] }));
   }
 
-  renderFull(): Promise<RenderOutput> {
+  renderCompleteModel(): Promise<RenderOutput> {
     throw new Error('Method not implemented.');
   }
 

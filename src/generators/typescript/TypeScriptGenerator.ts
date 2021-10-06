@@ -35,7 +35,7 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions> {
     super('TypeScript', TypeScriptGenerator.defaultOptions, options);
   }
 
-  renderFull(): Promise<RenderOutput> {
+  renderCompleteModel(): Promise<RenderOutput> {
     throw new Error('Method not implemented.');
   }
 

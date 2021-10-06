@@ -22,7 +22,7 @@ export const defaultGeneratorOptions: CommonGeneratorOptions = {
 /**
  * Abstract generator which must be implemented by each language
  */
-export abstract class AbstractGenerator<Options extends CommonGeneratorOptions = CommonGeneratorOptions, RenderFullOptions = any> {
+export abstract class AbstractGenerator<Options extends CommonGeneratorOptions = CommonGeneratorOptions, RenderCompleteModelOptions = any> {
   protected options: Options;
   
   constructor(
@@ -34,7 +34,7 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
   }
 
   public abstract render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput>;
-  public abstract renderFull(model: CommonModel, inputModel: CommonInputModel, options: RenderFullOptions): Promise<RenderOutput>;
+  public abstract renderCompleteModel(model: CommonModel, inputModel: CommonInputModel, options: RenderCompleteModelOptions): Promise<RenderOutput>;
 
   public process(input: Record<string, unknown>): Promise<CommonInputModel> {
     return InputProcessor.processor.process(input, this.options.processorOptions);
@@ -48,10 +48,10 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
    * @param input 
    * @param options to use for rendering full output
    */
-  public async generateFull(input: Record<string, unknown> | CommonInputModel, options: RenderFullOptions): Promise<OutputModel[]> {
+  public async generateCompleteModel(input: Record<string, unknown> | CommonInputModel, options: RenderCompleteModelOptions): Promise<OutputModel[]> {
     const inputModel = await this.processInput(input);
     const renders = Object.entries(inputModel.models).map(async ([modelName, model]) => {
-      const renderedOutput = await this.renderFull(model, inputModel, options);
+      const renderedOutput = await this.renderCompleteModel(model, inputModel, options);
       return OutputModel.toOutputModel({ result: renderedOutput.result, model, modelName, inputModel, dependencies: renderedOutput.dependencies});
     });
     return Promise.all(renders);

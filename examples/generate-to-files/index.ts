@@ -18,7 +18,7 @@ export async function generate() : Promise<void> {
   const modelGenerationOptions = {
     packageName: 'TestPackageName'
   };
-  const models = await generator.generateToSeparateFiles(jsonSchemaDraft7, outputFolder, modelGenerationOptions);
+  const models = await generator.generateToFiles(jsonSchemaDraft7, outputFolder, modelGenerationOptions);
   for (const model of models) {
     console.log(model.result);
   }

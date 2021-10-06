@@ -29,7 +29,7 @@ export class CSharpGenerator extends AbstractGenerator<CSharpOptions> {
     super('CSharp', CSharpGenerator.defaultOptions, options);
   }
 
-  renderFull(): Promise<RenderOutput> {
+  renderCompleteModel(): Promise<RenderOutput> {
     throw new Error('Method not implemented.');
   }
 
