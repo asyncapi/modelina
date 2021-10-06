@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`JavaGenerator should render models 1`] = `
+exports[`JavaGenerator should render models and their dependencies 1`] = `
 "package test.package;
 import test.package.OtherModel;
 import java.util.Map;
@@ -48,7 +48,7 @@ public class Address {
 }"
 `;
 
-exports[`JavaGenerator should render models 2`] = `
+exports[`JavaGenerator should render models and their dependencies 2`] = `
 "package test.package;
 
 import java.util.Map;
