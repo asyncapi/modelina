@@ -10,8 +10,8 @@ describe('Should be able to generate models to files', () => {
     const expectedRootDir = __dirname.includes('examples') ? __dirname : path.resolve(__dirname, './examples/generate-to-files');
     const expectedFilePath = path.resolve(expectedRootDir, 'Root.java');
     await generate();
-    expect(spy.mock.calls.length).toEqual(2);
-    expect(spy.mock.calls[1]).toMatchSnapshot();
+    expect(spy.mock.calls.length).toBeGreaterThanOrEqual(1);
+    expect(spy.mock.calls[spy.mock.calls.length-1]).toMatchSnapshot();
     expect(fs.existsSync(expectedFilePath));
   });
 });
