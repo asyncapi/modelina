@@ -27,10 +27,12 @@ TODO
 ## Include toString function for the class
 TODO
 
-## Include Javadoc for properties
-TODO
+## Include JavaDoc for properties
+To generate models containing `JavaDocs` from description and examples, use the `JAVA_DESCRIPTION_PRESET` option.
 
-## Include javax validation constraints annotations for properties
+Check out this [example for a live demonstration](../../examples/java-generate-javadoc).
+
+## Include Javax validation constraint annotations for properties
 In some cases, when you generate the models from JSON Schema, you may want to include `javax.validation.constraint` annotations.
 
 Check out this [example for a live demonstration](../../examples/java-generate-javax-constraint-annotation).
