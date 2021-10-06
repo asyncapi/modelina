@@ -7,7 +7,7 @@
 
 import * as path from 'path';
 import * as fs from 'fs';
-import { TypeScriptGenerator, JavaGenerator, JavaScriptGenerator, GoGenerator, CSharpGenerator } from '../../src';
+import { TypeScriptGenerator, JavaGenerator, JavaScriptGenerator, GoGenerator, CSharpGenerator, JavaFileGenerator } from '../../src';
 import { execCommand, generateModels, renderModels, renderModelsToSeparateFiles } from './utils/Utils';
 
 /**
@@ -46,12 +46,15 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
   describe(file, () => {
     describe('should be able to generate and compile Java', () => {
       test('class', async () => {
-        const generator = new JavaGenerator();
-        const generatedModels = await generateModels(fileToGenerateFor, generator);
-        expect(generatedModels).not.toHaveLength(0);
+        const generator = new JavaFileGenerator();
+        const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
+        const input = JSON.parse(String(inputFileContent));
         const renderOutputPath = path.resolve(__dirname, `./output/${outputDirectory}/java/class`);
         const dependencyPath = path.resolve(__dirname, './dependencies/java/*');
-        await renderModelsToSeparateFiles(generatedModels, renderOutputPath, 'java');
+
+        const generatedModels = await generator.generateToFiles(input, renderOutputPath, {packageName: 'TestPackageName'});
+        expect(generatedModels).not.toHaveLength(0);
+
         const compileCommand = `javac  -cp ${dependencyPath} ${path.resolve(renderOutputPath, '*.java')}`;
         await execCommand(compileCommand);
       });

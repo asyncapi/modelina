@@ -1,7 +1,7 @@
 import {
   AbstractGenerator,
   CommonGeneratorOptions,
-  defaultGeneratorOptions,
+  defaultGeneratorOptions
 } from '../AbstractGenerator';
 import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
 import { TypeHelpers, ModelKind, CommonNamingConvention, CommonNamingConventionImplementation } from '../../helpers';
@@ -27,6 +27,10 @@ export class CSharpGenerator extends AbstractGenerator<CSharpOptions> {
     options: CSharpOptions = CSharpGenerator.defaultOptions,
   ) {
     super('CSharp', CSharpGenerator.defaultOptions, options);
+  }
+
+  renderCompleteModel(): Promise<RenderOutput> {
+    throw new Error('Method not implemented.');
   }
 
   render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {

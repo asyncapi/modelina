@@ -9,5 +9,7 @@ This directory contains a series of self-contained examples that you can use as 
 - [java-generate-javax-constraint-annotation](./java-generate-javax-constraint-annotation) - A basic example that shows how Java data models having `javax.validation.constraints` annotations can be generated.
 - [java-generate-javadoc](./java-generate-javadoc) - A basic example of how to generate Java models including JavaDocs.
 - [custom-logging](./custom-logging) - A basic example where a custom logger is used.
+- [generate-to-file](./generate-to-file) - A basic example that shows how you can generate the models directly to files.
 - [generate-typescript-models](./generate-typescript-models) - A basic example to generate TypeScript data models
 - [TEMPLATE](./TEMPLATE) - A basic template used to create new examples.
+
