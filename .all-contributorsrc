@@ -119,6 +119,17 @@
         "test",
         "doc"
       ]
+    },
+    {
+      "login": "sudiptog81",
+      "name": "Sudipto Ghosh",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11232940?v=4",
+      "profile": "https://sudipto.ghosh.pro",
+      "contributions": [
+        "example",
+        "test",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
