@@ -33,7 +33,9 @@ To generate models containing `JavaDocs` from description and examples, use the 
 Check out this [example for a live demonstration](../../examples/java-generate-javadoc).
 
 ## Include Javax validation constraint annotations for properties
-TODO
+In some cases, when you generate the models from JSON Schema, you may want to include `javax.validation.constraint` annotations.
+
+Check out this [example for a live demonstration](../../examples/java-generate-javax-constraint-annotation).
 
 ## Include Jackson annotations for the class
 TODO
