@@ -27,12 +27,12 @@ TODO
 ## Include toString function for the class
 TODO
 
-## Include Javadoc for properties
-When you want to generate models containing JavaDocs from description and examples, you can use the `JAVA_DESCRIPTION_PRESET` option.
+## Include JavaDoc for properties
+To generate models containing `JavaDocs` from description and examples, use the `JAVA_DESCRIPTION_PRESET` option.
 
-Check out this [example out for a live demonstration](../../examples/java-generate-javadoc).
+Check out this [example for a live demonstration](../../examples/java-generate-javadoc).
 
-## Include javax validation constraints annotations for properties
+## Include Javax validation constraint annotations for properties
 TODO
 
 ## Include Jackson annotations for the class
