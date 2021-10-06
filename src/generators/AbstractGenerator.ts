@@ -76,11 +76,11 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
    * 
    * @param input 
    */
-  private async processInput(input: Record<string, unknown> | CommonInputModel): Promise<CommonInputModel> {
+  private processInput(input: Record<string, unknown> | CommonInputModel): Promise<CommonInputModel> {
     if (input instanceof CommonInputModel) {
-      return input;
+      return Promise.resolve(input);
     }
-    return await this.process(input);
+    return this.process(input);
   }
 
   protected getPresets(presetType: string): Array<[Preset, unknown]> {
