@@ -405,7 +405,7 @@ public enum CustomEnum {
     expect(classModel.dependencies).toEqual(expectedDependencies);
   });
 
-  test('should render full output', async () => {
+  test('should render models and their dependencies', async () => {
     const doc = {
       $id: 'Address',
       type: 'object',
@@ -417,6 +417,7 @@ public enum CustomEnum {
         marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
         members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
         array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
+        other_model: { type: 'object', $id: 'OtherModel', properties: {street_name: { type: 'string' }} },
       },
       patternProperties: {
         '^S(.?*)test&': {
@@ -427,8 +428,9 @@ public enum CustomEnum {
     };
     const config = {packageName: 'test.package'};
     const models = await generator.generateCompleteModels(doc, config);
-    expect(models).toHaveLength(1);
+    expect(models).toHaveLength(2);
     expect(models[0].result).toMatchSnapshot();
+    expect(models[1].result).toMatchSnapshot();
   });
   test('should throw error when reserved keyword is used for package name', async () => {
     const doc = {
