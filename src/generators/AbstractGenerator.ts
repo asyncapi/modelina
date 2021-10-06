@@ -22,7 +22,7 @@ export const defaultGeneratorOptions: CommonGeneratorOptions = {
 /**
  * Abstract generator which must be implemented by each language
  */
-export abstract class AbstractGenerator<RenderFullOptions, Options extends CommonGeneratorOptions = CommonGeneratorOptions> {
+export abstract class AbstractGenerator<Options extends CommonGeneratorOptions = CommonGeneratorOptions, RenderFullOptions = any> {
   protected options: Options;
   
   constructor(

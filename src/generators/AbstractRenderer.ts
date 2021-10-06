@@ -7,7 +7,7 @@ import { FormatHelpers, IndentationTypes } from '../helpers';
  */
 export abstract class AbstractRenderer<
   O extends CommonGeneratorOptions = CommonGeneratorOptions,
-  G extends AbstractGenerator<any> = AbstractGenerator<any>
+  G extends AbstractGenerator = AbstractGenerator
 > {
   constructor(
     protected readonly options: O,

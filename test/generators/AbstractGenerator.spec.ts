@@ -20,10 +20,6 @@ export class TestGenerator extends AbstractGenerator<any, any> {
   renderFull(model: CommonModel, inputModel: CommonInputModel, options: any): Promise<RenderOutput> {
     throw new Error('Method not implemented.');
   }
-
-  generateFile(input: CommonInputModel | Record<string, unknown>, outputDirectory: string, options: any, fileWriter: FileGenerator): Promise<OutputModel[]> {
-    throw new Error('Method not implemented.');
-  }
 }
 describe('AbstractGenerator', () => {
   let generator: TestGenerator;
@@ -85,10 +81,6 @@ describe('AbstractGenerator', () => {
         }
 
         renderFull(model: CommonModel, inputModel: CommonInputModel, options: any): Promise<RenderOutput> {
-          throw new Error('Method not implemented.');
-        }
-
-        generateFile(input: CommonInputModel | Record<string, unknown>, outputDirectory: string, options: any, fileWriter: FileGenerator): Promise<OutputModel[]> {
           throw new Error('Method not implemented.');
         }
       }

@@ -16,7 +16,7 @@ export interface JavaOptions extends CommonGeneratorOptions<JavaPreset> {
 export interface JavaRenderFullOptions {
   packageName: string
 }
-export class JavaGenerator extends AbstractGenerator<JavaRenderFullOptions, JavaOptions> {
+export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderFullOptions> {
   static defaultOptions: JavaOptions = {
     ...defaultGeneratorOptions,
     defaultPreset: JAVA_DEFAULT_PRESET,     
@@ -53,7 +53,7 @@ export class JavaGenerator extends AbstractGenerator<JavaRenderFullOptions, Java
    * 
    * @param model 
    * @param inputModel 
-   * @param options 
+   * @param options used to render the full output
    */
   async renderFull(model: CommonModel, inputModel: CommonInputModel, options: JavaRenderFullOptions): Promise<RenderOutput> {
     if (isReservedJavaKeyword(options.packageName)) {

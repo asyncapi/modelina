@@ -16,7 +16,7 @@ export interface CSharpOptions extends CommonGeneratorOptions<CSharpPreset> {
 /**
  * Generator for CSharp
  */
-export class CSharpGenerator extends AbstractGenerator<any, CSharpOptions> {
+export class CSharpGenerator extends AbstractGenerator<CSharpOptions> {
   static defaultOptions: CSharpOptions = {
     ...defaultGeneratorOptions,
     defaultPreset: CSHARP_DEFAULT_PRESET,

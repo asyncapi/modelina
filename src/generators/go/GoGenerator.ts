@@ -39,7 +39,7 @@ export interface GoOptions extends CommonGeneratorOptions<GoPreset> {
 /**
  * Generator for Go
  */
-export class GoGenerator extends AbstractGenerator<any, GoOptions> {
+export class GoGenerator extends AbstractGenerator<GoOptions> {
   static defaultOptions: GoOptions = {
     ...defaultGeneratorOptions,
     defaultPreset: GO_DEFAULT_PRESET,

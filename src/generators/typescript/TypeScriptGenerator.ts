@@ -16,13 +16,11 @@ export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPres
   modelType?: 'class' | 'interface';
   namingConvention?: CommonNamingConvention;
 }
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface TypeScriptRenderFullOptions { }
 
 /**
  * Generator for TypeScript
  */
-export class TypeScriptGenerator extends AbstractGenerator<TypeScriptRenderFullOptions, TypeScriptOptions> {
+export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions> {
   static defaultOptions: TypeScriptOptions = {
     ...defaultGeneratorOptions,
     renderTypes: true,
