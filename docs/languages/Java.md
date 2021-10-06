@@ -31,9 +31,9 @@ TODO
 TODO
 
 ## Include javax validation constraints annotations for properties
-In some cases where you generate the models from JSON Schema and you might want them to include `javax.validation.constraint` annotations.
+In some cases, when you generate the models from JSON Schema, you may want to include `javax.validation.constraint` annotations.
 
-Check out this [example out for a live demonstration](../../examples/java-generate-javax-constraint-annotation).
+Check out this [example for a live demonstration](../../examples/java-generate-javax-constraint-annotation).
 
 ## Include Jackson annotations for the class
 TODO
