@@ -127,6 +127,48 @@
 Abstract generator which must be implemented by each language
 
 **Kind**: global class  
+
+* [AbstractGenerator](#AbstractGenerator)
+    * [.generateCompleteModels(input, options)](#AbstractGenerator+generateCompleteModels)
+    * [.generate(input)](#AbstractGenerator+generate)
+    * [.processInput(input)](#AbstractGenerator+processInput)
+
+<a name="AbstractGenerator+generateCompleteModels"></a>
+
+### abstractGenerator.generateCompleteModels(input, options)
+Generates the full output of a model, instead of a scattered model.
+
+OutputModels result is no longer the model itself, but including package, package dependencies and model dependencies.
+
+**Kind**: instance method of [<code>AbstractGenerator</code>](#AbstractGenerator)  
+
+| Param | Description |
+| --- | --- |
+| input |  |
+| options | to use for rendering full output |
+
+<a name="AbstractGenerator+generate"></a>
+
+### abstractGenerator.generate(input)
+Generates a scattered model where dependencies and rendered results are separated.
+
+**Kind**: instance method of [<code>AbstractGenerator</code>](#AbstractGenerator)  
+
+| Param |
+| --- |
+| input | 
+
+<a name="AbstractGenerator+processInput"></a>
+
+### abstractGenerator.processInput(input)
+Process any of the input formats to the appropriate CommonInputModel type.
+
+**Kind**: instance method of [<code>AbstractGenerator</code>](#AbstractGenerator)  
+
+| Param |
+| --- |
+| input | 
+
 <a name="AbstractRenderer"></a>
 
 ## AbstractRenderer
