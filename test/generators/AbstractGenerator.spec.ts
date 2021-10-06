@@ -8,7 +8,7 @@ export const testOptions = {
     size: 2,
   }
 };
-export class TestGenerator extends AbstractGenerator<any, any> {
+export class TestGenerator extends AbstractGenerator {
   constructor() {
     super('TestGenerator', testOptions);
   }

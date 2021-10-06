@@ -13,7 +13,7 @@ const promiseExec = promisify(exec);
  * @param absolutePathToFile 
  * @param generator  
  */
-export async function generateModels(absolutePathToFile: string, generator: AbstractGenerator<any, any>): Promise<OutputModel[]> {
+export async function generateModels(absolutePathToFile: string, generator: AbstractGenerator): Promise<OutputModel[]> {
   const inputFileContent = await fs.readFile(absolutePathToFile);
   const input = JSON.parse(String(inputFileContent));
   return generator.generate(input);
