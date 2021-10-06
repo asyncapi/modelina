@@ -26,7 +26,7 @@ TODO
 
 The standard generator only allows you to generate the raw models which you can implement your own logic for generating the models to separate files. We have however create simple wrapper generators to use.
 
-The reason for splitting the functionality is because in certain environments, generating to a file is not needed.
+The reason for splitting the functionality is because in certain environments (like pure front-end application), generating to a file is not needed.
 
 The file generators all follow the same pattern regardless of output language, which is the following format - `<language>FileGenerator`.
 
