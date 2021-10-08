@@ -38,7 +38,14 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions> {
   ) {
     super('TypeScript', TypeScriptGenerator.defaultOptions, options);
   }
-
+  
+  /**
+   * Render a complete model result where the model code, library and model dependencies are all bundled appropriately.
+   *
+   * @param model
+   * @param inputModel
+   * @param options
+   */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async renderCompleteModel(model: CommonModel, inputModel: CommonInputModel, options: TypeScriptRenderCompleteModelOptions): Promise<RenderOutput> {
     const outputModel = await this.render(model, inputModel);
