@@ -1,7 +1,7 @@
 import {
   AbstractGenerator,
   CommonGeneratorOptions,
-  defaultGeneratorOptions,
+  defaultGeneratorOptions
 } from '../AbstractGenerator';
 import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
 import { TypeHelpers, ModelKind, FormatHelpers } from '../../helpers';
@@ -65,6 +65,10 @@ export class GoGenerator extends AbstractGenerator<GoOptions> {
       return this.renderEnum(model, inputModel);
     }
     return Promise.resolve(RenderOutput.toRenderOutput({ result: '', dependencies: [] }));
+  }
+
+  renderCompleteModel(): Promise<RenderOutput> {
+    throw new Error('Method not implemented.');
   }
 
   async renderEnum(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {

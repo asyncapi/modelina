@@ -1,7 +1,7 @@
 import { 
   AbstractGenerator, 
   CommonGeneratorOptions,
-  defaultGeneratorOptions,
+  defaultGeneratorOptions
 } from '../AbstractGenerator';
 import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
 import { TypeHelpers, ModelKind, CommonNamingConvention, CommonNamingConventionImplementation } from '../../helpers';
@@ -33,6 +33,10 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions> {
     options: TypeScriptOptions = TypeScriptGenerator.defaultOptions,
   ) {
     super('TypeScript', TypeScriptGenerator.defaultOptions, options);
+  }
+
+  renderCompleteModel(): Promise<RenderOutput> {
+    throw new Error('Method not implemented.');
   }
 
   render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
