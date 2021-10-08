@@ -2,8 +2,8 @@
 
 exports[`TypeScriptGenerator should render models and their dependencies 1`] = `
 "import ./OtherModel;
-    
-    export class Address {
+
+export class Address {
   private _streetName: string;
   private _city: string;
   private _state: string;
@@ -69,8 +69,8 @@ exports[`TypeScriptGenerator should render models and their dependencies 1`] = `
 
 exports[`TypeScriptGenerator should render models and their dependencies 2`] = `
 "
-    
-    export class OtherModel {
+
+export class OtherModel {
   private _streetName?: string;
   private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null>;
 

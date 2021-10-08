@@ -24,7 +24,7 @@ export interface TypeScriptRenderCompleteModelOptions {
 /**
  * Generator for TypeScript
  */
-export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions> {
+export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,TypeScriptRenderCompleteModelOptions> {
   static defaultOptions: TypeScriptOptions = {
     ...defaultGeneratorOptions,
     renderTypes: true,
@@ -54,8 +54,8 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions> {
       return `import ./${formattedDependencyModelName};`;
     });
     const outputContent = `${modelDependencies.join('\n')}
-    ${outputModel.dependencies.join('\n')}
-    ${outputModel.result}`;
+${outputModel.dependencies.join('\n')}
+${outputModel.result}`;
     return RenderOutput.toRenderOutput({ result: outputContent, dependencies: outputModel.dependencies });
   }
 
