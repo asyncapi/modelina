@@ -80,7 +80,7 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
     for (const [mediaContent, mediaTypeObject] of Object.entries(mediaTypes)) {
       const mediaType = mediaTypeObject;
       if (mediaType.schema === undefined) { continue; }
-      const mediaTypeSchema = mediaType.schema as OpenAPIV3.SchemaObject;
+      const mediaTypeSchema = (mediaType.schema as unknown) as OpenAPIV3.SchemaObject;
       //Replace any '/' with '_'
       const formattedMediaContent = mediaContent.replace(/\//, '_');
       this.includeSchema(mediaTypeSchema, `${path}_${formattedMediaContent}`, inputModel);
