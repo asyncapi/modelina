@@ -1,4 +1,4 @@
-import { CommonModel, Draft6Schema, SwaggerV2Schema, AsyncapiV2Schema, Draft7Schema } from '../models';
+import { CommonModel, Draft6Schema, Draft4Schema, SwaggerV2Schema, AsyncapiV2Schema, Draft7Schema } from '../models';
 import { interpretName, isEnum, isModelObject } from './Utils';
 import interpretProperties from './InterpretProperties';
 import interpretAllOf from './InterpretAllOf';
@@ -10,10 +10,6 @@ import interpretPatternProperties from './InterpretPatternProperties';
 import interpretNot from './InterpretNot';
 import interpretDependencies from './InterpretDependencies';
 import interpretAdditionalItems from './InterpretAdditionalItems';
-import { Draft4Schema } from '../models/Draft4Schema';
-import { Draft7Schema } from '../models/Draft7Schema';
-import { SwaggerV2Schema } from '../models/SwaggerV2Schema';
-import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
 
 export type InterpreterOptions = {
   allowInheritance?: boolean
