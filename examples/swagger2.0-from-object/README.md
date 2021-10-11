@@ -1,0 +1,10 @@
+# Swagger 2.0 from object
+
+A basic example of how to use Modelina with a basic Swagger 2.0 object.
+
+## How to run this example
+Run this example using:
+
+```sh
+npm i && npm run start
+```

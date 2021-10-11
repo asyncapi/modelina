@@ -1,6 +1,6 @@
 {
   "name": "@asyncapi/modelina",
-  "version": "0.33.0",
+  "version": "0.34.0",
   "description": "The Model SDK for generating data models",
   "license": "Apache-2.0",
   "homepage": "https://github.com/asyncapi/modelina",
@@ -35,8 +35,10 @@
   ],
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.7",
+    "@apidevtools/swagger-parser": "^10.0.3",
     "@asyncapi/parser": "^1.10.0",
-    "change-case": "^4.1.2"
+    "change-case": "^4.1.2",
+    "openapi-types": "9.3.0"
   },
   "devDependencies": {
     "@semantic-release/commit-analyzer": "^8.0.1",

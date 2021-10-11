@@ -1,0 +1,317 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SwaggerInputProcessor process() should process the swagger document accurately 1`] = `
+CommonInputModel {
+  "models": Object {},
+  "originalInput": Object {
+    "definitions": Object {
+      "ApiResponse": Object {
+        "properties": Object {
+          "code": Object {
+            "format": "int32",
+            "type": "integer",
+          },
+          "message": Object {
+            "type": "string",
+          },
+          "type": Object {
+            "type": "string",
+          },
+        },
+        "type": "object",
+      },
+    },
+    "info": Object {
+      "title": "Simple basic api",
+    },
+    "paths": Object {
+      "/test": Object {
+        "get": Object {
+          "responses": Object {
+            "200": Object {
+              "description": "successful operation",
+              "schema": Object {
+                "properties": Object {
+                  "code": Object {
+                    "format": "int32",
+                    "type": "integer",
+                  },
+                  "message": Object {
+                    "type": "string",
+                  },
+                  "type": Object {
+                    "type": "string",
+                  },
+                },
+                "type": "object",
+              },
+            },
+          },
+        },
+        "head": Object {
+          "responses": Object {
+            "200": Object {
+              "description": "successful operation",
+              "schema": Object {
+                "properties": Object {
+                  "code": Object {
+                    "format": "int32",
+                    "type": "integer",
+                  },
+                  "message": Object {
+                    "type": "string",
+                  },
+                  "type": Object {
+                    "type": "string",
+                  },
+                },
+                "type": "object",
+              },
+            },
+          },
+        },
+        "options": Object {
+          "responses": Object {
+            "200": Object {
+              "description": "successful operation",
+              "schema": Object {
+                "properties": Object {
+                  "code": Object {
+                    "format": "int32",
+                    "type": "integer",
+                  },
+                  "message": Object {
+                    "type": "string",
+                  },
+                  "type": Object {
+                    "type": "string",
+                  },
+                },
+                "type": "object",
+              },
+            },
+          },
+        },
+        "patch": Object {
+          "responses": Object {
+            "200": Object {
+              "description": "successful operation",
+              "schema": Object {
+                "properties": Object {
+                  "code": Object {
+                    "format": "int32",
+                    "type": "integer",
+                  },
+                  "message": Object {
+                    "type": "string",
+                  },
+                  "type": Object {
+                    "type": "string",
+                  },
+                },
+                "type": "object",
+              },
+            },
+          },
+        },
+        "post": Object {
+          "parameters": Array [
+            Object {
+              "in": "body",
+              "schema": Object {
+                "properties": Object {
+                  "code": Object {
+                    "format": "int32",
+                    "type": "integer",
+                  },
+                  "message": Object {
+                    "type": "string",
+                  },
+                  "type": Object {
+                    "type": "string",
+                  },
+                },
+                "type": "object",
+              },
+            },
+          ],
+          "responses": Object {
+            "200": Object {
+              "description": "successful operation",
+              "schema": Object {
+                "properties": Object {
+                  "code": Object {
+                    "format": "int32",
+                    "type": "integer",
+                  },
+                  "message": Object {
+                    "type": "string",
+                  },
+                  "type": Object {
+                    "type": "string",
+                  },
+                },
+                "type": "object",
+              },
+            },
+          },
+        },
+        "put": Object {
+          "responses": Object {
+            "200": Object {
+              "description": "successful operation",
+              "schema": Object {
+                "properties": Object {
+                  "code": Object {
+                    "format": "int32",
+                    "type": "integer",
+                  },
+                  "message": Object {
+                    "type": "string",
+                  },
+                  "type": Object {
+                    "type": "string",
+                  },
+                },
+                "type": "object",
+              },
+            },
+          },
+        },
+      },
+    },
+    "swagger": "2.0",
+  },
+}
+`;
+
+exports[`SwaggerInputProcessor process() should process the swagger document accurately 2`] = `
+Array [
+  Array [
+    Object {
+      "properties": Object {
+        "code": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "message": Object {
+          "type": "string",
+        },
+        "type": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+    "test_get_200",
+  ],
+  Array [
+    Object {
+      "properties": Object {
+        "code": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "message": Object {
+          "type": "string",
+        },
+        "type": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+    "test_put_200",
+  ],
+  Array [
+    Object {
+      "properties": Object {
+        "code": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "message": Object {
+          "type": "string",
+        },
+        "type": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+    "test_post_200",
+  ],
+  Array [
+    Object {
+      "properties": Object {
+        "code": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "message": Object {
+          "type": "string",
+        },
+        "type": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+    "test_post_body",
+  ],
+  Array [
+    Object {
+      "properties": Object {
+        "code": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "message": Object {
+          "type": "string",
+        },
+        "type": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+    "test_options_200",
+  ],
+  Array [
+    Object {
+      "properties": Object {
+        "code": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "message": Object {
+          "type": "string",
+        },
+        "type": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+    "test_head_200",
+  ],
+  Array [
+    Object {
+      "properties": Object {
+        "code": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "message": Object {
+          "type": "string",
+        },
+        "type": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+    "test_patch_200",
+  ],
+]
+`;

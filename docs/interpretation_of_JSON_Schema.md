@@ -1,4 +1,4 @@
-# Interpretation of JSON Schema draft 7 to CommonModel
+# Interpretation of JSON Schema to CommonModel
 
 The library transforms JSON Schema from data validation rules to data definitions (`CommonModel`(s)). 
 

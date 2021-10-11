@@ -8,10 +8,9 @@
 - [Advanced](#advanced)
 - [Integration](#integration)
 - [Development](#development)
-- [Input processing](#input-processing)
 - [Generators](#generators)
 - [Presets](#presets)
-- [Interpretation of JSON Schema draft 7](#interpretation-of-json-schema-draft-7)
+- [Interpretation of JSON Schema](#interpretation-of-json-schema)
 - [Languages](#languages)
 
 <!-- tocstop -->
@@ -30,17 +29,14 @@ Contains many advanced ways to integrate Modelina _(i.e. websites)_.
 ### [Development](./development.md)
 Explains how to setup the project for development. 
 
-### [Input processing](./input_processing.md)
-Details how input processing works.
-
 ### [Generators](./generators.md)
 Details which different generator options are supported.
 
 ### [Presets](./presets.md)
 Goes more in-depth into how the preset system works, which enables full customization of generators.
 
-### [Interpretation of JSON Schema draft 7](./interpretation_of_JSON_Schema_draft_7.md)
-Explains how a JSON Schema draft 7 schema is interpreted to a data model.
+### [Interpretation of JSON Schema](./interpretation_of_JSON_Schema.md)
+Explains how a JSON Schema is interpreted to a data model.
 
 ### Languages
 Each language has its own limitations, corner cases, and features; thus, each language has separate documentation.
