@@ -7,7 +7,7 @@
 
 import * as path from 'path';
 import * as fs from 'fs';
-import { TypeScriptGenerator, JavaGenerator, JavaScriptGenerator, GoGenerator, CSharpGenerator, JavaFileGenerator } from '../../src';
+import { TypeScriptGenerator, JavaScriptGenerator, GoGenerator, CSharpGenerator, JavaFileGenerator } from '../../src';
 import { execCommand, generateModels, renderModels, renderModelsToSeparateFiles } from './utils/Utils';
 
 /**
@@ -24,6 +24,7 @@ function readFilesInFolder(folder: string) {
 }
 const jsonSchemaDraft7Files = readFilesInFolder('JsonSchemaDraft-7');
 const jsonSchemaDraft6Files = readFilesInFolder('JsonSchemaDraft-6');
+const jsonSchemaDraft4Files = readFilesInFolder('JsonSchemaDraft-4');
 const AsyncAPIV2_0Files = readFilesInFolder('AsyncAPI-2_0');
 const AsyncAPIV2_1Files = readFilesInFolder('AsyncAPI-2_1');
 const AsyncAPIV2_2Files = readFilesInFolder('AsyncAPI-2_2');
@@ -39,12 +40,36 @@ const filesToTest = [
     //Blocked by https://github.com/asyncapi/modelina/issues/390
     return file !== './docs/JsonSchemaDraft-7/graphql-code-generator.json';
   }),
+  ...jsonSchemaDraft4Files.filter(({file}) => { 
+    //Blocked by https://github.com/asyncapi/modelina/issues/449
+    return file !== './docs/JsonSchemaDraft-4/openapi-3.json';
+  }).filter(({file}) => { 
+    //Blocked by https://github.com/asyncapi/modelina/issues/389
+    return file !== './docs/JsonSchemaDraft-4/jenkins-config.json';
+  }).filter(({file}) => { 
+    //Blocked by https://github.com/asyncapi/modelina/issues/450
+    return file !== './docs/JsonSchemaDraft-4/circleci-config.json';
+  }).filter(({file}) => { 
+    //Blocked by https://github.com/asyncapi/modelina/issues/390
+    return file !== './docs/JsonSchemaDraft-4/circleci-config.json';
+  }).filter(({file}) => { 
+    //Blocked by https://github.com/asyncapi/modelina/issues/452
+    return file !== './docs/JsonSchemaDraft-4/chrome-manifest.json';
+  }).filter(({file}) => { 
+    //Blocked by https://github.com/asyncapi/modelina/issues/367
+    return file !== './docs/JsonSchemaDraft-4/aws-cloudformation.json';
+  }).filter(({file}) => { 
+    //Blocked by https://github.com/asyncapi/modelina/issues/388
+    return file !== './docs/JsonSchemaDraft-4/draft-4-core.json';
+  }),
   ...jsonSchemaDraft6Files.filter(({file}) => {
     //Blocked by https://github.com/asyncapi/modelina/issues/453
     return file !== './docs/JsonSchemaDraft-6/fhir-full.json';
   })
 ];
 
+// eslint-disable-next-line no-console
+console.log('This is gonna take some time, Stay Awhile and Listen');
 describe.each(filesToTest)('Should be able to generate with inputs', ({file, outputDirectory}) => {
   jest.setTimeout(1000000);
   const fileToGenerateFor = path.resolve(__dirname, file);
