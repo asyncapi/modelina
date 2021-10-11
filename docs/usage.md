@@ -12,6 +12,7 @@ For more specific integration options, please check out the [integration documen
 - [Understanding the output format](#understanding-the-output-format)
 - [Generate models from AsyncAPI documents](#generate-models-from-asyncapi-documents)
 - [Generate models from JSON Schema draft 7 documents](#generate-models-from-json-schema-draft-7-documents)
+- [Generate models from Swagger 2.0 documents](#generate-models-from-swagger-20-documents)
 - [Generate Go models](#generate-go-models)
 - [Generate C# models](#generate-c%23-models)
 - [Generate Java models](#generate-java-models)

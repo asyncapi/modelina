@@ -28,6 +28,18 @@
 <dt><a href="#RenderOutput">RenderOutput</a></dt>
 <dd><p>Common representation for the rendered output.</p>
 </dd>
+<dt><a href="#SwaggerV2Schema">SwaggerV2Schema</a></dt>
+<dd><p>OpenAPI 2.0 (Swagger 2.0) schema model</p>
+<p>Based on Draft 4, but with restricted keywords and definitions</p>
+<p>Restrictions (keywords not allowed)</p>
+<ul>
+<li>oneOf</li>
+<li>anyOf</li>
+<li>patternProperties</li>
+<li>not</li>
+</ul>
+<p><a href="https://swagger.io/specification/v2/#schemaObject">https://swagger.io/specification/v2/#schemaObject</a></p>
+</dd>
 <dt><a href="#AsyncAPIInputProcessor">AsyncAPIInputProcessor</a></dt>
 <dd><p>Class for processing AsyncAPI inputs</p>
 </dd>
@@ -36,6 +48,9 @@
 </dd>
 <dt><a href="#JsonSchemaInputProcessor">JsonSchemaInputProcessor</a></dt>
 <dd><p>Class for processing JSON Schema</p>
+</dd>
+<dt><a href="#SwaggerInputProcessor">SwaggerInputProcessor</a></dt>
+<dd><p>Class for processing Swagger inputs</p>
 </dd>
 <dt><a href="#LoggerClass">LoggerClass</a></dt>
 <dd><p>Logger class for the model generation library</p>
@@ -568,6 +583,33 @@ Common representation for the output model.
 Common representation for the rendered output.
 
 **Kind**: global class  
+<a name="SwaggerV2Schema"></a>
+
+## SwaggerV2Schema
+OpenAPI 2.0 (Swagger 2.0) schema model
+
+Based on Draft 4, but with restricted keywords and definitions
+
+Restrictions (keywords not allowed)
+ - oneOf
+ - anyOf
+ - patternProperties
+ - not
+
+https://swagger.io/specification/v2/#schemaObject
+
+**Kind**: global class  
+<a name="SwaggerV2Schema.toSchema"></a>
+
+### SwaggerV2Schema.toSchema(object)
+Takes a deep copy of the input object and converts it to an instance of SwaggerV2Schema.
+
+**Kind**: static method of [<code>SwaggerV2Schema</code>](#SwaggerV2Schema)  
+
+| Param |
+| --- |
+| object | 
+
 <a name="AsyncAPIInputProcessor"></a>
 
 ## AsyncAPIInputProcessor
@@ -772,6 +814,66 @@ Simplifies a JSON Schema into a common models
 | Param | Description |
 | --- | --- |
 | schema | to simplify to common model |
+
+<a name="SwaggerInputProcessor"></a>
+
+## SwaggerInputProcessor
+Class for processing Swagger inputs
+
+**Kind**: global class  
+
+* [SwaggerInputProcessor](#SwaggerInputProcessor)
+    * _instance_
+        * [.process(input)](#SwaggerInputProcessor+process)
+        * [.shouldProcess(input)](#SwaggerInputProcessor+shouldProcess)
+        * [.tryGetVersionOfDocument(input)](#SwaggerInputProcessor+tryGetVersionOfDocument)
+    * _static_
+        * [.convertToInternalSchema(schema, name)](#SwaggerInputProcessor.convertToInternalSchema)
+
+<a name="SwaggerInputProcessor+process"></a>
+
+### swaggerInputProcessor.process(input)
+Process the input as a Swagger document
+
+**Kind**: instance method of [<code>SwaggerInputProcessor</code>](#SwaggerInputProcessor)  
+
+| Param |
+| --- |
+| input | 
+
+<a name="SwaggerInputProcessor+shouldProcess"></a>
+
+### swaggerInputProcessor.shouldProcess(input)
+Figures out if an object is of type Swagger document and supported
+
+**Kind**: instance method of [<code>SwaggerInputProcessor</code>](#SwaggerInputProcessor)  
+
+| Param |
+| --- |
+| input | 
+
+<a name="SwaggerInputProcessor+tryGetVersionOfDocument"></a>
+
+### swaggerInputProcessor.tryGetVersionOfDocument(input)
+Try to find the swagger version from the input. If it cannot, undefined are returned, if it can, the version is returned.
+
+**Kind**: instance method of [<code>SwaggerInputProcessor</code>](#SwaggerInputProcessor)  
+
+| Param |
+| --- |
+| input | 
+
+<a name="SwaggerInputProcessor.convertToInternalSchema"></a>
+
+### SwaggerInputProcessor.convertToInternalSchema(schema, name)
+Converts a Swagger 2.0 Schema to the internal schema format.
+
+**Kind**: static method of [<code>SwaggerInputProcessor</code>](#SwaggerInputProcessor)  
+
+| Param | Description |
+| --- | --- |
+| schema | to convert |
+| name | of the schema |
 
 <a name="LoggerClass"></a>
 
