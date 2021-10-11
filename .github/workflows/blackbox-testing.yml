@@ -1,4 +1,4 @@
-name: Blackbox testing (stay awhile and listen)
+name: Blackbox testing (Stay Awhile and Listen)
 on:
   push:
   pull_request:

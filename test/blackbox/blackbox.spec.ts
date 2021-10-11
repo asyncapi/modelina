@@ -64,7 +64,7 @@ const filesToTest = [
 ];
 
 // eslint-disable-next-line no-console
-console.log('This is gonna take a while, ~ X minutes');
+console.log('This is gonna take some time, Stay Awhile and Listen');
 describe.each(filesToTest)('Should be able to generate with inputs', ({file, outputDirectory}) => {
   jest.setTimeout(1000000);
   const fileToGenerateFor = path.resolve(__dirname, file);
