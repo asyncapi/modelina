@@ -39,7 +39,10 @@ const filesToTest = [
     //Blocked by https://github.com/asyncapi/modelina/issues/390
     return file !== './docs/JsonSchemaDraft-7/graphql-code-generator.json';
   }),
-  ...jsonSchemaDraft6Files
+  ...jsonSchemaDraft6Files.filter(({file}) => {
+    //Blocked by https://github.com/asyncapi/modelina/issues/453
+    return file !== './docs/JsonSchemaDraft-6/fhir-full.json';
+  })
 ];
 
 describe.each(filesToTest)('Should be able to generate with inputs', ({file, outputDirectory}) => {

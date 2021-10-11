@@ -149,7 +149,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       schema.anyOf = (schema.anyOf as any[]).map((item: any, idx: number) => this.reflectSchemaNames(item, namesStack, this.ensureNamePattern(name, 'anyOf', idx)));
     }
     if (schema.not !== undefined) {
-      schema.not = JsonSchemaInputProcessor.reflectSchemaNames(schema.not, namesStack, this.ensureNamePattern(name, 'not'));
+      schema.not = this.reflectSchemaNames(schema.not, namesStack, this.ensureNamePattern(name, 'not'));
     }
     if (
       typeof schema.additionalItems === 'object' &&
@@ -161,20 +161,20 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       typeof schema.additionalProperties === 'object' && 
       schema.additionalProperties !== undefined
     ) {
-      schema.additionalProperties = JsonSchemaInputProcessor.reflectSchemaNames(schema.additionalProperties, namesStack, this.ensureNamePattern(name, 'additionalProperty'));
+      schema.additionalProperties = this.reflectSchemaNames(schema.additionalProperties, namesStack, this.ensureNamePattern(name, 'additionalProperty'));
     }
     if (schema.items !== undefined) {
       if (Array.isArray(schema.items)) {
         schema.items = (schema.items as any[]).map((item: Draft7Schema | boolean, idx: number) => this.reflectSchemaNames(item, namesStack, this.ensureNamePattern(name, 'item', idx)));
       } else {
-        schema.items = JsonSchemaInputProcessor.reflectSchemaNames(schema.items, namesStack, this.ensureNamePattern(name, 'item'));
+        schema.items = this.reflectSchemaNames(schema.items, namesStack, this.ensureNamePattern(name, 'item'));
       }
     }
 
     if (schema.properties !== undefined) {
       const properties : any = {};
       for (const [propertyName, propertySchema] of Object.entries(schema.properties)) {
-        properties[String(propertyName)] = JsonSchemaInputProcessor.reflectSchemaNames(propertySchema, namesStack, this.ensureNamePattern(name, propertyName));
+        properties[String(propertyName)] = this.reflectSchemaNames(propertySchema, namesStack, this.ensureNamePattern(name, propertyName));
       }
       schema.properties = properties;
     }
@@ -199,7 +199,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     if (schema.definitions !== undefined) {
       const definitions: { [key: string]: any } = {};
       for (const [definitionName, definition] of Object.entries(schema.definitions)) {
-        definitions[String(definitionName)] = JsonSchemaInputProcessor.reflectSchemaNames(definition, namesStack, this.ensureNamePattern(name, definitionName));
+        definitions[String(definitionName)] = this.reflectSchemaNames(definition, namesStack, this.ensureNamePattern(name, definitionName));
       }
       schema.definitions = definitions;
     }
