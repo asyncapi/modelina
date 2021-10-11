@@ -1,7 +1,7 @@
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import path from 'path';
-import { CommonModel, CommonInputModel, Draft7Schema, SwaggerV2Schema, AsyncapiV2Schema } from '../models';
+import { CommonModel, CommonInputModel, Draft4Schema, Draft7Schema, SwaggerV2Schema, AsyncapiV2Schema } from '../models';
 import { Logger } from '../utils';
 import { postInterpretModel } from '../interpreter/PostInterpreter';
 import { Interpreter } from '../interpreter/Interpreter';
@@ -17,8 +17,10 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    */
   process(input: Record<string, any>): Promise<CommonInputModel> {
     if (this.shouldProcess(input)) {
-      // eslint-disable-next-line sonarjs/no-all-duplicated-branches
       switch (input.$schema) {
+      case 'http://json-schema.org/draft-04/schema':
+      case 'http://json-schema.org/draft-04/schema#':
+        return this.processDraft4(input);
       case 'http://json-schema.org/draft-07/schema#':
       case 'http://json-schema.org/draft-07/schema':
       default:
@@ -35,7 +37,9 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    */
   shouldProcess(input: Record<string, any>): boolean {
     if (input.$schema !== undefined) {
-      if (input.$schema === 'http://json-schema.org/draft-07/schema#' || 
+      if (input.$schema === 'http://json-schema.org/draft-04/schema#' ||
+      input.$schema === 'http://json-schema.org/draft-04/schema' || 
+      input.$schema === 'http://json-schema.org/draft-07/schema#' || 
       input.$schema === 'http://json-schema.org/draft-07/schema') {
         return true;
       }
@@ -45,7 +49,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
   }
 
   /**
-   * Process a draft 7 schema
+   * Process a draft-7 schema
    * 
    * @param input to process as draft 7
    */
@@ -58,6 +62,23 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     const parsedSchema = Draft7Schema.toSchema(input);
     commonInputModel.models = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema);
     Logger.debug('Completed processing input as JSON Schema draft 7 document');
+    return commonInputModel;
+  }
+
+  /**
+   * Process a draft-4 schema
+   * 
+   * @param input to process as draft 4
+   */
+  private async processDraft4(input: Record<string, any>) : Promise<CommonInputModel> {
+    Logger.debug('Processing input as JSON Schema Draft 4 document');
+    const commonInputModel = new CommonInputModel();
+    commonInputModel.originalInput = input;
+    input = JsonSchemaInputProcessor.reflectSchemaNames(input, {}, 'root', true) as Record<string, any>;
+    await this.dereferenceInputs(input);
+    const parsedSchema = Draft4Schema.toSchema(input);
+    commonInputModel.models = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema);
+    Logger.debug('Completed processing input as JSON Schema draft 4 document');
     return commonInputModel;
   }
 
@@ -95,7 +116,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    */
   // eslint-disable-next-line sonarjs/cognitive-complexity
   static reflectSchemaNames(
-    schema: Draft7Schema | SwaggerV2Schema | boolean,
+    schema: Draft4Schema | Draft7Schema | SwaggerV2Schema | boolean,
     namesStack: Record<string, number>,
     name?: string,
     isRoot?: boolean,
@@ -182,22 +203,25 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       }
       schema.definitions = definitions;
     }
-    //Keywords introduced in draft 6
-    if (schema.contains !== undefined) {
-      schema.contains = this.reflectSchemaNames(schema.contains, namesStack, this.ensureNamePattern(name, 'contain'));
-    }
-    if (schema.propertyNames !== undefined) {
-      schema.propertyNames = this.reflectSchemaNames(schema.propertyNames, namesStack, this.ensureNamePattern(name, 'propertyName'));
-    }
-    //Keywords introduced in Draft 7
-    if (schema.if !== undefined) {
-      schema.if = this.reflectSchemaNames(schema.if, namesStack, this.ensureNamePattern(name, 'if'));
-    }
-    if (schema.then !== undefined) {
-      schema.then = this.reflectSchemaNames(schema.then, namesStack, this.ensureNamePattern(name, 'then'));
-    }
-    if (schema.else !== undefined) {
-      schema.else = this.reflectSchemaNames(schema.else, namesStack, this.ensureNamePattern(name, 'else'));
+
+    if (!(schema instanceof Draft4Schema)) {
+      //Keywords introduced in draft 6
+      if (schema.contains !== undefined) {
+        schema.contains = this.reflectSchemaNames(schema.contains, namesStack, this.ensureNamePattern(name, 'contain'));
+      }
+      if (schema.propertyNames !== undefined) {
+        schema.propertyNames = this.reflectSchemaNames(schema.propertyNames, namesStack, this.ensureNamePattern(name, 'propertyName'));
+      }
+      //Keywords introduced in Draft 7
+      if (schema.if !== undefined) {
+        schema.if = this.reflectSchemaNames(schema.if, namesStack, this.ensureNamePattern(name, 'if'));
+      }
+      if (schema.then !== undefined) {
+        schema.then = this.reflectSchemaNames(schema.then, namesStack, this.ensureNamePattern(name, 'then'));
+      }
+      if (schema.else !== undefined) {
+        schema.else = this.reflectSchemaNames(schema.else, namesStack, this.ensureNamePattern(name, 'else'));
+      }
     }
     return schema;
   }
@@ -221,7 +245,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param schema to simplify to common model
    */
-  static convertSchemaToCommonModel(schema: Draft7Schema | SwaggerV2Schema | AsyncapiV2Schema | boolean): Record<string, CommonModel> {
+  static convertSchemaToCommonModel(schema: Draft4Schema | Draft7Schema | SwaggerV2Schema| AsyncapiV2Schema | boolean): Record<string, CommonModel> {
     const commonModelsMap: Record<string, CommonModel> = {};
     const interpreter = new Interpreter();
     const model = interpreter.interpret(schema);
