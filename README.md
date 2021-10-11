@@ -75,7 +75,7 @@ To see the complete feature list for each language, please click the individual 
   </tr>
   <tr>
     <td><a href="./docs/usage.md">OpenAPI</a></td>
-    <td>We support the following OpenAPI versions: <em>Swagger 2.0</em></td>
+    <td>We support the following OpenAPI versions: <em>Swagger 2.0 and 3.0.x</em></td>
   </tr>
 </table>
 

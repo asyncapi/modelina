@@ -23,11 +23,17 @@ function readFilesInFolder(folder: string) {
   );
 }
 const jsonSchemaDraft7Files = readFilesInFolder('JsonSchemaDraft-7');
+const OpenAPI3_0_0Files = readFilesInFolder('OpenAPI-3_0_0');
+const OpenAPI3_0_1Files = readFilesInFolder('OpenAPI-3_0_1');
+const OpenAPI3_0_3Files = readFilesInFolder('OpenAPI-3_0_3');
 const AsyncAPIV2_0Files = readFilesInFolder('AsyncAPI-2_0');
 const AsyncAPIV2_1Files = readFilesInFolder('AsyncAPI-2_1');
 const AsyncAPIV2_2Files = readFilesInFolder('AsyncAPI-2_2');
 
 const filesToTest = [
+  ...OpenAPI3_0_0Files,
+  ...OpenAPI3_0_1Files,
+  ...OpenAPI3_0_3Files,
   ...AsyncAPIV2_0Files,
   ...AsyncAPIV2_1Files,
   ...AsyncAPIV2_2Files,

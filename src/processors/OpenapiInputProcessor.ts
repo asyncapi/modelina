@@ -6,20 +6,20 @@ import SwaggerParser from '@apidevtools/swagger-parser';
 import { OpenAPIV3 } from 'openapi-types';
 
 /**
- * Class for processing OpenAPI V3.0.x inputs
+ * Class for processing OpenAPI V3.0 inputs
  */
 export class OpenapiInputProcessor extends AbstractInputProcessor {
   static supportedVersions = ['3.0.0', '3.0.1', '3.0.2', '3.0.3'];
 
   /**
-   * Process the input as a OpenAPI V3.0.x document
+   * Process the input as a OpenAPI V3.0 document
    * 
    * @param input 
    */
   async process(input: Record<string, any>): Promise<CommonInputModel> {
-    if (!this.shouldProcess(input)) {throw new Error('Input is not a OpenAPI V3.0.x document so it cannot be processed.');}
+    if (!this.shouldProcess(input)) {throw new Error('Input is not a OpenAPI document so it cannot be processed.');}
 
-    Logger.debug('Processing input as a OpenAPI V3.0.x document');
+    Logger.debug('Processing input as an OpenAPI document');
     const inputModel = new CommonInputModel();
     inputModel.originalInput = input;
     const api = await SwaggerParser.dereference(input as any) as OpenAPIV3.Document;
@@ -46,55 +46,54 @@ export class OpenapiInputProcessor extends AbstractInputProcessor {
       this.processOperation(pathObject.head, `${formattedPathName}_head`, inputModel);
       this.processOperation(pathObject.patch, `${formattedPathName}_patch`, inputModel);
       this.processOperation(pathObject.trace, `${formattedPathName}_trace`, inputModel);
-  
-      this.includeParameters(pathObject.parameters, formattedPathName, inputModel);
-  
-      if(pathObject.)
     } 
   }
 
   private processOperation(operation: OpenAPIV3.OperationObject | undefined, path: string, inputModel: CommonInputModel) {
     if (operation) {
       this.includeResponses(operation.responses, path, inputModel);
-      this.includeParameters(operation.parameters, path, inputModel);
-      
-      if(operation.callbacks) {
-        const callbacks = operation.callbacks as OpenAPIV3.CallbackObject
+
+      if (operation.requestBody) {
+        this.iterateMediaType((operation.requestBody as OpenAPIV3.RequestBodyObject).content || {}, path, inputModel);
       }
       
-    }
-  }
-
-  private includeResponses(responses: OpenAPIV3.ResponsesObject, path: string, inputModel: CommonInputModel) {
-    for (const [responseName, response] of Object.entries(responses)) {
-      if (response !== undefined) {
-        const contentMediaTypes = (response as OpenAPIV3.ResponseObject).content || {};
-        for (const mediaContent of Object.values(contentMediaTypes)) {
-          const mediaTypeSchema = (mediaContent as OpenAPIV3.MediaTypeObject).schema;
-          if (mediaTypeSchema !== undefined) { 
-            const internalOpenapiSchema = OpenapiInputProcessor.convertToInternalSchema((mediaContent as OpenAPIV3.SchemaObject), `${path}_${responseName}`);
-            const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(internalOpenapiSchema);
-            inputModel.models = {...inputModel.models, ...commonModels};
+      if (operation.callbacks) {
+        for (const [callbackName, callback] of Object.entries(operation.callbacks)) {
+          const callbackObject = callback as OpenAPIV3.CallbackObject;
+          for (const [callbackPath, callbackPathObject] of Object.entries(callbackObject)) {
+            this.processPath(callbackPathObject, `${path}_callback_${callbackName}_${callbackPath}`, inputModel);
           }
         }
       }
     }
   }
 
-  private includeParameters(parameters: (OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject)[] | undefined, path: string, inputModel: CommonInputModel) {
-    for (const parameterObject of parameters || []) {
-      const parameter = parameterObject as OpenAPIV3.ParameterObject;
-      if (parameter.in === 'body') {
-        const bodyParameterSchema = parameter.schema as OpenAPIV3.SchemaObject;
-        const swaggerSchema = OpenapiInputProcessor.convertToInternalSchema(bodyParameterSchema, `${path}_body`);
-        const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(swaggerSchema);
-        inputModel.models = {...inputModel.models, ...commonModels};
-      }
+  private includeResponses(responses: OpenAPIV3.ResponsesObject, path: string, inputModel: CommonInputModel) {
+    for (const [responseName, response] of Object.entries(responses)) {
+      //Replace any '/' with '_'
+      const formattedResponseName = responseName.replace(/\//, '_');
+      this.iterateMediaType((response as OpenAPIV3.ResponseObject).content || {}, `${path}_${formattedResponseName}`, inputModel);
     }
   }
 
+  private iterateMediaType(mediaTypes: {[media: string]: OpenAPIV3.MediaTypeObject}, path: string, inputModel: CommonInputModel) {
+    for (const [mediaContent, mediaTypeObject] of Object.entries(mediaTypes)) {
+      const mediaType = mediaTypeObject as OpenAPIV3.MediaTypeObject;
+      const mediaTypeSchema = mediaType.schema as OpenAPIV3.SchemaObject;
+      //Replace any '/' with '_'
+      const formattedMediaContent = mediaContent.replace(/\//, '_');
+      this.includeSchema(mediaTypeSchema, `${path}_${formattedMediaContent}`, inputModel);
+    }
+  }
+
+  private includeSchema(schema: OpenAPIV3.SchemaObject, name: string, inputModel: CommonInputModel) {
+    const internalSchema = OpenapiInputProcessor.convertToInternalSchema(schema, name);
+    const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(internalSchema);
+    inputModel.models = {...inputModel.models, ...commonModels};
+  }
+
   /**
-   * Converts a schema to the Common schema format.
+   * Converts a schema to the internal schema format.
    * 
    * @param schema to convert
    * @param name of the schema
