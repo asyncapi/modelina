@@ -75,6 +75,7 @@ export class Interpreter {
     if (schema.required !== undefined) {
       model.required = schema.required;
     }
+    const isDraft04 = schema instanceof Draft4Schema;
 
     interpretPatternProperties(schema, model, this, interpreterOptions);
     interpretAdditionalProperties(schema, model, this, interpreterOptions);
@@ -88,7 +89,7 @@ export class Interpreter {
 
     this.interpretAndCombineMultipleSchemas(schema.oneOf, model, schema, interpreterOptions);
     this.interpretAndCombineMultipleSchemas(schema.anyOf, model, schema, interpreterOptions);
-    if (!(schema instanceof Draft4Schema)) {
+    if (!isDraft04) {
       this.interpretAndCombineSchema(schema.then, model, schema, interpreterOptions);
       this.interpretAndCombineSchema(schema.else, model, schema, interpreterOptions);
     }

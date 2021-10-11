@@ -4,14 +4,15 @@ import { InterpreterSchemaType } from './Interpreter';
 import { inferTypeFromValue } from './Utils';
 
 /**
- * Interpreter function for const keyword.
+ * Interpreter function for const keyword for draft version > 4
  * 
  * @param schema 
  * @param model
  */
 export default function interpretConst(schema: InterpreterSchemaType, model: CommonModel): void {
-  //Draft 4 does not include const keyword
-  if (schema instanceof Draft4Schema || typeof schema === 'boolean' || schema.const === undefined) {return;}
+  const isDraft04 = schema instanceof Draft4Schema;
+
+  if (isDraft04 || typeof schema === 'boolean' || schema.const === undefined) {return;}
   
   const schemaConst = schema.const;
   model.enum = [schemaConst];
