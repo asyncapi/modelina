@@ -1,6 +1,6 @@
-import { AbstractGenerator } from '../../src/generators'; 
+import { AbstractGenerator, FileGenerator } from '../../src/generators'; 
 import { IndentationTypes } from '../../src/helpers';
-import { CommonInputModel, CommonModel, RenderOutput } from '../../src/models';
+import { CommonInputModel, CommonModel, OutputModel, RenderOutput } from '../../src/models';
 
 export const testOptions = {
   indentation: {
@@ -15,6 +15,10 @@ export class TestGenerator extends AbstractGenerator {
 
   render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     return Promise.resolve(RenderOutput.toRenderOutput({result: model.$id || 'rendered content'}));
+  }
+
+  renderCompleteModel(model: CommonModel, inputModel: CommonInputModel, options: any): Promise<RenderOutput> {
+    throw new Error('Method not implemented.');
   }
 }
 describe('AbstractGenerator', () => {
@@ -65,14 +69,19 @@ describe('AbstractGenerator', () => {
 
   describe('getPresets()', () => {
     test('getPresets()', () => {
-      class GeneratorWithPresets extends AbstractGenerator {
+      class GeneratorWithPresets extends AbstractGenerator<any, any> {
         constructor() {
           super('TestGenerator', {presets: [{preset: {test: 'test2'}, options: {}}]});
         }
+        
         render(model: CommonModel, inputModel: CommonInputModel): any { return; }
 
         testGetPresets(string: string) {
           return this.getPresets(string);
+        }
+
+        renderCompleteModel(model: CommonModel, inputModel: CommonInputModel, options: any): Promise<RenderOutput> {
+          throw new Error('Method not implemented.');
         }
       }
       const newGenerator = new GeneratorWithPresets();

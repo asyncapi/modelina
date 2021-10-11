@@ -30,7 +30,7 @@ export abstract class CSharpRenderer extends AbstractRenderer<CSharpOptions> {
    */
   nameType(name: string | undefined, model?: CommonModel): string {
     return this.options?.namingConvention?.type 
-      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel, isReservedKeyword: isReservedCSharpKeyword(`${name}`) })
+      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel, reservedKeywordCallback: isReservedCSharpKeyword })
       : name || '';
   }
 
@@ -42,7 +42,7 @@ export abstract class CSharpRenderer extends AbstractRenderer<CSharpOptions> {
    */
   nameProperty(propertyName: string | undefined, property?: CommonModel): string {
     return this.options?.namingConvention?.property 
-      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property, isReservedKeyword: isReservedCSharpKeyword(`${propertyName}`) })
+      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property, reservedKeywordCallback: isReservedCSharpKeyword })
       : propertyName || '';
   }
 
@@ -68,10 +68,6 @@ export abstract class CSharpRenderer extends AbstractRenderer<CSharpOptions> {
   }
 
   toCSharpType(type: string | undefined, model: CommonModel): string {
-    if (type === undefined) {
-      return 'dynamic';
-    }
-
     switch (type) {
     case 'string':
       return 'string';
@@ -90,7 +86,7 @@ export abstract class CSharpRenderer extends AbstractRenderer<CSharpOptions> {
       const arrayType = model.items ? this.renderType(model.items) : 'dynamic';
       return `${arrayType}[]`;
     }
-    default: return type;
+    default: return 'dynamic';
     }
   }
 }

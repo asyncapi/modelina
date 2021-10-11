@@ -1,5 +1,5 @@
 import { CommonModel } from '../models';
-import { Interpreter, InterpreterOptions, interpreterSchemaType } from './Interpreter';
+import { Interpreter, InterpreterOptions, InterpreterSchemaType } from './Interpreter';
 
 /**
  * Interpreter function for additionalItems keyword.
@@ -9,7 +9,7 @@ import { Interpreter, InterpreterOptions, interpreterSchemaType } from './Interp
  * @param interpreter
  * @param interpreterOptions to control the interpret process
  */
-export default function interpretAdditionalItems(schema: interpreterSchemaType, model: CommonModel, interpreter : Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
+export default function interpretAdditionalItems(schema: InterpreterSchemaType, model: CommonModel, interpreter : Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
   if (typeof schema === 'boolean' || model.type?.includes('array') === false) {return;}
   const additionalItemsModel = interpreter.interpret(schema.additionalItems === undefined ? true : schema.additionalItems, interpreterOptions);
   if (additionalItemsModel !== undefined) {

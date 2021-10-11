@@ -7,14 +7,20 @@
 <dt><a href="#AbstractRenderer">AbstractRenderer</a></dt>
 <dd><p>Abstract renderer with common helper methods</p>
 </dd>
+<dt><a href="#AsyncapiV2Schema">AsyncapiV2Schema</a></dt>
+<dd><p>AsyncAPI 2.0 + 2.1 schema model</p>
+<p>Based on Draft 7 with additions</p>
+<p><a href="https://www.asyncapi.com/docs/specifications/v2.0.0#schemaObject">https://www.asyncapi.com/docs/specifications/v2.0.0#schemaObject</a>
+<a href="https://www.asyncapi.com/docs/specifications/v2.1.0#schemaObject">https://www.asyncapi.com/docs/specifications/v2.1.0#schemaObject</a></p>
+</dd>
 <dt><a href="#CommonInputModel">CommonInputModel</a></dt>
 <dd><p>This class is the wrapper for simplified models and the rest of the context needed for further generate typed models.</p>
 </dd>
-<dt><a href="#CommonModel">CommonModel</a> ⇐ <code><a href="#CommonModel">CommonSchema&lt;CommonModel&gt;</a></code></dt>
+<dt><a href="#CommonModel">CommonModel</a></dt>
 <dd><p>Common internal representation for a model.</p>
 </dd>
-<dt><a href="#CommonSchema">CommonSchema</a></dt>
-<dd><p>CommonSchema which contains the common properties between Schema and CommonModel</p>
+<dt><a href="#Draft7Schema">Draft7Schema</a></dt>
+<dd><p>JSON Draft7Schema Draft 7 model</p>
 </dd>
 <dt><a href="#OutputModel">OutputModel</a></dt>
 <dd><p>Common representation for the output model.</p>
@@ -22,8 +28,17 @@
 <dt><a href="#RenderOutput">RenderOutput</a></dt>
 <dd><p>Common representation for the rendered output.</p>
 </dd>
-<dt><a href="#Schema">Schema</a> ⇐ <code><a href="#Schema">CommonSchema&lt;Schema&gt;</a></code></dt>
-<dd><p>JSON Schema Draft 7 model</p>
+<dt><a href="#SwaggerV2Schema">SwaggerV2Schema</a></dt>
+<dd><p>OpenAPI 2.0 (Swagger 2.0) schema model</p>
+<p>Based on Draft 4, but with restricted keywords and definitions</p>
+<p>Restrictions (keywords not allowed)</p>
+<ul>
+<li>oneOf</li>
+<li>anyOf</li>
+<li>patternProperties</li>
+<li>not</li>
+</ul>
+<p><a href="https://swagger.io/specification/v2/#schemaObject">https://swagger.io/specification/v2/#schemaObject</a></p>
 </dd>
 <dt><a href="#AsyncAPIInputProcessor">AsyncAPIInputProcessor</a></dt>
 <dd><p>Class for processing AsyncAPI inputs</p>
@@ -33,6 +48,9 @@
 </dd>
 <dt><a href="#JsonSchemaInputProcessor">JsonSchemaInputProcessor</a></dt>
 <dd><p>Class for processing JSON Schema</p>
+</dd>
+<dt><a href="#SwaggerInputProcessor">SwaggerInputProcessor</a></dt>
+<dd><p>Class for processing Swagger inputs</p>
 </dd>
 <dt><a href="#LoggerClass">LoggerClass</a></dt>
 <dd><p>Logger class for the model generation library</p>
@@ -59,38 +77,38 @@
 <p>This function ensures that the property name is unique for the model</p>
 </dd>
 <dt><a href="#interpretAdditionalItems">interpretAdditionalItems(schema, model, interpreter, interpreterOptions)</a></dt>
-<dd><p>Interpreter function for JSON Schema draft 7 additionalProperties keyword.</p>
+<dd><p>Interpreter function for additionalItems keyword.</p>
 </dd>
 <dt><a href="#interpretAdditionalProperties">interpretAdditionalProperties(schema, model, interpreter, interpreterOptions)</a></dt>
-<dd><p>Interpreter function for JSON Schema draft 7 additionalProperties keyword.</p>
+<dd><p>Interpreter function for additionalProperties keyword.</p>
 </dd>
 <dt><a href="#interpretAllOf">interpretAllOf(schema, model, interpreter, interpreterOptions)</a></dt>
-<dd><p>Interpreter function for JSON Schema draft 7 allOf keyword.</p>
+<dd><p>Interpreter function for allOf keyword.</p>
 <p>It either merges allOf schemas into existing model or if allowed, create inheritance.</p>
 </dd>
 <dt><a href="#interpretConst">interpretConst(schema, model)</a></dt>
-<dd><p>Interpreter function for JSON Schema draft 7 const keyword.</p>
+<dd><p>Interpreter function for const keyword.</p>
 </dd>
 <dt><a href="#interpretDependencies">interpretDependencies(schema, model)</a></dt>
-<dd><p>Interpreter function for JSON Schema draft 7 dependencies keyword.</p>
+<dd><p>Interpreter function for dependencies keyword.</p>
 </dd>
 <dt><a href="#interpretEnum">interpretEnum(schema, model)</a></dt>
-<dd><p>Interpreter function for JSON Schema draft 7 enum keyword</p>
+<dd><p>Interpreter function for enum keyword</p>
 </dd>
 <dt><a href="#interpretItems">interpretItems(schema, model, interpreter, interpreterOptions)</a></dt>
-<dd><p>Interpreter function for JSON Schema draft 7 items keyword.</p>
+<dd><p>Interpreter function for items keyword.</p>
 </dd>
 <dt><a href="#interpretArrayItems">interpretArrayItems(rootSchema, itemSchemas, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Internal function to process all item schemas</p>
 </dd>
 <dt><a href="#interpretNot">interpretNot(schema, model, interpreter, interpreterOptions)</a></dt>
-<dd><p>Interpreter function for JSON Schema draft 7 not keyword.</p>
+<dd><p>Interpreter function for not keyword.</p>
 </dd>
 <dt><a href="#interpretPatternProperties">interpretPatternProperties(schema, model, interpreter, interpreterOptions)</a></dt>
-<dd><p>Interpreter function for JSON Schema draft 7 patternProperties keyword.</p>
+<dd><p>Interpreter function for patternProperties keyword.</p>
 </dd>
 <dt><a href="#interpretProperties">interpretProperties(schema, model, interpreter, interpreterOptions)</a></dt>
-<dd><p>Interpreter function for interpreting JSON Schema draft 7 properties keyword.</p>
+<dd><p>Interpreter function for interpreting properties keyword.</p>
 </dd>
 <dt><a href="#postInterpretModel">postInterpretModel(model)</a></dt>
 <dd><p>Post process the interpreted model. By applying the following:</p>
@@ -124,6 +142,48 @@
 Abstract generator which must be implemented by each language
 
 **Kind**: global class  
+
+* [AbstractGenerator](#AbstractGenerator)
+    * [.generateCompleteModels(input, options)](#AbstractGenerator+generateCompleteModels)
+    * [.generate(input)](#AbstractGenerator+generate)
+    * [.processInput(input)](#AbstractGenerator+processInput)
+
+<a name="AbstractGenerator+generateCompleteModels"></a>
+
+### abstractGenerator.generateCompleteModels(input, options)
+Generates the full output of a model, instead of a scattered model.
+
+OutputModels result is no longer the model itself, but including package, package dependencies and model dependencies.
+
+**Kind**: instance method of [<code>AbstractGenerator</code>](#AbstractGenerator)  
+
+| Param | Description |
+| --- | --- |
+| input |  |
+| options | to use for rendering full output |
+
+<a name="AbstractGenerator+generate"></a>
+
+### abstractGenerator.generate(input)
+Generates a scattered model where dependencies and rendered results are separated.
+
+**Kind**: instance method of [<code>AbstractGenerator</code>](#AbstractGenerator)  
+
+| Param |
+| --- |
+| input | 
+
+<a name="AbstractGenerator+processInput"></a>
+
+### abstractGenerator.processInput(input)
+Process any of the input formats to the appropriate CommonInputModel type.
+
+**Kind**: instance method of [<code>AbstractGenerator</code>](#AbstractGenerator)  
+
+| Param |
+| --- |
+| input | 
+
 <a name="AbstractRenderer"></a>
 
 ## AbstractRenderer
@@ -141,6 +201,28 @@ Adds a dependency while ensuring that only one dependency is preset at a time.
 | --- | --- |
 | dependency | complete dependency string so it can be rendered as is. |
 
+<a name="AsyncapiV2Schema"></a>
+
+## AsyncapiV2Schema
+AsyncAPI 2.0 + 2.1 schema model
+
+Based on Draft 7 with additions
+
+https://www.asyncapi.com/docs/specifications/v2.0.0#schemaObject
+https://www.asyncapi.com/docs/specifications/v2.1.0#schemaObject
+
+**Kind**: global class  
+<a name="AsyncapiV2Schema.toSchema"></a>
+
+### AsyncapiV2Schema.toSchema(object)
+Takes a deep copy of the input object and converts it to an instance of AsyncapiV2Schema.
+
+**Kind**: static method of [<code>AsyncapiV2Schema</code>](#AsyncapiV2Schema)  
+
+| Param |
+| --- |
+| object | 
+
 <a name="CommonInputModel"></a>
 
 ## CommonInputModel
@@ -149,59 +231,42 @@ This class is the wrapper for simplified models and the rest of the context need
 **Kind**: global class  
 <a name="CommonModel"></a>
 
-## CommonModel ⇐ [<code>CommonSchema&lt;CommonModel&gt;</code>](#CommonModel)
+## CommonModel
 Common internal representation for a model.
 
 **Kind**: global class  
-**Extends**: [<code>CommonSchema&lt;CommonModel&gt;</code>](#CommonModel)  
-**Properties**
 
-| Name | Type | Description |
-| --- | --- | --- |
-| $id | <code>string</code> | define the id/name of the model. |
-| type | <code>string</code> \| <code>Array.&lt;string&gt;</code> | this is the different types for the model. All types from JSON Schema are used with no custom ones added. |
-| enum | <code>Array.&lt;any&gt;</code> | defines the different enums for the model, constant values are included here |
-| items | [<code>CommonModel</code>](#CommonModel) \| [<code>Array.&lt;CommonModel&gt;</code>](#CommonModel) | defines the type for `array` models as `CommonModel`. |
-| properties | <code>Record.&lt;string, CommonModel&gt;</code> | defines the properties and its expected types as `CommonModel`. |
-| additionalProperties | [<code>CommonModel</code>](#CommonModel) | are used to define if any extra properties are allowed, also defined as a  `CommonModel`. |
-| patternProperties | <code>Record.&lt;string, CommonModel&gt;</code> | are used for any extra properties that matches a specific pattern to be of specific type. |
-| $ref | <code>string</code> | is a reference to another `CommonModel` by using`$id` as a simple string. |
-| required | <code>Array.&lt;string&gt;</code> | list of required properties. |
-| extend | <code>Array.&lt;string&gt;</code> | list of other `CommonModel`s this model extends, is an array of `$id` strings. |
-| originalSchema | [<code>Schema</code>](#Schema) \| <code>boolean</code> | the actual input for which this model represent. |
-
-
-* [CommonModel](#CommonModel) ⇐ [<code>CommonSchema&lt;CommonModel&gt;</code>](#CommonModel)
+* [CommonModel](#CommonModel)
     * _instance_
-        * [.getFromSchema(key)](#CommonModel+getFromSchema) ⇒ <code>any</code>
+        * [.getFromOriginalInput(key)](#CommonModel+getFromOriginalInput) ⇒ <code>any</code>
         * [.setType(type)](#CommonModel+setType)
         * [.removeType(types)](#CommonModel+removeType)
         * [.addTypes(types)](#CommonModel+addTypes)
         * [.isRequired(propertyName)](#CommonModel+isRequired) ⇒ <code>boolean</code>
-        * [.addItem(itemModel, schema, addAsArray)](#CommonModel+addItem)
-        * [.addItemTuple(tupleModel, schema, index)](#CommonModel+addItemTuple)
+        * [.addItem(itemModel, originalInput)](#CommonModel+addItem)
+        * [.addItemTuple(tupleModel, originalInput, index)](#CommonModel+addItemTuple)
         * [.addEnum(enumValue)](#CommonModel+addEnum)
         * [.removeEnum(enumValue)](#CommonModel+removeEnum)
-        * [.addProperty(propertyName, propertyModel, schema)](#CommonModel+addProperty)
-        * [.addAdditionalProperty(additionalPropertiesModel, schema)](#CommonModel+addAdditionalProperty)
-        * [.addAdditionalItems(additionalItemsModel, schema)](#CommonModel+addAdditionalItems)
-        * [.addPatternProperty(pattern, patternModel, schema)](#CommonModel+addPatternProperty)
+        * [.addProperty(propertyName, propertyModel, originalInput)](#CommonModel+addProperty)
+        * [.addAdditionalProperty(additionalPropertiesModel, originalInput)](#CommonModel+addAdditionalProperty)
+        * [.addAdditionalItems(additionalItemsModel, originalInput)](#CommonModel+addAdditionalItems)
+        * [.addPatternProperty(pattern, patternModel, originalInput)](#CommonModel+addPatternProperty)
         * [.addExtendedModel(extendedModel)](#CommonModel+addExtendedModel)
         * [.getNearestDependencies()](#CommonModel+getNearestDependencies)
     * _static_
         * [.toCommonModel(object)](#CommonModel.toCommonModel) ⇒
-        * [.mergeProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)](#CommonModel.mergeProperties)
-        * [.mergeAdditionalProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)](#CommonModel.mergeAdditionalProperties)
-        * [.mergeAdditionalItems(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)](#CommonModel.mergeAdditionalItems)
-        * [.mergePatternProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)](#CommonModel.mergePatternProperties)
-        * [.mergeItems(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)](#CommonModel.mergeItems)
+        * [.mergeProperties(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergeProperties)
+        * [.mergeAdditionalProperties(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergeAdditionalProperties)
+        * [.mergeAdditionalItems(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergeAdditionalItems)
+        * [.mergePatternProperties(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergePatternProperties)
+        * [.mergeItems(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergeItems)
         * [.mergeTypes(mergeTo, mergeFrom)](#CommonModel.mergeTypes)
-        * [.mergeCommonModels(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)](#CommonModel.mergeCommonModels)
+        * [.mergeCommonModels(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergeCommonModels)
 
-<a name="CommonModel+getFromSchema"></a>
+<a name="CommonModel+getFromOriginalInput"></a>
 
-### commonModel.getFromSchema(key) ⇒ <code>any</code>
-Retrieves data from originalSchema by given key
+### commonModel.getFromOriginalInput(key) ⇒ <code>any</code>
+Retrieves data from originalInput by given key
 
 **Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
 
@@ -257,33 +322,32 @@ Checks if given property name is required in object
 
 <a name="CommonModel+addItem"></a>
 
-### commonModel.addItem(itemModel, schema, addAsArray)
+### commonModel.addItem(itemModel, originalInput)
 Adds an item to the model.
 
 If items already exist the two are merged.
 
 **Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
 
-| Param |
-| --- |
-| itemModel | 
-| schema | 
-| addAsArray | 
+| Param | Description |
+| --- | --- |
+| itemModel |  |
+| originalInput | corresponding input that got interpreted to this model |
 
 <a name="CommonModel+addItemTuple"></a>
 
-### commonModel.addItemTuple(tupleModel, schema, index)
+### commonModel.addItemTuple(tupleModel, originalInput, index)
 Adds a tuple to the model.
 
 If a item already exist it will be merged.
 
 **Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
 
-| Param |
-| --- |
-| tupleModel | 
-| schema | 
-| index | 
+| Param | Description |
+| --- | --- |
+| tupleModel |  |
+| originalInput | corresponding input that got interpreted to this model |
+| index |  |
 
 <a name="CommonModel+addEnum"></a>
 
@@ -311,7 +375,7 @@ Remove enum from model.
 
 <a name="CommonModel+addProperty"></a>
 
-### commonModel.addProperty(propertyName, propertyModel, schema)
+### commonModel.addProperty(propertyName, propertyModel, originalInput)
 Adds a property to the model.
 If the property already exist the two are merged.
 
@@ -321,37 +385,37 @@ If the property already exist the two are merged.
 | --- | --- |
 | propertyName |  |
 | propertyModel |  |
-| schema | schema to the corresponding property model |
+| originalInput | corresponding input that got interpreted to this model |
 
 <a name="CommonModel+addAdditionalProperty"></a>
 
-### commonModel.addAdditionalProperty(additionalPropertiesModel, schema)
+### commonModel.addAdditionalProperty(additionalPropertiesModel, originalInput)
 Adds additionalProperty to the model.
 If another model already exist the two are merged.
 
 **Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
 
-| Param |
-| --- |
-| additionalPropertiesModel | 
-| schema | 
+| Param | Description |
+| --- | --- |
+| additionalPropertiesModel |  |
+| originalInput | corresponding input that got interpreted to this model corresponding input that got interpreted to this model |
 
 <a name="CommonModel+addAdditionalItems"></a>
 
-### commonModel.addAdditionalItems(additionalItemsModel, schema)
+### commonModel.addAdditionalItems(additionalItemsModel, originalInput)
 Adds additionalItems to the model.
 If another model already exist the two are merged.
 
 **Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
 
-| Param |
-| --- |
-| additionalItemsModel | 
-| schema | 
+| Param | Description |
+| --- | --- |
+| additionalItemsModel |  |
+| originalInput | corresponding input that got interpreted to this model |
 
 <a name="CommonModel+addPatternProperty"></a>
 
-### commonModel.addPatternProperty(pattern, patternModel, schema)
+### commonModel.addPatternProperty(pattern, patternModel, originalInput)
 Adds a patternProperty to the model.
 If the pattern already exist the two models are merged.
 
@@ -361,7 +425,7 @@ If the pattern already exist the two models are merged.
 | --- | --- |
 | pattern |  |
 | patternModel |  |
-| schema | schema to the corresponding property model |
+| originalInput | corresponding input that got interpreted to this model |
 
 <a name="CommonModel+addExtendedModel"></a>
 
@@ -385,7 +449,7 @@ This function returns an array of `$id`s from all the CommonModel's it immediate
 <a name="CommonModel.toCommonModel"></a>
 
 ### CommonModel.toCommonModel(object) ⇒
-Transform object into a type of CommonModel.
+Takes a deep copy of the input object and converts it to an instance of CommonModel.
 
 **Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
 **Returns**: CommonModel instance of the object  
@@ -396,73 +460,73 @@ Transform object into a type of CommonModel.
 
 <a name="CommonModel.mergeProperties"></a>
 
-### CommonModel.mergeProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)
+### CommonModel.mergeProperties(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)
 Merge two common model properties together
 
 **Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
 
-| Param |
-| --- |
-| mergeTo | 
-| mergeFrom | 
-| originalSchema | 
-| alreadyIteratedModels | 
+| Param | Description |
+| --- | --- |
+| mergeTo |  |
+| mergeFrom |  |
+| originalInput | corresponding input that got interpreted to this model |
+| alreadyIteratedModels |  |
 
 <a name="CommonModel.mergeAdditionalProperties"></a>
 
-### CommonModel.mergeAdditionalProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)
+### CommonModel.mergeAdditionalProperties(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)
 Merge two common model additionalProperties together
 
 **Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
 
-| Param |
-| --- |
-| mergeTo | 
-| mergeFrom | 
-| originalSchema | 
-| alreadyIteratedModels | 
+| Param | Description |
+| --- | --- |
+| mergeTo |  |
+| mergeFrom |  |
+| originalInput | corresponding input that got interpreted to this model |
+| alreadyIteratedModels |  |
 
 <a name="CommonModel.mergeAdditionalItems"></a>
 
-### CommonModel.mergeAdditionalItems(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)
+### CommonModel.mergeAdditionalItems(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)
 Merge two common model additionalItems together
 
 **Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
 
-| Param |
-| --- |
-| mergeTo | 
-| mergeFrom | 
-| originalSchema | 
-| alreadyIteratedModels | 
+| Param | Description |
+| --- | --- |
+| mergeTo |  |
+| mergeFrom |  |
+| originalInput | corresponding input that got interpreted to this model |
+| alreadyIteratedModels |  |
 
 <a name="CommonModel.mergePatternProperties"></a>
 
-### CommonModel.mergePatternProperties(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)
+### CommonModel.mergePatternProperties(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)
 Merge two common model pattern properties together
 
 **Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
 
-| Param |
-| --- |
-| mergeTo | 
-| mergeFrom | 
-| originalSchema | 
-| alreadyIteratedModels | 
+| Param | Description |
+| --- | --- |
+| mergeTo |  |
+| mergeFrom |  |
+| originalInput | corresponding input that got interpreted to this model |
+| alreadyIteratedModels |  |
 
 <a name="CommonModel.mergeItems"></a>
 
-### CommonModel.mergeItems(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)
+### CommonModel.mergeItems(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)
 Merge items together, prefer tuples over simple array since it is more strict.
 
 **Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
 
-| Param |
-| --- |
-| mergeTo | 
-| mergeFrom | 
-| originalSchema | 
-| alreadyIteratedModels | 
+| Param | Description |
+| --- | --- |
+| mergeTo |  |
+| mergeFrom |  |
+| originalInput | corresponding input that got interpreted to this model |
+| alreadyIteratedModels |  |
 
 <a name="CommonModel.mergeTypes"></a>
 
@@ -478,38 +542,34 @@ Merge types together
 
 <a name="CommonModel.mergeCommonModels"></a>
 
-### CommonModel.mergeCommonModels(mergeTo, mergeFrom, originalSchema, alreadyIteratedModels)
+### CommonModel.mergeCommonModels(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)
 Only merge if left side is undefined and right side is sat OR both sides are defined
 
 **Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
 
-| Param |
-| --- |
-| mergeTo | 
-| mergeFrom | 
-| originalSchema | 
-| alreadyIteratedModels | 
-
-<a name="CommonSchema"></a>
-
-## CommonSchema
-CommonSchema which contains the common properties between Schema and CommonModel
-
-**Kind**: global class  
-<a name="CommonSchema.transformSchema"></a>
-
-### CommonSchema.transformSchema(schema, transformationSchemaCallback)
-Function to transform nested schemas into type of generic extended class
-
-Since both CommonModel and Schema uses these properties we need a common function to
-convert nested schemas into their corresponding class.
-
-**Kind**: static method of [<code>CommonSchema</code>](#CommonSchema)  
-
 | Param | Description |
 | --- | --- |
-| schema | to be transformed |
-| transformationSchemaCallback | callback to transform nested schemas |
+| mergeTo |  |
+| mergeFrom |  |
+| originalInput | corresponding input that got interpreted to this model |
+| alreadyIteratedModels |  |
+
+<a name="Draft7Schema"></a>
+
+## Draft7Schema
+JSON Draft7Schema Draft 7 model
+
+**Kind**: global class  
+<a name="Draft7Schema.toSchema"></a>
+
+### Draft7Schema.toSchema(object)
+Takes a deep copy of the input object and converts it to an instance of Draft7Schema.
+
+**Kind**: static method of [<code>Draft7Schema</code>](#Draft7Schema)  
+
+| Param |
+| --- |
+| object | 
 
 <a name="OutputModel"></a>
 
@@ -523,24 +583,32 @@ Common representation for the output model.
 Common representation for the rendered output.
 
 **Kind**: global class  
-<a name="Schema"></a>
+<a name="SwaggerV2Schema"></a>
 
-## Schema ⇐ [<code>CommonSchema&lt;Schema&gt;</code>](#Schema)
-JSON Schema Draft 7 model
+## SwaggerV2Schema
+OpenAPI 2.0 (Swagger 2.0) schema model
+
+Based on Draft 4, but with restricted keywords and definitions
+
+Restrictions (keywords not allowed)
+ - oneOf
+ - anyOf
+ - patternProperties
+ - not
+
+https://swagger.io/specification/v2/#schemaObject
 
 **Kind**: global class  
-**Extends**: [<code>CommonSchema&lt;Schema&gt;</code>](#Schema)  
-<a name="Schema.toSchema"></a>
+<a name="SwaggerV2Schema.toSchema"></a>
 
-### Schema.toSchema(object) ⇒
-Transform object into a type of Schema.
+### SwaggerV2Schema.toSchema(object)
+Takes a deep copy of the input object and converts it to an instance of SwaggerV2Schema.
 
-**Kind**: static method of [<code>Schema</code>](#Schema)  
-**Returns**: CommonModel instance of the object  
+**Kind**: static method of [<code>SwaggerV2Schema</code>](#SwaggerV2Schema)  
 
-| Param | Description |
-| --- | --- |
-| object | to transform |
+| Param |
+| --- |
+| object | 
 
 <a name="AsyncAPIInputProcessor"></a>
 
@@ -595,6 +663,7 @@ Try to find the AsyncAPI version from the input. If it cannot undefined are retu
 
 ### AsyncAPIInputProcessor.convertToInternalSchema(schema)
 Reflect the name of the schema and save it to `x-modelgen-inferred-name` extension.
+
 This keeps the the id of the model deterministic if used in conjunction with other AsyncAPI tools such as the generator.
 
 **Kind**: static method of [<code>AsyncAPIInputProcessor</code>](#AsyncAPIInputProcessor)  
@@ -606,7 +675,7 @@ This keeps the the id of the model deterministic if used in conjunction with oth
 <a name="AsyncAPIInputProcessor.isFromParser"></a>
 
 ### AsyncAPIInputProcessor.isFromParser(input)
-Figure out if input is from our parser.
+Figure out if input is from the AsyncAPI js parser.
 
 **Kind**: static method of [<code>AsyncAPIInputProcessor</code>](#AsyncAPIInputProcessor)  
 
@@ -708,7 +777,11 @@ Process a draft 7 schema
 <a name="JsonSchemaInputProcessor.reflectSchemaNames"></a>
 
 ### JsonSchemaInputProcessor.reflectSchemaNames(schema, namesStack, name, isRoot)
+Each schema must have a name, so when later interpreted, the model have the most accurate model name.
+
 Reflect name from given schema and save it to `x-modelgen-inferred-name` extension.
+
+This reflects all the common keywords that are shared between draft-4, draft-7 and Swagger 2.0 Schema
 
 **Kind**: static method of [<code>JsonSchemaInputProcessor</code>](#JsonSchemaInputProcessor)  
 
@@ -741,6 +814,66 @@ Simplifies a JSON Schema into a common models
 | Param | Description |
 | --- | --- |
 | schema | to simplify to common model |
+
+<a name="SwaggerInputProcessor"></a>
+
+## SwaggerInputProcessor
+Class for processing Swagger inputs
+
+**Kind**: global class  
+
+* [SwaggerInputProcessor](#SwaggerInputProcessor)
+    * _instance_
+        * [.process(input)](#SwaggerInputProcessor+process)
+        * [.shouldProcess(input)](#SwaggerInputProcessor+shouldProcess)
+        * [.tryGetVersionOfDocument(input)](#SwaggerInputProcessor+tryGetVersionOfDocument)
+    * _static_
+        * [.convertToInternalSchema(schema, name)](#SwaggerInputProcessor.convertToInternalSchema)
+
+<a name="SwaggerInputProcessor+process"></a>
+
+### swaggerInputProcessor.process(input)
+Process the input as a Swagger document
+
+**Kind**: instance method of [<code>SwaggerInputProcessor</code>](#SwaggerInputProcessor)  
+
+| Param |
+| --- |
+| input | 
+
+<a name="SwaggerInputProcessor+shouldProcess"></a>
+
+### swaggerInputProcessor.shouldProcess(input)
+Figures out if an object is of type Swagger document and supported
+
+**Kind**: instance method of [<code>SwaggerInputProcessor</code>](#SwaggerInputProcessor)  
+
+| Param |
+| --- |
+| input | 
+
+<a name="SwaggerInputProcessor+tryGetVersionOfDocument"></a>
+
+### swaggerInputProcessor.tryGetVersionOfDocument(input)
+Try to find the swagger version from the input. If it cannot, undefined are returned, if it can, the version is returned.
+
+**Kind**: instance method of [<code>SwaggerInputProcessor</code>](#SwaggerInputProcessor)  
+
+| Param |
+| --- |
+| input | 
+
+<a name="SwaggerInputProcessor.convertToInternalSchema"></a>
+
+### SwaggerInputProcessor.convertToInternalSchema(schema, name)
+Converts a Swagger 2.0 Schema to the internal schema format.
+
+**Kind**: static method of [<code>SwaggerInputProcessor</code>](#SwaggerInputProcessor)  
+
+| Param | Description |
+| --- | --- |
+| schema | to convert |
+| name | of the schema |
 
 <a name="LoggerClass"></a>
 
@@ -790,7 +923,7 @@ This function ensures that the property name is unique for the model
 <a name="interpretAdditionalItems"></a>
 
 ## interpretAdditionalItems(schema, model, interpreter, interpreterOptions)
-Interpreter function for JSON Schema draft 7 additionalProperties keyword.
+Interpreter function for additionalItems keyword.
 
 **Kind**: global function  
 
@@ -804,7 +937,7 @@ Interpreter function for JSON Schema draft 7 additionalProperties keyword.
 <a name="interpretAdditionalProperties"></a>
 
 ## interpretAdditionalProperties(schema, model, interpreter, interpreterOptions)
-Interpreter function for JSON Schema draft 7 additionalProperties keyword.
+Interpreter function for additionalProperties keyword.
 
 **Kind**: global function  
 
@@ -818,7 +951,7 @@ Interpreter function for JSON Schema draft 7 additionalProperties keyword.
 <a name="interpretAllOf"></a>
 
 ## interpretAllOf(schema, model, interpreter, interpreterOptions)
-Interpreter function for JSON Schema draft 7 allOf keyword.
+Interpreter function for allOf keyword.
 
 It either merges allOf schemas into existing model or if allowed, create inheritance.
 
@@ -834,7 +967,7 @@ It either merges allOf schemas into existing model or if allowed, create inherit
 <a name="interpretConst"></a>
 
 ## interpretConst(schema, model)
-Interpreter function for JSON Schema draft 7 const keyword.
+Interpreter function for const keyword.
 
 **Kind**: global function  
 
@@ -846,7 +979,7 @@ Interpreter function for JSON Schema draft 7 const keyword.
 <a name="interpretDependencies"></a>
 
 ## interpretDependencies(schema, model)
-Interpreter function for JSON Schema draft 7 dependencies keyword.
+Interpreter function for dependencies keyword.
 
 **Kind**: global function  
 
@@ -858,7 +991,7 @@ Interpreter function for JSON Schema draft 7 dependencies keyword.
 <a name="interpretEnum"></a>
 
 ## interpretEnum(schema, model)
-Interpreter function for JSON Schema draft 7 enum keyword
+Interpreter function for enum keyword
 
 **Kind**: global function  
 
@@ -870,7 +1003,7 @@ Interpreter function for JSON Schema draft 7 enum keyword
 <a name="interpretItems"></a>
 
 ## interpretItems(schema, model, interpreter, interpreterOptions)
-Interpreter function for JSON Schema draft 7 items keyword.
+Interpreter function for items keyword.
 
 **Kind**: global function  
 
@@ -899,7 +1032,7 @@ Internal function to process all item schemas
 <a name="interpretNot"></a>
 
 ## interpretNot(schema, model, interpreter, interpreterOptions)
-Interpreter function for JSON Schema draft 7 not keyword.
+Interpreter function for not keyword.
 
 **Kind**: global function  
 
@@ -913,7 +1046,7 @@ Interpreter function for JSON Schema draft 7 not keyword.
 <a name="interpretPatternProperties"></a>
 
 ## interpretPatternProperties(schema, model, interpreter, interpreterOptions)
-Interpreter function for JSON Schema draft 7 patternProperties keyword.
+Interpreter function for patternProperties keyword.
 
 **Kind**: global function  
 
@@ -927,7 +1060,7 @@ Interpreter function for JSON Schema draft 7 patternProperties keyword.
 <a name="interpretProperties"></a>
 
 ## interpretProperties(schema, model, interpreter, interpreterOptions)
-Interpreter function for interpreting JSON Schema draft 7 properties keyword.
+Interpreter function for interpreting properties keyword.
 
 **Kind**: global function  
 

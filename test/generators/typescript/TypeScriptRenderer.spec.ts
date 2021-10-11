@@ -17,7 +17,7 @@ describe('TypeScriptRenderer', () => {
     });
     test('should render reserved type keyword correctly', () => {
       const name = renderer.nameType('enum');
-      expect(name).toEqual('ReservedEnum');
+      expect(name).toEqual('Enum');
     });
   });
   
@@ -49,6 +49,12 @@ describe('TypeScriptRenderer', () => {
     });
     test('Should render number type', () => {
       expect(renderer.toTsType('number', new CommonModel())).toEqual('number');
+    });
+    test('Should render object type', () => {
+      expect(renderer.toTsType('object', new CommonModel())).toEqual('object');
+    });
+    test('Should render null type', () => {
+      expect(renderer.toTsType('null', new CommonModel())).toEqual('null');
     });
     test('Should render array type', () => {
       const model = new CommonModel();

@@ -20,7 +20,7 @@ export class ClassRenderer extends JavaRenderer {
     if (this.options?.collectionType === 'List') {
       this.addDependency('import java.util.List;');
     }
-    if (this.model.additionalProperties !== undefined) {
+    if (this.model.additionalProperties !== undefined || this.model.patternProperties !== undefined) {
       this.addDependency('import java.util.Map;');
     }
     
