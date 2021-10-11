@@ -71,7 +71,7 @@ To see the complete feature list for each language, please click the individual 
   </tr>
   <tr>
     <td><a href="./docs/usage.md">JSON Schema</a></td>
-    <td>We support the following JSON Schema versions: <em>Draft-7</em></td>
+    <td>We support the following JSON Schema versions: <em>Draft-4, Draft-6, Draft-7</em></td>
   </tr>
   <tr>
     <td><a href="./docs/usage.md">OpenAPI</a></td>
