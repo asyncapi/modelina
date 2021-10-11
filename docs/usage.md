@@ -43,7 +43,7 @@ There is one way to generate models for a JSON Schema document.
 
 - [Generate from a pure JS object](../examples/json-schema-draft7-from-object)
 
-We support both draft-4 and draft-7 documents.
+We support both draft-4, draft-6, and draft-7 documents.
 
 The library expects the `$schema` property for the document to be set in order to understand the input format. By default, if no other inputs are detected, it defaults to `JSON Schema draft 7`. The process of interpreting a JSON Schema to a model can be read [here](./interpretation_of_JSON_Schema.md).
 

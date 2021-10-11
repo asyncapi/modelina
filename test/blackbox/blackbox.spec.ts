@@ -23,6 +23,7 @@ function readFilesInFolder(folder: string) {
   );
 }
 const jsonSchemaDraft7Files = readFilesInFolder('JsonSchemaDraft-7');
+const jsonSchemaDraft6Files = readFilesInFolder('JsonSchemaDraft-6');
 const jsonSchemaDraft4Files = readFilesInFolder('JsonSchemaDraft-4');
 const AsyncAPIV2_0Files = readFilesInFolder('AsyncAPI-2_0');
 const AsyncAPIV2_1Files = readFilesInFolder('AsyncAPI-2_1');
@@ -60,6 +61,10 @@ const filesToTest = [
   }).filter(({file}) => { 
     //Blocked by https://github.com/asyncapi/modelina/issues/388
     return file !== './docs/JsonSchemaDraft-4/draft-4-core.json';
+  }),
+  ...jsonSchemaDraft6Files.filter(({file}) => {
+    //Blocked by https://github.com/asyncapi/modelina/issues/453
+    return file !== './docs/JsonSchemaDraft-6/fhir-full.json';
   })
 ];
 

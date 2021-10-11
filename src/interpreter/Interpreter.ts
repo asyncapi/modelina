@@ -1,4 +1,4 @@
-import { CommonModel } from '../models';
+import { CommonModel, Draft6Schema, Draft4Schema, SwaggerV2Schema, AsyncapiV2Schema, Draft7Schema } from '../models';
 import { interpretName, isEnum, isModelObject } from './Utils';
 import interpretProperties from './InterpretProperties';
 import interpretAllOf from './InterpretAllOf';
@@ -10,15 +10,11 @@ import interpretPatternProperties from './InterpretPatternProperties';
 import interpretNot from './InterpretNot';
 import interpretDependencies from './InterpretDependencies';
 import interpretAdditionalItems from './InterpretAdditionalItems';
-import { Draft4Schema } from '../models/Draft4Schema';
-import { Draft7Schema } from '../models/Draft7Schema';
-import { SwaggerV2Schema } from '../models/SwaggerV2Schema';
-import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
 
 export type InterpreterOptions = {
   allowInheritance?: boolean
 }
-export type InterpreterSchemas = Draft4Schema | Draft7Schema | SwaggerV2Schema | AsyncapiV2Schema;
+export type InterpreterSchemas = Draft6Schema | Draft4Schema | Draft7Schema | SwaggerV2Schema | AsyncapiV2Schema;
 export type InterpreterSchemaType = InterpreterSchemas | boolean;
 
 export class Interpreter {
@@ -88,7 +84,7 @@ export class Interpreter {
 
     this.interpretAndCombineMultipleSchemas(schema.oneOf, model, schema, interpreterOptions);
     this.interpretAndCombineMultipleSchemas(schema.anyOf, model, schema, interpreterOptions);
-    if (!(schema instanceof Draft4Schema)) {
+    if (!(schema instanceof Draft4Schema) && !(schema instanceof Draft6Schema)) {
       this.interpretAndCombineSchema(schema.then, model, schema, interpreterOptions);
       this.interpretAndCombineSchema(schema.else, model, schema, interpreterOptions);
     }

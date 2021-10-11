@@ -1,7 +1,7 @@
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import path from 'path';
-import { CommonModel, CommonInputModel, Draft4Schema, Draft7Schema, SwaggerV2Schema, AsyncapiV2Schema } from '../models';
+import { CommonModel, CommonInputModel, Draft4Schema, Draft7Schema, Draft6Schema, SwaggerV2Schema, AsyncapiV2Schema } from '../models';
 import { Logger } from '../utils';
 import { postInterpretModel } from '../interpreter/PostInterpreter';
 import { Interpreter } from '../interpreter/Interpreter';
@@ -21,6 +21,9 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       case 'http://json-schema.org/draft-04/schema':
       case 'http://json-schema.org/draft-04/schema#':
         return this.processDraft4(input);
+      case 'http://json-schema.org/draft-06/schema':
+      case 'http://json-schema.org/draft-06/schema#':
+        return this.processDraft6(input);
       case 'http://json-schema.org/draft-07/schema#':
       case 'http://json-schema.org/draft-07/schema':
       default:
@@ -38,7 +41,9 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
   shouldProcess(input: Record<string, any>): boolean {
     if (input.$schema !== undefined) {
       if (input.$schema === 'http://json-schema.org/draft-04/schema#' ||
-      input.$schema === 'http://json-schema.org/draft-04/schema' || 
+      input.$schema === 'http://json-schema.org/draft-04/schema' ||
+      input.$schema === 'http://json-schema.org/draft-06/schema#' || 
+      input.$schema === 'http://json-schema.org/draft-06/schema' ||
       input.$schema === 'http://json-schema.org/draft-07/schema#' || 
       input.$schema === 'http://json-schema.org/draft-07/schema') {
         return true;
@@ -81,6 +86,23 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     Logger.debug('Completed processing input as JSON Schema draft 4 document');
     return commonInputModel;
   }
+  
+  /**
+   * Process a draft-6 schema
+   * 
+   * @param input to process as draft-6
+   */
+  private async processDraft6(input: Record<string, any>) : Promise<CommonInputModel> {
+    Logger.debug('Processing input as a JSON Schema Draft 6 document');
+    const commonInputModel = new CommonInputModel();
+    commonInputModel.originalInput = input;
+    input = JsonSchemaInputProcessor.reflectSchemaNames(input, {}, 'root', true) as Record<string, any>;
+    await this.dereferenceInputs(input);
+    const parsedSchema = Draft6Schema.toSchema(input);
+    commonInputModel.models = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema);
+    Logger.debug('Completed processing input as JSON Schema draft 6 document');
+    return commonInputModel;
+  }
 
   private async dereferenceInputs(input: Record<string, any>) {
     Logger.debug('Dereferencing all $ref instances');
@@ -116,7 +138,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    */
   // eslint-disable-next-line sonarjs/cognitive-complexity
   static reflectSchemaNames(
-    schema: Draft4Schema | Draft7Schema | SwaggerV2Schema | boolean,
+    schema: Draft4Schema | Draft6Schema | Draft7Schema | SwaggerV2Schema | boolean,
     namesStack: Record<string, number>,
     name?: string,
     isRoot?: boolean,
@@ -212,15 +234,17 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       if (schema.propertyNames !== undefined) {
         schema.propertyNames = this.reflectSchemaNames(schema.propertyNames, namesStack, this.ensureNamePattern(name, 'propertyName'));
       }
-      //Keywords introduced in Draft 7
-      if (schema.if !== undefined) {
-        schema.if = this.reflectSchemaNames(schema.if, namesStack, this.ensureNamePattern(name, 'if'));
-      }
-      if (schema.then !== undefined) {
-        schema.then = this.reflectSchemaNames(schema.then, namesStack, this.ensureNamePattern(name, 'then'));
-      }
-      if (schema.else !== undefined) {
-        schema.else = this.reflectSchemaNames(schema.else, namesStack, this.ensureNamePattern(name, 'else'));
+      if (!(schema instanceof Draft6Schema)) {
+        //Keywords introduced in Draft 7
+        if (schema.if !== undefined) {
+          schema.if = this.reflectSchemaNames(schema.if, namesStack, this.ensureNamePattern(name, 'if'));
+        }
+        if (schema.then !== undefined) {
+          schema.then = this.reflectSchemaNames(schema.then, namesStack, this.ensureNamePattern(name, 'then'));
+        }
+        if (schema.else !== undefined) {
+          schema.else = this.reflectSchemaNames(schema.else, namesStack, this.ensureNamePattern(name, 'else'));
+        }
       }
     }
     return schema;
@@ -245,20 +269,21 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param schema to simplify to common model
    */
-  static convertSchemaToCommonModel(schema: Draft4Schema | Draft7Schema | SwaggerV2Schema| AsyncapiV2Schema | boolean): Record<string, CommonModel> {
+  static convertSchemaToCommonModel(schema: Draft4Schema | Draft6Schema | Draft7Schema | SwaggerV2Schema| AsyncapiV2Schema | boolean): Record<string, CommonModel> {
     const commonModelsMap: Record<string, CommonModel> = {};
     const interpreter = new Interpreter();
     const model = interpreter.interpret(schema);
-    if (model === undefined) { return commonModelsMap; }
-    const commonModels = postInterpretModel(model);
-    for (const commonModel of commonModels) {
-      if (commonModel.$id) {
-        if (commonModelsMap[commonModel.$id] !== undefined) {
-          Logger.warn(`Overwriting existing model with $id ${commonModel.$id}, are there two models with the same id present?`, commonModel);
+    if (model !== undefined) { 
+      const commonModels = postInterpretModel(model);
+      for (const commonModel of commonModels) {
+        if (commonModel.$id) {
+          if (commonModelsMap[commonModel.$id] !== undefined) {
+            Logger.warn(`Overwriting existing model with $id ${commonModel.$id}, are there two models with the same id present?`, commonModel);
+          }
+          commonModelsMap[commonModel.$id] = commonModel;
+        } else {
+          Logger.warn('Model did not have $id, ignoring.', commonModel);
         }
-        commonModelsMap[commonModel.$id] = commonModel;
-      } else {
-        Logger.warn('Model did not have $id, ignoring.', commonModel);
       }
     }
     return commonModelsMap;
