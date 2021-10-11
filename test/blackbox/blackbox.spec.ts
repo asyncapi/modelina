@@ -7,7 +7,7 @@
 
 import * as path from 'path';
 import * as fs from 'fs';
-import { TypeScriptGenerator, JavaGenerator, JavaScriptGenerator, GoGenerator, CSharpGenerator, JavaFileGenerator } from '../../src';
+import { TypeScriptGenerator, JavaScriptGenerator, GoGenerator, CSharpGenerator, JavaFileGenerator } from '../../src';
 import { execCommand, generateModels, renderModels, renderModelsToSeparateFiles } from './utils/Utils';
 
 /**
@@ -23,6 +23,7 @@ function readFilesInFolder(folder: string) {
   );
 }
 const jsonSchemaDraft7Files = readFilesInFolder('JsonSchemaDraft-7');
+const jsonSchemaDraft4Files = readFilesInFolder('JsonSchemaDraft-4');
 const AsyncAPIV2_0Files = readFilesInFolder('AsyncAPI-2_0');
 const AsyncAPIV2_1Files = readFilesInFolder('AsyncAPI-2_1');
 const AsyncAPIV2_2Files = readFilesInFolder('AsyncAPI-2_2');
@@ -37,7 +38,8 @@ const filesToTest = [
   }).filter(({file}) => {
     //Blocked by https://github.com/asyncapi/modelina/issues/390
     return file !== './docs/JsonSchemaDraft-7/graphql-code-generator.json';
-  })
+  }),
+  ...jsonSchemaDraft4Files
 ];
 
 describe.each(filesToTest)('Should be able to generate with inputs', ({file, outputDirectory}) => {
