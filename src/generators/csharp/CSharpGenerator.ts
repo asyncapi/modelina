@@ -53,13 +53,11 @@ export class CSharpGenerator extends AbstractGenerator<CSharpOptions, CSharpRend
       const formattedDependencyModelName = this.options.namingConvention?.type ? this.options.namingConvention.type(dependencyModelName, {inputModel, model: inputModel.models[String(dependencyModelName)], reservedKeywordCallback: isReservedCSharpKeyword}) : dependencyModelName;
       return `using ${options.namespace}.${formattedDependencyModelName};`;
     });
-    let outputContent = `${modelDependencies.join('\n')}
-${outputModel.dependencies.join('\n')}
-${outputModel.result}`; 
-    if (options.namespace) {
-      outputContent = `namespace ${options.namespace}
+    const outputContent = `namespace ${options.namespace}
 {
-  ${outputContent}
+  ${modelDependencies.join('\n')}
+  ${outputModel.dependencies.join('\n')}
+  ${outputModel.result}
 }`;
     }
     return RenderOutput.toRenderOutput({result: outputContent, dependencies: outputModel.dependencies});
