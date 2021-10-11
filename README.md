@@ -5,12 +5,12 @@
   <em><b>Modelina</b></em>
 </h5>
 <p align="center">
-  <em>Modelina is the official AsyncAPI SDK used to generate different data models (i.e. <a href="#outputs">Java/TypeScript classes, Go Structs, etc</a>) for <a href="#inputs">AsyncAPI documents, among other supported inputs </a>.</em>
+  <em>Modelina is the official AsyncAPI SDK used to generate different data models (i.e. <a href="#outputs">Java/TypeScript classes, Go Structs, etc</a>) for <a href="#inputs">AsyncAPI documents, among other supported inputs</a>.</em>
 </p>
 
 [![Coverage Status](https://coveralls.io/repos/github/asyncapi/modelina/badge.svg?branch=master)](https://coveralls.io/github/asyncapi/modelina?branch=master)
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-11-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ---
@@ -30,6 +30,7 @@ This package is still under development and has not reached version 1.0.0 yet. T
 - [Features](#features)
 - [Roadmap](#roadmap)
 - [Documentation](#documentation)
+- [Examples](#examples)
 - [Development](#development)
 - [Contributing](#contributing)
 - [Contributors ✨](#contributors-%E2%9C%A8)
@@ -65,12 +66,16 @@ To see the complete feature list for each language, please click the individual 
     <th>description</th>
   </tr>
   <tr>
-    <td><a href="./docs/usage.md#generate-typescript-models">AsyncAPI</a></td>
-    <td>We support the following AsyncAPI versions: <em>2.0.0, 2.1.0</em>, which generates models for all the defined message payloads.</td>
+    <td><a href="./docs/usage.md">AsyncAPI</a></td>
+    <td>We support the following AsyncAPI versions: <em>2.0.0, 2.1.0, 2.2.0</em>, which generates models for all the defined message payloads.</td>
   </tr>
   <tr>
-    <td><a href="./docs/usage.md#generate-java-models">JSON Schema</a></td>
+    <td><a href="./docs/usage.md">JSON Schema</a></td>
     <td>We support the following JSON Schema versions: <em>Draft-7</em></td>
+  </tr>
+  <tr>
+    <td><a href="./docs/usage.md">OpenAPI</a></td>
+    <td>We support the following OpenAPI versions: <em>Swagger 2.0</em></td>
   </tr>
 </table>
 
@@ -140,6 +145,8 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/Blakelist7"><img src="https://avatars.githubusercontent.com/u/54525960?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kanwal Singh</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=Blakelist7" title="Code">💻</a></td>
     <td align="center"><a href="http://www.alejandraquetzalli.com"><img src="https://avatars.githubusercontent.com/u/19964402?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Alejandra Quetzalli </b></sub></a><br /><a href="https://github.com/asyncapi/modelina/pulls?q=is%3Apr+reviewed-by%3Aalequetzalli" title="Reviewed Pull Requests">👀</a> <a href="https://github.com/asyncapi/modelina/commits?author=alequetzalli" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/md-saif-husain"><img src="https://avatars.githubusercontent.com/u/70682968?v=4?s=100" width="100px;" alt=""/><br /><sub><b>MD SAIF  HUSAIN</b></sub></a><br /><a href="#example-md-saif-husain" title="Examples">💡</a> <a href="https://github.com/asyncapi/modelina/commits?author=md-saif-husain" title="Tests">⚠️</a> <a href="https://github.com/asyncapi/modelina/commits?author=md-saif-husain" title="Documentation">📖</a> <a href="https://github.com/asyncapi/modelina/commits?author=md-saif-husain" title="Code">💻</a></td>
+    <td align="center"><a href="https://sudipto.ghosh.pro"><img src="https://avatars.githubusercontent.com/u/11232940?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Sudipto Ghosh</b></sub></a><br /><a href="#example-sudiptog81" title="Examples">💡</a> <a href="https://github.com/asyncapi/modelina/commits?author=sudiptog81" title="Tests">⚠️</a> <a href="https://github.com/asyncapi/modelina/commits?author=sudiptog81" title="Documentation">📖</a></td>
   </tr>
 </table>
 

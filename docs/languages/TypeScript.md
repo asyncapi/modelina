@@ -5,8 +5,8 @@ There are special use-cases that each language supports; this document pertains 
 
 <!-- toc -->
 
-- [Generate an interface instead of class](#generate-an-interface-instead-of-class)
-- [Generate un/marshal functions for each class](#generate-unmarshal-functions-for-each-class)
+- [Generate an interface instead of classes](#generate-an-interface-instead-of-classes)
+- [Generate un/marshal functions for classes](#generate-unmarshal-functions-for-classes)
 - [Generate example data function](#generate-example-data-function)
 
 <!-- tocstop -->

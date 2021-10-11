@@ -1,13 +1,10 @@
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import path from 'path';
-import { CommonModel, CommonInputModel} from '../models';
+import { CommonModel, CommonInputModel, Draft4Schema, Draft7Schema, SwaggerV2Schema, AsyncapiV2Schema } from '../models';
 import { Logger } from '../utils';
 import { postInterpretModel } from '../interpreter/PostInterpreter';
 import { Interpreter } from '../interpreter/Interpreter';
-import { Draft4Schema } from '../models/Draft4Schema';
-import { Draft7Schema } from '../models/Draft7Schema';
-import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
 
 /**
  * Class for processing JSON Schema
@@ -114,7 +111,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    */
   // eslint-disable-next-line sonarjs/cognitive-complexity
   static reflectSchemaNames(
-    schema: Draft4Schema | Draft7Schema | boolean,
+    schema: Draft4Schema | Draft7Schema | SwaggerV2Schema | boolean,
     namesStack: Record<string, number>,
     name?: string,
     isRoot?: boolean,
@@ -243,7 +240,11 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param schema to simplify to common model
    */
+<<<<<<< HEAD
   static convertSchemaToCommonModel(schema: Draft4Schema | Draft7Schema | AsyncapiV2Schema | boolean): Record<string, CommonModel> {
+=======
+  static convertSchemaToCommonModel(schema: Draft7Schema | SwaggerV2Schema | AsyncapiV2Schema | boolean): Record<string, CommonModel> {
+>>>>>>> master-upstream-master
     const commonModelsMap: Record<string, CommonModel> = {};
     const interpreter = new Interpreter();
     const model = interpreter.interpret(schema);

@@ -1,9 +1,14 @@
+import { CommonInputModel, CommonModel, FileGenerator, OutputModel } from '../../../src';
 import { JavaGenerator } from '../../../src/generators'; 
-
+import * as path from 'path';
+import * as fs from 'fs';
 describe('JavaGenerator', () => {
   let generator: JavaGenerator;
   beforeEach(() => {
     generator = new JavaGenerator();
+  });
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   test('should not render reserved keyword', async () => {
@@ -312,7 +317,7 @@ describe('JavaGenerator', () => {
     expect(enumModel.dependencies).toEqual(expectedDependencies);
   });
 
-  test('should work custom preset for `enum` type', async () => {
+  test('should render custom preset for `enum` type', async () => {
     const doc = {
       $id: 'CustomEnum',
       type: 'string',
@@ -398,5 +403,57 @@ public enum CustomEnum {
     const classModel = await generator.render(model, inputModel);
     expect(classModel.result).toEqual(expected);
     expect(classModel.dependencies).toEqual(expectedDependencies);
+  });
+
+  test('should render models and their dependencies', async () => {
+    const doc = {
+      $id: 'Address',
+      type: 'object',
+      properties: {
+        street_name: { type: 'string' },
+        city: { type: 'string', description: 'City description' },
+        state: { type: 'string' },
+        house_number: { type: 'number' },
+        marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
+        members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
+        array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
+        other_model: { type: 'object', $id: 'OtherModel', properties: {street_name: { type: 'string' }} },
+      },
+      patternProperties: {
+        '^S(.?*)test&': {
+          type: 'string'
+        }
+      },
+      required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+    };
+    const config = {packageName: 'test.package'};
+    const models = await generator.generateCompleteModels(doc, config);
+    expect(models).toHaveLength(2);
+    expect(models[0].result).toMatchSnapshot();
+    expect(models[1].result).toMatchSnapshot();
+  });
+  test('should throw error when reserved keyword is used for package name', async () => {
+    const doc = {
+      $id: 'Address',
+      type: 'object',
+      properties: {
+        street_name: { type: 'string' },
+        city: { type: 'string', description: 'City description' },
+        state: { type: 'string' },
+        house_number: { type: 'number' },
+        marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
+        members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
+        array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
+      },
+      patternProperties: {
+        '^S(.?*)test&': {
+          type: 'string'
+        }
+      },
+      required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+    };
+    const config = {packageName: 'package'};
+    const expectedError = new Error('You cannot use reserved Java keyword (package) as package name, please use another.');
+    await expect(generator.generateCompleteModels(doc, config)).rejects.toEqual(expectedError);
   });
 });

@@ -108,6 +108,29 @@
         "review",
         "doc"
       ]
+    },
+    {
+      "login": "md-saif-husain",
+      "name": "MD SAIF  HUSAIN",
+      "avatar_url": "https://avatars.githubusercontent.com/u/70682968?v=4",
+      "profile": "https://github.com/md-saif-husain",
+      "contributions": [
+        "example",
+        "test",
+        "doc",
+        "code"
+      ]
+    },
+    {
+      "login": "sudiptog81",
+      "name": "Sudipto Ghosh",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11232940?v=4",
+      "profile": "https://sudipto.ghosh.pro",
+      "contributions": [
+        "example",
+        "test",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,

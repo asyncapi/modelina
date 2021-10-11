@@ -6,14 +6,13 @@ This document contains many of the advanced use-cases that you may stumble upon 
 <!-- toc -->
 
 - [Generate each model in the same file](#generate-each-model-in-the-same-file)
-- [Generate a model in separate files](#generate-a-model-in-separate-files)
+- [Generate models to separate files](#generate-models-to-separate-files)
 - [Include a custom function in the data model](#include-a-custom-function-in-the-data-model)
 - [Use the models for data transfer](#use-the-models-for-data-transfer)
 - [Extend the logic of an existing renderer](#extend-the-logic-of-an-existing-renderer)
 - [Build your own model renderer](#build-your-own-model-renderer)
 - [Create your own models from the ground up, instead of a supported input](#create-your-own-models-from-the-ground-up-instead-of-a-supported-input)
 - [Add logging to library](#add-logging-to-library)
-  * [Example usage](#example-usage)
 - [Change the generated indentation type and size](#change-the-generated-indentation-type-and-size)
 - [Change the naming format for properties](#change-the-naming-format-for-properties)
 - [Change the naming format for data models](#change-the-naming-format-for-data-models)
@@ -23,8 +22,20 @@ This document contains many of the advanced use-cases that you may stumble upon 
 ## Generate each model in the same file
 TODO 
 
-## Generate a model in separate files
-TODO 
+## Generate models to separate files
+
+The standard generator only allows you to generate the raw models which you can implement your own logic for generating the models to separate files. We have however create simple wrapper generators to use.
+
+The reason for splitting the functionality is because in certain environments (like pure front-end application), generating to a file is not needed.
+
+The file generators all follow the same pattern regardless of output language, which is the following format - `<language>FileGenerator`.
+
+
+Currently only supported for `Java`.
+
+> Not support in browsers.
+
+Check out this [example out for a live demonstration](../examples/generate-to-files).
 
 ## Include a custom function in the data model
 TODO 

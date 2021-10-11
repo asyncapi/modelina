@@ -6,6 +6,7 @@ There are special use-cases that each language supports; this document pertains 
 <!-- toc -->
 
 - [Generate serializer and deserializer functionality](#generate-serializer-and-deserializer-functionality)
+- [Generate models with equals and GetHashCode methods](#generate-models-with-equals-and-gethashcode-methods)
 
 <!-- tocstop -->
 

@@ -5,3 +5,4 @@ export * from './csharp';
 export * from './javascript';
 export * from './typescript';
 export * from './go';
+export * from './AbstractFileGenerator';

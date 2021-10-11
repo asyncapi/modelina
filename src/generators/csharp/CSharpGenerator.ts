@@ -1,7 +1,7 @@
 import {
   AbstractGenerator,
   CommonGeneratorOptions,
-  defaultGeneratorOptions,
+  defaultGeneratorOptions
 } from '../AbstractGenerator';
 import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
 import { TypeHelpers, ModelKind, CommonNamingConvention, CommonNamingConventionImplementation } from '../../helpers';
@@ -29,15 +29,22 @@ export class CSharpGenerator extends AbstractGenerator<CSharpOptions> {
     super('CSharp', CSharpGenerator.defaultOptions, options);
   }
 
+  renderCompleteModel(): Promise<RenderOutput> {
+    throw new Error('Method not implemented.');
+  }
+
   render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const kind = TypeHelpers.extractKind(model);
     switch (kind) {
+    case ModelKind.UNION:
+      //We dont support union in Csharp generator, however, if union is an object, we render it as a class.
+      if (!model.type?.includes('object')) {break;}
+      return this.renderClass(model, inputModel);
     case ModelKind.OBJECT: 
       return this.renderClass(model, inputModel);
     case ModelKind.ENUM: 
       return this.renderEnum(model, inputModel);
     }
-
     return Promise.resolve(RenderOutput.toRenderOutput({ result: '', dependencies: [] }));
   }
 

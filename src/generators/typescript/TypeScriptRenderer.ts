@@ -64,11 +64,18 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
     return this.toTsType(model.type, model);
   }
 
+  /**
+   * JSON Schema types to TS
+   * 
+   * @param type 
+   * @param model
+   */
   toTsType(type: string | undefined, model: CommonModel): string {
-    if (type === undefined) {
-      return 'any';
-    }
     switch (type) { 
+    case 'null':
+      return 'null';
+    case 'object':
+      return 'object';
     case 'string':
       return 'string';
     case 'integer':
@@ -88,7 +95,7 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
       const arrayType = model.items ? this.renderType(model.items) : 'unknown';
       return `Array<${arrayType}>`;
     }
-    default: return type;
+    default: return 'any';
     }
   }
 
