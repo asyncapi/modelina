@@ -22,6 +22,9 @@
 <dt><a href="#Draft4Schema">Draft4Schema</a></dt>
 <dd><p>JSON Draft 4 schema model</p>
 </dd>
+<dt><a href="#Draft6Schema">Draft6Schema</a></dt>
+<dd><p>JSON Draft 6 schema model</p>
+</dd>
 <dt><a href="#Draft7Schema">Draft7Schema</a></dt>
 <dd><p>JSON Draft7Schema Draft 7 model</p>
 </dd>
@@ -574,6 +577,23 @@ Takes a deep copy of the input object and converts it to an instance of Draft4Sc
 | --- |
 | object | 
 
+<a name="Draft6Schema"></a>
+
+## Draft6Schema
+JSON Draft 6 schema model
+
+**Kind**: global class  
+<a name="Draft6Schema.toSchema"></a>
+
+### Draft6Schema.toSchema(object)
+Takes a deep copy of the input object and converts it to an instance of Draft6Schema.
+
+**Kind**: static method of [<code>Draft6Schema</code>](#Draft6Schema)  
+
+| Param |
+| --- |
+| object | 
+
 <a name="Draft7Schema"></a>
 
 ## Draft7Schema
@@ -757,6 +777,7 @@ Class for processing JSON Schema
         * [.shouldProcess(input)](#JsonSchemaInputProcessor+shouldProcess)
         * [.processDraft7(input)](#JsonSchemaInputProcessor+processDraft7)
         * [.processDraft4(input)](#JsonSchemaInputProcessor+processDraft4)
+        * [.processDraft6(input)](#JsonSchemaInputProcessor+processDraft6)
     * _static_
         * [.reflectSchemaNames(schema, namesStack, name, isRoot)](#JsonSchemaInputProcessor.reflectSchemaNames)
         * [.ensureNamePattern(previousName, ...newParts)](#JsonSchemaInputProcessor.ensureNamePattern)
@@ -805,6 +826,17 @@ Process a draft-4 schema
 | Param | Description |
 | --- | --- |
 | input | to process as draft 4 |
+
+<a name="JsonSchemaInputProcessor+processDraft6"></a>
+
+### jsonSchemaInputProcessor.processDraft6(input)
+Process a draft-6 schema
+
+**Kind**: instance method of [<code>JsonSchemaInputProcessor</code>](#JsonSchemaInputProcessor)  
+
+| Param | Description |
+| --- | --- |
+| input | to process as draft-6 |
 
 <a name="JsonSchemaInputProcessor.reflectSchemaNames"></a>
 
