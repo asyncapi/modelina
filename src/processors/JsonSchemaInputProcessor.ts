@@ -249,16 +249,17 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     const commonModelsMap: Record<string, CommonModel> = {};
     const interpreter = new Interpreter();
     const model = interpreter.interpret(schema);
-    if (model === undefined) { return commonModelsMap; }
-    const commonModels = postInterpretModel(model);
-    for (const commonModel of commonModels) {
-      if (commonModel.$id) {
-        if (commonModelsMap[commonModel.$id] !== undefined) {
-          Logger.warn(`Overwriting existing model with $id ${commonModel.$id}, are there two models with the same id present?`, commonModel);
+    if (model !== undefined) { 
+      const commonModels = postInterpretModel(model);
+      for (const commonModel of commonModels) {
+        if (commonModel.$id) {
+          if (commonModelsMap[commonModel.$id] !== undefined) {
+            Logger.warn(`Overwriting existing model with $id ${commonModel.$id}, are there two models with the same id present?`, commonModel);
+          }
+          commonModelsMap[commonModel.$id] = commonModel;
+        } else {
+          Logger.warn('Model did not have $id, ignoring.', commonModel);
         }
-        commonModelsMap[commonModel.$id] = commonModel;
-      } else {
-        Logger.warn('Model did not have $id, ignoring.', commonModel);
       }
     }
     return commonModelsMap;
