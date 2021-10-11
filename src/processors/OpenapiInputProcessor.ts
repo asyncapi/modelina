@@ -22,7 +22,7 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
     Logger.debug('Processing input as an OpenAPI document');
     const inputModel = new CommonInputModel();
     inputModel.originalInput = input;
-    const api = await SwaggerParser.dereference(input as any) as OpenAPIV3.Document;
+    const api = (await SwaggerParser.dereference(input as any) as unknown) as OpenAPIV3.Document;
 
     for (const [path, pathObject] of Object.entries(api.paths)) {
       this.processPath(pathObject, path, inputModel);
@@ -32,8 +32,8 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
 
   private processPath(pathObject: OpenAPIV3.PathItemObject | undefined, path: string, inputModel: CommonInputModel) {
     if (pathObject) {
-      //Remove all parameters from path
-      let formattedPathName = path.replace(/(\/)?\{(.*)\}/gm, '');
+      //Remove all special chars from path
+      let formattedPathName = path.replace(/[^\w\s*]+/g, '');
       //Remove any pre-pending '/'
       formattedPathName = formattedPathName.replace(/\//, '');
       //Replace all segment separators '/'
@@ -51,7 +51,7 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
 
   private processOperation(operation: OpenAPIV3.OperationObject | undefined, path: string, inputModel: CommonInputModel) {
     if (operation) {
-      this.includeResponses(operation.responses, path, inputModel);
+      this.iterateResponses(operation.responses, path, inputModel);
 
       if (operation.requestBody) {
         this.iterateMediaType((operation.requestBody as OpenAPIV3.RequestBodyObject).content || {}, path, inputModel);
@@ -68,7 +68,7 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
     }
   }
 
-  private includeResponses(responses: OpenAPIV3.ResponsesObject, path: string, inputModel: CommonInputModel) {
+  private iterateResponses(responses: OpenAPIV3.ResponsesObject, path: string, inputModel: CommonInputModel) {
     for (const [responseName, response] of Object.entries(responses)) {
       //Replace any '/' with '_'
       const formattedResponseName = responseName.replace(/\//, '_');
@@ -78,7 +78,7 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
 
   private iterateMediaType(mediaTypes: {[media: string]: OpenAPIV3.MediaTypeObject}, path: string, inputModel: CommonInputModel) {
     for (const [mediaContent, mediaTypeObject] of Object.entries(mediaTypes)) {
-      const mediaType = mediaTypeObject as OpenAPIV3.MediaTypeObject;
+      const mediaType = mediaTypeObject;
       if (mediaType.schema === undefined) { continue; }
       const mediaTypeSchema = mediaType.schema as OpenAPIV3.SchemaObject;
       //Replace any '/' with '_'
