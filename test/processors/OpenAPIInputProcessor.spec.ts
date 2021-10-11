@@ -1,12 +1,12 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { CommonModel } from '../../src/models';
-import {OpenapiInputProcessor} from '../../src/processors/OpenAPIInputProcessor';
+import {OpenAPIInputProcessor} from '../../src/processors/OpenAPIInputProcessor';
 const basicDoc = JSON.parse(fs.readFileSync(path.resolve(__dirname, './OpenAPIInputProcessor/basic.json'), 'utf8'));
 jest.mock('../../src/interpreter/Interpreter');
 jest.mock('../../src/interpreter/PostInterpreter');
 jest.mock('../../src/utils/LoggingInterface');
-jest.spyOn(OpenapiInputProcessor, 'convertToInternalSchema');
+jest.spyOn(OpenAPIInputProcessor, 'convertToInternalSchema');
 
 const mockedReturnModels = [new CommonModel()];
 jest.mock('../../src/interpreter/Interpreter', () => {
@@ -23,12 +23,12 @@ jest.mock('../../src/interpreter/PostInterpreter', () => {
     postInterpretModel: jest.fn().mockImplementation(() => {return mockedReturnModels;})
   };
 });
-describe('OpenapiInputProcessor', () => {
+describe('OpenAPIInputProcessor', () => {
   afterAll(() => {
     jest.restoreAllMocks();
   });
   describe('shouldProcess()', () => {
-    const processor = new OpenapiInputProcessor();
+    const processor = new OpenAPIInputProcessor();
     test('should be able to process OpenAPI 3.0.0 documents', () => {
       const parsedObject = {openapi: '3.0.0'};
       expect(processor.shouldProcess(parsedObject)).toEqual(true);
@@ -55,7 +55,7 @@ describe('OpenapiInputProcessor', () => {
     });
   });
   describe('tryGetVersionOfDocument()', () => {
-    const processor = new OpenapiInputProcessor();
+    const processor = new OpenAPIInputProcessor();
     test('should be able to find OpenAPI version from object', () => {
       expect(processor.tryGetVersionOfDocument(basicDoc)).toEqual('3.0.3');
     });
@@ -66,16 +66,16 @@ describe('OpenapiInputProcessor', () => {
 
   describe('process()', () => {
     test('should throw error when trying to process wrong schema', async () => {
-      const processor = new OpenapiInputProcessor();
+      const processor = new OpenAPIInputProcessor();
       await expect(processor.process({}))
         .rejects
         .toThrow('Input is not a OpenAPI document so it cannot be processed');
     });
     test('should process the OpenAPI document accurately', async () => {
-      const processor = new OpenapiInputProcessor();
+      const processor = new OpenAPIInputProcessor();
       const commonInputModel = await processor.process(basicDoc);
       expect(commonInputModel).toMatchSnapshot();
-      expect((OpenapiInputProcessor.convertToInternalSchema as any as jest.SpyInstance).mock.calls).toMatchSnapshot();
+      expect((OpenAPIInputProcessor.convertToInternalSchema as any as jest.SpyInstance).mock.calls).toMatchSnapshot();
     });
   });
 });

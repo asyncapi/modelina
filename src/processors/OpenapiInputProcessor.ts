@@ -8,7 +8,7 @@ import { OpenAPIV3 } from 'openapi-types';
 /**
  * Class for processing OpenAPI V3.0 inputs
  */
-export class OpenapiInputProcessor extends AbstractInputProcessor {
+export class OpenAPIInputProcessor extends AbstractInputProcessor {
   static supportedVersions = ['3.0.0', '3.0.1', '3.0.2', '3.0.3'];
 
   /**
@@ -79,6 +79,7 @@ export class OpenapiInputProcessor extends AbstractInputProcessor {
   private iterateMediaType(mediaTypes: {[media: string]: OpenAPIV3.MediaTypeObject}, path: string, inputModel: CommonInputModel) {
     for (const [mediaContent, mediaTypeObject] of Object.entries(mediaTypes)) {
       const mediaType = mediaTypeObject as OpenAPIV3.MediaTypeObject;
+      if (mediaType.schema === undefined) { continue; }
       const mediaTypeSchema = mediaType.schema as OpenAPIV3.SchemaObject;
       //Replace any '/' with '_'
       const formattedMediaContent = mediaContent.replace(/\//, '_');
@@ -87,7 +88,7 @@ export class OpenapiInputProcessor extends AbstractInputProcessor {
   }
 
   private includeSchema(schema: OpenAPIV3.SchemaObject, name: string, inputModel: CommonInputModel) {
-    const internalSchema = OpenapiInputProcessor.convertToInternalSchema(schema, name);
+    const internalSchema = OpenAPIInputProcessor.convertToInternalSchema(schema, name);
     const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(internalSchema);
     inputModel.models = {...inputModel.models, ...commonModels};
   }
@@ -114,7 +115,7 @@ export class OpenapiInputProcessor extends AbstractInputProcessor {
   shouldProcess(input: Record<string, any>) : boolean {
     const version = this.tryGetVersionOfDocument(input);
     if (!version) {return false;}
-    return OpenapiInputProcessor.supportedVersions.includes(version);
+    return OpenAPIInputProcessor.supportedVersions.includes(version);
   }
 
   /**
