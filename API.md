@@ -19,6 +19,9 @@
 <dt><a href="#CommonModel">CommonModel</a></dt>
 <dd><p>Common internal representation for a model.</p>
 </dd>
+<dt><a href="#Draft4Schema">Draft4Schema</a></dt>
+<dd><p>JSON Draft 4 schema model</p>
+</dd>
 <dt><a href="#Draft7Schema">Draft7Schema</a></dt>
 <dd><p>JSON Draft7Schema Draft 7 model</p>
 </dd>
@@ -87,7 +90,7 @@
 <p>It either merges allOf schemas into existing model or if allowed, create inheritance.</p>
 </dd>
 <dt><a href="#interpretConst">interpretConst(schema, model)</a></dt>
-<dd><p>Interpreter function for const keyword.</p>
+<dd><p>Interpreter function for const keyword for draft version &gt; 4</p>
 </dd>
 <dt><a href="#interpretDependencies">interpretDependencies(schema, model)</a></dt>
 <dd><p>Interpreter function for dependencies keyword.</p>
@@ -554,6 +557,23 @@ Only merge if left side is undefined and right side is sat OR both sides are def
 | originalInput | corresponding input that got interpreted to this model |
 | alreadyIteratedModels |  |
 
+<a name="Draft4Schema"></a>
+
+## Draft4Schema
+JSON Draft 4 schema model
+
+**Kind**: global class  
+<a name="Draft4Schema.toSchema"></a>
+
+### Draft4Schema.toSchema(object)
+Takes a deep copy of the input object and converts it to an instance of Draft4Schema.
+
+**Kind**: static method of [<code>Draft4Schema</code>](#Draft4Schema)  
+
+| Param |
+| --- |
+| object | 
+
 <a name="Draft7Schema"></a>
 
 ## Draft7Schema
@@ -736,6 +756,7 @@ Class for processing JSON Schema
         * [.process(input)](#JsonSchemaInputProcessor+process)
         * [.shouldProcess(input)](#JsonSchemaInputProcessor+shouldProcess)
         * [.processDraft7(input)](#JsonSchemaInputProcessor+processDraft7)
+        * [.processDraft4(input)](#JsonSchemaInputProcessor+processDraft4)
     * _static_
         * [.reflectSchemaNames(schema, namesStack, name, isRoot)](#JsonSchemaInputProcessor.reflectSchemaNames)
         * [.ensureNamePattern(previousName, ...newParts)](#JsonSchemaInputProcessor.ensureNamePattern)
@@ -766,13 +787,24 @@ Unless the schema states one that is not supported we assume its of type JSON Sc
 <a name="JsonSchemaInputProcessor+processDraft7"></a>
 
 ### jsonSchemaInputProcessor.processDraft7(input)
-Process a draft 7 schema
+Process a draft-7 schema
 
 **Kind**: instance method of [<code>JsonSchemaInputProcessor</code>](#JsonSchemaInputProcessor)  
 
 | Param | Description |
 | --- | --- |
 | input | to process as draft 7 |
+
+<a name="JsonSchemaInputProcessor+processDraft4"></a>
+
+### jsonSchemaInputProcessor.processDraft4(input)
+Process a draft-4 schema
+
+**Kind**: instance method of [<code>JsonSchemaInputProcessor</code>](#JsonSchemaInputProcessor)  
+
+| Param | Description |
+| --- | --- |
+| input | to process as draft 4 |
 
 <a name="JsonSchemaInputProcessor.reflectSchemaNames"></a>
 
@@ -967,7 +999,7 @@ It either merges allOf schemas into existing model or if allowed, create inherit
 <a name="interpretConst"></a>
 
 ## interpretConst(schema, model)
-Interpreter function for const keyword.
+Interpreter function for const keyword for draft version > 4
 
 **Kind**: global function  
 
