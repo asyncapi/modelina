@@ -1,4 +1,4 @@
-import { CommonModel, Draft6Schema, SwaggerV2Schema, AsyncapiV2Schem, Draft7Schemaa } from '../models';
+import { CommonModel, Draft6Schema, SwaggerV2Schema, AsyncapiV2Schema, Draft7Schema } from '../models';
 import { interpretName, isEnum, isModelObject } from './Utils';
 import interpretProperties from './InterpretProperties';
 import interpretAllOf from './InterpretAllOf';
