@@ -8,10 +8,9 @@
 - [Advanced](#advanced)
 - [Integration](#integration)
 - [Development](#development)
-- [Input processing](#input-processing)
 - [Generators](#generators)
 - [Presets](#presets)
-- [Interpretation of JSON Schema draft 7](#interpretation-of-json-schema-draft-7)
+- [Interpretation of JSON Schema](#interpretation-of-json-schema)
 - [Languages](#languages)
 
 <!-- tocstop -->
