@@ -30,19 +30,22 @@ const AsyncAPIV2_2Files = readFilesInFolder('AsyncAPI-2_2');
 
 const filesToTest = [
   ...OpenAPI3_0Files.filter(({file}) => { 
-    //Blocked by ??
+    //Blocked by https://github.com/asyncapi/modelina/issues/456
     return file !== './docs/OpenAPI-3_0/twilio-1_13.json';
+  }).filter(({file}) => { 
+    //Blocked by https://github.com/asyncapi/modelina/issues/452
+    return file !== './docs/OpenAPI-3_0/postman-api.json';
   }),
-  // ...AsyncAPIV2_0Files,
-  // ...AsyncAPIV2_1Files,
-  // ...AsyncAPIV2_2Files,
-  // ...jsonSchemaDraft7Files.filter(({file}) => { 
-  //   //Blocked by https://github.com/asyncapi/modelina/issues/388
-  //   return file !== './docs/JsonSchemaDraft-7/draft-7-core.json';
-  // }).filter(({file}) => {
-  //   //Blocked by https://github.com/asyncapi/modelina/issues/390
-  //   return file !== './docs/JsonSchemaDraft-7/graphql-code-generator.json';
-  // })
+  ...AsyncAPIV2_0Files,
+  ...AsyncAPIV2_1Files,
+  ...AsyncAPIV2_2Files,
+  ...jsonSchemaDraft7Files.filter(({file}) => { 
+    //Blocked by https://github.com/asyncapi/modelina/issues/388
+    return file !== './docs/JsonSchemaDraft-7/draft-7-core.json';
+  }).filter(({file}) => {
+    //Blocked by https://github.com/asyncapi/modelina/issues/390
+    return file !== './docs/JsonSchemaDraft-7/graphql-code-generator.json';
+  })
 ];
 
 describe.each(filesToTest)('Should be able to generate with inputs', ({file, outputDirectory}) => {
