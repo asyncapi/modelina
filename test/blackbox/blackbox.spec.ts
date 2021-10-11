@@ -39,9 +39,32 @@ const filesToTest = [
     //Blocked by https://github.com/asyncapi/modelina/issues/390
     return file !== './docs/JsonSchemaDraft-7/graphql-code-generator.json';
   }),
-  ...jsonSchemaDraft4Files
+  ...jsonSchemaDraft4Files.filter(({file}) => { 
+    //Blocked by https://github.com/asyncapi/modelina/issues/449
+    return file !== './docs/JsonSchemaDraft-4/openapi-3.json';
+  }).filter(({file}) => { 
+    //Blocked by https://github.com/asyncapi/modelina/issues/389
+    return file !== './docs/JsonSchemaDraft-4/jenkins-config.json';
+  }).filter(({file}) => { 
+    //Blocked by https://github.com/asyncapi/modelina/issues/450
+    return file !== './docs/JsonSchemaDraft-4/circleci-config.json';
+  }).filter(({file}) => { 
+    //Blocked by https://github.com/asyncapi/modelina/issues/390
+    return file !== './docs/JsonSchemaDraft-4/circleci-config.json';
+  }).filter(({file}) => { 
+    //Blocked by https://github.com/asyncapi/modelina/issues/452
+    return file !== './docs/JsonSchemaDraft-4/chrome-manifest.json';
+  }).filter(({file}) => { 
+    //Blocked by https://github.com/asyncapi/modelina/issues/367
+    return file !== './docs/JsonSchemaDraft-4/aws-cloudformation.json';
+  }).filter(({file}) => { 
+    //Blocked by https://github.com/asyncapi/modelina/issues/388
+    return file !== './docs/JsonSchemaDraft-4/draft-4-core.json';
+  })
 ];
 
+// eslint-disable-next-line no-console
+console.log('This is gonna take a while, ~ X minutes');
 describe.each(filesToTest)('Should be able to generate with inputs', ({file, outputDirectory}) => {
   jest.setTimeout(1000000);
   const fileToGenerateFor = path.resolve(__dirname, file);
