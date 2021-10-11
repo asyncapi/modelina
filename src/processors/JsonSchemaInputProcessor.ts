@@ -49,7 +49,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
   }
 
   /**
-   * Process a draft 7 schema
+   * Process a draft-7 schema
    * 
    * @param input to process as draft 7
    */
@@ -65,6 +65,11 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     return commonInputModel;
   }
 
+  /**
+   * Process a draft-4 schema
+   * 
+   * @param input to process as draft 4
+   */
   private async processDraft4(input: Record<string, any>) : Promise<CommonInputModel> {
     Logger.debug('Processing input as JSON Schema Draft 4 document');
     const commonInputModel = new CommonInputModel();
@@ -240,11 +245,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param schema to simplify to common model
    */
-<<<<<<< HEAD
-  static convertSchemaToCommonModel(schema: Draft4Schema | Draft7Schema | AsyncapiV2Schema | boolean): Record<string, CommonModel> {
-=======
-  static convertSchemaToCommonModel(schema: Draft7Schema | SwaggerV2Schema | AsyncapiV2Schema | boolean): Record<string, CommonModel> {
->>>>>>> master-upstream-master
+  static convertSchemaToCommonModel(schema: Draft4Schema | Draft7Schema | SwaggerV2Schema| AsyncapiV2Schema | boolean): Record<string, CommonModel> {
     const commonModelsMap: Record<string, CommonModel> = {};
     const interpreter = new Interpreter();
     const model = interpreter.interpret(schema);
