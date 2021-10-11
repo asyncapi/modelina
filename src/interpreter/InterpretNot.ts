@@ -4,7 +4,7 @@ import { CommonModel } from '../models/CommonModel';
 import { Interpreter, InterpreterOptions, InterpreterSchemaType } from './Interpreter';
 
 /**
- * Interpreter function for JSON Schema draft 7 not keyword.
+ * Interpreter function for not keyword.
  *   
  * @param schema
  * @param model

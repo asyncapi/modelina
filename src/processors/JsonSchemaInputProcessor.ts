@@ -1,14 +1,10 @@
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import path from 'path';
-import { CommonModel, CommonInputModel} from '../models';
+import { CommonModel, CommonInputModel, Draft7Schema, Draft6Schema, SwaggerV2Schema, AsyncapiV2Schema } from '../models';
 import { Logger } from '../utils';
 import { postInterpretModel } from '../interpreter/PostInterpreter';
 import { Interpreter } from '../interpreter/Interpreter';
-import {OpenAPIV2} from 'openapi-types';
-import { Draft7Schema } from '../models/Draft7Schema';
-import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
-import { Draft6Schema } from 'models/Draft6Schema';
 
 /**
  * Class for processing JSON Schema
@@ -22,12 +18,11 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
   process(input: Record<string, any>): Promise<CommonInputModel> {
     if (this.shouldProcess(input)) {
       switch (input.$schema) {
-      case 'http://json-schema.org/draft-07/schema#':
-      case 'http://json-schema.org/draft-07/schema':
-        return this.processDraft7(input);
       case 'http://json-schema.org/draft-06/schema':
       case 'http://json-schema.org/draft-06/schema#':
         return this.processDraft6(input);
+      case 'http://json-schema.org/draft-07/schema#':
+      case 'http://json-schema.org/draft-07/schema':
       default:
         return this.processDraft7(input);
       }
@@ -121,7 +116,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    */
   // eslint-disable-next-line sonarjs/cognitive-complexity
   static reflectSchemaNames(
-    schema: Draft6Schema | Draft7Schema | boolean,
+    schema: Draft6Schema | Draft7Schema | SwaggerV2Schema | boolean,
     namesStack: Record<string, number>,
     name?: string,
     isRoot?: boolean,
@@ -145,13 +140,13 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     }
 
     if (schema.allOf !== undefined) {
-      schema.allOf = (schema.allOf as any[]).map((item: any, idx: number) => JsonSchemaInputProcessor.reflectSchemaNames(item, namesStack, this.ensureNamePattern(name, 'allOf', idx)));
+      schema.allOf = (schema.allOf as any[]).map((item: any, idx: number) => this.reflectSchemaNames(item, namesStack, this.ensureNamePattern(name, 'allOf', idx)));
     }
     if (schema.oneOf !== undefined) {
-      schema.oneOf = (schema.oneOf as any[]).map((item: any, idx: number) => JsonSchemaInputProcessor.reflectSchemaNames(item, namesStack, this.ensureNamePattern(name, 'oneOf', idx)));
+      schema.oneOf = (schema.oneOf as any[]).map((item: any, idx: number) => this.reflectSchemaNames(item, namesStack, this.ensureNamePattern(name, 'oneOf', idx)));
     }
     if (schema.anyOf !== undefined) {
-      schema.anyOf = (schema.anyOf as any[]).map((item: any, idx: number) => JsonSchemaInputProcessor.reflectSchemaNames(item, namesStack, this.ensureNamePattern(name, 'anyOf', idx)));
+      schema.anyOf = (schema.anyOf as any[]).map((item: any, idx: number) => this.reflectSchemaNames(item, namesStack, this.ensureNamePattern(name, 'anyOf', idx)));
     }
     if (schema.not !== undefined) {
       schema.not = JsonSchemaInputProcessor.reflectSchemaNames(schema.not, namesStack, this.ensureNamePattern(name, 'not'));
@@ -160,7 +155,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       typeof schema.additionalItems === 'object' &&
       schema.additionalItems !== undefined
     ) {
-      schema.additionalItems = JsonSchemaInputProcessor.reflectSchemaNames(schema.additionalItems, namesStack, this.ensureNamePattern(name, 'additionalItem'));
+      schema.additionalItems = this.reflectSchemaNames(schema.additionalItems, namesStack, this.ensureNamePattern(name, 'additionalItem'));
     }
     if (
       typeof schema.additionalProperties === 'object' && 
@@ -170,7 +165,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     }
     if (schema.items !== undefined) {
       if (Array.isArray(schema.items)) {
-        schema.items = (schema.items as any[]).map((item: Draft7Schema | boolean, idx: number) => JsonSchemaInputProcessor.reflectSchemaNames(item, namesStack, this.ensureNamePattern(name, 'item', idx)));
+        schema.items = (schema.items as any[]).map((item: Draft7Schema | boolean, idx: number) => this.reflectSchemaNames(item, namesStack, this.ensureNamePattern(name, 'item', idx)));
       } else {
         schema.items = JsonSchemaInputProcessor.reflectSchemaNames(schema.items, namesStack, this.ensureNamePattern(name, 'item'));
       }
@@ -187,7 +182,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       const dependencies: any = {};
       for (const [dependencyName, dependency] of Object.entries(schema.dependencies)) {
         if (typeof dependency === 'object' && !Array.isArray(dependency)) {
-          dependencies[String(dependencyName)] = JsonSchemaInputProcessor.reflectSchemaNames(dependency as any, namesStack, this.ensureNamePattern(name, dependencyName));
+          dependencies[String(dependencyName)] = this.reflectSchemaNames(dependency as any, namesStack, this.ensureNamePattern(name, dependencyName));
         } else {
           dependencies[String(dependencyName)] = dependency as string[];
         }
@@ -197,7 +192,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     if (schema.patternProperties !== undefined) {
       const patternProperties: any = {};
       for (const [idx, [patternPropertyName, patternProperty]] of Object.entries(Object.entries(schema.patternProperties))) {
-        patternProperties[String(patternPropertyName)] = JsonSchemaInputProcessor.reflectSchemaNames(patternProperty as any, namesStack, this.ensureNamePattern(name, 'pattern_property', idx));
+        patternProperties[String(patternPropertyName)] = this.reflectSchemaNames(patternProperty as any, namesStack, this.ensureNamePattern(name, 'pattern_property', idx));
       }
       schema.patternProperties = patternProperties;
     }
@@ -208,7 +203,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       }
       schema.definitions = definitions;
     }
-
+    
     //Keywords introduced in draft 6
     if (schema.contains !== undefined) {
       schema.contains = this.reflectSchemaNames(schema.contains, namesStack, this.ensureNamePattern(name, 'contain'));
@@ -250,7 +245,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param schema to simplify to common model
    */
-  static convertSchemaToCommonModel(schema: Draft7Schema | Draft6Schema | AsyncapiV2Schema | boolean): Record<string, CommonModel> {
+  static convertSchemaToCommonModel(schema: Draft7Schema | Draft6Schema | SwaggerV2Schema | AsyncapiV2Schema | boolean): Record<string, CommonModel> {
     const commonModelsMap: Record<string, CommonModel> = {};
     const interpreter = new Interpreter();
     const model = interpreter.interpret(schema);

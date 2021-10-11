@@ -4,7 +4,7 @@ import { InterpreterSchemaType } from './Interpreter';
 import { inferTypeFromValue } from './Utils';
 
 /**
- * Interpreter function for JSON Schema draft 7 enum keyword
+ * Interpreter function for enum keyword
  * 
  * @param schema 
  * @param model

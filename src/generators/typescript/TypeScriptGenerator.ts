@@ -1,7 +1,7 @@
 import { 
   AbstractGenerator, 
   CommonGeneratorOptions,
-  defaultGeneratorOptions,
+  defaultGeneratorOptions
 } from '../AbstractGenerator';
 import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
 import { TypeHelpers, ModelKind, CommonNamingConvention, CommonNamingConventionImplementation } from '../../helpers';
@@ -17,10 +17,14 @@ export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPres
   namingConvention?: CommonNamingConvention;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface TypeScriptRenderCompleteModelOptions {
+}
+
 /**
  * Generator for TypeScript
  */
-export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions> {
+export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,TypeScriptRenderCompleteModelOptions> {
   static defaultOptions: TypeScriptOptions = {
     ...defaultGeneratorOptions,
     renderTypes: true,
@@ -33,6 +37,26 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions> {
     options: TypeScriptOptions = TypeScriptGenerator.defaultOptions,
   ) {
     super('TypeScript', TypeScriptGenerator.defaultOptions, options);
+  }
+  
+  /**
+   * Render a complete model result where the model code, library and model dependencies are all bundled appropriately.
+   *
+   * @param model
+   * @param inputModel
+   * @param options
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async renderCompleteModel(model: CommonModel, inputModel: CommonInputModel, options: TypeScriptRenderCompleteModelOptions): Promise<RenderOutput> {
+    const outputModel = await this.render(model, inputModel);
+    const modelDependencies = model.getNearestDependencies().map((dependencyModelName) => {
+      const formattedDependencyModelName = this.options.namingConvention?.type ? this.options.namingConvention.type(dependencyModelName, { inputModel, model: inputModel.models[String(dependencyModelName)] }) : dependencyModelName;
+      return `import ./${formattedDependencyModelName};`;
+    });
+    const outputContent = `${modelDependencies.join('\n')}
+${outputModel.dependencies.join('\n')}
+${outputModel.result}`;
+    return RenderOutput.toRenderOutput({ result: outputContent, dependencies: outputModel.dependencies });
   }
 
   render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {

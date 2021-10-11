@@ -297,10 +297,11 @@ ${content}`;
   test('should render union `enum` values', async () => {
     const doc = {
       $id: 'States',
-      enum: [2, 'test', true, {test: 'test'}]
+      enum: [2, '2', 'test', true, {test: 'test'}]
     };
     const expected = `export enum States {
   NUMBER_2 = 2,
+  STRING_2 = "2",
   TEST = "test",
   TRUE = "true",
   TEST_TEST = '{"test":"test"}',
@@ -437,5 +438,31 @@ ${content}`;
     const arrayModel = await generator.renderType(model, inputModel);
     expect(arrayModel.result).toEqual(expected);
     expect(arrayModel.dependencies).toEqual([]);
+  });
+  test('should render models and their dependencies', async () => {
+    const doc = {
+      $id: 'Address',
+      type: 'object',
+      properties: {
+        street_name: { type: 'string' },
+        city: { type: 'string', description: 'City description' },
+        state: { type: 'string' },
+        house_number: { type: 'number' },
+        marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
+        members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
+        array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
+        other_model: { type: 'object', $id: 'OtherModel', properties: {street_name: { type: 'string' }} },
+      },
+      patternProperties: {
+        '^S(.?*)test&': {
+          type: 'string'
+        }
+      },
+      required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+    };
+    const models = await generator.generateCompleteModels(doc,{});
+    expect(models).toHaveLength(2);
+    expect(models[0].result).toMatchSnapshot();
+    expect(models[1].result).toMatchSnapshot();
   });
 });

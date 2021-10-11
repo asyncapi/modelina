@@ -1,4 +1,4 @@
-import { CommonModel, Draft6Schema } from '../models';
+import { CommonModel, Draft6Schema, SwaggerV2Schema, AsyncapiV2Schem, Draft7Schemaa } from '../models';
 import { interpretName, isEnum, isModelObject } from './Utils';
 import interpretProperties from './InterpretProperties';
 import interpretAllOf from './InterpretAllOf';
@@ -10,13 +10,11 @@ import interpretPatternProperties from './InterpretPatternProperties';
 import interpretNot from './InterpretNot';
 import interpretDependencies from './InterpretDependencies';
 import interpretAdditionalItems from './InterpretAdditionalItems';
-import { Draft7Schema } from '../models/Draft7Schema';
-import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
 
 export type InterpreterOptions = {
   allowInheritance?: boolean
 } 
-export type InterpreterSchemaType = Draft6Schema | Draft7Schema | AsyncapiV2Schema | boolean;
+export type InterpreterSchemaType = Draft6Schema | Draft7Schema | SwaggerV2Schema | AsyncapiV2Schema | boolean;
 export class Interpreter {
   static defaultInterpreterOptions: InterpreterOptions = {
     allowInheritance: false
@@ -26,7 +24,7 @@ export class Interpreter {
   private seenSchemas: Map<InterpreterSchemaType, CommonModel> = new Map();
   
   /**
-   * Transforms a schema into instances of CommonModel by processing all JSON Schema draft 7 keywords and infers the model definition.
+   * Transforms a schema into instances of CommonModel by processing all keywords from schema documents and infers the model definition.
    * 
    * @param schema
    * @param interpreterOptions to control the interpret process
@@ -50,7 +48,7 @@ export class Interpreter {
   }
 
   /**
-   * Function to interpret the JSON schema draft 7 into a CommonModel.
+   * Function to interpret a schema into a CommonModel.
    * 
    * @param model 
    * @param schema 
@@ -63,7 +61,9 @@ export class Interpreter {
       if (schema.type !== undefined) {
         model.addTypes(schema.type);
       }
-      model.required = schema.required || model.required;
+      if (schema.required !== undefined) {
+        model.required = schema.required;
+      }
 
       interpretPatternProperties(schema, model, this, interpreterOptions);
       interpretAdditionalProperties(schema, model, this, interpreterOptions);

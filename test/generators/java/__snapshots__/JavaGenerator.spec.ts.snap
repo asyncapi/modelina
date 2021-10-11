@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`JavaGenerator should render models and their dependencies 1`] = `
+"package test.package;
+import test.package.OtherModel;
+import java.util.Map;
+public class Address {
+  private String streetName;
+  private String city;
+  private String state;
+  private Double houseNumber;
+  private Boolean marriage;
+  private Object members;
+  private Object[] arrayType;
+  private OtherModel otherModel;
+  private Map<String, Object> additionalProperties;
+  private Map<String, String> sTestPatternProperties;
+
+  public String getStreetName() { return this.streetName; }
+  public void setStreetName(String streetName) { this.streetName = streetName; }
+
+  public String getCity() { return this.city; }
+  public void setCity(String city) { this.city = city; }
+
+  public String getState() { return this.state; }
+  public void setState(String state) { this.state = state; }
+
+  public Double getHouseNumber() { return this.houseNumber; }
+  public void setHouseNumber(Double houseNumber) { this.houseNumber = houseNumber; }
+
+  public Boolean getMarriage() { return this.marriage; }
+  public void setMarriage(Boolean marriage) { this.marriage = marriage; }
+
+  public Object getMembers() { return this.members; }
+  public void setMembers(Object members) { this.members = members; }
+
+  public Object[] getArrayType() { return this.arrayType; }
+  public void setArrayType(Object[] arrayType) { this.arrayType = arrayType; }
+
+  public OtherModel getOtherModel() { return this.otherModel; }
+  public void setOtherModel(OtherModel otherModel) { this.otherModel = otherModel; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  public Map<String, String> getSTestPatternProperties() { return this.sTestPatternProperties; }
+  public void setSTestPatternProperties(Map<String, String> sTestPatternProperties) { this.sTestPatternProperties = sTestPatternProperties; }
+}"
+`;
+
+exports[`JavaGenerator should render models and their dependencies 2`] = `
+"package test.package;
+
+import java.util.Map;
+public class OtherModel {
+  private String streetName;
+  private Map<String, Object> additionalProperties;
+
+  public String getStreetName() { return this.streetName; }
+  public void setStreetName(String streetName) { this.streetName = streetName; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}"
+`;
