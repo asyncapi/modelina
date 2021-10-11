@@ -8,15 +8,20 @@ import { TypeHelpers, ModelKind, CommonNamingConvention, CommonNamingConventionI
 import { CSharpPreset, CSHARP_DEFAULT_PRESET } from './CSharpPreset';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { ClassRenderer } from './renderers/ClassRenderer';
+import { isReservedCSharpKeyword } from './Constants';
 
 export interface CSharpOptions extends CommonGeneratorOptions<CSharpPreset> {
   namingConvention?: CommonNamingConvention;
 }
 
+export interface CSharpRenderCompleteModelOptions {
+  namespace: string
+}
+
 /**
  * Generator for CSharp
  */
-export class CSharpGenerator extends AbstractGenerator<CSharpOptions> {
+export class CSharpGenerator extends AbstractGenerator<CSharpOptions, CSharpRenderCompleteModelOptions> {
   static defaultOptions: CSharpOptions = {
     ...defaultGeneratorOptions,
     defaultPreset: CSHARP_DEFAULT_PRESET,
@@ -29,8 +34,33 @@ export class CSharpGenerator extends AbstractGenerator<CSharpOptions> {
     super('CSharp', CSharpGenerator.defaultOptions, options);
   }
 
-  renderCompleteModel(): Promise<RenderOutput> {
-    throw new Error('Method not implemented.');
+  /**
+   * Render a complete model result where the model code, library and model dependencies are all bundled appropriately.
+   * 
+   * For CSharp we need to specify which namespace the model is placed under.
+   * 
+   * @param model 
+   * @param inputModel 
+   * @param options used to render the full output
+   */
+  async renderCompleteModel(model: CommonModel, inputModel: CommonInputModel, options: CSharpRenderCompleteModelOptions): Promise<RenderOutput> {
+    if (isReservedCSharpKeyword(options.namespace)) {
+      throw new Error(`You cannot use reserved CSharp keyword (${options.namespace}) as namespace, please use another.`);
+    }
+
+    const outputModel = await this.render(model, inputModel);
+    const modelDependencies = model.getNearestDependencies().map((dependencyModelName) => { 
+      const formattedDependencyModelName = this.options.namingConvention?.type ? this.options.namingConvention.type(dependencyModelName, {inputModel, model: inputModel.models[String(dependencyModelName)], reservedKeywordCallback: isReservedCSharpKeyword}) : dependencyModelName;
+      return `using ${options.namespace}.${formattedDependencyModelName};`;
+    });
+    const outputContent = `namespace ${options.namespace}
+{
+  ${modelDependencies.join('\n')}
+  ${outputModel.dependencies.join('\n')}
+  ${outputModel.result}
+}`;
+    
+    return RenderOutput.toRenderOutput({result: outputContent, dependencies: outputModel.dependencies});
   }
 
   render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
