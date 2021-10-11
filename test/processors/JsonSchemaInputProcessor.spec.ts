@@ -50,7 +50,7 @@ describe('JsonSchemaInputProcessor', () => {
         .toThrow('Input is not a JSON Schema, so it cannot be processed.');
     });
     test('should process draft 7 schemas', async () => {
-      const inputSchemaPath = './JsonSchemaInputProcessor/draft-7.json'
+      const inputSchemaPath = './JsonSchemaInputProcessor/draft-7.json';
       const {commonInputModel, inputSchema} = await getCommonInput(inputSchemaPath);
       expect(commonInputModel).toMatchObject({models: {test: {$id: 'test'}}, originalInput: inputSchema});
       expect(JsonSchemaInputProcessor.convertSchemaToCommonModel).toHaveBeenCalledTimes(1);
