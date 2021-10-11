@@ -23,6 +23,7 @@ function readFilesInFolder(folder: string) {
   );
 }
 const jsonSchemaDraft7Files = readFilesInFolder('JsonSchemaDraft-7');
+const jsonSchemaDraft6Files = readFilesInFolder('JsonSchemaDraft-6');
 const AsyncAPIV2_0Files = readFilesInFolder('AsyncAPI-2_0');
 const AsyncAPIV2_1Files = readFilesInFolder('AsyncAPI-2_1');
 const AsyncAPIV2_2Files = readFilesInFolder('AsyncAPI-2_2');
@@ -37,7 +38,8 @@ const filesToTest = [
   }).filter(({file}) => {
     //Blocked by https://github.com/asyncapi/modelina/issues/390
     return file !== './docs/JsonSchemaDraft-7/graphql-code-generator.json';
-  })
+  }),
+  ...jsonSchemaDraft6Files
 ];
 
 describe.each(filesToTest)('Should be able to generate with inputs', ({file, outputDirectory}) => {

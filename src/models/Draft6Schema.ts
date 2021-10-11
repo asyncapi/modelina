@@ -49,7 +49,6 @@ export class Draft6Schema {
    * Takes a deep copy of the input object and converts it to an instance of Draft6Schema.
    * 
    * @param object 
-   * @returns 
    */
   static toSchema(object: Record<string, unknown>): Draft6Schema {
     const convertedSchema = Draft6Schema.internalToSchema(object);
