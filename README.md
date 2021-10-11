@@ -73,6 +73,10 @@ To see the complete feature list for each language, please click the individual 
     <td><a href="./docs/usage.md">JSON Schema</a></td>
     <td>We support the following JSON Schema versions: <em>Draft-7</em></td>
   </tr>
+  <tr>
+    <td><a href="./docs/usage.md">OpenAPI</a></td>
+    <td>We support the following OpenAPI versions: <em>Swagger 2.0</em></td>
+  </tr>
 </table>
 
 <a id="outputs"></a>
