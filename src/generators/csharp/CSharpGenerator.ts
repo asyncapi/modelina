@@ -59,7 +59,7 @@ export class CSharpGenerator extends AbstractGenerator<CSharpOptions, CSharpRend
   ${outputModel.dependencies.join('\n')}
   ${outputModel.result}
 }`;
-    }
+    
     return RenderOutput.toRenderOutput({result: outputContent, dependencies: outputModel.dependencies});
   }
 

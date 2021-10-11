@@ -324,8 +324,8 @@ exports[`CSharpGenerator should render models and their dependencies 1`] = `
 "namespace Test.Package
 {
   using Test.Package.OtherModel;
-using System.Collections.Generic;
-public class Address {
+  using System.Collections.Generic;
+  public class Address {
   private string streetName;
   private string city;
   private string state;
@@ -404,8 +404,8 @@ exports[`CSharpGenerator should render models and their dependencies 2`] = `
 "namespace Test.Package
 {
   
-using System.Collections.Generic;
-public class OtherModel {
+  using System.Collections.Generic;
+  public class OtherModel {
   private string streetName;
   private Dictionary<string, dynamic> additionalProperties;
 
