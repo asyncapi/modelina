@@ -1,7 +1,7 @@
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import path from 'path';
-import { CommonModel, CommonInputModel, Draft4Schema, Draft7Schema, Draft6Schema, SwaggerV2Schema, AsyncapiV2Schema } from '../models';
+import { CommonModel, CommonInputModel, Draft4Schema, Draft7Schema, Draft6Schema, SwaggerV2Schema, OpenapiV3Schema, AsyncapiV2Schema } from '../models';
 import { Logger } from '../utils';
 import { postInterpretModel } from '../interpreter/PostInterpreter';
 import { Interpreter } from '../interpreter/Interpreter';
@@ -138,7 +138,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    */
   // eslint-disable-next-line sonarjs/cognitive-complexity
   static reflectSchemaNames(
-    schema: Draft4Schema | Draft6Schema | Draft7Schema | SwaggerV2Schema | boolean,
+    schema: Draft4Schema | Draft6Schema | Draft7Schema | SwaggerV2Schema | OpenapiV3Schema | boolean,
     namesStack: Record<string, number>,
     name?: string,
     isRoot?: boolean,

@@ -9,3 +9,4 @@ export * from './Draft7Schema';
 export * from './Draft6Schema';
 export * from './Draft4Schema';
 export * from './SwaggerV2Schema';
+export * from './OpenapiV3Schema';

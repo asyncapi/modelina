@@ -3,6 +3,7 @@ import * as path from 'path';
 import { CommonInputModel, ProcessorOptions } from '../../src/models';
 import { AbstractInputProcessor, AsyncAPIInputProcessor, JsonSchemaInputProcessor, InputProcessor, SwaggerInputProcessor } from '../../src/processors';
 import AsyncAPIParser, { ParserOptions } from '@asyncapi/parser';
+import { OpenAPIInputProcessor } from '../../src/processors/OpenAPIInputProcessor';
 describe('InputProcessor', () => {
   beforeEach(() => {
     jest.resetAllMocks();
@@ -44,11 +45,15 @@ describe('InputProcessor', () => {
       const swaggerInputProcessor = new SwaggerInputProcessor();
       jest.spyOn(swaggerInputProcessor, 'shouldProcess');
       jest.spyOn(swaggerInputProcessor, 'process');
+      const openAPIInputProcessor = new OpenAPIInputProcessor();
+      jest.spyOn(openAPIInputProcessor, 'shouldProcess');
+      jest.spyOn(openAPIInputProcessor, 'process');
       const processor = new InputProcessor();
       processor.setProcessor('asyncapi', asyncInputProcessor);
       processor.setProcessor('swagger', swaggerInputProcessor);
+      processor.setProcessor('openapi', openAPIInputProcessor);
       processor.setProcessor('default', defaultInputProcessor);
-      return {processor, asyncInputProcessor, swaggerInputProcessor, defaultInputProcessor};
+      return {processor, asyncInputProcessor, swaggerInputProcessor, openAPIInputProcessor, defaultInputProcessor};
     };
     test('should throw error when no default processor found', async () => {
       const processor = new InputProcessor();
@@ -87,6 +92,16 @@ describe('InputProcessor', () => {
       await processor.process(inputSchema);
       expect(swaggerInputProcessor.process).toHaveBeenNthCalledWith(1, inputSchema, undefined);
       expect(swaggerInputProcessor.shouldProcess).toHaveBeenNthCalledWith(1, inputSchema);
+      expect(defaultInputProcessor.process).not.toHaveBeenCalled();
+      expect(defaultInputProcessor.shouldProcess).not.toHaveBeenCalled();
+    });
+    test('should be able to process OpenAPI input', async () => {
+      const {processor, openAPIInputProcessor, defaultInputProcessor} = getProcessors(); 
+      const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './OpenAPIInputProcessor/basic.json'), 'utf8');
+      const inputSchema = JSON.parse(inputSchemaString);
+      await processor.process(inputSchema);
+      expect(openAPIInputProcessor.process).toHaveBeenNthCalledWith(1, inputSchema, undefined);
+      expect(openAPIInputProcessor.shouldProcess).toHaveBeenNthCalledWith(1, inputSchema);
       expect(defaultInputProcessor.process).not.toHaveBeenCalled();
       expect(defaultInputProcessor.shouldProcess).not.toHaveBeenCalled();
     });

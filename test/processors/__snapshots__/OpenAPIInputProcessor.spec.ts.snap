@@ -1,0 +1,772 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OpenAPIInputProcessor process() should process the OpenAPI document accurately 1`] = `
+CommonInputModel {
+  "models": Object {},
+  "originalInput": Object {
+    "components": Object {
+      "ApiResponse": Object {
+        "properties": Object {
+          "code": Object {
+            "format": "int32",
+            "type": "integer",
+          },
+          "message": Object {
+            "type": "string",
+          },
+          "type": Object {
+            "type": "string",
+          },
+        },
+        "type": "object",
+      },
+    },
+    "info": Object {
+      "title": "Simple basic api",
+    },
+    "openapi": "3.0.3",
+    "paths": Object {
+      "/test": Object {
+        "delete": Object {
+          "requestBody": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "properties": Object {
+                    "code": Object {
+                      "format": "int32",
+                      "type": "integer",
+                    },
+                    "message": Object {
+                      "type": "string",
+                    },
+                    "type": Object {
+                      "type": "string",
+                    },
+                  },
+                  "type": "object",
+                },
+              },
+            },
+            "required": true,
+          },
+          "responses": Object {
+            "200": Object {
+              "content": Object {
+                "application/json": Object {
+                  "schema": Object {
+                    "properties": Object {
+                      "code": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "message": Object {
+                        "type": "string",
+                      },
+                      "type": Object {
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+              },
+              "description": "Successful operation",
+            },
+          },
+        },
+        "get": Object {
+          "requestBody": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "properties": Object {
+                    "code": Object {
+                      "format": "int32",
+                      "type": "integer",
+                    },
+                    "message": Object {
+                      "type": "string",
+                    },
+                    "type": Object {
+                      "type": "string",
+                    },
+                  },
+                  "type": "object",
+                },
+              },
+            },
+            "required": true,
+          },
+          "responses": Object {
+            "200": Object {
+              "content": Object {
+                "application/json": Object {
+                  "schema": Object {
+                    "properties": Object {
+                      "code": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "message": Object {
+                        "type": "string",
+                      },
+                      "type": Object {
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+              },
+              "description": "Successful operation",
+            },
+          },
+        },
+        "head": Object {
+          "responses": Object {
+            "200": Object {
+              "content": Object {
+                "application/json": Object {
+                  "schema": Object {
+                    "properties": Object {
+                      "code": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "message": Object {
+                        "type": "string",
+                      },
+                      "type": Object {
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+              },
+              "description": "Successful operation",
+            },
+          },
+        },
+        "options": Object {
+          "requestBody": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "properties": Object {
+                    "code": Object {
+                      "format": "int32",
+                      "type": "integer",
+                    },
+                    "message": Object {
+                      "type": "string",
+                    },
+                    "type": Object {
+                      "type": "string",
+                    },
+                  },
+                  "type": "object",
+                },
+              },
+            },
+            "required": true,
+          },
+          "responses": Object {
+            "200": Object {
+              "content": Object {
+                "application/json": Object {
+                  "schema": Object {
+                    "properties": Object {
+                      "code": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "message": Object {
+                        "type": "string",
+                      },
+                      "type": Object {
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+              },
+              "description": "Successful operation",
+            },
+          },
+        },
+        "patch": Object {
+          "requestBody": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "properties": Object {
+                    "code": Object {
+                      "format": "int32",
+                      "type": "integer",
+                    },
+                    "message": Object {
+                      "type": "string",
+                    },
+                    "type": Object {
+                      "type": "string",
+                    },
+                  },
+                  "type": "object",
+                },
+              },
+            },
+            "required": true,
+          },
+          "responses": Object {
+            "200": Object {
+              "content": Object {
+                "application/json": Object {
+                  "schema": Object {
+                    "properties": Object {
+                      "code": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "message": Object {
+                        "type": "string",
+                      },
+                      "type": Object {
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+              },
+              "description": "Successful operation",
+            },
+          },
+        },
+        "post": Object {
+          "callbacks": Object {
+            "onData": Object {
+              "{$request.query.callbackUrl}/data": Object {
+                "post": Object {
+                  "requestBody": Object {
+                    "content": Object {
+                      "application/json": Object {
+                        "schema": Object {
+                          "properties": Object {
+                            "code": Object {
+                              "format": "int32",
+                              "type": "integer",
+                            },
+                            "message": Object {
+                              "type": "string",
+                            },
+                            "type": Object {
+                              "type": "string",
+                            },
+                          },
+                          "type": "object",
+                        },
+                      },
+                    },
+                  },
+                  "responses": Object {
+                    "202": Object {
+                      "content": Object {
+                        "application/json": Object {
+                          "schema": Object {
+                            "properties": Object {
+                              "code": Object {
+                                "format": "int32",
+                                "type": "integer",
+                              },
+                              "message": Object {
+                                "type": "string",
+                              },
+                              "type": Object {
+                                "type": "string",
+                              },
+                            },
+                            "type": "object",
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          "parameters": Array [
+            Object {
+              "description": "the location where data will be sent.  Must be network accessible
+by the source server
+",
+              "in": "query",
+              "name": "callbackUrl",
+              "required": true,
+              "schema": Object {
+                "format": "uri",
+                "type": "string",
+              },
+            },
+          ],
+          "requestBody": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "properties": Object {
+                    "code": Object {
+                      "format": "int32",
+                      "type": "integer",
+                    },
+                    "message": Object {
+                      "type": "string",
+                    },
+                    "type": Object {
+                      "type": "string",
+                    },
+                  },
+                  "type": "object",
+                },
+              },
+            },
+            "required": true,
+          },
+          "responses": Object {
+            "200": Object {
+              "content": Object {
+                "application/json": Object {
+                  "schema": Object {
+                    "properties": Object {
+                      "code": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "message": Object {
+                        "type": "string",
+                      },
+                      "type": Object {
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+              },
+            },
+          },
+        },
+        "put": Object {
+          "requestBody": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "properties": Object {
+                    "code": Object {
+                      "format": "int32",
+                      "type": "integer",
+                    },
+                    "message": Object {
+                      "type": "string",
+                    },
+                    "type": Object {
+                      "type": "string",
+                    },
+                  },
+                  "type": "object",
+                },
+              },
+            },
+            "required": true,
+          },
+          "responses": Object {
+            "200": Object {
+              "content": Object {
+                "application/json": Object {
+                  "schema": Object {
+                    "properties": Object {
+                      "code": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "message": Object {
+                        "type": "string",
+                      },
+                      "type": Object {
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+              },
+              "description": "Successful operation",
+            },
+          },
+        },
+        "trace": Object {
+          "requestBody": Object {
+            "content": Object {
+              "application/json": Object {
+                "schema": Object {
+                  "properties": Object {
+                    "code": Object {
+                      "format": "int32",
+                      "type": "integer",
+                    },
+                    "message": Object {
+                      "type": "string",
+                    },
+                    "type": Object {
+                      "type": "string",
+                    },
+                  },
+                  "type": "object",
+                },
+              },
+            },
+            "required": true,
+          },
+          "responses": Object {
+            "200": Object {
+              "content": Object {
+                "application/json": Object {
+                  "schema": Object {
+                    "properties": Object {
+                      "code": Object {
+                        "format": "int32",
+                        "type": "integer",
+                      },
+                      "message": Object {
+                        "type": "string",
+                      },
+                      "type": Object {
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+              },
+              "description": "Successful operation",
+            },
+          },
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`OpenAPIInputProcessor process() should process the OpenAPI document accurately 2`] = `
+Array [
+  Array [
+    Object {
+      "properties": Object {
+        "code": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "message": Object {
+          "type": "string",
+        },
+        "type": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+    "test_get_200_application_json",
+  ],
+  Array [
+    Object {
+      "properties": Object {
+        "code": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "message": Object {
+          "type": "string",
+        },
+        "type": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+    "test_get_application_json",
+  ],
+  Array [
+    Object {
+      "properties": Object {
+        "code": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "message": Object {
+          "type": "string",
+        },
+        "type": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+    "test_put_200_application_json",
+  ],
+  Array [
+    Object {
+      "properties": Object {
+        "code": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "message": Object {
+          "type": "string",
+        },
+        "type": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+    "test_put_application_json",
+  ],
+  Array [
+    Object {
+      "properties": Object {
+        "code": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "message": Object {
+          "type": "string",
+        },
+        "type": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+    "test_post_200_application_json",
+  ],
+  Array [
+    Object {
+      "properties": Object {
+        "code": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "message": Object {
+          "type": "string",
+        },
+        "type": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+    "test_post_application_json",
+  ],
+  Array [
+    Object {
+      "properties": Object {
+        "code": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "message": Object {
+          "type": "string",
+        },
+        "type": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+    "test_post_callback_onData_requestquerycallbackUrldata_post_202_application_json",
+  ],
+  Array [
+    Object {
+      "properties": Object {
+        "code": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "message": Object {
+          "type": "string",
+        },
+        "type": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+    "test_post_callback_onData_requestquerycallbackUrldata_post_application_json",
+  ],
+  Array [
+    Object {
+      "properties": Object {
+        "code": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "message": Object {
+          "type": "string",
+        },
+        "type": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+    "test_delete_200_application_json",
+  ],
+  Array [
+    Object {
+      "properties": Object {
+        "code": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "message": Object {
+          "type": "string",
+        },
+        "type": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+    "test_delete_application_json",
+  ],
+  Array [
+    Object {
+      "properties": Object {
+        "code": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "message": Object {
+          "type": "string",
+        },
+        "type": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+    "test_options_200_application_json",
+  ],
+  Array [
+    Object {
+      "properties": Object {
+        "code": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "message": Object {
+          "type": "string",
+        },
+        "type": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+    "test_options_application_json",
+  ],
+  Array [
+    Object {
+      "properties": Object {
+        "code": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "message": Object {
+          "type": "string",
+        },
+        "type": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+    "test_head_200_application_json",
+  ],
+  Array [
+    Object {
+      "properties": Object {
+        "code": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "message": Object {
+          "type": "string",
+        },
+        "type": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+    "test_patch_200_application_json",
+  ],
+  Array [
+    Object {
+      "properties": Object {
+        "code": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "message": Object {
+          "type": "string",
+        },
+        "type": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+    "test_patch_application_json",
+  ],
+  Array [
+    Object {
+      "properties": Object {
+        "code": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "message": Object {
+          "type": "string",
+        },
+        "type": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+    "test_trace_200_application_json",
+  ],
+  Array [
+    Object {
+      "properties": Object {
+        "code": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "message": Object {
+          "type": "string",
+        },
+        "type": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+    "test_trace_application_json",
+  ],
+]
+`;

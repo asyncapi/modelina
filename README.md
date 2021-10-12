@@ -67,15 +67,15 @@ To see the complete feature list for each language, please click the individual 
   </tr>
   <tr>
     <td><a href="./docs/usage.md">AsyncAPI</a></td>
-    <td>We support the following AsyncAPI versions: <em>2.0.0, 2.1.0, 2.2.0</em>, which generates models for all the defined message payloads.</td>
+    <td>We support the following AsyncAPI versions: <em>2.0.0, 2.1.0 and 2.2.0</em>, which generates models for all the defined message payloads.</td>
   </tr>
   <tr>
     <td><a href="./docs/usage.md">JSON Schema</a></td>
-    <td>We support the following JSON Schema versions: <em>Draft-4, Draft-6, Draft-7</em></td>
+    <td>We support the following JSON Schema versions: <em>Draft-4, Draft-6 and Draft-7</em></td>
   </tr>
   <tr>
     <td><a href="./docs/usage.md">OpenAPI</a></td>
-    <td>We support the following OpenAPI versions: <em>Swagger 2.0</em></td>
+    <td>We support the following OpenAPI versions: <em>Swagger 2.0 and OpenAPI 3.0</em>, which generates models for all the defined path request and responses.</td>
   </tr>
 </table>
 
