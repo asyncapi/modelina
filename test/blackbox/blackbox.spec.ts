@@ -31,27 +31,15 @@ const AsyncAPIV2_1Files = readFilesInFolder('AsyncAPI-2_1');
 const AsyncAPIV2_2Files = readFilesInFolder('AsyncAPI-2_2');
 
 const filesToTest = [
-  ...OpenAPI3_0Files.filter(({file}) => { 
-    //Blocked by https://github.com/asyncapi/modelina/issues/456
-    return file !== './docs/OpenAPI-3_0/twilio-1_13.json';
-  }).filter(({file}) => { 
-    //Blocked by https://github.com/asyncapi/modelina/issues/452
-    return file !== './docs/OpenAPI-3_0/postman-api.json';
-  }),
+  ...OpenAPI3_0Files,
   ...AsyncAPIV2_0Files,
   ...AsyncAPIV2_1Files,
   ...AsyncAPIV2_2Files,
-  ...jsonSchemaDraft7Files.filter(({file}) => { 
-    //Blocked by https://github.com/asyncapi/modelina/issues/388
-    return file !== './docs/JsonSchemaDraft-7/draft-7-core.json';
-  }).filter(({file}) => {
+  ...jsonSchemaDraft7Files.filter(({file}) => {
     //Blocked by https://github.com/asyncapi/modelina/issues/390
     return file !== './docs/JsonSchemaDraft-7/graphql-code-generator.json';
   }),
   ...jsonSchemaDraft4Files.filter(({file}) => { 
-    //Blocked by https://github.com/asyncapi/modelina/issues/449
-    return file !== './docs/JsonSchemaDraft-4/openapi-3.json';
-  }).filter(({file}) => { 
     //Blocked by https://github.com/asyncapi/modelina/issues/389
     return file !== './docs/JsonSchemaDraft-4/jenkins-config.json';
   }).filter(({file}) => { 
@@ -66,9 +54,6 @@ const filesToTest = [
   }).filter(({file}) => { 
     //Blocked by https://github.com/asyncapi/modelina/issues/367
     return file !== './docs/JsonSchemaDraft-4/aws-cloudformation.json';
-  }).filter(({file}) => { 
-    //Blocked by https://github.com/asyncapi/modelina/issues/388
-    return file !== './docs/JsonSchemaDraft-4/draft-4-core.json';
   }),
   ...jsonSchemaDraft6Files.filter(({file}) => {
     //Blocked by https://github.com/asyncapi/modelina/issues/453
