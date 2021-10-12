@@ -28,6 +28,20 @@
 <dt><a href="#Draft7Schema">Draft7Schema</a></dt>
 <dd><p>JSON Draft7Schema Draft 7 model</p>
 </dd>
+<dt><a href="#OpenapiV3Schema">OpenapiV3Schema</a></dt>
+<dd><p>OpenAPI 3.0 -&gt; 3.0.4 schema model</p>
+<p>Based on Draft 6, but with restricted keywords and definitions
+Modifications</p>
+<ul>
+<li>type, cannot be an array nor contain &#39;null&#39;</li>
+</ul>
+<p>Restrictions (keywords not allowed)</p>
+<ul>
+<li>patternProperties</li>
+<li>not</li>
+</ul>
+<p><a href="https://swagger.io/specification/#schema-object">https://swagger.io/specification/#schema-object</a></p>
+</dd>
 <dt><a href="#OutputModel">OutputModel</a></dt>
 <dd><p>Common representation for the output model.</p>
 </dd>
@@ -54,6 +68,9 @@
 </dd>
 <dt><a href="#JsonSchemaInputProcessor">JsonSchemaInputProcessor</a></dt>
 <dd><p>Class for processing JSON Schema</p>
+</dd>
+<dt><a href="#OpenAPIInputProcessor">OpenAPIInputProcessor</a></dt>
+<dd><p>Class for processing OpenAPI V3.0 inputs</p>
 </dd>
 <dt><a href="#SwaggerInputProcessor">SwaggerInputProcessor</a></dt>
 <dd><p>Class for processing Swagger inputs</p>
@@ -611,6 +628,33 @@ Takes a deep copy of the input object and converts it to an instance of Draft7Sc
 | --- |
 | object | 
 
+<a name="OpenapiV3Schema"></a>
+
+## OpenapiV3Schema
+OpenAPI 3.0 -> 3.0.4 schema model
+
+Based on Draft 6, but with restricted keywords and definitions
+Modifications
+ - type, cannot be an array nor contain 'null'
+
+Restrictions (keywords not allowed)
+ - patternProperties
+ - not
+
+https://swagger.io/specification/#schema-object
+
+**Kind**: global class  
+<a name="OpenapiV3Schema.toSchema"></a>
+
+### OpenapiV3Schema.toSchema(object)
+Takes a deep copy of the input object and converts it to an instance of OpenapiV3Schema.
+
+**Kind**: static method of [<code>OpenapiV3Schema</code>](#OpenapiV3Schema)  
+
+| Param |
+| --- |
+| object | 
+
 <a name="OutputModel"></a>
 
 ## OutputModel
@@ -878,6 +922,66 @@ Simplifies a JSON Schema into a common models
 | Param | Description |
 | --- | --- |
 | schema | to simplify to common model |
+
+<a name="OpenAPIInputProcessor"></a>
+
+## OpenAPIInputProcessor
+Class for processing OpenAPI V3.0 inputs
+
+**Kind**: global class  
+
+* [OpenAPIInputProcessor](#OpenAPIInputProcessor)
+    * _instance_
+        * [.process(input)](#OpenAPIInputProcessor+process)
+        * [.shouldProcess(input)](#OpenAPIInputProcessor+shouldProcess)
+        * [.tryGetVersionOfDocument(input)](#OpenAPIInputProcessor+tryGetVersionOfDocument)
+    * _static_
+        * [.convertToInternalSchema(schema, name)](#OpenAPIInputProcessor.convertToInternalSchema)
+
+<a name="OpenAPIInputProcessor+process"></a>
+
+### openAPIInputProcessor.process(input)
+Process the input as a OpenAPI V3.0 document
+
+**Kind**: instance method of [<code>OpenAPIInputProcessor</code>](#OpenAPIInputProcessor)  
+
+| Param |
+| --- |
+| input | 
+
+<a name="OpenAPIInputProcessor+shouldProcess"></a>
+
+### openAPIInputProcessor.shouldProcess(input)
+Figures out if an object is of type OpenAPI V3.0.x document and supported
+
+**Kind**: instance method of [<code>OpenAPIInputProcessor</code>](#OpenAPIInputProcessor)  
+
+| Param |
+| --- |
+| input | 
+
+<a name="OpenAPIInputProcessor+tryGetVersionOfDocument"></a>
+
+### openAPIInputProcessor.tryGetVersionOfDocument(input)
+Try to find the AsyncAPI version from the input. If it cannot undefined are returned, if it can, the version is returned.
+
+**Kind**: instance method of [<code>OpenAPIInputProcessor</code>](#OpenAPIInputProcessor)  
+
+| Param |
+| --- |
+| input | 
+
+<a name="OpenAPIInputProcessor.convertToInternalSchema"></a>
+
+### OpenAPIInputProcessor.convertToInternalSchema(schema, name)
+Converts a schema to the internal schema format.
+
+**Kind**: static method of [<code>OpenAPIInputProcessor</code>](#OpenAPIInputProcessor)  
+
+| Param | Description |
+| --- | --- |
+| schema | to convert |
+| name | of the schema |
 
 <a name="SwaggerInputProcessor"></a>
 
