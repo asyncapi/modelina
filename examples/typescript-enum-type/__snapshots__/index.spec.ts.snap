@@ -1,7 +1,35 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Should be able to render TEMPLATE and should log expected output to console 1`] = `
-Array [
-  "export type Event = \\"ping\\" | \\"pong\\";",
-]
+exports[`Should be able to render correct enums based on options and should log expected output to console 1`] = `
+"Generator output with Union:
+export class Root {
+  private _event?: Event;
+
+  constructor(input: {
+    event?: Event,
+  }) {
+    this._event = input.event;
+  }
+
+  get event(): Event | undefined { return this._event; }
+  set event(event: Event | undefined) { this._event = event; }
+}
+export type Event = \\"ping\\" | \\"pong\\";
+Generator output with Enum:
+export class Root {
+  private _event?: Event;
+
+  constructor(input: {
+    event?: Event,
+  }) {
+    this._event = input.event;
+  }
+
+  get event(): Event | undefined { return this._event; }
+  set event(event: Event | undefined) { this._event = event; }
+}
+export enum Event {
+  PING = \\"ping\\",
+  PONG = \\"pong\\",
+}"
 `;
