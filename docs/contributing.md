@@ -17,7 +17,7 @@ Fixing any bug, means that you should be able to reproduce the error using tests
 Any new features require a few things to be accepted. This is to ensure that a feature is well described and implemented before released. 
 
 1. An accepted feature request from the community (and maintainers). Even though you are welcome to create the feature without an issue, it might be rejected, and it would be a waste of your time, and we don't want that to happen!
-1. Tests that cover the new feature in depth. Try and aim for as high coverage numbers as possible.
+1. Tests that cover the new feature, try and aim for as high coverage numbers as possible. When you run the tests (`npm run test`), you should see a `./coverage/lcov-report/index.html` file being generated. You can use this to see in depth where your tests are not covering your implementation.
 1. No documentation no feature. If users are not enlighten of the new features, they don't exist, so make sure that any relevant [documentation](./) is updated.
     - New features such as new presets, generators or inputs, etc, need associated use-case documentation along side [examples](../examples) to not only showcase the feature, but ensure it will always work. Checkout [adding examples](#-adding-examples) for more information how to do this.
 
@@ -29,8 +29,9 @@ Adding examples is quite straight forward, so don't be alarmed! Here is how you 
 1. Rename the following [package configuration](https://github.com/asyncapi/modelina/blob/1e71b3b2cab6bc2c277001fcafe7e1b8ed175ce9/examples/TEMPLATE/package.json#L2) to the same name as the directory.
 1. Adapt the [source code example](https://github.com/asyncapi/modelina/blob/1e71b3b2cab6bc2c277001fcafe7e1b8ed175ce9/examples/TEMPLATE/index.ts) to reflect the use-case.
 1. Adapt the [testing file](https://github.com/asyncapi/modelina/blob/1e71b3b2cab6bc2c277001fcafe7e1b8ed175ce9/examples/TEMPLATE/index.spec.ts#L4) to the use-case. In most cases it would be as simple as changing the title of the test, nothing else.
+1. Add the your example to the overall list of [examples](https://github.com/asyncapi/modelina/blob/master/examples/README.md).
 
-Aaaand you are done :tada:
+Aaaand you are done :tada: 
 
 ## FAQ
 Below is some further information about different corners of contributing.
@@ -42,7 +43,6 @@ Absolutely!
 Regular issues are generally not that well described in terms of what need to be accomplished, and require some internal knowledge of the internals of the library. However!
 
 If you find an issue you would like to solve, ping one of the maintainers, and they can help you get started. It is not that we don't want to provide help, it just takes more effort to solve the issue, that what might be easily described.
-
 
 ### What does the CI system do when I create a PR?
 The CI system is quite complex and you don't need to know any in depth details as a general contributor, but here is the general rundown that is run on each PR:
