@@ -300,7 +300,7 @@ ${content}`;
       type: 'string',
       enum: ['Texas', 'Alabama', 'California'],
     };
-    const expected = `export type States = "Texas" | "Alabama" | "California";`;
+    const expected = 'export type States = "Texas" | "Alabama" | "California";';
 
     const unionGenerator = new TypeScriptGenerator({enumType: 'union'});
     const inputModel = await unionGenerator.process(doc);
