@@ -1,6 +1,6 @@
-# TypeScript interface
+# TypeScript Enum Types
 
-A basic example of how to use Modelina and output a TypeScript interface with enums cast to unions.
+A basic example of how to use Modelina can output different types of enums in TypeScript.
 
 ## How to run this example
 Run this example using:
