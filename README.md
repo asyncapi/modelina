@@ -123,7 +123,7 @@ To setup your development environment please read the [development](./docs/devel
 
 ## Contributing
 
-Read [CONTRIBUTING](https://github.com/asyncapi/.github/blob/master/CONTRIBUTING.md) guide.
+Read our [contributor](./docs/contributing.md) guide.
 
 ## Contributors ✨
 
