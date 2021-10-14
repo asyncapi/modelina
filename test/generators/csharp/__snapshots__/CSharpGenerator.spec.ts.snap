@@ -188,69 +188,7 @@ exports[`CSharpGenerator should render \`class\` type 2`] = `
 }"
 `;
 
-exports[`CSharpGenerator should render \`enum\` type $name should not be empty 1`] = `
-"public enum States {
-  Texas, Alabama, California
-}
-public static class StatesExtensions {
-  public static dynamic GetValue(this States enumValue)
-  {
-    switch (enumValue)
-    {
-      case States.Texas: return \\"Texas\\";
-      case States.Alabama: return \\"Alabama\\";
-      case States.California: return \\"California\\";
-    }
-    return null;
-  }
-
-  public static States? ToStates(dynamic value)
-  {
-    switch (value)
-    {
-      case \\"Texas\\": return States.Texas;
-      case \\"Alabama\\": return States.Alabama;
-      case \\"California\\": return States.California;
-    }
-    return null;
-  }
-}
-
-"
-`;
-
-exports[`CSharpGenerator should render \`enum\` type $name should not be empty 2`] = `
-"public enum States {
-  Texas, Alabama, California
-}
-public static class StatesExtensions {
-  public static dynamic GetValue(this States enumValue)
-  {
-    switch (enumValue)
-    {
-      case States.Texas: return \\"Texas\\";
-      case States.Alabama: return \\"Alabama\\";
-      case States.California: return \\"California\\";
-    }
-    return null;
-  }
-
-  public static States? ToStates(dynamic value)
-  {
-    switch (value)
-    {
-      case \\"Texas\\": return States.Texas;
-      case \\"Alabama\\": return States.Alabama;
-      case \\"California\\": return States.California;
-    }
-    return null;
-  }
-}
-
-"
-`;
-
-exports[`CSharpGenerator should render \`enum\` type $name should not be empty 3`] = `
+exports[`CSharpGenerator should render \`enum\` type with enums of mixed types 1`] = `
 "public enum Things {
   Texas, String_1, Number_1, False, TestTest
 }
@@ -285,7 +223,7 @@ public static class ThingsExtensions {
 "
 `;
 
-exports[`CSharpGenerator should render \`enum\` type $name should not be empty 4`] = `
+exports[`CSharpGenerator should render \`enum\` type with enums of mixed types 2`] = `
 "public enum Things {
   Texas, String_1, Number_1, False, TestTest
 }
@@ -312,6 +250,68 @@ public static class ThingsExtensions {
       case 1: return Things.Number_1;
       case false: return Things.False;
       case \\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\": return Things.TestTest;
+    }
+    return null;
+  }
+}
+
+"
+`;
+
+exports[`CSharpGenerator should render \`enum\` type with enums sharing same type 1`] = `
+"public enum States {
+  Texas, Alabama, California
+}
+public static class StatesExtensions {
+  public static dynamic GetValue(this States enumValue)
+  {
+    switch (enumValue)
+    {
+      case States.Texas: return \\"Texas\\";
+      case States.Alabama: return \\"Alabama\\";
+      case States.California: return \\"California\\";
+    }
+    return null;
+  }
+
+  public static States? ToStates(dynamic value)
+  {
+    switch (value)
+    {
+      case \\"Texas\\": return States.Texas;
+      case \\"Alabama\\": return States.Alabama;
+      case \\"California\\": return States.California;
+    }
+    return null;
+  }
+}
+
+"
+`;
+
+exports[`CSharpGenerator should render \`enum\` type with enums sharing same type 2`] = `
+"public enum States {
+  Texas, Alabama, California
+}
+public static class StatesExtensions {
+  public static dynamic GetValue(this States enumValue)
+  {
+    switch (enumValue)
+    {
+      case States.Texas: return \\"Texas\\";
+      case States.Alabama: return \\"Alabama\\";
+      case States.California: return \\"California\\";
+    }
+    return null;
+  }
+
+  public static States? ToStates(dynamic value)
+  {
+    switch (value)
+    {
+      case \\"Texas\\": return States.Texas;
+      case \\"Alabama\\": return States.Alabama;
+      case \\"California\\": return States.California;
     }
     return null;
   }

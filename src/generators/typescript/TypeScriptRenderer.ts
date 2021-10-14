@@ -119,8 +119,9 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
 
   renderComments(lines: string | string[]): string {
     lines = FormatHelpers.breakLines(lines);
+    const renderedLines = lines.map(line => ` * ${line}`).join('\n');
     return `/**
-${lines.map(line => ` * ${line}`).join('\n')}
+${renderedLines}
  */`;
   }
 
