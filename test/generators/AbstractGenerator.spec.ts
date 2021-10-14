@@ -14,11 +14,11 @@ export class TestGenerator extends AbstractGenerator {
   }
 
   render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
-    return Promise.resolve(RenderOutput.toRenderOutput({result: model.$id || 'rendered content', renderedName: ''}));
+    return Promise.resolve(RenderOutput.toRenderOutput({result: model.$id || 'rendered content', renderedName: 'TestName'}));
   }
 
   renderCompleteModel(model: CommonModel, inputModel: CommonInputModel, options: any): Promise<RenderOutput> {
-    throw new Error('Method not implemented.');
+    return Promise.resolve(RenderOutput.toRenderOutput({result: model.$id || 'rendered content', renderedName: 'TestName'}));
   }
 }
 describe('AbstractGenerator', () => {
@@ -32,6 +32,7 @@ describe('AbstractGenerator', () => {
     const outputModels = await generator.generate(doc);
 
     expect(outputModels[0].result).toEqual('test');
+    expect(outputModels[0].modelName).toEqual('TestName');
   });
 
   test('generate() should process CommonInputModel instance', async () => {
@@ -41,6 +42,7 @@ describe('AbstractGenerator', () => {
     cim.models[model.$id] = model;
     const outputModels = await generator.generate(cim);
     expect(outputModels[0].result).toEqual('test');
+    expect(outputModels[0].modelName).toEqual('TestName');
   });
 
   test('should `process` function return CommonInputModel', async () => {
@@ -64,6 +66,7 @@ describe('AbstractGenerator', () => {
     const renderedContent = await generator.render(commonInputModel.models[keys[0]], commonInputModel);
 
     expect(renderedContent.result).toEqual('SomeModel');
+    expect(renderedContent.renderedName).toEqual('TestName');
     expect(renderedContent.dependencies).toEqual([]);
   });
 
