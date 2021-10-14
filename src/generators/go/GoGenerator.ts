@@ -14,17 +14,17 @@ import { pascalCaseTransformMerge } from 'change-case';
  * The Go naming convention type
  */
 export type GoNamingConvention = {
-  type?: (renderedName: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel }) => string;
-  field?: (renderedName: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel, field?: CommonModel }) => string;
+  type?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel }) => string;
+  field?: (fieldName: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel, field?: CommonModel }) => string;
 };
 
 /**
  * A GoNamingConvention implementation for Go
  */
 export const GoNamingConventionImplementation: GoNamingConvention = {
-  type: (renderedName: string | undefined) => {
-    if (!renderedName) {return '';}
-    return FormatHelpers.toPascalCase(renderedName, { transform: pascalCaseTransformMerge });
+  type: (name: string | undefined) => {
+    if (!name) {return '';}
+    return FormatHelpers.toPascalCase(name, { transform: pascalCaseTransformMerge });
   },
   field: (fieldName: string | undefined) => {
     if (!fieldName) {return '';}
