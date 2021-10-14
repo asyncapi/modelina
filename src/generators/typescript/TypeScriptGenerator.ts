@@ -56,7 +56,7 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,Typ
     const outputContent = `${modelDependencies.join('\n')}
 ${outputModel.dependencies.join('\n')}
 ${outputModel.result}`;
-    return RenderOutput.toRenderOutput({ result: outputContent, dependencies: outputModel.dependencies });
+    return RenderOutput.toRenderOutput({ result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies });
   }
 
   render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
@@ -76,28 +76,32 @@ ${outputModel.result}`;
     const presets = this.getPresets('class'); 
     const renderer = new ClassRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({result, dependencies: renderer.dependencies});
+    const renderedName = renderer.nameType(model.$id, model);
+    return RenderOutput.toRenderOutput({result, renderedName, dependencies: renderer.dependencies});
   }
 
   async renderInterface(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const presets = this.getPresets('interface'); 
     const renderer = new InterfaceRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({result, dependencies: renderer.dependencies});
+    const renderedName = renderer.nameType(model.$id, model);
+    return RenderOutput.toRenderOutput({result, renderedName, dependencies: renderer.dependencies});
   }
 
   async renderEnum(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const presets = this.getPresets('enum'); 
     const renderer = new EnumRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({result, dependencies: renderer.dependencies});
+    const renderedName = renderer.nameType(model.$id, model);
+    return RenderOutput.toRenderOutput({result, renderedName, dependencies: renderer.dependencies});
   }
 
   async renderType(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const presets = this.getPresets('type'); 
     const renderer = new TypeRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({result, dependencies: renderer.dependencies});
+    const renderedName = renderer.nameType(model.$id, model);
+    return RenderOutput.toRenderOutput({result, renderedName, dependencies: renderer.dependencies});
   }
 
   private renderModelType(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {

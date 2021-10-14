@@ -60,7 +60,7 @@ export class CSharpGenerator extends AbstractGenerator<CSharpOptions, CSharpRend
   ${outputModel.result}
 }`;
     
-    return RenderOutput.toRenderOutput({result: outputContent, dependencies: outputModel.dependencies});
+    return RenderOutput.toRenderOutput({result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies});
   }
 
   render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
@@ -75,20 +75,22 @@ export class CSharpGenerator extends AbstractGenerator<CSharpOptions, CSharpRend
     case ModelKind.ENUM: 
       return this.renderEnum(model, inputModel);
     }
-    return Promise.resolve(RenderOutput.toRenderOutput({ result: '', dependencies: [] }));
+    return Promise.resolve(RenderOutput.toRenderOutput({ result: '', renderedName: 'unknown', dependencies: [] }));
   }
 
   async renderEnum(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const presets = this.getPresets('enum');
     const renderer = new EnumRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({ result, dependencies: renderer.dependencies });
+    const renderedName = renderer.nameType(model.$id, model);
+    return RenderOutput.toRenderOutput({ result, renderedName, dependencies: renderer.dependencies });
   }
 
   async renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const presets = this.getPresets('class');
     const renderer = new ClassRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({ result, dependencies: renderer.dependencies });
+    const renderedName = renderer.nameType(model.$id, model);
+    return RenderOutput.toRenderOutput({ result, renderedName, dependencies: renderer.dependencies });
   }
 }

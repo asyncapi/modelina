@@ -14,7 +14,7 @@ export class TestGenerator extends AbstractGenerator {
   }
 
   render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
-    return Promise.resolve(RenderOutput.toRenderOutput({result: model.$id || 'rendered content'}));
+    return Promise.resolve(RenderOutput.toRenderOutput({result: model.$id || 'rendered content', renderedName: ''}));
   }
 
   renderCompleteModel(model: CommonModel, inputModel: CommonInputModel, options: any): Promise<RenderOutput> {

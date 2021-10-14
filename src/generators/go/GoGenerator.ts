@@ -14,17 +14,17 @@ import { pascalCaseTransformMerge } from 'change-case';
  * The Go naming convention type
  */
 export type GoNamingConvention = {
-  type?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel }) => string;
-  field?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel, field?: CommonModel }) => string;
+  type?: (renderedName: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel }) => string;
+  field?: (renderedName: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel, field?: CommonModel }) => string;
 };
 
 /**
  * A GoNamingConvention implementation for Go
  */
 export const GoNamingConventionImplementation: GoNamingConvention = {
-  type: (name: string | undefined) => {
-    if (!name) {return '';}
-    return FormatHelpers.toPascalCase(name, { transform: pascalCaseTransformMerge });
+  type: (renderedName: string | undefined) => {
+    if (!renderedName) {return '';}
+    return FormatHelpers.toPascalCase(renderedName, { transform: pascalCaseTransformMerge });
   },
   field: (fieldName: string | undefined) => {
     if (!fieldName) {return '';}
@@ -64,7 +64,7 @@ export class GoGenerator extends AbstractGenerator<GoOptions> {
     case ModelKind.ENUM: 
       return this.renderEnum(model, inputModel);
     }
-    return Promise.resolve(RenderOutput.toRenderOutput({ result: '', dependencies: [] }));
+    return Promise.resolve(RenderOutput.toRenderOutput({ result: '', renderedName: 'unknown', dependencies: [] }));
   }
 
   renderCompleteModel(): Promise<RenderOutput> {
@@ -75,13 +75,15 @@ export class GoGenerator extends AbstractGenerator<GoOptions> {
     const presets = this.getPresets('enum');
     const renderer = new EnumRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({ result, dependencies: renderer.dependencies });
+    const renderedName = renderer.nameType(model.$id, model);
+    return RenderOutput.toRenderOutput({ result, renderedName, dependencies: renderer.dependencies });
   }
 
   async renderStruct(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const presets = this.getPresets('struct');
     const renderer = new StructRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({ result, dependencies: renderer.dependencies });
+    const renderedName = renderer.nameType(model.$id, model);
+    return RenderOutput.toRenderOutput({ result, renderedName, dependencies: renderer.dependencies });
   }
 }

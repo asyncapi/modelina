@@ -37,13 +37,14 @@ export class JavaScriptGenerator extends AbstractGenerator<JavaScriptOptions> {
     if (kind === ModelKind.OBJECT) {
       return this.renderClass(model, inputModel);
     }
-    return Promise.resolve(RenderOutput.toRenderOutput({result: '', dependencies: []}));
+    return Promise.resolve(RenderOutput.toRenderOutput({result: '', renderedName: 'unknown', dependencies: []}));
   }
 
   async renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const presets = this.getPresets('class'); 
     const renderer = new ClassRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({result, dependencies: renderer.dependencies});
+    const renderedName = renderer.nameType(model.$id, model);
+    return RenderOutput.toRenderOutput({result, renderedName, dependencies: renderer.dependencies});
   }
 }
