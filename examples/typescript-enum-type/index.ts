@@ -15,15 +15,15 @@ const jsonSchemaDraft7 = {
 };
 
 export async function generate(): Promise<void> {
-  console.log('Generated with Enum');
-  const modelsEnum = await generatorEnum.generate(jsonSchemaDraft7);
-  for (const model of modelsEnum) {
+  console.log('Generator output with Union:');
+  const modelsUnion = await generatorUnion.generate(jsonSchemaDraft7);
+  for (const model of modelsUnion) {
     console.log(model.result);
   }
 
-  console.log('Generated with Union');
-  const modelsUnion = await generatorUnion.generate(jsonSchemaDraft7);
-  for (const model of modelsUnion) {
+  console.log('Generator output with Enum:');
+  const modelsEnum = await generatorEnum.generate(jsonSchemaDraft7);
+  for (const model of modelsEnum) {
     console.log(model.result);
   }
 }
