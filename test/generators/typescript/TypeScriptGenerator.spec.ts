@@ -294,6 +294,27 @@ ${content}`;
     expect(enumModel.dependencies).toEqual([]);
   });
 
+  test('should render `enum` type as `union` if option enumType = `union`', async () => {
+    const doc = {
+      $id: 'States',
+      type: 'string',
+      enum: ['Texas', 'Alabama', 'California'],
+    };
+    const expected = `export type States = "Texas" | "Alabama" | "California";`;
+
+    const unionGenerator = new TypeScriptGenerator({enumType: 'union'});
+    const inputModel = await unionGenerator.process(doc);
+    const model = inputModel.models['States'];
+
+    let enumModel = await unionGenerator.render(model, inputModel);
+    expect(enumModel.result).toEqual(expected);
+    expect(enumModel.dependencies).toEqual([]);
+    
+    enumModel = await unionGenerator.renderType(model, inputModel);
+    expect(enumModel.result).toEqual(expected);
+    expect(enumModel.dependencies).toEqual([]);
+  });
+
   test('should render union `enum` values', async () => {
     const doc = {
       $id: 'States',

@@ -14,6 +14,7 @@ import { TypeRenderer } from './renderers/TypeRenderer';
 export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPreset> {
   renderTypes?: boolean;
   modelType?: 'class' | 'interface';
+  enumType?: 'enum' | 'union';
   namingConvention?: CommonNamingConvention;
 }
 
@@ -29,6 +30,7 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,Typ
     ...defaultGeneratorOptions,
     renderTypes: true,
     modelType: 'class',
+    enumType: 'enum',
     defaultPreset: TS_DEFAULT_PRESET,
     namingConvention: CommonNamingConventionImplementation
   };
@@ -61,11 +63,15 @@ ${outputModel.result}`;
 
   render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const kind = TypeHelpers.extractKind(model);
+    this.options.enumType === "enum"
     switch (kind) {
     case ModelKind.OBJECT: {
       return this.renderModelType(model, inputModel);
     }
     case ModelKind.ENUM: {
+      if (this.options.enumType === 'union') {
+        return this.renderType(model, inputModel);
+      }
       return this.renderEnum(model, inputModel);
     }
     default: return this.renderType(model, inputModel);
