@@ -32,6 +32,8 @@ export enum Event = {
 export type Event = "ping" | "pong";
 ```
 
+Check out this [example out for a live demonstration](../../examples/typescript-enum-type).
+
 ## Generate un/marshal functions for classes
 
 TODO
