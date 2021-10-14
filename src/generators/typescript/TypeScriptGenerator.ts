@@ -63,7 +63,6 @@ ${outputModel.result}`;
 
   render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const kind = TypeHelpers.extractKind(model);
-    this.options.enumType === "enum"
     switch (kind) {
     case ModelKind.OBJECT: {
       return this.renderModelType(model, inputModel);
