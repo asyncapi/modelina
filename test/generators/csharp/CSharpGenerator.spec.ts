@@ -93,7 +93,7 @@ describe('CSharpGenerator', () => {
     expect(classModel.dependencies).toEqual(['using System.Collections.Generic;']);
   });
 
-  describe.each([
+  test.each([
     {
       name: 'with enums sharing same type',
       doc: {
@@ -109,19 +109,17 @@ describe('CSharpGenerator', () => {
         enum: ['Texas', '1', 1, false, {test: 'test'}],
       }
     },
-  ])('should render `enum` type $name', ({doc}) => {
-    test('should not be empty', async () => {
-      const inputModel = await generator.process(doc);
-      const model = inputModel.models[doc.$id];
+  ])('should render `enum` type $name', async ({doc}) => {
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models[doc.$id];
 
-      let enumModel = await generator.render(model, inputModel);
-      expect(enumModel.result).toMatchSnapshot();
-      expect(enumModel.dependencies).toEqual([]);
-        
-      enumModel = await generator.renderEnum(model, inputModel);
-      expect(enumModel.result).toMatchSnapshot();
-      expect(enumModel.dependencies).toEqual([]);
-    });
+    let enumModel = await generator.render(model, inputModel);
+    expect(enumModel.result).toMatchSnapshot();
+    expect(enumModel.dependencies).toEqual([]);
+      
+    enumModel = await generator.renderEnum(model, inputModel);
+    expect(enumModel.result).toMatchSnapshot();
+    expect(enumModel.dependencies).toEqual([]);
   });
 
   test('should work custom preset for `enum` type', async () => {
