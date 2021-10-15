@@ -1,6 +1,6 @@
-# JSON Schema draft 7
+# TypeScript Enum Types
 
-A basic example of how to use Modelina with JSON Schema draft 7 input.
+A basic example of how to use Modelina can output different types of enums in TypeScript.
 
 ## How to run this example
 

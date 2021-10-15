@@ -131,6 +131,28 @@
         "test",
         "doc"
       ]
+    },
+    {
+      "login": "panwauu",
+      "name": "panwauu",
+      "avatar_url": "https://avatars.githubusercontent.com/u/62597223?v=4",
+      "profile": "https://github.com/panwauu",
+      "contributions": [
+        "code",
+        "test",
+        "example",
+        "doc",
+        "bug"
+      ]
+    },
+    {
+      "login": "stefanerwinmayer",
+      "name": "Stefan E. Mayer",
+      "avatar_url": "https://avatars.githubusercontent.com/u/15031950?v=4",
+      "profile": "https://www.linkedin.com/in/stefanemayer/",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,

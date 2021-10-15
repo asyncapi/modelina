@@ -44,6 +44,7 @@ Below is a list of additional options available for a given generator.
 |---|---|---|---|
 | `renderTypes` | Boolean | Render signature for types. | `true` |
 | `modelType` | String | It indicates which model type should be rendered for the `object` type. Its value can be either `interface` or `class`. | `class` |
+| `enumType` | String | It indicates which type should be rendered for the `enum` type. Its value can be either `union` or `enum`. | `enum` |
 | `namingConvention` | Object | Options for naming conventions. | - |
 | `namingConvention.type` | Function | A function that returns the format of the type. | _Returns pascal cased name, and ensures that reserved keywords are never rendered__ |
 | `namingConvention.property` | Function | A function that returns the format of the property. | _Returns camel cased name, and ensures that names of properties does not clash against reserved keywords for TS, as well as JS to ensure painless transpilation_ |

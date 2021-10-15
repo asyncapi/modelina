@@ -1,6 +1,6 @@
-# JSON Schema draft 7
+# TypeScript Data Models with un/marshalling functionality
 
-A basic example of how to use Modelina with JSON Schema draft 7 input.
+A basic example of how to use the un/marshalling functionality of the typescript class.
 
 ## How to run this example
 
