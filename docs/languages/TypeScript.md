@@ -1,4 +1,5 @@
 # TypeScript
+
 There are special use-cases that each language supports; this document pertains to **TypeScript models**.
 
 <!-- toc is generated with GitHub Actions do not remove toc markers -->
@@ -36,12 +37,16 @@ Check out this [example out for a live demonstration](../../examples/typescript-
 
 ## Generate un/marshal functions for classes
 
-TODO: Add explanation with usecase
+Sometimes you want to use the models for data transfers, and while most cases would work out of the box, custom serializer functionality is needed for the advanced cases. If you generated the data models based on a JSON Schema document and you want the serialized data to validate against the schema, this functionality is REQUIRED.
+
+This can be done by including the preset `TS_COMMON_PRESET` using the option `marshalling`.
 
 Check out this [example out for a live demonstration](../../examples/typescript-generate-unmarshal).
 
 ## Generate example data function
 
-TODO: Add explanation with usecase
+You might stumble upon a user case (we had one in code generation) where you want a simple example instance of the generated data model.
+
+This can be done by including the preset `TS_COMMON_PRESET` using the option `example`.
 
 Check out this [example out for a live demonstration](../../examples/typescript-generate-example).
