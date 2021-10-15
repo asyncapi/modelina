@@ -21,7 +21,7 @@ describe('NameHelpers', () => {
 
   describe('CommonNamingConventionImplementation', () => {
     const isReservedKeyword = jest.fn().mockReturnValue(false);
-    const defaultCtx = {model: CommonModel.toCommonModel({}), inputModel: new CommonInputModel(), reservedKeywordCallback: isReservedKeyword};
+    const defaultCtx = {model: CommonModel.toCommonModel({$id: 'Test'}), inputModel: new CommonInputModel(), reservedKeywordCallback: isReservedKeyword};
     describe('type', () => {
       test('should handle undefined', () => {
         const name = undefined;
@@ -40,16 +40,34 @@ describe('NameHelpers', () => {
         const formattedName = CommonNamingConventionImplementation!.property!(name, defaultCtx);
         expect(formattedName).toEqual('');
       });
-      test('Should default name to camel case', () => {
-        const name = 'some_not Pascal string';
+      test('should default name to camel case', () => {
+        const name = 'some_not camel case string';
         const formattedName = CommonNamingConventionImplementation!.property!(name, defaultCtx);
-        expect(formattedName).toEqual('someNotPascalString');
+        expect(formattedName).toEqual('someNotCamelCaseString');
       });
-      test('Should return accurate reserved property name', () => {
+      test('should return accurate reserved property name', () => {
         const name = '$ref';
         isReservedKeyword.mockReturnValueOnce(true);
         const formattedName = CommonNamingConventionImplementation!.property!(name, defaultCtx);
         expect(formattedName).toEqual('reservedRef');
+      });
+      test('should make sure no numbers can be the first character', () => {
+        const name = '123property';
+        isReservedKeyword.mockReturnValueOnce(true);
+        const formattedName = CommonNamingConventionImplementation!.property!(name, defaultCtx);
+        expect(formattedName).toEqual('number123property');
+      });
+      test('should make sure special characters are removed', () => {
+        const name = '!"#€%&/()=?`^*_:>Name';
+        isReservedKeyword.mockReturnValueOnce(true);
+        const formattedName = CommonNamingConventionImplementation!.property!(name, defaultCtx);
+        expect(formattedName).toEqual('name');
+      });
+      test('property name should not be the same as the model name', () => {
+        const name = 'Test';
+        isReservedKeyword.mockReturnValueOnce(true);
+        const formattedName = CommonNamingConventionImplementation!.property!(name, defaultCtx);
+        expect(formattedName).toEqual('reservedTest');
       });
     });
   });

@@ -74,10 +74,10 @@ export const CommonNamingConventionImplementation: CommonNamingConvention = {
     const firstChar = formattedName.charAt(0); 
     if (firstChar <= '9' && firstChar >= '0') {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      formattedName = CommonNamingConventionImplementation.property!(`number_${formattedName}`, ctx);
+      formattedName = CommonNamingConventionImplementation.property!(`number${formattedName}`, ctx);
     }
 
-    //Make sure no special chars are present in the property name
+    //Make sure no special characters are present in the property name
     formattedName = formattedName.replace(/[^\w\s*]+/g, '');
 
     //Formatted name cannot be the same as the model name, as this will cause problems for most languages
