@@ -141,7 +141,8 @@
         "code",
         "test",
         "example",
-        "doc"
+        "doc",
+        "bug"
       ]
     }
   ],
