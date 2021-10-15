@@ -1,4 +1,4 @@
-# TypeScript interface
+# TypeScript Data Models with un/marshalling functionality
 
 A basic example of how to use the un/marshalling functionality of the typescript class.
 

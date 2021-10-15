@@ -1,4 +1,4 @@
-# TypeScript interface
+# TypeScript Data Models with example function
 
 A basic example of how to use Modelina and output a TypeScript class with an example function.
 
