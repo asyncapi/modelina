@@ -68,6 +68,7 @@ export const CommonNamingConventionImplementation: CommonNamingConvention = {
    */
   property: (name, ctx) => {
     if (!name) {return '';}
+
     let formattedName = FormatHelpers.toCamelCase(name);
 
     //Make sure no numbers can be rendered as first characters as the property name
@@ -76,20 +77,18 @@ export const CommonNamingConventionImplementation: CommonNamingConvention = {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       formattedName = CommonNamingConventionImplementation.property!(`number${formattedName}`, ctx);
     }
-
-    //Make sure no special characters are present in the property name
-    formattedName = formattedName.replace(/[^\w\s*]+/g, '');
-
+    
     //Formatted name cannot be the same as the model name, as this will cause problems for most languages
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const formattedTypeName = CommonNamingConventionImplementation.type!(ctx.model.$id, ctx);
-    if (formattedTypeName === formattedName) {
+    if (formattedTypeName.toLowerCase() === formattedName.toLowerCase()) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       formattedName = CommonNamingConventionImplementation.property!(`reserved_${formattedName}`, ctx);
     }
 
     // If name is considered a reserved keyword, make sure we rename it appropriately
-    if (ctx.reservedKeywordCallback !== undefined && ctx.reservedKeywordCallback(formattedName)) { 
+    const isReservedKeyword = ctx.reservedKeywordCallback !== undefined ? ctx.reservedKeywordCallback(formattedName) : false;
+    if (isReservedKeyword === true) { 
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       formattedName = CommonNamingConventionImplementation.property!(`reserved_${formattedName}`, ctx);
     }

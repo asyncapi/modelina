@@ -49,9 +49,6 @@ const filesToTest = [
     //Blocked by https://github.com/asyncapi/modelina/issues/390
     return file !== './docs/JsonSchemaDraft-4/circleci-config.json';
   }).filter(({file}) => { 
-    //Blocked by https://github.com/asyncapi/modelina/issues/452
-    return file !== './docs/JsonSchemaDraft-4/chrome-manifest.json';
-  }).filter(({file}) => { 
     //Blocked by https://github.com/asyncapi/modelina/issues/367
     return file !== './docs/JsonSchemaDraft-4/aws-cloudformation.json';
   }),
