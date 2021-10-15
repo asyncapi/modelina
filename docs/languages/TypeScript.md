@@ -36,10 +36,12 @@ Check out this [example out for a live demonstration](../../examples/typescript-
 
 ## Generate un/marshal functions for classes
 
-TODO
+TODO: Add explanation with usecase
+
 Check out this [example out for a live demonstration](../../examples/typescript-generate-unmarshal).
 
 ## Generate example data function
 
-TODO
+TODO: Add explanation with usecase
+
 Check out this [example out for a live demonstration](../../examples/typescript-generate-example).
