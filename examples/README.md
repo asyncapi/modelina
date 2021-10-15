@@ -4,6 +4,7 @@ This directory contains a series of self-contained examples that you can use as 
 
 - [typescript-interface](./typescript-interface) - A basic TypeScript generator that outputs interfaces.
 - [typescript-enum-type](./typescript-enum-type) - A basic example of how to use Modelina can output different types of enums in TypeScript.
+- [typescript_generate_unmarshal](./typescript_generate_unmarshal) - A basic example of how to use the un/marshalling functionality of the typescript class.
 - [asyncapi-from-object](./asyncapi-from-object) - A basic example where an AsyncAPI JS object is used to generate models.
 - [asyncapi-from-parser](./asyncapi-from-parser) - A basic example where an AsyncAPI JS object from the [parser-js](https://github.com/asyncapi/parser-js) is used to generate models.
 - [json-schema-draft7-from-object](./json-schema-draft7-from-object) - A basic example where a JSON Schema draft 7 JS object is used to generate models.
