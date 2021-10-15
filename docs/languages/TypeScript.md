@@ -42,3 +42,4 @@ Check out this [example out for a live demonstration](../../examples/typescript-
 ## Generate example data function
 
 TODO
+Check out this [example out for a live demonstration](../../examples/typescript-generate-example).
