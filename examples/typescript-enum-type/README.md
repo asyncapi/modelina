@@ -8,3 +8,6 @@ Run this example using:
 ```sh
 npm i && npm run start
 ```
+```sh
+npm i && npm run start:windows
+```
