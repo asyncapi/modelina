@@ -1,7 +1,7 @@
 const spy = jest.spyOn(global.console, 'log').mockImplementation(() => { return; });
 import {generate} from './index';
 
-describe('Should render TEMPLATE with example function', () => {
+describe('Should be able to generate ts data model with example function', () => {
   afterAll(() => {
     jest.restoreAllMocks();
   });

@@ -1,7 +1,7 @@
 const spy = jest.spyOn(global.console, 'log').mockImplementation(() => { return; });
 import {generate} from './index';
 
-describe('Should render TEMPLATE with un/marshalling functions', () => {
+describe('Should be able to generate ts data model with marshal und unmarshal functions', () => {
   afterAll(() => {
     jest.restoreAllMocks();
   });
