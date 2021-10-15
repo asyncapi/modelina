@@ -41,7 +41,7 @@ Sometimes you want to use the models for data transfers, and while most cases wo
 
 This can be done by including the preset `TS_COMMON_PRESET` using the option `marshalling`.
 
-Check out this [example out for a live demonstration](../../examples/typescript-generate-unmarshal).
+Check out this [example out for a live demonstration](../../examples/typescript-generate-marshalling).
 
 ## Generate example data function
 
