@@ -3,6 +3,8 @@
   "scripts": {
     "install": "cd ../.. && npm i",
     "start": "../../node_modules/.bin/ts-node --cwd ../../ ./examples/$npm_package_config_example_name/index.ts",
-    "test": "cross-env CI=true jest --config=../../jest.config.js ./examples/$npm_package_config_example_name/index.spec.ts"
+    "start:windows": "..\\..\\node_modules\\.bin\\ts-node --cwd ..\\..\\ .\\examples\\%npm_package_config_example_name%\\index.ts",
+    "test": "../../node_modules/.bin/jest --config=../../jest.config.js ./examples/$npm_package_config_example_name/index.spec.ts",
+    "test:windows": "..\\..\\node_modules\\.bin\\jest --config=..\\..\\jest.config.js examples/%npm_package_config_example_name%/index.spec.ts"
   }
 }
