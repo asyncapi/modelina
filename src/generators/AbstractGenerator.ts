@@ -52,7 +52,13 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
     const inputModel = await this.processInput(input);
     const renders = Object.values(inputModel.models).map(async (model) => {
       const renderedOutput = await this.renderCompleteModel(model, inputModel, options);
-      return OutputModel.toOutputModel({ result: renderedOutput.result, model, modelName: renderedOutput.renderedName, inputModel, dependencies: renderedOutput.dependencies});
+      return OutputModel.toOutputModel({ 
+        result: renderedOutput.result,
+        modelName: renderedOutput.renderedName, 
+        dependencies: renderedOutput.dependencies,
+        model, 
+        inputModel
+      });
     });
     return Promise.all(renders);
   }
@@ -66,7 +72,13 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
     const inputModel = await this.processInput(input);
     const renders = Object.values(inputModel.models).map(async (model) => {
       const renderedOutput = await this.render(model, inputModel);
-      return OutputModel.toOutputModel({ result: renderedOutput.result, model, modelName: renderedOutput.renderedName, inputModel, dependencies: renderedOutput.dependencies});
+      return OutputModel.toOutputModel({ 
+        result: renderedOutput.result,
+        modelName: renderedOutput.renderedName, 
+        dependencies: renderedOutput.dependencies,
+        model, 
+        inputModel
+      });
     });
     return Promise.all(renders);
   }

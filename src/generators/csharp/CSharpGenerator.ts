@@ -9,6 +9,7 @@ import { CSharpPreset, CSHARP_DEFAULT_PRESET } from './CSharpPreset';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { isReservedCSharpKeyword } from './Constants';
+import { Logger } from '../../index';
 
 export interface CSharpOptions extends CommonGeneratorOptions<CSharpPreset> {
   namingConvention?: CommonNamingConvention;
@@ -75,7 +76,8 @@ export class CSharpGenerator extends AbstractGenerator<CSharpOptions, CSharpRend
     case ModelKind.ENUM: 
       return this.renderEnum(model, inputModel);
     }
-    return Promise.resolve(RenderOutput.toRenderOutput({ result: '', renderedName: 'unknown', dependencies: [] }));
+    Logger.warn(`C# generator, cannot generate this type of model, ${JSON.stringify(model)}`);
+    return Promise.resolve(RenderOutput.toRenderOutput({ result: '', renderedName: '', dependencies: [] }));
   }
 
   async renderEnum(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {

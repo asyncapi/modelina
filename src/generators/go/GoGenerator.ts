@@ -9,6 +9,7 @@ import { GoPreset, GO_DEFAULT_PRESET } from './GoPreset';
 import { StructRenderer } from './renderers/StructRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { pascalCaseTransformMerge } from 'change-case';
+import { Logger } from '../../';
 
 /**
  * The Go naming convention type
@@ -64,7 +65,8 @@ export class GoGenerator extends AbstractGenerator<GoOptions> {
     case ModelKind.ENUM: 
       return this.renderEnum(model, inputModel);
     }
-    return Promise.resolve(RenderOutput.toRenderOutput({ result: '', renderedName: 'unknown', dependencies: [] }));
+    Logger.warn(`Go generator, cannot generate this type of model, ${JSON.stringify(model)}`);
+    return Promise.resolve(RenderOutput.toRenderOutput({ result: '', renderedName: '', dependencies: [] }));
   }
 
   renderCompleteModel(): Promise<RenderOutput> {

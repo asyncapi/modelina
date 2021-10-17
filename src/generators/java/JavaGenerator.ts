@@ -9,6 +9,7 @@ import { JavaPreset, JAVA_DEFAULT_PRESET } from './JavaPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { isReservedJavaKeyword } from './Constants';
+import { Logger } from '../../';
 export interface JavaOptions extends CommonGeneratorOptions<JavaPreset> {
   collectionType?: 'List' | 'Array';
   namingConvention?: CommonNamingConvention;
@@ -44,7 +45,8 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderComp
     } else if (kind === ModelKind.ENUM) {
       return this.renderEnum(model, inputModel);
     }
-    return Promise.resolve(RenderOutput.toRenderOutput({ result: '', renderedName: 'unknown', dependencies: [] }));
+    Logger.warn(`Java generator, cannot generate this type of model, ${JSON.stringify(model)}`);
+    return Promise.resolve(RenderOutput.toRenderOutput({ result: '', renderedName: '', dependencies: [] }));
   }
 
   /**

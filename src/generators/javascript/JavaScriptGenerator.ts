@@ -8,6 +8,7 @@ import { TypeHelpers, ModelKind, CommonNamingConvention, CommonNamingConventionI
 import { JavaScriptPreset, JS_DEFAULT_PRESET } from './JavaScriptPreset';
 
 import { ClassRenderer } from './renderers/ClassRenderer';
+import { Logger } from '../../';
 export interface JavaScriptOptions extends CommonGeneratorOptions<JavaScriptPreset> {
   namingConvention?: CommonNamingConvention
 }
@@ -37,7 +38,8 @@ export class JavaScriptGenerator extends AbstractGenerator<JavaScriptOptions> {
     if (kind === ModelKind.OBJECT) {
       return this.renderClass(model, inputModel);
     }
-    return Promise.resolve(RenderOutput.toRenderOutput({result: '', renderedName: 'unknown', dependencies: []}));
+    Logger.warn(`JS generator, cannot generate this type of model, ${JSON.stringify(model)}`);
+    return Promise.resolve(RenderOutput.toRenderOutput({result: '', renderedName: '', dependencies: []}));
   }
 
   async renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
