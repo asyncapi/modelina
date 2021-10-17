@@ -33,6 +33,24 @@ describe('NameHelpers', () => {
         const formattedName = CommonNamingConventionImplementation.type!(name, defaultCtx);
         expect(formattedName).toEqual('SomeNotPascalString');
       });
+
+      test('should make sure special characters are removed', () => {
+        const name = '!"#€%&/()=?`^*_:>Name';
+        const formattedName = CommonNamingConventionImplementation.type!(name, defaultCtx);
+        expect(formattedName).toEqual('Name');
+      });
+
+      test('should make sure no numbers can be the first character', () => {
+        const name = '123property';
+        const formattedName = CommonNamingConventionImplementation.type!(name, defaultCtx);
+        expect(formattedName).toEqual('Number_123property');
+      });
+      test('should return accurate reserved property name', () => {
+        const name = 'ref';
+        defaultCtx.reservedKeywordCallback.mockReturnValueOnce(true);
+        const formattedName = CommonNamingConventionImplementation.type!(name, defaultCtx);
+        expect(formattedName).toEqual('ReservedRef');
+      });
     });
     describe('property', () => {
       test('should handle undefined', () => {
@@ -47,15 +65,14 @@ describe('NameHelpers', () => {
       });
       test('should return accurate reserved property name', () => {
         const name = 'ref';
-        const reservedKeywordCallback = jest.fn().mockReturnValueOnce(false).mockReturnValueOnce(true);
-        const ctx = {model: CommonModel.toCommonModel({$id: 'TempName'}), inputModel: new CommonInputModel(), reservedKeywordCallback};
-        const formattedName = CommonNamingConventionImplementation.property!(name, ctx);
+        defaultCtx.reservedKeywordCallback.mockReturnValueOnce(false).mockReturnValueOnce(true);
+        const formattedName = CommonNamingConventionImplementation.property!(name, defaultCtx);
         expect(formattedName).toEqual('reservedRef');
       });
       test('should make sure no numbers can be the first character', () => {
         const name = '123property';
         const formattedName = CommonNamingConventionImplementation.property!(name, defaultCtx);
-        expect(formattedName).toEqual('number123property');
+        expect(formattedName).toEqual('number_123property');
       });
       test('should make sure special characters are removed', () => {
         const name = '!"#€%&/()=?`^*_:>Name';
