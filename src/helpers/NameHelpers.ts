@@ -119,7 +119,9 @@ export const CommonNamingConventionImplementation: CommonNamingConvention = {
     // Check if name has been formatted, if it is lets make sure that the new name does not have any clashes with existing properties 
     const nameHasChanged = formattedName !== name;
     const formattedNameAlreadyIncludedInProperties = nameHasChanged && Object.keys(ctx.model.properties || {}).includes(formattedName);
-    if (formattedNameAlreadyIncludedInProperties) {
+    const formattedNameIsAdditionalProperties = nameHasChanged && ctx.model.additionalProperties !== undefined && formattedName === CommonNamingConventionImplementation.property!('additionalProperties', {...ctx, property: ctx.model.additionalProperties});
+    const formattedNameIsPatternProperties = nameHasChanged && ctx.model.patternProperties !== undefined && formattedName === CommonNamingConventionImplementation.property!('patternProperties', {...ctx, property: ctx.model.additionalProperties});
+    if (formattedNameAlreadyIncludedInProperties || formattedNameIsAdditionalProperties || formattedNameIsPatternProperties) {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       formattedName = CommonNamingConventionImplementation.property!(`reserved ${formattedName}`, ctx);
     }
@@ -127,3 +129,4 @@ export const CommonNamingConventionImplementation: CommonNamingConvention = {
     return formattedName;
   }
 };
+

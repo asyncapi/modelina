@@ -35,10 +35,7 @@ const filesToTest = [
   ...AsyncAPIV2_0Files,
   ...AsyncAPIV2_1Files,
   ...AsyncAPIV2_2Files,
-  ...jsonSchemaDraft7Files.filter(({file}) => {
-    //Blocked by https://github.com/asyncapi/modelina/issues/390
-    return file !== './docs/JsonSchemaDraft-7/graphql-code-generator.json';
-  }),
+  ...jsonSchemaDraft7Files,
   ...jsonSchemaDraft4Files.filter(({file}) => { 
     //Blocked by https://github.com/asyncapi/modelina/issues/389
     return file !== './docs/JsonSchemaDraft-4/jenkins-config.json';
@@ -47,7 +44,7 @@ const filesToTest = [
     return file !== './docs/JsonSchemaDraft-4/circleci-config.json';
   }).filter(({file}) => { 
     //Blocked by https://github.com/asyncapi/modelina/issues/390
-    return file !== './docs/JsonSchemaDraft-4/circleci-config.json';
+    return file !== './docs/JsonSchemaDraft-4/circleci-config.json' && file !== './docs/JsonSchemaDraft-4/chrome-manifest.json';
   }).filter(({file}) => { 
     //Blocked by https://github.com/asyncapi/modelina/issues/367
     return file !== './docs/JsonSchemaDraft-4/aws-cloudformation.json';

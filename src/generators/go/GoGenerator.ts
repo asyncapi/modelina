@@ -9,6 +9,7 @@ import { GoPreset, GO_DEFAULT_PRESET } from './GoPreset';
 import { StructRenderer } from './renderers/StructRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { pascalCaseTransformMerge } from 'change-case';
+import { CommonNamingConventionImplementation } from '../../';
 
 /**
  * The Go naming convention type
@@ -22,13 +23,31 @@ export type GoNamingConvention = {
  * A GoNamingConvention implementation for Go
  */
 export const GoNamingConventionImplementation: GoNamingConvention = {
-  type: (name: string | undefined) => {
-    if (!name) {return '';}
-    return FormatHelpers.toPascalCase(name, { transform: pascalCaseTransformMerge });
+  type: (name, ctx) => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return CommonNamingConventionImplementation.type!(
+      name, 
+      {
+        ...ctx, 
+        formatterCallback: (name: string) => {
+          return FormatHelpers.toPascalCase(name, { transform: pascalCaseTransformMerge });
+        }
+      }
+    ); 
   },
-  field: (fieldName: string | undefined) => {
-    if (!fieldName) {return '';}
-    return FormatHelpers.toPascalCase(fieldName, { transform: pascalCaseTransformMerge });
+  field: (fieldName, ctx) => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return CommonNamingConventionImplementation.property!(
+      fieldName, 
+      {
+        model: ctx.model,
+        inputModel: ctx.inputModel,
+        property: ctx.field,
+        formatterCallback: (name: string) => {
+          return FormatHelpers.toPascalCase(name, { transform: pascalCaseTransformMerge });
+        }
+      }
+    );
   }
 };
 

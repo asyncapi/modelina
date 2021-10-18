@@ -70,7 +70,17 @@ Check out this [example out for a live demonstration](../examples/custom-logging
 TODO 
 
 ## Change the naming format for properties
-TODO 
+We have quite a few "issues" that a custom property naming formatter have to handle if you overwrite the default behavior. At least if you want to be able to handle any type of inputs. Most of these "issues" are universal for most output languages.
+
+1. Property names cannot contain a number as the first character, so we need to define behavior when that is encountered: `{"properties": {"12Prop": {...}}`
+1. Property names cannot be the same as the data model it belongs to:  `{"$id": "PropClass", "properties": {"PropClass": {...}}`
+1. Property names cannot be reserved keyword names: `{"properties": {"return": {}}`, `{"$id": "return"}`
+1. Property names cannot contain most special characters (including space ` `): `{"properties": {"some prop !"#€%&/()=": {}}`, 
+1. If a property is renamed, we must make sure that it does not clash with the already existing property name (say we append `number` to the property name when a number is first char): `{"properties": {"12Prop": {}, "number12Prop}`. 
 
 ## Change the naming format for data models
-TODO
+
+1. Data model names cannot contain a number as the first character, so we need to define behavior when that is encountered: `{"properties": {"12Prop": {}}`
+1. Data model names cannot be reserved keywords: `{"properties": {"return": {}}`, `{"name": "return"}`
+1. Data model names cannot contains special cases (including space ` `): `{"properties": {"some prop !"#€%&/()=": {}}`, 
+1. If the data model is renamed, we must make sure that it does not clash with other existing existing data model names (say we append `number` to the property name when a number is first char): `{"properties": {"12Prop": {}, "number12Prop}`. 
