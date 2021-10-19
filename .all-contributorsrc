@@ -141,7 +141,17 @@
         "code",
         "test",
         "example",
-        "doc"
+        "doc",
+        "bug"
+      ]
+    },
+    {
+      "login": "stefanerwinmayer",
+      "name": "Stefan E. Mayer",
+      "avatar_url": "https://avatars.githubusercontent.com/u/15031950?v=4",
+      "profile": "https://www.linkedin.com/in/stefanemayer/",
+      "contributions": [
+        "bug"
       ]
     }
   ],

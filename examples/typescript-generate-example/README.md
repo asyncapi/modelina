@@ -1,6 +1,6 @@
-# JSON Schema draft 7
+# TypeScript Data Models with example function
 
-A basic example of how to use Modelina with JSON Schema draft 7 input.
+A basic example of how to use Modelina and output a TypeScript class with an example function.
 
 ## How to run this example
 
