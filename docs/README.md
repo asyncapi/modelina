@@ -4,6 +4,7 @@
 
 <!-- toc -->
 
+- [Contributing](#contributing)
 - [Usage](#usage)
 - [Advanced](#advanced)
 - [Integration](#integration)
@@ -16,6 +17,9 @@
 <!-- tocstop -->
 
 This document gives the overview of all the available documentation for Modelina.
+
+### [Contributing](./contributing.md)
+Contains all the information you need to contribute to this project.
 
 ### [Usage](./usage.md)
 Contains simple use-cases that you'll encounter when using Modelina.
