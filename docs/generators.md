@@ -30,7 +30,7 @@ Default options contain:
 
 | Option | Type | Description | Default value |
 |---|---|---|---|
-| `indentation` | Object | Options for indentation. | - |
+| `indentation` | Object | Options for indentation ([example](../src/examples/indentation-type-and-size)). | - |
 | `indentation.type` | String | Type of indentation. Its value can be either `SPACES` or `TABS`. | `SPACES` |
 | `indentation.size` | String | Size of indentation. | 2 |
 | `defaultPreset` | Object | Default preset for generator. For more information, read [customization](./customization.md) document. | _Implemented by generator_ |
