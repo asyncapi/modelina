@@ -30,7 +30,7 @@ Default options contain:
 
 | Option | Type | Description | Default value |
 |---|---|---|---|
-| `indentation` | Object | Options for indentation ([example](../src/examples/indentation-type-and-size)). | - |
+| `indentation` | Object | Options for indentation ([example](../examples/indentation-type-and-size)). | - |
 | `indentation.type` | String | Type of indentation. Its value can be either `SPACES` or `TABS`. | `SPACES` |
 | `indentation.size` | String | Size of indentation. | 2 |
 | `defaultPreset` | Object | Default preset for generator. For more information, read [customization](./customization.md) document. | _Implemented by generator_ |
@@ -38,7 +38,7 @@ Default options contain:
 
 Below is a list of additional options available for a given generator.
 
-### [TypeScript](../src/generators/typescript/TypeScriptGenerator.ts)
+### [TypeScript](./languages/TypeScript.md)
 
 | Option | Type | Description | Default value |
 |---|---|---|---|
@@ -49,7 +49,7 @@ Below is a list of additional options available for a given generator.
 | `namingConvention.type` | Function | A function that returns the format of the type. | _Returns pascal cased name, and ensures that reserved keywords are never rendered__ |
 | `namingConvention.property` | Function | A function that returns the format of the property. | _Returns camel cased name, and ensures that names of properties does not clash against reserved keywords for TS, as well as JS to ensure painless transpilation_ |
 
-### [Java](../src/generators/java/JavaGenerator.ts)
+### [Java](./languages/Java.md)
 
 | Option | Type | Description | Default value |
 |---|---|---|---|
@@ -58,7 +58,7 @@ Below is a list of additional options available for a given generator.
 | `namingConvention.type` | Function | A function that returns the format of the type. | _Returns pascal cased name, and ensures that reserved keywords are never rendered__ |
 | `namingConvention.property` | Function | A function that returns the format of the property. | _Returns camel cased name, and ensures that names of properties does not clash against reserved keywords_ |
 
-### [JavaScript](../src/generators/javascript/JavaScriptGenerator.ts)
+### [JavaScript](./languages/JavaScript.md)
 
 | Option | Type | Description | Default value |
 |---|---|---|---|
@@ -66,7 +66,7 @@ Below is a list of additional options available for a given generator.
 | `namingConvention.type` | Function | A function that returns the format of the type. | _Returns pascal cased name, and ensures that reserved keywords are never rendered_ |
 | `namingConvention.property` | Function | A function that returns the format of the property. | _Returns camel cased name, and ensures that names of properties does not clash against reserved keywords_ |
 
-### [Go](../src/generators/javascript/GoGenerator.ts)
+### [Go](./languages/Go.md)
 
 | Option | Type | Description | Default value |
 |---|---|---|---|
@@ -74,7 +74,7 @@ Below is a list of additional options available for a given generator.
 | `namingConvention.type` | Function | A function that returns the format of the type. | _Returns pascal cased name_ |
 | `namingConvention.field` | Function | A function that returns the format of the field. | _Returns pascal cased name_ |
 
-### [C#](../src/generators/csharp/CSharpGenerator.ts)
+### [C#](./languages/Csharp.md)
 
 | Option | Type | Description | Default value |
 |---|---|---|---|
