@@ -25,7 +25,9 @@ TODO
 TODO
 
 ## Include toString function for the class
-TODO
+To overwrite the `toString` method, use the preset `JAVA_COMMON_PRESET` and provide the option `classToString: true`.
+
+Check out this [example for a live demonstration](../../examples/java-generate-tostring).
 
 ## Include JavaDoc for properties
 To generate models containing `JavaDocs` from description and examples, use the `JAVA_DESCRIPTION_PRESET` option.

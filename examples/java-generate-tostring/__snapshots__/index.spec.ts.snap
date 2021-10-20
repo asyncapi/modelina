@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render TEMPLATE and should log expected output to console 1`] = `
+Array [
+  "public class Root {
+  private Object email;
+
+  public Object getEmail() { return this.email; }
+  public void setEmail(Object email) { this.email = email; }
+
+  @Override
+  public String toString() {
+    return \\"class Root {\\\\n\\" +   
+      \\"    email: \\" + toIndentedString(email) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+]
+`;
