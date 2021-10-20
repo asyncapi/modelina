@@ -1,10 +1,10 @@
-import { AbstractGenerator, FileGenerator } from '../../src/generators'; 
+import { AbstractGenerator } from '../../src/generators';
 import { IndentationTypes } from '../../src/helpers';
-import { CommonInputModel, CommonModel, OutputModel, RenderOutput } from '../../src/models';
+import { CommonInputModel, CommonModel, RenderOutput } from '../../src/models';
 
 export const testOptions = {
   indentation: {
-    type: IndentationTypes.SPACES,
+    type: 'spaces' as IndentationTypes,
     size: 2,
   }
 };

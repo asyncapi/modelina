@@ -1,5 +1,4 @@
-import { AbstractRenderer } from '../../src/generators'; 
-import { IndentationTypes } from '../../src/helpers';
+import { AbstractRenderer } from '../../src/generators';
 import { CommonInputModel, CommonModel, RenderOutput } from '../../src/models';
 import { testOptions, TestGenerator } from './AbstractGenerator.spec';
 
@@ -54,7 +53,7 @@ describe('AbstractRenderer', () => {
       expect(content).toEqual('  Test');
     });
     test('should render indentation  with options', () => {
-      const content = renderer.indent('Test', 4, IndentationTypes.SPACES);
+      const content = renderer.indent('Test', 4, 'spaces');
       expect(content).toEqual('    Test');
     });
   });
