@@ -1,6 +1,7 @@
 # Java Generate toString
 
-A Basic Example on how to overwrite the `toString` function.
+A basic example on how to generate models that overwrite the `toString` method
+
 
 ## How to run this example
 

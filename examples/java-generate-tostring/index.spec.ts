@@ -1,7 +1,7 @@
 const spy = jest.spyOn(global.console, 'log').mockImplementation(() => { return; });
 import {generate} from './index';
 
-describe('Should be able to render TEMPLATE', () => {
+describe('Should be able to generate a model to overwrite the toString method', () => {
   afterAll(() => {
     jest.restoreAllMocks();
   });

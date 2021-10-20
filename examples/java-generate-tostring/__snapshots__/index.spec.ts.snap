@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Should be able to render TEMPLATE and should log expected output to console 1`] = `
+exports[`Should be able to generate a model to overwrite the toString method and should log expected output to console 1`] = `
 Array [
   "public class Root {
   private Object email;
