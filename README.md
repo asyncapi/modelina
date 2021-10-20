@@ -10,7 +10,7 @@
 
 [![Coverage Status](https://coveralls.io/repos/github/asyncapi/modelina/badge.svg?branch=master)](https://coveralls.io/github/asyncapi/modelina?branch=master)
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-14-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ---
@@ -149,6 +149,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://sudipto.ghosh.pro"><img src="https://avatars.githubusercontent.com/u/11232940?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Sudipto Ghosh</b></sub></a><br /><a href="#example-sudiptog81" title="Examples">💡</a> <a href="https://github.com/asyncapi/modelina/commits?author=sudiptog81" title="Tests">⚠️</a> <a href="https://github.com/asyncapi/modelina/commits?author=sudiptog81" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/panwauu"><img src="https://avatars.githubusercontent.com/u/62597223?v=4?s=100" width="100px;" alt=""/><br /><sub><b>panwauu</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=panwauu" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=panwauu" title="Tests">⚠️</a> <a href="#example-panwauu" title="Examples">💡</a> <a href="https://github.com/asyncapi/modelina/commits?author=panwauu" title="Documentation">📖</a> <a href="https://github.com/asyncapi/modelina/issues?q=author%3Apanwauu" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://www.linkedin.com/in/stefanemayer/"><img src="https://avatars.githubusercontent.com/u/15031950?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Stefan E. Mayer</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/issues?q=author%3Astefanerwinmayer" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/HashTalmiz"><img src="https://avatars.githubusercontent.com/u/55018280?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Talmiz Ahmed</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=HashTalmiz" title="Documentation">📖</a></td>
   </tr>
 </table>
 
