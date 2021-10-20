@@ -1,5 +1,5 @@
 {
-  "config" : { "example_name" : "changing-indentation-type-and-size" },
+  "config" : { "example_name" : "indentation-type-and-size" },
   "scripts": {
     "install": "cd ../.. && npm i",
     "start": "../../node_modules/.bin/ts-node --cwd ../../ ./examples/$npm_package_config_example_name/index.ts",
