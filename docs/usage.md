@@ -72,4 +72,4 @@ TODO
 TypeScript is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-typescript-models) and the following [TypeScript documentation for more advanced use-cases](./languages/TypeScript.md).
 
 ## Generate JavaScript models
-TODO
+JavaScript is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-javascript-models)
