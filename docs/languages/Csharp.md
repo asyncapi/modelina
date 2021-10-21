@@ -14,4 +14,6 @@ There are special use-cases that each language supports; this document pertains 
 TODO
 
 ## Generate models with equals and GetHashCode methods
-TODO
+To overwrite the `Equal` and `GetHashCode` methods, use the preset `CSHARP_COMMON_PRESET` and provide the options `equal: true` and `hashCode: true`
+
+Check out this [example for a live demonstration](../../examples/csharp-generate-equals-and-hashcode).
