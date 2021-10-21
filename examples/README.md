@@ -17,3 +17,4 @@ This directory contains a series of self-contained examples that you can use as 
 - [generate-to-file](./generate-to-file) - A basic example that shows how you can generate the models directly to files.
 - [TEMPLATE](./TEMPLATE) - A basic template used to create new examples.
 - [java-generate-tostring](./java-generate-tostring) - A basic example that shows how to generate models that overwrite the `toString` method
+- [generate-javascript-models](./generate-javascript-models) - A basic example to generate JavaScript data models
