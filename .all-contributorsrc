@@ -153,6 +153,17 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "HashTalmiz",
+      "name": "Talmiz Ahmed",
+      "avatar_url": "https://avatars.githubusercontent.com/u/55018280?v=4",
+      "profile": "https://github.com/HashTalmiz",
+      "contributions": [
+        "doc",
+        "test",
+        "example"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -160,5 +171,6 @@
   "projectOwner": "asyncapi",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true
+  "skipCi": true,
+  "commitConvention": "none"
 }
