@@ -14,7 +14,7 @@ export interface CommonGeneratorOptions<P extends Preset = Preset> {
 
 export const defaultGeneratorOptions: CommonGeneratorOptions = {
   indentation: {
-    type: 'spaces',
+    type: IndentationTypes.SPACES,
     size: 2,
   }
 };

@@ -2,7 +2,7 @@ import { TypeScriptGenerator, IndentationTypes } from '../../src';
 
 const generator = new TypeScriptGenerator({
   indentation: {
-    type: 'tabs',
+    type: IndentationTypes.TABS,
     size: 4
   }
 });

@@ -1,4 +1,4 @@
-import { FormatHelpers } from '../../src/helpers';
+import { FormatHelpers, IndentationTypes } from '../../src/helpers'; 
 
 describe('FormatHelpers', () => {
   describe('breakLines', () => {
@@ -26,22 +26,22 @@ describe('FormatHelpers', () => {
     });
 
     test('should make indentation with no spaces', () => {
-      const content = FormatHelpers.indent('Test', -1, 'spaces');
+      const content = FormatHelpers.indent('Test', -1, IndentationTypes.SPACES);
       expect(content).toEqual('Test');
     });
     test('should make indentation with spaces', () => {
-      const content = FormatHelpers.indent('Test', 4, 'spaces');
+      const content = FormatHelpers.indent('Test', 4, IndentationTypes.SPACES);
       expect(content).toEqual('    Test');
     });
   
     test('should make indentation with tabs', () => {
-      const content = FormatHelpers.indent('Test', 2, 'tabs');
+      const content = FormatHelpers.indent('Test', 2, IndentationTypes.TABS);
       expect(content).toEqual('\t\tTest');
     });
   
     test('should be able to make nest indentation', () => {
-      let content = FormatHelpers.indent('Test', 4, 'spaces');
-      content = FormatHelpers.indent(content, 2, 'tabs');
+      let content = FormatHelpers.indent('Test', 4, IndentationTypes.SPACES);
+      content = FormatHelpers.indent(content, 2, IndentationTypes.TABS);
       expect(content).toEqual('\t\t    Test');
     });
   });

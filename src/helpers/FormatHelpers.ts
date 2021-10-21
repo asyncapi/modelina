@@ -5,7 +5,10 @@ import {
   constantCase
 } from 'change-case';
 
-export type IndentationTypes = 'tabs' | 'spaces';
+export enum IndentationTypes {
+  TABS = 'tabs',
+  SPACES = 'spaces',
+}
 
 export class FormatHelpers {
   /**
@@ -62,7 +65,7 @@ export class FormatHelpers {
    * @param {IndentationTypes} type the type of indendations to use. SPACES by default.
    * @returns {string}
    */
-  static indent(content = '', size = 1, type: IndentationTypes = 'spaces'): string {
+  static indent(content = '', size = 1, type: IndentationTypes = IndentationTypes.SPACES): string {
     if (size < 1) {
       return content;
     }
@@ -85,8 +88,8 @@ export class FormatHelpers {
    * @param {IndentationTypes} type the type of indendations to use. SPACES by default.
    * @returns {string}
    */
-  private static getIndentation(size = 0, type: IndentationTypes = 'spaces'): string {
-    const whitespaceChar = type === 'spaces' ? ' ' : '\t';
+  private static getIndentation(size = 0, type: IndentationTypes = IndentationTypes.SPACES): string {
+    const whitespaceChar = type === IndentationTypes.SPACES ? ' ' : '\t';
     return Array(size).fill(whitespaceChar).join('');
   }
 
