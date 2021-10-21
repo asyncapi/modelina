@@ -1,4 +1,4 @@
-Generate JavaScript Models
+# Generate JavaScript Models
 
 A basic example to generate JavaScript data models
 
