@@ -1,6 +1,6 @@
 {
   "config": {
-    "example_name": "TEMPLATE"
+    "example_name": "csharp-generate-equals-and-hashcode"
   },
   "scripts": {
     "install": "cd ../.. && npm i",
