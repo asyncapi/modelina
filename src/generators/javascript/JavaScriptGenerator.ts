@@ -6,7 +6,6 @@ import {
 import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
 import { TypeHelpers, ModelKind, CommonNamingConvention, CommonNamingConventionImplementation } from '../../helpers';
 import { JavaScriptPreset, JS_DEFAULT_PRESET } from './JavaScriptPreset';
-
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { Logger } from '../../';
 export interface JavaScriptOptions extends CommonGeneratorOptions<JavaScriptPreset> {
@@ -38,7 +37,7 @@ export class JavaScriptGenerator extends AbstractGenerator<JavaScriptOptions> {
     if (kind === ModelKind.OBJECT) {
       return this.renderClass(model, inputModel);
     }
-    Logger.warn(`JS generator, cannot generate this type of model, ${JSON.stringify(model)}`);
+    Logger.warn(`JS generator, cannot generate model for '${model.$id}'`);
     return Promise.resolve(RenderOutput.toRenderOutput({result: '', renderedName: '', dependencies: []}));
   }
 

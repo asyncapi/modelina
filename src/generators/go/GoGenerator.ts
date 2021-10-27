@@ -16,7 +16,7 @@ import { Logger } from '../../';
  */
 export type GoNamingConvention = {
   type?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel }) => string;
-  field?: (fieldName: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel, field?: CommonModel }) => string;
+  field?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel, field?: CommonModel }) => string;
 };
 
 /**
@@ -27,9 +27,9 @@ export const GoNamingConventionImplementation: GoNamingConvention = {
     if (!name) {return '';}
     return FormatHelpers.toPascalCase(name, { transform: pascalCaseTransformMerge });
   },
-  field: (fieldName: string | undefined) => {
-    if (!fieldName) {return '';}
-    return FormatHelpers.toPascalCase(fieldName, { transform: pascalCaseTransformMerge });
+  field: (name: string | undefined) => {
+    if (!name) {return '';}
+    return FormatHelpers.toPascalCase(name, { transform: pascalCaseTransformMerge });
   }
 };
 
