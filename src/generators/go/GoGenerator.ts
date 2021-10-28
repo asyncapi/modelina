@@ -65,7 +65,7 @@ export class GoGenerator extends AbstractGenerator<GoOptions> {
     case ModelKind.ENUM: 
       return this.renderEnum(model, inputModel);
     }
-    Logger.warn(`Go generator, cannot generate this type of model, ${JSON.stringify(model)}`);
+    Logger.warn(`Go generator, cannot generate this type of model, ${model.$id}`);
     return Promise.resolve(RenderOutput.toRenderOutput({ result: '', renderedName: '', dependencies: [] }));
   }
 

@@ -76,7 +76,7 @@ export class CSharpGenerator extends AbstractGenerator<CSharpOptions, CSharpRend
     case ModelKind.ENUM: 
       return this.renderEnum(model, inputModel);
     }
-    Logger.warn(`C# generator, cannot generate this type of model, ${JSON.stringify(model)}`);
+    Logger.warn(`C# generator, cannot generate this type of model, ${model.$id}`);
     return Promise.resolve(RenderOutput.toRenderOutput({ result: '', renderedName: '', dependencies: [] }));
   }
 

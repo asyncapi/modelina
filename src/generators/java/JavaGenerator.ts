@@ -45,7 +45,7 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderComp
     } else if (kind === ModelKind.ENUM) {
       return this.renderEnum(model, inputModel);
     }
-    Logger.warn(`Java generator, cannot generate this type of model, ${JSON.stringify(model)}`);
+    Logger.warn(`Java generator, cannot generate this type of model, ${model.$id}`);
     return Promise.resolve(RenderOutput.toRenderOutput({ result: '', renderedName: '', dependencies: [] }));
   }
 
