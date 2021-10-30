@@ -83,7 +83,9 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
   const fileToGenerateFor = path.resolve(__dirname, file);
   const outputDirectoryPath = path.resolve(__dirname, outputDirectory);
   beforeAll(async () => {
-    await fs.promises.rm(outputDirectoryPath, {recursive: true});
+    if (fs.existsSync(outputDirectoryPath)) {
+      await fs.rmSync(outputDirectoryPath, {recursive: true});
+    }
   });
   describe(file, () => {
     describe('should be able to generate and compile Java', () => {
