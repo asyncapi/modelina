@@ -18,7 +18,7 @@ function readFilesInFolder(folder: string) {
   const fullPath = path.resolve(__dirname, `./docs/${folder}`);
   return fs.readdirSync(fullPath).map(
     (file) => { 
-      return { file: `./docs/${folder}/${file}`, outputDirectory: `${folder}/${path.parse(file).name}`};
+      return { file: `./docs/${folder}/${file}`, outputDirectory: `./output/${folder}/${path.parse(file).name}`};
     }
   );
 }
@@ -81,13 +81,17 @@ console.log('This is gonna take some time, Stay Awhile and Listen');
 describe.each(filesToTest)('Should be able to generate with inputs', ({file, outputDirectory}) => {
   jest.setTimeout(1000000);
   const fileToGenerateFor = path.resolve(__dirname, file);
+  const outputDirectoryPath = path.resolve(__dirname, outputDirectory);
+  beforeAll(async () => {
+    await fs.promises.rm(outputDirectoryPath, {recursive: true});
+  });
   describe(file, () => {
     describe('should be able to generate and compile Java', () => {
       test('class', async () => {
         const generator = new JavaFileGenerator();
         const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
         const input = JSON.parse(String(inputFileContent));
-        const renderOutputPath = path.resolve(__dirname, `./output/${outputDirectory}/java/class`);
+        const renderOutputPath = path.resolve(outputDirectoryPath, './java/class');
         const dependencyPath = path.resolve(__dirname, './dependencies/java/*');
 
         const generatedModels = await generator.generateToFiles(input, renderOutputPath, {packageName: 'TestPackageName'});
@@ -102,7 +106,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
         const generator = new CSharpGenerator();
         const generatedModels = await generateModels(fileToGenerateFor, generator);
         expect(generatedModels).not.toHaveLength(0);
-        const renderOutputPath = path.resolve(__dirname, `./output/${outputDirectory}/csharp`);
+        const renderOutputPath = path.resolve(outputDirectoryPath, './csharp');
         await renderModelsToSeparateFiles(generatedModels, renderOutputPath, 'cs');
         const compileCommand = `csc /target:library /out:${path.resolve(renderOutputPath, './compiled.dll')} ${path.resolve(renderOutputPath, '*.cs')}`;
         await execCommand(compileCommand);
@@ -114,9 +118,9 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
         const generator = new TypeScriptGenerator();
         const generatedModels = await generateModels(fileToGenerateFor, generator);
         expect(generatedModels).not.toHaveLength(0);
-        const renderOutputPath = path.resolve(__dirname, `./output/${outputDirectory}/ts/class/output.ts`);
+        const renderOutputPath = path.resolve(outputDirectoryPath, './ts/class/output.ts');
         await renderModels(generatedModels, renderOutputPath);
-        const transpiledOutputPath = path.resolve(__dirname, `./output/${outputDirectory}/ts/class/output.js`);
+        const transpiledOutputPath = path.resolve(outputDirectoryPath, './ts/class/output.js');
         const transpileAndRunCommand = `tsc --downlevelIteration -t es5 ${renderOutputPath} && node ${transpiledOutputPath}`;
         await execCommand(transpileAndRunCommand);
       });
@@ -125,9 +129,9 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
         const generator = new TypeScriptGenerator({modelType: 'interface'});
         const generatedModels = await generateModels(fileToGenerateFor, generator);
         expect(generatedModels).not.toHaveLength(0);
-        const renderOutputPath = path.resolve(__dirname, `./output/${outputDirectory}/ts/interface/output.ts`);
+        const renderOutputPath = path.resolve(outputDirectoryPath, './ts/interface/output.ts');
         await renderModels(generatedModels, renderOutputPath);
-        const transpiledOutputPath = path.resolve(__dirname, `./output/${outputDirectory}/ts/interface/output.js`);
+        const transpiledOutputPath = path.resolve(outputDirectoryPath, './ts/interface/output.js');
         const transpileAndRunCommand = `tsc -t es5 ${renderOutputPath} && node ${transpiledOutputPath}`;
         await execCommand(transpileAndRunCommand);
       });
@@ -138,7 +142,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
         const generator = new JavaScriptGenerator();
         const generatedModels = await generateModels(fileToGenerateFor, generator);
         expect(generatedModels).not.toHaveLength(0);
-        const renderOutputPath = path.resolve(__dirname, `./output/${outputDirectory}/js/class/output.js`);
+        const renderOutputPath = path.resolve(outputDirectoryPath, './js/class/output.js');
         await renderModels(generatedModels, renderOutputPath);
         const transpileAndRunCommand = `node ${renderOutputPath}`;
         await execCommand(transpileAndRunCommand);
@@ -150,7 +154,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
         const generator = new GoGenerator();
         const generatedModels = await generateModels(fileToGenerateFor, generator);
         expect(generatedModels).not.toHaveLength(0);
-        const renderOutputPath = path.resolve(__dirname, `./output/${outputDirectory}/go/struct/main.go`);
+        const renderOutputPath = path.resolve(outputDirectoryPath, './go/struct/main.go');
         await renderModels(generatedModels, renderOutputPath, ['package main\n', 'func main() {}']);
         const compileCommand = `go build -o ${renderOutputPath.replace('.go', '')} ${renderOutputPath}`;
         await execCommand(compileCommand);
