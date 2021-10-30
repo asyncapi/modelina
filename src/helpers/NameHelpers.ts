@@ -1,5 +1,6 @@
 import { FormatHelpers } from '../helpers';
 import { CommonInputModel, CommonModel } from '../models';
+import { PropertyType } from '../models';
 
 /**
  * Default property names for different aspects of the common model
@@ -35,10 +36,11 @@ export type CommonTypeNamingConventionCtx = {
 };
 export type CommonPropertyNamingConventionCtx = { 
   model: CommonModel, 
-  inputModel: CommonInputModel, 
-  property?: CommonModel, 
+  inputModel: CommonInputModel,
   reservedKeywordCallback?: (name: string) => boolean, 
-  formatterCallback?: (name: string) => string
+  formatterCallback?: (name: string) => string,
+  propertyType?: PropertyType,
+  deepCheck?: boolean
 };
 
 /**
@@ -91,6 +93,9 @@ export const CommonNamingConventionImplementation: CommonNamingConvention = {
     if (formatter === undefined) {
       formatter = FormatHelpers.toCamelCase;
     }
+    if (ctx.propertyType === undefined) {
+      ctx.propertyType = PropertyType.property;
+    }
 
     let formattedName = formatter(name);
 
@@ -116,14 +121,26 @@ export const CommonNamingConventionImplementation: CommonNamingConvention = {
       formattedName = CommonNamingConventionImplementation.property!(`reserved ${formattedName}`, ctx);
     }
 
-    // Check if name has been formatted, if it is lets make sure that the new name does not have any clashes with existing properties 
+    // Check if name has been formatted, if it is lets make sure that the new name does not have any clashes with other properties 
     const nameHasChanged = formattedName !== name;
-    const formattedNameAlreadyIncludedInProperties = nameHasChanged && Object.keys(ctx.model.properties || {}).includes(formattedName);
-    const formattedNameIsAdditionalProperties = nameHasChanged && ctx.model.additionalProperties !== undefined && formattedName === CommonNamingConventionImplementation.property!('additionalProperties', {...ctx, property: ctx.model.additionalProperties});
-    const formattedNameIsPatternProperties = nameHasChanged && ctx.model.patternProperties !== undefined && formattedName === CommonNamingConventionImplementation.property!('patternProperties', {...ctx, property: ctx.model.additionalProperties});
-    if (formattedNameAlreadyIncludedInProperties || formattedNameIsAdditionalProperties || formattedNameIsPatternProperties) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      formattedName = CommonNamingConventionImplementation.property!(`reserved ${formattedName}`, ctx);
+    if ((nameHasChanged || ctx.propertyType !== PropertyType.property) && ctx.deepCheck !== false) {
+      let propertiesToCheck = Object.keys(ctx.model.properties || {});
+      //If property is not a normal property, lets not filter out it'self
+      if (ctx.propertyType === PropertyType.property) {
+        propertiesToCheck = propertiesToCheck.filter((propName) => {
+          return name !== propName;
+        });
+      }
+      propertiesToCheck = propertiesToCheck.map((propName) => {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        return CommonNamingConventionImplementation.property!(propName, {...ctx, propertyType: PropertyType.property, deepCheck: false});
+      });
+      
+      const formattedNameAlreadyIncludedInProperties = propertiesToCheck.includes(formattedName);
+      if (formattedNameAlreadyIncludedInProperties) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        formattedName = CommonNamingConventionImplementation.property!(`reserved ${formattedName}`, ctx);
+      }
     }
 
     return formattedName;

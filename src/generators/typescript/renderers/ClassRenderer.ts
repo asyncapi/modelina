@@ -69,8 +69,8 @@ export const TS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
   },
   ctor({ renderer, model }) : string {
     const properties = model.properties || {};
-    const assignments = Object.entries(properties).map(([propertyName, property]) => {
-      propertyName = renderer.nameProperty(propertyName, property);
+    const assignments = Object.keys(properties).map((propertyName) => {
+      propertyName = renderer.nameProperty(propertyName);
       return `this._${propertyName} = input.${propertyName};`;
     });
     const ctorProperties = Object.entries(properties).map(([propertyName, property]) => {
@@ -88,7 +88,7 @@ ${renderer.indent(renderer.renderBlock(assignments))}
   },
   getter({ renderer, model, propertyName, property, type }): string {
     const isRequired = model.isRequired(propertyName);
-    propertyName = renderer.nameProperty(propertyName, property);
+    propertyName = renderer.nameProperty(propertyName, type);
     let signature = ''; 
     if (type === PropertyType.property) {
       signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });
@@ -100,7 +100,7 @@ ${renderer.indent(renderer.renderBlock(assignments))}
   },
   setter({ renderer, model, propertyName, property, type }): string {
     const isRequired = model.isRequired(propertyName);
-    propertyName = renderer.nameProperty(propertyName, property);
+    propertyName = renderer.nameProperty(propertyName, type);
     let signature = ''; 
     if (type === PropertyType.property) {
       signature = renderer.renderTypeSignature(property, { orUndefined: !isRequired });

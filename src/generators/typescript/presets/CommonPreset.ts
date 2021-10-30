@@ -1,7 +1,7 @@
 import { TypeScriptRenderer } from '../TypeScriptRenderer';
 import { TypeScriptPreset } from '../TypeScriptPreset';
 import { getUniquePropertyName, DefaultPropertyNames, TypeHelpers, ModelKind } from '../../../helpers';
-import { CommonInputModel, CommonModel } from '../../../models';
+import { CommonInputModel, CommonModel, PropertyType } from '../../../models';
 import renderExampleFunction from './utils/ExampleFunction';
 
 export interface TypeScriptCommonPresetOptions {
@@ -27,7 +27,7 @@ function renderMarshalProperties(model: CommonModel, renderer: TypeScriptRendere
   const properties = model.properties || {};
   const propertyKeys = [...Object.entries(properties)];
   const marshalProperties = propertyKeys.map(([prop, propModel]) => {
-    const formattedPropertyName = renderer.nameProperty(prop, propModel);
+    const formattedPropertyName = renderer.nameProperty(prop);
     const modelInstanceVariable = `this.${formattedPropertyName}`;
     const propMarshalCode = renderMarshalProperty(modelInstanceVariable, propModel, inputModel);
     const marshalCode = `json += \`"${prop}": ${propMarshalCode},\`;`;
@@ -43,7 +43,7 @@ function renderMarshalPatternProperties(model: CommonModel, renderer: TypeScript
   if (model.patternProperties !== undefined) {
     for (const [pattern, patternModel] of Object.entries(model.patternProperties)) {
       let patternPropertyName = getUniquePropertyName(model, `${pattern}${DefaultPropertyNames.patternProperties}`);
-      patternPropertyName = renderer.nameProperty(patternPropertyName, patternModel);
+      patternPropertyName = renderer.nameProperty(patternPropertyName, PropertyType.patternProperties);
       const modelInstanceVariable = 'value';
       const patternPropertyMarshalCode = renderMarshalProperty(modelInstanceVariable, patternModel, inputModel);
       const marshalCode = `json += \`"$\{key}": ${patternPropertyMarshalCode},\`;`;
@@ -63,7 +63,7 @@ function renderMarshalAdditionalProperties(model: CommonModel, renderer: TypeScr
   let marshalAdditionalProperties = '';
   if (model.additionalProperties !== undefined) {
     let additionalPropertyName = getUniquePropertyName(model, DefaultPropertyNames.additionalProperties);
-    additionalPropertyName = renderer.nameProperty(additionalPropertyName, model.additionalProperties);
+    additionalPropertyName = renderer.nameProperty(additionalPropertyName, PropertyType.additionalProperty);
     const modelInstanceVariable = 'value';
     const patternPropertyMarshalCode = renderMarshalProperty(modelInstanceVariable, model.additionalProperties, inputModel);
     const marshalCode = `json += \`"$\{key}": ${patternPropertyMarshalCode},\`;`;
@@ -112,7 +112,7 @@ function renderUnmarshalProperties(model: CommonModel, renderer: TypeScriptRende
   const properties = model.properties || {};
   const propertyKeys = [...Object.entries(properties)];
   const unmarshalProperties = propertyKeys.map(([prop, propModel]) => {
-    const formattedPropertyName = renderer.nameProperty(prop, propModel);
+    const formattedPropertyName = renderer.nameProperty(prop);
     const modelInstanceVariable = `obj["${prop}"]`;
     const unmarshalCode = renderUnmarshalProperty(modelInstanceVariable, propModel, inputModel, renderer);
     return `if (${modelInstanceVariable} !== undefined) {
@@ -128,7 +128,7 @@ function renderUnmarshalPatternProperties(model: CommonModel, renderer: TypeScri
   if (model.patternProperties !== undefined) {
     for (const [pattern, patternModel] of Object.entries(model.patternProperties)) {
       let patternPropertyName = getUniquePropertyName(model, `${pattern}${DefaultPropertyNames.patternProperties}`);
-      patternPropertyName = renderer.nameProperty(patternPropertyName, patternModel);
+      patternPropertyName = renderer.nameProperty(patternPropertyName, PropertyType.patternProperties);
       const modelInstanceVariable = 'value as any';
       const unmarshalCode = renderUnmarshalProperty(modelInstanceVariable, patternModel, inputModel, renderer);
       setPatternPropertiesMap += `if (instance.${patternPropertyName} === undefined) {instance.${patternPropertyName} = new Map();}\n`;
@@ -147,7 +147,7 @@ function renderUnmarshalAdditionalProperties(model: CommonModel, renderer: TypeS
   let setAdditionalPropertiesMap = '';
   if (model.additionalProperties !== undefined) {
     let additionalPropertyName = getUniquePropertyName(model, DefaultPropertyNames.additionalProperties);
-    additionalPropertyName = renderer.nameProperty(additionalPropertyName, model.additionalProperties);
+    additionalPropertyName = renderer.nameProperty(additionalPropertyName, PropertyType.additionalProperty);
     const modelInstanceVariable = 'value as any';
     const unmarshalCode = renderUnmarshalProperty(modelInstanceVariable, model.additionalProperties, inputModel, renderer);
     setAdditionalPropertiesMap = `if (instance.${additionalPropertyName} === undefined) {instance.${additionalPropertyName} = new Map();}`;

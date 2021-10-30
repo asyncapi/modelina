@@ -40,9 +40,9 @@ export abstract class JavaScriptRenderer extends AbstractRenderer<JavaScriptOpti
    * @param propertyName 
    * @param property
    */
-  nameProperty(propertyName: string | undefined, property?: CommonModel): string {
+  nameProperty(propertyName: string | undefined, propertyType: PropertyType = PropertyType.property): string {
     return this.options?.namingConvention?.property 
-      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property, reservedKeywordCallback: isReservedJavaScriptKeyword })
+      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, reservedKeywordCallback: isReservedJavaScriptKeyword, propertyType })
       : propertyName || '';
   }
 

@@ -28,7 +28,7 @@ export const GO_DEFAULT_STRUCT_PRESET: StructPreset<StructRenderer> = {
     return renderer.defaultSelf();
   },
   field({ fieldName, field, renderer, type }) {
-    fieldName = renderer.nameField(fieldName, field);
+    fieldName = renderer.nameField(fieldName, type);
     let fieldType = renderer.renderType(field);
     if (type === FieldType.additionalProperty || type === FieldType.patternProperties) {
       fieldType = `map[string]${fieldType}`; 

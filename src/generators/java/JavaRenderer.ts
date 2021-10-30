@@ -1,6 +1,6 @@
 import { AbstractRenderer } from '../AbstractRenderer';
 import { JavaGenerator, JavaOptions } from './JavaGenerator';
-import { CommonModel, CommonInputModel, Preset } from '../../models';
+import { CommonModel, CommonInputModel, Preset, PropertyType } from '../../models';
 import { FormatHelpers, ModelKind, TypeHelpers } from '../../helpers';
 import { isReservedJavaKeyword } from './Constants';
 
@@ -40,9 +40,9 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
    * @param propertyName 
    * @param property
    */
-  nameProperty(propertyName: string | undefined, property?: CommonModel): string {
+  nameProperty(propertyName: string | undefined, propertyType: PropertyType = PropertyType.property): string {
     return this.options?.namingConvention?.property 
-      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property, reservedKeywordCallback: isReservedJavaKeyword })
+      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, reservedKeywordCallback: isReservedJavaKeyword, propertyType })
       : propertyName || '';
   }
   

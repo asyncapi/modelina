@@ -71,8 +71,8 @@ export const JS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
   },
   ctor({ renderer, model }) {
     const properties = model.properties || {};
-    const assigments = Object.entries(properties).map(([propertyName, property]) => {
-      propertyName = renderer.nameProperty(propertyName, property);
+    const assigments = Object.keys(properties).map((propertyName) => {
+      propertyName = renderer.nameProperty(propertyName, PropertyType.property);
       return `this.${propertyName} = input.${propertyName};`;
     });
     const body = renderer.renderBlock(assigments);
@@ -81,16 +81,16 @@ export const JS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
 ${renderer.indent(body)}
 }`;
   },
-  property({ renderer, propertyName, property }) {
-    propertyName = renderer.nameProperty(propertyName, property);
+  property({ renderer, propertyName, type }) {
+    propertyName = renderer.nameProperty(propertyName, type);
     return `${propertyName};`;
   },
-  getter({ renderer, propertyName, property }) {
-    propertyName = renderer.nameProperty(propertyName, property);
+  getter({ renderer, propertyName, type }) {
+    propertyName = renderer.nameProperty(propertyName, type);
     return `get ${propertyName}() { return this.${propertyName}; }`;
   },
-  setter({ renderer, propertyName, property }) {
-    propertyName = renderer.nameProperty(propertyName, property);
+  setter({ renderer, propertyName, type }) {
+    propertyName = renderer.nameProperty(propertyName, type);
     return `set ${propertyName}(${propertyName}) { this.${propertyName} = ${propertyName}; }`;
   },
 };

@@ -3,9 +3,9 @@ import {
   CommonGeneratorOptions,
   defaultGeneratorOptions
 } from '../AbstractGenerator';
-import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
+import { CommonModel, CommonInputModel, RenderOutput, PropertyType } from '../../models';
 import { TypeHelpers, ModelKind, FormatHelpers } from '../../helpers';
-import { GoPreset, GO_DEFAULT_PRESET } from './GoPreset';
+import { FieldType, GoPreset, GO_DEFAULT_PRESET } from './GoPreset';
 import { StructRenderer } from './renderers/StructRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { pascalCaseTransformMerge } from 'change-case';
@@ -16,7 +16,7 @@ import { CommonNamingConventionImplementation } from '../../';
  */
 export type GoNamingConvention = {
   type?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel }) => string;
-  field?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel, field?: CommonModel }) => string;
+  field?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel, fieldType: FieldType }) => string;
 };
 
 /**
@@ -36,13 +36,19 @@ export const GoNamingConventionImplementation: GoNamingConvention = {
     ); 
   },
   field: (fieldName, ctx) => {
+    let propertyType = PropertyType.property;
+    if (ctx.fieldType === FieldType.additionalProperty) {
+      propertyType = PropertyType.additionalProperty;
+    } else if (ctx.fieldType === FieldType.patternProperties) {
+      propertyType = PropertyType.patternProperties;
+    }
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return CommonNamingConventionImplementation.property!(
       fieldName, 
       {
         model: ctx.model,
         inputModel: ctx.inputModel,
-        property: ctx.field,
+        propertyType,
         formatterCallback: (name: string) => {
           return FormatHelpers.toPascalCase(name, { transform: pascalCaseTransformMerge });
         }

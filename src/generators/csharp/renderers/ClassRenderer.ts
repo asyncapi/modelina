@@ -54,7 +54,7 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 
   async accessorFactory(property: CommonModel, propertyName: string, type: PropertyType): Promise<string> {
-    const formattedAccessorName = pascalCase(this.nameProperty(propertyName, property));
+    const formattedAccessorName = pascalCase(this.nameProperty(propertyName, type));
     let propertyType = this.renderType(property);
     if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
       propertyType = `Dictionary<string, ${propertyType}>`;
@@ -110,19 +110,19 @@ export const CSHARP_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
     return renderer.defaultSelf();
   },
   property({ renderer, propertyName, property, type }) {
-    propertyName = renderer.nameProperty(propertyName, property);
+    propertyName = renderer.nameProperty(propertyName, type);
     let propertyType = renderer.renderType(property);
     if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
       propertyType = `Dictionary<string, ${propertyType}>`;
     }
     return `private ${propertyType} ${propertyName};`;
   },
-  getter({ renderer, propertyName, property }) {
-    const formattedPropertyName = renderer.nameProperty(propertyName, property);
+  getter({ renderer, propertyName, type }) {
+    const formattedPropertyName = renderer.nameProperty(propertyName, type);
     return `get { return ${formattedPropertyName}; }`;
   },
-  setter({ renderer, propertyName, property }) {
-    const formattedPropertyName = renderer.nameProperty(propertyName, property);
+  setter({ renderer, propertyName, type }) {
+    const formattedPropertyName = renderer.nameProperty(propertyName, type);
     return `set { ${formattedPropertyName} = value; }`;
   }
 };

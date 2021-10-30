@@ -42,9 +42,9 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
    * @param propertyName 
    * @param property
    */
-  nameProperty(propertyName: string | undefined, property?: CommonModel): string {
+  nameProperty(propertyName: string | undefined, propertyType: PropertyType = PropertyType.property): string {
     return this.options?.namingConvention?.property 
-      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property, reservedKeywordCallback: isReservedTypeScriptKeyword })
+      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, reservedKeywordCallback: isReservedTypeScriptKeyword, propertyType })
       : propertyName || '';
   }
 
@@ -155,7 +155,7 @@ ${renderedLines}
   }
 
   renderProperty(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): string {
-    const formattedPropertyName = this.nameProperty(propertyName, property);
+    const formattedPropertyName = this.nameProperty(propertyName, type);
     let signature: string;
     switch (type) {
     case PropertyType.property:

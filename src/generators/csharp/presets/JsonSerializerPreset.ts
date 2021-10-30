@@ -1,7 +1,7 @@
 import { CSharpRenderer } from '../CSharpRenderer';
 import { CSharpPreset } from '../CSharpPreset';
 import { getUniquePropertyName, DefaultPropertyNames, FormatHelpers, TypeHelpers, ModelKind } from '../../../helpers';
-import { CommonInputModel, CommonModel } from '../../../models';
+import { CommonInputModel, CommonModel, PropertyType} from '../../../models';
 
 function renderSerializeProperty(modelInstanceVariable: string, model: CommonModel, inputModel: CommonInputModel) {
   let value = modelInstanceVariable;
@@ -20,7 +20,7 @@ function renderSerializeAdditionalProperties(model: CommonModel, renderer: CShar
   const serializeAdditionalProperties = '';
   if (model.additionalProperties !== undefined) {
     let additionalPropertyName = getUniquePropertyName(model, DefaultPropertyNames.additionalProperties);
-    additionalPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(additionalPropertyName, model.additionalProperties));
+    additionalPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(additionalPropertyName, PropertyType.additionalProperty));
     return `// Unwrap additional properties in object
 if (value.AdditionalProperties != null) {
   foreach (var additionalProperty in value.${additionalPropertyName})
@@ -43,7 +43,7 @@ function renderSerializeProperties(model: CommonModel, renderer: CSharpRenderer,
   let serializeProperties = '';
   if (model.properties !== undefined) {
     for (const [propertyName, propertyModel] of Object.entries(model.properties)) {
-      const formattedPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(propertyName, propertyModel));
+      const formattedPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(propertyName));
       const modelInstanceVariable = `value.${formattedPropertyName}`;
       serializeProperties += `if(${modelInstanceVariable} != null) { 
   // write property name and let the serializer serialize the value itself
@@ -59,7 +59,7 @@ function renderSerializePatternProperties(model: CommonModel, renderer: CSharpRe
   if (model.patternProperties !== undefined) {
     for (const [pattern, patternModel] of Object.entries(model.patternProperties)) {
       let patternPropertyName = getUniquePropertyName(model, `${pattern}${DefaultPropertyNames.patternProperties}`);
-      patternPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(patternPropertyName, patternModel));
+      patternPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(patternPropertyName, PropertyType.patternProperties));
       serializePatternProperties += `// Unwrap pattern properties in object
 if(value.${patternPropertyName} != null) { 
   foreach (var patternProp in value.${patternPropertyName})
@@ -83,12 +83,12 @@ function renderPropertiesList(model: CommonModel, renderer: CSharpRenderer) {
   const propertyFilter: string[] = [];
   if (model.additionalProperties !== undefined) {
     let additionalPropertyName = getUniquePropertyName(model, DefaultPropertyNames.additionalProperties);
-    additionalPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(additionalPropertyName, model.additionalProperties));
+    additionalPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(additionalPropertyName, PropertyType.additionalProperty));
     propertyFilter.push(`prop.Name != "${additionalPropertyName}"`);
   }
-  for (const [pattern, patternModel] of Object.entries(model.patternProperties || {})) {
+  for (const pattern of Object.keys(model.patternProperties || {})) {
     let patternPropertyName = getUniquePropertyName(model, `${pattern}${DefaultPropertyNames.patternProperties}`);
-    patternPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(patternPropertyName, patternModel));
+    patternPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(patternPropertyName, PropertyType.patternProperties));
     propertyFilter.push(`prop.Name != "${patternPropertyName}"`);
   }
   let propertiesList = 'var properties = value.GetType().GetProperties();';
@@ -148,7 +148,7 @@ function renderDeserializeProperty(type: string, model: CommonModel, inputModel:
 function renderDeserializeProperties(model: CommonModel, renderer: CSharpRenderer, inputModel: CommonInputModel) {
   const propertyEntries = Object.entries(model.properties || {});
   const deserializeProperties = propertyEntries.map(([prop, propModel]) => {
-    const formattedPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(prop, propModel));
+    const formattedPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(prop));
     const propertyModelType = renderer.renderType(propModel);
     return `if (propertyName == "${prop}")
 {
@@ -166,7 +166,7 @@ function renderDeserializePatternProperties(model: CommonModel, renderer: CSharp
   }
   const patternProperties = Object.entries(model.patternProperties).map(([pattern, patternModel]) => {
     let patternPropertyName = getUniquePropertyName(model, `${pattern}${DefaultPropertyNames.patternProperties}`);
-    patternPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(patternPropertyName, patternModel));
+    patternPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(patternPropertyName, PropertyType.patternProperties));
     const patternPropertyType = renderer.renderType(patternModel);
     return `if(instance.${patternPropertyName} == null) { instance.${patternPropertyName} = new Dictionary<string, ${patternPropertyType}>(); }
 var match = Regex.Match(propertyName, @"${pattern}");
@@ -185,7 +185,7 @@ function renderDeserializeAdditionalProperties(model: CommonModel, renderer: CSh
     return ''; 
   }
   let additionalPropertyName = getUniquePropertyName(model, DefaultPropertyNames.additionalProperties);
-  additionalPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(additionalPropertyName, model.additionalProperties));
+  additionalPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(additionalPropertyName, PropertyType.additionalProperty));
   const additionalPropertyType = renderer.renderType(model.additionalProperties);
   return `if(instance.${additionalPropertyName} == null) { instance.${additionalPropertyName} = new Dictionary<string, ${additionalPropertyType}>(); }
 var deserializedValue = ${renderDeserializeProperty(additionalPropertyType, model.additionalProperties, inputModel)};

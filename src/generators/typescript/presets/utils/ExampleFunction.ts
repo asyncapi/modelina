@@ -62,7 +62,7 @@ export default function renderExampleFunction({ renderer, model }: {
   const properties = model.properties || {};
   const setProperties = [];
   for (const [propertyName, property] of Object.entries(properties)) {
-    const formattedPropertyName = renderer.nameProperty(propertyName, property);
+    const formattedPropertyName = renderer.nameProperty(propertyName);
     const potentialRenderedValue = renderValueFromModel(property, renderer);
     if (potentialRenderedValue === undefined) {
       //Unable to determine example value, skip property.

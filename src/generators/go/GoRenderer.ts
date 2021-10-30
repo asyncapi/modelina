@@ -66,9 +66,9 @@ export abstract class GoRenderer extends AbstractRenderer<GoOptions> {
    * @param fieldName 
    * @param field
    */
-  nameField(fieldName: string | undefined, field?: CommonModel): string {
+  nameField(fieldName: string | undefined, fieldType: FieldType = FieldType.field): string {
     return this.options?.namingConvention?.field 
-      ? this.options.namingConvention.field(fieldName, { model: this.model, inputModel: this.inputModel, field })
+      ? this.options.namingConvention.field(fieldName, { model: this.model, inputModel: this.inputModel, fieldType })
       : fieldName || '';
   }
 

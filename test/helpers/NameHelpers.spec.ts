@@ -1,5 +1,5 @@
-import { CommonNamingConventionImplementation, DefaultPropertyNames, getUniquePropertyName } from '../../src/helpers'; 
-import { CommonInputModel, CommonModel } from '../../src/models';
+import { CommonNamingConvention, CommonNamingConventionImplementation, CommonPropertyNamingConventionCtx, DefaultPropertyNames, getUniquePropertyName } from '../../src/helpers'; 
+import { CommonInputModel, CommonModel, PropertyType} from '../../src/models';
 
 describe('NameHelpers', () => {
   describe('getUniquePropertyName', () => {
@@ -34,7 +34,7 @@ describe('NameHelpers', () => {
         expect(formattedName).toEqual('SomeNotPascalString');
       });
 
-      test('should make sure special characters are removed', () => {
+      test('should make sure special characters are handled', () => {
         const name = '!"#€%&/()=?`^*_:>Name';
         const formattedName = CommonNamingConventionImplementation.type!(name, defaultCtx);
         expect(formattedName).toEqual('Name');
@@ -65,7 +65,7 @@ describe('NameHelpers', () => {
       });
       test('should return accurate reserved property name', () => {
         const name = 'ref';
-        defaultCtx.reservedKeywordCallback.mockReturnValueOnce(false).mockReturnValueOnce(true);
+        (defaultCtx.reservedKeywordCallback as jest.Mock).mockReturnValueOnce(false).mockReturnValueOnce(true);
         const formattedName = CommonNamingConventionImplementation.property!(name, defaultCtx);
         expect(formattedName).toEqual('reservedRef');
       });
@@ -74,15 +74,27 @@ describe('NameHelpers', () => {
         const formattedName = CommonNamingConventionImplementation.property!(name, defaultCtx);
         expect(formattedName).toEqual('number_123property');
       });
-      test('should make sure special characters are removed', () => {
+      test('should make sure special characters are handled', () => {
         const name = '!"#€%&/()=?`^*_:>Name';
         const formattedName = CommonNamingConventionImplementation.property!(name, defaultCtx);
         expect(formattedName).toEqual('name');
       });
       test('property name should not be the same as the model name', () => {
-        const name = 'TempName';
+        const name = defaultCtx.model.$id;
         const formattedName = CommonNamingConventionImplementation.property!(name, defaultCtx);
         expect(formattedName).toEqual('reservedTempName');
+      });
+      test('should make sure additionalProperties are rendered accurately with type PropertyType.additionalProperty', () => {
+        const name = 'additionalProperties';
+        const model = CommonModel.toCommonModel({properties: { additionalProperties: {}}});
+        const formattedName = CommonNamingConventionImplementation.property!(name, {...defaultCtx, model, propertyType: PropertyType.additionalProperty});
+        expect(formattedName).toEqual('reservedAdditionalProperties');
+      });
+      test('should make sure additionalProperties are rendered accurately with normal property type', () => {
+        const name = 'additionalProperties';
+        const model = CommonModel.toCommonModel({properties: { additionalProperties: {}}});
+        const formattedName = CommonNamingConventionImplementation.property!(name, {...defaultCtx, model});
+        expect(formattedName).toEqual('additionalProperties');
       });
     });
   });

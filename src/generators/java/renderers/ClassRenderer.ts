@@ -107,7 +107,7 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
     return renderer.defaultSelf();
   },
   property({ renderer, propertyName, property, type }) {
-    propertyName = renderer.nameProperty(propertyName, property);
+    propertyName = renderer.nameProperty(propertyName, type);
     let propertyType = renderer.renderType(property);
     if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
       propertyType = `Map<String, ${propertyType}>`;
@@ -115,7 +115,7 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
     return `private ${propertyType} ${propertyName};`;
   },
   getter({ renderer, propertyName, property, type }) {
-    const formattedPropertyName = renderer.nameProperty(propertyName, property);
+    const formattedPropertyName = renderer.nameProperty(propertyName, type);
     const getterName = `get${FormatHelpers.toPascalCase(propertyName)}`;
     let getterType = renderer.renderType(property);
     if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
@@ -124,7 +124,7 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
     return `public ${getterType} ${getterName}() { return this.${formattedPropertyName}; }`;
   },
   setter({ renderer, propertyName, property, type }) {
-    const formattedPropertyName = renderer.nameProperty(propertyName, property);
+    const formattedPropertyName = renderer.nameProperty(propertyName, type);
     const setterName = FormatHelpers.toPascalCase(propertyName);
     let setterType = renderer.renderType(property);
     if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
