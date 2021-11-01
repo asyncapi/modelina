@@ -29,7 +29,7 @@ The naming rules for properties are the following:
 1. Property names cannot be the same as the data model it belongs to, such as `{"$id": "PropClass", "properties": {"PropClass": {...}}`. By default we prepend `reserved`.
 1. Property names cannot be reserved keyword names, such as `return` is reserved in for example TS. By default we prepend `reserved`.
 1. Property names cannot contain special characters (including space ` `). By default we simply remove the special characters.
-1. If any property is renamed, we must make sure that it does not clash with the already existing property name (say we prepend `number` to the property name when a number is first char). By default we prepend `reserved`. 
+1. If any property is renamed, we must make sure that it does not clash with the already existing property name (say we prepend `number` to the property name when a number is first character). By default we prepend `reserved` if we encounter such a case. 
 
 ## Data model naming format
 Because data model names might not fit the output language, there are multiple naming rules it by default adhere to, to provide full support.
@@ -93,5 +93,7 @@ Check out this [example out for a live demonstration](../examples/custom-logging
 TODO 
 
 ## Change the naming format for properties
+TODO
 
 ## Change the naming format for data models
+TODO
