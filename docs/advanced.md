@@ -69,13 +69,12 @@ Check out this [example out for a live demonstration](../examples/custom-logging
 ## Change the generated indentation type and size
 TODO 
 
-## Change the naming format for properties
-If you are aren't happy with the default naming format implementation, you can change it to suite your needs.
+## Change the default naming convention for properties
+If you are aren't happy with the default naming convention, you can change it to suite your needs.
 
 If you want to support any type of input, you might want to checkout the section about [the issues in formatting names of properties](#Property-naming-format).
 
 Check out this [example out for a live demonstration](../examples/change-property-naming-format).
-
 
 ## Change the naming format for data models
 TODO

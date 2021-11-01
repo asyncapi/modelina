@@ -1,5 +1,5 @@
-# Change property naming format
-Sometimes the default naming format is not enough, and you want to change the behavior to suit your use-case.
+# Change property naming convention
+Sometimes the default naming convention is not enough, and you want to change the behavior to suit your use-case.
 
 ## How to run this example
 
