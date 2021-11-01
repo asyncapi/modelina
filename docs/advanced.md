@@ -70,7 +70,12 @@ Check out this [example out for a live demonstration](../examples/custom-logging
 TODO 
 
 ## Change the naming format for properties
-TODO 
+If you are aren't happy with the default naming format implementation, you can change it to suite your needs.
+
+If you want to support any type of input, you might want to checkout the section about [the issues in formatting names of properties](#Property-naming-format).
+
+Check out this [example out for a live demonstration](../examples/change-property-naming-format).
+
 
 ## Change the naming format for data models
 TODO
