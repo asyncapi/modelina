@@ -74,7 +74,7 @@ If you are aren't happy with the default naming convention, you can change it to
 
 If you want to support any type of input, you might want to checkout the section about [the issues in formatting names of properties](#Property-naming-format).
 
-Check out this [example out for a live demonstration](../examples/change-property-naming-format).
+Check out this [example out for a live demonstration](../examples/change-property-naming-convention).
 
 ## Change the naming format for data models
 TODO

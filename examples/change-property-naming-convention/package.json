@@ -1,6 +1,6 @@
 {
   "config": {
-    "example_name": "change-property-naming-format"
+    "example_name": "change-property-naming-convention"
   },
   "scripts": {
     "install": "cd ../.. && npm i",
