@@ -3,16 +3,16 @@
 exports[`Should be able to render property with custom naming convention and should log expected output to console 1`] = `
 Array [
   "export class Root {
-  private _prepend_email?: string;
+  private _prependEmail?: string;
 
   constructor(input: {
-    prepend_email?: string,
+    prependEmail?: string,
   }) {
-    this._prepend_email = input.prepend_email;
+    this._prependEmail = input.prependEmail;
   }
 
-  get prepend_email(): string | undefined { return this._prepend_email; }
-  set prepend_email(prepend_email: string | undefined) { this._prepend_email = prepend_email; }
+  get prependEmail(): string | undefined { return this._prependEmail; }
+  set prependEmail(prependEmail: string | undefined) { this._prependEmail = prependEmail; }
 }",
 ]
 `;
