@@ -1,18 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Should be able to render property with custom naming convention and should log expected output to console 1`] = `
+exports[`Should be able to render data models with custom naming convention and should log expected output to console 1`] = `
 Array [
-  "export class Root {
-  private _prepend_email?: string;
+  "export class PrependRoot {
+  private _email?: string;
 
   constructor(input: {
-    prepend_email?: string,
+    email?: string,
   }) {
-    this._prepend_email = input.prepend_email;
+    this._email = input.email;
   }
 
-  get prepend_email(): string | undefined { return this._prepend_email; }
-  set prepend_email(prepend_email: string | undefined) { this._prepend_email = prepend_email; }
+  get email(): string | undefined { return this._email; }
+  set email(email: string | undefined) { this._email = email; }
 }",
 ]
 `;

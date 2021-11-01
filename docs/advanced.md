@@ -72,5 +72,9 @@ TODO
 ## Change the naming format for properties
 TODO 
 
-## Change the naming format for data models
-TODO
+## Change the naming convention for data models
+If you are aren't happy with the default naming convention, you can change it to suite your needs.
+
+If you want to support any type of input, you might want to checkout the section about [the issues in formatting data model names](#data-models-naming-convention).
+
+Check out this [example out for a live demonstration](../examples/change-property-naming-convention).

@@ -2,11 +2,13 @@ import { CommonNamingConventionImplementation, TypeScriptGenerator } from '../..
 
 const generator = new TypeScriptGenerator({
   namingConvention: {
-    property: (name, context) => {
-      return `prepend_${name}`;
-    },
-    // Using the same default naming convention for the data models 
-    type: CommonNamingConventionImplementation.type
+    // Using the same default naming convention for properties 
+    property: CommonNamingConventionImplementation.property,
+    type: (name, context) => {
+      // Lets prepend something to each data model name, and then follow the default naming convention.
+      const newName = `prepend_${name}`;
+      return CommonNamingConventionImplementation.type!(newName, context);
+    }
   }
 });
 const jsonSchemaDraft7 = {

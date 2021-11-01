@@ -1,7 +1,7 @@
 const spy = jest.spyOn(global.console, 'log').mockImplementation(() => { return; });
 import {generate} from './index';
 
-describe('Should be able to render property with custom naming convention', () => {
+describe('Should be able to render data models with custom naming convention', () => {
   afterAll(() => {
     jest.restoreAllMocks();
   });
