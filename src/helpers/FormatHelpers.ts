@@ -46,6 +46,8 @@ const specialCharacterReplacements = new Map<string, string>([
   ['~', 'tilde'],
 ]);
 
+interface replaceSpecialCharactersOptions { separator?: string, exclude?: string[] }
+
 export class FormatHelpers {
   /**
    * Upper first char in given string value.
@@ -87,10 +89,10 @@ export class FormatHelpers {
   /**
   * Replace special characters (Not 0-9,a-z,A-Z) with character names
   * @param {string} value to transform
-  * @param {{separator?: string, exclude?: string[]}} options
+  * @param {replaceSpecialCharactersOptions} options
   * @returns {string}
   */
-  static replaceSpecialCharacters(string: string, options?: { exclude?: string[], separator?: string }): string {
+  static replaceSpecialCharacters(string: string, options?: replaceSpecialCharactersOptions): string {
     const separator = options?.separator ?? '';
     return [...string].reduce((sum: string, c: string, i: number) => {
       if (options?.exclude?.includes(c)) { return sum + c; }
