@@ -1,4 +1,4 @@
-import { 
+import {
   camelCase,
   pascalCase,
   paramCase,
@@ -9,6 +9,42 @@ export enum IndentationTypes {
   TABS = 'tabs',
   SPACES = 'spaces',
 }
+
+const specialCharacterReplacements = new Map<string, string>([
+  [' ', 'space'],
+  ['!', 'exclamation'],
+  ['"', 'quotation'],
+  ['#', 'hash'],
+  ['$', 'dollar'],
+  ['%', 'percent'],
+  ['&', 'ampersand'],
+  ['\'', 'apostrophe'],
+  ['(', 'roundleft'],
+  [')', 'roundright'],
+  ['*', 'asterisk'],
+  ['+', 'plus'],
+  [',', 'comma'],
+  ['-', 'minus'],
+  ['.', 'dot'],
+  ['/', 'slash'],
+  [':', 'colon'],
+  [';', 'semicolon'],
+  ['<', 'less'],
+  ['=', 'equal'],
+  ['>', 'greater'],
+  ['?', 'question'],
+  ['@', 'at'],
+  ['[', 'squareleft'],
+  ['\\', 'backslash'],
+  [']', 'squareright'],
+  ['^', 'circumflex'],
+  ['_', 'underscore'],
+  ['`', 'graveaccent'],
+  ['{', 'curlyleft'],
+  ['|', 'vertical'],
+  ['}', 'curlyright'],
+  ['~', 'tilde'],
+])
 
 export class FormatHelpers {
   /**
@@ -47,6 +83,22 @@ export class FormatHelpers {
    * @returns {string}
    */
   static toConstantCase = constantCase;
+
+  /**
+  * Replace special characters (Not 0-9,a-z,A-Z) with character names
+  * @param {string} value to transform
+  * @param {{separator?: string, exclude?: string[]}} options
+  * @returns {string}
+  */
+  static replaceSpecialCharacters(string: string, options?: { exclude?: string[], separator?: string }): string {
+    const separator = options?.separator ?? ''
+    return [...string].reduce((sum: string, c: string, i: number) => {
+      if (options?.exclude?.includes(c)) { return sum + c }
+      const replacement = specialCharacterReplacements.get(c)
+      if (replacement === undefined) { return sum + c }
+      return sum + (sum.endsWith(separator) || sum.length === 0 ? '' : separator) + replacement + (i === string.length - 1 ? '' : separator)
+    }, '')
+  }
 
   /**
    * Ensures breaking text into new lines according to newline char (`\n`) in text.
@@ -103,7 +155,7 @@ export class FormatHelpers {
     let renderedExamples = '';
     if (Array.isArray(examples)) {
       for (const example of examples) {
-        if (renderedExamples !== '') {renderedExamples += ', ';}
+        if (renderedExamples !== '') { renderedExamples += ', '; }
         if (typeof example === 'object') {
           try {
             renderedExamples += JSON.stringify(example);
