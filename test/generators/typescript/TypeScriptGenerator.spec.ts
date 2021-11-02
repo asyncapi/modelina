@@ -1,4 +1,4 @@
-import { TypeScriptGenerator } from '../../../src/generators'; 
+import { TypeScriptGenerator } from '../../../src/generators';
 
 describe('TypeScriptGenerator', () => {
   let generator: TypeScriptGenerator;
@@ -175,20 +175,22 @@ describe('TypeScriptGenerator', () => {
   set additionalProperties(additionalProperties: Map<String, object | string | number | Array<unknown> | boolean | null> | undefined) { this._additionalProperties = additionalProperties; }
 }`;
 
-    generator = new TypeScriptGenerator({ presets: [
-      {
-        class: {
-          property({ propertyName, content }) {
-            return `@JsonProperty("${propertyName}")
+    generator = new TypeScriptGenerator({
+      presets: [
+        {
+          class: {
+            property({ propertyName, content }) {
+              return `@JsonProperty("${propertyName}")
 ${content}`;
-          },
+            },
+          }
         }
-      }
-    ] });
+      ]
+    });
 
     const inputModel = await generator.process(doc);
     const model = inputModel.models['CustomClass'];
-    
+
     const classModel = await generator.render(model, inputModel);
     expect(classModel.result).toEqual(expected);
     expect(classModel.dependencies).toEqual([]);
@@ -230,7 +232,7 @@ ${content}`;
   sTestPatternProperties?: Map<String, string>;
 }`;
 
-    const interfaceGenerator = new TypeScriptGenerator({modelType: 'interface'});
+    const interfaceGenerator = new TypeScriptGenerator({ modelType: 'interface' });
     const inputModel = await interfaceGenerator.process(doc);
     const model = inputModel.models['Address'];
 
@@ -252,15 +254,17 @@ ${content}`;
   additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null>;
 }`;
 
-    generator = new TypeScriptGenerator({ presets: [
-      {
-        interface: {
-          self({ content }) {
-            return content;
-          },
+    generator = new TypeScriptGenerator({
+      presets: [
+        {
+          interface: {
+            self({ content }) {
+              return content;
+            },
+          }
         }
-      }
-    ] });
+      ]
+    });
 
     const inputModel = await generator.process(doc);
     const model = inputModel.models['CustomInterface'];
@@ -288,7 +292,7 @@ ${content}`;
     let enumModel = await generator.render(model, inputModel);
     expect(enumModel.result).toEqual(expected);
     expect(enumModel.dependencies).toEqual([]);
-    
+
     enumModel = await generator.renderEnum(model, inputModel);
     expect(enumModel.result).toEqual(expected);
     expect(enumModel.dependencies).toEqual([]);
@@ -302,14 +306,14 @@ ${content}`;
     };
     const expected = 'export type States = "Texas" | "Alabama" | "California";';
 
-    const unionGenerator = new TypeScriptGenerator({enumType: 'union'});
+    const unionGenerator = new TypeScriptGenerator({ enumType: 'union' });
     const inputModel = await unionGenerator.process(doc);
     const model = inputModel.models['States'];
 
     let enumModel = await unionGenerator.render(model, inputModel);
     expect(enumModel.result).toEqual(expected);
     expect(enumModel.dependencies).toEqual([]);
-    
+
     enumModel = await unionGenerator.renderType(model, inputModel);
     expect(enumModel.result).toEqual(expected);
     expect(enumModel.dependencies).toEqual([]);
@@ -318,7 +322,7 @@ ${content}`;
   test('should render union `enum` values', async () => {
     const doc = {
       $id: 'States',
-      enum: [2, '2', 'test', true, {test: 'test'}]
+      enum: [2, '2', 'test', true, { test: 'test' }]
     };
     const expected = `export enum States {
   NUMBER_2 = 2,
@@ -334,7 +338,32 @@ ${content}`;
     let enumModel = await generator.render(model, inputModel);
     expect(enumModel.result).toEqual(expected);
     expect(enumModel.dependencies).toEqual([]);
-    
+
+    enumModel = await generator.renderEnum(model, inputModel);
+    expect(enumModel.result).toEqual(expected);
+    expect(enumModel.dependencies).toEqual([]);
+  });
+
+  test('should render enums with translated special characters', async () => {
+    const doc = {
+      $id: 'States',
+      enum: ['test+', 'test', 'test-', 'test?!', '*test']
+    };
+    const expected = `export enum States {
+  TEST_PLUS = "test+",
+  TEST = "test",
+  TEST_MINUS = "test-",
+  TEST_QUESTION_EXCLAMATION = "test?!",
+  ASTERISK_TEST = "*test",
+}`;
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models['States'];
+
+    let enumModel = await generator.render(model, inputModel);
+    expect(enumModel.result).toEqual(expected);
+    expect(enumModel.dependencies).toEqual([]);
+
     enumModel = await generator.renderEnum(model, inputModel);
     expect(enumModel.result).toEqual(expected);
     expect(enumModel.dependencies).toEqual([]);
@@ -352,23 +381,25 @@ ${content}`;
   CALIFORNIA = "California",
 }`;
 
-    generator = new TypeScriptGenerator({ presets: [
-      {
-        enum: {
-          self({ content }) {
-            return content;
-          },
+    generator = new TypeScriptGenerator({
+      presets: [
+        {
+          enum: {
+            self({ content }) {
+              return content;
+            },
+          }
         }
-      }
-    ] });
+      ]
+    });
 
     const inputModel = await generator.process(doc);
     const model = inputModel.models['CustomEnum'];
-    
+
     let enumModel = await generator.render(model, inputModel);
     expect(enumModel.result).toEqual(expected);
     expect(enumModel.dependencies).toEqual([]);
-    
+
     enumModel = await generator.renderEnum(model, inputModel);
     expect(enumModel.result).toEqual(expected);
     expect(enumModel.dependencies).toEqual([]);
@@ -472,7 +503,7 @@ ${content}`;
         marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
         members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
         array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
-        other_model: { type: 'object', $id: 'OtherModel', properties: {street_name: { type: 'string' }} },
+        other_model: { type: 'object', $id: 'OtherModel', properties: { street_name: { type: 'string' } } },
       },
       patternProperties: {
         '^S(.?*)test&': {
@@ -481,7 +512,7 @@ ${content}`;
       },
       required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
     };
-    const models = await generator.generateCompleteModels(doc,{});
+    const models = await generator.generateCompleteModels(doc, {});
     expect(models).toHaveLength(2);
     expect(models[0].result).toMatchSnapshot();
     expect(models[1].result).toMatchSnapshot();
