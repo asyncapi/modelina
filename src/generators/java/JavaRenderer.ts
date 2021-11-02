@@ -23,7 +23,7 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
   /**
    * Renders the name of a type based on provided generator option naming convention type function.
    * 
-   * This is used to render names of models (example TS class) and then later used if that class is referenced from other models.
+   * This is used to render names of models and then later used if it is referenced from other models.
    * 
    * @param name 
    * @param model 

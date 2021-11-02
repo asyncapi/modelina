@@ -6,8 +6,8 @@ import {
 import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
 import { TypeHelpers, ModelKind, CommonNamingConvention, CommonNamingConventionImplementation } from '../../helpers';
 import { JavaScriptPreset, JS_DEFAULT_PRESET } from './JavaScriptPreset';
-
 import { ClassRenderer } from './renderers/ClassRenderer';
+import { Logger } from '../../';
 export interface JavaScriptOptions extends CommonGeneratorOptions<JavaScriptPreset> {
   namingConvention?: CommonNamingConvention
 }
@@ -37,13 +37,15 @@ export class JavaScriptGenerator extends AbstractGenerator<JavaScriptOptions> {
     if (kind === ModelKind.OBJECT) {
       return this.renderClass(model, inputModel);
     }
-    return Promise.resolve(RenderOutput.toRenderOutput({result: '', dependencies: []}));
+    Logger.warn(`JS generator, cannot generate model for '${model.$id}'`);
+    return Promise.resolve(RenderOutput.toRenderOutput({result: '', renderedName: '', dependencies: []}));
   }
 
   async renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const presets = this.getPresets('class'); 
     const renderer = new ClassRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({result, dependencies: renderer.dependencies});
+    const renderedName = renderer.nameType(model.$id, model);
+    return RenderOutput.toRenderOutput({result, renderedName, dependencies: renderer.dependencies});
   }
 }

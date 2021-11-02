@@ -1,7 +1,5 @@
-import { CommonInputModel, CommonModel, FileGenerator, OutputModel } from '../../../src';
 import { JavaGenerator } from '../../../src/generators'; 
-import * as path from 'path';
-import * as fs from 'fs';
+
 describe('JavaGenerator', () => {
   let generator: JavaGenerator;
   beforeEach(() => {

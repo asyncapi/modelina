@@ -34,6 +34,9 @@ ${this.indent(this.renderBlock(content, 2))}
     return this.runPreset('ctor');
   }
 
+  /**
+   * Render all the properties for the class.
+   */
   async renderProperties(): Promise<string> {
     const properties = this.model.properties || {};
     const content: string[] = [];
@@ -64,6 +67,9 @@ ${this.indent(this.renderBlock(content, 2))}
     return this.runPreset('property', { propertyName, property, type});
   }
 
+  /**
+   * Render all the accessors for the properties
+   */
   async renderAccessors(): Promise<string> {
     const properties = this.model.properties || {};
     const content: string[] = [];
