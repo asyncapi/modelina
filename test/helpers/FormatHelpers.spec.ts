@@ -81,5 +81,5 @@ describe('FormatHelpers', () => {
       const content = FormatHelpers.replaceSpecialCharacters('{?_', { separator: ' ', exclude: ['_', '?', '{'] });
       expect(content).toEqual('{?_');
     });
-  })
+  });
 });

@@ -44,7 +44,7 @@ const specialCharacterReplacements = new Map<string, string>([
   ['|', 'vertical'],
   ['}', 'curlyright'],
   ['~', 'tilde'],
-])
+]);
 
 export class FormatHelpers {
   /**
@@ -91,13 +91,13 @@ export class FormatHelpers {
   * @returns {string}
   */
   static replaceSpecialCharacters(string: string, options?: { exclude?: string[], separator?: string }): string {
-    const separator = options?.separator ?? ''
+    const separator = options?.separator ?? '';
     return [...string].reduce((sum: string, c: string, i: number) => {
-      if (options?.exclude?.includes(c)) { return sum + c }
-      const replacement = specialCharacterReplacements.get(c)
-      if (replacement === undefined) { return sum + c }
-      return sum + (sum.endsWith(separator) || sum.length === 0 ? '' : separator) + replacement + (i === string.length - 1 ? '' : separator)
-    }, '')
+      if (options?.exclude?.includes(c)) { return sum + c; }
+      const replacement = specialCharacterReplacements.get(c);
+      if (replacement === undefined) { return sum + c; }
+      return sum + (sum.endsWith(separator) || sum.length === 0 ? '' : separator) + replacement + (i === string.length - 1 ? '' : separator);
+    }, '');
   }
 
   /**
