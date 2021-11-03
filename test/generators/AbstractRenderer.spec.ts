@@ -9,7 +9,7 @@ describe('AbstractRenderer', () => {
       super(testOptions, new TestGenerator(), presets, new CommonModel(), new CommonInputModel());
     }
     render(): Promise<RenderOutput> {
-      return Promise.resolve(RenderOutput.toRenderOutput({result: ''}));
+      return Promise.resolve(RenderOutput.toRenderOutput({result: '', renderedName: ''}));
     }
   }
 

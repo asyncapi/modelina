@@ -9,6 +9,7 @@ import { GoPreset, GO_DEFAULT_PRESET } from './GoPreset';
 import { StructRenderer } from './renderers/StructRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { pascalCaseTransformMerge } from 'change-case';
+import { Logger } from '../../';
 
 /**
  * The Go naming convention type
@@ -26,9 +27,9 @@ export const GoNamingConventionImplementation: GoNamingConvention = {
     if (!name) {return '';}
     return FormatHelpers.toPascalCase(name, { transform: pascalCaseTransformMerge });
   },
-  field: (fieldName: string | undefined) => {
-    if (!fieldName) {return '';}
-    return FormatHelpers.toPascalCase(fieldName, { transform: pascalCaseTransformMerge });
+  field: (name: string | undefined) => {
+    if (!name) {return '';}
+    return FormatHelpers.toPascalCase(name, { transform: pascalCaseTransformMerge });
   }
 };
 
@@ -64,7 +65,8 @@ export class GoGenerator extends AbstractGenerator<GoOptions> {
     case ModelKind.ENUM: 
       return this.renderEnum(model, inputModel);
     }
-    return Promise.resolve(RenderOutput.toRenderOutput({ result: '', dependencies: [] }));
+    Logger.warn(`Go generator, cannot generate this type of model, ${model.$id}`);
+    return Promise.resolve(RenderOutput.toRenderOutput({ result: '', renderedName: '', dependencies: [] }));
   }
 
   renderCompleteModel(): Promise<RenderOutput> {
@@ -75,13 +77,15 @@ export class GoGenerator extends AbstractGenerator<GoOptions> {
     const presets = this.getPresets('enum');
     const renderer = new EnumRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({ result, dependencies: renderer.dependencies });
+    const renderedName = renderer.nameType(model.$id, model);
+    return RenderOutput.toRenderOutput({ result, renderedName, dependencies: renderer.dependencies });
   }
 
   async renderStruct(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const presets = this.getPresets('struct');
     const renderer = new StructRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({ result, dependencies: renderer.dependencies });
+    const renderedName = renderer.nameType(model.$id, model);
+    return RenderOutput.toRenderOutput({ result, renderedName, dependencies: renderer.dependencies });
   }
 }
