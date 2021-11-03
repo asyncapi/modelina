@@ -46,7 +46,7 @@ const specialCharacterReplacements = new Map<string, string>([
   ['~', 'tilde'],
 ]);
 
-interface replaceSpecialCharactersOptions { separator?: string, exclude?: string[] }
+interface ReplaceSpecialCharactersOptions { separator?: string, exclude?: string[] }
 
 export class FormatHelpers {
   /**
@@ -89,10 +89,10 @@ export class FormatHelpers {
   /**
   * Replace special characters (Not 0-9,a-z,A-Z) with character names
   * @param {string} value to transform
-  * @param {replaceSpecialCharactersOptions} options
+  * @param {ReplaceSpecialCharactersOptions} options
   * @returns {string}
   */
-  static replaceSpecialCharacters(string: string, options?: replaceSpecialCharactersOptions): string {
+  static replaceSpecialCharacters(string: string, options?: ReplaceSpecialCharactersOptions): string {
     const separator = options?.separator ?? '';
     return [...string].reduce((sum: string, c: string, i: number) => {
       if (options?.exclude?.includes(c)) { return sum + c; }
