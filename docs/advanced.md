@@ -19,10 +19,10 @@ This document contains many of the advanced use-cases that you may stumble upon 
 
 <!-- tocstop -->
 
-## Property naming format
+## Property naming convention
 Because property names of a data model might not fit the output language, there are multiple naming rules it by default adhere to, to provide full support. Not all problems necessarily exist for all output languages, but they are handled anyway. 
 
-If you overwrite the default naming behavior, you can of course decide not to support those use-cases. Checkout [change the naming format for properties](#change-the-naming-format-for-properties) for an example how to overwrite this.
+If you overwrite the default naming convention, you can of course decide not to support those use-cases. Checkout [change the naming format for properties](#change-the-naming-format-for-properties) for an example how to overwrite this.
 
 The naming rules for properties are the following:
 1. Property names cannot contain a number as the first character, such as `12Prop`, by default we prepend `number`.
@@ -31,7 +31,9 @@ The naming rules for properties are the following:
 1. Property names cannot contain special characters (including space ` `). By default we simply remove the special characters.
 1. If any property is renamed, we must make sure that it does not clash with the already existing property name (say we prepend `number` to the property name when a number is first character). By default we prepend `reserved` if we encounter such a case. 
 
-## Data model naming format
+By default all names are formatted using a camel case format.
+
+## Data model naming convention
 Because data model names might not fit the output language, there are multiple naming rules it by default adhere to, to provide full support.
 
 If you overwrite the default naming behavior, you can of course decide not to support those use-cases. Checkout [change the naming format for data models](#change-the-naming-format-for-data-models) for an example how to overwrite this.
@@ -41,6 +43,7 @@ If you overwrite the default naming behavior, you can of course decide not to su
 1. Data model names cannot contains special cases (including space ` `). By default we simply remove the special characters.
 1. If the data model is renamed, we must make sure that it does not clash with other existing existing data model names (say we prepend `number` to the property name when a number is first char). By default we prepend `reserved`.
 
+By default all names are formatted using a pascal case format.
 
 ## Generate each model in the same file
 TODO 

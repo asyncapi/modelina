@@ -77,11 +77,15 @@ export const CommonNamingConventionImplementation: CommonNamingConvention = {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       formattedName = CommonNamingConventionImplementation.type!(`number ${formattedName}`, ctx);
     }
+
+    const nameHasChanged = formattedName !== name;
     
     return formattedName;
   },
   /**
+   * Naming convention that returns the resolved property name. 
    * 
+   * Because the raw property name can be anything, we need to make sure that it is compliant in the desired context it is rendered.
    * 
    * @param name (raw name) of the property
    * @param ctx the context it should be formatted within
