@@ -36,7 +36,7 @@
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.9",
     "@apidevtools/swagger-parser": "^10.0.3",
-    "@asyncapi/parser": "^1.10.2",
+    "@asyncapi/parser": "^1.11.0",
     "change-case": "^4.1.2",
     "openapi-types": "9.3.0"
   },
