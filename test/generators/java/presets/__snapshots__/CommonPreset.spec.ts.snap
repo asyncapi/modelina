@@ -32,7 +32,7 @@ exports[`JAVA_COMMON_PRESET should render common function in class by common pre
 
   @Override
   public int hashCode() {
-    return Objects.hash(stringProp, numberProp, additionalProperties);
+    return Objects.hash((Object)stringProp, (Object)numberProp, (Object)additionalProperties);
   }
 
   @Override
@@ -89,7 +89,7 @@ exports[`JAVA_COMMON_PRESET with option should render all functions 1`] = `
 
   @Override
   public int hashCode() {
-    return Objects.hash(stringProp, numberProp, additionalProperties);
+    return Objects.hash((Object)stringProp, (Object)numberProp, (Object)additionalProperties);
   }
 
   @Override
@@ -200,7 +200,7 @@ exports[`JAVA_COMMON_PRESET with option should render hashCode 1`] = `
 
   @Override
   public int hashCode() {
-    return Objects.hash(stringProp, numberProp, additionalProperties);
+    return Objects.hash((Object)stringProp, (Object)numberProp, (Object)additionalProperties);
   }
 }"
 `;

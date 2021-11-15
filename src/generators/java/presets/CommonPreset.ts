@@ -54,6 +54,7 @@ function renderHashCode({ renderer, model }: {
   if (model.additionalProperties !== undefined) {
     propertyKeys.push(getUniquePropertyName(model, DefaultPropertyNames.additionalProperties));
   }
+  //Object casting needed because otherwise properties with arrays fails to be compiled.
   const hashProperties = propertyKeys.map(prop => `(Object)${renderer.nameProperty(prop)}`).join(', ');
 
   return `${renderer.renderAnnotation('Override')}
