@@ -4,14 +4,26 @@ describe('JAVA_COMMON_PRESET', () => {
   const doc = {
     $id: 'Clazz',
     type: 'object',
+    required: ['requiredProp'],
     properties: {
+      requiredProp: { type: 'boolean' },
       stringProp: { type: 'string' },
       numberProp: { type: 'number' },
+      booleanProp: { type: 'boolean' },
+      arrayProp: { type: 'array', items: { type: 'string' } },
     },
   };
   test('should render common function in class by common preset', async () => {
     const generator = new JavaGenerator({ presets: [JAVA_COMMON_PRESET] });
     const inputModel = await generator.process(doc);
+    const model = inputModel.models['Clazz'];
+
+    const classModel = await generator.renderClass(model, inputModel);
+    expect(classModel.result).toMatchSnapshot();
+  });
+  test('should render accurately when there is no additional properties', async () => {
+    const generator = new JavaGenerator({ presets: [JAVA_COMMON_PRESET] });
+    const inputModel = await generator.process({...doc, additionalProperties: false});
     const model = inputModel.models['Clazz'];
 
     const classModel = await generator.renderClass(model, inputModel);
