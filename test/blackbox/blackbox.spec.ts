@@ -7,7 +7,7 @@
 
 import * as path from 'path';
 import * as fs from 'fs';
-import { TypeScriptGenerator, JavaScriptGenerator, GoGenerator, CSharpGenerator, JavaFileGenerator } from '../../src';
+import { TypeScriptGenerator, JavaScriptGenerator, GoGenerator, CSharpGenerator, JavaFileGenerator, JAVA_COMMON_PRESET } from '../../src';
 import { execCommand, generateModels, renderModels, renderModelsToSeparateFiles } from './utils/Utils';
 
 /**
@@ -88,9 +88,23 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
     }
   });
   describe(file, () => {
-    describe('should be able to generate and compile Java', () => {
+    const javaGeneratorOptions = [
+      { 
+        generatorOption: { },
+        description: 'default generator'
+      },
+      { 
+        generatorOption: {
+          presets: [
+            JAVA_COMMON_PRESET
+          ]
+        },
+        description: 'all common presets'
+      }
+    ]; 
+    describe.each(javaGeneratorOptions)('should be able to generate and compile Java', ({generatorOption, description}) => {
       test('class', async () => {
-        const generator = new JavaFileGenerator();
+        const generator = new JavaFileGenerator(generatorOption);
         const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
         const input = JSON.parse(String(inputFileContent));
         const renderOutputPath = path.resolve(outputDirectoryPath, './java/class');

@@ -1,0 +1,353 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`JAVA_COMMON_PRESET should render accurately when there is no additional properties 1`] = `
+"public class Clazz {
+  private Boolean requiredProp;
+  private String stringProp;
+  private Double numberProp;
+  private Boolean booleanProp;
+  private String[] arrayProp;
+
+  public Boolean getRequiredProp() { return this.requiredProp; }
+  public void setRequiredProp(Boolean requiredProp) { this.requiredProp = requiredProp; }
+
+  public String getStringProp() { return this.stringProp; }
+  public void setStringProp(String stringProp) { this.stringProp = stringProp; }
+
+  public Double getNumberProp() { return this.numberProp; }
+  public void setNumberProp(Double numberProp) { this.numberProp = numberProp; }
+
+  public Boolean getBooleanProp() { return this.booleanProp; }
+  public void setBooleanProp(Boolean booleanProp) { this.booleanProp = booleanProp; }
+
+  public String[] getArrayProp() { return this.arrayProp; }
+  public void setArrayProp(String[] arrayProp) { this.arrayProp = arrayProp; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Clazz self = (Clazz) o;
+      return 
+        Objects.equals(this.requiredProp, self.requiredProp) &&
+        Objects.equals(this.stringProp, self.stringProp) &&
+        Objects.equals(this.numberProp, self.numberProp) &&
+        Objects.equals(this.booleanProp, self.booleanProp) &&
+        Objects.equals(this.arrayProp, self.arrayProp);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)requiredProp, (Object)stringProp, (Object)numberProp, (Object)booleanProp, (Object)arrayProp);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Clazz {\\\\n\\" +   
+      \\"    requiredProp: \\" + toIndentedString(requiredProp) + \\"\\\\n\\" +
+      \\"    stringProp: \\" + toIndentedString(stringProp) + \\"\\\\n\\" +
+      \\"    numberProp: \\" + toIndentedString(numberProp) + \\"\\\\n\\" +
+      \\"    booleanProp: \\" + toIndentedString(booleanProp) + \\"\\\\n\\" +
+      \\"    arrayProp: \\" + toIndentedString(arrayProp) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}"
+`;
+
+exports[`JAVA_COMMON_PRESET should render common function in class by common preset 1`] = `
+"public class Clazz {
+  private Boolean requiredProp;
+  private String stringProp;
+  private Double numberProp;
+  private Boolean booleanProp;
+  private String[] arrayProp;
+  private Map<String, Object> additionalProperties;
+
+  public Boolean getRequiredProp() { return this.requiredProp; }
+  public void setRequiredProp(Boolean requiredProp) { this.requiredProp = requiredProp; }
+
+  public String getStringProp() { return this.stringProp; }
+  public void setStringProp(String stringProp) { this.stringProp = stringProp; }
+
+  public Double getNumberProp() { return this.numberProp; }
+  public void setNumberProp(Double numberProp) { this.numberProp = numberProp; }
+
+  public Boolean getBooleanProp() { return this.booleanProp; }
+  public void setBooleanProp(Boolean booleanProp) { this.booleanProp = booleanProp; }
+
+  public String[] getArrayProp() { return this.arrayProp; }
+  public void setArrayProp(String[] arrayProp) { this.arrayProp = arrayProp; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Clazz self = (Clazz) o;
+      return 
+        Objects.equals(this.requiredProp, self.requiredProp) &&
+        Objects.equals(this.stringProp, self.stringProp) &&
+        Objects.equals(this.numberProp, self.numberProp) &&
+        Objects.equals(this.booleanProp, self.booleanProp) &&
+        Objects.equals(this.arrayProp, self.arrayProp) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)requiredProp, (Object)stringProp, (Object)numberProp, (Object)booleanProp, (Object)arrayProp, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Clazz {\\\\n\\" +   
+      \\"    requiredProp: \\" + toIndentedString(requiredProp) + \\"\\\\n\\" +
+      \\"    stringProp: \\" + toIndentedString(stringProp) + \\"\\\\n\\" +
+      \\"    numberProp: \\" + toIndentedString(numberProp) + \\"\\\\n\\" +
+      \\"    booleanProp: \\" + toIndentedString(booleanProp) + \\"\\\\n\\" +
+      \\"    arrayProp: \\" + toIndentedString(arrayProp) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}"
+`;
+
+exports[`JAVA_COMMON_PRESET with option should render all functions 1`] = `
+"public class Clazz {
+  private Boolean requiredProp;
+  private String stringProp;
+  private Double numberProp;
+  private Boolean booleanProp;
+  private String[] arrayProp;
+  private Map<String, Object> additionalProperties;
+
+  public Boolean getRequiredProp() { return this.requiredProp; }
+  public void setRequiredProp(Boolean requiredProp) { this.requiredProp = requiredProp; }
+
+  public String getStringProp() { return this.stringProp; }
+  public void setStringProp(String stringProp) { this.stringProp = stringProp; }
+
+  public Double getNumberProp() { return this.numberProp; }
+  public void setNumberProp(Double numberProp) { this.numberProp = numberProp; }
+
+  public Boolean getBooleanProp() { return this.booleanProp; }
+  public void setBooleanProp(Boolean booleanProp) { this.booleanProp = booleanProp; }
+
+  public String[] getArrayProp() { return this.arrayProp; }
+  public void setArrayProp(String[] arrayProp) { this.arrayProp = arrayProp; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Clazz self = (Clazz) o;
+      return 
+        Objects.equals(this.requiredProp, self.requiredProp) &&
+        Objects.equals(this.stringProp, self.stringProp) &&
+        Objects.equals(this.numberProp, self.numberProp) &&
+        Objects.equals(this.booleanProp, self.booleanProp) &&
+        Objects.equals(this.arrayProp, self.arrayProp) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)requiredProp, (Object)stringProp, (Object)numberProp, (Object)booleanProp, (Object)arrayProp, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Clazz {\\\\n\\" +   
+      \\"    requiredProp: \\" + toIndentedString(requiredProp) + \\"\\\\n\\" +
+      \\"    stringProp: \\" + toIndentedString(stringProp) + \\"\\\\n\\" +
+      \\"    numberProp: \\" + toIndentedString(numberProp) + \\"\\\\n\\" +
+      \\"    booleanProp: \\" + toIndentedString(booleanProp) + \\"\\\\n\\" +
+      \\"    arrayProp: \\" + toIndentedString(arrayProp) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}"
+`;
+
+exports[`JAVA_COMMON_PRESET with option should render classToString 1`] = `
+"public class Clazz {
+  private Boolean requiredProp;
+  private String stringProp;
+  private Double numberProp;
+  private Boolean booleanProp;
+  private String[] arrayProp;
+  private Map<String, Object> additionalProperties;
+
+  public Boolean getRequiredProp() { return this.requiredProp; }
+  public void setRequiredProp(Boolean requiredProp) { this.requiredProp = requiredProp; }
+
+  public String getStringProp() { return this.stringProp; }
+  public void setStringProp(String stringProp) { this.stringProp = stringProp; }
+
+  public Double getNumberProp() { return this.numberProp; }
+  public void setNumberProp(Double numberProp) { this.numberProp = numberProp; }
+
+  public Boolean getBooleanProp() { return this.booleanProp; }
+  public void setBooleanProp(Boolean booleanProp) { this.booleanProp = booleanProp; }
+
+  public String[] getArrayProp() { return this.arrayProp; }
+  public void setArrayProp(String[] arrayProp) { this.arrayProp = arrayProp; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public String toString() {
+    return \\"class Clazz {\\\\n\\" +   
+      \\"    requiredProp: \\" + toIndentedString(requiredProp) + \\"\\\\n\\" +
+      \\"    stringProp: \\" + toIndentedString(stringProp) + \\"\\\\n\\" +
+      \\"    numberProp: \\" + toIndentedString(numberProp) + \\"\\\\n\\" +
+      \\"    booleanProp: \\" + toIndentedString(booleanProp) + \\"\\\\n\\" +
+      \\"    arrayProp: \\" + toIndentedString(arrayProp) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}"
+`;
+
+exports[`JAVA_COMMON_PRESET with option should render equals 1`] = `
+"public class Clazz {
+  private Boolean requiredProp;
+  private String stringProp;
+  private Double numberProp;
+  private Boolean booleanProp;
+  private String[] arrayProp;
+  private Map<String, Object> additionalProperties;
+
+  public Boolean getRequiredProp() { return this.requiredProp; }
+  public void setRequiredProp(Boolean requiredProp) { this.requiredProp = requiredProp; }
+
+  public String getStringProp() { return this.stringProp; }
+  public void setStringProp(String stringProp) { this.stringProp = stringProp; }
+
+  public Double getNumberProp() { return this.numberProp; }
+  public void setNumberProp(Double numberProp) { this.numberProp = numberProp; }
+
+  public Boolean getBooleanProp() { return this.booleanProp; }
+  public void setBooleanProp(Boolean booleanProp) { this.booleanProp = booleanProp; }
+
+  public String[] getArrayProp() { return this.arrayProp; }
+  public void setArrayProp(String[] arrayProp) { this.arrayProp = arrayProp; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Clazz self = (Clazz) o;
+      return 
+        Objects.equals(this.requiredProp, self.requiredProp) &&
+        Objects.equals(this.stringProp, self.stringProp) &&
+        Objects.equals(this.numberProp, self.numberProp) &&
+        Objects.equals(this.booleanProp, self.booleanProp) &&
+        Objects.equals(this.arrayProp, self.arrayProp) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+}"
+`;
+
+exports[`JAVA_COMMON_PRESET with option should render hashCode 1`] = `
+"public class Clazz {
+  private Boolean requiredProp;
+  private String stringProp;
+  private Double numberProp;
+  private Boolean booleanProp;
+  private String[] arrayProp;
+  private Map<String, Object> additionalProperties;
+
+  public Boolean getRequiredProp() { return this.requiredProp; }
+  public void setRequiredProp(Boolean requiredProp) { this.requiredProp = requiredProp; }
+
+  public String getStringProp() { return this.stringProp; }
+  public void setStringProp(String stringProp) { this.stringProp = stringProp; }
+
+  public Double getNumberProp() { return this.numberProp; }
+  public void setNumberProp(Double numberProp) { this.numberProp = numberProp; }
+
+  public Boolean getBooleanProp() { return this.booleanProp; }
+  public void setBooleanProp(Boolean booleanProp) { this.booleanProp = booleanProp; }
+
+  public String[] getArrayProp() { return this.arrayProp; }
+  public void setArrayProp(String[] arrayProp) { this.arrayProp = arrayProp; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)requiredProp, (Object)stringProp, (Object)numberProp, (Object)booleanProp, (Object)arrayProp, (Object)additionalProperties);
+  }
+}"
+`;
