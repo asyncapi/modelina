@@ -164,6 +164,15 @@
         "test",
         "example"
       ]
+    },
+    {
+      "login": "ThanksForAllTheFish",
+      "name": "Marco",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2169655?v=4",
+      "profile": "https://github.com/ThanksForAllTheFish",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
