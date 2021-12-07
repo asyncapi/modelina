@@ -38,9 +38,18 @@ const filesToTest = [
     //Blocked by https://github.com/asyncapi/modelina/issues/452
     return file !== './docs/OpenAPI-3_0/postman-api.json';
   }),
-  ...AsyncAPIV2_0Files,
-  ...AsyncAPIV2_1Files,
-  ...AsyncAPIV2_2Files,
+  ...AsyncAPIV2_0Files.filter(({file}) => {
+    //Blocked by https://github.com/asyncapi/modelina/issues/504
+    return file !== './docs/AsyncAPI-2_0/dummy.json';
+  }),
+  ...AsyncAPIV2_1Files.filter(({file}) => {
+    //Blocked by https://github.com/asyncapi/modelina/issues/504
+    return file !== './docs/AsyncAPI-2_1/dummy.json';
+  }),
+  ...AsyncAPIV2_2Files.filter(({file}) => {
+    //Blocked by https://github.com/asyncapi/modelina/issues/504
+    return file !== './docs/AsyncAPI-2_2/dummy.json';
+  }),
   ...jsonSchemaDraft7Files.filter(({file}) => { 
     //Blocked by https://github.com/asyncapi/modelina/issues/388
     return file !== './docs/JsonSchemaDraft-7/draft-7-core.json';
