@@ -49,7 +49,7 @@ ${this.indent(this.renderBlock(content, 2))}
       break;
     }
     default: {
-      key = String(value);
+      key = FormatHelpers.replaceSpecialCharacters(String(value), { exclude: [' '], separator: '_' }); 
       //Ensure no special char can be the beginning letter 
       if (!(/^[a-zA-Z]+$/).test(key.charAt(0))) {
         key = `string_${key}`;
