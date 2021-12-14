@@ -376,6 +376,54 @@ public enum CustomEnum {
     expect(enumModel.dependencies).toEqual(expectedDependencies);
   });
 
+  test('should render enums with translated special characters', async () => {
+    const doc = {
+      $id: 'States',
+      enum: ['test+', 'test', 'test-', 'test?!', '*test']
+    };
+    const expected = `public enum States {
+  TEST_PLUS("test+"), TEST("test"), TEST_MINUS("test-"), TEST_QUESTION_EXCLAMATION("test?!"), ASTERISK_TEST("*test");
+
+  private String value;
+
+  States(String value) {
+    this.value = value;
+  }
+    
+  @JsonValue
+  public String getValue() {
+    return value;
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+
+  @JsonCreator
+  public static States fromValue(String value) {
+    for (States e : States.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException("Unexpected value '" + value + "'");
+  }
+}`;
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models['States'];
+
+    let enumModel = await generator.renderEnum(model, inputModel);
+    const expectedDependencies = ['import com.fasterxml.jackson.annotation.*;'];
+    expect(enumModel.result).toEqual(expected);
+    expect(enumModel.dependencies).toEqual(expectedDependencies);
+
+    enumModel = await generator.render(model, inputModel);
+    expect(enumModel.result).toEqual(expected);
+    expect(enumModel.dependencies).toEqual(expectedDependencies);
+  });
+
   test('should render List type for collections', async () => {
     const doc = {
       $id: 'CustomClass',
