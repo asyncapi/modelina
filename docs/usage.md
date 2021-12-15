@@ -14,7 +14,7 @@ For more specific integration options, please check out the [integration documen
   - [Generate models from AsyncAPI documents](#generate-models-from-asyncapi-documents)
   - [Generate models from JSON Schema documents](#generate-models-from-json-schema-documents)
   - [Generate models from Swagger 2.0 documents](#generate-models-from-swagger-20-documents)
-  - [Generate models from OpenAPI 3.0.x documents](#generate-models-from-openapi-30x-documents)
+  - [Generate models from OpenAPI documents](#generate-models-from-openapi-documents)
   - [Generate Go models](#generate-go-models)
   - [Generate C# models](#generate-c-models)
   - [Generate Java models](#generate-java-models)
@@ -58,14 +58,14 @@ The Swagger input processor expects that the property `swagger` is defined in or
 
 The response payload and `body` parameters, since it is a JSON Schema variant, is [interpreted as a such](./interpretation_of_JSON_Schema.md).
 
-## Generate models from OpenAPI 3.0.x documents
-There are one way to generate models from a Swagger 2.0 document
+## Generate models from OpenAPI documents
+There are one way to generate models from an OpenAPI document
 
-- [Generate from a pure JS object](../examples/openapi3.0-from-object)
+- [Generate from a pure JS object](../examples/openapi-from-object)
 
-The Swagger input processor expects that the property `swagger` is defined in order to know it should be processed.
+The OpenAPI input processor expects that the property `openapi` is defined in order to know it should be processed.
 
-The response payload and `body` parameters, since it is a JSON Schema variant, is [interpreted as a such](./interpretation_of_JSON_Schema.md).
+The response and request payloads, since it is a JSON Schema variant, is [interpreted as a such](./interpretation_of_JSON_Schema.md).
 
 ## Generate Go models
 TODO 
