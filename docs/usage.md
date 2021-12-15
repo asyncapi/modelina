@@ -9,15 +9,17 @@ For more specific integration options, please check out the [integration documen
 
 <!-- toc -->
 
-- [Understanding the output format](#understanding-the-output-format)
-- [Generate models from AsyncAPI documents](#generate-models-from-asyncapi-documents)
-- [Generate models from JSON Schema documents](#generate-models-from-json-schema-documents)
-- [Generate models from Swagger 2.0 documents](#generate-models-from-swagger-20-documents)
-- [Generate Go models](#generate-go-models)
-- [Generate C# models](#generate-c%23-models)
-- [Generate Java models](#generate-java-models)
-- [Generate TypeScript models](#generate-typescript-models)
-- [Generate JavaScript models](#generate-javascript-models)
+- [Usages](#usages)
+  - [Understanding the output format](#understanding-the-output-format)
+  - [Generate models from AsyncAPI documents](#generate-models-from-asyncapi-documents)
+  - [Generate models from JSON Schema documents](#generate-models-from-json-schema-documents)
+  - [Generate models from Swagger 2.0 documents](#generate-models-from-swagger-20-documents)
+  - [Generate models from DataModel](#generate-models-from-datamodel)
+  - [Generate Go models](#generate-go-models)
+  - [Generate C# models](#generate-c-models)
+  - [Generate Java models](#generate-java-models)
+  - [Generate TypeScript models](#generate-typescript-models)
+  - [Generate JavaScript models](#generate-javascript-models)
 
 <!-- tocstop -->
 
@@ -58,6 +60,10 @@ The Swagger input processor expects that the property `swagger` is defined in or
 
 The response payload and `body` parameters, since it is a JSON Schema variant, is [interpreted as a such](./interpretation_of_JSON_Schema.md).
 
+## Generate models from DataModel
+Sometimes, the supported inputs such as AsyncAPI and JSON Schema wont be enough for your use-case. sometimes you want to create your own raw data models while still utilizing the full sweep of features from the generators.
+
+Check out this [example out for a live demonstration](../examples/custom-models).
 
 ## Generate Go models
 TODO 
