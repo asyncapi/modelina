@@ -4,17 +4,16 @@
 
 <!-- toc -->
 
-- [Documentation](#documentation)
-    - [Internal language](#internal-language)
-    - [Contributing](#contributing)
-    - [Usage](#usage)
-    - [Advanced](#advanced)
-    - [Integration](#integration)
-    - [Development](#development)
-    - [Generators](#generators)
-    - [Presets](#presets)
-    - [Interpretation of JSON Schema](#interpretation-of-json-schema)
-    - [Languages](#languages)
+- [Internal language](#internal-language)
+- [Contributing](#contributing)
+- [Usage](#usage)
+- [Advanced](#advanced)
+- [Integration](#integration)
+- [Development](#development)
+- [Generators](#generators)
+- [Presets](#presets)
+- [Interpretation of JSON Schema](#interpretation-of-json-schema)
+- [Languages](#languages)
 
 <!-- tocstop -->
 
