@@ -25,6 +25,7 @@ This package is still under development and has not reached version 1.0.0 yet. T
 
 <!-- toc -->
 
+- [:loudspeaker: ATTENTION:](#loudspeaker-attention)
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Features](#features)
@@ -33,7 +34,7 @@ This package is still under development and has not reached version 1.0.0 yet. T
 - [Examples](#examples)
 - [Development](#development)
 - [Contributing](#contributing)
-- [Contributors ✨](#contributors-%E2%9C%A8)
+- [Contributors ✨](#contributors-)
 
 <!-- tocstop -->
 
@@ -76,6 +77,10 @@ To see the complete feature list for each language, please click the individual 
   <tr>
     <td><a href="./docs/usage.md">OpenAPI</a></td>
     <td>We support the following OpenAPI versions: <em>Swagger 2.0 and OpenAPI 3.0</em>, which generates models for all the defined path request and responses.</td>
+  </tr>
+  <tr>
+    <td><a href="./docs/usage.md#generate-models-from-datamodel">DataModel</a></td>
+    <td>This is the internal data model that all inputs gets converted to, and what generators are provided to generate any of the supported outputs. Read more about the </td>
   </tr>
 </table>
 
