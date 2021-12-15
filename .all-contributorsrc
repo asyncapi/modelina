@@ -173,6 +173,16 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "quadrrem",
+      "name": "quadrrem",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8450873?v=4",
+      "profile": "https://github.com/quadrrem",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -180,6 +190,6 @@
   "projectOwner": "asyncapi",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true,
+  "skipCi": false,
   "commitConvention": "none"
 }
