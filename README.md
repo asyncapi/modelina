@@ -25,6 +25,7 @@ This package is still under development and has not reached version 1.0.0 yet. T
 
 <!-- toc -->
 
+- [:loudspeaker: ATTENTION:](#loudspeaker-attention)
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Features](#features)
@@ -33,7 +34,7 @@ This package is still under development and has not reached version 1.0.0 yet. T
 - [Examples](#examples)
 - [Development](#development)
 - [Contributing](#contributing)
-- [Contributors ✨](#contributors-%E2%9C%A8)
+- [Contributors ✨](#contributors-)
 
 <!-- tocstop -->
 
@@ -66,16 +67,16 @@ To see the complete feature list for each language, please click the individual 
     <th>description</th>
   </tr>
   <tr>
-    <td><a href="./docs/usage.md">AsyncAPI</a></td>
+    <td><a href="./docs/usage.md#generate-models-from-asyncapi-documents">AsyncAPI</a></td>
     <td>We support the following AsyncAPI versions: <em>2.0.0, 2.1.0 and 2.2.0</em>, which generates models for all the defined message payloads.</td>
   </tr>
   <tr>
-    <td><a href="./docs/usage.md">JSON Schema</a></td>
+    <td><a href="./docs/usage.md#generate-models-from-json-schema-documents">JSON Schema</a></td>
     <td>We support the following JSON Schema versions: <em>Draft-4, Draft-6 and Draft-7</em></td>
   </tr>
   <tr>
-    <td><a href="./docs/usage.md">OpenAPI</a></td>
-    <td>We support the following OpenAPI versions: <em>Swagger 2.0 and OpenAPI 3.0</em>, which generates models for all the defined path request and responses.</td>
+    <td><a href="./docs/usage.md#generate-models-from-swagger-20-documents">OpenAPI</a></td>
+    <td>We support the following OpenAPI versions: <em>Swagger 2.0 and OpenAPI 3.0</em>, which generates models for all the defined request and response payloads.</td>
   </tr>
 </table>
 
