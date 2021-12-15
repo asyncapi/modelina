@@ -4,13 +4,14 @@
 
 <!-- toc -->
 
-- [Generator's options](#generators-options)
-  * [TypeScript](#typescript)
-  * [Java](#java)
-  * [JavaScript](#javascript)
-  * [Go](#go)
-  * [C#](#c%23)
-- [Custom generator](#custom-generator)
+- [Generators](#generators)
+  - [Generator's options](#generators-options)
+    - [TypeScript](#typescript)
+    - [Java](#java)
+    - [JavaScript](#javascript)
+    - [Go](#go)
+    - [C#](#c)
+  - [Custom generator](#custom-generator)
 
 <!-- tocstop -->
 

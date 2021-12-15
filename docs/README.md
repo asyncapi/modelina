@@ -4,19 +4,24 @@
 
 <!-- toc -->
 
-- [Contributing](#contributing)
-- [Usage](#usage)
-- [Advanced](#advanced)
-- [Integration](#integration)
-- [Development](#development)
-- [Generators](#generators)
-- [Presets](#presets)
-- [Interpretation of JSON Schema](#interpretation-of-json-schema)
-- [Languages](#languages)
+- [Documentation](#documentation)
+    - [Internal language](#internal-language)
+    - [Contributing](#contributing)
+    - [Usage](#usage)
+    - [Advanced](#advanced)
+    - [Integration](#integration)
+    - [Development](#development)
+    - [Generators](#generators)
+    - [Presets](#presets)
+    - [Interpretation of JSON Schema](#interpretation-of-json-schema)
+    - [Languages](#languages)
 
 <!-- tocstop -->
 
 This document gives the overview of all the available documentation for Modelina.
+
+### [Internal language](./Internal%20language.md)
+Contains all the information you need to understand the internal data models and processes.
 
 ### [Contributing](./contributing.md)
 Contains all the information you need to contribute to this project.

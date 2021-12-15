@@ -5,17 +5,18 @@ This document contains many of the advanced use-cases that you may stumble upon 
 
 <!-- toc -->
 
-- [Generate each model in the same file](#generate-each-model-in-the-same-file)
-- [Generate models to separate files](#generate-models-to-separate-files)
-- [Include a custom function in the data model](#include-a-custom-function-in-the-data-model)
-- [Use the models for data transfer](#use-the-models-for-data-transfer)
-- [Extend the logic of an existing renderer](#extend-the-logic-of-an-existing-renderer)
-- [Build your own model renderer](#build-your-own-model-renderer)
-- [Create your own models from the ground up, instead of a supported input](#create-your-own-models-from-the-ground-up-instead-of-a-supported-input)
-- [Add logging to library](#add-logging-to-library)
-- [Change the generated indentation type and size](#change-the-generated-indentation-type-and-size)
-- [Change the naming format for properties](#change-the-naming-format-for-properties)
-- [Change the naming format for data models](#change-the-naming-format-for-data-models)
+- [Advanced use-cases for Modelina](#advanced-use-cases-for-modelina)
+  - [Generate each model in the same file](#generate-each-model-in-the-same-file)
+  - [Generate models to separate files](#generate-models-to-separate-files)
+  - [Include a custom function in the data model](#include-a-custom-function-in-the-data-model)
+  - [Use the models for data transfer](#use-the-models-for-data-transfer)
+  - [Extend the logic of an existing renderer](#extend-the-logic-of-an-existing-renderer)
+  - [Build your own model renderer](#build-your-own-model-renderer)
+  - [Create your own models from the ground up, instead of a supported input](#create-your-own-models-from-the-ground-up-instead-of-a-supported-input)
+  - [Add logging to library](#add-logging-to-library)
+  - [Change the generated indentation type and size](#change-the-generated-indentation-type-and-size)
+  - [Change the naming format for properties](#change-the-naming-format-for-properties)
+  - [Change the naming format for data models](#change-the-naming-format-for-data-models)
 
 <!-- tocstop -->
 
@@ -50,8 +51,9 @@ TODO
 TODO 
 
 ## Create your own models from the ground up, instead of a supported input
-TODO 
+Sometimes, the supported inputs such as AsyncAPI and JSON Schema wont be enough for your use-case. sometimes you want to create your own raw data models while still utilizing the full sweep of features from the generators.
 
+Check out this [example out for a live demonstration](../examples/custom-models).
 
 ## Add logging to library
 When you generate models, by default, nothing is logged to the console or elsewhere.
