@@ -9,15 +9,17 @@ For more specific integration options, please check out the [integration documen
 
 <!-- toc -->
 
-- [Understanding the output format](#understanding-the-output-format)
-- [Generate models from AsyncAPI documents](#generate-models-from-asyncapi-documents)
-- [Generate models from JSON Schema documents](#generate-models-from-json-schema-documents)
-- [Generate models from Swagger 2.0 documents](#generate-models-from-swagger-20-documents)
-- [Generate Go models](#generate-go-models)
-- [Generate C# models](#generate-c%23-models)
-- [Generate Java models](#generate-java-models)
-- [Generate TypeScript models](#generate-typescript-models)
-- [Generate JavaScript models](#generate-javascript-models)
+- [Usages](#usages)
+  - [Understanding the output format](#understanding-the-output-format)
+  - [Generate models from AsyncAPI documents](#generate-models-from-asyncapi-documents)
+  - [Generate models from JSON Schema documents](#generate-models-from-json-schema-documents)
+  - [Generate models from Swagger 2.0 documents](#generate-models-from-swagger-20-documents)
+  - [Generate models from OpenAPI 3.0.x documents](#generate-models-from-openapi-30x-documents)
+  - [Generate Go models](#generate-go-models)
+  - [Generate C# models](#generate-c-models)
+  - [Generate Java models](#generate-java-models)
+  - [Generate TypeScript models](#generate-typescript-models)
+  - [Generate JavaScript models](#generate-javascript-models)
 
 <!-- tocstop -->
 
@@ -48,8 +50,6 @@ We support both draft-4, draft-6, and draft-7 documents.
 The library expects the `$schema` property for the document to be set in order to understand the input format. By default, if no other inputs are detected, it defaults to `JSON Schema draft 7`. The process of interpreting a JSON Schema to a model can be read [here](./interpretation_of_JSON_Schema.md).
 
 ## Generate models from Swagger 2.0 documents
-When providing an AsyncAPI document, Modelina iterates the entire document and generate models for all defined `body` parameters and responses. If any other kind of iteration is wanted, feel free to create a [feature request](https://github.com/asyncapi/modelina/issues/new?assignees=&labels=enhancement&template=enhancement.md).
-
 There are one way to generate models from a Swagger 2.0 document
 
 - [Generate from a pure JS object](../examples/swagger2.0-from-object)
@@ -58,6 +58,14 @@ The Swagger input processor expects that the property `swagger` is defined in or
 
 The response payload and `body` parameters, since it is a JSON Schema variant, is [interpreted as a such](./interpretation_of_JSON_Schema.md).
 
+## Generate models from OpenAPI 3.0.x documents
+There are one way to generate models from a Swagger 2.0 document
+
+- [Generate from a pure JS object](../examples/openapi3.0-from-object)
+
+The Swagger input processor expects that the property `swagger` is defined in order to know it should be processed.
+
+The response payload and `body` parameters, since it is a JSON Schema variant, is [interpreted as a such](./interpretation_of_JSON_Schema.md).
 
 ## Generate Go models
 TODO 
@@ -73,3 +81,4 @@ TypeScript is one of the many output languages we support. Check out this [basic
 
 ## Generate JavaScript models
 JavaScript is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-javascript-models)
+
