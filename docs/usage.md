@@ -9,17 +9,16 @@ For more specific integration options, please check out the [integration documen
 
 <!-- toc -->
 
-- [Usages](#usages)
-  - [Understanding the output format](#understanding-the-output-format)
-  - [Generate models from AsyncAPI documents](#generate-models-from-asyncapi-documents)
-  - [Generate models from JSON Schema documents](#generate-models-from-json-schema-documents)
-  - [Generate models from Swagger 2.0 documents](#generate-models-from-swagger-20-documents)
-  - [Generate models from OpenAPI documents](#generate-models-from-openapi-documents)
-  - [Generate Go models](#generate-go-models)
-  - [Generate C# models](#generate-c-models)
-  - [Generate Java models](#generate-java-models)
-  - [Generate TypeScript models](#generate-typescript-models)
-  - [Generate JavaScript models](#generate-javascript-models)
+- [Understanding the output format](#understanding-the-output-format)
+- [Generate models from AsyncAPI documents](#generate-models-from-asyncapi-documents)
+- [Generate models from JSON Schema documents](#generate-models-from-json-schema-documents)
+- [Generate models from Swagger 2.0 documents](#generate-models-from-swagger-20-documents)
+- [Generate models from OpenAPI documents](#generate-models-from-openapi-documents)
+- [Generate Go models](#generate-go-models)
+- [Generate C# models](#generate-c%23-models)
+- [Generate Java models](#generate-java-models)
+- [Generate TypeScript models](#generate-typescript-models)
+- [Generate JavaScript models](#generate-javascript-models)
 
 <!-- tocstop -->
 
