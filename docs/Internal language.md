@@ -10,7 +10,7 @@ There are two parts to the model, one for the input processors (the **raw data m
 
 For example (and this accounts for almost all languages) you cannot render a property with the name `my property`, generally, they follow some kind of common naming format such as using camel case `myProperty` or pascal case `MyProperty`.
 
-This is the reason for having two data models because output languages (Java, TS, Go, etc) have very specific constraints. Because each output language is dictated entirely by the output language, while the input knows nothing about those constraints.
+This is the reason for having two data models because each output (Java, TS, Go, etc) have very specific constraints.
 
 Therefore the **raw data model** does not have any constraints, and it is perfectly normal and expected to name your properties `my property`. Before the model reaches the generator, it gets transformed to a **constrained data model**.
 
@@ -25,7 +25,7 @@ The transformation happens in three stages.
 3. Constrain the data models to the output language. See [The constrained data model](#the-constrained-data-model) for more information.
 
 ## The raw data model
-The raw data model is what (now and in the future) Protobuf, XSD, JSON Type Definition, Graphql types, are gonna be converted into.
+The raw data model is what (now and in the future) Protobuf, JSON Schema, JSON Type Definition, Graphql types, are gonna be converted into.
 
 These are the following raw data models that we are gonna support:
 - **ArrayModel** is an unordered collection of a specific **DataModel**.
@@ -40,7 +40,6 @@ These are the following raw data models that we are gonna support:
 - **FloatModel** represent floating-point numbers. 
 - **StringModel** represent string values.
 - **AnyModel** represent generic values that cannot otherwise be represented by one of the other models.
-
 
 <p align="center">
   <img src="./img/RawDataModel.png" />
