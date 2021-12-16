@@ -2,7 +2,7 @@
 
 It is important to understand the domain-specific language that describes the data models. It is what the input processors converts their inputs to, and the generators use to generate the output.
 
-These are also the data models developers can use to create their own models because they can provide a **raw data model** as input. This way you can create your own custom data models that can be interpreted to any output language, with the full sweep of features the generators and presets support. See [Create your own models from the ground up, instead of a supported input](./advanced#create-your-own-models-from-the-ground-up-instead-of-a-supported-input)
+It is also what developers can use to create their own models, since they can provide a **raw data model** as input. This way you can create your own custom data models that can be interpreted to any output language, with the full sweep of features the generators and presets support. See [Create your own models from the ground up, instead of a supported input](./advanced#create-your-own-models-from-the-ground-up-instead-of-a-supported-input)
 
 ## The basics and process
 
