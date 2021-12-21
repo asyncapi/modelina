@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GoGenerator should render models and their dependencies 1`] = `
+"
+package SomePackage
+
+// Address represents a Address model.
+type Address struct {
+  StreetName string
+  City string
+  State string
+  HouseNumber float64
+  Marriage bool
+  Members []interface{}
+  ArrayType []interface{}
+  OtherModel *OtherModel
+  AdditionalProperties map[string][]interface{}
+  STestPatternProperties map[string]string
+}"
+`;
+
+exports[`GoGenerator should render models and their dependencies 2`] = `
+"
+package SomePackage
+
+// OtherModel represents a OtherModel model.
+type OtherModel struct {
+  StreetName string
+  AdditionalProperties map[string][]interface{}
+}"
+`;

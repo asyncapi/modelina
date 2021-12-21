@@ -37,10 +37,14 @@ export interface GoOptions extends CommonGeneratorOptions<GoPreset> {
   namingConvention?: GoNamingConvention;
 }
 
+export interface GoRenderCompleteModelOptions {
+  packageName: string
+}
+
 /**
  * Generator for Go
  */
-export class GoGenerator extends AbstractGenerator<GoOptions> {
+export class GoGenerator extends AbstractGenerator<GoOptions, GoRenderCompleteModelOptions> {
   static defaultOptions: GoOptions = {
     ...defaultGeneratorOptions,
     defaultPreset: GO_DEFAULT_PRESET,
@@ -69,8 +73,26 @@ export class GoGenerator extends AbstractGenerator<GoOptions> {
     return Promise.resolve(RenderOutput.toRenderOutput({ result: '', renderedName: '', dependencies: [] }));
   }
 
-  renderCompleteModel(): Promise<RenderOutput> {
-    throw new Error('Method not implemented.');
+  /**
+   * Render a complete model result where the model code, library and model dependencies are all bundled appropriately.
+   *
+   * @param model
+   * @param inputModel
+   * @param options
+   */
+  async renderCompleteModel(model: CommonModel, inputModel: CommonInputModel, options: GoRenderCompleteModelOptions): Promise<RenderOutput> {
+    const outputModel = await this.render(model, inputModel);
+    let importCode = '';
+    if (outputModel.dependencies.length > 0) {
+      importCode = `import (  
+  ${outputModel.dependencies.join(',\n')}
+)`;
+    }
+    const outputContent = `
+package ${options.packageName}
+${importCode}
+${outputModel.result}`;
+    return RenderOutput.toRenderOutput({ result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies });
   }
 
   async renderEnum(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
