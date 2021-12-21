@@ -53,7 +53,7 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,Typ
     const outputModel = await this.render(model, inputModel);
     const modelDependencies = model.getNearestDependencies().map((dependencyModelName) => {
       const formattedDependencyModelName = this.options.namingConvention?.type ? this.options.namingConvention.type(dependencyModelName, { inputModel, model: inputModel.models[String(dependencyModelName)] }) : dependencyModelName;
-      return `import ./${formattedDependencyModelName};`;
+      return `import { ${formattedDependencyModelName} } from './${formattedDependencyModelName}';`;
     });
     const outputContent = `${modelDependencies.join('\n')}
 ${outputModel.dependencies.join('\n')}
