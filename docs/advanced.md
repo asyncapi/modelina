@@ -67,7 +67,9 @@ The library uses 4 different logging levels:
 Check out this [example out for a live demonstration](../examples/custom-logging).
 
 ## Change the generated indentation type and size
-TODO 
+In some scenarios, depending on how you stitch them together, you might need to change the indentation type or size both of these cases are fully supported.
+
+Check out this [example out for a live demonstration](../examples/indentation-type-and-size).
 
 ## Change the naming format for properties
 TODO 
