@@ -16,7 +16,7 @@ export class CSharpFileGenerator extends CSharpGenerator implements AbstractFile
     let generatedModels = await this.generateCompleteModels(input, options);
     generatedModels = generatedModels.filter((outputModel) => { return outputModel.modelName !== undefined; });
     for (const outputModel of generatedModels) {
-      const filePath = path.resolve(outputDirectory, `${outputModel.modelName}.java`);
+      const filePath = path.resolve(outputDirectory, `${outputModel.modelName}.cs`);
       await FileHelpers.writerToFileSystem(outputModel.result, filePath);
     }
     return generatedModels;

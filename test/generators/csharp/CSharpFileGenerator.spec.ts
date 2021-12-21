@@ -34,7 +34,7 @@ describe('CSharpFileGenerator', () => {
       const generator = new CSharpFileGenerator();
       const outputDir = './test';
       const expectedOutputDirPath = path.resolve(outputDir);
-      const expectedOutputFilePath = path.resolve(`${outputDir}/Test.java`);
+      const expectedOutputFilePath = path.resolve(`${outputDir}/Test.cs`);
       const expectedWriteToFileParameters = [
         'content',
         expectedOutputFilePath,
