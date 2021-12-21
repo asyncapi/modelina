@@ -31,7 +31,9 @@ The reason for splitting the functionality is because in certain environments (l
 The file generators all follow the same pattern regardless of output language, which is the following format - `<language>FileGenerator`.
 
 
-Currently only supported for `Java`.
+Supported by:
+- Java
+- TypeScript
 
 > Not support in browsers.
 
