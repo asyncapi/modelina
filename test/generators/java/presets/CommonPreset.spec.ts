@@ -1,4 +1,4 @@
-import { JavaGenerator, JAVA_COMMON_PRESET } from '../../../../src/generators'; 
+import {JavaGenerator, JAVA_COMMON_PRESET, JavaCommonPresetOptions} from '../../../../src/generators';
 
 describe('JAVA_COMMON_PRESET', () => {
   const doc = {
@@ -24,6 +24,27 @@ describe('JAVA_COMMON_PRESET', () => {
   test('should render accurately when there is no additional properties', async () => {
     const generator = new JavaGenerator({ presets: [JAVA_COMMON_PRESET] });
     const inputModel = await generator.process({...doc, additionalProperties: false});
+    const model = inputModel.models['Clazz'];
+
+    const classModel = await generator.renderClass(model, inputModel);
+    expect(classModel.result).toMatchSnapshot();
+  });
+  test('should not render any functions when all 3 options are disabled', async () => {
+    const options: JavaCommonPresetOptions = {
+      equal: false,
+      hashCode: false,
+      classToString: false,
+    };
+
+    const generator = new JavaGenerator(
+      {
+        presets: [{
+          preset: JAVA_COMMON_PRESET,
+          options
+        }]
+      }
+    );
+    const inputModel = await generator.process(doc);
     const model = inputModel.models['Clazz'];
 
     const classModel = await generator.renderClass(model, inputModel);
