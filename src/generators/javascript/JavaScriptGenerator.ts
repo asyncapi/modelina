@@ -12,8 +12,8 @@ export interface JavaScriptOptions extends CommonGeneratorOptions<JavaScriptPres
   namingConvention?: CommonNamingConvention
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface JavaScriptRenderCompleteModelOptions {
+  moduleSystem?: 'ESM' | 'CJS';
 }
 
 /**
@@ -44,7 +44,10 @@ export class JavaScriptGenerator extends AbstractGenerator<JavaScriptOptions, Ja
     const outputModel = await this.render(model, inputModel);
     const modelDependencies = model.getNearestDependencies().map((dependencyModelName) => {
       const formattedDependencyModelName = this.options.namingConvention?.type ? this.options.namingConvention.type(dependencyModelName, { inputModel, model: inputModel.models[String(dependencyModelName)] }) : dependencyModelName;
-      return `const ${formattedDependencyModelName} = require('./${formattedDependencyModelName}');`;
+      if (options.moduleSystem === 'CJS') {
+        return `const ${formattedDependencyModelName} = require('./${formattedDependencyModelName}');`;
+      }
+      return `import ${formattedDependencyModelName} from './${formattedDependencyModelName}';`;
     });
     const outputContent = `${modelDependencies.join('\n')}
 ${outputModel.dependencies.join('\n')}
