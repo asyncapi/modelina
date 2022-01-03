@@ -6,7 +6,7 @@ import { CommonModel } from '../../../models';
 
 export interface JavaCommonPresetOptions {
   equal: boolean;
-  hash: boolean;
+  hashCode: boolean;
   classToString: boolean;
 }
 
