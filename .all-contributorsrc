@@ -183,6 +183,17 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "kamko",
+      "name": "Kamil Janeček",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17074375?v=4",
+      "profile": "https://kamko.dev",
+      "contributions": [
+        "test",
+        "bug",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
