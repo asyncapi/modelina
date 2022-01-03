@@ -49,13 +49,14 @@ export class JavaScriptGenerator extends AbstractGenerator<JavaScriptOptions, Ja
       }
       return `import ${formattedDependencyModelName} from './${formattedDependencyModelName}';`;
     });
-    const outputContent = `${modelDependencies.join('\n')}
-${outputModel.dependencies.join('\n')}
+    let modelCode = `export default ${outputModel.result}`;
+    if (options.moduleSystem === 'CJS') {
+      modelCode = `${outputModel.result}
+module.exports = ${outputModel.renderedName};`;
+    }
+    const outputContent = `${[...modelDependencies, ...outputModel.dependencies].join('\n')}
 
-${outputModel.result}
-
-module.exports = ${outputModel.renderedName};
-`;
+${modelCode}`;
     return RenderOutput.toRenderOutput({ result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies });
   }
 
