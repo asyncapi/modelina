@@ -5,11 +5,14 @@ There are special use-cases that each language supports; this document pertains 
 
 <!-- toc -->
 
-- [Rendering complete models to a specific module system](#rendering-complete-models-to-a-specific-module-system)
+- [JavaScript](#javascript)
+  - [Rendering complete models to a specific module system](#rendering-complete-models-to-a-specific-module-system)
 
 <!-- tocstop -->
 
 ## Rendering complete models to a specific module system
-Since you might need to render the complete models to a specific module system (such as ESM and CJS) we made sure to support those scenarios.
+In some cases you might need to render the complete models to a specific module system such as ESM and CJS.
 
-Check out this [example for a live demonstration](../../examples/javascript-module-system).
+Check out this [example for a live demonstration how to generate the complete JavaScript models to use ESM module system](../../examples/javascript-use-esm).
+
+Check out this [example for a live demonstration how to generate the complete JavaScript models to use CJS module system](../../examples/javascript-use-cjs).
