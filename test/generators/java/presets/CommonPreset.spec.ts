@@ -29,27 +29,6 @@ describe('JAVA_COMMON_PRESET', () => {
     const classModel = await generator.renderClass(model, inputModel);
     expect(classModel.result).toMatchSnapshot();
   });
-  test('should not render any functions when all 3 options are disabled', async () => {
-    const options: JavaCommonPresetOptions = {
-      equal: false,
-      hashCode: false,
-      classToString: false,
-    };
-
-    const generator = new JavaGenerator(
-      {
-        presets: [{
-          preset: JAVA_COMMON_PRESET,
-          options
-        }]
-      }
-    );
-    const inputModel = await generator.process(doc);
-    const model = inputModel.models['Clazz'];
-
-    const classModel = await generator.renderClass(model, inputModel);
-    expect(classModel.result).toMatchSnapshot();
-  });
   describe('with option', () => {
     test('should render all functions', async () => {
       const generator = new JavaGenerator(
@@ -70,6 +49,27 @@ describe('JAVA_COMMON_PRESET', () => {
       const classModel = await generator.renderClass(model, inputModel);
       expect(classModel.result).toMatchSnapshot();
       expect(classModel.dependencies.includes('import java.util.Objects;')).toEqual(true);
+    });
+    test('should not render any functions when all 3 options are disabled', async () => {
+      const options: JavaCommonPresetOptions = {
+        equal: false,
+        hashCode: false,
+        classToString: false,
+      };
+
+      const generator = new JavaGenerator(
+        {
+          presets: [{
+            preset: JAVA_COMMON_PRESET,
+            options
+          }]
+        }
+      );
+      const inputModel = await generator.process(doc);
+      const model = inputModel.models['Clazz'];
+
+      const classModel = await generator.renderClass(model, inputModel);
+      expect(classModel.result).toMatchSnapshot();
     });
     test('should render equals', async () => {
       const generator = new JavaGenerator(
