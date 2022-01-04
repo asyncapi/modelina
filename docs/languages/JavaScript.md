@@ -5,8 +5,7 @@ There are special use-cases that each language supports; this document pertains 
 
 <!-- toc -->
 
-- [JavaScript](#javascript)
-  - [Rendering complete models to a specific module system](#rendering-complete-models-to-a-specific-module-system)
+- [Rendering complete models to a specific module system](#rendering-complete-models-to-a-specific-module-system)
 
 <!-- tocstop -->
 
