@@ -24,7 +24,7 @@ describe('JavaScriptFileGenerator', () => {
       const generator = new JavaScriptFileGenerator();
       const expectedError = new Error('write error');
       jest.spyOn(FileHelpers, 'writerToFileSystem').mockRejectedValue(expectedError);
-      jest.spyOn(generator, 'generateCompleteModels').mockResolvedValue([new OutputModel('content', new CommonModel(), '', new CommonInputModel(), [])]);
+      jest.spyOn(generator, 'generateCompleteModels').mockResolvedValue([new OutputModel('content', new CommonModel(), 'Test', new CommonInputModel(), [])]);
     
       await expect(generator.generateToFiles(doc, '/test/')).rejects.toEqual(expectedError);
       expect(generator.generateCompleteModels).toHaveBeenCalledTimes(1);
