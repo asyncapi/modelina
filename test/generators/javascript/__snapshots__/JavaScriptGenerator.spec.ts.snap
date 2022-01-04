@@ -20,10 +20,7 @@ class Address {
     this.city = input.city;
     this.state = input.state;
     this.houseNumber = input.houseNumber;
-    this.marriage = input.marriage;
-    this.members = input.members;
     this.arrayType = input.arrayType;
-    this.otherModel = input.otherModel;
   }
 
   get streetName() { return this.streetName; }
@@ -99,10 +96,7 @@ export default class Address {
     this.city = input.city;
     this.state = input.state;
     this.houseNumber = input.houseNumber;
-    this.marriage = input.marriage;
-    this.members = input.members;
     this.arrayType = input.arrayType;
-    this.otherModel = input.otherModel;
   }
 
   get streetName() { return this.streetName; }

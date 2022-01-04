@@ -10,7 +10,8 @@ const jsonSchemaDraft7 = {
       type: 'string',
       format: 'email'
     }
-  }
+  },
+  required: ['email'],
 };
 
 export async function generate() : Promise<void> {
