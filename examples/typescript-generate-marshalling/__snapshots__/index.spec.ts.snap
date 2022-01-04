@@ -2,7 +2,7 @@
 
 exports[`Should be able to generate ts data model with marshal und unmarshal functions and should log expected output to console 1`] = `
 Array [
-  "export class Test {
+  "class Test {
   private _email?: string;
 
   constructor(input: {
