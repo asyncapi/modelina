@@ -148,8 +148,13 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
         const generatedModels = await generator.generateToFiles(input, renderOutputPath);
         expect(generatedModels).not.toHaveLength(0);
 
-        const transpileAndRunCommand = `tsc --downlevelIteration -t es5 ${path.resolve(renderOutputPath, './*.ts')}`;
-        await execCommand(transpileAndRunCommand);
+        const files = fs.readdirSync(renderOutputPath);
+
+        for (const file of files) {
+          const fullPath = path.resolve(renderOutputPath, file);
+          const transpileAndRunCommand = `tsc --downlevelIteration -t es5 ${fullPath} && node --check ${fullPath}`;
+          await execCommand(transpileAndRunCommand); 
+        }
       });
 
       test('interface', async () => {
@@ -161,8 +166,13 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
         const generatedModels = await generator.generateToFiles(input, renderOutputPath);
         expect(generatedModels).not.toHaveLength(0);
 
-        const transpileAndRunCommand = `tsc --downlevelIteration -t es5 ${path.resolve(renderOutputPath, './*.ts')}`;
-        await execCommand(transpileAndRunCommand);
+        const files = fs.readdirSync(renderOutputPath);
+
+        for (const file of files) {
+          const fullPath = path.resolve(renderOutputPath, file);
+          const transpileAndRunCommand = `tsc --downlevelIteration -t es5 ${fullPath} && node --check ${fullPath}`;
+          await execCommand(transpileAndRunCommand); 
+        }
       });
     });
 
@@ -176,8 +186,12 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
         const generatedModels = await generator.generateToFiles(input, renderOutputPath, {moduleSystem: 'CJS'});
         expect(generatedModels).not.toHaveLength(0);
 
-        const transpileAndRunCommand = `node --check ${path.resolve(renderOutputPath, './*.js')}`;
-        await execCommand(transpileAndRunCommand);
+        const files = fs.readdirSync(renderOutputPath);
+
+        for (const file of files) {
+          const transpileAndRunCommand = `node --check ${path.resolve(renderOutputPath, file)}`;
+          await execCommand(transpileAndRunCommand); 
+        }
       });
     });
 
