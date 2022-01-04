@@ -205,6 +205,16 @@
         "test",
         "doc"
       ]
+    },
+    {
+      "login": "ron-debajyoti",
+      "name": "Debajyoti Halder",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22571664?v=4",
+      "profile": "https://github.com/ron-debajyoti",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
