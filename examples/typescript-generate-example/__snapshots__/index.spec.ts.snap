@@ -2,7 +2,7 @@
 
 exports[`Should be able to generate ts data model with example function and should log expected output to console 1`] = `
 Array [
-  "export class Root {
+  "class Root {
   private _email?: string;
 
   constructor(input: {

@@ -2,7 +2,7 @@
 
 exports[`Should be able to process a pure OpenAPI object and should log expected output to console 1`] = `
 Array [
-  "export class TestPost_200ApplicationJson {
+  "class TestPost_200ApplicationJson {
   private _email?: string;
 
   constructor(input: {
@@ -19,7 +19,7 @@ Array [
 
 exports[`Should be able to process a pure OpenAPI object and should log expected output to console 2`] = `
 Array [
-  "export class TestPostApplicationJson {
+  "class TestPostApplicationJson {
   private _email?: string;
 
   constructor(input: {
