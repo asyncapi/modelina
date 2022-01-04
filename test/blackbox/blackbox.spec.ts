@@ -148,7 +148,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
         const generatedModels = await generator.generateToFiles(input, renderOutputPath);
         expect(generatedModels).not.toHaveLength(0);
 
-        const transpileAndRunCommand = `tsc --downlevelIteration -t es5 ${path.resolve(renderOutputPath, '*')}`;
+        const transpileAndRunCommand = `tsc --downlevelIteration -t es5 ${path.resolve(renderOutputPath, './*.ts')}`;
         await execCommand(transpileAndRunCommand);
       });
 
@@ -161,7 +161,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
         const generatedModels = await generator.generateToFiles(input, renderOutputPath);
         expect(generatedModels).not.toHaveLength(0);
 
-        const transpileAndRunCommand = `tsc --downlevelIteration -t es5 ${path.resolve(renderOutputPath, '*')}`;
+        const transpileAndRunCommand = `tsc --downlevelIteration -t es5 ${path.resolve(renderOutputPath, './*.ts')}`;
         await execCommand(transpileAndRunCommand);
       });
     });
@@ -176,7 +176,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
         const generatedModels = await generator.generateToFiles(input, renderOutputPath, {moduleSystem: 'CJS'});
         expect(generatedModels).not.toHaveLength(0);
 
-        const transpileAndRunCommand = `node --check ${path.resolve(renderOutputPath, '*')}`;
+        const transpileAndRunCommand = `node --check ${path.resolve(renderOutputPath, './*.js')}`;
         await execCommand(transpileAndRunCommand);
       });
     });
