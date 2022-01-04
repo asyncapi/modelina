@@ -129,16 +129,6 @@ describe('CSharpGenerator', () => {
       enum: ['Texas', 'Alabama', 'California'],
     };
 
-    generator = new CSharpGenerator({ presets: [
-      {
-        enum: {
-          self({ content }) {
-            return content;
-          },
-        }
-      }
-    ] });
-
     const inputModel = await generator.process(doc);
     const model = inputModel.models['CustomEnum'];
     
