@@ -34,6 +34,7 @@ The file generators all follow the same pattern regardless of output language, w
 Supported by:
 - Java
 - TypeScript
+- JavaScript
 
 > Not support in browsers.
 
