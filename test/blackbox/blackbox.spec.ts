@@ -148,13 +148,8 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
         const generatedModels = await generator.generateToFiles(input, renderOutputPath);
         expect(generatedModels).not.toHaveLength(0);
 
-        const files = fs.readdirSync(renderOutputPath);
-
-        for (const file of files) {
-          const fullPath = path.resolve(renderOutputPath, file);
-          const transpileAndRunCommand = `tsc --downlevelIteration -t es5 ${fullPath} && node --check ${fullPath}`;
-          await execCommand(transpileAndRunCommand); 
-        }
+        const transpileCommand = `tsc --downlevelIteration -t es5 ${path.resolve(renderOutputPath, './*')}`;
+        await execCommand(transpileCommand); 
       });
 
       test('interface', async () => {
@@ -166,13 +161,8 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
         const generatedModels = await generator.generateToFiles(input, renderOutputPath);
         expect(generatedModels).not.toHaveLength(0);
 
-        const files = fs.readdirSync(renderOutputPath);
-
-        for (const file of files) {
-          const fullPath = path.resolve(renderOutputPath, file);
-          const transpileAndRunCommand = `tsc --downlevelIteration -t es5 ${fullPath} && node --check ${fullPath}`;
-          await execCommand(transpileAndRunCommand); 
-        }
+        const transpileCommand = `tsc --downlevelIteration -t es5 ${path.resolve(renderOutputPath, './*')}`;
+        await execCommand(transpileCommand);
       });
     });
 
@@ -187,7 +177,6 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
         expect(generatedModels).not.toHaveLength(0);
 
         const files = fs.readdirSync(renderOutputPath);
-
         for (const file of files) {
           const transpileAndRunCommand = `node --check ${path.resolve(renderOutputPath, file)}`;
           await execCommand(transpileAndRunCommand); 

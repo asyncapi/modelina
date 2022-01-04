@@ -14,7 +14,8 @@ export class TypeScriptFileGenerator extends TypeScriptGenerator implements Abst
    */
   public async generateToFiles(input: Record<string, unknown> | CommonInputModel, outputDirectory: string, options?: TypeScriptRenderCompleteModelOptions): Promise<OutputModel[]> {
     let generatedModels = await this.generateCompleteModels(input, options || {});
-    generatedModels = generatedModels.filter((outputModel) => { return outputModel.modelName !== undefined; });
+    //Filter anything out that have not been successfully generated
+    generatedModels = generatedModels.filter((outputModel) => { return outputModel.modelName !== ''; });
     for (const outputModel of generatedModels) {
       const filePath = path.resolve(outputDirectory, `${outputModel.modelName}.ts`);
       await FileHelpers.writerToFileSystem(outputModel.result, filePath);
