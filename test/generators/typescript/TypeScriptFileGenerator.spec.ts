@@ -42,7 +42,7 @@ describe('TypeScriptFileGenerator', () => {
       jest.spyOn(FileHelpers, 'writerToFileSystem').mockResolvedValue(undefined);
       jest.spyOn(generator, 'generateCompleteModels').mockResolvedValue([new OutputModel('content', new CommonModel(), 'Test', new CommonInputModel(), [])]);
       
-      await generator.generateToFiles(doc, expectedOutputDirPath, {packageName: 'SomePackage'});
+      await generator.generateToFiles(doc, expectedOutputDirPath);
       expect(generator.generateCompleteModels).toHaveBeenCalledTimes(1);
       expect(FileHelpers.writerToFileSystem).toHaveBeenCalledTimes(1);
       expect((FileHelpers.writerToFileSystem as jest.Mock).mock.calls[0]).toEqual(expectedWriteToFileParameters);

@@ -17,9 +17,8 @@ export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPres
   enumType?: 'enum' | 'union';
   namingConvention?: CommonNamingConvention;
 }
-
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface TypeScriptRenderCompleteModelOptions {
+  moduleSystem?: 'ESM' | 'CJS';
 }
 
 /**
@@ -53,11 +52,19 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,Typ
     const outputModel = await this.render(model, inputModel);
     const modelDependencies = model.getNearestDependencies().map((dependencyModelName) => {
       const formattedDependencyModelName = this.options.namingConvention?.type ? this.options.namingConvention.type(dependencyModelName, { inputModel, model: inputModel.models[String(dependencyModelName)] }) : dependencyModelName;
-      return `import { ${formattedDependencyModelName} } from './${formattedDependencyModelName}';`;
+      if (options.moduleSystem === 'CJS') {
+        return `const ${formattedDependencyModelName} = require('./${formattedDependencyModelName}');`;
+      }
+      return `import ${formattedDependencyModelName} from './${formattedDependencyModelName}';`;
     });
-    const outputContent = `${modelDependencies.join('\n')}
-${outputModel.dependencies.join('\n')}
-${outputModel.result}`;
+    let modelCode = `export default ${outputModel.result}`;
+    if (options.moduleSystem === 'CJS') {
+      modelCode = `${outputModel.result}
+module.exports = ${outputModel.renderedName};`;
+    }
+    const outputContent = `${[...modelDependencies, ...outputModel.dependencies].join('\n')}
+
+${modelCode}`;
     return RenderOutput.toRenderOutput({ result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies });
   }
 
