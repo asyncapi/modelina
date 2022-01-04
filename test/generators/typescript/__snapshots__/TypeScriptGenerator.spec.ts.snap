@@ -1,9 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`TypeScriptGenerator should render \`type\` type - array of union type 1`] = `"type TypeArray = Array<string | number | boolean>;"`;
+
 exports[`TypeScriptGenerator should render models and their dependencies 1`] = `
 "import ./OtherModel;
 
-export class Address {
+class Address {
   private _streetName: string;
   private _city: string;
   private _state: string;
@@ -70,7 +72,7 @@ export class Address {
 exports[`TypeScriptGenerator should render models and their dependencies 2`] = `
 "
 
-export class OtherModel {
+class OtherModel {
   private _streetName?: string;
   private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null>;
 

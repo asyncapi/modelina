@@ -85,8 +85,8 @@ ${this.indent(this.renderBlock(content, 2))}
 }
 
 export const TS_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
-  async self({ renderer }) {
-    return `export ${await renderer.defaultSelf()}`;
+  self({ renderer }) {
+    return renderer.defaultSelf();
   },
   item({ item, renderer }): string {
     const key = renderer.normalizeKey(item);

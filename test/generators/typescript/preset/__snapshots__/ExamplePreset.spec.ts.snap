@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Example function generation should render example function for model 1`] = `
-"export class Test {
+"class Test {
   private _stringProp: string;
   private _numberProp?: number;
   private _objectProp?: NestedTest;
@@ -44,7 +44,7 @@ exports[`Example function generation should render example function for model 1`
 `;
 
 exports[`Example function generation should render example function for model 2`] = `
-"export class NestedTest {
+"class NestedTest {
   private _stringProp?: string;
   private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null>;
 
