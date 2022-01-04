@@ -316,7 +316,7 @@ export class CommonModel {
   }
 
   /**
-   * This function returns an array of `$id`s from all the CommonModel's it immediate depends on.
+   * Returns an array of unique `$id`s from all the CommonModel's this model depends on.
    */
   // eslint-disable-next-line sonarjs/cognitive-complexity
   getNearestDependencies(): string[] {
