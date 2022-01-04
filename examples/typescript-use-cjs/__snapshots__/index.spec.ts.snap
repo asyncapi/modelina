@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render models to ESM module system and should log expected output to console 1`] = `
+Array [
+  "
+
+
+module.exports = Person;",
+]
+`;
+
+exports[`Should be able to render models to ESM module system and should log expected output to console 2`] = `
+Array [
+  "const Person = require('./Person');
+
+
+module.exports = Root;",
+]
+`;
