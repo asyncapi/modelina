@@ -7,7 +7,7 @@
 
 import * as path from 'path';
 import * as fs from 'fs';
-import { TypeScriptGenerator, JavaScriptGenerator, GoGenerator, CSharpGenerator, JavaFileGenerator, JAVA_COMMON_PRESET, TypeScriptFileGenerator } from '../../src';
+import { TypeScriptGenerator, JavaScriptGenerator, GoGenerator, CSharpGenerator, JavaFileGenerator, JAVA_COMMON_PRESET, TypeScriptFileGenerator, JavaScriptFileGenerator } from '../../src';
 import { execCommand, generateModels, renderModels, renderModelsToSeparateFiles } from './utils/Utils';
 
 /**
@@ -143,12 +143,12 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
         const generator = new TypeScriptFileGenerator({modelType: 'class'});
         const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
         const input = JSON.parse(String(inputFileContent));
-        const renderOutputPath = path.resolve(outputDirectoryPath, './java/class');
+        const renderOutputPath = path.resolve(outputDirectoryPath, './ts/class');
 
         const generatedModels = await generator.generateToFiles(input, renderOutputPath);
         expect(generatedModels).not.toHaveLength(0);
 
-        const transpileAndRunCommand = `tsc --downlevelIteration -t es5 ${renderOutputPath}`;
+        const transpileAndRunCommand = `tsc --downlevelIteration -t es5 ${renderOutputPath}/*`;
         await execCommand(transpileAndRunCommand);
       });
 
@@ -156,24 +156,27 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
         const generator = new TypeScriptFileGenerator({modelType: 'interface'});
         const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
         const input = JSON.parse(String(inputFileContent));
-        const renderOutputPath = path.resolve(outputDirectoryPath, './java/interface');
+        const renderOutputPath = path.resolve(outputDirectoryPath, './ts/interface');
 
         const generatedModels = await generator.generateToFiles(input, renderOutputPath);
         expect(generatedModels).not.toHaveLength(0);
 
-        const transpileAndRunCommand = `tsc --downlevelIteration -t es5 ${renderOutputPath}`;
+        const transpileAndRunCommand = `tsc --downlevelIteration -t es5 ${renderOutputPath}/*`;
         await execCommand(transpileAndRunCommand);
       });
     });
 
     describe('should be able to generate JS', () => {
       test('class', async () => {
-        const generator = new JavaScriptGenerator();
-        const generatedModels = await generateModels(fileToGenerateFor, generator);
+        const generator = new JavaScriptFileGenerator();
+        const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
+        const input = JSON.parse(String(inputFileContent));
+        const renderOutputPath = path.resolve(outputDirectoryPath, './js/class');
+
+        const generatedModels = await generator.generateToFiles(input, renderOutputPath, {moduleSystem: 'CJS'});
         expect(generatedModels).not.toHaveLength(0);
-        const renderOutputPath = path.resolve(outputDirectoryPath, './js/class/output.js');
-        await renderModels(generatedModels, renderOutputPath);
-        const transpileAndRunCommand = `node ${renderOutputPath}`;
+
+        const transpileAndRunCommand = `node --check ${renderOutputPath}/*`;
         await execCommand(transpileAndRunCommand);
       });
     });

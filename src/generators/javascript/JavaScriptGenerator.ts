@@ -49,7 +49,9 @@ export class JavaScriptGenerator extends AbstractGenerator<JavaScriptOptions, Ja
       }
       return `import ${formattedDependencyModelName} from './${formattedDependencyModelName}';`;
     });
-    let modelCode = `export default ${outputModel.result}`;
+    let modelCode = `${outputModel.result}
+export default ${outputModel.renderedName};
+`;
     if (options.moduleSystem === 'CJS') {
       modelCode = `${outputModel.result}
 module.exports = ${outputModel.renderedName};`;

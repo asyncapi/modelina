@@ -351,7 +351,7 @@ export class CommonModel {
     if (this.additionalItems !== undefined) {
       dependsOn.push(...this.additionalItems.getNearestDependencies());
     }
-    return dependsOn;
+    return [...new Set(dependsOn)];
   }
 
   /**

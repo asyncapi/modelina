@@ -4,7 +4,7 @@ exports[`Should be able to render models to ESM module system and should log exp
 Array [
   "
 
-export default class Person {
+class Person {
   private _email?: string;
 
   constructor(input: {
@@ -15,7 +15,9 @@ export default class Person {
 
   get email(): string | undefined { return this._email; }
   set email(email: string | undefined) { this._email = email; }
-}",
+}
+export default Person;
+",
 ]
 `;
 
@@ -23,7 +25,7 @@ exports[`Should be able to render models to ESM module system and should log exp
 Array [
   "import Person from './Person';
 
-export default class Root {
+class Root {
   private _person?: Person;
 
   constructor(input: {
@@ -34,6 +36,8 @@ export default class Root {
 
   get person(): Person | undefined { return this._person; }
   set person(person: Person | undefined) { this._person = person; }
-}",
+}
+export default Root;
+",
 ]
 `;
