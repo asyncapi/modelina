@@ -2,7 +2,7 @@
 
 exports[`Should be able to render correct enums based on options and should log expected output to console 1`] = `
 "Generator output with Union:
-export class Root {
+class Root {
   private _event?: Event;
 
   constructor(input: {
@@ -14,9 +14,9 @@ export class Root {
   get event(): Event | undefined { return this._event; }
   set event(event: Event | undefined) { this._event = event; }
 }
-export type Event = \\"ping\\" | \\"pong\\";
+type Event = \\"ping\\" | \\"pong\\";
 Generator output with Enum:
-export class Root {
+class Root {
   private _event?: Event;
 
   constructor(input: {
@@ -28,7 +28,7 @@ export class Root {
   get event(): Event | undefined { return this._event; }
   set event(event: Event | undefined) { this._event = event; }
 }
-export enum Event {
+enum Event {
   PING = \\"ping\\",
   PONG = \\"pong\\",
 }"
