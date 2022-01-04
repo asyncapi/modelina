@@ -320,6 +320,76 @@ public static class StatesExtensions {
 "
 `;
 
+exports[`CSharpGenerator should render enums with translated special characters 1`] = `
+"public enum States {
+  TestPlus, Test, TestMinus, TestQuestionExclamation, AsteriskTest
+}
+public static class StatesExtensions {
+  public static dynamic GetValue(this States enumValue)
+  {
+    switch (enumValue)
+    {
+      case States.TestPlus: return \\"test+\\";
+      case States.Test: return \\"test\\";
+      case States.TestMinus: return \\"test-\\";
+      case States.TestQuestionExclamation: return \\"test?!\\";
+      case States.AsteriskTest: return \\"*test\\";
+    }
+    return null;
+  }
+
+  public static States? ToStates(dynamic value)
+  {
+    switch (value)
+    {
+      case \\"test+\\": return States.TestPlus;
+      case \\"test\\": return States.Test;
+      case \\"test-\\": return States.TestMinus;
+      case \\"test?!\\": return States.TestQuestionExclamation;
+      case \\"*test\\": return States.AsteriskTest;
+    }
+    return null;
+  }
+}
+
+"
+`;
+
+exports[`CSharpGenerator should render enums with translated special characters 2`] = `
+"public enum States {
+  TestPlus, Test, TestMinus, TestQuestionExclamation, AsteriskTest
+}
+public static class StatesExtensions {
+  public static dynamic GetValue(this States enumValue)
+  {
+    switch (enumValue)
+    {
+      case States.TestPlus: return \\"test+\\";
+      case States.Test: return \\"test\\";
+      case States.TestMinus: return \\"test-\\";
+      case States.TestQuestionExclamation: return \\"test?!\\";
+      case States.AsteriskTest: return \\"*test\\";
+    }
+    return null;
+  }
+
+  public static States? ToStates(dynamic value)
+  {
+    switch (value)
+    {
+      case \\"test+\\": return States.TestPlus;
+      case \\"test\\": return States.Test;
+      case \\"test-\\": return States.TestMinus;
+      case \\"test?!\\": return States.TestQuestionExclamation;
+      case \\"*test\\": return States.AsteriskTest;
+    }
+    return null;
+  }
+}
+
+"
+`;
+
 exports[`CSharpGenerator should render models and their dependencies 1`] = `
 "namespace Test.Package
 {

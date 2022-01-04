@@ -1,6 +1,7 @@
 import { CSharpRenderer } from '../CSharpRenderer';
 import { EnumPreset } from '../../../models';
 import { pascalCase } from 'change-case';
+import { FormatHelpers } from '../../../helpers';
 
 /**
  * Renderer for C#'s `enum` type
@@ -107,7 +108,7 @@ export const CSHARP_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
     return renderer.defaultSelf();
   },
   item({ item }) {
-    let itemName = String(item);
+    let itemName = FormatHelpers.replaceSpecialCharacters(String(item), { exclude: [' '], separator: '_' });
     if (typeof item === 'number' || typeof item === 'bigint') {
       itemName = `Number_${itemName}`;
     } else if (typeof item === 'object') {
