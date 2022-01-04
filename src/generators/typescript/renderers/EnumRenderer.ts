@@ -85,7 +85,7 @@ ${this.indent(this.renderBlock(content, 2))}
 }
 
 export const TS_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
-  self({ renderer }): Promise<string> {
+  self({ renderer }) {
     return renderer.defaultSelf();
   },
   item({ item, renderer }): string {

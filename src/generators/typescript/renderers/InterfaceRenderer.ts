@@ -21,7 +21,7 @@ ${this.indent(this.renderBlock(content, 2))}
 }
 
 export const TS_DEFAULT_INTERFACE_PRESET: InterfacePreset<InterfaceRenderer> = {
-  self({ renderer }): Promise<string> {
+  self({ renderer }) {
     return renderer.defaultSelf();
   },
   property({ renderer, propertyName, property, type }) {

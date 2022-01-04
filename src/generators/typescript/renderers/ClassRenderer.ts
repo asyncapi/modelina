@@ -64,7 +64,7 @@ ${this.indent(this.renderBlock(content, 2))}
 }
 
 export const TS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
-  self({ renderer }): Promise<string> {
+  self({ renderer }) {
     return renderer.defaultSelf();
   },
   ctor({ renderer, model }) : string {
