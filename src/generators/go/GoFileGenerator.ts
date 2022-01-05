@@ -1,4 +1,4 @@
-import { GoGenerator, GoRenderCompleteModelOptions } from './';
+import { GoGenerator, GoRenderCompleteModelOptions } from './GoGenerator';
 import { CommonInputModel, OutputModel } from '../../models';
 import * as path from 'path';
 import { AbstractFileGenerator } from '../AbstractFileGenerator';

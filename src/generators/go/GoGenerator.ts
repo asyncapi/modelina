@@ -9,7 +9,7 @@ import { GoPreset, GO_DEFAULT_PRESET } from './GoPreset';
 import { StructRenderer } from './renderers/StructRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { pascalCaseTransformMerge } from 'change-case';
-import { Logger } from '../../';
+import { Logger } from '../../utils/LoggingInterface';
 
 /**
  * The Go naming convention type
@@ -84,8 +84,9 @@ export class GoGenerator extends AbstractGenerator<GoOptions, GoRenderCompleteMo
     const outputModel = await this.render(model, inputModel);
     let importCode = '';
     if (outputModel.dependencies.length > 0) {
+      const dependencies = outputModel.dependencies.map((dependency) => {return `"${ dependency }"`;}).join('\n');
       importCode = `import (  
-  ${outputModel.dependencies.join(',\n')}
+  ${dependencies}
 )`;
     }
     const outputContent = `

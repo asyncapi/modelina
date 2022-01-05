@@ -1,8 +1,42 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`GoGenerator should render models and their dependencies 1`] = `
+exports[`GoGenerator generateCompleteModels() should render dependencies 1`] = `
 "
-package SomePackage
+package some_package
+import (  
+  \\"time\\"
+)
+// Address represents a Address model.
+type Address struct {
+  StreetName string
+  City string
+  State string
+  HouseNumber float64
+  Marriage bool
+  Members []interface{}
+  ArrayType []interface{}
+  OtherModel *OtherModel
+  AdditionalProperties map[string][]interface{}
+  STestPatternProperties map[string]string
+}"
+`;
+
+exports[`GoGenerator generateCompleteModels() should render dependencies 2`] = `
+"
+package some_package
+import (  
+  \\"time\\"
+)
+// OtherModel represents a OtherModel model.
+type OtherModel struct {
+  StreetName string
+  AdditionalProperties map[string][]interface{}
+}"
+`;
+
+exports[`GoGenerator generateCompleteModels() should render models 1`] = `
+"
+package some_package
 
 // Address represents a Address model.
 type Address struct {
@@ -19,9 +53,9 @@ type Address struct {
 }"
 `;
 
-exports[`GoGenerator should render models and their dependencies 2`] = `
+exports[`GoGenerator generateCompleteModels() should render models 2`] = `
 "
-package SomePackage
+package some_package
 
 // OtherModel represents a OtherModel model.
 type OtherModel struct {
