@@ -183,6 +183,38 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "kamko",
+      "name": "Kamil Janeček",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17074375?v=4",
+      "profile": "https://kamko.dev",
+      "contributions": [
+        "test",
+        "bug",
+        "code"
+      ]
+    },
+    {
+      "login": "mahakporwal02",
+      "name": "mahakporwal02",
+      "avatar_url": "https://avatars.githubusercontent.com/u/56486682?v=4",
+      "profile": "https://github.com/mahakporwal02",
+      "contributions": [
+        "example",
+        "test",
+        "doc"
+      ]
+    },
+    {
+      "login": "ron-debajyoti",
+      "name": "Debajyoti Halder",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22571664?v=4",
+      "profile": "https://github.com/ron-debajyoti",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,

@@ -33,6 +33,7 @@ The file generators all follow the same pattern regardless of output language, w
 Supported by:
 - Java
 - C#
+- JavaScript
 
 > It is not supported in browsers.
 

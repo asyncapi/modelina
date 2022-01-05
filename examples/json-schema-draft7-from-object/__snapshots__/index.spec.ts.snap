@@ -2,7 +2,7 @@
 
 exports[`Should be able to process JSON Schema draft 7 object and should log expected output to console 1`] = `
 Array [
-  "export class Root {
+  "class Root {
   private _email?: string;
 
   constructor(input: {
