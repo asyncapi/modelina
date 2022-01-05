@@ -184,7 +184,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
         const generatedModels = await generator.generateToFiles(input, renderOutputPath, {packageName: 'test_package_name'});
         expect(generatedModels).not.toHaveLength(0);
 
-        const compileCommand = `gofmt -e ${renderOutputPath} > /dev/null`;
+        const compileCommand = `gofmt ${renderOutputPath}`;
         await execCommand(compileCommand);
       });
     });
