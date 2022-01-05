@@ -50,13 +50,8 @@ export class CSharpGenerator extends AbstractGenerator<CSharpOptions, CSharpRend
     }
 
     const outputModel = await this.render(model, inputModel);
-    const modelDependencies = model.getNearestDependencies().map((dependencyModelName) => { 
-      const formattedDependencyModelName = this.options.namingConvention?.type ? this.options.namingConvention.type(dependencyModelName, {inputModel, model: inputModel.models[String(dependencyModelName)], reservedKeywordCallback: isReservedCSharpKeyword}) : dependencyModelName;
-      return `using ${options.namespace}.${formattedDependencyModelName};`;
-    });
     const outputContent = `namespace ${options.namespace}
 {
-  ${modelDependencies.join('\n')}
   ${outputModel.dependencies.join('\n')}
   ${outputModel.result}
 }`;
