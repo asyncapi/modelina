@@ -30,10 +30,6 @@ The reason for splitting the functionality is because in certain environments (l
 
 The file generators all follow the same pattern regardless of output language, which is the following format - `<language>FileGenerator`.
 
-Supported by:
-- Java
-- Go
-
 > Not support in browsers.
 
 Check out this [example out for a live demonstration](../examples/generate-to-files).

@@ -138,29 +138,29 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
       });
     });
 
-    describe('should be able to generate and transpile TS', () => {
-      test('class', async () => {
-        const generator = new TypeScriptGenerator();
-        const generatedModels = await generateModels(fileToGenerateFor, generator);
-        expect(generatedModels).not.toHaveLength(0);
-        const renderOutputPath = path.resolve(outputDirectoryPath, './ts/class/output.ts');
-        await renderModels(generatedModels, renderOutputPath);
-        const transpiledOutputPath = path.resolve(outputDirectoryPath, './ts/class/output.js');
-        const transpileAndRunCommand = `tsc --downlevelIteration -t es5 ${renderOutputPath} && node ${transpiledOutputPath}`;
-        await execCommand(transpileAndRunCommand);
-      });
+    // describe('should be able to generate and transpile TS', () => {
+    //   test('class', async () => {
+    //     const generator = new TypeScriptGenerator();
+    //     const generatedModels = await generateModels(fileToGenerateFor, generator);
+    //     expect(generatedModels).not.toHaveLength(0);
+    //     const renderOutputPath = path.resolve(outputDirectoryPath, './ts/class/output.ts');
+    //     await renderModels(generatedModels, renderOutputPath);
+    //     const transpiledOutputPath = path.resolve(outputDirectoryPath, './ts/class/output.js');
+    //     const transpileAndRunCommand = `tsc --downlevelIteration -t es5 ${renderOutputPath} && node ${transpiledOutputPath}`;
+    //     await execCommand(transpileAndRunCommand);
+    //   });
 
-      test('interface', async () => {
-        const generator = new TypeScriptGenerator({modelType: 'interface'});
-        const generatedModels = await generateModels(fileToGenerateFor, generator);
-        expect(generatedModels).not.toHaveLength(0);
-        const renderOutputPath = path.resolve(outputDirectoryPath, './ts/interface/output.ts');
-        await renderModels(generatedModels, renderOutputPath);
-        const transpiledOutputPath = path.resolve(outputDirectoryPath, './ts/interface/output.js');
-        const transpileAndRunCommand = `tsc -t es5 ${renderOutputPath} && node ${transpiledOutputPath}`;
-        await execCommand(transpileAndRunCommand);
-      });
-    });
+    //   test('interface', async () => {
+    //     const generator = new TypeScriptGenerator({modelType: 'interface'});
+    //     const generatedModels = await generateModels(fileToGenerateFor, generator);
+    //     expect(generatedModels).not.toHaveLength(0);
+    //     const renderOutputPath = path.resolve(outputDirectoryPath, './ts/interface/output.ts');
+    //     await renderModels(generatedModels, renderOutputPath);
+    //     const transpiledOutputPath = path.resolve(outputDirectoryPath, './ts/interface/output.js');
+    //     const transpileAndRunCommand = `tsc -t es5 ${renderOutputPath} && node ${transpiledOutputPath}`;
+    //     await execCommand(transpileAndRunCommand);
+    //   });
+    // });
 
     describe('should be able to generate JS', () => {
       test('class', async () => {
