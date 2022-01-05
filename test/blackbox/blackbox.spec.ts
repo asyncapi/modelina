@@ -148,7 +148,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
         const generatedModels = await generator.generateToFiles(input, renderOutputPath);
         expect(generatedModels).not.toHaveLength(0);
 
-        const transpileCommand = `tsc --downlevelIteration -t es5 ${path.resolve(renderOutputPath, './*')}`;
+        const transpileCommand = `tsc --downlevelIteration -t es5 ${path.resolve(renderOutputPath, './*.ts')}`;
         await execCommand(transpileCommand); 
       });
 
@@ -161,7 +161,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
         const generatedModels = await generator.generateToFiles(input, renderOutputPath);
         expect(generatedModels).not.toHaveLength(0);
 
-        const transpileCommand = `tsc --downlevelIteration -t es5 ${path.resolve(renderOutputPath, './*')}`;
+        const transpileCommand = `tsc --downlevelIteration -t es5 ${path.resolve(renderOutputPath, './*.ts')}`;
         await execCommand(transpileCommand);
       });
     });
