@@ -466,7 +466,7 @@ It is only allowed to extend if the other model have $id and is not already bein
 <a name="CommonModel+getNearestDependencies"></a>
 
 ### commonModel.getNearestDependencies()
-This function returns an array of `$id`s from all the CommonModel's it immediate depends on.
+Returns an array of unique `$id`s from all the CommonModel's this model depends on.
 
 **Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
 <a name="CommonModel.toCommonModel"></a>
