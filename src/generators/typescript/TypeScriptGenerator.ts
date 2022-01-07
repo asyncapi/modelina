@@ -54,7 +54,7 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,Typ
     modelDependencies = modelDependencies.map((dependencyModelName) => {
       return this.options.namingConvention?.type ? this.options.namingConvention.type(dependencyModelName, { inputModel, model: inputModel.models[String(dependencyModelName)] }) : dependencyModelName;
     });
-    //Filter out any dependencies that is recursive to it'self
+    //Filter out any dependencies that is recursive to itself
     modelDependencies = modelDependencies.filter((dependencyModelName) => {
       return dependencyModelName !== outputModel.renderedName;
     });
