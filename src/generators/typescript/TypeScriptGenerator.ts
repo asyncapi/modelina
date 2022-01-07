@@ -17,9 +17,8 @@ export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPres
   enumType?: 'enum' | 'union';
   namingConvention?: CommonNamingConvention;
 }
-
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface TypeScriptRenderCompleteModelOptions {
+  moduleSystem?: 'ESM' | 'CJS';
 }
 
 /**
@@ -48,16 +47,37 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,Typ
    * @param inputModel
    * @param options
    */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async renderCompleteModel(model: CommonModel, inputModel: CommonInputModel, options: TypeScriptRenderCompleteModelOptions): Promise<RenderOutput> {
     const outputModel = await this.render(model, inputModel);
-    const modelDependencies = model.getNearestDependencies().map((dependencyModelName) => {
-      const formattedDependencyModelName = this.options.namingConvention?.type ? this.options.namingConvention.type(dependencyModelName, { inputModel, model: inputModel.models[String(dependencyModelName)] }) : dependencyModelName;
-      return `import ./${formattedDependencyModelName};`;
+    let modelDependencies = model.getNearestDependencies();
+    //Ensure model dependencies have their rendered name
+    modelDependencies = modelDependencies.map((dependencyModelName) => {
+      return this.options.namingConvention?.type ? this.options.namingConvention.type(dependencyModelName, { inputModel, model: inputModel.models[String(dependencyModelName)] }) : dependencyModelName;
     });
-    const outputContent = `${modelDependencies.join('\n')}
-${outputModel.dependencies.join('\n')}
-${outputModel.result}`;
+    //Filter out any dependencies that is recursive to itself
+    modelDependencies = modelDependencies.filter((dependencyModelName) => {
+      return dependencyModelName !== outputModel.renderedName;
+    });
+    //Create the correct dependency imports
+    modelDependencies = modelDependencies.map((formattedDependencyModelName) => {
+      if (options.moduleSystem === 'CJS') {
+        return `const ${formattedDependencyModelName} = require('./${formattedDependencyModelName}');`;
+      }
+      return `import ${formattedDependencyModelName} from './${formattedDependencyModelName}';`;
+    });
+
+    //Ensure we expose the model correctly, based on the module system
+    let modelCode = `${outputModel.result}
+export default ${outputModel.renderedName};
+`;
+    if (options.moduleSystem === 'CJS') {
+      modelCode = `${outputModel.result}
+module.exports = ${outputModel.renderedName};`;
+    }
+
+    const outputContent = `${[...modelDependencies, ...outputModel.dependencies].join('\n')}
+
+${modelCode}`;
     return RenderOutput.toRenderOutput({ result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies });
   }
 
