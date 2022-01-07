@@ -6,7 +6,7 @@ Array [
   email;
 
   constructor(input) {
-    this.email = input.email;
+  
   }
 
   get email() { return this.email; }

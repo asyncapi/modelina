@@ -8,7 +8,7 @@ export default class Person {
   email;
 
   constructor(input) {
-    this.email = input.email;
+  
   }
 
   get email() { return this.email; }
@@ -25,7 +25,7 @@ export default class Root {
   person;
 
   constructor(input) {
-    this.person = input.person;
+  
   }
 
   get person() { return this.person; }
