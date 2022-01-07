@@ -7,7 +7,7 @@
 
 import * as path from 'path';
 import * as fs from 'fs';
-import { TypeScriptGenerator, JavaScriptGenerator, GoGenerator, CSharpGenerator, JavaFileGenerator, JAVA_COMMON_PRESET } from '../../src';
+import { TypeScriptGenerator, JavaScriptGenerator, GoGenerator, CSharpGenerator, JavaFileGenerator, JAVA_COMMON_PRESET, TypeScriptFileGenerator, JavaScriptFileGenerator } from '../../src';
 import { execCommand, generateModels, renderModels, renderModelsToSeparateFiles } from './utils/Utils';
 
 /**
@@ -138,39 +138,49 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
       });
     });
 
-    // describe('should be able to generate and transpile TS', () => {
-    //   test('class', async () => {
-    //     const generator = new TypeScriptGenerator();
-    //     const generatedModels = await generateModels(fileToGenerateFor, generator);
-    //     expect(generatedModels).not.toHaveLength(0);
-    //     const renderOutputPath = path.resolve(outputDirectoryPath, './ts/class/output.ts');
-    //     await renderModels(generatedModels, renderOutputPath);
-    //     const transpiledOutputPath = path.resolve(outputDirectoryPath, './ts/class/output.js');
-    //     const transpileAndRunCommand = `tsc --downlevelIteration -t es5 ${renderOutputPath} && node ${transpiledOutputPath}`;
-    //     await execCommand(transpileAndRunCommand);
-    //   });
+    describe('should be able to generate and transpile TS', () => {
+      test('class', async () => {
+        const generator = new TypeScriptFileGenerator({modelType: 'class'});
+        const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
+        const input = JSON.parse(String(inputFileContent));
+        const renderOutputPath = path.resolve(outputDirectoryPath, './ts/class');
 
-    //   test('interface', async () => {
-    //     const generator = new TypeScriptGenerator({modelType: 'interface'});
-    //     const generatedModels = await generateModels(fileToGenerateFor, generator);
-    //     expect(generatedModels).not.toHaveLength(0);
-    //     const renderOutputPath = path.resolve(outputDirectoryPath, './ts/interface/output.ts');
-    //     await renderModels(generatedModels, renderOutputPath);
-    //     const transpiledOutputPath = path.resolve(outputDirectoryPath, './ts/interface/output.js');
-    //     const transpileAndRunCommand = `tsc -t es5 ${renderOutputPath} && node ${transpiledOutputPath}`;
-    //     await execCommand(transpileAndRunCommand);
-    //   });
-    // });
+        const generatedModels = await generator.generateToFiles(input, renderOutputPath);
+        expect(generatedModels).not.toHaveLength(0);
+
+        const transpileCommand = `tsc --downlevelIteration -t es5 --baseUrl ${renderOutputPath}`;
+        await execCommand(transpileCommand); 
+      });
+
+      test('interface', async () => {
+        const generator = new TypeScriptFileGenerator({modelType: 'interface'});
+        const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
+        const input = JSON.parse(String(inputFileContent));
+        const renderOutputPath = path.resolve(outputDirectoryPath, './ts/interface');
+
+        const generatedModels = await generator.generateToFiles(input, renderOutputPath);
+        expect(generatedModels).not.toHaveLength(0);
+
+        const transpileCommand = `tsc --downlevelIteration -t es5 --baseUrl ${renderOutputPath}`;
+        await execCommand(transpileCommand);
+      });
+    });
 
     describe('should be able to generate JS', () => {
       test('class', async () => {
-        const generator = new JavaScriptGenerator();
-        const generatedModels = await generateModels(fileToGenerateFor, generator);
+        const generator = new JavaScriptFileGenerator();
+        const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
+        const input = JSON.parse(String(inputFileContent));
+        const renderOutputPath = path.resolve(outputDirectoryPath, './js/class');
+
+        const generatedModels = await generator.generateToFiles(input, renderOutputPath, {moduleSystem: 'CJS'});
         expect(generatedModels).not.toHaveLength(0);
-        const renderOutputPath = path.resolve(outputDirectoryPath, './js/class/output.js');
-        await renderModels(generatedModels, renderOutputPath);
-        const transpileAndRunCommand = `node ${renderOutputPath}`;
-        await execCommand(transpileAndRunCommand);
+
+        const files = fs.readdirSync(renderOutputPath);
+        for (const file of files) {
+          const transpileAndRunCommand = `node --check ${path.resolve(renderOutputPath, file)}`;
+          await execCommand(transpileAndRunCommand); 
+        }
       });
     });
 
