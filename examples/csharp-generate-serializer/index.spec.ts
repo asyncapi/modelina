@@ -5,6 +5,7 @@ describe('Should be able to generate a mode to validate serialized data against 
   afterAll(() => {
     jest.restoreAllMocks();
   });
+
   test('and should log expected output to console', async () => {
     await generate();
     //Generate is called 2x, so even though we expect 1 model, we double it
