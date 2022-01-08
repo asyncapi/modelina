@@ -1,7 +1,7 @@
-import { CommonInputModel, CommonModel, FileHelpers, JavaScriptFileGenerator, OutputModel } from '../../../src';
+import { CommonInputModel, CommonModel, FileHelpers, TypeScriptFileGenerator, OutputModel } from '../../../src';
 import * as path from 'path';
 
-describe('JavaScriptFileGenerator', () => {
+describe('TypeScriptFileGenerator', () => {
   afterEach(() => {
     jest.restoreAllMocks();
   });
@@ -21,7 +21,7 @@ describe('JavaScriptFileGenerator', () => {
       }
     };
     test('should throw accurate error if file cannot be written', async () => {
-      const generator = new JavaScriptFileGenerator();
+      const generator = new TypeScriptFileGenerator();
       const expectedError = new Error('write error');
       jest.spyOn(FileHelpers, 'writerToFileSystem').mockRejectedValue(expectedError);
       jest.spyOn(generator, 'generateCompleteModels').mockResolvedValue([new OutputModel('content', new CommonModel(), 'Test', new CommonInputModel(), [])]);
@@ -31,10 +31,10 @@ describe('JavaScriptFileGenerator', () => {
       expect(FileHelpers.writerToFileSystem).toHaveBeenCalledTimes(1);
     });
     test('should try and generate models to files', async () => {
-      const generator = new JavaScriptFileGenerator();
+      const generator = new TypeScriptFileGenerator();
       const outputDir = './test';
       const expectedOutputDirPath = path.resolve(outputDir);
-      const expectedOutputFilePath = path.resolve(`${outputDir}/Test.js`);
+      const expectedOutputFilePath = path.resolve(`${outputDir}/Test.ts`);
       const expectedWriteToFileParameters = [
         'content',
         expectedOutputFilePath,
@@ -47,8 +47,9 @@ describe('JavaScriptFileGenerator', () => {
       expect(FileHelpers.writerToFileSystem).toHaveBeenCalledTimes(1);
       expect((FileHelpers.writerToFileSystem as jest.Mock).mock.calls[0]).toEqual(expectedWriteToFileParameters);
     });
+
     test('should ignore models that have not been rendered', async () => {
-      const generator = new JavaScriptFileGenerator();
+      const generator = new TypeScriptFileGenerator();
       const outputDir = './test';
       const expectedOutputDirPath = path.resolve(outputDir);
       jest.spyOn(FileHelpers, 'writerToFileSystem').mockResolvedValue(undefined);
