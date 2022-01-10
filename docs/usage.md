@@ -67,7 +67,7 @@ The OpenAPI input processor expects that the property `openapi` is defined in or
 The response and request payloads, since it is a JSON Schema variant, is [interpreted as a such](./interpretation_of_JSON_Schema.md).
 
 ## Generate Go models
-TODO 
+Go is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-go-models) 
 
 ## Generate C# models
 TODO 
