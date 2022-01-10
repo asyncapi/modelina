@@ -26,3 +26,4 @@ This directory contains a series of self-contained examples that you can use as 
 - [javascript-use-esm](./javascript-use-esm) - A basic example that generate the models to use ESM module system.
 - [javascript-use-cjs](./javascript-use-cjs) - A basic example that generate the models to use CJS module system.
 - [generate-java-models](./generate-java-models) - A basic example to generate Java data models.
+- [generate-go-models](./generate-go-models) - A basic example to generate Go data models
