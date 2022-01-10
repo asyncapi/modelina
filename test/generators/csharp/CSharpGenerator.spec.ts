@@ -191,7 +191,7 @@ describe('CSharpGenerator', () => {
       },
       required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
     };
-    const config = {namespace: 'Test.Package'};
+    const config = {namespace: 'Test.Namespace'};
     const models = await generator.generateCompleteModels(doc, config);
     expect(models).toHaveLength(2);
     expect(models[0].result).toMatchSnapshot();

@@ -7,7 +7,7 @@
 
 import * as path from 'path';
 import * as fs from 'fs';
-import { TypeScriptGenerator, JavaScriptGenerator, GoGenerator, CSharpGenerator, JavaFileGenerator, JAVA_COMMON_PRESET, TypeScriptFileGenerator, JavaScriptFileGenerator } from '../../src';
+import { GoGenerator, CSharpFileGenerator, JavaFileGenerator, JAVA_COMMON_PRESET, TypeScriptFileGenerator, JavaScriptFileGenerator } from '../../src';
 import { execCommand, generateModels, renderModels, renderModelsToSeparateFiles } from './utils/Utils';
 
 /**
@@ -128,11 +128,14 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
     });
     describe('should be able to generate and compile C#', () => {
       test('class', async () => {
-        const generator = new CSharpGenerator();
-        const generatedModels = await generateModels(fileToGenerateFor, generator);
-        expect(generatedModels).not.toHaveLength(0);
+        const generator = new CSharpFileGenerator();
+        const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
+        const input = JSON.parse(String(inputFileContent));
         const renderOutputPath = path.resolve(outputDirectoryPath, './csharp');
-        await renderModelsToSeparateFiles(generatedModels, renderOutputPath, 'cs');
+        
+        const generatedModels = await generator.generateToFiles(input, renderOutputPath, {namespace: 'TestNamespace'});
+        expect(generatedModels).not.toHaveLength(0);
+        
         const compileCommand = `csc /target:library /out:${path.resolve(renderOutputPath, './compiled.dll')} ${path.resolve(renderOutputPath, '*.cs')}`;
         await execCommand(compileCommand);
       });

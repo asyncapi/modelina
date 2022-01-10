@@ -391,9 +391,8 @@ public static class StatesExtensions {
 `;
 
 exports[`CSharpGenerator should render models and their dependencies 1`] = `
-"namespace Test.Package
+"namespace Test.Namespace
 {
-  using Test.Package.OtherModel;
   using System.Collections.Generic;
   public class Address {
   private string streetName;
@@ -471,9 +470,8 @@ exports[`CSharpGenerator should render models and their dependencies 1`] = `
 `;
 
 exports[`CSharpGenerator should render models and their dependencies 2`] = `
-"namespace Test.Package
+"namespace Test.Namespace
 {
-  
   using System.Collections.Generic;
   public class OtherModel {
   private string streetName;
