@@ -7,6 +7,8 @@ This directory contains a series of self-contained examples that you can use as 
 - [typescript-enum-type](./typescript-enum-type) - A basic example of how to use Modelina can output different types of enums in TypeScript.
 - [typescript-generate-marshalling](./typescript-generate-marshalling) - A basic example of how to use the un/marshalling functionality of the typescript class.
 - [typescript-generate-example](./typescript-generate-example) - A basic example of how to use Modelina and output a TypeScript class with an example function.
+- [typescript-use-esm](./typescript-use-esm) - A basic example that generate the models to use ESM module system.
+- [typescript-use-cjs](./typescript-use-cjs) - A basic example that generate the models to use CJS module system.
 - [indentation-type-and-size](./indentation-type-and-size) - This example shows how to change the indentation type and size of the generated model.
 - [asyncapi-from-object](./asyncapi-from-object) - A basic example where an AsyncAPI JS object is used to generate models.
 - [asyncapi-from-parser](./asyncapi-from-parser) - A basic example where an AsyncAPI JS object from the [parser-js](https://github.com/asyncapi/parser-js) is used to generate models.
@@ -23,3 +25,4 @@ This directory contains a series of self-contained examples that you can use as 
 - [javascript-use-esm](./javascript-use-esm) - A basic example that generate the models to use ESM module system.
 - [javascript-use-cjs](./javascript-use-cjs) - A basic example that generate the models to use CJS module system.
 - [generate-java-models](./generate-java-models) - A basic example to generate Java data models.
+- [generate-go-models](./generate-go-models) - A basic example to generate Go data models

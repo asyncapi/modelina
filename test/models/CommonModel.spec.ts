@@ -908,6 +908,11 @@ describe('CommonModel', () => {
         const d = CommonModel.toCommonModel(doc);
         expect(d.getNearestDependencies()).toEqual([]);
       });
+      test('should not return duplicate dependencies', () => {
+        const doc = { properties: { test1: { $ref: '1' }, test2: { $ref: '1' } } };
+        const d = CommonModel.toCommonModel(doc);
+        expect(d.getNearestDependencies()).toEqual(['1']);
+      });    
     });
   });
 });
