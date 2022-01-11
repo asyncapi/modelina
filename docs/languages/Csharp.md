@@ -1,4 +1,5 @@
 # C#
+
 There are special use-cases that each language supports; this document pertains to **C# models**.
 
 <!-- toc is generated with GitHub Actions do not remove toc markers -->
@@ -11,9 +12,13 @@ There are special use-cases that each language supports; this document pertains 
 <!-- tocstop -->
 
 ## Generate serializer and deserializer functionality
-TODO
+
+To generate the data models based on JSON Schema document and validate the serialized data against the schema, use the preset `CSHARP_JSON_SERIALIZER_PRESET`
+
+Check out this [example for a live demonstration](../../examples/csharp-generate-serializer).
 
 ## Generate models with equals and GetHashCode methods
+
 To overwrite the `Equal` and `GetHashCode` methods, use the preset `CSHARP_COMMON_PRESET` and provide the options `equal: true` and `hashCode: true`
 
 Check out this [example for a live demonstration](../../examples/csharp-generate-equals-and-hashcode).
