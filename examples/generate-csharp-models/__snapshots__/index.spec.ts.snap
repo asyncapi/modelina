@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render C# models  and should log expected output to console 1`] = `
+Array [
+  "public class Root {
+  private string email;
+
+  public string Email 
+  {
+    get { return email; }
+    set { email = value; }
+  }
+}",
+]
+`;
