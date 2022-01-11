@@ -34,6 +34,7 @@ Supported by:
 - Java
 - TypeScript
 - C#
+- Go
 - JavaScript
 
 > It is not supported in browsers.
