@@ -1,6 +1,6 @@
-# C# Generate `Generate Serializer`
+# C# Generate serializer functions
 
-A basic example on how to generate models and want to serialize the data to validate against the schema.
+A basic example of how to generate models and which includes a way to serialize them into JSON.
 
 ## How to run this example
 
