@@ -42,7 +42,9 @@ Supported by:
 Check out this [example out for a live demonstration](../examples/generate-to-files).
 
 ## Include a custom function in the data model
-TODO 
+Sometimes you want to include custom functionality into the generated models, this can be done through a custom preset using the hook `additionalContent`.
+
+Check out this [example out for a live demonstration](../examples/include-custom-function).
 
 ## Use the models for data transfer
 TODO 
