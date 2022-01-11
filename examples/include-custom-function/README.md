@@ -1,4 +1,4 @@
-# TODO: Custom Function
+# Custom Function
 
 A basic example of how to include custom function in data model.
 
