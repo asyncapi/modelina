@@ -203,7 +203,8 @@
       "contributions": [
         "example",
         "test",
-        "doc"
+        "doc",
+        "code"
       ]
     },
     {
