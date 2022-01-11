@@ -71,7 +71,7 @@ export const JS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
   },
   ctor({ renderer, model }) {
     const properties = model.properties || {};
-    const assigments = Object.entries(properties).map(([propertyName, property]) => {
+    const assigments = Object.entries(properties).filter(([propertyName]) => model.isRequired(propertyName)).map(([propertyName, property]) => {
       propertyName = renderer.nameProperty(propertyName, property);
       return `this.${propertyName} = input.${propertyName};`;
     });

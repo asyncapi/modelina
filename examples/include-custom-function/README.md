@@ -1,6 +1,6 @@
-# C# Generate serializer functions
+# Custom Function
 
-A basic example of how to generate models and which includes a way to serialize them into JSON.
+A basic example of how to include custom function in data model.
 
 ## How to run this example
 

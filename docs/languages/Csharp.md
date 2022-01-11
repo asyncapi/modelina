@@ -13,7 +13,7 @@ There are special use-cases that each language supports; this document pertains 
 
 ## Generate serializer and deserializer functionality
 
-To generate the data models based on JSON Schema document and validate the serialized data against the schema, use the preset `CSHARP_JSON_SERIALIZER_PRESET`
+Sometimes you want to serialize the data models into JSON. In order to do that use the preset `CSHARP_JSON_SERIALIZER_PRESET`
 
 Check out this [example for a live demonstration](../../examples/csharp-generate-serializer).
 
