@@ -18,7 +18,9 @@ There are special use-cases that each language supports; this document pertains 
 
 ## Include equals function for the class
 
-TODO
+To overwrite the `equal` method, use the preset `JAVA_COMMON_PRESET` and provide the option `equal: true`.
+
+Check out this [example for a live demonstration](../../examples/java-generate-equals).
 
 ## Include hashCode function for the class
 
