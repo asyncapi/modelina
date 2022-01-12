@@ -30,3 +30,4 @@ This directory contains a series of self-contained examples that you can use as 
 - [include-custom-function](./include-custom-function) - A basic example where a custom function is included.
 - [java-generate-equals](./java-generate-equals) - A basic example that shows how to generate models that overwrite the `equal` method
 - [generate-csharp-models](./generate-csharp-models) - A basic example to generate C# data models
+- [java-generate-hashcode](./java-generate-hashcode) - A basic example that shows how to generate models that overwrite the `GetHashCode` method

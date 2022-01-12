@@ -22,7 +22,9 @@ Check out this [example for a live demonstration](../../examples/java-generate-e
 
 
 ## Include hashCode function for the class
-TODO
+To overwrite the `GetHashCode` method, use the preset `JAVA_COMMON_PRESET` and provide the option `hashCode: true`.
+
+Check out this [example for a live demonstration](../../examples/java-generate-hashcode).
 
 ## Change the collection type for arrays
 TODO
