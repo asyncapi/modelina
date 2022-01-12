@@ -129,16 +129,6 @@ describe('CSharpGenerator', () => {
       enum: ['Texas', 'Alabama', 'California'],
     };
 
-    generator = new CSharpGenerator({ presets: [
-      {
-        enum: {
-          self({ content }) {
-            return content;
-          },
-        }
-      }
-    ] });
-
     const inputModel = await generator.process(doc);
     const model = inputModel.models['CustomEnum'];
     
@@ -150,6 +140,36 @@ describe('CSharpGenerator', () => {
     expect(enumModel.result).toMatchSnapshot();
     expect(enumModel.dependencies).toEqual([]);
   });
+
+  test('should render enums with translated special characters', async () => {
+    const doc = {
+      $id: 'States',
+      type: 'string',
+      enum: ['test+', 'test', 'test-', 'test?!', '*test']
+    };
+    
+    generator = new CSharpGenerator({ presets: [
+      {
+        enum: {
+          self({ content }) {
+            return content;
+          },
+        }
+      }
+    ]});
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models['States'];
+
+    let enumModel = await generator.render(model, inputModel);
+    expect(enumModel.result).toMatchSnapshot();
+    expect(enumModel.dependencies).toEqual([]);
+
+    enumModel = await generator.renderEnum(model, inputModel);
+    expect(enumModel.result).toMatchSnapshot();
+    expect(enumModel.dependencies).toEqual([]);
+  });
+
   test('should render models and their dependencies', async () => {
     const doc = {
       $id: 'Address',
@@ -171,12 +191,13 @@ describe('CSharpGenerator', () => {
       },
       required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
     };
-    const config = {namespace: 'Test.Package'};
+    const config = {namespace: 'Test.Namespace'};
     const models = await generator.generateCompleteModels(doc, config);
     expect(models).toHaveLength(2);
     expect(models[0].result).toMatchSnapshot();
     expect(models[1].result).toMatchSnapshot();
   });
+
   test('should throw error when reserved keyword is used for package name', async () => {
     const doc = {
       $id: 'Address',

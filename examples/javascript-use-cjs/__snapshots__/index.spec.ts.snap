@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render models to ESM module system and should log expected output to console 1`] = `
+Array [
+  "
+
+class Person {
+  email;
+
+  constructor(input) {
+  
+  }
+
+  get email() { return this.email; }
+  set email(email) { this.email = email; }
+}
+module.exports = Person;",
+]
+`;
+
+exports[`Should be able to render models to ESM module system and should log expected output to console 2`] = `
+Array [
+  "const Person = require('./Person');
+
+class Root {
+  person;
+
+  constructor(input) {
+  
+  }
+
+  get person() { return this.person; }
+  set person(person) { this.person = person; }
+}
+module.exports = Root;",
+]
+`;

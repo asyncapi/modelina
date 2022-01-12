@@ -14,7 +14,8 @@ describe('JavaScriptGenerator', () => {
         enum: { type: 'string' },
         reservedEnum: { type: 'string' }
       },
-      additionalProperties: false
+      additionalProperties: false,
+      required: ['reservedEnum', 'enum'],
     };
     const expected = `class Address {
   reservedReservedEnum;
@@ -77,8 +78,6 @@ describe('JavaScriptGenerator', () => {
     this.city = input.city;
     this.state = input.state;
     this.houseNumber = input.houseNumber;
-    this.marriage = input.marriage;
-    this.members = input.members;
     this.arrayType = input.arrayType;
   }
 
@@ -187,5 +186,58 @@ describe('JavaScriptGenerator', () => {
     const classModel = await generator.render(model, inputModel);
     expect(classModel.result).toEqual(expected);
     expect(classModel.dependencies).toEqual([]);
+  });
+
+  test('should render models and their dependencies for CJS module system', async () => {
+    const doc = {
+      $id: 'Address',
+      type: 'object',
+      properties: {
+        street_name: { type: 'string' },
+        city: { type: 'string', description: 'City description' },
+        state: { type: 'string' },
+        house_number: { type: 'number' },
+        marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
+        members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
+        array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
+        other_model: { type: 'object', $id: 'OtherModel', properties: { street_name: { type: 'string' } }, required: ['street_name'] },
+      },
+      patternProperties: {
+        '^S(.?*)test&': {
+          type: 'string'
+        }
+      },
+      required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+    };
+    const models = await generator.generateCompleteModels(doc, {moduleSystem: 'CJS'});
+    expect(models).toHaveLength(2);
+    expect(models[0].result).toMatchSnapshot();
+    expect(models[1].result).toMatchSnapshot();
+  });
+  test('should render models and their dependencies for ESM module system', async () => {
+    const doc = {
+      $id: 'Address',
+      type: 'object',
+      properties: {
+        street_name: { type: 'string' },
+        city: { type: 'string', description: 'City description' },
+        state: { type: 'string' },
+        house_number: { type: 'number' },
+        marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
+        members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
+        array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
+        other_model: { type: 'object', $id: 'OtherModel', properties: { street_name: { type: 'string' } }, required: ['street_name'] },
+      },
+      patternProperties: {
+        '^S(.?*)test&': {
+          type: 'string'
+        }
+      },
+      required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+    };
+    const models = await generator.generateCompleteModels(doc, {moduleSystem: 'ESM'});
+    expect(models).toHaveLength(2);
+    expect(models[0].result).toMatchSnapshot();
+    expect(models[1].result).toMatchSnapshot();
   });
 });

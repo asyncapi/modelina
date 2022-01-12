@@ -30,15 +30,21 @@ The reason for splitting the functionality is because in certain environments (l
 
 The file generators all follow the same pattern regardless of output language, which is the following format - `<language>FileGenerator`.
 
+Supported by:
+- Java
+- TypeScript
+- C#
+- Go
+- JavaScript
 
-Currently only supported for `Java`.
-
-> Not support in browsers.
+> It is not supported in browsers.
 
 Check out this [example out for a live demonstration](../examples/generate-to-files).
 
 ## Include a custom function in the data model
-TODO 
+Sometimes you want to include custom functionality into the generated models, this can be done through a custom preset using the hook `additionalContent`.
+
+Check out this [example out for a live demonstration](../examples/include-custom-function).
 
 ## Use the models for data transfer
 TODO 
