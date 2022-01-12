@@ -1,4 +1,5 @@
 # Java
+
 There are special use-cases that each language supports; this document pertains to **Java models**.
 
 <!-- toc is generated with GitHub Actions do not remove toc markers -->
@@ -16,28 +17,37 @@ There are special use-cases that each language supports; this document pertains 
 <!-- tocstop -->
 
 ## Include equals function for the class
+
 TODO
 
 ## Include hashCode function for the class
+
 TODO
 
 ## Change the collection type for arrays
-TODO
+
+Sometimes, we might want to change whether the collections are to be rendered as `List` type. To do so, prove the option `collectionType: 'List'`.
+
+Check out this [example for a live demonstration](../../examples/java-change-collection-type).
 
 ## Include toString function for the class
+
 To overwrite the `toString` method, use the preset `JAVA_COMMON_PRESET` and provide the option `classToString: true`.
 
 Check out this [example for a live demonstration](../../examples/java-generate-tostring).
 
 ## Include JavaDoc for properties
+
 To generate models containing `JavaDocs` from description and examples, use the `JAVA_DESCRIPTION_PRESET` option.
 
 Check out this [example for a live demonstration](../../examples/java-generate-javadoc).
 
 ## Include Javax validation constraint annotations for properties
+
 In some cases, when you generate the models from JSON Schema, you may want to include `javax.validation.constraint` annotations.
 
 Check out this [example for a live demonstration](../../examples/java-generate-javax-constraint-annotation).
 
 ## Include Jackson annotations for the class
+
 TODO

@@ -29,3 +29,4 @@ This directory contains a series of self-contained examples that you can use as 
 - [generate-go-models](./generate-go-models) - A basic example to generate Go data models
 - [include-custom-function](./include-custom-function) - A basic example where a custom function is included.
 - [generate-csharp-models](./generate-csharp-models) - A basic example to generate C# data models
+- [java-change-collection-type](./java-change-collection-type) - An example to render collections as List in Java.
