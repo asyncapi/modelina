@@ -26,7 +26,7 @@ TODO
 
 ## Change the collection type for arrays
 
-Sometimes, we might want to change whether the collections are to be rendered as `List` type. To do so, prove the option `collectionType: 'List'`.
+Sometimes, we might want to render the collections as `List` type. To do so, prove the option `collectionType: 'List'`.
 
 Check out this [example for a live demonstration](../../examples/java-change-collection-type).
 
