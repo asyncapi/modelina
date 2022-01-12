@@ -1,6 +1,6 @@
 # Java Generate `HashCode`
 
-A basic example on how to generate models that overwrite `GetHashCode` method
+A basic example on how to generate models that overwrite `hashCode` method
 
 ## How to run this example
 

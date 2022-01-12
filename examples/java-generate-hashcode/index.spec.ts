@@ -1,7 +1,7 @@
 const spy = jest.spyOn(global.console, 'log').mockImplementation(() => { return; });
 import {generate} from './index';
 
-describe('Should be able to generate a model to overwrite the GetHashCode method', () => {
+describe('Should be able to generate a model to overwrite the hashCode method', () => {
   afterAll(() => {
     jest.restoreAllMocks();
   });
