@@ -31,3 +31,4 @@ This directory contains a series of self-contained examples that you can use as 
 - [java-generate-equals](./java-generate-equals) - A basic example that shows how to generate models that overwrite the `equal` method
 - [generate-csharp-models](./generate-csharp-models) - A basic example to generate C# data models
 - [java-change-collection-type](./java-change-collection-type) - An example to render collections as List in Java.
+- [java-generate-hashcode](./java-generate-hashcode) - A basic example that shows how to generate models that overwrite the `hashCode` method
