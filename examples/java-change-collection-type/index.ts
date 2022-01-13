@@ -9,8 +9,11 @@ const jsonSchemaDraft7 = {
   additionalProperties: false,
   properties: {
     email: {
-      type: 'string',
-      format: 'email'
+      type: 'array',
+      items: {
+        type: 'string',
+        format: 'email'
+      }
     }
   }
 };

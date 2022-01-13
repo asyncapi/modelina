@@ -30,7 +30,7 @@ Check out this [example for a live demonstration](../../examples/java-generate-h
 
 ## Change the collection type for arrays
 
-Sometimes, we might want to render the collections as `List` type. To do so, prove the option `collectionType: 'List'`.
+Sometimes, we might want to render a different collection type, and instead of the default `Array` use as `List` type. To do so, provide the option `collectionType: 'List'`.
 
 Check out this [example for a live demonstration](../../examples/java-change-collection-type).
 

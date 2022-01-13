@@ -1,4 +1,4 @@
-# TODO: Your example title
+# Java change collection type
 
 A basic example to render collections as List type in Java.
 
