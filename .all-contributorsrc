@@ -218,6 +218,15 @@
         "doc",
         "example"
       ]
+    },
+    {
+      "login": "ritik307",
+      "name": "Ritik Rawal",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22374829?v=4",
+      "profile": "https://ritik307.github.io/portfolio/",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
