@@ -16,11 +16,10 @@ You can either build the image and run the needed commands manually or rather us
 To setup the environment follow these steps:
 
 1. Setup the project by first installing the dependencies `npm install`
-2. Run `npm run nvmrc` to setup nvm.
-3. Run `nvm use` to update the nodejs version.
-4. Make sure the tests pass by running `npm run test` script
+2. Run `nvm use` to update the nodejs version.
+3. Make sure the tests pass by running `npm run test` script
    - You can update snapshots by running `npm run test -- -u`
-5. Make sure code is well formatted and secure `npm run lint`
+4. Make sure code is well formatted and secure `npm run lint`
 
 ## BlackBox testing
 
