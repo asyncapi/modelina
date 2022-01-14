@@ -6,7 +6,7 @@ Array [
   email;
 
   constructor(input) {
-    if (input.hasOwnProperty(email)) {
+    if (input.hasOwnProperty('email')) {
       this.email = input.email;
     }
   }

@@ -78,10 +78,10 @@ describe('JavaScriptGenerator', () => {
     this.city = input.city;
     this.state = input.state;
     this.houseNumber = input.houseNumber;
-    if (input.hasOwnProperty(marriage)) {
+    if (input.hasOwnProperty('marriage')) {
       this.marriage = input.marriage;
     }
-    if (input.hasOwnProperty(members)) {
+    if (input.hasOwnProperty('members')) {
       this.members = input.members;
     }
     this.arrayType = input.arrayType;

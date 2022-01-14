@@ -20,14 +20,14 @@ class Address {
     this.city = input.city;
     this.state = input.state;
     this.houseNumber = input.houseNumber;
-    if (input.hasOwnProperty(marriage)) {
+    if (input.hasOwnProperty('marriage')) {
       this.marriage = input.marriage;
     }
-    if (input.hasOwnProperty(members)) {
+    if (input.hasOwnProperty('members')) {
       this.members = input.members;
     }
     this.arrayType = input.arrayType;
-    if (input.hasOwnProperty(otherModel)) {
+    if (input.hasOwnProperty('otherModel')) {
       this.otherModel = input.otherModel;
     }
   }
@@ -105,14 +105,14 @@ class Address {
     this.city = input.city;
     this.state = input.state;
     this.houseNumber = input.houseNumber;
-    if (input.hasOwnProperty(marriage)) {
+    if (input.hasOwnProperty('marriage')) {
       this.marriage = input.marriage;
     }
-    if (input.hasOwnProperty(members)) {
+    if (input.hasOwnProperty('members')) {
       this.members = input.members;
     }
     this.arrayType = input.arrayType;
-    if (input.hasOwnProperty(otherModel)) {
+    if (input.hasOwnProperty('otherModel')) {
       this.otherModel = input.otherModel;
     }
   }
