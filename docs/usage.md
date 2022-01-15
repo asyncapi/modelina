@@ -72,15 +72,15 @@ The response and request payloads, since it is a JSON Schema variant, is [interp
 
 ## Generate Go models
 
-Go is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-go-models)
+Go is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-go-models) and the following [Go documentation for more advanced use-cases](./languages/Go.md).
 
 ## Generate C# models
 
-C# is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-csharp-models)
+C# is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-csharp-models) and the following [C# documentation for more advanced use-cases](./languages/Csharp.md).
 
 ## Generate Java models
 
-Java is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-java-models)
+Java is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-java-models) and the following [Java documentation for more advanced use-cases](./languages/Java.md).
 
 ## Generate TypeScript models
 
@@ -88,4 +88,4 @@ TypeScript is one of the many output languages we support. Check out this [basic
 
 ## Generate JavaScript models
 
-JavaScript is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-javascript-models)
+JavaScript is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-javascript-models) and the following [JavaScript documentation for more advanced use-cases](./languages/JavaScript.md).
