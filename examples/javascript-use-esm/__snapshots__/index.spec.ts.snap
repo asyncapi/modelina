@@ -8,7 +8,9 @@ class Person {
   email;
 
   constructor(input) {
-  
+    if (input.hasOwnProperty('email')) {
+      this.email = input.email;
+    }
   }
 
   get email() { return this.email; }
@@ -27,7 +29,9 @@ class Root {
   person;
 
   constructor(input) {
-  
+    if (input.hasOwnProperty('person')) {
+      this.person = input.person;
+    }
   }
 
   get person() { return this.person; }
