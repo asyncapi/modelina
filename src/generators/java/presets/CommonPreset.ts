@@ -8,6 +8,7 @@ export interface JavaCommonPresetOptions {
   equal: boolean;
   hashCode: boolean;
   classToString: boolean;
+  marshalling: boolean;
 }
 
 /**
@@ -98,6 +99,55 @@ private String toIndentedString(Object o) {
 } 
 
 /**
+ * Render `marshal` function based on model's properties
+ */
+function renderMarshalling({ renderer, model }: {
+  renderer: JavaRenderer,
+  model: CommonModel,
+}): string {
+  const properties = model.properties || {};
+  const propertyKeys = [...Object.keys(properties)];
+  if (model.additionalProperties !== undefined) {
+    propertyKeys.push(getUniquePropertyName(model, DefaultPropertyNames.additionalProperties));
+  }
+  const marshalProperties = propertyKeys.map(prop => {
+    const renderedPropertyName = renderer.nameProperty(prop);
+    return `"${renderedPropertyName}": ${renderedPropertyName}`;
+  });
+  return `${renderer.renderAnnotation('Override')}
+public Map<String, Object> marshal() {
+  Map<String, Object> map = new HashMap<>();
+${marshalProperties.length > 0 ? renderer.indent(marshalProperties.join(',\n'), 4) : ''}
+  return map;
+}`;
+}
+
+/**
+ * Render `unmarshal` function based on model's properties
+ */
+function renderUnmarshalling({ renderer, model }: {
+  renderer: JavaRenderer,
+  model: CommonModel,
+}): string {
+  const formattedModelName = renderer.nameType(model.$id);
+  const properties = model.properties || {};
+  const propertyKeys = [...Object.keys(properties)];
+  if (model.additionalProperties !== undefined) {
+    propertyKeys.push(getUniquePropertyName(model, DefaultPropertyNames.additionalProperties));
+  }
+  const unmarshalProperties = propertyKeys.map(prop => {
+    const renderedPropertyName = renderer.nameProperty(prop);
+    return `"${renderedPropertyName}": ${renderedPropertyName}`;
+  });
+  return `${renderer.renderAnnotation('Override')}
+public ${formattedModelName} unmarshal(Map<String, Object> map) {
+  ${formattedModelName} ${formattedModelName.toLowerCase()} = new ${formattedModelName}();
+${unmarshalProperties.length > 0 ? renderer.indent(unmarshalProperties.join(',\n'), 4) : ''}
+  return ${formattedModelName.toLowerCase()};
+}`;
+}
+
+/**
  * Preset which adds `equal`, `hashCode`, `toString` functions to class. 
  * 
  * @implements {JavaPreset}
@@ -110,6 +160,8 @@ export const JAVA_COMMON_PRESET: JavaPreset = {
       const shouldContainEqual = options.equal === undefined || options.equal === true;
       const shouldContainHashCode = options.hashCode === undefined || options.hashCode === true;
       const shouldContainToString = options.classToString === undefined || options.classToString === true;
+      const shouldContainMarshal = options.marshal === undefined || options.marshal === true;
+      const shouldContainUnmarshal = options.unmarshal === undefined || options.unmarshal === true;
 
       if (shouldContainEqual === true || shouldContainHashCode === true) {
         renderer.addDependency('import java.util.Objects;');
@@ -118,8 +170,11 @@ export const JAVA_COMMON_PRESET: JavaPreset = {
       if (shouldContainEqual) {blocks.push(renderEqual({ renderer, model }));}
       if (shouldContainHashCode) {blocks.push(renderHashCode({ renderer, model }));}
       if (shouldContainToString) {blocks.push(renderToString({ renderer, model }));}
+      if (shouldContainMarshal) {blocks.push(renderMarshalling({ renderer, model }));}
+      if (shouldContainUnmarshal) {blocks.push(renderUnmarshalling({ renderer, model }));}
 
       return renderer.renderBlock([content, ...blocks], 2);
     },
   }
 };
+
