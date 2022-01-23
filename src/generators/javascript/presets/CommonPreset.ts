@@ -84,7 +84,7 @@ function renderMarshal({ renderer, model, inputModel }: {
   model: CommonModel,
   inputModel: CommonInputModel
 }): string {
-  return `public marshal() : string {
+  return `function marshal(){
   let json = '{'
 ${renderer.indent(renderMarshalProperties(model, renderer, inputModel))}
 ${renderer.indent(renderMarshalPatternProperties(model, renderer, inputModel))}
@@ -127,7 +127,7 @@ function renderUnmarshalPatternProperties(model: CommonModel, renderer: JavaScri
     for (const [pattern, patternModel] of Object.entries(model.patternProperties)) {
       let patternPropertyName = getUniquePropertyName(model, `${pattern}${DefaultPropertyNames.patternProperties}`);
       patternPropertyName = renderer.nameProperty(patternPropertyName, patternModel);
-      const modelInstanceVariable = 'value as any';
+      const modelInstanceVariable = 'value';
       const unmarshalCode = renderUnmarshalProperty(modelInstanceVariable, patternModel, inputModel, renderer);
       setPatternPropertiesMap += `if (instance.${patternPropertyName} === undefined) {instance.${patternPropertyName} = new Map();}\n`;
       unmarshalPatternProperties += `//Check all pattern properties
@@ -168,7 +168,7 @@ function renderUnmarshal({ renderer, model, inputModel }: {
   const unmarshalProperties = renderUnmarshalProperties(model, renderer, inputModel);
   const formattedModelName = renderer.nameType(model.$id);
   const propertyNames = Object.keys(properties).map((prop => `"${prop}"`));
-  return `public static unmarshal(json: string | object): ${formattedModelName} {
+  return `function unmarshal(json){
   const obj = typeof json === "object" ? json : JSON.parse(json);
   const instance = new ${formattedModelName}({});
 
