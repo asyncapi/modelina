@@ -84,7 +84,7 @@ function renderMarshal({ renderer, model, inputModel }: {
   model: CommonModel,
   inputModel: CommonInputModel
 }): string {
-  return `function marshal(){
+  return `marshal(){
   let json = '{'
 ${renderer.indent(renderMarshalProperties(model, renderer, inputModel))}
 ${renderer.indent(renderMarshalPatternProperties(model, renderer, inputModel))}
@@ -168,7 +168,7 @@ function renderUnmarshal({ renderer, model, inputModel }: {
   const unmarshalProperties = renderUnmarshalProperties(model, renderer, inputModel);
   const formattedModelName = renderer.nameType(model.$id);
   const propertyNames = Object.keys(properties).map((prop => `"${prop}"`));
-  return `function unmarshal(json){
+  return `unmarshal(json){
   const obj = typeof json === "object" ? json : JSON.parse(json);
   const instance = new ${formattedModelName}({});
 
