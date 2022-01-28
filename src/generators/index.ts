@@ -6,3 +6,4 @@ export * from './javascript';
 export * from './typescript';
 export * from './go';
 export * from './AbstractFileGenerator';
+export * from './python';
