@@ -2,52 +2,62 @@ import { CommonInputModel } from '../models';
 import { resolve } from 'path';
 import ts from 'typescript';
 import * as fs from 'fs';
-import { PartialArgs, CompilerOptions, getProgramFromFiles, generateSchema, Definition, buildGenerator} from 'typescript-json-schema';
+import * as TJS from 'typescript-json-schema';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
+import { AbstractInputProcessor } from './AbstractInputProcessor';
 
 /** Class for processing Typescript code inputs to Common module*/
-export class TypeScriptInputProcessor {
-  // trial just to see schema output
-
-  static settings: PartialArgs = {
+export class TypeScriptInputProcessor extends AbstractInputProcessor {
+  static settings: TJS.PartialArgs = {
     uniqueNames: true,
     required: true
   }; 
 
-  static compilerOptions: CompilerOptions = {
+  static compilerOptions: TJS.CompilerOptions = {
     strictNullChecks: true
   };
 
   static generateProgram(basePath: string, requiredFile: string): ts.Program {
-    return getProgramFromFiles([resolve(requiredFile)], TypeScriptInputProcessor.compilerOptions, basePath);
+    return TJS.getProgramFromFiles([resolve(requiredFile)], TypeScriptInputProcessor.compilerOptions, basePath);
   }
 
-  private generateJSONSchema(basePath: string, Type: string, multiple:boolean): Definition | null {
-    const requiredFile = `${basePath }/index.ts`;
-    const program: ts.Program = TypeScriptInputProcessor.generateProgram(basePath, requiredFile);
+  static generateJSONSchema(basePath: string, pathToFile: string, typeRequired: string): TJS.Definition | null {
+    const program: ts.Program = TypeScriptInputProcessor.generateProgram(basePath, pathToFile);
 
-    if (multiple) {
-      const generator = buildGenerator(program, TypeScriptInputProcessor.settings);
-      if (generator) {
-        return generateSchema(program, Type, TypeScriptInputProcessor.settings, [], generator);
+    // if (multipleFiles) {
+    //   const generator = TJS.buildGenerator(program, TypeScriptInputProcessor.settings);
+    //   if (generator) {
+    //     return TJS.generateSchema(program, typeRequired, TypeScriptInputProcessor.settings, [], generator);
+    //   }
+    // }
+  
+    return TJS.generateSchema(program, typeRequired, TypeScriptInputProcessor.settings);
+  }
+
+  shouldProcess(input: Record<string, any>): boolean {
+    if (typeof input !== 'object' || typeof input.basePath !== 'string') {return false;}
+    return true;
+  }
+
+  process(input: Record<string, any>): Promise<CommonInputModel> {
+    const common = new CommonInputModel();
+    for (const [, value] of Object.entries(input)) {
+      if (!this.shouldProcess(value)) { 
+        return Promise.reject(new Error('Input is not of the valid file format.')); 
+      }
+
+      const indexFile = `${value.basePath}/index.ts`;
+      common.originalInput = fs.readFileSync(indexFile).toString();
+
+      // obtain generated schema
+      for (const type of value.types) {
+        const generatedSchema = TypeScriptInputProcessor.generateJSONSchema(value.basePath, indexFile, type) as Record<string, any>;
+        const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(generatedSchema);
+        common.models = {...common.models, ...commonModels };
       }
     }
-  
-    return generateSchema(program, Type, TypeScriptInputProcessor.settings);
-  }
-
-  process(basePath: string, listofTypes: Array<string>, multiple = false): CommonInputModel {
-    const common = new CommonInputModel();
-    common.originalInput = fs.readFileSync(`${basePath }/index.ts`, 'utf-8');
-
-    // obtain generated schema from above
-    for (const Type of listofTypes) {
-      const generatedSchema = this.generateJSONSchema(basePath, Type, multiple) as Record<string, any>;
-      const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(generatedSchema);
-      common.models = {...common.models, ...commonModels};
-    }
-
-    return common;
+    // console.log(JSON.stringify(common));
+    return Promise.resolve(common);
   }
 }
 

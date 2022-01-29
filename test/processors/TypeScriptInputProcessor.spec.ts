@@ -26,6 +26,13 @@ const basePath = path.resolve(__dirname, './TypeScriptInputProcessor');
 // });
 
 const processsor = new TypeScriptInputProcessor();
-const commonModel = processsor.process(basePath, ['Shape','InnerData', 'ShapesData']);
+console.log(basePath);
+const input = {
+  basePath,
+  types: ['Shape','InnerData', 'ShapesData'],
+} as Record<string, any>;
 
-console.log(`Common model : ${JSON.stringify(commonModel)}`);
+processsor.process({
+  input,
+}).then((commonModel) => console.log(`Common model : ${JSON.stringify(commonModel)}`));
+
