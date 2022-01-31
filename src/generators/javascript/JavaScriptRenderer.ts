@@ -14,7 +14,7 @@ export abstract class JavaScriptRenderer extends AbstractRenderer<JavaScriptOpti
     options: JavaScriptOptions,
     generator: JavaScriptGenerator,
     presets: Array<[Preset, unknown]>,
-    model: CommonModel, 
+    model: CommonModel,
     inputModel: CommonInputModel,
   ) {
     super(options, generator, presets, model, inputModel);
@@ -29,7 +29,7 @@ export abstract class JavaScriptRenderer extends AbstractRenderer<JavaScriptOpti
    * @param model 
    */
   nameType(name: string | undefined, model?: CommonModel): string {
-    return this.options?.namingConvention?.type 
+    return this.options?.namingConvention?.type
       ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel, reservedKeywordCallback: isReservedJavaScriptKeyword })
       : name || '';
   }
@@ -41,7 +41,7 @@ export abstract class JavaScriptRenderer extends AbstractRenderer<JavaScriptOpti
    * @param property
    */
   nameProperty(propertyName: string | undefined, property?: CommonModel): string {
-    return this.options?.namingConvention?.property 
+    return this.options?.namingConvention?.property
       ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property, reservedKeywordCallback: isReservedJavaScriptKeyword })
       : propertyName || '';
   }
@@ -76,11 +76,11 @@ ${content}
         content.push(renderedPatternProperty);
       }
     }
-    
+
     return this.renderBlock(content);
   }
 
   runPropertyPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
-    return this.runPreset('property', { propertyName, property, type});
+    return this.runPreset('property', { propertyName, property, type });
   }
 }
