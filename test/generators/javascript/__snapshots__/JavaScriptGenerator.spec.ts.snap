@@ -20,10 +20,16 @@ class Address {
     this.city = input.city;
     this.state = input.state;
     this.houseNumber = input.houseNumber;
-    this.marriage = input.marriage;
-    this.members = input.members;
+    if (input.hasOwnProperty('marriage')) {
+      this.marriage = input.marriage;
+    }
+    if (input.hasOwnProperty('members')) {
+      this.members = input.members;
+    }
     this.arrayType = input.arrayType;
-    this.otherModel = input.otherModel;
+    if (input.hasOwnProperty('otherModel')) {
+      this.otherModel = input.otherModel;
+    }
   }
 
   get streetName() { return this.streetName; }
@@ -82,7 +88,7 @@ module.exports = OtherModel;"
 exports[`JavaScriptGenerator should render models and their dependencies for ESM module system 1`] = `
 "import OtherModel from './OtherModel';
 
-export default class Address {
+class Address {
   streetName;
   city;
   state;
@@ -99,10 +105,16 @@ export default class Address {
     this.city = input.city;
     this.state = input.state;
     this.houseNumber = input.houseNumber;
-    this.marriage = input.marriage;
-    this.members = input.members;
+    if (input.hasOwnProperty('marriage')) {
+      this.marriage = input.marriage;
+    }
+    if (input.hasOwnProperty('members')) {
+      this.members = input.members;
+    }
     this.arrayType = input.arrayType;
-    this.otherModel = input.otherModel;
+    if (input.hasOwnProperty('otherModel')) {
+      this.otherModel = input.otherModel;
+    }
   }
 
   get streetName() { return this.streetName; }
@@ -134,13 +146,15 @@ export default class Address {
 
   get sTestPatternProperties() { return this.sTestPatternProperties; }
   set sTestPatternProperties(sTestPatternProperties) { this.sTestPatternProperties = sTestPatternProperties; }
-}"
+}
+export default Address;
+"
 `;
 
 exports[`JavaScriptGenerator should render models and their dependencies for ESM module system 2`] = `
 "
 
-export default class OtherModel {
+class OtherModel {
   streetName;
   additionalProperties;
 
@@ -153,5 +167,7 @@ export default class OtherModel {
 
   get additionalProperties() { return this.additionalProperties; }
   set additionalProperties(additionalProperties) { this.additionalProperties = additionalProperties; }
-}"
+}
+export default OtherModel;
+"
 `;

@@ -14,7 +14,8 @@ describe('JavaScriptGenerator', () => {
         enum: { type: 'string' },
         reservedEnum: { type: 'string' }
       },
-      additionalProperties: false
+      additionalProperties: false,
+      required: ['reservedEnum', 'enum'],
     };
     const expected = `class Address {
   reservedReservedEnum;
@@ -77,8 +78,12 @@ describe('JavaScriptGenerator', () => {
     this.city = input.city;
     this.state = input.state;
     this.houseNumber = input.houseNumber;
-    this.marriage = input.marriage;
-    this.members = input.members;
+    if (input.hasOwnProperty('marriage')) {
+      this.marriage = input.marriage;
+    }
+    if (input.hasOwnProperty('members')) {
+      this.members = input.members;
+    }
     this.arrayType = input.arrayType;
   }
 
@@ -201,7 +206,7 @@ describe('JavaScriptGenerator', () => {
         marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
         members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
         array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
-        other_model: { type: 'object', $id: 'OtherModel', properties: { street_name: { type: 'string' } } },
+        other_model: { type: 'object', $id: 'OtherModel', properties: { street_name: { type: 'string' } }, required: ['street_name'] },
       },
       patternProperties: {
         '^S(.?*)test&': {
@@ -227,7 +232,7 @@ describe('JavaScriptGenerator', () => {
         marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
         members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
         array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
-        other_model: { type: 'object', $id: 'OtherModel', properties: { street_name: { type: 'string' } } },
+        other_model: { type: 'object', $id: 'OtherModel', properties: { street_name: { type: 'string' } }, required: ['street_name'] },
       },
       patternProperties: {
         '^S(.?*)test&': {

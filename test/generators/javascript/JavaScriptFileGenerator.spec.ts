@@ -24,7 +24,7 @@ describe('JavaScriptFileGenerator', () => {
       const generator = new JavaScriptFileGenerator();
       const expectedError = new Error('write error');
       jest.spyOn(FileHelpers, 'writerToFileSystem').mockRejectedValue(expectedError);
-      jest.spyOn(generator, 'generateCompleteModels').mockResolvedValue([new OutputModel('content', new CommonModel(), '', new CommonInputModel(), [])]);
+      jest.spyOn(generator, 'generateCompleteModels').mockResolvedValue([new OutputModel('content', new CommonModel(), 'Test', new CommonInputModel(), [])]);
     
       await expect(generator.generateToFiles(doc, '/test/')).rejects.toEqual(expectedError);
       expect(generator.generateCompleteModels).toHaveBeenCalledTimes(1);
@@ -46,6 +46,18 @@ describe('JavaScriptFileGenerator', () => {
       expect(generator.generateCompleteModels).toHaveBeenCalledTimes(1);
       expect(FileHelpers.writerToFileSystem).toHaveBeenCalledTimes(1);
       expect((FileHelpers.writerToFileSystem as jest.Mock).mock.calls[0]).toEqual(expectedWriteToFileParameters);
+    });
+    test('should ignore models that have not been rendered', async () => {
+      const generator = new JavaScriptFileGenerator();
+      const outputDir = './test';
+      const expectedOutputDirPath = path.resolve(outputDir);
+      jest.spyOn(FileHelpers, 'writerToFileSystem').mockResolvedValue(undefined);
+      jest.spyOn(generator, 'generateCompleteModels').mockResolvedValue([new OutputModel('content', new CommonModel(), '', new CommonInputModel(), [])]);
+      
+      const models = await generator.generateToFiles(doc, expectedOutputDirPath);
+      expect(generator.generateCompleteModels).toHaveBeenCalledTimes(1);
+      expect(FileHelpers.writerToFileSystem).toHaveBeenCalledTimes(0);
+      expect(models).toHaveLength(0);
     });
   });
 });

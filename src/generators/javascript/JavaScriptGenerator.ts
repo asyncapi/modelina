@@ -42,14 +42,25 @@ export class JavaScriptGenerator extends AbstractGenerator<JavaScriptOptions, Ja
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async renderCompleteModel(model: CommonModel, inputModel: CommonInputModel, options: JavaScriptRenderCompleteModelOptions): Promise<RenderOutput> {
     const outputModel = await this.render(model, inputModel);
-    const modelDependencies = model.getNearestDependencies().map((dependencyModelName) => {
-      const formattedDependencyModelName = this.options.namingConvention?.type ? this.options.namingConvention.type(dependencyModelName, { inputModel, model: inputModel.models[String(dependencyModelName)] }) : dependencyModelName;
+    let modelDependencies = model.getNearestDependencies();
+    //Ensure model dependencies have their rendered name
+    modelDependencies = modelDependencies.map((dependencyModelName) => {
+      return this.options.namingConvention?.type ? this.options.namingConvention.type(dependencyModelName, { inputModel, model: inputModel.models[String(dependencyModelName)] }) : dependencyModelName;
+    });
+    //Filter out any dependencies that is recursive to it'self
+    modelDependencies = modelDependencies.filter((dependencyModelName) => {
+      return dependencyModelName !== outputModel.renderedName;
+    });
+    //Create the correct dependency imports
+    modelDependencies = modelDependencies.map((formattedDependencyModelName) => {
       if (options.moduleSystem === 'CJS') {
         return `const ${formattedDependencyModelName} = require('./${formattedDependencyModelName}');`;
       }
       return `import ${formattedDependencyModelName} from './${formattedDependencyModelName}';`;
     });
-    let modelCode = `export default ${outputModel.result}`;
+    let modelCode = `${outputModel.result}
+export default ${outputModel.renderedName};
+`;
     if (options.moduleSystem === 'CJS') {
       modelCode = `${outputModel.result}
 module.exports = ${outputModel.renderedName};`;
