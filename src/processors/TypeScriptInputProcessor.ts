@@ -35,28 +35,43 @@ export class TypeScriptInputProcessor extends AbstractInputProcessor {
   }
 
   shouldProcess(input: Record<string, any>): boolean {
-    if (typeof input !== 'object' || typeof input.basePath !== 'string') {return false;}
+    // checking if input is null
+    if ((input === null || undefined) || 
+        (input.basePath === null || undefined) || 
+        (input.types === null || undefined)) {
+      return false;
+    }
+
+    // checking the empty string
+    if (Object.keys(input).length === 0 && input.constructor === Object) { return false; }
+
+    //checking if input structure is correct
+    if (typeof input !== 'object' || typeof input.basePath !== 'string' || input.types.length <= 0) { 
+      return false; 
+    }
+    
     return true;
   }
 
   process(input: Record<string, any>): Promise<CommonInputModel> {
     const common = new CommonInputModel();
-    for (const [, value] of Object.entries(input)) {
-      if (!this.shouldProcess(value)) { 
-        return Promise.reject(new Error('Input is not of the valid file format.')); 
-      }
 
-      const indexFile = `${value.basePath}/index.ts`;
-      common.originalInput = fs.readFileSync(indexFile).toString();
-
-      // obtain generated schema
-      for (const type of value.types) {
-        const generatedSchema = TypeScriptInputProcessor.generateJSONSchema(value.basePath, indexFile, type) as Record<string, any>;
-        const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(generatedSchema);
-        common.models = {...common.models, ...commonModels };
-      }
+    if (!this.shouldProcess(input)) {
+      return Promise.reject(new Error('Input is not of the valid file format'));
     }
-    // console.log(JSON.stringify(common));
+
+    const basePath = input.basePath;
+    const types = input.types;
+
+    const indexFile = `${basePath}/index.ts`;
+    common.originalInput = fs.readFileSync(indexFile).toString();
+
+    // obtain generated schema
+    for (const type of types) {
+      const generatedSchema = TypeScriptInputProcessor.generateJSONSchema(basePath, indexFile, type) as Record<string, any>;
+      const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(generatedSchema);
+      common.models = {...common.models, ...commonModels };
+    }
     return Promise.resolve(common);
   }
 }

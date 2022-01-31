@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TypeScriptInputProcessor process() should be able to process input 1`] = `
+CommonInputModel {
+  "models": Object {},
+  "originalInput": "
+export type Shape = {
+  size: number;
+}
+
+export interface InnerData {
+  age: number;
+  name: string;
+  free: boolean;
+}
+
+export interface ShapesData {
+  data: InnerData;
+  sizes: boolean[];
+  emails: string[];
+}
+",
+}
+`;
+
+exports[`TypeScriptInputProcessor shouldProcess() should process input 1`] = `
+CommonInputModel {
+  "models": Object {},
+  "originalInput": "
+export type Shape = {
+  size: number;
+}
+
+export interface InnerData {
+  age: number;
+  name: string;
+  free: boolean;
+}
+
+export interface ShapesData {
+  data: InnerData;
+  sizes: boolean[];
+  emails: string[];
+}
+",
+}
+`;
