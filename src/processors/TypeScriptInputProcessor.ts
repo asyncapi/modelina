@@ -1,7 +1,6 @@
 import { CommonInputModel } from '../models';
 import { resolve } from 'path';
 import ts from 'typescript';
-import * as fs from 'fs';
 import * as TJS from 'typescript-json-schema';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
 import { AbstractInputProcessor } from './AbstractInputProcessor';
@@ -17,12 +16,12 @@ export class TypeScriptInputProcessor extends AbstractInputProcessor {
     strictNullChecks: true
   };
 
-  static generateProgram(basePath: string, requiredFile: string): ts.Program {
-    return TJS.getProgramFromFiles([resolve(requiredFile)], TypeScriptInputProcessor.compilerOptions, basePath);
+  static generateProgram(requiredFile: string): ts.Program {
+    return TJS.getProgramFromFiles([resolve(requiredFile)], TypeScriptInputProcessor.compilerOptions);
   }
 
-  static generateJSONSchema(basePath: string, pathToFile: string, typeRequired: string): TJS.Definition | null {
-    const program: ts.Program = TypeScriptInputProcessor.generateProgram(basePath, pathToFile);
+  static generateJSONSchema(pathToFile: string, typeRequired: string): TJS.Definition | null {
+    const program: ts.Program = TypeScriptInputProcessor.generateProgram(pathToFile);
 
     // if (multipleFiles) {
     //   const generator = TJS.buildGenerator(program, TypeScriptInputProcessor.settings);
@@ -36,9 +35,7 @@ export class TypeScriptInputProcessor extends AbstractInputProcessor {
 
   shouldProcess(input: Record<string, any>): boolean {
     // checking if input is null
-    if ((input === null || undefined) || 
-        (input.basePath === null || undefined) || 
-        (input.types === null || undefined)) {
+    if ((input === null || undefined) || (input.baseFile === null || undefined)) {
       return false;
     }
 
@@ -46,10 +43,10 @@ export class TypeScriptInputProcessor extends AbstractInputProcessor {
     if (Object.keys(input).length === 0 && input.constructor === Object) { return false; }
 
     //checking if input structure is correct
-    if (typeof input !== 'object' || typeof input.basePath !== 'string' || input.types.length <= 0) { 
+    if (typeof input !== 'object' || typeof input.baseFile !== 'string') { 
       return false; 
     }
-    
+
     return true;
   }
 
@@ -60,18 +57,13 @@ export class TypeScriptInputProcessor extends AbstractInputProcessor {
       return Promise.reject(new Error('Input is not of the valid file format'));
     }
 
-    const basePath = input.basePath;
-    const types = input.types;
-
-    const indexFile = `${basePath}/index.ts`;
-    common.originalInput = fs.readFileSync(indexFile).toString();
+    const { baseFile } = input;
+    common.originalInput = baseFile;
 
     // obtain generated schema
-    for (const type of types) {
-      const generatedSchema = TypeScriptInputProcessor.generateJSONSchema(basePath, indexFile, type) as Record<string, any>;
-      const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(generatedSchema);
-      common.models = {...common.models, ...commonModels };
-    }
+    const generatedSchema = TypeScriptInputProcessor.generateJSONSchema(baseFile, '*') as Record<string, any>;
+    const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(generatedSchema);
+    common.models = {...common.models, ...commonModels };
     return Promise.resolve(common);
   }
 }

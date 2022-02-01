@@ -3,8 +3,7 @@ import * as path from 'path';
 import { CommonModel } from '../../src/models';
 import { TypeScriptInputProcessor } from '../../src/processors';
 
-// const basicDocDirectory = fs.readFileSync(path.resolve(__dirname, './TypeScriptInputProcessor'), 'utf8');
-const basePath = path.resolve(__dirname, './TypeScriptInputProcessor');
+const baseFile = fs.readFileSync(path.resolve(__dirname, './TypeScriptInputProcessor/index.ts'), 'utf8');
 
 jest.mock('../../src/interpreter/Interpreter');
 jest.mock('../../src/interpreter/PostInterpreter');
@@ -34,33 +33,21 @@ describe('TypeScriptInputProcessor', () => {
     });
 
     test('should process input', async () => {
-      const input = {
-        basePath,
-        types: ['ShapesData', 'InnerData']
-      } as Record<string, any>;
       const processsor = new TypeScriptInputProcessor();
-      const commonModel = await processsor.process(input);
+      const commonModel = await processsor.process({ baseFile });
       expect(commonModel).toMatchSnapshot();
     });
   });
   describe('process()', () => {
     test('should throw error when trying to process wrong input format', async () => {
       const processor = new TypeScriptInputProcessor();
-      const input = {
-        basePath,
-        types: null
-      };
-      await expect(processor.process(input))
+      await expect(processor.process({}))
         .rejects
         .toThrowError('Input is not of the valid file format');
     });
     test('should be able to process input', async () => {
-      const input = {
-        basePath,
-        types: ['ShapesData', 'InnerData']
-      } as Record<string, any>;
       const processsor = new TypeScriptInputProcessor();
-      const commonModel = await processsor.process(input);
+      const commonModel = await processsor.process({ baseFile });
       expect(commonModel).toMatchSnapshot();
     });
   });
