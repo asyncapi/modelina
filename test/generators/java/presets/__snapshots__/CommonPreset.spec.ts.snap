@@ -68,25 +68,51 @@ exports[`JAVA_COMMON_PRESET should render accurately when there is no additional
   }
 
   @Override
-  public Map<String, Object> marshal() {
-    Map<String, Object> map = new HashMap<>();
-      \\"requiredProp\\": requiredProp,
-      \\"stringProp\\": stringProp,
-      \\"numberProp\\": numberProp,
-      \\"booleanProp\\": booleanProp,
-      \\"arrayProp\\": arrayProp
-    return map;
+  public String marshal() {
+    List<String> propList = new ArrayList();
+      if(this.requiredProp != null) {
+            propList.add(\\"requiredProp:\\"+this.requiredProp.toString());
+        }
+    if(this.stringProp != null) {
+            propList.add(\\"stringProp:\\"+this.stringProp.toString());
+        }
+    if(this.numberProp != null) {
+            propList.add(\\"numberProp:\\"+this.numberProp.toString());
+        }
+    if(this.booleanProp != null) {
+            propList.add(\\"booleanProp:\\"+this.booleanProp.toString());
+        }
+    if(this.arrayProp != null) {
+            propList.add(\\"arrayProp:\\"+this.arrayProp.toString());
+        }
+    return propList.stream().collect(Collectors.joining(\\",\\"));
   }
 
   @Override
-  public Clazz unmarshal(Map<String, Object> map) {
-    Clazz clazz = new Clazz();
-      \\"requiredProp\\": requiredProp,
-      \\"stringProp\\": stringProp,
-      \\"numberProp\\": numberProp,
-      \\"booleanProp\\": booleanProp,
-      \\"arrayProp\\": arrayProp
-    return clazz;
+  public static Clazz unmarshal(String json) {
+    Clazz result = new Clazz();
+    JSONObject jsonObject = new JSONObject(json);
+      if(jsonObject.has(\\"requiredProp\\")) {
+            result.setRequiredProp(jsonObject.getBoolean(\\"requiredProp\\"));
+          }
+    if(jsonObject.has(\\"stringProp\\")) {
+            result.setStringProp(jsonObject.getString(\\"stringProp\\"));
+          }
+    if(jsonObject.has(\\"numberProp\\")) {
+            result.setNumberProp(jsonObject.getNumber(\\"numberProp\\"));
+          }
+    if(jsonObject.has(\\"booleanProp\\")) {
+            result.setBooleanProp(jsonObject.getBoolean(\\"booleanProp\\"));
+          }
+    if(jsonObject.has(\\"arrayProp\\")) {
+            JSONArray jsonArray = jsonObject.getJSONArray(\\"arrayProp\\");
+            String[] arrayProp = new String[jsonArray.length()];
+            for(int i = 0; i < jsonArray.length(); i++) {
+              arrayProp[i] = jsonArray.getString(i);
+            }      
+            result.setArrayProp(arrayProp);
+        
+    return result;
   }
 }"
 `;
@@ -165,27 +191,51 @@ exports[`JAVA_COMMON_PRESET should render common function in class by common pre
   }
 
   @Override
-  public Map<String, Object> marshal() {
-    Map<String, Object> map = new HashMap<>();
-      \\"requiredProp\\": requiredProp,
-      \\"stringProp\\": stringProp,
-      \\"numberProp\\": numberProp,
-      \\"booleanProp\\": booleanProp,
-      \\"arrayProp\\": arrayProp,
-      \\"additionalProperties\\": additionalProperties
-    return map;
+  public String marshal() {
+    List<String> propList = new ArrayList();
+      if(this.requiredProp != null) {
+            propList.add(\\"requiredProp:\\"+this.requiredProp.toString());
+        }
+    if(this.stringProp != null) {
+            propList.add(\\"stringProp:\\"+this.stringProp.toString());
+        }
+    if(this.numberProp != null) {
+            propList.add(\\"numberProp:\\"+this.numberProp.toString());
+        }
+    if(this.booleanProp != null) {
+            propList.add(\\"booleanProp:\\"+this.booleanProp.toString());
+        }
+    if(this.arrayProp != null) {
+            propList.add(\\"arrayProp:\\"+this.arrayProp.toString());
+        }
+    return propList.stream().collect(Collectors.joining(\\",\\"));
   }
 
   @Override
-  public Clazz unmarshal(Map<String, Object> map) {
-    Clazz clazz = new Clazz();
-      \\"requiredProp\\": requiredProp,
-      \\"stringProp\\": stringProp,
-      \\"numberProp\\": numberProp,
-      \\"booleanProp\\": booleanProp,
-      \\"arrayProp\\": arrayProp,
-      \\"additionalProperties\\": additionalProperties
-    return clazz;
+  public static Clazz unmarshal(String json) {
+    Clazz result = new Clazz();
+    JSONObject jsonObject = new JSONObject(json);
+      if(jsonObject.has(\\"requiredProp\\")) {
+            result.setRequiredProp(jsonObject.getBoolean(\\"requiredProp\\"));
+          }
+    if(jsonObject.has(\\"stringProp\\")) {
+            result.setStringProp(jsonObject.getString(\\"stringProp\\"));
+          }
+    if(jsonObject.has(\\"numberProp\\")) {
+            result.setNumberProp(jsonObject.getNumber(\\"numberProp\\"));
+          }
+    if(jsonObject.has(\\"booleanProp\\")) {
+            result.setBooleanProp(jsonObject.getBoolean(\\"booleanProp\\"));
+          }
+    if(jsonObject.has(\\"arrayProp\\")) {
+            JSONArray jsonArray = jsonObject.getJSONArray(\\"arrayProp\\");
+            String[] arrayProp = new String[jsonArray.length()];
+            for(int i = 0; i < jsonArray.length(); i++) {
+              arrayProp[i] = jsonArray.getString(i);
+            }      
+            result.setArrayProp(arrayProp);
+        
+    return result;
   }
 }"
 `;
@@ -218,27 +268,51 @@ exports[`JAVA_COMMON_PRESET with option should not render any functions when all
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
   @Override
-  public Map<String, Object> marshal() {
-    Map<String, Object> map = new HashMap<>();
-      \\"requiredProp\\": requiredProp,
-      \\"stringProp\\": stringProp,
-      \\"numberProp\\": numberProp,
-      \\"booleanProp\\": booleanProp,
-      \\"arrayProp\\": arrayProp,
-      \\"additionalProperties\\": additionalProperties
-    return map;
+  public String marshal() {
+    List<String> propList = new ArrayList();
+      if(this.requiredProp != null) {
+            propList.add(\\"requiredProp:\\"+this.requiredProp.toString());
+        }
+    if(this.stringProp != null) {
+            propList.add(\\"stringProp:\\"+this.stringProp.toString());
+        }
+    if(this.numberProp != null) {
+            propList.add(\\"numberProp:\\"+this.numberProp.toString());
+        }
+    if(this.booleanProp != null) {
+            propList.add(\\"booleanProp:\\"+this.booleanProp.toString());
+        }
+    if(this.arrayProp != null) {
+            propList.add(\\"arrayProp:\\"+this.arrayProp.toString());
+        }
+    return propList.stream().collect(Collectors.joining(\\",\\"));
   }
 
   @Override
-  public Clazz unmarshal(Map<String, Object> map) {
-    Clazz clazz = new Clazz();
-      \\"requiredProp\\": requiredProp,
-      \\"stringProp\\": stringProp,
-      \\"numberProp\\": numberProp,
-      \\"booleanProp\\": booleanProp,
-      \\"arrayProp\\": arrayProp,
-      \\"additionalProperties\\": additionalProperties
-    return clazz;
+  public static Clazz unmarshal(String json) {
+    Clazz result = new Clazz();
+    JSONObject jsonObject = new JSONObject(json);
+      if(jsonObject.has(\\"requiredProp\\")) {
+            result.setRequiredProp(jsonObject.getBoolean(\\"requiredProp\\"));
+          }
+    if(jsonObject.has(\\"stringProp\\")) {
+            result.setStringProp(jsonObject.getString(\\"stringProp\\"));
+          }
+    if(jsonObject.has(\\"numberProp\\")) {
+            result.setNumberProp(jsonObject.getNumber(\\"numberProp\\"));
+          }
+    if(jsonObject.has(\\"booleanProp\\")) {
+            result.setBooleanProp(jsonObject.getBoolean(\\"booleanProp\\"));
+          }
+    if(jsonObject.has(\\"arrayProp\\")) {
+            JSONArray jsonArray = jsonObject.getJSONArray(\\"arrayProp\\");
+            String[] arrayProp = new String[jsonArray.length()];
+            for(int i = 0; i < jsonArray.length(); i++) {
+              arrayProp[i] = jsonArray.getString(i);
+            }      
+            result.setArrayProp(arrayProp);
+        
+    return result;
   }
 }"
 `;
@@ -317,27 +391,51 @@ exports[`JAVA_COMMON_PRESET with option should render all functions 1`] = `
   }
 
   @Override
-  public Map<String, Object> marshal() {
-    Map<String, Object> map = new HashMap<>();
-      \\"requiredProp\\": requiredProp,
-      \\"stringProp\\": stringProp,
-      \\"numberProp\\": numberProp,
-      \\"booleanProp\\": booleanProp,
-      \\"arrayProp\\": arrayProp,
-      \\"additionalProperties\\": additionalProperties
-    return map;
+  public String marshal() {
+    List<String> propList = new ArrayList();
+      if(this.requiredProp != null) {
+            propList.add(\\"requiredProp:\\"+this.requiredProp.toString());
+        }
+    if(this.stringProp != null) {
+            propList.add(\\"stringProp:\\"+this.stringProp.toString());
+        }
+    if(this.numberProp != null) {
+            propList.add(\\"numberProp:\\"+this.numberProp.toString());
+        }
+    if(this.booleanProp != null) {
+            propList.add(\\"booleanProp:\\"+this.booleanProp.toString());
+        }
+    if(this.arrayProp != null) {
+            propList.add(\\"arrayProp:\\"+this.arrayProp.toString());
+        }
+    return propList.stream().collect(Collectors.joining(\\",\\"));
   }
 
   @Override
-  public Clazz unmarshal(Map<String, Object> map) {
-    Clazz clazz = new Clazz();
-      \\"requiredProp\\": requiredProp,
-      \\"stringProp\\": stringProp,
-      \\"numberProp\\": numberProp,
-      \\"booleanProp\\": booleanProp,
-      \\"arrayProp\\": arrayProp,
-      \\"additionalProperties\\": additionalProperties
-    return clazz;
+  public static Clazz unmarshal(String json) {
+    Clazz result = new Clazz();
+    JSONObject jsonObject = new JSONObject(json);
+      if(jsonObject.has(\\"requiredProp\\")) {
+            result.setRequiredProp(jsonObject.getBoolean(\\"requiredProp\\"));
+          }
+    if(jsonObject.has(\\"stringProp\\")) {
+            result.setStringProp(jsonObject.getString(\\"stringProp\\"));
+          }
+    if(jsonObject.has(\\"numberProp\\")) {
+            result.setNumberProp(jsonObject.getNumber(\\"numberProp\\"));
+          }
+    if(jsonObject.has(\\"booleanProp\\")) {
+            result.setBooleanProp(jsonObject.getBoolean(\\"booleanProp\\"));
+          }
+    if(jsonObject.has(\\"arrayProp\\")) {
+            JSONArray jsonArray = jsonObject.getJSONArray(\\"arrayProp\\");
+            String[] arrayProp = new String[jsonArray.length()];
+            for(int i = 0; i < jsonArray.length(); i++) {
+              arrayProp[i] = jsonArray.getString(i);
+            }      
+            result.setArrayProp(arrayProp);
+        
+    return result;
   }
 }"
 `;
@@ -393,27 +491,51 @@ exports[`JAVA_COMMON_PRESET with option should render classToString 1`] = `
   }
 
   @Override
-  public Map<String, Object> marshal() {
-    Map<String, Object> map = new HashMap<>();
-      \\"requiredProp\\": requiredProp,
-      \\"stringProp\\": stringProp,
-      \\"numberProp\\": numberProp,
-      \\"booleanProp\\": booleanProp,
-      \\"arrayProp\\": arrayProp,
-      \\"additionalProperties\\": additionalProperties
-    return map;
+  public String marshal() {
+    List<String> propList = new ArrayList();
+      if(this.requiredProp != null) {
+            propList.add(\\"requiredProp:\\"+this.requiredProp.toString());
+        }
+    if(this.stringProp != null) {
+            propList.add(\\"stringProp:\\"+this.stringProp.toString());
+        }
+    if(this.numberProp != null) {
+            propList.add(\\"numberProp:\\"+this.numberProp.toString());
+        }
+    if(this.booleanProp != null) {
+            propList.add(\\"booleanProp:\\"+this.booleanProp.toString());
+        }
+    if(this.arrayProp != null) {
+            propList.add(\\"arrayProp:\\"+this.arrayProp.toString());
+        }
+    return propList.stream().collect(Collectors.joining(\\",\\"));
   }
 
   @Override
-  public Clazz unmarshal(Map<String, Object> map) {
-    Clazz clazz = new Clazz();
-      \\"requiredProp\\": requiredProp,
-      \\"stringProp\\": stringProp,
-      \\"numberProp\\": numberProp,
-      \\"booleanProp\\": booleanProp,
-      \\"arrayProp\\": arrayProp,
-      \\"additionalProperties\\": additionalProperties
-    return clazz;
+  public static Clazz unmarshal(String json) {
+    Clazz result = new Clazz();
+    JSONObject jsonObject = new JSONObject(json);
+      if(jsonObject.has(\\"requiredProp\\")) {
+            result.setRequiredProp(jsonObject.getBoolean(\\"requiredProp\\"));
+          }
+    if(jsonObject.has(\\"stringProp\\")) {
+            result.setStringProp(jsonObject.getString(\\"stringProp\\"));
+          }
+    if(jsonObject.has(\\"numberProp\\")) {
+            result.setNumberProp(jsonObject.getNumber(\\"numberProp\\"));
+          }
+    if(jsonObject.has(\\"booleanProp\\")) {
+            result.setBooleanProp(jsonObject.getBoolean(\\"booleanProp\\"));
+          }
+    if(jsonObject.has(\\"arrayProp\\")) {
+            JSONArray jsonArray = jsonObject.getJSONArray(\\"arrayProp\\");
+            String[] arrayProp = new String[jsonArray.length()];
+            for(int i = 0; i < jsonArray.length(); i++) {
+              arrayProp[i] = jsonArray.getString(i);
+            }      
+            result.setArrayProp(arrayProp);
+        
+    return result;
   }
 }"
 `;
@@ -464,27 +586,51 @@ exports[`JAVA_COMMON_PRESET with option should render equals 1`] = `
   }
 
   @Override
-  public Map<String, Object> marshal() {
-    Map<String, Object> map = new HashMap<>();
-      \\"requiredProp\\": requiredProp,
-      \\"stringProp\\": stringProp,
-      \\"numberProp\\": numberProp,
-      \\"booleanProp\\": booleanProp,
-      \\"arrayProp\\": arrayProp,
-      \\"additionalProperties\\": additionalProperties
-    return map;
+  public String marshal() {
+    List<String> propList = new ArrayList();
+      if(this.requiredProp != null) {
+            propList.add(\\"requiredProp:\\"+this.requiredProp.toString());
+        }
+    if(this.stringProp != null) {
+            propList.add(\\"stringProp:\\"+this.stringProp.toString());
+        }
+    if(this.numberProp != null) {
+            propList.add(\\"numberProp:\\"+this.numberProp.toString());
+        }
+    if(this.booleanProp != null) {
+            propList.add(\\"booleanProp:\\"+this.booleanProp.toString());
+        }
+    if(this.arrayProp != null) {
+            propList.add(\\"arrayProp:\\"+this.arrayProp.toString());
+        }
+    return propList.stream().collect(Collectors.joining(\\",\\"));
   }
 
   @Override
-  public Clazz unmarshal(Map<String, Object> map) {
-    Clazz clazz = new Clazz();
-      \\"requiredProp\\": requiredProp,
-      \\"stringProp\\": stringProp,
-      \\"numberProp\\": numberProp,
-      \\"booleanProp\\": booleanProp,
-      \\"arrayProp\\": arrayProp,
-      \\"additionalProperties\\": additionalProperties
-    return clazz;
+  public static Clazz unmarshal(String json) {
+    Clazz result = new Clazz();
+    JSONObject jsonObject = new JSONObject(json);
+      if(jsonObject.has(\\"requiredProp\\")) {
+            result.setRequiredProp(jsonObject.getBoolean(\\"requiredProp\\"));
+          }
+    if(jsonObject.has(\\"stringProp\\")) {
+            result.setStringProp(jsonObject.getString(\\"stringProp\\"));
+          }
+    if(jsonObject.has(\\"numberProp\\")) {
+            result.setNumberProp(jsonObject.getNumber(\\"numberProp\\"));
+          }
+    if(jsonObject.has(\\"booleanProp\\")) {
+            result.setBooleanProp(jsonObject.getBoolean(\\"booleanProp\\"));
+          }
+    if(jsonObject.has(\\"arrayProp\\")) {
+            JSONArray jsonArray = jsonObject.getJSONArray(\\"arrayProp\\");
+            String[] arrayProp = new String[jsonArray.length()];
+            for(int i = 0; i < jsonArray.length(); i++) {
+              arrayProp[i] = jsonArray.getString(i);
+            }      
+            result.setArrayProp(arrayProp);
+        
+    return result;
   }
 }"
 `;
@@ -522,27 +668,51 @@ exports[`JAVA_COMMON_PRESET with option should render hashCode 1`] = `
   }
 
   @Override
-  public Map<String, Object> marshal() {
-    Map<String, Object> map = new HashMap<>();
-      \\"requiredProp\\": requiredProp,
-      \\"stringProp\\": stringProp,
-      \\"numberProp\\": numberProp,
-      \\"booleanProp\\": booleanProp,
-      \\"arrayProp\\": arrayProp,
-      \\"additionalProperties\\": additionalProperties
-    return map;
+  public String marshal() {
+    List<String> propList = new ArrayList();
+      if(this.requiredProp != null) {
+            propList.add(\\"requiredProp:\\"+this.requiredProp.toString());
+        }
+    if(this.stringProp != null) {
+            propList.add(\\"stringProp:\\"+this.stringProp.toString());
+        }
+    if(this.numberProp != null) {
+            propList.add(\\"numberProp:\\"+this.numberProp.toString());
+        }
+    if(this.booleanProp != null) {
+            propList.add(\\"booleanProp:\\"+this.booleanProp.toString());
+        }
+    if(this.arrayProp != null) {
+            propList.add(\\"arrayProp:\\"+this.arrayProp.toString());
+        }
+    return propList.stream().collect(Collectors.joining(\\",\\"));
   }
 
   @Override
-  public Clazz unmarshal(Map<String, Object> map) {
-    Clazz clazz = new Clazz();
-      \\"requiredProp\\": requiredProp,
-      \\"stringProp\\": stringProp,
-      \\"numberProp\\": numberProp,
-      \\"booleanProp\\": booleanProp,
-      \\"arrayProp\\": arrayProp,
-      \\"additionalProperties\\": additionalProperties
-    return clazz;
+  public static Clazz unmarshal(String json) {
+    Clazz result = new Clazz();
+    JSONObject jsonObject = new JSONObject(json);
+      if(jsonObject.has(\\"requiredProp\\")) {
+            result.setRequiredProp(jsonObject.getBoolean(\\"requiredProp\\"));
+          }
+    if(jsonObject.has(\\"stringProp\\")) {
+            result.setStringProp(jsonObject.getString(\\"stringProp\\"));
+          }
+    if(jsonObject.has(\\"numberProp\\")) {
+            result.setNumberProp(jsonObject.getNumber(\\"numberProp\\"));
+          }
+    if(jsonObject.has(\\"booleanProp\\")) {
+            result.setBooleanProp(jsonObject.getBoolean(\\"booleanProp\\"));
+          }
+    if(jsonObject.has(\\"arrayProp\\")) {
+            JSONArray jsonArray = jsonObject.getJSONArray(\\"arrayProp\\");
+            String[] arrayProp = new String[jsonArray.length()];
+            for(int i = 0; i < jsonArray.length(); i++) {
+              arrayProp[i] = jsonArray.getString(i);
+            }      
+            result.setArrayProp(arrayProp);
+        
+    return result;
   }
 }"
 `;
@@ -575,27 +745,51 @@ exports[`JAVA_COMMON_PRESET with option should render un/marshal 1`] = `
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
   @Override
-  public Map<String, Object> marshal() {
-    Map<String, Object> map = new HashMap<>();
-      \\"requiredProp\\": requiredProp,
-      \\"stringProp\\": stringProp,
-      \\"numberProp\\": numberProp,
-      \\"booleanProp\\": booleanProp,
-      \\"arrayProp\\": arrayProp,
-      \\"additionalProperties\\": additionalProperties
-    return map;
+  public String marshal() {
+    List<String> propList = new ArrayList();
+      if(this.requiredProp != null) {
+            propList.add(\\"requiredProp:\\"+this.requiredProp.toString());
+        }
+    if(this.stringProp != null) {
+            propList.add(\\"stringProp:\\"+this.stringProp.toString());
+        }
+    if(this.numberProp != null) {
+            propList.add(\\"numberProp:\\"+this.numberProp.toString());
+        }
+    if(this.booleanProp != null) {
+            propList.add(\\"booleanProp:\\"+this.booleanProp.toString());
+        }
+    if(this.arrayProp != null) {
+            propList.add(\\"arrayProp:\\"+this.arrayProp.toString());
+        }
+    return propList.stream().collect(Collectors.joining(\\",\\"));
   }
 
   @Override
-  public Clazz unmarshal(Map<String, Object> map) {
-    Clazz clazz = new Clazz();
-      \\"requiredProp\\": requiredProp,
-      \\"stringProp\\": stringProp,
-      \\"numberProp\\": numberProp,
-      \\"booleanProp\\": booleanProp,
-      \\"arrayProp\\": arrayProp,
-      \\"additionalProperties\\": additionalProperties
-    return clazz;
+  public static Clazz unmarshal(String json) {
+    Clazz result = new Clazz();
+    JSONObject jsonObject = new JSONObject(json);
+      if(jsonObject.has(\\"requiredProp\\")) {
+            result.setRequiredProp(jsonObject.getBoolean(\\"requiredProp\\"));
+          }
+    if(jsonObject.has(\\"stringProp\\")) {
+            result.setStringProp(jsonObject.getString(\\"stringProp\\"));
+          }
+    if(jsonObject.has(\\"numberProp\\")) {
+            result.setNumberProp(jsonObject.getNumber(\\"numberProp\\"));
+          }
+    if(jsonObject.has(\\"booleanProp\\")) {
+            result.setBooleanProp(jsonObject.getBoolean(\\"booleanProp\\"));
+          }
+    if(jsonObject.has(\\"arrayProp\\")) {
+            JSONArray jsonArray = jsonObject.getJSONArray(\\"arrayProp\\");
+            String[] arrayProp = new String[jsonArray.length()];
+            for(int i = 0; i < jsonArray.length(); i++) {
+              arrayProp[i] = jsonArray.getString(i);
+            }      
+            result.setArrayProp(arrayProp);
+        
+    return result;
   }
 }"
 `;
