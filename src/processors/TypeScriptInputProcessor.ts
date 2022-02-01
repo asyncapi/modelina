@@ -22,14 +22,6 @@ export class TypeScriptInputProcessor extends AbstractInputProcessor {
 
   static generateJSONSchema(pathToFile: string, typeRequired: string): TJS.Definition | null {
     const program: ts.Program = TypeScriptInputProcessor.generateProgram(pathToFile);
-
-    // if (multipleFiles) {
-    //   const generator = TJS.buildGenerator(program, TypeScriptInputProcessor.settings);
-    //   if (generator) {
-    //     return TJS.generateSchema(program, typeRequired, TypeScriptInputProcessor.settings, [], generator);
-    //   }
-    // }
-  
     return TJS.generateSchema(program, typeRequired, TypeScriptInputProcessor.settings);
   }
 
