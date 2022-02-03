@@ -3,7 +3,8 @@ import * as path from 'path';
 import { CommonModel } from '../../src/models';
 import { TypeScriptInputProcessor } from '../../src/processors';
 
-const baseFile = fs.readFileSync(path.resolve(__dirname, './TypeScriptInputProcessor/index.ts'), 'utf8');
+const baseFile = path.resolve(__dirname, './TypeScriptInputProcessor/index.ts');
+const baseFileContents = fs.readFileSync(path.resolve(__dirname, './TypeScriptInputProcessor/index.ts'), 'utf-8');
 
 jest.mock('../../src/interpreter/Interpreter');
 jest.mock('../../src/interpreter/PostInterpreter');
@@ -29,13 +30,12 @@ describe('TypeScriptInputProcessor', () => {
   describe('shouldProcess()', () => {
     test('should throw error for empty input', async () => {
       const processsor = new TypeScriptInputProcessor();
-      await expect(processsor.process({})).rejects.toThrow('Input is not of the valid file format');
+      await expect(processsor.shouldProcess({})).toBeFalsy();
     });
 
-    test('should process input', async () => {
+    test('should process input', () => {
       const processsor = new TypeScriptInputProcessor();
-      const commonModel = await processsor.process({ baseFile });
-      expect(commonModel).toMatchSnapshot();
+      expect(processsor.shouldProcess({ fileContents: baseFileContents, baseFile })).toBeTruthy();
     });
   });
   describe('process()', () => {
@@ -47,9 +47,8 @@ describe('TypeScriptInputProcessor', () => {
     });
     test('should be able to process input', async () => {
       const processsor = new TypeScriptInputProcessor();
-      const commonModel = await processsor.process({ baseFile });
+      const commonModel = await processsor.process({ fileContents: baseFileContents, baseFile });
       expect(commonModel).toMatchSnapshot();
     });
   });
 });
-

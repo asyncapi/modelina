@@ -16,12 +16,12 @@ export class TypeScriptInputProcessor extends AbstractInputProcessor {
     strictNullChecks: true
   };
 
-  static generateProgram(requiredFile: string): ts.Program {
-    return TJS.getProgramFromFiles([resolve(requiredFile)], TypeScriptInputProcessor.compilerOptions);
+  static generateProgram(file: string): ts.Program {
+    return TJS.getProgramFromFiles([resolve(file)], TypeScriptInputProcessor.compilerOptions);
   }
 
-  static generateJSONSchema(pathToFile: string, typeRequired: string): TJS.Definition | null {
-    const program: ts.Program = TypeScriptInputProcessor.generateProgram(pathToFile);
+  static generateJSONSchema(file: string, typeRequired: string): TJS.Definition | null {
+    const program: ts.Program = TypeScriptInputProcessor.generateProgram(file);
     return TJS.generateSchema(program, typeRequired, TypeScriptInputProcessor.settings);
   }
 
@@ -49,8 +49,8 @@ export class TypeScriptInputProcessor extends AbstractInputProcessor {
       return Promise.reject(new Error('Input is not of the valid file format'));
     }
 
-    const { baseFile } = input;
-    common.originalInput = baseFile;
+    const { fileContents, baseFile } = input;
+    common.originalInput = fileContents;
 
     // obtain generated schema
     const generatedSchema = TypeScriptInputProcessor.generateJSONSchema(baseFile, '*') as Record<string, any>;
