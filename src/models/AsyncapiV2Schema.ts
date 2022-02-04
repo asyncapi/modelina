@@ -13,12 +13,14 @@ export class AsyncapiV2ExternalDocumentation {
 }
 
 /**
- * AsyncAPI 2.0 + 2.1 schema model
+ * AsyncAPI schema model
  * 
  * Based on Draft 7 with additions
  * 
  * https://www.asyncapi.com/docs/specifications/v2.0.0#schemaObject
  * https://www.asyncapi.com/docs/specifications/v2.1.0#schemaObject
+ * https://www.asyncapi.com/docs/specifications/v2.2.0#schemaObject
+ * https://www.asyncapi.com/docs/specifications/v2.3.0#schemaObject
  */
 export class AsyncapiV2Schema {
   $schema?: string;

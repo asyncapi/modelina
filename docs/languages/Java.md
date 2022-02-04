@@ -54,4 +54,6 @@ Check out this [example for a live demonstration](../../examples/java-generate-j
 
 ## Include Jackson annotations for the class
 
-TODO
+To generate Java data models with Jackson annotation using `JAVA_JACKSON_PRESET` option.
+
+Check out this [example for a live demonstration](../../examples/java-generate-jackson-annotation).
