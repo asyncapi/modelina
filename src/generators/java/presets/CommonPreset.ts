@@ -1,7 +1,7 @@
 import { JavaRenderer } from '../JavaRenderer';
 import { JavaPreset } from '../JavaPreset';
 
-import { getUniquePropertyName, DefaultPropertyNames, TypeHelpers } from '../../../helpers';
+import { getUniquePropertyName, DefaultPropertyNames } from '../../../helpers';
 import { CommonModel } from '../../../models';
 
 export interface JavaCommonPresetOptions {
@@ -98,7 +98,7 @@ private String toIndentedString(Object o) {
 }`;
 } 
 
-function renderMarshalProperties(renderer: JavaRenderer, model:CommonModel){
+function renderMarshalProperties(renderer: JavaRenderer, model:CommonModel) {
   const properties = model.properties || {};
   const propertyKeys = [...Object.keys(properties)];
   const marshalProperties = propertyKeys.map(prop => {
@@ -109,7 +109,6 @@ function renderMarshalProperties(renderer: JavaRenderer, model:CommonModel){
     }`;
   });
   return marshalProperties.join('\n');
-
 }
 /**
  * Render `marshal` function based on model's properties
@@ -122,18 +121,19 @@ function renderMarshalling({ renderer, model }: {
   List<String> propList = new ArrayList();
   ${renderer.indent(renderMarshalProperties(renderer,model))}
   return propList.stream().collect(Collectors.joining(","));
-}`
+}`;
 }
 
-
-function renderUnmarshalProperties(renderer: JavaRenderer, model:CommonModel){
+function renderUnmarshalProperties(renderer: JavaRenderer, model:CommonModel) {
   const properties = model.properties || {};
   const propertyKeys = [...Object.keys(properties)];
   const unmarshalProperties = propertyKeys.map(prop => {
     const formattedPropertyName = renderer.nameProperty(prop,model);
-    const setterFunction = `set${formattedPropertyName.charAt(0).toUpperCase()}`+formattedPropertyName.slice(1);
-    const getType = `jsonObject.get${properties[prop].type?.toString().charAt(0).toUpperCase()}`+properties[prop].type?.toString().slice(1);
-    if(properties[prop].type?.toString() === "array"){
+    const setterFunction = `set${formattedPropertyName.charAt(0).toUpperCase()}${formattedPropertyName.slice(1)}`;
+    // eslint-disable-next-line
+    const getType = `jsonObject.get${properties[prop].type?.toString().charAt(0).toUpperCase()}${properties[prop].type?.toString().slice(1)}`;
+    // eslint-disable-next-line
+    if (properties[prop].type?.toString() === 'array') {
       return `if(jsonObject.has("${formattedPropertyName}")) {
         JSONArray jsonArray = jsonObject.getJSONArray("${formattedPropertyName}");
         String[] ${formattedPropertyName} = new String[jsonArray.length()];
@@ -143,11 +143,10 @@ function renderUnmarshalProperties(renderer: JavaRenderer, model:CommonModel){
         result.${setterFunction}(${formattedPropertyName});
       }`;
     }
-    else{
-      return `if(jsonObject.has("${formattedPropertyName}")) {
+    
+    return `if(jsonObject.has("${formattedPropertyName}")) {
         result.${setterFunction}(${getType}("${formattedPropertyName}"));
       }`;
-    }
   });
   return unmarshalProperties.join('\n');
 }
@@ -159,12 +158,6 @@ function renderUnmarshalling({ renderer, model }: {
   model: CommonModel,
 }): string {
   const formattedModelName = renderer.nameType(model.$id);
-  const properties = model.properties || {};
-  const propertyKeys = [...Object.keys(properties)];
-  if (model.additionalProperties !== undefined) {
-    propertyKeys.push(getUniquePropertyName(model, DefaultPropertyNames.additionalProperties));
-  }
-  
   return `public static ${formattedModelName} unmarshal(String json) {
   ${formattedModelName} result = new ${formattedModelName}();
   JSONObject jsonObject = new JSONObject(json);
@@ -192,7 +185,7 @@ export const JAVA_COMMON_PRESET: JavaPreset = {
         renderer.addDependency('import java.util.Objects;');
       }
 
-      if(shouldContainMarshal === true){
+      if (shouldContainMarshal === true) {
         renderer.addDependency('import java.util.stream;');
         renderer.addDependency('import org.json.JSONObject;');
         renderer.addDependency('import java.util.Map;');
