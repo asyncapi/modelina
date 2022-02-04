@@ -1,5 +1,5 @@
 const spy = jest.spyOn(global.console, 'log').mockImplementation(() => { return; });
-import {generate} from './index';
+import {generate} from '../generate-dart-models';
 
 describe('Should be able to render Java Models', () => {
   afterAll(() => {

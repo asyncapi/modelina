@@ -1,6 +1,6 @@
 {
   "config": {
-    "example_name": "generate-java-models"
+    "example_name": "generate-dart-models"
   },
   "scripts": {
     "install": "cd ../.. && npm i",
@@ -10,6 +10,6 @@
     "test:windows": "..\\..\\node_modules\\.bin\\jest --config=..\\..\\jest.config.js examples/%npm_package_config_example_name%/index.spec.ts"
   },
   "dependencies": {
-    "@asyncapi/modelina": "^0.45.0"
+    "modelina": "file:././src/"
   }
 }
