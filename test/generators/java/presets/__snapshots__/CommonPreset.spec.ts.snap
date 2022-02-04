@@ -67,7 +67,6 @@ exports[`JAVA_COMMON_PRESET should render accurately when there is no additional
     return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
   }
 
-  @Override
   public String marshal() {
     List<String> propList = new ArrayList();
       if(this.requiredProp != null) {
@@ -88,7 +87,6 @@ exports[`JAVA_COMMON_PRESET should render accurately when there is no additional
     return propList.stream().collect(Collectors.joining(\\",\\"));
   }
 
-  @Override
   public static Clazz unmarshal(String json) {
     Clazz result = new Clazz();
     JSONObject jsonObject = new JSONObject(json);
@@ -111,7 +109,7 @@ exports[`JAVA_COMMON_PRESET should render accurately when there is no additional
               arrayProp[i] = jsonArray.getString(i);
             }      
             result.setArrayProp(arrayProp);
-        
+          }
     return result;
   }
 }"
@@ -190,7 +188,6 @@ exports[`JAVA_COMMON_PRESET should render common function in class by common pre
     return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
   }
 
-  @Override
   public String marshal() {
     List<String> propList = new ArrayList();
       if(this.requiredProp != null) {
@@ -211,7 +208,6 @@ exports[`JAVA_COMMON_PRESET should render common function in class by common pre
     return propList.stream().collect(Collectors.joining(\\",\\"));
   }
 
-  @Override
   public static Clazz unmarshal(String json) {
     Clazz result = new Clazz();
     JSONObject jsonObject = new JSONObject(json);
@@ -234,7 +230,7 @@ exports[`JAVA_COMMON_PRESET should render common function in class by common pre
               arrayProp[i] = jsonArray.getString(i);
             }      
             result.setArrayProp(arrayProp);
-        
+          }
     return result;
   }
 }"
@@ -267,7 +263,6 @@ exports[`JAVA_COMMON_PRESET with option should not render any functions when all
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
-  @Override
   public String marshal() {
     List<String> propList = new ArrayList();
       if(this.requiredProp != null) {
@@ -288,7 +283,6 @@ exports[`JAVA_COMMON_PRESET with option should not render any functions when all
     return propList.stream().collect(Collectors.joining(\\",\\"));
   }
 
-  @Override
   public static Clazz unmarshal(String json) {
     Clazz result = new Clazz();
     JSONObject jsonObject = new JSONObject(json);
@@ -311,7 +305,7 @@ exports[`JAVA_COMMON_PRESET with option should not render any functions when all
               arrayProp[i] = jsonArray.getString(i);
             }      
             result.setArrayProp(arrayProp);
-        
+          }
     return result;
   }
 }"
@@ -390,7 +384,6 @@ exports[`JAVA_COMMON_PRESET with option should render all functions 1`] = `
     return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
   }
 
-  @Override
   public String marshal() {
     List<String> propList = new ArrayList();
       if(this.requiredProp != null) {
@@ -411,7 +404,6 @@ exports[`JAVA_COMMON_PRESET with option should render all functions 1`] = `
     return propList.stream().collect(Collectors.joining(\\",\\"));
   }
 
-  @Override
   public static Clazz unmarshal(String json) {
     Clazz result = new Clazz();
     JSONObject jsonObject = new JSONObject(json);
@@ -434,7 +426,7 @@ exports[`JAVA_COMMON_PRESET with option should render all functions 1`] = `
               arrayProp[i] = jsonArray.getString(i);
             }      
             result.setArrayProp(arrayProp);
-        
+          }
     return result;
   }
 }"
@@ -490,7 +482,6 @@ exports[`JAVA_COMMON_PRESET with option should render classToString 1`] = `
     return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
   }
 
-  @Override
   public String marshal() {
     List<String> propList = new ArrayList();
       if(this.requiredProp != null) {
@@ -511,7 +502,6 @@ exports[`JAVA_COMMON_PRESET with option should render classToString 1`] = `
     return propList.stream().collect(Collectors.joining(\\",\\"));
   }
 
-  @Override
   public static Clazz unmarshal(String json) {
     Clazz result = new Clazz();
     JSONObject jsonObject = new JSONObject(json);
@@ -534,7 +524,7 @@ exports[`JAVA_COMMON_PRESET with option should render classToString 1`] = `
               arrayProp[i] = jsonArray.getString(i);
             }      
             result.setArrayProp(arrayProp);
-        
+          }
     return result;
   }
 }"
@@ -585,7 +575,6 @@ exports[`JAVA_COMMON_PRESET with option should render equals 1`] = `
         Objects.equals(this.additionalProperties, self.additionalProperties);
   }
 
-  @Override
   public String marshal() {
     List<String> propList = new ArrayList();
       if(this.requiredProp != null) {
@@ -606,7 +595,6 @@ exports[`JAVA_COMMON_PRESET with option should render equals 1`] = `
     return propList.stream().collect(Collectors.joining(\\",\\"));
   }
 
-  @Override
   public static Clazz unmarshal(String json) {
     Clazz result = new Clazz();
     JSONObject jsonObject = new JSONObject(json);
@@ -629,7 +617,7 @@ exports[`JAVA_COMMON_PRESET with option should render equals 1`] = `
               arrayProp[i] = jsonArray.getString(i);
             }      
             result.setArrayProp(arrayProp);
-        
+          }
     return result;
   }
 }"
@@ -667,7 +655,6 @@ exports[`JAVA_COMMON_PRESET with option should render hashCode 1`] = `
     return Objects.hash((Object)requiredProp, (Object)stringProp, (Object)numberProp, (Object)booleanProp, (Object)arrayProp, (Object)additionalProperties);
   }
 
-  @Override
   public String marshal() {
     List<String> propList = new ArrayList();
       if(this.requiredProp != null) {
@@ -688,7 +675,6 @@ exports[`JAVA_COMMON_PRESET with option should render hashCode 1`] = `
     return propList.stream().collect(Collectors.joining(\\",\\"));
   }
 
-  @Override
   public static Clazz unmarshal(String json) {
     Clazz result = new Clazz();
     JSONObject jsonObject = new JSONObject(json);
@@ -711,7 +697,7 @@ exports[`JAVA_COMMON_PRESET with option should render hashCode 1`] = `
               arrayProp[i] = jsonArray.getString(i);
             }      
             result.setArrayProp(arrayProp);
-        
+          }
     return result;
   }
 }"
@@ -744,7 +730,6 @@ exports[`JAVA_COMMON_PRESET with option should render un/marshal 1`] = `
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
-  @Override
   public String marshal() {
     List<String> propList = new ArrayList();
       if(this.requiredProp != null) {
@@ -765,7 +750,6 @@ exports[`JAVA_COMMON_PRESET with option should render un/marshal 1`] = `
     return propList.stream().collect(Collectors.joining(\\",\\"));
   }
 
-  @Override
   public static Clazz unmarshal(String json) {
     Clazz result = new Clazz();
     JSONObject jsonObject = new JSONObject(json);
@@ -788,7 +772,7 @@ exports[`JAVA_COMMON_PRESET with option should render un/marshal 1`] = `
               arrayProp[i] = jsonArray.getString(i);
             }      
             result.setArrayProp(arrayProp);
-        
+          }
     return result;
   }
 }"

@@ -104,7 +104,6 @@ function renderMarshalProperties(renderer: JavaRenderer, model:CommonModel){
   const marshalProperties = propertyKeys.map(prop => {
     const formattedPropertyName = renderer.nameProperty(prop,model);
     const modelInstanceVariable = `this.${formattedPropertyName}`;
-    // const marshalCode = `json += \`"${prop}": ${propMarshalCode}\`;`;
     return `if(${modelInstanceVariable} != null) {
         propList.add("${formattedPropertyName}:"+${modelInstanceVariable}.toString());
     }`;
@@ -119,10 +118,7 @@ function renderMarshalling({ renderer, model }: {
   renderer: JavaRenderer,
   model: CommonModel,
 }): string {
-  const properties = model.properties || {};
-  const propertyKeys = [...Object.keys(properties)];
-  return `${renderer.renderAnnotation('Override')}
-public String marshal() {
+  return `public String marshal() {
   List<String> propList = new ArrayList();
   ${renderer.indent(renderMarshalProperties(renderer,model))}
   return propList.stream().collect(Collectors.joining(","));
@@ -135,11 +131,8 @@ function renderUnmarshalProperties(renderer: JavaRenderer, model:CommonModel){
   const propertyKeys = [...Object.keys(properties)];
   const unmarshalProperties = propertyKeys.map(prop => {
     const formattedPropertyName = renderer.nameProperty(prop,model);
-    // const modelInstanceVariable = `this.${formattedPropertyName}`;
-    //fetch setter for formatted property name
     const setterFunction = `set${formattedPropertyName.charAt(0).toUpperCase()}`+formattedPropertyName.slice(1);
     const getType = `jsonObject.get${properties[prop].type?.toString().charAt(0).toUpperCase()}`+properties[prop].type?.toString().slice(1);
-    // const marshalCode = `json += \`"${prop}": ${propMarshalCode}\`;`;
     if(properties[prop].type?.toString() === "array"){
       return `if(jsonObject.has("${formattedPropertyName}")) {
         JSONArray jsonArray = jsonObject.getJSONArray("${formattedPropertyName}");
@@ -148,7 +141,7 @@ function renderUnmarshalProperties(renderer: JavaRenderer, model:CommonModel){
           ${formattedPropertyName}[i] = jsonArray.getString(i);
         }      
         result.${setterFunction}(${formattedPropertyName});
-        `;
+      }`;
     }
     else{
       return `if(jsonObject.has("${formattedPropertyName}")) {
@@ -171,14 +164,8 @@ function renderUnmarshalling({ renderer, model }: {
   if (model.additionalProperties !== undefined) {
     propertyKeys.push(getUniquePropertyName(model, DefaultPropertyNames.additionalProperties));
   }
-  const unmarshalProperties = propertyKeys.map(prop => {
-    const renderedPropertyName = renderer.nameProperty(prop);
-    const renderPropertyType = renderer.renderType(model);
-    return `${renderPropertyType} ${renderedPropertyName}`;
-  });
-
-  return `${renderer.renderAnnotation('Override')}
-public static ${formattedModelName} unmarshal(String json) {
+  
+  return `public static ${formattedModelName} unmarshal(String json) {
   ${formattedModelName} result = new ${formattedModelName}();
   JSONObject jsonObject = new JSONObject(json);
   ${renderer.indent(renderUnmarshalProperties(renderer,model))}
@@ -201,10 +188,14 @@ export const JAVA_COMMON_PRESET: JavaPreset = {
       const shouldContainToString = options.classToString === undefined || options.classToString === true;
       const shouldContainMarshal = options.marshal === undefined || options.marshal === true;
 
-      if (shouldContainEqual === true || shouldContainHashCode === true || shouldContainMarshal === true) {
+      if (shouldContainEqual === true || shouldContainHashCode === true) {
         renderer.addDependency('import java.util.Objects;');
+      }
+
+      if(shouldContainMarshal === true){
         renderer.addDependency('import java.util.stream;');
         renderer.addDependency('import org.json.JSONObject;');
+        renderer.addDependency('import java.util.Map;');
       }
 
       if (shouldContainEqual) {blocks.push(renderEqual({ renderer, model }));}
