@@ -6,4 +6,24 @@
 
 # The default owners are automatically added as reviewers when you open a pull request unless different owners are specified in the file.
 
-* @magicmatatjahu @jonaslagoni @github-actions[bot]
+*   @magicmatatjahu @jonaslagoni
+
+
+# Input Champions for AsyncAPI input
+*/processors/AsyncAPIInputProcessor*.ts 
+# Input Champions for OpenAPI input
+*/processors/OpenAPIInputProcessor*.ts 
+*/processors/SwaggerInputProcessor*.ts 
+# Input Champions for JSON Schema input
+*/processors/JsonSchemaInputProcessor*.ts 
+
+# Language Champions for TypeScript
+*/generators/typescript 
+# Language Champions for JavaScript
+*/generators/javascript 
+# Language Champions for Go
+*/generators/go
+# Language Champions for Java
+*/generators/java
+# Language Champions for Csharp
+*/generators/csharp 
