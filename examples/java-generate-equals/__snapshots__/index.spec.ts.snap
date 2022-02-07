@@ -20,23 +20,6 @@ Array [
       return 
         Objects.equals(this.email, self.email);
   }
-
-  public String marshal() {
-    List<String> propList = new ArrayList();
-      if(this.email != null) {
-            propList.add(\\"email:\\"+this.email.toString());
-        }
-    return propList.stream().collect(Collectors.joining(\\",\\"));
-  }
-
-  public static Root unmarshal(String json) {
-    Root result = new Root();
-    JSONObject jsonObject = new JSONObject(json);
-      if(jsonObject.has(\\"email\\")) {
-            result.setEmail(jsonObject.getString(\\"email\\"));
-          }
-    return result;
-  }
 }",
 ]
 `;

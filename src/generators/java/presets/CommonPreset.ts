@@ -1,8 +1,9 @@
 import { JavaRenderer } from '../JavaRenderer';
 import { JavaPreset } from '../JavaPreset';
 
-import { getUniquePropertyName, DefaultPropertyNames } from '../../../helpers';
+import { getUniquePropertyName, DefaultPropertyNames, FormatHelpers } from '../../../helpers';
 import { CommonModel } from '../../../models';
+import {Logger} from '../../../utils/LoggingInterface';
 
 export interface JavaCommonPresetOptions {
   equal: boolean;
@@ -130,10 +131,12 @@ function renderUnmarshalProperties(renderer: JavaRenderer, model:CommonModel) {
   const unmarshalProperties = propertyKeys.map(prop => {
     const formattedPropertyName = renderer.nameProperty(prop,model);
     const setterFunction = `set${formattedPropertyName.charAt(0).toUpperCase()}${formattedPropertyName.slice(1)}`;
-    // eslint-disable-next-line
-    const getType = `jsonObject.get${properties[prop].type?.toString().charAt(0).toUpperCase()}${properties[prop].type?.toString().slice(1)}`;
-    // eslint-disable-next-line
-    if (properties[prop].type?.toString() === 'array') {
+    const propModel = properties[String(prop)];
+    if (propModel.type === 'undefined') {
+      Logger.error(`Could not render unmarshal for property ${prop}`);
+      return; 
+    }
+    if (propModel.type === 'array') {
       return `if(jsonObject.has("${formattedPropertyName}")) {
         JSONArray jsonArray = jsonObject.getJSONArray("${formattedPropertyName}");
         String[] ${formattedPropertyName} = new String[jsonArray.length()];
@@ -143,7 +146,7 @@ function renderUnmarshalProperties(renderer: JavaRenderer, model:CommonModel) {
         result.${setterFunction}(${formattedPropertyName});
       }`;
     }
-    
+    const getType = `jsonObject.get${FormatHelpers.upperFirst(propModel.type?.toString() || '')}`;
     return `if(jsonObject.has("${formattedPropertyName}")) {
         result.${setterFunction}(${getType}("${formattedPropertyName}"));
       }`;
@@ -179,7 +182,7 @@ export const JAVA_COMMON_PRESET: JavaPreset = {
       const shouldContainEqual = options.equal === undefined || options.equal === true;
       const shouldContainHashCode = options.hashCode === undefined || options.hashCode === true;
       const shouldContainToString = options.classToString === undefined || options.classToString === true;
-      const shouldContainMarshal = options.marshal === undefined || options.marshal === true;
+      const shouldContainMarshal = options.marshal === true;
 
       if (shouldContainEqual === true || shouldContainHashCode === true) {
         renderer.addDependency('import java.util.Objects;');
@@ -203,4 +206,3 @@ export const JAVA_COMMON_PRESET: JavaPreset = {
     },
   }
 };
-

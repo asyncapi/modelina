@@ -154,9 +154,9 @@ describe('JAVA_COMMON_PRESET', () => {
       
       const classModel = await generator.renderClass(model, inputModel);
       expect(classModel.result).toMatchSnapshot();
+      expect(classModel.dependencies.includes('import java.util.Map;')).toEqual(true);
       expect(classModel.dependencies.includes('import java.util.stream;')).toEqual(true);
       expect(classModel.dependencies.includes('import org.json.JSONObject;')).toEqual(true);
-      expect(classModel.dependencies.includes('import java.util.Map;')).toEqual(true);
     });
   });
 });
