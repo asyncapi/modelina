@@ -83,7 +83,7 @@
     "generate:readme:toc": "markdown-toc -i README.md && markdown-toc -i ./docs/usage.md && markdown-toc -i ./docs/integration.md && markdown-toc -i ./docs/advanced.md && markdown-toc -i ./docs/languages/TypeScript.md && markdown-toc -i ./docs/languages/Java.md && markdown-toc -i ./docs/languages/JavaScript.md && markdown-toc -i ./docs/languages/Csharp.md && markdown-toc -i ./docs/README.md && markdown-toc -i ./docs/generators.md",
     "generate:assets": "npm run build:prod && npm run docs && npm run generate:readme:toc",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION",
-    "prepublishOnly": "npm run build:prod && npm run generate:readme:toc"
+    "prepare": "npm run build:prod && npm run generate:readme:toc"
   },
   "publishConfig": {
     "access": "public"
