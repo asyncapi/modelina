@@ -2,7 +2,7 @@ import { TypeScriptGenerator } from '../../../../src/generators';
 import { EnumRenderer } from '../../../../src/generators/typescript/renderers/EnumRenderer';
 import { CommonInputModel, CommonModel } from '../../../../src/models';
 
-describe('TypeScriptRenderer', () => {
+describe('EnumRenderer', () => {
   let renderer: EnumRenderer;
   beforeEach(() => {
     renderer = new EnumRenderer(TypeScriptGenerator.defaultOptions, new TypeScriptGenerator(), [], new CommonModel(), new CommonInputModel());
