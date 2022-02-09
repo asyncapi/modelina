@@ -1,15 +1,9 @@
 import { CSharpGenerator } from '../../src';
 
-/**
- * In this example, we show how we can alter a input (this case JSON Schema) to provide a property as a dictionary. This type of scenario is NOT supported by 
- * JSON Schema does not support a property to validate against dictionary per say,
- * instead they want you to validate the property against a well defined set of validation rules or an empty object. 
- * 
+/** 
  * This example shows how you can modify inputs as well as outputs to make it fit your need!
- */
-
-/**
- * NOTICE: This JSON Schema does not validate the "dictionaryProp" in any other way then allowing all kinds of values through!
+ * 
+ * Related issue triggering the example: https://github.com/asyncapi/modelina/issues/615
  */
 const jsonSchemaDraft7 = {
   $schema: 'http://json-schema.org/draft-07/schema#',
@@ -41,7 +35,7 @@ const generator = new CSharpGenerator({
           return args.content;
         },
         accessorFactory: (args) => {
-          //NOTICE: Disabling accessor factory for specific properties.
+          //NOTICE: Disabling accessor factory for specific property type
           if (args.property.getFromOriginalInput('x-custom-type') === 'dictionary') {
             return '';
           }
