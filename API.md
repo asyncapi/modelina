@@ -21,6 +21,9 @@
 <dt><a href="#CommonModel">CommonModel</a></dt>
 <dd><p>Common internal representation for a model.</p>
 </dd>
+<dt><a href="#CommonSchema">CommonSchema</a></dt>
+<dd><p>CommonSchema which contains the common properties between Schema and CommonModel</p>
+</dd>
 <dt><a href="#Draft4Schema">Draft4Schema</a></dt>
 <dd><p>JSON Draft 4 schema model</p>
 </dd>
@@ -49,6 +52,9 @@ Modifications</p>
 </dd>
 <dt><a href="#RenderOutput">RenderOutput</a></dt>
 <dd><p>Common representation for the rendered output.</p>
+</dd>
+<dt><a href="#Schema">Schema</a> ⇐ <code><a href="#Schema">CommonSchema&lt;Schema&gt;</a></code></dt>
+<dd><p>JSON Schema Draft 7 model</p>
 </dd>
 <dt><a href="#SwaggerV2Schema">SwaggerV2Schema</a></dt>
 <dd><p>OpenAPI 2.0 (Swagger 2.0) schema model</p>
@@ -581,6 +587,27 @@ Only merge if left side is undefined and right side is sat OR both sides are def
 | originalInput | corresponding input that got interpreted to this model |
 | alreadyIteratedModels |  |
 
+<a name="CommonSchema"></a>
+
+## CommonSchema
+CommonSchema which contains the common properties between Schema and CommonModel
+
+**Kind**: global class  
+<a name="CommonSchema.transformSchema"></a>
+
+### CommonSchema.transformSchema(schema, transformationSchemaCallback)
+Function to transform nested schemas into type of generic extended class
+
+Since both CommonModel and Schema uses these properties we need a common function to
+convert nested schemas into their corresponding class.
+
+**Kind**: static method of [<code>CommonSchema</code>](#CommonSchema)  
+
+| Param | Description |
+| --- | --- |
+| schema | to be transformed |
+| transformationSchemaCallback | callback to transform nested schemas |
+
 <a name="Draft4Schema"></a>
 
 ## Draft4Schema
@@ -671,6 +698,25 @@ Common representation for the output model.
 Common representation for the rendered output.
 
 **Kind**: global class  
+<a name="Schema"></a>
+
+## Schema ⇐ [<code>CommonSchema&lt;Schema&gt;</code>](#Schema)
+JSON Schema Draft 7 model
+
+**Kind**: global class  
+**Extends**: [<code>CommonSchema&lt;Schema&gt;</code>](#Schema)  
+<a name="Schema.toSchema"></a>
+
+### Schema.toSchema(object) ⇒
+Transform object into a type of Schema.
+
+**Kind**: static method of [<code>Schema</code>](#Schema)  
+**Returns**: CommonModel instance of the object  
+
+| Param | Description |
+| --- | --- |
+| object | to transform |
+
 <a name="SwaggerV2Schema"></a>
 
 ## SwaggerV2Schema
