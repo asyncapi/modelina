@@ -182,7 +182,7 @@ export const JAVA_COMMON_PRESET: JavaPreset = {
       const shouldContainEqual = options.equal === undefined || options.equal === true;
       const shouldContainHashCode = options.hashCode === undefined || options.hashCode === true;
       const shouldContainToString = options.classToString === undefined || options.classToString === true;
-      const shouldContainMarshal = options.marshal === true;
+      const shouldContainMarshal = options.marshalling === true;
 
       if (shouldContainEqual === true || shouldContainHashCode === true) {
         renderer.addDependency('import java.util.Objects;');
