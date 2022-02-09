@@ -1,7 +1,8 @@
 import { CSharpRenderer } from '../CSharpRenderer';
-import { ClassPreset, CommonModel, PropertyType } from '../../../models';
+import { CommonModel, PropertyType } from '../../../models';
 import { DefaultPropertyNames, getUniquePropertyName } from '../../../helpers';
 import { pascalCase } from 'change-case';
+import { CsharpClassPreset } from '../CSharpPreset';
 
 /**
  * Renderer for CSharp's `struct` type
@@ -53,35 +54,23 @@ ${this.indent(this.renderBlock(content, 2))}
     return this.renderBlock(content);
   }
 
-  async accessorFactory(property: CommonModel, propertyName: string, type: PropertyType): Promise<string> {
-    const formattedAccessorName = pascalCase(this.nameProperty(propertyName, property));
-    let propertyType = this.renderType(property);
-    if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
-      propertyType = `Dictionary<string, ${propertyType}>`;
-    }
-    return `public ${propertyType} ${formattedAccessorName} 
-{
-  ${await this.runGetterPreset(propertyName, property, type)}
-  ${await this.runSetterPreset(propertyName, property, type)}
-}`;
-  }
   async renderAccessors(): Promise<string> {
     const properties = this.model.properties || {};
     const content: string[] = [];
 
     for (const [propertyName, property] of Object.entries(properties)) {
-      content.push(await this.accessorFactory(property, propertyName, PropertyType.property));
+      content.push(await this.runAccessorFactoryPreset(propertyName, property, PropertyType.property));
     }
 
     if (this.model.additionalProperties !== undefined) {
       const propertyName = getUniquePropertyName(this.model, DefaultPropertyNames.additionalProperties);
-      content.push(await this.accessorFactory(this.model.additionalProperties, propertyName, PropertyType.additionalProperty));
+      content.push(await this.runAccessorFactoryPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty));
     }
 
     if (this.model.patternProperties !== undefined) {
       for (const [pattern, patternModel] of Object.entries(this.model.patternProperties)) {
         const propertyName = getUniquePropertyName(this.model, `${pattern}${DefaultPropertyNames.patternProperties}`);
-        content.push(await this.accessorFactory(patternModel, propertyName, PropertyType.patternProperties));
+        content.push(await this.runAccessorFactoryPreset(propertyName, patternModel, PropertyType.patternProperties));
       }
     }
 
@@ -90,6 +79,10 @@ ${this.indent(this.renderBlock(content, 2))}
 
   runCtorPreset(): Promise<string> {
     return this.runPreset('ctor');
+  }
+
+  runAccessorFactoryPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
+    return this.runPreset('accessorFactory', { propertyName, property, type});
   }
 
   runPropertyPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
@@ -105,7 +98,7 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 }
 
-export const CSHARP_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
+export const CSHARP_DEFAULT_CLASS_PRESET: CsharpClassPreset = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
@@ -116,6 +109,18 @@ export const CSHARP_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
       propertyType = `Dictionary<string, ${propertyType}>`;
     }
     return `private ${propertyType} ${propertyName};`;
+  },
+  async accessorFactory({ renderer, propertyName, property, type }) {
+    const formattedAccessorName = pascalCase(renderer.nameProperty(propertyName, property));
+    let propertyType = renderer.renderType(property);
+    if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
+      propertyType = `Dictionary<string, ${propertyType}>`;
+    }
+    return `public ${propertyType} ${formattedAccessorName} 
+{
+  ${await renderer.runGetterPreset(propertyName, property, type)}
+  ${await renderer.runSetterPreset(propertyName, property, type)}
+}`;
   },
   getter({ renderer, propertyName, property }) {
     const formattedPropertyName = renderer.nameProperty(propertyName, property);
