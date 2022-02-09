@@ -70,10 +70,10 @@ export class TypeScriptInputProcessor extends AbstractInputProcessor {
     // obtain generated schema
     const generatedSchemas = TypeScriptInputProcessor.generateJSONSchema(baseFile, '*');
     if (generatedSchemas) {
-      generatedSchemas.map((schema) => {
+      for (const schema of generatedSchemas) {
         const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema as Record<string, any>);
         common.models = {...common.models, ...commonModels };
-      });
+      }
     }
     return Promise.resolve(common);
   }
