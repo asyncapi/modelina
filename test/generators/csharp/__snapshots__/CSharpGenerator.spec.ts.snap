@@ -1,5 +1,35 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`CSharpGenerator class renderer should be able to overwrite accessorFactory preset hook 1`] = `
+"public class CustomClass {
+  private string property;
+  private Dictionary<string, string> additionalProperties;
+
+  my own custom factory
+
+  my own custom factory
+}"
+`;
+
+exports[`CSharpGenerator class renderer should be able to overwrite property preset hook 1`] = `
+"public class CustomClass {
+  my own property
+  my own property
+
+  public string Property 
+  {
+    get { return property; }
+    set { property = value; }
+  }
+
+  public Dictionary<string, string> AdditionalProperties 
+  {
+    get { return additionalProperties; }
+    set { additionalProperties = value; }
+  }
+}"
+`;
+
 exports[`CSharpGenerator should not render reserved keyword 1`] = `
 "public class Address {
   private string reservedReservedEnum;
@@ -320,6 +350,18 @@ public static class StatesExtensions {
 "
 `;
 
+exports[`CSharpGenerator should render custom type 1`] = `
+"public class Node {
+  private dynamic instructions;
+
+  public dynamic Instructions 
+  {
+    get { return instructions; }
+    set { instructions = value; }
+  }
+}"
+`;
+
 exports[`CSharpGenerator should render enums with translated special characters 1`] = `
 "public enum States {
   TestPlus, Test, TestMinus, TestQuestionExclamation, AsteriskTest
@@ -489,25 +531,6 @@ exports[`CSharpGenerator should render models and their dependencies 2`] = `
     set { additionalProperties = value; }
   }
 }
-}"
-`;
-
-exports[`CSharpGenerator should work custom preset for \`class\` type 1`] = `
-"public class CustomClass {
-  private property string
-  private additionalProperties string
-
-  public string Property 
-  {
-    get { return property; }
-    set { property = value; }
-  }
-
-  public Dictionary<string, string> AdditionalProperties 
-  {
-    get { return additionalProperties; }
-    set { additionalProperties = value; }
-  }
 }"
 `;
 
