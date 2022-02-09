@@ -61,11 +61,12 @@ TODO
 TODO 
 
 ## Adapting input and outputs
-Sometimes you simply cannot make two things work together as you wished. However, with great customization comes a great responsibility so always make sure to raise your issue so we can figure out if it's a bug, feature or whether you need to make your own work around.
+Sometimes you simply cannot make two things work together as you wished, maybe the input does not support it, or Modelina natively doesn't. However, because of the nature with presets, we can make it work anyway.
 
-If you end up having to make your own work around, have in mind the future implications it might have, and if unsure, feel free to reach out on the AsyncAPI slack channel!
+> With great customization comes a great responsibility. Always make sure to raise your issue before trying workarounds, maybe you are not alone in the problem, and it should be natively supported, so please make your due diligence before venturing into this :pray: And always feel free to reach out on the AsyncAPI slack channel if you want some quicker feedback!
 
-Check out this [example for a demonstration how to extend one of the inputs (JSON Schema) with a customization of a preset.](../examples/indentation-type-and-size).
+Check out this [example for a demonstration of how to adapt the input and out to a specific use-case.](../examples/adapting-input-and-output).
+
 ## Add logging to library
 When you generate models, by default, nothing is logged to the console or elsewhere.
 
