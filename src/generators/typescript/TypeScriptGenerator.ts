@@ -19,6 +19,7 @@ export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPres
 }
 export interface TypeScriptRenderCompleteModelOptions {
   moduleSystem?: 'ESM' | 'CJS';
+  exportType?: 'default' | 'named';
 }
 
 /**
@@ -58,22 +59,33 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,Typ
     modelDependencies = modelDependencies.filter((dependencyModelName) => {
       return dependencyModelName !== outputModel.renderedName;
     });
+
+    const {moduleSystem = "ESM", exportType = "default"} = options;
+
     //Create the correct dependency imports
-    modelDependencies = modelDependencies.map((formattedDependencyModelName) => {
-      if (options.moduleSystem === 'CJS') {
-        return `const ${formattedDependencyModelName} = require('./${formattedDependencyModelName}');`;
+    modelDependencies = modelDependencies.map(
+      (dependencyName) => {
+        const dependencyObject =
+          exportType === "named" ? `{${dependencyName}}` : dependencyName;
+
+        return moduleSystem === "CJS"
+          ? `const ${dependencyObject} = require('./${dependencyName}');`
+          : `import ${dependencyObject} from './${dependencyName}';`;
       }
-      return `import ${formattedDependencyModelName} from './${formattedDependencyModelName}';`;
-    });
+    );
 
     //Ensure we expose the model correctly, based on the module system
-    let modelCode = `${outputModel.result}
-export default ${outputModel.renderedName};
-`;
-    if (options.moduleSystem === 'CJS') {
-      modelCode = `${outputModel.result}
-module.exports = ${outputModel.renderedName};`;
-    }
+    const cjsExport =
+      exportType === 'default'
+        ? `module.exports = ${outputModel.renderedName};`
+        : `exports.${outputModel.renderedName} = ${outputModel.renderedName};`;
+    const esmExport =
+      exportType === 'default'
+        ? `export default ${outputModel.renderedName};`
+        : '';
+    const modelCode = `${
+      moduleSystem === 'ESM' && exportType === 'named' ? 'export ' : ' '
+    }${outputModel.result}\n${moduleSystem === 'CJS' ? cjsExport : esmExport}`;
 
     const outputContent = `${[...modelDependencies, ...outputModel.dependencies].join('\n')}
 
