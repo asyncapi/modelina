@@ -20,9 +20,24 @@ export class TypeScriptInputProcessor extends AbstractInputProcessor {
     return TJS.getProgramFromFiles([resolve(file)], TypeScriptInputProcessor.compilerOptions);
   }
 
-  static generateJSONSchema(file: string, typeRequired: string): TJS.Definition | null {
+  static generateJSONSchema(file: string, typeRequired: string): Array<TJS.Definition> | null {
     const program: ts.Program = TypeScriptInputProcessor.generateProgram(file);
-    return TJS.generateSchema(program, typeRequired, TypeScriptInputProcessor.settings);
+    if (typeRequired === '*') {
+      const generator = TJS.buildGenerator(program,this.settings);
+      if (!generator) {throw new Error('Cound not generate all types automatically');}
+      
+      const symbols = generator.getMainFileSymbols(program);
+      return symbols.map(symbol => {
+        const schema = generator.getSchemaForSymbol(symbol);
+        schema.$id = symbol;
+        return schema;
+      });
+    }
+
+    const schema = TJS.generateSchema(program, typeRequired, TypeScriptInputProcessor.settings);
+    if (!schema) { return null; }
+    schema.$id = typeRequired;
+    return [schema];
   }
 
   shouldProcess(input: Record<string, any>): boolean {
@@ -53,9 +68,13 @@ export class TypeScriptInputProcessor extends AbstractInputProcessor {
     common.originalInput = fileContents;
 
     // obtain generated schema
-    const generatedSchema = TypeScriptInputProcessor.generateJSONSchema(baseFile, '*') as Record<string, any>;
-    const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(generatedSchema);
-    common.models = {...common.models, ...commonModels };
+    const generatedSchemas = TypeScriptInputProcessor.generateJSONSchema(baseFile, '*');
+    if (generatedSchemas) {
+      generatedSchemas.map((schema) => {
+        const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema as Record<string, any>);
+        common.models = {...common.models, ...commonModels };
+      });
+    }
     return Promise.resolve(common);
   }
 }
