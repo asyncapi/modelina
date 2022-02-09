@@ -28,9 +28,9 @@ export class TypeScriptInputProcessor extends AbstractInputProcessor {
       
       const symbols = generator.getMainFileSymbols(program);
       return symbols.map(symbol => {
-        const schema = generator.getSchemaForSymbol(symbol);
-        schema.$id = symbol;
-        return schema;
+        const schemaFromGenerator = generator.getSchemaForSymbol(symbol);
+        schemaFromGenerator.$id = symbol;
+        return schemaFromGenerator;
       });
     }
 
