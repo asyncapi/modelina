@@ -350,18 +350,6 @@ public static class StatesExtensions {
 "
 `;
 
-exports[`CSharpGenerator should render custom type 1`] = `
-"public class Node {
-  private dynamic instructions;
-
-  public dynamic Instructions 
-  {
-    get { return instructions; }
-    set { instructions = value; }
-  }
-}"
-`;
-
 exports[`CSharpGenerator should render enums with translated special characters 1`] = `
 "public enum States {
   TestPlus, Test, TestMinus, TestQuestionExclamation, AsteriskTest

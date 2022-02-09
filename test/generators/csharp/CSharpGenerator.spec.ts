@@ -185,21 +185,6 @@ describe('CSharpGenerator', () => {
     await expect(generator.generateCompleteModels(doc, config)).rejects.toEqual(expectedError);
   });
 
-  test('should render custom type', async () => {
-    const doc = {
-      $id: 'Node',
-      type: 'object',
-      properties: {
-        Instructions: { 
-          additionalProperties: true
-        }
-      },
-      additionalProperties: false
-    };
-    const generator = new CSharpGenerator();
-    const inputModel = await generator.generate(doc);
-    expect(inputModel[0].result).toMatchSnapshot();
-  });
   describe('class renderer', () => {
     const doc = {
       $id: 'CustomClass',
