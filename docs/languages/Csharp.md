@@ -15,7 +15,7 @@ There are special use-cases that each language supports; this document pertains 
 
 Sometimes you want to serialize the data models into JSON. In order to do that use the preset `CSHARP_JSON_SERIALIZER_PRESET`
 
-**Important Note: **
+**Important Note:**
 The following dependencies used in the serializer and deserializer functionality are .NET specific dependencies.
 
 ```
