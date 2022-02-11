@@ -62,7 +62,7 @@ Check out this [example for a live demonstration](../../examples/java-generate-j
 
 Sometimes you just want to convert your class to JSON without the use of annotations such as Jackson.
 
-Check out this [example for a live demonstration](https://github.com/asyncapi/modelina/blob/master/examples/java-generate-marshal).
+Check out this [example for a live demonstration](../../examples/java-generate-marshalling).
 
 External dependencies
 - Requires [org.json package](https://search.maven.org/artifact/org.json/json/20211205/bundle) to work
