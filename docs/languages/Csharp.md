@@ -23,6 +23,8 @@ System.Text.Json
 System.Text.Json.Serialization
 System.Text.RegularExpressions
 ```
+**External dependencies:**
+Requires [System.Text.Json](https://devblogs.microsoft.com/dotnet/try-the-new-system-text-json-apis/) and [System.Text.RegularExpressions](https://docs.microsoft.com/en-us/dotnet/api/system.text.regularexpressions?view=net-6.0) to work.
 
 Check out this [example for a live demonstration](../../examples/csharp-generate-serializer).
 
