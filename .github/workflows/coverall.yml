@@ -7,27 +7,20 @@ on:
 name: Check test coverage 
 jobs:
   build:
+    if: "github.event.pull_request.draft == false &&!((github.actor == 'asyncapi-bot' && startsWith(github.event.pull_request.title, 'ci: update global workflows')) || (github.actor == 'asyncapi-bot' && startsWith(github.event.pull_request.title, 'chore(release):')) || (github.actor == 'allcontributors' && startsWith(github.event.pull_request.title, 'docs: add')))"
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - if: "github.event.pull_request.draft == false &&!((github.actor == 'asyncapi-bot' && startsWith(github.event.pull_request.title, 'ci: update global workflows')) || (github.actor == 'asyncapi-bot' && startsWith(github.event.pull_request.title, 'chore(release):')) || (github.actor == 'allcontributors' && startsWith(github.event.pull_request.title, 'docs: add')))"
-        id: should_run
-        name: Should Run
-        run: echo "::set-output name=shouldRun::true"
-      - if: steps.should_run.outputs.shouldRun == 'true' 
-        uses: actions/checkout@v2
-      - if: steps.should_run.outputs.shouldRun == 'true' 
-        name: Setup Node.js
+      - uses: actions/checkout@v2
+      - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
           node-version: 14
-      - if: steps.should_run.outputs.shouldRun == 'true' 
-        name: npm install, run test
+      - name: npm install, run test
         run: |
           npm install
           npm run test
-      - if: steps.should_run.outputs.shouldRun == 'true' 
-        name: Coveralls
+      - name: Coveralls
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
