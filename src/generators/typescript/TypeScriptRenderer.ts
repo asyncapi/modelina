@@ -71,13 +71,21 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
    * @param model
    */
   toTsType(type: string | undefined, model: CommonModel): string {
+    const format = model.getFromOriginalInput("format");
+
     switch (type) { 
     case 'null':
       return 'null';
     case 'object':
       return 'object';
     case 'string':
-      return 'string';
+      switch (format) {
+        case 'date':
+        case 'date-time':
+          return 'Date';
+        default:
+          return 'string';
+      }
     case 'integer':
     case 'number':
       return 'number';
