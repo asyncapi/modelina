@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render Go models with JSON annotation and should log expected output to console 1`] = `
+Array [
+  "// Root represents a Root model.
+type Root struct {
+  Email string \`json:\\"email,omitempty\\"\`
+}",
+]
+`;

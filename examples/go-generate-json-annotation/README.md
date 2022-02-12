@@ -1,6 +1,6 @@
-# Java Generate Jackson Annotation
+# Go Generate JSON Annotation
 
-A basic example on how to generate models with jackson annotation
+A basic example on how to generate models with JSON annotation.
 
 ## How to run this example
 
