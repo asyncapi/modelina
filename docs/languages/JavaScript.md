@@ -24,4 +24,4 @@ Sometimes you want to use the models for data transfers, and while most cases wo
 
 Here, this can be done by including the preset `JS_COMMON_PRESET` using the option `marshalling`.
 
-Check out this [example out for a live demonstration]().
+Check out this [example out for a live demonstration](../../examples/javascript-generate-marshalling).
