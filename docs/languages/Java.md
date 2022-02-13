@@ -13,6 +13,7 @@ There are special use-cases that each language supports; this document pertains 
 - [Include JavaDoc for properties](#include-javadoc-for-properties)
 - [Include Javax validation constraint annotations for properties](#include-javax-validation-constraint-annotations-for-properties)
 - [Include Jackson annotations for the class](#include-jackson-annotations-for-the-class)
+- [Include JSON marshaling and unmarshaling methods](#include-json-marshaling-and-unmarshaling-methods)
 
 <!-- tocstop -->
 
