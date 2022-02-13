@@ -7,7 +7,8 @@ const generator = new JavaGenerator({
       options: {
         equal: false,
         hashCode: true,
-        classToString: false
+        classToString: false,
+        marshalling: false,
       }
     }
   ]
