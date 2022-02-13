@@ -6,7 +6,6 @@ There are special use-cases that each language supports; this document pertains 
 <!-- toc -->
 
 - [Rendering complete models to a specific module system](#rendering-complete-models-to-a-specific-module-system)
-- [Generate un/marshal functions for classes](#generate-unmarshal-functions-for-classes)
 
 <!-- tocstop -->
 
