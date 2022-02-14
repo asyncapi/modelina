@@ -34,6 +34,3 @@ This directory contains a series of self-contained examples that you can use as 
 - [java-change-collection-type](./java-change-collection-type) - An example to render collections as List in Java.
 - [java-generate-hashcode](./java-generate-hashcode) - A basic example that shows how to generate models that overwrite the `hashCode` method
 - [go-generate-json-tags](./go-generate-json-tags) - A basic example on how to generate models with JSON Tags
-
-
-
