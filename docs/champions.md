@@ -1,4 +1,7 @@
+
 # Champions
+
+<img style="float: right;" src="https://i.giphy.com/media/3ohs4Az5xSJj0RYrss/giphy.webp" width="300" height="300">
 
 As Modelina grows, more and more people would like to become maintainers, each with varying degree of time to give.
 
@@ -7,7 +10,7 @@ In order to have something for everyone, we introduce the concept of `champions`
 ## Areas of responsibility
 These are the areas that we mainly focus on getting having champions and where you can help out. However, keep in mind it is not limited to any of these.
 
-### Core champion
+### Core champions
 There is not one area that interest you, but rather the library as a whole, where you want to maintain and push forward the project and it's vision.
 
 ### Doc champions
@@ -19,7 +22,7 @@ Input champions are those who take charge of the input processing, it can either
 ### Language champions
 Language champions are those who maintain of a specific language output, it can either be a specific generator (such as TypeScript or Java) or or multiple. They maintain the process of converting the internal model into usable data models in their respective language. 
 
-## Becoming a champion
+# Becoming a champion
 There can be many ways to become a champion, but what they all have in common is regularly contributing to the project. There is no limit to who or how many can become champions of a specific area and you can also become champion of multiple areas.
 
 ### How to get started
