@@ -1,8 +1,9 @@
 
+<p align="center">
+  <img src="https://i.giphy.com/media/3ohs4Az5xSJj0RYrss/giphy.webp" width="300" height="300">
+</p>
+
 # Champions
-
-<img style="float: right;" src="https://i.giphy.com/media/3ohs4Az5xSJj0RYrss/giphy.webp" width="300" height="300">
-
 As Modelina grows, more and more people would like to become maintainers, each with varying degree of time to give.
 
 In order to have something for everyone, we introduce the concept of `champions` where we split up the areas of responsibility where best possible. 
