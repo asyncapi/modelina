@@ -15,6 +15,9 @@ There are special use-cases that each language supports; this document pertains 
 
 Sometimes you want to serialize the data models into JSON. In order to do that use the preset `CSHARP_JSON_SERIALIZER_PRESET`
 
+**External dependencies:**
+Requires [System.Text.Json](https://devblogs.microsoft.com/dotnet/try-the-new-system-text-json-apis/), [System.Text.Json.Serialization](https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-how-to?pivots=dotnet-6-0) and [System.Text.RegularExpressions](https://docs.microsoft.com/en-us/dotnet/api/system.text.regularexpressions?view=net-6.0) to work.
+
 Check out this [example for a live demonstration](../../examples/csharp-generate-serializer).
 
 ## Generate models with equals and GetHashCode methods
