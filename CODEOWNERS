@@ -6,24 +6,39 @@
 
 # The default owners are automatically added as reviewers when you open a pull request unless different owners are specified in the file.
 
-*   @magicmatatjahu @jonaslagoni
+# Core champions (aaand bot of course!)
+* @magicmatatjahu @jonaslagoni @github-actions[bot]
 
 
 # Input Champions for AsyncAPI input
 */processors/AsyncAPIInputProcessor*.ts 
+
 # Input Champions for OpenAPI input
 */processors/OpenAPIInputProcessor*.ts 
 */processors/SwaggerInputProcessor*.ts 
+
 # Input Champions for JSON Schema input
 */processors/JsonSchemaInputProcessor*.ts 
 
-# Language Champions for TypeScript
-*/generators/typescript 
-# Language Champions for JavaScript
+# Language Champions for TypeScript and it's presets
+*/generators/typescript/ 
+*/generators/typescript/preset/CommonPreset.ts 
+
+# Language Champions for JavaScript and it's presets
 */generators/javascript 
-# Language Champions for Go
+*/generators/javascript/preset/CommonPreset.ts 
+
+# Language Champions for Go and it's presets
 */generators/go
-# Language Champions for Java
+
+# Language Champions for Java and it's presets
 */generators/java
-# Language Champions for Csharp
+*/generators/java/preset/CommonPreset.ts
+*/generators/java/preset/ConstraintsPreset.ts
+*/generators/java/preset/DescriptioPreset.ts
+*/generators/java/preset/JacksonPreset.ts 
+
+# Language Champions for C# and it's presets
 */generators/csharp 
+*/generators/csharp/preset/CommonPreset.ts 
+*/generators/csharp/preset/JsonSerializerPreset.ts
