@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CSharpGenerator class renderer should be able to overwrite accessorFactory preset hook 1`] = `
+exports[`CSharpGenerator class renderer should be able to overwrite accessor preset hook 1`] = `
 "public class CustomClass {
   private string property;
   private Dictionary<string, string> additionalProperties;

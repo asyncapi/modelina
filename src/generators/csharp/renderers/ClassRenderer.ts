@@ -59,18 +59,18 @@ ${this.indent(this.renderBlock(content, 2))}
     const content: string[] = [];
 
     for (const [propertyName, property] of Object.entries(properties)) {
-      content.push(await this.runAccessorFactoryPreset(propertyName, property, PropertyType.property));
+      content.push(await this.runAccessorPreset(propertyName, property, PropertyType.property));
     }
 
     if (this.model.additionalProperties !== undefined) {
       const propertyName = getUniquePropertyName(this.model, DefaultPropertyNames.additionalProperties);
-      content.push(await this.runAccessorFactoryPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty));
+      content.push(await this.runAccessorPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty));
     }
 
     if (this.model.patternProperties !== undefined) {
       for (const [pattern, patternModel] of Object.entries(this.model.patternProperties)) {
         const propertyName = getUniquePropertyName(this.model, `${pattern}${DefaultPropertyNames.patternProperties}`);
-        content.push(await this.runAccessorFactoryPreset(propertyName, patternModel, PropertyType.patternProperties));
+        content.push(await this.runAccessorPreset(propertyName, patternModel, PropertyType.patternProperties));
       }
     }
 
@@ -81,8 +81,8 @@ ${this.indent(this.renderBlock(content, 2))}
     return this.runPreset('ctor');
   }
 
-  runAccessorFactoryPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
-    return this.runPreset('accessorFactory', { propertyName, property, type});
+  runAccessorPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
+    return this.runPreset('accessor', { propertyName, property, type});
   }
 
   runPropertyPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
@@ -110,7 +110,7 @@ export const CSHARP_DEFAULT_CLASS_PRESET: CsharpClassPreset = {
     }
     return `private ${propertyType} ${propertyName};`;
   },
-  async accessorFactory({ renderer, propertyName, property, type }) {
+  async accessor({ renderer, propertyName, property, type }) {
     const formattedAccessorName = pascalCase(renderer.nameProperty(propertyName, property));
     let propertyType = renderer.renderType(property);
     if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
