@@ -1,7 +1,7 @@
-import { FieldType, GoPreset, FieldType } from '../GoPreset';
+import { FieldType, GoPreset } from '../GoPreset';
 
 /**
- * Preset which adds basic JSON annotation 
+ * Preset which adds basic JSON Tags for fields
  * 
  * @implements {GoPreset}
  */
