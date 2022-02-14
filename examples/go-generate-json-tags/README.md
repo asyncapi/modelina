@@ -1,6 +1,6 @@
-# Go Generate JSON Annotation
+# Go Generate JSON Tags
 
-A basic example on how to generate models with JSON annotation.
+A basic example on how to generate models with JSON tags.
 
 ## How to run this example
 
