@@ -22,23 +22,23 @@
 
 # Language Champions for TypeScript and it's presets
 */generators/typescript/ 
-*/generators/typescript/preset/CommonPreset.ts 
+*/generators/typescript/preset/CommonPreset*.ts 
 
 # Language Champions for JavaScript and it's presets
 */generators/javascript 
-*/generators/javascript/preset/CommonPreset.ts 
+*/generators/javascript/preset/CommonPreset*.ts 
 
 # Language Champions for Go and it's presets
 */generators/go
 
 # Language Champions for Java and it's presets
 */generators/java
-*/generators/java/preset/CommonPreset.ts
-*/generators/java/preset/ConstraintsPreset.ts
-*/generators/java/preset/DescriptioPreset.ts
-*/generators/java/preset/JacksonPreset.ts 
+*/generators/java/preset/CommonPreset*.ts
+*/generators/java/preset/ConstraintsPreset*.ts
+*/generators/java/preset/DescriptioPreset*.ts
+*/generators/java/preset/JacksonPreset*.ts 
 
 # Language Champions for C# and it's presets
 */generators/csharp 
-*/generators/csharp/preset/CommonPreset.ts 
-*/generators/csharp/preset/JsonSerializerPreset.ts
+*/generators/csharp/preset/CommonPreset*.ts 
+*/generators/csharp/preset/JsonSerializerPreset*.ts
