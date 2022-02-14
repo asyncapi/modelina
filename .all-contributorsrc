@@ -225,7 +225,20 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/22374829?v=4",
       "profile": "https://ritik307.github.io/portfolio/",
       "contributions": [
-        "doc"
+        "doc",
+        "code",
+        "test",
+        "example"
+      ]
+    },
+    {
+      "login": "Ishan-Saini",
+      "name": "Ishan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/54525602?v=4",
+      "profile": "https://github.com/Ishan-Saini",
+      "contributions": [
+        "code",
+        "test"
       ]
     }
   ],

@@ -39,6 +39,7 @@ describe('JAVA_COMMON_PRESET', () => {
               equal: true,
               hashCode: true,
               classToString: true,
+              marshalling: false,
             }
           }] 
         }
@@ -50,11 +51,12 @@ describe('JAVA_COMMON_PRESET', () => {
       expect(classModel.result).toMatchSnapshot();
       expect(classModel.dependencies.includes('import java.util.Objects;')).toEqual(true);
     });
-    test('should not render any functions when all 3 options are disabled', async () => {
+    test('should not render any functions when all 4 options are disabled', async () => {
       const options: JavaCommonPresetOptions = {
         equal: false,
         hashCode: false,
         classToString: false,
+        marshalling: false,
       };
 
       const generator = new JavaGenerator(
@@ -80,6 +82,7 @@ describe('JAVA_COMMON_PRESET', () => {
               equal: true,
               hashCode: false,
               classToString: false,
+              marshalling: false,
             }
           }] 
         }
@@ -100,6 +103,7 @@ describe('JAVA_COMMON_PRESET', () => {
               equal: false,
               hashCode: true,
               classToString: false,
+              marshalling: false,
             }
           }] 
         }
@@ -120,6 +124,7 @@ describe('JAVA_COMMON_PRESET', () => {
               equal: false,
               hashCode: false,
               classToString: true,
+              marshalling: false,
             }
           }] 
         }
@@ -129,6 +134,28 @@ describe('JAVA_COMMON_PRESET', () => {
   
       const classModel = await generator.renderClass(model, inputModel);
       expect(classModel.result).toMatchSnapshot();
+    });
+    test('should render un/marshal', async () => {
+      const generator = new JavaGenerator(
+        { 
+          presets: [{
+            preset: JAVA_COMMON_PRESET,
+            options: {
+              equal: false,
+              hashCode: false,
+              classToString: false,
+              marshalling: true,
+            }
+          }] 
+        }
+      );
+      const inputModel = await generator.process(doc);
+      const model = inputModel.models['Clazz'];
+      
+      const classModel = await generator.renderClass(model, inputModel);
+      expect(classModel.dependencies.includes('import java.util.Map;')).toEqual(true);
+      expect(classModel.dependencies.includes('import java.util.stream;')).toEqual(true);
+      expect(classModel.dependencies.includes('import org.json.JSONObject;')).toEqual(true);
     });
   });
 });

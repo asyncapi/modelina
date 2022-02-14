@@ -15,12 +15,12 @@ public class Root {
 
 internal class RootConverter : JsonConverter<Root>
 {
-  public override bool CanConvert(Type objectType)
+  public override bool CanConvert(System.Type objectType)
   {
     // this converter can be applied to any type
     return true;
   }
-  public override Root Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+  public override Root Read(ref Utf8JsonReader reader, System.Type typeToConvert, JsonSerializerOptions options)
   {
     if (reader.TokenType != JsonTokenType.StartObject)
     {
