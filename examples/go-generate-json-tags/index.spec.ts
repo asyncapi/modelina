@@ -1,7 +1,7 @@
 const spy = jest.spyOn(global.console, 'log').mockImplementation(() => { return; });
 import {generate} from './index';
 
-describe('Should be able to render Go models with JSON annotation', () => {
+describe('Should be able to render Go models with JSON tags', () => {
   afterAll(() => {
     jest.restoreAllMocks();
   });
