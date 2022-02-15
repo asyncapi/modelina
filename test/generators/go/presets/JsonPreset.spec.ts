@@ -3,7 +3,7 @@ const doc = {
   $id: 'Test',
   type: 'object',
   additionalProperties: {
-    type: "string"
+    type: 'string'
   },
   required: ['string prop'],
   properties: {
