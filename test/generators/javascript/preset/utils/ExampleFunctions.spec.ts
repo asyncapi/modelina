@@ -5,7 +5,7 @@ import { CommonInputModel, CommonModel } from '../../../../../src/models';
 class MockJavaScriptRenderer extends JavaScriptRenderer {
 }
 const renderer = new MockJavaScriptRenderer(JavaScriptGenerator.defaultOptions, new JavaScriptGenerator(), [], new CommonModel(), new CommonInputModel());
-describe('Marshalling preset', () => {
+describe('Example preset', () => {
   describe('.renderValueFromModel()', () => {
     test('should render refs correctly', () => {
       const input = CommonModel.toCommonModel({ $ref: 'SomeOtherModel' });
