@@ -6,35 +6,56 @@ import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 
 /** Class for processing Typescript code inputs to Common module*/
+
+export interface TypeScriptInputProcessorOptions extends TJS.PartialArgs{
+  uniqueNames? : boolean;
+  required? : boolean;
+  compilerOptions? : TJS.CompilerOptions;
+}
 export class TypeScriptInputProcessor extends AbstractInputProcessor {
-  static settings: TJS.PartialArgs = {
-    uniqueNames: true,
-    required: true
+  settings: TypeScriptInputProcessorOptions = {
+    uniqueNames: false,
+    required: true,
+    compilerOptions: {
+      strictNullChecks: false,
+    }
   }; 
 
-  static compilerOptions: TJS.CompilerOptions = {
-    strictNullChecks: true
-  };
-
-  static generateProgram(file: string): ts.Program {
-    return TJS.getProgramFromFiles([resolve(file)], TypeScriptInputProcessor.compilerOptions);
+  constructor(
+    settings?: TypeScriptInputProcessorOptions
+  ) {
+    super();
+    this.settings = { 
+      ...this.settings, 
+      uniqueNames: this.settings?.uniqueNames,
+      required: settings?.uniqueNames,
+      compilerOptions: {
+        ...this.settings.compilerOptions,
+        strictNullChecks: settings?.compilerOptions?.strictNullChecks,
+      } 
+    };
   }
 
-  static generateJSONSchema(file: string, typeRequired: string): Array<TJS.Definition> | null {
-    const program: ts.Program = TypeScriptInputProcessor.generateProgram(file);
+  private generateProgram(file: string): ts.Program {
+    return TJS.getProgramFromFiles([resolve(file)], this.settings.compilerOptions);
+  }
+
+  private generateJSONSchema(file: string, typeRequired: string): Array<TJS.Definition> | null {
+    const program: ts.Program = this.generateProgram(file);
     if (typeRequired === '*') {
-      const generator = TJS.buildGenerator(program,this.settings);
+      const generator = TJS.buildGenerator(program, this.settings);
       if (!generator) {throw new Error('Cound not generate all types automatically');}
       
       const symbols = generator.getMainFileSymbols(program);
       return symbols.map(symbol => {
         const schemaFromGenerator = generator.getSchemaForSymbol(symbol);
+        // console.log(schemaFromGenerator);
         schemaFromGenerator.$id = symbol;
         return schemaFromGenerator;
       });
     }
 
-    const schema = TJS.generateSchema(program, typeRequired, TypeScriptInputProcessor.settings);
+    const schema = TJS.generateSchema(program, typeRequired, this.settings);
     if (!schema) { return null; }
     schema.$id = typeRequired;
     return [schema];
@@ -68,7 +89,7 @@ export class TypeScriptInputProcessor extends AbstractInputProcessor {
     common.originalInput = fileContents;
 
     // obtain generated schema
-    const generatedSchemas = TypeScriptInputProcessor.generateJSONSchema(baseFile, '*');
+    const generatedSchemas = this.generateJSONSchema(baseFile, '*');
     if (generatedSchemas) {
       for (const schema of generatedSchemas) {
         const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema as Record<string, any>);
