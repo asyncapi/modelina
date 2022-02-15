@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`JSON preset should render serialize and deserialize code 1`] = `
+"// NestedTest represents a NestedTest model.
+type NestedTest struct {
+  StringProp string \`json:\\"stringProp,omitempty\\"\`
+  AdditionalProperties map[string][]interface{} \`json:\\"-\\"\`
+}"
+`;
+
+exports[`JSON preset should render serialize and deserialize code 2`] = `
+"// Test represents a Test model.
+type Test struct {
+  StringProp string \`json:\\"string prop,omitempty\\"\`
+  NumberProp float64 \`json:\\"numberProp,omitempty\\"\`
+  EnumProp *EnumTest \`json:\\"enumProp,omitempty\\"\`
+  ObjectProp *NestedTest \`json:\\"objectProp,omitempty\\"\`
+  AdditionalProperties map[string]string \`json:\\"-\\"\`
+  STestPatternProperties map[string]string \`json:\\"-\\"\`
+}"
+`;
+
+exports[`JSON preset should render serialize and deserialize code 3`] = `
+"// EnumTest represents an enum of mixed types.
+type EnumTest interface{}"
+`;
