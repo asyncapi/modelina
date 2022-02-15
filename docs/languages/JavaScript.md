@@ -7,6 +7,7 @@ There are special use-cases that each language supports; this document pertains 
 
 - [Rendering complete models to a specific module system](#rendering-complete-models-to-a-specific-module-system)
 - [Generate un/marshal functions for classes](#generate-unmarshal-functions-for-classes)
+- [Generate example data function](#generate-example-data-function)
 
 <!-- tocstop -->
 
@@ -25,3 +26,9 @@ Sometimes you want to use the models for data transfers, and while most cases wo
 Here, this can be done by including the preset `JS_COMMON_PRESET` using the option `marshalling`.
 
 Check out this [example out for a live demonstration](../../examples/javascript-generate-marshalling).
+
+## Generate example data function
+
+Generate example instance of the data model including the preset `JS_COMMON_PRESET` using the option `example`.
+
+Check out this [example out for a live demonstration](../../examples/javascript-generate-example).
