@@ -9,8 +9,11 @@
 </p>
 
 [![Coverage Status](https://coveralls.io/repos/github/asyncapi/modelina/badge.svg?branch=master)](https://coveralls.io/github/asyncapi/modelina?branch=master)
+
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-21-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ---
@@ -44,6 +47,7 @@ This package is still under development and has not reached version 1.0.0 yet. T
 Feel free to submit an issue if you require this project in other use-cases.
 
 ## Installation
+
 Run this command to install Modelina in your project:
 
 ```bash
@@ -53,11 +57,13 @@ npm install @asyncapi/modelina
 Once you've successfully installed Modelina in your project, it's time to select your generator. Check out the [examples](#examples) for the specific code.
 
 ## Features
+
 The following table provides a short summary of available features for supported output languages.
 
 To see the complete feature list for each language, please click the individual links for each language.
 
 <a id="inputs"></a>
+
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
 <table>
@@ -76,6 +82,10 @@ To see the complete feature list for each language, please click the individual 
   <tr>
     <td>OpenAPI</td>
     <td>We support the following OpenAPI versions: <em><a href="./docs/usage.md#generate-models-from-swagger-20-documents">Swagger 2.0</a> and <a href="./docs/usage.md#generate-models-from-openapi-documents">OpenAPI 3.0</a></em>, which generates models for all the defined request and response payloads.</td>
+  </tr>
+  <tr>
+    <td><a href="./docs/usage.md#generate-model-from-typescript-type-files">TypeScript file</a></td>
+    <td>We currently support TypeScript type file</td>
   </tr>
 </table>
 
