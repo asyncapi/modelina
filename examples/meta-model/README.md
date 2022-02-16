@@ -1,6 +1,6 @@
-# Generating with custom models
+# Meta Model
 
-Using the internal data models, you can create your own data models from scratch, and still utilize the generators full sweep of features.
+Using the internal meta model representation, you can create your own data models from scratch, and still utilize the generators full sweep of features.
 
 ## How to run this example
 

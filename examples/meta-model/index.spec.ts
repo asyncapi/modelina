@@ -1,7 +1,7 @@
 const spy = jest.spyOn(global.console, 'log').mockImplementation(() => { return; });
 import {generate} from './index';
 
-describe('Should be able to render custom data model', () => {
+describe('Should be able to use generator with meta model', () => {
   afterAll(() => {
     jest.restoreAllMocks();
   });
