@@ -50,5 +50,21 @@ describe('TypeScriptInputProcessor', () => {
       const commonModel = await processsor.process({ fileContents: baseFileContents, baseFile });
       expect(commonModel).toMatchSnapshot();
     });
+    test('should be able to process input with user provided options', async () => {
+      const processor = new TypeScriptInputProcessor();
+      const commonModel = await processor.process({ fileContents: baseFileContents, baseFile }, {
+        typescript: {
+          uniqueNames: true
+        }
+      });
+      expect(commonModel).toMatchSnapshot();
+    });
   });
 });
+
+// const processor = new TypeScriptInputProcessor();
+// processor.process({fileContents: baseFileContents, baseFile},{
+//   typescript: {
+//     uniqueNames: false
+//   }
+// }).then((model) => console.log(JSON.stringify(model, null, 4)));
