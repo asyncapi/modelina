@@ -10,10 +10,8 @@ export class EnumRenderer extends GoRenderer {
   public defaultSelf(): string {
     const formattedName = this.nameType(this.model.$id);
     const type = this.enumType(this.model);
-    const doc = formattedName && this.renderCommentForEnumType(formattedName, type);
 
-    return `${doc}
-type ${formattedName} ${type}`;
+    return `type ${formattedName} ${type}`;
   }
 
   enumType(model: CommonModel): string {
@@ -22,11 +20,6 @@ type ${formattedName} ${type}`;
     }
 
     return this.toGoType(this.model.type, model);
-  }
-
-  renderCommentForEnumType(name: string, type: string): string {
-    const globalType = type === 'interface{}' ? 'mixed types' : type;
-    return this.renderComments(`${name} represents an enum of ${globalType}.`);
   }
 }
 

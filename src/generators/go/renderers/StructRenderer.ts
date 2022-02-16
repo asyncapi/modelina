@@ -14,10 +14,8 @@ export class StructRenderer extends GoRenderer {
     ];
     
     const formattedName = this.nameType(this.model.$id);
-    const doc = this.renderComments(`${formattedName} represents a ${formattedName} model.`);
-    
-    return `${doc}
-type ${formattedName} struct {
+
+    return `type ${formattedName} struct {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
   }
