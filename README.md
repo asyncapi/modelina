@@ -66,7 +66,7 @@ To see the complete feature list for each language, please click the individual 
     <th>description</th>
   </tr>
   <tr>
-    <td><a href="./docs/usage.md##generate-models-from-asyncapi-documents">AsyncAPI</a></td>
+    <td><a href="./docs/usage.md#generate-models-from-asyncapi-documents">AsyncAPI</a></td>
     <td>We support the following AsyncAPI versions: <em>2.0.0, 2.1.0 and 2.2.0</em>, which generates models for all the defined message payloads.</td>
   </tr>
   <tr>

@@ -4,7 +4,7 @@
 
 <!-- toc -->
 
-- [The data model](#the-data-model)
+- [The Processing](#the-processing)
 - [Contributing](#contributing)
 - [Usage](#usage)
 - [Advanced](#advanced)
@@ -19,10 +19,10 @@
 
 This document gives the overview of all the available documentation for Modelina.
 
-### [The data model](./data%20model.md)
-The underlying data model, which the processors turn input into and what generators use for their output. 
+### [The Processing](./processing.md)
+Contains information how the internals of the processing works.
 
-This document contains all the information you need to understand the internal data model and processes.
+This document contains all the information you need to understand the internal MetaModel and processes.
 
 ### [Contributing](./contributing.md)
 Contains all the information you need to contribute to this project.
