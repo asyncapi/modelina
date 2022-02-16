@@ -61,10 +61,3 @@ describe('TypeScriptInputProcessor', () => {
     });
   });
 });
-
-// const processor = new TypeScriptInputProcessor();
-// processor.process({fileContents: baseFileContents, baseFile},{
-//   typescript: {
-//     uniqueNames: false
-//   }
-// }).then((model) => console.log(JSON.stringify(model, null, 4)));

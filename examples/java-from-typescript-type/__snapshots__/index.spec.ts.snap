@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to generate Java model from a TypeScript type file and should log expected output to console 1`] = `
+Array [
+  "public class InnerData {
+  private Double age;
+  private String name;
+  private Boolean free;
+  private Map<String, Object> additionalProperties;
+
+  public Double getAge() { return this.age; }
+  public void setAge(Double age) { this.age = age; }
+
+  public String getName() { return this.name; }
+  public void setName(String name) { this.name = name; }
+
+  public Boolean getFree() { return this.free; }
+  public void setFree(Boolean free) { this.free = free; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+]
+`;
+
+exports[`Should be able to generate Java models from a TypeScript type file 
+along with specific options and should log expected output to console 1`] = `
+Array [
+  "public class InnerData {
+  private Double age;
+  private String name;
+  private Boolean free;
+  private Map<String, Object> additionalProperties;
+
+  public Double getAge() { return this.age; }
+  public void setAge(Double age) { this.age = age; }
+
+  public String getName() { return this.name; }
+  public void setName(String name) { this.name = name; }
+
+  public Boolean getFree() { return this.free; }
+  public void setFree(Boolean free) { this.free = free; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+]
+`;
