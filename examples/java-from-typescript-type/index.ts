@@ -7,8 +7,9 @@ const generatorWithOptions = new JavaGenerator(
   {
     processorOptions: {
       typescript: {
+        uniqueNames: true,
         compilerOptions: {
-          strictNullChecks: false
+          strictNullChecks: true
         }
       }
     }
