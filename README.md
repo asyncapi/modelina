@@ -85,7 +85,7 @@ To see the complete feature list for each language, please click the individual 
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-model-from-typescript-type-files">TypeScript file</a></td>
-    <td>We currently support TypeScript type file</td>
+    <td>We currently support TypeScript type file as input for model generation</td>
   </tr>
 </table>
 
