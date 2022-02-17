@@ -39,9 +39,9 @@ export const GO_DEFAULT_STRUCT_PRESET: StructPreset<StructRenderer> = {
     const fieldTags = await renderer.runFieldTagPreset(fieldName, field, type);
     let fieldTag = '';
     if (fieldTags !== '') {
-      fieldTag = ` \`${fieldTags}\``
+      fieldTag = ` \`${fieldTags}\``;
     }
 
-    return `${formattedFieldName} ${fieldType}${fieldTag}`
+    return `${formattedFieldName} ${fieldType}${fieldTag}`;
   },
 };

@@ -8,8 +8,8 @@ import { FieldType, GoPreset } from '../GoPreset';
 export const GO_JSON_PRESET: GoPreset = {
   struct: {
     fieldTag({fieldName, content, type }) {
-      if(content !== '') {
-        content = `${content},`
+      if (content !== '') {
+        content = `${content},`;
       }
       if (type === FieldType.field) {
         return `${content}json:"${fieldName},omitempty"`;
