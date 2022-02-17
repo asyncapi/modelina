@@ -34,7 +34,7 @@ const generator = new CSharpGenerator({
           }
           return args.content;
         },
-        accessorFactory: (args) => {
+        accessor: (args) => {
           //NOTICE: Disabling accessor factory for specific property type
           if (args.property.getFromOriginalInput('x-custom-type') === 'dictionary') {
             return '';
