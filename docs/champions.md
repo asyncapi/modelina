@@ -23,7 +23,7 @@ Input champions are those who take charge of the input processing, it can either
 ### Language champions
 Language champions are those who maintain of a specific language output, it can either be a specific generator (such as TypeScript or Java) or or multiple. They maintain the process of converting the internal model into usable data models in their respective language. 
 
-# Becoming a champion
+## Becoming a champion
 There can be many ways to become a champion, but what they all have in common is regularly contributing to the project. There is no limit to who or how many can become champions of a specific area and you can also become champion of multiple areas.
 
 ### How to get started
