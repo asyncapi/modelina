@@ -73,7 +73,6 @@ Below is a list of additional options available for a given generator.
 | `namingConvention` | Object | Options for naming conventions. | - |
 | `namingConvention.type` | Function | A function that returns the format of the type. | _Returns pascal cased name_ |
 | `namingConvention.field` | Function | A function that returns the format of the field. | _Returns pascal cased name_ |
-| `namingConvention.fieldTag` | Function | A function that returns a field tag. | _None_ |
 
 ### [C#](./languages/Csharp.md)
 
