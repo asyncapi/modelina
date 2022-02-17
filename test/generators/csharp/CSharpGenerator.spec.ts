@@ -197,7 +197,6 @@ describe('CSharpGenerator', () => {
       }
     };
 
-
     test('should be able to overwrite accessor preset hook', async () => {
       generator = new CSharpGenerator({ presets: [
         {
