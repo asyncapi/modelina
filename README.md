@@ -126,8 +126,6 @@ Documentation for this library can be found under the [documentation folder](./d
 ## Examples
 Do you need to know how to use the library in certain scenarios? 
 
-A feature cannot exist without also showing exactly how it can be done in an example. 
-
 We have gathered all the examples in a separate folder, they can be found under the [examples folder](./examples). 
 
 ## Development
