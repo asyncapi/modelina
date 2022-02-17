@@ -2,9 +2,11 @@ import { JavaScriptRenderer } from '../JavaScriptRenderer';
 import { JavaScriptPreset } from '../JavaScriptPreset';
 import { getUniquePropertyName, DefaultPropertyNames, TypeHelpers, ModelKind } from '../../../helpers';
 import { CommonInputModel, CommonModel } from '../../../models';
+import renderExampleFunction from './utils/ExampleFunction';
 
 export interface JavaScriptCommonPresetOptions {
   marshalling: boolean;
+  example: boolean;
 }
 
 function realizePropertyFactory(prop: string) {
@@ -200,7 +202,9 @@ export const JS_COMMON_PRESET: JavaScriptPreset = {
         blocks.push(renderMarshal({ renderer, model, inputModel }));
         blocks.push(renderUnmarshal({ renderer, model, inputModel }));
       }
-
+      if (options.example === true) {
+        blocks.push(renderExampleFunction({ renderer, model }));
+      }
       return renderer.renderBlock([content, ...blocks], 2);
     },
   }
