@@ -121,7 +121,7 @@ To see the complete feature list for each language, please click the individual 
 - [Reach version 1.0](https://github.com/asyncapi/modelina/milestone/3)
 
 ## Documentation
-A feature cannot exist with documentation. Documentation for this library can be found under the [documentation folder](./docs/README.md).
+Documentation for this library can be found under the [documentation folder](./docs/README.md).
 
 ## Examples
 Do you need to know how to use the library in certain scenarios? 
