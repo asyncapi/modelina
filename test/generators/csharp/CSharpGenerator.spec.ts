@@ -197,11 +197,12 @@ describe('CSharpGenerator', () => {
       }
     };
 
-    test('should be able to overwrite accessorFactory preset hook', async () => {
+
+    test('should be able to overwrite accessor preset hook', async () => {
       generator = new CSharpGenerator({ presets: [
         {
           class: {
-            accessorFactory() {
+            accessor() {
               return 'my own custom factory';
             }
           }

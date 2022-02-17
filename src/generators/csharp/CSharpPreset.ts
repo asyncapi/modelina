@@ -2,9 +2,9 @@ import { Preset, EnumPreset, ClassPreset, PresetArgs, PropertyArgs } from '../..
 import { ClassRenderer, CSHARP_DEFAULT_CLASS_PRESET } from './renderers/ClassRenderer';
 import { CSHARP_DEFAULT_ENUM_PRESET, EnumRenderer } from './renderers/EnumRenderer';
 
-// Our class preset uses custom `accessorFactory` hook to craft getter and setters.
+// Our class preset uses custom `accessor` hook to craft getter and setters.
 export interface CsharpClassPreset extends ClassPreset<ClassRenderer> {
-  accessorFactory?: (args: PresetArgs<ClassRenderer, any> & PropertyArgs) => Promise<string> | string;
+  accessor?: (args: PresetArgs<ClassRenderer, any> & PropertyArgs) => Promise<string> | string;
 }
 
 export type CSharpPreset = Preset<{

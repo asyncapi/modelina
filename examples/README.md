@@ -25,6 +25,8 @@ This directory contains a series of self-contained examples that you can use as 
 - [generate-javascript-models](./generate-javascript-models) - A basic example to generate JavaScript data models
 - [javascript-use-esm](./javascript-use-esm) - A basic example that generate the models to use ESM module system.
 - [javascript-use-cjs](./javascript-use-cjs) - A basic example that generate the models to use CJS module system.
+- [javascript-generate-marshalling](./javascript-generate-marshalling) - A basic example of how to use the un/marshalling functionality of the javascript class.
+- [javascript-generate-example](./javascript-generate-example) - A basic example of how to use Modelina and output a JavaScript class with an example function.
 - [generate-java-models](./generate-java-models) - A basic example to generate Java data models.
 - [generate-go-models](./generate-go-models) - A basic example to generate Go data models
 - [include-custom-function](./include-custom-function) - A basic example where a custom function is included.
@@ -32,3 +34,4 @@ This directory contains a series of self-contained examples that you can use as 
 - [generate-csharp-models](./generate-csharp-models) - A basic example to generate C# data models
 - [java-change-collection-type](./java-change-collection-type) - An example to render collections as List in Java.
 - [java-generate-hashcode](./java-generate-hashcode) - A basic example that shows how to generate models that overwrite the `hashCode` method
+- [java-generate-marshalling](./java-generate-marshalling) - A basic example of how to use the un/marshalling functionality of the java class.

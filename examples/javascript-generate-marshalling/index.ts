@@ -1,21 +1,19 @@
-import { JavaGenerator, JAVA_COMMON_PRESET } from '../../src';
+import { JavaScriptGenerator } from '../../src';
+import { JS_COMMON_PRESET } from '../../src';
 
-const generator = new JavaGenerator({
+const generator = new JavaScriptGenerator({
   presets: [
     {
-      preset: JAVA_COMMON_PRESET,
+      preset: JS_COMMON_PRESET,
       options: {
-        equal: false,
-        hashCode: false,
-        classToString: true,
-        marshalling: false,
-      },
-    },
-  ],
+        marshalling: true
+      }
+    }
+  ]
 });
-
 const jsonSchemaDraft7 = {
   $schema: 'http://json-schema.org/draft-07/schema#',
+  $id: 'Test',
   type: 'object',
   additionalProperties: false,
   properties: {
@@ -26,7 +24,7 @@ const jsonSchemaDraft7 = {
   }
 };
 
-export async function generate() : Promise<void> {
+export async function generate(): Promise<void> {
   const models = await generator.generate(jsonSchemaDraft7);
   for (const model of models) {
     console.log(model.result);
