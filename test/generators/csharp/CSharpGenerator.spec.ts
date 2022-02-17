@@ -63,36 +63,6 @@ describe('CSharpGenerator', () => {
     expect(classModel.dependencies).toEqual(['using System.Collections.Generic;']);
   });
 
-  test('should work custom preset for `class` type', async () => {
-    const doc = {
-      $id: 'CustomClass',
-      type: 'object',
-      properties: {
-        property: { type: 'string' },
-      },
-      additionalProperties: {
-        type: 'string'
-      }
-    };
-
-    generator = new CSharpGenerator({ presets: [
-      {
-        class: {
-          property({ propertyName, property, renderer }) {
-            return `private ${propertyName} ${renderer.renderType(property)}`;
-          },
-        }
-      }
-    ] });
-
-    const inputModel = await generator.process(doc);
-    const model = inputModel.models['CustomClass'];
-    
-    const classModel = await generator.render(model, inputModel);
-    expect(classModel.result).toMatchSnapshot();
-    expect(classModel.dependencies).toEqual(['using System.Collections.Generic;']);
-  });
-
   test.each([
     {
       name: 'with enums sharing same type',
@@ -148,15 +118,7 @@ describe('CSharpGenerator', () => {
       enum: ['test+', 'test', 'test-', 'test?!', '*test']
     };
     
-    generator = new CSharpGenerator({ presets: [
-      {
-        enum: {
-          self({ content }) {
-            return content;
-          },
-        }
-      }
-    ]});
+    generator = new CSharpGenerator();
 
     const inputModel = await generator.process(doc);
     const model = inputModel.models['States'];
@@ -221,5 +183,54 @@ describe('CSharpGenerator', () => {
     const config = {namespace: 'true'};
     const expectedError = new Error('You cannot use reserved CSharp keyword (true) as namespace, please use another.');
     await expect(generator.generateCompleteModels(doc, config)).rejects.toEqual(expectedError);
+  });
+
+  describe('class renderer', () => {
+    const doc = {
+      $id: 'CustomClass',
+      type: 'object',
+      properties: {
+        property: { type: 'string' },
+      },
+      additionalProperties: {
+        type: 'string'
+      }
+    };
+
+    test('should be able to overwrite accessor preset hook', async () => {
+      generator = new CSharpGenerator({ presets: [
+        {
+          class: {
+            accessor() {
+              return 'my own custom factory';
+            }
+          }
+        }
+      ] });
+  
+      const inputModel = await generator.process(doc);
+      const model = inputModel.models['CustomClass'];
+      
+      const classModel = await generator.render(model, inputModel);
+      expect(classModel.result).toMatchSnapshot();
+    });
+
+    test('should be able to overwrite property preset hook', async () => {
+      generator = new CSharpGenerator({ presets: [
+        {
+          class: {
+            property() {
+              return 'my own property';
+            },
+          }
+        }
+      ] });
+
+      const inputModel = await generator.process(doc);
+      const model = inputModel.models['CustomClass'];
+      
+      const classModel = await generator.render(model, inputModel);
+      expect(classModel.result).toMatchSnapshot();
+    });
   });
 });
