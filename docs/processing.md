@@ -2,7 +2,7 @@
 
 In order to generate data models from all kinds of inputs, we need a common structure for how we interact with one. That structure is called `MetaModel` often referred to as `Modelina Meta Model`, `Raw Meta Model`, or `MMM`. And there are two parts to it, there is the **meta model** and then the **constrained meta model**.
 
-# The meta model
+# The Meta Model
 The **meta model** is what inputs (now and in the future) such as Protobuf, JSON Schema, JSON Type Definition, GraphQL types, are gonna be converted into. 
 
 These are the meta models and their meaning:
@@ -26,9 +26,9 @@ These are the meta models and their meaning:
 
 ## The Constrained Meta Model
 
-Before the **MetaModel**s reaches the generator, it needs to be `constrained` to the output. 
+Before the **meta models**s reaches the generator, it needs to be `constrained` to the output. 
 
-For example, constraining the **EnumModel** in Java means taking the raw enum key (for the **MetaModel** there are no constrains to what values may be used) such as `something% something` and convert it to a compliant (to the output) enum key that can be accessed directly, without having to call external libraries to find out of the result.
+For example, constraining the **EnumModel** in Java means taking the raw enum key (for the **meta model** there are no constrains to what values may be used) such as `something% something` and convert it to a compliant (to the output) enum key that can be accessed directly, without having to call external libraries to find out of the result.
 
 This means that if you accessed `EnumValueModel.key` you would get `something% something`, and with the Java constrained variant `ConstrainedEnumValueModel.key` you get (example) `SOMETHING_PERCENT_SOMETHING`.
 
@@ -57,7 +57,7 @@ This transformation happen in three stages.
 2. Split the meta model into separate models that are rendered separately. See [The splitting of meta models](#The-splitting-of-data-models) for more information. 
 3. Constrain the meta models to the output language. See [The constrained meta model](#the-constrained-data-model) for more information.
 
-## The splitting of meta models
+## The splitting of Meta Models
 Each generator requires a different splitting of the **meta model**s because it varies which should be rendered as is, and which need to be rendered separately.
 
 For example with the current TS generator, we split the following models:

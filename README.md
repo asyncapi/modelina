@@ -78,7 +78,7 @@ To see the complete feature list for each language, please click the individual 
     <td>We support the following OpenAPI versions: <em>Swagger 2.0 and OpenAPI 3.0</em>, which generates models for all the defined path request and responses.</td>
   </tr>
   <tr>
-    <td><a href="./docs/usage.md#generate-models-from-metamodels">MetaModel</a></td>
+    <td><a href="./docs/usage.md#generate-models-from-meta-models">Meta model</a></td>
     <td>This is the internal representation of a model for Modelina, it is what inputs gets converted to, and what generators are provided to generate code. Instead of relying on an input processor, you can create your own models from scratch, and still take advantage on the generators and the features.</td>
   </tr>
 </table>

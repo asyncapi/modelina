@@ -1,4 +1,4 @@
-# Meta Model
+# Meta model
 
 Using the internal meta model representation, you can create your own data models from scratch, and still utilize the generators full sweep of features.
 
