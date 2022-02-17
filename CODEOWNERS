@@ -6,8 +6,8 @@
 
 # The default owners are automatically added as reviewers when you open a pull request unless different owners are specified in the file.
 
-# Core champions (aaand bot of course!)
-* @magicmatatjahu @jonaslagoni @github-actions[bot]
+# Core Champions that does a little of everything
+* @magicmatatjahu @jonaslagoni
 
 
 # Input Champions for AsyncAPI input
