@@ -7,11 +7,14 @@ import { FieldType, GoPreset } from '../GoPreset';
  */
 export const GO_JSON_PRESET: GoPreset = {
   struct: {
-    field({fieldName, content, type }) {
-      if (type === FieldType.field) {
-        return `${content} \`json:"${fieldName},omitempty"\``;
+    fieldTag({fieldName, content, type }) {
+      if(content !== '') {
+        content = `${content},`
       }
-      return `${content} \`json:"-"\``;
+      if (type === FieldType.field) {
+        return `${content}json:"${fieldName},omitempty"`;
+      }
+      return `${content}json:"-"`;
     },
   }
 };
