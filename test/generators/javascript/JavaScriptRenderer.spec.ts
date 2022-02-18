@@ -1,13 +1,13 @@
 import { JavaScriptGenerator } from '../../../src/generators';
 import { JavaScriptRenderer } from '../../../src/generators/javascript/JavaScriptRenderer';
-import { CommonInputModel, CommonModel } from '../../../src/models';
+import { InputMetaModel, CommonModel } from '../../../src/models';
 class MockJavaScriptRenderer extends JavaScriptRenderer {
 
 }
 describe('JavaScriptRenderer', () => {
   let renderer: JavaScriptRenderer;
   beforeEach(() => {
-    renderer = new MockJavaScriptRenderer(JavaScriptGenerator.defaultOptions, new JavaScriptGenerator(), [], new CommonModel(), new CommonInputModel());
+    renderer = new MockJavaScriptRenderer(JavaScriptGenerator.defaultOptions, new JavaScriptGenerator(), [], new CommonModel(), new InputMetaModel());
   });
 
   describe('nameType()', () => {

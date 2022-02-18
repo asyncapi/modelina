@@ -61,8 +61,8 @@ describe('SwaggerInputProcessor', () => {
     });
     test('should process the swagger document accurately', async () => {
       const processor = new SwaggerInputProcessor();
-      const commonInputModel = await processor.process(basicDoc);
-      expect(commonInputModel).toMatchSnapshot();
+      const InputMetaModel = await processor.process(basicDoc);
+      expect(InputMetaModel).toMatchSnapshot();
       expect((SwaggerInputProcessor.convertToInternalSchema as any as jest.SpyInstance).mock.calls).toMatchSnapshot();
     });
   });

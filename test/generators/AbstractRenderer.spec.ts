@@ -1,12 +1,12 @@
 import { AbstractRenderer } from '../../src/generators'; 
 import { IndentationTypes } from '../../src/helpers';
-import { CommonInputModel, CommonModel, RenderOutput } from '../../src/models';
+import { InputMetaModel, CommonModel, RenderOutput } from '../../src/models';
 import { testOptions, TestGenerator } from './AbstractGenerator.spec';
 
 describe('AbstractRenderer', () => {
   class TestRenderer extends AbstractRenderer {
     constructor(presets = []) {
-      super(testOptions, new TestGenerator(), presets, new CommonModel(), new CommonInputModel());
+      super(testOptions, new TestGenerator(), presets, new CommonModel(), new InputMetaModel());
     }
     render(): Promise<RenderOutput> {
       return Promise.resolve(RenderOutput.toRenderOutput({result: '', renderedName: ''}));

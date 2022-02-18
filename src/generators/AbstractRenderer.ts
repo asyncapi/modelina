@@ -1,5 +1,5 @@
 import { AbstractGenerator, CommonGeneratorOptions } from './AbstractGenerator';
-import { CommonModel, CommonInputModel, Preset } from '../models';
+import { CommonModel, ConstrainedMetaModel, InputMetaModel, Preset } from '../models';
 import { FormatHelpers, IndentationTypes } from '../helpers';
 
 /**
@@ -7,14 +7,15 @@ import { FormatHelpers, IndentationTypes } from '../helpers';
  */
 export abstract class AbstractRenderer<
   O extends CommonGeneratorOptions = CommonGeneratorOptions,
-  G extends AbstractGenerator = AbstractGenerator
+  G extends AbstractGenerator = AbstractGenerator,
+  RendererModelType extends ConstrainedMetaModel = ConstrainedMetaModel
 > {
   constructor(
     protected readonly options: O,
     readonly generator: G,
     protected readonly presets: Array<[Preset, unknown]>,
-    protected readonly model: CommonModel, 
-    protected readonly inputModel: CommonInputModel,
+    protected readonly model: RendererModelType, 
+    protected readonly inputModel: InputMetaModel,
     public dependencies: string[] = []
   ) {}
 

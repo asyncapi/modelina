@@ -1,11 +1,11 @@
 import { TypeScriptGenerator } from '../../../../../src/generators';
 import { renderValueFromModel } from '../../../../../src/generators/typescript/presets/utils/ExampleFunction';
 import { TypeScriptRenderer } from '../../../../../src/generators/typescript/TypeScriptRenderer';
-import { CommonInputModel, CommonModel } from '../../../../../src/models';
+import { InputMetaModel, CommonModel } from '../../../../../src/models';
 class MockTypeScriptRenderer extends TypeScriptRenderer {
 
 }
-const renderer = new MockTypeScriptRenderer(TypeScriptGenerator.defaultOptions, new TypeScriptGenerator(), [], new CommonModel(), new CommonInputModel());
+const renderer = new MockTypeScriptRenderer(TypeScriptGenerator.defaultOptions, new TypeScriptGenerator(), [], new CommonModel(), new InputMetaModel());
 describe('Marshalling preset', () => {
   describe('.renderValueFromModel()', () => {
     describe('enums', () => {

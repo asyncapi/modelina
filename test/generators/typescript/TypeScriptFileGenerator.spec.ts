@@ -1,4 +1,4 @@
-import { CommonInputModel, CommonModel, FileHelpers, TypeScriptFileGenerator, OutputModel } from '../../../src';
+import { InputMetaModel, CommonModel, FileHelpers, TypeScriptFileGenerator, OutputModel } from '../../../src';
 import * as path from 'path';
 
 describe('TypeScriptFileGenerator', () => {
@@ -24,7 +24,7 @@ describe('TypeScriptFileGenerator', () => {
       const generator = new TypeScriptFileGenerator();
       const expectedError = new Error('write error');
       jest.spyOn(FileHelpers, 'writerToFileSystem').mockRejectedValue(expectedError);
-      jest.spyOn(generator, 'generateCompleteModels').mockResolvedValue([new OutputModel('content', new CommonModel(), 'Test', new CommonInputModel(), [])]);
+      jest.spyOn(generator, 'generateCompleteModels').mockResolvedValue([new OutputModel('content', new CommonModel(), 'Test', new InputMetaModel(), [])]);
     
       await expect(generator.generateToFiles(doc, '/test/')).rejects.toEqual(expectedError);
       expect(generator.generateCompleteModels).toHaveBeenCalledTimes(1);
@@ -40,7 +40,7 @@ describe('TypeScriptFileGenerator', () => {
         expectedOutputFilePath,
       ];
       jest.spyOn(FileHelpers, 'writerToFileSystem').mockResolvedValue(undefined);
-      jest.spyOn(generator, 'generateCompleteModels').mockResolvedValue([new OutputModel('content', new CommonModel(), 'Test', new CommonInputModel(), [])]);
+      jest.spyOn(generator, 'generateCompleteModels').mockResolvedValue([new OutputModel('content', new CommonModel(), 'Test', new InputMetaModel(), [])]);
       
       await generator.generateToFiles(doc, expectedOutputDirPath);
       expect(generator.generateCompleteModels).toHaveBeenCalledTimes(1);
@@ -53,7 +53,7 @@ describe('TypeScriptFileGenerator', () => {
       const outputDir = './test';
       const expectedOutputDirPath = path.resolve(outputDir);
       jest.spyOn(FileHelpers, 'writerToFileSystem').mockResolvedValue(undefined);
-      jest.spyOn(generator, 'generateCompleteModels').mockResolvedValue([new OutputModel('content', new CommonModel(), '', new CommonInputModel(), [])]);
+      jest.spyOn(generator, 'generateCompleteModels').mockResolvedValue([new OutputModel('content', new CommonModel(), '', new InputMetaModel(), [])]);
       
       const models = await generator.generateToFiles(doc, expectedOutputDirPath);
       expect(generator.generateCompleteModels).toHaveBeenCalledTimes(1);

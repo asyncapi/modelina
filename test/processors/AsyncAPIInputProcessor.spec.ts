@@ -86,14 +86,14 @@ describe('AsyncAPIInputProcessor', () => {
     test('should be able to process pure object', async () => {
       const basicDoc = JSON.parse(basicDocString);
       const processor = new AsyncAPIInputProcessor();
-      const commonInputModel = await processor.process(basicDoc);
-      expect(commonInputModel).toMatchSnapshot();
+      const InputMetaModel = await processor.process(basicDoc);
+      expect(InputMetaModel).toMatchSnapshot();
     });
     test('should be able to process parsed objects', async () => {
       const parsedObject = await parse(basicDocString, {} as ParserOptions);
       const processor = new AsyncAPIInputProcessor();
-      const commonInputModel = await processor.process(parsedObject);
-      expect(commonInputModel).toMatchSnapshot();
+      const InputMetaModel = await processor.process(parsedObject);
+      expect(InputMetaModel).toMatchSnapshot();
     });
   });
 

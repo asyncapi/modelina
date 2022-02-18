@@ -1,11 +1,11 @@
 import { TypeScriptGenerator } from '../../../../src/generators';
 import { EnumRenderer } from '../../../../src/generators/typescript/renderers/EnumRenderer';
-import { CommonInputModel, CommonModel } from '../../../../src/models';
+import { InputMetaModel, CommonModel } from '../../../../src/models';
 
 describe('EnumRenderer', () => {
   let renderer: EnumRenderer;
   beforeEach(() => {
-    renderer = new EnumRenderer(TypeScriptGenerator.defaultOptions, new TypeScriptGenerator(), [], new CommonModel(), new CommonInputModel());
+    renderer = new EnumRenderer(TypeScriptGenerator.defaultOptions, new TypeScriptGenerator(), [], new CommonModel(), new InputMetaModel());
   });
 
   describe('normalizeKey()', () => {

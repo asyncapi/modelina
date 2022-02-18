@@ -1,10 +1,10 @@
 import { JavaScriptGenerator } from '../../../../../src/generators';
 import { renderValueFromModel } from '../../../../../src/generators/javascript/presets/utils/ExampleFunction';
 import { JavaScriptRenderer } from '../../../../../src/generators/javascript/JavaScriptRenderer';
-import { CommonInputModel, CommonModel } from '../../../../../src/models';
+import { InputMetaModel, CommonModel } from '../../../../../src/models';
 class MockJavaScriptRenderer extends JavaScriptRenderer {
 }
-const renderer = new MockJavaScriptRenderer(JavaScriptGenerator.defaultOptions, new JavaScriptGenerator(), [], new CommonModel(), new CommonInputModel());
+const renderer = new MockJavaScriptRenderer(JavaScriptGenerator.defaultOptions, new JavaScriptGenerator(), [], new CommonModel(), new InputMetaModel());
 describe('Example preset', () => {
   describe('.renderValueFromModel()', () => {
     test('should render refs correctly', () => {

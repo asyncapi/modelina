@@ -1,4 +1,4 @@
-import { CommonInputModel, CommonModel, OutputModel, Preset, Presets, RenderOutput, ProcessorOptions } from '../models';
+import { InputMetaModel, CommonModel, OutputModel, Preset, Presets, RenderOutput, ProcessorOptions, ConstrainedMetaModel } from '../models';
 import { InputProcessor } from '../processors';
 import { IndentationTypes } from '../helpers';
 import { isPresetWithOptions } from '../utils';
@@ -33,10 +33,10 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
     this.options = this.mergeOptions(defaultOptions, passedOptions);
   }
 
-  public abstract render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput>;
-  public abstract renderCompleteModel(model: CommonModel, inputModel: CommonInputModel, options: RenderCompleteModelOptions): Promise<RenderOutput>;
+  public abstract render(model: ConstrainedMetaModel, inputModel: InputMetaModel): Promise<RenderOutput>;
+  public abstract renderCompleteModel(model: ConstrainedMetaModel, inputModel: InputMetaModel, options: RenderCompleteModelOptions): Promise<RenderOutput>;
 
-  public process(input: Record<string, unknown>): Promise<CommonInputModel> {
+  public process(input: Record<string, unknown>): Promise<InputMetaModel> {
     return InputProcessor.processor.process(input, this.options.processorOptions);
   }
 
@@ -48,7 +48,7 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
    * @param input 
    * @param options to use for rendering full output
    */
-  public async generateCompleteModels(input: Record<string, unknown> | CommonInputModel, options: RenderCompleteModelOptions): Promise<OutputModel[]> {
+  public async generateCompleteModels(input: Record<string, unknown> | InputMetaModel, options: RenderCompleteModelOptions): Promise<OutputModel[]> {
     const inputModel = await this.processInput(input);
     const renders = Object.values(inputModel.models).map(async (model) => {
       const renderedOutput = await this.renderCompleteModel(model, inputModel, options);
@@ -68,7 +68,7 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
    * 
    * @param input 
    */
-  public async generate(input: Record<string, unknown> | CommonInputModel): Promise<OutputModel[]> {
+  public async generate(input: Record<string, unknown> | InputMetaModel): Promise<OutputModel[]> {
     const inputModel = await this.processInput(input);
     const renders = Object.values(inputModel.models).map(async (model) => {
       const renderedOutput = await this.render(model, inputModel);
@@ -84,12 +84,12 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
   }
 
   /**
-   * Process any of the input formats to the appropriate CommonInputModel type.
+   * Process any of the input formats to the appropriate InputMetaModel type.
    * 
    * @param input 
    */
-  private processInput(input: Record<string, unknown> | CommonInputModel): Promise<CommonInputModel> {
-    if (input instanceof CommonInputModel) {
+  private processInput(input: Record<string, unknown> | InputMetaModel): Promise<InputMetaModel> {
+    if (input instanceof InputMetaModel) {
       return Promise.resolve(input);
     }
     return this.process(input);

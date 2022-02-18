@@ -1,5 +1,5 @@
 import { CommonNamingConventionImplementation, DefaultPropertyNames, getUniquePropertyName } from '../../src/helpers'; 
-import { CommonInputModel, CommonModel } from '../../src/models';
+import { InputMetaModel, CommonModel } from '../../src/models';
 
 describe('NameHelpers', () => {
   describe('getUniquePropertyName', () => {
@@ -21,7 +21,7 @@ describe('NameHelpers', () => {
 
   describe('CommonNamingConventionImplementation', () => {
     const isReservedKeyword = jest.fn().mockReturnValue(false);
-    const defaultCtx = {model: CommonModel.toCommonModel({}), inputModel: new CommonInputModel(), reservedKeywordCallback: isReservedKeyword};
+    const defaultCtx = {model: CommonModel.toCommonModel({}), inputModel: new InputMetaModel(), reservedKeywordCallback: isReservedKeyword};
     describe('type', () => {
       test('should handle undefined', () => {
         const name = undefined;

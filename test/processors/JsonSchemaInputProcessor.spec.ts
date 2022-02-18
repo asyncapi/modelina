@@ -8,7 +8,7 @@ import { Draft7Schema } from '../../src/models/Draft7Schema';
 jest.mock('../../src/interpreter/Interpreter');
 jest.mock('../../src/interpreter/PostInterpreter');
 jest.mock('../../src/utils/LoggingInterface');
-jest.spyOn(JsonSchemaInputProcessor, 'convertSchemaToCommonModel');
+jest.spyOn(JsonSchemaInputProcessor, 'convertSchemaToMetaModel');
 
 let mockedReturnModels = [new CommonModel()];
 jest.mock('../../src/interpreter/Interpreter', () => {
@@ -40,8 +40,8 @@ describe('JsonSchemaInputProcessor', () => {
       const inputSchemaString = fs.readFileSync(path.resolve(__dirname, inputSchemaPath), 'utf8');
       const inputSchema = JSON.parse(inputSchemaString);
       const processor = new JsonSchemaInputProcessor();
-      const commonInputModel = await processor.process(inputSchema);
-      return {inputSchema, commonInputModel};
+      const InputMetaModel = await processor.process(inputSchema);
+      return {inputSchema, InputMetaModel};
     };
     test('should throw error when trying to process wrong schema', async () => {
       const processor = new JsonSchemaInputProcessor();
@@ -51,56 +51,56 @@ describe('JsonSchemaInputProcessor', () => {
     });
     test('should process draft 7 schemas', async () => {
       const inputSchemaPath = './JsonSchemaInputProcessor/draft-7.json';
-      const {commonInputModel, inputSchema} = await getCommonInput(inputSchemaPath);
-      expect(commonInputModel).toMatchObject({models: {test: {$id: 'test'}}, originalInput: inputSchema});
-      expect(JsonSchemaInputProcessor.convertSchemaToCommonModel).toHaveBeenCalledTimes(1);
-      const functionArgConvertSchemaToCommonModel = (JsonSchemaInputProcessor.convertSchemaToCommonModel as jest.Mock).mock.calls[0][0];
-      expect(functionArgConvertSchemaToCommonModel).toMatchObject(inputSchema);
+      const {InputMetaModel, inputSchema} = await getCommonInput(inputSchemaPath);
+      expect(InputMetaModel).toMatchObject({models: {test: {$id: 'test'}}, originalInput: inputSchema});
+      expect(JsonSchemaInputProcessor.convertSchemaToMetaModel).toHaveBeenCalledTimes(1);
+      const functionArgconvertSchemaToMetaModel = (JsonSchemaInputProcessor.convertSchemaToMetaModel as jest.Mock).mock.calls[0][0];
+      expect(functionArgconvertSchemaToMetaModel).toMatchObject(inputSchema);
       expect(postInterpretModel).toHaveBeenCalledTimes(1);
     });
     
     test('should process draft 6 schemas', async () => {
       const inputSchemaPath = './JsonSchemaInputProcessor/draft-6.json';
-      const {commonInputModel, inputSchema} = await getCommonInput(inputSchemaPath);
-      expect(commonInputModel).toMatchObject({models: {test: {$id: 'test'}}, originalInput: inputSchema});
-      expect(JsonSchemaInputProcessor.convertSchemaToCommonModel).toHaveBeenCalledTimes(1);
-      const functionArgConvertSchemaToCommonModel = (JsonSchemaInputProcessor.convertSchemaToCommonModel as jest.Mock).mock.calls[0][0];
-      expect(functionArgConvertSchemaToCommonModel).toMatchObject(inputSchema);
+      const {InputMetaModel, inputSchema} = await getCommonInput(inputSchemaPath);
+      expect(InputMetaModel).toMatchObject({models: {test: {$id: 'test'}}, originalInput: inputSchema});
+      expect(JsonSchemaInputProcessor.convertSchemaToMetaModel).toHaveBeenCalledTimes(1);
+      const functionArgconvertSchemaToMetaModel = (JsonSchemaInputProcessor.convertSchemaToMetaModel as jest.Mock).mock.calls[0][0];
+      expect(functionArgconvertSchemaToMetaModel).toMatchObject(inputSchema);
       expect(postInterpretModel).toHaveBeenCalledTimes(1);
     });
     
     test('should process draft 4 schemas', async () => {
       const inputSchemaPath = './JsonSchemaInputProcessor/draft-4.json';
-      const {commonInputModel, inputSchema} = await getCommonInput(inputSchemaPath);
-      expect(commonInputModel).toMatchObject({models: {test: {$id: 'test'}}, originalInput: inputSchema});
-      expect(JsonSchemaInputProcessor.convertSchemaToCommonModel).toHaveBeenCalledTimes(1);
-      const functionArgConvertSchemaToCommonModel = (JsonSchemaInputProcessor.convertSchemaToCommonModel as jest.Mock).mock.calls[0][0];
-      expect(functionArgConvertSchemaToCommonModel).toMatchObject(inputSchema);
+      const {InputMetaModel, inputSchema} = await getCommonInput(inputSchemaPath);
+      expect(InputMetaModel).toMatchObject({models: {test: {$id: 'test'}}, originalInput: inputSchema});
+      expect(JsonSchemaInputProcessor.convertSchemaToMetaModel).toHaveBeenCalledTimes(1);
+      const functionArgconvertSchemaToMetaModel = (JsonSchemaInputProcessor.convertSchemaToMetaModel as jest.Mock).mock.calls[0][0];
+      expect(functionArgconvertSchemaToMetaModel).toMatchObject(inputSchema);
       expect(postInterpretModel).toHaveBeenCalledTimes(1);
     });
     
     test('should be able to use $ref', async () => {
       const inputSchemaPath = './JsonSchemaInputProcessor/references.json';
 
-      const {commonInputModel, inputSchema} = await getCommonInput(inputSchemaPath);
+      const {InputMetaModel, inputSchema} = await getCommonInput(inputSchemaPath);
 
       const expectedResolvedInput = {...inputSchema, properties: { street_address: { type: 'string' }}};
-      const functionArgConvertSchemaToCommonModel = (JsonSchemaInputProcessor.convertSchemaToCommonModel as jest.Mock).mock.calls[0][0];
-      expect(commonInputModel).toMatchObject({models: {test: {$id: 'test'}}, originalInput: inputSchema});
-      expect(JsonSchemaInputProcessor.convertSchemaToCommonModel).toHaveBeenCalledTimes(1);
-      expect(functionArgConvertSchemaToCommonModel).toMatchObject(expectedResolvedInput);
+      const functionArgconvertSchemaToMetaModel = (JsonSchemaInputProcessor.convertSchemaToMetaModel as jest.Mock).mock.calls[0][0];
+      expect(InputMetaModel).toMatchObject({models: {test: {$id: 'test'}}, originalInput: inputSchema});
+      expect(JsonSchemaInputProcessor.convertSchemaToMetaModel).toHaveBeenCalledTimes(1);
+      expect(functionArgconvertSchemaToMetaModel).toMatchObject(expectedResolvedInput);
       expect(postInterpretModel).toHaveBeenCalledTimes(1);
     });
     test('should be able to use $ref when circular', async () => {
       const inputSchemaPath = './JsonSchemaInputProcessor/references_circular.json';
 
-      const {commonInputModel, inputSchema} = await getCommonInput(inputSchemaPath);
+      const {InputMetaModel, inputSchema} = await getCommonInput(inputSchemaPath);
 
       const expectedResolvedInput = {...inputSchema, definitions: {}, properties: { street_address: { type: 'object', properties: { floor: { type: 'object', properties: {} } }}}};
-      const functionArgConvertSchemaToCommonModel = (JsonSchemaInputProcessor.convertSchemaToCommonModel as jest.Mock).mock.calls[0][0];
-      expect(commonInputModel).toMatchObject({models: {test: {$id: 'test'}}, originalInput: inputSchema});
-      expect(JsonSchemaInputProcessor.convertSchemaToCommonModel).toHaveBeenCalledTimes(1);
-      expect(functionArgConvertSchemaToCommonModel).toMatchObject(expectedResolvedInput);
+      const functionArgconvertSchemaToMetaModel = (JsonSchemaInputProcessor.convertSchemaToMetaModel as jest.Mock).mock.calls[0][0];
+      expect(InputMetaModel).toMatchObject({models: {test: {$id: 'test'}}, originalInput: inputSchema});
+      expect(JsonSchemaInputProcessor.convertSchemaToMetaModel).toHaveBeenCalledTimes(1);
+      expect(functionArgconvertSchemaToMetaModel).toMatchObject(expectedResolvedInput);
       expect(postInterpretModel).toHaveBeenCalledTimes(1);
     });
     test('should fail correctly when reference cannot be resolved', async () => {
@@ -150,11 +150,11 @@ describe('JsonSchemaInputProcessor', () => {
     });
   });
 
-  describe('convertSchemaToCommonModel()', () => {
+  describe('convertSchemaToMetaModel()', () => {
     test('Should ignore models which does not have $id', () => {
       const model = new CommonModel();
       mockedReturnModels = [model];
-      const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel({});
+      const commonModels = JsonSchemaInputProcessor.convertSchemaToMetaModel({});
       expect(Logger.warn).toHaveBeenCalled();
       expect(Object.entries(commonModels)).toHaveLength(0);
     });
@@ -164,12 +164,12 @@ describe('JsonSchemaInputProcessor', () => {
       const inputSchemaString = fs.readFileSync(path.resolve(__dirname, inputSchemaPath), 'utf8');
       const inferredSchema = JSON.parse(inputSchemaString);
       const inputSchema = Draft7Schema.toSchema(inferredSchema);
-      return {inputSchema, commonInputModel: JsonSchemaInputProcessor.convertSchemaToCommonModel(inputSchema)};
+      return {inputSchema, InputMetaModel: JsonSchemaInputProcessor.convertSchemaToMetaModel(inputSchema)};
     };
     test('should simplify schema and return a set of common models', () => {
       const inputSchemaPath = './JsonSchemaInputProcessor/draft-7.json';
-      const {commonInputModel} = getCommonInput(inputSchemaPath);
-      expect(commonInputModel).toEqual({test: {$id: 'test'}});
+      const {InputMetaModel} = getCommonInput(inputSchemaPath);
+      expect(InputMetaModel).toEqual({test: {$id: 'test'}});
     });
     test('should not contain duplicate models', () => {
       const model1 = new CommonModel();
@@ -178,8 +178,8 @@ describe('JsonSchemaInputProcessor', () => {
       model2.$id = 'same';
       mockedReturnModels = [model1, model2];
       const inputSchemaPath = './JsonSchemaInputProcessor/draft-7.json';
-      const {commonInputModel} = getCommonInput(inputSchemaPath);
-      expect(commonInputModel).toEqual({same: {$id: 'same'}});
+      const {InputMetaModel} = getCommonInput(inputSchemaPath);
+      expect(InputMetaModel).toEqual({same: {$id: 'same'}});
     });
   });
 

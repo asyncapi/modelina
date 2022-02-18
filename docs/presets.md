@@ -132,7 +132,7 @@ For each model type, you can implement two basic methods:
 Each customization method receives the following arguments:
 
 - `model` - an instance of the [`CommonModel`](../src/models/CommonModel.ts) class, which described rendered data model.
-- `inputModel` - an instance of the [`CommonInputModel`](../src/models/CommonInputModel.ts) class.
+- `inputModel` - an instance of the [`InputMetaModel`](../src/models/InputMetaModel.ts) class.
 - `renderer` - an instance of the class with common helper functions to render appropriate model type.
 - `content` - rendered content from previous preset.
 - `options` - options passed to preset defined in the `presets` array.

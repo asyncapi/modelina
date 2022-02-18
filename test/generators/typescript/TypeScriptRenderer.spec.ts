@@ -1,13 +1,13 @@
 import { defaultGeneratorOptions, TypeScriptGenerator } from '../../../src/generators';
 import { TypeScriptRenderer } from '../../../src/generators/typescript/TypeScriptRenderer';
-import { CommonInputModel, CommonModel } from '../../../src/models';
+import { InputMetaModel, CommonModel } from '../../../src/models';
 class MockTypeScriptRenderer extends TypeScriptRenderer {
 
 }
 describe('TypeScriptRenderer', () => {
   let renderer: TypeScriptRenderer;
   beforeEach(() => {
-    renderer = new MockTypeScriptRenderer(TypeScriptGenerator.defaultOptions, new TypeScriptGenerator(), [], new CommonModel(), new CommonInputModel());
+    renderer = new MockTypeScriptRenderer(TypeScriptGenerator.defaultOptions, new TypeScriptGenerator(), [], new CommonModel(), new InputMetaModel());
   });
 
   describe('nameType()', () => {

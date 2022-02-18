@@ -1,6 +1,6 @@
 import { AbstractGenerator, FileGenerator } from '../../src/generators'; 
 import { IndentationTypes } from '../../src/helpers';
-import { CommonInputModel, CommonModel, OutputModel, RenderOutput } from '../../src/models';
+import { InputMetaModel, CommonModel, OutputModel, RenderOutput } from '../../src/models';
 
 export const testOptions = {
   indentation: {
@@ -13,11 +13,11 @@ export class TestGenerator extends AbstractGenerator {
     super('TestGenerator', testOptions);
   }
 
-  render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
+  render(model: CommonModel, inputModel: InputMetaModel): Promise<RenderOutput> {
     return Promise.resolve(RenderOutput.toRenderOutput({result: model.$id || 'rendered content', renderedName: 'TestName'}));
   }
 
-  renderCompleteModel(model: CommonModel, inputModel: CommonInputModel, options: any): Promise<RenderOutput> {
+  renderCompleteModel(model: CommonModel, inputModel: InputMetaModel, options: any): Promise<RenderOutput> {
     return Promise.resolve(RenderOutput.toRenderOutput({result: 'rendered complete content', renderedName: 'TestName'}));
   }
 }
@@ -43,8 +43,8 @@ describe('AbstractGenerator', () => {
     expect(outputModels[0].modelName).toEqual('TestName');
   });
 
-  test('generate() should process CommonInputModel instance', async () => {
-    const cim = new CommonInputModel();
+  test('generate() should process InputMetaModel instance', async () => {
+    const cim = new InputMetaModel();
     const model = new CommonModel();
     model.$id = 'test';
     cim.models[model.$id] = model;
@@ -53,8 +53,8 @@ describe('AbstractGenerator', () => {
     expect(outputModels[0].modelName).toEqual('TestName');
   });
 
-  test('generateCompleteModels() should process CommonInputModel instance', async () => {
-    const cim = new CommonInputModel();
+  test('generateCompleteModels() should process InputMetaModel instance', async () => {
+    const cim = new InputMetaModel();
     const model = new CommonModel();
     model.$id = 'test';
     cim.models[model.$id] = model;
@@ -64,15 +64,15 @@ describe('AbstractGenerator', () => {
     expect(outputModels[0].modelName).toEqual('TestName');
   });
 
-  test('should `process` function return CommonInputModel', async () => {
+  test('should `process` function return InputMetaModel', async () => {
     const doc: any = { $id: 'test' };
-    const commonInputModel = await generator.process(doc);
-    const keys = Object.keys(commonInputModel.models);
+    const InputMetaModel = await generator.process(doc);
+    const keys = Object.keys(InputMetaModel.models);
 
-    expect(commonInputModel).toBeInstanceOf(CommonInputModel);
-    expect(commonInputModel.models).toBeDefined();
+    expect(InputMetaModel).toBeInstanceOf(InputMetaModel);
+    expect(InputMetaModel.models).toBeDefined();
     expect(keys).toHaveLength(1);
-    expect(commonInputModel.models[keys[0]].originalInput).toEqual({
+    expect(InputMetaModel.models[keys[0]].originalInput).toEqual({
       $id: 'test',
       'x-modelgen-inferred-name': 'root',
     });
@@ -80,9 +80,9 @@ describe('AbstractGenerator', () => {
 
   test('should `render` function return renderer model', async () => {
     const doc: any = { $id: 'SomeModel' };
-    const commonInputModel = await generator.process(doc);
-    const keys = Object.keys(commonInputModel.models);
-    const renderedContent = await generator.render(commonInputModel.models[keys[0]], commonInputModel);
+    const InputMetaModel = await generator.process(doc);
+    const keys = Object.keys(InputMetaModel.models);
+    const renderedContent = await generator.render(InputMetaModel.models[keys[0]], InputMetaModel);
 
     expect(renderedContent.result).toEqual('SomeModel');
     expect(renderedContent.renderedName).toEqual('TestName');
@@ -96,13 +96,13 @@ describe('AbstractGenerator', () => {
           super('TestGenerator', {presets: [{preset: {test: 'test2'}, options: {}}]});
         }
         
-        render(model: CommonModel, inputModel: CommonInputModel): any { return; }
+        render(model: CommonModel, inputModel: InputMetaModel): any { return; }
 
         testGetPresets(string: string) {
           return this.getPresets(string);
         }
 
-        renderCompleteModel(model: CommonModel, inputModel: CommonInputModel, options: any): Promise<RenderOutput> {
+        renderCompleteModel(model: CommonModel, inputModel: InputMetaModel, options: any): Promise<RenderOutput> {
           throw new Error('Method not implemented.');
         }
       }

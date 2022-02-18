@@ -73,8 +73,8 @@ describe('OpenAPIInputProcessor', () => {
     });
     test('should process the OpenAPI document accurately', async () => {
       const processor = new OpenAPIInputProcessor();
-      const commonInputModel = await processor.process(basicDoc);
-      expect(commonInputModel).toMatchSnapshot();
+      const InputMetaModel = await processor.process(basicDoc);
+      expect(InputMetaModel).toMatchSnapshot();
       expect((OpenAPIInputProcessor.convertToInternalSchema as any as jest.SpyInstance).mock.calls).toMatchSnapshot();
     });
   });

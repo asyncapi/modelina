@@ -1,4 +1,4 @@
-import { CommonInputModel, CommonModel, FileHelpers, CSharpFileGenerator, OutputModel } from '../../../src';
+import { InputMetaModel, CommonModel, FileHelpers, CSharpFileGenerator, OutputModel } from '../../../src';
 import * as path from 'path';
 
 describe('CSharpFileGenerator', () => {
@@ -24,7 +24,7 @@ describe('CSharpFileGenerator', () => {
       const generator = new CSharpFileGenerator();
       const expectedError = new Error('write error');
       jest.spyOn(FileHelpers, 'writerToFileSystem').mockRejectedValue(expectedError);
-      jest.spyOn(generator, 'generateCompleteModels').mockResolvedValue([new OutputModel('content', new CommonModel(), '', new CommonInputModel(), [])]);
+      jest.spyOn(generator, 'generateCompleteModels').mockResolvedValue([new OutputModel('content', new CommonModel(), '', new InputMetaModel(), [])]);
     
       await expect(generator.generateToFiles(doc, '/test/', {namespace: 'SomeNamespace'})).rejects.toEqual(expectedError);
       expect(generator.generateCompleteModels).toHaveBeenCalledTimes(1);
@@ -40,7 +40,7 @@ describe('CSharpFileGenerator', () => {
         expectedOutputFilePath,
       ];
       jest.spyOn(FileHelpers, 'writerToFileSystem').mockResolvedValue(undefined);
-      jest.spyOn(generator, 'generateCompleteModels').mockResolvedValue([new OutputModel('content', new CommonModel(), 'Test', new CommonInputModel(), [])]);
+      jest.spyOn(generator, 'generateCompleteModels').mockResolvedValue([new OutputModel('content', new CommonModel(), 'Test', new InputMetaModel(), [])]);
       
       await generator.generateToFiles(doc, expectedOutputDirPath, {namespace: 'SomeNamespace'});
       expect(generator.generateCompleteModels).toHaveBeenCalledTimes(1);

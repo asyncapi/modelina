@@ -1,7 +1,7 @@
 import {parse, AsyncAPIDocument, Schema as AsyncAPISchema, ParserOptions} from '@asyncapi/parser';
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
-import { CommonInputModel, ProcessorOptions } from '../models';
+import { InputMetaModel, ProcessorOptions } from '../models';
 import { Logger } from '../utils';
 import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
 
@@ -16,12 +16,12 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  async process(input: Record<string, any>, options?: ProcessorOptions): Promise<CommonInputModel> {
+  async process(input: Record<string, any>, options?: ProcessorOptions): Promise<InputMetaModel> {
     if (!this.shouldProcess(input)) {throw new Error('Input is not an AsyncAPI document so it cannot be processed.');}
 
     Logger.debug('Processing input as an AsyncAPI document');
     let doc: AsyncAPIDocument;
-    const common = new CommonInputModel();
+    const common = new InputMetaModel();
     if (!AsyncAPIInputProcessor.isFromParser(input)) {
       doc = await parse(input as any, options?.asyncapi || {} as ParserOptions);
     } else {
@@ -31,8 +31,8 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     
     for (const [, message] of doc.allMessages()) {
       const schema = AsyncAPIInputProcessor.convertToInternalSchema(message.payload());
-      const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema);
-      common.models = {...common.models, ...commonModels};
+      const metaModel = JsonSchemaInputProcessor.convertSchemaToMetaModel(schema);
+      common.models[metaModel.name] = metaModel;
     }
     return common;
   }

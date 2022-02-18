@@ -1,13 +1,13 @@
 import { CSharpGenerator } from '../../../src';
 import { CSharpRenderer } from '../../../src/generators/csharp/CSharpRenderer';
-import { CommonInputModel, CommonModel } from '../../../src/models';
+import { InputMetaModel, CommonModel } from '../../../src/models';
 class MockCSharpRenderer extends CSharpRenderer {
 
 }
 describe('CSharpRenderer', () => {
   let renderer: MockCSharpRenderer;
   beforeEach(() => {
-    renderer = new MockCSharpRenderer(CSharpGenerator.defaultOptions, new CSharpGenerator(), [], new CommonModel(), new CommonInputModel());
+    renderer = new MockCSharpRenderer(CSharpGenerator.defaultOptions, new CSharpGenerator(), [], new CommonModel(), new InputMetaModel());
   });
 
   describe('toCSharpType()', () => {

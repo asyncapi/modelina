@@ -1,4 +1,4 @@
-import { CommonInputModel, CommonModel, ToOutputModelArg, OutputModel } from '../../src/models'; 
+import { InputMetaModel, CommonModel, ToOutputModelArg, OutputModel } from '../../src/models'; 
 
 describe('OutputModel', () => {
   test('should return an OutputModel', () => {
@@ -9,7 +9,7 @@ describe('OutputModel', () => {
       result: 'result',
       model: commonModel,
       modelName: 'someModel',
-      inputModel: new CommonInputModel(),
+      inputModel: new InputMetaModel(),
       dependencies: ['test']
     };
     const output = OutputModel.toOutputModel(ioutput);
@@ -29,7 +29,7 @@ describe('OutputModel', () => {
       result: 'result',
       model: commonModel,
       modelName: 'someModel',
-      inputModel: new CommonInputModel(),
+      inputModel: new InputMetaModel(),
       dependencies: ['test']
     };
     const output = OutputModel.toOutputModel([ioutput, ioutput]);

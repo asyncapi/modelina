@@ -1,5 +1,5 @@
 import { FormatHelpers } from '../helpers';
-import { CommonInputModel, CommonModel } from '../models';
+import { InputMetaModel, CommonModel } from '../models';
 
 /**
  * Default property names for different aspects of the common model
@@ -27,8 +27,8 @@ export function getUniquePropertyName(rootModel: CommonModel, propertyName: stri
 /**
  * The common naming convention context type.
  */
-export type CommonTypeNamingConventionCtx = { model: CommonModel, inputModel: CommonInputModel, reservedKeywordCallback?: (name: string) => boolean};
-export type CommonPropertyNamingConventionCtx = { model: CommonModel, inputModel: CommonInputModel, property?: CommonModel, reservedKeywordCallback?: (name: string) => boolean};
+export type CommonTypeNamingConventionCtx = { model: CommonModel, inputModel: InputMetaModel, reservedKeywordCallback?: (name: string) => boolean};
+export type CommonPropertyNamingConventionCtx = { model: CommonModel, inputModel: InputMetaModel, property?: CommonModel, reservedKeywordCallback?: (name: string) => boolean};
 
 /**
  * The common naming convention type shared between generators for different languages.

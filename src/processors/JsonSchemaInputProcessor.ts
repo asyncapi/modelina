@@ -1,9 +1,8 @@
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import path from 'path';
-import { CommonModel, CommonInputModel, Draft4Schema, Draft7Schema, Draft6Schema, SwaggerV2Schema, OpenapiV3Schema, AsyncapiV2Schema } from '../models';
+import { CommonModel, Draft4Schema, Draft7Schema, Draft6Schema, SwaggerV2Schema, OpenapiV3Schema, AsyncapiV2Schema, MetaModel, UnionModel, ObjectModel, DictionaryModel, StringModel, TupleModel, TupleValueModel, ArrayModel, BooleanModel, IntegerModel, FloatModel, EnumModel, EnumValueModel, InputMetaModel} from '../models';
 import { Logger } from '../utils';
-import { postInterpretModel } from '../interpreter/PostInterpreter';
 import { Interpreter } from '../interpreter/Interpreter';
 
 /**
@@ -15,7 +14,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  process(input: Record<string, any>): Promise<CommonInputModel> {
+  process(input: Record<string, any>): Promise<InputMetaModel> {
     if (this.shouldProcess(input)) {
       switch (input.$schema) {
       case 'http://json-schema.org/draft-04/schema':
@@ -58,16 +57,17 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input to process as draft 7
    */
-  private async processDraft7(input: Record<string, any>) : Promise<CommonInputModel> {
+  private async processDraft7(input: Record<string, any>) : Promise<InputMetaModel> {
     Logger.debug('Processing input as a JSON Schema Draft 7 document');
-    const commonInputModel = new CommonInputModel();
-    commonInputModel.originalInput = input;
+    const inputMetaModel = new InputMetaModel();
+    inputMetaModel.originalInput = input;
     input = JsonSchemaInputProcessor.reflectSchemaNames(input, {}, 'root', true) as Record<string, any>;
     await this.dereferenceInputs(input);
     const parsedSchema = Draft7Schema.toSchema(input);
-    commonInputModel.models = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema);
+    const metaModel = JsonSchemaInputProcessor.convertSchemaToMetaModel(parsedSchema);
+    inputMetaModel.models[metaModel.name] = metaModel;
     Logger.debug('Completed processing input as JSON Schema draft 7 document');
-    return commonInputModel;
+    return inputMetaModel;
   }
 
   /**
@@ -75,16 +75,17 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input to process as draft 4
    */
-  private async processDraft4(input: Record<string, any>) : Promise<CommonInputModel> {
+  private async processDraft4(input: Record<string, any>) : Promise<InputMetaModel> {
     Logger.debug('Processing input as JSON Schema Draft 4 document');
-    const commonInputModel = new CommonInputModel();
-    commonInputModel.originalInput = input;
+    const inputMetaModel = new InputMetaModel();
+    inputMetaModel.originalInput = input;
     input = JsonSchemaInputProcessor.reflectSchemaNames(input, {}, 'root', true) as Record<string, any>;
     await this.dereferenceInputs(input);
     const parsedSchema = Draft4Schema.toSchema(input);
-    commonInputModel.models = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema);
+    const metaModel = JsonSchemaInputProcessor.convertSchemaToMetaModel(parsedSchema);
+    inputMetaModel.models[metaModel.name] = metaModel;
     Logger.debug('Completed processing input as JSON Schema draft 4 document');
-    return commonInputModel;
+    return inputMetaModel;
   }
   
   /**
@@ -92,16 +93,17 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input to process as draft-6
    */
-  private async processDraft6(input: Record<string, any>) : Promise<CommonInputModel> {
+  private async processDraft6(input: Record<string, any>) : Promise<InputMetaModel> {
     Logger.debug('Processing input as a JSON Schema Draft 6 document');
-    const commonInputModel = new CommonInputModel();
-    commonInputModel.originalInput = input;
+    const inputMetaModel = new InputMetaModel();
+    inputMetaModel.originalInput = input;
     input = JsonSchemaInputProcessor.reflectSchemaNames(input, {}, 'root', true) as Record<string, any>;
     await this.dereferenceInputs(input);
     const parsedSchema = Draft6Schema.toSchema(input);
-    commonInputModel.models = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema);
+    const metaModel = JsonSchemaInputProcessor.convertSchemaToMetaModel(parsedSchema);
+    inputMetaModel.models[metaModel.name] = metaModel;
     Logger.debug('Completed processing input as JSON Schema draft 6 document');
-    return commonInputModel;
+    return inputMetaModel;
   }
 
   private async dereferenceInputs(input: Record<string, any>) {
@@ -269,23 +271,210 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param schema to simplify to common model
    */
-  static convertSchemaToCommonModel(schema: Draft4Schema | Draft6Schema | Draft7Schema | SwaggerV2Schema| AsyncapiV2Schema | boolean): Record<string, CommonModel> {
-    const commonModelsMap: Record<string, CommonModel> = {};
+  static convertSchemaToMetaModel(schema: Draft4Schema | Draft6Schema | Draft7Schema | SwaggerV2Schema| AsyncapiV2Schema | boolean): MetaModel {
     const interpreter = new Interpreter();
-    const model = interpreter.interpret(schema);
-    if (model !== undefined) { 
-      const commonModels = postInterpretModel(model);
-      for (const commonModel of commonModels) {
-        if (commonModel.$id) {
-          if (commonModelsMap[commonModel.$id] !== undefined) {
-            Logger.warn(`Overwriting existing model with $id ${commonModel.$id}, are there two models with the same id present?`, commonModel);
-          }
-          commonModelsMap[commonModel.$id] = commonModel;
+    const jsonSchemaModel = interpreter.interpret(schema);
+    if (jsonSchemaModel === undefined) {
+      throw new Error('Could not convert JSON Schema to model');
+    }
+    return this.convertToMetaModel(jsonSchemaModel);
+  }
+  static convertToMetaModel(jsonSchemaModel: CommonModel): MetaModel {
+    // What to do here?
+    const modelName = jsonSchemaModel.$id || 'undefined';
+
+    // Has multiple types, so convert to union
+    if (Array.isArray(jsonSchemaModel.type) && jsonSchemaModel.type.length > 1) {
+      const unionModel = new UnionModel(modelName);
+      const stringModel = this.convertToStringModel(jsonSchemaModel, modelName);
+      if (stringModel !== undefined) {
+        unionModel.unionModels.push(stringModel);
+      }
+      const floatModel = this.convertToFloatModel(jsonSchemaModel, modelName);
+      if (floatModel !== undefined) {
+        unionModel.unionModels.push(floatModel);
+      }
+      const integerModel = this.convertToIntegerModel(jsonSchemaModel, modelName);
+      if (integerModel !== undefined) {
+        unionModel.unionModels.push(integerModel);
+      }
+      const enumModel = this.convertToEnumModel(jsonSchemaModel, modelName);
+      if (enumModel !== undefined) {
+        unionModel.unionModels.push(enumModel);
+      }
+      const booleanModel = this.convertToBooleanModel(jsonSchemaModel, modelName);
+      if (booleanModel !== undefined) {
+        unionModel.unionModels.push(booleanModel);
+      }
+      const objectModel = this.convertToObjectModel(jsonSchemaModel, modelName);
+      if (objectModel !== undefined) {
+        unionModel.unionModels.push(objectModel);
+      }
+      const arrayModel = this.convertToListModel(jsonSchemaModel, modelName);
+      if (arrayModel !== undefined) {
+        unionModel.unionModels.push(arrayModel);
+      }
+      return unionModel;
+    }
+    const stringModel = this.convertToStringModel(jsonSchemaModel, modelName);
+    if (stringModel !== undefined) {
+      return stringModel;
+    }
+    const floatModel = this.convertToFloatModel(jsonSchemaModel, modelName);
+    if (floatModel !== undefined) {
+      return floatModel;
+    }
+    const integerModel = this.convertToIntegerModel(jsonSchemaModel, modelName);
+    if (integerModel !== undefined) {
+      return integerModel;
+    }
+    const enumModel = this.convertToEnumModel(jsonSchemaModel, modelName);
+    if (enumModel !== undefined) {
+      return enumModel;
+    }
+    const booleanModel = this.convertToBooleanModel(jsonSchemaModel, modelName);
+    if (booleanModel !== undefined) {
+      return booleanModel;
+    }
+    const objectModel = this.convertToObjectModel(jsonSchemaModel, modelName);
+    if (objectModel !== undefined) {
+      return objectModel;
+    }
+    const arrayModel = this.convertToListModel(jsonSchemaModel, modelName);
+    if (arrayModel !== undefined) {
+      return arrayModel;
+    }
+    throw new Error('Failed to convert to MetaModel')
+  }
+  static convertToStringModel(jsonSchemaModel: CommonModel, name: string): MetaModel | undefined {
+    if(!jsonSchemaModel.type?.includes('string')) {
+      return undefined;
+    }
+    let metaModel = new StringModel(name);
+    metaModel.originalInput = jsonSchemaModel.originalInput;
+    return metaModel;
+  }
+  static convertToIntegerModel(jsonSchemaModel: CommonModel, name: string): MetaModel | undefined {
+    if(!jsonSchemaModel.type?.includes('integer')) {
+      return undefined;
+    }
+    let metaModel = new IntegerModel(name);
+    metaModel.originalInput = jsonSchemaModel.originalInput;
+    return metaModel;
+  }
+  static convertToFloatModel(jsonSchemaModel: CommonModel, name: string): MetaModel | undefined {
+    if(!jsonSchemaModel.type?.includes('number')) {
+      return undefined;
+    }
+    let metaModel = new FloatModel(name);
+    metaModel.originalInput = jsonSchemaModel.originalInput;
+    return metaModel;
+  }
+  static convertToEnumModel(jsonSchemaModel: CommonModel, name: string): MetaModel | undefined {
+    if(!Array.isArray(jsonSchemaModel.enum)) {
+      return undefined;
+    }
+    let metaModel = new EnumModel(name);
+    for (const enumValue of jsonSchemaModel.enum) {
+      const enumValueModel = new EnumValueModel(JSON.stringify(enumValue), enumValue);
+      metaModel.values.push(enumValueModel);
+    }
+    metaModel.originalInput = jsonSchemaModel.originalInput;
+    return metaModel;
+  }
+  static convertToBooleanModel(jsonSchemaModel: CommonModel, name: string): MetaModel | undefined {
+    if(!jsonSchemaModel.type?.includes('boolean')) {
+      return undefined;
+    }
+    let metaModel = new BooleanModel(name);
+    metaModel.originalInput = jsonSchemaModel.originalInput;
+    return metaModel;
+  }
+  static convertToObjectModel(jsonSchemaModel: CommonModel, name: string): MetaModel | undefined {
+    if(!jsonSchemaModel.type?.includes('object')) {
+      return undefined;
+    }
+    let metaModel = new ObjectModel(name);
+    metaModel.originalInput = jsonSchemaModel.originalInput;
+    metaModel.properties = {};
+    for (const [propertyName, prop] of Object.entries(jsonSchemaModel.properties || {}) ) {
+      metaModel.properties[propertyName] = JsonSchemaInputProcessor.convertToMetaModel(prop);
+    }
+    
+    // TODO: recursively find "correct" name
+    if (jsonSchemaModel.additionalProperties !== undefined) {
+      const propertyName = 'additionalProperties';
+      if (metaModel.properties[propertyName] === undefined) {
+        const keyModel = new StringModel(propertyName);
+        const valueModel = JsonSchemaInputProcessor.convertToMetaModel(jsonSchemaModel.additionalProperties);
+        const dictionaryModel = new DictionaryModel(propertyName, keyModel, valueModel);
+        dictionaryModel.serializationType = 'unwrap';
+        dictionaryModel.originalInput = jsonSchemaModel.originalInput;
+        metaModel.properties[propertyName] = dictionaryModel;
+      } else {
+        throw new Error('Property already exists')
+      }
+    }
+
+    if (jsonSchemaModel.patternProperties !== undefined) {
+      for (const [pattern, patternModel] of Object.entries(jsonSchemaModel.patternProperties)) {
+        const propertyName = `${pattern}_PatternProperty`;
+        if (metaModel.properties[propertyName] === undefined) {
+          const keyModel = new StringModel(propertyName);
+          // TODO: Add format to string model to match regex
+          const valueModel = JsonSchemaInputProcessor.convertToMetaModel(patternModel);
+          const dictionaryModel = new DictionaryModel(propertyName, keyModel, valueModel);
+          dictionaryModel.serializationType = 'unwrap';
+          dictionaryModel.originalInput = jsonSchemaModel.originalInput;
+          metaModel.properties[propertyName] = dictionaryModel;
         } else {
-          Logger.warn('Model did not have $id, ignoring.', commonModel);
+          throw new Error('Property already exists')
         }
       }
     }
-    return commonModelsMap;
+    return metaModel;
+  }
+
+  static convertToListModel(jsonSchemaModel: CommonModel, name: string): MetaModel | undefined {
+    if(!jsonSchemaModel.type?.includes('array')) {
+      return undefined;
+    }
+
+    if (Array.isArray(jsonSchemaModel.items) && jsonSchemaModel.additionalItems === undefined) {
+      //item multiple types + additionalItems not sat = tuple of item type
+      const tupleModel = new TupleModel(name);
+      tupleModel.tupleModels = [];
+      tupleModel.originalInput = jsonSchemaModel.originalInput;
+      for (let i = 0; i < jsonSchemaModel.items.length ; i++) {
+        const item = jsonSchemaModel.items[i];
+        const valueModel = JsonSchemaInputProcessor.convertToMetaModel(item);
+        const tupleValueModel = new TupleValueModel(i, valueModel);
+        tupleModel.tupleModels[i] = tupleValueModel;
+      }
+      return tupleModel;
+    } else {
+      //item multiple types + additionalItems sat = both count, as normal array
+      //item single type + additionalItems sat = contradicting, only items count, as normal array
+      //item not sat + additionalItems sat = anything is allowed, as normal array
+      //item single type + additionalItems not sat = normal array
+      //item not sat + additionalItems not sat = normal array, any type
+      if (!Array.isArray(jsonSchemaModel.items) && jsonSchemaModel.additionalItems === undefined && jsonSchemaModel.items !== undefined) {
+        const valueModel = JsonSchemaInputProcessor.convertToMetaModel(jsonSchemaModel.items);
+        return new ArrayModel(name, valueModel);
+      } else {
+        const valueModel = new UnionModel('');
+        for (const itemModel of Array.isArray(jsonSchemaModel.items) ? jsonSchemaModel.items : [] ) {
+          const itemsModel = JsonSchemaInputProcessor.convertToMetaModel(itemModel);
+          valueModel.unionModels.push(itemsModel);
+        }
+        if(jsonSchemaModel.additionalItems !== undefined) {
+          //Union model between the two
+          const itemsModel = JsonSchemaInputProcessor.convertToMetaModel(jsonSchemaModel.additionalItems);
+          valueModel.unionModels.push(itemsModel);
+        }
+        return new ArrayModel(name, valueModel);
+      }
+    }
+
   }
 }
