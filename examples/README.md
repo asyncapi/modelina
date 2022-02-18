@@ -36,3 +36,4 @@ This directory contains a series of self-contained examples that you can use as 
 - [java-generate-hashcode](./java-generate-hashcode) - A basic example that shows how to generate models that overwrite the `hashCode` method
 - [java-from-typescript-type](./java-from-typescript-type/) - A basic example that shows how to generate a Java model from a TypeScript type input file.
 - [java-generate-marshalling](./java-generate-marshalling) - A basic example of how to use the un/marshalling functionality of the java class.
+- [java-from-typescript-type-with-options](./java-from-typescript-type-with-options/) - A basic example that shows how to generate a Java model from a TypeScript type input file along with user provided options.

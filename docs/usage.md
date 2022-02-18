@@ -78,8 +78,6 @@ Currently, we support generating models from a TypeScript type file.
 
 The TypeScript input processor expects that the typescript file and base directory where it's present, is passed as input, in order to process the types accurately.
 
-The response and request payloads, since it is a JSON Schema variant, is [interpreted as a such](./interpretation_of_JSON_Schema.md).
-
 ## Generate Go models
 
 Go is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-go-models) and the following [Go documentation for more advanced use-cases](./languages/Go.md).

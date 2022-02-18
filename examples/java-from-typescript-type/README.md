@@ -1,6 +1,6 @@
 # Generate Java from a TypeScript Types file
 
-This is a basic example of generating Java models using a Typescript type file as input and optional processor options. This can be extended to generating Go, C# and other supported language models.
+This is a basic example of generating Java models using a Typescript type file as input. This can be extended to generating Go, C# and other supported language models.
 
 ## How to run this example
 

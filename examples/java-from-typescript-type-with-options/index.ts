@@ -2,7 +2,18 @@ import { JavaGenerator } from '../../src';
 import * as path from 'path';
 import * as fs from 'fs';
 
-const generator = new JavaGenerator();
+const generator = new JavaGenerator(
+  {
+    processorOptions: {
+      typescript: {
+        uniqueNames: true,
+        compilerOptions: {
+          strictNullChecks: true
+        }
+      }
+    }
+  }
+);
 
 const file = path.resolve(__dirname, './typescriptFile.ts');
 const fileContents = fs.readFileSync(path.resolve(__dirname, './typescriptFile.ts'),'utf-8');
