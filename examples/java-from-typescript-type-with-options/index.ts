@@ -6,7 +6,6 @@ const generator = new JavaGenerator(
   {
     processorOptions: {
       typescript: {
-        uniqueNames: true,
         compilerOptions: {
           strictNullChecks: true
         }

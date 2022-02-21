@@ -3,7 +3,7 @@
 exports[`Should be able to generate Java models from a TypeScript type file 
 along with specific options and should log expected output to console 1`] = `
 Array [
-  "public class OuterData_49c23313 {
+  "public class OuterData {
   private Object inner;
   private String name;
   private Map<String, Object> additionalProperties;
