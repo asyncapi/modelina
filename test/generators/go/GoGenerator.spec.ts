@@ -5,6 +5,28 @@ describe('GoGenerator', () => {
   beforeEach(() => {
     generator = new GoGenerator();
   });
+
+  test('should not render reserved keyword', async () => {
+    const doc = {
+      $id: 'Address',
+      type: 'object',
+      properties: {
+        enum: { type: 'string' },
+        reservedEnum: { type: 'string' }
+      },
+      additionalProperties: false
+    };
+    const expected = `// Address represents a Address model.
+type Address struct {
+  Enum string
+  ReservedEnum string
+}`;
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models['Address'];
+    const structModel = await generator.renderStruct(model, inputModel);
+    expect(structModel.result).toEqual(expected);
+  });
+
   test('should render `struct` type', async () => {
     const doc = {
       $id: '_address',
@@ -72,19 +94,21 @@ type CustomStruct struct {
   additionalProperties string
 }`;
 
-    generator = new GoGenerator({ presets: [
-      {
-        struct: {
-          field({ fieldName, field, renderer }) {
-            return `${fieldName} ${renderer.renderType(field)}`; // private fields
-          },
+    generator = new GoGenerator({
+      presets: [
+        {
+          struct: {
+            field({ fieldName, field, renderer }) {
+              return `${fieldName} ${renderer.renderType(field)}`; // private fields
+            },
+          }
         }
-      }
-    ] });
+      ]
+    });
 
     const inputModel = await generator.process(doc);
     const model = inputModel.models['CustomStruct'];
-    
+
     const structModel = await generator.render(model, inputModel);
     expect(structModel.result).toEqual(expected);
     expect(structModel.dependencies).toEqual([]);
@@ -105,12 +129,12 @@ type States string`,
       name: 'with enums of mixed types',
       doc: {
         $id: 'Things',
-        enum: ['Texas', 1, '1', false, {test: 'test'}],
+        enum: ['Texas', 1, '1', false, { test: 'test' }],
       },
       expected: `// Things represents an enum of mixed types.
 type Things interface{}`,
     },
-  ])('should render `enum` type $name', ({doc, expected}) => {
+  ])('should render `enum` type $name', ({ doc, expected }) => {
     test('should not be empty', async () => {
       const inputModel = await generator.process(doc);
       const model = inputModel.models[doc.$id];
@@ -118,7 +142,7 @@ type Things interface{}`,
       let enumModel = await generator.render(model, inputModel);
       expect(enumModel.result).toEqual(expected);
       expect(enumModel.dependencies).toEqual([]);
-        
+
       enumModel = await generator.renderEnum(model, inputModel);
       expect(enumModel.result).toEqual(expected);
       expect(enumModel.dependencies).toEqual([]);
@@ -134,23 +158,25 @@ type Things interface{}`,
     const expected = `// CustomEnum represents an enum of string.
 type CustomEnum string`;
 
-    generator = new GoGenerator({ presets: [
-      {
-        enum: {
-          self({ content }) {
-            return content;
-          },
+    generator = new GoGenerator({
+      presets: [
+        {
+          enum: {
+            self({ content }) {
+              return content;
+            },
+          }
         }
-      }
-    ] });
+      ]
+    });
 
     const inputModel = await generator.process(doc);
     const model = inputModel.models['CustomEnum'];
-    
+
     let enumModel = await generator.render(model, inputModel);
     expect(enumModel.result).toEqual(expected);
     expect(enumModel.dependencies).toEqual([]);
-    
+
     enumModel = await generator.renderEnum(model, inputModel);
     expect(enumModel.result).toEqual(expected);
     expect(enumModel.dependencies).toEqual([]);
@@ -168,7 +194,7 @@ type CustomEnum string`;
           marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
           members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
           array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
-          other_model: { type: 'object', $id: 'OtherModel', properties: {street_name: { type: 'string' }} },
+          other_model: { type: 'object', $id: 'OtherModel', properties: { street_name: { type: 'string' } } },
         },
         patternProperties: {
           '^S(.?*)test&': {
@@ -177,7 +203,7 @@ type CustomEnum string`;
         },
         required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
       };
-      const config = {packageName: 'some_package'};
+      const config = { packageName: 'some_package' };
       const models = await generator.generateCompleteModels(doc, config);
       expect(models).toHaveLength(2);
       expect(models[0].result).toMatchSnapshot();
@@ -196,7 +222,7 @@ type CustomEnum string`;
           marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
           members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
           array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
-          other_model: { type: 'object', $id: 'OtherModel', properties: {street_name: { type: 'string' }} },
+          other_model: { type: 'object', $id: 'OtherModel', properties: { street_name: { type: 'string' } } },
         },
         patternProperties: {
           '^S(.?*)test&': {
@@ -205,17 +231,19 @@ type CustomEnum string`;
         },
         required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
       };
-      generator = new GoGenerator({ presets: [
-        {
-          struct: {
-            self({ renderer, content }) {
-              renderer.addDependency('time');
-              return content;
-            },
+      generator = new GoGenerator({
+        presets: [
+          {
+            struct: {
+              self({ renderer, content }) {
+                renderer.addDependency('time');
+                return content;
+              },
+            }
           }
-        }
-      ] });
-      const config = {packageName: 'some_package'};
+        ]
+      });
+      const config = { packageName: 'some_package' };
       const models = await generator.generateCompleteModels(doc, config);
       expect(models).toHaveLength(2);
       expect(models[0].result).toMatchSnapshot();

@@ -7,6 +7,7 @@ export const RESERVED_GO_KEYWORDS = [
   'default',
   'defer',
   'else',
+  'enum',
   'fallthrough',
   'for',
   'func',

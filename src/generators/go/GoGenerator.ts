@@ -37,6 +37,10 @@ export const GoNamingConventionImplementation: GoNamingConvention = {
     let formattedName = FormatHelpers.toPascalCase(name, { transform: pascalCaseTransformMerge });
     if (ctx.reservedKeywordCallback !== undefined && ctx.reservedKeywordCallback(formattedName)) {
       formattedName = FormatHelpers.toPascalCase(`reserved_${formattedName}`);
+      if (Object.keys(ctx.model.properties || {}).includes(formattedName)) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        return GoNamingConventionImplementation.field!(`reserved_${formattedName}`, ctx);
+      }
     }
     return formattedName;
   }
