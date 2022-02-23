@@ -17,13 +17,6 @@ export const DART_JSON_PRESET: DartPreset = {
       renderer.addDependency('@JsonSerializable()');
       return content;
     },
-    getter({renderer, propertyName, content, type}) {
-      if (type === PropertyType.property) {
-        const annotation = renderer.renderAnnotation('JsonProperty', `"${propertyName}"`);
-        return renderer.renderBlock([annotation, content]);
-      }
-      return renderer.renderBlock([content]);
-    },
     additionalContent({renderer, model}) {
       const formattedModelName = renderer.nameType(model.$id);
       return `factory ${formattedModelName}.fromJson(Map<String, dynamic> json) => _$${formattedModelName}FromJson(json);

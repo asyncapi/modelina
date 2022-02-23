@@ -1,6 +1,6 @@
 import {DartRenderer} from '../DartRenderer';
 import {CommonModel, ClassPreset, PropertyType} from '../../../models';
-import {DefaultPropertyNames, FormatHelpers, getUniquePropertyName} from '../../../helpers';
+import {DefaultPropertyNames, getUniquePropertyName} from '../../../helpers';
 
 /**
  * Renderer for Dart's `class` type
@@ -15,13 +15,6 @@ export class ClassRenderer extends DartRenderer {
       await this.renderAccessors(),
       await this.runAdditionalContentPreset(),
     ];
-
-    // if (this.options?.collectionType === 'List') {
-    //   this.addDependency('import java.util.List;');
-    // }
-    // if (this.model.additionalProperties !== undefined || this.model.patternProperties !== undefined) {
-    //   this.addDependency('import java.util.Map;');
-    // }
 
     const formattedName = this.nameType(`${this.model.$id}`);
     return `class ${formattedName} {
@@ -43,12 +36,6 @@ ${this.indent(this.renderBlock(content, 2))}
     for (const [propertyName, property] of Object.entries(properties)) {
       const rendererProperty = await this.runPropertyPreset(propertyName, property);
       content.push(rendererProperty);
-    }
-
-    if (this.model.additionalProperties !== undefined) {
-      const propertyName = getUniquePropertyName(this.model, DefaultPropertyNames.additionalProperties);
-      const additionalProperty = await this.runPropertyPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
-      content.push(additionalProperty);
     }
 
     if (this.model.patternProperties !== undefined) {
@@ -75,14 +62,6 @@ ${this.indent(this.renderBlock(content, 2))}
     const content: string[] = [];
     return this.renderBlock(content, 2);
   }
-
-  runGetterPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
-    return this.runPreset('getter', {propertyName, property, type});
-  }
-
-  runSetterPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
-    return this.runPreset('setter', {propertyName, property, type});
-  }
 }
 
 export const DART_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
@@ -96,24 +75,6 @@ export const DART_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
       propertyType = `Map<String, ${propertyType}>`;
     }
     return `${propertyType}? ${propertyName};`;
-  },
-  getter({renderer, propertyName, property, type}) {
-    const formattedPropertyName = renderer.nameProperty(propertyName, property);
-    const getterName = `get${FormatHelpers.toPascalCase(propertyName)}`;
-    let getterType = renderer.renderType(property);
-    if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
-      getterType = `Map<String, ${getterType}>`;
-    }
-    return `${getterType} ${getterName}() { return this.${formattedPropertyName}; }`;
-  },
-  setter({renderer, propertyName, property, type}) {
-    const formattedPropertyName = renderer.nameProperty(propertyName, property);
-    const setterName = FormatHelpers.toPascalCase(propertyName);
-    let setterType = renderer.renderType(property);
-    if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
-      setterType = `Map<String, ${setterType}>`;
-    }
-    return `set${setterName}(${setterType} ${formattedPropertyName}) { this.${formattedPropertyName} = ${formattedPropertyName}; }`;
   },
   ctor({renderer,model}) {
     return `${renderer.nameType(model.$id)}();`;

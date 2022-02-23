@@ -1,5 +1,6 @@
-import { DartFileGenerator, DART_JSON_PRESET} from '../../src';
+import {DART_JSON_PRESET, DartGenerator} from '../../src';
 
+const generator = new DartGenerator();
 const jsonSchemaDraft7 = {
   $schema: 'http://json-schema.org/draft-07/schema#',
   type: 'object',
@@ -10,16 +11,10 @@ const jsonSchemaDraft7 = {
       format: 'email'
     }
   }
-};
-
-const generator = new DartFileGenerator({ presets: [DART_JSON_PRESET] });
+};;
 
 export async function generate() : Promise<void> {
-  const outputFolder = './examples/generate-dart-to-files/output/test';
-  const modelGenerationOptions = {
-    packageName: 'test'
-  };
-  const models = await generator.generateToFiles(jsonSchemaDraft7, outputFolder, modelGenerationOptions);
+  const models = await generator.generate(jsonSchemaDraft7);
   for (const model of models) {
     console.log(model.result);
   }

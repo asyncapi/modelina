@@ -77,8 +77,8 @@ export class DartGenerator extends AbstractGenerator<DartOptions, DartRenderComp
       return `import 'package:${options.packageName}/${snakeCase(formattedDependencyModelName)}.dart';`;
     });
     const outputContent = `${modelDependencies.join('\n')}
-${outputModel.dependencies.join('\n')}
-${outputModel.result}`;
+      ${outputModel.dependencies.join('\n')}
+      ${outputModel.result}`;
     return RenderOutput.toRenderOutput({
       result: outputContent,
       renderedName: outputModel.renderedName,

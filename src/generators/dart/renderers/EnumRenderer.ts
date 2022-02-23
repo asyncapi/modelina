@@ -1,17 +1,16 @@
-import { DartRenderer } from '../DartRenderer';
-import { EnumPreset} from '../../../models';
-import { FormatHelpers } from '../../../helpers';
+import {DartRenderer} from '../DartRenderer';
+import {EnumPreset} from '../../../models';
+import {FormatHelpers} from '../../../helpers';
 
 /**
  * Renderer for Dart's `enum` type
- * 
+ *
  * @extends DartRenderer
  */
 export class EnumRenderer extends DartRenderer {
   async defaultSelf(): Promise<string> {
     const content = [
       await this.renderItems(),
-      await this.runAdditionalContentPreset()
     ];
     const formattedName = this.nameType(this.model.$id);
     return `enum ${formattedName} {
@@ -29,7 +28,7 @@ ${this.indent(this.renderBlock(content, 2))}
     }
 
     const content = items.join(', ');
-    return `${content};`;
+    return `${content}`;
   }
 
   normalizeKey(value: any): string {
@@ -37,7 +36,7 @@ ${this.indent(this.renderBlock(content, 2))}
     switch (typeof value) {
     case 'bigint':
     case 'number': {
-      key = `number_${value}`;
+      key = 'number_${value}';
       break;
     }
     case 'boolean': {
@@ -49,7 +48,7 @@ ${this.indent(this.renderBlock(content, 2))}
       break;
     }
     default: {
-      key = FormatHelpers.replaceSpecialCharacters(String(value), { exclude: [' '], separator: '_' }); 
+      key = FormatHelpers.replaceSpecialCharacters(String(value), {exclude: [' '], separator: '_'});
       //Ensure no special char can be the beginning letter 
       if (!(/^[a-zA-Z]+$/).test(key.charAt(0))) {
         key = `string_${key}`;
@@ -60,38 +59,29 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 
   normalizeValue(value: any): string {
+    if (typeof value === 'number') {
+      return `NUMBER_${value}`;
+    }
     if (typeof value === 'string') {
-      return `"${value}"`;
+      return `${value}`;
     }
     if (typeof value === 'object') {
-      return `"${JSON.stringify(value).replace(/"/g, '\\"')}"`;
+      return `${JSON.stringify(value).replace(/"/g, '\\"')}`;
     }
     return String(value);
   }
 
   runItemPreset(item: any): Promise<string> {
-    return this.runPreset('item', { item });
+    return this.runPreset('item', {item});
   }
 }
 
 export const DART_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
-  self({ renderer }) {
+  self({renderer}) {
     return renderer.defaultSelf();
   },
-  item({ renderer, item }) {
-    //const key = renderer.normalizeKey(item);
+  item({renderer, item}) {
     const value = renderer.normalizeValue(item);
     return `${value}`;
   },
-//   additionalContent({ renderer, model }) {
-//     const enumName = renderer.nameType(model.$id);
-//     const type = Array.isArray(model.type) ? 'Object' : model.type;
-//     const classType = renderer.toClassType(renderer.toDartType(type, model));
-//
-//     return `private ${classType} value;
-//
-// ${enumName}(${classType} value) {
-//   this.value = value;
-// }`;
-//   },
 };
