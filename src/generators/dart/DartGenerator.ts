@@ -10,7 +10,7 @@ import {ClassRenderer} from './renderers/ClassRenderer';
 import {EnumRenderer} from './renderers/EnumRenderer';
 import {isReservedDartKeyword} from './Constants';
 import {Logger} from '../../';
-import {snakeCase} from '../../utils/NameHelpers';
+import {FormatHelpers} from '../../helpers/FormatHelpers';
 
 export interface DartOptions extends CommonGeneratorOptions<DartPreset> {
   collectionType?: 'List';
@@ -74,7 +74,7 @@ export class DartGenerator extends AbstractGenerator<DartOptions, DartRenderComp
         model: inputModel.models[String(dependencyModelName)],
         reservedKeywordCallback: isReservedDartKeyword
       }) : dependencyModelName;
-      return `import 'package:${options.packageName}/${snakeCase(formattedDependencyModelName)}.dart';`;
+      return `import 'package:${options.packageName}/${FormatHelpers.snakeCase(formattedDependencyModelName)}.dart';`;
     });
     const outputContent = `${modelDependencies.join('\n')}
       ${outputModel.dependencies.join('\n')}
@@ -90,7 +90,7 @@ export class DartGenerator extends AbstractGenerator<DartOptions, DartRenderComp
     const presets = this.getPresets('class');
     const renderer = new ClassRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
-    const renderedName = snakeCase(renderer.nameType(model.$id, model));
+    const renderedName = FormatHelpers.snakeCase(renderer.nameType(model.$id, model));
     return RenderOutput.toRenderOutput({result, renderedName, dependencies: renderer.dependencies});
   }
 
@@ -98,7 +98,7 @@ export class DartGenerator extends AbstractGenerator<DartOptions, DartRenderComp
     const presets = this.getPresets('enum');
     const renderer = new EnumRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
-    const renderedName = snakeCase(renderer.nameType(model.$id, model));
+    const renderedName = FormatHelpers.snakeCase(renderer.nameType(model.$id, model));
     return RenderOutput.toRenderOutput({result, renderedName, dependencies: renderer.dependencies});
   }
 }
