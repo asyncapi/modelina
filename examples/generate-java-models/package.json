@@ -8,8 +8,5 @@
     "start:windows": "..\\..\\node_modules\\.bin\\ts-node --cwd ..\\..\\ .\\examples\\%npm_package_config_example_name%\\index.ts",
     "test": "../../node_modules/.bin/jest --config=../../jest.config.js ./examples/$npm_package_config_example_name/index.spec.ts",
     "test:windows": "..\\..\\node_modules\\.bin\\jest --config=..\\..\\jest.config.js examples/%npm_package_config_example_name%/index.spec.ts"
-  },
-  "dependencies": {
-    "@asyncapi/modelina": "^0.45.0"
   }
 }
