@@ -1,17 +1,17 @@
 import { JavaGenerator, JAVA_COMMON_PRESET } from '../../src';
 
-const generator = new JavaGenerator({
+const generator = new JavaGenerator({ 
   presets: [
     {
-      preset: JAVA_COMMON_PRESET,
+      preset: JAVA_COMMON_PRESET, 
       options: {
         equal: false,
         hashCode: false,
-        classToString: true,
-        marshalling: false,
-      },
-    },
-  ],
+        classToString: false,
+        marshalling: true,
+      }
+    }
+  ]
 });
 
 const jsonSchemaDraft7 = {
