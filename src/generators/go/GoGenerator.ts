@@ -10,7 +10,7 @@ import { StructRenderer } from './renderers/StructRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { pascalCaseTransformMerge } from 'change-case';
 import { Logger } from '../../utils/LoggingInterface';
-
+import { isReservedGoKeyword } from './Constants';
 /**
  * The Go naming convention type
  */
@@ -63,13 +63,14 @@ export class GoGenerator extends AbstractGenerator<GoOptions, GoRenderCompleteMo
     defaultPreset: GO_DEFAULT_PRESET,
     namingConvention: GoNamingConventionImplementation
   };
-
   constructor(
     options: GoOptions = GoGenerator.defaultOptions,
   ) {
     super('Go', GoGenerator.defaultOptions, options);
   }
-
+  reservedGoKeyword(name: string): boolean {
+    return isReservedGoKeyword(name);
+  }
   render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const kind = TypeHelpers.extractKind(model);
     switch (kind) {
