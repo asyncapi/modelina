@@ -20,7 +20,7 @@ describe('TypeScriptRenderer', () => {
       expect(name).toEqual('Enum');
     });
   });
-  
+
   describe('nameProperty()', () => {
     test('should name the property', () => {
       const name = renderer.nameProperty('property__someProperty');
@@ -55,6 +55,16 @@ describe('TypeScriptRenderer', () => {
     });
     test('Should render null type', () => {
       expect(renderer.toTsType('null', new CommonModel())).toEqual('null');
+    });
+    test('Should render Date type from string of format date', () => {
+      const model = new CommonModel();
+      model.originalInput = {format: 'date'};
+      expect(renderer.toTsType('string', model)).toEqual('Date');
+    });
+    test('Should render Date type from string of format date-time', () => {
+      const model = new CommonModel();
+      model.originalInput = {format: 'date-time'};
+      expect(renderer.toTsType('string', model)).toEqual('Date');
     });
     test('Should render array type', () => {
       const model = new CommonModel();
