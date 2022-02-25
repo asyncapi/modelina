@@ -6,25 +6,36 @@ describe('GoGenerator', () => {
     generator = new GoGenerator();
   });
 
-  test('should not render reserved keyword', async () => {
-    const doc = {
-      $id: 'Address',
-      type: 'object',
-      properties: {
-        enum: { type: 'string' },
-        reservedEnum: { type: 'string' }
-      },
-      additionalProperties: false
-    };
-    const expected = `// Address represents a Address model.
-type Address struct {
-  Enum string
-  ReservedEnum string
-}`;
-    const inputModel = await generator.process(doc);
-    const model = inputModel.models['Address'];
-    const structModel = await generator.renderStruct(model, inputModel);
-    expect(structModel.result).toEqual(expected);
+  it('should return true if the word is a reserved keyword', () => {
+    expect(generator.reservedGoKeyword('break')).toBe(true);
+    expect(generator.reservedGoKeyword('case')).toBe(true);
+    expect(generator.reservedGoKeyword('chan')).toBe(true);
+    expect(generator.reservedGoKeyword('const')).toBe(true);
+    expect(generator.reservedGoKeyword('continue')).toBe(true);
+    expect(generator.reservedGoKeyword('default')).toBe(true);
+    expect(generator.reservedGoKeyword('defer')).toBe(true);
+    expect(generator.reservedGoKeyword('else')).toBe(true);
+    expect(generator.reservedGoKeyword('fallthrough')).toBe(true);
+    expect(generator.reservedGoKeyword('for')).toBe(true);
+    expect(generator.reservedGoKeyword('func')).toBe(true);
+    expect(generator.reservedGoKeyword('go')).toBe(true);
+    expect(generator.reservedGoKeyword('goto')).toBe(true);
+    expect(generator.reservedGoKeyword('if')).toBe(true);
+    expect(generator.reservedGoKeyword('import')).toBe(true);
+    expect(generator.reservedGoKeyword('interface')).toBe(true);
+    expect(generator.reservedGoKeyword('map')).toBe(true);
+    expect(generator.reservedGoKeyword('package')).toBe(true);
+    expect(generator.reservedGoKeyword('range')).toBe(true);
+    expect(generator.reservedGoKeyword('return')).toBe(true);
+    expect(generator.reservedGoKeyword('select')).toBe(true);
+    expect(generator.reservedGoKeyword('struct')).toBe(true);
+    expect(generator.reservedGoKeyword('switch')).toBe(true);
+    expect(generator.reservedGoKeyword('type')).toBe(true);
+    expect(generator.reservedGoKeyword('var')).toBe(true);
+  });
+
+  it('should return false if the word is not a reserved keyword', () => {
+    expect(generator.reservedGoKeyword('enum')).toBe(false);
   });
 
   test('should render `struct` type', async () => {
