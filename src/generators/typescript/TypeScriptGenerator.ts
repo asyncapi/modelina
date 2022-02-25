@@ -81,10 +81,10 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,Typ
         : `exports.${outputModel.renderedName} = ${outputModel.renderedName};`;
     const esmExport =
       exportType === 'default'
-        ? `export default ${outputModel.renderedName};`
+        ? `export default ${outputModel.renderedName};\n`
         : '';
     const modelCode = `${
-      moduleSystem === 'ESM' && exportType === 'named' ? 'export ' : ' '
+      moduleSystem === 'ESM' && exportType === 'named' ? 'export ' : ''
     }${outputModel.result}\n${moduleSystem === 'CJS' ? cjsExport : esmExport}`;
 
     const outputContent = `${[...modelDependencies, ...outputModel.dependencies].join('\n')}
