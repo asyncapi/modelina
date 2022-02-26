@@ -126,7 +126,7 @@ Documentation for this library can be found under the [documentation folder](./d
 ## Examples
 Do you need to know how to use the library in certain scenarios? 
 
-We have gathered all the examples in a separate folder, they can be found under the [examples folder](./examples). 
+We have gathered all the examples in a separate folder and they can be found under the [examples folder](./examples). 
 
 ## Development
 To setup your development environment please read the [development](./docs/development.md) document.
