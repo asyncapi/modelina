@@ -23,6 +23,7 @@ This directory contains a series of self-contained examples that you can use as 
 - [csharp-generate-equals-and-hashcode](./csharp-generate-equals-and-hashcode) - A basic example on how to generate models that overwrite the `Equal` and `GetHashCode` methods
 - [csharp-generate-serializer](./csharp-generate-serializer) - A basic example on how to generate models that include function to serialize the data models to JSON
 - [generate-javascript-models](./generate-javascript-models) - A basic example to generate JavaScript data models
+- [meta-model](./meta-model) - A basic example how to provide a meta model for the generator
 - [javascript-use-esm](./javascript-use-esm) - A basic example that generate the models to use ESM module system.
 - [javascript-use-cjs](./javascript-use-cjs) - A basic example that generate the models to use CJS module system.
 - [javascript-generate-marshalling](./javascript-generate-marshalling) - A basic example of how to use the un/marshalling functionality of the javascript class.
