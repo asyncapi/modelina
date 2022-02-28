@@ -23,8 +23,7 @@
 */generators/typescript/* @Samridhi-98
 
 # Language Champions for JavaScript and it's presets
-*/generators/javascript @Samridhi-98
-*/generators/javascript/preset/CommonPreset*.ts 
+*/generators/javascript/* @Samridhi-98
 
 # Language Champions for Go and it's presets
 */generators/go
