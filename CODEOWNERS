@@ -39,6 +39,6 @@
 */generators/java/preset/JacksonPreset*.ts 
 
 # Language Champions for C# and it's presets
-*/generators/csharp 
+*/generators/csharp @ron-debajyoti
 */generators/csharp/preset/CommonPreset*.ts 
 */generators/csharp/preset/JsonSerializerPreset*.ts
