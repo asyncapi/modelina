@@ -46,6 +46,10 @@ describe('AsyncAPIInputProcessor', () => {
       const parsedObject = {asyncapi: '2.2.0'};
       expect(processor.shouldProcess(parsedObject)).toEqual(true);
     });
+    test('should be able to process AsyncAPI 2.3.0', () => {
+      const parsedObject = {asyncapi: '2.3.0'};
+      expect(processor.shouldProcess(parsedObject)).toEqual(true);
+    });
   });
   describe('tryGetVersionOfDocument()', () => {
     const processor = new AsyncAPIInputProcessor();
@@ -129,6 +133,15 @@ describe('AsyncAPIInputProcessor', () => {
       expect(expected.anyOf[0]['x-modelgen-inferred-name']).toEqual('<anonymous-schema-16>');
       expect(expected.anyOf[1]['x-modelgen-inferred-name']).toEqual('<anonymous-schema-17>');
       expect(expected.anyOf[1].properties.prop['x-modelgen-inferred-name']).toEqual('<anonymous-schema-18>');
+    });
+    test('should correctly convert when schema has more than one properties referencing one other schema', async () => {
+      const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/schema_with_2_properties_referencing_one_schema.json'), 'utf8');
+      const doc = await parse(basicDocString, {} as ParserOptions);
+      const schema = doc.channels()['/user/signedup'].subscribe().message().payload();
+      const result = AsyncAPIInputProcessor.convertToInternalSchema(schema) as any;
+
+      expect(result.properties['lastName']).not.toEqual({});
+      expect(result.properties['firstName']).toEqual(result.properties['lastName']);
     });
   });
 });

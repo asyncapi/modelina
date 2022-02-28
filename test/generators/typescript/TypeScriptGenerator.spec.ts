@@ -16,7 +16,7 @@ describe('TypeScriptGenerator', () => {
       },
       additionalProperties: false
     };
-    const expected = `export class Address {
+    const expected = `class Address {
   private _reservedReservedEnum?: string;
   private _reservedEnum?: string;
 
@@ -67,7 +67,7 @@ describe('TypeScriptGenerator', () => {
       },
       required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
     };
-    const expected = `export class Address {
+    const expected = `class Address {
   private _streetName: string;
   private _city: string;
   private _state: string;
@@ -156,7 +156,7 @@ describe('TypeScriptGenerator', () => {
         property: { type: 'string' },
       }
     };
-    const expected = `export class CustomClass {
+    const expected = `class CustomClass {
   @JsonProperty("property")
   private _property?: string;
   @JsonProperty("additionalProperties")
@@ -218,7 +218,7 @@ ${content}`;
       },
       required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
     };
-    const expected = `export interface Address {
+    const expected = `interface Address {
   streetName: string;
   city: string;
   state: string;
@@ -249,7 +249,7 @@ ${content}`;
         property: { type: 'string' },
       }
     };
-    const expected = `export interface CustomInterface {
+    const expected = `interface CustomInterface {
   property?: string;
   additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null>;
 }`;
@@ -280,7 +280,7 @@ ${content}`;
       type: 'string',
       enum: ['Texas', 'Alabama', 'California'],
     };
-    const expected = `export enum States {
+    const expected = `enum States {
   TEXAS = "Texas",
   ALABAMA = "Alabama",
   CALIFORNIA = "California",
@@ -304,7 +304,7 @@ ${content}`;
       type: 'string',
       enum: ['Texas', 'Alabama', 'California'],
     };
-    const expected = 'export type States = "Texas" | "Alabama" | "California";';
+    const expected = 'type States = "Texas" | "Alabama" | "California";';
 
     const unionGenerator = new TypeScriptGenerator({ enumType: 'union' });
     const inputModel = await unionGenerator.process(doc);
@@ -324,7 +324,7 @@ ${content}`;
       $id: 'States',
       enum: [2, '2', 'test', true, { test: 'test' }]
     };
-    const expected = `export enum States {
+    const expected = `enum States {
   NUMBER_2 = 2,
   STRING_2 = "2",
   TEST = "test",
@@ -349,7 +349,7 @@ ${content}`;
       $id: 'States',
       enum: ['test+', 'test', 'test-', 'test?!', '*test']
     };
-    const expected = `export enum States {
+    const expected = `enum States {
   TEST_PLUS = "test+",
   TEST = "test",
   TEST_MINUS = "test-",
@@ -375,7 +375,7 @@ ${content}`;
       type: 'string',
       enum: ['Texas', 'Alabama', 'California'],
     };
-    const expected = `export enum CustomEnum {
+    const expected = `enum CustomEnum {
   TEXAS = "Texas",
   ALABAMA = "Alabama",
   CALIFORNIA = "California",
@@ -410,7 +410,7 @@ ${content}`;
       $id: 'TypePrimitive',
       type: 'string',
     };
-    const expected = 'export type TypePrimitive = string;';
+    const expected = 'type TypePrimitive = string;';
 
     const inputModel = await generator.process(doc);
     const model = inputModel.models['TypePrimitive'];
@@ -429,7 +429,7 @@ ${content}`;
       $id: 'TypeEnum',
       enum: ['Texas', 'Alabama', 'California', 0, 1, false, true],
     };
-    const expected = 'export type TypeEnum = "Texas" | "Alabama" | "California" | 0 | 1 | false | true;';
+    const expected = 'type TypeEnum = "Texas" | "Alabama" | "California" | 0 | 1 | false | true;';
 
     const inputModel = await generator.process(doc);
     const model = inputModel.models['TypeEnum'];
@@ -444,7 +444,7 @@ ${content}`;
       $id: 'TypeUnion',
       type: ['string', 'number', 'boolean'],
     };
-    const expected = 'export type TypeUnion = string | number | boolean;';
+    const expected = 'type TypeUnion = string | number | boolean;';
 
     const inputModel = await generator.process(doc);
     const model = inputModel.models['TypeUnion'];
@@ -463,7 +463,7 @@ ${content}`;
         type: 'string',
       }
     };
-    const expected = 'export type TypeArray = Array<string>;';
+    const expected = 'type TypeArray = Array<string>;';
 
     const inputModel = await generator.process(doc);
     const model = inputModel.models['TypeArray'];
@@ -482,16 +482,15 @@ ${content}`;
         type: ['string', 'number', 'boolean'],
       }
     };
-    const expected = 'export type TypeArray = Array<string | number | boolean>;';
 
     const inputModel = await generator.process(doc);
     const model = inputModel.models['TypeArray'];
 
     const arrayModel = await generator.renderType(model, inputModel);
-    expect(arrayModel.result).toEqual(expected);
+    expect(arrayModel.result).toMatchSnapshot();
     expect(arrayModel.dependencies).toEqual([]);
   });
-  test('should render models and their dependencies', async () => {
+  test('should render models and their dependencies for CJS module system', async () => {
     const doc = {
       $id: 'Address',
       type: 'object',
@@ -512,7 +511,33 @@ ${content}`;
       },
       required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
     };
-    const models = await generator.generateCompleteModels(doc, {});
+    const models = await generator.generateCompleteModels(doc, {moduleSystem: 'CJS'});
+    expect(models).toHaveLength(2);
+    expect(models[0].result).toMatchSnapshot();
+    expect(models[1].result).toMatchSnapshot();
+  });
+  test('should render models and their dependencies for ESM module system', async () => {
+    const doc = {
+      $id: 'Address',
+      type: 'object',
+      properties: {
+        street_name: { type: 'string' },
+        city: { type: 'string', description: 'City description' },
+        state: { type: 'string' },
+        house_number: { type: 'number' },
+        marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
+        members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
+        array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
+        other_model: { type: 'object', $id: 'OtherModel', properties: { street_name: { type: 'string' } } },
+      },
+      patternProperties: {
+        '^S(.?*)test&': {
+          type: 'string'
+        }
+      },
+      required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+    };
+    const models = await generator.generateCompleteModels(doc, {moduleSystem: 'ESM'});
     expect(models).toHaveLength(2);
     expect(models[0].result).toMatchSnapshot();
     expect(models[1].result).toMatchSnapshot();

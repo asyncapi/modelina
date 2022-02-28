@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to process a pure OpenAPI object and should log expected output to console 1`] = `
+Array [
+  "class TestPost_200ApplicationJson {
+  private _email?: string;
+
+  constructor(input: {
+    email?: string,
+  }) {
+    this._email = input.email;
+  }
+
+  get email(): string | undefined { return this._email; }
+  set email(email: string | undefined) { this._email = email; }
+}",
+]
+`;
+
+exports[`Should be able to process a pure OpenAPI object and should log expected output to console 2`] = `
+Array [
+  "class TestPostApplicationJson {
+  private _email?: string;
+
+  constructor(input: {
+    email?: string,
+  }) {
+    this._email = input.email;
+  }
+
+  get email(): string | undefined { return this._email; }
+  set email(email: string | undefined) { this._email = email; }
+}",
+]
+`;

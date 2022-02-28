@@ -9,7 +9,7 @@ import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
  * Class for processing AsyncAPI inputs
  */
 export class AsyncAPIInputProcessor extends AbstractInputProcessor {
-  static supportedVersions = ['2.0.0', '2.1.0', '2.2.0'];
+  static supportedVersions = ['2.0.0', '2.1.0', '2.2.0', '2.3.0'];
 
   /**
    * Process the input as an AsyncAPI document
@@ -55,10 +55,10 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     if (alreadyIteratedSchemas.has(schemaUid)) {
       return alreadyIteratedSchemas.get(schemaUid) as AsyncapiV2Schema; 
     }
-    let convertedSchema = new AsyncapiV2Schema();
-    alreadyIteratedSchemas.set(schemaUid, convertedSchema);
-    convertedSchema = Object.assign({}, schema.json());
+
+    const convertedSchema = Object.assign(new AsyncapiV2Schema(), schema.json());
     convertedSchema[this.MODELGEN_INFFERED_NAME] = schemaUid;
+    alreadyIteratedSchemas.set(schemaUid, convertedSchema);
 
     if (schema.allOf() !== null) {
       convertedSchema.allOf = schema.allOf().map((item) => this.convertToInternalSchema(item, alreadyIteratedSchemas));

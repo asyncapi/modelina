@@ -1,5 +1,35 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`CSharpGenerator class renderer should be able to overwrite accessor preset hook 1`] = `
+"public class CustomClass {
+  private string property;
+  private Dictionary<string, string> additionalProperties;
+
+  my own custom factory
+
+  my own custom factory
+}"
+`;
+
+exports[`CSharpGenerator class renderer should be able to overwrite property preset hook 1`] = `
+"public class CustomClass {
+  my own property
+  my own property
+
+  public string Property 
+  {
+    get { return property; }
+    set { property = value; }
+  }
+
+  public Dictionary<string, string> AdditionalProperties 
+  {
+    get { return additionalProperties; }
+    set { additionalProperties = value; }
+  }
+}"
+`;
+
 exports[`CSharpGenerator should not render reserved keyword 1`] = `
 "public class Address {
   private string reservedReservedEnum;
@@ -320,10 +350,79 @@ public static class StatesExtensions {
 "
 `;
 
+exports[`CSharpGenerator should render enums with translated special characters 1`] = `
+"public enum States {
+  TestPlus, Test, TestMinus, TestQuestionExclamation, AsteriskTest
+}
+public static class StatesExtensions {
+  public static dynamic GetValue(this States enumValue)
+  {
+    switch (enumValue)
+    {
+      case States.TestPlus: return \\"test+\\";
+      case States.Test: return \\"test\\";
+      case States.TestMinus: return \\"test-\\";
+      case States.TestQuestionExclamation: return \\"test?!\\";
+      case States.AsteriskTest: return \\"*test\\";
+    }
+    return null;
+  }
+
+  public static States? ToStates(dynamic value)
+  {
+    switch (value)
+    {
+      case \\"test+\\": return States.TestPlus;
+      case \\"test\\": return States.Test;
+      case \\"test-\\": return States.TestMinus;
+      case \\"test?!\\": return States.TestQuestionExclamation;
+      case \\"*test\\": return States.AsteriskTest;
+    }
+    return null;
+  }
+}
+
+"
+`;
+
+exports[`CSharpGenerator should render enums with translated special characters 2`] = `
+"public enum States {
+  TestPlus, Test, TestMinus, TestQuestionExclamation, AsteriskTest
+}
+public static class StatesExtensions {
+  public static dynamic GetValue(this States enumValue)
+  {
+    switch (enumValue)
+    {
+      case States.TestPlus: return \\"test+\\";
+      case States.Test: return \\"test\\";
+      case States.TestMinus: return \\"test-\\";
+      case States.TestQuestionExclamation: return \\"test?!\\";
+      case States.AsteriskTest: return \\"*test\\";
+    }
+    return null;
+  }
+
+  public static States? ToStates(dynamic value)
+  {
+    switch (value)
+    {
+      case \\"test+\\": return States.TestPlus;
+      case \\"test\\": return States.Test;
+      case \\"test-\\": return States.TestMinus;
+      case \\"test?!\\": return States.TestQuestionExclamation;
+      case \\"*test\\": return States.AsteriskTest;
+    }
+    return null;
+  }
+}
+
+"
+`;
+
 exports[`CSharpGenerator should render models and their dependencies 1`] = `
-"namespace Test.Package
+"namespace Test.Namespace
 {
-  using Test.Package.OtherModel;
   using System.Collections.Generic;
   public class Address {
   private string streetName;
@@ -401,9 +500,8 @@ exports[`CSharpGenerator should render models and their dependencies 1`] = `
 `;
 
 exports[`CSharpGenerator should render models and their dependencies 2`] = `
-"namespace Test.Package
+"namespace Test.Namespace
 {
-  
   using System.Collections.Generic;
   public class OtherModel {
   private string streetName;
@@ -421,25 +519,6 @@ exports[`CSharpGenerator should render models and their dependencies 2`] = `
     set { additionalProperties = value; }
   }
 }
-}"
-`;
-
-exports[`CSharpGenerator should work custom preset for \`class\` type 1`] = `
-"public class CustomClass {
-  private property string
-  private additionalProperties string
-
-  public string Property 
-  {
-    get { return property; }
-    set { property = value; }
-  }
-
-  public Dictionary<string, string> AdditionalProperties 
-  {
-    get { return additionalProperties; }
-    set { additionalProperties = value; }
-  }
 }"
 `;
 

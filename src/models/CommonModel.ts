@@ -316,13 +316,18 @@ export class CommonModel {
   }
 
   /**
-   * This function returns an array of `$id`s from all the CommonModel's it immediate depends on.
+   * Returns an array of unique `$id`s from all the CommonModel's this model depends on.
    */
   // eslint-disable-next-line sonarjs/cognitive-complexity
   getNearestDependencies(): string[] {
     const dependsOn = [];
-    if (this.additionalProperties?.$ref !== undefined) {
-      dependsOn.push(this.additionalProperties.$ref);
+
+    if (this.$ref !== undefined) {
+      return [this.$ref];
+    }
+
+    if (this.additionalProperties !== undefined) {
+      dependsOn.push(...this.additionalProperties.getNearestDependencies());
     }
     if (this.extend !== undefined) {
       dependsOn.push(...this.extend);
@@ -330,28 +335,23 @@ export class CommonModel {
     if (this.items !== undefined) {
       const items = Array.isArray(this.items) ? this.items : [this.items];
       for (const item of items) {
-        const itemRef = item.$ref;
-        if (itemRef !== undefined) {
-          dependsOn.push(itemRef);
-        }
+        dependsOn.push(...item.getNearestDependencies());
       }
     }
     if (this.properties !== undefined && Object.keys(this.properties).length) {
-      const referencedProperties = Object.values(this.properties)
-        .filter((propertyModel: CommonModel) => propertyModel.$ref !== undefined)
-        .map((propertyModel: CommonModel) => String(propertyModel.$ref));
-      dependsOn.push(...referencedProperties);
+      for (const property of Object.values(this.properties)) {
+        dependsOn.push(...property.getNearestDependencies());
+      }
     }
     if (this.patternProperties !== undefined && Object.keys(this.patternProperties).length) {
-      const referencedPatternProperties = Object.values(this.patternProperties)
-        .filter((patternPropertyModel: CommonModel) => patternPropertyModel.$ref !== undefined)
-        .map((patternPropertyModel: CommonModel) => String(patternPropertyModel.$ref));
-      dependsOn.push(...referencedPatternProperties);
+      for (const patternProperty of Object.values(this.patternProperties)) {
+        dependsOn.push(...patternProperty.getNearestDependencies());
+      }
     }
-    if (this.additionalItems?.$ref !== undefined) {
-      dependsOn.push(this.additionalItems.$ref);
+    if (this.additionalItems !== undefined) {
+      dependsOn.push(...this.additionalItems.getNearestDependencies());
     }
-    return dependsOn;
+    return [...new Set(dependsOn)];
   }
 
   /**
