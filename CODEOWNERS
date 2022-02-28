@@ -20,8 +20,7 @@
 */processors/JsonSchemaInputProcessor*.ts 
 
 # Language Champions for TypeScript and it's presets
-*/generators/typescript/ @Samridhi-98
-*/generators/typescript/preset/CommonPreset*.ts 
+*/generators/typescript/* @Samridhi-98
 
 # Language Champions for JavaScript and it's presets
 */generators/javascript @Samridhi-98
