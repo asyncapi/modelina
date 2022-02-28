@@ -29,13 +29,6 @@
 */generators/go
 
 # Language Champions for Java and it's presets
-*/generators/java
-*/generators/java/preset/CommonPreset*.ts
-*/generators/java/preset/ConstraintsPreset*.ts
-*/generators/java/preset/DescriptioPreset*.ts
-*/generators/java/preset/JacksonPreset*.ts 
-
+*/generators/java/*
 # Language Champions for C# and it's presets
-*/generators/csharp 
-*/generators/csharp/preset/CommonPreset*.ts 
-*/generators/csharp/preset/JsonSerializerPreset*.ts
+*/generators/csharp/*
