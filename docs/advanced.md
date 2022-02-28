@@ -64,7 +64,7 @@ Sometimes you simply cannot make two things work together as you wished, maybe t
 
 > With great customization comes a great responsibility. Always make sure to raise your issue before trying workarounds, maybe you are not alone in the problem, and it should be natively supported, so please make your due diligence before venturing into this :pray: And always feel free to reach out on the AsyncAPI slack channel if you want some quicker feedback!
 
-Check out this [example for a demonstration of how to adapt the input and out to a specific use-case.](../examples/adapting-input-and-output).
+Check out this [example for a demonstration of how to adapt the input and out to a specific use-case](../examples/adapting-input-and-output).
 
 ## Add logging to library
 When you generate models, by default, nothing is logged to the console or elsewhere.
