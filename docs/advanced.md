@@ -11,7 +11,6 @@ This document contains many of the advanced use-cases that you may stumble upon 
 - [Use the models for data transfer](#use-the-models-for-data-transfer)
 - [Extend the logic of an existing renderer](#extend-the-logic-of-an-existing-renderer)
 - [Build your own model renderer](#build-your-own-model-renderer)
-- [Create your own models from the ground up, instead of a supported input](#create-your-own-models-from-the-ground-up-instead-of-a-supported-input)
 - [Add logging to library](#add-logging-to-library)
 - [Change the generated indentation type and size](#change-the-generated-indentation-type-and-size)
 - [Change the naming format for properties](#change-the-naming-format-for-properties)
@@ -54,10 +53,6 @@ TODO
 
 ## Build your own model renderer
 TODO 
-
-## Create your own models from the ground up, instead of a supported input
-TODO 
-
 
 ## Add logging to library
 When you generate models, by default, nothing is logged to the console or elsewhere.

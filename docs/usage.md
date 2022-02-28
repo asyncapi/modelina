@@ -15,6 +15,7 @@ For more specific integration options, please check out the [integration documen
 - [Generate models from JSON Schema documents](#generate-models-from-json-schema-documents)
 - [Generate models from Swagger 2.0 documents](#generate-models-from-swagger-20-documents)
 - [Generate models from OpenAPI documents](#generate-models-from-openapi-documents)
+- [Generate models from Meta models](#generate-models-from-meta-models)
 - [Generate Go models](#generate-go-models)
 - [Generate C# models](#generate-c%23-models)
 - [Generate Java models](#generate-java-models)
@@ -59,6 +60,11 @@ There are one way to generate models from a Swagger 2.0 document
 The Swagger input processor expects that the property `swagger` is defined in order to know it should be processed.
 
 The response payload and `body` parameters, since it is a JSON Schema variant, is [interpreted as a such](./interpretation_of_JSON_Schema.md).
+
+## Generate models from Meta models
+Sometimes, the supported inputs such as AsyncAPI and JSON Schema wont be enough for your use-case and you want to create your own data models while still utilizing the full sweep of features from the generators.
+
+Check out this [example out for a live demonstration](../examples/meta-model).
 
 ## Generate models from OpenAPI documents
 

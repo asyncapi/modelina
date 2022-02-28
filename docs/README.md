@@ -4,6 +4,7 @@
 
 <!-- toc -->
 
+- [The Processing](#the-processing)
 - [Contributing](#contributing)
 - [Usage](#usage)
 - [Advanced](#advanced)
@@ -17,6 +18,11 @@
 <!-- tocstop -->
 
 This document gives the overview of all the available documentation for Modelina.
+
+### [The Processing](./processing.md)
+Contains information how the internals of the processing works.
+
+This document contains all the information you need to understand the internal meta model and processes.
 
 ### [Contributing](./contributing.md)
 Contains all the information you need to contribute to this project.
