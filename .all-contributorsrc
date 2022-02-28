@@ -173,6 +173,85 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "quadrrem",
+      "name": "quadrrem",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8450873?v=4",
+      "profile": "https://github.com/quadrrem",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "kamko",
+      "name": "Kamil Janeček",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17074375?v=4",
+      "profile": "https://kamko.dev",
+      "contributions": [
+        "test",
+        "bug",
+        "code"
+      ]
+    },
+    {
+      "login": "mahakporwal02",
+      "name": "mahakporwal02",
+      "avatar_url": "https://avatars.githubusercontent.com/u/56486682?v=4",
+      "profile": "https://github.com/mahakporwal02",
+      "contributions": [
+        "example",
+        "test",
+        "doc",
+        "code"
+      ]
+    },
+    {
+      "login": "ron-debajyoti",
+      "name": "Debajyoti Halder",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22571664?v=4",
+      "profile": "https://github.com/ron-debajyoti",
+      "contributions": [
+        "code",
+        "test",
+        "doc",
+        "example"
+      ]
+    },
+    {
+      "login": "ritik307",
+      "name": "Ritik Rawal",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22374829?v=4",
+      "profile": "https://ritik307.github.io/portfolio/",
+      "contributions": [
+        "doc",
+        "code",
+        "test",
+        "example"
+      ]
+    },
+    {
+      "login": "Ishan-Saini",
+      "name": "Ishan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/54525602?v=4",
+      "profile": "https://github.com/Ishan-Saini",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "Samridhi-98",
+      "name": "Samriddhi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/54466041?v=4",
+      "profile": "https://samridhi-98.github.io/Portfolio",
+      "contributions": [
+        "code",
+        "test",
+        "doc",
+        "example"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -180,6 +259,6 @@
   "projectOwner": "asyncapi",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true,
+  "skipCi": false,
   "commitConvention": "none"
 }

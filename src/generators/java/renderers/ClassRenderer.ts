@@ -1,5 +1,4 @@
 import { JavaRenderer } from '../JavaRenderer';
-
 import { CommonModel, ClassPreset, PropertyType } from '../../../models';
 import { DefaultPropertyNames, FormatHelpers, getUniquePropertyName } from '../../../helpers';
 

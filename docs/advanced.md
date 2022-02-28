@@ -30,15 +30,21 @@ The reason for splitting the functionality is because in certain environments (l
 
 The file generators all follow the same pattern regardless of output language, which is the following format - `<language>FileGenerator`.
 
+Supported by:
+- Java
+- TypeScript
+- C#
+- Go
+- JavaScript
 
-Currently only supported for `Java`.
-
-> Not support in browsers.
+> It is not supported in browsers.
 
 Check out this [example out for a live demonstration](../examples/generate-to-files).
 
 ## Include a custom function in the data model
-TODO 
+Sometimes you want to include custom functionality into the generated models, this can be done through a custom preset using the hook `additionalContent`.
+
+Check out this [example out for a live demonstration](../examples/include-custom-function).
 
 ## Use the models for data transfer
 TODO 
@@ -67,7 +73,9 @@ The library uses 4 different logging levels:
 Check out this [example out for a live demonstration](../examples/custom-logging).
 
 ## Change the generated indentation type and size
-TODO 
+In some scenarios, depending on how you stitch them together, you might need to change the indentation type or size and both of these cases are fully supported.
+
+Check out this [example out for a live demonstration](../examples/indentation-type-and-size).
 
 ## Change the naming format for properties
 TODO 

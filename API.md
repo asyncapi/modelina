@@ -8,10 +8,12 @@
 <dd><p>Abstract renderer with common helper methods</p>
 </dd>
 <dt><a href="#AsyncapiV2Schema">AsyncapiV2Schema</a></dt>
-<dd><p>AsyncAPI 2.0 + 2.1 schema model</p>
+<dd><p>AsyncAPI schema model</p>
 <p>Based on Draft 7 with additions</p>
 <p><a href="https://www.asyncapi.com/docs/specifications/v2.0.0#schemaObject">https://www.asyncapi.com/docs/specifications/v2.0.0#schemaObject</a>
-<a href="https://www.asyncapi.com/docs/specifications/v2.1.0#schemaObject">https://www.asyncapi.com/docs/specifications/v2.1.0#schemaObject</a></p>
+<a href="https://www.asyncapi.com/docs/specifications/v2.1.0#schemaObject">https://www.asyncapi.com/docs/specifications/v2.1.0#schemaObject</a>
+<a href="https://www.asyncapi.com/docs/specifications/v2.2.0#schemaObject">https://www.asyncapi.com/docs/specifications/v2.2.0#schemaObject</a>
+<a href="https://www.asyncapi.com/docs/specifications/v2.3.0#schemaObject">https://www.asyncapi.com/docs/specifications/v2.3.0#schemaObject</a></p>
 </dd>
 <dt><a href="#CommonInputModel">CommonInputModel</a></dt>
 <dd><p>This class is the wrapper for simplified models and the rest of the context needed for further generate typed models.</p>
@@ -227,12 +229,14 @@ Adds a dependency while ensuring that only one dependency is preset at a time.
 <a name="AsyncapiV2Schema"></a>
 
 ## AsyncapiV2Schema
-AsyncAPI 2.0 + 2.1 schema model
+AsyncAPI schema model
 
 Based on Draft 7 with additions
 
 https://www.asyncapi.com/docs/specifications/v2.0.0#schemaObject
 https://www.asyncapi.com/docs/specifications/v2.1.0#schemaObject
+https://www.asyncapi.com/docs/specifications/v2.2.0#schemaObject
+https://www.asyncapi.com/docs/specifications/v2.3.0#schemaObject
 
 **Kind**: global class  
 <a name="AsyncapiV2Schema.toSchema"></a>
@@ -466,7 +470,7 @@ It is only allowed to extend if the other model have $id and is not already bein
 <a name="CommonModel+getNearestDependencies"></a>
 
 ### commonModel.getNearestDependencies()
-This function returns an array of `$id`s from all the CommonModel's it immediate depends on.
+Returns an array of unique `$id`s from all the CommonModel's this model depends on.
 
 **Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
 <a name="CommonModel.toCommonModel"></a>
