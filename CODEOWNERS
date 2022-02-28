@@ -9,7 +9,6 @@
 # Core Champions that does a little of everything
 * @magicmatatjahu @jonaslagoni
 
-
 # Input Champions for AsyncAPI input
 */processors/AsyncAPIInputProcessor*.ts 
 
@@ -21,11 +20,11 @@
 */processors/JsonSchemaInputProcessor*.ts 
 
 # Language Champions for TypeScript and it's presets
-*/generators/typescript/ 
+*/generators/typescript/ @Samridhi-98
 */generators/typescript/preset/CommonPreset*.ts 
 
 # Language Champions for JavaScript and it's presets
-*/generators/javascript 
+*/generators/javascript @Samridhi-98
 */generators/javascript/preset/CommonPreset*.ts 
 
 # Language Champions for Go and it's presets
