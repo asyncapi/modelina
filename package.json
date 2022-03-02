@@ -22,7 +22,7 @@
     "sdk"
   ],
   "author": {
-    "name": "The AsyncAPI maintainers"
+    "name": "The Modelina codeowners and contributors"
   },
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
