@@ -33,7 +33,6 @@ This package is still under development and has not reached version 1.0.0 yet. T
 
 <!-- toc -->
 
-- [:loudspeaker: ATTENTION:](#loudspeaker-attention)
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Features](#features)
@@ -42,7 +41,7 @@ This package is still under development and has not reached version 1.0.0 yet. T
 - [Examples](#examples)
 - [Development](#development)
 - [Contributing](#contributing)
-- [Contributors ✨](#contributors-)
+- [Contributors ✨](#contributors-%E2%9C%A8)
 
 <!-- tocstop -->
 
