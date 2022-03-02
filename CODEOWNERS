@@ -7,7 +7,7 @@
 # The default owners are automatically added as reviewers when you open a pull request unless different owners are specified in the file.
 
 # Core Champions that does a little of everything
-* @magicmatatjahu @jonaslagoni
+* @magicmatatjahu @jonaslagoni @asyncapi-bot-eve 
 
 # Input Champions for AsyncAPI input
 */processors/AsyncAPIInputProcessor*.ts 
