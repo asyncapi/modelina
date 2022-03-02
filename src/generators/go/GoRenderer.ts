@@ -4,6 +4,7 @@ import { CommonModel, CommonInputModel, Preset } from '../../models';
 import { FormatHelpers } from '../../helpers/FormatHelpers';
 import { DefaultPropertyNames, getUniquePropertyName } from '../../helpers';
 import { FieldType } from './GoPreset';
+import { isReservedGoKeyword } from './Constants';
 
 /**
  * Common renderer for Go types
@@ -55,8 +56,8 @@ export abstract class GoRenderer extends AbstractRenderer<GoOptions> {
    * @param model 
    */
   nameType(name: string | undefined, model?: CommonModel): string {
-    return this.options?.namingConvention?.type 
-      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel })
+    return this.options?.namingConvention?.type
+      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel, reservedKeywordCallback: isReservedGoKeyword })
       : name || '';
   }
 
@@ -67,8 +68,8 @@ export abstract class GoRenderer extends AbstractRenderer<GoOptions> {
    * @param field
    */
   nameField(fieldName: string | undefined, field?: CommonModel): string {
-    return this.options?.namingConvention?.field 
-      ? this.options.namingConvention.field(fieldName, { model: this.model, inputModel: this.inputModel, field })
+    return this.options?.namingConvention?.field
+      ? this.options.namingConvention.field(fieldName, { model: this.model, inputModel: this.inputModel, field, reservedKeywordCallback: isReservedGoKeyword })
       : fieldName || '';
   }
 
