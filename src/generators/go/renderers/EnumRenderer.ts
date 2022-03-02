@@ -1,5 +1,6 @@
 import { GoRenderer } from '../GoRenderer';
 import { EnumPreset, CommonModel } from '../../../models';
+import { FormatHelpers } from '../../../helpers';
 
 /**
  * Renderer for Go's `enum` type
@@ -11,9 +12,15 @@ export class EnumRenderer extends GoRenderer {
     const formattedName = this.nameType(this.model.$id);
     const type = this.enumType(this.model);
     const doc = formattedName && this.renderCommentForEnumType(formattedName, type);
+    const enumValues = this.renderConstValuesForEnumType(formattedName, type, <string[]>this.model.enum)
 
     return `${doc}
-type ${formattedName} ${type}`;
+type ${formattedName} ${type}
+
+const (
+  ${this.indent(this.renderBlock(enumValues))}
+)
+`;
   }
 
   enumType(model: CommonModel): string {
@@ -27,6 +34,23 @@ type ${formattedName} ${type}`;
   renderCommentForEnumType(name: string, type: string): string {
     const globalType = type === 'interface{}' ? 'mixed types' : type;
     return this.renderComments(`${name} represents an enum of ${globalType}.`);
+  }
+
+  renderConstValuesForEnumType(typeName: string, innerType: string, values: string[]): string[]{
+    values = values.map(v => FormatHelpers.upperFirst(v));
+
+    let enumValues = [innerType == "string" ? `${values[0]} ${typeName} = "${values[0]}"` : `${values[0]} ${typeName} = iota`]
+
+    values.slice(1).forEach(function (value) {
+      if(innerType === "string") {
+        enumValues = enumValues.concat(`${value} = "${value}`);
+      }
+      if(innerType === "int") {
+        enumValues = enumValues.concat(`${value}`);
+      }
+    });
+
+    return enumValues;
   }
 }
 
