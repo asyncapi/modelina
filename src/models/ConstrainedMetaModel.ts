@@ -1,4 +1,4 @@
-import { MetaModel } from "./MetaModel";
+import { MetaModel } from './MetaModel';
 
 export class ConstrainedMetaModel extends MetaModel {
   type: string;
