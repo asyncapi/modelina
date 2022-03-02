@@ -30,5 +30,6 @@
 
 # Language Champions for Java and it's presets
 */generators/java/*
+
 # Language Champions for C# and it's presets
-*/generators/csharp/*
+*/generators/csharp/* @ron-debajyoti
