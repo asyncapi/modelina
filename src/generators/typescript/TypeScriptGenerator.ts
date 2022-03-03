@@ -1,10 +1,11 @@
-import { 
-  AbstractGenerator, 
+import {
+  AbstractGenerator,
   CommonGeneratorOptions,
   defaultGeneratorOptions
 } from '../AbstractGenerator';
-import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
+import { CommonModel, CommonInputModel, RenderOutput, PresetWithOptions } from '../../models';
 import { TypeHelpers, ModelKind, CommonNamingConvention, CommonNamingConventionImplementation } from '../../helpers';
+import { TS_EXPORT_KEYWORD_PRESET } from './presets/ExportKeywordPreset'
 import { TypeScriptPreset, TS_DEFAULT_PRESET } from './TypeScriptPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { InterfaceRenderer } from './renderers/InterfaceRenderer';
@@ -40,7 +41,7 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,Typ
   ) {
     super('TypeScript', TypeScriptGenerator.defaultOptions, options);
   }
-  
+
   /**
    * Render a complete model result where the model code, library and model dependencies are all bundled appropriately.
    *
@@ -48,7 +49,21 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,Typ
    * @param inputModel
    * @param options
    */
-  async renderCompleteModel(model: CommonModel, inputModel: CommonInputModel, options: TypeScriptRenderCompleteModelOptions): Promise<RenderOutput> {
+  async renderCompleteModel(model: CommonModel, inputModel: CommonInputModel, {moduleSystem = "ESM", exportType = "default"}: TypeScriptRenderCompleteModelOptions): Promise<RenderOutput> {
+    // Shallow copy presets so that we can restore it once we are done
+    const originalPresets = [...(this.options.presets ? this.options.presets : [])]
+
+    // Add preset that adds the `export` keyword if needed
+    if (
+      moduleSystem === "ESM" &&
+      exportType === "named" &&
+      (originalPresets[0] != TS_EXPORT_KEYWORD_PRESET ||
+        (originalPresets[0]?.hasOwnProperty("preset") &&
+          (originalPresets[0] as PresetWithOptions).preset != TS_EXPORT_KEYWORD_PRESET))
+    ) {
+      this.options.presets = [TS_EXPORT_KEYWORD_PRESET, ...originalPresets];
+    }
+
     const outputModel = await this.render(model, inputModel);
     let modelDependencies = model.getNearestDependencies();
     //Ensure model dependencies have their rendered name
@@ -59,8 +74,6 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,Typ
     modelDependencies = modelDependencies.filter((dependencyModelName) => {
       return dependencyModelName !== outputModel.renderedName;
     });
-
-    const {moduleSystem = "ESM", exportType = "default"} = options;
 
     //Create the correct dependency imports
     modelDependencies = modelDependencies.map(
@@ -74,7 +87,7 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,Typ
       }
     );
 
-    //Ensure we expose the model correctly, based on the module system
+    //Ensure we expose the model correctly, based on the module system and export type
     const cjsExport =
       exportType === 'default'
         ? `module.exports = ${outputModel.renderedName};`
@@ -83,13 +96,15 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,Typ
       exportType === 'default'
         ? `export default ${outputModel.renderedName};\n`
         : '';
-    const modelCode = `${
-      moduleSystem === 'ESM' && exportType === 'named' ? 'export ' : ''
-    }${outputModel.result}\n${moduleSystem === 'CJS' ? cjsExport : esmExport}`;
+    const modelCode = `${outputModel.result}\n${moduleSystem === 'CJS' ? cjsExport : esmExport}`;
 
     const outputContent = `${[...modelDependencies, ...outputModel.dependencies].join('\n')}
 
 ${modelCode}`;
+
+    // Restore presets array from original copy
+    this.options.presets = originalPresets
+
     return RenderOutput.toRenderOutput({ result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies });
   }
 
@@ -110,7 +125,7 @@ ${modelCode}`;
   }
 
   async renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
-    const presets = this.getPresets('class'); 
+    const presets = this.getPresets('class');
     const renderer = new ClassRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
     const renderedName = renderer.nameType(model.$id, model);
@@ -118,7 +133,7 @@ ${modelCode}`;
   }
 
   async renderInterface(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
-    const presets = this.getPresets('interface'); 
+    const presets = this.getPresets('interface');
     const renderer = new InterfaceRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
     const renderedName = renderer.nameType(model.$id, model);
@@ -126,7 +141,7 @@ ${modelCode}`;
   }
 
   async renderEnum(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
-    const presets = this.getPresets('enum'); 
+    const presets = this.getPresets('enum');
     const renderer = new EnumRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
     const renderedName = renderer.nameType(model.$id, model);
@@ -134,7 +149,7 @@ ${modelCode}`;
   }
 
   async renderType(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
-    const presets = this.getPresets('type'); 
+    const presets = this.getPresets('type');
     const renderer = new TypeRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
     const renderedName = renderer.nameType(model.$id, model);
