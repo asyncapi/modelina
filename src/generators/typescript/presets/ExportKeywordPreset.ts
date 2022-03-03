@@ -1,6 +1,6 @@
-import { CommonModel } from "../../../models";
-import { TypeScriptPreset } from "../TypeScriptPreset";
-import { TypeScriptRenderer } from "../TypeScriptRenderer";
+import { CommonModel } from '../../../models';
+import { TypeScriptPreset } from '../TypeScriptPreset';
+import { TypeScriptRenderer } from '../TypeScriptRenderer';
 
 const renderWithExportKeyword = ({
   content,
@@ -9,7 +9,6 @@ const renderWithExportKeyword = ({
   content: string;
   item: CommonModel;
 }): string => `export ${content}`;
-
 
 /**
  * Preset which adds export keyword wherever applicable (named exports)

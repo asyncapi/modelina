@@ -5,7 +5,7 @@ import {
 } from '../AbstractGenerator';
 import { CommonModel, CommonInputModel, RenderOutput, PresetWithOptions } from '../../models';
 import { TypeHelpers, ModelKind, CommonNamingConvention, CommonNamingConventionImplementation } from '../../helpers';
-import { TS_EXPORT_KEYWORD_PRESET } from './presets/ExportKeywordPreset'
+import { TS_EXPORT_KEYWORD_PRESET } from './presets';
 import { TypeScriptPreset, TS_DEFAULT_PRESET } from './TypeScriptPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { InterfaceRenderer } from './renderers/InterfaceRenderer';
@@ -49,17 +49,17 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,Typ
    * @param inputModel
    * @param options
    */
-  async renderCompleteModel(model: CommonModel, inputModel: CommonInputModel, {moduleSystem = "ESM", exportType = "default"}: TypeScriptRenderCompleteModelOptions): Promise<RenderOutput> {
+  async renderCompleteModel(model: CommonModel, inputModel: CommonInputModel, {moduleSystem = 'ESM', exportType = 'default'}: TypeScriptRenderCompleteModelOptions): Promise<RenderOutput> {
     // Shallow copy presets so that we can restore it once we are done
-    const originalPresets = [...(this.options.presets ? this.options.presets : [])]
+    const originalPresets = [...(this.options.presets ? this.options.presets : [])];
 
     // Add preset that adds the `export` keyword if needed
     if (
-      moduleSystem === "ESM" &&
-      exportType === "named" &&
-      (originalPresets[0] != TS_EXPORT_KEYWORD_PRESET ||
-        (originalPresets[0]?.hasOwnProperty("preset") &&
-          (originalPresets[0] as PresetWithOptions).preset != TS_EXPORT_KEYWORD_PRESET))
+      moduleSystem === 'ESM' &&
+      exportType === 'named' &&
+      (originalPresets[0] !== TS_EXPORT_KEYWORD_PRESET ||
+        (Object.prototype.hasOwnProperty.call(originalPresets[0], 'preset') &&
+          (originalPresets[0] as PresetWithOptions).preset !== TS_EXPORT_KEYWORD_PRESET))
     ) {
       this.options.presets = [TS_EXPORT_KEYWORD_PRESET, ...originalPresets];
     }
@@ -79,9 +79,9 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,Typ
     modelDependencies = modelDependencies.map(
       (dependencyName) => {
         const dependencyObject =
-          exportType === "named" ? `{${dependencyName}}` : dependencyName;
+          exportType === 'named' ? `{${dependencyName}}` : dependencyName;
 
-        return moduleSystem === "CJS"
+        return moduleSystem === 'CJS'
           ? `const ${dependencyObject} = require('./${dependencyName}');`
           : `import ${dependencyObject} from './${dependencyName}';`;
       }
@@ -103,7 +103,7 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,Typ
 ${modelCode}`;
 
     // Restore presets array from original copy
-    this.options.presets = originalPresets
+    this.options.presets = originalPresets;
 
     return RenderOutput.toRenderOutput({ result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies });
   }
