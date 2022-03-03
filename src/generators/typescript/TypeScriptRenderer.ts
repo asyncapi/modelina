@@ -156,24 +156,17 @@ ${renderedLines}
 
   renderProperty(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): string {
     const formattedPropertyName = this.nameProperty(propertyName, property);
-
-    const desc = property.getFromOriginalInput('description')?.trim();
-    const examples = property.getFromOriginalInput('examples');
-    const formattedExamples = `@example ${examples?.join ? examples.join(', ') : examples}`
-    const doc = this.renderComments(`${desc || ''}\n${examples ? formattedExamples : ''}`.trim());
-    const formattedDoc = desc || examples ? `${doc}\n` : '';
-
     let signature: string;
     switch (type) {
-      case PropertyType.property:
-        signature = this.renderTypeSignature(property, { isRequired: this.model.isRequired(propertyName) });
-        return `${formattedDoc}${formattedPropertyName}${signature};`;
-      case PropertyType.additionalProperty:
-      case PropertyType.patternProperties:
-        signature = this.renderType(property);
-        return `${formattedPropertyName}?: Map<String, ${signature}>;`;
-      default:
-        return '';
+    case PropertyType.property:
+      signature = this.renderTypeSignature(property, { isRequired: this.model.isRequired(propertyName) });
+      return `${formattedPropertyName}${signature};`;
+    case PropertyType.additionalProperty:
+    case PropertyType.patternProperties:
+      signature = this.renderType(property);
+      return `${formattedPropertyName}?: Map<String, ${signature}>;`;
+    default:
+      return '';
     }
   }
 
