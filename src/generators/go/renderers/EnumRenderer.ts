@@ -12,6 +12,11 @@ export class EnumRenderer extends GoRenderer {
     const formattedName = this.nameType(this.model.$id);
     const type = this.enumType(this.model);
     const doc = formattedName && this.renderCommentForEnumType(formattedName, type);
+    if (type === 'interface{}') {
+      return `${doc}
+type ${formattedName} ${type}`
+    }
+
     const enumValues = this.renderConstValuesForEnumType(formattedName, type, <string[]> this.model.enum);
 
     return `${doc}
@@ -19,8 +24,7 @@ type ${formattedName} ${type}
 
 const (
 ${this.indent(this.renderBlock(enumValues))}
-)
-`;
+)`;
   }
 
   enumType(model: CommonModel): string {
@@ -36,7 +40,7 @@ ${this.indent(this.renderBlock(enumValues))}
     return this.renderComments(`${name} represents an enum of ${globalType}.`);
   }
 
-  renderConstValuesForEnumType(typeName: string, innerType: string, values: string[]): string[]{
+  renderConstValuesForEnumType(typeName: string, innerType: string, values: string[]): string[] {
     values = values.map(v => FormatHelpers.upperFirst(v));
 
     let enumValues = [innerType === 'string' ? `${values[0]} ${typeName} = "${values[0]}"` : `${values[0]} ${typeName} = iota`];

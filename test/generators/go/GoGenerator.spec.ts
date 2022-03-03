@@ -134,7 +134,13 @@ type CustomStruct struct {
         enum: ['Texas', 'Alabama', 'California'],
       },
       expected: `// States represents an enum of string.
-type States string`,
+type States string
+
+const (
+  Texas States = "Texas"
+  Alabama = "Alabama"
+  California = "California"
+)`,
     },
     {
       name: 'with enums of mixed types',
@@ -167,7 +173,13 @@ type Things interface{}`,
       enum: ['Texas', 'Alabama', 'California'],
     };
     const expected = `// CustomEnum represents an enum of string.
-type CustomEnum string`;
+type CustomEnum string
+
+const (
+  Texas CustomEnum = "Texas"
+  Alabama = "Alabama"
+  California = "California"
+)`;
 
     generator = new GoGenerator({
       presets: [
