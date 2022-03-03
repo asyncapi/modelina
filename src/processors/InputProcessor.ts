@@ -4,6 +4,7 @@ import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
 import { ProcessorOptions, CommonInputModel } from '../models';
 import { SwaggerInputProcessor } from './SwaggerInputProcessor';
 import { OpenAPIInputProcessor } from './OpenAPIInputProcessor';
+import { TypeScriptInputProcessor } from './TypeScriptInputProcessor';
 
 /**
  * Main input processor which figures out the type of input it receives and delegates the processing into separate individual processors.
@@ -17,6 +18,7 @@ export class InputProcessor {
     this.setProcessor('swagger', new SwaggerInputProcessor()); 
     this.setProcessor('openapi', new OpenAPIInputProcessor()); 
     this.setProcessor('default', new JsonSchemaInputProcessor());
+    this.setProcessor('typescript', new TypeScriptInputProcessor());
   }
   
   /**
