@@ -1,6 +1,6 @@
-import { CommonModel } from "../../../models";
-import { TypeScriptPreset } from "../TypeScriptPreset";
-import { TypeScriptRenderer } from "../TypeScriptRenderer";
+import { CommonModel } from '../../../models';
+import { TypeScriptPreset } from '../TypeScriptPreset';
+import { TypeScriptRenderer } from '../TypeScriptRenderer';
 
 const renderDescription = ({
   renderer,
@@ -11,15 +11,15 @@ const renderDescription = ({
   content: string;
   item: CommonModel;
 }): string => {
-  const desc = item.getFromOriginalInput("description")?.trim();
-  const examples = item.getFromOriginalInput("examples");
+  const desc = item.getFromOriginalInput('description')?.trim();
+  const examples = item.getFromOriginalInput('examples');
   const formattedExamples = `@example ${
-    examples?.join ? examples.join(", ") : examples
+    examples?.join ? examples.join(', ') : examples
   }`;
 
   if (desc || examples) {
     const doc = renderer.renderComments(
-      `${desc || ""}\n${examples ? formattedExamples : ""}`.trim()
+      `${desc || ''}\n${examples ? formattedExamples : ''}`.trim()
     );
     return `${doc}\n${content}`;
   }

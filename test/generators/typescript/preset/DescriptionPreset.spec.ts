@@ -1,28 +1,28 @@
-import {TS_DESCRIPTION_PRESET, TypeScriptGenerator} from '../../../../src'
+import {TS_DESCRIPTION_PRESET, TypeScriptGenerator} from '../../../../src';
 
 const doc = {
-  $id: "Test",
-  type: "object",
+  $id: 'Test',
+  type: 'object',
   additionalProperties: true,
-  required: ["string prop"],
-  description: "Main Description",
+  required: ['string prop'],
+  description: 'Main Description',
   properties: {
-    "string prop": { type: "string" },
+    'string prop': { type: 'string' },
     numberProp: {
-      type: "number",
-      description: "Description",
-      examples: "Example",
+      type: 'number',
+      description: 'Description',
+      examples: 'Example',
     },
     objectProp: {
-      type: "object",
-      $id: "NestedTest",
-      properties: { stringProp: { type: "string" } },
-      examples: ["Example 1", "Example 2"],
+      type: 'object',
+      $id: 'NestedTest',
+      properties: { stringProp: { type: 'string' } },
+      examples: ['Example 1', 'Example 2'],
     },
   },
 };
 
-describe("Description generation", () => {
+describe('Description generation', () => {
   let generator: TypeScriptGenerator;
   beforeEach(() => {
     generator = new TypeScriptGenerator({
@@ -30,10 +30,10 @@ describe("Description generation", () => {
     });
   });
 
-  test("should render example function for model", async () => {
+  test('should render example function for model', async () => {
     const inputModel = await generator.process(doc);
-    const testModel = inputModel.models["Test"];
-    const nestedTestModel = inputModel.models["NestedTest"];
+    const testModel = inputModel.models['Test'];
+    const nestedTestModel = inputModel.models['NestedTest'];
 
     const testClass = await generator.renderClass(testModel, inputModel);
     const nestedTestClass = await generator.renderClass(
