@@ -43,7 +43,7 @@ const (
 
     values.slice(1).forEach(function (value) {
       if(innerType === "string") {
-        enumValues = enumValues.concat(`${value} = "${value}`);
+        enumValues = enumValues.concat(`${value} = "${value}"`);
       }
       if(innerType === "int") {
         enumValues = enumValues.concat(`${value}`);
