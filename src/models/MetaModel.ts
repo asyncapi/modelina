@@ -1,13 +1,17 @@
 export class MetaModel {
-  name: string;
-  originalInput: any;
-  constructor(name: string) {
-    this.name = name;
+  constructor(
+    public name: string,
+    public originalInput: any) {
   }
 }
 
 export class ReferencedModel extends MetaModel {
-  referencedModel?: MetaModel
+  constructor(
+    public name: string,
+    public originalInput: any,
+    public referencedModel: MetaModel) {
+    super(name, originalInput);
+  }
 }
 export class AnyModel extends MetaModel { }
 export class FloatModel extends MetaModel { }
@@ -15,48 +19,64 @@ export class IntegerModel extends MetaModel { }
 export class StringModel extends MetaModel { }
 export class BooleanModel extends MetaModel { }
 export class TupleValueModel {
-  index: number;
-  value: MetaModel;
-  constructor(index: number, value: MetaModel) {
-    this.index = index;
-    this.value = value;
+  constructor(
+    public index: number, 
+    public value: MetaModel) {
   }
 }
 export class TupleModel extends MetaModel {
-  tupleModels: TupleValueModel[] = [];
+  constructor(
+    public name: string,
+    public originalInput: any,
+    public tupleModels: TupleValueModel[]) {
+    super(name, originalInput);
+  }
 }
 export class ObjectModel extends MetaModel {
-  properties: { [key: string]: MetaModel; } = {};
+  constructor(
+    public name: string,
+    public originalInput: any,
+    public properties: { [key: string]: MetaModel; }) {
+    super(name, originalInput);
+  }
 }
 export class ArrayModel extends MetaModel {
-  valueModel: MetaModel;
-  constructor(name: string, valueModel: MetaModel) {
-    super(name);
-    this.valueModel = valueModel;
+  constructor(
+    public name: string,
+    public originalInput: any, 
+    public valueModel: MetaModel) {
+    super(name, originalInput);
   }
 }
 export class UnionModel extends MetaModel {
-  unionModels: MetaModel[] = [];
+  constructor(
+    public name: string,
+    public originalInput: any, 
+    public unionModels: MetaModel[]) {
+    super(name, originalInput);
+  }
 }
 export class EnumValueModel {
-  key: string;
-  value: any;
-  constructor(key: string, value: any) {
-    this.key = key;
-    this.value = value;
+  constructor(
+    public key: string, 
+    public value: any) {
   }
 }
 export class EnumModel extends MetaModel {
-  values: EnumValueModel[] = [];
+  constructor(
+    public name: string,
+    public originalInput: any, 
+    public values: EnumValueModel[]) {
+    super(name, originalInput);
+  }
 }
 export class DictionaryModel extends MetaModel {
-  keyModel: MetaModel;
-  valueModel: MetaModel;
-  serializationType: 'unwrap' | 'normal' = 'normal';
-
-  constructor(name: string, keyModel: MetaModel, valueModel: MetaModel) {
-    super(name);
-    this.keyModel = keyModel;
-    this.valueModel = valueModel;
+  constructor(
+    public name: string,
+    public originalInput: any, 
+    public keyModel: MetaModel, 
+    public valueModel: MetaModel,
+    public serializationType: 'unwrap' | 'normal' = 'normal') {
+    super(name, originalInput);
   }
 }
