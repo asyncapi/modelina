@@ -105,32 +105,20 @@ export const CSHARP_DEFAULT_CLASS_PRESET: CsharpClassPreset = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
-  property({ renderer, propertyName, property, type }) {
-    propertyName = renderer.nameProperty(propertyName, property);
+  async property({ renderer, propertyName, property, type }) {
+    propertyName = pascalCase(renderer.nameProperty(propertyName, property));
     let propertyType = renderer.renderType(property);
     if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
       propertyType = `Dictionary<string, ${propertyType}>`;
     }
-    return `private ${propertyType} ${propertyName};`;
+    let getter = await renderer.runGetterPreset(propertyName, property, type);
+    let setter = await renderer.runSetterPreset(propertyName, property, type);
+    return `public ${propertyType} ${propertyName} { ${getter} ${setter} } `;
   },
-  async accessor({ renderer, propertyName, property, type }) {
-    const formattedAccessorName = pascalCase(renderer.nameProperty(propertyName, property));
-    let propertyType = renderer.renderType(property);
-    if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
-      propertyType = `Dictionary<string, ${propertyType}>`;
-    }
-    return `public ${propertyType} ${formattedAccessorName} 
-{
-  ${await renderer.runGetterPreset(propertyName, property, type)}
-  ${await renderer.runSetterPreset(propertyName, property, type)}
-}`;
+  getter() {
+    return `get;`;
   },
-  getter({ renderer, propertyName, property }) {
-    const formattedPropertyName = renderer.nameProperty(propertyName, property);
-    return `get { return ${formattedPropertyName}; }`;
-  },
-  setter({ renderer, propertyName, property }) {
-    const formattedPropertyName = renderer.nameProperty(propertyName, property);
-    return `set { ${formattedPropertyName} = value; }`;
+  setter() {
+    return `set;`;
   }
 };
