@@ -5,11 +5,11 @@ export class MetaModel {
   }
 }
 
-export class ReferencedModel extends MetaModel {
+export class ReferenceModel extends MetaModel {
   constructor(
     public name: string,
     public originalInput: any,
-    public referencedModel: MetaModel) {
+    public ref: MetaModel) {
     super(name, originalInput);
   }
 }
@@ -28,7 +28,7 @@ export class TupleModel extends MetaModel {
   constructor(
     public name: string,
     public originalInput: any,
-    public tupleModels: TupleValueModel[]) {
+    public tuple: TupleValueModel[]) {
     super(name, originalInput);
   }
 }
@@ -52,7 +52,7 @@ export class UnionModel extends MetaModel {
   constructor(
     public name: string,
     public originalInput: any, 
-    public unionModels: MetaModel[]) {
+    public union: MetaModel[]) {
     super(name, originalInput);
   }
 }
@@ -74,8 +74,8 @@ export class DictionaryModel extends MetaModel {
   constructor(
     public name: string,
     public originalInput: any, 
-    public keyModel: MetaModel, 
-    public valueModel: MetaModel,
+    public key: MetaModel, 
+    public value: MetaModel,
     public serializationType: 'unwrap' | 'normal' = 'normal') {
     super(name, originalInput);
   }
