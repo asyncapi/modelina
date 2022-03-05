@@ -17,7 +17,7 @@ export class ClassRenderer extends CSharpRenderer {
       await this.renderAccessors(),
       await this.runAdditionalContentPreset(),
     ];
-    
+
     if (this.model.additionalProperties !== undefined || this.model.patternProperties !== undefined) {
       this.addDependency('using System.Collections.Generic;');
     }
@@ -36,7 +36,7 @@ ${this.indent(this.renderBlock(content, 2))}
       const rendererProperty = await this.runPropertyPreset(propertyName, property);
       content.push(rendererProperty);
     }
-    
+
     if (this.model.additionalProperties !== undefined) {
       const propertyName = getUniquePropertyName(this.model, DefaultPropertyNames.additionalProperties);
       const additionalProperty = await this.runPropertyPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
@@ -82,19 +82,19 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 
   runAccessorPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
-    return this.runPreset('accessor', { propertyName, property, type});
+    return this.runPreset('accessor', { propertyName, property, type });
   }
 
   runPropertyPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
-    return this.runPreset('property', { propertyName, property, type});
+    return this.runPreset('property', { propertyName, property, type });
   }
 
   runGetterPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
-    return this.runPreset('getter', { propertyName, property, type});
+    return this.runPreset('getter', { propertyName, property, type });
   }
 
   runSetterPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
-    return this.runPreset('setter', { propertyName, property, type});
+    return this.runPreset('setter', { propertyName, property, type });
   }
 }
 
@@ -102,32 +102,22 @@ export const CSHARP_DEFAULT_CLASS_PRESET: CsharpClassPreset = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
-  property({ renderer, propertyName, property, type }) {
-    propertyName = renderer.nameProperty(propertyName, property);
+  async property({ renderer, propertyName, property, type }) {
+    propertyName = pascalCase(renderer.nameProperty(propertyName, property));
     let propertyType = renderer.renderType(property);
     if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
       propertyType = `Dictionary<string, ${propertyType}>`;
     }
-    return `private ${propertyType} ${propertyName};`;
+
+    let getter = await renderer.runGetterPreset(propertyName, property, type);
+    let setter = await renderer.runSetterPreset(propertyName, property, type);
+
+    return `public ${propertyType} ${propertyName} { ${getter} ${setter} }`;
   },
-  async accessor({ renderer, propertyName, property, type }) {
-    const formattedAccessorName = pascalCase(renderer.nameProperty(propertyName, property));
-    let propertyType = renderer.renderType(property);
-    if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
-      propertyType = `Dictionary<string, ${propertyType}>`;
-    }
-    return `public ${propertyType} ${formattedAccessorName} 
-{
-  ${await renderer.runGetterPreset(propertyName, property, type)}
-  ${await renderer.runSetterPreset(propertyName, property, type)}
-}`;
+  getter() {
+    return `get;`;
   },
-  getter({ renderer, propertyName, property }) {
-    const formattedPropertyName = renderer.nameProperty(propertyName, property);
-    return `get { return ${formattedPropertyName}; }`;
-  },
-  setter({ renderer, propertyName, property }) {
-    const formattedPropertyName = renderer.nameProperty(propertyName, property);
-    return `set { ${formattedPropertyName} = value; }`;
+  setter() {
+    return `set;`;
   }
 };
