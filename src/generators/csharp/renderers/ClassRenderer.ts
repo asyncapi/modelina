@@ -109,8 +109,8 @@ export const CSHARP_DEFAULT_CLASS_PRESET: CsharpClassPreset = {
       propertyType = `Dictionary<string, ${propertyType}>`;
     }
 
-    let getter = await renderer.runGetterPreset(propertyName, property, type);
-    let setter = await renderer.runSetterPreset(propertyName, property, type);
+    const getter: string = await renderer.runGetterPreset(propertyName, property, type);
+    const setter: string = await renderer.runSetterPreset(propertyName, property, type);
 
     return `public ${propertyType} ${propertyName} { ${getter} ${setter} }`;
   },
