@@ -99,7 +99,7 @@ export abstract class CSharpRenderer extends AbstractRenderer<CSharpOptions> {
         }
         const newType = model.items ? this.renderType(model.items) : 'dynamic';
         if (this.options.collectionType && this.options.collectionType === 'List') {
-          return `List<${newType}>`;
+          return `IEnumerable<${newType}>`;
         }
         return `${newType}[]`;
       }
