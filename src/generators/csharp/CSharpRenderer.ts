@@ -69,24 +69,41 @@ export abstract class CSharpRenderer extends AbstractRenderer<CSharpOptions> {
 
   toCSharpType(type: string | undefined, model: CommonModel): string {
     switch (type) {
-    case 'string':
-      return 'string';
-    case 'integer':
-      return 'int?';
-    case 'number':
-      return 'float?';
-    case 'boolean':
-      return 'bool?';
-    case 'object':
-      return 'object';
-    case 'array': {
-      if (Array.isArray(model.items)) {
-        return model.items.length > 1? 'dynamic[]' : `${this.renderType(model.items[0])}[]`;
+      case 'integer':
+      case 'int32':
+        return 'int?';
+      case 'long':
+      case 'int64':
+        return 'long?';
+      case 'boolean':
+        return 'bool?';
+      case 'date':
+      case 'time':
+      case 'dateTime':
+      case 'date-time':
+        return 'System.DateTime?';
+      case 'string':
+      case 'password':
+      case 'byte':
+        return 'string';
+      case 'float':
+        return 'float?';
+      case 'double':
+      case 'number':
+        return 'double?';
+      case 'binary':
+        return 'byte[]';
+      case 'array': {
+        if (Array.isArray(model.items)) {
+          return model.items.length > 1 ? 'dynamic[]' : `${this.renderType(model.items[0])}[]`;
+        }
+        const newType = model.items ? this.renderType(model.items) : 'dynamic';
+        if (this.options.collectionType && this.options.collectionType === 'List') {
+          return `List<${newType}>`;
+        }
+        return `${newType}[]`;
       }
-      const arrayType = model.items ? this.renderType(model.items) : 'dynamic';
-      return `${arrayType}[]`;
-    }
-    default: return 'dynamic';
+      default: return 'dynamic';
     }
   }
 }
