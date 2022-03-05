@@ -4,7 +4,7 @@ import {
   defaultGeneratorOptions
 } from '../AbstractGenerator';
 import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
-import { TypeHelpers, ModelKind, CommonNamingConvention, CommonNamingConventionImplementation } from '../../helpers';
+import { TypeHelpers, ModelKind, CommonNamingConvention, CommonNamingConventionImplementation, FileHelpers, FormatHelpers } from '../../helpers';
 import { CSharpPreset, CSHARP_DEFAULT_PRESET } from './CSharpPreset';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { ClassRenderer } from './renderers/ClassRenderer';
@@ -50,26 +50,30 @@ export class CSharpGenerator extends AbstractGenerator<CSharpOptions, CSharpRend
     }
 
     const outputModel = await this.render(model, inputModel);
-    const outputContent = `namespace ${options.namespace}
+
+    const outputDependencies = outputModel.dependencies.length == 0 ? '' : `${outputModel.dependencies.join('\n')}
+
+`;
+
+    const outputContent = `${outputDependencies}namespace ${options.namespace}
 {
-  ${outputModel.dependencies.join('\n')}
-  ${outputModel.result}
+${FormatHelpers.indent(outputModel.result, this.options.indentation?.size, this.options.indentation?.type)}
 }`;
-    
-    return RenderOutput.toRenderOutput({result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies});
+
+    return RenderOutput.toRenderOutput({ result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies });
   }
 
   render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const kind = TypeHelpers.extractKind(model);
     switch (kind) {
-    case ModelKind.UNION:
-      //We dont support union in Csharp generator, however, if union is an object, we render it as a class.
-      if (!model.type?.includes('object')) {break;}
-      return this.renderClass(model, inputModel);
-    case ModelKind.OBJECT: 
-      return this.renderClass(model, inputModel);
-    case ModelKind.ENUM: 
-      return this.renderEnum(model, inputModel);
+      case ModelKind.UNION:
+        //We dont support union in Csharp generator, however, if union is an object, we render it as a class.
+        if (!model.type?.includes('object')) { break; }
+        return this.renderClass(model, inputModel);
+      case ModelKind.OBJECT:
+        return this.renderClass(model, inputModel);
+      case ModelKind.ENUM:
+        return this.renderEnum(model, inputModel);
     }
     Logger.warn(`C# generator, cannot generate this type of model, ${model.$id}`);
     return Promise.resolve(RenderOutput.toRenderOutput({ result: '', renderedName: '', dependencies: [] }));
