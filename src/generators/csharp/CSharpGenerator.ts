@@ -55,9 +55,9 @@ export class CSharpGenerator extends AbstractGenerator<CSharpOptions, CSharpRend
 
 `;
 
-    const outputContent = `${outputDependencies}namespace ${options.namespace}
+    const outputContent = `namespace ${options.namespace}
 {
-${FormatHelpers.indent(outputModel.result, this.options.indentation?.size, this.options.indentation?.type)}
+${FormatHelpers.indent(outputDependencies + outputModel.result, this.options.indentation?.size, this.options.indentation?.type)}
 }`;
 
     return RenderOutput.toRenderOutput({ result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies });

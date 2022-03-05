@@ -21,25 +21,24 @@ ${this.indent(enumItems)}
 
 public static class ${formattedName}Extensions 
 {
-  public static dynamic GetValue(this ${formattedName} enumValue)
-  {
-    switch (enumValue)
-    {
-${this.indent(getValueCaseItemValues, 6)}
-    }
-    return null;
-  }
-
-  public static ${formattedName}? To${formattedName}(dynamic value)
-  {
-    switch (value)
-    {
-${this.indent(toEnumCaseItemValues, 6)}
-    }
-    return null;
-  }
+${this.indent(`public static dynamic GetValue(this ${formattedName} enumValue)
+{
+${this.indent(`switch (enumValue)
+{
+${this.indent(getValueCaseItemValues)}
+}
+return null;`)}
 }
 
+public static ${formattedName}? To${formattedName}(dynamic value)
+{
+${this.indent(`switch (value)
+{
+${this.indent(toEnumCaseItemValues)}
+}
+return null;`)}
+}`)}
+}
 `;
   }
 

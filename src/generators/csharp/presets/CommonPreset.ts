@@ -65,8 +65,7 @@ function renderHashCode({ renderer, model }: {
   HashCode hash = new HashCode();
 ${renderer.indent(hashProperties, 2)}
   return hash.ToHashCode();
-}
-`;
+}`;
 }
 
 /**
