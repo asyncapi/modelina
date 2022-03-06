@@ -14,7 +14,7 @@ export class EnumRenderer extends GoRenderer {
     const doc = formattedName && this.renderCommentForEnumType(formattedName, type);
     if (type === 'interface{}') {
       return `${doc}
-type ${formattedName} ${type}`
+type ${formattedName} ${type}`;
     }
 
     const enumValues = this.renderConstValuesForEnumType(formattedName, type, <string[]> this.model.enum);
@@ -41,18 +41,18 @@ ${this.indent(this.renderBlock(enumValues))}
   }
 
   renderConstValuesForEnumType(typeName: string, innerType: string, values: string[]): string[] {
-    values = values.map(v => FormatHelpers.upperFirst(v));
+    const fieldNames = values.map(v => 
+      FormatHelpers.upperFirst(FormatHelpers.toCamelCase(v))
+    );
 
-    let enumValues = [innerType === 'string' ? `${values[0]} ${typeName} = "${values[0]}"` : `${values[0]} ${typeName} = iota`];
+    let enumValues = [innerType === 'string' ? `${fieldNames[0]} ${typeName} = "${values[0]}"` : `${fieldNames[0]} ${typeName} = iota`];
 
-    for (const value of values.slice(1)) {
-      const fieldName = FormatHelpers.replaceSpecialCharacters(value);
-
+    for (let i = 1; i < values.length; i++) {
       if (innerType === 'string') {
-        enumValues = enumValues.concat(`${fieldName} = "${value}"`);
+        enumValues = enumValues.concat(`${fieldNames[i]} = "${values[i]}"`);
       }
       if (innerType === 'int') {
-        enumValues = enumValues.concat(`${fieldName}`);
+        enumValues = enumValues.concat(`${fieldNames[i]}`);
       }
     }
 
