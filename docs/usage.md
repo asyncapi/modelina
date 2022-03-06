@@ -70,6 +70,14 @@ The OpenAPI input processor expects that the property `openapi` is defined in or
 
 The response and request payloads, since it is a JSON Schema variant, is [interpreted as a such](./interpretation_of_JSON_Schema.md).
 
+## Generate models from TypeScript type files
+
+Currently, we support generating models from a TypeScript type file.
+
+- [Generate Java model from a TypeScript file](../examples/java-from-typescript-type/)
+
+The TypeScript input processor expects that the typescript file and base directory where it's present, is passed as input, in order to process the types accurately.
+
 ## Generate Go models
 
 Go is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-go-models) and the following [Go documentation for more advanced use-cases](./languages/Go.md).
