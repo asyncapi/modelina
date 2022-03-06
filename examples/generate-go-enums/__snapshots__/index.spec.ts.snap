@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render Go Enums and should log expected output to console 1`] = `
+Array [
+  "// Cities represents an enum of string.
+type Cities string
+
+const (
+  London Cities = \\"London\\"
+  Rome = \\"Rome\\"
+  Brusseles = \\"Brusseles\\"
+)",
+]
+`;
+
+exports[`Should be able to render Go Enums and should log expected output to console 2`] = `
+Array [
+  "// ClickOptions represents an enum of string.
+type ClickOptions string
+
+const (
+  ClickAndPlay ClickOptions = \\"click_and_play\\"
+  ClickPay = \\"click&pay\\"
+)",
+]
+`;
+
+exports[`Should be able to render Go Enums and should log expected output to console 3`] = `
+Array [
+  "// Options represents an enum of int.
+type Options int
+
+const (
+  FirstOption Options = iota
+  SecondOption
+)",
+]
+`;
