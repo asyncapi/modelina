@@ -216,7 +216,8 @@
         "code",
         "test",
         "doc",
-        "example"
+        "example",
+        "maintenance"
       ]
     },
     {
@@ -250,7 +251,8 @@
         "code",
         "test",
         "doc",
-        "example"
+        "example",
+        "maintenance"
       ]
     }
   ],
