@@ -1,31 +1,30 @@
-import {TS_DESCRIPTION_PRESET, TypeScriptGenerator} from '../../src'
-import { TS_COMMON_PRESET } from '../../src';
+import {TS_DESCRIPTION_PRESET, TypeScriptGenerator} from '../../src';
 
 const generator = new TypeScriptGenerator({
-  modelType: "interface",
+  modelType: 'interface',
   presets: [
     TS_DESCRIPTION_PRESET,
   ]
 });
 const jsonSchemaDraft7 = {
   $schema: 'http://json-schema.org/draft-07/schema#',
-  $id: "Test",
-  type: "object",
+  $id: 'Test',
+  type: 'object',
   additionalProperties: true,
-  required: ["string prop"],
-  description: "Main Description",
+  required: ['string prop'],
+  description: 'Main Description',
   properties: {
-    "string prop": { type: "string" },
+    'string prop': { type: 'string' },
     numberProp: {
-      type: "number",
-      description: "Description",
-      examples: "Example",
+      type: 'number',
+      description: 'Description',
+      examples: 'Example',
     },
     objectProp: {
-      type: "object",
-      $id: "NestedTest",
-      properties: { stringProp: { type: "string" } },
-      examples: ["Example 1", "Example 2"],
+      type: 'object',
+      $id: 'NestedTest',
+      properties: { stringProp: { type: 'string' } },
+      examples: ['Example 1', 'Example 2'],
     },
   },
 };
