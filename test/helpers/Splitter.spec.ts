@@ -13,10 +13,11 @@ describe('Splitter', () => {
       splitString: true
     };
     const splittedModels = split(model, options);
-    expect(splittedModels.length).toEqual(2);
     
     const expectedObjectModel = model;
     expectedObjectModel.properties['test'] = new ReferenceModel(stringModel.name, stringModel.originalInput, stringModel);
+    
+    expect(splittedModels.length).toEqual(2);
     expect(splittedModels[0] instanceof ObjectModel).toEqual(true);
     expect(splittedModels[0]).toEqual(expectedObjectModel);
     expect(splittedModels[1] instanceof StringModel).toEqual(true);
@@ -44,7 +45,6 @@ describe('Splitter', () => {
     };
     const splittedModels = split(model, options);
     expect(splittedModels.length).toEqual(1);
-    
     expect(splittedModels[0]).toEqual(model);
   });
 });
