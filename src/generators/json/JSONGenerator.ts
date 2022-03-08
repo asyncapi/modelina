@@ -25,17 +25,6 @@ export class JSONGenerator extends AbstractGenerator<JSONOptions, any> {
     super('JSON', JSONGenerator.defaultOptions, options);
   }
 
-  // /**
-  //  * Render a scattered model, where the source code and library and model dependencies are separated.
-  //  * 
-  //  * @param model 
-  //  * @param inputModel 
-  //  */
-  // public render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
-  //   const result = JSON.stringify(Draft7Schema.toSchema(model as Record<string, any>), null, 4);
-  //   return Promise.resolve(RenderOutput.toRenderOutput({result, renderedName: '', dependencies: []}));
-  // }
-
   /**
    * Render a scattered model, where the source code and library and model dependencies are separated.
    * 
@@ -75,7 +64,7 @@ export class JSONGenerator extends AbstractGenerator<JSONOptions, any> {
     const renderer = new JSONRenderer(this.options, this, [], model, inputModel);
     const renderedType = await renderer.renderType(model);
     const renderedName = renderer.nameType(model.$id, model);
-    const renderProperties = renderer.renderProperties(model);
+    const renderProperties = renderer.renderAllProperties(model);
     const result = JSON.stringify({
       $id: renderedName,
       type: renderedType,
