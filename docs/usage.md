@@ -61,6 +61,7 @@ The Swagger input processor expects that the property `swagger` is defined in or
 
 The response payload and `body` parameters, since it is a JSON Schema variant, is [interpreted as a such](./interpretation_of_JSON_Schema.md).
 
+
 ## Generate models from Meta models
 Sometimes, the supported inputs such as AsyncAPI and JSON Schema wont be enough for your use-case and you want to create your own data models while still utilizing the full sweep of features from the generators.
 
