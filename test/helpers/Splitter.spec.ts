@@ -34,4 +34,17 @@ describe('Splitter', () => {
     
     expect(splittedModels[0]).toEqual(model);
   });
+  test('should not split models when asked for something else', () => { 
+    const stringModel = new StringModel('testString', undefined);
+    const model = new ObjectModel('testObj', undefined, {
+      test: stringModel
+    });
+    const options: SplitOptions = {
+      splitBoolean: true
+    };
+    const splittedModels = split(model, options);
+    expect(splittedModels.length).toEqual(1);
+    
+    expect(splittedModels[0]).toEqual(model);
+  });
 });
