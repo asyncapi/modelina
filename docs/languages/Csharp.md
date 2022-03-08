@@ -25,3 +25,9 @@ Check out this [example for a live demonstration](../../examples/csharp-generate
 To overwrite the `Equal` and `GetHashCode` methods, use the preset `CSHARP_COMMON_PRESET` and provide the options `equal: true` and `hashCode: true`
 
 Check out this [example for a live demonstration](../../examples/csharp-generate-equals-and-hashcode).
+
+## Change the collection type for arrays
+
+If you consider the Array Class to be insuitable for your situation, then you might look into setting the `collectionType: 'List'` option to your instance of the generator. This will cause all of the collections to be rendered as of type `System.Collections.Generic.IEnumerable<T>`.
+
+Check out this [example for a live demonstration](../../examples/csharp-change-collection-type).

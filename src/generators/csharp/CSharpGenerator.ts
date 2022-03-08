@@ -26,7 +26,7 @@ export interface CSharpRenderCompleteModelOptions {
 export class CSharpGenerator extends AbstractGenerator<CSharpOptions, CSharpRenderCompleteModelOptions> {
   static defaultOptions: CSharpOptions = {
     ...defaultGeneratorOptions,
-    collectionType: 'List',
+    collectionType: 'Array',
     defaultPreset: CSHARP_DEFAULT_PRESET,
     namingConvention: CommonNamingConventionImplementation
   };

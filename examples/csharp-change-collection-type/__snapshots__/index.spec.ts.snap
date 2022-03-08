@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render TEMPLATE and should log expected output to console 1`] = `
+Array [
+  "public class Root {
+  private IEnumerable<string> email;
+
+  public IEnumerable<string> Email 
+  {
+    get { return email; }
+    set { email = value; }
+  }
+}",
+]
+`;
+
+exports[`Should be able to render collections in Java as List and should log expected output to console 1`] = `
+Array [
+  "public class Root {
+  private IEnumerable<string> email;
+
+  public IEnumerable<string> getEmail() { return this.email; }
+  public void setEmail(IEnumerable<string> email) { this.email = email; }
+}",
+]
+`;

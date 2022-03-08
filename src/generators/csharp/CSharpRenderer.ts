@@ -29,7 +29,7 @@ export abstract class CSharpRenderer extends AbstractRenderer<CSharpOptions> {
    * @param model 
    */
   nameType(name: string | undefined, model?: CommonModel): string {
-    return this.options?.namingConvention?.type 
+    return this.options?.namingConvention?.type
       ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel, reservedKeywordCallback: isReservedCSharpKeyword })
       : name || '';
   }
@@ -41,7 +41,7 @@ export abstract class CSharpRenderer extends AbstractRenderer<CSharpOptions> {
    * @param property
    */
   nameProperty(propertyName: string | undefined, property?: CommonModel): string {
-    return this.options?.namingConvention?.property 
+    return this.options?.namingConvention?.property
       ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property, reservedKeywordCallback: isReservedCSharpKeyword })
       : propertyName || '';
   }
@@ -93,11 +93,19 @@ export abstract class CSharpRenderer extends AbstractRenderer<CSharpOptions> {
         return 'double?';
       case 'binary':
         return 'byte[]';
+      case 'object':
+        return 'object';
       case 'array': {
+        let arrayItemModel = model.items;
         if (Array.isArray(model.items)) {
-          return model.items.length > 1 ? 'dynamic[]' : `${this.renderType(model.items[0])}[]`;
+          arrayItemModel = model.items.reduce((prevModel, currentModel) => {
+            return CommonModel.mergeCommonModels(CommonModel.toCommonModel(prevModel), CommonModel.toCommonModel(currentModel), {});
+          });
+          if (model.additionalItems !== undefined) {
+            arrayItemModel = CommonModel.mergeCommonModels(arrayItemModel, model.additionalItems, {});
+          }
         }
-        const newType = model.items ? this.renderType(model.items) : 'dynamic';
+        const newType = arrayItemModel ? this.renderType(arrayItemModel as CommonModel) : 'dynamic';
         if (this.options.collectionType && this.options.collectionType === 'List') {
           return `IEnumerable<${newType}>`;
         }
