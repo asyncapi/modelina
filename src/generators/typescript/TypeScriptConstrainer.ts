@@ -1,83 +1,38 @@
-import { NO_NUMBER_START_CHAR, NO_DUPLICATE_PROPERTIES, NO_EMPTY_VALUE, NO_RESERVED_KEYWORDS} from 'constrainer/constraints';
 import { FormatHelpers } from 'helpers';
 import { ConstrainedAnyModel, ConstrainedBooleanModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedMetaModel, ConstrainedObjectModel, ConstrainedReferencedModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedTupleValueModel, ConstrainedArrayModel, ConstrainedUnionModel, ConstrainedEnumModel } from '../../models/ConstrainedMetaModel';
 import { AnyModel, BooleanModel, FloatModel, IntegerModel, MetaModel, ObjectModel, ReferencedModel, StringModel, TupleModel, ArrayModel, UnionModel, EnumModel } from '../../models/MetaModel';
-import { isReservedTypeScriptKeyword } from './Constants';
-
-const NO_TYPESCRIPT_RESERVED_KEYWORDS = (constrainedObjectModel: ConstrainedObjectModel, objectModel: ObjectModel, propertyName: string, namingFormatter: (value: string) => string) => {
-  let newPropertyName = propertyName;
-
-  const alreadyPartOfMetaModelProperties = Object.keys(objectModel.properties).includes(propertyName);
-  const alreadyPartOfNewProperties = Object.keys(constrainedObjectModel.properties).includes(propertyName);
-  if (alreadyPartOfMetaModelProperties || alreadyPartOfNewProperties) {
-    newPropertyName = `reserved_${propertyName}`;
-    newPropertyName = namingFormatter(newPropertyName);
-    [newPropertyName] = NO_DUPLICATE_PROPERTIES(constrainedObjectModel, objectModel, newPropertyName, namingFormatter);
-  }
-  return newPropertyName;
+import { DefaultPropertyKeyConstraints, ModelPropertyKeyConstraints } from './constrainer/ModelPropertyKeyConstrainer';
+import { DefaultModelNameConstraints, ModelNameConstraints } from './constrainer/ModelNameConstrainer';
+export interface TypeScriptConstraints {
+  modelNameConstraints: ModelNameConstraints,
+  modelPropertyKeyConstraints: ModelPropertyKeyConstraints,
 }
-export type TypeScriptNameConstraints = {
-  NO_SPECIAL_CHAR: (value: string) => string;
-  NO_NUMBER_START_CHAR: (value: string) => string;
-  NO_EMPTY_VALUE: (value: string) => string;
-  NAMING_FORMATTER: (value: string) => string;
-  NO_RESERVED_KEYWORDS: (value: string) => string;
-};
 
-export type TypeScriptPropertyConstraints = {
-  NO_SPECIAL_CHAR: (value: string) => string;
-  NO_NUMBER_START_CHAR: (value: string) => string;
-  NO_DUPLICATE_PROPERTIES: (constrainedObjectModel: ConstrainedObjectModel, objectModel: ObjectModel, propertyName: string, namingFormatter: (value: string) => string) => string;
-  NO_EMPTY_VALUE: (value: string) => string;
-  NAMING_FORMATTER: (value: string) => string;
-  NO_RESERVED_KEYWORDS: (value: string) => string;
-};
-
-const DefaultPropertyConstraints: TypeScriptPropertyConstraints = {
-  NO_SPECIAL_CHAR: (value: string) => {
-    return FormatHelpers.replaceSpecialCharacters(value, { exclude: [' ', '_', '$'], separator: '_' });
-  },
-  NO_NUMBER_START_CHAR,
-  NO_DUPLICATE_PROPERTIES,
-  NO_EMPTY_VALUE,
-  NAMING_FORMATTER: (value: string) => {
-    return FormatHelpers.toPascalCase(value);
-  },
-  NO_RESERVED_KEYWORDS: (value: string) => {
-    return NO_RESERVED_KEYWORDS(value, isReservedTypeScriptKeyword); 
-  }
-};
-
-const DefaultTypeScriptNameConstraints: TypeScriptNameConstraints = {
-  NO_SPECIAL_CHAR: (value: string) => {
-    return FormatHelpers.replaceSpecialCharacters(value, { exclude: [' ', '_', '$'], separator: '_' });
-  },
-  NO_NUMBER_START_CHAR,
-  NO_EMPTY_VALUE,
-  NAMING_FORMATTER: (value: string) => {
-    return FormatHelpers.toPascalCase(value);
-  },
-  NO_RESERVED_KEYWORDS: (value: string) => {
-    return NO_RESERVED_KEYWORDS(value, isReservedTypeScriptKeyword); 
-  }
-};
-
-export type TypeScriptConstraints = {
-  properties: TypeScriptPropertyConstraints = COMMON_PROPERTY_CONSTRAINER
-};
-
-export function ConstrainName(value: string, constrainRules: TypeScriptConstraints): string {
+export const DefaultTypeScriptConstraints: TypeScriptConstraints = {
+  modelNameConstraints: DefaultModelNameConstraints,
+  modelPropertyKeyConstraints: DefaultPropertyKeyConstraints
+}
+export function ConstrainModelName(value: string, constrainRules: TypeScriptConstraints): string {
   let constrainedValue = value;
-  constrainedValue = constrainRules.properties.NO_SPECIAL_CHAR(constrainedValue);
-  constrainedValue = constrainRules.properties.NO_NUMBER_START_CHAR(constrainedValue);
-  constrainedValue = constrainRules.properties.NO_EMPTY_VALUE(constrainedValue);
-  constrainedValue = constrainRules.properties.NAMING_FORMATTER(constrainedValue);
-  constrainedValue = constrainRules.properties.NO_RESERVED_KEYWORDS(constrainedValue);
+  constrainedValue = constrainRules.modelNameConstraints.NO_SPECIAL_CHAR(constrainedValue);
+  constrainedValue = constrainRules.modelNameConstraints.NO_NUMBER_START_CHAR(constrainedValue);
+  constrainedValue = constrainRules.modelNameConstraints.NO_EMPTY_VALUE(constrainedValue);
+  constrainedValue = constrainRules.modelNameConstraints.NAMING_FORMATTER(constrainedValue);
+  constrainedValue = constrainRules.modelNameConstraints.NO_RESERVED_KEYWORDS(constrainedValue);
+  return constrainedValue;
+}
+export function ConstrainPropertyKey(value: string, constrainRules: TypeScriptConstraints): string {
+  let constrainedValue = value;
+  constrainedValue = constrainRules.modelPropertyKeyConstraints.NO_SPECIAL_CHAR(constrainedValue);
+  constrainedValue = constrainRules.modelPropertyKeyConstraints.NO_NUMBER_START_CHAR(constrainedValue);
+  constrainedValue = constrainRules.modelPropertyKeyConstraints.NO_EMPTY_VALUE(constrainedValue);
+  constrainedValue = constrainRules.modelPropertyKeyConstraints.NAMING_FORMATTER(constrainedValue);
+  constrainedValue = constrainRules.modelPropertyKeyConstraints.NO_RESERVED_KEYWORDS(constrainedValue);
   return constrainedValue;
 }
 
 export function TypeScriptConstrainer(metaModel: MetaModel, constrainRules: TypeScriptConstraints): ConstrainedMetaModel {
-  const constrainedName = ConstrainName(metaModel.name, constrainRules);
+  const constrainedName = ConstrainModelName(metaModel.name, constrainRules);
   
   if (metaModel instanceof ObjectModel) {
     return constrainObjectModel(metaModel, constrainRules);
