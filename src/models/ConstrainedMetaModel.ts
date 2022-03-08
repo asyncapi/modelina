@@ -2,8 +2,8 @@ import { MetaModel } from './MetaModel';
 
 export class ConstrainedMetaModel extends MetaModel {
   constructor(
-    public name: string,
-    public originalInput: any, 
+    name: string,
+    originalInput: any, 
     public type: string) {
     super(name, originalInput);
   }
@@ -11,9 +11,9 @@ export class ConstrainedMetaModel extends MetaModel {
 
 export class ConstrainedReferenceModel extends ConstrainedMetaModel {
   constructor(
-    public name: string,
-    public originalInput: any, 
-    public type: string, 
+    name: string,
+    originalInput: any, 
+    type: string, 
     public ref: ConstrainedMetaModel) {
     super(name, originalInput, type);
   }
@@ -31,36 +31,36 @@ export class ConstrainedTupleValueModel {
 }
 export class ConstrainedTupleModel extends ConstrainedMetaModel {
   constructor(
-    public name: string,
-    public originalInput: any, 
-    public type: string, 
+    name: string,
+    originalInput: any, 
+    type: string, 
     public tuple: ConstrainedTupleValueModel[]) {
     super(name, originalInput, type);
   }
 }
 export class ConstrainedObjectModel extends ConstrainedMetaModel {
   constructor(
-    public name: string,
-    public originalInput: any, 
-    public type: string, 
+    name: string,
+    originalInput: any, 
+    type: string, 
     public properties: { [key: string]: ConstrainedMetaModel; }) {
     super(name, originalInput, type);
   }
 }
 export class ConstrainedArrayModel extends ConstrainedMetaModel {
   constructor(
-    public name: string,
-    public originalInput: any, 
-    public type: string, 
+    name: string,
+    originalInput: any, 
+    type: string, 
     public valueModel: ConstrainedMetaModel) {
     super(name, originalInput, type);
   }
 }
 export class ConstrainedUnionModel extends ConstrainedMetaModel {
   constructor(
-    public name: string,
-    public originalInput: any, 
-    public type: string, 
+    name: string,
+    originalInput: any, 
+    type: string, 
     public union: ConstrainedMetaModel[]) {
     super(name, originalInput, type);
   }
@@ -73,18 +73,18 @@ export class ConstrainedEnumValueModel {
 }
 export class ConstrainedEnumModel extends ConstrainedMetaModel {
   constructor(
-    public name: string,
-    public originalInput: any, 
-    public type: string, 
+    name: string,
+    originalInput: any, 
+    type: string, 
     public values: ConstrainedEnumValueModel[]) {
     super(name, originalInput, type);
   }
 }
 export class ConstrainedDictionaryModel extends ConstrainedMetaModel {
   constructor(
-    public name: string,
-    public originalInput: any, 
-    public type: string, 
+    name: string,
+    originalInput: any, 
+    type: string, 
     public key: ConstrainedMetaModel, 
     public value: ConstrainedMetaModel, 
     public serializationType: 'unwrap' | 'normal' = 'normal') {

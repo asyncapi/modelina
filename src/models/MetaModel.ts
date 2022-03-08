@@ -7,8 +7,8 @@ export class MetaModel {
 
 export class ReferenceModel extends MetaModel {
   constructor(
-    public name: string,
-    public originalInput: any,
+    name: string,
+    originalInput: any,
     public ref: MetaModel) {
     super(name, originalInput);
   }
@@ -26,32 +26,32 @@ export class TupleValueModel {
 }
 export class TupleModel extends MetaModel {
   constructor(
-    public name: string,
-    public originalInput: any,
+    name: string,
+    originalInput: any,
     public tuple: TupleValueModel[]) {
     super(name, originalInput);
   }
 }
 export class ObjectModel extends MetaModel {
   constructor(
-    public name: string,
-    public originalInput: any,
+    name: string,
+    originalInput: any,
     public properties: { [key: string]: MetaModel; }) {
     super(name, originalInput);
   }
 }
 export class ArrayModel extends MetaModel {
   constructor(
-    public name: string,
-    public originalInput: any, 
+    name: string,
+    originalInput: any, 
     public valueModel: MetaModel) {
     super(name, originalInput);
   }
 }
 export class UnionModel extends MetaModel {
   constructor(
-    public name: string,
-    public originalInput: any, 
+    name: string,
+    originalInput: any, 
     public union: MetaModel[]) {
     super(name, originalInput);
   }
@@ -64,16 +64,16 @@ export class EnumValueModel {
 }
 export class EnumModel extends MetaModel {
   constructor(
-    public name: string,
-    public originalInput: any, 
+    name: string,
+    originalInput: any, 
     public values: EnumValueModel[]) {
     super(name, originalInput);
   }
 }
 export class DictionaryModel extends MetaModel {
   constructor(
-    public name: string,
-    public originalInput: any, 
+    name: string,
+    originalInput: any, 
     public key: MetaModel, 
     public value: MetaModel,
     public serializationType: 'unwrap' | 'normal' = 'normal') {
