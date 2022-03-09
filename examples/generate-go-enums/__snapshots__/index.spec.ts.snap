@@ -5,6 +5,7 @@ Array [
   "// Cities represents an enum of string.
 type Cities string
 
+// These are all the valid values for Cities enum.
 const (
   London Cities = \\"London\\"
   Rome = \\"Rome\\"
