@@ -27,6 +27,27 @@ import { JavaGenerator, JSONGenerator } from '../../../src/generators';
 //   }
 // };
 
+// const doc = {
+//   $id: 'Address',
+//   type: 'object',
+//   properties: {
+//     street_name: { type: 'string' },
+//     city: { type: 'string', description: 'City description' },
+//     state: { type: 'string' },
+//     house_number: { type: 'number' },
+//     marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
+//     members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
+//     array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
+//     other_model: { type: 'object', $id: 'OtherModel', properties: { street_name: { type: 'string' } } },
+//   },
+//   patternProperties: {
+//     '^S(.?*)test&': {
+//       type: 'string'
+//     }
+//   },
+//   required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+// };
+
 const doc = {
   $id: 'TypeArray',
   type: 'array',

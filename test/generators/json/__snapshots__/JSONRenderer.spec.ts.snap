@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`JSONRenderer renderAllProperties() Should render all properties of the model 1`] = `
+Object {
+  "additionalProperties": CommonModel {
+    "type": "string",
+  },
+  "patternProperties": Object {
+    "^I_": CommonModel {
+      "type": "integer",
+    },
+    "^S_": CommonModel {
+      "type": "string",
+    },
+  },
+  "properties": Object {
+    "enum": Object {
+      "type": "string",
+    },
+    "reservedEnum": CommonModel {
+      "type": "string",
+    },
+  },
+}
+`;
+
+exports[`JSONRenderer renderAllProperties() Shouldn't render the missing properties. 1`] = `
+Object {
+  "additionalProperties": CommonModel {
+    "type": "string",
+  },
+  "properties": Object {
+    "enum": Object {
+      "type": "string",
+    },
+    "reservedEnum": CommonModel {
+      "type": "string",
+    },
+  },
+}
+`;
+
+exports[`JSONRenderer renderArrayItems() Should render items and additionalItems of type array 1`] = `
+Object {
+  "additionalItems": Array [],
+  "items": Object {
+    "$id": "StringArray",
+    "type": Array [
+      "string",
+      "number",
+      "boolean",
+    ],
+  },
+}
+`;
+
+exports[`JSONRenderer renderObject() Should render JSON Schema of type object 1`] = `
+Object {
+  "$id": "Address",
+  "additionalProperties": CommonModel {
+    "type": "string",
+  },
+  "patternProperties": CommonModel {
+    "^I_": CommonModel {
+      "type": "integer",
+    },
+    "^S_": CommonModel {
+      "type": "string",
+    },
+  },
+  "properties": CommonModel {
+    "enum": Object {
+      "type": "string",
+    },
+    "reservedEnum": CommonModel {
+      "type": "string",
+    },
+  },
+  "type": "object",
+}
+`;

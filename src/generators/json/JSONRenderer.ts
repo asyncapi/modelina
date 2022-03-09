@@ -51,15 +51,19 @@ export class JSONRenderer extends AbstractRenderer<JSONOptions, JSONGenerator> {
    * 
    * @param model
    */
-  renderType(model: CommonModel): string {
+  renderType(model: CommonModel | CommonModel[]): string | string[] {
     if (Array.isArray(model)) {
-      return JSON.stringify(model.map((m) => this.renderType(m)));
+      return model.map((m:CommonModel) => this.renderType(m) as string);
     }
     if (model.type) {
       if (Array.isArray(model.type)) {
         return 'array';
       }
       return model.type;
+    } else if (model.$ref !== undefined) {
+      return this.nameType(model.$ref);
+    } else if (model.enum!== undefined) {
+      return model.enum;
     }
     return 'any';
   }
@@ -84,7 +88,7 @@ export class JSONRenderer extends AbstractRenderer<JSONOptions, JSONGenerator> {
         // delete originalInput if present as key in value of each property entry
         const modifiedProperty = this.deleteOriginalInputKeyValue(property);
         if (property.type && property.type === 'array') {
-          propertyContent[`${propertyName}`] = this.renderArray(modifiedProperty as CommonModel);
+          propertyContent[`${propertyName}`] = this.renderArrayItems(modifiedProperty as CommonModel);
         } else if (property.type && property.type === 'object') {
           propertyContent[`${propertyName}`] = this.renderObject(modifiedProperty as CommonModel);
         } else {
@@ -121,12 +125,12 @@ export class JSONRenderer extends AbstractRenderer<JSONOptions, JSONGenerator> {
   }
 
   /**
-   * Renders model of type array 
+   * Renders JSON schema of type array 
    * 
    * @param model
    * @returns Record<string,any>
    */
-  renderArray(model: CommonModel): Record<string,any> {
+  renderArrayItems(model: CommonModel): Record<string,any> {
     const renderAdditionalItemsType = model.additionalItems?.type ? model.additionalItems.type : [];
     let items;
     if (Array.isArray(model.items)) {
@@ -144,7 +148,7 @@ export class JSONRenderer extends AbstractRenderer<JSONOptions, JSONGenerator> {
   }
 
   /**
-   * Renders model of type object
+   * Renders JSON Schema of type object
    *  
    * @param model 
    * @returns Record<string,any>

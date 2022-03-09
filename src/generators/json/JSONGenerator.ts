@@ -75,7 +75,7 @@ export class JSONGenerator extends AbstractGenerator<JSONOptions, any> {
 
   async renderArray(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const renderer = new JSONRenderer(this.options, this, [], model, inputModel);
-    const renderedContents = await renderer.renderArray(model);
+    const renderedContents = await renderer.renderArrayItems(model);
     const renderedName = renderer.nameType(model.$id, model);
     const result = JSON.stringify({
       $id: renderedName,
