@@ -15,6 +15,7 @@ For more specific integration options, please check out the [integration documen
 - [Generate models from JSON Schema documents](#generate-models-from-json-schema-documents)
 - [Generate models from Swagger 2.0 documents](#generate-models-from-swagger-20-documents)
 - [Generate models from OpenAPI documents](#generate-models-from-openapi-documents)
+- [Generate models from TypeScript type files](#generate-models-from-typescript-type-files)
 - [Generate Go models](#generate-go-models)
 - [Generate C# models](#generate-c%23-models)
 - [Generate Java models](#generate-java-models)
