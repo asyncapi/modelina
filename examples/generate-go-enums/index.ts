@@ -9,7 +9,7 @@ const jsonSchemaDraft7 = {
     cities: {
       $id: 'cities',
       type: 'string',
-      enum: ["London", "Rome", "Brusseles"],
+      enum: ["London", "Rome", "Brussels"],
     },
     click_options: {
       $id: 'click_options',

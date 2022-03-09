@@ -137,9 +137,9 @@ type CustomStruct struct {
 type States string
 
 const (
-  Texas States = "Texas"
-  Alabama = "Alabama"
-  California = "California"
+  StatesTexas States = "Texas"
+  StatesAlabama = "Alabama"
+  StatesCalifornia = "California"
 )`,
     },
     {
@@ -176,9 +176,9 @@ type Things interface{}`,
 type CustomEnum string
 
 const (
-  Texas CustomEnum = "Texas"
-  Alabama = "Alabama"
-  California = "California"
+  CustomEnumTexas CustomEnum = "Texas"
+  CustomEnumAlabama = "Alabama"
+  CustomEnumCalifornia = "California"
 )`;
 
     generator = new GoGenerator({

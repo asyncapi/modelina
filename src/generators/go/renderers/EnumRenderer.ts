@@ -42,7 +42,7 @@ ${this.indent(this.renderBlock(enumValues))}
 
   renderConstValuesForEnumType(typeName: string, innerType: string, values: string[]): string[] {
     const fieldNames = values.map(v => 
-      FormatHelpers.upperFirst(FormatHelpers.toCamelCase(v))
+      typeName.concat(FormatHelpers.upperFirst(FormatHelpers.toCamelCase(v)))
     );
 
     let enumValues = [innerType === 'string' ? `${fieldNames[0]} ${typeName} = "${values[0]}"` : `${fieldNames[0]} ${typeName} = iota`];

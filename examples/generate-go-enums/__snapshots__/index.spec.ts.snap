@@ -5,11 +5,10 @@ Array [
   "// Cities represents an enum of string.
 type Cities string
 
-// These are all the valid values for Cities enum.
 const (
-  London Cities = \\"London\\"
-  Rome = \\"Rome\\"
-  Brusseles = \\"Brusseles\\"
+  CitiesLondon Cities = \\"London\\"
+  CitiesRome = \\"Rome\\"
+  CitiesBrussels = \\"Brussels\\"
 )",
 ]
 `;
@@ -20,8 +19,8 @@ Array [
 type ClickOptions string
 
 const (
-  ClickAndPlay ClickOptions = \\"click_and_play\\"
-  ClickPay = \\"click&pay\\"
+  ClickOptionsClickAndPlay ClickOptions = \\"click_and_play\\"
+  ClickOptionsClickPay = \\"click&pay\\"
 )",
 ]
 `;
@@ -32,8 +31,8 @@ Array [
 type Options int
 
 const (
-  FirstOption Options = iota
-  SecondOption
+  OptionsFirstOption Options = iota
+  OptionsSecondOption
 )",
 ]
 `;
