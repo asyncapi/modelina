@@ -1,6 +1,6 @@
 # Go Data Models
 
-A basic example of how to Modelina render enums values in Go.
+A basic example of how Modelina renders enum values in Go.
 
 ## How to run this example
 
