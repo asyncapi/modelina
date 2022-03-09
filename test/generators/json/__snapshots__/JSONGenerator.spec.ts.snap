@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`JSONGenerator Should render JSON schema for array object 1`] = `
+"{
+    \\"$id\\": \\"TypeArray\\",
+    \\"type\\": \\"array\\",
+    \\"additionalItems\\": [
+        \\"object\\",
+        \\"string\\",
+        \\"number\\",
+        \\"array\\",
+        \\"boolean\\",
+        \\"null\\",
+        \\"integer\\"
+    ],
+    \\"items\\": {
+        \\"type\\": [
+            \\"string\\",
+            \\"number\\",
+            \\"boolean\\"
+        ],
+        \\"$id\\": \\"StringArray\\"
+    }
+}"
+`;
+
+exports[`JSONGenerator Should render JSON schema for type object 1`] = `
+"{
+    \\"$id\\": \\"Address\\",
+    \\"type\\": \\"object\\",
+    \\"properties\\": {
+        \\"enum\\": {
+            \\"type\\": \\"string\\"
+        },
+        \\"reservedEnum\\": {
+            \\"type\\": \\"string\\"
+        }
+    },
+    \\"additionalProperties\\": {
+        \\"type\\": \\"string\\"
+    },
+    \\"patternProperties\\": {
+        \\"^S_\\": {
+            \\"type\\": \\"string\\"
+        },
+        \\"^I_\\": {
+            \\"type\\": \\"integer\\"
+        }
+    }
+}"
+`;

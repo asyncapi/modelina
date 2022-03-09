@@ -1,15 +1,56 @@
-import { JavaGenerator, JSONGenerator } from '../../../src/generators'; 
+import { JSONGenerator } from '../../../src/generators/json/JSONGenerator';
+import { CommonInputModel, CommonModel } from '../../../src/models';
 
-// describe('JSONGenerator', () => {
-//   let generator: JSONGenerator;
-//   beforeEach(() => {
-//     generator = new JSONGenerator();
-//   });
-//   afterEach(() => {
-//     jest.restoreAllMocks();
-//   });
+describe('JSONGenerator', () => {
+  let generator: JSONGenerator;
+  beforeEach(() => {
+    generator = new JSONGenerator();
+  });
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
 
-// }
+  test('Should render JSON schema for type object', async () => {
+    const doc = {
+      $id: 'Address',
+      type: 'object',
+      properties: {
+        enum: { type: 'string' },
+        reservedEnum: { type: 'string' }
+      },
+      additionalProperties: {
+        type: 'string'
+      },
+      patternProperties: {
+        '^S_': { type: 'string' },
+        '^I_': { type: 'integer' }
+      }
+    };
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models['Address'];
+    const schema = await generator.render(model, inputModel);
+    expect(schema.result).toMatchSnapshot();
+    expect(schema.dependencies).toEqual([]);
+  });
+
+  test('Should render JSON schema for array object', async () => {
+    const doc = {
+      $id: 'TypeArray',
+      type: 'array',
+      items: {
+        $id: 'StringArray',
+        type: ['string', 'number', 'boolean'],
+      }
+    };
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models['TypeArray'];
+    const schema = await generator.render(model, inputModel);
+    expect(schema.result).toMatchSnapshot();
+    expect(schema.dependencies).toEqual([]);
+  });
+});
 
 // const doc = {
 //   $id: 'Address',
@@ -48,16 +89,16 @@ import { JavaGenerator, JSONGenerator } from '../../../src/generators';
 //   required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
 // };
 
-const doc = {
-  $id: 'TypeArray',
-  type: 'array',
-  items: {
-    $id: 'StringArray',
-    type: ['string', 'number', 'boolean'],
-  }
-};
+// const doc = {
+//   $id: 'TypeArray',
+//   type: 'array',
+//   items: {
+//     $id: 'StringArray',
+//     type: ['string', 'number', 'boolean'],
+//   }
+// };
 
-const generator = new JSONGenerator();
-generator.generate(doc).then((output) => {
-  console.log(output);
-});
+// const generator = new JSONGenerator();
+// generator.generate(doc).then((output) => {
+//   console.log(output);
+// })
