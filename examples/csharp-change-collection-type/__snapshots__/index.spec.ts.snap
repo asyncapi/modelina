@@ -14,7 +14,7 @@ Array [
 ]
 `;
 
-exports[`Should be able to render collections in Java as List and should log expected output to console 1`] = `
+exports[`Should be able to render collections in C# as IEnumerable and should log expected output to console 1`] = `
 Array [
   "public class Root {
   private IEnumerable<string> email;
