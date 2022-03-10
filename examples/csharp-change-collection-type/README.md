@@ -1,6 +1,6 @@
-# TODO: Your example title
+# C# change collection type
 
-TODO: Your example description
+A basic example to render collections as IEnumerable type in C#.
 
 ## How to run this example
 
