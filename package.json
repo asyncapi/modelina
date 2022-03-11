@@ -1,6 +1,6 @@
 {
   "name": "@asyncapi/modelina",
-  "version": "0.49.0",
+  "version": "0.52.0",
   "description": "The Model SDK for generating data models",
   "license": "Apache-2.0",
   "homepage": "https://github.com/asyncapi/modelina",
@@ -22,7 +22,7 @@
     "sdk"
   ],
   "author": {
-    "name": "The AsyncAPI maintainers"
+    "name": "The Modelina codeowners and contributors"
   },
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
@@ -38,7 +38,8 @@
     "@apidevtools/swagger-parser": "^10.0.3",
     "@asyncapi/parser": "^1.14.0",
     "change-case": "^4.1.2",
-    "openapi-types": "9.3.0"
+    "openapi-types": "9.3.0",
+    "typescript-json-schema": "^0.53.0"
   },
   "devDependencies": {
     "@semantic-release/commit-analyzer": "^9.0.1",

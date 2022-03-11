@@ -216,7 +216,8 @@
         "code",
         "test",
         "doc",
-        "example"
+        "example",
+        "maintenance"
       ]
     },
     {
@@ -246,6 +247,19 @@
       "name": "Samriddhi",
       "avatar_url": "https://avatars.githubusercontent.com/u/54466041?v=4",
       "profile": "https://samridhi-98.github.io/Portfolio",
+      "contributions": [
+        "code",
+        "test",
+        "doc",
+        "example",
+        "maintenance"
+      ]
+    },
+    {
+      "login": "gabormagyar",
+      "name": "Gábor Magyar",
+      "avatar_url": "https://avatars.githubusercontent.com/u/63397303?v=4",
+      "profile": "https://github.com/gabormagyar",
       "contributions": [
         "code",
         "test",
