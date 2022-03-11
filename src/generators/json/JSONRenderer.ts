@@ -82,18 +82,19 @@ export class JSONRenderer extends AbstractRenderer<JSONOptions, JSONGenerator> {
       model.additionalProperties ? model.additionalProperties : true;
     const patternPropertyContent: Record<any,any> = {};
 
-    // delete properties.originalInput;
-    for (const [propertyName, property] of Object.entries(properties)) {
-      if (propertyName !== 'originalInput') {
-        // delete originalInput if present as key in value of each property entry
-        const modifiedProperty = this.deleteOriginalInputKeyValue(property);
-        if (property.type && property.type === 'array') {
+    const modifiedProperties = this.deleteOriginalInputKeyValue(properties);
+    for (const [propertyName, property] of Object.entries(modifiedProperties)) {
+      // delete originalInput if present as key in value of each property entry
+      const modifiedProperty = this.deleteOriginalInputKeyValue(property);
+      if (property.type) {
+        if (property.type === 'array') {
           propertyContent[`${propertyName}`] = this.renderArrayItems(modifiedProperty as CommonModel);
-        } else if (property.type && property.type === 'object') {
-          propertyContent[`${propertyName}`] = this.renderObject(modifiedProperty as CommonModel);
-        } else {
-          propertyContent[`${propertyName}`] = modifiedProperty;
         }
+        if (property.type === 'object') {
+          propertyContent[`${propertyName}`] = this.renderObject(modifiedProperty as CommonModel);
+        }
+      } else {
+        propertyContent[`${propertyName}`] = modifiedProperty;
       }
     }
 

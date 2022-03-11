@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`JSONGenerator Should render JSON schema for array object 1`] = `
+exports[`JSONGenerator Should render JSON schema for type array 1`] = `
 "{
     \\"$id\\": \\"TypeArray\\",
     \\"type\\": \\"array\\",
@@ -24,18 +24,25 @@ exports[`JSONGenerator Should render JSON schema for array object 1`] = `
 }"
 `;
 
+exports[`JSONGenerator Should render JSON schema for type enum/union 1`] = `
+"{
+    \\"$id\\": \\"TypeEnum\\",
+    \\"type\\": \\"array\\",
+    \\"additionalItems\\": [],
+    \\"items\\": {
+        \\"type\\": [
+            \\"string\\",
+            \\"number\\"
+        ],
+        \\"$id\\": \\"StringEnum\\"
+    }
+}"
+`;
+
 exports[`JSONGenerator Should render JSON schema for type object 1`] = `
 "{
     \\"$id\\": \\"Address\\",
     \\"type\\": \\"object\\",
-    \\"properties\\": {
-        \\"enum\\": {
-            \\"type\\": \\"string\\"
-        },
-        \\"reservedEnum\\": {
-            \\"type\\": \\"string\\"
-        }
-    },
     \\"additionalProperties\\": {
         \\"type\\": \\"string\\"
     },
@@ -46,6 +53,71 @@ exports[`JSONGenerator Should render JSON schema for type object 1`] = `
         \\"^I_\\": {
             \\"type\\": \\"integer\\"
         }
+    }
+}"
+`;
+
+exports[`JSONGenerator Should render model and their dependencies 1`] = `
+"{
+    \\"$id\\": \\"Address\\",
+    \\"type\\": \\"object\\",
+    \\"properties\\": {
+        \\"array_type\\": {
+            \\"additionalItems\\": [
+                \\"object\\",
+                \\"string\\",
+                \\"number\\",
+                \\"array\\",
+                \\"boolean\\",
+                \\"null\\",
+                \\"integer\\"
+            ],
+            \\"items\\": [
+                {
+                    \\"type\\": \\"string\\"
+                },
+                {
+                    \\"type\\": \\"number\\"
+                }
+            ]
+        },
+        \\"other_model\\": {
+            \\"$ref\\": \\"OtherModel\\"
+        }
+    },
+    \\"additionalProperties\\": {
+        \\"type\\": [
+            \\"object\\",
+            \\"string\\",
+            \\"number\\",
+            \\"array\\",
+            \\"boolean\\",
+            \\"null\\",
+            \\"integer\\"
+        ]
+    },
+    \\"patternProperties\\": {
+        \\"^S(.?*)test&\\": {
+            \\"type\\": \\"string\\"
+        }
+    }
+}"
+`;
+
+exports[`JSONGenerator Should render model and their dependencies 2`] = `
+"{
+    \\"$id\\": \\"OtherModel\\",
+    \\"type\\": \\"object\\",
+    \\"additionalProperties\\": {
+        \\"type\\": [
+            \\"object\\",
+            \\"string\\",
+            \\"number\\",
+            \\"array\\",
+            \\"boolean\\",
+            \\"null\\",
+            \\"integer\\"
+        ]
     }
 }"
 `;

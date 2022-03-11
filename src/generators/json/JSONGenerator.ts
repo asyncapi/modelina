@@ -60,9 +60,9 @@ export class JSONGenerator extends AbstractGenerator<JSONOptions, any> {
     return this.render(model,inputModel);
   }
 
-  async renderObject(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
+  renderObject(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const renderer = new JSONRenderer(this.options, this, [], model, inputModel);
-    const renderedType = await renderer.renderType(model);
+    const renderedType = renderer.renderType(model);
     const renderedName = renderer.nameType(model.$id, model);
     const renderProperties = renderer.renderAllProperties(model);
     const result = JSON.stringify({
@@ -70,18 +70,22 @@ export class JSONGenerator extends AbstractGenerator<JSONOptions, any> {
       type: renderedType,
       ...renderProperties
     }, null, 4);
-    return RenderOutput.toRenderOutput({result, renderedName, dependencies: renderer.dependencies});
+    return Promise.resolve(
+      RenderOutput.toRenderOutput({result, renderedName, dependencies: renderer.dependencies})
+    );
   }
 
-  async renderArray(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
+  renderArray(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const renderer = new JSONRenderer(this.options, this, [], model, inputModel);
-    const renderedContents = await renderer.renderArrayItems(model);
+    const renderedContents = renderer.renderArrayItems(model);
     const renderedName = renderer.nameType(model.$id, model);
     const result = JSON.stringify({
       $id: renderedName,
       type: 'array',
       ...renderedContents 
     }, null , 4);
-    return RenderOutput.toRenderOutput({result, renderedName, dependencies: renderer.dependencies});
+    return Promise.resolve(
+      RenderOutput.toRenderOutput({result, renderedName, dependencies: renderer.dependencies})
+    );
   }
 }
