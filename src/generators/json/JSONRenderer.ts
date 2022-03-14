@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/cognitive-complexity */
 import { AbstractRenderer } from '../AbstractRenderer';
 import { JSONGenerator, JSONOptions } from './JSONGenerator';
 import { CommonModel, CommonInputModel, Preset } from '../../models';
@@ -6,7 +5,7 @@ import { CommonModel, CommonInputModel, Preset } from '../../models';
 /**
  * Common renderer for JSON type
  * 
- * @externs AbstractRenderer
+ * @extends AbstractRenderer
  */
 
 export class JSONRenderer extends AbstractRenderer<JSONOptions, JSONGenerator> {
@@ -86,13 +85,10 @@ export class JSONRenderer extends AbstractRenderer<JSONOptions, JSONGenerator> {
     for (const [propertyName, property] of Object.entries(modifiedProperties)) {
       // delete originalInput if present as key in value of each property entry
       const modifiedProperty = this.deleteOriginalInputKeyValue(property);
-      if (property.type) {
-        if (property.type === 'array') {
-          propertyContent[`${propertyName}`] = this.renderArrayItems(modifiedProperty as CommonModel);
-        }
-        if (property.type === 'object') {
-          propertyContent[`${propertyName}`] = this.renderObject(modifiedProperty as CommonModel);
-        }
+      if (property.type === 'array') {
+        propertyContent[`${propertyName}`] = this.renderArrayItems(modifiedProperty as CommonModel);
+      } else if (property.type === 'object') {
+        propertyContent[`${propertyName}`] = this.renderObject(modifiedProperty as CommonModel);
       } else {
         propertyContent[`${propertyName}`] = modifiedProperty;
       }
@@ -106,6 +102,7 @@ export class JSONRenderer extends AbstractRenderer<JSONOptions, JSONGenerator> {
     if (model.patternProperties !== undefined) {
       const pattern = this.deleteOriginalInputKeyValue(model.patternProperties);
       for (const [patternName, patternProperty] of Object.entries(pattern)) {
+        // delete originalInput if present as key in value of each property entry
         const newPatternProperty = this.deleteOriginalInputKeyValue(patternProperty);
         patternPropertyContent[`${patternName}`] = newPatternProperty;
       }

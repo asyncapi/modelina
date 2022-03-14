@@ -70,7 +70,6 @@ export abstract class AbstractGenerator<Options extends CommonGeneratorOptions =
    */
   public async generate(input: Record<string, unknown> | CommonInputModel): Promise<OutputModel[]> {
     const inputModel = await this.processInput(input);
-    console.log(`INSIDE ABSTRACT GENERATOR : ${JSON.stringify(inputModel, null, 4)}`);
     const renders = Object.values(inputModel.models).map(async (model) => {
       const renderedOutput = await this.render(model, inputModel);
       return OutputModel.toOutputModel({ 
