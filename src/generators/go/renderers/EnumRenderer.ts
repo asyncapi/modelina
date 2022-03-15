@@ -12,6 +12,7 @@ export class EnumRenderer extends GoRenderer {
     const formattedName = this.nameType(this.model.$id);
     const type = this.enumType(this.model);
     const doc = formattedName && this.renderCommentForEnumType(formattedName, type);
+    // eslint-disable-next-line sonarjs/no-duplicate-string
     if (type === 'interface{}') {
       return `${doc}
 type ${formattedName} ${type}`;
@@ -41,18 +42,18 @@ ${this.indent(this.renderBlock(enumValues))}
   }
 
   renderConstValuesForEnumType(typeName: string, innerType: string, values: string[]): string[] {
-    const fieldNames = values.map(v => 
-      typeName.concat(FormatHelpers.upperFirst(FormatHelpers.toCamelCase(v)))
-    );
+    const firstName = typeName.concat(FormatHelpers.upperFirst(FormatHelpers.toCamelCase(values[0])));
 
-    let enumValues = [innerType === 'string' ? `${fieldNames[0]} ${typeName} = "${values[0]}"` : `${fieldNames[0]} ${typeName} = iota`];
+    let enumValues = [innerType === 'string' ? `${firstName} ${typeName} = "${values[0]}"` : `${firstName} ${typeName} = iota`];
 
-    for (let i = 1; i < values.length; i++) {
+    for (const value of values.slice(1)) {
+      const name = typeName.concat(FormatHelpers.upperFirst(FormatHelpers.toCamelCase(value)));
+
       if (innerType === 'string') {
-        enumValues = enumValues.concat(`${fieldNames[i]} = "${values[i]}"`);
+        enumValues = enumValues.concat(`${name} = "${value}"`);
       }
       if (innerType === 'int') {
-        enumValues = enumValues.concat(`${fieldNames[i]}`);
+        enumValues = enumValues.concat(`${name}`);
       }
     }
 
