@@ -1,4 +1,4 @@
-# Go Data Models
+# Go Enum Models
 
 A basic example of how Modelina renders enum values in Go.
 
