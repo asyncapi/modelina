@@ -19,8 +19,11 @@ Array [
   "public class Root {
   private IEnumerable<string> email;
 
-  public IEnumerable<string> getEmail() { return this.email; }
-  public void setEmail(IEnumerable<string> email) { this.email = email; }
+  public IEnumerable<string> Email 
+  {
+    get { return email; }
+    set { email = value; }
+  }
 }",
 ]
 `;
