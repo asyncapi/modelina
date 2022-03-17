@@ -1,9 +1,10 @@
+import { hasPreset } from "../../helpers/PresetHelpers";
 import {
   AbstractGenerator,
   CommonGeneratorOptions,
   defaultGeneratorOptions
 } from '../AbstractGenerator';
-import { CommonModel, CommonInputModel, RenderOutput, PresetWithOptions } from '../../models';
+import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
 import { TypeHelpers, ModelKind, CommonNamingConvention, CommonNamingConventionImplementation } from '../../helpers';
 import { TS_EXPORT_KEYWORD_PRESET } from './presets';
 import { TypeScriptPreset, TS_DEFAULT_PRESET } from './TypeScriptPreset';
@@ -53,13 +54,11 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,Typ
     // Shallow copy presets so that we can restore it once we are done
     const originalPresets = [...(this.options.presets ? this.options.presets : [])];
 
-    // Add preset that adds the `export` keyword if needed
+    // Add preset that adds the `export` keyword if it hasn't already been added
     if (
       moduleSystem === 'ESM' &&
       exportType === 'named' &&
-      (originalPresets[0] !== TS_EXPORT_KEYWORD_PRESET ||
-        (Object.prototype.hasOwnProperty.call(originalPresets[0], 'preset') &&
-          (originalPresets[0] as PresetWithOptions).preset !== TS_EXPORT_KEYWORD_PRESET))
+      !hasPreset(originalPresets, TS_EXPORT_KEYWORD_PRESET)
     ) {
       this.options.presets = [TS_EXPORT_KEYWORD_PRESET, ...originalPresets];
     }
