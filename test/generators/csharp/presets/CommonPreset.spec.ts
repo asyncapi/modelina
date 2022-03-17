@@ -54,7 +54,7 @@ describe('CSHARP_COMMON_PRESET', () => {
         {
           preset: CSHARP_COMMON_PRESET,
           options: {
-            useShortHandAccessors: true,
+            autoImplementedProperties: true,
           }
         }
       ]

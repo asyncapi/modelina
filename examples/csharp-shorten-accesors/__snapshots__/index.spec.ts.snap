@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Should be able to render a short version of accessors in CSharp and should log expected output to console 1`] = `
-Array [
-  "public class Root {
-  public string[] Email { get; set; }
-}",
-]
-`;

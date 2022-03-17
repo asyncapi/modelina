@@ -5,7 +5,7 @@ const generator = new CSharpGenerator({
     {
       preset: CSHARP_DEFAULT_PRESET,
       options: {
-        useShortHandAccessors: true
+        autoImplementedProperties: true
       }
     }]
 });

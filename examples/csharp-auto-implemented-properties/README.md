@@ -1,6 +1,6 @@
-# Java change collection type
+# CSharp auto implemented properties
 
-A basic example to render collections as List type in Java.
+A basic example to render auto implemented properties in CSharp
 
 ## How to run this example
 
