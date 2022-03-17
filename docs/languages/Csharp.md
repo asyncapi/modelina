@@ -25,3 +25,9 @@ Check out this [example for a live demonstration](../../examples/csharp-generate
 To overwrite the `Equal` and `GetHashCode` methods, use the preset `CSHARP_COMMON_PRESET` and provide the options `equal: true` and `hashCode: true`
 
 Check out this [example for a live demonstration](../../examples/csharp-generate-equals-and-hashcode).
+
+## Generate models with short accessors
+
+To generate properties with `{ get; set; }` accessors, use the preset `CSHARP_COMMON_PRESET` and provide the options `useShortHandAccessors: true`
+
+Check out this [example for a live demonstration](../../examples/csharp-shorten-accesors).

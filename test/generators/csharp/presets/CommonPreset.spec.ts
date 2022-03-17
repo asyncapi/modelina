@@ -48,4 +48,18 @@ describe('CSHARP_COMMON_PRESET', () => {
     expect(inputModel[0].result).toMatchSnapshot();
     expect(inputModel[1].result).toMatchSnapshot();
   });
+  test('should render short accessors', async () => {
+    const generator = new CSharpGenerator({
+      presets: [
+        {
+          preset: CSHARP_COMMON_PRESET,
+          options: {
+            useShortHandAccessors: true,
+          }
+        }
+      ]
+    });
+    const inputModel = await generator.generate(doc);
+    expect(inputModel[0].result).toMatchSnapshot();
+  });
 });
