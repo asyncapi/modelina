@@ -1,4 +1,4 @@
-import { Preset, Presets } from "../models";
+import { Preset, Presets } from '../models';
 
 /**
  * Returns true if and only if a given preset is already included in a list of presets
@@ -9,12 +9,12 @@ import { Preset, Presets } from "../models";
 export const hasPreset = <P extends Preset = Preset>(
   presets: Presets<P>,
   preset: P
-) =>
-  presets.some(
-    (presetListItem) =>
+): boolean =>
+    presets.some(
+      (presetListItem) =>
       // Check regular preset equality
-      preset === presetListItem ||
+        preset === presetListItem ||
       // Check PresetWithOptions equality
-      (Object.prototype.hasOwnProperty.call(preset, "preset") &&
+      (Object.prototype.hasOwnProperty.call(preset, 'preset') &&
         preset.preset === presetListItem)
-  );
+    );

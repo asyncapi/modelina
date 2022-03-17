@@ -1,4 +1,4 @@
-import { hasPreset } from "../../helpers/PresetHelpers";
+import { hasPreset } from '../../helpers/PresetHelpers';
 import {
   AbstractGenerator,
   CommonGeneratorOptions,
