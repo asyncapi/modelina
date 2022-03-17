@@ -1,7 +1,7 @@
 const spy = jest.spyOn(global.console, 'log').mockImplementation(() => { return; });
 import {generate} from './index';
 
-describe('Should be able to render auto implemented properties in CSharp', () => {
+describe('Should be able to render auto-implemented properties in CSharp', () => {
   afterAll(() => {
     jest.restoreAllMocks();
   });

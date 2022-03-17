@@ -1,6 +1,6 @@
-# CSharp auto implemented properties
+# CSharp auto-implemented properties
 
-A basic example to render auto implemented properties in CSharp
+A basic example to render auto-implemented properties in CSharp
 
 ## How to run this example
 

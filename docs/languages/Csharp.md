@@ -26,8 +26,8 @@ To overwrite the `Equal` and `GetHashCode` methods, use the preset `CSHARP_COMMO
 
 Check out this [example for a live demonstration](../../examples/csharp-generate-equals-and-hashcode).
 
-## Generate models with auto implemented properties
+## Generate models with auto-implemented properties
 
-To generate auto implemented properties (the ones with with `{ get; set; }` accessors), use the preset `CSHARP_COMMON_PRESET` and provide the options `autoImplementedProperties: true`
+To generate auto-implemented properties (the ones with with `{ get; set; }` accessors), use the preset `CSHARP_COMMON_PRESET` and provide the options `autoImplementedProperties: true`
 
 Check out this [example for a live demonstration](../../examples/csharp-auto-implemented-properties).
