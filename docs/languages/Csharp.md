@@ -28,6 +28,6 @@ Check out this [example for a live demonstration](../../examples/csharp-generate
 
 ## Generate models with auto-implemented properties
 
-To generate auto-implemented properties (the ones with with `{ get; set; }` accessors), use the preset `CSHARP_COMMON_PRESET` and provide the options `autoImplementedProperties: true`
+To generate auto-implemented properties (the ones with with `{ get; set; }` accessors), use the preset `CSHARP_COMMON_PRESET` and provide the option `autoImplementedProperties: true`
 
 Check out this [example for a live demonstration](../../examples/csharp-auto-implemented-properties).
