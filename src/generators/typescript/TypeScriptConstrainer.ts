@@ -15,9 +15,7 @@ export const DefaultTypeScriptConstraints: TypeScriptConstraints = {
   modelNameConstraints: DefaultModelNameConstraints,
   modelPropertyKeyConstraints: DefaultPropertyKeyConstraints
 };
-export type ConstrainArguments = {
 
-}
 type TypeMappingFunction<T extends ConstrainedMetaModel> = (model: T) => string;
 
 type TypeMapping = {
