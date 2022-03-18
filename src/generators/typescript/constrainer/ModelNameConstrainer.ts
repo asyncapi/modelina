@@ -25,3 +25,13 @@ export const DefaultModelNameConstraints: ModelNameConstraints = {
     return NO_RESERVED_KEYWORDS(value, isReservedTypeScriptKeyword); 
   }
 };
+
+export function ConstrainModelName(value: string, constrainRules: ModelNameConstraints): string {
+  let constrainedValue = value;
+  constrainedValue = constrainRules.NO_SPECIAL_CHAR(constrainedValue);
+  constrainedValue = constrainRules.NO_NUMBER_START_CHAR(constrainedValue);
+  constrainedValue = constrainRules.NO_EMPTY_VALUE(constrainedValue);
+  constrainedValue = constrainRules.NAMING_FORMATTER(constrainedValue);
+  constrainedValue = constrainRules.NO_RESERVED_KEYWORDS(constrainedValue);
+  return constrainedValue;
+}

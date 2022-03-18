@@ -21,9 +21,7 @@ export const DefaultPropertyKeyConstraints: ModelPropertyKeyConstraints = {
   NO_NUMBER_START_CHAR,
   NO_DUPLICATE_PROPERTIES,
   NO_EMPTY_VALUE,
-  NAMING_FORMATTER: (value: string) => {
-    return FormatHelpers.toPascalCase(value);
-  },
+  NAMING_FORMATTER: FormatHelpers.toPascalCase,
   NO_RESERVED_KEYWORDS: (value: string) => {
     return NO_RESERVED_KEYWORDS(value, isReservedTypeScriptKeyword); 
   }
