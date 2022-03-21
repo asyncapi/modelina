@@ -15,13 +15,19 @@ const jsonSchemaDraft7 = {
   type: 'object',
   additionalProperties: false,
   properties: {
-    email: {
+    emails: {
       type: 'array',
       items: {
         type: 'string',
         format: 'email'
       }
-    }
+    },
+    stringProp: {
+      type: 'string'
+    },
+    numberProp: {
+      type: 'number'
+    },
   }
 };
 

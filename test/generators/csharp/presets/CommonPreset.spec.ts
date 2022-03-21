@@ -1,4 +1,4 @@
-import { CSharpGenerator, CSHARP_COMMON_PRESET } from '../../../../src/generators'; 
+import { CSharpGenerator, CSHARP_COMMON_PRESET, CSHARP_DEFAULT_PRESET } from '../../../../src/generators'; 
 const doc = {
   $id: 'Test',
   type: 'object',
@@ -47,19 +47,5 @@ describe('CSHARP_COMMON_PRESET', () => {
     const inputModel = await generator.generate(doc);
     expect(inputModel[0].result).toMatchSnapshot();
     expect(inputModel[1].result).toMatchSnapshot();
-  });
-  test('should render short accessors', async () => {
-    const generator = new CSharpGenerator({
-      presets: [
-        {
-          preset: CSHARP_COMMON_PRESET,
-          options: {
-            autoImplementedProperties: true,
-          }
-        }
-      ]
-    });
-    const inputModel = await generator.generate(doc);
-    expect(inputModel[0].result).toMatchSnapshot();
   });
 });
