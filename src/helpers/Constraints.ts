@@ -1,5 +1,5 @@
-import { ConstrainedObjectModel, ConstrainedEnumModel} from 'models/ConstrainedMetaModel';
-import { ObjectModel, EnumModel } from 'models/MetaModel';
+import { ConstrainedObjectModel, ConstrainedEnumModel} from '../models/ConstrainedMetaModel';
+import { ObjectModel, EnumModel } from '../models/MetaModel';
 
 export function NO_NUMBER_START_CHAR(value: string): string {
   const firstChar = value.charAt(0);
@@ -11,12 +11,6 @@ export function NO_NUMBER_START_CHAR(value: string): string {
 
 /**
  * Makes sure that no duplicate properties can be created. 
- * 
- * @param constrainedObjectModel 
- * @param objectModel 
- * @param propertyName 
- * @param namingFormatter 
- * @returns 
  */
 export function NO_DUPLICATE_PROPERTIES(constrainedObjectModel: ConstrainedObjectModel, objectModel: ObjectModel, propertyName: string, namingFormatter: (value: string) => string): string {
   let newPropertyName = propertyName;
