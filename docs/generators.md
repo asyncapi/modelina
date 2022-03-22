@@ -33,8 +33,8 @@ Default generator options (common to all generators) are as follows:
 | `indentation` | Object | Options for indentation ([example](../examples/indentation-type-and-size)). | - |
 | `indentation.type` | String | Type of indentation. Its value can be either `SPACES` or `TABS` and are typed by `IndentationTypes`| `SPACES` |
 | `indentation.size` | String | Size of indentation. | 2 |
-| `defaultPreset` | Object | Default preset for generator. For more information, read [customization](./customization.md) document. | _Implemented by generator_ |
-| `presets` | Array | Array contains **presets**. For more information, read [customization](./customization.md) document. | `[]` |
+| `defaultPreset` | Object | Default preset for generator. For more information, read [customization](./presets.md) document. | _Implemented by generator_ |
+| `presets` | Array | Array contains **presets**. For more information, read [customization](./presets.md) document. | `[]` |
 
 In addition, generators take additional options when calling their `renderCompleteModel(input, options)` functions.
 This allows the caller to specify additional options when generating a multi-file model from the input with cross dependencies.
