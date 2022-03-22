@@ -6,10 +6,20 @@
 
 - [Generator's options](#generators-options)
   * [TypeScript](#typescript)
+    + [Generator options](#generator-options)
+    + [Render complete model options](#render-complete-model-options)
   * [Java](#java)
+    + [Generator options](#generator-options-1)
+    + [Render complete model options](#render-complete-model-options-1)
   * [JavaScript](#javascript)
+    + [Generator options](#generator-options-2)
+    + [Render complete model options](#render-complete-model-options-2)
   * [Go](#go)
+    + [Generator options](#generator-options-3)
+    + [Render complete model options](#render-complete-model-options-3)
   * [C#](#c%23)
+    + [Generator options](#generator-options-4)
+    + [Render complete model options](#render-complete-model-options-4)
 - [Custom generator](#custom-generator)
 
 <!-- tocstop -->
