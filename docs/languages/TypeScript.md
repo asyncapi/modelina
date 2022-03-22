@@ -57,6 +57,8 @@ Check out this [example out for a live demonstration](../../examples/typescript-
 ## Rendering complete models to a specific module system
 In some cases you might need to render the complete models to a specific module system such as ESM and CJS.
 
+You can choose between default exports and named exports when using either, with the `exportType` option.
+
 Check out this [example for a live demonstration how to generate the complete TypeScript models to use ESM module system](../../examples/typescript-use-esm).
 
 Check out this [example for a live demonstration how to generate the complete TypeScript models to use CJS module system](../../examples/typescript-use-cjs).
