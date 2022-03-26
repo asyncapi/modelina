@@ -1,6 +1,6 @@
 # Contributing to Modelina
 
-First of all, thank you 🙇🏾‍♀️ for considering contributing to the Modelina SDK library; we can use all the help we can get!
+First of all, thank you 🙇🏾‍♀️ for considering contributing to Modelina; it needs all the help it can get!
 
 This contribution guide is an extension to the core contributing guide that can be found [here](https://github.com/asyncapi/.github/blob/master/CONTRIBUTING.md). Please make sure you go through that beforehand. 🙂👍🏽
 
