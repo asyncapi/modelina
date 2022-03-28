@@ -17,8 +17,10 @@ export class ClassRenderer extends CSharpRenderer {
       await this.renderAccessors(),
       await this.runAdditionalContentPreset(),
     ];
-    
-    if (this.model.additionalProperties !== undefined || this.model.patternProperties !== undefined) {
+
+    if (this.options?.collectionType === 'List' ||
+      this.model.additionalProperties !== undefined ||
+      this.model.patternProperties !== undefined) {
       this.addDependency('using System.Collections.Generic;');
     }
 
