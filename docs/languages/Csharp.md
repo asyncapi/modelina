@@ -8,6 +8,7 @@ There are special use-cases that each language supports; this document pertains 
 
 - [Generate serializer and deserializer functionality](#generate-serializer-and-deserializer-functionality)
 - [Generate models with equals and GetHashCode methods](#generate-models-with-equals-and-gethashcode-methods)
+- [Change the collection type for arrays](#change-the-collection-type-for-arrays)
 
 <!-- tocstop -->
 
@@ -25,3 +26,9 @@ Check out this [example for a live demonstration](../../examples/csharp-generate
 To overwrite the `Equal` and `GetHashCode` methods, use the preset `CSHARP_COMMON_PRESET` and provide the options `equal: true` and `hashCode: true`
 
 Check out this [example for a live demonstration](../../examples/csharp-generate-equals-and-hashcode).
+
+## Change the collection type for arrays
+
+If you consider the Array Class to be insuitable for your situation, then you might look into setting the `collectionType: 'List'` option to your instance of the generator. This will cause all of the collections to be rendered as of type `System.Collections.Generic.IEnumerable<T>`.
+
+Check out this [example for a live demonstration](../../examples/csharp-change-collection-type).

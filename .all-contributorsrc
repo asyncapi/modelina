@@ -254,6 +254,18 @@
         "example",
         "maintenance"
       ]
+    },
+    {
+      "login": "gabormagyar",
+      "name": "Gábor Magyar",
+      "avatar_url": "https://avatars.githubusercontent.com/u/63397303?v=4",
+      "profile": "https://github.com/gabormagyar",
+      "contributions": [
+        "code",
+        "test",
+        "doc",
+        "example"
+      ]
     }
   ],
   "contributorsPerLine": 7,
