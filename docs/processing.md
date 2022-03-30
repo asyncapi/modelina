@@ -34,7 +34,7 @@ This means that if you accessed `EnumValueModel.key` you would get `something% s
 
 How and what are constrained?
 
-The answer to this question is not straightforward, cause each language has unique constraints that the meta models much adhere to. This is TBD.
+The answer to this question is not straightforward, cause each language has unique constraints that the meta models much adhere to. To read more about [the constraint behavior here](constraints.md).
 
 <p align="center">
   <img src="./img/ConstrainedMetaModel.png" />
