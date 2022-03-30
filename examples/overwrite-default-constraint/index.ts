@@ -1,13 +1,11 @@
 import { TypeScriptGenerator } from '../../src';
-import { constantCase } from 'change-case';
+import { pascalCase } from 'change-case';
 
 const generator = new TypeScriptGenerator({
   constraints: {
-    modelName: defaultModelNameConstraints({
-      NAMING_FORMATTER: (name) => {
-        return constantCase(name);
-      }
-    })
+    modelName: ({modelName}) => {
+      return pascalCase(modelName);
+    }
   }
 });
 

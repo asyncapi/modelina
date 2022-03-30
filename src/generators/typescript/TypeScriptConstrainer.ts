@@ -1,19 +1,20 @@
 import { ConstrainedAnyModel, ConstrainedBooleanModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedMetaModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedTupleValueModel, ConstrainedArrayModel, ConstrainedUnionModel, ConstrainedEnumModel, ConstrainedDictionaryModel, ConstrainedEnumValueModel } from '../../models/ConstrainedMetaModel';
 import { AnyModel, BooleanModel, FloatModel, IntegerModel, MetaModel, ObjectModel, ReferenceModel, StringModel, TupleModel, ArrayModel, UnionModel, EnumModel, DictionaryModel } from '../../models/MetaModel';
-import { DefaultPropertyKeyConstraints, ModelPropertyKeyConstraints } from './constrainer/ModelPropertyKeyConstrainer';
-import { DefaultModelNameConstraints, ModelNameConstraints, ConstrainModelName } from './constrainer/ModelNameConstrainer';
-import { DefaultEnumKeyConstraints, ModelEnumKeyConstraints } from './constrainer/ModelEnumConstrainer';
+import { defaultPropertyKeyConstraints, PropertyKeyConstraintType } from './constrainer/PropertyKeyConstrainer';
+import { defaultModelNameConstraints, ModelNameConstraintType } from './constrainer/ModelNameConstrainer';
+import { defaultEnumKeyConstraints, EnumConstraintType } from './constrainer/EnumConstrainer';
 import { Logger } from '../../utils';
+
 export interface TypeScriptConstraints {
-  modelEnumKeyConstraints: ModelEnumKeyConstraints,
-  modelNameConstraints: ModelNameConstraints,
-  modelPropertyKeyConstraints: ModelPropertyKeyConstraints,
+  enumKey: EnumConstraintType,
+  modelName: ModelNameConstraintType,
+  propertyKey: PropertyKeyConstraintType,
 }
 
 export const DefaultTypeScriptConstraints: TypeScriptConstraints = {
-  modelEnumKeyConstraints: DefaultEnumKeyConstraints,
-  modelNameConstraints: DefaultModelNameConstraints,
-  modelPropertyKeyConstraints: DefaultPropertyKeyConstraints
+  enumKey: defaultEnumKeyConstraints(),
+  modelName: defaultModelNameConstraints(),
+  propertyKey: defaultPropertyKeyConstraints()
 };
 
 type TypeMappingFunction<T extends ConstrainedMetaModel> = (model: T) => string;
@@ -150,14 +151,8 @@ function constrainDictionaryModel(constrainedName: string, metaModel: Dictionary
 
 function constrainObjectModel(constrainedName: string, objectModel: ObjectModel, typeMapping: TypeMapping, constrainRules: TypeScriptConstraints): ConstrainedObjectModel {
   const constrainedObjectModel = new ConstrainedObjectModel(constrainedName, objectModel.originalInput, '', {});
-  for (const [propertyName, propertyMetaModel] of Object.entries(objectModel.properties)) {
-    let constrainedPropertyName = propertyName;
-    constrainedPropertyName = constrainRules.modelPropertyKeyConstraints.NO_SPECIAL_CHAR(constrainedPropertyName);
-    constrainedPropertyName = constrainRules.modelPropertyKeyConstraints.NO_NUMBER_START_CHAR(constrainedPropertyName);
-    constrainedPropertyName = constrainRules.modelPropertyKeyConstraints.NO_EMPTY_VALUE(constrainedPropertyName);
-    constrainedPropertyName = constrainRules.modelPropertyKeyConstraints.NO_RESERVED_KEYWORDS(constrainedPropertyName);
-    constrainedPropertyName = constrainRules.modelPropertyKeyConstraints.NAMING_FORMATTER(constrainedPropertyName);
-    constrainedPropertyName = constrainRules.modelPropertyKeyConstraints.NO_DUPLICATE_PROPERTIES(constrainedObjectModel, objectModel, constrainedPropertyName, constrainRules.modelPropertyKeyConstraints.NAMING_FORMATTER);
+  for (const [propertyKey, propertyMetaModel] of Object.entries(objectModel.properties)) {
+    const constrainedPropertyName = constrainRules.propertyKey({propertyKey, constrainedObjectModel, objectModel});
     const constrainedProperty = constrainMetaModel(propertyMetaModel, typeMapping, constrainRules);
     constrainedObjectModel.properties[String(constrainedPropertyName)] = constrainedProperty;
   }
@@ -173,13 +168,7 @@ export function ConstrainEnumModel(constrainedName: string, enumModel: EnumModel
   const constrainedModel = new ConstrainedEnumModel(constrainedName, enumModel.originalInput, '', []);
 
   for (const enumValue of enumModel.values) {
-    let constrainedEnumKey = String(enumValue.key);
-    constrainedEnumKey = constrainRules.modelEnumKeyConstraints.NO_SPECIAL_CHAR(constrainedEnumKey);
-    constrainedEnumKey = constrainRules.modelEnumKeyConstraints.NO_NUMBER_START_CHAR(constrainedEnumKey);
-    constrainedEnumKey = constrainRules.modelEnumKeyConstraints.NO_EMPTY_VALUE(constrainedEnumKey);
-    constrainedEnumKey = constrainRules.modelEnumKeyConstraints.NO_RESERVED_KEYWORDS(constrainedEnumKey);
-    constrainedEnumKey = constrainRules.modelEnumKeyConstraints.NAMING_FORMATTER(constrainedEnumKey);
-    constrainedEnumKey = constrainRules.modelEnumKeyConstraints.NO_DUPLICATE_KEYS(constrainedModel, enumModel, constrainedEnumKey, constrainRules.modelPropertyKeyConstraints.NAMING_FORMATTER);
+    const constrainedEnumKey = constrainRules.enumKey({enumKey: String(enumValue.key), enumModel, constrainedEnumModel: constrainedModel});
     let normalizedEnumValue;
     switch (typeof enumValue.value) {
     case 'string':
@@ -211,7 +200,7 @@ export function ConstrainEnumModel(constrainedName: string, enumModel: EnumModel
 }
 
 export function constrainMetaModel(metaModel: MetaModel, typeMapping: TypeMapping, constrainRules: TypeScriptConstraints): ConstrainedMetaModel {
-  const constrainedName = ConstrainModelName(metaModel.name, constrainRules.modelNameConstraints);
+  const constrainedName = constrainRules.modelName({modelName: metaModel.name});
   
   if (metaModel instanceof ObjectModel) {
     return constrainObjectModel(constrainedName, metaModel, typeMapping, constrainRules);
