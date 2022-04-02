@@ -3,7 +3,6 @@ import { CommonModel, PropertyType } from '../../../models';
 import { DefaultPropertyNames, getUniquePropertyName } from '../../../helpers';
 import { pascalCase } from 'change-case';
 import { CsharpClassPreset } from '../CSharpPreset';
-import { CSharpOptions } from '../CSharpGenerator';
 
 /**
  * Renderer for CSharp's `struct` type
