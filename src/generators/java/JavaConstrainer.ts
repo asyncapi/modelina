@@ -35,8 +35,8 @@ type TypeMapping = {
   Dictionary?: TypeMappingFunction<ConstrainedDictionaryModel>
 }
 
-function constrainReferenceModel(constrainedName: string, metaModel: ReferenceModel, typeMapping: TypeMapping, constrainRules: TypeScriptConstraints): ConstrainedReferenceModel {
-  const constrainedRefModel = constrainMetaModel(metaModel.ref, typeMapping, constrainRules);
+function constrainReferenceModel(constrainedName: string, metaModel: ReferenceModel, typeMapping: TypeMapping, constrainRules: TypeScriptConstraints, options: JavaOptions): ConstrainedReferenceModel {
+  const constrainedRefModel = constrainMetaModel(metaModel.ref, typeMapping, constrainRules, options);
   const constrainedModel = new ConstrainedReferenceModel(constrainedName, metaModel.originalInput, '', constrainedRefModel);
   if (typeMapping.Reference !== undefined) {
     constrainedModel.type = typeMapping.Reference(constrainedModel);
@@ -64,9 +64,11 @@ function constrainFloatModel(constrainedName: string, metaModel: FloatModel, typ
     switch (format) {
     case 'float':
       type = 'float';
+      break;
     case 'double':
     case 'number':
       type = 'double';
+      break;
     }
     constrainedModel.type = type;
   }
@@ -83,9 +85,11 @@ function constrainIntegerModel(constrainedName: string, metaModel: IntegerModel,
     case 'integer':
     case 'int32':
       type = 'int';
+      break;
     case 'long':
     case 'int64':
       type = 'long';
+      break;
     }
     constrainedModel.type = type;
   }
@@ -110,13 +114,17 @@ function constrainBooleanModel(constrainedName: string, metaModel: BooleanModel,
     switch (format) {
     case 'date':
       type = 'java.time.LocalDate';
+      break;
     case 'time':
       type = 'java.time.OffsetTime';
+      break;
     case 'dateTime':
     case 'date-time':
       type = 'java.time.OffsetDateTime';
+      break;
     case 'binary':
       type = 'byte[]';
+      break;
     }
     constrainedModel.type = type;
   }
@@ -124,7 +132,7 @@ function constrainBooleanModel(constrainedName: string, metaModel: BooleanModel,
 }
 function constrainTupleModel(constrainedName: string, metaModel: TupleModel, typeMapping: TypeMapping, constrainRules: TypeScriptConstraints, options: JavaOptions): ConstrainedTupleModel {
   const constrainedTupleModels = metaModel.tuple.map((tupleValue) => {
-    const tupleType = constrainMetaModel(tupleValue.value, typeMapping, constrainRules);
+    const tupleType = constrainMetaModel(tupleValue.value, typeMapping, constrainRules, options);
     return new ConstrainedTupleValueModel(tupleValue.index, tupleType);
   });
   const constrainedModel = new ConstrainedTupleModel(constrainedName, metaModel.originalInput, '', constrainedTupleModels);
@@ -141,7 +149,7 @@ function constrainTupleModel(constrainedName: string, metaModel: TupleModel, typ
   return constrainedModel;
 }
 function constrainArrayModel(constrainedName: string, metaModel: ArrayModel, typeMapping: TypeMapping, constrainRules: TypeScriptConstraints, options: JavaOptions): ConstrainedArrayModel {
-  const constrainedValueModel = constrainMetaModel(metaModel.valueModel, typeMapping, constrainRules);
+  const constrainedValueModel = constrainMetaModel(metaModel.valueModel, typeMapping, constrainRules, options);
   const constrainedModel = new ConstrainedArrayModel(constrainedName, metaModel.originalInput, '', constrainedValueModel);
   if (typeMapping.Array !== undefined) {
     constrainedModel.type = typeMapping.Array(constrainedModel);
@@ -153,9 +161,9 @@ function constrainArrayModel(constrainedName: string, metaModel: ArrayModel, typ
   }
   return constrainedModel;
 }
-function constrainUnionModel(constrainedName: string, metaModel: UnionModel, typeMapping: TypeMapping, constrainRules: TypeScriptConstraints): ConstrainedUnionModel {
+function constrainUnionModel(constrainedName: string, metaModel: UnionModel, typeMapping: TypeMapping, constrainRules: TypeScriptConstraints, options: JavaOptions): ConstrainedUnionModel {
   const constrainedUnionModels = metaModel.union.map((unionValue) => {
-    return constrainMetaModel(unionValue, typeMapping, constrainRules);
+    return constrainMetaModel(unionValue, typeMapping, constrainRules, options);
   });
   const constrainedModel = new ConstrainedUnionModel(constrainedName, metaModel.originalInput, '', constrainedUnionModels);
   if (typeMapping.Union !== undefined) {
@@ -166,9 +174,9 @@ function constrainUnionModel(constrainedName: string, metaModel: UnionModel, typ
   }
   return constrainedModel;
 }
-function constrainDictionaryModel(constrainedName: string, metaModel: DictionaryModel, typeMapping: TypeMapping, constrainRules: TypeScriptConstraints): ConstrainedDictionaryModel {
-  const keyModel = constrainMetaModel(metaModel.key, typeMapping, constrainRules);
-  const valueModel = constrainMetaModel(metaModel.value, typeMapping, constrainRules);
+function constrainDictionaryModel(constrainedName: string, metaModel: DictionaryModel, typeMapping: TypeMapping, constrainRules: TypeScriptConstraints, options: JavaOptions): ConstrainedDictionaryModel {
+  const keyModel = constrainMetaModel(metaModel.key, typeMapping, constrainRules, options);
+  const valueModel = constrainMetaModel(metaModel.value, typeMapping, constrainRules, options);
   const constrainedModel = new ConstrainedDictionaryModel(constrainedName, metaModel.originalInput, '', keyModel, valueModel, metaModel.serializationType);
   if (typeMapping.Dictionary !== undefined) {
     constrainedModel.type = typeMapping.Dictionary(constrainedModel);
@@ -179,11 +187,11 @@ function constrainDictionaryModel(constrainedName: string, metaModel: Dictionary
   return constrainedModel;
 }
 
-function constrainObjectModel(constrainedName: string, objectModel: ObjectModel, typeMapping: TypeMapping, constrainRules: TypeScriptConstraints): ConstrainedObjectModel {
+function constrainObjectModel(constrainedName: string, objectModel: ObjectModel, typeMapping: TypeMapping, constrainRules: TypeScriptConstraints, options: JavaOptions): ConstrainedObjectModel {
   const constrainedObjectModel = new ConstrainedObjectModel(constrainedName, objectModel.originalInput, '', {});
   for (const [propertyKey, propertyMetaModel] of Object.entries(objectModel.properties)) {
     const constrainedPropertyName = constrainRules.propertyKey({propertyKey, constrainedObjectModel, objectModel});
-    const constrainedProperty = constrainMetaModel(propertyMetaModel, typeMapping, constrainRules);
+    const constrainedProperty = constrainMetaModel(propertyMetaModel, typeMapping, constrainRules, options);
     constrainedObjectModel.properties[String(constrainedPropertyName)] = constrainedProperty;
   }
   if (typeMapping.Object !== undefined) {
@@ -194,7 +202,7 @@ function constrainObjectModel(constrainedName: string, objectModel: ObjectModel,
   return constrainedObjectModel;
 }
 
-export function ConstrainEnumModel(constrainedName: string, enumModel: EnumModel, typeMapping: TypeMapping, constrainRules: TypeScriptConstraints): ConstrainedEnumModel {
+export function ConstrainEnumModel(constrainedName: string, enumModel: EnumModel, typeMapping: TypeMapping, constrainRules: TypeScriptConstraints, options: JavaOptions): ConstrainedEnumModel {
   const constrainedModel = new ConstrainedEnumModel(constrainedName, enumModel.originalInput, '', []);
 
   for (const enumValue of enumModel.values) {
@@ -233,29 +241,29 @@ export function constrainMetaModel(metaModel: MetaModel, typeMapping: TypeMappin
   const constrainedName = constrainRules.modelName({modelName: metaModel.name});
   
   if (metaModel instanceof ObjectModel) {
-    return constrainObjectModel(constrainedName, metaModel, typeMapping, constrainRules);
+    return constrainObjectModel(constrainedName, metaModel, typeMapping, constrainRules, options);
   } else if (metaModel instanceof ReferenceModel) {
-    return constrainReferenceModel(constrainedName, metaModel, typeMapping, constrainRules);
+    return constrainReferenceModel(constrainedName, metaModel, typeMapping, constrainRules, options);
   } else if (metaModel instanceof AnyModel) {
-    return constrainAnyModel(constrainedName, metaModel, typeMapping);
+    return constrainAnyModel(constrainedName, metaModel, typeMapping, options);
   } else if (metaModel instanceof FloatModel) {
-    return constrainFloatModel(constrainedName, metaModel, typeMapping);
+    return constrainFloatModel(constrainedName, metaModel, typeMapping, options);
   } else if (metaModel instanceof IntegerModel) {
-    return constrainIntegerModel(constrainedName, metaModel, typeMapping);
+    return constrainIntegerModel(constrainedName, metaModel, typeMapping, options);
   } else if (metaModel instanceof StringModel) {
-    return constrainStringModel(constrainedName, metaModel, typeMapping);
+    return constrainStringModel(constrainedName, metaModel, typeMapping, options);
   } else if (metaModel instanceof BooleanModel) {
-    return constrainBooleanModel(constrainedName, metaModel, typeMapping);
+    return constrainBooleanModel(constrainedName, metaModel, typeMapping, options);
   } else if (metaModel instanceof TupleModel) {
     return constrainTupleModel(constrainedName, metaModel, typeMapping, constrainRules, options);
   } else if (metaModel instanceof ArrayModel) {
     return constrainArrayModel(constrainedName, metaModel, typeMapping, constrainRules, options);
   } else if (metaModel instanceof UnionModel) {
-    return constrainUnionModel(constrainedName, metaModel, typeMapping, constrainRules);
+    return constrainUnionModel(constrainedName, metaModel, typeMapping, constrainRules, options);
   } else if (metaModel instanceof EnumModel) {
-    return ConstrainEnumModel(constrainedName, metaModel, typeMapping, constrainRules);
+    return ConstrainEnumModel(constrainedName, metaModel, typeMapping, constrainRules, options);
   } else if (metaModel instanceof DictionaryModel) {
-    return constrainDictionaryModel(constrainedName, metaModel, typeMapping, constrainRules);
+    return constrainDictionaryModel(constrainedName, metaModel, typeMapping, constrainRules, options);
   }
   throw new Error('Could not constrain model');
 }
