@@ -202,7 +202,7 @@ function constrainObjectModel(constrainedName: string, objectModel: ObjectModel,
   return constrainedObjectModel;
 }
 
-export function ConstrainEnumModel(constrainedName: string, enumModel: EnumModel, typeMapping: TypeMapping, constrainRules: TypeScriptConstraints, options: JavaOptions): ConstrainedEnumModel {
+export function ConstrainEnumModel(constrainedName: string, enumModel: EnumModel, typeMapping: TypeMapping, constrainRules: TypeScriptConstraints): ConstrainedEnumModel {
   const constrainedModel = new ConstrainedEnumModel(constrainedName, enumModel.originalInput, '', []);
 
   for (const enumValue of enumModel.values) {
@@ -261,7 +261,7 @@ export function constrainMetaModel(metaModel: MetaModel, typeMapping: TypeMappin
   } else if (metaModel instanceof UnionModel) {
     return constrainUnionModel(constrainedName, metaModel, typeMapping, constrainRules, options);
   } else if (metaModel instanceof EnumModel) {
-    return ConstrainEnumModel(constrainedName, metaModel, typeMapping, constrainRules, options);
+    return ConstrainEnumModel(constrainedName, metaModel, typeMapping, constrainRules);
   } else if (metaModel instanceof DictionaryModel) {
     return constrainDictionaryModel(constrainedName, metaModel, typeMapping, constrainRules, options);
   }
