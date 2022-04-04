@@ -4,13 +4,13 @@ import { defaultPropertyKeyConstraints, PropertyKeyConstraintType } from './cons
 import { defaultModelNameConstraints, ModelNameConstraintType } from './constrainer/ModelNameConstrainer';
 import { defaultEnumKeyConstraints, EnumConstraintType } from './constrainer/EnumConstrainer';
 
-export interface TypeScriptConstraints {
+export interface GoConstraints {
   enumKey: EnumConstraintType,
   modelName: ModelNameConstraintType,
   propertyKey: PropertyKeyConstraintType,
 }
 
-export const DefaultTypeScriptConstraints: TypeScriptConstraints = {
+export const DefaultGoConstraints: GoConstraints = {
   enumKey: defaultEnumKeyConstraints(),
   modelName: defaultModelNameConstraints(),
   propertyKey: defaultPropertyKeyConstraints()
@@ -33,7 +33,7 @@ type TypeMapping = {
   Dictionary?: TypeMappingFunction<ConstrainedDictionaryModel>
 }
 
-function constrainReferenceModel(constrainedName: string, metaModel: ReferenceModel, typeMapping: TypeMapping, constrainRules: TypeScriptConstraints): ConstrainedReferenceModel {
+function constrainReferenceModel(constrainedName: string, metaModel: ReferenceModel, typeMapping: TypeMapping, constrainRules: GoConstraints): ConstrainedReferenceModel {
   const constrainedRefModel = constrainMetaModel(metaModel.ref, typeMapping, constrainRules);
   const constrainedModel = new ConstrainedReferenceModel(constrainedName, metaModel.originalInput, '', constrainedRefModel);
   if (typeMapping.Reference !== undefined) {
@@ -88,7 +88,7 @@ function constrainBooleanModel(constrainedName: string, metaModel: BooleanModel,
   }
   return constrainedModel;
 }
-function constrainTupleModel(constrainedName: string, metaModel: TupleModel, typeMapping: TypeMapping, constrainRules: TypeScriptConstraints): ConstrainedTupleModel {
+function constrainTupleModel(constrainedName: string, metaModel: TupleModel, typeMapping: TypeMapping, constrainRules: GoConstraints): ConstrainedTupleModel {
   const constrainedTupleModels = metaModel.tuple.map((tupleValue) => {
     const tupleType = constrainMetaModel(tupleValue.value, typeMapping, constrainRules);
     return new ConstrainedTupleValueModel(tupleValue.index, tupleType);
@@ -102,7 +102,7 @@ function constrainTupleModel(constrainedName: string, metaModel: TupleModel, typ
   }
   return constrainedModel;
 }
-function constrainArrayModel(constrainedName: string, metaModel: ArrayModel, typeMapping: TypeMapping, constrainRules: TypeScriptConstraints): ConstrainedArrayModel {
+function constrainArrayModel(constrainedName: string, metaModel: ArrayModel, typeMapping: TypeMapping, constrainRules: GoConstraints): ConstrainedArrayModel {
   const constrainedValueModel = constrainMetaModel(metaModel.valueModel, typeMapping, constrainRules);
   const constrainedModel = new ConstrainedArrayModel(constrainedName, metaModel.originalInput, '', constrainedValueModel);
   if (typeMapping.Array !== undefined) {
@@ -112,7 +112,7 @@ function constrainArrayModel(constrainedName: string, metaModel: ArrayModel, typ
   }
   return constrainedModel;
 }
-function constrainUnionModel(constrainedName: string, metaModel: UnionModel, typeMapping: TypeMapping, constrainRules: TypeScriptConstraints): ConstrainedUnionModel {
+function constrainUnionModel(constrainedName: string, metaModel: UnionModel, typeMapping: TypeMapping, constrainRules: GoConstraints): ConstrainedUnionModel {
   const constrainedUnionModels = metaModel.union.map((unionValue) => {
     return constrainMetaModel(unionValue, typeMapping, constrainRules);
   });
@@ -124,7 +124,7 @@ function constrainUnionModel(constrainedName: string, metaModel: UnionModel, typ
   }
   return constrainedModel;
 }
-function constrainDictionaryModel(constrainedName: string, metaModel: DictionaryModel, typeMapping: TypeMapping, constrainRules: TypeScriptConstraints): ConstrainedDictionaryModel {
+function constrainDictionaryModel(constrainedName: string, metaModel: DictionaryModel, typeMapping: TypeMapping, constrainRules: GoConstraints): ConstrainedDictionaryModel {
   const keyModel = constrainMetaModel(metaModel.key, typeMapping, constrainRules);
   const valueModel = constrainMetaModel(metaModel.value, typeMapping, constrainRules);
   const constrainedModel = new ConstrainedDictionaryModel(constrainedName, metaModel.originalInput, '', keyModel, valueModel, metaModel.serializationType);
@@ -137,7 +137,7 @@ function constrainDictionaryModel(constrainedName: string, metaModel: Dictionary
   return constrainedModel;
 }
 
-function constrainObjectModel(constrainedName: string, objectModel: ObjectModel, typeMapping: TypeMapping, constrainRules: TypeScriptConstraints): ConstrainedObjectModel {
+function constrainObjectModel(constrainedName: string, objectModel: ObjectModel, typeMapping: TypeMapping, constrainRules: GoConstraints): ConstrainedObjectModel {
   const constrainedObjectModel = new ConstrainedObjectModel(constrainedName, objectModel.originalInput, '', {});
   for (const [propertyKey, propertyMetaModel] of Object.entries(objectModel.properties)) {
     const constrainedPropertyName = constrainRules.propertyKey({propertyKey, constrainedObjectModel, objectModel});
@@ -152,7 +152,7 @@ function constrainObjectModel(constrainedName: string, objectModel: ObjectModel,
   return constrainedObjectModel;
 }
 
-export function ConstrainEnumModel(constrainedName: string, enumModel: EnumModel, typeMapping: TypeMapping, constrainRules: TypeScriptConstraints): ConstrainedEnumModel {
+export function ConstrainEnumModel(constrainedName: string, enumModel: EnumModel, typeMapping: TypeMapping, constrainRules: GoConstraints): ConstrainedEnumModel {
   const constrainedModel = new ConstrainedEnumModel(constrainedName, enumModel.originalInput, '', []);
 
   for (const enumValue of enumModel.values) {
@@ -168,7 +168,7 @@ export function ConstrainEnumModel(constrainedName: string, enumModel: EnumModel
   return constrainedModel;
 }
 
-export function constrainMetaModel(metaModel: MetaModel, typeMapping: TypeMapping, constrainRules: TypeScriptConstraints): ConstrainedMetaModel {
+export function constrainMetaModel(metaModel: MetaModel, typeMapping: TypeMapping, constrainRules: GoConstraints): ConstrainedMetaModel {
   const constrainedName = constrainRules.modelName({modelName: metaModel.name});
   
   if (metaModel instanceof ObjectModel) {
