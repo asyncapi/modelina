@@ -11,6 +11,7 @@ There are special use-cases that each language supports; this document pertains 
 - [Generate un/marshal functions for classes](#generate-unmarshal-functions-for-classes)
 - [Generate example data function](#generate-example-data-function)
 - [Rendering complete models to a specific module system](#rendering-complete-models-to-a-specific-module-system)
+- [Rendering comments from description and example fields](#rendering-comments-from-description-and-example-fields)
 
 <!-- tocstop -->
 
@@ -56,6 +57,13 @@ Check out this [example out for a live demonstration](../../examples/typescript-
 ## Rendering complete models to a specific module system
 In some cases you might need to render the complete models to a specific module system such as ESM and CJS.
 
+You can choose between default exports and named exports when using either, with the `exportType` option.
+
 Check out this [example for a live demonstration how to generate the complete TypeScript models to use ESM module system](../../examples/typescript-use-esm).
 
 Check out this [example for a live demonstration how to generate the complete TypeScript models to use CJS module system](../../examples/typescript-use-cjs).
+
+## Rendering comments from description and example fields
+You can use the `TS_DESCRIPTION_PRESET` to generate JSDoc style comments from description and example fields in your model.
+
+See [this example](../../examples/typescript-generate-comments) for how this can be used.

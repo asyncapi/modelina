@@ -112,7 +112,7 @@ exports[`JSON serializer preset should render serialize and deserialize converte
 "[JsonConverter(typeof(TestConverter))]
 public class Test {
   private string stringProp;
-  private float? numberProp;
+  private double? numberProp;
   private EnumTest enumProp;
   private NestedTest objectProp;
   private Dictionary<string, dynamic> additionalProperties;
@@ -124,7 +124,7 @@ public class Test {
     set { stringProp = value; }
   }
 
-  public float? NumberProp 
+  public double? NumberProp 
   {
     get { return numberProp; }
     set { numberProp = value; }
@@ -193,7 +193,7 @@ internal class TestConverter : JsonConverter<Test>
       }
       if (propertyName == \\"numberProp\\")
       {
-        var value = JsonSerializer.Deserialize<float?>(ref reader, options);
+        var value = JsonSerializer.Deserialize<double?>(ref reader, options);
         instance.NumberProp = value;
         continue;
       }
