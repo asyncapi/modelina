@@ -5,7 +5,7 @@ import { defaultModelNameConstraints, ModelNameConstraintType } from './constrai
 import { defaultEnumKeyConstraints, EnumConstraintType } from './constrainer/EnumConstrainer';
 import { Logger } from '../../utils';
 
-export interface TypeScriptConstraints {
+export interface JavaScriptConstraints {
   enumKey: EnumConstraintType,
   modelName: ModelNameConstraintType,
   propertyKey: PropertyKeyConstraintType,
