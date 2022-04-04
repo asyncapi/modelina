@@ -11,30 +11,30 @@ export interface JavaScriptConstraints {
   propertyKey: PropertyKeyConstraintType,
 }
 
-export const DefaultTypeScriptConstraints: TypeScriptConstraints = {
+export const DefaultJavaScriptConstraints: JavaScriptConstraints = {
   enumKey: defaultEnumKeyConstraints(),
   modelName: defaultModelNameConstraints(),
   propertyKey: defaultPropertyKeyConstraints()
 };
 
-function constrainTupleModel(constrainedName: string, metaModel: TupleModel, constrainRules: TypeScriptConstraints): ConstrainedTupleModel {
+function constrainTupleModel(constrainedName: string, metaModel: TupleModel, constrainRules: JavaScriptConstraints): ConstrainedTupleModel {
   const constrainedTupleModels = metaModel.tuple.map((tupleValue) => {
     const tupleType = constrainMetaModel(tupleValue.value, constrainRules);
     return new ConstrainedTupleValueModel(tupleValue.index, tupleType);
   });
   return new ConstrainedTupleModel(constrainedName, metaModel.originalInput, '', constrainedTupleModels);
 }
-function constrainArrayModel(constrainedName: string, metaModel: ArrayModel, constrainRules: TypeScriptConstraints): ConstrainedArrayModel {
+function constrainArrayModel(constrainedName: string, metaModel: ArrayModel, constrainRules: JavaScriptConstraints): ConstrainedArrayModel {
   const constrainedValueModel = constrainMetaModel(metaModel.valueModel, constrainRules);
   return new ConstrainedArrayModel(constrainedName, metaModel.originalInput, '', constrainedValueModel);
 }
-function constrainUnionModel(constrainedName: string, metaModel: UnionModel, constrainRules: TypeScriptConstraints): ConstrainedUnionModel {
+function constrainUnionModel(constrainedName: string, metaModel: UnionModel, constrainRules: JavaScriptConstraints): ConstrainedUnionModel {
   const constrainedUnionModels = metaModel.union.map((unionValue) => {
     return constrainMetaModel(unionValue, constrainRules);
   });
   return new ConstrainedUnionModel(constrainedName, metaModel.originalInput, '', constrainedUnionModels);
 }
-function constrainDictionaryModel(constrainedName: string, metaModel: DictionaryModel, constrainRules: TypeScriptConstraints): ConstrainedDictionaryModel {
+function constrainDictionaryModel(constrainedName: string, metaModel: DictionaryModel, constrainRules: JavaScriptConstraints): ConstrainedDictionaryModel {
   let keyModel;    
   //There is some restrictions on what can be used as keys for dictionaries.
   if (metaModel.key instanceof UnionModel) {
@@ -48,7 +48,7 @@ function constrainDictionaryModel(constrainedName: string, metaModel: Dictionary
   return new ConstrainedDictionaryModel(constrainedName, metaModel.originalInput, '', keyModel, valueModel, metaModel.serializationType);
 }
 
-function constrainObjectModel(constrainedName: string, objectModel: ObjectModel, constrainRules: TypeScriptConstraints): ConstrainedObjectModel {
+function constrainObjectModel(constrainedName: string, objectModel: ObjectModel, constrainRules: JavaScriptConstraints): ConstrainedObjectModel {
   const constrainedObjectModel = new ConstrainedObjectModel(constrainedName, objectModel.originalInput, '', {});
   for (const [propertyKey, propertyMetaModel] of Object.entries(objectModel.properties)) {
     const constrainedPropertyName = constrainRules.propertyKey({propertyKey, constrainedObjectModel, objectModel});
@@ -58,7 +58,7 @@ function constrainObjectModel(constrainedName: string, objectModel: ObjectModel,
   return constrainedObjectModel;
 }
 
-export function ConstrainEnumModel(constrainedName: string, enumModel: EnumModel, constrainRules: TypeScriptConstraints): ConstrainedEnumModel {
+export function ConstrainEnumModel(constrainedName: string, enumModel: EnumModel, constrainRules: JavaScriptConstraints): ConstrainedEnumModel {
   const constrainedModel = new ConstrainedEnumModel(constrainedName, enumModel.originalInput, '', []);
 
   for (const enumValue of enumModel.values) {
@@ -88,7 +88,7 @@ export function ConstrainEnumModel(constrainedName: string, enumModel: EnumModel
   return constrainedModel;
 }
 
-export function constrainMetaModel(metaModel: MetaModel, constrainRules: TypeScriptConstraints): ConstrainedMetaModel {
+export function constrainMetaModel(metaModel: MetaModel, constrainRules: JavaScriptConstraints): ConstrainedMetaModel {
   const constrainedName = constrainRules.modelName({modelName: metaModel.name});
   
   if (metaModel instanceof ObjectModel) {
