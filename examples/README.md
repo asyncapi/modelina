@@ -36,3 +36,6 @@ This directory contains a series of self-contained examples that you can use as 
 - [java-change-collection-type](./java-change-collection-type) - An example to render collections as List in Java.
 - [java-generate-hashcode](./java-generate-hashcode) - A basic example that shows how to generate models that overwrite the `hashCode` method
 - [java-generate-marshalling](./java-generate-marshalling) - A basic example of how to use the un/marshalling functionality of the java class.
+- [overwrite-naming-formatting](./overwrite-naming-formatting) - A basic example how to overwrite default naming format constraint in this case, overwriting returning a constant case format.
+- [overwrite-default-constraint](./overwrite-default-constraint/) -  A basic example how to overwrite the entire constraint logic and not just a single single part of the default behavior, in this case overwriting the model naming constraint.
+- [change-type-mapping](./change-type-mapping) - A basic example how to overwrite default constrain behavior, in this case, overwriting the naming formatting.
