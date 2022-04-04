@@ -245,15 +245,15 @@ export function constrainMetaModel(metaModel: MetaModel, typeMapping: TypeMappin
   } else if (metaModel instanceof ReferenceModel) {
     return constrainReferenceModel(constrainedName, metaModel, typeMapping, constrainRules, options);
   } else if (metaModel instanceof AnyModel) {
-    return constrainAnyModel(constrainedName, metaModel, typeMapping, options);
+    return constrainAnyModel(constrainedName, metaModel, typeMapping);
   } else if (metaModel instanceof FloatModel) {
-    return constrainFloatModel(constrainedName, metaModel, typeMapping, options);
+    return constrainFloatModel(constrainedName, metaModel, typeMapping);
   } else if (metaModel instanceof IntegerModel) {
-    return constrainIntegerModel(constrainedName, metaModel, typeMapping, options);
+    return constrainIntegerModel(constrainedName, metaModel, typeMapping);
   } else if (metaModel instanceof StringModel) {
-    return constrainStringModel(constrainedName, metaModel, typeMapping, options);
+    return constrainStringModel(constrainedName, metaModel, typeMapping);
   } else if (metaModel instanceof BooleanModel) {
-    return constrainBooleanModel(constrainedName, metaModel, typeMapping, options);
+    return constrainBooleanModel(constrainedName, metaModel, typeMapping);
   } else if (metaModel instanceof TupleModel) {
     return constrainTupleModel(constrainedName, metaModel, typeMapping, constrainRules, options);
   } else if (metaModel instanceof ArrayModel) {
