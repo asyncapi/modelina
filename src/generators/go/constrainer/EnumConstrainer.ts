@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { ConstrainedEnumModel, EnumModel } from '../../../models';
-import { NO_NUMBER_START_CHAR, NO_DUPLICATE_ENUM_KEYS, NO_EMPTY_VALUE, NO_RESERVED_KEYWORDS} from '../../../helpers/Constraints';
+import { NO_NUMBER_START_CHAR, NO_DUPLICATE_ENUM_KEYS, NO_EMPTY_VALUE} from '../../../helpers/Constraints';
 import { FormatHelpers } from '../../../helpers';
-import { isReservedTypeScriptKeyword } from '../Constants';
 
 export type ModelEnumKeyConstraints = {
   NO_SPECIAL_CHAR: (value: string) => string;
@@ -23,7 +22,7 @@ export const DefaultEnumKeyConstraints: ModelEnumKeyConstraints = {
   NO_EMPTY_VALUE,
   NAMING_FORMATTER: FormatHelpers.toConstantCase,
   NO_RESERVED_KEYWORDS: (value: string) => {
-    return NO_RESERVED_KEYWORDS(value, isReservedTypeScriptKeyword); 
+    return value;
   }
 };
 

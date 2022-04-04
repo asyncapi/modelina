@@ -56,7 +56,6 @@ export function defaultPropertyKeyConstraints(customConstraints?: PropertyKeyCon
     constrainedPropertyKey = constraints.NO_SPECIAL_CHAR!(constrainedPropertyKey);
     constrainedPropertyKey = constraints.NO_NUMBER_START_CHAR!(constrainedPropertyKey);
     constrainedPropertyKey = constraints.NO_EMPTY_VALUE!(constrainedPropertyKey);
-    constrainedPropertyKey = constraints.NO_RESERVED_KEYWORDS!(constrainedPropertyKey);
     constrainedPropertyKey = constraints.NAMING_FORMATTER!(constrainedPropertyKey);
     constrainedPropertyKey = constraints.NO_DUPLICATE_PROPERTIES!(constrainedObjectModel, objectModel, constrainedPropertyKey, constraints.NAMING_FORMATTER!);
     return constrainedPropertyKey;

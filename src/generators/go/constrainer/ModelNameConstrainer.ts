@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { NO_NUMBER_START_CHAR, NO_EMPTY_VALUE, NO_RESERVED_KEYWORDS} from '../../../helpers/Constraints';
+import { NO_NUMBER_START_CHAR, NO_EMPTY_VALUE} from '../../../helpers/Constraints';
 import { FormatHelpers } from '../../../helpers';
-import { isReservedTypeScriptKeyword } from '../Constants';
 
 export type ModelNameConstraints = {
   NO_SPECIAL_CHAR?: (value: string) => string;
@@ -23,7 +22,7 @@ export const DefaultModelNameConstraints: ModelNameConstraints = {
     return FormatHelpers.toPascalCase(value);
   },
   NO_RESERVED_KEYWORDS: (value: string) => {
-    return NO_RESERVED_KEYWORDS(value, isReservedTypeScriptKeyword); 
+    return value;
   }
 };
 export type ModelNameContext = {
