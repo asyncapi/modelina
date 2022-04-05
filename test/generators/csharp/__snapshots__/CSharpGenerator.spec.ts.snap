@@ -73,7 +73,7 @@ exports[`CSharpGenerator should render \`class\` type 1`] = `
   private string streetName;
   private string city;
   private string state;
-  private float? houseNumber;
+  private double? houseNumber;
   private bool? marriage;
   private dynamic members;
   private dynamic[] tupleType;
@@ -99,7 +99,7 @@ exports[`CSharpGenerator should render \`class\` type 1`] = `
     set { state = value; }
   }
 
-  public float? HouseNumber 
+  public double? HouseNumber 
   {
     get { return houseNumber; }
     set { houseNumber = value; }
@@ -148,7 +148,7 @@ exports[`CSharpGenerator should render \`class\` type 2`] = `
   private string streetName;
   private string city;
   private string state;
-  private float? houseNumber;
+  private double? houseNumber;
   private bool? marriage;
   private dynamic members;
   private dynamic[] tupleType;
@@ -174,7 +174,7 @@ exports[`CSharpGenerator should render \`class\` type 2`] = `
     set { state = value; }
   }
 
-  public float? HouseNumber 
+  public double? HouseNumber 
   {
     get { return houseNumber; }
     set { houseNumber = value; }
@@ -428,7 +428,7 @@ exports[`CSharpGenerator should render models and their dependencies 1`] = `
   private string streetName;
   private string city;
   private string state;
-  private float? houseNumber;
+  private double? houseNumber;
   private bool? marriage;
   private dynamic members;
   private dynamic[] arrayType;
@@ -454,7 +454,7 @@ exports[`CSharpGenerator should render models and their dependencies 1`] = `
     set { state = value; }
   }
 
-  public float? HouseNumber 
+  public double? HouseNumber 
   {
     get { return houseNumber; }
     set { houseNumber = value; }
