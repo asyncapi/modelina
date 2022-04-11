@@ -266,6 +266,18 @@
         "doc",
         "example"
       ]
+    },
+    {
+      "login": "ibernabeudev",
+      "name": "ibernabeudev",
+      "avatar_url": "https://avatars.githubusercontent.com/u/74215074?v=4",
+      "profile": "https://github.com/ibernabeudev",
+      "contributions": [
+        "code",
+        "test",
+        "example",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
