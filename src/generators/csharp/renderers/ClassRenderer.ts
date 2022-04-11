@@ -123,7 +123,9 @@ export const CSHARP_DEFAULT_CLASS_PRESET: CsharpClassPreset = {
     if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
       propertyType = `Dictionary<string, ${propertyType}>`;
     }
-    if (options?.autoImplementedProperties) return '';
+    if (options?.autoImplementedProperties) {
+      return '';
+    }
 
     return `public ${propertyType} ${formattedAccessorName} 
 {
@@ -132,12 +134,16 @@ export const CSHARP_DEFAULT_CLASS_PRESET: CsharpClassPreset = {
 }`;
   },
   getter({ renderer, propertyName, options, property }) {
-    if (options?.autoImplementedProperties) return 'get;';
+    if (options?.autoImplementedProperties) {
+      return 'get;';
+    }
     const formattedPropertyName = renderer.nameProperty(propertyName, property);
     return `get { return ${formattedPropertyName}; }`;
   },
   setter({ renderer, propertyName, options, property }) {
-    if (options?.autoImplementedProperties) return 'set;';
+    if (options?.autoImplementedProperties) {
+      return 'set;';
+    }
     const formattedPropertyName = renderer.nameProperty(propertyName, property);
     return `set { ${formattedPropertyName} = value; }`;
   }
