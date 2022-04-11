@@ -95,7 +95,7 @@ ${renderer.indent(renderMarshalAdditionalProperties(model, renderer, inputModel)
   //Remove potential last comma 
   return \`$\{json.charAt(json.length-1) === ',' ? json.slice(0, json.length-1) : json}}\`;
 }`;
-} 
+}
 
 function renderUnmarshalProperty(modelInstanceVariable: string, model: CommonModel, inputModel: CommonInputModel, renderer: TypeScriptRenderer) {
   if (model.$ref) {
@@ -139,7 +139,7 @@ if (key.match(new RegExp('${pattern}'))) {
 }`;
     }
   }
-  return {unmarshalPatternProperties, setPatternPropertiesMap};
+  return { unmarshalPatternProperties, setPatternPropertiesMap };
 }
 
 function renderUnmarshalAdditionalProperties(model: CommonModel, renderer: TypeScriptRenderer, inputModel: CommonInputModel) {
@@ -153,7 +153,7 @@ function renderUnmarshalAdditionalProperties(model: CommonModel, renderer: TypeS
     setAdditionalPropertiesMap = `if (instance.${additionalPropertyName} === undefined) {instance.${additionalPropertyName} = new Map();}`;
     unmarshalAdditionalProperties = `instance.${additionalPropertyName}.set(key, ${unmarshalCode});`;
   }
-  return {unmarshalAdditionalProperties, setAdditionalPropertiesMap};
+  return { unmarshalAdditionalProperties, setAdditionalPropertiesMap };
 }
 
 /**
@@ -165,8 +165,8 @@ function renderUnmarshal({ renderer, model, inputModel }: {
   inputModel: CommonInputModel
 }): string {
   const properties = model.properties || {};
-  const {unmarshalPatternProperties, setPatternPropertiesMap} = renderUnmarshalPatternProperties(model, renderer, inputModel);
-  const {unmarshalAdditionalProperties, setAdditionalPropertiesMap} = renderUnmarshalAdditionalProperties(model, renderer, inputModel);
+  const { unmarshalPatternProperties, setPatternPropertiesMap } = renderUnmarshalPatternProperties(model, renderer, inputModel);
+  const { unmarshalAdditionalProperties, setAdditionalPropertiesMap } = renderUnmarshalAdditionalProperties(model, renderer, inputModel);
   const unmarshalProperties = renderUnmarshalProperties(model, renderer, inputModel);
   const formattedModelName = renderer.nameType(model.$id);
   const propertyNames = Object.keys(properties).map((prop => `"${prop}"`));
@@ -185,19 +185,19 @@ ${renderer.indent(unmarshalAdditionalProperties, 4)}
   }
   return instance;
 }`;
-} 
+}
 
 /**
  * Preset which adds `marshal`, `unmarshal`, `example` functions to class. 
  * 
  * @implements {TypeScriptPreset}
  */
-export const TS_COMMON_PRESET: TypeScriptPreset = {
+export const TS_COMMON_PRESET: TypeScriptPreset<TypeScriptCommonPresetOptions> = {
   class: {
     additionalContent({ renderer, model, content, options, inputModel }) {
       options = options || {};
       const blocks: string[] = [];
-      
+
       if (options.marshalling === true) {
         blocks.push(renderMarshal({ renderer, model, inputModel }));
         blocks.push(renderUnmarshal({ renderer, model, inputModel }));
@@ -206,7 +206,7 @@ export const TS_COMMON_PRESET: TypeScriptPreset = {
       if (options.example === true) {
         blocks.push(renderExampleFunction({ renderer, model }));
       }
-      
+
       return renderer.renderBlock([content, ...blocks], 2);
     },
   }

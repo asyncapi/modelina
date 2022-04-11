@@ -192,7 +192,7 @@ ${renderer.indent(unmarshalAdditionalProperties, 4)}
  * 
  * @implements {JavaScriptPreset}
  */
-export const JS_COMMON_PRESET: JavaScriptPreset = {
+export const JS_COMMON_PRESET: JavaScriptPreset<JavaScriptCommonPresetOptions> = {
   class: {
     additionalContent({ renderer, model, content, options, inputModel }) {
       options = options || {};
