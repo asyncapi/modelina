@@ -5,7 +5,7 @@ Array [
   "public class Root {
   public string[] Emails { get; set; }
   public string StringProp { get; set; }
-  public float? NumberProp { get; set; }
+  public double? NumberProp { get; set; }
 }",
 ]
 `;
