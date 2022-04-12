@@ -46,8 +46,8 @@ export abstract class CSharpRenderer extends AbstractRenderer<CSharpOptions> {
       : propertyName || '';
   }
 
-  runPropertyPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
-    return this.runPreset('property', { propertyName, property, type });
+  runPropertyPreset(propertyName: string, property: CommonModel, options: any, type: PropertyType = PropertyType.property): Promise<string> {
+    return this.runPreset('property', { propertyName, property, options, type });
   }
 
   renderType(model: CommonModel): string {

@@ -27,6 +27,12 @@ To overwrite the `Equal` and `GetHashCode` methods, use the preset `CSHARP_COMMO
 
 Check out this [example for a live demonstration](../../examples/csharp-generate-equals-and-hashcode).
 
+## Generate models with auto-implemented properties
+
+To generate auto-implemented properties (the ones with with `{ get; set; }` accessors), use the preset `CSHARP_COMMON_PRESET` and provide the option `autoImplementedProperties: true`
+
+Check out this [example for a live demonstration](../../examples/csharp-auto-implemented-properties).
+
 ## Change the collection type for arrays
 
 If you consider the Array Class to be insuitable for your situation, then you might look into setting the `collectionType: 'List'` option to your instance of the generator. This will cause all of the collections to be rendered as of type `System.Collections.Generic.IEnumerable<T>`.
