@@ -3,7 +3,7 @@ import { JavaPreset } from '../JavaPreset';
 
 import { getUniquePropertyName, DefaultPropertyNames, FormatHelpers } from '../../../helpers';
 import { CommonModel } from '../../../models';
-import {Logger} from '../../../utils/LoggingInterface';
+import { Logger } from '../../../utils/LoggingInterface';
 
 export interface JavaCommonPresetOptions {
   equal: boolean;
@@ -42,7 +42,7 @@ public boolean equals(Object o) {
     return 
 ${equalProperties.length > 0 ? renderer.indent(equalProperties, 6) : 'true'};
 }`;
-} 
+}
 
 /**
  * Render `hashCode` function based on model's properties
@@ -63,7 +63,7 @@ function renderHashCode({ renderer, model }: {
 public int hashCode() {
   return Objects.hash(${hashProperties});
 }`;
-} 
+}
 
 /**
  * Render `toString` function based on model's properties
@@ -78,7 +78,7 @@ function renderToString({ renderer, model }: {
   if (model.additionalProperties !== undefined) {
     propertyKeys.push(getUniquePropertyName(model, DefaultPropertyNames.additionalProperties));
   }
-  const toStringProperties = propertyKeys.map(prop => { 
+  const toStringProperties = propertyKeys.map(prop => {
     const renderedPropertyName = renderer.nameProperty(prop);
     return `"    ${renderedPropertyName}: " + toIndentedString(${renderedPropertyName}) + "\\n" +`;
   });
@@ -97,13 +97,13 @@ private String toIndentedString(Object o) {
   }
   return o.toString().replace("\\n", "\\n    ");
 }`;
-} 
+}
 
-function renderMarshalProperties(renderer: JavaRenderer, model:CommonModel) {
+function renderMarshalProperties(renderer: JavaRenderer, model: CommonModel) {
   const properties = model.properties || {};
   const propertyKeys = [...Object.keys(properties)];
   const marshalProperties = propertyKeys.map(prop => {
-    const formattedPropertyName = renderer.nameProperty(prop,model);
+    const formattedPropertyName = renderer.nameProperty(prop, model);
     const modelInstanceVariable = `this.${formattedPropertyName}`;
     return `if(${modelInstanceVariable} != null) {
         propList.add("${formattedPropertyName}:"+${modelInstanceVariable}.toString());
@@ -120,21 +120,21 @@ function renderMarshalling({ renderer, model }: {
 }): string {
   return `public String marshal() {
   List<String> propList = new ArrayList();
-  ${renderer.indent(renderMarshalProperties(renderer,model))}
+  ${renderer.indent(renderMarshalProperties(renderer, model))}
   return propList.stream().collect(Collectors.joining(","));
 }`;
 }
 
-function renderUnmarshalProperties(renderer: JavaRenderer, model:CommonModel) {
+function renderUnmarshalProperties(renderer: JavaRenderer, model: CommonModel) {
   const properties = model.properties || {};
   const propertyKeys = [...Object.keys(properties)];
   const unmarshalProperties = propertyKeys.map(prop => {
-    const formattedPropertyName = renderer.nameProperty(prop,model);
+    const formattedPropertyName = renderer.nameProperty(prop, model);
     const setterFunction = `set${formattedPropertyName.charAt(0).toUpperCase()}${formattedPropertyName.slice(1)}`;
     const propModel = properties[String(prop)];
     if (propModel.type === 'undefined') {
       Logger.error(`Could not render unmarshal for property ${prop}`);
-      return; 
+      return;
     }
     if (propModel.type === 'array') {
       return `if(jsonObject.has("${formattedPropertyName}")) {
@@ -164,7 +164,7 @@ function renderUnmarshalling({ renderer, model }: {
   return `public static ${formattedModelName} unmarshal(String json) {
   ${formattedModelName} result = new ${formattedModelName}();
   JSONObject jsonObject = new JSONObject(json);
-  ${renderer.indent(renderUnmarshalProperties(renderer,model))}
+  ${renderer.indent(renderUnmarshalProperties(renderer, model))}
   return result;
 }`;
 }
@@ -174,7 +174,7 @@ function renderUnmarshalling({ renderer, model }: {
  * 
  * @implements {JavaPreset}
  */
-export const JAVA_COMMON_PRESET: JavaPreset = {
+export const JAVA_COMMON_PRESET: JavaPreset<JavaCommonPresetOptions> = {
   class: {
     additionalContent({ renderer, model, content, options }) {
       options = options || {};
@@ -194,10 +194,10 @@ export const JAVA_COMMON_PRESET: JavaPreset = {
         renderer.addDependency('import java.util.Map;');
       }
 
-      if (shouldContainEqual) {blocks.push(renderEqual({ renderer, model }));}
-      if (shouldContainHashCode) {blocks.push(renderHashCode({ renderer, model }));}
-      if (shouldContainToString) {blocks.push(renderToString({ renderer, model }));}
-      
+      if (shouldContainEqual) { blocks.push(renderEqual({ renderer, model })); }
+      if (shouldContainHashCode) { blocks.push(renderHashCode({ renderer, model })); }
+      if (shouldContainToString) { blocks.push(renderToString({ renderer, model })); }
+
       if (shouldContainMarshal === true) {
         blocks.push(renderMarshalling({ renderer, model }));
         blocks.push(renderUnmarshalling({ renderer, model }));
