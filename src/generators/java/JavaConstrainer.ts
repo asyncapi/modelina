@@ -143,8 +143,9 @@ function constrainTupleModel(constrainedName: string, metaModel: TupleModel, typ
     const tupleType = 'Object';
     if (options.collectionType && options.collectionType === 'List') {
       constrainedModel.type = `List<${tupleType}>`;
+    } else {
+      constrainedModel.type = `${tupleType}[]`;
     }
-    constrainedModel.type = `${tupleType}[]`;
   }
   return constrainedModel;
 }
@@ -153,10 +154,9 @@ function constrainArrayModel(constrainedName: string, metaModel: ArrayModel, typ
   const constrainedModel = new ConstrainedArrayModel(constrainedName, metaModel.originalInput, '', constrainedValueModel);
   if (typeMapping.Array !== undefined) {
     constrainedModel.type = typeMapping.Array(constrainedModel);
+  } else if (options.collectionType && options.collectionType === 'List') {
+    constrainedModel.type = `List<${constrainedValueModel.type}>`;
   } else {
-    if (options.collectionType && options.collectionType === 'List') {
-      constrainedModel.type = `List<${constrainedValueModel.type}>`;
-    }
     constrainedModel.type = `${constrainedValueModel.type}[]`;
   }
   return constrainedModel;
