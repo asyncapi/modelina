@@ -278,6 +278,18 @@
         "example",
         "doc"
       ]
+    },
+    {
+      "login": "slowikowskiarkadiusz",
+      "name": "Arkadiusz Słowikowski",
+      "avatar_url": "https://avatars.githubusercontent.com/u/97508930?v=4",
+      "profile": "https://github.com/slowikowskiarkadiusz",
+      "contributions": [
+        "code",
+        "test",
+        "example",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
