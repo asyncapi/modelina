@@ -12,6 +12,7 @@ import { isReservedCSharpKeyword } from './Constants';
 import { Logger } from '../../index';
 
 export interface CSharpOptions extends CommonGeneratorOptions<CSharpPreset> {
+  collectionType?: 'List' | 'Array';
   namingConvention?: CommonNamingConvention;
 }
 
@@ -25,6 +26,7 @@ export interface CSharpRenderCompleteModelOptions {
 export class CSharpGenerator extends AbstractGenerator<CSharpOptions, CSharpRenderCompleteModelOptions> {
   static defaultOptions: CSharpOptions = {
     ...defaultGeneratorOptions,
+    collectionType: 'Array',
     defaultPreset: CSHARP_DEFAULT_PRESET,
     namingConvention: CommonNamingConventionImplementation
   };
