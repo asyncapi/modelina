@@ -19,9 +19,9 @@ export interface StructPreset<R extends AbstractRenderer, O extends object = any
   field?: (args: PresetArgs<R, O> & FieldArgs) => Promise<string> | string;
 }
 
-export type GoPreset = Preset<{
-  struct: StructPreset<StructRenderer>;
-  enum: EnumPreset<EnumRenderer>
+export type GoPreset<O extends object = any> = Preset<{
+  struct: StructPreset<StructRenderer, O>;
+  enum: EnumPreset<EnumRenderer, O>
 }>;
 
 export const GO_DEFAULT_PRESET: GoPreset = {
