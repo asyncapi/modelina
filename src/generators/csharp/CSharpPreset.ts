@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { Preset, EnumPreset, ClassPreset, PresetArgs, PropertyArgs } from '../../models';
 import { ClassRenderer, CSHARP_DEFAULT_CLASS_PRESET } from './renderers/ClassRenderer';
 import { CSHARP_DEFAULT_ENUM_PRESET, EnumRenderer } from './renderers/EnumRenderer';
@@ -7,9 +8,9 @@ export interface CsharpClassPreset extends ClassPreset<ClassRenderer> {
   accessor?: (args: PresetArgs<ClassRenderer, any> & PropertyArgs) => Promise<string> | string;
 }
 
-export type CSharpPreset = Preset<{
+export type CSharpPreset<O extends object = any> = Preset<{
   class: CsharpClassPreset;
-  enum: EnumPreset<EnumRenderer>
+  enum: EnumPreset<EnumRenderer, O>
 }>;
 
 export const CSHARP_DEFAULT_PRESET: CSharpPreset = {
