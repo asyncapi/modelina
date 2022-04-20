@@ -19,6 +19,11 @@ export class EnumRenderer extends CSharpRenderer {
 ${this.indent(getValueCaseItemValues)}
 }
 return null;`;
+    const valueSwitch = `switch (value)
+{
+${this.indent(toEnumCaseItemValues)}
+}
+return null;`;
     const classContent = `public static dynamic GetValue(this ${formattedName} enumValue)
 {
 ${this.indent(enumValueSwitch)}
@@ -26,11 +31,7 @@ ${this.indent(enumValueSwitch)}
 
 public static ${formattedName}? To${formattedName}(dynamic value)
 {
-${this.indent(`switch (value)
-{
-${this.indent(toEnumCaseItemValues)}
-}
-return null;`)}
+${this.indent(valueSwitch)}
 }`;
 
     return `public enum ${formattedName}
