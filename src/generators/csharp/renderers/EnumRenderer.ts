@@ -14,12 +14,12 @@ export class EnumRenderer extends CSharpRenderer {
     const formattedName = this.nameType(this.model.$id);
     const getValueCaseItemValues = await this.getValueCaseItemValues();
     const toEnumCaseItemValues = await this.toEnumCaseItemValues();
-    return `public enum ${formattedName} 
+    return `public enum ${formattedName}
 {
 ${this.indent(enumItems)}
 }
 
-public static class ${formattedName}Extensions 
+public static class ${formattedName}Extensions
 {
 ${this.indent(`public static dynamic GetValue(this ${formattedName} enumValue)
 {

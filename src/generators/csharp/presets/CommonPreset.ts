@@ -35,7 +35,7 @@ function renderEqual({ renderer, model }: {
 {
 ${renderer.indent(`if(obj is ${formattedModelName} model)
 {
-${renderer.indent(`if(ReferenceEquals(this, model)) return true;`)}
+${renderer.indent(`if(ReferenceEquals(this, model)) { return true; }`)}
 ${renderer.indent(equalProperties)};
 }
 

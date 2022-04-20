@@ -2,7 +2,8 @@
 
 exports[`JSON serializer preset should render serialize and deserialize converters 1`] = `
 "[JsonConverter(typeof(NestedTestConverter))]
-public class NestedTest {
+public class NestedTest
+{
   private string stringProp;
   private Dictionary<string, dynamic> additionalProperties;
 
@@ -110,7 +111,8 @@ internal class NestedTestConverter : JsonConverter<NestedTest>
 
 exports[`JSON serializer preset should render serialize and deserialize converters 2`] = `
 "[JsonConverter(typeof(TestConverter))]
-public class Test {
+public class Test
+{
   private string stringProp;
   private double? numberProp;
   private EnumTest enumProp;
@@ -298,10 +300,16 @@ internal class TestConverter : JsonConverter<Test>
 `;
 
 exports[`JSON serializer preset should render serialize and deserialize converters 3`] = `
-"public enum EnumTest {
-  SomeEnumString, True, TestTest, Number_2
+"public enum EnumTest
+{
+  SomeEnumString,
+  True,
+  TestTest,
+  Number_2
 }
-public static class EnumTestExtensions {
+
+public static class EnumTestExtensions
+{
   public static dynamic GetValue(this EnumTest enumValue)
   {
     switch (enumValue)
@@ -326,6 +334,5 @@ public static class EnumTestExtensions {
     return null;
   }
 }
-
 "
 `;
