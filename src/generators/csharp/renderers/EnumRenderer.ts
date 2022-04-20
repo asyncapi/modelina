@@ -60,14 +60,14 @@ return null;`)}
    */
   getEnumValue(enumValue: any): any {
     switch (typeof enumValue) {
-      case 'number':
-      case 'bigint':
-      case 'boolean':
-        return enumValue;
-      case 'object':
-        return `"${JSON.stringify(enumValue).replace(/"/g, '\\"')}"`;
-      default:
-        return `"${enumValue}"`;
+    case 'number':
+    case 'bigint':
+    case 'boolean':
+      return enumValue;
+    case 'object':
+      return `"${JSON.stringify(enumValue).replace(/"/g, '\\"')}"`;
+    default:
+      return `"${enumValue}"`;
     }
   }
 
