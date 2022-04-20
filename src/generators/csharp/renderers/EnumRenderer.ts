@@ -14,20 +14,14 @@ export class EnumRenderer extends CSharpRenderer {
     const formattedName = this.nameType(this.model.$id);
     const getValueCaseItemValues = await this.getValueCaseItemValues();
     const toEnumCaseItemValues = await this.toEnumCaseItemValues();
-    return `public enum ${formattedName}
-{
-${this.indent(enumItems)}
-}
-
-public static class ${formattedName}Extensions
-{
-${this.indent(`public static dynamic GetValue(this ${formattedName} enumValue)
-{
-${this.indent(`switch (enumValue)
+    const enumValueSwitch = `switch (enumValue)
 {
 ${this.indent(getValueCaseItemValues)}
 }
-return null;`)}
+return null;`;
+    const classContent = `public static dynamic GetValue(this ${formattedName} enumValue)
+{
+${this.indent(enumValueSwitch)}
 }
 
 public static ${formattedName}? To${formattedName}(dynamic value)
@@ -37,7 +31,16 @@ ${this.indent(`switch (value)
 ${this.indent(toEnumCaseItemValues)}
 }
 return null;`)}
-}`)}
+}`;
+
+    return `public enum ${formattedName}
+{
+${this.indent(enumItems)}
+}
+
+public static class ${formattedName}Extensions
+{
+${this.indent(classContent)}
 }
 `;
   }

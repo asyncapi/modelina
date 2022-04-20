@@ -4,7 +4,7 @@ import {
   defaultGeneratorOptions
 } from '../AbstractGenerator';
 import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
-import { TypeHelpers, ModelKind, CommonNamingConvention, CommonNamingConventionImplementation, FileHelpers, FormatHelpers } from '../../helpers';
+import { TypeHelpers, ModelKind, CommonNamingConvention, CommonNamingConventionImplementation, FormatHelpers } from '../../helpers';
 import { CSharpPreset, CSHARP_DEFAULT_PRESET } from './CSharpPreset';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { ClassRenderer } from './renderers/ClassRenderer';
@@ -53,7 +53,7 @@ export class CSharpGenerator extends AbstractGenerator<CSharpOptions, CSharpRend
 
     const outputModel = await this.render(model, inputModel);
 
-    const outputDependencies = outputModel.dependencies.length == 0 ? '' : `${outputModel.dependencies.join('\n')}
+    const outputDependencies = outputModel.dependencies.length === 0 ? '' : `${outputModel.dependencies.join('\n')}
 
 `;
 

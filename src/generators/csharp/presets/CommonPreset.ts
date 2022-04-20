@@ -30,16 +30,17 @@ function renderEqual({ renderer, model }: {
     return `${accessorMethodProp} == model.${accessorMethodProp}`;
   }).join(' && \n');
   equalProperties = `return ${equalProperties !== '' ? equalProperties : 'true'}`;
-
-  return `public override bool Equals(object obj)
+  const methodContent = `if(obj is ${formattedModelName} model)
 {
-${renderer.indent(`if(obj is ${formattedModelName} model)
-{
-${renderer.indent(`if(ReferenceEquals(this, model)) { return true; }`)}
+${renderer.indent('if(ReferenceEquals(this, model)) { return true; }')}
 ${renderer.indent(equalProperties)};
 }
 
-return false;`)}
+return false;`;
+
+  return `public override bool Equals(object obj)
+{
+${renderer.indent(methodContent)}
 }`;
 }
 
