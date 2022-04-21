@@ -50,16 +50,18 @@ export abstract class CSharpRenderer extends AbstractRenderer<CSharpOptions> {
     return this.runPreset('property', { propertyName, property, options, type });
   }
 
-  renderType(model: CommonModel): string {
+  renderType(model: CommonModel, modelName?: string): string {
     if (model.$ref !== undefined) {
       return this.nameType(model.$ref);
     }
 
+    const isRequired = modelName ? this.model.isRequired(modelName) : false;
+
     if (Array.isArray(model.type)) {
-      return model.type.length > 1 ? 'dynamic' : `${this.toCSharpType(model.type[0], model)}`;
+      return model.type.length > 1 ? 'dynamic' : `${this.toCSharpType(model.type[0], model, modelName, isRequired)}`;
     }
 
-    return this.toCSharpType(model.type, model);
+    return this.toCSharpType(model.type, model, modelName, isRequired);
   }
 
   renderComments(lines: string | string[]): string {
@@ -67,30 +69,30 @@ export abstract class CSharpRenderer extends AbstractRenderer<CSharpOptions> {
     return lines.map(line => `// ${line}`).join('\n');
   }
 
-  toCSharpType(type: string | undefined, model: CommonModel): string {
+  toCSharpType(type: string | undefined, model: CommonModel, modelName?: string, isRequired?: boolean): string {
     switch (type) {
     case 'integer':
     case 'int32':
-      return 'int?';
+      return `int${isRequired ? '?' : ''}`;
     case 'long':
     case 'int64':
-      return 'long?';
+      return `long${isRequired ? '?' : ''}`;
     case 'boolean':
-      return 'bool?';
+      return `bool${isRequired ? '?' : ''}`;
     case 'date':
     case 'time':
     case 'dateTime':
     case 'date-time':
-      return 'System.DateTime?';
+      return `System.DateTime${isRequired ? '?' : ''}`;
     case 'string':
     case 'password':
     case 'byte':
       return 'string';
     case 'float':
-      return 'float?';
+      return `float${isRequired ? '?' : ''}`;
     case 'double':
     case 'number':
-      return 'double?';
+      return `double${isRequired ? '?' : ''}`;
     case 'binary':
       return 'byte[]';
     case 'object':
@@ -105,7 +107,7 @@ export abstract class CSharpRenderer extends AbstractRenderer<CSharpOptions> {
           arrayItemModel = CommonModel.mergeCommonModels(arrayItemModel, model.additionalItems, {});
         }
       }
-      const newType = arrayItemModel ? this.renderType(arrayItemModel as CommonModel) : 'dynamic';
+      const newType = arrayItemModel ? this.renderType(arrayItemModel as CommonModel, modelName) : 'dynamic';
       if (this.options.collectionType && this.options.collectionType === 'List') {
         return `IEnumerable<${newType}>`;
       }

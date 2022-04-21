@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render TEMPLATE and should log expected output to console 1`] = `
+Array [
+  "public class Root {
+  private bool requiredBoolean;
+  private bool notRequiredBoolean;
+  private string requiredString;
+  private string notRequiredString;
+
+  public bool RequiredBoolean 
+  {
+    get { return requiredBoolean; }
+    set { requiredBoolean = value; }
+  }
+
+  public bool NotRequiredBoolean 
+  {
+    get { return notRequiredBoolean; }
+    set { notRequiredBoolean = value; }
+  }
+
+  public string RequiredString 
+  {
+    get { return requiredString; }
+    set { requiredString = value; }
+  }
+
+  public string NotRequiredString 
+  {
+    get { return notRequiredString; }
+    set { notRequiredString = value; }
+  }
+}",
+]
+`;
+
+exports[`Should be able to render collections in C# as IEnumerable and should log expected output to console 1`] = `
+Array [
+  "public class Root {
+  private bool requiredBoolean;
+  private bool? notRequiredBoolean;
+  private string requiredString;
+  private string notRequiredString;
+
+  public bool RequiredBoolean 
+  {
+    get { return requiredBoolean; }
+    set { requiredBoolean = value; }
+  }
+
+  public bool? NotRequiredBoolean 
+  {
+    get { return notRequiredBoolean; }
+    set { notRequiredBoolean = value; }
+  }
+
+  public string RequiredString 
+  {
+    get { return requiredString; }
+    set { requiredString = value; }
+  }
+
+  public string NotRequiredString 
+  {
+    get { return notRequiredString; }
+    set { notRequiredString = value; }
+  }
+}",
+]
+`;
