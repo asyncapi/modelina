@@ -5,17 +5,16 @@ This document contains many of the advanced use-cases that you may stumble upon 
 
 <!-- toc -->
 
-- [Advanced use-cases for Modelina](#advanced-use-cases-for-modelina)
-  - [Generate each model in the same file](#generate-each-model-in-the-same-file)
-  - [Generate models to separate files](#generate-models-to-separate-files)
-  - [Include a custom function in the data model](#include-a-custom-function-in-the-data-model)
-  - [Use the models for data transfer](#use-the-models-for-data-transfer)
-  - [Extend the logic of an existing renderer](#extend-the-logic-of-an-existing-renderer)
-  - [Build your own model renderer](#build-your-own-model-renderer)
-  - [Add logging to library](#add-logging-to-library)
-  - [Change the generated indentation type and size](#change-the-generated-indentation-type-and-size)
-  - [Change the type mapping](#change-the-type-mapping)
-  - [Changing the constrain rules](#changing-the-constrain-rules)
+- [Generate each model in the same file](#generate-each-model-in-the-same-file)
+- [Generate models to separate files](#generate-models-to-separate-files)
+- [Include a custom function in the data model](#include-a-custom-function-in-the-data-model)
+- [Use the models for data transfer](#use-the-models-for-data-transfer)
+- [Extend the logic of an existing renderer](#extend-the-logic-of-an-existing-renderer)
+- [Build your own model renderer](#build-your-own-model-renderer)
+- [Add logging to library](#add-logging-to-library)
+- [Change the generated indentation type and size](#change-the-generated-indentation-type-and-size)
+- [Change the type mapping](#change-the-type-mapping)
+- [Changing the constrain rules](#changing-the-constrain-rules)
 
 <!-- tocstop -->
 
