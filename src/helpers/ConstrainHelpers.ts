@@ -188,27 +188,27 @@ export function constrainMetaModel<R extends AbstractRenderer>(typeMapping: Type
   const newContext = {...context, constrainedName};
   if (newContext.metaModel instanceof ObjectModel) {
     return constrainObjectModel(typeMapping, constrainRules, {...newContext, metaModel: newContext.metaModel});
-  } else if (context.metaModel instanceof ReferenceModel) {
+  } else if (newContext.metaModel instanceof ReferenceModel) {
     return constrainReferenceModel(typeMapping, constrainRules, {...newContext, metaModel: newContext.metaModel});
-  } else if (context.metaModel instanceof AnyModel) {
+  } else if (newContext.metaModel instanceof AnyModel) {
     return constrainAnyModel(typeMapping, {...newContext, metaModel: newContext.metaModel});
-  } else if (context.metaModel instanceof FloatModel) {
+  } else if (newContext.metaModel instanceof FloatModel) {
     return constrainFloatModel(typeMapping, {...newContext, metaModel: newContext.metaModel});
-  } else if (context.metaModel instanceof IntegerModel) {
+  } else if (newContext.metaModel instanceof IntegerModel) {
     return constrainIntegerModel(typeMapping, {...newContext, metaModel: newContext.metaModel});
-  } else if (context.metaModel instanceof StringModel) {
+  } else if (newContext.metaModel instanceof StringModel) {
     return constrainStringModel(typeMapping, {...newContext, metaModel: newContext.metaModel});
-  } else if (context.metaModel instanceof BooleanModel) {
+  } else if (newContext.metaModel instanceof BooleanModel) {
     return constrainBooleanModel(typeMapping, {...newContext, metaModel: newContext.metaModel});
-  } else if (context.metaModel instanceof TupleModel) {
+  } else if (newContext.metaModel instanceof TupleModel) {
     return constrainTupleModel(typeMapping, constrainRules, {...newContext, metaModel: newContext.metaModel});
-  } else if (context.metaModel instanceof ArrayModel) {
+  } else if (newContext.metaModel instanceof ArrayModel) {
     return constrainArrayModel(typeMapping, constrainRules, {...newContext, metaModel: newContext.metaModel});
-  } else if (context.metaModel instanceof UnionModel) {
+  } else if (newContext.metaModel instanceof UnionModel) {
     return constrainUnionModel(typeMapping, constrainRules, {...newContext, metaModel: newContext.metaModel});
-  } else if (context.metaModel instanceof EnumModel) {
+  } else if (newContext.metaModel instanceof EnumModel) {
     return ConstrainEnumModel(typeMapping, constrainRules, {...newContext, metaModel: newContext.metaModel});
-  } else if (context.metaModel instanceof DictionaryModel) {
+  } else if (newContext.metaModel instanceof DictionaryModel) {
     return constrainDictionaryModel(typeMapping, constrainRules, {...newContext, metaModel: newContext.metaModel});
   }
   throw new Error('Could not constrain model');

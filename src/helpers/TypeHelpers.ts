@@ -51,9 +51,9 @@ export type TypeMapping<R extends AbstractRenderer> = {
 
 export function getTypeFromMapping<T extends ConstrainedMetaModel, R extends AbstractRenderer>(typeMapping: TypeMapping<R>, context: TypeContext<T, R>): string {
   if (context.constrainedModel instanceof ConstrainedObjectModel) {
-    return typeMapping.Object(context);
+    return typeMapping.Object({...context, constrainedModel: context.constrainedModel});
   } else if (context.constrainedModel instanceof ConstrainedReferenceModel) {
-    return typeMapping.Reference(context);
+    return typeMapping.Reference({...context, constrainedModel: context.constrainedModel});
   } else if (context.constrainedModel instanceof ConstrainedAnyModel) {
     return typeMapping.Any(context);
   } else if (context.constrainedModel instanceof ConstrainedFloatModel) {
@@ -65,15 +65,15 @@ export function getTypeFromMapping<T extends ConstrainedMetaModel, R extends Abs
   } else if (context.constrainedModel instanceof ConstrainedBooleanModel) {
     return typeMapping.Boolean(context);
   } else if (context.constrainedModel instanceof ConstrainedTupleModel) {
-    return typeMapping.Tuple(context);
+    return typeMapping.Tuple({...context, constrainedModel: context.constrainedModel});
   } else if (context.constrainedModel instanceof ConstrainedArrayModel) {
-    return typeMapping.Array(context);
+    return typeMapping.Array({...context, constrainedModel: context.constrainedModel});
   } else if (context.constrainedModel instanceof ConstrainedEnumModel) {
-    return typeMapping.Enum(context);
+    return typeMapping.Enum({...context, constrainedModel: context.constrainedModel});
   } else if (context.constrainedModel instanceof ConstrainedUnionModel) {
-    return typeMapping.Union(context);
+    return typeMapping.Union({...context, constrainedModel: context.constrainedModel});
   } else if (context.constrainedModel instanceof ConstrainedDictionaryModel) {
-    return typeMapping.Dictionary(context);
+    return typeMapping.Dictionary({...context, constrainedModel: context.constrainedModel});
   }
   throw new Error('Could not find type for model');
 }
