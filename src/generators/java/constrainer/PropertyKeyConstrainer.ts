@@ -1,5 +1,5 @@
 import { ConstrainedObjectModel, ObjectModel } from '../../../models';
-import { NO_NUMBER_START_CHAR, NO_DUPLICATE_PROPERTIES, NO_EMPTY_VALUE, NO_RESERVED_KEYWORDS} from '../../../helpers/CommonConstraints';
+import { NO_NUMBER_START_CHAR, NO_DUPLICATE_PROPERTIES, NO_EMPTY_VALUE, NO_RESERVED_KEYWORDS} from '../../../helpers/Constraints';
 import { FormatHelpers, PropertyKeyConstraint } from '../../../helpers';
 import { isReservedJavaKeyword } from '../Constants';
 

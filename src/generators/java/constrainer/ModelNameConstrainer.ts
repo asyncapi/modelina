@@ -1,4 +1,4 @@
-import { NO_NUMBER_START_CHAR, NO_EMPTY_VALUE, NO_RESERVED_KEYWORDS} from '../../../helpers/CommonConstraints';
+import { NO_NUMBER_START_CHAR, NO_EMPTY_VALUE, NO_RESERVED_KEYWORDS} from '../../../helpers/Constraints';
 import { FormatHelpers, ModelNameConstraint } from '../../../helpers';
 import { isReservedJavaKeyword } from '../Constants';
 

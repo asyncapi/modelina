@@ -4,5 +4,5 @@ export * from './NameHelpers';
 export * from './FileHelpers';
 export * from './CommonModelToMetaModel';
 export * from './Splitter';
-export * from './CommonConstraints';
+export * from './Constraints';
 export * from './ConstrainHelpers';
