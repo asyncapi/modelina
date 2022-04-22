@@ -28,14 +28,6 @@ export const DefaultPropertyKeyConstraints: PropertyKeyConstraintOptions = {
   }
 };
 
-export type PropertyKeyContext = {
-  propertyKey: string,
-  constrainedObjectModel: ConstrainedObjectModel,
-  objectModel: ObjectModel
-}
-
-export type PropertyKeyConstraintType = (context: PropertyKeyContext) => string;
-
 export function defaultPropertyKeyConstraints(customConstraints?: PropertyKeyConstraintOptions): PropertyKeyConstraintType {
   const constraints = DefaultPropertyKeyConstraints;
   if (customConstraints !== undefined) {

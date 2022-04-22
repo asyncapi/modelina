@@ -4,15 +4,21 @@ import {
   defaultGeneratorOptions
 } from '../AbstractGenerator';
 import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
-import { CommonNamingConvention, CommonNamingConventionImplementation, ModelKind, TypeHelpers } from '../../helpers';
+import { CommonNamingConvention, CommonNamingConventionImplementation, ModelKind, TypeHelpers, TypeMapping } from '../../helpers';
 import { JavaPreset, JAVA_DEFAULT_PRESET } from './JavaPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { isReservedJavaKeyword } from './Constants';
 import { Logger } from '../../';
+import { JavaRenderer } from './JavaRenderer';
+import { Constraints } from '../../helpers/ConstrainHelpers';
+import { JavaDefaultConstraints, JavaDefaultTypeMapping } from './JavaConstrainer';
+
 export interface JavaOptions extends CommonGeneratorOptions<JavaPreset> {
-  collectionType?: 'List' | 'Array';
-  namingConvention?: CommonNamingConvention;
+  collectionType: 'List' | 'Array';
+  namingConvention: CommonNamingConvention;
+  typeMapping: TypeMapping<JavaRenderer>;
+  constraints: Constraints
 }
 export interface JavaRenderCompleteModelOptions {
   packageName: string
@@ -22,13 +28,17 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderComp
     ...defaultGeneratorOptions,
     defaultPreset: JAVA_DEFAULT_PRESET,     
     collectionType: 'Array',
-    namingConvention: CommonNamingConventionImplementation
+    namingConvention: CommonNamingConventionImplementation,
+    typeMapping: JavaDefaultTypeMapping,
+    constraints: JavaDefaultConstraints
   };
 
   constructor(
-    options: JavaOptions = JavaGenerator.defaultOptions,
+    options: Partial<JavaOptions> = JavaGenerator.defaultOptions,
   ) {
-    super('Java', JavaGenerator.defaultOptions, options);
+    const mergedOptions = {...JavaGenerator.defaultOptions, ...options};
+
+    super('Java', JavaGenerator.defaultOptions, mergedOptions);
   }
 
   /**

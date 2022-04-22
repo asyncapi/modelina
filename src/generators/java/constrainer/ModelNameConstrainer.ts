@@ -26,11 +26,6 @@ export const DefaultModelNameConstraints: ModelNameConstraints = {
     return NO_RESERVED_KEYWORDS(value, isReservedJavaKeyword); 
   }
 };
-export type ModelNameContext = {
-  modelName: string
-}
-export type ModelNameConstraintType = (context: ModelNameContext) => string;
-
 export function defaultModelNameConstraints(customConstraints?: ModelNameConstraints): ModelNameConstraintType {
   const constraints = DefaultModelNameConstraints;
   if (customConstraints !== undefined) {

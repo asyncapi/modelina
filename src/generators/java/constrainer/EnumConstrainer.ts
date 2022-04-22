@@ -3,6 +3,7 @@ import { ConstrainedEnumModel, EnumModel } from '../../../models';
 import { NO_NUMBER_START_CHAR, NO_DUPLICATE_ENUM_KEYS, NO_EMPTY_VALUE, NO_RESERVED_KEYWORDS} from '../../../helpers/Constraints';
 import { FormatHelpers } from '../../../helpers';
 import { isReservedJavaKeyword } from '../Constants';
+import { EnumKeyConstraint, EnumValueConstraint } from 'helpers/ConstrainHelpers';
 
 export type ModelEnumKeyConstraints = {
   NO_SPECIAL_CHAR: (value: string) => string;
@@ -27,14 +28,7 @@ export const DefaultEnumKeyConstraints: ModelEnumKeyConstraints = {
   }
 };
 
-export type EnumKeyContext = {
-  enumKey: string,
-  constrainedEnumModel: ConstrainedEnumModel,
-  enumModel: EnumModel
-}
-export type EnumConstraintType = (context: EnumKeyContext, constraints?: ModelEnumKeyConstraints) => string;
-
-export function defaultEnumKeyConstraints(customConstraints?: ModelEnumKeyConstraints): EnumConstraintType {
+export function defaultEnumKeyConstraints(customConstraints?: ModelEnumKeyConstraints): EnumKeyConstraint {
   const constraints = DefaultEnumKeyConstraints;
   if (customConstraints !== undefined) {
     if (customConstraints.NAMING_FORMATTER !== undefined) {
@@ -62,5 +56,30 @@ export function defaultEnumKeyConstraints(customConstraints?: ModelEnumKeyConstr
     constrainedEnumKey = constraints.NAMING_FORMATTER!(constrainedEnumKey);
     constrainedEnumKey = constraints.NO_DUPLICATE_KEYS!(constrainedEnumModel, enumModel, constrainedEnumKey, constraints.NAMING_FORMATTER!);
     return constrainedEnumKey;
+  };
+}
+
+export function defaultEnumValueConstraints(): EnumValueConstraint {
+  return ({enumValue}) => {
+    let constrainedEnumValue = enumValue;
+    switch (typeof enumValue) {
+    case 'string':
+    case 'boolean':
+      constrainedEnumValue = `"${enumValue}"`;
+      break;
+    case 'bigint':
+    case 'number': {
+      constrainedEnumValue = enumValue;
+      break;
+    }
+    case 'object': {
+      constrainedEnumValue = `"${JSON.stringify(enumValue).replace(/"/g, '\\"')}"`;
+      break;
+    }
+    default: {
+      constrainedEnumValue = String(enumValue);
+    }
+    }
+    return constrainedEnumValue;
   };
 }
