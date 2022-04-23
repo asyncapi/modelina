@@ -74,7 +74,7 @@ ${renderer.indent(hashProperties, 2)}
  * 
  * @implements {CSharpPreset}
  */
-export const CSHARP_COMMON_PRESET: CSharpPreset = {
+export const CSHARP_COMMON_PRESET: CSharpPreset<CSharpCommonPresetOptions> = {
   class: {
     additionalContent({ renderer, model, content, options }) {
       options = options || {};
