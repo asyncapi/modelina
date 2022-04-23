@@ -53,7 +53,7 @@ export class CSharpGenerator extends AbstractGenerator<CSharpOptions, CSharpRend
 
     const outputModel = await this.render(model, inputModel);
 
-    const outputDependencies = outputModel.dependencies.length === 0 ? '' : `${outputModel.dependencies.join('\n')} \n \n`
+    const outputDependencies = outputModel.dependencies.length === 0 ? '' : `${outputModel.dependencies.join('\n')}\n\n`
 
     const outputContent = `namespace ${options.namespace}
 {
