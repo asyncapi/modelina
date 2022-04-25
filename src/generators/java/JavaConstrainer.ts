@@ -16,11 +16,8 @@ export const JavaDefaultTypeMapping: TypeMapping<JavaRenderer> = {
   },
   Float ({constrainedModel}): string {
     let type = 'float';
-    const format = constrainedModel.originalInput['format'];
+    const format = constrainedModel.originalInput && constrainedModel.originalInput['format'];
     switch (format) {
-    case 'float':
-      type = 'float';
-      break;
     case 'double':
     case 'number':
       type = 'double';
@@ -29,8 +26,8 @@ export const JavaDefaultTypeMapping: TypeMapping<JavaRenderer> = {
     return type;
   },
   Integer ({constrainedModel}): string {
-    let type = 'integer';
-    const format = constrainedModel.originalInput['format'];
+    let type = 'Integer';
+    const format = constrainedModel.originalInput && constrainedModel.originalInput['format'];
     switch (format) {
     case 'integer':
     case 'int32':
@@ -45,7 +42,7 @@ export const JavaDefaultTypeMapping: TypeMapping<JavaRenderer> = {
   },
   String ({constrainedModel}): string {
     let type = 'String';
-    const format = constrainedModel.originalInput['format'];
+    const format = constrainedModel.originalInput && constrainedModel.originalInput['format'];
     switch (format) {
     case 'date':
       type = 'java.time.LocalDate';
@@ -98,4 +95,3 @@ export const JavaDefaultConstraints = {
   modelName: defaultModelNameConstraints(),
   propertyKey: defaultPropertyKeyConstraints()
 };
-

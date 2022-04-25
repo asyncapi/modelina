@@ -60,7 +60,7 @@ export function defaultEnumValueConstraints(): EnumValueConstraint {
       break;
     }
     default: {
-      constrainedEnumValue = String(enumValue);
+      constrainedEnumValue = `"${JSON.stringify(enumValue)}"`;
     }
     }
     return constrainedEnumValue;

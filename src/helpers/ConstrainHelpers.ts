@@ -19,7 +19,7 @@ export type EnumKeyContext = {
 export type EnumKeyConstraint = (context: EnumKeyContext) => string;
 
 export type EnumValueContext = {
-  enumValue: string,
+  enumValue: any,
   constrainedEnumModel: ConstrainedEnumModel,
   enumModel: EnumModel
 }
@@ -43,13 +43,6 @@ export interface Constraints {
   enumValue: EnumValueConstraint,
   modelName: ModelNameConstraint,
   propertyKey: PropertyKeyConstraint,
-}
-
-export interface OptionalConstraints {
-  enumKey?: EnumKeyConstraint,
-  enumValue?: EnumValueConstraint,
-  modelName?: ModelNameConstraint,
-  propertyKey?: PropertyKeyConstraint,
 }
 
 function constrainReferenceModel<R extends AbstractRenderer>(typeMapping: TypeMapping<R>, constrainRules: Constraints, context: ConstrainContext<R, ReferenceModel>): ConstrainedReferenceModel {
@@ -169,7 +162,7 @@ function constrainObjectModel<R extends AbstractRenderer>(typeMapping: TypeMappi
   return constrainedModel;
 }
 
-export function ConstrainEnumModel<R extends AbstractRenderer>(typeMapping: TypeMapping<R>, constrainRules: Constraints, context: ConstrainContext<R, EnumModel>): ConstrainedEnumModel {
+function ConstrainEnumModel<R extends AbstractRenderer>(typeMapping: TypeMapping<R>, constrainRules: Constraints, context: ConstrainContext<R, EnumModel>): ConstrainedEnumModel {
   const constrainedModel = new ConstrainedEnumModel(context.constrainedName, context.metaModel.originalInput, '', []);
 
   for (const enumValue of context.metaModel.values) {

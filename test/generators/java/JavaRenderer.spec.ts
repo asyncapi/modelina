@@ -1,9 +1,8 @@
-import { defaultGeneratorOptions, JavaGenerator } from '../../../src/generators';
+import { JavaGenerator } from '../../../src/generators';
 import { JavaRenderer } from '../../../src/generators/java/JavaRenderer';
 import { CommonInputModel, CommonModel } from '../../../src/models';
-class MockJavaRenderer extends JavaRenderer {
+import { MockJavaRenderer } from '../../TestUtils/TestRenderers';
 
-}
 describe('JavaRenderer', () => {
   let renderer: JavaRenderer;
   beforeEach(() => {

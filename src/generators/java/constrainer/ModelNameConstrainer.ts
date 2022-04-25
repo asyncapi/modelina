@@ -33,8 +33,8 @@ export function defaultModelNameConstraints(customConstraints?: Partial<ModelNam
     constrainedValue = constraints.NO_SPECIAL_CHAR(constrainedValue);
     constrainedValue = constraints.NO_NUMBER_START_CHAR(constrainedValue);
     constrainedValue = constraints.NO_EMPTY_VALUE(constrainedValue);
-    constrainedValue = constraints.NAMING_FORMATTER(constrainedValue);
     constrainedValue = constraints.NO_RESERVED_KEYWORDS(constrainedValue);
+    constrainedValue = constraints.NAMING_FORMATTER(constrainedValue);
     return constrainedValue;
   };
 }
