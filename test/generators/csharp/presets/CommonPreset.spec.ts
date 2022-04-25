@@ -1,4 +1,4 @@
-import { CSharpGenerator, CSHARP_COMMON_PRESET } from '../../../../src/generators'; 
+import { CSharpGenerator, CSHARP_COMMON_PRESET, CSHARP_DEFAULT_PRESET } from '../../../../src/generators'; 
 const doc = {
   $id: 'Test',
   type: 'object',

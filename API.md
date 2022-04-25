@@ -101,6 +101,10 @@ Modifications</p>
 <dd><p>Recursively find the proper property name.</p>
 <p>This function ensures that the property name is unique for the model</p>
 </dd>
+<dt><a href="#hasPreset">hasPreset(presets, preset)</a></dt>
+<dd><p>Returns true if and only if a given preset is already included in a list of presets
+Check is done using referential equality</p>
+</dd>
 <dt><a href="#interpretAdditionalItems">interpretAdditionalItems(schema, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for additionalItems keyword.</p>
 </dd>
@@ -1091,6 +1095,19 @@ This function ensures that the property name is unique for the model
 | --- |
 | rootModel | 
 | propertyName | 
+
+<a name="hasPreset"></a>
+
+## hasPreset(presets, preset)
+Returns true if and only if a given preset is already included in a list of presets
+Check is done using referential equality
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| presets | the list to check |
+| preset | the preset to check for |
 
 <a name="interpretAdditionalItems"></a>
 
