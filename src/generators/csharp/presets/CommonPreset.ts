@@ -30,15 +30,17 @@ function renderEqual({ renderer, model }: {
     return `${accessorMethodProp} == model.${accessorMethodProp}`;
   }).join(' && \n');
   equalProperties = `return ${equalProperties !== '' ? equalProperties : 'true'}`;
+  const methodContent = `if(obj is ${formattedModelName} model)
+{
+${renderer.indent('if(ReferenceEquals(this, model)) { return true; }')}
+${renderer.indent(equalProperties)};
+}
+
+return false;`;
 
   return `public override bool Equals(object obj)
 {
-  if(obj is ${formattedModelName} model)
-  {
-    if(ReferenceEquals(this, model)) { return true; }
-${renderer.indent(equalProperties, 4)};
-  }
-  return false;
+${renderer.indent(methodContent)}
 }`;
 }
 
@@ -64,8 +66,7 @@ function renderHashCode({ renderer, model }: {
   HashCode hash = new HashCode();
 ${renderer.indent(hashProperties, 2)}
   return hash.ToHashCode();
-}
-`;
+}`;
 }
 
 /**

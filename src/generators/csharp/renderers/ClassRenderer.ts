@@ -25,7 +25,8 @@ export class ClassRenderer extends CSharpRenderer {
     }
 
     const formattedName = this.nameType(this.model.$id);
-    return `public class ${formattedName} {
+    return `public class ${formattedName}
+{
 ${this.indent(this.renderBlock(content, 2))}
 }`;
   }
