@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { AbstractGenerator, CommonInputModel, CommonModel, IndentationTypes, RenderOutput } from "../../src";
+import { AbstractGenerator, CommonInputModel, CommonModel, IndentationTypes, RenderOutput } from '../../src';
 
 export const testOptions = {
   indentation: {
