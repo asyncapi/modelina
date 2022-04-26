@@ -13,7 +13,7 @@ function renderSerializeProperty(modelInstanceVariable: string, model: CommonMod
       value = `${value}.GetValue()`;
     }
   }
-  return `JsonSerializer.Serialize(writer, ${value});`;
+  return `JsonSerializer.Serialize(writer, ${value}, options);`;
 }
 
 function renderSerializeAdditionalProperties(model: CommonModel, renderer: CSharpRenderer, inputModel: CommonInputModel) {
@@ -116,7 +116,7 @@ function renderSerialize({ renderer, model, inputModel }: {
 {
   if (value == null)
   {
-    JsonSerializer.Serialize(writer, null);
+    JsonSerializer.Serialize(writer, null, options);
     return;
   }
   ${propertiesList}
