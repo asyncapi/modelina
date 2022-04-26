@@ -11,7 +11,7 @@ export abstract class AbstractRenderer<
   RendererModelType extends ConstrainedMetaModel = ConstrainedMetaModel
 > {
   constructor(
-    protected readonly options: O,
+    readonly options: O,
     readonly generator: G,
     protected readonly presets: Array<[Preset, unknown]>,
     protected readonly model: RendererModelType,
