@@ -148,6 +148,8 @@ As shown in the [Hello world!](#hello-world) example, there are many ways to cus
 ### Overwriting existing rendered content
 Since the preset renders in a form of layers, one of the usecases is to overwrite an already existing rendering of some part of the generated model. Lets try an adapt out hello world example, and instead of prepending comments, we can overwrite the already rendered content, for example lets use public property initializer.
 
+You can find the full preset at [typescript/presets/DescriptionPreset.ts](../src/generators/typescript/presets/DescriptionPreset.ts)
+
 ```ts
 import { TypeScriptGenerator } from '@asyncapi/modelina';
 

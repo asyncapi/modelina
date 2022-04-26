@@ -134,6 +134,10 @@ Check is done using referential equality</p>
 <dt><a href="#split">split(model, options, models)</a> ⇒</dt>
 <dd><p>Overwrite the nested models with references where required.</p>
 </dd>
+<dt><a href="#hasPreset">hasPreset(presets, preset)</a></dt>
+<dd><p>Returns true if and only if a given preset is already included in a list of presets
+Check is done using referential equality</p>
+</dd>
 <dt><a href="#interpretAdditionalItems">interpretAdditionalItems(schema, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for additionalItems keyword.</p>
 </dd>
@@ -1269,6 +1273,19 @@ Overwrite the nested models with references where required.
 | model | 
 | options | 
 | models | 
+
+<a name="hasPreset"></a>
+
+## hasPreset(presets, preset)
+Returns true if and only if a given preset is already included in a list of presets
+Check is done using referential equality
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| presets | the list to check |
+| preset | the preset to check for |
 
 <a name="interpretAdditionalItems"></a>
 
