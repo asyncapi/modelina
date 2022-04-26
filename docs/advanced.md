@@ -11,6 +11,8 @@ This document contains many of the advanced use-cases that you may stumble upon 
 - [Use the models for data transfer](#use-the-models-for-data-transfer)
 - [Extend the logic of an existing renderer](#extend-the-logic-of-an-existing-renderer)
 - [Build your own model renderer](#build-your-own-model-renderer)
+- [Create your own models from the ground up, instead of a supported input](#create-your-own-models-from-the-ground-up-instead-of-a-supported-input)
+- [Adapting input and outputs](#adapting-input-and-outputs)
 - [Add logging to library](#add-logging-to-library)
 - [Change the generated indentation type and size](#change-the-generated-indentation-type-and-size)
 - [Change the type mapping](#change-the-type-mapping)
@@ -53,6 +55,16 @@ TODO
 
 ## Build your own model renderer
 TODO 
+
+## Create your own models from the ground up, instead of a supported input
+TODO 
+
+## Adapting input and outputs
+Sometimes you simply cannot make two things work together as you wished, maybe the input does not support it, or Modelina natively doesn't. However, because of the nature with presets, we can make it work anyway.
+
+> With great customization comes a great responsibility. Always make sure to raise your issue before trying workarounds, maybe you are not alone in the problem, and it should be natively supported, so please make your due diligence before venturing into this :pray: And always feel free to reach out on the AsyncAPI slack channel if you want some quicker feedback!
+
+Check out this [example for a demonstration of how to adapt the input and out to a specific use-case](../examples/adapting-input-and-output).
 
 ## Add logging to library
 When you generate models, by default, nothing is logged to the console or elsewhere.

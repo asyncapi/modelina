@@ -26,6 +26,8 @@ Each language has different model types, which results in different implementabl
 
 Below is a custom preset written for TypeScript language, which adds a description to each interface's property and to the model itself as a JavaScript comment.
 
+You can find the full preset at [typescript/presets/DescriptionPreset.ts](../src/generators/typescript/presets/DescriptionPreset.ts)
+
 ```ts
 import { TypeScriptGenerator } from '@asyncapi/modelina';
 

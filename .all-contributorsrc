@@ -216,7 +216,8 @@
         "code",
         "test",
         "doc",
-        "example"
+        "example",
+        "maintenance"
       ]
     },
     {
@@ -250,7 +251,44 @@
         "code",
         "test",
         "doc",
+        "example",
+        "maintenance"
+      ]
+    },
+    {
+      "login": "gabormagyar",
+      "name": "Gábor Magyar",
+      "avatar_url": "https://avatars.githubusercontent.com/u/63397303?v=4",
+      "profile": "https://github.com/gabormagyar",
+      "contributions": [
+        "code",
+        "test",
+        "doc",
         "example"
+      ]
+    },
+    {
+      "login": "ibernabeudev",
+      "name": "ibernabeudev",
+      "avatar_url": "https://avatars.githubusercontent.com/u/74215074?v=4",
+      "profile": "https://github.com/ibernabeudev",
+      "contributions": [
+        "code",
+        "test",
+        "example",
+        "doc"
+      ]
+    },
+    {
+      "login": "slowikowskiarkadiusz",
+      "name": "Arkadiusz Słowikowski",
+      "avatar_url": "https://avatars.githubusercontent.com/u/97508930?v=4",
+      "profile": "https://github.com/slowikowskiarkadiusz",
+      "contributions": [
+        "code",
+        "test",
+        "example",
+        "doc"
       ]
     }
   ],

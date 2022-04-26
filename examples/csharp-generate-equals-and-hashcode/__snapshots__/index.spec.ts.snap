@@ -2,7 +2,8 @@
 
 exports[`Should be able to generate a model to overwrite the Equal and GetHashCode methods and should log expected output to console 1`] = `
 Array [
-  "public class Root {
+  "public class Root
+{
   private string email;
 
   public string Email 
@@ -18,6 +19,7 @@ Array [
       if(ReferenceEquals(this, model)) { return true; }
       return Email == model.Email;
     }
+
     return false;
   }
 
@@ -27,7 +29,6 @@ Array [
     hash.Add(Email);
     return hash.ToHashCode();
   }
-
 }",
 ]
 `;

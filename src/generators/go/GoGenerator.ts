@@ -10,26 +10,39 @@ import { StructRenderer } from './renderers/StructRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { pascalCaseTransformMerge } from 'change-case';
 import { Logger } from '../../utils/LoggingInterface';
-
+import { isReservedGoKeyword } from './Constants';
 /**
  * The Go naming convention type
  */
 export type GoNamingConvention = {
-  type?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel }) => string;
-  field?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel, field?: CommonModel }) => string;
+  type?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel, reservedKeywordCallback?: (name: string) => boolean }) => string;
+  field?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel, field?: CommonModel, reservedKeywordCallback?: (name: string) => boolean }) => string;
 };
 
 /**
  * A GoNamingConvention implementation for Go
  */
 export const GoNamingConventionImplementation: GoNamingConvention = {
-  type: (name: string | undefined) => {
-    if (!name) {return '';}
-    return FormatHelpers.toPascalCase(name, { transform: pascalCaseTransformMerge });
+  type: (name: string | undefined, ctx) => {
+    if (!name) { return ''; }
+    let formattedName = FormatHelpers.toPascalCase(name, { transform: pascalCaseTransformMerge });
+    if (ctx.reservedKeywordCallback !== undefined && ctx.reservedKeywordCallback(formattedName)) {
+      formattedName = FormatHelpers.toPascalCase(`reserved_${formattedName}`);
+    }
+    return formattedName;
   },
-  field: (name: string | undefined) => {
-    if (!name) {return '';}
-    return FormatHelpers.toPascalCase(name, { transform: pascalCaseTransformMerge });
+  // eslint-disable-next-line sonarjs/no-identical-functions
+  field: (name: string | undefined, ctx) => {
+    if (!name) { return ''; }
+    let formattedName = FormatHelpers.toPascalCase(name, { transform: pascalCaseTransformMerge });
+    if (ctx.reservedKeywordCallback !== undefined && ctx.reservedKeywordCallback(formattedName)) {
+      formattedName = FormatHelpers.toPascalCase(`reserved_${formattedName}`);
+      if (Object.keys(ctx.model.properties || {}).includes(formattedName)) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        return GoNamingConventionImplementation.field!(`reserved_${formattedName}`, ctx);
+      }
+    }
+    return formattedName;
   }
 };
 
@@ -50,23 +63,24 @@ export class GoGenerator extends AbstractGenerator<GoOptions, GoRenderCompleteMo
     defaultPreset: GO_DEFAULT_PRESET,
     namingConvention: GoNamingConventionImplementation
   };
-
   constructor(
     options: GoOptions = GoGenerator.defaultOptions,
   ) {
     super('Go', GoGenerator.defaultOptions, options);
   }
-
+  reservedGoKeyword(name: string): boolean {
+    return isReservedGoKeyword(name);
+  }
   render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
     const kind = TypeHelpers.extractKind(model);
     switch (kind) {
     case ModelKind.UNION:
       // We don't support union in Go generator, however, if union is an object, we render it as a struct.
-      if (!model.type?.includes('object')) {break;}
+      if (!model.type?.includes('object')) { break; }
       return this.renderStruct(model, inputModel);
-    case ModelKind.OBJECT: 
+    case ModelKind.OBJECT:
       return this.renderStruct(model, inputModel);
-    case ModelKind.ENUM: 
+    case ModelKind.ENUM:
       return this.renderEnum(model, inputModel);
     }
     Logger.warn(`Go generator, cannot generate this type of model, ${model.$id}`);
@@ -84,7 +98,7 @@ export class GoGenerator extends AbstractGenerator<GoOptions, GoRenderCompleteMo
     const outputModel = await this.render(model, inputModel);
     let importCode = '';
     if (outputModel.dependencies.length > 0) {
-      const dependencies = outputModel.dependencies.map((dependency) => {return `"${ dependency }"`;}).join('\n');
+      const dependencies = outputModel.dependencies.map((dependency) => { return `"${dependency}"`; }).join('\n');
       importCode = `import (  
   ${dependencies}
 )`;

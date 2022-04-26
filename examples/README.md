@@ -5,8 +5,9 @@ This directory contains a series of self-contained examples that you can use as 
 - [generate-typescript-models](./generate-typescript-models) - A basic example to generate TypeScript data models
 - [typescript-interface](./typescript-interface) - A basic TypeScript generator that outputs interfaces.
 - [typescript-enum-type](./typescript-enum-type) - A basic example of how to use Modelina can output different types of enums in TypeScript.
-- [typescript-generate-marshalling](./typescript-generate-marshalling) - A basic example of how to use the un/marshalling functionality of the typescript class.
 - [typescript-generate-example](./typescript-generate-example) - A basic example of how to use Modelina and output a TypeScript class with an example function.
+- [typescript-generate-marshalling](./typescript-generate-marshalling) - A basic example of how to use the un/marshalling functionality of the typescript class.
+- [typescript-generate-comments](./typescript-generate-comments) - A basic example of how to generate TypeScript interfaces with comments from description and example fields.
 - [typescript-use-esm](./typescript-use-esm) - A basic example that generate the models to use ESM module system.
 - [typescript-use-cjs](./typescript-use-cjs) - A basic example that generate the models to use CJS module system.
 - [indentation-type-and-size](./indentation-type-and-size) - This example shows how to change the indentation type and size of the generated model.
@@ -35,7 +36,9 @@ This directory contains a series of self-contained examples that you can use as 
 - [generate-csharp-models](./generate-csharp-models) - A basic example to generate C# data models
 - [java-change-collection-type](./java-change-collection-type) - An example to render collections as List in Java.
 - [java-generate-hashcode](./java-generate-hashcode) - A basic example that shows how to generate models that overwrite the `hashCode` method
+- [java-from-typescript-type](./java-from-typescript-type/) - A basic example that shows how to generate a Java model from a TypeScript type input file.
 - [java-generate-marshalling](./java-generate-marshalling) - A basic example of how to use the un/marshalling functionality of the java class.
+- [java-from-typescript-type-with-options](./java-from-typescript-type-with-options/) - A basic example that shows how to generate a Java model from a TypeScript type input file along with user provided options.
 - [overwrite-naming-formatting](./overwrite-naming-formatting) - A basic example how to overwrite default naming format constraint in this case, overwriting returning a constant case format.
 - [overwrite-default-constraint](./overwrite-default-constraint/) -  A basic example how to overwrite the entire constraint logic and not just a single single part of the default behavior, in this case overwriting the model naming constraint.
 - [change-type-mapping](./change-type-mapping) - A basic example how to overwrite default constrain behavior, in this case, overwriting the naming formatting.
