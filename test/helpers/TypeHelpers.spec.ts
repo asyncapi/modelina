@@ -1,5 +1,6 @@
-import { TypeHelpers, ModelKind } from '../../src/helpers'; 
-import { CommonModel } from '../../src/models';
+import { TypeHelpers, ModelKind, getTypeFromMapping, TypeMapping } from '../../src/helpers'; 
+import { CommonModel, ConstrainedAnyModel, ConstrainedArrayModel, ConstrainedBooleanModel, ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedMetaModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedUnionModel } from '../../src/models';
+import { TestRenderer } from '../TestUtils/TestRenderers';
 
 describe('TypeHelpers', () => {
   describe('extractKind', () => {
@@ -53,6 +54,49 @@ describe('TypeHelpers', () => {
       model.type = 'boolean';
       kind = TypeHelpers.extractKind(model);
       expect(kind).toEqual(ModelKind.PRIMITIVE);
+    });
+  });
+  describe('getTypeFromMapping', () => {
+    const testRenderer = new TestRenderer();
+    const typeMapping: TypeMapping<TestRenderer> = {
+      Object: jest.fn().mockReturnValue('test'),
+      Reference: jest.fn().mockReturnValue('test'),
+      Any: jest.fn().mockReturnValue('test'),
+      Float: jest.fn().mockReturnValue('test'), 
+      Integer: jest.fn().mockReturnValue('test'),
+      String: jest.fn().mockReturnValue('test'),
+      Boolean: jest.fn().mockReturnValue('test'),
+      Tuple: jest.fn().mockReturnValue('test'),
+      Array: jest.fn().mockReturnValue('test'),
+      Enum: jest.fn().mockReturnValue('test'),
+      Union: jest.fn().mockReturnValue('test'),
+      Dictionary: jest.fn().mockReturnValue('test')
+    };
+    test('should return undefined with generic constrained model', () => {
+      const constrainedModel = new ConstrainedMetaModel('', undefined, '');
+
+      const t = () => {
+        getTypeFromMapping(typeMapping, {constrainedModel, renderer: testRenderer});
+      };
+      expect(t).toThrow('Could not find type for model');
+    });
+    const modelsToCheck = [
+      new ConstrainedObjectModel('', undefined, '', {}),
+      new ConstrainedReferenceModel('', undefined, '', new ConstrainedMetaModel('', undefined, '')),
+      new ConstrainedAnyModel('', undefined, ''),
+      new ConstrainedFloatModel('', undefined, ''),
+      new ConstrainedIntegerModel('', undefined, ''),
+      new ConstrainedStringModel('', undefined, ''),
+      new ConstrainedBooleanModel('', undefined, ''),
+      new ConstrainedTupleModel('', undefined, '', []),
+      new ConstrainedArrayModel('', undefined, '', new ConstrainedMetaModel('', undefined, '')),
+      new ConstrainedEnumModel('', undefined, '', []),
+      new ConstrainedUnionModel('', undefined, '', []),
+      new ConstrainedDictionaryModel('', undefined, '', new ConstrainedMetaModel('', undefined, ''), new ConstrainedMetaModel('', undefined, ''))
+    ];
+    test.each(modelsToCheck)('should return type from mapping', (constrainedModel: ConstrainedMetaModel) => {
+      const foundType = getTypeFromMapping(typeMapping, {constrainedModel, renderer: testRenderer});
+      expect(foundType).toEqual('test');
     });
   });
 });

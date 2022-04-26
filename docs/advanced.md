@@ -15,8 +15,8 @@ This document contains many of the advanced use-cases that you may stumble upon 
 - [Adapting input and outputs](#adapting-input-and-outputs)
 - [Add logging to library](#add-logging-to-library)
 - [Change the generated indentation type and size](#change-the-generated-indentation-type-and-size)
-- [Change the naming format for properties](#change-the-naming-format-for-properties)
-- [Change the naming format for data models](#change-the-naming-format-for-data-models)
+- [Change the type mapping](#change-the-type-mapping)
+- [Changing the constrain rules](#changing-the-constrain-rules)
 
 <!-- tocstop -->
 
@@ -84,8 +84,16 @@ In some scenarios, depending on how you stitch them together, you might need to 
 
 Check out this [example out for a live demonstration](../examples/indentation-type-and-size).
 
-## Change the naming format for properties
-TODO 
+## Change the type mapping
+Sometimes, the default type mapping simply dont use the types you expected, or fit into your use-case. Thats why the entire mapping from [MetaModels](./processing.md#the-meta-model) to constrained types can be altered.
 
-## Change the naming format for data models
-TODO
+Check out this [example out for a live demonstration](../examples/change-type-mapping).
+
+## Changing the constrain rules
+When moving from a [MetaModel](./processing.md#the-meta-model) to a [ConstrainedMetaModel](./processing.md#the-constrained-meta-model) it means we bind the input to a specific output. That output has specific constraints that the input MUST adhere to, [read more about this here](constraints.md).
+
+There can be multiple reasons why you want to change the default constrain rules, and therefore you can form them to your needs.
+
+Check out this [example out for a live demonstration](../examples/overwrite-default-constraint/) for how to overwrite the default constraints.
+
+Check out this [example out for a live demonstration](../examples/overwrite-naming-formatting/) for how to overwrite the naming formatting for models.

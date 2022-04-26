@@ -17,6 +17,7 @@ For more specific integration options, please check out the [integration documen
 - [Generate models from OpenAPI documents](#generate-models-from-openapi-documents)
 - [Generate models from TypeScript type files](#generate-models-from-typescript-type-files)
 - [Generate models from Meta models](#generate-models-from-meta-models)
+- [Generate models from OpenAPI documents](#generate-models-from-openapi-documents)
 - [Generate Go models](#generate-go-models)
 - [Generate C# models](#generate-c%23-models)
 - [Generate Java models](#generate-java-models)
