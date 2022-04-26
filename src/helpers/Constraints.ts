@@ -3,7 +3,7 @@ import { ObjectModel, EnumModel } from '../models/MetaModel';
 
 export function NO_NUMBER_START_CHAR(value: string): string {
   const firstChar = value.charAt(0);
-  if (isNaN(+firstChar)) {
+  if (firstChar !== '' && !isNaN(+firstChar)) {
     return `number_${value}`;
   }
   return value;
@@ -28,12 +28,12 @@ export function NO_DUPLICATE_PROPERTIES(constrainedObjectModel: ConstrainedObjec
 export function NO_DUPLICATE_ENUM_KEYS(constrainedEnumModel: ConstrainedEnumModel, enumModel: EnumModel, enumKey: string, namingFormatter: (value: string) => string): string {
   let newEnumKey = enumKey;
 
-  const alreadyPartOfMetaModel = constrainedEnumModel.values.map((model) => model.key).map((key) => namingFormatter(key)).includes(enumKey);
+  const alreadyPartOfMetaModel = enumModel.values.map((model) => model.key).map((key) => namingFormatter(key)).includes(enumKey);
   const alreadyPartOfConstrainedModel = constrainedEnumModel.values.map((model) => model.key).includes(enumKey);
 
   if (alreadyPartOfMetaModel || alreadyPartOfConstrainedModel) {
     newEnumKey = `reserved_${enumKey}`;
-    newEnumKey = namingFormatter(enumKey);
+    newEnumKey = namingFormatter(newEnumKey);
     newEnumKey = NO_DUPLICATE_ENUM_KEYS(constrainedEnumModel, enumModel, newEnumKey, namingFormatter);
   }
   return newEnumKey;

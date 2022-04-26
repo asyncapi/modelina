@@ -1,26 +1,6 @@
-import { AbstractGenerator, FileGenerator } from '../../src/generators'; 
-import { IndentationTypes } from '../../src/helpers';
-import { CommonInputModel, CommonModel, OutputModel, RenderOutput } from '../../src/models';
-
-export const testOptions = {
-  indentation: {
-    type: IndentationTypes.SPACES,
-    size: 2,
-  }
-};
-export class TestGenerator extends AbstractGenerator {
-  constructor() {
-    super('TestGenerator', testOptions);
-  }
-
-  render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
-    return Promise.resolve(RenderOutput.toRenderOutput({result: model.$id || 'rendered content', renderedName: 'TestName'}));
-  }
-
-  renderCompleteModel(model: CommonModel, inputModel: CommonInputModel, options: any): Promise<RenderOutput> {
-    return Promise.resolve(RenderOutput.toRenderOutput({result: 'rendered complete content', renderedName: 'TestName'}));
-  }
-}
+import { AbstractGenerator } from '../../src/generators'; 
+import { CommonInputModel, CommonModel, RenderOutput } from '../../src/models';
+import {TestGenerator} from '../TestUtils/TestGenerator';
 describe('AbstractGenerator', () => {
   let generator: TestGenerator;
   beforeEach(() => {

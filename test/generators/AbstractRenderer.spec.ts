@@ -1,18 +1,7 @@
-import { AbstractRenderer } from '../../src/generators'; 
 import { IndentationTypes } from '../../src/helpers';
-import { CommonInputModel, CommonModel, RenderOutput } from '../../src/models';
-import { testOptions, TestGenerator } from './AbstractGenerator.spec';
+import {TestRenderer} from '../TestUtils/TestRenderers';
 
 describe('AbstractRenderer', () => {
-  class TestRenderer extends AbstractRenderer {
-    constructor(presets = []) {
-      super(testOptions, new TestGenerator(), presets, new CommonModel(), new CommonInputModel());
-    }
-    render(): Promise<RenderOutput> {
-      return Promise.resolve(RenderOutput.toRenderOutput({result: '', renderedName: ''}));
-    }
-  }
-
   let renderer: TestRenderer;
   beforeEach(() => {
     renderer = new TestRenderer();

@@ -9,14 +9,14 @@ export interface CommonGeneratorOptions<P extends Preset = Preset> {
   };
   defaultPreset?: P;
   presets?: Presets<P>;
-  processorOptions?: ProcessorOptions
+  processorOptions?: ProcessorOptions;
 }
 
 export const defaultGeneratorOptions: CommonGeneratorOptions = {
   indentation: {
     type: IndentationTypes.SPACES,
     size: 2,
-  }
+  },
 };
 
 /**

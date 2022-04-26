@@ -3,7 +3,7 @@ import { TypeScriptGenerator } from '../../src';
 const generator = new TypeScriptGenerator({
   constraints: {
     typeMapping: {
-      Number: () => {
+      Number: ({renderer, model}) => {
         return 'integer';
       }
     }
