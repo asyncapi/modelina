@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { AbstractRenderer } from 'generators';
+import { AbstractRenderer } from '../generators';
 import { CommonModel } from '../models';
 import { ConstrainedAnyModel, ConstrainedBooleanModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedMetaModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedArrayModel, ConstrainedUnionModel, ConstrainedEnumModel, ConstrainedDictionaryModel } from '../models/ConstrainedMetaModel';
 
