@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { ConstrainedEnumModel, EnumModel } from '../../../models';
 import { NO_NUMBER_START_CHAR, NO_DUPLICATE_ENUM_KEYS, NO_EMPTY_VALUE, NO_RESERVED_KEYWORDS } from '../../../helpers/Constraints';
 import { FormatHelpers, EnumKeyConstraint, EnumValueConstraint } from '../../../helpers';
@@ -37,7 +36,7 @@ export function defaultEnumKeyConstraints(customConstraints?: Partial<ModelEnumK
     constrainedEnumKey = constraints.NO_EMPTY_VALUE(constrainedEnumKey);
     constrainedEnumKey = constraints.NO_RESERVED_KEYWORDS(constrainedEnumKey);
     constrainedEnumKey = constraints.NAMING_FORMATTER(constrainedEnumKey);
-    constrainedEnumKey = constraints.NO_DUPLICATE_KEYS(constrainedEnumModel, enumModel, constrainedEnumKey, constraints.NAMING_FORMATTER!);
+    constrainedEnumKey = constraints.NO_DUPLICATE_KEYS(constrainedEnumModel, enumModel, constrainedEnumKey, constraints.NAMING_FORMATTER);
     return constrainedEnumKey;
   };
 }

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { NO_NUMBER_START_CHAR, NO_EMPTY_VALUE, NO_RESERVED_KEYWORDS } from '../../../helpers/Constraints';
 import { FormatHelpers, ModelNameConstraint } from '../../../helpers';
 import { isReservedGoKeyword } from '../Constants';

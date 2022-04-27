@@ -57,6 +57,11 @@ describe('EnumConstrainer', () => {
     });
   });
   describe('custom constraints', () => {
+    test('should be able to handle undefined', () => {
+      const constrainFunction = defaultEnumKeyConstraints(undefined);
+      const value = constrainFunction({enumModel, constrainedEnumModel, enumKey: 'TEST'});
+      expect(value).toEqual('TEST');
+    });
     test('should be able to overwrite all hooks for enum key', () => {
       const mockedConstraintCallbacks: ModelEnumKeyConstraints = {
         NAMING_FORMATTER: jest.fn().mockReturnValue(''),
