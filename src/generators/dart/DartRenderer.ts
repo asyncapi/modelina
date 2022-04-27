@@ -84,12 +84,12 @@ export abstract class DartRenderer extends AbstractRenderer<DartOptions, DartGen
     case 'boolean':
       return 'bool';
     case 'date':
-      return 'LocalDate';
+      return 'DateTime';
     case 'time':
-      return 'OffsetTime';
+      return 'DateTime';
     case 'dateTime':
     case 'date-time':
-      return 'OffsetDateTime?';
+      return 'DateTime';
     case 'string':
     case 'password':
     case 'byte':
@@ -126,9 +126,8 @@ export abstract class DartRenderer extends AbstractRenderer<DartOptions, DartGen
   toClassType(type: string): string {
     switch (type) {
     case 'int':
-      return 'int';
     case 'long':
-      return 'long';
+      return 'int';
     case 'boolean':
       return 'bool';
     case 'float':

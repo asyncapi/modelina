@@ -20,6 +20,7 @@ For more specific integration options, please check out the [integration documen
 - [Generate Java models](#generate-java-models)
 - [Generate TypeScript models](#generate-typescript-models)
 - [Generate JavaScript models](#generate-javascript-models)
+- [Generate Dart models](#generate-dart-models)
 
 <!-- tocstop -->
 
@@ -89,3 +90,7 @@ TypeScript is one of the many output languages we support. Check out this [basic
 ## Generate JavaScript models
 
 JavaScript is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-javascript-models) and the following [JavaScript documentation for more advanced use-cases](./languages/JavaScript.md).
+
+## Generate Dart models
+
+Dart is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-dart-models) and the following [Dart documentation for more advanced use-cases](./languages/Dart.md).

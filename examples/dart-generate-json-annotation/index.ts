@@ -1,10 +1,9 @@
-import {DartGenerator} from '../../src';
+import {DART_JSON_PRESET, DartFileGenerator} from '../../src';
 
-const generator = new DartGenerator();
 const jsonSchemaDraft7 = {
   $schema: 'http://json-schema.org/draft-07/schema#',
   type: 'object',
-  additionalProperties: false,
+  additionalProperties: true,
   properties: {
     email: {
       type: 'string',
@@ -13,6 +12,8 @@ const jsonSchemaDraft7 = {
   }
 };
 
+const generator = new DartFileGenerator({ presets: [DART_JSON_PRESET] });
+
 export async function generate() : Promise<void> {
   const models = await generator.generate(jsonSchemaDraft7);
   for (const model of models) {
@@ -20,3 +21,4 @@ export async function generate() : Promise<void> {
   }
 }
 generate();
+

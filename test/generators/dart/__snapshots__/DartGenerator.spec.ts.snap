@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DartGenerator should render models and their dependencies 1`] = `
+"import 'package:test.package/other_model.dart';
+      
+      class Address {
+  String? streetName;
+  String? city;
+  String? state;
+  double? houseNumber;
+  bool? marriage;
+  Object? members;
+  List<Object>? arrayType;
+  OtherModel? otherModel;
+  Map<String, String>? sTestPatternProperties;
+
+  Address();
+}"
+`;
+
+exports[`DartGenerator should render models and their dependencies 2`] = `
+"
+      
+      class OtherModel {
+  String? streetName;
+
+  OtherModel();
+}"
+`;
+
+
