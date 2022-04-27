@@ -66,6 +66,14 @@ describe('CSharpConstrainer', () => {
       const type = CSharpDefaultTypeMapping.Tuple({constrainedModel: model, renderer});
       expect(type).toEqual('(string)');
     });
+    test('should render multiple types', () => {
+      const tupleModel = new ConstrainedBooleanModel('test', undefined, 'string');
+      const tupleValueModel0 = new ConstrainedTupleValueModel(0, tupleModel);
+      const tupleValueModel1 = new ConstrainedTupleValueModel(1, tupleModel);
+      const model = new ConstrainedTupleModel('test', undefined, '', [tupleValueModel0, tupleValueModel1]);
+      const type = CSharpDefaultTypeMapping.Tuple({constrainedModel: model, renderer});
+      expect(type).toEqual('(string, string)');
+    });
   });
 
   describe('Array', () => { 
