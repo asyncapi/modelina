@@ -18,7 +18,7 @@ export interface JavaOptions extends CommonGeneratorOptions<JavaPreset> {
   collectionType: 'List' | 'Array';
   namingConvention: CommonNamingConvention;
   typeMapping: TypeMapping<JavaRenderer>;
-  constraints: Constraints
+  constraints: Constraints;
 }
 export interface JavaRenderCompleteModelOptions {
   packageName: string

@@ -4,16 +4,20 @@ import {
   defaultGeneratorOptions
 } from '../AbstractGenerator';
 import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
-import { TypeHelpers, ModelKind, CommonNamingConvention, CommonNamingConventionImplementation, FormatHelpers } from '../../helpers';
+import { TypeHelpers, ModelKind, CommonNamingConvention, CommonNamingConventionImplementation, FormatHelpers, TypeMapping, Constraints } from '../../helpers';
 import { CSharpPreset, CSHARP_DEFAULT_PRESET } from './CSharpPreset';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { isReservedCSharpKeyword } from './Constants';
 import { Logger } from '../../index';
+import { CSharpRenderer } from './CSharpRenderer';
+import { CSharpDefaultConstraints, CSharpDefaultTypeMapping } from './CSharpConstrainer';
 
 export interface CSharpOptions extends CommonGeneratorOptions<CSharpPreset> {
   collectionType?: 'List' | 'Array';
   namingConvention?: CommonNamingConvention;
+  typeMapping: TypeMapping<CSharpRenderer>;
+  constraints: Constraints;
 }
 
 export interface CSharpRenderCompleteModelOptions {
@@ -28,13 +32,17 @@ export class CSharpGenerator extends AbstractGenerator<CSharpOptions, CSharpRend
     ...defaultGeneratorOptions,
     collectionType: 'Array',
     defaultPreset: CSHARP_DEFAULT_PRESET,
-    namingConvention: CommonNamingConventionImplementation
+    namingConvention: CommonNamingConventionImplementation,
+    typeMapping: CSharpDefaultTypeMapping,
+    constraints: CSharpDefaultConstraints
   };
 
   constructor(
-    options: CSharpOptions = CSharpGenerator.defaultOptions,
+    options: Partial<CSharpOptions> = CSharpGenerator.defaultOptions,
   ) {
-    super('CSharp', CSharpGenerator.defaultOptions, options);
+    const mergedOptions = {...CSharpGenerator.defaultOptions, ...options};
+
+    super('CSharp', CSharpGenerator.defaultOptions, mergedOptions);
   }
 
   /**
