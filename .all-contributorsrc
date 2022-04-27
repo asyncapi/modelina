@@ -216,7 +216,8 @@
         "code",
         "test",
         "doc",
-        "example"
+        "example",
+        "maintenance"
       ]
     },
     {
@@ -225,7 +226,80 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/22374829?v=4",
       "profile": "https://ritik307.github.io/portfolio/",
       "contributions": [
+        "doc",
+        "code",
+        "test",
+        "example"
+      ]
+    },
+    {
+      "login": "Ishan-Saini",
+      "name": "Ishan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/54525602?v=4",
+      "profile": "https://github.com/Ishan-Saini",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "Samridhi-98",
+      "name": "Samriddhi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/54466041?v=4",
+      "profile": "https://samridhi-98.github.io/Portfolio",
+      "contributions": [
+        "code",
+        "test",
+        "doc",
+        "example",
+        "maintenance"
+      ]
+    },
+    {
+      "login": "gabormagyar",
+      "name": "Gábor Magyar",
+      "avatar_url": "https://avatars.githubusercontent.com/u/63397303?v=4",
+      "profile": "https://github.com/gabormagyar",
+      "contributions": [
+        "code",
+        "test",
+        "doc",
+        "example"
+      ]
+    },
+    {
+      "login": "ibernabeudev",
+      "name": "ibernabeudev",
+      "avatar_url": "https://avatars.githubusercontent.com/u/74215074?v=4",
+      "profile": "https://github.com/ibernabeudev",
+      "contributions": [
+        "code",
+        "test",
+        "example",
         "doc"
+      ]
+    },
+    {
+      "login": "slowikowskiarkadiusz",
+      "name": "Arkadiusz Słowikowski",
+      "avatar_url": "https://avatars.githubusercontent.com/u/97508930?v=4",
+      "profile": "https://github.com/slowikowskiarkadiusz",
+      "contributions": [
+        "code",
+        "test",
+        "example",
+        "doc"
+      ]
+    },
+    {
+      "login": "Polygens",
+      "name": "Willem Gillis",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3582318?v=4",
+      "profile": "https://github.com/Polygens",
+      "contributions": [
+        "code",
+        "test",
+        "bug"
       ]
     }
   ],

@@ -8,10 +8,12 @@
 <dd><p>Abstract renderer with common helper methods</p>
 </dd>
 <dt><a href="#AsyncapiV2Schema">AsyncapiV2Schema</a></dt>
-<dd><p>AsyncAPI 2.0 + 2.1 schema model</p>
+<dd><p>AsyncAPI schema model</p>
 <p>Based on Draft 7 with additions</p>
 <p><a href="https://www.asyncapi.com/docs/specifications/v2.0.0#schemaObject">https://www.asyncapi.com/docs/specifications/v2.0.0#schemaObject</a>
-<a href="https://www.asyncapi.com/docs/specifications/v2.1.0#schemaObject">https://www.asyncapi.com/docs/specifications/v2.1.0#schemaObject</a></p>
+<a href="https://www.asyncapi.com/docs/specifications/v2.1.0#schemaObject">https://www.asyncapi.com/docs/specifications/v2.1.0#schemaObject</a>
+<a href="https://www.asyncapi.com/docs/specifications/v2.2.0#schemaObject">https://www.asyncapi.com/docs/specifications/v2.2.0#schemaObject</a>
+<a href="https://www.asyncapi.com/docs/specifications/v2.3.0#schemaObject">https://www.asyncapi.com/docs/specifications/v2.3.0#schemaObject</a></p>
 </dd>
 <dt><a href="#CommonInputModel">CommonInputModel</a></dt>
 <dd><p>This class is the wrapper for simplified models and the rest of the context needed for further generate typed models.</p>
@@ -98,6 +100,10 @@ Modifications</p>
 <dt><a href="#getUniquePropertyName">getUniquePropertyName(rootModel, propertyName)</a></dt>
 <dd><p>Recursively find the proper property name.</p>
 <p>This function ensures that the property name is unique for the model</p>
+</dd>
+<dt><a href="#hasPreset">hasPreset(presets, preset)</a></dt>
+<dd><p>Returns true if and only if a given preset is already included in a list of presets
+Check is done using referential equality</p>
 </dd>
 <dt><a href="#interpretAdditionalItems">interpretAdditionalItems(schema, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for additionalItems keyword.</p>
@@ -227,12 +233,14 @@ Adds a dependency while ensuring that only one dependency is preset at a time.
 <a name="AsyncapiV2Schema"></a>
 
 ## AsyncapiV2Schema
-AsyncAPI 2.0 + 2.1 schema model
+AsyncAPI schema model
 
 Based on Draft 7 with additions
 
 https://www.asyncapi.com/docs/specifications/v2.0.0#schemaObject
 https://www.asyncapi.com/docs/specifications/v2.1.0#schemaObject
+https://www.asyncapi.com/docs/specifications/v2.2.0#schemaObject
+https://www.asyncapi.com/docs/specifications/v2.3.0#schemaObject
 
 **Kind**: global class  
 <a name="AsyncapiV2Schema.toSchema"></a>
@@ -1087,6 +1095,19 @@ This function ensures that the property name is unique for the model
 | --- |
 | rootModel | 
 | propertyName | 
+
+<a name="hasPreset"></a>
+
+## hasPreset(presets, preset)
+Returns true if and only if a given preset is already included in a list of presets
+Check is done using referential equality
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| presets | the list to check |
+| preset | the preset to check for |
 
 <a name="interpretAdditionalItems"></a>
 

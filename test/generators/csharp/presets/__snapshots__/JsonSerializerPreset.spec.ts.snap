@@ -2,7 +2,8 @@
 
 exports[`JSON serializer preset should render serialize and deserialize converters 1`] = `
 "[JsonConverter(typeof(NestedTestConverter))]
-public class NestedTest {
+public class NestedTest
+{
   private string stringProp;
   private Dictionary<string, dynamic> additionalProperties;
 
@@ -21,12 +22,12 @@ public class NestedTest {
 
 internal class NestedTestConverter : JsonConverter<NestedTest>
 {
-  public override bool CanConvert(Type objectType)
+  public override bool CanConvert(System.Type objectType)
   {
     // this converter can be applied to any type
     return true;
   }
-  public override NestedTest Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+  public override NestedTest Read(ref Utf8JsonReader reader, System.Type typeToConvert, JsonSerializerOptions options)
   {
     if (reader.TokenType != JsonTokenType.StartObject)
     {
@@ -70,7 +71,7 @@ internal class NestedTestConverter : JsonConverter<NestedTest>
   {
     if (value == null)
     {
-      JsonSerializer.Serialize(writer, null);
+      JsonSerializer.Serialize(writer, null, options);
       return;
     }
     var properties = value.GetType().GetProperties().Where(prop => prop.Name != \\"AdditionalProperties\\");
@@ -80,7 +81,7 @@ internal class NestedTestConverter : JsonConverter<NestedTest>
     if(value.StringProp != null) { 
       // write property name and let the serializer serialize the value itself
       writer.WritePropertyName(\\"stringProp\\");
-      JsonSerializer.Serialize(writer, value.StringProp);
+      JsonSerializer.Serialize(writer, value.StringProp, options);
     }
 
 
@@ -97,7 +98,7 @@ internal class NestedTestConverter : JsonConverter<NestedTest>
         }
         // write property name and let the serializer serialize the value itself
         writer.WritePropertyName(additionalProperty.Key);
-        JsonSerializer.Serialize(writer, additionalProperty.Value);
+        JsonSerializer.Serialize(writer, additionalProperty.Value, options);
       }
     }
 
@@ -110,9 +111,10 @@ internal class NestedTestConverter : JsonConverter<NestedTest>
 
 exports[`JSON serializer preset should render serialize and deserialize converters 2`] = `
 "[JsonConverter(typeof(TestConverter))]
-public class Test {
+public class Test
+{
   private string stringProp;
-  private float? numberProp;
+  private double? numberProp;
   private EnumTest enumProp;
   private NestedTest objectProp;
   private Dictionary<string, dynamic> additionalProperties;
@@ -124,7 +126,7 @@ public class Test {
     set { stringProp = value; }
   }
 
-  public float? NumberProp 
+  public double? NumberProp 
   {
     get { return numberProp; }
     set { numberProp = value; }
@@ -157,12 +159,12 @@ public class Test {
 
 internal class TestConverter : JsonConverter<Test>
 {
-  public override bool CanConvert(Type objectType)
+  public override bool CanConvert(System.Type objectType)
   {
     // this converter can be applied to any type
     return true;
   }
-  public override Test Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+  public override Test Read(ref Utf8JsonReader reader, System.Type typeToConvert, JsonSerializerOptions options)
   {
     if (reader.TokenType != JsonTokenType.StartObject)
     {
@@ -193,7 +195,7 @@ internal class TestConverter : JsonConverter<Test>
       }
       if (propertyName == \\"numberProp\\")
       {
-        var value = JsonSerializer.Deserialize<float?>(ref reader, options);
+        var value = JsonSerializer.Deserialize<double?>(ref reader, options);
         instance.NumberProp = value;
         continue;
       }
@@ -231,7 +233,7 @@ internal class TestConverter : JsonConverter<Test>
   {
     if (value == null)
     {
-      JsonSerializer.Serialize(writer, null);
+      JsonSerializer.Serialize(writer, null, options);
       return;
     }
     var properties = value.GetType().GetProperties().Where(prop => prop.Name != \\"AdditionalProperties\\" && prop.Name != \\"STestPatternProperties\\");
@@ -241,22 +243,22 @@ internal class TestConverter : JsonConverter<Test>
     if(value.StringProp != null) { 
       // write property name and let the serializer serialize the value itself
       writer.WritePropertyName(\\"string prop\\");
-      JsonSerializer.Serialize(writer, value.StringProp);
+      JsonSerializer.Serialize(writer, value.StringProp, options);
     }
     if(value.NumberProp != null) { 
       // write property name and let the serializer serialize the value itself
       writer.WritePropertyName(\\"numberProp\\");
-      JsonSerializer.Serialize(writer, value.NumberProp);
+      JsonSerializer.Serialize(writer, value.NumberProp, options);
     }
     if(value.EnumProp != null) { 
       // write property name and let the serializer serialize the value itself
       writer.WritePropertyName(\\"enumProp\\");
-      JsonSerializer.Serialize(writer, value.EnumProp.GetValue());
+      JsonSerializer.Serialize(writer, value.EnumProp.GetValue(), options);
     }
     if(value.ObjectProp != null) { 
       // write property name and let the serializer serialize the value itself
       writer.WritePropertyName(\\"objectProp\\");
-      JsonSerializer.Serialize(writer, value.ObjectProp);
+      JsonSerializer.Serialize(writer, value.ObjectProp, options);
     }
 
 
@@ -271,7 +273,7 @@ internal class TestConverter : JsonConverter<Test>
         }
         // write property name and let the serializer serialize the value itself
         writer.WritePropertyName(patternProp.Key);
-        JsonSerializer.Serialize(writer, patternProp.Value);
+        JsonSerializer.Serialize(writer, patternProp.Value, options);
       }
     }
 
@@ -286,7 +288,7 @@ internal class TestConverter : JsonConverter<Test>
         }
         // write property name and let the serializer serialize the value itself
         writer.WritePropertyName(additionalProperty.Key);
-        JsonSerializer.Serialize(writer, additionalProperty.Value);
+        JsonSerializer.Serialize(writer, additionalProperty.Value, options);
       }
     }
 
@@ -298,10 +300,16 @@ internal class TestConverter : JsonConverter<Test>
 `;
 
 exports[`JSON serializer preset should render serialize and deserialize converters 3`] = `
-"public enum EnumTest {
-  SomeEnumString, True, TestTest, Number_2
+"public enum EnumTest
+{
+  SomeEnumString,
+  True,
+  TestTest,
+  Number_2
 }
-public static class EnumTestExtensions {
+
+public static class EnumTestExtensions
+{
   public static dynamic GetValue(this EnumTest enumValue)
   {
     switch (enumValue)
@@ -326,6 +334,5 @@ public static class EnumTestExtensions {
     return null;
   }
 }
-
 "
 `;

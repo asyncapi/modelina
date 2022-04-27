@@ -13,6 +13,7 @@ There are special use-cases that each language supports; this document pertains 
 - [Include JavaDoc for properties](#include-javadoc-for-properties)
 - [Include Javax validation constraint annotations for properties](#include-javax-validation-constraint-annotations-for-properties)
 - [Include Jackson annotations for the class](#include-jackson-annotations-for-the-class)
+- [Include JSON marshaling and unmarshaling methods](#include-json-marshaling-and-unmarshaling-methods)
 
 <!-- tocstop -->
 
@@ -54,4 +55,15 @@ Check out this [example for a live demonstration](../../examples/java-generate-j
 
 ## Include Jackson annotations for the class
 
-TODO
+To generate Java data models with Jackson annotation using `JAVA_JACKSON_PRESET` option.
+
+Check out this [example for a live demonstration](../../examples/java-generate-jackson-annotation).
+
+## Include JSON marshaling and unmarshaling methods
+
+Sometimes you just want to convert your class to JSON without the use of annotations such as Jackson.
+
+Check out this [example for a live demonstration](../../examples/java-generate-marshalling).
+
+External dependencies
+- Requires [org.json package](https://search.maven.org/artifact/org.json/json/20211205/bundle) to work

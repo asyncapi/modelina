@@ -1,9 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`CSHARP_COMMON_PRESET should render Equals support function 1`] = `
-"public class Test {
+"public class Test
+{
   private string stringProp;
-  private float? numberProp;
+  private double? numberProp;
   private NestedTest objectProp;
   private Dictionary<string, dynamic> additionalProperties;
   private Dictionary<string, string> sTestPatternProperties;
@@ -14,7 +15,7 @@ exports[`CSHARP_COMMON_PRESET should render Equals support function 1`] = `
     set { stringProp = value; }
   }
 
-  public float? NumberProp 
+  public double? NumberProp 
   {
     get { return numberProp; }
     set { numberProp = value; }
@@ -49,13 +50,15 @@ exports[`CSHARP_COMMON_PRESET should render Equals support function 1`] = `
       AdditionalProperties == model.AdditionalProperties && 
       STestPatternProperties == model.STestPatternProperties;
     }
+
     return false;
   }
 }"
 `;
 
 exports[`CSHARP_COMMON_PRESET should render Equals support function 2`] = `
-"public class NestedTest {
+"public class NestedTest
+{
   private string stringProp;
   private Dictionary<string, dynamic> additionalProperties;
 
@@ -79,15 +82,17 @@ exports[`CSHARP_COMMON_PRESET should render Equals support function 2`] = `
       return StringProp == model.StringProp && 
       AdditionalProperties == model.AdditionalProperties;
     }
+
     return false;
   }
 }"
 `;
 
 exports[`CSHARP_COMMON_PRESET should render GetHashCode support function 1`] = `
-"public class Test {
+"public class Test
+{
   private string stringProp;
-  private float? numberProp;
+  private double? numberProp;
   private NestedTest objectProp;
   private Dictionary<string, dynamic> additionalProperties;
   private Dictionary<string, string> sTestPatternProperties;
@@ -98,7 +103,7 @@ exports[`CSHARP_COMMON_PRESET should render GetHashCode support function 1`] = `
     set { stringProp = value; }
   }
 
-  public float? NumberProp 
+  public double? NumberProp 
   {
     get { return numberProp; }
     set { numberProp = value; }
@@ -132,12 +137,12 @@ exports[`CSHARP_COMMON_PRESET should render GetHashCode support function 1`] = `
     hash.Add(STestPatternProperties);
     return hash.ToHashCode();
   }
-
 }"
 `;
 
 exports[`CSHARP_COMMON_PRESET should render GetHashCode support function 2`] = `
-"public class NestedTest {
+"public class NestedTest
+{
   private string stringProp;
   private Dictionary<string, dynamic> additionalProperties;
 
@@ -160,6 +165,5 @@ exports[`CSHARP_COMMON_PRESET should render GetHashCode support function 2`] = `
     hash.Add(AdditionalProperties);
     return hash.ToHashCode();
   }
-
 }"
 `;

@@ -13,7 +13,7 @@ function renderSerializeProperty(modelInstanceVariable: string, model: CommonMod
       value = `${value}.GetValue()`;
     }
   }
-  return `JsonSerializer.Serialize(writer, ${value});`;
+  return `JsonSerializer.Serialize(writer, ${value}, options);`;
 }
 
 function renderSerializeAdditionalProperties(model: CommonModel, renderer: CSharpRenderer, inputModel: CommonInputModel) {
@@ -116,7 +116,7 @@ function renderSerialize({ renderer, model, inputModel }: {
 {
   if (value == null)
   {
-    JsonSerializer.Serialize(writer, null);
+    JsonSerializer.Serialize(writer, null, options);
     return;
   }
   ${propertiesList}
@@ -205,7 +205,7 @@ function renderDeserialize({ renderer, model, inputModel }: {
   const deserializeProperties = renderDeserializeProperties(model, renderer, inputModel);
   const deserializePatternProperties = renderDeserializePatternProperties(model, renderer, inputModel);
   const deserializeAdditionalProperties = renderDeserializeAdditionalProperties(model, renderer, inputModel);
-  return `public override ${formattedModelName} Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+  return `public override ${formattedModelName} Read(ref Utf8JsonReader reader, System.Type typeToConvert, JsonSerializerOptions options)
 {
   if (reader.TokenType != JsonTokenType.StartObject)
   {
@@ -260,7 +260,7 @@ ${content}
 
 internal class ${formattedModelName}Converter : JsonConverter<${formattedModelName}>
 {
-  public override bool CanConvert(Type objectType)
+  public override bool CanConvert(System.Type objectType)
   {
     // this converter can be applied to any type
     return true;

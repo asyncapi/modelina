@@ -15,6 +15,7 @@ For more specific integration options, please check out the [integration documen
 - [Generate models from JSON Schema documents](#generate-models-from-json-schema-documents)
 - [Generate models from Swagger 2.0 documents](#generate-models-from-swagger-20-documents)
 - [Generate models from OpenAPI documents](#generate-models-from-openapi-documents)
+- [Generate models from TypeScript type files](#generate-models-from-typescript-type-files)
 - [Generate Go models](#generate-go-models)
 - [Generate C# models](#generate-c%23-models)
 - [Generate Java models](#generate-java-models)
@@ -70,6 +71,14 @@ There are one way to generate models from an OpenAPI document
 The OpenAPI input processor expects that the property `openapi` is defined in order to know it should be processed.
 
 The response and request payloads, since it is a JSON Schema variant, is [interpreted as a such](./interpretation_of_JSON_Schema.md).
+
+## Generate models from TypeScript type files
+
+Currently, we support generating models from a TypeScript type file.
+
+- [Generate Java model from a TypeScript file](../examples/java-from-typescript-type/)
+
+The TypeScript input processor expects that the typescript file and base directory where it's present, is passed as input, in order to process the types accurately.
 
 ## Generate Go models
 

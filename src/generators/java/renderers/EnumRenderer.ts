@@ -1,5 +1,5 @@
 import { JavaRenderer } from '../JavaRenderer';
-import { EnumPreset} from '../../../models';
+import { EnumPreset } from '../../../models';
 import { FormatHelpers } from '../../../helpers';
 
 /**
@@ -49,7 +49,7 @@ ${this.indent(this.renderBlock(content, 2))}
       break;
     }
     default: {
-      key = FormatHelpers.replaceSpecialCharacters(String(value), { exclude: [' '], separator: '_' }); 
+      key = FormatHelpers.replaceSpecialCharacters(String(value), { exclude: [' ', '_'], separator: '_' });
       //Ensure no special char can be the beginning letter 
       if (!(/^[a-zA-Z]+$/).test(key.charAt(0))) {
         key = `string_${key}`;
