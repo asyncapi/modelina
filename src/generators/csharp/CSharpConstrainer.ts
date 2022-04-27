@@ -32,7 +32,10 @@ export const CSharpDefaultTypeMapping: TypeMapping<CSharpRenderer> = {
     });
     return `(${tupleTypes.join(', ')})`;
   },
-  Array ({constrainedModel}): string {
+  Array ({constrainedModel, renderer}): string {
+    if (renderer.options.collectionType && renderer.options.collectionType === 'List') {
+      return `IEnumerable<${constrainedModel.valueModel.type}>`;
+    }
     return `${constrainedModel.valueModel.type}[]`;
   },
   Enum ({constrainedModel}): string {

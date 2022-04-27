@@ -76,6 +76,13 @@ describe('CSharpConstrainer', () => {
       const type = CSharpDefaultTypeMapping.Array({constrainedModel: model, renderer});
       expect(type).toEqual('String[]');
     });
+    test('should render array as a list', () => {
+      const arrayModel = new ConstrainedStringModel('test', undefined, 'String');
+      const model = new ConstrainedArrayModel('test', undefined, '', arrayModel);
+      renderer.options.collectionType = 'List';
+      const type = CSharpDefaultTypeMapping.Array({constrainedModel: model, renderer});
+      expect(type).toEqual('IEnumerable<String>');
+    });
   });
 
   describe('Enum', () => { 
