@@ -37,7 +37,7 @@ export function defaultPropertyKeyConstraints(customConstraints?: Partial<Proper
     constrainedPropertyKey = constraints.NO_EMPTY_VALUE(constrainedPropertyKey);
     constrainedPropertyKey = constraints.NO_RESERVED_KEYWORDS(constrainedPropertyKey);
     constrainedPropertyKey = constraints.NAMING_FORMATTER(constrainedPropertyKey);
-    constrainedPropertyKey = constraints.NO_DUPLICATE_PROPERTIES(constrainedObjectModel, objectModel, constrainedPropertyKey, constraints.NAMING_FORMATTER!);
+    constrainedPropertyKey = constraints.NO_DUPLICATE_PROPERTIES(constrainedObjectModel, objectModel, constrainedPropertyKey, constraints.NAMING_FORMATTER);
     return constrainedPropertyKey;
   };
 }
