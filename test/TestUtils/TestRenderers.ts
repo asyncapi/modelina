@@ -1,5 +1,6 @@
 import { AbstractRenderer, CommonInputModel, CommonModel, RenderOutput } from '../../src';
 import { JavaRenderer } from '../../src/generators/java/JavaRenderer';
+import { TypeScriptRenderer } from '../../src/generators/typescript/TypeScriptRenderer';
 import {testOptions, TestGenerator} from './TestGenerator';
 
 export class TestRenderer extends AbstractRenderer {
@@ -11,6 +12,5 @@ export class TestRenderer extends AbstractRenderer {
   }
 }
 
-export class MockJavaRenderer extends JavaRenderer {
-
-}
+export class MockJavaRenderer extends JavaRenderer {}
+export class MockTypeScriptRenderer extends TypeScriptRenderer {}

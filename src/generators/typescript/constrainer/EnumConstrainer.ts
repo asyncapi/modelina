@@ -44,22 +44,22 @@ export function defaultEnumKeyConstraints(customConstraints?: Partial<ModelEnumK
 export function defaultEnumValueConstraints(): EnumValueConstraint {
   return ({enumValue}) => {
     let normalizedEnumValue;
-    switch (typeof enumValue.value) {
+    switch (typeof enumValue) {
     case 'string':
     case 'boolean':
-      normalizedEnumValue = `"${enumValue.value}"`;
+      normalizedEnumValue = `"${enumValue}"`;
       break;
     case 'bigint':
     case 'number': {
-      normalizedEnumValue = enumValue.value;
+      normalizedEnumValue = `${enumValue}`;
       break;
     }
     case 'object': {
-      normalizedEnumValue = `'${JSON.stringify(enumValue.value)}'`;
+      normalizedEnumValue = `'${JSON.stringify(enumValue)}'`;
       break;
     }
     default: {
-      normalizedEnumValue = String(enumValue.value);
+      normalizedEnumValue = String(enumValue);
     }
     }
     return normalizedEnumValue;
