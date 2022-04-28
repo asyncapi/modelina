@@ -5,19 +5,23 @@ import {
   defaultGeneratorOptions
 } from '../AbstractGenerator';
 import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
-import { TypeHelpers, ModelKind, CommonNamingConvention, CommonNamingConventionImplementation } from '../../helpers';
+import { TypeHelpers, ModelKind, CommonNamingConvention, CommonNamingConventionImplementation, TypeMapping, Constraints } from '../../helpers';
 import { TS_EXPORT_KEYWORD_PRESET } from './presets';
 import { TypeScriptPreset, TS_DEFAULT_PRESET } from './TypeScriptPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { InterfaceRenderer } from './renderers/InterfaceRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { TypeRenderer } from './renderers/TypeRenderer';
+import { TypeScriptRenderer } from './TypeScriptRenderer';
+import { TypeScriptDefaultConstraints, TypeScriptDefaultTypeMapping } from './TypeScriptConstrainer';
 
 export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPreset> {
   renderTypes?: boolean;
   modelType?: 'class' | 'interface';
   enumType?: 'enum' | 'union';
   namingConvention?: CommonNamingConvention;
+  typeMapping: TypeMapping<TypeScriptRenderer>;
+  constraints: Constraints
 }
 export interface TypeScriptRenderCompleteModelOptions {
   moduleSystem?: 'ESM' | 'CJS';
@@ -34,13 +38,17 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,Typ
     modelType: 'class',
     enumType: 'enum',
     defaultPreset: TS_DEFAULT_PRESET,
-    namingConvention: CommonNamingConventionImplementation
+    namingConvention: CommonNamingConventionImplementation,
+    typeMapping: TypeScriptDefaultTypeMapping,
+    constraints: TypeScriptDefaultConstraints
   };
 
   constructor(
-    options: TypeScriptOptions = TypeScriptGenerator.defaultOptions,
+    options: Partial<TypeScriptOptions> = TypeScriptGenerator.defaultOptions,
   ) {
-    super('TypeScript', TypeScriptGenerator.defaultOptions, options);
+    const mergedOptions = {...TypeScriptGenerator.defaultOptions, ...options};
+
+    super('TypeScript', TypeScriptGenerator.defaultOptions, mergedOptions);
   }
 
   /**
