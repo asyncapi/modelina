@@ -4,13 +4,15 @@ import {
   defaultGeneratorOptions
 } from '../AbstractGenerator';
 import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
-import { TypeHelpers, ModelKind, FormatHelpers } from '../../helpers';
+import { TypeHelpers, ModelKind, FormatHelpers, Constraints, TypeMapping } from '../../helpers';
 import { GoPreset, GO_DEFAULT_PRESET } from './GoPreset';
 import { StructRenderer } from './renderers/StructRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { pascalCaseTransformMerge } from 'change-case';
 import { Logger } from '../../utils/LoggingInterface';
 import { isReservedGoKeyword } from './Constants';
+import { GoDefaultConstraints, GoDefaultTypeMapping } from './GoConstrainer';
+import { GoRenderer } from './GoRenderer';
 /**
  * The Go naming convention type
  */
@@ -48,6 +50,8 @@ export const GoNamingConventionImplementation: GoNamingConvention = {
 
 export interface GoOptions extends CommonGeneratorOptions<GoPreset> {
   namingConvention?: GoNamingConvention;
+  typeMapping: TypeMapping<GoRenderer>;
+  constraints: Constraints
 }
 
 export interface GoRenderCompleteModelOptions {
@@ -61,12 +65,16 @@ export class GoGenerator extends AbstractGenerator<GoOptions, GoRenderCompleteMo
   static defaultOptions: GoOptions = {
     ...defaultGeneratorOptions,
     defaultPreset: GO_DEFAULT_PRESET,
-    namingConvention: GoNamingConventionImplementation
+    namingConvention: GoNamingConventionImplementation,
+    typeMapping: GoDefaultTypeMapping,
+    constraints: GoDefaultConstraints
   };
   constructor(
-    options: GoOptions = GoGenerator.defaultOptions,
+    options: Partial<GoOptions> = GoGenerator.defaultOptions,
   ) {
-    super('Go', GoGenerator.defaultOptions, options);
+    const mergedOptions = {...GoGenerator.defaultOptions, ...options};
+
+    super('Go', GoGenerator.defaultOptions, mergedOptions);
   }
   reservedGoKeyword(name: string): boolean {
     return isReservedGoKeyword(name);

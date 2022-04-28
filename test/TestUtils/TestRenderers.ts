@@ -1,4 +1,5 @@
 import { AbstractRenderer, CommonInputModel, CommonModel, RenderOutput } from '../../src';
+import { GoRenderer } from '../../src/generators/go/GoRenderer';
 import { CSharpRenderer } from '../../src/generators/csharp/CSharpRenderer';
 import { JavaRenderer } from '../../src/generators/java/JavaRenderer';
 import { JavaScriptRenderer } from '../../src/generators/javascript/JavaScriptRenderer';
@@ -14,5 +15,6 @@ export class TestRenderer extends AbstractRenderer {
 }
 
 export class MockJavaRenderer extends JavaRenderer {}
+export class MockGoRenderer extends GoRenderer {}
 export class MockCSharpRenderer extends CSharpRenderer {}
 export class MockJavaScriptRenderer extends JavaScriptRenderer {}
