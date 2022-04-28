@@ -4,12 +4,16 @@ import {
   defaultGeneratorOptions
 } from '../AbstractGenerator';
 import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
-import { TypeHelpers, ModelKind, CommonNamingConvention, CommonNamingConventionImplementation } from '../../helpers';
+import { TypeHelpers, ModelKind, CommonNamingConvention, CommonNamingConventionImplementation, TypeMapping, Constraints } from '../../helpers';
 import { JavaScriptPreset, JS_DEFAULT_PRESET } from './JavaScriptPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { Logger } from '../../';
+import { JavaScriptRenderer } from './JavaScriptRenderer';
+import { JavaScriptDefaultConstraints, JavaScriptDefaultTypeMapping } from './JavaScriptConstrainer';
 export interface JavaScriptOptions extends CommonGeneratorOptions<JavaScriptPreset> {
-  namingConvention?: CommonNamingConvention
+  namingConvention?: CommonNamingConvention;
+  typeMapping: TypeMapping<JavaScriptRenderer>;
+  constraints: Constraints;
 }
 
 export interface JavaScriptRenderCompleteModelOptions {
@@ -23,13 +27,17 @@ export class JavaScriptGenerator extends AbstractGenerator<JavaScriptOptions, Ja
   static defaultOptions: JavaScriptOptions = {
     ...defaultGeneratorOptions,
     defaultPreset: JS_DEFAULT_PRESET,
-    namingConvention: CommonNamingConventionImplementation
+    namingConvention: CommonNamingConventionImplementation,
+    typeMapping: JavaScriptDefaultTypeMapping,
+    constraints: JavaScriptDefaultConstraints
   };
 
   constructor(
-    options: JavaScriptOptions = JavaScriptGenerator.defaultOptions,
+    options: Partial<JavaScriptOptions> = JavaScriptGenerator.defaultOptions,
   ) {
-    super('JavaScript', JavaScriptGenerator.defaultOptions, options);
+    const mergedOptions = {...JavaScriptGenerator.defaultOptions, ...options};
+
+    super('JavaScript', JavaScriptGenerator.defaultOptions, mergedOptions);
   }
   
   /**
