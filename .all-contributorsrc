@@ -313,6 +313,17 @@
         "test",
         "example"
       ]
+    },
+    {
+      "login": "owais34",
+      "name": "Owais Hasnath Ahmed",
+      "avatar_url": "https://avatars.githubusercontent.com/u/37238759?v=4",
+      "profile": "https://github.com/owais34",
+      "contributions": [
+        "code",
+        "test",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,

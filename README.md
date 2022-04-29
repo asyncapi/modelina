@@ -11,7 +11,7 @@ Modelina is the official AsyncAPI SDK to generate data models (i.e. <a href="#ou
 [![last commit](https://img.shields.io/github/last-commit/asyncapi/modelina)](https://github.com/asyncapi/modelina/commits/master)
 [![Discussions](https://img.shields.io/github/discussions/asyncapi/modelina)](https://github.com/asyncapi/modelina/discussions)
 [![Playground](https://img.shields.io/website?label=playground&url=https%3A%2F%2Fwww.asyncapi.com%2Ftools%2Fmodelina)](https://www.asyncapi.com/tools/modelina) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-27-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-28-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ---
@@ -181,6 +181,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/slowikowskiarkadiusz"><img src="https://avatars.githubusercontent.com/u/97508930?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Arkadiusz Słowikowski</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=slowikowskiarkadiusz" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=slowikowskiarkadiusz" title="Tests">⚠️</a> <a href="#example-slowikowskiarkadiusz" title="Examples">💡</a> <a href="https://github.com/asyncapi/modelina/commits?author=slowikowskiarkadiusz" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/Polygens"><img src="https://avatars.githubusercontent.com/u/3582318?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Willem Gillis</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=Polygens" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=Polygens" title="Tests">⚠️</a> <a href="https://github.com/asyncapi/modelina/issues?q=author%3APolygens" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/rmasarovic"><img src="https://avatars.githubusercontent.com/u/1522834?v=4?s=100" width="100px;" alt=""/><br /><sub><b>rmasarovic</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=rmasarovic" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=rmasarovic" title="Documentation">📖</a> <a href="https://github.com/asyncapi/modelina/commits?author=rmasarovic" title="Tests">⚠️</a> <a href="#example-rmasarovic" title="Examples">💡</a></td>
+    <td align="center"><a href="https://github.com/owais34"><img src="https://avatars.githubusercontent.com/u/37238759?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Owais Hasnath Ahmed</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=owais34" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=owais34" title="Tests">⚠️</a> <a href="https://github.com/asyncapi/modelina/commits?author=owais34" title="Documentation">📖</a></td>
   </tr>
 </table>
 
