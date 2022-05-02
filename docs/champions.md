@@ -6,7 +6,7 @@
 # Champions
 As Modelina grows, more and more people would like to become maintainers, each with varying degree of time to give.
 
-In order to have something for everyone, we introduce the concept of `champions` where we split up the areas of responsibility where best possible. 
+In order to have something for everyone, we introduce the concept of `champions` where we split up the areas of responsibility where best possible. Champions will have the ability to merge and accept pull requests for their [area of responsibility](#areas-of-responsibility), basically owning and maintaining a part of Modelina. This also entitles you to join the [AsyncAPI TSC](https://www.asyncapi.com/community/tsc).
 
 You can checkout the [CODEOWNERS file](../CODEOWNERS) for an updated list of maintainers and what areas they champion.
 
