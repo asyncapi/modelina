@@ -51,8 +51,8 @@ const trySplitModel = (model: MetaModel, options: SplitOptions, models: MetaMode
 export const split = (model: MetaModel, options: SplitOptions, models: MetaModel[] = [model]): MetaModel[] => {
   if (model instanceof ObjectModel) {
     for (const [prop, propModel] of Object.entries(model.properties)) {
-      model.properties[String(prop)] = trySplitModel(propModel, options, models);
-      split(propModel, options, models);
+      model.properties[String(prop)].property = trySplitModel(propModel.property, options, models);
+      split(propModel.property, options, models);
     }
   } else if (model instanceof UnionModel) {
     for (let index = 0; index < model.union.length; index++) {

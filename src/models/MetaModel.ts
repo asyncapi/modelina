@@ -32,11 +32,18 @@ export class TupleModel extends MetaModel {
     super(name, originalInput);
   }
 }
+export class ObjectPropertyModel {
+  constructor(
+    public propertyName: string,
+    public required: boolean,
+    public property: MetaModel) {
+  }
+}
 export class ObjectModel extends MetaModel {
   constructor(
     name: string,
     originalInput: any,
-    public properties: { [key: string]: MetaModel; }) {
+    public properties: { [key: string]: ObjectPropertyModel; }) {
     super(name, originalInput);
   }
 }
