@@ -1,4 +1,4 @@
-# TODO: Your example title
+# TODO: Generate required properties
 
 TODO: Your example description
 
