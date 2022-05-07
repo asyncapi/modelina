@@ -1,6 +1,6 @@
-# TODO: Generate required properties
+# C# Generate required properties
 
-TODO: Your example description
+An example showing that when a property of a not-nullable type (value type) is set as required, it's not going to be made into nullable.
 
 ## How to run this example
 
