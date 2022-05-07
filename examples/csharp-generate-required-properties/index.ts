@@ -19,7 +19,7 @@ const jsonSchemaDraft7 = {
       type: 'string'
     },
   },
-  required: ['requiredBoolean', "requiredString"]
+  required: ['requiredBoolean', 'requiredString']
 };
 
 export async function generate(): Promise<void> {
