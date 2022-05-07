@@ -55,7 +55,7 @@ export abstract class CSharpRenderer extends AbstractRenderer<CSharpOptions> {
       return this.nameType(model.$ref);
     }
 
-    const isRequired = modelName ? this.model.isRequired(modelName) : false;
+    const isRequired = modelName ? this.model.isRequired(modelName) || this.model.required?.map(x => this.nameProperty(x)).includes(modelName) : false;
 
     if (Array.isArray(model.type)) {
       return model.type.length > 1 ? 'dynamic' : `${this.toCSharpType(model.type[0], model, modelName, isRequired)}`;
@@ -71,49 +71,49 @@ export abstract class CSharpRenderer extends AbstractRenderer<CSharpOptions> {
 
   toCSharpType(type: string | undefined, model: CommonModel, modelName?: string, isRequired?: boolean): string {
     switch (type) {
-    case 'integer':
-    case 'int32':
-      return `int${isRequired ? '?' : ''}`;
-    case 'long':
-    case 'int64':
-      return `long${isRequired ? '?' : ''}`;
-    case 'boolean':
-      return `bool${isRequired ? '?' : ''}`;
-    case 'date':
-    case 'time':
-    case 'dateTime':
-    case 'date-time':
-      return `System.DateTime${isRequired ? '?' : ''}`;
-    case 'string':
-    case 'password':
-    case 'byte':
-      return 'string';
-    case 'float':
-      return `float${isRequired ? '?' : ''}`;
-    case 'double':
-    case 'number':
-      return `double${isRequired ? '?' : ''}`;
-    case 'binary':
-      return 'byte[]';
-    case 'object':
-      return 'object';
-    case 'array': {
-      let arrayItemModel = model.items;
-      if (Array.isArray(model.items)) {
-        arrayItemModel = model.items.reduce((prevModel, currentModel) => {
-          return CommonModel.mergeCommonModels(CommonModel.toCommonModel(prevModel), CommonModel.toCommonModel(currentModel), {});
-        });
-        if (model.additionalItems !== undefined) {
-          arrayItemModel = CommonModel.mergeCommonModels(arrayItemModel, model.additionalItems, {});
+      case 'integer':
+      case 'int32':
+        return `int${isRequired ? '' : '?'}`;
+      case 'long':
+      case 'int64':
+        return `long${isRequired ? '' : '?'}`;
+      case 'boolean':
+        return `bool${isRequired ? '' : '?'}`;
+      case 'date':
+      case 'time':
+      case 'dateTime':
+      case 'date-time':
+        return `System.DateTime${isRequired ? '' : '?'}`;
+      case 'string':
+      case 'password':
+      case 'byte':
+        return 'string';
+      case 'float':
+        return `float${isRequired ? '' : '?'}`;
+      case 'double':
+      case 'number':
+        return `double${isRequired ? '' : '?'}`;
+      case 'binary':
+        return 'byte[]';
+      case 'object':
+        return 'object';
+      case 'array': {
+        let arrayItemModel = model.items;
+        if (Array.isArray(model.items)) {
+          arrayItemModel = model.items.reduce((prevModel, currentModel) => {
+            return CommonModel.mergeCommonModels(CommonModel.toCommonModel(prevModel), CommonModel.toCommonModel(currentModel), {});
+          });
+          if (model.additionalItems !== undefined) {
+            arrayItemModel = CommonModel.mergeCommonModels(arrayItemModel, model.additionalItems, {});
+          }
         }
+        const newType = arrayItemModel ? this.renderType(arrayItemModel as CommonModel, modelName) : 'dynamic';
+        if (this.options.collectionType && this.options.collectionType === 'List') {
+          return `IEnumerable<${newType}>`;
+        }
+        return `${newType}[]`;
       }
-      const newType = arrayItemModel ? this.renderType(arrayItemModel as CommonModel, modelName) : 'dynamic';
-      if (this.options.collectionType && this.options.collectionType === 'List') {
-        return `IEnumerable<${newType}>`;
-      }
-      return `${newType}[]`;
-    }
-    default: return 'dynamic';
+      default: return 'dynamic';
     }
   }
 }
