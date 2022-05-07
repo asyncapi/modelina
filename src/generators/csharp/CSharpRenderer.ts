@@ -73,26 +73,26 @@ export abstract class CSharpRenderer extends AbstractRenderer<CSharpOptions> {
     switch (type) {
     case 'integer':
     case 'int32':
-      return `int${isRequired ? '' : '?'}`;
+      return `int${this.questionMark(isRequired)}`;
     case 'long':
     case 'int64':
-      return `long${isRequired ? '' : '?'}`;
+      return `long${this.questionMark(isRequired)}`;
     case 'boolean':
-      return `bool${isRequired ? '' : '?'}`;
+      return `bool${this.questionMark(isRequired)}`;
     case 'date':
     case 'time':
     case 'dateTime':
     case 'date-time':
-      return `System.DateTime${isRequired ? '' : '?'}`;
+      return `System.DateTime${this.questionMark(isRequired)}`;
     case 'string':
     case 'password':
     case 'byte':
       return 'string';
     case 'float':
-      return `float${isRequired ? '' : '?'}`;
+      return `float${this.questionMark(isRequired)}`;
     case 'double':
     case 'number':
-      return `double${isRequired ? '' : '?'}`;
+      return `double${this.questionMark(isRequired)}`;
     case 'binary':
       return 'byte[]';
     case 'object':
@@ -115,5 +115,9 @@ export abstract class CSharpRenderer extends AbstractRenderer<CSharpOptions> {
     }
     default: return 'dynamic';
     }
+  }
+
+  private questionMark(isRequired?: boolean): string {
+    return isRequired ? '' : '?';
   }
 }
