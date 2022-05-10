@@ -14,29 +14,35 @@ export class EnumRenderer extends CSharpRenderer {
     const formattedName = this.nameType(this.model.$id);
     const getValueCaseItemValues = await this.getValueCaseItemValues();
     const toEnumCaseItemValues = await this.toEnumCaseItemValues();
-    return `public enum ${formattedName} {
+    const enumValueSwitch = `switch (enumValue)
+{
+${this.indent(getValueCaseItemValues)}
+}
+return null;`;
+    const valueSwitch = `switch (value)
+{
+${this.indent(toEnumCaseItemValues)}
+}
+return null;`;
+    const classContent = `public static dynamic GetValue(this ${formattedName} enumValue)
+{
+${this.indent(enumValueSwitch)}
+}
+
+public static ${formattedName}? To${formattedName}(dynamic value)
+{
+${this.indent(valueSwitch)}
+}`;
+
+    return `public enum ${formattedName}
+{
 ${this.indent(enumItems)}
 }
-public static class ${formattedName}Extensions {
-  public static dynamic GetValue(this ${formattedName} enumValue)
-  {
-    switch (enumValue)
-    {
-${this.indent(getValueCaseItemValues, 6)}
-    }
-    return null;
-  }
 
-  public static ${formattedName}? To${formattedName}(dynamic value)
-  {
-    switch (value)
-    {
-${this.indent(toEnumCaseItemValues, 6)}
-    }
-    return null;
-  }
+public static class ${formattedName}Extensions
+{
+${this.indent(classContent)}
 }
-
 `;
   }
 
@@ -49,7 +55,7 @@ ${this.indent(toEnumCaseItemValues, 6)}
       items.push(renderedItem);
     }
 
-    const content = items.join(', ');
+    const content = items.join(',\n');
     return `${content}`;
   }
 
@@ -62,7 +68,7 @@ ${this.indent(toEnumCaseItemValues, 6)}
     case 'bigint':
     case 'boolean':
       return enumValue;
-    case 'object': 
+    case 'object':
       return `"${JSON.stringify(enumValue).replace(/"/g, '\\"')}"`;
     default:
       return `"${enumValue}"`;
@@ -79,7 +85,7 @@ ${this.indent(toEnumCaseItemValues, 6)}
       const value = this.getEnumValue(enumValue);
       items.push(`case ${value}: return ${formattedName}.${renderedItem};`);
     }
-    
+
     const content = items.join('\n');
     return `${content}`;
   }
@@ -93,7 +99,7 @@ ${this.indent(toEnumCaseItemValues, 6)}
       const value = this.getEnumValue(enumValue);
       items.push(`case ${formattedName}.${renderedItem}: return ${value};`);
     }
-    
+
     const content = items.join('\n');
     return `${content}`;
   }
@@ -115,7 +121,7 @@ export const CSHARP_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
       itemName = `${JSON.stringify(item)}`;
     } else if (!(/^[a-zA-Z]+$/).test(itemName.charAt(0))) {
       itemName = `String_${itemName}`;
-    } 
+    }
 
     return pascalCase(itemName);
   },

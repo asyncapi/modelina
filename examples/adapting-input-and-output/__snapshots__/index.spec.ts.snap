@@ -2,7 +2,8 @@
 
 exports[`Should be able to generate a model with functions to serialize the data model into JSON  and should log expected output to console 1`] = `
 Array [
-  "public class Address {
+  "public class Address
+{
   public Dictionary<string, object> dictionaryProp;
 }",
 ]
