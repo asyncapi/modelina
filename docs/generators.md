@@ -142,7 +142,7 @@ The minimum set of required actions to create a new generator are:
 
 - Source code must be included in [generators](../src/generators) folder.
 - Must extend the abstract [`AbstractGenerator`](../src/generators/AbstractGenerator.ts) class,
-- Must define [`Preset`](./customization.md)'s shape for the language,
+- Must define [`Preset`](./presets.md)'s shape for the language,
 - Must define language options by passing an interface describing additional options to the first generic argument of [`AbstractGenerator`](../src/generators/AbstractGenerator.ts). The interface must also be extended by `CommonGeneratorOptions` interface,
 - Must define default options as static class's field, which must be extended by `defaultGeneratorOptions`,
 - Default options must include `defaultPreset` property,
