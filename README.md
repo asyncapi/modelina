@@ -2,7 +2,7 @@
 
 Modelina is the official AsyncAPI SDK to generate data models (i.e. <a href="#outputs">Java/TypeScript classes, Go Structs, etc</a>) from <a href="#inputs">AsyncAPI documents, among other supported inputs</a>.
 
-[![blackbox pipeline status](<https://img.shields.io/github/workflow/status/asyncapi/modelina/Blackbox%20testing%20(Stay%20Awhile%20and%20Listen)?label=blackbox%20testing>)](https://github.com/asyncapi/modelina/actions/workflows/blackbox-testing.yml?query=branch%3Amaster++)
+[![blackbox pipeline status](https://img.shields.io/github/workflow/status/asyncapi/modelina/Blackbox%20testing%20(Stay%20Awhile%20and%20Listen)?label=blackbox%20testing)](https://github.com/asyncapi/modelina/actions/workflows/blackbox-testing.yml?query=branch%3Amaster++)
 [![Coverage Status](https://coveralls.io/repos/github/asyncapi/modelina/badge.svg?branch=master)](https://coveralls.io/github/asyncapi/modelina?branch=master)
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 ![Maintenance score](https://img.shields.io/npms-io/maintenance-score/@asyncapi/modelina)
