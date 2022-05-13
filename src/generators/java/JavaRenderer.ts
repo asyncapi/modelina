@@ -1,12 +1,12 @@
-import { AbstractRenderer } from '../AbstractRenderer';
-import { JavaGenerator, JavaOptions } from './JavaGenerator';
-import { CommonModel, CommonInputModel, Preset } from '../../models';
-import { FormatHelpers, ModelKind, TypeHelpers } from '../../helpers';
-import { isReservedJavaKeyword } from './Constants';
+import {AbstractRenderer} from '../AbstractRenderer';
+import {JavaGenerator, JavaOptions} from './JavaGenerator';
+import {CommonInputModel, CommonModel, Preset} from '../../models';
+import {FormatHelpers, ModelKind, TypeHelpers} from '../../helpers';
+import {isReservedJavaKeyword} from './Constants';
 
 /**
  * Common renderer for Java types
- * 
+ *
  * @extends AbstractRenderer
  */
 export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGenerator> {
@@ -14,7 +14,7 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
     options: JavaOptions,
     generator: JavaGenerator,
     presets: Array<[Preset, unknown]>,
-    model: CommonModel, 
+    model: CommonModel,
     inputModel: CommonInputModel,
   ) {
     super(options, generator, presets, model, inputModel);
@@ -22,43 +22,55 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
 
   /**
    * Renders the name of a type based on provided generator option naming convention type function.
-   * 
+   *
    * This is used to render names of models and then later used if it is referenced from other models.
-   * 
-   * @param name 
-   * @param model 
+   *
+   * @param name
+   * @param model
    */
   nameType(name: string | undefined, model?: CommonModel): string {
-    return this.options?.namingConvention?.type 
-      ? this.options.namingConvention.type(name, { model: model || this.model, inputModel: this.inputModel, reservedKeywordCallback: isReservedJavaKeyword })
+    return this.options?.namingConvention?.type
+      ? this.options.namingConvention.type(name, {
+        model: model || this.model,
+        inputModel: this.inputModel,
+        reservedKeywordCallback: isReservedJavaKeyword
+      })
       : name || '';
   }
 
   /**
    * Renders the name of a property based on provided generator option naming convention property function.
-   * 
-   * @param propertyName 
+   *
+   * @param propertyName
    * @param property
    */
   nameProperty(propertyName: string | undefined, property?: CommonModel): string {
-    return this.options?.namingConvention?.property 
-      ? this.options.namingConvention.property(propertyName, { model: this.model, inputModel: this.inputModel, property, reservedKeywordCallback: isReservedJavaKeyword })
+    return this.options?.namingConvention?.property
+      ? this.options.namingConvention.property(propertyName, {
+        model: this.model,
+        inputModel: this.inputModel,
+        property,
+        reservedKeywordCallback: isReservedJavaKeyword
+      })
       : propertyName || '';
   }
-  
+
   /**
    * Renders model(s) to Java type(s).
-   * 
+   *
    * @param model
    */
   renderType(model: CommonModel | CommonModel[]): string {
-    if (Array.isArray(model) || Array.isArray(model.type)) {
+    if (Array.isArray(model) || (Array.isArray(model.type) && !TypeHelpers.isNullableType(model.type))) {
       return 'Object'; // fallback
     }
     if (model.$ref !== undefined) {
       return this.nameType(model.$ref, model);
     }
     const kind = TypeHelpers.extractKind(model);
+    if (kind === ModelKind.NULLABLE) {
+      return this.toClassType(this.toJavaType(TypeHelpers.getNullableType(model.type), model));
+    }
     if (
       kind === ModelKind.PRIMITIVE ||
       kind === ModelKind.ARRAY
@@ -71,8 +83,8 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
 
   /**
    * Returns the Java corresponding type from CommonModel type or JSON schema format
-   * @param type 
-   * @param model 
+   * @param type
+   * @param model
    */
   toJavaType(type: string | undefined, model: CommonModel): string {
     switch (type) {
@@ -104,7 +116,7 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
       return 'byte[]';
     case 'array': {
       let arrayItemModel = model.items;
-      //Since Java dont support tuples, lets make sure that we combine the tuple types to find the appropriate array type 
+      //Since Java doesn't support tuples, lets make sure that we combine the tuple types to find the appropriate array type
       if (Array.isArray(model.items)) {
         arrayItemModel = model.items.reduce((prevModel, currentModel) => {
           return CommonModel.mergeCommonModels(CommonModel.toCommonModel(prevModel), CommonModel.toCommonModel(currentModel), {});
@@ -117,6 +129,9 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
       const newType = arrayItemModel ? this.renderType(arrayItemModel) : 'Object';
       if (this.options.collectionType && this.options.collectionType === 'List') {
         return `List<${newType}>`;
+      }
+      if (TypeHelpers.isNullable(arrayItemModel)) {
+        return newType;
       }
       return `${newType}[]`;
     }

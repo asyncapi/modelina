@@ -1,4 +1,4 @@
-import { defaultGeneratorOptions, JavaGenerator } from '../../../src/generators';
+import { JavaGenerator } from '../../../src/generators';
 import { JavaRenderer } from '../../../src/generators/java/JavaRenderer';
 import { CommonInputModel, CommonModel } from '../../../src/models';
 class MockJavaRenderer extends JavaRenderer {
@@ -20,7 +20,7 @@ describe('JavaRenderer', () => {
       expect(name).toEqual('Enum');
     });
   });
-  
+
   describe('nameProperty()', () => {
     test('should name the property', () => {
       const name = renderer.nameProperty('property__someProperty');
@@ -74,7 +74,7 @@ describe('JavaRenderer', () => {
       expect(renderer.toJavaType('array', model)).toEqual('String[]');
     });
     test('Should render mismatching tuple types as Object', () => {
-      const model = CommonModel.toCommonModel({ 
+      const model = CommonModel.toCommonModel({
         items: [
           {
             type: 'string'
@@ -85,6 +85,19 @@ describe('JavaRenderer', () => {
         ]
       });
       expect(renderer.toJavaType('array', model)).toEqual('Object[]');
+    });
+    test('Should render Union of nullable as type', () => {
+      const model = CommonModel.toCommonModel({
+        items: [
+          {
+            type: 'string'
+          },
+          {
+            type: 'null'
+          }
+        ]
+      });
+      expect(renderer.toJavaType('array', model)).toEqual('String');
     });
     test('Should render matching tuple and additionalItem types', () => {
       const model = CommonModel.toCommonModel({
