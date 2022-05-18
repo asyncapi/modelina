@@ -539,4 +539,62 @@ ${content}`;
     expect(models[0].result).toMatchSnapshot();
     expect(models[1].result).toMatchSnapshot();
   });
+
+  test('should render a nullable object in `interface` type', async () => {
+    const doc = {
+      $id: 'NullableObject',
+      type: ['object', 'null'],
+      properties: {
+        foo: {
+          type: 'string'
+        },
+      },
+      additionalProperties: false,
+    };
+    const expected = `interface NullableObjectInner {
+  foo?: string;
+}
+type NullableObject = NullableObjectInner | null;`;
+
+    const interfaceGenerator = new TypeScriptGenerator({ modelType: 'interface' });
+    const inputModel = await interfaceGenerator.process(doc);
+    const model = inputModel.models['NullableObject'];
+
+    const nullableObjectModel = await interfaceGenerator.render(model, inputModel);
+    expect(nullableObjectModel.result).toEqual(expected);
+    expect(nullableObjectModel.dependencies).toEqual([]);
+  });
+
+  test('should render a nullable object in `class` type', async () => {
+    const doc = {
+      $id: 'NullableObject',
+      type: ['object', 'null'],
+      properties: {
+        foo: {
+          type: 'string'
+        },
+      },
+      additionalProperties: false,
+    };
+    const expected = `class NullableObjectInner {
+  private _foo?: string;
+
+  constructor(input: {
+    foo?: string,
+  }) {
+    this._foo = input.foo;
+  }
+
+  get foo(): string | undefined { return this._foo; }
+  set foo(foo: string | undefined) { this._foo = foo; }
+}
+type NullableObject = NullableObjectInner | null;`;
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models['NullableObject'];
+
+    const nullableObjectModel = await generator.render(model, inputModel);
+    expect(nullableObjectModel.result).toEqual(expected);
+    expect(nullableObjectModel.dependencies).toEqual([]);
+  });
 });

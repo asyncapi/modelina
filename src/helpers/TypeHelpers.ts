@@ -22,4 +22,16 @@ export class TypeHelpers {
     if (Array.isArray(model.type)) {return ModelKind.UNION;}
     return ModelKind.PRIMITIVE;
   }
+
+  /**
+   * Returns wether the model is a nullable object (with object and null types)
+   * @param model to check
+   * @returns {boolean}
+   */
+  static isNullableObject(model: CommonModel): boolean {
+    return Array.isArray(model.type) &&
+      model.type.length === 2 &&
+      model.type.includes('object') &&
+      model.type.includes('null');
+  }
 }

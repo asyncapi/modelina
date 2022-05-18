@@ -119,6 +119,12 @@ ${modelCode}`;
       }
       return this.renderEnum(model, inputModel);
     }
+    case ModelKind.UNION: {
+      if (TypeHelpers.isNullableObject(model)) {
+        return this.renderNullableObject(model, inputModel);
+      }
+      return this.renderType(model, inputModel);
+    }
     default: return this.renderType(model, inputModel);
     }
   }
@@ -153,6 +159,22 @@ ${modelCode}`;
     const result = await renderer.runSelfPreset();
     const renderedName = renderer.nameType(model.$id, model);
     return RenderOutput.toRenderOutput({result, renderedName, dependencies: renderer.dependencies});
+  }
+
+  private async renderNullableObject(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
+    const modelObject = CommonModel.toCommonModel(model);
+    modelObject.$id = `${modelObject.$id}Inner`;
+    modelObject.type = 'object';
+    model.$ref = modelObject.$id;
+
+    const [modelOutput, typeOutput] = await Promise.all([
+      this.renderModelType(modelObject, inputModel),
+      this.renderType(model, inputModel),
+    ]);
+    return RenderOutput.toRenderOutput({
+      ...modelOutput,
+      result: `${modelOutput.result}\n${typeOutput.result}`,
+    });
   }
 
   private renderModelType(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
