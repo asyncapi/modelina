@@ -167,13 +167,14 @@ ${modelCode}`;
     modelObject.type = 'object';
     model.$ref = modelObject.$id;
 
-    const [modelOutput, typeOutput] = await Promise.all([
+    const [modelObjectOutput, modelOutput] = await Promise.all([
       this.renderModelType(modelObject, inputModel),
       this.renderType(model, inputModel),
     ]);
     return RenderOutput.toRenderOutput({
       ...modelOutput,
-      result: `${modelOutput.result}\n${typeOutput.result}`,
+      result: `${modelObjectOutput.result}\n${modelOutput.result}`,
+      dependencies: [...modelObjectOutput.dependencies, ...modelOutput.dependencies],
     });
   }
 
