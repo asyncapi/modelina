@@ -139,7 +139,7 @@ function renderDeserializeProperty(type: string, model: CommonModel, inputModel:
     const propertyModelKind = TypeHelpers.extractKind(resolvedModel);
     //Referenced enums is the only one who need custom serialization
     if (propertyModelKind === ModelKind.ENUM) {
-      return `${type}Extension.To${type}(JsonSerializer.Deserialize<dynamic>(ref reader, options))`;
+      return `${type}Extensions.To${type}(JsonSerializer.Deserialize<dynamic>(ref reader, options))`;
     }
   }
   return `JsonSerializer.Deserialize<${type}>(ref reader, options)`;
