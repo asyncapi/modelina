@@ -244,4 +244,18 @@ describe('CommonModelToMetaModel', () => {
     expect(model instanceof TupleModel).toEqual(true);
     expect(model.isNullable).toEqual(true);
   });
+
+  test('should convert to multiple types nullable union model', () => { 
+    const cm = new CommonModel();
+    cm.type = ['string', 'number', 'null'];
+    cm.$id = 'test';
+
+    const model = convertToMetaModel(cm);
+
+    expect(model).not.toBeUndefined();
+    expect(model instanceof UnionModel).toEqual(true);
+    expect(model.isNullable).toEqual(false);
+    expect((model as UnionModel).union[0].isNullable).toEqual(true);
+    expect((model as UnionModel).union[1].isNullable).toEqual(true);
+  });
 });
