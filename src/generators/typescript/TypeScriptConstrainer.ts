@@ -16,17 +16,17 @@ export const TypeScriptDefaultTypeMapping: TypeMapping<TypeScriptRenderer> = {
   Any (): string {
     return 'any';
   },
-  Float (): string {
-    return 'number';
+  Float ({constrainedModel}): string {
+    return constrainedModel.isNullable ? 'number | null' : 'number';
   },
-  Integer (): string {
-    return 'integer'; 
+  Integer ({constrainedModel}): string {
+    return constrainedModel.isNullable ? 'integer | null' : 'integer';
   },
-  String (): string {
-    return 'string';
+  String ({constrainedModel}): string {
+    return constrainedModel.isNullable ? 'string | null' : 'string';
   },
-  Boolean (): string {
-    return 'boolean';
+  Boolean ({constrainedModel}): string {
+    return constrainedModel.isNullable ? 'boolean | null' : 'boolean';
   },
   Tuple ({constrainedModel}): string {
     const tupleTypes = constrainedModel.tuple.map((constrainedType) => {

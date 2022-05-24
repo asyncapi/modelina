@@ -35,12 +35,22 @@ describe('TypeScriptConstrainer', () => {
       const type = TypeScriptDefaultTypeMapping.Float({constrainedModel: model, renderer});
       expect(type).toEqual('number');
     });
+    test('should render nullable type', () => {
+      const model = new ConstrainedFloatModel('test', undefined, '', true);
+      const type = TypeScriptDefaultTypeMapping.Float({constrainedModel: model, renderer});
+      expect(type).toEqual('number | null');
+    });
   });
   describe('Integer', () => { 
     test('should render type', () => {
       const model = new ConstrainedIntegerModel('test', undefined, '');
       const type = TypeScriptDefaultTypeMapping.Integer({constrainedModel: model, renderer});
       expect(type).toEqual('integer');
+    });
+    test('should render nullable type', () => {
+      const model = new ConstrainedIntegerModel('test', undefined, '', true);
+      const type = TypeScriptDefaultTypeMapping.Integer({constrainedModel: model, renderer});
+      expect(type).toEqual('integer | null');
     });
   });
   describe('String', () => { 
@@ -49,12 +59,22 @@ describe('TypeScriptConstrainer', () => {
       const type = TypeScriptDefaultTypeMapping.String({constrainedModel: model, renderer});
       expect(type).toEqual('string');
     });
+    test('should render nullable type', () => {
+      const model = new ConstrainedStringModel('test', undefined, '', true);
+      const type = TypeScriptDefaultTypeMapping.String({constrainedModel: model, renderer});
+      expect(type).toEqual('string | null');
+    });
   });
   describe('Boolean', () => { 
     test('should render type', () => {
       const model = new ConstrainedBooleanModel('test', undefined, '');
       const type = TypeScriptDefaultTypeMapping.Boolean({constrainedModel: model, renderer});
       expect(type).toEqual('boolean');
+    });
+    test('should render nullable type', () => {
+      const model = new ConstrainedBooleanModel('test', undefined, '', true);
+      const type = TypeScriptDefaultTypeMapping.Boolean({constrainedModel: model, renderer});
+      expect(type).toEqual('boolean | null');
     });
   });
 
