@@ -1,13 +1,14 @@
 import { split, SplitOptions } from '../../src/helpers';
-import { ObjectModel, ReferenceModel, StringModel } from '../../src/models';
+import { ObjectModel, ReferenceModel, StringModel, ObjectPropertyModel } from '../../src/models';
 describe('Splitter', () => {
   afterEach(() => {
     jest.restoreAllMocks();
   });
   test('should split models when asked for it', () => { 
     const stringModel = new StringModel('testString', undefined);
+    const propertyModel = new ObjectPropertyModel('test', false, stringModel);
     const model = new ObjectModel('testObj', undefined, {
-      test: stringModel
+      test: propertyModel
     });
     const options: SplitOptions = {
       splitString: true
@@ -15,7 +16,7 @@ describe('Splitter', () => {
     const splittedModels = split(model, options);
     
     const expectedObjectModel = model;
-    expectedObjectModel.properties['test'] = new ReferenceModel(stringModel.name, stringModel.originalInput, stringModel);
+    expectedObjectModel.properties['test'].property = new ReferenceModel(stringModel.name, stringModel.originalInput, stringModel);
     
     expect(splittedModels.length).toEqual(2);
     expect(splittedModels[0] instanceof ObjectModel).toEqual(true);
@@ -24,8 +25,9 @@ describe('Splitter', () => {
   });
   test('should not split models when not asked for', () => { 
     const stringModel = new StringModel('testString', undefined);
+    const propertyModel = new ObjectPropertyModel('test', false, stringModel);
     const model = new ObjectModel('testObj', undefined, {
-      test: stringModel
+      test: propertyModel
     });
     const options: SplitOptions = {
       splitString: false
@@ -37,8 +39,9 @@ describe('Splitter', () => {
   });
   test('should not split models when asked for something else', () => { 
     const stringModel = new StringModel('testString', undefined);
+    const propertyModel = new ObjectPropertyModel('test', false, stringModel);
     const model = new ObjectModel('testObj', undefined, {
-      test: stringModel
+      test: propertyModel
     });
     const options: SplitOptions = {
       splitBoolean: true

@@ -1,5 +1,5 @@
 
-import { CommonModel, MetaModel, UnionModel, ObjectModel, DictionaryModel, StringModel, TupleModel, TupleValueModel, ArrayModel, BooleanModel, IntegerModel, FloatModel, EnumModel, EnumValueModel} from '../models';
+import { CommonModel, MetaModel, UnionModel, ObjectModel, DictionaryModel, StringModel, TupleModel, TupleValueModel, ArrayModel, BooleanModel, IntegerModel, FloatModel, EnumModel, EnumValueModel, ObjectPropertyModel} from '../models';
 
 export function convertToMetaModel(jsonSchemaModel: CommonModel): MetaModel {
   const modelName = jsonSchemaModel.$id || 'undefined';
@@ -123,7 +123,9 @@ export function convertToObjectModel(jsonSchemaModel: CommonModel, name: string)
   }
   const metaModel = new ObjectModel(name, jsonSchemaModel.originalInput, {});
   for (const [propertyName, prop] of Object.entries(jsonSchemaModel.properties || {})) {
-    metaModel.properties[String(propertyName)] = convertToMetaModel(prop);
+    const isRequired = jsonSchemaModel.isRequired(propertyName);
+    const propertyModel = new ObjectPropertyModel(propertyName, isRequired, convertToMetaModel(prop));
+    metaModel.properties[String(propertyName)] = propertyModel;
   }
 
   if (jsonSchemaModel.additionalProperties !== undefined) {
@@ -132,7 +134,8 @@ export function convertToObjectModel(jsonSchemaModel: CommonModel, name: string)
       const keyModel = new StringModel(propertyName, jsonSchemaModel.additionalProperties.originalInput);
       const valueModel = convertToMetaModel(jsonSchemaModel.additionalProperties);
       const dictionaryModel = new DictionaryModel(propertyName, jsonSchemaModel.additionalProperties.originalInput, keyModel, valueModel, 'unwrap');
-      metaModel.properties[String(propertyName)] = dictionaryModel;
+      const propertyModel = new ObjectPropertyModel(propertyName, false, dictionaryModel);
+      metaModel.properties[String(propertyName)] = propertyModel;
     } else {
       throw new Error('Property already exists');
     }
@@ -145,7 +148,8 @@ export function convertToObjectModel(jsonSchemaModel: CommonModel, name: string)
         const keyModel = new StringModel(propertyName, pattern);
         const valueModel = convertToMetaModel(patternModel);
         const dictionaryModel = new DictionaryModel(propertyName, patternModel.originalInput, keyModel, valueModel, 'unwrap');
-        metaModel.properties[String(propertyName)] = dictionaryModel;
+        const propertyModel = new ObjectPropertyModel(propertyName, false, dictionaryModel);
+        metaModel.properties[String(propertyName)] = propertyModel;
       } else {
         throw new Error('Property already exists');
       }
