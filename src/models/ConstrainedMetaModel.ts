@@ -3,9 +3,10 @@ import { MetaModel } from './MetaModel';
 export class ConstrainedMetaModel extends MetaModel {
   constructor(
     name: string,
-    originalInput: any, 
-    public type: string) {
-    super(name, originalInput);
+    originalInput: any,
+    public type: string,
+    isNullable = false) {
+    super(name, originalInput, isNullable);
   }
 }
 
@@ -14,8 +15,9 @@ export class ConstrainedReferenceModel extends ConstrainedMetaModel {
     name: string,
     originalInput: any, 
     type: string, 
-    public ref: ConstrainedMetaModel) {
-    super(name, originalInput, type);
+    public ref: ConstrainedMetaModel,
+    isNullable = false) {
+    super(name, originalInput, type, isNullable);
   }
 }
 export class ConstrainedAnyModel extends ConstrainedMetaModel { }
@@ -34,8 +36,9 @@ export class ConstrainedTupleModel extends ConstrainedMetaModel {
     name: string,
     originalInput: any, 
     type: string, 
-    public tuple: ConstrainedTupleValueModel[]) {
-    super(name, originalInput, type);
+    public tuple: ConstrainedTupleValueModel[],
+    isNullable = false) {
+    super(name, originalInput, type, isNullable);
   }
 }
 export class ConstrainedObjectModel extends ConstrainedMetaModel {
@@ -43,8 +46,9 @@ export class ConstrainedObjectModel extends ConstrainedMetaModel {
     name: string,
     originalInput: any, 
     type: string, 
-    public properties: { [key: string]: ConstrainedMetaModel; }) {
-    super(name, originalInput, type);
+    public properties: { [key: string]: ConstrainedMetaModel; },
+    isNullable = false) {
+    super(name, originalInput, type, isNullable);
   }
 }
 export class ConstrainedArrayModel extends ConstrainedMetaModel {
@@ -52,8 +56,9 @@ export class ConstrainedArrayModel extends ConstrainedMetaModel {
     name: string,
     originalInput: any, 
     type: string, 
-    public valueModel: ConstrainedMetaModel) {
-    super(name, originalInput, type);
+    public valueModel: ConstrainedMetaModel,
+    isNullable = false) {
+    super(name, originalInput, type, isNullable);
   }
 }
 export class ConstrainedUnionModel extends ConstrainedMetaModel {
@@ -61,8 +66,9 @@ export class ConstrainedUnionModel extends ConstrainedMetaModel {
     name: string,
     originalInput: any, 
     type: string, 
-    public union: ConstrainedMetaModel[]) {
-    super(name, originalInput, type);
+    public union: ConstrainedMetaModel[],
+    isNullable = false) {
+    super(name, originalInput, type, isNullable);
   }
 }
 export class ConstrainedEnumValueModel {
@@ -76,8 +82,9 @@ export class ConstrainedEnumModel extends ConstrainedMetaModel {
     name: string,
     originalInput: any, 
     type: string, 
-    public values: ConstrainedEnumValueModel[]) {
-    super(name, originalInput, type);
+    public values: ConstrainedEnumValueModel[],
+    isNullable = false) {
+    super(name, originalInput, type, isNullable);
   }
 }
 export class ConstrainedDictionaryModel extends ConstrainedMetaModel {
@@ -87,7 +94,8 @@ export class ConstrainedDictionaryModel extends ConstrainedMetaModel {
     type: string, 
     public key: ConstrainedMetaModel, 
     public value: ConstrainedMetaModel, 
-    public serializationType: 'unwrap' | 'normal' = 'normal') {
-    super(name, originalInput, type);
+    public serializationType: 'unwrap' | 'normal' = 'normal',
+    isNullable = false) {
+    super(name, originalInput, type, isNullable);
   }
 }

@@ -43,10 +43,16 @@ export function convertToMetaModel(jsonSchemaModel: CommonModel): MetaModel {
   throw new Error('Failed to convert to MetaModel');
 }
 export function convertToUnionModel(jsonSchemaModel: CommonModel, name: string): UnionModel | undefined {
-  if (!Array.isArray(jsonSchemaModel.type) || jsonSchemaModel.type.length <= 1) {
+  if (!Array.isArray(jsonSchemaModel.type)) {
     return undefined;
   }
-  // Has multiple types, so convert to union
+  const containsNullType = jsonSchemaModel.type?.includes('null');
+  //As null is not a direct type, for this to be a union model, it needs to have more then one core type.
+  const minimumTypesToBeUnion = containsNullType ? 2 : 1;
+  if (jsonSchemaModel.type.length <= minimumTypesToBeUnion) {
+    return undefined;
+  }
+  
   const unionModel = new UnionModel(name, jsonSchemaModel.originalInput, []);
   const stringModel = convertToStringModel(jsonSchemaModel, name);
   if (stringModel !== undefined) {
@@ -86,25 +92,29 @@ export function convertToStringModel(jsonSchemaModel: CommonModel, name: string)
   if (!jsonSchemaModel.type?.includes('string')) {
     return undefined;
   }
-  return new StringModel(name, jsonSchemaModel.originalInput);
+  const isNullable = jsonSchemaModel.type?.includes('null');
+  return new StringModel(name, jsonSchemaModel.originalInput, isNullable);
 }
 export function convertToIntegerModel(jsonSchemaModel: CommonModel, name: string): IntegerModel | undefined {
   if (!jsonSchemaModel.type?.includes('integer')) {
     return undefined;
   }
-  return new IntegerModel(name, jsonSchemaModel.originalInput);
+  const isNullable = jsonSchemaModel.type?.includes('null');
+  return new IntegerModel(name, jsonSchemaModel.originalInput, isNullable);
 }
 export function convertToFloatModel(jsonSchemaModel: CommonModel, name: string): FloatModel | undefined {
   if (!jsonSchemaModel.type?.includes('number')) {
     return undefined;
   }
-  return new FloatModel(name, jsonSchemaModel.originalInput);
+  const isNullable = jsonSchemaModel.type?.includes('null');
+  return new FloatModel(name, jsonSchemaModel.originalInput, isNullable);
 }
 export function convertToEnumModel(jsonSchemaModel: CommonModel, name: string): EnumModel | undefined {
   if (!Array.isArray(jsonSchemaModel.enum)) {
     return undefined;
   }
-  const metaModel = new EnumModel(name, jsonSchemaModel.originalInput, []);
+  const isNullable = jsonSchemaModel.type?.includes('null');
+  const metaModel = new EnumModel(name, jsonSchemaModel.originalInput, [], isNullable);
   for (const enumValue of jsonSchemaModel.enum) {
     const enumValueModel = new EnumValueModel(JSON.stringify(enumValue), enumValue);
     metaModel.values.push(enumValueModel);
@@ -115,13 +125,15 @@ export function convertToBooleanModel(jsonSchemaModel: CommonModel, name: string
   if (!jsonSchemaModel.type?.includes('boolean')) {
     return undefined;
   }
-  return new BooleanModel(name, jsonSchemaModel.originalInput);
+  const isNullable = jsonSchemaModel.type?.includes('null');
+  return new BooleanModel(name, jsonSchemaModel.originalInput, isNullable);
 }
 export function convertToObjectModel(jsonSchemaModel: CommonModel, name: string): ObjectModel | undefined {
   if (!jsonSchemaModel.type?.includes('object')) {
     return undefined;
   }
-  const metaModel = new ObjectModel(name, jsonSchemaModel.originalInput, {});
+  const isNullable = jsonSchemaModel.type?.includes('null');
+  const metaModel = new ObjectModel(name, jsonSchemaModel.originalInput, {}, isNullable);
   for (const [propertyName, prop] of Object.entries(jsonSchemaModel.properties || {})) {
     metaModel.properties[String(propertyName)] = convertToMetaModel(prop);
   }
@@ -158,6 +170,7 @@ export function convertToArrayModel(jsonSchemaModel: CommonModel, name: string):
   if (!jsonSchemaModel.type?.includes('array')) {
     return undefined;
   }
+  const isNullable = jsonSchemaModel.type?.includes('null');
 
   const isNormalArray = !Array.isArray(jsonSchemaModel.items) && jsonSchemaModel.additionalItems === undefined && jsonSchemaModel.items !== undefined;
   //item multiple types + additionalItems sat = both count, as normal array
@@ -167,10 +180,10 @@ export function convertToArrayModel(jsonSchemaModel: CommonModel, name: string):
   //item not sat + additionalItems not sat = normal array, any type
   if (isNormalArray) {
     const valueModel = convertToMetaModel(jsonSchemaModel.items as CommonModel);
-    return new ArrayModel(name, jsonSchemaModel.originalInput, valueModel);
+    return new ArrayModel(name, jsonSchemaModel.originalInput, valueModel, isNullable);
   }
 
-  const valueModel = new UnionModel('union', jsonSchemaModel.originalInput, []);
+  const valueModel = new UnionModel('union', jsonSchemaModel.originalInput, [], isNullable);
   if (jsonSchemaModel.items !== undefined) {
     for (const itemModel of Array.isArray(jsonSchemaModel.items) ? jsonSchemaModel.items : [jsonSchemaModel.items]) {
       const itemsModel = convertToMetaModel(itemModel);
@@ -181,17 +194,18 @@ export function convertToArrayModel(jsonSchemaModel: CommonModel, name: string):
     const itemsModel = convertToMetaModel(jsonSchemaModel.additionalItems);
     valueModel.union.push(itemsModel);
   }
-  return new ArrayModel(name, jsonSchemaModel.originalInput, valueModel);
+  return new ArrayModel(name, jsonSchemaModel.originalInput, valueModel, isNullable);
 }
 export function convertToTupleModel(jsonSchemaModel: CommonModel, name: string): TupleModel | undefined {
   const isTuple = jsonSchemaModel.type?.includes('array') && Array.isArray(jsonSchemaModel.items) && jsonSchemaModel.additionalItems === undefined;
   if (!isTuple) {
     return undefined;
   }
+  const isNullable = jsonSchemaModel.type?.includes('null');
 
   const items = jsonSchemaModel.items as CommonModel[];
   //item multiple types + additionalItems not sat = tuple of item type
-  const tupleModel = new TupleModel(name, jsonSchemaModel.originalInput, []);
+  const tupleModel = new TupleModel(name, jsonSchemaModel.originalInput, [], isNullable);
   for (let i = 0; i < items.length; i++) {
     const item = items[Number(i)];
     const valueModel = convertToMetaModel(item);

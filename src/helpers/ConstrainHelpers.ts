@@ -46,7 +46,7 @@ export interface Constraints {
 
 function constrainReferenceModel<R extends AbstractRenderer>(typeMapping: TypeMapping<R>, constrainRules: Constraints, context: ConstrainContext<R, ReferenceModel>): ConstrainedReferenceModel {
   const constrainedRefModel = constrainMetaModel(typeMapping, constrainRules, {...context, metaModel: context.metaModel.ref, propertyKey: undefined});
-  const constrainedModel = new ConstrainedReferenceModel(context.constrainedName, context.metaModel.originalInput, '', constrainedRefModel);
+  const constrainedModel = new ConstrainedReferenceModel(context.constrainedName, context.metaModel.originalInput, '', constrainedRefModel, context.metaModel.isNullable);
   constrainedModel.type = getTypeFromMapping(typeMapping, {
     constrainedModel,
     renderer: context.renderer,
@@ -55,7 +55,7 @@ function constrainReferenceModel<R extends AbstractRenderer>(typeMapping: TypeMa
   return constrainedModel;
 }
 function constrainAnyModel<R extends AbstractRenderer>(typeMapping: TypeMapping<R>, context: ConstrainContext<R, AnyModel>): ConstrainedAnyModel {
-  const constrainedModel = new ConstrainedAnyModel(context.constrainedName, context.metaModel.originalInput, '');
+  const constrainedModel = new ConstrainedAnyModel(context.constrainedName, context.metaModel.originalInput, '', context.metaModel.isNullable);
   constrainedModel.type = getTypeFromMapping(typeMapping, {
     constrainedModel,
     renderer: context.renderer,
@@ -64,7 +64,7 @@ function constrainAnyModel<R extends AbstractRenderer>(typeMapping: TypeMapping<
   return constrainedModel; 
 }
 function constrainFloatModel<R extends AbstractRenderer>(typeMapping: TypeMapping<R>, context: ConstrainContext<R, FloatModel>): ConstrainedFloatModel {
-  const constrainedModel = new ConstrainedFloatModel(context.constrainedName, context.metaModel.originalInput, '');
+  const constrainedModel = new ConstrainedFloatModel(context.constrainedName, context.metaModel.originalInput, '', context.metaModel.isNullable);
   constrainedModel.type = getTypeFromMapping(typeMapping, {
     constrainedModel,
     renderer: context.renderer,
@@ -73,7 +73,7 @@ function constrainFloatModel<R extends AbstractRenderer>(typeMapping: TypeMappin
   return constrainedModel;
 }
 function constrainIntegerModel<R extends AbstractRenderer>(typeMapping: TypeMapping<R>, context: ConstrainContext<R, IntegerModel>): ConstrainedIntegerModel {
-  const constrainedModel = new ConstrainedIntegerModel(context.constrainedName, context.metaModel.originalInput, '');
+  const constrainedModel = new ConstrainedIntegerModel(context.constrainedName, context.metaModel.originalInput, '', context.metaModel.isNullable);
   constrainedModel.type = getTypeFromMapping(typeMapping, {
     constrainedModel,
     renderer: context.renderer,
@@ -82,7 +82,7 @@ function constrainIntegerModel<R extends AbstractRenderer>(typeMapping: TypeMapp
   return constrainedModel;
 }
 function constrainStringModel<R extends AbstractRenderer>(typeMapping: TypeMapping<R>, context: ConstrainContext<R, StringModel>): ConstrainedStringModel {
-  const constrainedModel = new ConstrainedStringModel(context.constrainedName, context.metaModel.originalInput, '');
+  const constrainedModel = new ConstrainedStringModel(context.constrainedName, context.metaModel.originalInput, '', context.metaModel.isNullable);
   constrainedModel.type = getTypeFromMapping(typeMapping, {
     constrainedModel,
     renderer: context.renderer,
@@ -91,7 +91,7 @@ function constrainStringModel<R extends AbstractRenderer>(typeMapping: TypeMappi
   return constrainedModel;
 }
 function constrainBooleanModel<R extends AbstractRenderer>(typeMapping: TypeMapping<R>, context: ConstrainContext<R, BooleanModel>): ConstrainedBooleanModel {
-  const constrainedModel = new ConstrainedBooleanModel(context.constrainedName, context.metaModel.originalInput, '');
+  const constrainedModel = new ConstrainedBooleanModel(context.constrainedName, context.metaModel.originalInput, '', context.metaModel.isNullable);
   constrainedModel.type = getTypeFromMapping(typeMapping, {
     constrainedModel,
     renderer: context.renderer,
@@ -104,7 +104,7 @@ function constrainTupleModel<R extends AbstractRenderer>(typeMapping: TypeMappin
     const tupleType = constrainMetaModel(typeMapping, constrainRules, {...context, metaModel: tupleValue.value, propertyKey: undefined});
     return new ConstrainedTupleValueModel(tupleValue.index, tupleType);
   });
-  const constrainedModel = new ConstrainedTupleModel(context.constrainedName, context.metaModel.originalInput, '', constrainedTupleModels);
+  const constrainedModel = new ConstrainedTupleModel(context.constrainedName, context.metaModel.originalInput, '', constrainedTupleModels, context.metaModel.isNullable);
   constrainedModel.type = getTypeFromMapping(typeMapping, {
     constrainedModel,
     renderer: context.renderer,
@@ -114,7 +114,7 @@ function constrainTupleModel<R extends AbstractRenderer>(typeMapping: TypeMappin
 }
 function constrainArrayModel<R extends AbstractRenderer>(typeMapping: TypeMapping<R>, constrainRules: Constraints, context: ConstrainContext<R, ArrayModel>): ConstrainedArrayModel {
   const constrainedValueModel = constrainMetaModel(typeMapping, constrainRules, {...context, metaModel: context.metaModel.valueModel, propertyKey: undefined});
-  const constrainedModel = new ConstrainedArrayModel(context.constrainedName, context.metaModel.originalInput, '', constrainedValueModel);
+  const constrainedModel = new ConstrainedArrayModel(context.constrainedName, context.metaModel.originalInput, '', constrainedValueModel, context.metaModel.isNullable);
   constrainedModel.type = getTypeFromMapping(typeMapping, {
     constrainedModel,
     renderer: context.renderer,
@@ -126,7 +126,7 @@ function constrainUnionModel<R extends AbstractRenderer>(typeMapping: TypeMappin
   const constrainedUnionModels = context.metaModel.union.map((unionValue) => {
     return constrainMetaModel(typeMapping, constrainRules, {...context, metaModel: unionValue, propertyKey: undefined});
   });
-  const constrainedModel = new ConstrainedUnionModel(context.constrainedName, context.metaModel.originalInput, '', constrainedUnionModels);
+  const constrainedModel = new ConstrainedUnionModel(context.constrainedName, context.metaModel.originalInput, '', constrainedUnionModels, context.metaModel.isNullable);
   constrainedModel.type = getTypeFromMapping(typeMapping, {
     constrainedModel,
     renderer: context.renderer,
@@ -137,7 +137,7 @@ function constrainUnionModel<R extends AbstractRenderer>(typeMapping: TypeMappin
 function constrainDictionaryModel<R extends AbstractRenderer>(typeMapping: TypeMapping<R>, constrainRules: Constraints, context: ConstrainContext<R, DictionaryModel>): ConstrainedDictionaryModel {
   const keyModel = constrainMetaModel(typeMapping, constrainRules, {...context, metaModel: context.metaModel.key, propertyKey: undefined});
   const valueModel = constrainMetaModel(typeMapping, constrainRules, {...context, metaModel: context.metaModel.value, propertyKey: undefined});
-  const constrainedModel = new ConstrainedDictionaryModel(context.constrainedName, context.metaModel.originalInput, '', keyModel, valueModel, context.metaModel.serializationType);
+  const constrainedModel = new ConstrainedDictionaryModel(context.constrainedName, context.metaModel.originalInput, '', keyModel, valueModel, context.metaModel.serializationType, context.metaModel.isNullable);
   constrainedModel.type = getTypeFromMapping(typeMapping, {
     constrainedModel,
     renderer: context.renderer,
@@ -147,7 +147,7 @@ function constrainDictionaryModel<R extends AbstractRenderer>(typeMapping: TypeM
 }
 
 function constrainObjectModel<R extends AbstractRenderer>(typeMapping: TypeMapping<R>, constrainRules: Constraints, context: ConstrainContext<R, ObjectModel>): ConstrainedObjectModel {
-  const constrainedModel = new ConstrainedObjectModel(context.constrainedName, context.metaModel.originalInput, '', {});
+  const constrainedModel = new ConstrainedObjectModel(context.constrainedName, context.metaModel.originalInput, '', {}, context.metaModel.isNullable);
   for (const [propertyKey, propertyMetaModel] of Object.entries(context.metaModel.properties)) {
     const constrainedPropertyName = constrainRules.propertyKey({propertyKey, constrainedObjectModel: constrainedModel, objectModel: context.metaModel});
     const constrainedProperty = constrainMetaModel(typeMapping, constrainRules, {...context, metaModel: propertyMetaModel, propertyKey: constrainedPropertyName});
@@ -162,7 +162,7 @@ function constrainObjectModel<R extends AbstractRenderer>(typeMapping: TypeMappi
 }
 
 function ConstrainEnumModel<R extends AbstractRenderer>(typeMapping: TypeMapping<R>, constrainRules: Constraints, context: ConstrainContext<R, EnumModel>): ConstrainedEnumModel {
-  const constrainedModel = new ConstrainedEnumModel(context.constrainedName, context.metaModel.originalInput, '', []);
+  const constrainedModel = new ConstrainedEnumModel(context.constrainedName, context.metaModel.originalInput, '', [], context.metaModel.isNullable);
 
   for (const enumValue of context.metaModel.values) {
     const constrainedEnumKey = constrainRules.enumKey({enumKey: String(enumValue.key), enumModel: context.metaModel, constrainedEnumModel: constrainedModel});

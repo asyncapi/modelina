@@ -35,6 +35,11 @@ describe('JavaConstrainer', () => {
       const type = JavaDefaultTypeMapping.Float({constrainedModel: model, renderer});
       expect(type).toEqual('float');
     });
+    test('should render nullable type', () => {
+      const model = new ConstrainedFloatModel('test', undefined, '', true);
+      const type = JavaDefaultTypeMapping.Float({constrainedModel: model, renderer});
+      expect(type).toEqual('Float');
+    });
     test('should render double when original input has number format', () => {
       const model = new ConstrainedFloatModel('test', {format: 'number'}, '');
       const type = JavaDefaultTypeMapping.Float({constrainedModel: model, renderer});
@@ -49,6 +54,11 @@ describe('JavaConstrainer', () => {
   describe('Integer', () => { 
     test('should render type', () => {
       const model = new ConstrainedIntegerModel('test', undefined, '');
+      const type = JavaDefaultTypeMapping.Integer({constrainedModel: model, renderer});
+      expect(type).toEqual('int');
+    });
+    test('should render nullable type', () => {
+      const model = new ConstrainedIntegerModel('test', undefined, '', true);
       const type = JavaDefaultTypeMapping.Integer({constrainedModel: model, renderer});
       expect(type).toEqual('Integer');
     });
@@ -108,6 +118,11 @@ describe('JavaConstrainer', () => {
   describe('Boolean', () => { 
     test('should render type', () => {
       const model = new ConstrainedBooleanModel('test', undefined, '');
+      const type = JavaDefaultTypeMapping.Boolean({constrainedModel: model, renderer});
+      expect(type).toEqual('boolean');
+    });
+    test('should render nullable type', () => {
+      const model = new ConstrainedBooleanModel('test', undefined, '', true);
       const type = JavaDefaultTypeMapping.Boolean({constrainedModel: model, renderer});
       expect(type).toEqual('Boolean');
     });
