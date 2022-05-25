@@ -48,7 +48,7 @@ export class ObjectModel extends MetaModel {
     originalInput: any,
     public properties: { [key: string]: ObjectPropertyModel; },
     isNullable = false) {
-    super(name, originalInput);
+    super(name, originalInput, isNullable);
   }
 }
 export class ArrayModel extends MetaModel {
