@@ -41,12 +41,19 @@ export class ConstrainedTupleModel extends ConstrainedMetaModel {
     super(name, originalInput, type, isNullable);
   }
 }
+export class ConstrainedObjectPropertyModel {
+  constructor(
+    public propertyName: string,
+    public required: boolean,
+    public property: ConstrainedMetaModel) {
+  }
+}
 export class ConstrainedObjectModel extends ConstrainedMetaModel {
   constructor(
     name: string,
     originalInput: any, 
     type: string, 
-    public properties: { [key: string]: ConstrainedMetaModel; },
+    public properties: { [key: string]: ConstrainedObjectPropertyModel; },
     isNullable = false) {
     super(name, originalInput, type, isNullable);
   }

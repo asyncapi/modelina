@@ -29,8 +29,8 @@ export const DefaultPropertyKeyConstraints: PropertyKeyConstraintOptions = {
 export function defaultPropertyKeyConstraints(customConstraints?: Partial<PropertyKeyConstraintOptions>): PropertyKeyConstraint {
   const constraints = {...DefaultPropertyKeyConstraints, ...customConstraints};
 
-  return ({propertyKey, constrainedObjectModel, objectModel}) => {
-    let constrainedPropertyKey = propertyKey;
+  return ({objectPropertyModel, constrainedObjectModel, objectModel}) => {
+    let constrainedPropertyKey = objectPropertyModel.propertyName;
 
     constrainedPropertyKey = constraints.NO_SPECIAL_CHAR(constrainedPropertyKey);
     constrainedPropertyKey = constraints.NO_NUMBER_START_CHAR(constrainedPropertyKey);

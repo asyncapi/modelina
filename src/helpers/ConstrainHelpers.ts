@@ -1,6 +1,6 @@
 import { AbstractRenderer } from '../generators';
-import { ConstrainedAnyModel, ConstrainedBooleanModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedMetaModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedTupleValueModel, ConstrainedArrayModel, ConstrainedUnionModel, ConstrainedEnumModel, ConstrainedDictionaryModel, ConstrainedEnumValueModel } from '../models/ConstrainedMetaModel';
-import { AnyModel, BooleanModel, FloatModel, IntegerModel, ObjectModel, ReferenceModel, StringModel, TupleModel, ArrayModel, UnionModel, EnumModel, DictionaryModel, MetaModel } from '../models/MetaModel';
+import { ConstrainedAnyModel, ConstrainedBooleanModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedMetaModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedTupleValueModel, ConstrainedArrayModel, ConstrainedUnionModel, ConstrainedEnumModel, ConstrainedDictionaryModel, ConstrainedEnumValueModel, ConstrainedObjectPropertyModel } from '../models/ConstrainedMetaModel';
+import { AnyModel, BooleanModel, FloatModel, IntegerModel, ObjectModel, ReferenceModel, StringModel, TupleModel, ArrayModel, UnionModel, EnumModel, DictionaryModel, MetaModel, ObjectPropertyModel } from '../models/MetaModel';
 import { getTypeFromMapping, TypeMapping } from './TypeHelpers';
 
 export type ConstrainContext<R extends AbstractRenderer, M extends MetaModel> = {
@@ -30,7 +30,8 @@ export type ModelNameContext = {
 export type ModelNameConstraint = (context: ModelNameContext) => string;
 
 export type PropertyKeyContext = {
-  propertyKey: string,
+  constrainedObjectPropertyModel: ConstrainedObjectPropertyModel,
+  objectPropertyModel: ObjectPropertyModel,
   constrainedObjectModel: ConstrainedObjectModel,
   objectModel: ObjectModel
 }
@@ -148,10 +149,13 @@ function constrainDictionaryModel<R extends AbstractRenderer>(typeMapping: TypeM
 
 function constrainObjectModel<R extends AbstractRenderer>(typeMapping: TypeMapping<R>, constrainRules: Constraints, context: ConstrainContext<R, ObjectModel>): ConstrainedObjectModel {
   const constrainedModel = new ConstrainedObjectModel(context.constrainedName, context.metaModel.originalInput, '', {}, context.metaModel.isNullable);
-  for (const [propertyKey, propertyMetaModel] of Object.entries(context.metaModel.properties)) {
-    const constrainedPropertyName = constrainRules.propertyKey({propertyKey, constrainedObjectModel: constrainedModel, objectModel: context.metaModel});
-    const constrainedProperty = constrainMetaModel(typeMapping, constrainRules, {...context, metaModel: propertyMetaModel, propertyKey: constrainedPropertyName});
-    constrainedModel.properties[String(constrainedPropertyName)] = constrainedProperty;
+  for (const propertyMetaModel of Object.values(context.metaModel.properties)) {
+    const constrainedPropertyModel = new ConstrainedObjectPropertyModel('', propertyMetaModel.required, constrainedModel);
+    const constrainedPropertyName = constrainRules.propertyKey({objectPropertyModel: propertyMetaModel, constrainedObjectPropertyModel: constrainedPropertyModel, constrainedObjectModel: constrainedModel, objectModel: context.metaModel});
+    constrainedPropertyModel.propertyName = constrainedPropertyName;
+    const constrainedProperty = constrainMetaModel(typeMapping, constrainRules, {...context, metaModel: context.metaModel, propertyKey: constrainedPropertyName});
+    constrainedPropertyModel.property = constrainedProperty;
+    constrainedModel.properties[String(constrainedPropertyName)] = constrainedPropertyModel;
   }
   constrainedModel.type = getTypeFromMapping(typeMapping, {
     constrainedModel,
