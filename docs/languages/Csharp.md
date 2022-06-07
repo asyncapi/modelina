@@ -10,6 +10,7 @@ There are special use-cases that each language supports; this document pertains 
 - [Generate models with equals and GetHashCode methods](#generate-models-with-equals-and-gethashcode-methods)
 - [Generate models with auto-implemented properties](#generate-models-with-auto-implemented-properties)
 - [Change the collection type for arrays](#change-the-collection-type-for-arrays)
+- [Generate custom enum value names](#generate-custom-enum-value-names)
 
 <!-- tocstop -->
 
@@ -39,3 +40,10 @@ Check out this [example for a live demonstration](../../examples/csharp-auto-imp
 If you consider the Array Class to be insuitable for your situation, then you might look into setting the `collectionType: 'List'` option to your instance of the generator. This will cause all of the collections to be rendered as of type `System.Collections.Generic.IEnumerable<T>`.
 
 Check out this [example for a live demonstration](../../examples/csharp-change-collection-type).
+
+
+## Generate custom enum value names
+
+When using AsyncAPI or JSON Schema, it is not possible to associate enum names with values however with extensions it is. 
+
+Check out this [example for a live demonstration](../../examples/csharp-overwrite-enum-naming/).
