@@ -5,7 +5,6 @@ const generator = new CSharpGenerator({
     {
       enum: {
         item: ({model, item, content}) => {
-          console.error(model);
           const hasCustomName = model.originalInput !== undefined && model.originalInput['x-enumNames'] !== undefined;
           if (hasCustomName) {
             const customName = model.originalInput['x-enumNames'][item];
