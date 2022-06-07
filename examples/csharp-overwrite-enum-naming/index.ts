@@ -5,8 +5,10 @@ const generator = new CSharpGenerator({
     {
       enum: {
         item: ({model, item, content}) => {
+          // Lets see if an enum has any associated names
           const hasCustomName = model.originalInput !== undefined && model.originalInput['x-enumNames'] !== undefined;
           if (hasCustomName) {
+            // Lets see if the specific value has an associated name
             const customName = model.originalInput['x-enumNames'][item];
             if (customName !== undefined) {
               return customName;
