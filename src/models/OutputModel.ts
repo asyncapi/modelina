@@ -1,11 +1,11 @@
-import { CommonInputModel } from './CommonInputModel';
-import { CommonModel } from './CommonModel';
+import { InputMetaModel } from './InputMetaModel';
+import { ConstrainedMetaModel } from './ConstrainedMetaModel';
 
 export interface ToOutputModelArg {
   result: string;
-  model: CommonModel;
+  model: ConstrainedMetaModel;
   modelName: string;
-  inputModel: CommonInputModel;
+  inputModel: InputMetaModel;
   dependencies: string[];
 }
 
@@ -15,9 +15,9 @@ export interface ToOutputModelArg {
 export class OutputModel {
   constructor(
     public readonly result: string,
-    public readonly model: CommonModel,
+    public readonly model: ConstrainedMetaModel,
     public readonly modelName: string,
-    public readonly inputModel: CommonInputModel,
+    public readonly inputModel: InputMetaModel,
     public readonly dependencies: string[]
   ) {}
 
