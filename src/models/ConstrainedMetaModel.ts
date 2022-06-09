@@ -7,6 +7,11 @@ export abstract class ConstrainedMetaModel extends MetaModel {
     public type: string) {
     super(name, originalInput);
   }
+  /**
+   * Get the nearest constrained meta models for the constrained model.
+   * 
+   * This is often used when you want to know which other models you are referencing.
+   */
   abstract getNearestDependencies(): ConstrainedMetaModel[]
 }
 
