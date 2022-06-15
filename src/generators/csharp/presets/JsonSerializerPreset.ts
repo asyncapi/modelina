@@ -1,7 +1,7 @@
 import { CSharpRenderer } from '../CSharpRenderer';
 import { CSharpPreset } from '../CSharpPreset';
 import { getUniquePropertyName, DefaultPropertyNames, FormatHelpers, TypeHelpers, ModelKind } from '../../../helpers';
-import { CommonInputModel, CommonModel } from '../../../models';
+import { CommonInputModel, CommonModel, ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedObjectModel, ConstrainedObjectPropertyModel, ConstrainedReferenceModel, ConstrainedStringModel, DictionaryModel, InputMetaModel } from '../../../models';
 
 function renderSerializeProperty(modelInstanceVariable: string, model: CommonModel, inputModel: CommonInputModel) {
   let value = modelInstanceVariable;
@@ -133,86 +133,67 @@ ${renderer.indent(serializeAdditionalProperties)}
 }`;
 } 
 
-function renderDeserializeProperty(type: string, model: CommonModel, inputModel: CommonInputModel) {
-  if (model.$ref) {
-    const resolvedModel = inputModel.models[model.$ref];
-    const propertyModelKind = TypeHelpers.extractKind(resolvedModel);
-    //Referenced enums is the only one who need custom serialization
-    if (propertyModelKind === ModelKind.ENUM) {
-      return `${type}Extension.To${type}(JsonSerializer.Deserialize<dynamic>(ref reader, options))`;
-    }
+function renderDeserializeProperty(model: ConstrainedObjectPropertyModel) {
+  //Referenced enums is the only one who need custom serialization
+  if (model.property instanceof ConstrainedReferenceModel && 
+    model.property.ref instanceof ConstrainedEnumModel) {
+    return `${model.property.type}Extension.To${model.property.type}(JsonSerializer.Deserialize<dynamic>(ref reader, options))`;
   }
-  return `JsonSerializer.Deserialize<${type}>(ref reader, options)`;
+  return `JsonSerializer.Deserialize<${model.property.type}>(ref reader, options)`;
 }
 
-function renderDeserializeProperties(model: CommonModel, renderer: CSharpRenderer, inputModel: CommonInputModel) {
+function renderDeserializeProperties(model: ConstrainedObjectModel) {
   const propertyEntries = Object.entries(model.properties || {});
   const deserializeProperties = propertyEntries.map(([prop, propModel]) => {
-    const formattedPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(prop, propModel));
-    const propertyModelType = renderer.renderType(propModel);
+    //Unwrapped dictionary properties, need to be unwrapped in JSON
+    if (propModel.property instanceof ConstrainedDictionaryModel && 
+      propModel.property.serializationType === 'unwrap') {
+      const dictionaryProperty = propModel.property as ConstrainedDictionaryModel;
+      if (dictionaryProperty.key instanceof ConstrainedStringModel && 
+        dictionaryProperty.key.originalInput['format'] &&) {
+        return `if(instance.${prop} == null) { instance.${prop} = new Dictionary<${dictionaryProperty.key.type}, ${dictionaryProperty.key.type}>(); }
+        var match = Regex.Match(propertyName, @"${pattern}");
+        if (match.Success)
+        {
+          var deserializedValue = ${renderDeserializeProperty(propModel)};
+          instance.${prop}.Add(propertyName, deserializedValue);
+          continue;
+        }`;
+      }
+      return `if(instance.${prop} == null) { instance.${prop} = new Dictionary<${dictionaryProperty.key.type}, ${dictionaryProperty.key.type}>(); }
+      var deserializedValue = ${renderDeserializeProperty(propModel)};
+      instance.${prop}.Add(propertyName, deserializedValue);
+      continue;`;
+    } 
     return `if (propertyName == "${prop}")
-{
-  var value = ${renderDeserializeProperty(propertyModelType, propModel, inputModel)};
-  instance.${formattedPropertyName} = value;
-  continue;
-}`;
+  {
+    var value = ${renderDeserializeProperty(propModel)};
+    instance.${prop} = value;
+    continue;
+  }`;
   });
   return deserializeProperties.join('\n');
-}
-
-function renderDeserializePatternProperties(model: CommonModel, renderer: CSharpRenderer, inputModel: CommonInputModel) {
-  if (model.patternProperties === undefined) {
-    return '';
-  }
-  const patternProperties = Object.entries(model.patternProperties).map(([pattern, patternModel]) => {
-    let patternPropertyName = getUniquePropertyName(model, `${pattern}${DefaultPropertyNames.patternProperties}`);
-    patternPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(patternPropertyName, patternModel));
-    const patternPropertyType = renderer.renderType(patternModel);
-    return `if(instance.${patternPropertyName} == null) { instance.${patternPropertyName} = new Dictionary<string, ${patternPropertyType}>(); }
-var match = Regex.Match(propertyName, @"${pattern}");
-if (match.Success)
-{
-  var deserializedValue = ${renderDeserializeProperty(patternPropertyType, patternModel, inputModel)};
-  instance.${patternPropertyName}.Add(propertyName, deserializedValue);
-  continue;
-}`;
-  });
-  return patternProperties.join('\n');
-}
-
-function renderDeserializeAdditionalProperties(model: CommonModel, renderer: CSharpRenderer, inputModel: CommonInputModel) {
-  if (model.additionalProperties === undefined) {
-    return ''; 
-  }
-  let additionalPropertyName = getUniquePropertyName(model, DefaultPropertyNames.additionalProperties);
-  additionalPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(additionalPropertyName, model.additionalProperties));
-  const additionalPropertyType = renderer.renderType(model.additionalProperties);
-  return `if(instance.${additionalPropertyName} == null) { instance.${additionalPropertyName} = new Dictionary<string, ${additionalPropertyType}>(); }
-var deserializedValue = ${renderDeserializeProperty(additionalPropertyType, model.additionalProperties, inputModel)};
-instance.${additionalPropertyName}.Add(propertyName, deserializedValue);
-continue;`;
 }
 
 /**
  * Render `deserialize` function based on model
  */
 function renderDeserialize({ renderer, model, inputModel }: {
-  renderer: CSharpRenderer,
-  model: CommonModel,
-  inputModel: CommonInputModel
+  renderer: CSharpRenderer<any>,
+  model: ConstrainedObjectModel,
+  inputModel: InputMetaModel
 }): string {
-  const formattedModelName = renderer.nameType(model.$id);
-  const deserializeProperties = renderDeserializeProperties(model, renderer, inputModel);
+  const deserializeProperties = renderDeserializeProperties(model);
   const deserializePatternProperties = renderDeserializePatternProperties(model, renderer, inputModel);
   const deserializeAdditionalProperties = renderDeserializeAdditionalProperties(model, renderer, inputModel);
-  return `public override ${formattedModelName} Read(ref Utf8JsonReader reader, System.Type typeToConvert, JsonSerializerOptions options)
+  return `public override ${model.name} Read(ref Utf8JsonReader reader, System.Type typeToConvert, JsonSerializerOptions options)
 {
   if (reader.TokenType != JsonTokenType.StartObject)
   {
     throw new JsonException();
   }
 
-  var instance = new ${formattedModelName}();
+  var instance = new ${model.name}();
   
   while (reader.Read())
   {
@@ -251,14 +232,13 @@ export const CSHARP_JSON_SERIALIZER_PRESET: CSharpPreset = {
       renderer.addDependency('using System.Text.Json.Serialization;');
       renderer.addDependency('using System.Text.RegularExpressions;');
       
-      const formattedModelName = renderer.nameType(model.$id);
       const deserialize = renderDeserialize({renderer, model, inputModel});
       const serialize = renderSerialize({renderer, model, inputModel});
 
-      return `[JsonConverter(typeof(${formattedModelName}Converter))]
+      return `[JsonConverter(typeof(${model.name}Converter))]
 ${content}
 
-internal class ${formattedModelName}Converter : JsonConverter<${formattedModelName}>
+internal class ${model.name}Converter : JsonConverter<${model.name}>
 {
   public override bool CanConvert(System.Type objectType)
   {

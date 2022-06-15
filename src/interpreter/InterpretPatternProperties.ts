@@ -14,6 +14,7 @@ export default function interpretPatternProperties(schema: InterpreterSchemaType
   for (const [pattern, patternSchema] of Object.entries(schema.patternProperties || {})) {
     const patternModel = interpreter.interpret(patternSchema as any, interpreterOptions);
     if (patternModel !== undefined) {
+      patternModel.originalInput = {pattern: patternSchema};
       model.addPatternProperty(pattern, patternModel, schema);
     }
   }
