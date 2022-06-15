@@ -35,8 +35,8 @@ export abstract class AbstractGenerator<
   public abstract constrainToMetaModel(model: MetaModel): ConstrainedMetaModel;
   public abstract splitMetaModel(model: MetaModel): MetaModel[];
 
-  public async process(input: Record<string, unknown>): Promise<InputMetaModel> {
-    return await InputProcessor.processor.process(input, this.options.processorOptions);
+  public process(input: Record<string, unknown>): Promise<InputMetaModel> {
+    return InputProcessor.processor.process(input, this.options.processorOptions);
   }
 
   /**

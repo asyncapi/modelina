@@ -1,9 +1,10 @@
-import { CommonInputModel, ProcessorOptions } from '../models';
+import { CommonModel, InputMetaModel, ProcessorOptions } from '../models';
 import { resolve } from 'path';
 import ts from 'typescript';
 import * as TJS from 'typescript-json-schema';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
 import { AbstractInputProcessor } from './AbstractInputProcessor';
+import { convertToMetaModel } from '../helpers';
 
 /** Class for processing Typescript code inputs to Common module*/
 
@@ -67,25 +68,29 @@ export class TypeScriptInputProcessor extends AbstractInputProcessor {
     return true;
   }
 
-  process(input: Record<string, any>, options?: ProcessorOptions): Promise<CommonInputModel> {
-    const common = new CommonInputModel();
+  process(input: Record<string, any>, options?: ProcessorOptions): Promise<InputMetaModel> {
+    const inputModel = new InputMetaModel();
 
     if (!this.shouldProcess(input)) {
       return Promise.reject(new Error('Input is not of the valid file format'));
     }
 
     const { fileContents, baseFile } = input;
-    common.originalInput = fileContents;
+    inputModel.originalInput = fileContents;
 
     // obtain generated schema
     const generatedSchemas = this.generateJSONSchema(baseFile, '*', options?.typescript);
     if (generatedSchemas) {
+      let commonModels: {[key: string]: CommonModel} = {};
       for (const schema of generatedSchemas) {
-        const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema as Record<string, any>);
-        common.models = {...common.models, ...commonModels };
+        const newCommonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema as Record<string, any>);
+        commonModels = {...commonModels, ...newCommonModels };
+      }
+      for (const [key, commonModel] of Object.entries(commonModels)) {
+        inputModel.models[String(key)] = convertToMetaModel(commonModel);
       }
     }
-    return Promise.resolve(common);
+    return Promise.resolve(inputModel);
   }
 }
 
