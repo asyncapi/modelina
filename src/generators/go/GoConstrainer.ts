@@ -2,9 +2,9 @@ import { TypeMapping } from '../../helpers';
 import { defaultEnumKeyConstraints, defaultEnumValueConstraints } from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
-import { GoRenderer } from './GoRenderer';
+import { GoOptions } from './GoGenerator';
 
-export const GoDefaultTypeMapping: TypeMapping<GoRenderer> = {
+export const GoDefaultTypeMapping: TypeMapping<GoOptions> = {
   Object ({constrainedModel}): string {
     return constrainedModel.name;
   },

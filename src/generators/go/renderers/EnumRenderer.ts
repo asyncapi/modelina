@@ -1,39 +1,31 @@
 import { GoRenderer } from '../GoRenderer';
-import { EnumPreset, CommonModel } from '../../../models';
+import { ConstrainedEnumModel } from '../../../models';
 import { FormatHelpers } from '../../../helpers';
+import { EnumPresetType } from '../GoPreset';
+import { GoOptions } from '../GoGenerator';
 
 /**
  * Renderer for Go's `enum` type
  * 
  * @extends GoRenderer
  */
-export class EnumRenderer extends GoRenderer {
+export class EnumRenderer extends GoRenderer<ConstrainedEnumModel> {
   public defaultSelf(): string {
-    const formattedName = this.nameType(this.model.$id);
-    const type = this.enumType(this.model);
-    const doc = formattedName && this.renderCommentForEnumType(formattedName, type);
+    const doc = this.renderCommentForEnumType(this.model.name, this.model.type);
     // eslint-disable-next-line sonarjs/no-duplicate-string
-    if (type === 'interface{}') {
+    if (this.model.type === 'interface{}') {
       return `${doc}
-type ${formattedName} ${type}`;
+type ${this.model.name} ${this.model.type}`;
     }
 
-    const enumValues = this.renderConstValuesForEnumType(formattedName, type, <string[]> this.model.enum);
+    const enumValues = this.renderConstValuesForEnumType(this.model.name, this.model.type, <string[]> this.model.values.map((enumValue) => enumValue.value));
 
     return `${doc}
-type ${formattedName} ${type}
+type ${this.model.name} ${this.model.type}
 
 const (
 ${this.indent(this.renderBlock(enumValues))}
 )`;
-  }
-
-  enumType(model: CommonModel): string {
-    if (this.model.type === undefined || Array.isArray(this.model.type)) {
-      return 'interface{}';
-    }
-
-    return this.toGoType(this.model.type, model);
   }
 
   renderCommentForEnumType(name: string, type: string): string {
@@ -61,7 +53,7 @@ ${this.indent(this.renderBlock(enumValues))}
   }
 }
 
-export const GO_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
+export const GO_DEFAULT_ENUM_PRESET: EnumPresetType<GoOptions> = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
