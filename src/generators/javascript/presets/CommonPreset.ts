@@ -1,7 +1,7 @@
 import { JavaScriptRenderer } from '../JavaScriptRenderer';
 import { JavaScriptPreset } from '../JavaScriptPreset';
 import { getUniquePropertyName, DefaultPropertyNames, TypeHelpers, ModelKind } from '../../../helpers';
-import { CommonInputModel, CommonModel } from '../../../models';
+import { CommonInputModel, CommonModel, ConstrainedEnumModel, ConstrainedMetaModel, ConstrainedObjectModel, ConstrainedReferenceModel } from '../../../models';
 import renderExampleFunction from './utils/ExampleFunction';
 
 export interface JavaScriptCommonPresetOptions {
@@ -12,24 +12,19 @@ export interface JavaScriptCommonPresetOptions {
 function realizePropertyFactory(prop: string) {
   return `$\{typeof ${prop} === 'number' || typeof ${prop} === 'boolean' ? ${prop} : JSON.stringify(${prop})}`;
 }
-function renderMarshalProperty(modelInstanceVariable: string, model: CommonModel, inputModel: CommonInputModel) {
-  if (model.$ref) {
-    const resolvedModel = inputModel.models[model.$ref];
-    const propertyModelKind = TypeHelpers.extractKind(resolvedModel);
+function renderMarshalProperty(modelInstanceVariable: string, model: ConstrainedMetaModel) {
+  if (model instanceof ConstrainedReferenceModel && !(model.ref instanceof ConstrainedEnumModel)) {
     //Referenced enums only need standard marshalling, so lets filter those away
-    if (propertyModelKind !== ModelKind.ENUM) {
-      return `$\{${modelInstanceVariable}.marshal()}`;
-    }
+    return `$\{${modelInstanceVariable}.marshal()}`;
   }
   return realizePropertyFactory(modelInstanceVariable);
 }
-function renderMarshalProperties(model: CommonModel, renderer: JavaScriptRenderer, inputModel: CommonInputModel) {
+function renderMarshalProperties(model: ConstrainedObjectModel) {
   const properties = model.properties || {};
   const propertyKeys = [...Object.entries(properties)];
   const marshalProperties = propertyKeys.map(([prop, propModel]) => {
-    const formattedPropertyName = renderer.nameProperty(prop, propModel);
-    const modelInstanceVariable = `this.${formattedPropertyName}`;
-    const propMarshalCode = renderMarshalProperty(modelInstanceVariable, propModel, inputModel);
+    const modelInstanceVariable = `this.${prop}`;
+    const propMarshalCode = renderMarshalProperty(modelInstanceVariable, propModel.property);
     const marshalCode = `json += \`"${prop}": ${propMarshalCode},\`;`;
     return `if(${modelInstanceVariable} !== undefined) {
   ${marshalCode} 
@@ -42,8 +37,6 @@ function renderMarshalPatternProperties(model: CommonModel, renderer: JavaScript
   let marshalPatternProperties = '';
   if (model.patternProperties !== undefined) {
     for (const [pattern, patternModel] of Object.entries(model.patternProperties)) {
-      let patternPropertyName = getUniquePropertyName(model, `${pattern}${DefaultPropertyNames.patternProperties}`);
-      patternPropertyName = renderer.nameProperty(patternPropertyName, patternModel);
       const modelInstanceVariable = 'value';
       const patternPropertyMarshalCode = renderMarshalProperty(modelInstanceVariable, patternModel, inputModel);
       const marshalCode = `json += \`"$\{key}": ${patternPropertyMarshalCode},\`;`;
@@ -59,11 +52,9 @@ function renderMarshalPatternProperties(model: CommonModel, renderer: JavaScript
   return marshalPatternProperties;
 }
 
-function renderMarshalAdditionalProperties(model: CommonModel, renderer: JavaScriptRenderer, inputModel: CommonInputModel) {
+function renderMarshalAdditionalProperties(model: CommonModel) {
   let marshalAdditionalProperties = '';
   if (model.additionalProperties !== undefined) {
-    let additionalPropertyName = getUniquePropertyName(model, DefaultPropertyNames.additionalProperties);
-    additionalPropertyName = renderer.nameProperty(additionalPropertyName, model.additionalProperties);
     const modelInstanceVariable = 'value';
     const patternPropertyMarshalCode = renderMarshalProperty(modelInstanceVariable, model.additionalProperties, inputModel);
     const marshalCode = `json += \`"$\{key}": ${patternPropertyMarshalCode},\`;`;
@@ -82,13 +73,13 @@ function renderMarshalAdditionalProperties(model: CommonModel, renderer: JavaScr
  * Render `marshal` function based on model
  */
 function renderMarshal({ renderer, model, inputModel }: {
-  renderer: JavaScriptRenderer,
-  model: CommonModel,
+  renderer: JavaScriptRenderer<any>,
+  model: ConstrainedObjectModel,
   inputModel: CommonInputModel
 }): string {
   return `marshal(){
   let json = '{'
-${renderer.indent(renderMarshalProperties(model, renderer, inputModel))}
+${renderer.indent(renderMarshalProperties(model))}
 ${renderer.indent(renderMarshalPatternProperties(model, renderer, inputModel))}
 ${renderer.indent(renderMarshalAdditionalProperties(model, renderer, inputModel))}
 
@@ -159,20 +150,18 @@ function renderUnmarshalAdditionalProperties(model: CommonModel, renderer: JavaS
 /**
  * Render `unmarshal` function based on model
  */
-function renderUnmarshal({ renderer, model, inputModel }: {
-  renderer: JavaScriptRenderer,
-  model: CommonModel,
-  inputModel: CommonInputModel
+function renderUnmarshal({ renderer, model }: {
+  renderer: JavaScriptRenderer<any>,
+  model: ConstrainedObjectModel
 }): string {
   const properties = model.properties || {};
   const { unmarshalPatternProperties, setPatternPropertiesMap } = renderUnmarshalPatternProperties(model, renderer, inputModel);
   const { unmarshalAdditionalProperties, setAdditionalPropertiesMap } = renderUnmarshalAdditionalProperties(model, renderer, inputModel);
-  const unmarshalProperties = renderUnmarshalProperties(model, renderer, inputModel);
-  const formattedModelName = renderer.nameType(model.$id);
+  const unmarshalProperties = renderUnmarshalProperties(model, renderer);
   const propertyNames = Object.keys(properties).map((prop => `"${prop}"`));
   return `unmarshal(json){
   const obj = typeof json === "object" ? json : JSON.parse(json);
-  const instance = new ${formattedModelName}({});
+  const instance = new ${model.name}({});
 
 ${renderer.indent(unmarshalProperties)}
 
