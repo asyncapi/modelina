@@ -1,13 +1,9 @@
-import { CommonModel } from '../../../models';
 import { TypeScriptPreset } from '../TypeScriptPreset';
-import { TypeScriptRenderer } from '../TypeScriptRenderer';
 
 const renderWithExportKeyword = ({
   content,
 }: {
-  renderer: TypeScriptRenderer;
   content: string;
-  item: CommonModel;
 }): string => `export ${content}`;
 
 /**
@@ -17,23 +13,23 @@ const renderWithExportKeyword = ({
  */
 export const TS_EXPORT_KEYWORD_PRESET: TypeScriptPreset = {
   class: {
-    self({ renderer, model, content }) {
-      return renderWithExportKeyword({ renderer, content, item: model });
+    self({ content }) {
+      return renderWithExportKeyword({ content });
     },
   },
   interface: {
-    self({ renderer, model, content }) {
-      return renderWithExportKeyword({ renderer, content, item: model });
+    self({ content }) {
+      return renderWithExportKeyword({ content });
     },
   },
   type: {
-    self({ renderer, model, content }) {
-      return renderWithExportKeyword({ renderer, content, item: model });
+    self({ content }) {
+      return renderWithExportKeyword({ content });
     },
   },
   enum: {
-    self({ renderer, model, content }) {
-      return renderWithExportKeyword({ renderer, content, item: model });
+    self({ content }) {
+      return renderWithExportKeyword({ content });
     },
   },
 };
