@@ -1,4 +1,4 @@
-# The Process
+# Internal model
 
 In order to generate data models from all kinds of inputs, we need a common structure for how we interact with one. That structure is called `MetaModel` often referred to as `Modelina Meta Model`, `Raw Meta Model`, or `MMM`. And there are two parts to it, there is the **meta model** and then the **constrained meta model**.
 
@@ -41,31 +41,3 @@ The answer to this question is not straightforward, cause each language has uniq
 </p>
 
 
-## The Basics
-
-Inputs generally don't have the faintest idea about the constraints of an output and it is therefore the **meta model** does not have any constraints, and it is perfectly normal and expected to name your properties `my property`. 
-
-Before the model reaches the generator, it gets transformed to a **constrained meta model**. Here it converts the raw **meta model** into only having valid values for the specific output. For example (and this accounts for almost all languages) you cannot render a property with the name `my property`, as they generally follow some kind of common naming format such as using camel case `myProperty` or pascal case `MyProperty`. 
-
-This transformation happen in three stages. 
-
-<p align="center">
-  <img src="./img/RenderingProcess.png" />
-</p>
-
-1. Process the input and transform it into the meta model. See [The meta model](./the_meta_model.md) for more information.
-2. Split the meta model into separate models that are rendered separately. See [The splitting of meta models](#The-splitting-of-data-models) for more information. 
-3. Constrain the meta models to the output language. See [The constrained meta model](#the-constrained-data-model) for more information.
-
-## The splitting of Meta Models
-Each generator requires a different splitting of the **meta model**s because it varies which should be rendered as is, and which need to be rendered separately.
-
-For example with the current TS generator, we split the following models:
-- **ObjectModel**, because we want to generate it into interfaces, or classes
-- **EnumModel**, because we want to generate a representation for enums
-
-For the Java generator, we split the following models:
-- **ObjectModel**, because we want to generate it into a Java Class
-- **EnumModel**, because we want to generate it into a Java Enum.
-- **TupleModel** (TS have these models natively supported, Java don't, so we need to generate alternatives)
-- **UnionModel** (TS have these models natively supported, Java don't, so we need to generate alternatives)

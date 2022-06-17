@@ -8,14 +8,14 @@ A **preset** is a pure JavaScript object with format `key: value`, where `key` i
 {
   // `class` model type 
   class: {
-    self(...options) { /* logic */ },
+    self(...arguments) { /* logic */ },
     // `setter` customization method 
-    setter(...options) { /* logic */ },
+    setter(...arguments) { /* logic */ },
   },
   interface: {
     // `property` customization method 
-    property(...options) { /* logic */ },
-    additionalContent(...options) { /* logic */ },
+    property(...arguments) { /* logic */ },
+    additionalContent(...arguments) { /* logic */ },
   },
 }
 ```
@@ -131,13 +131,13 @@ For each model type, you can implement two basic methods:
 - `self` - the method for extending the model shape.
 - `additionalContent` - the method which adds additional content to the model.
 
-Each customization method receives the following arguments:
+Each preset hook method receives the following arguments:
 
-- `model` - an instance of the [`CommonModel`](../src/models/CommonModel.ts) class, which described rendered data model.
-- `inputModel` - an instance of the [`CommonInputModel`](../src/models/CommonInputModel.ts) class.
+- `model` - a [`ConstrainedMetaModel`](../src/models/CommonModel.ts) variation which depends on the preset type.
+- `inputModel` - an instance of the [`InputMetaModel`](../src/models/InputMetaModel.ts) class.
 - `renderer` - an instance of the class with common helper functions to render appropriate model type.
 - `content` - rendered content from previous preset.
-- `options` - options passed to preset defined in the `presets` array.
+- `options` - options passed to preset defined in the `presets` array, it's type depends on the specific preset.
 
 Below is a list of supported languages with their model types and corresponding additional preset's methods with extra arguments based on the character of the customization method.
 
@@ -145,54 +145,68 @@ Below is a list of supported languages with their model types and corresponding 
 
 #### **Class**
 
+This preset is a generator for the meta model `ConstrainedObjectModel` and [can be accessed through the `model` argument](#presets-shape).
+
 | Method | Description | Additional arguments |
 |---|---|---|
 | `ctor` | A method to extend rendered constructor for a given class. | - |
-| `property` | A method to extend rendered given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
-| `setter` | A method to extend setter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
-| `getter` | A method to extend getter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
+| `property` | A method to extend rendered given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+| `setter` | A method to extend setter for a given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+| `getter` | A method to extend getter for a given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
 
 #### **Enum**
 
+This preset is a generator for the meta model `ConstrainedEnumModel` and [can be accessed through the `model` argument](#presets-shape).
+
 | Method | Description | Additional arguments |
 |---|---|---|
-| `item` | A method to extend enum's item. | an `item` containing the value of enum's item. |
+| `item` | A method to extend enum's item. | `item` object as a [`ConstrainedEnumValueModel`](./internal-model.md#the-constrained-meta-model) instance, which contains the value and key of enum's item. |
 
 ### JavaScript
 
 #### **Class**
 
+This preset is a generator for the meta model `ConstrainedObjectModel` and [can be accessed through the `model` argument](#presets-shape).
+
 | Method | Description | Additional arguments |
 |---|---|---|
 | `ctor` | A method to extend rendered constructor for a given class. | - |
-| `property` | A method to extend rendered given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
-| `setter` | A method to extend setter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
-| `getter` | A method to extend getter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
+| `property` | A method to extend rendered given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+| `setter` | A method to extend setter for a given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+| `getter` | A method to extend getter for a given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
 
 ### TypeScript
 
 #### **Class**
 
+This preset is a generator for the meta model `ConstrainedObjectModel` and [can be accessed through the `model` argument](#presets-shape).
+
 | Method | Description | Additional arguments |
 |---|---|---|
 | `ctor` | A method to extend rendered constructor for a given class. | - |
-| `property` | A method to extend rendered given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
-| `setter` | A method to extend setter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
-| `getter` | A method to extend getter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
+| `property` | A method to extend rendered given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+| `setter` | A method to extend setter for a given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+| `getter` | A method to extend getter for a given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
 
 #### **Interface**
 
+This preset is a generator for the meta model `ConstrainedObjectModel` and [can be accessed through the `model` argument](#presets-shape).
+
 | Method | Description | Additional arguments |
 |---|---|---|
-| `property` | A method to extend rendered given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
+| `property` | A method to extend rendered given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
 
 #### **Enum**
 
+This preset is a generator for the meta model `ConstrainedEnumModel` and [can be accessed through the `model` argument](#presets-shape).
+
 | Method | Description | Additional arguments |
 |---|---|---|
-| `item` | A method to extend enum's item. | an `item` containing the value of enum's item. |
+| `item` | A method to extend enum's item. | `item` object as a [`ConstrainedEnumValueModel`](./internal-model.md#the-constrained-meta-model) instance, which contains the value and key of enum's item. |
 
 #### **Type**
+
+This preset is a generator for all meta models `ConstrainedMetaModel` and [can be accessed through the `model` argument](#presets-shape).
 
 There are no additional methods.
 
@@ -200,25 +214,31 @@ There are no additional methods.
 
 #### **Struct**
 
+This preset is a generator for the meta model `ConstrainedObjectModel` and [can be accessed through the `model` argument](#presets-shape).
+
 | Method | Description | Additional arguments |
 |---|---|---|
-| `field` | A method to extend rendered given field. | `fieldName` as a name of a given field, `field` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
+| `field` | A method to extend rendered given field. | `field` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
 
 
 ### C#
 
 #### **Class**
 
+This preset is a generator for the meta model `ConstrainedObjectModel` and [can be accessed through the `model` argument](#presets-shape).
+
 | Method | Description | Additional arguments |
 |---|---|---|
 | `ctor` | A method to extend rendered constructor for a given class. | - |
-| `property` | A method to extend rendered given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
-| `accessor` | A method to extend rendered given property accessor. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
-| `setter` | A method to extend setter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
-| `getter` | A method to extend getter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
+| `property` | A method to extend rendered given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+| `accessor` | A method to extend rendered given property accessor. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+| `setter` | A method to extend setter for a given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+| `getter` | A method to extend getter for a given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
 
 #### **Enum**
 
+This preset is a generator for the meta model `ConstrainedEnumModel` and [can be accessed through the `model` argument](#presets-shape).
+
 | Method | Description | Additional arguments |
 |---|---|---|
-| `item` | A method to extend enum's item. | an `item` containing the value of enum's item. |
+| `item` | A method to extend enum's item. | `item` object as a [`ConstrainedEnumValueModel`](./internal-model.md#the-constrained-meta-model) instance, which contains the value and key of enum's item. |

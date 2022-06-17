@@ -4,28 +4,26 @@
 
 <!-- toc -->
 
-- [The Processing](#the-processing)
-- [Contributing](#contributing)
-- [Usage](#usage)
-- [Advanced](#advanced)
-- [Integration](#integration)
-- [Development](#development)
-- [Generators](#generators)
-- [Presets](#presets)
-- [Interpretation of JSON Schema](#interpretation-of-json-schema)
-- [Languages](#languages)
+- [Documentation](#documentation)
+    - [The Processing](#the-processing)
+    - [Usage](#usage)
+    - [Advanced](#advanced)
+    - [Integration](#integration)
+    - [Generators](#generators)
+    - [Presets](#presets)
+    - [Interpretation of JSON Schema](#interpretation-of-json-schema)
+    - [Languages](#languages)
+    - [Contributing](#contributing)
+    - [Development](#development)
 
 <!-- tocstop -->
 
 This document gives the overview of all the available documentation for Modelina.
 
-### [The Processing](./processing.md)
-Contains information how the internals of the processing works.
+### [The Processing](./internal-model.md)
+Contains information about how inputs are processed to the internal data model.
 
 This document contains all the information you need to understand the internal meta model and processes.
-
-### [Contributing](./contributing.md)
-Contains all the information you need to contribute to this project.
 
 ### [Usage](./usage.md)
 Contains simple use-cases that you'll encounter when using Modelina.
@@ -35,9 +33,6 @@ Contains many of the advanced use-cases that you may stumble upon when pushing t
 
 ### [Integration](./integration.md)
 Contains many advanced ways to integrate Modelina _(i.e. websites)_. 
-
-### [Development](./development.md)
-Explains how to setup the project for development. 
 
 ### [Generators](./generators.md)
 Details which different generator options are supported.
@@ -55,3 +50,9 @@ Each language has its own limitations, corner cases, and features; thus, each la
 - [Java](./languages/Java.md)
 - [JavaScript](./languages/JavaScript.md)
 - [TypeScript](./languages/TypeScript.md)
+
+### [Contributing](./contributing.md)
+Contains all the information you need to contribute to this project.
+
+### [Development](./development.md)
+Explains how to setup the project for development. 
