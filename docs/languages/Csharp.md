@@ -11,6 +11,7 @@ There are special use-cases that each language supports; this document pertains 
 - [Generate models with auto-implemented properties](#generate-models-with-auto-implemented-properties)
 - [Change the collection type for arrays](#change-the-collection-type-for-arrays)
 - [Generate custom enum value names](#generate-custom-enum-value-names)
+- [Generate models with inheritance](#generate-models-with-inheritance)
 
 <!-- tocstop -->
 
@@ -41,9 +42,15 @@ If you consider the Array Class to be insuitable for your situation, then you mi
 
 Check out this [example for a live demonstration](../../examples/csharp-change-collection-type).
 
-
 ## Generate custom enum value names
 
 When using AsyncAPI or JSON Schema, it is not possible to associate enum names with values however with extensions it is. 
 
 Check out this [example for a live demonstration](../../examples/csharp-overwrite-enum-naming/).
+
+## Generate models with inheritance
+
+If you want the generated models to inherit from a custom class, you can overwrite the existing rendering behavior and create your own class setup.
+
+Check out this [example for a live demonstration](../../examples/csharp-use-inheritance).
+
