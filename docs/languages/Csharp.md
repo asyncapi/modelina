@@ -10,6 +10,7 @@ There are special use-cases that each language supports; this document pertains 
 - [Generate models with equals and GetHashCode methods](#generate-models-with-equals-and-gethashcode-methods)
 - [Generate models with auto-implemented properties](#generate-models-with-auto-implemented-properties)
 - [Change the collection type for arrays](#change-the-collection-type-for-arrays)
+- [Generate models with inheritance](#generate-models-with-inheritance)
 
 <!-- tocstop -->
 
@@ -39,3 +40,9 @@ Check out this [example for a live demonstration](../../examples/csharp-auto-imp
 If you consider the Array Class to be insuitable for your situation, then you might look into setting the `collectionType: 'List'` option to your instance of the generator. This will cause all of the collections to be rendered as of type `System.Collections.Generic.IEnumerable<T>`.
 
 Check out this [example for a live demonstration](../../examples/csharp-change-collection-type).
+
+## Generate models with inheritance
+
+If you want the generated models to inherit from a custom class, you can overwrite the existing rendering behavior and create your own class setup.
+
+Check out this [example for a live demonstration](../../examples/csharp-use-inheritance).
