@@ -1,5 +1,5 @@
 import { TypeScriptRenderer } from '../TypeScriptRenderer';
-import { ConstrainedEnumModel } from '../../../models';
+import { ConstrainedEnumModel, ConstrainedEnumValueModel } from '../../../models';
 import { EnumPresetType } from '../TypeScriptPreset';
 import { TypeScriptOptions } from '../TypeScriptGenerator';
 
@@ -32,7 +32,7 @@ ${this.indent(this.renderBlock(content, 2))}
     return this.renderBlock(items);
   }
 
-  runItemPreset(item: any): Promise<string> {
+  runItemPreset(item: ConstrainedEnumValueModel): Promise<string> {
     return this.runPreset('item', { item });
   }
 }

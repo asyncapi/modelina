@@ -1,15 +1,15 @@
 import { JavaRenderer } from '../JavaRenderer';
 import { JavaPreset } from '../JavaPreset';
 import { FormatHelpers } from '../../../helpers';
-import { CommonModel } from '../../../models';
+import { ConstrainedMetaModel } from '../../../models';
 
 function renderDescription({ renderer, content, item }: {
-  renderer: JavaRenderer,
+  renderer: JavaRenderer<any>,
   content: string,
-  item: CommonModel,
+  item: ConstrainedMetaModel,
 }): string {
-  let desc = item.getFromOriginalInput('description');
-  const examples = item.getFromOriginalInput('examples');
+  let desc = item.originalInput['description'];
+  const examples = item.originalInput['examples'];
 
   if (Array.isArray(examples)) {
     const renderedExamples = FormatHelpers.renderJSONExamples(examples);
@@ -35,7 +35,7 @@ export const JAVA_DESCRIPTION_PRESET: JavaPreset = {
       return renderDescription({ renderer, content, item: model });
     },
     getter({ renderer, property, content }) {
-      return renderDescription({ renderer, content, item: property });
+      return renderDescription({ renderer, content, item: property.property });
     }
   },
   enum: {

@@ -2,9 +2,9 @@ import { TypeMapping } from '../../helpers';
 import { defaultEnumKeyConstraints, defaultEnumValueConstraints } from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
-import { JavaRenderer } from './JavaRenderer';
+import { JavaOptions } from './JavaGenerator';
 
-export const JavaDefaultTypeMapping: TypeMapping<JavaRenderer> = {
+export const JavaDefaultTypeMapping: TypeMapping<JavaOptions> = {
   Object ({constrainedModel}): string {
     return constrainedModel.name;
   },
@@ -63,16 +63,16 @@ export const JavaDefaultTypeMapping: TypeMapping<JavaRenderer> = {
   Boolean (): string {
     return 'Boolean';
   },
-  Tuple ({renderer}): string {
+  Tuple ({options}): string {
     //Because Java have no notion of tuples (and no custom implementation), we have to render it as a list of any value.
     const tupleType = 'Object';
-    if (renderer.options.collectionType && renderer.options.collectionType === 'List') {
+    if (options.collectionType && options.collectionType === 'List') {
       return `List<${tupleType}>`;
     }
     return `${tupleType}[]`;
   },
-  Array ({constrainedModel, renderer}): string {
-    if (renderer.options.collectionType && renderer.options.collectionType === 'List') {
+  Array ({constrainedModel, options}): string {
+    if (options.collectionType && options.collectionType === 'List') {
       return `List<${constrainedModel.valueModel.type}>`;
     }
     return `${constrainedModel.valueModel.type}[]`;
