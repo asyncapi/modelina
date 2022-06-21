@@ -79,7 +79,7 @@ if(value.${patternPropertyName} != null) {
   return serializePatternProperties;
 }
 
-function renderPropertiesList(model: CommonModel, renderer: CSharpRenderer) {
+function renderPropertiesList(model: ConstrainedObjectModel) {
   const propertyFilter: string[] = [];
   if (model.additionalProperties !== undefined) {
     let additionalPropertyName = getUniquePropertyName(model, DefaultPropertyNames.additionalProperties);
@@ -102,17 +102,14 @@ function renderPropertiesList(model: CommonModel, renderer: CSharpRenderer) {
  * Render `serialize` function based on model
  */
 function renderSerialize({ renderer, model, inputModel }: {
-  renderer: CSharpRenderer,
-  model: CommonModel,
+  renderer: CSharpRenderer<any>,
+  model: ConstrainedObjectModel,
   inputModel: CommonInputModel
 }): string {
-  const formattedModelName = renderer.nameType(model.$id);
   const serializeProperties = renderSerializeProperties(model, renderer, inputModel);
-  const serializePatternProperties = renderSerializePatternProperties(model, renderer, inputModel);
-  const serializeAdditionalProperties = renderSerializeAdditionalProperties(model, renderer, inputModel);
   const propertiesList = renderPropertiesList(model, renderer);
 
-  return `public override void Write(Utf8JsonWriter writer, ${formattedModelName} value, JsonSerializerOptions options)
+  return `public override void Write(Utf8JsonWriter writer, ${model.name} value, JsonSerializerOptions options)
 {
   if (value == null)
   {
@@ -124,10 +121,6 @@ function renderSerialize({ renderer, model, inputModel }: {
   writer.WriteStartObject();
 
 ${renderer.indent(serializeProperties)}
-
-${renderer.indent(serializePatternProperties)}
-
-${renderer.indent(serializeAdditionalProperties)}
 
   writer.WriteEndObject();
 }`;
@@ -178,14 +171,12 @@ function renderDeserializeProperties(model: ConstrainedObjectModel) {
 /**
  * Render `deserialize` function based on model
  */
-function renderDeserialize({ renderer, model, inputModel }: {
+function renderDeserialize({ renderer, model }: {
   renderer: CSharpRenderer<any>,
   model: ConstrainedObjectModel,
   inputModel: InputMetaModel
 }): string {
   const deserializeProperties = renderDeserializeProperties(model);
-  const deserializePatternProperties = renderDeserializePatternProperties(model, renderer, inputModel);
-  const deserializeAdditionalProperties = renderDeserializeAdditionalProperties(model, renderer, inputModel);
   return `public override ${model.name} Read(ref Utf8JsonReader reader, System.Type typeToConvert, JsonSerializerOptions options)
 {
   if (reader.TokenType != JsonTokenType.StartObject)
@@ -210,10 +201,6 @@ function renderDeserialize({ renderer, model, inputModel }: {
 
     string propertyName = reader.GetString();
 ${renderer.indent(deserializeProperties, 4)}
-
-${renderer.indent(deserializePatternProperties, 4)}
-
-${renderer.indent(deserializeAdditionalProperties, 4)}
   }
   
   throw new JsonException();
