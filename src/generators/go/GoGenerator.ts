@@ -3,54 +3,16 @@ import {
   CommonGeneratorOptions,
   defaultGeneratorOptions
 } from '../AbstractGenerator';
-import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
-import { TypeHelpers, ModelKind, FormatHelpers, Constraints, TypeMapping } from '../../helpers';
+import { InputMetaModel, RenderOutput, ConstrainedObjectModel, ConstrainedEnumModel, ConstrainedMetaModel, MetaModel } from '../../models';
+import { constrainMetaModel, Constraints, split, TypeMapping } from '../../helpers';
 import { GoPreset, GO_DEFAULT_PRESET } from './GoPreset';
 import { StructRenderer } from './renderers/StructRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
-import { pascalCaseTransformMerge } from 'change-case';
 import { Logger } from '../../utils/LoggingInterface';
-import { isReservedGoKeyword } from './Constants';
 import { GoDefaultConstraints, GoDefaultTypeMapping } from './GoConstrainer';
-import { GoRenderer } from './GoRenderer';
-/**
- * The Go naming convention type
- */
-export type GoNamingConvention = {
-  type?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel, reservedKeywordCallback?: (name: string) => boolean }) => string;
-  field?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel, field?: CommonModel, reservedKeywordCallback?: (name: string) => boolean }) => string;
-};
-
-/**
- * A GoNamingConvention implementation for Go
- */
-export const GoNamingConventionImplementation: GoNamingConvention = {
-  type: (name: string | undefined, ctx) => {
-    if (!name) { return ''; }
-    let formattedName = FormatHelpers.toPascalCase(name, { transform: pascalCaseTransformMerge });
-    if (ctx.reservedKeywordCallback !== undefined && ctx.reservedKeywordCallback(formattedName)) {
-      formattedName = FormatHelpers.toPascalCase(`reserved_${formattedName}`);
-    }
-    return formattedName;
-  },
-  // eslint-disable-next-line sonarjs/no-identical-functions
-  field: (name: string | undefined, ctx) => {
-    if (!name) { return ''; }
-    let formattedName = FormatHelpers.toPascalCase(name, { transform: pascalCaseTransformMerge });
-    if (ctx.reservedKeywordCallback !== undefined && ctx.reservedKeywordCallback(formattedName)) {
-      formattedName = FormatHelpers.toPascalCase(`reserved_${formattedName}`);
-      if (Object.keys(ctx.model.properties || {}).includes(formattedName)) {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        return GoNamingConventionImplementation.field!(`reserved_${formattedName}`, ctx);
-      }
-    }
-    return formattedName;
-  }
-};
 
 export interface GoOptions extends CommonGeneratorOptions<GoPreset> {
-  namingConvention?: GoNamingConvention;
-  typeMapping: TypeMapping<GoRenderer>;
+  typeMapping: TypeMapping<GoOptions>;
   constraints: Constraints
 }
 
@@ -65,33 +27,45 @@ export class GoGenerator extends AbstractGenerator<GoOptions, GoRenderCompleteMo
   static defaultOptions: GoOptions = {
     ...defaultGeneratorOptions,
     defaultPreset: GO_DEFAULT_PRESET,
-    namingConvention: GoNamingConventionImplementation,
     typeMapping: GoDefaultTypeMapping,
     constraints: GoDefaultConstraints
   };
   constructor(
     options: Partial<GoOptions> = GoGenerator.defaultOptions,
   ) {
-    const mergedOptions = {...GoGenerator.defaultOptions, ...options};
+    const realizedOptions = {...GoGenerator.defaultOptions, ...options};
 
-    super('Go', GoGenerator.defaultOptions, mergedOptions);
+    super('Go', realizedOptions);
   }
-  reservedGoKeyword(name: string): boolean {
-    return isReservedGoKeyword(name);
+
+  splitMetaModel(model: MetaModel): MetaModel[] {
+    //These are the models that we have separate renderers for
+    const metaModelsToSplit = {
+      splitEnum: true, 
+      splitObject: true
+    };
+    return split(model, metaModelsToSplit);
   }
-  render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
-    const kind = TypeHelpers.extractKind(model);
-    switch (kind) {
-    case ModelKind.UNION:
-      // We don't support union in Go generator, however, if union is an object, we render it as a struct.
-      if (!model.type?.includes('object')) { break; }
+
+  constrainToMetaModel(model: MetaModel): ConstrainedMetaModel {
+    return constrainMetaModel(
+      this.options.typeMapping, 
+      this.options.constraints, 
+      {
+        metaModel: model,
+        options: this.options,
+        constrainedName: '' //This is just a placeholder, it will be constrained within the function
+      }
+    );
+  }
+
+  render(model: ConstrainedMetaModel, inputModel: InputMetaModel): Promise<RenderOutput> {
+    if (model instanceof ConstrainedObjectModel) {
       return this.renderStruct(model, inputModel);
-    case ModelKind.OBJECT:
-      return this.renderStruct(model, inputModel);
-    case ModelKind.ENUM:
+    } else if (model instanceof ConstrainedEnumModel) {
       return this.renderEnum(model, inputModel);
-    }
-    Logger.warn(`Go generator, cannot generate this type of model, ${model.$id}`);
+    } 
+    Logger.warn(`Go generator, cannot generate this type of model, ${model.name}`);
     return Promise.resolve(RenderOutput.toRenderOutput({ result: '', renderedName: '', dependencies: [] }));
   }
 
@@ -102,7 +76,7 @@ export class GoGenerator extends AbstractGenerator<GoOptions, GoRenderCompleteMo
    * @param inputModel
    * @param options
    */
-  async renderCompleteModel(model: CommonModel, inputModel: CommonInputModel, options: GoRenderCompleteModelOptions): Promise<RenderOutput> {
+  async renderCompleteModel(model: ConstrainedMetaModel, inputModel: InputMetaModel, options: GoRenderCompleteModelOptions): Promise<RenderOutput> {
     const outputModel = await this.render(model, inputModel);
     let importCode = '';
     if (outputModel.dependencies.length > 0) {
@@ -118,19 +92,17 @@ ${outputModel.result}`;
     return RenderOutput.toRenderOutput({ result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies });
   }
 
-  async renderEnum(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
+  async renderEnum(model: ConstrainedEnumModel, inputModel: InputMetaModel): Promise<RenderOutput> {
     const presets = this.getPresets('enum');
     const renderer = new EnumRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
-    const renderedName = renderer.nameType(model.$id, model);
-    return RenderOutput.toRenderOutput({ result, renderedName, dependencies: renderer.dependencies });
+    return RenderOutput.toRenderOutput({ result, renderedName: model.name, dependencies: renderer.dependencies });
   }
 
-  async renderStruct(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
+  async renderStruct(model: ConstrainedObjectModel, inputModel: InputMetaModel): Promise<RenderOutput> {
     const presets = this.getPresets('struct');
     const renderer = new StructRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
-    const renderedName = renderer.nameType(model.$id, model);
-    return RenderOutput.toRenderOutput({ result, renderedName, dependencies: renderer.dependencies });
+    return RenderOutput.toRenderOutput({ result, renderedName: model.name, dependencies: renderer.dependencies });
   }
 }

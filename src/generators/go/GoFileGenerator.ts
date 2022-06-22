@@ -1,5 +1,5 @@
 import { GoGenerator, GoRenderCompleteModelOptions } from './GoGenerator';
-import { CommonInputModel, OutputModel } from '../../models';
+import { InputMetaModel, OutputModel } from '../../models';
 import * as path from 'path';
 import { AbstractFileGenerator } from '../AbstractFileGenerator';
 import { FileHelpers } from '../../helpers';
@@ -12,7 +12,7 @@ export class GoFileGenerator extends GoGenerator implements AbstractFileGenerato
    * @param outputDirectory where you want the models generated to
    * @param options
    */
-  public async generateToFiles(input: Record<string, unknown> | CommonInputModel, outputDirectory: string, options: GoRenderCompleteModelOptions): Promise<OutputModel[]> {
+  public async generateToFiles(input: Record<string, unknown> | InputMetaModel, outputDirectory: string, options: GoRenderCompleteModelOptions): Promise<OutputModel[]> {
     let generatedModels = await this.generateCompleteModels(input, options);
     generatedModels = generatedModels.filter((outputModel) => { return outputModel.modelName !== undefined; });
     for (const outputModel of generatedModels) {
