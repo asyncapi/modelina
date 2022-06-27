@@ -1,5 +1,5 @@
 import { DartGenerator, DartRenderCompleteModelOptions } from './';
-import { CommonInputModel, OutputModel } from '../../models';
+import { InputMetaModel, OutputModel } from '../../models';
 import * as path from 'path';
 import { AbstractFileGenerator } from '../AbstractFileGenerator';
 import { FileHelpers } from '../../helpers';
@@ -12,7 +12,7 @@ export class DartFileGenerator extends DartGenerator implements AbstractFileGene
    * @param outputDirectory where you want the models generated to
    * @param options
    */
-  public async generateToFiles(input: Record<string, unknown> | CommonInputModel, outputDirectory: string, options: DartRenderCompleteModelOptions): Promise<OutputModel[]> {
+  public async generateToFiles(input: Record<string, unknown> | InputMetaModel, outputDirectory: string, options: DartRenderCompleteModelOptions): Promise<OutputModel[]> {
     let generatedModels = await this.generateCompleteModels(input, options);
     generatedModels = generatedModels.filter((outputModel) => { return outputModel.modelName !== undefined; });
     for (const outputModel of generatedModels) {
