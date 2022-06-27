@@ -8,7 +8,7 @@ function renderSerializeProperty(modelInstanceVariable: string, model: Constrain
   if (model.property instanceof ConstrainedReferenceModel && model.property.ref instanceof ConstrainedEnumModel) {
     value = `${model.property.type}.GetValue()`;
   }
-  return `JsonSerializer.Serialize(writer, ${value});`;
+  return `JsonSerializer.Serialize(writer, ${value}, options);`;
 }
 
 function renderSerializeProperties(model: ConstrainedObjectModel) {
@@ -70,7 +70,7 @@ function renderSerialize({ renderer, model }: {
 {
   if (value == null)
   {
-    JsonSerializer.Serialize(writer, null);
+    JsonSerializer.Serialize(writer, null, options);
     return;
   }
   ${propertiesList}

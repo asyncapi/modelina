@@ -29,6 +29,8 @@ const jsonSchemaDraft4Files = readFilesInFolder('JsonSchemaDraft-4');
 const AsyncAPIV2_0Files = readFilesInFolder('AsyncAPI-2_0');
 const AsyncAPIV2_1Files = readFilesInFolder('AsyncAPI-2_1');
 const AsyncAPIV2_2Files = readFilesInFolder('AsyncAPI-2_2');
+const AsyncAPIV2_3Files = readFilesInFolder('AsyncAPI-2_3');
+const AsyncAPIV2_4Files = readFilesInFolder('AsyncAPI-2_4');
 
 const filesToTest = [
   ...OpenAPI3_0Files.filter(({file}) => { 
@@ -49,6 +51,14 @@ const filesToTest = [
   ...AsyncAPIV2_2Files.filter(({file}) => {
     //Blocked by https://github.com/asyncapi/modelina/issues/504
     return file !== './docs/AsyncAPI-2_2/dummy.json';
+  }),
+  ...AsyncAPIV2_3Files.filter(({file}) => {
+    //Blocked by https://github.com/asyncapi/modelina/issues/504
+    return file !== './docs/AsyncAPI-2_3/dummy.json';
+  }),
+  ...AsyncAPIV2_4Files.filter(({file}) => {
+    //Blocked by https://github.com/asyncapi/modelina/issues/504
+    return file !== './docs/AsyncAPI-2_4/dummy.json';
   }),
   ...jsonSchemaDraft7Files.filter(({file}) => { 
     //Blocked by https://github.com/asyncapi/modelina/issues/388
