@@ -1,65 +1,46 @@
-import { JavaScriptRenderer } from '../../JavaScriptRenderer';
-import { CommonModel } from '../../../../models';
+import { ConstrainedArrayModel, ConstrainedBooleanModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedMetaModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedUnionModel } from '../../../../models';
 
-export function renderValueFromModel(model: CommonModel, renderer: JavaScriptRenderer): string | undefined {
-  if (model.$ref !== undefined) {
-    return `${renderer.nameType(model.$ref)}.example()`;
-  }
-  if (Array.isArray(model.type)) {
-    if (model.type.length > 0) {
-      return renderValueFromType(model.type[0], model, renderer);
-    }
-    return undefined;
-  }
-  return renderValueFromType(model.type, model, renderer);
-}
-
-export function renderValueFromType(modelType: string | undefined, model: CommonModel, renderer: JavaScriptRenderer): string | undefined {
-  if (modelType === undefined) {
-    return undefined;
-  }
-  switch (modelType) {
-  case 'string':
+/**
+ * Render specific example values 
+ * @param model 
+ * @returns 
+ */
+export function renderValueFromModel(model: ConstrainedMetaModel): string | undefined {
+  if (model instanceof ConstrainedReferenceModel) {
+    return `${model.type}.example()`;
+  } else if (model instanceof ConstrainedUnionModel) {
+    //Greedy example, where we just use the first type of the union models
+    return renderValueFromModel(model.union[0]);
+  } else if (model instanceof ConstrainedStringModel) {
     return '"string"';
-  case 'integer':
-  case 'number':
+  } else if (model instanceof ConstrainedFloatModel || model instanceof ConstrainedIntegerModel) {
     return '0';
-  case 'boolean':
+  } else if (model instanceof ConstrainedBooleanModel) {
     return 'true';
-  case 'array': {
-    if (model.items === undefined) {
-      return '[]';
-    }
-    if (Array.isArray(model.items)) {
-      const arrayValues = model.items.map((item) => {
-        return renderValueFromModel(item, renderer);
-      });
-      return `[${arrayValues.join(', ')}]`;
-    }
-    const arrayType = renderValueFromModel(model.items, renderer);
-    return `[${arrayType}]`;
-  }
+  } else if (model instanceof ConstrainedArrayModel) {
+    const value = renderValueFromModel(model.valueModel);
+    return `[${value}]`;
+  } else if (model instanceof ConstrainedTupleModel) {
+    const values = model.tuple.map((tupleModel) => renderValueFromModel(tupleModel.value));
+    return `[${values.join(', ')}]`;
   }
   return undefined;
 }
 
-export default function renderExampleFunction({ renderer, model }: {
-    renderer: JavaScriptRenderer,
-    model: CommonModel
+export default function renderExampleFunction({ model }: {
+    model: ConstrainedObjectModel
 }): string {
   const properties = model.properties || {};
   const setProperties = [];
   for (const [propertyName, property] of Object.entries(properties)) {
-    const formattedPropertyName = renderer.nameProperty(propertyName, property);
-    const potentialRenderedValue = renderValueFromModel(property, renderer);
+    const potentialRenderedValue = renderValueFromModel(property.property);
     if (potentialRenderedValue === undefined) {
       continue;
     }
-    setProperties.push(`  instance.${formattedPropertyName} = ${potentialRenderedValue};`);
+    setProperties.push(`  instance.${propertyName} = ${potentialRenderedValue};`);
   }
-  const formattedModelName = renderer.nameType(model.$id);
   return `example(){
-  const instance = new ${formattedModelName}({});
+  const instance = new ${model.name}({});
 ${(setProperties.join('\n'))}
   return instance;
 }`;
