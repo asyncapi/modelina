@@ -1,6 +1,6 @@
 import { AbstractRenderer } from '../AbstractRenderer';
 import { CSharpGenerator, CSharpOptions } from './CSharpGenerator';
-import { Preset, ConstrainedMetaModel, InputMetaModel } from '../../models';
+import { Preset, ConstrainedMetaModel, InputMetaModel, ConstrainedObjectPropertyModel } from '../../models';
 import { FormatHelpers } from '../../helpers/FormatHelpers';
 import { CSharpDependencyManager } from './CSharpDependencyManager';
 
@@ -26,5 +26,9 @@ export abstract class CSharpRenderer<
   renderComments(lines: string | string[]): string {
     lines = FormatHelpers.breakLines(lines);
     return lines.map((line) => `// ${line}`).join('\n');
+  }
+
+  optionalMark(propertyModel: ConstrainedObjectPropertyModel): string {
+    return propertyModel.required ? '' : '?';
   }
 }
