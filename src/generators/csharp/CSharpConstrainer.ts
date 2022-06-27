@@ -2,9 +2,9 @@ import { TypeMapping } from '../../helpers';
 import { defaultEnumKeyConstraints, defaultEnumValueConstraints } from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
-import { CSharpRenderer } from './CSharpRenderer';
+import { CSharpOptions } from './CSharpGenerator';
 
-export const CSharpDefaultTypeMapping: TypeMapping<CSharpRenderer> = {
+export const CSharpDefaultTypeMapping: TypeMapping<CSharpOptions> = {
   Object ({constrainedModel}): string {
     return constrainedModel.name;
   },
@@ -32,8 +32,8 @@ export const CSharpDefaultTypeMapping: TypeMapping<CSharpRenderer> = {
     });
     return `(${tupleTypes.join(', ')})`;
   },
-  Array ({constrainedModel, renderer}): string {
-    if (renderer.options.collectionType && renderer.options.collectionType === 'List') {
+  Array ({constrainedModel, options}): string {
+    if (options.collectionType && options.collectionType === 'List') {
       return `IEnumerable<${constrainedModel.valueModel.type}>`;
     }
     return `${constrainedModel.valueModel.type}[]`;
