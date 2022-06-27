@@ -1,7 +1,7 @@
 import { AbstractRenderer } from '../AbstractRenderer';
 import { JavaScriptGenerator, JavaScriptOptions } from './JavaScriptGenerator';
 import { FormatHelpers } from '../../helpers';
-import { Preset, ConstrainedMetaModel, ConstrainedObjectPropertyModel, InputMetaModel } from '../../models';
+import { Preset, ConstrainedMetaModel, InputMetaModel } from '../../models';
 
 /**
  * Common renderer for JavaScript types

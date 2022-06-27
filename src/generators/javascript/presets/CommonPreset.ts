@@ -1,7 +1,6 @@
 import { JavaScriptRenderer } from '../JavaScriptRenderer';
 import { JavaScriptPreset } from '../JavaScriptPreset';
-import { getUniquePropertyName, DefaultPropertyNames, TypeHelpers, ModelKind } from '../../../helpers';
-import { CommonInputModel, CommonModel, ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedMetaModel, ConstrainedObjectModel, ConstrainedReferenceModel } from '../../../models';
+import { ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedMetaModel, ConstrainedObjectModel, ConstrainedReferenceModel } from '../../../models';
 import renderExampleFunction from './utils/ExampleFunction';
 
 export interface JavaScriptCommonPresetOptions {
@@ -33,23 +32,6 @@ function renderMarshalProperties(model: ConstrainedObjectModel) {
   return marshalProperties.join('\n');
 }
 
-function renderMarshalAdditionalProperties(model: CommonModel) {
-  let marshalAdditionalProperties = '';
-  if (model.additionalProperties !== undefined) {
-    const modelInstanceVariable = 'value';
-    const patternPropertyMarshalCode = renderMarshalProperty(modelInstanceVariable, model.additionalProperties, inputModel);
-    const marshalCode = `json += \`"$\{key}": ${patternPropertyMarshalCode},\`;`;
-    marshalAdditionalProperties = `if(this.${additionalPropertyName} !== undefined) { 
-  for (const [key, value] of this.${additionalPropertyName}.entries()) {
-    //Only render additionalProperties which are not already a property
-    if(Object.keys(this).includes(String(key))) continue;
-    ${marshalCode}
-  }
-}`;
-  }
-  return marshalAdditionalProperties;
-}
-
 /**
  * Render `marshal` function based on model
  */
@@ -76,7 +58,6 @@ function renderUnmarshalProperty(modelInstanceVariable: string, model: Constrain
 function renderUnmarshalProperties(model: ConstrainedObjectModel) {
   const properties = model.properties || {};
   const propertyKeys = [...Object.entries(properties)];
-  const unwrappedDictionaryProperties = propertyKeys.filter(([,propModel]) => propModel instanceof ConstrainedDictionaryModel && propModel.serializationType === 'unwrap');
   const normalProperties = propertyKeys.filter(([,propModel]) => !(propModel instanceof ConstrainedDictionaryModel) || propModel.serializationType === 'normal');
   const unmarshalNormalProperties = normalProperties.map(([prop, propModel]) => {
     const modelInstanceVariable = `obj["${prop}"]`;
@@ -86,7 +67,6 @@ function renderUnmarshalProperties(model: ConstrainedObjectModel) {
 }`;
   });
 
-
   return `
 ${unmarshalNormalProperties.join('\n')}
 
@@ -94,21 +74,23 @@ ${unmarshalNormalProperties.join('\n')}
 }
 
 function renderUnmarshalUnwrapProperties(model: ConstrainedObjectModel, renderer: JavaScriptRenderer<any>) {
-  let unmarshalAdditionalProperties = '';
-  let setAdditionalPropertiesMap = '';
-  if (model.additionalProperties !== undefined) {
+  const unmarshalAdditionalProperties = [];
+  const setAdditionalPropertiesMap = [];
+  const unwrappedDictionaryProperties = Object.entries(model.properties).filter(([,propModel]) => propModel instanceof ConstrainedDictionaryModel && propModel.serializationType === 'unwrap');
+  for (const [prop,] of unwrappedDictionaryProperties) {
     const modelInstanceVariable = 'value';
     const unmarshalCode = renderUnmarshalProperty(modelInstanceVariable, model);
-    setAdditionalPropertiesMap = `if (instance.${additionalPropertyName} === undefined) {instance.${additionalPropertyName} = new Map();}`;
-    unmarshalAdditionalProperties = `instance.${additionalPropertyName}.set(key, ${unmarshalCode});`;
+    setAdditionalPropertiesMap.push(`if (instance.${prop} === undefined) {instance.${prop} = new Map();}`);
+    unmarshalAdditionalProperties.push(`instance.${prop}.set(key, ${unmarshalCode});`);
   }
   const propertyNames = Object.keys(model.properties).map((prop => `"${prop}"`));
   return `
-  //Not part of core properties
-  ${setAdditionalPropertiesMap}
-  for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![${propertyNames}].includes(key);}))) {
-${renderer.indent(unmarshalAdditionalProperties, 4)}
-  }`;
+//Not part of core properties
+${setAdditionalPropertiesMap.join('\n')}
+//Only go over remaining. properties 
+for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![${propertyNames}].includes(key);}))) {
+${renderer.indent(unmarshalAdditionalProperties.join('\n'), 2)}
+}`;
 }
 
 /**
@@ -118,14 +100,15 @@ function renderUnmarshal({ renderer, model }: {
   renderer: JavaScriptRenderer<any>,
   model: ConstrainedObjectModel
 }): string {
-  const properties = model.properties || {};
-  const unmarshalProperties = renderUnmarshalProperties(model, renderer);
+  const unmarshalProperties = renderUnmarshalProperties(model);
+  const unmarshalUnwrapProperties = renderUnmarshalUnwrapProperties(model, renderer);
   return `unmarshal(json){
   const obj = typeof json === "object" ? json : JSON.parse(json);
   const instance = new ${model.name}({});
 
 ${renderer.indent(unmarshalProperties)}
 
+${renderer.indent(unmarshalUnwrapProperties)}
 
   return instance;
 }`;
@@ -138,16 +121,16 @@ ${renderer.indent(unmarshalProperties)}
  */
 export const JS_COMMON_PRESET: JavaScriptPreset<JavaScriptCommonPresetOptions> = {
   class: {
-    additionalContent({ renderer, model, content, options, inputModel }) {
+    additionalContent({ renderer, model, content, options }) {
       options = options || {};
       const blocks: string[] = [];
 
       if (options.marshalling === true) {
-        blocks.push(renderMarshal({ renderer, model, inputModel }));
-        blocks.push(renderUnmarshal({ renderer, model, inputModel }));
+        blocks.push(renderMarshal({ renderer, model }));
+        blocks.push(renderUnmarshal({ renderer, model }));
       }
       if (options.example === true) {
-        blocks.push(renderExampleFunction({ renderer, model }));
+        blocks.push(renderExampleFunction({ model }));
       }
       return renderer.renderBlock([content, ...blocks], 2);
     },
