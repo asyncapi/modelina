@@ -186,16 +186,11 @@ export class ConstrainedObjectModel extends ConstrainedMetaModel {
   
   /**
    * More specifics on the type setup here: https://github.com/Microsoft/TypeScript/wiki/FAQ#why-cant-i-write-typeof-t-new-t-or-instanceof-t-in-my-generic-function
-   * 
-   * Generics are erased during compilation. 
-   * This means that there is no value T at runtime inside doSomething. 
-   * The normal pattern that people try to express here is to use the constructor function for a class either as a factory or as a runtime type check. 
-   * In both cases, using a construct signature and providing it as a parameter will do the right thing.
-   * 
+   *  
    * @param propertyType 
    * @returns 
    */
-  containsDictionaryProperty<T>(propertyType: { new(...args: any[]): T }) : boolean {
+  containsPropertyType<T>(propertyType: { new(...args: any[]): T }) : boolean {
     const foundPropertiesWithType = Object.values(this.properties).filter((property) => {
       return property instanceof propertyType;
     });

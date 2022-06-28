@@ -21,7 +21,7 @@ export class ClassRenderer extends JavaRenderer<ConstrainedObjectModel> {
     if (this.options?.collectionType === 'List') {
       this.addDependency('import java.util.List;');
     }
-    if (this.model.containsDictionaryProperty(ConstrainedDictionaryModel)) {
+    if (this.model.containsPropertyType(ConstrainedDictionaryModel)) {
       this.addDependency('import java.util.Map;');
     }
     

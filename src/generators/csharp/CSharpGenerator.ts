@@ -4,7 +4,7 @@ import {
   defaultGeneratorOptions
 } from '../AbstractGenerator';
 import { ConstrainedEnumModel, ConstrainedMetaModel, ConstrainedObjectModel, InputMetaModel, MetaModel, RenderOutput } from '../../models';
-import { CommonNamingConvention, CommonNamingConventionImplementation, FormatHelpers, TypeMapping, Constraints, constrainMetaModel, split } from '../../helpers';
+import { FormatHelpers, TypeMapping, Constraints, constrainMetaModel, split } from '../../helpers';
 import { CSharpPreset, CSHARP_DEFAULT_PRESET } from './CSharpPreset';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { ClassRenderer } from './renderers/ClassRenderer';
@@ -14,7 +14,6 @@ import { CSharpDefaultConstraints, CSharpDefaultTypeMapping } from './CSharpCons
 
 export interface CSharpOptions extends CommonGeneratorOptions<CSharpPreset> {
   collectionType?: 'List' | 'Array';
-  namingConvention?: CommonNamingConvention;
   typeMapping: TypeMapping<CSharpOptions>;
   constraints: Constraints;
   autoImplementedProperties: boolean;
@@ -32,7 +31,6 @@ export class CSharpGenerator extends AbstractGenerator<CSharpOptions, CSharpRend
     ...defaultGeneratorOptions,
     collectionType: 'Array',
     defaultPreset: CSHARP_DEFAULT_PRESET,
-    namingConvention: CommonNamingConventionImplementation,
     typeMapping: CSharpDefaultTypeMapping,
     constraints: CSharpDefaultConstraints,
     autoImplementedProperties: false

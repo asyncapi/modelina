@@ -1,5 +1,5 @@
 import { CSharpRenderer } from '../CSharpRenderer';
-import { ConstrainedObjectModel, ConstrainedObjectPropertyModel} from '../../../models';
+import { ConstrainedDictionaryModel, ConstrainedObjectModel, ConstrainedObjectPropertyModel} from '../../../models';
 import { pascalCase } from 'change-case';
 import { CsharpClassPreset } from '../CSharpPreset';
 import { CSharpOptions } from '../CSharpGenerator';
@@ -19,8 +19,7 @@ export class ClassRenderer extends CSharpRenderer<ConstrainedObjectModel> {
     ];
 
     if (this.options?.collectionType === 'List' ||
-      this.model.additionalProperties !== undefined ||
-      this.model.patternProperties !== undefined) {
+      this.model.containsPropertyType(ConstrainedDictionaryModel)) {
       this.addDependency('using System.Collections.Generic;');
     }
 
@@ -80,8 +79,8 @@ export const CSHARP_DEFAULT_CLASS_PRESET: CsharpClassPreset<CSharpOptions> = {
   },
   async property({ renderer, property, options }) {
     if (options.autoImplementedProperties) {
-      const getter = await renderer.runGetterPreset(property, options);
-      const setter = await renderer.runSetterPreset(property, options);
+      const getter = await renderer.runGetterPreset(property);
+      const setter = await renderer.runSetterPreset(property);
       return `public ${property.property.type} ${pascalCase(property.propertyName)} { ${getter} ${setter} }`;
     }
     return `private ${property.property.type} ${property.propertyName};`;
@@ -94,8 +93,8 @@ export const CSHARP_DEFAULT_CLASS_PRESET: CsharpClassPreset<CSharpOptions> = {
 
     return `public ${property.property.type} ${formattedAccessorName} 
 {
-  ${await renderer.runGetterPreset(property, options)}
-  ${await renderer.runSetterPreset(property, options)}
+  ${await renderer.runGetterPreset(property)}
+  ${await renderer.runSetterPreset(property)}
 }`;
   },
   getter({ options, property }) {

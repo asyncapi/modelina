@@ -4,7 +4,7 @@ import {
   defaultGeneratorOptions
 } from '../AbstractGenerator';
 import { ConstrainedEnumModel, ConstrainedMetaModel, ConstrainedObjectModel, InputMetaModel, MetaModel, RenderOutput } from '../../models';
-import { CommonNamingConvention, CommonNamingConventionImplementation, split, TypeMapping } from '../../helpers';
+import { split, TypeMapping } from '../../helpers';
 import { JavaPreset, JAVA_DEFAULT_PRESET } from './JavaPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
@@ -15,7 +15,6 @@ import { JavaDefaultConstraints, JavaDefaultTypeMapping } from './JavaConstraine
 
 export interface JavaOptions extends CommonGeneratorOptions<JavaPreset> {
   collectionType: 'List' | 'Array';
-  namingConvention: CommonNamingConvention;
   typeMapping: TypeMapping<JavaOptions>;
   constraints: Constraints;
 }
@@ -27,7 +26,6 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderComp
     ...defaultGeneratorOptions,
     defaultPreset: JAVA_DEFAULT_PRESET,     
     collectionType: 'Array',
-    namingConvention: CommonNamingConventionImplementation,
     typeMapping: JavaDefaultTypeMapping,
     constraints: JavaDefaultConstraints
   };

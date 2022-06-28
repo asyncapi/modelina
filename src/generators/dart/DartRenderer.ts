@@ -1,6 +1,7 @@
 import { AbstractRenderer } from '../AbstractRenderer';
 import { DartGenerator, DartOptions } from './DartGenerator';
-import { Preset, ConstrainedMetaModel } from '../../models';
+import { Preset, ConstrainedMetaModel, InputMetaModel } from '../../models';
+import { FormatHelpers } from 'helpers';
 
 /**
  * Common renderer for Dart types
@@ -13,14 +14,14 @@ export abstract class DartRenderer<RendererModelType extends ConstrainedMetaMode
     generator: DartGenerator,
     presets: Array<[Preset, unknown]>,
     model: RendererModelType, 
-    inputModel: CommonInputModel,
+    inputModel: InputMetaModel,
   ) {
     super(options, generator, presets, model, inputModel);
   }
   
   renderComments(lines: string | string[]): string {
     lines = FormatHelpers.breakLines(lines);
-    const newLiteral = lines.map(line => ` * ${line}`).join('\n');
+    const newLiteral = lines.map((line: string) => ` * ${line}`).join('\n');
     return `/**
 ${newLiteral}
  */`;

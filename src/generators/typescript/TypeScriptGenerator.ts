@@ -4,7 +4,7 @@ import {
   defaultGeneratorOptions
 } from '../AbstractGenerator';
 import { ConstrainedEnumModel, ConstrainedMetaModel, ConstrainedObjectModel, InputMetaModel, MetaModel, RenderOutput } from '../../models';
-import { CommonNamingConvention, CommonNamingConventionImplementation, constrainMetaModel, Constraints, split, TypeMapping } from '../../helpers';
+import { constrainMetaModel, Constraints, split, TypeMapping } from '../../helpers';
 import { TypeScriptPreset, TS_DEFAULT_PRESET } from './TypeScriptPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { InterfaceRenderer } from './renderers/InterfaceRenderer';
@@ -16,7 +16,6 @@ export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPres
   renderTypes: boolean;
   modelType: 'class' | 'interface';
   enumType: 'enum' | 'union';
-  namingConvention: CommonNamingConvention;
   typeMapping: TypeMapping<TypeScriptOptions>;
   constraints: Constraints;
 }
@@ -35,7 +34,6 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,Typ
     modelType: 'class',
     enumType: 'enum',
     defaultPreset: TS_DEFAULT_PRESET,
-    namingConvention: CommonNamingConventionImplementation,
     typeMapping: TypeScriptDefaultTypeMapping,
     constraints: TypeScriptDefaultConstraints
   };

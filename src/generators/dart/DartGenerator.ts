@@ -4,7 +4,7 @@ import {
   defaultGeneratorOptions
 } from '../AbstractGenerator';
 import {RenderOutput, ConstrainedMetaModel, MetaModel, ConstrainedObjectModel, ConstrainedEnumModel, InputMetaModel} from '../../models';
-import {CommonNamingConvention, CommonNamingConventionImplementation, constrainMetaModel, Constraints, split, TypeMapping} from '../../helpers';
+import {constrainMetaModel, Constraints, split, TypeMapping} from '../../helpers';
 import {DartPreset, DART_DEFAULT_PRESET} from './DartPreset';
 import {ClassRenderer} from './renderers/ClassRenderer';
 import {EnumRenderer} from './renderers/EnumRenderer';
@@ -15,7 +15,6 @@ import { DartDefaultConstraints, DartDefaultTypeMapping } from './DartConstraine
 
 export interface DartOptions extends CommonGeneratorOptions<DartPreset> {
   collectionType?: 'List';
-  namingConvention?: CommonNamingConvention;
   typeMapping: TypeMapping<DartOptions>;
   constraints: Constraints;
 }
@@ -29,7 +28,6 @@ export class DartGenerator extends AbstractGenerator<DartOptions, DartRenderComp
     ...defaultGeneratorOptions,
     defaultPreset: DART_DEFAULT_PRESET,
     collectionType: 'List',
-    namingConvention: CommonNamingConventionImplementation,
     typeMapping: DartDefaultTypeMapping,
     constraints: DartDefaultConstraints
   };
