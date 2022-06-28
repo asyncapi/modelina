@@ -1,13 +1,14 @@
 import {DartRenderer} from '../DartRenderer';
-import {CommonModel, ClassPreset, PropertyType} from '../../../models';
-import {DefaultPropertyNames, getUniquePropertyName} from '../../../helpers';
+import {ConstrainedObjectModel, ConstrainedObjectPropertyModel} from '../../../models';
+import { ClassPresetType } from '../DartPreset';
+import { DartOptions } from '../DartGenerator';
 
 /**
  * Renderer for Dart's `class` type
  *
  * @extends DartRenderer
  */
-export class ClassRenderer extends DartRenderer {
+export class ClassRenderer extends DartRenderer<ConstrainedObjectModel> {
   async defaultSelf(): Promise<string> {
     const content = [
       await this.renderProperties(),
@@ -16,8 +17,7 @@ export class ClassRenderer extends DartRenderer {
       await this.runAdditionalContentPreset(),
     ];
 
-    const formattedName = this.nameType(`${this.model.$id}`);
-    return `class ${formattedName} {
+    return `class ${this.model.name} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
   }
@@ -33,24 +33,16 @@ ${this.indent(this.renderBlock(content, 2))}
     const properties = this.model.properties || {};
     const content: string[] = [];
 
-    for (const [propertyName, property] of Object.entries(properties)) {
-      const rendererProperty = await this.runPropertyPreset(propertyName, property);
+    for (const property of Object.values(properties)) {
+      const rendererProperty = await this.runPropertyPreset(property);
       content.push(rendererProperty);
-    }
-
-    if (this.model.patternProperties !== undefined) {
-      for (const [pattern, patternModel] of Object.entries(this.model.patternProperties)) {
-        const propertyName = getUniquePropertyName(this.model, `${pattern}${DefaultPropertyNames.patternProperties}`);
-        const renderedPatternProperty = await this.runPropertyPreset(propertyName, patternModel, PropertyType.patternProperties);
-        content.push(renderedPatternProperty);
-      }
     }
 
     return this.renderBlock(content);
   }
 
-  runPropertyPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
-    return this.runPreset('property', {propertyName, property, type});
+  runPropertyPreset(property: ConstrainedObjectPropertyModel): Promise<string> {
+    return this.runPreset('property', {property});
   }
 
   /**
@@ -64,19 +56,14 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 }
 
-export const DART_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
+export const DART_DEFAULT_CLASS_PRESET: ClassPresetType<DartOptions> = {
   self({renderer}) {
     return renderer.defaultSelf();
   },
-  property({renderer, propertyName, property, type}) {
-    propertyName = renderer.nameProperty(propertyName, property);
-    let propertyType = renderer.renderType(property);
-    if (type === PropertyType.additionalProperty || type === PropertyType.patternProperties) {
-      propertyType = `Map<String, ${propertyType}>`;
-    }
-    return `${propertyType}? ${propertyName};`;
+  property({property}) {
+    return `${property.property.type}? ${property.propertyName};`;
   },
-  ctor({renderer,model}) {
-    return `${renderer.nameType(model.$id)}();`;
+  ctor({model}) {
+    return `${model.name}();`;
   }
 };
