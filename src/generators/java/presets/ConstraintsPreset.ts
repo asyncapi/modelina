@@ -1,4 +1,4 @@
-import { ConstrainedArrayModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedStringModel } from 'models';
+import { ConstrainedArrayModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedStringModel } from '../../../models';
 import { JavaPreset } from '../JavaPreset';
 
 /**
