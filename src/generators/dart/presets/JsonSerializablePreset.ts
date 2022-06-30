@@ -17,7 +17,8 @@ export const DART_JSON_PRESET: DartPreset = {
       return `factory ${model.name}.fromJson(Map<String, dynamic> json) => _$${model.name}FromJson(json);
 Map<String, dynamic> toJson() => _$${model.name}ToJson(this);`;
     }
-  }, enum: {
+  }, 
+  enum: {
     self({renderer, model, content}) {
       renderer.addDependency('import \'package:json_annotation/json_annotation.dart\';');
       renderer.addDependency(`part '${model.name}.g.dart';`);

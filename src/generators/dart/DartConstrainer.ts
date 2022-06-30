@@ -21,7 +21,7 @@ export const DartDefaultTypeMapping: TypeMapping<DartOptions> = {
     return 'int';
   },
   String ({constrainedModel}): string {
-    const format = constrainedModel.originalInput['format'];
+    const format = constrainedModel.originalInput?.format;
     switch (format) {
     case 'date':
       return 'DateTime';

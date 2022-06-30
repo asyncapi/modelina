@@ -1,5 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`DartGenerator should render \`enum\` type (integer type) 1`] = `""`;
+
+exports[`DartGenerator should render \`enum\` type (string type) 1`] = `""`;
+
+exports[`DartGenerator should render custom preset for \`enum\` type 1`] = `""`;
+
 exports[`DartGenerator should render models and their dependencies 1`] = `
 "import 'package:test.package/other_model.dart';
       
@@ -27,5 +33,3 @@ exports[`DartGenerator should render models and their dependencies 2`] = `
   OtherModel();
 }"
 `;
-
-

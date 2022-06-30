@@ -14,7 +14,7 @@ import {FormatHelpers} from '../../helpers/FormatHelpers';
 import { DartDefaultConstraints, DartDefaultTypeMapping } from './DartConstrainer';
 
 export interface DartOptions extends CommonGeneratorOptions<DartPreset> {
-  collectionType?: 'List';
+  collectionType?: 'List' | 'Normal';
   typeMapping: TypeMapping<DartOptions>;
   constraints: Constraints;
 }
@@ -27,13 +27,13 @@ export class DartGenerator extends AbstractGenerator<DartOptions, DartRenderComp
   static defaultOptions: DartOptions = {
     ...defaultGeneratorOptions,
     defaultPreset: DART_DEFAULT_PRESET,
-    collectionType: 'List',
+    collectionType: 'Normal',
     typeMapping: DartDefaultTypeMapping,
     constraints: DartDefaultConstraints
   };
 
   constructor(
-    options: DartOptions = DartGenerator.defaultOptions,
+    options: Partial<DartOptions> = DartGenerator.defaultOptions,
   ) {
     const realizedOptions = {...DartGenerator.defaultOptions, ...options};
     super('Dart', realizedOptions);
