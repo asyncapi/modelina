@@ -14,7 +14,8 @@ export class GoFileGenerator extends GoGenerator implements AbstractFileGenerato
    */
   public async generateToFiles(input: Record<string, unknown> | InputMetaModel, outputDirectory: string, options: GoRenderCompleteModelOptions): Promise<OutputModel[]> {
     let generatedModels = await this.generateCompleteModels(input, options);
-    generatedModels = generatedModels.filter((outputModel) => { return outputModel.modelName !== undefined; });
+    //Filter anything out that have not been successfully generated
+    generatedModels = generatedModels.filter((outputModel) => { return outputModel.modelName !== ''; });
     for (const outputModel of generatedModels) {
       const filePath = path.resolve(outputDirectory, `${outputModel.modelName}.go`);
       await FileHelpers.writerToFileSystem(outputModel.result, filePath);
