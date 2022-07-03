@@ -11,7 +11,7 @@ Modelina is the official AsyncAPI SDK to generate data models (i.e. <a href="#ou
 [![last commit](https://img.shields.io/github/last-commit/asyncapi/modelina)](https://github.com/asyncapi/modelina/commits/master)
 [![Discussions](https://img.shields.io/github/discussions/asyncapi/modelina)](https://github.com/asyncapi/modelina/discussions)
 [![Playground](https://img.shields.io/website?label=playground&url=https%3A%2F%2Fwww.asyncapi.com%2Ftools%2Fmodelina)](https://www.asyncapi.com/tools/modelina) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-29-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-30-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ---
@@ -185,6 +185,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/PanMan"><img src="https://avatars.githubusercontent.com/u/978501?v=4?s=100" width="100px;" alt=""/><br /><sub><b>PanMan</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=PanMan" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/artur-ciocanu"><img src="https://avatars.githubusercontent.com/u/743192?v=4?s=100" width="100px;" alt=""/><br /><sub><b>artur-ciocanu</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=artur-ciocanu" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/issues?q=author%3Aartur-ciocanu" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 

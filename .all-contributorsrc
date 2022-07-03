@@ -333,6 +333,16 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "artur-ciocanu",
+      "name": "artur-ciocanu",
+      "avatar_url": "https://avatars.githubusercontent.com/u/743192?v=4",
+      "profile": "https://github.com/artur-ciocanu",
+      "contributions": [
+        "code",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
