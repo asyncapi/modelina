@@ -1,9 +1,13 @@
 
-import { CommonModel, MetaModel, UnionModel, ObjectModel, DictionaryModel, StringModel, TupleModel, TupleValueModel, ArrayModel, BooleanModel, IntegerModel, FloatModel, EnumModel, EnumValueModel, ObjectPropertyModel} from '../models';
+import { CommonModel, MetaModel, UnionModel, ObjectModel, DictionaryModel, StringModel, TupleModel, TupleValueModel, ArrayModel, BooleanModel, IntegerModel, FloatModel, EnumModel, EnumValueModel, ObjectPropertyModel, AnyModel} from '../models';
 
 export function convertToMetaModel(jsonSchemaModel: CommonModel): MetaModel {
   const modelName = jsonSchemaModel.$id || 'undefined';
 
+  const anyModel = convertToAnyModel(jsonSchemaModel, modelName);
+  if (anyModel !== undefined) {
+    return anyModel;
+  }
   const unionModel = convertToUnionModel(jsonSchemaModel, modelName);
   if (unionModel !== undefined) {
     return unionModel;
@@ -87,6 +91,12 @@ export function convertToStringModel(jsonSchemaModel: CommonModel, name: string)
     return undefined;
   }
   return new StringModel(name, jsonSchemaModel.originalInput);
+}
+export function convertToAnyModel(jsonSchemaModel: CommonModel, name: string): StringModel | undefined {
+  if (!Array.isArray(jsonSchemaModel.type) || jsonSchemaModel.type.length !== 7) {
+    return undefined;
+  }
+  return new AnyModel(name, jsonSchemaModel.originalInput);
 }
 export function convertToIntegerModel(jsonSchemaModel: CommonModel, name: string): IntegerModel | undefined {
   if (!jsonSchemaModel.type?.includes('integer')) {
