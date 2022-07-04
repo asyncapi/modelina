@@ -1,8 +1,18 @@
-import { ArrayModel, BooleanModel, CommonModel, FloatModel, IntegerModel, ObjectModel, StringModel, TupleModel, UnionModel } from '../../src';
+import { AnyModel, ArrayModel, BooleanModel, CommonModel, FloatModel, IntegerModel, ObjectModel, StringModel, TupleModel, UnionModel } from '../../src';
 import { convertToMetaModel } from '../../src/helpers';
 describe('CommonModelToMetaModel', () => {
   afterEach(() => {
     jest.restoreAllMocks();
+  });
+  test('should convert to any model', () => { 
+    const cm = new CommonModel();
+    cm.type = ['string', 'number', 'integer', 'boolean', 'object', 'array', 'null'];
+    cm.$id = 'test';
+
+    const model = convertToMetaModel(cm);
+
+    expect(model).not.toBeUndefined();
+    expect(model instanceof AnyModel).toEqual(true);
   });
   test('should convert to string model', () => { 
     const cm = new CommonModel();
