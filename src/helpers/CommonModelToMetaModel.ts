@@ -140,21 +140,6 @@ export function convertToObjectModel(jsonSchemaModel: CommonModel, name: string)
       throw new Error('Property already exists');
     }
   }
-
-  if (jsonSchemaModel.patternProperties !== undefined) {
-    for (const [pattern, patternModel] of Object.entries(jsonSchemaModel.patternProperties)) {
-      const propertyName = `${pattern}_PatternProperty`;
-      if (metaModel.properties[String(propertyName)] === undefined) {
-        const keyModel = new StringModel(propertyName, pattern);
-        const valueModel = convertToMetaModel(patternModel);
-        const dictionaryModel = new DictionaryModel(propertyName, patternModel.originalInput, keyModel, valueModel, 'unwrap');
-        const propertyModel = new ObjectPropertyModel(propertyName, false, dictionaryModel);
-        metaModel.properties[String(propertyName)] = propertyModel;
-      } else {
-        throw new Error('Property already exists');
-      }
-    }
-  }
   return metaModel;
 }
 
