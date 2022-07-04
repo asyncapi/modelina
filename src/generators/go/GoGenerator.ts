@@ -48,7 +48,7 @@ export class GoGenerator extends AbstractGenerator<GoOptions, GoRenderCompleteMo
   }
 
   constrainToMetaModel(model: MetaModel): ConstrainedMetaModel {
-    return constrainMetaModel(
+    return constrainMetaModel<GoOptions>(
       this.options.typeMapping, 
       this.options.constraints, 
       {

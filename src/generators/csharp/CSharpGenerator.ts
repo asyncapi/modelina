@@ -54,7 +54,7 @@ export class CSharpGenerator extends AbstractGenerator<CSharpOptions, CSharpRend
   }
 
   constrainToMetaModel(model: MetaModel): ConstrainedMetaModel {
-    return constrainMetaModel(
+    return constrainMetaModel<CSharpOptions>(
       this.options.typeMapping, 
       this.options.constraints, 
       {

@@ -48,7 +48,7 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderComp
   }
 
   constrainToMetaModel(model: MetaModel): ConstrainedMetaModel {
-    return constrainMetaModel(
+    return constrainMetaModel<JavaOptions>(
       this.options.typeMapping, 
       this.options.constraints, 
       {

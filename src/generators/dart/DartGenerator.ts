@@ -49,7 +49,7 @@ export class DartGenerator extends AbstractGenerator<DartOptions, DartRenderComp
   }
 
   constrainToMetaModel(model: MetaModel): ConstrainedMetaModel {
-    return constrainMetaModel(
+    return constrainMetaModel<DartOptions>(
       this.options.typeMapping, 
       this.options.constraints, 
       {
