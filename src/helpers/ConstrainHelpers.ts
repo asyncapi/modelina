@@ -152,7 +152,7 @@ function constrainObjectModel<Options>(typeMapping: TypeMapping<Options>, constr
     const constrainedPropertyModel = new ConstrainedObjectPropertyModel('', propertyMetaModel.required, constrainedModel);
     const constrainedPropertyName = constrainRules.propertyKey({objectPropertyModel: propertyMetaModel, constrainedObjectPropertyModel: constrainedPropertyModel, constrainedObjectModel: constrainedModel, objectModel: context.metaModel});
     constrainedPropertyModel.propertyName = constrainedPropertyName;
-    const constrainedProperty = constrainMetaModel(typeMapping, constrainRules, {...context, metaModel: context.metaModel, propertyKey: constrainedPropertyName});
+    const constrainedProperty = constrainMetaModel(typeMapping, constrainRules, {...context, metaModel: propertyMetaModel.property, propertyKey: constrainedPropertyName});
     constrainedPropertyModel.property = constrainedProperty;
     constrainedModel.properties[String(constrainedPropertyName)] = constrainedPropertyModel;
   }
@@ -178,7 +178,7 @@ function ConstrainEnumModel<Options>(typeMapping: TypeMapping<Options>, constrai
   return constrainedModel;
 }
 
-export function constrainMetaModel(typeMapping: TypeMapping<any>, constrainRules: Constraints, context: ConstrainContext<any, MetaModel>): ConstrainedMetaModel {
+export function constrainMetaModel<Options>(typeMapping: TypeMapping<Options>, constrainRules: Constraints, context: ConstrainContext<Options, MetaModel>): ConstrainedMetaModel {
   const constrainedName = constrainRules.modelName({modelName: context.metaModel.name});
   const newContext = {...context, constrainedName};
   if (newContext.metaModel instanceof ObjectModel) {
