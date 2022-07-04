@@ -92,7 +92,7 @@ export function convertToStringModel(jsonSchemaModel: CommonModel, name: string)
   }
   return new StringModel(name, jsonSchemaModel.originalInput);
 }
-export function convertToAnyModel(jsonSchemaModel: CommonModel, name: string): StringModel | undefined {
+export function convertToAnyModel(jsonSchemaModel: CommonModel, name: string): AnyModel | undefined {
   if (!Array.isArray(jsonSchemaModel.type) || jsonSchemaModel.type.length !== 7) {
     return undefined;
   }
