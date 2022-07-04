@@ -50,12 +50,6 @@ function ensureModelsAreSplit(model: CommonModel, splitModels: CommonModel[], it
       model.properties[String(prop)] = trySplitModels(propSchema, splitModels, iteratedModels);
     }
   }
-  if (model.patternProperties) {
-    const existingPatternProperties = model.patternProperties;
-    for (const [pattern, patternModel] of Object.entries(existingPatternProperties)) {
-      model.patternProperties[String(pattern)] = trySplitModels(patternModel, splitModels, iteratedModels);
-    }
-  }
   if (model.additionalProperties) {
     model.additionalProperties = trySplitModels(model.additionalProperties, splitModels, iteratedModels);
   }
