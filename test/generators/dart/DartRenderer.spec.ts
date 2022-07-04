@@ -1,13 +1,13 @@
 import { defaultGeneratorOptions, DartGenerator } from '../../../src/generators';
 import { DartRenderer } from '../../../src/generators/dart/DartRenderer';
-import { CommonInputModel, CommonModel, ConstrainedObjectModel } from '../../../src/models';
+import { ConstrainedObjectModel, InputMetaModel } from '../../../src/models';
 class MockDartRenderer extends DartRenderer<ConstrainedObjectModel> {
 
 }
 describe('DartRenderer', () => {
-  let renderer: DartRenderer;
+  let renderer: DartRenderer<any>;
   beforeEach(() => {
-    renderer = new MockDartRenderer(DartGenerator.defaultOptions, new DartGenerator(), [], new CommonModel(), new CommonInputModel());
+    renderer = new MockDartRenderer(DartGenerator.defaultOptions, new DartGenerator(), [], new ConstrainedObjectModel('', undefined, '', {}), new InputMetaModel());
   });
   describe('renderComments()', () => {
     test('Should be able to render comments', () => {

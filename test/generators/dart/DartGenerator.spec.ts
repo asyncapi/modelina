@@ -114,28 +114,4 @@ describe('DartGenerator', () => {
     expect(models[0].result).toMatchSnapshot();
     expect(models[1].result).toMatchSnapshot();
   });
-  test('should throw error when reserved keyword is used for package name', async () => {
-    const doc = {
-      $id: 'Address',
-      type: 'object',
-      properties: {
-        street_name: {type: 'string'},
-        city: {type: 'string', description: 'City description'},
-        state: {type: 'string'},
-        house_number: {type: 'number'},
-        marriage: {type: 'boolean', description: 'Status if marriage live in given house'},
-        members: {oneOf: [{type: 'string'}, {type: 'number'}, {type: 'boolean'}],},
-        array_type: {type: 'array', items: [{type: 'string'}, {type: 'number'}]},
-      },
-      patternProperties: {
-        '^S(.?*)test&': {
-          type: 'string'
-        }
-      },
-      required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
-    };
-    const config = {packageName: 'interface'};
-    const expectedError = new Error('You cannot use reserved Dart keyword (interface) as package name, please use another.');
-    await expect(generator.generateCompleteModels(doc, config)).rejects.toEqual(expectedError);
-  });
 });
