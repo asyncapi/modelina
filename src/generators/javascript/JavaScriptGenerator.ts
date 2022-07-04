@@ -86,7 +86,7 @@ ${modelCode}`;
   }
 
   constrainToMetaModel(model: MetaModel): ConstrainedMetaModel {
-    return constrainMetaModel(
+    return constrainMetaModel<JavaScriptOptions>(
       this.options.typeMapping, 
       this.options.constraints, 
       {

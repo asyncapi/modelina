@@ -55,7 +55,7 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,Typ
   }
 
   constrainToMetaModel(model: MetaModel): ConstrainedMetaModel {
-    return constrainMetaModel(
+    return constrainMetaModel<TypeScriptOptions>(
       this.options.typeMapping, 
       this.options.constraints, 
       {
