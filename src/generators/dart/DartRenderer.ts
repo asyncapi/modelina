@@ -1,7 +1,7 @@
 import { AbstractRenderer } from '../AbstractRenderer';
 import { DartGenerator, DartOptions } from './DartGenerator';
 import { Preset, ConstrainedMetaModel, InputMetaModel } from '../../models';
-import { FormatHelpers } from 'helpers';
+import { FormatHelpers } from '../../helpers';
 
 /**
  * Common renderer for Dart types
