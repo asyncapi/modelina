@@ -1,5 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`DartGenerator should render \`class\` type 1`] = `
+"class Address {
+  string? StreetName;
+  string? City;
+  string? State;
+  double? HouseNumber;
+  bool? Marriage;
+  Object? Members;
+  Object[]? ArrayType;
+  Map<string, Object>? AdditionalProperties;
+
+  Address();
+}"
+`;
+
 exports[`DartGenerator should render \`enum\` type (integer type) 1`] = `""`;
 
 exports[`DartGenerator should render \`enum\` type (string type) 1`] = `""`;
