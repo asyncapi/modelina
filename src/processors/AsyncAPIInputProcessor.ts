@@ -31,11 +31,15 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     inputModel.originalInput = doc;
 
     //Intermediate model before meta model
-    let commonModels: {[key: string]: CommonModel} = {};
+    const commonModels: {[key: string]: CommonModel} = {};
     for (const [, message] of doc.allMessages()) {
       const schema = AsyncAPIInputProcessor.convertToInternalSchema(message.payload());
-      const newCommonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema);
-      commonModels = {...commonModels, ...newCommonModels};
+      const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema);
+      if (newCommonModel.$id !== undefined) {
+        commonModels[newCommonModel.$id] = newCommonModel;
+      } else {
+        Logger.error('Could not use schema as model, as it was missing an id');
+      }
     }
     for (const [key, commonModel] of Object.entries(commonModels)) {
       inputModel.models[String(key)] = convertToMetaModel(commonModel);

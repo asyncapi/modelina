@@ -73,9 +73,11 @@ export class SwaggerInputProcessor extends AbstractInputProcessor {
 
   private includeSchema(schema: OpenAPIV2.SchemaObject, name: string, inputModel: InputMetaModel) {
     const internalSchema = SwaggerInputProcessor.convertToInternalSchema(schema, name);
-    const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(internalSchema);
-    for (const [key, commonModel] of Object.entries(commonModels)) {
-      inputModel.models[String(key)] = convertToMetaModel(commonModel);
+    const commonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(internalSchema);
+    if (commonModel.$id !== undefined) {
+      inputModel.models[commonModel.$id] = convertToMetaModel(commonModel);
+    } else {
+      Logger.error('Could not use schema as model, as it was missing an id');
     }
   }
   

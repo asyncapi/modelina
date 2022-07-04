@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AsyncAPIInputProcessor process() should be able to process parsed objects 1`] = `
-CommonInputModel {
+InputMetaModel {
   "models": Object {},
   "originalInput": AsyncAPIDocument {
     "_json": Object {
@@ -50,7 +50,7 @@ CommonInputModel {
 `;
 
 exports[`AsyncAPIInputProcessor process() should be able to process pure object 1`] = `
-CommonInputModel {
+InputMetaModel {
   "models": Object {},
   "originalInput": AsyncAPIDocument {
     "_json": Object {

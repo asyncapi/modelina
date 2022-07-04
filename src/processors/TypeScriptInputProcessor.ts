@@ -5,9 +5,9 @@ import * as TJS from 'typescript-json-schema';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { convertToMetaModel } from '../helpers';
+import { Logger } from '../utils';
 
 /** Class for processing Typescript code inputs to Common module*/
-
 export interface TypeScriptInputProcessorOptions extends TJS.PartialArgs{
   uniqueNames? : boolean;
   required? : boolean;
@@ -81,10 +81,14 @@ export class TypeScriptInputProcessor extends AbstractInputProcessor {
     // obtain generated schema
     const generatedSchemas = this.generateJSONSchema(baseFile, '*', options?.typescript);
     if (generatedSchemas) {
-      let commonModels: {[key: string]: CommonModel} = {};
+      const commonModels: {[key: string]: CommonModel} = {};
       for (const schema of generatedSchemas) {
-        const newCommonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema as Record<string, any>);
-        commonModels = {...commonModels, ...newCommonModels };
+        const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema as Record<string, any>);
+        if (newCommonModel.$id !== undefined) {
+          commonModels[newCommonModel.$id] = newCommonModel;
+        } else {
+          Logger.error('Could not use schema as model, as it was missing an id');
+        }
       }
       for (const [key, commonModel] of Object.entries(commonModels)) {
         inputModel.models[String(key)] = convertToMetaModel(commonModel);

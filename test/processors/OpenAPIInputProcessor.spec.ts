@@ -4,7 +4,6 @@ import { CommonModel } from '../../src/models';
 import {OpenAPIInputProcessor} from '../../src/processors/OpenAPIInputProcessor';
 const basicDoc = JSON.parse(fs.readFileSync(path.resolve(__dirname, './OpenAPIInputProcessor/basic.json'), 'utf8'));
 jest.mock('../../src/interpreter/Interpreter');
-jest.mock('../../src/interpreter/PostInterpreter');
 jest.mock('../../src/utils/LoggingInterface');
 jest.spyOn(OpenAPIInputProcessor, 'convertToInternalSchema');
 
@@ -16,11 +15,6 @@ jest.mock('../../src/interpreter/Interpreter', () => {
         interpret: jest.fn().mockImplementation(() => {return mockedReturnModels[0];})
       };
     })
-  };
-});
-jest.mock('../../src/interpreter/PostInterpreter', () => {
-  return {
-    postInterpretModel: jest.fn().mockImplementation(() => {return mockedReturnModels;})
   };
 });
 describe('OpenAPIInputProcessor', () => {

@@ -5,7 +5,6 @@ import {AsyncAPIInputProcessor} from '../../src/processors/AsyncAPIInputProcesso
 import { CommonModel } from '../../src/models';
 const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'), 'utf8');
 jest.mock('../../src/interpreter/Interpreter');
-jest.mock('../../src/interpreter/PostInterpreter');
 jest.mock('../../src/utils/LoggingInterface');
 
 const mockedReturnModels = [new CommonModel()];
@@ -16,11 +15,6 @@ jest.mock('../../src/interpreter/Interpreter', () => {
         interpret: jest.fn().mockImplementation(() => {return mockedReturnModels[0];})
       };
     })
-  };
-});
-jest.mock('../../src/interpreter/PostInterpreter', () => {
-  return {
-    postInterpretModel: jest.fn().mockImplementation(() => {return mockedReturnModels;})
   };
 });
 describe('AsyncAPIInputProcessor', () => {

@@ -3,7 +3,6 @@ import $RefParser from '@apidevtools/json-schema-ref-parser';
 import path from 'path';
 import { CommonModel, InputMetaModel, Draft4Schema, Draft7Schema, Draft6Schema, SwaggerV2Schema, OpenapiV3Schema, AsyncapiV2Schema } from '../models';
 import { Logger } from '../utils';
-import { postInterpretModel } from '../interpreter/PostInterpreter';
 import { Interpreter } from '../interpreter/Interpreter';
 import { convertToMetaModel } from '../helpers';
 
@@ -279,23 +278,12 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param schema to simplify to common model
    */
-  static convertSchemaToCommonModel(schema: Draft4Schema | Draft6Schema | Draft7Schema | SwaggerV2Schema| AsyncapiV2Schema | boolean): Record<string, CommonModel> {
-    const commonModelsMap: Record<string, CommonModel> = {};
+  static convertSchemaToCommonModel(schema: Draft4Schema | Draft6Schema | Draft7Schema | SwaggerV2Schema| AsyncapiV2Schema | boolean): CommonModel {
     const interpreter = new Interpreter();
     const model = interpreter.interpret(schema);
-    if (model !== undefined) { 
-      const commonModels = postInterpretModel(model);
-      for (const commonModel of commonModels) {
-        if (commonModel.$id) {
-          if (commonModelsMap[commonModel.$id] !== undefined) {
-            Logger.warn(`Overwriting existing model with $id ${commonModel.$id}, are there two models with the same id present?`, commonModel);
-          }
-          commonModelsMap[commonModel.$id] = commonModel;
-        } else {
-          Logger.warn('Model did not have $id, ignoring.', commonModel);
-        }
-      }
+    if (model === undefined) {
+      throw new Error('Could not interpret schema to internal model');
     }
-    return commonModelsMap;
+    return model;
   }
 }

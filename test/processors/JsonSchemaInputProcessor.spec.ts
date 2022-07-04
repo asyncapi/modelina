@@ -3,10 +3,8 @@ import * as path from 'path';
 import { JsonSchemaInputProcessor } from '../../src/processors/JsonSchemaInputProcessor';
 import { CommonModel } from '../../src/models';
 import { Logger } from '../../src/utils';
-import { postInterpretModel } from '../../src/interpreter/PostInterpreter';
 import { Draft7Schema } from '../../src/models/Draft7Schema';
 jest.mock('../../src/interpreter/Interpreter');
-jest.mock('../../src/interpreter/PostInterpreter');
 jest.mock('../../src/utils/LoggingInterface');
 jest.spyOn(JsonSchemaInputProcessor, 'convertSchemaToCommonModel');
 
@@ -18,11 +16,6 @@ jest.mock('../../src/interpreter/Interpreter', () => {
         interpret: jest.fn().mockImplementation(() => {return mockedReturnModels[0];})
       };
     })
-  };
-});
-jest.mock('../../src/interpreter/PostInterpreter', () => {
-  return {
-    postInterpretModel: jest.fn().mockImplementation(() => {return mockedReturnModels;})
   };
 });
 describe('JsonSchemaInputProcessor', () => {
@@ -56,7 +49,6 @@ describe('JsonSchemaInputProcessor', () => {
       expect(JsonSchemaInputProcessor.convertSchemaToCommonModel).toHaveBeenCalledTimes(1);
       const functionArgConvertSchemaToCommonModel = (JsonSchemaInputProcessor.convertSchemaToCommonModel as jest.Mock).mock.calls[0][0];
       expect(functionArgConvertSchemaToCommonModel).toMatchObject(inputSchema);
-      expect(postInterpretModel).toHaveBeenCalledTimes(1);
     });
     
     test('should process draft 6 schemas', async () => {
@@ -66,7 +58,6 @@ describe('JsonSchemaInputProcessor', () => {
       expect(JsonSchemaInputProcessor.convertSchemaToCommonModel).toHaveBeenCalledTimes(1);
       const functionArgConvertSchemaToCommonModel = (JsonSchemaInputProcessor.convertSchemaToCommonModel as jest.Mock).mock.calls[0][0];
       expect(functionArgConvertSchemaToCommonModel).toMatchObject(inputSchema);
-      expect(postInterpretModel).toHaveBeenCalledTimes(1);
     });
     
     test('should process draft 4 schemas', async () => {
@@ -76,7 +67,6 @@ describe('JsonSchemaInputProcessor', () => {
       expect(JsonSchemaInputProcessor.convertSchemaToCommonModel).toHaveBeenCalledTimes(1);
       const functionArgConvertSchemaToCommonModel = (JsonSchemaInputProcessor.convertSchemaToCommonModel as jest.Mock).mock.calls[0][0];
       expect(functionArgConvertSchemaToCommonModel).toMatchObject(inputSchema);
-      expect(postInterpretModel).toHaveBeenCalledTimes(1);
     });
     
     test('should be able to use $ref', async () => {
@@ -89,7 +79,6 @@ describe('JsonSchemaInputProcessor', () => {
       expect(commonInputModel).toMatchObject({models: {test: {$id: 'test'}}, originalInput: inputSchema});
       expect(JsonSchemaInputProcessor.convertSchemaToCommonModel).toHaveBeenCalledTimes(1);
       expect(functionArgConvertSchemaToCommonModel).toMatchObject(expectedResolvedInput);
-      expect(postInterpretModel).toHaveBeenCalledTimes(1);
     });
     test('should be able to use $ref when circular', async () => {
       const inputSchemaPath = './JsonSchemaInputProcessor/references_circular.json';
@@ -101,7 +90,6 @@ describe('JsonSchemaInputProcessor', () => {
       expect(commonInputModel).toMatchObject({models: {test: {$id: 'test'}}, originalInput: inputSchema});
       expect(JsonSchemaInputProcessor.convertSchemaToCommonModel).toHaveBeenCalledTimes(1);
       expect(functionArgConvertSchemaToCommonModel).toMatchObject(expectedResolvedInput);
-      expect(postInterpretModel).toHaveBeenCalledTimes(1);
     });
     test('should fail correctly when reference cannot be resolved', async () => {
       const inputSchemaPath = './JsonSchemaInputProcessor/wrong_references.json';

@@ -1,5 +1,5 @@
 import { CommonModel, Draft6Schema, Draft4Schema, SwaggerV2Schema, AsyncapiV2Schema, Draft7Schema } from '../models';
-import { interpretName, isEnum, isModelObject } from './Utils';
+import { interpretName } from './Utils';
 import interpretProperties from './InterpretProperties';
 import interpretAllOf from './InterpretAllOf';
 import interpretConst from './InterpretConst';
@@ -91,12 +91,8 @@ export class Interpreter {
 
     interpretNot(schema, model, this, interpreterOptions);
 
-    //All schemas of type model object or enum MUST have ids
-    if (isModelObject(model) === true || isEnum(model) === true) {
-      model.$id = interpretName(schema) || `anonymSchema${this.anonymCounter++}`;
-    } else if ((!(schema instanceof Draft4Schema) && schema.$id !== undefined) || (schema instanceof Draft4Schema && schema.id !== undefined)) {
-      model.$id = interpretName(schema);
-    }
+    //All schemas MUST have ids as we do not know how it will be generated and when it will be needed
+    model.$id = interpretName(schema) || `anonymSchema${this.anonymCounter++}`;
   }
 
   /**

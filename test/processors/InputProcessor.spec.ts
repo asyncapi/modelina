@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { CommonInputModel, ProcessorOptions } from '../../src/models';
+import { InputMetaModel, ProcessorOptions } from '../../src/models';
 import { AbstractInputProcessor, AsyncAPIInputProcessor, JsonSchemaInputProcessor, InputProcessor, SwaggerInputProcessor } from '../../src/processors';
 import AsyncAPIParser, { ParserOptions } from '@asyncapi/parser';
 import { OpenAPIInputProcessor } from '../../src/processors/OpenAPIInputProcessor';
@@ -13,7 +13,7 @@ describe('InputProcessor', () => {
   });
   
   class TempProcessor extends AbstractInputProcessor {
-    process(input: any): Promise<CommonInputModel> { return Promise.resolve(new CommonInputModel()); }
+    process(input: any): Promise<InputMetaModel> { return Promise.resolve(new InputMetaModel()); }
     shouldProcess(input: any): boolean { return true; }
   }
   test('should add processor to map', () => {

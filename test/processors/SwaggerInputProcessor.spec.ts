@@ -4,7 +4,6 @@ import { CommonModel } from '../../src/models';
 import {SwaggerInputProcessor} from '../../src/processors/SwaggerInputProcessor';
 const basicDoc = JSON.parse(fs.readFileSync(path.resolve(__dirname, './SwaggerInputProcessor/basic.json'), 'utf8'));
 jest.mock('../../src/interpreter/Interpreter');
-jest.mock('../../src/interpreter/PostInterpreter');
 jest.mock('../../src/utils/LoggingInterface');
 jest.spyOn(SwaggerInputProcessor, 'convertToInternalSchema');
 
@@ -18,11 +17,7 @@ jest.mock('../../src/interpreter/Interpreter', () => {
     })
   };
 });
-jest.mock('../../src/interpreter/PostInterpreter', () => {
-  return {
-    postInterpretModel: jest.fn().mockImplementation(() => {return mockedReturnModels;})
-  };
-});
+
 describe('SwaggerInputProcessor', () => {
   afterAll(() => {
     jest.restoreAllMocks();
