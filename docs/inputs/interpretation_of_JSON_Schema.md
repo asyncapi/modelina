@@ -1,16 +1,16 @@
 # Interpretation of JSON Schema to CommonModel
 
-The library transforms JSON Schema from data validation rules to data definitions (`CommonModel`(s)). 
+The library transforms JSON Schema from validation rules to data definitions (`CommonModel`(s)). 
 
-The algorithm tries to get to a model whose data can be validated against the JSON schema document. 
+The algorithm tries to get to a model whose instance or serialized data can be validated against the JSON schema document it was generated from. 
 
-As of now we only provide the underlying structure of the schema file for the model, where constraints/annotations such as `maxItems`, `uniqueItems`, `multipleOf`, etc. are not interpreted.
+As of now we only provide the underlying structure of the schema file for the model, where runtime constraints such as `maxItems`, `uniqueItems`, `multipleOf`, etc. are not interpreted out of the box.
 
 ## Interpreter 
-The main functionality is located in the `Interpreter` class. This class ensures to recursively create (or retrieve from a cache) a `CommonModel` representation of a Schema. We have tried to keep the functionality split out into separate functions to reduce complexity and ensure it is easy to maintain. 
+The main functionality is located in the[ `Interpreter` class](../../src/interpreter/Interpreter.ts). This class ensures to recursively create (or retrieve from a cache) a `CommonModel` representation of a Schema. We have tried to keep the functionality split out into separate functions to reduce complexity and ensure it is easy to maintain. 
 
 The order of interpretation:
-- `true` boolean schema infers all model types (`object`, `string`, `number`, `array`, `boolean`, `null`, `integer`) schemas.
+- `true` boolean schema infers all model types `object`, `string`, `number`, `array`, `boolean`, `null`, `integer`.
 - `type` infers the initial model type.
 - `required` are interpreted as is.
 - `patternProperties` are merged together with any additionalProperties, where duplicate additionalProperties are [merged](#Merging-models).
@@ -26,9 +26,9 @@ The order of interpretation:
 - [not](#interpreting-not-schemas)
 
 ## Interpreting not schemas
-`not` schemas infer the form for which the model should not take by recursively interpret the `not` schema. It removes certain model properties when encountered.
+Encountering an odd level of `not` schemas infer the form for which the model should not take and an even level of `not` schemas once again infer the form.
 
-Currently, the following `not` model properties are interpreted:
+Currently, the following `not` schema properties are negated when encountered:
 - `type`
 - `enum`
 
