@@ -7,6 +7,7 @@ export abstract class ConstrainedMetaModel extends MetaModel {
     public type: string) {
     super(name, originalInput);
   }
+
   /**
    * Get the nearest constrained meta models for the constrained model.
    * 
@@ -75,29 +76,6 @@ export class ConstrainedObjectPropertyModel {
     public propertyName: string,
     public required: boolean,
     public property: ConstrainedMetaModel) {
-  }
-}
-export class ConstrainedObjectModel extends ConstrainedMetaModel {
-  constructor(
-    name: string,
-    originalInput: any, 
-    type: string,
-  public properties: { [key: string]: ConstrainedObjectPropertyModel; }) {
-    super(name, originalInput, type);
-  }
-  getNearestDependencies(): ConstrainedReferenceModel[] {
-    let dependencyModels = Object.values(this.properties).filter(
-      (modelProperty) => {
-        return modelProperty.property instanceof ConstrainedReferenceModel;
-      }
-    ).map((modelProperty) => {
-      return modelProperty.property as ConstrainedReferenceModel;
-    });
-    //Ensure no self references
-    dependencyModels = dependencyModels.filter((referenceModel) => {
-      return referenceModel.name !== this.name;
-    });
-    return dependencyModels;
   }
 }
 export class ConstrainedArrayModel extends ConstrainedMetaModel {
@@ -180,5 +158,42 @@ export class ConstrainedDictionaryModel extends ConstrainedMetaModel {
     public value: ConstrainedMetaModel, 
     public serializationType: 'unwrap' | 'normal' = 'normal') {
     super(name, originalInput, type);
+  }
+}
+
+export class ConstrainedObjectModel extends ConstrainedMetaModel {
+  constructor(
+    name: string,
+    originalInput: any, 
+    type: string,
+  public properties: { [key: string]: ConstrainedObjectPropertyModel; }) {
+    super(name, originalInput, type);
+  }
+  getNearestDependencies(): ConstrainedReferenceModel[] {
+    let dependencyModels = Object.values(this.properties).filter(
+      (modelProperty) => {
+        return modelProperty.property instanceof ConstrainedReferenceModel;
+      }
+    ).map((modelProperty) => {
+      return modelProperty.property as ConstrainedReferenceModel;
+    });
+    //Ensure no self references
+    dependencyModels = dependencyModels.filter((referenceModel) => {
+      return referenceModel.name !== this.name;
+    });
+    return dependencyModels;
+  }
+  
+  /**
+   * More specifics on the type setup here: https://github.com/Microsoft/TypeScript/wiki/FAQ#why-cant-i-write-typeof-t-new-t-or-instanceof-t-in-my-generic-function
+   *  
+   * @param propertyType 
+   * @returns 
+   */
+  containsPropertyType<T>(propertyType: { new(...args: any[]): T }) : boolean {
+    const foundPropertiesWithType = Object.values(this.properties).filter((property) => {
+      return property instanceof propertyType;
+    });
+    return foundPropertiesWithType.length === 0;
   }
 }

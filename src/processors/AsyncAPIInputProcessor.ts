@@ -10,7 +10,7 @@ import { convertToMetaModel } from '../helpers';
  * Class for processing AsyncAPI inputs
  */
 export class AsyncAPIInputProcessor extends AbstractInputProcessor {
-  static supportedVersions = ['2.0.0', '2.1.0', '2.2.0', '2.3.0'];
+  static supportedVersions = ['2.0.0', '2.1.0', '2.2.0', '2.3.0','2.4.0'];
 
   /**
    * Process the input as an AsyncAPI document

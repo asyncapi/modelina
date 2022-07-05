@@ -290,6 +290,49 @@
         "example",
         "doc"
       ]
+    },
+    {
+      "login": "Polygens",
+      "name": "Willem Gillis",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3582318?v=4",
+      "profile": "https://github.com/Polygens",
+      "contributions": [
+        "code",
+        "test",
+        "bug"
+      ]
+    },
+    {
+      "login": "rmasarovic",
+      "name": "rmasarovic",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1522834?v=4",
+      "profile": "https://github.com/rmasarovic",
+      "contributions": [
+        "code",
+        "doc",
+        "test",
+        "example"
+      ]
+    },
+    {
+      "login": "owais34",
+      "name": "Owais Hasnath Ahmed",
+      "avatar_url": "https://avatars.githubusercontent.com/u/37238759?v=4",
+      "profile": "https://github.com/owais34",
+      "contributions": [
+        "code",
+        "test",
+        "doc"
+      ]
+    },
+    {
+      "login": "PanMan",
+      "name": "PanMan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/978501?v=4",
+      "profile": "https://github.com/PanMan",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,

@@ -1,19 +1,18 @@
 import { CSharpRenderer } from '../CSharpRenderer';
-import { EnumPreset } from '../../../models';
-import { pascalCase } from 'change-case';
-import { FormatHelpers } from '../../../helpers';
+import { ConstrainedEnumModel, ConstrainedEnumValueModel } from '../../../models';
+import { EnumPresetType } from '../CSharpPreset';
+import { CSharpOptions } from '../CSharpGenerator';
 
 /**
  * Renderer for C#'s `enum` type
  * 
  * @extends CSharpRenderer
  */
-export class EnumRenderer extends CSharpRenderer {
+export class EnumRenderer extends CSharpRenderer<ConstrainedEnumModel> {
   async defaultSelf(): Promise<string> {
     const enumItems = await this.renderItems();
-    const formattedName = this.nameType(this.model.$id);
-    const getValueCaseItemValues = await this.getValueCaseItemValues();
-    const toEnumCaseItemValues = await this.toEnumCaseItemValues();
+    const getValueCaseItemValues = this.getValueCaseItemValues();
+    const toEnumCaseItemValues = this.toEnumCaseItemValues();
     const enumValueSwitch = `switch (enumValue)
 {
 ${this.indent(getValueCaseItemValues)}
@@ -24,22 +23,22 @@ return null;`;
 ${this.indent(toEnumCaseItemValues)}
 }
 return null;`;
-    const classContent = `public static dynamic GetValue(this ${formattedName} enumValue)
+    const classContent = `public static dynamic GetValue(this ${this.model.name} enumValue)
 {
 ${this.indent(enumValueSwitch)}
 }
 
-public static ${formattedName}? To${formattedName}(dynamic value)
+public static ${this.model.name}? To${this.model.name}(dynamic value)
 {
 ${this.indent(valueSwitch)}
 }`;
 
-    return `public enum ${formattedName}
+    return `public enum ${this.model.name}
 {
 ${this.indent(enumItems)}
 }
 
-public static class ${formattedName}Extensions
+public static class ${this.model.name}Extensions
 {
 ${this.indent(classContent)}
 }
@@ -47,7 +46,7 @@ ${this.indent(classContent)}
   }
 
   async renderItems(): Promise<string> {
-    const enums = this.model.enum || [];
+    const enums = this.model.values || [];
     const items: string[] = [];
 
     for (const value of enums) {
@@ -59,70 +58,39 @@ ${this.indent(classContent)}
     return `${content}`;
   }
 
-  /**
-   * Some enum values require custom value conversion
-   */
-  getEnumValue(enumValue: any): any {
-    switch (typeof enumValue) {
-    case 'number':
-    case 'bigint':
-    case 'boolean':
-      return enumValue;
-    case 'object':
-      return `"${JSON.stringify(enumValue).replace(/"/g, '\\"')}"`;
-    default:
-      return `"${enumValue}"`;
-    }
-  }
-
-  async toEnumCaseItemValues(): Promise<string> {
-    const enums = this.model.enum || [];
+  toEnumCaseItemValues(): string {
+    const enums = this.model.values || [];
     const items: string[] = [];
-    const formattedName = this.nameType(this.model.$id);
 
     for (const enumValue of enums) {
-      const renderedItem = await this.runItemPreset(enumValue);
-      const value = this.getEnumValue(enumValue);
-      items.push(`case ${value}: return ${formattedName}.${renderedItem};`);
+      items.push(`case ${enumValue.value}: return ${this.model.name}.${enumValue.key};`);
     }
 
     const content = items.join('\n');
     return `${content}`;
   }
-  async getValueCaseItemValues(): Promise<string> {
-    const enums = this.model.enum || [];
+  getValueCaseItemValues(): string {
+    const enums = this.model.values || [];
     const items: string[] = [];
-    const formattedName = this.nameType(this.model.$id);
 
     for (const enumValue of enums) {
-      const renderedItem = await this.runItemPreset(enumValue);
-      const value = this.getEnumValue(enumValue);
-      items.push(`case ${formattedName}.${renderedItem}: return ${value};`);
+      items.push(`case ${this.model.name}.${enumValue.key}: return ${enumValue.value};`);
     }
 
     const content = items.join('\n');
     return `${content}`;
   }
 
-  runItemPreset(item: any): Promise<string> {
+  runItemPreset(item: ConstrainedEnumValueModel): Promise<string> {
     return this.runPreset('item', { item });
   }
 }
 
-export const CSHARP_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
+export const CSHARP_DEFAULT_ENUM_PRESET: EnumPresetType<CSharpOptions> = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
   item({ item }) {
-    let itemName = FormatHelpers.replaceSpecialCharacters(String(item), { exclude: [' '], separator: '_' });
-    if (typeof item === 'number' || typeof item === 'bigint') {
-      itemName = `Number_${itemName}`;
-    } else if (typeof item === 'object') {
-      itemName = `${JSON.stringify(item)}`;
-    } else if (!(/^[a-zA-Z]+$/).test(itemName.charAt(0))) {
-      itemName = `String_${itemName}`;
-    }
-
-    return pascalCase(itemName);
+    return item.key;
   },
 };

@@ -201,36 +201,6 @@ describe('PostInterpreter', () => {
       expect(postProcessedModels[0]).toMatchObject(expectedSchema1Model);
       expect(postProcessedModels[1]).toMatchObject(expectedSchema2Model);
     });
-    test('should split models if patternProperties contains model object', () => {
-      const rawModel = {
-        $id: 'schema1',
-        patternProperties: {
-          testPattern: {
-            $id: 'schema2',
-            type: 'object'
-          }
-        }
-      };  
-      const model = CommonModel.toCommonModel(rawModel);
-      (isModelObject as jest.Mock).mockReturnValue(true);
-
-      const postProcessedModels = postInterpretModel(model);
-
-      const expectedSchema1Model = new CommonModel();
-      expectedSchema1Model.$id = 'schema1';
-      const expectedPatternModel = new CommonModel();
-      expectedPatternModel.$ref = 'schema2';
-      expectedSchema1Model.patternProperties = {
-        testPattern: expectedPatternModel
-      };
-      const expectedSchema2Model = new CommonModel();
-      expectedSchema2Model.$id = 'schema2';
-
-      expect(postProcessedModels).toHaveLength(2);
-      expect(isModelObject).toHaveBeenNthCalledWith(1, rawModel.patternProperties!['testPattern']);
-      expect(postProcessedModels[0]).toMatchObject(expectedSchema1Model);
-      expect(postProcessedModels[1]).toMatchObject(expectedSchema2Model);
-    });
     test('should split models if additionalProperties contains model object', () => {
       const rawModel = {
         $id: 'schema1',

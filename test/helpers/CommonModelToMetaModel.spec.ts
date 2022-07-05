@@ -96,25 +96,6 @@ describe('CommonModelToMetaModel', () => {
     expect(model instanceof ObjectModel).toEqual(true);
     expect((model as ObjectModel).properties['additionalProperties']).not.toBeUndefined();
   });
-  test('should convert to object model with pattern properties', () => { 
-    const spm = new CommonModel();
-    spm.type = 'string';
-    const cm = new CommonModel();
-    cm.type = 'object';
-    cm.$id = 'test';
-    cm.properties = {
-      test: spm
-    };
-    cm.patternProperties = {
-      test: spm
-    };
-    
-    const model = convertToMetaModel(cm);
-
-    expect(model).not.toBeUndefined();
-    expect(model instanceof ObjectModel).toEqual(true);
-    expect((model as ObjectModel).properties['test_PatternProperty']).not.toBeUndefined();
-  });
   test('should convert normal array to array model', () => { 
     const spm = new CommonModel();
     spm.type = 'string';

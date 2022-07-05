@@ -11,10 +11,10 @@ import { Interpreter, InterpreterOptions, InterpreterSchemaType } from './Interp
  */
 export default function interpretPatternProperties(schema: InterpreterSchemaType, model: CommonModel, interpreter : Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
   if (typeof schema === 'boolean') {return;}
-  for (const [pattern, patternSchema] of Object.entries(schema.patternProperties || {})) {
+  for (const [,patternSchema] of Object.entries(schema.patternProperties || {})) {
     const patternModel = interpreter.interpret(patternSchema as any, interpreterOptions);
     if (patternModel !== undefined) {
-      model.addPatternProperty(pattern, patternModel, schema);
+      model.addAdditionalProperty(patternModel, schema);
     }
   }
 }
