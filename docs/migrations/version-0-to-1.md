@@ -7,6 +7,11 @@ In version 0, you where able to control the naming formats for properties and mo
 This is now removed and replaced with `constraints` which is a mean to simplify the complex task of constraining any type of values to the specifics of an output. Each output has their unique constraints to what is allowed and what is expected as names for properties, models and enums, and enum values.
 
 To read more about the constrain option here:
+- [C#](../constraints/CSharp.md)
+- [Dart](../constraints/Dart.md)
+- [Go](../constraints/Go.md)
+- [Java](../constraints/Java.md)
+- [JavaScript](../constraints/JavaScript.md)
 - [TypeScript](../constraints/TypeScript.md)
 
 ## CommonModel is no more
@@ -26,7 +31,6 @@ This change means that any time you did some custom presets and interacted with 
 - Go, struct preset hooks had access to `model: CommonModel` which has now been changed to `model: ConstrainedObjectModel`
 - C#, class preset hooks had access to `model: CommonModel` which has now been changed to `model: ConstrainedObjectModel`
 - C#, enum preset hooks had access to `model: CommonModel` which has now been changed to `model: ConstrainedEnumModel`
-
 
 General changes:
 - Hooks that gave access to properties/fields formally had the arguments `property`, `propertyName` and `type`, these are now wrapped within the [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) and can be accessed through the `property` argument.

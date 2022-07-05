@@ -4,23 +4,27 @@
 
 <!-- toc -->
 
-- [Generator's options](#generators-options)
-  * [TypeScript](#typescript)
-    + [Generator options](#generator-options)
-    + [Render complete model options](#render-complete-model-options)
-  * [Java](#java)
-    + [Generator options](#generator-options-1)
-    + [Render complete model options](#render-complete-model-options-1)
-  * [JavaScript](#javascript)
-    + [Generator options](#generator-options-2)
-    + [Render complete model options](#render-complete-model-options-2)
-  * [Go](#go)
-    + [Generator options](#generator-options-3)
-    + [Render complete model options](#render-complete-model-options-3)
-  * [C#](#c%23)
-    + [Generator options](#generator-options-4)
-    + [Render complete model options](#render-complete-model-options-4)
-- [Custom generator](#custom-generator)
+- [Generators](#generators)
+  - [Generator's options](#generators-options)
+    - [Dart](#dart)
+      - [Generator options](#generator-options)
+      - [Render complete model options](#render-complete-model-options)
+    - [TypeScript](#typescript)
+      - [Generator options](#generator-options-1)
+      - [Render complete model options](#render-complete-model-options-1)
+    - [Java](#java)
+      - [Generator options](#generator-options-2)
+      - [Render complete model options](#render-complete-model-options-2)
+    - [JavaScript](#javascript)
+      - [Generator options](#generator-options-3)
+      - [Render complete model options](#render-complete-model-options-3)
+    - [Go](#go)
+      - [Generator options](#generator-options-4)
+      - [Render complete model options](#render-complete-model-options-4)
+    - [C#](#c)
+      - [Generator options](#generator-options-5)
+      - [Render complete model options](#render-complete-model-options-5)
+  - [Custom generator](#custom-generator)
 
 <!-- tocstop -->
 
@@ -50,6 +54,26 @@ In addition, generators take additional options when calling their `renderComple
 This allows the caller to specify additional options when generating a multi-file model from the input with cross dependencies.
 
 Below is a list of additional options available for a given generator.
+
+### [Dart](./languages/Dart.md)
+
+#### Generator options
+
+| Option | Type | Description | Default value |
+|---|---|---|---|
+| `renderTypes` | Boolean | Render signature for types. | `true` |
+| `modelType` | String | It indicates which model type should be rendered for the `object` type. Its value can be either `interface` or `class`. | `class` |
+| `enumType` | String | It indicates which type should be rendered for the `enum` type. Its value can be either `union` or `enum`. | `enum` |
+| `namingConvention` | Object | Options for naming conventions. | - |
+| `namingConvention.type` | Function | A function that returns the format of the type. | _Returns pascal cased name, and ensures that reserved keywords are never rendered__ |
+| `namingConvention.property` | Function | A function that returns the format of the property. | _Returns camel cased name, and ensures that names of properties does not clash against reserved keywords for TS, as well as JS to ensure painless transpilation_ |
+
+#### Render complete model options
+
+| Option         | Type                     | Description                                                                | Default value |
+|----------------|--------------------------|----------------------------------------------------------------------------|---------------|
+| `moduleSystem` | 'ESM' &#124; 'CJS'       | Which module system the generated files should use (`import` or `require`) | 'CJS'         |
+| `exportType`   | 'default' &#124; 'named' | Whether the exports should be default or named exports                     | 'default'     |
 
 ### [TypeScript](./languages/TypeScript.md)
 
