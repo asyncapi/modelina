@@ -73,9 +73,15 @@ export class SwaggerInputProcessor extends AbstractInputProcessor {
 
   private includeSchema(schema: OpenAPIV2.SchemaObject, name: string, inputModel: InputMetaModel) {
     const internalSchema = SwaggerInputProcessor.convertToInternalSchema(schema, name);
-    const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(internalSchema);
-    for (const [key, commonModel] of Object.entries(commonModels)) {
-      inputModel.models[String(key)] = convertToMetaModel(commonModel);
+    const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(internalSchema);
+    if (newCommonModel.$id !== undefined) {
+      if (inputModel.models[newCommonModel.$id] !== undefined) {
+        Logger.warn(`Overwriting existing model with $id ${newCommonModel.$id}, are there two models with the same id present?`, newCommonModel);
+      }
+      const metaModel = convertToMetaModel(newCommonModel);
+      inputModel.models[metaModel.name] = metaModel;
+    } else {
+      Logger.warn('Model did not have $id, ignoring.', newCommonModel);
     }
   }
   
