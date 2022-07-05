@@ -1,4 +1,4 @@
-import { CommonModel, InputMetaModel, ProcessorOptions } from '../models';
+import { InputMetaModel, ProcessorOptions } from '../models';
 import { resolve } from 'path';
 import ts from 'typescript';
 import * as TJS from 'typescript-json-schema';
@@ -81,17 +81,17 @@ export class TypeScriptInputProcessor extends AbstractInputProcessor {
     // obtain generated schema
     const generatedSchemas = this.generateJSONSchema(baseFile, '*', options?.typescript);
     if (generatedSchemas) {
-      const commonModels: {[key: string]: CommonModel} = {};
       for (const schema of generatedSchemas) {
         const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema as Record<string, any>);
         if (newCommonModel.$id !== undefined) {
-          commonModels[newCommonModel.$id] = newCommonModel;
+          if (inputModel.models[newCommonModel.$id] !== undefined) {
+            Logger.warn(`Overwriting existing model with $id ${newCommonModel.$id}, are there two models with the same id present?`, newCommonModel);
+          }
+          const metaModel = convertToMetaModel(newCommonModel);
+          inputModel.models[metaModel.name] = metaModel;
         } else {
-          Logger.error('Could not use schema as model, as it was missing an id');
+          Logger.warn('Model did not have $id, ignoring.', newCommonModel);
         }
-      }
-      for (const [key, commonModel] of Object.entries(commonModels)) {
-        inputModel.models[String(key)] = convertToMetaModel(commonModel);
       }
     }
     return Promise.resolve(inputModel);

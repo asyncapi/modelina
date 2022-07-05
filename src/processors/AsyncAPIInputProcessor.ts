@@ -1,7 +1,7 @@
 import {parse, AsyncAPIDocument, Schema as AsyncAPISchema, ParserOptions} from '@asyncapi/parser';
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
-import { CommonModel, InputMetaModel, ProcessorOptions } from '../models';
+import { InputMetaModel, ProcessorOptions } from '../models';
 import { Logger } from '../utils';
 import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
 import { convertToMetaModel } from '../helpers';
@@ -29,20 +29,19 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       doc = input as AsyncAPIDocument;
     }
     inputModel.originalInput = doc;
-
-    //Intermediate model before meta model
-    const commonModels: {[key: string]: CommonModel} = {};
+    // Go over all the message payloads and convert them to models
     for (const [, message] of doc.allMessages()) {
       const schema = AsyncAPIInputProcessor.convertToInternalSchema(message.payload());
       const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema);
       if (newCommonModel.$id !== undefined) {
-        commonModels[newCommonModel.$id] = newCommonModel;
+        if (inputModel.models[newCommonModel.$id] !== undefined) {
+          Logger.warn(`Overwriting existing model with $id ${newCommonModel.$id}, are there two models with the same id present?`, newCommonModel);
+        }
+        const metaModel = convertToMetaModel(newCommonModel);
+        inputModel.models[metaModel.name] = metaModel;
       } else {
-        Logger.error('Could not use schema as model, as it was missing an id');
+        Logger.warn('Model did not have $id which is required, ignoring.', newCommonModel);
       }
-    }
-    for (const [key, commonModel] of Object.entries(commonModels)) {
-      inputModel.models[String(key)] = convertToMetaModel(commonModel);
     }
     return inputModel;
   }

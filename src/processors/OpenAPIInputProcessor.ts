@@ -90,11 +90,15 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
 
   private includeSchema(schema: OpenAPIV3.SchemaObject, name: string, inputModel: InputMetaModel) {
     const internalSchema = OpenAPIInputProcessor.convertToInternalSchema(schema, name);
-    const commonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(internalSchema);
-    if (commonModel.$id !== undefined) {
-      inputModel.models[commonModel.$id] = convertToMetaModel(commonModel);
+    const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(internalSchema);
+    if (newCommonModel.$id !== undefined) {
+      if (inputModel.models[newCommonModel.$id] !== undefined) {
+        Logger.warn(`Overwriting existing model with $id ${newCommonModel.$id}, are there two models with the same id present?`, newCommonModel);
+      }
+      const metaModel = convertToMetaModel(newCommonModel);
+      inputModel.models[metaModel.name] = metaModel;
     } else {
-      Logger.error('Could not use schema as model, as it was missing an id');
+      Logger.warn('Model did not have $id, ignoring.', newCommonModel);
     }
   }
 

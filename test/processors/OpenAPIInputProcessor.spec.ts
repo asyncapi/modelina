@@ -1,13 +1,19 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { CommonModel } from '../../src/models';
+import { AnyModel, CommonModel } from '../../src/models';
 import {OpenAPIInputProcessor} from '../../src/processors/OpenAPIInputProcessor';
 const basicDoc = JSON.parse(fs.readFileSync(path.resolve(__dirname, './OpenAPIInputProcessor/basic.json'), 'utf8'));
-jest.mock('../../src/interpreter/Interpreter');
 jest.mock('../../src/utils/LoggingInterface');
 jest.spyOn(OpenAPIInputProcessor, 'convertToInternalSchema');
-
 const mockedReturnModels = [new CommonModel()];
+const mockedMetaModel = new AnyModel('', undefined);
+jest.mock('../../src/helpers/CommonModelToMetaModel', () => {
+  return {
+    convertToMetaModel: jest.fn().mockImplementation(() => {
+      return mockedMetaModel;
+    })
+  };
+});
 jest.mock('../../src/interpreter/Interpreter', () => {
   return {
     Interpreter: jest.fn().mockImplementation(() => {

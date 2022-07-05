@@ -4,9 +4,7 @@ import { CommonModel } from '../../src/models';
 import { TypeScriptInputProcessor } from '../../src/processors';
 const baseFile = path.resolve(__dirname, './TypeScriptInputProcessor/index.ts');
 const baseFileContents = fs.readFileSync(path.resolve(__dirname, './TypeScriptInputProcessor/index.ts'), 'utf-8');
-jest.mock('../../src/interpreter/Interpreter');
 jest.mock('../../src/utils/LoggingInterface');
-
 const mockedReturnModels = [new CommonModel()];
 jest.mock('../../src/interpreter/Interpreter', () => {
   return {

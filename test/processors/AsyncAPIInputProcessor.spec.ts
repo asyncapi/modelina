@@ -2,12 +2,18 @@ import * as fs from 'fs';
 import * as path from 'path';
 import {parse, ParserOptions} from '@asyncapi/parser';
 import {AsyncAPIInputProcessor} from '../../src/processors/AsyncAPIInputProcessor';
-import { CommonModel } from '../../src/models';
+import { AnyModel, CommonModel } from '../../src/models';
 const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'), 'utf8');
-jest.mock('../../src/interpreter/Interpreter');
 jest.mock('../../src/utils/LoggingInterface');
-
 const mockedReturnModels = [new CommonModel()];
+const mockedMetaModel = new AnyModel('', undefined);
+jest.mock('../../src/helpers/CommonModelToMetaModel', () => {
+  return {
+    convertToMetaModel: jest.fn().mockImplementation(() => {
+      return mockedMetaModel;
+    })
+  };
+});
 jest.mock('../../src/interpreter/Interpreter', () => {
   return {
     Interpreter: jest.fn().mockImplementation(() => {
