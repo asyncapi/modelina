@@ -1,7 +1,48 @@
-import { ConstrainContext, Constraints } from 'models/Constraints';
 import { ConstrainedAnyModel, ConstrainedBooleanModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedMetaModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedTupleValueModel, ConstrainedArrayModel, ConstrainedUnionModel, ConstrainedEnumModel, ConstrainedDictionaryModel, ConstrainedEnumValueModel, ConstrainedObjectPropertyModel } from '../models/ConstrainedMetaModel';
-import { AnyModel, BooleanModel, FloatModel, IntegerModel, ObjectModel, ReferenceModel, StringModel, TupleModel, ArrayModel, UnionModel, EnumModel, DictionaryModel, MetaModel } from '../models/MetaModel';
+import { AnyModel, BooleanModel, FloatModel, IntegerModel, ObjectModel, ReferenceModel, StringModel, TupleModel, ArrayModel, UnionModel, EnumModel, DictionaryModel, MetaModel, ObjectPropertyModel } from '../models/MetaModel';
 import { getTypeFromMapping, TypeMapping } from './TypeHelpers';
+
+export type ConstrainContext<Options, M extends MetaModel> = {
+  propertyKey?: string,
+  metaModel: M,
+  constrainedName: string,
+  options: Options
+}
+
+export type EnumKeyContext = {
+  enumKey: string,
+  constrainedEnumModel: ConstrainedEnumModel,
+  enumModel: EnumModel
+}
+export type EnumKeyConstraint = (context: EnumKeyContext) => string;
+
+export type EnumValueContext = {
+  enumValue: any,
+  constrainedEnumModel: ConstrainedEnumModel,
+  enumModel: EnumModel
+}
+export type EnumValueConstraint = (context: EnumValueContext) => string;
+
+export type ModelNameContext = {
+  modelName: string
+}
+export type ModelNameConstraint = (context: ModelNameContext) => string;
+
+export type PropertyKeyContext = {
+  constrainedObjectPropertyModel: ConstrainedObjectPropertyModel,
+  objectPropertyModel: ObjectPropertyModel,
+  constrainedObjectModel: ConstrainedObjectModel,
+  objectModel: ObjectModel
+}
+
+export type PropertyKeyConstraint = (context: PropertyKeyContext) => string;
+
+export interface Constraints {
+  enumKey: EnumKeyConstraint,
+  enumValue: EnumValueConstraint,
+  modelName: ModelNameConstraint,
+  propertyKey: PropertyKeyConstraint,
+}
 
 function constrainReferenceModel<Options>(typeMapping: TypeMapping<Options>, constrainRules: Constraints, context: ConstrainContext<Options, ReferenceModel>): ConstrainedReferenceModel {
   const constrainedRefModel = constrainMetaModel(typeMapping, constrainRules, {...context, metaModel: context.metaModel.ref, propertyKey: undefined});
