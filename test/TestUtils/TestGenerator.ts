@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { AbstractGenerator, CommonInputModel, CommonModel, IndentationTypes, RenderOutput } from '../../src';
+import { AbstractGenerator, InputMetaModel, IndentationTypes, RenderOutput, ConstrainedMetaModel, MetaModel, ConstrainedAnyModel, Preset } from '../../src';
 
 export const testOptions = {
   indentation: {
@@ -7,16 +7,24 @@ export const testOptions = {
     size: 2,
   }
 };
-export class TestGenerator extends AbstractGenerator {
-  constructor() {
-    super('TestGenerator', testOptions);
+export class TestGenerator extends AbstractGenerator<any, any> {
+  constructor(options: any = testOptions) {
+    super('TestGenerator', options);
   }
 
-  render(model: CommonModel, _inputModel: CommonInputModel): Promise<RenderOutput> {
-    return Promise.resolve(RenderOutput.toRenderOutput({result: model.$id || 'rendered content', renderedName: 'TestName'}));
+  public constrainToMetaModel(model: MetaModel): ConstrainedMetaModel {
+    return new ConstrainedAnyModel(model.name, undefined, '');
   }
-
-  renderCompleteModel(_model: CommonModel, _inputModel: CommonInputModel, _options: any): Promise<RenderOutput> {
-    return Promise.resolve(RenderOutput.toRenderOutput({result: 'rendered complete content', renderedName: 'TestName'}));
+  public splitMetaModel(model: MetaModel): MetaModel[] {
+    return [model];
+  }
+  public render(model: MetaModel, inputModel: InputMetaModel): Promise<RenderOutput> {
+    return Promise.resolve(RenderOutput.toRenderOutput({result: model.name || 'rendered content', renderedName: 'TestName'}));
+  }
+  public renderCompleteModel(model: MetaModel, inputModel: InputMetaModel, options: any): Promise<RenderOutput> {
+    return Promise.resolve(RenderOutput.toRenderOutput({result: model.name || 'rendered complete content', renderedName: 'TestName'}));
+  }
+  public testGetPresets(string: string): Array<[Preset, unknown]> {
+    return this.getPresets(string);
   }
 }
