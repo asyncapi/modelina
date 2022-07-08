@@ -1,4 +1,4 @@
-import { defaultGeneratorOptions, DartGenerator } from '../../../src/generators';
+import { DartGenerator } from '../../../src/generators';
 import { DartDefaultTypeMapping } from '../../../src/generators/dart/DartConstrainer';
 import { ConstrainedAnyModel, ConstrainedArrayModel, ConstrainedBooleanModel, ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedUnionModel, InputMetaModel } from '../../../src/models';
 
