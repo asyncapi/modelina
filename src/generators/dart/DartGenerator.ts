@@ -27,7 +27,7 @@ export class DartGenerator extends AbstractGenerator<DartOptions, DartRenderComp
   static defaultOptions: DartOptions = {
     ...defaultGeneratorOptions,
     defaultPreset: DART_DEFAULT_PRESET,
-    collectionType: 'Normal',
+    collectionType: 'List',
     typeMapping: DartDefaultTypeMapping,
     constraints: DartDefaultConstraints
   };

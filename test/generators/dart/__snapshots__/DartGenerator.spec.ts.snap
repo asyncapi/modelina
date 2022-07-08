@@ -2,51 +2,38 @@
 
 exports[`DartGenerator should render \`class\` type 1`] = `
 "class Address {
-  string? StreetName;
-  string? City;
-  string? State;
+  String? StreetName;
+  String? City;
+  String? State;
   double? HouseNumber;
   bool? Marriage;
   Object? Members;
-  Object[]? ArrayType;
-  Map<string, Object>? AdditionalProperties;
+  List<Object>? ArrayType;
+  Map<String, Object>? AdditionalProperties;
 
   Address();
 }"
 `;
 
-exports[`DartGenerator should render \`enum\` type (integer type) 1`] = `
-"enum Numbers {
-  \\"0\\", \\"1\\", \\"2\\", \\"3\\"
-}"
-`;
+exports[`DartGenerator should render \`enum\` type (integer type) 1`] = `""`;
 
-exports[`DartGenerator should render \`enum\` type (string type) 1`] = `
-"enum States {
-  \\"Texas\\", \\"Alabama\\", \\"California\\", \\"New York\\"
-}"
-`;
+exports[`DartGenerator should render \`enum\` type (string type) 1`] = `""`;
 
-exports[`DartGenerator should render custom preset for \`enum\` type 1`] = `
-"@EnumAnnotation
-enum CustomEnum {
-  \\"Texas\\", \\"Alabama\\", \\"California\\"
-}"
-`;
+exports[`DartGenerator should render custom preset for \`enum\` type 1`] = `""`;
 
 exports[`DartGenerator should render models and their dependencies 1`] = `
 "import 'package:test.package/other_model.dart';
       
       class Address {
-  string? StreetName;
-  string? City;
-  string? State;
+  String? StreetName;
+  String? City;
+  String? State;
   double? HouseNumber;
   bool? Marriage;
   Object? Members;
-  Object[]? ArrayType;
+  List<Object>? ArrayType;
   OtherModel? OtherModel;
-  Map<string, Object>? AdditionalProperties;
+  Map<String, Object>? AdditionalProperties;
 
   Address();
 }"
@@ -56,8 +43,8 @@ exports[`DartGenerator should render models and their dependencies 2`] = `
 "
       
       class OtherModel {
-  string? StreetName;
-  Map<string, Object>? AdditionalProperties;
+  String? StreetName;
+  Map<String, Object>? AdditionalProperties;
 
   OtherModel();
 }"

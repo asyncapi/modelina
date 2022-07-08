@@ -36,7 +36,7 @@ export const DartDefaultTypeMapping: TypeMapping<DartOptions> = {
       return 'String';
     case 'binary':
       return 'byte[]';
-    default: return 'string';
+    default: return 'String';
     }
   },
   Boolean (): string {

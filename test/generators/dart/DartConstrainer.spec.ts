@@ -43,7 +43,7 @@ describe('DartRenderer', () => {
     test('should render type', () => {
       const model = new ConstrainedStringModel('test', undefined, '');
       const type = DartDefaultTypeMapping.String({constrainedModel: model, options: DartGenerator.defaultOptions});
-      expect(type).toEqual('string');
+      expect(type).toEqual('String');
     });
   });
   describe('Boolean', () => { 
