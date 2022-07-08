@@ -2,14 +2,14 @@
 
 exports[`DartGenerator should render \`class\` type 1`] = `
 "class Address {
-  String? StreetName;
-  String? City;
-  String? State;
-  double? HouseNumber;
-  bool? Marriage;
-  Object? Members;
-  List<Object>? ArrayType;
-  Map<String, Object>? AdditionalProperties;
+  String? streetName;
+  String? city;
+  String? state;
+  double? houseNumber;
+  bool? marriage;
+  Object? members;
+  List<Object>? arrayType;
+  Map<String, Object>? additionalProperties;
 
   Address();
 }"
@@ -38,15 +38,15 @@ exports[`DartGenerator should render models and their dependencies 1`] = `
 "import 'package:test.package/other_model.dart';
       
       class Address {
-  String? StreetName;
-  String? City;
-  String? State;
-  double? HouseNumber;
-  bool? Marriage;
-  Object? Members;
-  List<Object>? ArrayType;
-  OtherModel? OtherModel;
-  Map<String, Object>? AdditionalProperties;
+  String? streetName;
+  String? city;
+  String? state;
+  double? houseNumber;
+  bool? marriage;
+  Object? members;
+  List<Object>? arrayType;
+  OtherModel? otherModel;
+  Map<String, Object>? additionalProperties;
 
   Address();
 }"
@@ -56,8 +56,8 @@ exports[`DartGenerator should render models and their dependencies 2`] = `
 "
       
       class OtherModel {
-  String? StreetName;
-  Map<String, Object>? AdditionalProperties;
+  String? streetName;
+  Map<String, Object>? additionalProperties;
 
   OtherModel();
 }"
