@@ -5,39 +5,6 @@ describe('GoGenerator', () => {
   beforeEach(() => {
     generator = new GoGenerator();
   });
-
-  it('should return true if the word is a reserved keyword', () => {
-    expect(generator.reservedGoKeyword('break')).toBe(true);
-    expect(generator.reservedGoKeyword('case')).toBe(true);
-    expect(generator.reservedGoKeyword('chan')).toBe(true);
-    expect(generator.reservedGoKeyword('const')).toBe(true);
-    expect(generator.reservedGoKeyword('continue')).toBe(true);
-    expect(generator.reservedGoKeyword('default')).toBe(true);
-    expect(generator.reservedGoKeyword('defer')).toBe(true);
-    expect(generator.reservedGoKeyword('else')).toBe(true);
-    expect(generator.reservedGoKeyword('fallthrough')).toBe(true);
-    expect(generator.reservedGoKeyword('for')).toBe(true);
-    expect(generator.reservedGoKeyword('func')).toBe(true);
-    expect(generator.reservedGoKeyword('go')).toBe(true);
-    expect(generator.reservedGoKeyword('goto')).toBe(true);
-    expect(generator.reservedGoKeyword('if')).toBe(true);
-    expect(generator.reservedGoKeyword('import')).toBe(true);
-    expect(generator.reservedGoKeyword('interface')).toBe(true);
-    expect(generator.reservedGoKeyword('map')).toBe(true);
-    expect(generator.reservedGoKeyword('package')).toBe(true);
-    expect(generator.reservedGoKeyword('range')).toBe(true);
-    expect(generator.reservedGoKeyword('return')).toBe(true);
-    expect(generator.reservedGoKeyword('select')).toBe(true);
-    expect(generator.reservedGoKeyword('struct')).toBe(true);
-    expect(generator.reservedGoKeyword('switch')).toBe(true);
-    expect(generator.reservedGoKeyword('type')).toBe(true);
-    expect(generator.reservedGoKeyword('var')).toBe(true);
-  });
-
-  it('should return false if the word is not a reserved keyword', () => {
-    expect(generator.reservedGoKeyword('enum')).toBe(false);
-  });
-
   test('should render `struct` type', async () => {
     const doc = {
       $id: '_address',
@@ -62,30 +29,10 @@ describe('GoGenerator', () => {
         }
       },
     };
-    const expected = `// Address represents a Address model.
-type Address struct {
-  StreetName string
-  City string
-  State string
-  HouseNumber float64
-  Marriage bool
-  Members []interface{}
-  TupleType []interface{}
-  ArrayType []string
-  AdditionalProperties map[string]string
-  STestPatternProperties map[string]string
-}`;
 
-    const inputModel = await generator.process(doc);
-    const model = inputModel.models['_address'];
-
-    let structModel = await generator.renderStruct(model, inputModel);
-    expect(structModel.result).toEqual(expected);
-    expect(structModel.dependencies).toEqual([]);
-
-    structModel = await generator.render(model, inputModel);
-    expect(structModel.result).toEqual(expected);
-    expect(structModel.dependencies).toEqual([]);
+    const models = await generator.generate(doc);
+    expect(models).toHaveLength(1);
+    expect(models[0].result).toMatchSnapshot();
   });
 
   test('should work custom preset for `struct` type', async () => {
@@ -99,30 +46,21 @@ type Address struct {
         type: 'string'
       }
     };
-    const expected = `// CustomStruct represents a CustomStruct model.
-type CustomStruct struct {
-  property string
-  additionalProperties string
-}`;
-
     generator = new GoGenerator({
       presets: [
         {
           struct: {
-            field({ fieldName, field, renderer }) {
-              return `${fieldName} ${renderer.renderType(field)}`; // private fields
+            field({ field }) {
+              return `${field.propertyName} ${field.property.type}`; // private fields
             },
           }
         }
       ]
     });
 
-    const inputModel = await generator.process(doc);
-    const model = inputModel.models['CustomStruct'];
-
-    const structModel = await generator.render(model, inputModel);
-    expect(structModel.result).toEqual(expected);
-    expect(structModel.dependencies).toEqual([]);
+    const models = await generator.generate(doc);
+    expect(models).toHaveLength(1);
+    expect(models[0].result).toMatchSnapshot();
   });
 
   describe.each([
@@ -153,16 +91,9 @@ type Things interface{}`,
     },
   ])('should render `enum` type $name', ({ doc, expected }) => {
     test('should not be empty', async () => {
-      const inputModel = await generator.process(doc);
-      const model = inputModel.models[doc.$id];
-
-      let enumModel = await generator.render(model, inputModel);
-      expect(enumModel.result).toEqual(expected);
-      expect(enumModel.dependencies).toEqual([]);
-
-      enumModel = await generator.renderEnum(model, inputModel);
-      expect(enumModel.result).toEqual(expected);
-      expect(enumModel.dependencies).toEqual([]);
+      const models = await generator.generate(doc);
+      expect(models).toHaveLength(1);
+      expect(models[0].result).toMatchSnapshot();
     });
   });
 
@@ -172,14 +103,6 @@ type Things interface{}`,
       type: 'string',
       enum: ['Texas', 'Alabama', 'California'],
     };
-    const expected = `// CustomEnum represents an enum of string.
-type CustomEnum string
-
-const (
-  CustomEnumTexas CustomEnum = "Texas"
-  CustomEnumAlabama = "Alabama"
-  CustomEnumCalifornia = "California"
-)`;
 
     generator = new GoGenerator({
       presets: [
@@ -193,16 +116,9 @@ const (
       ]
     });
 
-    const inputModel = await generator.process(doc);
-    const model = inputModel.models['CustomEnum'];
-
-    let enumModel = await generator.render(model, inputModel);
-    expect(enumModel.result).toEqual(expected);
-    expect(enumModel.dependencies).toEqual([]);
-
-    enumModel = await generator.renderEnum(model, inputModel);
-    expect(enumModel.result).toEqual(expected);
-    expect(enumModel.dependencies).toEqual([]);
+    const models = await generator.generate(doc);
+    expect(models).toHaveLength(1);
+    expect(models[0].result).toMatchSnapshot();
   });
   describe('generateCompleteModels()', () => {
     test('should render models', async () => {
@@ -271,6 +187,8 @@ const (
       expect(models).toHaveLength(2);
       expect(models[0].result).toMatchSnapshot();
       expect(models[1].result).toMatchSnapshot();
+      expect(models[0].dependencies).toEqual(['time']);
+      expect(models[1].dependencies).toEqual(['time']);
     });
   });
 });
