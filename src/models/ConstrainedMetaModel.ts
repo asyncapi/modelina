@@ -1,11 +1,10 @@
-import { AnyModel, ArrayModel, BooleanModel, DictionaryModel, EnumModel, FloatModel, IntegerModel, MetaModel, ObjectModel, ObjectPropertyModel, ReferenceModel, StringModel, TupleModel, UnionModel } from './MetaModel';
+import { MetaModel, ObjectPropertyModel } from './MetaModel';
 
-export abstract class ConstrainedMetaModel<RawMetaModel extends MetaModel = MetaModel> extends MetaModel {
+export abstract class ConstrainedMetaModel extends MetaModel {
   constructor(
     name: string,
     originalInput: any, 
-    public type: string, 
-    public rawMetaModel: RawMetaModel) {
+    public type: string) {
     super(name, originalInput);
   }
 
@@ -19,35 +18,33 @@ export abstract class ConstrainedMetaModel<RawMetaModel extends MetaModel = Meta
   }
 }
 
-export class ConstrainedReferenceModel extends ConstrainedMetaModel<ReferenceModel> {
+export class ConstrainedReferenceModel extends ConstrainedMetaModel {
   constructor(
     name: string,
     originalInput: any, 
     type: string, 
-    rawMetaModel: ReferenceModel, 
     public ref: ConstrainedMetaModel) {
-    super(name, originalInput, type, rawMetaModel);
+    super(name, originalInput, type);
   }
 }
-export class ConstrainedAnyModel extends ConstrainedMetaModel<AnyModel> { }
-export class ConstrainedFloatModel extends ConstrainedMetaModel<FloatModel> { }
-export class ConstrainedIntegerModel extends ConstrainedMetaModel<IntegerModel> { }
-export class ConstrainedStringModel extends ConstrainedMetaModel<StringModel> { }
-export class ConstrainedBooleanModel extends ConstrainedMetaModel<BooleanModel> { }
+export class ConstrainedAnyModel extends ConstrainedMetaModel { }
+export class ConstrainedFloatModel extends ConstrainedMetaModel { }
+export class ConstrainedIntegerModel extends ConstrainedMetaModel { }
+export class ConstrainedStringModel extends ConstrainedMetaModel { }
+export class ConstrainedBooleanModel extends ConstrainedMetaModel { }
 export class ConstrainedTupleValueModel {
   constructor(
     public index: number, 
     public value: ConstrainedMetaModel) {
   }
 }
-export class ConstrainedTupleModel extends ConstrainedMetaModel<TupleModel> {
+export class ConstrainedTupleModel extends ConstrainedMetaModel {
   constructor(
     name: string,
     originalInput: any, 
     type: string, 
-    rawMetaModel: TupleModel, 
     public tuple: ConstrainedTupleValueModel[]) {
-    super(name, originalInput, type, rawMetaModel);
+    super(name, originalInput, type);
   }
 
   getNearestDependencies(): ConstrainedMetaModel[] {
@@ -68,19 +65,19 @@ export class ConstrainedTupleModel extends ConstrainedMetaModel<TupleModel> {
 export class ConstrainedObjectPropertyModel {
   constructor(
     public propertyName: string,
+    public unconstrainedPropertyName: string,
     public required: boolean,
     public property: ConstrainedMetaModel,
     public rawMetaModel: ObjectPropertyModel) {
   }
 }
-export class ConstrainedArrayModel extends ConstrainedMetaModel<ArrayModel> {
+export class ConstrainedArrayModel extends ConstrainedMetaModel {
   constructor(
     name: string,
     originalInput: any, 
     type: string, 
-    rawMetaModel: ArrayModel, 
     public valueModel: ConstrainedMetaModel) {
-    super(name, originalInput, type, rawMetaModel);
+    super(name, originalInput, type);
   }
 
   getNearestDependencies(): ConstrainedMetaModel[] {
@@ -91,14 +88,13 @@ export class ConstrainedArrayModel extends ConstrainedMetaModel<ArrayModel> {
     return [];
   }
 }
-export class ConstrainedUnionModel extends ConstrainedMetaModel<UnionModel> {
+export class ConstrainedUnionModel extends ConstrainedMetaModel {
   constructor(
     name: string,
     originalInput: any, 
     type: string, 
-    rawMetaModel: UnionModel, 
     public union: ConstrainedMetaModel[]) {
-    super(name, originalInput, type, rawMetaModel);
+    super(name, originalInput, type);
   }
 
   getNearestDependencies(): ConstrainedReferenceModel[] {
@@ -122,14 +118,13 @@ export class ConstrainedEnumValueModel {
     public value: any) {
   }
 }
-export class ConstrainedEnumModel extends ConstrainedMetaModel<EnumModel> {
+export class ConstrainedEnumModel extends ConstrainedMetaModel {
   constructor(
     name: string,
     originalInput: any, 
     type: string, 
-    rawMetaModel: EnumModel, 
     public values: ConstrainedEnumValueModel[]) {
-    super(name, originalInput, type, rawMetaModel);
+    super(name, originalInput, type);
   }
 
   getNearestDependencies(): ConstrainedReferenceModel[] {
@@ -147,16 +142,15 @@ export class ConstrainedEnumModel extends ConstrainedMetaModel<EnumModel> {
     return dependencyModels;
   }
 }
-export class ConstrainedDictionaryModel extends ConstrainedMetaModel<DictionaryModel> {
+export class ConstrainedDictionaryModel extends ConstrainedMetaModel {
   constructor(
     name: string,
     originalInput: any, 
     type: string, 
-    rawMetaModel: DictionaryModel, 
     public key: ConstrainedMetaModel, 
     public value: ConstrainedMetaModel, 
     public serializationType: 'unwrap' | 'normal' = 'normal') {
-    super(name, originalInput, type, rawMetaModel);
+    super(name, originalInput, type);
   }
 
   getNearestDependencies(): ConstrainedMetaModel[] {
@@ -176,14 +170,13 @@ export class ConstrainedDictionaryModel extends ConstrainedMetaModel<DictionaryM
   }
 }
 
-export class ConstrainedObjectModel extends ConstrainedMetaModel<ObjectModel> {
+export class ConstrainedObjectModel extends ConstrainedMetaModel {
   constructor(
     name: string,
     originalInput: any, 
     type: string,
-    rawMetaModel: ObjectModel,
     public properties: { [key: string]: ConstrainedObjectPropertyModel; }) {
-    super(name, originalInput, type, rawMetaModel);
+    super(name, originalInput, type);
   }
 
   getNearestDependencies(): ConstrainedReferenceModel[] {
