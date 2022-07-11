@@ -1,25 +1,7 @@
 import { NO_NUMBER_START_CHAR, NO_EMPTY_VALUE, NO_DUPLICATE_PROPERTIES, FormatHelpers, NO_DUPLICATE_ENUM_KEYS, constrainMetaModel, TypeMapping, Constraints } from '../../src/helpers';
 import { AnyModel, ArrayModel, BooleanModel, ConstrainedAnyModel, ConstrainedArrayModel, ConstrainedBooleanModel, ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedEnumValueModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedObjectModel, ConstrainedObjectPropertyModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedTupleValueModel, ConstrainedUnionModel, DictionaryModel, EnumModel, EnumValueModel, FloatModel, IntegerModel, ObjectModel, ObjectPropertyModel, ReferenceModel, StringModel, TupleModel, TupleValueModel, UnionModel } from '../../src/models';
-const mockedTypeMapping: TypeMapping<any> = {
-  Any: jest.fn(),
-  Array: jest.fn(),
-  Boolean: jest.fn(),
-  Dictionary: jest.fn(),
-  Enum: jest.fn(),
-  Float: jest.fn(),
-  Integer: jest.fn(),
-  Object: jest.fn(),
-  Reference: jest.fn(),
-  String: jest.fn(),
-  Tuple: jest.fn(),
-  Union: jest.fn()
-};
-const mockedConstraints: Constraints = {
-  enumKey: jest.fn().mockImplementation(({enumKey}) => enumKey),
-  enumValue: jest.fn().mockImplementation(({enumValue}) => enumValue),
-  modelName: jest.fn().mockImplementation(({modelName}) => modelName),
-  propertyKey: jest.fn().mockImplementation(({objectPropertyModel}) => objectPropertyModel.propertyName)
-};
+import { mockedConstraints, mockedTypeMapping } from '../TestUtils/TestConstrainer';
+
 describe('ConstrainHelpers', () => {
   afterEach(() => {
     jest.clearAllMocks();
