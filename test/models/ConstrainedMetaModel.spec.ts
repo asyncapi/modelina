@@ -4,17 +4,6 @@ import { mockedConstraints, mockedTypeMapping } from '../TestUtils/TestConstrain
 
 
 describe('ConstrainedMetaModel', () => {
-  describe('containsPropertyType', () => {
-    test('should find present property type and those who are not', () => {
-      const stringModel = new ConstrainedStringModel('', undefined, '');
-      const stringObjectPropertyModel = new ConstrainedObjectPropertyModel('string', '', false, stringModel);
-      const rawModel = new ConstrainedObjectModel('test', undefined, '', {
-        string: stringObjectPropertyModel
-      });
-      expect(rawModel.containsPropertyType(ConstrainedStringModel)).toEqual(true);
-      expect(rawModel.containsPropertyType(ConstrainedBooleanModel)).toEqual(false);
-    });
-  });
   describe('ReferenceModel', () => {
     test('should return no dependencies', () => {
       const stringModel = new StringModel('', undefined);
@@ -131,6 +120,18 @@ describe('ConstrainedMetaModel', () => {
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(1);
       expect(dependencies[0]).toEqual(model.properties['reference'].property);
+    });
+
+    describe('containsPropertyType', () => {
+      test('should find present property type and those who are not', () => {
+        const stringModel = new ConstrainedStringModel('', undefined, '');
+        const stringObjectPropertyModel = new ConstrainedObjectPropertyModel('string', '', false, stringModel);
+        const rawModel = new ConstrainedObjectModel('test', undefined, '', {
+          string: stringObjectPropertyModel
+        });
+        expect(rawModel.containsPropertyType(ConstrainedStringModel)).toEqual(true);
+        expect(rawModel.containsPropertyType(ConstrainedBooleanModel)).toEqual(false);
+      });
     });
   });
   describe('EnumModel', () => {
