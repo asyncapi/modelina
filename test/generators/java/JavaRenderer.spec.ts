@@ -1,12 +1,12 @@
 import { JavaGenerator } from '../../../src/generators';
 import { JavaRenderer } from '../../../src/generators/java/JavaRenderer';
-import { CommonInputModel, CommonModel } from '../../../src/models';
+import { CommonModel, ConstrainedObjectModel, InputMetaModel } from '../../../src/models';
 import { MockJavaRenderer } from '../../TestUtils/TestRenderers';
 
 describe('JavaRenderer', () => {
-  let renderer: JavaRenderer;
+  let renderer: JavaRenderer<any>;
   beforeEach(() => {
-    renderer = new MockJavaRenderer(JavaGenerator.defaultOptions, new JavaGenerator(), [], new CommonModel(), new CommonInputModel());
+    renderer = new MockJavaRenderer(JavaGenerator.defaultOptions, new JavaGenerator(), [], new ConstrainedObjectModel('', undefined, '', {}), new InputMetaModel());
   });
 
   describe('renderComments()', () => {

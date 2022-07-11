@@ -1,5 +1,225 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`JavaGenerator should not render reserved keyword 1`] = `
+"public class Address {
+  private String ReservedEnum;
+  private String ReservedEnum;
+
+  public String getReservedEnum() { return this.ReservedEnum; }
+  public void setReservedEnum(String ReservedEnum) { this.ReservedEnum = ReservedEnum; }
+
+  public String getReservedReservedEnum() { return this.ReservedEnum; }
+  public void setReservedReservedEnum(String ReservedEnum) { this.ReservedEnum = ReservedEnum; }
+}"
+`;
+
+exports[`JavaGenerator should render \`class\` type 1`] = `
+"public class Address {
+  private String StreetName;
+  private String City;
+  private String State;
+  private float HouseNumber;
+  private Boolean Marriage;
+  private Object Members;
+  private Object[] ArrayType;
+  private Map<String, Object> AdditionalProperties;
+
+  public String getStreetName() { return this.StreetName; }
+  public void setStreetName(String StreetName) { this.StreetName = StreetName; }
+
+  public String getCity() { return this.City; }
+  public void setCity(String City) { this.City = City; }
+
+  public String getState() { return this.State; }
+  public void setState(String State) { this.State = State; }
+
+  public float getHouseNumber() { return this.HouseNumber; }
+  public void setHouseNumber(float HouseNumber) { this.HouseNumber = HouseNumber; }
+
+  public Boolean getMarriage() { return this.Marriage; }
+  public void setMarriage(Boolean Marriage) { this.Marriage = Marriage; }
+
+  public Object getMembers() { return this.Members; }
+  public void setMembers(Object Members) { this.Members = Members; }
+
+  public Object[] getArrayType() { return this.ArrayType; }
+  public void setArrayType(Object[] ArrayType) { this.ArrayType = ArrayType; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.AdditionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> AdditionalProperties) { this.AdditionalProperties = AdditionalProperties; }
+}"
+`;
+
+exports[`JavaGenerator should render \`enum\` type (integer type) 1`] = `
+"public enum Numbers {
+  NUMBER_0(\\"0\\"), NUMBER_1(\\"1\\"), NUMBER_2(\\"2\\"), NUMBER_3(\\"3\\");
+
+  private Numbers value;
+
+  Numbers(Numbers value) {
+    this.value = value;
+  }
+    
+  @JsonValue
+  public Numbers getValue() {
+    return value;
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+
+  @JsonCreator
+  public static Numbers fromValue(Numbers value) {
+    for (Numbers e : Numbers.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+}"
+`;
+
+exports[`JavaGenerator should render \`enum\` type (string type) 1`] = `
+"public enum States {
+  QUOTATION_TEXAS_QUOTATION(\\"Texas\\"), QUOTATION_ALABAMA_QUOTATION(\\"Alabama\\"), QUOTATION_CALIFORNIA_QUOTATION(\\"California\\"), QUOTATION_NEW_YORK_QUOTATION(\\"New York\\");
+
+  private States value;
+
+  States(States value) {
+    this.value = value;
+  }
+    
+  @JsonValue
+  public States getValue() {
+    return value;
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+
+  @JsonCreator
+  public static States fromValue(States value) {
+    for (States e : States.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+}"
+`;
+
+exports[`JavaGenerator should render \`enum\` type (union type) 1`] = `
+"public enum Union {
+  QUOTATION_TEXAS_QUOTATION(\\"Texas\\"), QUOTATION_ALABAMA_QUOTATION(\\"Alabama\\"), NUMBER_0(\\"0\\"), NUMBER_1(\\"1\\"), QUOTATION_1_QUOTATION(\\"1\\"), TRUE(\\"true\\"), CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT(\\"[object Object]\\");
+
+  private Union value;
+
+  Union(Union value) {
+    this.value = value;
+  }
+    
+  @JsonValue
+  public Union getValue() {
+    return value;
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+
+  @JsonCreator
+  public static Union fromValue(Union value) {
+    for (Union e : Union.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+}"
+`;
+
+exports[`JavaGenerator should render List type for collections 1`] = `
+"public class CustomClass {
+  private List<Object> ArrayType;
+
+  public List<Object> getArrayType() { return this.ArrayType; }
+  public void setArrayType(List<Object> ArrayType) { this.ArrayType = ArrayType; }
+}"
+`;
+
+exports[`JavaGenerator should render custom preset for \`enum\` type 1`] = `
+"@EnumAnnotation
+public enum CustomEnum {
+  QUOTATION_TEXAS_QUOTATION(\\"Texas\\"), QUOTATION_ALABAMA_QUOTATION(\\"Alabama\\"), QUOTATION_CALIFORNIA_QUOTATION(\\"California\\");
+
+  private CustomEnum value;
+
+  CustomEnum(CustomEnum value) {
+    this.value = value;
+  }
+    
+  @JsonValue
+  public CustomEnum getValue() {
+    return value;
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+
+  @JsonCreator
+  public static CustomEnum fromValue(CustomEnum value) {
+    for (CustomEnum e : CustomEnum.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+}"
+`;
+
+exports[`JavaGenerator should render enums with translated special characters 1`] = `
+"public enum States {
+  QUOTATION_TEST_PLUS_QUOTATION(\\"test+\\"), QUOTATION_TEST_QUOTATION(\\"test\\"), QUOTATION_TEST_MINUS_QUOTATION(\\"test-\\"), QUOTATION_TEST_QUESTION_EXCLAMATION_QUOTATION(\\"test?!\\"), QUOTATION_ASTERISK_TEST_QUOTATION(\\"*test\\");
+
+  private States value;
+
+  States(States value) {
+    this.value = value;
+  }
+    
+  @JsonValue
+  public States getValue() {
+    return value;
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+
+  @JsonCreator
+  public static States fromValue(States value) {
+    for (States e : States.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+}"
+`;
+
 exports[`JavaGenerator should render models and their dependencies 1`] = `
 "package test.package;
 import test.package.OtherModel;
@@ -61,5 +281,24 @@ public class OtherModel {
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}"
+`;
+
+exports[`JavaGenerator should work custom preset for \`class\` type 1`] = `
+"public class CustomClass {
+  @JsonProperty(\\"Property\\")
+  private String Property;
+  @JsonProperty(\\"AdditionalProperties\\")
+  private Map<String, Object> AdditionalProperties;
+
+  @JsonProperty(\\"Property\\")
+  public String getProperty() { return this.Property; }
+  @JsonProperty(\\"Property\\")
+  public void setProperty(String Property) { this.Property = Property; }
+
+  @JsonProperty(\\"AdditionalProperties\\")
+  public Map<String, Object> getAdditionalProperties() { return this.AdditionalProperties; }
+  @JsonProperty(\\"AdditionalProperties\\")
+  public void setAdditionalProperties(Map<String, Object> AdditionalProperties) { this.AdditionalProperties = AdditionalProperties; }
 }"
 `;
