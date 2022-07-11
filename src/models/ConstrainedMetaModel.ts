@@ -1,4 +1,4 @@
-import { MetaModel } from './MetaModel';
+import { MetaModel, ObjectPropertyModel } from './MetaModel';
 
 export abstract class ConstrainedMetaModel extends MetaModel {
   constructor(
@@ -13,7 +13,9 @@ export abstract class ConstrainedMetaModel extends MetaModel {
    * 
    * This is often used when you want to know which other models you are referencing.
    */
-  abstract getNearestDependencies(): ConstrainedMetaModel[]
+  getNearestDependencies(): ConstrainedMetaModel[] {
+    return [];
+  }
 }
 
 export class ConstrainedReferenceModel extends ConstrainedMetaModel {
@@ -24,35 +26,12 @@ export class ConstrainedReferenceModel extends ConstrainedMetaModel {
     public ref: ConstrainedMetaModel) {
     super(name, originalInput, type);
   }
-  getNearestDependencies(): ConstrainedMetaModel[] {
-    return [];
-  }
 }
-export class ConstrainedAnyModel extends ConstrainedMetaModel {
-  getNearestDependencies(): ConstrainedMetaModel[] {
-    return [];
-  }
-}
-export class ConstrainedFloatModel extends ConstrainedMetaModel {
-  getNearestDependencies(): ConstrainedMetaModel[] {
-    return [];
-  }
-}
-export class ConstrainedIntegerModel extends ConstrainedMetaModel {
-  getNearestDependencies(): ConstrainedMetaModel[] {
-    return [];
-  }
-}
-export class ConstrainedStringModel extends ConstrainedMetaModel {
-  getNearestDependencies(): ConstrainedMetaModel[] {
-    return [];
-  }
-}
-export class ConstrainedBooleanModel extends ConstrainedMetaModel {
-  getNearestDependencies(): ConstrainedMetaModel[] {
-    return [];
-  }
-}
+export class ConstrainedAnyModel extends ConstrainedMetaModel { }
+export class ConstrainedFloatModel extends ConstrainedMetaModel { }
+export class ConstrainedIntegerModel extends ConstrainedMetaModel { }
+export class ConstrainedStringModel extends ConstrainedMetaModel { }
+export class ConstrainedBooleanModel extends ConstrainedMetaModel { }
 export class ConstrainedTupleValueModel {
   constructor(
     public index: number, 
@@ -64,28 +43,35 @@ export class ConstrainedTupleModel extends ConstrainedMetaModel {
     name: string,
     originalInput: any, 
     type: string, 
-  public tuple: ConstrainedTupleValueModel[]) {
+    public tuple: ConstrainedTupleValueModel[]) {
     super(name, originalInput, type);
   }
+
   getNearestDependencies(): ConstrainedMetaModel[] {
-    return [];
+    let dependencyModels = Object.values(this.tuple).filter(
+      (tupleModel) => {
+        return tupleModel.value instanceof ConstrainedReferenceModel;
+      }
+    ).map((tupleModel) => {
+      return tupleModel.value = tupleModel.value as ConstrainedReferenceModel;
+    });
+    //Ensure no self references
+    dependencyModels = dependencyModels.filter((referenceModel) => {
+      return referenceModel.name !== this.name;
+    });
+    return dependencyModels;
   }
 }
 export class ConstrainedObjectPropertyModel {
   constructor(
     public propertyName: string,
+    public unconstrainedPropertyName: string,
     public required: boolean,
-    public property: ConstrainedMetaModel) {
+    public property: ConstrainedMetaModel,
+    public rawMetaModel: ObjectPropertyModel) {
   }
 }
 export class ConstrainedArrayModel extends ConstrainedMetaModel {
-  getNearestDependencies(): ConstrainedMetaModel[] {
-    if (this.valueModel instanceof ConstrainedReferenceModel &&
-      this.valueModel.name !== this.name) {
-      return [this.valueModel];
-    }
-    return [];
-  }
   constructor(
     name: string,
     originalInput: any, 
@@ -93,8 +79,24 @@ export class ConstrainedArrayModel extends ConstrainedMetaModel {
     public valueModel: ConstrainedMetaModel) {
     super(name, originalInput, type);
   }
+
+  getNearestDependencies(): ConstrainedMetaModel[] {
+    if (this.valueModel instanceof ConstrainedReferenceModel &&
+      this.valueModel.name !== this.name) {
+      return [this.valueModel];
+    }
+    return [];
+  }
 }
 export class ConstrainedUnionModel extends ConstrainedMetaModel {
+  constructor(
+    name: string,
+    originalInput: any, 
+    type: string, 
+    public union: ConstrainedMetaModel[]) {
+    super(name, originalInput, type);
+  }
+
   getNearestDependencies(): ConstrainedReferenceModel[] {
     let dependencyModels = Object.values(this.union).filter(
       (unionModel) => {
@@ -109,13 +111,6 @@ export class ConstrainedUnionModel extends ConstrainedMetaModel {
     });
     return dependencyModels;
   }
-  constructor(
-    name: string,
-    originalInput: any, 
-    type: string, 
-    public union: ConstrainedMetaModel[]) {
-    super(name, originalInput, type);
-  }
 }
 export class ConstrainedEnumValueModel {
   constructor(
@@ -124,6 +119,14 @@ export class ConstrainedEnumValueModel {
   }
 }
 export class ConstrainedEnumModel extends ConstrainedMetaModel {
+  constructor(
+    name: string,
+    originalInput: any, 
+    type: string, 
+    public values: ConstrainedEnumValueModel[]) {
+    super(name, originalInput, type);
+  }
+
   getNearestDependencies(): ConstrainedReferenceModel[] {
     let dependencyModels = Object.values(this.values).filter(
       (enumModel) => {
@@ -138,18 +141,8 @@ export class ConstrainedEnumModel extends ConstrainedMetaModel {
     });
     return dependencyModels;
   }
-  constructor(
-    name: string,
-    originalInput: any, 
-    type: string, 
-    public values: ConstrainedEnumValueModel[]) {
-    super(name, originalInput, type);
-  }
 }
 export class ConstrainedDictionaryModel extends ConstrainedMetaModel {
-  getNearestDependencies(): ConstrainedMetaModel[] {
-    return [];
-  }
   constructor(
     name: string,
     originalInput: any, 
@@ -159,6 +152,22 @@ export class ConstrainedDictionaryModel extends ConstrainedMetaModel {
     public serializationType: 'unwrap' | 'normal' = 'normal') {
     super(name, originalInput, type);
   }
+
+  getNearestDependencies(): ConstrainedMetaModel[] {
+    const dependencies = [this.key, this.value];
+    let dependencyModels = dependencies.filter(
+      (model) => {
+        return model instanceof ConstrainedReferenceModel;
+      }
+    ).map((model) => {
+      return model as ConstrainedReferenceModel;
+    });
+    //Ensure no self references
+    dependencyModels = dependencyModels.filter((referenceModel) => {
+      return referenceModel.name !== this.name;
+    });
+    return dependencyModels;
+  }
 }
 
 export class ConstrainedObjectModel extends ConstrainedMetaModel {
@@ -166,9 +175,10 @@ export class ConstrainedObjectModel extends ConstrainedMetaModel {
     name: string,
     originalInput: any, 
     type: string,
-  public properties: { [key: string]: ConstrainedObjectPropertyModel; }) {
+    public properties: { [key: string]: ConstrainedObjectPropertyModel; }) {
     super(name, originalInput, type);
   }
+
   getNearestDependencies(): ConstrainedReferenceModel[] {
     let dependencyModels = Object.values(this.properties).filter(
       (modelProperty) => {
