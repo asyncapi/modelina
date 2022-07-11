@@ -1,8 +1,20 @@
 import { constrainMetaModel } from '../../src/helpers';
-import { AnyModel, ArrayModel, BooleanModel, ConstrainedArrayModel, ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedTupleModel, ConstrainedUnionModel, DictionaryModel, EnumModel, EnumValueModel, FloatModel, IntegerModel, ObjectModel, ObjectPropertyModel, ReferenceModel, StringModel, TupleModel, TupleValueModel, UnionModel } from '../../src/models';
+import { AnyModel, ArrayModel, BooleanModel, ConstrainedArrayModel, ConstrainedBooleanModel, ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedObjectModel, ConstrainedObjectPropertyModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedUnionModel, DictionaryModel, EnumModel, EnumValueModel, FloatModel, IntegerModel, ObjectModel, ObjectPropertyModel, ReferenceModel, StringModel, TupleModel, TupleValueModel, UnionModel } from '../../src/models';
 import { mockedConstraints, mockedTypeMapping } from '../TestUtils/TestConstrainer';
 
+
 describe('ConstrainedMetaModel', () => {
+  describe('containsPropertyType', () => {
+    test('should find present property type and those who are not', () => {
+      const stringModel = new ConstrainedStringModel('', undefined, '');
+      const stringObjectPropertyModel = new ConstrainedObjectPropertyModel('string', '', false, stringModel);
+      const rawModel = new ConstrainedObjectModel('test', undefined, '', {
+        string: stringObjectPropertyModel
+      });
+      expect(rawModel.containsPropertyType(ConstrainedStringModel)).toEqual(true);
+      expect(rawModel.containsPropertyType(ConstrainedBooleanModel)).toEqual(false);
+    });
+  });
   describe('ReferenceModel', () => {
     test('should return no dependencies', () => {
       const stringModel = new StringModel('', undefined);
