@@ -1,4 +1,4 @@
-import { AnyModel, ArrayModel, BooleanModel, CommonModel, FloatModel, IntegerModel, ObjectModel, StringModel, TupleModel, UnionModel } from '../../src';
+import { AnyModel, ArrayModel, BooleanModel, CommonModel, EnumModel, FloatModel, IntegerModel, ObjectModel, StringModel, TupleModel, UnionModel } from '../../src';
 import { convertToMetaModel } from '../../src/helpers';
 describe('CommonModelToMetaModel', () => {
   afterEach(() => {
@@ -13,6 +13,19 @@ describe('CommonModelToMetaModel', () => {
 
     expect(model).not.toBeUndefined();
     expect(model instanceof AnyModel).toEqual(true);
+  });
+  test('should convert to enum model', () => { 
+    const cm = new CommonModel();
+    cm.type = 'string';
+    cm.$id = 'test';
+    cm.enum = [
+      'test'
+    ];
+
+    const model = convertToMetaModel(cm);
+
+    expect(model).not.toBeUndefined();
+    expect(model instanceof EnumModel).toEqual(true);
   });
   test('should convert to string model', () => { 
     const cm = new CommonModel();

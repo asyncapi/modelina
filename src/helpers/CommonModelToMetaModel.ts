@@ -12,25 +12,9 @@ export function convertToMetaModel(jsonSchemaModel: CommonModel): MetaModel {
   if (unionModel !== undefined) {
     return unionModel;
   }
-  const stringModel = convertToStringModel(jsonSchemaModel, modelName);
-  if (stringModel !== undefined) {
-    return stringModel;
-  }
-  const floatModel = convertToFloatModel(jsonSchemaModel, modelName);
-  if (floatModel !== undefined) {
-    return floatModel;
-  }
-  const integerModel = convertToIntegerModel(jsonSchemaModel, modelName);
-  if (integerModel !== undefined) {
-    return integerModel;
-  }
   const enumModel = convertToEnumModel(jsonSchemaModel, modelName);
   if (enumModel !== undefined) {
     return enumModel;
-  }
-  const booleanModel = convertToBooleanModel(jsonSchemaModel, modelName);
-  if (booleanModel !== undefined) {
-    return booleanModel;
   }
   const objectModel = convertToObjectModel(jsonSchemaModel, modelName);
   if (objectModel !== undefined) {
@@ -44,6 +28,22 @@ export function convertToMetaModel(jsonSchemaModel: CommonModel): MetaModel {
   if (arrayModel !== undefined) {
     return arrayModel;
   }
+  const stringModel = convertToStringModel(jsonSchemaModel, modelName);
+  if (stringModel !== undefined) {
+    return stringModel;
+  }
+  const floatModel = convertToFloatModel(jsonSchemaModel, modelName);
+  if (floatModel !== undefined) {
+    return floatModel;
+  }
+  const integerModel = convertToIntegerModel(jsonSchemaModel, modelName);
+  if (integerModel !== undefined) {
+    return integerModel;
+  }
+  const booleanModel = convertToBooleanModel(jsonSchemaModel, modelName);
+  if (booleanModel !== undefined) {
+    return booleanModel;
+  }
   throw new Error('Failed to convert to MetaModel');
 }
 export function convertToUnionModel(jsonSchemaModel: CommonModel, name: string): UnionModel | undefined {
@@ -52,25 +52,9 @@ export function convertToUnionModel(jsonSchemaModel: CommonModel, name: string):
   }
   // Has multiple types, so convert to union
   const unionModel = new UnionModel(name, jsonSchemaModel.originalInput, []);
-  const stringModel = convertToStringModel(jsonSchemaModel, name);
-  if (stringModel !== undefined) {
-    unionModel.union.push(stringModel);
-  }
-  const floatModel = convertToFloatModel(jsonSchemaModel, name);
-  if (floatModel !== undefined) {
-    unionModel.union.push(floatModel);
-  }
-  const integerModel = convertToIntegerModel(jsonSchemaModel, name);
-  if (integerModel !== undefined) {
-    unionModel.union.push(integerModel);
-  }
   const enumModel = convertToEnumModel(jsonSchemaModel, name);
   if (enumModel !== undefined) {
     unionModel.union.push(enumModel);
-  }
-  const booleanModel = convertToBooleanModel(jsonSchemaModel, name);
-  if (booleanModel !== undefined) {
-    unionModel.union.push(booleanModel);
   }
   const objectModel = convertToObjectModel(jsonSchemaModel, name);
   if (objectModel !== undefined) {
@@ -83,6 +67,22 @@ export function convertToUnionModel(jsonSchemaModel: CommonModel, name: string):
   const arrayModel = convertToArrayModel(jsonSchemaModel, name);
   if (arrayModel !== undefined) {
     unionModel.union.push(arrayModel);
+  }
+  const stringModel = convertToStringModel(jsonSchemaModel, name);
+  if (stringModel !== undefined) {
+    unionModel.union.push(stringModel);
+  }
+  const floatModel = convertToFloatModel(jsonSchemaModel, name);
+  if (floatModel !== undefined) {
+    unionModel.union.push(floatModel);
+  }
+  const integerModel = convertToIntegerModel(jsonSchemaModel, name);
+  if (integerModel !== undefined) {
+    unionModel.union.push(integerModel);
+  }
+  const booleanModel = convertToBooleanModel(jsonSchemaModel, name);
+  if (booleanModel !== undefined) {
+    unionModel.union.push(booleanModel);
   }
   return unionModel;
 }
