@@ -13,32 +13,35 @@ describe('PropertyKeyConstrainer', () => {
 
   test('should never render special chars', () => {
     const constrainedKey = constrainPropertyName('%');
-    expect(constrainedKey).toEqual('Percent');
+    expect(constrainedKey).toEqual('percent');
   });
   test('should not render number as start char', () => {
     const constrainedKey = constrainPropertyName('1');
-    expect(constrainedKey).toEqual('Number_1');
+    expect(constrainedKey).toEqual('number_1');
   });
   test('should never contain empty name', () => {
     const constrainedKey = constrainPropertyName('');
-    expect(constrainedKey).toEqual('Empty');
+    expect(constrainedKey).toEqual('empty');
   });
   test('should use constant naming format', () => {
     const constrainedKey = constrainPropertyName('some weird_value!"#2');
-    expect(constrainedKey).toEqual('SomeWeirdValueExclamationQuotationHash_2');
+    expect(constrainedKey).toEqual('someWeirdValueExclamationQuotationHash_2');
   });
   test('should not contain duplicate properties', () => {
     const objectModel = new ObjectModel('test', undefined, {});
     const constrainedObjectModel = new ConstrainedObjectModel('test', undefined, '', {});
-    const objectPropertyModel = new ObjectPropertyModel('SomeProperty', false, objectModel);
-    const constrainedObjectPropertyModel = new ConstrainedObjectPropertyModel('SomeProperty', '', objectPropertyModel.required, constrainedObjectModel);
-    constrainedObjectModel.properties['SomeProperty'] = constrainedObjectPropertyModel;
-    const constrainedKey = JavaDefaultConstraints.propertyKey({constrainedObjectModel, objectModel, objectPropertyModel, constrainedObjectPropertyModel});
-    expect(constrainedKey).toEqual('ReservedSomeProperty');
+    const objectPropertyModel = new ObjectPropertyModel('reservedReturn', false, objectModel);
+    const constrainedObjectPropertyModel = new ConstrainedObjectPropertyModel('reservedReturn', '', objectPropertyModel.required, constrainedObjectModel);
+    const objectPropertyModel2 = new ObjectPropertyModel('return', false, objectModel);
+    const constrainedObjectPropertyModel2 = new ConstrainedObjectPropertyModel('return', '', objectPropertyModel.required, constrainedObjectModel);
+    constrainedObjectModel.properties['reservedReturn'] = constrainedObjectPropertyModel;
+    constrainedObjectModel.properties['return'] = constrainedObjectPropertyModel2;
+    const constrainedKey = JavaDefaultConstraints.propertyKey({constrainedObjectModel, objectModel, objectPropertyModel: objectPropertyModel2, constrainedObjectPropertyModel: constrainedObjectPropertyModel2});
+    expect(constrainedKey).toEqual('reservedReservedReturn');
   });
   test('should never render reserved keywords', () => {
     const constrainedKey = constrainPropertyName('return');
-    expect(constrainedKey).toEqual('ReservedReturn');
+    expect(constrainedKey).toEqual('reservedReturn');
   });
   describe('custom constraints', () => {
     test('should be able to overwrite all hooks', () => {

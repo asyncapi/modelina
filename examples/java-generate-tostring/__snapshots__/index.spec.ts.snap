@@ -3,10 +3,10 @@
 exports[`Should be able to generate a model to overwrite the toString method and should log expected output to console 1`] = `
 Array [
   "public class Root {
-  private Object email;
+  private String Email;
 
-  public Object getEmail() { return this.email; }
-  public void setEmail(Object email) { this.email = email; }
+  public String getEmail() { return this.Email; }
+  public void setEmail(String Email) { this.Email = Email; }
 
   @Override
   public String toString() {

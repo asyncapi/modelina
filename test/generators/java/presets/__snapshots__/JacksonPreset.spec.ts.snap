@@ -1,8 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Should be able to generate data models for jackson annotation and should log expected output to console 1`] = `
-Array [
-  "public class Root {
+exports[`JAVA_JACKSON_PRESET should render Jackson annotations 1`] = `
+"public class Clazz {
   private float MinNumberProp;
   private float MaxNumberProp;
   private Map<String, Object> AdditionalProperties;
@@ -17,6 +16,5 @@ Array [
 
   public Map<String, Object> getAdditionalProperties() { return this.AdditionalProperties; }
   public void setAdditionalProperties(Map<String, Object> AdditionalProperties) { this.AdditionalProperties = AdditionalProperties; }
-}",
-]
+}"
 `;

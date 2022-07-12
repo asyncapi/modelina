@@ -7,18 +7,18 @@ Array [
  * Examples: {\\"prop\\":\\"value\\"}
  */
 public class JavaDoc {
-  private String prop;
-  private Map<String, Object> additionalProperties;
+  private String Prop;
+  private Map<String, Object> AdditionalProperties;
 
   /**
    * Description for prop
    * Examples: exampleValue
    */
-  public String getProp() { return this.prop; }
-  public void setProp(String prop) { this.prop = prop; }
+  public String getProp() { return this.Prop; }
+  public void setProp(String Prop) { this.Prop = Prop; }
 
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+  public Map<String, Object> getAdditionalProperties() { return this.AdditionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> AdditionalProperties) { this.AdditionalProperties = AdditionalProperties; }
 }",
 ]
 `;

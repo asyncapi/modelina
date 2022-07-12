@@ -3,22 +3,22 @@
 exports[`Should be able to generate Java model from a TypeScript type file and should log expected output to console 1`] = `
 Array [
   "public class InnerData {
-  private Double age;
-  private String name;
-  private Boolean free;
-  private Map<String, Object> additionalProperties;
+  private float AnonymSchema1;
+  private String AnonymSchema2;
+  private Boolean AnonymSchema3;
+  private Map<String, Object> AdditionalProperties;
 
-  public Double getAge() { return this.age; }
-  public void setAge(Double age) { this.age = age; }
+  public float getAge() { return this.AnonymSchema1; }
+  public void setAge(float AnonymSchema1) { this.AnonymSchema1 = AnonymSchema1; }
 
-  public String getName() { return this.name; }
-  public void setName(String name) { this.name = name; }
+  public String getName() { return this.AnonymSchema2; }
+  public void setName(String AnonymSchema2) { this.AnonymSchema2 = AnonymSchema2; }
 
-  public Boolean getFree() { return this.free; }
-  public void setFree(Boolean free) { this.free = free; }
+  public Boolean getFree() { return this.AnonymSchema3; }
+  public void setFree(Boolean AnonymSchema3) { this.AnonymSchema3 = AnonymSchema3; }
 
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+  public Map<String, Object> getAdditionalProperties() { return this.AdditionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> AdditionalProperties) { this.AdditionalProperties = AdditionalProperties; }
 }",
 ]
 `;

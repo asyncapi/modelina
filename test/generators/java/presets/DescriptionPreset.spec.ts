@@ -20,7 +20,7 @@ describe('JAVA_DESCRIPTION_PRESET', () => {
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot(); 
-    expect(models[0].result).toEqual(expectedDependencies);
+    expect(models[0].dependencies).toEqual(expectedDependencies);
   });
 
   test('should render description and examples for enum', async () => {
