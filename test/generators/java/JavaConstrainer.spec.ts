@@ -27,17 +27,12 @@ describe('JavaConstrainer', () => {
     test('should render type', () => {
       const model = new ConstrainedFloatModel('test', undefined, '');
       const type = JavaDefaultTypeMapping.Float({constrainedModel: model, options: JavaGenerator.defaultOptions});
-      expect(type).toEqual('float');
+      expect(type).toEqual('double');
     });
     test('should render double when original input has number format', () => {
-      const model = new ConstrainedFloatModel('test', {format: 'number'}, '');
+      const model = new ConstrainedFloatModel('test', {format: 'float'}, '');
       const type = JavaDefaultTypeMapping.Float({constrainedModel: model, options: JavaGenerator.defaultOptions});
-      expect(type).toEqual('double');
-    });
-    test('should render double when original input has double format', () => {
-      const model = new ConstrainedFloatModel('test', {format: 'double'}, '');
-      const type = JavaDefaultTypeMapping.Float({constrainedModel: model, options: JavaGenerator.defaultOptions});
-      expect(type).toEqual('double');
+      expect(type).toEqual('float');
     });
   });
   describe('Integer', () => { 
