@@ -15,7 +15,7 @@ export type ModelEnumKeyConstraints = {
 
 export const DefaultEnumKeyConstraints: ModelEnumKeyConstraints = {
   NO_SPECIAL_CHAR: (value: string) => {
-    return FormatHelpers.replaceSpecialCharacters(value, { exclude: [' '], separator: '_' });
+    return FormatHelpers.replaceSpecialCharacters(value, { exclude: [' ', '_'], separator: '_' });
   },
   NO_NUMBER_START_CHAR,
   NO_DUPLICATE_KEYS: NO_DUPLICATE_ENUM_KEYS,
@@ -35,30 +35,35 @@ export function defaultEnumKeyConstraints(customConstraints?: Partial<ModelEnumK
     constrainedEnumKey = constraints.NO_NUMBER_START_CHAR(constrainedEnumKey);
     constrainedEnumKey = constraints.NO_EMPTY_VALUE(constrainedEnumKey);
     constrainedEnumKey = constraints.NO_RESERVED_KEYWORDS(constrainedEnumKey);
+    //If the property name has been manipulated, lets make sure it don't clash with existing properties
+    if (constrainedEnumKey !== enumKey) {
+      constrainedEnumKey = constraints.NO_DUPLICATE_KEYS(constrainedEnumModel, enumModel, constrainedEnumKey, constraints.NAMING_FORMATTER!);
+    }
     constrainedEnumKey = constraints.NAMING_FORMATTER(constrainedEnumKey);
-    constrainedEnumKey = constraints.NO_DUPLICATE_KEYS(constrainedEnumModel, enumModel, constrainedEnumKey, constraints.NAMING_FORMATTER!);
     return constrainedEnumKey;
   };
 }
 
 export function defaultEnumValueConstraints(): EnumValueConstraint {
   return ({enumValue}) => {
-    let normalizedEnumValue;
-    switch (typeof enumValue.value) {
+    let constrainedEnumValue;
+    switch (typeof enumValue) {
+    case 'string':
     case 'boolean':
+      constrainedEnumValue = `"${enumValue}"`;
     case 'bigint':
     case 'number': {
-      normalizedEnumValue = enumValue.value;
+      constrainedEnumValue = enumValue;
       break;
     }
     case 'object': {
-      normalizedEnumValue = `"${JSON.stringify(enumValue).replace(/"/g, '\\"')}"`;
+      constrainedEnumValue = `"${JSON.stringify(enumValue).replace(/"/g, '\\"')}"`;
       break;
     }
     default: {
-      normalizedEnumValue = `"${enumValue}"`;
+      constrainedEnumValue = `"${enumValue}"`;
     }
     }
-    return normalizedEnumValue;
+    return constrainedEnumValue;
   };
 }
