@@ -1,5 +1,4 @@
 import { JavaDefaultConstraints } from '../../../../src/generators/java/JavaConstrainer';
-import { defaultEnumKeyConstraints, ModelEnumKeyConstraints, DefaultEnumKeyConstraints } from '../../../../src/generators/java/constrainer/EnumConstrainer';
 import { DefaultModelNameConstraints, defaultModelNameConstraints, ModelNameConstraints } from '../../../../src/generators/java/constrainer/ModelNameConstrainer';
 describe('ModelNameConstrainer', () => {
   test('should never render special chars', () => {

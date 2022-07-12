@@ -2,51 +2,51 @@
 
 exports[`JavaGenerator should not render reserved keyword 1`] = `
 "public class Address {
-  private String ReservedEnum;
-  private String ReservedEnum;
+  private String reservedReservedEnum;
+  private String reservedEnum;
 
-  public String getReservedReservedEnum() { return this.ReservedEnum; }
-  public void setReservedReservedEnum(String ReservedEnum) { this.ReservedEnum = ReservedEnum; }
+  public String getReservedReservedEnum() { return this.reservedReservedEnum; }
+  public void setReservedReservedEnum(String reservedReservedEnum) { this.reservedReservedEnum = reservedReservedEnum; }
 
-  public String getReservedEnum() { return this.ReservedEnum; }
-  public void setReservedEnum(String ReservedEnum) { this.ReservedEnum = ReservedEnum; }
+  public String getReservedEnum() { return this.reservedEnum; }
+  public void setReservedEnum(String reservedEnum) { this.reservedEnum = reservedEnum; }
 }"
 `;
 
 exports[`JavaGenerator should render \`class\` type 1`] = `
 "public class Address {
-  private String StreetName;
-  private String City;
-  private String State;
-  private float HouseNumber;
-  private Boolean Marriage;
-  private Object Members;
-  private Object[] ArrayType;
-  private Map<String, Object> AdditionalProperties;
+  private String streetName;
+  private String city;
+  private String state;
+  private float houseNumber;
+  private Boolean marriage;
+  private Object members;
+  private Object[] arrayType;
+  private Map<String, Object> additionalProperties;
 
-  public String getStreetName() { return this.StreetName; }
-  public void setStreetName(String StreetName) { this.StreetName = StreetName; }
+  public String getStreetName() { return this.streetName; }
+  public void setStreetName(String streetName) { this.streetName = streetName; }
 
-  public String getCity() { return this.City; }
-  public void setCity(String City) { this.City = City; }
+  public String getCity() { return this.city; }
+  public void setCity(String city) { this.city = city; }
 
-  public String getState() { return this.State; }
-  public void setState(String State) { this.State = State; }
+  public String getState() { return this.state; }
+  public void setState(String state) { this.state = state; }
 
-  public float getHouseNumber() { return this.HouseNumber; }
-  public void setHouseNumber(float HouseNumber) { this.HouseNumber = HouseNumber; }
+  public float getHouseNumber() { return this.houseNumber; }
+  public void setHouseNumber(float houseNumber) { this.houseNumber = houseNumber; }
 
-  public Boolean getMarriage() { return this.Marriage; }
-  public void setMarriage(Boolean Marriage) { this.Marriage = Marriage; }
+  public Boolean getMarriage() { return this.marriage; }
+  public void setMarriage(Boolean marriage) { this.marriage = marriage; }
 
-  public Object getMembers() { return this.Members; }
-  public void setMembers(Object Members) { this.Members = Members; }
+  public Object getMembers() { return this.members; }
+  public void setMembers(Object members) { this.members = members; }
 
-  public Object[] getArrayType() { return this.ArrayType; }
-  public void setArrayType(Object[] ArrayType) { this.ArrayType = ArrayType; }
+  public Object[] getArrayType() { return this.arrayType; }
+  public void setArrayType(Object[] arrayType) { this.arrayType = arrayType; }
 
-  public Map<String, Object> getAdditionalProperties() { return this.AdditionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> AdditionalProperties) { this.AdditionalProperties = AdditionalProperties; }
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }"
 `;
 
@@ -148,10 +148,10 @@ exports[`JavaGenerator should render \`enum\` type (union type) 1`] = `
 
 exports[`JavaGenerator should render List type for collections 1`] = `
 "public class CustomClass {
-  private List<Object> ArrayType;
+  private List<Object> arrayType;
 
-  public List<Object> getArrayType() { return this.ArrayType; }
-  public void setArrayType(List<Object> ArrayType) { this.ArrayType = ArrayType; }
+  public List<Object> getArrayType() { return this.arrayType; }
+  public void setArrayType(List<Object> arrayType) { this.arrayType = arrayType; }
 }"
 `;
 
@@ -222,45 +222,45 @@ exports[`JavaGenerator should render enums with translated special characters 1`
 
 exports[`JavaGenerator should render models and their dependencies 1`] = `
 "package test.package;
-import test.package.OtherModel;
+import test.package.otherModel;
 import java.util.Map;
 public class Address {
-  private String StreetName;
-  private String City;
-  private String State;
-  private float HouseNumber;
-  private Boolean Marriage;
-  private Object Members;
-  private Object[] ArrayType;
-  private OtherModel OtherModel;
-  private Map<String, Object> AdditionalProperties;
+  private String streetName;
+  private String city;
+  private String state;
+  private float houseNumber;
+  private Boolean marriage;
+  private Object members;
+  private Object[] arrayType;
+  private otherModel otherModel;
+  private Map<String, Object> additionalProperties;
 
-  public String getStreetName() { return this.StreetName; }
-  public void setStreetName(String StreetName) { this.StreetName = StreetName; }
+  public String getStreetName() { return this.streetName; }
+  public void setStreetName(String streetName) { this.streetName = streetName; }
 
-  public String getCity() { return this.City; }
-  public void setCity(String City) { this.City = City; }
+  public String getCity() { return this.city; }
+  public void setCity(String city) { this.city = city; }
 
-  public String getState() { return this.State; }
-  public void setState(String State) { this.State = State; }
+  public String getState() { return this.state; }
+  public void setState(String state) { this.state = state; }
 
-  public float getHouseNumber() { return this.HouseNumber; }
-  public void setHouseNumber(float HouseNumber) { this.HouseNumber = HouseNumber; }
+  public float getHouseNumber() { return this.houseNumber; }
+  public void setHouseNumber(float houseNumber) { this.houseNumber = houseNumber; }
 
-  public Boolean getMarriage() { return this.Marriage; }
-  public void setMarriage(Boolean Marriage) { this.Marriage = Marriage; }
+  public Boolean getMarriage() { return this.marriage; }
+  public void setMarriage(Boolean marriage) { this.marriage = marriage; }
 
-  public Object getMembers() { return this.Members; }
-  public void setMembers(Object Members) { this.Members = Members; }
+  public Object getMembers() { return this.members; }
+  public void setMembers(Object members) { this.members = members; }
 
-  public Object[] getArrayType() { return this.ArrayType; }
-  public void setArrayType(Object[] ArrayType) { this.ArrayType = ArrayType; }
+  public Object[] getArrayType() { return this.arrayType; }
+  public void setArrayType(Object[] arrayType) { this.arrayType = arrayType; }
 
-  public OtherModel getOtherModel() { return this.OtherModel; }
-  public void setOtherModel(OtherModel OtherModel) { this.OtherModel = OtherModel; }
+  public otherModel getOtherModel() { return this.otherModel; }
+  public void setOtherModel(otherModel otherModel) { this.otherModel = otherModel; }
 
-  public Map<String, Object> getAdditionalProperties() { return this.AdditionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> AdditionalProperties) { this.AdditionalProperties = AdditionalProperties; }
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }"
 `;
 
@@ -269,32 +269,32 @@ exports[`JavaGenerator should render models and their dependencies 2`] = `
 
 import java.util.Map;
 public class OtherModel {
-  private String OtherModelStreetName;
-  private Map<String, Object> AdditionalProperties;
+  private String streetName;
+  private Map<String, Object> additionalProperties;
 
-  public String getStreetName() { return this.OtherModelStreetName; }
-  public void setStreetName(String OtherModelStreetName) { this.OtherModelStreetName = OtherModelStreetName; }
+  public String getStreetName() { return this.streetName; }
+  public void setStreetName(String streetName) { this.streetName = streetName; }
 
-  public Map<String, Object> getAdditionalProperties() { return this.AdditionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> AdditionalProperties) { this.AdditionalProperties = AdditionalProperties; }
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }"
 `;
 
 exports[`JavaGenerator should work custom preset for \`class\` type 1`] = `
 "public class CustomClass {
   @JsonProperty(\\"property\\")
-  private String Property;
+  private String property;
   @JsonProperty(\\"additionalProperties\\")
-  private Map<String, Object> AdditionalProperties;
+  private Map<String, Object> additionalProperties;
 
   @JsonProperty(\\"property\\")
-  public String getProperty() { return this.Property; }
+  public String getProperty() { return this.property; }
   @JsonProperty(\\"property\\")
-  public void setProperty(String Property) { this.Property = Property; }
+  public void setProperty(String property) { this.property = property; }
 
   @JsonProperty(\\"additionalProperties\\")
-  public Map<String, Object> getAdditionalProperties() { return this.AdditionalProperties; }
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   @JsonProperty(\\"additionalProperties\\")
-  public void setAdditionalProperties(Map<String, Object> AdditionalProperties) { this.AdditionalProperties = AdditionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }"
 `;

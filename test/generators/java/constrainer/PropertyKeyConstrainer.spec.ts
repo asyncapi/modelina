@@ -10,6 +10,9 @@ describe('PropertyKeyConstrainer', () => {
     const constrainedObjectPropertyModel = new ConstrainedObjectPropertyModel('', '', objectPropertyModel.required, constrainedObjectModel);
     return JavaDefaultConstraints.propertyKey({constrainedObjectModel, objectModel, objectPropertyModel, constrainedObjectPropertyModel });
   };
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
 
   test('should never render special chars', () => {
     const constrainedKey = constrainPropertyName('%');
@@ -45,13 +48,12 @@ describe('PropertyKeyConstrainer', () => {
   });
   describe('custom constraints', () => {
     test('should be able to overwrite all hooks', () => {
-      const mockedConstraintCallbacks: PropertyKeyConstraintOptions = {
+      const mockedConstraintCallbacks: Partial<PropertyKeyConstraintOptions> = {
         NAMING_FORMATTER: jest.fn().mockReturnValue(''),
         NO_SPECIAL_CHAR: jest.fn().mockReturnValue(''),
         NO_NUMBER_START_CHAR: jest.fn().mockReturnValue(''),
         NO_EMPTY_VALUE: jest.fn().mockReturnValue(''),
-        NO_RESERVED_KEYWORDS: jest.fn().mockReturnValue(''),
-        NO_DUPLICATE_PROPERTIES: jest.fn().mockReturnValue('')
+        NO_RESERVED_KEYWORDS: jest.fn().mockReturnValue('')
       };
       const constrainFunction = defaultPropertyKeyConstraints(mockedConstraintCallbacks);
       const objectPropertyModel = new ObjectPropertyModel('', false, objectModel);

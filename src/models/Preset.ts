@@ -49,4 +49,4 @@ export type PresetWithOptions<P extends Preset = Preset, O = any> = {
   preset: P,
   options: O,
 }
-export type Presets<P extends Preset = Preset> = Array<P | PresetWithOptions<P, O>>;
+export type Presets<P extends Preset = Preset> = Array<P | PresetWithOptions<P>>;

@@ -3,20 +3,20 @@
 exports[`Should be able to generate data models for jackson annotation and should log expected output to console 1`] = `
 Array [
   "public class Root {
-  private float MinNumberProp;
-  private float MaxNumberProp;
-  private Map<String, Object> AdditionalProperties;
+  private float minNumberProp;
+  private float maxNumberProp;
+  private Map<String, Object> additionalProperties;
 
   @JsonProperty(\\"min_number_prop\\")
-  public float getMinNumberProp() { return this.MinNumberProp; }
-  public void setMinNumberProp(float MinNumberProp) { this.MinNumberProp = MinNumberProp; }
+  public float getMinNumberProp() { return this.minNumberProp; }
+  public void setMinNumberProp(float minNumberProp) { this.minNumberProp = minNumberProp; }
 
   @JsonProperty(\\"max_number_prop\\")
-  public float getMaxNumberProp() { return this.MaxNumberProp; }
-  public void setMaxNumberProp(float MaxNumberProp) { this.MaxNumberProp = MaxNumberProp; }
+  public float getMaxNumberProp() { return this.maxNumberProp; }
+  public void setMaxNumberProp(float maxNumberProp) { this.maxNumberProp = maxNumberProp; }
 
-  public Map<String, Object> getAdditionalProperties() { return this.AdditionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> AdditionalProperties) { this.AdditionalProperties = AdditionalProperties; }
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }",
 ]
 `;

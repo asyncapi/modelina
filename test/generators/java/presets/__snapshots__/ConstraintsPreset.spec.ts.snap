@@ -2,32 +2,32 @@
 
 exports[`JAVA_CONSTRAINTS_PRESET should render constaints annotations 1`] = `
 "public class Clazz {
-  private float MinNumberProp;
-  private float MaxNumberProp;
-  private Object[] ArrayProp;
-  private String StringProp;
-  private Map<String, Object> AdditionalProperties;
+  private float minNumberProp;
+  private float maxNumberProp;
+  private Object[] arrayProp;
+  private String stringProp;
+  private Map<String, Object> additionalProperties;
 
   @NotNull
   @Min(0)
-  public float getMinNumberProp() { return this.MinNumberProp; }
-  public void setMinNumberProp(float MinNumberProp) { this.MinNumberProp = MinNumberProp; }
+  public float getMinNumberProp() { return this.minNumberProp; }
+  public void setMinNumberProp(float minNumberProp) { this.minNumberProp = minNumberProp; }
 
   @NotNull
   @Max(99)
-  public float getMaxNumberProp() { return this.MaxNumberProp; }
-  public void setMaxNumberProp(float MaxNumberProp) { this.MaxNumberProp = MaxNumberProp; }
+  public float getMaxNumberProp() { return this.maxNumberProp; }
+  public void setMaxNumberProp(float maxNumberProp) { this.maxNumberProp = maxNumberProp; }
 
   @Size(min=2, max=3)
-  public Object[] getArrayProp() { return this.ArrayProp; }
-  public void setArrayProp(Object[] ArrayProp) { this.ArrayProp = ArrayProp; }
+  public Object[] getArrayProp() { return this.arrayProp; }
+  public void setArrayProp(Object[] arrayProp) { this.arrayProp = arrayProp; }
 
   @Pattern(regexp=\\"^I_\\")
   @Size(min=3)
-  public String getStringProp() { return this.StringProp; }
-  public void setStringProp(String StringProp) { this.StringProp = StringProp; }
+  public String getStringProp() { return this.stringProp; }
+  public void setStringProp(String stringProp) { this.stringProp = stringProp; }
 
-  public Map<String, Object> getAdditionalProperties() { return this.AdditionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> AdditionalProperties) { this.AdditionalProperties = AdditionalProperties; }
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }"
 `;

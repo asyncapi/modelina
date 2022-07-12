@@ -43,7 +43,7 @@ describe('JAVA_COMMON_PRESET', () => {
       const models = await generator.generate(doc);
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot(); 
-      expect(models[0].dependencies).toEqual(['import java.util.Objects;']);
+      expect(models[0].dependencies).toEqual(['import java.util.Objects;', 'import java.util.Map;']);
     });
     test('should not render any functions when all 4 options are disabled', async () => {
       const options: JavaCommonPresetOptions = {
@@ -82,7 +82,7 @@ describe('JAVA_COMMON_PRESET', () => {
       const models = await generator.generate(doc);
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot(); 
-      expect(models[0].dependencies).toEqual(['import java.util.Objects;']);
+      expect(models[0].dependencies).toEqual(['import java.util.Objects;', 'import java.util.Map;']);
     });
     test('should render hashCode', async () => {
       const generator = new JavaGenerator(
@@ -101,7 +101,7 @@ describe('JAVA_COMMON_PRESET', () => {
       const models = await generator.generate(doc);
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot(); 
-      expect(models[0].dependencies).toEqual(['import java.util.Objects;']);
+      expect(models[0].dependencies).toEqual(['import java.util.Objects;', 'import java.util.Map;']);
     });
     test('should render classToString', async () => {
       const generator = new JavaGenerator(
@@ -120,7 +120,7 @@ describe('JAVA_COMMON_PRESET', () => {
       const models = await generator.generate(doc);
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot(); 
-      expect(models[0].dependencies).toEqual(['import java.util.Objects;']);
+      expect(models[0].dependencies).toEqual(['import java.util.Map;']);
     });
     test('should render un/marshal', async () => {
       const generator = new JavaGenerator(
@@ -139,7 +139,7 @@ describe('JAVA_COMMON_PRESET', () => {
       const models = await generator.generate(doc);
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot(); 
-      expect(models[0].dependencies).toEqual(['import java.util.Map;', 'import java.util.stream;', 'import org.json.JSONObject;']);
+      expect(models[0].dependencies).toEqual(['import java.util.stream;', 'import org.json.JSONObject;', 'import java.util.Map;']);
     });
   });
 });

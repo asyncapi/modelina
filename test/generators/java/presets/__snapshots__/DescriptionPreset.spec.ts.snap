@@ -6,18 +6,18 @@ exports[`JAVA_DESCRIPTION_PRESET should render description and examples for clas
  * Examples: {\\"prop\\":\\"value\\"}
  */
 public class Clazz {
-  private String Prop;
-  private Map<String, Object> AdditionalProperties;
+  private String prop;
+  private Map<String, Object> additionalProperties;
 
   /**
    * Description for prop
    * Examples: exampleValue
    */
-  public String getProp() { return this.Prop; }
-  public void setProp(String Prop) { this.Prop = Prop; }
+  public String getProp() { return this.prop; }
+  public void setProp(String prop) { this.prop = prop; }
 
-  public Map<String, Object> getAdditionalProperties() { return this.AdditionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> AdditionalProperties) { this.AdditionalProperties = AdditionalProperties; }
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }"
 `;
 
