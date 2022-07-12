@@ -1,5 +1,77 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`JavaScriptGenerator should not render \`class\` with reserved keyword 1`] = `
+"class Address {
+  ReservedEnum;
+  reserved_ReservedEnum;
+
+  constructor(input) {
+    this.ReservedEnum = input.ReservedEnum;
+    this.reserved_ReservedEnum = input.reserved_ReservedEnum;
+  }
+
+  get ReservedEnum() { return this.ReservedEnum; }
+  set ReservedEnum(ReservedEnum) { this.ReservedEnum = ReservedEnum; }
+
+  get reserved_ReservedEnum() { return this.reserved_ReservedEnum; }
+  set reserved_ReservedEnum(reserved_ReservedEnum) { this.reserved_ReservedEnum = reserved_ReservedEnum; }
+}"
+`;
+
+exports[`JavaScriptGenerator should render \`class\` type 1`] = `
+"class Address {
+  StreetName;
+  City;
+  State;
+  HouseNumber;
+  Marriage;
+  Members;
+  ArrayType;
+  AdditionalProperties;
+
+  constructor(input) {
+    this.StreetName = input.StreetName;
+    this.City = input.City;
+    this.State = input.State;
+    this.HouseNumber = input.HouseNumber;
+    if (input.hasOwnProperty('Marriage')) {
+      this.Marriage = input.Marriage;
+    }
+    if (input.hasOwnProperty('Members')) {
+      this.Members = input.Members;
+    }
+    this.ArrayType = input.ArrayType;
+    if (input.hasOwnProperty('AdditionalProperties')) {
+      this.AdditionalProperties = input.AdditionalProperties;
+    }
+  }
+
+  get StreetName() { return this.StreetName; }
+  set StreetName(StreetName) { this.StreetName = StreetName; }
+
+  get City() { return this.City; }
+  set City(City) { this.City = City; }
+
+  get State() { return this.State; }
+  set State(State) { this.State = State; }
+
+  get HouseNumber() { return this.HouseNumber; }
+  set HouseNumber(HouseNumber) { this.HouseNumber = HouseNumber; }
+
+  get Marriage() { return this.Marriage; }
+  set Marriage(Marriage) { this.Marriage = Marriage; }
+
+  get Members() { return this.Members; }
+  set Members(Members) { this.Members = Members; }
+
+  get ArrayType() { return this.ArrayType; }
+  set ArrayType(ArrayType) { this.ArrayType = ArrayType; }
+
+  get AdditionalProperties() { return this.AdditionalProperties; }
+  set AdditionalProperties(AdditionalProperties) { this.AdditionalProperties = AdditionalProperties; }
+}"
+`;
+
 exports[`JavaScriptGenerator should render models and their dependencies for CJS module system 1`] = `
 "const OtherModel = require('./OtherModel');
 
@@ -170,4 +242,17 @@ class OtherModel {
 }
 export default OtherModel;
 "
+`;
+
+exports[`JavaScriptGenerator should work custom preset for \`class\` type 1`] = `
+"export class CustomClass {
+  #Property;
+
+  constructor(input) {
+    this.#property = input.property;
+  }
+
+  get property() { return this.#property; }
+  set property(property) { this.#property = property; }
+}"
 `;

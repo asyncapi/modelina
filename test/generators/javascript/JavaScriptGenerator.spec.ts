@@ -74,17 +74,6 @@ describe('JavaScriptGenerator', () => {
       },
       additionalProperties: false
     };
-    const expected = `export class CustomClass {
-  #property;
-
-  constructor(input) {
-    this.#property = input.property;
-  }
-
-  get property() { return this.#property; }
-  set property(property) { this.#property = property; }
-}`;
-
     generator = new JavaScriptGenerator({ presets: [
       {
         class: {
