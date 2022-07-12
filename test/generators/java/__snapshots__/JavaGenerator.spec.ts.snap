@@ -18,7 +18,7 @@ exports[`JavaGenerator should render \`class\` type 1`] = `
   private String streetName;
   private String city;
   private String state;
-  private float houseNumber;
+  private double houseNumber;
   private Boolean marriage;
   private Object members;
   private Object[] arrayType;
@@ -33,8 +33,8 @@ exports[`JavaGenerator should render \`class\` type 1`] = `
   public String getState() { return this.state; }
   public void setState(String state) { this.state = state; }
 
-  public float getHouseNumber() { return this.houseNumber; }
-  public void setHouseNumber(float houseNumber) { this.houseNumber = houseNumber; }
+  public double getHouseNumber() { return this.houseNumber; }
+  public void setHouseNumber(double houseNumber) { this.houseNumber = houseNumber; }
 
   public Boolean getMarriage() { return this.marriage; }
   public void setMarriage(Boolean marriage) { this.marriage = marriage; }
@@ -228,7 +228,7 @@ public class Address {
   private String streetName;
   private String city;
   private String state;
-  private float houseNumber;
+  private double houseNumber;
   private Boolean marriage;
   private Object members;
   private Object[] arrayType;
@@ -244,8 +244,8 @@ public class Address {
   public String getState() { return this.state; }
   public void setState(String state) { this.state = state; }
 
-  public float getHouseNumber() { return this.houseNumber; }
-  public void setHouseNumber(float houseNumber) { this.houseNumber = houseNumber; }
+  public double getHouseNumber() { return this.houseNumber; }
+  public void setHouseNumber(double houseNumber) { this.houseNumber = houseNumber; }
 
   public Boolean getMarriage() { return this.marriage; }
   public void setMarriage(Boolean marriage) { this.marriage = marriage; }

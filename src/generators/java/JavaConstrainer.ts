@@ -15,12 +15,11 @@ export const JavaDefaultTypeMapping: TypeMapping<JavaOptions> = {
     return 'Object';
   },
   Float ({constrainedModel}): string {
-    let type = 'float';
+    let type = 'double';
     const format = constrainedModel.originalInput && constrainedModel.originalInput['format'];
     switch (format) {
-    case 'double':
-    case 'number':
-      type = 'double';
+    case 'float':
+      type = 'float';
       break;
     }
     return type;
