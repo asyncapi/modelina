@@ -201,8 +201,8 @@ export class ConstrainedObjectModel extends ConstrainedMetaModel {
    */
   containsPropertyType<T>(propertyType: { new(...args: any[]): T }) : boolean {
     const foundPropertiesWithType = Object.values(this.properties).filter((property) => {
-      return property instanceof propertyType;
+      return property.property instanceof propertyType;
     });
-    return foundPropertiesWithType.length === 0;
+    return foundPropertiesWithType.length !== 0;
   }
 }
