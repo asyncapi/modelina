@@ -67,8 +67,7 @@ export class ConstrainedObjectPropertyModel {
     public propertyName: string,
     public unconstrainedPropertyName: string,
     public required: boolean,
-    public property: ConstrainedMetaModel,
-    public rawMetaModel: ObjectPropertyModel) {
+    public property: ConstrainedMetaModel) {
   }
 }
 export class ConstrainedArrayModel extends ConstrainedMetaModel {
