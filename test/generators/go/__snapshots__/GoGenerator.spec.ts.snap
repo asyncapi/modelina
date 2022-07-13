@@ -63,3 +63,51 @@ type OtherModel struct {
   AdditionalProperties map[string][]interface{}
 }"
 `;
+
+exports[`GoGenerator should render \`enum\` type with enums of mixed types should not be empty 1`] = `
+"// Things represents a Things model.
+type Things struct {
+  
+}"
+`;
+
+exports[`GoGenerator should render \`enum\` type with enums sharing same type should not be empty 1`] = `
+"// States represents an enum of States.
+type States States
+
+const (
+  StatesTexas States = iota
+)"
+`;
+
+exports[`GoGenerator should render \`struct\` type 1`] = `
+"// Address represents a Address model.
+type Address struct {
+  [object Object] string
+  [object Object] string
+  [object Object] string
+  [object Object] float64
+  [object Object] bool
+  [object Object] interface{}
+  [object Object] []interface{}
+  [object Object] []interface{}
+  [object Object] map[string]string
+}"
+`;
+
+exports[`GoGenerator should work custom preset for \`enum\` type 1`] = `
+"// CustomEnum represents an enum of CustomEnum.
+type CustomEnum CustomEnum
+
+const (
+  CustomEnumTexas CustomEnum = iota
+)"
+`;
+
+exports[`GoGenerator should work custom preset for \`struct\` type 1`] = `
+"// CustomStruct represents a CustomStruct model.
+type CustomStruct struct {
+  Property string
+  AdditionalProperties map[string]string
+}"
+`;
