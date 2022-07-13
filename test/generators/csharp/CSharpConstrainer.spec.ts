@@ -82,7 +82,7 @@ describe('CSharpConstrainer', () => {
       const arrayModel = new ConstrainedStringModel('test', undefined, 'String');
       const model = new ConstrainedArrayModel('test', undefined, '', arrayModel);
       const options: CSharpOptions = {...CSharpGenerator.defaultOptions, collectionType: 'List'};
-      const type = CSharpDefaultTypeMapping.Array({constrainedModel: model, options: CSharpGenerator.defaultOptions});
+      const type = CSharpDefaultTypeMapping.Array({constrainedModel: model, options});
       expect(type).toEqual('IEnumerable<String>');
     });
   });
