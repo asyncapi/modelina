@@ -149,7 +149,7 @@ function constrainDictionaryModel<Options>(typeMapping: TypeMapping<Options>, co
 function constrainObjectModel<Options>(typeMapping: TypeMapping<Options>, constrainRules: Constraints, context: ConstrainContext<Options, ObjectModel>): ConstrainedObjectModel {
   const constrainedModel = new ConstrainedObjectModel(context.constrainedName, context.metaModel.originalInput, '', {});
   for (const propertyMetaModel of Object.values(context.metaModel.properties)) {
-    const constrainedPropertyModel = new ConstrainedObjectPropertyModel('', propertyMetaModel.propertyName, propertyMetaModel.required, constrainedModel, propertyMetaModel);
+    const constrainedPropertyModel = new ConstrainedObjectPropertyModel('', propertyMetaModel.propertyName, propertyMetaModel.required, constrainedModel);
     const constrainedPropertyName = constrainRules.propertyKey({objectPropertyModel: propertyMetaModel, constrainedObjectPropertyModel: constrainedPropertyModel, constrainedObjectModel: constrainedModel, objectModel: context.metaModel});
     constrainedPropertyModel.propertyName = constrainedPropertyName;
     const constrainedProperty = constrainMetaModel(typeMapping, constrainRules, {...context, metaModel: propertyMetaModel.property, propertyKey: constrainedPropertyName});
