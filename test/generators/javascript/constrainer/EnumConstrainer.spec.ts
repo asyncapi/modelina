@@ -58,11 +58,10 @@ describe('EnumConstrainer', () => {
   });
   describe('custom constraints', () => {
     test('should be able to overwrite all hooks for enum key', () => {
-      const mockedConstraintCallbacks: ModelEnumKeyConstraints = {
+      const mockedConstraintCallbacks: Partial<ModelEnumKeyConstraints> = {
         NAMING_FORMATTER: jest.fn().mockReturnValue(''),
         NO_SPECIAL_CHAR: jest.fn().mockReturnValue(''),
         NO_NUMBER_START_CHAR: jest.fn().mockReturnValue(''),
-        NO_DUPLICATE_KEYS: jest.fn().mockReturnValue(''),
         NO_EMPTY_VALUE: jest.fn().mockReturnValue(''),
         NO_RESERVED_KEYWORDS: jest.fn().mockReturnValue('')
       };
