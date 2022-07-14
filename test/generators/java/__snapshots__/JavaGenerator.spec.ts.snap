@@ -222,7 +222,7 @@ exports[`JavaGenerator should render enums with translated special characters 1`
 
 exports[`JavaGenerator should render models and their dependencies 1`] = `
 "package test.package;
-import test.package.otherModel;
+import test.package.OtherModel;
 import java.util.Map;
 public class Address {
   private String streetName;
@@ -232,7 +232,7 @@ public class Address {
   private Boolean marriage;
   private Object members;
   private Object[] arrayType;
-  private otherModel otherModel;
+  private OtherModel otherModel;
   private Map<String, Object> additionalProperties;
 
   public String getStreetName() { return this.streetName; }
@@ -256,8 +256,8 @@ public class Address {
   public Object[] getArrayType() { return this.arrayType; }
   public void setArrayType(Object[] arrayType) { this.arrayType = arrayType; }
 
-  public otherModel getOtherModel() { return this.otherModel; }
-  public void setOtherModel(otherModel otherModel) { this.otherModel = otherModel; }
+  public OtherModel getOtherModel() { return this.otherModel; }
+  public void setOtherModel(OtherModel otherModel) { this.otherModel = otherModel; }
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }

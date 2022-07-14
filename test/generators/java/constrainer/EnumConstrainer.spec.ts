@@ -16,10 +16,10 @@ describe('EnumConstrainer', () => {
       expect(constrainedKey).toEqual('NUMBER_1');
     });
     test('should not contain duplicate keys', () => {
-      const existingConstrainedEnumValueModel = new ConstrainedEnumValueModel('TEST', 'test');
+      const existingConstrainedEnumValueModel = new ConstrainedEnumValueModel('EMPTY', 'return');
       const constrainedEnumModel = new ConstrainedEnumModel('test', undefined, '', [existingConstrainedEnumValueModel]);
-      const constrainedKey = JavaDefaultConstraints.enumKey({enumModel, constrainedEnumModel, enumKey: 'TEST'});
-      expect(constrainedKey).toEqual('RESERVED_TEST');
+      const constrainedKey = JavaDefaultConstraints.enumKey({enumModel, constrainedEnumModel, enumKey: ''});
+      expect(constrainedKey).toEqual('RESERVED_EMPTY');
     });
     test('should never contain empty keys', () => {
       const constrainedKey = JavaDefaultConstraints.enumKey({enumModel, constrainedEnumModel, enumKey: ''});
