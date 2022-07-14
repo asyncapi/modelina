@@ -1,9 +1,7 @@
-/* eslint-disable */
-
 import { JavaScriptGenerator, JS_COMMON_PRESET } from '../../../../src/generators';
 const doc = {
   definitions: {
-    'NestedTest': {
+    NestedTest: {
       type: 'object', $id: 'NestedTest', properties: {stringProp: { type: 'string' }}
     }
   },
