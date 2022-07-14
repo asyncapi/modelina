@@ -19,5 +19,43 @@ export const JAVA_JACKSON_PRESET: JavaPreset = {
       }
       return renderer.renderBlock([content]);
     },
+  },
+  enum: {
+    self({renderer, content}) {
+      renderer.addDependency('import com.fasterxml.jackson.annotation.*;');
+      return content;
+    },
+    additionalContent({ renderer, model }) {
+      const enumName = renderer.nameType(model.$id);
+      const type = Array.isArray(model.type) ? 'Object' : model.type;
+      const classType = renderer.toClassType(renderer.toJavaType(type, model));
+
+      return `private ${classType} value;
+    
+${enumName}(${classType} value) {
+  this.value = value;
+}
+    
+@JsonValue
+public ${classType} getValue() {
+  return value;
+}
+
+@Override
+public String toString() {
+  return String.valueOf(value);
+}
+
+@JsonCreator
+public static ${enumName} fromValue(${classType} value) {
+  for (${enumName} e : ${enumName}.values()) {
+    if (e.value.equals(value)) {
+      return e;
+    }
+  }
+  throw new IllegalArgumentException("Unexpected value '" + value + "'");
+}`;
+    },
+
   }
 };

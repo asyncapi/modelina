@@ -68,7 +68,6 @@ public enum Enum {
     this.value = value;
   }
     
-  @JsonValue
   public String getValue() {
     return value;
   }
@@ -78,7 +77,6 @@ public enum Enum {
     return String.valueOf(value);
   }
 
-  @JsonCreator
   public static Enum fromValue(String value) {
     for (Enum e : Enum.values()) {
       if (e.value.equals(value)) {
@@ -94,6 +92,6 @@ public enum Enum {
 
     const enumModel = await generator.renderEnum(model, inputModel);
     expect(enumModel.result).toEqual(expected);
-    expect(enumModel.dependencies).toEqual(['import com.fasterxml.jackson.annotation.*;']);
+    expect(enumModel.dependencies).toEqual([]);
   });
 });

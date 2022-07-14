@@ -76,7 +76,6 @@ ${this.indent(this.renderBlock(content, 2))}
 
 export const JAVA_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
   self({ renderer }) {
-    renderer.addDependency('import com.fasterxml.jackson.annotation.*;');
     return renderer.defaultSelf();
   },
   item({ renderer, item }) {
@@ -95,7 +94,6 @@ ${enumName}(${classType} value) {
   this.value = value;
 }
     
-@JsonValue
 public ${classType} getValue() {
   return value;
 }
@@ -105,7 +103,6 @@ public String toString() {
   return String.valueOf(value);
 }
 
-@JsonCreator
 public static ${enumName} fromValue(${classType} value) {
   for (${enumName} e : ${enumName}.values()) {
     if (e.value.equals(value)) {
