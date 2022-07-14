@@ -15,7 +15,7 @@ describe('ModelNameConstrainer', () => {
   });
   test('should use constant naming format', () => {
     const constrainedKey = DartDefaultConstraints.modelName({modelName: 'some weird_value!"#2'});
-    expect(constrainedKey).toEqual('SomeWeirdValueExclamationQuotationHash_2');
+    expect(constrainedKey).toEqual('SomeSpaceWeirdUnderscoreValueExclamationQuotationHash_2');
   });
   test('should never render reserved keywords', () => {
     const constrainedKey = DartDefaultConstraints.modelName({modelName: 'return'});

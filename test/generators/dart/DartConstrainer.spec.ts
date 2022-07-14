@@ -55,10 +55,10 @@ describe('DartRenderer', () => {
   });
 
   describe('Tuple', () => { 
-    test('should render type', () => {
+    test('should render default type', () => {
       const model = new ConstrainedTupleModel('test', undefined, '', []);
       const type = DartDefaultTypeMapping.Tuple({constrainedModel: model, options: {...DartGenerator.defaultOptions}});
-      expect(type).toEqual('Object[]');
+      expect(type).toEqual('List<Object>');
     });
     test('should render type with custom collection type', () => {
       const model = new ConstrainedTupleModel('test', undefined, '', []);
@@ -68,11 +68,11 @@ describe('DartRenderer', () => {
   });
 
   describe('Array', () => { 
-    test('should render type', () => {
+    test('should render default type', () => {
       const arrayModel = new ConstrainedStringModel('test', undefined, 'string');
       const model = new ConstrainedArrayModel('test', undefined, '', arrayModel);
       const type = DartDefaultTypeMapping.Array({constrainedModel: model, options: DartGenerator.defaultOptions});
-      expect(type).toEqual('string[]');
+      expect(type).toEqual('List<string>');
     });
     test('should render type with custom collection type', () => {
       const arrayModel = new ConstrainedStringModel('test', undefined, 'string');

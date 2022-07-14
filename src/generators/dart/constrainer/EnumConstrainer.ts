@@ -46,11 +46,12 @@ export function defaultEnumKeyConstraints(customConstraints?: Partial<ModelEnumK
 
 export function defaultEnumValueConstraints(): EnumValueConstraint {
   return ({enumValue}) => {
-    let constrainedEnumValue;
+    let constrainedEnumValue = enumValue;
     switch (typeof enumValue) {
     case 'string':
     case 'boolean':
       constrainedEnumValue = `"${enumValue}"`;
+      break;
     case 'bigint':
     case 'number': {
       constrainedEnumValue = enumValue;

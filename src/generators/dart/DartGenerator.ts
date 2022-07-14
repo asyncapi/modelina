@@ -14,7 +14,7 @@ import {FormatHelpers} from '../../helpers/FormatHelpers';
 import { DartDefaultConstraints, DartDefaultTypeMapping } from './DartConstrainer';
 
 export interface DartOptions extends CommonGeneratorOptions<DartPreset> {
-  collectionType?: 'List' | 'Normal';
+  collectionType?: 'List';
   typeMapping: TypeMapping<DartOptions>;
   constraints: Constraints;
 }
