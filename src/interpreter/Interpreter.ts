@@ -2,6 +2,7 @@ import { CommonModel, Draft6Schema, Draft4Schema, SwaggerV2Schema, AsyncapiV2Sch
 import { interpretName, isEnum, isModelObject } from './Utils';
 import interpretProperties from './InterpretProperties';
 import interpretAllOf from './InterpretAllOf';
+import interpretOneOf from './InterpretOneOf';
 import interpretConst from './InterpretConst';
 import interpretEnum from './InterpretEnum';
 import interpretAdditionalProperties from './InterpretAdditionalProperties';
@@ -78,11 +79,11 @@ export class Interpreter {
     interpretItems(schema, model, this, interpreterOptions);
     interpretProperties(schema, model, this, interpreterOptions);
     interpretAllOf(schema, model, this, interpreterOptions);
+    interpretOneOf(schema, model, this, interpreterOptions);
     interpretDependencies(schema, model, this, interpreterOptions);
     interpretConst(schema, model);
     interpretEnum(schema, model);
 
-    this.interpretAndCombineMultipleSchemas(schema.oneOf, model, schema, interpreterOptions);
     this.interpretAndCombineMultipleSchemas(schema.anyOf, model, schema, interpreterOptions);
     if (!(schema instanceof Draft4Schema) && !(schema instanceof Draft6Schema)) {
       this.interpretAndCombineSchema(schema.then, model, schema, interpreterOptions);
