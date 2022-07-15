@@ -13,7 +13,7 @@ type Address struct {
   State string
   HouseNumber float64
   Marriage bool
-  Members []interface{}
+  Members interface{}
   ArrayType []interface{}
   OtherModel *OtherModel
   AdditionalProperties map[string][]interface{}
@@ -45,7 +45,7 @@ type Address struct {
   State string
   HouseNumber float64
   Marriage bool
-  Members []interface{}
+  Members interface{}
   ArrayType []interface{}
   OtherModel *OtherModel
   AdditionalProperties map[string][]interface{}

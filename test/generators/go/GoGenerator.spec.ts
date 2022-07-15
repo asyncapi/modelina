@@ -69,7 +69,7 @@ type Address struct {
   State string
   HouseNumber float64
   Marriage bool
-  Members []interface{}
+  Members interface{}
   TupleType []interface{}
   ArrayType []string
   AdditionalProperties map[string]string
