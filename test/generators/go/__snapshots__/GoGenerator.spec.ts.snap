@@ -15,7 +15,7 @@ type Address struct {
   Marriage bool
   Members interface{}
   ArrayType []interface{}
-  OtherModel OtherModel
+  OtherModel *OtherModel
   AdditionalProperties map[string]interface{}
 }"
 `;
@@ -46,7 +46,7 @@ type Address struct {
   Marriage bool
   Members interface{}
   ArrayType []interface{}
-  OtherModel OtherModel
+  OtherModel *OtherModel
   AdditionalProperties map[string]interface{}
 }"
 `;
@@ -63,10 +63,34 @@ type OtherModel struct {
 `;
 
 exports[`GoGenerator should render \`enum\` type with enums of mixed types should not be empty 1`] = `
-"// Things represents a Things model.
-type Things struct {
-  
-}"
+"// Things represents an enum of Things.
+type Things uint
+
+const (
+  ThingsTexas Things = iota
+  ThingsNumber_1
+  ThingsReservedNumber_1
+  ThingsFalse
+  ThingsCurlyleftQuotationTestQuotationColonQuotationTestQuotationCurlyright
+)
+
+// Value returns the value of the enum.
+func (op Things) Value() any {
+	if op >= Things(len(ThingsValues)) {
+		return nil
+	}
+	return ThingsValues[op]
+}
+
+var ThingsValues = []any{\\"Texas\\",1,\\"1\\",false,{\\"test\\":\\"test\\"}}
+var ValuesToThings = map[any]Things{
+  ThingsValues[ThingsTexas]: ThingsTexas,
+  ThingsValues[ThingsNumber_1]: ThingsNumber_1,
+  ThingsValues[ThingsReservedNumber_1]: ThingsReservedNumber_1,
+  ThingsValues[ThingsFalse]: ThingsFalse,
+  ThingsValues[ThingsCurlyleftQuotationTestQuotationColonQuotationTestQuotationCurlyright]: ThingsCurlyleftQuotationTestQuotationColonQuotationTestQuotationCurlyright,
+}
+"
 `;
 
 exports[`GoGenerator should render \`enum\` type with enums sharing same type should not be empty 1`] = `
