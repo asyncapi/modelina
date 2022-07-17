@@ -21,7 +21,7 @@ export type EnumValueContext = {
   constrainedEnumModel: ConstrainedEnumModel,
   enumModel: EnumModel
 }
-export type EnumValueConstraint = (context: EnumValueContext) => string;
+export type EnumValueConstraint = (context: EnumValueContext) => any;
 
 export type ModelNameContext = {
   modelName: string

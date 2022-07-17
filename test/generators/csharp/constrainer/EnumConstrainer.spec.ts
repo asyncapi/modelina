@@ -16,10 +16,10 @@ describe('EnumConstrainer', () => {
       expect(constrainedKey).toEqual('NUMBER_1');
     });
     test('should not contain duplicate keys', () => {
-      const existingConstrainedEnumValueModel = new ConstrainedEnumValueModel('TEST', 'test');
+      const existingConstrainedEnumValueModel = new ConstrainedEnumValueModel('EMPTY', 'return');
       const constrainedEnumModel = new ConstrainedEnumModel('test', undefined, '', [existingConstrainedEnumValueModel]);
-      const constrainedKey = CSharpDefaultConstraints.enumKey({enumModel, constrainedEnumModel, enumKey: 'TEST'});
-      expect(constrainedKey).toEqual('RESERVED_TEST');
+      const constrainedKey = CSharpDefaultConstraints.enumKey({enumModel, constrainedEnumModel, enumKey: ''});
+      expect(constrainedKey).toEqual('RESERVED_EMPTY');
     });
     test('should never contain empty keys', () => {
       const constrainedKey = CSharpDefaultConstraints.enumKey({enumModel, constrainedEnumModel, enumKey: ''});
@@ -41,28 +41,27 @@ describe('EnumConstrainer', () => {
     });
     test('should render boolean values', () => {
       const constrainedValue = CSharpDefaultConstraints.enumValue({enumModel, constrainedEnumModel, enumValue: true});
-      expect(constrainedValue).toEqual('"true"');
+      expect(constrainedValue).toEqual(true);
     });
     test('should render numbers', () => {
       const constrainedValue = CSharpDefaultConstraints.enumValue({enumModel, constrainedEnumModel, enumValue: 123});
-      expect(constrainedValue).toEqual('"123"');
+      expect(constrainedValue).toEqual(123);
     });
-    test.skip('should render object', () => {
+    test('should render object', () => {
       const constrainedValue = CSharpDefaultConstraints.enumValue({enumModel, constrainedEnumModel, enumValue: {test: 'test'}});
       expect(constrainedValue).toEqual('"{\\"test\\":\\"test\\"}"');
     });
-    test.skip('should render unknown value', () => {
+    test('should render unknown value', () => {
       const constrainedValue = CSharpDefaultConstraints.enumValue({enumModel, constrainedEnumModel, enumValue: undefined});
       expect(constrainedValue).toEqual('"undefined"');
     });
   });
   describe('custom constraints', () => {
     test('should be able to overwrite all hooks for enum key', () => {
-      const mockedConstraintCallbacks: ModelEnumKeyConstraints = {
+      const mockedConstraintCallbacks: Partial<ModelEnumKeyConstraints> = {
         NAMING_FORMATTER: jest.fn().mockReturnValue(''),
         NO_SPECIAL_CHAR: jest.fn().mockReturnValue(''),
         NO_NUMBER_START_CHAR: jest.fn().mockReturnValue(''),
-        NO_DUPLICATE_KEYS: jest.fn().mockReturnValue(''),
         NO_EMPTY_VALUE: jest.fn().mockReturnValue(''),
         NO_RESERVED_KEYWORDS: jest.fn().mockReturnValue('')
       };

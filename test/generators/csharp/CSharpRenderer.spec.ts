@@ -1,31 +1,28 @@
 import { CSharpGenerator } from '../../../src';
 import { CSharpRenderer } from '../../../src/generators/csharp/CSharpRenderer';
-import { CommonInputModel, CommonModel } from '../../../src/models';
-class MockCSharpRenderer extends CSharpRenderer {
-
-}
+import { ConstrainedObjectModel, InputMetaModel } from '../../../src/models';
+import { MockCSharpRenderer } from '../../TestUtils/TestRenderers';
 describe('CSharpRenderer', () => {
-  let renderer: MockCSharpRenderer;
+  let renderer: CSharpRenderer<any>;
   beforeEach(() => {
-    renderer = new MockCSharpRenderer(CSharpGenerator.defaultOptions, new CSharpGenerator(), [], new CommonModel(), new CommonInputModel());
+    renderer = new MockCSharpRenderer(CSharpGenerator.defaultOptions, new CSharpGenerator(), [], new ConstrainedObjectModel('', undefined, '', {}), new InputMetaModel());
   });
 
-  describe('renderType()', () => {
-    test('Should render refs using type naming convention', () => {
-      const model = new CommonModel();
-      model.$ref = '<anonymous-schema-1>';
-      const renderedType = renderer.renderType(model);
-      expect(renderedType).toEqual('AnonymousSchema_1');
+  describe('renderComments()', () => {
+    test('should render single lines correctly', () => {
+      const lines = 'test';
+      const renderedLines = renderer.renderComments(lines);
+      expect(renderedLines).toMatchSnapshot();
     });
-    test('Should render single union type', () => {
-      const model = CommonModel.toCommonModel({ type: ['number'] });
-      const renderedType = renderer.renderType(model);
-      expect(renderedType).toEqual('double?');
+    test('should render multiple lines correctly', () => {
+      const lines = ['test', 'test2'];
+      const renderedLines = renderer.renderComments(lines);
+      expect(renderedLines).toMatchSnapshot();
     });
-    test('Should render union types with multiple types as slice of interface', () => {
-      const model = CommonModel.toCommonModel({ type: ['number', 'string'] });
-      const renderedType = renderer.renderType(model);
-      expect(renderedType).toEqual('dynamic');
+    test('should render no lines', () => {
+      const lines: string[] = [];
+      const renderedLines = renderer.renderComments(lines);
+      expect(renderedLines).toMatchSnapshot();
     });
   });
 });

@@ -27,7 +27,7 @@ describe('CSharpConstrainer', () => {
     test('should render type', () => {
       const model = new ConstrainedFloatModel('test', undefined, '');
       const type = CSharpDefaultTypeMapping.Float({constrainedModel: model, options: CSharpGenerator.defaultOptions});
-      expect(type).toEqual('float');
+      expect(type).toEqual('double');
     });
   });
   describe('Integer', () => { 

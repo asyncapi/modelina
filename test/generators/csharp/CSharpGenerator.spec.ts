@@ -37,23 +37,11 @@ describe('CSharpGenerator', () => {
     expect(models[0].dependencies).toEqual(['using System.Collections.Generic;']);
   });
 
-  test.each([
-    {
-      name: 'with enums sharing same type',
-      doc: {
-        $id: 'States',
-        type: 'string',
-        enum: ['Texas', 'Alabama', 'California'],
-      }
-    },
-    {
-      name: 'with enums of mixed types',
-      doc: {
-        $id: 'Things',
-        enum: ['Texas', '1', 1, false, {test: 'test'}],
-      }
-    },
-  ])('should render `enum` type $name', async ({doc}) => {
+  test('should render `enum` type', async () => {
+    const doc = {
+      $id: 'Things',
+      enum: ['Texas', '1', 1, false, {test: 'test'}],
+    };
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot();
