@@ -11,15 +11,10 @@ const jsonSchemaDraft7 = {
       type: 'string',
       enum: ['London', 'Rome', 'Brussels'],
     },
-    click_options: {
-      $id: 'click_options',
-      type: 'string',
-      enum: ['click_and_play', 'click&pay'],
-    },
     options: {
       $id: 'options',
-      type: 'integer',
-      enum: [123, 213],
+      type: ['integer', 'boolean', 'string'],
+      enum: [123, 213, true, 'Run'],
     },
   }
 };

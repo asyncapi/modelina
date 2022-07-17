@@ -5,7 +5,6 @@ Array [
   "// Root represents a Root model.
 type Root struct {
   Cities *Cities
-  ClickOptions *ClickOptions
   Options *Options
 }",
 ]
@@ -42,39 +41,14 @@ var ValuesToCities = map[any]Cities{
 
 exports[`Should be able to render Go Enums and should log expected output to console 3`] = `
 Array [
-  "// ClickOptions represents an enum of ClickOptions.
-type ClickOptions uint
-
-const (
-  ClickOptionsClickAndPlay ClickOptions = iota
-  ClickOptionsClickAmpersandPay
-)
-
-// Value returns the value of the enum.
-func (op ClickOptions) Value() any {
-	if op >= ClickOptions(len(ClickOptionsValues)) {
-		return nil
-	}
-	return ClickOptionsValues[op]
-}
-
-var ClickOptionsValues = []any{\\"click_and_play\\",\\"click&pay\\"}
-var ValuesToClickOptions = map[any]ClickOptions{
-  ClickOptionsValues[ClickOptionsClickAndPlay]: ClickOptionsClickAndPlay,
-  ClickOptionsValues[ClickOptionsClickAmpersandPay]: ClickOptionsClickAmpersandPay,
-}
-",
-]
-`;
-
-exports[`Should be able to render Go Enums and should log expected output to console 4`] = `
-Array [
   "// Options represents an enum of Options.
 type Options uint
 
 const (
   OptionsNumber_123 Options = iota
   OptionsNumber_213
+  OptionsTrue
+  OptionsRun
 )
 
 // Value returns the value of the enum.
@@ -85,10 +59,12 @@ func (op Options) Value() any {
 	return OptionsValues[op]
 }
 
-var OptionsValues = []any{123,213}
+var OptionsValues = []any{123,213,true,\\"Run\\"}
 var ValuesToOptions = map[any]Options{
   OptionsValues[OptionsNumber_123]: OptionsNumber_123,
   OptionsValues[OptionsNumber_213]: OptionsNumber_213,
+  OptionsValues[OptionsTrue]: OptionsTrue,
+  OptionsValues[OptionsRun]: OptionsRun,
 }
 ",
 ]

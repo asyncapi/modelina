@@ -8,10 +8,6 @@ export function convertToMetaModel(jsonSchemaModel: CommonModel): MetaModel {
   if (anyModel !== undefined) {
     return anyModel;
   }
-  const unionModel = convertToUnionModel(jsonSchemaModel, modelName);
-  if (unionModel !== undefined) {
-    return unionModel;
-  }
   const enumModel = convertToEnumModel(jsonSchemaModel, modelName);
   if (enumModel !== undefined) {
     return enumModel;
@@ -27,6 +23,10 @@ export function convertToMetaModel(jsonSchemaModel: CommonModel): MetaModel {
   const arrayModel = convertToArrayModel(jsonSchemaModel, modelName);
   if (arrayModel !== undefined) {
     return arrayModel;
+  }
+  const unionModel = convertToUnionModel(jsonSchemaModel, modelName);
+  if (unionModel !== undefined) {
+    return unionModel;
   }
   const stringModel = convertToStringModel(jsonSchemaModel, modelName);
   if (stringModel !== undefined) {
