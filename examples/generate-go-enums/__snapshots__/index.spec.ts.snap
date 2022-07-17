@@ -4,9 +4,9 @@ exports[`Should be able to render Go Enums and should log expected output to con
 Array [
   "// Root represents a Root model.
 type Root struct {
-  Cities Cities
-  ClickOptions ClickOptions
-  Options []interface{}
+  Cities *Cities
+  ClickOptions *ClickOptions
+  Options *Options
 }",
 ]
 `;
@@ -75,7 +75,6 @@ type Options uint
 const (
   OptionsNumber_123 Options = iota
   OptionsNumber_213
-  OptionsTrue
 )
 
 // Value returns the value of the enum.
@@ -86,11 +85,10 @@ func (op Options) Value() any {
 	return OptionsValues[op]
 }
 
-var OptionsValues = []any{123,213,true}
+var OptionsValues = []any{123,213}
 var ValuesToOptions = map[any]Options{
   OptionsValues[OptionsNumber_123]: OptionsNumber_123,
   OptionsValues[OptionsNumber_213]: OptionsNumber_213,
-  OptionsValues[OptionsTrue]: OptionsTrue,
 }
 ",
 ]

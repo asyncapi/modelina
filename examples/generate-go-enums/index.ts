@@ -18,8 +18,8 @@ const jsonSchemaDraft7 = {
     },
     options: {
       $id: 'options',
-      type: ['integer', 'boolean'],
-      enum: [123, 213, true],
+      type: 'integer',
+      enum: [123, 213],
     },
   }
 };
