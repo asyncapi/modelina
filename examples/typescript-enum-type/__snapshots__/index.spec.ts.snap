@@ -14,7 +14,7 @@ class Root {
   get event(): Event | undefined { return this._event; }
   set event(event: Event | undefined) { this._event = event; }
 }
-type Event = \\"ping\\" | \\"pong\\";
+type Event = Event;
 Generator output with Enum:
 class Root {
   private _event?: Event;
@@ -29,7 +29,7 @@ class Root {
   set event(event: Event | undefined) { this._event = event; }
 }
 enum Event {
-  PING = \\"ping\\",
-  PONG = \\"pong\\",
+  QUOTATION_PING_QUOTATION = \\"ping\\",
+  QUOTATION_PONG_QUOTATION = \\"pong\\",
 }"
 `;

@@ -104,19 +104,33 @@ describe('TypeScriptConstrainer', () => {
   });
 
   describe('Dictionary', () => { 
-    test('should render type', () => {
+    test('should render type with default map type', () => {
       const keyModel = new ConstrainedStringModel('test', undefined, 'String');
       const valueModel = new ConstrainedStringModel('test', undefined, 'String');
       const model = new ConstrainedDictionaryModel('test', undefined, '', keyModel, valueModel);
       const type = TypeScriptDefaultTypeMapping.Dictionary({constrainedModel: model, options: TypeScriptGenerator.defaultOptions});
+      expect(type).toEqual('Map<String, String>');
+    });
+    test('should render type with indexed object map type', () => {
+      const keyModel = new ConstrainedStringModel('test', undefined, 'String');
+      const valueModel = new ConstrainedStringModel('test', undefined, 'String');
+      const model = new ConstrainedDictionaryModel('test', undefined, '', keyModel, valueModel);
+      const type = TypeScriptDefaultTypeMapping.Dictionary({constrainedModel: model, options: {...TypeScriptGenerator.defaultOptions, mapType: 'indexedObject'}});
       expect(type).toEqual('{ [name: String]: String }');
+    });
+    test('should render type with record map type', () => {
+      const keyModel = new ConstrainedStringModel('test', undefined, 'String');
+      const valueModel = new ConstrainedStringModel('test', undefined, 'String');
+      const model = new ConstrainedDictionaryModel('test', undefined, '', keyModel, valueModel);
+      const type = TypeScriptDefaultTypeMapping.Dictionary({constrainedModel: model, options: {...TypeScriptGenerator.defaultOptions, mapType: 'record'}});
+      expect(type).toEqual('Record<String, String>');
     });
     test('should not be able to render dictionary with union key type', () => {
       const keyModel = new ConstrainedUnionModel('test', undefined, 'String', []);
       const valueModel = new ConstrainedStringModel('test', undefined, 'String');
       const model = new ConstrainedDictionaryModel('test', undefined, '', keyModel, valueModel);
       const type = TypeScriptDefaultTypeMapping.Dictionary({constrainedModel: model, options: TypeScriptGenerator.defaultOptions});
-      expect(type).toEqual('{ [name: any]: String }');
+      expect(type).toEqual('Map<any, String>');
     });
   });
 });
