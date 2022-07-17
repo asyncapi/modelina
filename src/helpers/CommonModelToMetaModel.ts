@@ -116,7 +116,11 @@ export function convertToEnumModel(jsonSchemaModel: CommonModel, name: string): 
   }
   const metaModel = new EnumModel(name, jsonSchemaModel.originalInput, []);
   for (const enumValue of jsonSchemaModel.enum) {
-    const enumValueModel = new EnumValueModel(JSON.stringify(enumValue), enumValue);
+    let enumKey = enumValue;
+    if (typeof enumValue !== 'string') {
+      enumKey = JSON.stringify(enumValue);
+    }
+    const enumValueModel = new EnumValueModel(enumKey, enumValue);
     metaModel.values.push(enumValueModel);
   }
   return metaModel;

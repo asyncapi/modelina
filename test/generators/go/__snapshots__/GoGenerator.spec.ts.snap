@@ -13,11 +13,10 @@ type Address struct {
   State string
   HouseNumber float64
   Marriage bool
-  Members []interface{}
+  Members interface{}
   ArrayType []interface{}
-  OtherModel *OtherModel
-  AdditionalProperties map[string][]interface{}
-  STestPatternProperties map[string]string
+  OtherModel OtherModel
+  AdditionalProperties map[string]interface{}
 }"
 `;
 
@@ -30,7 +29,7 @@ import (
 // OtherModel represents a OtherModel model.
 type OtherModel struct {
   StreetName string
-  AdditionalProperties map[string][]interface{}
+  AdditionalProperties map[string]interface{}
 }"
 `;
 
@@ -45,11 +44,10 @@ type Address struct {
   State string
   HouseNumber float64
   Marriage bool
-  Members []interface{}
+  Members interface{}
   ArrayType []interface{}
-  OtherModel *OtherModel
-  AdditionalProperties map[string][]interface{}
-  STestPatternProperties map[string]string
+  OtherModel OtherModel
+  AdditionalProperties map[string]interface{}
 }"
 `;
 
@@ -60,7 +58,7 @@ package some_package
 // OtherModel represents a OtherModel model.
 type OtherModel struct {
   StreetName string
-  AdditionalProperties map[string][]interface{}
+  AdditionalProperties map[string]interface{}
 }"
 `;
 
@@ -73,35 +71,71 @@ type Things struct {
 
 exports[`GoGenerator should render \`enum\` type with enums sharing same type should not be empty 1`] = `
 "// States represents an enum of States.
-type States States
+type States uint
 
 const (
   StatesTexas States = iota
-)"
+  StatesAlabama
+  StatesCalifornia
+)
+
+// Value returns the value of the enum.
+func (op States) Value() any {
+	if op >= States(len(StatesValues)) {
+		return nil
+	}
+	return StatesValues[op]
+}
+
+var StatesValues = []any{\\"Texas\\",\\"Alabama\\",\\"California\\"}
+var ValuesToStates = map[any]States{
+  StatesValues[StatesTexas]: StatesTexas,
+  StatesValues[StatesAlabama]: StatesAlabama,
+  StatesValues[StatesCalifornia]: StatesCalifornia,
+}
+"
 `;
 
 exports[`GoGenerator should render \`struct\` type 1`] = `
 "// Address represents a Address model.
 type Address struct {
-  [object Object] string
-  [object Object] string
-  [object Object] string
-  [object Object] float64
-  [object Object] bool
-  [object Object] interface{}
-  [object Object] []interface{}
-  [object Object] []interface{}
-  [object Object] map[string]string
+  StreetName string
+  City string
+  State string
+  HouseNumber float64
+  Marriage bool
+  Members interface{}
+  TupleType []interface{}
+  ArrayType []interface{}
+  AdditionalProperties map[string]string
 }"
 `;
 
 exports[`GoGenerator should work custom preset for \`enum\` type 1`] = `
 "// CustomEnum represents an enum of CustomEnum.
-type CustomEnum CustomEnum
+type CustomEnum uint
 
 const (
   CustomEnumTexas CustomEnum = iota
-)"
+  CustomEnumAlabama
+  CustomEnumCalifornia
+)
+
+// Value returns the value of the enum.
+func (op CustomEnum) Value() any {
+	if op >= CustomEnum(len(CustomEnumValues)) {
+		return nil
+	}
+	return CustomEnumValues[op]
+}
+
+var CustomEnumValues = []any{\\"Texas\\",\\"Alabama\\",\\"California\\"}
+var ValuesToCustomEnum = map[any]CustomEnum{
+  CustomEnumValues[CustomEnumTexas]: CustomEnumTexas,
+  CustomEnumValues[CustomEnumAlabama]: CustomEnumAlabama,
+  CustomEnumValues[CustomEnumCalifornia]: CustomEnumCalifornia,
+}
+"
 `;
 
 exports[`GoGenerator should work custom preset for \`struct\` type 1`] = `

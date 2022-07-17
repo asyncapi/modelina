@@ -1,4 +1,4 @@
-import { TypeMapping } from '../../helpers';
+import { Constraints, TypeMapping } from '../../helpers';
 import { defaultEnumKeyConstraints, defaultEnumValueConstraints } from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
@@ -9,7 +9,7 @@ export const GoDefaultTypeMapping: TypeMapping<GoOptions> = {
     return constrainedModel.name;
   },
   Reference ({constrainedModel}): string {
-    return constrainedModel.name;
+    return `${constrainedModel.name}`;
   },
   Any (): string {
     return 'interface{}';
@@ -27,7 +27,7 @@ export const GoDefaultTypeMapping: TypeMapping<GoOptions> = {
     return 'bool';
   },
   Tuple (): string {
-    //Because Java have no notion of tuples (and no custom implementation), we have to render it as a list of any value.
+    //Because Go have no notion of tuples (and no custom implementation), we have to render it as a list of any value.
     return '[]interface{}';
   },
   Array ({constrainedModel}): string {
@@ -37,7 +37,7 @@ export const GoDefaultTypeMapping: TypeMapping<GoOptions> = {
     return constrainedModel.name;
   },
   Union (): string {
-    //Because Java have no notion of unions (and no custom implementation), we have to render it as any value.
+    //Because Go have no notion of unions (and no custom implementation), we have to render it as any value.
     return 'interface{}';
   },
   Dictionary ({constrainedModel}): string {
@@ -45,7 +45,7 @@ export const GoDefaultTypeMapping: TypeMapping<GoOptions> = {
   }
 };
 
-export const GoDefaultConstraints = {
+export const GoDefaultConstraints: Constraints = {
   enumKey: defaultEnumKeyConstraints(),
   enumValue: defaultEnumValueConstraints(),
   modelName: defaultModelNameConstraints(),

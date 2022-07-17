@@ -1,30 +1,28 @@
 import { GoGenerator } from '../../../src/generators/go/GoGenerator';
 import { GoRenderer } from '../../../src/generators/go/GoRenderer';
-import { CommonInputModel, CommonModel } from '../../../src/models';
-class MockGoRenderer extends GoRenderer {
+import { ConstrainedObjectModel, InputMetaModel } from '../../../src/models';
+import { MockGoRenderer } from '../../TestUtils/TestRenderers';
 
-}
 describe('GoRenderer', () => {
-  let renderer: MockGoRenderer;
+  let renderer: GoRenderer<any>;
   beforeEach(() => {
-    renderer = new MockGoRenderer(GoGenerator.defaultOptions, new GoGenerator(), [], new CommonModel(), new CommonInputModel());
+    renderer = new MockGoRenderer(GoGenerator.defaultOptions, new GoGenerator(), [], new ConstrainedObjectModel('', undefined, '', {}), new InputMetaModel());
   });
-  describe('renderType()', () => {
-    test('Should render refs using type naming convention', () => {
-      const model = new CommonModel();
-      model.$ref = '<anonymous-schema-1>';
-      const renderedType = renderer.renderType(model);
-      expect(renderedType).toEqual('*AnonymousSchema1');
+  describe('renderComments()', () => {
+    test('should render single lines correctly', () => {
+      const lines = 'test';
+      const renderedLines = renderer.renderComments(lines);
+      expect(renderedLines).toMatchSnapshot();
     });
-    test('Should render union types with one type as slice of that type', () => {
-      const model = CommonModel.toCommonModel({ type: ['number'] });
-      const renderedType = renderer.renderType(model);
-      expect(renderedType).toEqual('[]float64');
+    test('should render multiple lines correctly', () => {
+      const lines = ['test', 'test2'];
+      const renderedLines = renderer.renderComments(lines);
+      expect(renderedLines).toMatchSnapshot();
     });
-    test('Should render union types with multiple types as slice of interface', () => {
-      const model = CommonModel.toCommonModel({ type: ['number', 'string'] });
-      const renderedType = renderer.renderType(model);
-      expect(renderedType).toEqual('[]interface{}');
+    test('should render no lines', () => {
+      const lines: string[] = [];
+      const renderedLines = renderer.renderComments(lines);
+      expect(renderedLines).toMatchSnapshot();
     });
   });
 });

@@ -44,6 +44,6 @@ export const GO_DEFAULT_STRUCT_PRESET: StructPresetType<GoOptions> = {
     return renderer.defaultSelf();
   },
   field({ field }) {
-    return `${ field } ${ field.property.type }`;
+    return `${ field.propertyName } ${ field.property.type }`;
   },
 };

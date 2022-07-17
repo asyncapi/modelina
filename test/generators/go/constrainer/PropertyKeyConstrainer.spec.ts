@@ -30,11 +30,14 @@ describe('PropertyKeyConstrainer', () => {
   test('should not contain duplicate properties', () => {
     const objectModel = new ObjectModel('test', undefined, {});
     const constrainedObjectModel = new ConstrainedObjectModel('test', undefined, '', {});
-    const objectPropertyModel = new ObjectPropertyModel('SomeProperty', false, objectModel);
-    const constrainedObjectPropertyModel = new ConstrainedObjectPropertyModel('SomeProperty', 'SomeProperty', objectPropertyModel.required, constrainedObjectModel);
-    constrainedObjectModel.properties['SomeProperty'] = constrainedObjectPropertyModel;
-    const constrainedKey = GoDefaultConstraints.propertyKey({constrainedObjectModel, objectModel, objectPropertyModel, constrainedObjectPropertyModel});
-    expect(constrainedKey).toEqual('ReservedSomeProperty');
+    const objectPropertyModel = new ObjectPropertyModel('ReservedReturn', false, objectModel);
+    const constrainedObjectPropertyModel = new ConstrainedObjectPropertyModel('ReservedReturn', '', objectPropertyModel.required, constrainedObjectModel);
+    const objectPropertyModel2 = new ObjectPropertyModel('return', false, objectModel);
+    const constrainedObjectPropertyModel2 = new ConstrainedObjectPropertyModel('return', '', objectPropertyModel.required, constrainedObjectModel);
+    constrainedObjectModel.properties['ReservedReturn'] = constrainedObjectPropertyModel;
+    constrainedObjectModel.properties['return'] = constrainedObjectPropertyModel2;
+    const constrainedKey = GoDefaultConstraints.propertyKey({constrainedObjectModel, objectModel, objectPropertyModel: objectPropertyModel2, constrainedObjectPropertyModel: constrainedObjectPropertyModel2});
+    expect(constrainedKey).toEqual('ReservedReservedReturn');
   });
   test('should never render reserved keywords', () => {
     const constrainedKey = constrainPropertyName('return');
@@ -42,13 +45,12 @@ describe('PropertyKeyConstrainer', () => {
   });
   describe('custom constraints', () => {
     test('should be able to overwrite all hooks', () => {
-      const mockedConstraintCallbacks: PropertyKeyConstraintOptions = {
+      const mockedConstraintCallbacks: Partial<PropertyKeyConstraintOptions> = {
         NAMING_FORMATTER: jest.fn().mockReturnValue(''),
         NO_SPECIAL_CHAR: jest.fn().mockReturnValue(''),
         NO_NUMBER_START_CHAR: jest.fn().mockReturnValue(''),
         NO_EMPTY_VALUE: jest.fn().mockReturnValue(''),
-        NO_RESERVED_KEYWORDS: jest.fn().mockReturnValue(''),
-        NO_DUPLICATE_PROPERTIES: jest.fn().mockReturnValue('')
+        NO_RESERVED_KEYWORDS: jest.fn().mockReturnValue('')
       };
       const constrainFunction = defaultPropertyKeyConstraints(mockedConstraintCallbacks);
       const objectPropertyModel = new ObjectPropertyModel('', false, objectModel);

@@ -70,26 +70,16 @@ describe('GoGenerator', () => {
         $id: 'States',
         type: 'string',
         enum: ['Texas', 'Alabama', 'California'],
-      },
-      expected: `// States represents an enum of string.
-type States string
-
-const (
-  StatesTexas States = "Texas"
-  StatesAlabama = "Alabama"
-  StatesCalifornia = "California"
-)`,
+      }
     },
     {
       name: 'with enums of mixed types',
       doc: {
         $id: 'Things',
         enum: ['Texas', 1, '1', false, { test: 'test' }],
-      },
-      expected: `// Things represents an enum of mixed types.
-type Things interface{}`,
-    },
-  ])('should render `enum` type $name', ({ doc, expected }) => {
+      }
+    }
+  ])('should render `enum` type $name', ({ doc }) => {
     test('should not be empty', async () => {
       const models = await generator.generate(doc);
       expect(models).toHaveLength(1);

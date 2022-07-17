@@ -2,37 +2,96 @@
 
 exports[`Should be able to render Go Enums and should log expected output to console 1`] = `
 Array [
-  "// Cities represents an enum of string.
-type Cities string
-
-const (
-  CitiesLondon Cities = \\"London\\"
-  CitiesRome = \\"Rome\\"
-  CitiesBrussels = \\"Brussels\\"
-)",
+  "// Root represents a Root model.
+type Root struct {
+  Cities Cities
+  ClickOptions ClickOptions
+  Options []interface{}
+}",
 ]
 `;
 
 exports[`Should be able to render Go Enums and should log expected output to console 2`] = `
 Array [
-  "// ClickOptions represents an enum of string.
-type ClickOptions string
+  "// Cities represents an enum of Cities.
+type Cities uint
 
 const (
-  ClickOptionsClickAndPlay ClickOptions = \\"click_and_play\\"
-  ClickOptionsClickPay = \\"click&pay\\"
-)",
+  CitiesLondon Cities = iota
+  CitiesRome
+  CitiesBrussels
+)
+
+// Value returns the value of the enum.
+func (op Cities) Value() any {
+	if op >= Cities(len(CitiesValues)) {
+		return nil
+	}
+	return CitiesValues[op]
+}
+
+var CitiesValues = []any{\\"London\\",\\"Rome\\",\\"Brussels\\"}
+var ValuesToCities = map[any]Cities{
+  CitiesValues[CitiesLondon]: CitiesLondon,
+  CitiesValues[CitiesRome]: CitiesRome,
+  CitiesValues[CitiesBrussels]: CitiesBrussels,
+}
+",
 ]
 `;
 
 exports[`Should be able to render Go Enums and should log expected output to console 3`] = `
 Array [
-  "// Options represents an enum of int.
-type Options int
+  "// ClickOptions represents an enum of ClickOptions.
+type ClickOptions uint
 
 const (
-  OptionsFirstOption Options = iota
-  OptionsSecondOption
-)",
+  ClickOptionsClickAndPlay ClickOptions = iota
+  ClickOptionsClickAmpersandPay
+)
+
+// Value returns the value of the enum.
+func (op ClickOptions) Value() any {
+	if op >= ClickOptions(len(ClickOptionsValues)) {
+		return nil
+	}
+	return ClickOptionsValues[op]
+}
+
+var ClickOptionsValues = []any{\\"click_and_play\\",\\"click&pay\\"}
+var ValuesToClickOptions = map[any]ClickOptions{
+  ClickOptionsValues[ClickOptionsClickAndPlay]: ClickOptionsClickAndPlay,
+  ClickOptionsValues[ClickOptionsClickAmpersandPay]: ClickOptionsClickAmpersandPay,
+}
+",
+]
+`;
+
+exports[`Should be able to render Go Enums and should log expected output to console 4`] = `
+Array [
+  "// Options represents an enum of Options.
+type Options uint
+
+const (
+  OptionsNumber_123 Options = iota
+  OptionsNumber_213
+  OptionsTrue
+)
+
+// Value returns the value of the enum.
+func (op Options) Value() any {
+	if op >= Options(len(OptionsValues)) {
+		return nil
+	}
+	return OptionsValues[op]
+}
+
+var OptionsValues = []any{123,213,true}
+var ValuesToOptions = map[any]Options{
+  OptionsValues[OptionsNumber_123]: OptionsNumber_123,
+  OptionsValues[OptionsNumber_213]: OptionsNumber_213,
+  OptionsValues[OptionsTrue]: OptionsTrue,
+}
+",
 ]
 `;
