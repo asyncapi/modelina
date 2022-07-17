@@ -62,7 +62,7 @@ type OtherModel struct {
 }"
 `;
 
-exports[`GoGenerator should render \`enum\` type with enums of mixed types should not be empty 1`] = `
+exports[`GoGenerator should render \`enum\` with mixed types 1`] = `
 "// Things represents an enum of Things.
 type Things uint
 
@@ -89,33 +89,6 @@ var ValuesToThings = map[any]Things{
   ThingsValues[ThingsReservedNumber_1]: ThingsReservedNumber_1,
   ThingsValues[ThingsFalse]: ThingsFalse,
   ThingsValues[ThingsCurlyleftQuotationTestQuotationColonQuotationTestQuotationCurlyright]: ThingsCurlyleftQuotationTestQuotationColonQuotationTestQuotationCurlyright,
-}
-"
-`;
-
-exports[`GoGenerator should render \`enum\` type with enums sharing same type should not be empty 1`] = `
-"// States represents an enum of States.
-type States uint
-
-const (
-  StatesTexas States = iota
-  StatesAlabama
-  StatesCalifornia
-)
-
-// Value returns the value of the enum.
-func (op States) Value() any {
-	if op >= States(len(StatesValues)) {
-		return nil
-	}
-	return StatesValues[op]
-}
-
-var StatesValues = []any{\\"Texas\\",\\"Alabama\\",\\"California\\"}
-var ValuesToStates = map[any]States{
-  StatesValues[StatesTexas]: StatesTexas,
-  StatesValues[StatesAlabama]: StatesAlabama,
-  StatesValues[StatesCalifornia]: StatesCalifornia,
 }
 "
 `;
