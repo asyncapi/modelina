@@ -1,6 +1,12 @@
 import { FormatHelpers, IndentationTypes } from '../../src/helpers';
 
 describe('FormatHelpers', () => {
+  describe('lowerFirst', () => {
+    test('should convert first char to lowercase', () => {
+      const returnedText = FormatHelpers.lowerFirst('Test');
+      expect(returnedText).toEqual('test');
+    });
+  });
   describe('breakLines', () => {
     test('should break single text', () => {
       const breakedTexts = FormatHelpers.breakLines('text1\ntext2\ntext3');
