@@ -67,14 +67,9 @@ public enum Enum {
   Enum(String value) {
     this.value = value;
   }
-    
+
   public String getValue() {
     return value;
-  }
-
-  @Override
-  public String toString() {
-    return String.valueOf(value);
   }
 
   public static Enum fromValue(String value) {
@@ -84,6 +79,11 @@ public enum Enum {
       }
     }
     throw new IllegalArgumentException("Unexpected value '" + value + "'");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
   }
 }`;
 

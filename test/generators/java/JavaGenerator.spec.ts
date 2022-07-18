@@ -182,14 +182,9 @@ describe('JavaGenerator', () => {
   States(String value) {
     this.value = value;
   }
-    
+
   public String getValue() {
     return value;
-  }
-
-  @Override
-  public String toString() {
-    return String.valueOf(value);
   }
 
   public static States fromValue(String value) {
@@ -199,6 +194,11 @@ describe('JavaGenerator', () => {
       }
     }
     throw new IllegalArgumentException("Unexpected value '" + value + "'");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
   }
 }`;
 
@@ -228,14 +228,9 @@ describe('JavaGenerator', () => {
   Numbers(Integer value) {
     this.value = value;
   }
-    
+
   public Integer getValue() {
     return value;
-  }
-
-  @Override
-  public String toString() {
-    return String.valueOf(value);
   }
 
   public static Numbers fromValue(Integer value) {
@@ -245,6 +240,11 @@ describe('JavaGenerator', () => {
       }
     }
     throw new IllegalArgumentException("Unexpected value '" + value + "'");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
   }
 }`;
 
@@ -274,14 +274,9 @@ describe('JavaGenerator', () => {
   Union(Object value) {
     this.value = value;
   }
-    
+
   public Object getValue() {
     return value;
-  }
-
-  @Override
-  public String toString() {
-    return String.valueOf(value);
   }
 
   public static Union fromValue(Object value) {
@@ -291,6 +286,11 @@ describe('JavaGenerator', () => {
       }
     }
     throw new IllegalArgumentException("Unexpected value '" + value + "'");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
   }
 }`;
 
@@ -321,14 +321,9 @@ public enum CustomEnum {
   CustomEnum(String value) {
     this.value = value;
   }
-    
+
   public String getValue() {
     return value;
-  }
-
-  @Override
-  public String toString() {
-    return String.valueOf(value);
   }
 
   public static CustomEnum fromValue(String value) {
@@ -338,6 +333,11 @@ public enum CustomEnum {
       }
     }
     throw new IllegalArgumentException("Unexpected value '" + value + "'");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
   }
 }`;
 
@@ -377,14 +377,9 @@ public enum CustomEnum {
   States(String value) {
     this.value = value;
   }
-    
+
   public String getValue() {
     return value;
-  }
-
-  @Override
-  public String toString() {
-    return String.valueOf(value);
   }
 
   public static States fromValue(String value) {
@@ -394,6 +389,11 @@ public enum CustomEnum {
       }
     }
     throw new IllegalArgumentException("Unexpected value '" + value + "'");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
   }
 }`;
 

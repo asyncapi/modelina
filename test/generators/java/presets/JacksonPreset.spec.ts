@@ -56,19 +56,14 @@ describe('JAVA_JACKSON_PRESET', () => {
   ON("on"), OFF("off");
 
   private String value;
-    
+
   Enum(String value) {
     this.value = value;
   }
-    
+
   @JsonValue
   public String getValue() {
     return value;
-  }
-
-  @Override
-  public String toString() {
-    return String.valueOf(value);
   }
 
   @JsonCreator
@@ -79,6 +74,11 @@ describe('JAVA_JACKSON_PRESET', () => {
       }
     }
     throw new IllegalArgumentException("Unexpected value '" + value + "'");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
   }
 }`;
 
