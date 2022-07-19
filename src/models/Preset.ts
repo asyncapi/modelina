@@ -44,9 +44,6 @@ export interface EnumArgs {
 
 export interface EnumPreset<R extends AbstractRenderer, O extends object = any> extends CommonPreset<R, O> {
   item?: (args: PresetArgs<R, O> & EnumArgs) => string;
-  ctor?: (args: PresetArgs<R, O> & EnumArgs) => string;
-  getValue?: (args: PresetArgs<R, O> & EnumArgs) => string;
-  fromValue?: (args: PresetArgs<R, O> & EnumArgs) => string;
 }
 
 export type Preset<C extends Record<string, CommonPreset<any, any>> = any> = Partial<C>;

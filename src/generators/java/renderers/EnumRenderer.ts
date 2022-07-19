@@ -1,6 +1,6 @@
 import { JavaRenderer } from '../JavaRenderer';
-import { EnumPreset } from '../../../models';
 import { FormatHelpers } from '../../../helpers';
+import { JavaEnumPreset } from '../JavaPreset';
 
 /**
  * Renderer for Java's `enum` type
@@ -89,7 +89,7 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 }
 
-export const JAVA_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
+export const JAVA_DEFAULT_ENUM_PRESET: JavaEnumPreset = {
   self({renderer}) {
     return renderer.defaultSelf();
   },
