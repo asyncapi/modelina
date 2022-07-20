@@ -343,6 +343,17 @@
         "code",
         "bug"
       ]
+    },
+    {
+      "login": "micro-jumbo",
+      "name": "Cyprian Gracz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11511697?v=4",
+      "profile": "https://micro-jumbo.eu/",
+      "contributions": [
+        "code",
+        "test",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
