@@ -67,18 +67,11 @@ public enum Enum {
   Enum(String value) {
     this.value = value;
   }
-    
-  @JsonValue
+
   public String getValue() {
     return value;
   }
 
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-
-  @JsonCreator
   public static Enum fromValue(String value) {
     for (Enum e : Enum.values()) {
       if (e.value.equals(value)) {
@@ -87,6 +80,11 @@ public enum Enum {
     }
     throw new IllegalArgumentException("Unexpected value '" + value + "'");
   }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
 }`;
 
     const inputModel = await generator.process(doc);
@@ -94,6 +92,6 @@ public enum Enum {
 
     const enumModel = await generator.renderEnum(model, inputModel);
     expect(enumModel.result).toEqual(expected);
-    expect(enumModel.dependencies).toEqual(['import com.fasterxml.jackson.annotation.*;']);
+    expect(enumModel.dependencies).toEqual([]);
   });
 });

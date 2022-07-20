@@ -1,16 +1,19 @@
 import { JavaRenderer } from '../JavaRenderer';
-import { EnumPreset } from '../../../models';
 import { FormatHelpers } from '../../../helpers';
+import { JavaEnumPreset } from '../JavaPreset';
 
 /**
  * Renderer for Java's `enum` type
- * 
+ *
  * @extends JavaRenderer
  */
 export class EnumRenderer extends JavaRenderer {
   async defaultSelf(): Promise<string> {
     const content = [
       await this.renderItems(),
+      await this.runCtorPreset(),
+      await this.runGetValuePreset(),
+      await this.runFromValuePreset(),
       await this.runAdditionalContentPreset()
     ];
     const formattedName = this.nameType(this.model.$id);
@@ -49,7 +52,7 @@ ${this.indent(this.renderBlock(content, 2))}
       break;
     }
     default: {
-      key = FormatHelpers.replaceSpecialCharacters(String(value), { exclude: [' ', '_'], separator: '_' });
+      key = FormatHelpers.replaceSpecialCharacters(String(value), {exclude: [' ', '_'], separator: '_'});
       //Ensure no special char can be the beginning letter 
       if (!(/^[a-zA-Z]+$/).test(key.charAt(0))) {
         key = `string_${key}`;
@@ -70,43 +73,53 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 
   runItemPreset(item: any): Promise<string> {
-    return this.runPreset('item', { item });
+    return this.runPreset('item', {item});
+  }
+
+  runCtorPreset(): Promise<string> {
+    return this.runPreset('ctor');
+  }
+
+  runGetValuePreset(): Promise<string> {
+    return this.runPreset('getValue');
+  }
+
+  runFromValuePreset(): Promise<string> {
+    return this.runPreset('fromValue');
   }
 }
 
-export const JAVA_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
-  self({ renderer }) {
-    renderer.addDependency('import com.fasterxml.jackson.annotation.*;');
+export const JAVA_DEFAULT_ENUM_PRESET: JavaEnumPreset = {
+  self({renderer}) {
     return renderer.defaultSelf();
   },
-  item({ renderer, item }) {
+  item({renderer, item}) {
     const key = renderer.normalizeKey(item);
     const value = renderer.normalizeValue(item);
     return `${key}(${value})`;
   },
-  additionalContent({ renderer, model }) {
+  ctor({renderer, model}) {
     const enumName = renderer.nameType(model.$id);
     const type = Array.isArray(model.type) ? 'Object' : model.type;
     const classType = renderer.toClassType(renderer.toJavaType(type, model));
-
     return `private ${classType} value;
 
 ${enumName}(${classType} value) {
   this.value = value;
-}
-    
-@JsonValue
-public ${classType} getValue() {
+}`;
+  },
+  getValue({renderer, model}) {
+    const type = Array.isArray(model.type) ? 'Object' : model.type;
+    const classType = renderer.toClassType(renderer.toJavaType(type, model));
+    return `public ${classType} getValue() {
   return value;
-}
-
-@Override
-public String toString() {
-  return String.valueOf(value);
-}
-
-@JsonCreator
-public static ${enumName} fromValue(${classType} value) {
+}`;
+  },
+  fromValue({renderer, model}) {
+    const enumName = renderer.nameType(model.$id);
+    const type = Array.isArray(model.type) ? 'Object' : model.type;
+    const classType = renderer.toClassType(renderer.toJavaType(type, model));
+    return `public static ${enumName} fromValue(${classType} value) {
   for (${enumName} e : ${enumName}.values()) {
     if (e.value.equals(value)) {
       return e;
@@ -115,4 +128,10 @@ public static ${enumName} fromValue(${classType} value) {
   throw new IllegalArgumentException("Unexpected value '" + value + "'");
 }`;
   },
+  additionalContent() {
+    return `@Override
+public String toString() {
+  return String.valueOf(value);
+}`;
+  }
 };
