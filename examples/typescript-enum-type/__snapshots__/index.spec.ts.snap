@@ -29,7 +29,7 @@ class Root {
   set event(event: Event | undefined) { this._event = event; }
 }
 enum Event {
-  QUOTATION_PING_QUOTATION = \\"ping\\",
-  QUOTATION_PONG_QUOTATION = \\"pong\\",
+  PING = \\"ping\\",
+  PONG = \\"pong\\",
 }"
 `;
