@@ -1,5 +1,5 @@
 import { GoDefaultConstraints } from '../../../../src/generators/go/GoConstrainer';
-import {EnumModel} from '../../../../src/models/MetaModel';
+import { EnumModel } from '../../../../src/models/MetaModel';
 import { ConstrainedEnumModel, ConstrainedEnumValueModel } from '../../../../src';
 import { defaultEnumKeyConstraints, ModelEnumKeyConstraints, DefaultEnumKeyConstraints } from '../../../../src/generators/go/constrainer/EnumConstrainer';
 describe('EnumConstrainer', () => {
@@ -9,29 +9,29 @@ describe('EnumConstrainer', () => {
   describe('enum keys', () => {
     test('should never render special chars', () => {
       const constrainedKey = GoDefaultConstraints.enumKey({enumModel, constrainedEnumModel, enumKey: '%'});
-      expect(constrainedKey).toEqual('PERCENT');
+      expect(constrainedKey).toEqual('TestPercent');
     });
     test('should not render number as start char', () => {
       const constrainedKey = GoDefaultConstraints.enumKey({enumModel, constrainedEnumModel, enumKey: '1'});
-      expect(constrainedKey).toEqual('NUMBER_1');
+      expect(constrainedKey).toEqual('TestNumber_1');
     });
     test('should not contain duplicate keys', () => {
-      const existingConstrainedEnumValueModel = new ConstrainedEnumValueModel('TEST', 'test');
+      const existingConstrainedEnumValueModel = new ConstrainedEnumValueModel('TestEmpty', 'TestEmpty');
       const constrainedEnumModel = new ConstrainedEnumModel('test', undefined, '', [existingConstrainedEnumValueModel]);
-      const constrainedKey = GoDefaultConstraints.enumKey({enumModel, constrainedEnumModel, enumKey: 'TEST'});
-      expect(constrainedKey).toEqual('RESERVED_TEST');
+      const constrainedKey = GoDefaultConstraints.enumKey({enumModel, constrainedEnumModel, enumKey: ''});
+      expect(constrainedKey).toEqual('TestReservedEmpty');
     });
     test('should never contain empty keys', () => {
       const constrainedKey = GoDefaultConstraints.enumKey({enumModel, constrainedEnumModel, enumKey: ''});
-      expect(constrainedKey).toEqual('EMPTY');
+      expect(constrainedKey).toEqual('TestEmpty');
     });
     test('should use constant naming format', () => {
       const constrainedKey = GoDefaultConstraints.enumKey({enumModel, constrainedEnumModel, enumKey: 'some weird_value!"#2'});
-      expect(constrainedKey).toEqual('SOME_SPACE_WEIRD_VALUE_EXCLAMATION_QUOTATION_HASH_2');
+      expect(constrainedKey).toEqual('TestSomeSpaceWeirdValueExclamationQuotationHash_2');
     });
     test('should never render reserved keywords', () => {
       const constrainedKey = GoDefaultConstraints.enumKey({enumModel, constrainedEnumModel, enumKey: 'return'});
-      expect(constrainedKey).toEqual('RESERVED_RETURN');
+      expect(constrainedKey).toEqual('TestReservedReturn');
     });
   });
   describe('enum values', () => {
@@ -41,33 +41,32 @@ describe('EnumConstrainer', () => {
     });
     test('should render boolean values', () => {
       const constrainedValue = GoDefaultConstraints.enumValue({enumModel, constrainedEnumModel, enumValue: true});
-      expect(constrainedValue).toEqual('"true"');
+      expect(constrainedValue).toEqual('true');
     });
-    test.skip('should render numbers', () => {
+    test('should render numbers', () => {
       const constrainedValue = GoDefaultConstraints.enumValue({enumModel, constrainedEnumModel, enumValue: 123});
       expect(constrainedValue).toEqual(123);
     });
-    test.skip('should render object', () => {
+    test('should render object', () => {
       const constrainedValue = GoDefaultConstraints.enumValue({enumModel, constrainedEnumModel, enumValue: {test: 'test'}});
-      expect(constrainedValue).toEqual('"{\\"test\\":\\"test\\"}"');
+      expect(constrainedValue).toEqual('{"test":"test"}');
     });
     test('should render unknown value', () => {
       const constrainedValue = GoDefaultConstraints.enumValue({enumModel, constrainedEnumModel, enumValue: undefined});
-      expect(constrainedValue).toEqual('"undefined"');
+      expect(constrainedValue).toEqual(undefined);
     });
   });
   describe('custom constraints', () => {
     test('should be able to handle undefined', () => {
       const constrainFunction = defaultEnumKeyConstraints(undefined);
       const value = constrainFunction({enumModel, constrainedEnumModel, enumKey: 'TEST'});
-      expect(value).toEqual('TEST');
+      expect(value).toEqual('TestTest');
     });
     test('should be able to overwrite all hooks for enum key', () => {
-      const mockedConstraintCallbacks: ModelEnumKeyConstraints = {
+      const mockedConstraintCallbacks: Partial<ModelEnumKeyConstraints> = {
         NAMING_FORMATTER: jest.fn().mockReturnValue(''),
         NO_SPECIAL_CHAR: jest.fn().mockReturnValue(''),
         NO_NUMBER_START_CHAR: jest.fn().mockReturnValue(''),
-        NO_DUPLICATE_KEYS: jest.fn().mockReturnValue(''),
         NO_EMPTY_VALUE: jest.fn().mockReturnValue(''),
         NO_RESERVED_KEYWORDS: jest.fn().mockReturnValue('')
       };

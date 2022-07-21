@@ -14,18 +14,43 @@ describe('CommonModelToMetaModel', () => {
     expect(model).not.toBeUndefined();
     expect(model instanceof AnyModel).toEqual(true);
   });
-  test('should convert to enum model', () => { 
-    const cm = new CommonModel();
-    cm.type = 'string';
-    cm.$id = 'test';
-    cm.enum = [
-      'test'
-    ];
-
-    const model = convertToMetaModel(cm);
-
-    expect(model).not.toBeUndefined();
-    expect(model instanceof EnumModel).toEqual(true);
+  describe('should convert to enum model', () => {
+    test('when string enums', () => { 
+      const cm = new CommonModel();
+      cm.type = 'string';
+      cm.$id = 'test';
+      cm.enum = [
+        'test'
+      ];
+  
+      const model = convertToMetaModel(cm);
+  
+      expect(model).not.toBeUndefined();
+      expect(model instanceof EnumModel).toEqual(true);
+      expect((model as EnumModel).values.length).toEqual(1);
+      expect((model as EnumModel).values[0].key).toEqual('test');
+    });
+    test('when different types of values', () => { 
+      const cm = new CommonModel();
+      cm.type = ['string', 'object', 'number', 'boolean'];
+      cm.$id = 'test';
+      cm.enum = [
+        {test: 1},
+        123,
+        'test',
+        true
+      ];
+  
+      const model = convertToMetaModel(cm);
+  
+      expect(model).not.toBeUndefined();
+      expect(model instanceof EnumModel).toEqual(true);
+      expect((model as EnumModel).values.length).toEqual(4);
+      expect((model as EnumModel).values[0].value).toEqual({test: 1});
+      expect((model as EnumModel).values[1].value).toEqual(123);
+      expect((model as EnumModel).values[2].value).toEqual('test');
+      expect((model as EnumModel).values[3].value).toEqual(true);
+    });
   });
   test('should convert to string model', () => { 
     const cm = new CommonModel();
