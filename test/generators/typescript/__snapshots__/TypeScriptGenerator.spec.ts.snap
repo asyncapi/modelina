@@ -92,9 +92,9 @@ exports[`TypeScriptGenerator should render \`class\` type 1`] = `
 
 exports[`TypeScriptGenerator should render \`enum\` type 1`] = `
 "enum States {
-  QUOTATION_TEXAS_QUOTATION = \\"Texas\\",
-  QUOTATION_ALABAMA_QUOTATION = \\"Alabama\\",
-  QUOTATION_CALIFORNIA_QUOTATION = \\"California\\",
+  TEXAS = \\"Texas\\",
+  ALABAMA = \\"Alabama\\",
+  CALIFORNIA = \\"California\\",
 }"
 `;
 
@@ -121,11 +121,11 @@ exports[`TypeScriptGenerator should render \`type\` type - array of union type 1
 
 exports[`TypeScriptGenerator should render \`type\` type - enum 1`] = `
 "enum TypeEnum {
-  QUOTATION_TEXAS_QUOTATION = \\"Texas\\",
-  QUOTATION_ALABAMA_QUOTATION = \\"Alabama\\",
-  QUOTATION_CALIFORNIA_QUOTATION = \\"California\\",
-  NUMBER_0 = \\"0\\",
-  NUMBER_1 = \\"1\\",
+  TEXAS = \\"Texas\\",
+  ALABAMA = \\"Alabama\\",
+  CALIFORNIA = \\"California\\",
+  NUMBER_0 = 0,
+  NUMBER_1 = 1,
   RESERVED_FALSE = \\"false\\",
   RESERVED_TRUE = \\"true\\",
 }"
@@ -137,11 +137,11 @@ exports[`TypeScriptGenerator should render \`type\` type - union 1`] = `"type Ty
 
 exports[`TypeScriptGenerator should render enums with translated special characters 1`] = `
 "enum States {
-  QUOTATION_TEST_PLUS_QUOTATION = \\"test+\\",
-  QUOTATION_TEST_QUOTATION = \\"test\\",
-  QUOTATION_TEST_MINUS_QUOTATION = \\"test-\\",
-  QUOTATION_TEST_QUESTION_EXCLAMATION_QUOTATION = \\"test?!\\",
-  QUOTATION_ASTERISK_TEST_QUOTATION = \\"*test\\",
+  TEST_PLUS = \\"test+\\",
+  TEST = \\"test\\",
+  TEST_MINUS = \\"test-\\",
+  TEST_QUESTION_EXCLAMATION = \\"test?!\\",
+  ASTERISK_TEST = \\"*test\\",
 }"
 `;
 
@@ -500,12 +500,12 @@ export class OtherModel {
 `;
 
 exports[`TypeScriptGenerator should render union \`enum\` values 1`] = `
-"class States {
-  constructor(input: {
-  
-  }) {
-  
-  }
+"enum States {
+  NUMBER_2 = 2,
+  RESERVED_NUMBER_2 = \\"2\\",
+  TEST = \\"test\\",
+  RESERVED_TRUE = \\"true\\",
+  CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT = '{\\"test\\":\\"test\\"}',
 }"
 `;
 
@@ -534,9 +534,9 @@ exports[`TypeScriptGenerator should work custom preset for \`class\` type 1`] = 
 
 exports[`TypeScriptGenerator should work custom preset for \`enum\` type 1`] = `
 "enum CustomEnum {
-  QUOTATION_TEXAS_QUOTATION = \\"Texas\\",
-  QUOTATION_ALABAMA_QUOTATION = \\"Alabama\\",
-  QUOTATION_CALIFORNIA_QUOTATION = \\"California\\",
+  TEXAS = \\"Texas\\",
+  ALABAMA = \\"Alabama\\",
+  CALIFORNIA = \\"California\\",
 }"
 `;
 
