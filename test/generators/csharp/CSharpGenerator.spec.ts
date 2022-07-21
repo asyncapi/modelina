@@ -142,7 +142,7 @@ describe('CSharpGenerator', () => {
       const models = await generator.generate(doc);
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot();
-      expect(models[0].dependencies).toEqual([]);
+      expect(models[0].dependencies).toEqual(['using System.Collections.Generic;']);
     });
 
     test('should be able to overwrite property preset hook', async () => {
@@ -159,7 +159,7 @@ describe('CSharpGenerator', () => {
       const models = await generator.generate(doc);
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot();
-      expect(models[0].dependencies).toEqual([]);
+      expect(models[0].dependencies).toEqual(['using System.Collections.Generic;']);
     });
   });
 });
