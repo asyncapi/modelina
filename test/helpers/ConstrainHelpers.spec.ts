@@ -164,9 +164,11 @@ describe('ConstrainHelpers', () => {
         constrainedName: ''
       });
       expect(constrainedModel instanceof ConstrainedEnumModel).toEqual(true);
-      expect((constrainedModel as ConstrainedEnumModel).values[0] instanceof ConstrainedEnumValueModel).toEqual(true);
+      const enumModel = constrainedModel as ConstrainedEnumModel;
       expect(mockedConstraints.modelName).toHaveBeenCalledTimes(1);
       expect(mockedTypeMapping.Enum).toHaveBeenCalledTimes(1);
+      expect(enumModel.values[0].key).toEqual('test');
+      expect(enumModel.values[0].value).toEqual(123);
     });
   });
   describe('constrain DictionaryModel', () => {

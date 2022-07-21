@@ -169,7 +169,7 @@ function ConstrainEnumModel<Options>(typeMapping: TypeMapping<Options>, constrai
 
   for (const enumValue of context.metaModel.values) {
     const constrainedEnumKey = constrainRules.enumKey({enumKey: String(enumValue.key), enumModel: context.metaModel, constrainedEnumModel: constrainedModel});
-    const constrainedEnumValue = constrainRules.enumValue({enumValue: String(enumValue.value), enumModel: context.metaModel, constrainedEnumModel: constrainedModel});
+    const constrainedEnumValue = constrainRules.enumValue({enumValue: enumValue.value, enumModel: context.metaModel, constrainedEnumModel: constrainedModel});
 
     const constrainedEnumValueModel = new ConstrainedEnumValueModel(constrainedEnumKey, constrainedEnumValue);
     constrainedModel.values.push(constrainedEnumValueModel);

@@ -1,6 +1,6 @@
 import { GoRenderer } from '../GoRenderer';
 import { StructPresetType } from '../GoPreset';
-import { ConstrainedObjectModel, ConstrainedObjectPropertyModel } from 'models';
+import { ConstrainedObjectModel, ConstrainedObjectPropertyModel, ConstrainedReferenceModel } from '../../../models';
 import { GoOptions } from '../GoGenerator';
 
 /**
@@ -44,6 +44,10 @@ export const GO_DEFAULT_STRUCT_PRESET: StructPresetType<GoOptions> = {
     return renderer.defaultSelf();
   },
   field({ field }) {
-    return `${ field } ${ field.property.type }`;
+    let fieldType = field.property.type;
+    if (field.property instanceof ConstrainedReferenceModel) {
+      fieldType = `*${fieldType}`; 
+    }
+    return `${ field.propertyName } ${ fieldType }`;
   },
 };
