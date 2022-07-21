@@ -1,24 +1,24 @@
-import { JavaDefaultConstraints } from '../../../../src/generators/java/JavaConstrainer';
-import { DefaultModelNameConstraints, defaultModelNameConstraints, ModelNameConstraints } from '../../../../src/generators/java/constrainer/ModelNameConstrainer';
+import { DartDefaultConstraints } from '../../../../src/generators/dart/DartConstrainer';
+import { DefaultModelNameConstraints, defaultModelNameConstraints, ModelNameConstraints } from '../../../../src/generators/dart/constrainer/ModelNameConstrainer';
 describe('ModelNameConstrainer', () => {
   test('should never render special chars', () => {
-    const constrainedKey = JavaDefaultConstraints.modelName({modelName: '%'});
+    const constrainedKey = DartDefaultConstraints.modelName({modelName: '%'});
     expect(constrainedKey).toEqual('Percent');
   });
   test('should never render number as start char', () => {
-    const constrainedKey = JavaDefaultConstraints.modelName({modelName: '1'});
+    const constrainedKey = DartDefaultConstraints.modelName({modelName: '1'});
     expect(constrainedKey).toEqual('Number_1');
   });
   test('should never contain empty name', () => {
-    const constrainedKey = JavaDefaultConstraints.modelName({modelName: ''});
+    const constrainedKey = DartDefaultConstraints.modelName({modelName: ''});
     expect(constrainedKey).toEqual('Empty');
   });
   test('should use constant naming format', () => {
-    const constrainedKey = JavaDefaultConstraints.modelName({modelName: 'some weird_value!"#2'});
-    expect(constrainedKey).toEqual('SomeWeirdValueExclamationQuotationHash_2');
+    const constrainedKey = DartDefaultConstraints.modelName({modelName: 'some weird_value!"#2'});
+    expect(constrainedKey).toEqual('SomeSpaceWeirdUnderscoreValueExclamationQuotationHash_2');
   });
   test('should never render reserved keywords', () => {
-    const constrainedKey = JavaDefaultConstraints.modelName({modelName: 'return'});
+    const constrainedKey = DartDefaultConstraints.modelName({modelName: 'return'});
     expect(constrainedKey).toEqual('ReservedReturn');
   });
   describe('custom constraints', () => {

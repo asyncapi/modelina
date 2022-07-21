@@ -33,7 +33,7 @@ export class DartGenerator extends AbstractGenerator<DartOptions, DartRenderComp
   };
 
   constructor(
-    options: DartOptions = DartGenerator.defaultOptions,
+    options: Partial<DartOptions> = DartGenerator.defaultOptions,
   ) {
     const realizedOptions = {...DartGenerator.defaultOptions, ...options};
     super('Dart', realizedOptions);

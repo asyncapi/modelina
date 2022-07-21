@@ -83,14 +83,14 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
     return renderer.defaultSelf();
   },
   property({ property }) {
-    return `private ${property.property.type} ${property.property.name};`;
+    return `private ${property.property.type} ${property.propertyName};`;
   },
   getter({ property }) {
     const getterName = `get${FormatHelpers.toPascalCase(property.propertyName)}`;
-    return `public ${property.property.type} ${getterName}() { return this.${property.property.name}; }`;
+    return `public ${property.property.type} ${getterName}() { return this.${property.propertyName}; }`;
   },
   setter({ property }) {
     const setterName = FormatHelpers.toPascalCase(property.propertyName);
-    return `public void set${setterName}(${property.property.type} ${property.property.name}) { this.${property.property.name} = ${property.property.name}; }`;
+    return `public void set${setterName}(${property.property.type} ${property.propertyName}) { this.${property.propertyName} = ${property.propertyName}; }`;
   }
 };

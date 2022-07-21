@@ -15,19 +15,15 @@ describe('JAVA_COMMON_PRESET', () => {
   };
   test('should render common function in class by common preset', async () => {
     const generator = new JavaGenerator({ presets: [JAVA_COMMON_PRESET] });
-    const inputModel = await generator.process(doc);
-    const model = inputModel.models['Clazz'];
-
-    const classModel = await generator.renderClass(model, inputModel);
-    expect(classModel.result).toMatchSnapshot();
+    const models = await generator.generate(doc);
+    expect(models).toHaveLength(1);
+    expect(models[0].result).toMatchSnapshot(); 
   });
   test('should render accurately when there is no additional properties', async () => {
     const generator = new JavaGenerator({ presets: [JAVA_COMMON_PRESET] });
-    const inputModel = await generator.process({...doc, additionalProperties: false});
-    const model = inputModel.models['Clazz'];
-
-    const classModel = await generator.renderClass(model, inputModel);
-    expect(classModel.result).toMatchSnapshot();
+    const models = await generator.generate({...doc, additionalProperties: false});
+    expect(models).toHaveLength(1);
+    expect(models[0].result).toMatchSnapshot(); 
   });
   describe('with option', () => {
     test('should render all functions', async () => {
@@ -44,12 +40,10 @@ describe('JAVA_COMMON_PRESET', () => {
           }] 
         }
       );
-      const inputModel = await generator.process(doc);
-      const model = inputModel.models['Clazz'];
-  
-      const classModel = await generator.renderClass(model, inputModel);
-      expect(classModel.result).toMatchSnapshot();
-      expect(classModel.dependencies.includes('import java.util.Objects;')).toEqual(true);
+      const models = await generator.generate(doc);
+      expect(models).toHaveLength(1);
+      expect(models[0].result).toMatchSnapshot(); 
+      expect(models[0].dependencies).toEqual(['import java.util.Objects;', 'import java.util.Map;']);
     });
     test('should not render any functions when all 4 options are disabled', async () => {
       const options: JavaCommonPresetOptions = {
@@ -67,11 +61,9 @@ describe('JAVA_COMMON_PRESET', () => {
           }]
         }
       );
-      const inputModel = await generator.process(doc);
-      const model = inputModel.models['Clazz'];
-
-      const classModel = await generator.renderClass(model, inputModel);
-      expect(classModel.result).toMatchSnapshot();
+      const models = await generator.generate(doc);
+      expect(models).toHaveLength(1);
+      expect(models[0].result).toMatchSnapshot(); 
     });
     test('should render equals', async () => {
       const generator = new JavaGenerator(
@@ -87,12 +79,10 @@ describe('JAVA_COMMON_PRESET', () => {
           }] 
         }
       );
-      const inputModel = await generator.process(doc);
-      const model = inputModel.models['Clazz'];
-  
-      const classModel = await generator.renderClass(model, inputModel);
-      expect(classModel.result).toMatchSnapshot();
-      expect(classModel.dependencies.includes('import java.util.Objects;')).toEqual(true);
+      const models = await generator.generate(doc);
+      expect(models).toHaveLength(1);
+      expect(models[0].result).toMatchSnapshot(); 
+      expect(models[0].dependencies).toEqual(['import java.util.Objects;', 'import java.util.Map;']);
     });
     test('should render hashCode', async () => {
       const generator = new JavaGenerator(
@@ -108,12 +98,10 @@ describe('JAVA_COMMON_PRESET', () => {
           }] 
         }
       );
-      const inputModel = await generator.process(doc);
-      const model = inputModel.models['Clazz'];
-  
-      const classModel = await generator.renderClass(model, inputModel);
-      expect(classModel.result).toMatchSnapshot();
-      expect(classModel.dependencies.includes('import java.util.Objects;')).toEqual(true);
+      const models = await generator.generate(doc);
+      expect(models).toHaveLength(1);
+      expect(models[0].result).toMatchSnapshot(); 
+      expect(models[0].dependencies).toEqual(['import java.util.Objects;', 'import java.util.Map;']);
     });
     test('should render classToString', async () => {
       const generator = new JavaGenerator(
@@ -129,11 +117,10 @@ describe('JAVA_COMMON_PRESET', () => {
           }] 
         }
       );
-      const inputModel = await generator.process(doc);
-      const model = inputModel.models['Clazz'];
-  
-      const classModel = await generator.renderClass(model, inputModel);
-      expect(classModel.result).toMatchSnapshot();
+      const models = await generator.generate(doc);
+      expect(models).toHaveLength(1);
+      expect(models[0].result).toMatchSnapshot(); 
+      expect(models[0].dependencies).toEqual(['import java.util.Map;']);
     });
     test('should render un/marshal', async () => {
       const generator = new JavaGenerator(
@@ -149,13 +136,10 @@ describe('JAVA_COMMON_PRESET', () => {
           }] 
         }
       );
-      const inputModel = await generator.process(doc);
-      const model = inputModel.models['Clazz'];
-      
-      const classModel = await generator.renderClass(model, inputModel);
-      expect(classModel.dependencies.includes('import java.util.Map;')).toEqual(true);
-      expect(classModel.dependencies.includes('import java.util.stream;')).toEqual(true);
-      expect(classModel.dependencies.includes('import org.json.JSONObject;')).toEqual(true);
+      const models = await generator.generate(doc);
+      expect(models).toHaveLength(1);
+      expect(models[0].result).toMatchSnapshot(); 
+      expect(models[0].dependencies).toEqual(['import java.util.stream;', 'import org.json.JSONObject;', 'import java.util.Map;']);
     });
   });
 });
