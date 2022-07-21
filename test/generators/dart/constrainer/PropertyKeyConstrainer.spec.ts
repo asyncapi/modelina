@@ -1,6 +1,6 @@
-import { JavaDefaultConstraints } from '../../../../src/generators/java/JavaConstrainer';
+import { DartDefaultConstraints } from '../../../../src/generators/dart/DartConstrainer';
 import { ConstrainedObjectModel, ConstrainedObjectPropertyModel, ObjectModel, ObjectPropertyModel } from '../../../../src';
-import { DefaultPropertyKeyConstraints, defaultPropertyKeyConstraints, PropertyKeyConstraintOptions } from '../../../../src/generators/java/constrainer/PropertyKeyConstrainer';
+import { DefaultPropertyKeyConstraints, defaultPropertyKeyConstraints, PropertyKeyConstraintOptions } from '../../../../src/generators/dart/constrainer/PropertyKeyConstrainer';
 describe('PropertyKeyConstrainer', () => {
   const objectModel = new ObjectModel('test', undefined, {});
   const constrainedObjectModel = new ConstrainedObjectModel('test', undefined, '', {});
@@ -8,7 +8,7 @@ describe('PropertyKeyConstrainer', () => {
   const constrainPropertyName = (propertyName: string) => {
     const objectPropertyModel = new ObjectPropertyModel(propertyName, false, objectModel);
     const constrainedObjectPropertyModel = new ConstrainedObjectPropertyModel('', '', objectPropertyModel.required, constrainedObjectModel);
-    return JavaDefaultConstraints.propertyKey({constrainedObjectModel, objectModel, objectPropertyModel, constrainedObjectPropertyModel });
+    return DartDefaultConstraints.propertyKey({constrainedObjectModel, objectModel, objectPropertyModel, constrainedObjectPropertyModel });
   };
   afterEach(() => {
     jest.restoreAllMocks();
@@ -39,7 +39,7 @@ describe('PropertyKeyConstrainer', () => {
     const constrainedObjectPropertyModel2 = new ConstrainedObjectPropertyModel('return', '', objectPropertyModel.required, constrainedObjectModel);
     constrainedObjectModel.properties['reservedReturn'] = constrainedObjectPropertyModel;
     constrainedObjectModel.properties['return'] = constrainedObjectPropertyModel2;
-    const constrainedKey = JavaDefaultConstraints.propertyKey({constrainedObjectModel, objectModel, objectPropertyModel: objectPropertyModel2, constrainedObjectPropertyModel: constrainedObjectPropertyModel2});
+    const constrainedKey = DartDefaultConstraints.propertyKey({constrainedObjectModel, objectModel, objectPropertyModel: objectPropertyModel2, constrainedObjectPropertyModel: constrainedObjectPropertyModel2});
     expect(constrainedKey).toEqual('reservedReservedReturn');
   });
   test('should never render reserved keywords', () => {
