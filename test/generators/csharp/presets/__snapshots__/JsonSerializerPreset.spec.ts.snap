@@ -6,7 +6,7 @@ public class Test
 {
   private string stringProp;
   private double numberProp;
-  private dynamic enumProp;
+  private EnumTest enumProp;
   private NestedTest objectProp;
   private Dictionary<string, dynamic> additionalProperties;
 
@@ -22,7 +22,7 @@ public class Test
     set { numberProp = value; }
   }
 
-  public dynamic EnumProp 
+  public EnumTest EnumProp 
   {
     get { return enumProp; }
     set { enumProp = value; }
@@ -85,7 +85,7 @@ internal class TestConverter : JsonConverter<Test>
         }
       if (propertyName == \\"enumProp\\")
         {
-          var value = JsonSerializer.Deserialize<dynamic>(ref reader, options);
+          var value = EnumTestExtension.ToEnumTest(JsonSerializer.Deserialize<dynamic>(ref reader, options));
           instance.enumProp = value;
           continue;
         }
@@ -127,7 +127,7 @@ internal class TestConverter : JsonConverter<Test>
     if(value.enumProp != null) { 
       // write property name and let the serializer serialize the value itself
       writer.WritePropertyName(\\"enumProp\\");
-      JsonSerializer.Serialize(writer, value.enumProp, options);
+      JsonSerializer.Serialize(writer, EnumTest.GetValue(), options);
     }
     if(value.objectProp != null) { 
       // write property name and let the serializer serialize the value itself
@@ -162,63 +162,39 @@ internal class TestConverter : JsonConverter<Test>
 `;
 
 exports[`JSON serializer preset should render serialize and deserialize converters 2`] = `
-"[JsonConverter(typeof(EnumTestConverter))]
-public class EnumTest
+"public enum EnumTest
 {
-  
+  SOME_SPACE_ENUM_SPACE_STRING,
+  RESERVED_TRUE,
+  CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT,
+  NUMBER_2
 }
 
-internal class EnumTestConverter : JsonConverter<EnumTest>
+public static class EnumTestExtensions
 {
-  public override bool CanConvert(System.Type objectType)
+  public static dynamic GetValue(this EnumTest enumValue)
   {
-    // this converter can be applied to any type
-    return true;
-  }
-  public override EnumTest Read(ref Utf8JsonReader reader, System.Type typeToConvert, JsonSerializerOptions options)
-  {
-    if (reader.TokenType != JsonTokenType.StartObject)
+    switch (enumValue)
     {
-      throw new JsonException();
+      case EnumTest.SOME_SPACE_ENUM_SPACE_STRING: return \\"Some enum String\\";
+      case EnumTest.RESERVED_TRUE: return true;
+      case EnumTest.CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT: return \\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\";
+      case EnumTest.NUMBER_2: return 2;
     }
-
-    var instance = new EnumTest();
-  
-    while (reader.Read())
-    {
-      if (reader.TokenType == JsonTokenType.EndObject)
-      {
-        return instance;
-      }
-
-      // Get the key.
-      if (reader.TokenType != JsonTokenType.PropertyName)
-      {
-        throw new JsonException();
-      }
-
-      string propertyName = reader.GetString();
-    
-    }
-  
-    throw new JsonException();
-  }
-  public override void Write(Utf8JsonWriter writer, EnumTest value, JsonSerializerOptions options)
-  {
-    if (value == null)
-    {
-      JsonSerializer.Serialize(writer, null, options);
-      return;
-    }
-    var properties = value.GetType().GetProperties();
-  
-    writer.WriteStartObject();
-
-  
-
-    writer.WriteEndObject();
+    return null;
   }
 
+  public static EnumTest? ToEnumTest(dynamic value)
+  {
+    switch (value)
+    {
+      case \\"Some enum String\\": return EnumTest.SOME_SPACE_ENUM_SPACE_STRING;
+      case true: return EnumTest.RESERVED_TRUE;
+      case \\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\": return EnumTest.CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT;
+      case 2: return EnumTest.NUMBER_2;
+    }
+    return null;
+  }
 }
 "
 `;

@@ -101,41 +101,40 @@ exports[`CSharpGenerator should render \`class\` type 1`] = `
 }"
 `;
 
-exports[`CSharpGenerator should render \`enum\` type with enums of mixed types 1`] = `
-"public class Things
+exports[`CSharpGenerator should render \`enum\` type 1`] = `
+"public enum Things
 {
-  
-}"
-`;
-
-exports[`CSharpGenerator should render \`enum\` type with enums sharing same type 1`] = `
-"public enum States
-{
-  QUOTATION_TEXAS_QUOTATION,
-  QUOTATION_ALABAMA_QUOTATION,
-  QUOTATION_CALIFORNIA_QUOTATION
+  TEXAS,
+  NUMBER_1,
+  RESERVED_NUMBER_1,
+  RESERVED_FALSE,
+  CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT
 }
 
-public static class StatesExtensions
+public static class ThingsExtensions
 {
-  public static dynamic GetValue(this States enumValue)
+  public static dynamic GetValue(this Things enumValue)
   {
     switch (enumValue)
     {
-      case States.QUOTATION_TEXAS_QUOTATION: return \\"Texas\\";
-      case States.QUOTATION_ALABAMA_QUOTATION: return \\"Alabama\\";
-      case States.QUOTATION_CALIFORNIA_QUOTATION: return \\"California\\";
+      case Things.TEXAS: return \\"Texas\\";
+      case Things.NUMBER_1: return \\"1\\";
+      case Things.RESERVED_NUMBER_1: return 1;
+      case Things.RESERVED_FALSE: return false;
+      case Things.CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT: return \\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\";
     }
     return null;
   }
 
-  public static States? ToStates(dynamic value)
+  public static Things? ToThings(dynamic value)
   {
     switch (value)
     {
-      case \\"Texas\\": return States.QUOTATION_TEXAS_QUOTATION;
-      case \\"Alabama\\": return States.QUOTATION_ALABAMA_QUOTATION;
-      case \\"California\\": return States.QUOTATION_CALIFORNIA_QUOTATION;
+      case \\"Texas\\": return Things.TEXAS;
+      case \\"1\\": return Things.NUMBER_1;
+      case 1: return Things.RESERVED_NUMBER_1;
+      case false: return Things.RESERVED_FALSE;
+      case \\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\": return Things.CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT;
     }
     return null;
   }
@@ -146,11 +145,11 @@ public static class StatesExtensions
 exports[`CSharpGenerator should render enums with translated special characters 1`] = `
 "public enum States
 {
-  QUOTATION_TEST_PLUS_QUOTATION,
-  QUOTATION_TEST_QUOTATION,
-  QUOTATION_TEST_MINUS_QUOTATION,
-  QUOTATION_TEST_QUESTION_EXCLAMATION_QUOTATION,
-  QUOTATION_ASTERISK_TEST_QUOTATION
+  TEST_PLUS,
+  TEST,
+  TEST_MINUS,
+  TEST_QUESTION_EXCLAMATION,
+  ASTERISK_TEST
 }
 
 public static class StatesExtensions
@@ -159,11 +158,11 @@ public static class StatesExtensions
   {
     switch (enumValue)
     {
-      case States.QUOTATION_TEST_PLUS_QUOTATION: return \\"test+\\";
-      case States.QUOTATION_TEST_QUOTATION: return \\"test\\";
-      case States.QUOTATION_TEST_MINUS_QUOTATION: return \\"test-\\";
-      case States.QUOTATION_TEST_QUESTION_EXCLAMATION_QUOTATION: return \\"test?!\\";
-      case States.QUOTATION_ASTERISK_TEST_QUOTATION: return \\"*test\\";
+      case States.TEST_PLUS: return \\"test+\\";
+      case States.TEST: return \\"test\\";
+      case States.TEST_MINUS: return \\"test-\\";
+      case States.TEST_QUESTION_EXCLAMATION: return \\"test?!\\";
+      case States.ASTERISK_TEST: return \\"*test\\";
     }
     return null;
   }
@@ -172,11 +171,11 @@ public static class StatesExtensions
   {
     switch (value)
     {
-      case \\"test+\\": return States.QUOTATION_TEST_PLUS_QUOTATION;
-      case \\"test\\": return States.QUOTATION_TEST_QUOTATION;
-      case \\"test-\\": return States.QUOTATION_TEST_MINUS_QUOTATION;
-      case \\"test?!\\": return States.QUOTATION_TEST_QUESTION_EXCLAMATION_QUOTATION;
-      case \\"*test\\": return States.QUOTATION_ASTERISK_TEST_QUOTATION;
+      case \\"test+\\": return States.TEST_PLUS;
+      case \\"test\\": return States.TEST;
+      case \\"test-\\": return States.TEST_MINUS;
+      case \\"test?!\\": return States.TEST_QUESTION_EXCLAMATION;
+      case \\"*test\\": return States.ASTERISK_TEST;
     }
     return null;
   }
