@@ -43,25 +43,38 @@ export function NO_DUPLICATE_PROPERTIES(constrainedObjectModel: ConstrainedObjec
  * 
  * @param constrainedEnumModel the current constrained enum model, which contains already existing constrained enum keys
  * @param enumModel the raw enum model which is non-constrained to the output language.
- * @param enumKey one of the enum keys in enumModel which might have been manipulated
- * @param namingFormatter the name formatter which are used to format the enum key
- * @returns 
+ * @param enumKey one of the enum keys in enumModel which might have been manipulated.
+ * @param namingFormatter the name formatter which are used to format the enum key.
+ * @param enumKeyToCheck the enum key to use for checking if it already exist, defaults to enumKey.
+ * @param onNameChange callback to change the name of the enum key that needs to be returned.
+ * @param onNameChangeToCheck callback to change the enum key which is being checked as part of the existing models.
+ * @returns {string} the potential new enum key that does not clash with existing enum keys.
  */
-export function NO_DUPLICATE_ENUM_KEYS(constrainedEnumModel: ConstrainedEnumModel, enumModel: EnumModel, enumKey: string, namingFormatter: (value: string) => string): string {
-  const formattedEnumKey = namingFormatter(enumKey);
+export function NO_DUPLICATE_ENUM_KEYS(
+  constrainedEnumModel: ConstrainedEnumModel, 
+  enumModel: EnumModel, 
+  enumKey: string,
+  namingFormatter: (value: string) => string,
+  enumKeyToCheck: string = enumKey,
+  onNameChange: (currentEnumKey: string) => string = (currentEnumKey) => {
+    return `reserved_${currentEnumKey}`;
+  },
+  onNameChangeToCheck: (currentEnumKey: string) => string = onNameChange): string {
+  const formattedEnumKey = namingFormatter(enumKeyToCheck);
   let newEnumKey = enumKey;
 
   const alreadyPartOfMetaModel = enumModel.values
     .map((model) => model.key)
-    .filter((key) => enumKey !== key)
+    .filter((key) => enumKeyToCheck !== key)
     .includes(formattedEnumKey);
   const alreadyPartOfConstrainedModel = constrainedEnumModel.values
     .map((model) => model.key)
     .includes(formattedEnumKey);
   
   if (alreadyPartOfMetaModel || alreadyPartOfConstrainedModel) {
-    newEnumKey = `reserved_${enumKey}`;
-    newEnumKey = NO_DUPLICATE_ENUM_KEYS(constrainedEnumModel, enumModel, newEnumKey, namingFormatter);
+    newEnumKey = onNameChange(newEnumKey);
+    enumKeyToCheck = onNameChangeToCheck(enumKeyToCheck);
+    newEnumKey = NO_DUPLICATE_ENUM_KEYS(constrainedEnumModel, enumModel, newEnumKey, namingFormatter, enumKeyToCheck, onNameChange, onNameChangeToCheck);
   }
   return newEnumKey;
 }

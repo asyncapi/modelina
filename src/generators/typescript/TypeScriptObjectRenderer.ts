@@ -34,7 +34,7 @@ export abstract class TypeScriptObjectRenderer extends TypeScriptRenderer<Constr
   }
 
   renderProperty(property: ConstrainedObjectPropertyModel): string {
-    return `${property.propertyName}: ${property.property.type};`;
+    return `${property.propertyName}${property.required === false ? '?' : ''}: ${property.property.type};`;
   }
 
   runPropertyPreset(property: ConstrainedObjectPropertyModel): Promise<string> {

@@ -3,7 +3,6 @@
 exports[`Should be able to render models to ESM module system and should log expected output to console 1`] = `
 Array [
   "
-
 class Person {
   private _email?: string;
 
@@ -24,7 +23,6 @@ export default Person;
 exports[`Should be able to render models to ESM module system and should log expected output to console 2`] = `
 Array [
   "import Person from './Person';
-
 class Root {
   private _person?: Person;
 
