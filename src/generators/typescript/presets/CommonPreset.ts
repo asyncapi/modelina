@@ -114,14 +114,16 @@ function renderUnmarshalProperties(model: ConstrainedObjectModel) {
     setDictionaryProperties.push(`if (instance.${prop} === undefined) {instance.${prop} = new Map();}`);
     unmarshalDictionaryProperties.push(`instance.${prop}.set(key, ${unmarshalCode});`);
   }
+  const corePropertyKeys = propertyNames.map((propertyKey) => `"${propertyKey}"`).join(',');
+  const unwrappedDictionaryCode = setDictionaryProperties.length > 0 ? `${setDictionaryProperties.join('\n')}
+  for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![${corePropertyKeys}].includes(key);}))) {
+    ${unmarshalDictionaryProperties.join('\n')}
+  }` : '';
 
   return `
 ${unmarshalNormalProperties.join('\n')}
 
-${setDictionaryProperties.join('\n')}
-for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![${propertyNames.join(',')}].includes(key);}))) {
-  ${unmarshalDictionaryProperties.join('\n')}
-}
+${unwrappedDictionaryCode}
 `;
 }
 
@@ -159,7 +161,7 @@ export const TS_COMMON_PRESET: TypeScriptPreset<TypeScriptCommonPresetOptions> =
       }
 
       if (options.example === true) {
-        blocks.push(renderExampleFunction({ renderer, model }));
+        blocks.push(renderExampleFunction({ model }));
       }
       
       return renderer.renderBlock([content, ...blocks], 2);

@@ -17,7 +17,7 @@ exports[`DartGenerator should render \`class\` type 1`] = `
 
 exports[`DartGenerator should render \`enum\` type (integer type) 1`] = `
 "enum Numbers {
-  \\"0\\", \\"1\\", \\"2\\", \\"3\\"
+  0, 1, 2, 3
 }"
 `;
 

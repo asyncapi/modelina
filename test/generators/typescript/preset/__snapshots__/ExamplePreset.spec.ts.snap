@@ -5,17 +5,18 @@ exports[`Example function generation should render example function for model 1`
   private _stringProp: string;
   private _numberProp?: number;
   private _objectProp?: NestedTest;
-  private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null>;
-  private _sTestPatternProperties?: Map<String, string>;
+  private _additionalProperties?: Map<string, any>;
 
   constructor(input: {
     stringProp: string,
     numberProp?: number,
     objectProp?: NestedTest,
+    additionalProperties?: Map<string, any>,
   }) {
     this._stringProp = input.stringProp;
     this._numberProp = input.numberProp;
     this._objectProp = input.objectProp;
+    this._additionalProperties = input.additionalProperties;
   }
 
   get stringProp(): string { return this._stringProp; }
@@ -27,16 +28,13 @@ exports[`Example function generation should render example function for model 1`
   get objectProp(): NestedTest | undefined { return this._objectProp; }
   set objectProp(objectProp: NestedTest | undefined) { this._objectProp = objectProp; }
 
-  get additionalProperties(): Map<String, object | string | number | Array<unknown> | boolean | null> | undefined { return this._additionalProperties; }
-  set additionalProperties(additionalProperties: Map<String, object | string | number | Array<unknown> | boolean | null> | undefined) { this._additionalProperties = additionalProperties; }
-
-  get sTestPatternProperties(): Map<String, string> | undefined { return this._sTestPatternProperties; }
-  set sTestPatternProperties(sTestPatternProperties: Map<String, string> | undefined) { this._sTestPatternProperties = sTestPatternProperties; }
+  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
 
   public static example(): Test {
     const instance = new Test({} as any);
     instance.stringProp = \\"string\\";
-    instance.numberProp = 0;
+    instance.numberProp = 0.0;
     instance.objectProp = NestedTest.example();
     return instance;
   }
@@ -46,19 +44,21 @@ exports[`Example function generation should render example function for model 1`
 exports[`Example function generation should render example function for model 2`] = `
 "class NestedTest {
   private _stringProp?: string;
-  private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null>;
+  private _additionalProperties?: Map<string, any>;
 
   constructor(input: {
     stringProp?: string,
+    additionalProperties?: Map<string, any>,
   }) {
     this._stringProp = input.stringProp;
+    this._additionalProperties = input.additionalProperties;
   }
 
   get stringProp(): string | undefined { return this._stringProp; }
   set stringProp(stringProp: string | undefined) { this._stringProp = stringProp; }
 
-  get additionalProperties(): Map<String, object | string | number | Array<unknown> | boolean | null> | undefined { return this._additionalProperties; }
-  set additionalProperties(additionalProperties: Map<String, object | string | number | Array<unknown> | boolean | null> | undefined) { this._additionalProperties = additionalProperties; }
+  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
 
   public static example(): NestedTest {
     const instance = new NestedTest({} as any);

@@ -46,7 +46,7 @@ export const TypeScriptDefaultTypeMapping: TypeMapping<TypeScriptOptions> = {
     });
     return unionTypes.join(' | ');
   },
-  Dictionary ({constrainedModel}): string {
+  Dictionary ({constrainedModel, options}): string {
     let keyType;    
     //There is some restrictions on what can be used as keys for dictionaries.
     if (constrainedModel.key instanceof ConstrainedUnionModel) {
@@ -55,8 +55,15 @@ export const TypeScriptDefaultTypeMapping: TypeMapping<TypeScriptOptions> = {
     } else {
       keyType = constrainedModel.key.type;
     }
-
-    return `{ [name: ${keyType}]: ${constrainedModel.value.type} }`;
+    switch (options.mapType) {
+    case 'indexedObject':
+      return `{ [name: ${keyType}]: ${constrainedModel.value.type} }`;
+    case 'record':
+      return `Record<${keyType}, ${constrainedModel.value.type}>`;
+    default:
+    case 'map':
+      return `Map<${keyType}, ${constrainedModel.value.type}>`;
+    }
   }
 };
 

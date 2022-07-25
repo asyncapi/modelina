@@ -11,12 +11,12 @@ export interface CsharpClassPreset<O> extends ClassPreset<ClassRenderer, O> {
 export type ClassPresetType<O> = CsharpClassPreset<O>;
 export type EnumPresetType<O> = EnumPreset<EnumRenderer, O>;
 
-export type CSharpPreset<O = CSharpOptions> = Preset<{
+export type CSharpPreset<O = any> = Preset<{
   class: CsharpClassPreset<O>;
   enum: EnumPreset<EnumRenderer, O>
 }>;
 
-export const CSHARP_DEFAULT_PRESET: CSharpPreset = {
+export const CSHARP_DEFAULT_PRESET: CSharpPreset<CSharpOptions> = {
   class: CSHARP_DEFAULT_CLASS_PRESET,
   enum: CSHARP_DEFAULT_ENUM_PRESET,
 };

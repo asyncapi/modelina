@@ -66,7 +66,9 @@ export const CSHARP_COMMON_PRESET: CSharpPreset<CSharpCommonPresetOptions> = {
       options = options || {};
       const blocks: string[] = [];
 
-      if (options.equal === undefined || options.equal === true) { blocks.push(renderEqual({ renderer, model })); }
+      if (options.equal === undefined || options.equal === true) { 
+        blocks.push(renderEqual({ renderer, model })); 
+      }
       if (options.hash === undefined || options.hash === true) {
         renderer.addDependency('using System;');
         blocks.push(renderHashCode({ renderer, model }));
