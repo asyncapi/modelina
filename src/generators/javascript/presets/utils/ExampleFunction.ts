@@ -7,7 +7,7 @@ import { ConstrainedArrayModel, ConstrainedBooleanModel, ConstrainedFloatModel, 
  */
 export function renderValueFromModel(model: ConstrainedMetaModel): string | undefined {
   if (model instanceof ConstrainedReferenceModel) {
-    return `${model.type}.example()`;
+    return `${model.ref.type}.example()`;
   } else if (model instanceof ConstrainedUnionModel) {
     //Greedy example, where we just use the first type of the union models
     return renderValueFromModel(model.union[0]);
