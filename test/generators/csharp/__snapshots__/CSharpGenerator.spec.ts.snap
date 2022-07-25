@@ -32,59 +32,18 @@ exports[`CSharpGenerator class renderer should be able to overwrite property pre
 }"
 `;
 
-exports[`CSharpGenerator should not render reserved keyword 1`] = `
-"public class Address
-{
-  private string reservedReservedEnum;
-  private string reservedEnum;
-
-  public string ReservedReservedEnum 
-  {
-    get { return reservedReservedEnum; }
-    set { reservedReservedEnum = value; }
-  }
-
-  public string ReservedEnum 
-  {
-    get { return reservedEnum; }
-    set { reservedEnum = value; }
-  }
-}"
-`;
-
-exports[`CSharpGenerator should not render reserved keyword 2`] = `
-"public class Address
-{
-  private string reservedReservedEnum;
-  private string reservedEnum;
-
-  public string ReservedReservedEnum 
-  {
-    get { return reservedReservedEnum; }
-    set { reservedReservedEnum = value; }
-  }
-
-  public string ReservedEnum 
-  {
-    get { return reservedEnum; }
-    set { reservedEnum = value; }
-  }
-}"
-`;
-
 exports[`CSharpGenerator should render \`class\` type 1`] = `
 "public class Address
 {
   private string streetName;
   private string city;
   private string state;
-  private double? houseNumber;
-  private bool? marriage;
+  private double houseNumber;
+  private bool marriage;
   private dynamic members;
   private dynamic[] tupleType;
-  private string[] arrayType;
+  private dynamic[] arrayType;
   private Dictionary<string, string> additionalProperties;
-  private Dictionary<string, string> sTestPatternProperties;
 
   public string StreetName 
   {
@@ -104,13 +63,13 @@ exports[`CSharpGenerator should render \`class\` type 1`] = `
     set { state = value; }
   }
 
-  public double? HouseNumber 
+  public double HouseNumber 
   {
     get { return houseNumber; }
     set { houseNumber = value; }
   }
 
-  public bool? Marriage 
+  public bool Marriage 
   {
     get { return marriage; }
     set { marriage = value; }
@@ -128,7 +87,7 @@ exports[`CSharpGenerator should render \`class\` type 1`] = `
     set { tupleType = value; }
   }
 
-  public string[] ArrayType 
+  public dynamic[] ArrayType 
   {
     get { return arrayType; }
     set { arrayType = value; }
@@ -139,99 +98,17 @@ exports[`CSharpGenerator should render \`class\` type 1`] = `
     get { return additionalProperties; }
     set { additionalProperties = value; }
   }
-
-  public Dictionary<string, string> STestPatternProperties 
-  {
-    get { return sTestPatternProperties; }
-    set { sTestPatternProperties = value; }
-  }
 }"
 `;
 
-exports[`CSharpGenerator should render \`class\` type 2`] = `
-"public class Address
-{
-  private string streetName;
-  private string city;
-  private string state;
-  private double? houseNumber;
-  private bool? marriage;
-  private dynamic members;
-  private dynamic[] tupleType;
-  private string[] arrayType;
-  private Dictionary<string, string> additionalProperties;
-  private Dictionary<string, string> sTestPatternProperties;
-
-  public string StreetName 
-  {
-    get { return streetName; }
-    set { streetName = value; }
-  }
-
-  public string City 
-  {
-    get { return city; }
-    set { city = value; }
-  }
-
-  public string State 
-  {
-    get { return state; }
-    set { state = value; }
-  }
-
-  public double? HouseNumber 
-  {
-    get { return houseNumber; }
-    set { houseNumber = value; }
-  }
-
-  public bool? Marriage 
-  {
-    get { return marriage; }
-    set { marriage = value; }
-  }
-
-  public dynamic Members 
-  {
-    get { return members; }
-    set { members = value; }
-  }
-
-  public dynamic[] TupleType 
-  {
-    get { return tupleType; }
-    set { tupleType = value; }
-  }
-
-  public string[] ArrayType 
-  {
-    get { return arrayType; }
-    set { arrayType = value; }
-  }
-
-  public Dictionary<string, string> AdditionalProperties 
-  {
-    get { return additionalProperties; }
-    set { additionalProperties = value; }
-  }
-
-  public Dictionary<string, string> STestPatternProperties 
-  {
-    get { return sTestPatternProperties; }
-    set { sTestPatternProperties = value; }
-  }
-}"
-`;
-
-exports[`CSharpGenerator should render \`enum\` type with enums of mixed types 1`] = `
+exports[`CSharpGenerator should render \`enum\` type 1`] = `
 "public enum Things
 {
-  Texas,
-  String_1,
-  Number_1,
-  False,
-  TestTest
+  TEXAS,
+  NUMBER_1,
+  RESERVED_NUMBER_1,
+  RESERVED_FALSE,
+  CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT
 }
 
 public static class ThingsExtensions
@@ -240,11 +117,11 @@ public static class ThingsExtensions
   {
     switch (enumValue)
     {
-      case Things.Texas: return \\"Texas\\";
-      case Things.String_1: return \\"1\\";
-      case Things.Number_1: return 1;
-      case Things.False: return false;
-      case Things.TestTest: return \\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\";
+      case Things.TEXAS: return \\"Texas\\";
+      case Things.NUMBER_1: return \\"1\\";
+      case Things.RESERVED_NUMBER_1: return 1;
+      case Things.RESERVED_FALSE: return false;
+      case Things.CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT: return \\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\";
     }
     return null;
   }
@@ -253,122 +130,11 @@ public static class ThingsExtensions
   {
     switch (value)
     {
-      case \\"Texas\\": return Things.Texas;
-      case \\"1\\": return Things.String_1;
-      case 1: return Things.Number_1;
-      case false: return Things.False;
-      case \\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\": return Things.TestTest;
-    }
-    return null;
-  }
-}
-"
-`;
-
-exports[`CSharpGenerator should render \`enum\` type with enums of mixed types 2`] = `
-"public enum Things
-{
-  Texas,
-  String_1,
-  Number_1,
-  False,
-  TestTest
-}
-
-public static class ThingsExtensions
-{
-  public static dynamic GetValue(this Things enumValue)
-  {
-    switch (enumValue)
-    {
-      case Things.Texas: return \\"Texas\\";
-      case Things.String_1: return \\"1\\";
-      case Things.Number_1: return 1;
-      case Things.False: return false;
-      case Things.TestTest: return \\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\";
-    }
-    return null;
-  }
-
-  public static Things? ToThings(dynamic value)
-  {
-    switch (value)
-    {
-      case \\"Texas\\": return Things.Texas;
-      case \\"1\\": return Things.String_1;
-      case 1: return Things.Number_1;
-      case false: return Things.False;
-      case \\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\": return Things.TestTest;
-    }
-    return null;
-  }
-}
-"
-`;
-
-exports[`CSharpGenerator should render \`enum\` type with enums sharing same type 1`] = `
-"public enum States
-{
-  Texas,
-  Alabama,
-  California
-}
-
-public static class StatesExtensions
-{
-  public static dynamic GetValue(this States enumValue)
-  {
-    switch (enumValue)
-    {
-      case States.Texas: return \\"Texas\\";
-      case States.Alabama: return \\"Alabama\\";
-      case States.California: return \\"California\\";
-    }
-    return null;
-  }
-
-  public static States? ToStates(dynamic value)
-  {
-    switch (value)
-    {
-      case \\"Texas\\": return States.Texas;
-      case \\"Alabama\\": return States.Alabama;
-      case \\"California\\": return States.California;
-    }
-    return null;
-  }
-}
-"
-`;
-
-exports[`CSharpGenerator should render \`enum\` type with enums sharing same type 2`] = `
-"public enum States
-{
-  Texas,
-  Alabama,
-  California
-}
-
-public static class StatesExtensions
-{
-  public static dynamic GetValue(this States enumValue)
-  {
-    switch (enumValue)
-    {
-      case States.Texas: return \\"Texas\\";
-      case States.Alabama: return \\"Alabama\\";
-      case States.California: return \\"California\\";
-    }
-    return null;
-  }
-
-  public static States? ToStates(dynamic value)
-  {
-    switch (value)
-    {
-      case \\"Texas\\": return States.Texas;
-      case \\"Alabama\\": return States.Alabama;
-      case \\"California\\": return States.California;
+      case \\"Texas\\": return Things.TEXAS;
+      case \\"1\\": return Things.NUMBER_1;
+      case 1: return Things.RESERVED_NUMBER_1;
+      case false: return Things.RESERVED_FALSE;
+      case \\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\": return Things.CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT;
     }
     return null;
   }
@@ -379,11 +145,11 @@ public static class StatesExtensions
 exports[`CSharpGenerator should render enums with translated special characters 1`] = `
 "public enum States
 {
-  TestPlus,
-  Test,
-  TestMinus,
-  TestQuestionExclamation,
-  AsteriskTest
+  TEST_PLUS,
+  TEST,
+  TEST_MINUS,
+  TEST_QUESTION_EXCLAMATION,
+  ASTERISK_TEST
 }
 
 public static class StatesExtensions
@@ -392,11 +158,11 @@ public static class StatesExtensions
   {
     switch (enumValue)
     {
-      case States.TestPlus: return \\"test+\\";
-      case States.Test: return \\"test\\";
-      case States.TestMinus: return \\"test-\\";
-      case States.TestQuestionExclamation: return \\"test?!\\";
-      case States.AsteriskTest: return \\"*test\\";
+      case States.TEST_PLUS: return \\"test+\\";
+      case States.TEST: return \\"test\\";
+      case States.TEST_MINUS: return \\"test-\\";
+      case States.TEST_QUESTION_EXCLAMATION: return \\"test?!\\";
+      case States.ASTERISK_TEST: return \\"*test\\";
     }
     return null;
   }
@@ -405,52 +171,11 @@ public static class StatesExtensions
   {
     switch (value)
     {
-      case \\"test+\\": return States.TestPlus;
-      case \\"test\\": return States.Test;
-      case \\"test-\\": return States.TestMinus;
-      case \\"test?!\\": return States.TestQuestionExclamation;
-      case \\"*test\\": return States.AsteriskTest;
-    }
-    return null;
-  }
-}
-"
-`;
-
-exports[`CSharpGenerator should render enums with translated special characters 2`] = `
-"public enum States
-{
-  TestPlus,
-  Test,
-  TestMinus,
-  TestQuestionExclamation,
-  AsteriskTest
-}
-
-public static class StatesExtensions
-{
-  public static dynamic GetValue(this States enumValue)
-  {
-    switch (enumValue)
-    {
-      case States.TestPlus: return \\"test+\\";
-      case States.Test: return \\"test\\";
-      case States.TestMinus: return \\"test-\\";
-      case States.TestQuestionExclamation: return \\"test?!\\";
-      case States.AsteriskTest: return \\"*test\\";
-    }
-    return null;
-  }
-
-  public static States? ToStates(dynamic value)
-  {
-    switch (value)
-    {
-      case \\"test+\\": return States.TestPlus;
-      case \\"test\\": return States.Test;
-      case \\"test-\\": return States.TestMinus;
-      case \\"test?!\\": return States.TestQuestionExclamation;
-      case \\"*test\\": return States.AsteriskTest;
+      case \\"test+\\": return States.TEST_PLUS;
+      case \\"test\\": return States.TEST;
+      case \\"test-\\": return States.TEST_MINUS;
+      case \\"test?!\\": return States.TEST_QUESTION_EXCLAMATION;
+      case \\"*test\\": return States.ASTERISK_TEST;
     }
     return null;
   }
@@ -468,13 +193,12 @@ exports[`CSharpGenerator should render models and their dependencies 1`] = `
     private string streetName;
     private string city;
     private string state;
-    private double? houseNumber;
-    private bool? marriage;
+    private double houseNumber;
+    private bool marriage;
     private dynamic members;
     private dynamic[] arrayType;
     private OtherModel otherModel;
     private Dictionary<string, dynamic> additionalProperties;
-    private Dictionary<string, string> sTestPatternProperties;
 
     public string StreetName 
     {
@@ -494,13 +218,13 @@ exports[`CSharpGenerator should render models and their dependencies 1`] = `
       set { state = value; }
     }
 
-    public double? HouseNumber 
+    public double HouseNumber 
     {
       get { return houseNumber; }
       set { houseNumber = value; }
     }
 
-    public bool? Marriage 
+    public bool Marriage 
     {
       get { return marriage; }
       set { marriage = value; }
@@ -529,12 +253,6 @@ exports[`CSharpGenerator should render models and their dependencies 1`] = `
       get { return additionalProperties; }
       set { additionalProperties = value; }
     }
-
-    public Dictionary<string, string> STestPatternProperties 
-    {
-      get { return sTestPatternProperties; }
-      set { sTestPatternProperties = value; }
-    }
   }
 }"
 `;
@@ -562,74 +280,4 @@ exports[`CSharpGenerator should render models and their dependencies 2`] = `
     }
   }
 }"
-`;
-
-exports[`CSharpGenerator should work custom preset for \`enum\` type 1`] = `
-"public enum CustomEnum
-{
-  Texas,
-  Alabama,
-  California
-}
-
-public static class CustomEnumExtensions
-{
-  public static dynamic GetValue(this CustomEnum enumValue)
-  {
-    switch (enumValue)
-    {
-      case CustomEnum.Texas: return \\"Texas\\";
-      case CustomEnum.Alabama: return \\"Alabama\\";
-      case CustomEnum.California: return \\"California\\";
-    }
-    return null;
-  }
-
-  public static CustomEnum? ToCustomEnum(dynamic value)
-  {
-    switch (value)
-    {
-      case \\"Texas\\": return CustomEnum.Texas;
-      case \\"Alabama\\": return CustomEnum.Alabama;
-      case \\"California\\": return CustomEnum.California;
-    }
-    return null;
-  }
-}
-"
-`;
-
-exports[`CSharpGenerator should work custom preset for \`enum\` type 2`] = `
-"public enum CustomEnum
-{
-  Texas,
-  Alabama,
-  California
-}
-
-public static class CustomEnumExtensions
-{
-  public static dynamic GetValue(this CustomEnum enumValue)
-  {
-    switch (enumValue)
-    {
-      case CustomEnum.Texas: return \\"Texas\\";
-      case CustomEnum.Alabama: return \\"Alabama\\";
-      case CustomEnum.California: return \\"California\\";
-    }
-    return null;
-  }
-
-  public static CustomEnum? ToCustomEnum(dynamic value)
-  {
-    switch (value)
-    {
-      case \\"Texas\\": return CustomEnum.Texas;
-      case \\"Alabama\\": return CustomEnum.Alabama;
-      case \\"California\\": return CustomEnum.California;
-    }
-    return null;
-  }
-}
-"
 `;

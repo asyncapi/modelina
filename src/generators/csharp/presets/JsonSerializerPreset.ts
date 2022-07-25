@@ -1,6 +1,7 @@
 import { CSharpRenderer } from '../CSharpRenderer';
 import { CSharpPreset } from '../CSharpPreset';
 import { ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedObjectModel, ConstrainedObjectPropertyModel, ConstrainedReferenceModel } from '../../../models';
+import { CSharpOptions } from '../CSharpGenerator';
 
 function renderSerializeProperty(modelInstanceVariable: string, model: ConstrainedObjectPropertyModel) {
   let value = modelInstanceVariable;
@@ -156,7 +157,7 @@ ${renderer.indent(deserializeProperties, 4)}
  * 
  * @implements {CSharpPreset}
  */
-export const CSHARP_JSON_SERIALIZER_PRESET: CSharpPreset = {
+export const CSHARP_JSON_SERIALIZER_PRESET: CSharpPreset<CSharpOptions> = {
   class: {
     self({ renderer, model, content}) {
       renderer.addDependency('using System.Text.Json;');

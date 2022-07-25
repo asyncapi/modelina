@@ -52,7 +52,7 @@ exports[`JavaGenerator should render \`class\` type 1`] = `
 
 exports[`JavaGenerator should render \`enum\` type (integer type) 1`] = `
 "public enum Numbers {
-  NUMBER_0(\\"0\\"), NUMBER_1(\\"1\\"), NUMBER_2(\\"2\\"), NUMBER_3(\\"3\\");
+  NUMBER_0(0), NUMBER_1(1), NUMBER_2(2), NUMBER_3(3);
 
   private Numbers value;
 
@@ -84,7 +84,7 @@ exports[`JavaGenerator should render \`enum\` type (integer type) 1`] = `
 
 exports[`JavaGenerator should render \`enum\` type (string type) 1`] = `
 "public enum States {
-  QUOTATION_TEXAS_QUOTATION(\\"Texas\\"), QUOTATION_ALABAMA_QUOTATION(\\"Alabama\\"), QUOTATION_CALIFORNIA_QUOTATION(\\"California\\"), QUOTATION_NEW_YORK_QUOTATION(\\"New York\\");
+  TEXAS(\\"Texas\\"), ALABAMA(\\"Alabama\\"), CALIFORNIA(\\"California\\"), NEW_YORK(\\"New York\\");
 
   private States value;
 
@@ -116,7 +116,7 @@ exports[`JavaGenerator should render \`enum\` type (string type) 1`] = `
 
 exports[`JavaGenerator should render \`enum\` type (union type) 1`] = `
 "public enum Union {
-  QUOTATION_TEXAS_QUOTATION(\\"Texas\\"), QUOTATION_ALABAMA_QUOTATION(\\"Alabama\\"), NUMBER_0(\\"0\\"), NUMBER_1(\\"1\\"), QUOTATION_1_QUOTATION(\\"1\\"), TRUE(\\"true\\"), CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT(\\"[object Object]\\");
+  TEXAS(\\"Texas\\"), ALABAMA(\\"Alabama\\"), NUMBER_0(0), NUMBER_1(1), RESERVED_NUMBER_1(\\"1\\"), TRUE(\\"true\\"), CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT(\\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\");
 
   private Union value;
 
@@ -158,7 +158,7 @@ exports[`JavaGenerator should render List type for collections 1`] = `
 exports[`JavaGenerator should render custom preset for \`enum\` type 1`] = `
 "@EnumAnnotation
 public enum CustomEnum {
-  QUOTATION_TEXAS_QUOTATION(\\"Texas\\"), QUOTATION_ALABAMA_QUOTATION(\\"Alabama\\"), QUOTATION_CALIFORNIA_QUOTATION(\\"California\\");
+  TEXAS(\\"Texas\\"), ALABAMA(\\"Alabama\\"), CALIFORNIA(\\"California\\");
 
   private CustomEnum value;
 
@@ -190,7 +190,7 @@ public enum CustomEnum {
 
 exports[`JavaGenerator should render enums with translated special characters 1`] = `
 "public enum States {
-  QUOTATION_TEST_PLUS_QUOTATION(\\"test+\\"), QUOTATION_TEST_QUOTATION(\\"test\\"), QUOTATION_TEST_MINUS_QUOTATION(\\"test-\\"), QUOTATION_TEST_QUESTION_EXCLAMATION_QUOTATION(\\"test?!\\"), QUOTATION_ASTERISK_TEST_QUOTATION(\\"*test\\");
+  TEST_PLUS(\\"test+\\"), TEST(\\"test\\"), TEST_MINUS(\\"test-\\"), TEST_QUESTION_EXCLAMATION(\\"test?!\\"), ASTERISK_TEST(\\"*test\\");
 
   private States value;
 
