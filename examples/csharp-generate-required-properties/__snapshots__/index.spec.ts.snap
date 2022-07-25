@@ -5,7 +5,7 @@ Array [
   "public class Root
 {
   private bool requiredBoolean;
-  private bool? notRequiredBoolean;
+  private bool notRequiredBoolean;
   private string requiredString;
   private string? notRequiredString;
 
@@ -15,7 +15,7 @@ Array [
     set { requiredBoolean = value; }
   }
 
-  public bool? NotRequiredBoolean 
+  public bool NotRequiredBoolean 
   {
     get { return notRequiredBoolean; }
     set { notRequiredBoolean = value; }
