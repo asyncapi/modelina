@@ -4,7 +4,7 @@ import { InputMetaModel, Preset, ConstrainedMetaModel } from '../../models';
 import { FormatHelpers } from '../../helpers/FormatHelpers';
 import { deriveCopy, deriveHash, deriveEq } from './RustConstrainer';
 /**
- * Common renderer for Go types
+ * Common renderer for Rust types
  * 
  * @extends AbstractRenderer
  */
