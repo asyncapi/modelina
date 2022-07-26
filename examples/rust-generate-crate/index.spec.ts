@@ -6,7 +6,7 @@ describe('Should be able to render Rust Models', () => {
   });
   test('and should log expected output to console', async () => {
     await generate();
-    expect(spy.mock.calls.length).toEqual(9);
+    expect(spy.mock.calls.length).toEqual(4);
     expect(spy.mock.calls).toMatchSnapshot();
   });
 });
