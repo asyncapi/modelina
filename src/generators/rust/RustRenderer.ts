@@ -37,6 +37,7 @@ export abstract class RustRenderer<RendererModelType extends ConstrainedMetaMode
       derive.push('Ord');
       derive.push('PartialOrd');
     }
-    return `#[derive(${derive.sort().join(', ')})]`;
+    derive.sort();
+    return `#[derive(${derive.join(', ')})]`;
   }
 }

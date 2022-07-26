@@ -102,7 +102,7 @@ ${renderer.indent(fieldsBlock, 8)}
       if (options.implementNew) {
         const properties = model.tuple;
         const args: string[] = Object.values(properties).map((v, idx) => `value_${idx}: ${v.value.type}`);
-        const fields: string[] = Object.values(properties).map((v, idx) => `value_${idx}`);
+        const fields: string[] = Object.values(properties).map((_v, idx) => `value_${idx}`);
         const implementNew = `
 impl ${model.name} {
     pub fn new(${args.join(', ')}) -> ${model.name} {

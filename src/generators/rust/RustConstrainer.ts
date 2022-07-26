@@ -1,9 +1,8 @@
-import { Constraints, TypeMapping } from '../../helpers';
 import { defaultEnumKeyConstraints, defaultEnumValueConstraints } from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
 import { RustOptions } from './RustGenerator';
-import { FormatHelpers } from '../../helpers';
+import { FormatHelpers, Constraints, TypeMapping } from '../../helpers';
 import { ConstrainedAnyModel, ConstrainedArrayModel, ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedFloatModel, ConstrainedMetaModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedUnionModel } from '../../models';
 
 export function deriveHash(model: ConstrainedMetaModel): boolean {
@@ -113,6 +112,8 @@ export const RustDefaultTypeMapping: TypeMapping<RustOptions> = {
     let type = 'f64';
     const format = constrainedModel.originalInput && constrainedModel.originalInput['format'];
     switch (format) {
+    case 'fp32':
+    case 'f32':
     case 'float32':
       type = 'f32';
       break;
@@ -125,7 +126,6 @@ export const RustDefaultTypeMapping: TypeMapping<RustOptions> = {
     switch (format) {
     case 'integer':
     case 'int32':
-      type = 'i32';
       break;
     case 'long':
     case 'int64':
@@ -138,6 +138,8 @@ export const RustDefaultTypeMapping: TypeMapping<RustOptions> = {
     let type = 'String';
     const format = constrainedModel.originalInput && constrainedModel.originalInput['format'];
     switch (format) {
+    case 'bytes':
+    case 'bytes[]':
     case 'binary':
       type = 'Vec<u8>';
       break;
