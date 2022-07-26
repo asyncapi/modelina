@@ -1,0 +1,206 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render Rust Models and should log expected output to console 1`] = `
+Array [
+  Array [
+    "// DummyCreatedDummyArrayWithArray represents field dummyArrayWithArray from dummyCreated model.
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+pub struct DummyCreatedDummyArrayWithArray(Box<crate::DummyInfo>, String, f64);
+
+// DummyCreated represents a DummyCreated model.
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+pub struct DummyCreated {
+    #[serde(rename = \\"prop1\\", skip_serializing_if = \\"Option::is_none\\")]
+    pub prop1: Option<i32>,
+    #[serde(rename = \\"prop2\\")]
+    pub prop2: String,
+    #[serde(rename = \\"sentAt\\", skip_serializing_if = \\"Option::is_none\\")]
+    pub sent_at: Option<String>,
+    #[serde(rename = \\"dummyArrayWithObject\\", skip_serializing_if = \\"Option::is_none\\")]
+    pub dummy_array_with_object: Option<Vec<Box<crate::DummyInfo>>>,
+    #[serde(rename = \\"dummyArrayWithArray\\", skip_serializing_if = \\"Option::is_none\\")]
+    pub dummy_array_with_array: Option<Box<DummyCreatedDummyArrayWithArray>>,
+    #[serde(rename = \\"dummyObject\\", skip_serializing_if = \\"Option::is_none\\")]
+    pub dummy_object: Option<Box<crate::DummyObject>>,
+    #[serde(rename = \\"dummyArrayRank\\", skip_serializing_if = \\"Option::is_none\\")]
+    pub dummy_array_rank: Option<Box<crate::DummyArrayRank>>,
+    #[serde(rename = \\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
+    pub additional_properties: Option<std::collections::HashMap<String, serde_json::Value>>,
+}
+
+impl DummyCreated {
+    pub fn new(prop2: String) -> DummyCreated {
+        DummyCreated {
+            prop1: None,
+            prop2,
+            sent_at: None,
+            dummy_array_with_object: None,
+            dummy_array_with_array: None,
+            dummy_object: None,
+            dummy_array_rank: None,
+            additional_properties: None,
+        }
+    }
+}",
+  ],
+  Array [
+    "// DummyInfo represents a DummyInfo model.
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+pub struct DummyInfo {
+    #[serde(rename = \\"prop1\\")]
+    pub prop1: Box<crate::AnonymousSchema6>,
+    #[serde(rename = \\"sentAt\\", skip_serializing_if = \\"Option::is_none\\")]
+    pub sent_at: Option<String>,
+    #[serde(rename = \\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
+    pub additional_properties: Option<std::collections::HashMap<String, serde_json::Value>>,
+}
+
+impl DummyInfo {
+    pub fn new(prop1: crate::AnonymousSchema6) -> DummyInfo {
+        DummyInfo {
+            prop1: Box::new(prop1),
+            sent_at: None,
+            additional_properties: None,
+        }
+    }
+}",
+  ],
+  Array [
+    "// AnonymousSchema6 enum of type: String
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
+pub enum AnonymousSchema6 {
+    #[serde(rename = \\"option1\\")]
+    Option1,
+    #[serde(rename = \\"option2\\")]
+    Option2,
+}
+impl Default for AnonymousSchema6 {
+    fn default() -> AnonymousSchema6{
+        Self::Option1
+    }
+}",
+  ],
+  Array [
+    "// DummyObject represents a DummyObject model.
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+pub struct DummyObject {
+    #[serde(rename = \\"dummyObjectProp1\\", skip_serializing_if = \\"Option::is_none\\")]
+    pub dummy_object_prop1: Option<String>,
+    #[serde(rename = \\"dummyObjectProp2\\", skip_serializing_if = \\"Option::is_none\\")]
+    pub dummy_object_prop2: Option<Box<crate::DummyRecursiveObject>>,
+    #[serde(rename = \\"dummyObjectProp3\\", skip_serializing_if = \\"Option::is_none\\")]
+    pub dummy_object_prop3: Option<Box<crate::AnonymousSchema10>>,
+    #[serde(rename = \\"dummyObjectProp4\\", skip_serializing_if = \\"Option::is_none\\")]
+    pub dummy_object_prop4: Option<Box<crate::AnonymousSchema11>>,
+    #[serde(rename = \\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
+    pub additional_properties: Option<std::collections::HashMap<String, serde_json::Value>>,
+}
+
+impl DummyObject {
+    pub fn new() -> DummyObject {
+        DummyObject {
+            dummy_object_prop1: None,
+            dummy_object_prop2: None,
+            dummy_object_prop3: None,
+            dummy_object_prop4: None,
+            additional_properties: None,
+        }
+    }
+}",
+  ],
+  Array [
+    "// DummyRecursiveObject represents a DummyRecursiveObject model.
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+pub struct DummyRecursiveObject {
+    #[serde(rename = \\"dummyRecursiveProp1\\", skip_serializing_if = \\"Option::is_none\\")]
+    pub dummy_recursive_prop1: Option<Box<crate::DummyObject>>,
+    #[serde(rename = \\"dummyRecursiveProp2\\", skip_serializing_if = \\"Option::is_none\\")]
+    pub dummy_recursive_prop2: Option<String>,
+    #[serde(rename = \\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
+    pub additional_properties: Option<std::collections::HashMap<String, serde_json::Value>>,
+}
+
+impl DummyRecursiveObject {
+    pub fn new() -> DummyRecursiveObject {
+        DummyRecursiveObject {
+            dummy_recursive_prop1: None,
+            dummy_recursive_prop2: None,
+            additional_properties: None,
+        }
+    }
+}",
+  ],
+  Array [
+    "// AnonymousSchema10 represents a AnonymousSchema10 model.
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+pub struct AnonymousSchema10 {
+    #[serde(rename = \\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
+    pub additional_properties: Option<std::collections::HashMap<String, serde_json::Value>>,
+}
+
+impl AnonymousSchema10 {
+    pub fn new() -> AnonymousSchema10 {
+        AnonymousSchema10 {
+            additional_properties: None,
+        }
+    }
+}",
+  ],
+  Array [
+    "// AnonymousSchema11 represents a AnonymousSchema11 model.
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+pub struct AnonymousSchema11 {
+    
+}
+
+impl AnonymousSchema11 {
+    pub fn new() -> AnonymousSchema11 {
+        AnonymousSchema11 {
+            
+        }
+    }
+}",
+  ],
+  Array [
+    "// DummyArrayRank represents a DummyArrayRank model.
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+pub struct DummyArrayRank {
+    #[serde(rename = \\"dummyArrayValueRank\\", skip_serializing_if = \\"Option::is_none\\")]
+    pub dummy_array_value_rank: Option<Box<crate::DummyArrayValueRank>>,
+    #[serde(rename = \\"dummyArrayDimensions\\", skip_serializing_if = \\"Option::is_none\\")]
+    pub dummy_array_dimensions: Option<Vec<i32>>,
+    #[serde(rename = \\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
+    pub additional_properties: Option<std::collections::HashMap<String, serde_json::Value>>,
+}
+
+impl DummyArrayRank {
+    pub fn new() -> DummyArrayRank {
+        DummyArrayRank {
+            dummy_array_value_rank: None,
+            dummy_array_dimensions: None,
+            additional_properties: None,
+        }
+    }
+}",
+  ],
+  Array [
+    "// DummyArrayValueRank enum of type: [integer,number]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
+pub enum DummyArrayValueRank {
+    #[serde(rename = \\"-1\\")]
+    DummyArrayValueRankMinus1,
+    #[serde(rename = \\"0\\")]
+    DummyArrayValueRank0,
+    #[serde(rename = \\"1\\")]
+    DummyArrayValueRank1,
+    #[serde(rename = \\"2\\")]
+    DummyArrayValueRank2,
+}
+impl Default for DummyArrayValueRank {
+    fn default() -> DummyArrayValueRank{
+        Self::DummyArrayValueRankMinus1
+    }
+}",
+  ],
+]
+`;
