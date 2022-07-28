@@ -26,17 +26,17 @@ exports[`JAVA_DESCRIPTION_PRESET should render description and examples for enum
  * Description for enum
  * Examples: value
  */
-public enum Enum {
+public enum ReservedEnum {
   ON(\\"on\\"), OFF(\\"off\\");
 
-  private Enum value;
+  private Object value;
 
-  Enum(Enum value) {
+  ReservedEnum(Object value) {
     this.value = value;
   }
-    
+
   @JsonValue
-  public Enum getValue() {
+  public Object getValue() {
     return value;
   }
 
@@ -46,8 +46,8 @@ public enum Enum {
   }
 
   @JsonCreator
-  public static Enum fromValue(Enum value) {
-    for (Enum e : Enum.values()) {
+  public static ReservedEnum fromValue(Object value) {
+    for (ReservedEnum e : ReservedEnum.values()) {
       if (e.value.equals(value)) {
         return e;
       }
