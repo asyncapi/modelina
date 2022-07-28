@@ -22,7 +22,11 @@ export const DefaultEnumKeyConstraints: ModelEnumKeyConstraints = {
   NO_EMPTY_VALUE,
   NAMING_FORMATTER: FormatHelpers.toConstantCase,
   NO_RESERVED_KEYWORDS: (value: string) => {
-    return NO_RESERVED_KEYWORDS(value, isReservedCSharpKeyword); 
+    return NO_RESERVED_KEYWORDS(value, (value) => {
+      // We don't care about comparing values in lowercase as we are using constant case
+      // This means the reserved keywords technically never clashes
+      return isReservedCSharpKeyword(value, false);
+    }); 
   }
 };
 

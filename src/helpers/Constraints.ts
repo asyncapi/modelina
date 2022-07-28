@@ -94,3 +94,13 @@ export function NO_RESERVED_KEYWORDS(
   }
   return propertyName;
 }
+
+export function checkForReservedKeyword(word: string, wordList: string[], forceLowerCase = true): boolean {
+  let wordListToCheck = [...wordList];
+  let wordToCheck = word;
+  if (forceLowerCase) {
+    wordListToCheck = wordListToCheck.map((value) => value.toLowerCase());
+    wordToCheck = wordToCheck.toLowerCase();
+  }
+  return wordListToCheck.includes(wordToCheck);
+}
