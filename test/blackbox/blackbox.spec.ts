@@ -45,6 +45,9 @@ const filesToTest = [
   }).filter(({file}) => {
     // Related to https://github.com/asyncapi/modelina/issues/389
     return !file.includes('jenkins-config.json');
+  }).filter(({file}) => {
+    // Related to https://github.com/asyncapi/modelina/issues/825
+    return !file.includes('circleci-config.json');
   }),
   // ...jsonSchemaDraft7Files,
   // ...jsonSchemaDraft6Files,

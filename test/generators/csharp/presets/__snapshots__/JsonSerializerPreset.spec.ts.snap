@@ -71,7 +71,7 @@ internal class TestConverter : JsonConverter<Test>
       }
 
       string propertyName = reader.GetString();
-      if (propertyName == \\"stringProp\\")
+      if (propertyName == \\"string prop\\")
         {
           var value = JsonSerializer.Deserialize<string>(ref reader, options);
           instance.stringProp = value;
@@ -116,7 +116,7 @@ internal class TestConverter : JsonConverter<Test>
 
     if(value.stringProp != null) { 
       // write property name and let the serializer serialize the value itself
-      writer.WritePropertyName(\\"stringProp\\");
+      writer.WritePropertyName(\\"string prop\\");
       JsonSerializer.Serialize(writer, value.stringProp, options);
     }
     if(value.numberProp != null) { 

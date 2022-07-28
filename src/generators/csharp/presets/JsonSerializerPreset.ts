@@ -35,7 +35,7 @@ if (${modelInstanceVariable} != null) {
       }
       serializeProperties += `if(${modelInstanceVariable} != null) { 
   // write property name and let the serializer serialize the value itself
-  writer.WritePropertyName("${propertyName}");
+  writer.WritePropertyName("${propertyModel.unconstrainedPropertyName}");
   ${renderSerializeProperty(modelInstanceVariable, propertyModel)}
 }\n`;
     }
@@ -104,7 +104,7 @@ function renderDeserializeProperties(model: ConstrainedObjectModel) {
       instance.${prop}.Add(propertyName, deserializedValue);
       continue;`;
     } 
-    return `if (propertyName == "${prop}")
+    return `if (propertyName == "${propModel.unconstrainedPropertyName}")
   {
     var value = ${renderDeserializeProperty(propModel)};
     instance.${prop} = value;

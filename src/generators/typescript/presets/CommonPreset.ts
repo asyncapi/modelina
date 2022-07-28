@@ -37,7 +37,7 @@ function renderMarshalProperties(model: ConstrainedObjectModel) {
   const marshalNormalProperties = normalProperties.map(([prop, propModel]) => {
     const modelInstanceVariable = `this.${prop}`;
     const propMarshalCode = renderMarshalProperty(modelInstanceVariable, propModel.property);
-    const marshalCode = `json += \`"${prop}": ${propMarshalCode},\`;`;
+    const marshalCode = `json += \`"${propModel.unconstrainedPropertyName}": ${propMarshalCode},\`;`;
     return `if(${modelInstanceVariable} !== undefined) {
   ${marshalCode} 
 }`;
@@ -99,7 +99,7 @@ function renderUnmarshalProperties(model: ConstrainedObjectModel) {
   }
 
   const unmarshalNormalProperties = normalProperties.map(([prop, propModel]) => {
-    const modelInstanceVariable = `obj["${prop}"]`;
+    const modelInstanceVariable = `obj["${propModel.unconstrainedPropertyName}"]`;
     const unmarshalCode = renderUnmarshalProperty(modelInstanceVariable, propModel.property);
     return `if (${modelInstanceVariable} !== undefined) {
   instance.${prop} = ${unmarshalCode};

@@ -28,7 +28,7 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
   marshal(){
     let json = '{'
     if(this.stringProp !== undefined) {
-      json += \`\\"stringProp\\": \${typeof this.stringProp === 'number' || typeof this.stringProp === 'boolean' ? this.stringProp : JSON.stringify(this.stringProp)},\`; 
+      json += \`\\"string prop\\": \${typeof this.stringProp === 'number' || typeof this.stringProp === 'boolean' ? this.stringProp : JSON.stringify(this.stringProp)},\`; 
     }
     if(this.numberProp !== undefined) {
       json += \`\\"numberProp\\": \${typeof this.numberProp === 'number' || typeof this.numberProp === 'boolean' ? this.numberProp : JSON.stringify(this.numberProp)},\`; 
@@ -45,8 +45,8 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
     const obj = typeof json === \\"object\\" ? json : JSON.parse(json);
     const instance = new Test({});
 
-    if (obj[\\"stringProp\\"] !== undefined) {
-      instance.stringProp = obj[\\"stringProp\\"];
+    if (obj[\\"string prop\\"] !== undefined) {
+      instance.stringProp = obj[\\"string prop\\"];
     }
     if (obj[\\"numberProp\\"] !== undefined) {
       instance.numberProp = obj[\\"numberProp\\"];
