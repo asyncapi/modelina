@@ -831,14 +831,14 @@ describe('CommonModel', () => {
         expect(d.getNearestDependencies()).toEqual(['1']);
       });
       test('check that all dependencies are returned', () => {
-        const doc = { additionalProperties: { $ref: '1' }, extend: ['2'], items: { $ref: '3' }, properties: { testProp: { $ref: '4' } }, patternProperties: {testPattern: {$ref: '5'}}, additionalItems: { $ref: '6' } };
+        const doc = { additionalProperties: { $ref: '1' }, extend: ['2'], items: { $ref: '3' }, properties: { testProp: { $ref: '4' } }, additionalItems: { $ref: '5' } };
         const d = CommonModel.toCommonModel(doc);
-        expect(d.getNearestDependencies()).toEqual(['1', '2', '3', '4', '5', '6']);
+        expect(d.getNearestDependencies()).toEqual(['1', '2', '3', '4', '5']);
       });      
       test('should work with nested items', () => {
-        const doc = {properties: { testProp: { items: { $ref: '1' } } }, patternProperties: { testPattern: { items: { $ref: '2' } } } };
+        const doc = {properties: { testProp: { items: { $ref: '1' } } } };
         const d = CommonModel.toCommonModel(doc);
-        expect(d.getNearestDependencies()).toEqual(['1', '2']);
+        expect(d.getNearestDependencies()).toEqual(['1']);
       });
       test('check that no dependencies is returned if there are none', () => {
         const doc = { };
