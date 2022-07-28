@@ -70,12 +70,15 @@ describe('PropertyKeyConstrainer', () => {
         jest.spyOn(DefaultPropertyKeyConstraints, 'NO_RESERVED_KEYWORDS'),
         jest.spyOn(DefaultPropertyKeyConstraints, 'NO_DUPLICATE_PROPERTIES')
       ];
+      const overwrittenDefaultFunction = jest.spyOn(DefaultPropertyKeyConstraints, 'NAMING_FORMATTER');
       const jestCallback = jest.fn().mockReturnValue('');
       const constrainFunction = defaultPropertyKeyConstraints({NAMING_FORMATTER: jestCallback});
       const objectPropertyModel = new ObjectPropertyModel('', false, objectModel);
       const constrainedObjectPropertyModel = new ConstrainedObjectPropertyModel('', '', objectPropertyModel.required, constrainedObjectModel);
       const constrainedValue = constrainFunction({constrainedObjectModel, objectModel, objectPropertyModel, constrainedObjectPropertyModel});
       expect(constrainedValue).toEqual('');
+      expect(jestCallback).toHaveBeenCalled();
+      expect(overwrittenDefaultFunction).not.toHaveBeenCalled();
       for (const jestMockCallback of spies) {
         expect(jestMockCallback).toHaveBeenCalled();
       }

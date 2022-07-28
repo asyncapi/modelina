@@ -4,7 +4,7 @@ import { pascalCase } from 'change-case';
 const generator = new TypeScriptGenerator({
   constraints: {
     modelName: ({modelName}) => {
-      return pascalCase(modelName);
+      return 'MyOwnCustomModelName';
     }
   }
 });

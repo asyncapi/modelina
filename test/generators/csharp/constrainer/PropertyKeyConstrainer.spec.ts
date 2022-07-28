@@ -2,8 +2,8 @@ import { CSharpDefaultConstraints } from '../../../../src/generators/csharp/CSha
 import { ConstrainedObjectModel, ConstrainedObjectPropertyModel, ObjectModel, ObjectPropertyModel } from '../../../../src';
 import { DefaultPropertyKeyConstraints, defaultPropertyKeyConstraints, PropertyKeyConstraintOptions } from '../../../../src/generators/csharp/constrainer/PropertyKeyConstrainer';
 describe('PropertyKeyConstrainer', () => {
-  const objectModel = new ObjectModel('test', undefined, {});
-  const constrainedObjectModel = new ConstrainedObjectModel('test', undefined, '', {});
+  const objectModel = new ObjectModel('MyObjectModelName', undefined, {});
+  const constrainedObjectModel = new ConstrainedObjectModel('MyObjectModelName', undefined, '', {});
 
   const constrainPropertyName = (propertyName: string) => {
     const objectPropertyModel = new ObjectPropertyModel(propertyName, false, objectModel);
@@ -26,6 +26,10 @@ describe('PropertyKeyConstrainer', () => {
   test('should use constant naming format', () => {
     const constrainedKey = constrainPropertyName('some weird_value!"#2');
     expect(constrainedKey).toEqual('someWeirdValueExclamationQuotationHash_2');
+  });
+  test('should not render enclosing type name', () => {
+    const constrainedKey = constrainPropertyName('MyObjectModelName');
+    expect(constrainedKey).toEqual('reservedMyObjectModelName');
   });
   test('should not contain duplicate properties', () => {
     const objectModel = new ObjectModel('test', undefined, {});
@@ -50,7 +54,8 @@ describe('PropertyKeyConstrainer', () => {
         NO_SPECIAL_CHAR: jest.fn().mockReturnValue(''),
         NO_NUMBER_START_CHAR: jest.fn().mockReturnValue(''),
         NO_EMPTY_VALUE: jest.fn().mockReturnValue(''),
-        NO_RESERVED_KEYWORDS: jest.fn().mockReturnValue('')
+        NO_RESERVED_KEYWORDS: jest.fn().mockReturnValue(''),
+        NO_ENCLOSING_NAMES: jest.fn().mockReturnValue('')
       };
       const constrainFunction = defaultPropertyKeyConstraints(mockedConstraintCallbacks);
       const objectPropertyModel = new ObjectPropertyModel('', false, objectModel);
@@ -68,14 +73,17 @@ describe('PropertyKeyConstrainer', () => {
         jest.spyOn(DefaultPropertyKeyConstraints, 'NO_NUMBER_START_CHAR'),
         jest.spyOn(DefaultPropertyKeyConstraints, 'NO_EMPTY_VALUE'),
         jest.spyOn(DefaultPropertyKeyConstraints, 'NO_RESERVED_KEYWORDS'),
-        jest.spyOn(DefaultPropertyKeyConstraints, 'NO_DUPLICATE_PROPERTIES')
+        jest.spyOn(DefaultPropertyKeyConstraints, 'NO_ENCLOSING_NAMES')
       ];
+      const overwrittenDefaultFunction = jest.spyOn(DefaultPropertyKeyConstraints, 'NAMING_FORMATTER');
       const jestCallback = jest.fn().mockReturnValue('');
       const constrainFunction = defaultPropertyKeyConstraints({NAMING_FORMATTER: jestCallback});
       const objectPropertyModel = new ObjectPropertyModel('', false, objectModel);
       const constrainedObjectPropertyModel = new ConstrainedObjectPropertyModel('', '', objectPropertyModel.required, constrainedObjectModel);
       const constrainedValue = constrainFunction({constrainedObjectModel, objectModel, objectPropertyModel, constrainedObjectPropertyModel});
       expect(constrainedValue).toEqual('');
+      expect(jestCallback).toHaveBeenCalled();
+      expect(overwrittenDefaultFunction).not.toHaveBeenCalled();
       for (const jestMockCallback of spies) {
         expect(jestMockCallback).toHaveBeenCalled();
       }

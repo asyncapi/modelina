@@ -11,9 +11,9 @@ import { ClassRenderer } from './renderers/ClassRenderer';
 import { isReservedCSharpKeyword } from './Constants';
 import { Logger } from '../../index';
 import { CSharpDefaultConstraints, CSharpDefaultTypeMapping } from './CSharpConstrainer';
-
+import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 export interface CSharpOptions extends CommonGeneratorOptions<CSharpPreset> {
-  collectionType?: 'List' | 'Array';
+  collectionType: 'List' | 'Array';
   typeMapping: TypeMapping<CSharpOptions>;
   constraints: Constraints;
   autoImplementedProperties: boolean;
@@ -37,10 +37,9 @@ export class CSharpGenerator extends AbstractGenerator<CSharpOptions, CSharpRend
   };
 
   constructor(
-    options: Partial<CSharpOptions> = CSharpGenerator.defaultOptions,
+    options?: DeepPartial<CSharpOptions>
   ) {
-    const realizedOptions = {...CSharpGenerator.defaultOptions, ...options};
-
+    const realizedOptions = mergePartialAndDefault(CSharpGenerator.defaultOptions, options) as CSharpOptions;
     super('CSharp', realizedOptions);
   }
 

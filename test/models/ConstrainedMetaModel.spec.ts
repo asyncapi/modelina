@@ -2,7 +2,6 @@ import { constrainMetaModel } from '../../src/helpers';
 import { AnyModel, ArrayModel, BooleanModel, ConstrainedArrayModel, ConstrainedBooleanModel, ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedObjectModel, ConstrainedObjectPropertyModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedUnionModel, DictionaryModel, EnumModel, EnumValueModel, FloatModel, IntegerModel, ObjectModel, ObjectPropertyModel, ReferenceModel, StringModel, TupleModel, TupleValueModel, UnionModel } from '../../src/models';
 import { mockedConstraints, mockedTypeMapping } from '../TestUtils/TestConstrainer';
 
-
 describe('ConstrainedMetaModel', () => {
   describe('ReferenceModel', () => {
     test('should return no dependencies', () => {

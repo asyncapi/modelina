@@ -12,6 +12,7 @@ import {isReservedDartKeyword} from './Constants';
 import {Logger} from '../../';
 import {FormatHelpers} from '../../helpers/FormatHelpers';
 import { DartDefaultConstraints, DartDefaultTypeMapping } from './DartConstrainer';
+import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 
 export interface DartOptions extends CommonGeneratorOptions<DartPreset> {
   collectionType?: 'List';
@@ -33,9 +34,9 @@ export class DartGenerator extends AbstractGenerator<DartOptions, DartRenderComp
   };
 
   constructor(
-    options: Partial<DartOptions> = DartGenerator.defaultOptions,
+    options?: DeepPartial<DartOptions>,
   ) {
-    const realizedOptions = {...DartGenerator.defaultOptions, ...options};
+    const realizedOptions = mergePartialAndDefault(DartGenerator.defaultOptions, options) as DartOptions;
     super('Dart', realizedOptions);
   }
 

@@ -11,12 +11,7 @@ const doc = {
   required: ['string prop'],
   properties: {
     'string prop': { type: 'string' },
-    numberProp: { type: 'number' },
-    objectProp: { $ref: '#/definitions/NestedTest' }
-  },
-  patternProperties: {
-    '^S(.?)test': { type: 'string' },
-    '^S(.?)AnotherTest': { $ref: '#/definitions/NestedTest' },
+    numberProp: { type: 'number' }
   },
 };
 describe('Marshalling preset', () => {

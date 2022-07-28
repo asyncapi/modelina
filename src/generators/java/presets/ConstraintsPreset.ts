@@ -12,6 +12,7 @@ export const JAVA_CONSTRAINTS_PRESET: JavaPreset = {
       renderer.addDependency('import javax.validation.constraints.*;');
       return content;
     },
+    // eslint-disable-next-line sonarjs/cognitive-complexity
     getter({ renderer, property, content }) {
       const annotations: string[] = [];
       

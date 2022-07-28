@@ -110,7 +110,7 @@ export abstract class AbstractGenerator<
 
     const defaultPreset = this.options.defaultPreset;
     if (defaultPreset !== undefined) {
-      filteredPresets.push([defaultPreset[String(presetType)], undefined]);
+      filteredPresets.push([defaultPreset[String(presetType)], this.options]);
     }
 
     const presets = this.options.presets || [];
@@ -129,13 +129,5 @@ export abstract class AbstractGenerator<
     }
 
     return filteredPresets;
-  }
-
-  protected mergeOptions(defaultOptions: Options = {} as any, passedOptions: Options = {} as any): Options {
-    return {
-      ...defaultGeneratorOptions,
-      ...defaultOptions,
-      ...passedOptions
-    };
   }
 }

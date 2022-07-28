@@ -60,7 +60,13 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     alreadyIteratedSchemas: Map<string, AsyncapiV2Schema> = new Map()
   ): AsyncapiV2Schema | boolean {
     if (typeof schema === 'boolean') {return schema;}
-    const schemaUid = schema.uid();
+    
+    let schemaUid = schema.uid();
+    //Because the constraint functionality of generators cannot handle -, <, >, we remove them from the id if it's an anonymous schema.
+    if (schemaUid.includes('<anonymous-schema')) {
+      schemaUid = schemaUid.replace('<', '').replace(/-/g, '_').replace('>', '');
+    }
+    
     if (alreadyIteratedSchemas.has(schemaUid)) {
       return alreadyIteratedSchemas.get(schemaUid) as AsyncapiV2Schema; 
     }

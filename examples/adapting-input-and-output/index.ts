@@ -20,26 +20,25 @@ const jsonSchemaDraft7 = {
   additionalProperties: false
 };
 
-const generator = new CSharpGenerator({ 
+const generator = new CSharpGenerator({
   presets: [
     {
       class: {
-        property: (args) => {
-          if (args.property.getFromOriginalInput('x-custom-type') === 'dictionary') {
-            args.propertyName = args.renderer.nameProperty(args.propertyName, args.property);
-            const dictKey = args.property.getFromOriginalInput('x-custom-dictionary-key');
-            const dictValue = args.property.getFromOriginalInput('x-custom-dictionary-value');
-            //NOTICE: I use public visibility here, so for simplicity no need to add getter/setters, could easily be done though!
-            return `public Dictionary<${dictKey}, ${dictValue}> ${args.propertyName};`;
+        property: ({property, content}) => {
+          if (property.property.originalInput['x-custom-type'] === 'dictionary') {
+            const dictKey = property.property.originalInput['x-custom-dictionary-key'];
+            const dictValue = property.property.originalInput['x-custom-dictionary-value'];
+            //NOTICE: I use public visibility here, so for simplicity no need to add getter/setters
+            return `public Dictionary<${dictKey}, ${dictValue}> ${property.propertyName};`;
           }
-          return args.content;
+          return content;
         },
-        accessor: (args) => {
+        accessor: ({property, content}) => {
           //NOTICE: Disabling accessor factory for specific property type
-          if (args.property.getFromOriginalInput('x-custom-type') === 'dictionary') {
+          if (property.property.originalInput['x-custom-type'] === 'dictionary') {
             return '';
           }
-          return args.content;
+          return content;
         }
       }
     }
