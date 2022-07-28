@@ -7,7 +7,7 @@ const jsonSchemaDraft7 = {
   type: 'object',
   additionalProperties: false,
   properties: {
-    event: {
+    eventType: {
       type: 'string',
       enum: ['ping', 'pong']
     }
