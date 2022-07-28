@@ -3,7 +3,6 @@ import { ConstrainedArrayModel, ConstrainedBooleanModel, ConstrainedFloatModel, 
 /**
  * Render specific example values 
  * @param model 
- * @returns 
  */
 export function renderValueFromModel(model: ConstrainedMetaModel): string | undefined {
   if (model instanceof ConstrainedReferenceModel) {
