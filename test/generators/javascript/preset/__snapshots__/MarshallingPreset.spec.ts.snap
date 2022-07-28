@@ -4,18 +4,15 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
 "class Test {
   stringProp;
   numberProp;
-  objectProp;
   additionalProperties;
-  sTestPatternProperties;
-  sAnotherTestPatternProperties;
 
   constructor(input) {
     this.stringProp = input.stringProp;
     if (input.hasOwnProperty('numberProp')) {
       this.numberProp = input.numberProp;
     }
-    if (input.hasOwnProperty('objectProp')) {
-      this.objectProp = input.objectProp;
+    if (input.hasOwnProperty('additionalProperties')) {
+      this.additionalProperties = input.additionalProperties;
     }
   }
 
@@ -25,48 +22,19 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
   get numberProp() { return this.numberProp; }
   set numberProp(numberProp) { this.numberProp = numberProp; }
 
-  get objectProp() { return this.objectProp; }
-  set objectProp(objectProp) { this.objectProp = objectProp; }
-
   get additionalProperties() { return this.additionalProperties; }
   set additionalProperties(additionalProperties) { this.additionalProperties = additionalProperties; }
-
-  get sTestPatternProperties() { return this.sTestPatternProperties; }
-  set sTestPatternProperties(sTestPatternProperties) { this.sTestPatternProperties = sTestPatternProperties; }
-
-  get sAnotherTestPatternProperties() { return this.sAnotherTestPatternProperties; }
-  set sAnotherTestPatternProperties(sAnotherTestPatternProperties) { this.sAnotherTestPatternProperties = sAnotherTestPatternProperties; }
 
   marshal(){
     let json = '{'
     if(this.stringProp !== undefined) {
-      json += \`\\"string prop\\": \${typeof this.stringProp === 'number' || typeof this.stringProp === 'boolean' ? this.stringProp : JSON.stringify(this.stringProp)},\`; 
+      json += \`\\"stringProp\\": \${typeof this.stringProp === 'number' || typeof this.stringProp === 'boolean' ? this.stringProp : JSON.stringify(this.stringProp)},\`; 
     }
     if(this.numberProp !== undefined) {
       json += \`\\"numberProp\\": \${typeof this.numberProp === 'number' || typeof this.numberProp === 'boolean' ? this.numberProp : JSON.stringify(this.numberProp)},\`; 
     }
-    if(this.objectProp !== undefined) {
-      json += \`\\"objectProp\\": \${this.objectProp.marshal()},\`; 
-    }
-    if(this.sTestPatternProperties !== undefined) { 
-      for (const [key, value] of this.sTestPatternProperties.entries()) {
-        //Only render pattern properties which are not already a property
-        if(Object.keys(this).includes(String(key))) continue;
-        json += \`\\"\${key}\\": \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;
-      }
-    }if(this.sAnotherTestPatternProperties !== undefined) { 
-      for (const [key, value] of this.sAnotherTestPatternProperties.entries()) {
-        //Only render pattern properties which are not already a property
-        if(Object.keys(this).includes(String(key))) continue;
-        json += \`\\"\${key}\\": \${value.marshal()},\`;
-      }
-    }
-    if(this.additionalProperties !== undefined) { 
-      for (const [key, value] of this.additionalProperties.entries()) {
-        //Only render additionalProperties which are not already a property
-        if(Object.keys(this).includes(String(key))) continue;
-        json += \`\\"\${key}\\": \${value.marshal()},\`;
-      }
+    if(this.additionalProperties !== undefined) {
+      json += \`\\"additionalProperties\\": \${typeof this.additionalProperties === 'number' || typeof this.additionalProperties === 'boolean' ? this.additionalProperties : JSON.stringify(this.additionalProperties)},\`; 
     }
 
     //Remove potential last comma 
@@ -77,33 +45,25 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
     const obj = typeof json === \\"object\\" ? json : JSON.parse(json);
     const instance = new Test({});
 
-    if (obj[\\"string prop\\"] !== undefined) {
-      instance.stringProp = obj[\\"string prop\\"];
+    if (obj[\\"stringProp\\"] !== undefined) {
+      instance.stringProp = obj[\\"stringProp\\"];
     }
     if (obj[\\"numberProp\\"] !== undefined) {
       instance.numberProp = obj[\\"numberProp\\"];
     }
-    if (obj[\\"objectProp\\"] !== undefined) {
-      instance.objectProp = NestedTest.unmarshal(obj[\\"objectProp\\"]);
+    if (obj[\\"additionalProperties\\"] !== undefined) {
+      instance.additionalProperties = obj[\\"additionalProperties\\"];
     }
+
+
 
     //Not part of core properties
-    if (instance.sTestPatternProperties === undefined) {instance.sTestPatternProperties = new Map();}
-  if (instance.sAnotherTestPatternProperties === undefined) {instance.sAnotherTestPatternProperties = new Map();}
 
-    if (instance.additionalProperties === undefined) {instance.additionalProperties = new Map();}
-    for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"string prop\\",\\"numberProp\\",\\"objectProp\\"].includes(key);}))) {
-      //Check all pattern properties
-      if (key.match(new RegExp('^S(.?)test'))) {
-        instance.sTestPatternProperties.set(key, value);
-        continue;
-      }//Check all pattern properties
-      if (key.match(new RegExp('^S(.?)AnotherTest'))) {
-        instance.sAnotherTestPatternProperties.set(key, NestedTest.unmarshal(value));
-        continue;
-      }
-      instance.additionalProperties.set(key, NestedTest.unmarshal(value));
+    //Only go over remaining. properties 
+    for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"stringProp\\",\\"numberProp\\",\\"additionalProperties\\"].includes(key);}))) {
+  
     }
+
     return instance;
   }
 }"
@@ -118,6 +78,9 @@ exports[`Marshalling preset should render un/marshal code 2`] = `
     if (input.hasOwnProperty('stringProp')) {
       this.stringProp = input.stringProp;
     }
+    if (input.hasOwnProperty('additionalProperties')) {
+      this.additionalProperties = input.additionalProperties;
+    }
   }
 
   get stringProp() { return this.stringProp; }
@@ -131,13 +94,8 @@ exports[`Marshalling preset should render un/marshal code 2`] = `
     if(this.stringProp !== undefined) {
       json += \`\\"stringProp\\": \${typeof this.stringProp === 'number' || typeof this.stringProp === 'boolean' ? this.stringProp : JSON.stringify(this.stringProp)},\`; 
     }
-  
-    if(this.additionalProperties !== undefined) { 
-      for (const [key, value] of this.additionalProperties.entries()) {
-        //Only render additionalProperties which are not already a property
-        if(Object.keys(this).includes(String(key))) continue;
-        json += \`\\"\${key}\\": \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;
-      }
+    if(this.additionalProperties !== undefined) {
+      json += \`\\"additionalProperties\\": \${typeof this.additionalProperties === 'number' || typeof this.additionalProperties === 'boolean' ? this.additionalProperties : JSON.stringify(this.additionalProperties)},\`; 
     }
 
     //Remove potential last comma 
@@ -151,14 +109,19 @@ exports[`Marshalling preset should render un/marshal code 2`] = `
     if (obj[\\"stringProp\\"] !== undefined) {
       instance.stringProp = obj[\\"stringProp\\"];
     }
+    if (obj[\\"additionalProperties\\"] !== undefined) {
+      instance.additionalProperties = obj[\\"additionalProperties\\"];
+    }
+
+
 
     //Not part of core properties
+
+    //Only go over remaining. properties 
+    for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"stringProp\\",\\"additionalProperties\\"].includes(key);}))) {
   
-    if (instance.additionalProperties === undefined) {instance.additionalProperties = new Map();}
-    for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"stringProp\\"].includes(key);}))) {
-    
-      instance.additionalProperties.set(key, value);
     }
+
     return instance;
   }
 }"
