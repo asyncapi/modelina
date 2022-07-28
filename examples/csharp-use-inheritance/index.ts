@@ -1,4 +1,4 @@
-import { CSharpGenerator } from '../../src';
+import { ConstrainedDictionaryModel, CSharpGenerator } from '../../src';
 
 const generator = new CSharpGenerator({
   presets: [
@@ -15,13 +15,10 @@ const generator = new CSharpGenerator({
           ];
       
           if (options?.collectionType === 'List' ||
-            model.additionalProperties !== undefined ||
-            model.patternProperties !== undefined) {
+            model.containsPropertyType(ConstrainedDictionaryModel)) {
             renderer.addDependency('using System.Collections.Generic;');
           }
-      
-          const formattedName = renderer.nameType(model.$id);
-          return `public class ${formattedName} : IEvent
+          return `public class ${model.name} : IEvent
 {
 ${renderer.indent(renderer.renderBlock(content, 2))}
 }`;
@@ -37,6 +34,7 @@ const jsonSchemaDraft7 = {
   properties: {
     email: {
       type: 'array',
+      additionalItems: false,
       items: {
         type: 'string',
         format: 'email'
