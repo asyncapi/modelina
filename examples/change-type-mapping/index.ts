@@ -1,11 +1,9 @@
 import { TypeScriptGenerator } from '../../src';
 
 const generator = new TypeScriptGenerator({
-  constraints: {
-    typeMapping: {
-      Number: ({renderer, model}) => {
-        return 'integer';
-      }
+  typeMapping: {
+    String: ({constrainedModel, options, propertyKey}) => {
+      return 'integer';
     }
   }
 });
