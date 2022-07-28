@@ -1,4 +1,4 @@
-import { MetaModel, ObjectPropertyModel } from './MetaModel';
+import { MetaModel } from './MetaModel';
 
 export abstract class ConstrainedMetaModel extends MetaModel {
   constructor(
