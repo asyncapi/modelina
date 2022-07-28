@@ -64,7 +64,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     let schemaUid = schema.uid();
     //Because the constraint functionality of generators cannot handle -, <, >, we remove them from the id if it's an anonymous schema.
     if (schemaUid.includes('<anonymous-schema')) {
-      schemaUid = schemaUid.replace('<', '').replaceAll('-', '_').replace('>', '');
+      schemaUid = schemaUid.replace('<', '').replace(/-/g, '_').replace('>', '');
     }
     
     if (alreadyIteratedSchemas.has(schemaUid)) {
