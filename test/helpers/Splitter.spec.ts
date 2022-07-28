@@ -50,4 +50,63 @@ describe('Splitter', () => {
     expect(splittedModels.length).toEqual(1);
     expect(splittedModels[0]).toEqual(model);
   });
+  test('should split out nested models', () => { 
+    const nestedStringModel = new StringModel('nestedString', undefined);
+    const nestedPropertyModel = new ObjectPropertyModel('nestedStringProp', false, nestedStringModel);
+    const nestedObjectModel = new ObjectModel('nestedTestObj', undefined, {
+      test: nestedPropertyModel
+    });
+    const objectPropertyModel = new ObjectPropertyModel('stringProp', false, nestedObjectModel);
+    const stringModel = new StringModel('string', undefined);
+    const propertyModel = new ObjectPropertyModel('test', false, stringModel);
+    const model = new ObjectModel('testObj', undefined, {
+      test: propertyModel,
+      nested: objectPropertyModel
+    });
+    const options: SplitOptions = {
+      splitString: true,
+      splitObject: true
+    };
+    const splittedModels = split(model, options);
+    expect(splittedModels.length).toEqual(4);
+    expect(splittedModels[0]).toEqual(model);
+    expect(splittedModels[1]).toEqual(stringModel);
+    expect(splittedModels[2]).toEqual(nestedObjectModel);
+    expect(splittedModels[3]).toEqual(nestedStringModel);
+  });
+  test('should handle already seen models', () => { 
+    const stringModel = new StringModel('string', undefined);
+    const nestedPropertyModel = new ObjectPropertyModel('nestedStringProp', false, stringModel);
+    const nestedObjectModel = new ObjectModel('nestedTestObj', undefined, {
+      test: nestedPropertyModel
+    });
+    const objectPropertyModel = new ObjectPropertyModel('stringProp', false, nestedObjectModel);
+    const propertyModel = new ObjectPropertyModel('test', false, stringModel);
+    const model = new ObjectModel('testObj', undefined, {
+      test: propertyModel,
+      nested: objectPropertyModel
+    });
+    const options: SplitOptions = {
+      splitString: true,
+      splitObject: true
+    };
+    const splittedModels = split(model, options);
+    expect(splittedModels.length).toEqual(3);
+    expect(splittedModels[0]).toEqual(model);
+    expect(splittedModels[1]).toEqual(stringModel);
+    expect(splittedModels[2]).toEqual(nestedObjectModel);
+  });
+  test('should handle recursive models', () => { 
+    const model = new ObjectModel('testObj', undefined, {});
+    const objectPropertyModel = new ObjectPropertyModel('recursiveProp', false, model);
+    model.properties['recursive'] = objectPropertyModel;
+
+    const options: SplitOptions = {
+      splitString: true,
+      splitObject: true
+    };
+    const splittedModels = split(model, options);
+    expect(splittedModels.length).toEqual(1);
+    expect(splittedModels[0]).toEqual(model);
+  });
 });

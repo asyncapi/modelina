@@ -4,6 +4,15 @@ describe('CommonModelToMetaModel', () => {
   afterEach(() => {
     jest.restoreAllMocks();
   });
+  test('should default to any model', () => { 
+    const cm = new CommonModel();
+    cm.$id = 'test';
+
+    const model = convertToMetaModel(cm);
+
+    expect(model).not.toBeUndefined();
+    expect(model instanceof AnyModel).toEqual(true);
+  });
   test('should convert to any model', () => { 
     const cm = new CommonModel();
     cm.type = ['string', 'number', 'integer', 'boolean', 'object', 'array', 'null'];
@@ -144,6 +153,24 @@ describe('CommonModelToMetaModel', () => {
     expect(model instanceof ObjectModel).toEqual(true);
     expect((model as ObjectModel).properties['additionalProperties']).not.toBeUndefined();
   });
+  test('should convert to object model with additional properties and already existing property with that name', () => { 
+    const spm = new CommonModel();
+    spm.type = 'string';
+    const cm = new CommonModel();
+    cm.type = 'object';
+    cm.$id = 'test';
+    cm.properties = {
+      additionalProperties: spm
+    };
+    cm.additionalProperties = spm;
+    
+    const model = convertToMetaModel(cm);
+
+    expect(model).not.toBeUndefined();
+    expect(model instanceof ObjectModel).toEqual(true);
+    expect((model as ObjectModel).properties['additionalProperties']).not.toBeUndefined();
+    expect((model as ObjectModel).properties['reserved_additionalProperties']).not.toBeUndefined();
+  });
   test('should convert normal array to array model', () => { 
     const spm = new CommonModel();
     spm.type = 'string';
@@ -196,5 +223,18 @@ describe('CommonModelToMetaModel', () => {
     expect(model).not.toBeUndefined();
     expect(model instanceof TupleModel).toEqual(true);
     expect((model as TupleModel).tuple.length).toEqual(2); 
+  });
+  test('should handle recursive models', () => { 
+    const cm = new CommonModel();
+    cm.type = 'object';
+    cm.$id = 'test';
+    cm.properties = {
+      test: cm
+    };
+    
+    const model = convertToMetaModel(cm);
+
+    expect(model).not.toBeUndefined();
+    expect(model instanceof ObjectModel).toEqual(true);
   });
 });
