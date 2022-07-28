@@ -18,7 +18,6 @@ export function NO_NUMBER_START_CHAR(value: string): string {
  * @param objectModel the raw object model which is non-constrained to the output language.
  * @param propertyName one of the properties in objectModel which might have been manipulated
  * @param namingFormatter the name formatter which are used to format the property key
- * @returns 
  */
 export function NO_DUPLICATE_PROPERTIES(constrainedObjectModel: ConstrainedObjectModel, objectModel: ObjectModel, propertyName: string, namingFormatter: (value: string) => string): string {
   // Make sure that the given property name is formatted correctly for further comparisons

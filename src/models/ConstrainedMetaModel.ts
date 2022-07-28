@@ -197,7 +197,6 @@ export class ConstrainedObjectModel extends ConstrainedMetaModel {
    * More specifics on the type setup here: https://github.com/Microsoft/TypeScript/wiki/FAQ#why-cant-i-write-typeof-t-new-t-or-instanceof-t-in-my-generic-function
    *  
    * @param propertyType 
-   * @returns 
    */
   containsPropertyType<T>(propertyType: { new(...args: any[]): T }) : boolean {
     const foundPropertiesWithType = Object.values(this.properties).filter((property) => {
