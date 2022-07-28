@@ -12,6 +12,7 @@ import { EnumRenderer } from './renderers/EnumRenderer';
 import { TypeRenderer } from './renderers/TypeRenderer';
 import { TypeScriptDefaultConstraints, TypeScriptDefaultTypeMapping } from './TypeScriptConstrainer';
 import { TS_EXPORT_KEYWORD_PRESET } from './presets';
+import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 
 export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPreset> {
   renderTypes: boolean;
@@ -43,12 +44,12 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,Typ
   };
 
   constructor(
-    options: Partial<TypeScriptOptions> = TypeScriptGenerator.defaultOptions,
+    options?: DeepPartial<TypeScriptOptions>,
   ) {
-    const realizedOptions = {...TypeScriptGenerator.defaultOptions, ...options};
+    const realizedOptions = mergePartialAndDefault(TypeScriptGenerator.defaultOptions, options) as TypeScriptOptions;
     super('TypeScript', realizedOptions);
   }
-  
+
   splitMetaModel(model: MetaModel): MetaModel[] {
     //These are the models that we have separate renderers for
     const metaModelsToSplit = {
@@ -129,9 +130,6 @@ ${modelCode}`;
       }
       return this.renderClass(model, inputModel);
     } else if (model instanceof ConstrainedEnumModel) {
-      if (this.options.enumType === 'union') {
-        return this.renderType(model, inputModel);
-      }
       return this.renderEnum(model, inputModel);
     } 
     return this.renderType(model, inputModel);

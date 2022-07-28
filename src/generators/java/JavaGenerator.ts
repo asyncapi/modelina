@@ -12,6 +12,7 @@ import { isReservedJavaKeyword } from './Constants';
 import { Logger } from '../../';
 import { constrainMetaModel, Constraints } from '../../helpers/ConstrainHelpers';
 import { JavaDefaultConstraints, JavaDefaultTypeMapping } from './JavaConstrainer';
+import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 
 export interface JavaOptions extends CommonGeneratorOptions<JavaPreset> {
   collectionType: 'List' | 'Array';
@@ -31,13 +32,12 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderComp
   };
 
   constructor(
-    options: Partial<JavaOptions> = JavaGenerator.defaultOptions,
+    options?: DeepPartial<JavaOptions>,
   ) {
-    const realizedOptions = {...JavaGenerator.defaultOptions, ...options};
-
+    const realizedOptions = mergePartialAndDefault(JavaGenerator.defaultOptions, options) as JavaOptions;
     super('Java', realizedOptions);
   }
-
+  
   splitMetaModel(model: MetaModel): MetaModel[] {
     //These are the models that we have separate renderers for
     const metaModelsToSplit = {

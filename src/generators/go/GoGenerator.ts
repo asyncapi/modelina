@@ -10,6 +10,7 @@ import { StructRenderer } from './renderers/StructRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { Logger } from '../../utils/LoggingInterface';
 import { GoDefaultConstraints, GoDefaultTypeMapping } from './GoConstrainer';
+import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 
 export interface GoOptions extends CommonGeneratorOptions<GoPreset> {
   typeMapping: TypeMapping<GoOptions>;
@@ -30,11 +31,11 @@ export class GoGenerator extends AbstractGenerator<GoOptions, GoRenderCompleteMo
     typeMapping: GoDefaultTypeMapping,
     constraints: GoDefaultConstraints
   };
-  constructor(
-    options: Partial<GoOptions> = GoGenerator.defaultOptions,
-  ) {
-    const realizedOptions = {...GoGenerator.defaultOptions, ...options};
 
+  constructor(
+    options?: DeepPartial<GoOptions>,
+  ) {
+    const realizedOptions = mergePartialAndDefault(GoGenerator.defaultOptions, options) as GoOptions;
     super('Go', realizedOptions);
   }
 
