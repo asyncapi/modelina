@@ -10,13 +10,13 @@ export type PropertyKeyConstraintOptions = {
   NO_EMPTY_VALUE: (value: string) => string;
   NAMING_FORMATTER: (value: string) => string;
   NO_RESERVED_KEYWORDS: (value: string) => string;
+  NO_ENCLOSING_NAMES: (constrainedObjectModel: ConstrainedObjectModel, value: string) => string;
 };
 
 export const DefaultPropertyKeyConstraints: PropertyKeyConstraintOptions = {
   NO_SPECIAL_CHAR: (value: string) => {
-    //Exclude ` ` because it gets formatted by NAMING_FORMATTER
-    //Exclude '_', '$' because they are allowed
-    return FormatHelpers.replaceSpecialCharacters(value, { exclude: [' ', '_', '$'], separator: '_' });
+    //Exclude ` ` and `_` because it gets formatted by NAMING_FORMATTER
+    return FormatHelpers.replaceSpecialCharacters(value, { exclude: [' ', '_'], separator: '_' });
   },
   NO_NUMBER_START_CHAR,
   NO_DUPLICATE_PROPERTIES,
@@ -24,6 +24,12 @@ export const DefaultPropertyKeyConstraints: PropertyKeyConstraintOptions = {
   NAMING_FORMATTER: FormatHelpers.toCamelCase,
   NO_RESERVED_KEYWORDS: (value: string) => {
     return NO_RESERVED_KEYWORDS(value, isReservedCSharpKeyword); 
+  },
+  NO_ENCLOSING_NAMES: (constrainedObjectModel, value) => {
+    if (constrainedObjectModel.name.toLowerCase() === value.toLowerCase()) {
+      return `reserved_${value}`;
+    }
+    return value;
   }
 };
 
@@ -37,6 +43,8 @@ export function defaultPropertyKeyConstraints(customConstraints?: Partial<Proper
     constrainedPropertyKey = constraints.NO_NUMBER_START_CHAR(constrainedPropertyKey);
     constrainedPropertyKey = constraints.NO_EMPTY_VALUE(constrainedPropertyKey);
     constrainedPropertyKey = constraints.NO_RESERVED_KEYWORDS(constrainedPropertyKey);
+    constrainedPropertyKey = constraints.NAMING_FORMATTER(constrainedPropertyKey);
+    constrainedPropertyKey = constraints.NO_ENCLOSING_NAMES(constrainedObjectModel, constrainedPropertyKey);
     //If the property name has been manipulated, lets make sure it don't clash with existing properties
     if (constrainedPropertyKey !== objectPropertyModel.propertyName) {
       constrainedPropertyKey = constraints.NO_DUPLICATE_PROPERTIES(constrainedObjectModel, objectModel, constrainedPropertyKey, constraints.NAMING_FORMATTER);
