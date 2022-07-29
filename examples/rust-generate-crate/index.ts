@@ -38,11 +38,9 @@ export async function generate(): Promise<void> {
   });
   // Generated files will be written to output/ directory
   const outDir = path.join(__dirname, 'output');
-  // Parse the schema document
-  const inputModel = await generator.process(doc);
 
   // Run the file generator with options
-  const models = await generator.generateToFiles(inputModel, outDir, {
+  const models = await generator.generateToFiles(doc, outDir, {
     ...defaultRustRenderCompleteModelOptions,
     supportFiles: true, // generate Cargo.toml and lib.rs
     package: {

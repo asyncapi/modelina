@@ -4,7 +4,7 @@ import { UnionPresetType } from '../RustPreset';
 import { RustOptions } from '../RustGenerator';
 
 /**
- * Renderer for Rust's `enum` type
+ * Renderer for Rust's `Union` type
  * 
  * @extends UnionRenderer
  */
