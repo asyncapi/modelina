@@ -9,9 +9,6 @@ This document contains many of the advanced use-cases that you may stumble upon 
 - [Generate models to separate files](#generate-models-to-separate-files)
 - [Include a custom function in the data model](#include-a-custom-function-in-the-data-model)
 - [Use the models for data transfer](#use-the-models-for-data-transfer)
-- [Extend the logic of an existing renderer](#extend-the-logic-of-an-existing-renderer)
-- [Build your own model renderer](#build-your-own-model-renderer)
-- [Create your own models from the ground up, instead of a supported input](#create-your-own-models-from-the-ground-up-instead-of-a-supported-input)
 - [Adapting input and outputs](#adapting-input-and-outputs)
 - [Add logging to library](#add-logging-to-library)
 - [Change the generated indentation type and size](#change-the-generated-indentation-type-and-size)
@@ -31,13 +28,6 @@ The reason for splitting the functionality is because in certain environments (l
 
 The file generators all follow the same pattern regardless of output language, which is the following format - `<language>FileGenerator`.
 
-Supported by:
-- Java
-- TypeScript
-- C#
-- Go
-- JavaScript
-
 > It is not supported in browsers.
 
 Check out this [example out for a live demonstration](../examples/generate-to-files).
@@ -48,16 +38,14 @@ Sometimes you want to include custom functionality into the generated models, th
 Check out this [example out for a live demonstration](../examples/include-custom-function).
 
 ## Use the models for data transfer
-TODO 
+One of the primary use-cases for the generated models, is to serialize and deserilize it to for example JSON, XML or binary. Each generator can have multiple ways to achieve this, and even support multiple libraries. This is achieved through presets, you can find them here for each output:
 
-## Extend the logic of an existing renderer
-TODO 
-
-## Build your own model renderer
-TODO 
-
-## Create your own models from the ground up, instead of a supported input
-TODO 
+- [C#](./languages/Csharp.md#generate-serializer-and-deserializer-functionality)
+- [Dart](./languages/Dart.md#generate-serializer-and-deserializer-functionality)
+- [Go](./languages/Go.md#generate-serializer-and-deserializer-functionality)
+- [Java](./languages/Java.md#generate-serializer-and-deserializer-functionality)
+- [JavaScript](./languages/JavaScript.md#generate-serializer-and-deserializer-functionality)
+- [TypeScript](./languages/TypeScript.md#generate-serializer-and-deserializer-functionality)
 
 ## Adapting input and outputs
 Sometimes you simply cannot make two things work together as you wished, maybe the input does not support it, or Modelina natively doesn't. However, because of the nature with presets, we can make it work anyway.

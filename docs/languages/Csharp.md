@@ -6,21 +6,28 @@ There are special use-cases that each language supports; this document pertains 
 
 <!-- toc -->
 
-- [C#](#c)
-  - [Generate serializer and deserializer functionality](#generate-serializer-and-deserializer-functionality)
-  - [Generate models with equals and GetHashCode methods](#generate-models-with-equals-and-gethashcode-methods)
-  - [Generate models with auto-implemented properties](#generate-models-with-auto-implemented-properties)
-  - [Change the collection type for arrays](#change-the-collection-type-for-arrays)
-  - [Generate custom enum value names](#generate-custom-enum-value-names)
-  - [Generate models with inheritance](#generate-models-with-inheritance)
+  * [Generate serializer and deserializer functionality](#generate-serializer-and-deserializer-functionality)
+  * [Use the data models for JSON serialization](#use-the-data-models-for-json-serialization)
+  * [Generate models with equals and GetHashCode methods](#generate-models-with-equals-and-gethashcode-methods)
+  * [Generate models with auto-implemented properties](#generate-models-with-auto-implemented-properties)
+  * [Change the collection type for arrays](#change-the-collection-type-for-arrays)
+  * [Generate custom enum value names](#generate-custom-enum-value-names)
+  * [Generate models with inheritance](#generate-models-with-inheritance)
 - [FAQ](#faq)
-    - [Why is the type `dynamic` or `dynamic[]` when it should be `X`?](#why-is-the-type-dynamic-or-dynamic-when-it-should-be-x)
+    + [Why is the type `dynamic` or `dynamic[]` when it should be `X`?](#why-is-the-type-dynamic-or-dynamic-when-it-should-be-x)
 
 <!-- tocstop -->
 
 ## Generate serializer and deserializer functionality
 
-Sometimes you want to serialize the data models into JSON. In order to do that use the preset `CSHARP_JSON_SERIALIZER_PRESET`
+Sometimes you want to serialize the data models, this can either be into JSON, XML, etc. And it can even be from multiple libraries, all dependant on what your use-case is.
+
+This is what is currently supported:
+
+- [JSON through `System.Text.Json`](#use-the-data-models-for-json-serialization)
+
+## Use the data models for JSON serialization 
+In order to do that use the preset `CSHARP_JSON_SERIALIZER_PRESET`
 
 **External dependencies:**
 Requires [System.Text.Json](https://devblogs.microsoft.com/dotnet/try-the-new-system-text-json-apis/), [System.Text.Json.Serialization](https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-how-to?pivots=dotnet-6-0) and [System.Text.RegularExpressions](https://docs.microsoft.com/en-us/dotnet/api/system.text.regularexpressions?view=net-6.0) to work.
@@ -63,4 +70,4 @@ This is the most asked questions and answers which should be your GOTO list to c
 ### Why is the type `dynamic` or `dynamic[]` when it should be `X`? 
 Often times you might encounter variables which as of type `dynamic` or `dynamic[]`, which is our fallback type when we cannot accurately find the right type.
 
-**If you are encountering this when your input is JSON Schema/OpenAPI/AsyncAPI**, it most likely is because of a property being defined as having multiple types (union or tuple) which the C# generator cannot natively handle and fallback to `dynamic`. For arrays, you have to remember that `additionalItems` is by default `true`, this means that even though you say `items: { type: "string"}` by not setting `additionalItems: false`, it's the same as setting `items: { type: ["array", "boolean", "integer", "null", "number", "object", "string"]}`. 
+**If you are encountering this when your input is JSON Schema/OpenAPI/AsyncAPI**, it most likely is because of a property being defined as having multiple types (union or tuple) which the C# generator cannot natively handle and fallback to `dynamic`. For arrays, you have to remember that `additionalItems` is by default `true`, this means that even though you say `items: { type: "string"}` by not setting `additionalItems: false`, it's the same as setting `items: { type: ["array", "boolean", "integer", "null", "number", "object", "string"]}`.

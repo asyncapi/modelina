@@ -29,22 +29,33 @@ The Acceptance Criteria Process for _adding examples_ is not only something we u
 Adding examples is quite straight forward, so don't feel shy! Here's how to do it:
 1. Duplicate the [TEMPLATE folder](https://github.com/asyncapi/modelina/tree/master/examples/TEMPLATE) and rename it to something that makes sense for your feature. If you can't think of anything, feel free to go with your first thought, since we can always discuss it in the PR afterwards.
 1. Rename the following [package configuration](https://github.com/asyncapi/modelina/blob/1e71b3b2cab6bc2c277001fcafe7e1b8ed175ce9/examples/TEMPLATE/package.json#L2) to the same name as your directory.
-1. Adapt [this source code example](https://github.com/asyncapi/modelina/blob/1e71b3b2cab6bc2c277001fcafe7e1b8ed175ce9/examples/TEMPLATE/index.ts) to reflect your use case.
-1. Adapt [this testing file](https://github.com/asyncapi/modelina/blob/1e71b3b2cab6bc2c277001fcafe7e1b8ed175ce9/examples/TEMPLATE/index.spec.ts#L4) for your use case. In most cases, it could be as simple as changing the title of the test!
+1. Adapt [the source code example](https://github.com/asyncapi/modelina/blob/1e71b3b2cab6bc2c277001fcafe7e1b8ed175ce9/examples/TEMPLATE/index.ts) to reflect your use case.
+1. Adapt [the testing file](https://github.com/asyncapi/modelina/blob/1e71b3b2cab6bc2c277001fcafe7e1b8ed175ce9/examples/TEMPLATE/index.spec.ts#L4) for your use case. In most cases, it could be as simple as changing the title of the test!
 1. Add your example to our overall list of [examples](https://github.com/asyncapi/modelina/blob/master/examples/README.md).
 
 Aaaand you are done! :tada: 
+
+### Adding a new generator
+
+
+### Adding a new preset
+
+
+### Adding a new input processor
+An input processors job is to convert the input into the MetaModel format. This is the internal format that the generators can then use.
+
+
 
 ## FAQs
 Below are some of the typical questions we've received about contributing to Modelina.
 
 ### Can I solve issues not labeled "good first issue"?
 
-Absolutely!
+Absolutely, anyone can!
 
-Regular issues are generally not that well described in terms of what needs to be accomplished and require some internal knowledge of the library internals.
+Regular issues are generally not that well described in terms of what needs to be accomplished and require some internal knowledge of Modelina, or take your sherlock homes hat on.
 
-If you find an issue you would like to solve, ping one of the maintainers to help you get started. Some issues may require a higher level of effort to solve than might be easily described within the issue, so don't feel shy to chat with us about individual issues. 😀
+If you find an issue you would like to solve, feel free to ping one of the maintainers to help you get started. Some issues may require a higher level of effort to solve than might be easily described within the issue, so don't feel shy to chat with us about individual issues :slight_smile:
 
 
 ### What does the CI system do when I create a PR?

@@ -5,11 +5,20 @@ There are special use-cases that each language supports; this document pertains 
 
 <!-- toc -->
 
+- [Generate serializer and deserializer functionality](#generate-serializer-and-deserializer-functionality)
 - [Rendering complete models to a specific module system](#rendering-complete-models-to-a-specific-module-system)
 - [Generate un/marshal functions for classes](#generate-unmarshal-functions-for-classes)
 - [Generate example data function](#generate-example-data-function)
 
 <!-- tocstop -->
+
+## Generate serializer and deserializer functionality
+
+Sometimes you want to serialize the data models, this can either be into JSON, XML, etc. And it can even be from multiple libraries, all dependant on what your use-case is.
+This is what is currently supported:
+
+- [JSON through custom function](#generate-unmarshal-functions-for-classes) 
+
 
 ## Rendering complete models to a specific module system
 In some cases you might need to render the complete models to a specific module system such as ESM and CJS.

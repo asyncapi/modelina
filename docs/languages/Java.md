@@ -6,6 +6,7 @@ There are special use-cases that each language supports; this document pertains 
 
 <!-- toc -->
 
+- [Generate serializer and deserializer functionality](#generate-serializer-and-deserializer-functionality)
 - [Include equals function for the class](#include-equals-function-for-the-class)
 - [Include hashCode function for the class](#include-hashcode-function-for-the-class)
 - [Change the collection type for arrays](#change-the-collection-type-for-arrays)
@@ -16,6 +17,14 @@ There are special use-cases that each language supports; this document pertains 
 - [Include JSON marshaling and unmarshaling methods](#include-json-marshaling-and-unmarshaling-methods)
 
 <!-- tocstop -->
+
+## Generate serializer and deserializer functionality
+
+Sometimes you want to serialize the data models, this can either be into JSON, XML, etc. And it can even be from multiple libraries, all dependant on what your use-case is.
+This is what is currently supported:
+
+- [JSON through Jackson annotation](#include-jackson-annotations-for-the-class) 
+- [JSON through custom function](#include-json-marshaling-and-unmarshaling-methods) 
 
 ## Include equals function for the class
 

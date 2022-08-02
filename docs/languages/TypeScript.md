@@ -6,6 +6,7 @@ There are special use-cases that each language supports; this document pertains 
 
 <!-- toc -->
 
+- [Generate serializer and deserializer functionality](#generate-serializer-and-deserializer-functionality)
 - [Generate an interface instead of classes](#generate-an-interface-instead-of-classes)
 - [Generate union types instead of enums](#generate-union-types-instead-of-enums)
 - [Generate un/marshal functions for classes](#generate-unmarshal-functions-for-classes)
@@ -14,6 +15,14 @@ There are special use-cases that each language supports; this document pertains 
 - [Rendering comments from description and example fields](#rendering-comments-from-description-and-example-fields)
 
 <!-- tocstop -->
+
+## Generate serializer and deserializer functionality
+
+Sometimes you want to serialize the data models, this can either be into JSON, XML, etc. And it can even be from multiple libraries, all dependant on what your use-case is.
+This is what is currently supported:
+
+- [JSON through custom function](#generate-unmarshal-functions-for-classes) 
+
 
 ## Generate an interface instead of classes
 

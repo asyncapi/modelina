@@ -16,18 +16,14 @@ Modelina is the official AsyncAPI SDK to generate data models (i.e. <a href="#ou
 
 ---
 
-## :loudspeaker: ATTENTION:
-
-This package is still under development and has not reached version 1.0.0 yet. This means that its API may contain breaking changes until we're able to deploy the first stable version and begin semantic versioning. Please use tests to ensure expected outputs or to hardcode the version.
-
----
-
 <!-- toc is generated with GitHub Actions do not remove toc markers -->
 
 <!-- toc -->
 
 - [Requirements](#requirements)
-- [Installation](#installation)
+- [Usage](#usage)
+  * [CLI](#cli)
+  * [Library](#library)
 - [Features](#features)
 - [Roadmap](#roadmap)
 - [Documentation](#documentation)
@@ -44,15 +40,25 @@ This package is still under development and has not reached version 1.0.0 yet. T
 
 Feel free to submit an issue if you require this project in other use-cases.
 
-## Installation
+## Usage
+There are many ways you can get started with Modelina, which all depends on what you want!
 
-Run this command to install Modelina in your project:
+### CLI
+If you just want to generate some models, without much customization, 
+You can use the official AsyncAPI CLI
+
+```sh
+asyncapi generate models typescript ./asyncapi.json --output='./output'
+```
+
+### Library
+To take full advantage of the customization Modelina enables, you have to use the library.
 
 ```bash
 npm install @asyncapi/modelina
 ```
 
-Once you've successfully installed Modelina in your project, it's time to select your generator. Check out the [examples](#examples) for the specific code.
+Once you've successfully installed Modelina in your project, it's time to select your generator. Check out the [examples](#examples) for detailed code examples how to use Modelina.
 
 ## Features
 
@@ -197,4 +203,4 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome! If you made any contributions please help keep this table up to date by writing `@all-contributors please add @<username> for <contributions>` in the PR/issue if you contributed!
