@@ -4,17 +4,16 @@
 
 <!-- toc -->
 
-- [Documentation](#documentation)
-    - [The Processing](#the-processing)
-    - [Usage](#usage)
-    - [Advanced](#advanced)
-    - [Integration](#integration)
-    - [Generators](#generators)
-    - [Presets](#presets)
-    - [Interpretation of JSON Schema](#interpretation-of-json-schema)
-    - [Languages](#languages)
-    - [Contributing](#contributing)
-    - [Development](#development)
+- [The Processing](#the-processing)
+- [Usage](#usage)
+- [Advanced](#advanced)
+- [Integration](#integration)
+- [Generators](#generators)
+- [Presets](#presets)
+- [Interpretation of JSON Schema](#interpretation-of-json-schema)
+- [Languages](#languages)
+- [Contributing](#contributing)
+- [Development](#development)
 
 <!-- tocstop -->
 
@@ -55,4 +54,4 @@ Each language has its own limitations, corner cases, and features; thus, each la
 Contains all the information you need to contribute to this project.
 
 ### [Development](./development.md)
-Explains how to setup the project for development. 
+Explains how to setup the project for development.
