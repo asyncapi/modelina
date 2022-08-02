@@ -3,7 +3,6 @@
 exports[`Should be able to render models to ESM module system and should log expected output to console 1`] = `
 Array [
   "
-
 class Person {
   private _email?: string;
 
@@ -23,7 +22,6 @@ module.exports = Person;",
 exports[`Should be able to render models to ESM module system and should log expected output to console 2`] = `
 Array [
   "const Person = require('./Person');
-
 class Root {
   private _person?: Person;
 

@@ -27,14 +27,9 @@ describe('Example function generation', () => {
         }
       ]
     });
-    const inputModel = await generator.process(doc);
-    const testModel = inputModel.models['Test'];
-    const nestedTestModel = inputModel.models['NestedTest'];
-
-    const testClass = await generator.renderClass(testModel, inputModel);
-    const nestedTestClass = await generator.renderClass(nestedTestModel, inputModel);
-
-    expect(testClass.result).toMatchSnapshot();
-    expect(nestedTestClass.result).toMatchSnapshot();
+    const models = await generator.generate(doc);
+    expect(models).toHaveLength(2);
+    expect(models[0].result).toMatchSnapshot(); 
+    expect(models[1].result).toMatchSnapshot(); 
   });
 });

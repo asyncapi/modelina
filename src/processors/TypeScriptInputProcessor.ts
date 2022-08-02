@@ -1,13 +1,13 @@
-import { CommonModel, InputMetaModel, ProcessorOptions } from '../models';
+import { InputMetaModel, ProcessorOptions } from '../models';
 import { resolve } from 'path';
 import ts from 'typescript';
 import * as TJS from 'typescript-json-schema';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { convertToMetaModel } from '../helpers';
+import { Logger } from '../utils';
 
 /** Class for processing Typescript code inputs to Common module*/
-
 export interface TypeScriptInputProcessorOptions extends TJS.PartialArgs{
   uniqueNames? : boolean;
   required? : boolean;
@@ -81,13 +81,17 @@ export class TypeScriptInputProcessor extends AbstractInputProcessor {
     // obtain generated schema
     const generatedSchemas = this.generateJSONSchema(baseFile, '*', options?.typescript);
     if (generatedSchemas) {
-      let commonModels: {[key: string]: CommonModel} = {};
       for (const schema of generatedSchemas) {
-        const newCommonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema as Record<string, any>);
-        commonModels = {...commonModels, ...newCommonModels };
-      }
-      for (const [key, commonModel] of Object.entries(commonModels)) {
-        inputModel.models[String(key)] = convertToMetaModel(commonModel);
+        const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema as Record<string, any>);
+        if (newCommonModel.$id !== undefined) {
+          if (inputModel.models[newCommonModel.$id] !== undefined) {
+            Logger.warn(`Overwriting existing model with $id ${newCommonModel.$id}, are there two models with the same id present?`, newCommonModel);
+          }
+          const metaModel = convertToMetaModel(newCommonModel);
+          inputModel.models[metaModel.name] = metaModel;
+        } else {
+          Logger.warn('Model did not have $id, ignoring.', newCommonModel);
+        }
       }
     }
     return Promise.resolve(inputModel);

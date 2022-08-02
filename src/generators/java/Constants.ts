@@ -1,9 +1,12 @@
+import { checkForReservedKeyword } from '../../helpers';
+
 export const RESERVED_JAVA_KEYWORDS = [
   'abstract', 
   'continue', 
   'for', 
   'new', 
-  'switch  assert', 
+  'switch',
+  'assert', 
   'default', 
   'goto', 
   'package', 
@@ -50,6 +53,6 @@ export const RESERVED_JAVA_KEYWORDS = [
   'while'
 ];
 
-export function isReservedJavaKeyword(word: string): boolean {
-  return RESERVED_JAVA_KEYWORDS.includes(word);
+export function isReservedJavaKeyword(word: string, forceLowerCase = true): boolean {
+  return checkForReservedKeyword(word, RESERVED_JAVA_KEYWORDS, forceLowerCase);
 }

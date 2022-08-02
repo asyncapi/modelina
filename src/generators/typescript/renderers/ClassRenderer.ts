@@ -71,9 +71,9 @@ ${renderer.indent(renderer.renderBlock(assignments))}
     return `private _${renderer.renderProperty(property)}`;
   },
   getter({ property }): string {
-    return `get ${property.propertyName}()${property.property.type} { return this._${property.propertyName}; }`;
+    return `get ${property.propertyName}(): ${property.property.type}${property.required === false ? ' | undefined' : ''} { return this._${property.propertyName}; }`;
   },
   setter({ property }): string {
-    return `set ${property.propertyName}(${property.propertyName}${property.property.type}) { this._${property.propertyName} = ${property.propertyName}; }`;
+    return `set ${property.propertyName}(${property.propertyName}: ${property.property.type}${property.required === false ? ' | undefined' : ''}) { this._${property.propertyName} = ${property.propertyName}; }`;
   },
 };

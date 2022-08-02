@@ -21,7 +21,7 @@ export type EnumValueContext = {
   constrainedEnumModel: ConstrainedEnumModel,
   enumModel: EnumModel
 }
-export type EnumValueConstraint = (context: EnumValueContext) => string;
+export type EnumValueConstraint = (context: EnumValueContext) => any;
 
 export type ModelNameContext = {
   modelName: string
@@ -44,9 +44,14 @@ export interface Constraints {
   propertyKey: PropertyKeyConstraint,
 }
 
-function constrainReferenceModel<Options>(typeMapping: TypeMapping<Options>, constrainRules: Constraints, context: ConstrainContext<Options, ReferenceModel>): ConstrainedReferenceModel {
-  const constrainedRefModel = constrainMetaModel(typeMapping, constrainRules, {...context, metaModel: context.metaModel.ref, propertyKey: undefined});
-  const constrainedModel = new ConstrainedReferenceModel(context.constrainedName, context.metaModel.originalInput, '', constrainedRefModel);
+const placeHolderConstrainedObject = new ConstrainedAnyModel('', undefined, '');
+
+function constrainReferenceModel<Options>(typeMapping: TypeMapping<Options>, constrainRules: Constraints, context: ConstrainContext<Options, ReferenceModel>, alreadySeenModels: Map<MetaModel, ConstrainedMetaModel>): ConstrainedReferenceModel {
+  const constrainedModel = new ConstrainedReferenceModel(context.constrainedName, context.metaModel.originalInput, '', placeHolderConstrainedObject);
+  alreadySeenModels.set(context.metaModel, constrainedModel); 
+
+  const constrainedRefModel = constrainMetaModel(typeMapping, constrainRules, {...context, metaModel: context.metaModel.ref, propertyKey: undefined}, alreadySeenModels);
+  constrainedModel.ref = constrainedRefModel;
   constrainedModel.type = getTypeFromMapping(typeMapping, {
     constrainedModel,
     options: context.options,
@@ -99,12 +104,15 @@ function constrainBooleanModel<Options>(typeMapping: TypeMapping<Options>, conte
   });
   return constrainedModel;
 }
-function constrainTupleModel<Options>(typeMapping: TypeMapping<Options>, constrainRules: Constraints, context: ConstrainContext<Options, TupleModel>): ConstrainedTupleModel {
+function constrainTupleModel<Options>(typeMapping: TypeMapping<Options>, constrainRules: Constraints, context: ConstrainContext<Options, TupleModel>, alreadySeenModels: Map<MetaModel, ConstrainedMetaModel>): ConstrainedTupleModel {
+  const constrainedModel = new ConstrainedTupleModel(context.constrainedName, context.metaModel.originalInput, '', []);
+  alreadySeenModels.set(context.metaModel, constrainedModel); 
+
   const constrainedTupleModels = context.metaModel.tuple.map((tupleValue) => {
-    const tupleType = constrainMetaModel(typeMapping, constrainRules, {...context, metaModel: tupleValue.value, propertyKey: undefined});
+    const tupleType = constrainMetaModel(typeMapping, constrainRules, {...context, metaModel: tupleValue.value, propertyKey: undefined}, alreadySeenModels);
     return new ConstrainedTupleValueModel(tupleValue.index, tupleType);
   });
-  const constrainedModel = new ConstrainedTupleModel(context.constrainedName, context.metaModel.originalInput, '', constrainedTupleModels);
+  constrainedModel.tuple = constrainedTupleModels;
   constrainedModel.type = getTypeFromMapping(typeMapping, {
     constrainedModel,
     options: context.options,
@@ -112,9 +120,11 @@ function constrainTupleModel<Options>(typeMapping: TypeMapping<Options>, constra
   });
   return constrainedModel;
 }
-function constrainArrayModel<Options>(typeMapping: TypeMapping<Options>, constrainRules: Constraints, context: ConstrainContext<Options, ArrayModel>): ConstrainedArrayModel {
-  const constrainedValueModel = constrainMetaModel(typeMapping, constrainRules, {...context, metaModel: context.metaModel.valueModel, propertyKey: undefined});
-  const constrainedModel = new ConstrainedArrayModel(context.constrainedName, context.metaModel.originalInput, '', constrainedValueModel);
+function constrainArrayModel<Options>(typeMapping: TypeMapping<Options>, constrainRules: Constraints, context: ConstrainContext<Options, ArrayModel>, alreadySeenModels: Map<MetaModel, ConstrainedMetaModel>): ConstrainedArrayModel {
+  const constrainedModel = new ConstrainedArrayModel(context.constrainedName, context.metaModel.originalInput, '', placeHolderConstrainedObject);
+  alreadySeenModels.set(context.metaModel, constrainedModel);
+  const constrainedValueModel = constrainMetaModel(typeMapping, constrainRules, {...context, metaModel: context.metaModel.valueModel, propertyKey: undefined}, alreadySeenModels);
+  constrainedModel.valueModel = constrainedValueModel;
   constrainedModel.type = getTypeFromMapping(typeMapping, {
     constrainedModel,
     options: context.options,
@@ -122,11 +132,14 @@ function constrainArrayModel<Options>(typeMapping: TypeMapping<Options>, constra
   });
   return constrainedModel;
 }
-function constrainUnionModel<Options>(typeMapping: TypeMapping<Options>, constrainRules: Constraints, context: ConstrainContext<Options, UnionModel>): ConstrainedUnionModel {
+function constrainUnionModel<Options>(typeMapping: TypeMapping<Options>, constrainRules: Constraints, context: ConstrainContext<Options, UnionModel>, alreadySeenModels: Map<MetaModel, ConstrainedMetaModel>): ConstrainedUnionModel {
+  const constrainedModel = new ConstrainedUnionModel(context.constrainedName, context.metaModel.originalInput, '', []);
+  alreadySeenModels.set(context.metaModel, constrainedModel); 
+
   const constrainedUnionModels = context.metaModel.union.map((unionValue) => {
-    return constrainMetaModel(typeMapping, constrainRules, {...context, metaModel: unionValue, propertyKey: undefined});
+    return constrainMetaModel(typeMapping, constrainRules, {...context, metaModel: unionValue, propertyKey: undefined}, alreadySeenModels);
   });
-  const constrainedModel = new ConstrainedUnionModel(context.constrainedName, context.metaModel.originalInput, '', constrainedUnionModels);
+  constrainedModel.union = constrainedUnionModels;
   constrainedModel.type = getTypeFromMapping(typeMapping, {
     constrainedModel,
     options: context.options,
@@ -134,10 +147,14 @@ function constrainUnionModel<Options>(typeMapping: TypeMapping<Options>, constra
   });
   return constrainedModel;
 }
-function constrainDictionaryModel<Options>(typeMapping: TypeMapping<Options>, constrainRules: Constraints, context: ConstrainContext<Options, DictionaryModel>): ConstrainedDictionaryModel {
-  const keyModel = constrainMetaModel(typeMapping, constrainRules, {...context, metaModel: context.metaModel.key, propertyKey: undefined});
-  const valueModel = constrainMetaModel(typeMapping, constrainRules, {...context, metaModel: context.metaModel.value, propertyKey: undefined});
-  const constrainedModel = new ConstrainedDictionaryModel(context.constrainedName, context.metaModel.originalInput, '', keyModel, valueModel, context.metaModel.serializationType);
+function constrainDictionaryModel<Options>(typeMapping: TypeMapping<Options>, constrainRules: Constraints, context: ConstrainContext<Options, DictionaryModel>, alreadySeenModels: Map<MetaModel, ConstrainedMetaModel>): ConstrainedDictionaryModel {
+  const constrainedModel = new ConstrainedDictionaryModel(context.constrainedName, context.metaModel.originalInput, '', placeHolderConstrainedObject, placeHolderConstrainedObject, context.metaModel.serializationType);
+  alreadySeenModels.set(context.metaModel, constrainedModel);
+
+  const keyModel = constrainMetaModel(typeMapping, constrainRules, {...context, metaModel: context.metaModel.key, propertyKey: undefined}, alreadySeenModels);
+  constrainedModel.key = keyModel;
+  const valueModel = constrainMetaModel(typeMapping, constrainRules, {...context, metaModel: context.metaModel.value, propertyKey: undefined}, alreadySeenModels);
+  constrainedModel.value = valueModel;
   constrainedModel.type = getTypeFromMapping(typeMapping, {
     constrainedModel,
     options: context.options,
@@ -146,13 +163,15 @@ function constrainDictionaryModel<Options>(typeMapping: TypeMapping<Options>, co
   return constrainedModel;
 }
 
-function constrainObjectModel<Options>(typeMapping: TypeMapping<Options>, constrainRules: Constraints, context: ConstrainContext<Options, ObjectModel>): ConstrainedObjectModel {
+function constrainObjectModel<Options>(typeMapping: TypeMapping<Options>, constrainRules: Constraints, context: ConstrainContext<Options, ObjectModel>, alreadySeenModels: Map<MetaModel, ConstrainedMetaModel>): ConstrainedObjectModel {
   const constrainedModel = new ConstrainedObjectModel(context.constrainedName, context.metaModel.originalInput, '', {});
+  alreadySeenModels.set(context.metaModel, constrainedModel); 
+
   for (const propertyMetaModel of Object.values(context.metaModel.properties)) {
-    const constrainedPropertyModel = new ConstrainedObjectPropertyModel('', propertyMetaModel.required, constrainedModel);
+    const constrainedPropertyModel = new ConstrainedObjectPropertyModel('', propertyMetaModel.propertyName, propertyMetaModel.required, constrainedModel);
     const constrainedPropertyName = constrainRules.propertyKey({objectPropertyModel: propertyMetaModel, constrainedObjectPropertyModel: constrainedPropertyModel, constrainedObjectModel: constrainedModel, objectModel: context.metaModel});
     constrainedPropertyModel.propertyName = constrainedPropertyName;
-    const constrainedProperty = constrainMetaModel(typeMapping, constrainRules, {...context, metaModel: propertyMetaModel.property, propertyKey: constrainedPropertyName});
+    const constrainedProperty = constrainMetaModel(typeMapping, constrainRules, {...context, metaModel: propertyMetaModel.property, propertyKey: constrainedPropertyName}, alreadySeenModels);
     constrainedPropertyModel.property = constrainedProperty;
     constrainedModel.properties[String(constrainedPropertyName)] = constrainedPropertyModel;
   }
@@ -169,7 +188,7 @@ function ConstrainEnumModel<Options>(typeMapping: TypeMapping<Options>, constrai
 
   for (const enumValue of context.metaModel.values) {
     const constrainedEnumKey = constrainRules.enumKey({enumKey: String(enumValue.key), enumModel: context.metaModel, constrainedEnumModel: constrainedModel});
-    const constrainedEnumValue = constrainRules.enumValue({enumValue: String(enumValue.value), enumModel: context.metaModel, constrainedEnumModel: constrainedModel});
+    const constrainedEnumValue = constrainRules.enumValue({enumValue: enumValue.value, enumModel: context.metaModel, constrainedEnumModel: constrainedModel});
 
     const constrainedEnumValueModel = new ConstrainedEnumValueModel(constrainedEnumKey, constrainedEnumValue);
     constrainedModel.values.push(constrainedEnumValueModel);
@@ -178,13 +197,16 @@ function ConstrainEnumModel<Options>(typeMapping: TypeMapping<Options>, constrai
   return constrainedModel;
 }
 
-export function constrainMetaModel<Options>(typeMapping: TypeMapping<Options>, constrainRules: Constraints, context: ConstrainContext<Options, MetaModel>): ConstrainedMetaModel {
+export function constrainMetaModel<Options>(typeMapping: TypeMapping<Options>, constrainRules: Constraints, context: ConstrainContext<Options, MetaModel>, alreadySeenModels: Map<MetaModel, ConstrainedMetaModel> = new Map()): ConstrainedMetaModel {
+  if (alreadySeenModels.has(context.metaModel)) {
+    return alreadySeenModels.get(context.metaModel) as ConstrainedMetaModel;
+  }
   const constrainedName = constrainRules.modelName({modelName: context.metaModel.name});
   const newContext = {...context, constrainedName};
   if (newContext.metaModel instanceof ObjectModel) {
-    return constrainObjectModel(typeMapping, constrainRules, {...newContext, metaModel: newContext.metaModel});
+    return constrainObjectModel(typeMapping, constrainRules, {...newContext, metaModel: newContext.metaModel}, alreadySeenModels);
   } else if (newContext.metaModel instanceof ReferenceModel) {
-    return constrainReferenceModel(typeMapping, constrainRules, {...newContext, metaModel: newContext.metaModel});
+    return constrainReferenceModel(typeMapping, constrainRules, {...newContext, metaModel: newContext.metaModel}, alreadySeenModels);
   } else if (newContext.metaModel instanceof AnyModel) {
     return constrainAnyModel(typeMapping, {...newContext, metaModel: newContext.metaModel});
   } else if (newContext.metaModel instanceof FloatModel) {
@@ -196,15 +218,15 @@ export function constrainMetaModel<Options>(typeMapping: TypeMapping<Options>, c
   } else if (newContext.metaModel instanceof BooleanModel) {
     return constrainBooleanModel(typeMapping, {...newContext, metaModel: newContext.metaModel});
   } else if (newContext.metaModel instanceof TupleModel) {
-    return constrainTupleModel(typeMapping, constrainRules, {...newContext, metaModel: newContext.metaModel});
+    return constrainTupleModel(typeMapping, constrainRules, {...newContext, metaModel: newContext.metaModel}, alreadySeenModels);
   } else if (newContext.metaModel instanceof ArrayModel) {
-    return constrainArrayModel(typeMapping, constrainRules, {...newContext, metaModel: newContext.metaModel});
+    return constrainArrayModel(typeMapping, constrainRules, {...newContext, metaModel: newContext.metaModel}, alreadySeenModels);
   } else if (newContext.metaModel instanceof UnionModel) {
-    return constrainUnionModel(typeMapping, constrainRules, {...newContext, metaModel: newContext.metaModel});
+    return constrainUnionModel(typeMapping, constrainRules, {...newContext, metaModel: newContext.metaModel}, alreadySeenModels);
   } else if (newContext.metaModel instanceof EnumModel) {
     return ConstrainEnumModel(typeMapping, constrainRules, {...newContext, metaModel: newContext.metaModel});
   } else if (newContext.metaModel instanceof DictionaryModel) {
-    return constrainDictionaryModel(typeMapping, constrainRules, {...newContext, metaModel: newContext.metaModel});
+    return constrainDictionaryModel(typeMapping, constrainRules, {...newContext, metaModel: newContext.metaModel}, alreadySeenModels);
   }
   throw new Error('Could not constrain model');
 }

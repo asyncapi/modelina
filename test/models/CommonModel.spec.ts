@@ -532,42 +532,6 @@ describe('CommonModel', () => {
         expect(doc1.additionalItems).toBeUndefined();
       });
     });
-
-    describe('patternProperties', () => {
-      test('should be merged when only right side is defined', () => {
-        const doc = { };
-        let doc1 = CommonModel.toCommonModel(doc);
-        const doc2 = CommonModel.toCommonModel(doc);
-        doc2.patternProperties = {pattern1: CommonModel.toCommonModel({type: 'string'})};
-        doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
-        expect(doc1.patternProperties).toEqual(doc2.patternProperties);
-      });
-      test('should be merged when both sides are defined', () => {
-        const doc = { };
-        let doc1 = CommonModel.toCommonModel(doc);
-        const doc2 = CommonModel.toCommonModel(doc);
-        doc2.patternProperties = {pattern1: CommonModel.toCommonModel({type: 'string'})};
-        doc1.patternProperties = {pattern2: CommonModel.toCommonModel({type: 'number'})};
-        doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
-        expect(doc1.patternProperties).toEqual({pattern1: {type: 'string'}, pattern2: {type: 'number'}});
-      });
-      test('should be merged together when both sides are defined', () => {
-        const doc = { };
-        let doc1 = CommonModel.toCommonModel(doc);
-        const doc2 = CommonModel.toCommonModel(doc);
-        doc2.patternProperties = {pattern1: CommonModel.toCommonModel({type: 'string'})};
-        doc1.patternProperties = {pattern1: CommonModel.toCommonModel({type: 'number'})};
-        doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
-        expect(doc1.patternProperties).toEqual({pattern1: {type: ['number', 'string'], originalInput: {}}});
-      });
-      test('should not change if nothing is defined', () => {
-        const doc = { };
-        let doc1 = CommonModel.toCommonModel(doc);
-        const doc2 = CommonModel.toCommonModel(doc);
-        doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
-        expect(doc1.patternProperties).toBeUndefined();
-      });
-    });
   });
   
   describe('addItem', () => {
@@ -758,33 +722,6 @@ describe('CommonModel', () => {
       expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, additionalItemsModel, additionalItemsModel, {});
     });
   });
-  describe('addPatternProperty', () => {
-    beforeAll(() => {
-      jest.spyOn(CommonModel, 'mergeCommonModels');
-    });
-    afterEach(() => {
-      jest.clearAllMocks();
-    });
-    test('should add patternProperty to model', () => {
-      const patternPropertyModel = new CommonModel();
-      const pattern = 'TestPattern';
-      patternPropertyModel.$id = 'test'; 
-      const model = new CommonModel(); 
-      model.addPatternProperty(pattern, patternPropertyModel, {});
-      expect(model.patternProperties).toEqual({TestPattern: patternPropertyModel});
-      expect(CommonModel.mergeCommonModels).not.toHaveBeenCalled();
-    });
-    test('should merge additionalProperties together', () => {
-      const patternPropertyModel = new CommonModel();
-      const pattern = 'TestPattern';
-      patternPropertyModel.$id = 'test'; 
-      const model = new CommonModel(); 
-      model.addPatternProperty(pattern, patternPropertyModel, {});
-      model.addPatternProperty(pattern, patternPropertyModel, {});
-      expect(model.patternProperties).toEqual({TestPattern: patternPropertyModel});
-      expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, patternPropertyModel, patternPropertyModel, {});
-    });
-  });
   describe('addEnum', () => {
     test('should add enum', () => {
       const model = new CommonModel(); 
@@ -894,14 +831,14 @@ describe('CommonModel', () => {
         expect(d.getNearestDependencies()).toEqual(['1']);
       });
       test('check that all dependencies are returned', () => {
-        const doc = { additionalProperties: { $ref: '1' }, extend: ['2'], items: { $ref: '3' }, properties: { testProp: { $ref: '4' } }, patternProperties: {testPattern: {$ref: '5'}}, additionalItems: { $ref: '6' } };
+        const doc = { additionalProperties: { $ref: '1' }, extend: ['2'], items: { $ref: '3' }, properties: { testProp: { $ref: '4' } }, additionalItems: { $ref: '5' } };
         const d = CommonModel.toCommonModel(doc);
-        expect(d.getNearestDependencies()).toEqual(['1', '2', '3', '4', '5', '6']);
+        expect(d.getNearestDependencies()).toEqual(['1', '2', '3', '4', '5']);
       });      
       test('should work with nested items', () => {
-        const doc = {properties: { testProp: { items: { $ref: '1' } } }, patternProperties: { testPattern: { items: { $ref: '2' } } } };
+        const doc = {properties: { testProp: { items: { $ref: '1' } } } };
         const d = CommonModel.toCommonModel(doc);
-        expect(d.getNearestDependencies()).toEqual(['1', '2']);
+        expect(d.getNearestDependencies()).toEqual(['1']);
       });
       test('check that no dependencies is returned if there are none', () => {
         const doc = { };

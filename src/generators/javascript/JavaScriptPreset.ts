@@ -1,10 +1,9 @@
 import { Preset, ClassPreset } from '../../models';
-import { JavaScriptOptions } from './JavaScriptGenerator';
 import { ClassRenderer, JS_DEFAULT_CLASS_PRESET } from './renderers/ClassRenderer';
 
 export type ClassPresetType<O> = ClassPreset<ClassRenderer, O>;
 
-export type JavaScriptPreset<O = JavaScriptOptions> = Preset<{
+export type JavaScriptPreset<O = any> = Preset<{
   class: ClassPresetType<O>;
 }>;
 

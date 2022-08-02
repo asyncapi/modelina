@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { ConstrainedEnumModel, EnumModel } from '../../../models';
 import { NO_NUMBER_START_CHAR, NO_DUPLICATE_ENUM_KEYS, NO_EMPTY_VALUE, NO_RESERVED_KEYWORDS} from '../../../helpers/Constraints';
 import { EnumKeyConstraint, EnumValueConstraint, FormatHelpers } from '../../../helpers';
@@ -23,7 +22,11 @@ export const DefaultEnumKeyConstraints: ModelEnumKeyConstraints = {
   NO_EMPTY_VALUE,
   NAMING_FORMATTER: FormatHelpers.toConstantCase,
   NO_RESERVED_KEYWORDS: (value: string) => {
-    return NO_RESERVED_KEYWORDS(value, isReservedCSharpKeyword); 
+    return NO_RESERVED_KEYWORDS(value, (value) => {
+      // We don't care about comparing values in lowercase as we are using constant case
+      // This means the reserved keywords technically never clashes
+      return isReservedCSharpKeyword(value, false);
+    }); 
   }
 };
 
@@ -36,8 +39,11 @@ export function defaultEnumKeyConstraints(customConstraints?: Partial<ModelEnumK
     constrainedEnumKey = constraints.NO_NUMBER_START_CHAR(constrainedEnumKey);
     constrainedEnumKey = constraints.NO_EMPTY_VALUE(constrainedEnumKey);
     constrainedEnumKey = constraints.NO_RESERVED_KEYWORDS(constrainedEnumKey);
+    //If the enum key has been manipulated, lets make sure it don't clash with existing keys
+    if (constrainedEnumKey !== enumKey) {
+      constrainedEnumKey = constraints.NO_DUPLICATE_KEYS(constrainedEnumModel, enumModel, constrainedEnumKey, constraints.NAMING_FORMATTER);
+    }
     constrainedEnumKey = constraints.NAMING_FORMATTER(constrainedEnumKey);
-    constrainedEnumKey = constraints.NO_DUPLICATE_KEYS(constrainedEnumModel, enumModel, constrainedEnumKey, constraints.NAMING_FORMATTER!);
     return constrainedEnumKey;
   };
 }
@@ -45,11 +51,11 @@ export function defaultEnumKeyConstraints(customConstraints?: Partial<ModelEnumK
 export function defaultEnumValueConstraints(): EnumValueConstraint {
   return ({enumValue}) => {
     let normalizedEnumValue;
-    switch (typeof enumValue.value) {
+    switch (typeof enumValue) {
     case 'boolean':
     case 'bigint':
     case 'number': {
-      normalizedEnumValue = enumValue.value;
+      normalizedEnumValue = enumValue;
       break;
     }
     case 'object': {

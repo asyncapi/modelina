@@ -1,7 +1,7 @@
 import {parse, AsyncAPIDocument, Schema as AsyncAPISchema, ParserOptions} from '@asyncapi/parser';
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
-import { CommonModel, InputMetaModel, ProcessorOptions } from '../models';
+import { InputMetaModel, ProcessorOptions } from '../models';
 import { Logger } from '../utils';
 import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
 import { convertToMetaModel } from '../helpers';
@@ -29,16 +29,19 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       doc = input as AsyncAPIDocument;
     }
     inputModel.originalInput = doc;
-
-    //Intermediate model before meta model
-    let commonModels: {[key: string]: CommonModel} = {};
+    // Go over all the message payloads and convert them to models
     for (const [, message] of doc.allMessages()) {
       const schema = AsyncAPIInputProcessor.convertToInternalSchema(message.payload());
-      const newCommonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema);
-      commonModels = {...commonModels, ...newCommonModels};
-    }
-    for (const [key, commonModel] of Object.entries(commonModels)) {
-      inputModel.models[String(key)] = convertToMetaModel(commonModel);
+      const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema);
+      if (newCommonModel.$id !== undefined) {
+        if (inputModel.models[newCommonModel.$id] !== undefined) {
+          Logger.warn(`Overwriting existing model with $id ${newCommonModel.$id}, are there two models with the same id present?`, newCommonModel);
+        }
+        const metaModel = convertToMetaModel(newCommonModel);
+        inputModel.models[metaModel.name] = metaModel;
+      } else {
+        Logger.warn('Model did not have $id which is required, ignoring.', newCommonModel);
+      }
     }
     return inputModel;
   }
@@ -57,7 +60,13 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     alreadyIteratedSchemas: Map<string, AsyncapiV2Schema> = new Map()
   ): AsyncapiV2Schema | boolean {
     if (typeof schema === 'boolean') {return schema;}
-    const schemaUid = schema.uid();
+    
+    let schemaUid = schema.uid();
+    //Because the constraint functionality of generators cannot handle -, <, >, we remove them from the id if it's an anonymous schema.
+    if (schemaUid.includes('<anonymous-schema')) {
+      schemaUid = schemaUid.replace('<', '').replace(/-/g, '_').replace('>', '');
+    }
+    
     if (alreadyIteratedSchemas.has(schemaUid)) {
       return alreadyIteratedSchemas.get(schemaUid) as AsyncapiV2Schema; 
     }

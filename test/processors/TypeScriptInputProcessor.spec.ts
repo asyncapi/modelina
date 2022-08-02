@@ -2,14 +2,9 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { CommonModel } from '../../src/models';
 import { TypeScriptInputProcessor } from '../../src/processors';
-
 const baseFile = path.resolve(__dirname, './TypeScriptInputProcessor/index.ts');
 const baseFileContents = fs.readFileSync(path.resolve(__dirname, './TypeScriptInputProcessor/index.ts'), 'utf-8');
-
-jest.mock('../../src/interpreter/Interpreter');
-jest.mock('../../src/interpreter/PostInterpreter');
 jest.mock('../../src/utils/LoggingInterface');
-
 const mockedReturnModels = [new CommonModel()];
 jest.mock('../../src/interpreter/Interpreter', () => {
   return {
@@ -18,11 +13,6 @@ jest.mock('../../src/interpreter/Interpreter', () => {
         interpret: jest.fn().mockImplementation(() => {return mockedReturnModels[0];})
       };
     })
-  };
-});
-jest.mock('../../src/interpreter/PostInterpreter', () => {
-  return {
-    postInterpretModel: jest.fn().mockImplementation(() => {return mockedReturnModels;})
   };
 });
 

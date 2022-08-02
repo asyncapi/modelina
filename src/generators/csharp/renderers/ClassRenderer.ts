@@ -57,19 +57,19 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 
   runAccessorPreset(property: ConstrainedObjectPropertyModel): Promise<string> {
-    return this.runPreset('accessor', { property });
+    return this.runPreset('accessor', { property, options: this.options, renderer: this });
   }
 
   runPropertyPreset(property: ConstrainedObjectPropertyModel): Promise<string> {
-    return this.runPreset('property', { property });
+    return this.runPreset('property', { property, options: this.options, renderer: this });
   }
 
   runGetterPreset(property: ConstrainedObjectPropertyModel): Promise<string> {
-    return this.runPreset('getter', { property });
+    return this.runPreset('getter', { property, options: this.options, renderer: this });
   }
 
   runSetterPreset(property: ConstrainedObjectPropertyModel): Promise<string> {
-    return this.runPreset('setter', { property });
+    return this.runPreset('setter', { property, options: this.options, renderer: this });
   }
 }
 
@@ -78,10 +78,10 @@ export const CSHARP_DEFAULT_CLASS_PRESET: CsharpClassPreset<CSharpOptions> = {
     return renderer.defaultSelf();
   },
   async property({ renderer, property, options }) {
-    if (options.autoImplementedProperties) {
+    if (options?.autoImplementedProperties) {
       const getter = await renderer.runGetterPreset(property);
       const setter = await renderer.runSetterPreset(property);
-      return `public ${property.property.type} ${pascalCase(property.propertyName)} { ${getter} ${setter} }`;
+      return `public ${property.property.type}${property.required === false && '?'} ${pascalCase(property.propertyName)} { ${getter} ${setter} }`;
     }
     return `private ${property.property.type} ${property.propertyName};`;
   },

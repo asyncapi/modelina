@@ -6,12 +6,13 @@ import { JavaPreset } from '../JavaPreset';
  * 
  * @implements {JavaPreset}
  */
-export const JAVA_CONSTRAINTS_PRESET: JavaPreset<any> = {
+export const JAVA_CONSTRAINTS_PRESET: JavaPreset = {
   class: {
     self({renderer, content}) {
       renderer.addDependency('import javax.validation.constraints.*;');
       return content;
     },
+    // eslint-disable-next-line sonarjs/cognitive-complexity
     getter({ renderer, property, content }) {
       const annotations: string[] = [];
       
@@ -19,7 +20,7 @@ export const JAVA_CONSTRAINTS_PRESET: JavaPreset<any> = {
         annotations.push(renderer.renderAnnotation('NotNull'));
       }
       const originalInput = property.property.originalInput;
-    
+
       // string
       if (property.property instanceof ConstrainedStringModel) {
         const pattern = originalInput['pattern'];
@@ -32,7 +33,7 @@ export const JAVA_CONSTRAINTS_PRESET: JavaPreset<any> = {
           annotations.push(renderer.renderAnnotation('Size', { min: minLength, max: maxLength }));
         }
       }
-    
+      
       // number/integer
       if (property.property instanceof ConstrainedFloatModel ||
         property.property instanceof ConstrainedIntegerModel) {

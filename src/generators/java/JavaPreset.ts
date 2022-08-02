@@ -7,12 +7,12 @@ import { EnumRenderer, JAVA_DEFAULT_ENUM_PRESET } from './renderers/EnumRenderer
 export type ClassPresetType<O> = ClassPreset<ClassRenderer, O>;
 export type EnumPresetType<O> = EnumPreset<EnumRenderer, O>;
 
-export type JavaPreset<O = JavaOptions> = Preset<{
+export type JavaPreset<O = any> = Preset<{
   class: ClassPresetType<O>;
   enum: EnumPresetType<O>;
 }>;
 
-export const JAVA_DEFAULT_PRESET: JavaPreset = {
+export const JAVA_DEFAULT_PRESET: JavaPreset<JavaOptions> = {
   class: JAVA_DEFAULT_CLASS_PRESET,
   enum: JAVA_DEFAULT_ENUM_PRESET,
 };

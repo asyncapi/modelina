@@ -52,8 +52,8 @@ describe('Constraints', () => {
     });
     test('should be able to handle multiple reserved properties', () => {
       const constrainedModel = new ConstrainedObjectModel('', undefined, '', {
-        Test: new ConstrainedObjectPropertyModel('Test', false, new ConstrainedAnyModel('', undefined, '')),
-        ReservedTest: new ConstrainedObjectPropertyModel('ReservedTest', false, new ConstrainedAnyModel('', undefined, ''))
+        Test: new ConstrainedObjectPropertyModel('Test', 'Test', false, new ConstrainedAnyModel('', undefined, '')),
+        ReservedTest: new ConstrainedObjectPropertyModel('ReservedTest', 'ReservedTest', false, new ConstrainedAnyModel('', undefined, ''))
       });
       const metaModel = new ObjectModel('', undefined, {
         test: new ObjectPropertyModel('test', false, new AnyModel('', undefined)),

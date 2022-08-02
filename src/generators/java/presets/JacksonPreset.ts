@@ -17,7 +17,7 @@ export const JAVA_JACKSON_PRESET: JavaPreset = {
       const isDictionary = property.property instanceof ConstrainedDictionaryModel;
       const hasUnwrappedOptions = isDictionary && (property.property as ConstrainedDictionaryModel).serializationType === 'unwrap';
       if (!hasUnwrappedOptions) {
-        const annotation = renderer.renderAnnotation('JsonProperty', `"${property.propertyName}"`);
+        const annotation = renderer.renderAnnotation('JsonProperty', `"${property.unconstrainedPropertyName}"`);
         return renderer.renderBlock([annotation, content]);
       }
       return renderer.renderBlock([content]);

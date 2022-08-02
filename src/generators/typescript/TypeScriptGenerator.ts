@@ -4,24 +4,28 @@ import {
   defaultGeneratorOptions
 } from '../AbstractGenerator';
 import { ConstrainedEnumModel, ConstrainedMetaModel, ConstrainedObjectModel, InputMetaModel, MetaModel, RenderOutput } from '../../models';
-import { constrainMetaModel, Constraints, split, TypeMapping } from '../../helpers';
+import { constrainMetaModel, Constraints, split, TypeMapping, hasPreset } from '../../helpers';
 import { TypeScriptPreset, TS_DEFAULT_PRESET } from './TypeScriptPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { InterfaceRenderer } from './renderers/InterfaceRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { TypeRenderer } from './renderers/TypeRenderer';
 import { TypeScriptDefaultConstraints, TypeScriptDefaultTypeMapping } from './TypeScriptConstrainer';
+import { TS_EXPORT_KEYWORD_PRESET } from './presets';
+import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 
 export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPreset> {
   renderTypes: boolean;
   modelType: 'class' | 'interface';
   enumType: 'enum' | 'union';
+  mapType: 'indexedObject' | 'map' | 'record';
   typeMapping: TypeMapping<TypeScriptOptions>;
   constraints: Constraints;
 }
 
 export interface TypeScriptRenderCompleteModelOptions {
   moduleSystem?: 'ESM' | 'CJS';
+  exportType?: 'default' | 'named';
 }
 
 /**
@@ -33,18 +37,19 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,Typ
     renderTypes: true,
     modelType: 'class',
     enumType: 'enum',
+    mapType: 'map',
     defaultPreset: TS_DEFAULT_PRESET,
     typeMapping: TypeScriptDefaultTypeMapping,
     constraints: TypeScriptDefaultConstraints
   };
 
   constructor(
-    options: Partial<TypeScriptOptions> = TypeScriptGenerator.defaultOptions,
+    options?: DeepPartial<TypeScriptOptions>,
   ) {
-    const realizedOptions = {...TypeScriptGenerator.defaultOptions, ...options};
+    const realizedOptions = mergePartialAndDefault(TypeScriptGenerator.defaultOptions, options) as TypeScriptOptions;
     super('TypeScript', realizedOptions);
   }
-  
+
   splitMetaModel(model: MetaModel): MetaModel[] {
     //These are the models that we have separate renderers for
     const metaModelsToSplit = {
@@ -73,29 +78,48 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,Typ
    * @param inputModel
    * @param options
    */
-  async renderCompleteModel(model: ConstrainedMetaModel, inputModel: InputMetaModel, options: TypeScriptRenderCompleteModelOptions): Promise<RenderOutput> {
+  async renderCompleteModel(model: ConstrainedMetaModel, inputModel: InputMetaModel, {moduleSystem = 'ESM', exportType = 'default'}: TypeScriptRenderCompleteModelOptions): Promise<RenderOutput> {
+    // Shallow copy presets so that we can restore it once we are done
+    const originalPresets = [...(this.options.presets ? this.options.presets : [])];
+
+    // Add preset that adds the `export` keyword if it hasn't already been added
+    if (
+      moduleSystem === 'ESM' &&
+      exportType === 'named' &&
+      !hasPreset(originalPresets, TS_EXPORT_KEYWORD_PRESET)
+    ) {
+      this.options.presets = [TS_EXPORT_KEYWORD_PRESET, ...originalPresets];
+    }
+
     const outputModel = await this.render(model, inputModel);
     const modelDependencies = model.getNearestDependencies();
     //Create the correct dependency imports
-    const modelDependencyImports = modelDependencies.map((formattedDependencyModelName) => {
-      if (options.moduleSystem === 'CJS') {
-        return `const ${formattedDependencyModelName} = require('./${formattedDependencyModelName}');`;
-      }
-      return `import ${formattedDependencyModelName} from './${formattedDependencyModelName}';`;
+    const modelDependencyImports = modelDependencies.map(({name}) => {
+      const dependencyObject =
+        exportType === 'named' ? `{${name}}` : name;
+
+      return moduleSystem === 'CJS'
+        ? `const ${dependencyObject} = require('./${name}');`
+        : `import ${dependencyObject} from './${name}';`;
     });
 
-    //Ensure we expose the model correctly, based on the module system
-    let modelCode = `${outputModel.result}
-export default ${outputModel.renderedName};
-`;
-    if (options.moduleSystem === 'CJS') {
-      modelCode = `${outputModel.result}
-module.exports = ${outputModel.renderedName};`;
-    }
+    //Ensure we expose the model correctly, based on the module system and export type
+    const cjsExport =
+      exportType === 'default'
+        ? `module.exports = ${outputModel.renderedName};`
+        : `exports.${outputModel.renderedName} = ${outputModel.renderedName};`;
+    const esmExport =
+      exportType === 'default'
+        ? `export default ${outputModel.renderedName};\n`
+        : '';
+    const modelCode = `${outputModel.result}\n${moduleSystem === 'CJS' ? cjsExport : esmExport}`;
 
     const outputContent = `${[...modelDependencyImports, ...outputModel.dependencies].join('\n')}
-
 ${modelCode}`;
+
+    // Restore presets array from original copy
+    this.options.presets = originalPresets;
+
     return RenderOutput.toRenderOutput({ result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies });
   }
 
@@ -106,9 +130,6 @@ ${modelCode}`;
       }
       return this.renderClass(model, inputModel);
     } else if (model instanceof ConstrainedEnumModel) {
-      if (this.options.enumType === 'union') {
-        return this.renderType(model, inputModel);
-      }
       return this.renderEnum(model, inputModel);
     } 
     return this.renderType(model, inputModel);

@@ -1,21 +1,38 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TypeScriptGenerator should render \`type\` type - array of union type 1`] = `"type TypeArray = Array<string | number | boolean>;"`;
+exports[`TypeScriptGenerator should not render \`class\` with reserved keyword 1`] = `
+"class Address {
+  private _reservedReservedEnum?: string;
+  private _reservedEnum?: string;
 
-exports[`TypeScriptGenerator should render models and their dependencies for CJS module system 1`] = `
-"const OtherModel = require('./OtherModel');
+  constructor(input: {
+    reservedReservedEnum?: string,
+    reservedEnum?: string,
+  }) {
+    this._reservedReservedEnum = input.reservedReservedEnum;
+    this._reservedEnum = input.reservedEnum;
+  }
 
-class Address {
+  get reservedReservedEnum(): string | undefined { return this._reservedReservedEnum; }
+  set reservedReservedEnum(reservedReservedEnum: string | undefined) { this._reservedReservedEnum = reservedReservedEnum; }
+
+  get reservedEnum(): string | undefined { return this._reservedEnum; }
+  set reservedEnum(reservedEnum: string | undefined) { this._reservedEnum = reservedEnum; }
+}"
+`;
+
+exports[`TypeScriptGenerator should render \`class\` type 1`] = `
+"class Address {
   private _streetName: string;
   private _city: string;
   private _state: string;
   private _houseNumber: number;
   private _marriage?: boolean;
   private _members?: string | number | boolean;
-  private _arrayType: [string, number, ...(object | string | number | Array<unknown> | boolean | null)[]];
-  private _otherModel?: OtherModel;
-  private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null>;
-  private _sTestPatternProperties?: Map<String, string>;
+  private _tupleType?: [string, number];
+  private _tupleTypeWithAdditionalItems?: string | number | any[];
+  private _arrayType: string | any[];
+  private _additionalProperties?: Map<string, any>;
 
   constructor(input: {
     streetName: string,
@@ -24,8 +41,10 @@ class Address {
     houseNumber: number,
     marriage?: boolean,
     members?: string | number | boolean,
-    arrayType: [string, number, ...(object | string | number | Array<unknown> | boolean | null)[]],
-    otherModel?: OtherModel,
+    tupleType?: [string, number],
+    tupleTypeWithAdditionalItems?: string | number | any[],
+    arrayType: string | any[],
+    additionalProperties?: Map<string, any>,
   }) {
     this._streetName = input.streetName;
     this._city = input.city;
@@ -33,8 +52,10 @@ class Address {
     this._houseNumber = input.houseNumber;
     this._marriage = input.marriage;
     this._members = input.members;
+    this._tupleType = input.tupleType;
+    this._tupleTypeWithAdditionalItems = input.tupleTypeWithAdditionalItems;
     this._arrayType = input.arrayType;
-    this._otherModel = input.otherModel;
+    this._additionalProperties = input.additionalProperties;
   }
 
   get streetName(): string { return this._streetName; }
@@ -55,46 +76,165 @@ class Address {
   get members(): string | number | boolean | undefined { return this._members; }
   set members(members: string | number | boolean | undefined) { this._members = members; }
 
-  get arrayType(): [string, number, ...(object | string | number | Array<unknown> | boolean | null)[]] { return this._arrayType; }
-  set arrayType(arrayType: [string, number, ...(object | string | number | Array<unknown> | boolean | null)[]]) { this._arrayType = arrayType; }
+  get tupleType(): [string, number] | undefined { return this._tupleType; }
+  set tupleType(tupleType: [string, number] | undefined) { this._tupleType = tupleType; }
+
+  get tupleTypeWithAdditionalItems(): string | number | any[] | undefined { return this._tupleTypeWithAdditionalItems; }
+  set tupleTypeWithAdditionalItems(tupleTypeWithAdditionalItems: string | number | any[] | undefined) { this._tupleTypeWithAdditionalItems = tupleTypeWithAdditionalItems; }
+
+  get arrayType(): string | any[] { return this._arrayType; }
+  set arrayType(arrayType: string | any[]) { this._arrayType = arrayType; }
+
+  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
+}"
+`;
+
+exports[`TypeScriptGenerator should render \`enum\` type 1`] = `
+"enum States {
+  TEXAS = \\"Texas\\",
+  ALABAMA = \\"Alabama\\",
+  CALIFORNIA = \\"California\\",
+}"
+`;
+
+exports[`TypeScriptGenerator should render \`enum\` type as \`union\` if option enumType = \`union\` 1`] = `"type States = \\"Texas\\" | \\"Alabama\\" | \\"California\\";"`;
+
+exports[`TypeScriptGenerator should render \`interface\` type 1`] = `
+"interface Address {
+  streetName: string;
+  city: string;
+  state: string;
+  houseNumber: number;
+  marriage?: boolean;
+  members?: string | number | boolean;
+  tupleType?: [string, number];
+  tupleTypeWithAdditionalItems?: string | number | any[];
+  arrayType: string | any[];
+  additionalProperties?: Map<string, any>;
+}"
+`;
+
+exports[`TypeScriptGenerator should render \`type\` type - array of primitive type 1`] = `"type TypeArray = string | any[];"`;
+
+exports[`TypeScriptGenerator should render \`type\` type - array of union type 1`] = `"type TypeArray = string | number | boolean | any[];"`;
+
+exports[`TypeScriptGenerator should render \`type\` type - enum 1`] = `
+"enum TypeEnum {
+  TEXAS = \\"Texas\\",
+  ALABAMA = \\"Alabama\\",
+  CALIFORNIA = \\"California\\",
+  NUMBER_0 = 0,
+  NUMBER_1 = 1,
+  RESERVED_FALSE = \\"false\\",
+  RESERVED_TRUE = \\"true\\",
+}"
+`;
+
+exports[`TypeScriptGenerator should render \`type\` type - primitive 1`] = `"type TypePrimitive = string;"`;
+
+exports[`TypeScriptGenerator should render \`type\` type - union 1`] = `"type TypeUnion = string | number | boolean;"`;
+
+exports[`TypeScriptGenerator should render enums with translated special characters 1`] = `
+"enum States {
+  TEST_PLUS = \\"test+\\",
+  TEST = \\"test\\",
+  TEST_MINUS = \\"test-\\",
+  TEST_QUESTION_EXCLAMATION = \\"test?!\\",
+  ASTERISK_TEST = \\"*test\\",
+}"
+`;
+
+exports[`TypeScriptGenerator should render models and their dependencies for CJS module system 1`] = `
+"const OtherModel = require('./OtherModel');
+class Address {
+  private _streetName: string;
+  private _city: string;
+  private _state: string;
+  private _houseNumber: number;
+  private _marriage?: boolean;
+  private _members?: string | number | boolean;
+  private _arrayType: string | number | any[];
+  private _otherModel?: OtherModel;
+  private _additionalProperties?: Map<string, any>;
+
+  constructor(input: {
+    streetName: string,
+    city: string,
+    state: string,
+    houseNumber: number,
+    marriage?: boolean,
+    members?: string | number | boolean,
+    arrayType: string | number | any[],
+    otherModel?: OtherModel,
+    additionalProperties?: Map<string, any>,
+  }) {
+    this._streetName = input.streetName;
+    this._city = input.city;
+    this._state = input.state;
+    this._houseNumber = input.houseNumber;
+    this._marriage = input.marriage;
+    this._members = input.members;
+    this._arrayType = input.arrayType;
+    this._otherModel = input.otherModel;
+    this._additionalProperties = input.additionalProperties;
+  }
+
+  get streetName(): string { return this._streetName; }
+  set streetName(streetName: string) { this._streetName = streetName; }
+
+  get city(): string { return this._city; }
+  set city(city: string) { this._city = city; }
+
+  get state(): string { return this._state; }
+  set state(state: string) { this._state = state; }
+
+  get houseNumber(): number { return this._houseNumber; }
+  set houseNumber(houseNumber: number) { this._houseNumber = houseNumber; }
+
+  get marriage(): boolean | undefined { return this._marriage; }
+  set marriage(marriage: boolean | undefined) { this._marriage = marriage; }
+
+  get members(): string | number | boolean | undefined { return this._members; }
+  set members(members: string | number | boolean | undefined) { this._members = members; }
+
+  get arrayType(): string | number | any[] { return this._arrayType; }
+  set arrayType(arrayType: string | number | any[]) { this._arrayType = arrayType; }
 
   get otherModel(): OtherModel | undefined { return this._otherModel; }
   set otherModel(otherModel: OtherModel | undefined) { this._otherModel = otherModel; }
 
-  get additionalProperties(): Map<String, object | string | number | Array<unknown> | boolean | null> | undefined { return this._additionalProperties; }
-  set additionalProperties(additionalProperties: Map<String, object | string | number | Array<unknown> | boolean | null> | undefined) { this._additionalProperties = additionalProperties; }
-
-  get sTestPatternProperties(): Map<String, string> | undefined { return this._sTestPatternProperties; }
-  set sTestPatternProperties(sTestPatternProperties: Map<String, string> | undefined) { this._sTestPatternProperties = sTestPatternProperties; }
+  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
 }
 module.exports = Address;"
 `;
 
 exports[`TypeScriptGenerator should render models and their dependencies for CJS module system 2`] = `
 "
-
 class OtherModel {
   private _streetName?: string;
-  private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null>;
+  private _additionalProperties?: Map<string, any>;
 
   constructor(input: {
     streetName?: string,
+    additionalProperties?: Map<string, any>,
   }) {
     this._streetName = input.streetName;
+    this._additionalProperties = input.additionalProperties;
   }
 
   get streetName(): string | undefined { return this._streetName; }
   set streetName(streetName: string | undefined) { this._streetName = streetName; }
 
-  get additionalProperties(): Map<String, object | string | number | Array<unknown> | boolean | null> | undefined { return this._additionalProperties; }
-  set additionalProperties(additionalProperties: Map<String, object | string | number | Array<unknown> | boolean | null> | undefined) { this._additionalProperties = additionalProperties; }
+  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
 }
 module.exports = OtherModel;"
 `;
 
 exports[`TypeScriptGenerator should render models and their dependencies for CJS module system with named exports 1`] = `
 "const {OtherModel} = require('./OtherModel');
-
 class Address {
   private _streetName: string;
   private _city: string;
@@ -102,10 +242,9 @@ class Address {
   private _houseNumber: number;
   private _marriage?: boolean;
   private _members?: string | number | boolean;
-  private _arrayType: [string, number, ...(object | string | number | Array<unknown> | boolean | null)[]];
+  private _arrayType: string | number | any[];
   private _otherModel?: OtherModel;
-  private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null>;
-  private _sTestPatternProperties?: Map<String, string>;
+  private _additionalProperties?: Map<string, any>;
 
   constructor(input: {
     streetName: string,
@@ -114,8 +253,9 @@ class Address {
     houseNumber: number,
     marriage?: boolean,
     members?: string | number | boolean,
-    arrayType: [string, number, ...(object | string | number | Array<unknown> | boolean | null)[]],
+    arrayType: string | number | any[],
     otherModel?: OtherModel,
+    additionalProperties?: Map<string, any>,
   }) {
     this._streetName = input.streetName;
     this._city = input.city;
@@ -125,6 +265,7 @@ class Address {
     this._members = input.members;
     this._arrayType = input.arrayType;
     this._otherModel = input.otherModel;
+    this._additionalProperties = input.additionalProperties;
   }
 
   get streetName(): string { return this._streetName; }
@@ -145,46 +286,43 @@ class Address {
   get members(): string | number | boolean | undefined { return this._members; }
   set members(members: string | number | boolean | undefined) { this._members = members; }
 
-  get arrayType(): [string, number, ...(object | string | number | Array<unknown> | boolean | null)[]] { return this._arrayType; }
-  set arrayType(arrayType: [string, number, ...(object | string | number | Array<unknown> | boolean | null)[]]) { this._arrayType = arrayType; }
+  get arrayType(): string | number | any[] { return this._arrayType; }
+  set arrayType(arrayType: string | number | any[]) { this._arrayType = arrayType; }
 
   get otherModel(): OtherModel | undefined { return this._otherModel; }
   set otherModel(otherModel: OtherModel | undefined) { this._otherModel = otherModel; }
 
-  get additionalProperties(): Map<String, object | string | number | Array<unknown> | boolean | null> | undefined { return this._additionalProperties; }
-  set additionalProperties(additionalProperties: Map<String, object | string | number | Array<unknown> | boolean | null> | undefined) { this._additionalProperties = additionalProperties; }
-
-  get sTestPatternProperties(): Map<String, string> | undefined { return this._sTestPatternProperties; }
-  set sTestPatternProperties(sTestPatternProperties: Map<String, string> | undefined) { this._sTestPatternProperties = sTestPatternProperties; }
+  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
 }
 exports.Address = Address;"
 `;
 
 exports[`TypeScriptGenerator should render models and their dependencies for CJS module system with named exports 2`] = `
 "
-
 class OtherModel {
   private _streetName?: string;
-  private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null>;
+  private _additionalProperties?: Map<string, any>;
 
   constructor(input: {
     streetName?: string,
+    additionalProperties?: Map<string, any>,
   }) {
     this._streetName = input.streetName;
+    this._additionalProperties = input.additionalProperties;
   }
 
   get streetName(): string | undefined { return this._streetName; }
   set streetName(streetName: string | undefined) { this._streetName = streetName; }
 
-  get additionalProperties(): Map<String, object | string | number | Array<unknown> | boolean | null> | undefined { return this._additionalProperties; }
-  set additionalProperties(additionalProperties: Map<String, object | string | number | Array<unknown> | boolean | null> | undefined) { this._additionalProperties = additionalProperties; }
+  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
 }
 exports.OtherModel = OtherModel;"
 `;
 
 exports[`TypeScriptGenerator should render models and their dependencies for ESM module system 1`] = `
 "import OtherModel from './OtherModel';
-
 class Address {
   private _streetName: string;
   private _city: string;
@@ -192,10 +330,9 @@ class Address {
   private _houseNumber: number;
   private _marriage?: boolean;
   private _members?: string | number | boolean;
-  private _arrayType: [string, number, ...(object | string | number | Array<unknown> | boolean | null)[]];
+  private _arrayType: string | number | any[];
   private _otherModel?: OtherModel;
-  private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null>;
-  private _sTestPatternProperties?: Map<String, string>;
+  private _additionalProperties?: Map<string, any>;
 
   constructor(input: {
     streetName: string,
@@ -204,8 +341,9 @@ class Address {
     houseNumber: number,
     marriage?: boolean,
     members?: string | number | boolean,
-    arrayType: [string, number, ...(object | string | number | Array<unknown> | boolean | null)[]],
+    arrayType: string | number | any[],
     otherModel?: OtherModel,
+    additionalProperties?: Map<string, any>,
   }) {
     this._streetName = input.streetName;
     this._city = input.city;
@@ -215,6 +353,7 @@ class Address {
     this._members = input.members;
     this._arrayType = input.arrayType;
     this._otherModel = input.otherModel;
+    this._additionalProperties = input.additionalProperties;
   }
 
   get streetName(): string { return this._streetName; }
@@ -235,17 +374,14 @@ class Address {
   get members(): string | number | boolean | undefined { return this._members; }
   set members(members: string | number | boolean | undefined) { this._members = members; }
 
-  get arrayType(): [string, number, ...(object | string | number | Array<unknown> | boolean | null)[]] { return this._arrayType; }
-  set arrayType(arrayType: [string, number, ...(object | string | number | Array<unknown> | boolean | null)[]]) { this._arrayType = arrayType; }
+  get arrayType(): string | number | any[] { return this._arrayType; }
+  set arrayType(arrayType: string | number | any[]) { this._arrayType = arrayType; }
 
   get otherModel(): OtherModel | undefined { return this._otherModel; }
   set otherModel(otherModel: OtherModel | undefined) { this._otherModel = otherModel; }
 
-  get additionalProperties(): Map<String, object | string | number | Array<unknown> | boolean | null> | undefined { return this._additionalProperties; }
-  set additionalProperties(additionalProperties: Map<String, object | string | number | Array<unknown> | boolean | null> | undefined) { this._additionalProperties = additionalProperties; }
-
-  get sTestPatternProperties(): Map<String, string> | undefined { return this._sTestPatternProperties; }
-  set sTestPatternProperties(sTestPatternProperties: Map<String, string> | undefined) { this._sTestPatternProperties = sTestPatternProperties; }
+  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
 }
 export default Address;
 "
@@ -253,22 +389,23 @@ export default Address;
 
 exports[`TypeScriptGenerator should render models and their dependencies for ESM module system 2`] = `
 "
-
 class OtherModel {
   private _streetName?: string;
-  private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null>;
+  private _additionalProperties?: Map<string, any>;
 
   constructor(input: {
     streetName?: string,
+    additionalProperties?: Map<string, any>,
   }) {
     this._streetName = input.streetName;
+    this._additionalProperties = input.additionalProperties;
   }
 
   get streetName(): string | undefined { return this._streetName; }
   set streetName(streetName: string | undefined) { this._streetName = streetName; }
 
-  get additionalProperties(): Map<String, object | string | number | Array<unknown> | boolean | null> | undefined { return this._additionalProperties; }
-  set additionalProperties(additionalProperties: Map<String, object | string | number | Array<unknown> | boolean | null> | undefined) { this._additionalProperties = additionalProperties; }
+  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
 }
 export default OtherModel;
 "
@@ -276,7 +413,6 @@ export default OtherModel;
 
 exports[`TypeScriptGenerator should render models and their dependencies for ESM module system with named exports 1`] = `
 "import {OtherModel} from './OtherModel';
-
 export class Address {
   private _streetName: string;
   private _city: string;
@@ -284,10 +420,9 @@ export class Address {
   private _houseNumber: number;
   private _marriage?: boolean;
   private _members?: string | number | boolean;
-  private _arrayType: [string, number, ...(object | string | number | Array<unknown> | boolean | null)[]];
+  private _arrayType: string | number | any[];
   private _otherModel?: OtherModel;
-  private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null>;
-  private _sTestPatternProperties?: Map<String, string>;
+  private _additionalProperties?: Map<string, any>;
 
   constructor(input: {
     streetName: string,
@@ -296,8 +431,9 @@ export class Address {
     houseNumber: number,
     marriage?: boolean,
     members?: string | number | boolean,
-    arrayType: [string, number, ...(object | string | number | Array<unknown> | boolean | null)[]],
+    arrayType: string | number | any[],
     otherModel?: OtherModel,
+    additionalProperties?: Map<string, any>,
   }) {
     this._streetName = input.streetName;
     this._city = input.city;
@@ -307,6 +443,7 @@ export class Address {
     this._members = input.members;
     this._arrayType = input.arrayType;
     this._otherModel = input.otherModel;
+    this._additionalProperties = input.additionalProperties;
   }
 
   get streetName(): string { return this._streetName; }
@@ -327,39 +464,99 @@ export class Address {
   get members(): string | number | boolean | undefined { return this._members; }
   set members(members: string | number | boolean | undefined) { this._members = members; }
 
-  get arrayType(): [string, number, ...(object | string | number | Array<unknown> | boolean | null)[]] { return this._arrayType; }
-  set arrayType(arrayType: [string, number, ...(object | string | number | Array<unknown> | boolean | null)[]]) { this._arrayType = arrayType; }
+  get arrayType(): string | number | any[] { return this._arrayType; }
+  set arrayType(arrayType: string | number | any[]) { this._arrayType = arrayType; }
 
   get otherModel(): OtherModel | undefined { return this._otherModel; }
   set otherModel(otherModel: OtherModel | undefined) { this._otherModel = otherModel; }
 
-  get additionalProperties(): Map<String, object | string | number | Array<unknown> | boolean | null> | undefined { return this._additionalProperties; }
-  set additionalProperties(additionalProperties: Map<String, object | string | number | Array<unknown> | boolean | null> | undefined) { this._additionalProperties = additionalProperties; }
-
-  get sTestPatternProperties(): Map<String, string> | undefined { return this._sTestPatternProperties; }
-  set sTestPatternProperties(sTestPatternProperties: Map<String, string> | undefined) { this._sTestPatternProperties = sTestPatternProperties; }
+  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
 }
 "
 `;
 
 exports[`TypeScriptGenerator should render models and their dependencies for ESM module system with named exports 2`] = `
 "
-
 export class OtherModel {
   private _streetName?: string;
-  private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null>;
+  private _additionalProperties?: Map<string, any>;
 
   constructor(input: {
     streetName?: string,
+    additionalProperties?: Map<string, any>,
   }) {
     this._streetName = input.streetName;
+    this._additionalProperties = input.additionalProperties;
   }
 
   get streetName(): string | undefined { return this._streetName; }
   set streetName(streetName: string | undefined) { this._streetName = streetName; }
 
-  get additionalProperties(): Map<String, object | string | number | Array<unknown> | boolean | null> | undefined { return this._additionalProperties; }
-  set additionalProperties(additionalProperties: Map<String, object | string | number | Array<unknown> | boolean | null> | undefined) { this._additionalProperties = additionalProperties; }
+  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
 }
 "
+`;
+
+exports[`TypeScriptGenerator should render union \`enum\` values 1`] = `
+"enum States {
+  NUMBER_2 = 2,
+  RESERVED_NUMBER_2 = \\"2\\",
+  TEST = \\"test\\",
+  RESERVED_TRUE = \\"true\\",
+  CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT = '{\\"test\\":\\"test\\"}',
+}"
+`;
+
+exports[`TypeScriptGenerator should work custom preset for \`class\` type 1`] = `
+"class CustomClass {
+  @JsonProperty(\\"property\\")
+  private _property?: string;
+  @JsonProperty(\\"additionalProperties\\")
+  private _additionalProperties?: Map<string, any>;
+
+  constructor(input: {
+    property?: string,
+    additionalProperties?: Map<string, any>,
+  }) {
+    this._property = input.property;
+    this._additionalProperties = input.additionalProperties;
+  }
+
+  get property(): string | undefined { return this._property; }
+  set property(property: string | undefined) { this._property = property; }
+
+  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
+}"
+`;
+
+exports[`TypeScriptGenerator should work custom preset for \`enum\` type 1`] = `
+"enum CustomEnum {
+  TEXAS = \\"Texas\\",
+  ALABAMA = \\"Alabama\\",
+  CALIFORNIA = \\"California\\",
+}"
+`;
+
+exports[`TypeScriptGenerator should work custom preset for \`interface\` type 1`] = `
+"class CustomInterface {
+  private _property?: string;
+  private _additionalProperties?: Map<string, any>;
+
+  constructor(input: {
+    property?: string,
+    additionalProperties?: Map<string, any>,
+  }) {
+    this._property = input.property;
+    this._additionalProperties = input.additionalProperties;
+  }
+
+  get property(): string | undefined { return this._property; }
+  set property(property: string | undefined) { this._property = property; }
+
+  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
+}"
 `;

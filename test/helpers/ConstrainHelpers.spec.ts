@@ -1,26 +1,9 @@
-import { NO_NUMBER_START_CHAR, NO_EMPTY_VALUE, NO_DUPLICATE_PROPERTIES, FormatHelpers, NO_DUPLICATE_ENUM_KEYS, constrainMetaModel, TypeMapping, Constraints } from '../../src/helpers';
-import { AnyModel, ArrayModel, BooleanModel, ConstrainedAnyModel, ConstrainedArrayModel, ConstrainedBooleanModel, ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedEnumValueModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedObjectModel, ConstrainedObjectPropertyModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedTupleValueModel, ConstrainedUnionModel, DictionaryModel, EnumModel, EnumValueModel, FloatModel, IntegerModel, ObjectModel, ObjectPropertyModel, ReferenceModel, StringModel, TupleModel, TupleValueModel, UnionModel } from '../../src/models';
-const mockedTypeMapping: TypeMapping<any> = {
-  Any: jest.fn(),
-  Array: jest.fn(),
-  Boolean: jest.fn(),
-  Dictionary: jest.fn(),
-  Enum: jest.fn(),
-  Float: jest.fn(),
-  Integer: jest.fn(),
-  Object: jest.fn(),
-  Reference: jest.fn(),
-  String: jest.fn(),
-  Tuple: jest.fn(),
-  Union: jest.fn()
-};
-const mockedConstraints: Constraints = {
-  enumKey: jest.fn().mockImplementation(({enumKey}) => enumKey),
-  enumValue: jest.fn().mockImplementation(({enumValue}) => enumValue),
-  modelName: jest.fn().mockImplementation(({modelName}) => modelName),
-  propertyKey: jest.fn().mockImplementation(({objectPropertyModel}) => objectPropertyModel.propertyName)
-};
+import { constrainMetaModel } from '../../src/helpers';
+import { AnyModel, ArrayModel, BooleanModel, ConstrainedAnyModel, ConstrainedArrayModel, ConstrainedBooleanModel, ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedEnumValueModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedUnionModel, DictionaryModel, EnumModel, EnumValueModel, FloatModel, IntegerModel, ObjectModel, ObjectPropertyModel, ReferenceModel, StringModel, TupleModel, TupleValueModel, UnionModel } from '../../src/models';
+import { mockedConstraints, mockedTypeMapping } from '../TestUtils/TestConstrainer';
+
 describe('ConstrainHelpers', () => {
+  const placeHolderModel = new AnyModel('', undefined);
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -42,6 +25,19 @@ describe('ConstrainHelpers', () => {
       expect(mockedTypeMapping.Object).toHaveBeenCalledTimes(1);
       expect(mockedTypeMapping.String).toHaveBeenCalledTimes(1);
     });
+
+    test('should handle recursive models', () => {
+      const model = new ObjectModel('testObj', undefined, {});
+      const objectPropertyModel = new ObjectPropertyModel('recursiveProp', false, model);
+      model.properties['recursive'] = objectPropertyModel;
+
+      const constrainedModel = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
+        metaModel: model,
+        options: {},
+        constrainedName: ''
+      });
+      expect(constrainedModel instanceof ConstrainedObjectModel).toEqual(true);
+    });
   });
   describe('constrain ReferenceModel', () => {
     test('should constrain correctly', () => {
@@ -57,6 +53,17 @@ describe('ConstrainHelpers', () => {
       expect(mockedConstraints.modelName).toHaveBeenCalledTimes(2);
       expect(mockedTypeMapping.String).toHaveBeenCalledTimes(1);
       expect(mockedTypeMapping.Reference).toHaveBeenCalledTimes(1);
+    });
+
+    test('should handle recursive models', () => {
+      const metaModel = new ReferenceModel('', undefined, placeHolderModel);
+      metaModel.ref = metaModel;
+      const constrainedModel = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
+        metaModel,
+        options: {},
+        constrainedName: ''
+      });
+      expect(constrainedModel instanceof ConstrainedReferenceModel).toEqual(true);
     });
   });
   describe('constrain AnyModel', () => {
@@ -140,6 +147,16 @@ describe('ConstrainHelpers', () => {
       expect(mockedTypeMapping.Tuple).toHaveBeenCalledTimes(1);
       expect(mockedTypeMapping.String).toHaveBeenCalledTimes(1);
     });
+    test('should handle recursive models', () => {
+      const metaModel = new TupleModel('test', undefined, []);
+      metaModel.tuple.push(new TupleValueModel(0, metaModel));
+      const constrainedModel = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
+        metaModel,
+        options: {},
+        constrainedName: ''
+      });
+      expect(constrainedModel instanceof ConstrainedTupleModel).toEqual(true);
+    });
   });
   describe('constrain ArrayModel', () => {
     test('should constrain correctly', () => {
@@ -155,6 +172,16 @@ describe('ConstrainHelpers', () => {
       expect(mockedConstraints.modelName).toHaveBeenCalledTimes(2);
       expect(mockedTypeMapping.Array).toHaveBeenCalledTimes(1);
       expect(mockedTypeMapping.String).toHaveBeenCalledTimes(1);
+    });
+    test('should handle recursive models', () => {
+      const metaModel = new ArrayModel('test', undefined, placeHolderModel);
+      metaModel.valueModel = metaModel;
+      const constrainedModel = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
+        metaModel,
+        options: {},
+        constrainedName: ''
+      });
+      expect(constrainedModel instanceof ConstrainedArrayModel).toEqual(true);
     });
   });
   describe('constrain UnionModel', () => {
@@ -172,6 +199,16 @@ describe('ConstrainHelpers', () => {
       expect(mockedTypeMapping.Union).toHaveBeenCalledTimes(1);
       expect(mockedTypeMapping.String).toHaveBeenCalledTimes(1);
     });
+    test('should handle recursive models', () => {
+      const metaModel = new UnionModel('test', undefined, []);
+      metaModel.union.push(metaModel);
+      const constrainedModel = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
+        metaModel,
+        options: {},
+        constrainedName: ''
+      });
+      expect(constrainedModel instanceof ConstrainedUnionModel).toEqual(true);
+    });
   });
   describe('constrain EnumModel', () => {
     test('should constrain correctly', () => {
@@ -182,9 +219,11 @@ describe('ConstrainHelpers', () => {
         constrainedName: ''
       });
       expect(constrainedModel instanceof ConstrainedEnumModel).toEqual(true);
-      expect((constrainedModel as ConstrainedEnumModel).values[0] instanceof ConstrainedEnumValueModel).toEqual(true);
+      const enumModel = constrainedModel as ConstrainedEnumModel;
       expect(mockedConstraints.modelName).toHaveBeenCalledTimes(1);
       expect(mockedTypeMapping.Enum).toHaveBeenCalledTimes(1);
+      expect(enumModel.values[0].key).toEqual('test');
+      expect(enumModel.values[0].value).toEqual(123);
     });
   });
   describe('constrain DictionaryModel', () => {
@@ -202,6 +241,17 @@ describe('ConstrainHelpers', () => {
       expect(mockedConstraints.modelName).toHaveBeenCalledTimes(3);
       expect(mockedTypeMapping.Dictionary).toHaveBeenCalledTimes(1);
       expect(mockedTypeMapping.String).toHaveBeenCalledTimes(2);
+    });
+    test('should handle recursive models', () => {
+      const metaModel = new DictionaryModel('test', undefined, placeHolderModel, placeHolderModel);
+      metaModel.key = metaModel;
+      metaModel.value = metaModel;
+      const constrainedModel = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
+        metaModel,
+        options: {},
+        constrainedName: ''
+      });
+      expect(constrainedModel instanceof ConstrainedDictionaryModel).toEqual(true);
     });
   });
 });

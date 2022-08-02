@@ -2,13 +2,18 @@ import * as fs from 'fs';
 import * as path from 'path';
 import {parse, ParserOptions} from '@asyncapi/parser';
 import {AsyncAPIInputProcessor} from '../../src/processors/AsyncAPIInputProcessor';
-import { CommonModel } from '../../src/models';
+import { AnyModel, CommonModel } from '../../src/models';
 const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'), 'utf8');
-jest.mock('../../src/interpreter/Interpreter');
-jest.mock('../../src/interpreter/PostInterpreter');
 jest.mock('../../src/utils/LoggingInterface');
-
 const mockedReturnModels = [new CommonModel()];
+const mockedMetaModel = new AnyModel('', undefined);
+jest.mock('../../src/helpers/CommonModelToMetaModel', () => {
+  return {
+    convertToMetaModel: jest.fn().mockImplementation(() => {
+      return mockedMetaModel;
+    })
+  };
+});
 jest.mock('../../src/interpreter/Interpreter', () => {
   return {
     Interpreter: jest.fn().mockImplementation(() => {
@@ -16,11 +21,6 @@ jest.mock('../../src/interpreter/Interpreter', () => {
         interpret: jest.fn().mockImplementation(() => {return mockedReturnModels[0];})
       };
     })
-  };
-});
-jest.mock('../../src/interpreter/PostInterpreter', () => {
-  return {
-    postInterpretModel: jest.fn().mockImplementation(() => {return mockedReturnModels;})
   };
 });
 describe('AsyncAPIInputProcessor', () => {
@@ -112,31 +112,31 @@ describe('AsyncAPIInputProcessor', () => {
       expect(expected['x-modelgen-inferred-name']).toEqual('MainSchema');
 
       // properties
-      expect(expected.properties.prop['x-modelgen-inferred-name']).toEqual('<anonymous-schema-2>');
-      expect(expected.properties.allOfCase['x-modelgen-inferred-name']).toEqual('<anonymous-schema-3>');
-      expect(expected.properties.allOfCase.allOf[0]['x-modelgen-inferred-name']).toEqual('<anonymous-schema-4>');
-      expect(expected.properties.allOfCase.allOf[1]['x-modelgen-inferred-name']).toEqual('<anonymous-schema-5>');
-      expect(expected.properties.object['x-modelgen-inferred-name']).toEqual('<anonymous-schema-6>');
-      expect(expected.properties.object.properties.prop['x-modelgen-inferred-name']).toEqual('<anonymous-schema-7>');
-      expect(expected.properties.propWithObject['x-modelgen-inferred-name']).toEqual('<anonymous-schema-8>');
-      expect(expected.properties.propWithObject.properties.propWithObject['x-modelgen-inferred-name']).toEqual('<anonymous-schema-9>');
+      expect(expected.properties.prop['x-modelgen-inferred-name']).toEqual('anonymous_schema_2');
+      expect(expected.properties.allOfCase['x-modelgen-inferred-name']).toEqual('anonymous_schema_3');
+      expect(expected.properties.allOfCase.allOf[0]['x-modelgen-inferred-name']).toEqual('anonymous_schema_4');
+      expect(expected.properties.allOfCase.allOf[1]['x-modelgen-inferred-name']).toEqual('anonymous_schema_5');
+      expect(expected.properties.object['x-modelgen-inferred-name']).toEqual('anonymous_schema_6');
+      expect(expected.properties.object.properties.prop['x-modelgen-inferred-name']).toEqual('anonymous_schema_7');
+      expect(expected.properties.propWithObject['x-modelgen-inferred-name']).toEqual('anonymous_schema_8');
+      expect(expected.properties.propWithObject.properties.propWithObject['x-modelgen-inferred-name']).toEqual('anonymous_schema_9');
 
       // patternProperties
-      expect(expected.patternProperties.patternProp['x-modelgen-inferred-name']).toEqual('<anonymous-schema-10>');
+      expect(expected.patternProperties.patternProp['x-modelgen-inferred-name']).toEqual('anonymous_schema_10');
 
       // dependencies
-      expect(expected.dependencies.dep['x-modelgen-inferred-name']).toEqual('<anonymous-schema-11>');
+      expect(expected.dependencies.dep['x-modelgen-inferred-name']).toEqual('anonymous_schema_11');
 
       // definitions
-      expect(expected.definitions.def['x-modelgen-inferred-name']).toEqual('<anonymous-schema-12>');
-      expect(expected.definitions.oneOfCase['x-modelgen-inferred-name']).toEqual('<anonymous-schema-13>');
-      expect(expected.definitions.oneOfCase.oneOf[0]['x-modelgen-inferred-name']).toEqual('<anonymous-schema-14>');
-      expect(expected.definitions.oneOfCase.oneOf[1]['x-modelgen-inferred-name']).toEqual('<anonymous-schema-15>');
+      expect(expected.definitions.def['x-modelgen-inferred-name']).toEqual('anonymous_schema_12');
+      expect(expected.definitions.oneOfCase['x-modelgen-inferred-name']).toEqual('anonymous_schema_13');
+      expect(expected.definitions.oneOfCase.oneOf[0]['x-modelgen-inferred-name']).toEqual('anonymous_schema_14');
+      expect(expected.definitions.oneOfCase.oneOf[1]['x-modelgen-inferred-name']).toEqual('anonymous_schema_15');
 
       // anyOf
-      expect(expected.anyOf[0]['x-modelgen-inferred-name']).toEqual('<anonymous-schema-16>');
-      expect(expected.anyOf[1]['x-modelgen-inferred-name']).toEqual('<anonymous-schema-17>');
-      expect(expected.anyOf[1].properties.prop['x-modelgen-inferred-name']).toEqual('<anonymous-schema-18>');
+      expect(expected.anyOf[0]['x-modelgen-inferred-name']).toEqual('anonymous_schema_16');
+      expect(expected.anyOf[1]['x-modelgen-inferred-name']).toEqual('anonymous_schema_17');
+      expect(expected.anyOf[1].properties.prop['x-modelgen-inferred-name']).toEqual('anonymous_schema_18');
     });
     test('should correctly convert when schema has more than one properties referencing one other schema', async () => {
       const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/schema_with_2_properties_referencing_one_schema.json'), 'utf8');

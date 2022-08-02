@@ -1,24 +1,20 @@
 import { CSharpGenerator } from '../../src';
+import { DefaultEnumKeyConstraints } from '../../src/generators/csharp/constrainer/EnumConstrainer';
 
-const generator = new CSharpGenerator({ 
-  presets: [
-    {
-      enum: {
-        item: ({model, item, content}) => {
-          // Lets see if an enum has any associated names
-          const hasCustomName = model.originalInput !== undefined && model.originalInput['x-enumNames'] !== undefined;
-          if (hasCustomName) {
-            // Lets see if the specific value has an associated name
-            const customName = model.originalInput['x-enumNames'][item];
-            if (customName !== undefined) {
-              return customName;
-            }
-          }
-          return content;
+const generator = new CSharpGenerator({
+  constraints: {
+    enumKey: ({enumModel, enumKey}) => {
+      // Lets see if an enum has an associated custom name
+      const hasCustomName = enumModel.originalInput !== undefined && enumModel.originalInput['x-enumNames'] !== undefined;
+      if (hasCustomName) {
+        // Lets see if the specific value has an associated name
+        const customName = enumModel.originalInput['x-enumNames'][enumKey];
+        if (customName !== undefined) {
+          return customName;
         }
       }
     }
-  ]
+  }
 });
 
 const jsonSchemaDraft7 = {
@@ -34,7 +30,7 @@ const jsonSchemaDraft7 = {
   'x-enumNames': {
     30: 'Ordered',
     40: 'UnderDelivery',
-    50: 'Deliveret',
+    50: 'Delivered',
     99: 'Cancelled'
   }
 };

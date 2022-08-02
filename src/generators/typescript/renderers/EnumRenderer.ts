@@ -20,6 +20,12 @@ ${this.indent(this.renderBlock(content, 2))}
 }`;
   }
 
+  renderUnionEnum(model: ConstrainedEnumModel): string {
+    const enums = model.values || [];
+    const enumTypes = enums.map(t => t.value).join(' | ');
+    return `type ${model.name} = ${enumTypes};`;
+  }
+
   async renderItems(): Promise<string> {
     const enums = this.model.values || [];
     const items: string[] = [];
@@ -38,7 +44,10 @@ ${this.indent(this.renderBlock(content, 2))}
 }
 
 export const TS_DEFAULT_ENUM_PRESET: EnumPresetType<TypeScriptOptions> = {
-  self({ renderer }) {
+  self({ renderer, options, model }) {
+    if (options.enumType === 'union' && model instanceof ConstrainedEnumModel) {
+      return renderer.renderUnionEnum(model);
+    }
     return renderer.defaultSelf();
   },
   item({ item }): string {

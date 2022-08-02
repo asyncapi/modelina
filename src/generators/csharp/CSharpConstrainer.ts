@@ -15,7 +15,7 @@ export const CSharpDefaultTypeMapping: TypeMapping<CSharpOptions> = {
     return 'dynamic';
   },
   Float (): string {
-    return 'float';
+    return 'double';
   },
   Integer (): string {
     return 'int';

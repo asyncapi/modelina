@@ -9,6 +9,7 @@ import { JavaScriptPreset, JS_DEFAULT_PRESET } from './JavaScriptPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { Logger } from '../../';
 import { JavaScriptDefaultConstraints, JavaScriptDefaultTypeMapping } from './JavaScriptConstrainer';
+import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 export interface JavaScriptOptions extends CommonGeneratorOptions<JavaScriptPreset> {
   typeMapping: TypeMapping<JavaScriptOptions>;
   constraints: Constraints;
@@ -28,15 +29,14 @@ export class JavaScriptGenerator extends AbstractGenerator<JavaScriptOptions, Ja
     typeMapping: JavaScriptDefaultTypeMapping,
     constraints: JavaScriptDefaultConstraints
   };
-
+  
   constructor(
-    options: Partial<JavaScriptOptions> = JavaScriptGenerator.defaultOptions,
+    options?: DeepPartial<JavaScriptOptions>,
   ) {
-    const realizedOptions = {...JavaScriptGenerator.defaultOptions, ...options};
-
+    const realizedOptions = mergePartialAndDefault(JavaScriptGenerator.defaultOptions, options) as JavaScriptOptions;
     super('JavaScript', realizedOptions);
   }
-  
+
   /**
    * Render a complete model result where the model code, library and model dependencies are all bundled appropriately.
    *
