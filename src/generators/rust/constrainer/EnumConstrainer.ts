@@ -38,7 +38,7 @@ export function defaultEnumKeyConstraints(customConstraints?: Partial<ModelEnumK
     constrainedEnumKey = constraints.NO_RESERVED_KEYWORDS(constrainedEnumKey);
     //If the enum key has been manipulated, lets make sure it don't clash with existing keys
     if (constrainedEnumKey !== enumKey) {
-      constrainedEnumKey = constraints.NO_DUPLICATE_KEYS(constrainedEnumModel, enumModel, constrainedEnumKey, constraints.NAMING_FORMATTER!);
+      constrainedEnumKey = constraints.NO_DUPLICATE_KEYS(constrainedEnumModel, enumModel, constrainedEnumKey, constraints.NAMING_FORMATTER);
     }
     constrainedEnumKey = constraints.NAMING_FORMATTER(constrainedEnumKey);
     return constrainedEnumKey;
@@ -47,27 +47,21 @@ export function defaultEnumKeyConstraints(customConstraints?: Partial<ModelEnumK
 
 export function defaultEnumValueConstraints(): EnumValueConstraint {
   return ({ enumValue }) => {
-    let constrainedEnumValue = enumValue;
     switch (typeof enumValue) {
-    case 'boolean':
-      constrainedEnumValue = 'bool';
-      break;
-    case 'bigint':
-      constrainedEnumValue = 'i64';
-      break;
-    case 'number': {
-      constrainedEnumValue = 'f64';
-      break;
+      case 'boolean':
+        return 'bool';
+      case 'bigint':
+        return 'i64';
+      case 'number': {
+        return 'f64';
+      }
+      case 'object': {
+        return 'HashMap<String, serde_json::Value>';
+      }
+      case 'string':
+      default: {
+        return 'String';
+      }
     }
-    case 'object': {
-      constrainedEnumValue = 'HashMap<String, serde_json::Value>';
-      break;
-    }
-    case 'string':
-    default: {
-      constrainedEnumValue = 'String';
-    }
-    }
-    return constrainedEnumValue;
   };
 }
