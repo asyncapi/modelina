@@ -33,87 +33,24 @@ const AsyncAPIV2_3Files = readFilesInFolder('AsyncAPI-2_3');
 const AsyncAPIV2_4Files = readFilesInFolder('AsyncAPI-2_4');
 
 const filesToTest = [
-<<<<<<< HEAD
   // ...OpenAPI3_0Files,
   // ...AsyncAPIV2_0Files,
   // ...AsyncAPIV2_1Files,
   // ...AsyncAPIV2_2Files,
   // ...AsyncAPIV2_3Files,
   // ...AsyncAPIV2_4Files,
-  ...jsonSchemaDraft4Files.filter(({file}) => {
+  ...jsonSchemaDraft4Files.filter(({ file }) => {
     // Too large to process https://github.com/asyncapi/modelina/issues/822
     return !file.includes('aws-cloudformation.json');
-  }).filter(({file}) => {
+  }).filter(({ file }) => {
     // Related to https://github.com/asyncapi/modelina/issues/389
     return !file.includes('jenkins-config.json');
-  }).filter(({file}) => {
+  }).filter(({ file }) => {
     // Related to https://github.com/asyncapi/modelina/issues/825
     return !file.includes('circleci-config.json');
   }),
   // ...jsonSchemaDraft7Files,
   // ...jsonSchemaDraft6Files,
-=======
-  ...OpenAPI3_0Files.filter(({ file }) => {
-    //Blocked by https://github.com/asyncapi/modelina/issues/456
-    return file !== './docs/OpenAPI-3_0/twilio-1_13.json';
-  }).filter(({ file }) => {
-    //Blocked by https://github.com/asyncapi/modelina/issues/452
-    return file !== './docs/OpenAPI-3_0/postman-api.json';
-  }),
-  ...AsyncAPIV2_0Files.filter(({ file }) => {
-    //Blocked by https://github.com/asyncapi/modelina/issues/504
-    return file !== './docs/AsyncAPI-2_0/dummy.json';
-  }),
-  ...AsyncAPIV2_1Files.filter(({ file }) => {
-    //Blocked by https://github.com/asyncapi/modelina/issues/504
-    return file !== './docs/AsyncAPI-2_1/dummy.json';
-  }),
-  ...AsyncAPIV2_2Files.filter(({ file }) => {
-    //Blocked by https://github.com/asyncapi/modelina/issues/504
-    return file !== './docs/AsyncAPI-2_2/dummy.json';
-  }),
-  ...AsyncAPIV2_3Files.filter(({ file }) => {
-    //Blocked by https://github.com/asyncapi/modelina/issues/504
-    return file !== './docs/AsyncAPI-2_3/dummy.json';
-  }),
-  ...AsyncAPIV2_4Files.filter(({ file }) => {
-    //Blocked by https://github.com/asyncapi/modelina/issues/504
-    return file !== './docs/AsyncAPI-2_4/dummy.json';
-  }),
-  ...jsonSchemaDraft7Files.filter(({ file }) => {
-    //Blocked by https://github.com/asyncapi/modelina/issues/388
-    return file !== './docs/JsonSchemaDraft-7/draft-7-core.json';
-  }).filter(({ file }) => {
-    //Blocked by https://github.com/asyncapi/modelina/issues/390
-    return file !== './docs/JsonSchemaDraft-7/graphql-code-generator.json';
-  }),
-  ...jsonSchemaDraft4Files.filter(({ file }) => {
-    //Blocked by https://github.com/asyncapi/modelina/issues/449
-    return file !== './docs/JsonSchemaDraft-4/openapi-3.json';
-  }).filter(({ file }) => {
-    //Blocked by https://github.com/asyncapi/modelina/issues/389
-    return file !== './docs/JsonSchemaDraft-4/jenkins-config.json';
-  }).filter(({ file }) => {
-    //Blocked by https://github.com/asyncapi/modelina/issues/450
-    return file !== './docs/JsonSchemaDraft-4/circleci-config.json';
-  }).filter(({ file }) => {
-    //Blocked by https://github.com/asyncapi/modelina/issues/390
-    return file !== './docs/JsonSchemaDraft-4/circleci-config.json';
-  }).filter(({ file }) => {
-    //Blocked by https://github.com/asyncapi/modelina/issues/452
-    return file !== './docs/JsonSchemaDraft-4/chrome-manifest.json';
-  }).filter(({ file }) => {
-    //Blocked by https://github.com/asyncapi/modelina/issues/367
-    return file !== './docs/JsonSchemaDraft-4/aws-cloudformation.json';
-  }).filter(({ file }) => {
-    //Blocked by https://github.com/asyncapi/modelina/issues/388
-    return file !== './docs/JsonSchemaDraft-4/draft-4-core.json';
-  }),
-  ...jsonSchemaDraft6Files.filter(({ file }) => {
-    //Blocked by https://github.com/asyncapi/modelina/issues/453
-    return file !== './docs/JsonSchemaDraft-6/fhir-full.json';
-  })
->>>>>>> f77edfc (chore: add Rust to blackbox test spec)
 ];
 
 // eslint-disable-next-line no-console
@@ -129,16 +66,10 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
   });
   describe(file, () => {
     const javaGeneratorOptions = [
-<<<<<<< HEAD
-      { 
-        generatorOption: { },
-        description: 'default generator',
-        renderOutputPath: path.resolve(outputDirectoryPath, './java/class/default')
-=======
       {
         generatorOption: {},
-        description: 'default generator'
->>>>>>> f77edfc (chore: add Rust to blackbox test spec)
+        description: 'default generator',
+        renderOutputPath: path.resolve(outputDirectoryPath, './java/class/default')
       },
       {
         generatorOption: {
@@ -149,13 +80,8 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
         description: 'all common presets',
         renderOutputPath: path.resolve(outputDirectoryPath, './java/class/commonpreset')
       }
-<<<<<<< HEAD
-    ]; 
-    describe.each(javaGeneratorOptions)('should be able to generate and compile Java', ({generatorOption, description, renderOutputPath}) => {
-=======
     ];
-    describe.each(javaGeneratorOptions)('should be able to generate and compile Java', ({ generatorOption, description }) => {
->>>>>>> f77edfc (chore: add Rust to blackbox test spec)
+    describe.each(javaGeneratorOptions)('should be able to generate and compile Java', ({ generatorOption, description, renderOutputPath }) => {
       test('class', async () => {
         const generator = new JavaFileGenerator(generatorOption);
         const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
@@ -267,7 +193,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
             // enable serde_json
             packageFeatures: [RustPackageFeatures.json] as RustPackageFeatures[]
           }
-        } as RustRenderCompleteModelOptions
+        } as RustRenderCompleteModelOptions;
         const generatedModels = await generator.generateToFiles(input, renderOutputPath, options);
         expect(generatedModels).not.toHaveLength(0);
 

@@ -136,7 +136,7 @@ export class RustGenerator extends AbstractGenerator<RustOptions, RustRenderComp
   async renderCompleteModel(model: ConstrainedMetaModel, inputModel: InputMetaModel, options: RustRenderCompleteModelOptions): Promise<RenderOutput> {
     Logger.debug('Generating complete models with options: ', options);
     const outputModel = await this.render(model, inputModel);
-    const outputContent = outputModel.result
+    const outputContent = outputModel.result;
     return RenderOutput.toRenderOutput({ result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies });
   }
 

@@ -2,9 +2,7 @@
 
 exports[`Should be able to render Rust Models and should log expected output to console 1`] = `
 Array [
-  Array [
-    "
-// Address represents a Address model.
+  "// Address represents a Address model.
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Address {
     #[serde(rename=\\"street_name\\")]
@@ -45,12 +43,13 @@ impl Address {
         }
     }
 }
-
 ",
-  ],
-  Array [
-    "
-// Members represents a union of types: String, f64, bool
+]
+`;
+
+exports[`Should be able to render Rust Models and should log expected output to console 2`] = `
+Array [
+  "// Members represents a union of types: String, f64, bool
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub enum Members {
     #[serde(rename=\\"Members0\\")]
@@ -61,12 +60,13 @@ pub enum Members {
     Members2(bool),
 }
 
-
 ",
-  ],
-  Array [
-    "
-// TupleType represents a TupleType model.
+]
+`;
+
+exports[`Should be able to render Rust Models and should log expected output to console 3`] = `
+Array [
+  "// TupleType represents a TupleType model.
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct TupleType(String, f64);
 
@@ -76,27 +76,8 @@ impl TupleType {
     }
 }
 
-
 ",
-  ],
-  Array [
-    "
-// EnumType represents a EnumType model.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub enum EnumType {
-    #[serde(rename=\\"Texas\\")]
-    Texas,
-    #[serde(rename=\\"Alabama\\")]
-    Alabama,
-    #[serde(rename=\\"California\\")]
-    California,
-}
-impl Default for EnumType {
-    fn default() -> EnumType {
-        EnumType::California
-    }
-}
-",
-  ],
 ]
 `;
+
+exports[`Should be able to render Rust Models and should log expected output to console 4`] = `undefined`;
