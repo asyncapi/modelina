@@ -171,8 +171,7 @@ impl Default for States {
 `;
 
 exports[`RUST_COMMON_PRESET Enum should render implement Default for \`enum (default provided) 1`] = `
-"
-// CustomEnum represents a CustomEnum model.
+"// CustomEnum represents a CustomEnum model.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub enum CustomEnum {
     #[serde(rename=\\"Texas\\")]
@@ -186,8 +185,7 @@ impl Default for CustomEnum {
     fn default() -> CustomEnum {
         CustomEnum::Texas
     }
-}
-"
+}"
 `;
 
 exports[`RUST_COMMON_PRESET Struct & Complete Models should render \`struct\` type with all implementations 1`] = `

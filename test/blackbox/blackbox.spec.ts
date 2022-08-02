@@ -194,7 +194,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
             packageFeatures: [RustPackageFeatures.json] as RustPackageFeatures[]
           }
         } as RustRenderCompleteModelOptions;
-        const generatedModels = await generator.generateToFiles(input, renderOutputPath, options);
+        const generatedModels = await generator.generateToPackage(input, renderOutputPath, options);
         expect(generatedModels).not.toHaveLength(0);
 
         const compileCommand = `cargo build ${renderOutputPath}`;

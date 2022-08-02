@@ -63,8 +63,7 @@ pub enum States {
 `;
 
 exports[`RustGenerator Enum should render implement Default for \`enum (default provided) 1`] = `
-"
-// CustomEnum represents a CustomEnum model.
+"// CustomEnum represents a CustomEnum model.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub enum CustomEnum {
     #[serde(rename=\\"Texas\\")]
@@ -74,7 +73,6 @@ pub enum CustomEnum {
     #[serde(rename=\\"California\\")]
     California,
 }
-
 "
 `;
 
@@ -124,8 +122,7 @@ pub use self::numbers::*;"
 `;
 
 exports[`RustGenerator Struct & Complete Models Should render complete models 1`] = `
-"
-// Address represents a Address model.
+"// Address represents a Address model.
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Address {
     #[serde(rename=\\"street_name\\")]
@@ -147,13 +144,11 @@ pub struct Address {
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
     additional_properties: Option<std::collections::HashMap<String, String>>,
 }
-
 "
 `;
 
 exports[`RustGenerator Struct & Complete Models Should render complete models 2`] = `
-"
-// Members represents a union of types: String, f64, bool
+"// Members represents a union of types: String, f64, bool
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub enum Members {
     #[serde(rename=\\"Members0\\")]
@@ -164,16 +159,13 @@ pub enum Members {
     Members2(bool),
 }
 
-
 "
 `;
 
 exports[`RustGenerator Struct & Complete Models Should render complete models 3`] = `
-"
-// TupleType represents a TupleType model.
+"// TupleType represents a TupleType model.
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct TupleType(String, f64);
-
 
 "
 `;

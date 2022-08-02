@@ -40,7 +40,7 @@ export async function generate(): Promise<void> {
   const outDir = path.join(__dirname, 'output');
 
   // Run the file generator with options
-  const models = await generator.generateToFiles(doc, outDir, {
+  const models = await generator.generateToPackage(doc, outDir, {
     ...defaultRustRenderCompleteModelOptions,
     supportFiles: true, // generate Cargo.toml and lib.rs
     package: {
