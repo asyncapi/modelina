@@ -88,7 +88,7 @@
     "generate:assets": "npm run build:prod && npm run docs && npm run generate:readme:toc",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION",
     "prepublishOnly": "npm run build:prod && npm run generate:readme:toc",
-    "format": "prettier --config .prettierrc 'src/**/*.ts' --write"
+    "format": "prettier --config .prettierrc '**/*.ts' --write"
   },
   "publishConfig": {
     "access": "public"
