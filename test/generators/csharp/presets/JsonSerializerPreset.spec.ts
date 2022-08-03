@@ -23,16 +23,11 @@ describe('JSON serializer preset', () => {
         CSHARP_JSON_SERIALIZER_PRESET
       ]
     });
-    const inputModel = await generator.process(doc);
-    const nestedTestModel = inputModel.models['NestedTest'];
-    const testModel = inputModel.models['Test'];
-    const enumModel = inputModel.models['EnumTest'];
-
-    const nestedTestClass = await generator.renderClass(nestedTestModel, inputModel);
-    const testClass = await generator.renderClass(testModel, inputModel);
-    const enumEnum = await generator.renderEnum(enumModel, inputModel);
-    expect(nestedTestClass.result).toMatchSnapshot();
-    expect(testClass.result).toMatchSnapshot();
-    expect(enumEnum.result).toMatchSnapshot();
+    
+    const inputModel = await generator.generate(doc);
+    expect(inputModel).toHaveLength(3);
+    expect(inputModel[0].result).toMatchSnapshot();
+    expect(inputModel[1].result).toMatchSnapshot();
+    expect(inputModel[2].result).toMatchSnapshot();
   });
 });

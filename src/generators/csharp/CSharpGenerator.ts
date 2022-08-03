@@ -3,16 +3,20 @@ import {
   CommonGeneratorOptions,
   defaultGeneratorOptions
 } from '../AbstractGenerator';
-import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
-import { TypeHelpers, ModelKind, CommonNamingConvention, CommonNamingConventionImplementation } from '../../helpers';
+import { ConstrainedEnumModel, ConstrainedMetaModel, ConstrainedObjectModel, InputMetaModel, MetaModel, RenderOutput } from '../../models';
+import { FormatHelpers, TypeMapping, Constraints, constrainMetaModel, split } from '../../helpers';
 import { CSharpPreset, CSHARP_DEFAULT_PRESET } from './CSharpPreset';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { isReservedCSharpKeyword } from './Constants';
 import { Logger } from '../../index';
-
+import { CSharpDefaultConstraints, CSharpDefaultTypeMapping } from './CSharpConstrainer';
+import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 export interface CSharpOptions extends CommonGeneratorOptions<CSharpPreset> {
-  namingConvention?: CommonNamingConvention;
+  collectionType: 'List' | 'Array';
+  typeMapping: TypeMapping<CSharpOptions>;
+  constraints: Constraints;
+  autoImplementedProperties: boolean;
 }
 
 export interface CSharpRenderCompleteModelOptions {
@@ -25,14 +29,39 @@ export interface CSharpRenderCompleteModelOptions {
 export class CSharpGenerator extends AbstractGenerator<CSharpOptions, CSharpRenderCompleteModelOptions> {
   static defaultOptions: CSharpOptions = {
     ...defaultGeneratorOptions,
+    collectionType: 'Array',
     defaultPreset: CSHARP_DEFAULT_PRESET,
-    namingConvention: CommonNamingConventionImplementation
+    typeMapping: CSharpDefaultTypeMapping,
+    constraints: CSharpDefaultConstraints,
+    autoImplementedProperties: false
   };
 
   constructor(
-    options: CSharpOptions = CSharpGenerator.defaultOptions,
+    options?: DeepPartial<CSharpOptions>
   ) {
-    super('CSharp', CSharpGenerator.defaultOptions, options);
+    const realizedOptions = mergePartialAndDefault(CSharpGenerator.defaultOptions, options) as CSharpOptions;
+    super('CSharp', realizedOptions);
+  }
+
+  splitMetaModel(model: MetaModel): MetaModel[] {
+    //These are the models that we have separate renderers for
+    const metaModelsToSplit = {
+      splitEnum: true, 
+      splitObject: true
+    };
+    return split(model, metaModelsToSplit);
+  }
+
+  constrainToMetaModel(model: MetaModel): ConstrainedMetaModel {
+    return constrainMetaModel<CSharpOptions>(
+      this.options.typeMapping, 
+      this.options.constraints, 
+      {
+        metaModel: model,
+        options: this.options,
+        constrainedName: '' //This is just a placeholder, it will be constrained within the function
+      }
+    );
   }
 
   /**
@@ -44,55 +73,44 @@ export class CSharpGenerator extends AbstractGenerator<CSharpOptions, CSharpRend
    * @param inputModel 
    * @param options used to render the full output
    */
-  async renderCompleteModel(model: CommonModel, inputModel: CommonInputModel, options: CSharpRenderCompleteModelOptions): Promise<RenderOutput> {
+  async renderCompleteModel(model: ConstrainedMetaModel, inputModel: InputMetaModel, options: CSharpRenderCompleteModelOptions): Promise<RenderOutput> {
     if (isReservedCSharpKeyword(options.namespace)) {
       throw new Error(`You cannot use reserved CSharp keyword (${options.namespace}) as namespace, please use another.`);
     }
 
     const outputModel = await this.render(model, inputModel);
-    const modelDependencies = model.getNearestDependencies().map((dependencyModelName) => { 
-      const formattedDependencyModelName = this.options.namingConvention?.type ? this.options.namingConvention.type(dependencyModelName, {inputModel, model: inputModel.models[String(dependencyModelName)], reservedKeywordCallback: isReservedCSharpKeyword}) : dependencyModelName;
-      return `using ${options.namespace}.${formattedDependencyModelName};`;
-    });
+
+    const outputDependencies = outputModel.dependencies.length === 0 ? '' : `${outputModel.dependencies.join('\n')}\n\n`;
+
     const outputContent = `namespace ${options.namespace}
 {
-  ${modelDependencies.join('\n')}
-  ${outputModel.dependencies.join('\n')}
-  ${outputModel.result}
+${FormatHelpers.indent(outputDependencies + outputModel.result, this.options.indentation?.size, this.options.indentation?.type)}
 }`;
-    
-    return RenderOutput.toRenderOutput({result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies});
+
+    return RenderOutput.toRenderOutput({ result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies });
   }
 
-  render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
-    const kind = TypeHelpers.extractKind(model);
-    switch (kind) {
-    case ModelKind.UNION:
-      //We dont support union in Csharp generator, however, if union is an object, we render it as a class.
-      if (!model.type?.includes('object')) {break;}
+  render(model: ConstrainedMetaModel, inputModel: InputMetaModel): Promise<RenderOutput> {
+    if (model instanceof ConstrainedObjectModel) {
       return this.renderClass(model, inputModel);
-    case ModelKind.OBJECT: 
-      return this.renderClass(model, inputModel);
-    case ModelKind.ENUM: 
+    } else if (model instanceof ConstrainedEnumModel) {
       return this.renderEnum(model, inputModel);
-    }
-    Logger.warn(`C# generator, cannot generate this type of model, ${model.$id}`);
+    } 
+    Logger.warn(`C# generator, cannot generate this type of model, ${model.name}`);
     return Promise.resolve(RenderOutput.toRenderOutput({ result: '', renderedName: '', dependencies: [] }));
   }
 
-  async renderEnum(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
+  async renderEnum(model: ConstrainedEnumModel, inputModel: InputMetaModel): Promise<RenderOutput> {
     const presets = this.getPresets('enum');
     const renderer = new EnumRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
-    const renderedName = renderer.nameType(model.$id, model);
-    return RenderOutput.toRenderOutput({ result, renderedName, dependencies: renderer.dependencies });
+    return RenderOutput.toRenderOutput({ result, renderedName: model.name, dependencies: renderer.dependencies });
   }
 
-  async renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
+  async renderClass(model: ConstrainedObjectModel, inputModel: InputMetaModel): Promise<RenderOutput> {
     const presets = this.getPresets('class');
     const renderer = new ClassRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
-    const renderedName = renderer.nameType(model.$id, model);
-    return RenderOutput.toRenderOutput({ result, renderedName, dependencies: renderer.dependencies });
+    return RenderOutput.toRenderOutput({ result, renderedName: model.name, dependencies: renderer.dependencies });
   }
 }

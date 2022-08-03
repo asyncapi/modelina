@@ -1,9 +1,10 @@
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
-import { CommonInputModel, OpenapiV3Schema } from '../models';
+import { InputMetaModel, OpenapiV3Schema } from '../models';
 import { Logger } from '../utils';
 import SwaggerParser from '@apidevtools/swagger-parser';
 import { OpenAPIV3 } from 'openapi-types';
+import { convertToMetaModel } from '../helpers';
 
 /**
  * Class for processing OpenAPI V3.0 inputs
@@ -16,11 +17,11 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  async process(input: Record<string, any>): Promise<CommonInputModel> {
+  async process(input: Record<string, any>): Promise<InputMetaModel> {
     if (!this.shouldProcess(input)) {throw new Error('Input is not a OpenAPI document so it cannot be processed.');}
 
     Logger.debug('Processing input as an OpenAPI document');
-    const inputModel = new CommonInputModel();
+    const inputModel = new InputMetaModel();
     inputModel.originalInput = input;
     const api = (await SwaggerParser.dereference(input as any) as unknown) as OpenAPIV3.Document;
 
@@ -30,7 +31,7 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
     return inputModel;
   }
 
-  private processPath(pathObject: OpenAPIV3.PathItemObject | undefined, path: string, inputModel: CommonInputModel) {
+  private processPath(pathObject: OpenAPIV3.PathItemObject | undefined, path: string, inputModel: InputMetaModel) {
     if (pathObject) {
       //Remove all special chars from path
       let formattedPathName = path.replace(/[^\w\s*]+/g, '');
@@ -49,7 +50,7 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
     } 
   }
 
-  private processOperation(operation: OpenAPIV3.OperationObject | undefined, path: string, inputModel: CommonInputModel) {
+  private processOperation(operation: OpenAPIV3.OperationObject | undefined, path: string, inputModel: InputMetaModel) {
     if (operation) {
       this.iterateResponses(operation.responses, path, inputModel);
 
@@ -68,7 +69,7 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
     }
   }
 
-  private iterateResponses(responses: OpenAPIV3.ResponsesObject, path: string, inputModel: CommonInputModel) {
+  private iterateResponses(responses: OpenAPIV3.ResponsesObject, path: string, inputModel: InputMetaModel) {
     for (const [responseName, response] of Object.entries(responses)) {
       //Replace any '/' with '_'
       const formattedResponseName = responseName.replace(/\//, '_');
@@ -76,7 +77,7 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
     }
   }
 
-  private iterateMediaType(mediaTypes: {[media: string]: OpenAPIV3.MediaTypeObject}, path: string, inputModel: CommonInputModel) {
+  private iterateMediaType(mediaTypes: {[media: string]: OpenAPIV3.MediaTypeObject}, path: string, inputModel: InputMetaModel) {
     for (const [mediaContent, mediaTypeObject] of Object.entries(mediaTypes)) {
       const mediaType = mediaTypeObject;
       if (mediaType.schema === undefined) { continue; }
@@ -87,10 +88,18 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
     }
   }
 
-  private includeSchema(schema: OpenAPIV3.SchemaObject, name: string, inputModel: CommonInputModel) {
+  private includeSchema(schema: OpenAPIV3.SchemaObject, name: string, inputModel: InputMetaModel) {
     const internalSchema = OpenAPIInputProcessor.convertToInternalSchema(schema, name);
-    const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(internalSchema);
-    inputModel.models = {...inputModel.models, ...commonModels};
+    const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(internalSchema);
+    if (newCommonModel.$id !== undefined) {
+      if (inputModel.models[newCommonModel.$id] !== undefined) {
+        Logger.warn(`Overwriting existing model with $id ${newCommonModel.$id}, are there two models with the same id present?`, newCommonModel);
+      }
+      const metaModel = convertToMetaModel(newCommonModel);
+      inputModel.models[metaModel.name] = metaModel;
+    } else {
+      Logger.warn('Model did not have $id, ignoring.', newCommonModel);
+    }
   }
 
   /**

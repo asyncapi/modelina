@@ -1,18 +1,7 @@
-import { AbstractRenderer } from '../../src/generators'; 
 import { IndentationTypes } from '../../src/helpers';
-import { CommonInputModel, CommonModel, RenderOutput } from '../../src/models';
-import { testOptions, TestGenerator } from './AbstractGenerator.spec';
+import {TestRenderer} from '../TestUtils/TestRenderers';
 
 describe('AbstractRenderer', () => {
-  class TestRenderer extends AbstractRenderer {
-    constructor(presets = []) {
-      super(testOptions, new TestGenerator(), presets, new CommonModel(), new CommonInputModel());
-    }
-    render(): Promise<RenderOutput> {
-      return Promise.resolve(RenderOutput.toRenderOutput({result: '', renderedName: ''}));
-    }
-  }
-
   let renderer: TestRenderer;
   beforeEach(() => {
     renderer = new TestRenderer();
@@ -26,14 +15,6 @@ describe('AbstractRenderer', () => {
   test('renderBlock function should render multiple lines', () => {
     const content = renderer.renderBlock(['Test1', 'Test2']);
     expect(content).toEqual('Test1\nTest2');
-  });
-
-  test('can use generator inside renderer', async () => {
-    const generator = renderer.generator;
-    const doc: any = { $id: 'test' };
-    const outputModels = await generator.generate(doc);
-
-    expect(outputModels[0].result).toEqual('test');
   });
   
   describe('addDependency()', () => {
@@ -105,6 +86,7 @@ describe('AbstractRenderer', () => {
       expect(presetCallback).not.toHaveBeenCalled();
     });
   });
+  
   describe('runPreset()', () => {
     test('should use string', async () => {
       const preset1Callback = jest.fn();
@@ -144,6 +126,7 @@ describe('AbstractRenderer', () => {
       expect(preset1Callback).toHaveBeenCalled();
       expect(preset2Callback).toHaveBeenCalled();
     });
+    
     test('should not use previous preset if undefined returned', async () => {
       const preset1Callback = jest.fn();
       const preset2Callback = jest.fn();

@@ -29,30 +29,10 @@ describe('GoGenerator', () => {
         }
       },
     };
-    const expected = `// Address represents a Address model.
-type Address struct {
-  StreetName string
-  City string
-  State string
-  HouseNumber float64
-  Marriage bool
-  Members []interface{}
-  TupleType []interface{}
-  ArrayType []string
-  AdditionalProperties map[string]string
-  STestPatternProperties map[string]string
-}`;
 
-    const inputModel = await generator.process(doc);
-    const model = inputModel.models['_address'];
-
-    let structModel = await generator.renderStruct(model, inputModel);
-    expect(structModel.result).toEqual(expected);
-    expect(structModel.dependencies).toEqual([]);
-
-    structModel = await generator.render(model, inputModel);
-    expect(structModel.result).toEqual(expected);
-    expect(structModel.dependencies).toEqual([]);
+    const models = await generator.generate(doc);
+    expect(models).toHaveLength(1);
+    expect(models[0].result).toMatchSnapshot();
   });
 
   test('should work custom preset for `struct` type', async () => {
@@ -66,63 +46,31 @@ type Address struct {
         type: 'string'
       }
     };
-    const expected = `// CustomStruct represents a CustomStruct model.
-type CustomStruct struct {
-  property string
-  additionalProperties string
-}`;
-
-    generator = new GoGenerator({ presets: [
-      {
-        struct: {
-          field({ fieldName, field, renderer }) {
-            return `${fieldName} ${renderer.renderType(field)}`; // private fields
-          },
+    generator = new GoGenerator({
+      presets: [
+        {
+          struct: {
+            field({ field }) {
+              return `${field.propertyName} ${field.property.type}`; // private fields
+            },
+          }
         }
-      }
-    ] });
+      ]
+    });
 
-    const inputModel = await generator.process(doc);
-    const model = inputModel.models['CustomStruct'];
-    
-    const structModel = await generator.render(model, inputModel);
-    expect(structModel.result).toEqual(expected);
-    expect(structModel.dependencies).toEqual([]);
+    const models = await generator.generate(doc);
+    expect(models).toHaveLength(1);
+    expect(models[0].result).toMatchSnapshot();
   });
 
-  describe.each([
-    {
-      name: 'with enums sharing same type',
-      doc: {
-        $id: 'States',
-        type: 'string',
-        enum: ['Texas', 'Alabama', 'California'],
-      },
-      expected: `// States represents an enum of string.
-type States string`,
-    },
-    {
-      name: 'with enums of mixed types',
-      doc: {
-        $id: 'Things',
-        enum: ['Texas', 1, '1', false, {test: 'test'}],
-      },
-      expected: `// Things represents an enum of mixed types.
-type Things interface{}`,
-    },
-  ])('should render `enum` type $name', ({doc, expected}) => {
-    test('should not be empty', async () => {
-      const inputModel = await generator.process(doc);
-      const model = inputModel.models[doc.$id];
-
-      let enumModel = await generator.render(model, inputModel);
-      expect(enumModel.result).toEqual(expected);
-      expect(enumModel.dependencies).toEqual([]);
-        
-      enumModel = await generator.renderEnum(model, inputModel);
-      expect(enumModel.result).toEqual(expected);
-      expect(enumModel.dependencies).toEqual([]);
-    });
+  test('should render `enum` with mixed types', async () => {
+    const doc = {
+      $id: 'Things',
+      enum: ['Texas', 1, '1', false, { test: 'test' }],
+    };
+    const models = await generator.generate(doc);
+    expect(models).toHaveLength(1);
+    expect(models[0].result).toMatchSnapshot();
   });
 
   test('should work custom preset for `enum` type', async () => {
@@ -131,28 +79,92 @@ type Things interface{}`,
       type: 'string',
       enum: ['Texas', 'Alabama', 'California'],
     };
-    const expected = `// CustomEnum represents an enum of string.
-type CustomEnum string`;
 
-    generator = new GoGenerator({ presets: [
-      {
-        enum: {
-          self({ content }) {
-            return content;
-          },
+    generator = new GoGenerator({
+      presets: [
+        {
+          enum: {
+            self({ content }) {
+              return content;
+            },
+          }
         }
-      }
-    ] });
+      ]
+    });
 
-    const inputModel = await generator.process(doc);
-    const model = inputModel.models['CustomEnum'];
-    
-    let enumModel = await generator.render(model, inputModel);
-    expect(enumModel.result).toEqual(expected);
-    expect(enumModel.dependencies).toEqual([]);
-    
-    enumModel = await generator.renderEnum(model, inputModel);
-    expect(enumModel.result).toEqual(expected);
-    expect(enumModel.dependencies).toEqual([]);
+    const models = await generator.generate(doc);
+    expect(models).toHaveLength(1);
+    expect(models[0].result).toMatchSnapshot();
+  });
+  describe('generateCompleteModels()', () => {
+    test('should render models', async () => {
+      const doc = {
+        $id: 'Address',
+        type: 'object',
+        properties: {
+          street_name: { type: 'string' },
+          city: { type: 'string', description: 'City description' },
+          state: { type: 'string' },
+          house_number: { type: 'number' },
+          marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
+          members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
+          array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
+          other_model: { type: 'object', $id: 'OtherModel', properties: { street_name: { type: 'string' } } },
+        },
+        patternProperties: {
+          '^S(.?*)test&': {
+            type: 'string'
+          }
+        },
+        required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+      };
+      const config = { packageName: 'some_package' };
+      const models = await generator.generateCompleteModels(doc, config);
+      expect(models).toHaveLength(2);
+      expect(models[0].result).toMatchSnapshot();
+      expect(models[1].result).toMatchSnapshot();
+    });
+
+    test('should render dependencies', async () => {
+      const doc = {
+        $id: 'Address',
+        type: 'object',
+        properties: {
+          street_name: { type: 'string' },
+          city: { type: 'string', description: 'City description' },
+          state: { type: 'string' },
+          house_number: { type: 'number' },
+          marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
+          members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
+          array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
+          other_model: { type: 'object', $id: 'OtherModel', properties: { street_name: { type: 'string' } } },
+        },
+        patternProperties: {
+          '^S(.?*)test&': {
+            type: 'string'
+          }
+        },
+        required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+      };
+      generator = new GoGenerator({
+        presets: [
+          {
+            struct: {
+              self({ renderer, content }) {
+                renderer.addDependency('time');
+                return content;
+              },
+            }
+          }
+        ]
+      });
+      const config = { packageName: 'some_package' };
+      const models = await generator.generateCompleteModels(doc, config);
+      expect(models).toHaveLength(2);
+      expect(models[0].result).toMatchSnapshot();
+      expect(models[1].result).toMatchSnapshot();
+      expect(models[0].dependencies).toEqual(['time']);
+      expect(models[1].dependencies).toEqual(['time']);
+    });
   });
 });

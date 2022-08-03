@@ -46,7 +46,7 @@ export async function renderModelsToSeparateFiles(generatedModels: OutputModel[]
   await fs.rm(outputPath, { recursive: true, force: true });
   await fs.mkdir(outputPath, { recursive: true });
   for (const outputModel of generatedModels) {
-    const outputFilePath = path.resolve(outputPath, `${FormatHelpers.toPascalCase(outputModel.model.$id || 'undefined')}.${extension}`);
+    const outputFilePath = path.resolve(outputPath, `${FormatHelpers.toPascalCase(outputModel.model.name || 'undefined')}.${extension}`);
     const outputContent = `
 ${outputModel.dependencies.join('\n')}
 ${outputModel.result}

@@ -2,33 +2,33 @@
 
 exports[`Should be able to render correct enums based on options and should log expected output to console 1`] = `
 "Generator output with Union:
-export class Root {
-  private _event?: Event;
+class Root {
+  private _eventType?: EventType;
 
   constructor(input: {
-    event?: Event,
+    eventType?: EventType,
   }) {
-    this._event = input.event;
+    this._eventType = input.eventType;
   }
 
-  get event(): Event | undefined { return this._event; }
-  set event(event: Event | undefined) { this._event = event; }
+  get eventType(): EventType | undefined { return this._eventType; }
+  set eventType(eventType: EventType | undefined) { this._eventType = eventType; }
 }
-export type Event = \\"ping\\" | \\"pong\\";
+type EventType = \\"ping\\" | \\"pong\\";
 Generator output with Enum:
-export class Root {
-  private _event?: Event;
+class Root {
+  private _eventType?: EventType;
 
   constructor(input: {
-    event?: Event,
+    eventType?: EventType,
   }) {
-    this._event = input.event;
+    this._eventType = input.eventType;
   }
 
-  get event(): Event | undefined { return this._event; }
-  set event(event: Event | undefined) { this._event = event; }
+  get eventType(): EventType | undefined { return this._eventType; }
+  set eventType(eventType: EventType | undefined) { this._eventType = eventType; }
 }
-export enum Event {
+enum EventType {
   PING = \\"ping\\",
   PONG = \\"pong\\",
 }"

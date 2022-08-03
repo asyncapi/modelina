@@ -1,10 +1,10 @@
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import path from 'path';
-import { CommonModel, CommonInputModel, Draft4Schema, Draft7Schema, Draft6Schema, SwaggerV2Schema, OpenapiV3Schema, AsyncapiV2Schema } from '../models';
+import { CommonModel, InputMetaModel, Draft4Schema, Draft7Schema, Draft6Schema, SwaggerV2Schema, OpenapiV3Schema, AsyncapiV2Schema } from '../models';
 import { Logger } from '../utils';
-import { postInterpretModel } from '../interpreter/PostInterpreter';
 import { Interpreter } from '../interpreter/Interpreter';
+import { convertToMetaModel } from '../helpers';
 
 /**
  * Class for processing JSON Schema
@@ -15,7 +15,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  process(input: Record<string, any>): Promise<CommonInputModel> {
+  process(input: Record<string, any>): Promise<InputMetaModel> {
     if (this.shouldProcess(input)) {
       switch (input.$schema) {
       case 'http://json-schema.org/draft-04/schema':
@@ -58,16 +58,18 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input to process as draft 7
    */
-  private async processDraft7(input: Record<string, any>) : Promise<CommonInputModel> {
+  private async processDraft7(input: Record<string, any>) : Promise<InputMetaModel> {
     Logger.debug('Processing input as a JSON Schema Draft 7 document');
-    const commonInputModel = new CommonInputModel();
-    commonInputModel.originalInput = input;
+    const inputModel = new InputMetaModel();
+    inputModel.originalInput = input;
     input = JsonSchemaInputProcessor.reflectSchemaNames(input, {}, 'root', true) as Record<string, any>;
     await this.dereferenceInputs(input);
     const parsedSchema = Draft7Schema.toSchema(input);
-    commonInputModel.models = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema);
+    const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema);
+    const metaModel = convertToMetaModel(newCommonModel);
+    inputModel.models[metaModel.name] = metaModel;
     Logger.debug('Completed processing input as JSON Schema draft 7 document');
-    return commonInputModel;
+    return inputModel;
   }
 
   /**
@@ -75,16 +77,18 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input to process as draft 4
    */
-  private async processDraft4(input: Record<string, any>) : Promise<CommonInputModel> {
+  private async processDraft4(input: Record<string, any>) : Promise<InputMetaModel> {
     Logger.debug('Processing input as JSON Schema Draft 4 document');
-    const commonInputModel = new CommonInputModel();
-    commonInputModel.originalInput = input;
+    const inputModel = new InputMetaModel();
+    inputModel.originalInput = input;
     input = JsonSchemaInputProcessor.reflectSchemaNames(input, {}, 'root', true) as Record<string, any>;
     await this.dereferenceInputs(input);
     const parsedSchema = Draft4Schema.toSchema(input);
-    commonInputModel.models = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema);
+    const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema);
+    const metaModel = convertToMetaModel(newCommonModel);
+    inputModel.models[metaModel.name] = metaModel;
     Logger.debug('Completed processing input as JSON Schema draft 4 document');
-    return commonInputModel;
+    return inputModel;
   }
   
   /**
@@ -92,16 +96,18 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input to process as draft-6
    */
-  private async processDraft6(input: Record<string, any>) : Promise<CommonInputModel> {
+  private async processDraft6(input: Record<string, any>) : Promise<InputMetaModel> {
     Logger.debug('Processing input as a JSON Schema Draft 6 document');
-    const commonInputModel = new CommonInputModel();
-    commonInputModel.originalInput = input;
+    const inputModel = new InputMetaModel();
+    inputModel.originalInput = input;
     input = JsonSchemaInputProcessor.reflectSchemaNames(input, {}, 'root', true) as Record<string, any>;
     await this.dereferenceInputs(input);
     const parsedSchema = Draft6Schema.toSchema(input);
-    commonInputModel.models = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema);
+    const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema);
+    const metaModel = convertToMetaModel(newCommonModel);
+    inputModel.models[metaModel.name] = metaModel;
     Logger.debug('Completed processing input as JSON Schema draft 6 document');
-    return commonInputModel;
+    return inputModel;
   }
 
   private async dereferenceInputs(input: Record<string, any>) {
@@ -269,23 +275,12 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param schema to simplify to common model
    */
-  static convertSchemaToCommonModel(schema: Draft4Schema | Draft6Schema | Draft7Schema | SwaggerV2Schema| AsyncapiV2Schema | boolean): Record<string, CommonModel> {
-    const commonModelsMap: Record<string, CommonModel> = {};
+  static convertSchemaToCommonModel(schema: Draft4Schema | Draft6Schema | Draft7Schema | SwaggerV2Schema| AsyncapiV2Schema | boolean): CommonModel {
     const interpreter = new Interpreter();
     const model = interpreter.interpret(schema);
-    if (model !== undefined) { 
-      const commonModels = postInterpretModel(model);
-      for (const commonModel of commonModels) {
-        if (commonModel.$id) {
-          if (commonModelsMap[commonModel.$id] !== undefined) {
-            Logger.warn(`Overwriting existing model with $id ${commonModel.$id}, are there two models with the same id present?`, commonModel);
-          }
-          commonModelsMap[commonModel.$id] = commonModel;
-        } else {
-          Logger.warn('Model did not have $id, ignoring.', commonModel);
-        }
-      }
+    if (model === undefined) {
+      throw new Error('Could not interpret schema to internal model');
     }
-    return commonModelsMap;
+    return model;
   }
 }

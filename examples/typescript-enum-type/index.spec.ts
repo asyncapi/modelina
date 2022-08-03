@@ -21,4 +21,3 @@ describe('Should be able to render correct enums based on options', () => {
     expect(generatedContent).toMatchSnapshot();
   });
 });
-

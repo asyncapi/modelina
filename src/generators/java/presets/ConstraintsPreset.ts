@@ -1,4 +1,6 @@
+import { ConstrainedArrayModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedStringModel } from '../../../models';
 import { JavaPreset } from '../JavaPreset';
+
 /**
  * Preset which extends class's getters with annotations from `javax.validation.constraints` package
  * 
@@ -10,48 +12,56 @@ export const JAVA_CONSTRAINTS_PRESET: JavaPreset = {
       renderer.addDependency('import javax.validation.constraints.*;');
       return content;
     },
-    getter({ renderer, model, propertyName, property, content }) {
+    // eslint-disable-next-line sonarjs/cognitive-complexity
+    getter({ renderer, property, content }) {
       const annotations: string[] = [];
       
-      const isRequired = model.isRequired(propertyName);
-      if (isRequired) {
+      if (property.required) {
         annotations.push(renderer.renderAnnotation('NotNull'));
       }
-    
+      const originalInput = property.property.originalInput;
+
       // string
-      const pattern = property.getFromOriginalInput('pattern');
-      if (pattern !== undefined) {
-        annotations.push(renderer.renderAnnotation('Pattern', { regexp: `"${pattern}"` }));
+      if (property.property instanceof ConstrainedStringModel) {
+        const pattern = originalInput['pattern'];
+        if (pattern !== undefined) {
+          annotations.push(renderer.renderAnnotation('Pattern', { regexp: `"${pattern}"` }));
+        }
+        const minLength = originalInput['minLength'];
+        const maxLength = originalInput['maxLength'];
+        if (minLength !== undefined || maxLength !== undefined) {
+          annotations.push(renderer.renderAnnotation('Size', { min: minLength, max: maxLength }));
+        }
       }
-      const minLength = property.getFromOriginalInput('minLength');
-      const maxLength = property.getFromOriginalInput('maxLength');
-      if (minLength !== undefined || maxLength !== undefined) {
-        annotations.push(renderer.renderAnnotation('Size', { min: minLength, max: maxLength }));
-      }
-    
+      
       // number/integer
-      const minimum = property.getFromOriginalInput('minimum');
-      if (minimum !== undefined) {
-        annotations.push(renderer.renderAnnotation('Min', minimum));
-      }
-      const exclusiveMinimum = property.getFromOriginalInput('exclusiveMinimum');
-      if (exclusiveMinimum !== undefined) {
-        annotations.push(renderer.renderAnnotation('Min', exclusiveMinimum + 1));
-      }
-      const maximum = property.getFromOriginalInput('maximum');
-      if (maximum !== undefined) {
-        annotations.push(renderer.renderAnnotation('Max', maximum));
-      }
-      const exclusiveMaximum = property.getFromOriginalInput('exclusiveMaximum');
-      if (exclusiveMaximum !== undefined) {
-        annotations.push(renderer.renderAnnotation('Max', exclusiveMaximum - 1));
+      if (property.property instanceof ConstrainedFloatModel ||
+        property.property instanceof ConstrainedIntegerModel) {
+        const minimum = originalInput['minimum'];
+        if (minimum !== undefined) {
+          annotations.push(renderer.renderAnnotation('Min', minimum));
+        }
+        const exclusiveMinimum = originalInput['exclusiveMinimum'];
+        if (exclusiveMinimum !== undefined) {
+          annotations.push(renderer.renderAnnotation('Min', exclusiveMinimum + 1));
+        }
+        const maximum = originalInput['maximum'];
+        if (maximum !== undefined) {
+          annotations.push(renderer.renderAnnotation('Max', maximum));
+        }
+        const exclusiveMaximum = originalInput['exclusiveMaximum'];
+        if (exclusiveMaximum !== undefined) {
+          annotations.push(renderer.renderAnnotation('Max', exclusiveMaximum - 1));
+        }
       }
     
       // array
-      const minItems = property.getFromOriginalInput('minItems');
-      const maxItems = property.getFromOriginalInput('maxItems');
-      if (minItems !== undefined || maxItems !== undefined) {
-        annotations.push(renderer.renderAnnotation('Size', { min: minItems, max: maxItems }));
+      if (property.property instanceof ConstrainedArrayModel) {
+        const minItems = originalInput['minItems'];
+        const maxItems = originalInput['maxItems'];
+        if (minItems !== undefined || maxItems !== undefined) {
+          annotations.push(renderer.renderAnnotation('Size', { min: minItems, max: maxItems }));
+        }
       }
     
       return renderer.renderBlock([...annotations, content]);

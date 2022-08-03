@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to generate a model to overwrite the Equal methods and should log expected output to console 1`] = `
+Array [
+  "public class Root {
+  private String email;
+
+  public String getEmail() { return this.email; }
+  public void setEmail(String email) { this.email = email; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Root self = (Root) o;
+      return 
+        Objects.equals(this.email, self.email);
+  }
+}",
+]
+`;

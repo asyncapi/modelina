@@ -8,6 +8,7 @@ const generator = new JavaGenerator({
         equal: false,
         hashCode: false,
         classToString: true,
+        marshalling: false,
       },
     },
   ],

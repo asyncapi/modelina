@@ -8,13 +8,12 @@
 <dd><p>Abstract renderer with common helper methods</p>
 </dd>
 <dt><a href="#AsyncapiV2Schema">AsyncapiV2Schema</a></dt>
-<dd><p>AsyncAPI 2.0 + 2.1 schema model</p>
+<dd><p>AsyncAPI schema model</p>
 <p>Based on Draft 7 with additions</p>
 <p><a href="https://www.asyncapi.com/docs/specifications/v2.0.0#schemaObject">https://www.asyncapi.com/docs/specifications/v2.0.0#schemaObject</a>
-<a href="https://www.asyncapi.com/docs/specifications/v2.1.0#schemaObject">https://www.asyncapi.com/docs/specifications/v2.1.0#schemaObject</a></p>
-</dd>
-<dt><a href="#CommonInputModel">CommonInputModel</a></dt>
-<dd><p>This class is the wrapper for simplified models and the rest of the context needed for further generate typed models.</p>
+<a href="https://www.asyncapi.com/docs/specifications/v2.1.0#schemaObject">https://www.asyncapi.com/docs/specifications/v2.1.0#schemaObject</a>
+<a href="https://www.asyncapi.com/docs/specifications/v2.2.0#schemaObject">https://www.asyncapi.com/docs/specifications/v2.2.0#schemaObject</a>
+<a href="https://www.asyncapi.com/docs/specifications/v2.3.0#schemaObject">https://www.asyncapi.com/docs/specifications/v2.3.0#schemaObject</a></p>
 </dd>
 <dt><a href="#CommonModel">CommonModel</a></dt>
 <dd><p>Common internal representation for a model.</p>
@@ -27,6 +26,9 @@
 </dd>
 <dt><a href="#Draft7Schema">Draft7Schema</a></dt>
 <dd><p>JSON Draft7Schema Draft 7 model</p>
+</dd>
+<dt><a href="#InputMetaModel">InputMetaModel</a></dt>
+<dd><p>Since each input processor can create multiple meta models this is a wrapper to a MetaModel to make that possible.</p>
 </dd>
 <dt><a href="#OpenapiV3Schema">OpenapiV3Schema</a></dt>
 <dd><p>OpenAPI 3.0 -&gt; 3.0.4 schema model</p>
@@ -81,23 +83,28 @@ Modifications</p>
 </dd>
 </dl>
 
-## Members
-
-<dl>
-<dt><a href="#DefaultPropertyNames">DefaultPropertyNames</a></dt>
-<dd><p>Default property names for different aspects of the common model</p>
-</dd>
-<dt><a href="#CommonNamingConventionImplementation">CommonNamingConventionImplementation</a></dt>
-<dd><p>A CommonNamingConvention implementation shared between generators for different languages.</p>
-</dd>
-</dl>
-
 ## Functions
 
 <dl>
-<dt><a href="#getUniquePropertyName">getUniquePropertyName(rootModel, propertyName)</a></dt>
-<dd><p>Recursively find the proper property name.</p>
-<p>This function ensures that the property name is unique for the model</p>
+<dt><a href="#NO_DUPLICATE_PROPERTIES">NO_DUPLICATE_PROPERTIES(constrainedObjectModel, objectModel, propertyName, namingFormatter)</a></dt>
+<dd><p>Because a lot of the other constrain functions (such as NO_NUMBER_START_CHAR, NO_EMPTY_VALUE, etc) they might manipulate the property names by append, prepend, or manipulate it any other way.
+We then need to make sure that they don&#39;t clash with any existing properties, this is what this function handles.
+If so, prepend <code>reserved_</code> to the property name and recheck.</p>
+</dd>
+<dt><a href="#NO_DUPLICATE_ENUM_KEYS">NO_DUPLICATE_ENUM_KEYS(constrainedEnumModel, enumModel, enumKey, namingFormatter, enumKeyToCheck, onNameChange, onNameChangeToCheck)</a> ⇒ <code>string</code></dt>
+<dd><p>Because a lot of the other constrain functions (such as NO_NUMBER_START_CHAR, NO_EMPTY_VALUE, etc) they might manipulate the enum keys by append, prepend, or manipulate it any other way.
+We then need to make sure that they don&#39;t clash with any existing enum keys, this is what this function handles.
+If so, prepend <code>reserved_</code> to the enum key and recheck.</p>
+</dd>
+<dt><a href="#hasPreset">hasPreset(presets, preset)</a></dt>
+<dd><p>Returns true if and only if a given preset is already included in a list of presets
+Check is done using referential equality</p>
+</dd>
+<dt><a href="#trySplitModel">trySplitModel(model, options, models)</a> ⇒</dt>
+<dd><p>Try split the model</p>
+</dd>
+<dt><a href="#split">split(model, options, models)</a> ⇒</dt>
+<dd><p>Overwrite the nested models with references where required.</p>
 </dd>
 <dt><a href="#interpretAdditionalItems">interpretAdditionalItems(schema, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for additionalItems keyword.</p>
@@ -133,18 +140,6 @@ Modifications</p>
 <dt><a href="#interpretProperties">interpretProperties(schema, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for interpreting properties keyword.</p>
 </dd>
-<dt><a href="#postInterpretModel">postInterpretModel(model)</a></dt>
-<dd><p>Post process the interpreted model. By applying the following:</p>
-<ul>
-<li>Ensure models are split as required</li>
-</ul>
-</dd>
-<dt><a href="#trySplitModels">trySplitModels(model, iteratedModels)</a></dt>
-<dd><p>This function splits up a model if needed and add the new model to the list of models.</p>
-</dd>
-<dt><a href="#ensureModelsAreSplit">ensureModelsAreSplit(model, iteratedModels)</a></dt>
-<dd><p>Split up all models which should and use ref instead.</p>
-</dd>
 <dt><a href="#isEnum">isEnum(model)</a></dt>
 <dd><p>Check if CommonModel is an enum</p>
 </dd>
@@ -156,6 +151,9 @@ Modifications</p>
 </dd>
 <dt><a href="#interpretName">interpretName(schema)</a></dt>
 <dd><p>Find the name for simplified version of schema</p>
+</dd>
+<dt><a href="#mergePartialAndDefault">mergePartialAndDefault()</a></dt>
+<dd><p>Merge a non optional value with custom optional values to form a full value that has all properties sat.</p>
 </dd>
 </dl>
 
@@ -199,7 +197,8 @@ Generates a scattered model where dependencies and rendered results are separate
 <a name="AbstractGenerator+processInput"></a>
 
 ### abstractGenerator.processInput(input)
-Process any of the input formats to the appropriate CommonInputModel type.
+Process any of the input formats to the appropriate InputMetaModel type and split out the meta models
+based on the requirements of the generators
 
 **Kind**: instance method of [<code>AbstractGenerator</code>](#AbstractGenerator)  
 
@@ -227,12 +226,14 @@ Adds a dependency while ensuring that only one dependency is preset at a time.
 <a name="AsyncapiV2Schema"></a>
 
 ## AsyncapiV2Schema
-AsyncAPI 2.0 + 2.1 schema model
+AsyncAPI schema model
 
 Based on Draft 7 with additions
 
 https://www.asyncapi.com/docs/specifications/v2.0.0#schemaObject
 https://www.asyncapi.com/docs/specifications/v2.1.0#schemaObject
+https://www.asyncapi.com/docs/specifications/v2.2.0#schemaObject
+https://www.asyncapi.com/docs/specifications/v2.3.0#schemaObject
 
 **Kind**: global class  
 <a name="AsyncapiV2Schema.toSchema"></a>
@@ -246,12 +247,6 @@ Takes a deep copy of the input object and converts it to an instance of Asyncapi
 | --- |
 | object | 
 
-<a name="CommonInputModel"></a>
-
-## CommonInputModel
-This class is the wrapper for simplified models and the rest of the context needed for further generate typed models.
-
-**Kind**: global class  
 <a name="CommonModel"></a>
 
 ## CommonModel
@@ -273,7 +268,6 @@ Common internal representation for a model.
         * [.addProperty(propertyName, propertyModel, originalInput)](#CommonModel+addProperty)
         * [.addAdditionalProperty(additionalPropertiesModel, originalInput)](#CommonModel+addAdditionalProperty)
         * [.addAdditionalItems(additionalItemsModel, originalInput)](#CommonModel+addAdditionalItems)
-        * [.addPatternProperty(pattern, patternModel, originalInput)](#CommonModel+addPatternProperty)
         * [.addExtendedModel(extendedModel)](#CommonModel+addExtendedModel)
         * [.getNearestDependencies()](#CommonModel+getNearestDependencies)
     * _static_
@@ -281,7 +275,6 @@ Common internal representation for a model.
         * [.mergeProperties(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergeProperties)
         * [.mergeAdditionalProperties(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergeAdditionalProperties)
         * [.mergeAdditionalItems(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergeAdditionalItems)
-        * [.mergePatternProperties(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergePatternProperties)
         * [.mergeItems(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergeItems)
         * [.mergeTypes(mergeTo, mergeFrom)](#CommonModel.mergeTypes)
         * [.mergeCommonModels(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergeCommonModels)
@@ -436,20 +429,6 @@ If another model already exist the two are merged.
 | additionalItemsModel |  |
 | originalInput | corresponding input that got interpreted to this model |
 
-<a name="CommonModel+addPatternProperty"></a>
-
-### commonModel.addPatternProperty(pattern, patternModel, originalInput)
-Adds a patternProperty to the model.
-If the pattern already exist the two models are merged.
-
-**Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
-
-| Param | Description |
-| --- | --- |
-| pattern |  |
-| patternModel |  |
-| originalInput | corresponding input that got interpreted to this model |
-
 <a name="CommonModel+addExtendedModel"></a>
 
 ### commonModel.addExtendedModel(extendedModel)
@@ -466,7 +445,7 @@ It is only allowed to extend if the other model have $id and is not already bein
 <a name="CommonModel+getNearestDependencies"></a>
 
 ### commonModel.getNearestDependencies()
-This function returns an array of `$id`s from all the CommonModel's it immediate depends on.
+Returns an array of unique `$id`s from all the CommonModel's this model depends on.
 
 **Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
 <a name="CommonModel.toCommonModel"></a>
@@ -513,20 +492,6 @@ Merge two common model additionalProperties together
 
 ### CommonModel.mergeAdditionalItems(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)
 Merge two common model additionalItems together
-
-**Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
-
-| Param | Description |
-| --- | --- |
-| mergeTo |  |
-| mergeFrom |  |
-| originalInput | corresponding input that got interpreted to this model |
-| alreadyIteratedModels |  |
-
-<a name="CommonModel.mergePatternProperties"></a>
-
-### CommonModel.mergePatternProperties(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)
-Merge two common model pattern properties together
 
 **Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
 
@@ -628,6 +593,12 @@ Takes a deep copy of the input object and converts it to an instance of Draft7Sc
 | --- |
 | object | 
 
+<a name="InputMetaModel"></a>
+
+## InputMetaModel
+Since each input processor can create multiple meta models this is a wrapper to a MetaModel to make that possible.
+
+**Kind**: global class  
 <a name="OpenapiV3Schema"></a>
 
 ## OpenapiV3Schema
@@ -1062,31 +1033,82 @@ Sets the logger to use for the model generation library
 | --- | --- |
 | logger | to add |
 
-<a name="DefaultPropertyNames"></a>
+<a name="NO_DUPLICATE_PROPERTIES"></a>
 
-## DefaultPropertyNames
-Default property names for different aspects of the common model
-
-**Kind**: global variable  
-<a name="CommonNamingConventionImplementation"></a>
-
-## CommonNamingConventionImplementation
-A CommonNamingConvention implementation shared between generators for different languages.
-
-**Kind**: global variable  
-<a name="getUniquePropertyName"></a>
-
-## getUniquePropertyName(rootModel, propertyName)
-Recursively find the proper property name.
-
-This function ensures that the property name is unique for the model
+## NO\_DUPLICATE\_PROPERTIES(constrainedObjectModel, objectModel, propertyName, namingFormatter)
+Because a lot of the other constrain functions (such as NO_NUMBER_START_CHAR, NO_EMPTY_VALUE, etc) they might manipulate the property names by append, prepend, or manipulate it any other way.
+We then need to make sure that they don't clash with any existing properties, this is what this function handles.
+If so, prepend `reserved_` to the property name and recheck.
 
 **Kind**: global function  
 
+| Param | Description |
+| --- | --- |
+| constrainedObjectModel | the current constrained object model, which contains already existing constrained properties |
+| objectModel | the raw object model which is non-constrained to the output language. |
+| propertyName | one of the properties in objectModel which might have been manipulated |
+| namingFormatter | the name formatter which are used to format the property key |
+
+<a name="NO_DUPLICATE_ENUM_KEYS"></a>
+
+## NO\_DUPLICATE\_ENUM\_KEYS(constrainedEnumModel, enumModel, enumKey, namingFormatter, enumKeyToCheck, onNameChange, onNameChangeToCheck) ⇒ <code>string</code>
+Because a lot of the other constrain functions (such as NO_NUMBER_START_CHAR, NO_EMPTY_VALUE, etc) they might manipulate the enum keys by append, prepend, or manipulate it any other way.
+We then need to make sure that they don't clash with any existing enum keys, this is what this function handles.
+If so, prepend `reserved_` to the enum key and recheck.
+
+**Kind**: global function  
+**Returns**: <code>string</code> - the potential new enum key that does not clash with existing enum keys.  
+
+| Param | Description |
+| --- | --- |
+| constrainedEnumModel | the current constrained enum model, which contains already existing constrained enum keys |
+| enumModel | the raw enum model which is non-constrained to the output language. |
+| enumKey | one of the enum keys in enumModel which might have been manipulated. |
+| namingFormatter | the name formatter which are used to format the enum key. |
+| enumKeyToCheck | the enum key to use for checking if it already exist, defaults to enumKey. |
+| onNameChange | callback to change the name of the enum key that needs to be returned. |
+| onNameChangeToCheck | callback to change the enum key which is being checked as part of the existing models. |
+
+<a name="hasPreset"></a>
+
+## hasPreset(presets, preset)
+Returns true if and only if a given preset is already included in a list of presets
+Check is done using referential equality
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| presets | the list to check |
+| preset | the preset to check for |
+
+<a name="trySplitModel"></a>
+
+## trySplitModel(model, options, models) ⇒
+Try split the model
+
+**Kind**: global function  
+**Returns**: whether the new or old MetaModel to use.  
+
 | Param |
 | --- |
-| rootModel | 
-| propertyName | 
+| model | 
+| options | 
+| models | 
+
+<a name="split"></a>
+
+## split(model, options, models) ⇒
+Overwrite the nested models with references where required.
+
+**Kind**: global function  
+**Returns**: an array of all the split models  
+
+| Param |
+| --- |
+| model | 
+| options | 
+| models | 
 
 <a name="interpretAdditionalItems"></a>
 
@@ -1239,42 +1261,6 @@ Interpreter function for interpreting properties keyword.
 | interpreter |  |
 | interpreterOptions | to control the interpret process |
 
-<a name="postInterpretModel"></a>
-
-## postInterpretModel(model)
-Post process the interpreted model. By applying the following:
-- Ensure models are split as required
-
-**Kind**: global function  
-
-| Param |
-| --- |
-| model | 
-
-<a name="trySplitModels"></a>
-
-## trySplitModels(model, iteratedModels)
-This function splits up a model if needed and add the new model to the list of models.
-
-**Kind**: global function  
-
-| Param | Description |
-| --- | --- |
-| model | check if it should be split up |
-| iteratedModels | which have already been split up |
-
-<a name="ensureModelsAreSplit"></a>
-
-## ensureModelsAreSplit(model, iteratedModels)
-Split up all models which should and use ref instead.
-
-**Kind**: global function  
-
-| Param | Description |
-| --- | --- |
-| model | to ensure are split |
-| iteratedModels | which are already split |
-
 <a name="isEnum"></a>
 
 ## isEnum(model)
@@ -1319,3 +1305,9 @@ Find the name for simplified version of schema
 | --- | --- |
 | schema | to find the name |
 
+<a name="mergePartialAndDefault"></a>
+
+## mergePartialAndDefault()
+Merge a non optional value with custom optional values to form a full value that has all properties sat.
+
+**Kind**: global function  

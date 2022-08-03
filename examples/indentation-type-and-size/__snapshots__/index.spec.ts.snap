@@ -2,7 +2,7 @@
 
 exports[`Should render the typescript class with 4 tabs as indentation and should log expected output to console 1`] = `
 Array [
-  "export class Root {
+  "class Root {
 				private _email?: string;
 
 				constructor(input: {

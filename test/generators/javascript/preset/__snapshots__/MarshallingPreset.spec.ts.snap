@@ -1,0 +1,128 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Marshalling preset should render un/marshal code 1`] = `
+"class Test {
+  stringProp;
+  numberProp;
+  additionalProperties;
+
+  constructor(input) {
+    this.stringProp = input.stringProp;
+    if (input.hasOwnProperty('numberProp')) {
+      this.numberProp = input.numberProp;
+    }
+    if (input.hasOwnProperty('additionalProperties')) {
+      this.additionalProperties = input.additionalProperties;
+    }
+  }
+
+  get stringProp() { return this.stringProp; }
+  set stringProp(stringProp) { this.stringProp = stringProp; }
+
+  get numberProp() { return this.numberProp; }
+  set numberProp(numberProp) { this.numberProp = numberProp; }
+
+  get additionalProperties() { return this.additionalProperties; }
+  set additionalProperties(additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  marshal(){
+    let json = '{'
+    if(this.stringProp !== undefined) {
+      json += \`\\"string prop\\": \${typeof this.stringProp === 'number' || typeof this.stringProp === 'boolean' ? this.stringProp : JSON.stringify(this.stringProp)},\`; 
+    }
+    if(this.numberProp !== undefined) {
+      json += \`\\"numberProp\\": \${typeof this.numberProp === 'number' || typeof this.numberProp === 'boolean' ? this.numberProp : JSON.stringify(this.numberProp)},\`; 
+    }
+    if(this.additionalProperties !== undefined) {
+      json += \`\\"additionalProperties\\": \${typeof this.additionalProperties === 'number' || typeof this.additionalProperties === 'boolean' ? this.additionalProperties : JSON.stringify(this.additionalProperties)},\`; 
+    }
+
+    //Remove potential last comma 
+    return \`\${json.charAt(json.length-1) === ',' ? json.slice(0, json.length-1) : json}}\`;
+  }
+
+  unmarshal(json){
+    const obj = typeof json === \\"object\\" ? json : JSON.parse(json);
+    const instance = new Test({});
+
+    if (obj[\\"string prop\\"] !== undefined) {
+      instance.stringProp = obj[\\"string prop\\"];
+    }
+    if (obj[\\"numberProp\\"] !== undefined) {
+      instance.numberProp = obj[\\"numberProp\\"];
+    }
+    if (obj[\\"additionalProperties\\"] !== undefined) {
+      instance.additionalProperties = obj[\\"additionalProperties\\"];
+    }
+
+
+
+    //Not part of core properties
+
+    //Only go over remaining. properties 
+    for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"stringProp\\",\\"numberProp\\",\\"additionalProperties\\"].includes(key);}))) {
+  
+    }
+
+    return instance;
+  }
+}"
+`;
+
+exports[`Marshalling preset should render un/marshal code 2`] = `
+"class NestedTest {
+  stringProp;
+  additionalProperties;
+
+  constructor(input) {
+    if (input.hasOwnProperty('stringProp')) {
+      this.stringProp = input.stringProp;
+    }
+    if (input.hasOwnProperty('additionalProperties')) {
+      this.additionalProperties = input.additionalProperties;
+    }
+  }
+
+  get stringProp() { return this.stringProp; }
+  set stringProp(stringProp) { this.stringProp = stringProp; }
+
+  get additionalProperties() { return this.additionalProperties; }
+  set additionalProperties(additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  marshal(){
+    let json = '{'
+    if(this.stringProp !== undefined) {
+      json += \`\\"stringProp\\": \${typeof this.stringProp === 'number' || typeof this.stringProp === 'boolean' ? this.stringProp : JSON.stringify(this.stringProp)},\`; 
+    }
+    if(this.additionalProperties !== undefined) {
+      json += \`\\"additionalProperties\\": \${typeof this.additionalProperties === 'number' || typeof this.additionalProperties === 'boolean' ? this.additionalProperties : JSON.stringify(this.additionalProperties)},\`; 
+    }
+
+    //Remove potential last comma 
+    return \`\${json.charAt(json.length-1) === ',' ? json.slice(0, json.length-1) : json}}\`;
+  }
+
+  unmarshal(json){
+    const obj = typeof json === \\"object\\" ? json : JSON.parse(json);
+    const instance = new NestedTest({});
+
+    if (obj[\\"stringProp\\"] !== undefined) {
+      instance.stringProp = obj[\\"stringProp\\"];
+    }
+    if (obj[\\"additionalProperties\\"] !== undefined) {
+      instance.additionalProperties = obj[\\"additionalProperties\\"];
+    }
+
+
+
+    //Not part of core properties
+
+    //Only go over remaining. properties 
+    for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"stringProp\\",\\"additionalProperties\\"].includes(key);}))) {
+  
+    }
+
+    return instance;
+  }
+}"
+`;

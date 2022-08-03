@@ -1,40 +1,49 @@
 import {parse, AsyncAPIDocument, Schema as AsyncAPISchema, ParserOptions} from '@asyncapi/parser';
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
-import { CommonInputModel, ProcessorOptions } from '../models';
+import { InputMetaModel, ProcessorOptions } from '../models';
 import { Logger } from '../utils';
 import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
+import { convertToMetaModel } from '../helpers';
 
 /**
  * Class for processing AsyncAPI inputs
  */
 export class AsyncAPIInputProcessor extends AbstractInputProcessor {
-  static supportedVersions = ['2.0.0', '2.1.0', '2.2.0'];
+  static supportedVersions = ['2.0.0', '2.1.0', '2.2.0', '2.3.0','2.4.0'];
 
   /**
    * Process the input as an AsyncAPI document
    * 
    * @param input 
    */
-  async process(input: Record<string, any>, options?: ProcessorOptions): Promise<CommonInputModel> {
+  async process(input: Record<string, any>, options?: ProcessorOptions): Promise<InputMetaModel> {
     if (!this.shouldProcess(input)) {throw new Error('Input is not an AsyncAPI document so it cannot be processed.');}
 
     Logger.debug('Processing input as an AsyncAPI document');
     let doc: AsyncAPIDocument;
-    const common = new CommonInputModel();
+    const inputModel = new InputMetaModel();
     if (!AsyncAPIInputProcessor.isFromParser(input)) {
       doc = await parse(input as any, options?.asyncapi || {} as ParserOptions);
     } else {
       doc = input as AsyncAPIDocument;
     }
-    common.originalInput = doc;
-    
+    inputModel.originalInput = doc;
+    // Go over all the message payloads and convert them to models
     for (const [, message] of doc.allMessages()) {
       const schema = AsyncAPIInputProcessor.convertToInternalSchema(message.payload());
-      const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema);
-      common.models = {...common.models, ...commonModels};
+      const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema);
+      if (newCommonModel.$id !== undefined) {
+        if (inputModel.models[newCommonModel.$id] !== undefined) {
+          Logger.warn(`Overwriting existing model with $id ${newCommonModel.$id}, are there two models with the same id present?`, newCommonModel);
+        }
+        const metaModel = convertToMetaModel(newCommonModel);
+        inputModel.models[metaModel.name] = metaModel;
+      } else {
+        Logger.warn('Model did not have $id which is required, ignoring.', newCommonModel);
+      }
     }
-    return common;
+    return inputModel;
   }
 
   /**
@@ -51,14 +60,20 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     alreadyIteratedSchemas: Map<string, AsyncapiV2Schema> = new Map()
   ): AsyncapiV2Schema | boolean {
     if (typeof schema === 'boolean') {return schema;}
-    const schemaUid = schema.uid();
+    
+    let schemaUid = schema.uid();
+    //Because the constraint functionality of generators cannot handle -, <, >, we remove them from the id if it's an anonymous schema.
+    if (schemaUid.includes('<anonymous-schema')) {
+      schemaUid = schemaUid.replace('<', '').replace(/-/g, '_').replace('>', '');
+    }
+    
     if (alreadyIteratedSchemas.has(schemaUid)) {
       return alreadyIteratedSchemas.get(schemaUid) as AsyncapiV2Schema; 
     }
-    let convertedSchema = new AsyncapiV2Schema();
-    alreadyIteratedSchemas.set(schemaUid, convertedSchema);
-    convertedSchema = Object.assign({}, schema.json());
+
+    const convertedSchema = Object.assign(new AsyncapiV2Schema(), schema.json());
     convertedSchema[this.MODELGEN_INFFERED_NAME] = schemaUid;
+    alreadyIteratedSchemas.set(schemaUid, convertedSchema);
 
     if (schema.allOf() !== null) {
       convertedSchema.allOf = schema.allOf().map((item) => this.convertToInternalSchema(item, alreadyIteratedSchemas));

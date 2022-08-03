@@ -10,6 +10,8 @@ There are special use-cases that each language supports; this document pertains 
 - [Generate union types instead of enums](#generate-union-types-instead-of-enums)
 - [Generate un/marshal functions for classes](#generate-unmarshal-functions-for-classes)
 - [Generate example data function](#generate-example-data-function)
+- [Rendering complete models to a specific module system](#rendering-complete-models-to-a-specific-module-system)
+- [Rendering comments from description and example fields](#rendering-comments-from-description-and-example-fields)
 
 <!-- tocstop -->
 
@@ -50,3 +52,18 @@ You might stumble upon a user case (we had one in code generation) where you wan
 This can be done by including the preset `TS_COMMON_PRESET` using the option `example`.
 
 Check out this [example out for a live demonstration](../../examples/typescript-generate-example).
+
+
+## Rendering complete models to a specific module system
+In some cases you might need to render the complete models to a specific module system such as ESM and CJS.
+
+You can choose between default exports and named exports when using either, with the `exportType` option.
+
+Check out this [example for a live demonstration how to generate the complete TypeScript models to use ESM module system](../../examples/typescript-use-esm).
+
+Check out this [example for a live demonstration how to generate the complete TypeScript models to use CJS module system](../../examples/typescript-use-cjs).
+
+## Rendering comments from description and example fields
+You can use the `TS_DESCRIPTION_PRESET` to generate JSDoc style comments from description and example fields in your model.
+
+See [this example](../../examples/typescript-generate-comments) for how this can be used.

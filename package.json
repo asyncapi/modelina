@@ -1,7 +1,7 @@
 {
   "name": "@asyncapi/modelina",
-  "version": "0.39.8",
-  "description": "The Model SDK for generating data models",
+  "version": "1.0.0-next.1",
+  "description": "Library for generating data models based on inputs such as AsyncAPI, OpenAPI, or JSON Schema documents",
   "license": "Apache-2.0",
   "homepage": "https://github.com/asyncapi/modelina",
   "bugs": {
@@ -22,7 +22,7 @@
     "sdk"
   ],
   "author": {
-    "name": "The AsyncAPI maintainers"
+    "name": "The Modelina codeowners and contributors"
   },
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
@@ -36,9 +36,10 @@
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.9",
     "@apidevtools/swagger-parser": "^10.0.3",
-    "@asyncapi/parser": "^1.12.0",
+    "@asyncapi/parser": "^1.15.1",
     "change-case": "^4.1.2",
-    "openapi-types": "9.3.0"
+    "openapi-types": "9.3.0",
+    "typescript-json-schema": "^0.53.0"
   },
   "devDependencies": {
     "@semantic-release/commit-analyzer": "^9.0.1",
@@ -46,7 +47,8 @@
     "@semantic-release/npm": "^8.0.0",
     "@semantic-release/release-notes-generator": "^10.0.2",
     "@types/jest": "^27.0.2",
-    "@typescript-eslint/eslint-plugin": "^4.15.0",
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "@typescript-eslint/parser": "^4.33.0",
     "ajv": "^8.6.3",
     "conventional-changelog-conventionalcommits": "^4.6.1",
     "cross-env": "^7.0.3",
@@ -59,7 +61,7 @@
     "jest": "^27.2.5",
     "jsdoc-to-markdown": "^7.1.0",
     "markdown-toc": "^1.2.0",
-    "semantic-release": "^18.0.0",
+    "semantic-release": "^19.0.3",
     "ts-jest": "^27.0.5",
     "ts-node": "^10.3.0",
     "typescript": "^4.4.4"
@@ -82,7 +84,7 @@
     "lint": "eslint --max-warnings 0 --config .eslintrc .",
     "lint:fix": "eslint --max-warnings 0 --config .eslintrc . --fix",
     "release": "semantic-release",
-    "generate:readme:toc": "markdown-toc -i README.md && markdown-toc -i ./docs/usage.md && markdown-toc -i ./docs/integration.md && markdown-toc -i ./docs/advanced.md && markdown-toc -i ./docs/languages/TypeScript.md && markdown-toc -i ./docs/languages/Java.md && markdown-toc -i ./docs/languages/Csharp.md && markdown-toc -i ./docs/README.md && markdown-toc -i ./docs/generators.md",
+    "generate:readme:toc": "markdown-toc -i README.md && markdown-toc -i ./docs/usage.md && markdown-toc -i ./docs/integration.md && markdown-toc -i ./docs/advanced.md && markdown-toc -i ./docs/languages/TypeScript.md && markdown-toc -i ./docs/languages/Java.md && markdown-toc -i ./docs/languages/JavaScript.md && markdown-toc -i ./docs/languages/Csharp.md && markdown-toc -i ./docs/README.md && markdown-toc -i ./docs/generators.md",
     "generate:assets": "npm run build:prod && npm run docs && npm run generate:readme:toc",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION",
     "prepublishOnly": "npm run build:prod && npm run generate:readme:toc",
@@ -93,7 +95,11 @@
   },
   "release": {
     "branches": [
-      "master"
+      "master",
+      {
+        "name": "next",
+        "prerelease": true
+      }
     ],
     "plugins": [
       [

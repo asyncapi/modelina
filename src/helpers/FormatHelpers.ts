@@ -57,6 +57,15 @@ export class FormatHelpers {
   static upperFirst(value: string): string {
     return value.charAt(0).toUpperCase() + value.slice(1);
   }
+  
+  /**
+   * Lower first char in given string value.
+   * @param {string} value to change
+   * @returns {string}
+   */
+  static lowerFirst(value: string): string {
+    return value.charAt(0).toLowerCase() + value.slice(1);
+  }
 
   /**
    * Transform into a string with the separator denoted by the next word capitalized.
@@ -170,5 +179,12 @@ export class FormatHelpers {
       }
     }
     return renderedExamples;
+  }
+
+  static snakeCase(renderName: string): string {
+    return renderName.replace(/\W+/g, ' ')
+      .split(/ |\B(?=[A-Z])/)
+      .map(word => word.toLowerCase())
+      .join('_');
   }
 }

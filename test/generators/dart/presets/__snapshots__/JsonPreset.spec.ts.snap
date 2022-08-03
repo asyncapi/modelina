@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DART_JSON_PRESET should render json annotations 1`] = `
+"class Clazz {
+  double? minNumberProp;
+  double? maxNumberProp;
+
+  Clazz();
+
+  factory Clazz.fromJson(Map<String, dynamic> json) => _$ClazzFromJson(json);
+  Map<String, dynamic> toJson() => _$ClazzToJson(this);
+}"
+`;

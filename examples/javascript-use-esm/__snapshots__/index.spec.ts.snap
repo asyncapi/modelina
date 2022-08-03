@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render models to ESM module system and should log expected output to console 1`] = `
+Array [
+  "
+
+class Person {
+  email;
+
+  constructor(input) {
+    if (input.hasOwnProperty('email')) {
+      this.email = input.email;
+    }
+  }
+
+  get email() { return this.email; }
+  set email(email) { this.email = email; }
+}
+export default Person;
+",
+]
+`;
+
+exports[`Should be able to render models to ESM module system and should log expected output to console 2`] = `
+Array [
+  "import Person from './Person';
+
+class Root {
+  person;
+
+  constructor(input) {
+    if (input.hasOwnProperty('person')) {
+      this.person = input.person;
+    }
+  }
+
+  get person() { return this.person; }
+  set person(person) { this.person = person; }
+}
+export default Root;
+",
+]
+`;

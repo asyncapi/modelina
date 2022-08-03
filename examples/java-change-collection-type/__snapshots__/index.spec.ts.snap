@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render collections in Java as List and should log expected output to console 1`] = `
+Array [
+  "public class Root {
+  private List<Object> email;
+
+  public List<Object> getEmail() { return this.email; }
+  public void setEmail(List<Object> email) { this.email = email; }
+}",
+]
+`;

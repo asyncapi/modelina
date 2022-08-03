@@ -1,0 +1,144 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GoGenerator generateCompleteModels() should render dependencies 1`] = `
+"
+package some_package
+import (  
+  \\"time\\"
+)
+// Address represents a Address model.
+type Address struct {
+  StreetName string
+  City string
+  State string
+  HouseNumber float64
+  Marriage bool
+  Members interface{}
+  ArrayType []interface{}
+  OtherModel *OtherModel
+  AdditionalProperties map[string]interface{}
+}"
+`;
+
+exports[`GoGenerator generateCompleteModels() should render dependencies 2`] = `
+"
+package some_package
+import (  
+  \\"time\\"
+)
+// OtherModel represents a OtherModel model.
+type OtherModel struct {
+  StreetName string
+  AdditionalProperties map[string]interface{}
+}"
+`;
+
+exports[`GoGenerator generateCompleteModels() should render models 1`] = `
+"
+package some_package
+
+// Address represents a Address model.
+type Address struct {
+  StreetName string
+  City string
+  State string
+  HouseNumber float64
+  Marriage bool
+  Members interface{}
+  ArrayType []interface{}
+  OtherModel *OtherModel
+  AdditionalProperties map[string]interface{}
+}"
+`;
+
+exports[`GoGenerator generateCompleteModels() should render models 2`] = `
+"
+package some_package
+
+// OtherModel represents a OtherModel model.
+type OtherModel struct {
+  StreetName string
+  AdditionalProperties map[string]interface{}
+}"
+`;
+
+exports[`GoGenerator should render \`enum\` with mixed types 1`] = `
+"// Things represents an enum of Things.
+type Things uint
+
+const (
+  ThingsTexas Things = iota
+  ThingsNumber_1
+  ThingsReservedNumber_1
+  ThingsFalse
+  ThingsCurlyleftQuotationTestQuotationColonQuotationTestQuotationCurlyright
+)
+
+// Value returns the value of the enum.
+func (op Things) Value() any {
+	if op >= Things(len(ThingsValues)) {
+		return nil
+	}
+	return ThingsValues[op]
+}
+
+var ThingsValues = []any{\\"Texas\\",1,\\"1\\",false,{\\"test\\":\\"test\\"}}
+var ValuesToThings = map[any]Things{
+  ThingsValues[ThingsTexas]: ThingsTexas,
+  ThingsValues[ThingsNumber_1]: ThingsNumber_1,
+  ThingsValues[ThingsReservedNumber_1]: ThingsReservedNumber_1,
+  ThingsValues[ThingsFalse]: ThingsFalse,
+  ThingsValues[ThingsCurlyleftQuotationTestQuotationColonQuotationTestQuotationCurlyright]: ThingsCurlyleftQuotationTestQuotationColonQuotationTestQuotationCurlyright,
+}
+"
+`;
+
+exports[`GoGenerator should render \`struct\` type 1`] = `
+"// Address represents a Address model.
+type Address struct {
+  StreetName string
+  City string
+  State string
+  HouseNumber float64
+  Marriage bool
+  Members interface{}
+  TupleType []interface{}
+  ArrayType []interface{}
+  AdditionalProperties map[string]string
+}"
+`;
+
+exports[`GoGenerator should work custom preset for \`enum\` type 1`] = `
+"// CustomEnum represents an enum of CustomEnum.
+type CustomEnum uint
+
+const (
+  CustomEnumTexas CustomEnum = iota
+  CustomEnumAlabama
+  CustomEnumCalifornia
+)
+
+// Value returns the value of the enum.
+func (op CustomEnum) Value() any {
+	if op >= CustomEnum(len(CustomEnumValues)) {
+		return nil
+	}
+	return CustomEnumValues[op]
+}
+
+var CustomEnumValues = []any{\\"Texas\\",\\"Alabama\\",\\"California\\"}
+var ValuesToCustomEnum = map[any]CustomEnum{
+  CustomEnumValues[CustomEnumTexas]: CustomEnumTexas,
+  CustomEnumValues[CustomEnumAlabama]: CustomEnumAlabama,
+  CustomEnumValues[CustomEnumCalifornia]: CustomEnumCalifornia,
+}
+"
+`;
+
+exports[`GoGenerator should work custom preset for \`struct\` type 1`] = `
+"// CustomStruct represents a CustomStruct model.
+type CustomStruct struct {
+  Property string
+  AdditionalProperties map[string]string
+}"
+`;

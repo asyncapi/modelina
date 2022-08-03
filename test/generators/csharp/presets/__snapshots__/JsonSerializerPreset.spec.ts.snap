@@ -1,122 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`JSON serializer preset should render serialize and deserialize converters 1`] = `
-"[JsonConverter(typeof(NestedTestConverter))]
-public class NestedTest {
-  private string stringProp;
-  private Dictionary<string, dynamic> additionalProperties;
-
-  public string StringProp 
-  {
-    get { return stringProp; }
-    set { stringProp = value; }
-  }
-
-  public Dictionary<string, dynamic> AdditionalProperties 
-  {
-    get { return additionalProperties; }
-    set { additionalProperties = value; }
-  }
-}
-
-internal class NestedTestConverter : JsonConverter<NestedTest>
-{
-  public override bool CanConvert(Type objectType)
-  {
-    // this converter can be applied to any type
-    return true;
-  }
-  public override NestedTest Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-  {
-    if (reader.TokenType != JsonTokenType.StartObject)
-    {
-      throw new JsonException();
-    }
-
-    var instance = new NestedTest();
-  
-    while (reader.Read())
-    {
-      if (reader.TokenType == JsonTokenType.EndObject)
-      {
-        return instance;
-      }
-
-      // Get the key.
-      if (reader.TokenType != JsonTokenType.PropertyName)
-      {
-        throw new JsonException();
-      }
-
-      string propertyName = reader.GetString();
-      if (propertyName == \\"stringProp\\")
-      {
-        var value = JsonSerializer.Deserialize<string>(ref reader, options);
-        instance.StringProp = value;
-        continue;
-      }
-
-    
-
-      if(instance.AdditionalProperties == null) { instance.AdditionalProperties = new Dictionary<string, dynamic>(); }
-      var deserializedValue = JsonSerializer.Deserialize<dynamic>(ref reader, options);
-      instance.AdditionalProperties.Add(propertyName, deserializedValue);
-      continue;
-    }
-  
-    throw new JsonException();
-  }
-  public override void Write(Utf8JsonWriter writer, NestedTest value, JsonSerializerOptions options)
-  {
-    if (value == null)
-    {
-      JsonSerializer.Serialize(writer, null);
-      return;
-    }
-    var properties = value.GetType().GetProperties().Where(prop => prop.Name != \\"AdditionalProperties\\");
-  
-    writer.WriteStartObject();
-
-    if(value.StringProp != null) { 
-      // write property name and let the serializer serialize the value itself
-      writer.WritePropertyName(\\"stringProp\\");
-      JsonSerializer.Serialize(writer, value.StringProp);
-    }
-
-
-  
-
-    // Unwrap additional properties in object
-    if (value.AdditionalProperties != null) {
-      foreach (var additionalProperty in value.AdditionalProperties)
-      {
-        //Ignore any additional properties which might already be part of the core properties
-        if (properties.Any(prop => prop.Name == additionalProperty.Key))
-        {
-            continue;
-        }
-        // write property name and let the serializer serialize the value itself
-        writer.WritePropertyName(additionalProperty.Key);
-        JsonSerializer.Serialize(writer, additionalProperty.Value);
-      }
-    }
-
-    writer.WriteEndObject();
-  }
-
-}
-"
-`;
-
-exports[`JSON serializer preset should render serialize and deserialize converters 2`] = `
 "[JsonConverter(typeof(TestConverter))]
-public class Test {
+public class Test
+{
   private string stringProp;
-  private float? numberProp;
+  private double numberProp;
   private EnumTest enumProp;
   private NestedTest objectProp;
   private Dictionary<string, dynamic> additionalProperties;
-  private Dictionary<string, string> sTestPatternProperties;
 
   public string StringProp 
   {
@@ -124,7 +16,7 @@ public class Test {
     set { stringProp = value; }
   }
 
-  public float? NumberProp 
+  public double NumberProp 
   {
     get { return numberProp; }
     set { numberProp = value; }
@@ -147,22 +39,16 @@ public class Test {
     get { return additionalProperties; }
     set { additionalProperties = value; }
   }
-
-  public Dictionary<string, string> STestPatternProperties 
-  {
-    get { return sTestPatternProperties; }
-    set { sTestPatternProperties = value; }
-  }
 }
 
 internal class TestConverter : JsonConverter<Test>
 {
-  public override bool CanConvert(Type objectType)
+  public override bool CanConvert(System.Type objectType)
   {
     // this converter can be applied to any type
     return true;
   }
-  public override Test Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+  public override Test Read(ref Utf8JsonReader reader, System.Type typeToConvert, JsonSerializerOptions options)
   {
     if (reader.TokenType != JsonTokenType.StartObject)
     {
@@ -186,43 +72,33 @@ internal class TestConverter : JsonConverter<Test>
 
       string propertyName = reader.GetString();
       if (propertyName == \\"string prop\\")
-      {
-        var value = JsonSerializer.Deserialize<string>(ref reader, options);
-        instance.StringProp = value;
-        continue;
-      }
+        {
+          var value = JsonSerializer.Deserialize<string>(ref reader, options);
+          instance.stringProp = value;
+          continue;
+        }
       if (propertyName == \\"numberProp\\")
-      {
-        var value = JsonSerializer.Deserialize<float?>(ref reader, options);
-        instance.NumberProp = value;
-        continue;
-      }
+        {
+          var value = JsonSerializer.Deserialize<double>(ref reader, options);
+          instance.numberProp = value;
+          continue;
+        }
       if (propertyName == \\"enumProp\\")
-      {
-        var value = EnumTestExtension.ToEnumTest(JsonSerializer.Deserialize<dynamic>(ref reader, options));
-        instance.EnumProp = value;
-        continue;
-      }
+        {
+          var value = EnumTestExtension.ToEnumTest(JsonSerializer.Deserialize<dynamic>(ref reader, options));
+          instance.enumProp = value;
+          continue;
+        }
       if (propertyName == \\"objectProp\\")
-      {
-        var value = JsonSerializer.Deserialize<NestedTest>(ref reader, options);
-        instance.ObjectProp = value;
-        continue;
-      }
-
-      if(instance.STestPatternProperties == null) { instance.STestPatternProperties = new Dictionary<string, string>(); }
-      var match = Regex.Match(propertyName, @\\"^S(.?)test\\");
-      if (match.Success)
-      {
-        var deserializedValue = JsonSerializer.Deserialize<string>(ref reader, options);
-        instance.STestPatternProperties.Add(propertyName, deserializedValue);
-        continue;
-      }
-
-      if(instance.AdditionalProperties == null) { instance.AdditionalProperties = new Dictionary<string, dynamic>(); }
-      var deserializedValue = JsonSerializer.Deserialize<dynamic>(ref reader, options);
-      instance.AdditionalProperties.Add(propertyName, deserializedValue);
-      continue;
+        {
+          var value = JsonSerializer.Deserialize<NestedTest>(ref reader, options);
+          instance.objectProp = value;
+          continue;
+        }
+      if(instance.additionalProperties == null) { instance.additionalProperties = new Dictionary<string, string>(); }
+            var deserializedValue = JsonSerializer.Deserialize<Dictionary<string, dynamic>>(ref reader, options);
+            instance.additionalProperties.Add(propertyName, deserializedValue);
+            continue;
     }
   
     throw new JsonException();
@@ -231,64 +107,52 @@ internal class TestConverter : JsonConverter<Test>
   {
     if (value == null)
     {
-      JsonSerializer.Serialize(writer, null);
+      JsonSerializer.Serialize(writer, null, options);
       return;
     }
-    var properties = value.GetType().GetProperties().Where(prop => prop.Name != \\"AdditionalProperties\\" && prop.Name != \\"STestPatternProperties\\");
+    var properties = value.GetType().GetProperties().Where(prop => additionalProperties);
   
     writer.WriteStartObject();
 
-    if(value.StringProp != null) { 
+    if(value.stringProp != null) { 
       // write property name and let the serializer serialize the value itself
       writer.WritePropertyName(\\"string prop\\");
-      JsonSerializer.Serialize(writer, value.StringProp);
+      JsonSerializer.Serialize(writer, value.stringProp, options);
     }
-    if(value.NumberProp != null) { 
+    if(value.numberProp != null) { 
       // write property name and let the serializer serialize the value itself
       writer.WritePropertyName(\\"numberProp\\");
-      JsonSerializer.Serialize(writer, value.NumberProp);
+      JsonSerializer.Serialize(writer, value.numberProp, options);
     }
-    if(value.EnumProp != null) { 
+    if(value.enumProp != null) { 
       // write property name and let the serializer serialize the value itself
       writer.WritePropertyName(\\"enumProp\\");
-      JsonSerializer.Serialize(writer, value.EnumProp.GetValue());
+      JsonSerializer.Serialize(writer, EnumTest.GetValue(), options);
     }
-    if(value.ObjectProp != null) { 
+    if(value.objectProp != null) { 
       // write property name and let the serializer serialize the value itself
       writer.WritePropertyName(\\"objectProp\\");
-      JsonSerializer.Serialize(writer, value.ObjectProp);
+      JsonSerializer.Serialize(writer, value.objectProp, options);
     }
-
-
-    // Unwrap pattern properties in object
-    if(value.STestPatternProperties != null) { 
-      foreach (var patternProp in value.STestPatternProperties)
+    // Unwrap dictionary properties
+    if (value.additionalProperties != null) {
+      foreach (var unwrappedProperty in value.additionalProperties)
       {
-        //Ignore any pattern properties which might already be part of the core properties
-        if (properties.Any(prop => prop.Name == patternProp.Key))
+        // Ignore any unwrapped properties which might already be part of the core properties
+        if (properties.Any(prop => prop.Name == unwrappedProperty.Key))
         {
             continue;
         }
-        // write property name and let the serializer serialize the value itself
-        writer.WritePropertyName(patternProp.Key);
-        JsonSerializer.Serialize(writer, patternProp.Value);
+        // Write property name and let the serializer serialize the value itself
+        writer.WritePropertyName(unwrappedProperty.Key);
+        JsonSerializer.Serialize(writer, unwrappedProperty.Value, options);
       }
+    }if(value.additionalProperties != null) { 
+      // write property name and let the serializer serialize the value itself
+      writer.WritePropertyName(\\"additionalProperties\\");
+      JsonSerializer.Serialize(writer, value.additionalProperties, options);
     }
 
-    // Unwrap additional properties in object
-    if (value.AdditionalProperties != null) {
-      foreach (var additionalProperty in value.AdditionalProperties)
-      {
-        //Ignore any additional properties which might already be part of the core properties
-        if (properties.Any(prop => prop.Name == additionalProperty.Key))
-        {
-            continue;
-        }
-        // write property name and let the serializer serialize the value itself
-        writer.WritePropertyName(additionalProperty.Key);
-        JsonSerializer.Serialize(writer, additionalProperty.Value);
-      }
-    }
 
     writer.WriteEndObject();
   }
@@ -297,19 +161,25 @@ internal class TestConverter : JsonConverter<Test>
 "
 `;
 
-exports[`JSON serializer preset should render serialize and deserialize converters 3`] = `
-"public enum EnumTest {
-  SomeEnumString, True, TestTest, Number_2
+exports[`JSON serializer preset should render serialize and deserialize converters 2`] = `
+"public enum EnumTest
+{
+  SOME_SPACE_ENUM_SPACE_STRING,
+  RESERVED_TRUE,
+  CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT,
+  NUMBER_2
 }
-public static class EnumTestExtensions {
+
+public static class EnumTestExtensions
+{
   public static dynamic GetValue(this EnumTest enumValue)
   {
     switch (enumValue)
     {
-      case EnumTest.SomeEnumString: return \\"Some enum String\\";
-      case EnumTest.True: return true;
-      case EnumTest.TestTest: return \\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\";
-      case EnumTest.Number_2: return 2;
+      case EnumTest.SOME_SPACE_ENUM_SPACE_STRING: return \\"Some enum String\\";
+      case EnumTest.RESERVED_TRUE: return true;
+      case EnumTest.CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT: return \\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\";
+      case EnumTest.NUMBER_2: return 2;
     }
     return null;
   }
@@ -318,14 +188,120 @@ public static class EnumTestExtensions {
   {
     switch (value)
     {
-      case \\"Some enum String\\": return EnumTest.SomeEnumString;
-      case true: return EnumTest.True;
-      case \\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\": return EnumTest.TestTest;
-      case 2: return EnumTest.Number_2;
+      case \\"Some enum String\\": return EnumTest.SOME_SPACE_ENUM_SPACE_STRING;
+      case true: return EnumTest.RESERVED_TRUE;
+      case \\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\": return EnumTest.CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT;
+      case 2: return EnumTest.NUMBER_2;
     }
     return null;
   }
 }
+"
+`;
 
+exports[`JSON serializer preset should render serialize and deserialize converters 3`] = `
+"[JsonConverter(typeof(NestedTestConverter))]
+public class NestedTest
+{
+  private string stringProp;
+  private Dictionary<string, dynamic> additionalProperties;
+
+  public string StringProp 
+  {
+    get { return stringProp; }
+    set { stringProp = value; }
+  }
+
+  public Dictionary<string, dynamic> AdditionalProperties 
+  {
+    get { return additionalProperties; }
+    set { additionalProperties = value; }
+  }
+}
+
+internal class NestedTestConverter : JsonConverter<NestedTest>
+{
+  public override bool CanConvert(System.Type objectType)
+  {
+    // this converter can be applied to any type
+    return true;
+  }
+  public override NestedTest Read(ref Utf8JsonReader reader, System.Type typeToConvert, JsonSerializerOptions options)
+  {
+    if (reader.TokenType != JsonTokenType.StartObject)
+    {
+      throw new JsonException();
+    }
+
+    var instance = new NestedTest();
+  
+    while (reader.Read())
+    {
+      if (reader.TokenType == JsonTokenType.EndObject)
+      {
+        return instance;
+      }
+
+      // Get the key.
+      if (reader.TokenType != JsonTokenType.PropertyName)
+      {
+        throw new JsonException();
+      }
+
+      string propertyName = reader.GetString();
+      if (propertyName == \\"stringProp\\")
+        {
+          var value = JsonSerializer.Deserialize<string>(ref reader, options);
+          instance.stringProp = value;
+          continue;
+        }
+      if(instance.additionalProperties == null) { instance.additionalProperties = new Dictionary<string, string>(); }
+            var deserializedValue = JsonSerializer.Deserialize<Dictionary<string, dynamic>>(ref reader, options);
+            instance.additionalProperties.Add(propertyName, deserializedValue);
+            continue;
+    }
+  
+    throw new JsonException();
+  }
+  public override void Write(Utf8JsonWriter writer, NestedTest value, JsonSerializerOptions options)
+  {
+    if (value == null)
+    {
+      JsonSerializer.Serialize(writer, null, options);
+      return;
+    }
+    var properties = value.GetType().GetProperties().Where(prop => additionalProperties);
+  
+    writer.WriteStartObject();
+
+    if(value.stringProp != null) { 
+      // write property name and let the serializer serialize the value itself
+      writer.WritePropertyName(\\"stringProp\\");
+      JsonSerializer.Serialize(writer, value.stringProp, options);
+    }
+    // Unwrap dictionary properties
+    if (value.additionalProperties != null) {
+      foreach (var unwrappedProperty in value.additionalProperties)
+      {
+        // Ignore any unwrapped properties which might already be part of the core properties
+        if (properties.Any(prop => prop.Name == unwrappedProperty.Key))
+        {
+            continue;
+        }
+        // Write property name and let the serializer serialize the value itself
+        writer.WritePropertyName(unwrappedProperty.Key);
+        JsonSerializer.Serialize(writer, unwrappedProperty.Value, options);
+      }
+    }if(value.additionalProperties != null) { 
+      // write property name and let the serializer serialize the value itself
+      writer.WritePropertyName(\\"additionalProperties\\");
+      JsonSerializer.Serialize(writer, value.additionalProperties, options);
+    }
+
+
+    writer.WriteEndObject();
+  }
+
+}
 "
 `;

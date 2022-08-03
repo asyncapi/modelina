@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Example function generation should render example function for model 1`] = `
+"class Test {
+  stringProp;
+  numberProp;
+  objectProp;
+  additionalProperties;
+
+  constructor(input) {
+    this.stringProp = input.stringProp;
+    if (input.hasOwnProperty('numberProp')) {
+      this.numberProp = input.numberProp;
+    }
+    if (input.hasOwnProperty('objectProp')) {
+      this.objectProp = input.objectProp;
+    }
+    if (input.hasOwnProperty('additionalProperties')) {
+      this.additionalProperties = input.additionalProperties;
+    }
+  }
+
+  get stringProp() { return this.stringProp; }
+  set stringProp(stringProp) { this.stringProp = stringProp; }
+
+  get numberProp() { return this.numberProp; }
+  set numberProp(numberProp) { this.numberProp = numberProp; }
+
+  get objectProp() { return this.objectProp; }
+  set objectProp(objectProp) { this.objectProp = objectProp; }
+
+  get additionalProperties() { return this.additionalProperties; }
+  set additionalProperties(additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  example(){
+    const instance = new Test({});
+    instance.stringProp = \\"string\\";
+    instance.numberProp = 0;
+    instance.objectProp = .example();
+    return instance;
+  }
+}"
+`;
+
+exports[`Example function generation should render example function for model 2`] = `
+"class NestedTest {
+  stringProp;
+  additionalProperties;
+
+  constructor(input) {
+    if (input.hasOwnProperty('stringProp')) {
+      this.stringProp = input.stringProp;
+    }
+    if (input.hasOwnProperty('additionalProperties')) {
+      this.additionalProperties = input.additionalProperties;
+    }
+  }
+
+  get stringProp() { return this.stringProp; }
+  set stringProp(stringProp) { this.stringProp = stringProp; }
+
+  get additionalProperties() { return this.additionalProperties; }
+  set additionalProperties(additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  example(){
+    const instance = new NestedTest({});
+    instance.stringProp = \\"string\\";
+    return instance;
+  }
+}"
+`;

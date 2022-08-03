@@ -6,10 +6,20 @@
 
 - [Generator's options](#generators-options)
   * [TypeScript](#typescript)
+    + [Generator options](#generator-options)
+    + [Render complete model options](#render-complete-model-options)
   * [Java](#java)
+    + [Generator options](#generator-options-1)
+    + [Render complete model options](#render-complete-model-options-1)
   * [JavaScript](#javascript)
+    + [Generator options](#generator-options-2)
+    + [Render complete model options](#render-complete-model-options-2)
   * [Go](#go)
+    + [Generator options](#generator-options-3)
+    + [Render complete model options](#render-complete-model-options-3)
   * [C#](#c%23)
+    + [Generator options](#generator-options-4)
+    + [Render complete model options](#render-complete-model-options-4)
 - [Custom generator](#custom-generator)
 
 <!-- tocstop -->
@@ -26,19 +36,24 @@ Options are passed as the first argument to the generator's constructor. Check t
 const generator = new TypeScriptGenerator({ ...options });
 ```
 
-Default options contain:
+Default generator options (common to all generators) are as follows:
 
 | Option | Type | Description | Default value |
 |---|---|---|---|
 | `indentation` | Object | Options for indentation ([example](../examples/indentation-type-and-size)). | - |
 | `indentation.type` | String | Type of indentation. Its value can be either `SPACES` or `TABS` and are typed by `IndentationTypes`| `SPACES` |
 | `indentation.size` | String | Size of indentation. | 2 |
-| `defaultPreset` | Object | Default preset for generator. For more information, read [customization](./customization.md) document. | _Implemented by generator_ |
-| `presets` | Array | Array contains **presets**. For more information, read [customization](./customization.md) document. | `[]` |
+| `defaultPreset` | Object | Default preset for generator. For more information, read [customization](./presets.md) document. | _Implemented by generator_ |
+| `presets` | Array | Array contains **presets**. For more information, read [customization](./presets.md) document. | `[]` |
+
+In addition, generators take additional options when calling their `renderCompleteModel(input, options)` functions.
+This allows the caller to specify additional options when generating a multi-file model from the input with cross dependencies.
 
 Below is a list of additional options available for a given generator.
 
 ### [TypeScript](./languages/TypeScript.md)
+
+#### Generator options
 
 | Option | Type | Description | Default value |
 |---|---|---|---|
@@ -49,7 +64,16 @@ Below is a list of additional options available for a given generator.
 | `namingConvention.type` | Function | A function that returns the format of the type. | _Returns pascal cased name, and ensures that reserved keywords are never rendered__ |
 | `namingConvention.property` | Function | A function that returns the format of the property. | _Returns camel cased name, and ensures that names of properties does not clash against reserved keywords for TS, as well as JS to ensure painless transpilation_ |
 
+#### Render complete model options
+
+| Option         | Type                     | Description                                                                | Default value |
+|----------------|--------------------------|----------------------------------------------------------------------------|---------------|
+| `moduleSystem` | 'ESM' &#124; 'CJS'       | Which module system the generated files should use (`import` or `require`) | 'CJS'         |
+| `exportType`   | 'default' &#124; 'named' | Whether the exports should be default or named exports                     | 'default'     |
+
 ### [Java](./languages/Java.md)
+
+#### Generator options
 
 | Option | Type | Description | Default value |
 |---|---|---|---|
@@ -58,7 +82,15 @@ Below is a list of additional options available for a given generator.
 | `namingConvention.type` | Function | A function that returns the format of the type. | _Returns pascal cased name, and ensures that reserved keywords are never rendered__ |
 | `namingConvention.property` | Function | A function that returns the format of the property. | _Returns camel cased name, and ensures that names of properties does not clash against reserved keywords_ |
 
+#### Render complete model options
+
+| Option        | Type   | Description                                   | Default value |
+|---------------|--------|-----------------------------------------------|---------------|
+| `packageName` | string | The package name to generate the models under | [required]    |
+
 ### [JavaScript](./languages/JavaScript.md)
+
+#### Generator options
 
 | Option | Type | Description | Default value |
 |---|---|---|---|
@@ -66,7 +98,15 @@ Below is a list of additional options available for a given generator.
 | `namingConvention.type` | Function | A function that returns the format of the type. | _Returns pascal cased name, and ensures that reserved keywords are never rendered_ |
 | `namingConvention.property` | Function | A function that returns the format of the property. | _Returns camel cased name, and ensures that names of properties does not clash against reserved keywords_ |
 
+#### Render complete model options
+
+| Option         | Type                     | Description                                                                | Default value |
+|----------------|--------------------------|----------------------------------------------------------------------------|---------------|
+| `moduleSystem` | 'ESM' &#124; 'CJS'       | Which module system the generated files should use (`import` or `require`) | 'CJS'         |
+
 ### [Go](./languages/Go.md)
+
+#### Generator options
 
 | Option | Type | Description | Default value |
 |---|---|---|---|
@@ -74,13 +114,27 @@ Below is a list of additional options available for a given generator.
 | `namingConvention.type` | Function | A function that returns the format of the type. | _Returns pascal cased name_ |
 | `namingConvention.field` | Function | A function that returns the format of the field. | _Returns pascal cased name_ |
 
+#### Render complete model options
+
+| Option        | Type   | Description                                   | Default value |
+|---------------|--------|-----------------------------------------------|---------------|
+| `packageName` | string | The package name to generate the models under | [required]    |
+
 ### [C#](./languages/Csharp.md)
+
+#### Generator options
 
 | Option | Type | Description | Default value |
 |---|---|---|---|
 | `namingConvention` | Object | Options for naming conventions. | - |
 | `namingConvention.type` | Function | A function that returns the format of the type. | _Returns pascal cased name, and ensures that reserved keywords are never rendered__ |
 | `namingConvention.property` | Function | A function that returns the format of the property. | _Returns camel cased name, and ensures that names of properties does not clash against reserved keywords_ |
+
+#### Render complete model options
+
+| Option      | Type   | Description                                | Default value |
+|-------------|--------|--------------------------------------------|---------------|
+| `namespace` | string | The namespace to generate the models under | [required]    |
 
 ## Custom generator
 
