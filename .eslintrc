@@ -4,14 +4,16 @@
     "@typescript-eslint",
     "sonarjs",
     "security",
-    "github"
+    "github",
+    "prettier"
   ],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:sonarjs/recommended",
-    "plugin:security/recommended"
+    "plugin:security/recommended",
+    "prettier"
   ],
   "rules": {
     "strict": 0,
@@ -183,7 +185,8 @@
     "prefer-const": 2,
     "prefer-spread": 2,
     "prefer-template": 2,
-    "@typescript-eslint/no-unused-vars": 2
+    "@typescript-eslint/no-unused-vars": 2,
+    "prettier/prettier": 2
   },
   "overrides": [
     {
