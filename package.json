@@ -53,7 +53,9 @@
     "conventional-changelog-conventionalcommits": "^4.6.1",
     "cross-env": "^7.0.3",
     "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-github": "^4.3.2",
+    "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-security": "^1.4.0",
     "eslint-plugin-sonarjs": "^0.10.0",
     "jest": "^27.2.5",
@@ -85,7 +87,8 @@
     "generate:readme:toc": "markdown-toc -i README.md && markdown-toc -i ./docs/usage.md && markdown-toc -i ./docs/integration.md && markdown-toc -i ./docs/advanced.md && markdown-toc -i ./docs/languages/TypeScript.md && markdown-toc -i ./docs/languages/Java.md && markdown-toc -i ./docs/languages/JavaScript.md && markdown-toc -i ./docs/languages/Csharp.md && markdown-toc -i ./docs/README.md && markdown-toc -i ./docs/generators.md",
     "generate:assets": "npm run build:prod && npm run docs && npm run generate:readme:toc",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION",
-    "prepublishOnly": "npm run build:prod && npm run generate:readme:toc"
+    "prepublishOnly": "npm run build:prod && npm run generate:readme:toc",
+    "format": "prettier --config .prettierrc 'src/**/*.ts' --write"
   },
   "publishConfig": {
     "access": "public"
