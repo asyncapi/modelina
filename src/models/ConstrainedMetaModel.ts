@@ -55,6 +55,9 @@ export class ConstrainedTupleModel extends ConstrainedMetaModel {
     ).map((tupleModel) => {
       return tupleModel.value = tupleModel.value as ConstrainedReferenceModel;
     });
+    //Ensure no duplicate references
+    dependencyModels = [...new Set(dependencyModels)];
+
     //Ensure no self references
     dependencyModels = dependencyModels.filter((referenceModel) => {
       return referenceModel.name !== this.name;
@@ -104,6 +107,9 @@ export class ConstrainedUnionModel extends ConstrainedMetaModel {
     ).map((unionModel) => {
       return unionModel as ConstrainedReferenceModel;
     });
+    //Ensure no duplicate references
+    dependencyModels = [...new Set(dependencyModels)];
+
     //Ensure no self references
     dependencyModels = dependencyModels.filter((referenceModel) => {
       return referenceModel.name !== this.name;
@@ -124,21 +130,6 @@ export class ConstrainedEnumModel extends ConstrainedMetaModel {
     type: string, 
     public values: ConstrainedEnumValueModel[]) {
     super(name, originalInput, type);
-  }
-
-  getNearestDependencies(): ConstrainedReferenceModel[] {
-    let dependencyModels = Object.values(this.values).filter(
-      (enumModel) => {
-        return enumModel.value instanceof ConstrainedReferenceModel;
-      }
-    ).map((enumModel) => {
-      return enumModel.value as ConstrainedReferenceModel;
-    });
-    //Ensure no self references
-    dependencyModels = dependencyModels.filter((referenceModel) => {
-      return referenceModel.name !== this.name;
-    });
-    return dependencyModels;
   }
 }
 export class ConstrainedDictionaryModel extends ConstrainedMetaModel {
@@ -161,6 +152,9 @@ export class ConstrainedDictionaryModel extends ConstrainedMetaModel {
     ).map((model) => {
       return model as ConstrainedReferenceModel;
     });
+    //Ensure no duplicate references
+    dependencyModels = [...new Set(dependencyModels)];
+
     //Ensure no self references
     dependencyModels = dependencyModels.filter((referenceModel) => {
       return referenceModel.name !== this.name;
@@ -186,6 +180,9 @@ export class ConstrainedObjectModel extends ConstrainedMetaModel {
     ).map((modelProperty) => {
       return modelProperty.property as ConstrainedReferenceModel;
     });
+    //Ensure no duplicate references
+    dependencyModels = [...new Set(dependencyModels)];
+
     //Ensure no self references
     dependencyModels = dependencyModels.filter((referenceModel) => {
       return referenceModel.name !== this.name;
