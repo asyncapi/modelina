@@ -32,6 +32,17 @@ export interface ClassPreset<R extends AbstractRenderer, O> extends CommonPreset
   setter?: (args: PresetArgs<R, O, ConstrainedObjectModel> & PropertyArgs) => Promise<string> | string;
 }
 
+export interface CommonTestPreset<R extends AbstractRenderer, O, M extends ConstrainedMetaModel> {
+  self?: (args: PresetArgs<R, O, M>) => Promise<string> | string;
+  additionalTest?: (args: PresetArgs<R, O, M>) => Promise<string> | string;
+}
+export interface ClassTestPreset<R extends AbstractRenderer, O> extends CommonTestPreset<R, O, ConstrainedObjectModel> {
+  ctor?: (args: PresetArgs<R, O, ConstrainedObjectModel>) => Promise<string> | string;
+  property?: (args: PresetArgs<R, O, ConstrainedObjectModel> & PropertyArgs) => Promise<string> | string;
+  getter?: (args: PresetArgs<R, O, ConstrainedObjectModel> & PropertyArgs) => Promise<string> | string;
+  setter?: (args: PresetArgs<R, O, ConstrainedObjectModel> & PropertyArgs) => Promise<string> | string;
+}
+
 export interface InterfacePreset<R extends AbstractRenderer, O> extends CommonPreset<R, O, ConstrainedObjectModel> {
   property?: (args: PresetArgs<R, O, ConstrainedObjectModel> & PropertyArgs) => Promise<string> | string;
 }

@@ -166,5 +166,10 @@ export const TS_COMMON_PRESET: TypeScriptPreset<TypeScriptCommonPresetOptions> =
       
       return renderer.renderBlock([content, ...blocks], 2);
     },
+  },
+  class_test: {
+    additionalContent({}) {
+      return ''
+    }
   }
 };

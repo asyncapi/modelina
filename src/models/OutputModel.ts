@@ -7,6 +7,7 @@ export interface ToOutputModelArg {
   modelName: string;
   inputModel: InputMetaModel;
   dependencies: string[];
+  test_result?: string;
 }
 
 /**
@@ -18,15 +19,16 @@ export class OutputModel {
     public readonly model: ConstrainedMetaModel,
     public readonly modelName: string,
     public readonly inputModel: InputMetaModel,
-    public readonly dependencies: string[]
+    public readonly dependencies: string[],
+    public readonly test_result?: string
   ) {}
 
   static toOutputModel(args: ToOutputModelArg): OutputModel;
   static toOutputModel(args: Array<ToOutputModelArg>): Array<OutputModel>;
   static toOutputModel(args: ToOutputModelArg | Array<ToOutputModelArg>): OutputModel | Array<OutputModel> {
     if (Array.isArray(args)) {
-      return args.map(arg => new this(arg.result, arg.model, arg.modelName, arg.inputModel, arg.dependencies));
+      return args.map(arg => new this(arg.result, arg.model, arg.modelName, arg.inputModel, arg.dependencies, arg.test_result));
     }
-    return new this(args.result, args.model, args.modelName, args.inputModel, args.dependencies);
+    return new this(args.result, args.model, args.modelName, args.inputModel, args.dependencies, args.test_result);
   }
 }

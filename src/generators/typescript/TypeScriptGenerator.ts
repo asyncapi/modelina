@@ -13,6 +13,7 @@ import { TypeRenderer } from './renderers/TypeRenderer';
 import { TypeScriptDefaultConstraints, TypeScriptDefaultTypeMapping } from './TypeScriptConstrainer';
 import { TS_EXPORT_KEYWORD_PRESET } from './presets';
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
+import { TestClassRenderer } from './renderers/TestClassRenderer';
 
 export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPreset> {
   renderTypes: boolean;
@@ -21,11 +22,14 @@ export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPres
   mapType: 'indexedObject' | 'map' | 'record';
   typeMapping: TypeMapping<TypeScriptOptions>;
   constraints: Constraints;
+  renderTests: boolean;
+  testFramework: 'jest';
 }
 
 export interface TypeScriptRenderCompleteModelOptions {
   moduleSystem?: 'ESM' | 'CJS';
   exportType?: 'default' | 'named';
+  outputTestDirectory?: string;
 }
 
 /**
@@ -40,7 +44,9 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,Typ
     mapType: 'map',
     defaultPreset: TS_DEFAULT_PRESET,
     typeMapping: TypeScriptDefaultTypeMapping,
-    constraints: TypeScriptDefaultConstraints
+    constraints: TypeScriptDefaultConstraints,
+    renderTests: true,
+    testFramework: 'jest'
   };
 
   constructor(
@@ -120,7 +126,7 @@ ${modelCode}`;
     // Restore presets array from original copy
     this.options.presets = originalPresets;
 
-    return RenderOutput.toRenderOutput({ result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies });
+    return RenderOutput.toRenderOutput({ testResult: outputModel.testResult, result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies });
   }
 
   render(model: ConstrainedMetaModel, inputModel: InputMetaModel): Promise<RenderOutput> {
@@ -139,7 +145,15 @@ ${modelCode}`;
     const presets = this.getPresets('class'); 
     const renderer = new ClassRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: renderer.dependencies});
+    let testResult = undefined;
+    if(this.options.renderTests) {
+      if(this.options.testFramework === 'jest') {
+        const testPresets = this.getPresets('class_test'); 
+        const testRenderer = new TestClassRenderer(this.options, this, testPresets, model, inputModel);
+        testResult = await testRenderer.runSelfPreset();
+      }
+    }
+    return RenderOutput.toRenderOutput({result, testResult, renderedName: model.name, dependencies: renderer.dependencies});
   }
 
   async renderInterface(model: ConstrainedObjectModel, inputModel: InputMetaModel): Promise<RenderOutput> {

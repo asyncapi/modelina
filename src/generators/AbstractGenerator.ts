@@ -54,6 +54,7 @@ export abstract class AbstractGenerator<
       const renderedOutput = await this.renderCompleteModel(constrainedModel, inputModel, options);
       return OutputModel.toOutputModel({ 
         result: renderedOutput.result,
+        test_result: renderedOutput.testResult,
         modelName: renderedOutput.renderedName, 
         dependencies: renderedOutput.dependencies,
         model: constrainedModel, 

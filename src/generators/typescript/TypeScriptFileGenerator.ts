@@ -19,6 +19,12 @@ export class TypeScriptFileGenerator extends TypeScriptGenerator implements Abst
     for (const outputModel of generatedModels) {
       const filePath = path.resolve(outputDirectory, `${outputModel.modelName}.ts`);
       await FileHelpers.writerToFileSystem(outputModel.result, filePath);
+      if(this.options.renderTests) {
+        const testOutputDir = options?.outputTestDirectory || outputDirectory;
+        const filePath = path.resolve(testOutputDir, `${outputModel.modelName}.spec.ts`);
+        const testCode = outputModel.test_result ? outputModel.test_result : '';
+        await FileHelpers.writerToFileSystem(testCode, filePath);
+      }
     }
     return generatedModels;
   }
