@@ -50,7 +50,7 @@ export class ConstrainedTupleModel extends ConstrainedMetaModel {
   getNearestDependencies(): ConstrainedMetaModel[] {
     let dependencyModels: ConstrainedMetaModel[] = [];
     for (const tupleModel of Object.values(this.tuple)) {
-      if(tupleModel.value instanceof ConstrainedReferenceModel) {
+      if (tupleModel.value instanceof ConstrainedReferenceModel) {
         dependencyModels.push(tupleModel.value);
       } else {
         //Lets check the non-reference model for dependencies
@@ -82,12 +82,11 @@ export class ConstrainedArrayModel extends ConstrainedMetaModel {
   }
 
   getNearestDependencies(): ConstrainedMetaModel[] {
-    if(this.valueModel.name !== this.name) {
+    if (this.valueModel.name !== this.name) {
       if (this.valueModel instanceof ConstrainedReferenceModel) {
         return [this.valueModel];
-      } else {
-        return this.valueModel.getNearestDependencies();
-      }
+      } 
+      return this.valueModel.getNearestDependencies();
     }
     return [];
   }
@@ -104,7 +103,7 @@ export class ConstrainedUnionModel extends ConstrainedMetaModel {
   getNearestDependencies(): ConstrainedMetaModel[] {
     let dependencyModels: ConstrainedMetaModel[] = [];
     for (const unionModel of Object.values(this.union)) {
-      if(unionModel instanceof ConstrainedReferenceModel) {
+      if (unionModel instanceof ConstrainedReferenceModel) {
         dependencyModels.push(unionModel);
       } else {
         //Lets check the non-reference model for dependencies
@@ -164,7 +163,7 @@ export class ConstrainedDictionaryModel extends ConstrainedMetaModel {
     const dependencies = [this.key, this.value];
     let dependencyModels: ConstrainedMetaModel[] = [];
     for (const model of dependencies) {
-      if(model instanceof ConstrainedReferenceModel) {
+      if (model instanceof ConstrainedReferenceModel) {
         dependencyModels.push(model);
       } else {
         //Lets check the non-reference model for dependencies
@@ -191,7 +190,7 @@ export class ConstrainedObjectModel extends ConstrainedMetaModel {
   getNearestDependencies(): ConstrainedMetaModel[] {
     let dependencyModels: ConstrainedMetaModel[] = [];
     for (const modelProperty of Object.values(this.properties)) {
-      if(modelProperty.property instanceof ConstrainedReferenceModel) {
+      if (modelProperty.property instanceof ConstrainedReferenceModel) {
         dependencyModels.push(modelProperty.property);
       } else {
         //Lets check the non-reference model for dependencies

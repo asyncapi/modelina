@@ -102,7 +102,7 @@ describe('ConstrainedMetaModel', () => {
     test('should return inner reference dependencies', () => {
       const stringModel = new StringModel('', undefined);
       const referenceModel = new ReferenceModel('', undefined, stringModel);
-      const unionModel = new UnionModel('union', undefined, [stringModel, referenceModel])
+      const unionModel = new UnionModel('union', undefined, [stringModel, referenceModel]);
       const unionTupleModel = new TupleValueModel(0, unionModel);
       const stringTupleModel = new TupleValueModel(1, stringModel);
       const rawModel = new TupleModel('test', undefined, [unionTupleModel, stringTupleModel]);
@@ -121,7 +121,7 @@ describe('ConstrainedMetaModel', () => {
     test('should return inner reference dependencies', () => {
       const stringModel = new StringModel('', undefined);
       const referenceModel = new ReferenceModel('', undefined, stringModel);
-      const unionModel = new UnionModel('union', undefined, [stringModel, referenceModel])
+      const unionModel = new UnionModel('union', undefined, [stringModel, referenceModel]);
       const unionObjectPropertyModel = new ObjectPropertyModel('union', false, unionModel);
       const rawModel = new ObjectModel('test', undefined, {
         union: unionObjectPropertyModel
@@ -202,7 +202,7 @@ describe('ConstrainedMetaModel', () => {
     test('should return inner reference dependencies', () => {
       const stringModel = new StringModel('', undefined);
       const referenceModel = new ReferenceModel('', undefined, stringModel);
-      const unionModel = new UnionModel('union', undefined, [stringModel, referenceModel])
+      const unionModel = new UnionModel('union', undefined, [stringModel, referenceModel]);
       const rawModel = new DictionaryModel('test', undefined, unionModel, stringModel);
       
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
@@ -246,7 +246,7 @@ describe('ConstrainedMetaModel', () => {
     test('should return inner reference dependencies', () => {
       const stringModel = new StringModel('', undefined);
       const referenceModel = new ReferenceModel('', undefined, stringModel);
-      const unionModel = new UnionModel('union', undefined, [stringModel, referenceModel])
+      const unionModel = new UnionModel('union', undefined, [stringModel, referenceModel]);
       const rawModel = new ArrayModel('', undefined, unionModel);
       
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
