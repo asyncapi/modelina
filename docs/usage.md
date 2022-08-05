@@ -11,6 +11,8 @@ For more specific integration options, please check out the [integration documen
 <!-- toc -->
 
 - [Understanding the output format](#understanding-the-output-format)
+- [Using Modelina in websites](#using-modelina-in-websites)
+  * [Security NOTICE](#security-notice)
 - [Generate models from AsyncAPI documents](#generate-models-from-asyncapi-documents)
 - [Generate models from JSON Schema documents](#generate-models-from-json-schema-documents)
 - [Generate models from Swagger 2.0 documents](#generate-models-from-swagger-20-documents)
@@ -30,6 +32,21 @@ For more specific integration options, please check out the [integration documen
 ## Understanding the output format
 
 TODO
+
+## Using Modelina in websites
+
+Using Modelina in websites is is one of the core features.
+
+- [Using Modelina in React](../examples/generate-in-react/)
+
+There are a few exceptions to the features Modelina support in a website environment. Those are listed here below:
+
+- You cannot use the [file generator](./advanced.md#generate-models-to-separate-files) to write to the client's disk.
+
+### Security NOTICE
+Do NOT enable users to write their own option callbacks. This includes but not limits to preset hooks and constrain rules. The reason for this is that in some cases it will enable arbitrary code execution on your webserver. 
+
+To be on the safeside, only enable the user to chose between the internal options and presets, as you can see the [playground does](https://www.asyncapi.com/tools/modelina).
 
 ## Generate models from AsyncAPI documents
 

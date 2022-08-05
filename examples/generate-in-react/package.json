@@ -14,10 +14,10 @@
   "scripts": {
     "install": "cd ../.. && npm i",
     "start": "react-scripts start",
-    "start:windows": "npm run start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "test:windows": "npm run test",
-    "eject": "react-scripts eject"
+    "test": "react-scripts test --watchAll=false",
+    "test:watch": "react-scripts test --watchAll=false",
+    "eject": "react-scripts eject",
+    "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache"
   }
 }
