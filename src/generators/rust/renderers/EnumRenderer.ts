@@ -56,7 +56,7 @@ export const RUST_DEFAULT_ENUM_PRESET: EnumPresetType<RustOptions> = {
     return `${item.key}`;
   },
   itemMacro({ itemIndex, model }) {
-    const originalInput = model.originalInput.enum[itemIndex];
+    const originalInput = model.originalInput.enum[Number(itemIndex)];
     const serdeArgs = [];
     if (typeof originalInput === 'object') {
       serdeArgs.push('flatten');
