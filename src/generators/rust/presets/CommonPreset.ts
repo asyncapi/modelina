@@ -20,7 +20,7 @@ export const defaultRustCommonPresetOptions: RustCommonPresetOptions = {
  */
 function getEnumDefaultOrFirst(model: ConstrainedEnumModel): ConstrainedEnumValueModel {
   const maybeDefault = model.values.find((v, idx) => {
-    const originalValue = model.originalInput.enum[idx];
+    const originalValue = model.originalInput.enum[Number(idx)];
     if (model.originalInput.default && model.originalInput.default === originalValue) {
       return v;
     }
