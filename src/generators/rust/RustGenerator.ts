@@ -13,6 +13,7 @@ import { RustDefaultConstraints, RustDefaultTypeMapping } from './RustConstraine
 import { TupleRenderer } from './renderers/TupleRenderer';
 import { UnionRenderer } from './renderers/UnionRenderer';
 import { PackageRenderer } from './renderers/PackageRenderer';
+import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 
 export interface RustOptions extends CommonGeneratorOptions<RustPreset> {
   typeMapping: TypeMapping<RustOptions>;
