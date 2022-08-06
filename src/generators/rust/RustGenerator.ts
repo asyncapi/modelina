@@ -189,14 +189,14 @@ export class RustGenerator extends AbstractGenerator<RustOptions, RustRenderComp
     return [
       OutputModel.toOutputModel({
         result: manifestOutput.result,
-        modelName: manifestOutput.renderedName,
+        modelName: "CargoToml",
         dependencies: manifestOutput.dependencies,
         model: manifestMetaModel,
         inputModel
       }),
       OutputModel.toOutputModel({
         result: libOutput.result,
-        modelName: libOutput.renderedName,
+        modelName: "lib",
         dependencies: libOutput.dependencies,
         model: libMetaModel,
         inputModel

@@ -15,7 +15,7 @@ export class RustFileGenerator extends RustGenerator implements AbstractFileGene
   public async generateToFiles(input: Record<string, unknown> | InputMetaModel, outputDirectory: string, options: RustRenderCompleteModelOptions): Promise<OutputModel[]> {
     let generatedModels = await this.generateCompleteModels(input, options);
     //Filter anything out that have not been successfully generated
-    generatedModels = generatedModels.filter((outputModel) => { return outputModel.modelName !== ''; });
+    generatedModels = generatedModels.filter((outputModel) => { return outputModel.modelName !== '' && outputModel.modelName !== undefined });
     for (const outputModel of generatedModels) {
       const fileName = FormatHelpers.snakeCase(outputModel.modelName);
       const filePath = path.resolve(outputDirectory, `${fileName}.rs`);
