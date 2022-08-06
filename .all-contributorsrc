@@ -354,6 +354,19 @@
         "test",
         "bug"
       ]
+    },
+    {
+      "login": "leigh-johnson",
+      "name": "Leigh Johnson",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2601819?v=4",
+      "profile": "https://www.printnanny.ai",
+      "contributions": [
+        "code",
+        "test",
+        "example",
+        "doc",
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
