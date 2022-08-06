@@ -34,11 +34,11 @@ export class RustFileGenerator extends RustGenerator implements AbstractFileGene
   public async generateToPackage(input: Record<string, unknown> | InputMetaModel, outputDirectory: string, options: RustRenderCompleteModelOptions): Promise<OutputModel[]> {
     // Crate package expects source code to be written to src/<filename>.rs
     const sourceOutputDirectory = `${outputDirectory}/src`;
-    const generatedModels = await this.generateToFiles(input, sourceOutputDirectory, options);
+    let generatedModels = await this.generateToFiles(input, sourceOutputDirectory, options);
     // render lib.rs and Cargo.toml
     if (options.supportFiles) {
       const supportOutput = await this.generateCompleteSupport(input, options);
-      generatedModels.concat(supportOutput);
+      generatedModels = generatedModels.concat(supportOutput);
       for (const outputModel of supportOutput) {
         const filePath = path.resolve(outputDirectory, outputModel.modelName);
         await FileHelpers.writerToFileSystem(outputModel.result, filePath);
