@@ -61,7 +61,7 @@ export const RUST_DEFAULT_ENUM_PRESET: EnumPresetType<RustOptions> = {
     if (typeof originalInput === 'object') {
       serdeArgs.push('flatten');
     } else {
-      const rename = model.originalInput.enum[itemIndex].toString();
+      const rename = model.originalInput.enum[Number(itemIndex)].toString();
       serdeArgs.push(`rename="${rename}"`);
     }
     return `#[serde(${serdeArgs.join(', ')})]`;
