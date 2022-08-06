@@ -77,8 +77,7 @@ export class RustGenerator extends AbstractGenerator<RustOptions, RustRenderComp
   constructor(
     options?: DeepPartial<RustOptions>,
   ) {
-    const realizedOptions = { ...RustGenerator.defaultOptions, ...options };
-
+    const realizedOptions = mergePartialAndDefault(RustGenerator.defaultOptions, options) as RustOptions;
     super('Rust', realizedOptions);
   }
 
