@@ -1,20 +1,20 @@
-import { FileHelpers, DartFileGenerator, OutputModel, ConstrainedAnyModel, InputMetaModel, GoFileGenerator, JavaFileGenerator, JavaScriptFileGenerator, TypeScriptFileGenerator, CSharpFileGenerator } from '../../src';
+import { FileHelpers, DartFileGenerator, OutputModel, ConstrainedAnyModel, InputMetaModel, GoFileGenerator, JavaFileGenerator, JavaScriptFileGenerator, TypeScriptFileGenerator, CSharpFileGenerator, RustFileGenerator } from '../../src';
 import * as path from 'path';
 
 const generatorsToTest = [
   {
     generator: new GoFileGenerator(),
-    generatorOptions: {packageName: 'some_package'},
+    generatorOptions: { packageName: 'some_package' },
     fileExtension: 'go'
   },
   {
     generator: new DartFileGenerator(),
-    generatorOptions: {packageName: 'SomePackage'},
+    generatorOptions: { packageName: 'SomePackage' },
     fileExtension: 'dart'
   },
   {
     generator: new JavaFileGenerator(),
-    generatorOptions: {packageName: 'SomePackage'},
+    generatorOptions: { packageName: 'SomePackage' },
     fileExtension: 'java'
   },
   {
@@ -29,12 +29,17 @@ const generatorsToTest = [
   },
   {
     generator: new CSharpFileGenerator(),
-    generatorOptions: {namespace: 'SomeNamespace'},
+    generatorOptions: { namespace: 'SomeNamespace' },
     fileExtension: 'cs'
+  },
+  {
+    generator: new RustFileGenerator(),
+    generatorOptions: { namespace: 'SomeNamespace' },
+    fileExtension: 'rs'
   }
 ];
 
-describe.each(generatorsToTest)('generateToFiles', ({generator, generatorOptions, fileExtension}) => {
+describe.each(generatorsToTest)('generateToFiles', ({ generator, generatorOptions, fileExtension }) => {
   afterEach(() => {
     jest.restoreAllMocks();
   });
@@ -57,7 +62,7 @@ describe.each(generatorsToTest)('generateToFiles', ({generator, generatorOptions
     const expectedError = new Error('write error');
     jest.spyOn(FileHelpers, 'writerToFileSystem').mockRejectedValue(expectedError);
     jest.spyOn(generator, 'generateCompleteModels').mockResolvedValue([new OutputModel('content', new ConstrainedAnyModel('', undefined, ''), 'test', new InputMetaModel(), [])]);
-  
+
     await expect(generator.generateToFiles(doc, '/test/', generatorOptions as any)).rejects.toEqual(expectedError);
     expect(generator.generateCompleteModels).toHaveBeenCalledTimes(1);
     expect(FileHelpers.writerToFileSystem).toHaveBeenCalledTimes(1);
@@ -72,7 +77,7 @@ describe.each(generatorsToTest)('generateToFiles', ({generator, generatorOptions
     ];
     jest.spyOn(FileHelpers, 'writerToFileSystem').mockResolvedValue(undefined);
     jest.spyOn(generator, 'generateCompleteModels').mockResolvedValue([new OutputModel('content', new ConstrainedAnyModel('', undefined, ''), 'test', new InputMetaModel(), [])]);
-    
+
     await generator.generateToFiles(doc, expectedOutputDirPath, generatorOptions as any);
     expect(generator.generateCompleteModels).toHaveBeenCalledTimes(1);
     expect(FileHelpers.writerToFileSystem).toHaveBeenCalledTimes(1);
@@ -83,7 +88,7 @@ describe.each(generatorsToTest)('generateToFiles', ({generator, generatorOptions
     const expectedOutputDirPath = path.resolve(outputDir);
     jest.spyOn(FileHelpers, 'writerToFileSystem').mockResolvedValue(undefined);
     jest.spyOn(generator, 'generateCompleteModels').mockResolvedValue([new OutputModel('', new ConstrainedAnyModel('', undefined, ''), '', new InputMetaModel(), [])]);
-    
+
     const models = await generator.generateToFiles(doc, expectedOutputDirPath, generatorOptions as any);
     expect(generator.generateCompleteModels).toHaveBeenCalledTimes(1);
     expect(models).toHaveLength(0);

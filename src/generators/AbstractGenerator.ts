@@ -90,7 +90,7 @@ export abstract class AbstractGenerator<
    * 
    * @param input 
    */
-  private async processInput(input: Record<string, unknown> | InputMetaModel): Promise<InputMetaModel> {
+  protected async processInput(input: Record<string, unknown> | InputMetaModel): Promise<InputMetaModel> {
     const rawInputModel = input instanceof InputMetaModel ? input : await this.process(input);
 
     //Split out the models based on the language specific requirements of which models is rendered separately
