@@ -2,3 +2,5 @@ node_modules
 docs
 lib
 output
+src/generators/template
+test/generators/template

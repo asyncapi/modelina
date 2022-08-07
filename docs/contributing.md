@@ -35,6 +35,36 @@ Adding examples is quite straight forward, so don't feel shy! Here's how to do i
 
 Aaaand you are done! :tada: 
 
+### New Generators
+Generators sits as the core of Modelina, which frames the core concepts of what you can generate. Therefore it's also no small task to create a new one, so dont get discourage, we are here to help you! 
+
+To make it easier to contribute a new generator, and to avoid focusing too much of the internals of Modelina, we created a template generator so you only need to follow some steps.
+
+Here is how you can get started:
+1. Copy/paste the [template generator](../src/generators/template/) and [tests](../test/generators/template/) and rename it to your generator.
+2. Search and replace within your new generator and test folder for `Template`, `template` and `TEMPLATE`. **Make sure you search and replace it with matching case**.
+3. Replace the filenames `Template...` to your generator.
+4. Add your [generator to the generator index file](../src/generators/index.ts)
+
+Now it's time to adapt the template into what ever it is you are generating:
+1. Adapt the [constraint logic](../src/generators/template/) based on what is allowed within your output.
+2. Add all of the reserved keywords that the models must never generate in the [Constant file](../src/generators/template/Constants.ts)
+3. Time to adapt/create the first renderers. The template by default include two renderers, one for rendering enums and one for classes, but you can create what ever renderers makes sense. For example in Rust it's not called class but struct, so therefore its called a `StructRenderer`.
+
+Time to adapt the tests, cause without tests, it's just an empty shell. The test that is included in the template is really just placeholders, so make sure you adapt them accordingly to your code.
+1. First set of tests are example tests 
+
+And that it in theory all that is needed to support a new output. However, we are not quite done, as without tests and documentation, the changes will not even be considered.
+
+Lastly, we need to adapt some of the docs to showcase your new awesome generator! Cause if the users cant find it, it dont exist.
+1. Add your [generator specific documentation under languages](./languages/) and add it to the [list of generators](./README.md#languages)
+2. Add your generator to the list of generators in the [main readme file](../README.md)
+
+As a rule of thumb, start small and slowly add more features, dont try to push everything into one PR, as it will take forever to review and merge.
+
+PR's you can look to for guidance on how the process goes: https://github.com/asyncapi/modelina/pull/818
+
+
 ## FAQs
 Below are some of the typical questions we've received about contributing to Modelina.
 

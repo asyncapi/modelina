@@ -19,5 +19,9 @@ module.exports = {
   testTimeout: 10000,
   collectCoverageFrom: [
     'src/**'
+  ],
+  modulePathIgnorePatterns: [
+    "<rootDir>/examples/TEMPLATE",
+    "<rootDir>/test/generators/template"
   ]
 };
