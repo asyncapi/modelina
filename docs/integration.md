@@ -14,7 +14,7 @@
 
 Integrating Modelina into websites is is one of the core features, and each framework is different, so here are some of examples:
 
-- [Using Modelina in React](../examples/generate-in-react/)
+- [Using Modelina in React](../examples/integrate-with-react/)
 
 There are a few exceptions to the features Modelina support in a website environment. Those are listed here below:
 

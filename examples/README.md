@@ -43,3 +43,4 @@ This directory contains a series of self-contained examples that you can use as 
 - [java-from-typescript-type-with-options](./java-from-typescript-type-with-options/) - A basic example that shows how to generate a Java model from a TypeScript type input file along with user provided options.
 - [overwrite-naming-formatting](./overwrite-naming-formatting) - A basic example how to overwrite default naming format constraint in this case, overwriting returning a constant case format.
 - [overwrite-default-constraint](./overwrite-default-constraint/) -  A basic example how to overwrite the entire constraint logic and not just a single single part of the default behavior, in this case overwriting the model naming constraint.
+- [integrate with react](./integrate-with-react/) - A basic example that shows how you can integrate Modelina with React.
