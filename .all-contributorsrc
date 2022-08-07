@@ -324,6 +324,49 @@
         "test",
         "doc"
       ]
+    },
+    {
+      "login": "PanMan",
+      "name": "PanMan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/978501?v=4",
+      "profile": "https://github.com/PanMan",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "artur-ciocanu",
+      "name": "artur-ciocanu",
+      "avatar_url": "https://avatars.githubusercontent.com/u/743192?v=4",
+      "profile": "https://github.com/artur-ciocanu",
+      "contributions": [
+        "code",
+        "bug"
+      ]
+    },
+    {
+      "login": "micro-jumbo",
+      "name": "Cyprian Gracz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11511697?v=4",
+      "profile": "https://micro-jumbo.eu/",
+      "contributions": [
+        "code",
+        "test",
+        "bug"
+      ]
+    },
+    {
+      "login": "leigh-johnson",
+      "name": "Leigh Johnson",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2601819?v=4",
+      "profile": "https://www.printnanny.ai",
+      "contributions": [
+        "code",
+        "test",
+        "example",
+        "doc",
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,

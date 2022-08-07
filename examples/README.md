@@ -18,11 +18,13 @@ This directory contains a series of self-contained examples that you can use as 
 - [java-generate-javax-constraint-annotation](./java-generate-javax-constraint-annotation) - A basic example that shows how Java data models having `javax.validation.constraints` annotations can be generated.
 - [java-generate-javadoc](./java-generate-javadoc) - A basic example of how to generate Java models including JavaDocs.
 - [custom-logging](./custom-logging) - A basic example where a custom logger is used.
-- [generate-to-file](./generate-to-file) - A basic example that shows how you can generate the models directly to files.
+- [generate-to-files](./generate-to-files) - A basic example that shows how you can generate the models directly to files.
 - [TEMPLATE](./TEMPLATE) - A basic template used to create new examples.
 - [java-generate-tostring](./java-generate-tostring) - A basic example that shows how to generate models that overwrite the `toString` method
 - [csharp-generate-equals-and-hashcode](./csharp-generate-equals-and-hashcode) - A basic example on how to generate models that overwrite the `Equal` and `GetHashCode` methods
 - [csharp-generate-serializer](./csharp-generate-serializer) - A basic example on how to generate models that include function to serialize the data models to JSON
+- [csharp-overwrite-enum-naming](./csharp-overwrite-enum-naming) - A basic example on how to generate enum value names.
+- [csharp-use-inheritance](./csharp-use-inheritance) - A basic example that shows how to introduce inheritance to classes 
 - [generate-javascript-models](./generate-javascript-models) - A basic example to generate JavaScript data models
 - [javascript-use-esm](./javascript-use-esm) - A basic example that generate the models to use ESM module system.
 - [javascript-use-cjs](./javascript-use-cjs) - A basic example that generate the models to use CJS module system.

@@ -182,18 +182,11 @@ describe('JavaGenerator', () => {
   States(String value) {
     this.value = value;
   }
-    
-  @JsonValue
+
   public String getValue() {
     return value;
   }
 
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-
-  @JsonCreator
   public static States fromValue(String value) {
     for (States e : States.values()) {
       if (e.value.equals(value)) {
@@ -202,19 +195,23 @@ describe('JavaGenerator', () => {
     }
     throw new IllegalArgumentException("Unexpected value '" + value + "'");
   }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
 }`;
 
     const inputModel = await generator.process(doc);
     const model = inputModel.models['States'];
 
     let enumModel = await generator.renderEnum(model, inputModel);
-    const expectedDependencies = ['import com.fasterxml.jackson.annotation.*;'];
     expect(enumModel.result).toEqual(expected);
-    expect(enumModel.dependencies).toEqual(expectedDependencies);
+    expect(enumModel.dependencies.length).toEqual(0);
 
     enumModel = await generator.render(model, inputModel);
     expect(enumModel.result).toEqual(expected);
-    expect(enumModel.dependencies).toEqual(expectedDependencies);
+    expect(enumModel.dependencies.length).toEqual(0);
   });
 
   test('should render `enum` type (integer type)', async () => {
@@ -231,18 +228,11 @@ describe('JavaGenerator', () => {
   Numbers(Integer value) {
     this.value = value;
   }
-    
-  @JsonValue
+
   public Integer getValue() {
     return value;
   }
 
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-
-  @JsonCreator
   public static Numbers fromValue(Integer value) {
     for (Numbers e : Numbers.values()) {
       if (e.value.equals(value)) {
@@ -251,19 +241,23 @@ describe('JavaGenerator', () => {
     }
     throw new IllegalArgumentException("Unexpected value '" + value + "'");
   }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
 }`;
 
     const inputModel = await generator.process(doc);
     const model = inputModel.models['Numbers'];
 
     let enumModel = await generator.renderEnum(model, inputModel);
-    const expectedDependencies = ['import com.fasterxml.jackson.annotation.*;'];
     expect(enumModel.result).toEqual(expected);
-    expect(enumModel.dependencies).toEqual(expectedDependencies);
+    expect(enumModel.dependencies.length).toEqual(0);
 
     enumModel = await generator.render(model, inputModel);
     expect(enumModel.result).toEqual(expected);
-    expect(enumModel.dependencies).toEqual(expectedDependencies);
+    expect(enumModel.dependencies.length).toEqual(0);
   });
 
   test('should render `enum` type (union type)', async () => {
@@ -280,18 +274,11 @@ describe('JavaGenerator', () => {
   Union(Object value) {
     this.value = value;
   }
-    
-  @JsonValue
+
   public Object getValue() {
     return value;
   }
 
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-
-  @JsonCreator
   public static Union fromValue(Object value) {
     for (Union e : Union.values()) {
       if (e.value.equals(value)) {
@@ -300,19 +287,23 @@ describe('JavaGenerator', () => {
     }
     throw new IllegalArgumentException("Unexpected value '" + value + "'");
   }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
 }`;
 
     const inputModel = await generator.process(doc);
     const model = inputModel.models['Union'];
 
     let enumModel = await generator.renderEnum(model, inputModel);
-    const expectedDependencies = ['import com.fasterxml.jackson.annotation.*;'];
     expect(enumModel.result).toEqual(expected);
-    expect(enumModel.dependencies).toEqual(expectedDependencies);
+    expect(enumModel.dependencies.length).toEqual(0);
 
     enumModel = await generator.render(model, inputModel);
     expect(enumModel.result).toEqual(expected);
-    expect(enumModel.dependencies).toEqual(expectedDependencies);
+    expect(enumModel.dependencies.length).toEqual(0);
   });
 
   test('should render custom preset for `enum` type', async () => {
@@ -330,18 +321,11 @@ public enum CustomEnum {
   CustomEnum(String value) {
     this.value = value;
   }
-    
-  @JsonValue
+
   public String getValue() {
     return value;
   }
 
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-
-  @JsonCreator
   public static CustomEnum fromValue(String value) {
     for (CustomEnum e : CustomEnum.values()) {
       if (e.value.equals(value)) {
@@ -349,6 +333,11 @@ public enum CustomEnum {
       }
     }
     throw new IllegalArgumentException("Unexpected value '" + value + "'");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
   }
 }`;
 
@@ -367,13 +356,12 @@ public enum CustomEnum {
     const model = inputModel.models['CustomEnum'];
     
     let enumModel = await generator.render(model, inputModel);
-    const expectedDependencies = ['import com.fasterxml.jackson.annotation.*;'];
     expect(enumModel.result).toEqual(expected);
-    expect(enumModel.dependencies).toEqual(expectedDependencies);
+    expect(enumModel.dependencies.length).toEqual(0);
     
     enumModel = await generator.renderEnum(model, inputModel);
     expect(enumModel.result).toEqual(expected);
-    expect(enumModel.dependencies).toEqual(expectedDependencies);
+    expect(enumModel.dependencies.length).toEqual(0);
   });
 
   test('should render enums with translated special characters', async () => {
@@ -389,18 +377,11 @@ public enum CustomEnum {
   States(String value) {
     this.value = value;
   }
-    
-  @JsonValue
+
   public String getValue() {
     return value;
   }
 
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-
-  @JsonCreator
   public static States fromValue(String value) {
     for (States e : States.values()) {
       if (e.value.equals(value)) {
@@ -409,19 +390,23 @@ public enum CustomEnum {
     }
     throw new IllegalArgumentException("Unexpected value '" + value + "'");
   }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
 }`;
 
     const inputModel = await generator.process(doc);
     const model = inputModel.models['States'];
 
     let enumModel = await generator.renderEnum(model, inputModel);
-    const expectedDependencies = ['import com.fasterxml.jackson.annotation.*;'];
     expect(enumModel.result).toEqual(expected);
-    expect(enumModel.dependencies).toEqual(expectedDependencies);
+    expect(enumModel.dependencies.length).toEqual(0);
 
     enumModel = await generator.render(model, inputModel);
     expect(enumModel.result).toEqual(expected);
-    expect(enumModel.dependencies).toEqual(expectedDependencies);
+    expect(enumModel.dependencies.length).toEqual(0);
   });
 
   test('should render List type for collections', async () => {
