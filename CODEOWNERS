@@ -42,3 +42,7 @@
 
 # Language Champions for Dart and it's presets
 */generators/dart
+
+# Language Champions for Rust and its presets
+*/generators/rust @leigh-johnson
+

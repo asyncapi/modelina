@@ -2,7 +2,8 @@ import {
   camelCase,
   pascalCase,
   paramCase,
-  constantCase
+  constantCase,
+  snakeCase
 } from 'change-case';
 
 export enum IndentationTypes {
@@ -57,7 +58,7 @@ export class FormatHelpers {
   static upperFirst(value: string): string {
     return value.charAt(0).toUpperCase() + value.slice(1);
   }
-  
+
   /**
    * Lower first char in given string value.
    * @param {string} value to change
@@ -94,6 +95,13 @@ export class FormatHelpers {
    * @returns {string}
    */
   static toConstantCase = constantCase;
+
+  /**
+   * Transform into lower case string with an underscore between words.
+   * @param {string} value to transform
+   * @returns {string}
+  */
+  static toSnakeCase = snakeCase;
 
   /**
   * Replace special characters (Not 0-9,a-z,A-Z) with character names
