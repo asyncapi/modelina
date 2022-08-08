@@ -49,9 +49,11 @@ Each language has its own limitations, corner cases, and features; thus, each la
 - [Java](./languages/Java.md)
 - [JavaScript](./languages/JavaScript.md)
 - [TypeScript](./languages/TypeScript.md)
+- [Rust](./languages/Rust.md)
 
 ### [Contributing](./contributing.md)
 Contains all the information you need to contribute to this project.
 
 ### [Development](./development.md)
 Explains how to setup the project for development.
+
