@@ -1,4 +1,4 @@
-import { TypeScriptGenerator } from '../../../lib/esm';
+import { TypeScriptGenerator } from '../../../';
 import React from 'react';
 import { useState, useEffect } from "react";
 
