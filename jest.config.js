@@ -21,7 +21,7 @@ module.exports = {
     'src/**'
   ],
   modulePathIgnorePatterns: [
-    "<rootDir>/examples/TEMPLATE",
-    "<rootDir>/test/generators/template"
+    '<rootDir>/examples/TEMPLATE',
+    '<rootDir>/test/generators/template'
   ]
 };
