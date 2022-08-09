@@ -7,22 +7,6 @@ describe('TemplateGenerator', () => {
   });
 
   describe('Enum', () => {
-    test('should not render reserved keyword', async () => {
-      const doc = {
-        $id: 'Address',
-        type: 'object',
-        properties: {
-          enum: { type: 'string' },
-          reservedEnum: { type: 'string' }
-        },
-        additionalProperties: false
-      };
-
-      const models = await generator.generate(doc);
-      expect(models).toHaveLength(1);
-      expect(models[0].result).toMatchSnapshot();
-    });
-
     test('should render `enum` with mixed types (union type)', async () => {
       const doc = {
         $id: 'Things',
@@ -65,6 +49,84 @@ describe('TemplateGenerator', () => {
       const models = await generator.generate(doc);
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot();
+    });
+  });
+  describe('Class', () => {
+    test('should not render reserved keyword', async () => {
+      const doc = {
+        $id: 'Address',
+        type: 'object',
+        properties: {
+          enum: { type: 'string' },
+          reservedEnum: { type: 'string' }
+        },
+        additionalProperties: false
+      };
+
+      const models = await generator.generate(doc);
+      expect(models).toHaveLength(1);
+      expect(models[0].result).toMatchSnapshot();
+    });
+
+    test('should render `class` type', async () => {
+      const doc = {
+        $id: 'Address',
+        type: 'object',
+        properties: {
+          street_name: { type: 'string' },
+          city: { type: 'string', description: 'City description' },
+          state: { type: 'string' },
+          house_number: { type: 'number' },
+          marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
+          members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
+          array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
+        },
+        patternProperties: {
+          '^S(.?*)test&': {
+            type: 'string'
+          }
+        },
+        required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+      };
+      const expectedDependencies = [];
+      const models = await generator.generate(doc);
+      expect(models).toHaveLength(1);
+      expect(models[0].result).toMatchSnapshot();
+      expect(models[0].dependencies).toEqual(expectedDependencies);
+    });
+  
+    test('should work with custom preset for `class` type', async () => {
+      const doc = {
+        $id: 'CustomClass',
+        type: 'object',
+        properties: {
+          property: { type: 'string' },
+        }
+      };
+      generator = new TemplateGenerator({ presets: [
+        {
+          class: {
+            property({ content }) {
+              const annotation = 'test1';
+              return `${annotation}\n${content}`;
+            },
+            getter({ content }) {
+              const annotation = 'test2';
+              return `${annotation}\n${content}`;
+            },
+            setter({ content }) {
+              const annotation = 'test3';
+              return `${annotation}\n${content}`;
+            },
+          }
+        }
+      ] });
+      const expectedDependencies = [];
+  
+      const models = await generator.generate(doc);
+      expect(models).toHaveLength(1);
+      expect(models[0].result).toMatchSnapshot();
+      expect(models[0].dependencies).toEqual(expectedDependencies);
     });
   });
 });

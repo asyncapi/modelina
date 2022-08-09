@@ -17,7 +17,7 @@ export class TemplateFileGenerator extends TemplateGenerator implements Abstract
     //Filter anything out that have not been successfully generated
     generatedModels = generatedModels.filter((outputModel) => { return outputModel.modelName !== ''; });
     for (const outputModel of generatedModels) {
-      const filePath = path.resolve(outputDirectory, `${outputModel.modelName}.java`);
+      const filePath = path.resolve(outputDirectory, `${outputModel.modelName}.MYEXTENSION`);
       await FileHelpers.writerToFileSystem(outputModel.result, filePath);
     }
     return generatedModels;
