@@ -1,9 +1,8 @@
 import { TypeScriptGenerator } from '../../../';
 import React from 'react';
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 export default function App() {
-
   const [models, setModels] = useState('');
 
   useEffect(() => {
@@ -23,13 +22,12 @@ export default function App() {
       const models = await generator.generate(input);
       const modelsCode = models.map((model) => model.result).join('\n');
       setModels(modelsCode);
-    })()
-  }, [])
-
+    })();
+  }, []);
 
   return (
     <div className="App" data-testid="App">
       {models}
     </div>
-  )
+  );
 }
