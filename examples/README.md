@@ -44,3 +44,4 @@ This directory contains a series of self-contained examples that you can use as 
 - [overwrite-naming-formatting](./overwrite-naming-formatting) - A basic example how to overwrite default naming format constraint in this case, overwriting returning a constant case format.
 - [overwrite-default-constraint](./overwrite-default-constraint/) -  A basic example how to overwrite the entire constraint logic and not just a single single part of the default behavior, in this case overwriting the model naming constraint.
 - [rust-generate-crate](./rust-generate-crate/) - A basic example showing how to generate a Rust package.
+- [typescript-generate-jsonbinpack](./typescript-generate-jsonbinpack) - A basic example showing how to generate models that include [jsonbinpack](https://github.com/sourcemeta/jsonbinpack) functionality.
