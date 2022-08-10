@@ -1,16 +1,28 @@
 import { TypeScriptPreset } from '../TypeScriptPreset';
 const alterschema = require('alterschema');
 
+function getInputSchema(originalInput: any) {
+  if(originalInput.$schema !== undefined) {
+    if(originalInput.$schema.includes('http://json-schema.org/draft-04/schema')) {
+      return 'draft4';
+    }
+    if(originalInput.$schema.includes('http://json-schema.org/draft-06/schema')) {
+      return 'draft6';
+    }
+  }
+  return 'draft7';
+}
+
 /**
  * Preset which adds descriptions
  *
  * @implements {TypeScriptPreset}
  */
-export const TS_BINPACK_PRESET: TypeScriptPreset = {
+export const TS_JSONBINPACK_PRESET: TypeScriptPreset = {
   class: {
     async additionalContent({renderer, content, model}) {
       renderer.addDependency('const jsonbinpack = require(\'jsonbinpack\');');
-      const jsonSchema = await alterschema(model.originalInput, 'draft7', '2020-12');
+      const jsonSchema = await alterschema(model.originalInput, getInputSchema(model.originalInput), '2020-12');
       const json = JSON.stringify(jsonSchema);
       const packContent = `
 public async jsonbinSerialize(): Promise<Buffer>{

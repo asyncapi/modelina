@@ -6,13 +6,14 @@ There are special use-cases that each language supports; this document pertains 
 
 <!-- toc -->
 
-- [Generate an interface instead of classes](#generate-an-interface-instead-of-classes)
-- [Generate union types instead of enums](#generate-union-types-instead-of-enums)
-- [Generate un/marshal functions for classes](#generate-unmarshal-functions-for-classes)
-- [Generate models with jsonbinpack support](#generate-models-with-jsonbinpack-support)
-- [Generate example data function](#generate-example-data-function)
-- [Rendering complete models to a specific module system](#rendering-complete-models-to-a-specific-module-system)
-- [Rendering comments from description and example fields](#rendering-comments-from-description-and-example-fields)
+- [TypeScript](#typescript)
+  - [Generate an interface instead of classes](#generate-an-interface-instead-of-classes)
+  - [Generate union types instead of enums](#generate-union-types-instead-of-enums)
+  - [Generate un/marshal functions for classes](#generate-unmarshal-functions-for-classes)
+  - [Generate models with jsonbinpack support](#generate-models-with-jsonbinpack-support)
+  - [Generate example data function](#generate-example-data-function)
+  - [Rendering complete models to a specific module system](#rendering-complete-models-to-a-specific-module-system)
+  - [Rendering comments from description and example fields](#rendering-comments-from-description-and-example-fields)
 
 <!-- tocstop -->
 
@@ -49,6 +50,8 @@ Check out this [example out for a live demonstration](../../examples/typescript-
 ## Generate models with jsonbinpack support
 
 This functionality is for the library [jsonbinpack](https://github.com/sourcemeta/jsonbinpack).
+
+This preset can ONLY be used with AsyncAPI 2.x and JSON Schema draft 4 to 7 inputs.
 
 This functionality has two requirements:
 1. You MUST manually install the library `jsonbinpack`.
