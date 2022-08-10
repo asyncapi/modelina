@@ -6,14 +6,13 @@ There are special use-cases that each language supports; this document pertains 
 
 <!-- toc -->
 
-- [TypeScript](#typescript)
-  - [Generate an interface instead of classes](#generate-an-interface-instead-of-classes)
-  - [Generate union types instead of enums](#generate-union-types-instead-of-enums)
-  - [Generate un/marshal functions for classes](#generate-unmarshal-functions-for-classes)
-  - [Generate models with jsonbinpack support](#generate-models-with-jsonbinpack-support)
-  - [Generate example data function](#generate-example-data-function)
-  - [Rendering complete models to a specific module system](#rendering-complete-models-to-a-specific-module-system)
-  - [Rendering comments from description and example fields](#rendering-comments-from-description-and-example-fields)
+- [Generate an interface instead of classes](#generate-an-interface-instead-of-classes)
+- [Generate union types instead of enums](#generate-union-types-instead-of-enums)
+- [Generate un/marshal functions for classes](#generate-unmarshal-functions-for-classes)
+- [Generate models with jsonbinpack support](#generate-models-with-jsonbinpack-support)
+- [Generate example data function](#generate-example-data-function)
+- [Rendering complete models to a specific module system](#rendering-complete-models-to-a-specific-module-system)
+- [Rendering comments from description and example fields](#rendering-comments-from-description-and-example-fields)
 
 <!-- tocstop -->
 
