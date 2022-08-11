@@ -1,105 +1,214 @@
 # Presets
 
-The AsyncAPI Model SDK uses **preset** objects to extend the rendered model.
 
-A **preset** is a pure JavaScript object with format `key: value`, where `key` is the name of a model type and `value` is an object containing methods that extend a given rendered part for a given model type, like below example:
+Modelina uses something called **presets** to extend the rendered model. You can see it as layers you add ontop of each other which either adds new code to render, or completely overwrite existing generated code. 
+
+<!-- toc is generated with GitHub Actions do not remove toc markers -->
+
+<!-- toc -->
+
+  * [Hello world!](#hello-world)
+  * [Presets in depth](#presets-in-depth)
+    + [Overwriting existing rendered content](#overwriting-existing-rendered-content)
+    + [Ap/pre-pending to existng rendered content](#appre-pending-to-existng-rendered-content)
+    + [Reusing presets (options)](#reusing-presets-options)
+    + [Adding new dependencies](#adding-new-dependencies)
+    + [Overriding the default preset](#overriding-the-default-preset)
+  * [Preset's shape](#presets-shape)
+    + [Java](#java)
+      - [**Class**](#class)
+      - [**Enum**](#enum)
+    + [JavaScript](#javascript)
+      - [**Class**](#class-1)
+    + [TypeScript](#typescript)
+      - [**Class**](#class-2)
+      - [**Interface**](#interface)
+      - [**Enum**](#enum-1)
+      - [**Type**](#type)
+    + [Go](#go)
+      - [**Struct**](#struct)
+    + [C#](#c%23)
+      - [**Class**](#class-3)
+      - [**Enum**](#enum-2)
+    + [Rust](#rust)
+    + [Dart](#dart)
+- [Limitations](#limitations)
+  * [Hard for two presets to write to the exact same location within a class](#hard-for-two-presets-to-write-to-the-exact-same-location-within-a-class)
+
+<!-- tocstop -->
+
+## Hello world!
+Lets try to look at an example, every generator start with a bare minimal model called the **default preset** and for the TypeScript that preset would render a class to look something like this: 
+```ts
+class Root {
+  private _email?: string;
+
+  constructor(input: {
+    email?: string,
+  }) {
+    this._email = input.email;
+  }
+
+  get email(): string | undefined { return this._email; }
+  set email(email: string | undefined) { this._email = email; }
+}
+```
+
+The preset renderes the TypeScript class by calling **preset hooks**, which is callbacks that is called for rendering parts of the class. 
+```html
+<self>
+  <properties />
+
+  <ctor />
+
+  <getter />
+  <setter />
+
+  <additionalContent />
+</self>
+```
+
+This is what Modelina leverage to customize what is being rendered, because these preset hooks can be **extended or overwritten** by one or more presets.
+
+Lets take a look at an example, say we wanted to a description for each property of the class, maybe just to say hallo to the world. To do this we pass a custom preset to our generator:
+
+```ts
+import { TypeScriptGenerator } from '@asyncapi/modelina';
+
+const generator = new TypeScriptGenerator({ 
+  presets: [
+    {
+      class: {
+        property({ content }) {
+          const description = '// Hello world!'
+          return `${description}\n${content}`;
+        }
+      }
+    }
+  ]
+});
+```
+
+This adds a new preset for classes where for each property it runs our callback. The callback then prepends, to the existing `content` that have been rendered by other presets, our comment `// Hello world!`. This now renders all class properties with a comment from us!
+
+```ts
+class Root {
+  // Hello world!
+  private _email?: string;
+
+  constructor(input: {
+    email?: string,
+  }) {
+    this._email = input.email;
+  }
+
+  get email(): string | undefined { return this._email; }
+  set email(email: string | undefined) { this._email = email; }
+}
+```
+
+## Presets in depth
+A **preset** is a pure JavaScript object with format `key: value`, where `key` is the name of a **model type** and `value` is an object containing callbacks that extend a given rendered part for a given model type, like below example:
 
 ```js
 {
   // `class` model type 
   class: {
-    self(...options) { /* logic */ },
+    self(...arguments) { /* logic */ },
     // `setter` customization method 
-    setter(...options) { /* logic */ },
+    setter(...arguments) { /* logic */ },
   },
   interface: {
     // `property` customization method 
-    property(...options) { /* logic */ },
-    additionalContent(...options) { /* logic */ },
+    property(...arguments) { /* logic */ },
+    additionalContent(...arguments) { /* logic */ },
   },
 }
 ```
 
-Each language has different model types, which results in different implementable methods in a single preset. For more information, please check the [preset's shape](#presets-shape) section.
+Each output has different model types, which results in different implementable methods in a single preset. The different model types can be found in the [preset's shape](#presets-shape) section.
 
-## Custom preset
+For each custom preset, the implementation of methods for a given model type is optional. It means that you can implement one or all, depending on your use-case.
 
-Below is a custom preset written for TypeScript language, which adds a description to each interface's property and to the model itself as a JavaScript comment.
+The order of extending a given part of the model is consistent with the order of presets in the array passed as a `presets` option parameter in the generator's constructor.
 
-You can find the full preset at [typescript/presets/DescriptionPreset.ts](../src/generators/typescript/presets/DescriptionPreset.ts)
+As shown in the [Hello world!](#hello-world) example, there are many ways to customize the model generation, this section covers the the different parts.
+
+### Overwriting existing rendered content
+TODO
+
+### Ap/pre-pending to existng rendered content
+TODO
+
+### Reusing presets (options)
+Sometimes you might want to create different behavior based on user input, this can be done through options that can be provided with the preset.
+
+Say we want to create a preset with a customizable description that is provided by the use of the preset. To do this we can adapt the [hello world!](#hello-world) example to this:
 
 ```ts
 import { TypeScriptGenerator } from '@asyncapi/modelina';
 
-function renderDesc({ renderer, content, model }) {
-  const desc = model.getFromOriginalInput('description');
-  if (desc) {
-    const renderedDesc = renderer.renderComments(desc);
-    return `${renderedDesc}\n${content}`;
-  }
-  return content;
-}
+const generator = new TypeScriptGenerator({ 
+  presets: [
+    {
+      preset: {
+        class: {
+          property({ content, options }) {
+            const description = options.description !== undefined ? options.description : '// Hello world!'
+            return `${description}\n${content}`;
+          }
+        }
+      },
+      options: {
+        description: "Hello dear customizer!"
+      }
+    }
+  ]
+});
+```
 
-const DESCRIPTION_PRESET = {
-  interface: {
-    self({ renderer, content, model }) {
-      return renderDesc({ renderer, content, model });
-    },
-    property({ renderer, model, content }) {
-      return renderDesc({ renderer, content, model });
+This enables you to reuse presets (even expose them) to multiple generators
+```ts
+import { TypeScriptGenerator } from '@asyncapi/modelina';
+interface DescriptionOption = {
+  description: string
+}
+const descriptionPreset: TypeScriptPreset<DescriptionOption> = {
+  class: {
+    property({ content, options }) {
+      const description = options.description !== undefined ? options.description : '// Hello world!'
+      return `${description}\n${content}`;
     }
   }
 }
 
-const generator = new TypeScriptGenerator({ modelType: 'interface', presets: [DESCRIPTION_PRESET] });
+// One generator prepends `Hello dear customizer!`
+const generator = new TypeScriptGenerator({ 
+  presets: [
+    {
+      preset: descriptionPreset,
+      options: {
+        description: "Hello dear customizer!"
+      }
+    }
+  ]
+});
 
-const schema = {
-  $id: "Address",
-  type: "object",
-  description: "Address information",
-  properties: {
-    street_name:    { type: "string" },
-    city:           { type: "string", description: "City description" },
-  },
-  required: ["street_name", "city"],
-};
-
-const models = await generator.generate(schema);
-
-// models[0] should have the shape:
-/**
- * Address information
- */
-interface Address {
-  streetName: string;
-  /**
-   * City description
-   */
-  city: string;
-}
+// Second generator prepends `Hello from beyond!`
+const generator2 = new TypeScriptGenerator({ 
+  presets: [
+    {
+      preset: descriptionPreset,
+      options: {
+        description: "Hello from beyond!"
+      }
+    }
+  ]
+});
 ```
 
-Note that in the `DESCRIPTION_PRESET` object, we first defined which model we want to extend - in our case it's the `interface` - and then we implemented the `self` method, which extends the whole model shape and `property` method, which only extends that part of the model - property for the interface.
-
-For each custom preset, the implementation of methods for a given model type is optional. It means that you can implement only one, needed by your case extension for the given model type, as in the above example.
-
-The order of extending a given part of the model is consistent with the order of presets in the array passed as a `presets` option parameter in the generator's constructor.
-
-The user has the possibility to pass options to the custom preset - if preset has defined options - used in a `presets` array. To do that, please pass as an array's element an object with the `preset` field as a reference to the custom preset and define the `options` field with options passed to the preset. Check example:
-
-```js
-const generator = new TypeScriptGenerator({ presets: [
-  SOME_PRESET, 
-  {
-    preset: PRESET_WITH_OPTIONS,
-    options: {...},
-  },
-] });
-```
-
-## Adding new dependencies
-
-Each preset hook has the possibility of adding its own dependencies that needs to be rendered for the given model. It can be done through the `addDependency` function from `renderer` property.
+### Adding new dependencies
+Sometimes the preset might need to use some kind of foreign dependency. To achieve this each preset hook has the possibility of adding its own dependencies through the `addDependency` function from `renderer` property.
 
 ```ts
 ...
@@ -110,9 +219,9 @@ self({ renderer, content }) {
 ...
 ```
 
-## Overriding the default preset
+### Overriding the default preset
 
-Each implemented generator for appropriate language must have defined the default preset. However, we can override it by passing it as the `defaultPreset` parameter in the generator options. Check the example for TypeScript generator:
+Each implemented generator must have defined a default preset which forms is minimal generated model, that the rest of the presets add to or removes from. This can be overwritten by passing the `defaultPreset` parameter in the generator options. Check the example for TypeScript generator:
 
 ```js
 const DEFAULT_PRESET = {
@@ -122,22 +231,22 @@ const DEFAULT_PRESET = {
 const generator = new TypeScriptGenerator({ defaultPreset: DEFAULT_PRESET });
 ```
 
-> **NOTE**: Each default preset must have implemented each method for a given model type. Keep this in mind when overriding the default preset.
+> **NOTE**: Default presets MUST implement all preset hooks for a given model type!
 
 ## Preset's shape
 
-For each model type, you can implement two basic methods:
+For each model type, you can implement two basic preset hooks:
 
-- `self` - the method for extending the model shape.
+- `self` - the method for extending the model shape, this is what calls all additional preset hooks.
 - `additionalContent` - the method which adds additional content to the model.
 
-Each customization method receives the following arguments:
+Each preset hook method receives the following arguments:
 
-- `model` - an instance of the [`CommonModel`](../src/models/CommonModel.ts) class, which described rendered data model.
-- `inputModel` - an instance of the [`CommonInputModel`](../src/models/CommonInputModel.ts) class.
+- `model` - a [`ConstrainedMetaModel`](../src/models/CommonModel.ts) variation which depends on the preset type.
+- `inputModel` - an instance of the [`InputMetaModel`](../src/models/InputMetaModel.ts) class.
 - `renderer` - an instance of the class with common helper functions to render appropriate model type.
 - `content` - rendered content from previous preset.
-- `options` - options passed to preset defined in the `presets` array.
+- `options` - options passed to preset defined in the `presets` array, it's type depends on the specific preset.
 
 Below is a list of supported languages with their model types and corresponding additional preset's methods with extra arguments based on the character of the customization method.
 
@@ -145,54 +254,68 @@ Below is a list of supported languages with their model types and corresponding 
 
 #### **Class**
 
+This preset is a generator for the meta model `ConstrainedObjectModel` and [can be accessed through the `model` argument](#presets-shape).
+
 | Method | Description | Additional arguments |
 |---|---|---|
 | `ctor` | A method to extend rendered constructor for a given class. | - |
-| `property` | A method to extend rendered given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
-| `setter` | A method to extend setter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
-| `getter` | A method to extend getter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
+| `property` | A method to extend rendered given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+| `setter` | A method to extend setter for a given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+| `getter` | A method to extend getter for a given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
 
 #### **Enum**
 
+This preset is a generator for the meta model `ConstrainedEnumModel` and [can be accessed through the `model` argument](#presets-shape).
+
 | Method | Description | Additional arguments |
 |---|---|---|
-| `item` | A method to extend enum's item. | an `item` containing the value of enum's item. |
+| `item` | A method to extend enum's item. | `item` object as a [`ConstrainedEnumValueModel`](./internal-model.md#the-constrained-meta-model) instance, which contains the value and key of enum's item. |
 
 ### JavaScript
 
 #### **Class**
 
+This preset is a generator for the meta model `ConstrainedObjectModel` and [can be accessed through the `model` argument](#presets-shape).
+
 | Method | Description | Additional arguments |
 |---|---|---|
 | `ctor` | A method to extend rendered constructor for a given class. | - |
-| `property` | A method to extend rendered given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
-| `setter` | A method to extend setter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
-| `getter` | A method to extend getter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
+| `property` | A method to extend rendered given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+| `setter` | A method to extend setter for a given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+| `getter` | A method to extend getter for a given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
 
 ### TypeScript
 
 #### **Class**
 
+This preset is a generator for the meta model `ConstrainedObjectModel` and [can be accessed through the `model` argument](#presets-shape).
+
 | Method | Description | Additional arguments |
 |---|---|---|
 | `ctor` | A method to extend rendered constructor for a given class. | - |
-| `property` | A method to extend rendered given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
-| `setter` | A method to extend setter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
-| `getter` | A method to extend getter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
+| `property` | A method to extend rendered given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+| `setter` | A method to extend setter for a given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+| `getter` | A method to extend getter for a given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
 
 #### **Interface**
 
+This preset is a generator for the meta model `ConstrainedObjectModel` and [can be accessed through the `model` argument](#presets-shape).
+
 | Method | Description | Additional arguments |
 |---|---|---|
-| `property` | A method to extend rendered given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
+| `property` | A method to extend rendered given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
 
 #### **Enum**
 
+This preset is a generator for the meta model `ConstrainedEnumModel` and [can be accessed through the `model` argument](#presets-shape).
+
 | Method | Description | Additional arguments |
 |---|---|---|
-| `item` | A method to extend enum's item. | an `item` containing the value of enum's item. |
+| `item` | A method to extend enum's item. | `item` object as a [`ConstrainedEnumValueModel`](./internal-model.md#the-constrained-meta-model) instance, which contains the value and key of enum's item. |
 
 #### **Type**
+
+This preset is a generator for all meta models `ConstrainedMetaModel` and [can be accessed through the `model` argument](#presets-shape).
 
 There are no additional methods.
 
@@ -200,25 +323,53 @@ There are no additional methods.
 
 #### **Struct**
 
+This preset is a generator for the meta model `ConstrainedObjectModel` and [can be accessed through the `model` argument](#presets-shape).
+
 | Method | Description | Additional arguments |
 |---|---|---|
-| `field` | A method to extend rendered given field. | `fieldName` as a name of a given field, `field` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
+| `field` | A method to extend rendered given field. | `field` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
 
 
 ### C#
 
 #### **Class**
 
+This preset is a generator for the meta model `ConstrainedObjectModel` and [can be accessed through the `model` argument](#presets-shape).
+
 | Method | Description | Additional arguments |
 |---|---|---|
 | `ctor` | A method to extend rendered constructor for a given class. | - |
-| `property` | A method to extend rendered given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
-| `accessor` | A method to extend rendered given property accessor. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
-| `setter` | A method to extend setter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
-| `getter` | A method to extend getter for a given property. | `propertyName` as a name of a given property, `property` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
+| `property` | A method to extend rendered given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+| `accessor` | A method to extend rendered given property accessor. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+| `setter` | A method to extend setter for a given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+| `getter` | A method to extend getter for a given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
 
 #### **Enum**
 
+This preset is a generator for the meta model `ConstrainedEnumModel` and [can be accessed through the `model` argument](#presets-shape).
+
 | Method | Description | Additional arguments |
 |---|---|---|
-| `item` | A method to extend enum's item. | an `item` containing the value of enum's item. |
+| `item` | A method to extend enum's item. | `item` object as a [`ConstrainedEnumValueModel`](./internal-model.md#the-constrained-meta-model) instance, which contains the value and key of enum's item. |
+
+### Rust
+
+
+### Dart
+# Limitations
+
+With features natually comes limitations, and same applies for presets, so here are the known limitations the architecture of presets for Modelina.
+
+## Hard for two presets to write to the exact same location within a class
+
+Say you developed two presets, and you wanted to use both at the same time, but they both to add something right before a property. Example could be one wanted to add `@something` and the other `@something_else`. With the way presets work, one will always be rendered before the other.
+
+```ts
+class Root {
+  @something
+  @something_else
+  private _email?: string;
+}
+```
+
+There are no easy way for those two presets to properly together, and there is no easy way to solve this. You can read more about the issue here: https://github.com/asyncapi/modelina/issues/628
