@@ -10,27 +10,28 @@ For more specific integration options, please check out the [integration documen
 
 <!-- toc -->
 
-- [Understanding the output format](#understanding-the-output-format)
-- [Generate models from AsyncAPI documents](#generate-models-from-asyncapi-documents)
-  * [Limitations and Compatibility](#limitations-and-compatibility)
-    + [Message Schema formats](#message-schema-formats)
-    + [Polymorphism](#polymorphism)
-- [Generate models from JSON Schema documents](#generate-models-from-json-schema-documents)
-- [Generate models from Swagger 2.0 documents](#generate-models-from-swagger-20-documents)
-  * [Limitations and Compatibility](#limitations-and-compatibility-1)
-    + [Polymorphism](#polymorphism-1)
-- [Generate models from OpenAPI documents](#generate-models-from-openapi-documents)
-    + [Limitations and Compatibility](#limitations-and-compatibility-2)
-      - [Polymorphism](#polymorphism-2)
-- [Generate models from TypeScript type files](#generate-models-from-typescript-type-files)
-- [Generate models from Meta models](#generate-models-from-meta-models)
-- [Generate Go models](#generate-go-models)
-- [Generate C# models](#generate-c%23-models)
-- [Generate Java models](#generate-java-models)
-- [Generate TypeScript models](#generate-typescript-models)
-- [Generate JavaScript models](#generate-javascript-models)
-- [Generate Dart models](#generate-dart-models)
-- [Generate Rust models](#generate-rust-models)
+- [Usages](#usages)
+  - [Understanding the output format](#understanding-the-output-format)
+  - [Generate models from AsyncAPI documents](#generate-models-from-asyncapi-documents)
+    - [Limitations and Compatibility](#limitations-and-compatibility)
+      - [Message Schema formats](#message-schema-formats)
+      - [Polymorphism](#polymorphism)
+  - [Generate models from JSON Schema documents](#generate-models-from-json-schema-documents)
+  - [Generate models from Swagger 2.0 documents](#generate-models-from-swagger-20-documents)
+    - [Limitations and Compatibility](#limitations-and-compatibility-1)
+      - [Polymorphism](#polymorphism-1)
+  - [Generate models from OpenAPI documents](#generate-models-from-openapi-documents)
+      - [Limitations and Compatibility](#limitations-and-compatibility-2)
+        - [Polymorphism](#polymorphism-2)
+  - [Generate models from TypeScript type files](#generate-models-from-typescript-type-files)
+  - [Generate models from Meta models](#generate-models-from-meta-models)
+  - [Generate Go models](#generate-go-models)
+  - [Generate C# models](#generate-c-models)
+  - [Generate Java models](#generate-java-models)
+  - [Generate TypeScript models](#generate-typescript-models)
+  - [Generate JavaScript models](#generate-javascript-models)
+  - [Generate Dart models](#generate-dart-models)
+  - [Generate Rust models](#generate-rust-models)
 
 <!-- tocstop -->
 
@@ -46,8 +47,8 @@ For JSON Schema it follows the [JSON Schema input processing](#generate-models-f
 
 There are two ways to generate models for an AsyncAPI document.
 
-- [Generate from a parsed AsyncAPI document](../examples/asyncapi-from-parser)
-- [Generate from a pure JS object](../examples/asyncapi-from-object)
+- [Generate from a parsed AsyncAPI 2.x document](../examples/asyncapi-from-parser)
+- [Generate from an AsyncAPI 2.x JS object](../examples/asyncapi-from-object)
 
 The library expects the `asyncapi` property for the document to be set in order to understand the input format.
 
@@ -67,15 +68,15 @@ Long term if this is something you wish was supported, voice your [opionion here
 
 There is one way to generate models for a JSON Schema document.
 
-- [Generate from a pure JS object](../examples/json-schema-draft7-from-object)
+- [Generate from a JSON Schema draft 7 JS object](../examples/json-schema-draft7-from-object)
 
 The library expects the `$schema` property for the document to be set in order to understand the input format. By default, if no other inputs are detected, it defaults to `JSON Schema draft 7`. The process of interpreting a JSON Schema to a model can be read [here](./interpretation_of_JSON_Schema.md).
 
 ## Generate models from Swagger 2.0 documents
 
-There are one way to generate models from a Swagger 2.0 document
+There are one way to generate models from a Swagger 2.0 document.
 
-- [Generate from a JS object](../examples/swagger2.0-from-object)
+- [Generate from a Swagger 2.0 JS object](../examples/swagger2.0-from-object)
 
 The Swagger input processor expects that the property `swagger` is defined in order to know it should be processed.
 
