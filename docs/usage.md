@@ -13,6 +13,7 @@ For more specific integration options, please check out the [integration documen
 - [Usages](#usages)
   - [Understanding the output format](#understanding-the-output-format)
   - [Generate models from AsyncAPI documents](#generate-models-from-asyncapi-documents)
+      - [Compatibility](#compatibility)
   - [Generate models from JSON Schema documents](#generate-models-from-json-schema-documents)
   - [Generate models from Swagger 2.0 documents](#generate-models-from-swagger-20-documents)
   - [Generate models from OpenAPI documents](#generate-models-from-openapi-documents)
@@ -45,6 +46,13 @@ There are two ways to generate models for an AsyncAPI document.
 - [Generate from a pure JS object](../examples/asyncapi-from-object)
 
 The library expects the `asyncapi` property for the document to be set in order to understand the input format.
+
+#### Compatibility
+This is the current known limitation to AsyncAPI input.
+
+Unknown schema formats
+
+
 
 ## Generate models from JSON Schema documents
 
