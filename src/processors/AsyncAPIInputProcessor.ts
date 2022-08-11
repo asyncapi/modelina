@@ -1,16 +1,45 @@
 import {parse, AsyncAPIDocument, Schema as AsyncAPISchema, ParserOptions} from '@asyncapi/parser';
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
-import { InputMetaModel, ProcessorOptions } from '../models';
+import { Draft4Schema, Draft6Schema, Draft7Schema, InputMetaModel, OpenapiV3Schema, ProcessorOptions } from '../models';
 import { Logger } from '../utils';
 import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
 import { convertToMetaModel } from '../helpers';
+import { OpenAPIInputProcessor } from './OpenAPIInputProcessor';
 
 /**
  * Class for processing AsyncAPI inputs
  */
 export class AsyncAPIInputProcessor extends AbstractInputProcessor {
   static supportedVersions = ['2.0.0', '2.1.0', '2.2.0', '2.3.0','2.4.0'];
+  static supportedJsonSchema7Formats = [
+    'application/schema+json;version=draft-07',
+    'application/schema+yaml;version=draft-07'
+  ];
+  static supportedJsonSchema6Formats = [
+    'application/schema+json;version=draft-06',
+    'application/schema+yaml;version=draft-06'
+  ];
+  static supportedJsonSchema4Formats = [
+    'application/schema+json;version=draft-04',
+    'application/schema+yaml;version=draft-04'
+  ];
+  static supportedAsyncAPIFormats = [
+    'application/vnd.aai.asyncapi'
+  ]
+  static supportedOpenAPIFormats = [
+    'application/vnd.oai.openapi;version=3.0.0', 
+    'application/vnd.oai.openapi+json;version=3.0.0', 
+    'application/vnd.oai.openapi+yaml;version=3.0.0'
+  ]
+  static supportedSchemaFormats = [
+    ...this.supportedAsyncAPIFormats,
+    ...this.supportedJsonSchema7Formats,
+    ...this.supportedJsonSchema6Formats,
+    ...this.supportedJsonSchema4Formats,
+    ...this.supportedOpenAPIFormats,
+    'application/vnd.apache.avro',
+  ]
 
   /**
    * Process the input as an AsyncAPI document
@@ -31,20 +60,48 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     inputModel.originalInput = doc;
     // Go over all the message payloads and convert them to models
     for (const [, message] of doc.allMessages()) {
-      const schema = AsyncAPIInputProcessor.convertToInternalSchema(message.payload());
-      const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema);
-      if (newCommonModel.$id !== undefined) {
-        if (inputModel.models[newCommonModel.$id] !== undefined) {
-          Logger.warn(`Overwriting existing model with $id ${newCommonModel.$id}, are there two models with the same id present?`, newCommonModel);
+      const isSupportedSchemaFormat = AsyncAPIInputProcessor.supportedSchemaFormats.some(v => message.schemaFormat().includes(v));
+      if(isSupportedSchemaFormat) {
+        const messagePayload = message.originalPayload(); 
+        let schema;
+        const isAsyncAPISchema = AsyncAPIInputProcessor.supportedAsyncAPIFormats.some(v => message.schemaFormat().includes(v));
+        const isOpenAPISchema = AsyncAPIInputProcessor.supportedOpenAPIFormats.some(v => message.schemaFormat().includes(v));
+        const isJsonSchemaDraft7 = AsyncAPIInputProcessor.supportedJsonSchema7Formats.some(v => message.schemaFormat().includes(v));
+        const isJsonSchemaDraft6 = AsyncAPIInputProcessor.supportedJsonSchema6Formats.some(v => message.schemaFormat().includes(v));
+        const isJsonSchemaDraft4 = AsyncAPIInputProcessor.supportedJsonSchema4Formats.some(v => message.schemaFormat().includes(v));
+        if(isAsyncAPISchema) {
+          schema = AsyncAPIInputProcessor.convertToInternalSchema(messagePayload);
+        } else if (isOpenAPISchema) {
+          schema = OpenapiV3Schema.toSchema(messagePayload);
+        } else if (isJsonSchemaDraft7) {
+          schema = Draft7Schema.toSchema(messagePayload);
+        } else if (isJsonSchemaDraft6) {
+          schema = Draft6Schema.toSchema(messagePayload);
+        } else if (isJsonSchemaDraft4) {
+          schema = Draft4Schema.toSchema(messagePayload);
+        } else {
+          Logger.error(`AsyncAPI message was unable to be converted, dropping message`);
+          continue;
         }
-        const metaModel = convertToMetaModel(newCommonModel);
-        inputModel.models[metaModel.name] = metaModel;
+        const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema);
+
+        if (newCommonModel.$id !== undefined) {
+          if (inputModel.models[newCommonModel.$id] !== undefined) {
+            Logger.warn(`Overwriting existing model with $id ${newCommonModel.$id}, are there two models with the same id present?`, newCommonModel);
+          }
+          const metaModel = convertToMetaModel(newCommonModel);
+          inputModel.models[metaModel.name] = metaModel;
+        } else {
+          Logger.warn('Model did not have $id which is required, ignoring.', newCommonModel);
+        }
       } else {
-        Logger.warn('Model did not have $id which is required, ignoring.', newCommonModel);
+        Logger.error(`AsyncAPI message included unknown schema format ${message.schemaFormat()}, dropping message`);
       }
     }
     return inputModel;
   }
+
+
 
   /**
    * 
