@@ -43,7 +43,7 @@ There are two ways to generate models for an AsyncAPI document.
 
 The library expects the `asyncapi` property for the document to be set in order to understand the input format.
 
-The message payloads, since it is a JSON Schema variant, is [interpreted as a such](./interpretation_of_JSON_Schema.md).
+The message payloads, since it is a JSON Schema variant, is [interpreted as a such](./inputs/JSON_Schema.md).
 
 ## Generate models from JSON Schema documents
 
@@ -53,7 +53,7 @@ There is one way to generate models for a JSON Schema document.
 
 We support both draft-4, draft-6, and draft-7 documents.
 
-The library expects the `$schema` property for the document to be set in order to understand the input format. By default, if no other inputs are detected, it defaults to `JSON Schema draft 7`. The process of interpreting a JSON Schema to a model can be read [here](./interpretation_of_JSON_Schema.md).
+The library expects the `$schema` property for the document to be set in order to understand the input format. By default, if no other inputs are detected, it defaults to `JSON Schema draft 7`. The process of interpreting a JSON Schema to a model can be read [here](./inputs/JSON_Schema.md).
 
 ## Generate models from Swagger 2.0 documents
 
@@ -63,7 +63,7 @@ There are one way to generate models from a Swagger 2.0 document
 
 The Swagger input processor expects that the property `swagger` is defined in order to know it should be processed.
 
-The response payload and `body` parameters, since it is a JSON Schema variant, is [interpreted as a such](./interpretation_of_JSON_Schema.md).
+The response payload and `body` parameters, since it is a JSON Schema variant, is [interpreted as a such](./inputs/JSON_Schema.md).
 
 ## Generate models from OpenAPI documents
 
@@ -73,7 +73,7 @@ There are one way to generate models from an OpenAPI document
 
 The OpenAPI input processor expects that the property `openapi` is defined in order to know it should be processed.
 
-The response and request payloads, since it is a JSON Schema variant, is [interpreted as a such](./interpretation_of_JSON_Schema.md).
+The response and request payloads, since it is a JSON Schema variant, is [interpreted as a such](./inputs/JSON_Schema.md).
 
 ## Generate models from TypeScript type files
 
@@ -96,7 +96,7 @@ There are one way to generate models from an OpenAPI document
 
 The OpenAPI input processor expects that the property `openapi` is defined in order to know it should be processed.
 
-The response and request payloads, since it is a JSON Schema variant, is [interpreted as a such](./interpretation_of_JSON_Schema.md).
+The response and request payloads, since it is a JSON Schema variant, is [interpreted as a such](./inputs/JSON_Schema.md).
 
 ## Generate Go models
 
