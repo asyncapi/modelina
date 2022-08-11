@@ -131,6 +131,10 @@ To see the complete feature list for each language, please click the individual 
     <td><a href="./docs/usage.md#generate-rust-models">Rust</a></td>
     <td>Struct/tuple and enum generation: <em>generation of `implement Default`, generate serde macros, custom indentation type and size, etc</em></td>
   </tr>
+  <tr>
+    <td><a href="./docs/usage.md#generate-python-models">Python</a></td>
+    <td>Class and enum generation: <em>custom indentation type and size, etc </em></td>
+  </tr>
 </table>
 
 ## Roadmap

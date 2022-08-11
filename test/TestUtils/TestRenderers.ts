@@ -7,6 +7,7 @@ import { TypeScriptRenderer } from '../../src/generators/typescript/TypeScriptRe
 import { testOptions, TestGenerator } from './TestGenerator';
 import { DartRenderer } from '../../src/generators/dart/DartRenderer';
 import { RustRenderer } from '../../src/generators/rust/RustRenderer';
+import { PythonRenderer } from '../../src/generators/python/PythonRenderer';
 
 export class TestRenderer extends AbstractRenderer {
   constructor(presets = []) {
@@ -24,3 +25,4 @@ export class MockCSharpRenderer extends CSharpRenderer<any> { }
 export class MockJavaScriptRenderer extends JavaScriptRenderer<any> { }
 export class MockDartRenderer extends DartRenderer<any> { }
 export class MockRustRenderer extends RustRenderer<any> { }
+export class MockPythonRenderer extends PythonRenderer<any> { }

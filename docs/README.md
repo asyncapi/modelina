@@ -56,3 +56,4 @@ Each language has its own limitations, corner cases, and features; thus, each la
 - [JavaScript](./languages/JavaScript.md)
 - [TypeScript](./languages/TypeScript.md)
 - [Rust](./languages/Rust.md)
+- [Python](./languages/Python.md)

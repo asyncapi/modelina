@@ -125,3 +125,7 @@ Dart is one of the many output languages we support. Check out this [basic examp
 ## Generate Rust models
 
 Rust is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-rust-crate) and the following [Rust documentation for more advanced use-cases](./languages/Rust.md).
+
+## Generate Python models
+
+Python is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-python-models) and the following [Python documentation for more advanced use-cases](./languages/Python.md).

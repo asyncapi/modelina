@@ -1,4 +1,4 @@
-import { FileHelpers, DartFileGenerator, OutputModel, ConstrainedAnyModel, InputMetaModel, GoFileGenerator, JavaFileGenerator, JavaScriptFileGenerator, TypeScriptFileGenerator, CSharpFileGenerator, RustFileGenerator } from '../../src';
+import { FileHelpers, DartFileGenerator, OutputModel, ConstrainedAnyModel, InputMetaModel, GoFileGenerator, JavaFileGenerator, JavaScriptFileGenerator, TypeScriptFileGenerator, CSharpFileGenerator, RustFileGenerator, PythonFileGenerator } from '../../src';
 import * as path from 'path';
 
 const generatorsToTest = [
@@ -36,6 +36,11 @@ const generatorsToTest = [
     generator: new RustFileGenerator(),
     generatorOptions: { namespace: 'SomeNamespace' },
     fileExtension: 'rs'
+  },
+  {
+    generator: new PythonFileGenerator(),
+    generatorOptions: { },
+    fileExtension: 'py'
   }
 ];
 
