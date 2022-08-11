@@ -87,7 +87,7 @@ export class PythonGenerator extends AbstractGenerator<PythonOptions, PythonRend
   async renderCompleteModel(model: ConstrainedMetaModel, inputModel: InputMetaModel, options: PythonRenderCompleteModelOptions): Promise<RenderOutput> {
     const outputModel = await this.render(model, inputModel);
     const modelDependencies = model.getNearestDependencies().map((dependencyModel) => {
-      return `from './${dependencyModel.name}' import ${dependencyModel.name}`;
+      return `from ${dependencyModel.name} import ${dependencyModel.name}`;
     });
     const outputContent = `${modelDependencies.join('\n')}
 ${outputModel.dependencies.join('\n')}

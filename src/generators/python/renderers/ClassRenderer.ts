@@ -20,7 +20,7 @@ export class ClassRenderer extends PythonRenderer<ConstrainedObjectModel> {
 
     return `class ${this.model.name}: 
 ${this.indent(this.renderBlock(content, 2))}
-}`;
+`;
   }
 
   runCtorPreset(): Promise<string> {
