@@ -19,7 +19,7 @@
 
 This document gives the overview of all the available documentation for Modelina.
 
-### [The Processing](./input-processing.md)
+### [The Processing](./processing.md)
 Contains information how the internals of the processing works.
 
 This document contains all the information you need to understand the internal meta model and processes.

@@ -1,5 +1,4 @@
-# Integrations
-This readme file goes into details how to integrate Modelina into various environments.
+## Integrations
 
 <!-- toc is generated with GitHub Actions do not remove toc markers -->
 
