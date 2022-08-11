@@ -1,6 +1,6 @@
 import { TemplateDefaultTypeMapping } from '../../../src/generators/template/TemplateConstrainer';
 import { TemplateGenerator } from '../../../src/generators/template';
-import { ConstrainedAnyModel, ConstrainedArrayModel, ConstrainedBooleanModel, ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedUnionModel } from '../../../src';
+import { ConstrainedAnyModel, ConstrainedArrayModel, ConstrainedBooleanModel, ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedTupleValueModel, ConstrainedUnionModel } from '../../../src';
 describe('TemplateConstrainer', () => {
   describe('ObjectModel', () => {
     test('should render the constrained name as type', () => {
@@ -14,7 +14,7 @@ describe('TemplateConstrainer', () => {
       const refModel = new ConstrainedAnyModel('test', undefined, '');
       const model = new ConstrainedReferenceModel('test', undefined, '', refModel);
       const type = TemplateDefaultTypeMapping.Reference({ constrainedModel: model, options: TemplateGenerator.defaultOptions });
-      expect(type).toEqual('');
+      expect(type).toEqual(model.name);
     });
   });
   describe('Any', () => {
@@ -55,8 +55,18 @@ describe('TemplateConstrainer', () => {
 
   describe('Tuple', () => {
     test('should render type', () => {
-      const model = new ConstrainedTupleModel('Test', undefined, '', []);
-      const type = TemplateDefaultTypeMapping.Tuple({ constrainedModel: model, options: TemplateGenerator.defaultOptions });
+      const stringModel = new ConstrainedStringModel('test', undefined, 'String');
+      const tupleValueModel = new ConstrainedTupleValueModel(0, stringModel);
+      const model = new ConstrainedTupleModel('test', undefined, '', [tupleValueModel]);
+      const type = TemplateDefaultTypeMapping.Tuple({constrainedModel: model, options: TemplateGenerator.defaultOptions});
+      expect(type).toEqual('');
+    });
+    test('should render multiple tuple types', () => {
+      const stringModel = new ConstrainedStringModel('test', undefined, 'String');
+      const tupleValueModel0 = new ConstrainedTupleValueModel(0, stringModel);
+      const tupleValueModel1 = new ConstrainedTupleValueModel(1, stringModel);
+      const model = new ConstrainedTupleModel('test', undefined, '', [tupleValueModel0, tupleValueModel1]);
+      const type = TemplateDefaultTypeMapping.Tuple({constrainedModel: model, options: TemplateGenerator.defaultOptions});
       expect(type).toEqual('');
     });
   });
@@ -80,16 +90,24 @@ describe('TemplateConstrainer', () => {
 
   describe('Union', () => {
     test('should render type', () => {
-      const model = new ConstrainedUnionModel('Test', undefined, '', []);
-      const type = TemplateDefaultTypeMapping.Union({ constrainedModel: model, options: TemplateGenerator.defaultOptions });
+      const unionModel = new ConstrainedStringModel('test', undefined, 'str');
+      const model = new ConstrainedUnionModel('test', undefined, '', [unionModel]);
+      const type = TemplateDefaultTypeMapping.Union({constrainedModel: model, options: TemplateGenerator.defaultOptions});
+      expect(type).toEqual('');
+    });
+    test('should render multiple types', () => {
+      const unionModel1 = new ConstrainedStringModel('test', undefined, 'str');
+      const unionModel2 = new ConstrainedStringModel('test', undefined, 'str');
+      const model = new ConstrainedUnionModel('test', undefined, '', [unionModel1, unionModel2]);
+      const type = TemplateDefaultTypeMapping.Union({constrainedModel: model, options: TemplateGenerator.defaultOptions});
       expect(type).toEqual('');
     });
   });
 
   describe('Dictionary', () => {
     test('should render type', () => {
-      const keyModel = new ConstrainedStringModel('test', undefined, 'String');
-      const valueModel = new ConstrainedStringModel('test', undefined, 'String');
+      const keyModel = new ConstrainedStringModel('test', undefined, 'str');
+      const valueModel = new ConstrainedStringModel('test', undefined, 'str');
       const model = new ConstrainedDictionaryModel('test', undefined, '', keyModel, valueModel);
       const type = TemplateDefaultTypeMapping.Dictionary({ constrainedModel: model, options: TemplateGenerator.defaultOptions });
       expect(type).toEqual('');

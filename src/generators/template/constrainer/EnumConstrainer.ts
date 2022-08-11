@@ -15,7 +15,8 @@ export type ModelEnumKeyConstraints = {
 
 export const DefaultEnumKeyConstraints: ModelEnumKeyConstraints = {
   NO_SPECIAL_CHAR: (value: string) => {
-    //Exclude '_', '$' because they are allowed as enum keys
+    //Exclude ` ` because it gets formatted by NAMING_FORMATTER
+    //Exclude '_' because they are allowed as enum keys
     return FormatHelpers.replaceSpecialCharacters(value, { exclude: [' ', '_'], separator: '_' });
   },
   NO_NUMBER_START_CHAR,

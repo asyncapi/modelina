@@ -88,7 +88,7 @@ describe('TemplateGenerator', () => {
         },
         required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
       };
-      const expectedDependencies = [];
+      const expectedDependencies: string[] = [];
       const models = await generator.generate(doc);
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot();
@@ -121,7 +121,7 @@ describe('TemplateGenerator', () => {
           }
         }
       ] });
-      const expectedDependencies = [];
+      const expectedDependencies: string[] = [];
   
       const models = await generator.generate(doc);
       expect(models).toHaveLength(1);

@@ -9,8 +9,8 @@ export const TemplateDefaultTypeMapping: TypeMapping<TemplateOptions> = {
     //Returning name here because all object models have been split out
     return constrainedModel.name;
   },
-  Reference (): string {
-    return '';
+  Reference ({constrainedModel}): string {
+    return constrainedModel.name;
   },
   Any (): string {
     return '';

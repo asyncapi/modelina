@@ -40,14 +40,14 @@ Generators sits as the core of Modelina, which frames the core concepts of what 
 
 To make it easier to contribute a new generator, and to avoid focusing too much of the internals of Modelina, we created a template generator to get you started. If you encounter discreprencies with the following guide or templates, make sure to raise it as an issue so it can be fixed!
 
-Here is how:
-1. Copy/paste the [template generator](../src/generators/template/) and [tests](../test/generators/template/) and rename it to your generator.
+#### Getting started
+1. Start by copy/pasting the [template generator](../src/generators/template/) and [tests](../test/generators/template/) and rename it to your generator.
 2. Search and replace within your new generator and test folder for `Template`, `template` and `TEMPLATE` and replace it with your generator name and match the cases. **Make sure you search and replace it with matching case**.
 3. Replace the filenames `Template...` with your generator name.
 4. Add your [generator to the generator index file](../src/generators/index.ts).
 
 Now it's time to adapt the template into what ever it is you are generating:
-1. Adapt the [constraint logic](../src/generators/template/) based on what is allowed within your output. Read more about the constraint logic here.
+1. Adapt the [constraint logic](../src/generators/template/constrainer) and [the type constraints](../src/generators/template/TemplateConstrainer.ts) based on what is allowed within your output. [Read more about the constraint logic here](./constraints.md).
 2. Add all of the reserved keywords that the models must never generate in the [Constant file](../src/generators/template/Constants.ts).
 3. Adapt/create the first renderers. The template by default include two renderers, one for rendering enums and one for classes, but you can create what ever renderers makes sense. For example in Rust it's not called class but struct, so therefore its called a `StructRenderer`.
 4. Adapt the file generator and the rendering of the complete models to fit your generator.
@@ -56,7 +56,9 @@ Time to adapt the tests, cause without tests, it's just an empty promise. The te
 1. Add a mocked renderer in the [TestRenderers](../test/TestUtils/TestRenderers.ts) file.
 2. Adapt the [constrainer tests](../test/generators/template/TemplateConstrainer.spec.ts) based on the output.
 3. Adapt the [reserved keywords tests](../test/generators/template/Constants.spec.ts)
-4. Add your generator to the [FileGenerators test](../test/generators/FileGenerators.spec.ts) to ensure the models are accurately written to files.
+4. Adapt the [generator tests](../test/generators/template/TemplateGenerator.spec.ts)
+4. Adapt the [renderer tests](../test/generators/template/TemplateRenderer.spec.ts)
+5. Add your generator to the [FileGenerators test](../test/generators/FileGenerators.spec.ts) to ensure the models are accurately written to files.
 
 Lastly, we need to adapt some of the docs to showcase your new awesome generator! Cause if the users cant find it, it dont exist.
 1. Add your [generator specific documentation under languages](./languages/) and add it to the [list of generators](./README.md#languages)

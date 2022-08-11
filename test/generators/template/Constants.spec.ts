@@ -8,6 +8,5 @@ describe('Reserved keywords', () => {
 
   it('should return false if the word is not a reserved keyword', () => {
     expect(isReservedTemplateKeyword('dinosaur')).toBe(false);
-    expect(isReservedTemplateKeyword('class')).toBe(false);
   });
 });
