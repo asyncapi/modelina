@@ -14,6 +14,12 @@ class 1name {}
 
 There are many rules as such, to get the full description about them read further for each corresponding output:
 
+- [CSharp](./constraints/CSharp.md)
+- [Dart](./constraints/Dart.md)
+- [Go](./constraints/Go.md)
+- [Java](./constraints/Java.md)
+- [JavaScript](./constraints/JavaScript.md)
+- [Rust](./constraints/Rust.md)
 - [TypeScript](./constraints/TypeScript.md)
 
 # Customization
