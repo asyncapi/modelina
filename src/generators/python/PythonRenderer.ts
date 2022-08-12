@@ -26,5 +26,4 @@ export abstract class PythonRenderer<RendererModelType extends ConstrainedMetaMo
 ${content}
 """`;
   }
-
 }

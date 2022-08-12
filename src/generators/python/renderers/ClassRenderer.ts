@@ -1,6 +1,5 @@
 import { PythonRenderer } from '../PythonRenderer';
-import { ConstrainedDictionaryModel, ConstrainedObjectModel, ConstrainedObjectPropertyModel } from '../../../models';
-import { FormatHelpers } from '../../../helpers';
+import { ConstrainedObjectModel, ConstrainedObjectPropertyModel } from '../../../models';
 import { PythonOptions } from '../PythonGenerator';
 import { ClassPresetType } from '../PythonPreset';
 
@@ -87,11 +86,11 @@ export const PYTHON_DEFAULT_CLASS_PRESET: ClassPresetType<PythonOptions> = {
     return `def __init__(self, input):
 ${renderer.indent(body)}`;
   },
-  getter({ renderer, property }) {
+  getter({ property }) {
     return `@property
 def ${property.propertyName}(self):\n\treturn self._${property.propertyName}`;
   },
-  setter({ renderer, property }) {
+  setter({ property }) {
     return `@${property.propertyName}.setter
 def ${property.propertyName}(self, ${property.propertyName}):\n\tself._${property.propertyName} = ${property.propertyName}`;
   },

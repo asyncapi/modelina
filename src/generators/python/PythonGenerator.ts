@@ -8,7 +8,6 @@ import { split, TypeMapping } from '../../helpers';
 import { PythonPreset, PYTHON_DEFAULT_PRESET } from './PythonPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
-import { isReservedPythonKeyword } from './Constants';
 import { Logger } from '../..';
 import { constrainMetaModel, Constraints } from '../../helpers/ConstrainHelpers';
 import { PythonDefaultConstraints, PythonDefaultTypeMapping } from './PythonConstrainer';
@@ -18,8 +17,8 @@ export interface PythonOptions extends CommonGeneratorOptions<PythonPreset> {
   typeMapping: TypeMapping<PythonOptions>;
   constraints: Constraints;
 }
-export interface PythonRenderCompleteModelOptions {
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface PythonRenderCompleteModelOptions {}
 export class PythonGenerator extends AbstractGenerator<PythonOptions, PythonRenderCompleteModelOptions> {
   static defaultOptions: PythonOptions = {
     ...defaultGeneratorOptions,
@@ -84,7 +83,7 @@ export class PythonGenerator extends AbstractGenerator<PythonOptions, PythonRend
    * @param inputModel 
    * @param options used to render the full output
    */
-  async renderCompleteModel(model: ConstrainedMetaModel, inputModel: InputMetaModel, options: PythonRenderCompleteModelOptions): Promise<RenderOutput> {
+  async renderCompleteModel(model: ConstrainedMetaModel, inputModel: InputMetaModel): Promise<RenderOutput> {
     const outputModel = await this.render(model, inputModel);
     const modelDependencies = model.getNearestDependencies().map((dependencyModel) => {
       return `from ${dependencyModel.name} import ${dependencyModel.name}`;
