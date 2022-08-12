@@ -57,8 +57,8 @@ describe('PythonGenerator', () => {
         $id: 'Address',
         type: 'object',
         properties: {
-          enum: { type: 'string' },
-          reservedEnum: { type: 'string' }
+          del: { type: 'string' },
+          reservedDel: { type: 'string' }
         },
         additionalProperties: false
       };
