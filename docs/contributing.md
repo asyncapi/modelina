@@ -52,13 +52,16 @@ Now it's time to adapt the template into what ever it is you are generating:
 3. Adapt/create the first renderers. The template by default include two renderers, one for rendering enums and one for classes, but you can create what ever renderers makes sense. For example in Rust it's not called class but struct, so therefore its called a `StructRenderer`.
 4. Adapt the file generator and the rendering of the complete models to fit your generator.
 
+An important note about presets, they are used to extend and build upon the default model, the bare minimum of a data model, so that Modelina can support multiple features. You can read more about [presets here](./presets.md). If you have any questions or want something clarified, don't hesitate to [reach out on slack](https://asyncapi.com/slack-invite).
+
 Time to adapt the tests, cause without tests, it's just an empty promise. The test that is included in the template is really just placeholders, so make sure you adapt them accordingly to your code.
 1. Add a mocked renderer in the [TestRenderers](../test/TestUtils/TestRenderers.ts) file.
 2. Adapt the [constrainer tests](../test/generators/template/TemplateConstrainer.spec.ts) based on the output.
 3. Adapt the [reserved keywords tests](../test/generators/template/Constants.spec.ts)
 4. Adapt the [generator tests](../test/generators/template/TemplateGenerator.spec.ts)
-4. Adapt the [renderer tests](../test/generators/template/TemplateRenderer.spec.ts)
-5. Add your generator to the [FileGenerators test](../test/generators/FileGenerators.spec.ts) to ensure the models are accurately written to files.
+5. Adapt the [renderer tests](../test/generators/template/TemplateRenderer.spec.ts)
+6. Add your generator to the [FileGenerators test](../test/generators/FileGenerators.spec.ts) to ensure the models are accurately written to files.
+7. Lastly, we have (arguably) the most important tests, [the BlackBox tests](./development.md#blackbox-testing). They are to ensure that real-world inputs generate usable models that do not contain syntax errors. You can read more about the BlackBox tests [here](./development.md#blackbox-testing).
 
 Lastly, we need to adapt some of the docs to showcase your new awesome generator! Cause if the users cant find it, it dont exist.
 1. Add your [generator specific documentation under languages](./languages/) and add it to the [list of generators](./README.md#languages)
@@ -67,7 +70,11 @@ Lastly, we need to adapt some of the docs to showcase your new awesome generator
 
 Aaaand that's it! As a rule of thumb, start small and slowly add more features, dont try to push everything into one PR, as it will take forever to review, code, and merge. 
 
-PR's you can look to for guidance on how the process goes: https://github.com/asyncapi/modelina/pull/818
+If you have any questions, are unsure how your use-case fits in, or want something clarified, don't hesitate to [reach out on slack](https://asyncapi.com/slack-invite).
+
+PR's you can look to for guidance on how the process goes: 
+- https://github.com/asyncapi/modelina/pull/818
+- https://github.com/asyncapi/modelina/pull/863
 
 ## FAQs
 Below are some of the typical questions we've received about contributing to Modelina.
