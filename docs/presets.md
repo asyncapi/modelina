@@ -417,9 +417,75 @@ This preset is a generator for the meta model `ConstrainedEnumModel` and [can be
 | `item` | A method to extend enum's item. | `item` object as a [`ConstrainedEnumValueModel`](./internal-model.md#the-constrained-meta-model) instance, which contains the value and key of enum's item. |
 
 ### Rust
+#### **Struct**
 
+This preset is a generator for the meta model `ConstrainedObjectModel` and [can be accessed through the `model` argument](#presets-shape).
+
+| Method | Description | Additional arguments |
+|---|---|---|
+| `field` | A method to extend rendered given field. | `field` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+| `fieldMacro` |  | `field` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+| `structMacro` |  | `field` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+
+#### **Enum**
+
+This preset is a generator for the meta model `ConstrainedEnumModel` and [can be accessed through the `model` argument](#presets-shape).
+
+| Method | Description | Additional arguments |
+|---|---|---|
+| `item` | A method to extend enum's item. | `item` object as a [`ConstrainedEnumValueModel`](./internal-model.md#the-constrained-meta-model) instance, which contains the value and key of enum's item, `itemIndex`. |
+| `itemMacro` |  | `item` object as a [`ConstrainedEnumValueModel`](./internal-model.md#the-constrained-meta-model) instance, which contains the value and key of enum's item, `itemIndex`. |
+| `structMacro` |  | `item` object as a [`ConstrainedEnumValueModel`](./internal-model.md#the-constrained-meta-model) instance, which contains the value and key of enum's item, `itemIndex`. |
+
+#### **Package**
+
+This preset is a generator for the crate package file.
+
+| Method | Description | Additional arguments |
+|---|---|---|
+| `manifest` |  | `packageOptions`, `InputMetaModel` |
+| `lib` |  | `packageOptions`, `inputModel` |
+
+#### **Union**
+
+This preset is a generator for the meta model `ConstrainedUnionModel` and [can be accessed through the `model` argument](#presets-shape).
+
+| Method | Description | Additional arguments |
+|---|---|---|
+| `item` |  | `ConstrainedMetaModel` |
+| `itemMacro` |  | `ConstrainedMetaModel` |
+| `structMacro` |  | `ConstrainedMetaModel` |
+
+#### **Tuple**
+
+This preset is a generator for the meta model `ConstrainedTupleModel` and [can be accessed through the `model` argument](#presets-shape).
+
+| Method | Description | Additional arguments |
+|---|---|---|
+| `field` |  | `field` object as a [`ConstrainedTupleValueModel`](./internal-model.md#the-constrained-meta-model) instance, `fieldIndex`. |
+| `structMacro` |  | `field` object as a [`ConstrainedTupleValueModel`](./internal-model.md#the-constrained-meta-model) instance, `fieldIndex`. |
 
 ### Dart
+#### **Class**
+
+This preset is a generator for the meta model `ConstrainedObjectModel` and [can be accessed through the `model` argument](#presets-shape).
+
+| Method | Description | Additional arguments |
+|---|---|---|
+| `ctor` | A method to extend rendered constructor for a given class. | - |
+| `property` | A method to extend rendered given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+| `accessor` | A method to extend rendered given property accessor. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+| `setter` | A method to extend setter for a given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+| `getter` | A method to extend getter for a given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+
+#### **Enum**
+
+This preset is a generator for the meta model `ConstrainedEnumModel` and [can be accessed through the `model` argument](#presets-shape).
+
+| Method | Description | Additional arguments |
+|---|---|---|
+| `item` | A method to extend enum's item. | `item` object as a [`ConstrainedEnumValueModel`](./internal-model.md#the-constrained-meta-model) instance, which contains the value and key of enum's item. |
+
 # Limitations
 
 With features natually comes limitations, and same applies for presets, so here are the known limitations the architecture of presets for Modelina.
