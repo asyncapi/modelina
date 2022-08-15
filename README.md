@@ -18,7 +18,7 @@ Modelina is the official AsyncAPI SDK to generate data models (i.e. <a href="#ou
 
 ## :loudspeaker: ATTENTION:
 
-This package is still under development and has not reached version 1.0.0 yet. This means that its API may contain breaking changes until we're able to deploy the first stable version and begin semantic versioning. Please use tests to ensure expected outputs or to hardcode the version.
+This package is currently being prepared to reach version 1.0.0 and the development is therefore happening on the [`next` branch](https://github.com/asyncapi/modelina/tree/next), any features must be based and targetting that branch.
 
 ---
 
