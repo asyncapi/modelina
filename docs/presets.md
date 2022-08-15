@@ -135,10 +135,74 @@ The order of extending a given part of the model is consistent with the order of
 As shown in the [Hello world!](#hello-world) example, there are many ways to customize the model generation, this section covers the the different parts.
 
 ### Overwriting existing rendered content
-TODO
+Since the preset renders in a form of layers, one of the usecases is to overwrite an already existing rendering of some part of the generated model. Lets try an adapt out hello world example, and instead of prepending comments, we can overwrite the already rendered content, for example lets use public property initializer.
+
+```ts
+import { TypeScriptGenerator } from '@asyncapi/modelina';
+
+const generator = new TypeScriptGenerator({ 
+  presets: [
+    {
+      class: {
+        property({ property }) {
+          return `public ${property.propertyName}${!property.required ? '?' : ''}: ${property.type};`;
+        }
+      }
+    }
+  ]
+});
+```
+It would render the following class:
+```ts
+class Root {
+  public _email?: string;
+
+  constructor(input: {
+    email?: string,
+  }) {
+    this._email = input.email;
+  }
+
+  get email(): string | undefined { return this._email; }
+  set email(email: string | undefined) { this._email = email; }
+}
+```
 
 ### Ap/pre-pending to existng rendered content
-TODO
+As the hello world example appended content, this time lets prepend some content to the properties.
+```ts
+import { TypeScriptGenerator } from '@asyncapi/modelina';
+
+const generator = new TypeScriptGenerator({ 
+  presets: [
+    {
+      class: {
+        property({ content }) {
+          const description = '// Hello world!'
+          return `${description}\n${content}`;
+        }
+      }
+    }
+  ]
+});
+```
+
+It would render the following class:
+```ts
+class Root {
+  private _email?: string;
+  // Hello world!
+
+  constructor(input: {
+    email?: string,
+  }) {
+    this._email = input.email;
+  }
+
+  get email(): string | undefined { return this._email; }
+  set email(email: string | undefined) { this._email = email; }
+}
+```
 
 ### Reusing presets (options)
 Sometimes you might want to create different behavior based on user input, this can be done through options that can be provided with the preset.
