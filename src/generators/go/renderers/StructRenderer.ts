@@ -37,17 +37,25 @@ ${this.indent(this.renderBlock(content, 2))}
   runFieldPreset(field: ConstrainedObjectPropertyModel): Promise<string> {
     return this.runPreset('field', { field });
   }
+  runFieldTagPreset(field: ConstrainedObjectPropertyModel): Promise<string> {
+    return this.runPreset('fieldTag', { field });
+  }
 }
 
 export const GO_DEFAULT_STRUCT_PRESET: StructPresetType<GoOptions> = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
-  field({ field }) {
+  async field({ field, renderer }) {
     let fieldType = field.property.type;
     if (field.property instanceof ConstrainedReferenceModel) {
       fieldType = `*${fieldType}`; 
     }
-    return `${ field.propertyName } ${ fieldType }`;
+    const tags = await renderer.runFieldTagPreset(field);
+    let tagsToRender = '';
+    if(tags !== '') {
+      tagsToRender = ` \`${tags}\``;
+    }
+    return `${ field.propertyName } ${ fieldType }${ tagsToRender }`;
   },
 };

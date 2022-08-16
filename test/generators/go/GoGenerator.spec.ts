@@ -96,6 +96,41 @@ describe('GoGenerator', () => {
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot();
   });
+  test('should be able to work with multiple field tag presets', async () => {
+    const doc = {
+      $id: 'CustomStruct',
+      type: 'object',
+      properties: {
+        property: { type: 'string' },
+      },
+      additionalProperties: {
+        type: 'string'
+      }
+    };
+
+    generator = new GoGenerator({
+      presets: [
+        {
+          struct: {
+            fieldTag({ content }) {
+              return `${content}schema:"name"`;
+            },
+          }
+        },
+        {
+          struct: {
+            fieldTag({ content }) {
+              return `${content} gorm:"primary_key"`;
+            },
+          }
+        }
+      ]
+    });
+
+    const models = await generator.generate(doc);
+    expect(models).toHaveLength(1);
+    expect(models[0].result).toMatchSnapshot();
+  });
   describe('generateCompleteModels()', () => {
     test('should render models', async () => {
       const doc = {

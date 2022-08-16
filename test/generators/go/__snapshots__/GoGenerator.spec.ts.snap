@@ -62,6 +62,14 @@ type OtherModel struct {
 }"
 `;
 
+exports[`GoGenerator should be able to work with multiple field tag presets 1`] = `
+"// CustomStruct represents a CustomStruct model.
+type CustomStruct struct {
+  Property string \`schema:\\"name\\" gorm:\\"primary_key\\"\`
+  AdditionalProperties map[string]string \`schema:\\"name\\" gorm:\\"primary_key\\"\`
+}"
+`;
+
 exports[`GoGenerator should render \`enum\` with mixed types 1`] = `
 "// Things represents an enum of Things.
 type Things uint

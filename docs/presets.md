@@ -203,7 +203,7 @@ There are no additional methods.
 | Method | Description | Additional arguments |
 |---|---|---|
 | `field` | A method to extend rendered given field. | `fieldName` as a name of a given field, `field` object as a [`CommonModel`](../src/models/CommonModel.ts) instance. |
-
+| `fieldTag` | A function to add tags to a field. It is called by the `field` hook. | `ConstrainedObjectPropertyModel` |
 
 ### C#
 

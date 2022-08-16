@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`JSON preset should render serialize and deserialize code 1`] = `
+"// Test represents a Test model.
+type Test struct {
+  StringProp string \`json:\\"string prop,omitempty\\"\`
+  NumberProp float64 \`json:\\"numberProp,omitempty\\"\`
+  EnumProp *EnumTest \`json:\\"enumProp,omitempty\\"\`
+  ObjectProp *NestedTest \`json:\\"objectProp,omitempty\\"\`
+  AdditionalProperties map[string]string \`json:\\"additionalProperties,omitempty\\"\`
+}"
+`;
+
+exports[`JSON preset should render serialize and deserialize code 2`] = `
+"// EnumTest represents an enum of EnumTest.
+type EnumTest uint
+
+const (
+  EnumTestSomeSpaceEnumSpaceString EnumTest = iota
+  EnumTestTrue
+  EnumTestCurlyleftQuotationTestQuotationColonQuotationTestQuotationCurlyright
+  EnumTestNumber_2
+)
+
+// Value returns the value of the enum.
+func (op EnumTest) Value() any {
+	if op >= EnumTest(len(EnumTestValues)) {
+		return nil
+	}
+	return EnumTestValues[op]
+}
+
+var EnumTestValues = []any{\\"Some enum String\\",true,{\\"test\\":\\"test\\"},2}
+var ValuesToEnumTest = map[any]EnumTest{
+  EnumTestValues[EnumTestSomeSpaceEnumSpaceString]: EnumTestSomeSpaceEnumSpaceString,
+  EnumTestValues[EnumTestTrue]: EnumTestTrue,
+  EnumTestValues[EnumTestCurlyleftQuotationTestQuotationColonQuotationTestQuotationCurlyright]: EnumTestCurlyleftQuotationTestQuotationColonQuotationTestQuotationCurlyright,
+  EnumTestValues[EnumTestNumber_2]: EnumTestNumber_2,
+}
+"
+`;
+
+exports[`JSON preset should render serialize and deserialize code 3`] = `
+"// NestedTest represents a NestedTest model.
+type NestedTest struct {
+  StringProp string \`json:\\"stringProp,omitempty\\"\`
+  AdditionalProperties map[string]interface{} \`json:\\"additionalProperties,omitempty\\"\`
+}"
+`;

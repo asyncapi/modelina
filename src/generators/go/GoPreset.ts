@@ -10,6 +10,7 @@ export interface FieldArgs {
 
 export interface StructPreset<R extends AbstractRenderer, O> extends CommonPreset<R, O, ConstrainedObjectModel> {
   field?: (args: PresetArgs<R, O, ConstrainedObjectModel> & FieldArgs) => Promise<string> | string;
+  fieldTag?: (args: PresetArgs<R, O, ConstrainedObjectModel> & FieldArgs) => Promise<string> | string;
 }
 export type StructPresetType<O> = StructPreset<StructRenderer, O>;
 export type EnumPresetType<O> = EnumPreset<EnumRenderer, O>;
