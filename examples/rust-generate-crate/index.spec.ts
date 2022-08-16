@@ -10,8 +10,5 @@ describe('Should be able to render Rust Models', () => {
     expect(spy.mock.calls[0]).toMatchSnapshot();
     expect(spy.mock.calls[1]).toMatchSnapshot();
     expect(spy.mock.calls[2]).toMatchSnapshot();
-    expect(spy.mock.calls[4]).toMatchSnapshot();
-    expect(spy.mock.calls[5]).toMatchSnapshot();
-    expect(spy.mock.calls[6]).toMatchSnapshot();
   });
 });
