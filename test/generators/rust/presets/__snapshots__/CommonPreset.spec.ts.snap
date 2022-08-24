@@ -1,0 +1,286 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Default implementation of integer type 1`] = `
+"// Address represents a Address model.
+#[derive(Clone, Debug, Deserialize, Eq, Ord, PartialEq, PartialOrd, Serialize)]
+pub struct Address {
+    #[serde(rename=\\"members\\")]
+    members: Box<crate::Members>,
+    #[serde(rename=\\"optional_members\\", skip_serializing_if = \\"Option::is_none\\")]
+    optional_members: Option<Box<crate::OptionalMembers>>,
+    #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
+    additional_properties: Option<std::collections::HashMap<String, String>>,
+}
+
+impl Address {
+    pub fn new(members: Members, optional_members: Option<crate::OptionalMembers>, additional_properties: Option<std::collections::HashMap<String, String>>) -> Address {
+        Address {
+        members,
+        optional_members: optional_members.map(Box::new),
+        additional_properties,
+        }
+    }
+}
+"
+`;
+
+exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Default implementation of integer type 2`] = `
+"// Members represents a union of types: String, f64, bool
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+pub enum Members {
+    #[serde(rename=\\"Members0\\")]
+    Members0(String),
+    #[serde(rename=\\"Members1\\")]
+    Members1(f64),
+    #[serde(rename=\\"Members2\\")]
+    Members2(bool),
+}
+
+"
+`;
+
+exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Default implementation of integer type 3`] = `
+"// OptionalMembers represents a union of types: String, f64, bool
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+pub enum OptionalMembers {
+    #[serde(rename=\\"OptionalMembers0\\")]
+    OptionalMembers0(String),
+    #[serde(rename=\\"OptionalMembers1\\")]
+    OptionalMembers1(f64),
+    #[serde(rename=\\"OptionalMembers2\\")]
+    OptionalMembers2(bool),
+}
+
+"
+`;
+
+exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Default implementation of string type 1`] = `
+"// Address represents a Address model.
+#[derive(Clone, Debug, Deserialize, Eq, Ord, PartialEq, PartialOrd, Serialize)]
+pub struct Address {
+    #[serde(rename=\\"members\\")]
+    members: Box<crate::Members>,
+    #[serde(rename=\\"optional_members\\", skip_serializing_if = \\"Option::is_none\\")]
+    optional_members: Option<Box<crate::OptionalMembers>>,
+    #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
+    additional_properties: Option<std::collections::HashMap<String, String>>,
+}
+
+impl Address {
+    pub fn new(members: Members, optional_members: Option<crate::OptionalMembers>, additional_properties: Option<std::collections::HashMap<String, String>>) -> Address {
+        Address {
+        members,
+        optional_members: optional_members.map(Box::new),
+        additional_properties,
+        }
+    }
+}
+"
+`;
+
+exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Default implementation of string type 2`] = `
+"// Members represents a union of types: String, f64, bool
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+pub enum Members {
+    #[serde(rename=\\"Members0\\")]
+    Members0(String),
+    #[serde(rename=\\"Members1\\")]
+    Members1(f64),
+    #[serde(rename=\\"Members2\\")]
+    Members2(bool),
+}
+
+"
+`;
+
+exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Default implementation of string type 3`] = `
+"// OptionalMembers represents a union of types: String, f64, bool
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+pub enum OptionalMembers {
+    #[serde(rename=\\"OptionalMembers0\\")]
+    OptionalMembers0(String),
+    #[serde(rename=\\"OptionalMembers1\\")]
+    OptionalMembers1(f64),
+    #[serde(rename=\\"OptionalMembers2\\")]
+    OptionalMembers2(bool),
+}
+
+"
+`;
+
+exports[`RUST_COMMON_PRESET Enum should render \`enum\` with mixed types (union type) and Default implementation 1`] = `
+"// Things represents a Things model.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+pub enum Things {
+    #[serde(rename=\\"Texas\\")]
+    Texas,
+    #[serde(rename=\\"1\\")]
+    Number_1,
+    #[serde(rename=\\"1\\")]
+    ReservedNumber_1,
+    #[serde(rename=\\"false\\")]
+    ReservedFalse,
+    #[serde(flatten)]
+    CurlyleftQuotationTestQuotationColonQuotationTestQuotationCurlyright(HashMap<String, serde_json::Value>),
+}
+impl Default for Things {
+    fn default() -> Things {
+        Things::Texas
+    }
+}"
+`;
+
+exports[`RUST_COMMON_PRESET Enum should render \`enum\` without Default implementation 1`] = `
+"// Things represents a Things model.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+pub enum Things {
+    #[serde(rename=\\"Texas\\")]
+    Texas,
+    #[serde(rename=\\"1\\")]
+    Number_1,
+    #[serde(rename=\\"1\\")]
+    ReservedNumber_1,
+    #[serde(rename=\\"false\\")]
+    ReservedFalse,
+    #[serde(flatten)]
+    CurlyleftQuotationTestQuotationColonQuotationTestQuotationCurlyright(HashMap<String, serde_json::Value>),
+}
+"
+`;
+
+exports[`RUST_COMMON_PRESET Enum should render enums with translated special characters 1`] = `
+"// States represents a States model.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+pub enum States {
+    #[serde(rename=\\"test+\\")]
+    TestPlus,
+    #[serde(rename=\\"$test\\")]
+    DollarTest,
+    #[serde(rename=\\"test-\\")]
+    TestMinus,
+    #[serde(rename=\\"test?!\\")]
+    TestQuestionExclamation,
+    #[serde(rename=\\"*test\\")]
+    AsteriskTest,
+}
+impl Default for States {
+    fn default() -> States {
+        States::TestPlus
+    }
+}"
+`;
+
+exports[`RUST_COMMON_PRESET Enum should render implement Default for \`enum (default provided) 1`] = `
+"// CustomEnum represents a CustomEnum model.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+pub enum CustomEnum {
+    #[serde(rename=\\"Texas\\")]
+    Texas,
+    #[serde(rename=\\"Alabama\\")]
+    Alabama,
+    #[serde(rename=\\"California\\")]
+    California,
+}
+impl Default for CustomEnum {
+    fn default() -> CustomEnum {
+        CustomEnum::Texas
+    }
+}"
+`;
+
+exports[`RUST_COMMON_PRESET Struct & Complete Models should render \`struct\` type with all implementations 1`] = `
+"// Address represents a Address model.
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+pub struct Address {
+    #[serde(rename=\\"street_name\\")]
+    street_name: String,
+    #[serde(rename=\\"city\\")]
+    city: String,
+    #[serde(rename=\\"state\\")]
+    state: String,
+    #[serde(rename=\\"house_number\\")]
+    house_number: f64,
+    #[serde(rename=\\"marriage\\", skip_serializing_if = \\"Option::is_none\\")]
+    marriage: Option<bool>,
+    #[serde(rename=\\"members\\", skip_serializing_if = \\"Option::is_none\\")]
+    members: Option<Box<crate::Members>>,
+    #[serde(rename=\\"tuple_type\\", skip_serializing_if = \\"Option::is_none\\")]
+    tuple_type: Option<Box<crate::TupleType>>,
+    #[serde(rename=\\"array_type\\")]
+    array_type: Vec<String>,
+    #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
+    additional_properties: Option<std::collections::HashMap<String, String>>,
+}
+
+impl Address {
+    pub fn new(street_name: String, city: String, state: String, house_number: f64, marriage: Option<bool>, members: Option<crate::Members>, tuple_type: Option<crate::TupleType>, array_type: Vec<String>, additional_properties: Option<std::collections::HashMap<String, String>>) -> Address {
+        Address {
+        street_name,
+        city,
+        state,
+        house_number,
+        marriage,
+        members: members.map(Box::new),
+        tuple_type: tuple_type.map(Box::new),
+        array_type,
+        additional_properties,
+        }
+    }
+}
+"
+`;
+
+exports[`RUST_COMMON_PRESET Struct & Complete Models should render \`struct\` type with all implementations 2`] = `
+"// Members represents a union of types: String, f64, bool
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+pub enum Members {
+    #[serde(rename=\\"Members0\\")]
+    Members0(String),
+    #[serde(rename=\\"Members1\\")]
+    Members1(f64),
+    #[serde(rename=\\"Members2\\")]
+    Members2(bool),
+}
+
+"
+`;
+
+exports[`RUST_COMMON_PRESET Struct & Complete Models should render \`struct\` type with all implementations 3`] = `
+"// TupleType represents a TupleType model.
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+pub struct TupleType(String, f64);
+
+impl TupleType {
+    pub fn new(value_0: String, value_1: f64) -> TupleType {
+        TupleType(value_0, value_1)
+    }
+}
+
+"
+`;
+
+exports[`RUST_COMMON_PRESET Struct & Complete Models should render \`struct\` without Default or new() implementation 1`] = `
+"// Address represents a Address model.
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+pub struct Address {
+    #[serde(rename=\\"street_name\\")]
+    street_name: String,
+    #[serde(rename=\\"city\\")]
+    city: String,
+    #[serde(rename=\\"state\\")]
+    state: String,
+    #[serde(rename=\\"house_number\\")]
+    house_number: f64,
+    #[serde(rename=\\"marriage\\", skip_serializing_if = \\"Option::is_none\\")]
+    marriage: Option<bool>,
+    #[serde(rename=\\"members\\", skip_serializing_if = \\"Option::is_none\\")]
+    members: Option<Box<crate::Members>>,
+    #[serde(rename=\\"tuple_type\\", skip_serializing_if = \\"Option::is_none\\")]
+    tuple_type: Option<Box<crate::TupleType>>,
+    #[serde(rename=\\"array_type\\")]
+    array_type: Vec<String>,
+    #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
+    additional_properties: Option<std::collections::HashMap<String, String>>,
+}
+"
+`;

@@ -27,7 +27,7 @@ function renderMarshalProperties(model: ConstrainedObjectModel) {
   const unwrapDictionaryProperties = [];
   const normalProperties = [];
   for (const entry of propertyKeys) {
-    if (entry[1] instanceof ConstrainedDictionaryModel && entry[1].serializationType === 'unwrap') {
+    if (entry[1].property instanceof ConstrainedDictionaryModel && entry[1].property.serializationType === 'unwrap') {
       unwrapDictionaryProperties.push(entry);
     } else {
       normalProperties.push(entry);
@@ -91,7 +91,7 @@ function renderUnmarshalProperties(model: ConstrainedObjectModel) {
   const unwrapDictionaryProperties = [];
   const normalProperties = [];
   for (const entry of propertyKeys) {
-    if (entry[1] instanceof ConstrainedDictionaryModel && entry[1].serializationType === 'unwrap') {
+    if (entry[1].property instanceof ConstrainedDictionaryModel && entry[1].property.serializationType === 'unwrap') {
       unwrapDictionaryProperties.push(entry);
     } else {
       normalProperties.push(entry);
