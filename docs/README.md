@@ -55,3 +55,4 @@ Each language has its own limitations, corner cases, and features; thus, each la
 - [Java](./languages/Java.md)
 - [JavaScript](./languages/JavaScript.md)
 - [TypeScript](./languages/TypeScript.md)
+- [Rust](./languages/Rust.md)
