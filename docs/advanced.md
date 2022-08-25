@@ -74,12 +74,12 @@ In some scenarios, depending on how you stitch them together, you might need to 
 Check out this [example out for a live demonstration](../examples/indentation-type-and-size).
 
 ## Change the type mapping
-Sometimes, the default type mapping simply dont use the types you expected, or fit into your use-case. Thats why the entire mapping from [MetaModels](./processing.md#the-meta-model) to constrained types can be altered.
+Sometimes, the default type mapping simply dont use the types you expected, or fit into your use-case. Thats why the entire mapping from [MetaModels](./internal-model.md#the-meta-model) to constrained types can be altered.
 
 Check out this [example out for a live demonstration](../examples/change-type-mapping).
 
 ## Changing the constrain rules
-When moving from a [MetaModel](./processing.md#the-meta-model) to a [ConstrainedMetaModel](./processing.md#the-constrained-meta-model) it means we bind the input to a specific output. That output has specific constraints that the input MUST adhere to, [read more about this here](constraints.md).
+When moving from a [MetaModel](./internal-model.md#the-meta-model) to a [ConstrainedMetaModel](./internal-model.md#the-constrained-meta-model) it means we bind the input to a specific output. That output has specific constraints that the input MUST adhere to, [read more about this here](constraints.md).
 
 There can be multiple reasons why you want to change the default constrain rules, and therefore you can form them to your needs.
 

@@ -86,7 +86,7 @@ The TypeScript input processor expects that the typescript file and base directo
 ## Generate models from Meta models
 Sometimes, the supported inputs such as AsyncAPI and JSON Schema wont be enough for your use-case and you want to create your own data models while still utilizing the full sweep of features from the generators.
 
-Check out this [example out for a live demonstration](../examples/meta-model).
+You can do that by providing the [internal meta model](./internal-model.md#the-meta-model) as input. Check out this [example out for a live demonstration](../examples/meta-model).
 
 ## Generate models from OpenAPI documents
 
