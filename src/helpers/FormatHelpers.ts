@@ -3,7 +3,8 @@ import {
   pascalCase,
   paramCase,
   constantCase,
-  snakeCase
+  snakeCase,
+  pascalCaseTransformMerge,
 } from 'change-case';
 
 export enum IndentationTypes {
@@ -81,6 +82,16 @@ export class FormatHelpers {
    * @returns {string}
    */
   static toPascalCase = pascalCase;
+
+  /**
+   * Transform into a string of capitalized words without separators
+   * merging numbers.
+   * @param {string} value to transform
+   * @returns {string}
+   */
+  static toPascalCaseMergingNumbers(value: string): string {
+    return pascalCase(value, { transform: pascalCaseTransformMerge })
+  }
 
   /**
    * Transform into a lower cased string with dashes between words.
