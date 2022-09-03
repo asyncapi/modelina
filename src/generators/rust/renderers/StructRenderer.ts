@@ -1,6 +1,6 @@
 import { RustRenderer } from '../RustRenderer';
 import { StructPresetType } from '../RustPreset';
-import { ConstrainedObjectModel, ConstrainedObjectPropertyModel, ConstrainedReferenceModel } from '../../../models';
+import { ConstrainedObjectModel, ConstrainedObjectPropertyModel, ConstrainedReferenceModel, ConstrainedUnionModel } from '../../../models';
 import { RustOptions } from '../RustGenerator';
 
 /**
@@ -69,10 +69,9 @@ export const RUST_DEFAULT_STRUCT_PRESET: StructPresetType<RustOptions> = {
   },
   field({ field }) {
     let fieldType = field.property.type;
-    if (field.property instanceof ConstrainedReferenceModel) {
-      fieldType = `Box<crate::${fieldType}>`;
-    }
-    if (!field.required) {
+    if (!field.required && (field.property instanceof ConstrainedReferenceModel || field.property instanceof ConstrainedUnionModel)) {
+      fieldType = `Option<Box<${fieldType}>>`;
+    } else if (!field.required) {
       fieldType = `Option<${fieldType}>`;
     }
     return `${field.propertyName}: ${fieldType},`;
