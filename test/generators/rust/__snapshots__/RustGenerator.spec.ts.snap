@@ -27,9 +27,9 @@ pub enum Numbers {
 `;
 
 exports[`RustGenerator Enum should render \`enum\` with mixed types (union type) 1`] = `
-"// Things represents a Things model.
+"// Things123 represents a Things123 model.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub enum Things {
+pub enum Things123 {
     #[serde(rename=\\"Texas\\")]
     Texas,
     #[serde(rename=\\"1\\")]
