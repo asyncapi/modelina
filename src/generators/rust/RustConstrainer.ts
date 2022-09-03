@@ -41,16 +41,84 @@ export function deriveCopy(model: ConstrainedMetaModel): boolean {
   return true;
 }
 
+export function derivePartialEq(model: ConstrainedMetaModel): boolean {
+  if (model instanceof ConstrainedAnyModel) { return false; }
+
+  if (
+    // all contents implement PartialEq trait
+    model instanceof ConstrainedArrayModel ||
+    model instanceof ConstrainedEnumModel ||
+    model instanceof ConstrainedObjectModel ||
+    model instanceof ConstrainedTupleModel ||
+    model instanceof ConstrainedUnionModel ||
+    model instanceof ConstrainedDictionaryModel
+  ) { return allPartialEq(model); }
+  return true;
+}
+
 export function deriveEq(model: ConstrainedMetaModel): boolean {
+  if (!derivePartialEq(model)) { return false }
+
   if (model instanceof ConstrainedFloatModel || model instanceof ConstrainedAnyModel) { return false; } else if (
     // all contents implement Eq trait
     model instanceof ConstrainedArrayModel ||
     model instanceof ConstrainedEnumModel ||
     model instanceof ConstrainedObjectModel ||
     model instanceof ConstrainedTupleModel ||
-    model instanceof ConstrainedUnionModel
+    model instanceof ConstrainedUnionModel ||
+    model instanceof ConstrainedDictionaryModel
   ) { return allEq(model); }
   return true;
+}
+
+export function derivePartialOrd(model: ConstrainedMetaModel): boolean {
+  if (
+    model instanceof ConstrainedAnyModel ||
+    model instanceof ConstrainedDictionaryModel
+  ) { return false; } else if (
+    // all contents implement PartialOrd trait
+    model instanceof ConstrainedArrayModel ||
+    model instanceof ConstrainedEnumModel ||
+    model instanceof ConstrainedObjectModel ||
+    model instanceof ConstrainedTupleModel ||
+    model instanceof ConstrainedUnionModel
+  ) { return allPartialOrd(model); }
+  return true;
+}
+
+export function deriveOrd(model: ConstrainedMetaModel): boolean {
+  if (!derivePartialOrd(model)) { return false }
+
+  if (
+    model instanceof ConstrainedFloatModel ||
+    model instanceof ConstrainedAnyModel ||
+    model instanceof ConstrainedDictionaryModel
+  ) { return false; } else if (
+    // all contents implement Ord trait
+    model instanceof ConstrainedArrayModel ||
+    model instanceof ConstrainedEnumModel ||
+    model instanceof ConstrainedObjectModel ||
+    model instanceof ConstrainedTupleModel ||
+    model instanceof ConstrainedUnionModel
+  ) { return allOrd(model); }
+  return true;
+}
+
+export function allPartialEq(model: ConstrainedMetaModel): boolean {
+  if (model instanceof ConstrainedUnionModel) {
+    return model.union.map(derivePartialEq).every(v => v === true);
+  } else if (model instanceof ConstrainedTupleModel) {
+    return model.tuple.map(v => derivePartialEq(v.value)).every(v => v === true);
+  } else if (model instanceof ConstrainedObjectModel) {
+    return Object.values(model.properties).map(p => derivePartialEq(p.property)).every(v => v === true);
+  } else if (model instanceof ConstrainedArrayModel) {
+    return derivePartialEq(model.valueModel);
+  } else if (model instanceof ConstrainedEnumModel) {
+    return model.values.map(v => derivePartialEq(v.value)).every(v => v === true);
+  } else if (model instanceof ConstrainedDictionaryModel) {
+    return derivePartialEq(model.value);
+  }
+  return false;
 }
 
 export function allEq(model: ConstrainedMetaModel): boolean {
@@ -64,6 +132,38 @@ export function allEq(model: ConstrainedMetaModel): boolean {
     return deriveEq(model.valueModel);
   } else if (model instanceof ConstrainedEnumModel) {
     return model.values.map(v => deriveEq(v.value)).every(v => v === true);
+  } else if (model instanceof ConstrainedDictionaryModel) {
+    return deriveEq(model.value);
+  }
+  return false;
+}
+
+export function allPartialOrd(model: ConstrainedMetaModel): boolean {
+  if (model instanceof ConstrainedUnionModel) {
+    return model.union.map(derivePartialOrd).every(v => v === true);
+  } else if (model instanceof ConstrainedTupleModel) {
+    return model.tuple.map(v => derivePartialOrd(v.value)).every(v => v === true);
+  } else if (model instanceof ConstrainedObjectModel) {
+    return Object.values(model.properties).map(p => derivePartialOrd(p.property)).every(v => v === true);
+  } else if (model instanceof ConstrainedArrayModel) {
+    return derivePartialOrd(model.valueModel);
+  } else if (model instanceof ConstrainedEnumModel) {
+    return model.values.map(v => derivePartialOrd(v.value)).every(v => v === true);
+  }
+  return false;
+}
+
+export function allOrd(model: ConstrainedMetaModel): boolean {
+  if (model instanceof ConstrainedUnionModel) {
+    return model.union.map(deriveOrd).every(v => v === true);
+  } else if (model instanceof ConstrainedTupleModel) {
+    return model.tuple.map(v => deriveOrd(v.value)).every(v => v === true);
+  } else if (model instanceof ConstrainedObjectModel) {
+    return Object.values(model.properties).map(p => deriveOrd(p.property)).every(v => v === true);
+  } else if (model instanceof ConstrainedArrayModel) {
+    return deriveOrd(model.valueModel);
+  } else if (model instanceof ConstrainedEnumModel) {
+    return model.values.map(v => deriveOrd(v.value)).every(v => v === true);
   }
   return false;
 }
