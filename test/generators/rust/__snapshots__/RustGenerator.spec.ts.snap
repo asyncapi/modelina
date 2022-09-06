@@ -136,9 +136,9 @@ pub struct Address {
     #[serde(rename=\\"marriage\\", skip_serializing_if = \\"Option::is_none\\")]
     marriage: Option<bool>,
     #[serde(rename=\\"members\\", skip_serializing_if = \\"Option::is_none\\")]
-    members: Option<Box<crate::Members>>,
+    members: Option<Box<Members>>,
     #[serde(rename=\\"tuple_type\\", skip_serializing_if = \\"Option::is_none\\")]
-    tuple_type: Option<Box<crate::TupleType>>,
+    tuple_type: Option<Box<TupleType>>,
     #[serde(rename=\\"array_type\\")]
     array_type: Vec<String>,
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
@@ -149,7 +149,7 @@ pub struct Address {
 
 exports[`RustGenerator Struct & Complete Models Should render complete models 2`] = `
 "// Members represents a union of types: String, f64, bool
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 pub enum Members {
     #[serde(rename=\\"Members0\\")]
     Members0(String),
@@ -164,7 +164,7 @@ pub enum Members {
 
 exports[`RustGenerator Struct & Complete Models Should render complete models 3`] = `
 "// TupleType represents a TupleType model.
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 pub struct TupleType(String, f64);
 
 "
@@ -185,9 +185,9 @@ pub struct Address {
     #[serde(rename=\\"marriage\\", skip_serializing_if = \\"Option::is_none\\")]
     marriage: Option<bool>,
     #[serde(rename=\\"members\\", skip_serializing_if = \\"Option::is_none\\")]
-    members: Option<Box<crate::Members>>,
+    members: Option<Box<Members>>,
     #[serde(rename=\\"tuple_type\\", skip_serializing_if = \\"Option::is_none\\")]
-    tuple_type: Option<Box<crate::TupleType>>,
+    tuple_type: Option<Box<TupleType>>,
     #[serde(rename=\\"array_type\\")]
     array_type: Vec<String>,
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
@@ -198,7 +198,7 @@ pub struct Address {
 
 exports[`RustGenerator Struct & Complete Models should render \`struct\` type  2`] = `
 "// Members represents a union of types: String, f64, bool
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 pub enum Members {
     #[serde(rename=\\"Members0\\")]
     Members0(String),
@@ -213,7 +213,7 @@ pub enum Members {
 
 exports[`RustGenerator Struct & Complete Models should render \`struct\` type  3`] = `
 "// TupleType represents a TupleType model.
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 pub struct TupleType(String, f64);
 
 "

@@ -2,18 +2,18 @@
 
 exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Default implementation of integer type 1`] = `
 "// Address represents a Address model.
-#[derive(Clone, Debug, Deserialize, Eq, Ord, PartialEq, PartialOrd, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct Address {
     #[serde(rename=\\"members\\")]
-    members: Box<crate::Members>,
+    members: Members,
     #[serde(rename=\\"optional_members\\", skip_serializing_if = \\"Option::is_none\\")]
-    optional_members: Option<Box<crate::OptionalMembers>>,
+    optional_members: Option<Box<OptionalMembers>>,
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
     additional_properties: Option<std::collections::HashMap<String, String>>,
 }
 
 impl Address {
-    pub fn new(members: Members, optional_members: Option<crate::OptionalMembers>, additional_properties: Option<std::collections::HashMap<String, String>>) -> Address {
+    pub fn new(members: Members, optional_members: Option<OptionalMembers>, additional_properties: Option<std::collections::HashMap<String, String>>) -> Address {
         Address {
         members,
         optional_members: optional_members.map(Box::new),
@@ -26,7 +26,7 @@ impl Address {
 
 exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Default implementation of integer type 2`] = `
 "// Members represents a union of types: String, f64, bool
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 pub enum Members {
     #[serde(rename=\\"Members0\\")]
     Members0(String),
@@ -41,7 +41,7 @@ pub enum Members {
 
 exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Default implementation of integer type 3`] = `
 "// OptionalMembers represents a union of types: String, f64, bool
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 pub enum OptionalMembers {
     #[serde(rename=\\"OptionalMembers0\\")]
     OptionalMembers0(String),
@@ -56,18 +56,18 @@ pub enum OptionalMembers {
 
 exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Default implementation of string type 1`] = `
 "// Address represents a Address model.
-#[derive(Clone, Debug, Deserialize, Eq, Ord, PartialEq, PartialOrd, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct Address {
     #[serde(rename=\\"members\\")]
-    members: Box<crate::Members>,
+    members: Members,
     #[serde(rename=\\"optional_members\\", skip_serializing_if = \\"Option::is_none\\")]
-    optional_members: Option<Box<crate::OptionalMembers>>,
+    optional_members: Option<Box<OptionalMembers>>,
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
     additional_properties: Option<std::collections::HashMap<String, String>>,
 }
 
 impl Address {
-    pub fn new(members: Members, optional_members: Option<crate::OptionalMembers>, additional_properties: Option<std::collections::HashMap<String, String>>) -> Address {
+    pub fn new(members: Members, optional_members: Option<OptionalMembers>, additional_properties: Option<std::collections::HashMap<String, String>>) -> Address {
         Address {
         members,
         optional_members: optional_members.map(Box::new),
@@ -80,7 +80,7 @@ impl Address {
 
 exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Default implementation of string type 2`] = `
 "// Members represents a union of types: String, f64, bool
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 pub enum Members {
     #[serde(rename=\\"Members0\\")]
     Members0(String),
@@ -95,7 +95,7 @@ pub enum Members {
 
 exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Default implementation of string type 3`] = `
 "// OptionalMembers represents a union of types: String, f64, bool
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 pub enum OptionalMembers {
     #[serde(rename=\\"OptionalMembers0\\")]
     OptionalMembers0(String),
@@ -203,9 +203,9 @@ pub struct Address {
     #[serde(rename=\\"marriage\\", skip_serializing_if = \\"Option::is_none\\")]
     marriage: Option<bool>,
     #[serde(rename=\\"members\\", skip_serializing_if = \\"Option::is_none\\")]
-    members: Option<Box<crate::Members>>,
+    members: Option<Box<Members>>,
     #[serde(rename=\\"tuple_type\\", skip_serializing_if = \\"Option::is_none\\")]
-    tuple_type: Option<Box<crate::TupleType>>,
+    tuple_type: Option<Box<TupleType>>,
     #[serde(rename=\\"array_type\\")]
     array_type: Vec<String>,
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
@@ -213,7 +213,7 @@ pub struct Address {
 }
 
 impl Address {
-    pub fn new(street_name: String, city: String, state: String, house_number: f64, marriage: Option<bool>, members: Option<crate::Members>, tuple_type: Option<crate::TupleType>, array_type: Vec<String>, additional_properties: Option<std::collections::HashMap<String, String>>) -> Address {
+    pub fn new(street_name: String, city: String, state: String, house_number: f64, marriage: Option<bool>, members: Option<Members>, tuple_type: Option<TupleType>, array_type: Vec<String>, additional_properties: Option<std::collections::HashMap<String, String>>) -> Address {
         Address {
         street_name,
         city,
@@ -232,7 +232,7 @@ impl Address {
 
 exports[`RUST_COMMON_PRESET Struct & Complete Models should render \`struct\` type with all implementations 2`] = `
 "// Members represents a union of types: String, f64, bool
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 pub enum Members {
     #[serde(rename=\\"Members0\\")]
     Members0(String),
@@ -247,7 +247,7 @@ pub enum Members {
 
 exports[`RUST_COMMON_PRESET Struct & Complete Models should render \`struct\` type with all implementations 3`] = `
 "// TupleType represents a TupleType model.
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 pub struct TupleType(String, f64);
 
 impl TupleType {
@@ -274,9 +274,9 @@ pub struct Address {
     #[serde(rename=\\"marriage\\", skip_serializing_if = \\"Option::is_none\\")]
     marriage: Option<bool>,
     #[serde(rename=\\"members\\", skip_serializing_if = \\"Option::is_none\\")]
-    members: Option<Box<crate::Members>>,
+    members: Option<Box<Members>>,
     #[serde(rename=\\"tuple_type\\", skip_serializing_if = \\"Option::is_none\\")]
-    tuple_type: Option<Box<crate::TupleType>>,
+    tuple_type: Option<Box<TupleType>>,
     #[serde(rename=\\"array_type\\")]
     array_type: Vec<String>,
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]

@@ -16,19 +16,19 @@ pub struct Address {
     #[serde(rename=\\"marriage\\", skip_serializing_if = \\"Option::is_none\\")]
     marriage: Option<bool>,
     #[serde(rename=\\"members\\", skip_serializing_if = \\"Option::is_none\\")]
-    members: Option<Box<crate::Members>>,
+    members: Option<Box<Members>>,
     #[serde(rename=\\"tuple_type\\", skip_serializing_if = \\"Option::is_none\\")]
-    tuple_type: Option<Box<crate::TupleType>>,
+    tuple_type: Option<Box<TupleType>>,
     #[serde(rename=\\"array_type\\")]
     array_type: Vec<String>,
     #[serde(rename=\\"enum_type\\", skip_serializing_if = \\"Option::is_none\\")]
-    enum_type: Option<Box<crate::EnumType>>,
+    enum_type: Option<Box<EnumType>>,
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
     additional_properties: Option<std::collections::HashMap<String, String>>,
 }
 
 impl Address {
-    pub fn new(street_name: String, city: String, state: String, house_number: f64, marriage: Option<bool>, members: Option<crate::Members>, tuple_type: Option<crate::TupleType>, array_type: Vec<String>, enum_type: Option<crate::EnumType>, additional_properties: Option<std::collections::HashMap<String, String>>) -> Address {
+    pub fn new(street_name: String, city: String, state: String, house_number: f64, marriage: Option<bool>, members: Option<Members>, tuple_type: Option<TupleType>, array_type: Vec<String>, enum_type: Option<EnumType>, additional_properties: Option<std::collections::HashMap<String, String>>) -> Address {
         Address {
         street_name,
         city,
@@ -50,7 +50,7 @@ impl Address {
 exports[`Should be able to render Rust Models and should log expected output to console 2`] = `
 Array [
   "// Members represents a union of types: String, f64, bool
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 pub enum Members {
     #[serde(rename=\\"Members0\\")]
     Members0(String),
@@ -67,7 +67,7 @@ pub enum Members {
 exports[`Should be able to render Rust Models and should log expected output to console 3`] = `
 Array [
   "// TupleType represents a TupleType model.
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 pub struct TupleType(String, f64);
 
 impl TupleType {
