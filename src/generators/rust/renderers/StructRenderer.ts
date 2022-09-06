@@ -68,7 +68,9 @@ export const RUST_DEFAULT_STRUCT_PRESET: StructPresetType<RustOptions> = {
     return `#[serde(${serdeArgs.join(', ')})]`;
   },
   field({ field }) {
-    let fieldType = field.property.type;
+    let prefix = (field.property instanceof ConstrainedReferenceModel) ? 'crate::' : '';
+    let fieldType = prefix + field.property.type ;
+
     if (!field.required && (field.property instanceof ConstrainedReferenceModel || field.property instanceof ConstrainedUnionModel)) {
       fieldType = `Option<Box<${fieldType}>>`;
     } else if (!field.required) {

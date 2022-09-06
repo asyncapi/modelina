@@ -136,9 +136,9 @@ pub struct Address {
     #[serde(rename=\\"marriage\\", skip_serializing_if = \\"Option::is_none\\")]
     marriage: Option<bool>,
     #[serde(rename=\\"members\\", skip_serializing_if = \\"Option::is_none\\")]
-    members: Option<Box<Members>>,
+    members: Option<Box<crate::Members>>,
     #[serde(rename=\\"tuple_type\\", skip_serializing_if = \\"Option::is_none\\")]
-    tuple_type: Option<Box<TupleType>>,
+    tuple_type: Option<Box<crate::TupleType>>,
     #[serde(rename=\\"array_type\\")]
     array_type: Vec<String>,
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
@@ -185,9 +185,9 @@ pub struct Address {
     #[serde(rename=\\"marriage\\", skip_serializing_if = \\"Option::is_none\\")]
     marriage: Option<bool>,
     #[serde(rename=\\"members\\", skip_serializing_if = \\"Option::is_none\\")]
-    members: Option<Box<Members>>,
+    members: Option<Box<crate::Members>>,
     #[serde(rename=\\"tuple_type\\", skip_serializing_if = \\"Option::is_none\\")]
-    tuple_type: Option<Box<TupleType>>,
+    tuple_type: Option<Box<crate::TupleType>>,
     #[serde(rename=\\"array_type\\")]
     array_type: Vec<String>,
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]

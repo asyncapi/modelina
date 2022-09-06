@@ -253,7 +253,8 @@ export const RustDefaultTypeMapping: TypeMapping<RustOptions> = {
     return `${constrainedModel.name}`;
   },
   Array({ constrainedModel }): string {
-    return `Vec<${FormatHelpers.upperFirst(constrainedModel.valueModel.type)}>`;
+    let prefix = (constrainedModel.valueModel instanceof ConstrainedReferenceModel) ? 'crate::' : '';
+    return `Vec<${prefix}${FormatHelpers.upperFirst(constrainedModel.valueModel.type)}>`;
   },
   Enum({ constrainedModel }): string {
     return constrainedModel.name;
@@ -262,7 +263,9 @@ export const RustDefaultTypeMapping: TypeMapping<RustOptions> = {
     return constrainedModel.name;
   },
   Dictionary({ constrainedModel }): string {
-    return `std::collections::HashMap<${constrainedModel.key.type}, ${constrainedModel.value.type}>`;
+    let key_prefix = (constrainedModel.key instanceof ConstrainedReferenceModel) ? 'crate::' : '';
+    let value_prefix = (constrainedModel.value instanceof ConstrainedReferenceModel) ? 'crate::' : '';
+    return `std::collections::HashMap<${key_prefix}${constrainedModel.key.type}, ${value_prefix}${constrainedModel.value.type}>`;
   }
 };
 

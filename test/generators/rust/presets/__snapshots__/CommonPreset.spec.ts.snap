@@ -5,15 +5,15 @@ exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Defau
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct Address {
     #[serde(rename=\\"members\\")]
-    members: Members,
+    members: crate::Members,
     #[serde(rename=\\"optional_members\\", skip_serializing_if = \\"Option::is_none\\")]
-    optional_members: Option<Box<OptionalMembers>>,
+    optional_members: Option<Box<crate::OptionalMembers>>,
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
     additional_properties: Option<std::collections::HashMap<String, String>>,
 }
 
 impl Address {
-    pub fn new(members: Members, optional_members: Option<OptionalMembers>, additional_properties: Option<std::collections::HashMap<String, String>>) -> Address {
+    pub fn new(members: crate::Members, optional_members: Option<crate::OptionalMembers>, additional_properties: Option<std::collections::HashMap<String, String>>) -> Address {
         Address {
         members,
         optional_members: optional_members.map(Box::new),
@@ -59,15 +59,15 @@ exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Defau
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct Address {
     #[serde(rename=\\"members\\")]
-    members: Members,
+    members: crate::Members,
     #[serde(rename=\\"optional_members\\", skip_serializing_if = \\"Option::is_none\\")]
-    optional_members: Option<Box<OptionalMembers>>,
+    optional_members: Option<Box<crate::OptionalMembers>>,
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
     additional_properties: Option<std::collections::HashMap<String, String>>,
 }
 
 impl Address {
-    pub fn new(members: Members, optional_members: Option<OptionalMembers>, additional_properties: Option<std::collections::HashMap<String, String>>) -> Address {
+    pub fn new(members: crate::Members, optional_members: Option<crate::OptionalMembers>, additional_properties: Option<std::collections::HashMap<String, String>>) -> Address {
         Address {
         members,
         optional_members: optional_members.map(Box::new),
@@ -203,9 +203,9 @@ pub struct Address {
     #[serde(rename=\\"marriage\\", skip_serializing_if = \\"Option::is_none\\")]
     marriage: Option<bool>,
     #[serde(rename=\\"members\\", skip_serializing_if = \\"Option::is_none\\")]
-    members: Option<Box<Members>>,
+    members: Option<Box<crate::Members>>,
     #[serde(rename=\\"tuple_type\\", skip_serializing_if = \\"Option::is_none\\")]
-    tuple_type: Option<Box<TupleType>>,
+    tuple_type: Option<Box<crate::TupleType>>,
     #[serde(rename=\\"array_type\\")]
     array_type: Vec<String>,
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
@@ -213,7 +213,7 @@ pub struct Address {
 }
 
 impl Address {
-    pub fn new(street_name: String, city: String, state: String, house_number: f64, marriage: Option<bool>, members: Option<Members>, tuple_type: Option<TupleType>, array_type: Vec<String>, additional_properties: Option<std::collections::HashMap<String, String>>) -> Address {
+    pub fn new(street_name: String, city: String, state: String, house_number: f64, marriage: Option<bool>, members: Option<crate::Members>, tuple_type: Option<crate::TupleType>, array_type: Vec<String>, additional_properties: Option<std::collections::HashMap<String, String>>) -> Address {
         Address {
         street_name,
         city,
@@ -274,9 +274,9 @@ pub struct Address {
     #[serde(rename=\\"marriage\\", skip_serializing_if = \\"Option::is_none\\")]
     marriage: Option<bool>,
     #[serde(rename=\\"members\\", skip_serializing_if = \\"Option::is_none\\")]
-    members: Option<Box<Members>>,
+    members: Option<Box<crate::Members>>,
     #[serde(rename=\\"tuple_type\\", skip_serializing_if = \\"Option::is_none\\")]
-    tuple_type: Option<Box<TupleType>>,
+    tuple_type: Option<Box<crate::TupleType>>,
     #[serde(rename=\\"array_type\\")]
     array_type: Vec<String>,
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
