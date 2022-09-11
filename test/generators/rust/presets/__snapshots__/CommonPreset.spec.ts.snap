@@ -5,7 +5,7 @@ exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Defau
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct Address {
     #[serde(rename=\\"members\\")]
-    members: crate::Members,
+    members: Box<crate::Members>,
     #[serde(rename=\\"optional_members\\", skip_serializing_if = \\"Option::is_none\\")]
     optional_members: Option<Box<crate::OptionalMembers>>,
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
@@ -15,7 +15,7 @@ pub struct Address {
 impl Address {
     pub fn new(members: crate::Members, optional_members: Option<crate::OptionalMembers>, additional_properties: Option<std::collections::HashMap<String, String>>) -> Address {
         Address {
-        members,
+        Box::new(members),
         optional_members: optional_members.map(Box::new),
         additional_properties,
         }
@@ -59,7 +59,7 @@ exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Defau
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct Address {
     #[serde(rename=\\"members\\")]
-    members: crate::Members,
+    members: Box<crate::Members>,
     #[serde(rename=\\"optional_members\\", skip_serializing_if = \\"Option::is_none\\")]
     optional_members: Option<Box<crate::OptionalMembers>>,
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
@@ -69,7 +69,7 @@ pub struct Address {
 impl Address {
     pub fn new(members: crate::Members, optional_members: Option<crate::OptionalMembers>, additional_properties: Option<std::collections::HashMap<String, String>>) -> Address {
         Address {
-        members,
+        Box::new(members),
         optional_members: optional_members.map(Box::new),
         additional_properties,
         }

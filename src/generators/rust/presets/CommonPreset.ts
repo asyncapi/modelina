@@ -73,7 +73,11 @@ export const RUST_COMMON_PRESET: RustPreset<RustCommonPresetOptions> = {
 
           if (v.required) {
             args.push(`${v.propertyName}: ${fieldType}`);
-            fields.push(`${v.propertyName},`);
+            if (v.property instanceof ConstrainedReferenceModel) {
+              fields.push(`Box::new(${v.propertyName}),`);
+            } else {
+              fields.push(`${v.propertyName},`);
+            }
             // use map to box reference if field is optional
           } else if (!v.required && (v.property instanceof ConstrainedReferenceModel || v.property instanceof ConstrainedUnionModel)) {
             args.push(`${v.propertyName}: Option<crate::${v.property.type}>`);
