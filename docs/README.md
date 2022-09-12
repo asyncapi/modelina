@@ -13,6 +13,7 @@
 - [Generators](#generators)
 - [Presets](#presets)
 - [Interpretation of JSON Schema](#interpretation-of-json-schema)
+- [Migration](#migration)
 - [Languages](#languages)
 
 <!-- tocstop -->
