@@ -27,7 +27,7 @@ export default function App() {
 
   return (
     <div className="App" data-testid="App">
-      {models}
+      {models || 'Model generation is processed. Please wait...'}
     </div>
   );
 }
