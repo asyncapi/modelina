@@ -58,10 +58,6 @@ export class ConstrainedTupleModel extends ConstrainedMetaModel {
       }
     }
     
-    dependencyModels = dependencyModels.map((model) => {
-      return model as ConstrainedReferenceModel;
-    });
-    
     //Ensure no duplicate references
     dependencyModels = [...new Set(dependencyModels)];
     
@@ -114,10 +110,6 @@ export class ConstrainedUnionModel extends ConstrainedMetaModel {
         dependencyModels = [...dependencyModels, ...unionModel.getNearestDependencies()];
       }
     }
-    
-    dependencyModels = dependencyModels.map((model) => {
-      return model as ConstrainedReferenceModel;
-    });
     
     //Ensure no duplicate references
     dependencyModels = [...new Set(dependencyModels)];
@@ -177,10 +169,6 @@ export class ConstrainedDictionaryModel extends ConstrainedMetaModel {
       }
     }
    
-    dependencyModels = dependencyModels.map((model) => {
-      return model as ConstrainedReferenceModel;
-    });
-    
     //Ensure no duplicate references
     dependencyModels = [...new Set(dependencyModels)];
 
@@ -208,10 +196,6 @@ export class ConstrainedObjectModel extends ConstrainedMetaModel {
       }
     }
 
-    dependencyModels = dependencyModels.map((model) => {
-      return model as ConstrainedReferenceModel;
-    });
-    
     //Ensure no duplicate references
     dependencyModels = [...new Set(dependencyModels)];
 
