@@ -10,7 +10,7 @@
 
 <!-- tocstop -->
 
-## Integrate Modelina in a website
+## Integrate Modelina in a browser
 
 Integrating Modelina into websites is is one of the core features, and each framework is different, so here are some of examples:
 
