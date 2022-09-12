@@ -58,8 +58,8 @@ export class ConstrainedTupleModel extends ConstrainedMetaModel {
       }
     }
     
-    dependencyModels = dependencyModels.map((tupleModel) => {
-      return tupleModel.value = tupleModel.value as ConstrainedReferenceModel;
+    dependencyModels = dependencyModels.map((model) => {
+      return model as ConstrainedReferenceModel;
     });
     
     //Ensure no duplicate references
@@ -115,8 +115,8 @@ export class ConstrainedUnionModel extends ConstrainedMetaModel {
       }
     }
     
-    dependencyModels = dependencyModels.map((tupleModel) => {
-      return tupleModel.value = tupleModel.value as ConstrainedReferenceModel;
+    dependencyModels = dependencyModels.map((model) => {
+      return model as ConstrainedReferenceModel;
     });
     
     //Ensure no duplicate references
@@ -148,10 +148,9 @@ export class ConstrainedEnumModel extends ConstrainedMetaModel {
     ).map((enumModel) => {
       return enumModel.value as ConstrainedReferenceModel;
     });
-    //Ensure no self references
-    dependencyModels = dependencyModels.filter((referenceModel) => {
-      return referenceModel.name !== this.name;
-    });
+
+    //Ensure no duplicate references
+    dependencyModels = [...new Set(dependencyModels)];
     return dependencyModels;
   }
 }
@@ -178,8 +177,8 @@ export class ConstrainedDictionaryModel extends ConstrainedMetaModel {
       }
     }
    
-    dependencyModels = dependencyModels.map((tupleModel) => {
-      return tupleModel.value = tupleModel.value as ConstrainedReferenceModel;
+    dependencyModels = dependencyModels.map((model) => {
+      return model as ConstrainedReferenceModel;
     });
     
     //Ensure no duplicate references
@@ -209,8 +208,8 @@ export class ConstrainedObjectModel extends ConstrainedMetaModel {
       }
     }
 
-    dependencyModels = dependencyModels.map((tupleModel) => {
-      return tupleModel.value = tupleModel.value as ConstrainedReferenceModel;
+    dependencyModels = dependencyModels.map((model) => {
+      return model as ConstrainedReferenceModel;
     });
     
     //Ensure no duplicate references

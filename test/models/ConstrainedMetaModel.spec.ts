@@ -122,14 +122,6 @@ describe('ConstrainedMetaModel', () => {
       const referenceTupleModel = new TupleValueModel(0, referenceModel);
       const reference2TupleModel = new TupleValueModel(1, referenceModel);
       const rawModel = new TupleModel('test', undefined, [referenceTupleModel, reference2TupleModel]);
-      const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
-        metaModel: rawModel,
-        constrainedName: '',
-        options: undefined
-      }) as ConstrainedTupleModel;
-      const dependencies = model.getNearestDependencies();
-      expect(dependencies).toHaveLength(1);
-      expect(dependencies[0]).toEqual(model.tuple[0].value);
 
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
