@@ -1,4 +1,3 @@
-import { CommonModel } from '../models';
 import { ConstrainedAnyModel, ConstrainedBooleanModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedMetaModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedArrayModel, ConstrainedUnionModel, ConstrainedEnumModel, ConstrainedDictionaryModel } from '../models/ConstrainedMetaModel';
 
 export type TypeContext<T extends ConstrainedMetaModel, Options> = {
