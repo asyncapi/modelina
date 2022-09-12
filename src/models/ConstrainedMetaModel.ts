@@ -48,20 +48,19 @@ export class ConstrainedTupleModel extends ConstrainedMetaModel {
   }
 
   getNearestDependencies(): ConstrainedMetaModel[] {
-    let dependencyModels = Object.values(this.tuple).filter(
-      (tupleModel) => {
-        return tupleModel.value instanceof ConstrainedReferenceModel;
+    let dependencyModels: ConstrainedMetaModel[] = [];
+    for (const tupleModel of Object.values(this.tuple)) {
+      if (tupleModel.value instanceof ConstrainedReferenceModel) {
+        dependencyModels.push(tupleModel.value);
+      } else {
+        //Lets check the non-reference model for dependencies
+        dependencyModels = [...dependencyModels, ...tupleModel.value.getNearestDependencies()];
       }
-    ).map((tupleModel) => {
-      return tupleModel.value = tupleModel.value as ConstrainedReferenceModel;
-    });
+    }
+    
     //Ensure no duplicate references
     dependencyModels = [...new Set(dependencyModels)];
-
-    //Ensure no self references
-    dependencyModels = dependencyModels.filter((referenceModel) => {
-      return referenceModel.name !== this.name;
-    });
+    
     return dependencyModels;
   }
 }
@@ -83,9 +82,11 @@ export class ConstrainedArrayModel extends ConstrainedMetaModel {
   }
 
   getNearestDependencies(): ConstrainedMetaModel[] {
-    if (this.valueModel instanceof ConstrainedReferenceModel &&
-      this.valueModel.name !== this.name) {
-      return [this.valueModel];
+    if (this.valueModel.name !== this.name) {
+      if (this.valueModel instanceof ConstrainedReferenceModel) {
+        return [this.valueModel];
+      } 
+      return this.valueModel.getNearestDependencies();
     }
     return [];
   }
@@ -99,21 +100,20 @@ export class ConstrainedUnionModel extends ConstrainedMetaModel {
     super(name, originalInput, type);
   }
 
-  getNearestDependencies(): ConstrainedReferenceModel[] {
-    let dependencyModels = Object.values(this.union).filter(
-      (unionModel) => {
-        return unionModel instanceof ConstrainedReferenceModel;
+  getNearestDependencies(): ConstrainedMetaModel[] {
+    let dependencyModels: ConstrainedMetaModel[] = [];
+    for (const unionModel of Object.values(this.union)) {
+      if (unionModel instanceof ConstrainedReferenceModel) {
+        dependencyModels.push(unionModel);
+      } else {
+        //Lets check the non-reference model for dependencies
+        dependencyModels = [...dependencyModels, ...unionModel.getNearestDependencies()];
       }
-    ).map((unionModel) => {
-      return unionModel as ConstrainedReferenceModel;
-    });
+    }
+    
     //Ensure no duplicate references
     dependencyModels = [...new Set(dependencyModels)];
 
-    //Ensure no self references
-    dependencyModels = dependencyModels.filter((referenceModel) => {
-      return referenceModel.name !== this.name;
-    });
     return dependencyModels;
   }
 }
@@ -131,6 +131,20 @@ export class ConstrainedEnumModel extends ConstrainedMetaModel {
     public values: ConstrainedEnumValueModel[]) {
     super(name, originalInput, type);
   }
+
+  getNearestDependencies(): ConstrainedMetaModel[] {
+    let dependencyModels = Object.values(this.values).filter(
+      (enumModel) => {
+        return enumModel.value instanceof ConstrainedReferenceModel;
+      }
+    ).map((enumModel) => {
+      return enumModel.value as ConstrainedReferenceModel;
+    });
+
+    //Ensure no duplicate references
+    dependencyModels = [...new Set(dependencyModels)];
+    return dependencyModels;
+  }
 }
 export class ConstrainedDictionaryModel extends ConstrainedMetaModel {
   constructor(
@@ -145,20 +159,19 @@ export class ConstrainedDictionaryModel extends ConstrainedMetaModel {
 
   getNearestDependencies(): ConstrainedMetaModel[] {
     const dependencies = [this.key, this.value];
-    let dependencyModels = dependencies.filter(
-      (model) => {
-        return model instanceof ConstrainedReferenceModel;
+    let dependencyModels: ConstrainedMetaModel[] = [];
+    for (const model of dependencies) {
+      if (model instanceof ConstrainedReferenceModel) {
+        dependencyModels.push(model);
+      } else {
+        //Lets check the non-reference model for dependencies
+        dependencyModels = [...dependencyModels, ...model.getNearestDependencies()];
       }
-    ).map((model) => {
-      return model as ConstrainedReferenceModel;
-    });
+    }
+   
     //Ensure no duplicate references
     dependencyModels = [...new Set(dependencyModels)];
 
-    //Ensure no self references
-    dependencyModels = dependencyModels.filter((referenceModel) => {
-      return referenceModel.name !== this.name;
-    });
     return dependencyModels;
   }
 }
@@ -172,21 +185,20 @@ export class ConstrainedObjectModel extends ConstrainedMetaModel {
     super(name, originalInput, type);
   }
 
-  getNearestDependencies(): ConstrainedReferenceModel[] {
-    let dependencyModels = Object.values(this.properties).filter(
-      (modelProperty) => {
-        return modelProperty.property instanceof ConstrainedReferenceModel;
+  getNearestDependencies(): ConstrainedMetaModel[] {
+    let dependencyModels: ConstrainedMetaModel[] = [];
+    for (const modelProperty of Object.values(this.properties)) {
+      if (modelProperty.property instanceof ConstrainedReferenceModel) {
+        dependencyModels.push(modelProperty.property);
+      } else {
+        //Lets check the non-reference model for dependencies
+        dependencyModels = [...dependencyModels, ...modelProperty.property.getNearestDependencies()];
       }
-    ).map((modelProperty) => {
-      return modelProperty.property as ConstrainedReferenceModel;
-    });
+    }
+
     //Ensure no duplicate references
     dependencyModels = [...new Set(dependencyModels)];
 
-    //Ensure no self references
-    dependencyModels = dependencyModels.filter((referenceModel) => {
-      return referenceModel.name !== this.name;
-    });
     return dependencyModels;
   }
   
