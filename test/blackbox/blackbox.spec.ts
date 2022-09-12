@@ -7,8 +7,8 @@
 
 import * as path from 'path';
 import * as fs from 'fs';
-import { GoFileGenerator, CSharpFileGenerator, JavaFileGenerator, JAVA_COMMON_PRESET, TypeScriptFileGenerator, JavaScriptFileGenerator } from '../../src';
-import { execCommand, generateModels, renderModels, renderModelsToSeparateFiles } from './utils/Utils';
+import { RustFileGenerator, defaultRustRenderCompleteModelOptions, RustPackageFeatures, RustRenderCompleteModelOptions, GoFileGenerator, CSharpFileGenerator, JavaFileGenerator, JAVA_COMMON_PRESET, TypeScriptFileGenerator, JavaScriptFileGenerator } from '../../src';
+import { execCommand } from './utils/Utils';
 
 /**
  * Read all the files in the folder, and return the appropriate Jest `each` entries.
@@ -17,8 +17,8 @@ import { execCommand, generateModels, renderModels, renderModelsToSeparateFiles 
 function readFilesInFolder(folder: string) {
   const fullPath = path.resolve(__dirname, `./docs/${folder}`);
   return fs.readdirSync(fullPath).map(
-    (file) => { 
-      return { file: `./docs/${folder}/${file}`, outputDirectory: `./output/${folder}/${path.parse(file).name}`};
+    (file) => {
+      return { file: `./docs/${folder}/${file}`, outputDirectory: `./output/${folder}/${path.parse(file).name}` };
     }
   );
 }
@@ -39,13 +39,16 @@ const filesToTest = [
   // ...AsyncAPIV2_2Files,
   // ...AsyncAPIV2_3Files,
   // ...AsyncAPIV2_4Files,
-  ...jsonSchemaDraft4Files.filter(({file}) => {
+  ...jsonSchemaDraft4Files.filter(({ file }) => {
     // Too large to process https://github.com/asyncapi/modelina/issues/822
     return !file.includes('aws-cloudformation.json');
-  }).filter(({file}) => {
+  }).filter(({ file }) => {
     // Related to https://github.com/asyncapi/modelina/issues/389
     return !file.includes('jenkins-config.json');
   }).filter(({file}) => {
+    // Related to https://github.com/asyncapi/modelina/issues/840
+    // Related to https://github.com/asyncapi/modelina/issues/841
+  }).filter(({ file }) => {
     // Related to https://github.com/asyncapi/modelina/issues/825
     return !file.includes('circleci-config.json');
   }),
@@ -55,23 +58,23 @@ const filesToTest = [
 
 // eslint-disable-next-line no-console
 console.log('This is gonna take some time, Stay Awhile and Listen');
-describe.each(filesToTest)('Should be able to generate with inputs', ({file, outputDirectory}) => {
+describe.each(filesToTest)('Should be able to generate with inputs', ({ file, outputDirectory }) => {
   jest.setTimeout(1000000);
   const fileToGenerateFor = path.resolve(__dirname, file);
   const outputDirectoryPath = path.resolve(__dirname, outputDirectory);
   beforeAll(async () => {
     if (fs.existsSync(outputDirectoryPath)) {
-      await fs.rmSync(outputDirectoryPath, {recursive: true});
+      await fs.rmSync(outputDirectoryPath, { recursive: true });
     }
   });
   describe(file, () => {
     const javaGeneratorOptions = [
-      { 
-        generatorOption: { },
+      {
+        generatorOption: {},
         description: 'default generator',
         renderOutputPath: path.resolve(outputDirectoryPath, './java/class/default')
       },
-      { 
+      {
         generatorOption: {
           presets: [
             JAVA_COMMON_PRESET
@@ -80,15 +83,15 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
         description: 'all common presets',
         renderOutputPath: path.resolve(outputDirectoryPath, './java/class/commonpreset')
       }
-    ]; 
-    describe.each(javaGeneratorOptions)('should be able to generate and compile Java', ({generatorOption, description, renderOutputPath}) => {
+    ];
+    describe.each(javaGeneratorOptions)('should be able to generate and compile Java', ({ generatorOption, description, renderOutputPath }) => {
       test('class', async () => {
         const generator = new JavaFileGenerator(generatorOption);
         const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
         const input = JSON.parse(String(inputFileContent));
         const dependencyPath = path.resolve(__dirname, './dependencies/java/*');
 
-        const generatedModels = await generator.generateToFiles(input, renderOutputPath, {packageName: 'TestPackageName'});
+        const generatedModels = await generator.generateToFiles(input, renderOutputPath, { packageName: 'TestPackageName' });
         expect(generatedModels).not.toHaveLength(0);
 
         const compileCommand = `javac  -cp ${dependencyPath} ${path.resolve(renderOutputPath, '*.java')}`;
@@ -101,10 +104,10 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
         const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
         const input = JSON.parse(String(inputFileContent));
         const renderOutputPath = path.resolve(outputDirectoryPath, './csharp');
-        
-        const generatedModels = await generator.generateToFiles(input, renderOutputPath, {namespace: 'TestNamespace'});
+
+        const generatedModels = await generator.generateToFiles(input, renderOutputPath, { namespace: 'TestNamespace' });
         expect(generatedModels).not.toHaveLength(0);
-        
+
         const compileCommand = `csc /target:library /out:${path.resolve(renderOutputPath, './compiled.dll')} ${path.resolve(renderOutputPath, '*.cs')}`;
         await execCommand(compileCommand);
       });
@@ -112,7 +115,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
 
     describe('should be able to generate and transpile TS', () => {
       test('class', async () => {
-        const generator = new TypeScriptFileGenerator({modelType: 'class'});
+        const generator = new TypeScriptFileGenerator({ modelType: 'class' });
         const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
         const input = JSON.parse(String(inputFileContent));
         const renderOutputPath = path.resolve(outputDirectoryPath, './ts/class');
@@ -121,11 +124,11 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
         expect(generatedModels).not.toHaveLength(0);
 
         const transpileCommand = `tsc --downlevelIteration -t es5 --baseUrl ${renderOutputPath}`;
-        await execCommand(transpileCommand); 
+        await execCommand(transpileCommand);
       });
 
       test('interface', async () => {
-        const generator = new TypeScriptFileGenerator({modelType: 'interface'});
+        const generator = new TypeScriptFileGenerator({ modelType: 'interface' });
         const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
         const input = JSON.parse(String(inputFileContent));
         const renderOutputPath = path.resolve(outputDirectoryPath, './ts/interface');
@@ -145,13 +148,13 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
         const input = JSON.parse(String(inputFileContent));
         const renderOutputPath = path.resolve(outputDirectoryPath, './js/class');
 
-        const generatedModels = await generator.generateToFiles(input, renderOutputPath, {moduleSystem: 'CJS'});
+        const generatedModels = await generator.generateToFiles(input, renderOutputPath, { moduleSystem: 'CJS' });
         expect(generatedModels).not.toHaveLength(0);
 
         const files = fs.readdirSync(renderOutputPath);
         for (const file of files) {
           const transpileAndRunCommand = `node --check ${path.resolve(renderOutputPath, file)}`;
-          await execCommand(transpileAndRunCommand); 
+          await execCommand(transpileAndRunCommand);
         }
       });
     });
@@ -163,10 +166,41 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({file, out
         const input = JSON.parse(String(inputFileContent));
         const renderOutputPath = path.resolve(outputDirectoryPath, './go/struct/');
 
-        const generatedModels = await generator.generateToFiles(input, renderOutputPath, {packageName: 'test_package_name'});
+        const generatedModels = await generator.generateToFiles(input, renderOutputPath, { packageName: 'test_package_name' });
         expect(generatedModels).not.toHaveLength(0);
 
         const compileCommand = `gofmt ${renderOutputPath}`;
+        await execCommand(compileCommand);
+      });
+    });
+    describe('should be able to generate Rust', () => {
+      test('struct with serde_json', async () => {
+        const generator = new RustFileGenerator();
+        const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
+        const input = JSON.parse(String(inputFileContent));
+        const renderOutputPath = path.resolve(outputDirectoryPath, './rust/struct/');
+        const options = {
+          ...defaultRustRenderCompleteModelOptions,
+          supportFiles: true, // generate Cargo.toml and lib.rs
+          package: {
+            packageName: 'asyncapi-rs-example',
+            packageVersion: '1.0.0',
+            // set authors, homepage, repository, and license
+            authors: ['AsyncAPI Rust Champions'],
+            homepage: 'https://www.asyncapi.com/tools/modelina',
+            repository: 'https://github.com/asyncapi/modelina',
+            license: 'Apache-2.0',
+            description: 'Rust models generated by AsyncAPI Modelina',
+            // support 2018 editions and up
+            edition: '2018',
+            // enable serde_json
+            packageFeatures: [RustPackageFeatures.json] as RustPackageFeatures[]
+          }
+        } as RustRenderCompleteModelOptions;
+        const generatedModels = await generator.generateToPackage(input, renderOutputPath, options);
+        expect(generatedModels).not.toHaveLength(0);
+
+        const compileCommand = `cargo build ${renderOutputPath}`;
         await execCommand(compileCommand);
       });
     });

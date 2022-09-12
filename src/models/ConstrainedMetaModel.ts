@@ -57,10 +57,14 @@ export class ConstrainedTupleModel extends ConstrainedMetaModel {
         dependencyModels = [...dependencyModels, ...tupleModel.value.getNearestDependencies()];
       }
     }
-    //Ensure no self references
-    dependencyModels = dependencyModels.filter((referenceModel) => {
-      return referenceModel.name !== this.name;
+    
+    dependencyModels = dependencyModels.map((tupleModel) => {
+      return tupleModel.value = tupleModel.value as ConstrainedReferenceModel;
     });
+    
+    //Ensure no duplicate references
+    dependencyModels = [...new Set(dependencyModels)];
+    
     return dependencyModels;
   }
 }
@@ -110,11 +114,14 @@ export class ConstrainedUnionModel extends ConstrainedMetaModel {
         dependencyModels = [...dependencyModels, ...unionModel.getNearestDependencies()];
       }
     }
-
-    //Ensure no self references
-    dependencyModels = dependencyModels.filter((referenceModel) => {
-      return referenceModel.name !== this.name;
+    
+    dependencyModels = dependencyModels.map((tupleModel) => {
+      return tupleModel.value = tupleModel.value as ConstrainedReferenceModel;
     });
+    
+    //Ensure no duplicate references
+    dependencyModels = [...new Set(dependencyModels)];
+
     return dependencyModels;
   }
 }
@@ -170,10 +177,14 @@ export class ConstrainedDictionaryModel extends ConstrainedMetaModel {
         dependencyModels = [...dependencyModels, ...model.getNearestDependencies()];
       }
     }
-    //Ensure no self references
-    dependencyModels = dependencyModels.filter((referenceModel) => {
-      return referenceModel.name !== this.name;
+   
+    dependencyModels = dependencyModels.map((tupleModel) => {
+      return tupleModel.value = tupleModel.value as ConstrainedReferenceModel;
     });
+    
+    //Ensure no duplicate references
+    dependencyModels = [...new Set(dependencyModels)];
+
     return dependencyModels;
   }
 }
@@ -197,10 +208,14 @@ export class ConstrainedObjectModel extends ConstrainedMetaModel {
         dependencyModels = [...dependencyModels, ...modelProperty.property.getNearestDependencies()];
       }
     }
-    //Ensure no self references
-    dependencyModels = dependencyModels.filter((referenceModel) => {
-      return referenceModel.name !== this.name;
+
+    dependencyModels = dependencyModels.map((tupleModel) => {
+      return tupleModel.value = tupleModel.value as ConstrainedReferenceModel;
     });
+    
+    //Ensure no duplicate references
+    dependencyModels = [...new Set(dependencyModels)];
+
     return dependencyModels;
   }
   

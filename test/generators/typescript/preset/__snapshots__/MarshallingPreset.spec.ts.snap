@@ -42,10 +42,13 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
     if(this.numberProp !== undefined) {
       json += \`\\"numberProp\\": \${typeof this.numberProp === 'number' || typeof this.numberProp === 'boolean' ? this.numberProp : JSON.stringify(this.numberProp)},\`; 
     }
-    if(this.additionalProperties !== undefined) {
-      json += \`\\"additionalProperties\\": \${typeof this.additionalProperties === 'number' || typeof this.additionalProperties === 'boolean' ? this.additionalProperties : JSON.stringify(this.additionalProperties)},\`; 
+    if(this.additionalProperties !== undefined) { 
+    for (const [key, value] of this.additionalProperties.entries()) {
+      //Only unwrap those who are not already a property in the JSON object
+      if(Object.keys(this).includes(String(key))) continue;
+        json += \`\\"\${key}\\": \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;
+      }
     }
-
 
     //Remove potential last comma 
     return \`\${json.charAt(json.length-1) === ',' ? json.slice(0, json.length-1) : json}}\`;
@@ -64,11 +67,11 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
     if (obj[\\"numberProp\\"] !== undefined) {
       instance.numberProp = obj[\\"numberProp\\"];
     }
-    if (obj[\\"additionalProperties\\"] !== undefined) {
-      instance.additionalProperties = obj[\\"additionalProperties\\"];
-    }
 
-
+    if (instance.additionalProperties === undefined) {instance.additionalProperties = new Map();}
+      for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"stringProp\\",\\"enumProp\\",\\"numberProp\\",\\"additionalProperties\\"].includes(key);}))) {
+        instance.additionalProperties.set(key, value as any);
+      }
 
     return instance;
   }
@@ -108,10 +111,13 @@ exports[`Marshalling preset should render un/marshal code 3`] = `
     if(this.stringProp !== undefined) {
       json += \`\\"stringProp\\": \${typeof this.stringProp === 'number' || typeof this.stringProp === 'boolean' ? this.stringProp : JSON.stringify(this.stringProp)},\`; 
     }
-    if(this.additionalProperties !== undefined) {
-      json += \`\\"additionalProperties\\": \${typeof this.additionalProperties === 'number' || typeof this.additionalProperties === 'boolean' ? this.additionalProperties : JSON.stringify(this.additionalProperties)},\`; 
+    if(this.additionalProperties !== undefined) { 
+    for (const [key, value] of this.additionalProperties.entries()) {
+      //Only unwrap those who are not already a property in the JSON object
+      if(Object.keys(this).includes(String(key))) continue;
+        json += \`\\"\${key}\\": \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;
+      }
     }
-
 
     //Remove potential last comma 
     return \`\${json.charAt(json.length-1) === ',' ? json.slice(0, json.length-1) : json}}\`;
@@ -124,11 +130,11 @@ exports[`Marshalling preset should render un/marshal code 3`] = `
     if (obj[\\"stringProp\\"] !== undefined) {
       instance.stringProp = obj[\\"stringProp\\"];
     }
-    if (obj[\\"additionalProperties\\"] !== undefined) {
-      instance.additionalProperties = obj[\\"additionalProperties\\"];
-    }
 
-
+    if (instance.additionalProperties === undefined) {instance.additionalProperties = new Map();}
+      for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"stringProp\\",\\"additionalProperties\\"].includes(key);}))) {
+        instance.additionalProperties.set(key, value as any);
+      }
 
     return instance;
   }

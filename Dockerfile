@@ -19,6 +19,9 @@ RUN apt install apt-transport-https dirmngr gnupg ca-certificates -yq  \
     && apt update -yq  \
     && apt install mono-devel -yq 
 
+# Install rust
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
 # Setup library 
 COPY package-lock.json .
 RUN npm install
