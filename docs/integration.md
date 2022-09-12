@@ -5,7 +5,7 @@ This readme file goes into details how to integrate Modelina into various enviro
 
 <!-- toc -->
 
-- [Integrate Modelina in a website](#integrate-modelina-in-a-website)
+- [Integrate Modelina in a browser](#integrate-modelina-in-a-browser)
   * [Security NOTICE](#security-notice)
 - [Integrate Modelina in an AsyncAPI generator template](#integrate-modelina-in-an-asyncapi-generator-template)
 
