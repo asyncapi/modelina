@@ -38,6 +38,16 @@ For more specific integration options, please check out the [integration documen
 
 The output format is designed for you to use the generated models in further contexts. It might be part of a larger code generation such as AsyncAPI templates. This means that you can glue multiple models together into one large file, or split it out as you see fit.
 
+All [generate functions](./generators.md) return an array of `OutputModel`s, which contains the following properties.
+
+| Property | Type | Description |
+|---|---|---|
+| `result` | String | The rendered content, that depends on whether you render it as a full model or partial model. |
+| `model` | [ConstrainedMetaModel](./processing.md#the-constrained-meta-model) | The constrained meta model that contains many other information about the rendered model. |
+| `modelName` | String | The rendered name of the model. |
+| `inputModel` | `InputMetaModel` | Contains all the raw models along side the input they where generated for. Check the code for further information. |
+| `dependencies` | String[] | List of rendered dependency imports that the model uses. |
+
 ## Generate models from AsyncAPI documents
 
 When providing an AsyncAPI document, the library iterates the entire document and generate models for all defined message payloads. The message payloads are interpreted based on the schema format. 
@@ -79,7 +89,7 @@ There are one way to generate models from a Swagger 2.0 document.
 
 The Swagger input processor expects that the property `swagger` is defined in order to know it should be processed.
 
-The response payload and `body` parameters, since it is a JSON Schema variant, is [interpreted as a such](./interpretation_of_JSON_Schema.md).
+The response payload and `body` parameters, since it is a JSON Schema variant, which are then passed on to the [JSON Schema processor](#generate-models-from-json-schema-documents). 
 
 ### Limitations and Compatibility
 These are the current known limitation of the Swagger 2.0 input.
@@ -98,7 +108,7 @@ There are one way to generate models from an OpenAPI document
 
 The OpenAPI input processor expects that the property `openapi` is defined in order to know it should be processed.
 
-The response and request payloads, since it is a JSON Schema variant, is [interpreted as a such](./interpretation_of_JSON_Schema.md).
+The response and request payloads, since it is a JSON Schema variant, which are then passed on to the [JSON Schema processor](#generate-models-from-json-schema-documents). 
 
 #### Limitations and Compatibility
 These are the current known limitation of the OpenAPI inputs.
@@ -115,7 +125,7 @@ Currently, we support generating models from a TypeScript type file.
 
 - [Generate Java model from a TypeScript file](../examples/java-from-typescript-type/)
 
-The TypeScript input processor expects that the typescript file and base directory where it's present, is passed as input, in order to process the types accurately. The input processor converts the TypeScript types into JSON Schema, which is [interpreted as a such](./interpretation_of_JSON_Schema.md). 
+The TypeScript input processor expects that the typescript file and base directory where it's present, is passed as input, in order to process the types accurately. The input processor converts the TypeScript types into JSON Schema, which are then passed on to the [JSON Schema processor](#generate-models-from-json-schema-documents). 
 
 ## Generate models from Meta models
 Sometimes, the supported inputs such as AsyncAPI and JSON Schema wont be enough for your use-case and you want to create your own data models while still utilizing the full sweep of features from the generators.
