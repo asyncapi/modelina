@@ -56,7 +56,7 @@ This functionality has two requirements:
 1. You MUST manually install the library `jsonbinpack`.
 2. You MUST also use the [Generate un/marshal functions for classes](#generate-unmarshal-functions-for-classes)
 
-This feature enables you to conver the models into a buffer that is highly space efficient, this is instead of sending pure JSON data across the wire.
+This feature allows you to convert models to a buffer, which is highly space-efficient, instead of sending pure JSON data over the wire.
 
 Check out this [example out for a live demonstration](../../examples/typescript-generate-jsonbinpack/).
 
