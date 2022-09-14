@@ -23,5 +23,10 @@
   "include": [
     "src/**/*.ts",
   ],
-  "exclude": ["node_modules", "lib", "examples"]
+  "exclude": ["node_modules", "lib", "examples"],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  }
 }

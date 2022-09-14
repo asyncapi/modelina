@@ -61,6 +61,8 @@ There are two ways to generate models for an AsyncAPI document.
 
 The library expects the `asyncapi` property for the document to be set in order to understand the input format.
 
+The message payloads, since it is a JSON Schema variant, is [interpreted as a such](./inputs/JSON_Schema.md).
+
 ### Limitations and Compatibility
 These are the current known limitation of the AsyncAPI input.
 
@@ -79,7 +81,7 @@ There is one way to generate models for a JSON Schema document.
 
 - [Generate from a JSON Schema draft 7 JS object](../examples/json-schema-draft7-from-object)
 
-The library expects the `$schema` property for the document to be set in order to understand the input format. By default, if no other inputs are detected, it defaults to `JSON Schema draft 7`. The process of interpreting a JSON Schema to a model can be read [here](./interpretation_of_JSON_Schema.md).
+The library expects the `$schema` property for the document to be set in order to understand the input format. By default, if no other inputs are detected, it defaults to `JSON Schema draft 7`. The process of interpreting a JSON Schema to a model can be read [here](./inputs/JSON_Schema.md).
 
 ## Generate models from Swagger 2.0 documents
 
@@ -89,7 +91,7 @@ There are one way to generate models from a Swagger 2.0 document.
 
 The Swagger input processor expects that the property `swagger` is defined in order to know it should be processed.
 
-The response payload and `body` parameters, since it is a JSON Schema variant, which are then passed on to the [JSON Schema processor](#generate-models-from-json-schema-documents). 
+The response payload and `body` parameters, since it is a JSON Schema variant, is [interpreted as a such](./inputs/JSON_Schema.md).
 
 ### Limitations and Compatibility
 These are the current known limitation of the Swagger 2.0 input.
@@ -108,7 +110,7 @@ There are one way to generate models from an OpenAPI document
 
 The OpenAPI input processor expects that the property `openapi` is defined in order to know it should be processed.
 
-The response and request payloads, since it is a JSON Schema variant, which are then passed on to the [JSON Schema processor](#generate-models-from-json-schema-documents). 
+The response and request payloads, since it is a JSON Schema variant, is [interpreted as a such](./inputs/JSON_Schema.md).
 
 #### Limitations and Compatibility
 These are the current known limitation of the OpenAPI inputs.
@@ -129,6 +131,8 @@ The TypeScript input processor expects that the typescript file and base directo
 
 ## Generate models from Meta models
 Sometimes, the supported inputs such as AsyncAPI and JSON Schema wont be enough for your use-case and you want to create your own data models while still utilizing the full sweep of features from the generators.
+
+You can do that by providing the [internal meta model](./internal-model.md#the-meta-model) as input. Check out this [example out for a live demonstration](../examples/meta-model).
 
 Check out this [example out for a live demonstration](../examples/meta-model).
 
