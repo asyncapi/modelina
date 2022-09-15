@@ -36,5 +36,5 @@ These are all the preset hook changes:
 - C#, enum preset hooks had access to `model: CommonModel` which has now been changed to `model: ConstrainedEnumModel`
 
 General changes:
-- Hooks that gave access to properties/fields formally had the arguments `property`, `propertyName` and `type`, these are now wrapped within the [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) and can be accessed through the `property` argument.
-- Hooks that gave access to enum items, now has the type [`ConstrainedEnumValueModel`](./internal-model.md#the-constrained-meta-model).
+- Hooks that gave access to properties/fields formally had the arguments `property`, `propertyName` and `type`, these are now wrapped within the [`ConstrainedObjectPropertyModel`](../internal-model.md#the-constrained-meta-model) and can be accessed through the `property` argument.
+- Hooks that gave access to enum items, now has the type [`ConstrainedEnumValueModel`](../internal-model.md#the-constrained-meta-model).
