@@ -143,12 +143,12 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
 
     describe('should be able to generate JS', () => {
       test('class', async () => {
-        const generator = new JavaScriptFileGenerator();
+        const generator = new JavaScriptFileGenerator({ moduleSystem: 'CJS' });
         const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
         const input = JSON.parse(String(inputFileContent));
         const renderOutputPath = path.resolve(outputDirectoryPath, './js/class');
 
-        const generatedModels = await generator.generateToFiles(input, renderOutputPath, { moduleSystem: 'CJS' });
+        const generatedModels = await generator.generateToFiles(input, renderOutputPath, {});
         expect(generatedModels).not.toHaveLength(0);
 
         const files = fs.readdirSync(renderOutputPath);
