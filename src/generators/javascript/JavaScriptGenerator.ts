@@ -15,7 +15,7 @@ export interface JavaScriptOptions extends CommonGeneratorOptions<JavaScriptPres
   constraints: Constraints;
   moduleSystem: 'ESM' | 'CJS';
 }
-
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface JavaScriptRenderCompleteModelOptions {
 }
 

@@ -4,7 +4,7 @@ describe('DependencyHelper', () => {
   describe('renderJavaScriptDependency', () => {
     test('should render accurate CJS dependency', () => {
       const renderedDependency = renderJavaScriptDependency('test', 'test2', 'CJS');
-      expect(renderedDependency).toEqual('const test = require(\'test2\');')
+      expect(renderedDependency).toEqual('const test = require(\'test2\');');
     });
     test('should render accurate ESM dependency', () => {
       const renderedDependency = renderJavaScriptDependency('test', 'test2', 'ESM');

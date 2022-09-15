@@ -1,12 +1,13 @@
 import { TypeScriptPreset } from '../TypeScriptPreset';
+// eslint-disable-next-line @typescript-eslint/no-var-requires,no-undef
 const alterschema = require('alterschema');
 
-function getInputSchema(originalInput: any) {
-  if(originalInput.$schema !== undefined) {
-    if(originalInput.$schema.includes('http://json-schema.org/draft-04/schema')) {
+function getInputSchema(originalInput: any): string {
+  if (originalInput.$schema !== undefined) {
+    if (originalInput.$schema.includes('http://json-schema.org/draft-04/schema')) {
       return 'draft4';
     }
-    if(originalInput.$schema.includes('http://json-schema.org/draft-06/schema')) {
+    if (originalInput.$schema.includes('http://json-schema.org/draft-06/schema')) {
       return 'draft6';
     }
   }
@@ -37,7 +38,7 @@ public static async jsonbinDeserialize(buffer: Buffer): Promise<${model.name}> {
   const json = jsonbinpack.deserialize(jsonbinpackEncodedSchema, buffer);
   return ${model.name}.unmarshal(json);
 }`;
-      return `${content}\n${packContent}`
+      return `${content}\n${packContent}`;
     }
   }
 };

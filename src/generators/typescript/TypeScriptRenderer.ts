@@ -35,7 +35,7 @@ ${renderedLines}
    * @param fromModule 
    * @returns 
    */
-  renderDependency(toImport: string, fromModule: string) {
+  renderDependency(toImport: string, fromModule: string): string {
     return renderJavaScriptDependency(toImport, fromModule, this.options.moduleSystem);
   }
 }

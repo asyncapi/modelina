@@ -40,22 +40,22 @@ describe('JsonBinPack preset', () => {
 
   test('should work fine with AsyncAPI inputs', async () => {
     const input = {
-      "asyncapi": "2.0.0",
-      "defaultContentType": "application/json",
-      "info": {
-        "title": "Signup service example (internal)",
-        "version": "0.1.0"
+      asyncapi: '2.0.0',
+      defaultContentType: 'application/json',
+      info: {
+        title: 'Signup service example (internal)',
+        version: '0.1.0'
       },
-      "channels": {
-        "/user/signedup": {
-          "subscribe": {
-            "message": {
-              "payload": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "format": "email"
+      channels: {
+        '/user/signedup': {
+          subscribe: {
+            message: {
+              payload: {
+                type: 'object',
+                properties: {
+                  email: {
+                    type: 'string',
+                    format: 'email'
                   }
                 }
               }
@@ -63,7 +63,7 @@ describe('JsonBinPack preset', () => {
           }
         }
       }
-    }
+    };
     const models = await generator.generate(input);
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot(); 
@@ -71,15 +71,15 @@ describe('JsonBinPack preset', () => {
 
   test('should work fine with JSON Schema draft 4', async () => {
     const input = {
-      "$schema": "http://json-schema.org/draft-04/schema",
-      "type": "object",
-      "properties": {
-        "email": {
-          "type": "string",
-          "format": "email"
+      $schema: 'http://json-schema.org/draft-04/schema',
+      type: 'object',
+      properties: {
+        email: {
+          type: 'string',
+          format: 'email'
         }
       }
-    }
+    };
     const models = await generator.generate(input);
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot(); 
@@ -87,18 +87,17 @@ describe('JsonBinPack preset', () => {
 
   test('should work fine with JSON Schema draft 6', async () => {
     const input = {
-      "$schema": "http://json-schema.org/draft-06/schema",
-      "type": "object",
-      "properties": {
-        "email": {
-          "type": "string",
-          "format": "email"
+      $schema: 'http://json-schema.org/draft-06/schema',
+      type: 'object',
+      properties: {
+        email: {
+          type: 'string',
+          format: 'email'
         }
       }
-    }
+    };
     const models = await generator.generate(input);
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot(); 
   });
-
 });
