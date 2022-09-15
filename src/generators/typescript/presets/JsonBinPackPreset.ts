@@ -21,7 +21,8 @@ function getInputSchema(originalInput: any) {
 export const TS_JSONBINPACK_PRESET: TypeScriptPreset = {
   class: {
     async additionalContent({renderer, content, model}) {
-      renderer.addDependency('const jsonbinpack = require(\'jsonbinpack\');');
+      renderer.addDependency(renderer.renderDependency('jsonbinpack', 'jsonbinpack'));
+    
       const jsonSchema = await alterschema(model.originalInput, getInputSchema(model.originalInput), '2020-12');
       const json = JSON.stringify(jsonSchema);
       const packContent = `
@@ -40,16 +41,3 @@ public static async jsonbinDeserialize(buffer: Buffer): Promise<${model.name}> {
     }
   }
 };
-
-/**
- * Potential runtime test:
- * 
-const instance = new Test({});
-instance.email = 'testing@test.com';
-const expectedJSON = JSON.parse(instance.marshal());
-const jsonpackbuffer = await instance.jsonbinSerialize();
-const test = await Test.jsonbinDeserialize(jsonpackbuffer);
-const actualJson = JSON.parse(test.marshal());
-expect(actualJson).toEqual(expectedJSON);
- * 
- */

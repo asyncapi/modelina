@@ -15,4 +15,10 @@ describe('TypeScriptRenderer', () => {
  */`);
     });
   });
+
+  describe('renderDependency()', () => {
+    test('Should be able to render dependency', () => {
+      expect(renderer.renderDependency('someComment', 'someComment2')).toEqual('import someComment from \'someComment2\';');
+    });
+  });
 });

@@ -2,6 +2,7 @@ import { AbstractRenderer } from '../AbstractRenderer';
 import { TypeScriptGenerator, TypeScriptOptions } from './TypeScriptGenerator';
 import { FormatHelpers } from '../../helpers';
 import { ConstrainedMetaModel, InputMetaModel, Preset } from '../../models';
+import { renderJavaScriptDependency } from '../../utils/DepndencyHelper';
 
 /**
  * Common renderer for TypeScript types
@@ -25,5 +26,16 @@ export abstract class TypeScriptRenderer<RendererModelType extends ConstrainedMe
     return `/**
 ${renderedLines}
  */`;
+  }
+
+  /**
+   * Simple helper function to render a dependency based on the module systme.
+   * 
+   * @param toImport 
+   * @param fromModule 
+   * @returns 
+   */
+  renderDependency(toImport: string, fromModule: string) {
+    return renderJavaScriptDependency(toImport, fromModule, this.options.moduleSystem);
   }
 }
