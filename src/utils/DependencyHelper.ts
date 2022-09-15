@@ -5,7 +5,6 @@
  * @param toImport 
  * @param fromModule 
  * @param moduleSystem 
- * @returns 
  */
 export function renderJavaScriptDependency(toImport: string, fromModule: string, moduleSystem: 'CJS' | 'ESM'): string {
   return moduleSystem === 'CJS'
