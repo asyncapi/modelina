@@ -22,7 +22,7 @@ The order of interpretation:
 - `dependencies` only apply to schema dependencies, since property dependencies adds nothing to the underlying model. Any schema dependencies are interpreted and then [merged](#Merging-models) together with the current interpreted model.
 - `enum` is interpreted as is, where each `enum`. Usage of `enum` infers the enumerator value type to the model, but only if the schema does not have `type` specified.
 - `const` interpretation overwrite already interpreted `enum`. Usage of `const` infers the constant value type to the model, but only if the schema does not have `type` specified.
-- [oneOf/anyOf/then/else](#Processing-sub-schemas)
+- [allOf/oneOf/anyOf/then/else](#Processing-sub-schemas)
 - [not](#interpreting-not-schemas)
 
 ## Interpreting not schemas
@@ -36,13 +36,9 @@ Currently, the following `not` model properties are interpreted:
 - You cannot use nested `not` schemas to infer new model properties, it can only be used to re-allow them.
 - boolean `not` schemas are not applied.
 
-## allOf sub schemas
-`allOf` is a bit different than the other [combination keywords](#Processing-sub-schemas) since it can imply inheritance. 
-
-So dependant on whether the interpreter option `allowInheritance` is true or false we interpret it as inheritance or [merge](#Merging-models) the models.
-
 ## Processing sub schemas
 The following JSON Schema keywords are [merged](#Merging-models) with the already interpreted model:
+- `allOf`
 - `oneOf`
 - `anyOf`
 - `then`

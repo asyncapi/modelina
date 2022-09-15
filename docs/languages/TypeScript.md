@@ -8,8 +8,11 @@ There are special use-cases that each language supports; this document pertains 
 
 - [Generate an interface instead of classes](#generate-an-interface-instead-of-classes)
 - [Generate union types instead of enums](#generate-union-types-instead-of-enums)
-- [Generate un/marshal functions for classes](#generate-unmarshal-functions-for-classes)
-- [Generate models with jsonbinpack support](#generate-models-with-jsonbinpack-support)
+- [Generate serializer and deserializer functionality](#generate-serializer-and-deserializer-functionality)
+  * [To and from JSON](#to-and-from-json)
+    + [Generate marshalling and unmarshalling functions](#generate-marshalling-and-unmarshalling-functions)
+  * [To and from XML](#to-and-from-xml)
+  * [To and from binary](#to-and-from-binary)
 - [Generate example data function](#generate-example-data-function)
 - [Rendering complete models to a specific module system](#rendering-complete-models-to-a-specific-module-system)
 - [Rendering comments from description and example fields](#rendering-comments-from-description-and-example-fields)
@@ -38,15 +41,24 @@ export type Event = "ping" | "pong";
 
 Check out this [example out for a live demonstration](../../examples/typescript-enum-type).
 
-## Generate un/marshal functions for classes
+## Generate serializer and deserializer functionality
 
-Sometimes you want to use the models for data transfers, and while most cases would work out of the box, custom serializer functionality is needed for the advanced cases. If you generated the data models based on a JSON Schema document and you want the serialized data to validate against the schema, this functionality is REQUIRED.
+The most widely used usecase for Modelina is to generate models that include serilization and deserialization functionality to convert the models into payload data. This payload data can of course be many different kinds, JSON, XML, raw binary, you name it.
 
-This can be done by including the preset `TS_COMMON_PRESET` using the option `marshalling`.
+As you normally only need one library to do this, we developers can never get enough with creating new stuff, therefore there might be one specific library you need or want to integrate with. Therefore there is not one specific preset that offers everything. Below is a list of all the supported serialization presets. 
+
+### To and from JSON
+Here are all the supported presets and the libraries they use: 
+
+- [Generate marshalling and unmarshalling functions](#generate-marshalling-and-unmarshalling-functions) 
+
+#### Generate marshalling and unmarshalling functions
+
+Using the preset `TS_COMMON_PRESET` with the option `marshalling` to `true`, renders two function for the class models. One which convert the model to JSON and another which convert the model from JSON to an instance of the class.
 
 Check out this [example out for a live demonstration](../../examples/typescript-generate-marshalling).
 
-## Generate models with jsonbinpack support
+#### Generate models with jsonbinpack support
 
 This functionality is for the library [jsonbinpack](https://github.com/sourcemeta/jsonbinpack).
 
@@ -59,6 +71,12 @@ This functionality has two requirements:
 This feature allows you to convert models to a buffer, which is highly space-efficient, instead of sending pure JSON data over the wire.
 
 Check out this [example out for a live demonstration](../../examples/typescript-generate-jsonbinpack/).
+
+### To and from XML
+Currently not supported, [let everyone know you need it](https://github.com/asyncapi/modelina/issues/new?assignees=&labels=enhancement&template=enhancement.md)!
+
+### To and from binary
+Currently not supported, [let everyone know you need it](https://github.com/asyncapi/modelina/issues/new?assignees=&labels=enhancement&template=enhancement.md)!
 
 ## Generate example data function
 
