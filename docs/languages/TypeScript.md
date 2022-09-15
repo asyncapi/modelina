@@ -11,9 +11,9 @@ There are special use-cases that each language supports; this document pertains 
 - [Generate serializer and deserializer functionality](#generate-serializer-and-deserializer-functionality)
   * [To and from JSON](#to-and-from-json)
     + [Generate marshalling and unmarshalling functions](#generate-marshalling-and-unmarshalling-functions)
-    + [Generate models with jsonbinpack support](#generate-models-with-jsonbinpack-support)
   * [To and from XML](#to-and-from-xml)
   * [To and from binary](#to-and-from-binary)
+    + [Generate models with jsonbinpack support](#generate-models-with-jsonbinpack-support)
 - [Generate example data function](#generate-example-data-function)
 - [Rendering complete models to a specific module system](#rendering-complete-models-to-a-specific-module-system)
 - [Rendering comments from description and example fields](#rendering-comments-from-description-and-example-fields)
@@ -49,16 +49,23 @@ The most widely used usecase for Modelina is to generate models that include ser
 As you normally only need one library to do this, we developers can never get enough with creating new stuff, therefore there might be one specific library you need or want to integrate with. Therefore there is not one specific preset that offers everything. Below is a list of all the supported serialization presets. 
 
 ### To and from JSON
-Here are all the supported presets and the libraries they use: 
+Here are all the supported presets and the libraries they use for converting to and from JSON: 
 
 - [Generate marshalling and unmarshalling functions](#generate-marshalling-and-unmarshalling-functions) 
-- [Generate jsonbinpack functions](#generate-models-with-jsonbinpack-support) 
 
 #### Generate marshalling and unmarshalling functions
 
 Using the preset `TS_COMMON_PRESET` with the option `marshalling` to `true`, renders two function for the class models. One which convert the model to JSON and another which convert the model from JSON to an instance of the class.
 
 Check out this [example out for a live demonstration](../../examples/typescript-generate-marshalling).
+
+### To and from XML
+Currently not supported, [let everyone know you need it](https://github.com/asyncapi/modelina/issues/new?assignees=&labels=enhancement&template=enhancement.md)!
+
+### To and from binary
+Here are all the supported presets and the libraries they use for converting to and from binary: 
+
+- [Generate jsonbinpack functions](#generate-models-with-jsonbinpack-support) 
 
 #### Generate models with jsonbinpack support
 
@@ -73,12 +80,6 @@ This functionality has two requirements:
 This feature allows you to convert models to a buffer, which is highly space-efficient, instead of sending pure JSON data over the wire.
 
 Check out this [example out for a live demonstration](../../examples/typescript-generate-jsonbinpack/).
-
-### To and from XML
-Currently not supported, [let everyone know you need it](https://github.com/asyncapi/modelina/issues/new?assignees=&labels=enhancement&template=enhancement.md)!
-
-### To and from binary
-Currently not supported, [let everyone know you need it](https://github.com/asyncapi/modelina/issues/new?assignees=&labels=enhancement&template=enhancement.md)!
 
 ## Generate example data function
 
