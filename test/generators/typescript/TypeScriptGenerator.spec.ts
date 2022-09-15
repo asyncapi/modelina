@@ -311,28 +311,41 @@ ${content}`;
   };
 
   test('should render models and their dependencies for CJS module system', async () => {
-    const models = await generator.generateCompleteModels(doc, {moduleSystem: 'CJS'});
+    generator = new TypeScriptGenerator({
+      moduleSystem: 'CJS'
+    });
+    const models = await generator.generateCompleteModels(doc, {});
+    
     expect(models).toHaveLength(2);
     expect(models[0].result).toMatchSnapshot();
     expect(models[1].result).toMatchSnapshot();
   });
 
   test('should render models and their dependencies for CJS module system with named exports', async () => {
-    const models = await generator.generateCompleteModels(doc, {moduleSystem: 'CJS', exportType: 'named'});
+    generator = new TypeScriptGenerator({
+      moduleSystem: 'CJS'
+    });
+    const models = await generator.generateCompleteModels(doc, {exportType: 'named'});
     expect(models).toHaveLength(2);
     expect(models[0].result).toMatchSnapshot();
     expect(models[1].result).toMatchSnapshot();
   });
 
   test('should render models and their dependencies for ESM module system', async () => {
-    const models = await generator.generateCompleteModels(doc, {moduleSystem: 'ESM'});
+    generator = new TypeScriptGenerator({
+      moduleSystem: 'ESM'
+    });
+    const models = await generator.generateCompleteModels(doc, {});
     expect(models).toHaveLength(2);
     expect(models[0].result).toMatchSnapshot();
     expect(models[1].result).toMatchSnapshot();
   });
 
   test('should render models and their dependencies for ESM module system with named exports', async () => {
-    const models = await generator.generateCompleteModels(doc, {moduleSystem: 'ESM', exportType: 'named'});
+    generator = new TypeScriptGenerator({
+      moduleSystem: 'ESM'
+    });
+    const models = await generator.generateCompleteModels(doc, {exportType: 'named'});
     expect(models).toHaveLength(2);
     expect(models[0].result).toMatchSnapshot();
     expect(models[1].result).toMatchSnapshot();
