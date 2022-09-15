@@ -14,7 +14,7 @@ function getInputSchema(originalInput: any) {
 }
 
 /**
- * Preset which adds descriptions
+ * Preset which adds jsonbinpack marshalling/unmarshalling methods
  *
  * @implements {TypeScriptPreset}
  */
