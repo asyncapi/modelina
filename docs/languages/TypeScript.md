@@ -11,6 +11,7 @@ There are special use-cases that each language supports; this document pertains 
 - [Generate serializer and deserializer functionality](#generate-serializer-and-deserializer-functionality)
   * [To and from JSON](#to-and-from-json)
     + [Generate marshalling and unmarshalling functions](#generate-marshalling-and-unmarshalling-functions)
+    + [Generate models with jsonbinpack support](#generate-models-with-jsonbinpack-support)
   * [To and from XML](#to-and-from-xml)
   * [To and from binary](#to-and-from-binary)
 - [Generate example data function](#generate-example-data-function)
@@ -51,6 +52,7 @@ As you normally only need one library to do this, we developers can never get en
 Here are all the supported presets and the libraries they use: 
 
 - [Generate marshalling and unmarshalling functions](#generate-marshalling-and-unmarshalling-functions) 
+- [Generate jsonbinpack functions](#generate-models-with-jsonbinpack-support) 
 
 #### Generate marshalling and unmarshalling functions
 
@@ -85,7 +87,6 @@ You might stumble upon a user case (we had one in code generation) where you wan
 This can be done by including the preset `TS_COMMON_PRESET` using the option `example`.
 
 Check out this [example out for a live demonstration](../../examples/typescript-generate-example).
-
 
 ## Rendering complete models to a specific module system
 In some cases you might need to render the complete models to a specific module system such as ESM and CJS.
