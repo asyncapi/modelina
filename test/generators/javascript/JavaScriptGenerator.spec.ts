@@ -125,7 +125,8 @@ describe('JavaScriptGenerator', () => {
       },
       required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
     };
-    const models = await generator.generateCompleteModels(doc, {moduleSystem: 'CJS'});
+    generator = new JavaScriptGenerator({moduleSystem: 'CJS'});
+    const models = await generator.generateCompleteModels(doc, {});
     expect(models).toHaveLength(2);
     expect(models[0].result).toMatchSnapshot();
     expect(models[1].result).toMatchSnapshot();
@@ -151,7 +152,8 @@ describe('JavaScriptGenerator', () => {
       },
       required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
     };
-    const models = await generator.generateCompleteModels(doc, {moduleSystem: 'ESM'});
+    generator = new JavaScriptGenerator({moduleSystem: 'ESM'});
+    const models = await generator.generateCompleteModels(doc, {});
     expect(models).toHaveLength(2);
     expect(models[0].result).toMatchSnapshot();
     expect(models[1].result).toMatchSnapshot();

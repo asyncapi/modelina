@@ -9,14 +9,14 @@ import { JavaScriptPreset, JS_DEFAULT_PRESET } from './JavaScriptPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { Logger } from '../../';
 import { JavaScriptDefaultConstraints, JavaScriptDefaultTypeMapping } from './JavaScriptConstrainer';
-import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
+import { DeepPartial, mergePartialAndDefault, renderJavaScriptDependency } from '../../utils';
 export interface JavaScriptOptions extends CommonGeneratorOptions<JavaScriptPreset> {
   typeMapping: TypeMapping<JavaScriptOptions>;
   constraints: Constraints;
+  moduleSystem: 'ESM' | 'CJS';
 }
 
 export interface JavaScriptRenderCompleteModelOptions {
-  moduleSystem?: 'ESM' | 'CJS';
 }
 
 /**
@@ -27,7 +27,8 @@ export class JavaScriptGenerator extends AbstractGenerator<JavaScriptOptions, Ja
     ...defaultGeneratorOptions,
     defaultPreset: JS_DEFAULT_PRESET,
     typeMapping: JavaScriptDefaultTypeMapping,
-    constraints: JavaScriptDefaultConstraints
+    constraints: JavaScriptDefaultConstraints,
+    moduleSystem: 'ESM'
   };
   
   constructor(
@@ -50,15 +51,12 @@ export class JavaScriptGenerator extends AbstractGenerator<JavaScriptOptions, Ja
     const modelDependencies = model.getNearestDependencies();
     //Ensure model dependencies have their rendered name
     const modelDependencyImports = modelDependencies.map((dependencyModel) => {
-      if (options.moduleSystem === 'CJS') {
-        return `const ${dependencyModel.name} = require('./${dependencyModel.name}');`;
-      }
-      return `import ${dependencyModel.name} from './${dependencyModel.name}';`;
+      return renderJavaScriptDependency(dependencyModel.name, `./${dependencyModel.name}`, this.options.moduleSystem);
     });
     let modelCode = `${outputModel.result}
 export default ${outputModel.renderedName};
 `;
-    if (options.moduleSystem === 'CJS') {
+    if (this.options.moduleSystem === 'CJS') {
       modelCode = `${outputModel.result}
 module.exports = ${outputModel.renderedName};`;
     }

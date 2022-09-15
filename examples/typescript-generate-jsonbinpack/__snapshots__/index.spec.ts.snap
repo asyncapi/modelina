@@ -44,7 +44,7 @@ Array [
     return jsonbinpack.serialize(jsonbinpackEncodedSchema, jsonData);
   }
 
-  public static async jsonbinDeserialize(buffer: Buffer): Test {
+  public static async jsonbinDeserialize(buffer: Buffer): Promise<Test> {
     const jsonbinpackEncodedSchema = await jsonbinpack.compileSchema({\\"$schema\\":\\"https://json-schema.org/draft/2020-12/schema\\",\\"$id\\":\\"Test\\",\\"type\\":\\"object\\",\\"additionalProperties\\":false,\\"properties\\":{\\"email\\":{\\"type\\":\\"string\\",\\"format\\":\\"email\\",\\"x-modelgen-inferred-name\\":\\"email\\"}},\\"x-modelgen-inferred-name\\":\\"root\\"});
     const json = jsonbinpack.deserialize(jsonbinpackEncodedSchema, buffer);
     return Test.unmarshal(json);
