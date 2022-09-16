@@ -10,9 +10,9 @@ export const GO_JSON_TAG_PRESET: GoPreset = {
   struct: {
     fieldTag({field, content }) {
       let jsonTag = '';
-      if(field.property instanceof ConstrainedDictionaryModel && 
+      if (field.property instanceof ConstrainedDictionaryModel && 
         field.property.serializationType === 'unwrap') {
-        jsonTag = `json:"-"`;
+        jsonTag = 'json:"-"';
       }
       jsonTag = `json:"${field.unconstrainedPropertyName},omitempty"`;
       return `${content}${jsonTag}`;

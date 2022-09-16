@@ -53,7 +53,7 @@ export const GO_DEFAULT_STRUCT_PRESET: StructPresetType<GoOptions> = {
     }
     const tags = await renderer.runFieldTagPreset(field);
     let tagsToRender = '';
-    if(tags !== '') {
+    if (tags !== '') {
       tagsToRender = ` \`${tags}\``;
     }
     return `${ field.propertyName } ${ fieldType }${ tagsToRender }`;
