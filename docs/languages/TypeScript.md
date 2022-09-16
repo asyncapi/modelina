@@ -13,6 +13,7 @@ There are special use-cases that each language supports; this document pertains 
     + [Generate marshalling and unmarshalling functions](#generate-marshalling-and-unmarshalling-functions)
   * [To and from XML](#to-and-from-xml)
   * [To and from binary](#to-and-from-binary)
+    + [Generate models with jsonbinpack support](#generate-models-with-jsonbinpack-support)
 - [Generate example data function](#generate-example-data-function)
 - [Rendering complete models to a specific module system](#rendering-complete-models-to-a-specific-module-system)
 - [Rendering comments from description and example fields](#rendering-comments-from-description-and-example-fields)
@@ -48,7 +49,7 @@ The most widely used usecase for Modelina is to generate models that include ser
 As you normally only need one library to do this, we developers can never get enough with creating new stuff, therefore there might be one specific library you need or want to integrate with. Therefore there is not one specific preset that offers everything. Below is a list of all the supported serialization presets. 
 
 ### To and from JSON
-Here are all the supported presets and the libraries they use: 
+Here are all the supported presets and the libraries they use for converting to and from JSON: 
 
 - [Generate marshalling and unmarshalling functions](#generate-marshalling-and-unmarshalling-functions) 
 
@@ -62,8 +63,23 @@ Check out this [example out for a live demonstration](../../examples/typescript-
 Currently not supported, [let everyone know you need it](https://github.com/asyncapi/modelina/issues/new?assignees=&labels=enhancement&template=enhancement.md)!
 
 ### To and from binary
-Currently not supported, [let everyone know you need it](https://github.com/asyncapi/modelina/issues/new?assignees=&labels=enhancement&template=enhancement.md)!
+Here are all the supported presets and the libraries they use for converting to and from binary: 
 
+- [Generate jsonbinpack functions](#generate-models-with-jsonbinpack-support) 
+
+#### Generate models with jsonbinpack support
+
+This functionality is for the library [jsonbinpack](https://github.com/sourcemeta/jsonbinpack).
+
+This preset can ONLY be used with AsyncAPI 2.x and JSON Schema draft 4 to 7 inputs.
+
+This functionality has two requirements:
+1. You MUST manually install the library `jsonbinpack`.
+2. You MUST also use the [Generate un/marshal functions for classes](#generate-unmarshal-functions-for-classes)
+
+This feature allows you to convert models to a buffer, which is highly space-efficient, instead of sending pure JSON data over the wire.
+
+Check out this [example out for a live demonstration](../../examples/typescript-generate-jsonbinpack/).
 
 ## Generate example data function
 
@@ -72,7 +88,6 @@ You might stumble upon a user case (we had one in code generation) where you wan
 This can be done by including the preset `TS_COMMON_PRESET` using the option `example`.
 
 Check out this [example out for a live demonstration](../../examples/typescript-generate-example).
-
 
 ## Rendering complete models to a specific module system
 In some cases you might need to render the complete models to a specific module system such as ESM and CJS.

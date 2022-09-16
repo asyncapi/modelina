@@ -43,7 +43,7 @@ All [generate functions](./generators.md) return an array of `OutputModel`s, whi
 | Property | Type | Description |
 |---|---|---|
 | `result` | String | The rendered content, that depends on whether you render it as a full model or partial model. |
-| `model` | [ConstrainedMetaModel](./processing.md#the-constrained-meta-model) | The constrained meta model that contains many other information about the rendered model. |
+| `model` | [ConstrainedMetaModel](./internal-model.md#the-constrained-meta-model) | The constrained meta model that contains many other information about the rendered model. |
 | `modelName` | String | The rendered name of the model. |
 | `inputModel` | `InputMetaModel` | Contains all the raw models along side the input they where generated for. Check the code for further information. |
 | `dependencies` | String[] | List of rendered dependency imports that the model uses. |
@@ -67,11 +67,11 @@ The message payloads, since it is a JSON Schema variant, is [interpreted as a su
 These are the current known limitation of the AsyncAPI input.
 
 #### Message Schema formats
-Currently, only a limited number of schema formats are supported and we currently rely on the [AsyncAPI parser](github.com/asyncapi/parser-js/) to handle those schema formats and convert them into [AsyncAPI Schema format](https://github.com/asyncapi/parser-js/#custom-message-parsers). At some point in the future, Modelina will support all native schema formats, so it does not matter which standard you use to define the message payloads, you will be able to generate models from it.
+Currently, only a limited number of schema formats are supported and we currently rely on the [AsyncAPI parser](https://github.com/asyncapi/parser-js/) to handle those schema formats and convert them into [AsyncAPI Schema format](https://github.com/asyncapi/parser-js/#custom-message-parsers). At some point in the future, Modelina will support all native schema formats, so it does not matter which standard you use to define the message payloads, you will be able to generate models from it.
 
 #### Polymorphism
 
-Through the AsyncAPI Schema you are able to use `discriminator` for achieving polymorphism. Current version of Modelina does not generate the expected inheritance of models, instead it's current behavior is to [merge the schemas together](./inputs/interpretation_of_JSON_Schema.md#Processing-sub-schemas). This means you will still get access to the properties that missing inherited model has, but without the inheritance.
+Through the AsyncAPI Schema you are able to use `discriminator` for achieving polymorphism. Current version of Modelina does not generate the expected inheritance of models, instead it's current behavior is to [merge the schemas together](./inputs/JSON_Schema.md#processing-sub-schemas). This means you will still get access to the properties that missing inherited model has, but without the inheritance.
 
 Long term if this is something you wish was supported, voice your [opionion here](https://github.com/asyncapi/modelina/issues/108).
 
@@ -98,7 +98,7 @@ These are the current known limitation of the Swagger 2.0 input.
 
 #### Polymorphism
 
-Through the Swagger 2.0 Schema you are able to use `discriminator` for achieving polymorphism. Current version of Modelina does not generate the expected inheritance of models, instead it's current behavior is to [merge the schemas together](./inputs/interpretation_of_JSON_Schema.md#Processing-sub-schemas). This means you will still get access to the properties that missing inherited model has, but without the inheritance.
+Through the Swagger 2.0 Schema you are able to use `discriminator` for achieving polymorphism. Current version of Modelina does not generate the expected inheritance of models, instead it's current behavior is to [merge the schemas together](./inputs/JSON_Schema.md#processing-sub-schemas). This means you will still get access to the properties that missing inherited model has, but without the inheritance.
 
 Long term if this is something you wish was supported, voice your [opionion here](https://github.com/asyncapi/modelina/issues/108).
 
@@ -117,7 +117,7 @@ These are the current known limitation of the OpenAPI inputs.
 
 ##### Polymorphism
 
-Through the OpenAPI 3.0 Schema you are able to use `discriminator` for achieving polymorphism. Current version of Modelina does not generate the expected inheritance of models, instead it's current behavior is to [merge the schemas together](./inputs/interpretation_of_JSON_Schema.md#Processing-sub-schemas). This means you will still get access to the properties that missing inherited model has, but without the inheritance.
+Through the OpenAPI 3.0 Schema you are able to use `discriminator` for achieving polymorphism. Current version of Modelina does not generate the expected inheritance of models, instead it's current behavior is to [merge the schemas together](./inputs/JSON_Schema.md#processing-sub-schemas). This means you will still get access to the properties that missing inherited model has, but without the inheritance.
 
 Long term if this is something you wish was supported, voice your [opionion here](https://github.com/asyncapi/modelina/issues/108).
 
@@ -162,4 +162,4 @@ Dart is one of the many output languages we support. Check out this [basic examp
 
 ## Generate Rust models
 
-Rust is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-rust-crate) and the following [Rust documentation for more advanced use-cases](./languages/Rust.md).
+Rust is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/rust-generate-crate) and the following [Rust documentation for more advanced use-cases](./languages/Rust.md).

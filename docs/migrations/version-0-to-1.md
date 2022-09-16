@@ -36,5 +36,23 @@ These are all the preset hook changes:
 - C#, enum preset hooks had access to `model: CommonModel` which has now been changed to `model: ConstrainedEnumModel`
 
 General changes:
-- Hooks that gave access to properties/fields formally had the arguments `property`, `propertyName` and `type`, these are now wrapped within the [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) and can be accessed through the `property` argument.
-- Hooks that gave access to enum items, now has the type [`ConstrainedEnumValueModel`](./internal-model.md#the-constrained-meta-model).
+- Hooks that gave access to properties/fields formally had the arguments `property`, `propertyName` and `type`, these are now wrapped within the [`ConstrainedObjectPropertyModel`](../internal-model.md#the-constrained-meta-model) and can be accessed through the `property` argument.
+- Hooks that gave access to enum items, now has the type [`ConstrainedEnumValueModel`](../internal-model.md#the-constrained-meta-model).
+
+## TypeScript and JavaScript module system
+In the previous version you only had to define a the module system type (`ESM` or `CJS`) when generating complete models. However, it happens that presets need to import their own dependencies which then need to adapt to the desire module system. Therefore this option have been moved so you have to adapt your code the following way:
+
+```ts
+const input = ...;
+
+// Old way
+const generator = new JavaScriptGenerator();
+const models = await generator.generateCompleteModels(input, {
+  moduleSystem: 'ESM'
+})
+
+// New way
+const generator = new JavaScriptGenerator({moduleSystem: 'ESM'});
+const models = await generator.generateCompleteModels(input, {});
+
+```
