@@ -1,4 +1,4 @@
-[![AsyncAPI Modelina](./assets/readme-banner.png)](https://www.asyncapi.com/tools/modelina)
+[![AsyncAPI Modelina](./docs/img/readme-banner.png)](https://www.asyncapi.com/tools/modelina)
 
 Modelina is the official AsyncAPI SDK to generate data models (i.e. <a href="#outputs">Java/TypeScript classes, Go Structs, etc</a>) from <a href="#inputs">AsyncAPI documents, among other supported inputs</a>.
 
