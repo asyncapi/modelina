@@ -42,12 +42,10 @@ const filesToTest = [
   ...jsonSchemaDraft4Files.filter(({ file }) => {
     // Too large to process https://github.com/asyncapi/modelina/issues/822
     return !file.includes('aws-cloudformation.json');
-  }).filter(({file}) => {
   }).filter(({ file }) => {
     // Related to https://github.com/asyncapi/modelina/issues/389
     return !file.includes('jenkins-config.json');
   }).filter(({ file }) => {
-
     // Related to https://github.com/asyncapi/modelina/issues/825
     return !file.includes('circleci-config.json');
   }),
