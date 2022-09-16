@@ -152,6 +152,9 @@ Check is done using referential equality</p>
 <dt><a href="#interpretName">interpretName(schema)</a></dt>
 <dd><p>Find the name for simplified version of schema</p>
 </dd>
+<dt><a href="#renderJavaScriptDependency">renderJavaScriptDependency(toImport, fromModule, moduleSystem)</a></dt>
+<dd><p>Function to make it easier to render JS/TS dependencies based on module system</p>
+</dd>
 <dt><a href="#mergePartialAndDefault">mergePartialAndDefault()</a></dt>
 <dd><p>Merge a non optional value with custom optional values to form a full value that has all properties sat.</p>
 </dd>
@@ -1304,6 +1307,19 @@ Find the name for simplified version of schema
 | Param | Description |
 | --- | --- |
 | schema | to find the name |
+
+<a name="renderJavaScriptDependency"></a>
+
+## renderJavaScriptDependency(toImport, fromModule, moduleSystem)
+Function to make it easier to render JS/TS dependencies based on module system
+
+**Kind**: global function  
+
+| Param |
+| --- |
+| toImport | 
+| fromModule | 
+| moduleSystem | 
 
 <a name="mergePartialAndDefault"></a>
 
