@@ -138,6 +138,38 @@ describe('JsonSchemaInputProcessor', () => {
     });
   });
 
+  describe('dereferenceInputs()', () => {
+    test('should handle root $ref', () => {
+      const processor = new JsonSchemaInputProcessor();
+      const schema = {
+        definitions: {
+          root: {
+            type: 'string'
+          }
+        },
+        $ref: '#/definitions/root'
+      };
+      const dereferencedSchema = processor.handleRootReference(schema);
+      expect(dereferencedSchema).toEqual({definitions: {root: {type: 'string'}}, type: 'string'});
+    });
+    test('should handle root $ref that cannot be processed', () => {
+      const processor = new JsonSchemaInputProcessor();
+      const schema = {
+        definitions: {
+          root: {
+            definitions: {
+              innerRoot: {
+                type: 'string'
+              }
+            }
+          }
+        },
+        $ref: '#/definitions/root/definitions/innerRoot'
+      };
+      expect(() => processor.handleRootReference(schema)).toThrowError('Cannot handle input, because it has a root `$ref`, please manually resolve the first reference.');
+    });
+  });
+
   describe('convertSchemaToCommonModel()', () => {
     test('Should ignore models which does not have $id', () => {
       const model = new CommonModel();
