@@ -1,7 +1,7 @@
 import { AbstractRenderer } from '../AbstractRenderer';
 import { TypeScriptGenerator, TypeScriptOptions } from './TypeScriptGenerator';
 
-import { FormatHelpers } from '../../helpers';
+import { FormatHelpers, TypeHelpers } from '../../helpers';
 import { CommonModel, CommonInputModel, Preset, PropertyType } from '../../models';
 import { DefaultPropertyNames, getUniquePropertyName } from '../../helpers/NameHelpers';
 import { isReservedTypeScriptKeyword } from './Constants';
@@ -52,14 +52,17 @@ export abstract class TypeScriptRenderer extends AbstractRenderer<TypeScriptOpti
     if (Array.isArray(model)) {
       return model.map(t => this.renderType(t)).join(' | ');
     }
+    if (Array.isArray(model.type)) {
+      if (TypeHelpers.isNullableObject(model) && model.$ref !== undefined) {
+        return [this.nameType(model.$ref), 'null'].join(' | ');
+      }
+      return [... new Set(model.type.map(t => this.toTsType(t, model)))].join(' | ');
+    }
     if (model.enum !== undefined) {
       return model.enum.map(value => typeof value === 'string' ? `"${value}"` : value).join(' | ');
     }
     if (model.$ref !== undefined) {
       return this.nameType(model.$ref);
-    }
-    if (Array.isArray(model.type)) {
-      return [... new Set(model.type.map(t => this.toTsType(t, model)))].join(' | ');
     }
     return this.toTsType(model.type, model);
   }
