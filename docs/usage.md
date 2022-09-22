@@ -31,6 +31,7 @@ For more specific integration options, please check out the [integration documen
 - [Generate JavaScript models](#generate-javascript-models)
 - [Generate Dart models](#generate-dart-models)
 - [Generate Rust models](#generate-rust-models)
+- [Generate Python models](#generate-python-models)
 
 <!-- tocstop -->
 
