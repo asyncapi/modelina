@@ -351,7 +351,7 @@ ${content}`;
     expect(models[1].result).toMatchSnapshot();
   });
 
-  describe.only('AsyncAPI 2.4.0 with polymorphism', () => {
+  describe('AsyncAPI 2.4.0 with polymorphism', () => {
     const asyncapiDoc = {
       asyncapi: '2.4.0',
       info: {
