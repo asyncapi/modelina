@@ -68,7 +68,7 @@ Lastly, we need to adapt some of the docs to showcase your new awesome generator
 2. Add your generator to the list of generators in the [main readme file](../README.md)
 3. Add a basic [usage example to the usage documentation](./usage.md), you can see more about how to create [examples here](#adding-examples).
 
-Aaaand that's it! As a rule of thumb, start small and slowly add more features, dont try to push everything into one PR, as it will take forever to review, code, and merge. 
+Aaaand that's it! As a rule of thumb, start small and slowly add more features, don't try to push everything into one PR, as it will take forever to review, code, and merge. 
 
 If you have any questions, are unsure how your use-case fits in, or want something clarified, don't hesitate to [reach out on slack](https://asyncapi.com/slack-invite).
 
