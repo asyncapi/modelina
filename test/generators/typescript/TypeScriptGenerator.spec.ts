@@ -453,7 +453,7 @@ ${content}`;
       }
     };
 
-    test('should render 6 models (5 classes and 2 enums)', async () => {
+    test('should render 7 models (5 classes and 2 enums)', async () => {
       const models = await generator.generate(asyncapiDoc);
       expect(models).toHaveLength(7);
       expect(models.map((model) => model.result)).toMatchSnapshot();
