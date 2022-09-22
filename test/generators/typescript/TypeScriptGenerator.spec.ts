@@ -350,4 +350,124 @@ ${content}`;
     expect(models[0].result).toMatchSnapshot();
     expect(models[1].result).toMatchSnapshot();
   });
+
+  describe.only('AsyncAPI 2.4.0 with polymorphism', () => {
+    const asyncapiDoc = {
+      asyncapi: '2.4.0',
+      info: {
+        title: 'Pet',
+        version: '1.0.0'
+      },
+      channels: {},
+      components: {
+        messages: {
+          PetMessage: {
+            payload: {
+              oneOf: [
+                { $ref: '#/components/schemas/Cat' },
+                { $ref: '#/components/schemas/Dog' },
+                { $ref: '#/components/schemas/StickInsect' },
+              ]
+            }
+          },
+        },
+        schemas: {
+          Pet: {
+            type: 'object',
+            additionalProperties: false,
+            discriminator: 'petType',
+            properties: {
+              name: {
+                type: 'string'
+              },
+              petType: {
+                type: 'string'
+              },
+            },
+            required: [
+              'name',
+              'petType'
+            ],
+          },
+          Cat: {
+            allOf: [
+              { $ref: '#/components/schemas/Pet' },
+              {
+                type: 'object',
+                properties: {
+                  huntingSkill: {
+                    type: 'string',
+                    enum: [
+                      'clueless',
+                      'lazy',
+                      'adventurous',
+                      'aggressive'
+                    ]
+                  }
+                },
+                required: [
+                  'huntingSkill'
+                ]
+              }
+            ]
+          },
+          Dog: {
+            allOf: [
+              { $ref: '#/components/schemas/Pet' },
+              {
+                type: 'object',
+                properties: {
+                  packSize: {
+                    type: 'integer',
+                    format: 'int32',
+                    description: 'the size of the pack the dog is from',
+                    minimum: 0
+                  }
+                },
+                required: [
+                  'packSize'
+                ]
+              }
+            ]
+          },
+          StickInsect: {
+            allOf: [
+              { $ref: '#/components/schemas/Pet' },
+              {
+                type: 'object',
+                properties: {
+                  petType: {
+                    const: 'StickBug'
+                  },
+                  color: {
+                    type: 'string',
+                  }
+                },
+                required: [
+                  'color'
+                ]
+              }
+            ]
+          },
+        }
+      }
+    };
+
+    test('should render 6 models (5 classes and 2 enums)', async () => {
+      const models = await generator.generate(asyncapiDoc);
+      expect(models).toHaveLength(7);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+
+    test('should render enums with discriminator', async () => {
+      const models = await generator.generate(asyncapiDoc);
+      const enums = models.filter(model => model.result.includes('enum'));
+
+      expect(enums).toHaveLength(2);
+      const discriminatorEnum = enums.at(1);
+      expect(discriminatorEnum?.modelName).not.toContain('AnonymousSchema');
+      // Should contain Cat, Dog, and StickBug
+      expect(enums.at(1)?.result).toMatchSnapshot();
+    });
+  });
 });
