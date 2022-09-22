@@ -4,6 +4,8 @@ First of all, thank you 🙇🏾‍♀️ for considering contributing to Modeli
 
 This contribution guide is an extension to the core contributing guide that can be found [here](https://github.com/asyncapi/.github/blob/master/CONTRIBUTING.md). Please make sure you go through that beforehand. 🙂👍🏽
 
+If you have any questions, are unsure how your use-case fits in, or want something clarified, don't hesitate to [reach out on slack](https://asyncapi.com/slack-invite), we are always happy to help out!
+
 ## Acceptance criteria and process
 
 Even though we love contributions, we need to maintain a certain standard of what can be merged into the codebase. 
@@ -41,6 +43,7 @@ Generators sits as the core of Modelina, which frames the core concepts of what 
 To make it easier to contribute a new generator, and to avoid focusing too much of the internals of Modelina, we created a template generator to get you started. If you encounter discreprencies with the following guide or templates, make sure to raise it as an issue so it can be fixed!
 
 #### Getting started
+
 1. Start by copy/pasting the [template generator](../src/generators/template/) and [tests](../test/generators/template/) and rename it to your generator.
 2. Search and replace within your new generator and test folder for `Template`, `template` and `TEMPLATE` and replace it with your generator name and match the cases. **Make sure you search and replace it with matching case**.
 3. Replace the filenames `Template...` with your generator name.
@@ -70,8 +73,6 @@ Lastly, we need to adapt some of the docs to showcase your new awesome generator
 
 Aaaand that's it! As a rule of thumb, start small and slowly add more features, don't try to push everything into one PR, as it will take forever to review, code, and merge. 
 
-If you have any questions, are unsure how your use-case fits in, or want something clarified, don't hesitate to [reach out on slack](https://asyncapi.com/slack-invite).
-
 PR's you can look to for guidance on how the process goes: 
 - https://github.com/asyncapi/modelina/pull/818
 - https://github.com/asyncapi/modelina/pull/863
@@ -86,7 +87,6 @@ Absolutely!
 Regular issues are generally not that well described in terms of what needs to be accomplished and require some internal knowledge of the library internals.
 
 If you find an issue you would like to solve, ping one of the maintainers to help you get started. Some issues may require a higher level of effort to solve than might be easily described within the issue, so don't feel shy to chat with us about individual issues. 😀
-
 
 ### What does the CI system do when I create a PR?
 Because the CI system is quite complex, we've designed it so that individual contributors don't need to understand in depth details. 
