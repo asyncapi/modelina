@@ -46,3 +46,4 @@ This directory contains a series of self-contained examples that you can use as 
 - [integrate with React](./integrate-with-react/) - A basic example that shows how you can integrate Modelina with React.
 - [rust-generate-crate](./rust-generate-crate/) - A basic example showing how to generate a Rust package.
 - [typescript-generate-jsonbinpack](./typescript-generate-jsonbinpack) - A basic example showing how to generate models that include [jsonbinpack](https://github.com/sourcemeta/jsonbinpack) functionality.
+- [generate-python-models](./generate-python-models/) - A basic example showing how to generate Python models.

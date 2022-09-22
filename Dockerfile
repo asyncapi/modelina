@@ -22,6 +22,9 @@ RUN apt install apt-transport-https dirmngr gnupg ca-certificates -yq  \
 # Install rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
+# Install Python
+RUN sudo apt-get install -y python
+
 # Setup library 
 COPY package-lock.json .
 RUN npm install
