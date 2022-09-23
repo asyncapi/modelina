@@ -796,6 +796,7 @@ Class for processing JSON Schema
         * [.processDraft7(input)](#JsonSchemaInputProcessor+processDraft7)
         * [.processDraft4(input)](#JsonSchemaInputProcessor+processDraft4)
         * [.processDraft6(input)](#JsonSchemaInputProcessor+processDraft6)
+        * [.handleRootReference()](#JsonSchemaInputProcessor+handleRootReference)
     * _static_
         * [.reflectSchemaNames(schema, namesStack, name, isRoot)](#JsonSchemaInputProcessor.reflectSchemaNames)
         * [.ensureNamePattern(previousName, ...newParts)](#JsonSchemaInputProcessor.ensureNamePattern)
@@ -856,6 +857,14 @@ Process a draft-6 schema
 | --- | --- |
 | input | to process as draft-6 |
 
+<a name="JsonSchemaInputProcessor+handleRootReference"></a>
+
+### jsonSchemaInputProcessor.handleRootReference()
+This is a hotfix and really only a partial solution as it does not cover all cases.
+
+But it's the best we can do until we find or build a better library to handle references.
+
+**Kind**: instance method of [<code>JsonSchemaInputProcessor</code>](#JsonSchemaInputProcessor)  
 <a name="JsonSchemaInputProcessor.reflectSchemaNames"></a>
 
 ### JsonSchemaInputProcessor.reflectSchemaNames(schema, namesStack, name, isRoot)

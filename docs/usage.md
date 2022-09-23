@@ -31,6 +31,7 @@ For more specific integration options, please check out the [integration documen
 - [Generate JavaScript models](#generate-javascript-models)
 - [Generate Dart models](#generate-dart-models)
 - [Generate Rust models](#generate-rust-models)
+- [Generate Python models](#generate-python-models)
 
 <!-- tocstop -->
 
@@ -162,4 +163,8 @@ Dart is one of the many output languages we support. Check out this [basic examp
 
 ## Generate Rust models
 
-Rust is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/rust-generate-crate) and the following [Rust documentation for more advanced use-cases](./languages/Rust.md).
+Rust is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-rust-crate) and the following [Rust documentation for more advanced use-cases](./languages/Rust.md).
+
+## Generate Python models
+
+Python is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-python-models) and the following [Python documentation for more advanced use-cases](./languages/Python.md).

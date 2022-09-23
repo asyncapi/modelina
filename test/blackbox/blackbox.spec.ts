@@ -7,7 +7,7 @@
 
 import * as path from 'path';
 import * as fs from 'fs';
-import { RustFileGenerator, defaultRustRenderCompleteModelOptions, RustPackageFeatures, RustRenderCompleteModelOptions, GoFileGenerator, CSharpFileGenerator, JavaFileGenerator, JAVA_COMMON_PRESET, TypeScriptFileGenerator, JavaScriptFileGenerator } from '../../src';
+import { RustFileGenerator, defaultRustRenderCompleteModelOptions, RustPackageFeatures, RustRenderCompleteModelOptions, GoFileGenerator, CSharpFileGenerator, JavaFileGenerator, JAVA_COMMON_PRESET, TypeScriptFileGenerator, JavaScriptFileGenerator, PythonFileGenerator, PythonRenderCompleteModelOptions } from '../../src';
 import { execCommand } from './utils/Utils';
 
 /**
@@ -85,7 +85,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
       }
     ];
     describe.each(javaGeneratorOptions)('should be able to generate and compile Java', ({ generatorOption, description, renderOutputPath }) => {
-      test('class', async () => {
+      test('class and enums', async () => {
         const generator = new JavaFileGenerator(generatorOption);
         const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
         const input = JSON.parse(String(inputFileContent));
@@ -99,7 +99,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
       });
     });
     describe('should be able to generate and compile C#', () => {
-      test('class', async () => {
+      test('class and enums', async () => {
         const generator = new CSharpFileGenerator();
         const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
         const input = JSON.parse(String(inputFileContent));
@@ -114,7 +114,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
     });
 
     describe('should be able to generate and transpile TS', () => {
-      test('class', async () => {
+      test('class and enums', async () => {
         const generator = new TypeScriptFileGenerator({ modelType: 'class' });
         const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
         const input = JSON.parse(String(inputFileContent));
@@ -127,7 +127,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
         await execCommand(transpileCommand);
       });
 
-      test('interface', async () => {
+      test('interface and enums', async () => {
         const generator = new TypeScriptFileGenerator({ modelType: 'interface' });
         const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
         const input = JSON.parse(String(inputFileContent));
@@ -143,12 +143,12 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
 
     describe('should be able to generate JS', () => {
       test('class', async () => {
-        const generator = new JavaScriptFileGenerator({ moduleSystem: 'CJS' });
+        const generator = new JavaScriptFileGenerator();
         const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
         const input = JSON.parse(String(inputFileContent));
         const renderOutputPath = path.resolve(outputDirectoryPath, './js/class');
 
-        const generatedModels = await generator.generateToFiles(input, renderOutputPath, {});
+        const generatedModels = await generator.generateToFiles(input, renderOutputPath, { moduleSystem: 'CJS' });
         expect(generatedModels).not.toHaveLength(0);
 
         const files = fs.readdirSync(renderOutputPath);
@@ -202,6 +202,21 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
 
         const compileCommand = `cargo build ${renderOutputPath}`;
         await execCommand(compileCommand);
+      });
+    });
+    describe('should be able to generate Python', () => {
+      test('class and enums', async () => {
+        const generator = new PythonFileGenerator();
+        const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
+        const input = JSON.parse(String(inputFileContent));
+        const renderOutputPath = path.resolve(outputDirectoryPath, './python/class/');
+        const options = { } as PythonRenderCompleteModelOptions;
+        const generatedModels = await generator.generateToFiles(input, renderOutputPath, options);
+        expect(generatedModels).not.toHaveLength(0);
+
+        const compileCommand = `python -m compileall -f ${renderOutputPath}`;
+        await execCommand(compileCommand);
+        expect(generatedModels).not.toHaveLength(0);
       });
     });
   });

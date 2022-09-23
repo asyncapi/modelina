@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PythonGenerator Class should not render reserved keyword 1`] = `
+"class Address: 
+  def __init__(self, input):
+    if hasattr(input, 'reservedReservedDel'):
+    	self._reservedReservedDel = input.reservedReservedDel
+    if hasattr(input, 'reservedDel'):
+    	self._reservedDel = input.reservedDel
+
+  @property
+  def reservedReservedDel(self):
+  	return self._reservedReservedDel
+  @reservedReservedDel.setter
+  def reservedReservedDel(self, reservedReservedDel):
+  	self._reservedReservedDel = reservedReservedDel
+
+  @property
+  def reservedDel(self):
+  	return self._reservedDel
+  @reservedDel.setter
+  def reservedDel(self, reservedDel):
+  	self._reservedDel = reservedDel
+"
+`;
