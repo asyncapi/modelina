@@ -1,0 +1,30 @@
+{
+    "$id": "https://mycompany.com/api/common/error-response.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "javaType": "com.mycompany.api.models.common.ErrorResponse",
+    "title": "ErrorResponse",
+    "type": "object",
+    "required": ["code", "message"],
+    "properties": {
+      "code": {
+        "type": "integer",
+        "example": 400
+      },
+      "message": {
+        "type": "string",
+        "example": "Bad Request"
+      },
+      "target": {
+        "type": "string",
+        "example": "example target"
+      },
+      "details": {
+        "type": "array",
+        "items": {
+          "$ref": "./error-response.json"
+        },
+        "description": "Additional details of cascading error messages."
+      }
+    }
+  }
+  
