@@ -54,6 +54,10 @@ describe('AsyncAPIInputProcessor', () => {
       const parsedObject = {asyncapi: '2.4.0'};
       expect(processor.shouldProcess(parsedObject)).toEqual(true);
     });
+    test('should be able to process AsyncAPI 2.5.0', () => {
+      const parsedObject = {asyncapi: '2.5.0'};
+      expect(processor.shouldProcess(parsedObject)).toEqual(true);
+    });
   });
   describe('tryGetVersionOfDocument()', () => {
     const processor = new AsyncAPIInputProcessor();
