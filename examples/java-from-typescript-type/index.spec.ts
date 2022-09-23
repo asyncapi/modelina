@@ -7,8 +7,7 @@ describe('Should be able to generate Java model from a TypeScript type file', ()
   });
   test('and should log expected output to console', async () => {
     await generate();
-    //Generate is called 4x, so even though we expect 1 model, we double it
-    expect(spy.mock.calls.length).toEqual(4);
+    expect(spy.mock.calls.length).toEqual(2);
     expect(spy.mock.calls[1]).toMatchSnapshot();
   });
 });
