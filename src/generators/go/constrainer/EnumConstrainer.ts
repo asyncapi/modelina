@@ -62,18 +62,44 @@ export function defaultEnumKeyConstraints(customConstraints?: Partial<ModelEnumK
   };
 }
 
-export function defaultEnumValueConstraints(): EnumValueConstraint {
-  return ({enumValue}) => {
-    let constrainedEnumValue: any = JSON.stringify(enumValue);
+function iterateEnumValues(skipStringQuotation: boolean): EnumValueConstraint {
+  return ({enumValue, constrainedEnumModel, enumModel}) => {
+    let constrainedEnumValue: any;
+    
     switch (typeof enumValue) {
     case 'string':
+      if (skipStringQuotation) {
+        constrainedEnumValue = enumValue;
+        break;
+      }
       constrainedEnumValue = `"${enumValue}"`;
       break;
     case 'number':
     case 'bigint':
       constrainedEnumValue = enumValue;
       break;
+    case 'object':
+      if (Array.isArray(enumValue)) {
+        enumValue.map((value) => {iterateEnumValues(true)(value)});
+        break;
+      }
+
+      const result: any = {};
+      Object.keys(enumValue).forEach(function(key) {
+        result[key] = iterateEnumValues(true)({enumValue: enumValue[key], constrainedEnumModel, enumModel});
+      });
+
+      constrainedEnumValue = `map[string]any{${JSON.stringify(result)}`;
+      break;
+    default:
+      constrainedEnumValue = JSON.stringify(enumValue);
     }
+
     return constrainedEnumValue;
   };
+
+}
+
+export function defaultEnumValueConstraints(): EnumValueConstraint {
+  return iterateEnumValues(false);
 }

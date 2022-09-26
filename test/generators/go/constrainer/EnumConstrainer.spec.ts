@@ -48,8 +48,23 @@ describe('EnumConstrainer', () => {
       expect(constrainedValue).toEqual(123);
     });
     test('should render object', () => {
-      const constrainedValue = GoDefaultConstraints.enumValue({enumModel, constrainedEnumModel, enumValue: {test: 'test'}});
-      expect(constrainedValue).toEqual('{"test":"test"}');
+      const value = {
+        test: 'test', 
+        aNumber: 123, 
+        multipleObjects: {
+          anotherObject: {
+            test: 'test',
+          }
+        },
+        anArray: [
+          "elementOne",
+          2,
+          {test: "test"},
+          [{test: "test"}]
+        ]
+      };
+      const constrainedValue = GoDefaultConstraints.enumValue({enumModel, constrainedEnumModel, enumValue: value});
+      expect(constrainedValue).toEqual('map[string]any{"test":"test,"aNumber":123,"multipleObjects":map[string]any{"anotherObject":map[string]any{"test":"test}}}');
     });
     test('should render unknown value', () => {
       const constrainedValue = GoDefaultConstraints.enumValue({enumModel, constrainedEnumModel, enumValue: undefined});

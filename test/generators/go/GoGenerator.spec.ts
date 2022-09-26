@@ -66,7 +66,7 @@ describe('GoGenerator', () => {
   test('should render `enum` with mixed types', async () => {
     const doc = {
       $id: 'Things',
-      enum: ['Texas', 1, '1', false, { test: 'test' }],
+      enum: ['Texas', 1, '1', false, { objectTest: 'test' }, ["one", 2, "three"]],
     };
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
