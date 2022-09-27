@@ -23,3 +23,12 @@ exports[`PythonGenerator Class should not render reserved keyword 1`] = `
   	self._reservedDel = reservedDel
 "
 `;
+
+exports[`PythonGenerator Class should work with empty objects 1`] = `
+"class CustomClass: 
+  def __init__(self, input):
+    \\"\\"\\"
+    No properties
+    \\"\\"\\"
+"
+`;

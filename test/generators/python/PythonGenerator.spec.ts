@@ -128,5 +128,19 @@ describe('PythonGenerator', () => {
       expect(models[0].result).toMatchSnapshot();
       expect(models[0].dependencies).toEqual(expectedDependencies);
     });
+    test('should work with empty objects', async () => {
+      const doc = {
+        $id: 'CustomClass',
+        type: 'object',
+        additionalProperties: false
+      };
+      generator = new PythonGenerator();
+      const expectedDependencies: string[] = [];
+  
+      const models = await generator.generate(doc);
+      expect(models).toHaveLength(1);
+      expect(models[0].result).toMatchSnapshot();
+      expect(models[0].dependencies).toEqual(expectedDependencies);
+    });
   });
 });
