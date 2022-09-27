@@ -9,6 +9,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { RustFileGenerator, defaultRustRenderCompleteModelOptions, RustPackageFeatures, RustRenderCompleteModelOptions, GoFileGenerator, CSharpFileGenerator, JavaFileGenerator, JAVA_COMMON_PRESET, TypeScriptFileGenerator, JavaScriptFileGenerator, PythonFileGenerator, PythonRenderCompleteModelOptions } from '../../src';
 import { execCommand } from './utils/Utils';
+const ignoreTestIf = (condition: boolean) => condition ? test.skip : test;
 
 /**
  * Read all the files in the folder, and return the appropriate Jest `each` entries.
@@ -42,15 +43,6 @@ const filesToTest = [
   ...jsonSchemaDraft4Files.filter(({ file }) => {
     // Too large to process https://github.com/asyncapi/modelina/issues/822
     return !file.includes('aws-cloudformation.json');
-  }).filter(({ file }) => {
-    // Related to https://github.com/asyncapi/modelina/issues/389
-    return !file.includes('jenkins-config.json');
-  }).filter(({file}) => {
-    // Related to https://github.com/asyncapi/modelina/issues/840
-    // Related to https://github.com/asyncapi/modelina/issues/841
-  }).filter(({ file }) => {
-    // Related to https://github.com/asyncapi/modelina/issues/825
-    return !file.includes('circleci-config.json');
   }),
   // ...jsonSchemaDraft7Files,
   // ...jsonSchemaDraft6Files,
@@ -143,12 +135,12 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
 
     describe('should be able to generate JS', () => {
       test('class', async () => {
-        const generator = new JavaScriptFileGenerator();
+        const generator = new JavaScriptFileGenerator({moduleSystem: 'CJS'});
         const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
         const input = JSON.parse(String(inputFileContent));
         const renderOutputPath = path.resolve(outputDirectoryPath, './js/class');
 
-        const generatedModels = await generator.generateToFiles(input, renderOutputPath, { moduleSystem: 'CJS' });
+        const generatedModels = await generator.generateToFiles(input, renderOutputPath, { });
         expect(generatedModels).not.toHaveLength(0);
 
         const files = fs.readdirSync(renderOutputPath);
@@ -173,8 +165,9 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
         await execCommand(compileCommand);
       });
     });
-    describe('should be able to generate Rust', () => {
-      test('struct with serde_json', async () => {
+    describe.skip('should be able to generate Rust', () => {
+      const ignoreTest = file === './docs/JsonSchemaDraft-4/openapi-3.json';
+      ignoreTestIf(ignoreTest)('struct with serde_json', async () => {
         const generator = new RustFileGenerator();
         const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
         const input = JSON.parse(String(inputFileContent));
