@@ -10,6 +10,7 @@ import interpretPatternProperties from './InterpretPatternProperties';
 import interpretNot from './InterpretNot';
 import interpretDependencies from './InterpretDependencies';
 import interpretAdditionalItems from './InterpretAdditionalItems';
+import interpretOneOf from './InterpretOneOf';
 
 export type InterpreterOptions = {
   allowInheritance?: boolean
@@ -78,11 +79,11 @@ export class Interpreter {
     interpretItems(schema, model, this, interpreterOptions);
     interpretProperties(schema, model, this, interpreterOptions);
     interpretAllOf(schema, model, this, interpreterOptions);
+    interpretOneOf(schema, model, this, interpreterOptions);
     interpretDependencies(schema, model, this, interpreterOptions);
     interpretConst(schema, model);
     interpretEnum(schema, model);
 
-    this.interpretAndCombineMultipleSchemas(schema.oneOf, model, schema, interpreterOptions);
     this.interpretAndCombineMultipleSchemas(schema.anyOf, model, schema, interpreterOptions);
     if (!(schema instanceof Draft4Schema) && !(schema instanceof Draft6Schema)) {
       this.interpretAndCombineSchema(schema.then, model, schema, interpreterOptions);
