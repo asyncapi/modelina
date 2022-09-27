@@ -2,7 +2,7 @@
 
 exports[`TypeScriptGenerator AsyncAPI with polymorphism should render 6 models (1 oneOf, 3 classes and 2 enums) 1`] = `
 Array [
-  "type PetMessage = Cat | Dog | StickInsect;",
+  "type AnonymousSchema_1 = Cat | Dog | StickInsect;",
   "class Cat {
   private _petType: PetType;
   private _reservedName: string;

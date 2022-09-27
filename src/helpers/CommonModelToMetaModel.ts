@@ -53,22 +53,23 @@ export function convertToMetaModel(jsonSchemaModel: CommonModel, alreadySeenMode
   return new AnyModel(modelName, jsonSchemaModel.originalInput);
 }
 export function convertToUnionModel(jsonSchemaModel: CommonModel, name: string, alreadySeenModels: Map<CommonModel, MetaModel>): UnionModel | undefined {
+  const containsUnions = Array.isArray(jsonSchemaModel.union);
+  const containsSimpleTypeUnion = Array.isArray(jsonSchemaModel.type) && jsonSchemaModel.type.length > 1
+  if (!containsSimpleTypeUnion && !containsUnions) {
+    return undefined;
+  }
   const unionModel = new UnionModel(name, jsonSchemaModel.originalInput, []);
-
-  if (Array.isArray(jsonSchemaModel.union)) {
-    alreadySeenModels.set(jsonSchemaModel, unionModel);
+  alreadySeenModels.set(jsonSchemaModel, unionModel);
+  
+  // Has multiple types, so convert to union
+  if (containsUnions && jsonSchemaModel.union) {
     for (const unionCommonModel of jsonSchemaModel.union) {
       const unionMetaModel = convertToMetaModel(unionCommonModel, alreadySeenModels);
       unionModel.union.push(unionMetaModel);
     }
     return unionModel;
-  }
-
-  if (!Array.isArray(jsonSchemaModel.type) || jsonSchemaModel.type.length <= 1) {
-    return undefined;
-  }
-  // Has multiple types, so convert to union
-  alreadySeenModels.set(jsonSchemaModel, unionModel);
+  } 
+  // Has simple union types
   const enumModel = convertToEnumModel(jsonSchemaModel, name);
   if (enumModel !== undefined) {
     unionModel.union.push(enumModel);

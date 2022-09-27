@@ -30,8 +30,8 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     }
     inputModel.originalInput = doc;
     // Go over all the message payloads and convert them to models
-    for (const [messageName, message] of doc.allMessages()) {
-      const schema = AsyncAPIInputProcessor.convertToInternalSchema(message.payload(), messageName);
+    for (const [, message] of doc.allMessages()) {
+      const schema = AsyncAPIInputProcessor.convertToInternalSchema(message.payload());
       const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema);
       if (newCommonModel.$id !== undefined) {
         if (inputModel.models[newCommonModel.$id] !== undefined) {
@@ -57,7 +57,6 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
   // eslint-disable-next-line sonarjs/cognitive-complexity
   static convertToInternalSchema(
     schema: AsyncAPISchema | boolean,
-    name?: string,
     alreadyIteratedSchemas: Map<string, AsyncapiV2Schema> = new Map()
   ): AsyncapiV2Schema | boolean {
     if (typeof schema === 'boolean') {return schema;}
@@ -65,7 +64,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     let schemaUid = schema.uid();
     //Because the constraint functionality of generators cannot handle -, <, >, we remove them from the id if it's an anonymous schema.
     if (schemaUid.includes('<anonymous-schema')) {
-      schemaUid = name || schemaUid.replace('<', '').replace(/-/g, '_').replace('>', '');
+      schemaUid = schemaUid.replace('<', '').replace(/-/g, '_').replace('>', '');
     }
     
     if (alreadyIteratedSchemas.has(schemaUid)) {
@@ -77,56 +76,56 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     alreadyIteratedSchemas.set(schemaUid, convertedSchema);
 
     if (schema.allOf() !== null) {
-      convertedSchema.allOf = schema.allOf().map((item) => this.convertToInternalSchema(item, undefined, alreadyIteratedSchemas));
+      convertedSchema.allOf = schema.allOf().map((item) => this.convertToInternalSchema(item, alreadyIteratedSchemas));
     }
     if (schema.oneOf() !== null) {
-      convertedSchema.oneOf = schema.oneOf().map((item) => this.convertToInternalSchema(item, undefined, alreadyIteratedSchemas));
+      convertedSchema.oneOf = schema.oneOf().map((item) => this.convertToInternalSchema(item, alreadyIteratedSchemas));
     }
     if (schema.anyOf() !== null) {
-      convertedSchema.anyOf = schema.anyOf().map((item) => this.convertToInternalSchema(item, undefined, alreadyIteratedSchemas));
+      convertedSchema.anyOf = schema.anyOf().map((item) => this.convertToInternalSchema(item, alreadyIteratedSchemas));
     }
     if (schema.not() !== null) {
-      convertedSchema.not = this.convertToInternalSchema(schema.not(), undefined, alreadyIteratedSchemas);
+      convertedSchema.not = this.convertToInternalSchema(schema.not(), alreadyIteratedSchemas);
     }
     if (
       typeof schema.additionalItems() === 'object' &&
       schema.additionalItems() !== null
     ) {
-      convertedSchema.additionalItems = this.convertToInternalSchema(schema.additionalItems(), undefined, alreadyIteratedSchemas);
+      convertedSchema.additionalItems = this.convertToInternalSchema(schema.additionalItems(), alreadyIteratedSchemas);
     }
     if (schema.contains() !== null) {
-      convertedSchema.contains = this.convertToInternalSchema(schema.contains(), undefined, alreadyIteratedSchemas);
+      convertedSchema.contains = this.convertToInternalSchema(schema.contains(), alreadyIteratedSchemas);
     }
     if (schema.propertyNames() !== null) {
-      convertedSchema.propertyNames = this.convertToInternalSchema(schema.propertyNames(), undefined, alreadyIteratedSchemas);
+      convertedSchema.propertyNames = this.convertToInternalSchema(schema.propertyNames(), alreadyIteratedSchemas);
     }
     if (schema.if() !== null) {
-      convertedSchema.if = this.convertToInternalSchema(schema.if(), undefined, alreadyIteratedSchemas);
+      convertedSchema.if = this.convertToInternalSchema(schema.if(), alreadyIteratedSchemas);
     }
     if (schema.then() !== null) {
-      convertedSchema.then = this.convertToInternalSchema(schema.then(), undefined, alreadyIteratedSchemas);
+      convertedSchema.then = this.convertToInternalSchema(schema.then(), alreadyIteratedSchemas);
     }
     if (schema.else() !== null) {
-      convertedSchema.else = this.convertToInternalSchema(schema.else(), undefined, alreadyIteratedSchemas);
+      convertedSchema.else = this.convertToInternalSchema(schema.else(), alreadyIteratedSchemas);
     }
     if (
       typeof schema.additionalProperties() === 'object' && 
       schema.additionalProperties() !== null
     ) {
-      convertedSchema.additionalProperties = this.convertToInternalSchema(schema.additionalProperties(), undefined, alreadyIteratedSchemas);
+      convertedSchema.additionalProperties = this.convertToInternalSchema(schema.additionalProperties(), alreadyIteratedSchemas);
     }
     if (schema.items() !== null) {
       if (Array.isArray(schema.items())) {
         convertedSchema.items = (schema.items() as AsyncAPISchema[]).map((item) => this.convertToInternalSchema(item), alreadyIteratedSchemas);
       } else {
-        convertedSchema.items = this.convertToInternalSchema(schema.items() as AsyncAPISchema, undefined, alreadyIteratedSchemas);
+        convertedSchema.items = this.convertToInternalSchema(schema.items() as AsyncAPISchema, alreadyIteratedSchemas);
       }
     }
 
     if (schema.properties() !== null && Object.keys(schema.properties()).length) {
       const properties : {[key: string]: AsyncapiV2Schema | boolean} = {};
       for (const [propertyName, propertySchema] of Object.entries(schema.properties())) {
-        properties[String(propertyName)] = this.convertToInternalSchema(propertySchema, undefined, alreadyIteratedSchemas);
+        properties[String(propertyName)] = this.convertToInternalSchema(propertySchema, alreadyIteratedSchemas);
       }
       convertedSchema.properties = properties;
     }
@@ -134,7 +133,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       const dependencies: { [key: string]: AsyncapiV2Schema | boolean | string[] } = {};
       for (const [dependencyName, dependency] of Object.entries(schema.dependencies())) {
         if (typeof dependency === 'object' && !Array.isArray(dependency)) {
-          dependencies[String(dependencyName)] = this.convertToInternalSchema(dependency, undefined, alreadyIteratedSchemas);
+          dependencies[String(dependencyName)] = this.convertToInternalSchema(dependency, alreadyIteratedSchemas);
         } else {
           dependencies[String(dependencyName)] = dependency as string[];
         }
@@ -144,14 +143,14 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     if (schema.patternProperties() !== null && Object.keys(schema.patternProperties()).length) {
       const patternProperties: { [key: string]: AsyncapiV2Schema | boolean } = {};
       for (const [patternPropertyName, patternProperty] of Object.entries(schema.patternProperties())) {
-        patternProperties[String(patternPropertyName)] = this.convertToInternalSchema(patternProperty, undefined, alreadyIteratedSchemas);
+        patternProperties[String(patternPropertyName)] = this.convertToInternalSchema(patternProperty, alreadyIteratedSchemas);
       }
       convertedSchema.patternProperties = patternProperties;
     }
     if (schema.definitions() !== null && Object.keys(schema.definitions()).length) {
       const definitions: { [key: string]: AsyncapiV2Schema | boolean } = {};
       for (const [definitionName, definition] of Object.entries(schema.definitions())) {
-        definitions[String(definitionName)] = this.convertToInternalSchema(definition, undefined, alreadyIteratedSchemas);
+        definitions[String(definitionName)] = this.convertToInternalSchema(definition, alreadyIteratedSchemas);
       }
       convertedSchema.definitions = definitions;
     }
