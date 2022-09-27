@@ -474,7 +474,7 @@ ${content}`;
       const enums = models.filter(model => model.result.includes('enum'));
 
       expect(enums).toHaveLength(2);
-      const discriminatorEnum = enums.at(0);
+      const discriminatorEnum = enums[0];
       expect(discriminatorEnum?.modelName).not.toContain('AnonymousSchema');
       // Should contain Cat, Dog, and StickBug
       expect(discriminatorEnum?.result).toMatchSnapshot();
