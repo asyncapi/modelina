@@ -54,7 +54,7 @@ export function convertToMetaModel(jsonSchemaModel: CommonModel, alreadySeenMode
 }
 export function convertToUnionModel(jsonSchemaModel: CommonModel, name: string, alreadySeenModels: Map<CommonModel, MetaModel>): UnionModel | undefined {
   const containsUnions = Array.isArray(jsonSchemaModel.union);
-  const containsSimpleTypeUnion = Array.isArray(jsonSchemaModel.type) && jsonSchemaModel.type.length > 1
+  const containsSimpleTypeUnion = Array.isArray(jsonSchemaModel.type) && jsonSchemaModel.type.length > 1;
   if (!containsSimpleTypeUnion && !containsUnions) {
     return undefined;
   }
