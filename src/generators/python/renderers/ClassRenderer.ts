@@ -77,7 +77,7 @@ export const PYTHON_DEFAULT_CLASS_PRESET: ClassPresetType<PythonOptions> = {
   ctor({renderer, model}) {
     const properties = model.properties || {};
     let body = '';
-    if(Object.keys(properties).length > 0) {
+    if (Object.keys(properties).length > 0) {
       const assigments = Object.values(properties).map((property) => {
         if (!property.required) {
           return `if hasattr(input, '${property.propertyName}'):\n\tself._${property.propertyName} = input.${property.propertyName}`;
