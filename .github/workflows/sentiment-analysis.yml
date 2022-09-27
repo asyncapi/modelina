@@ -30,7 +30,7 @@ jobs:
         name: Checking sentiments
         runs-on: ubuntu-latest
         steps:
-        - uses: actions/checkout@v2
+        - uses: actions/checkout@v3
         - name: Check sentiment
           uses: derberg/code-of-conduct-sentiment-analysis-github-action@v1
           id: sentiments

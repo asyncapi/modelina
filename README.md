@@ -40,7 +40,7 @@ This package is still under development and has not reached version 1.0.0 yet. T
 
 ## Requirements
 
-- [NodeJS](https://nodejs.org/en/) >= 14
+- [NodeJS](https://nodejs.org/en/) >= 16
 
 Feel free to submit an issue if you require this project in other use-cases.
 
