@@ -34,7 +34,7 @@ describe('TypeScriptConstrainer', () => {
     test('should render type', () => {
       const model = new ConstrainedIntegerModel('test', undefined, '');
       const type = TypeScriptDefaultTypeMapping.Integer({constrainedModel: model, options: TypeScriptGenerator.defaultOptions});
-      expect(type).toEqual('integer');
+      expect(type).toEqual('number');
     });
   });
   describe('String', () => { 
