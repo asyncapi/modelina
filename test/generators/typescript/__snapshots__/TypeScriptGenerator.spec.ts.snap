@@ -1,5 +1,138 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`TypeScriptGenerator AsyncAPI with polymorphism should render 6 models (1 oneOf, 3 classes and 2 enums) 1`] = `
+Array [
+  "type PetMessage = Cat | Dog | StickInsect;",
+  "class Cat {
+  private _petType: PetType;
+  private _reservedName: string;
+  private _huntingSkill: AnonymousSchema_5;
+  private _packSize?: integer;
+  private _color?: string;
+
+  constructor(input: {
+    petType: PetType,
+    reservedName: string,
+    huntingSkill: AnonymousSchema_5,
+    packSize?: integer,
+    color?: string,
+  }) {
+    this._petType = input.petType;
+    this._reservedName = input.reservedName;
+    this._huntingSkill = input.huntingSkill;
+    this._packSize = input.packSize;
+    this._color = input.color;
+  }
+
+  get petType(): PetType { return this._petType; }
+  set petType(petType: PetType) { this._petType = petType; }
+
+  get reservedName(): string { return this._reservedName; }
+  set reservedName(reservedName: string) { this._reservedName = reservedName; }
+
+  get huntingSkill(): AnonymousSchema_5 { return this._huntingSkill; }
+  set huntingSkill(huntingSkill: AnonymousSchema_5) { this._huntingSkill = huntingSkill; }
+
+  get packSize(): integer | undefined { return this._packSize; }
+  set packSize(packSize: integer | undefined) { this._packSize = packSize; }
+
+  get color(): string | undefined { return this._color; }
+  set color(color: string | undefined) { this._color = color; }
+}",
+  "enum PetType {
+  CAT = \\"Cat\\",
+  DOG = \\"Dog\\",
+  STICK_BUG = \\"StickBug\\",
+}",
+  "enum AnonymousSchema_5 {
+  CLUELESS = \\"clueless\\",
+  LAZY = \\"lazy\\",
+  ADVENTUROUS = \\"adventurous\\",
+  AGGRESSIVE = \\"aggressive\\",
+}",
+  "class Dog {
+  private _petType: PetType;
+  private _reservedName: string;
+  private _huntingSkill?: AnonymousSchema_5;
+  private _packSize: integer;
+  private _color?: string;
+
+  constructor(input: {
+    petType: PetType,
+    reservedName: string,
+    huntingSkill?: AnonymousSchema_5,
+    packSize: integer,
+    color?: string,
+  }) {
+    this._petType = input.petType;
+    this._reservedName = input.reservedName;
+    this._huntingSkill = input.huntingSkill;
+    this._packSize = input.packSize;
+    this._color = input.color;
+  }
+
+  get petType(): PetType { return this._petType; }
+  set petType(petType: PetType) { this._petType = petType; }
+
+  get reservedName(): string { return this._reservedName; }
+  set reservedName(reservedName: string) { this._reservedName = reservedName; }
+
+  get huntingSkill(): AnonymousSchema_5 | undefined { return this._huntingSkill; }
+  set huntingSkill(huntingSkill: AnonymousSchema_5 | undefined) { this._huntingSkill = huntingSkill; }
+
+  get packSize(): integer { return this._packSize; }
+  set packSize(packSize: integer) { this._packSize = packSize; }
+
+  get color(): string | undefined { return this._color; }
+  set color(color: string | undefined) { this._color = color; }
+}",
+  "class StickInsect {
+  private _petType: PetType;
+  private _reservedName: string;
+  private _huntingSkill?: AnonymousSchema_5;
+  private _packSize?: integer;
+  private _color: string;
+
+  constructor(input: {
+    petType: PetType,
+    reservedName: string,
+    huntingSkill?: AnonymousSchema_5,
+    packSize?: integer,
+    color: string,
+  }) {
+    this._petType = input.petType;
+    this._reservedName = input.reservedName;
+    this._huntingSkill = input.huntingSkill;
+    this._packSize = input.packSize;
+    this._color = input.color;
+  }
+
+  get petType(): PetType { return this._petType; }
+  set petType(petType: PetType) { this._petType = petType; }
+
+  get reservedName(): string { return this._reservedName; }
+  set reservedName(reservedName: string) { this._reservedName = reservedName; }
+
+  get huntingSkill(): AnonymousSchema_5 | undefined { return this._huntingSkill; }
+  set huntingSkill(huntingSkill: AnonymousSchema_5 | undefined) { this._huntingSkill = huntingSkill; }
+
+  get packSize(): integer | undefined { return this._packSize; }
+  set packSize(packSize: integer | undefined) { this._packSize = packSize; }
+
+  get color(): string { return this._color; }
+  set color(color: string) { this._color = color; }
+}",
+]
+`;
+
+exports[`TypeScriptGenerator AsyncAPI with polymorphism should render enum with discriminator 1`] = `
+"enum PetType {
+  CAT = \\"Cat\\",
+  DOG = \\"Dog\\",
+  STICK_BUG = \\"StickBug\\",
+}"
+`;
+
 exports[`TypeScriptGenerator should not render \`class\` with reserved keyword 1`] = `
 "class Address {
   private _reservedReservedEnum?: string;
