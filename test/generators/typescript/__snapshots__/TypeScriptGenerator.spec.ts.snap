@@ -7,14 +7,14 @@ Array [
   private _petType: PetType;
   private _reservedName: string;
   private _huntingSkill: AnonymousSchema_5;
-  private _packSize?: integer;
+  private _packSize?: number;
   private _color?: string;
 
   constructor(input: {
     petType: PetType,
     reservedName: string,
     huntingSkill: AnonymousSchema_5,
-    packSize?: integer,
+    packSize?: number,
     color?: string,
   }) {
     this._petType = input.petType;
@@ -33,8 +33,8 @@ Array [
   get huntingSkill(): AnonymousSchema_5 { return this._huntingSkill; }
   set huntingSkill(huntingSkill: AnonymousSchema_5) { this._huntingSkill = huntingSkill; }
 
-  get packSize(): integer | undefined { return this._packSize; }
-  set packSize(packSize: integer | undefined) { this._packSize = packSize; }
+  get packSize(): number | undefined { return this._packSize; }
+  set packSize(packSize: number | undefined) { this._packSize = packSize; }
 
   get color(): string | undefined { return this._color; }
   set color(color: string | undefined) { this._color = color; }
@@ -54,14 +54,14 @@ Array [
   private _petType: PetType;
   private _reservedName: string;
   private _huntingSkill?: AnonymousSchema_5;
-  private _packSize: integer;
+  private _packSize: number;
   private _color?: string;
 
   constructor(input: {
     petType: PetType,
     reservedName: string,
     huntingSkill?: AnonymousSchema_5,
-    packSize: integer,
+    packSize: number,
     color?: string,
   }) {
     this._petType = input.petType;
@@ -80,8 +80,8 @@ Array [
   get huntingSkill(): AnonymousSchema_5 | undefined { return this._huntingSkill; }
   set huntingSkill(huntingSkill: AnonymousSchema_5 | undefined) { this._huntingSkill = huntingSkill; }
 
-  get packSize(): integer { return this._packSize; }
-  set packSize(packSize: integer) { this._packSize = packSize; }
+  get packSize(): number { return this._packSize; }
+  set packSize(packSize: number) { this._packSize = packSize; }
 
   get color(): string | undefined { return this._color; }
   set color(color: string | undefined) { this._color = color; }
@@ -90,14 +90,14 @@ Array [
   private _petType: PetType;
   private _reservedName: string;
   private _huntingSkill?: AnonymousSchema_5;
-  private _packSize?: integer;
+  private _packSize?: number;
   private _color: string;
 
   constructor(input: {
     petType: PetType,
     reservedName: string,
     huntingSkill?: AnonymousSchema_5,
-    packSize?: integer,
+    packSize?: number,
     color: string,
   }) {
     this._petType = input.petType;
@@ -116,8 +116,8 @@ Array [
   get huntingSkill(): AnonymousSchema_5 | undefined { return this._huntingSkill; }
   set huntingSkill(huntingSkill: AnonymousSchema_5 | undefined) { this._huntingSkill = huntingSkill; }
 
-  get packSize(): integer | undefined { return this._packSize; }
-  set packSize(packSize: integer | undefined) { this._packSize = packSize; }
+  get packSize(): number | undefined { return this._packSize; }
+  set packSize(packSize: number | undefined) { this._packSize = packSize; }
 
   get color(): string { return this._color; }
   set color(color: string) { this._color = color; }
