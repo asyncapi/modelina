@@ -1,0 +1,91 @@
+{
+    "description": "Used for orchestrating all jobs. Each workflow consists of the workflow name as a key and a map as a value",
+    "type": "object",
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "definitions": {
+        "logical": {
+            "$id": "logical",
+            "description": "https://circleci.com/docs/2.0/configuration-reference/#logic-statements \n\nA logical statement to be used in dynamic configuration",
+            "oneOf": [
+                {
+                    "type": [
+                        "string",
+                        "boolean",
+                        "integer",
+                        "number"
+                    ]
+                },
+                {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "minProperties": 1,
+                    "maxProperties": 1,
+                    "properties": {
+                        "and": {
+                            "description": "https://circleci.com/docs/2.0/configuration-reference/#logic-statements \n\nLogical and: true when all statements in the list are true",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/logical"
+                            }
+                        },
+                        "or": {
+                            "description": "https://circleci.com/docs/2.0/configuration-reference/#logic-statements \n\nLogical or: true when at least one statements in the list is true",
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/logical"
+                            }
+                        },
+                        "not": {
+                            "description": "https://circleci.com/docs/2.0/configuration-reference/#logic-statements \n\nLogical not: true when statement is false",
+                            "$ref": "#/definitions/logical"
+                        },
+                        "equal": {
+                            "description": "https://circleci.com/docs/2.0/configuration-reference/#logic-statements \n\nTrue when all elements in the list are equal",
+                            "type": "array"
+                        },
+                        "matches": {
+                            "description": "https://circleci.com/docs/2.0/configuration-reference/#logic-statements \n\nTrue when value matches the pattern",
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "pattern": {
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    },
+    "properties": {
+        "workflows": {
+            "type": "object",
+            "properties": {
+                "version": {
+                    "description": "The Workflows `version` field is used to issue warnings for deprecation or breaking changes during v2 Beta. It is deprecated as of CircleCI v2.1",
+                    "enum": [
+                        2
+                    ]
+                }
+            },
+            "additionalProperties": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "when": {
+                        "description": "Specify when to run the workflow.",
+                        "$ref": "#/definitions/logical"
+                    },
+                    "unless": {
+                        "description": "Specify when *not* to run the workflow.",
+                        "$ref": "#/definitions/logical"
+                    }
+                }
+            }
+        }
+    }
+}
