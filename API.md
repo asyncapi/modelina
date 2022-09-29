@@ -116,6 +116,10 @@ Check is done using referential equality</p>
 <dd><p>Interpreter function for allOf keyword.</p>
 <p>It either merges allOf schemas into existing model or if allowed, create inheritance.</p>
 </dd>
+<dt><a href="#interpretAnyOf">interpretAnyOf(schema, model, interpreter, interpreterOptions)</a></dt>
+<dd><p>Interpreter function for anyOf keyword.</p>
+<p>It puts the schema reference into the items field.</p>
+</dd>
 <dt><a href="#interpretConst">interpretConst(schema, model)</a></dt>
 <dd><p>Interpreter function for const keyword for draft version &gt; 4</p>
 </dd>
@@ -133,6 +137,10 @@ Check is done using referential equality</p>
 </dd>
 <dt><a href="#interpretNot">interpretNot(schema, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for not keyword.</p>
+</dd>
+<dt><a href="#interpretOneOf">interpretOneOf(schema, model, interpreter, interpreterOptions)</a></dt>
+<dd><p>Interpreter function for oneOf keyword.</p>
+<p>It puts the schema reference into the items field.</p>
 </dd>
 <dt><a href="#interpretPatternProperties">interpretPatternProperties(schema, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for patternProperties keyword.</p>
@@ -266,6 +274,7 @@ Common internal representation for a model.
         * [.isRequired(propertyName)](#CommonModel+isRequired) ⇒ <code>boolean</code>
         * [.addItem(itemModel, originalInput)](#CommonModel+addItem)
         * [.addItemTuple(tupleModel, originalInput, index)](#CommonModel+addItemTuple)
+        * [.addItemUnion(unionModel)](#CommonModel+addItemUnion)
         * [.addEnum(enumValue)](#CommonModel+addEnum)
         * [.removeEnum(enumValue)](#CommonModel+removeEnum)
         * [.addProperty(propertyName, propertyModel, originalInput)](#CommonModel+addProperty)
@@ -367,6 +376,17 @@ If a item already exist it will be merged.
 | tupleModel |  |
 | originalInput | corresponding input that got interpreted to this model |
 | index |  |
+
+<a name="CommonModel+addItemUnion"></a>
+
+### commonModel.addItemUnion(unionModel)
+Adds a union model to the model.
+
+**Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
+
+| Param |
+| --- |
+| unionModel | 
 
 <a name="CommonModel+addEnum"></a>
 
@@ -1166,6 +1186,22 @@ It either merges allOf schemas into existing model or if allowed, create inherit
 | interpreter |  |
 | interpreterOptions | to control the interpret process |
 
+<a name="interpretAnyOf"></a>
+
+## interpretAnyOf(schema, model, interpreter, interpreterOptions)
+Interpreter function for anyOf keyword.
+
+It puts the schema reference into the items field.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema |  |
+| model |  |
+| interpreter |  |
+| interpreterOptions | to control the interpret process |
+
 <a name="interpretConst"></a>
 
 ## interpretConst(schema, model)
@@ -1235,6 +1271,22 @@ Internal function to process all item schemas
 
 ## interpretNot(schema, model, interpreter, interpreterOptions)
 Interpreter function for not keyword.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema |  |
+| model |  |
+| interpreter |  |
+| interpreterOptions | to control the interpret process |
+
+<a name="interpretOneOf"></a>
+
+## interpretOneOf(schema, model, interpreter, interpreterOptions)
+Interpreter function for oneOf keyword.
+
+It puts the schema reference into the items field.
 
 **Kind**: global function  
 

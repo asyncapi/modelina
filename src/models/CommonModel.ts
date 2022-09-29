@@ -15,6 +15,7 @@ export class CommonModel {
   $ref?: string;
   required?: string[];
   additionalItems?: CommonModel;
+  union?: CommonModel[]
 
   /**
    * Takes a deep copy of the input object and converts it to an instance of CommonModel.
@@ -187,6 +188,19 @@ export class CommonModel {
       modelItems[Number(index)] = tupleModel;
     }
     this.items = modelItems;
+  }
+
+  /**
+   * Adds a union model to the model.
+   *
+   * @param unionModel
+   */
+  addItemUnion(unionModel: CommonModel): void {
+    if (Array.isArray(this.union)) {
+      this.union.push(unionModel);
+    } else {
+      this.union = [unionModel];
+    }
   }
 
   /**
