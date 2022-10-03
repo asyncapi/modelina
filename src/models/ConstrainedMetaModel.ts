@@ -1,3 +1,4 @@
+import { makeUnique } from '../utils/DependencyHelper';
 import { MetaModel } from './MetaModel';
 
 export abstract class ConstrainedMetaModel extends MetaModel {
@@ -59,7 +60,7 @@ export class ConstrainedTupleModel extends ConstrainedMetaModel {
     }
     
     //Ensure no duplicate references
-    dependencyModels = [...new Set(dependencyModels)];
+    dependencyModels = makeUnique(dependencyModels);
     
     return dependencyModels;
   }
@@ -112,7 +113,7 @@ export class ConstrainedUnionModel extends ConstrainedMetaModel {
     }
     
     //Ensure no duplicate references
-    dependencyModels = [...new Set(dependencyModels)];
+    dependencyModels = makeUnique(dependencyModels);
 
     return dependencyModels;
   }
@@ -156,7 +157,7 @@ export class ConstrainedDictionaryModel extends ConstrainedMetaModel {
     }
    
     //Ensure no duplicate references
-    dependencyModels = [...new Set(dependencyModels)];
+    dependencyModels = makeUnique(dependencyModels);
 
     return dependencyModels;
   }
@@ -188,7 +189,7 @@ export class ConstrainedObjectModel extends ConstrainedMetaModel {
     });
 
     //Ensure no duplicate references
-    dependencyModels = [...new Set(dependencyModels)];
+    dependencyModels = makeUnique(dependencyModels);
 
     return dependencyModels;
   }
