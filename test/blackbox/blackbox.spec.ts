@@ -32,6 +32,7 @@ const AsyncAPIV2_1Files = readFilesInFolder('AsyncAPI-2_1');
 const AsyncAPIV2_2Files = readFilesInFolder('AsyncAPI-2_2');
 const AsyncAPIV2_3Files = readFilesInFolder('AsyncAPI-2_3');
 const AsyncAPIV2_4Files = readFilesInFolder('AsyncAPI-2_4');
+const AsyncAPIV2_5Files = readFilesInFolder('AsyncAPI-2_5');
 
 const filesToTest = [
   // ...OpenAPI3_0Files,
@@ -40,6 +41,7 @@ const filesToTest = [
   // ...AsyncAPIV2_2Files,
   // ...AsyncAPIV2_3Files,
   // ...AsyncAPIV2_4Files,
+  // ...AsyncAPIV2_5Files,
   ...jsonSchemaDraft4Files.filter(({ file }) => {
     // Too large to process https://github.com/asyncapi/modelina/issues/822
     return !file.includes('aws-cloudformation.json');

@@ -1,5 +1,102 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`TypeScriptGenerator AsyncAPI with polymorphism should render 6 models (1 oneOf, 3 classes and 2 enums) 1`] = `
+Array [
+  "type AnonymousSchema_1 = Cat | Dog | StickInsect;",
+  "class Cat {
+  private _petType: PetType;
+  private _reservedName: string;
+  private _huntingSkill: AnonymousSchema_5;
+
+  constructor(input: {
+    petType: PetType,
+    reservedName: string,
+    huntingSkill: AnonymousSchema_5,
+  }) {
+    this._petType = input.petType;
+    this._reservedName = input.reservedName;
+    this._huntingSkill = input.huntingSkill;
+  }
+
+  get petType(): PetType { return this._petType; }
+  set petType(petType: PetType) { this._petType = petType; }
+
+  get reservedName(): string { return this._reservedName; }
+  set reservedName(reservedName: string) { this._reservedName = reservedName; }
+
+  get huntingSkill(): AnonymousSchema_5 { return this._huntingSkill; }
+  set huntingSkill(huntingSkill: AnonymousSchema_5) { this._huntingSkill = huntingSkill; }
+}",
+  "enum PetType {
+  CAT = \\"Cat\\",
+  DOG = \\"Dog\\",
+  STICK_BUG = \\"StickBug\\",
+}",
+  "enum AnonymousSchema_5 {
+  CLUELESS = \\"clueless\\",
+  LAZY = \\"lazy\\",
+  ADVENTUROUS = \\"adventurous\\",
+  AGGRESSIVE = \\"aggressive\\",
+}",
+  "class Dog {
+  private _petType: PetType;
+  private _reservedName: string;
+  private _packSize: number;
+
+  constructor(input: {
+    petType: PetType,
+    reservedName: string,
+    packSize: number,
+  }) {
+    this._petType = input.petType;
+    this._reservedName = input.reservedName;
+    this._packSize = input.packSize;
+  }
+
+  get petType(): PetType { return this._petType; }
+  set petType(petType: PetType) { this._petType = petType; }
+
+  get reservedName(): string { return this._reservedName; }
+  set reservedName(reservedName: string) { this._reservedName = reservedName; }
+
+  get packSize(): number { return this._packSize; }
+  set packSize(packSize: number) { this._packSize = packSize; }
+}",
+  "class StickInsect {
+  private _petType: PetType;
+  private _reservedName: string;
+  private _color: string;
+
+  constructor(input: {
+    petType: PetType,
+    reservedName: string,
+    color: string,
+  }) {
+    this._petType = input.petType;
+    this._reservedName = input.reservedName;
+    this._color = input.color;
+  }
+
+  get petType(): PetType { return this._petType; }
+  set petType(petType: PetType) { this._petType = petType; }
+
+  get reservedName(): string { return this._reservedName; }
+  set reservedName(reservedName: string) { this._reservedName = reservedName; }
+
+  get color(): string { return this._color; }
+  set color(color: string) { this._color = color; }
+}",
+]
+`;
+
+exports[`TypeScriptGenerator AsyncAPI with polymorphism should render enum with discriminator 1`] = `
+"enum PetType {
+  CAT = \\"Cat\\",
+  DOG = \\"Dog\\",
+  STICK_BUG = \\"StickBug\\",
+}"
+`;
+
 exports[`TypeScriptGenerator should not render \`class\` with reserved keyword 1`] = `
 "class Address {
   private _reservedReservedEnum?: string;
