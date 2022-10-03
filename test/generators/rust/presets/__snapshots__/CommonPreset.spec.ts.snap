@@ -28,12 +28,12 @@ exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Defau
 "// Members represents a union of types: String, f64, bool
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub enum Members {
-    #[serde(rename=\\"Members0\\")]
-    Members0(String),
-    #[serde(rename=\\"Members1\\")]
-    Members1(f64),
-    #[serde(rename=\\"Members2\\")]
-    Members2(bool),
+    #[serde(rename=\\"MembersOneOf_00\\")]
+    MembersOneOf_00(String),
+    #[serde(rename=\\"MembersOneOf_11\\")]
+    MembersOneOf_11(f64),
+    #[serde(rename=\\"MembersOneOf_22\\")]
+    MembersOneOf_22(bool),
 }
 
 "
@@ -43,12 +43,12 @@ exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Defau
 "// OptionalMembers represents a union of types: String, f64, bool
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub enum OptionalMembers {
-    #[serde(rename=\\"OptionalMembers0\\")]
-    OptionalMembers0(String),
-    #[serde(rename=\\"OptionalMembers1\\")]
-    OptionalMembers1(f64),
-    #[serde(rename=\\"OptionalMembers2\\")]
-    OptionalMembers2(bool),
+    #[serde(rename=\\"OptionalMembersOneOf_00\\")]
+    OptionalMembersOneOf_00(String),
+    #[serde(rename=\\"OptionalMembersOneOf_11\\")]
+    OptionalMembersOneOf_11(f64),
+    #[serde(rename=\\"OptionalMembersOneOf_22\\")]
+    OptionalMembersOneOf_22(bool),
 }
 
 "
@@ -82,12 +82,12 @@ exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Defau
 "// Members represents a union of types: String, f64, bool
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub enum Members {
-    #[serde(rename=\\"Members0\\")]
-    Members0(String),
-    #[serde(rename=\\"Members1\\")]
-    Members1(f64),
-    #[serde(rename=\\"Members2\\")]
-    Members2(bool),
+    #[serde(rename=\\"MembersOneOf_00\\")]
+    MembersOneOf_00(String),
+    #[serde(rename=\\"MembersOneOf_11\\")]
+    MembersOneOf_11(f64),
+    #[serde(rename=\\"MembersOneOf_22\\")]
+    MembersOneOf_22(bool),
 }
 
 "
@@ -97,12 +97,12 @@ exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Defau
 "// OptionalMembers represents a union of types: String, f64, bool
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub enum OptionalMembers {
-    #[serde(rename=\\"OptionalMembers0\\")]
-    OptionalMembers0(String),
-    #[serde(rename=\\"OptionalMembers1\\")]
-    OptionalMembers1(f64),
-    #[serde(rename=\\"OptionalMembers2\\")]
-    OptionalMembers2(bool),
+    #[serde(rename=\\"OptionalMembersOneOf_00\\")]
+    OptionalMembersOneOf_00(String),
+    #[serde(rename=\\"OptionalMembersOneOf_11\\")]
+    OptionalMembersOneOf_11(f64),
+    #[serde(rename=\\"OptionalMembersOneOf_22\\")]
+    OptionalMembersOneOf_22(bool),
 }
 
 "
@@ -234,12 +234,12 @@ exports[`RUST_COMMON_PRESET Struct & Complete Models should render \`struct\` ty
 "// Members represents a union of types: String, f64, bool
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub enum Members {
-    #[serde(rename=\\"Members0\\")]
-    Members0(String),
-    #[serde(rename=\\"Members1\\")]
-    Members1(f64),
-    #[serde(rename=\\"Members2\\")]
-    Members2(bool),
+    #[serde(rename=\\"MembersOneOf_00\\")]
+    MembersOneOf_00(String),
+    #[serde(rename=\\"MembersOneOf_11\\")]
+    MembersOneOf_11(f64),
+    #[serde(rename=\\"MembersOneOf_22\\")]
+    MembersOneOf_22(bool),
 }
 
 "

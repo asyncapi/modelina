@@ -11,7 +11,7 @@ import { OpenAPIInputProcessor } from './OpenAPIInputProcessor';
  * Class for processing AsyncAPI inputs
  */
 export class AsyncAPIInputProcessor extends AbstractInputProcessor {
-  static supportedVersions = ['2.0.0', '2.1.0', '2.2.0', '2.3.0','2.4.0'];
+  static supportedVersions = ['2.0.0', '2.1.0', '2.2.0', '2.3.0', '2.4.0', '2.5.0'];
   static supportedJsonSchema7Formats = [
     'application/schema+json;version=draft-07',
     'application/schema+yaml;version=draft-07'

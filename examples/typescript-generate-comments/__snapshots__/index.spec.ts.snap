@@ -29,32 +29,5 @@ interface NestedTest {
   additionalProperties?: Map<string, any>;
 }",
   ],
-  Array [
-    "/**
- * Main Description
- */
-interface Test {
-  stringProp: string;
-  /**
-   * Description
-   * @example Example
-   */
-  numberProp?: number;
-  /**
-   * @example Example 1, Example 2
-   */
-  objectProp?: NestedTest;
-  additionalProperties?: Map<string, any>;
-}",
-  ],
-  Array [
-    "/**
- * @example Example 1, Example 2
- */
-interface NestedTest {
-  stringProp?: string;
-  additionalProperties?: Map<string, any>;
-}",
-  ],
 ]
 `;

@@ -7,8 +7,7 @@ describe('Should be able to generate data models for jackson annotation', () => 
   });
   test('and should log expected output to console', async () => {
     await generate();
-    //Generate is called 2x, so even though we expect 1 model, we double it
-    expect(spy.mock.calls.length).toEqual(2);
-    expect(spy.mock.calls[1]).toMatchSnapshot();
+    expect(spy.mock.calls.length).toEqual(1);
+    expect(spy.mock.calls[0]).toMatchSnapshot();
   });
 });

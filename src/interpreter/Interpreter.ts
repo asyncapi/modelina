@@ -10,6 +10,8 @@ import interpretPatternProperties from './InterpretPatternProperties';
 import interpretNot from './InterpretNot';
 import interpretDependencies from './InterpretDependencies';
 import interpretAdditionalItems from './InterpretAdditionalItems';
+import interpretOneOf from './InterpretOneOf';
+import interpretAnyOf from './InterpretAnyOf';
 
 export type InterpreterOptions = {
   allowInheritance?: boolean
@@ -78,12 +80,12 @@ export class Interpreter {
     interpretItems(schema, model, this, interpreterOptions);
     interpretProperties(schema, model, this, interpreterOptions);
     interpretAllOf(schema, model, this, interpreterOptions);
+    interpretOneOf(schema, model, this, interpreterOptions);
+    interpretAnyOf(schema, model, this, interpreterOptions);
     interpretDependencies(schema, model, this, interpreterOptions);
     interpretConst(schema, model);
     interpretEnum(schema, model);
 
-    this.interpretAndCombineMultipleSchemas(schema.oneOf, model, schema, interpreterOptions);
-    this.interpretAndCombineMultipleSchemas(schema.anyOf, model, schema, interpreterOptions);
     if (!(schema instanceof Draft4Schema) && !(schema instanceof Draft6Schema)) {
       this.interpretAndCombineSchema(schema.then, model, schema, interpreterOptions);
       this.interpretAndCombineSchema(schema.else, model, schema, interpreterOptions);
@@ -108,21 +110,6 @@ export class Interpreter {
     const model = this.interpret(schema, interpreterOptions);
     if (model !== undefined) {
       CommonModel.mergeCommonModels(currentModel, model, rootSchema);
-    }
-  }
-
-  /**
-   * Go through multiple schemas and combine the interpreted models together.
-   * 
-   * @param schema to go through
-   * @param currentModel the current output
-   * @param rootSchema the root schema to use as original schema when merged
-   * @param interpreterOptions to control the interpret process
-   */
-  interpretAndCombineMultipleSchemas(schema: InterpreterSchemaType[] | undefined, currentModel: CommonModel, rootSchema: any, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
-    if (!Array.isArray(schema)) { return; }
-    for (const forEachSchema of schema) {
-      this.interpretAndCombineSchema(forEachSchema, currentModel, rootSchema, interpreterOptions);
     }
   }
 }

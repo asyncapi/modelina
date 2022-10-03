@@ -7,7 +7,7 @@
 
 import * as path from 'path';
 import * as fs from 'fs';
-import { RustFileGenerator, defaultRustRenderCompleteModelOptions, RustPackageFeatures, RustRenderCompleteModelOptions, GoFileGenerator, CSharpFileGenerator, JavaFileGenerator, JAVA_COMMON_PRESET, TypeScriptFileGenerator, JavaScriptFileGenerator } from '../../src';
+import { RustFileGenerator, defaultRustRenderCompleteModelOptions, RustPackageFeatures, RustRenderCompleteModelOptions, GoFileGenerator, CSharpFileGenerator, JavaFileGenerator, JAVA_COMMON_PRESET, TypeScriptFileGenerator, JavaScriptFileGenerator, PythonFileGenerator, PythonRenderCompleteModelOptions } from '../../src';
 import { execCommand } from './utils/Utils';
 
 /**
@@ -31,6 +31,7 @@ const AsyncAPIV2_1Files = readFilesInFolder('AsyncAPI-2_1');
 const AsyncAPIV2_2Files = readFilesInFolder('AsyncAPI-2_2');
 const AsyncAPIV2_3Files = readFilesInFolder('AsyncAPI-2_3');
 const AsyncAPIV2_4Files = readFilesInFolder('AsyncAPI-2_4');
+const AsyncAPIV2_5Files = readFilesInFolder('AsyncAPI-2_5');
 
 const filesToTest = [
   // ...OpenAPI3_0Files,
@@ -39,12 +40,16 @@ const filesToTest = [
   // ...AsyncAPIV2_2Files,
   // ...AsyncAPIV2_3Files,
   // ...AsyncAPIV2_4Files,
+  // ...AsyncAPIV2_5Files,
   ...jsonSchemaDraft4Files.filter(({ file }) => {
     // Too large to process https://github.com/asyncapi/modelina/issues/822
     return !file.includes('aws-cloudformation.json');
   }).filter(({ file }) => {
     // Related to https://github.com/asyncapi/modelina/issues/389
     return !file.includes('jenkins-config.json');
+  }).filter(({file}) => {
+    // Related to https://github.com/asyncapi/modelina/issues/840
+    // Related to https://github.com/asyncapi/modelina/issues/841
   }).filter(({ file }) => {
     // Related to https://github.com/asyncapi/modelina/issues/825
     return !file.includes('circleci-config.json');
@@ -82,7 +87,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
       }
     ];
     describe.each(javaGeneratorOptions)('should be able to generate and compile Java', ({ generatorOption, description, renderOutputPath }) => {
-      test('class', async () => {
+      test('class and enums', async () => {
         const generator = new JavaFileGenerator(generatorOption);
         const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
         const input = JSON.parse(String(inputFileContent));
@@ -96,7 +101,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
       });
     });
     describe('should be able to generate and compile C#', () => {
-      test('class', async () => {
+      test('class and enums', async () => {
         const generator = new CSharpFileGenerator();
         const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
         const input = JSON.parse(String(inputFileContent));
@@ -111,7 +116,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
     });
 
     describe('should be able to generate and transpile TS', () => {
-      test('class', async () => {
+      test('class and enums', async () => {
         const generator = new TypeScriptFileGenerator({ modelType: 'class' });
         const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
         const input = JSON.parse(String(inputFileContent));
@@ -124,7 +129,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
         await execCommand(transpileCommand);
       });
 
-      test('interface', async () => {
+      test('interface and enums', async () => {
         const generator = new TypeScriptFileGenerator({ modelType: 'interface' });
         const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
         const input = JSON.parse(String(inputFileContent));
@@ -199,6 +204,21 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
 
         const compileCommand = `cargo build ${renderOutputPath}`;
         await execCommand(compileCommand);
+      });
+    });
+    describe('should be able to generate Python', () => {
+      test('class and enums', async () => {
+        const generator = new PythonFileGenerator();
+        const inputFileContent = await fs.promises.readFile(fileToGenerateFor);
+        const input = JSON.parse(String(inputFileContent));
+        const renderOutputPath = path.resolve(outputDirectoryPath, './python/class/');
+        const options = { } as PythonRenderCompleteModelOptions;
+        const generatedModels = await generator.generateToFiles(input, renderOutputPath, options);
+        expect(generatedModels).not.toHaveLength(0);
+
+        const compileCommand = `python -m compileall -f ${renderOutputPath}`;
+        await execCommand(compileCommand);
+        expect(generatedModels).not.toHaveLength(0);
       });
     });
   });

@@ -27,4 +27,6 @@ export async function generate(): Promise<void> {
     console.log(model.result);
   }
 }
-generate();
+if (require.main === module) {
+  generate();
+}

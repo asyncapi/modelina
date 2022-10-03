@@ -15,6 +15,7 @@ export class CommonModel {
   $ref?: string;
   required?: string[];
   additionalItems?: CommonModel;
+  union?: CommonModel[]
 
   /**
    * Takes a deep copy of the input object and converts it to an instance of CommonModel.
@@ -190,6 +191,19 @@ export class CommonModel {
   }
 
   /**
+   * Adds a union model to the model.
+   *
+   * @param unionModel
+   */
+  addItemUnion(unionModel: CommonModel): void {
+    if (Array.isArray(this.union)) {
+      this.union.push(unionModel);
+    } else {
+      this.union = [unionModel];
+    }
+  }
+
+  /**
    * Add enum value to the model.
    * 
    * Ensures no duplicates are added.
@@ -339,20 +353,25 @@ export class CommonModel {
    * @param alreadyIteratedModels
    */
   private static mergeProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalInput: any, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
-    const mergeToProperties = mergeTo.properties;
-    const mergeFromProperties = mergeFrom.properties;
-    if (mergeFromProperties !== undefined) {
-      if (mergeToProperties === undefined) {
-        mergeTo.properties = mergeFromProperties;
+    if (!mergeTo.properties) {
+      mergeTo.properties = mergeFrom.properties;
+      return;
+    }
+
+    if (!mergeFrom.properties) {
+      return;
+    }
+
+    mergeTo.properties = {
+      ...mergeTo.properties,
+    };
+
+    for (const [propName, propValue] of Object.entries(mergeFrom.properties)) {
+      if (!mergeTo.properties[String(propName)]) {
+        mergeTo.properties[String(propName)] = propValue;
       } else {
-        for (const [propName, prop] of Object.entries(mergeFromProperties)) {
-          if (mergeToProperties[String(propName)] !== undefined) {
-            Logger.warn(`Found duplicate properties ${propName} for model. Model property from ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalInput);
-            mergeToProperties[String(propName)] = CommonModel.mergeCommonModels(mergeToProperties[String(propName)], prop, originalInput, alreadyIteratedModels);
-          } else {
-            mergeToProperties[String(propName)] = prop;
-          }
-        }
+        Logger.warn(`Found duplicate properties ${propName} for model. Model property from ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalInput);
+        mergeTo.properties[String(propName)] = CommonModel.mergeCommonModels(mergeTo.properties[String(propName)], propValue, originalInput, alreadyIteratedModels);
       }
     }
   }

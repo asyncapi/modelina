@@ -1,4 +1,4 @@
-[![AsyncAPI Modelina](./assets/readme-banner.png)](https://www.asyncapi.com/tools/modelina)
+[![AsyncAPI Modelina](./docs/img/readme-banner.png)](https://www.asyncapi.com/tools/modelina)
 
 Modelina is the official AsyncAPI SDK to generate data models (i.e. <a href="#outputs">Java/TypeScript classes, Go Structs, etc</a>) from <a href="#inputs">AsyncAPI documents, among other supported inputs</a>.
 
@@ -71,7 +71,7 @@ To see the complete feature list for each language, please click the individual 
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-models-from-asyncapi-documents">AsyncAPI</a></td>
-    <td>We support the following AsyncAPI versions: <em>2.0.0, 2.1.0, 2.2.0, 2.3.0 and 2.4.0</em>, which generates models for all the defined message payloads.</td>
+    <td>We support the following AsyncAPI versions: <em>2.0.0 -> 2.5.0</em>, which generates models for all the defined message payloads.</td>
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-models-from-json-schema-documents">JSON Schema</a></td>
@@ -124,12 +124,12 @@ To see the complete feature list for each language, please click the individual 
     <td>Class and enum generation: json_annotation</td>
   </tr>
   <tr>
-    <td><a href="./docs/usage.md#generate-dart-models">Dart</a></td>
-    <td>Class and enum generation: json_annotation</td>
-  </tr>
-  <tr>
     <td><a href="./docs/usage.md#generate-rust-models">Rust</a></td>
     <td>Struct/tuple and enum generation: <em>generation of `implement Default`, generate serde macros, custom indentation type and size, etc</em></td>
+  </tr>
+  <tr>
+    <td><a href="./docs/usage.md#generate-python-models">Python</a></td>
+    <td>Class and enum generation: <em>custom indentation type and size, etc </em></td>
   </tr>
 </table>
 

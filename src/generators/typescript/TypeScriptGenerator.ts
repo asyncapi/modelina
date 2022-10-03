@@ -12,7 +12,7 @@ import { EnumRenderer } from './renderers/EnumRenderer';
 import { TypeRenderer } from './renderers/TypeRenderer';
 import { TypeScriptDefaultConstraints, TypeScriptDefaultTypeMapping } from './TypeScriptConstrainer';
 import { TS_EXPORT_KEYWORD_PRESET } from './presets';
-import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
+import { DeepPartial, mergePartialAndDefault, renderJavaScriptDependency } from '../../utils';
 
 export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPreset> {
   renderTypes: boolean;
@@ -21,10 +21,10 @@ export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPres
   mapType: 'indexedObject' | 'map' | 'record';
   typeMapping: TypeMapping<TypeScriptOptions>;
   constraints: Constraints;
+  moduleSystem: 'ESM' | 'CJS';
 }
 
 export interface TypeScriptRenderCompleteModelOptions {
-  moduleSystem?: 'ESM' | 'CJS';
   exportType?: 'default' | 'named';
 }
 
@@ -40,7 +40,8 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,Typ
     mapType: 'map',
     defaultPreset: TS_DEFAULT_PRESET,
     typeMapping: TypeScriptDefaultTypeMapping,
-    constraints: TypeScriptDefaultConstraints
+    constraints: TypeScriptDefaultConstraints,
+    moduleSystem: 'ESM'
   };
 
   constructor(
@@ -78,13 +79,13 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,Typ
    * @param inputModel
    * @param options
    */
-  async renderCompleteModel(model: ConstrainedMetaModel, inputModel: InputMetaModel, {moduleSystem = 'ESM', exportType = 'default'}: TypeScriptRenderCompleteModelOptions): Promise<RenderOutput> {
+  async renderCompleteModel(model: ConstrainedMetaModel, inputModel: InputMetaModel, {exportType = 'default'}: TypeScriptRenderCompleteModelOptions): Promise<RenderOutput> {
     // Shallow copy presets so that we can restore it once we are done
     const originalPresets = [...(this.options.presets ? this.options.presets : [])];
 
     // Add preset that adds the `export` keyword if it hasn't already been added
     if (
-      moduleSystem === 'ESM' &&
+      this.options.moduleSystem === 'ESM' &&
       exportType === 'named' &&
       !hasPreset(originalPresets, TS_EXPORT_KEYWORD_PRESET)
     ) {
@@ -97,10 +98,7 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,Typ
     const modelDependencyImports = modelDependencies.map(({name}) => {
       const dependencyObject =
         exportType === 'named' ? `{${name}}` : name;
-
-      return moduleSystem === 'CJS'
-        ? `const ${dependencyObject} = require('./${name}');`
-        : `import ${dependencyObject} from './${name}';`;
+      return renderJavaScriptDependency(dependencyObject, `./${name}`, this.options.moduleSystem);
     });
 
     //Ensure we expose the model correctly, based on the module system and export type
@@ -112,7 +110,7 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,Typ
       exportType === 'default'
         ? `export default ${outputModel.renderedName};\n`
         : '';
-    const modelCode = `${outputModel.result}\n${moduleSystem === 'CJS' ? cjsExport : esmExport}`;
+    const modelCode = `${outputModel.result}\n${this.options.moduleSystem === 'CJS' ? cjsExport : esmExport}`;
 
     const outputContent = `${[...modelDependencyImports, ...outputModel.dependencies].join('\n')}
 ${modelCode}`;

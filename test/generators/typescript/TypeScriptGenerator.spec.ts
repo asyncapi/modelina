@@ -311,30 +311,181 @@ ${content}`;
   };
 
   test('should render models and their dependencies for CJS module system', async () => {
-    const models = await generator.generateCompleteModels(doc, {moduleSystem: 'CJS'});
+    generator = new TypeScriptGenerator({
+      moduleSystem: 'CJS'
+    });
+    const models = await generator.generateCompleteModels(doc, {});
+    
     expect(models).toHaveLength(2);
     expect(models[0].result).toMatchSnapshot();
     expect(models[1].result).toMatchSnapshot();
   });
 
   test('should render models and their dependencies for CJS module system with named exports', async () => {
-    const models = await generator.generateCompleteModels(doc, {moduleSystem: 'CJS', exportType: 'named'});
+    generator = new TypeScriptGenerator({
+      moduleSystem: 'CJS'
+    });
+    const models = await generator.generateCompleteModels(doc, {exportType: 'named'});
     expect(models).toHaveLength(2);
     expect(models[0].result).toMatchSnapshot();
     expect(models[1].result).toMatchSnapshot();
   });
 
   test('should render models and their dependencies for ESM module system', async () => {
-    const models = await generator.generateCompleteModels(doc, {moduleSystem: 'ESM'});
+    generator = new TypeScriptGenerator({
+      moduleSystem: 'ESM'
+    });
+    const models = await generator.generateCompleteModels(doc, {});
     expect(models).toHaveLength(2);
     expect(models[0].result).toMatchSnapshot();
     expect(models[1].result).toMatchSnapshot();
   });
 
   test('should render models and their dependencies for ESM module system with named exports', async () => {
-    const models = await generator.generateCompleteModels(doc, {moduleSystem: 'ESM', exportType: 'named'});
+    generator = new TypeScriptGenerator({
+      moduleSystem: 'ESM'
+    });
+    const models = await generator.generateCompleteModels(doc, {exportType: 'named'});
     expect(models).toHaveLength(2);
     expect(models[0].result).toMatchSnapshot();
     expect(models[1].result).toMatchSnapshot();
+  });
+
+  describe('AsyncAPI with polymorphism', () => {
+    const asyncapiDoc = {
+      asyncapi: '2.4.0',
+      info: {
+        title: 'Pet',
+        version: '1.0.0'
+      },
+      channels: {},
+      components: {
+        messages: {
+          PetMessage: {
+            payload: {
+              oneOf: [
+                { $ref: '#/components/schemas/Cat' },
+                { $ref: '#/components/schemas/Dog' },
+                { $ref: '#/components/schemas/StickInsect' },
+              ]
+            }
+          },
+        },
+        schemas: {
+          Pet: {
+            type: 'object',
+            additionalProperties: false,
+            discriminator: 'petType',
+            properties: {
+              petType: {
+                $id: 'PetType',
+                type: 'string'
+              },
+              name: {
+                type: 'string'
+              },
+            },
+            required: [
+              'petType',
+              'name',
+            ],
+          },
+          Cat: {
+            allOf: [
+              { $ref: '#/components/schemas/Pet' },
+              {
+                type: 'object',
+                additionalProperties: false,
+                properties: {
+                  petType: {
+                    const: 'Cat'
+                  },
+                  huntingSkill: {
+                    type: 'string',
+                    enum: [
+                      'clueless',
+                      'lazy',
+                      'adventurous',
+                      'aggressive'
+                    ]
+                  }
+                },
+                required: [
+                  'huntingSkill'
+                ]
+              }
+            ]
+          },
+          Dog: {
+            allOf: [
+              { $ref: '#/components/schemas/Pet' },
+              {
+                type: 'object',
+                additionalProperties: false,
+                properties: {
+                  petType: {
+                    const: 'Dog'
+                  },
+                  packSize: {
+                    type: 'integer',
+                    format: 'int32',
+                    description: 'the size of the pack the dog is from',
+                    minimum: 0
+                  }
+                },
+                required: [
+                  'packSize'
+                ]
+              }
+            ]
+          },
+          StickInsect: {
+            allOf: [
+              { $ref: '#/components/schemas/Pet' },
+              {
+                type: 'object',
+                additionalProperties: false,
+                properties: {
+                  petType: {
+                    const: 'StickBug'
+                  },
+                  color: {
+                    type: 'string',
+                  }
+                },
+                required: [
+                  'color'
+                ]
+              }
+            ]
+          },
+        }
+      }
+    };
+
+    test('should render 6 models (1 oneOf, 3 classes and 2 enums)', async () => {
+      const models = await generator.generate(asyncapiDoc);
+      expect(models).toHaveLength(6);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+
+      const cat = models.find((model) => model.modelName === 'Cat');
+      expect(cat).not.toBeUndefined();
+      expect(cat?.result).toContain('petType');
+      expect(cat?.result).toContain('reservedName');
+      expect(cat?.result).toContain('huntingSkill');
+      expect(cat?.result).not.toContain('packSize');
+      expect(cat?.result).not.toContain('color');
+    });
+
+    test('should render enum with discriminator', async () => {
+      const models = await generator.generate(asyncapiDoc);
+      const enums = models.filter(model => model.result.includes('enum'));
+
+      expect(enums).toHaveLength(2);
+      const discriminatorEnum = enums[0];
+      expect(discriminatorEnum?.modelName).not.toContain('AnonymousSchema');
+      // Should contain Cat, Dog, and StickBug
+      expect(discriminatorEnum?.result).toMatchSnapshot();
+    });
   });
 });

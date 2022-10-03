@@ -63,7 +63,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     const inputModel = new InputMetaModel();
     inputModel.originalInput = input;
     input = JsonSchemaInputProcessor.reflectSchemaNames(input, {}, 'root', true) as Record<string, any>;
-    await this.dereferenceInputs(input);
+    input = await this.dereferenceInputs(input);
     const parsedSchema = Draft7Schema.toSchema(input);
     const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema);
     const metaModel = convertToMetaModel(newCommonModel);
@@ -82,7 +82,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     const inputModel = new InputMetaModel();
     inputModel.originalInput = input;
     input = JsonSchemaInputProcessor.reflectSchemaNames(input, {}, 'root', true) as Record<string, any>;
-    await this.dereferenceInputs(input);
+    input = await this.dereferenceInputs(input);
     const parsedSchema = Draft4Schema.toSchema(input);
     const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema);
     const metaModel = convertToMetaModel(newCommonModel);
@@ -101,7 +101,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     const inputModel = new InputMetaModel();
     inputModel.originalInput = input;
     input = JsonSchemaInputProcessor.reflectSchemaNames(input, {}, 'root', true) as Record<string, any>;
-    await this.dereferenceInputs(input);
+    input = await this.dereferenceInputs(input);
     const parsedSchema = Draft6Schema.toSchema(input);
     const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema);
     const metaModel = convertToMetaModel(newCommonModel);
@@ -110,7 +110,41 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     return inputModel;
   }
 
-  private async dereferenceInputs(input: Record<string, any>) {
+  /**
+   * This is a hotfix and really only a partial solution as it does not cover all cases.
+   * 
+   * But it's the best we can do until we find or build a better library to handle references.
+   */
+  public handleRootReference(input: Record<string, any>): Record<string, any> {
+    //Because of https://github.com/APIDevTools/json-schema-ref-parser/issues/201 the tool cannot handle root references.
+    //This really is a bad patch to fix an underlying problem, but until a full library is available, this is best we can do.
+    const hasRootRef = input.$ref !== undefined;
+    if (hasRootRef) {
+      Logger.warn('Found a root $ref, which is not fully supported in Modelina, trying to do what I can with it...');
+      //When we encounter it, manually try to resolve the reference in the definitions section
+      const hasDefinitionSection = input.definitions !== undefined;
+      if (hasDefinitionSection) {
+        const definitionLink = '#/definitions/';
+        const referenceLink = input.$ref.slice(0, definitionLink.length);
+        const referenceIsLocal = referenceLink === definitionLink;
+        if (referenceIsLocal) {
+          const definitionName = input.$ref.slice(definitionLink.length);
+          const definition = input.definitions[String(definitionName)];
+          const definitionExist = definition !== undefined;
+          if (definitionExist) {
+            delete input.$ref;
+            return {...definition, ...input};
+          }
+        }
+      }
+      //All other unhandled cases, means we cannot handle this input
+      throw new Error('Cannot handle input, because it has a root `$ref`, please manually resolve the first reference.'); 
+    }
+    return input;
+  }
+
+  public async dereferenceInputs(input: Record<string, any>): Promise<Record<string, any>> {
+    input = this.handleRootReference(input);
     Logger.debug('Dereferencing all $ref instances');
     const refParser = new $RefParser;
     // eslint-disable-next-line no-undef
@@ -128,6 +162,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       throw new Error(errorMessage);
     }
     Logger.debug('Successfully dereferenced all $ref instances from input.', input);
+    return input;
   }
 
   /**

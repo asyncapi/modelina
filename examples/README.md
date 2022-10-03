@@ -14,6 +14,7 @@ This directory contains a series of self-contained examples that you can use as 
 - [asyncapi-from-object](./asyncapi-from-object) - A basic example where an AsyncAPI JS object is used to generate models.
 - [asyncapi-from-parser](./asyncapi-from-parser) - A basic example where an AsyncAPI JS object from the [parser-js](https://github.com/asyncapi/parser-js) is used to generate models.
 - [json-schema-draft7-from-object](./json-schema-draft7-from-object) - A basic example where a JSON Schema draft 7 JS object is used to generate models.
+- [json-schema-draft4-from-object](./json-schema-draft4-from-object) - A basic example where a JSON Schema draft 4 JS object is used to generate models.
 - [swagger2.0-from-object](./swagger2.0-from-object) - A basic example where a Swagger 2.0 JS object is used to generate models.
 - [java-generate-javax-constraint-annotation](./java-generate-javax-constraint-annotation) - A basic example that shows how Java data models having `javax.validation.constraints` annotations can be generated.
 - [java-generate-javadoc](./java-generate-javadoc) - A basic example of how to generate Java models including JavaDocs.
@@ -43,4 +44,7 @@ This directory contains a series of self-contained examples that you can use as 
 - [java-from-typescript-type-with-options](./java-from-typescript-type-with-options/) - A basic example that shows how to generate a Java model from a TypeScript type input file along with user provided options.
 - [overwrite-naming-formatting](./overwrite-naming-formatting) - A basic example how to overwrite default naming format constraint in this case, overwriting returning a constant case format.
 - [overwrite-default-constraint](./overwrite-default-constraint/) -  A basic example how to overwrite the entire constraint logic and not just a single single part of the default behavior, in this case overwriting the model naming constraint.
+- [integrate with React](./integrate-with-react/) - A basic example that shows how you can integrate Modelina with React.
 - [rust-generate-crate](./rust-generate-crate/) - A basic example showing how to generate a Rust package.
+- [typescript-generate-jsonbinpack](./typescript-generate-jsonbinpack) - A basic example showing how to generate models that include [jsonbinpack](https://github.com/sourcemeta/jsonbinpack) functionality.
+- [generate-python-models](./generate-python-models/) - A basic example showing how to generate Python models.

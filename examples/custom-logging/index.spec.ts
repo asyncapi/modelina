@@ -11,7 +11,7 @@ describe('Should be able to use custom logging interface', () => {
   
   test('and should log expected output to console', async () => {
     await generate();
-    expect(spy.mock.calls.length).toEqual(2);
-    expect(spy.mock.calls[1]).toMatchSnapshot();
+    expect(spy.mock.calls.length).toEqual(1);
+    expect(spy.mock.calls[0]).toMatchSnapshot();
   });
 });

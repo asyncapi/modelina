@@ -210,6 +210,19 @@ describe('CommonModelToMetaModel', () => {
     expect(model instanceof UnionModel).toEqual(true);
     expect((model as UnionModel).union.length).toEqual(2); 
   });
+  test('should convert array of types to union model', () => {
+    const cm = new CommonModel();
+    cm.$id = 'Pet';
+    const cat = new CommonModel();
+    cat.$id = 'Cat';
+    const dog = new CommonModel();
+    dog.$id = 'Dog';
+    cm.union = [cat, dog];
+    const model = convertToMetaModel(cm);
+    expect(model).not.toBeUndefined();
+    expect(model instanceof UnionModel).toEqual(true);
+    expect((model as UnionModel).union.length).toEqual(2);
+  });
   test('should convert tuple to tuple model', () => { 
     const scm = new CommonModel();
     scm.type = 'string';
