@@ -529,7 +529,7 @@ describe('CommonModel', () => {
         expect(catModel.properties?.petType.$id).toBe('PetType');
         expect(catModel.properties).toHaveProperty('name');
         expect(catModel.properties).toHaveProperty('huntingSkill');
-        expect(catModel.properties?.packSize).toBeUndefined();
+        expect(catModel.properties).not.toHaveProperty('packSize');
 
         expect(dogModel.properties).toHaveProperty('petType');
         expect(dogModel.properties?.petType.$id).toBe('PetType');
