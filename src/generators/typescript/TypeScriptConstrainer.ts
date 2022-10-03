@@ -20,7 +20,7 @@ export const TypeScriptDefaultTypeMapping: TypeMapping<TypeScriptOptions> = {
     return 'number';
   },
   Integer (): string {
-    return 'integer'; 
+    return 'number'; 
   },
   String (): string {
     return 'string';

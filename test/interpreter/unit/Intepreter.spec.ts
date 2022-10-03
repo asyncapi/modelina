@@ -105,7 +105,7 @@ describe('Interpreter', () => {
     const interpreter = new Interpreter();
     const model = interpreter.interpret(schema1);
     expect(model).not.toBeUndefined();
-    expect(model).toEqual({originalInput: schema1, $id: 'anonymSchema2'});
+    expect(model).toMatchObject({originalInput: schema1, $id: 'anonymSchema2'});
   });
   describe('combineSchemas', () => {
     test('should combine single schema with model', () => {
@@ -117,17 +117,6 @@ describe('Interpreter', () => {
       expectedSimplifiedModel.required = ['test'];
       expectedSimplifiedModel.originalInput = schema;
       interpreter.interpretAndCombineSchema(schema, model, schema);
-      expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, model, expectedSimplifiedModel, schema);
-    });
-    test('should combine multiple schema with model', () => {
-      const schema = { required: ['test'] };
-      const interpreter = new Interpreter();
-      const model = new CommonModel();
-      const expectedSimplifiedModel = new CommonModel();
-      expectedSimplifiedModel.$id = 'anonymSchema1';
-      expectedSimplifiedModel.required = ['test'];
-      expectedSimplifiedModel.originalInput = schema;
-      interpreter.interpretAndCombineMultipleSchemas([schema], model, schema);
       expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, model, expectedSimplifiedModel, schema);
     });
   });
