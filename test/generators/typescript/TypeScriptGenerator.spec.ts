@@ -467,6 +467,14 @@ ${content}`;
       const models = await generator.generate(asyncapiDoc);
       expect(models).toHaveLength(6);
       expect(models.map((model) => model.result)).toMatchSnapshot();
+
+      const cat = models.find((model) => model.modelName === 'Cat');
+      expect(cat).not.toBeUndefined();
+      expect(cat?.result).toContain('petType');
+      expect(cat?.result).toContain('reservedName');
+      expect(cat?.result).toContain('huntingSkill');
+      expect(cat?.result).not.toContain('packSize');
+      expect(cat?.result).not.toContain('color');
     });
 
     test('should render enum with discriminator', async () => {
