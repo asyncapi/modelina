@@ -14,7 +14,7 @@ export function renderJavaScriptDependency(toImport: string, fromModule: string,
 }
 
 /**
- * Function to make an array only contain unique values (ignores different in memory instances)
+ * Function to make an array of ConstrainedMetaModels only contain unique values (ignores different in memory instances)
  * 
  * @param array to make unique
  */
