@@ -479,6 +479,64 @@ describe('CommonModel', () => {
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
         expect(doc1.properties).toBeUndefined();
       });
+      test('should not carry over properties to other models', () => {
+        const petModel = CommonModel.toCommonModel({
+          title: 'Pet',
+          type: 'object',
+          discriminator: 'petType',
+          properties: {
+            petType: {
+              $id: 'PetType',
+              type: 'string'
+            },
+            name: {
+              type: 'string'
+            },
+          },
+        });
+
+        const cat = {};
+        const catModel = CommonModel.toCommonModel(cat);
+        CommonModel.mergeCommonModels(catModel, petModel, cat);
+        CommonModel.mergeCommonModels(catModel, CommonModel.toCommonModel({
+          title: 'Cat',
+          properties: {
+            petType: {
+              const: 'Cat',
+            },
+            huntingSkill: {
+              type: 'string',
+            }
+          },
+        }), cat);
+
+        const dog = {};
+        const dogModel = CommonModel.toCommonModel(dog);
+        CommonModel.mergeCommonModels(dogModel, petModel, dog);
+        CommonModel.mergeCommonModels(dogModel, CommonModel.toCommonModel({
+          title: 'Dog',
+          properties: {
+            petType: {
+              const: 'Dog',
+            },
+            packSize: {
+              type: 'integer',
+            }
+          },
+        }), dog);
+
+        expect(catModel.properties).toHaveProperty('petType');
+        expect(catModel.properties?.petType.$id).toBe('PetType');
+        expect(catModel.properties).toHaveProperty('name');
+        expect(catModel.properties).toHaveProperty('huntingSkill');
+        expect(catModel.properties).not.toHaveProperty('packSize');
+
+        expect(dogModel.properties).toHaveProperty('petType');
+        expect(dogModel.properties?.petType.$id).toBe('PetType');
+        expect(dogModel.properties).toHaveProperty('name');
+        expect(dogModel.properties).toHaveProperty('packSize');
+        expect(dogModel.properties).not.toHaveProperty('huntingSkill');
+      });
     });
     describe('additionalProperties', () => {
       test('should be merged when only right side is defined', () => {

@@ -353,20 +353,25 @@ export class CommonModel {
    * @param alreadyIteratedModels
    */
   private static mergeProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalInput: any, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
-    const mergeToProperties = mergeTo.properties;
-    const mergeFromProperties = mergeFrom.properties;
-    if (mergeFromProperties !== undefined) {
-      if (mergeToProperties === undefined) {
-        mergeTo.properties = mergeFromProperties;
+    if (!mergeTo.properties) {
+      mergeTo.properties = mergeFrom.properties;
+      return;
+    }
+
+    if (!mergeFrom.properties) {
+      return;
+    }
+
+    mergeTo.properties = {
+      ...mergeTo.properties,
+    };
+
+    for (const [propName, propValue] of Object.entries(mergeFrom.properties)) {
+      if (!mergeTo.properties[String(propName)]) {
+        mergeTo.properties[String(propName)] = propValue;
       } else {
-        for (const [propName, prop] of Object.entries(mergeFromProperties)) {
-          if (mergeToProperties[String(propName)] !== undefined) {
-            Logger.warn(`Found duplicate properties ${propName} for model. Model property from ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalInput);
-            mergeToProperties[String(propName)] = CommonModel.mergeCommonModels(mergeToProperties[String(propName)], prop, originalInput, alreadyIteratedModels);
-          } else {
-            mergeToProperties[String(propName)] = prop;
-          }
-        }
+        Logger.warn(`Found duplicate properties ${propName} for model. Model property from ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalInput);
+        mergeTo.properties[String(propName)] = CommonModel.mergeCommonModels(mergeTo.properties[String(propName)], propValue, originalInput, alreadyIteratedModels);
       }
     }
   }
