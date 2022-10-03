@@ -16,6 +16,13 @@ export default function interpretOneOf(schema: InterpreterSchemaType, model: Com
   for (const oneOfSchema of schema.oneOf) {
     const oneOfModel = interpreter.interpret(oneOfSchema, interpreterOptions);
     if (oneOfModel === undefined) { continue; }
+
+    if (schema.allOf) {
+      for (const allOfSchema of schema.allOf) {
+        interpreter.interpretAndCombineSchema(allOfSchema, oneOfModel, oneOfSchema, interpreterOptions);
+      }
+    }
+
     model.addItemUnion(oneOfModel);
   }
 }

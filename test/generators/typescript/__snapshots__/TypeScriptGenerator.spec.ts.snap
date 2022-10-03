@@ -97,6 +97,74 @@ exports[`TypeScriptGenerator AsyncAPI with polymorphism should render enum with 
 }"
 `;
 
+exports[`TypeScriptGenerator Combine oneOf and allOf should combine oneOf and allOf 1`] = `
+Array [
+  "type Carnivora = Cat | Dog;",
+  "class Cat {
+  private _petType?: AnonymousSchema_2;
+  private _huntingSkill?: HuntingSkill;
+  private _age?: number;
+
+  constructor(input: {
+    petType?: AnonymousSchema_2,
+    huntingSkill?: HuntingSkill,
+    age?: number,
+  }) {
+    this._petType = input.petType;
+    this._huntingSkill = input.huntingSkill;
+    this._age = input.age;
+  }
+
+  get petType(): AnonymousSchema_2 | undefined { return this._petType; }
+  set petType(petType: AnonymousSchema_2 | undefined) { this._petType = petType; }
+
+  get huntingSkill(): HuntingSkill | undefined { return this._huntingSkill; }
+  set huntingSkill(huntingSkill: HuntingSkill | undefined) { this._huntingSkill = huntingSkill; }
+
+  get age(): number | undefined { return this._age; }
+  set age(age: number | undefined) { this._age = age; }
+}",
+  "enum AnonymousSchema_2 {
+  CAT = \\"Cat\\",
+}",
+  "enum HuntingSkill {
+  CLUELESS = \\"clueless\\",
+  LAZY = \\"lazy\\",
+}",
+  "class Dog {
+  private _petType?: AnonymousSchema_4;
+  private _breed?: DogBreed;
+  private _age?: number;
+
+  constructor(input: {
+    petType?: AnonymousSchema_4,
+    breed?: DogBreed,
+    age?: number,
+  }) {
+    this._petType = input.petType;
+    this._breed = input.breed;
+    this._age = input.age;
+  }
+
+  get petType(): AnonymousSchema_4 | undefined { return this._petType; }
+  set petType(petType: AnonymousSchema_4 | undefined) { this._petType = petType; }
+
+  get breed(): DogBreed | undefined { return this._breed; }
+  set breed(breed: DogBreed | undefined) { this._breed = breed; }
+
+  get age(): number | undefined { return this._age; }
+  set age(age: number | undefined) { this._age = age; }
+}",
+  "enum AnonymousSchema_4 {
+  DOG = \\"Dog\\",
+}",
+  "enum DogBreed {
+  BULLDOG = \\"bulldog\\",
+  BICHONS_SPACE_FRISE = \\"bichons frise\\",
+}",
+]
+`;
+
 exports[`TypeScriptGenerator should not render \`class\` with reserved keyword 1`] = `
 "class Address {
   private _reservedReservedEnum?: string;

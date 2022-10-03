@@ -488,4 +488,99 @@ ${content}`;
       expect(discriminatorEnum?.result).toMatchSnapshot();
     });
   });
+
+  describe('Combine oneOf and allOf', () => {
+    const asyncapiDoc = {
+      asyncapi: '2.4.0',
+      info: {
+        title: 'Carnivora',
+        version: '1.0.0'
+      },
+      channels: {},
+      components: {
+        messages: {
+          Carnivora: {
+            payload: {
+              title: 'Carnivora',
+              allOf: [
+                { $ref: '#/components/schemas/Pet' },
+              ],
+              oneOf: [
+                { $ref: '#/components/schemas/Cat' },
+                { $ref: '#/components/schemas/Dog' },
+              ],
+            }
+          },
+        },
+        schemas: {
+          Pet: {
+            title: 'Pet',
+            type: 'object',
+            additionalProperties: false,
+            discriminator: 'petType',
+            properties: {
+              petType: {
+                title: 'Pet Type',
+                type: 'string',
+              },
+              age: {
+                type: 'integer',
+                min: 0,
+              },
+            },
+          },
+          Cat: {
+            title: 'Cat',
+            type: 'object',
+            additionalProperties: false,
+            properties: {
+              petType: {
+                const: 'Cat'
+              },
+              huntingSkill: {
+                title: 'Hunting Skill',
+                type: 'string',
+                enum: [
+                  'clueless',
+                  'lazy',
+                ],
+              },
+            },
+          },
+          Dog: {
+            title: 'Dog',
+            type: 'object',
+            additionalProperties: false,
+            properties: {
+              petType: {
+                const: 'Dog'
+              },
+              breed: {
+                title: 'Dog Breed',
+                type: 'string',
+                enum: [
+                  'bulldog',
+                  'bichons frise',
+                ],
+              },
+            },
+          },
+        }
+      }
+    };
+
+    test.only('should combine oneOf and allOf', async () => {
+      const models = await generator.generate(asyncapiDoc);
+      // expect(models).toHaveLength(6);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+
+      // const cat = models.find((model) => model.modelName === 'Cat');
+      // expect(cat).not.toBeUndefined();
+      // expect(cat?.result).toContain('petType');
+      // expect(cat?.result).toContain('reservedName');
+      // expect(cat?.result).toContain('huntingSkill');
+      // expect(cat?.result).not.toContain('packSize');
+      // expect(cat?.result).not.toContain('color');
+    });
+  });
 });
