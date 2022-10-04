@@ -35,24 +35,24 @@ const AsyncAPIV2_4Files = readFilesInFolder('AsyncAPI-2_4');
 const AsyncAPIV2_5Files = readFilesInFolder('AsyncAPI-2_5');
 
 const filesToTest = [
-  // ...OpenAPI3_0Files,
-  // ...AsyncAPIV2_0Files,
-  // ...AsyncAPIV2_1Files,
-  // ...AsyncAPIV2_2Files,
-  // ...AsyncAPIV2_3Files,
-  // ...AsyncAPIV2_4Files,
-  // ...AsyncAPIV2_5Files,
-  ...jsonSchemaDraft4Files.filter(({ file }) => {
-    // Too large to process https://github.com/asyncapi/modelina/issues/822
-    return !file.includes('aws-cloudformation.json');
-  }),
+  ...OpenAPI3_0Files,
+  ...AsyncAPIV2_0Files,
+  ...AsyncAPIV2_1Files,
+  ...AsyncAPIV2_2Files,
+  ...AsyncAPIV2_3Files,
+  ...AsyncAPIV2_4Files,
+  ...AsyncAPIV2_5Files,
+  // ...jsonSchemaDraft4Files.filter(({ file }) => {
+  //   // Too large to process https://github.com/asyncapi/modelina/issues/822
+  //   return !file.includes('aws-cloudformation.json');
+  // }),
   // ...jsonSchemaDraft7Files,
   // ...jsonSchemaDraft6Files,
 ];
 
 // eslint-disable-next-line no-console
 console.log('This is gonna take some time, Stay Awhile and Listen');
-describe.each([filesToTest[8]])('Should be able to generate with inputs', ({ file, outputDirectory }) => {
+describe.each(filesToTest)('Should be able to generate with inputs', ({ file, outputDirectory }) => {
   jest.setTimeout(1000000);
   const fileToGenerateFor = path.resolve(__dirname, file);
   const outputDirectoryPath = path.resolve(__dirname, outputDirectory);
