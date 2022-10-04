@@ -204,6 +204,9 @@ Check is done using referential equality</p>
 <dd><p>Return true or false based on whether the input object is a regular object or a class</p>
 <p>Taken from: <a href="https://stackoverflow.com/a/43197340/6803886">https://stackoverflow.com/a/43197340/6803886</a></p>
 </dd>
+<dt><a href="#makeUnique">makeUnique(array)</a></dt>
+<dd><p>Function to make an array of ConstrainedMetaModels only contain unique values (ignores different in memory instances)</p>
+</dd>
 <dt><a href="#mergePartialAndDefault">mergePartialAndDefault()</a></dt>
 <dd><p>Merge a non optional value with custom optional values to form a full value that has all properties sat.</p>
 </dd>
@@ -1558,6 +1561,17 @@ Taken from: https://stackoverflow.com/a/43197340/6803886
 | Param |
 | --- |
 | obj | 
+
+<a name="makeUnique"></a>
+
+## makeUnique(array)
+Function to make an array of ConstrainedMetaModels only contain unique values (ignores different in memory instances)
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| array | to make unique |
 
 <a name="mergePartialAndDefault"></a>
 
