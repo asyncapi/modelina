@@ -63,7 +63,7 @@ export default function interpretOneOf(schema: InterpreterSchemaType, model: Com
     const oneOfModel = interpreter.interpret(oneOfSchema, interpreterOptions);
     if (oneOfModel === undefined) { continue; }
 
-    if (schema.allOf) {
+    if (schema.allOf && interpreterOptions.allowInheritance === false) {
       interpretOneOfWithAllOf(oneOfSchema, oneOfModel, schema, model, interpreter, interpreterOptions);
     } else {
       model.addItemUnion(oneOfModel);
