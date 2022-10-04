@@ -163,6 +163,9 @@ Check is done using referential equality</p>
 <dt><a href="#renderJavaScriptDependency">renderJavaScriptDependency(toImport, fromModule, moduleSystem)</a></dt>
 <dd><p>Function to make it easier to render JS/TS dependencies based on module system</p>
 </dd>
+<dt><a href="#makeUnique">makeUnique(array)</a></dt>
+<dd><p>Function to make an array of ConstrainedMetaModels only contain unique values (ignores different in memory instances)</p>
+</dd>
 <dt><a href="#mergePartialAndDefault">mergePartialAndDefault()</a></dt>
 <dd><p>Merge a non optional value with custom optional values to form a full value that has all properties sat.</p>
 </dd>
@@ -1381,6 +1384,17 @@ Function to make it easier to render JS/TS dependencies based on module system
 | toImport | 
 | fromModule | 
 | moduleSystem | 
+
+<a name="makeUnique"></a>
+
+## makeUnique(array)
+Function to make an array of ConstrainedMetaModels only contain unique values (ignores different in memory instances)
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| array | to make unique |
 
 <a name="mergePartialAndDefault"></a>
 
