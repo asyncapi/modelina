@@ -493,17 +493,17 @@ ${content}`;
     const asyncapiDoc = {
       asyncapi: '2.4.0',
       info: {
-        title: 'Carnivora',
+        title: 'Pet',
         version: '1.0.0'
       },
       channels: {},
       components: {
         messages: {
-          Carnivora: {
+          Pet: {
             payload: {
-              title: 'Carnivora',
+              title: 'Pet',
               allOf: [
-                { $ref: '#/components/schemas/Pet' },
+                { $ref: '#/components/schemas/Animal' },
               ],
               oneOf: [
                 { $ref: '#/components/schemas/Cat' },
@@ -513,14 +513,14 @@ ${content}`;
           },
         },
         schemas: {
-          Pet: {
-            title: 'Pet',
+          Animal: {
+            title: 'Animal',
             type: 'object',
             additionalProperties: false,
-            discriminator: 'petType',
+            discriminator: 'animalType',
             properties: {
-              petType: {
-                title: 'Pet Type',
+              animalType: {
+                title: 'Animal Type',
                 type: 'string',
               },
               age: {
@@ -534,7 +534,7 @@ ${content}`;
             type: 'object',
             additionalProperties: false,
             properties: {
-              petType: {
+              animalType: {
                 const: 'Cat'
               },
               huntingSkill: {
@@ -552,7 +552,7 @@ ${content}`;
             type: 'object',
             additionalProperties: false,
             properties: {
-              petType: {
+              animalType: {
                 const: 'Dog'
               },
               breed: {
@@ -571,16 +571,22 @@ ${content}`;
 
     test.only('should combine oneOf and allOf', async () => {
       const models = await generator.generate(asyncapiDoc);
-      // expect(models).toHaveLength(6);
+      expect(models).toHaveLength(6);
       expect(models.map((model) => model.result)).toMatchSnapshot();
 
-      // const cat = models.find((model) => model.modelName === 'Cat');
-      // expect(cat).not.toBeUndefined();
-      // expect(cat?.result).toContain('petType');
-      // expect(cat?.result).toContain('reservedName');
-      // expect(cat?.result).toContain('huntingSkill');
-      // expect(cat?.result).not.toContain('packSize');
-      // expect(cat?.result).not.toContain('color');
+      const cat = models.find((model) => model.modelName === 'Cat');
+      expect(cat).not.toBeUndefined();
+      expect(cat?.result).toContain('animalType');
+      expect(cat?.result).toContain('age');
+      expect(cat?.result).toContain('huntingSkill');
+      expect(cat?.result).not.toContain('breed');
+
+      const dog = models.find((model) => model.modelName === 'Dog');
+      expect(dog).not.toBeUndefined();
+      expect(dog?.result).toContain('animalType');
+      expect(dog?.result).toContain('age');
+      expect(dog?.result).toContain('breed');
+      expect(dog?.result).not.toContain('huntingSkill');
     });
   });
 });
