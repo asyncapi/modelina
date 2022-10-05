@@ -77,6 +77,14 @@ describe('TypeScriptConstrainer', () => {
       const type = TypeScriptDefaultTypeMapping.Array({constrainedModel: model, options: TypeScriptGenerator.defaultOptions});
       expect(type).toEqual('String[]');
     });
+    test('should render union types correctly', () => {
+      const stringModel = new ConstrainedStringModel('test', undefined, 'String');
+      const anyModel = new ConstrainedAnyModel('test', undefined, 'any');
+      const unionModel = new ConstrainedUnionModel('test', undefined, 'String | any', [anyModel, stringModel]);
+      const model = new ConstrainedArrayModel('test', undefined, '', unionModel);
+      const type = TypeScriptDefaultTypeMapping.Array({constrainedModel: model, options: TypeScriptGenerator.defaultOptions});
+      expect(type).toEqual('(String | any)[]');
+    });
   });
 
   describe('Enum', () => { 
