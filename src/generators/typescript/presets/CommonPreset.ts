@@ -110,7 +110,7 @@ function renderUnmarshalProperties(model: ConstrainedObjectModel) {
   const unmarshalDictionaryProperties = [];
   for (const [prop, propModel] of unwrapDictionaryProperties) {
     const modelInstanceVariable = 'value as any';
-    const unmarshalCode = renderUnmarshalProperty(modelInstanceVariable, propModel.property);
+    const unmarshalCode = renderUnmarshalProperty(modelInstanceVariable, (propModel.property as ConstrainedDictionaryModel).value);
     setDictionaryProperties.push(`if (instance.${prop} === undefined) {instance.${prop} = new Map();}`);
     unmarshalDictionaryProperties.push(`instance.${prop}.set(key, ${unmarshalCode});`);
   }
