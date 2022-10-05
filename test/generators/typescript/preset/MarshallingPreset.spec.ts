@@ -1,7 +1,6 @@
 /* eslint-disable */
 
 import { TypeScriptGenerator, TS_COMMON_PRESET } from '../../../../src/generators'; 
-import Ajv from 'ajv';
 const doc = {
   definitions: {
     'NestedTest': {
@@ -15,7 +14,8 @@ const doc = {
   properties: {
     'string prop': { type: 'string' },
     enumProp: { $id: 'EnumTest', enum: ['Some enum String', true, {test: 'test'}, 2]},
-    numberProp: { type: 'number' }
+    numberProp: { type: 'number' },
+    nestedObject: {$ref: '#/definitions/NestedTest'}
   }
 };
 describe('Marshalling preset', () => {
