@@ -2,8 +2,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { InputMetaModel, ProcessorOptions } from '../../src/models';
 import { AbstractInputProcessor, AsyncAPIInputProcessor, JsonSchemaInputProcessor, InputProcessor, SwaggerInputProcessor } from '../../src/processors';
-import AsyncAPIParser, { ParserOptions } from '@asyncapi/parser';
 import { OpenAPIInputProcessor } from '../../src/processors/OpenAPIInputProcessor';
+
 describe('InputProcessor', () => {
   beforeEach(() => {
     jest.resetAllMocks();
@@ -16,6 +16,7 @@ describe('InputProcessor', () => {
     process(input: any): Promise<InputMetaModel> { return Promise.resolve(new InputMetaModel()); }
     shouldProcess(input: any): boolean { return true; }
   }
+
   test('should add processor to map', () => {
     const testProcessor = new TempProcessor();
     const processor = new InputProcessor();
@@ -24,6 +25,7 @@ describe('InputProcessor', () => {
     const foundProcessor = processors.get('some_key');
     expect(foundProcessor).toEqual(testProcessor);
   });
+
   test('overwriting processor should use new and not old', () => {
     const testProcessor = new TempProcessor();
     const processor = new InputProcessor();
@@ -34,6 +36,7 @@ describe('InputProcessor', () => {
     expect(oldDefaultProcessor?.constructor).toEqual(oldDefaultProcessor?.constructor);
     expect(currentDefaultProcessor?.constructor).toEqual(currentDefaultProcessor?.constructor);
   });
+
   describe('process()', () => {
     const getProcessors = () => {
       const asyncInputProcessor = new AsyncAPIInputProcessor();
@@ -108,18 +111,16 @@ describe('InputProcessor', () => {
 
     test('should be able to process AsyncAPI schema input with options', async () => {
       const {processor, asyncInputProcessor, defaultInputProcessor} = getProcessors(); 
-      const spy = jest.spyOn(AsyncAPIParser, 'parse');
       const options: ProcessorOptions = {
         asyncapi: {
-          path: 'test'
-        } as ParserOptions
+          source: 'test'
+        }
       };
       const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'), 'utf8');
       const inputSchema = JSON.parse(inputSchemaString);
       await processor.process(inputSchema, options);
       expect(asyncInputProcessor.process).toHaveBeenNthCalledWith(1, inputSchema, options);
       expect(asyncInputProcessor.shouldProcess).toHaveBeenNthCalledWith(1, inputSchema);
-      expect(spy).toHaveBeenNthCalledWith(1, inputSchema, expect.objectContaining(options.asyncapi));
       expect(defaultInputProcessor.process).not.toHaveBeenCalled();
       expect(defaultInputProcessor.shouldProcess).not.toHaveBeenCalled();
     });

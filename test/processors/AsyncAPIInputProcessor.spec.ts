@@ -1,8 +1,9 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import {parse, ParserOptions} from '@asyncapi/parser';
+import { Parser } from '@asyncapi/parser';
 import {AsyncAPIInputProcessor} from '../../src/processors/AsyncAPIInputProcessor';
 import { AnyModel, CommonModel } from '../../src/models';
+
 const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'), 'utf8');
 jest.mock('../../src/utils/LoggingInterface');
 const mockedReturnModels = [new CommonModel()];
@@ -24,6 +25,8 @@ jest.mock('../../src/interpreter/Interpreter', () => {
   };
 });
 describe('AsyncAPIInputProcessor', () => {
+  const parser = new Parser();
+
   describe('shouldProcess()', () => {
     const processor = new AsyncAPIInputProcessor();
     test('should be able to detect pure object', () => {
@@ -31,8 +34,8 @@ describe('AsyncAPIInputProcessor', () => {
       expect(processor.shouldProcess(basicDoc)).toEqual(true);
     });
     test('should be able to detect parsed object', async () => {
-      const parsedObject = await parse(basicDocString, {} as ParserOptions);
-      expect(processor.shouldProcess(parsedObject)).toEqual(true);
+      const { document } = await parser.parse(basicDocString);
+      expect(processor.shouldProcess(document)).toEqual(true);
     });
     test('should be able to process AsyncAPI 2.0.0', () => {
       const parsedObject = {asyncapi: '2.0.0'};
@@ -69,8 +72,8 @@ describe('AsyncAPIInputProcessor', () => {
       expect(processor.tryGetVersionOfDocument({})).toBeUndefined();
     });
     test('should be able to find AsyncAPI version from parsed document', async () => {
-      const parsedObject = await parse(basicDocString, {} as ParserOptions);
-      expect(processor.tryGetVersionOfDocument(parsedObject)).toEqual('2.0.0');
+      const { document } = await parser.parse(basicDocString);
+      expect(processor.tryGetVersionOfDocument(document)).toEqual('2.0.0');
     });
   });
   describe('isFromParser()', () => {
@@ -79,28 +82,37 @@ describe('AsyncAPIInputProcessor', () => {
       expect(AsyncAPIInputProcessor.isFromParser(basicDoc)).toEqual(false);
     });
     test('should be able to detect parsed object', async () => {
-      const parsedObject = await parse(basicDocString, {} as ParserOptions);
-      expect(AsyncAPIInputProcessor.isFromParser(parsedObject)).toEqual(true);
+      const { document } = await parser.parse(basicDocString);
+      expect(AsyncAPIInputProcessor.isFromParser(document)).toEqual(true);
     });
   });
 
   describe('process()', () => {
-    test('should throw error when trying to process wrong schema', async () => {
+    test('should throw error when trying to process empty schema', async () => {
       const processor = new AsyncAPIInputProcessor();
       await expect(processor.process({}))
         .rejects
         .toThrow('Input is not an AsyncAPI document so it cannot be processed.');
     });
+
+    test('should throw error when trying to process wrong schema', async () => {
+      const processor = new AsyncAPIInputProcessor();
+      await expect(processor.process({asyncapi: '2.5.0', nonExistingField: {}}))
+        .rejects
+        .toThrow('Input is not an corrent AsyncAPI document so it cannot be processed.');
+    });
+
     test('should be able to process pure object', async () => {
       const basicDoc = JSON.parse(basicDocString);
       const processor = new AsyncAPIInputProcessor();
       const commonInputModel = await processor.process(basicDoc);
       expect(commonInputModel).toMatchSnapshot();
     });
+
     test('should be able to process parsed objects', async () => {
-      const parsedObject = await parse(basicDocString, {} as ParserOptions);
+      const { document } = await parser.parse(basicDocString);
       const processor = new AsyncAPIInputProcessor();
-      const commonInputModel = await processor.process(parsedObject);
+      const commonInputModel = await processor.process(document);
       expect(commonInputModel).toMatchSnapshot();
     });
   });
@@ -108,9 +120,9 @@ describe('AsyncAPIInputProcessor', () => {
   describe('convertToInternalSchema()', () => {
     test('should work', async () => {
       const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/schema_name_reflection.json'), 'utf8');
-      const doc = await parse(basicDocString, {} as ParserOptions);
-      const schema = doc.channels()['/user/signedup'].subscribe().message().payload();
-      const expected = AsyncAPIInputProcessor.convertToInternalSchema(schema) as any;
+      const { document } = await parser.parse(basicDocString);
+      const schema = document?.channels().get('/user/signedup')?.operations()[0].messages()[0]?.payload();
+      const expected = AsyncAPIInputProcessor.convertToInternalSchema(schema as any) as any;
 
       // root
       expect(expected['x-modelgen-inferred-name']).toEqual('MainSchema');
@@ -144,9 +156,9 @@ describe('AsyncAPIInputProcessor', () => {
     });
     test('should correctly convert when schema has more than one properties referencing one other schema', async () => {
       const basicDocString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/schema_with_2_properties_referencing_one_schema.json'), 'utf8');
-      const doc = await parse(basicDocString, {} as ParserOptions);
-      const schema = doc.channels()['/user/signedup'].subscribe().message().payload();
-      const result = AsyncAPIInputProcessor.convertToInternalSchema(schema) as any;
+      const { document } = await parser.parse(basicDocString);
+      const schema = document?.channels().get('/user/signedup')?.operations()[0]?.messages()[0]?.payload();
+      const result = AsyncAPIInputProcessor.convertToInternalSchema(schema as any) as any;
 
       expect(result.properties['lastName']).not.toEqual({});
       expect(result.properties['firstName']).toEqual(result.properties['lastName']);

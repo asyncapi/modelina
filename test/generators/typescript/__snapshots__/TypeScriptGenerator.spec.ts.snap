@@ -6,12 +6,12 @@ Array [
   "class Cat {
   private _petType: PetType;
   private _reservedName: string;
-  private _huntingSkill: AnonymousSchema_5;
+  private _huntingSkill: AnonymousSchema_6;
 
   constructor(input: {
     petType: PetType,
     reservedName: string,
-    huntingSkill: AnonymousSchema_5,
+    huntingSkill: AnonymousSchema_6,
   }) {
     this._petType = input.petType;
     this._reservedName = input.reservedName;
@@ -24,15 +24,15 @@ Array [
   get reservedName(): string { return this._reservedName; }
   set reservedName(reservedName: string) { this._reservedName = reservedName; }
 
-  get huntingSkill(): AnonymousSchema_5 { return this._huntingSkill; }
-  set huntingSkill(huntingSkill: AnonymousSchema_5) { this._huntingSkill = huntingSkill; }
+  get huntingSkill(): AnonymousSchema_6 { return this._huntingSkill; }
+  set huntingSkill(huntingSkill: AnonymousSchema_6) { this._huntingSkill = huntingSkill; }
 }",
   "enum PetType {
   CAT = \\"Cat\\",
   DOG = \\"Dog\\",
   STICK_BUG = \\"StickBug\\",
 }",
-  "enum AnonymousSchema_5 {
+  "enum AnonymousSchema_6 {
   CLUELESS = \\"clueless\\",
   LAZY = \\"lazy\\",
   ADVENTUROUS = \\"adventurous\\",
