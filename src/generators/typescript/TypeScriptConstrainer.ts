@@ -35,8 +35,8 @@ export const TypeScriptDefaultTypeMapping: TypeMapping<TypeScriptOptions> = {
     return `[${tupleTypes.join(', ')}]`;
   },
   Array ({constrainedModel}): string {
-    let arrayType = constrainedModel.valueModel.type
-    if(constrainedModel.valueModel instanceof ConstrainedUnionModel) {
+    let arrayType = constrainedModel.valueModel.type;
+    if (constrainedModel.valueModel instanceof ConstrainedUnionModel) {
       arrayType = `(${arrayType})`;
     }
     return `${arrayType}[]`;
