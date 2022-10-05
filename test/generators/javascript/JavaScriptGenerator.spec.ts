@@ -23,6 +23,22 @@ describe('JavaScriptGenerator', () => {
     expect(models[0].result).toMatchSnapshot();
     expect(models[0].dependencies).toEqual([]);
   });
+
+  test('should not render enums type', async () => {
+    const doc = {
+      $id: 'Address',
+      type: 'object',
+      properties: {
+        enum: { type: 'string', enum: ['test', 'test2'] },
+      },
+    };
+    
+    const models = await generator.generate(doc);
+    expect(models).toHaveLength(1);
+    expect(models[0].result).toMatchSnapshot();
+    expect(models[0].dependencies).toEqual([]);
+  });
+
   test('should render `class` type', async () => {
     const doc = {
       $id: 'Address',
