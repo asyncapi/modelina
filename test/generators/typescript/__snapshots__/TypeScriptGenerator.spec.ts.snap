@@ -163,6 +163,72 @@ Array [
 ]
 `;
 
+exports[`TypeScriptGenerator Combine properties and oneOf should combine properties and oneOf 1`] = `
+Array [
+  "type Pet = Cat | Dog;",
+  "class Cat {
+  private _petType?: PetType;
+  private _age?: number;
+  private _huntingSkill?: HuntingSkill;
+
+  constructor(input: {
+    petType?: PetType,
+    age?: number,
+    huntingSkill?: HuntingSkill,
+  }) {
+    this._petType = input.petType;
+    this._age = input.age;
+    this._huntingSkill = input.huntingSkill;
+  }
+
+  get petType(): PetType | undefined { return this._petType; }
+  set petType(petType: PetType | undefined) { this._petType = petType; }
+
+  get age(): number | undefined { return this._age; }
+  set age(age: number | undefined) { this._age = age; }
+
+  get huntingSkill(): HuntingSkill | undefined { return this._huntingSkill; }
+  set huntingSkill(huntingSkill: HuntingSkill | undefined) { this._huntingSkill = huntingSkill; }
+}",
+  "enum PetType {
+  CAT = \\"Cat\\",
+  DOG = \\"Dog\\",
+}",
+  "enum HuntingSkill {
+  CLUELESS = \\"clueless\\",
+  LAZY = \\"lazy\\",
+}",
+  "class Dog {
+  private _petType?: PetType;
+  private _age?: number;
+  private _breed?: DogBreed;
+
+  constructor(input: {
+    petType?: PetType,
+    age?: number,
+    breed?: DogBreed,
+  }) {
+    this._petType = input.petType;
+    this._age = input.age;
+    this._breed = input.breed;
+  }
+
+  get petType(): PetType | undefined { return this._petType; }
+  set petType(petType: PetType | undefined) { this._petType = petType; }
+
+  get age(): number | undefined { return this._age; }
+  set age(age: number | undefined) { this._age = age; }
+
+  get breed(): DogBreed | undefined { return this._breed; }
+  set breed(breed: DogBreed | undefined) { this._breed = breed; }
+}",
+  "enum DogBreed {
+  BULLDOG = \\"bulldog\\",
+  BICHONS_SPACE_FRISE = \\"bichons frise\\",
+}",
+]
+`;
+
 exports[`TypeScriptGenerator should not render \`class\` with reserved keyword 1`] = `
 "class Address {
   private _reservedReservedEnum?: string;

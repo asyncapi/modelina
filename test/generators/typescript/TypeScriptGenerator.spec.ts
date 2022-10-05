@@ -569,7 +569,7 @@ ${content}`;
       }
     };
 
-    test.only('should combine oneOf and allOf', async () => {
+    test('should combine oneOf and allOf', async () => {
       const models = await generator.generate(asyncapiDoc);
       expect(models).toHaveLength(6);
       expect(models.map((model) => model.result)).toMatchSnapshot();
@@ -584,6 +584,101 @@ ${content}`;
       const dog = models.find((model) => model.modelName === 'Dog');
       expect(dog).not.toBeUndefined();
       expect(dog?.result).toContain('animalType');
+      expect(dog?.result).toContain('age');
+      expect(dog?.result).toContain('breed');
+      expect(dog?.result).not.toContain('huntingSkill');
+    });
+  });
+
+  describe('Combine properties and oneOf', () => {
+    const asyncapiDoc = {
+      asyncapi: '2.4.0',
+      info: {
+        title: 'Pet',
+        version: '1.0.0'
+      },
+      channels: {},
+      components: {
+        messages: {
+          Pet: {
+            payload: {
+              title: 'Pet',
+              type: 'object',
+              additionalProperties: false,
+              discriminator: 'petType',
+              properties: {
+                petType: {
+                  title: 'Pet Type',
+                  type: 'string',
+                },
+                age: {
+                  type: 'integer',
+                  min: 0,
+                },
+              },
+              oneOf: [
+                { $ref: '#/components/schemas/Cat' },
+                { $ref: '#/components/schemas/Dog' },
+              ],
+            }
+          },
+        },
+        schemas: {
+          Cat: {
+            title: 'Cat',
+            type: 'object',
+            additionalProperties: false,
+            properties: {
+              petType: {
+                const: 'Cat'
+              },
+              huntingSkill: {
+                title: 'Hunting Skill',
+                type: 'string',
+                enum: [
+                  'clueless',
+                  'lazy',
+                ],
+              },
+            },
+          },
+          Dog: {
+            title: 'Dog',
+            type: 'object',
+            additionalProperties: false,
+            properties: {
+              petType: {
+                const: 'Dog'
+              },
+              breed: {
+                title: 'Dog Breed',
+                type: 'string',
+                enum: [
+                  'bulldog',
+                  'bichons frise',
+                ],
+              },
+            },
+          },
+        }
+      }
+    };
+
+    test('should combine properties and oneOf', async () => {
+      const models = await generator.generate(asyncapiDoc);
+      expect(models).toHaveLength(6);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+
+      const cat = models.find((model) => model.modelName === 'Cat');
+      expect(cat).not.toBeUndefined();
+      expect(cat?.result).toContain('petType');
+      expect(cat?.result).toContain('age');
+      expect(cat?.result).toContain('huntingSkill');
+      expect(cat?.result).not.toContain('breed');
+
+      const dog = models.find((model) => model.modelName === 'Dog');
+      expect(dog).not.toBeUndefined();
+      expect(dog?.result).toContain('petType');
       expect(dog?.result).toContain('age');
       expect(dog?.result).toContain('breed');
       expect(dog?.result).not.toContain('huntingSkill');
