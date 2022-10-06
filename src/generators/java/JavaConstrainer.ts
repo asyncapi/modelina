@@ -86,7 +86,7 @@ export const JavaDefaultTypeMapping: TypeMapping<JavaOptions> = {
   Dictionary ({constrainedModel}): string {
     //Limitations to Java is that maps cannot have specific value types...
     if (constrainedModel.value.type === 'int') {
-      constrainedModel.value.type = 'Integer'
+      constrainedModel.value.type = 'Integer';
     }
     return `Map<${constrainedModel.key.type}, ${constrainedModel.value.type}>`;
   }
