@@ -15,7 +15,7 @@ function realizePropertyFactory(prop: string) {
 
 function renderMarshalProperty(modelInstanceVariable: string, model: ConstrainedMetaModel) {
   if (model instanceof ConstrainedReferenceModel && !(model.ref instanceof ConstrainedEnumModel)) {
-    return `$\{${model.type}.marshal()}`;
+    return `$\{${modelInstanceVariable}.marshal()}`;
   }
   return realizePropertyFactory(modelInstanceVariable);
 }
@@ -45,7 +45,7 @@ function renderMarshalProperties(model: ConstrainedObjectModel) {
 
   const marshalUnwrapDictionaryProperties = unwrapDictionaryProperties.map(([prop, propModel]) => {
     const modelInstanceVariable = 'value';
-    const patternPropertyMarshalCode = renderMarshalProperty(modelInstanceVariable, propModel.property);
+    const patternPropertyMarshalCode = renderMarshalProperty(modelInstanceVariable, (propModel.property as ConstrainedDictionaryModel).value);
     const marshalCode = `json += \`"$\{key}": ${patternPropertyMarshalCode},\`;`;
     return `if(this.${prop} !== undefined) { 
 for (const [key, value] of this.${prop}.entries()) {
@@ -79,7 +79,7 @@ ${renderer.indent(renderMarshalProperties(model))}
 
 function renderUnmarshalProperty(modelInstanceVariable: string, model: ConstrainedMetaModel) {
   if (model instanceof ConstrainedReferenceModel && !(model.ref instanceof ConstrainedEnumModel)) {
-    return `$\{${model.type}.marshal()}`;
+    return `$\{${model.type}.unmarshal(${modelInstanceVariable})}`;
   }
   return `${modelInstanceVariable}`;
 }
@@ -110,7 +110,7 @@ function renderUnmarshalProperties(model: ConstrainedObjectModel) {
   const unmarshalDictionaryProperties = [];
   for (const [prop, propModel] of unwrapDictionaryProperties) {
     const modelInstanceVariable = 'value as any';
-    const unmarshalCode = renderUnmarshalProperty(modelInstanceVariable, propModel.property);
+    const unmarshalCode = renderUnmarshalProperty(modelInstanceVariable, (propModel.property as ConstrainedDictionaryModel).value);
     setDictionaryProperties.push(`if (instance.${prop} === undefined) {instance.${prop} = new Map();}`);
     unmarshalDictionaryProperties.push(`instance.${prop}.set(key, ${unmarshalCode});`);
   }

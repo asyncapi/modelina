@@ -77,7 +77,6 @@ ${modelCode}`;
   splitMetaModel(model: MetaModel): MetaModel[] {
     //These are the models that we have separate renderers for
     const metaModelsToSplit = {
-      splitEnum: true, 
       splitObject: true
     };
     return split(model, metaModelsToSplit);
