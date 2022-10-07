@@ -47,7 +47,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       const payload = message.payload();
       if (payload) {
         const schema = AsyncAPIInputProcessor.convertToInternalSchema(payload);
-        const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema);
+        const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema, options);
         if (newCommonModel.$id !== undefined) {
           if (inputModel.models[newCommonModel.$id] !== undefined) {
             Logger.warn(`Overwriting existing model with $id ${newCommonModel.$id}, are there two models with the same id present?`, newCommonModel);
