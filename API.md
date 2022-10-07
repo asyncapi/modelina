@@ -704,7 +704,6 @@ Class for processing AsyncAPI inputs
         * [.shouldProcess(input)](#AsyncAPIInputProcessor+shouldProcess)
         * [.tryGetVersionOfDocument(input)](#AsyncAPIInputProcessor+tryGetVersionOfDocument)
     * _static_
-        * [.convertToInternalSchema(schema)](#AsyncAPIInputProcessor.convertToInternalSchema)
         * [.isFromParser(input)](#AsyncAPIInputProcessor.isFromParser)
 
 <a name="AsyncAPIInputProcessor+process"></a>
@@ -739,19 +738,6 @@ Try to find the AsyncAPI version from the input. If it cannot undefined are retu
 | Param |
 | --- |
 | input | 
-
-<a name="AsyncAPIInputProcessor.convertToInternalSchema"></a>
-
-### AsyncAPIInputProcessor.convertToInternalSchema(schema)
-Reflect the name of the schema and save it to `x-modelgen-inferred-name` extension.
-
-This keeps the the id of the model deterministic if used in conjunction with other AsyncAPI tools such as the generator.
-
-**Kind**: static method of [<code>AsyncAPIInputProcessor</code>](#AsyncAPIInputProcessor)  
-
-| Param | Description |
-| --- | --- |
-| schema | to reflect name for |
 
 <a name="AsyncAPIInputProcessor.isFromParser"></a>
 

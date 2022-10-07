@@ -1,7 +1,7 @@
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import path from 'path';
-import { CommonModel, InputMetaModel, Draft4Schema, Draft7Schema, Draft6Schema, SwaggerV2Schema, OpenapiV3Schema, AsyncapiV2Schema } from '../models';
+import { CommonModel, InputMetaModel, Draft4Schema, Draft7Schema, Draft6Schema, SwaggerV2Schema, OpenapiV3Schema, AsyncapiV2Schema, ProcessorOptions } from '../models';
 import { Logger } from '../utils';
 import { Interpreter } from '../interpreter/Interpreter';
 import { convertToMetaModel } from '../helpers';
@@ -310,9 +310,9 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param schema to simplify to common model
    */
-  static convertSchemaToCommonModel(schema: Draft4Schema | Draft6Schema | Draft7Schema | SwaggerV2Schema| AsyncapiV2Schema | boolean): CommonModel {
+  static convertSchemaToCommonModel(schema: Draft4Schema | Draft6Schema | Draft7Schema | SwaggerV2Schema| AsyncapiV2Schema | boolean, options?: ProcessorOptions): CommonModel {
     const interpreter = new Interpreter();
-    const model = interpreter.interpret(schema);
+    const model = interpreter.interpret(schema, options?.interpreter);
     if (model === undefined) {
       throw new Error('Could not interpret schema to internal model');
     }

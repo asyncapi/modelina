@@ -82,7 +82,7 @@ export class TypeScriptInputProcessor extends AbstractInputProcessor {
     const generatedSchemas = this.generateJSONSchema(baseFile, '*', options?.typescript);
     if (generatedSchemas) {
       for (const schema of generatedSchemas) {
-        const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema as Record<string, any>);
+        const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema as Record<string, any>, options);
         if (newCommonModel.$id !== undefined) {
           if (inputModel.models[newCommonModel.$id] !== undefined) {
             Logger.warn(`Overwriting existing model with $id ${newCommonModel.$id}, are there two models with the same id present?`, newCommonModel);

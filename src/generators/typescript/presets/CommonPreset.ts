@@ -79,7 +79,7 @@ ${renderer.indent(renderMarshalProperties(model))}
 
 function renderUnmarshalProperty(modelInstanceVariable: string, model: ConstrainedMetaModel) {
   if (model instanceof ConstrainedReferenceModel && !(model.ref instanceof ConstrainedEnumModel)) {
-    return `$\{${model.type}.unmarshal(${modelInstanceVariable})}`;
+    return `${model.type}.unmarshal(${modelInstanceVariable})`;
   }
   return `${modelInstanceVariable}`;
 }
