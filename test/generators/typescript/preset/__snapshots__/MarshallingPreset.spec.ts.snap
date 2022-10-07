@@ -77,12 +77,12 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
       instance.numberProp = obj[\\"numberProp\\"];
     }
     if (obj[\\"nestedObject\\"] !== undefined) {
-      instance.nestedObject = \${NestedTest.unmarshal(obj[\\"nestedObject\\"])};
+      instance.nestedObject = NestedTest.unmarshal(obj[\\"nestedObject\\"]);
     }
 
     if (instance.additionalProperties === undefined) {instance.additionalProperties = new Map();}
       for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"stringProp\\",\\"enumProp\\",\\"numberProp\\",\\"nestedObject\\",\\"additionalProperties\\"].includes(key);}))) {
-        instance.additionalProperties.set(key, \${NestedTest.unmarshal(value as any)});
+        instance.additionalProperties.set(key, NestedTest.unmarshal(value as any));
       }
 
     return instance;
