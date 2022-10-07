@@ -157,5 +157,12 @@ describe('JavaConstrainer', () => {
       const type = JavaDefaultTypeMapping.Dictionary({constrainedModel: model, options: JavaGenerator.defaultOptions});
       expect(type).toEqual('Map<String, String>');
     });
+    test('should not render simple integer type', () => {
+      const keyModel = new ConstrainedStringModel('test', undefined, 'String');
+      const valueModel = new ConstrainedIntegerModel('test', undefined, 'int');
+      const model = new ConstrainedDictionaryModel('test', undefined, '', keyModel, valueModel);
+      const type = JavaDefaultTypeMapping.Dictionary({constrainedModel: model, options: JavaGenerator.defaultOptions});
+      expect(type).toEqual('Map<String, Integer>');
+    });
   });
 });
