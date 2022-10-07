@@ -7,21 +7,15 @@ Array [
   private _petType: PetType;
   private _reservedName: string;
   private _huntingSkill: AnonymousSchema_5;
-  private _packSize?: number;
-  private _color?: string;
 
   constructor(input: {
     petType: PetType,
     reservedName: string,
     huntingSkill: AnonymousSchema_5,
-    packSize?: number,
-    color?: string,
   }) {
     this._petType = input.petType;
     this._reservedName = input.reservedName;
     this._huntingSkill = input.huntingSkill;
-    this._packSize = input.packSize;
-    this._color = input.color;
   }
 
   get petType(): PetType { return this._petType; }
@@ -32,12 +26,6 @@ Array [
 
   get huntingSkill(): AnonymousSchema_5 { return this._huntingSkill; }
   set huntingSkill(huntingSkill: AnonymousSchema_5) { this._huntingSkill = huntingSkill; }
-
-  get packSize(): number | undefined { return this._packSize; }
-  set packSize(packSize: number | undefined) { this._packSize = packSize; }
-
-  get color(): string | undefined { return this._color; }
-  set color(color: string | undefined) { this._color = color; }
 }",
   "enum PetType {
   CAT = \\"Cat\\",
@@ -53,22 +41,16 @@ Array [
   "class Dog {
   private _petType: PetType;
   private _reservedName: string;
-  private _huntingSkill?: AnonymousSchema_5;
   private _packSize: number;
-  private _color?: string;
 
   constructor(input: {
     petType: PetType,
     reservedName: string,
-    huntingSkill?: AnonymousSchema_5,
     packSize: number,
-    color?: string,
   }) {
     this._petType = input.petType;
     this._reservedName = input.reservedName;
-    this._huntingSkill = input.huntingSkill;
     this._packSize = input.packSize;
-    this._color = input.color;
   }
 
   get petType(): PetType { return this._petType; }
@@ -77,33 +59,21 @@ Array [
   get reservedName(): string { return this._reservedName; }
   set reservedName(reservedName: string) { this._reservedName = reservedName; }
 
-  get huntingSkill(): AnonymousSchema_5 | undefined { return this._huntingSkill; }
-  set huntingSkill(huntingSkill: AnonymousSchema_5 | undefined) { this._huntingSkill = huntingSkill; }
-
   get packSize(): number { return this._packSize; }
   set packSize(packSize: number) { this._packSize = packSize; }
-
-  get color(): string | undefined { return this._color; }
-  set color(color: string | undefined) { this._color = color; }
 }",
   "class StickInsect {
   private _petType: PetType;
   private _reservedName: string;
-  private _huntingSkill?: AnonymousSchema_5;
-  private _packSize?: number;
   private _color: string;
 
   constructor(input: {
     petType: PetType,
     reservedName: string,
-    huntingSkill?: AnonymousSchema_5,
-    packSize?: number,
     color: string,
   }) {
     this._petType = input.petType;
     this._reservedName = input.reservedName;
-    this._huntingSkill = input.huntingSkill;
-    this._packSize = input.packSize;
     this._color = input.color;
   }
 
@@ -112,12 +82,6 @@ Array [
 
   get reservedName(): string { return this._reservedName; }
   set reservedName(reservedName: string) { this._reservedName = reservedName; }
-
-  get huntingSkill(): AnonymousSchema_5 | undefined { return this._huntingSkill; }
-  set huntingSkill(huntingSkill: AnonymousSchema_5 | undefined) { this._huntingSkill = huntingSkill; }
-
-  get packSize(): number | undefined { return this._packSize; }
-  set packSize(packSize: number | undefined) { this._packSize = packSize; }
 
   get color(): string { return this._color; }
   set color(color: string) { this._color = color; }
@@ -163,8 +127,8 @@ exports[`TypeScriptGenerator should render \`class\` type 1`] = `
   private _marriage?: boolean;
   private _members?: string | number | boolean;
   private _tupleType?: [string, number];
-  private _tupleTypeWithAdditionalItems?: string | number | any[];
-  private _arrayType: string | any[];
+  private _tupleTypeWithAdditionalItems?: (string | number | any)[];
+  private _arrayType: (string | any)[];
   private _additionalProperties?: Map<string, any>;
 
   constructor(input: {
@@ -175,8 +139,8 @@ exports[`TypeScriptGenerator should render \`class\` type 1`] = `
     marriage?: boolean,
     members?: string | number | boolean,
     tupleType?: [string, number],
-    tupleTypeWithAdditionalItems?: string | number | any[],
-    arrayType: string | any[],
+    tupleTypeWithAdditionalItems?: (string | number | any)[],
+    arrayType: (string | any)[],
     additionalProperties?: Map<string, any>,
   }) {
     this._streetName = input.streetName;
@@ -212,11 +176,11 @@ exports[`TypeScriptGenerator should render \`class\` type 1`] = `
   get tupleType(): [string, number] | undefined { return this._tupleType; }
   set tupleType(tupleType: [string, number] | undefined) { this._tupleType = tupleType; }
 
-  get tupleTypeWithAdditionalItems(): string | number | any[] | undefined { return this._tupleTypeWithAdditionalItems; }
-  set tupleTypeWithAdditionalItems(tupleTypeWithAdditionalItems: string | number | any[] | undefined) { this._tupleTypeWithAdditionalItems = tupleTypeWithAdditionalItems; }
+  get tupleTypeWithAdditionalItems(): (string | number | any)[] | undefined { return this._tupleTypeWithAdditionalItems; }
+  set tupleTypeWithAdditionalItems(tupleTypeWithAdditionalItems: (string | number | any)[] | undefined) { this._tupleTypeWithAdditionalItems = tupleTypeWithAdditionalItems; }
 
-  get arrayType(): string | any[] { return this._arrayType; }
-  set arrayType(arrayType: string | any[]) { this._arrayType = arrayType; }
+  get arrayType(): (string | any)[] { return this._arrayType; }
+  set arrayType(arrayType: (string | any)[]) { this._arrayType = arrayType; }
 
   get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
   set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
@@ -242,15 +206,15 @@ exports[`TypeScriptGenerator should render \`interface\` type 1`] = `
   marriage?: boolean;
   members?: string | number | boolean;
   tupleType?: [string, number];
-  tupleTypeWithAdditionalItems?: string | number | any[];
-  arrayType: string | any[];
+  tupleTypeWithAdditionalItems?: (string | number | any)[];
+  arrayType: (string | any)[];
   additionalProperties?: Map<string, any>;
 }"
 `;
 
-exports[`TypeScriptGenerator should render \`type\` type - array of primitive type 1`] = `"type TypeArray = string | any[];"`;
+exports[`TypeScriptGenerator should render \`type\` type - array of primitive type 1`] = `"type TypeArray = (string | any)[];"`;
 
-exports[`TypeScriptGenerator should render \`type\` type - array of union type 1`] = `"type TypeArray = string | number | boolean | any[];"`;
+exports[`TypeScriptGenerator should render \`type\` type - array of union type 1`] = `"type TypeArray = (string | number | boolean | any)[];"`;
 
 exports[`TypeScriptGenerator should render \`type\` type - enum 1`] = `
 "enum TypeEnum {
@@ -287,7 +251,7 @@ class Address {
   private _houseNumber: number;
   private _marriage?: boolean;
   private _members?: string | number | boolean;
-  private _arrayType: string | number | any[];
+  private _arrayType: (string | number | any)[];
   private _otherModel?: OtherModel;
   private _additionalProperties?: Map<string, any>;
 
@@ -298,7 +262,7 @@ class Address {
     houseNumber: number,
     marriage?: boolean,
     members?: string | number | boolean,
-    arrayType: string | number | any[],
+    arrayType: (string | number | any)[],
     otherModel?: OtherModel,
     additionalProperties?: Map<string, any>,
   }) {
@@ -331,8 +295,8 @@ class Address {
   get members(): string | number | boolean | undefined { return this._members; }
   set members(members: string | number | boolean | undefined) { this._members = members; }
 
-  get arrayType(): string | number | any[] { return this._arrayType; }
-  set arrayType(arrayType: string | number | any[]) { this._arrayType = arrayType; }
+  get arrayType(): (string | number | any)[] { return this._arrayType; }
+  set arrayType(arrayType: (string | number | any)[]) { this._arrayType = arrayType; }
 
   get otherModel(): OtherModel | undefined { return this._otherModel; }
   set otherModel(otherModel: OtherModel | undefined) { this._otherModel = otherModel; }
@@ -375,7 +339,7 @@ class Address {
   private _houseNumber: number;
   private _marriage?: boolean;
   private _members?: string | number | boolean;
-  private _arrayType: string | number | any[];
+  private _arrayType: (string | number | any)[];
   private _otherModel?: OtherModel;
   private _additionalProperties?: Map<string, any>;
 
@@ -386,7 +350,7 @@ class Address {
     houseNumber: number,
     marriage?: boolean,
     members?: string | number | boolean,
-    arrayType: string | number | any[],
+    arrayType: (string | number | any)[],
     otherModel?: OtherModel,
     additionalProperties?: Map<string, any>,
   }) {
@@ -419,8 +383,8 @@ class Address {
   get members(): string | number | boolean | undefined { return this._members; }
   set members(members: string | number | boolean | undefined) { this._members = members; }
 
-  get arrayType(): string | number | any[] { return this._arrayType; }
-  set arrayType(arrayType: string | number | any[]) { this._arrayType = arrayType; }
+  get arrayType(): (string | number | any)[] { return this._arrayType; }
+  set arrayType(arrayType: (string | number | any)[]) { this._arrayType = arrayType; }
 
   get otherModel(): OtherModel | undefined { return this._otherModel; }
   set otherModel(otherModel: OtherModel | undefined) { this._otherModel = otherModel; }
@@ -463,7 +427,7 @@ class Address {
   private _houseNumber: number;
   private _marriage?: boolean;
   private _members?: string | number | boolean;
-  private _arrayType: string | number | any[];
+  private _arrayType: (string | number | any)[];
   private _otherModel?: OtherModel;
   private _additionalProperties?: Map<string, any>;
 
@@ -474,7 +438,7 @@ class Address {
     houseNumber: number,
     marriage?: boolean,
     members?: string | number | boolean,
-    arrayType: string | number | any[],
+    arrayType: (string | number | any)[],
     otherModel?: OtherModel,
     additionalProperties?: Map<string, any>,
   }) {
@@ -507,8 +471,8 @@ class Address {
   get members(): string | number | boolean | undefined { return this._members; }
   set members(members: string | number | boolean | undefined) { this._members = members; }
 
-  get arrayType(): string | number | any[] { return this._arrayType; }
-  set arrayType(arrayType: string | number | any[]) { this._arrayType = arrayType; }
+  get arrayType(): (string | number | any)[] { return this._arrayType; }
+  set arrayType(arrayType: (string | number | any)[]) { this._arrayType = arrayType; }
 
   get otherModel(): OtherModel | undefined { return this._otherModel; }
   set otherModel(otherModel: OtherModel | undefined) { this._otherModel = otherModel; }
@@ -553,7 +517,7 @@ export class Address {
   private _houseNumber: number;
   private _marriage?: boolean;
   private _members?: string | number | boolean;
-  private _arrayType: string | number | any[];
+  private _arrayType: (string | number | any)[];
   private _otherModel?: OtherModel;
   private _additionalProperties?: Map<string, any>;
 
@@ -564,7 +528,7 @@ export class Address {
     houseNumber: number,
     marriage?: boolean,
     members?: string | number | boolean,
-    arrayType: string | number | any[],
+    arrayType: (string | number | any)[],
     otherModel?: OtherModel,
     additionalProperties?: Map<string, any>,
   }) {
@@ -597,8 +561,8 @@ export class Address {
   get members(): string | number | boolean | undefined { return this._members; }
   set members(members: string | number | boolean | undefined) { this._members = members; }
 
-  get arrayType(): string | number | any[] { return this._arrayType; }
-  set arrayType(arrayType: string | number | any[]) { this._arrayType = arrayType; }
+  get arrayType(): (string | number | any)[] { return this._arrayType; }
+  set arrayType(arrayType: (string | number | any)[]) { this._arrayType = arrayType; }
 
   get otherModel(): OtherModel | undefined { return this._otherModel; }
   set otherModel(otherModel: OtherModel | undefined) { this._otherModel = otherModel; }

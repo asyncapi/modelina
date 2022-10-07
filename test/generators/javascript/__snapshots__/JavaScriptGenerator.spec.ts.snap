@@ -18,6 +18,28 @@ exports[`JavaScriptGenerator should not render \`class\` with reserved keyword 1
 }"
 `;
 
+exports[`JavaScriptGenerator should not render enums type 1`] = `
+"class Address {
+  reservedEnum;
+  additionalProperties;
+
+  constructor(input) {
+    if (input.hasOwnProperty('reservedEnum')) {
+      this.reservedEnum = input.reservedEnum;
+    }
+    if (input.hasOwnProperty('additionalProperties')) {
+      this.additionalProperties = input.additionalProperties;
+    }
+  }
+
+  get reservedEnum() { return this.reservedEnum; }
+  set reservedEnum(reservedEnum) { this.reservedEnum = reservedEnum; }
+
+  get additionalProperties() { return this.additionalProperties; }
+  set additionalProperties(additionalProperties) { this.additionalProperties = additionalProperties; }
+}"
+`;
+
 exports[`JavaScriptGenerator should render \`class\` type 1`] = `
 "class Address {
   streetName;

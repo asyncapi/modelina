@@ -1,4 +1,5 @@
-import {renderJavaScriptDependency} from '../../src/utils'; 
+import { ConstrainedReferenceModel, ConstrainedStringModel } from '../../src';
+import {renderJavaScriptDependency, makeUnique} from '../../src/utils'; 
 
 describe('DependencyHelper', () => {
   describe('renderJavaScriptDependency', () => {
@@ -9,6 +10,29 @@ describe('DependencyHelper', () => {
     test('should render accurate ESM dependency', () => {
       const renderedDependency = renderJavaScriptDependency('test', 'test2', 'ESM');
       expect(renderedDependency).toEqual('import test from \'test2\';');
+    });
+  });
+  describe('makeUnique', () => {
+    test('should remove duplicate regular instances', () => {
+      const stringModel = new ConstrainedStringModel('', undefined, '');
+      const nonUniqueArray = [stringModel, stringModel];
+      const uniqueArray = makeUnique(nonUniqueArray);
+      expect(uniqueArray).toHaveLength(1);
+    });
+    test('should remove duplicate reference instances', () => {
+      const stringModel = new ConstrainedStringModel('', undefined, '');
+      const ref1 = new ConstrainedReferenceModel('', undefined, '', stringModel);
+      const nonUniqueArray = [ref1, ref1];
+      const uniqueArray = makeUnique(nonUniqueArray);
+      expect(uniqueArray).toHaveLength(1);
+    });
+    test('should remove duplicate reference value instances', () => {
+      const stringModel = new ConstrainedStringModel('', undefined, '');
+      const ref1 = new ConstrainedReferenceModel('', undefined, '', stringModel);
+      const ref2 = new ConstrainedReferenceModel('', undefined, '', stringModel);
+      const nonUniqueArray = [ref1, ref2];
+      const uniqueArray = makeUnique(nonUniqueArray);
+      expect(uniqueArray).toHaveLength(1);
     });
   });
 });

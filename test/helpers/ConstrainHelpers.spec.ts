@@ -229,7 +229,8 @@ describe('ConstrainHelpers', () => {
   describe('constrain DictionaryModel', () => {
     test('should constrain correctly', () => {
       const stringModel = new StringModel('', undefined);
-      const metaModel = new DictionaryModel('test', undefined, stringModel, stringModel);
+      const stringModel2 = new StringModel('', undefined);
+      const metaModel = new DictionaryModel('test', undefined, stringModel, stringModel2);
       const constrainedModel = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel,
         options: {},

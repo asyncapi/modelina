@@ -1,3 +1,4 @@
+import { makeUnique } from '../utils/DependencyHelper';
 import { MetaModel } from './MetaModel';
 
 export abstract class ConstrainedMetaModel extends MetaModel {
@@ -59,7 +60,7 @@ export class ConstrainedTupleModel extends ConstrainedMetaModel {
     }
     
     //Ensure no duplicate references
-    dependencyModels = [...new Set(dependencyModels)];
+    dependencyModels = makeUnique(dependencyModels);
     
     return dependencyModels;
   }
@@ -112,7 +113,7 @@ export class ConstrainedUnionModel extends ConstrainedMetaModel {
     }
     
     //Ensure no duplicate references
-    dependencyModels = [...new Set(dependencyModels)];
+    dependencyModels = makeUnique(dependencyModels);
 
     return dependencyModels;
   }
@@ -130,20 +131,6 @@ export class ConstrainedEnumModel extends ConstrainedMetaModel {
     type: string, 
     public values: ConstrainedEnumValueModel[]) {
     super(name, originalInput, type);
-  }
-
-  getNearestDependencies(): ConstrainedMetaModel[] {
-    let dependencyModels = Object.values(this.values).filter(
-      (enumModel) => {
-        return enumModel.value instanceof ConstrainedReferenceModel;
-      }
-    ).map((enumModel) => {
-      return enumModel.value as ConstrainedReferenceModel;
-    });
-
-    //Ensure no duplicate references
-    dependencyModels = [...new Set(dependencyModels)];
-    return dependencyModels;
   }
 }
 export class ConstrainedDictionaryModel extends ConstrainedMetaModel {
@@ -170,7 +157,7 @@ export class ConstrainedDictionaryModel extends ConstrainedMetaModel {
     }
    
     //Ensure no duplicate references
-    dependencyModels = [...new Set(dependencyModels)];
+    dependencyModels = makeUnique(dependencyModels);
 
     return dependencyModels;
   }
@@ -196,8 +183,13 @@ export class ConstrainedObjectModel extends ConstrainedMetaModel {
       }
     }
 
+    //Ensure no self references
+    dependencyModels = dependencyModels.filter((referenceModel) => {
+      return referenceModel.name !== this.name;
+    });
+
     //Ensure no duplicate references
-    dependencyModels = [...new Set(dependencyModels)];
+    dependencyModels = makeUnique(dependencyModels);
 
     return dependencyModels;
   }
