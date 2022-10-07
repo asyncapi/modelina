@@ -387,6 +387,17 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "amit-ksh",
+      "name": "Amit Kumar Sharma",
+      "avatar_url": "https://avatars.githubusercontent.com/u/91947037?v=4",
+      "profile": "https://github.com/amit-ksh",
+      "contributions": [
+        "test",
+        "doc",
+        "example"
+      ]
     }
   ],
   "contributorsPerLine": 7,
