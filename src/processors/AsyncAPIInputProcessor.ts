@@ -33,7 +33,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       if (document) {
         doc = document;
       } else {
-        const err = new Error('Input is not an corrent AsyncAPI document so it cannot be processed.');
+        const err = new Error('Input is not a correct AsyncAPI document so it cannot be processed.');
         (err as any).diagnostics = diagnostics;
         throw err;
       }
