@@ -99,7 +99,7 @@ describe('AsyncAPIInputProcessor', () => {
       const processor = new AsyncAPIInputProcessor();
       await expect(processor.process({asyncapi: '2.5.0', nonExistingField: {}}))
         .rejects
-        .toThrow('Input is not an corrent AsyncAPI document so it cannot be processed.');
+        .toThrow('Input is not an correct AsyncAPI document so it cannot be processed.');
     });
 
     test('should be able to process pure object', async () => {

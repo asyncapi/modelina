@@ -33,7 +33,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       if (document) {
         doc = document;
       } else {
-        const err = new Error('Input is not a correct AsyncAPI document so it cannot be processed.');
+        const err = new Error('Input is not an correct AsyncAPI document so it cannot be processed.');
         (err as any).diagnostics = diagnostics;
         throw err;
       }
@@ -78,7 +78,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
   ): AsyncapiV2Schema | boolean {
     if (typeof schema === 'boolean') {return schema;}
     
-    let schemaUid = schema.uid();
+    let schemaUid = schema.id();
     //Because the constraint functionality of generators cannot handle -, <, >, we remove them from the id if it's an anonymous schema.
     if (schemaUid.includes('<anonymous-schema')) {
       schemaUid = schemaUid.replace('<', '').replace(/-/g, '_').replace('>', '');
