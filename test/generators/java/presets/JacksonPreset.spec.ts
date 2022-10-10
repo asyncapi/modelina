@@ -34,41 +34,12 @@ describe('JAVA_JACKSON_PRESET', () => {
         'off',
       ]
     };
-    const expected = `public enum Enum {
-  ON("on"), OFF("off");
+    
+    const expectedDependencies = ['import com.fasterxml.jackson.annotation.*;'];
 
-  private String value;
-
-  Enum(String value) {
-    this.value = value;
-  }
-
-  @JsonValue
-  public String getValue() {
-    return value;
-  }
-
-  @JsonCreator
-  public static Enum fromValue(String value) {
-    for (Enum e : Enum.values()) {
-      if (e.value.equals(value)) {
-        return e;
-      }
-    }
-    throw new IllegalArgumentException("Unexpected value '" + value + "'");
-  }
-
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-}`;
-
-    const inputModel = await generator.process(doc);
-    const model = inputModel.models['Enum'];
-
-    const enumModel = await generator.renderEnum(model, inputModel);
-    expect(enumModel.result).toEqual(expected);
-    expect(enumModel.dependencies).toEqual(['import com.fasterxml.jackson.annotation.*;']);
+    const models = await generator.generate(doc);
+    expect(models).toHaveLength(1);
+    expect(models[0].result).toMatchSnapshot(); 
+    expect(models[0].dependencies).toEqual(expectedDependencies); 
   });
 });
