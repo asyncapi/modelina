@@ -894,9 +894,9 @@ describe('CommonModel', () => {
         expect(d.getNearestDependencies()).toEqual(['1', '2', '3', '4', '5']);
       });
       test('should work with nested items', () => {
-        const doc = {properties: { testProp: { items: { $ref: '1' } } }, patternProperties: { testPattern: { items: { $ref: '2' } } } };
+        const doc = {properties: { testProp: { items: { $ref: '1' } } } };
         const d = CommonModel.toCommonModel(doc);
-        expect(d.getNearestDependencies()).toEqual(['1', '2']);
+        expect(d.getNearestDependencies()).toEqual(['1']);
       });
       test('check that no dependencies is returned if there are none', () => {
         const doc = { };
