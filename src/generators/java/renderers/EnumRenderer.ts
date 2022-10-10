@@ -1,5 +1,5 @@
 import { JavaRenderer } from '../JavaRenderer';
-import { ConstrainedEnumModel, ConstrainedEnumValueModel} from '../../../models';
+import { ConstrainedEnumModel} from '../../../models';
 import { EnumPresetType } from '../JavaPreset';
 import { JavaOptions } from '../JavaGenerator';
 
@@ -52,7 +52,7 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 }
 
-export const JAVA_DEFAULT_ENUM_PRESET: JavaEnumPreset = {
+export const JAVA_DEFAULT_ENUM_PRESET: EnumPresetType<JavaOptions> = {
   self({renderer}) {
     return renderer.defaultSelf();
   },

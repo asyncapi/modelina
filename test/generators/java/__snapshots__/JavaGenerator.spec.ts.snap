@@ -60,17 +60,10 @@ exports[`JavaGenerator should render \`enum\` type (integer type) 1`] = `
     this.value = value;
   }
 
-  @JsonValue
   public Object getValue() {
     return value;
   }
 
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-
-  @JsonCreator
   public static Numbers fromValue(Object value) {
     for (Numbers e : Numbers.values()) {
       if (e.value.equals(value)) {
@@ -78,6 +71,11 @@ exports[`JavaGenerator should render \`enum\` type (integer type) 1`] = `
       }
     }
     throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
   }
 }"
 `;
@@ -92,17 +90,10 @@ exports[`JavaGenerator should render \`enum\` type (string type) 1`] = `
     this.value = value;
   }
 
-  @JsonValue
   public Object getValue() {
     return value;
   }
 
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-
-  @JsonCreator
   public static States fromValue(Object value) {
     for (States e : States.values()) {
       if (e.value.equals(value)) {
@@ -110,6 +101,11 @@ exports[`JavaGenerator should render \`enum\` type (string type) 1`] = `
       }
     }
     throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
   }
 }"
 `;
@@ -124,17 +120,10 @@ exports[`JavaGenerator should render \`enum\` type (union type) 1`] = `
     this.value = value;
   }
 
-  @JsonValue
   public Object getValue() {
     return value;
   }
 
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-
-  @JsonCreator
   public static Union fromValue(Object value) {
     for (Union e : Union.values()) {
       if (e.value.equals(value)) {
@@ -142,6 +131,11 @@ exports[`JavaGenerator should render \`enum\` type (union type) 1`] = `
       }
     }
     throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
   }
 }"
 `;
@@ -166,17 +160,10 @@ public enum CustomEnum {
     this.value = value;
   }
 
-  @JsonValue
   public Object getValue() {
     return value;
   }
 
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-
-  @JsonCreator
   public static CustomEnum fromValue(Object value) {
     for (CustomEnum e : CustomEnum.values()) {
       if (e.value.equals(value)) {
@@ -184,6 +171,11 @@ public enum CustomEnum {
       }
     }
     throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
   }
 }"
 `;
@@ -198,17 +190,10 @@ exports[`JavaGenerator should render enums with translated special characters 1`
     this.value = value;
   }
 
-  @JsonValue
   public Object getValue() {
     return value;
   }
 
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-
-  @JsonCreator
   public static States fromValue(Object value) {
     for (States e : States.values()) {
       if (e.value.equals(value)) {
@@ -216,6 +201,11 @@ exports[`JavaGenerator should render enums with translated special characters 1`
       }
     }
     throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
   }
 }"
 `;
