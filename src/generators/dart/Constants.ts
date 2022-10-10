@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 import { checkForReservedKeyword } from '../../helpers';
 
-=======
->>>>>>> master-github-upstream
 export const RESERVED_DART_KEYWORDS = [
   'abstract', 
   'as',
@@ -69,11 +66,6 @@ export const RESERVED_DART_KEYWORDS = [
   'yield',
 ];
 
-<<<<<<< HEAD
 export function isReservedDartKeyword(word: string, forceLowerCase = true): boolean {
   return checkForReservedKeyword(word, RESERVED_DART_KEYWORDS, forceLowerCase);
-=======
-export function isReservedDartKeyword(word: string): boolean {
-  return RESERVED_DART_KEYWORDS.includes(word);
->>>>>>> master-github-upstream
 }
