@@ -2,9 +2,9 @@ import { CommonModel } from '../models/CommonModel';
 import { Interpreter, InterpreterOptions, InterpreterSchemaType } from './Interpreter';
 
 /**
- * Interpreter function for oneOf keyword with allOf.
+ * Interpreter function for oneOf keyword combined with the allOf keyword.
  * 
- * It puts the schema reference into the items field.
+ * It merges the allOf schemas into all of the oneOf schemas. Shared properties are merged. The oneOf schemas are then added as union to the model.
  * 
  * @param schema 
  * @param model 
