@@ -14,7 +14,13 @@ import { isModelObject } from './Utils';
  * @param interpreterOptions to control the interpret process
  */
 export default function interpretAllOf(schema: InterpreterSchemaType, model: CommonModel, interpreter : Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
-  if (typeof schema === 'boolean' || schema.allOf === undefined || schema.oneOf) {return;}
+  if (
+    typeof schema === 'boolean' ||
+    schema.allOf === undefined ||
+    schema.oneOf
+  ) {
+    return;
+  }
   for (const allOfSchema of schema.allOf) {  
     const allOfModel = interpreter.interpret(allOfSchema, interpreterOptions);
     if (allOfModel === undefined) {continue;}
