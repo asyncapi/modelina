@@ -1,8 +1,43 @@
+import { ConstrainedEnumValueModel } from 'models';
 import { TypeMapping } from '../../helpers';
 import { defaultEnumKeyConstraints, defaultEnumValueConstraints } from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
 import { JavaOptions } from './JavaGenerator';
+
+function enumFormatToNumberType(format: string): string {
+  switch(format){
+    case 'integer':
+    case 'int32':
+      return 'int';
+    case 'long':
+    case 'int64':
+      return 'long';
+    case 'float':
+      return 'float';
+    case 'double':
+      return 'double'
+    case 'number':
+    default: 
+      return 'int';
+  }
+}
+
+const fromEnumValuetoType = (enumValueModel: ConstrainedEnumValueModel, format: string): string => {
+  switch(typeof enumValueModel.value) {
+  case 'boolean':
+    return 'boolean';
+  case 'number':
+  case 'bigint':
+    return enumFormatToNumberType(format);
+  case 'object':
+    return 'Object';
+  case 'string':
+    return 'String';
+  default: 
+    return 'Object';
+  }
+};
 
 export const JavaDefaultTypeMapping: TypeMapping<JavaOptions> = {
   Object ({constrainedModel}): string {
@@ -77,7 +112,17 @@ export const JavaDefaultTypeMapping: TypeMapping<JavaOptions> = {
     return `${constrainedModel.valueModel.type}[]`;
   },
   Enum ({constrainedModel}): string {
-    return constrainedModel.name;
+    const format = constrainedModel.originalInput && constrainedModel.originalInput['format'];
+    const valueTypes = constrainedModel.values.map((enumValue) => fromEnumValuetoType(enumValue, format));
+    const uniqueTypes = valueTypes.filter(function(item, pos) {
+      return valueTypes.indexOf(item) == pos;
+    });
+
+    //Enums cannot handle union types, default to a loose type
+    if(uniqueTypes.length > 1) {
+      return 'Object';
+    }
+    return uniqueTypes[0];
   },
   Union (): string {
     //Because Java have no notion of unions (and no custom implementation), we have to render it as any value.

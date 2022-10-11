@@ -46,16 +46,14 @@ export const JAVA_DEFAULT_ENUM_PRESET: EnumPresetType<JavaOptions> = {
     return `${item.key}(${item.value})`;
   },
   additionalContent({ model }) {
-    const enumValueType = 'Object';
+    return `private ${model.type} value;
 
-    return `private ${enumValueType} value;
-
-${model.type}(${enumValueType} value) {
+${model.name}(${model.type} value) {
   this.value = value;
 }
 
 @JsonValue
-public ${enumValueType} getValue() {
+public ${model.type} getValue() {
   return value;
 }
 
@@ -65,8 +63,8 @@ public String toString() {
 }
 
 @JsonCreator
-public static ${model.type} fromValue(${enumValueType} value) {
-  for (${model.type} e : ${model.type}.values()) {
+public static ${model.name} fromValue(${model.type} value) {
+  for (${model.name} e : ${model.name}.values()) {
     if (e.value.equals(value)) {
       return e;
     }
