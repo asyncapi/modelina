@@ -28,10 +28,6 @@ export default function interpretOneOfWithProperties(schema: InterpreterSchemaTy
       continue; 
     }
 
-    if (typeof schema === 'boolean' || !schema.properties) {
-      continue;
-    }
-  
     const schemaModel = interpreter.interpret({
       ...schema,
       oneOf: undefined

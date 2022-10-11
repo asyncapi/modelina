@@ -29,10 +29,6 @@ export default function interpretOneOfWithAllOf(schema: InterpreterSchemaType, m
       continue; 
     }
     
-    if (typeof schema === 'boolean' || !schema.allOf?.length) {
-      continue;
-    }
-  
     const [firstAllOfSchema, ...allOfSchemas] = schema.allOf;
   
     if (typeof firstAllOfSchema === 'boolean') {
