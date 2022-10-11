@@ -1,6 +1,6 @@
 import { CommonModel } from '../../../src/models/CommonModel';
 import { Interpreter } from '../../../src/interpreter/Interpreter';
-import interpretOneOfWithProperties from '../../../src/interpreter/interpretOneOfWithProperties';
+import interpretOneOfWithProperties from '../../../src/interpreter/InterpretOneOfWithProperties';
 
 describe('Interpretation of oneOf with properties', () => {
   beforeEach(() => {

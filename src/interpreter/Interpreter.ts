@@ -12,8 +12,8 @@ import interpretDependencies from './InterpretDependencies';
 import interpretAdditionalItems from './InterpretAdditionalItems';
 import interpretOneOf from './InterpretOneOf';
 import interpretAnyOf from './InterpretAnyOf';
-import interpretOneOfWithAllOf from './interpretOneOfWithAllOf';
-import interpretOneOfWithProperties from './interpretOneOfWithProperties';
+import interpretOneOfWithAllOf from './InterpretOneOfWithAllOf';
+import interpretOneOfWithProperties from './InterpretOneOfWithProperties';
 
 export type InterpreterOptions = {
   allowInheritance?: boolean
