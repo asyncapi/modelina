@@ -142,6 +142,14 @@ Check is done using referential equality</p>
 <dd><p>Interpreter function for oneOf keyword.</p>
 <p>It puts the schema reference into the items field.</p>
 </dd>
+<dt><a href="#interpretOneOfWithAllOf">interpretOneOfWithAllOf(schema, model, interpreter, interpreterOptions)</a></dt>
+<dd><p>Interpreter function for oneOf keyword combined with the allOf keyword.</p>
+<p>It merges the allOf schemas into all of the oneOf schemas. Shared properties are merged. The oneOf schemas are then added as union to the model.</p>
+</dd>
+<dt><a href="#interpretOneOfWithProperties">interpretOneOfWithProperties(schema, model, interpreter, interpreterOptions)</a></dt>
+<dd><p>Interpreter function for oneOf keyword combined with properties.</p>
+<p>It merges the properties of the schema into the oneOf schemas. Shared properties are merged. The oneOf schemas are then added as union to the model.</p>
+</dd>
 <dt><a href="#interpretPatternProperties">interpretPatternProperties(schema, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for patternProperties keyword.</p>
 </dd>
@@ -1276,6 +1284,38 @@ Interpreter function for not keyword.
 Interpreter function for oneOf keyword.
 
 It puts the schema reference into the items field.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema |  |
+| model |  |
+| interpreter |  |
+| interpreterOptions | to control the interpret process |
+
+<a name="interpretOneOfWithAllOf"></a>
+
+## interpretOneOfWithAllOf(schema, model, interpreter, interpreterOptions)
+Interpreter function for oneOf keyword combined with the allOf keyword.
+
+It merges the allOf schemas into all of the oneOf schemas. Shared properties are merged. The oneOf schemas are then added as union to the model.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema |  |
+| model |  |
+| interpreter |  |
+| interpreterOptions | to control the interpret process |
+
+<a name="interpretOneOfWithProperties"></a>
+
+## interpretOneOfWithProperties(schema, model, interpreter, interpreterOptions)
+Interpreter function for oneOf keyword combined with properties.
+
+It merges the properties of the schema into the oneOf schemas. Shared properties are merged. The oneOf schemas are then added as union to the model.
 
 **Kind**: global function  
 
