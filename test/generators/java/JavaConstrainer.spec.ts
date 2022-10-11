@@ -177,6 +177,20 @@ describe('JavaConstrainer', () => {
       const type = JavaDefaultTypeMapping.Enum({constrainedModel: model, options: JavaGenerator.defaultOptions});
       expect(type).toEqual('Object');
     });
+    test('should render double and integer as double type', () => {
+      const enumValue2 = new ConstrainedEnumValueModel('test', 123);
+      const enumValue1 = new ConstrainedEnumValueModel('test', 123.12);
+      const model = new ConstrainedEnumModel('test', undefined, '', [enumValue1, enumValue2]);
+      const type = JavaDefaultTypeMapping.Enum({constrainedModel: model, options: JavaGenerator.defaultOptions});
+      expect(type).toEqual('double');
+    });
+    test('should render int and long as long type', () => {
+      const enumValue2 = new ConstrainedEnumValueModel('test', 123);
+      const enumValue1 = new ConstrainedEnumValueModel('test', 123);
+      const model = new ConstrainedEnumModel('test', {format: 'long'}, '', [enumValue1, enumValue2]);
+      const type = JavaDefaultTypeMapping.Enum({constrainedModel: model, options: JavaGenerator.defaultOptions});
+      expect(type).toEqual('long');
+    });
   });
 
   describe('Union', () => { 
