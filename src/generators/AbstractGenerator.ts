@@ -31,8 +31,8 @@ export abstract class AbstractGenerator<
     public readonly options: Options
   ) { }
 
-  public abstract render(model: MetaModel, inputModel: InputMetaModel): Promise<RenderOutput>;
-  public abstract renderCompleteModel(model: MetaModel, inputModel: InputMetaModel, options: RenderCompleteModelOptions): Promise<RenderOutput>;
+  public abstract render(model: MetaModel, inputModel: InputMetaModel, dependencyManager?: AbstractDependencyManager): Promise<RenderOutput>;
+  public abstract renderCompleteModel(model: MetaModel, inputModel: InputMetaModel, options: RenderCompleteModelOptions, dependencyManager?: AbstractDependencyManager): Promise<RenderOutput>;
   public abstract constrainToMetaModel(model: MetaModel, dependencyManager: AbstractDependencyManager): ConstrainedMetaModel;
   public abstract generate(input: Record<string, unknown> | InputMetaModel): Promise<OutputModel[]>;
   public abstract generateCompleteModels(input: Record<string, unknown> | InputMetaModel, options: RenderCompleteModelOptions): Promise<OutputModel[]>;
@@ -52,7 +52,7 @@ export abstract class AbstractGenerator<
     const inputModel = await this.processInput(input);
     const renders = Object.values(inputModel.models).map(async (model) => {
       const constrainedModel = this.constrainToMetaModel(model, dependencyManager);
-      const renderedOutput = await this.renderCompleteModel(constrainedModel, inputModel, options);
+      const renderedOutput = await this.renderCompleteModel(constrainedModel, inputModel, options, dependencyManager);
       return OutputModel.toOutputModel({ 
         result: renderedOutput.result,
         modelName: renderedOutput.renderedName, 
@@ -71,7 +71,7 @@ export abstract class AbstractGenerator<
     const inputModel = await this.processInput(input);
     const renders = Object.values(inputModel.models).map(async (model) => {
       const constrainedModel = this.constrainToMetaModel(model, dependencyManager);
-      const renderedOutput = await this.render(constrainedModel, inputModel);
+      const renderedOutput = await this.render(constrainedModel, inputModel, dependencyManager);
       return OutputModel.toOutputModel({ 
         result: renderedOutput.result,
         modelName: renderedOutput.renderedName, 

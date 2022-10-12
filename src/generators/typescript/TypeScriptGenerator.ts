@@ -133,43 +133,43 @@ ${modelCode}`;
     return RenderOutput.toRenderOutput({ result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies });
   }
 
-  render(model: ConstrainedMetaModel, inputModel: InputMetaModel): Promise<RenderOutput> {
+  render(model: ConstrainedMetaModel, inputModel: InputMetaModel, dependencyManager: TypeScriptDependencyManager = new TypeScriptDependencyManager(this.options)): Promise<RenderOutput> {
     if (model instanceof ConstrainedObjectModel) {
       if (this.options.modelType === 'interface') {
-        return this.renderInterface(model, inputModel);
+        return this.renderInterface(model, inputModel, dependencyManager);
       }
-      return this.renderClass(model, inputModel);
+      return this.renderClass(model, inputModel, dependencyManager);
     } else if (model instanceof ConstrainedEnumModel) {
-      return this.renderEnum(model, inputModel);
+      return this.renderEnum(model, inputModel, dependencyManager);
     } 
-    return this.renderType(model, inputModel);
+    return this.renderType(model, inputModel, dependencyManager);
   }
 
-  async renderClass(model: ConstrainedObjectModel, inputModel: InputMetaModel): Promise<RenderOutput> {
+  async renderClass(model: ConstrainedObjectModel, inputModel: InputMetaModel, dependencyManager: TypeScriptDependencyManager = new TypeScriptDependencyManager(this.options)): Promise<RenderOutput> {
     const presets = this.getPresets('class'); 
     const renderer = new ClassRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({result, renderedName: model.name});
+    return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: dependencyManager.dependencies});
   }
 
-  async renderInterface(model: ConstrainedObjectModel, inputModel: InputMetaModel): Promise<RenderOutput> {
+  async renderInterface(model: ConstrainedObjectModel, inputModel: InputMetaModel, dependencyManager: TypeScriptDependencyManager = new TypeScriptDependencyManager(this.options)): Promise<RenderOutput> {
     const presets = this.getPresets('interface'); 
     const renderer = new InterfaceRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({result, renderedName: model.name});
+    return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: dependencyManager.dependencies});
   }
 
-  async renderEnum(model: ConstrainedEnumModel, inputModel: InputMetaModel): Promise<RenderOutput> {
+  async renderEnum(model: ConstrainedEnumModel, inputModel: InputMetaModel, dependencyManager: TypeScriptDependencyManager = new TypeScriptDependencyManager(this.options)): Promise<RenderOutput> {
     const presets = this.getPresets('enum'); 
     const renderer = new EnumRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({result, renderedName: model.name});
+    return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: dependencyManager.dependencies});
   }
 
-  async renderType(model: ConstrainedMetaModel, inputModel: InputMetaModel): Promise<RenderOutput> {
+  async renderType(model: ConstrainedMetaModel, inputModel: InputMetaModel, dependencyManager: TypeScriptDependencyManager = new TypeScriptDependencyManager(this.options)): Promise<RenderOutput> {
     const presets = this.getPresets('type'); 
     const renderer = new TypeRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({result, renderedName: model.name});
+    return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: dependencyManager.dependencies});
   }
 }
