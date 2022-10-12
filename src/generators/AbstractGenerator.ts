@@ -2,6 +2,7 @@ import { InputMetaModel, OutputModel, Preset, Presets, RenderOutput, ProcessorOp
 import { InputProcessor } from '../processors';
 import { IndentationTypes } from '../helpers';
 import { isPresetWithOptions } from '../utils';
+import { AbstractDependencyManager } from './AbstractDependencyManager';
 export interface CommonGeneratorOptions<P extends Preset = Preset> {
   indentation?: {
     type: IndentationTypes;
@@ -32,7 +33,9 @@ export abstract class AbstractGenerator<
 
   public abstract render(model: MetaModel, inputModel: InputMetaModel): Promise<RenderOutput>;
   public abstract renderCompleteModel(model: MetaModel, inputModel: InputMetaModel, options: RenderCompleteModelOptions): Promise<RenderOutput>;
-  public abstract constrainToMetaModel(model: MetaModel): ConstrainedMetaModel;
+  public abstract constrainToMetaModel(model: MetaModel, dependencyManager: AbstractDependencyManager): ConstrainedMetaModel;
+  public abstract generate(input: Record<string, unknown> | InputMetaModel): Promise<OutputModel[]>;
+  public abstract generateCompleteModels(input: Record<string, unknown> | InputMetaModel, options: RenderCompleteModelOptions): Promise<OutputModel[]>;
   public abstract splitMetaModel(model: MetaModel): MetaModel[];
 
   public process(input: Record<string, unknown>): Promise<InputMetaModel> {
@@ -44,13 +47,11 @@ export abstract class AbstractGenerator<
    * 
    * OutputModels result is no longer the model itself, but including package, package dependencies and model dependencies.
    * 
-   * @param input 
-   * @param options to use for rendering full output
    */
-  public async generateCompleteModels(input: Record<string, unknown> | InputMetaModel, options: RenderCompleteModelOptions): Promise<OutputModel[]> {
+  protected async internalGenerateCompleteModels(input: Record<string, unknown> | InputMetaModel, options: RenderCompleteModelOptions, dependencyManager: AbstractDependencyManager): Promise<OutputModel[]> {
     const inputModel = await this.processInput(input);
     const renders = Object.values(inputModel.models).map(async (model) => {
-      const constrainedModel = this.constrainToMetaModel(model);
+      const constrainedModel = this.constrainToMetaModel(model, dependencyManager);
       const renderedOutput = await this.renderCompleteModel(constrainedModel, inputModel, options);
       return OutputModel.toOutputModel({ 
         result: renderedOutput.result,
@@ -65,13 +66,11 @@ export abstract class AbstractGenerator<
 
   /**
    * Generates a scattered model where dependencies and rendered results are separated. 
-   * 
-   * @param input 
    */
-  public async generate(input: Record<string, unknown> | InputMetaModel): Promise<OutputModel[]> {
+  protected async internalGenerate(input: Record<string, unknown> | InputMetaModel, dependencyManager: AbstractDependencyManager): Promise<OutputModel[]> {
     const inputModel = await this.processInput(input);
     const renders = Object.values(inputModel.models).map(async (model) => {
-      const constrainedModel = this.constrainToMetaModel(model);
+      const constrainedModel = this.constrainToMetaModel(model, dependencyManager);
       const renderedOutput = await this.render(constrainedModel, inputModel);
       return OutputModel.toOutputModel({ 
         result: renderedOutput.result,
@@ -105,6 +104,9 @@ export abstract class AbstractGenerator<
     return rawInputModel;
   }
 
+  /**
+   * Get all presets (default and custom ones from options) for a given preset type (class, enum, etc).  
+   */
   protected getPresets(presetType: string): Array<[Preset, unknown]> {
     const filteredPresets: Array<[Preset, unknown]> = [];
 

@@ -15,20 +15,9 @@ export abstract class AbstractRenderer<
     readonly generator: G,
     protected readonly presets: Array<[Preset, unknown]>,
     protected readonly model: RendererModelType, 
-    protected readonly inputModel: InputMetaModel,
-    public dependencies: string[] = []
+    protected readonly inputModel: InputMetaModel
   ) {}
 
-  /**
-   * Adds a dependency while ensuring that only one dependency is preset at a time.
-   * 
-   * @param dependency complete dependency string so it can be rendered as is.
-   */
-  addDependency(dependency: string): void {
-    if (!this.dependencies.includes(dependency)) {
-      this.dependencies.push(dependency);
-    }
-  }
 
   renderLine(line: string): string {
     return `${line}\n`;

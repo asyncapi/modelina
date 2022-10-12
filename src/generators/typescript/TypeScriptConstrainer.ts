@@ -5,8 +5,9 @@ import { defaultEnumKeyConstraints, defaultEnumValueConstraints } from './constr
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
 import { TypeScriptOptions } from './TypeScriptGenerator';
+import { TypeScriptDependencyManager } from './TypeScriptDependencyManager';
 
-export const TypeScriptDefaultTypeMapping: TypeMapping<TypeScriptOptions> = {
+export const TypeScriptDefaultTypeMapping: TypeMapping<TypeScriptOptions, TypeScriptDependencyManager> = {
   Object ({constrainedModel}): string {
     return constrainedModel.name;
   },

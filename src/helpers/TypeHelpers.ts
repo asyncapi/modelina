@@ -1,29 +1,31 @@
-import { ConstrainedAnyModel, ConstrainedBooleanModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedMetaModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedArrayModel, ConstrainedUnionModel, ConstrainedEnumModel, ConstrainedDictionaryModel } from '../models/ConstrainedMetaModel';
+import { AbstractDependencyManager } from 'generators/AbstractDependencyManager';
+import { ConstrainedAnyModel, ConstrainedBooleanModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedMetaModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedArrayModel, ConstrainedUnionModel, ConstrainedEnumModel, ConstrainedDictionaryModel, ConstrainedObjectPropertyModel } from '../models/ConstrainedMetaModel';
 
-export type TypeContext<T extends ConstrainedMetaModel, Options> = {
-  propertyKey?: string,
+export type TypeContext<T extends ConstrainedMetaModel, Options, DependencyManager extends AbstractDependencyManager> = {
+  partOfProperty?: ConstrainedObjectPropertyModel,
   options: Options,
   constrainedModel: T,
+  dependencyManager: DependencyManager
 }
 
-export type TypeMappingFunction<T extends ConstrainedMetaModel, Options> = (context: TypeContext<T, Options>) => string;
+export type TypeMappingFunction<T extends ConstrainedMetaModel, Options, DependencyManager extends AbstractDependencyManager> = (context: TypeContext<T, Options, DependencyManager>) => string;
 
-export type TypeMapping<Options> = {
-  Object: TypeMappingFunction<ConstrainedObjectModel, Options>,
-  Reference: TypeMappingFunction<ConstrainedReferenceModel, Options>,
-  Any: TypeMappingFunction<ConstrainedAnyModel, Options>,
-  Float: TypeMappingFunction<ConstrainedFloatModel, Options>,
-  Integer: TypeMappingFunction<ConstrainedIntegerModel, Options>,
-  String: TypeMappingFunction<ConstrainedStringModel, Options>,
-  Boolean: TypeMappingFunction<ConstrainedBooleanModel, Options>,
-  Tuple: TypeMappingFunction<ConstrainedTupleModel, Options>,
-  Array: TypeMappingFunction<ConstrainedArrayModel, Options>,
-  Enum: TypeMappingFunction<ConstrainedEnumModel, Options>,
-  Union: TypeMappingFunction<ConstrainedUnionModel, Options>,
-  Dictionary: TypeMappingFunction<ConstrainedDictionaryModel, Options>
+export type TypeMapping<Options, DependencyManager extends AbstractDependencyManager> = {
+  Object: TypeMappingFunction<ConstrainedObjectModel, Options, DependencyManager>,
+  Reference: TypeMappingFunction<ConstrainedReferenceModel, Options, DependencyManager>,
+  Any: TypeMappingFunction<ConstrainedAnyModel, Options, DependencyManager>,
+  Float: TypeMappingFunction<ConstrainedFloatModel, Options, DependencyManager>,
+  Integer: TypeMappingFunction<ConstrainedIntegerModel, Options, DependencyManager>,
+  String: TypeMappingFunction<ConstrainedStringModel, Options, DependencyManager>,
+  Boolean: TypeMappingFunction<ConstrainedBooleanModel, Options, DependencyManager>,
+  Tuple: TypeMappingFunction<ConstrainedTupleModel, Options, DependencyManager>,
+  Array: TypeMappingFunction<ConstrainedArrayModel, Options, DependencyManager>,
+  Enum: TypeMappingFunction<ConstrainedEnumModel, Options, DependencyManager>,
+  Union: TypeMappingFunction<ConstrainedUnionModel, Options, DependencyManager>,
+  Dictionary: TypeMappingFunction<ConstrainedDictionaryModel, Options, DependencyManager>
 };
 
-export function getTypeFromMapping<T extends ConstrainedMetaModel, Options>(typeMapping: TypeMapping<Options>, context: TypeContext<T, Options>): string {
+export function getTypeFromMapping<T extends ConstrainedMetaModel, Options, DependencyManager extends AbstractDependencyManager>(typeMapping: TypeMapping<Options, DependencyManager>, context: TypeContext<T, Options, DependencyManager>): string {
   if (context.constrainedModel instanceof ConstrainedObjectModel) {
     return typeMapping.Object({...context, constrainedModel: context.constrainedModel});
   } else if (context.constrainedModel instanceof ConstrainedReferenceModel) {
