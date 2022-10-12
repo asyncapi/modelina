@@ -1,6 +1,7 @@
 import { TypeScriptGenerator, TypeScriptOptions } from './TypeScriptGenerator';
 import { ConstrainedObjectModel, ConstrainedObjectPropertyModel, InputMetaModel, Preset } from '../../models';
 import { TypeScriptRenderer } from './TypeScriptRenderer';
+import { TypeScriptDependencyManager } from './TypeScriptDependencyManager';
 
 /**
  * Common renderer for TypeScript types
@@ -14,8 +15,9 @@ export abstract class TypeScriptObjectRenderer extends TypeScriptRenderer<Constr
     presets: Array<[Preset, unknown]>,
     model: ConstrainedObjectModel, 
     inputModel: InputMetaModel,
+    dependencyManager: TypeScriptDependencyManager = new TypeScriptDependencyManager(options)
   ) {
-    super(options, generator, presets, model, inputModel);
+    super(options, generator, presets, model, inputModel, dependencyManager);
   }
 
   /**

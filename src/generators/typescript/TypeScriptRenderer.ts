@@ -3,6 +3,7 @@ import { TypeScriptGenerator, TypeScriptOptions } from './TypeScriptGenerator';
 import { FormatHelpers } from '../../helpers';
 import { ConstrainedMetaModel, InputMetaModel, Preset } from '../../models';
 import { renderJavaScriptDependency } from '../../utils/DependencyHelper';
+import { TypeScriptDependencyManager } from './TypeScriptDependencyManager';
 
 /**
  * Common renderer for TypeScript types
@@ -16,6 +17,7 @@ export abstract class TypeScriptRenderer<RendererModelType extends ConstrainedMe
     presets: Array<[Preset, unknown]>,
     model: RendererModelType, 
     inputModel: InputMetaModel,
+    public dependencyManager: TypeScriptDependencyManager = new TypeScriptDependencyManager(options)
   ) {
     super(options, generator, presets, model, inputModel);
   }

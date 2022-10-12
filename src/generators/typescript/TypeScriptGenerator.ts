@@ -147,28 +147,28 @@ ${modelCode}`;
 
   async renderClass(model: ConstrainedObjectModel, inputModel: InputMetaModel, dependencyManager: TypeScriptDependencyManager = new TypeScriptDependencyManager(this.options)): Promise<RenderOutput> {
     const presets = this.getPresets('class'); 
-    const renderer = new ClassRenderer(this.options, this, presets, model, inputModel);
+    const renderer = new ClassRenderer(this.options, this, presets, model, inputModel, dependencyManager);
     const result = await renderer.runSelfPreset();
     return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: dependencyManager.dependencies});
   }
 
   async renderInterface(model: ConstrainedObjectModel, inputModel: InputMetaModel, dependencyManager: TypeScriptDependencyManager = new TypeScriptDependencyManager(this.options)): Promise<RenderOutput> {
     const presets = this.getPresets('interface'); 
-    const renderer = new InterfaceRenderer(this.options, this, presets, model, inputModel);
+    const renderer = new InterfaceRenderer(this.options, this, presets, model, inputModel, dependencyManager);
     const result = await renderer.runSelfPreset();
     return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: dependencyManager.dependencies});
   }
 
   async renderEnum(model: ConstrainedEnumModel, inputModel: InputMetaModel, dependencyManager: TypeScriptDependencyManager = new TypeScriptDependencyManager(this.options)): Promise<RenderOutput> {
     const presets = this.getPresets('enum'); 
-    const renderer = new EnumRenderer(this.options, this, presets, model, inputModel);
+    const renderer = new EnumRenderer(this.options, this, presets, model, inputModel, dependencyManager);
     const result = await renderer.runSelfPreset();
     return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: dependencyManager.dependencies});
   }
 
   async renderType(model: ConstrainedMetaModel, inputModel: InputMetaModel, dependencyManager: TypeScriptDependencyManager = new TypeScriptDependencyManager(this.options)): Promise<RenderOutput> {
     const presets = this.getPresets('type'); 
-    const renderer = new TypeRenderer(this.options, this, presets, model, inputModel);
+    const renderer = new TypeRenderer(this.options, this, presets, model, inputModel, dependencyManager);
     const result = await renderer.runSelfPreset();
     return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: dependencyManager.dependencies});
   }

@@ -184,7 +184,7 @@ function constrainObjectModel<Options, DependencyManager extends AbstractDepende
 
   for (const propertyMetaModel of Object.values(context.metaModel.properties)) {
     const constrainedPropertyModel = new ConstrainedObjectPropertyModel('', propertyMetaModel.propertyName, propertyMetaModel.required, constrainedModel);
-    const constrainedPropertyName = constrainRules.partOfProperty({objectPropertyModel: propertyMetaModel, constrainedObjectPropertyModel: constrainedPropertyModel, constrainedObjectModel: constrainedModel, objectModel: context.metaModel});
+    const constrainedPropertyName = constrainRules.propertyKey({objectPropertyModel: propertyMetaModel, constrainedObjectPropertyModel: constrainedPropertyModel, constrainedObjectModel: constrainedModel, objectModel: context.metaModel});
     constrainedPropertyModel.propertyName = constrainedPropertyName;
     const constrainedProperty = constrainMetaModel(typeMapping, constrainRules, {...context, metaModel: propertyMetaModel.property, partOfProperty: constrainedPropertyModel}, alreadySeenModels);
     constrainedPropertyModel.property = constrainedProperty;
