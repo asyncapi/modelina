@@ -15,7 +15,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  process(input: Record<string, any>): Promise<InputMetaModel> {
+  process(input: any): Promise<InputMetaModel> {
     if (this.shouldProcess(input)) {
       switch (input.$schema) {
       case 'http://json-schema.org/draft-04/schema':
@@ -38,7 +38,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  shouldProcess(input: Record<string, any>): boolean {
+  shouldProcess(input: any): boolean {
     if (input.$schema !== undefined) {
       if (input.$schema === 'http://json-schema.org/draft-04/schema#' ||
       input.$schema === 'http://json-schema.org/draft-04/schema' ||
@@ -58,11 +58,11 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input to process as draft 7
    */
-  private async processDraft7(input: Record<string, any>) : Promise<InputMetaModel> {
+  private async processDraft7(input: any) : Promise<InputMetaModel> {
     Logger.debug('Processing input as a JSON Schema Draft 7 document');
     const inputModel = new InputMetaModel();
     inputModel.originalInput = input;
-    input = JsonSchemaInputProcessor.reflectSchemaNames(input, {}, 'root', true) as Record<string, any>;
+    input = JsonSchemaInputProcessor.reflectSchemaNames(input, {}, 'root', true) as any;
     input = await this.dereferenceInputs(input);
     const parsedSchema = Draft7Schema.toSchema(input);
     const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema);
@@ -77,11 +77,11 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input to process as draft 4
    */
-  private async processDraft4(input: Record<string, any>) : Promise<InputMetaModel> {
+  private async processDraft4(input: any) : Promise<InputMetaModel> {
     Logger.debug('Processing input as JSON Schema Draft 4 document');
     const inputModel = new InputMetaModel();
     inputModel.originalInput = input;
-    input = JsonSchemaInputProcessor.reflectSchemaNames(input, {}, 'root', true) as Record<string, any>;
+    input = JsonSchemaInputProcessor.reflectSchemaNames(input, {}, 'root', true) as any;
     input = await this.dereferenceInputs(input);
     const parsedSchema = Draft4Schema.toSchema(input);
     const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema);
@@ -96,11 +96,11 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input to process as draft-6
    */
-  private async processDraft6(input: Record<string, any>) : Promise<InputMetaModel> {
+  private async processDraft6(input: any) : Promise<InputMetaModel> {
     Logger.debug('Processing input as a JSON Schema Draft 6 document');
     const inputModel = new InputMetaModel();
     inputModel.originalInput = input;
-    input = JsonSchemaInputProcessor.reflectSchemaNames(input, {}, 'root', true) as Record<string, any>;
+    input = JsonSchemaInputProcessor.reflectSchemaNames(input, {}, 'root', true) as any;
     input = await this.dereferenceInputs(input);
     const parsedSchema = Draft6Schema.toSchema(input);
     const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema);
@@ -115,7 +115,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * But it's the best we can do until we find or build a better library to handle references.
    */
-  public handleRootReference(input: Record<string, any>): Record<string, any> {
+  public handleRootReference(input: any): any {
     //Because of https://github.com/APIDevTools/json-schema-ref-parser/issues/201 the tool cannot handle root references.
     //This really is a bad patch to fix an underlying problem, but until a full library is available, this is best we can do.
     const hasRootRef = input.$ref !== undefined;
@@ -143,7 +143,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     return input;
   }
 
-  public async dereferenceInputs(input: Record<string, any>): Promise<Record<string, any>> {
+  public async dereferenceInputs(input: any): Promise<any> {
     input = this.handleRootReference(input);
     Logger.debug('Dereferencing all $ref instances');
     const refParser = new $RefParser;

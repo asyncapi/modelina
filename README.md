@@ -82,8 +82,8 @@ To see the complete feature list for each language, please click the individual 
     <td>We support the following OpenAPI versions: <em><a href="./docs/usage.md#generate-models-from-swagger-20-documents">Swagger 2.0</a> and <a href="./docs/usage.md#generate-models-from-openapi-documents">OpenAPI 3.0</a></em>, which generates models for all the defined request and response payloads.</td>
   </tr>
   <tr>
-    <td><a href="./docs/usage.md#generate-model-from-typescript-type-files">TypeScript file</a></td>
-    <td>We currently support TypeScript type file as input for model generation</td>
+    <td><a href="./docs/usage.md#generate-model-from-typescript-type-files">TypeScript</a></td>
+    <td>We currently support TypeScript types as file input for model generation</td>
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-models-from-meta-models">Meta model</a></td>
@@ -153,7 +153,7 @@ Read our [contributor](./docs/contributing.md) guide.
 
 ## Contributors ✨
 
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+Thanks go out to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->

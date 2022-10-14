@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { InputMetaModel, ProcessorOptions } from '../../src/models';
-import { AbstractInputProcessor, AsyncAPIInputProcessor, JsonSchemaInputProcessor, InputProcessor, SwaggerInputProcessor } from '../../src/processors';
+import { AbstractInputProcessor, AsyncAPIInputProcessor, JsonSchemaInputProcessor, InputProcessor, SwaggerInputProcessor, TypeScriptInputProcessor } from '../../src/processors';
 import { OpenAPIInputProcessor } from '../../src/processors/OpenAPIInputProcessor';
 
 describe('InputProcessor', () => {
@@ -51,11 +51,15 @@ describe('InputProcessor', () => {
       const openAPIInputProcessor = new OpenAPIInputProcessor();
       jest.spyOn(openAPIInputProcessor, 'shouldProcess');
       jest.spyOn(openAPIInputProcessor, 'process');
+      const typeScriptInputProcessor = new TypeScriptInputProcessor();
+      jest.spyOn(typeScriptInputProcessor, 'shouldProcess');
+      jest.spyOn(typeScriptInputProcessor, 'process');
       const processor = new InputProcessor();
       processor.setProcessor('asyncapi', asyncInputProcessor);
       processor.setProcessor('swagger', swaggerInputProcessor);
       processor.setProcessor('openapi', openAPIInputProcessor);
       processor.setProcessor('default', defaultInputProcessor);
+      processor.setProcessor('typescript', typeScriptInputProcessor);
       return {processor, asyncInputProcessor, swaggerInputProcessor, openAPIInputProcessor, defaultInputProcessor};
     };
     test('should throw error when no default processor found', async () => {
@@ -105,6 +109,17 @@ describe('InputProcessor', () => {
       await processor.process(inputSchema);
       expect(openAPIInputProcessor.process).toHaveBeenNthCalledWith(1, inputSchema, undefined);
       expect(openAPIInputProcessor.shouldProcess).toHaveBeenNthCalledWith(1, inputSchema);
+      expect(defaultInputProcessor.process).not.toHaveBeenCalled();
+      expect(defaultInputProcessor.shouldProcess).not.toHaveBeenCalled();
+    });
+
+    test('should be able to process TypeScript input', async () => {
+      const {processor, asyncInputProcessor, defaultInputProcessor} = getProcessors(); 
+      const inputSchemaString = fs.readFileSync(path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'), 'utf8');
+      const inputSchema = JSON.parse(inputSchemaString);
+      await processor.process(inputSchema);
+      expect(asyncInputProcessor.process).toHaveBeenNthCalledWith(1, inputSchema, undefined);
+      expect(asyncInputProcessor.shouldProcess).toHaveBeenNthCalledWith(1, inputSchema);
       expect(defaultInputProcessor.process).not.toHaveBeenCalled();
       expect(defaultInputProcessor.shouldProcess).not.toHaveBeenCalled();
     });

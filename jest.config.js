@@ -22,12 +22,17 @@ module.exports = {
   collectCoverageFrom: [
     'src/**'
   ],
+  coveragePathIgnorePatterns: [
+    "<rootDir>/src/processors/TemplateInputProcessor.ts",
+    "<rootDir>/src/generators/template",
+  ],
   moduleNameMapper: {
     '^nimma/legacy$': '<rootDir>/node_modules/nimma/dist/legacy/cjs/index.js',
     '^nimma/(.*)': '<rootDir>/node_modules/nimma/dist/cjs/$1',
   },
   modulePathIgnorePatterns: [
     '<rootDir>/examples/TEMPLATE',
-    '<rootDir>/test/generators/template'
+    '<rootDir>/test/generators/template',
+    '<rootDir>/test/processors/TemplateInputProcessor.spec.ts'
   ]
 };
