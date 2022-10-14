@@ -147,6 +147,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     input = this.handleRootReference(input);
     Logger.debug('Dereferencing all $ref instances');
     const refParser = new $RefParser;
+    // eslint-disable-next-line no-undef
     const localPath = `${process.cwd()}${path.sep}`;
     const deRefOption: $RefParser.Options = {
       continueOnError: true,
