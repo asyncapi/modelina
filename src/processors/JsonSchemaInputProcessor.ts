@@ -147,7 +147,6 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     input = this.handleRootReference(input);
     Logger.debug('Dereferencing all $ref instances');
     const refParser = new $RefParser;
-    // eslint-disable-next-line no-undef
     const localPath = `${process.cwd()}${path.sep}`;
     const deRefOption: $RefParser.Options = {
       continueOnError: true,
@@ -191,7 +190,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       namesStack[String(name)] = 0;
       (schema as any)[this.MODELGEN_INFFERED_NAME] = name;
       name = '';
-    } else if (name && !(schema as any)[this.MODELGEN_INFFERED_NAME]) {
+    } else if (name && !(schema as any)[this.MODELGEN_INFFERED_NAME] && schema.$ref === undefined) {
       let occurrence = namesStack[String(name)];
       if (occurrence === undefined) {
         namesStack[String(name)] = 0;
