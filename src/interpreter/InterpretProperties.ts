@@ -10,7 +10,7 @@ import { Interpreter, InterpreterOptions, InterpreterSchemaType } from './Interp
  * @param interpreterOptions to control the interpret process
  */
 export default function interpretProperties(schema: InterpreterSchemaType, model: CommonModel, interpreter : Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
-  if (typeof schema === 'boolean' || schema.properties === undefined) {return;}
+  if (typeof schema === 'boolean' || schema.properties === undefined || schema.oneOf) {return;}
   model.addTypes('object');
   
   for (const [propertyName, propertySchema] of Object.entries(schema.properties)) {

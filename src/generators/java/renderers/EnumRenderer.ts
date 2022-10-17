@@ -56,27 +56,25 @@ export const JAVA_DEFAULT_ENUM_PRESET: EnumPresetType<JavaOptions> = {
   self({renderer}) {
     return renderer.defaultSelf();
   },
-  item({ item }) {
-    return `${item.key}(${item.value})`;
+  item({ item, model }) {
+    //Cast the enum type just to be sure, as some cases can be `int` type with floating value. 
+    return `${item.key}((${model.type})${item.value})`;
   },
   ctor({ model }) {
-    const enumValueType = 'Object';
-    return `private ${enumValueType} value;
+    return `private ${model.type} value;
 
-${model.type}(${enumValueType} value) {
+${model.name}(${model.type} value) {
   this.value = value;
 }`;
   },
-  getValue() {
-    const enumValueType = 'Object';
-    return `public ${enumValueType} getValue() {
+  getValue({ model }) {
+    return `public ${model.type} getValue() {
   return value;
 }`;
   },
   fromValue({ model }) {
-    const enumValueType = 'Object';
-    return `public static ${model.type} fromValue(${enumValueType} value) {
-  for (${model.type} e : ${model.type}.values()) {
+    return `public static ${model.name} fromValue(${model.type} value) {
+  for (${model.name} e : ${model.name}.values()) {
     if (e.value.equals(value)) {
       return e;
     }

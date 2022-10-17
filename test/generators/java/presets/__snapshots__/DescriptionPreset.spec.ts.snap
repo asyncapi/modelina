@@ -29,17 +29,24 @@ exports[`JAVA_DESCRIPTION_PRESET should render description and examples for enum
 public enum ReservedEnum {
   ON(\\"on\\"), OFF(\\"off\\");
 
-  private Object value;
+  private String value;
 
-  ReservedEnum(Object value) {
+  ReservedEnum(String value) {
     this.value = value;
   }
 
-  public Object getValue() {
+  @JsonValue
+  public String getValue() {
     return value;
   }
 
-  public static ReservedEnum fromValue(Object value) {
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+
+  @JsonCreator
+  public static ReservedEnum fromValue(String value) {
     for (ReservedEnum e : ReservedEnum.values()) {
       if (e.value.equals(value)) {
         return e;

@@ -82,6 +82,7 @@ describe('JsonSchemaInputProcessor', () => {
       expect(JsonSchemaInputProcessor.convertSchemaToCommonModel).toHaveBeenCalledTimes(1);
       expect(functionArgConvertSchemaToCommonModel).toMatchObject(expectedResolvedInput);
     });
+    
     test('should be able to use $ref when circular', async () => {
       const inputSchemaPath = './JsonSchemaInputProcessor/references_circular.json';
       const {inputMetaModel, inputSchema} = await getCommonInput(inputSchemaPath);
@@ -91,6 +92,7 @@ describe('JsonSchemaInputProcessor', () => {
       expect(JsonSchemaInputProcessor.convertSchemaToCommonModel).toHaveBeenCalledTimes(1);
       expect(functionArgConvertSchemaToCommonModel).toMatchObject(expectedResolvedInput);
     });
+
     test('should fail correctly when reference cannot be resolved', async () => {
       const inputSchemaPath = './JsonSchemaInputProcessor/wrong_references.json';
       const inputSchemaString = fs.readFileSync(path.resolve(__dirname, inputSchemaPath), 'utf8');
@@ -183,6 +185,9 @@ describe('JsonSchemaInputProcessor', () => {
     test('should work', () => {
       const schema = {
         properties: {
+          reference: {
+            $ref: '#/definitions/def'
+          },
           prop: {
             type: 'string',
           },
@@ -258,6 +263,7 @@ describe('JsonSchemaInputProcessor', () => {
       expect(expected['x-modelgen-inferred-name']).toEqual('root');
 
       // properties
+      expect(expected.properties.reference['x-modelgen-inferred-name']).toBeUndefined();
       expect(expected.properties.prop['x-modelgen-inferred-name']).toEqual('prop');
       expect(expected.properties.allOfCase.allOf[0]['x-modelgen-inferred-name']).toEqual('allOfCase_allOf_0');
       expect(expected.properties.allOfCase.allOf[1]['x-modelgen-inferred-name']).toEqual('allOfCase_allOf_1');
