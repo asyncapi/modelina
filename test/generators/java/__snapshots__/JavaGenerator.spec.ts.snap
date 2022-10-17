@@ -52,7 +52,7 @@ exports[`JavaGenerator should render \`class\` type 1`] = `
 
 exports[`JavaGenerator should render \`enum\` type (integer type) 1`] = `
 "public enum Numbers {
-  NUMBER_0(0), NUMBER_1(1), NUMBER_2(2), NUMBER_3(3);
+  NUMBER_0((int)0), NUMBER_1((int)1), NUMBER_2((int)2), NUMBER_3((int)3);
 
   private int value;
 
@@ -60,17 +60,10 @@ exports[`JavaGenerator should render \`enum\` type (integer type) 1`] = `
     this.value = value;
   }
 
-  @JsonValue
   public int getValue() {
     return value;
   }
 
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-
-  @JsonCreator
   public static Numbers fromValue(int value) {
     for (Numbers e : Numbers.values()) {
       if (e.value.equals(value)) {
@@ -89,7 +82,7 @@ exports[`JavaGenerator should render \`enum\` type (integer type) 1`] = `
 
 exports[`JavaGenerator should render \`enum\` type (string type) 1`] = `
 "public enum States {
-  TEXAS(\\"Texas\\"), ALABAMA(\\"Alabama\\"), CALIFORNIA(\\"California\\"), NEW_YORK(\\"New York\\");
+  TEXAS((String)\\"Texas\\"), ALABAMA((String)\\"Alabama\\"), CALIFORNIA((String)\\"California\\"), NEW_YORK((String)\\"New York\\");
 
   private String value;
 
@@ -97,17 +90,10 @@ exports[`JavaGenerator should render \`enum\` type (string type) 1`] = `
     this.value = value;
   }
 
-  @JsonValue
   public String getValue() {
     return value;
   }
 
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-
-  @JsonCreator
   public static States fromValue(String value) {
     for (States e : States.values()) {
       if (e.value.equals(value)) {
@@ -126,7 +112,7 @@ exports[`JavaGenerator should render \`enum\` type (string type) 1`] = `
 
 exports[`JavaGenerator should render \`enum\` type (union type) 1`] = `
 "public enum Union {
-  TEXAS(\\"Texas\\"), ALABAMA(\\"Alabama\\"), NUMBER_0(0), NUMBER_1(1), RESERVED_NUMBER_1(\\"1\\"), TRUE(\\"true\\"), CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT(\\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\");
+  TEXAS((Object)\\"Texas\\"), ALABAMA((Object)\\"Alabama\\"), NUMBER_0((Object)0), NUMBER_1((Object)1), RESERVED_NUMBER_1((Object)\\"1\\"), TRUE((Object)\\"true\\"), CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT((Object)\\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\");
 
   private Object value;
 
@@ -166,7 +152,7 @@ exports[`JavaGenerator should render List type for collections 1`] = `
 exports[`JavaGenerator should render custom preset for \`enum\` type 1`] = `
 "@EnumAnnotation
 public enum CustomEnum {
-  TEXAS(\\"Texas\\"), ALABAMA(\\"Alabama\\"), CALIFORNIA(\\"California\\");
+  TEXAS((String)\\"Texas\\"), ALABAMA((String)\\"Alabama\\"), CALIFORNIA((String)\\"California\\");
 
   private String value;
 
@@ -174,17 +160,10 @@ public enum CustomEnum {
     this.value = value;
   }
 
-  @JsonValue
   public String getValue() {
     return value;
   }
 
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-
-  @JsonCreator
   public static CustomEnum fromValue(String value) {
     for (CustomEnum e : CustomEnum.values()) {
       if (e.value.equals(value)) {
@@ -203,7 +182,7 @@ public enum CustomEnum {
 
 exports[`JavaGenerator should render enums with translated special characters 1`] = `
 "public enum States {
-  TEST_PLUS(\\"test+\\"), TEST(\\"test\\"), TEST_MINUS(\\"test-\\"), TEST_QUESTION_EXCLAMATION(\\"test?!\\"), ASTERISK_TEST(\\"*test\\");
+  TEST_PLUS((String)\\"test+\\"), TEST((String)\\"test\\"), TEST_MINUS((String)\\"test-\\"), TEST_QUESTION_EXCLAMATION((String)\\"test?!\\"), ASTERISK_TEST((String)\\"*test\\");
 
   private String value;
 
@@ -211,17 +190,10 @@ exports[`JavaGenerator should render enums with translated special characters 1`
     this.value = value;
   }
 
-  @JsonValue
   public String getValue() {
     return value;
   }
 
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-
-  @JsonCreator
   public static States fromValue(String value) {
     for (States e : States.values()) {
       if (e.value.equals(value)) {

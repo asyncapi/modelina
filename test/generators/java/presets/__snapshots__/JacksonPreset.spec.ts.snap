@@ -21,21 +21,21 @@ exports[`JAVA_JACKSON_PRESET should render Jackson annotations for class 1`] = `
 
 exports[`JAVA_JACKSON_PRESET should render Jackson annotations for enum 1`] = `
 "public enum ReservedEnum {
-  ON(\\"on\\"), OFF(\\"off\\");
+  ON((String)\\"on\\"), OFF((String)\\"off\\");
 
-  private Object value;
+  private String value;
 
-  ReservedEnum(Object value) {
+  ReservedEnum(String value) {
     this.value = value;
   }
 
   @JsonValue
-  public Object getValue() {
+  public String getValue() {
     return value;
   }
 
   @JsonCreator
-  public static ReservedEnum fromValue(Object value) {
+  public static ReservedEnum fromValue(String value) {
     for (ReservedEnum e : ReservedEnum.values()) {
       if (e.value.equals(value)) {
         return e;
