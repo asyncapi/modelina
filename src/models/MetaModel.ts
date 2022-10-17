@@ -3,6 +3,9 @@ export class MetaModel {
     public name: string,
     public originalInput: any) {
   }
+  equals(toCompare: MetaModel): boolean {
+    return true;
+  }
 }
 
 export class ReferenceModel extends MetaModel {
@@ -12,11 +15,14 @@ export class ReferenceModel extends MetaModel {
     public ref: MetaModel) {
     super(name, originalInput);
   }
+  equals(toCompare: MetaModel) {
+  }
 }
 export class AnyModel extends MetaModel { }
 export class FloatModel extends MetaModel { }
 export class IntegerModel extends MetaModel { }
-export class StringModel extends MetaModel { }
+export class StringModel extends MetaModel { 
+}
 export class BooleanModel extends MetaModel { }
 export class TupleValueModel {
   constructor(
