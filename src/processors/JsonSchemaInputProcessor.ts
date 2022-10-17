@@ -15,19 +15,19 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  process(input: any): Promise<InputMetaModel> {
+  process(input: any, options?: ProcessorOptions): Promise<InputMetaModel> {
     if (this.shouldProcess(input)) {
       switch (input.$schema) {
       case 'http://json-schema.org/draft-04/schema':
       case 'http://json-schema.org/draft-04/schema#':
-        return this.processDraft4(input);
+        return this.processDraft4(input, options);
       case 'http://json-schema.org/draft-06/schema':
       case 'http://json-schema.org/draft-06/schema#':
-        return this.processDraft6(input);
+        return this.processDraft6(input, options);
       case 'http://json-schema.org/draft-07/schema#':
       case 'http://json-schema.org/draft-07/schema':
       default:
-        return this.processDraft7(input);
+        return this.processDraft7(input, options);
       }
     }
     return Promise.reject(new Error('Input is not a JSON Schema, so it cannot be processed.'));
@@ -58,14 +58,14 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input to process as draft 7
    */
-  private async processDraft7(input: any) : Promise<InputMetaModel> {
+  private async processDraft7(input: any, options?: ProcessorOptions) : Promise<InputMetaModel> {
     Logger.debug('Processing input as a JSON Schema Draft 7 document');
     const inputModel = new InputMetaModel();
     inputModel.originalInput = input;
     input = JsonSchemaInputProcessor.reflectSchemaNames(input, {}, 'root', true) as any;
     input = await this.dereferenceInputs(input);
     const parsedSchema = Draft7Schema.toSchema(input);
-    const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema);
+    const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema, options);
     const metaModel = convertToMetaModel(newCommonModel);
     inputModel.models[metaModel.name] = metaModel;
     Logger.debug('Completed processing input as JSON Schema draft 7 document');
@@ -77,14 +77,14 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input to process as draft 4
    */
-  private async processDraft4(input: any) : Promise<InputMetaModel> {
+  private async processDraft4(input: any, options?: ProcessorOptions) : Promise<InputMetaModel> {
     Logger.debug('Processing input as JSON Schema Draft 4 document');
     const inputModel = new InputMetaModel();
     inputModel.originalInput = input;
     input = JsonSchemaInputProcessor.reflectSchemaNames(input, {}, 'root', true) as any;
     input = await this.dereferenceInputs(input);
     const parsedSchema = Draft4Schema.toSchema(input);
-    const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema);
+    const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema, options);
     const metaModel = convertToMetaModel(newCommonModel);
     inputModel.models[metaModel.name] = metaModel;
     Logger.debug('Completed processing input as JSON Schema draft 4 document');
@@ -96,14 +96,14 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * 
    * @param input to process as draft-6
    */
-  private async processDraft6(input: any) : Promise<InputMetaModel> {
+  private async processDraft6(input: any, options?: ProcessorOptions) : Promise<InputMetaModel> {
     Logger.debug('Processing input as a JSON Schema Draft 6 document');
     const inputModel = new InputMetaModel();
     inputModel.originalInput = input;
     input = JsonSchemaInputProcessor.reflectSchemaNames(input, {}, 'root', true) as any;
     input = await this.dereferenceInputs(input);
     const parsedSchema = Draft6Schema.toSchema(input);
-    const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema);
+    const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(parsedSchema, options);
     const metaModel = convertToMetaModel(newCommonModel);
     inputModel.models[metaModel.name] = metaModel;
     Logger.debug('Completed processing input as JSON Schema draft 6 document');
@@ -191,7 +191,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       namesStack[String(name)] = 0;
       (schema as any)[this.MODELGEN_INFFERED_NAME] = name;
       name = '';
-    } else if (name && !(schema as any)[this.MODELGEN_INFFERED_NAME]) {
+    } else if (name && !(schema as any)[this.MODELGEN_INFFERED_NAME] && schema.$ref === undefined) {
       let occurrence = namesStack[String(name)];
       if (occurrence === undefined) {
         namesStack[String(name)] = 0;
