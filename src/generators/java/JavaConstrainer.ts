@@ -1,5 +1,4 @@
 import { ConstrainedEnumValueModel } from 'models';
-import { createSemanticDiagnosticsBuilderProgram } from 'typescript';
 import { TypeMapping } from '../../helpers';
 import { defaultEnumKeyConstraints, defaultEnumValueConstraints } from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
@@ -141,7 +140,7 @@ export const JavaDefaultTypeMapping: TypeMapping<JavaOptions> = {
     const format = constrainedModel.originalInput && constrainedModel.originalInput['format'];
     const valueTypes = constrainedModel.values.map((enumValue) => fromEnumValueToType(enumValue, format));
     const uniqueTypes = valueTypes.filter((item, pos) => {
-      return valueTypes.indexOf(item) == pos;
+      return valueTypes.indexOf(item) === pos;
     });
 
     //Enums cannot handle union types, default to a loose type
