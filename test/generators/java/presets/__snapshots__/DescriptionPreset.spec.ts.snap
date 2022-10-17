@@ -27,7 +27,7 @@ exports[`JAVA_DESCRIPTION_PRESET should render description and examples for enum
  * Examples: value
  */
 public enum ReservedEnum {
-  ON(\\"on\\"), OFF(\\"off\\");
+  ON((String)\\"on\\"), OFF((String)\\"off\\");
 
   private String value;
 
