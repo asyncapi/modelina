@@ -378,7 +378,7 @@ ${content}`;
             discriminator: 'petType',
             properties: {
               petType: {
-                $id: 'PetType',
+                title: 'PetType',
                 type: 'string'
               },
               name: {

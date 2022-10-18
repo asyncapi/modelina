@@ -9,6 +9,7 @@ export class CommonModel {
   $id?: string;
   type?: string | string[];
   enum?: any[];
+  const?: any;
   items?: CommonModel | CommonModel[];
   properties?: { [key: string]: CommonModel; };
   additionalProperties?: CommonModel;
@@ -371,7 +372,11 @@ export class CommonModel {
         mergeTo.properties[String(propName)] = propValue;
       } else {
         Logger.warn(`Found duplicate properties ${propName} for model. Model property from ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalInput);
-        mergeTo.properties[String(propName)] = CommonModel.mergeCommonModels(mergeTo.properties[String(propName)], propValue, originalInput, alreadyIteratedModels);
+        const mergedProperty = CommonModel.mergeCommonModels(mergeTo.properties[String(propName)], propValue, originalInput, alreadyIteratedModels);
+        mergeTo.properties[String(propName)] = CommonModel.toCommonModel(mergedProperty);
+        if (propValue.const) {
+          mergeTo.properties[String(propName)].const = propValue.const;
+        }
       }
     }
   }
@@ -506,6 +511,9 @@ export class CommonModel {
     if (mergeFrom.enum !== undefined) {
       mergeTo.enum = [... new Set([...(mergeTo.enum || []), ...mergeFrom.enum])];
     }
+
+    mergeTo.const = mergeTo.const || mergeFrom.const;
+
     if (mergeFrom.required !== undefined) {
       mergeTo.required = [... new Set([...(mergeTo.required || []), ...mergeFrom.required])];
     }

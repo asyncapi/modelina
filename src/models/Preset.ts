@@ -29,7 +29,7 @@ export interface ClassPreset<R extends AbstractRenderer, O> extends CommonPreset
   ctor?: (args: PresetArgs<R, O, ConstrainedObjectModel>) => Promise<string> | string;
   property?: (args: PresetArgs<R, O, ConstrainedObjectModel> & PropertyArgs) => Promise<string> | string;
   getter?: (args: PresetArgs<R, O, ConstrainedObjectModel> & PropertyArgs) => Promise<string> | string;
-  setter?: (args: PresetArgs<R, O, ConstrainedObjectModel> & PropertyArgs) => Promise<string> | string;
+  setter?: (args: PresetArgs<R, O, ConstrainedObjectModel> & PropertyArgs) => Promise<string | undefined> | string | undefined;
 }
 
 export interface InterfacePreset<R extends AbstractRenderer, O> extends CommonPreset<R, O, ConstrainedObjectModel> {

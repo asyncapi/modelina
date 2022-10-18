@@ -1,5 +1,5 @@
 import { TypeScriptGenerator, TypeScriptOptions } from './TypeScriptGenerator';
-import { ConstrainedObjectModel, ConstrainedObjectPropertyModel, InputMetaModel, Preset } from '../../models';
+import { ConstrainedEnumModel, ConstrainedEnumValueModel, ConstrainedObjectModel, ConstrainedObjectPropertyModel, ConstrainedReferenceModel, InputMetaModel, Preset } from '../../models';
 import { TypeScriptRenderer } from './TypeScriptRenderer';
 
 /**
@@ -33,8 +33,27 @@ export abstract class TypeScriptObjectRenderer extends TypeScriptRenderer<Constr
     return this.renderBlock(content);
   }
 
+  getConstValue(property: ConstrainedObjectPropertyModel): ConstrainedEnumValueModel | undefined {
+    if (
+      property.property instanceof ConstrainedReferenceModel &&
+      property.property.ref instanceof ConstrainedEnumModel &&
+      property.property.ref.constValue
+    ) {
+      return property.property.ref.constValue;
+    }
+    return undefined;
+  }
+
   renderProperty(property: ConstrainedObjectPropertyModel): string {
-    return `${property.propertyName}${property.required === false ? '?' : ''}: ${property.property.type};`;
+    const renderedProperty = `${property.propertyName}${property.required === false ? '?' : ''}: ${property.property.type}`;
+
+    const constValue = this.getConstValue(property);
+
+    if (constValue) {
+      return `${renderedProperty} = ${property.property.type}.${constValue.key};`;
+    }
+
+    return `${renderedProperty};`;
   }
 
   runPropertyPreset(property: ConstrainedObjectPropertyModel): Promise<string> {

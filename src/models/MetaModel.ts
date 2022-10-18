@@ -72,8 +72,9 @@ export class EnumValueModel {
 export class EnumModel extends MetaModel {
   constructor(
     name: string,
-    originalInput: any, 
-    public values: EnumValueModel[]) {
+    originalInput: any,
+    public values: EnumValueModel[],
+    public constValue?: EnumValueModel) {
     super(name, originalInput);
   }
 }

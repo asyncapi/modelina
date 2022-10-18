@@ -1,5 +1,5 @@
 import { ConstrainedAnyModel, ConstrainedBooleanModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedMetaModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedTupleValueModel, ConstrainedArrayModel, ConstrainedUnionModel, ConstrainedEnumModel, ConstrainedDictionaryModel, ConstrainedEnumValueModel, ConstrainedObjectPropertyModel } from '../models/ConstrainedMetaModel';
-import { AnyModel, BooleanModel, FloatModel, IntegerModel, ObjectModel, ReferenceModel, StringModel, TupleModel, ArrayModel, UnionModel, EnumModel, DictionaryModel, MetaModel, ObjectPropertyModel } from '../models/MetaModel';
+import { AnyModel, BooleanModel, FloatModel, IntegerModel, ObjectModel, ReferenceModel, StringModel, TupleModel, ArrayModel, UnionModel, EnumModel, DictionaryModel, MetaModel, ObjectPropertyModel, EnumValueModel } from '../models/MetaModel';
 import { getTypeFromMapping, TypeMapping } from './TypeHelpers';
 
 export type ConstrainContext<Options, M extends MetaModel> = {
@@ -186,14 +186,21 @@ function constrainObjectModel<Options>(typeMapping: TypeMapping<Options>, constr
 function ConstrainEnumModel<Options>(typeMapping: TypeMapping<Options>, constrainRules: Constraints, context: ConstrainContext<Options, EnumModel>): ConstrainedEnumModel {
   const constrainedModel = new ConstrainedEnumModel(context.constrainedName, context.metaModel.originalInput, '', []);
 
-  for (const enumValue of context.metaModel.values) {
+  const enumValueToConstrainedEnumValueModel = (enumValue: EnumValueModel): ConstrainedEnumValueModel => {
     const constrainedEnumKey = constrainRules.enumKey({enumKey: String(enumValue.key), enumModel: context.metaModel, constrainedEnumModel: constrainedModel});
     const constrainedEnumValue = constrainRules.enumValue({enumValue: enumValue.value, enumModel: context.metaModel, constrainedEnumModel: constrainedModel});
+    return new ConstrainedEnumValueModel(constrainedEnumKey, constrainedEnumValue);
+  };
 
-    const constrainedEnumValueModel = new ConstrainedEnumValueModel(constrainedEnumKey, constrainedEnumValue);
-    constrainedModel.values.push(constrainedEnumValueModel);
+  for (const enumValue of context.metaModel.values) {
+    constrainedModel.values.push(enumValueToConstrainedEnumValueModel(enumValue));
   }
   constrainedModel.type = getTypeFromMapping(typeMapping, {constrainedModel, options: context.options, propertyKey: context.propertyKey});
+
+  if (context.metaModel.constValue) {
+    constrainedModel.constValue = enumValueToConstrainedEnumValueModel(context.metaModel.constValue);
+  }
+
   return constrainedModel;
 }
 
