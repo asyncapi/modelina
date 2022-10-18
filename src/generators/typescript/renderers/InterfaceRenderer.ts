@@ -1,3 +1,4 @@
+import { ConstrainedObjectPropertyModel } from 'models';
 import { TypeScriptOptions } from '../TypeScriptGenerator';
 import { TypeScriptObjectRenderer } from '../TypeScriptObjectRenderer';
 import { InterfacePresetType } from '../TypeScriptPreset';
@@ -17,6 +18,18 @@ export class InterfaceRenderer extends TypeScriptObjectRenderer {
     return `interface ${this.model.name} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
+  }
+
+  renderProperty(property: ConstrainedObjectPropertyModel): string {
+    const renderedProperty = `${property.propertyName}${property.required === false ? '?' : ''}: ${property.property.type}`;
+
+    const constValue = this.getConstValue(property);
+
+    if (constValue) {
+      return `${renderedProperty}.${constValue.key};`;
+    }
+
+    return `${renderedProperty};`;
   }
 }
 
