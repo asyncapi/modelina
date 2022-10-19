@@ -20,6 +20,10 @@ module.exports = {
     '<rootDir>/src/processors/TemplateInputProcessor.ts',
     '<rootDir>/src/generators/template'
   ],
+  coveragePathIgnorePatterns: [
+    '<rootDir>/src/processors/TemplateInputProcessor.ts',
+    '<rootDir>/src/generators/template',
+  ],
   moduleNameMapper: {
     '^nimma/legacy$': '<rootDir>/node_modules/nimma/dist/legacy/cjs/index.js',
     '^nimma/(.*)': '<rootDir>/node_modules/nimma/dist/cjs/$1'
