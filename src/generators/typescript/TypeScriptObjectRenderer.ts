@@ -1,5 +1,5 @@
 import { TypeScriptGenerator, TypeScriptOptions } from './TypeScriptGenerator';
-import { ConstrainedEnumModel, ConstrainedEnumValueModel, ConstrainedObjectModel, ConstrainedObjectPropertyModel, ConstrainedReferenceModel, InputMetaModel, Preset } from '../../models';
+import { ConstrainedObjectModel, ConstrainedObjectPropertyModel, InputMetaModel, Preset } from '../../models';
 import { TypeScriptRenderer } from './TypeScriptRenderer';
 
 /**
@@ -31,17 +31,6 @@ export abstract class TypeScriptObjectRenderer extends TypeScriptRenderer<Constr
     }
 
     return this.renderBlock(content);
-  }
-
-  getConstValue(property: ConstrainedObjectPropertyModel): ConstrainedEnumValueModel | undefined {
-    if (
-      property.property instanceof ConstrainedReferenceModel &&
-      property.property.ref instanceof ConstrainedEnumModel &&
-      property.property.ref.constValue
-    ) {
-      return property.property.ref.constValue;
-    }
-    return undefined;
   }
 
   renderProperty(property: ConstrainedObjectPropertyModel): string {

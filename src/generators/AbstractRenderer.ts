@@ -1,5 +1,5 @@
 import { AbstractGenerator, CommonGeneratorOptions } from './AbstractGenerator';
-import { ConstrainedMetaModel, InputMetaModel, Preset } from '../models';
+import { ConstrainedEnumModel, ConstrainedEnumValueModel, ConstrainedMetaModel, ConstrainedObjectPropertyModel, ConstrainedReferenceModel, InputMetaModel, Preset } from '../models';
 import { FormatHelpers, IndentationTypes } from '../helpers';
 
 /**
@@ -80,5 +80,16 @@ export abstract class AbstractRenderer<
       }
     }
     return content;
+  }
+
+  getConstValue(property: ConstrainedObjectPropertyModel): ConstrainedEnumValueModel | undefined {
+    if (
+      property.property instanceof ConstrainedReferenceModel &&
+      property.property.ref instanceof ConstrainedEnumModel &&
+      property.property.ref.constValue
+    ) {
+      return property.property.ref.constValue;
+    }
+    return undefined;
   }
 }
