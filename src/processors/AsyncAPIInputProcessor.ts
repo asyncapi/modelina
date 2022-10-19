@@ -92,13 +92,13 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     alreadyIteratedSchemas.set(schemaUid, convertedSchema);
 
     if (schema.allOf()) {
-      convertedSchema.allOf = schema.allOf()!.map((item) => this.convertToInternalSchema(item, alreadyIteratedSchemas));
+      convertedSchema.allOf = schema.allOf()!.map((item: any) => this.convertToInternalSchema(item, alreadyIteratedSchemas));
     }
     if (schema.oneOf()) {
-      convertedSchema.oneOf = schema.oneOf()!.map((item) => this.convertToInternalSchema(item, alreadyIteratedSchemas));
+      convertedSchema.oneOf = schema.oneOf()!.map((item: any) => this.convertToInternalSchema(item, alreadyIteratedSchemas));
     }
     if (schema.anyOf()) {
-      convertedSchema.anyOf = schema.anyOf()!.map((item) => this.convertToInternalSchema(item, alreadyIteratedSchemas));
+      convertedSchema.anyOf = schema.anyOf()!.map((item: any) => this.convertToInternalSchema(item, alreadyIteratedSchemas));
     }
     if (schema.not()) {
       convertedSchema.not = this.convertToInternalSchema(schema.not()!, alreadyIteratedSchemas);
