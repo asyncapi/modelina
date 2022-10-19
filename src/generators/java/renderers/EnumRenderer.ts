@@ -42,20 +42,20 @@ export const JAVA_DEFAULT_ENUM_PRESET: EnumPresetType<JavaOptions> = {
     renderer.addDependency('import com.fasterxml.jackson.annotation.*;');
     return renderer.defaultSelf();
   },
-  item({ item }) {
-    return `${item.key}(${item.value})`;
+  item({ item, model }) {
+    //Cast the enum type just to be sure, as some cases can be `int` type with floating value. 
+    return `${item.key}((${model.type})${item.value})`;
   },
   additionalContent({ model }) {
-    const enumValueType = 'Object';
+    const valueComparitor = model.type.charAt(0) == model.type.charAt(0).toUpperCase() ? 'e.value.equals(value)' : 'e.value == value';
+    return `private ${model.type} value;
 
-    return `private ${enumValueType} value;
-
-${model.type}(${enumValueType} value) {
+${model.name}(${model.type} value) {
   this.value = value;
 }
 
 @JsonValue
-public ${enumValueType} getValue() {
+public ${model.type} getValue() {
   return value;
 }
 
@@ -65,9 +65,9 @@ public String toString() {
 }
 
 @JsonCreator
-public static ${model.type} fromValue(${enumValueType} value) {
-  for (${model.type} e : ${model.type}.values()) {
-    if (e.value.equals(value)) {
+public static ${model.name} fromValue(${model.type} value) {
+  for (${model.name} e : ${model.name}.values()) {
+    if (${valueComparitor}) {
       return e;
     }
   }
