@@ -61,6 +61,7 @@ export const JAVA_DEFAULT_ENUM_PRESET: EnumPresetType<JavaOptions> = {
     return `${item.key}((${model.type})${item.value})`;
   },
   ctor({ model }) {
+    const valueComparitor = model.type.charAt(0) === model.type.charAt(0).toUpperCase() ? 'e.value.equals(value)' : 'e.value == value';
     return `private ${model.type} value;
 
 ${model.name}(${model.type} value) {

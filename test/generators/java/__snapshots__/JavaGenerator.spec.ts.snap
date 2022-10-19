@@ -66,7 +66,7 @@ exports[`JavaGenerator should render \`enum\` type (integer type) 1`] = `
 
   public static Numbers fromValue(int value) {
     for (Numbers e : Numbers.values()) {
-      if (e.value.equals(value)) {
+      if (e.value == value) {
         return e;
       }
     }

@@ -21,7 +21,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
    * @param input 
    */
   // eslint-disable-next-line sonarjs/cognitive-complexity
-  async process(input?: Record<string, any>, options?: ProcessorOptions): Promise<InputMetaModel> {
+  async process(input?: any, options?: ProcessorOptions): Promise<InputMetaModel> {
     if (!this.shouldProcess(input)) {throw new Error('Input is not an AsyncAPI document so it cannot be processed.');}
 
     Logger.debug('Processing input as an AsyncAPI document');
@@ -187,7 +187,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
 	 * 
 	 * @param input 
 	 */
-  shouldProcess(input?: Record<string, any>) : boolean {
+  shouldProcess(input?: any) : boolean {
     if (!input) {return false;}
     const version = this.tryGetVersionOfDocument(input);
     if (!version) {return false;}
@@ -199,7 +199,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  tryGetVersionOfDocument(input?: Record<string, any>) : string | undefined {
+  tryGetVersionOfDocument(input?: any) : string | undefined {
     if (!input) {return;}
     if (AsyncAPIInputProcessor.isFromParser(input)) {
       return input.version();
@@ -212,7 +212,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  static isFromParser(input?: Record<string, any>): boolean {
+  static isFromParser(input?: any): boolean {
     if (!input) {return false;}
     if (input['_json'] !== undefined && input['_json'].asyncapi !== undefined && 
       typeof input.version === 'function') {
