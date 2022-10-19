@@ -1,5 +1,60 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`JavaGenerator oneOf / union should render oneOf 1`] = `
+Array [
+  "",
+  "public class Cat {
+  private AnimalType animalType;
+  private String huntingSkill;
+
+  public AnimalType getAnimalType() { return this.animalType; }
+  public void setAnimalType(AnimalType animalType) { this.animalType = animalType; }
+
+  public String getHuntingSkill() { return this.huntingSkill; }
+  public void setHuntingSkill(String huntingSkill) { this.huntingSkill = huntingSkill; }
+}",
+  "public enum AnimalType {
+  CAT((String)\\"Cat\\"), DOG((String)\\"Dog\\");
+
+  private String value;
+
+  AnimalType(String value) {
+    this.value = value;
+  }
+
+  @JsonValue
+  public String getValue() {
+    return value;
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+
+  @JsonCreator
+  public static AnimalType fromValue(String value) {
+    for (AnimalType e : AnimalType.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+}",
+  "public class Dog {
+  private AnimalType animalType;
+  private Integer packSize;
+
+  public AnimalType getAnimalType() { return this.animalType; }
+  public void setAnimalType(AnimalType animalType) { this.animalType = animalType; }
+
+  public Integer getPackSize() { return this.packSize; }
+  public void setPackSize(Integer packSize) { this.packSize = packSize; }
+}",
+]
+`;
+
 exports[`JavaGenerator should not render reserved keyword 1`] = `
 "public class Address {
   private String reservedReservedEnum;

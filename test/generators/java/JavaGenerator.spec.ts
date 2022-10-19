@@ -235,4 +235,102 @@ describe('JavaGenerator', () => {
     const expectedError = new Error('You cannot use reserved Java keyword (package) as package name, please use another.');
     await expect(generator.generateCompleteModels(doc, config)).rejects.toEqual(expectedError);
   });
+
+  describe('oneOf / union', () => {
+    const asyncapiDoc = {
+      asyncapi: '2.5.0',
+      info: {
+        title: 'Pet',
+        version: '1.0.0'
+      },
+      channels: {},
+      components: {
+        messages: {
+          Pet: {
+            payload: {
+              oneOf: [
+                { $ref: '#/components/schemas/Cat' },
+                { $ref: '#/components/schemas/Dog' },
+              ]
+            }
+          },
+        },
+        schemas: {
+          Animal: {
+            type: 'object',
+            additionalProperties: false,
+            discriminator: 'animalType',
+            properties: {
+              animalType: {
+                title: 'AnimalType',
+                type: 'string'
+              },
+            },
+          },
+          Cat: {
+            allOf: [
+              { $ref: '#/components/schemas/Animal' },
+              {
+                type: 'object',
+                additionalProperties: false,
+                properties: {
+                  animalType: {
+                    const: 'Cat'
+                  },
+                  huntingSkill: {
+                    type: 'string',
+                  },
+                },
+              }
+            ]
+          },
+          Dog: {
+            allOf: [
+              { $ref: '#/components/schemas/Animal' },
+              {
+                type: 'object',
+                additionalProperties: false,
+                properties: {
+                  animalType: {
+                    const: 'Dog',
+                  },
+                  packSize: {
+                    type: 'integer',
+                  }
+                },
+              }
+            ]
+          },
+        }
+      }
+    };
+
+    test.only('should render oneOf', async () => {
+      const models = await generator.generate(asyncapiDoc);
+      expect(models).toHaveLength(4);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+
+      for (const model of models) {
+        if (!model.modelName) {
+          console.log(model);
+        }
+      }
+
+      const animalTypeEnum = models.find((model) => model.modelName === 'AnimalType');
+      expect(animalTypeEnum).not.toBeUndefined();
+      expect(animalTypeEnum?.result).toContain('CAT((String)"Cat"), DOG((String)"Dog")');
+
+      const cat = models.find((model) => model.modelName === 'Cat');
+      expect(cat).not.toBeUndefined();
+      expect(cat?.result).toContain('animalType');
+      expect(cat?.result).toContain('huntingSkill');
+      expect(cat?.result).not.toContain('packSize');
+
+      const dog = models.find((model) => model.modelName === 'Dog');
+      expect(dog).not.toBeUndefined();
+      expect(dog?.result).toContain('animalType');
+      expect(dog?.result).toContain('packSize');
+      expect(dog?.result).not.toContain('huntingSkill');
+    });
+  });
 });
