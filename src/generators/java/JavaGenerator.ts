@@ -3,7 +3,7 @@ import {
   CommonGeneratorOptions,
   defaultGeneratorOptions
 } from '../AbstractGenerator';
-import { ConstrainedEnumModel, ConstrainedMetaModel, ConstrainedObjectModel, InputMetaModel, MetaModel, RenderOutput } from '../../models';
+import { ConstrainedEnumModel, ConstrainedMetaModel, ConstrainedObjectModel, ConstrainedUnionModel, InputMetaModel, MetaModel, RenderOutput } from '../../models';
 import { split, TypeMapping } from '../../helpers';
 import { JavaPreset, JAVA_DEFAULT_PRESET } from './JavaPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
@@ -13,6 +13,7 @@ import { Logger } from '../../';
 import { constrainMetaModel, Constraints } from '../../helpers/ConstrainHelpers';
 import { JavaDefaultConstraints, JavaDefaultTypeMapping } from './JavaConstrainer';
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
+import { UnionRenderer } from './renderers/UnionRenderer';
 
 export interface JavaOptions extends CommonGeneratorOptions<JavaPreset> {
   collectionType: 'List' | 'Array';
@@ -70,7 +71,9 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderComp
       return this.renderClass(model, inputModel);
     } else if (model instanceof ConstrainedEnumModel) {
       return this.renderEnum(model, inputModel);
-    } 
+    } else if (model instanceof ConstrainedUnionModel) {
+      return this.renderUnion(model, inputModel);
+    }
     Logger.warn(`Java generator, cannot generate this type of model, ${model.name}`);
     return Promise.resolve(RenderOutput.toRenderOutput({ result: '', renderedName: '', dependencies: [] }));
   }
@@ -112,5 +115,12 @@ ${outputModel.result}`;
     const renderer = new EnumRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
     return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: renderer.dependencies});
+  }
+
+  async renderUnion(model: ConstrainedUnionModel, inputModel: InputMetaModel): Promise<RenderOutput> {
+    const presets = this.getPresets('union');
+    const renderer = new UnionRenderer(this.options, this, presets, model, inputModel);
+    const result = await renderer.runSelfPreset();
+    return RenderOutput.toRenderOutput({ result, renderedName: model.name, dependencies: renderer.dependencies });
   }
 }

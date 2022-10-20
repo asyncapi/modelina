@@ -2,7 +2,13 @@
 
 exports[`JavaGenerator oneOf / union should render oneOf 1`] = `
 Array [
-  "",
+  "/**
+ * Pet represents a union of types: Cat, Dog
+ */
+public class Pet {
+  Object
+}
+",
   "public class Cat {
   private AnimalType animalType;
   private String huntingSkill;

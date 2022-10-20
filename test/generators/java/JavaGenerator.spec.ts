@@ -248,6 +248,7 @@ describe('JavaGenerator', () => {
         messages: {
           Pet: {
             payload: {
+              title: 'Pet',
               oneOf: [
                 { $ref: '#/components/schemas/Cat' },
                 { $ref: '#/components/schemas/Dog' },
@@ -310,11 +311,9 @@ describe('JavaGenerator', () => {
       expect(models).toHaveLength(4);
       expect(models.map((model) => model.result)).toMatchSnapshot();
 
-      for (const model of models) {
-        if (!model.modelName) {
-          console.log(model);
-        }
-      }
+      const pet = models.find((model) => model.modelName === 'Pet');
+      expect(pet).not.toBeUndefined();
+      expect(pet?.result).toContain('public class Pet');
 
       const animalTypeEnum = models.find((model) => model.modelName === 'AnimalType');
       expect(animalTypeEnum).not.toBeUndefined();
