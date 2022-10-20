@@ -1,5 +1,5 @@
 import { FormatHelpers } from '../../../helpers';
-import { ConstrainedUnionModel } from '../../../models';
+import { ConstrainedMetaModel, ConstrainedUnionModel } from '../../../models';
 import { JavaOptions } from '../JavaGenerator';
 import { UnionPresetType } from '../JavaPreset';
 import { JavaRenderer } from '../JavaRenderer';
@@ -10,11 +10,13 @@ import { JavaRenderer } from '../JavaRenderer';
  * @extends UnionRenderer
  */
 export class UnionRenderer extends JavaRenderer<ConstrainedUnionModel> {
-  public defaultSelf(): string {
+  public async defaultSelf(): Promise<string> {
     const doc = this.renderComments(`${this.model.name} represents a union of types: ${this.model.union.map(m => m.type).join(', ')}`);
 
     const content = [
+      await this.renderProperties(),
       this.renderEnum(),
+      await this.renderAccessors(),
     ];
 
     return `${doc}
@@ -22,6 +24,14 @@ public class ${this.model.name} {
 ${this.indent(this.renderBlock(content, 2))}
 }
 `;
+  }
+
+  async renderProperties(): Promise<string> {
+    return this.renderBlock([await this.runPropertyPreset(this.model)]);
+  }
+
+  runPropertyPreset(property: ConstrainedUnionModel): Promise<string> {
+    return this.runPreset('property', { property });
   }
 
   renderEnum(): string {
@@ -39,10 +49,54 @@ ${this.indent(this.renderBlock([unionTypes]))}
 
     return this.renderBlock(content);
   }
+
+  async renderAccessors(): Promise<string> {
+    const content: string[] = [];
+
+    for (const item of Object.values(this.model.union)) {
+      const getter = await this.runGetterPreset(item);
+      const setter = await this.runSetterPreset(item);
+      content.push(this.renderBlock([getter, setter]));
+    }
+
+    return this.renderBlock(content, 2);
+  }
+
+  runGetterPreset(item: ConstrainedMetaModel): Promise<string> {
+    return this.runPreset('getter', { item });
+  }
+
+  runSetterPreset(item: ConstrainedMetaModel): Promise<string> {
+    return this.runPreset('setter', { item });
+  }
 }
 
 export const JAVA_DEFAULT_UNION_PRESET: UnionPresetType<JavaOptions> = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
+  property({ model }) {
+    return `private ${model.type} ${FormatHelpers.toCamelCase(model.name)};`;
+  },
+  getter({ item, model }) {
+    const modelPascalCase = FormatHelpers.toPascalCase(model.name);
+    const modelCamelCase = FormatHelpers.toCamelCase(model.name);
+    const itemPascalCase = FormatHelpers.toPascalCase(item.name);
+    const getterName = `get${modelPascalCase}${itemPascalCase}`;
+    return `public ${item.type} ${getterName}() {
+  return ${modelCamelCase} instanceof ${itemPascalCase} ? (${itemPascalCase}) ${modelCamelCase} : new ${itemPascalCase}();
+}`;
+  },
+  setter({ item, model }) {
+    const modelPascalCase = FormatHelpers.toPascalCase(model.name);
+    const modelCamelCase = FormatHelpers.toCamelCase(model.name);
+    const itemPascalCase = FormatHelpers.toPascalCase(item.name);
+    const enumCamelCase = FormatHelpers.toCamelCase(`${model.name}Case`);
+    const enumPascalCase = FormatHelpers.toPascalCase(`${model.name}Case`);
+    const setterName = `set${modelPascalCase}${itemPascalCase}`;
+    return `public void ${setterName}(${itemPascalCase} ${modelCamelCase}) {
+  ${enumCamelCase} = ${enumPascalCase}.${FormatHelpers.toConstantCase(item.type)};
+  this.${modelCamelCase} = ${modelCamelCase};
+}`;
+  }
 };

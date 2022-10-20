@@ -6,8 +6,26 @@ Array [
  * Pet represents a union of types: Cat, Dog
  */
 public class Pet {
+  private Object pet;
+
   private enum PetCase {
     CAT, DOG
+  }
+
+  public Cat getPetCat() {
+    return pet instanceof Cat ? (Cat) pet : new Cat();
+  }
+  public void setPetCat(Cat pet) {
+    petCase = PetCase.CAT;
+    this.pet = pet;
+  }
+
+  public Dog getPetDog() {
+    return pet instanceof Dog ? (Dog) pet : new Dog();
+  }
+  public void setPetDog(Dog pet) {
+    petCase = PetCase.DOG;
+    this.pet = pet;
   }
 }
 ",
@@ -30,17 +48,10 @@ public class Pet {
     this.value = value;
   }
 
-  @JsonValue
   public String getValue() {
     return value;
   }
 
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-
-  @JsonCreator
   public static AnimalType fromValue(String value) {
     for (AnimalType e : AnimalType.values()) {
       if (e.value.equals(value)) {
@@ -48,6 +59,11 @@ public class Pet {
       }
     }
     throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
   }
 }",
   "public class Dog {
