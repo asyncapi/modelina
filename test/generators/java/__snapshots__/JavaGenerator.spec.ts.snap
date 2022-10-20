@@ -6,7 +6,9 @@ Array [
  * Pet represents a union of types: Cat, Dog
  */
 public class Pet {
-  Object
+  private enum PetCase {
+    Cat, Dog
+  }
 }
 ",
   "public class Cat {
