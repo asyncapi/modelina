@@ -14,6 +14,7 @@ export interface JavaUnionPreset<R extends AbstractRenderer, O> extends CommonPr
   property?: (args: PresetArgs<R, O, ConstrainedUnionModel>) => string;
   getter?: (args: PresetArgs<R, O, ConstrainedUnionModel> & UnionArgs) => string;
   setter?: (args: PresetArgs<R, O, ConstrainedUnionModel> & UnionArgs) => string;
+  has?: (args: PresetArgs<R, O, ConstrainedUnionModel> & UnionArgs) => string;
 }
 
 export type ClassPresetType<O> = ClassPreset<ClassRenderer, O>;

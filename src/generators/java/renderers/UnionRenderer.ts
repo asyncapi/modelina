@@ -56,7 +56,8 @@ ${this.indent(this.renderBlock([unionTypes]))}
     for (const item of Object.values(this.model.union)) {
       const getter = await this.runGetterPreset(item);
       const setter = await this.runSetterPreset(item);
-      content.push(this.renderBlock([getter, setter]));
+      const has = await this.runHasPreset(item);
+      content.push(this.renderBlock([getter, setter, has]));
     }
 
     return this.renderBlock(content, 2);
@@ -68,6 +69,10 @@ ${this.indent(this.renderBlock([unionTypes]))}
 
   runSetterPreset(item: ConstrainedMetaModel): Promise<string> {
     return this.runPreset('setter', { item });
+  }
+
+  runHasPreset(item: ConstrainedMetaModel): Promise<string> {
+    return this.runPreset('has', { item });
   }
 }
 
@@ -98,5 +103,15 @@ export const JAVA_DEFAULT_UNION_PRESET: UnionPresetType<JavaOptions> = {
   ${enumCamelCase} = ${enumPascalCase}.${FormatHelpers.toConstantCase(item.type)};
   this.${modelCamelCase} = ${modelCamelCase};
 }`;
-  }
+  },
+  has({ item, model }) {
+    const modelPascalCase = FormatHelpers.toPascalCase(model.name);
+    const itemPascalCase = FormatHelpers.toPascalCase(item.name);
+    const enumCamelCase = FormatHelpers.toCamelCase(`${model.name}Case`);
+    const enumPascalCase = FormatHelpers.toPascalCase(`${model.name}Case`);
+    const hasName = `has${modelPascalCase}${itemPascalCase}`;
+    return `public boolean ${hasName}() {
+  return ${enumCamelCase} == ${enumPascalCase}.${FormatHelpers.toConstantCase(item.type)};
+}`;
+  },
 };

@@ -19,6 +19,9 @@ public class Pet {
     petCase = PetCase.CAT;
     this.pet = pet;
   }
+  public boolean hasPetCat() {
+    return petCase == PetCase.CAT;
+  }
 
   public Dog getPetDog() {
     return pet instanceof Dog ? (Dog) pet : new Dog();
@@ -26,6 +29,9 @@ public class Pet {
   public void setPetDog(Dog pet) {
     petCase = PetCase.DOG;
     this.pet = pet;
+  }
+  public boolean hasPetDog() {
+    return petCase == PetCase.DOG;
   }
 }
 ",
