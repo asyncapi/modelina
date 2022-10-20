@@ -35,17 +35,10 @@ public enum ReservedEnum {
     this.value = value;
   }
 
-  @JsonValue
   public String getValue() {
     return value;
   }
 
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-
-  @JsonCreator
   public static ReservedEnum fromValue(String value) {
     for (ReservedEnum e : ReservedEnum.values()) {
       if (e.value.equals(value)) {
@@ -53,6 +46,11 @@ public enum ReservedEnum {
       }
     }
     throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
   }
 }"
 `;

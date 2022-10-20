@@ -91,7 +91,7 @@ describe('JavaGenerator', () => {
       type: 'string',
       enum: ['Texas', 'Alabama', 'California', 'New York'],
     };
-    const expectedDependencies = ['import com.fasterxml.jackson.annotation.*;'];
+    const expectedDependencies = [];
 
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
@@ -105,7 +105,7 @@ describe('JavaGenerator', () => {
       type: 'integer',
       enum: [0, 1, 2, 3],
     };
-    const expectedDependencies = ['import com.fasterxml.jackson.annotation.*;'];
+    const expectedDependencies = [];
     
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
@@ -119,7 +119,7 @@ describe('JavaGenerator', () => {
       type: ['string', 'integer', 'boolean'],
       enum: ['Texas', 'Alabama', 0, 1, '1', true, {test: 'test'}],
     };
-    const expectedDependencies = ['import com.fasterxml.jackson.annotation.*;'];
+    const expectedDependencies = [];
     
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
@@ -144,7 +144,7 @@ describe('JavaGenerator', () => {
         }
       }
     ] });
-    const expectedDependencies = ['import com.fasterxml.jackson.annotation.*;'];
+    const expectedDependencies = [];
     
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
@@ -157,7 +157,7 @@ describe('JavaGenerator', () => {
       $id: 'States',
       enum: ['test+', 'test', 'test-', 'test?!', '*test']
     };
-    const expectedDependencies = ['import com.fasterxml.jackson.annotation.*;'];
+    const expectedDependencies = [];
     
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);

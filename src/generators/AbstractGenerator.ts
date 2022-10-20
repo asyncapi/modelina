@@ -47,7 +47,7 @@ export abstract class AbstractGenerator<
    * @param input 
    * @param options to use for rendering full output
    */
-  public async generateCompleteModels(input: Record<string, unknown> | InputMetaModel, options: RenderCompleteModelOptions): Promise<OutputModel[]> {
+  public async generateCompleteModels(input: any | InputMetaModel, options: RenderCompleteModelOptions): Promise<OutputModel[]> {
     const inputModel = await this.processInput(input);
     const renders = Object.values(inputModel.models).map(async (model) => {
       const constrainedModel = this.constrainToMetaModel(model);
@@ -68,7 +68,7 @@ export abstract class AbstractGenerator<
    * 
    * @param input 
    */
-  public async generate(input: Record<string, unknown> | InputMetaModel): Promise<OutputModel[]> {
+  public async generate(input: any | InputMetaModel): Promise<OutputModel[]> {
     const inputModel = await this.processInput(input);
     const renders = Object.values(inputModel.models).map(async (model) => {
       const constrainedModel = this.constrainToMetaModel(model);
@@ -90,7 +90,7 @@ export abstract class AbstractGenerator<
    * 
    * @param input 
    */
-  protected async processInput(input: Record<string, unknown> | InputMetaModel): Promise<InputMetaModel> {
+  protected async processInput(input: any | InputMetaModel): Promise<InputMetaModel> {
     const rawInputModel = input instanceof InputMetaModel ? input : await this.process(input);
 
     //Split out the models based on the language specific requirements of which models is rendered separately
