@@ -17,7 +17,7 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  async process(input: Record<string, any>, options?: ProcessorOptions): Promise<InputMetaModel> {
+  async process(input: any, options?: ProcessorOptions): Promise<InputMetaModel> {
     if (!this.shouldProcess(input)) {throw new Error('Input is not a OpenAPI document so it cannot be processed.');}
 
     Logger.debug('Processing input as an OpenAPI document');
@@ -121,7 +121,7 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
 	 * 
 	 * @param input 
 	 */
-  shouldProcess(input: Record<string, any>) : boolean {
+  shouldProcess(input: any) : boolean {
     const version = this.tryGetVersionOfDocument(input);
     if (!version) {return false;}
     return OpenAPIInputProcessor.supportedVersions.includes(version);
@@ -132,7 +132,7 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  tryGetVersionOfDocument(input: Record<string, any>) : string | undefined {
+  tryGetVersionOfDocument(input: any) : string | undefined {
     return input && input.openapi;
   }
 }

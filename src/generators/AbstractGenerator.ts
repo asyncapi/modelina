@@ -48,7 +48,7 @@ export abstract class AbstractGenerator<
    * OutputModels result is no longer the model itself, but including package, package dependencies and model dependencies.
    * 
    */
-  protected async internalGenerateCompleteModels(input: Record<string, unknown> | InputMetaModel, options: RenderCompleteModelOptions, dependencyManager: AbstractDependencyManager): Promise<OutputModel[]> {
+  protected async internalGenerateCompleteModels(input: any | InputMetaModel, options: RenderCompleteModelOptions, dependencyManager: AbstractDependencyManager): Promise<OutputModel[]> {
     const inputModel = await this.processInput(input);
     const renders = Object.values(inputModel.models).map(async (model) => {
       const constrainedModel = this.constrainToMetaModel(model, dependencyManager);
@@ -67,7 +67,7 @@ export abstract class AbstractGenerator<
   /**
    * Generates a scattered model where dependencies and rendered results are separated. 
    */
-  protected async internalGenerate(input: Record<string, unknown> | InputMetaModel, dependencyManager: AbstractDependencyManager): Promise<OutputModel[]> {
+  protected async internalGenerate(input: any | InputMetaModel, dependencyManager: AbstractDependencyManager): Promise<OutputModel[]> {
     const inputModel = await this.processInput(input);
     const renders = Object.values(inputModel.models).map(async (model) => {
       const constrainedModel = this.constrainToMetaModel(model, dependencyManager);
@@ -89,7 +89,7 @@ export abstract class AbstractGenerator<
    * 
    * @param input 
    */
-  protected async processInput(input: Record<string, unknown> | InputMetaModel): Promise<InputMetaModel> {
+  protected async processInput(input: any | InputMetaModel): Promise<InputMetaModel> {
     const rawInputModel = input instanceof InputMetaModel ? input : await this.process(input);
 
     //Split out the models based on the language specific requirements of which models is rendered separately

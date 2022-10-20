@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { InputMetaModel, ProcessorOptions } from '../../src/models';
-import { AbstractInputProcessor, AsyncAPIInputProcessor, JsonSchemaInputProcessor, InputProcessor, SwaggerInputProcessor } from '../../src/processors';
+import { AbstractInputProcessor, AsyncAPIInputProcessor, JsonSchemaInputProcessor, InputProcessor, SwaggerInputProcessor, TypeScriptInputProcessor } from '../../src/processors';
 import { OpenAPIInputProcessor } from '../../src/processors/OpenAPIInputProcessor';
 
 describe('InputProcessor', () => {
