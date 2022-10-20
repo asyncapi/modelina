@@ -22,7 +22,6 @@ export interface EnumPresetType<O> extends EnumPreset<EnumRenderer, O> {
   getValue?: (args: PresetArgs<EnumRenderer, O, ConstrainedEnumModel> & EnumArgs) => string;
   fromValue?: (args: PresetArgs<EnumRenderer, O, ConstrainedEnumModel> & EnumArgs) => string;
 }
-// export type UnionPresetType<O> = ClassPreset<UnionRenderer, O>;
 export type UnionPresetType<O> = JavaUnionPreset<UnionRenderer, O>;
 
 export type JavaPreset<O = any> = Preset<{
