@@ -7,7 +7,7 @@ Array [
  */
 public class Pet {
   private enum PetCase {
-    Cat, Dog
+    CAT, DOG
   }
 }
 ",

@@ -1,3 +1,4 @@
+import { FormatHelpers } from '../../../helpers';
 import { ConstrainedUnionModel } from '../../../models';
 import { JavaOptions } from '../JavaGenerator';
 import { UnionPresetType } from '../JavaPreset';
@@ -27,11 +28,13 @@ ${this.indent(this.renderBlock(content, 2))}
     const content: string[] = [];
 
     const unionTypes = this.model.union.map((unionModel) => {
-      return unionModel.type;
+      return FormatHelpers.toConstantCase(unionModel.type);
     }).join(', ');
 
-    content.push(`private enum ${this.model.name}Case {
-  ${unionTypes}
+    const enumName = FormatHelpers.toPascalCase(`${this.model.name}Case`);
+
+    content.push(`private enum ${enumName} {
+${this.indent(this.renderBlock([unionTypes]))}
 }`);
 
     return this.renderBlock(content);

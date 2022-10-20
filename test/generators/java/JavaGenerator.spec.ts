@@ -314,6 +314,7 @@ describe('JavaGenerator', () => {
       const pet = models.find((model) => model.modelName === 'Pet');
       expect(pet).not.toBeUndefined();
       expect(pet?.result).toContain('public class Pet');
+      expect(pet?.result).toContain('private enum PetCase {');
 
       const animalTypeEnum = models.find((model) => model.modelName === 'AnimalType');
       expect(animalTypeEnum).not.toBeUndefined();
