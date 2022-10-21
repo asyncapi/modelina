@@ -1,12 +1,14 @@
 import { AbstractDependencyManager } from "../AbstractDependencyManager";
 import { renderJavaScriptDependency } from "../../utils";
-import { TypeScriptOptions } from "./TypeScriptGenerator";
+import { TypeScriptOptions, TypeScriptRenderCompleteModelOptions } from "./TypeScriptGenerator";
+import { ConstrainedMetaModel } from "../../models";
 
 export class TypeScriptDependencyManager extends AbstractDependencyManager {
   constructor(
-    public options: TypeScriptOptions
+    public options: TypeScriptOptions,
+    dependencies: string[] = []
   ) {
-    super();
+    super(dependencies);
   }
 
   /**
@@ -25,5 +27,10 @@ export class TypeScriptDependencyManager extends AbstractDependencyManager {
   addTypeScriptDependency(toImport: string, fromModule: string) {
     const dependencyImport = this.renderDependency(toImport, fromModule);
     this.addDependency(dependencyImport);
+  }
+
+  renderCompleteModelDependencies(model: ConstrainedMetaModel, opt: TypeScriptRenderCompleteModelOptions) {
+    const dependencyObject = opt.exportType === 'named' ? `{${model.name}}` : model.name;
+    return renderJavaScriptDependency(dependencyObject, `./${model.name}`, this.options.moduleSystem);
   }
 }

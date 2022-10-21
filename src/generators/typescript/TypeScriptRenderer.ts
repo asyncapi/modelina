@@ -2,7 +2,6 @@ import { AbstractRenderer } from '../AbstractRenderer';
 import { TypeScriptGenerator, TypeScriptOptions } from './TypeScriptGenerator';
 import { FormatHelpers } from '../../helpers';
 import { ConstrainedMetaModel, InputMetaModel, Preset } from '../../models';
-import { renderJavaScriptDependency } from '../../utils/DependencyHelper';
 import { TypeScriptDependencyManager } from './TypeScriptDependencyManager';
 
 /**

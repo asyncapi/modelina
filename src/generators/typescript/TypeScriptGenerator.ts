@@ -11,11 +11,10 @@ import { InterfaceRenderer } from './renderers/InterfaceRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { TypeRenderer } from './renderers/TypeRenderer';
 import { TypeScriptDefaultConstraints, TypeScriptDefaultTypeMapping } from './TypeScriptConstrainer';
-import { TS_EXPORT_KEYWORD_PRESET } from './presets';
 import { DeepPartial, mergePartialAndDefault, renderJavaScriptDependency } from '../../utils';
 import { TypeScriptDependencyManager } from './TypeScriptDependencyManager';
 
-export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPreset> {
+export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPreset, TypeScriptDependencyManager> {
   renderTypes: boolean;
   modelType: 'class' | 'interface';
   enumType: 'enum' | 'union';
@@ -26,7 +25,7 @@ export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPres
 }
 
 export interface TypeScriptRenderCompleteModelOptions {
-  exportType?: 'default' | 'named';
+  exportType: 'default' | 'named';
 }
 
 /**
@@ -42,13 +41,19 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions, Ty
     defaultPreset: TS_DEFAULT_PRESET,
     typeMapping: TypeScriptDefaultTypeMapping,
     constraints: TypeScriptDefaultConstraints,
-    moduleSystem: 'ESM'
+    moduleSystem: 'ESM',
+    dependencyManagerFactory: undefined
+  };
+  
+  static defaultCompleteModelOptions: TypeScriptRenderCompleteModelOptions = {
+    exportType: 'default'
   };
 
   constructor(
     options?: DeepPartial<TypeScriptOptions>,
   ) {
     const realizedOptions = mergePartialAndDefault(TypeScriptGenerator.defaultOptions, options) as TypeScriptOptions;
+    realizedOptions.dependencyManagerFactory = () => { return new TypeScriptDependencyManager(realizedOptions);};
     super('TypeScript', realizedOptions);
   }
 
@@ -74,16 +79,6 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions, Ty
     );
   }
 
-  public generate(input: InputMetaModel | Record<string, unknown>): Promise<OutputModel[]> {
-    const dependencyManager = new TypeScriptDependencyManager(this.options);
-    return this.internalGenerate(input, dependencyManager);
-  }
-
-  public generateCompleteModels(input: InputMetaModel | Record<string, unknown>, options: TypeScriptRenderCompleteModelOptions): Promise<OutputModel[]> {
-    const dependencyManager = new TypeScriptDependencyManager(this.options);
-    return this.internalGenerateCompleteModels(input, options, dependencyManager);
-  }
-
   /**
    * Render a complete model result where the model code, library and model dependencies are all bundled appropriately.
    *
@@ -91,49 +86,35 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions, Ty
    * @param inputModel
    * @param options
    */
-  async renderCompleteModel(model: ConstrainedMetaModel, inputModel: InputMetaModel, {exportType = 'default'}: TypeScriptRenderCompleteModelOptions): Promise<RenderOutput> {
-    // Shallow copy presets so that we can restore it once we are done
-    const originalPresets = [...(this.options.presets ? this.options.presets : [])];
-
-    // Add preset that adds the `export` keyword if it hasn't already been added
-    if (
-      this.options.moduleSystem === 'ESM' &&
-      exportType === 'named' &&
-      !hasPreset(originalPresets, TS_EXPORT_KEYWORD_PRESET)
-    ) {
-      this.options.presets = [TS_EXPORT_KEYWORD_PRESET, ...originalPresets];
-    }
-
-    const outputModel = await this.render(model, inputModel);
+  async renderCompleteModel(
+    model: ConstrainedMetaModel, 
+    inputModel: InputMetaModel, 
+    completeModelOptions: TypeScriptRenderCompleteModelOptions, 
+    dependencyManager?: TypeScriptDependencyManager = this.options.dependencyManagerFactory!()): Promise<RenderOutput> {
+    const outputModel = await this.render(model, inputModel, dependencyManager);
     const modelDependencies = model.getNearestDependencies();
     //Create the correct dependency imports
-    const modelDependencyImports = modelDependencies.map(({name}) => {
-      const dependencyObject =
-        exportType === 'named' ? `{${name}}` : name;
-      return renderJavaScriptDependency(dependencyObject, `./${name}`, this.options.moduleSystem);
-    });
+    const modelDependencyImports = modelDependencies.map((model) => {return dependencyManager.renderCompleteModelDependencies(model, completeModelOptions); ); });
 
     //Ensure we expose the model correctly, based on the module system and export type
     const cjsExport =
-      exportType === 'default'
+    this.options.exportType === 'default'
         ? `module.exports = ${outputModel.renderedName};`
         : `exports.${outputModel.renderedName} = ${outputModel.renderedName};`;
     const esmExport =
       exportType === 'default'
         ? `export default ${outputModel.renderedName};\n`
-        : '';
+        : `export {${outputModel.renderedName}};`;
+
     const modelCode = `${outputModel.result}\n${this.options.moduleSystem === 'CJS' ? cjsExport : esmExport}`;
 
     const outputContent = `${[...modelDependencyImports, ...outputModel.dependencies].join('\n')}
 ${modelCode}`;
 
-    // Restore presets array from original copy
-    this.options.presets = originalPresets;
-
     return RenderOutput.toRenderOutput({ result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies });
   }
 
-  render(model: ConstrainedMetaModel, inputModel: InputMetaModel, dependencyManager: TypeScriptDependencyManager = new TypeScriptDependencyManager(this.options)): Promise<RenderOutput> {
+  render(model: ConstrainedMetaModel, inputModel: InputMetaModel, dependencyManager: TypeScriptDependencyManager = this.options.dependencyManagerFactory!()): Promise<RenderOutput> {
     if (model instanceof ConstrainedObjectModel) {
       if (this.options.modelType === 'interface') {
         return this.renderInterface(model, inputModel, dependencyManager);
@@ -145,28 +126,28 @@ ${modelCode}`;
     return this.renderType(model, inputModel, dependencyManager);
   }
 
-  async renderClass(model: ConstrainedObjectModel, inputModel: InputMetaModel, dependencyManager: TypeScriptDependencyManager = new TypeScriptDependencyManager(this.options)): Promise<RenderOutput> {
+  async renderClass(model: ConstrainedObjectModel, inputModel: InputMetaModel, dependencyManager: TypeScriptDependencyManager = this.options.dependencyManagerFactory!()): Promise<RenderOutput> {
     const presets = this.getPresets('class'); 
     const renderer = new ClassRenderer(this.options, this, presets, model, inputModel, dependencyManager);
     const result = await renderer.runSelfPreset();
     return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: dependencyManager.dependencies});
   }
 
-  async renderInterface(model: ConstrainedObjectModel, inputModel: InputMetaModel, dependencyManager: TypeScriptDependencyManager = new TypeScriptDependencyManager(this.options)): Promise<RenderOutput> {
+  async renderInterface(model: ConstrainedObjectModel, inputModel: InputMetaModel, dependencyManager: TypeScriptDependencyManager = this.options.dependencyManagerFactory!()): Promise<RenderOutput> {
     const presets = this.getPresets('interface'); 
     const renderer = new InterfaceRenderer(this.options, this, presets, model, inputModel, dependencyManager);
     const result = await renderer.runSelfPreset();
     return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: dependencyManager.dependencies});
   }
 
-  async renderEnum(model: ConstrainedEnumModel, inputModel: InputMetaModel, dependencyManager: TypeScriptDependencyManager = new TypeScriptDependencyManager(this.options)): Promise<RenderOutput> {
+  async renderEnum(model: ConstrainedEnumModel, inputModel: InputMetaModel, dependencyManager: TypeScriptDependencyManager = this.options.dependencyManagerFactory!()): Promise<RenderOutput> {
     const presets = this.getPresets('enum'); 
     const renderer = new EnumRenderer(this.options, this, presets, model, inputModel, dependencyManager);
     const result = await renderer.runSelfPreset();
     return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: dependencyManager.dependencies});
   }
 
-  async renderType(model: ConstrainedMetaModel, inputModel: InputMetaModel, dependencyManager: TypeScriptDependencyManager = new TypeScriptDependencyManager(this.options)): Promise<RenderOutput> {
+  async renderType(model: ConstrainedMetaModel, inputModel: InputMetaModel, dependencyManager: TypeScriptDependencyManager = this.options.dependencyManagerFactory!()): Promise<RenderOutput> {
     const presets = this.getPresets('type'); 
     const renderer = new TypeRenderer(this.options, this, presets, model, inputModel, dependencyManager);
     const result = await renderer.runSelfPreset();
