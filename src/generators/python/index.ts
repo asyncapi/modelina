@@ -1,5 +1,6 @@
 export * from './PythonGenerator';
 export * from './PythonFileGenerator';
+export * from './presets';
 export { PYTHON_DEFAULT_PRESET } from './PythonPreset';
 export type { PythonPreset } from './PythonPreset';
 
@@ -18,7 +19,3 @@ export {
   DefaultPropertyKeyConstraints as PythonDefaultPropertyKeyConstraints,
   defaultPropertyKeyConstraints as pythonDefaultPropertyKeyConstraints
 } from './constrainer/PropertyKeyConstrainer';
-
-export {
-  PYTHON_PYDANTIC_PRESET
-} from  './presets/Pydantic';

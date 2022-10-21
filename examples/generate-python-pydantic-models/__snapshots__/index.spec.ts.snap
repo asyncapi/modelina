@@ -1,11 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Should be able to render python models and should log expected output to console 1`] = `
+exports[`Should be able to render python models and should log expected output to console: class-model 1`] = `
 Array [
-  "from typing import Optional, Any
-from pydantic import BaseModel, Field
-class Root(BaseModel): 
+  "class Root(BaseModel): 
   optionalField: Optional[str] = Field(alias='this field is optional')
-  noDescription: str = Field()"
+  requiredField: str = Field(alias='this field is required')
+  noDescription: Optional[str] = Field()
+  options: Optional[Options] = Field()
+",
+]
+`;
+
+exports[`Should be able to render python models and should log expected output to console: enum-model 1`] = `
+Array [
+  "class Options(Enum): 
+  NUMBER_123 = 123
+  NUMBER_213 = 213
+  RESERVED_TRUE = \\"true\\"
+  RUN = \\"Run\\"",
 ]
 `;

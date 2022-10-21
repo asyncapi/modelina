@@ -1,6 +1,5 @@
 import { PythonOptions } from '../PythonGenerator';
 import { ClassPresetType, PythonPreset } from '../PythonPreset';
-import { PYTHON_DEFAULT_ENUM_PRESET } from '../renderers/EnumRenderer';
 
 const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
   async self({renderer, model}) {
@@ -27,6 +26,5 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
 };
 
 export const PYTHON_PYDANTIC_PRESET: PythonPreset<PythonOptions> = {
-  class: PYTHON_PYDANTIC_CLASS_PRESET,
-  enum: PYTHON_DEFAULT_ENUM_PRESET,
+  class: PYTHON_PYDANTIC_CLASS_PRESET
 };

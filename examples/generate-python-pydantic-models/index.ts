@@ -7,22 +7,26 @@ const jsonSchemaDraft7 = {
   $schema: 'http://json-schema.org/draft-07/schema#',
   type: 'object',
   additionalProperties: false,
+  required: ['requiredField'],
   properties: {
     optionalField: {
       type: 'string',
       format: 'email',
-      optional: true,
       description: 'this field is optional'
     },
-    // requiredField: {
-    //   type: 'string',
-    //   format: 'email',
-    //   required: true,
-    //   description: 'this field is required'
-    // },
+    requiredField: {
+      type: 'string',
+      format: 'email',
+      description: 'this field is required'
+    },
     noDescription: {
       type: 'string'
     },
+    options: {
+      $id: 'options',
+      type: ['integer', 'boolean', 'string'],
+      enum: [123, 213, true, 'Run'],
+    }
   }
 };
 
