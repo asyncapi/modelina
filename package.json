@@ -16,7 +16,8 @@
   },
   "keywords": [
     "asyncapi",
-    "documentation",
+    "modelina",
+    "model-generation",
     "generator",
     "model",
     "sdk"
