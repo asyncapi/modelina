@@ -19,7 +19,3 @@ export {
   DefaultPropertyKeyConstraints as PythonDefaultPropertyKeyConstraints,
   defaultPropertyKeyConstraints as pythonDefaultPropertyKeyConstraints
 } from './constrainer/PropertyKeyConstrainer';
-
-export {
-  PYTHON_PYDANTIC_PRESET
-} from  './presets/Pydantic';
