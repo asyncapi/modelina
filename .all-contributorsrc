@@ -398,6 +398,18 @@
         "doc",
         "example"
       ]
+    },
+    {
+      "login": "zaytsevand",
+      "name": "Andrey Zaytsev",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5207748?v=4",
+      "profile": "https://github.com/zaytsevand",
+      "contributions": [
+        "code",
+        "example",
+        "doc",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
