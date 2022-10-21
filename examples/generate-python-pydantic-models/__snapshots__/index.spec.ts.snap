@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render python models and should log expected output to console 1`] = `
+Array [
+  "from typing import Optional, Any
+from pydantic import BaseModel, Field
+class Root(BaseModel): 
+  optionalField: Optional[str] = Field(alias='this field is optional')
+  noDescription: str = Field()"
+]
+`;
