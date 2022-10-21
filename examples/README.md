@@ -49,3 +49,4 @@ This directory contains a series of self-contained examples that you can use as 
 - [rust-generate-crate](./rust-generate-crate/) - A basic example showing how to generate a Rust package.
 - [typescript-generate-jsonbinpack](./typescript-generate-jsonbinpack) - A basic example showing how to generate models that include [jsonbinpack](https://github.com/sourcemeta/jsonbinpack) functionality.
 - [generate-python-models](./generate-python-models/) - A basic example showing how to generate Python models.
+- [generate-python-pydantic-models](./generate-python-pydantic-models/) - An example showing how to generate Python pydantic models.
