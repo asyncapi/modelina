@@ -14,20 +14,34 @@ const jsonSchemaDraft7 = {
   $schema: 'http://json-schema.org/draft-07/schema#',
   type: 'object',
   additionalProperties: false,
+  required: ['nonNullNumber', 'nonNullString', 'nonNullArray'],
   properties: {
-    emails: {
+    nullArray: {
       type: 'array',
       items: {
         type: 'string',
         format: 'email'
       }
     },
-    stringProp: {
+    nullString: {
       type: 'string'
     },
-    numberProp: {
+    nullNumber: {
       type: 'number'
     },
+    nonNullArray: {
+      type: 'array',
+      items: {
+        type: 'string',
+        format: 'email'
+      }
+    },
+    nonNullString: {
+      type: 'string'
+    },
+    nonNullNumber: {
+      type: 'number'
+    }
   }
 };
 
