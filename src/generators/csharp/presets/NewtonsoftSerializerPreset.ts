@@ -50,7 +50,7 @@ function renderDeserialize({ model }: {
   const corePropsRead = Object.values(model.properties)
   .filter((prop) => !(prop.property instanceof ConstrainedDictionaryModel) || prop.property.serializationType === 'normal')
   .map((prop) => {
-    return `value.${prop.propertyName} = (string)jo["${prop.unconstrainedPropertyName}"];`;
+    return `value.${prop.propertyName} = jo["${prop.unconstrainedPropertyName}"].ToObject<${prop.property.type}>(serializer);`;
   });
 const nonDictionaryPropCheck = Object.values(model.properties)
   .filter((prop) => prop.property instanceof ConstrainedDictionaryModel && prop.property.serializationType === 'unwrap')
