@@ -3,8 +3,8 @@
 exports[`CSharpGenerator class renderer should be able to overwrite accessor preset hook 1`] = `
 "public class CustomClass
 {
-  private string property;
-  private Dictionary<string, string> additionalProperties;
+  private string? property;
+  private Dictionary<string, string>? additionalProperties;
 
   my own custom factory
 
@@ -18,13 +18,13 @@ exports[`CSharpGenerator class renderer should be able to overwrite property pre
   my own property
   my own property
 
-  public string Property 
+  public string? Property 
   {
     get { return property; }
     set { property = value; }
   }
 
-  public Dictionary<string, string> AdditionalProperties 
+  public Dictionary<string, string>? AdditionalProperties 
   {
     get { return additionalProperties; }
     set { additionalProperties = value; }
@@ -39,11 +39,11 @@ exports[`CSharpGenerator should render \`class\` type 1`] = `
   private string city;
   private string state;
   private double houseNumber;
-  private bool marriage;
-  private dynamic members;
-  private dynamic[] tupleType;
+  private bool? marriage;
+  private dynamic? members;
+  private dynamic[]? tupleType;
   private dynamic[] arrayType;
-  private Dictionary<string, string> additionalProperties;
+  private Dictionary<string, string>? additionalProperties;
 
   public string StreetName 
   {
@@ -69,19 +69,19 @@ exports[`CSharpGenerator should render \`class\` type 1`] = `
     set { houseNumber = value; }
   }
 
-  public bool Marriage 
+  public bool? Marriage 
   {
     get { return marriage; }
     set { marriage = value; }
   }
 
-  public dynamic Members 
+  public dynamic? Members 
   {
     get { return members; }
     set { members = value; }
   }
 
-  public dynamic[] TupleType 
+  public dynamic[]? TupleType 
   {
     get { return tupleType; }
     set { tupleType = value; }
@@ -93,7 +93,7 @@ exports[`CSharpGenerator should render \`class\` type 1`] = `
     set { arrayType = value; }
   }
 
-  public Dictionary<string, string> AdditionalProperties 
+  public Dictionary<string, string>? AdditionalProperties 
   {
     get { return additionalProperties; }
     set { additionalProperties = value; }
@@ -194,11 +194,11 @@ exports[`CSharpGenerator should render models and their dependencies 1`] = `
     private string city;
     private string state;
     private double houseNumber;
-    private bool marriage;
-    private dynamic members;
+    private bool? marriage;
+    private dynamic? members;
     private dynamic[] arrayType;
-    private OtherModel otherModel;
-    private Dictionary<string, dynamic> additionalProperties;
+    private OtherModel? otherModel;
+    private Dictionary<string, dynamic>? additionalProperties;
 
     public string StreetName 
     {
@@ -224,13 +224,13 @@ exports[`CSharpGenerator should render models and their dependencies 1`] = `
       set { houseNumber = value; }
     }
 
-    public bool Marriage 
+    public bool? Marriage 
     {
       get { return marriage; }
       set { marriage = value; }
     }
 
-    public dynamic Members 
+    public dynamic? Members 
     {
       get { return members; }
       set { members = value; }
@@ -242,13 +242,13 @@ exports[`CSharpGenerator should render models and their dependencies 1`] = `
       set { arrayType = value; }
     }
 
-    public OtherModel OtherModel 
+    public OtherModel? OtherModel 
     {
       get { return otherModel; }
       set { otherModel = value; }
     }
 
-    public Dictionary<string, dynamic> AdditionalProperties 
+    public Dictionary<string, dynamic>? AdditionalProperties 
     {
       get { return additionalProperties; }
       set { additionalProperties = value; }
@@ -264,16 +264,16 @@ exports[`CSharpGenerator should render models and their dependencies 2`] = `
 
   public class OtherModel
   {
-    private string streetName;
-    private Dictionary<string, dynamic> additionalProperties;
+    private string? streetName;
+    private Dictionary<string, dynamic>? additionalProperties;
 
-    public string StreetName 
+    public string? StreetName 
     {
       get { return streetName; }
       set { streetName = value; }
     }
 
-    public Dictionary<string, dynamic> AdditionalProperties 
+    public Dictionary<string, dynamic>? AdditionalProperties 
     {
       get { return additionalProperties; }
       set { additionalProperties = value; }

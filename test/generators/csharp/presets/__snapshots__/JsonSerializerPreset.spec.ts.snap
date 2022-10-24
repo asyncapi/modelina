@@ -5,10 +5,10 @@ exports[`JSON serializer preset should render serialize and deserialize converte
 public class Test
 {
   private string stringProp;
-  private double numberProp;
-  private EnumTest enumProp;
-  private NestedTest objectProp;
-  private Dictionary<string, dynamic> additionalProperties;
+  private double? numberProp;
+  private EnumTest? enumProp;
+  private NestedTest? objectProp;
+  private Dictionary<string, dynamic>? additionalProperties;
 
   public string StringProp 
   {
@@ -16,25 +16,25 @@ public class Test
     set { stringProp = value; }
   }
 
-  public double NumberProp 
+  public double? NumberProp 
   {
     get { return numberProp; }
     set { numberProp = value; }
   }
 
-  public EnumTest EnumProp 
+  public EnumTest? EnumProp 
   {
     get { return enumProp; }
     set { enumProp = value; }
   }
 
-  public NestedTest ObjectProp 
+  public NestedTest? ObjectProp 
   {
     get { return objectProp; }
     set { objectProp = value; }
   }
 
-  public Dictionary<string, dynamic> AdditionalProperties 
+  public Dictionary<string, dynamic>? AdditionalProperties 
   {
     get { return additionalProperties; }
     set { additionalProperties = value; }
@@ -203,16 +203,16 @@ exports[`JSON serializer preset should render serialize and deserialize converte
 "[JsonConverter(typeof(NestedTestConverter))]
 public class NestedTest
 {
-  private string stringProp;
-  private Dictionary<string, dynamic> additionalProperties;
+  private string? stringProp;
+  private Dictionary<string, dynamic>? additionalProperties;
 
-  public string StringProp 
+  public string? StringProp 
   {
     get { return stringProp; }
     set { stringProp = value; }
   }
 
-  public Dictionary<string, dynamic> AdditionalProperties 
+  public Dictionary<string, dynamic>? AdditionalProperties 
   {
     get { return additionalProperties; }
     set { additionalProperties = value; }

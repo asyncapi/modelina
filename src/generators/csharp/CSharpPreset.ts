@@ -6,6 +6,7 @@ import { CSHARP_DEFAULT_ENUM_PRESET, EnumRenderer } from './renderers/EnumRender
 // Our class preset uses custom `accessor` hook to craft getter and setters.
 export interface CsharpClassPreset<O> extends ClassPreset<ClassRenderer, O> {
   accessor?: (args: PresetArgs<ClassRenderer, O, ConstrainedObjectModel> & PropertyArgs) => Promise<string> | string;
+  propertyType?: (args: PresetArgs<ClassRenderer, O, ConstrainedObjectModel> & PropertyArgs) => Promise<string> | string;
 }
 
 export type ClassPresetType<O> = CsharpClassPreset<O>;

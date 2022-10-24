@@ -1,5 +1,5 @@
 import { CSharpRenderer } from '../CSharpRenderer';
-import { ConstrainedDictionaryModel, ConstrainedObjectModel, ConstrainedObjectPropertyModel} from '../../../models';
+import { ConstrainedDictionaryModel, ConstrainedObjectModel, ConstrainedObjectPropertyModel } from '../../../models';
 import { pascalCase } from 'change-case';
 import { CsharpClassPreset } from '../CSharpPreset';
 import { CSharpOptions } from '../CSharpGenerator';
@@ -71,6 +71,10 @@ ${this.indent(this.renderBlock(content, 2))}
   runSetterPreset(property: ConstrainedObjectPropertyModel): Promise<string> {
     return this.runPreset('setter', { property, options: this.options, renderer: this });
   }
+
+  runPropertyTypePreset(property: ConstrainedObjectPropertyModel): Promise<string> {
+    return this.runPreset('propertyType', { property, options: this.options, renderer: this });
+  }
 }
 
 export const CSHARP_DEFAULT_CLASS_PRESET: CsharpClassPreset<CSharpOptions> = {
@@ -78,20 +82,25 @@ export const CSHARP_DEFAULT_CLASS_PRESET: CsharpClassPreset<CSharpOptions> = {
     return renderer.defaultSelf();
   },
   async property({ renderer, property, options }) {
+    const type = await renderer.runPropertyTypePreset(property);
+
     if (options?.autoImplementedProperties) {
       const getter = await renderer.runGetterPreset(property);
       const setter = await renderer.runSetterPreset(property);
-      return `public ${property.property.type}${property.required === false && '?'} ${pascalCase(property.propertyName)} { ${getter} ${setter} }`;
+      return `public ${type} ${pascalCase(property.propertyName)} { ${getter} ${setter} }`;
     }
-    return `private ${property.property.type} ${property.propertyName};`;
+    return `private ${type} ${property.propertyName};`;
   },
   async accessor({ renderer, options, property }) {
-    const formattedAccessorName = pascalCase(property.propertyName);
+    const type = await renderer.runPropertyTypePreset(property);
+
     if (options?.autoImplementedProperties) {
       return '';
     }
 
-    return `public ${property.property.type} ${formattedAccessorName} 
+    const formattedAccessorName = pascalCase(property.propertyName);
+
+    return `public ${type} ${formattedAccessorName} 
 {
   ${await renderer.runGetterPreset(property)}
   ${await renderer.runSetterPreset(property)}
@@ -108,5 +117,10 @@ export const CSHARP_DEFAULT_CLASS_PRESET: CsharpClassPreset<CSharpOptions> = {
       return 'set;';
     }
     return `set { ${property.propertyName} = value; }`;
+  },
+  propertyType({ property }) {
+    const isNullable = property.required === false;
+
+    return `${property.property.type}${isNullable ? '?' : ''}`;
   }
 };
