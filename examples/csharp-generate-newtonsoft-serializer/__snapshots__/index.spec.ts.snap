@@ -14,68 +14,40 @@ public class Root
   }
 }
 
-internal class RootConverter : JsonConverter<Root>
+public class RootConverter : JsonConverter<Root>
 {
-  public override bool CanConvert(System.Type objectType)
+  private readonly Type[] _types;
+
+  public RootConverter(params Type[] types)
   {
-    // this converter can be applied to any type
-    return true;
-  }
-  public override Root Read(ref Utf8JsonReader reader, System.Type typeToConvert, JsonSerializerOptions options)
-  {
-    if (reader.TokenType != JsonTokenType.StartObject)
-    {
-      throw new JsonException();
-    }
-
-    var instance = new Root();
-  
-    while (reader.Read())
-    {
-      if (reader.TokenType == JsonTokenType.EndObject)
-      {
-        return instance;
-      }
-
-      // Get the key.
-      if (reader.TokenType != JsonTokenType.PropertyName)
-      {
-        throw new JsonException();
-      }
-
-      string propertyName = reader.GetString();
-      if (propertyName == \\"email\\")
-        {
-          var value = JsonSerializer.Deserialize<string>(ref reader, options);
-          instance.email = value;
-          continue;
-        }
-    }
-  
-    throw new JsonException();
-  }
-  public override void Write(Utf8JsonWriter writer, Root value, JsonSerializerOptions options)
-  {
-    if (value == null)
-    {
-      JsonSerializer.Serialize(writer, null, options);
-      return;
-    }
-    var properties = value.GetType().GetProperties();
-  
-    writer.WriteStartObject();
-
-    if(value.email != null) { 
-      // write property name and let the serializer serialize the value itself
-      writer.WritePropertyName(\\"email\\");
-      JsonSerializer.Serialize(writer, value.email, options);
-    }
-
-
-    writer.WriteEndObject();
+    _types = types;
   }
 
+  public override Root ReadJson(JsonReader reader, Type objectType, Root existingValue, bool hasExistingValue, JsonSerializer serializer)
+{
+  JObject jo = JObject.Load(reader);
+  Root value = new Root();
+
+  value.email = jo[\\"email\\"].ToObject<string>(serializer);
+
+  
+  return value;
 }
-",
+  public override void WriteJson(JsonWriter writer, Root value, JsonSerializer serializer)
+{
+  JObject jo = new JObject();
+
+  if (value.email != null)
+{
+  jo.Add(\\"email\\", JToken.FromObject(value.email, serializer));
+}
+  
+
+  jo.WriteTo(writer);
+}
+
+  public override bool CanRead => true;
+  public override bool CanWrite => true;
+}",
 ]
 `;
