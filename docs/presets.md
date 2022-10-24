@@ -418,6 +418,7 @@ This preset is a generator for the meta model `ConstrainedObjectModel` and [can 
 | `accessor` | A method to extend rendered given property accessor. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
 | `setter` | A method to extend setter for a given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
 | `getter` | A method to extend getter for a given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+| `propertyType` | A method to extend type definition of a given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
 
 #### **Enum**
 
