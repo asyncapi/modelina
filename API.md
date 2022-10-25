@@ -77,6 +77,9 @@ Modifications</p>
 <dt><a href="#SwaggerInputProcessor">SwaggerInputProcessor</a></dt>
 <dd><p>Class for processing Swagger inputs</p>
 </dd>
+<dt><a href="#TemplateInputProcessor">TemplateInputProcessor</a></dt>
+<dd><p>Class for processing X input</p>
+</dd>
 <dt><a href="#LoggerClass">LoggerClass</a></dt>
 <dd><p>Logger class for the model generation library</p>
 <p>This class acts as a forefront for any external loggers which is why it also implements the interface itself.</p>
@@ -1043,6 +1046,12 @@ Converts a Swagger 2.0 Schema to the internal schema format.
 | schema | to convert |
 | name | of the schema |
 
+<a name="TemplateInputProcessor"></a>
+
+## TemplateInputProcessor
+Class for processing X input
+
+**Kind**: global class  
 <a name="LoggerClass"></a>
 
 ## LoggerClass
