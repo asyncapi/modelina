@@ -48,7 +48,7 @@ To include functionality that convert the models using the [Newtonsoft/Json.NET]
 Check out this [example for a live demonstration](../../examples/csharp-generate-newtonsoft-serializer).
 
 **External dependencies**
-Requires [`Newtonsoft.Json` and `Newtonsoft.Json.Linq`](https://www.newtonsoft.com/json) and [System.Collections.Generic](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic?view=net-7.0).
+Requires [`Newtonsoft.Json`, `Newtonsoft.Json.Linq`](https://www.newtonsoft.com/json) and [System.Collections.Generic](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic?view=net-7.0).
 
 ### To and from XML
 Currently not supported, [let everyone know you need it](https://github.com/asyncapi/modelina/issues/new?assignees=&labels=enhancement&template=enhancement.md)!

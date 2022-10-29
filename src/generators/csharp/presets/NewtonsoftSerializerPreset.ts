@@ -1,6 +1,7 @@
 import { CSharpPreset } from '../CSharpPreset';
-import { ConstrainedDictionaryModel, ConstrainedObjectModel } from '../../../models';
+import { ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedObjectModel, ConstrainedReferenceModel } from '../../../models';
 import { CSharpOptions } from '../CSharpGenerator';
+import { pascalCase } from 'change-case';
 
 /**
  * Render `serialize` function based on model
@@ -11,17 +12,29 @@ function renderSerialize({ model }: {
   const corePropsWrite = Object.values(model.properties)
     .filter((prop) => !(prop.property instanceof ConstrainedDictionaryModel) || prop.property.serializationType === 'normal')
     .map((prop) => {
+      const propertyAccessor = pascalCase(prop.propertyName);
+      let toJson = `jo.Add("${prop.unconstrainedPropertyName}", JToken.FromObject(value.${propertyAccessor}, serializer));`;
+      if(prop.property instanceof ConstrainedReferenceModel 
+        && prop.property.ref instanceof ConstrainedEnumModel) {
+        toJson = `var enumValue = ${prop.property.type}Extensions.GetValue((${prop.property.type})value.${propertyAccessor});
+var stringEnumValue = enumValue.ToString();
+// C# converts booleans to uppercase True and False, which newtonsoft cannot understand
+var jsonStringCompliant = stringEnumValue == "True" || stringEnumValue == "False" ? stringEnumValue.ToLower() : stringEnumValue;
+var jsonToken = JToken.Parse(jsonStringCompliant);
+jo.Add("${prop.unconstrainedPropertyName}", jsonToken);`;
+      }
       return `if (value.${prop.propertyName} != null)
 {
-  jo.Add("${prop.unconstrainedPropertyName}", JToken.FromObject(value.${prop.propertyName}, serializer));
+  ${toJson}
 }`;
     });
   const unwrapPropsWrite = Object.values(model.properties)
     .filter((prop) => prop.property instanceof ConstrainedDictionaryModel && prop.property.serializationType === 'unwrap')
     .map((prop) => {
-      return `if (value.${prop.propertyName} != null)
+      const propertyAccessor = pascalCase(prop.propertyName);
+      return `if (value.${propertyAccessor} != null)
   {
-  foreach (var unwrapProperty in value.${prop.propertyName})
+  foreach (var unwrapProperty in value.${propertyAccessor})
   {
     var hasProp = jo[unwrapProperty.Key]; 
     if (hasProp != null) continue;
@@ -49,25 +62,31 @@ function renderDeserialize({ model }: {
 }): string {
   const unwrapDictionaryProps = Object.values(model.properties)
     .filter((prop) => prop.property instanceof ConstrainedDictionaryModel && prop.property.serializationType === 'unwrap');
-  const corePropsRead = Object.values(model.properties)
+  const coreProps = Object.values(model.properties)
     .filter((prop) => !(prop.property instanceof ConstrainedDictionaryModel) || prop.property.serializationType === 'normal')
-    .map((prop) => {
-      return `value.${prop.propertyName} = jo["${prop.unconstrainedPropertyName}"].ToObject<${prop.property.type}>(serializer);`;
+  const corePropsRead = coreProps.map((prop) => {
+      const propertyAccessor = pascalCase(prop.propertyName);
+      let toValue = `jo["${prop.unconstrainedPropertyName}"].ToObject<${prop.property.type}>(serializer)`;
+      if(prop.property instanceof ConstrainedReferenceModel 
+        && prop.property.ref instanceof ConstrainedEnumModel) {
+        toValue = `${prop.property.type}Extensions.To${prop.property.type}(jo["${prop.unconstrainedPropertyName}"])`
+      }
+      return `if(jo["${prop.unconstrainedPropertyName}" != null) {
+  value.${propertyAccessor} = ${toValue};
+}`;
     });
-  const nonDictionaryPropCheck = unwrapDictionaryProps.map((prop) => {
+  const nonDictionaryPropCheck = coreProps.map((prop) => {
       return `prop.Name != "${prop.unconstrainedPropertyName}"`;
     });
-  const dictionaryPropCheck = unwrapDictionaryProps.map((prop) => {
-      return `prop.Name == "${prop.unconstrainedPropertyName}"`;
-    });
   const dictionaryInitializers = unwrapDictionaryProps.map((prop) => {
-      return `value.${prop.propertyName} = new Dictionary<${(prop.property as ConstrainedDictionaryModel).key.type}, ${(prop.property as ConstrainedDictionaryModel).value.type}>();`;
+    const propertyAccessor = pascalCase(prop.propertyName);
+      return `value.${propertyAccessor} = new Dictionary<${(prop.property as ConstrainedDictionaryModel).key.type}, ${(prop.property as ConstrainedDictionaryModel).value.type}>();`;
     });
   const unwrapDictionaryRead = unwrapDictionaryProps.map((prop) => {
-      return `value.${prop.propertyName}[additionalProperty.Name] = JsonConvert.DeserializeObject(additionalProperty.Value.ToString());`;
+    const propertyAccessor = pascalCase(prop.propertyName);
+      return `value.${propertyAccessor}[additionalProperty.Name] = additionalProperty.Value.ToObject<${(prop.property as ConstrainedDictionaryModel).value.type}>(serializer);`;
     });
   const additionalPropertiesCode = unwrapDictionaryProps.length !== 0 ? `var additionalProperties = jo.Properties().Where((prop) => ${nonDictionaryPropCheck.join(' || ')});
-  var coreProperties = jo.Properties().Where((prop) => ${dictionaryPropCheck.join(' || ')});
   ${dictionaryInitializers}
 
   foreach (var additionalProperty in additionalProperties)
@@ -87,7 +106,7 @@ function renderDeserialize({ model }: {
 }
 
 /**
- * Preset which adds `serialize` and `deserialize` functions to class. 
+ * Preset which adds Newtonsoft/JSON.net converters for serializing and deserializing the data models
  * 
  * @implements {CSharpPreset}
  */
@@ -106,13 +125,6 @@ ${content}
 
 public class ${model.name}Converter : JsonConverter<${model.name}>
 {
-  private readonly Type[] _types;
-
-  public ${model.name}Converter(params Type[] types)
-  {
-    _types = types;
-  }
-
   ${deserialize}
   ${serialize}
 

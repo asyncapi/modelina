@@ -24,10 +24,10 @@ describe('Newtonsoft JSON serializer preset', () => {
       ]
     });
     
-    const inputModel = await generator.generate(doc);
-    expect(inputModel).toHaveLength(3);
-    expect(inputModel[0].result).toMatchSnapshot();
-    expect(inputModel[1].result).toMatchSnapshot();
-    expect(inputModel[2].result).toMatchSnapshot();
+    const outputModels = await generator.generate(doc);
+    expect(outputModels).toHaveLength(3);
+    expect(outputModels[0].result).toMatchSnapshot();
+    expect(outputModels[1].result).toMatchSnapshot();
+    expect(outputModels[2].result).toMatchSnapshot();
   });
 });
