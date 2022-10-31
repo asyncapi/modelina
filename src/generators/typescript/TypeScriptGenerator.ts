@@ -4,7 +4,7 @@ import {
   defaultGeneratorOptions
 } from '../AbstractGenerator';
 import { ConstrainedEnumModel, ConstrainedMetaModel, ConstrainedObjectModel, InputMetaModel, MetaModel, OutputModel, RenderOutput } from '../../models';
-import { constrainMetaModel, Constraints, split, TypeMapping, hasPreset } from '../../helpers';
+import { constrainMetaModel, Constraints, hasPreset, split, TypeMapping } from '../../helpers';
 import { TypeScriptPreset, TS_DEFAULT_PRESET } from './TypeScriptPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { InterfaceRenderer } from './renderers/InterfaceRenderer';
@@ -13,6 +13,7 @@ import { TypeRenderer } from './renderers/TypeRenderer';
 import { TypeScriptDefaultConstraints, TypeScriptDefaultTypeMapping } from './TypeScriptConstrainer';
 import { DeepPartial, mergePartialAndDefault, renderJavaScriptDependency } from '../../utils';
 import { TypeScriptDependencyManager } from './TypeScriptDependencyManager';
+import { TS_EXPORT_KEYWORD_PRESET } from './presets/ExportKeywordPreset';
 
 export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPreset, TypeScriptDependencyManager> {
   renderTypes: boolean;
@@ -89,20 +90,34 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions, Ty
   async renderCompleteModel(
     model: ConstrainedMetaModel, 
     inputModel: InputMetaModel, 
-    completeModelOptions: TypeScriptRenderCompleteModelOptions, 
-    dependencyManager?: TypeScriptDependencyManager = this.options.dependencyManagerFactory!()): Promise<RenderOutput> {
+    completeModelOptions: Partial<TypeScriptRenderCompleteModelOptions>, 
+    dependencyManager: TypeScriptDependencyManager = this.options.dependencyManagerFactory!()): Promise<RenderOutput> {
+    const realizedOptions = mergePartialAndDefault(TypeScriptGenerator.defaultCompleteModelOptions, completeModelOptions) as TypeScriptRenderCompleteModelOptions;
     const outputModel = await this.render(model, inputModel, dependencyManager);
     const modelDependencies = model.getNearestDependencies();
-    //Create the correct dependency imports
-    const modelDependencyImports = modelDependencies.map((model) => {return dependencyManager.renderCompleteModelDependencies(model, completeModelOptions); ); });
+    // Shallow copy presets so that we can restore it once we are done
+    const originalPresets = [...(this.options.presets ? this.options.presets : [])];
+
+    // Add preset that adds the `export` keyword if it hasn't already been added
+    if (
+      this.options.moduleSystem === 'ESM' &&
+      completeModelOptions.exportType === 'named' &&
+      !hasPreset(originalPresets, TS_EXPORT_KEYWORD_PRESET)
+    ) {
+      this.options.presets = [TS_EXPORT_KEYWORD_PRESET, ...originalPresets];
+    }
+    //Create the correct model dependency imports
+    const modelDependencyImports = modelDependencies.map((model) => {
+      return dependencyManager.renderCompleteModelDependencies(model, realizedOptions); 
+    });
 
     //Ensure we expose the model correctly, based on the module system and export type
     const cjsExport =
-    this.options.exportType === 'default'
+      completeModelOptions.exportType === 'default'
         ? `module.exports = ${outputModel.renderedName};`
         : `exports.${outputModel.renderedName} = ${outputModel.renderedName};`;
     const esmExport =
-      exportType === 'default'
+      completeModelOptions.exportType === 'default'
         ? `export default ${outputModel.renderedName};\n`
         : `export {${outputModel.renderedName}};`;
 

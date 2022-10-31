@@ -1,10 +1,9 @@
 import { TypeScriptGenerator, TypeScriptRenderCompleteModelOptions } from './';
 import { InputMetaModel, OutputModel } from '../../models';
 import * as path from 'path';
-import { AbstractFileGenerator } from '../AbstractFileGenerator';
 import { FileHelpers } from '../../helpers';
 
-export class TypeScriptFileGenerator extends TypeScriptGenerator implements AbstractFileGenerator<TypeScriptRenderCompleteModelOptions> {
+export class TypeScriptFileGenerator extends TypeScriptGenerator {
   /**
    * Generates all the models to an output directory each model with their own separate files. 
    * 

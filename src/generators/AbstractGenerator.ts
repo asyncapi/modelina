@@ -26,15 +26,15 @@ export const defaultGeneratorOptions: CommonGeneratorOptions = {
  * Abstract generator which must be implemented by each language
  */
 export abstract class AbstractGenerator<
-  Options extends CommonGeneratorOptions = CommonGeneratorOptions, 
-  RenderCompleteModelOptions = any> {
+  Options extends CommonGeneratorOptions, 
+  RenderCompleteModelOptions> {
   constructor(
     public readonly languageName: string,
     public readonly options: Options
   ) { }
 
   public abstract render(model: MetaModel, inputModel: InputMetaModel, dependencyManager?: AbstractDependencyManager): Promise<RenderOutput>;
-  public abstract renderCompleteModel(model: MetaModel, inputModel: InputMetaModel, options: RenderCompleteModelOptions, dependencyManager?: AbstractDependencyManager): Promise<RenderOutput>;
+  public abstract renderCompleteModel(model: MetaModel, inputModel: InputMetaModel, options: Partial<RenderCompleteModelOptions>, dependencyManager?: AbstractDependencyManager): Promise<RenderOutput>;
   public abstract constrainToMetaModel(model: MetaModel, dependencyManager: AbstractDependencyManager): ConstrainedMetaModel;
   public abstract splitMetaModel(model: MetaModel): MetaModel[];
 
@@ -48,7 +48,7 @@ export abstract class AbstractGenerator<
    * OutputModels result is no longer the model itself, but including package, package dependencies and model dependencies.
    * 
    */
-  public async generateCompleteModels(input: any | InputMetaModel, options: RenderCompleteModelOptions): Promise<OutputModel[]> {
+  public async generateCompleteModels(input: any | InputMetaModel, options: Partial<RenderCompleteModelOptions>): Promise<OutputModel[]> {
     const inputModel = await this.processInput(input);
     const dependencyManager = this.options.dependencyManagerFactory!();
     const renders = Object.values(inputModel.models).map(async (model) => {

@@ -29,6 +29,13 @@ export class TypeScriptDependencyManager extends AbstractDependencyManager {
     this.addDependency(dependencyImport);
   }
 
+  /**
+   * Render the model dependencies based on the options
+   * 
+   * @param model 
+   * @param opt 
+   * @returns 
+   */
   renderCompleteModelDependencies(model: ConstrainedMetaModel, opt: TypeScriptRenderCompleteModelOptions) {
     const dependencyObject = opt.exportType === 'named' ? `{${model.name}}` : model.name;
     return renderJavaScriptDependency(dependencyObject, `./${model.name}`, this.options.moduleSystem);
