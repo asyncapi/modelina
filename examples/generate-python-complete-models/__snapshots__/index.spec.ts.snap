@@ -1,6 +1,34 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Should be able to render python models and should generate \`explicit\` imports for models implementing referenced types: model 1`] = `
+exports[`Should be able to render python models and should generate \`explicit\` imports for models implementing referenced types: nested-model 1`] = `
+Array [
+  "
+
+class ObjProperty: 
+  def __init__(self, input):
+    if hasattr(input, 'number'):
+    	self._number = input.number
+    if hasattr(input, 'additionalProperties'):
+    	self._additionalProperties = input.additionalProperties
+
+  @property
+  def number(self):
+  	return self._number
+  @number.setter
+  def number(self, number):
+  	self._number = number
+
+  @property
+  def additionalProperties(self):
+  	return self._additionalProperties
+  @additionalProperties.setter
+  def additionalProperties(self, additionalProperties):
+  	self._additionalProperties = additionalProperties
+",
+]
+`;
+
+exports[`Should be able to render python models and should generate \`explicit\` imports for models implementing referenced types: root-model 1`] = `
 Array [
   "from .ObjProperty import ObjProperty
 
@@ -28,7 +56,35 @@ class Root:
 ]
 `;
 
-exports[`Should be able to render python models and should generate \`implicit\` imports for models implementing referenced types: model 1`] = `
+exports[`Should be able to render python models and should generate \`implicit\` imports for models implementing referenced types: nested-model 1`] = `
+Array [
+  "
+
+class ObjProperty: 
+  def __init__(self, input):
+    if hasattr(input, 'number'):
+    	self._number = input.number
+    if hasattr(input, 'additionalProperties'):
+    	self._additionalProperties = input.additionalProperties
+
+  @property
+  def number(self):
+  	return self._number
+  @number.setter
+  def number(self, number):
+  	self._number = number
+
+  @property
+  def additionalProperties(self):
+  	return self._additionalProperties
+  @additionalProperties.setter
+  def additionalProperties(self, additionalProperties):
+  	self._additionalProperties = additionalProperties
+",
+]
+`;
+
+exports[`Should be able to render python models and should generate \`implicit\` imports for models implementing referenced types: root-model 1`] = `
 Array [
   "from ObjProperty import ObjProperty
 

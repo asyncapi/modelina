@@ -14,7 +14,8 @@ describe('Should be able to render python models', () => {
     });
 
     expect(spy.mock.calls.length).toEqual(2);
-    expect(spy.mock.calls[0]).toMatchSnapshot('model');
+    expect(spy.mock.calls[0]).toMatchSnapshot('root-model');
+    expect(spy.mock.calls[1]).toMatchSnapshot('nested-model');
   });
   test('and should generate `explicit` imports for models implementing referenced types', async () => {
     const spy = createLogMock();
@@ -24,6 +25,7 @@ describe('Should be able to render python models', () => {
     });
 
     expect(spy.mock.calls.length).toEqual(2);
-    expect(spy.mock.calls[0]).toMatchSnapshot('model');
+    expect(spy.mock.calls[0]).toMatchSnapshot('root-model');
+    expect(spy.mock.calls[1]).toMatchSnapshot('nested-model');
   });
 });
