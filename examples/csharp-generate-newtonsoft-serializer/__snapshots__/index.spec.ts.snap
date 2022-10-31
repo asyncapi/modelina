@@ -16,19 +16,14 @@ public class Root
 
 public class RootConverter : JsonConverter<Root>
 {
-  private readonly Type[] _types;
-
-  public RootConverter(params Type[] types)
-  {
-    _types = types;
-  }
-
   public override Root ReadJson(JsonReader reader, Type objectType, Root existingValue, bool hasExistingValue, JsonSerializer serializer)
 {
   JObject jo = JObject.Load(reader);
   Root value = new Root();
 
-  value.email = jo[\\"email\\"].ToObject<string>(serializer);
+  if(jo[\\"email\\" != null) {
+  value.Email = jo[\\"email\\"].ToObject<string>(serializer);
+}
 
   
   return value;
@@ -39,7 +34,7 @@ public class RootConverter : JsonConverter<Root>
 
   if (value.email != null)
 {
-  jo.Add(\\"email\\", JToken.FromObject(value.email, serializer));
+  jo.Add(\\"email\\", JToken.FromObject(value.Email, serializer));
 }
   
 
