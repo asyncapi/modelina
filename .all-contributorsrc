@@ -398,6 +398,15 @@
         "doc",
         "example"
       ]
+    },
+    {
+      "login": "codingtenshi",
+      "name": "Tenshi Codes",
+      "avatar_url": "https://avatars.githubusercontent.com/u/116377630?v=4",
+      "profile": "https://github.com/codingtenshi",
+      "contributions": [
+        "infra"
+      ]
     }
   ],
   "contributorsPerLine": 7,
