@@ -31,7 +31,7 @@ export async function generate(options: DeepPartial<PythonOptions>) : Promise<vo
   }
 }
 
-// if (require.main === module) {
-//   generator = new PythonGenerator(PythonGenerator.defaultOptions);
-//   generate({});
-// }
+if (require.main === module) {
+  generator = new PythonGenerator(PythonGenerator.defaultOptions);
+  generate({});
+}
