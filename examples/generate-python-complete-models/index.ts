@@ -1,8 +1,5 @@
 import { PythonGenerator } from '../../src';
-import { PythonOptions } from '../../src/generators/python/PythonGenerator';
-import { DeepPartial } from '../../src/utils';
 
-let generator: PythonGenerator;
 export const jsonSchemaDraft7 = {
   $schema: 'http://json-schema.org/draft-07/schema#',
   type: 'object',
@@ -23,15 +20,26 @@ export const jsonSchemaDraft7 = {
   }
 };
 
-export async function generate(options: DeepPartial<PythonOptions>) : Promise<void> {
-  generator = new PythonGenerator(options);
-  const models = await generator.generateCompleteModels(jsonSchemaDraft7, options);
+export async function generate(): Promise<void> {
+  const generator = new PythonGenerator();
+
+  let models = await generator.generateCompleteModels(jsonSchemaDraft7, {
+    importsStyle: 'implicit'
+  });
+
+  for (const model of models) {
+    console.log(model.result);
+  }
+
+  models = await generator.generateCompleteModels(jsonSchemaDraft7, {
+    importsStyle: 'explicit'
+  });
+
   for (const model of models) {
     console.log(model.result);
   }
 }
 
 if (require.main === module) {
-  generator = new PythonGenerator(PythonGenerator.defaultOptions);
-  generate({});
+  generate();
 }
