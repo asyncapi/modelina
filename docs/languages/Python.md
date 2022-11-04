@@ -6,11 +6,11 @@ There are special use-cases that each language supports; this document pertains 
 
 <!-- toc -->
 
-- [Generate an Pydantic models](#generate-an-pydantic-models)
+- [Generate Pydantic models](#generate-pydantic-models)
 
 <!-- tocstop -->
 
-## Generate an Pydantic models
+## Generate Pydantic models
 In some cases you might want to use [pydantic](https://pypi.org/project/pydantic/) data validation and settings management using Python type hints for the models.
 
 You can find an example of its use [here](../../examples/generate-python-pydantic-models/index.ts)
