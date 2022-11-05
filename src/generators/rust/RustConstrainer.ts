@@ -263,7 +263,7 @@ export const RustDefaultTypeMapping: TypeMapping<RustOptions> = {
     return constrainedModel.name;
   },
   Dictionary({ constrainedModel }): string {
-    let key_prefix = (constrainedModel.key instanceof ConstrainedReferenceModel) ? 'crate::' : '';
+    const key_prefix = (constrainedModel.key instanceof ConstrainedReferenceModel) ? 'crate::' : '';
     let value_prefix = (constrainedModel.value instanceof ConstrainedReferenceModel) ? 'crate::' : '';
     return `std::collections::HashMap<${key_prefix}${constrainedModel.key.type}, ${value_prefix}${constrainedModel.value.type}>`;
   }
