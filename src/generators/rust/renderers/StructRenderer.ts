@@ -1,6 +1,6 @@
 import { RustRenderer } from '../RustRenderer';
 import { StructPresetType } from '../RustPreset';
-import { ConstrainedObjectModel, ConstrainedObjectPropertyModel, ConstrainedReferenceModel, ConstrainedUnionModel } from '../../../models';
+import { ConstrainedObjectModel, ConstrainedObjectPropertyModel, ConstrainedReferenceModel } from '../../../models';
 import { RustOptions } from '../RustGenerator';
 
 /**
