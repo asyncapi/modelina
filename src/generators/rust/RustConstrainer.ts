@@ -87,7 +87,7 @@ export function derivePartialOrd(model: ConstrainedMetaModel): boolean {
 }
 
 export function deriveOrd(model: ConstrainedMetaModel): boolean {
-  if (!derivePartialOrd(model)) { return false }
+  if (!derivePartialOrd(model)) { return false };
 
   if (
     model instanceof ConstrainedFloatModel ||
