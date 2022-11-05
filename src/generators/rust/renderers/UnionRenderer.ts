@@ -56,8 +56,7 @@ export const RUST_DEFAULT_UNION_PRESET: UnionPresetType<RustOptions> = {
   item({ item }) {
     if (item instanceof ConstrainedReferenceModel) {
       return `${item.name}(crate::${item.ref.type})`;
-    } else {
-      return `${item.name}(${item.type})`;
     }
+    return `${item.name}(${item.type})`;
   }
 };
