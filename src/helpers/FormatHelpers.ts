@@ -90,7 +90,7 @@ export class FormatHelpers {
    * @returns {string}
    */
   static toPascalCaseMergingNumbers(value: string): string {
-    return pascalCase(value, { transform: pascalCaseTransformMerge })
+    return pascalCase(value, { transform: pascalCaseTransformMerge });
   }
 
   /**
