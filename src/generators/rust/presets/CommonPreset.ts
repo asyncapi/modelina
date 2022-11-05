@@ -69,7 +69,7 @@ export const RUST_COMMON_PRESET: RustPreset<RustCommonPresetOptions> = {
         const fields: string[] = [];
         for (const v of Object.values(properties)) {
           const prefix = (v.property instanceof ConstrainedReferenceModel) ? 'crate::' : '';
-          let fieldType = prefix + v.property.type;
+          const fieldType = prefix + v.property.type;
 
           if (v.required) {
             args.push(`${v.propertyName}: ${fieldType}`);
