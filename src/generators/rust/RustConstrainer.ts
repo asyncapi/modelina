@@ -253,7 +253,7 @@ export const RustDefaultTypeMapping: TypeMapping<RustOptions> = {
     return `${constrainedModel.name}`;
   },
   Array({ constrainedModel }): string {
-    let prefix = (constrainedModel.valueModel instanceof ConstrainedReferenceModel) ? 'crate::' : '';
+    const prefix = (constrainedModel.valueModel instanceof ConstrainedReferenceModel) ? 'crate::' : '';
     return `Vec<${prefix}${FormatHelpers.upperFirst(constrainedModel.valueModel.type)}>`;
   },
   Enum({ constrainedModel }): string {
