@@ -9,6 +9,7 @@ There are special use-cases that each language supports; this document pertains 
   * [Generate serializer and deserializer functionality](#generate-serializer-and-deserializer-functionality)
     + [To and from JSON](#to-and-from-json)
       - [Using native System.Text.Json](#using-native-systemtextjson)
+      - [Using Newtonsoft/Json.NET](#using-newtonsoftjsonnet)
     + [To and from XML](#to-and-from-xml)
     + [To and from binary](#to-and-from-binary)
   * [Generate models with equals and GetHashCode methods](#generate-models-with-equals-and-gethashcode-methods)
