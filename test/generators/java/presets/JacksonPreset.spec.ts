@@ -6,7 +6,7 @@ describe('JAVA_JACKSON_PRESET', () => {
     generator = new JavaGenerator({ presets: [JAVA_JACKSON_PRESET] });
   });
 
-  test('should render Jackson annotations', async () => {
+  test('should render Jackson annotations for class', async () => {
     const doc = {
       $id: 'Clazz',
       type: 'object',
@@ -16,6 +16,26 @@ describe('JAVA_JACKSON_PRESET', () => {
       },
     };
     const expectedDependencies = ['import java.util.Map;', 'import com.fasterxml.jackson.annotation.*;'];
+
+    const models = await generator.generate(doc);
+    expect(models).toHaveLength(1);
+    expect(models[0].result).toMatchSnapshot(); 
+    expect(models[0].dependencies).toEqual(expectedDependencies); 
+  });
+
+  test('should render Jackson annotations for enum', async () => {
+    const doc = {
+      $id: 'Enum',
+      type: 'string',
+      description: 'Description for enum',
+      examples: ['value'],
+      enum: [
+        'on',
+        'off',
+      ]
+    };
+    
+    const expectedDependencies = ['import com.fasterxml.jackson.annotation.*;'];
 
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);

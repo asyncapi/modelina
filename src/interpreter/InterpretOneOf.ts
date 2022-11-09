@@ -12,7 +12,14 @@ import { Interpreter, InterpreterOptions, InterpreterSchemaType } from './Interp
  * @param interpreterOptions to control the interpret process
  */
 export default function interpretOneOf(schema: InterpreterSchemaType, model: CommonModel, interpreter : Interpreter, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions): void {
-  if (typeof schema === 'boolean' || schema.oneOf === undefined) { return; }
+  if (
+    typeof schema === 'boolean' ||
+    schema.oneOf === undefined ||
+    schema.allOf ||
+    schema.properties
+  ) {
+    return;
+  }
   for (const oneOfSchema of schema.oneOf) {
     const oneOfModel = interpreter.interpret(oneOfSchema, interpreterOptions);
     if (oneOfModel === undefined) { continue; }

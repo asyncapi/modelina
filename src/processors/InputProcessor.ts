@@ -45,7 +45,7 @@ export class InputProcessor {
    * @param input to process
    * @param options passed to the processors
    */
-  process(input: Record<string, any>, options?: ProcessorOptions): Promise<InputMetaModel> {
+  process(input: any, options?: ProcessorOptions): Promise<InputMetaModel> {
     for (const [type, processor] of this.processors) {
       if (type === 'default') {continue;}
       if (processor.shouldProcess(input)) {

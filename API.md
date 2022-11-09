@@ -77,6 +77,9 @@ Modifications</p>
 <dt><a href="#SwaggerInputProcessor">SwaggerInputProcessor</a></dt>
 <dd><p>Class for processing Swagger inputs</p>
 </dd>
+<dt><a href="#TemplateInputProcessor">TemplateInputProcessor</a></dt>
+<dd><p>Class for processing X input</p>
+</dd>
 <dt><a href="#LoggerClass">LoggerClass</a></dt>
 <dd><p>Logger class for the model generation library</p>
 <p>This class acts as a forefront for any external loggers which is why it also implements the interface itself.</p>
@@ -141,6 +144,14 @@ Check is done using referential equality</p>
 <dt><a href="#interpretOneOf">interpretOneOf(schema, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for oneOf keyword.</p>
 <p>It puts the schema reference into the items field.</p>
+</dd>
+<dt><a href="#interpretOneOfWithAllOf">interpretOneOfWithAllOf(schema, model, interpreter, interpreterOptions)</a></dt>
+<dd><p>Interpreter function for oneOf keyword combined with the allOf keyword.</p>
+<p>It merges the allOf schemas into all of the oneOf schemas. Shared properties are merged. The oneOf schemas are then added as union to the model.</p>
+</dd>
+<dt><a href="#interpretOneOfWithProperties">interpretOneOfWithProperties(schema, model, interpreter, interpreterOptions)</a></dt>
+<dd><p>Interpreter function for oneOf keyword combined with properties.</p>
+<p>It merges the properties of the schema into the oneOf schemas. Shared properties are merged. The oneOf schemas are then added as union to the model.</p>
 </dd>
 <dt><a href="#interpretPatternProperties">interpretPatternProperties(schema, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for patternProperties keyword.</p>
@@ -704,7 +715,6 @@ Class for processing AsyncAPI inputs
         * [.shouldProcess(input)](#AsyncAPIInputProcessor+shouldProcess)
         * [.tryGetVersionOfDocument(input)](#AsyncAPIInputProcessor+tryGetVersionOfDocument)
     * _static_
-        * [.convertToInternalSchema(schema)](#AsyncAPIInputProcessor.convertToInternalSchema)
         * [.isFromParser(input)](#AsyncAPIInputProcessor.isFromParser)
 
 <a name="AsyncAPIInputProcessor+process"></a>
@@ -739,19 +749,6 @@ Try to find the AsyncAPI version from the input. If it cannot undefined are retu
 | Param |
 | --- |
 | input | 
-
-<a name="AsyncAPIInputProcessor.convertToInternalSchema"></a>
-
-### AsyncAPIInputProcessor.convertToInternalSchema(schema)
-Reflect the name of the schema and save it to `x-modelgen-inferred-name` extension.
-
-This keeps the the id of the model deterministic if used in conjunction with other AsyncAPI tools such as the generator.
-
-**Kind**: static method of [<code>AsyncAPIInputProcessor</code>](#AsyncAPIInputProcessor)  
-
-| Param | Description |
-| --- | --- |
-| schema | to reflect name for |
 
 <a name="AsyncAPIInputProcessor.isFromParser"></a>
 
@@ -1049,6 +1046,12 @@ Converts a Swagger 2.0 Schema to the internal schema format.
 | schema | to convert |
 | name | of the schema |
 
+<a name="TemplateInputProcessor"></a>
+
+## TemplateInputProcessor
+Class for processing X input
+
+**Kind**: global class  
 <a name="LoggerClass"></a>
 
 ## LoggerClass
@@ -1290,6 +1293,38 @@ Interpreter function for not keyword.
 Interpreter function for oneOf keyword.
 
 It puts the schema reference into the items field.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema |  |
+| model |  |
+| interpreter |  |
+| interpreterOptions | to control the interpret process |
+
+<a name="interpretOneOfWithAllOf"></a>
+
+## interpretOneOfWithAllOf(schema, model, interpreter, interpreterOptions)
+Interpreter function for oneOf keyword combined with the allOf keyword.
+
+It merges the allOf schemas into all of the oneOf schemas. Shared properties are merged. The oneOf schemas are then added as union to the model.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema |  |
+| model |  |
+| interpreter |  |
+| interpreterOptions | to control the interpret process |
+
+<a name="interpretOneOfWithProperties"></a>
+
+## interpretOneOfWithProperties(schema, model, interpreter, interpreterOptions)
+Interpreter function for oneOf keyword combined with properties.
+
+It merges the properties of the schema into the oneOf schemas. Shared properties are merged. The oneOf schemas are then added as union to the model.
 
 **Kind**: global function  
 
