@@ -42,12 +42,12 @@ const filesToTest = [
   ...AsyncAPIV2_3Files,
   ...AsyncAPIV2_4Files,
   ...AsyncAPIV2_5Files,
-  // ...jsonSchemaDraft4Files.filter(({ file }) => {
-  //   // Too large to process https://github.com/asyncapi/modelina/issues/822
-  //   return !file.includes('aws-cloudformation.json');
-  // }),
-  // ...jsonSchemaDraft7Files,
-  // ...jsonSchemaDraft6Files,
+  ...jsonSchemaDraft4Files.filter(({ file }) => {
+    // Too large to process https://github.com/asyncapi/modelina/issues/822
+    return file.includes('aws-cloudformation.json');
+  }),
+  ...jsonSchemaDraft7Files,
+  ...jsonSchemaDraft6Files,
 ];
 
 // eslint-disable-next-line no-console

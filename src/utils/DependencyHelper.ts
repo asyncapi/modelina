@@ -19,11 +19,9 @@ export function renderJavaScriptDependency(toImport: string, fromModule: string,
  * @param array to make unique
  */
 export function makeUnique(array: ConstrainedMetaModel[]): ConstrainedMetaModel[] {
-  const seen: Map<ConstrainedMetaModel, boolean> = new Map();
+  const seen: Map<string, boolean> = new Map();
   return array.filter((item: ConstrainedMetaModel) => {
-    if (item instanceof ConstrainedReferenceModel) {
-      return seen.has(item.ref) ? false : seen.set(item.ref, true);
-    }
-    return seen.has(item) ? false : seen.set(item, true);
+    const naiveIdentifier = item.name + item.type;
+    return seen.has(naiveIdentifier) ? false : seen.set(naiveIdentifier, true);
   });
 }
