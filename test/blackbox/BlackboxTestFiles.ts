@@ -29,12 +29,14 @@ const filesToTest = [
     ...OpenAPI3_0Files.filter(({ file }) => {
         // Too large to process in normal blackbox testing, can be used locally test stuff.
         return !file.includes('postman-api.json');
-        
     }).filter(({ file }) => {
         // Too large to process in normal blackbox testing, can be used locally test stuff.
         return !file.includes('twilio-1_13.json');
     }),
-    ...AsyncAPIV2_0Files,
+    ...AsyncAPIV2_0Files.filter(({ file }) => {
+        // Too large to process in normal blackbox testing, can be used locally test stuff.
+        return !file.includes('zbos_mqtt-all-asyncapi.json');
+    }),
     ...AsyncAPIV2_1Files,
     ...AsyncAPIV2_2Files,
     ...AsyncAPIV2_3Files,
