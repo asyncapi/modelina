@@ -14,18 +14,20 @@ The documents being tested can be found under [docs](./docs), which contain docu
 - [Swagger 2.0](./docs/Swagger-2_0)
 - [OpenAPI 3.0](./docs/OpenAPI-3_0)
 
-Each document is tested across all output languages and output will be written to `./output` folder in appropriate sub folders, for easier access.
+Each document is tested across all output languages and output will be written to `./output` folder in appropriate sub-folders, for easier access.
 
 ## Running the tests
-The tests can either be run by installing all dependencies locally, or running it through docker.
+The tests can either be run by installing all dependencies locally or running it through docker.
+
+If you want to run the BlackBox tests locally, you have to install a couple of dependencies:
+- To run the `Java` BlackBox tests, you need to have JDK installed.
+- To run the `TypeScript` BlackBox tests, you need to have TypeScript installed globally - `npm install -g typescript`.
+- To run the `C#` BlackBox tests, you need to have C# compiler installed globally. - https://www.mono-project.com/download/stable/
+- To run the `Go` BlackBox tests, you need to have GoLang installed - https://golang.org/doc/install
+- To run the `Python` BlackBox tests, you need to have python installed - https://www.python.org/downloads/
+
+By default, the BlackBox tests are not run with the regular `npm run test`, but can be run with `npm run test:blackbox`.
 
 To run the BlackBox tests through Docker, run the command `npm run docker:test:blackbox`.
 
-If you want to run the BlackBox tests locally, you have to install a couple of dependencies:
-- To to run the `Java` BlackBox tests, you need to have JDK installed.
-- To to run the `TypeScript` BlackBox tests, you need to have TypeScript installed globally - `npm install -g typescript`.
-- To to run the `C#` BlackBox tests, you need to have C# compiler installed globally. - https://www.mono-project.com/download/stable/
-- To to run the `Go` BlackBox tests, you need to have GoLang installed - https://golang.org/doc/install
-- To to run the `Python` BlackBox tests, you need to have python installed - https://www.python.org/downloads/
-
-By default, the BlackBox tests are not run with the regular `npm run test`, but can be run with `npm run test:blackbox`.
+To run individual blackbox tests you can run the commands `npm run test:blackbox:${language}` where language is one of `csharp`, `go`, `java`, `javascript`, `python`, `rust`, and `typescript`.
