@@ -1,6 +1,6 @@
 {
   "config" : { 
-    "example_name" : "csharp-generate-serializer" 
+    "example_name" : "csharp-generate-json-serializer" 
   },
   "scripts": {
     "install": "cd ../.. && npm i",

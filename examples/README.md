@@ -24,7 +24,8 @@ This directory contains a series of self-contained examples that you can use as 
 - [TEMPLATE](./TEMPLATE) - A basic template used to create new examples.
 - [java-generate-tostring](./java-generate-tostring) - A basic example that shows how to generate models that overwrite the `toString` method
 - [csharp-generate-equals-and-hashcode](./csharp-generate-equals-and-hashcode) - A basic example on how to generate models that overwrite the `Equal` and `GetHashCode` methods
-- [csharp-generate-serializer](./csharp-generate-serializer) - A basic example on how to generate models that include function to serialize the data models to JSON
+- [csharp-generate-json-serializer](./csharp-generate-json-serializer) - A basic example on how to generate models that include function to serialize the data models to and from JSON with System.Text.Json.
+- [csharp-generate-newtonsoft-serializer](./csharp-generate-newtonsoft-serializer) - A basic example on how to generate models that include function to serialize the data models to and form JSON with Newtonsoft.
 - [csharp-overwrite-enum-naming](./csharp-overwrite-enum-naming) - A basic example on how to generate enum value names.
 - [csharp-use-inheritance](./csharp-use-inheritance) - A basic example that shows how to introduce inheritance to classes 
 - [generate-javascript-models](./generate-javascript-models) - A basic example to generate JavaScript data models

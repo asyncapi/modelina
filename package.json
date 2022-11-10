@@ -1,6 +1,6 @@
 {
   "name": "@asyncapi/modelina",
-  "version": "1.0.0-next.24",
+  "version": "1.0.0-next.25",
   "description": "Library for generating data models based on inputs such as AsyncAPI, OpenAPI, or JSON Schema documents",
   "license": "Apache-2.0",
   "homepage": "https://github.com/asyncapi/modelina",
@@ -81,7 +81,8 @@
     "docker:test:blackbox": "npm run docker:build && docker run asyncapi/modelina npm run test:blackbox",
     "test": "npm run test:library && npm run test:examples",
     "test:library": "cross-env CI=true jest --coverage --testPathIgnorePatterns ./test/blackbox --testPathIgnorePatterns ./examples",
-    "test:examples": "cross-env CI=true jest ./examples --testPathIgnorePatterns ./examples/integrate-with-react && npm run test:examples:websites",
+    "test:examples": "npm run test:examples:regular && npm run test:examples:websites",
+    "test:examples:regular": "cross-env CI=true jest ./examples --testPathIgnorePatterns ./examples/integrate-with-react",
     "test:examples:websites": "cd ./examples/integrate-with-react && npm i && npm run test",
     "test:blackbox": "concurrently --group -n csharp,go,java,javascript,python,rust,typescript \"npm run test:blackbox:csharp\" \"npm run test:blackbox:go\" \"npm run test:blackbox:java\" \"npm run test:blackbox:javascript\" \"npm run test:blackbox:python\" \"npm run test:blackbox:rust\" \"npm run test:blackbox:typescript\"",
     "test:blackbox:csharp": "cross-env CI=true jest ./test/blackbox/blackbox-csharp",
