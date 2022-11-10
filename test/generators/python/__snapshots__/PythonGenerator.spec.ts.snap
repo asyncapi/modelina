@@ -24,15 +24,6 @@ exports[`PythonGenerator Class should not render reserved keyword 1`] = `
 "
 `;
 
-exports[`PythonGenerator Class should work with empty objects 1`] = `
-"class CustomClass: 
-  def __init__(self, input):
-    \\"\\"\\"
-    No properties
-    \\"\\"\\"
-"
-`;
-
 exports[`PythonGenerator Class should render \`class\` type 1`] = `
 "class Address: 
   def __init__(self, input):
@@ -104,4 +95,71 @@ exports[`PythonGenerator Class should render \`class\` type 1`] = `
   def additionalProperties(self, additionalProperties):
   	self._additionalProperties = additionalProperties
 "
+`;
+
+exports[`PythonGenerator Class should work with custom preset for \`class\` type 1`] = `
+"class CustomClass: 
+  test1
+
+  test1
+
+
+  def __init__(self, input):
+    if hasattr(input, 'property'):
+    	self._property = input.property
+    if hasattr(input, 'additionalProperties'):
+    	self._additionalProperties = input.additionalProperties
+
+  test2
+  @property
+  def property(self):
+  	return self._property
+  test3
+  @property.setter
+  def property(self, property):
+  	self._property = property
+
+  test2
+  @property
+  def additionalProperties(self):
+  	return self._additionalProperties
+  test3
+  @additionalProperties.setter
+  def additionalProperties(self, additionalProperties):
+  	self._additionalProperties = additionalProperties
+"
+`;
+
+exports[`PythonGenerator Class should work with empty objects 1`] = `
+"class CustomClass: 
+  def __init__(self, input):
+    \\"\\"\\"
+    No properties
+    \\"\\"\\"
+"
+`;
+
+exports[`PythonGenerator Enum should render \`enum\` with mixed types (union type) 1`] = `
+"class Things(Enum): 
+  TEXAS = \\"Texas\\"
+  NUMBER_1 = 1
+  RESERVED_NUMBER_1 = \\"1\\"
+  RESERVED_FALSE = \\"false\\"
+  CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT = \\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\""
+`;
+
+exports[`PythonGenerator Enum should render enums with translated special characters 1`] = `
+"class States(Enum): 
+  TEST_PLUS = \\"test+\\"
+  DOLLAR_TEST = \\"$test\\"
+  TEST_MINUS = \\"test-\\"
+  TEST_QUESTION_EXCLAMATION = \\"test?!\\"
+  ASTERISK_TEST = \\"*test\\""
+`;
+
+exports[`PythonGenerator Enum should work custom preset for \`enum\` type 1`] = `
+"class CustomEnum(Enum): 
+  TEXAS = \\"Texas\\"
+  ALABAMA = \\"Alabama\\"
+  CALIFORNIA = \\"California\\""
 `;

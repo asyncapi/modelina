@@ -1,4 +1,4 @@
-import { ConstrainedMetaModel, ConstrainedReferenceModel } from '../models';
+import { ConstrainedMetaModel } from '../models';
 
 /**
  * Function to make it easier to render JS/TS dependencies based on module system

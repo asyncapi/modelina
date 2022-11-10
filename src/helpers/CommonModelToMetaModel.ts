@@ -1,4 +1,3 @@
-
 import { Logger } from '../utils';
 import { CommonModel, MetaModel, UnionModel, ObjectModel, DictionaryModel, StringModel, TupleModel, TupleValueModel, ArrayModel, BooleanModel, IntegerModel, FloatModel, EnumModel, EnumValueModel, ObjectPropertyModel, AnyModel } from '../models';
 
@@ -71,6 +70,7 @@ function isEnumModel(jsonSchemaModel: CommonModel): boolean {
  * 
  * If the CommonModel has multiple types 
  */
+// eslint-disable-next-line sonarjs/cognitive-complexity
 export function convertToUnionModel(jsonSchemaModel: CommonModel, name: string, alreadySeenModels: Map<CommonModel, MetaModel>): UnionModel | undefined {
   const containsUnions = Array.isArray(jsonSchemaModel.union);
   const containsSimpleTypeUnion = Array.isArray(jsonSchemaModel.type) && jsonSchemaModel.type.length > 1;
@@ -87,7 +87,6 @@ export function convertToUnionModel(jsonSchemaModel: CommonModel, name: string, 
   // Has multiple types, so convert to union
   if (containsUnions && jsonSchemaModel.union) {
     for (const unionCommonModel of jsonSchemaModel.union) {
-      unionCommonModel.$id = unionCommonModel.$id;
       const unionMetaModel = convertToMetaModel(unionCommonModel, alreadySeenModels);
       unionModel.union.push(unionMetaModel);
     }
@@ -164,6 +163,7 @@ export function convertToEnumModel(jsonSchemaModel: CommonModel, name: string): 
   }
   const metaModel = new EnumModel(name, jsonSchemaModel.originalInput, []);
 
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   for (const enumValue of jsonSchemaModel.enum!) {
     let enumKey = enumValue;
     if (typeof enumValue !== 'string') {
@@ -194,10 +194,12 @@ export function convertToDictionaryModel(jsonSchemaModel: CommonModel, name: str
   if (!isDictionary(jsonSchemaModel)) {
     return undefined;
   }
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const keyModel = new StringModel(name, jsonSchemaModel.additionalProperties!.originalInput);
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const valueModel = convertToMetaModel(jsonSchemaModel.additionalProperties!, alreadySeenModels);
-  const dictionaryModel = new DictionaryModel(name, jsonSchemaModel.additionalProperties!.originalInput, keyModel, valueModel, 'normal');
-  return dictionaryModel;
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return new DictionaryModel(name, jsonSchemaModel.additionalProperties!.originalInput, keyModel, valueModel, 'normal');
 }
 export function convertToObjectModel(jsonSchemaModel: CommonModel, name: string, alreadySeenModels: Map<CommonModel, MetaModel>): ObjectModel | undefined {
   if (!jsonSchemaModel.type?.includes('object') ||
