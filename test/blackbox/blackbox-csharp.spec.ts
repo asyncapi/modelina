@@ -32,7 +32,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
       test('class and enums', async () => {
         const generator = new CSharpFileGenerator();
 
-        const generatedModels = await generator.generateToFiles(models, outputDirectoryPath, { namespace: 'TestNamespace' });
+        const generatedModels = await generator.generateToFiles(models, outputDirectoryPath, { namespace: 'TestNamespace' }, true);
         expect(generatedModels).not.toHaveLength(0);
 
         const compileCommand = `csc /target:library /out:${path.resolve(outputDirectoryPath, './compiled.dll')} ${path.resolve(outputDirectoryPath, '*.cs')}`;

@@ -31,7 +31,7 @@ export interface TypeScriptRenderCompleteModelOptions {
 /**
  * Generator for TypeScript
  */
-export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,TypeScriptRenderCompleteModelOptions> {
+export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions, TypeScriptRenderCompleteModelOptions> {
   static defaultOptions: TypeScriptOptions = {
     ...defaultGeneratorOptions,
     renderTypes: true,

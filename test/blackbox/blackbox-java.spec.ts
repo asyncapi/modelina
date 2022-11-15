@@ -44,12 +44,12 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
         renderOutputPath: path.resolve(outputDirectoryPath, './class/commonpreset')
       }
     ];
-    describe.each(javaGeneratorOptions)('should be able to generate and compile Java', ({ generatorOption, description, renderOutputPath }) => {
+    describe.each(javaGeneratorOptions)('should be able to generate and compile Java', ({ generatorOption, renderOutputPath }) => {
       test('class and enums', async () => {
         const generator = new JavaFileGenerator(generatorOption);
         const dependencyPath = path.resolve(__dirname, './dependencies/java/*');
 
-        const generatedModels = await generator.generateToFiles(models, renderOutputPath, { packageName: 'TestPackageName' });
+        const generatedModels = await generator.generateToFiles(models, renderOutputPath, { packageName: 'TestPackageName' }, true);
         expect(generatedModels).not.toHaveLength(0);
 
         const compileCommand = `javac  -cp ${dependencyPath} ${path.resolve(renderOutputPath, '*.java')}`;

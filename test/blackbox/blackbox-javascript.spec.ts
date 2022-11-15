@@ -33,7 +33,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
         const generator = new JavaScriptFileGenerator({moduleSystem: 'CJS'});
         const renderOutputPath = path.resolve(outputDirectoryPath, './class');
 
-        const generatedModels = await generator.generateToFiles(models, renderOutputPath, { });
+        const generatedModels = await generator.generateToFiles(models, renderOutputPath, { }, true);
         expect(generatedModels).not.toHaveLength(0);
 
         const files = fs.readdirSync(renderOutputPath);

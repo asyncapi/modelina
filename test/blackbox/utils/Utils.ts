@@ -31,8 +31,7 @@ export async function execCommand(command: string) : Promise<void> {
     }
     return Promise.resolve();
   } catch (e: any) {
-    const wrapperError = new Error(`Error: ${e.stack}; Stdout: ${e.stdout}`);
-    return Promise.reject(wrapperError);
+    return Promise.reject(`${e.stack}; Stdout: ${e.stdout}`);
   }
 }
 

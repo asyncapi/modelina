@@ -33,7 +33,8 @@ export const RESERVED_PYTHON_KEYWORDS = [
   'or',
   'continue',
   'global',
-  'pass'
+  'pass',
+  'exec'
 ];
 
 export function isReservedPythonKeyword(word: string, forceLowerCase = true): boolean {

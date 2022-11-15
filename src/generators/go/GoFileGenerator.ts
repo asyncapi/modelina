@@ -11,14 +11,15 @@ export class GoFileGenerator extends GoGenerator implements AbstractFileGenerato
    * @param input
    * @param outputDirectory where you want the models generated to
    * @param options
+   * @param skipFileCheck skip verying that the file is completely written before returning, this can happen if the file system is swamped with write requests. 
    */
-  public async generateToFiles(input: Record<string, unknown> | InputMetaModel, outputDirectory: string, options: GoRenderCompleteModelOptions): Promise<OutputModel[]> {
+  public async generateToFiles(input: Record<string, unknown> | InputMetaModel, outputDirectory: string, options: GoRenderCompleteModelOptions, skipFileCheck = true): Promise<OutputModel[]> {
     let generatedModels = await this.generateCompleteModels(input, options);
     //Filter anything out that have not been successfully generated
     generatedModels = generatedModels.filter((outputModel) => { return outputModel.modelName !== ''; });
     for (const outputModel of generatedModels) {
       const filePath = path.resolve(outputDirectory, `${outputModel.modelName}.go`);
-      await FileHelpers.writerToFileSystem(outputModel.result, filePath);
+      await FileHelpers.writerToFileSystem(outputModel.result, filePath, skipFileCheck);
     }
     return generatedModels;
   }
