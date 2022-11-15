@@ -16,12 +16,6 @@ Modelina is the official AsyncAPI SDK to generate data models (i.e. <a href="#ou
 
 ---
 
-## :loudspeaker: ATTENTION:
-
-This package is currently being prepared to reach version 1.0.0 and the development is therefore happening on the [`next` branch](https://github.com/asyncapi/modelina/tree/next), any features must be based and targetting that branch.
-
----
-
 <!-- toc is generated with GitHub Actions do not remove toc markers -->
 
 <!-- toc -->
@@ -144,12 +138,26 @@ Do you need to know how to use the library in certain scenarios?
 
 We have gathered all the examples in a separate folder and they can be found under the [examples folder](./examples). 
 
+## Versioning and maintenance
+As of version 1, Modelina has a very strict set of changes we are allowed to do before it requires a major version change. In short, any changes that change the generated outcome are not allowed as it's a breaking change for the consumer of the generated models. 
+
+Here is a list of changes we are allowed to do that would not require a breaking change:
+- Adding new features (that do not change existing output), such as generators, presets, input processors, etc.
+- Change existing features, by providing options that default to current behavior.
+- Bug fixes where the generated code is otherwise unusable (syntax errors, etc).
+
+Breaking changes are allowed and expected at a frequent rate, of course where it makes sense we will try to bundle multiple changes together.
+
+This is what we strive to do, however, mistakes may happen, and please do let us know when they do!
+
+Because of the number of the limited number of champions, only the most recent major version will be maintained.
+
 ## Development
 To setup your development environment please read the [development](./docs/development.md) document.
 
 ## Contributing
 
-Read our [contributor](./docs/contributing.md) guide.
+We welcome any kind of contributions, please read our [contributor](./docs/contributing.md) guide and reach out in issues, pull requests, or in [the AsyncAPI Slack channel](https://asyncapi.com/slack-invite).
 
 ## Contributors ✨
 
@@ -216,4 +224,4 @@ Thanks go out to these wonderful people ([emoji key](https://allcontributors.org
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification.
