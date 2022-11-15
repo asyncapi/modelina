@@ -1,6 +1,6 @@
 {
-  "config" : { 
-    "example_name" : "csharp-generate-serializer" 
+  "config": {
+    "example_name": "generate-python-pydantic-models"
   },
   "scripts": {
     "install": "cd ../.. && npm i",

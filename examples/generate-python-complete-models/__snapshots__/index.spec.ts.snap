@@ -1,0 +1,113 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render python models and should generate \`implicit\` or \`explicit\` imports for models implementing referenced types: nested-model 1`] = `
+Array [
+  "
+
+class ObjProperty: 
+  def __init__(self, input):
+    if hasattr(input, 'number'):
+    	self._number = input.number
+    if hasattr(input, 'additionalProperties'):
+    	self._additionalProperties = input.additionalProperties
+
+  @property
+  def number(self):
+  	return self._number
+  @number.setter
+  def number(self, number):
+  	self._number = number
+
+  @property
+  def additionalProperties(self):
+  	return self._additionalProperties
+  @additionalProperties.setter
+  def additionalProperties(self, additionalProperties):
+  	self._additionalProperties = additionalProperties
+",
+]
+`;
+
+exports[`Should be able to render python models and should generate \`implicit\` or \`explicit\` imports for models implementing referenced types: nested-model 2`] = `
+Array [
+  "
+
+class ObjProperty: 
+  def __init__(self, input):
+    if hasattr(input, 'number'):
+    	self._number = input.number
+    if hasattr(input, 'additionalProperties'):
+    	self._additionalProperties = input.additionalProperties
+
+  @property
+  def number(self):
+  	return self._number
+  @number.setter
+  def number(self, number):
+  	self._number = number
+
+  @property
+  def additionalProperties(self):
+  	return self._additionalProperties
+  @additionalProperties.setter
+  def additionalProperties(self, additionalProperties):
+  	self._additionalProperties = additionalProperties
+",
+]
+`;
+
+exports[`Should be able to render python models and should generate \`implicit\` or \`explicit\` imports for models implementing referenced types: root-model-explicit-import 1`] = `
+Array [
+  "from .ObjProperty import ObjProperty
+
+class Root: 
+  def __init__(self, input):
+    if hasattr(input, 'email'):
+    	self._email = input.email
+    if hasattr(input, 'objProperty'):
+    	self._objProperty = input.objProperty
+
+  @property
+  def email(self):
+  	return self._email
+  @email.setter
+  def email(self, email):
+  	self._email = email
+
+  @property
+  def objProperty(self):
+  	return self._objProperty
+  @objProperty.setter
+  def objProperty(self, objProperty):
+  	self._objProperty = objProperty
+",
+]
+`;
+
+exports[`Should be able to render python models and should generate \`implicit\` or \`explicit\` imports for models implementing referenced types: root-model-implicit-import 1`] = `
+Array [
+  "from ObjProperty import ObjProperty
+
+class Root: 
+  def __init__(self, input):
+    if hasattr(input, 'email'):
+    	self._email = input.email
+    if hasattr(input, 'objProperty'):
+    	self._objProperty = input.objProperty
+
+  @property
+  def email(self):
+  	return self._email
+  @email.setter
+  def email(self, email):
+  	self._email = email
+
+  @property
+  def objProperty(self):
+  	return self._objProperty
+  @objProperty.setter
+  def objProperty(self, objProperty):
+  	self._objProperty = objProperty
+",
+]
+`;

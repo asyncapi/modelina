@@ -12,6 +12,8 @@ import interpretDependencies from './InterpretDependencies';
 import interpretAdditionalItems from './InterpretAdditionalItems';
 import interpretOneOf from './InterpretOneOf';
 import interpretAnyOf from './InterpretAnyOf';
+import interpretOneOfWithAllOf from './InterpretOneOfWithAllOf';
+import interpretOneOfWithProperties from './InterpretOneOfWithProperties';
 
 export type InterpreterOptions = {
   allowInheritance?: boolean
@@ -81,6 +83,8 @@ export class Interpreter {
     interpretProperties(schema, model, this, interpreterOptions);
     interpretAllOf(schema, model, this, interpreterOptions);
     interpretOneOf(schema, model, this, interpreterOptions);
+    interpretOneOfWithAllOf(schema, model, this, interpreterOptions);
+    interpretOneOfWithProperties(schema, model, this, interpreterOptions);
     interpretAnyOf(schema, model, this, interpreterOptions);
     interpretDependencies(schema, model, this, interpreterOptions);
     interpretConst(schema, model);

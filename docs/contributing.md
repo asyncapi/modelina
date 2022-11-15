@@ -37,6 +37,26 @@ Adding examples is quite straight forward, so don't feel shy! Here's how to do i
 
 Aaaand you are done! :tada: 
 
+### New input processor
+Input processors are the translators from inputs to MetaModel (read more about [the input processing here](./input-processing.md)). 
+
+Here is how you can add a new input processor:
+1. Duplicate the [template input processor](../src/processors/TemplateInputProcessor.ts) and rename it to the input you are adding a processor for.
+2. Adapt the `shouldProcess` function which is used to detect whether an input processor should process the provided input.
+3. Adapt the `process` function which is used to convert the input into meta models.
+4. Duplicate the [template input processor tests](../test/processors/TemplateInputProcessor.spec.ts) and rename it to the input you are adding a processor for.
+5. Adapt the testing code based on your input and the expected MetaModel conversion.
+6. [Export your input processor](../src/processors/index.ts)
+7. Add your input processor as part of the [main input processor](../src/processors/InputProcessor.ts)
+8. Add a [test for the main input processor](../test/processors/InputProcessor.spec.ts) to ensure that your input processor are accessed accordingly.
+
+Thats it for the code and tests, now all that remains is docs and examples! :fire:
+1. [Add a new example](#adding-examples) showcasing the new supported input.
+2. Add the [usage example to the usage document](./usage.md).
+3. Add the new supported input to the [main readme file](../README.md#features).
+
+Aaaand you are done! :tada: 
+
 ### New Generators
 Generators sits as the core of Modelina, which frames the core concepts of what you can generate. Therefore it's also no small task to create a new one, so dont get discourage, we are here to help you! 
 

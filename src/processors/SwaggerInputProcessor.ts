@@ -1,6 +1,6 @@
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
-import { InputMetaModel, SwaggerV2Schema } from '../models';
+import { InputMetaModel, SwaggerV2Schema, ProcessorOptions } from '../models';
 import { Logger } from '../utils';
 import SwaggerParser from '@apidevtools/swagger-parser';
 import { OpenAPIV2 } from 'openapi-types';
@@ -17,7 +17,7 @@ export class SwaggerInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  async process(input: Record<string, any>): Promise<InputMetaModel> {
+  async process(input: any, options?: ProcessorOptions): Promise<InputMetaModel> {
     if (!this.shouldProcess(input)) {throw new Error('Input is not a Swagger document so it cannot be processed.');}
 
     Logger.debug('Processing input as a Swagger document');
@@ -33,47 +33,47 @@ export class SwaggerInputProcessor extends AbstractInputProcessor {
       formattedPathName = formattedPathName.replace(/\//, '');
       //Replace all segment separators '/'
       formattedPathName = formattedPathName.replace(/\//gm, '_');
-      this.processOperation(pathObject.get, `${formattedPathName}_get`, common);
-      this.processOperation(pathObject.put, `${formattedPathName}_put`, common);
-      this.processOperation(pathObject.post, `${formattedPathName}_post`, common);
-      this.processOperation(pathObject.options, `${formattedPathName}_options`, common);
-      this.processOperation(pathObject.head, `${formattedPathName}_head`, common);
-      this.processOperation(pathObject.patch, `${formattedPathName}_patch`, common);
+      this.processOperation(pathObject.get, `${formattedPathName}_get`, common, options);
+      this.processOperation(pathObject.put, `${formattedPathName}_put`, common, options);
+      this.processOperation(pathObject.post, `${formattedPathName}_post`, common, options);
+      this.processOperation(pathObject.options, `${formattedPathName}_options`, common, options);
+      this.processOperation(pathObject.head, `${formattedPathName}_head`, common, options);
+      this.processOperation(pathObject.patch, `${formattedPathName}_patch`, common, options);
     }
     return common;
   }
 
-  private processOperation(operation: OpenAPIV2.OperationObject | undefined, path: string, inputModel: InputMetaModel) {
+  private processOperation(operation: OpenAPIV2.OperationObject | undefined, path: string, inputModel: InputMetaModel, options?: ProcessorOptions) {
     if (operation) {
-      this.includeResponses(operation.responses, path, inputModel);
-      this.includeParameters(operation.parameters, path, inputModel);
+      this.includeResponses(operation.responses, path, inputModel, options);
+      this.includeParameters(operation.parameters, path, inputModel, options);
     }
   }
 
-  private includeResponses(responses: OpenAPIV2.ResponsesObject, path: string, inputModel: InputMetaModel) {
+  private includeResponses(responses: OpenAPIV2.ResponsesObject, path: string, inputModel: InputMetaModel, options?: ProcessorOptions) {
     for (const [responseName, response] of Object.entries(responses)) {
       if (response !== undefined) {
         const getOperationResponseSchema = (response as OpenAPIV2.ResponseObject).schema;
         if (getOperationResponseSchema !== undefined) { 
-          this.includeSchema(getOperationResponseSchema, `${path}_${responseName}`, inputModel);
+          this.includeSchema(getOperationResponseSchema, `${path}_${responseName}`, inputModel, options);
         }
       }
     }
   }
 
-  private includeParameters(parameters: OpenAPIV2.Parameters | undefined, path: string, inputModel: InputMetaModel) {
+  private includeParameters(parameters: OpenAPIV2.Parameters | undefined, path: string, inputModel: InputMetaModel, options?: ProcessorOptions) {
     for (const parameterObject of parameters || []) {
       const parameter = parameterObject as OpenAPIV2.Parameter;
       if (parameter.in === 'body') {
         const bodyParameterSchema = parameter.schema;
-        this.includeSchema(bodyParameterSchema, `${path}_body`, inputModel);
+        this.includeSchema(bodyParameterSchema, `${path}_body`, inputModel, options);
       }
     }
   }
 
-  private includeSchema(schema: OpenAPIV2.SchemaObject, name: string, inputModel: InputMetaModel) {
+  private includeSchema(schema: OpenAPIV2.SchemaObject, name: string, inputModel: InputMetaModel, options?: ProcessorOptions) {
     const internalSchema = SwaggerInputProcessor.convertToInternalSchema(schema, name);
-    const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(internalSchema);
+    const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(internalSchema, options);
     if (newCommonModel.$id !== undefined) {
       if (inputModel.models[newCommonModel.$id] !== undefined) {
         Logger.warn(`Overwriting existing model with $id ${newCommonModel.$id}, are there two models with the same id present?`, newCommonModel);
@@ -103,7 +103,7 @@ export class SwaggerInputProcessor extends AbstractInputProcessor {
 	 * 
 	 * @param input 
 	 */
-  shouldProcess(input: Record<string, any>) : boolean {
+  shouldProcess(input: any) : boolean {
     const version = this.tryGetVersionOfDocument(input);
     if (!version) { return false; }
     return SwaggerInputProcessor.supportedVersions.includes(version);
@@ -114,7 +114,7 @@ export class SwaggerInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  tryGetVersionOfDocument(input: Record<string, any>) : string | undefined {
+  tryGetVersionOfDocument(input: any) : string | undefined {
     return input && input.swagger;
   }
 }

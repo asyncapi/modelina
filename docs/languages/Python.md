@@ -6,8 +6,11 @@ There are special use-cases that each language supports; this document pertains 
 
 <!-- toc -->
 
-
+- [Generate Pydantic models](#generate-pydantic-models)
 
 <!-- tocstop -->
 
-At the moment, Python models have no specific features.
+## Generate Pydantic models
+In some cases you might want to use [pydantic](https://pypi.org/project/pydantic/) data validation and settings management using Python type hints for the models.
+
+You can find an example of its use [here](../../examples/generate-python-pydantic-models/index.ts)

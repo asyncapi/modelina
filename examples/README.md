@@ -14,6 +14,7 @@ This directory contains a series of self-contained examples that you can use as 
 - [asyncapi-from-object](./asyncapi-from-object) - A basic example where an AsyncAPI JS object is used to generate models.
 - [asyncapi-from-parser](./asyncapi-from-parser) - A basic example where an AsyncAPI JS object from the [parser-js](https://github.com/asyncapi/parser-js) is used to generate models.
 - [json-schema-draft7-from-object](./json-schema-draft7-from-object) - A basic example where a JSON Schema draft 7 JS object is used to generate models.
+- [json-schema-draft6-from-object](./json-schema-draft6-from-object) - A basic example where a JSON Schema draft 6 JS object is used to generate models.
 - [json-schema-draft4-from-object](./json-schema-draft4-from-object) - A basic example where a JSON Schema draft 4 JS object is used to generate models.
 - [swagger2.0-from-object](./swagger2.0-from-object) - A basic example where a Swagger 2.0 JS object is used to generate models.
 - [java-generate-javax-constraint-annotation](./java-generate-javax-constraint-annotation) - A basic example that shows how Java data models having `javax.validation.constraints` annotations can be generated.
@@ -23,7 +24,8 @@ This directory contains a series of self-contained examples that you can use as 
 - [TEMPLATE](./TEMPLATE) - A basic template used to create new examples.
 - [java-generate-tostring](./java-generate-tostring) - A basic example that shows how to generate models that overwrite the `toString` method
 - [csharp-generate-equals-and-hashcode](./csharp-generate-equals-and-hashcode) - A basic example on how to generate models that overwrite the `Equal` and `GetHashCode` methods
-- [csharp-generate-serializer](./csharp-generate-serializer) - A basic example on how to generate models that include function to serialize the data models to JSON
+- [csharp-generate-json-serializer](./csharp-generate-json-serializer) - A basic example on how to generate models that include function to serialize the data models to and from JSON with System.Text.Json.
+- [csharp-generate-newtonsoft-serializer](./csharp-generate-newtonsoft-serializer) - A basic example on how to generate models that include function to serialize the data models to and form JSON with Newtonsoft.
 - [csharp-overwrite-enum-naming](./csharp-overwrite-enum-naming) - A basic example on how to generate enum value names.
 - [csharp-use-inheritance](./csharp-use-inheritance) - A basic example that shows how to introduce inheritance to classes 
 - [generate-javascript-models](./generate-javascript-models) - A basic example to generate JavaScript data models
@@ -48,3 +50,4 @@ This directory contains a series of self-contained examples that you can use as 
 - [rust-generate-crate](./rust-generate-crate/) - A basic example showing how to generate a Rust package.
 - [typescript-generate-jsonbinpack](./typescript-generate-jsonbinpack) - A basic example showing how to generate models that include [jsonbinpack](https://github.com/sourcemeta/jsonbinpack) functionality.
 - [generate-python-models](./generate-python-models/) - A basic example showing how to generate Python models.
+- [generate-python-pydantic-models](./generate-python-pydantic-models/) - An example showing how to generate Python pydantic models.
