@@ -407,6 +407,16 @@
       "contributions": [
         "infra"
       ]
+    },
+    {
+      "login": "YushiOMOTE",
+      "name": "Yushi OMOTE",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3733915?v=4",
+      "profile": "http://yushiomote.org/",
+      "contributions": [
+        "bug",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
