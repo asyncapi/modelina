@@ -7,8 +7,6 @@ import { Logger } from '../utils';
 import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
 import { convertToMetaModel } from '../helpers';
 import { OpenAPIInputProcessor } from './OpenAPIInputProcessor';
-import type { AsyncAPIDocumentInterface, SchemaInterface as AsyncAPISchema } from '@asyncapi/parser';
-
 
 /**
  * Class for processing AsyncAPI inputs
@@ -30,7 +28,27 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     'application/schema+yaml;version=draft-04'
   ];
   static supportedAsyncAPIFormats = [
-    'application/vnd.aai.asyncapi'
+    'application/vnd.aai.asyncapi',
+    'application/vnd.aai.asyncapi+json',
+    'application/vnd.aai.asyncapi+yaml',
+    'application/vnd.aai.asyncapi;version=2.5.0',
+    'application/vnd.aai.asyncapi+json;version=2.5.0',
+    'application/vnd.aai.asyncapi+yaml;version=2.5.0',
+    'application/vnd.aai.asyncapi;version=2.4.0',
+    'application/vnd.aai.asyncapi+json;version=2.4.0',
+    'application/vnd.aai.asyncapi+yaml;version=2.4.0',
+    'application/vnd.aai.asyncapi;version=2.3.0',
+    'application/vnd.aai.asyncapi+json;version=2.3.0',
+    'application/vnd.aai.asyncapi+yaml;version=2.3.0',
+    'application/vnd.aai.asyncapi;version=2.2.0',
+    'application/vnd.aai.asyncapi+json;version=2.2.0',
+    'application/vnd.aai.asyncapi+yaml;version=2.2.0',
+    'application/vnd.aai.asyncapi;version=2.1.0',
+    'application/vnd.aai.asyncapi+json;version=2.1.0',
+    'application/vnd.aai.asyncapi+yaml;version=2.1.0',
+    'application/vnd.aai.asyncapi;version=2.0.0',
+    'application/vnd.aai.asyncapi+json;version=2.0.0',
+    'application/vnd.aai.asyncapi+yaml;version=2.0.0'
   ]
   static supportedOpenAPIFormats = [
     'application/vnd.oai.openapi;version=3.0.0', 
@@ -69,14 +87,16 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       const payload = message.payload();
       if (payload) {
         const newCommonModel = this.tryProcessMessage(message);
-        if (newCommonModel.$id !== undefined) {
-          if (inputModel.models[newCommonModel.$id] !== undefined) {
-            Logger.warn(`Overwriting existing model with $id ${newCommonModel.$id}, are there two models with the same id present?`, newCommonModel);
+        if(newCommonModel !== undefined) {
+          if (newCommonModel.$id !== undefined) {
+            if (inputModel.models[newCommonModel.$id] !== undefined) {
+              Logger.warn(`Overwriting existing model with $id ${newCommonModel.$id}, are there two models with the same id present?`, newCommonModel);
+            }
+            const metaModel = convertToMetaModel(newCommonModel);
+            inputModel.models[metaModel.name] = metaModel;
+          } else {
+            Logger.warn('Model did not have $id which is required, ignoring.', newCommonModel);
           }
-          const metaModel = convertToMetaModel(newCommonModel);
-          inputModel.models[metaModel.name] = metaModel;
-        } else {
-          Logger.warn('Model did not have $id which is required, ignoring.', newCommonModel);
         }
       }
     }
