@@ -50,7 +50,7 @@ impl Address {
 exports[`Should be able to render Rust Models and should log expected output to console 2`] = `
 Array [
   "// Members represents a union of types: String, f64, bool
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 pub enum Members {
     #[serde(rename=\\"MembersOneOf_00\\")]
     MembersOneOf_00(String),
@@ -67,7 +67,7 @@ pub enum Members {
 exports[`Should be able to render Rust Models and should log expected output to console 3`] = `
 Array [
   "// TupleType represents a TupleType model.
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 pub struct TupleType(String, f64);
 
 impl TupleType {

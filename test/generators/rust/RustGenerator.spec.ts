@@ -36,7 +36,7 @@ describe('RustGenerator', () => {
 
     test('should render `enum` with mixed types (union type)', async () => {
       const doc = {
-        $id: 'Things',
+        $id: 'Things_123',
         enum: ['Texas', 1, '1', false, { test: 'test' }],
       };
       const models = await generator.generate(doc);

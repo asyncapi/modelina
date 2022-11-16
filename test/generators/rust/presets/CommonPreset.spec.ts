@@ -97,6 +97,37 @@ describe('RUST_COMMON_PRESET', () => {
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot();
     });
+
+    test('should render reserved union for dict array', async () => {
+      const doc = {
+        $id: '_class',
+        type: 'object',
+        definitions: {
+          "student" : {
+            $id: '_student',
+            type: 'object',
+            properties: {
+              name: { type: 'string' },
+              birth: { type: 'number' }
+            },
+            required: ['name', 'birth'],
+          }
+        },
+        properties: {
+          students: {
+            type: 'array',
+            items: { $ref: '#/definitions/student' }
+          },
+        },
+        required: ['students'],
+      };
+
+      const models = await generator.generate(doc);
+      expect(models).toHaveLength(3);
+      expect(models[0].result).toMatchSnapshot();
+      expect(models[1].result).toMatchSnapshot();
+      expect(models[2].result).toMatchSnapshot();
+    });
   });
 
   describe('Struct & Complete Models', () => {

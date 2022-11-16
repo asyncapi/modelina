@@ -27,9 +27,9 @@ pub enum Numbers {
 `;
 
 exports[`RustGenerator Enum should render \`enum\` with mixed types (union type) 1`] = `
-"// Things represents a Things model.
+"// Things123 represents a Things123 model.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
-pub enum Things {
+pub enum Things123 {
     #[serde(rename=\\"Texas\\")]
     Texas,
     #[serde(rename=\\"1\\")]
@@ -149,7 +149,7 @@ pub struct Address {
 
 exports[`RustGenerator Struct & Complete Models Should render complete models 2`] = `
 "// Members represents a union of types: String, f64, bool
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 pub enum Members {
     #[serde(rename=\\"MembersOneOf_00\\")]
     MembersOneOf_00(String),
@@ -164,7 +164,7 @@ pub enum Members {
 
 exports[`RustGenerator Struct & Complete Models Should render complete models 3`] = `
 "// TupleType represents a TupleType model.
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 pub struct TupleType(String, f64);
 
 "
@@ -198,7 +198,7 @@ pub struct Address {
 
 exports[`RustGenerator Struct & Complete Models should render \`struct\` type  2`] = `
 "// Members represents a union of types: String, f64, bool
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 pub enum Members {
     #[serde(rename=\\"MembersOneOf_00\\")]
     MembersOneOf_00(String),
@@ -213,7 +213,7 @@ pub enum Members {
 
 exports[`RustGenerator Struct & Complete Models should render \`struct\` type  3`] = `
 "// TupleType represents a TupleType model.
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 pub struct TupleType(String, f64);
 
 "
