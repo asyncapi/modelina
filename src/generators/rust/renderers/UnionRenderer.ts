@@ -1,5 +1,5 @@
 import { RustRenderer } from '../RustRenderer';
-import { ConstrainedUnionModel, ConstrainedMetaModel } from '../../../models';
+import { ConstrainedUnionModel, ConstrainedMetaModel, ConstrainedReferenceModel } from '../../../models';
 import { UnionPresetType } from '../RustPreset';
 import { RustOptions } from '../RustGenerator';
 
@@ -54,6 +54,9 @@ export const RUST_DEFAULT_UNION_PRESET: UnionPresetType<RustOptions> = {
     return `#[serde(${serdeArgs.join(', ')})]`;
   },
   item({ item }) {
+    if (item instanceof ConstrainedReferenceModel) {
+      return `${item.name}(crate::${item.ref.type})`;
+    }
     return `${item.name}(${item.type})`;
   }
 };
