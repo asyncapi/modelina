@@ -340,5 +340,9 @@ pub struct Address {
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
     additional_properties: Option<std::collections::HashMap<String, String>>,
 }
+
+impl Address {
+    
+}
 "
 `;

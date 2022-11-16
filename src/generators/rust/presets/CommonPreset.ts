@@ -81,13 +81,11 @@ function renderImplementNew({ model, renderer }: {
     }
   }
   const fieldsBlock = renderer.renderBlock(fields);
-  return `
-    pub fn new(${args.join(', ')}) -> ${model.name} {
-        ${model.name} {
-${renderer.indent(fieldsBlock, 8)}
-        }
+  return `pub fn new(${args.join(', ')}) -> ${model.name} {
+    ${model.name} {
+${renderer.indent(fieldsBlock, 4)}
     }
-`;
+}`;
 }
 
 export const RUST_COMMON_PRESET: RustPreset<RustCommonPresetOptions> = {
@@ -112,7 +110,7 @@ export const RUST_COMMON_PRESET: RustPreset<RustCommonPresetOptions> = {
       const fnBlock = renderer.renderBlock(fnBlocks);
       const contentBlock = `
 impl ${model.name} {
-  ${renderer.indent(fnBlock, 4)}
+${renderer.indent(fnBlock, 4)}
 }
 `;
       content = renderer.renderBlock([content, contentBlock]);
