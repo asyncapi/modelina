@@ -418,6 +418,16 @@
         "bug",
         "code"
       ]
+    },
+    {
+      "login": "Ferror",
+      "name": "Zbigniew Malcherczyk",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17534504?v=4",
+      "profile": "https://malcherczyk.pl",
+      "contributions": [
+        "bug",
+        "infra"
+      ]
     }
   ],
   "contributorsPerLine": 7,
