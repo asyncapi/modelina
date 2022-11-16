@@ -23,9 +23,11 @@ RUN apt install apt-transport-https dirmngr gnupg ca-certificates -yq  \
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 # Install Python
-RUN sudo apt-get install -y python
+RUN apt-get install -yq python
 
-# Setup library 
-COPY package-lock.json .
+# Setup library
+RUN apt-get install -yq chromium
+
+COPY package.json package-lock.json ./
 RUN npm install
-COPY . .
+COPY . ./
