@@ -365,7 +365,8 @@
         "test",
         "example",
         "doc",
-        "maintenance"
+        "maintenance",
+        "review"
       ]
     },
     {
