@@ -103,7 +103,7 @@ describe('RUST_COMMON_PRESET', () => {
         $id: '_class',
         type: 'object',
         definitions: {
-          "student" : {
+          student: {
             $id: '_student',
             type: 'object',
             properties: {

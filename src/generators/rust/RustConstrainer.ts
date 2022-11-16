@@ -57,7 +57,7 @@ export function derivePartialEq(model: ConstrainedMetaModel): boolean {
 }
 
 export function deriveEq(model: ConstrainedMetaModel): boolean {
-  if (!derivePartialEq(model)) { return false };
+  if (!derivePartialEq(model)) { return false; }
 
   if (model instanceof ConstrainedFloatModel || model instanceof ConstrainedAnyModel) { return false; } else if (
     // all contents implement Eq trait
@@ -87,7 +87,7 @@ export function derivePartialOrd(model: ConstrainedMetaModel): boolean {
 }
 
 export function deriveOrd(model: ConstrainedMetaModel): boolean {
-  if (!derivePartialOrd(model)) { return false };
+  if (!derivePartialOrd(model)) { return false; }
 
   if (
     model instanceof ConstrainedFloatModel ||
