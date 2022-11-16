@@ -52,12 +52,12 @@ Array [
   "// Members represents a union of types: String, f64, bool
 #[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 pub enum Members {
-    #[serde(rename=\\"MembersOneOf_00\\")]
-    MembersOneOf_00(String),
-    #[serde(rename=\\"MembersOneOf_11\\")]
-    MembersOneOf_11(f64),
-    #[serde(rename=\\"MembersOneOf_22\\")]
-    MembersOneOf_22(bool),
+    #[serde(rename=\\"MembersOneOf00\\")]
+    MembersOneOf00(String),
+    #[serde(rename=\\"MembersOneOf11\\")]
+    MembersOneOf11(f64),
+    #[serde(rename=\\"MembersOneOf22\\")]
+    MembersOneOf22(bool),
 }
 
 ",
