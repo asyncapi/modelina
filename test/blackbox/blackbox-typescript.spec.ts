@@ -8,7 +8,6 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { InputMetaModel, InputProcessor, TypeScriptFileGenerator } from '../../src';
 import { execCommand } from './utils/Utils';
-const ignoreTestIf = (condition: boolean) => condition ? test.skip : test;
 import filesToTest from './BlackBoxTestFiles';
 
 // eslint-disable-next-line no-console

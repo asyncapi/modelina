@@ -7,9 +7,8 @@
 
 import * as path from 'path';
 import * as fs from 'fs';
-import { defaultRustRenderCompleteModelOptions, InputMetaModel, InputProcessor, RustFileGenerator, RustPackageFeatures, RustRenderCompleteModelOptions, TypeScriptFileGenerator } from '../../src';
+import { defaultRustRenderCompleteModelOptions, InputMetaModel, InputProcessor, RustFileGenerator, RustPackageFeatures, RustRenderCompleteModelOptions } from '../../src';
 import { execCommand } from './utils/Utils';
-const ignoreTestIf = (condition: boolean) => condition ? test.skip : test;
 import filesToTest from './BlackBoxTestFiles';
 // eslint-disable-next-line no-console
 console.log('This is gonna take some time, Stay Awhile and Listen');
@@ -29,10 +28,10 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
   });
   describe(file, () => {
     describe.skip('should be able to generate Rust', () => {
-      const ignoreTest = file === './docs/JsonSchemaDraft-4/openapi-3.json';
-      ignoreTestIf(ignoreTest)('struct with serde_json', async () => {
+      test('struct with serde_json', async () => {
         const generator = new RustFileGenerator();
-        const renderOutputPath = path.resolve(outputDirectoryPath, './struct/');
+        const renderOutputPath = path.resolve(outputDirectoryPath, './struct');
+        const cargoFile = path.resolve(outputDirectoryPath, './struct/Cargo.toml');
         const options = {
           ...defaultRustRenderCompleteModelOptions,
           supportFiles: true, // generate Cargo.toml and lib.rs
@@ -51,11 +50,11 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
             packageFeatures: [RustPackageFeatures.json] as RustPackageFeatures[]
           }
         } as RustRenderCompleteModelOptions;
-        const generatedModels = await generator.generateToPackage(models, renderOutputPath, options, true);
+        const generatedModels = await generator.generateToPackage(models, renderOutputPath, options, false);
         expect(generatedModels).not.toHaveLength(0);
 
-        const compileCommand = `cargo build ${renderOutputPath}`;
-        await execCommand(compileCommand);
+        const compileCommand = `cargo build --manifest-path=${cargoFile}`;
+        await execCommand(compileCommand, true);
       });
     });
   });

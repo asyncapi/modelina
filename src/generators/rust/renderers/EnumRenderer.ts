@@ -55,14 +55,12 @@ export const RUST_DEFAULT_ENUM_PRESET: EnumPresetType<RustOptions> = {
     }
     return `${item.key}`;
   },
-  itemMacro({ itemIndex, model }) {
-    const originalInput = model.originalInput.enum[Number(itemIndex)];
+  itemMacro({ item }) {
     const serdeArgs = [];
-    if (typeof originalInput === 'object') {
+    if (typeof item.value === 'object') {
       serdeArgs.push('flatten');
     } else {
-      const rename = model.originalInput.enum[Number(itemIndex)].toString();
-      serdeArgs.push(`rename="${rename}"`);
+      serdeArgs.push(`rename="${item.value}"`);
     }
     return `#[serde(${serdeArgs.join(', ')})]`;
   },

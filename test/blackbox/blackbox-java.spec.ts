@@ -9,7 +9,6 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { InputMetaModel, InputProcessor, JavaFileGenerator, JAVA_COMMON_PRESET } from '../../src';
 import { execCommand } from './utils/Utils';
-const ignoreTestIf = (condition: boolean) => condition ? test.skip : test;
 import filesToTest from './BlackBoxTestFiles';
 // eslint-disable-next-line no-console
 console.log('This is gonna take some time, Stay Awhile and Listen');

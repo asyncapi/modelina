@@ -23,11 +23,14 @@ export async function generateModels(absolutePathToFile: string, generator: Abst
  * 
  * @param command 
  */
-export async function execCommand(command: string) : Promise<void> {
+export async function execCommand(command: string, allowStdError: boolean = false) : Promise<void> {
   try {
     const { stderr } = await promiseExec(command);
     if (stderr !== '') {
-      return Promise.reject(stderr);
+      if(!allowStdError) {
+        return Promise.reject(stderr);
+      }
+      console.error(stderr);
     }
     return Promise.resolve();
   } catch (e: any) {

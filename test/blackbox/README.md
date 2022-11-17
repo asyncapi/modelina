@@ -8,6 +8,7 @@ The documents being tested can be found under [docs](./docs), which contain docu
 - [AsyncAPI 2.2](./docs/AsyncAPI-2_2)
 - [AsyncAPI 2.3](./docs/AsyncAPI-2_3)
 - [AsyncAPI 2.4](./docs/AsyncAPI-2_4)
+- [AsyncAPI 2.5](./docs/AsyncAPI-2_5)
 - [JSON Schema draft 4](./docs/JsonSchemaDraft-4)
 - [JSON Schema draft 6](./docs/JsonSchemaDraft-6)
 - [JSON Schema draft 7](./docs/JsonSchemaDraft-7)
@@ -25,9 +26,8 @@ If you want to run the BlackBox tests locally, you have to install a couple of d
 - To run the `C#` BlackBox tests, you need to have C# compiler installed globally. - https://www.mono-project.com/download/stable/
 - To run the `Go` BlackBox tests, you need to have GoLang installed - https://golang.org/doc/install
 - To run the `Python` BlackBox tests, you need to have python installed - https://www.python.org/downloads/
+- To run the `Rust` BlackBox tests, you need to have rust installed - https://www.rust-lang.org/tools/install (if you are on mac you might also need to install xcode `xcode-select --install`)
 
-By default, the BlackBox tests are not run with the regular `npm run test`, but can be run with `npm run test:blackbox`.
+By default, the BlackBox tests are not run with the regular `npm run test`, but can be run with `npm run test:blackbox`. Or run individual BlackBox tests you can run the commands `npm run test:blackbox:${language}` where language is one of `csharp`, `go`, `java`, `javascript`, `python`, `rust`, `typescript`, etc.
 
 To run the BlackBox tests through Docker, run the command `npm run docker:test:blackbox`.
-
-To run individual blackbox tests you can run the commands `npm run test:blackbox:${language}` where language is one of `csharp`, `go`, `java`, `javascript`, `python`, `rust`, and `typescript`.
