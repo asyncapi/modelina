@@ -57,4 +57,4 @@ const filesToTest = [
     return !file.includes('fhir-full.json');
   }),
 ];
-export default filesToTest;
+export default [filesToTest[0]];

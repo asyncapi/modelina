@@ -4,13 +4,13 @@
  * For those languages where it is possible, the models are compiled/transpiled to ensure there are no syntax errors in generated models.
  * 
  */
-
 import * as path from 'path';
 import * as fs from 'fs';
 import { InputMetaModel, InputProcessor, TypeScriptFileGenerator } from '../../src';
 import { execCommand } from './utils/Utils';
 const ignoreTestIf = (condition: boolean) => condition ? test.skip : test;
 import filesToTest from './BlackBoxTestFiles';
+
 // eslint-disable-next-line no-console
 console.log('This is gonna take some time, Stay Awhile and Listen');
 describe.each(filesToTest)('Should be able to generate with inputs', ({ file, outputDirectory }) => {
@@ -33,7 +33,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
         const generator = new TypeScriptFileGenerator({ modelType: 'class' });
         const renderOutputPath = path.resolve(outputDirectoryPath, './class');
 
-        const generatedModels = await generator.generateToFiles(models, renderOutputPath, {}, true);
+        const generatedModels = await generator.generateToFiles(models, renderOutputPath, {}, false);
         expect(generatedModels).not.toHaveLength(0);
 
         const transpileCommand = `tsc --downlevelIteration -t es5 --baseUrl ${renderOutputPath}`;
@@ -44,7 +44,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
         const generator = new TypeScriptFileGenerator({ modelType: 'interface' });
         const renderOutputPath = path.resolve(outputDirectoryPath, './interface');
 
-        const generatedModels = await generator.generateToFiles(models, renderOutputPath, {}, true);
+        const generatedModels = await generator.generateToFiles(models, renderOutputPath, {}, false);
         expect(generatedModels).not.toHaveLength(0);
 
         const transpileCommand = `tsc --downlevelIteration -t es5 --baseUrl ${renderOutputPath}`;
