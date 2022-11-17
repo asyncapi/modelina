@@ -32,7 +32,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
         const generator = new TypeScriptFileGenerator({ modelType: 'class' });
         const renderOutputPath = path.resolve(outputDirectoryPath, './class');
 
-        const generatedModels = await generator.generateToFiles(models, renderOutputPath, {}, false);
+        const generatedModels = await generator.generateToFiles(models, renderOutputPath, {});
         expect(generatedModels).not.toHaveLength(0);
 
         const transpileCommand = `tsc --downlevelIteration -t es5 --baseUrl ${renderOutputPath}`;
@@ -43,7 +43,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
         const generator = new TypeScriptFileGenerator({ modelType: 'interface' });
         const renderOutputPath = path.resolve(outputDirectoryPath, './interface');
 
-        const generatedModels = await generator.generateToFiles(models, renderOutputPath, {}, false);
+        const generatedModels = await generator.generateToFiles(models, renderOutputPath, {});
         expect(generatedModels).not.toHaveLength(0);
 
         const transpileCommand = `tsc --downlevelIteration -t es5 --baseUrl ${renderOutputPath}`;

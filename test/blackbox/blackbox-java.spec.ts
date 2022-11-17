@@ -48,7 +48,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
         const generator = new JavaFileGenerator(generatorOption);
         const dependencyPath = path.resolve(__dirname, './dependencies/java/*');
 
-        const generatedModels = await generator.generateToFiles(models, renderOutputPath, { packageName: 'TestPackageName' }, true);
+        const generatedModels = await generator.generateToFiles(models, renderOutputPath, { packageName: 'TestPackageName' });
         expect(generatedModels).not.toHaveLength(0);
 
         const compileCommand = `javac  -cp ${dependencyPath} ${path.resolve(renderOutputPath, '*.java')}`;

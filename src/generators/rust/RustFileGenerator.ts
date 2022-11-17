@@ -11,16 +11,16 @@ export class RustFileGenerator extends RustGenerator implements AbstractFileGene
    * @param input
    * @param outputDirectory where you want the models generated to
    * @param options
-   * @param skipFileCheck skip verying that the file is completely written before returning, this can happen if the file system is swamped with write requests. 
+   * @param ensureFilesWritten veryify that the files is completely written before returning, this can happen if the file system is swamped with write requests. 
   */
-  public async generateToFiles(input: Record<string, unknown> | InputMetaModel, outputDirectory: string, options: RustRenderCompleteModelOptions, skipFileCheck = true): Promise<OutputModel[]> {
+  public async generateToFiles(input: Record<string, unknown> | InputMetaModel, outputDirectory: string, options: RustRenderCompleteModelOptions, ensureFilesWritten = false): Promise<OutputModel[]> {
     let generatedModels = await this.generateCompleteModels(input, options);
     //Filter anything out that have not been successfully generated
     generatedModels = generatedModels.filter((outputModel) => { return outputModel.modelName !== '' && outputModel.modelName !== undefined; });
     for (const outputModel of generatedModels) {
       const fileName = FormatHelpers.snakeCase(outputModel.modelName);
       const filePath = path.resolve(outputDirectory, `${fileName}.rs`);
-      await FileHelpers.writerToFileSystem(outputModel.result, filePath, skipFileCheck);
+      await FileHelpers.writerToFileSystem(outputModel.result, filePath, ensureFilesWritten);
     }
     return generatedModels;
   }
@@ -31,19 +31,19 @@ export class RustFileGenerator extends RustGenerator implements AbstractFileGene
    * @param input
    * @param outputDirectory where you want the models generated to
    * @param options
-   * @param skipFileCheck skip verying that the file is completely written before returning, this can happen if the file system is swamped with write requests. 
+   * @param ensureFilesWritten veryify that the files is completely written before returning, this can happen if the file system is swamped with write requests. 
   */
-  public async generateToPackage(input: Record<string, unknown> | InputMetaModel, outputDirectory: string, options: RustRenderCompleteModelOptions, skipFileCheck = true): Promise<OutputModel[]> {
+  public async generateToPackage(input: Record<string, unknown> | InputMetaModel, outputDirectory: string, options: RustRenderCompleteModelOptions, ensureFilesWritten = false): Promise<OutputModel[]> {
     // Crate package expects source code to be written to src/<filename>.rs
     const sourceOutputDirectory = `${outputDirectory}/src`;
-    let generatedModels = await this.generateToFiles(input, sourceOutputDirectory, options, skipFileCheck);
+    let generatedModels = await this.generateToFiles(input, sourceOutputDirectory, options, ensureFilesWritten);
     // render lib.rs and Cargo.toml
     if (options.supportFiles) {
       const supportOutput = await this.generateCompleteSupport(input, options);
       generatedModels = generatedModels.concat(supportOutput);
       for (const outputModel of supportOutput) {
         const filePath = path.resolve(outputDirectory, outputModel.model.name);
-        await FileHelpers.writerToFileSystem(outputModel.result, filePath, skipFileCheck);
+        await FileHelpers.writerToFileSystem(outputModel.result, filePath, ensureFilesWritten);
       }
     }
     return generatedModels;

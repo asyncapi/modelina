@@ -32,7 +32,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
         const generator = new GoFileGenerator();
         const renderOutputPath = path.resolve(outputDirectoryPath, './struct/');
 
-        const generatedModels = await generator.generateToFiles(models, renderOutputPath, { packageName: 'test_package_name' }, true);
+        const generatedModels = await generator.generateToFiles(models, renderOutputPath, { packageName: 'test_package_name' });
         expect(generatedModels).not.toHaveLength(0);
 
         const compileCommand = `gofmt ${renderOutputPath}`;

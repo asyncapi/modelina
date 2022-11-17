@@ -32,7 +32,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
         const generator = new PythonFileGenerator();
         const renderOutputPath = path.resolve(outputDirectoryPath, './class/');
         const options = { } as PythonRenderCompleteModelOptions;
-        const generatedModels = await generator.generateToFiles(models, renderOutputPath, options, true);
+        const generatedModels = await generator.generateToFiles(models, renderOutputPath, options);
         expect(generatedModels).not.toHaveLength(0);
 
         const compileCommand = `python -m compileall -f ${renderOutputPath}`;

@@ -18,9 +18,9 @@ export class FileHelpers {
    * 
    * @param content to write
    * @param filePath to write to,
-   * @param skipCheck skip checking if the file is written, it can happen that the promise is returned before the file is actually written.
+   * @param ensureFilesWritten veryify that the files is completely written before returning, this can happen if the file system is swamped with write requests. 
    */
-  static async writerToFileSystem(content: string, filePath: string, skipFileCheck = true): Promise<void> {
+  static async writerToFileSystem(content: string, filePath: string, ensureFilesWritten = false): Promise<void> {
     return new Promise(async (resolve, reject) => {
       try {
         const outputFilePath = path.resolve(filePath);
@@ -36,7 +36,7 @@ export class FileHelpers {
          * 
          * To avoid this we dont resolve until we are sure the file is written and exists.
          */
-        if(!skipFileCheck) {
+        if(ensureFilesWritten) {
           const timerId = setInterval(async () => {
             try {
               const isExists = await fs.promises.stat(outputFilePath);
