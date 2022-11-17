@@ -42,7 +42,7 @@ export class RustFileGenerator extends RustGenerator implements AbstractFileGene
       const supportOutput = await this.generateCompleteSupport(input, options);
       generatedModels = generatedModels.concat(supportOutput);
       for (const outputModel of supportOutput) {
-        const filePath = path.resolve(outputDirectory, outputModel.modelName);
+        const filePath = path.resolve(outputDirectory, outputModel.model.name);
         await FileHelpers.writerToFileSystem(outputModel.result, filePath, skipFileCheck);
       }
     }
