@@ -11,15 +11,10 @@ const jsonSchemaDraft7 = {
       type: 'string',
       enum: ['London', 'Rome', 'Brussels'],
     },
-    click_options: {
-      $id: 'click_options',
-      type: 'string',
-      enum: ['click_and_play', 'click&pay'],
-    },
     options: {
       $id: 'options',
-      type: 'integer',
-      enum: ['first_option', 'second_option'],
+      type: ['integer', 'boolean', 'string'],
+      enum: [123, 213, true, 'Run'],
     },
   }
 };
@@ -30,4 +25,6 @@ export async function generate() : Promise<void> {
     console.log(model.result);
   }
 }
-generate();
+if (require.main === module) {
+  generate();
+}

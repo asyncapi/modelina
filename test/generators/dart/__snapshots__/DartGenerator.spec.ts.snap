@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DartGenerator should render \`class\` type 1`] = `
+"class Address {
+  String? streetName;
+  String? city;
+  String? state;
+  double? houseNumber;
+  bool? marriage;
+  Object? members;
+  List<Object>? arrayType;
+  Map<String, Object>? additionalProperties;
+
+  Address();
+}"
+`;
+
+exports[`DartGenerator should render \`enum\` type (integer type) 1`] = `
+"enum Numbers {
+  0, 1, 2, 3
+}"
+`;
+
+exports[`DartGenerator should render \`enum\` type (string type) 1`] = `
+"enum States {
+  \\"Texas\\", \\"Alabama\\", \\"California\\", \\"New York\\"
+}"
+`;
+
+exports[`DartGenerator should render custom preset for \`enum\` type 1`] = `
+"@EnumAnnotation
+enum CustomEnum {
+  \\"Texas\\", \\"Alabama\\", \\"California\\"
+}"
+`;
+
+exports[`DartGenerator should render models and their dependencies 1`] = `
+"import 'package:test.package/other_model.dart';
+      
+      class Address {
+  String? streetName;
+  String? city;
+  String? state;
+  double? houseNumber;
+  bool? marriage;
+  Object? members;
+  List<Object>? arrayType;
+  OtherModel? otherModel;
+  Map<String, Object>? additionalProperties;
+
+  Address();
+}"
+`;
+
+exports[`DartGenerator should render models and their dependencies 2`] = `
+"
+      
+      class OtherModel {
+  String? streetName;
+  Map<String, Object>? additionalProperties;
+
+  OtherModel();
+}"
+`;

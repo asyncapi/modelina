@@ -1,9 +1,9 @@
-import { TypeScriptGenerator } from '../../src';
+import { TypeScriptGenerator, typeScriptDefaultModelNameConstraints } from '../../src';
 import { constantCase } from 'change-case';
 
 const generator = new TypeScriptGenerator({
   constraints: {
-    modelName: defaultModelNameConstraints({
+    modelName: typeScriptDefaultModelNameConstraints({
       NAMING_FORMATTER: (name) => {
         return constantCase(name);
       }
@@ -29,4 +29,6 @@ export async function generate() : Promise<void> {
     console.log(model.result);
   }
 }
-generate();
+if (require.main === module) {
+  generate();
+}

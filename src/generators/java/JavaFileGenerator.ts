@@ -1,5 +1,5 @@
 import { JavaGenerator, JavaRenderCompleteModelOptions } from './';
-import { CommonInputModel, OutputModel } from '../../models';
+import { InputMetaModel, OutputModel } from '../../models';
 import * as path from 'path';
 import { AbstractFileGenerator } from '../AbstractFileGenerator';
 import { FileHelpers } from '../../helpers';
@@ -12,9 +12,10 @@ export class JavaFileGenerator extends JavaGenerator implements AbstractFileGene
    * @param outputDirectory where you want the models generated to
    * @param options
    */
-  public async generateToFiles(input: Record<string, unknown> | CommonInputModel, outputDirectory: string, options: JavaRenderCompleteModelOptions): Promise<OutputModel[]> {
+  public async generateToFiles(input: Record<string, unknown> | InputMetaModel, outputDirectory: string, options: JavaRenderCompleteModelOptions): Promise<OutputModel[]> {
     let generatedModels = await this.generateCompleteModels(input, options);
-    generatedModels = generatedModels.filter((outputModel) => { return outputModel.modelName !== undefined; });
+    //Filter anything out that have not been successfully generated
+    generatedModels = generatedModels.filter((outputModel) => { return outputModel.modelName !== ''; });
     for (const outputModel of generatedModels) {
       const filePath = path.resolve(outputDirectory, `${outputModel.modelName}.java`);
       await FileHelpers.writerToFileSystem(outputModel.result, filePath);

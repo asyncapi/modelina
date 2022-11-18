@@ -29,6 +29,7 @@ describe('CSHARP_COMMON_PRESET', () => {
       ]
     });
     const inputModel = await generator.generate(doc);
+    expect(inputModel).toHaveLength(2);
     expect(inputModel[0].result).toMatchSnapshot();
     expect(inputModel[1].result).toMatchSnapshot();
   });
@@ -45,6 +46,7 @@ describe('CSHARP_COMMON_PRESET', () => {
       ]
     });
     const inputModel = await generator.generate(doc);
+    expect(inputModel).toHaveLength(2);
     expect(inputModel[0].result).toMatchSnapshot();
     expect(inputModel[1].result).toMatchSnapshot();
   });

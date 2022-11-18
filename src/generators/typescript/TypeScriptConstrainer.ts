@@ -4,9 +4,9 @@ import { TypeMapping } from '../../helpers';
 import { defaultEnumKeyConstraints, defaultEnumValueConstraints } from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
-import { TypeScriptRenderer } from './TypeScriptRenderer';
+import { TypeScriptOptions } from './TypeScriptGenerator';
 
-export const TypeScriptDefaultTypeMapping: TypeMapping<TypeScriptRenderer> = {
+export const TypeScriptDefaultTypeMapping: TypeMapping<TypeScriptOptions> = {
   Object ({constrainedModel}): string {
     return constrainedModel.name;
   },
@@ -20,7 +20,7 @@ export const TypeScriptDefaultTypeMapping: TypeMapping<TypeScriptRenderer> = {
     return constrainedModel.isNullable ? 'number | null' : 'number';
   },
   Integer ({constrainedModel}): string {
-    return constrainedModel.isNullable ? 'integer | null' : 'integer';
+    return constrainedModel.isNullable ? 'number | null' : 'number';
   },
   String ({constrainedModel}): string {
     return constrainedModel.isNullable ? 'string | null' : 'string';
@@ -35,7 +35,11 @@ export const TypeScriptDefaultTypeMapping: TypeMapping<TypeScriptRenderer> = {
     return `[${tupleTypes.join(', ')}]`;
   },
   Array ({constrainedModel}): string {
-    return `${constrainedModel.valueModel.type}[]`;
+    let arrayType = constrainedModel.valueModel.type;
+    if (constrainedModel.valueModel instanceof ConstrainedUnionModel) {
+      arrayType = `(${arrayType})`;
+    }
+    return `${arrayType}[]`;
   },
   Enum ({constrainedModel}): string {
     return constrainedModel.name;
@@ -46,7 +50,7 @@ export const TypeScriptDefaultTypeMapping: TypeMapping<TypeScriptRenderer> = {
     });
     return unionTypes.join(' | ');
   },
-  Dictionary ({constrainedModel}): string {
+  Dictionary ({constrainedModel, options}): string {
     let keyType;    
     //There is some restrictions on what can be used as keys for dictionaries.
     if (constrainedModel.key instanceof ConstrainedUnionModel) {
@@ -55,8 +59,15 @@ export const TypeScriptDefaultTypeMapping: TypeMapping<TypeScriptRenderer> = {
     } else {
       keyType = constrainedModel.key.type;
     }
-
-    return `{ [name: ${keyType}]: ${constrainedModel.value.type} }`;
+    switch (options.mapType) {
+    case 'indexedObject':
+      return `{ [name: ${keyType}]: ${constrainedModel.value.type} }`;
+    case 'record':
+      return `Record<${keyType}, ${constrainedModel.value.type}>`;
+    default:
+    case 'map':
+      return `Map<${keyType}, ${constrainedModel.value.type}>`;
+    }
   }
 };
 

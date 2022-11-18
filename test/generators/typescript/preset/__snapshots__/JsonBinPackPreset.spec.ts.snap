@@ -1,0 +1,199 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`JsonBinPack preset should work fine with AsyncAPI inputs 1`] = `
+"class AnonymousSchema_1 {
+  private _email?: string;
+  private _additionalProperties?: Map<string, any>;
+
+  constructor(input: {
+    email?: string,
+    additionalProperties?: Map<string, any>,
+  }) {
+    this._email = input.email;
+    this._additionalProperties = input.additionalProperties;
+  }
+
+  get email(): string | undefined { return this._email; }
+  set email(email: string | undefined) { this._email = email; }
+
+  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
+
+  public marshal() : string {
+    let json = '{'
+    if(this.email !== undefined) {
+      json += \`\\"email\\": \${typeof this.email === 'number' || typeof this.email === 'boolean' ? this.email : JSON.stringify(this.email)},\`; 
+    }
+    if(this.additionalProperties !== undefined) { 
+    for (const [key, value] of this.additionalProperties.entries()) {
+      //Only unwrap those who are not already a property in the JSON object
+      if(Object.keys(this).includes(String(key))) continue;
+        json += \`\\"\${key}\\": \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;
+      }
+    }
+
+    //Remove potential last comma 
+    return \`\${json.charAt(json.length-1) === ',' ? json.slice(0, json.length-1) : json}}\`;
+  }
+
+  public static unmarshal(json: string | object): AnonymousSchema_1 {
+    const obj = typeof json === \\"object\\" ? json : JSON.parse(json);
+    const instance = new AnonymousSchema_1({} as any);
+
+    if (obj[\\"email\\"] !== undefined) {
+      instance.email = obj[\\"email\\"];
+    }
+
+    if (instance.additionalProperties === undefined) {instance.additionalProperties = new Map();}
+      for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"email\\",\\"additionalProperties\\"].includes(key);}))) {
+        instance.additionalProperties.set(key, value as any);
+      }
+
+    return instance;
+  }
+
+  public async jsonbinSerialize(): Promise<Buffer>{
+    const jsonData = JSON.parse(this.marshal());
+    const jsonbinpackEncodedSchema = await jsonbinpack.compileSchema({\\"type\\":\\"object\\",\\"properties\\":{\\"email\\":{\\"type\\":\\"string\\",\\"format\\":\\"email\\",\\"x-parser-schema-id\\":\\"<anonymous-schema-2>\\",\\"x-modelgen-inferred-name\\":\\"anonymous_schema_2\\"}},\\"x-parser-schema-id\\":\\"<anonymous-schema-1>\\",\\"x-modelgen-inferred-name\\":\\"anonymous_schema_1\\"});
+    return jsonbinpack.serialize(jsonbinpackEncodedSchema, jsonData);
+  }
+
+  public static async jsonbinDeserialize(buffer: Buffer): Promise<AnonymousSchema_1> {
+    const jsonbinpackEncodedSchema = await jsonbinpack.compileSchema({\\"type\\":\\"object\\",\\"properties\\":{\\"email\\":{\\"type\\":\\"string\\",\\"format\\":\\"email\\",\\"x-parser-schema-id\\":\\"<anonymous-schema-2>\\",\\"x-modelgen-inferred-name\\":\\"anonymous_schema_2\\"}},\\"x-parser-schema-id\\":\\"<anonymous-schema-1>\\",\\"x-modelgen-inferred-name\\":\\"anonymous_schema_1\\"});
+    const json = jsonbinpack.deserialize(jsonbinpackEncodedSchema, buffer);
+    return AnonymousSchema_1.unmarshal(json);
+  }
+}"
+`;
+
+exports[`JsonBinPack preset should work fine with JSON Schema draft 4 1`] = `
+"class Root {
+  private _email?: string;
+  private _additionalProperties?: Map<string, any>;
+
+  constructor(input: {
+    email?: string,
+    additionalProperties?: Map<string, any>,
+  }) {
+    this._email = input.email;
+    this._additionalProperties = input.additionalProperties;
+  }
+
+  get email(): string | undefined { return this._email; }
+  set email(email: string | undefined) { this._email = email; }
+
+  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
+
+  public marshal() : string {
+    let json = '{'
+    if(this.email !== undefined) {
+      json += \`\\"email\\": \${typeof this.email === 'number' || typeof this.email === 'boolean' ? this.email : JSON.stringify(this.email)},\`; 
+    }
+    if(this.additionalProperties !== undefined) { 
+    for (const [key, value] of this.additionalProperties.entries()) {
+      //Only unwrap those who are not already a property in the JSON object
+      if(Object.keys(this).includes(String(key))) continue;
+        json += \`\\"\${key}\\": \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;
+      }
+    }
+
+    //Remove potential last comma 
+    return \`\${json.charAt(json.length-1) === ',' ? json.slice(0, json.length-1) : json}}\`;
+  }
+
+  public static unmarshal(json: string | object): Root {
+    const obj = typeof json === \\"object\\" ? json : JSON.parse(json);
+    const instance = new Root({} as any);
+
+    if (obj[\\"email\\"] !== undefined) {
+      instance.email = obj[\\"email\\"];
+    }
+
+    if (instance.additionalProperties === undefined) {instance.additionalProperties = new Map();}
+      for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"email\\",\\"additionalProperties\\"].includes(key);}))) {
+        instance.additionalProperties.set(key, value as any);
+      }
+
+    return instance;
+  }
+
+  public async jsonbinSerialize(): Promise<Buffer>{
+    const jsonData = JSON.parse(this.marshal());
+    const jsonbinpackEncodedSchema = await jsonbinpack.compileSchema({\\"$schema\\":\\"http://json-schema.org/draft-04/schema\\",\\"type\\":\\"object\\",\\"properties\\":{\\"email\\":{\\"type\\":\\"string\\",\\"format\\":\\"email\\",\\"x-modelgen-inferred-name\\":\\"email\\"}},\\"x-modelgen-inferred-name\\":\\"root\\"});
+    return jsonbinpack.serialize(jsonbinpackEncodedSchema, jsonData);
+  }
+
+  public static async jsonbinDeserialize(buffer: Buffer): Promise<Root> {
+    const jsonbinpackEncodedSchema = await jsonbinpack.compileSchema({\\"$schema\\":\\"http://json-schema.org/draft-04/schema\\",\\"type\\":\\"object\\",\\"properties\\":{\\"email\\":{\\"type\\":\\"string\\",\\"format\\":\\"email\\",\\"x-modelgen-inferred-name\\":\\"email\\"}},\\"x-modelgen-inferred-name\\":\\"root\\"});
+    const json = jsonbinpack.deserialize(jsonbinpackEncodedSchema, buffer);
+    return Root.unmarshal(json);
+  }
+}"
+`;
+
+exports[`JsonBinPack preset should work fine with JSON Schema draft 6 1`] = `
+"class Root {
+  private _email?: string;
+  private _additionalProperties?: Map<string, any>;
+
+  constructor(input: {
+    email?: string,
+    additionalProperties?: Map<string, any>,
+  }) {
+    this._email = input.email;
+    this._additionalProperties = input.additionalProperties;
+  }
+
+  get email(): string | undefined { return this._email; }
+  set email(email: string | undefined) { this._email = email; }
+
+  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
+
+  public marshal() : string {
+    let json = '{'
+    if(this.email !== undefined) {
+      json += \`\\"email\\": \${typeof this.email === 'number' || typeof this.email === 'boolean' ? this.email : JSON.stringify(this.email)},\`; 
+    }
+    if(this.additionalProperties !== undefined) { 
+    for (const [key, value] of this.additionalProperties.entries()) {
+      //Only unwrap those who are not already a property in the JSON object
+      if(Object.keys(this).includes(String(key))) continue;
+        json += \`\\"\${key}\\": \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;
+      }
+    }
+
+    //Remove potential last comma 
+    return \`\${json.charAt(json.length-1) === ',' ? json.slice(0, json.length-1) : json}}\`;
+  }
+
+  public static unmarshal(json: string | object): Root {
+    const obj = typeof json === \\"object\\" ? json : JSON.parse(json);
+    const instance = new Root({} as any);
+
+    if (obj[\\"email\\"] !== undefined) {
+      instance.email = obj[\\"email\\"];
+    }
+
+    if (instance.additionalProperties === undefined) {instance.additionalProperties = new Map();}
+      for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"email\\",\\"additionalProperties\\"].includes(key);}))) {
+        instance.additionalProperties.set(key, value as any);
+      }
+
+    return instance;
+  }
+
+  public async jsonbinSerialize(): Promise<Buffer>{
+    const jsonData = JSON.parse(this.marshal());
+    const jsonbinpackEncodedSchema = await jsonbinpack.compileSchema({\\"$schema\\":\\"http://json-schema.org/draft-06/schema\\",\\"type\\":\\"object\\",\\"properties\\":{\\"email\\":{\\"type\\":\\"string\\",\\"format\\":\\"email\\",\\"x-modelgen-inferred-name\\":\\"email\\"}},\\"x-modelgen-inferred-name\\":\\"root\\"});
+    return jsonbinpack.serialize(jsonbinpackEncodedSchema, jsonData);
+  }
+
+  public static async jsonbinDeserialize(buffer: Buffer): Promise<Root> {
+    const jsonbinpackEncodedSchema = await jsonbinpack.compileSchema({\\"$schema\\":\\"http://json-schema.org/draft-06/schema\\",\\"type\\":\\"object\\",\\"properties\\":{\\"email\\":{\\"type\\":\\"string\\",\\"format\\":\\"email\\",\\"x-modelgen-inferred-name\\":\\"email\\"}},\\"x-modelgen-inferred-name\\":\\"root\\"});
+    const json = jsonbinpack.deserialize(jsonbinpackEncodedSchema, buffer);
+    return Root.unmarshal(json);
+  }
+}"
+`;

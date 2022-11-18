@@ -19,7 +19,15 @@ RUN apt install apt-transport-https dirmngr gnupg ca-certificates -yq  \
     && apt update -yq  \
     && apt install mono-devel -yq 
 
-# Setup library 
-COPY package-lock.json .
+# Install rust
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+# Install Python
+RUN apt-get install -yq python
+
+# Setup library
+RUN apt-get install -yq chromium
+
+COPY package.json package-lock.json ./
 RUN npm install
-COPY . .
+COPY . ./

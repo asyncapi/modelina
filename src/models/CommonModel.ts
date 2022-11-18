@@ -12,10 +12,10 @@ export class CommonModel {
   items?: CommonModel | CommonModel[];
   properties?: { [key: string]: CommonModel; };
   additionalProperties?: CommonModel;
-  patternProperties?: { [key: string]: CommonModel; };
   $ref?: string;
   required?: string[];
   additionalItems?: CommonModel;
+  union?: CommonModel[]
 
   /**
    * Takes a deep copy of the input object and converts it to an instance of CommonModel.
@@ -191,6 +191,19 @@ export class CommonModel {
   }
 
   /**
+   * Adds a union model to the model.
+   *
+   * @param unionModel
+   */
+  addItemUnion(unionModel: CommonModel): void {
+    if (Array.isArray(this.union)) {
+      this.union.push(unionModel);
+    } else {
+      this.union = [unionModel];
+    }
+  }
+
+  /**
    * Add enum value to the model.
    * 
    * Ensures no duplicates are added.
@@ -278,24 +291,6 @@ export class CommonModel {
   }
   
   /**
-   * Adds a patternProperty to the model.
-   * If the pattern already exist the two models are merged.
-   * 
-   * @param pattern 
-   * @param patternModel 
-   * @param originalInput corresponding input that got interpreted to this model 
-   */
-  addPatternProperty(pattern: string, patternModel: CommonModel, originalInput: any): void {
-    if (this.patternProperties === undefined) {this.patternProperties = {};}
-    if (this.patternProperties[`${pattern}`] !== undefined) {
-      Logger.warn(`While trying to add patternProperty to model, duplicate patterns found. Merging pattern models together for pattern ${pattern}`, patternModel, originalInput, this);
-      this.patternProperties[String(pattern)] = CommonModel.mergeCommonModels(this.patternProperties[String(pattern)], patternModel, originalInput);
-    } else {
-      this.patternProperties[String(pattern)] = patternModel;
-    }
-  }
-  
-  /**
    * Adds another model this model should extend.
    * 
    * It is only allowed to extend if the other model have $id and is not already being extended.
@@ -343,11 +338,6 @@ export class CommonModel {
         dependsOn.push(...property.getNearestDependencies());
       }
     }
-    if (this.patternProperties !== undefined && Object.keys(this.patternProperties).length) {
-      for (const patternProperty of Object.values(this.patternProperties)) {
-        dependsOn.push(...patternProperty.getNearestDependencies());
-      }
-    }
     if (this.additionalItems !== undefined) {
       dependsOn.push(...this.additionalItems.getNearestDependencies());
     }
@@ -363,20 +353,25 @@ export class CommonModel {
    * @param alreadyIteratedModels
    */
   private static mergeProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalInput: any, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
-    const mergeToProperties = mergeTo.properties;
-    const mergeFromProperties = mergeFrom.properties;
-    if (mergeFromProperties !== undefined) {
-      if (mergeToProperties === undefined) {
-        mergeTo.properties = mergeFromProperties;
+    if (!mergeTo.properties) {
+      mergeTo.properties = mergeFrom.properties;
+      return;
+    }
+
+    if (!mergeFrom.properties) {
+      return;
+    }
+
+    mergeTo.properties = {
+      ...mergeTo.properties,
+    };
+
+    for (const [propName, propValue] of Object.entries(mergeFrom.properties)) {
+      if (!mergeTo.properties[String(propName)]) {
+        mergeTo.properties[String(propName)] = propValue;
       } else {
-        for (const [propName, prop] of Object.entries(mergeFromProperties)) {
-          if (mergeToProperties[String(propName)] !== undefined) {
-            Logger.warn(`Found duplicate properties ${propName} for model. Model property from ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalInput);
-            mergeToProperties[String(propName)] = CommonModel.mergeCommonModels(mergeToProperties[String(propName)], prop, originalInput, alreadyIteratedModels);
-          } else {
-            mergeToProperties[String(propName)] = prop;
-          }
-        }
+        Logger.warn(`Found duplicate properties ${propName} for model. Model property from ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalInput);
+        mergeTo.properties[String(propName)] = CommonModel.mergeCommonModels(mergeTo.properties[String(propName)], propValue, originalInput, alreadyIteratedModels);
       }
     }
   }
@@ -417,32 +412,6 @@ export class CommonModel {
       } else {
         Logger.warn(`Found duplicate additionalItems for model. additionalItems from ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalInput);
         mergeTo.additionalItems = CommonModel.mergeCommonModels(mergeToAdditionalItems, mergeFromAdditionalItems, originalInput, alreadyIteratedModels);
-      }
-    }
-  }
-  /**
-   * Merge two common model pattern properties together 
-   * 
-   * @param mergeTo 
-   * @param mergeFrom 
-   * @param originalInput corresponding input that got interpreted to this model 
-   * @param alreadyIteratedModels
-   */
-  private static mergePatternProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalInput: any, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
-    const mergeToPatternProperties = mergeTo.patternProperties;
-    const mergeFromPatternProperties = mergeFrom.patternProperties;
-    if (mergeFromPatternProperties !== undefined) {
-      if (mergeToPatternProperties === undefined) {
-        mergeTo.patternProperties = mergeFromPatternProperties;
-      } else {
-        for (const [pattern, patternModel] of Object.entries(mergeFromPatternProperties)) {
-          if (mergeToPatternProperties[String(pattern)] !== undefined) {
-            Logger.warn(`Found duplicate pattern ${pattern} for model. Model pattern for ${mergeFrom.$id || 'unknown'} merged into ${mergeTo.$id || 'unknown'}`, mergeTo, mergeFrom, originalInput);
-            mergeToPatternProperties[String(pattern)] = CommonModel.mergeCommonModels(mergeToPatternProperties[String(pattern)], patternModel, originalInput, alreadyIteratedModels);
-          } else {
-            mergeToPatternProperties[String(pattern)] = patternModel;
-          }
-        }
       }
     }
   }
@@ -530,7 +499,6 @@ export class CommonModel {
 
     CommonModel.mergeAdditionalProperties(mergeTo, mergeFrom, originalInput, alreadyIteratedModels);
     CommonModel.mergeAdditionalItems(mergeTo, mergeFrom, originalInput, alreadyIteratedModels);
-    CommonModel.mergePatternProperties(mergeTo, mergeFrom, originalInput, alreadyIteratedModels);
     CommonModel.mergeProperties(mergeTo, mergeFrom, originalInput, alreadyIteratedModels);
     CommonModel.mergeItems(mergeTo, mergeFrom, originalInput, alreadyIteratedModels);
     CommonModel.mergeTypes(mergeTo, mergeFrom);

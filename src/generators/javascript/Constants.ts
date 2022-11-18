@@ -1,3 +1,5 @@
+import { checkForReservedKeyword } from '../../helpers';
+
 //Based on https://www.w3schools.com/js/js_reserved.asp
 export const RESERVED_JAVASCRIPT_KEYWORDS = [
   //Standard reserved keywords
@@ -194,6 +196,6 @@ export const RESERVED_JAVASCRIPT_KEYWORDS = [
   'window'
 ];
 
-export function isReservedJavaScriptKeyword(word: string): boolean {
-  return RESERVED_JAVASCRIPT_KEYWORDS.includes(word);
+export function isReservedJavaScriptKeyword(word: string, forceLowerCase = true): boolean {
+  return checkForReservedKeyword(word, RESERVED_JAVASCRIPT_KEYWORDS, forceLowerCase);
 }

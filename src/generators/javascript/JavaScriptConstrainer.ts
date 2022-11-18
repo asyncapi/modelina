@@ -1,10 +1,10 @@
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultEnumKeyConstraints, defaultEnumValueConstraints } from './constrainer/EnumConstrainer';
-import { TypeMapping } from '../../helpers';
-import { JavaScriptRenderer } from './JavaScriptRenderer';
+import { Constraints, TypeMapping } from '../../helpers';
+import { JavaScriptOptions } from './JavaScriptGenerator';
 
-export const JavaScriptDefaultTypeMapping: TypeMapping<JavaScriptRenderer> = {
+export const JavaScriptDefaultTypeMapping: TypeMapping<JavaScriptOptions> = {
   Object (): string {
     return ''; 
   },
@@ -43,7 +43,7 @@ export const JavaScriptDefaultTypeMapping: TypeMapping<JavaScriptRenderer> = {
   }
 };
 
-export const JavaScriptDefaultConstraints = {
+export const JavaScriptDefaultConstraints: Constraints = {
   enumKey: defaultEnumKeyConstraints(),
   enumValue: defaultEnumValueConstraints(),
   modelName: defaultModelNameConstraints(),

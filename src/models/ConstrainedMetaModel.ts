@@ -1,12 +1,22 @@
+import { makeUnique } from '../utils/DependencyHelper';
 import { MetaModel } from './MetaModel';
 
-export class ConstrainedMetaModel extends MetaModel {
+export abstract class ConstrainedMetaModel extends MetaModel {
   constructor(
     name: string,
     originalInput: any,
     public type: string,
     isNullable = false) {
     super(name, originalInput, isNullable);
+  }
+
+  /**
+   * Get the nearest constrained meta models for the constrained model.
+   * 
+   * This is often used when you want to know which other models you are referencing.
+   */
+  getNearestDependencies(): ConstrainedMetaModel[] {
+    return [];
   }
 }
 
@@ -40,10 +50,28 @@ export class ConstrainedTupleModel extends ConstrainedMetaModel {
     isNullable = false) {
     super(name, originalInput, type, isNullable);
   }
+
+  getNearestDependencies(): ConstrainedMetaModel[] {
+    let dependencyModels: ConstrainedMetaModel[] = [];
+    for (const tupleModel of Object.values(this.tuple)) {
+      if (tupleModel.value instanceof ConstrainedReferenceModel) {
+        dependencyModels.push(tupleModel.value);
+      } else {
+        //Lets check the non-reference model for dependencies
+        dependencyModels = [...dependencyModels, ...tupleModel.value.getNearestDependencies()];
+      }
+    }
+    
+    //Ensure no duplicate references
+    dependencyModels = makeUnique(dependencyModels);
+    
+    return dependencyModels;
+  }
 }
 export class ConstrainedObjectPropertyModel {
   constructor(
     public propertyName: string,
+    public unconstrainedPropertyName: string,
     public required: boolean,
     public property: ConstrainedMetaModel) {
   }
@@ -67,6 +95,16 @@ export class ConstrainedArrayModel extends ConstrainedMetaModel {
     isNullable = false) {
     super(name, originalInput, type, isNullable);
   }
+
+  getNearestDependencies(): ConstrainedMetaModel[] {
+    if (this.valueModel.name !== this.name) {
+      if (this.valueModel instanceof ConstrainedReferenceModel) {
+        return [this.valueModel];
+      } 
+      return this.valueModel.getNearestDependencies();
+    }
+    return [];
+  }
 }
 export class ConstrainedUnionModel extends ConstrainedMetaModel {
   constructor(
@@ -76,6 +114,23 @@ export class ConstrainedUnionModel extends ConstrainedMetaModel {
     public union: ConstrainedMetaModel[],
     isNullable = false) {
     super(name, originalInput, type, isNullable);
+  }
+
+  getNearestDependencies(): ConstrainedMetaModel[] {
+    let dependencyModels: ConstrainedMetaModel[] = [];
+    for (const unionModel of Object.values(this.union)) {
+      if (unionModel instanceof ConstrainedReferenceModel) {
+        dependencyModels.push(unionModel);
+      } else {
+        //Lets check the non-reference model for dependencies
+        dependencyModels = [...dependencyModels, ...unionModel.getNearestDependencies()];
+      }
+    }
+    
+    //Ensure no duplicate references
+    dependencyModels = makeUnique(dependencyModels);
+
+    return dependencyModels;
   }
 }
 export class ConstrainedEnumValueModel {
@@ -104,5 +159,67 @@ export class ConstrainedDictionaryModel extends ConstrainedMetaModel {
     public serializationType: 'unwrap' | 'normal' = 'normal',
     isNullable = false) {
     super(name, originalInput, type, isNullable);
+  }
+
+  getNearestDependencies(): ConstrainedMetaModel[] {
+    const dependencies = [this.key, this.value];
+    let dependencyModels: ConstrainedMetaModel[] = [];
+    for (const model of dependencies) {
+      if (model instanceof ConstrainedReferenceModel) {
+        dependencyModels.push(model);
+      } else {
+        //Lets check the non-reference model for dependencies
+        dependencyModels = [...dependencyModels, ...model.getNearestDependencies()];
+      }
+    }
+   
+    //Ensure no duplicate references
+    dependencyModels = makeUnique(dependencyModels);
+
+    return dependencyModels;
+  }
+}
+
+export class ConstrainedObjectModel extends ConstrainedMetaModel {
+  constructor(
+    name: string,
+    originalInput: any, 
+    type: string,
+    public properties: { [key: string]: ConstrainedObjectPropertyModel; }) {
+    super(name, originalInput, type);
+  }
+
+  getNearestDependencies(): ConstrainedMetaModel[] {
+    let dependencyModels: ConstrainedMetaModel[] = [];
+    for (const modelProperty of Object.values(this.properties)) {
+      if (modelProperty.property instanceof ConstrainedReferenceModel) {
+        dependencyModels.push(modelProperty.property);
+      } else {
+        //Lets check the non-reference model for dependencies
+        dependencyModels = [...dependencyModels, ...modelProperty.property.getNearestDependencies()];
+      }
+    }
+
+    //Ensure no self references
+    dependencyModels = dependencyModels.filter((referenceModel) => {
+      return referenceModel.name !== this.name;
+    });
+
+    //Ensure no duplicate references
+    dependencyModels = makeUnique(dependencyModels);
+
+    return dependencyModels;
+  }
+  
+  /**
+   * More specifics on the type setup here: https://github.com/Microsoft/TypeScript/wiki/FAQ#why-cant-i-write-typeof-t-new-t-or-instanceof-t-in-my-generic-function
+   *  
+   * @param propertyType 
+   */
+  containsPropertyType<T>(propertyType: { new(...args: any[]): T }) : boolean {
+    const foundPropertiesWithType = Object.values(this.properties).filter((property) => {
+      return property.property instanceof propertyType;
+    });
+    return foundPropertiesWithType.length !== 0;
   }
 }

@@ -34,7 +34,9 @@ const trySplitModel = (model: MetaModel, options: SplitOptions, models: MetaMode
     options.splitDictionary === true && model instanceof DictionaryModel;
 
   if (shouldSplit) {
-    models.push(model);
+    if (!models.includes(model)) {
+      models.push(model);
+    }
     return new ReferenceModel(model.name, model.originalInput, model);
   } 
   return model;
@@ -48,35 +50,41 @@ const trySplitModel = (model: MetaModel, options: SplitOptions, models: MetaMode
  * @param models 
  * @returns an array of all the split models
  */
-export const split = (model: MetaModel, options: SplitOptions, models: MetaModel[] = [model]): MetaModel[] => {
+export const split = (model: MetaModel, options: SplitOptions, models: MetaModel[] = [model], alreadySeenModels: MetaModel[] = []): MetaModel[] => {
+  if (!alreadySeenModels.includes(model)) {
+    alreadySeenModels.push(model);
+  } else {
+    return models;
+  }
   if (model instanceof ObjectModel) {
     for (const [prop, propModel] of Object.entries(model.properties)) {
+      const propertyModel = propModel.property;
       model.properties[String(prop)].property = trySplitModel(propModel.property, options, models);
-      split(propModel.property, options, models);
+      split(propertyModel, options, models, alreadySeenModels);
     }
   } else if (model instanceof UnionModel) {
     for (let index = 0; index < model.union.length; index++) {
       const unionModel = model.union[Number(index)];
       model.union[Number(index)] = trySplitModel(unionModel, options, models);
-      split(unionModel, options, models);
+      split(unionModel, options, models, alreadySeenModels);
     }
   } else if (model instanceof ArrayModel) {
     const valueModel = model.valueModel;
     model.valueModel = trySplitModel(valueModel, options, models);
-    split(valueModel, options, models);
+    split(valueModel, options, models, alreadySeenModels);
   } else if (model instanceof TupleModel) {
     for (const tuple of model.tuple) {
       const tupleModel = tuple.value;
       tuple.value = trySplitModel(tupleModel, options, models);
-      split(tupleModel, options, models);
+      split(tupleModel, options, models, alreadySeenModels);
     }
   } else if (model instanceof DictionaryModel) {
     const keyModel = model.key;
     const valueModel = model.value;
     model.key = trySplitModel(keyModel, options, models);
     model.value = trySplitModel(valueModel, options, models);
-    split(keyModel, options, models);
-    split(valueModel, options, models);
+    split(keyModel, options, models, alreadySeenModels);
+    split(valueModel, options, models, alreadySeenModels);
   }
   return models;
 };

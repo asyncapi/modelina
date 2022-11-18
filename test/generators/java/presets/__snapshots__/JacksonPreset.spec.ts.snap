@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`JAVA_JACKSON_PRESET should render Jackson annotations for class 1`] = `
+"public class Clazz {
+  private Double minNumberProp;
+  private Double maxNumberProp;
+  private Map<String, Object> additionalProperties;
+
+  @JsonProperty(\\"min_number_prop\\")
+  public Double getMinNumberProp() { return this.minNumberProp; }
+  public void setMinNumberProp(Double minNumberProp) { this.minNumberProp = minNumberProp; }
+
+  @JsonProperty(\\"max_number_prop\\")
+  public Double getMaxNumberProp() { return this.maxNumberProp; }
+  public void setMaxNumberProp(Double maxNumberProp) { this.maxNumberProp = maxNumberProp; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}"
+`;
+
+exports[`JAVA_JACKSON_PRESET should render Jackson annotations for enum 1`] = `
+"public enum ReservedEnum {
+  ON((String)\\"on\\"), OFF((String)\\"off\\");
+
+  private String value;
+
+  ReservedEnum(String value) {
+    this.value = value;
+  }
+
+  @JsonValue
+  public String getValue() {
+    return value;
+  }
+
+  @JsonCreator
+  public static ReservedEnum fromValue(String value) {
+    for (ReservedEnum e : ReservedEnum.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+}"
+`;

@@ -4,7 +4,7 @@ import { pascalCase } from 'change-case';
 const generator = new TypeScriptGenerator({
   constraints: {
     modelName: ({modelName}) => {
-      return pascalCase(modelName);
+      return 'MyOwnCustomModelName';
     }
   }
 });
@@ -27,4 +27,6 @@ export async function generate() : Promise<void> {
     console.log(model.result);
   }
 }
-generate();
+if (require.main === module) {
+  generate();
+}

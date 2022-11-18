@@ -6,10 +6,10 @@ Array [
 
 
 public class Root {
-  private Object email;
+  private String email;
 
-  public Object getEmail() { return this.email; }
-  public void setEmail(Object email) { this.email = email; }
+  public String getEmail() { return this.email; }
+  public void setEmail(String email) { this.email = email; }
 }",
 ]
 `;

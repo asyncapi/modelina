@@ -19,8 +19,7 @@ Array [
     if(this.email !== undefined) {
       json += \`\\"email\\": \${typeof this.email === 'number' || typeof this.email === 'boolean' ? this.email : JSON.stringify(this.email)},\`; 
     }
-  
-  
+
 
     //Remove potential last comma 
     return \`\${json.charAt(json.length-1) === ',' ? json.slice(0, json.length-1) : json}}\`;
@@ -34,13 +33,8 @@ Array [
       instance.email = obj[\\"email\\"];
     }
 
-    //Not part of core properties
-  
-  
-    for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"email\\"].includes(key);}))) {
-    
-    
-    }
+
+
     return instance;
   }
 }",

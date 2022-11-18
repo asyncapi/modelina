@@ -1,14 +1,22 @@
-/* eslint-disable @typescript-eslint/ban-types */
-import { Preset, ClassPreset, EnumPreset } from '../../models';
+import { ConstrainedEnumModel } from 'models/ConstrainedMetaModel';
+import { Preset, ClassPreset, EnumPreset, PresetArgs, EnumArgs } from '../../models';
+import { JavaOptions } from './JavaGenerator';
 import { ClassRenderer, JAVA_DEFAULT_CLASS_PRESET } from './renderers/ClassRenderer';
 import { EnumRenderer, JAVA_DEFAULT_ENUM_PRESET } from './renderers/EnumRenderer';
 
-export type JavaPreset<O extends object = any> = Preset<{
-  class: ClassPreset<ClassRenderer, O>;
-  enum: EnumPreset<EnumRenderer, O>;
+export type ClassPresetType<O> = ClassPreset<ClassRenderer, O>;
+export interface EnumPresetType<O> extends EnumPreset<EnumRenderer, O> {
+  ctor?: (args: PresetArgs<EnumRenderer, O, ConstrainedEnumModel> & EnumArgs) => string;
+  getValue?: (args: PresetArgs<EnumRenderer, O, ConstrainedEnumModel> & EnumArgs) => string;
+  fromValue?: (args: PresetArgs<EnumRenderer, O, ConstrainedEnumModel> & EnumArgs) => string;
+}
+
+export type JavaPreset<O = any> = Preset<{
+  class: ClassPresetType<O>;
+  enum: EnumPresetType<O>;
 }>;
 
-export const JAVA_DEFAULT_PRESET: JavaPreset = {
+export const JAVA_DEFAULT_PRESET: JavaPreset<JavaOptions> = {
   class: JAVA_DEFAULT_CLASS_PRESET,
   enum: JAVA_DEFAULT_ENUM_PRESET,
 };

@@ -2,7 +2,9 @@ import {
   camelCase,
   pascalCase,
   paramCase,
-  constantCase
+  constantCase,
+  snakeCase,
+  pascalCaseTransformMerge,
 } from 'change-case';
 
 export enum IndentationTypes {
@@ -59,6 +61,15 @@ export class FormatHelpers {
   }
 
   /**
+   * Lower first char in given string value.
+   * @param {string} value to change
+   * @returns {string}
+   */
+  static lowerFirst(value: string): string {
+    return value.charAt(0).toLowerCase() + value.slice(1);
+  }
+
+  /**
    * Transform into a string with the separator denoted by the next word capitalized.
    * @param {string} value to transform
    * @returns {string}
@@ -73,6 +84,16 @@ export class FormatHelpers {
   static toPascalCase = pascalCase;
 
   /**
+   * Transform into a string of capitalized words without separators
+   * merging numbers.
+   * @param {string} value to transform
+   * @returns {string}
+   */
+  static toPascalCaseMergingNumbers(value: string): string {
+    return pascalCase(value, { transform: pascalCaseTransformMerge });
+  }
+
+  /**
    * Transform into a lower cased string with dashes between words.
    * @param {string} value to transform
    * @returns {string}
@@ -85,6 +106,13 @@ export class FormatHelpers {
    * @returns {string}
    */
   static toConstantCase = constantCase;
+
+  /**
+   * Transform into lower case string with an underscore between words.
+   * @param {string} value to transform
+   * @returns {string}
+  */
+  static toSnakeCase = snakeCase;
 
   /**
   * Replace special characters (Not 0-9,a-z,A-Z) with character names
@@ -170,5 +198,12 @@ export class FormatHelpers {
       }
     }
     return renderedExamples;
+  }
+
+  static snakeCase(renderName: string): string {
+    return renderName.replace(/\W+/g, ' ')
+      .split(/ |\B(?=[A-Z])/)
+      .map(word => word.toLowerCase())
+      .join('_');
   }
 }

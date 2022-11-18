@@ -1,7 +1,7 @@
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { AsyncAPIInputProcessor } from './AsyncAPIInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
-import { ProcessorOptions, CommonInputModel } from '../models';
+import { ProcessorOptions, InputMetaModel } from '../models';
 import { SwaggerInputProcessor } from './SwaggerInputProcessor';
 import { OpenAPIInputProcessor } from './OpenAPIInputProcessor';
 import { TypeScriptInputProcessor } from './TypeScriptInputProcessor';
@@ -45,7 +45,7 @@ export class InputProcessor {
    * @param input to process
    * @param options passed to the processors
    */
-  process(input: Record<string, any>, options?: ProcessorOptions): Promise<CommonInputModel> {
+  process(input: any, options?: ProcessorOptions): Promise<InputMetaModel> {
     for (const [type, processor] of this.processors) {
       if (type === 'default') {continue;}
       if (processor.shouldProcess(input)) {

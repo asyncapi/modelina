@@ -1,4 +1,4 @@
-import { CommonModel } from '../../../models';
+import { ConstrainedMetaModel } from '../../../models';
 import { TypeScriptPreset } from '../TypeScriptPreset';
 import { TypeScriptRenderer } from '../TypeScriptRenderer';
 
@@ -7,12 +7,12 @@ const renderDescription = ({
   content,
   item,
 }: {
-  renderer: TypeScriptRenderer;
+  renderer: TypeScriptRenderer<ConstrainedMetaModel>;
   content: string;
-  item: CommonModel;
+  item: ConstrainedMetaModel;
 }): string => {
-  const desc = item.getFromOriginalInput('description')?.trim();
-  const examples = item.getFromOriginalInput('examples');
+  const desc = item.originalInput.description?.trim();
+  const examples = item.originalInput.examples;
   const formattedExamples = `@example ${
     examples?.join ? examples.join(', ') : examples
   }`;
@@ -38,7 +38,7 @@ export const TS_DESCRIPTION_PRESET: TypeScriptPreset = {
       return renderDescription({ renderer, content, item: model });
     },
     property({ renderer, property, content }) {
-      return renderDescription({ renderer, content, item: property });
+      return renderDescription({ renderer, content, item: property.property });
     }
   },
   interface: {
@@ -46,7 +46,7 @@ export const TS_DESCRIPTION_PRESET: TypeScriptPreset = {
       return renderDescription({ renderer, content, item: model });
     },
     property({ renderer, property, content }) {
-      return renderDescription({ renderer, content, item: property });
+      return renderDescription({ renderer, content, item: property.property });
     }
   },
   type: {
