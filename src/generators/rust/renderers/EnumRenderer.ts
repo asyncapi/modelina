@@ -44,26 +44,25 @@ ${additionalContent}`;
     return this.runPreset('structMacro');
   }
 
-
   /**
    * Returns the type for the JSON value
    */
   renderEnumValueType(value: any): string {
     switch (typeof value) {
-      case 'boolean':
-        return 'bool';
-      case 'bigint':
-        return 'i64';
-      case 'number': {
-        return 'f64';
-      }
-      case 'object': {
-        return 'HashMap<String, serde_json::Value>';
-      }
-      case 'string':
-      default: {
-        return 'String';
-      }
+    case 'boolean':
+      return 'bool';
+    case 'bigint':
+      return 'i64';
+    case 'number': {
+      return 'f64';
+    }
+    case 'object': {
+      return 'HashMap<String, serde_json::Value>';
+    }
+    case 'string':
+    default: {
+      return 'String';
+    }
     }
   }
 }
