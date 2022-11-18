@@ -1,4 +1,4 @@
-import { makeUnique } from '../utils/DependencyHelper';
+import { makeUnique } from '../helpers/DependencyHelpers';
 import { MetaModel } from './MetaModel';
 
 export abstract class ConstrainedMetaModel extends MetaModel {
