@@ -33,8 +33,8 @@ export abstract class AbstractGenerator<
     public readonly options: Options
   ) { }
 
-  public abstract render(model: MetaModel, inputModel: InputMetaModel, dependencyManager?: AbstractDependencyManager): Promise<RenderOutput>;
-  public abstract renderCompleteModel(model: MetaModel, inputModel: InputMetaModel, options: Partial<RenderCompleteModelOptions>, dependencyManager?: AbstractDependencyManager): Promise<RenderOutput>;
+  public abstract render(model: MetaModel, inputModel: InputMetaModel): Promise<RenderOutput>;
+  public abstract renderCompleteModel(model: MetaModel, inputModel: InputMetaModel, options: Partial<RenderCompleteModelOptions>): Promise<RenderOutput>;
   public abstract constrainToMetaModel(model: MetaModel, dependencyManager: AbstractDependencyManager): ConstrainedMetaModel;
   public abstract splitMetaModel(model: MetaModel): MetaModel[];
 
@@ -52,12 +52,12 @@ export abstract class AbstractGenerator<
     const inputModel = await this.processInput(input);
     const dependencyManager = this.options.dependencyManagerFactory!();
     const renders = Object.values(inputModel.models).map(async (model) => {
-      const constrainedModel = this.constrainToMetaModel(model, dependencyManager);
-      const renderedOutput = await this.renderCompleteModel(constrainedModel, inputModel, options, dependencyManager);
+      const constrainedModel = this.constrainToMetaModel(model);
+      const renderedOutput = await this.renderCompleteModel(constrainedModel, inputModel, options);
       return OutputModel.toOutputModel({ 
         result: renderedOutput.result,
         modelName: renderedOutput.renderedName, 
-        dependencies: renderedOutput.dependencies,
+        dependencies: [...renderedOutput.dependencies],
         model: constrainedModel, 
         inputModel
       });
@@ -72,8 +72,9 @@ export abstract class AbstractGenerator<
     const inputModel = await this.processInput(input);
     const dependencyManager = this.options.dependencyManagerFactory!();
     const renders = Object.values(inputModel.models).map(async (model) => {
+      const dependencyManager = this.options.dependencyManagerFactory!();
       const constrainedModel = this.constrainToMetaModel(model, dependencyManager);
-      const renderedOutput = await this.render(constrainedModel, inputModel, dependencyManager);
+      const renderedOutput = await this.render(constrainedModel, inputModel);
       return OutputModel.toOutputModel({ 
         result: renderedOutput.result,
         modelName: renderedOutput.renderedName, 
