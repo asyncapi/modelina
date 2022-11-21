@@ -54,7 +54,11 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions, Ty
     options?: DeepPartial<TypeScriptOptions>,
   ) {
     const realizedOptions = mergePartialAndDefault(TypeScriptGenerator.defaultOptions, options) as TypeScriptOptions;
-    realizedOptions.dependencyManagerFactory = () => { return new TypeScriptDependencyManager(realizedOptions);};
+    
+    //Have to set the dependency manager factory after realizing the custom and default options, as it's required in the constructor.
+    if(realizedOptions.dependencyManagerFactory === undefined) {
+      realizedOptions.dependencyManagerFactory = () => { return new TypeScriptDependencyManager(realizedOptions);};
+    }
     super('TypeScript', realizedOptions);
   }
 
