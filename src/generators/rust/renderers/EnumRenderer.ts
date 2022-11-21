@@ -43,26 +43,47 @@ ${additionalContent}`;
   runStructMacroPreset(): Promise<string> {
     return this.runPreset('structMacro');
   }
+
+  /**
+   * Returns the type for the JSON value
+   */
+  renderEnumValueType(value: any): string {
+    switch (typeof value) {
+    case 'boolean':
+      return 'bool';
+    case 'bigint':
+      return 'i64';
+    case 'number': {
+      return 'f64';
+    }
+    case 'object': {
+      return 'HashMap<String, serde_json::Value>';
+    }
+    case 'string':
+    default: {
+      return 'String';
+    }
+    }
+  }
 }
 
 export const RUST_DEFAULT_ENUM_PRESET: EnumPresetType<RustOptions> = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
-  item({ item }) {
-    if (item.value === 'HashMap<String, serde_json::Value>') {
-      return `${item.key}(${item.value})`;
+  item({ item, renderer }) {
+    const typeOfEnumValue = renderer.renderEnumValueType(item.value);
+    if (typeOfEnumValue === 'HashMap<String, serde_json::Value>') {
+      return `${item.key}(${typeOfEnumValue})`;
     }
     return `${item.key}`;
   },
-  itemMacro({ itemIndex, model }) {
-    const originalInput = model.originalInput.enum[Number(itemIndex)];
+  itemMacro({ item }) {
     const serdeArgs = [];
-    if (typeof originalInput === 'object') {
+    if (typeof item.value === 'object') {
       serdeArgs.push('flatten');
     } else {
-      const rename = model.originalInput.enum[Number(itemIndex)].toString();
-      serdeArgs.push(`rename="${rename}"`);
+      serdeArgs.push(`rename="${item.value}"`);
     }
     return `#[serde(${serdeArgs.join(', ')})]`;
   },
