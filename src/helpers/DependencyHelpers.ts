@@ -19,9 +19,10 @@ export function renderJavaScriptDependency(toImport: string, fromModule: string,
  * @param array to make unique
  */
 export function makeUnique(array: ConstrainedMetaModel[]): ConstrainedMetaModel[] {
-  const seen: Map<string, boolean> = new Map();
+  const seen: Set<string> = new Set();
+
   return array.filter((item: ConstrainedMetaModel) => {
     const naiveIdentifier = item.name + item.type;
-    return seen.has(naiveIdentifier) ? false : seen.set(naiveIdentifier, true);
+    return seen.has(naiveIdentifier) ? false : seen.add(naiveIdentifier);
   });
 }
