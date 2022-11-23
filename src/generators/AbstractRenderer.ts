@@ -18,7 +18,6 @@ export abstract class AbstractRenderer<
     protected readonly inputModel: InputMetaModel
   ) {}
 
-
   renderLine(line: string): string {
     return `${line}\n`;
   }

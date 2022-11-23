@@ -1,5 +1,3 @@
-import { CommonGeneratorOptions } from "./AbstractGenerator";
-
 export abstract class AbstractDependencyManager {
   constructor(
     public dependencies: string[] = []
@@ -10,7 +8,7 @@ export abstract class AbstractDependencyManager {
    * 
    * @param dependency complete dependency string so it can be rendered as is.
    */
-   addDependency(dependency: string): void {
+  addDependency(dependency: string): void {
     if (!this.dependencies.includes(dependency)) {
       this.dependencies.push(dependency);
     }

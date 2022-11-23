@@ -1,13 +1,11 @@
 import { ConstrainedUnionModel } from '../../models';
 import { Logger } from '../../utils';
-import { TypeMapping } from '../../helpers';
 import { defaultEnumKeyConstraints, defaultEnumValueConstraints } from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
-import { TypeScriptOptions } from './TypeScriptGenerator';
-import { TypeScriptDependencyManager } from './TypeScriptDependencyManager';
+import { TypeScriptTypeMapping } from './TypeScriptGenerator';
 
-export const TypeScriptDefaultTypeMapping: TypeMapping<TypeScriptOptions, TypeScriptDependencyManager> = {
+export const TypeScriptDefaultTypeMapping: TypeScriptTypeMapping = {
   Object ({constrainedModel}): string {
     return constrainedModel.name;
   },

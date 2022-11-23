@@ -1,11 +1,10 @@
-import { AbstractDependencyManager } from "../AbstractDependencyManager";
-import { renderJavaScriptDependency } from "../../utils";
-import { TypeScriptOptions, TypeScriptRenderCompleteModelOptions } from "./TypeScriptGenerator";
-import { ConstrainedMetaModel } from "../../models";
+import { AbstractDependencyManager } from '../AbstractDependencyManager';
+import { renderJavaScriptDependency } from '../../utils';
+import { ConstrainedMetaModel } from '../../models';
+import { TypeScriptExportType, TypeScriptModuleSystemType } from './TypeScriptGenerator';
 
 export class TypeScriptDependencyManager extends AbstractDependencyManager {
   constructor(
-    public options: TypeScriptOptions,
     dependencies: string[] = []
   ) {
     super(dependencies);
@@ -13,31 +12,24 @@ export class TypeScriptDependencyManager extends AbstractDependencyManager {
 
   /**
    * Simple helper function to render a dependency based on the module system that the user defines.
-   * 
-   * @param toImport 
-   * @param fromModule 
    */
-  renderDependency(toImport: string, fromModule: string): string {
-    return renderJavaScriptDependency(toImport, fromModule, this.options.moduleSystem);
+  renderDependency(toImport: string, fromModule: string, moduleSystem: TypeScriptModuleSystemType): string {
+    return renderJavaScriptDependency(toImport, fromModule, moduleSystem);
   }
 
   /**
    * Simple helper function to add a dependency correct based on the module system that the user defines.
    */
-  addTypeScriptDependency(toImport: string, fromModule: string) {
-    const dependencyImport = this.renderDependency(toImport, fromModule);
+  addTypeScriptDependency(toImport: string, fromModule: string, moduleSystem: TypeScriptModuleSystemType): void {
+    const dependencyImport = this.renderDependency(toImport, fromModule, moduleSystem);
     this.addDependency(dependencyImport);
   }
-
+  
   /**
-   * Render the model dependencies based on the options
-   * 
-   * @param model 
-   * @param opt 
-   * @returns 
+   * Render the model dependencies based on the option
    */
-  renderCompleteModelDependencies(model: ConstrainedMetaModel, opt: TypeScriptRenderCompleteModelOptions) {
-    const dependencyObject = opt.exportType === 'named' ? `{${model.name}}` : model.name;
-    return renderJavaScriptDependency(dependencyObject, `./${model.name}`, this.options.moduleSystem);
+  renderCompleteModelDependencies(model: ConstrainedMetaModel, exportType: TypeScriptExportType, moduleSystem: TypeScriptModuleSystemType): string {
+    const dependencyObject = exportType === 'named' ? `{${model.name}}` : model.name;
+    return renderJavaScriptDependency(dependencyObject, `./${model.name}`, moduleSystem);
   }
 }

@@ -3,7 +3,7 @@ import {
   CommonGeneratorOptions,
   defaultGeneratorOptions
 } from '../AbstractGenerator';
-import { ConstrainedEnumModel, ConstrainedMetaModel, ConstrainedObjectModel, InputMetaModel, MetaModel, OutputModel, RenderOutput } from '../../models';
+import { ConstrainedEnumModel, ConstrainedMetaModel, ConstrainedObjectModel, InputMetaModel, MetaModel, RenderOutput } from '../../models';
 import { constrainMetaModel, Constraints, hasPreset, split, TypeMapping } from '../../helpers';
 import { TypeScriptPreset, TS_DEFAULT_PRESET } from './TypeScriptPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
@@ -11,10 +11,12 @@ import { InterfaceRenderer } from './renderers/InterfaceRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { TypeRenderer } from './renderers/TypeRenderer';
 import { TypeScriptDefaultConstraints, TypeScriptDefaultTypeMapping } from './TypeScriptConstrainer';
-import { DeepPartial, mergePartialAndDefault, renderJavaScriptDependency } from '../../utils';
+import { DeepPartial, mergePartialAndDefault } from '../../utils';
 import { TypeScriptDependencyManager } from './TypeScriptDependencyManager';
 import { TS_EXPORT_KEYWORD_PRESET } from './presets/ExportKeywordPreset';
 
+export type TypeScriptModuleSystemType = 'ESM' | 'CJS';
+export type TypeScriptExportType = 'named' | 'default'; 
 export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPreset, TypeScriptDependencyManager> {
   renderTypes: boolean;
   modelType: 'class' | 'interface';
@@ -22,11 +24,11 @@ export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPres
   mapType: 'indexedObject' | 'map' | 'record';
   typeMapping: TypeMapping<TypeScriptOptions, TypeScriptDependencyManager>;
   constraints: Constraints;
-  moduleSystem: 'ESM' | 'CJS';
+  moduleSystem: TypeScriptModuleSystemType;
 }
-
+export type TypeScriptTypeMapping = TypeMapping<TypeScriptOptions, TypeScriptDependencyManager>;
 export interface TypeScriptRenderCompleteModelOptions {
-  exportType: 'default' | 'named';
+  exportType: TypeScriptExportType;
 }
 
 /**
@@ -43,7 +45,7 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions, Ty
     typeMapping: TypeScriptDefaultTypeMapping,
     constraints: TypeScriptDefaultConstraints,
     moduleSystem: 'ESM',
-    dependencyManagerFactory: undefined
+    dependencyManager: () => { return new TypeScriptDependencyManager();},
   };
   
   static defaultCompleteModelOptions: TypeScriptRenderCompleteModelOptions = {
@@ -53,13 +55,22 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions, Ty
   constructor(
     options?: DeepPartial<TypeScriptOptions>,
   ) {
-    const realizedOptions = mergePartialAndDefault(TypeScriptGenerator.defaultOptions, options) as TypeScriptOptions;
-
-    //Have to set the dependency manager factory after realizing the custom and default options, as it's required in the constructor.
-    if(realizedOptions.dependencyManagerFactory === undefined) {
-      realizedOptions.dependencyManagerFactory = () => { return new TypeScriptDependencyManager(realizedOptions);};
-    }
+    const realizedOptions = TypeScriptGenerator.getTypeScriptOptions(options);
     super('TypeScript', realizedOptions);
+  }
+
+  /**
+   * Returns the TypeScript options by merging custom options with default ones.
+   */
+  static getTypeScriptOptions(options?: DeepPartial<TypeScriptOptions>): TypeScriptOptions {
+    return mergePartialAndDefault(TypeScriptGenerator.defaultOptions, options) as TypeScriptOptions;
+  }
+
+  /**
+   * Wrapper to get an instance of the dependency manager
+   */
+  getTypeScriptDependencyManager(options: TypeScriptOptions): TypeScriptDependencyManager {
+    return this.getDependencyManagerInstance(options) as TypeScriptDependencyManager;
   }
 
   splitMetaModel(model: MetaModel): MetaModel[] {
@@ -71,14 +82,16 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions, Ty
     return split(model, metaModelsToSplit);
   }
 
-  constrainToMetaModel(model: MetaModel, dependencyManager: TypeScriptDependencyManager): ConstrainedMetaModel {
+  constrainToMetaModel(model: MetaModel, options: DeepPartial<TypeScriptOptions>): ConstrainedMetaModel {
+    const optionsToUse = TypeScriptGenerator.getTypeScriptOptions({...this.options, ...options});
+    const dependencyManagerToUse = this.getTypeScriptDependencyManager(optionsToUse);
     return constrainMetaModel<TypeScriptOptions, TypeScriptDependencyManager>(
       this.options.typeMapping, 
       this.options.constraints, 
       {
         metaModel: model,
-        dependencyManager: dependencyManager,
-        options: this.options,
+        dependencyManager: dependencyManagerToUse,
+        options: {...this.options},
         constrainedName: '' //This is just a placeholder, it will be constrained within the function
       }
     );
@@ -94,9 +107,12 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions, Ty
   async renderCompleteModel(
     model: ConstrainedMetaModel, 
     inputModel: InputMetaModel, 
-    completeModelOptions: Partial<TypeScriptRenderCompleteModelOptions>): Promise<RenderOutput> {
-    const realizedOptions = mergePartialAndDefault(TypeScriptGenerator.defaultCompleteModelOptions, completeModelOptions) as TypeScriptRenderCompleteModelOptions;
-    const outputModel = await this.render(model, inputModel);
+    completeModelOptions: Partial<TypeScriptRenderCompleteModelOptions>,
+    options: DeepPartial<TypeScriptOptions>): Promise<RenderOutput> {
+    const completeModelOptionsToUse = mergePartialAndDefault(TypeScriptGenerator.defaultCompleteModelOptions, completeModelOptions) as TypeScriptRenderCompleteModelOptions;
+    const optionsToUse = TypeScriptGenerator.getTypeScriptOptions({...this.options, ...options});
+    const dependencyManagerToUse = this.getTypeScriptDependencyManager(optionsToUse);
+    const outputModel = await this.render(model, inputModel, {dependencyManager: dependencyManagerToUse});
     const modelDependencies = model.getNearestDependencies();
     // Shallow copy presets so that we can restore it once we are done
     const originalPresets = [...(this.options.presets ? this.options.presets : [])];
@@ -104,27 +120,18 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions, Ty
     // Add preset that adds the `export` keyword if it hasn't already been added
     if (
       this.options.moduleSystem === 'ESM' &&
-      completeModelOptions.exportType === 'named' &&
+      completeModelOptionsToUse.exportType === 'named' &&
       !hasPreset(originalPresets, TS_EXPORT_KEYWORD_PRESET)
     ) {
       this.options.presets = [TS_EXPORT_KEYWORD_PRESET, ...originalPresets];
     }
     //Create the correct model dependency imports
     const modelDependencyImports = modelDependencies.map((model) => {
-      return TypeScriptDependencyManager.renderCompleteModelDependencies(model, realizedOptions); 
+      return dependencyManagerToUse.renderCompleteModelDependencies(model, completeModelOptionsToUse.exportType, optionsToUse.moduleSystem); 
     });
+    const modelExport = dependencyManagerToUse.renderCompleteModelDependencies(model, completeModelOptionsToUse.exportType, optionsToUse.moduleSystem);
 
-    //Ensure we expose the model correctly, based on the module system and export type
-    const cjsExport =
-      completeModelOptions.exportType === 'default'
-        ? `module.exports = ${outputModel.renderedName};`
-        : `exports.${outputModel.renderedName} = ${outputModel.renderedName};`;
-    const esmExport =
-      completeModelOptions.exportType === 'default'
-        ? `export default ${outputModel.renderedName};\n`
-        : `export {${outputModel.renderedName}};`;
-
-    const modelCode = `${outputModel.result}\n${this.options.moduleSystem === 'CJS' ? cjsExport : esmExport}`;
+    const modelCode = `${outputModel.result}\n${modelExport}`;
 
     const outputContent = `${[...modelDependencyImports, ...outputModel.dependencies].join('\n')}
 ${modelCode}`;
@@ -132,47 +139,55 @@ ${modelCode}`;
     return RenderOutput.toRenderOutput({ result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies });
   }
 
-  render(model: ConstrainedMetaModel, inputModel: InputMetaModel): Promise<RenderOutput> {
+  /**
+   * Render any ConstrainedMetaModel to code 
+   */
+  render(model: ConstrainedMetaModel, inputModel: InputMetaModel, options?: DeepPartial<TypeScriptOptions>): Promise<RenderOutput> {
+    const optionsToUse = TypeScriptGenerator.getTypeScriptOptions({...this.options, ...options});
     if (model instanceof ConstrainedObjectModel) {
       if (this.options.modelType === 'interface') {
-        return this.renderInterface(model, inputModel);
+        return this.renderInterface(model, inputModel, optionsToUse);
       }
-      return this.renderClass(model, inputModel);
+      return this.renderClass(model, inputModel, optionsToUse);
     } else if (model instanceof ConstrainedEnumModel) {
-      return this.renderEnum(model, inputModel);
+      return this.renderEnum(model, inputModel, optionsToUse);
     } 
-    return this.renderType(model, inputModel);
+    return this.renderType(model, inputModel, optionsToUse);
   }
 
-  async renderClass(model: ConstrainedObjectModel, inputModel: InputMetaModel): Promise<RenderOutput> {
-    const presets = this.getPresets('class'); 
-    const dependencyManager = this.options.dependencyManagerFactory!();
-    const renderer = new ClassRenderer(this.options, this, presets, model, inputModel, dependencyManager);
+  async renderClass(model: ConstrainedObjectModel, inputModel: InputMetaModel, options?: DeepPartial<TypeScriptOptions>): Promise<RenderOutput> {
+    const optionsToUse = TypeScriptGenerator.getTypeScriptOptions({...this.options, ...options});
+    const dependencyManagerToUse = this.getTypeScriptDependencyManager(optionsToUse);
+    const presets = this.getPresets('class');
+    const renderer = new ClassRenderer(optionsToUse, this, presets, model, inputModel, dependencyManagerToUse);
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: dependencyManager.dependencies});
+    return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: dependencyManagerToUse.dependencies});
   }
 
-  async renderInterface(model: ConstrainedObjectModel, inputModel: InputMetaModel): Promise<RenderOutput> {
+  async renderInterface(model: ConstrainedObjectModel, inputModel: InputMetaModel, options?: Partial<TypeScriptOptions>): Promise<RenderOutput> {
+    const optionsToUse = TypeScriptGenerator.getTypeScriptOptions({...this.options, ...options});
+    const dependencyManagerToUse = this.getTypeScriptDependencyManager(optionsToUse);
     const presets = this.getPresets('interface'); 
-    const dependencyManager = this.options.dependencyManagerFactory!();
-    const renderer = new InterfaceRenderer(this.options, this, presets, model, inputModel, dependencyManager);
+    const renderer = new InterfaceRenderer(optionsToUse, this, presets, model, inputModel, dependencyManagerToUse);
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: dependencyManager.dependencies});
+    return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: dependencyManagerToUse.dependencies});
   }
 
-  async renderEnum(model: ConstrainedEnumModel, inputModel: InputMetaModel): Promise<RenderOutput> {
+  async renderEnum(model: ConstrainedEnumModel, inputModel: InputMetaModel, options?: DeepPartial<TypeScriptOptions>): Promise<RenderOutput> {
+    const optionsToUse = TypeScriptGenerator.getTypeScriptOptions({...this.options, ...options});
+    const dependencyManagerToUse = this.getTypeScriptDependencyManager(optionsToUse);
     const presets = this.getPresets('enum'); 
-    const dependencyManager = this.options.dependencyManagerFactory!();
-    const renderer = new EnumRenderer(this.options, this, presets, model, inputModel, dependencyManager);
+    const renderer = new EnumRenderer(optionsToUse, this, presets, model, inputModel, dependencyManagerToUse);
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: dependencyManager.dependencies});
+    return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: dependencyManagerToUse.dependencies});
   }
 
-  async renderType(model: ConstrainedMetaModel, inputModel: InputMetaModel): Promise<RenderOutput> {
+  async renderType(model: ConstrainedMetaModel, inputModel: InputMetaModel, options?: DeepPartial<TypeScriptOptions>): Promise<RenderOutput> {
+    const optionsToUse = TypeScriptGenerator.getTypeScriptOptions({...this.options, ...options});
+    const dependencyManagerToUse = this.getTypeScriptDependencyManager(optionsToUse);
     const presets = this.getPresets('type'); 
-    const dependencyManager = this.options.dependencyManagerFactory!();
-    const renderer = new TypeRenderer(this.options, this, presets, model, inputModel, dependencyManager);
+    const renderer = new TypeRenderer(optionsToUse, this, presets, model, inputModel, dependencyManagerToUse);
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: dependencyManager.dependencies});
+    return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: dependencyManagerToUse.dependencies});
   }
 }
