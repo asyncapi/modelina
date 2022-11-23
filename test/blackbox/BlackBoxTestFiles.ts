@@ -58,7 +58,7 @@ let filesToTest = [
   }),
 ];
 // Outcomment below to customize which inputs are used in the blackbox tests:
-// filesToTest = jsonSchemaDraft7Files.filter(({ file }) => {
-//   return file.includes('asyncapi-2_0.json');
-// });
+filesToTest = jsonSchemaDraft7Files.filter(({ file }) => {
+  return file.includes('asyncapi-2_0.json');
+});
 export default filesToTest;
