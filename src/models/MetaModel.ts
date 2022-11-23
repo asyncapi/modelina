@@ -16,8 +16,7 @@ export class ReferenceModel extends MetaModel {
 export class AnyModel extends MetaModel { }
 export class FloatModel extends MetaModel { }
 export class IntegerModel extends MetaModel { }
-export class StringModel extends MetaModel { 
-}
+export class StringModel extends MetaModel { }
 export class BooleanModel extends MetaModel { }
 export class TupleValueModel {
   constructor(
