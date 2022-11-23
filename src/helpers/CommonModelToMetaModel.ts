@@ -219,31 +219,14 @@ export function convertToObjectModel(jsonSchemaModel: CommonModel, name: string,
     metaModel.properties[String(propertyName)] = propertyModel;
   }
 
-  if(jsonSchemaModel.additionalProperties !== undefined || jsonSchemaModel.patternProperties !== undefined) {
+  if (jsonSchemaModel.additionalProperties !== undefined) {
     let propertyName = 'additionalProperties';
     while (metaModel.properties[String(propertyName)] !== undefined) {
       propertyName = `reserved_${propertyName}`;
     }
-    const keyModel = new StringModel(propertyName, jsonSchemaModel.originalInput);
-    const modelsAsValue = new Map<string, MetaModel>();
-    if (jsonSchemaModel.additionalProperties !== undefined) {
-      const additionalPropertyModel = convertToMetaModel(jsonSchemaModel.additionalProperties, alreadySeenModels);
-      modelsAsValue.set(additionalPropertyModel.name, additionalPropertyModel);
-    }
-    
-    if (jsonSchemaModel.patternProperties !== undefined) {
-      for (const patternModel of Object.values(jsonSchemaModel.patternProperties)) {
-        const patternPropertyModel = convertToMetaModel(patternModel);
-        modelsAsValue.set(patternPropertyModel.name, patternPropertyModel);
-      }
-    }
-    let valueModel: MetaModel;
-    if (modelsAsValue.size === 1) {
-      valueModel = Array.from(modelsAsValue.values())[0];
-    } else {
-      valueModel = new UnionModel(propertyName, jsonSchemaModel.originalInput, Array.from(modelsAsValue.values()));
-    }
-    const dictionaryModel = new DictionaryModel(propertyName, jsonSchemaModel.originalInput, keyModel, valueModel, 'unwrap');
+    const keyModel = new StringModel(propertyName, jsonSchemaModel.additionalProperties.originalInput);
+    const valueModel = convertToMetaModel(jsonSchemaModel.additionalProperties, alreadySeenModels);
+    const dictionaryModel = new DictionaryModel(propertyName, jsonSchemaModel.additionalProperties.originalInput, keyModel, valueModel, 'unwrap');
     const propertyModel = new ObjectPropertyModel(propertyName, false, dictionaryModel);
     metaModel.properties[String(propertyName)] = propertyModel;
   }
