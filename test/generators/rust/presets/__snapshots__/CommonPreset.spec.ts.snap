@@ -112,15 +112,15 @@ exports[`RUST_COMMON_PRESET Enum should render \`enum\` with mixed types (union 
 "// Things represents a Things model.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub enum Things {
-    #[serde(rename=\\"Texas\\")]
+    #[serde(rename=\\"String\\")]
     Texas,
-    #[serde(rename=\\"1\\")]
+    #[serde(rename=\\"f64\\")]
     Number_1,
-    #[serde(rename=\\"1\\")]
+    #[serde(rename=\\"String\\")]
     ReservedNumber_1,
-    #[serde(rename=\\"false\\")]
+    #[serde(rename=\\"bool\\")]
     ReservedFalse,
-    #[serde(flatten)]
+    #[serde(rename=\\"HashMap<String, serde_json::Value>\\")]
     CurlyleftQuotationTestQuotationColonQuotationTestQuotationCurlyright(HashMap<String, serde_json::Value>),
 }
 impl Default for Things {
@@ -134,15 +134,15 @@ exports[`RUST_COMMON_PRESET Enum should render \`enum\` without Default implemen
 "// Things represents a Things model.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub enum Things {
-    #[serde(rename=\\"Texas\\")]
+    #[serde(rename=\\"String\\")]
     Texas,
-    #[serde(rename=\\"1\\")]
+    #[serde(rename=\\"f64\\")]
     Number_1,
-    #[serde(rename=\\"1\\")]
+    #[serde(rename=\\"String\\")]
     ReservedNumber_1,
-    #[serde(rename=\\"false\\")]
+    #[serde(rename=\\"bool\\")]
     ReservedFalse,
-    #[serde(flatten)]
+    #[serde(rename=\\"HashMap<String, serde_json::Value>\\")]
     CurlyleftQuotationTestQuotationColonQuotationTestQuotationCurlyright(HashMap<String, serde_json::Value>),
 }
 "
@@ -152,15 +152,15 @@ exports[`RUST_COMMON_PRESET Enum should render enums with translated special cha
 "// States represents a States model.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub enum States {
-    #[serde(rename=\\"test+\\")]
+    #[serde(rename=\\"String\\")]
     TestPlus,
-    #[serde(rename=\\"$test\\")]
+    #[serde(rename=\\"String\\")]
     DollarTest,
-    #[serde(rename=\\"test-\\")]
+    #[serde(rename=\\"String\\")]
     TestMinus,
-    #[serde(rename=\\"test?!\\")]
+    #[serde(rename=\\"String\\")]
     TestQuestionExclamation,
-    #[serde(rename=\\"*test\\")]
+    #[serde(rename=\\"String\\")]
     AsteriskTest,
 }
 impl Default for States {
@@ -174,11 +174,11 @@ exports[`RUST_COMMON_PRESET Enum should render implement Default for \`enum (def
 "// CustomEnum represents a CustomEnum model.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub enum CustomEnum {
-    #[serde(rename=\\"Texas\\")]
+    #[serde(rename=\\"String\\")]
     Texas,
-    #[serde(rename=\\"Alabama\\")]
+    #[serde(rename=\\"String\\")]
     Alabama,
-    #[serde(rename=\\"California\\")]
+    #[serde(rename=\\"String\\")]
     California,
 }
 impl Default for CustomEnum {

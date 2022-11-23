@@ -23,7 +23,7 @@ var jsonStringCompliant = stringEnumValue == "True" || stringEnumValue == "False
 var jsonToken = JToken.Parse(jsonStringCompliant);
 jo.Add("${prop.unconstrainedPropertyName}", jsonToken);`;
       }
-      return `if (value.${prop.propertyName} != null)
+      return `if (value.${propertyAccessor} != null)
 {
   ${toJson}
 }`;
@@ -92,7 +92,7 @@ function renderDeserialize({ model }: {
   {
     ${unwrapDictionaryRead.join('\n')}
   }` : '';
-  return `public override ${model.name} ReadJson(JsonReader reader, Type objectType, ${model.name} existingValue, bool hasExistingValue, JsonSerializer serializer)
+  return `public override ${model.name} ReadJson(JsonReader reader, System.Type objectType, ${model.name} existingValue, bool hasExistingValue, JsonSerializer serializer)
 {
   JObject jo = JObject.Load(reader);
   ${model.name} value = new ${model.name}();
@@ -115,6 +115,7 @@ export const CSHARP_NEWTONSOFT_SERIALIZER_PRESET: CSharpPreset<CSharpOptions> = 
       renderer.addDependency('using Newtonsoft.Json;');
       renderer.addDependency('using Newtonsoft.Json.Linq;');
       renderer.addDependency('using System.Collections.Generic;');
+      renderer.addDependency('using System.Linq;');
 
       const deserialize = renderDeserialize({ model });
       const serialize = renderSerialize({ model });
