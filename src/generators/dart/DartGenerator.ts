@@ -13,6 +13,7 @@ import {Logger} from '../../';
 import {FormatHelpers} from '../../helpers/FormatHelpers';
 import { DartDefaultConstraints, DartDefaultTypeMapping } from './DartConstrainer';
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
+import { CommonRenderCompleteModelOptions, defaultCompleteOptions } from '../AbstractFileGenerator';
 
 export interface DartOptions extends CommonGeneratorOptions<DartPreset> {
   collectionType?: 'List';
@@ -20,7 +21,7 @@ export interface DartOptions extends CommonGeneratorOptions<DartPreset> {
   constraints: Constraints;
 }
 
-export interface DartRenderCompleteModelOptions {
+export interface DartRenderCompleteModelOptions extends CommonRenderCompleteModelOptions {
   packageName: string;
 }
 
@@ -32,6 +33,11 @@ export class DartGenerator extends AbstractGenerator<DartOptions, DartRenderComp
     typeMapping: DartDefaultTypeMapping,
     constraints: DartDefaultConstraints
   };
+
+  static defaultCompleteOptions: DartRenderCompleteModelOptions = {
+    ...defaultCompleteOptions,
+    packageName: 'asyncapi'
+  }
 
   constructor(
     options?: DeepPartial<DartOptions>,

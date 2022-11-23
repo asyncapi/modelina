@@ -1,4 +1,4 @@
-import { defaultRustRenderCompleteModelOptions, RustGenerator, RustRenderCompleteModelOptions } from '../../../src/generators';
+import { RustGenerator, RustRenderCompleteModelOptions } from '../../../src/generators';
 
 describe('RustGenerator', () => {
   let generator: RustGenerator;
@@ -77,7 +77,7 @@ describe('RustGenerator', () => {
         enum: ['Texas', 'Alabama', 'California'],
       };
 
-      const options = { ...defaultRustRenderCompleteModelOptions, implementDefault: true, packageName: 'test' } as RustRenderCompleteModelOptions;
+      const options = { ...RustGenerator.defaultCompleteOptions, implementDefault: true, packageName: 'test' } as RustRenderCompleteModelOptions;
 
       const models = await generator.generateCompleteModels(doc, options);
       expect(models).toHaveLength(1);
@@ -135,7 +135,7 @@ describe('RustGenerator', () => {
     });
 
     test('Should render complete models', async () => {
-      const options = { ...defaultRustRenderCompleteModelOptions, implementDefault: true, implementNew: true, supportFiles: true } as RustRenderCompleteModelOptions;
+      const options = { ...RustGenerator.defaultCompleteOptions, implementDefault: true, implementNew: true, supportFiles: true } as RustRenderCompleteModelOptions;
 
       const models = await generator.generateCompleteModels(doc, options);
       expect(models).toHaveLength(3);
@@ -152,7 +152,7 @@ describe('RustGenerator', () => {
         type: 'integer',
         enum: [0, 1, 2, 3],
       };
-      const options = { ...defaultRustRenderCompleteModelOptions, implementDefault: true, implementNew: true, supportFiles: true } as RustRenderCompleteModelOptions;
+      const options = { ...RustGenerator.defaultCompleteOptions, implementDefault: true, implementNew: true, supportFiles: true } as RustRenderCompleteModelOptions;
       const output = await generator.generateCompleteSupport(doc, options);
       expect(output).toHaveLength(2);
       expect(output[0].result).toMatchSnapshot(); // Cargo.toml

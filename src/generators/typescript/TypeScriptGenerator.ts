@@ -1,53 +1,24 @@
 import { 
-  AbstractGenerator, 
-  CommonGeneratorOptions,
-  defaultGeneratorOptions
+  AbstractGenerator
 } from '../AbstractGenerator';
 import { ConstrainedEnumModel, ConstrainedMetaModel, ConstrainedObjectModel, InputMetaModel, MetaModel, RenderOutput } from '../../models';
-import { constrainMetaModel, Constraints, split, TypeMapping, hasPreset, SplitOptions, renderJavaScriptDependency } from '../../helpers';
-import { TypeScriptPreset, TS_DEFAULT_PRESET } from './TypeScriptPreset';
+import { constrainMetaModel, split, hasPreset, SplitOptions, renderJavaScriptDependency } from '../../helpers';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { InterfaceRenderer } from './renderers/InterfaceRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { TypeRenderer } from './renderers/TypeRenderer';
-import { TypeScriptDefaultConstraints, TypeScriptDefaultTypeMapping } from './TypeScriptConstrainer';
 import { TS_EXPORT_KEYWORD_PRESET } from './presets';
 import { DeepPartial, mergePartialAndDefault } from '../../utils';
-
-export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPreset> {
-  renderTypes: boolean;
-  modelType: 'class' | 'interface';
-  enumType: 'enum' | 'union';
-  mapType: 'indexedObject' | 'map' | 'record';
-  typeMapping: TypeMapping<TypeScriptOptions>;
-  constraints: Constraints;
-  moduleSystem: 'ESM' | 'CJS';
-}
-
-export interface TypeScriptRenderCompleteModelOptions {
-  exportType?: 'default' | 'named';
-}
+import { defaultTypeScriptOptions, TypeScriptCompleteOptions, TypeScriptOptions } from './TypeScriptOptions';
 
 /**
  * Generator for TypeScript
  */
-export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions, TypeScriptRenderCompleteModelOptions> {
-  static defaultOptions: TypeScriptOptions = {
-    ...defaultGeneratorOptions,
-    renderTypes: true,
-    modelType: 'class',
-    enumType: 'enum',
-    mapType: 'map',
-    defaultPreset: TS_DEFAULT_PRESET,
-    typeMapping: TypeScriptDefaultTypeMapping,
-    constraints: TypeScriptDefaultConstraints,
-    moduleSystem: 'ESM'
-  };
-
+export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions, TypeScriptCompleteOptions> {
   constructor(
     options?: DeepPartial<TypeScriptOptions>,
   ) {
-    const realizedOptions = mergePartialAndDefault(TypeScriptGenerator.defaultOptions, options) as TypeScriptOptions;
+    const realizedOptions = mergePartialAndDefault(defaultTypeScriptOptions, options) as TypeScriptOptions;
     super('TypeScript', realizedOptions);
   }
 
@@ -79,14 +50,14 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions, Ty
    * @param inputModel
    * @param options
    */
-  async renderCompleteModel(model: ConstrainedMetaModel, inputModel: InputMetaModel, {exportType = 'default'}: TypeScriptRenderCompleteModelOptions): Promise<RenderOutput> {
+  async renderCompleteModel(model: ConstrainedMetaModel, inputModel: InputMetaModel, options: TypeScriptCompleteOptions): Promise<RenderOutput> {
     // Shallow copy presets so that we can restore it once we are done
     const originalPresets = [...(this.options.presets ? this.options.presets : [])];
 
     // Add preset that adds the `export` keyword if it hasn't already been added
     if (
       this.options.moduleSystem === 'ESM' &&
-      exportType === 'named' &&
+      options.exportType === 'named' &&
       !hasPreset(originalPresets, TS_EXPORT_KEYWORD_PRESET)
     ) {
       this.options.presets = [TS_EXPORT_KEYWORD_PRESET, ...originalPresets];

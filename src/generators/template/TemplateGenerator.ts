@@ -13,12 +13,13 @@ import { Logger } from '../..';
 import { constrainMetaModel, Constraints } from '../../helpers/ConstrainHelpers';
 import { TemplateDefaultConstraints, TemplateDefaultTypeMapping } from './TemplateConstrainer';
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
+import { CommonRenderCompleteModelOptions, defaultCompleteOptions } from '../AbstractFileGenerator';
 
 export interface TemplateOptions extends CommonGeneratorOptions<TemplatePreset> {
   typeMapping: TypeMapping<TemplateOptions>;
   constraints: Constraints;
 }
-export interface TemplateRenderCompleteModelOptions {
+export interface TemplateRenderCompleteModelOptions extends CommonRenderCompleteModelOptions {
   packageName: string
 }
 export class TemplateGenerator extends AbstractGenerator<TemplateOptions, TemplateRenderCompleteModelOptions> {
@@ -28,6 +29,12 @@ export class TemplateGenerator extends AbstractGenerator<TemplateOptions, Templa
     typeMapping: TemplateDefaultTypeMapping,
     constraints: TemplateDefaultConstraints
   };
+  
+  static defaultCompleteOptions: TemplateRenderCompleteModelOptions = {
+    ...defaultCompleteOptions,
+    packageName: 'MyPackage'
+  }
+
 
   constructor(
     options?: DeepPartial<TemplateOptions>,
@@ -35,6 +42,7 @@ export class TemplateGenerator extends AbstractGenerator<TemplateOptions, Templa
     const realizedOptions = mergePartialAndDefault(TemplateGenerator.defaultOptions, options) as TemplateOptions;
     super('Template', realizedOptions);
   }
+
   /**
    * This function makes sure we split up the MetaModels accordingly to what we want to render as models.
    */

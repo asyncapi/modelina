@@ -11,13 +11,14 @@ import { EnumRenderer } from './renderers/EnumRenderer';
 import { Logger } from '../../utils/LoggingInterface';
 import { GoDefaultConstraints, GoDefaultTypeMapping } from './GoConstrainer';
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
+import { CommonRenderCompleteModelOptions, defaultCompleteOptions } from '../AbstractFileGenerator';
 
 export interface GoOptions extends CommonGeneratorOptions<GoPreset> {
   typeMapping: TypeMapping<GoOptions>;
   constraints: Constraints
 }
 
-export interface GoRenderCompleteModelOptions {
+export interface GoRenderCompleteModelOptions extends CommonRenderCompleteModelOptions {
   packageName: string
 }
 
@@ -31,6 +32,11 @@ export class GoGenerator extends AbstractGenerator<GoOptions, GoRenderCompleteMo
     typeMapping: GoDefaultTypeMapping,
     constraints: GoDefaultConstraints
   };
+  
+  static defaultCompleteOptions: GoRenderCompleteModelOptions = {
+    ...defaultCompleteOptions,
+    packageName: 'asyncapi'
+  }
 
   constructor(
     options?: DeepPartial<GoOptions>,

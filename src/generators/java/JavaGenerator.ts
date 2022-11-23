@@ -13,13 +13,14 @@ import { Logger } from '../../';
 import { constrainMetaModel, Constraints } from '../../helpers/ConstrainHelpers';
 import { JavaDefaultConstraints, JavaDefaultTypeMapping } from './JavaConstrainer';
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
+import { CommonRenderCompleteModelOptions, defaultCompleteOptions } from '../AbstractFileGenerator';
 
 export interface JavaOptions extends CommonGeneratorOptions<JavaPreset> {
   collectionType: 'List' | 'Array';
   typeMapping: TypeMapping<JavaOptions>;
   constraints: Constraints;
 }
-export interface JavaRenderCompleteModelOptions {
+export interface JavaRenderCompleteModelOptions extends CommonRenderCompleteModelOptions {
   packageName: string
 }
 export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderCompleteModelOptions> {
@@ -30,6 +31,11 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderComp
     typeMapping: JavaDefaultTypeMapping,
     constraints: JavaDefaultConstraints
   };
+
+  static defaultCompleteOptions: JavaRenderCompleteModelOptions = {
+    ...defaultCompleteOptions,
+    packageName: 'asyncapi'
+  }
 
   constructor(
     options?: DeepPartial<JavaOptions>,

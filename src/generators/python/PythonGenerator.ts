@@ -13,14 +13,15 @@ import { Logger } from '../..';
 import { constrainMetaModel, Constraints } from '../../helpers/ConstrainHelpers';
 import { PythonDefaultConstraints, PythonDefaultTypeMapping } from './PythonConstrainer';
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
-
+import { CommonRenderCompleteModelOptions, defaultCompleteOptions } from '../AbstractFileGenerator';
 export interface PythonOptions extends CommonGeneratorOptions<PythonPreset> {
   typeMapping: TypeMapping<PythonOptions>;
   constraints: Constraints;
   importsStyle: 'explicit' | 'implicit';
 }
+
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface PythonRenderCompleteModelOptions {}
+export interface PythonRenderCompleteModelOptions extends CommonRenderCompleteModelOptions {}
 export class PythonGenerator extends AbstractGenerator<PythonOptions, PythonRenderCompleteModelOptions> {
   static defaultOptions: PythonOptions = {
     ...defaultGeneratorOptions,
@@ -29,6 +30,10 @@ export class PythonGenerator extends AbstractGenerator<PythonOptions, PythonRend
     constraints: PythonDefaultConstraints,
     importsStyle: 'implicit'
   };
+
+  static defaultCompleteOptions: PythonRenderCompleteModelOptions = {
+    ...defaultCompleteOptions
+  }
 
   constructor(
     options?: DeepPartial<PythonOptions>,
@@ -86,8 +91,8 @@ export class PythonGenerator extends AbstractGenerator<PythonOptions, PythonRend
    * @param inputModel 
    * @param options used to render the full output
    */
-  async renderCompleteModel(model: ConstrainedMetaModel, inputModel: InputMetaModel, options: PythonOptions): Promise<RenderOutput> {
-    const useExplicitImports = options.importsStyle === 'explicit';
+  async renderCompleteModel(model: ConstrainedMetaModel, inputModel: InputMetaModel, options: PythonRenderCompleteModelOptions): Promise<RenderOutput> {
+    const useExplicitImports = this.options.importsStyle === 'explicit';
     const outputModel = await this.render(model, inputModel);
     const modelDependencies = model.getNearestDependencies().map((dependencyModel) => {
       return `from ${useExplicitImports ? '.' : ''}${dependencyModel.name} import ${dependencyModel.name}`;

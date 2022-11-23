@@ -1,4 +1,4 @@
-import { RustFileGenerator, RustRenderCompleteModelOptions, RUST_COMMON_PRESET, defaultRustRenderCompleteModelOptions, RustPackageFeatures } from '../../src/generators';
+import { RustFileGenerator, RustGenerator, RustRenderCompleteModelOptions, RUST_COMMON_PRESET, RustPackageFeatures } from '../../src/generators';
 import * as path from 'path';
 
 const doc = {
@@ -41,7 +41,7 @@ export async function generate(): Promise<void> {
 
   // Run the file generator with options
   const models = await generator.generateToPackage(doc, outDir, {
-    ...defaultRustRenderCompleteModelOptions,
+    ...RustGenerator.defaultCompleteOptions,
     supportFiles: true, // generate Cargo.toml and lib.rs
     package: {
       packageName: 'asyncapi-rs-example',
