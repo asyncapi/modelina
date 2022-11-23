@@ -4,12 +4,12 @@ import {
   defaultGeneratorOptions
 } from '../AbstractGenerator';
 import { ConstrainedMetaModel, ConstrainedObjectModel, InputMetaModel, MetaModel, RenderOutput } from '../../models';
-import { TypeMapping, Constraints, split, constrainMetaModel } from '../../helpers';
+import { TypeMapping, Constraints, split, constrainMetaModel, renderJavaScriptDependency } from '../../helpers';
 import { JavaScriptPreset, JS_DEFAULT_PRESET } from './JavaScriptPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { Logger } from '../../';
 import { JavaScriptDefaultConstraints, JavaScriptDefaultTypeMapping } from './JavaScriptConstrainer';
-import { DeepPartial, mergePartialAndDefault, renderJavaScriptDependency } from '../../utils';
+import { DeepPartial, mergePartialAndDefault } from '../../utils';
 export interface JavaScriptOptions extends CommonGeneratorOptions<JavaScriptPreset> {
   typeMapping: TypeMapping<JavaScriptOptions>;
   constraints: Constraints;
