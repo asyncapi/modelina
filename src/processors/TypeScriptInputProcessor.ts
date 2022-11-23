@@ -51,7 +51,7 @@ export class TypeScriptInputProcessor extends AbstractInputProcessor {
     return [schema];
   }
 
-  shouldProcess(input: Record<string, any>): boolean {
+  shouldProcess(input: any): boolean {
     // checking if input is null
     if ((input === null || undefined) || (input.baseFile === null || undefined)) {
       return false;
@@ -68,7 +68,7 @@ export class TypeScriptInputProcessor extends AbstractInputProcessor {
     return true;
   }
 
-  process(input: Record<string, any>, options?: ProcessorOptions): Promise<InputMetaModel> {
+  process(input: any, options?: ProcessorOptions): Promise<InputMetaModel> {
     const inputModel = new InputMetaModel();
 
     if (!this.shouldProcess(input)) {
@@ -82,7 +82,7 @@ export class TypeScriptInputProcessor extends AbstractInputProcessor {
     const generatedSchemas = this.generateJSONSchema(baseFile, '*', options?.typescript);
     if (generatedSchemas) {
       for (const schema of generatedSchemas) {
-        const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema as Record<string, any>, options);
+        const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(schema as any, options);
         if (newCommonModel.$id !== undefined) {
           if (inputModel.models[newCommonModel.$id] !== undefined) {
             Logger.warn(`Overwriting existing model with $id ${newCommonModel.$id}, are there two models with the same id present?`, newCommonModel);

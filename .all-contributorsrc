@@ -333,6 +333,83 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "artur-ciocanu",
+      "name": "artur-ciocanu",
+      "avatar_url": "https://avatars.githubusercontent.com/u/743192?v=4",
+      "profile": "https://github.com/artur-ciocanu",
+      "contributions": [
+        "code",
+        "bug"
+      ]
+    },
+    {
+      "login": "micro-jumbo",
+      "name": "Cyprian Gracz",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11511697?v=4",
+      "profile": "https://micro-jumbo.eu/",
+      "contributions": [
+        "code",
+        "test",
+        "bug"
+      ]
+    },
+    {
+      "login": "leigh-johnson",
+      "name": "Leigh Johnson",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2601819?v=4",
+      "profile": "https://www.printnanny.ai",
+      "contributions": [
+        "code",
+        "test",
+        "example",
+        "doc",
+        "maintenance"
+      ]
+    },
+    {
+      "login": "nitintejuja",
+      "name": "Nitin Tejuja",
+      "avatar_url": "https://avatars.githubusercontent.com/u/95347924?v=4",
+      "profile": "https://github.com/nitintejuja",
+      "contributions": [
+        "test",
+        "example"
+      ]
+    },
+    {
+      "login": "kennethaasan",
+      "name": "Kenneth Aasan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1437394?v=4",
+      "profile": "https://github.com/kennethaasan",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "amit-ksh",
+      "name": "Amit Kumar Sharma",
+      "avatar_url": "https://avatars.githubusercontent.com/u/91947037?v=4",
+      "profile": "https://github.com/amit-ksh",
+      "contributions": [
+        "test",
+        "doc",
+        "example"
+      ]
+    },
+    {
+      "login": "zaytsevand",
+      "name": "Andrey Zaytsev",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5207748?v=4",
+      "profile": "https://github.com/zaytsevand",
+      "contributions": [
+        "code",
+        "example",
+        "doc",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,

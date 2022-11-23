@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { 
   AbstractGenerator, 
   CommonGeneratorOptions,
@@ -16,6 +17,7 @@ import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 export interface PythonOptions extends CommonGeneratorOptions<PythonPreset> {
   typeMapping: TypeMapping<PythonOptions>;
   constraints: Constraints;
+  importsStyle: 'explicit' | 'implicit';
 }
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface PythonRenderCompleteModelOptions {}
@@ -24,7 +26,8 @@ export class PythonGenerator extends AbstractGenerator<PythonOptions, PythonRend
     ...defaultGeneratorOptions,
     defaultPreset: PYTHON_DEFAULT_PRESET,
     typeMapping: PythonDefaultTypeMapping,
-    constraints: PythonDefaultConstraints
+    constraints: PythonDefaultConstraints,
+    importsStyle: 'implicit'
   };
 
   constructor(
@@ -83,10 +86,11 @@ export class PythonGenerator extends AbstractGenerator<PythonOptions, PythonRend
    * @param inputModel 
    * @param options used to render the full output
    */
-  async renderCompleteModel(model: ConstrainedMetaModel, inputModel: InputMetaModel): Promise<RenderOutput> {
+  async renderCompleteModel(model: ConstrainedMetaModel, inputModel: InputMetaModel, options: PythonOptions): Promise<RenderOutput> {
+    const useExplicitImports = options.importsStyle === 'explicit';
     const outputModel = await this.render(model, inputModel);
     const modelDependencies = model.getNearestDependencies().map((dependencyModel) => {
-      return `from ${dependencyModel.name} import ${dependencyModel.name}`;
+      return `from ${useExplicitImports ? '.' : ''}${dependencyModel.name} import ${dependencyModel.name}`;
     });
     const outputContent = `${modelDependencies.join('\n')}
 ${outputModel.dependencies.join('\n')}

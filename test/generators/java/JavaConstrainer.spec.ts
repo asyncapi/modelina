@@ -1,5 +1,5 @@
 import {JavaDefaultTypeMapping } from '../../../src/generators/java/JavaConstrainer';
-import { ConstrainedAnyModel, ConstrainedArrayModel, ConstrainedBooleanModel, ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedUnionModel, JavaGenerator, JavaOptions } from '../../../src';
+import { ConstrainedAnyModel, ConstrainedArrayModel, ConstrainedBooleanModel, ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedEnumValueModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedUnionModel, JavaGenerator, JavaOptions } from '../../../src';
 describe('JavaConstrainer', () => {
   describe('ObjectModel', () => { 
     test('should render the constrained name as type', () => {
@@ -134,10 +134,62 @@ describe('JavaConstrainer', () => {
   });
 
   describe('Enum', () => { 
-    test('should render the constrained name as type', () => {
-      const model = new ConstrainedEnumModel('test', undefined, '', []);
+    test('should render string enum values as String type', () => {
+      const enumValue = new ConstrainedEnumValueModel('test', 'string type');
+      const model = new ConstrainedEnumModel('test', undefined, '', [enumValue]);
       const type = JavaDefaultTypeMapping.Enum({constrainedModel: model, options: JavaGenerator.defaultOptions});
-      expect(type).toEqual(model.name);
+      expect(type).toEqual('String');
+    });
+    test('should render boolean enum values as boolean type', () => {
+      const enumValue = new ConstrainedEnumValueModel('test', true);
+      const model = new ConstrainedEnumModel('test', undefined, '', [enumValue]);
+      const type = JavaDefaultTypeMapping.Enum({constrainedModel: model, options: JavaGenerator.defaultOptions});
+      expect(type).toEqual('boolean');
+    });
+    test('should render generic number enum value with format  ', () => {
+      const enumValue = new ConstrainedEnumValueModel('test', 123);
+      const model = new ConstrainedEnumModel('test', undefined, '', [enumValue]);
+      const type = JavaDefaultTypeMapping.Enum({constrainedModel: model, options: JavaGenerator.defaultOptions});
+      expect(type).toEqual('int');
+    });
+    test('should render generic number enum value with float format as float type', () => {
+      const enumValue = new ConstrainedEnumValueModel('test', 12.0);
+      const model = new ConstrainedEnumModel('test', {format: 'float'}, '', [enumValue]);
+      const type = JavaDefaultTypeMapping.Enum({constrainedModel: model, options: JavaGenerator.defaultOptions});
+      expect(type).toEqual('float');
+    });
+    test('should render generic number enum value with double format as double type', () => {
+      const enumValue = new ConstrainedEnumValueModel('test', 12.0);
+      const model = new ConstrainedEnumModel('test', {format: 'double'}, '', [enumValue]);
+      const type = JavaDefaultTypeMapping.Enum({constrainedModel: model, options: JavaGenerator.defaultOptions});
+      expect(type).toEqual('double');
+    });
+    test('should render object enum value as generic Object', () => {
+      const enumValue = new ConstrainedEnumValueModel('test', {});
+      const model = new ConstrainedEnumModel('test', undefined, '', [enumValue]);
+      const type = JavaDefaultTypeMapping.Enum({constrainedModel: model, options: JavaGenerator.defaultOptions});
+      expect(type).toEqual('Object');
+    });
+    test('should render multiple value types as generic Object', () => {
+      const enumValue2 = new ConstrainedEnumValueModel('test', true);
+      const enumValue1 = new ConstrainedEnumValueModel('test', 'string type');
+      const model = new ConstrainedEnumModel('test', undefined, '', [enumValue1, enumValue2]);
+      const type = JavaDefaultTypeMapping.Enum({constrainedModel: model, options: JavaGenerator.defaultOptions});
+      expect(type).toEqual('Object');
+    });
+    test('should render double and integer as double type', () => {
+      const enumValue2 = new ConstrainedEnumValueModel('test', 123);
+      const enumValue1 = new ConstrainedEnumValueModel('test', 123.12);
+      const model = new ConstrainedEnumModel('test', undefined, '', [enumValue1, enumValue2]);
+      const type = JavaDefaultTypeMapping.Enum({constrainedModel: model, options: JavaGenerator.defaultOptions});
+      expect(type).toEqual('double');
+    });
+    test('should render int and long as long type', () => {
+      const enumValue2 = new ConstrainedEnumValueModel('test', 123);
+      const enumValue1 = new ConstrainedEnumValueModel('test', 123);
+      const model = new ConstrainedEnumModel('test', {format: 'long'}, '', [enumValue1, enumValue2]);
+      const type = JavaDefaultTypeMapping.Enum({constrainedModel: model, options: JavaGenerator.defaultOptions});
+      expect(type).toEqual('long');
     });
   });
 

@@ -38,6 +38,6 @@ describe('JAVA_DESCRIPTION_PRESET', () => {
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot(); 
-    expect(models[0].dependencies).toEqual(['import com.fasterxml.jackson.annotation.*;']);
+    expect(models[0].dependencies).toEqual([]);
   });
 });

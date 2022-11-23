@@ -1,17 +1,20 @@
 import { JavaRenderer } from '../JavaRenderer';
-import { ConstrainedEnumModel, ConstrainedEnumValueModel} from '../../../models';
+import { ConstrainedEnumModel} from '../../../models';
 import { EnumPresetType } from '../JavaPreset';
 import { JavaOptions } from '../JavaGenerator';
 
 /**
  * Renderer for Java's `enum` type
- * 
+ *
  * @extends JavaRenderer
  */
 export class EnumRenderer extends JavaRenderer<ConstrainedEnumModel> {
   async defaultSelf(): Promise<string> {
     const content = [
       await this.renderItems(),
+      await this.runCtorPreset(),
+      await this.runGetValuePreset(),
+      await this.runFromValuePreset(),
       await this.runAdditionalContentPreset()
     ];
     return `public enum ${this.model.name} {
@@ -32,46 +35,58 @@ ${this.indent(this.renderBlock(content, 2))}
     return `${content};`;
   }
 
-  runItemPreset(item: ConstrainedEnumValueModel): Promise<string> {
-    return this.runPreset('item', { item });
+  runItemPreset(item: any): Promise<string> {
+    return this.runPreset('item', {item});
+  }
+
+  runCtorPreset(): Promise<string> {
+    return this.runPreset('ctor');
+  }
+
+  runGetValuePreset(): Promise<string> {
+    return this.runPreset('getValue');
+  }
+
+  runFromValuePreset(): Promise<string> {
+    return this.runPreset('fromValue');
   }
 }
 
 export const JAVA_DEFAULT_ENUM_PRESET: EnumPresetType<JavaOptions> = {
-  self({ renderer }) {
-    renderer.addDependency('import com.fasterxml.jackson.annotation.*;');
+  self({renderer}) {
     return renderer.defaultSelf();
   },
-  item({ item }) {
-    return `${item.key}(${item.value})`;
+  item({ item, model }) {
+    //Cast the enum type just to be sure, as some cases can be `int` type with floating value. 
+    return `${item.key}((${model.type})${item.value})`;
   },
-  additionalContent({ model }) {
-    const enumValueType = 'Object';
+  ctor({ model }) {
+    return `private ${model.type} value;
 
-    return `private ${enumValueType} value;
-
-${model.type}(${enumValueType} value) {
+${model.name}(${model.type} value) {
   this.value = value;
-}
-
-@JsonValue
-public ${enumValueType} getValue() {
+}`;
+  },
+  getValue({ model }) {
+    return `public ${model.type} getValue() {
   return value;
-}
-
-@Override
-public String toString() {
-  return String.valueOf(value);
-}
-
-@JsonCreator
-public static ${model.type} fromValue(${enumValueType} value) {
-  for (${model.type} e : ${model.type}.values()) {
-    if (e.value.equals(value)) {
+}`;
+  },
+  fromValue({ model }) {
+    const valueComparitor = model.type.charAt(0) === model.type.charAt(0).toUpperCase() ? 'e.value.equals(value)' : 'e.value == value';
+    return `public static ${model.name} fromValue(${model.type} value) {
+  for (${model.name} e : ${model.name}.values()) {
+    if (${valueComparitor}) {
       return e;
     }
   }
   throw new IllegalArgumentException("Unexpected value '" + value + "'");
 }`;
   },
+  additionalContent() {
+    return `@Override
+public String toString() {
+  return String.valueOf(value);
+}`;
+  }
 };

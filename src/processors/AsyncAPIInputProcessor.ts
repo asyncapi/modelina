@@ -5,7 +5,6 @@ import { InputMetaModel, ProcessorOptions } from '../models';
 import { Logger } from '../utils';
 import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
 import { convertToMetaModel } from '../helpers';
-
 import type { AsyncAPIDocumentInterface, SchemaInterface as AsyncAPISchema } from '@asyncapi/parser';
 
 /**
@@ -22,7 +21,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
    * @param input 
    */
   // eslint-disable-next-line sonarjs/cognitive-complexity
-  async process(input?: Record<string, any>, options?: ProcessorOptions): Promise<InputMetaModel> {
+  async process(input?: any, options?: ProcessorOptions): Promise<InputMetaModel> {
     if (!this.shouldProcess(input)) {throw new Error('Input is not an AsyncAPI document so it cannot be processed.');}
 
     Logger.debug('Processing input as an AsyncAPI document');
@@ -80,7 +79,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     
     let schemaUid = schema.id();
     //Because the constraint functionality of generators cannot handle -, <, >, we remove them from the id if it's an anonymous schema.
-    if (schemaUid.includes('<anonymous-schema')) {
+    if (typeof schemaUid !== 'undefined' && schemaUid.includes('<anonymous-schema')) {
       schemaUid = schemaUid.replace('<', '').replace(/-/g, '_').replace('>', '');
     }
     
@@ -93,13 +92,13 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     alreadyIteratedSchemas.set(schemaUid, convertedSchema);
 
     if (schema.allOf()) {
-      convertedSchema.allOf = schema.allOf()!.map((item) => this.convertToInternalSchema(item, alreadyIteratedSchemas));
+      convertedSchema.allOf = schema.allOf()!.map((item: any) => this.convertToInternalSchema(item, alreadyIteratedSchemas));
     }
     if (schema.oneOf()) {
-      convertedSchema.oneOf = schema.oneOf()!.map((item) => this.convertToInternalSchema(item, alreadyIteratedSchemas));
+      convertedSchema.oneOf = schema.oneOf()!.map((item: any) => this.convertToInternalSchema(item, alreadyIteratedSchemas));
     }
     if (schema.anyOf()) {
-      convertedSchema.anyOf = schema.anyOf()!.map((item) => this.convertToInternalSchema(item, alreadyIteratedSchemas));
+      convertedSchema.anyOf = schema.anyOf()!.map((item: any) => this.convertToInternalSchema(item, alreadyIteratedSchemas));
     }
     if (schema.not()) {
       convertedSchema.not = this.convertToInternalSchema(schema.not()!, alreadyIteratedSchemas);
@@ -188,7 +187,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
 	 * 
 	 * @param input 
 	 */
-  shouldProcess(input?: Record<string, any>) : boolean {
+  shouldProcess(input?: any) : boolean {
     if (!input) {return false;}
     const version = this.tryGetVersionOfDocument(input);
     if (!version) {return false;}
@@ -200,7 +199,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  tryGetVersionOfDocument(input?: Record<string, any>) : string | undefined {
+  tryGetVersionOfDocument(input?: any) : string | undefined {
     if (!input) {return;}
     if (AsyncAPIInputProcessor.isFromParser(input)) {
       return input.version();
@@ -213,7 +212,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
    * 
    * @param input 
    */
-  static isFromParser(input?: Record<string, any>): boolean {
+  static isFromParser(input?: any): boolean {
     if (!input) {return false;}
     if (input['_json'] !== undefined && input['_json'].asyncapi !== undefined && 
       typeof input.version === 'function') {
