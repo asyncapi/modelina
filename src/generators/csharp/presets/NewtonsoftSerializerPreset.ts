@@ -70,7 +70,7 @@ function renderDeserialize({ model }: {
         && prop.property.ref instanceof ConstrainedEnumModel) {
       toValue = `${prop.property.type}Extensions.To${prop.property.type}(jo["${prop.unconstrainedPropertyName}"])`;
     }
-    return `if(jo["${prop.unconstrainedPropertyName}" != null) {
+    return `if(jo["${prop.unconstrainedPropertyName}"] != null) {
   value.${propertyAccessor} = ${toValue};
 }`;
   });

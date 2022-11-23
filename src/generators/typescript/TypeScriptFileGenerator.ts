@@ -11,7 +11,7 @@ export class TypeScriptFileGenerator extends TypeScriptGenerator implements Abst
    * @param input
    * @param outputDirectory where you want the models generated to
    * @param options
-   * @param ensureFilesWritten veryify that the files is completely written before returning, this can happen if the file system is swamped with write requests. 
+   * @param ensureFilesWritten verify that the files is completely written before returning, this can happen if the file system is swamped with write requests. 
    */
   public async generateToFiles(input: Record<string, unknown> | InputMetaModel, outputDirectory: string, options?: TypeScriptRenderCompleteModelOptions, ensureFilesWritten = false): Promise<OutputModel[]> {
     let generatedModels = await this.generateCompleteModels(input, options || {});

@@ -25,7 +25,7 @@ The Acceptance Criteria for _adding new features_ requires a few things in order
 1. **No documentation, no feature:** If a user cannot understand a new feature, that feature basically doesn't exist! Remember to make sure that any and all relevant [documentation](./) is consistently updated.
     - New features such as new presets, generators or inputs, etc, need associated use case documentation along side [examples](../examples). This is not only to showcase the feature, but to ensure it will always work. Checkout our [adding examples](#-adding-examples) doc for more information on how to do this.
 
-### Adding Examples
+### Adding examples
 The Acceptance Criteria Process for _adding examples_ is not only something we use to showcase features, but also to ensure those features always work. _(This is important since it is picked up by [our CI system](#What-does–the-CI-system-do-when-I-create-a-PR).)_
 
 Adding examples is quite straight forward, so don't feel shy! Here's how to do it:
@@ -65,6 +65,7 @@ describe('LANGUAGE_MY_PRESET', () => {
   beforeEach(() => {
     generator = new LanguageGenerator({ presets: [LANGUAGE_MY_PRESET] });
   });
+  
   test('should render xxx', async () => {
     const input = {
       $id: 'Clazz',

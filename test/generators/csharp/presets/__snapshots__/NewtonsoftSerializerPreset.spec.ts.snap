@@ -48,16 +48,16 @@ public class TestConverter : JsonConverter<Test>
   JObject jo = JObject.Load(reader);
   Test value = new Test();
 
-  if(jo[\\"string prop\\" != null) {
+  if(jo[\\"string prop\\"] != null) {
   value.StringProp = jo[\\"string prop\\"].ToObject<string>(serializer);
 }
-if(jo[\\"numberProp\\" != null) {
+if(jo[\\"numberProp\\"] != null) {
   value.NumberProp = jo[\\"numberProp\\"].ToObject<double>(serializer);
 }
-if(jo[\\"enumProp\\" != null) {
+if(jo[\\"enumProp\\"] != null) {
   value.EnumProp = EnumTestExtensions.ToEnumTest(jo[\\"enumProp\\"]);
 }
-if(jo[\\"objectProp\\" != null) {
+if(jo[\\"objectProp\\"] != null) {
   value.ObjectProp = jo[\\"objectProp\\"].ToObject<NestedTest>(serializer);
 }
 
@@ -178,7 +178,7 @@ public class NestedTestConverter : JsonConverter<NestedTest>
   JObject jo = JObject.Load(reader);
   NestedTest value = new NestedTest();
 
-  if(jo[\\"stringProp\\" != null) {
+  if(jo[\\"stringProp\\"] != null) {
   value.StringProp = jo[\\"stringProp\\"].ToObject<string>(serializer);
 }
 

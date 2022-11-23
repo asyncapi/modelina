@@ -47,7 +47,7 @@ ${additionalContent}`;
   /**
    * Returns the type for the JSON value
    */
-   renderEnumValueType(value: any): string {
+  renderEnumValueType(value: any): string {
     switch (typeof value) {
     case 'boolean':
       return 'bool';
@@ -73,7 +73,7 @@ export const RUST_DEFAULT_ENUM_PRESET: EnumPresetType<RustOptions> = {
   },
   item({ item, renderer }) {
     const typeOfEnumValue = renderer.renderEnumValueType(item.value);
-    if (item.value === 'HashMap<String, serde_json::Value>') {
+    if (typeOfEnumValue === 'HashMap<String, serde_json::Value>') {
       return `${item.key}(${typeOfEnumValue})`;
     }
     return `${item.key}`;

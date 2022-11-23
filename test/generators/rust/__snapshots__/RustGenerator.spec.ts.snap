@@ -39,7 +39,7 @@ pub enum Things123 {
     #[serde(rename=\\"false\\")]
     ReservedFalse,
     #[serde(flatten)]
-    CurlyleftQuotationTestQuotationColonQuotationTestQuotationCurlyright,
+    CurlyleftQuotationTestQuotationColonQuotationTestQuotationCurlyright(HashMap<String, serde_json::Value>),
 }
 "
 `;
