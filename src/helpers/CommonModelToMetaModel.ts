@@ -169,32 +169,23 @@ export function convertToObjectModel(jsonSchemaModel: CommonModel, name: string,
       propertyName = `reserved_${propertyName}`;
     }
     const keyModel = new StringModel(propertyName, jsonSchemaModel.originalInput);
-    const modelsAsValue = new Set();
+    const modelsAsValue = new Map<string, MetaModel>();
     if (jsonSchemaModel.additionalProperties !== undefined) {
       const additionalPropertyModel = convertToMetaModel(jsonSchemaModel.additionalProperties, alreadySeenModels);
-      if (additionalPropertyModel instanceof UnionModel) {
-        modelsAsValue.add(...additionalPropertyModel.union);
-      } else {
-        modelsAsValue.add(additionalPropertyModel);
-      }
+      modelsAsValue.set(additionalPropertyModel.name, additionalPropertyModel);
     }
     
     if (jsonSchemaModel.patternProperties !== undefined) {
       for (const patternModel of Object.values(jsonSchemaModel.patternProperties)) {
         const patternPropertyModel = convertToMetaModel(patternModel);
-        if (patternPropertyModel instanceof UnionModel) {
-          modelsAsValue.add(...patternPropertyModel.union);
-        } else {
-          modelsAsValue.add(patternPropertyModel);
-        }
+        modelsAsValue.set(patternPropertyModel.name, patternPropertyModel);
       }
     }
     let valueModel: MetaModel;
-    if (unionModel.union.length === 1) {
-      valueModel = unionModel.union[0];
+    if (modelsAsValue.size === 1) {
+      valueModel = Array.from(modelsAsValue.values())[0];
     } else {
-      unionModel.union = [...new Set(unionModel.union)];
-      valueModel = unionModel;
+      valueModel = new UnionModel(propertyName, jsonSchemaModel.originalInput, Array.from(modelsAsValue.values()));
     }
     const dictionaryModel = new DictionaryModel(propertyName, jsonSchemaModel.originalInput, keyModel, valueModel, 'unwrap');
     const propertyModel = new ObjectPropertyModel(propertyName, false, dictionaryModel);

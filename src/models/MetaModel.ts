@@ -3,9 +3,6 @@ export class MetaModel {
     public name: string,
     public originalInput: any) {
   }
-  equals(toCompare: MetaModel): boolean {
-    return true;
-  }
 }
 
 export class ReferenceModel extends MetaModel {
@@ -14,8 +11,6 @@ export class ReferenceModel extends MetaModel {
     originalInput: any,
     public ref: MetaModel) {
     super(name, originalInput);
-  }
-  equals(toCompare: MetaModel) {
   }
 }
 export class AnyModel extends MetaModel { }

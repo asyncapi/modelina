@@ -1,4 +1,4 @@
-import { AnyModel, ArrayModel, BooleanModel, CommonModel, EnumModel, FloatModel, IntegerModel, ObjectModel, StringModel, TupleModel, UnionModel } from '../../src';
+import { AnyModel, ArrayModel, BooleanModel, CommonModel, DictionaryModel, EnumModel, FloatModel, IntegerModel, ObjectModel, StringModel, TupleModel, UnionModel } from '../../src';
 import { convertToMetaModel } from '../../src/helpers';
 describe('CommonModelToMetaModel', () => {
   afterEach(() => {
@@ -174,8 +174,7 @@ describe('CommonModelToMetaModel', () => {
     expect((model as ObjectModel).properties['additionalProperties']).not.toBeUndefined();
   });
 
-
-  test('should convert to object model with pattern properties and additional properties', () => { 
+  test('should convert to object model with a property for pattern properties and additional properties', () => { 
     const spm = new CommonModel();
     spm.type = 'string';
     const cm = new CommonModel();
@@ -194,6 +193,34 @@ describe('CommonModelToMetaModel', () => {
     expect(model).not.toBeUndefined();
     expect(model instanceof ObjectModel).toEqual(true);
     expect((model as ObjectModel).properties['additionalProperties']).not.toBeUndefined();
+  });
+
+  test('should convert to object model with pattern properties and additional properties to union value', () => { 
+    const stringModel = new CommonModel();
+    stringModel.$id = 'pattern';
+    stringModel.type = 'string';
+    const booleanModel = new CommonModel();
+    booleanModel.$id = 'additionalProp';
+    booleanModel.type = 'boolean';
+    const cm = new CommonModel();
+    cm.type = 'object';
+    cm.$id = 'test';
+    cm.patternProperties = {
+      test: stringModel
+    };
+    cm.additionalProperties = booleanModel;
+
+    const model = convertToMetaModel(cm);
+
+    expect(model).not.toBeUndefined();
+    expect(model instanceof ObjectModel).toEqual(true);
+    const propertyToCheck = (model as ObjectModel).properties['additionalProperties'];
+    expect(propertyToCheck).not.toBeUndefined();
+    expect(propertyToCheck.property).not.toBeUndefined();
+    expect(propertyToCheck.property instanceof DictionaryModel).toEqual(true);
+    expect((propertyToCheck.property as DictionaryModel).value instanceof UnionModel).toEqual(true);
+    expect(((propertyToCheck.property as DictionaryModel).value as UnionModel).union[0] instanceof BooleanModel).toEqual(true);
+    expect(((propertyToCheck.property as DictionaryModel).value as UnionModel).union[1] instanceof StringModel).toEqual(true);
   });
   test('should convert to object model with additional properties and already existing property with that name', () => { 
     const spm = new CommonModel();
@@ -252,7 +279,7 @@ describe('CommonModelToMetaModel', () => {
     expect(model instanceof UnionModel).toEqual(true);
     expect((model as UnionModel).union.length).toEqual(2); 
   });
-  test('should convert array of types to union model', () => {
+  test('should convert array of unions to union model', () => {
     const cm = new CommonModel();
     cm.$id = 'Pet';
     const cat = new CommonModel();
