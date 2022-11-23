@@ -13,7 +13,7 @@ The order of interpretation:
 - `true` boolean schema infers all model types (`object`, `string`, `number`, `array`, `boolean`, `null`, `integer`) schemas.
 - `type` infers the initial model type.
 - `required` are interpreted as is.
-- `patternProperties` are interpreted as is, where duplicate patterns for the model are [merged](#Merging-models).
+- `patternProperties` are merged together with any additionalProperties, where duplicate additionalProperties are [merged](#Merging-models).
 - `additionalProperties` are interpreted as is, where duplicate additionalProperties for the model are [merged](#Merging-models). If the schema does not define `additionalProperties` it defaults to `true` schema.
 - `additionalItems` are interpreted as is, where duplicate additionalItems for the model are [merged](#Merging-models). If the schema does not define `additionalItems` it defaults to `true` schema.
 - `items` are interpreted as ether tuples or simple array, where more than 1 item are [merged](#Merging-models). Usage of `items` infers `array` model type.
@@ -49,7 +49,6 @@ Because of the recursive nature of the interpreter (and the nested nature of JSO
 
 If only one side has a property defined, it is used as is, if both have it defined they are merged based on the following logic (look [here](./input_processing.md#Internal-model-representation) for more information about the CommonModel and its properties):
 - `additionalProperties` if both models contain it the two are recursively merged together. 
-- `patternProperties` if both models contain a pattern the corresponding models are recursively merged together. 
 - `properties` if both models contain the same property the corresponding models are recursively merged together. 
 - `items` are merged together based on a couple of rules:
     - If both models are simple arrays those item models are merged together as is.

@@ -65,7 +65,7 @@ class Root {
 }
 ```
 
-The preset renderes the TypeScript class by calling **preset hooks**, which is callbacks that is called for rendering parts of the class. 
+The generator renderes the TypeScript class by calling **preset hooks**, which is callbacks that is called for rendering parts of the class. 
 ```html
 <self>
   <properties />

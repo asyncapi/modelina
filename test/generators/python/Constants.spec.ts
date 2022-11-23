@@ -35,7 +35,6 @@ describe('Reserved keywords', () => {
     expect(isReservedPythonKeyword('continue')).toBe(true);
     expect(isReservedPythonKeyword('global')).toBe(true);
     expect(isReservedPythonKeyword('pass')).toBe(true);
-    expect(isReservedPythonKeyword('exec')).toBe(true);
   });
 
   it('should return false if the word is not a reserved keyword', () => {
