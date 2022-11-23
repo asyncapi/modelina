@@ -27,16 +27,16 @@ const AsyncAPIV2_3Files = readFilesInFolder('AsyncAPI-2_3');
 const AsyncAPIV2_4Files = readFilesInFolder('AsyncAPI-2_4');
 const AsyncAPIV2_5Files = readFilesInFolder('AsyncAPI-2_5');
 
-const filesToTest = [
+let filesToTest = [
   ...OpenAPI3_0Files.filter(({ file }) => {
-    // Too large to process in normal blackbox testing, can be used locally test stuff.
+    // Too large to process in normal blackbox testing, can be used to locally test stuff.
     return !file.includes('postman-api.json');
   }).filter(({ file }) => {
-    // Too large to process in normal blackbox testing, can be used locally test stuff.
+    // Too large to process in normal blackbox testing, can be used to locally test stuff.
     return !file.includes('twilio-1_13.json');
   }),
   ...AsyncAPIV2_0Files.filter(({ file }) => {
-    // Too large to process in normal blackbox testing, can be used locally test stuff.
+    // Too large to process in normal blackbox testing, can be used to locally test stuff.
     return !file.includes('zbos_mqtt-all-asyncapi.json');
   }),
   ...AsyncAPIV2_1Files,
@@ -45,16 +45,20 @@ const filesToTest = [
   ...AsyncAPIV2_4Files,
   ...AsyncAPIV2_5Files,
   ...jsonSchemaDraft4Files.filter(({ file }) => {
-    // Too large to process in normal blackbox testing, can be used locally test stuff.
+    // Too large to process in normal blackbox testing, can be used lto ocally test stuff.
     return !file.includes('aws-cloudformation.json');
   }),
   ...jsonSchemaDraft7Files.filter(({ file }) => {
-    // Too large to process in normal blackbox testing, can be used locally test stuff.
+    // Too large to process in normal blackbox testing, can be used to locally test stuff.
     return !file.includes('graphql-code-generator.json');
   }),
   ...jsonSchemaDraft6Files.filter(({ file }) => {
-    // Too large to process in normal blackbox testing, can be used locally test stuff.
+    // Too large to process in normal blackbox testing, can be used to locally test stuff.
     return !file.includes('fhir-full.json');
   }),
 ];
+// Outcomment below to customize which inputs are used in the blackbox tests:
+// filesToTest = jsonSchemaDraft7Files.filter(({ file }) => {
+//   return file.includes('asyncapi-2_0.json');
+// });
 export default filesToTest;
