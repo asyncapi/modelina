@@ -99,6 +99,12 @@ If so, prepend <code>reserved_</code> to the property name and recheck.</p>
 We then need to make sure that they don&#39;t clash with any existing enum keys, this is what this function handles.
 If so, prepend <code>reserved_</code> to the enum key and recheck.</p>
 </dd>
+<dt><a href="#renderJavaScriptDependency">renderJavaScriptDependency(toImport, fromModule, moduleSystem)</a></dt>
+<dd><p>Function to make it easier to render JS/TS dependencies based on module system</p>
+</dd>
+<dt><a href="#makeUnique">makeUnique(array)</a></dt>
+<dd><p>Function to make an array of ConstrainedMetaModels only contain unique values (ignores different in memory instances)</p>
+</dd>
 <dt><a href="#hasPreset">hasPreset(presets, preset)</a></dt>
 <dd><p>Returns true if and only if a given preset is already included in a list of presets
 Check is done using referential equality</p>
@@ -170,12 +176,6 @@ Check is done using referential equality</p>
 </dd>
 <dt><a href="#interpretName">interpretName(schema)</a></dt>
 <dd><p>Find the name for simplified version of schema</p>
-</dd>
-<dt><a href="#renderJavaScriptDependency">renderJavaScriptDependency(toImport, fromModule, moduleSystem)</a></dt>
-<dd><p>Function to make it easier to render JS/TS dependencies based on module system</p>
-</dd>
-<dt><a href="#makeUnique">makeUnique(array)</a></dt>
-<dd><p>Function to make an array of ConstrainedMetaModels only contain unique values (ignores different in memory instances)</p>
 </dd>
 <dt><a href="#mergePartialAndDefault">mergePartialAndDefault()</a></dt>
 <dd><p>Merge a non optional value with custom optional values to form a full value that has all properties sat.</p>
@@ -1107,6 +1107,30 @@ If so, prepend `reserved_` to the enum key and recheck.
 | onNameChange | callback to change the name of the enum key that needs to be returned. |
 | onNameChangeToCheck | callback to change the enum key which is being checked as part of the existing models. |
 
+<a name="renderJavaScriptDependency"></a>
+
+## renderJavaScriptDependency(toImport, fromModule, moduleSystem)
+Function to make it easier to render JS/TS dependencies based on module system
+
+**Kind**: global function  
+
+| Param |
+| --- |
+| toImport | 
+| fromModule | 
+| moduleSystem | 
+
+<a name="makeUnique"></a>
+
+## makeUnique(array)
+Function to make an array of ConstrainedMetaModels only contain unique values (ignores different in memory instances)
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| array | to make unique |
+
 <a name="hasPreset"></a>
 
 ## hasPreset(presets, preset)
@@ -1406,30 +1430,6 @@ Find the name for simplified version of schema
 | Param | Description |
 | --- | --- |
 | schema | to find the name |
-
-<a name="renderJavaScriptDependency"></a>
-
-## renderJavaScriptDependency(toImport, fromModule, moduleSystem)
-Function to make it easier to render JS/TS dependencies based on module system
-
-**Kind**: global function  
-
-| Param |
-| --- |
-| toImport | 
-| fromModule | 
-| moduleSystem | 
-
-<a name="makeUnique"></a>
-
-## makeUnique(array)
-Function to make an array of ConstrainedMetaModels only contain unique values (ignores different in memory instances)
-
-**Kind**: global function  
-
-| Param | Description |
-| --- | --- |
-| array | to make unique |
 
 <a name="mergePartialAndDefault"></a>
 
