@@ -1,4 +1,4 @@
-import { ConstrainedMetaModel, ConstrainedReferenceModel } from '../models';
+import { ConstrainedMetaModel } from '../models';
 
 /**
  * Function to make it easier to render JS/TS dependencies based on module system
@@ -19,11 +19,10 @@ export function renderJavaScriptDependency(toImport: string, fromModule: string,
  * @param array to make unique
  */
 export function makeUnique(array: ConstrainedMetaModel[]): ConstrainedMetaModel[] {
-  const seen: Map<ConstrainedMetaModel, boolean> = new Map();
+  const seen: Set<string> = new Set();
+
   return array.filter((item: ConstrainedMetaModel) => {
-    if (item instanceof ConstrainedReferenceModel) {
-      return seen.has(item.ref) ? false : seen.set(item.ref, true);
-    }
-    return seen.has(item) ? false : seen.set(item, true);
+    const naiveIdentifier = item.name + item.type;
+    return seen.has(naiveIdentifier) ? false : seen.add(naiveIdentifier);
   });
 }
