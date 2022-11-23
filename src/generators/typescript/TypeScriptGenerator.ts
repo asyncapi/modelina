@@ -3,8 +3,8 @@ import {
   CommonGeneratorOptions,
   defaultGeneratorOptions
 } from '../AbstractGenerator';
-import { ConstrainedEnumModel, ConstrainedMetaModel, ConstrainedObjectModel, InputMetaModel, MetaModel, RenderOutput, renderJavaScriptDependency } from '../../models';
-import { constrainMetaModel, Constraints, split, TypeMapping, hasPreset, SplitOptions } from '../../helpers';
+import { ConstrainedEnumModel, ConstrainedMetaModel, ConstrainedObjectModel, InputMetaModel, MetaModel, RenderOutput } from '../../models';
+import { constrainMetaModel, Constraints, split, TypeMapping, hasPreset, SplitOptions, renderJavaScriptDependency } from '../../helpers';
 import { TypeScriptPreset, TS_DEFAULT_PRESET } from './TypeScriptPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { InterfaceRenderer } from './renderers/InterfaceRenderer';

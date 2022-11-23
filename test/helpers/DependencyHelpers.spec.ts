@@ -1,4 +1,4 @@
-import { ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedReferenceModel } from '../../src';
+import { ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedAnyModel } from '../../src';
 import {renderJavaScriptDependency, makeUnique} from '../../src/helpers'; 
 
 describe('DependencyHelper', () => {

@@ -14,13 +14,13 @@ exports[`RustGenerator Enum should render \`enum\` type (integer type) 1`] = `
 "// Numbers represents a Numbers model.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub enum Numbers {
-    #[serde(rename=\\"f64\\")]
+    #[serde(rename=\\"0\\")]
     Number_0,
-    #[serde(rename=\\"f64\\")]
+    #[serde(rename=\\"1\\")]
     Number_1,
-    #[serde(rename=\\"f64\\")]
+    #[serde(rename=\\"2\\")]
     Number_2,
-    #[serde(rename=\\"f64\\")]
+    #[serde(rename=\\"3\\")]
     Number_3,
 }
 "
@@ -30,16 +30,16 @@ exports[`RustGenerator Enum should render \`enum\` with mixed types (union type)
 "// Things123 represents a Things123 model.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub enum Things123 {
-    #[serde(rename=\\"String\\")]
+    #[serde(rename=\\"Texas\\")]
     Texas,
-    #[serde(rename=\\"f64\\")]
+    #[serde(rename=\\"1\\")]
     Number_1,
-    #[serde(rename=\\"String\\")]
+    #[serde(rename=\\"1\\")]
     ReservedNumber_1,
-    #[serde(rename=\\"bool\\")]
+    #[serde(rename=\\"false\\")]
     ReservedFalse,
-    #[serde(rename=\\"HashMap<String, serde_json::Value>\\")]
-    CurlyleftQuotationTestQuotationColonQuotationTestQuotationCurlyright(HashMap<String, serde_json::Value>),
+    #[serde(flatten)]
+    CurlyleftQuotationTestQuotationColonQuotationTestQuotationCurlyright,
 }
 "
 `;
@@ -48,15 +48,15 @@ exports[`RustGenerator Enum should render enums with translated special characte
 "// States represents a States model.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub enum States {
-    #[serde(rename=\\"String\\")]
+    #[serde(rename=\\"test+\\")]
     TestPlus,
-    #[serde(rename=\\"String\\")]
+    #[serde(rename=\\"$test\\")]
     DollarTest,
-    #[serde(rename=\\"String\\")]
+    #[serde(rename=\\"test-\\")]
     TestMinus,
-    #[serde(rename=\\"String\\")]
+    #[serde(rename=\\"test?!\\")]
     TestQuestionExclamation,
-    #[serde(rename=\\"String\\")]
+    #[serde(rename=\\"*test\\")]
     AsteriskTest,
 }
 "
@@ -66,11 +66,11 @@ exports[`RustGenerator Enum should render implement Default for \`enum (default 
 "// CustomEnum represents a CustomEnum model.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub enum CustomEnum {
-    #[serde(rename=\\"String\\")]
+    #[serde(rename=\\"Texas\\")]
     Texas,
-    #[serde(rename=\\"String\\")]
+    #[serde(rename=\\"Alabama\\")]
     Alabama,
-    #[serde(rename=\\"String\\")]
+    #[serde(rename=\\"California\\")]
     California,
 }
 "
@@ -80,11 +80,11 @@ exports[`RustGenerator Enum should work custom preset for \`enum\` type 1`] = `
 "// CustomEnum represents a CustomEnum model.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub enum CustomEnum {
-    #[serde(rename=\\"String\\")]
+    #[serde(rename=\\"Texas\\")]
     Texas,
-    #[serde(rename=\\"String\\")]
+    #[serde(rename=\\"Alabama\\")]
     Alabama,
-    #[serde(rename=\\"String\\")]
+    #[serde(rename=\\"California\\")]
     California,
 }
 "

@@ -79,7 +79,7 @@ describe.each(generatorsToTest)('generateToFiles', ({ generator, generatorOption
     const expectedWriteToFileParameters = [
       'content',
       expectedOutputFilePath,
-      true
+      false
     ];
     jest.spyOn(FileHelpers, 'writerToFileSystem').mockResolvedValue(undefined);
     jest.spyOn(generator, 'generateCompleteModels').mockResolvedValue([new OutputModel('content', new ConstrainedAnyModel('', undefined, ''), 'test', new InputMetaModel(), [])]);
