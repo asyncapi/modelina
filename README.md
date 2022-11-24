@@ -143,7 +143,7 @@ As of version 1, Modelina has a very strict set of changes we are allowed to do 
 
 Here is a list of changes we are allowed to do that would not require a breaking change:
 - Adding new features (that do not change existing output), such as generators, presets, input processors, etc.
-- Change existing features, by providing options that default to current behavior.
+- Change existing features, by providing options that default to current behavior. This could be a preset that adapts the output based on options, as long as the API of Modelina and the API of the generated models does not have any breaking changes.
 - Bug fixes where the generated code is otherwise unusable (syntax errors, etc).
 
 Breaking changes are allowed and expected at a frequent rate, of course where it makes sense we will try to bundle multiple changes together.
