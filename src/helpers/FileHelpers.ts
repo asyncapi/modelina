@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import { promises as fs } from 'fs';
 import * as path from 'path';
 
 /**
@@ -21,14 +21,14 @@ export class FileHelpers {
    * @param ensureFilesWritten veryify that the files is completely written before returning, this can happen if the file system is swamped with write requests. 
    */
   static writerToFileSystem(content: string, filePath: string, ensureFilesWritten = false): Promise<void> {
-    // 
-    return new Promise((resolve, reject) => {
+    // eslint-disable-next-line no-async-promise-executor
+    return new Promise(async (resolve, reject) => {
       try {
         const outputFilePath = path.resolve(filePath);
         // eslint-disable-next-line security/detect-non-literal-fs-filename
-        fs.mkdirSync(path.dirname(outputFilePath), { recursive: true });
+        await fs.mkdir(path.dirname(outputFilePath), { recursive: true });
         // eslint-disable-next-line security/detect-non-literal-fs-filename
-        fs.writeFileSync(outputFilePath, content);
+        await fs.writeFile(outputFilePath, content);
   
         /**
          * It happens that the promise is resolved before the file is actually written to.
@@ -42,7 +42,7 @@ export class FileHelpers {
           const timerId = setInterval(async () => {
             try {
               // eslint-disable-next-line security/detect-non-literal-fs-filename
-              const isExists = await fs.promises.stat(outputFilePath);
+              const isExists = await fs.stat(outputFilePath);
               if (isExists && isExists.size === lengthInUtf8Bytes(content)) {
                 // eslint-disable-next-line no-undef
                 clearInterval(timerId);
