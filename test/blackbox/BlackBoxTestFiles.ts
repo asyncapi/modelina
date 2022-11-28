@@ -57,8 +57,23 @@ let filesToTest = [
     return !file.includes('fhir-full.json');
   }),
 ];
-// Outcomment below to customize which inputs are used in the blackbox tests:
-// filesToTest = jsonSchemaDraft7Files.filter(({ file }) => {
-//   return file.includes('asyncapi-2_0.json');
-// });
-export default filesToTest;
+
+/**
+ * Officially only use one specific file for each input type, and the rest is for local testing.
+ * 
+ * Otherwise the CI system will take far too long.
+ */
+export default filesToTest.filter(({ file }) => {
+  const containsFile = file.includes('AsyncAPI-2_0/dummy.json') ||
+    file.includes('AsyncAPI-2_1/dummy.json') || 
+    file.includes('AsyncAPI-2_2/dummy.json') || 
+    file.includes('AsyncAPI-2_3/dummy.json') || 
+    file.includes('AsyncAPI-2_4/dummy.json') || 
+    file.includes('AsyncAPI-2_5/streetlight_kafka.json') || 
+    file.includes('JsonSchemaDraft-4/draft-4-core.json') || 
+    file.includes('JsonSchemaDraft-6/draft-6-core.json') || 
+    file.includes('JsonSchemaDraft-7/draft-7-core.json') || 
+    file.includes('OpenAPI-3_0/petstore.json') || 
+    file.includes('Swagger-2_0/petstore.json');
+  return containsFile;
+});

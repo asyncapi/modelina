@@ -10,8 +10,7 @@ import * as fs from 'fs';
 import { InputMetaModel, InputProcessor, PythonFileGenerator, PythonRenderCompleteModelOptions } from '../../src';
 import { execCommand } from './utils/Utils';
 import filesToTest from './BlackBoxTestFiles';
-// eslint-disable-next-line no-console
-console.log('This is gonna take some time, Stay Awhile and Listen');
+
 describe.each(filesToTest)('Should be able to generate with inputs', ({ file, outputDirectory }) => {
   jest.setTimeout(1000000);
   const fileToGenerateFor = path.resolve(__dirname, file);
