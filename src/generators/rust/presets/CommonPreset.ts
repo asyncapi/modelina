@@ -67,7 +67,7 @@ function renderImplementNew({ model, renderer }: {
     if (v.required) {
       args.push(`${v.propertyName}: ${fieldType}`);
       if (v.property instanceof ConstrainedReferenceModel) {
-        fields.push(`Box::new(${v.propertyName}),`);
+        fields.push(`${v.propertyName}: Box::new(${v.propertyName}),`);
       } else {
         fields.push(`${v.propertyName},`);
       }
@@ -83,7 +83,7 @@ function renderImplementNew({ model, renderer }: {
   const fieldsBlock = renderer.renderBlock(fields);
   return `pub fn new(${args.join(', ')}) -> ${model.name} {
     ${model.name} {
-${renderer.indent(fieldsBlock, 4)}
+${renderer.indent(fieldsBlock, 8)}
     }
 }`;
 }

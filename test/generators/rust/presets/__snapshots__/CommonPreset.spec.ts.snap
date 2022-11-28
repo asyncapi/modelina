@@ -15,9 +15,9 @@ pub struct Address {
 impl Address {
     pub fn new(members: crate::Members, optional_members: Option<crate::OptionalMembers>, additional_properties: Option<std::collections::HashMap<String, String>>) -> Address {
         Address {
-        Box::new(members),
-        optional_members: optional_members.map(Box::new),
-        additional_properties,
+            members: Box::new(members),
+            optional_members: optional_members.map(Box::new),
+            additional_properties,
         }
     }
 }
@@ -69,9 +69,9 @@ pub struct Address {
 impl Address {
     pub fn new(members: crate::Members, optional_members: Option<crate::OptionalMembers>, additional_properties: Option<std::collections::HashMap<String, String>>) -> Address {
         Address {
-        Box::new(members),
-        optional_members: optional_members.map(Box::new),
-        additional_properties,
+            members: Box::new(members),
+            optional_members: optional_members.map(Box::new),
+            additional_properties,
         }
     }
 }
@@ -201,8 +201,8 @@ pub struct Class {
 impl Class {
     pub fn new(students: Vec<crate::ReservedUnion>, additional_properties: Option<std::collections::HashMap<String, serde_json::Value>>) -> Class {
         Class {
-        students,
-        additional_properties,
+            students,
+            additional_properties,
         }
     }
 }
@@ -237,9 +237,9 @@ pub struct Student {
 impl Student {
     pub fn new(name: String, birth: f64, additional_properties: Option<std::collections::HashMap<String, serde_json::Value>>) -> Student {
         Student {
-        name,
-        birth,
-        additional_properties,
+            name,
+            birth,
+            additional_properties,
         }
     }
 }
@@ -273,15 +273,15 @@ pub struct Address {
 impl Address {
     pub fn new(street_name: String, city: String, state: String, house_number: f64, marriage: Option<bool>, members: Option<crate::Members>, tuple_type: Option<crate::TupleType>, array_type: Vec<String>, additional_properties: Option<std::collections::HashMap<String, String>>) -> Address {
         Address {
-        street_name,
-        city,
-        state,
-        house_number,
-        marriage,
-        members: members.map(Box::new),
-        tuple_type: tuple_type.map(Box::new),
-        array_type,
-        additional_properties,
+            street_name,
+            city,
+            state,
+            house_number,
+            marriage,
+            members: members.map(Box::new),
+            tuple_type: tuple_type.map(Box::new),
+            array_type,
+            additional_properties,
         }
     }
 }
