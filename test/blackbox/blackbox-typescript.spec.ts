@@ -10,7 +10,6 @@ import { InputMetaModel, InputProcessor, TypeScriptFileGenerator } from '../../s
 import { execCommand } from './utils/Utils';
 import filesToTest from './BlackBoxTestFiles';
 
-
 describe.each(filesToTest)('Should be able to generate with inputs', ({ file, outputDirectory }) => {
   jest.setTimeout(1000000);
   const fileToGenerateFor = path.resolve(__dirname, file);

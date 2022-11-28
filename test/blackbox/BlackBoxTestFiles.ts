@@ -27,7 +27,7 @@ const AsyncAPIV2_3Files = readFilesInFolder('AsyncAPI-2_3');
 const AsyncAPIV2_4Files = readFilesInFolder('AsyncAPI-2_4');
 const AsyncAPIV2_5Files = readFilesInFolder('AsyncAPI-2_5');
 
-let filesToTest = [
+const filesToTest = [
   ...OpenAPI3_0Files.filter(({ file }) => {
     // Too large to process in normal blackbox testing, can be used to locally test stuff.
     return !file.includes('postman-api.json');
@@ -64,7 +64,7 @@ let filesToTest = [
  * Otherwise the CI system will take far too long.
  */
 export default filesToTest.filter(({ file }) => {
-  const containsFile = file.includes('AsyncAPI-2_0/dummy.json') ||
+  return file.includes('AsyncAPI-2_0/dummy.json') ||
     file.includes('AsyncAPI-2_1/dummy.json') || 
     file.includes('AsyncAPI-2_2/dummy.json') || 
     file.includes('AsyncAPI-2_3/dummy.json') || 
@@ -75,5 +75,4 @@ export default filesToTest.filter(({ file }) => {
     file.includes('JsonSchemaDraft-7/draft-7-core.json') || 
     file.includes('OpenAPI-3_0/petstore.json') || 
     file.includes('Swagger-2_0/petstore.json');
-  return containsFile;
 });
