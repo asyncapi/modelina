@@ -1,22 +1,37 @@
-import { InputMetaModel, OutputModel, Preset, RenderOutput, MetaModel, ConstrainedMetaModel } from '../models';
+import { InputMetaModel, OutputModel, Preset, Presets, RenderOutput, ProcessorOptions, MetaModel, ConstrainedMetaModel } from '../models';
 import { InputProcessor } from '../processors';
-import { DeepPartial, isPresetWithOptions } from '../utils';
-import { CommonOptions } from './CommonGeneratorOptions';
+import { IndentationTypes } from '../helpers';
+import { isPresetWithOptions } from '../utils';
+export interface CommonGeneratorOptions<P extends Preset = Preset> {
+  indentation?: {
+    type: IndentationTypes;
+    size: number;
+  };
+  defaultPreset?: P;
+  presets?: Presets<P>;
+  processorOptions?: ProcessorOptions
+}
+
+export const defaultGeneratorOptions: CommonGeneratorOptions = {
+  indentation: {
+    type: IndentationTypes.SPACES,
+    size: 2,
+  }
+};
 
 /**
  * Abstract generator which must be implemented by each language
  */
 export abstract class AbstractGenerator<
-  Options extends CommonOptions = CommonOptions, 
+  Options extends CommonGeneratorOptions = CommonGeneratorOptions, 
   RenderCompleteModelOptions = any> {
-
   constructor(
     public readonly languageName: string,
     public readonly options: Options
   ) { }
 
   public abstract render(model: MetaModel, inputModel: InputMetaModel): Promise<RenderOutput>;
-  public abstract renderCompleteModel(model: MetaModel, inputModel: InputMetaModel, options?: DeepPartial<RenderCompleteModelOptions>): Promise<RenderOutput>;
+  public abstract renderCompleteModel(model: MetaModel, inputModel: InputMetaModel, options: RenderCompleteModelOptions): Promise<RenderOutput>;
   public abstract constrainToMetaModel(model: MetaModel): ConstrainedMetaModel;
   public abstract splitMetaModel(model: MetaModel): MetaModel[];
 
@@ -32,7 +47,7 @@ export abstract class AbstractGenerator<
    * @param input 
    * @param options to use for rendering full output
    */
-  public async generateCompleteModels(input: any | InputMetaModel, options?: DeepPartial<RenderCompleteModelOptions>): Promise<OutputModel[]> {
+  public async generateCompleteModels(input: any | InputMetaModel, options: RenderCompleteModelOptions): Promise<OutputModel[]> {
     const inputModel = await this.processInput(input);
     const renders = Object.values(inputModel.models).map(async (model) => {
       const constrainedModel = this.constrainToMetaModel(model);

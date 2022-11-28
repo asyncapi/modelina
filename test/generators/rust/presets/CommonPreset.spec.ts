@@ -1,5 +1,5 @@
 import {
-  RustGenerator, RustRenderCompleteModelOptions, RUST_COMMON_PRESET,
+  defaultRustRenderCompleteModelOptions, RustGenerator, RustRenderCompleteModelOptions, RUST_COMMON_PRESET,
   defaultRustCommonPresetOptions, RustCommonPresetOptions
 } from '../../../../src/generators';
 
@@ -81,7 +81,7 @@ describe('RUST_COMMON_PRESET', () => {
         enum: ['Texas', 'Alabama', 'California'],
       };
 
-      const options = { ...RustGenerator.defaultCompleteOptions, implementDefault: true, packageName: 'test' } as RustRenderCompleteModelOptions;
+      const options = { ...defaultRustRenderCompleteModelOptions, implementDefault: true, packageName: 'test' } as RustRenderCompleteModelOptions;
 
       const models = await generator.generateCompleteModels(doc, options);
       expect(models).toHaveLength(1);

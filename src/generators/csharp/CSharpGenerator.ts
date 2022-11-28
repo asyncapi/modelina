@@ -12,8 +12,6 @@ import { isReservedCSharpKeyword } from './Constants';
 import { Logger } from '../../index';
 import { CSharpDefaultConstraints, CSharpDefaultTypeMapping } from './CSharpConstrainer';
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
-import { CommonRenderCompleteModelOptions, defaultCompleteOptions } from '../AbstractFileGenerator';
-
 export interface CSharpOptions extends CommonGeneratorOptions<CSharpPreset> {
   collectionType: 'List' | 'Array';
   typeMapping: TypeMapping<CSharpOptions>;
@@ -21,7 +19,7 @@ export interface CSharpOptions extends CommonGeneratorOptions<CSharpPreset> {
   autoImplementedProperties: boolean;
 }
 
-export interface CSharpRenderCompleteModelOptions extends CommonRenderCompleteModelOptions {
+export interface CSharpRenderCompleteModelOptions {
   namespace: string
 }
 
@@ -37,11 +35,6 @@ export class CSharpGenerator extends AbstractGenerator<CSharpOptions, CSharpRend
     constraints: CSharpDefaultConstraints,
     autoImplementedProperties: false
   };
-
-  static defaultCompleteOptions: CSharpRenderCompleteModelOptions = {
-    ...defaultCompleteOptions,
-    namespace: 'asyncapi'
-  }
 
   constructor(
     options?: DeepPartial<CSharpOptions>

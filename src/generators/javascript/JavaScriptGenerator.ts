@@ -10,14 +10,13 @@ import { ClassRenderer } from './renderers/ClassRenderer';
 import { Logger } from '../../';
 import { JavaScriptDefaultConstraints, JavaScriptDefaultTypeMapping } from './JavaScriptConstrainer';
 import { DeepPartial, mergePartialAndDefault } from '../../utils';
-import { CommonRenderCompleteModelOptions, defaultCompleteOptions } from '../AbstractFileGenerator';
 export interface JavaScriptOptions extends CommonGeneratorOptions<JavaScriptPreset> {
   typeMapping: TypeMapping<JavaScriptOptions>;
   constraints: Constraints;
   moduleSystem: 'ESM' | 'CJS';
 }
-
-export interface JavaScriptRenderCompleteModelOptions extends CommonRenderCompleteModelOptions {
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface JavaScriptRenderCompleteModelOptions {
 }
 
 /**
@@ -31,10 +30,6 @@ export class JavaScriptGenerator extends AbstractGenerator<JavaScriptOptions, Ja
     constraints: JavaScriptDefaultConstraints,
     moduleSystem: 'ESM'
   };
-
-  static defaultCompleteOptions: JavaScriptRenderCompleteModelOptions = {
-    ...defaultCompleteOptions
-  }
   
   constructor(
     options?: DeepPartial<JavaScriptOptions>,

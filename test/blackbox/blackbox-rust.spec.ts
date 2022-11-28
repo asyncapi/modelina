@@ -7,7 +7,7 @@
 
 import * as path from 'path';
 import * as fs from 'fs';
-import { RustGenerator.defaultCompleteOptions, InputMetaModel, InputProcessor, RustFileGenerator, RustPackageFeatures, RustRenderCompleteModelOptions } from '../../src';
+import { defaultRustRenderCompleteModelOptions, InputMetaModel, InputProcessor, RustFileGenerator, RustPackageFeatures, RustRenderCompleteModelOptions } from '../../src';
 import { execCommand } from './utils/Utils';
 import filesToTest from './BlackBoxTestFiles';
 // eslint-disable-next-line no-console
@@ -33,7 +33,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
         const renderOutputPath = path.resolve(outputDirectoryPath, './struct');
         const cargoFile = path.resolve(outputDirectoryPath, './struct/Cargo.toml');
         const options = {
-          ...RustGenerator.defaultCompleteOptions,
+          ...defaultRustRenderCompleteModelOptions,
           supportFiles: true, // generate Cargo.toml and lib.rs
           package: {
             packageName: 'asyncapi-rs-example',

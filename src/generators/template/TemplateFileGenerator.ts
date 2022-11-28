@@ -3,7 +3,6 @@ import { InputMetaModel, OutputModel } from '../../models';
 import * as path from 'path';
 import { AbstractFileGenerator } from '../AbstractFileGenerator';
 import { FileHelpers } from '../../helpers';
-import { mergePartialAndDefault, DeepPartial } from '../../utils';
 
 export class TemplateFileGenerator extends TemplateGenerator implements AbstractFileGenerator<TemplateRenderCompleteModelOptions> {
   /**
@@ -13,14 +12,13 @@ export class TemplateFileGenerator extends TemplateGenerator implements Abstract
    * @param outputDirectory where you want the models generated to
    * @param options
    */
-  public async generateToFiles(input: Record<string, unknown> | InputMetaModel, outputDirectory: string, options?: DeepPartial<TemplateRenderCompleteModelOptions>): Promise<OutputModel[]> {
-    const realizedOptions = mergePartialAndDefault(TemplateGenerator.defaultCompleteOptions, options) as TemplateRenderCompleteModelOptions;
-    let generatedModels = await this.generateCompleteModels(input, realizedOptions);
+  public async generateToFiles(input: Record<string, unknown> | InputMetaModel, outputDirectory: string, options: TemplateRenderCompleteModelOptions): Promise<OutputModel[]> {
+    let generatedModels = await this.generateCompleteModels(input, options);
     //Filter anything out that have not been successfully generated
     generatedModels = generatedModels.filter((outputModel) => { return outputModel.modelName !== ''; });
     for (const outputModel of generatedModels) {
       const filePath = path.resolve(outputDirectory, `${outputModel.modelName}.MYEXTENSION`);
-      await FileHelpers.writerToFileSystem(outputModel.result, filePath, realizedOptions.ensureFilesWritten);
+      await FileHelpers.writerToFileSystem(outputModel.result, filePath);
     }
     return generatedModels;
   }
