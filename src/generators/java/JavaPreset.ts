@@ -1,5 +1,4 @@
-import { ConstrainedEnumModel } from 'models/ConstrainedMetaModel';
-import { Preset, ClassPreset, EnumPreset, PresetArgs, EnumArgs } from '../../models';
+import { Preset, ClassPreset, EnumPreset, PresetArgs, EnumArgs, ConstrainedEnumModel } from '../../models';
 import { JavaOptions } from './JavaGenerator';
 import { ClassRenderer, JAVA_DEFAULT_CLASS_PRESET } from './renderers/ClassRenderer';
 import { EnumRenderer, JAVA_DEFAULT_ENUM_PRESET } from './renderers/EnumRenderer';

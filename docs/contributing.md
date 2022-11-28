@@ -65,7 +65,7 @@ describe('LANGUAGE_MY_PRESET', () => {
   beforeEach(() => {
     generator = new LanguageGenerator({ presets: [LANGUAGE_MY_PRESET] });
   });
-
+  
   test('should render xxx', async () => {
     const input = {
       $id: 'Clazz',

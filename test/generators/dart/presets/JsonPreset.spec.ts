@@ -8,14 +8,6 @@ describe('DART_JSON_PRESET', () => {
   });
 
   test('should render json annotations', async () => {
-    const doc = {
-      $id: 'Clazz',
-      type: 'object',
-      properties: {
-        min_number_prop: { type: 'number' },
-        max_number_prop: { type: 'number' },
-      },
-    };
     const model = new ConstrainedObjectModel('Clazz', undefined, 'Clazz', {
       minNumberProp: new ConstrainedObjectPropertyModel('minNumberProp', 'min_number_prop', false, new ConstrainedFloatModel('minNumberProp', undefined, 'double')),
       maxNumberProp: new ConstrainedObjectPropertyModel('maxNumberProp', 'max_number_prop', false, new ConstrainedFloatModel('maxNumberProp', undefined, 'double'))

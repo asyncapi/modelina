@@ -46,7 +46,7 @@ export function defaultEnumKeyConstraints(customConstraints?: Partial<ModelEnumK
 }
 
 export function defaultEnumValueConstraints(): EnumValueConstraint {
-  return ({enumValue}) => {
+  return ({ enumValue }) => {
     return enumValue;
   };
 }
