@@ -5,11 +5,11 @@ exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Defau
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct Address {
     #[serde(rename=\\"members\\")]
-    members: Box<crate::Members>,
+    pub members: Box<crate::Members>,
     #[serde(rename=\\"optional_members\\", skip_serializing_if = \\"Option::is_none\\")]
-    optional_members: Option<Box<crate::OptionalMembers>>,
+    pub optional_members: Option<Box<crate::OptionalMembers>>,
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
-    additional_properties: Option<std::collections::HashMap<String, String>>,
+    pub additional_properties: Option<std::collections::HashMap<String, String>>,
 }
 
 impl Address {
@@ -59,11 +59,11 @@ exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Defau
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct Address {
     #[serde(rename=\\"members\\")]
-    members: Box<crate::Members>,
+    pub members: Box<crate::Members>,
     #[serde(rename=\\"optional_members\\", skip_serializing_if = \\"Option::is_none\\")]
-    optional_members: Option<Box<crate::OptionalMembers>>,
+    pub optional_members: Option<Box<crate::OptionalMembers>>,
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
-    additional_properties: Option<std::collections::HashMap<String, String>>,
+    pub additional_properties: Option<std::collections::HashMap<String, String>>,
 }
 
 impl Address {
@@ -193,9 +193,9 @@ exports[`RUST_COMMON_PRESET Enum should render reserved union for dict array 1`]
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Class {
     #[serde(rename=\\"students\\")]
-    students: Vec<crate::ReservedUnion>,
+    pub students: Vec<crate::ReservedUnion>,
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
-    additional_properties: Option<std::collections::HashMap<String, serde_json::Value>>,
+    pub additional_properties: Option<std::collections::HashMap<String, serde_json::Value>>,
 }
 
 impl Class {
@@ -227,11 +227,11 @@ exports[`RUST_COMMON_PRESET Enum should render reserved union for dict array 3`]
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Student {
     #[serde(rename=\\"name\\")]
-    name: String,
+    pub name: String,
     #[serde(rename=\\"birth\\")]
-    birth: f64,
+    pub birth: f64,
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
-    additional_properties: Option<std::collections::HashMap<String, serde_json::Value>>,
+    pub additional_properties: Option<std::collections::HashMap<String, serde_json::Value>>,
 }
 
 impl Student {
@@ -251,23 +251,23 @@ exports[`RUST_COMMON_PRESET Struct & Complete Models should render \`struct\` ty
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Address {
     #[serde(rename=\\"street_name\\")]
-    street_name: String,
+    pub street_name: String,
     #[serde(rename=\\"city\\")]
-    city: String,
+    pub city: String,
     #[serde(rename=\\"state\\")]
-    state: String,
+    pub state: String,
     #[serde(rename=\\"house_number\\")]
-    house_number: f64,
+    pub house_number: f64,
     #[serde(rename=\\"marriage\\", skip_serializing_if = \\"Option::is_none\\")]
-    marriage: Option<bool>,
+    pub marriage: Option<bool>,
     #[serde(rename=\\"members\\", skip_serializing_if = \\"Option::is_none\\")]
-    members: Option<Box<crate::Members>>,
+    pub members: Option<Box<crate::Members>>,
     #[serde(rename=\\"tuple_type\\", skip_serializing_if = \\"Option::is_none\\")]
-    tuple_type: Option<Box<crate::TupleType>>,
+    pub tuple_type: Option<Box<crate::TupleType>>,
     #[serde(rename=\\"array_type\\")]
-    array_type: Vec<String>,
+    pub array_type: Vec<String>,
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
-    additional_properties: Option<std::collections::HashMap<String, String>>,
+    pub additional_properties: Option<std::collections::HashMap<String, String>>,
 }
 
 impl Address {
@@ -322,23 +322,23 @@ exports[`RUST_COMMON_PRESET Struct & Complete Models should render \`struct\` wi
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Address {
     #[serde(rename=\\"street_name\\")]
-    street_name: String,
+    pub street_name: String,
     #[serde(rename=\\"city\\")]
-    city: String,
+    pub city: String,
     #[serde(rename=\\"state\\")]
-    state: String,
+    pub state: String,
     #[serde(rename=\\"house_number\\")]
-    house_number: f64,
+    pub house_number: f64,
     #[serde(rename=\\"marriage\\", skip_serializing_if = \\"Option::is_none\\")]
-    marriage: Option<bool>,
+    pub marriage: Option<bool>,
     #[serde(rename=\\"members\\", skip_serializing_if = \\"Option::is_none\\")]
-    members: Option<Box<crate::Members>>,
+    pub members: Option<Box<crate::Members>>,
     #[serde(rename=\\"tuple_type\\", skip_serializing_if = \\"Option::is_none\\")]
-    tuple_type: Option<Box<crate::TupleType>>,
+    pub tuple_type: Option<Box<crate::TupleType>>,
     #[serde(rename=\\"array_type\\")]
-    array_type: Vec<String>,
+    pub array_type: Vec<String>,
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
-    additional_properties: Option<std::collections::HashMap<String, String>>,
+    pub additional_properties: Option<std::collections::HashMap<String, String>>,
 }
 
 impl Address {
