@@ -67,7 +67,7 @@ function renderImplementNew({ model, renderer }: {
     if (v.required) {
       args.push(`${v.propertyName}: ${fieldType}`);
       if (v.property instanceof ConstrainedReferenceModel) {
-        fields.push(`Box::new(${v.propertyName}),`);
+        fields.push(`${v.propertyName}: Box::new(${v.propertyName}),`);
       } else {
         fields.push(`${v.propertyName},`);
       }
