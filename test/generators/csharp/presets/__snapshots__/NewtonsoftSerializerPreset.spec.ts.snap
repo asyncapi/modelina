@@ -43,21 +43,21 @@ public class Test
 
 public class TestConverter : JsonConverter<Test>
 {
-  public override Test ReadJson(JsonReader reader, Type objectType, Test existingValue, bool hasExistingValue, JsonSerializer serializer)
+  public override Test ReadJson(JsonReader reader, System.Type objectType, Test existingValue, bool hasExistingValue, JsonSerializer serializer)
 {
   JObject jo = JObject.Load(reader);
   Test value = new Test();
 
-  if(jo[\\"string prop\\" != null) {
+  if(jo[\\"string prop\\"] != null) {
   value.StringProp = jo[\\"string prop\\"].ToObject<string>(serializer);
 }
-if(jo[\\"numberProp\\" != null) {
+if(jo[\\"numberProp\\"] != null) {
   value.NumberProp = jo[\\"numberProp\\"].ToObject<double>(serializer);
 }
-if(jo[\\"enumProp\\" != null) {
+if(jo[\\"enumProp\\"] != null) {
   value.EnumProp = EnumTestExtensions.ToEnumTest(jo[\\"enumProp\\"]);
 }
-if(jo[\\"objectProp\\" != null) {
+if(jo[\\"objectProp\\"] != null) {
   value.ObjectProp = jo[\\"objectProp\\"].ToObject<NestedTest>(serializer);
 }
 
@@ -74,15 +74,15 @@ if(jo[\\"objectProp\\" != null) {
 {
   JObject jo = new JObject();
 
-  if (value.stringProp != null)
+  if (value.StringProp != null)
 {
   jo.Add(\\"string prop\\", JToken.FromObject(value.StringProp, serializer));
 }
-if (value.numberProp != null)
+if (value.NumberProp != null)
 {
   jo.Add(\\"numberProp\\", JToken.FromObject(value.NumberProp, serializer));
 }
-if (value.enumProp != null)
+if (value.EnumProp != null)
 {
   var enumValue = EnumTestExtensions.GetValue((EnumTest)value.EnumProp);
 var stringEnumValue = enumValue.ToString();
@@ -91,7 +91,7 @@ var jsonStringCompliant = stringEnumValue == \\"True\\" || stringEnumValue == \\
 var jsonToken = JToken.Parse(jsonStringCompliant);
 jo.Add(\\"enumProp\\", jsonToken);
 }
-if (value.objectProp != null)
+if (value.ObjectProp != null)
 {
   jo.Add(\\"objectProp\\", JToken.FromObject(value.ObjectProp, serializer));
 }
@@ -173,12 +173,12 @@ public class NestedTest
 
 public class NestedTestConverter : JsonConverter<NestedTest>
 {
-  public override NestedTest ReadJson(JsonReader reader, Type objectType, NestedTest existingValue, bool hasExistingValue, JsonSerializer serializer)
+  public override NestedTest ReadJson(JsonReader reader, System.Type objectType, NestedTest existingValue, bool hasExistingValue, JsonSerializer serializer)
 {
   JObject jo = JObject.Load(reader);
   NestedTest value = new NestedTest();
 
-  if(jo[\\"stringProp\\" != null) {
+  if(jo[\\"stringProp\\"] != null) {
   value.StringProp = jo[\\"stringProp\\"].ToObject<string>(serializer);
 }
 
@@ -195,7 +195,7 @@ public class NestedTestConverter : JsonConverter<NestedTest>
 {
   JObject jo = new JObject();
 
-  if (value.stringProp != null)
+  if (value.StringProp != null)
 {
   jo.Add(\\"stringProp\\", JToken.FromObject(value.StringProp, serializer));
 }
