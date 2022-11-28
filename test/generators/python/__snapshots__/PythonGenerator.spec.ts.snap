@@ -24,15 +24,6 @@ exports[`PythonGenerator Class should not render reserved keyword 1`] = `
 "
 `;
 
-exports[`PythonGenerator Class should work with empty objects 1`] = `
-"class CustomClass: 
-  def __init__(self, input):
-    \\"\\"\\"
-    No properties
-    \\"\\"\\"
-"
-`;
-
 exports[`PythonGenerator Class should render \`class\` type 1`] = `
 "class Address: 
   def __init__(self, input):
