@@ -30,16 +30,16 @@ pub struct Address {
 impl Address {
     pub fn new(street_name: String, city: String, state: String, house_number: f64, marriage: Option<bool>, members: Option<crate::Members>, tuple_type: Option<crate::TupleType>, array_type: Vec<String>, enum_type: Option<crate::EnumType>, additional_properties: Option<std::collections::HashMap<String, String>>) -> Address {
         Address {
-        street_name,
-        city,
-        state,
-        house_number,
-        marriage,
-        members: members.map(Box::new),
-        tuple_type: tuple_type.map(Box::new),
-        array_type,
-        enum_type: enum_type.map(Box::new),
-        additional_properties,
+            street_name,
+            city,
+            state,
+            house_number,
+            marriage,
+            members: members.map(Box::new),
+            tuple_type: tuple_type.map(Box::new),
+            array_type,
+            enum_type: enum_type.map(Box::new),
+            additional_properties,
         }
     }
 }

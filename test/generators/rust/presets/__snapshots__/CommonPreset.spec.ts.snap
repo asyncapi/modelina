@@ -16,8 +16,8 @@ impl Address {
     pub fn new(members: crate::Members, optional_members: Option<crate::OptionalMembers>, additional_properties: Option<std::collections::HashMap<String, String>>) -> Address {
         Address {
         members: Box::new(members),
-        optional_members: optional_members.map(Box::new),
-        additional_properties,
+            optional_members: optional_members.map(Box::new),
+            additional_properties,
         }
     }
 }
@@ -70,8 +70,8 @@ impl Address {
     pub fn new(members: crate::Members, optional_members: Option<crate::OptionalMembers>, additional_properties: Option<std::collections::HashMap<String, String>>) -> Address {
         Address {
         members: Box::new(members),
-        optional_members: optional_members.map(Box::new),
-        additional_properties,
+            optional_members: optional_members.map(Box::new),
+            additional_properties,
         }
     }
 }
@@ -237,9 +237,9 @@ pub struct Student {
 impl Student {
     pub fn new(name: String, birth: f64, additional_properties: Option<std::collections::HashMap<String, serde_json::Value>>) -> Student {
         Student {
-        name,
-        birth,
-        additional_properties,
+            name,
+            birth,
+            additional_properties,
         }
     }
 }

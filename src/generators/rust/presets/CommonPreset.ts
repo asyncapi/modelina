@@ -83,7 +83,7 @@ function renderImplementNew({ model, renderer }: {
   const fieldsBlock = renderer.renderBlock(fields);
   return `pub fn new(${args.join(', ')}) -> ${model.name} {
     ${model.name} {
-${renderer.indent(fieldsBlock, 4)}
+${renderer.indent(fieldsBlock, 8)}
     }
 }`;
 }
