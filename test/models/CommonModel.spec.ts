@@ -626,6 +626,7 @@ describe('CommonModel', () => {
   
   describe('addItem', () => {
     beforeAll(() => {
+      jest.clearAllMocks();
       jest.spyOn(CommonModel, 'mergeCommonModels');
     });
     afterEach(() => {
@@ -652,6 +653,7 @@ describe('CommonModel', () => {
   });
   describe('addItemTuple', () => {
     beforeAll(() => {
+      jest.clearAllMocks();
       jest.spyOn(CommonModel, 'mergeCommonModels');
     });
     afterEach(() => {
@@ -678,6 +680,7 @@ describe('CommonModel', () => {
   });
   describe('addProperty', () => {
     beforeAll(() => {
+      jest.clearAllMocks();
       jest.spyOn(CommonModel, 'mergeCommonModels');
     });
     afterEach(() => {
@@ -763,6 +766,7 @@ describe('CommonModel', () => {
 
   describe('addAdditionalProperty', () => {
     beforeAll(() => {
+      jest.clearAllMocks();
       jest.spyOn(CommonModel, 'mergeCommonModels');
     });
     afterEach(() => {
@@ -789,6 +793,7 @@ describe('CommonModel', () => {
 
   describe('addAdditionalItems', () => {
     beforeAll(() => {
+      jest.clearAllMocks();
       jest.spyOn(CommonModel, 'mergeCommonModels');
     });
     afterEach(() => {
