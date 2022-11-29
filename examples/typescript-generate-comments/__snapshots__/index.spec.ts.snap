@@ -17,6 +17,9 @@ interface Test {
    * @example Example 1, Example 2
    */
   objectProp?: NestedTest;
+  /**
+   * Main Description
+   */
   additionalProperties?: Map<string, any>;
 }",
   ],
@@ -26,6 +29,9 @@ interface Test {
  */
 interface NestedTest {
   stringProp?: string;
+  /**
+   * @example Example 1, Example 2
+   */
   additionalProperties?: Map<string, any>;
 }",
   ],
