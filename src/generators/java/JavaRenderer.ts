@@ -64,11 +64,20 @@ export abstract class JavaRenderer extends AbstractRenderer<JavaOptions, JavaGen
       kind === ModelKind.ARRAY
     ) {
       const format = model.getFromOriginalInput('format');
-      return this.toClassType(this.toJavaType(format || model.type, model));
+      return this.toClassType(this.toJavaTypeWithFormat(model.type, format, model));
     }
     return this.nameType(model.$id, model);
   }
-
+  
+  toJavaTypeWithFormat(type: string | undefined, format: string | undefined, model: CommonModel): string {
+    if (format) {
+      const returnType = this.toJavaType(format, model);
+      if (returnType !== 'Object') {
+        return returnType;
+      }
+    }
+    return this.toJavaType(type, model);
+  }
   /**
    * Returns the Java corresponding type from CommonModel type or JSON schema format
    * @param type 

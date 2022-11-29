@@ -38,7 +38,14 @@ describe('JavaRenderer', () => {
       expect(renderer.renderType(model)).toEqual('AnonymousSchema_1');
     });
   });
-
+  describe('toJavaTypeWithFormat()', () => {
+    test('Should be able to return type if format ist not handled', () => {
+      expect(renderer.toJavaTypeWithFormat('string', 'email', new CommonModel())).toEqual('String');
+    });
+    test('Should be able to return type for format', () => {
+      expect(renderer.toJavaTypeWithFormat('string', 'password', new CommonModel())).toEqual('String');
+    });
+  });
   describe('toJavaType()', () => {
     test('Should be able to return long', () => {
       expect(renderer.toJavaType('long', new CommonModel())).toEqual('long');
