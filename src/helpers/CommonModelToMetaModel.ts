@@ -225,17 +225,6 @@ export function convertToDictionaryModel(jsonSchemaModel: CommonModel, name: str
 }
 
 export function convertToObjectModel(jsonSchemaModel: CommonModel, name: string, alreadySeenModels: Map<CommonModel, MetaModel>): ObjectModel | undefined {
-  if (!jsonSchemaModel.type?.includes('object')) {
-    return undefined;
-  }
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const keyModel = new StringModel(name, jsonSchemaModel.additionalProperties!.originalInput);
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const valueModel = convertToMetaModel(jsonSchemaModel.additionalProperties!, alreadySeenModels);
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  return new DictionaryModel(name, jsonSchemaModel.additionalProperties!.originalInput, keyModel, valueModel, 'normal');
-}
-export function convertToObjectModel(jsonSchemaModel: CommonModel, name: string, alreadySeenModels: Map<CommonModel, MetaModel>): ObjectModel | undefined {
   if (!jsonSchemaModel.type?.includes('object') ||
     isDictionary(jsonSchemaModel)) {
     return undefined;
