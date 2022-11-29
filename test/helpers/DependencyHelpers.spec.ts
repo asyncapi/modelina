@@ -1,4 +1,4 @@
-import { ConstrainedReferenceModel, ConstrainedStringModel } from '../../src';
+import { ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedAnyModel } from '../../src';
 import {renderJavaScriptDependency, makeUnique} from '../../src/helpers'; 
 
 describe('DependencyHelper', () => {
@@ -31,6 +31,22 @@ describe('DependencyHelper', () => {
       const ref1 = new ConstrainedReferenceModel('name', undefined, '', stringModel);
       const ref2 = new ConstrainedReferenceModel('name', undefined, '', stringModel);
       const nonUniqueArray = [ref1, ref2];
+      const uniqueArray = makeUnique(nonUniqueArray);
+      expect(uniqueArray).toHaveLength(1);
+    });
+    test('should remove duplicate reference value instances', () => {
+      const stringModel = new ConstrainedStringModel('', undefined, '');
+      const ref1 = new ConstrainedReferenceModel('', undefined, '', stringModel);
+      const ref2 = new ConstrainedReferenceModel('', undefined, '', stringModel);
+      const nonUniqueArray = [ref1, ref2];
+      const uniqueArray = makeUnique(nonUniqueArray);
+      expect(uniqueArray).toHaveLength(1);
+    });
+    test('should remove duplicate name and type models', () => {
+      const stringModel = new ConstrainedStringModel('', undefined, '');
+      const ref = new ConstrainedReferenceModel('name', undefined, 'type', stringModel);
+      const any = new ConstrainedAnyModel('name', undefined, 'type');
+      const nonUniqueArray = [ref, any];
       const uniqueArray = makeUnique(nonUniqueArray);
       expect(uniqueArray).toHaveLength(1);
     });

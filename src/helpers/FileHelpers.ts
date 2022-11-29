@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import { promises as fs } from 'fs';
 import * as path from 'path';
 
 /**
@@ -6,7 +6,7 @@ import * as path from 'path';
  */
 function lengthInUtf8Bytes(str: string): number {
   // Matches only the 10.. bytes that are non-initial characters in a multi-byte sequence.
-  var m = encodeURIComponent(str).match(/%[89ABab]/g);
+  const m = encodeURIComponent(str).match(/%[89ABab]/g);
   return str.length + (m ? m.length : 0);
 }
 
@@ -20,14 +20,15 @@ export class FileHelpers {
    * @param filePath to write to,
    * @param ensureFilesWritten veryify that the files is completely written before returning, this can happen if the file system is swamped with write requests. 
    */
-  static async writerToFileSystem(content: string, filePath: string, ensureFilesWritten = false): Promise<void> {
+  static writerToFileSystem(content: string, filePath: string, ensureFilesWritten = false): Promise<void> {
+    // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve, reject) => {
       try {
         const outputFilePath = path.resolve(filePath);
         // eslint-disable-next-line security/detect-non-literal-fs-filename
-        await fs.promises.mkdir(path.dirname(outputFilePath), { recursive: true });
+        await fs.mkdir(path.dirname(outputFilePath), { recursive: true });
         // eslint-disable-next-line security/detect-non-literal-fs-filename
-        await fs.promises.writeFile(outputFilePath, content);
+        await fs.writeFile(outputFilePath, content);
   
         /**
          * It happens that the promise is resolved before the file is actually written to.
@@ -36,15 +37,20 @@ export class FileHelpers {
          * 
          * To avoid this we dont resolve until we are sure the file is written and exists.
          */
-        if(ensureFilesWritten) {
+        if (ensureFilesWritten) {
+          // eslint-disable-next-line no-undef
           const timerId = setInterval(async () => {
             try {
-              const isExists = await fs.promises.stat(outputFilePath);
-              if(isExists && isExists.size === lengthInUtf8Bytes(content)) {
+              // eslint-disable-next-line security/detect-non-literal-fs-filename
+              const isExists = await fs.stat(outputFilePath);
+              if (isExists && isExists.size === lengthInUtf8Bytes(content)) {
+                // eslint-disable-next-line no-undef
                 clearInterval(timerId);
                 resolve();
               }
-            } catch(e){}
+            } catch (e) {
+              // Ignore errors here as the file might not have been written yet
+            }
           }, 10);
         } else {
           resolve();

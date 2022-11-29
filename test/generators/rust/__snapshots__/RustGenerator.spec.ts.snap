@@ -5,7 +5,7 @@ exports[`RustGenerator Enum should not render reserved keyword 1`] = `
 #[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct Address {
     #[serde(rename=\\"reservedEnum\\", skip_serializing_if = \\"Option::is_none\\")]
-    reserved_enum: Option<String>,
+    pub reserved_enum: Option<String>,
 }
 "
 `;
@@ -126,23 +126,23 @@ exports[`RustGenerator Struct & Complete Models Should render complete models 1`
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Address {
     #[serde(rename=\\"street_name\\")]
-    street_name: String,
+    pub street_name: String,
     #[serde(rename=\\"city\\")]
-    city: String,
+    pub city: String,
     #[serde(rename=\\"state\\")]
-    state: String,
+    pub state: String,
     #[serde(rename=\\"house_number\\")]
-    house_number: f64,
+    pub house_number: f64,
     #[serde(rename=\\"marriage\\", skip_serializing_if = \\"Option::is_none\\")]
-    marriage: Option<bool>,
+    pub marriage: Option<bool>,
     #[serde(rename=\\"members\\", skip_serializing_if = \\"Option::is_none\\")]
-    members: Option<Box<crate::Members>>,
+    pub members: Option<Box<crate::Members>>,
     #[serde(rename=\\"tuple_type\\", skip_serializing_if = \\"Option::is_none\\")]
-    tuple_type: Option<Box<crate::TupleType>>,
+    pub tuple_type: Option<Box<crate::TupleType>>,
     #[serde(rename=\\"array_type\\")]
-    array_type: Vec<String>,
+    pub array_type: Vec<String>,
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
-    additional_properties: Option<std::collections::HashMap<String, String>>,
+    pub additional_properties: Option<std::collections::HashMap<String, String>>,
 }
 "
 `;
@@ -175,23 +175,23 @@ exports[`RustGenerator Struct & Complete Models should render \`struct\` type  1
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Address {
     #[serde(rename=\\"street_name\\")]
-    street_name: String,
+    pub street_name: String,
     #[serde(rename=\\"city\\")]
-    city: String,
+    pub city: String,
     #[serde(rename=\\"state\\")]
-    state: String,
+    pub state: String,
     #[serde(rename=\\"house_number\\")]
-    house_number: f64,
+    pub house_number: f64,
     #[serde(rename=\\"marriage\\", skip_serializing_if = \\"Option::is_none\\")]
-    marriage: Option<bool>,
+    pub marriage: Option<bool>,
     #[serde(rename=\\"members\\", skip_serializing_if = \\"Option::is_none\\")]
-    members: Option<Box<crate::Members>>,
+    pub members: Option<Box<crate::Members>>,
     #[serde(rename=\\"tuple_type\\", skip_serializing_if = \\"Option::is_none\\")]
-    tuple_type: Option<Box<crate::TupleType>>,
+    pub tuple_type: Option<Box<crate::TupleType>>,
     #[serde(rename=\\"array_type\\")]
-    array_type: Vec<String>,
+    pub array_type: Vec<String>,
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
-    additional_properties: Option<std::collections::HashMap<String, String>>,
+    pub additional_properties: Option<std::collections::HashMap<String, String>>,
 }
 "
 `;

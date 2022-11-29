@@ -6,40 +6,40 @@ Array [
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Address {
     #[serde(rename=\\"street_name\\")]
-    street_name: String,
+    pub street_name: String,
     #[serde(rename=\\"city\\")]
-    city: String,
+    pub city: String,
     #[serde(rename=\\"state\\")]
-    state: String,
+    pub state: String,
     #[serde(rename=\\"house_number\\")]
-    house_number: f64,
+    pub house_number: f64,
     #[serde(rename=\\"marriage\\", skip_serializing_if = \\"Option::is_none\\")]
-    marriage: Option<bool>,
+    pub marriage: Option<bool>,
     #[serde(rename=\\"members\\", skip_serializing_if = \\"Option::is_none\\")]
-    members: Option<Box<crate::Members>>,
+    pub members: Option<Box<crate::Members>>,
     #[serde(rename=\\"tuple_type\\", skip_serializing_if = \\"Option::is_none\\")]
-    tuple_type: Option<Box<crate::TupleType>>,
+    pub tuple_type: Option<Box<crate::TupleType>>,
     #[serde(rename=\\"array_type\\")]
-    array_type: Vec<String>,
+    pub array_type: Vec<String>,
     #[serde(rename=\\"enum_type\\", skip_serializing_if = \\"Option::is_none\\")]
-    enum_type: Option<Box<crate::EnumType>>,
+    pub enum_type: Option<Box<crate::EnumType>>,
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
-    additional_properties: Option<std::collections::HashMap<String, String>>,
+    pub additional_properties: Option<std::collections::HashMap<String, String>>,
 }
 
 impl Address {
     pub fn new(street_name: String, city: String, state: String, house_number: f64, marriage: Option<bool>, members: Option<crate::Members>, tuple_type: Option<crate::TupleType>, array_type: Vec<String>, enum_type: Option<crate::EnumType>, additional_properties: Option<std::collections::HashMap<String, String>>) -> Address {
         Address {
-        street_name,
-        city,
-        state,
-        house_number,
-        marriage,
-        members: members.map(Box::new),
-        tuple_type: tuple_type.map(Box::new),
-        array_type,
-        enum_type: enum_type.map(Box::new),
-        additional_properties,
+            street_name,
+            city,
+            state,
+            house_number,
+            marriage,
+            members: members.map(Box::new),
+            tuple_type: tuple_type.map(Box::new),
+            array_type,
+            enum_type: enum_type.map(Box::new),
+            additional_properties,
         }
     }
 }
