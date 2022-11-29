@@ -47,7 +47,7 @@ ${additionalContent}`;
   /**
    * Returns the type for the JSON value
    */
-   renderEnumValueType(value: any): string {
+  renderEnumValueType(value: any): string {
     switch (typeof value) {
     case 'boolean':
       return 'bool';

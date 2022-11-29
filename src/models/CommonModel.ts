@@ -282,7 +282,7 @@ export class CommonModel {
    * @param patternModel 
    * @param originalInput corresponding input that got interpreted to this model 
    */
-   addPatternProperty(pattern: string, patternModel: CommonModel, originalInput: any): void {
+  addPatternProperty(pattern: string, patternModel: CommonModel, originalInput: any): void {
     if (this.patternProperties === undefined) {this.patternProperties = {};}
     if (this.patternProperties[`${pattern}`] !== undefined) {
       Logger.warn(`While trying to add patternProperty to model, duplicate patterns found. Merging pattern models together for pattern ${pattern}`, patternModel, originalInput, this);
@@ -446,7 +446,7 @@ export class CommonModel {
    * @param originalInput corresponding input that got interpreted to this model 
    * @param alreadyIteratedModels
    */
-   private static mergePatternProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalInput: any, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
+  private static mergePatternProperties(mergeTo: CommonModel, mergeFrom: CommonModel, originalInput: any, alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()) {
     const mergeToPatternProperties = mergeTo.patternProperties;
     const mergeFromPatternProperties = mergeFrom.patternProperties;
     if (mergeFromPatternProperties !== undefined) {

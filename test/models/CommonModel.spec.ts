@@ -567,8 +567,6 @@ describe('CommonModel', () => {
         expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, patternPropertyModel, patternPropertyModel, {});
       });
     });
-  
-  
 
     describe('additionalProperties', () => {
       test('should be merged when only right side is defined', () => {
