@@ -16,6 +16,10 @@ public class Clazz {
   public String getProp() { return this.prop; }
   public void setProp(String prop) { this.prop = prop; }
 
+  /**
+   * Description for class
+   * Examples: {\\"prop\\":\\"value\\"}
+   */
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }"
