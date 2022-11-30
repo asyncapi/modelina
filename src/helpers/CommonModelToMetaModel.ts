@@ -196,7 +196,7 @@ function isDictionary(jsonSchemaModel: CommonModel): boolean {
  * Return the original input based on additionalProperties and patternProperties. 
  */
 function getOriginalInputFromAdditionalAndPatterns(jsonSchemaModel: CommonModel) {
-  let originalInputs = [];
+  const originalInputs = [];
   if (jsonSchemaModel.additionalProperties !== undefined) {
     originalInputs.push(jsonSchemaModel.additionalProperties.originalInput);
   }

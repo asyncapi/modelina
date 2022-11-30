@@ -183,10 +183,10 @@ describe('CommonModelToMetaModel', () => {
     cm.type = 'object';
     cm.$id = 'test';
     cm.properties = {
-      'some_prop': stringCM
-    }
+      some_prop: stringCM
+    };
     cm.patternProperties = {
-      'some_random_pattern': stringCM
+      some_random_pattern: stringCM
     };
     cm.additionalProperties = booleanCM;
     
@@ -215,7 +215,7 @@ describe('CommonModelToMetaModel', () => {
     cm.type = 'object';
     cm.$id = 'test';
     cm.patternProperties = {
-      'some_random_pattern': stringCM
+      some_random_pattern: stringCM
     };
     cm.additionalProperties = booleanCM;
     
