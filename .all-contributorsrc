@@ -428,6 +428,16 @@
         "bug",
         "infra"
       ]
+    },
+    {
+      "login": "200Puls",
+      "name": "200Puls",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6918360?v=4",
+      "profile": "https://github.com/200Puls",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,

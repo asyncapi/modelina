@@ -11,7 +11,7 @@ Modelina is the official AsyncAPI SDK to generate data models (i.e. <a href="#ou
 [![last commit](https://img.shields.io/github/last-commit/asyncapi/modelina)](https://github.com/asyncapi/modelina/commits/master)
 [![Discussions](https://img.shields.io/github/discussions/asyncapi/modelina)](https://github.com/asyncapi/modelina/discussions)
 [![Playground](https://img.shields.io/website?label=playground&url=https%3A%2F%2Fwww.asyncapi.com%2Ftools%2Fmodelina)](https://www.asyncapi.com/tools/modelina) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-38-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-39-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ---
@@ -197,6 +197,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center"><a href="https://github.com/codingtenshi"><img src="https://avatars.githubusercontent.com/u/116377630?v=4?s=100" width="100px;" alt="Tenshi Codes"/><br /><sub><b>Tenshi Codes</b></sub></a><br /><a href="#infra-codingtenshi" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
       <td align="center"><a href="http://yushiomote.org/"><img src="https://avatars.githubusercontent.com/u/3733915?v=4?s=100" width="100px;" alt="Yushi OMOTE"/><br /><sub><b>Yushi OMOTE</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/issues?q=author%3AYushiOMOTE" title="Bug reports">🐛</a> <a href="https://github.com/asyncapi/modelina/commits?author=YushiOMOTE" title="Code">💻</a></td>
       <td align="center"><a href="https://malcherczyk.pl"><img src="https://avatars.githubusercontent.com/u/17534504?v=4?s=100" width="100px;" alt="Zbigniew Malcherczyk"/><br /><sub><b>Zbigniew Malcherczyk</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/issues?q=author%3AFerror" title="Bug reports">🐛</a> <a href="#infra-Ferror" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+      <td align="center"><a href="https://github.com/200Puls"><img src="https://avatars.githubusercontent.com/u/6918360?v=4?s=100" width="100px;" alt="200Puls"/><br /><sub><b>200Puls</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=200Puls" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=200Puls" title="Tests">⚠️</a></td>
     </tr>
   </tbody>
 </table>
