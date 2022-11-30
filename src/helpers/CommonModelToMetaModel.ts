@@ -192,6 +192,20 @@ function isDictionary(jsonSchemaModel: CommonModel): boolean {
   return true;
 }
 
+function getOriginal(jsonSchemaModel: CommonModel) {
+  let originalInputs = [];
+  if (jsonSchemaModel.additionalProperties !== undefined) {
+    originalInputs.push(jsonSchemaModel.additionalProperties.originalInput);
+  }
+  
+  if (jsonSchemaModel.patternProperties !== undefined) {
+    for (const patternModel of Object.values(jsonSchemaModel.patternProperties)) {
+      originalInputs.push(patternModel.originalInput);
+    }
+  }
+  return originalInputs;
+}
+
 /**
  * Function creating the right meta model based on additionalProperties and patternProperties.
  */
@@ -211,7 +225,7 @@ function handleAdditionalProperties(jsonSchemaModel: CommonModel, name: string, 
   if (modelsAsValue.size === 1) {
     return Array.from(modelsAsValue.values())[0];
   }
-  return new UnionModel(name, jsonSchemaModel.originalInput, Array.from(modelsAsValue.values()));
+  return new UnionModel(name, getOriginal(jsonSchemaModel), Array.from(modelsAsValue.values()));
 }
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -219,9 +233,9 @@ export function convertToDictionaryModel(jsonSchemaModel: CommonModel, name: str
   if (!isDictionary(jsonSchemaModel)) {
     return undefined;
   }
-  const keyModel = new StringModel(name, jsonSchemaModel.originalInput);
+  const keyModel = new StringModel(name, getOriginal(jsonSchemaModel));
   const valueModel = handleAdditionalProperties(jsonSchemaModel, name, alreadySeenModels);
-  return new DictionaryModel(name, jsonSchemaModel.originalInput, keyModel, valueModel, 'normal');
+  return new DictionaryModel(name, getOriginal(jsonSchemaModel), keyModel, valueModel, 'normal');
 }
 
 export function convertToObjectModel(jsonSchemaModel: CommonModel, name: string, alreadySeenModels: Map<CommonModel, MetaModel>): ObjectModel | undefined {
@@ -247,9 +261,9 @@ export function convertToObjectModel(jsonSchemaModel: CommonModel, name: string,
     while (metaModel.properties[String(propertyName)] !== undefined) {
       propertyName = `reserved_${propertyName}`;
     }
-    const keyModel = new StringModel(propertyName, jsonSchemaModel.originalInput);
+    const keyModel = new StringModel(propertyName, getOriginal(jsonSchemaModel));
     const valueModel = handleAdditionalProperties(jsonSchemaModel, propertyName, alreadySeenModels);
-    const dictionaryModel = new DictionaryModel(propertyName, jsonSchemaModel.originalInput, keyModel, valueModel, 'unwrap');
+    const dictionaryModel = new DictionaryModel(propertyName, getOriginal(jsonSchemaModel), keyModel, valueModel, 'unwrap');
     const propertyModel = new ObjectPropertyModel(propertyName, false, dictionaryModel);
     metaModel.properties[String(propertyName)] = propertyModel;
   }

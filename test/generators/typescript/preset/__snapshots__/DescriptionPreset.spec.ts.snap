@@ -15,9 +15,6 @@ class Test {
    * @example Example 1, Example 2
    */
   private _objectProp?: NestedTest;
-  /**
-   * Main Description
-   */
   private _additionalProperties?: Map<string, any>;
 
   constructor(input: {
@@ -52,9 +49,6 @@ exports[`Description generation should render example function for model 2`] = `
  */
 class NestedTest {
   private _stringProp?: string;
-  /**
-   * @example Example 1, Example 2
-   */
   private _additionalProperties?: Map<string, any>;
 
   constructor(input: {
