@@ -4,7 +4,6 @@ exports[`RustGenerator Enum should not render reserved keyword 1`] = `
 "// Address represents a Address model.
 #[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct Address {
-    #[serde(rename=\\"reservedEnum\\", skip_serializing_if = \\"Option::is_none\\")]
     pub reserved_enum: Option<String>,
 }
 "
@@ -14,13 +13,9 @@ exports[`RustGenerator Enum should render \`enum\` type (integer type) 1`] = `
 "// Numbers represents a Numbers model.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub enum Numbers {
-    #[serde(rename=\\"0\\")]
     Number_0,
-    #[serde(rename=\\"1\\")]
     Number_1,
-    #[serde(rename=\\"2\\")]
     Number_2,
-    #[serde(rename=\\"3\\")]
     Number_3,
 }
 "
@@ -30,16 +25,11 @@ exports[`RustGenerator Enum should render \`enum\` with mixed types (union type)
 "// Things123 represents a Things123 model.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub enum Things123 {
-    #[serde(rename=\\"Texas\\")]
     Texas,
-    #[serde(rename=\\"1\\")]
     Number_1,
-    #[serde(rename=\\"1\\")]
     ReservedNumber_1,
-    #[serde(rename=\\"false\\")]
     ReservedFalse,
-    #[serde(flatten)]
-    CurlyleftQuotationTestQuotationColonQuotationTestQuotationCurlyright(HashMap<String, serde_json::Value>),
+    CurlyleftQuotationTestQuotationColonQuotationTestQuotationCurlyright,
 }
 "
 `;
@@ -48,15 +38,10 @@ exports[`RustGenerator Enum should render enums with translated special characte
 "// States represents a States model.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub enum States {
-    #[serde(rename=\\"test+\\")]
     TestPlus,
-    #[serde(rename=\\"$test\\")]
     DollarTest,
-    #[serde(rename=\\"test-\\")]
     TestMinus,
-    #[serde(rename=\\"test?!\\")]
     TestQuestionExclamation,
-    #[serde(rename=\\"*test\\")]
     AsteriskTest,
 }
 "
@@ -66,11 +51,8 @@ exports[`RustGenerator Enum should render implement Default for \`enum (default 
 "// CustomEnum represents a CustomEnum model.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub enum CustomEnum {
-    #[serde(rename=\\"Texas\\")]
     Texas,
-    #[serde(rename=\\"Alabama\\")]
     Alabama,
-    #[serde(rename=\\"California\\")]
     California,
 }
 "
@@ -80,11 +62,8 @@ exports[`RustGenerator Enum should work custom preset for \`enum\` type 1`] = `
 "// CustomEnum represents a CustomEnum model.
 #[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub enum CustomEnum {
-    #[serde(rename=\\"Texas\\")]
     Texas,
-    #[serde(rename=\\"Alabama\\")]
     Alabama,
-    #[serde(rename=\\"California\\")]
     California,
 }
 "
@@ -125,23 +104,14 @@ exports[`RustGenerator Struct & Complete Models Should render complete models 1`
 "// Address represents a Address model.
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Address {
-    #[serde(rename=\\"street_name\\")]
     pub street_name: String,
-    #[serde(rename=\\"city\\")]
     pub city: String,
-    #[serde(rename=\\"state\\")]
     pub state: String,
-    #[serde(rename=\\"house_number\\")]
     pub house_number: f64,
-    #[serde(rename=\\"marriage\\", skip_serializing_if = \\"Option::is_none\\")]
     pub marriage: Option<bool>,
-    #[serde(rename=\\"members\\", skip_serializing_if = \\"Option::is_none\\")]
     pub members: Option<Box<crate::Members>>,
-    #[serde(rename=\\"tuple_type\\", skip_serializing_if = \\"Option::is_none\\")]
     pub tuple_type: Option<Box<crate::TupleType>>,
-    #[serde(rename=\\"array_type\\")]
     pub array_type: Vec<String>,
-    #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
     pub additional_properties: Option<std::collections::HashMap<String, String>>,
 }
 "
@@ -151,11 +121,8 @@ exports[`RustGenerator Struct & Complete Models Should render complete models 2`
 "// Members represents a union of types: String, f64, bool
 #[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 pub enum Members {
-    #[serde(rename=\\"MembersOneOf00\\")]
     MembersOneOf00(String),
-    #[serde(rename=\\"MembersOneOf11\\")]
     MembersOneOf11(f64),
-    #[serde(rename=\\"MembersOneOf22\\")]
     MembersOneOf22(bool),
 }
 
@@ -174,23 +141,14 @@ exports[`RustGenerator Struct & Complete Models should render \`struct\` type  1
 "// Address represents a Address model.
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Address {
-    #[serde(rename=\\"street_name\\")]
     pub street_name: String,
-    #[serde(rename=\\"city\\")]
     pub city: String,
-    #[serde(rename=\\"state\\")]
     pub state: String,
-    #[serde(rename=\\"house_number\\")]
     pub house_number: f64,
-    #[serde(rename=\\"marriage\\", skip_serializing_if = \\"Option::is_none\\")]
     pub marriage: Option<bool>,
-    #[serde(rename=\\"members\\", skip_serializing_if = \\"Option::is_none\\")]
     pub members: Option<Box<crate::Members>>,
-    #[serde(rename=\\"tuple_type\\", skip_serializing_if = \\"Option::is_none\\")]
     pub tuple_type: Option<Box<crate::TupleType>>,
-    #[serde(rename=\\"array_type\\")]
     pub array_type: Vec<String>,
-    #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
     pub additional_properties: Option<std::collections::HashMap<String, String>>,
 }
 "
@@ -200,11 +158,8 @@ exports[`RustGenerator Struct & Complete Models should render \`struct\` type  2
 "// Members represents a union of types: String, f64, bool
 #[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 pub enum Members {
-    #[serde(rename=\\"MembersOneOf00\\")]
     MembersOneOf00(String),
-    #[serde(rename=\\"MembersOneOf11\\")]
     MembersOneOf11(f64),
-    #[serde(rename=\\"MembersOneOf22\\")]
     MembersOneOf22(bool),
 }
 

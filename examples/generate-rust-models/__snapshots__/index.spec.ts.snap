@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render regular rust models and should log expected output to console 1`] = `
+"// Address represents a Address model.
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+pub struct Address {
+    pub street_name: String,
+    pub city: String,
+    pub state: String,
+    pub house_number: f64,
+    pub marriage: Option<bool>,
+    pub members: Option<Box<crate::Members>>,
+    pub tuple_type: Option<Box<crate::TupleType>>,
+    pub array_type: Vec<String>,
+    pub enum_type: Option<Box<crate::EnumType>>,
+    pub additional_properties: Option<std::collections::HashMap<String, String>>,
+}
+
+// Members represents a union of types: String, f64, bool
+#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
+pub enum Members {
+    MembersOneOf00(String),
+    MembersOneOf11(f64),
+    MembersOneOf22(bool),
+}
+
+
+// TupleType represents a TupleType model.
+#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
+pub struct TupleType(String, f64);
+
+
+// EnumType represents a EnumType model.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+pub enum EnumType {
+    Texas,
+    Alabama,
+    California,
+}
+"
+`;

@@ -44,14 +44,8 @@ export const RUST_DEFAULT_UNION_PRESET: UnionPresetType<RustOptions> = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
-
   structMacro({ model, renderer }) {
     return renderer.renderMacro(model);
-  },
-  itemMacro({ item }) {
-    const serdeArgs: string[] = [];
-    serdeArgs.push(`rename="${item.name}"`);
-    return `#[serde(${serdeArgs.join(', ')})]`;
   },
   item({ item }) {
     if (item instanceof ConstrainedReferenceModel) {

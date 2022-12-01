@@ -47,7 +47,9 @@ This directory contains a series of self-contained examples that you can use as 
 - [overwrite-naming-formatting](./overwrite-naming-formatting) - A basic example how to overwrite default naming format constraint in this case, overwriting returning a constant case format.
 - [overwrite-default-constraint](./overwrite-default-constraint/) -  A basic example how to overwrite the entire constraint logic and not just a single single part of the default behavior, in this case overwriting the model naming constraint.
 - [integrate with React](./integrate-with-react/) - A basic example that shows how you can integrate Modelina with React.
-- [rust-generate-crate](./rust-generate-crate/) - A basic example showing how to generate a Rust package.
+- [generate-rust-models](./generate-rust-models) - A basic example to generate Rust data models.
+- [rust-generate-serde](./rust-generate-serde/) - A basic example showing how to generate Rust models with serde annotation.
+- [rust-generate-crate](./rust-generate-crate/) - A basic example showing how to generate a Rust models with package.
 - [typescript-generate-jsonbinpack](./typescript-generate-jsonbinpack) - A basic example showing how to generate models that include [jsonbinpack](https://github.com/sourcemeta/jsonbinpack) functionality.
 - [generate-python-models](./generate-python-models/) - A basic example showing how to generate Python models.
 - [generate-python-pydantic-models](./generate-python-pydantic-models/) - An example showing how to generate Python pydantic models.

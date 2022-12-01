@@ -58,15 +58,6 @@ export const RUST_DEFAULT_STRUCT_PRESET: StructPresetType<RustOptions> = {
   structMacro({ model, renderer }) {
     return renderer.renderMacro(model);
   },
-
-  fieldMacro({ field }) {
-    const serdeArgs: string[] = [];
-    serdeArgs.push(`rename="${field.unconstrainedPropertyName}"`);
-    if (!field.required) {
-      serdeArgs.push('skip_serializing_if = "Option::is_none"');
-    }
-    return `#[serde(${serdeArgs.join(', ')})]`;
-  },
   field({ field }) {
     let fieldType = field.property.type;
     if (field.property instanceof ConstrainedReferenceModel) {

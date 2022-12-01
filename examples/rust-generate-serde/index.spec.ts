@@ -1,12 +1,12 @@
 const spy = jest.spyOn(global.console, 'log').mockImplementation(() => { return; });
 import { generate } from './index';
-describe('Should be able to render Rust Models', () => {
+describe('Should be able to render Rust Models with serde annotation', () => {
   afterAll(() => {
     jest.restoreAllMocks();
   });
   test('and should log expected output to console', async () => {
     await generate();
-    expect(spy.mock.calls.length).toEqual(6);
+    expect(spy.mock.calls.length).toEqual(4);
     const generatedContent = spy.mock.calls.join('\n');
     expect(generatedContent).toMatchSnapshot();
   });

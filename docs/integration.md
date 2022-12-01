@@ -22,7 +22,7 @@ There are a few exceptions to the features Modelina support in a website environ
 - You cannot use the [file generator](./advanced.md#generate-models-to-separate-files) to write to the client's disk.
 
 ### Security NOTICE
-Do NOT enable users to write their own option callbacks. This includes but not limits to preset hooks and constrain rules. The reason for this is that in some cases it will enable arbitrary code execution on your webserver (which you most probably don't want!). 
+Do NOT enable users to write their own option callbacks. This includes but not limits to preset hooks and constrain rules. In some cases this can enable arbitrary code execution on your webserver (which you most probably don't want!). 
 
 To be on the safeside, only enable the user to chose between the internal options and presets, as you can see the [playground does](https://www.asyncapi.com/tools/modelina).
 

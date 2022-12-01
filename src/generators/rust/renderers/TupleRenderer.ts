@@ -50,6 +50,5 @@ export const RUST_DEFAULT_TUPLE_PRESET: TuplePresetType<RustOptions> = {
   field({ field }) {
     return field.value.type;
   }
-
 };
 
