@@ -1,5 +1,6 @@
 import { RustPreset } from '../RustPreset';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface RustSerdePresetOptions { }
 export const defaultRustSerdePresetOptions: RustSerdePresetOptions = { };
 
@@ -26,7 +27,7 @@ export const RUST_SERDE_PRESET: RustPreset<RustSerdePresetOptions> = {
       const previousMacro = getPreviousMacro(content);
       return `${previousMacro}#[serde(${serdeArgs.join(', ')})]`;
     },
-    item({item, content}){
+    item({item, content}) {
       //Overwrite the original item content if something serde specific
       if (typeof item.value === 'object') {
         return `${item.key}(HashMap<String, serde_json::Value>)`;

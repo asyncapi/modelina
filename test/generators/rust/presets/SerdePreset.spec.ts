@@ -7,7 +7,6 @@ describe('RUST_SERDE_PRESET', () => {
   });
 
   describe('Enum', () => {
-
     test('should render `enum` with mixed types (union type) and Default implementation', async () => {
       const doc = {
         $id: 'Things',
