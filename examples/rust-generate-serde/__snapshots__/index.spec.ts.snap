@@ -2,71 +2,54 @@
 
 exports[`Should be able to render Rust Models with serde annotation and should log expected output to console 1`] = `
 "// Address represents a Address model.
-#[derive(Clone, Debug, PartialEq)]
 #[derive('Deserialize', 'Serialize')]
 pub struct Address {
     #[serde(rename=\\"street_name\\")]
     pub street_name: String,
-
     #[serde(rename=\\"city\\")]
     pub city: String,
-
     #[serde(rename=\\"state\\")]
     pub state: String,
-
     #[serde(rename=\\"house_number\\")]
     pub house_number: f64,
-
     #[serde(rename=\\"marriage\\", skip_serializing_if = \\"Option::is_none\\")]
     pub marriage: Option<bool>,
-
     #[serde(rename=\\"members\\", skip_serializing_if = \\"Option::is_none\\")]
     pub members: Option<Box<crate::Members>>,
-
     #[serde(rename=\\"tuple_type\\", skip_serializing_if = \\"Option::is_none\\")]
     pub tuple_type: Option<Box<crate::TupleType>>,
-
     #[serde(rename=\\"array_type\\")]
     pub array_type: Vec<String>,
-
     #[serde(rename=\\"enum_type\\", skip_serializing_if = \\"Option::is_none\\")]
     pub enum_type: Option<Box<crate::EnumType>>,
-
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
     pub additional_properties: Option<std::collections::HashMap<String, String>>,
 }
 
 // Members represents a union of types: String, f64, bool
-#[derive(Clone, Debug, PartialEq, PartialOrd)]
 #[derive('Deserialize', 'Serialize')]
 pub enum Members {
     #[serde(rename=\\"MembersOneOf00\\")]
     MembersOneOf00(String),
-
     #[serde(rename=\\"MembersOneOf11\\")]
     MembersOneOf11(f64),
-
     #[serde(rename=\\"MembersOneOf22\\")]
     MembersOneOf22(bool),
 }
 
 
 // TupleType represents a TupleType model.
-#[derive(Clone, Debug, PartialEq, PartialOrd)]
 #[derive('Deserialize', 'Serialize')]
 pub struct TupleType(String, f64);
 
 
 // EnumType represents a EnumType model.
-#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 #[derive('Deserialize', 'Serialize')]
 pub enum EnumType {
     #[serde(rename=\\"Texas\\")]
     Texas,
-
     #[serde(rename=\\"Alabama\\")]
     Alabama,
-
     #[serde(rename=\\"California\\")]
     California,
 }
