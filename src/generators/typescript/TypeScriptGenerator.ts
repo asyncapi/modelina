@@ -16,7 +16,7 @@ import { TypeScriptDependencyManager } from './TypeScriptDependencyManager';
 import { TS_EXPORT_KEYWORD_PRESET } from './presets/ExportKeywordPreset';
 
 export type TypeScriptModuleSystemType = 'ESM' | 'CJS';
-export type TypeScriptExportType = 'named' | 'default'; 
+export type TypeScriptExportType = 'named' | 'default';
 export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPreset, TypeScriptDependencyManager> {
   renderTypes: boolean;
   modelType: 'class' | 'interface';
@@ -45,7 +45,8 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions, Ty
     typeMapping: TypeScriptDefaultTypeMapping,
     constraints: TypeScriptDefaultConstraints,
     moduleSystem: 'ESM',
-    dependencyManager: () => { return new TypeScriptDependencyManager();},
+    //Temporarily sat
+    dependencyManager: () => { return {} as TypeScriptDependencyManager;}
   };
   
   static defaultCompleteModelOptions: TypeScriptRenderCompleteModelOptions = {
@@ -63,7 +64,12 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions, Ty
    * Returns the TypeScript options by merging custom options with default ones.
    */
   static getTypeScriptOptions(options?: DeepPartial<TypeScriptOptions>): TypeScriptOptions {
-    return mergePartialAndDefault(TypeScriptGenerator.defaultOptions, options) as TypeScriptOptions;
+    const optionsToUse = mergePartialAndDefault(TypeScriptGenerator.defaultOptions, options) as TypeScriptOptions;
+    //Always overwrite the dependency manager unless user explicitly state they want it (ignore default temporary dependency manager)
+    if (options?.dependencyManager === undefined) {
+      optionsToUse.dependencyManager = () => { return new TypeScriptDependencyManager(optionsToUse); };
+    }
+    return optionsToUse;
   }
 
   /**
@@ -127,9 +133,9 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions, Ty
     }
     //Create the correct model dependency imports
     const modelDependencyImports = modelDependencies.map((model) => {
-      return dependencyManagerToUse.renderCompleteModelDependencies(model, completeModelOptionsToUse.exportType, optionsToUse.moduleSystem); 
+      return dependencyManagerToUse.renderCompleteModelDependencies(model, completeModelOptionsToUse.exportType); 
     });
-    const modelExport = dependencyManagerToUse.renderCompleteModelDependencies(model, completeModelOptionsToUse.exportType, optionsToUse.moduleSystem);
+    const modelExport = dependencyManagerToUse.renderCompleteModelDependencies(model, completeModelOptionsToUse.exportType);
 
     const modelCode = `${outputModel.result}\n${modelExport}`;
 
@@ -140,7 +146,7 @@ ${modelCode}`;
   }
 
   /**
-   * Render any ConstrainedMetaModel to code 
+   * Render any ConstrainedMetaModel to code based on the type
    */
   render(model: ConstrainedMetaModel, inputModel: InputMetaModel, options?: DeepPartial<TypeScriptOptions>): Promise<RenderOutput> {
     const optionsToUse = TypeScriptGenerator.getTypeScriptOptions({...this.options, ...options});

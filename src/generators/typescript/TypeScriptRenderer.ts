@@ -16,7 +16,7 @@ export abstract class TypeScriptRenderer<RendererModelType extends ConstrainedMe
     presets: Array<[Preset, unknown]>,
     model: RendererModelType, 
     inputModel: InputMetaModel,
-    public dependencyManager: TypeScriptDependencyManager = new TypeScriptDependencyManager(options)
+    public dependencyManager: TypeScriptDependencyManager
   ) {
     super(options, generator, presets, model, inputModel);
   }

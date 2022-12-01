@@ -15,7 +15,7 @@ export abstract class TypeScriptObjectRenderer extends TypeScriptRenderer<Constr
     presets: Array<[Preset, unknown]>,
     model: ConstrainedObjectModel, 
     inputModel: InputMetaModel,
-    dependencyManager: TypeScriptDependencyManager = new TypeScriptDependencyManager(options)
+    dependencyManager: TypeScriptDependencyManager
   ) {
     super(options, generator, presets, model, inputModel, dependencyManager);
   }

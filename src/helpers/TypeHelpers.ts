@@ -2,9 +2,21 @@ import { AbstractDependencyManager } from 'generators/AbstractDependencyManager'
 import { ConstrainedAnyModel, ConstrainedBooleanModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedMetaModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedArrayModel, ConstrainedUnionModel, ConstrainedEnumModel, ConstrainedDictionaryModel, ConstrainedObjectPropertyModel } from '../models/ConstrainedMetaModel';
 
 export type TypeContext<T extends ConstrainedMetaModel, Options, DependencyManager extends AbstractDependencyManager> = {
+  /**
+   * If the model is a property in an object model this can be used to conditionally change types based on property information.
+   */
   partOfProperty?: ConstrainedObjectPropertyModel,
+  /**
+   * The underlying options provided to the generator
+   */
   options: Options,
+  /**
+   * The specific constrained model that we are trying to find the type for
+   */
   constrainedModel: T,
+  /**
+   * Dependency manager that can be used to add custom dependencies to the rendering of the model, such as when using external types.
+   */
   dependencyManager: DependencyManager
 }
 
