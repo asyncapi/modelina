@@ -48,9 +48,9 @@ describe('RustRenderer', () => {
 
       });
 
-      expect(renderer.renderMacro(arrayModel)).toEqual('#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]');
-      expect(renderer.renderMacro(enumModel)).toEqual('#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]');
-      expect(renderer.renderMacro(objectModel)).toEqual('#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]');
+      expect(renderer.renderMacro(arrayModel)).toEqual('#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]');
+      expect(renderer.renderMacro(enumModel)).toEqual('#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]');
+      expect(renderer.renderMacro(objectModel)).toEqual('#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]');
     });
 
     test('Should not derive Copy trait', () => {
@@ -77,9 +77,9 @@ describe('RustRenderer', () => {
 
       });
 
-      expect(renderer.renderMacro(arrayModel)).toEqual('#[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]');
-      expect(renderer.renderMacro(enumModel)).toEqual('#[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]');
-      expect(renderer.renderMacro(objectModel)).toEqual('#[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]');
+      expect(renderer.renderMacro(arrayModel)).toEqual('#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]');
+      expect(renderer.renderMacro(enumModel)).toEqual('#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]');
+      expect(renderer.renderMacro(objectModel)).toEqual('#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]');
     });
     test('Should not derive Hash, Eq, Ord traits', () => {
       // float does not implement Hash, Eq, Ord
@@ -104,9 +104,9 @@ describe('RustRenderer', () => {
 
       });
 
-      expect(renderer.renderMacro(arrayModel)).toEqual('#[derive(Clone, Copy, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]');
-      expect(renderer.renderMacro(enumModel)).toEqual('#[derive(Clone, Copy, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]');
-      expect(renderer.renderMacro(objectModel)).toEqual('#[derive(Clone, Copy, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]');
+      expect(renderer.renderMacro(arrayModel)).toEqual('#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]');
+      expect(renderer.renderMacro(enumModel)).toEqual('#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]');
+      expect(renderer.renderMacro(objectModel)).toEqual('#[derive(Clone, Copy, Debug, PartialEq, PartialOrd)]');
     });
     test('Should not derive Hash, Copy, PartialOrd, Ord traits', () => {
       // dict (HashMap) does not implement Copy, PartialOrd, Ord
@@ -131,9 +131,9 @@ describe('RustRenderer', () => {
 
       });
 
-      expect(renderer.renderMacro(arrayModel)).toEqual('#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]');
-      expect(renderer.renderMacro(enumModel)).toEqual('#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]');
-      expect(renderer.renderMacro(objectModel)).toEqual('#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]');
+      expect(renderer.renderMacro(arrayModel)).toEqual('#[derive(Clone, Debug, Eq, PartialEq)]');
+      expect(renderer.renderMacro(enumModel)).toEqual('#[derive(Clone, Debug, Eq, PartialEq)]');
+      expect(renderer.renderMacro(objectModel)).toEqual('#[derive(Clone, Debug, Eq, PartialEq)]');
     });
     test('Should not derive Hash, Copy, PartialOrd, Ord, PartialEq, traits', () => {
       // dict (HashMap) + float does not implement Copy, PartialOrd, Ord, Eq
@@ -158,9 +158,9 @@ describe('RustRenderer', () => {
 
       });
 
-      expect(renderer.renderMacro(arrayModel)).toEqual('#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]');
-      expect(renderer.renderMacro(enumModel)).toEqual('#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]');
-      expect(renderer.renderMacro(objectModel)).toEqual('#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]');
+      expect(renderer.renderMacro(arrayModel)).toEqual('#[derive(Clone, Debug, PartialEq)]');
+      expect(renderer.renderMacro(enumModel)).toEqual('#[derive(Clone, Debug, PartialEq)]');
+      expect(renderer.renderMacro(objectModel)).toEqual('#[derive(Clone, Debug, PartialEq)]');
     });
     test('Should not derive Hash, Copy, PartialOrd, Ord, PartialEq, Eq', () => {
       // any prevents those traits
@@ -185,9 +185,9 @@ describe('RustRenderer', () => {
 
       });
 
-      expect(renderer.renderMacro(arrayModel)).toEqual('#[derive(Clone, Debug, Deserialize, Serialize)]');
-      expect(renderer.renderMacro(enumModel)).toEqual('#[derive(Clone, Debug, Deserialize, Serialize)]');
-      expect(renderer.renderMacro(objectModel)).toEqual('#[derive(Clone, Debug, Deserialize, Serialize)]');
+      expect(renderer.renderMacro(arrayModel)).toEqual('#[derive(Clone, Debug)]');
+      expect(renderer.renderMacro(enumModel)).toEqual('#[derive(Clone, Debug)]');
+      expect(renderer.renderMacro(objectModel)).toEqual('#[derive(Clone, Debug)]');
     });
   });
 });

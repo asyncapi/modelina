@@ -2,7 +2,7 @@
 
 exports[`Should be able to render Rust Models and should log expected output to console 1`] = `
 "// Address represents a Address model.
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Address {
     pub street_name: String,
     pub city: String,
@@ -34,7 +34,7 @@ impl Address {
 }
 
 // Members represents a union of types: String, f64, bool
-#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
+#[derive(Clone, Debug, PartialEq, PartialOrd)]
 pub enum Members {
     MembersOneOf00(String),
     MembersOneOf11(f64),
@@ -43,7 +43,7 @@ pub enum Members {
 
 
 // TupleType represents a TupleType model.
-#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
+#[derive(Clone, Debug, PartialEq, PartialOrd)]
 pub struct TupleType(String, f64);
 
 impl TupleType {
@@ -54,7 +54,7 @@ impl TupleType {
 
 
 // EnumType represents a EnumType model.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum EnumType {
     Texas,
     Alabama,

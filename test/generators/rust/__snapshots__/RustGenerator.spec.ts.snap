@@ -2,7 +2,7 @@
 
 exports[`RustGenerator Enum should not render reserved keyword 1`] = `
 "// Address represents a Address model.
-#[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub struct Address {
     pub reserved_enum: Option<String>,
 }
@@ -11,7 +11,7 @@ pub struct Address {
 
 exports[`RustGenerator Enum should render \`enum\` type (integer type) 1`] = `
 "// Numbers represents a Numbers model.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum Numbers {
     Number_0,
     Number_1,
@@ -23,7 +23,7 @@ pub enum Numbers {
 
 exports[`RustGenerator Enum should render \`enum\` with mixed types (union type) 1`] = `
 "// Things123 represents a Things123 model.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum Things123 {
     Texas,
     Number_1,
@@ -36,7 +36,7 @@ pub enum Things123 {
 
 exports[`RustGenerator Enum should render enums with translated special characters 1`] = `
 "// States represents a States model.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum States {
     TestPlus,
     DollarTest,
@@ -49,7 +49,7 @@ pub enum States {
 
 exports[`RustGenerator Enum should render implement Default for \`enum (default provided) 1`] = `
 "// CustomEnum represents a CustomEnum model.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum CustomEnum {
     Texas,
     Alabama,
@@ -60,7 +60,7 @@ pub enum CustomEnum {
 
 exports[`RustGenerator Enum should work custom preset for \`enum\` type 1`] = `
 "// CustomEnum represents a CustomEnum model.
-#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
 pub enum CustomEnum {
     Texas,
     Alabama,
@@ -102,7 +102,7 @@ pub use self::numbers::*;"
 
 exports[`RustGenerator Struct & Complete Models Should render complete models 1`] = `
 "// Address represents a Address model.
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Address {
     pub street_name: String,
     pub city: String,
@@ -119,7 +119,7 @@ pub struct Address {
 
 exports[`RustGenerator Struct & Complete Models Should render complete models 2`] = `
 "// Members represents a union of types: String, f64, bool
-#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
+#[derive(Clone, Debug, PartialEq, PartialOrd)]
 pub enum Members {
     MembersOneOf00(String),
     MembersOneOf11(f64),
@@ -131,7 +131,7 @@ pub enum Members {
 
 exports[`RustGenerator Struct & Complete Models Should render complete models 3`] = `
 "// TupleType represents a TupleType model.
-#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
+#[derive(Clone, Debug, PartialEq, PartialOrd)]
 pub struct TupleType(String, f64);
 
 "
@@ -139,7 +139,7 @@ pub struct TupleType(String, f64);
 
 exports[`RustGenerator Struct & Complete Models should render \`struct\` type  1`] = `
 "// Address represents a Address model.
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Address {
     pub street_name: String,
     pub city: String,
@@ -156,7 +156,7 @@ pub struct Address {
 
 exports[`RustGenerator Struct & Complete Models should render \`struct\` type  2`] = `
 "// Members represents a union of types: String, f64, bool
-#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
+#[derive(Clone, Debug, PartialEq, PartialOrd)]
 pub enum Members {
     MembersOneOf00(String),
     MembersOneOf11(f64),
@@ -168,7 +168,7 @@ pub enum Members {
 
 exports[`RustGenerator Struct & Complete Models should render \`struct\` type  3`] = `
 "// TupleType represents a TupleType model.
-#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
+#[derive(Clone, Debug, PartialEq, PartialOrd)]
 pub struct TupleType(String, f64);
 
 "

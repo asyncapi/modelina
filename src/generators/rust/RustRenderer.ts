@@ -25,7 +25,7 @@ export abstract class RustRenderer<RendererModelType extends ConstrainedMetaMode
   }
 
   renderMacro(model: ConstrainedMetaModel): string {
-    const derive: string[] = ['Serialize', 'Deserialize', 'Clone', 'Debug'];
+    const derive: string[] = ['Clone', 'Debug'];
     if (deriveHash(model)) {
       derive.push('Hash');
     }
