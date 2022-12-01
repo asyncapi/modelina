@@ -81,7 +81,7 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions, Ty
 
   splitMetaModel(model: MetaModel): MetaModel[] {
     //These are the models that we have separate renderers for
-    const metaModelsToSplit = {
+    const metaModelsToSplit: SplitOptions = {
       splitEnum: true, 
       splitObject: true
     };

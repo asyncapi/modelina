@@ -77,6 +77,9 @@ Modifications</p>
 <dt><a href="#SwaggerInputProcessor">SwaggerInputProcessor</a></dt>
 <dd><p>Class for processing Swagger inputs</p>
 </dd>
+<dt><a href="#TemplateInputProcessor">TemplateInputProcessor</a></dt>
+<dd><p>Class for processing X input</p>
+</dd>
 <dt><a href="#LoggerClass">LoggerClass</a></dt>
 <dd><p>Logger class for the model generation library</p>
 <p>This class acts as a forefront for any external loggers which is why it also implements the interface itself.</p>
@@ -86,6 +89,16 @@ Modifications</p>
 ## Functions
 
 <dl>
+<dt><a href="#convertToUnionModel">convertToUnionModel()</a></dt>
+<dd><p>Converts a CommonModel into multiple models wrapped in a union model.</p>
+<p>Because a CommonModel might contain multiple models, it&#39;s name for each of those models would be the same, instead we slightly change the model name.
+Each model has it&#39;s type as a name prepended to the union name.</p>
+<p>If the CommonModel has multiple types</p>
+</dd>
+<dt><a href="#isDictionary">isDictionary()</a></dt>
+<dd><p>Determine whether we have a dictionary or an object. because in some cases inputs might be:
+{ &quot;type&quot;: &quot;object&quot;, &quot;additionalProperties&quot;: { &quot;$ref&quot;: &quot;#&quot; } } which is to be interpreted as a dictionary not an object model.</p>
+</dd>
 <dt><a href="#NO_DUPLICATE_PROPERTIES">NO_DUPLICATE_PROPERTIES(constrainedObjectModel, objectModel, propertyName, namingFormatter)</a></dt>
 <dd><p>Because a lot of the other constrain functions (such as NO_NUMBER_START_CHAR, NO_EMPTY_VALUE, etc) they might manipulate the property names by append, prepend, or manipulate it any other way.
 We then need to make sure that they don&#39;t clash with any existing properties, this is what this function handles.
@@ -95,6 +108,15 @@ If so, prepend <code>reserved_</code> to the property name and recheck.</p>
 <dd><p>Because a lot of the other constrain functions (such as NO_NUMBER_START_CHAR, NO_EMPTY_VALUE, etc) they might manipulate the enum keys by append, prepend, or manipulate it any other way.
 We then need to make sure that they don&#39;t clash with any existing enum keys, this is what this function handles.
 If so, prepend <code>reserved_</code> to the enum key and recheck.</p>
+</dd>
+<dt><a href="#renderJavaScriptDependency">renderJavaScriptDependency(toImport, fromModule, moduleSystem)</a></dt>
+<dd><p>Function to make it easier to render JS/TS dependencies based on module system</p>
+</dd>
+<dt><a href="#makeUnique">makeUnique(array)</a></dt>
+<dd><p>Function to make an array of ConstrainedMetaModels only contain unique values (ignores different in memory instances)</p>
+</dd>
+<dt><a href="#lengthInUtf8Bytes">lengthInUtf8Bytes()</a></dt>
+<dd><p>Convert a string into utf-8 encoding and return the byte size.</p>
 </dd>
 <dt><a href="#hasPreset">hasPreset(presets, preset)</a></dt>
 <dd><p>Returns true if and only if a given preset is already included in a list of presets
@@ -167,12 +189,6 @@ Check is done using referential equality</p>
 </dd>
 <dt><a href="#interpretName">interpretName(schema)</a></dt>
 <dd><p>Find the name for simplified version of schema</p>
-</dd>
-<dt><a href="#renderJavaScriptDependency">renderJavaScriptDependency(toImport, fromModule, moduleSystem)</a></dt>
-<dd><p>Function to make it easier to render JS/TS dependencies based on module system</p>
-</dd>
-<dt><a href="#makeUnique">makeUnique(array)</a></dt>
-<dd><p>Function to make an array of ConstrainedMetaModels only contain unique values (ignores different in memory instances)</p>
 </dd>
 <dt><a href="#mergePartialAndDefault">mergePartialAndDefault()</a></dt>
 <dd><p>Merge a non optional value with custom optional values to form a full value that has all properties sat.</p>
@@ -1043,6 +1059,12 @@ Converts a Swagger 2.0 Schema to the internal schema format.
 | schema | to convert |
 | name | of the schema |
 
+<a name="TemplateInputProcessor"></a>
+
+## TemplateInputProcessor
+Class for processing X input
+
+**Kind**: global class  
 <a name="LoggerClass"></a>
 
 ## LoggerClass
@@ -1062,6 +1084,24 @@ Sets the logger to use for the model generation library
 | --- | --- |
 | logger | to add |
 
+<a name="convertToUnionModel"></a>
+
+## convertToUnionModel()
+Converts a CommonModel into multiple models wrapped in a union model.
+
+Because a CommonModel might contain multiple models, it's name for each of those models would be the same, instead we slightly change the model name.
+Each model has it's type as a name prepended to the union name.
+
+If the CommonModel has multiple types
+
+**Kind**: global function  
+<a name="isDictionary"></a>
+
+## isDictionary()
+Determine whether we have a dictionary or an object. because in some cases inputs might be:
+{ "type": "object", "additionalProperties": { "$ref": "#" } } which is to be interpreted as a dictionary not an object model.
+
+**Kind**: global function  
 <a name="NO_DUPLICATE_PROPERTIES"></a>
 
 ## NO\_DUPLICATE\_PROPERTIES(constrainedObjectModel, objectModel, propertyName, namingFormatter)
@@ -1098,6 +1138,36 @@ If so, prepend `reserved_` to the enum key and recheck.
 | onNameChange | callback to change the name of the enum key that needs to be returned. |
 | onNameChangeToCheck | callback to change the enum key which is being checked as part of the existing models. |
 
+<a name="renderJavaScriptDependency"></a>
+
+## renderJavaScriptDependency(toImport, fromModule, moduleSystem)
+Function to make it easier to render JS/TS dependencies based on module system
+
+**Kind**: global function  
+
+| Param |
+| --- |
+| toImport | 
+| fromModule | 
+| moduleSystem | 
+
+<a name="makeUnique"></a>
+
+## makeUnique(array)
+Function to make an array of ConstrainedMetaModels only contain unique values (ignores different in memory instances)
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| array | to make unique |
+
+<a name="lengthInUtf8Bytes"></a>
+
+## lengthInUtf8Bytes()
+Convert a string into utf-8 encoding and return the byte size.
+
+**Kind**: global function  
 <a name="hasPreset"></a>
 
 ## hasPreset(presets, preset)
@@ -1397,30 +1467,6 @@ Find the name for simplified version of schema
 | Param | Description |
 | --- | --- |
 | schema | to find the name |
-
-<a name="renderJavaScriptDependency"></a>
-
-## renderJavaScriptDependency(toImport, fromModule, moduleSystem)
-Function to make it easier to render JS/TS dependencies based on module system
-
-**Kind**: global function  
-
-| Param |
-| --- |
-| toImport | 
-| fromModule | 
-| moduleSystem | 
-
-<a name="makeUnique"></a>
-
-## makeUnique(array)
-Function to make an array of ConstrainedMetaModels only contain unique values (ignores different in memory instances)
-
-**Kind**: global function  
-
-| Param | Description |
-| --- | --- |
-| array | to make unique |
 
 <a name="mergePartialAndDefault"></a>
 

@@ -39,6 +39,10 @@ Modelina uses something called **presets** to extend the rendered model. You can
     + [Dart](#dart)
       - [**Class**](#class-4)
       - [**Enum**](#enum-4)
+    + [Python](#python)
+      - [**Class: plain Python**](#class-5)
+      - [**Class: pydantic**](#class-6)
+      - [**Enum**](#enum-5)
 - [Limitations](#limitations)
   * [Hard for two presets to write to the exact same location within a class](#hard-for-two-presets-to-write-to-the-exact-same-location-within-a-class)
 
@@ -61,7 +65,7 @@ class Root {
 }
 ```
 
-The preset renderes the TypeScript class by calling **preset hooks**, which is callbacks that is called for rendering parts of the class. 
+The generator renderes the TypeScript class by calling **preset hooks**, which is callbacks that is called for rendering parts of the class. 
 ```html
 <self>
   <properties />
@@ -493,6 +497,24 @@ This preset is a generator for the meta model `ConstrainedEnumModel` and [can be
 |---|---|---|
 | `item` | A method to extend enum's item. | `item` object as a [`ConstrainedEnumValueModel`](./internal-model.md#the-constrained-meta-model) instance, which contains the value and key of enum's item. |
 
+### Python
+
+#### **Class**
+This preset is a generator for the meta model `ConstrainedObjectModel` and [can be accessed through the `model` argument](#presets-shape).
+
+| Method | Description | Additional arguments |
+|---|---|---|
+| `ctor` | A method to extend rendered constructor for a given class. | - |
+| `property` | A method to extend rendered given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+| `setter` | A method to extend setter for a given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+| `getter` | A method to extend getter for a given property. | `property` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+#### **Enum**
+
+This preset is a generator for the meta model `ConstrainedEnumModel` and [can be accessed through the `model` argument](#presets-shape).
+
+| Method | Description | Additional arguments |
+|---|---|---|
+| `item` | A method to extend enum's item. | `item` object as a [`ConstrainedEnumValueModel`](./internal-model.md#the-constrained-meta-model) instance, which contains the value and key of enum's item. |
 # Limitations
 
 With features natually comes limitations, and same applies for presets, so here are the known limitations the architecture of presets for Modelina.

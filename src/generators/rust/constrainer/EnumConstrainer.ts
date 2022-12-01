@@ -47,21 +47,6 @@ export function defaultEnumKeyConstraints(customConstraints?: Partial<ModelEnumK
 
 export function defaultEnumValueConstraints(): EnumValueConstraint {
   return ({ enumValue }) => {
-    switch (typeof enumValue) {
-    case 'boolean':
-      return 'bool';
-    case 'bigint':
-      return 'i64';
-    case 'number': {
-      return 'f64';
-    }
-    case 'object': {
-      return 'HashMap<String, serde_json::Value>';
-    }
-    case 'string':
-    default: {
-      return 'String';
-    }
-    }
+    return enumValue;
   };
 }

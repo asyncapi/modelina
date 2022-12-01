@@ -75,6 +75,6 @@ export const RUST_DEFAULT_STRUCT_PRESET: StructPresetType<RustOptions> = {
     if (!field.required) {
       fieldType = `Option<${fieldType}>`;
     }
-    return `${field.propertyName}: ${fieldType},`;
+    return `pub ${field.propertyName}: ${fieldType},`;
   },
 };

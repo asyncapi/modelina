@@ -24,7 +24,8 @@ This directory contains a series of self-contained examples that you can use as 
 - [TEMPLATE](./TEMPLATE) - A basic template used to create new examples.
 - [java-generate-tostring](./java-generate-tostring) - A basic example that shows how to generate models that overwrite the `toString` method
 - [csharp-generate-equals-and-hashcode](./csharp-generate-equals-and-hashcode) - A basic example on how to generate models that overwrite the `Equal` and `GetHashCode` methods
-- [csharp-generate-serializer](./csharp-generate-serializer) - A basic example on how to generate models that include function to serialize the data models to JSON
+- [csharp-generate-json-serializer](./csharp-generate-json-serializer) - A basic example on how to generate models that include function to serialize the data models to and from JSON with System.Text.Json.
+- [csharp-generate-newtonsoft-serializer](./csharp-generate-newtonsoft-serializer) - A basic example on how to generate models that include function to serialize the data models to and form JSON with Newtonsoft.
 - [csharp-overwrite-enum-naming](./csharp-overwrite-enum-naming) - A basic example on how to generate enum value names.
 - [csharp-use-inheritance](./csharp-use-inheritance) - A basic example that shows how to introduce inheritance to classes 
 - [generate-javascript-models](./generate-javascript-models) - A basic example to generate JavaScript data models
@@ -49,5 +50,6 @@ This directory contains a series of self-contained examples that you can use as 
 - [rust-generate-crate](./rust-generate-crate/) - A basic example showing how to generate a Rust package.
 - [typescript-generate-jsonbinpack](./typescript-generate-jsonbinpack) - A basic example showing how to generate models that include [jsonbinpack](https://github.com/sourcemeta/jsonbinpack) functionality.
 - [generate-python-models](./generate-python-models/) - A basic example showing how to generate Python models.
+- [generate-python-pydantic-models](./generate-python-pydantic-models/) - An example showing how to generate Python pydantic models.
 - [change-type-mapping](./change-type-mapping/) - A basic example showing how to change the type of a model in some context.
 - [change-type-mapping-with-dependency](./change-type-mapping-with-dependency/) - A basic example showing how to use the dependency manager to inject your own custom type with a dependency instead of the default type.
