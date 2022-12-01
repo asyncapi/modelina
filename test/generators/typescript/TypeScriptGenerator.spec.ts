@@ -108,6 +108,24 @@ ${content}`;
     expect(models[0].dependencies).toEqual([]);
   });
 
+  test('should render `interface` type not extended with additionalProperties definition', async () => {
+    const doc = {
+      $id: 'Address',
+      type: 'object',
+      properties: {
+        street_name: { type: 'string' },
+      },
+      required: ['street_name'],
+      additionalProperties: false,
+    };
+
+    generator = new TypeScriptGenerator({ modelType: 'interface' });
+    const models = await generator.generate(doc);
+    expect(models).toHaveLength(1);
+    expect(models[0].result).toMatchSnapshot();
+    expect(models[0].dependencies).toEqual([]);
+  });
+
   test('should work custom preset for `interface` type', async () => {
     const doc = {
       $id: 'CustomInterface',

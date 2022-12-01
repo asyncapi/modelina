@@ -22,6 +22,7 @@ export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPres
   typeMapping: TypeMapping<TypeScriptOptions>;
   constraints: Constraints;
   moduleSystem: 'ESM' | 'CJS';
+  extendInterfaceWithAdditionalProperties: boolean;
 }
 
 export interface TypeScriptRenderCompleteModelOptions {
@@ -41,7 +42,8 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions, Ty
     defaultPreset: TS_DEFAULT_PRESET,
     typeMapping: TypeScriptDefaultTypeMapping,
     constraints: TypeScriptDefaultConstraints,
-    moduleSystem: 'ESM'
+    moduleSystem: 'ESM',
+    extendInterfaceWithAdditionalProperties: true
   };
 
   constructor(

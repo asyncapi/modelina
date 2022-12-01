@@ -25,6 +25,7 @@ const jsonSchemaDraft7 = {
       $id: 'NestedTest',
       properties: { stringProp: { type: 'string' } },
       examples: ['Example 1', 'Example 2'],
+      additionalProperties: false,
     },
   },
 };

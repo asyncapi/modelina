@@ -6,7 +6,7 @@ Array [
     "/**
  * Main Description
  */
-interface Test {
+interface Test extends Map<string, any> {
   stringProp: string;
   /**
    * Description
@@ -17,7 +17,6 @@ interface Test {
    * @example Example 1, Example 2
    */
   objectProp?: NestedTest;
-  additionalProperties?: Map<string, any>;
 }",
   ],
   Array [
@@ -26,7 +25,6 @@ interface Test {
  */
 interface NestedTest {
   stringProp?: string;
-  additionalProperties?: Map<string, any>;
 }",
   ],
 ]
