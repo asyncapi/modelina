@@ -45,7 +45,7 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions, Ty
     typeMapping: TypeScriptDefaultTypeMapping,
     constraints: TypeScriptDefaultConstraints,
     moduleSystem: 'ESM',
-    //Temporarily sat
+    // Temporarily set
     dependencyManager: () => { return {} as TypeScriptDependencyManager;}
   };
   
