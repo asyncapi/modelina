@@ -51,3 +51,5 @@ This directory contains a series of self-contained examples that you can use as 
 - [typescript-generate-jsonbinpack](./typescript-generate-jsonbinpack) - A basic example showing how to generate models that include [jsonbinpack](https://github.com/sourcemeta/jsonbinpack) functionality.
 - [generate-python-models](./generate-python-models/) - A basic example showing how to generate Python models.
 - [generate-python-pydantic-models](./generate-python-pydantic-models/) - An example showing how to generate Python pydantic models.
+- [change-type-mapping](./change-type-mapping/) - A basic example showing how to change the type of a model in some context.
+- [change-type-mapping-with-dependency](./change-type-mapping-with-dependency/) - A basic example showing how to use the dependency manager to inject your own custom type with a dependency instead of the default type.

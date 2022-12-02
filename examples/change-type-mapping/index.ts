@@ -2,7 +2,7 @@ import { TypeScriptGenerator } from '../../src';
 
 const generator = new TypeScriptGenerator({
   typeMapping: {
-    String: ({constrainedModel, options, propertyKey}) => {
+    String: ({constrainedModel, options, partOfProperty, dependencyManager}) => {
       return 'integer';
     }
   }
