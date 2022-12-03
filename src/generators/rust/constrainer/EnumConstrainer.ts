@@ -40,7 +40,10 @@ export function defaultEnumKeyConstraints(customConstraints?: Partial<ModelEnumK
       constrainedEnumKey = constraints.NO_DUPLICATE_KEYS(constrainedEnumModel, enumModel, constrainedEnumKey, constraints.NAMING_FORMATTER);
     }
     constrainedEnumKey = constraints.NAMING_FORMATTER(constrainedEnumKey);
+
     constrainedEnumKey = constraints.NO_RESERVED_KEYWORDS(constrainedEnumKey);
+    // If the name is a reserved keyword, make sure to format it afterwards
+    constrainedEnumKey = constraints.NAMING_FORMATTER(constrainedEnumKey);
     return constrainedEnumKey;
   };
 }
