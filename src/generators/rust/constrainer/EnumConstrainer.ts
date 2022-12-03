@@ -35,12 +35,12 @@ export function defaultEnumKeyConstraints(customConstraints?: Partial<ModelEnumK
     constrainedEnumKey = constraints.NO_SPECIAL_CHAR(constrainedEnumKey);
     constrainedEnumKey = constraints.NO_NUMBER_START_CHAR(constrainedEnumKey);
     constrainedEnumKey = constraints.NO_EMPTY_VALUE(constrainedEnumKey);
-    constrainedEnumKey = constraints.NO_RESERVED_KEYWORDS(constrainedEnumKey);
     //If the enum key has been manipulated, lets make sure it don't clash with existing keys
     if (constrainedEnumKey !== enumKey) {
       constrainedEnumKey = constraints.NO_DUPLICATE_KEYS(constrainedEnumModel, enumModel, constrainedEnumKey, constraints.NAMING_FORMATTER);
     }
     constrainedEnumKey = constraints.NAMING_FORMATTER(constrainedEnumKey);
+    constrainedEnumKey = constraints.NO_RESERVED_KEYWORDS(constrainedEnumKey);
     return constrainedEnumKey;
   };
 }
