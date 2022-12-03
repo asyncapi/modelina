@@ -32,7 +32,6 @@ export function defaultPropertyKeyConstraints(customConstraints?: Partial<Proper
 
   return ({ objectPropertyModel, constrainedObjectModel, objectModel }) => {
     let constrainedPropertyKey = objectPropertyModel.propertyName;
-
     
     constrainedPropertyKey = constraints.NO_SPECIAL_CHAR(constrainedPropertyKey);
     constrainedPropertyKey = constraints.NO_NUMBER_START_CHAR(constrainedPropertyKey);
@@ -47,7 +46,6 @@ export function defaultPropertyKeyConstraints(customConstraints?: Partial<Proper
     if (constrainedPropertyKey !== objectPropertyModel.propertyName) {
       constrainedPropertyKey = constraints.NO_DUPLICATE_PROPERTIES(constrainedObjectModel, objectModel, constrainedPropertyKey, constraints.NAMING_FORMATTER);
     }
-
     
     return constrainedPropertyKey;
   };
