@@ -4,8 +4,10 @@ exports[`RustGenerator Enum should not render reserved keyword 1`] = `
 "// Address represents a Address model.
 #[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct Address {
-    #[serde(rename=\\"reservedEnum\\", skip_serializing_if = \\"Option::is_none\\")]
+    #[serde(rename=\\"enum\\", skip_serializing_if = \\"Option::is_none\\")]
     pub reserved_enum: Option<String>,
+    #[serde(rename=\\"reservedEnum\\", skip_serializing_if = \\"Option::is_none\\")]
+    pub reserved_reserved_enum: Option<String>,
 }
 "
 `;
@@ -37,7 +39,7 @@ pub enum Things123 {
     #[serde(rename=\\"1\\")]
     ReservedNumber_1,
     #[serde(rename=\\"false\\")]
-    ReservedFalse,
+    False,
     #[serde(flatten)]
     CurlyleftQuotationTestQuotationColonQuotationTestQuotationCurlyright(HashMap<String, serde_json::Value>),
 }
