@@ -68,7 +68,7 @@ const models = await generator.generate(
 </td>
   </tr>
     <tr>
-    <td><b>Use the same inputs across a range of different <a href="#outputs">output generators.</a></b></td>
+    <td><b>Use the same inputs across a range of different <a href="#outputs">generators</a></b></td>
 <td>
 
 ```typescript
@@ -145,7 +145,7 @@ const models = await generator.generate(input);
 </td>
   </tr>
   <tr>
-    <td><b><a href="./docs/usage.md#generate-models-from-json-schema-documents">Seamlessly</a> let you combine multiple layers of additional or replacement code together</b></td>
+    <td><b>Seamlessly let you <a href="./docs/presets.md">combine multiple layers of additional or replacement code</a></b></td>
 
 <td>
 
