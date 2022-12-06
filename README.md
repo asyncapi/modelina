@@ -61,7 +61,9 @@ const jsonschema = ...
 const openapi = ... 
 const metamodel = ... 
 ...
-const models = await generator.generate(asyncapi | jsonschema | openapi | metamodel);
+const models = await generator.generate(
+  asyncapi | jsonschema | openapi | metamodel
+);
 ```
 </td>
   </tr>
@@ -110,7 +112,7 @@ for (const model in models) {
 const generator = new TypeScriptGenerator({
   constraints: {
     modelName: ({modelName}) => {
-      // Implement your own constraining of the model name into TypeScript
+      // Implement your own constraining logic
       return modelName;
     }
   }
