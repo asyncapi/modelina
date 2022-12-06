@@ -88,7 +88,7 @@ const models = await generator.generate(input);
 - Want to generate the models into files? Sure! 
 - Want to combine all the models into one single file? Sure! 
 
-Whatever interaction you need you can create.</td>
+Whatever interaction you need, you can create.</td>
 <td>
 
 ```typescript
@@ -145,7 +145,7 @@ const models = await generator.generate(input);
 </td>
   </tr>
   <tr>
-    <td><b>Seamlessly let you <a href="./docs/presets.md">combine multiple layers of additional or replacement code</a></b></td>
+    <td><b>Seamlessly lets you <a href="./docs/presets.md">combine multiple layers of additional or replacement code</a></b></td>
 
 <td>
 
