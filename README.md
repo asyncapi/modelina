@@ -280,7 +280,7 @@ If no documentation helps you, here is how you can reach out to get help:
 - On the [official AsycnAPI slack](https://asyncapi.com/slack-invite) under the `#04 Tooling` channel
 - Tag a specific [CODEOWNER](./CODEOWNERS) in your PR
 - Generally, it's always a good idea to do everything in public, but in some cases, it might not be possible. In those circumstances you can contact the following: 
-  - [jonaslagoni](github.com/jonaslagoni) (on [AsyncAPI Slack](https://asyncapi.com/slack-invite), [Twitter](twitter.com/jonaslagoni), [Email](jonas-lt@live.dk), [LinkedIn](https://www.linkedin.com/in/jonaslagoni/))
+  - [jonaslagoni](https://github.com/jonaslagoni) (on [AsyncAPI Slack](https://asyncapi.com/slack-invite), [Twitter](https://twitter.com/jonaslagoni), [Email](mailto:jonas-lt@live.dk), [LinkedIn](https://www.linkedin.com/in/jonaslagoni/))
 
 ## Contributors ✨
 
