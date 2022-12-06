@@ -121,7 +121,7 @@ const generator = new TypeScriptGenerator({
 </td>
   </tr>
   <tr>
-    <td><b>Seamlessly layer additional code <a href="./docs/presets.md">on top of each other to customize the models</a> to your use-case</b></td>
+    <td><b>Seamlessly layer additional or replacement code <a href="./docs/presets.md">on top of each other to customize the models</a> to your use-case</b></td>
 
 <td>
 
@@ -204,7 +204,7 @@ The following table provides a short summary of available features for supported
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-models-from-meta-models">Meta model</a></td>
-    <td>This is the internal representation of a model for Modelina, it is what inputs gets converted to, and what generators are provided to generate code. Instead of relying on an input processor, you can create your own models from scratch, and still take advantage on the generators and the features.</td>
+    <td>This is the internal representation of a model for Modelina, it is what inputs gets converted to, and what generators are provided to generate code. Instead of relying on an input processor, you can create your own models from scratch and still take advantage on the generators and the features.</td>
   </tr>
 </table>
 
