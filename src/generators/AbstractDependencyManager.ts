@@ -4,7 +4,7 @@ export abstract class AbstractDependencyManager {
   ) {}
   
   /**
-   * Adds a dependency while ensuring that only one dependency is preset at a time.
+   * Adds a dependency while ensuring that unique dependencies.
    * 
    * @param dependency complete dependency string so it can be rendered as is.
    */

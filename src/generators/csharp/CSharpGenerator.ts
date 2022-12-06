@@ -93,7 +93,6 @@ export class CSharpGenerator extends AbstractGenerator<CSharpOptions, CSharpRend
         dependencyManager: dependencyManagerToUse,
         options: this.options,
         constrainedName: '' //This is just a placeholder, it will be constrained within the function,
-        
       }
     );
   }
