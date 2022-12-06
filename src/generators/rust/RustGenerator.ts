@@ -15,9 +15,9 @@ import { UnionRenderer } from './renderers/UnionRenderer';
 import { PackageRenderer } from './renderers/PackageRenderer';
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 import { RustDependencyManager } from './RustDependencyManager';
-
+export type RustTypeMapping = TypeMapping<RustOptions, RustDependencyManager>;
 export interface RustOptions extends CommonGeneratorOptions<RustPreset> {
-  typeMapping: TypeMapping<RustOptions, RustDependencyManager>;
+  typeMapping: RustTypeMapping;
   constraints: Constraints
 }
 
@@ -186,7 +186,7 @@ export class RustGenerator extends AbstractGenerator<RustOptions, RustRenderComp
     const optionsToUse = RustGenerator.getRustOptions({...this.options, ...options});
     const dependencyManagerToUse = this.getRustDependencyManager(optionsToUse);
     const presets = this.getPresets('enum');
-    const renderer = new EnumRenderer(this.options, this, presets, model, inputModel, dependencyManagerToUse);
+    const renderer = new EnumRenderer(optionsToUse, this, presets, model, inputModel, dependencyManagerToUse);
     const result = await renderer.runSelfPreset();
     return RenderOutput.toRenderOutput({ result, renderedName: model.name, dependencies: dependencyManagerToUse.dependencies });
   }
@@ -195,7 +195,7 @@ export class RustGenerator extends AbstractGenerator<RustOptions, RustRenderComp
     const optionsToUse = RustGenerator.getRustOptions({...this.options, ...options});
     const dependencyManagerToUse = this.getRustDependencyManager(optionsToUse);
     const presets = this.getPresets('struct');
-    const renderer = new StructRenderer(this.options, this, presets, model, inputModel, dependencyManagerToUse);
+    const renderer = new StructRenderer(optionsToUse, this, presets, model, inputModel, dependencyManagerToUse);
     const result = await renderer.runSelfPreset();
     return RenderOutput.toRenderOutput({ result, renderedName: model.name, dependencies: dependencyManagerToUse.dependencies });
   }
@@ -204,7 +204,7 @@ export class RustGenerator extends AbstractGenerator<RustOptions, RustRenderComp
     const optionsToUse = RustGenerator.getRustOptions({...this.options, ...options});
     const dependencyManagerToUse = this.getRustDependencyManager(optionsToUse);
     const presets = this.getPresets('tuple');
-    const renderer = new TupleRenderer(this.options, this, presets, model, inputModel, dependencyManagerToUse);
+    const renderer = new TupleRenderer(optionsToUse, this, presets, model, inputModel, dependencyManagerToUse);
     const result = await renderer.runSelfPreset();
     return RenderOutput.toRenderOutput({ result, renderedName: model.name, dependencies: dependencyManagerToUse.dependencies });
   }
@@ -221,7 +221,7 @@ export class RustGenerator extends AbstractGenerator<RustOptions, RustRenderComp
     const optionsToUse = RustGenerator.getRustOptions({...this.options, ...options});
     const dependencyManagerToUse = this.getRustDependencyManager(optionsToUse);
     const presets = this.getPresets('package');
-    const renderer = new PackageRenderer(this.options, this, presets, model, inputModel, dependencyManagerToUse);
+    const renderer = new PackageRenderer(optionsToUse, this, presets, model, inputModel, dependencyManagerToUse);
     const result = await renderer.runPreset('manifest', { packageOptions: completeModelOptions.package, inputModel });
     return RenderOutput.toRenderOutput({ result, renderedName: model.name, dependencies: dependencyManagerToUse.dependencies });
   }
@@ -229,14 +229,12 @@ export class RustGenerator extends AbstractGenerator<RustOptions, RustRenderComp
     const optionsToUse = RustGenerator.getRustOptions({...this.options, ...options});
     const dependencyManagerToUse = this.getRustDependencyManager(optionsToUse);
     const presets = this.getPresets('package');
-    const renderer = new PackageRenderer(this.options, this, presets, model, inputModel, dependencyManagerToUse);
+    const renderer = new PackageRenderer(optionsToUse, this, presets, model, inputModel, dependencyManagerToUse);
     const result = await renderer.runPreset('lib', { packageOptions: completeModelOptions.package, inputModel });
     return RenderOutput.toRenderOutput({ result, renderedName: model.name, dependencies: dependencyManagerToUse.dependencies });
   }
 
   async generateCompleteSupport(input: Record<string, unknown> | InputMetaModel, completeModelOptions: Partial<RustRenderCompleteModelOptions>, options?: DeepPartial<RustOptions>): Promise<OutputModel[]> {
-    const optionsToUse = RustGenerator.getRustOptions({...this.options, ...options});
-    const dependencyManagerToUse = this.getRustDependencyManager(optionsToUse);
     const inputModel = await this.processInput(input);
     const manifestMetaModel = new ConstrainedSupportFileModel('Cargo.toml', inputModel, 'supportFile');
     const libMetaModel = new ConstrainedSupportFileModel('src/lib.rs', inputModel, 'supportFile');
