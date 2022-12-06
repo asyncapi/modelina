@@ -1,52 +1,63 @@
+import { AbstractDependencyManager } from 'generators/AbstractDependencyManager';
+import { ConstrainedObjectPropertyModel } from 'models';
 import { TypeMapping } from '../../helpers';
 import { defaultEnumKeyConstraints, defaultEnumValueConstraints } from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
 import { CSharpOptions } from './CSharpGenerator';
 
-export const CSharpDefaultTypeMapping: TypeMapping<CSharpOptions> = {
-  Object ({constrainedModel}): string {
-    return constrainedModel.name;
+function getFullTypeDefinition(typeName: string, partOfProperty: ConstrainedObjectPropertyModel | undefined) {
+  return partOfProperty?.required ?? true
+    ? typeName
+    : `${typeName}?`;
+};
+
+export const CSharpDefaultTypeMapping: TypeMapping<CSharpOptions, AbstractDependencyManager> = {
+
+  Object({ constrainedModel, partOfProperty }): string {
+    return getFullTypeDefinition(constrainedModel.name, partOfProperty);
   },
-  Reference ({constrainedModel}): string {
-    return constrainedModel.name;
+  Reference({ constrainedModel, partOfProperty }): string {
+    return getFullTypeDefinition(constrainedModel.name, partOfProperty);
   },
-  Any (): string {
-    return 'dynamic';
+  Any({ partOfProperty }): string {
+    return getFullTypeDefinition('dynamic', partOfProperty);
   },
-  Float (): string {
-    return 'double';
+  Float({ partOfProperty }): string {
+    return getFullTypeDefinition('double', partOfProperty);
   },
-  Integer (): string {
-    return 'int';
+  Integer({ partOfProperty }): string {
+    return getFullTypeDefinition('int', partOfProperty);
   },
-  String (): string {
-    return 'string';
+  String({ partOfProperty }): string {
+    return getFullTypeDefinition('string', partOfProperty);
   },
-  Boolean (): string {
-    return 'bool';
+  Boolean({ partOfProperty }): string {
+    return getFullTypeDefinition('bool', partOfProperty);
   },
-  Tuple ({constrainedModel}): string {
+  Tuple({ constrainedModel, partOfProperty }): string {
     const tupleTypes = constrainedModel.tuple.map((constrainedType) => {
       return constrainedType.value.type;
     });
-    return `(${tupleTypes.join(', ')})`;
+    return getFullTypeDefinition(`(${tupleTypes.join(', ')})`, partOfProperty);
   },
-  Array ({constrainedModel, options}): string {
-    if (options.collectionType && options.collectionType === 'List') {
-      return `IEnumerable<${constrainedModel.valueModel.type}>`;
-    }
-    return `${constrainedModel.valueModel.type}[]`;
+  Array({ constrainedModel, options, partOfProperty }): string {
+    const typeString = options.collectionType && options.collectionType === 'List'
+      ? `IEnumerable<${constrainedModel.valueModel.type}>`
+      : `${constrainedModel.valueModel.type}[]`;
+
+    return getFullTypeDefinition(typeString, partOfProperty);
   },
-  Enum ({constrainedModel}): string {
-    return constrainedModel.name;
+  Enum({ constrainedModel, partOfProperty }): string {
+    return getFullTypeDefinition(constrainedModel.name, partOfProperty);
   },
-  Union (): string {
-    //Because CSharp have no notion of unions (and no custom implementation), we have to render it as any value.
-    return 'dynamic';
+  Union({ partOfProperty }): string {
+    //BecauserenderPrivateType( CSharp , partOfProperty) have no notion of unions (and no custom implementation), we have to render it as any value.
+
+    return getFullTypeDefinition('dynamic', partOfProperty);
   },
-  Dictionary ({constrainedModel}): string {
-    return `Dictionary<${constrainedModel.key.type}, ${constrainedModel.value.type}>`;
+  Dictionary({ constrainedModel, partOfProperty }): string {
+    return getFullTypeDefinition(`Dictionary<${constrainedModel.key.type}, ${constrainedModel.value.type}>`, partOfProperty);
   }
 };
 

@@ -116,10 +116,6 @@ ${content}`;
         property: { type: 'string' },
       }
     };
-    const expected = `interface CustomInterface {
-  property?: string;
-  additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null>;
-}`;
 
     generator = new TypeScriptGenerator({
       presets: [
@@ -157,7 +153,6 @@ ${content}`;
       type: 'string',
       enum: ['Texas', 'Alabama', 'California'],
     };
-    const expected = 'type States = "Texas" | "Alabama" | "California";';
 
     generator = new TypeScriptGenerator({ enumType: 'union' });
     const models = await generator.generate(doc);
@@ -171,13 +166,6 @@ ${content}`;
       $id: 'States',
       enum: [2, '2', 'test', true, { test: 'test' }]
     };
-    const expected = `enum States {
-  NUMBER_2 = 2,
-  STRING_2 = "2",
-  TEST = "test",
-  TRUE = "true",
-  TEST_TEST = '{"test":"test"}',
-}`;
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot();

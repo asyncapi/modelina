@@ -283,16 +283,20 @@ const generator2 = new TypeScriptGenerator({
 ```
 
 ### Adding new dependencies
-Sometimes the preset might need to use some kind of foreign dependency. To achieve this each preset hook has the possibility of adding its own dependencies through the `addDependency` function from `renderer` property.
+Sometimes the preset might need to use some kind of foreign dependency. To achieve this each preset hook has the possibility of adding its own dependencies through a dependency manager, which can be accessed in `dependencyManager`.
 
 ```ts
 ...
-self({ renderer, content }) {
-  renderer.addDependency('import java.util.*;');
+self({ dependencyManager, content }) {
+  dependencyManager.addDependency('import java.util.*;');
   return content;
 }
 ...
 ```
+
+Some languages has specific helper functions, and some very basic interfaces, such as for Java.
+
+In TypeScript because you can have different import syntaxes based on the module system such as [CJS](../examples/typescript-use-cjs/) or [ESM](../examples/typescript-use-esm/), therefore it provies a specific function `addTypeScriptDependency` that takes care of that logic, and you just have to remember `addTypeScriptDependency('ImportanWhat', 'FromWhere')`.
 
 ### Overriding the default preset
 
