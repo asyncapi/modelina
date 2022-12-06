@@ -112,10 +112,10 @@ function renderDeserialize({ model }: {
 export const CSHARP_NEWTONSOFT_SERIALIZER_PRESET: CSharpPreset<CSharpOptions> = {
   class: {
     self: ({ renderer, content, model }) => {
-      renderer.addDependency('using Newtonsoft.Json;');
-      renderer.addDependency('using Newtonsoft.Json.Linq;');
-      renderer.addDependency('using System.Collections.Generic;');
-      renderer.addDependency('using System.Linq;');
+      renderer.dependencyManager.addDependency('using Newtonsoft.Json;');
+      renderer.dependencyManager.addDependency('using Newtonsoft.Json.Linq;');
+      renderer.dependencyManager.addDependency('using System.Collections.Generic;');
+      renderer.dependencyManager.addDependency('using System.Linq;');
 
       const deserialize = renderDeserialize({ model });
       const serialize = renderSerialize({ model });

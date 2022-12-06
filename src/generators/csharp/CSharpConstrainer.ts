@@ -1,10 +1,9 @@
-import { TypeMapping } from '../../helpers';
 import { defaultEnumKeyConstraints, defaultEnumValueConstraints } from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
-import { CSharpOptions } from './CSharpGenerator';
+import { CSharpTypeMapping } from './CSharpGenerator';
 
-export const CSharpDefaultTypeMapping: TypeMapping<CSharpOptions> = {
+export const CSharpDefaultTypeMapping: CSharpTypeMapping = {
   Object ({constrainedModel}): string {
     return constrainedModel.name;
   },
