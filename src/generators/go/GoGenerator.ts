@@ -4,18 +4,16 @@ import {
   defaultGeneratorOptions
 } from '../AbstractGenerator';
 import { InputMetaModel, RenderOutput, ConstrainedObjectModel, ConstrainedEnumModel, ConstrainedMetaModel, MetaModel } from '../../models';
-import { constrainMetaModel, Constraints, split, SplitOptions, TypeMapping } from '../../helpers';
+import { constrainMetaModel, Constraints, split, TypeMapping } from '../../helpers';
 import { GoPreset, GO_DEFAULT_PRESET } from './GoPreset';
 import { StructRenderer } from './renderers/StructRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { Logger } from '../../utils/LoggingInterface';
 import { GoDefaultConstraints, GoDefaultTypeMapping } from './GoConstrainer';
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
-import { GoDependencyManager } from './GoDependencyManager';
-export type GoTypeMapping = TypeMapping<GoOptions, GoDependencyManager>;
 
 export interface GoOptions extends CommonGeneratorOptions<GoPreset> {
-  typeMapping: GoTypeMapping;
+  typeMapping: TypeMapping<GoOptions>;
   constraints: Constraints
 }
 
@@ -34,11 +32,6 @@ export class GoGenerator extends AbstractGenerator<GoOptions, GoRenderCompleteMo
     constraints: GoDefaultConstraints
   };
 
-  static defaultCompleteModelOptions: GoRenderCompleteModelOptions = {
-    packageName: 'AsyncapiModels'
-  };
-
-
   constructor(
     options?: DeepPartial<GoOptions>,
   ) {
@@ -46,55 +39,32 @@ export class GoGenerator extends AbstractGenerator<GoOptions, GoRenderCompleteMo
     super('Go', realizedOptions);
   }
 
-  /**
-   * Returns the Go options by merging custom options with default ones.
-   */
-   static getGoOptions(options?: DeepPartial<GoOptions>): GoOptions {
-    const optionsToUse = mergePartialAndDefault(GoGenerator.defaultOptions, options) as GoOptions;
-    //Always overwrite the dependency manager unless user explicitly state they want it (ignore default temporary dependency manager)
-    if (options?.dependencyManager === undefined) {
-      optionsToUse.dependencyManager = () => { return new GoDependencyManager(optionsToUse); };
-    }
-    return optionsToUse;
-  }
-
-  /**
-   * Wrapper to get an instance of the dependency manager
-   */
-  getGoDependencyManager(options: GoOptions): GoDependencyManager {
-    return this.getDependencyManagerInstance(options) as GoDependencyManager;
-  }
-
   splitMetaModel(model: MetaModel): MetaModel[] {
     //These are the models that we have separate renderers for
-    const metaModelsToSplit: SplitOptions = {
+    const metaModelsToSplit = {
       splitEnum: true, 
       splitObject: true
     };
     return split(model, metaModelsToSplit);
   }
 
-  constrainToMetaModel(model: MetaModel, options: DeepPartial<GoOptions>): ConstrainedMetaModel {
-    const optionsToUse = GoGenerator.getGoOptions({...this.options, ...options});
-    const dependencyManagerToUse = this.getGoDependencyManager(optionsToUse);
-    return constrainMetaModel<GoOptions, GoDependencyManager>(
+  constrainToMetaModel(model: MetaModel): ConstrainedMetaModel {
+    return constrainMetaModel<GoOptions>(
       this.options.typeMapping, 
       this.options.constraints, 
       {
         metaModel: model,
-        dependencyManager: dependencyManagerToUse,
         options: this.options,
         constrainedName: '' //This is just a placeholder, it will be constrained within the function
       }
     );
   }
 
-  render(model: ConstrainedMetaModel, inputModel: InputMetaModel, options?: DeepPartial<GoOptions>): Promise<RenderOutput> {
-    const optionsToUse = GoGenerator.getGoOptions({...this.options, ...options});
+  render(model: ConstrainedMetaModel, inputModel: InputMetaModel): Promise<RenderOutput> {
     if (model instanceof ConstrainedObjectModel) {
-      return this.renderStruct(model, inputModel, optionsToUse);
+      return this.renderStruct(model, inputModel);
     } else if (model instanceof ConstrainedEnumModel) {
-      return this.renderEnum(model, inputModel, optionsToUse);
+      return this.renderEnum(model, inputModel);
     } 
     Logger.warn(`Go generator, cannot generate this type of model, ${model.name}`);
     return Promise.resolve(RenderOutput.toRenderOutput({ result: '', renderedName: '', dependencies: [] }));
@@ -107,14 +77,8 @@ export class GoGenerator extends AbstractGenerator<GoOptions, GoRenderCompleteMo
    * @param inputModel
    * @param options
    */
-  async renderCompleteModel(
-    model: ConstrainedMetaModel, 
-    inputModel: InputMetaModel, 
-    completeModelOptions: Partial<GoRenderCompleteModelOptions>,
-    options: DeepPartial<GoOptions>): Promise<RenderOutput> {
-    const completeModelOptionsToUse = mergePartialAndDefault(GoGenerator.defaultCompleteModelOptions, completeModelOptions) as GoRenderCompleteModelOptions;
-    const optionsToUse = GoGenerator.getGoOptions({...this.options, ...options});
-    const outputModel = await this.render(model, inputModel, optionsToUse);
+  async renderCompleteModel(model: ConstrainedMetaModel, inputModel: InputMetaModel, options: GoRenderCompleteModelOptions): Promise<RenderOutput> {
+    const outputModel = await this.render(model, inputModel);
     let importCode = '';
     if (outputModel.dependencies.length > 0) {
       const dependencies = outputModel.dependencies.map((dependency) => { return `"${dependency}"`; }).join('\n');
@@ -123,27 +87,23 @@ export class GoGenerator extends AbstractGenerator<GoOptions, GoRenderCompleteMo
 )`;
     }
     const outputContent = `
-package ${completeModelOptionsToUse.packageName}
+package ${options.packageName}
 ${importCode}
 ${outputModel.result}`;
     return RenderOutput.toRenderOutput({ result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies });
   }
 
-  async renderEnum(model: ConstrainedEnumModel, inputModel: InputMetaModel, options?: DeepPartial<GoOptions>): Promise<RenderOutput> {
-    const optionsToUse = GoGenerator.getGoOptions({...this.options, ...options});
-    const dependencyManagerToUse = this.getGoDependencyManager(optionsToUse);
+  async renderEnum(model: ConstrainedEnumModel, inputModel: InputMetaModel): Promise<RenderOutput> {
     const presets = this.getPresets('enum');
-    const renderer = new EnumRenderer(optionsToUse, this, presets, model, inputModel, dependencyManagerToUse);
+    const renderer = new EnumRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({ result, renderedName: model.name, dependencies: dependencyManagerToUse.dependencies });
+    return RenderOutput.toRenderOutput({ result, renderedName: model.name, dependencies: renderer.dependencies });
   }
 
-  async renderStruct(model: ConstrainedObjectModel, inputModel: InputMetaModel, options?: DeepPartial<GoOptions>): Promise<RenderOutput> {
-    const optionsToUse = GoGenerator.getGoOptions({...this.options, ...options});
-    const dependencyManagerToUse = this.getGoDependencyManager(optionsToUse);
+  async renderStruct(model: ConstrainedObjectModel, inputModel: InputMetaModel): Promise<RenderOutput> {
     const presets = this.getPresets('struct');
-    const renderer = new StructRenderer(optionsToUse, this, presets, model, inputModel, dependencyManagerToUse);
+    const renderer = new StructRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({ result, renderedName: model.name, dependencies: dependencyManagerToUse.dependencies });
+    return RenderOutput.toRenderOutput({ result, renderedName: model.name, dependencies: renderer.dependencies });
   }
 }

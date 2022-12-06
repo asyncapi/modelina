@@ -1,10 +1,10 @@
-import { Constraints } from '../../helpers';
+import { Constraints, TypeMapping } from '../../helpers';
 import { defaultEnumKeyConstraints, defaultEnumValueConstraints } from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
-import { GoTypeMapping } from './GoGenerator';
+import { GoOptions } from './GoGenerator';
 
-export const GoDefaultTypeMapping: GoTypeMapping = {
+export const GoDefaultTypeMapping: TypeMapping<GoOptions> = {
   Object ({constrainedModel}): string {
     return constrainedModel.name;
   },

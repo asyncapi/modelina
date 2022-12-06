@@ -1,4 +1,3 @@
-import { GoDependencyManager } from '../../../src/generators/go/GoDependencyManager';
 import { GoGenerator } from '../../../src/generators/go/GoGenerator';
 import { GoRenderer } from '../../../src/generators/go/GoRenderer';
 import { ConstrainedObjectModel, InputMetaModel } from '../../../src/models';
@@ -7,7 +6,7 @@ import { MockGoRenderer } from '../../TestUtils/TestRenderers';
 describe('GoRenderer', () => {
   let renderer: GoRenderer<any>;
   beforeEach(() => {
-    renderer = new MockGoRenderer(GoGenerator.defaultOptions, new GoGenerator(), [], new ConstrainedObjectModel('', undefined, '', {}), new InputMetaModel(), new GoDependencyManager(GoGenerator.defaultOptions));
+    renderer = new MockGoRenderer(GoGenerator.defaultOptions, new GoGenerator(), [], new ConstrainedObjectModel('', undefined, '', {}), new InputMetaModel());
   });
   describe('renderComments()', () => {
     test('should render single lines correctly', () => {
