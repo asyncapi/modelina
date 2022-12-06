@@ -1,4 +1,3 @@
-import { AbstractDependencyManager } from 'generators/AbstractDependencyManager';
 import { ConstrainedObjectPropertyModel } from 'models';
 import { TypeMapping } from '../../helpers';
 import { defaultEnumKeyConstraints, defaultEnumValueConstraints } from './constrainer/EnumConstrainer';
@@ -12,7 +11,7 @@ function getFullTypeDefinition(typeName: string, partOfProperty: ConstrainedObje
     : `${typeName}?`;
 };
 
-export const CSharpDefaultTypeMapping: TypeMapping<CSharpOptions, AbstractDependencyManager> = {
+export const CSharpDefaultTypeMapping: TypeMapping<CSharpOptions> = {
 
   Object({ constrainedModel, partOfProperty }): string {
     return getFullTypeDefinition(constrainedModel.name, partOfProperty);
