@@ -277,7 +277,7 @@ Without contributions, Modelina would not exist, it's a community project we bui
 We have made quite a [comprehensive contribution guide](./docs/contributing.md) to give you a lending hand in how different features and changes are introduced.
 
 If no documentation helps you, here is how you can reach out to get help:
-- On the [official AsycnAPI slack](https://asyncapi.com/slack-invite) under the `#04 Tooling` channel
+- On the [official AsycnAPI slack](https://asyncapi.com/slack-invite) under the `#04_tooling` channel
 - Tag a specific [CODEOWNER](./CODEOWNERS) in your PR
 - Generally, it's always a good idea to do everything in public, but in some cases, it might not be possible. In those circumstances you can contact the following: 
   - [jonaslagoni](https://github.com/jonaslagoni) (on [AsyncAPI Slack](https://asyncapi.com/slack-invite), [Twitter](https://twitter.com/jonaslagoni), [Email](mailto:jonas-lt@live.dk), [LinkedIn](https://www.linkedin.com/in/jonaslagoni/))
