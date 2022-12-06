@@ -1,4 +1,5 @@
 import { JavaGenerator } from '../../../src/generators';
+import { JavaDependencyManager } from '../../../src/generators/java/JavaDependencyManager';
 import { JavaRenderer } from '../../../src/generators/java/JavaRenderer';
 import { CommonModel, ConstrainedObjectModel, InputMetaModel } from '../../../src/models';
 import { MockJavaRenderer } from '../../TestUtils/TestRenderers';
@@ -6,7 +7,7 @@ import { MockJavaRenderer } from '../../TestUtils/TestRenderers';
 describe('JavaRenderer', () => {
   let renderer: JavaRenderer<any>;
   beforeEach(() => {
-    renderer = new MockJavaRenderer(JavaGenerator.defaultOptions, new JavaGenerator(), [], new ConstrainedObjectModel('', undefined, '', {}), new InputMetaModel());
+    renderer = new MockJavaRenderer(JavaGenerator.defaultOptions, new JavaGenerator(), [], new ConstrainedObjectModel('', undefined, '', {}), new InputMetaModel(), new JavaDependencyManager(JavaGenerator.defaultOptions));
   });
 
   describe('renderComments()', () => {

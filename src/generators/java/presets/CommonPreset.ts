@@ -166,13 +166,13 @@ export const JAVA_COMMON_PRESET: JavaPreset<JavaCommonPresetOptions> = {
       const shouldContainMarshal = options.marshalling === true;
 
       if (shouldContainEqual === true || shouldContainHashCode === true) {
-        renderer.addDependency('import java.util.Objects;');
+        renderer.dependencyManager.addDependency('import java.util.Objects;');
       }
 
       if (shouldContainMarshal === true) {
-        renderer.addDependency('import java.util.stream;');
-        renderer.addDependency('import org.json.JSONObject;');
-        renderer.addDependency('import java.util.Map;');
+        renderer.dependencyManager.addDependency('import java.util.stream;');
+        renderer.dependencyManager.addDependency('import org.json.JSONObject;');
+        renderer.dependencyManager.addDependency('import java.util.Map;');
       }
 
       if (shouldContainEqual) { blocks.push(renderEqual({ renderer, model })); }
