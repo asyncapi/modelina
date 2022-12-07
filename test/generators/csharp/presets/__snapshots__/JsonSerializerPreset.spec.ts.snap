@@ -85,7 +85,7 @@ internal class TestConverter : JsonConverter<Test>
         }
       if (propertyName == \\"enumProp\\")
         {
-          var value = EnumTest?Extension.ToEnumTest?(JsonSerializer.Deserialize<dynamic>(ref reader, options));
+          var value = EnumTestExtension.ToEnumTest(JsonSerializer.Deserialize<dynamic>(ref reader, options));
           instance.enumProp = value;
           continue;
         }
