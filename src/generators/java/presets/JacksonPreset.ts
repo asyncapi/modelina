@@ -9,7 +9,7 @@ import { JavaPreset } from '../JavaPreset';
 export const JAVA_JACKSON_PRESET: JavaPreset = {
   class: {
     self({renderer, content}) {
-      renderer.addDependency('import com.fasterxml.jackson.annotation.*;');
+      renderer.dependencyManager.addDependency('import com.fasterxml.jackson.annotation.*;');
       return content;
     },
     getter({ renderer, property, content }) {
@@ -25,7 +25,7 @@ export const JAVA_JACKSON_PRESET: JavaPreset = {
   },
   enum: {
     self({renderer, content}) {
-      renderer.addDependency('import com.fasterxml.jackson.annotation.*;');
+      renderer.dependencyManager.addDependency('import com.fasterxml.jackson.annotation.*;');
       return content;
     },
     getValue({content}) {
