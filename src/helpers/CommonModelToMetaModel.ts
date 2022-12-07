@@ -180,6 +180,7 @@ export function convertToBooleanModel(jsonSchemaModel: CommonModel, name: string
   }
   return new BooleanModel(name, jsonSchemaModel.originalInput);
 }
+
 /**
  * Determine whether we have a dictionary or an object. because in some cases inputs might be:
  * { "type": "object", "additionalProperties": { "$ref": "#" } } which is to be interpreted as a dictionary not an object model.
@@ -190,17 +191,57 @@ function isDictionary(jsonSchemaModel: CommonModel): boolean {
   }
   return true;
 }
+
+/**
+ * Return the original input based on additionalProperties and patternProperties. 
+ */
+function getOriginalInputFromAdditionalAndPatterns(jsonSchemaModel: CommonModel) {
+  const originalInputs = [];
+  if (jsonSchemaModel.additionalProperties !== undefined) {
+    originalInputs.push(jsonSchemaModel.additionalProperties.originalInput);
+  }
+  
+  if (jsonSchemaModel.patternProperties !== undefined) {
+    for (const patternModel of Object.values(jsonSchemaModel.patternProperties)) {
+      originalInputs.push(patternModel.originalInput);
+    }
+  }
+  return originalInputs;
+}
+
+/**
+ * Function creating the right meta model based on additionalProperties and patternProperties.
+ */
+function convertAdditionalAndPatterns(jsonSchemaModel: CommonModel, name: string, alreadySeenModels: Map<CommonModel, MetaModel>) {
+  const modelsAsValue = new Map<string, MetaModel>();
+  if (jsonSchemaModel.additionalProperties !== undefined) {
+    const additionalPropertyModel = convertToMetaModel(jsonSchemaModel.additionalProperties, alreadySeenModels);
+    modelsAsValue.set(additionalPropertyModel.name, additionalPropertyModel);
+  }
+  
+  if (jsonSchemaModel.patternProperties !== undefined) {
+    for (const patternModel of Object.values(jsonSchemaModel.patternProperties)) {
+      const patternPropertyModel = convertToMetaModel(patternModel);
+      modelsAsValue.set(patternPropertyModel.name, patternPropertyModel);
+    }
+  }
+  if (modelsAsValue.size === 1) {
+    return Array.from(modelsAsValue.values())[0];
+  }
+  return new UnionModel(name, getOriginalInputFromAdditionalAndPatterns(jsonSchemaModel), Array.from(modelsAsValue.values()));
+}
+
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 export function convertToDictionaryModel(jsonSchemaModel: CommonModel, name: string, alreadySeenModels: Map<CommonModel, MetaModel>): DictionaryModel | undefined {
   if (!isDictionary(jsonSchemaModel)) {
     return undefined;
   }
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const keyModel = new StringModel(name, jsonSchemaModel.additionalProperties!.originalInput);
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const valueModel = convertToMetaModel(jsonSchemaModel.additionalProperties!, alreadySeenModels);
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  return new DictionaryModel(name, jsonSchemaModel.additionalProperties!.originalInput, keyModel, valueModel, 'normal');
+  const originalInput = getOriginalInputFromAdditionalAndPatterns(jsonSchemaModel); 
+  const keyModel = new StringModel(name, originalInput);
+  const valueModel = convertAdditionalAndPatterns(jsonSchemaModel, name, alreadySeenModels);
+  return new DictionaryModel(name, originalInput, keyModel, valueModel, 'normal');
 }
+
 export function convertToObjectModel(jsonSchemaModel: CommonModel, name: string, alreadySeenModels: Map<CommonModel, MetaModel>): ObjectModel | undefined {
   if (!jsonSchemaModel.type?.includes('object') ||
     isDictionary(jsonSchemaModel)) {
@@ -219,14 +260,15 @@ export function convertToObjectModel(jsonSchemaModel: CommonModel, name: string,
     metaModel.properties[String(propertyName)] = propertyModel;
   }
 
-  if (jsonSchemaModel.additionalProperties !== undefined) {
+  if (jsonSchemaModel.additionalProperties !== undefined || jsonSchemaModel.patternProperties !== undefined) {
     let propertyName = 'additionalProperties';
     while (metaModel.properties[String(propertyName)] !== undefined) {
       propertyName = `reserved_${propertyName}`;
     }
-    const keyModel = new StringModel(propertyName, jsonSchemaModel.additionalProperties.originalInput);
-    const valueModel = convertToMetaModel(jsonSchemaModel.additionalProperties, alreadySeenModels);
-    const dictionaryModel = new DictionaryModel(propertyName, jsonSchemaModel.additionalProperties.originalInput, keyModel, valueModel, 'unwrap');
+    const originalInput = getOriginalInputFromAdditionalAndPatterns(jsonSchemaModel); 
+    const keyModel = new StringModel(propertyName, originalInput);
+    const valueModel = convertAdditionalAndPatterns(jsonSchemaModel, propertyName, alreadySeenModels);
+    const dictionaryModel = new DictionaryModel(propertyName, originalInput, keyModel, valueModel, 'unwrap');
     const propertyModel = new ObjectPropertyModel(propertyName, false, dictionaryModel);
     metaModel.properties[String(propertyName)] = propertyModel;
   }

@@ -22,7 +22,7 @@ describe('Interpretation of patternProperties', () => {
 
     interpretPatternProperties({}, model, interpreter);
 
-    expect(model.addAdditionalProperty).not.toHaveBeenCalled();
+    expect(model.addPatternProperty).not.toHaveBeenCalled();
   });
   test('should not do anything if schema is boolean', () => {
     const model = new CommonModel();
@@ -32,7 +32,7 @@ describe('Interpretation of patternProperties', () => {
 
     interpretPatternProperties(true, model, interpreter);
 
-    expect(model.addAdditionalProperty).not.toHaveBeenCalled();
+    expect(model.addPatternProperty).not.toHaveBeenCalled();
   });
 
   test('should ignore model if interpreter cannot interpret patternProperties schema', () => {
@@ -44,7 +44,7 @@ describe('Interpretation of patternProperties', () => {
 
     interpretPatternProperties(schema, model, interpreter);
 
-    expect(model.addAdditionalProperty).not.toHaveBeenCalled();
+    expect(model.addPatternProperty).not.toHaveBeenCalled();
   });
   test('should use as is', () => {
     const schema: any = { patternProperties: { pattern: { type: 'string' } } };
@@ -56,6 +56,6 @@ describe('Interpretation of patternProperties', () => {
     interpretPatternProperties(schema, model, interpreter);
     
     expect(interpreter.interpret).toHaveBeenNthCalledWith(1, { type: 'string' }, Interpreter.defaultInterpreterOptions);
-    expect(model.addAdditionalProperty).toHaveBeenNthCalledWith(1, mockedReturnModel, schema);
+    expect(model.addPatternProperty).toHaveBeenNthCalledWith(1, 'pattern', mockedReturnModel, schema);
   });
 });
