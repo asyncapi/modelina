@@ -1,6 +1,6 @@
 import { AbstractRenderer } from '../AbstractRenderer';
 import { CSharpGenerator, CSharpOptions } from './CSharpGenerator';
-import { Preset, ConstrainedMetaModel, InputMetaModel, ConstrainedObjectPropertyModel } from '../../models';
+import { Preset, ConstrainedMetaModel, InputMetaModel } from '../../models';
 import { FormatHelpers } from '../../helpers/FormatHelpers';
 
 /**

@@ -9,7 +9,7 @@ function getFullTypeDefinition(typeName: string, partOfProperty: ConstrainedObje
   return partOfProperty?.required ?? true
     ? typeName
     : `${typeName}?`;
-};
+}
 
 export const CSharpDefaultTypeMapping: TypeMapping<CSharpOptions> = {
 
