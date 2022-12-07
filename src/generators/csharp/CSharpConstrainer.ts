@@ -1,8 +1,27 @@
+import { ConstrainedEnumValueModel } from 'models';
 import { TypeMapping } from '../../helpers';
 import { defaultEnumKeyConstraints, defaultEnumValueConstraints } from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
 import { CSharpOptions } from './CSharpGenerator';
+
+const fromEnumValueToType = (enumValueModel: ConstrainedEnumValueModel): string => {
+  switch (typeof enumValueModel.value) {
+  case 'boolean':
+    return 'bool';
+  case 'number':
+  case 'bigint':
+    if(Number.isInteger(enumValueModel.value)) {
+      return 'int';
+    }
+    return 'double';
+  case 'string':
+    return 'string';
+  case 'object':
+  default:
+    return 'dynamic';
+  }
+};
 
 export const CSharpDefaultTypeMapping: TypeMapping<CSharpOptions> = {
   Object ({constrainedModel}): string {
@@ -39,7 +58,18 @@ export const CSharpDefaultTypeMapping: TypeMapping<CSharpOptions> = {
     return `${constrainedModel.valueModel.type}[]`;
   },
   Enum ({constrainedModel}): string {
-    return constrainedModel.name;
+    const typesForValues: Set<string> = new Set();
+
+    for (const value of this.model.values) {
+      const typeForValue = fromEnumValueToType(value);
+      typesForValues.add(typeForValue);
+    }
+    // If there exist more then 1 unique type, then default to dynamic
+    if(typesForValues.size > 1) {
+      return 'dynamic';
+    }
+    const [typeForValues] = typesForValues;
+    return typeForValues;
   },
   Union (): string {
     //Because CSharp have no notion of unions (and no custom implementation), we have to render it as any value.
