@@ -23,8 +23,4 @@ export abstract class CSharpRenderer<RendererModelType extends ConstrainedMetaMo
     lines = FormatHelpers.breakLines(lines);
     return lines.map(line => `// ${line}`).join('\n');
   }
-
-  optionalMark(propertyModel: ConstrainedObjectPropertyModel): string {
-    return propertyModel.required ? '' : '?';
-  }
 }

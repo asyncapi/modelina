@@ -5,9 +5,9 @@ Array [
   "[JsonConverter(typeof(RootConverter))]
 public class Root
 {
-  private string email;
+  private string? email;
 
-  public string Email 
+  public string? Email 
   {
     get { return email; }
     set { email = value; }
@@ -22,7 +22,7 @@ public class RootConverter : JsonConverter<Root>
   Root value = new Root();
 
   if(jo[\\"email\\"] != null) {
-  value.Email = jo[\\"email\\"].ToObject<string>(serializer);
+  value.Email = jo[\\"email\\"].ToObject<string?>(serializer);
 }
 
   
