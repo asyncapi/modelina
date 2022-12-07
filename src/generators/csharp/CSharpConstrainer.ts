@@ -11,7 +11,7 @@ const fromEnumValueToType = (enumValueModel: ConstrainedEnumValueModel): string 
     return 'bool';
   case 'number':
   case 'bigint':
-    if(Number.isInteger(enumValueModel.value)) {
+    if (Number.isInteger(enumValueModel.value)) {
       return 'int';
     }
     return 'double';
@@ -65,7 +65,7 @@ export const CSharpDefaultTypeMapping: TypeMapping<CSharpOptions> = {
       typesForValues.add(typeForValue);
     }
     // If there exist more then 1 unique type, then default to dynamic
-    if(typesForValues.size > 1) {
+    if (typesForValues.size > 1) {
       return 'dynamic';
     }
     const [typeForValues] = typesForValues;
