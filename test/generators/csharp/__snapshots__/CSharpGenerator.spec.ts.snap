@@ -43,7 +43,7 @@ exports[`CSharpGenerator should render \`class\` type 1`] = `
   private dynamic? members;
   private dynamic[]? tupleType;
   private dynamic[] arrayType;
-  private Dictionary<string, string>? additionalProperties;
+  private Dictionary<string, dynamic>? additionalProperties;
 
   public string StreetName 
   {
@@ -93,7 +93,7 @@ exports[`CSharpGenerator should render \`class\` type 1`] = `
     set { arrayType = value; }
   }
 
-  public Dictionary<string, string>? AdditionalProperties 
+  public Dictionary<string, dynamic>? AdditionalProperties 
   {
     get { return additionalProperties; }
     set { additionalProperties = value; }
