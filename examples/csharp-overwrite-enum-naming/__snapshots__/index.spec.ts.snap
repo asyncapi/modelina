@@ -12,7 +12,7 @@ Array [
 
 public static class OrderStatusExtensions
 {
-  public static dynamic GetValue(this OrderStatus enumValue)
+  public static int GetValue(this OrderStatus enumValue)
   {
     switch (enumValue)
     {
@@ -24,7 +24,7 @@ public static class OrderStatusExtensions
     return null;
   }
 
-  public static OrderStatus? ToOrderStatus(dynamic value)
+  public static OrderStatus? ToOrderStatus(int value)
   {
     switch (value)
     {

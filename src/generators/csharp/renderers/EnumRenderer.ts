@@ -57,25 +57,6 @@ ${this.indent(classContent)}
     const content = items.join(',\n');
     return `${content}`;
   }
-  
-  /**
-   * This function returns the best approximated type for the values.
-   * 
-   * If there are more then 1 unique type, it uses `dynamic`.
-   */
-  findTypeForEnum(): string {
-    const typesForValues: Set<String> = new Set();
-    for (const value of this.model.values) {
-      switch(typeof value) {
-        case 'string': typesForValues.add('String');
-          break;
-        case 'bigint':
-        case 'number':
-          typesForValues.add('')
-      }
-    }
-    return 'dynamic';
-  }
 
   toEnumCaseItemValues(): string {
     const enums = this.model.values || [];

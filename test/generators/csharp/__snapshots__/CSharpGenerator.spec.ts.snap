@@ -154,7 +154,7 @@ exports[`CSharpGenerator should render enums with translated special characters 
 
 public static class StatesExtensions
 {
-  public static dynamic GetValue(this States enumValue)
+  public static string GetValue(this States enumValue)
   {
     switch (enumValue)
     {
@@ -167,7 +167,7 @@ public static class StatesExtensions
     return null;
   }
 
-  public static States? ToStates(dynamic value)
+  public static States? ToStates(string value)
   {
     switch (value)
     {

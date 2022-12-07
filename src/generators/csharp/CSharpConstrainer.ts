@@ -60,7 +60,7 @@ export const CSharpDefaultTypeMapping: TypeMapping<CSharpOptions> = {
   Enum ({constrainedModel}): string {
     const typesForValues: Set<string> = new Set();
 
-    for (const value of this.model.values) {
+    for (const value of constrainedModel.values) {
       const typeForValue = fromEnumValueToType(value);
       typesForValues.add(typeForValue);
     }
