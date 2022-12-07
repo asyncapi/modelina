@@ -99,6 +99,12 @@ Each model has it&#39;s type as a name prepended to the union name.</p>
 <dd><p>Determine whether we have a dictionary or an object. because in some cases inputs might be:
 { &quot;type&quot;: &quot;object&quot;, &quot;additionalProperties&quot;: { &quot;$ref&quot;: &quot;#&quot; } } which is to be interpreted as a dictionary not an object model.</p>
 </dd>
+<dt><a href="#getOriginalInputFromAdditionalAndPatterns">getOriginalInputFromAdditionalAndPatterns()</a></dt>
+<dd><p>Return the original input based on additionalProperties and patternProperties.</p>
+</dd>
+<dt><a href="#convertAdditionalAndPatterns">convertAdditionalAndPatterns()</a></dt>
+<dd><p>Function creating the right meta model based on additionalProperties and patternProperties.</p>
+</dd>
 <dt><a href="#NO_DUPLICATE_PROPERTIES">NO_DUPLICATE_PROPERTIES(constrainedObjectModel, objectModel, propertyName, namingFormatter)</a></dt>
 <dd><p>Because a lot of the other constrain functions (such as NO_NUMBER_START_CHAR, NO_EMPTY_VALUE, etc) they might manipulate the property names by append, prepend, or manipulate it any other way.
 We then need to make sure that they don&#39;t clash with any existing properties, this is what this function handles.
@@ -306,15 +312,16 @@ Common internal representation for a model.
         * [.removeEnum(enumValue)](#CommonModel+removeEnum)
         * [.addProperty(propertyName, propertyModel, originalInput)](#CommonModel+addProperty)
         * [.addAdditionalProperty(additionalPropertiesModel, originalInput)](#CommonModel+addAdditionalProperty)
+        * [.addPatternProperty(pattern, patternModel, originalInput)](#CommonModel+addPatternProperty)
         * [.addAdditionalItems(additionalItemsModel, originalInput)](#CommonModel+addAdditionalItems)
         * [.addExtendedModel(extendedModel)](#CommonModel+addExtendedModel)
-        * [.getNearestDependencies()](#CommonModel+getNearestDependencies)
     * _static_
         * [.toCommonModel(object)](#CommonModel.toCommonModel) ⇒
         * [.mergeProperties(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergeProperties)
         * [.mergeAdditionalProperties(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergeAdditionalProperties)
         * [.mergeAdditionalItems(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergeAdditionalItems)
         * [.mergeItems(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergeItems)
+        * [.mergePatternProperties(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergePatternProperties)
         * [.mergeTypes(mergeTo, mergeFrom)](#CommonModel.mergeTypes)
         * [.mergeCommonModels(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergeCommonModels)
 
@@ -466,6 +473,20 @@ If another model already exist the two are merged.
 | additionalPropertiesModel |  |
 | originalInput | corresponding input that got interpreted to this model corresponding input that got interpreted to this model |
 
+<a name="CommonModel+addPatternProperty"></a>
+
+### commonModel.addPatternProperty(pattern, patternModel, originalInput)
+Adds a patternProperty to the model.
+If the pattern already exist the two models are merged.
+
+**Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
+
+| Param | Description |
+| --- | --- |
+| pattern |  |
+| patternModel |  |
+| originalInput | corresponding input that got interpreted to this model |
+
 <a name="CommonModel+addAdditionalItems"></a>
 
 ### commonModel.addAdditionalItems(additionalItemsModel, originalInput)
@@ -492,12 +513,6 @@ It is only allowed to extend if the other model have $id and is not already bein
 | --- |
 | extendedModel | 
 
-<a name="CommonModel+getNearestDependencies"></a>
-
-### commonModel.getNearestDependencies()
-Returns an array of unique `$id`s from all the CommonModel's this model depends on.
-
-**Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
 <a name="CommonModel.toCommonModel"></a>
 
 ### CommonModel.toCommonModel(object) ⇒
@@ -556,6 +571,20 @@ Merge two common model additionalItems together
 
 ### CommonModel.mergeItems(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)
 Merge items together, prefer tuples over simple array since it is more strict.
+
+**Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
+
+| Param | Description |
+| --- | --- |
+| mergeTo |  |
+| mergeFrom |  |
+| originalInput | corresponding input that got interpreted to this model |
+| alreadyIteratedModels |  |
+
+<a name="CommonModel.mergePatternProperties"></a>
+
+### CommonModel.mergePatternProperties(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)
+Merge two common model pattern properties together
 
 **Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
 
@@ -1100,6 +1129,18 @@ If the CommonModel has multiple types
 ## isDictionary()
 Determine whether we have a dictionary or an object. because in some cases inputs might be:
 { "type": "object", "additionalProperties": { "$ref": "#" } } which is to be interpreted as a dictionary not an object model.
+
+**Kind**: global function  
+<a name="getOriginalInputFromAdditionalAndPatterns"></a>
+
+## getOriginalInputFromAdditionalAndPatterns()
+Return the original input based on additionalProperties and patternProperties.
+
+**Kind**: global function  
+<a name="convertAdditionalAndPatterns"></a>
+
+## convertAdditionalAndPatterns()
+Function creating the right meta model based on additionalProperties and patternProperties.
 
 **Kind**: global function  
 <a name="NO_DUPLICATE_PROPERTIES"></a>
