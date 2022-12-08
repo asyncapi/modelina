@@ -40,11 +40,11 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     } else {
       if (AsyncAPIInputProcessor.isFromNewParser(input)) {
         doc = input as AsyncAPIDocumentInterface;
-      } else {
-        // Is from old parser
-        const parsedJSON = input.json();
-        const detailed = createDetailedAsyncAPI(parsedJSON, parsedJSON);
-        doc = createAsyncAPIDocument(detailed);
+        } else {
+          // Is from old parser
+          const parsedJSON = input.json();
+          const detailed = createDetailedAsyncAPI(parsedJSON, parsedJSON);
+          doc = createAsyncAPIDocument(detailed);
       }
     }
 
@@ -188,7 +188,6 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
 
     return convertedSchema;
   }
-  /* eslint-enable @typescript-eslint/no-non-null-assertion */
 
   /**
 	 * Figures out if an object is of type AsyncAPI document
@@ -216,7 +215,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
   }
 
   /**
-   * Figure out if input is from the AsyncAPI JS parser.
+   * Figure out if input is from the AsyncAPI parser.
    * 
    * @param input 
    */
@@ -225,7 +224,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
   }
 
   /**
-   * Figure out if input is from the new AsyncAPI JS parser.
+   * Figure out if input is from the new AsyncAPI parser.
    * 
    * @param input 
    */
@@ -234,7 +233,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
   }
 
   /**
-   * 
+   * Figure out if the input is from the old AsyncAPI parser.
    * @param input 
    */
   static isFromOldParser(input?: any): boolean {

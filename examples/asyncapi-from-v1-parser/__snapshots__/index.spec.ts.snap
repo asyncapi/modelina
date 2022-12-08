@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Should be able to process old AsyncAPI object from parser and should log expected output to console 1`] = `
+exports[`Should be able to process already parsed AsyncAPI document from old parser and should log expected output to console 1`] = `
 Array [
   "class AnonymousSchema_1 {
   private _email?: string;
