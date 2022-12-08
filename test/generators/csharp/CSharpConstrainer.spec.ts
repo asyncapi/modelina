@@ -1,5 +1,5 @@
 import { CSharpDefaultTypeMapping } from '../../../src/generators/csharp/CSharpConstrainer';
-import { ConstrainedAnyModel, ConstrainedArrayModel, ConstrainedBooleanModel, ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedTupleValueModel, ConstrainedUnionModel, CSharpGenerator, CSharpOptions } from '../../../src';
+import { ConstrainedAnyModel, ConstrainedArrayModel, ConstrainedBooleanModel, ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedEnumValueModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedTupleValueModel, ConstrainedUnionModel, CSharpGenerator, CSharpOptions } from '../../../src';
 describe('CSharpConstrainer', () => {
   describe('ObjectModel', () => { 
     test('should render the constrained name as type', () => {
@@ -88,10 +88,43 @@ describe('CSharpConstrainer', () => {
   });
 
   describe('Enum', () => { 
-    test('should render the constrained name as type', () => {
-      const model = new ConstrainedEnumModel('test', undefined, '', []);
+    test('should render string enum values as String type', () => {
+      const enumValue = new ConstrainedEnumValueModel('test', 'string type');
+      const model = new ConstrainedEnumModel('test', undefined, '', [enumValue]);
       const type = CSharpDefaultTypeMapping.Enum({constrainedModel: model, options: CSharpGenerator.defaultOptions});
-      expect(type).toEqual(model.name);
+      expect(type).toEqual('string');
+    });
+    test('should render boolean enum values as boolean type', () => {
+      const enumValue = new ConstrainedEnumValueModel('test', true);
+      const model = new ConstrainedEnumModel('test', undefined, '', [enumValue]);
+      const type = CSharpDefaultTypeMapping.Enum({constrainedModel: model, options: CSharpGenerator.defaultOptions});
+      expect(type).toEqual('bool');
+    });
+    test('should render generic number enum value with format  ', () => {
+      const enumValue = new ConstrainedEnumValueModel('test', 123);
+      const model = new ConstrainedEnumModel('test', undefined, '', [enumValue]);
+      const type = CSharpDefaultTypeMapping.Enum({constrainedModel: model, options: CSharpGenerator.defaultOptions});
+      expect(type).toEqual('int');
+    });
+    test('should render object enum value as generic Object', () => {
+      const enumValue = new ConstrainedEnumValueModel('test', {});
+      const model = new ConstrainedEnumModel('test', undefined, '', [enumValue]);
+      const type = CSharpDefaultTypeMapping.Enum({constrainedModel: model, options: CSharpGenerator.defaultOptions});
+      expect(type).toEqual('dynamic');
+    });
+    test('should render multiple value types as generic Object', () => {
+      const enumValue2 = new ConstrainedEnumValueModel('test', true);
+      const enumValue1 = new ConstrainedEnumValueModel('test', 'string type');
+      const model = new ConstrainedEnumModel('test', undefined, '', [enumValue1, enumValue2]);
+      const type = CSharpDefaultTypeMapping.Enum({constrainedModel: model, options: CSharpGenerator.defaultOptions});
+      expect(type).toEqual('dynamic');
+    });
+    test('should render double and integer as dynamic type', () => {
+      const enumValue2 = new ConstrainedEnumValueModel('test', 123);
+      const enumValue1 = new ConstrainedEnumValueModel('test', 123.12);
+      const model = new ConstrainedEnumModel('test', undefined, '', [enumValue1, enumValue2]);
+      const type = CSharpDefaultTypeMapping.Enum({constrainedModel: model, options: CSharpGenerator.defaultOptions});
+      expect(type).toEqual('dynamic');
     });
   });
 
