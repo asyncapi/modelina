@@ -22,7 +22,7 @@ function getInputSchema(originalInput: any): string {
 export const TS_JSONBINPACK_PRESET: TypeScriptPreset = {
   class: {
     async additionalContent({renderer, content, model}) {
-      renderer.addDependency(renderer.renderDependency('jsonbinpack', 'jsonbinpack'));
+      renderer.dependencyManager.addTypeScriptDependency('jsonbinpack', 'jsonbinpack');
     
       const jsonSchema = await alterschema(model.originalInput, getInputSchema(model.originalInput), '2020-12');
       const json = JSON.stringify(jsonSchema);

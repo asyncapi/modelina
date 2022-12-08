@@ -64,6 +64,7 @@ These are examples of how you can integrate Modelina into a specific scenario:
 
 ## Python
 These are all specific examples only relevant to the Python generator:
+- [generate-python-models](./generate-python-models/) - A basic example showing how to generate Python models.
 - [generate-python-pydantic-models](./generate-python-pydantic-models/) - An example showing how to generate Python pydantic models.
 
 ## JavaScript
