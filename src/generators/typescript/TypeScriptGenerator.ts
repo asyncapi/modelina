@@ -4,7 +4,7 @@ import {
   defaultGeneratorOptions
 } from '../AbstractGenerator';
 import { ConstrainedEnumModel, ConstrainedMetaModel, ConstrainedObjectModel, InputMetaModel, MetaModel, RenderOutput } from '../../models';
-import { constrainMetaModel, Constraints, split, TypeMapping, hasPreset } from '../../helpers';
+import { constrainMetaModel, Constraints, split, TypeMapping, hasPreset, SplitOptions, renderJavaScriptDependency } from '../../helpers';
 import { TypeScriptPreset, TS_DEFAULT_PRESET } from './TypeScriptPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { InterfaceRenderer } from './renderers/InterfaceRenderer';
@@ -12,7 +12,7 @@ import { EnumRenderer } from './renderers/EnumRenderer';
 import { TypeRenderer } from './renderers/TypeRenderer';
 import { TypeScriptDefaultConstraints, TypeScriptDefaultTypeMapping } from './TypeScriptConstrainer';
 import { TS_EXPORT_KEYWORD_PRESET } from './presets';
-import { DeepPartial, mergePartialAndDefault, renderJavaScriptDependency } from '../../utils';
+import { DeepPartial, mergePartialAndDefault } from '../../utils';
 
 export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPreset> {
   renderTypes: boolean;
@@ -31,7 +31,7 @@ export interface TypeScriptRenderCompleteModelOptions {
 /**
  * Generator for TypeScript
  */
-export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,TypeScriptRenderCompleteModelOptions> {
+export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions, TypeScriptRenderCompleteModelOptions> {
   static defaultOptions: TypeScriptOptions = {
     ...defaultGeneratorOptions,
     renderTypes: true,
@@ -53,7 +53,7 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions,Typ
 
   splitMetaModel(model: MetaModel): MetaModel[] {
     //These are the models that we have separate renderers for
-    const metaModelsToSplit = {
+    const metaModelsToSplit: SplitOptions = {
       splitEnum: true, 
       splitObject: true
     };

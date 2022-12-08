@@ -104,7 +104,7 @@ type Address struct {
   Members interface{}
   TupleType []interface{}
   ArrayType []interface{}
-  AdditionalProperties map[string]string
+  AdditionalProperties map[string]interface{}
 }"
 `;
 

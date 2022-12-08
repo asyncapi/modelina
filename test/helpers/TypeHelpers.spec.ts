@@ -1,5 +1,5 @@
 import { getTypeFromMapping, TypeMapping } from '../../src/helpers'; 
-import { CommonModel, ConstrainedAnyModel, ConstrainedArrayModel, ConstrainedBooleanModel, ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedMetaModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedUnionModel } from '../../src/models';
+import { CommonModel, ConstrainedAnyModel, ConstrainedArrayModel, ConstrainedBooleanModel, ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedMetaModel, ConstrainedObjectModel, ConstrainedObjectPropertyModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedUnionModel } from '../../src/models';
 
 describe('TypeHelpers', () => {
   describe('getTypeFromMapping', () => {
@@ -24,12 +24,12 @@ describe('TypeHelpers', () => {
     }
     test('should return undefined with generic constrained model', () => {
       const constrainedModel = new CustomConstrainedMetaModel('', undefined, '');
-
       const t = () => {
         getTypeFromMapping(typeMapping, {constrainedModel, options: {}});
       };
       expect(t).toThrow('Could not find type for model');
     });
+
     const modelsToCheck = [
       new ConstrainedObjectModel('', undefined, '', {}),
       new ConstrainedReferenceModel('', undefined, '', new CustomConstrainedMetaModel('', undefined, '')),

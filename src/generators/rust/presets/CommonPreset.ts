@@ -1,7 +1,8 @@
-import { ConstrainedEnumModel, ConstrainedReferenceModel, ConstrainedUnionModel, ConstrainedEnumValueModel } from '../../../models';
+import { ConstrainedEnumModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedUnionModel, ConstrainedEnumValueModel } from '../../../models';
 import { EnumRenderer } from '../renderers/EnumRenderer';
 import { RustPreset } from '../RustPreset';
 import { Logger } from '../../../utils';
+import { StructRenderer } from '../renderers/StructRenderer';
 
 export interface RustCommonPresetOptions {
   implementDefault: boolean;
@@ -49,6 +50,44 @@ function renderImplementDefault({ model }: {
 }`;
 }
 
+/**
+* Render `new` constructor function in struct impl
+*/
+function renderImplementNew({ model, renderer }: {
+  renderer: StructRenderer
+  model: ConstrainedObjectModel
+}) {
+  const args: string[] = [];
+  const fields: string[] = [];
+  const properties = model.properties || {};
+  for (const v of Object.values(properties)) {
+    const prefix = (v.property instanceof ConstrainedReferenceModel) ? 'crate::' : '';
+    const fieldType = prefix + v.property.type;
+
+    if (v.required) {
+      args.push(`${v.propertyName}: ${fieldType}`);
+      if (v.property instanceof ConstrainedReferenceModel) {
+        fields.push(`${v.propertyName}: Box::new(${v.propertyName}),`);
+      } else {
+        fields.push(`${v.propertyName},`);
+      }
+      // use map to box reference if field is optional
+    } else if (!v.required && (v.property instanceof ConstrainedReferenceModel || v.property instanceof ConstrainedUnionModel)) {
+      args.push(`${v.propertyName}: Option<crate::${v.property.type}>`);
+      fields.push(`${v.propertyName}: ${v.propertyName}.map(Box::new),`);
+    } else {
+      args.push(`${v.propertyName}: Option<${fieldType}>`);
+      fields.push(`${v.propertyName},`);
+    }
+  }
+  const fieldsBlock = renderer.renderBlock(fields);
+  return `pub fn new(${args.join(', ')}) -> ${model.name} {
+    ${model.name} {
+${renderer.indent(fieldsBlock, 8)}
+    }
+}`;
+}
+
 export const RUST_COMMON_PRESET: RustPreset<RustCommonPresetOptions> = {
   enum: {
     additionalContent({ renderer, model, content, options }) {
@@ -63,35 +102,18 @@ export const RUST_COMMON_PRESET: RustPreset<RustCommonPresetOptions> = {
   struct: {
     additionalContent({ renderer, model, content, options }) {
       options = options || defaultRustCommonPresetOptions;
-      const properties = model.properties || {};
+      const fnBlocks = [];
       if (options.implementNew) {
-        const args: string[] = [];
-        const fields: string[] = [];
-        for (const v of Object.values(properties)) {
-          if (v.required) {
-            args.push(`${v.propertyName}: ${v.property.type}`);
-            fields.push(`${v.propertyName},`);
-            // use map to box reference if field is optional
-          } else if (!v.required && (v.property instanceof ConstrainedReferenceModel || v.property instanceof ConstrainedUnionModel)) {
-            args.push(`${v.propertyName}: Option<crate::${v.property.type}>`);
-            fields.push(`${v.propertyName}: ${v.propertyName}.map(Box::new),`);
-          } else {
-            args.push(`${v.propertyName}: Option<${v.property.type}>`);
-            fields.push(`${v.propertyName},`);
-          }
-        }
-        const fieldsBlock = renderer.renderBlock(fields);
-        const contentBlock = `
+        fnBlocks.push(renderImplementNew({ model, renderer }));
+      }
+
+      const fnBlock = renderer.renderBlock(fnBlocks);
+      const contentBlock = `
 impl ${model.name} {
-    pub fn new(${args.join(', ')}) -> ${model.name} {
-        ${model.name} {
-${renderer.indent(fieldsBlock, 8)}
-        }
-    }
+${renderer.indent(fnBlock, 4)}
 }
 `;
-        content = renderer.renderBlock([content, contentBlock]);
-      }
+      content = renderer.renderBlock([content, contentBlock]);
       return content;
     }
   },

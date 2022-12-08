@@ -1,6 +1,6 @@
 {
   "name": "@asyncapi/modelina",
-  "version": "1.0.0-next.25",
+  "version": "1.0.0-next.35",
   "description": "Library for generating data models based on inputs such as AsyncAPI, OpenAPI, or JSON Schema documents",
   "license": "Apache-2.0",
   "homepage": "https://github.com/asyncapi/modelina",
@@ -79,8 +79,10 @@
     "docker:test": "npm run docker:build && docker run asyncapi/modelina npm run test",
     "docker:test:blackbox": "npm run docker:build && docker run asyncapi/modelina npm run test:blackbox",
     "test": "npm run test:library && npm run test:examples",
+    "test:update": "npm run test:library -- -u && npm run test:examples:update",
     "test:library": "cross-env CI=true jest --coverage --testPathIgnorePatterns ./test/blackbox --testPathIgnorePatterns ./examples",
     "test:examples": "npm run test:examples:regular && npm run test:examples:websites",
+    "test:examples:update": "npm run test:examples:regular -- -u && npm run test:examples:websites -- -u",
     "test:examples:regular": "cross-env CI=true jest ./examples --testPathIgnorePatterns ./examples/integrate-with-react",
     "test:examples:websites": "cd ./examples/integrate-with-react && npm i && npm run test",
     "test:blackbox": "cross-env CI=true jest ./test/blackbox",
@@ -90,7 +92,7 @@
     "lint": "eslint --max-warnings 0 --config .eslintrc .",
     "lint:fix": "eslint --max-warnings 0 --config .eslintrc . --fix",
     "release": "semantic-release",
-    "generate:readme:toc": "markdown-toc -i README.md && markdown-toc -i ./docs/languages/Python.md && markdown-toc -i ./docs/usage.md && markdown-toc -i ./docs/integration.md && markdown-toc -i ./docs/advanced.md && markdown-toc -i ./docs/languages/Dart.md && markdown-toc -i ./docs/languages/TypeScript.md && markdown-toc -i ./docs/languages/Java.md && markdown-toc -i ./docs/languages/JavaScript.md && markdown-toc -i ./docs/languages/Csharp.md && markdown-toc -i ./docs/README.md && markdown-toc -i ./docs/generators.md",
+    "generate:readme:toc": "markdown-toc -i README.md && markdown-toc -i ./examples/README.md && markdown-toc -i ./docs/languages/Python.md && markdown-toc -i ./docs/usage.md && markdown-toc -i ./docs/integration.md && markdown-toc -i ./docs/advanced.md && markdown-toc -i ./docs/languages/Dart.md && markdown-toc -i ./docs/languages/TypeScript.md && markdown-toc -i ./docs/languages/Java.md && markdown-toc -i ./docs/languages/JavaScript.md && markdown-toc -i ./docs/languages/Csharp.md && markdown-toc -i ./docs/README.md && markdown-toc -i ./docs/generators.md",
     "generate:assets": "npm run build:prod && npm run docs && npm run generate:readme:toc",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION",
     "prepublishOnly": "npm run build:prod && npm run generate:readme:toc"

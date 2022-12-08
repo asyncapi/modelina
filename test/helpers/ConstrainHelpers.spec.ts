@@ -26,6 +26,18 @@ describe('ConstrainHelpers', () => {
       expect(mockedTypeMapping.String).toHaveBeenCalledTimes(1);
     });
 
+    test('should have access to partOfProperty', () => {
+      const testProperty = new StringModel('', undefined);
+      const metaModel = new ObjectModel('test', undefined, {
+        testProperty: new ObjectPropertyModel('testProperty', false, testProperty)
+      });
+      constrainMetaModel(mockedTypeMapping, mockedConstraints, {
+        metaModel,
+        options: {},
+        constrainedName: ''
+      });
+      expect(mockedTypeMapping.String).toBeCalledWith(expect.objectContaining({partOfProperty: expect.objectContaining({})}));
+    });
     test('should handle recursive models', () => {
       const model = new ObjectModel('testObj', undefined, {});
       const objectPropertyModel = new ObjectPropertyModel('recursiveProp', false, model);

@@ -89,6 +89,22 @@ Modifications</p>
 ## Functions
 
 <dl>
+<dt><a href="#convertToUnionModel">convertToUnionModel()</a></dt>
+<dd><p>Converts a CommonModel into multiple models wrapped in a union model.</p>
+<p>Because a CommonModel might contain multiple models, it&#39;s name for each of those models would be the same, instead we slightly change the model name.
+Each model has it&#39;s type as a name prepended to the union name.</p>
+<p>If the CommonModel has multiple types</p>
+</dd>
+<dt><a href="#isDictionary">isDictionary()</a></dt>
+<dd><p>Determine whether we have a dictionary or an object. because in some cases inputs might be:
+{ &quot;type&quot;: &quot;object&quot;, &quot;additionalProperties&quot;: { &quot;$ref&quot;: &quot;#&quot; } } which is to be interpreted as a dictionary not an object model.</p>
+</dd>
+<dt><a href="#getOriginalInputFromAdditionalAndPatterns">getOriginalInputFromAdditionalAndPatterns()</a></dt>
+<dd><p>Return the original input based on additionalProperties and patternProperties.</p>
+</dd>
+<dt><a href="#convertAdditionalAndPatterns">convertAdditionalAndPatterns()</a></dt>
+<dd><p>Function creating the right meta model based on additionalProperties and patternProperties.</p>
+</dd>
 <dt><a href="#NO_DUPLICATE_PROPERTIES">NO_DUPLICATE_PROPERTIES(constrainedObjectModel, objectModel, propertyName, namingFormatter)</a></dt>
 <dd><p>Because a lot of the other constrain functions (such as NO_NUMBER_START_CHAR, NO_EMPTY_VALUE, etc) they might manipulate the property names by append, prepend, or manipulate it any other way.
 We then need to make sure that they don&#39;t clash with any existing properties, this is what this function handles.
@@ -98,6 +114,15 @@ If so, prepend <code>reserved_</code> to the property name and recheck.</p>
 <dd><p>Because a lot of the other constrain functions (such as NO_NUMBER_START_CHAR, NO_EMPTY_VALUE, etc) they might manipulate the enum keys by append, prepend, or manipulate it any other way.
 We then need to make sure that they don&#39;t clash with any existing enum keys, this is what this function handles.
 If so, prepend <code>reserved_</code> to the enum key and recheck.</p>
+</dd>
+<dt><a href="#renderJavaScriptDependency">renderJavaScriptDependency(toImport, fromModule, moduleSystem)</a></dt>
+<dd><p>Function to make it easier to render JS/TS dependencies based on module system</p>
+</dd>
+<dt><a href="#makeUnique">makeUnique(array)</a></dt>
+<dd><p>Function to make an array of ConstrainedMetaModels only contain unique values (ignores different in memory instances)</p>
+</dd>
+<dt><a href="#lengthInUtf8Bytes">lengthInUtf8Bytes()</a></dt>
+<dd><p>Convert a string into utf-8 encoding and return the byte size.</p>
 </dd>
 <dt><a href="#hasPreset">hasPreset(presets, preset)</a></dt>
 <dd><p>Returns true if and only if a given preset is already included in a list of presets
@@ -170,12 +195,6 @@ Check is done using referential equality</p>
 </dd>
 <dt><a href="#interpretName">interpretName(schema)</a></dt>
 <dd><p>Find the name for simplified version of schema</p>
-</dd>
-<dt><a href="#renderJavaScriptDependency">renderJavaScriptDependency(toImport, fromModule, moduleSystem)</a></dt>
-<dd><p>Function to make it easier to render JS/TS dependencies based on module system</p>
-</dd>
-<dt><a href="#makeUnique">makeUnique(array)</a></dt>
-<dd><p>Function to make an array of ConstrainedMetaModels only contain unique values (ignores different in memory instances)</p>
 </dd>
 <dt><a href="#mergePartialAndDefault">mergePartialAndDefault()</a></dt>
 <dd><p>Merge a non optional value with custom optional values to form a full value that has all properties sat.</p>
@@ -293,15 +312,16 @@ Common internal representation for a model.
         * [.removeEnum(enumValue)](#CommonModel+removeEnum)
         * [.addProperty(propertyName, propertyModel, originalInput)](#CommonModel+addProperty)
         * [.addAdditionalProperty(additionalPropertiesModel, originalInput)](#CommonModel+addAdditionalProperty)
+        * [.addPatternProperty(pattern, patternModel, originalInput)](#CommonModel+addPatternProperty)
         * [.addAdditionalItems(additionalItemsModel, originalInput)](#CommonModel+addAdditionalItems)
         * [.addExtendedModel(extendedModel)](#CommonModel+addExtendedModel)
-        * [.getNearestDependencies()](#CommonModel+getNearestDependencies)
     * _static_
         * [.toCommonModel(object)](#CommonModel.toCommonModel) ⇒
         * [.mergeProperties(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergeProperties)
         * [.mergeAdditionalProperties(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergeAdditionalProperties)
         * [.mergeAdditionalItems(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergeAdditionalItems)
         * [.mergeItems(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergeItems)
+        * [.mergePatternProperties(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergePatternProperties)
         * [.mergeTypes(mergeTo, mergeFrom)](#CommonModel.mergeTypes)
         * [.mergeCommonModels(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergeCommonModels)
 
@@ -453,6 +473,20 @@ If another model already exist the two are merged.
 | additionalPropertiesModel |  |
 | originalInput | corresponding input that got interpreted to this model corresponding input that got interpreted to this model |
 
+<a name="CommonModel+addPatternProperty"></a>
+
+### commonModel.addPatternProperty(pattern, patternModel, originalInput)
+Adds a patternProperty to the model.
+If the pattern already exist the two models are merged.
+
+**Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
+
+| Param | Description |
+| --- | --- |
+| pattern |  |
+| patternModel |  |
+| originalInput | corresponding input that got interpreted to this model |
+
 <a name="CommonModel+addAdditionalItems"></a>
 
 ### commonModel.addAdditionalItems(additionalItemsModel, originalInput)
@@ -479,12 +513,6 @@ It is only allowed to extend if the other model have $id and is not already bein
 | --- |
 | extendedModel | 
 
-<a name="CommonModel+getNearestDependencies"></a>
-
-### commonModel.getNearestDependencies()
-Returns an array of unique `$id`s from all the CommonModel's this model depends on.
-
-**Kind**: instance method of [<code>CommonModel</code>](#CommonModel)  
 <a name="CommonModel.toCommonModel"></a>
 
 ### CommonModel.toCommonModel(object) ⇒
@@ -543,6 +571,20 @@ Merge two common model additionalItems together
 
 ### CommonModel.mergeItems(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)
 Merge items together, prefer tuples over simple array since it is more strict.
+
+**Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
+
+| Param | Description |
+| --- | --- |
+| mergeTo |  |
+| mergeFrom |  |
+| originalInput | corresponding input that got interpreted to this model |
+| alreadyIteratedModels |  |
+
+<a name="CommonModel.mergePatternProperties"></a>
+
+### CommonModel.mergePatternProperties(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)
+Merge two common model pattern properties together
 
 **Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
 
@@ -1071,6 +1113,36 @@ Sets the logger to use for the model generation library
 | --- | --- |
 | logger | to add |
 
+<a name="convertToUnionModel"></a>
+
+## convertToUnionModel()
+Converts a CommonModel into multiple models wrapped in a union model.
+
+Because a CommonModel might contain multiple models, it's name for each of those models would be the same, instead we slightly change the model name.
+Each model has it's type as a name prepended to the union name.
+
+If the CommonModel has multiple types
+
+**Kind**: global function  
+<a name="isDictionary"></a>
+
+## isDictionary()
+Determine whether we have a dictionary or an object. because in some cases inputs might be:
+{ "type": "object", "additionalProperties": { "$ref": "#" } } which is to be interpreted as a dictionary not an object model.
+
+**Kind**: global function  
+<a name="getOriginalInputFromAdditionalAndPatterns"></a>
+
+## getOriginalInputFromAdditionalAndPatterns()
+Return the original input based on additionalProperties and patternProperties.
+
+**Kind**: global function  
+<a name="convertAdditionalAndPatterns"></a>
+
+## convertAdditionalAndPatterns()
+Function creating the right meta model based on additionalProperties and patternProperties.
+
+**Kind**: global function  
 <a name="NO_DUPLICATE_PROPERTIES"></a>
 
 ## NO\_DUPLICATE\_PROPERTIES(constrainedObjectModel, objectModel, propertyName, namingFormatter)
@@ -1107,6 +1179,36 @@ If so, prepend `reserved_` to the enum key and recheck.
 | onNameChange | callback to change the name of the enum key that needs to be returned. |
 | onNameChangeToCheck | callback to change the enum key which is being checked as part of the existing models. |
 
+<a name="renderJavaScriptDependency"></a>
+
+## renderJavaScriptDependency(toImport, fromModule, moduleSystem)
+Function to make it easier to render JS/TS dependencies based on module system
+
+**Kind**: global function  
+
+| Param |
+| --- |
+| toImport | 
+| fromModule | 
+| moduleSystem | 
+
+<a name="makeUnique"></a>
+
+## makeUnique(array)
+Function to make an array of ConstrainedMetaModels only contain unique values (ignores different in memory instances)
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| array | to make unique |
+
+<a name="lengthInUtf8Bytes"></a>
+
+## lengthInUtf8Bytes()
+Convert a string into utf-8 encoding and return the byte size.
+
+**Kind**: global function  
 <a name="hasPreset"></a>
 
 ## hasPreset(presets, preset)
@@ -1406,30 +1508,6 @@ Find the name for simplified version of schema
 | Param | Description |
 | --- | --- |
 | schema | to find the name |
-
-<a name="renderJavaScriptDependency"></a>
-
-## renderJavaScriptDependency(toImport, fromModule, moduleSystem)
-Function to make it easier to render JS/TS dependencies based on module system
-
-**Kind**: global function  
-
-| Param |
-| --- |
-| toImport | 
-| fromModule | 
-| moduleSystem | 
-
-<a name="makeUnique"></a>
-
-## makeUnique(array)
-Function to make an array of ConstrainedMetaModels only contain unique values (ignores different in memory instances)
-
-**Kind**: global function  
-
-| Param | Description |
-| --- | --- |
-| array | to make unique |
 
 <a name="mergePartialAndDefault"></a>
 

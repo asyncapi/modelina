@@ -1,3 +1,5 @@
+import { checkForReservedKeyword } from '../../helpers';
+
 export const RESERVED_RUST_KEYWORDS = [
   // strict keywords can only be used in correct context, and are therefore invalid as:
   // Items, variables and function parameters, fields and vairants, type parameters, lifetime parameters, loop labels, macros or attributes, macro placeholders
@@ -62,5 +64,5 @@ export const RESERVED_RUST_KEYWORDS = [
 ];
 
 export function isReservedRustKeyword(word: string): boolean {
-  return RESERVED_RUST_KEYWORDS.includes(word);
+  return checkForReservedKeyword(word, RESERVED_RUST_KEYWORDS, false);
 }

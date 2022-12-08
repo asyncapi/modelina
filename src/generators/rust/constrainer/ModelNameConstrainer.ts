@@ -19,7 +19,7 @@ export const DefaultModelNameConstraints: ModelNameConstraints = {
   NO_NUMBER_START_CHAR,
   NO_EMPTY_VALUE,
   NAMING_FORMATTER: (value: string) => {
-    return FormatHelpers.toPascalCase(value);
+    return FormatHelpers.toPascalCaseMergingNumbers(value);
   },
   NO_RESERVED_KEYWORDS: (value: string) => {
     return NO_RESERVED_KEYWORDS(value, isReservedRustKeyword);
@@ -33,8 +33,12 @@ export function defaultModelNameConstraints(customConstraints?: Partial<ModelNam
     constrainedValue = constraints.NO_SPECIAL_CHAR(constrainedValue);
     constrainedValue = constraints.NO_NUMBER_START_CHAR(constrainedValue);
     constrainedValue = constraints.NO_EMPTY_VALUE(constrainedValue);
-    constrainedValue = constraints.NO_RESERVED_KEYWORDS(constrainedValue);
     constrainedValue = constraints.NAMING_FORMATTER(constrainedValue);
+
+    constrainedValue = constraints.NO_RESERVED_KEYWORDS(constrainedValue);
+    // If the name is a reserved keyword, make sure to format it afterwards
+    constrainedValue = constraints.NAMING_FORMATTER(constrainedValue);
+
     return constrainedValue;
   };
 }

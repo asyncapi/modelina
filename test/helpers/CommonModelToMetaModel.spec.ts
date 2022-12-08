@@ -1,4 +1,4 @@
-import { AnyModel, ArrayModel, BooleanModel, CommonModel, EnumModel, FloatModel, IntegerModel, ObjectModel, StringModel, TupleModel, UnionModel } from '../../src';
+import { AnyModel, ArrayModel, BooleanModel, CommonModel, DictionaryModel, EnumModel, FloatModel, IntegerModel, ObjectModel, StringModel, TupleModel, UnionModel } from '../../src';
 import { convertToMetaModel } from '../../src/helpers';
 describe('CommonModelToMetaModel', () => {
   afterEach(() => {
@@ -171,6 +171,65 @@ describe('CommonModelToMetaModel', () => {
     expect((model as ObjectModel).properties['additionalProperties']).not.toBeUndefined();
     expect((model as ObjectModel).properties['reserved_additionalProperties']).not.toBeUndefined();
   });
+
+  test('should merge both patternProperties and additionalProperties into one property', () => { 
+    const stringCM = new CommonModel();
+    stringCM.type = 'string';
+    stringCM.$id = 'stringModel';
+    const booleanCM = new CommonModel();
+    booleanCM.type = 'boolean';
+    booleanCM.$id = 'booleanModel';
+    const cm = new CommonModel();
+    cm.type = 'object';
+    cm.$id = 'test';
+    cm.properties = {
+      some_prop: stringCM
+    };
+    cm.patternProperties = {
+      some_random_pattern: stringCM
+    };
+    cm.additionalProperties = booleanCM;
+    
+    const model = convertToMetaModel(cm);
+
+    expect(model).not.toBeUndefined();
+    expect(model instanceof ObjectModel).toEqual(true);
+    expect((model as ObjectModel).properties['additionalProperties']).not.toBeUndefined();
+    const additionalPropModel = (model as ObjectModel).properties['additionalProperties'].property;
+    expect(additionalPropModel instanceof DictionaryModel).toEqual(true);
+    expect((additionalPropModel as DictionaryModel).value instanceof UnionModel).toEqual(true);
+    const unionModel = (additionalPropModel as DictionaryModel).value as UnionModel;
+    expect(unionModel.union.length).toEqual(2);
+    expect(unionModel.union[0] instanceof BooleanModel).toEqual(true);
+    expect(unionModel.union[1] instanceof StringModel).toEqual(true);
+  });
+
+  test('should merge both patternProperties and additionalProperties into one for a dictionary', () => { 
+    const stringCM = new CommonModel();
+    stringCM.type = 'string';
+    stringCM.$id = 'stringModel';
+    const booleanCM = new CommonModel();
+    booleanCM.type = 'boolean';
+    booleanCM.$id = 'booleanModel';
+    const cm = new CommonModel();
+    cm.type = 'object';
+    cm.$id = 'test';
+    cm.patternProperties = {
+      some_random_pattern: stringCM
+    };
+    cm.additionalProperties = booleanCM;
+    
+    const model = convertToMetaModel(cm);
+
+    expect(model).not.toBeUndefined();
+    expect(model instanceof DictionaryModel).toEqual(true);
+    const dictionaryValueModel = (model as DictionaryModel).value;
+    expect(dictionaryValueModel instanceof UnionModel).toEqual(true);
+    expect((dictionaryValueModel as UnionModel).union.length).toEqual(2);
+    expect((dictionaryValueModel as UnionModel).union[0] instanceof BooleanModel).toEqual(true);
+    expect((dictionaryValueModel as UnionModel).union[1] instanceof StringModel).toEqual(true);
+  });
+
   test('should convert normal array to array model', () => { 
     const spm = new CommonModel();
     spm.type = 'string';
@@ -210,7 +269,7 @@ describe('CommonModelToMetaModel', () => {
     expect(model instanceof UnionModel).toEqual(true);
     expect((model as UnionModel).union.length).toEqual(2); 
   });
-  test('should convert array of types to union model', () => {
+  test('should convert array of models to union model', () => {
     const cm = new CommonModel();
     cm.$id = 'Pet';
     const cat = new CommonModel();

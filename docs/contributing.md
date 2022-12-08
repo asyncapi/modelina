@@ -25,7 +25,7 @@ The Acceptance Criteria for _adding new features_ requires a few things in order
 1. **No documentation, no feature:** If a user cannot understand a new feature, that feature basically doesn't exist! Remember to make sure that any and all relevant [documentation](./) is consistently updated.
     - New features such as new presets, generators or inputs, etc, need associated use case documentation along side [examples](../examples). This is not only to showcase the feature, but to ensure it will always work. Checkout our [adding examples](#-adding-examples) doc for more information on how to do this.
 
-### Adding Examples
+### Adding examples
 The Acceptance Criteria Process for _adding examples_ is not only something we use to showcase features, but also to ensure those features always work. _(This is important since it is picked up by [our CI system](#What-does–the-CI-system-do-when-I-create-a-PR).)_
 
 Adding examples is quite straight forward, so don't feel shy! Here's how to do it:
@@ -37,7 +37,55 @@ Adding examples is quite straight forward, so don't feel shy! Here's how to do i
 
 Aaaand you are done! :tada: 
 
-### New input processor
+### Adding a new preset 
+Presets are for when you want to customize the generated output, they work like middleware that layers on top of each other, you can read more [about presets here](./presets.md).
+
+Here is how you add a new preset:
+1. All presets are located under `src/generators/${language}/presets`, either duplicate an existing preset and adapt it or create an empty TypeScript file.
+2. The preset file has the syntax:
+```ts
+export const LANGUAGE_MY_PRESET: LanguagePreset = {
+  class: {
+    // Add preset hooks here
+  }, 
+  // enum: {
+    // Add preset hooks here
+  // }
+};
+```
+Replace `LANGUAGE` with the generator the preset is for (for example `TYPESCRIPT`), and replace `LanguagePreset` with the generator the preset is for (for example `TypeScriptPreset`). It is optional which models you add preset hooks for, i.e. you can add preset hooks for `enum` alongside for `class`, but it's not required. Each generator has a set of outputs you can change, read more [about the presets here](./presets.md).
+
+3. Add your preset to the `src/generators/${language}/presets/index.ts` file.
+4. Add an [example](#adding-examples) to showcase your new feature.
+5. Add documentation to [the language docs](./languages/) that explain the use case and links to your new example.
+6. In most cases you want to add specific tests for edge cases or simply to test the preset. To do this add a new test file in `test/generators/${language}/presets/MyPreset.spec.ts` and replace `MyPreset` with your preset name. Now add a test using the following syntax:
+```ts
+describe('LANGUAGE_MY_PRESET', () => {
+  let generator: LanguageGenerator;
+  beforeEach(() => {
+    generator = new LanguageGenerator({ presets: [LANGUAGE_MY_PRESET] });
+  });
+  
+  test('should render xxx', async () => {
+    const input = {
+      $id: 'Clazz',
+      type: 'object',
+      properties: {
+        min_number_prop: { type: 'number' },
+        max_number_prop: { type: 'number' },
+      },
+    };
+    const models = await generator.generate(input);
+    expect(models).toHaveLength(1);
+    expect(models[0].result).toMatchSnapshot();
+  });
+});
+```
+Remember to replace `LANGUAGE` and `Language` with the appropriate values.
+
+Aaaand you are done! :tada: 
+
+### Adding a new input processor
 Input processors are the translators from inputs to MetaModel (read more about [the input processing here](./input-processing.md)). 
 
 Here is how you can add a new input processor:
@@ -57,7 +105,7 @@ Thats it for the code and tests, now all that remains is docs and examples! :fir
 
 Aaaand you are done! :tada: 
 
-### New Generators
+### Adding a new generator
 Generators sits as the core of Modelina, which frames the core concepts of what you can generate. Therefore it's also no small task to create a new one, so dont get discourage, we are here to help you! 
 
 To make it easier to contribute a new generator, and to avoid focusing too much of the internals of Modelina, we created a template generator to get you started. If you encounter discreprencies with the following guide or templates, make sure to raise it as an issue so it can be fixed!
