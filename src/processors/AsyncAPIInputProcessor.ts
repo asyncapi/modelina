@@ -1,4 +1,4 @@
-import { AsyncAPIDocumentV3, createAsyncAPIDocument, isAsyncAPIDocument, OldAsyncAPIDocument, Parser } from '@asyncapi/parser';
+import { createAsyncAPIDocument, isAsyncAPIDocument, Parser } from '@asyncapi/parser';
 import { createDetailedAsyncAPI } from '@asyncapi/parser/cjs/utils';
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
@@ -238,6 +238,6 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
    * @param input 
    */
   static isFromOldParser(input?: any): boolean {
-    return input instanceof OldAsyncAPIDocument;
+    return !this.isFromNewParser(input) && typeof input.json === 'function'; 
   }
 }

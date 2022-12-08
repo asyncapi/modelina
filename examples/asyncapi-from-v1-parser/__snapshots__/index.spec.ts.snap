@@ -2,6 +2,17 @@
 
 exports[`Should be able to process old AsyncAPI object from parser and should log expected output to console 1`] = `
 Array [
-  "type Root = any;",
+  "class AnonymousSchema_1 {
+  private _email?: string;
+
+  constructor(input: {
+    email?: string,
+  }) {
+    this._email = input.email;
+  }
+
+  get email(): string | undefined { return this._email; }
+  set email(email: string | undefined) { this._email = email; }
+}",
 ]
 `;
