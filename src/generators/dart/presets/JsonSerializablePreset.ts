@@ -10,9 +10,9 @@ export const DART_JSON_PRESET: DartPreset = {
   class: {
     self({renderer, model, content}) {
       const snakeformattedModelName = FormatHelpers.snakeCase(model.name);
-      renderer.addDependency('import \'package:json_annotation/json_annotation.dart\';');
-      renderer.addDependency(`part '${snakeformattedModelName}.g.dart';`);
-      renderer.addDependency('@JsonSerializable()');
+      renderer.dependencyManager.addDependency('import \'package:json_annotation/json_annotation.dart\';');
+      renderer.dependencyManager.addDependency(`part '${snakeformattedModelName}.g.dart';`);
+      renderer.dependencyManager.addDependency('@JsonSerializable()');
       return content;
     },
     additionalContent({model}) {
@@ -23,9 +23,9 @@ Map<String, dynamic> toJson() => _$${model.name}ToJson(this);`;
   enum: {
     self({renderer, model, content}) {
       const snakeformattedModelName = FormatHelpers.snakeCase(model.name);
-      renderer.addDependency('import \'package:json_annotation/json_annotation.dart\';');
-      renderer.addDependency(`part '${snakeformattedModelName}.g.dart';`);
-      renderer.addDependency('@JsonEnum(alwaysCreate:true)');
+      renderer.dependencyManager.addDependency('import \'package:json_annotation/json_annotation.dart\';');
+      renderer.dependencyManager.addDependency(`part '${snakeformattedModelName}.g.dart';`);
+      renderer.dependencyManager.addDependency('@JsonEnum(alwaysCreate:true)');
       return content;
     },
   }
