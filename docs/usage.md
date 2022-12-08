@@ -58,6 +58,7 @@ For JSON Schema it follows the [JSON Schema input processing](#generate-models-f
 There are two ways to generate models for an AsyncAPI document.
 
 - [Generate from a parsed AsyncAPI 2.x document](../examples/asyncapi-from-parser)
+- [Generate from a parsed AsyncAPI 2.x document, from the old v1 parser](../examples/asyncapi-from-v1-parser)
 - [Generate from an AsyncAPI 2.x JS object](../examples/asyncapi-from-object)
 
 The library expects the `asyncapi` property for the document to be set in order to understand the input format.
