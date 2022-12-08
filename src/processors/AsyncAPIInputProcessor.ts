@@ -37,15 +37,13 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
         (err as any).diagnostics = diagnostics;
         throw err;
       }
+    } else if (AsyncAPIInputProcessor.isFromNewParser(input)) {
+      doc = input as AsyncAPIDocumentInterface;
     } else {
-      if (AsyncAPIInputProcessor.isFromNewParser(input)) {
-        doc = input as AsyncAPIDocumentInterface;
-        } else {
-          // Is from old parser
-          const parsedJSON = input.json();
-          const detailed = createDetailedAsyncAPI(parsedJSON, parsedJSON);
-          doc = createAsyncAPIDocument(detailed);
-      }
+      // Is from old parser
+      const parsedJSON = input.json();
+      const detailed = createDetailedAsyncAPI(parsedJSON, parsedJSON);
+      doc = createAsyncAPIDocument(detailed);
     }
 
     inputModel.originalInput = doc;

@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const parser = require('@asyncapi/parserV1');
 import { TypeScriptGenerator } from '../../src';
 
