@@ -1,4 +1,5 @@
 import { ConstrainedObjectPropertyModel } from 'models';
+import { ConstrainedEnumValueModel } from '../../models';
 import { TypeMapping } from '../../helpers';
 import { defaultEnumKeyConstraints, defaultEnumValueConstraints } from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
@@ -10,6 +11,24 @@ function getFullTypeDefinition(typeName: string, partOfProperty: ConstrainedObje
     ? typeName
     : `${typeName}?`;
 }
+
+const fromEnumValueToType = (enumValueModel: ConstrainedEnumValueModel): string => {
+  switch (typeof enumValueModel.value) {
+  case 'boolean':
+    return 'bool';
+  case 'number':
+  case 'bigint':
+    if (Number.isInteger(enumValueModel.value)) {
+      return 'int';
+    }
+    return 'double';
+  case 'string':
+    return 'string';
+  case 'object':
+  default:
+    return 'dynamic';
+  }
+};
 
 export const CSharpDefaultTypeMapping: TypeMapping<CSharpOptions> = {
 
@@ -48,7 +67,18 @@ export const CSharpDefaultTypeMapping: TypeMapping<CSharpOptions> = {
     return getFullTypeDefinition(typeString, partOfProperty);
   },
   Enum({ constrainedModel, partOfProperty }): string {
-    return getFullTypeDefinition(constrainedModel.name, partOfProperty);
+    const typesForValues: Set<string> = new Set();
+
+    for (const value of constrainedModel.values) {
+      const typeForValue = fromEnumValueToType(value);
+      typesForValues.add(typeForValue);
+    }
+    // If there exist more then 1 unique type, then default to dynamic
+    if (typesForValues.size > 1) {
+      return 'dynamic';
+    }
+    const [typeForValues] = typesForValues;
+    return getFullTypeDefinition(typeForValues, partOfProperty);;
   },
   Union({ partOfProperty }): string {
     //BecauserenderPrivateType( CSharp , partOfProperty) have no notion of unions (and no custom implementation), we have to render it as any value.
