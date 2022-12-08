@@ -124,7 +124,7 @@ exports[`Newtonsoft JSON serializer preset should render serialize and deseriali
 
 public static class EnumTestExtensions
 {
-  public static dynamic GetValue(this EnumTest enumValue)
+  public static dynamic? GetValue(this EnumTest enumValue)
   {
     switch (enumValue)
     {
@@ -136,7 +136,7 @@ public static class EnumTestExtensions
     return null;
   }
 
-  public static EnumTest? ToEnumTest(dynamic value)
+  public static EnumTest? ToEnumTest(dynamic? value)
   {
     switch (value)
     {
