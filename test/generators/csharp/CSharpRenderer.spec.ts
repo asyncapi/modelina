@@ -1,11 +1,12 @@
 import { CSharpGenerator } from '../../../src';
+import { CSharpDependencyManager } from '../../../src/generators/csharp/CSharpDependencyManager';
 import { CSharpRenderer } from '../../../src/generators/csharp/CSharpRenderer';
 import { ConstrainedObjectModel, InputMetaModel } from '../../../src/models';
 import { MockCSharpRenderer } from '../../TestUtils/TestRenderers';
 describe('CSharpRenderer', () => {
   let renderer: CSharpRenderer<any>;
   beforeEach(() => {
-    renderer = new MockCSharpRenderer(CSharpGenerator.defaultOptions, new CSharpGenerator(), [], new ConstrainedObjectModel('', undefined, '', {}), new InputMetaModel());
+    renderer = new MockCSharpRenderer(CSharpGenerator.defaultOptions, new CSharpGenerator(), [], new ConstrainedObjectModel('', undefined, '', {}), new InputMetaModel(), new CSharpDependencyManager(CSharpGenerator.defaultOptions));
   });
 
   describe('renderComments()', () => {

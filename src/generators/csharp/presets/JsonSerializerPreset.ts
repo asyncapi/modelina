@@ -52,7 +52,7 @@ function renderPropertiesList(model: ConstrainedObjectModel, renderer: CSharpRen
   
   let propertiesList = 'var properties = value.GetType().GetProperties();';
   if (unwrappedDictionaryProperties.length > 0) {
-    renderer.addDependency('using System.Linq;');
+    renderer.dependencyManager.addDependency('using System.Linq;');
     propertiesList = `var properties = value.GetType().GetProperties().Where(prop => ${unwrappedDictionaryProperties.join(' && ')});`;
   }
   return propertiesList;
@@ -160,9 +160,9 @@ ${renderer.indent(deserializeProperties, 4)}
 export const CSHARP_JSON_SERIALIZER_PRESET: CSharpPreset<CSharpOptions> = {
   class: {
     self({ renderer, model, content}) {
-      renderer.addDependency('using System.Text.Json;');
-      renderer.addDependency('using System.Text.Json.Serialization;');
-      renderer.addDependency('using System.Text.RegularExpressions;');
+      renderer.dependencyManager.addDependency('using System.Text.Json;');
+      renderer.dependencyManager.addDependency('using System.Text.Json.Serialization;');
+      renderer.dependencyManager.addDependency('using System.Text.RegularExpressions;');
       
       const deserialize = renderDeserialize({renderer, model});
       const serialize = renderSerialize({renderer, model});
