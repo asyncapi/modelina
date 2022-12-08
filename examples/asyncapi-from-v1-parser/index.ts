@@ -1,5 +1,10 @@
-import { Parser } from '@asyncapi/parser';
+const parser = require('@asyncapi/parserV1');
 import { TypeScriptGenerator } from '../../src';
+
+/**
+ * We are using the new parser as conviencince here
+ * and converts from the new document to the old one.
+ */
 
 const generator = new TypeScriptGenerator();
 const AsyncAPIDocument = {
@@ -30,9 +35,8 @@ const AsyncAPIDocument = {
 };
 
 export async function generate() : Promise<void> {
-  const parser = new Parser();
-  const { document } = await parser.parse(JSON.stringify(AsyncAPIDocument));
-  const models = await generator.generate(document);
+  const parsedDoc = await parser.parse(JSON.stringify(AsyncAPIDocument));
+  const models = await generator.generate(parsedDoc);
   for (const model of models) {
     console.log(model.result);
   }
