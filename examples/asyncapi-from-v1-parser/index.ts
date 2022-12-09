@@ -2,11 +2,6 @@
 const parser = require('@asyncapi/parserV1');
 import { TypeScriptGenerator } from '../../src';
 
-/**
- * We are using the new parser as conviencince here
- * and converts from the new document to the old one.
- */
-
 const generator = new TypeScriptGenerator();
 const AsyncAPIDocument = {
   asyncapi: '2.2.0',
