@@ -77,7 +77,7 @@ export const CSharpDefaultTypeMapping: TypeMapping<CSharpOptions> = {
       return 'dynamic';
     }
     const [typeForValues] = typesForValues;
-    return getFullTypeDefinition(typeForValues, partOfProperty);;
+    return getFullTypeDefinition(typeForValues, partOfProperty);
   },
   Union({ partOfProperty }): string {
     //BecauserenderPrivateType( CSharp , partOfProperty) have no notion of unions (and no custom implementation), we have to render it as any value.
