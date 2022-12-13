@@ -7,9 +7,7 @@ import { InputMetaModel, ProcessorOptions } from '../models';
 export class TemplateInputProcessor extends AbstractInputProcessor {
 
   shouldProcess(input?: any) : boolean {
-    if (!input) {return false;}
-    
-    return false;
+    return !input;
   }
 
   async process(input?: any, options?: ProcessorOptions): Promise<InputMetaModel> {

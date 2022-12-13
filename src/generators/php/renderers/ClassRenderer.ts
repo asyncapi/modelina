@@ -1,11 +1,11 @@
 import { PhpRenderer } from '../PhpRenderer';
-import { ConstrainedDictionaryModel, ConstrainedObjectModel, ConstrainedObjectPropertyModel } from '../../../models';
+import { ConstrainedObjectModel, ConstrainedObjectPropertyModel } from '../../../models';
 import { FormatHelpers } from '../../../helpers';
-import { TemplateOptions } from '../PhpGenerator';
+import { PhpOptions } from '../PhpGenerator';
 import { ClassPresetType } from '../PhpPreset';
 
 /**
- * Renderer for Template's `class` type
+ * Renderer for Php's `class` type
  * 
  * @extends PhpRenderer
  */
@@ -72,7 +72,7 @@ ${this.indent(this.renderBlock(content, 2))}
   // }
 }
 
-export const TEMPLATE_DEFAULT_CLASS_PRESET: ClassPresetType<TemplateOptions> = {
+export const Php_DEFAULT_CLASS_PRESET: ClassPresetType<PhpOptions> = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },

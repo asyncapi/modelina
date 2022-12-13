@@ -1,12 +1,12 @@
-import { isReservedTemplateKeyword } from '../../../src/generators/template/Constants';
+import { isReservedPhpKeyword } from '../../../src/generators/php/Constants';
 
 describe('Reserved keywords', () => {
-  it('shoud return true if the word is a reserved keyword', () => {
-    expect(isReservedTemplateKeyword('as')).toBe(true);
-    expect(isReservedTemplateKeyword('async')).toBe(true);
+  it('should return true if the word is a reserved keyword', () => {
+    expect(isReservedPhpKeyword('as')).toBe(true);
+    expect(isReservedPhpKeyword('class')).toBe(true);
   });
 
   it('should return false if the word is not a reserved keyword', () => {
-    expect(isReservedTemplateKeyword('dinosaur')).toBe(false);
+    expect(isReservedPhpKeyword('dinosaur')).toBe(false);
   });
 });

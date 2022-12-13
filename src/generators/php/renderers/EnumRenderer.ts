@@ -1,10 +1,10 @@
 import { PhpRenderer } from '../PhpRenderer';
 import { ConstrainedEnumModel, ConstrainedEnumValueModel} from '../../../models';
 import { EnumPresetType } from '../PhpPreset';
-import { TemplateOptions } from '../PhpGenerator';
+import { PhpOptions } from '../PhpGenerator';
 
 /**
- * Renderer for Template's `enum` type
+ * Renderer for Php's `enum` type
  * 
  * @extends PhpRenderer
  */
@@ -37,7 +37,7 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 }
 
-export const TEMPLATE_DEFAULT_ENUM_PRESET: EnumPresetType<TemplateOptions> = {
+export const Php_DEFAULT_ENUM_PRESET: EnumPresetType<PhpOptions> = {
   self({ renderer }) {
     renderer.addDependency('import com.fasterxml.jackson.annotation.*;');
     return renderer.defaultSelf();

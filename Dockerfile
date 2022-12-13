@@ -27,7 +27,3 @@ RUN apt-get install -yq python
 
 # Setup library
 RUN apt-get install -yq chromium
-
-COPY package.json package-lock.json ./
-RUN npm install
-COPY . ./

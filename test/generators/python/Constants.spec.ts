@@ -1,7 +1,7 @@
 import { isReservedPythonKeyword } from '../../../src/generators/python/Constants';
 
 describe('Reserved keywords', () => {
-  it('shoud return true if the word is a reserved keyword', () => {
+  it('should return true if the word is a reserved keyword', () => {
     expect(isReservedPythonKeyword('False')).toBe(true);
     expect(isReservedPythonKeyword('def')).toBe(true);
     expect(isReservedPythonKeyword('if')).toBe(true);

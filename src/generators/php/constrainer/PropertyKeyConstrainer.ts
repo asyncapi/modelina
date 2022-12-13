@@ -1,7 +1,7 @@
 import { ConstrainedObjectModel, ObjectModel } from '../../../models';
 import { NO_NUMBER_START_CHAR, NO_DUPLICATE_PROPERTIES, NO_EMPTY_VALUE, NO_RESERVED_KEYWORDS} from '../../../helpers/Constraints';
 import { FormatHelpers, PropertyKeyConstraint } from '../../../helpers';
-import { isReservedTemplateKeyword } from '../Constants';
+import { isReservedPhpKeyword } from '../Constants';
 
 export type PropertyKeyConstraintOptions = {
   NO_SPECIAL_CHAR: (value: string) => string;
@@ -23,11 +23,11 @@ export const DefaultPropertyKeyConstraints: PropertyKeyConstraintOptions = {
   NO_EMPTY_VALUE,
   NAMING_FORMATTER: FormatHelpers.toCamelCase,
   NO_RESERVED_KEYWORDS: (value: string) => {
-    return NO_RESERVED_KEYWORDS(value, isReservedTemplateKeyword); 
+    return NO_RESERVED_KEYWORDS(value, isReservedPhpKeyword);
   }
 };
 /**
- * Default constraint logic for Template, which converts the object property key into something that is compatible with Template 
+ * Default constraint logic for Php, which converts the object property key into something that is compatible with Php
  */
 export function defaultPropertyKeyConstraints(customConstraints?: Partial<PropertyKeyConstraintOptions>): PropertyKeyConstraint {
   const constraints = {...DefaultPropertyKeyConstraints, ...customConstraints};

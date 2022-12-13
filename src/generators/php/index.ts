@@ -1,21 +1,18 @@
 export * from './PhpGenerator';
 export * from './PhpFileGenerator';
-export { TEMPLATE_DEFAULT_PRESET } from './PhpPreset';
+export { Php_DEFAULT_PRESET } from './PhpPreset';
 export type { PhpPreset } from './PhpPreset';
 export * from './presets';
 
 export {
-  defaultEnumKeyConstraints as templateDefaultEnumKeyConstraints,
-  DefaultEnumKeyConstraints as TemplateDefaultEnumKeyConstraints,
-  defaultEnumValueConstraints as templateDefaultEnumValueConstraints
+  defaultEnumKeyConstraints as PhpDefaultEnumKeyConstraints,
+  defaultEnumValueConstraints as PhpDefaultEnumValueConstraints
 } from './constrainer/EnumConstrainer';
 
 export {
-  DefaultModelNameConstraints as TemplateDefaultModelNameConstraints,
-  defaultModelNameConstraints as templateDefaultModelNameConstraints
+  defaultModelNameConstraints as PhpDefaultModelNameConstraints
 } from './constrainer/ModelNameConstrainer';
 
 export {
-  DefaultPropertyKeyConstraints as TemplateDefaultPropertyKeyConstraints,
-  defaultPropertyKeyConstraints as templateDefaultPropertyKeyConstraints
+  defaultPropertyKeyConstraints as PhpDefaultPropertyKeyConstraints
 } from './constrainer/PropertyKeyConstrainer';

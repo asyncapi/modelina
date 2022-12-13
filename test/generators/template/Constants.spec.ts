@@ -1,7 +1,7 @@
 import { isReservedTemplateKeyword } from '../../../src/generators/template/Constants';
 
 describe('Reserved keywords', () => {
-  it('shoud return true if the word is a reserved keyword', () => {
+  it('should return true if the word is a reserved keyword', () => {
     expect(isReservedTemplateKeyword('as')).toBe(true);
     expect(isReservedTemplateKeyword('async')).toBe(true);
   });

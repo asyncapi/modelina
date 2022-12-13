@@ -8,6 +8,8 @@ import { testOptions, TestGenerator } from './TestGenerator';
 import { DartRenderer } from '../../src/generators/dart/DartRenderer';
 import { RustRenderer } from '../../src/generators/rust/RustRenderer';
 import { PythonRenderer } from '../../src/generators/python/PythonRenderer';
+import { PhpRenderer } from '../../src/generators/php/PhpRenderer';
+import { TemplateRenderer } from "../../src/generators/template/TemplateRenderer";
 
 export class TestRenderer extends AbstractRenderer {
   constructor(presets = []) {
@@ -18,6 +20,7 @@ export class TestRenderer extends AbstractRenderer {
   }
 }
 
+export class MockTemplateRenderer extends TemplateRenderer<any> { }
 export class MockJavaRenderer extends JavaRenderer<any> { }
 export class MockTypeScriptRenderer extends TypeScriptRenderer<any> { }
 export class MockGoRenderer extends GoRenderer<any> { }
@@ -26,3 +29,4 @@ export class MockJavaScriptRenderer extends JavaScriptRenderer<any> { }
 export class MockDartRenderer extends DartRenderer<any> { }
 export class MockRustRenderer extends RustRenderer<any> { }
 export class MockPythonRenderer extends PythonRenderer<any> { }
+export class MockPhpRenderer extends PhpRenderer<any> { }

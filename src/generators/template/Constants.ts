@@ -1,8 +1,8 @@
 import { checkForReservedKeyword } from '../../helpers';
 
 export const RESERVED_TEMPLATE_KEYWORDS = [
-  'abstract', 
-  'continue'
+  'as',
+  'async',
 ];
 
 export function isReservedTemplateKeyword(word: string, forceLowerCase = true): boolean {
