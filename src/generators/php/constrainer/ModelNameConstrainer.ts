@@ -1,6 +1,6 @@
 import { NO_NUMBER_START_CHAR, NO_EMPTY_VALUE, NO_RESERVED_KEYWORDS} from '../../../helpers/Constraints';
 import { FormatHelpers, ModelNameConstraint } from '../../../helpers';
-import { isReservedTemplateKeyword } from '../Constants';
+import { isReservedPhpKeyword } from '../Constants';
 
 export type ModelNameConstraints = {
   NO_SPECIAL_CHAR: (value: string) => string;
@@ -22,12 +22,12 @@ export const DefaultModelNameConstraints: ModelNameConstraints = {
     return FormatHelpers.toPascalCase(value);
   },
   NO_RESERVED_KEYWORDS: (value: string) => {
-    return NO_RESERVED_KEYWORDS(value, isReservedTemplateKeyword); 
+    return NO_RESERVED_KEYWORDS(value, isReservedPhpKeyword);
   }
 };
 
 /**
- * Default constraint logic for Template, which converts the model name into something that is compatible with Template 
+ * Default constraint logic for Php, which converts the model name into something that is compatible with Php
  */
 export function defaultModelNameConstraints(customConstraints?: Partial<ModelNameConstraints>): ModelNameConstraint {
   const constraints = {...DefaultModelNameConstraints, ...customConstraints};

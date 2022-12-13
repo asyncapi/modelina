@@ -5,35 +5,35 @@ import {
 } from '../AbstractGenerator';
 import { ConstrainedEnumModel, ConstrainedMetaModel, ConstrainedObjectModel, InputMetaModel, MetaModel, RenderOutput } from '../../models';
 import { split, TypeMapping } from '../../helpers';
-import { PhpPreset, TEMPLATE_DEFAULT_PRESET } from './PhpPreset';
+import { PhpPreset, Php_DEFAULT_PRESET } from './PhpPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
-import { isReservedTemplateKeyword } from './Constants';
+import { isReservedPhpKeyword } from './Constants';
 import { Logger } from '../..';
 import { constrainMetaModel, Constraints } from '../../helpers/ConstrainHelpers';
-import { TemplateDefaultConstraints, TemplateDefaultTypeMapping } from './TemplateConstrainer';
+import { PhpDefaultConstraints, PhpDefaultTypeMapping } from './PhpConstrainer';
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 
-export interface TemplateOptions extends CommonGeneratorOptions<PhpPreset> {
-  typeMapping: TypeMapping<TemplateOptions>;
+export interface PhpOptions extends CommonGeneratorOptions<PhpPreset> {
+  typeMapping: TypeMapping<PhpOptions>;
   constraints: Constraints;
 }
-export interface TemplateRenderCompleteModelOptions {
+export interface PhpRenderCompleteModelOptions {
   packageName: string
 }
-export class PhpGenerator extends AbstractGenerator<TemplateOptions, TemplateRenderCompleteModelOptions> {
-  static defaultOptions: TemplateOptions = {
+export class PhpGenerator extends AbstractGenerator<PhpOptions, PhpRenderCompleteModelOptions> {
+  static defaultOptions: PhpOptions = {
     ...defaultGeneratorOptions,
-    defaultPreset: TEMPLATE_DEFAULT_PRESET,
-    typeMapping: TemplateDefaultTypeMapping,
-    constraints: TemplateDefaultConstraints
+    defaultPreset: Php_DEFAULT_PRESET,
+    typeMapping: PhpDefaultTypeMapping,
+    constraints: PhpDefaultConstraints
   };
 
   constructor(
-    options?: DeepPartial<TemplateOptions>,
+    options?: DeepPartial<PhpOptions>,
   ) {
-    const realizedOptions = mergePartialAndDefault(PhpGenerator.defaultOptions, options) as TemplateOptions;
-    super('Template', realizedOptions);
+    const realizedOptions = mergePartialAndDefault(PhpGenerator.defaultOptions, options) as PhpOptions;
+    super('Php', realizedOptions);
   }
   /**
    * This function makes sure we split up the MetaModels accordingly to what we want to render as models.
@@ -48,7 +48,7 @@ export class PhpGenerator extends AbstractGenerator<TemplateOptions, TemplateRen
   }
 
   constrainToMetaModel(model: MetaModel): ConstrainedMetaModel {
-    return constrainMetaModel<TemplateOptions>(
+    return constrainMetaModel<PhpOptions>(
       this.options.typeMapping, 
       this.options.constraints, 
       {
@@ -71,22 +71,22 @@ export class PhpGenerator extends AbstractGenerator<TemplateOptions, TemplateRen
     } else if (model instanceof ConstrainedEnumModel) {
       return this.renderEnum(model, inputModel);
     } 
-    Logger.warn(`Template generator, cannot generate this type of model, ${model.name}`);
+    Logger.warn(`Php generator, cannot generate this type of model, ${model.name}`);
     return Promise.resolve(RenderOutput.toRenderOutput({ result: '', renderedName: '', dependencies: [] }));
   }
 
   /**
    * Render a complete model result where the model code, library and model dependencies are all bundled appropriately.
    * 
-   * For Template you need to specify which package the model is placed under.
+   * For Php you need to specify which package the model is placed under.
    * 
    * @param model 
    * @param inputModel 
    * @param options used to render the full output
    */
-  async renderCompleteModel(model: ConstrainedMetaModel, inputModel: InputMetaModel, options: TemplateRenderCompleteModelOptions): Promise<RenderOutput> {
-    if (isReservedTemplateKeyword(options.packageName)) {
-      throw new Error(`You cannot use reserved Template keyword (${options.packageName}) as package name, please use another.`);
+  async renderCompleteModel(model: ConstrainedMetaModel, inputModel: InputMetaModel, options: PhpRenderCompleteModelOptions): Promise<RenderOutput> {
+    if (isReservedPhpKeyword(options.packageName)) {
+      throw new Error(`You cannot use reserved Php keyword (${options.packageName}) as package name, please use another.`);
     }
 
     const outputModel = await this.render(model, inputModel);

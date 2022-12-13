@@ -2,7 +2,7 @@
 import { ConstrainedEnumModel, EnumModel } from '../../../models';
 import { NO_NUMBER_START_CHAR, NO_DUPLICATE_ENUM_KEYS, NO_EMPTY_VALUE, NO_RESERVED_KEYWORDS} from '../../../helpers/Constraints';
 import { FormatHelpers, EnumKeyConstraint, EnumValueConstraint} from '../../../helpers';
-import { isReservedTemplateKeyword } from '../Constants';
+import { isReservedPhpKeyword } from '../Constants';
 
 export type ModelEnumKeyConstraints = {
   NO_SPECIAL_CHAR: (value: string) => string;
@@ -24,12 +24,12 @@ export const DefaultEnumKeyConstraints: ModelEnumKeyConstraints = {
   NO_EMPTY_VALUE,
   NAMING_FORMATTER: FormatHelpers.toConstantCase,
   NO_RESERVED_KEYWORDS: (value: string) => {
-    return NO_RESERVED_KEYWORDS(value, isReservedTemplateKeyword); 
+    return NO_RESERVED_KEYWORDS(value, isReservedPhpKeyword);
   }
 };
 
 /**
- * Default constraint logic for Template, which converts the enum key into a key that is compatible with Template 
+ * Default constraint logic for Php, which converts the enum key into a key that is compatible with Php
  */
 export function defaultEnumKeyConstraints(customConstraints?: Partial<ModelEnumKeyConstraints>): EnumKeyConstraint {
   const constraints = {...DefaultEnumKeyConstraints, ...customConstraints};
@@ -50,7 +50,7 @@ export function defaultEnumKeyConstraints(customConstraints?: Partial<ModelEnumK
 }
 
 /**
- * Convert the enum value to a value that is compatible with Template
+ * Convert the enum value to a value that is compatible with Php
  */
 export function defaultEnumValueConstraints(): EnumValueConstraint {
   return ({enumValue}) => {

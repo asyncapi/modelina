@@ -1,7 +1,7 @@
 import { isReservedRustKeyword } from '../../../src/generators/rust/Constants';
 
 describe('Reserved keywords', () => {
-  it('shoud return true if the word is a reserved keyword', () => {
+  it('should return true if the word is a reserved keyword', () => {
     expect(isReservedRustKeyword('as')).toBe(true);
     expect(isReservedRustKeyword('async')).toBe(true);
     expect(isReservedRustKeyword('await')).toBe(true);

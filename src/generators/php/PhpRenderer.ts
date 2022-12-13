@@ -1,20 +1,29 @@
 import { AbstractRenderer } from '../AbstractRenderer';
-import { PhpGenerator, TemplateOptions } from './PhpGenerator';
+import { PhpGenerator, PhpOptions } from './PhpGenerator';
 import { ConstrainedMetaModel, InputMetaModel, Preset } from '../../models';
+import {FormatHelpers} from "../../helpers";
 
 /**
- * Common renderer for Template
+ * Common renderer for Php
  * 
  * @extends AbstractRenderer
  */
-export abstract class PhpRenderer<RendererModelType extends ConstrainedMetaModel> extends AbstractRenderer<TemplateOptions, PhpGenerator, RendererModelType> {
+export abstract class PhpRenderer<RendererModelType extends ConstrainedMetaModel> extends AbstractRenderer<PhpOptions, PhpGenerator, RendererModelType> {
   constructor(
-    options: TemplateOptions,
+    options: PhpOptions,
     generator: PhpGenerator,
     presets: Array<[Preset, unknown]>,
     model: RendererModelType, 
     inputModel: InputMetaModel,
   ) {
     super(options, generator, presets, model, inputModel);
+  }
+
+  renderComments(lines: string | string[]): string {
+    lines = FormatHelpers.breakLines(lines);
+    const content = lines.map(line => ` * ${line}`).join('\n');
+    return `/**
+${content}
+ */`;
   }
 }
