@@ -1,9 +1,9 @@
-import { TemplateGenerator, TEMPLATE_DESCRIPTION_PRESET } from '../../../../src/generators/template'; 
+import { PhpGenerator, PHP_DESCRIPTION_PRESET } from '../../../../src';
 
-describe('TEMPLATE_DESCRIPTION_PRESET', () => {
-  let generator: TemplateGenerator;
+describe('PHP_DESCRIPTION_PRESET', () => {
+  let generator: PhpGenerator;
   beforeEach(() => {
-    generator = new TemplateGenerator({ presets: [TEMPLATE_DESCRIPTION_PRESET] });
+    generator = new PhpGenerator({ presets: [PHP_DESCRIPTION_PRESET] });
   });
 
   test('should render description and examples for class', async () => {

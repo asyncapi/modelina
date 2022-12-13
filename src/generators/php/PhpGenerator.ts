@@ -10,9 +10,9 @@ import { ClassRenderer } from './renderers/ClassRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { isReservedPhpKeyword } from './Constants';
 import { Logger } from '../..';
-import { constrainMetaModel, Constraints } from '../../helpers/ConstrainHelpers';
+import { constrainMetaModel, Constraints } from '../../helpers';
 import { PhpDefaultConstraints, PhpDefaultTypeMapping } from './PhpConstrainer';
-import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
+import { DeepPartial, mergePartialAndDefault } from '../../utils';
 
 export interface PhpOptions extends CommonGeneratorOptions<PhpPreset> {
   typeMapping: TypeMapping<PhpOptions>;
