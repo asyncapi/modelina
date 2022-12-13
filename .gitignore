@@ -1,6 +1,6 @@
-node_modules
+**/*.DS_Store
+**/__snapshots__
 .vscode
+node_modules
 coverage
 lib
-*.DS_Store
-.vscode
