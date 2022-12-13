@@ -1,9 +1,9 @@
-import { TemplateGenerator } from '../../../src/generators/template';
+import { PhpGenerator } from '../../../src/generators/Php';
 
-describe('TemplateGenerator', () => {
-  let generator: TemplateGenerator;
+describe('PhpGenerator', () => {
+  let generator: PhpGenerator;
   beforeEach(() => {
-    generator = new TemplateGenerator();
+    generator = new PhpGenerator();
   });
 
   describe('Enum', () => {
@@ -24,7 +24,7 @@ describe('TemplateGenerator', () => {
         enum: ['Texas', 'Alabama', 'California'],
       };
 
-      generator = new TemplateGenerator({
+      generator = new PhpGenerator({
         presets: [
           {
             enum: {
@@ -103,7 +103,7 @@ describe('TemplateGenerator', () => {
           property: { type: 'string' },
         }
       };
-      generator = new TemplateGenerator({ presets: [
+      generator = new PhpGenerator({ presets: [
         {
           class: {
             property({ content }) {

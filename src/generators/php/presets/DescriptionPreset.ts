@@ -5,7 +5,7 @@ import { PhpPreset } from '../PhpPreset';
  * 
  * @implements {PhpPreset}
  */
-export const Php_DESCRIPTION_PRESET: PhpPreset = {
+export const PHP_DESCRIPTION_PRESET: PhpPreset = {
   class: {
     self({ content }) {
       const renderedDesc = 'my description';
