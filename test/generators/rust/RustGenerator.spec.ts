@@ -159,4 +159,133 @@ describe('RustGenerator', () => {
       expect(output[1].result).toMatchSnapshot(); // lib.rs
     });
   });
+
+  describe('AsyncAPI with polymorphism', () => {
+    const asyncapiDoc = {
+      asyncapi: '2.4.0',
+      info: {
+        title: 'Pet',
+        version: '1.0.0'
+      },
+      channels: {},
+      components: {
+        messages: {
+          PetMessage: {
+            payload: {
+              $id: 'Critter',
+              oneOf: [
+                { $ref: '#/components/schemas/Cat' },
+                { $ref: '#/components/schemas/Dog' },
+                { $ref: '#/components/schemas/StickInsect' },
+              ]
+            }
+          },
+        },
+        schemas: {
+          Pet: {
+            type: 'object',
+            additionalProperties: false,
+            discriminator: 'petType',
+            properties: {
+              petType: {
+                $id: 'PetType',
+                type: 'string'
+              },
+              name: {
+                type: 'string'
+              },
+            },
+            required: [
+              'petType',
+              'name',
+            ],
+          },
+          Cat: {
+            allOf: [
+              { $ref: '#/components/schemas/Pet' },
+              {
+                type: 'object',
+                additionalProperties: false,
+                properties: {
+                  petType: {
+                    const: 'Cat'
+                  },
+                  huntingSkill: {
+                    $id: 'HuntingSkill',
+                    type: 'string',
+                    enum: [
+                      'clueless',
+                      'lazy',
+                      'adventurous',
+                      'aggressive'
+                    ]
+                  }
+                },
+                required: [
+                  'huntingSkill'
+                ]
+              }
+            ]
+          },
+          Dog: {
+            allOf: [
+              { $ref: '#/components/schemas/Pet' },
+              {
+                type: 'object',
+                additionalProperties: false,
+                properties: {
+                  petType: {
+                    const: 'Dog'
+                  },
+                  packSize: {
+                    type: 'integer',
+                    format: 'int32',
+                    description: 'the size of the pack the dog is from',
+                    minimum: 0
+                  }
+                },
+                required: [
+                  'packSize'
+                ]
+              }
+            ]
+          },
+          StickInsect: {
+            allOf: [
+              { $ref: '#/components/schemas/Pet' },
+              {
+                type: 'object',
+                additionalProperties: false,
+                properties: {
+                  petType: {
+                    const: 'StickBug'
+                  },
+                  color: {
+                    type: 'string',
+                  }
+                },
+                required: [
+                  'color'
+                ]
+              }
+            ]
+          },
+        }
+      }
+    };
+
+    test('should render', async () => {
+      const models = await generator.generate(asyncapiDoc);
+      expect(models).toHaveLength(6);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+
+      const cat = models.find((model) => model.modelName === 'Cat');
+      expect(cat).not.toBeUndefined();
+      expect(cat?.result).toContain('petType');
+      expect(cat?.result).toContain('name');
+      expect(cat?.result).toContain('huntingSkill');
+      expect(cat?.result).not.toContain('packSize');
+      expect(cat?.result).not.toContain('color');
+    });
+  });
 });
