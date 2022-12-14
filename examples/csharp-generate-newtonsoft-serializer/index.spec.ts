@@ -1,7 +1,7 @@
 const spy = jest.spyOn(global.console, 'log').mockImplementation(() => { return; });
 import {generate} from './index';
 
-describe('Should be able to generate a model with functions to serialize the data model into JSON ', () => {
+describe('Should be able to generate a model ', () => {
   afterAll(() => {
     jest.restoreAllMocks();
   });

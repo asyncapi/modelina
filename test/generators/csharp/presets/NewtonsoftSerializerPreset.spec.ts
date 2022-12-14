@@ -17,7 +17,7 @@ const doc = {
   },
 };
 describe('Newtonsoft JSON serializer preset', () => {
-  test('should render serialize and deserialize converters', async () => {
+  test('should render enum with custom mapping of values', async () => {
     const generator = new CSharpGenerator({ 
       presets: [
         CSHARP_NEWTONSOFT_SERIALIZER_PRESET
