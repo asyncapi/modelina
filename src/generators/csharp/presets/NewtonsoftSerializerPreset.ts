@@ -15,18 +15,22 @@ export const CSHARP_NEWTONSOFT_SERIALIZER_PRESET: CSharpPreset<CSharpOptions> = 
 
       const enumItems = await renderer.renderItems();
 
-      return `${renderer.indent('[JsonConverter(typeof(StringEnumConverter))]')}
-${renderer.indent(`public enum ${model.name}`)}
-${renderer.indent('{')}
-${renderer.indent(enumItems)}
-${renderer.indent('}')}`;
+      return [
+        renderer.indent('[JsonConverter(typeof(StringEnumConverter))]'),
+        renderer.indent(`public enum ${model.name}`),
+        renderer.indent('{'),
+        renderer.indent(enumItems),
+        renderer.indent('}')
+      ].join('\n');
     },
     item: ({content, item, renderer}): string => {
       const stringValue = item.value.toString();
       const sanitizedValue = stringValue.replace(/(^")|("$)/g, '');
 
-      return `${renderer.indent(`[EnumMember(Value="${sanitizedValue}")]`)}
-${renderer.indent(content)}`;
+      return [
+        renderer.indent(`[EnumMember(Value="${sanitizedValue}")]`),
+        renderer.indent(content)
+      ].join('\n');
     }
   },
 };
