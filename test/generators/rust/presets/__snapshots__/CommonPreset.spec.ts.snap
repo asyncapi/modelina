@@ -28,12 +28,12 @@ exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Defau
 "// Members represents a union of types: String, f64, bool
 #[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 pub enum Members {
-    #[serde(rename=\\"MembersOneOf00\\")]
-    MembersOneOf00(String),
-    #[serde(rename=\\"MembersOneOf11\\")]
-    MembersOneOf11(f64),
-    #[serde(rename=\\"MembersOneOf22\\")]
-    MembersOneOf22(bool),
+    #[serde(rename=\\"MembersOneOf0\\")]
+    MembersOneOf0(String),
+    #[serde(rename=\\"MembersOneOf1\\")]
+    MembersOneOf1(f64),
+    #[serde(rename=\\"MembersOneOf2\\")]
+    MembersOneOf2(bool),
 }
 
 "
@@ -43,12 +43,12 @@ exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Defau
 "// OptionalMembers represents a union of types: String, f64, bool
 #[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 pub enum OptionalMembers {
-    #[serde(rename=\\"OptionalMembersOneOf00\\")]
-    OptionalMembersOneOf00(String),
-    #[serde(rename=\\"OptionalMembersOneOf11\\")]
-    OptionalMembersOneOf11(f64),
-    #[serde(rename=\\"OptionalMembersOneOf22\\")]
-    OptionalMembersOneOf22(bool),
+    #[serde(rename=\\"OptionalMembersOneOf0\\")]
+    OptionalMembersOneOf0(String),
+    #[serde(rename=\\"OptionalMembersOneOf1\\")]
+    OptionalMembersOneOf1(f64),
+    #[serde(rename=\\"OptionalMembersOneOf2\\")]
+    OptionalMembersOneOf2(bool),
 }
 
 "
@@ -82,12 +82,12 @@ exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Defau
 "// Members represents a union of types: String, f64, bool
 #[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 pub enum Members {
-    #[serde(rename=\\"MembersOneOf00\\")]
-    MembersOneOf00(String),
-    #[serde(rename=\\"MembersOneOf11\\")]
-    MembersOneOf11(f64),
-    #[serde(rename=\\"MembersOneOf22\\")]
-    MembersOneOf22(bool),
+    #[serde(rename=\\"MembersOneOf0\\")]
+    MembersOneOf0(String),
+    #[serde(rename=\\"MembersOneOf1\\")]
+    MembersOneOf1(f64),
+    #[serde(rename=\\"MembersOneOf2\\")]
+    MembersOneOf2(bool),
 }
 
 "
@@ -97,12 +97,12 @@ exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Defau
 "// OptionalMembers represents a union of types: String, f64, bool
 #[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 pub enum OptionalMembers {
-    #[serde(rename=\\"OptionalMembersOneOf00\\")]
-    OptionalMembersOneOf00(String),
-    #[serde(rename=\\"OptionalMembersOneOf11\\")]
-    OptionalMembersOneOf11(f64),
-    #[serde(rename=\\"OptionalMembersOneOf22\\")]
-    OptionalMembersOneOf22(bool),
+    #[serde(rename=\\"OptionalMembersOneOf0\\")]
+    OptionalMembersOneOf0(String),
+    #[serde(rename=\\"OptionalMembersOneOf1\\")]
+    OptionalMembersOneOf1(f64),
+    #[serde(rename=\\"OptionalMembersOneOf2\\")]
+    OptionalMembersOneOf2(bool),
 }
 
 "
@@ -210,13 +210,13 @@ impl Class {
 `;
 
 exports[`RUST_COMMON_PRESET Enum should render reserved union for dict array 2`] = `
-"// Union represents a union of types: Student0, serde_json::Value
+"// Union represents a union of types: Student, serde_json::Value
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub enum Union {
-    #[serde(rename=\\"Student0\\")]
-    Student0(crate::Student),
-    #[serde(rename=\\"Undefined1\\")]
-    Undefined1(serde_json::Value),
+    #[serde(rename=\\"Student\\")]
+    Student(crate::Student),
+    #[serde(rename=\\"Undefined\\")]
+    Undefined(serde_json::Value),
 }
 
 "
@@ -292,12 +292,12 @@ exports[`RUST_COMMON_PRESET Struct & Complete Models should render \`struct\` ty
 "// Members represents a union of types: String, f64, bool
 #[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 pub enum Members {
-    #[serde(rename=\\"MembersOneOf00\\")]
-    MembersOneOf00(String),
-    #[serde(rename=\\"MembersOneOf11\\")]
-    MembersOneOf11(f64),
-    #[serde(rename=\\"MembersOneOf22\\")]
-    MembersOneOf22(bool),
+    #[serde(rename=\\"MembersOneOf0\\")]
+    MembersOneOf0(String),
+    #[serde(rename=\\"MembersOneOf1\\")]
+    MembersOneOf1(f64),
+    #[serde(rename=\\"MembersOneOf2\\")]
+    MembersOneOf2(bool),
 }
 
 "
