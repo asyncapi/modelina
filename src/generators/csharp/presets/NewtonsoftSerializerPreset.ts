@@ -22,7 +22,10 @@ ${renderer.indent(enumItems)}
 ${renderer.indent('}')}`;
     },
     item: ({content, item, renderer}): string => {
-      return `${renderer.indent(`[EnumMember(Value="${item.value.toString().replace(/(^")|("$)/g, '')}")]`)}
+      const stringValue = item.value.toString();
+      const sanitizedValue = stringValue.replace(/(^")|("$)/g, '');
+
+      return `${renderer.indent(`[EnumMember(Value="${sanitizedValue}")]`)}
 ${renderer.indent(content)}`;
     }
   },
