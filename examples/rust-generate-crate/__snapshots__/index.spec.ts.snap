@@ -51,6 +51,7 @@ exports[`Should be able to render Rust Models and should log expected output to 
 Array [
   "// Members represents a union of types: String, f64, bool
 #[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
+#[serde(untagged)]
 pub enum Members {
     #[serde(rename=\\"MembersOneOf0\\")]
     MembersOneOf0(String),
