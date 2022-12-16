@@ -1,5 +1,80 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`RustGenerator AsyncAPI with polymorphism should render 1`] = `
+Array [
+  "// Critter represents a union of types: Cat, Dog, StickInsect
+#[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+#[serde(tag = \\"petType\\")]
+pub enum Critter {
+    #[serde(rename=\\"Cat\\")]
+    Cat(crate::Cat),
+    #[serde(rename=\\"Dog\\")]
+    Dog(crate::Dog),
+    #[serde(rename=\\"StickInsect\\")]
+    StickInsect(crate::StickInsect),
+}
+
+",
+  "// Cat represents a Cat model.
+#[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+pub struct Cat {
+    #[serde(rename=\\"petType\\")]
+    pub pet_type: Box<crate::PetType>,
+    #[serde(rename=\\"name\\")]
+    pub name: String,
+    #[serde(rename=\\"huntingSkill\\")]
+    pub hunting_skill: Box<crate::HuntingSkill>,
+}
+",
+  "// PetType represents a PetType model.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+pub enum PetType {
+    #[serde(rename=\\"Cat\\")]
+    Cat,
+    #[serde(rename=\\"Dog\\")]
+    Dog,
+    #[serde(rename=\\"StickBug\\")]
+    StickBug,
+}
+",
+  "// HuntingSkill represents a HuntingSkill model.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+pub enum HuntingSkill {
+    #[serde(rename=\\"clueless\\")]
+    Clueless,
+    #[serde(rename=\\"lazy\\")]
+    Lazy,
+    #[serde(rename=\\"adventurous\\")]
+    Adventurous,
+    #[serde(rename=\\"aggressive\\")]
+    Aggressive,
+}
+",
+  "// Dog represents a Dog model.
+#[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+pub struct Dog {
+    #[serde(rename=\\"petType\\")]
+    pub pet_type: Box<crate::PetType>,
+    #[serde(rename=\\"name\\")]
+    pub name: String,
+    #[serde(rename=\\"packSize\\")]
+    pub pack_size: i32,
+}
+",
+  "// StickInsect represents a StickInsect model.
+#[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+pub struct StickInsect {
+    #[serde(rename=\\"petType\\")]
+    pub pet_type: Box<crate::PetType>,
+    #[serde(rename=\\"name\\")]
+    pub name: String,
+    #[serde(rename=\\"color\\")]
+    pub color: String,
+}
+",
+]
+`;
+
 exports[`RustGenerator Enum should not render reserved keyword 1`] = `
 "// Address represents a Address model.
 #[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
@@ -152,13 +227,14 @@ pub struct Address {
 exports[`RustGenerator Struct & Complete Models Should render complete models 2`] = `
 "// Members represents a union of types: String, f64, bool
 #[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
+#[serde(untagged)]
 pub enum Members {
-    #[serde(rename=\\"MembersOneOf00\\")]
-    MembersOneOf00(String),
-    #[serde(rename=\\"MembersOneOf11\\")]
-    MembersOneOf11(f64),
-    #[serde(rename=\\"MembersOneOf22\\")]
-    MembersOneOf22(bool),
+    #[serde(rename=\\"MembersOneOf0\\")]
+    MembersOneOf0(String),
+    #[serde(rename=\\"MembersOneOf1\\")]
+    MembersOneOf1(f64),
+    #[serde(rename=\\"MembersOneOf2\\")]
+    MembersOneOf2(bool),
 }
 
 "
@@ -201,13 +277,14 @@ pub struct Address {
 exports[`RustGenerator Struct & Complete Models should render \`struct\` type  2`] = `
 "// Members represents a union of types: String, f64, bool
 #[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
+#[serde(untagged)]
 pub enum Members {
-    #[serde(rename=\\"MembersOneOf00\\")]
-    MembersOneOf00(String),
-    #[serde(rename=\\"MembersOneOf11\\")]
-    MembersOneOf11(f64),
-    #[serde(rename=\\"MembersOneOf22\\")]
-    MembersOneOf22(bool),
+    #[serde(rename=\\"MembersOneOf0\\")]
+    MembersOneOf0(String),
+    #[serde(rename=\\"MembersOneOf1\\")]
+    MembersOneOf1(f64),
+    #[serde(rename=\\"MembersOneOf2\\")]
+    MembersOneOf2(bool),
 }
 
 "
