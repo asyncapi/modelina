@@ -59,10 +59,10 @@ export const RUST_DEFAULT_UNION_PRESET: UnionPresetType<RustOptions> = {
     // a warning is logged because this is a highly inefficient deserialization method
     else {
       Logger.warn(`${model.name} is a polymorphic schema, but no discriminator field was found. RustGenerator will use serde's untagged data representation, which attempts to match against the first valid data representation. This is significantly slower than deserializing a tagged data representation. You should provide a discriminator field if possible. See serde tagged/untagged docs for more info: https://serde.rs/enum-representations.html#untagged`);
-      const discriminatorBlock = "#[serde(untagged)]";
+      const discriminatorBlock = '#[serde(untagged)]';
       blocks.push(discriminatorBlock);
     }
-    return renderer.renderBlock(blocks)
+    return renderer.renderBlock(blocks);
   },
   itemMacro({ item }) {
     const serdeArgs: string[] = [];
