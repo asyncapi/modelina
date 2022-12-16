@@ -173,6 +173,7 @@ describe('RustGenerator', () => {
           PetMessage: {
             payload: {
               $id: 'Critter',
+              discriminator: 'petType',
               oneOf: [
                 { $ref: '#/components/schemas/Cat' },
                 { $ref: '#/components/schemas/Dog' },
