@@ -1,4 +1,4 @@
-# Generate all models within same files
+# Generate all models within the same file
 
 A basic example how to generate all models within same files
 
