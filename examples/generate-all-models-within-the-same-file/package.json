@@ -1,6 +1,6 @@
 {
   "config": {
-    "example_name": "generate-all-models-within-same-files"
+    "example_name": "generate-all-models-within-the-same-file"
   },
   "scripts": {
     "install": "cd ../.. && npm i",

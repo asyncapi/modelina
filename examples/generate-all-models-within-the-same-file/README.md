@@ -1,6 +1,6 @@
-# Generate all models within same files
+# Generate all models within the same file
 
-A basic example how to generate all models within same files
+A basic example of how to generate all models within the same file.
 
 ## How to run this example
 
