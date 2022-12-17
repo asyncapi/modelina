@@ -81,7 +81,7 @@ export const CSHARP_DEFAULT_CLASS_PRESET: CsharpClassPreset<CSharpOptions> = {
     if (options?.autoImplementedProperties) {
       const getter = await renderer.runGetterPreset(property);
       const setter = await renderer.runSetterPreset(property);
-      return `public ${property.property.type}${property.required === false && '?'} ${pascalCase(property.propertyName)} { ${getter} ${setter} }`;
+      return `public ${property.property.type} ${pascalCase(property.propertyName)} { ${getter} ${setter} }`;
     }
     return `private ${property.property.type} ${property.propertyName};`;
   },

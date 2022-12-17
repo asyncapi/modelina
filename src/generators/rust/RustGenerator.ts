@@ -3,7 +3,7 @@ import {
   CommonGeneratorOptions,
   defaultGeneratorOptions
 } from '../AbstractGenerator';
-import { OutputModel, InputMetaModel, RenderOutput, ConstrainedObjectModel, ConstrainedEnumModel, ConstrainedMetaModel, MetaModel, ConstrainedTupleModel, ConstrainedUnionModel, UnionModel } from '../../models';
+import { OutputModel, InputMetaModel, RenderOutput, ConstrainedObjectModel, ConstrainedEnumModel, ConstrainedMetaModel, MetaModel, ConstrainedTupleModel, ConstrainedUnionModel } from '../../models';
 import { constrainMetaModel, Constraints, IndentationTypes, split, TypeMapping } from '../../helpers';
 import { RustPreset, RUST_DEFAULT_PRESET } from './RustPreset';
 import { StructRenderer } from './renderers/StructRenderer';
@@ -94,14 +94,6 @@ export class RustGenerator extends AbstractGenerator<RustOptions, RustRenderComp
   }
 
   constrainToMetaModel(model: MetaModel): ConstrainedMetaModel {
-    // How to constrain Union member names?
-    if (model instanceof UnionModel) {
-      model.union = model.union.map((v, idx) => {
-        v.name += idx;
-        return v;
-      });
-    }
-
     return constrainMetaModel<RustOptions>(
       this.options.typeMapping,
       this.options.constraints,
