@@ -4,9 +4,9 @@ exports[`Should be able to render inheritance and should log expected output to 
 Array [
   "public class Root : IEvent
 {
-  private string[] email;
+  private string[]? email;
 
-  public string[] Email 
+  public string[]? Email 
   {
     get { return email; }
     set { email = value; }

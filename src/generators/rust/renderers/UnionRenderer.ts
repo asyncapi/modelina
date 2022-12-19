@@ -2,6 +2,7 @@ import { RustRenderer } from '../RustRenderer';
 import { ConstrainedUnionModel, ConstrainedMetaModel, ConstrainedReferenceModel } from '../../../models';
 import { UnionPresetType } from '../RustPreset';
 import { RustOptions } from '../RustGenerator';
+import { Logger } from '../../../index';
 
 /**
  * Renderer for Rust's `Union` type
@@ -46,7 +47,21 @@ export const RUST_DEFAULT_UNION_PRESET: UnionPresetType<RustOptions> = {
   },
 
   structMacro({ model, renderer }) {
-    return renderer.renderMacro(model);
+    const blocks = [renderer.renderMacro(model)];
+    if (model.originalInput.discriminator !== undefined) {
+      // when discriminator is provided, polymorphic type is internally-tagged: 
+      // https://serde.rs/enum-representations.html#internally-tagged
+      const discriminatorBlock = `#[serde(tag = "${model.originalInput.discriminator}")]`;
+      blocks.push(discriminatorBlock);
+    } else {
+      // otherwise if a discriminator field is not provided, use untagged representation
+      // https://serde.rs/enum-representations.html#untagged
+      // a warning is logged because this is a highly inefficient deserialization method
+      Logger.warn(`${model.name} is a polymorphic schema, but no discriminator field was found. RustGenerator will use serde's untagged data representation, which attempts to match against the first valid data representation. This is significantly slower than deserializing a tagged data representation. You should provide a discriminator field if possible. See serde tagged/untagged docs for more info: https://serde.rs/enum-representations.html#untagged`);
+      const discriminatorBlock = '#[serde(untagged)]';
+      blocks.push(discriminatorBlock);
+    }
+    return renderer.renderBlock(blocks);
   },
   itemMacro({ item }) {
     const serdeArgs: string[] = [];

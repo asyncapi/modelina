@@ -1,6 +1,8 @@
 import { RustDefaultConstraints } from '../../../../src/generators/rust/RustConstrainer';
 import { EnumModel } from '../../../../src/models/MetaModel';
-import { ConstrainedEnumModel, ConstrainedEnumValueModel } from '../../../../src';
+import { ConstrainedEnumModel, ConstrainedEnumValueModel, EnumKeyConstraint } from '../../../../src';
+import { RESERVED_RUST_KEYWORDS } from '../../../../src/generators/rust/Constants';
+import { defaultEnumKeyConstraints } from '../../../../src/generators/rust/constrainer/EnumConstrainer';
 describe('EnumConstrainer', () => {
   const enumModel = new EnumModel('test', undefined, []);
   const constrainedEnumModel = new ConstrainedEnumModel('test', undefined, '', []);
@@ -28,9 +30,20 @@ describe('EnumConstrainer', () => {
       const constrainedKey = RustDefaultConstraints.enumKey({enumModel, constrainedEnumModel, enumKey: 'some weird_value!"#2'});
       expect(constrainedKey).toEqual('SomeWeirdValueExclamationQuotationHash_2');
     });
-    test('should never render reserved keywords', () => {
+    test('Reserved keywords should not take effect when naming formatter changes its format', () => {
       const constrainedKey = RustDefaultConstraints.enumKey({enumModel, constrainedEnumModel, enumKey: 'return'});
-      expect(constrainedKey).toEqual('ReservedReturn');
+      expect(constrainedKey).toEqual('Return');
+    });
+
+    describe('custom constraints', () => {
+      test('should make sure reserved keywords cannot be rendered', () => {
+        const customNamingFormat: Partial<EnumKeyConstraint> = {
+          NAMING_FORMATTER: (value) => value
+        };
+        const constrainFunction = defaultEnumKeyConstraints(customNamingFormat);
+        const constrainedKey = constrainFunction({enumModel, constrainedEnumModel, enumKey: 'return'});
+        expect(constrainedKey).toEqual('reserved_return');
+      });
     });
   });
   describe('enum values', () => {

@@ -88,7 +88,7 @@ function renderDeserializeProperty(model: ConstrainedObjectPropertyModel) {
   //Referenced enums is the only one who need custom serialization
   if (model.property instanceof ConstrainedReferenceModel && 
     model.property.ref instanceof ConstrainedEnumModel) {
-    return `${model.property.type}Extension.To${model.property.type}(JsonSerializer.Deserialize<dynamic>(ref reader, options))`;
+    return `${model.property.name}Extension.To${model.property.name}(JsonSerializer.Deserialize<dynamic>(ref reader, options))`;
   }
   return `JsonSerializer.Deserialize<${model.property.type}>(ref reader, options)`;
 }

@@ -261,7 +261,7 @@ exports[`TypeScriptGenerator should render \`class\` type 1`] = `
   private _tupleType?: [string, number];
   private _tupleTypeWithAdditionalItems?: (string | number | any)[];
   private _arrayType: (string | any)[];
-  private _additionalProperties?: Map<string, any>;
+  private _additionalProperties?: Map<string, any | string>;
 
   constructor(input: {
     streetName: string,
@@ -273,7 +273,7 @@ exports[`TypeScriptGenerator should render \`class\` type 1`] = `
     tupleType?: [string, number],
     tupleTypeWithAdditionalItems?: (string | number | any)[],
     arrayType: (string | any)[],
-    additionalProperties?: Map<string, any>,
+    additionalProperties?: Map<string, any | string>,
   }) {
     this._streetName = input.streetName;
     this._city = input.city;
@@ -314,8 +314,8 @@ exports[`TypeScriptGenerator should render \`class\` type 1`] = `
   get arrayType(): (string | any)[] { return this._arrayType; }
   set arrayType(arrayType: (string | any)[]) { this._arrayType = arrayType; }
 
-  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
-  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
+  get additionalProperties(): Map<string, any | string> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any | string> | undefined) { this._additionalProperties = additionalProperties; }
 }"
 `;
 
@@ -340,7 +340,7 @@ exports[`TypeScriptGenerator should render \`interface\` type 1`] = `
   tupleType?: [string, number];
   tupleTypeWithAdditionalItems?: (string | number | any)[];
   arrayType: (string | any)[];
-  additionalProperties?: Map<string, any>;
+  additionalProperties?: Map<string, any | string>;
 }"
 `;
 
@@ -385,7 +385,7 @@ class Address {
   private _members?: string | number | boolean;
   private _arrayType: (string | number | any)[];
   private _otherModel?: OtherModel;
-  private _additionalProperties?: Map<string, any>;
+  private _additionalProperties?: Map<string, any | string>;
 
   constructor(input: {
     streetName: string,
@@ -396,7 +396,7 @@ class Address {
     members?: string | number | boolean,
     arrayType: (string | number | any)[],
     otherModel?: OtherModel,
-    additionalProperties?: Map<string, any>,
+    additionalProperties?: Map<string, any | string>,
   }) {
     this._streetName = input.streetName;
     this._city = input.city;
@@ -433,8 +433,8 @@ class Address {
   get otherModel(): OtherModel | undefined { return this._otherModel; }
   set otherModel(otherModel: OtherModel | undefined) { this._otherModel = otherModel; }
 
-  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
-  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
+  get additionalProperties(): Map<string, any | string> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any | string> | undefined) { this._additionalProperties = additionalProperties; }
 }
 module.exports = Address;"
 `;
@@ -473,7 +473,7 @@ class Address {
   private _members?: string | number | boolean;
   private _arrayType: (string | number | any)[];
   private _otherModel?: OtherModel;
-  private _additionalProperties?: Map<string, any>;
+  private _additionalProperties?: Map<string, any | string>;
 
   constructor(input: {
     streetName: string,
@@ -484,7 +484,7 @@ class Address {
     members?: string | number | boolean,
     arrayType: (string | number | any)[],
     otherModel?: OtherModel,
-    additionalProperties?: Map<string, any>,
+    additionalProperties?: Map<string, any | string>,
   }) {
     this._streetName = input.streetName;
     this._city = input.city;
@@ -521,8 +521,8 @@ class Address {
   get otherModel(): OtherModel | undefined { return this._otherModel; }
   set otherModel(otherModel: OtherModel | undefined) { this._otherModel = otherModel; }
 
-  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
-  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
+  get additionalProperties(): Map<string, any | string> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any | string> | undefined) { this._additionalProperties = additionalProperties; }
 }
 exports.Address = Address;"
 `;
@@ -561,7 +561,7 @@ class Address {
   private _members?: string | number | boolean;
   private _arrayType: (string | number | any)[];
   private _otherModel?: OtherModel;
-  private _additionalProperties?: Map<string, any>;
+  private _additionalProperties?: Map<string, any | string>;
 
   constructor(input: {
     streetName: string,
@@ -572,7 +572,7 @@ class Address {
     members?: string | number | boolean,
     arrayType: (string | number | any)[],
     otherModel?: OtherModel,
-    additionalProperties?: Map<string, any>,
+    additionalProperties?: Map<string, any | string>,
   }) {
     this._streetName = input.streetName;
     this._city = input.city;
@@ -609,8 +609,8 @@ class Address {
   get otherModel(): OtherModel | undefined { return this._otherModel; }
   set otherModel(otherModel: OtherModel | undefined) { this._otherModel = otherModel; }
 
-  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
-  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
+  get additionalProperties(): Map<string, any | string> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any | string> | undefined) { this._additionalProperties = additionalProperties; }
 }
 export default Address;
 "
@@ -651,7 +651,7 @@ export class Address {
   private _members?: string | number | boolean;
   private _arrayType: (string | number | any)[];
   private _otherModel?: OtherModel;
-  private _additionalProperties?: Map<string, any>;
+  private _additionalProperties?: Map<string, any | string>;
 
   constructor(input: {
     streetName: string,
@@ -662,7 +662,7 @@ export class Address {
     members?: string | number | boolean,
     arrayType: (string | number | any)[],
     otherModel?: OtherModel,
-    additionalProperties?: Map<string, any>,
+    additionalProperties?: Map<string, any | string>,
   }) {
     this._streetName = input.streetName;
     this._city = input.city;
@@ -699,8 +699,8 @@ export class Address {
   get otherModel(): OtherModel | undefined { return this._otherModel; }
   set otherModel(otherModel: OtherModel | undefined) { this._otherModel = otherModel; }
 
-  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
-  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
+  get additionalProperties(): Map<string, any | string> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any | string> | undefined) { this._additionalProperties = additionalProperties; }
 }
 "
 `;
