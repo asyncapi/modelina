@@ -1,7 +1,5 @@
 [![AsyncAPI Modelina](./docs/img/readme-banner.png)](https://www.asyncapi.com/tools/modelina)
 
-Modelina is the official AsyncAPI SDK to generate data models (i.e. <a href="#outputs">Java/TypeScript classes, Go Structs, etc</a>) from <a href="#inputs">AsyncAPI documents, among other supported inputs</a>.
-
 [![blackbox pipeline status](<https://img.shields.io/github/workflow/status/asyncapi/modelina/Blackbox%20testing%20(Stay%20Awhile%20and%20Listen)?label=blackbox%20testing>)](https://github.com/asyncapi/modelina/actions/workflows/blackbox-testing.yml?query=branch%3Amaster++)
 [![Coverage Status](https://coveralls.io/repos/github/asyncapi/modelina/badge.svg?branch=master)](https://coveralls.io/github/asyncapi/modelina?branch=master)
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
@@ -11,14 +9,8 @@ Modelina is the official AsyncAPI SDK to generate data models (i.e. <a href="#ou
 [![last commit](https://img.shields.io/github/last-commit/asyncapi/modelina)](https://github.com/asyncapi/modelina/commits/master)
 [![Discussions](https://img.shields.io/github/discussions/asyncapi/modelina)](https://github.com/asyncapi/modelina/discussions)
 [![Playground](https://img.shields.io/website?label=playground&url=https%3A%2F%2Fwww.asyncapi.com%2Ftools%2Fmodelina)](https://www.asyncapi.com/tools/modelina) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-36-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-39-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
-
----
-
-## :loudspeaker: ATTENTION:
-
-This package is currently being prepared to reach version 1.0.0 and the development is therefore happening on the [`next` branch](https://github.com/asyncapi/modelina/tree/next), any features must be based and targetting that branch.
 
 ---
 
@@ -26,10 +18,10 @@ This package is currently being prepared to reach version 1.0.0 and the developm
 
 <!-- toc -->
 
-- [Requirements](#requirements)
-- [Installation](#installation)
+- [Installing Modelina](#installing-modelina)
 - [Features](#features)
 - [Roadmap](#roadmap)
+- [Requirements](#requirements)
 - [Documentation](#documentation)
 - [Examples](#examples)
 - [Development](#development)
@@ -38,13 +30,7 @@ This package is currently being prepared to reach version 1.0.0 and the developm
 
 <!-- tocstop -->
 
-## Requirements
-
-- [NodeJS](https://nodejs.org/en/) >= 14
-
-Feel free to submit an issue if you require this project in other use-cases.
-
-## Installation
+## Installing Modelina
 
 Run this command to install Modelina in your project:
 
@@ -52,13 +38,138 @@ Run this command to install Modelina in your project:
 npm install @asyncapi/modelina
 ```
 
-Once you've successfully installed Modelina in your project, it's time to select your generator. Check out the [examples](#examples) for the specific code.
+<h2 align="center">What Does Modelina Do?</h2>
+
+<p align="center">Modelina put YOU in control of your data models, here is how...</p>
+
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td><b>Modelina lets you generate data models from many types of <a href="#inputs">inputs</a></b></td>
+<td>
+
+```typescript
+const asyncapi = ...
+const jsonschema = ...
+const openapi = ... 
+const metamodel = ... 
+...
+const models = await generator.generate(
+  asyncapi | jsonschema | openapi | metamodel
+);
+```
+</td>
+  </tr>
+    <tr>
+    <td><b>Use the same inputs across a range of different <a href="#outputs">generators</a></b></td>
+<td>
+
+```typescript
+const generator = new TypeScriptGenerator();
+const generator = new CsharpGenerator();
+const generator = new JavaGenerator();
+const generator = new RustGenerator();
+...
+const models = await generator.generate(input);
+```
+</td>
+  </tr>
+    <tr>
+    <td><b>Easily let you interact with the generated models.</b> 
+
+- Want to show the generated models on a website? Sure! 
+- Want to generate the models into files? Sure! 
+- Want to combine all the models into one single file? Sure! 
+
+Whatever interaction you need, you can create.</td>
+<td>
+
+```typescript
+const models = await generator.generate(input);
+for (const model in models) { 
+  const generatedCode = generatedModel.result;
+  const dependencies = generatedModel.dependencies;
+  const modeltype = generatedModel.model.type;
+  const modelName = generatedModel.modelName;
+  ...
+}
+```
+</td>
+  </tr>
+  <tr>
+    <td><b>Easily modify how models are <a href="./docs/constraints.md">constrained</a> into the output</b></td>
+
+<td>
+
+```typescript
+const generator = new TypeScriptGenerator({
+  constraints: {
+    modelName: ({modelName}) => {
+      // Implement your own constraining logic
+      return modelName;
+    }
+  }
+});
+```
+</td>
+  </tr>
+  <tr>
+    <td><b>Seamlessly layer additional or replacement code <a href="./docs/presets.md">on top of each other to customize the models</a> to your use-case</b></td>
+
+<td>
+
+```typescript
+const generator = new TypeScriptGenerator({
+  presets: [
+    {
+      class: {
+        additionalContent({ content }) {
+          return `${content}
+public myCustomFunction(): string {
+  return 'A custom function for each class';
+}`;
+        },
+      }
+    }
+  ]
+});
+const models = await generator.generate(input);
+```
+</td>
+  </tr>
+  <tr>
+    <td><b>Seamlessly lets you <a href="./docs/presets.md">combine multiple layers of additional or replacement code</a></b></td>
+
+<td>
+
+```typescript
+const myCustomFunction1 = {
+  class: {
+    additionalContent({ content }) {
+      return `${content}
+public myCustomFunction(): string {
+return 'A custom function for each class';
+}`;
+    },
+  }
+};
+const myCustomFunction2 = {...};
+const generator = new TypeScriptGenerator({
+  presets: [
+    myCustomFunction1,
+    myCustomFunction2
+  ]
+});
+const models = await generator.generate(input);
+```
+</td>
+  </tr>
+</table>
 
 ## Features
 
-The following table provides a short summary of available features for supported output languages.
-
-To see the complete feature list for each language, please click the individual links for each language.
+The following table provides a short summary of available features for supported output languages. To see the complete feature list for each language, please click the individual links for each language.
 
 <a id="inputs"></a>
 
@@ -67,7 +178,7 @@ To see the complete feature list for each language, please click the individual 
 <table>
   <tr>
     <th>Supported inputs</th>
-    <th>description</th>
+    <th></th>
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-models-from-asyncapi-documents">AsyncAPI</a></td>
@@ -87,7 +198,7 @@ To see the complete feature list for each language, please click the individual 
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-models-from-meta-models">Meta model</a></td>
-    <td>This is the internal representation of a model for Modelina, it is what inputs gets converted to, and what generators are provided to generate code. Instead of relying on an input processor, you can create your own models from scratch, and still take advantage on the generators and the features.</td>
+    <td>This is the internal representation of a model for Modelina, it is what inputs gets converted to, and what generators are provided to generate code. Instead of relying on an input processor, you can create your own models from scratch and still take advantage on the generators and the features.</td>
   </tr>
 </table>
 
@@ -97,7 +208,7 @@ To see the complete feature list for each language, please click the individual 
 <table>
   <tr>
     <th>Supported outputs</th>
-    <th>Features</th>
+    <th></th>
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-java-models">Java</a></td>
@@ -134,22 +245,50 @@ To see the complete feature list for each language, please click the individual 
 </table>
 
 ## Roadmap
+This is the roadmap that is currently in focus by the [CODEOWNERS](./CODEOWNERS)
+
 - [Reach version 1.0](https://github.com/asyncapi/modelina/milestone/3)
 
+## Requirements
+The following are a requirement in order to use Modelina.
+
+- [NodeJS](https://nodejs.org/en/) >= 14
+
 ## Documentation
-Documentation for this library can be found under the [documentation folder](./docs/README.md).
+A feature in Modelina cannot exists without an example and documentation for it. You can find all the [documentation here](./docs/README.md).
 
 ## Examples
 Do you need to know how to use the library in certain scenarios? 
 
 We have gathered all the examples in a separate folder and they can be found under the [examples folder](./examples). 
 
+## Versioning and maintenance
+As of version 1, Modelina has a very strict set of changes we are allowed to do before it requires a major version change. In short, any changes that change the generated outcome are not allowed as it's a breaking change for the consumer of the generated models. 
+
+Here is a list of changes we are allowed to do that would not require a breaking change:
+- Adding new features (that do not change existing output), such as generators, presets, input processors, etc.
+- Change existing features, by providing options that default to current behavior. This could be a preset that adapts the output based on options, as long as the API of Modelina and the API of the generated models does not have any breaking changes.
+- Bug fixes where the generated code is otherwise unusable (syntax errors, etc).
+
+Breaking changes are allowed and expected at a frequent rate, of course where it makes sense we will try to bundle multiple changes together.
+
+We of course will do our best to uphold this, but mistakes can happen, and if you notice any breaking changes please let us know!
+
+Because of the number of the limited number of champions, only the most recent major version will be maintained.
+
 ## Development
-To setup your development environment please read the [development](./docs/development.md) document.
+We try to make it as easy for you as possible to set up your development environment to contribute to Modelina. You can find the development documentation [here](./docs/development.md).
 
 ## Contributing
+Without contributions, Modelina would not exist, it's a community project we build together to create the best possible building blocks, and we do this through [champions](./docs/champions.md).
 
-Read our [contributor](./docs/contributing.md) guide.
+We have made quite a [comprehensive contribution guide](./docs/contributing.md) to give you a lending hand in how different features and changes are introduced.
+
+If no documentation helps you, here is how you can reach out to get help:
+- On the [official AsycnAPI slack](https://asyncapi.com/slack-invite) under the `#04_tooling` channel
+- Tag a specific [CODEOWNER](./CODEOWNERS) in your PR
+- Generally, it's always a good idea to do everything in public, but in some cases, it might not be possible. In those circumstances you can contact the following: 
+  - [jonaslagoni](https://github.com/jonaslagoni) (on [AsyncAPI Slack](https://asyncapi.com/slack-invite), [Twitter](https://twitter.com/jonaslagoni), [Email](mailto:jonas-lt@live.dk), [LinkedIn](https://www.linkedin.com/in/jonaslagoni/))
 
 ## Contributors ✨
 
@@ -200,20 +339,23 @@ Thanks go out to these wonderful people ([emoji key](https://allcontributors.org
       <td align="center"><a href="https://github.com/PanMan"><img src="https://avatars.githubusercontent.com/u/978501?v=4?s=100" width="100px;" alt="PanMan"/><br /><sub><b>PanMan</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=PanMan" title="Documentation">📖</a></td>
       <td align="center"><a href="https://github.com/artur-ciocanu"><img src="https://avatars.githubusercontent.com/u/743192?v=4?s=100" width="100px;" alt="artur-ciocanu"/><br /><sub><b>artur-ciocanu</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=artur-ciocanu" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/issues?q=author%3Aartur-ciocanu" title="Bug reports">🐛</a></td>
       <td align="center"><a href="https://micro-jumbo.eu/"><img src="https://avatars.githubusercontent.com/u/11511697?v=4?s=100" width="100px;" alt="Cyprian Gracz"/><br /><sub><b>Cyprian Gracz</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=micro-jumbo" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=micro-jumbo" title="Tests">⚠️</a> <a href="https://github.com/asyncapi/modelina/issues?q=author%3Amicro-jumbo" title="Bug reports">🐛</a></td>
-      <td align="center"><a href="https://www.printnanny.ai"><img src="https://avatars.githubusercontent.com/u/2601819?v=4?s=100" width="100px;" alt="Leigh Johnson"/><br /><sub><b>Leigh Johnson</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=leigh-johnson" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=leigh-johnson" title="Tests">⚠️</a> <a href="#example-leigh-johnson" title="Examples">💡</a> <a href="https://github.com/asyncapi/modelina/commits?author=leigh-johnson" title="Documentation">📖</a> <a href="#maintenance-leigh-johnson" title="Maintenance">🚧</a></td>
+      <td align="center"><a href="https://www.printnanny.ai"><img src="https://avatars.githubusercontent.com/u/2601819?v=4?s=100" width="100px;" alt="Leigh Johnson"/><br /><sub><b>Leigh Johnson</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=leigh-johnson" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=leigh-johnson" title="Tests">⚠️</a> <a href="#example-leigh-johnson" title="Examples">💡</a> <a href="https://github.com/asyncapi/modelina/commits?author=leigh-johnson" title="Documentation">📖</a> <a href="#maintenance-leigh-johnson" title="Maintenance">🚧</a> <a href="https://github.com/asyncapi/modelina/pulls?q=is%3Apr+reviewed-by%3Aleigh-johnson" title="Reviewed Pull Requests">👀</a></td>
       <td align="center"><a href="https://github.com/nitintejuja"><img src="https://avatars.githubusercontent.com/u/95347924?v=4?s=100" width="100px;" alt="Nitin Tejuja"/><br /><sub><b>Nitin Tejuja</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=nitintejuja" title="Tests">⚠️</a> <a href="#example-nitintejuja" title="Examples">💡</a></td>
       <td align="center"><a href="https://github.com/kennethaasan"><img src="https://avatars.githubusercontent.com/u/1437394?v=4?s=100" width="100px;" alt="Kenneth Aasan"/><br /><sub><b>Kenneth Aasan</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=kennethaasan" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=kennethaasan" title="Tests">⚠️</a></td>
       <td align="center"><a href="https://github.com/amit-ksh"><img src="https://avatars.githubusercontent.com/u/91947037?v=4?s=100" width="100px;" alt="Amit Kumar Sharma"/><br /><sub><b>Amit Kumar Sharma</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=amit-ksh" title="Tests">⚠️</a> <a href="https://github.com/asyncapi/modelina/commits?author=amit-ksh" title="Documentation">📖</a> <a href="#example-amit-ksh" title="Examples">💡</a></td>
     </tr>
-    <tr>
+    <tr>     
       <td align="center"><a href="https://github.com/zaytsevand"><img src="https://avatars.githubusercontent.com/u/5207748?v=4?s=100" width="100px;" alt="Andrey Zaytsev"/><br /><sub><b>Andrey Zaytsev</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=zaytsevand" title="Code">💻</a> <a href="#example-zaytsevand" title="Examples">💡</a> <a href="https://github.com/asyncapi/modelina/commits?author=zaytsevand" title="Documentation">📖</a> <a href="https://github.com/asyncapi/modelina/commits?author=zaytsevand" title="Tests">⚠️</a></td>
+      <td align="center"><a href="https://github.com/codingtenshi"><img src="https://avatars.githubusercontent.com/u/116377630?v=4?s=100" width="100px;" alt="Tenshi Codes"/><br /><sub><b>Tenshi Codes</b></sub></a><br /><a href="#infra-codingtenshi" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+      <td align="center"><a href="http://yushiomote.org/"><img src="https://avatars.githubusercontent.com/u/3733915?v=4?s=100" width="100px;" alt="Yushi OMOTE"/><br /><sub><b>Yushi OMOTE</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/issues?q=author%3AYushiOMOTE" title="Bug reports">🐛</a> <a href="https://github.com/asyncapi/modelina/commits?author=YushiOMOTE" title="Code">💻</a></td>
+      <td align="center"><a href="https://malcherczyk.pl"><img src="https://avatars.githubusercontent.com/u/17534504?v=4?s=100" width="100px;" alt="Zbigniew Malcherczyk"/><br /><sub><b>Zbigniew Malcherczyk</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/issues?q=author%3AFerror" title="Bug reports">🐛</a> <a href="#infra-Ferror" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+      <td align="center"><a href="https://github.com/200Puls"><img src="https://avatars.githubusercontent.com/u/6918360?v=4?s=100" width="100px;" alt="200Puls"/><br /><sub><b>200Puls</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=200Puls" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=200Puls" title="Tests">⚠️</a></td>
     </tr>
-  </tbody>
-</table>
+
 
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind are welcome!

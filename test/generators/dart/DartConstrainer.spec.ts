@@ -1,12 +1,14 @@
-import { DartGenerator } from '../../../src/generators';
+import { DartGenerator, DartOptions } from '../../../src/generators';
 import { DartDefaultTypeMapping } from '../../../src/generators/dart/DartConstrainer';
+import { DartDependencyManager } from '../../../src/generators/dart/DartDependencyManager';
 import { ConstrainedAnyModel, ConstrainedArrayModel, ConstrainedBooleanModel, ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedUnionModel, InputMetaModel } from '../../../src/models';
 
-describe('DartRenderer', () => {
+describe('DartConstrainer', () => {
+  const defaultOptions = {options: DartGenerator.defaultOptions, dependencyManager: new DartDependencyManager(DartGenerator.defaultOptions)};
   describe('ObjectModel', () => { 
     test('should render the constrained name as type', () => {
       const model = new ConstrainedObjectModel('test', undefined, '', {});
-      const type = DartDefaultTypeMapping.Object({constrainedModel: model, options: DartGenerator.defaultOptions});
+      const type = DartDefaultTypeMapping.Object({constrainedModel: model, ...defaultOptions});
       expect(type).toEqual(model.name);
     });
   });
@@ -14,42 +16,42 @@ describe('DartRenderer', () => {
     test('should render the constrained name as type', () => {
       const refModel = new ConstrainedAnyModel('test', undefined, '');
       const model = new ConstrainedReferenceModel('test', undefined, '', refModel);
-      const type = DartDefaultTypeMapping.Reference({constrainedModel: model, options: DartGenerator.defaultOptions});
+      const type = DartDefaultTypeMapping.Reference({constrainedModel: model, ...defaultOptions});
       expect(type).toEqual(model.name);
     });
   });
   describe('Any', () => { 
     test('should render type', () => {
       const model = new ConstrainedAnyModel('test', undefined, '');
-      const type = DartDefaultTypeMapping.Any({constrainedModel: model, options: DartGenerator.defaultOptions});
+      const type = DartDefaultTypeMapping.Any({constrainedModel: model, ...defaultOptions});
       expect(type).toEqual('Object');
     });
   });
   describe('Float', () => { 
     test('should render type', () => {
       const model = new ConstrainedFloatModel('test', undefined, '');
-      const type = DartDefaultTypeMapping.Float({constrainedModel: model, options: DartGenerator.defaultOptions});
+      const type = DartDefaultTypeMapping.Float({constrainedModel: model, ...defaultOptions});
       expect(type).toEqual('double');
     });
   });
   describe('Integer', () => { 
     test('should render type', () => {
       const model = new ConstrainedIntegerModel('test', undefined, '');
-      const type = DartDefaultTypeMapping.Integer({constrainedModel: model, options: DartGenerator.defaultOptions});
+      const type = DartDefaultTypeMapping.Integer({constrainedModel: model, ...defaultOptions});
       expect(type).toEqual('int');
     });
   });
   describe('String', () => { 
     test('should render type', () => {
       const model = new ConstrainedStringModel('test', undefined, '');
-      const type = DartDefaultTypeMapping.String({constrainedModel: model, options: DartGenerator.defaultOptions});
+      const type = DartDefaultTypeMapping.String({constrainedModel: model, ...defaultOptions});
       expect(type).toEqual('String');
     });
   });
   describe('Boolean', () => { 
     test('should render type', () => {
       const model = new ConstrainedBooleanModel('test', undefined, '');
-      const type = DartDefaultTypeMapping.Boolean({constrainedModel: model, options: DartGenerator.defaultOptions});
+      const type = DartDefaultTypeMapping.Boolean({constrainedModel: model, ...defaultOptions});
       expect(type).toEqual('bool');
     });
   });
@@ -57,12 +59,14 @@ describe('DartRenderer', () => {
   describe('Tuple', () => { 
     test('should render default type', () => {
       const model = new ConstrainedTupleModel('test', undefined, '', []);
-      const type = DartDefaultTypeMapping.Tuple({constrainedModel: model, options: {...DartGenerator.defaultOptions}});
+      const optionsToUse: DartOptions = {...DartGenerator.defaultOptions};
+      const type = DartDefaultTypeMapping.Tuple({constrainedModel: model, options: optionsToUse, dependencyManager: new DartDependencyManager(optionsToUse)});
       expect(type).toEqual('List<Object>');
     });
     test('should render type with custom collection type', () => {
       const model = new ConstrainedTupleModel('test', undefined, '', []);
-      const type = DartDefaultTypeMapping.Tuple({constrainedModel: model, options: {...DartGenerator.defaultOptions, collectionType: 'List'}});
+      const optionsToUse: DartOptions = {...DartGenerator.defaultOptions, collectionType: 'List'};
+      const type = DartDefaultTypeMapping.Tuple({constrainedModel: model, options: optionsToUse, dependencyManager: new DartDependencyManager(optionsToUse)});
       expect(type).toEqual('List<Object>');
     });
   });
@@ -71,13 +75,14 @@ describe('DartRenderer', () => {
     test('should render default type', () => {
       const arrayModel = new ConstrainedStringModel('test', undefined, 'string');
       const model = new ConstrainedArrayModel('test', undefined, '', arrayModel);
-      const type = DartDefaultTypeMapping.Array({constrainedModel: model, options: DartGenerator.defaultOptions});
+      const type = DartDefaultTypeMapping.Array({constrainedModel: model, ...defaultOptions});
       expect(type).toEqual('List<string>');
     });
     test('should render type with custom collection type', () => {
       const arrayModel = new ConstrainedStringModel('test', undefined, 'string');
       const model = new ConstrainedArrayModel('test', undefined, '', arrayModel);
-      const type = DartDefaultTypeMapping.Array({constrainedModel: model, options: {...DartGenerator.defaultOptions, collectionType: 'List'}});
+      const optionsToUse: DartOptions = {...DartGenerator.defaultOptions, collectionType: 'List'};
+      const type = DartDefaultTypeMapping.Array({constrainedModel: model, options: optionsToUse, dependencyManager: new DartDependencyManager(optionsToUse)});
       expect(type).toEqual('List<string>');
     });
   });
@@ -85,7 +90,7 @@ describe('DartRenderer', () => {
   describe('Enum', () => { 
     test('should render the constrained name as type', () => {
       const model = new ConstrainedEnumModel('test', undefined, '', []);
-      const type = DartDefaultTypeMapping.Enum({constrainedModel: model, options: DartGenerator.defaultOptions});
+      const type = DartDefaultTypeMapping.Enum({constrainedModel: model, ...defaultOptions});
       expect(type).toEqual(model.name);
     });
   });
@@ -93,7 +98,7 @@ describe('DartRenderer', () => {
   describe('Union', () => { 
     test('should render type', () => {
       const model = new ConstrainedUnionModel('test', undefined, '', []);
-      const type = DartDefaultTypeMapping.Union({constrainedModel: model, options: DartGenerator.defaultOptions});
+      const type = DartDefaultTypeMapping.Union({constrainedModel: model, ...defaultOptions});
       expect(type).toEqual('Object');
     });
   });
@@ -103,7 +108,7 @@ describe('DartRenderer', () => {
       const keyModel = new ConstrainedStringModel('test', undefined, 'string');
       const valueModel = new ConstrainedStringModel('test', undefined, 'string');
       const model = new ConstrainedDictionaryModel('test', undefined, '', keyModel, valueModel);
-      const type = DartDefaultTypeMapping.Dictionary({constrainedModel: model, options: DartGenerator.defaultOptions});
+      const type = DartDefaultTypeMapping.Dictionary({constrainedModel: model, ...defaultOptions});
       expect(type).toEqual('Map<string, string>');
     });
   });

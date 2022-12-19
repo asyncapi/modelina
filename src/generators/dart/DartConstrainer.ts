@@ -1,10 +1,9 @@
-import { TypeMapping } from '../../helpers';
 import { defaultEnumKeyConstraints, defaultEnumValueConstraints } from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
-import { DartOptions } from './DartGenerator';
+import { DartTypeMapping } from './DartGenerator';
 
-export const DartDefaultTypeMapping: TypeMapping<DartOptions> = {
+export const DartDefaultTypeMapping: DartTypeMapping = {
   Object ({constrainedModel}): string {
     return constrainedModel.name;
   },

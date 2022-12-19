@@ -70,7 +70,7 @@ export const CSHARP_COMMON_PRESET: CSharpPreset<CSharpCommonPresetOptions> = {
         blocks.push(renderEqual({ renderer, model })); 
       }
       if (options.hash === undefined || options.hash === true) {
-        renderer.addDependency('using System;');
+        renderer.dependencyManager.addDependency('using System;');
         blocks.push(renderHashCode({ renderer, model }));
       }
 

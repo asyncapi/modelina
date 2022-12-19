@@ -123,19 +123,8 @@ export class RustGenerator extends AbstractGenerator<RustOptions, RustRenderComp
     return split(model, metaModelsToSplit);
   }
 
-  constrainToMetaModel(model: MetaModel, options: DeepPartial<RustOptions>): ConstrainedMetaModel {
-    const optionsToUse = RustGenerator.getRustOptions({...this.options, ...options});
-    const dependencyManagerToUse = this.getRustDependencyManager(optionsToUse);
-
-    // How to constrain Union member names?
-    if (model instanceof UnionModel) {
-      model.union = model.union.map((v, idx) => {
-        v.name += idx;
-        return v;
-      });
-    }
-
-    return constrainMetaModel<RustOptions, RustDependencyManager>(
+  constrainToMetaModel(model: MetaModel): ConstrainedMetaModel {
+    return constrainMetaModel<RustOptions>(
       this.options.typeMapping,
       this.options.constraints,
       {

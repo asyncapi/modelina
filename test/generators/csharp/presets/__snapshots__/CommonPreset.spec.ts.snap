@@ -4,9 +4,9 @@ exports[`CSHARP_COMMON_PRESET should render Equals support function 1`] = `
 "public class Test
 {
   private string stringProp;
-  private double numberProp;
-  private NestedTest objectProp;
-  private Dictionary<string, dynamic> additionalProperties;
+  private double? numberProp;
+  private NestedTest? objectProp;
+  private Dictionary<string, dynamic>? additionalProperties;
 
   public string StringProp 
   {
@@ -14,19 +14,19 @@ exports[`CSHARP_COMMON_PRESET should render Equals support function 1`] = `
     set { stringProp = value; }
   }
 
-  public double NumberProp 
+  public double? NumberProp 
   {
     get { return numberProp; }
     set { numberProp = value; }
   }
 
-  public NestedTest ObjectProp 
+  public NestedTest? ObjectProp 
   {
     get { return objectProp; }
     set { objectProp = value; }
   }
 
-  public Dictionary<string, dynamic> AdditionalProperties 
+  public Dictionary<string, dynamic>? AdditionalProperties 
   {
     get { return additionalProperties; }
     set { additionalProperties = value; }
@@ -61,16 +61,16 @@ exports[`CSHARP_COMMON_PRESET should render Equals support function 1`] = `
 exports[`CSHARP_COMMON_PRESET should render Equals support function 2`] = `
 "public class NestedTest
 {
-  private string stringProp;
-  private Dictionary<string, dynamic> additionalProperties;
+  private string? stringProp;
+  private Dictionary<string, dynamic>? additionalProperties;
 
-  public string StringProp 
+  public string? StringProp 
   {
     get { return stringProp; }
     set { stringProp = value; }
   }
 
-  public Dictionary<string, dynamic> AdditionalProperties 
+  public Dictionary<string, dynamic>? AdditionalProperties 
   {
     get { return additionalProperties; }
     set { additionalProperties = value; }
@@ -102,9 +102,9 @@ exports[`CSHARP_COMMON_PRESET should render GetHashCode support function 1`] = `
 "public class Test
 {
   private string stringProp;
-  private double numberProp;
-  private NestedTest objectProp;
-  private Dictionary<string, dynamic> additionalProperties;
+  private double? numberProp;
+  private NestedTest? objectProp;
+  private Dictionary<string, dynamic>? additionalProperties;
 
   public string StringProp 
   {
@@ -112,19 +112,19 @@ exports[`CSHARP_COMMON_PRESET should render GetHashCode support function 1`] = `
     set { stringProp = value; }
   }
 
-  public double NumberProp 
+  public double? NumberProp 
   {
     get { return numberProp; }
     set { numberProp = value; }
   }
 
-  public NestedTest ObjectProp 
+  public NestedTest? ObjectProp 
   {
     get { return objectProp; }
     set { objectProp = value; }
   }
 
-  public Dictionary<string, dynamic> AdditionalProperties 
+  public Dictionary<string, dynamic>? AdditionalProperties 
   {
     get { return additionalProperties; }
     set { additionalProperties = value; }
@@ -145,16 +145,16 @@ exports[`CSHARP_COMMON_PRESET should render GetHashCode support function 1`] = `
 exports[`CSHARP_COMMON_PRESET should render GetHashCode support function 2`] = `
 "public class NestedTest
 {
-  private string stringProp;
-  private Dictionary<string, dynamic> additionalProperties;
+  private string? stringProp;
+  private Dictionary<string, dynamic>? additionalProperties;
 
-  public string StringProp 
+  public string? StringProp 
   {
     get { return stringProp; }
     set { stringProp = value; }
   }
 
-  public Dictionary<string, dynamic> AdditionalProperties 
+  public Dictionary<string, dynamic>? AdditionalProperties 
   {
     get { return additionalProperties; }
     set { additionalProperties = value; }

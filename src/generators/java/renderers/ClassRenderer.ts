@@ -19,10 +19,10 @@ export class ClassRenderer extends JavaRenderer<ConstrainedObjectModel> {
     ];
 
     if (this.options?.collectionType === 'List') {
-      this.addDependency('import java.util.List;');
+      this.dependencyManager.addDependency('import java.util.List;');
     }
     if (this.model.containsPropertyType(ConstrainedDictionaryModel)) {
-      this.addDependency('import java.util.Map;');
+      this.dependencyManager.addDependency('import java.util.Map;');
     }
     
     return `public class ${this.model.name} {

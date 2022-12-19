@@ -2,6 +2,7 @@ import { AbstractRenderer } from '../AbstractRenderer';
 import { GoGenerator, GoOptions } from './GoGenerator';
 import { InputMetaModel, Preset, ConstrainedMetaModel } from '../../models';
 import { FormatHelpers } from '../../helpers/FormatHelpers';
+import { GoDependencyManager } from './GoDependencyManager';
 
 /**
  * Common renderer for Go types
@@ -15,6 +16,7 @@ export abstract class GoRenderer<RendererModelType extends ConstrainedMetaModel>
     presets: Array<[Preset, unknown]>,
     model: RendererModelType,
     inputModel: InputMetaModel,
+    public dependencyManager: GoDependencyManager
   ) {
     super(options, generator, presets, model, inputModel);
   }

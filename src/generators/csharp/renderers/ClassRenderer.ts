@@ -20,7 +20,7 @@ export class ClassRenderer extends CSharpRenderer<ConstrainedObjectModel> {
 
     if (this.options?.collectionType === 'List' ||
       this.model.containsPropertyType(ConstrainedDictionaryModel)) {
-      this.addDependency('using System.Collections.Generic;');
+      this.dependencyManager.addDependency('using System.Collections.Generic;');
     }
 
     return `public class ${this.model.name}
@@ -81,7 +81,7 @@ export const CSHARP_DEFAULT_CLASS_PRESET: CsharpClassPreset<CSharpOptions> = {
     if (options?.autoImplementedProperties) {
       const getter = await renderer.runGetterPreset(property);
       const setter = await renderer.runSetterPreset(property);
-      return `public ${property.property.type}${property.required === false && '?'} ${pascalCase(property.propertyName)} { ${getter} ${setter} }`;
+      return `public ${property.property.type} ${pascalCase(property.propertyName)} { ${getter} ${setter} }`;
     }
     return `private ${property.property.type} ${property.propertyName};`;
   },

@@ -2,6 +2,7 @@ import { AbstractRenderer } from '../AbstractRenderer';
 import { DartGenerator, DartOptions } from './DartGenerator';
 import { Preset, ConstrainedMetaModel, InputMetaModel } from '../../models';
 import { FormatHelpers } from '../../helpers';
+import { DartDependencyManager } from './DartDependencyManager';
 
 /**
  * Common renderer for Dart types
@@ -15,6 +16,7 @@ export abstract class DartRenderer<RendererModelType extends ConstrainedMetaMode
     presets: Array<[Preset, unknown]>,
     model: RendererModelType, 
     inputModel: InputMetaModel,
+    public dependencyManager: DartDependencyManager
   ) {
     super(options, generator, presets, model, inputModel);
   }

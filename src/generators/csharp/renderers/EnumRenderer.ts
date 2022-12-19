@@ -23,12 +23,12 @@ return null;`;
 ${this.indent(toEnumCaseItemValues)}
 }
 return null;`;
-    const classContent = `public static dynamic GetValue(this ${this.model.name} enumValue)
+    const classContent = `public static ${this.model.type}? GetValue(this ${this.model.name} enumValue)
 {
 ${this.indent(enumValueSwitch)}
 }
 
-public static ${this.model.name}? To${this.model.name}(dynamic value)
+public static ${this.model.name}? To${this.model.name}(${this.model.type}? value)
 {
 ${this.indent(valueSwitch)}
 }`;
