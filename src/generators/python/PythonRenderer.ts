@@ -2,6 +2,7 @@ import { AbstractRenderer } from '../AbstractRenderer';
 import { PythonGenerator, PythonOptions } from './PythonGenerator';
 import { ConstrainedMetaModel, InputMetaModel, Preset } from '../../models';
 import { FormatHelpers } from '../../helpers';
+import { PythonDependencyManager } from './PythonDependencyManager';
 
 /**
  * Common renderer for Python
@@ -15,6 +16,7 @@ export abstract class PythonRenderer<RendererModelType extends ConstrainedMetaMo
     presets: Array<[Preset, unknown]>,
     model: RendererModelType, 
     inputModel: InputMetaModel,
+    public dependencyManager: PythonDependencyManager
   ) {
     super(options, generator, presets, model, inputModel);
   }
