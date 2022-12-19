@@ -31,6 +31,7 @@ InputMetaModel {
         "title": "Signup service example (internal)",
         "version": "0.1.0",
       },
+      "x-parser-api-version": 1,
       "x-parser-spec-parsed": true,
     },
     "_meta": Object {
@@ -87,6 +88,7 @@ InputMetaModel {
             "title": "Signup service example (internal)",
             "version": "0.1.0",
           },
+          "x-parser-api-version": 1,
           "x-parser-spec-parsed": true,
         },
         "semver": Object {
@@ -135,6 +137,7 @@ InputMetaModel {
         "title": "Signup service example (internal)",
         "version": "0.1.0",
       },
+      "x-parser-api-version": 1,
       "x-parser-spec-parsed": true,
     },
     "_meta": Object {
@@ -191,6 +194,7 @@ InputMetaModel {
             "title": "Signup service example (internal)",
             "version": "0.1.0",
           },
+          "x-parser-api-version": 1,
           "x-parser-spec-parsed": true,
         },
         "semver": Object {
