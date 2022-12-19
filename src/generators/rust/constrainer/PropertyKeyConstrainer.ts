@@ -4,12 +4,12 @@ import { FormatHelpers, PropertyKeyConstraint } from '../../../helpers';
 import { isReservedRustKeyword } from '../Constants';
 
 export type PropertyKeyConstraintOptions = {
-    NO_SPECIAL_CHAR: (value: string) => string;
-    NO_NUMBER_START_CHAR: (value: string) => string;
-    NO_DUPLICATE_PROPERTIES: (constrainedObjectModel: ConstrainedObjectModel, objectModel: ObjectModel, propertyName: string, namingFormatter: (value: string) => string) => string;
-    NO_EMPTY_VALUE: (value: string) => string;
-    NAMING_FORMATTER: (value: string) => string;
-    NO_RESERVED_KEYWORDS: (value: string) => string;
+  NO_SPECIAL_CHAR: (value: string) => string;
+  NO_NUMBER_START_CHAR: (value: string) => string;
+  NO_DUPLICATE_PROPERTIES: (constrainedObjectModel: ConstrainedObjectModel, objectModel: ObjectModel, propertyName: string, namingFormatter: (value: string) => string) => string;
+  NO_EMPTY_VALUE: (value: string) => string;
+  NAMING_FORMATTER: (value: string) => string;
+  NO_RESERVED_KEYWORDS: (value: string) => string;
 };
 
 export const DefaultPropertyKeyConstraints: PropertyKeyConstraintOptions = {
@@ -32,7 +32,7 @@ export function defaultPropertyKeyConstraints(customConstraints?: Partial<Proper
 
   return ({ objectPropertyModel, constrainedObjectModel, objectModel }) => {
     let constrainedPropertyKey = objectPropertyModel.propertyName;
-    
+
     constrainedPropertyKey = constraints.NO_SPECIAL_CHAR(constrainedPropertyKey);
     constrainedPropertyKey = constraints.NO_NUMBER_START_CHAR(constrainedPropertyKey);
     constrainedPropertyKey = constraints.NO_EMPTY_VALUE(constrainedPropertyKey);
@@ -41,12 +41,12 @@ export function defaultPropertyKeyConstraints(customConstraints?: Partial<Proper
     constrainedPropertyKey = constraints.NO_RESERVED_KEYWORDS(constrainedPropertyKey);
     // If the property key is a reserved keyword, make sure to format it afterwards
     constrainedPropertyKey = constraints.NAMING_FORMATTER(constrainedPropertyKey);
-    
+
     //If the property name has been manipulated, lets make sure it don't clash with existing properties
     if (constrainedPropertyKey !== objectPropertyModel.propertyName) {
       constrainedPropertyKey = constraints.NO_DUPLICATE_PROPERTIES(constrainedObjectModel, objectModel, constrainedPropertyKey, constraints.NAMING_FORMATTER);
     }
-    
+
     return constrainedPropertyKey;
   };
 }

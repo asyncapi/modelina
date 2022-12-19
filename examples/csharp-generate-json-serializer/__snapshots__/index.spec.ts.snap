@@ -5,9 +5,9 @@ Array [
   "[JsonConverter(typeof(RootConverter))]
 public class Root
 {
-  private string email;
+  private string? email;
 
-  public string Email 
+  public string? Email 
   {
     get { return email; }
     set { email = value; }
@@ -46,7 +46,7 @@ internal class RootConverter : JsonConverter<Root>
       string propertyName = reader.GetString();
       if (propertyName == \\"email\\")
         {
-          var value = JsonSerializer.Deserialize<string>(ref reader, options);
+          var value = JsonSerializer.Deserialize<string?>(ref reader, options);
           instance.email = value;
           continue;
         }

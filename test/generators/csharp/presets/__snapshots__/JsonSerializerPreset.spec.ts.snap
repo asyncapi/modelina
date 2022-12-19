@@ -5,10 +5,10 @@ exports[`JSON serializer preset should render serialize and deserialize converte
 public class Test
 {
   private string stringProp;
-  private double numberProp;
-  private EnumTest enumProp;
-  private NestedTest objectProp;
-  private Dictionary<string, dynamic> additionalProperties;
+  private double? numberProp;
+  private EnumTest? enumProp;
+  private NestedTest? objectProp;
+  private Dictionary<string, dynamic>? additionalProperties;
 
   public string StringProp 
   {
@@ -16,25 +16,25 @@ public class Test
     set { stringProp = value; }
   }
 
-  public double NumberProp 
+  public double? NumberProp 
   {
     get { return numberProp; }
     set { numberProp = value; }
   }
 
-  public EnumTest EnumProp 
+  public EnumTest? EnumProp 
   {
     get { return enumProp; }
     set { enumProp = value; }
   }
 
-  public NestedTest ObjectProp 
+  public NestedTest? ObjectProp 
   {
     get { return objectProp; }
     set { objectProp = value; }
   }
 
-  public Dictionary<string, dynamic> AdditionalProperties 
+  public Dictionary<string, dynamic>? AdditionalProperties 
   {
     get { return additionalProperties; }
     set { additionalProperties = value; }
@@ -79,7 +79,7 @@ internal class TestConverter : JsonConverter<Test>
         }
       if (propertyName == \\"numberProp\\")
         {
-          var value = JsonSerializer.Deserialize<double>(ref reader, options);
+          var value = JsonSerializer.Deserialize<double?>(ref reader, options);
           instance.numberProp = value;
           continue;
         }
@@ -91,12 +91,12 @@ internal class TestConverter : JsonConverter<Test>
         }
       if (propertyName == \\"objectProp\\")
         {
-          var value = JsonSerializer.Deserialize<NestedTest>(ref reader, options);
+          var value = JsonSerializer.Deserialize<NestedTest?>(ref reader, options);
           instance.objectProp = value;
           continue;
         }
       if(instance.additionalProperties == null) { instance.additionalProperties = new Dictionary<string, string>(); }
-            var deserializedValue = JsonSerializer.Deserialize<Dictionary<string, dynamic>>(ref reader, options);
+            var deserializedValue = JsonSerializer.Deserialize<Dictionary<string, dynamic>?>(ref reader, options);
             instance.additionalProperties.Add(propertyName, deserializedValue);
             continue;
     }
@@ -127,7 +127,7 @@ internal class TestConverter : JsonConverter<Test>
     if(value.enumProp != null) { 
       // write property name and let the serializer serialize the value itself
       writer.WritePropertyName(\\"enumProp\\");
-      JsonSerializer.Serialize(writer, EnumTest.GetValue(), options);
+      JsonSerializer.Serialize(writer, EnumTest?.GetValue(), options);
     }
     if(value.objectProp != null) { 
       // write property name and let the serializer serialize the value itself
@@ -203,16 +203,16 @@ exports[`JSON serializer preset should render serialize and deserialize converte
 "[JsonConverter(typeof(NestedTestConverter))]
 public class NestedTest
 {
-  private string stringProp;
-  private Dictionary<string, dynamic> additionalProperties;
+  private string? stringProp;
+  private Dictionary<string, dynamic>? additionalProperties;
 
-  public string StringProp 
+  public string? StringProp 
   {
     get { return stringProp; }
     set { stringProp = value; }
   }
 
-  public Dictionary<string, dynamic> AdditionalProperties 
+  public Dictionary<string, dynamic>? AdditionalProperties 
   {
     get { return additionalProperties; }
     set { additionalProperties = value; }
@@ -251,12 +251,12 @@ internal class NestedTestConverter : JsonConverter<NestedTest>
       string propertyName = reader.GetString();
       if (propertyName == \\"stringProp\\")
         {
-          var value = JsonSerializer.Deserialize<string>(ref reader, options);
+          var value = JsonSerializer.Deserialize<string?>(ref reader, options);
           instance.stringProp = value;
           continue;
         }
       if(instance.additionalProperties == null) { instance.additionalProperties = new Dictionary<string, string>(); }
-            var deserializedValue = JsonSerializer.Deserialize<Dictionary<string, dynamic>>(ref reader, options);
+            var deserializedValue = JsonSerializer.Deserialize<Dictionary<string, dynamic>?>(ref reader, options);
             instance.additionalProperties.Add(propertyName, deserializedValue);
             continue;
     }

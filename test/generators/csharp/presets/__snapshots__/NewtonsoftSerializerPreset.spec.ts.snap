@@ -5,10 +5,10 @@ exports[`Newtonsoft JSON serializer preset should render serialize and deseriali
 public class Test
 {
   private string stringProp;
-  private double numberProp;
-  private EnumTest enumProp;
-  private NestedTest objectProp;
-  private Dictionary<string, dynamic> additionalProperties;
+  private double? numberProp;
+  private EnumTest? enumProp;
+  private NestedTest? objectProp;
+  private Dictionary<string, dynamic>? additionalProperties;
 
   public string StringProp 
   {
@@ -16,25 +16,25 @@ public class Test
     set { stringProp = value; }
   }
 
-  public double NumberProp 
+  public double? NumberProp 
   {
     get { return numberProp; }
     set { numberProp = value; }
   }
 
-  public EnumTest EnumProp 
+  public EnumTest? EnumProp 
   {
     get { return enumProp; }
     set { enumProp = value; }
   }
 
-  public NestedTest ObjectProp 
+  public NestedTest? ObjectProp 
   {
     get { return objectProp; }
     set { objectProp = value; }
   }
 
-  public Dictionary<string, dynamic> AdditionalProperties 
+  public Dictionary<string, dynamic>? AdditionalProperties 
   {
     get { return additionalProperties; }
     set { additionalProperties = value; }
@@ -52,13 +52,13 @@ public class TestConverter : JsonConverter<Test>
   value.StringProp = jo[\\"string prop\\"].ToObject<string>(serializer);
 }
 if(jo[\\"numberProp\\"] != null) {
-  value.NumberProp = jo[\\"numberProp\\"].ToObject<double>(serializer);
+  value.NumberProp = jo[\\"numberProp\\"].ToObject<double?>(serializer);
 }
 if(jo[\\"enumProp\\"] != null) {
   value.EnumProp = EnumTestExtensions.ToEnumTest(jo[\\"enumProp\\"]);
 }
 if(jo[\\"objectProp\\"] != null) {
-  value.ObjectProp = jo[\\"objectProp\\"].ToObject<NestedTest>(serializer);
+  value.ObjectProp = jo[\\"objectProp\\"].ToObject<NestedTest?>(serializer);
 }
 
   var additionalProperties = jo.Properties().Where((prop) => prop.Name != \\"string prop\\" || prop.Name != \\"numberProp\\" || prop.Name != \\"enumProp\\" || prop.Name != \\"objectProp\\");
@@ -155,16 +155,16 @@ exports[`Newtonsoft JSON serializer preset should render serialize and deseriali
 "[JsonConverter(typeof(NestedTestConverter))]
 public class NestedTest
 {
-  private string stringProp;
-  private Dictionary<string, dynamic> additionalProperties;
+  private string? stringProp;
+  private Dictionary<string, dynamic>? additionalProperties;
 
-  public string StringProp 
+  public string? StringProp 
   {
     get { return stringProp; }
     set { stringProp = value; }
   }
 
-  public Dictionary<string, dynamic> AdditionalProperties 
+  public Dictionary<string, dynamic>? AdditionalProperties 
   {
     get { return additionalProperties; }
     set { additionalProperties = value; }
@@ -179,7 +179,7 @@ public class NestedTestConverter : JsonConverter<NestedTest>
   NestedTest value = new NestedTest();
 
   if(jo[\\"stringProp\\"] != null) {
-  value.StringProp = jo[\\"stringProp\\"].ToObject<string>(serializer);
+  value.StringProp = jo[\\"stringProp\\"].ToObject<string?>(serializer);
 }
 
   var additionalProperties = jo.Properties().Where((prop) => prop.Name != \\"stringProp\\");
