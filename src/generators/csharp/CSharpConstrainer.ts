@@ -3,7 +3,8 @@ import { TypeMapping } from '../../helpers';
 import { defaultEnumKeyConstraints, defaultEnumValueConstraints } from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
-import { CSharpTypeMapping } from './CSharpGenerator';
+import { CSharpOptions, CSharpTypeMapping } from './CSharpGenerator';
+import { CSharpDependencyManager } from './CSharpDependencyManager';
 
 function getFullTypeDefinition(typeName: string, partOfProperty: ConstrainedObjectPropertyModel | undefined) {
   return partOfProperty?.required ?? true
@@ -29,7 +30,7 @@ const fromEnumValueToType = (enumValueModel: ConstrainedEnumValueModel): string 
   }
 };
 
-export const CSharpDefaultTypeMapping: TypeMapping<CSharpOptions> = {
+export const CSharpDefaultTypeMapping: TypeMapping<CSharpOptions, CSharpDependencyManager> = {
   Object({ constrainedModel, partOfProperty }): string {
     return getFullTypeDefinition(constrainedModel.name, partOfProperty);
   },
@@ -79,7 +80,7 @@ export const CSharpDefaultTypeMapping: TypeMapping<CSharpOptions> = {
     return getFullTypeDefinition(typeForValues, partOfProperty);
   },
   Union({ partOfProperty }): string {
-    //BecauserenderPrivateType( CSharp , partOfProperty) have no notion of unions (and no custom implementation), we have to render it as any value.
+    //Because renderPrivateType( CSharp , partOfProperty) have no notion of unions (and no custom implementation), we have to render it as any value.
 
     return getFullTypeDefinition('dynamic', partOfProperty);
   },

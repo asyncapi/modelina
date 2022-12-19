@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { AbstractGenerator, InputMetaModel, IndentationTypes, RenderOutput, ConstrainedMetaModel, MetaModel, ConstrainedAnyModel, Preset } from '../../src';
+import { AbstractDependencyManager } from '../../src/generators/AbstractDependencyManager';
 
 export const testOptions = {
   indentation: {
@@ -26,5 +27,8 @@ export class TestGenerator extends AbstractGenerator<any, any> {
   }
   public testGetPresets(string: string): Array<[Preset, unknown]> {
     return this.getPresets(string);
+  }
+  public getDependencyManager(options: any): AbstractDependencyManager {
+    return new AbstractDependencyManager();
   }
 }

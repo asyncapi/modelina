@@ -42,7 +42,7 @@ export class GoGenerator extends AbstractGenerator<GoOptions, GoRenderCompleteMo
   constructor(
     options?: DeepPartial<GoOptions>,
   ) {
-    const realizedOptions = mergePartialAndDefault(GoGenerator.defaultOptions, options) as GoOptions;
+    const realizedOptions = GoGenerator.getGoOptions(options);
     super('Go', realizedOptions);
   }
 
@@ -61,7 +61,7 @@ export class GoGenerator extends AbstractGenerator<GoOptions, GoRenderCompleteMo
   /**
    * Wrapper to get an instance of the dependency manager
    */
-  getGoDependencyManager(options: GoOptions): GoDependencyManager {
+  getDependencyManager(options: GoOptions): GoDependencyManager {
     return this.getDependencyManagerInstance(options) as GoDependencyManager;
   }
 
@@ -76,7 +76,7 @@ export class GoGenerator extends AbstractGenerator<GoOptions, GoRenderCompleteMo
 
   constrainToMetaModel(model: MetaModel, options: DeepPartial<GoOptions>): ConstrainedMetaModel {
     const optionsToUse = GoGenerator.getGoOptions({...this.options, ...options});
-    const dependencyManagerToUse = this.getGoDependencyManager(optionsToUse);
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     return constrainMetaModel<GoOptions, GoDependencyManager>(
       this.options.typeMapping, 
       this.options.constraints, 
@@ -131,7 +131,7 @@ ${outputModel.result}`;
 
   async renderEnum(model: ConstrainedEnumModel, inputModel: InputMetaModel, options?: DeepPartial<GoOptions>): Promise<RenderOutput> {
     const optionsToUse = GoGenerator.getGoOptions({...this.options, ...options});
-    const dependencyManagerToUse = this.getGoDependencyManager(optionsToUse);
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('enum');
     const renderer = new EnumRenderer(optionsToUse, this, presets, model, inputModel, dependencyManagerToUse);
     const result = await renderer.runSelfPreset();
@@ -140,7 +140,7 @@ ${outputModel.result}`;
 
   async renderStruct(model: ConstrainedObjectModel, inputModel: InputMetaModel, options?: DeepPartial<GoOptions>): Promise<RenderOutput> {
     const optionsToUse = GoGenerator.getGoOptions({...this.options, ...options});
-    const dependencyManagerToUse = this.getGoDependencyManager(optionsToUse);
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('struct');
     const renderer = new StructRenderer(optionsToUse, this, presets, model, inputModel, dependencyManagerToUse);
     const result = await renderer.runSelfPreset();

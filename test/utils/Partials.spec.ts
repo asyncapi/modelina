@@ -65,4 +65,25 @@ describe('mergePartialAndDefault', () => {
     mergePartialAndDefault(defaultOptions, partialOptions2) as TestType;
     expect(realizedOptions.nestedObject.nested).toEqual('test2');
   });
+
+  test('should keep class types for instances of non-regular objects', () => {
+    class TestClass {
+      test(){ return true };
+    }
+    interface TestType {
+      nestedObject: TestClass,
+      testProp: string
+    }
+    const defaultOptions: TestType = {
+      nestedObject: new TestClass(),
+      testProp: 'test'
+    };
+    const partialOptions: DeepPartial<TestType> = {
+      testProp: 'test2'
+    };
+    const realizedOptions = mergePartialAndDefault(defaultOptions, partialOptions) as TestType;
+    expect(realizedOptions.testProp).toEqual('test2');
+    expect(realizedOptions.nestedObject instanceof TestClass).toEqual(true);
+    expect(realizedOptions.nestedObject.test()).toEqual(true);
+  });
 });

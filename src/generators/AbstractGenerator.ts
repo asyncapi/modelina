@@ -43,6 +43,7 @@ export abstract class AbstractGenerator<
   public abstract render(model: MetaModel, inputModel: InputMetaModel, options?: DeepPartial<Options>): Promise<RenderOutput>;
   public abstract renderCompleteModel(model: MetaModel, inputModel: InputMetaModel, completeOptions: Partial<RenderCompleteModelOptions>, options?: DeepPartial<Options>): Promise<RenderOutput>;
   public abstract constrainToMetaModel(model: MetaModel, options: DeepPartial<Options>): ConstrainedMetaModel;
+  public abstract getDependencyManager(options: Options): AbstractDependencyManager;
   public abstract splitMetaModel(model: MetaModel): MetaModel[];
 
   public process(input: Record<string, unknown>): Promise<InputMetaModel> {
@@ -50,7 +51,7 @@ export abstract class AbstractGenerator<
   }
 
   /**
-   * This function returns an instance of the dependency manager.
+   * This function returns an instance of the dependency manager which is either a factory or an instance.
    */
   protected getDependencyManagerInstance(options: Options): AbstractDependencyManager {
     if (options.dependencyManager === undefined) {
@@ -71,9 +72,9 @@ export abstract class AbstractGenerator<
   public async generateCompleteModels(input: any | InputMetaModel, completeOptions: Partial<RenderCompleteModelOptions>): Promise<OutputModel[]> {
     const inputModel = await this.processInput(input);
     const renders = Object.values(inputModel.models).map(async (model) => {
-      const dependencyManager = this.getDependencyManagerInstance(this.options);
-      const constrainedModel = this.constrainToMetaModel(model, {dependencyManager} as any);
-      const renderedOutput = await this.renderCompleteModel(constrainedModel, inputModel, completeOptions, {dependencyManager} as any);
+      const dependencyManager = this.getDependencyManager(this.options);
+      const constrainedModel = this.constrainToMetaModel(model, {dependencyManager} as DeepPartial<Options>);
+      const renderedOutput = await this.renderCompleteModel(constrainedModel, inputModel, completeOptions, {dependencyManager} as DeepPartial<Options>);
       return OutputModel.toOutputModel({ 
         result: renderedOutput.result,
         modelName: renderedOutput.renderedName, 
@@ -91,9 +92,9 @@ export abstract class AbstractGenerator<
   public async generate(input: any | InputMetaModel): Promise<OutputModel[]> {
     const inputModel = await this.processInput(input);
     const renders = Object.values(inputModel.models).map(async (model) => {
-      const dependencyManager = this.getDependencyManagerInstance(this.options);
-      const constrainedModel = this.constrainToMetaModel(model, dependencyManager as any);
-      const renderedOutput = await this.render(constrainedModel, inputModel, {dependencyManager} as any);
+      const dependencyManager = this.getDependencyManager(this.options);
+      const constrainedModel = this.constrainToMetaModel(model, {dependencyManager} as DeepPartial<Options>);
+      const renderedOutput = await this.render(constrainedModel, inputModel, {dependencyManager} as DeepPartial<Options>);
       return OutputModel.toOutputModel({ 
         result: renderedOutput.result,
         modelName: renderedOutput.renderedName, 

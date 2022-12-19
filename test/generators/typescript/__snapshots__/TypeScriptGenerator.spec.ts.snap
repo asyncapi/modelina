@@ -642,7 +642,7 @@ export default OtherModel;
 
 exports[`TypeScriptGenerator should render models and their dependencies for ESM module system with named exports 1`] = `
 "import {OtherModel} from './OtherModel';
-export class Address {
+class Address {
   private _streetName: string;
   private _city: string;
   private _state: string;
@@ -702,12 +702,12 @@ export class Address {
   get additionalProperties(): Map<string, any | string> | undefined { return this._additionalProperties; }
   set additionalProperties(additionalProperties: Map<string, any | string> | undefined) { this._additionalProperties = additionalProperties; }
 }
-"
+export { Address };"
 `;
 
 exports[`TypeScriptGenerator should render models and their dependencies for ESM module system with named exports 2`] = `
 "
-export class OtherModel {
+class OtherModel {
   private _streetName?: string;
   private _additionalProperties?: Map<string, any>;
 
@@ -725,7 +725,7 @@ export class OtherModel {
   get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
   set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
 }
-"
+export { OtherModel };"
 `;
 
 exports[`TypeScriptGenerator should render union \`enum\` values 1`] = `

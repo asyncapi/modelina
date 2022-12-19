@@ -39,7 +39,7 @@ ${this.indent(this.renderBlock(content, 2))}
 
 export const TEMPLATE_DEFAULT_ENUM_PRESET: EnumPresetType<TemplateOptions> = {
   self({ renderer }) {
-    renderer.addDependency('import com.fasterxml.jackson.annotation.*;');
+    renderer.dependencyManager.addDependency('import com.fasterxml.jackson.annotation.*;');
     return renderer.defaultSelf();
   },
   item({ item }) {

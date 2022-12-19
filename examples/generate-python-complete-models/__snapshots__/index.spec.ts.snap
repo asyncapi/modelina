@@ -58,7 +58,7 @@ class ObjProperty:
 
 exports[`Should be able to render python models and should generate \`implicit\` or \`explicit\` imports for models implementing referenced types: root-model-explicit-import 1`] = `
 Array [
-  "from .ObjProperty import ObjProperty
+  "from ObjProperty import ObjProperty
 
 class Root: 
   def __init__(self, input):

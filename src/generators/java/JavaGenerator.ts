@@ -41,7 +41,7 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderComp
   constructor(
     options?: DeepPartial<JavaOptions>,
   ) {
-    const realizedOptions = mergePartialAndDefault(JavaGenerator.defaultOptions, options) as JavaOptions;
+    const realizedOptions = JavaGenerator.getJavaOptions(options);
     super('Java', realizedOptions);
   }
 
@@ -60,7 +60,7 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderComp
   /**
    * Wrapper to get an instance of the dependency manager
    */
-  getJavaDependencyManager(options: JavaOptions): JavaDependencyManager {
+  getDependencyManager(options: JavaOptions): JavaDependencyManager {
     return this.getDependencyManagerInstance(options) as JavaDependencyManager;
   }
 
@@ -75,7 +75,7 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderComp
 
   constrainToMetaModel(model: MetaModel, options: DeepPartial<JavaOptions>): ConstrainedMetaModel {
     const optionsToUse = JavaGenerator.getJavaOptions({...this.options, ...options});
-    const dependencyManagerToUse = this.getJavaDependencyManager(optionsToUse);
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     return constrainMetaModel<JavaOptions, JavaDependencyManager>(
       this.options.typeMapping, 
       this.options.constraints, 
@@ -119,7 +119,7 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderComp
     options: DeepPartial<JavaOptions>): Promise<RenderOutput> {
     const completeModelOptionsToUse = mergePartialAndDefault(JavaGenerator.defaultCompleteModelOptions, completeModelOptions) as JavaRenderCompleteModelOptions;
     const optionsToUse = JavaGenerator.getJavaOptions({...this.options, ...options});
-    const dependencyManagerToUse = this.getJavaDependencyManager(optionsToUse);
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
 
     if (isReservedJavaKeyword(completeModelOptionsToUse.packageName)) {
       throw new Error(`You cannot use reserved Java keyword (${completeModelOptionsToUse.packageName}) as package name, please use another.`);
@@ -138,7 +138,7 @@ ${outputModel.result}`;
 
   async renderClass(model: ConstrainedObjectModel, inputModel: InputMetaModel, options?: DeepPartial<JavaOptions>): Promise<RenderOutput> {
     const optionsToUse = JavaGenerator.getJavaOptions({...this.options, ...options});
-    const dependencyManagerToUse = this.getJavaDependencyManager(optionsToUse);
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('class');
     const renderer = new ClassRenderer(optionsToUse, this, presets, model, inputModel, dependencyManagerToUse);
     const result = await renderer.runSelfPreset();
@@ -147,7 +147,7 @@ ${outputModel.result}`;
 
   async renderEnum(model: ConstrainedEnumModel, inputModel: InputMetaModel, options?: DeepPartial<JavaOptions>): Promise<RenderOutput> {
     const optionsToUse = JavaGenerator.getJavaOptions({...this.options, ...options});
-    const dependencyManagerToUse = this.getJavaDependencyManager(optionsToUse);
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('enum'); 
     const renderer = new EnumRenderer(optionsToUse, this, presets, model, inputModel, dependencyManagerToUse);
     const result = await renderer.runSelfPreset();

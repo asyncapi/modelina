@@ -37,7 +37,7 @@ export class JavaScriptGenerator extends AbstractGenerator<JavaScriptOptions, Ja
   constructor(
     options?: DeepPartial<JavaScriptOptions>,
   ) {
-    const realizedOptions = mergePartialAndDefault(JavaScriptGenerator.defaultOptions, options) as JavaScriptOptions;
+    const realizedOptions = JavaScriptGenerator.getJavaScriptOptions(options);
     super('JavaScript', realizedOptions);
   }
 
@@ -57,7 +57,7 @@ export class JavaScriptGenerator extends AbstractGenerator<JavaScriptOptions, Ja
   /**
    * Wrapper to get an instance of the dependency manager
    */
-  getJavaScriptDependencyManager(options: JavaScriptOptions): JavaScriptDependencyManager {
+  getDependencyManager(options: JavaScriptOptions): JavaScriptDependencyManager {
     return this.getDependencyManagerInstance(options) as JavaScriptDependencyManager;
   }
 
@@ -76,7 +76,7 @@ export class JavaScriptGenerator extends AbstractGenerator<JavaScriptOptions, Ja
     options: DeepPartial<JavaScriptOptions>): Promise<RenderOutput> {
     //const completeModelOptionsToUse = mergePartialAndDefault(JavaScriptGenerator.defaultCompleteModelOptions, completeModelOptions) as JavaScriptRenderCompleteModelOptions;
     const optionsToUse = JavaScriptGenerator.getJavaScriptOptions({...this.options, ...options});
-    const dependencyManagerToUse = this.getJavaScriptDependencyManager(optionsToUse);
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const outputModel = await this.render(model, inputModel);
     const modelDependencies = model.getNearestDependencies();
     //Ensure model dependencies have their rendered name
@@ -115,7 +115,7 @@ ${modelCode}`;
 
   constrainToMetaModel(model: MetaModel, options: DeepPartial<JavaScriptOptions>): ConstrainedMetaModel {
     const optionsToUse = JavaScriptGenerator.getJavaScriptOptions({...this.options, ...options});
-    const dependencyManagerToUse = this.getJavaScriptDependencyManager(optionsToUse);
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     return constrainMetaModel<JavaScriptOptions, JavaScriptDependencyManager>(
       this.options.typeMapping, 
       this.options.constraints, 
@@ -130,7 +130,7 @@ ${modelCode}`;
 
   async renderClass(model: ConstrainedObjectModel, inputModel: InputMetaModel, options?: DeepPartial<JavaScriptOptions>): Promise<RenderOutput> {
     const optionsToUse = JavaScriptGenerator.getJavaScriptOptions({...this.options, ...options});
-    const dependencyManagerToUse = this.getJavaScriptDependencyManager(optionsToUse);
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('class'); 
     const renderer = new ClassRenderer(optionsToUse, this, presets, model, inputModel, dependencyManagerToUse);
     const result = await renderer.runSelfPreset();

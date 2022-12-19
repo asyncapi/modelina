@@ -41,7 +41,7 @@ export class DartGenerator extends AbstractGenerator<DartOptions, DartRenderComp
   constructor(
     options?: DeepPartial<DartOptions>,
   ) {
-    const realizedOptions = mergePartialAndDefault(DartGenerator.defaultOptions, options) as DartOptions;
+    const realizedOptions = DartGenerator.getDartOptions(options);
     super('Dart', realizedOptions);
   }
 
@@ -61,7 +61,7 @@ export class DartGenerator extends AbstractGenerator<DartOptions, DartRenderComp
   /**
    * Wrapper to get an instance of the dependency manager
    */
-  getDartDependencyManager(options: DartOptions): DartDependencyManager {
+  getDependencyManager(options: DartOptions): DartDependencyManager {
     return this.getDependencyManagerInstance(options) as DartDependencyManager;
   }
 
@@ -76,7 +76,7 @@ export class DartGenerator extends AbstractGenerator<DartOptions, DartRenderComp
 
   constrainToMetaModel(model: MetaModel, options: DeepPartial<DartOptions>): ConstrainedMetaModel {
     const optionsToUse = DartGenerator.getDartOptions({...this.options, ...options});
-    const dependencyManagerToUse = this.getDartDependencyManager(optionsToUse);
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     return constrainMetaModel<DartOptions, DartDependencyManager>(
       this.options.typeMapping, 
       this.options.constraints, 
@@ -121,7 +121,7 @@ export class DartGenerator extends AbstractGenerator<DartOptions, DartRenderComp
     options: DeepPartial<DartOptions>): Promise<RenderOutput> {
     const completeModelOptionsToUse = mergePartialAndDefault(DartGenerator.defaultCompleteModelOptions, completeModelOptions) as DartRenderCompleteModelOptions;
     const optionsToUse = DartGenerator.getDartOptions({...this.options, ...options});
-    const dependencyManagerToUse = this.getDartDependencyManager(optionsToUse);
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     if (isReservedDartKeyword(completeModelOptionsToUse.packageName)) {
       throw new Error(`You cannot use reserved Dart keyword (${completeModelOptionsToUse.packageName}) as package name, please use another.`);
     }
@@ -142,7 +142,7 @@ export class DartGenerator extends AbstractGenerator<DartOptions, DartRenderComp
 
   async renderClass(model: ConstrainedObjectModel, inputModel: InputMetaModel, options?: DeepPartial<DartOptions>): Promise<RenderOutput> {
     const optionsToUse = DartGenerator.getDartOptions({...this.options, ...options});
-    const dependencyManagerToUse = this.getDartDependencyManager(optionsToUse);
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('class');
     const renderer = new ClassRenderer(optionsToUse, this, presets, model, inputModel, dependencyManagerToUse);
     const result = await renderer.runSelfPreset();
@@ -151,7 +151,7 @@ export class DartGenerator extends AbstractGenerator<DartOptions, DartRenderComp
 
   async renderEnum(model: ConstrainedEnumModel, inputModel: InputMetaModel, options?: DeepPartial<DartOptions>): Promise<RenderOutput> {
     const optionsToUse = DartGenerator.getDartOptions({...this.options, ...options});
-    const dependencyManagerToUse = this.getDartDependencyManager(optionsToUse);
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('enum');
     const renderer = new EnumRenderer(optionsToUse, this, presets, model, inputModel, dependencyManagerToUse);
     const result = await renderer.runSelfPreset();

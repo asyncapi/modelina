@@ -69,7 +69,7 @@ export class CSharpGenerator extends AbstractGenerator<CSharpOptions, CSharpRend
   /**
    * Wrapper to get an instance of the dependency manager
    */
-  getCSharpDependencyManager(options: CSharpOptions): CSharpDependencyManager {
+  getDependencyManager(options: CSharpOptions): CSharpDependencyManager {
     return this.getDependencyManagerInstance(options) as CSharpDependencyManager;
   }
 
@@ -84,7 +84,7 @@ export class CSharpGenerator extends AbstractGenerator<CSharpOptions, CSharpRend
 
   constrainToMetaModel(model: MetaModel, options: DeepPartial<CSharpOptions>): ConstrainedMetaModel {
     const optionsToUse = CSharpGenerator.getCSharpOptions({...this.options, ...options});
-    const dependencyManagerToUse = this.getCSharpDependencyManager(optionsToUse);
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     return constrainMetaModel<CSharpOptions, CSharpDependencyManager>(
       this.options.typeMapping, 
       this.options.constraints, 
@@ -138,7 +138,7 @@ ${FormatHelpers.indent(outputDependencies + outputModel.result, optionsToUse.ind
 
   async renderEnum(model: ConstrainedEnumModel, inputModel: InputMetaModel, options?: Partial<CSharpOptions>): Promise<RenderOutput> {
     const optionsToUse = CSharpGenerator.getCSharpOptions({...this.options, ...options});
-    const dependencyManagerToUse = this.getCSharpDependencyManager(optionsToUse);
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('enum');
     const renderer = new EnumRenderer(this.options, this, presets, model, inputModel, dependencyManagerToUse);
     const result = await renderer.runSelfPreset();
@@ -147,7 +147,7 @@ ${FormatHelpers.indent(outputDependencies + outputModel.result, optionsToUse.ind
 
   async renderClass(model: ConstrainedObjectModel, inputModel: InputMetaModel, options?: Partial<CSharpOptions>): Promise<RenderOutput> {
     const optionsToUse = CSharpGenerator.getCSharpOptions({...this.options, ...options});
-    const dependencyManagerToUse = this.getCSharpDependencyManager(optionsToUse);
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('class');
     const renderer = new ClassRenderer(this.options, this, presets, model, inputModel, dependencyManagerToUse);
     const result = await renderer.runSelfPreset();

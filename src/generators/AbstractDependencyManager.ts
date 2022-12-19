@@ -1,4 +1,4 @@
-export abstract class AbstractDependencyManager {
+export class AbstractDependencyManager {
   constructor(
     public dependencies: string[] = []
   ) {}
