@@ -14,12 +14,6 @@
 
 ---
 
-## :loudspeaker: ATTENTION:
-
-This package is currently being prepared to reach version 1.0.0 and the development is therefore happening on the [`next` branch](https://github.com/asyncapi/modelina/tree/next), any features must be based and targetting that branch.
-
----
-
 <!-- toc is generated with GitHub Actions do not remove toc markers -->
 
 <!-- toc -->
@@ -267,6 +261,20 @@ A feature in Modelina cannot exists without an example and documentation for it.
 Do you need to know how to use the library in certain scenarios? 
 
 We have gathered all the examples in a separate folder and they can be found under the [examples folder](./examples). 
+
+## Versioning and maintenance
+As of version 1, Modelina has a very strict set of changes we are allowed to do before it requires a major version change. In short, any changes that change the generated outcome are not allowed as it's a breaking change for the consumer of the generated models. 
+
+Here is a list of changes we are allowed to do that would not require a breaking change:
+- Adding new features (that do not change existing output), such as generators, presets, input processors, etc.
+- Change existing features, by providing options that default to current behavior. This could be a preset that adapts the output based on options, as long as the API of Modelina and the API of the generated models does not have any breaking changes.
+- Bug fixes where the generated code is otherwise unusable (syntax errors, etc).
+
+Breaking changes are allowed and expected at a frequent rate, of course where it makes sense we will try to bundle multiple changes together.
+
+We of course will do our best to uphold this, but mistakes can happen, and if you notice any breaking changes please let us know!
+
+Because of the number of the limited number of champions, only the most recent major version will be maintained.
 
 ## Development
 We try to make it as easy for you as possible to set up your development environment to contribute to Modelina. You can find the development documentation [here](./docs/development.md).
