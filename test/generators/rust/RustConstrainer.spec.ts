@@ -1,10 +1,12 @@
 import { deriveEq, deriveHash, deriveCopy, RustDefaultTypeMapping } from '../../../src/generators/rust/RustConstrainer';
-import { ConstrainedAnyModel, ConstrainedArrayModel, ConstrainedTupleValueModel, ConstrainedEnumValueModel, ConstrainedBooleanModel, ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedUnionModel, RustGenerator, RustOptions, ConstrainedObjectPropertyModel } from '../../../src';
+import { ConstrainedAnyModel, ConstrainedArrayModel, ConstrainedTupleValueModel, ConstrainedEnumValueModel, ConstrainedBooleanModel, ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedUnionModel, RustGenerator, RustOptions, ConstrainedObjectPropertyModel, ConstrainedMetaModel } from '../../../src';
+import { RustDependencyManager } from '../../../src/generators/rust/RustDependencyManager';
 describe('RustConstrainer', () => {
+  const defaultOptions = { options: RustGenerator.defaultOptions, dependencyManager: new RustDependencyManager(RustGenerator.defaultOptions) }; 
   describe('ObjectModel', () => {
     test('should render the constrained name as type', () => {
       const model = new ConstrainedObjectModel('test', undefined, '', {});
-      const type = RustDefaultTypeMapping.Object({ constrainedModel: model, options: RustGenerator.defaultOptions });
+      const type = RustDefaultTypeMapping.Object({ constrainedModel: model, ...defaultOptions });
       expect(type).toEqual(model.name);
     });
   });
@@ -12,72 +14,72 @@ describe('RustConstrainer', () => {
     test('should render the constrained name as type', () => {
       const refModel = new ConstrainedAnyModel('test', undefined, '');
       const model = new ConstrainedReferenceModel('test', undefined, '', refModel);
-      const type = RustDefaultTypeMapping.Reference({ constrainedModel: model, options: RustGenerator.defaultOptions });
+      const type = RustDefaultTypeMapping.Reference({ constrainedModel: model, ...defaultOptions });
       expect(type).toEqual(model.name);
     });
   });
   describe('Any', () => {
     test('should render type', () => {
       const model = new ConstrainedAnyModel('test', undefined, '');
-      const type = RustDefaultTypeMapping.Any({ constrainedModel: model, options: RustGenerator.defaultOptions });
+      const type = RustDefaultTypeMapping.Any({ constrainedModel: model, ...defaultOptions });
       expect(type).toEqual('serde_json::Value');
     });
   });
   describe('Float', () => {
     test('should render type', () => {
       const model = new ConstrainedFloatModel('test', undefined, '');
-      const type = RustDefaultTypeMapping.Float({ constrainedModel: model, options: RustGenerator.defaultOptions });
+      const type = RustDefaultTypeMapping.Float({ constrainedModel: model, ...defaultOptions });
       expect(type).toEqual('f64');
     });
     test('should render f32 when original input has number format', () => {
       const model = new ConstrainedFloatModel('test', { format: 'float32' }, '');
-      const type = RustDefaultTypeMapping.Float({ constrainedModel: model, options: RustGenerator.defaultOptions });
+      const type = RustDefaultTypeMapping.Float({ constrainedModel: model, ...defaultOptions });
       expect(type).toEqual('f32');
     });
   });
   describe('Integer', () => {
     test('should render type', () => {
       const model = new ConstrainedIntegerModel('test', undefined, '');
-      const type = RustDefaultTypeMapping.Integer({ constrainedModel: model, options: RustGenerator.defaultOptions });
+      const type = RustDefaultTypeMapping.Integer({ constrainedModel: model, ...defaultOptions });
       expect(type).toEqual('i32');
     });
     test('should render int when original input has integer format', () => {
       const model = new ConstrainedIntegerModel('test', { format: 'integer' }, '');
-      const type = RustDefaultTypeMapping.Integer({ constrainedModel: model, options: RustGenerator.defaultOptions });
+      const type = RustDefaultTypeMapping.Integer({ constrainedModel: model, ...defaultOptions });
       expect(type).toEqual('i32');
     });
     test('should render int when original input has int32 format', () => {
       const model = new ConstrainedIntegerModel('test', { format: 'int32' }, '');
-      const type = RustDefaultTypeMapping.Integer({ constrainedModel: model, options: RustGenerator.defaultOptions });
+      const type = RustDefaultTypeMapping.Integer({ constrainedModel: model, ...defaultOptions });
       expect(type).toEqual('i32');
     });
     test('should render long when original input has long format', () => {
       const model = new ConstrainedIntegerModel('test', { format: 'long' }, '');
-      const type = RustDefaultTypeMapping.Integer({ constrainedModel: model, options: RustGenerator.defaultOptions });
+      const type = RustDefaultTypeMapping.Integer({ constrainedModel: model, ...defaultOptions });
       expect(type).toEqual('i64');
     });
     test('should render long when original input has int64 format', () => {
       const model = new ConstrainedIntegerModel('test', { format: 'int64' }, '');
-      const type = RustDefaultTypeMapping.Integer({ constrainedModel: model, options: RustGenerator.defaultOptions });
+      const type = RustDefaultTypeMapping.Integer({ constrainedModel: model, ...defaultOptions });
       expect(type).toEqual('i64');
     });
   });
   describe('String', () => {
     test('should render type', () => {
       const model = new ConstrainedStringModel('test', undefined, '');
-      const type = RustDefaultTypeMapping.String({ constrainedModel: model, options: RustGenerator.defaultOptions });
+      const type = RustDefaultTypeMapping.String({ constrainedModel: model, ...defaultOptions });
       expect(type).toEqual('String');
     });
     test('should render Vec<u8> when original input has binary format', () => {
       const model = new ConstrainedStringModel('test', { format: 'binary' }, '');
-      const type = RustDefaultTypeMapping.String({ constrainedModel: model, options: RustGenerator.defaultOptions });
+      const type = RustDefaultTypeMapping.String({ constrainedModel: model, ...defaultOptions });
       expect(type).toEqual('Vec<u8>');
     });
   });
   describe('Boolean', () => {
     test('should render type', () => {
       const model = new ConstrainedBooleanModel('test', undefined, '');
-      const type = RustDefaultTypeMapping.Boolean({ constrainedModel: model, options: RustGenerator.defaultOptions });
+      const type = RustDefaultTypeMapping.Boolean({ constrainedModel: model, ...defaultOptions });
       expect(type).toEqual('bool');
     });
   });
@@ -85,7 +87,7 @@ describe('RustConstrainer', () => {
   describe('Tuple', () => {
     test('should render type', () => {
       const model = new ConstrainedTupleModel('Test', undefined, '', []);
-      const type = RustDefaultTypeMapping.Tuple({ constrainedModel: model, options: RustGenerator.defaultOptions });
+      const type = RustDefaultTypeMapping.Tuple({ constrainedModel: model, ...defaultOptions });
       expect(type).toEqual('Test');
     });
   });
@@ -94,7 +96,7 @@ describe('RustConstrainer', () => {
     test('should render type', () => {
       const arrayModel = new ConstrainedStringModel('test', undefined, 'String');
       const model = new ConstrainedArrayModel('test', undefined, '', arrayModel);
-      const type = RustDefaultTypeMapping.Array({ constrainedModel: model, options: RustGenerator.defaultOptions });
+      const type = RustDefaultTypeMapping.Array({ constrainedModel: model, ...defaultOptions });
       expect(type).toEqual('Vec<String>');
     });
   });
@@ -102,7 +104,7 @@ describe('RustConstrainer', () => {
   describe('Enum', () => {
     test('should render the constrained name as type', () => {
       const model = new ConstrainedEnumModel('Test', undefined, '', []);
-      const type = RustDefaultTypeMapping.Enum({ constrainedModel: model, options: RustGenerator.defaultOptions });
+      const type = RustDefaultTypeMapping.Enum({ constrainedModel: model, ...defaultOptions });
       expect(type).toEqual(model.name);
     });
   });
@@ -110,7 +112,7 @@ describe('RustConstrainer', () => {
   describe('Union', () => {
     test('should render type', () => {
       const model = new ConstrainedUnionModel('Test', undefined, '', []);
-      const type = RustDefaultTypeMapping.Union({ constrainedModel: model, options: RustGenerator.defaultOptions });
+      const type = RustDefaultTypeMapping.Union({ constrainedModel: model, ...defaultOptions });
       expect(type).toEqual('Test');
     });
   });
@@ -120,7 +122,7 @@ describe('RustConstrainer', () => {
       const keyModel = new ConstrainedStringModel('test', undefined, 'String');
       const valueModel = new ConstrainedStringModel('test', undefined, 'String');
       const model = new ConstrainedDictionaryModel('test', undefined, '', keyModel, valueModel);
-      const type = RustDefaultTypeMapping.Dictionary({ constrainedModel: model, options: RustGenerator.defaultOptions });
+      const type = RustDefaultTypeMapping.Dictionary({ constrainedModel: model, ...defaultOptions });
       expect(type).toEqual('std::collections::HashMap<String, String>');
     });
   });
