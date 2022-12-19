@@ -1,4 +1,5 @@
-import { Parser } from '@asyncapi/parser';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const parser = require('@asyncapi/parserV1');
 import { TypeScriptGenerator } from '../../src';
 
 const generator = new TypeScriptGenerator();
@@ -30,9 +31,8 @@ const AsyncAPIDocument = {
 };
 
 export async function generate() : Promise<void> {
-  const parser = new Parser();
-  const { document } = await parser.parse(JSON.stringify(AsyncAPIDocument));
-  const models = await generator.generate(document);
+  const parsedDoc = await parser.parse(JSON.stringify(AsyncAPIDocument));
+  const models = await generator.generate(parsedDoc);
   for (const model of models) {
     console.log(model.result);
   }
