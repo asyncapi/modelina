@@ -13,7 +13,7 @@ export const JAVA_CONSTRAINTS_PRESET: JavaPreset = {
       return content;
     },
     // eslint-disable-next-line sonarjs/cognitive-complexity
-    getter({ renderer, property, content }) {
+    property({ renderer, property, content }) {
       const annotations: string[] = [];
       
       if (property.required) {

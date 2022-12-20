@@ -1,12 +1,12 @@
 import { JavaGenerator, JAVA_CONSTRAINTS_PRESET } from '../../../../src/generators'; 
 
-describe('JAVA_CONSTRAINTS_PRESET', () => {
+fdescribe('JAVA_CONSTRAINTS_PRESET', () => {
   let generator: JavaGenerator;
   beforeEach(() => {
     generator = new JavaGenerator({ presets: [JAVA_CONSTRAINTS_PRESET] });
   });
 
-  test('should render constaints annotations', async () => {
+  test('should render constraints annotations', async () => {
     const doc = {
       $id: 'Clazz',
       type: 'object',
