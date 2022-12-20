@@ -1,6 +1,6 @@
 import { JavaGenerator, JAVA_CONSTRAINTS_PRESET } from '../../../../src/generators'; 
 
-fdescribe('JAVA_CONSTRAINTS_PRESET', () => {
+describe('JAVA_CONSTRAINTS_PRESET', () => {
   let generator: JavaGenerator;
   beforeEach(() => {
     generator = new JavaGenerator({ presets: [JAVA_CONSTRAINTS_PRESET] });
