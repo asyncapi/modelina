@@ -15,7 +15,7 @@ const jsonSchemaDraft7 = {
 };
 export async function generate(): Promise<void> {
   const outputFile =
-    "./examples/generate-all-models-within-the-same-file/output";
+    "./output";
   const models = await generator.generate(jsonSchemaDraft7);
   const modelCode = models.map((outputModel) => {
     return outputModel.result;
