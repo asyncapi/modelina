@@ -438,6 +438,17 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "anaysarkar7",
+      "name": "Anay Sarkar",
+      "avatar_url": "https://avatars.githubusercontent.com/u/53341181?v=4",
+      "profile": "https://linktr.ee/anaysarkar7",
+      "contributions": [
+        "example",
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
