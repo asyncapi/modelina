@@ -758,6 +758,7 @@ Class for processing AsyncAPI inputs
         * [.tryGetVersionOfDocument(input)](#AsyncAPIInputProcessor+tryGetVersionOfDocument)
     * _static_
         * [.isFromParser(input)](#AsyncAPIInputProcessor.isFromParser)
+        * [.isFromNewParser(input)](#AsyncAPIInputProcessor.isFromNewParser)
 
 <a name="AsyncAPIInputProcessor+process"></a>
 
@@ -795,7 +796,18 @@ Try to find the AsyncAPI version from the input. If it cannot undefined are retu
 <a name="AsyncAPIInputProcessor.isFromParser"></a>
 
 ### AsyncAPIInputProcessor.isFromParser(input)
-Figure out if input is from the AsyncAPI js parser.
+Figure out if input is from the AsyncAPI parser.
+
+**Kind**: static method of [<code>AsyncAPIInputProcessor</code>](#AsyncAPIInputProcessor)  
+
+| Param |
+| --- |
+| input | 
+
+<a name="AsyncAPIInputProcessor.isFromNewParser"></a>
+
+### AsyncAPIInputProcessor.isFromNewParser(input)
+Figure out if input is from the new AsyncAPI parser.
 
 **Kind**: static method of [<code>AsyncAPIInputProcessor</code>](#AsyncAPIInputProcessor)  
 
