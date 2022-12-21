@@ -24,6 +24,7 @@
 - [Requirements](#requirements)
 - [Documentation](#documentation)
 - [Examples](#examples)
+- [Versioning and maintenance](#versioning-and-maintenance)
 - [Development](#development)
 - [Contributing](#contributing)
 - [Contributors ✨](#contributors-%E2%9C%A8)
