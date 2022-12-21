@@ -365,7 +365,8 @@
         "test",
         "example",
         "doc",
-        "maintenance"
+        "maintenance",
+        "review"
       ]
     },
     {
@@ -408,6 +409,45 @@
         "code",
         "example",
         "doc",
+        "test"
+      ]
+    },
+    {
+      "login": "codingtenshi",
+      "name": "Tenshi Codes",
+      "avatar_url": "https://avatars.githubusercontent.com/u/116377630?v=4",
+      "profile": "https://github.com/codingtenshi",
+      "contributions": [
+        "infra"
+      ]
+    },
+    {
+      "login": "YushiOMOTE",
+      "name": "Yushi OMOTE",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3733915?v=4",
+      "profile": "http://yushiomote.org/",
+      "contributions": [
+        "bug",
+        "code"
+      ]
+    },
+    {
+      "login": "Ferror",
+      "name": "Zbigniew Malcherczyk",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17534504?v=4",
+      "profile": "https://malcherczyk.pl",
+      "contributions": [
+        "bug",
+        "infra"
+      ]
+    },
+    {
+      "login": "200Puls",
+      "name": "200Puls",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6918360?v=4",
+      "profile": "https://github.com/200Puls",
+      "contributions": [
+        "code",
         "test"
       ]
     }

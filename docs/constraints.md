@@ -26,7 +26,7 @@ Even though there are many of these constraints, there might be reasons you want
 
 We define these as two types, either you only want to change part of the logic, or you want to overwrite the entire constraint logic.
 - [Overwriting the formatter](../examples/overwrite-naming-formatting) and keep the rest of the constraints as is.
-- [Overwriting the entire naming constraint logic](../examples/overwrite-naming-formatting) keeping none of the existing functionality which handles edge cases. It is recommended to **NOT** use this if it can be avoided, as you will limit yourself to what inputs can be generated to models. So make sure you know what you are doing :laughing:
+- [Overwriting the entire naming constraint logic](../examples/overwrite-default-constraint) keeping none of the existing functionality which handles edge cases. It is recommended to **NOT** use this if it can be avoided, as you will limit yourself to what inputs can be generated to models. So make sure you know what you are doing :laughing:
 
 # Type mapping
 To make it easier to use the meta models in presets and generators, we need to figure out the types for each model. This is to enable you to access the types from a property rather then calling a function. This is especially relevant because Modelina cannot fit all use-cases out of the box, and we therefore strive to make it tailorable to what ever your needs may be. The type mapping is one of those things that enable you to fine tune the types for your purpose.
