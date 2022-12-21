@@ -6,7 +6,7 @@ describe('JAVA_CONSTRAINTS_PRESET', () => {
     generator = new JavaGenerator({ presets: [JAVA_CONSTRAINTS_PRESET] });
   });
 
-  test('should render constaints annotations', async () => {
+  test('should render constraints annotations', async () => {
     const doc = {
       $id: 'Clazz',
       type: 'object',
