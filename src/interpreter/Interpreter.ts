@@ -22,21 +22,49 @@ import interpretAnyOf from './InterpretAnyOf';
 import interpretOneOfWithAllOf from './InterpretOneOfWithAllOf';
 import interpretOneOfWithProperties from './InterpretOneOfWithProperties';
 
+/* eslint-disable no-use-before-define */
+export type InterpreterComplexFunc = (schema: InterpreterSchemaType, model: CommonModel, interpreter : Interpreter, options?: InterpreterOptions) => void;
+export type InterpreterFunc = (schema: InterpreterSchemaType, model: CommonModel) => void;
 export type InterpreterOptions = {
-  allowInheritance?: boolean;
+  allowInheritance?: boolean,
+  patternProperties?: InterpreterComplexFunc,
+  additionalProperties?: InterpreterComplexFunc,
+  additionalItems?: InterpreterComplexFunc,
+  items?: InterpreterComplexFunc,
+  properties?: InterpreterComplexFunc,
+  allOf?: InterpreterComplexFunc,
+  oneOf?: InterpreterComplexFunc,
+  oneOfWithAllOf?: InterpreterComplexFunc,
+  oneOfWithProperties?: InterpreterComplexFunc,
+  anyOf?: InterpreterComplexFunc,
+  dependencies?: InterpreterComplexFunc,
+  not?: InterpreterComplexFunc,
+  const?: InterpreterFunc,
+  enum?: InterpreterFunc
 };
-export type InterpreterSchemas =
-  | Draft6Schema
-  | Draft4Schema
-  | Draft7Schema
-  | SwaggerV2Schema
-  | AsyncapiV2Schema;
+/* eslint-enable no-use-before-define */
+export type InterpreterSchemas = Draft6Schema | Draft4Schema | Draft7Schema | SwaggerV2Schema | AsyncapiV2Schema;
 export type InterpreterSchemaType = InterpreterSchemas | boolean;
 
 export class Interpreter {
   static defaultInterpreterOptions: InterpreterOptions = {
-    allowInheritance: false
+    allowInheritance: false,
+    patternProperties: interpretPatternProperties,
+    additionalProperties: interpretAdditionalProperties,
+    additionalItems: interpretAdditionalItems,
+    items: interpretItems,
+    properties: interpretProperties,
+    allOf: interpretAllOf,
+    oneOf: interpretOneOf,
+    oneOfWithAllOf: interpretOneOfWithAllOf,
+    oneOfWithProperties: interpretOneOfWithProperties,
+    anyOf: interpretAnyOf,
+    dependencies: interpretDependencies,
+    not: interpretNot,
+    const: interpretConst,
+    enum: interpretEnum
   };
+  static NOOP_FUNC = (): void => { return; };
 
   private anonymCounter = 1;
   private seenSchemas: Map<InterpreterSchemaType, CommonModel> = new Map();
@@ -107,19 +135,35 @@ export class Interpreter {
       model.required = schema.required;
     }
 
-    interpretPatternProperties(schema, model, this, interpreterOptions);
-    interpretAdditionalProperties(schema, model, this, interpreterOptions);
-    interpretAdditionalItems(schema, model, this, interpreterOptions);
-    interpretItems(schema, model, this, interpreterOptions);
-    interpretProperties(schema, model, this, interpreterOptions);
-    interpretAllOf(schema, model, this, interpreterOptions);
-    interpretOneOf(schema, model, this, interpreterOptions);
-    interpretOneOfWithAllOf(schema, model, this, interpreterOptions);
-    interpretOneOfWithProperties(schema, model, this, interpreterOptions);
-    interpretAnyOf(schema, model, this, interpreterOptions);
-    interpretDependencies(schema, model, this, interpreterOptions);
-    interpretConst(schema, model);
-    interpretEnum(schema, model);
+    const defaultInterpreterOptions = Interpreter.defaultInterpreterOptions;
+    const patternPropertiesFunc = (interpreterOptions.patternProperties || defaultInterpreterOptions.patternProperties) as InterpreterComplexFunc;
+    const additionalPropertiesFunc = (interpreterOptions.additionalProperties || defaultInterpreterOptions.additionalProperties) as InterpreterComplexFunc;
+    const additionalItemsFunc = (interpreterOptions.additionalItems || defaultInterpreterOptions.additionalItems) as InterpreterComplexFunc;
+    const itemsFunc = (interpreterOptions.items || defaultInterpreterOptions.items) as InterpreterComplexFunc;
+    const propertiesFunc = (interpreterOptions.properties || defaultInterpreterOptions.properties) as InterpreterComplexFunc;
+    const allOfFunc = (interpreterOptions.allOf || defaultInterpreterOptions.allOf) as InterpreterComplexFunc;
+    const oneOfFunc = (interpreterOptions.oneOf || defaultInterpreterOptions.oneOf) as InterpreterComplexFunc;
+    const oneOfWithAllOfFunc = (interpreterOptions.oneOfWithAllOf || defaultInterpreterOptions.oneOfWithAllOf) as InterpreterComplexFunc;
+    const oneOfWithPropertiesFunc = (interpreterOptions.oneOfWithProperties || defaultInterpreterOptions.oneOfWithProperties) as InterpreterComplexFunc;
+    const anyOfFunc = (interpreterOptions.anyOf || defaultInterpreterOptions.anyOf) as InterpreterComplexFunc;
+    const dependenciesFunc = (interpreterOptions.dependencies || defaultInterpreterOptions.dependencies) as InterpreterComplexFunc;
+    const constFunc = (interpreterOptions.const || defaultInterpreterOptions.const) as InterpreterFunc;
+    const enumFunc = (interpreterOptions.enum || defaultInterpreterOptions.enum) as InterpreterFunc;
+    const notFunc = (interpreterOptions.not || defaultInterpreterOptions.not) as InterpreterComplexFunc;
+
+    patternPropertiesFunc(schema, model, this, interpreterOptions);
+    additionalPropertiesFunc(schema, model, this, interpreterOptions);
+    additionalItemsFunc(schema, model, this, interpreterOptions);
+    itemsFunc(schema, model, this, interpreterOptions);
+    propertiesFunc(schema, model, this, interpreterOptions);
+    allOfFunc(schema, model, this, interpreterOptions);
+    oneOfFunc(schema, model, this, interpreterOptions);
+    oneOfWithAllOfFunc(schema, model, this, interpreterOptions);
+    oneOfWithPropertiesFunc(schema, model, this, interpreterOptions);
+    anyOfFunc(schema, model, this, interpreterOptions);
+    dependenciesFunc(schema, model, this, interpreterOptions);
+    constFunc(schema, model);
+    enumFunc(schema, model);
 
     if (
       !(schema instanceof Draft4Schema) &&
@@ -139,7 +183,7 @@ export class Interpreter {
       );
     }
 
-    interpretNot(schema, model, this, interpreterOptions);
+    notFunc(schema, model, this, interpreterOptions);
 
     //All schemas MUST have ids as we do not know how it will be generated and when it will be needed
     model.$id = interpretName(schema) || `anonymSchema${this.anonymCounter++}`;
