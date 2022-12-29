@@ -64,7 +64,6 @@ export class Interpreter {
     const: interpretConst,
     enum: interpretEnum
   };
-  static NOOP_FUNC = (): void => { return; };
 
   private anonymCounter = 1;
   private seenSchemas: Map<InterpreterSchemaType, CommonModel> = new Map();
@@ -123,11 +122,7 @@ export class Interpreter {
     }
   }
 
-  private interpretSchemaObject(
-    model: CommonModel,
-    schema: InterpreterSchemas,
-    interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions
-  ) {
+  private interpretSchemaObject(model: CommonModel, schema: InterpreterSchemas, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions) {
     if (schema.type !== undefined) {
       model.addTypes(schema.type);
     }
@@ -188,6 +183,7 @@ export class Interpreter {
     //All schemas MUST have ids as we do not know how it will be generated and when it will be needed
     model.$id = interpretName(schema) || `anonymSchema${this.anonymCounter++}`;
   }
+  /* eslint-enable sonarjs/cognitive-complexity */
 
   /**
    * Go through a schema and combine the interpreted models together.
