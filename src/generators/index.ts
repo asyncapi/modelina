@@ -8,5 +8,5 @@ export * from './typescript';
 export * from './python';
 export * from './go';
 export * from './rust';
-export * from './cpp'
+export * from './cpp';
 export * from './AbstractFileGenerator';

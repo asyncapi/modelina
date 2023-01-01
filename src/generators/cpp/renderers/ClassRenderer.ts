@@ -1,5 +1,5 @@
 import { CppRenderer } from '../CppRenderer';
-import { ConstrainedDictionaryModel, ConstrainedObjectModel, ConstrainedObjectPropertyModel } from '../../../models';
+import { ConstrainedObjectModel, ConstrainedObjectPropertyModel } from '../../../models';
 import { FormatHelpers } from '../../../helpers';
 import { CppOptions } from '../CppGenerator';
 import { ClassPresetType } from '../CppPreset';

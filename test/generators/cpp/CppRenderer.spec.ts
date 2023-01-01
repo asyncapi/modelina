@@ -9,9 +9,9 @@ describe('CppRenderer', () => {
     renderer = new MockCppRenderer(CppGenerator.defaultOptions, new CppGenerator(), [], new ConstrainedObjectModel('', undefined, '', {}), new InputMetaModel());
   });
 
-describe('renderComments()', () => {
-  test('Should be able to render comments', () => {
-    expect(renderer.renderComments('someComment')).toEqual('// someComment');
+  describe('renderComments()', () => { 
+    test('Should be able to render comments', () => {   
+      expect(renderer.renderComments('someComment')).toEqual('// someComment');     
     });
   });
 });
