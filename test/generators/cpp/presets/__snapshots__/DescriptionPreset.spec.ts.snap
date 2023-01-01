@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CPP_DESCRIPTION_PRESET should render description and examples for class 1`] = `
+"my description
+public class Clazz {
+  private  prop;
+  private  additionalProperties;
+
+  my description
+  public  getProp() { return this.prop; }
+  public void setProp( prop) { this.prop = prop; }
+
+  my description
+  public  getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties( additionalProperties) { this.additionalProperties = additionalProperties; }
+}"
+`;
+
+exports[`CPP_DESCRIPTION_PRESET should render description and examples for enum 1`] = `
+"my description
+public enum Enum {
+  ON(\\"on\\"), OFF(\\"off\\");
+
+  private Object value;
+
+  Enum(Object value) {
+    this.value = value;
+  }
+
+  @JsonValue
+  public Object getValue() {
+    return value;
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+
+  @JsonCreator
+  public static Enum fromValue(Object value) {
+    for (Enum e : Enum.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+}"
+`;

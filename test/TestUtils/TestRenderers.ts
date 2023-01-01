@@ -8,7 +8,7 @@ import { testOptions, TestGenerator } from './TestGenerator';
 import { DartRenderer } from '../../src/generators/dart/DartRenderer';
 import { RustRenderer } from '../../src/generators/rust/RustRenderer';
 import { PythonRenderer } from '../../src/generators/python/PythonRenderer';
-
+import { CppRenderer } from '../../src/generators/cpp/CppRenderer';
 export class TestRenderer extends AbstractRenderer {
   constructor(presets = []) {
     super(testOptions, new TestGenerator(), presets, new ConstrainedAnyModel('', undefined, ''), new InputMetaModel());
@@ -26,3 +26,4 @@ export class MockJavaScriptRenderer extends JavaScriptRenderer<any> { }
 export class MockDartRenderer extends DartRenderer<any> { }
 export class MockRustRenderer extends RustRenderer<any> { }
 export class MockPythonRenderer extends PythonRenderer<any> { }
+export class MockCppRenderer extends CppRenderer<any> { }

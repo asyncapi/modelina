@@ -1,0 +1,166 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CppGenerator Class should not render reserved keyword 1`] = `
+"public class Address {
+  private  enum;
+  private  reservedEnum;
+
+  public  getEnum() { return this.enum; }
+  public void setEnum( enum) { this.enum = enum; }
+
+  public  getReservedEnum() { return this.reservedEnum; }
+  public void setReservedEnum( reservedEnum) { this.reservedEnum = reservedEnum; }
+}"
+`;
+
+exports[`CppGenerator Class should render \`class\` type 1`] = `
+"public class Address {
+  private  streetName;
+  private  city;
+  private  state;
+  private  houseNumber;
+  private  marriage;
+  private  members;
+  private  arrayType;
+  private  additionalProperties;
+
+  public  getStreetName() { return this.streetName; }
+  public void setStreetName( streetName) { this.streetName = streetName; }
+
+  public  getCity() { return this.city; }
+  public void setCity( city) { this.city = city; }
+
+  public  getState() { return this.state; }
+  public void setState( state) { this.state = state; }
+
+  public  getHouseNumber() { return this.houseNumber; }
+  public void setHouseNumber( houseNumber) { this.houseNumber = houseNumber; }
+
+  public  getMarriage() { return this.marriage; }
+  public void setMarriage( marriage) { this.marriage = marriage; }
+
+  public  getMembers() { return this.members; }
+  public void setMembers( members) { this.members = members; }
+
+  public  getArrayType() { return this.arrayType; }
+  public void setArrayType( arrayType) { this.arrayType = arrayType; }
+
+  public  getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties( additionalProperties) { this.additionalProperties = additionalProperties; }
+}"
+`;
+
+exports[`CppGenerator Class should work with custom preset for \`class\` type 1`] = `
+"public class CustomClass {
+  test1
+  private  property;
+  test1
+  private  additionalProperties;
+
+  test2
+  public  getProperty() { return this.property; }
+  test3
+  public void setProperty( property) { this.property = property; }
+
+  test2
+  public  getAdditionalProperties() { return this.additionalProperties; }
+  test3
+  public void setAdditionalProperties( additionalProperties) { this.additionalProperties = additionalProperties; }
+}"
+`;
+
+exports[`CppGenerator Enum should render \`enum\` with mixed types (union type) 1`] = `
+"public enum Things {
+  TEXAS(\\"Texas\\"), NUMBER_1(1), RESERVED_NUMBER_1(\\"1\\"), FALSE(\\"false\\"), CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT(\\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\");
+
+  private Object value;
+
+  Things(Object value) {
+    this.value = value;
+  }
+
+  @JsonValue
+  public Object getValue() {
+    return value;
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+
+  @JsonCreator
+  public static Things fromValue(Object value) {
+    for (Things e : Things.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+}"
+`;
+
+exports[`CppGenerator Enum should render enums with translated special characters 1`] = `
+"public enum States {
+  TEST_PLUS(\\"test+\\"), DOLLAR_TEST(\\"$test\\"), TEST_MINUS(\\"test-\\"), TEST_QUESTION_EXCLAMATION(\\"test?!\\"), ASTERISK_TEST(\\"*test\\");
+
+  private Object value;
+
+  States(Object value) {
+    this.value = value;
+  }
+
+  @JsonValue
+  public Object getValue() {
+    return value;
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+
+  @JsonCreator
+  public static States fromValue(Object value) {
+    for (States e : States.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+}"
+`;
+
+exports[`CppGenerator Enum should work custom preset for \`enum\` type 1`] = `
+"public enum CustomEnum {
+  TEXAS(\\"Texas\\"), ALABAMA(\\"Alabama\\"), CALIFORNIA(\\"California\\");
+
+  private Object value;
+
+  CustomEnum(Object value) {
+    this.value = value;
+  }
+
+  @JsonValue
+  public Object getValue() {
+    return value;
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+
+  @JsonCreator
+  public static CustomEnum fromValue(Object value) {
+    for (CustomEnum e : CustomEnum.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+}"
+`;
