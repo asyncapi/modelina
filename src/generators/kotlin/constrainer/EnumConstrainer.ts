@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { ConstrainedEnumModel, EnumModel } from '../../../models';
-import { NO_NUMBER_START_CHAR, NO_DUPLICATE_ENUM_KEYS, NO_EMPTY_VALUE, NO_RESERVED_KEYWORDS} from '../../../helpers/Constraints';
+import { NO_NUMBER_START_CHAR, NO_DUPLICATE_ENUM_KEYS, NO_EMPTY_VALUE, NO_RESERVED_KEYWORDS} from '../../../helpers';
 import { FormatHelpers, EnumKeyConstraint, EnumValueConstraint} from '../../../helpers';
-import {isInvalidKotlinEnumKey, isReservedKotlinKeyword} from '../Constants';
+import {isInvalidKotlinEnumKey} from '../Constants';
 
 export type ModelEnumKeyConstraints = {
   NO_SPECIAL_CHAR: (value: string) => string;
@@ -38,7 +38,7 @@ export function defaultEnumKeyConstraints(customConstraints?: Partial<ModelEnumK
     constrainedEnumKey = constraints.NO_RESERVED_KEYWORDS(constrainedEnumKey);
     //If the enum key has been manipulated, lets make sure it don't clash with existing keys
     if (constrainedEnumKey !== enumKey) {
-      constrainedEnumKey = constraints.NO_DUPLICATE_KEYS(constrainedEnumModel, enumModel, constrainedEnumKey, constraints.NAMING_FORMATTER!);
+      constrainedEnumKey = constraints.NO_DUPLICATE_KEYS(constrainedEnumModel, enumModel, constrainedEnumKey, constraints.NAMING_FORMATTER);
     }
     constrainedEnumKey = constraints.NAMING_FORMATTER(constrainedEnumKey);
     return constrainedEnumKey;

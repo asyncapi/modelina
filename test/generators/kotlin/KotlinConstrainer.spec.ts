@@ -1,5 +1,5 @@
 import { KotlinDefaultTypeMapping } from '../../../src/generators/kotlin/KotlinConstrainer';
-import { KotlinGenerator, KotlinOptions } from '../../../src/generators/kotlin';
+import { KotlinGenerator, KotlinOptions } from '../../../src';
 import { ConstrainedAnyModel, ConstrainedArrayModel, ConstrainedBooleanModel, ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedEnumValueModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedTupleValueModel, ConstrainedUnionModel } from '../../../src';
 describe('KotlinConstrainer', () => {
   describe('ObjectModel', () => {
