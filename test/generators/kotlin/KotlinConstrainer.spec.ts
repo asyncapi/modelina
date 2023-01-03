@@ -123,7 +123,7 @@ describe('KotlinConstrainer', () => {
       const model = new ConstrainedArrayModel('test', undefined, '', arrayModel);
       const options: KotlinOptions = {...KotlinGenerator.defaultOptions, collectionType: 'Array'};
       const type = KotlinDefaultTypeMapping.Array({constrainedModel: model, options});
-      expect(type).toEqual('String[]');
+      expect(type).toEqual('Array<String>');
     });
     test('should render array as a list', () => {
       const arrayModel = new ConstrainedStringModel('test', undefined, 'String');
