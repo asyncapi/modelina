@@ -4,3 +4,4 @@ coverage
 lib
 *.DS_Store
 .vscode
+.idea
