@@ -74,7 +74,7 @@ export const KotlinDefaultTypeMapping: TypeMapping<KotlinOptions> = {
     return 'Any';
   },
   Float ({ constrainedModel }): string {
-    const format = constrainedModel.originalInput && constrainedModel.originalInput['format']
+    const format = constrainedModel.originalInput && constrainedModel.originalInput['format'];
     return format === 'float' ? 'Float' : 'Double';
   },
   Integer ({ constrainedModel }): string {
@@ -82,7 +82,7 @@ export const KotlinDefaultTypeMapping: TypeMapping<KotlinOptions> = {
     return format === 'long' || format === 'int64' ? 'Long' : 'Int';
   },
   String ({ constrainedModel }): string {
-    const format = constrainedModel.originalInput && constrainedModel.originalInput['format']
+    const format = constrainedModel.originalInput && constrainedModel.originalInput['format'];
     switch (format) {
     case 'date': {
       return 'java.time.LocalDate';

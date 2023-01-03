@@ -17,7 +17,7 @@ function renderDescription({ renderer, content, item }: {
 
   if (item instanceof ConstrainedObjectModel) {
     const properties = Object.keys(item.properties)
-      .map(key => item.properties[key])
+      .map(key => item.properties[`${key}`])
       .map(model => {
         const property = `@property ${model.propertyName}`;
         const desc = model.property.originalInput['description'];
