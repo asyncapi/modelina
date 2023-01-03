@@ -1,4 +1,4 @@
-import {JavaGenerator, KotlinGenerator} from '../../src';
+import { KotlinGenerator} from '../../src';
 
 const generator = new KotlinGenerator();
 const jsonSchemaDraft7 = {

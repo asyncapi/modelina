@@ -1,7 +1,7 @@
 const spy = jest.spyOn(global.console, 'log').mockImplementation(() => { return; });
 import {generate} from './index';
 
-describe('Should be able to render Kotlin Enums', () => {
+describe('Should be able to render Kotlin Models', () => {
   afterAll(() => {
     jest.restoreAllMocks();
   });

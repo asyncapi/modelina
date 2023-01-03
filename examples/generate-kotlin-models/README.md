@@ -1,6 +1,6 @@
-# Kotlin Enums
+# Kotlin Data Models
 
-A basic example of how to use Modelina and output a Kotlin enum.
+A basic example of how to use Modelina and output a Kotlin data model.
 
 ## How to run this example
 
