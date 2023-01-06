@@ -1,31 +1,30 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`KOTLIN_DESCRIPTION_PRESET should render description and examples for class 1`] = `
-"my description
-public class Clazz {
-  private String prop;
-  private Map<String, Any> additionalProperties;
-
-  my description
-  public String getProp() { return this.prop; }
-  public void setProp(String prop) { this.prop = prop; }
-
-  my description
-  public Map<String, Any> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Any> additionalProperties) { this.additionalProperties = additionalProperties; }
-}"
+"/**
+ * Description for class
+ * 
+ * @property prop Description for prop
+ * @property additionalProperties
+ * 
+ * Examples: 
+ * {\\"prop\\":\\"value\\"}
+ */
+data class Clazz(
+    val prop: String,
+    val additionalProperties: Map<String, Any>,
+)"
 `;
 
 exports[`KOTLIN_DESCRIPTION_PRESET should render description and examples for enum 1`] = `
-"my description
-enum class ReservedEnum(val value: String) {
-  ON(\\"on\\" as String), 
-  OFF(\\"off\\" as String);
-
-  companion object {
-      fun fromValue(value: String) = 
-          ReservedEnum.values().firstOrNull { it.value.contentEquals(value, ignoringCase = true ) }
-              ?: throw IllegalArgumentException(\\"Unexpected value '$value'\\")
-  }
+"/**
+ * Description for enum
+ * 
+ * Examples: 
+ * value
+ */
+enum class Enum(val value: String) {
+    ON(\\"on\\"), 
+    OFF(\\"off\\");
 }"
 `;

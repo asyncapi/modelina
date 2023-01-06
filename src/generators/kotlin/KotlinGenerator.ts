@@ -90,19 +90,20 @@ export class KotlinGenerator extends AbstractGenerator<KotlinOptions, KotlinRend
    * @param options used to render the full output
    */
   async renderCompleteModel(model: ConstrainedMetaModel, inputModel: InputMetaModel, options: KotlinRenderCompleteModelOptions): Promise<RenderOutput> {
-    if (isReservedKotlinKeyword(options.packageName)) {
-      throw new Error(`You cannot use reserved Kotlin keyword (${options.packageName}) as package name, please use another.`);
-    }
-
     const outputModel = await this.render(model, inputModel);
-    const modelDependencies = model.getNearestDependencies().map((dependencyModel) => {
-      return `import ${options.packageName}.${dependencyModel.name};`;
-    });
-    const outputContent = `package ${options.packageName};
-${modelDependencies.join('\n')}
+
+    const packageName = this.sanitizePackageName(options.packageName);
+    const outputContent = `package ${packageName}
 ${outputModel.dependencies.join('\n')}
 ${outputModel.result}`;
     return RenderOutput.toRenderOutput({result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies});
+  }
+
+  private sanitizePackageName(packageName: string): string {
+    return packageName
+      .split('.')
+      .map(subpackage => isReservedKotlinKeyword(subpackage, true) ? `\`${subpackage}\`` : subpackage)
+      .join('.');
   }
 
   async renderClass(model: ConstrainedObjectModel, inputModel: InputMetaModel): Promise<RenderOutput> {
