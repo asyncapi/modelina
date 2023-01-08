@@ -243,6 +243,10 @@ The following table provides a short summary of available features for supported
     <td><a href="./docs/usage.md#generate-python-models">Python</a></td>
     <td>Class and enum generation: <em>custom indentation type and size, etc </em></td>
   </tr>
+  <tr>
+    <td><a href="./docs/usage.md#generate-kotlin-models">Kotlin</a></td>
+    <td>Class and enum generation: <em>use of data classes where appropriate, custom indentation type and size, etc </em></td>
+  </tr>
 </table>
 
 ## Roadmap
