@@ -9,7 +9,11 @@ import { ClassPresetType } from '../KotlinPreset';
  * @extends KotlinRenderer
  */
 export class ClassRenderer extends KotlinRenderer<ConstrainedObjectModel> {
-  async defaultSelf(): Promise<string> {
+  async defaultSelf(hasProperties: boolean): Promise<string> {
+    return hasProperties ? await this.defaultWithProperties() : `class ${this.model.name} {}`;
+  }
+
+  private async defaultWithProperties(): Promise<string> {
     const content = [
       await this.renderProperties(),
       await this.runAdditionalContentPreset(),
@@ -38,8 +42,10 @@ ${this.indent(this.renderBlock(content, 2))}
 }
 
 export const KOTLIN_DEFAULT_CLASS_PRESET: ClassPresetType<KotlinOptions> = {
-  self({ renderer }) {
-    return renderer.defaultSelf();
+  self({ renderer, model }) {
+    const hasProperties = Object.keys(model.properties).length > 0;
+
+    return renderer.defaultSelf(hasProperties);
   },
   property({ property }) {
     return `val ${property.propertyName}: ${property.property.type},`;
