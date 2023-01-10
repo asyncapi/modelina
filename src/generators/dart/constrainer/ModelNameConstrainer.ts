@@ -13,7 +13,7 @@ export type ModelNameConstraints = {
 
 export const DefaultModelNameConstraints: ModelNameConstraints = {
   NO_SPECIAL_CHAR: (value: string) => {
-    return FormatHelpers.replaceSpecialCharacters(value, { exclude: [], separator: '_' });
+    return FormatHelpers.replaceSpecialCharacters(value, { exclude: ['_'], separator: '_' });
   },
   NO_NUMBER_START_CHAR,
   NO_EMPTY_VALUE,
