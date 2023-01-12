@@ -1,7 +1,7 @@
-import { JavaGenerator, JAVA_CONSTRAINTS_PRESET } from '../../src';
+import { JavaGenerator, KOTLIN_CONSTRAINTS_PRESET } from '../../src';
 
-const generator = new JavaGenerator({ 
-  presets: [JAVA_CONSTRAINTS_PRESET]
+const generator = new JavaGenerator({
+  presets: [KOTLIN_CONSTRAINTS_PRESET]
 });
 const jsonSchemaDraft7 = {
   $schema: 'http://json-schema.org/draft-07/schema#',

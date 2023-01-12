@@ -1,9 +1,9 @@
-import { JavaGenerator, KOTLIN_CONSTRAINTS_PRESET } from '../../../../src/generators';
+import { KotlinGenerator, KOTLIN_CONSTRAINTS_PRESET } from '../../../../src';
 
-describe('JAVA_CONSTRAINTS_PRESET', () => {
-  let generator: JavaGenerator;
+describe('KOTLIN_CONSTRAINTS_PRESET', () => {
+  let generator: KotlinGenerator;
   beforeEach(() => {
-    generator = new JavaGenerator({ presets: [KOTLIN_CONSTRAINTS_PRESET] });
+    generator = new KotlinGenerator({ presets: [KOTLIN_CONSTRAINTS_PRESET] });
   });
 
   test('should render constraints annotations', async () => {
@@ -18,7 +18,7 @@ describe('JAVA_CONSTRAINTS_PRESET', () => {
       },
       required: ['min_number_prop', 'max_number_prop']
     };
-    const expectedDependencies = ['import java.util.Map;', 'import javax.validation.constraints.*;'];
+    const expectedDependencies = ['import javax.validation.constraints.*;'];
 
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);

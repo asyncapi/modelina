@@ -1,6 +1,5 @@
 import { ConstrainedArrayModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedStringModel } from '../../../models';
 import { KotlinPreset } from '../KotlinPreset';
-import {prefix} from 'concurrently/dist/src/defaults';
 
 export const KOTLIN_CONSTRAINTS_PRESET: KotlinPreset = {
   class: {

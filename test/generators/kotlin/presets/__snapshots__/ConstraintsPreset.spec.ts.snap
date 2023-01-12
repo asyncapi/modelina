@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`KOTLIN_CONSTRAINTS_PRESET should render constraints annotations 1`] = `
+"data class Clazz(
+    @NotNull
+    @Min(0)
+    val minNumberProp: Double,
+    @NotNull
+    @Max(99)
+    val maxNumberProp: Double,
+    @Size(min=2, max=3)
+    val arrayProp: List<Any>,
+    @Pattern(regexp=\\"^I_\\")
+    @Size(min=3)
+    val stringProp: String,
+    val additionalProperties: Map<String, Any>,
+)"
+`;
