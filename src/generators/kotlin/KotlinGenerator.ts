@@ -95,6 +95,7 @@ export class KotlinGenerator extends AbstractGenerator<KotlinOptions, KotlinRend
     const packageName = this.sanitizePackageName(options.packageName);
     const outputContent = `package ${packageName}
 ${outputModel.dependencies.join('\n')}
+
 ${outputModel.result}`;
     return RenderOutput.toRenderOutput({result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies});
   }

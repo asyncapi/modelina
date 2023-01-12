@@ -1,0 +1,64 @@
+import { ConstrainedArrayModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedStringModel } from '../../../models';
+import { KotlinPreset } from '../KotlinPreset';
+
+export const KOTLIN_CONSTRAINTS_PRESET: KotlinPreset = {
+  class: {
+    self({renderer, content}) {
+      renderer.addDependency('import javax.validation.constraints.*');
+      return content;
+    },
+    property({ renderer, property, content}) {
+      const annotations: string[] = [];
+
+      if (property.required) {
+        annotations.push(renderer.renderAnnotation('NotNull'));
+      }
+      const originalInput = property.property.originalInput;
+
+      // string
+      if (property.property instanceof ConstrainedStringModel) {
+        const pattern = originalInput['pattern'];
+        if (pattern !== undefined) {
+          annotations.push(renderer.renderAnnotation('Pattern', { regexp: `"${pattern}"` }));
+        }
+        const minLength = originalInput['minLength'];
+        const maxLength = originalInput['maxLength'];
+        if (minLength !== undefined || maxLength !== undefined) {
+          annotations.push(renderer.renderAnnotation('Size', { min: minLength, max: maxLength }));
+        }
+      }
+
+      // number/integer
+      if (property.property instanceof ConstrainedFloatModel ||
+        property.property instanceof ConstrainedIntegerModel) {
+        const minimum = originalInput['minimum'];
+        if (minimum !== undefined) {
+          annotations.push(renderer.renderAnnotation('Min', minimum));
+        }
+        const exclusiveMinimum = originalInput['exclusiveMinimum'];
+        if (exclusiveMinimum !== undefined) {
+          annotations.push(renderer.renderAnnotation('Min', exclusiveMinimum + 1));
+        }
+        const maximum = originalInput['maximum'];
+        if (maximum !== undefined) {
+          annotations.push(renderer.renderAnnotation('Max', maximum));
+        }
+        const exclusiveMaximum = originalInput['exclusiveMaximum'];
+        if (exclusiveMaximum !== undefined) {
+          annotations.push(renderer.renderAnnotation('Max', exclusiveMaximum - 1));
+        }
+      }
+
+      // array
+      if (property.property instanceof ConstrainedArrayModel) {
+        const minItems = originalInput['minItems'];
+        const maxItems = originalInput['maxItems'];
+        if (minItems !== undefined || maxItems !== undefined) {
+          annotations.push(renderer.renderAnnotation('Size', { min: minItems, max: maxItems }));
+        }
+      }
+
+      return renderer.renderBlock([...annotations, content]);
+    }
+  }
+}

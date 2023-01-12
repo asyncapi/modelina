@@ -5,7 +5,7 @@ import {FormatHelpers} from '../../helpers';
 
 /**
  * Common renderer for Kotlin
- * 
+ *
  * @extends AbstractRenderer
  */
 export abstract class KotlinRenderer<RendererModelType extends ConstrainedMetaModel> extends AbstractRenderer<KotlinOptions, KotlinGenerator, RendererModelType> {
@@ -13,7 +13,7 @@ export abstract class KotlinRenderer<RendererModelType extends ConstrainedMetaMo
     options: KotlinOptions,
     generator: KotlinGenerator,
     presets: Array<[Preset, unknown]>,
-    model: RendererModelType, 
+    model: RendererModelType,
     inputModel: InputMetaModel,
   ) {
     super(options, generator, presets, model, inputModel);
@@ -26,4 +26,28 @@ export abstract class KotlinRenderer<RendererModelType extends ConstrainedMetaMo
 ${newLiteral}
  */`;
   }
+
+  renderAnnotation(annotationName: string, value?: any | Record<string, any>, prefix: 'field:' | 'get:' = 'get:'): string {
+    const name = `@${prefix}${FormatHelpers.upperFirst(annotationName)}`;
+
+    if (value === undefined) {
+      return name;
+    }
+
+    if (typeof value !== 'object') {
+      return `${name}(${value})`;
+    }
+
+    const values = concatenateEntries(Object.entries(value || {}));
+    return `${name}(${values})`;
+  }
+}
+
+function concatenateEntries(entries: [string, unknown][] = []): string {
+  return entries.map(([paramName, newValue]) => {
+    if (paramName && newValue !== undefined) {
+      return `${paramName}=${newValue}`;
+    }
+    return newValue;
+  }).filter(v => v !== undefined).join(', ');
 }

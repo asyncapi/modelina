@@ -72,6 +72,7 @@ exports[`KotlinGenerator should render enums with translated special characters 
 exports[`KotlinGenerator should render models and their dependencies 1`] = `
 "package test.\`package\`
 
+
 data class Address(
     val streetName: String,
     val city: String,
@@ -87,6 +88,7 @@ data class Address(
 
 exports[`KotlinGenerator should render models and their dependencies 2`] = `
 "package test.\`package\`
+
 
 data class OtherModel(
     val streetName: String,
