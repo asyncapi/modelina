@@ -27,10 +27,10 @@ ${newLiteral}
  */`;
   }
 
-  renderAnnotation(annotationName: string, value?: any | Record<string, any>, prefix: 'field:' | 'get:' = 'get:'): string {
-    const name = `@${prefix}${FormatHelpers.upperFirst(annotationName)}`;
+  renderAnnotation(annotationName: string, value?: any | Record<string, any>, prefix?: 'field:' | 'get:' | 'param:'): string {
+    const name = `@${!prefix ? '' : prefix}${FormatHelpers.upperFirst(annotationName)}`;
 
-    if (value === undefined) {
+    if (value === undefined || value === null) {
       return name;
     }
 
@@ -38,7 +38,13 @@ ${newLiteral}
       return `${name}(${value})`;
     }
 
-    const values = concatenateEntries(Object.entries(value || {}));
+    const entries = Object.entries(value || {})
+
+    if (entries.length === 0) {
+      return name;
+    }
+
+    const values = concatenateEntries(entries);
     return `${name}(${values})`;
   }
 }

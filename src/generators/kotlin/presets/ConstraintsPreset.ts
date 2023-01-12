@@ -1,5 +1,6 @@
 import { ConstrainedArrayModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedStringModel } from '../../../models';
 import { KotlinPreset } from '../KotlinPreset';
+import {prefix} from 'concurrently/dist/src/defaults';
 
 export const KOTLIN_CONSTRAINTS_PRESET: KotlinPreset = {
   class: {
@@ -11,7 +12,7 @@ export const KOTLIN_CONSTRAINTS_PRESET: KotlinPreset = {
       const annotations: string[] = [];
 
       if (property.required) {
-        annotations.push(renderer.renderAnnotation('NotNull'));
+        annotations.push(renderer.renderAnnotation('NotNull', null, 'get:'));
       }
       const originalInput = property.property.originalInput;
 
@@ -19,12 +20,12 @@ export const KOTLIN_CONSTRAINTS_PRESET: KotlinPreset = {
       if (property.property instanceof ConstrainedStringModel) {
         const pattern = originalInput['pattern'];
         if (pattern !== undefined) {
-          annotations.push(renderer.renderAnnotation('Pattern', { regexp: `"${pattern}"` }));
+          annotations.push(renderer.renderAnnotation('Pattern', { regexp: `"${pattern}"` }, 'get:'));
         }
         const minLength = originalInput['minLength'];
         const maxLength = originalInput['maxLength'];
         if (minLength !== undefined || maxLength !== undefined) {
-          annotations.push(renderer.renderAnnotation('Size', { min: minLength, max: maxLength }));
+          annotations.push(renderer.renderAnnotation('Size', { min: minLength, max: maxLength }, 'get:'));
         }
       }
 
@@ -33,19 +34,19 @@ export const KOTLIN_CONSTRAINTS_PRESET: KotlinPreset = {
         property.property instanceof ConstrainedIntegerModel) {
         const minimum = originalInput['minimum'];
         if (minimum !== undefined) {
-          annotations.push(renderer.renderAnnotation('Min', minimum));
+          annotations.push(renderer.renderAnnotation('Min', minimum, 'get:'));
         }
         const exclusiveMinimum = originalInput['exclusiveMinimum'];
         if (exclusiveMinimum !== undefined) {
-          annotations.push(renderer.renderAnnotation('Min', exclusiveMinimum + 1));
+          annotations.push(renderer.renderAnnotation('Min', exclusiveMinimum + 1), 'get:');
         }
         const maximum = originalInput['maximum'];
         if (maximum !== undefined) {
-          annotations.push(renderer.renderAnnotation('Max', maximum));
+          annotations.push(renderer.renderAnnotation('Max', maximum, 'get:'));
         }
         const exclusiveMaximum = originalInput['exclusiveMaximum'];
         if (exclusiveMaximum !== undefined) {
-          annotations.push(renderer.renderAnnotation('Max', exclusiveMaximum - 1));
+          annotations.push(renderer.renderAnnotation('Max', exclusiveMaximum - 1, 'get:'));
         }
       }
 
@@ -54,7 +55,7 @@ export const KOTLIN_CONSTRAINTS_PRESET: KotlinPreset = {
         const minItems = originalInput['minItems'];
         const maxItems = originalInput['maxItems'];
         if (minItems !== undefined || maxItems !== undefined) {
-          annotations.push(renderer.renderAnnotation('Size', { min: minItems, max: maxItems }));
+          annotations.push(renderer.renderAnnotation('Size', { min: minItems, max: maxItems }, 'get:'));
         }
       }
 

@@ -2,10 +2,7 @@
 
 exports[`Should be able to generate models with javax.validation.constraints annotations and should log expected output to console 1`] = `
 Array [
-  "package main
-import javax.validation.constraints.*
-
-data class JavaxAnnotation(
+  "data class JavaxAnnotation(
     @get:NotNull
     @get:Min(0)
     val minNumberProp: Double,
