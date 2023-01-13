@@ -27,7 +27,7 @@ If you want to run the BlackBox tests locally, you have to install a couple of d
 - To run the `Go` BlackBox tests, you need to have GoLang installed - https://golang.org/doc/install
 - To run the `Python` BlackBox tests, you need to have python installed - https://www.python.org/downloads/
 - To run the `Rust` BlackBox tests, you need to have rust installed - https://www.rust-lang.org/tools/install (if you are on mac you might also need to install xcode `xcode-select --install`)
-- To run the `Kotlin` BlackBox tests, you need to have a JDK as well as kotlinc installed - https://kotlinlang.org/docs/command-line.html
+- To run the `Kotlin` BlackBox tests, you need to have a JDK >= 8 as well as kotlinc installed - https://kotlinlang.org/docs/command-line.html
 
 By default, the BlackBox tests are not run with the regular `npm run test`, but can be run with `npm run test:blackbox`. Or run individual BlackBox tests you can run the commands `npm run test:blackbox:${language}` where language is one of `csharp`, `go`, `java`, `javascript`, `python`, `rust`, `typescript`, etc.
 
