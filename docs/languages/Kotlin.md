@@ -16,7 +16,9 @@ implementation. The default one should suffice here.
 - [Change the collection type for arrays](#change-the-collection-type-for-arrays)
 - [Include Javax validation constraint annotations for properties](#include-javax-validation-constraint-annotations-for-properties)
 - [Generate serializer and deserializer functionality](#generate-serializer-and-deserializer-functionality)
-
+  * [To and from JSON](#to-and-from-json)
+  * [To and from XML](#to-and-from-xml)
+  * [To and from binary](#to-and-from-binary)
 <!-- tocstop -->
 
 ## Include KDoc for properties
@@ -42,6 +44,9 @@ The most widely used usecase for Modelina is to generate models that include ser
 
 As you normally only need one library to do this, we developers can never get enough with creating new stuff, therefore there might be one specific library you need or want to integrate with. Therefore, there is not one specific preset that offers everything. Below is a list of all the supported serialization presets.
 
-As Kotlin integration with the common parsers and mappers, like Jackson, is pretty good, there are no special presets
-included as of now. If you need annotations or presets to have more control over your JSON, XML and/or Binary mapping,
-[let everybody know](https://github.com/asyncapi/modelina/issues/new?assignees=&labels=enhancement&template=enhancement.md).
+### To and from JSON
+Currently not supported, [let everyone know you need it](https://github.com/asyncapi/modelina/issues/new?assignees=&labels=enhancement&template=enhancement.md)!
+### To and from XML
+Currently not supported, [let everyone know you need it](https://github.com/asyncapi/modelina/issues/new?assignees=&labels=enhancement&template=enhancement.md)!
+### To and from binary
+Currently not supported, [let everyone know you need it](https://github.com/asyncapi/modelina/issues/new?assignees=&labels=enhancement&template=enhancement.md)!
