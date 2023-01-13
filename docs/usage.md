@@ -174,4 +174,4 @@ Python is one of the many output languages we support. Check out this [basic exa
 
 ## Generate Kotlin models
 
-Kotlin is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-kotlin-models) and the following [Kotlin documentation for more advanced use-cases](./languages/Kotlin.md).
+Kotlin is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-kotlin-models) as well as [how to generate enums](../examples/generate-kotlin-enums) and the following [Kotlin documentation for more advanced use-cases](./languages/Kotlin.md).
