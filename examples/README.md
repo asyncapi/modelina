@@ -22,6 +22,7 @@ We love contributions and new examples that does not already exist, you can foll
 - [Java](#java)
 - [C#](#c%23)
 - [TypeScript](#typescript)
+- [Kotlin](#kotlin)
 - [Other examples](#other-examples)
 
 <!-- tocstop -->
@@ -58,6 +59,7 @@ These are all the basic generator examples that shows a bare minimal example of 
 - [generate-java-models](./generate-java-models) - A basic example to generate Java data models.
 - [generate-go-models](./generate-go-models) - A basic example to generate Go data models
 - [generate-javascript-models](./generate-javascript-models) - A basic example to generate JavaScript data models
+- [generate-kotlin-models](./generate-kotlin-models) - A basic example to generate Kotlin data models
 
 ## Integrations
 These are examples of how you can integrate Modelina into a specific scenario:
@@ -106,6 +108,13 @@ These are all specific examples only relevant to the TypeScript generator:
 - [typescript-use-esm](./typescript-use-esm) - A basic example that generate the models to use ESM module system.
 - [typescript-use-cjs](./typescript-use-cjs) - A basic example that generate the models to use CJS module system.
 - [typescript-generate-jsonbinpack](./typescript-generate-jsonbinpack) - A basic example showing how to generate models that include [jsonbinpack](https://github.com/sourcemeta/jsonbinpack) functionality.
+
+## Kotlin
+These are all specific examples only relevant to the Kotlin generator:
+- [generate-kotlin-enums](./generate-kotlin-enums)
+- [kotlin-generate-kdoc](./kotlin-generate-kdoc)
+- [kotlin-generate-javax-constraint-annotations](./kotlin-generate-javax-constraint-annotation)
+- [kotlin-change-collection-type](./kotlin-change-collection-type)
 
 ## Other examples
 Miscelanious examples that do not fit into the otherwise grouping.
