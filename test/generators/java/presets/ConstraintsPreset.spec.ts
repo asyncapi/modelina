@@ -1,9 +1,9 @@
-import { JavaGenerator, KOTLIN_CONSTRAINTS_PRESET } from '../../../../src/generators';
+import { JavaGenerator, JAVA_CONSTRAINTS_PRESET } from '../../../../src/generators';
 
 describe('JAVA_CONSTRAINTS_PRESET', () => {
   let generator: JavaGenerator;
   beforeEach(() => {
-    generator = new JavaGenerator({ presets: [KOTLIN_CONSTRAINTS_PRESET] });
+    generator = new JavaGenerator({ presets: [JAVA_CONSTRAINTS_PRESET] });
   });
 
   test('should render constraints annotations', async () => {

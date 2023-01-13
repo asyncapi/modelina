@@ -1,5 +1,4 @@
-import {KotlinGenerator} from '../../src';
-import {KOTLIN_CONSTRAINTS_PRESET} from '../../src/generators/kotlin/presets/ConstraintsPreset';
+import {KotlinGenerator, KOTLIN_CONSTRAINTS_PRESET} from '../../src';
 
 const generator = new KotlinGenerator({
   presets: [KOTLIN_CONSTRAINTS_PRESET]

@@ -1,12 +1,12 @@
 import { ConstrainedArrayModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedStringModel } from '../../../models';
-import {KotlinPreset} from '../../kotlin';
+import {JavaPreset} from '../JavaPreset';
 
 /**
  * Preset which extends class's getters with annotations from `javax.validation.constraints` package
  *
  * @implements {JavaPreset}
  */
-export const KOTLIN_CONSTRAINTS_PRESET: KotlinPreset = {
+export const JAVA_CONSTRAINTS_PRESET: JavaPreset = {
   class: {
     self({renderer, content}) {
       renderer.addDependency('import javax.validation.constraints.*;');

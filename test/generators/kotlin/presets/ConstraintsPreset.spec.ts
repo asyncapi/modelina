@@ -1,5 +1,4 @@
 import { KotlinGenerator, KOTLIN_CONSTRAINTS_PRESET } from '../../../../src';
-
 describe('KOTLIN_CONSTRAINTS_PRESET', () => {
   let generator: KotlinGenerator;
   beforeEach(() => {
@@ -18,7 +17,7 @@ describe('KOTLIN_CONSTRAINTS_PRESET', () => {
       },
       required: ['min_number_prop', 'max_number_prop']
     };
-    const expectedDependencies = ['import javax.validation.constraints.*;'];
+    const expectedDependencies = ['import javax.validation.constraints.*'];
 
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
