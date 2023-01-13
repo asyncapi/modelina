@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Should be able to generate JavaDocs and should log expected output to console 1`] = `
+exports[`Should be able to generate KDoc and should log expected output to console 1`] = `
 Array [
   "/**
  * Description for class

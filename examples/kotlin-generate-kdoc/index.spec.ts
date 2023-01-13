@@ -1,7 +1,7 @@
 const spy = jest.spyOn(global.console, 'log').mockImplementation(() => { return; });
 import {generate} from './index';
 
-describe('Should be able to generate JavaDocs', () => {
+describe('Should be able to generate KDoc', () => {
   afterAll(() => {
     jest.restoreAllMocks();
   });
