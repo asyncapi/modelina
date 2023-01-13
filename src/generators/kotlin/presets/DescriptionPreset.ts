@@ -7,13 +7,11 @@ function renderDescription({ renderer, content, item }: {
   content: string,
   item: (ConstrainedObjectModel | ConstrainedEnumModel)
 }): string {
-  const desc = item.originalInput['description'];
-
-  if (!desc) {
+  if (!item.originalInput['description']) {
     return content;
   }
 
-  let comment = `${desc}`;
+  let comment = `${item.originalInput['description']}`;
 
   if (item instanceof ConstrainedObjectModel) {
     const properties = Object.keys(item.properties)
