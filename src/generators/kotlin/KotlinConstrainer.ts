@@ -126,7 +126,7 @@ export const KotlinDefaultTypeMapping: TypeMapping<KotlinOptions> = {
     return uniqueTypes.length > 1 ? interpretUnionValueType(uniqueTypes) : uniqueTypes[0];
   },
   Union (): string {
-    // No Unions in Kotlin, use Any
+    // No Unions in Kotlin, use Any for now.
     return 'Any';
   },
   Dictionary ({ constrainedModel }): string {

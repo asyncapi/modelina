@@ -38,7 +38,7 @@ ${newLiteral}
       return `${name}(${value})`;
     }
 
-    const entries = Object.entries(value || {})
+    const entries = Object.entries(value || {});
 
     if (entries.length === 0) {
       return name;
