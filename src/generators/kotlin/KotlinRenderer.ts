@@ -1,7 +1,7 @@
 import { AbstractRenderer } from '../AbstractRenderer';
 import { KotlinGenerator, KotlinOptions } from './KotlinGenerator';
 import { ConstrainedMetaModel, InputMetaModel, Preset } from '../../models';
-import {FormatHelpers} from '../../helpers';
+import { FormatHelpers } from '../../helpers';
 
 /**
  * Common renderer for Kotlin
