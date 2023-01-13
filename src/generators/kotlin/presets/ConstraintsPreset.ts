@@ -15,13 +15,13 @@ export const KOTLIN_CONSTRAINTS_PRESET: KotlinPreset = {
       return content;
     },
     property({ renderer, property, content}) {
-      let annotations: string[] = [];
+      const annotations: string[] = [];
 
       if (property.required) {
-        annotations = [...annotations, renderer.renderAnnotation('NotNull', null, 'get:')];
+        annotations.push(renderer.renderAnnotation('NotNull', null, 'get:'));
       }
 
-      annotations = [...annotations, ...getTypeSpecificAnnotations(property.property, renderer)];
+      annotations.push(...getTypeSpecificAnnotations(property.property, renderer));
 
       return renderer.renderBlock([...annotations, content]);
     }
@@ -43,15 +43,27 @@ function getTypeSpecificAnnotations(property: ConstrainedMetaModel, renderer: Cl
 function getStringAnnotations(property: ConstrainedStringModel, renderer: ClassRenderer): string[] {
   const annotations: string[] = [];
   const originalInput = property.originalInput;
-  const pattern = originalInput['pattern'];
-  if (pattern !== undefined) {
-    annotations.push(renderer.renderAnnotation('Pattern', { regexp: `"${pattern}"` }, 'get:'));
+
+  if (originalInput['pattern'] !== undefined) {
+    annotations.push(
+      renderer.renderAnnotation(
+        'Pattern',
+        { regexp: `"${originalInput['pattern']}"` },
+        'get:'
+      )
+    );
   }
-  const minLength = originalInput['minLength'];
-  const maxLength = originalInput['maxLength'];
-  if (minLength !== undefined || maxLength !== undefined) {
-    annotations.push(renderer.renderAnnotation('Size', { min: minLength, max: maxLength }, 'get:'));
+
+  if (originalInput['minLength'] !== undefined || originalInput['maxLength'] !== undefined) {
+    annotations.push(
+      renderer.renderAnnotation(
+        'Size',
+        { min: originalInput['minLength'], max: originalInput['maxLength'] },
+        'get:'
+      )
+    );
   }
+
   return annotations;
 }
 
@@ -59,21 +71,25 @@ function getNumericAnnotations(property: ConstrainedIntegerModel | ConstrainedFl
   const annotations: string[] = [];
   const originalInput = property.originalInput;
 
-  const minimum = originalInput['minimum'];
-  if (minimum !== undefined) {
-    annotations.push(renderer.renderAnnotation('Min', minimum, 'get:'));
+  if (originalInput['minimum'] !== undefined) {
+    annotations.push(renderer.renderAnnotation('Min', originalInput['minimum'], 'get:'));
   }
-  const exclusiveMinimum = originalInput['exclusiveMinimum'];
-  if (exclusiveMinimum !== undefined) {
-    annotations.push(renderer.renderAnnotation('Min', exclusiveMinimum + 1), 'get:');
+
+  if (originalInput['exclusiveMinimum'] !== undefined) {
+    annotations.push(renderer.renderAnnotation('Min', originalInput['exclusiveMinimum'] + 1), 'get:');
   }
-  const maximum = originalInput['maximum'];
-  if (maximum !== undefined) {
-    annotations.push(renderer.renderAnnotation('Max', maximum, 'get:'));
+
+  if (originalInput['maximum'] !== undefined) {
+    annotations.push(renderer.renderAnnotation('Max', originalInput['maximum'], 'get:'));
   }
-  const exclusiveMaximum = originalInput['exclusiveMaximum'];
-  if (exclusiveMaximum !== undefined) {
-    annotations.push(renderer.renderAnnotation('Max', exclusiveMaximum - 1, 'get:'));
+
+  if (originalInput['exclusiveMaximum'] !== undefined) {
+    annotations.push(
+      renderer.renderAnnotation(
+        'Max',
+        originalInput['exclusiveMaximum'] - 1,
+        'get:')
+    );
   }
 
   return annotations;
@@ -83,10 +99,14 @@ function getArrayAnnotations(property: ConstrainedArrayModel, renderer: ClassRen
   const annotations: string[] = [];
   const originalInput = property.originalInput;
 
-  const minItems = originalInput['minItems'];
-  const maxItems = originalInput['maxItems'];
-  if (minItems !== undefined || maxItems !== undefined) {
-    annotations.push(renderer.renderAnnotation('Size', { min: minItems, max: maxItems }, 'get:'));
+  if (originalInput['minItems'] !== undefined || originalInput['maxItems'] !== undefined) {
+    annotations.push(
+      renderer.renderAnnotation(
+        'Size',
+        { min: originalInput['minItems'], max: originalInput['maxItems'] },
+        'get:'
+      )
+    );
   }
 
   return annotations;
