@@ -41,7 +41,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
   });
 
   describe(file, () => {
-    const javaGeneratorOptions = [
+    const kotlinGeneratorOptions = [
       {
         generatorOption: {},
         description: 'default generator',
@@ -58,7 +58,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
       }
     ];
 
-    describe.each(javaGeneratorOptions)('should be able to generate and compile Kotlin', ({ generatorOption, renderOutputPath }) => {
+    describe.each(kotlinGeneratorOptions)('should be able to generate and compile Kotlin', ({ generatorOption, renderOutputPath }) => {
       test('class and enums', async () => {
         const generator = new KotlinFileGenerator(generatorOption);
 
