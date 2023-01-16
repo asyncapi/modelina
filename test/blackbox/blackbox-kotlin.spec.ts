@@ -11,7 +11,7 @@ import {
   InputMetaModel,
   InputProcessor,
   KotlinFileGenerator,
-  KOTLIN_DEFAULT_PRESET,
+  KOTLIN_DEFAULT_PRESET, JAVA_COMMON_PRESET, KOTLIN_CONSTRAINTS_PRESET,
 } from '../../src';
 import { execCommand } from './utils/Utils';
 import filesToTest from './BlackBoxTestFiles';
@@ -50,22 +50,23 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
       {
         generatorOption: {
           presets: [
-            KOTLIN_DEFAULT_PRESET
+            KOTLIN_CONSTRAINTS_PRESET
           ]
         },
-        description: 'all common presets',
-        renderOutputPath: path.resolve(outputDirectoryPath, './class/commonpreset')
+        description: 'constraints preset',
+        renderOutputPath: path.resolve(outputDirectoryPath, './class/constraints')
       }
     ];
 
     describe.each(kotlinGeneratorOptions)('should be able to generate and compile Kotlin', ({ generatorOption, renderOutputPath }) => {
       test('class and enums', async () => {
         const generator = new KotlinFileGenerator(generatorOption);
+        const dependencyPath = path.resolve(__dirname, './dependencies/kotlin/*');
 
         const generatedModels = await generator.generateToFiles(models, renderOutputPath, { packageName: 'main'});
         expect(generatedModels).not.toHaveLength(0);
 
-        const compileCommand = `kotlinc ${path.resolve(renderOutputPath, '*.kt')} -d ${outputDirectoryPath}`;
+        const compileCommand = `kotlinc -cp ${dependencyPath} ${path.resolve(renderOutputPath, '*.kt')} -d ${renderOutputPath}`;
         await execCommand(compileCommand);
       });
     });
