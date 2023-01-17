@@ -165,7 +165,7 @@ export class RustGenerator extends AbstractGenerator<RustOptions, RustRenderComp
     inputModel: InputMetaModel, 
     completeModelOptions: Partial<RustRenderCompleteModelOptions>,
     options: DeepPartial<RustOptions>): Promise<RenderOutput> {
-    //const _ = RustGenerator.getRustCompleteOptions(completeModelOptions);
+    //const _ = RustGenerator.getRustCompleteOptions(completeModelOptions); //NOSONAR
     const optionsToUse = RustGenerator.getRustOptions({...this.options, ...options});
     Logger.debug('Generating complete models with options: ', optionsToUse);
     const outputModel = await this.render(model, inputModel);

@@ -90,7 +90,7 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions, Ty
 
   constrainToMetaModel(model: MetaModel, options: DeepPartial<TypeScriptOptions>): ConstrainedMetaModel {
     const optionsToUse = TypeScriptGenerator.getOptions({...this.options, ...options});
-    const dependencyManagerToUse = this.getDependencyManager(optionsToUse) as TypeScriptDependencyManager;
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     return constrainMetaModel<TypeScriptOptions, TypeScriptDependencyManager>(
       this.options.typeMapping, 
       this.options.constraints, 
@@ -117,7 +117,7 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions, Ty
     options: DeepPartial<TypeScriptOptions>): Promise<RenderOutput> {
     const completeModelOptionsToUse = mergePartialAndDefault(TypeScriptGenerator.defaultCompleteModelOptions, completeModelOptions) as TypeScriptRenderCompleteModelOptions;
     const optionsToUse = TypeScriptGenerator.getOptions({...this.options, ...options});
-    const dependencyManagerToUse = this.getDependencyManager(optionsToUse) as TypeScriptDependencyManager;
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const outputModel = await this.render(model, inputModel, {...optionsToUse, dependencyManager: dependencyManagerToUse});
     const modelDependencies = model.getNearestDependencies();
 
