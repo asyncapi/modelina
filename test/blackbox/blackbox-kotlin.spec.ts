@@ -33,7 +33,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
   const isWindows = process.platform === 'win32';
   if (isWindows) {
     // Windows environment has a weird setup, where it is using Kotlin Native instead of Kotlin JVM as it's compiler
-    // (We'll link an issue here, once we know why this is the case)
+    // (See https://github.com/asyncapi/modelina/issues/1080)
     return;
   }
 
