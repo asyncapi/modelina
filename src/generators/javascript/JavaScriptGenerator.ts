@@ -4,19 +4,19 @@ import {
   defaultGeneratorOptions
 } from '../AbstractGenerator';
 import { ConstrainedMetaModel, ConstrainedObjectModel, InputMetaModel, MetaModel, RenderOutput } from '../../models';
-import { TypeMapping, Constraints, split, constrainMetaModel, renderJavaScriptDependency, SplitOptions } from '../../helpers';
+import { TypeMapping, Constraints, split, constrainMetaModel, SplitOptions } from '../../helpers';
 import { JavaScriptPreset, JS_DEFAULT_PRESET } from './JavaScriptPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { Logger } from '../../';
 import { JavaScriptDefaultConstraints, JavaScriptDefaultTypeMapping } from './JavaScriptConstrainer';
 import { DeepPartial, mergePartialAndDefault } from '../../utils';
 import { JavaScriptDependencyManager } from './JavaScriptDependencyManager';
-export type JavaScriptTypeMapping = TypeMapping<JavaScriptOptions, JavaScriptDependencyManager>;
 export interface JavaScriptOptions extends CommonGeneratorOptions<JavaScriptPreset> {
-  typeMapping: JavaScriptTypeMapping;
+  typeMapping: TypeMapping<JavaScriptOptions, JavaScriptDependencyManager>;
   constraints: Constraints;
   moduleSystem: 'ESM' | 'CJS';
 }
+export type JavaScriptTypeMapping = TypeMapping<JavaScriptOptions, JavaScriptDependencyManager>;
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface JavaScriptRenderCompleteModelOptions { }
 
@@ -41,11 +41,10 @@ export class JavaScriptGenerator extends AbstractGenerator<JavaScriptOptions, Ja
     super('JavaScript', realizedOptions);
   }
 
-
   /**
    * Returns the JavaScript options by merging custom options with default ones.
    */
-   static getJavaScriptOptions(options?: DeepPartial<JavaScriptOptions>): JavaScriptOptions {
+  static getJavaScriptOptions(options?: DeepPartial<JavaScriptOptions>): JavaScriptOptions {
     const optionsToUse = mergePartialAndDefault(JavaScriptGenerator.defaultOptions, options) as JavaScriptOptions;
     //Always overwrite the dependency manager unless user explicitly state they want it (ignore default temporary dependency manager)
     if (options?.dependencyManager === undefined) {

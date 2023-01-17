@@ -15,13 +15,12 @@ import { JavaDefaultConstraints, JavaDefaultTypeMapping } from './JavaConstraine
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 import { JavaDependencyManager } from './JavaDependencyManager';
 
-export type JavaTypeMapping = TypeMapping<JavaOptions, JavaDependencyManager>;
-
 export interface JavaOptions extends CommonGeneratorOptions<JavaPreset> {
   collectionType: 'List' | 'Array';
-  typeMapping: JavaTypeMapping;
+  typeMapping: TypeMapping<JavaOptions, JavaDependencyManager>;
   constraints: Constraints;
 }
+export type JavaTypeMapping = TypeMapping<JavaOptions, JavaDependencyManager>;
 export interface JavaRenderCompleteModelOptions {
   packageName: string
 }
@@ -125,12 +124,10 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderComp
       throw new Error(`You cannot use reserved Java keyword (${completeModelOptionsToUse.packageName}) as package name, please use another.`);
     }
 
-    const outputModel = await this.render(model, inputModel);
-    const modelDependencies = model.getNearestDependencies().map((dependencyModel) => {
-      return `import ${completeModelOptionsToUse.packageName}.${dependencyModel.name};`;
-    });
+    const outputModel = await this.render(model, inputModel, optionsToUse);
+    const modelDependencies = dependencyManagerToUse.renderAllModelDependencies(model, completeModelOptionsToUse.packageName);
     const outputContent = `package ${completeModelOptionsToUse.packageName};
-${modelDependencies.join('\n')}
+${modelDependencies}
 ${outputModel.dependencies.join('\n')}
 ${outputModel.result}`; 
     return RenderOutput.toRenderOutput({result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies});

@@ -1,10 +1,8 @@
 import { ConstrainedEnumValueModel, ConstrainedObjectPropertyModel } from '../../models';
-import { TypeMapping } from '../../helpers';
 import { defaultEnumKeyConstraints, defaultEnumValueConstraints } from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
-import { CSharpOptions, CSharpTypeMapping } from './CSharpGenerator';
-import { CSharpDependencyManager } from './CSharpDependencyManager';
+import { CSharpTypeMapping } from './CSharpGenerator';
 
 function getFullTypeDefinition(typeName: string, partOfProperty: ConstrainedObjectPropertyModel | undefined) {
   return partOfProperty?.required ?? true
@@ -30,7 +28,7 @@ const fromEnumValueToType = (enumValueModel: ConstrainedEnumValueModel): string 
   }
 };
 
-export const CSharpDefaultTypeMapping: TypeMapping<CSharpOptions, CSharpDependencyManager> = {
+export const CSharpDefaultTypeMapping: CSharpTypeMapping = {
   Object({ constrainedModel, partOfProperty }): string {
     return getFullTypeDefinition(constrainedModel.name, partOfProperty);
   },

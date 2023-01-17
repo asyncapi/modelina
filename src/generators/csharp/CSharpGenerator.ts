@@ -14,13 +14,13 @@ import { CSharpDefaultConstraints, CSharpDefaultTypeMapping } from './CSharpCons
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 import { CSharpDependencyManager } from './CSharpDependencyManager';
 
-export type CSharpTypeMapping = TypeMapping<CSharpOptions, CSharpDependencyManager>
 export interface CSharpOptions extends CommonGeneratorOptions<CSharpPreset> {
   collectionType: 'List' | 'Array';
-  typeMapping: CSharpTypeMapping;
+  typeMapping: TypeMapping<CSharpOptions, CSharpDependencyManager>;
   constraints: Constraints;
   autoImplementedProperties: boolean;
 }
+export type CSharpTypeMapping = TypeMapping<CSharpOptions, CSharpDependencyManager>;
 
 export interface CSharpRenderCompleteModelOptions {
   namespace: string
@@ -41,7 +41,6 @@ export class CSharpGenerator extends AbstractGenerator<CSharpOptions, CSharpRend
     dependencyManager: () => { return {} as CSharpDependencyManager;}
   };
 
-
   static defaultCompleteModelOptions: CSharpRenderCompleteModelOptions = {
     namespace: 'Asyncapi.Models'
   };
@@ -53,11 +52,10 @@ export class CSharpGenerator extends AbstractGenerator<CSharpOptions, CSharpRend
     super('CSharp', realizedOptions);
   }
 
-
   /**
    * Returns the CSharp options by merging custom options with default ones.
    */
-   static getCSharpOptions(options?: DeepPartial<CSharpOptions>): CSharpOptions {
+  static getCSharpOptions(options?: DeepPartial<CSharpOptions>): CSharpOptions {
     const optionsToUse = mergePartialAndDefault(this.defaultOptions, options) as CSharpOptions;
     //Always overwrite the dependency manager unless user explicitly state they want it (ignore default temporary dependency manager)
     if (options?.dependencyManager === undefined) {

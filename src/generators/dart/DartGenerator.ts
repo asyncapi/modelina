@@ -10,16 +10,15 @@ import {ClassRenderer} from './renderers/ClassRenderer';
 import {EnumRenderer} from './renderers/EnumRenderer';
 import {isReservedDartKeyword} from './Constants';
 import {Logger} from '../../';
-import {FormatHelpers} from '../../helpers/FormatHelpers';
 import { DartDefaultConstraints, DartDefaultTypeMapping } from './DartConstrainer';
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 import { DartDependencyManager } from './DartDependencyManager';
-export type DartTypeMapping = TypeMapping<DartOptions, DartDependencyManager>;
 export interface DartOptions extends CommonGeneratorOptions<DartPreset> {
   collectionType?: 'List';
-  typeMapping: DartTypeMapping;
+  typeMapping: TypeMapping<DartOptions, DartDependencyManager>;
   constraints: Constraints;
 }
+export type DartTypeMapping = TypeMapping<DartOptions, DartDependencyManager>;
 
 export interface DartRenderCompleteModelOptions {
   packageName: string;
@@ -45,11 +44,10 @@ export class DartGenerator extends AbstractGenerator<DartOptions, DartRenderComp
     super('Dart', realizedOptions);
   }
 
-
   /**
    * Returns the Dart options by merging custom options with default ones.
    */
-   static getDartOptions(options?: DeepPartial<DartOptions>): DartOptions {
+  static getDartOptions(options?: DeepPartial<DartOptions>): DartOptions {
     const optionsToUse = mergePartialAndDefault(DartGenerator.defaultOptions, options) as DartOptions;
     //Always overwrite the dependency manager unless user explicitly state they want it (ignore default temporary dependency manager)
     if (options?.dependencyManager === undefined) {
@@ -127,10 +125,8 @@ export class DartGenerator extends AbstractGenerator<DartOptions, DartRenderComp
     }
 
     const outputModel = await this.render(model, inputModel, optionsToUse);
-    const modelDependencies = model.getNearestDependencies().map((dependencyModelName) => {
-      return `import 'package:${completeModelOptionsToUse.packageName}/${FormatHelpers.snakeCase(dependencyModelName.name)}.dart';`;
-    });
-    const outputContent = `${modelDependencies.join('\n')}
+    const modelDependencies = dependencyManagerToUse.renderAllModelDependencies(model, completeModelOptionsToUse.packageName);
+    const outputContent = `${modelDependencies}
       ${outputModel.dependencies.join('\n')}
       ${outputModel.result}`;
     return RenderOutput.toRenderOutput({

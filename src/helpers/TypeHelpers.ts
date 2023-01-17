@@ -1,4 +1,4 @@
-import { AbstractDependencyManager } from 'generators/AbstractDependencyManager';
+import { AbstractDependencyManager } from '../generators/AbstractDependencyManager';
 import { ConstrainedAnyModel, ConstrainedBooleanModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedMetaModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedArrayModel, ConstrainedUnionModel, ConstrainedEnumModel, ConstrainedDictionaryModel, ConstrainedObjectPropertyModel } from '../models/ConstrainedMetaModel';
 
 export type TypeContext<T extends ConstrainedMetaModel, Options, DependencyManager extends AbstractDependencyManager> = {

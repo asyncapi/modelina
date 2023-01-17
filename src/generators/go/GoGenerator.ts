@@ -12,12 +12,12 @@ import { Logger } from '../../utils/LoggingInterface';
 import { GoDefaultConstraints, GoDefaultTypeMapping } from './GoConstrainer';
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 import { GoDependencyManager } from './GoDependencyManager';
-export type GoTypeMapping = TypeMapping<GoOptions, GoDependencyManager>;
 
 export interface GoOptions extends CommonGeneratorOptions<GoPreset> {
-  typeMapping: GoTypeMapping;
+  typeMapping: TypeMapping<GoOptions, GoDependencyManager>;
   constraints: Constraints
 }
+export type GoTypeMapping = TypeMapping<GoOptions, GoDependencyManager>;
 
 export interface GoRenderCompleteModelOptions {
   packageName: string
@@ -38,7 +38,6 @@ export class GoGenerator extends AbstractGenerator<GoOptions, GoRenderCompleteMo
     packageName: 'AsyncapiModels'
   };
 
-
   constructor(
     options?: DeepPartial<GoOptions>,
   ) {
@@ -49,7 +48,7 @@ export class GoGenerator extends AbstractGenerator<GoOptions, GoRenderCompleteMo
   /**
    * Returns the Go options by merging custom options with default ones.
    */
-   static getGoOptions(options?: DeepPartial<GoOptions>): GoOptions {
+  static getGoOptions(options?: DeepPartial<GoOptions>): GoOptions {
     const optionsToUse = mergePartialAndDefault(GoGenerator.defaultOptions, options) as GoOptions;
     //Always overwrite the dependency manager unless user explicitly state they want it (ignore default temporary dependency manager)
     if (options?.dependencyManager === undefined) {

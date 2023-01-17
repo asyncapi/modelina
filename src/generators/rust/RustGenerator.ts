@@ -3,7 +3,7 @@ import {
   CommonGeneratorOptions,
   defaultGeneratorOptions
 } from '../AbstractGenerator';
-import { OutputModel, InputMetaModel, RenderOutput, ConstrainedObjectModel, ConstrainedEnumModel, ConstrainedMetaModel, MetaModel, ConstrainedTupleModel, ConstrainedUnionModel, UnionModel } from '../../models';
+import { OutputModel, InputMetaModel, RenderOutput, ConstrainedObjectModel, ConstrainedEnumModel, ConstrainedMetaModel, MetaModel, ConstrainedTupleModel, ConstrainedUnionModel } from '../../models';
 import { constrainMetaModel, Constraints, IndentationTypes, split, SplitOptions, TypeMapping } from '../../helpers';
 import { RustPreset, RUST_DEFAULT_PRESET } from './RustPreset';
 import { StructRenderer } from './renderers/StructRenderer';
@@ -15,11 +15,11 @@ import { UnionRenderer } from './renderers/UnionRenderer';
 import { PackageRenderer } from './renderers/PackageRenderer';
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 import { RustDependencyManager } from './RustDependencyManager';
-export type RustTypeMapping = TypeMapping<RustOptions, RustDependencyManager>;
 export interface RustOptions extends CommonGeneratorOptions<RustPreset> {
-  typeMapping: RustTypeMapping;
+  typeMapping: TypeMapping<RustOptions, RustDependencyManager>;
   constraints: Constraints
 }
+export type RustTypeMapping = TypeMapping<RustOptions, RustDependencyManager>;
 
 export enum RustPackageFeatures {
   json,
@@ -165,7 +165,7 @@ export class RustGenerator extends AbstractGenerator<RustOptions, RustRenderComp
     inputModel: InputMetaModel, 
     completeModelOptions: Partial<RustRenderCompleteModelOptions>,
     options: DeepPartial<RustOptions>): Promise<RenderOutput> {
-    const _ = RustGenerator.getRustCompleteOptions(completeModelOptions);
+    //const _ = RustGenerator.getRustCompleteOptions(completeModelOptions);
     const optionsToUse = RustGenerator.getRustOptions({...this.options, ...options});
     Logger.debug('Generating complete models with options: ', optionsToUse);
     const outputModel = await this.render(model, inputModel);

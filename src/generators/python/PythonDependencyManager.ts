@@ -1,4 +1,4 @@
-import { ConstrainedMetaModel } from 'models';
+import { ConstrainedMetaModel } from '../../models';
 import { AbstractDependencyManager } from '../AbstractDependencyManager';
 import { PythonOptions } from './PythonGenerator';
 
@@ -9,7 +9,6 @@ export class PythonDependencyManager extends AbstractDependencyManager {
   ) {
     super(dependencies);
   }
-
 
   /**
    * Simple helper function to render a dependency based on the module system that the user defines.

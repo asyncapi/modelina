@@ -68,7 +68,7 @@ describe('mergePartialAndDefault', () => {
 
   test('should keep class types for instances of non-regular objects', () => {
     class TestClass {
-      test(){ return true };
+      test() { return true; }
     }
     interface TestType {
       nestedObject: TestClass,

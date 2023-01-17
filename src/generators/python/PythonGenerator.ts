@@ -14,13 +14,13 @@ import { constrainMetaModel, Constraints } from '../../helpers/ConstrainHelpers'
 import { PythonDefaultConstraints, PythonDefaultTypeMapping } from './PythonConstrainer';
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 import { PythonDependencyManager } from './PythonDependencyManager';
-export type PythonTypeMapping = TypeMapping<PythonOptions, PythonDependencyManager>;
 
 export interface PythonOptions extends CommonGeneratorOptions<PythonPreset> {
-  typeMapping: PythonTypeMapping;
+  typeMapping: TypeMapping<PythonOptions, PythonDependencyManager>;
   constraints: Constraints;
   importsStyle: 'explicit' | 'implicit';
 }
+export type PythonTypeMapping = TypeMapping<PythonOptions, PythonDependencyManager>;
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface PythonRenderCompleteModelOptions { }
 
@@ -47,7 +47,7 @@ export class PythonGenerator extends AbstractGenerator<PythonOptions, PythonRend
   /**
    * Returns the Python options by merging custom options with default ones.
    */
-   static getPythonOptions(options?: DeepPartial<PythonOptions>): PythonOptions {
+  static getPythonOptions(options?: DeepPartial<PythonOptions>): PythonOptions {
     const optionsToUse = mergePartialAndDefault(PythonGenerator.defaultOptions, options) as PythonOptions;
     //Always overwrite the dependency manager unless user explicitly state they want it (ignore default temporary dependency manager)
     if (options?.dependencyManager === undefined) {
@@ -125,7 +125,7 @@ export class PythonGenerator extends AbstractGenerator<PythonOptions, PythonRend
     const optionsToUse = PythonGenerator.getPythonOptions({...this.options, ...options});
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const outputModel = await this.render(model, inputModel, {dependencyManager: dependencyManagerToUse});
-    const modelDependencies = model.getNearestDependencies().map((model) => {return dependencyManagerToUse.renderDependency(model)});
+    const modelDependencies = model.getNearestDependencies().map((model) => {return dependencyManagerToUse.renderDependency(model);});
     const outputContent = `${modelDependencies.join('\n')}
 ${outputModel.dependencies.join('\n')}
 ${outputModel.result}`; 

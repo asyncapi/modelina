@@ -8,5 +8,4 @@ export class RustDependencyManager extends AbstractDependencyManager {
   ) {
     super(dependencies);
   }
-
 }

@@ -6,7 +6,6 @@
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type DeepPartial<T> = T extends Function ? T : (T extends object ? { [P in keyof T]?: DeepPartial<T[P]>; } : T);
 
-
 /**
  * Return true or false based on whether the input object is a regular object or a class
  * 
@@ -15,14 +14,14 @@ export type DeepPartial<T> = T extends Function ? T : (T extends object ? { [P i
  */
 function isClass(obj: any): boolean {
   const isCtorClass = obj.constructor
-      && obj.constructor.toString().substring(0, 5) === 'class'
-  if(obj.prototype === undefined) {
-    return isCtorClass
+      && obj.constructor.toString().substring(0, 5) === 'class';
+  if (obj.prototype === undefined) {
+    return isCtorClass;
   }
   const isPrototypeCtorClass = obj.prototype.constructor 
     && obj.prototype.constructor.toString
-    && obj.prototype.constructor.toString().substring(0, 5) === 'class'
-  return isCtorClass || isPrototypeCtorClass
+    && obj.prototype.constructor.toString().substring(0, 5) === 'class';
+  return isCtorClass || isPrototypeCtorClass;
 }
 
 /**

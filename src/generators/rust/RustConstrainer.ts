@@ -1,10 +1,9 @@
 import { defaultEnumKeyConstraints, defaultEnumValueConstraints } from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
-import { RustOptions, RustTypeMapping } from './RustGenerator';
-import { FormatHelpers, Constraints, TypeMapping } from '../../helpers';
+import { RustTypeMapping } from './RustGenerator';
+import { FormatHelpers, Constraints } from '../../helpers';
 import { ConstrainedAnyModel, ConstrainedArrayModel, ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedFloatModel, ConstrainedMetaModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedUnionModel } from '../../models';
-import { RustDependencyManager } from './RustDependencyManager';
 
 export function deriveHash(model: ConstrainedMetaModel): boolean {
   // float primitives and std::collection::HashMap do not implement Hash trait

@@ -4,7 +4,7 @@ import {
   defaultGeneratorOptions
 } from '../AbstractGenerator';
 import { ConstrainedEnumModel, ConstrainedMetaModel, ConstrainedObjectModel, InputMetaModel, MetaModel, RenderOutput } from '../../models';
-import { constrainMetaModel, Constraints, hasPreset, split, SplitOptions, TypeMapping } from '../../helpers';
+import { constrainMetaModel, Constraints, split, SplitOptions, TypeMapping } from '../../helpers';
 import { TypeScriptPreset, TS_DEFAULT_PRESET } from './TypeScriptPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { InterfaceRenderer } from './renderers/InterfaceRenderer';
@@ -21,7 +21,7 @@ export interface TypeScriptOptions extends CommonGeneratorOptions<TypeScriptPres
   modelType: 'class' | 'interface';
   enumType: 'enum' | 'union';
   mapType: 'indexedObject' | 'map' | 'record';
-  typeMapping: TypeScriptTypeMapping;
+  typeMapping: TypeMapping<TypeScriptOptions, TypeScriptDependencyManager>;
   constraints: Constraints;
   moduleSystem: TypeScriptModuleSystemType;
 }
@@ -118,7 +118,7 @@ export class TypeScriptGenerator extends AbstractGenerator<TypeScriptOptions, Ty
     const completeModelOptionsToUse = mergePartialAndDefault(TypeScriptGenerator.defaultCompleteModelOptions, completeModelOptions) as TypeScriptRenderCompleteModelOptions;
     const optionsToUse = TypeScriptGenerator.getOptions({...this.options, ...options});
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse) as TypeScriptDependencyManager;
-    const outputModel = await this.render(model, inputModel, {dependencyManager: dependencyManagerToUse});
+    const outputModel = await this.render(model, inputModel, {...optionsToUse, dependencyManager: dependencyManagerToUse});
     const modelDependencies = model.getNearestDependencies();
 
     //Create the correct model dependency imports
