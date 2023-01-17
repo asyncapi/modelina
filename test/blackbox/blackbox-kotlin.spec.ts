@@ -30,6 +30,13 @@ function deleteDirectoryIfExists(directory: string) {
 }
 
 describe.each(filesToTest)('Should be able to generate with inputs', ({ file, outputDirectory }) => {
+  const isWindows = process.platform === 'win32';
+  if (isWindows) {
+    // Windows environment has a weird setup, where it is using Kotlin Native instead of Kotlin JVM as it's compiler
+    // (We'll link an issue here, once we know why this is the case)
+    return;
+  }
+
   jest.setTimeout(1000000);
   const fileToGenerateFor = path.resolve(__dirname, file);
   const outputDirectoryPath = path.resolve(__dirname, outputDirectory, 'kotlin');
