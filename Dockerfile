@@ -25,7 +25,13 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 # Install Python
 RUN apt-get install -yq python
 
-# TODO install kotlin before completing PR
+# Install Kotlin
+RUN apt install -yq wget unzip  \
+    && cd /usr/lib \
+    && wget -q https://github.com/JetBrains/kotlin/releases/download/v1.8.0/kotlin-compiler-1.8.0.zip \
+    && unzip -qq kotlin-compiler-*.zip
+
+ENV PATH $PATH:/usr/lib/kotlinc/bin
 
 # Setup library
 RUN apt-get install -yq chromium
