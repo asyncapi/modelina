@@ -7,23 +7,23 @@
 # The default owners are automatically added as reviewers when you open a pull request unless different owners are specified in the file.
 
 # Core Champions that does a little of everything
-* @magicmatatjahu @jonaslagoni @asyncapi-bot-eve 
+* @magicmatatjahu @jonaslagoni @asyncapi-bot-eve
 
 # Documentation champions
 /docs
 
 # Input Champions for AsyncAPI input
-*/processors/AsyncAPIInputProcessor*.ts 
+*/processors/AsyncAPIInputProcessor*.ts
 
 # Input Champions for TypeScript input
 */processors/TypeScriptInputProcessor*.ts @ron-debajyoti
 
 # Input Champions for OpenAPI input
-*/processors/OpenAPIInputProcessor*.ts 
-*/processors/SwaggerInputProcessor*.ts 
+*/processors/OpenAPIInputProcessor*.ts
+*/processors/SwaggerInputProcessor*.ts
 
 # Input Champions for JSON Schema input
-*/processors/JsonSchemaInputProcessor*.ts 
+*/processors/JsonSchemaInputProcessor*.ts
 
 # Language Champions for TypeScript and it's presets
 */generators/typescript @Samridhi-98
@@ -46,3 +46,5 @@
 # Language Champions for Rust and its presets
 */generators/rust @leigh-johnson
 
+# Language Champions for Kotlin and it's presets
+*/generators/kotlin @LouisXhaferi
