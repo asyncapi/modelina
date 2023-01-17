@@ -9,6 +9,8 @@ Array [
     @get:NotNull
     @get:Max(99)
     val maxNumberProp: Double,
+    @get:Min(101)
+    val minNumberPropExclusive: Double,
     @get:Size(min=2, max=3)
     val arrayProp: List<Any>,
     @get:Pattern(regexp=\\"^I_\\")

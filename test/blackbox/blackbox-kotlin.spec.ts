@@ -66,7 +66,7 @@ describe.each(filesToTest)('Should be able to generate with inputs', ({ file, ou
         const generatedModels = await generator.generateToFiles(models, renderOutputPath, { packageName: 'main'});
         expect(generatedModels).not.toHaveLength(0);
 
-        const compileCommand = `kotlinc -cp ${dependencyPath} ${path.resolve(renderOutputPath, '*.kt')} -d ${renderOutputPath}`;
+        const compileCommand = `kotlinc ${path.resolve(renderOutputPath, '*.kt')} -cp ${dependencyPath} -d ${renderOutputPath}`;
         await execCommand(compileCommand);
       });
     });

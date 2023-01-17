@@ -76,7 +76,12 @@ function getNumericAnnotations(property: ConstrainedIntegerModel | ConstrainedFl
   }
 
   if (originalInput['exclusiveMinimum'] !== undefined) {
-    annotations.push(renderer.renderAnnotation('Min', originalInput['exclusiveMinimum'] + 1), 'get:');
+    annotations.push(
+      renderer.renderAnnotation(
+        'Min',
+        originalInput['exclusiveMinimum'] + 1,
+        'get:')
+    );
   }
 
   if (originalInput['maximum'] !== undefined) {

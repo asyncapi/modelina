@@ -10,6 +10,7 @@ const jsonSchemaDraft7 = {
   properties: {
     min_number_prop: { type: 'number', minimum: 0 },
     max_number_prop: { type: 'number', exclusiveMaximum: 100 },
+    min_number_prop_exclusive: { type: 'number', exclusiveMinimum: 100 },
     array_prop: { type: 'array', minItems: 2, maxItems: 3, },
     string_prop: { type: 'string', pattern: '^I_', minLength: 3 }
   },
