@@ -29,13 +29,12 @@ function deleteDirectoryIfExists(directory: string) {
   }
 }
 
-describe.each(filesToTest)('Should be able to generate with inputs', ({ file, outputDirectory }) => {
-  const isWindows = process.platform === 'win32';
-  if (isWindows) {
-    // Windows environment has a weird setup, where it is using Kotlin Native instead of Kotlin JVM as it's compiler
-    // (See https://github.com/asyncapi/modelina/issues/1080)
-    return;
-  }
+const isWindows = process.platform === 'win32';
+const describeIf = (condition: boolean) => condition ? describe : describe.skip;
+
+// Windows environment has a weird setup, where it is using Kotlin Native instead of Kotlin JVM as it's compiler
+// (See https://github.com/asyncapi/modelina/issues/1080)
+describeIf(!isWindows).each(filesToTest)('Should be able to generate with inputs', ({ file, outputDirectory }) => {
 
   jest.setTimeout(1000000);
   const fileToGenerateFor = path.resolve(__dirname, file);
