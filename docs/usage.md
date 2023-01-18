@@ -32,6 +32,7 @@ For more specific integration options, please check out the [integration documen
 - [Generate Dart models](#generate-dart-models)
 - [Generate Rust models](#generate-rust-models)
 - [Generate Python models](#generate-python-models)
+- [Generate Kotlin models](#generate-kotlin-models)
 
 <!-- tocstop -->
 
