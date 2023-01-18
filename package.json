@@ -1,6 +1,6 @@
 {
   "name": "@asyncapi/modelina",
-  "version": "1.0.0-next.40",
+  "version": "1.0.0-next.41",
   "description": "Library for generating data models based on inputs such as AsyncAPI, OpenAPI, or JSON Schema documents",
   "license": "Apache-2.0",
   "homepage": "https://github.com/asyncapi/modelina",
@@ -37,7 +37,7 @@
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.9",
     "@apidevtools/swagger-parser": "^10.0.3",
-    "@asyncapi/parser": "^2.0.0-next-major.5",
+    "@asyncapi/parser": "^2.0.0-next-major.11",
     "@swc/core": "^1.3.5",
     "@swc/jest": "^0.2.23",
     "alterschema": "^1.1.1",
@@ -68,6 +68,7 @@
     "ts-jest": "^27.0.5",
     "ts-node": "^10.3.0",
     "typescript": "^4.4.4",
+    "@asyncapi/parserV1": "npm:@asyncapi/parser@^1.17.2",
     "concurrently": "^7.5.0"
   },
   "scripts": {
@@ -86,7 +87,7 @@
     "test:examples:update": "npm run test:examples:regular -- -u && npm run test:examples:websites -- -u",
     "test:examples:regular": "cross-env CI=true jest ./examples --testPathIgnorePatterns ./examples/integrate-with-react",
     "test:examples:websites": "cd ./examples/integrate-with-react && npm i && npm run test",
-    "test:blackbox": "concurrently --group -n csharp,go,java,javascript,python,rust,typescript \"npm run test:blackbox:csharp\" \"npm run test:blackbox:go\" \"npm run test:blackbox:java\" \"npm run test:blackbox:javascript\" \"npm run test:blackbox:python\" \"npm run test:blackbox:rust\" \"npm run test:blackbox:typescript\"",
+    "test:blackbox": "concurrently --group -n csharp,go,java,javascript,python,rust,typescript,kotlin \"npm run test:blackbox:csharp\" \"npm run test:blackbox:go\" \"npm run test:blackbox:java\" \"npm run test:blackbox:javascript\" \"npm run test:blackbox:python\" \"npm run test:blackbox:rust\" \"npm run test:blackbox:typescript\" \"npm run test:blackbox:kotlin\"",
     "test:blackbox:csharp": "cross-env CI=true jest ./test/blackbox/blackbox-csharp.spec.ts",
     "test:blackbox:go": "cross-env CI=true jest ./test/blackbox/blackbox-go.spec.ts",
     "test:blackbox:java": "cross-env CI=true jest ./test/blackbox/blackbox-java.spec.ts",
@@ -94,6 +95,7 @@
     "test:blackbox:python": "cross-env CI=true jest ./test/blackbox/blackbox-python.spec.ts",
     "test:blackbox:rust": "cross-env CI=true jest ./test/blackbox/blackbox-rust.spec.ts",
     "test:blackbox:typescript": "cross-env CI=true jest ./test/blackbox/blackbox-typescript.spec.ts",
+    "test:blackbox:kotlin": "cross-env CI=true jest ./test/blackbox/blackbox-kotlin.spec.ts",
     "test:watch": "jest --watch",
     "docs": "npm run docs:markdown",
     "docs:markdown": "jsdoc2md lib/cjs/index.js -f lib/cjs/**/*.js > API.md",

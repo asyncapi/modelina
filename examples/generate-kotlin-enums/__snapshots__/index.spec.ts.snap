@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render Kotlin Enums and should log expected output to console 1`] = `
+Array [
+  "enum class Protocol(val value: Any) {
+    HTTP(\\"HTTP\\"), 
+    NUMBER_1(1), 
+    HTTPS(\\"HTTPS\\"), 
+    TRUE(true);
+}",
+]
+`;

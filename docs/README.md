@@ -62,3 +62,4 @@ Each language has its own limitations, corner cases, and features; thus, each la
 - [Rust](./languages/Rust.md)
 - [Python](./languages/Python.md)
 - [TypeScript](./languages/TypeScript.md)
+- [Kotlin](./languages/Kotlin.md)

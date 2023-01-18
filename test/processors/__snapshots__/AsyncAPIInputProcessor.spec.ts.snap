@@ -31,10 +31,36 @@ InputMetaModel {
         "title": "Signup service example (internal)",
         "version": "0.1.0",
       },
+      "x-parser-api-version": 1,
       "x-parser-spec-parsed": true,
     },
     "_meta": Object {
       "asyncapi": Object {
+        "input": "{
+  \\"asyncapi\\": \\"2.0.0\\",
+  \\"defaultContentType\\": \\"application/json\\",
+  \\"info\\": {
+    \\"title\\": \\"Signup service example (internal)\\",
+    \\"version\\": \\"0.1.0\\"
+  },
+  \\"channels\\": {
+    \\"/user/signedup\\": {
+      \\"subscribe\\": {
+        \\"message\\": {
+          \\"payload\\": {
+            \\"type\\": \\"object\\",
+            \\"properties\\": {
+              \\"email\\": {
+                \\"type\\": \\"string\\",
+                \\"format\\": \\"email\\"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}",
         "parsed": Object {
           "asyncapi": "2.0.0",
           "channels": Object {
@@ -62,6 +88,7 @@ InputMetaModel {
             "title": "Signup service example (internal)",
             "version": "0.1.0",
           },
+          "x-parser-api-version": 1,
           "x-parser-spec-parsed": true,
         },
         "semver": Object {
@@ -71,31 +98,7 @@ InputMetaModel {
           "rc": undefined,
           "version": "2.0.0",
         },
-        "source": "{
-  \\"asyncapi\\": \\"2.0.0\\",
-  \\"defaultContentType\\": \\"application/json\\",
-  \\"info\\": {
-    \\"title\\": \\"Signup service example (internal)\\",
-    \\"version\\": \\"0.1.0\\"
-  },
-  \\"channels\\": {
-    \\"/user/signedup\\": {
-      \\"subscribe\\": {
-        \\"message\\": {
-          \\"payload\\": {
-            \\"type\\": \\"object\\",
-            \\"properties\\": {
-              \\"email\\": {
-                \\"type\\": \\"string\\",
-                \\"format\\": \\"email\\"
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}",
+        "source": undefined,
       },
       "pointer": "/",
     },
@@ -134,10 +137,36 @@ InputMetaModel {
         "title": "Signup service example (internal)",
         "version": "0.1.0",
       },
+      "x-parser-api-version": 1,
       "x-parser-spec-parsed": true,
     },
     "_meta": Object {
       "asyncapi": Object {
+        "input": Object {
+          "asyncapi": "2.0.0",
+          "channels": Object {
+            "/user/signedup": Object {
+              "subscribe": Object {
+                "message": Object {
+                  "payload": Object {
+                    "properties": Object {
+                      "email": Object {
+                        "format": "email",
+                        "type": "string",
+                      },
+                    },
+                    "type": "object",
+                  },
+                },
+              },
+            },
+          },
+          "defaultContentType": "application/json",
+          "info": Object {
+            "title": "Signup service example (internal)",
+            "version": "0.1.0",
+          },
+        },
         "parsed": Object {
           "asyncapi": "2.0.0",
           "channels": Object {
@@ -165,6 +194,7 @@ InputMetaModel {
             "title": "Signup service example (internal)",
             "version": "0.1.0",
           },
+          "x-parser-api-version": 1,
           "x-parser-spec-parsed": true,
         },
         "semver": Object {
@@ -174,31 +204,7 @@ InputMetaModel {
           "rc": undefined,
           "version": "2.0.0",
         },
-        "source": Object {
-          "asyncapi": "2.0.0",
-          "channels": Object {
-            "/user/signedup": Object {
-              "subscribe": Object {
-                "message": Object {
-                  "payload": Object {
-                    "properties": Object {
-                      "email": Object {
-                        "format": "email",
-                        "type": "string",
-                      },
-                    },
-                    "type": "object",
-                  },
-                },
-              },
-            },
-          },
-          "defaultContentType": "application/json",
-          "info": Object {
-            "title": "Signup service example (internal)",
-            "version": "0.1.0",
-          },
-        },
+        "source": undefined,
       },
       "pointer": "/",
     },

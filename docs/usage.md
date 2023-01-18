@@ -32,6 +32,7 @@ For more specific integration options, please check out the [integration documen
 - [Generate Dart models](#generate-dart-models)
 - [Generate Rust models](#generate-rust-models)
 - [Generate Python models](#generate-python-models)
+- [Generate Kotlin models](#generate-kotlin-models)
 
 <!-- tocstop -->
 
@@ -79,6 +80,7 @@ For JSON Schema it follows the [JSON Schema input processing](#generate-models-f
 There are two ways to generate models for an AsyncAPI document.
 
 - [Generate from a parsed AsyncAPI 2.x document](../examples/asyncapi-from-parser)
+- [Generate from a parsed AsyncAPI 2.x document, from the old v1 parser](../examples/asyncapi-from-v1-parser)
 - [Generate from an AsyncAPI 2.x JS object](../examples/asyncapi-from-object)
 
 The library expects the `asyncapi` property for the document to be set in order to understand the input format.
@@ -191,3 +193,7 @@ Rust is one of the many output languages we support. Check out this [basic examp
 ## Generate Python models
 
 Python is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-python-models) and the following [Python documentation for more advanced use-cases](./languages/Python.md).
+
+## Generate Kotlin models
+
+Kotlin is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-kotlin-models) as well as [how to generate enums](../examples/generate-kotlin-enums) and the following [Kotlin documentation for more advanced use-cases](./languages/Kotlin.md).

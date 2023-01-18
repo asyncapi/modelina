@@ -32,7 +32,7 @@ const AsyncAPIDocument = {
 export async function generate() : Promise<void> {
   const parser = new Parser();
   const { document } = await parser.parse(JSON.stringify(AsyncAPIDocument));
-  const models = await generator.generate(document as any);
+  const models = await generator.generate(document);
   for (const model of models) {
     console.log(model.result);
   }

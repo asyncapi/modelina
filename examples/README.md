@@ -22,6 +22,7 @@ We love contributions and new examples that does not already exist, you can foll
 - [Java](#java)
 - [C#](#c%23)
 - [TypeScript](#typescript)
+- [Kotlin](#kotlin)
 - [Other examples](#other-examples)
 
 <!-- tocstop -->
@@ -32,6 +33,7 @@ We love contributions and new examples that does not already exist, you can foll
 These examples show a specific input and how they can be used:
 - [asyncapi-from-object](./asyncapi-from-object) - A basic example where an AsyncAPI JS object is used to generate models.
 - [asyncapi-from-parser](./asyncapi-from-parser) - A basic example where an AsyncAPI JS object from the [parser-js](https://github.com/asyncapi/parser-js) is used to generate models.
+- [asyncapi-from-v1-parser](./asyncapi-from-v1-parser) - A basic example where an AsyncAPI JS object from the old v1 [parser-js](https://github.com/asyncapi/parser-js) is used to generate models.
 - [json-schema-draft7-from-object](./json-schema-draft7-from-object) - A basic example where a JSON Schema draft 7 JS object is used to generate models.
 - [json-schema-draft6-from-object](./json-schema-draft6-from-object) - A basic example where a JSON Schema draft 6 JS object is used to generate models.
 - [json-schema-draft4-from-object](./json-schema-draft4-from-object) - A basic example where a JSON Schema draft 4 JS object is used to generate models.
@@ -60,6 +62,7 @@ These are all the basic generator examples that shows a bare minimal example of 
 - [generate-java-models](./generate-java-models) - A basic example to generate Java data models.
 - [generate-go-models](./generate-go-models) - A basic example to generate Go data models
 - [generate-javascript-models](./generate-javascript-models) - A basic example to generate JavaScript data models
+- [generate-kotlin-models](./generate-kotlin-models) - A basic example to generate Kotlin data models
 
 ## Integrations
 These are examples of how you can integrate Modelina into a specific scenario:
@@ -108,6 +111,13 @@ These are all specific examples only relevant to the TypeScript generator:
 - [typescript-use-esm](./typescript-use-esm) - A basic example that generate the models to use ESM module system.
 - [typescript-use-cjs](./typescript-use-cjs) - A basic example that generate the models to use CJS module system.
 - [typescript-generate-jsonbinpack](./typescript-generate-jsonbinpack) - A basic example showing how to generate models that include [jsonbinpack](https://github.com/sourcemeta/jsonbinpack) functionality.
+
+## Kotlin
+These are all specific examples only relevant to the Kotlin generator:
+- [generate-kotlin-enums](./generate-kotlin-enums)
+- [kotlin-generate-kdoc](./kotlin-generate-kdoc)
+- [kotlin-generate-javax-constraint-annotations](./kotlin-generate-javax-constraint-annotation)
+- [kotlin-change-collection-type](./kotlin-change-collection-type)
 
 ## Other examples
 Miscelanious examples that do not fit into the otherwise grouping.

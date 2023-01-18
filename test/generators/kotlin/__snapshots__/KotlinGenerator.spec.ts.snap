@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`KotlinGenerator should not render reserved keyword 1`] = `
+"data class Address(
+    val reservedClass: String,
+)"
+`;
+
+exports[`KotlinGenerator should render \`data class\` type 1`] = `
+"data class Address(
+    val streetName: String,
+    val city: String,
+    val state: String,
+    val houseNumber: Double,
+    val marriage: Boolean,
+    val members: Any,
+    val arrayType: List<Any>,
+    val date: java.time.LocalDate,
+    val time: java.time.OffsetTime,
+    val dateTime: java.time.OffsetDateTime,
+    val binary: ByteArray,
+    val additionalProperties: Map<String, Any>,
+)"
+`;
+
+exports[`KotlinGenerator should render \`enum class\` type (string type) 1`] = `
+"enum class States(val value: String) {
+    TEXAS(\\"Texas\\"), 
+    ALABAMA(\\"Alabama\\"), 
+    CALIFORNIA(\\"California\\"), 
+    NEW_YORK(\\"New York\\");
+}"
+`;
+
+exports[`KotlinGenerator should render \`enum\` type (integer type) 1`] = `
+"enum class Numbers(val value: Int) {
+    NUMBER_0(0), 
+    NUMBER_1(1), 
+    NUMBER_2(2), 
+    NUMBER_3(3);
+}"
+`;
+
+exports[`KotlinGenerator should render \`enum\` type (union type) 1`] = `
+"enum class Union(val value: Any) {
+    TEXAS(\\"Texas\\"), 
+    ALABAMA(\\"Alabama\\"), 
+    NUMBER_0(0), 
+    NUMBER_1(1), 
+    RESERVED_NUMBER_1(\\"1\\"), 
+    TRUE(true), 
+    CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT(\\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\");
+}"
+`;
+
+exports[`KotlinGenerator should render List type for collections 1`] = `
+"data class CustomClass(
+    val arrayType: List<Int>,
+)"
+`;
+
+exports[`KotlinGenerator should render enums with translated special characters 1`] = `
+"enum class States(val value: String) {
+    TEST_PLUS(\\"test+\\"), 
+    TEST(\\"test\\"), 
+    TEST_MINUS(\\"test-\\"), 
+    TEST_QUESTION_EXCLAMATION(\\"test?!\\"), 
+    ASTERISK_TEST(\\"*test\\");
+}"
+`;
+
+exports[`KotlinGenerator should render models and their dependencies 1`] = `
+"package test.\`package\`
+
+
+data class Address(
+    val streetName: String,
+    val city: String,
+    val state: String,
+    val houseNumber: Double,
+    val marriage: Boolean,
+    val members: Any,
+    val arrayType: List<Any>,
+    val otherModel: OtherModel,
+    val additionalProperties: Map<String, Any>,
+)"
+`;
+
+exports[`KotlinGenerator should render models and their dependencies 2`] = `
+"package test.\`package\`
+
+
+data class OtherModel(
+    val streetName: String,
+    val additionalProperties: Map<String, Any>,
+)"
+`;
