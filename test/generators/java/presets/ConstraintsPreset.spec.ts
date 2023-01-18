@@ -1,4 +1,4 @@
-import { JavaGenerator, JAVA_CONSTRAINTS_PRESET } from '../../../../src/generators'; 
+import { JavaGenerator, JAVA_CONSTRAINTS_PRESET } from '../../../../src/generators';
 
 describe('JAVA_CONSTRAINTS_PRESET', () => {
   let generator: JavaGenerator;
@@ -22,7 +22,7 @@ describe('JAVA_CONSTRAINTS_PRESET', () => {
 
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
-    expect(models[0].result).toMatchSnapshot(); 
+    expect(models[0].result).toMatchSnapshot();
     expect(models[0].dependencies).toEqual(expectedDependencies);
   });
 });

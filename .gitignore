@@ -3,4 +3,5 @@ node_modules
 coverage
 lib
 *.DS_Store
-.vscode
+.idea
+output

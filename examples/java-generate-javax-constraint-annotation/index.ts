@@ -1,6 +1,6 @@
 import { JavaGenerator, JAVA_CONSTRAINTS_PRESET } from '../../src';
 
-const generator = new JavaGenerator({ 
+const generator = new JavaGenerator({
   presets: [JAVA_CONSTRAINTS_PRESET]
 });
 const jsonSchemaDraft7 = {

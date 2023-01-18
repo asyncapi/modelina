@@ -1,4 +1,18 @@
-import { FileHelpers, DartFileGenerator, OutputModel, ConstrainedAnyModel, InputMetaModel, GoFileGenerator, JavaFileGenerator, JavaScriptFileGenerator, TypeScriptFileGenerator, CSharpFileGenerator, RustFileGenerator, PythonFileGenerator } from '../../src';
+import {
+  FileHelpers,
+  DartFileGenerator,
+  OutputModel,
+  ConstrainedAnyModel,
+  InputMetaModel,
+  GoFileGenerator,
+  JavaFileGenerator,
+  JavaScriptFileGenerator,
+  TypeScriptFileGenerator,
+  CSharpFileGenerator,
+  RustFileGenerator,
+  PythonFileGenerator,
+  KotlinFileGenerator
+} from '../../src';
 import * as path from 'path';
 
 const generatorsToTest = [
@@ -41,7 +55,12 @@ const generatorsToTest = [
     generator: new PythonFileGenerator(),
     generatorOptions: { },
     fileExtension: 'py'
-  }
+  },
+  {
+    generator: new KotlinFileGenerator(),
+    generatorOptions: { packageName: 'SomePackage' },
+    fileExtension: 'kt'
+  },
 ];
 
 describe.each(generatorsToTest)('generateToFiles', ({ generator, generatorOptions, fileExtension }) => {
