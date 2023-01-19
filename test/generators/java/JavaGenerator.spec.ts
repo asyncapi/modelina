@@ -1,4 +1,4 @@
-import { JavaGenerator } from '../../../src/generators'; 
+import { JavaGenerator } from '../../../src/generators';
 
 describe('JavaGenerator', () => {
   let generator: JavaGenerator;
@@ -91,12 +91,11 @@ describe('JavaGenerator', () => {
       type: 'string',
       enum: ['Texas', 'Alabama', 'California', 'New York'],
     };
-    const expectedDependencies = [];
 
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot();
-    expect(models[0].dependencies).toEqual(expectedDependencies);
+    expect(models[0].dependencies).toEqual([]);
   });
 
   test('should render `enum` type (integer type)', async () => {
@@ -105,12 +104,11 @@ describe('JavaGenerator', () => {
       type: 'integer',
       enum: [0, 1, 2, 3],
     };
-    const expectedDependencies = [];
-    
+
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot();
-    expect(models[0].dependencies).toEqual(expectedDependencies);
+    expect(models[0].dependencies).toEqual([]);
   });
 
   test('should render `enum` type (union type)', async () => {
@@ -119,12 +117,11 @@ describe('JavaGenerator', () => {
       type: ['string', 'integer', 'boolean'],
       enum: ['Texas', 'Alabama', 0, 1, '1', true, {test: 'test'}],
     };
-    const expectedDependencies = [];
-    
+
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot();
-    expect(models[0].dependencies).toEqual(expectedDependencies);
+    expect(models[0].dependencies).toEqual([]);
   });
 
   test('should render custom preset for `enum` type', async () => {
@@ -144,12 +141,11 @@ describe('JavaGenerator', () => {
         }
       }
     ] });
-    const expectedDependencies = [];
-    
+
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot();
-    expect(models[0].dependencies).toEqual(expectedDependencies);
+    expect(models[0].dependencies).toEqual([]);
   });
 
   test('should render enums with translated special characters', async () => {
@@ -157,12 +153,11 @@ describe('JavaGenerator', () => {
       $id: 'States',
       enum: ['test+', 'test', 'test-', 'test?!', '*test']
     };
-    const expectedDependencies = [];
-    
+
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot();
-    expect(models[0].dependencies).toEqual(expectedDependencies);
+    expect(models[0].dependencies).toEqual([]);
   });
 
   test('should render List type for collections', async () => {
@@ -205,13 +200,13 @@ describe('JavaGenerator', () => {
       },
       required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
     };
-    const config = {packageName: 'test.package'};
+    const config = {packageName: 'test.packageName'};
     const models = await generator.generateCompleteModels(doc, config);
     expect(models).toHaveLength(2);
     expect(models[0].result).toMatchSnapshot();
     expect(models[1].result).toMatchSnapshot();
   });
-  test('should throw error when reserved keyword is used for package name', async () => {
+  test('should throw error when reserved keyword is used in any part of the package name', async () => {
     const doc = {
       $id: 'Address',
       type: 'object',
@@ -231,8 +226,8 @@ describe('JavaGenerator', () => {
       },
       required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
     };
-    const config = {packageName: 'package'};
-    const expectedError = new Error('You cannot use reserved Java keyword (package) as package name, please use another.');
+    const config = {packageName: 'valid.package.correct.class'};
+    const expectedError = new Error('You cannot use \'valid.package.correct.class\' as a package name, contains reserved keywords: [package, class]');
     await expect(generator.generateCompleteModels(doc, config)).rejects.toEqual(expectedError);
   });
 });

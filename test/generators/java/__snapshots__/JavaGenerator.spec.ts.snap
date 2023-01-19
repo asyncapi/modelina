@@ -211,8 +211,8 @@ exports[`JavaGenerator should render enums with translated special characters 1`
 `;
 
 exports[`JavaGenerator should render models and their dependencies 1`] = `
-"package test.package;
-import test.package.OtherModel;
+"package test.packageName;
+import test.packageName.OtherModel;
 import java.util.Map;
 public class Address {
   private String streetName;
@@ -255,7 +255,7 @@ public class Address {
 `;
 
 exports[`JavaGenerator should render models and their dependencies 2`] = `
-"package test.package;
+"package test.packageName;
 
 import java.util.Map;
 public class OtherModel {
