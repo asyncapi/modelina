@@ -1,5 +1,5 @@
-import { 
-  AbstractGenerator, 
+import {
+  AbstractGenerator,
   CommonGeneratorOptions,
   defaultGeneratorOptions
 } from '../AbstractGenerator';
@@ -10,9 +10,9 @@ import { ClassRenderer } from './renderers/ClassRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { isReservedJavaKeyword } from './Constants';
 import { Logger } from '../../';
-import { constrainMetaModel, Constraints } from '../../helpers/ConstrainHelpers';
+import { constrainMetaModel, Constraints } from '../../helpers';
 import { JavaDefaultConstraints, JavaDefaultTypeMapping } from './JavaConstrainer';
-import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
+import { DeepPartial, mergePartialAndDefault } from '../../utils';
 
 export interface JavaOptions extends CommonGeneratorOptions<JavaPreset> {
   collectionType: 'List' | 'Array';
@@ -25,7 +25,7 @@ export interface JavaRenderCompleteModelOptions {
 export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderCompleteModelOptions> {
   static defaultOptions: JavaOptions = {
     ...defaultGeneratorOptions,
-    defaultPreset: JAVA_DEFAULT_PRESET,     
+    defaultPreset: JAVA_DEFAULT_PRESET,
     collectionType: 'Array',
     typeMapping: JavaDefaultTypeMapping,
     constraints: JavaDefaultConstraints
@@ -37,11 +37,11 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderComp
     const realizedOptions = mergePartialAndDefault(JavaGenerator.defaultOptions, options) as JavaOptions;
     super('Java', realizedOptions);
   }
-  
+
   splitMetaModel(model: MetaModel): MetaModel[] {
     //These are the models that we have separate renderers for
     const metaModelsToSplit = {
-      splitEnum: true, 
+      splitEnum: true,
       splitObject: true
     };
     return split(model, metaModelsToSplit);
@@ -49,8 +49,8 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderComp
 
   constrainToMetaModel(model: MetaModel): ConstrainedMetaModel {
     return constrainMetaModel<JavaOptions>(
-      this.options.typeMapping, 
-      this.options.constraints, 
+      this.options.typeMapping,
+      this.options.constraints,
       {
         metaModel: model,
         options: this.options,
@@ -61,33 +61,31 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderComp
 
   /**
    * Render a scattered model, where the source code and library and model dependencies are separated.
-   * 
-   * @param model 
-   * @param inputModel 
+   *
+   * @param model
+   * @param inputModel
    */
   render(model: ConstrainedMetaModel, inputModel: InputMetaModel): Promise<RenderOutput> {
     if (model instanceof ConstrainedObjectModel) {
       return this.renderClass(model, inputModel);
     } else if (model instanceof ConstrainedEnumModel) {
       return this.renderEnum(model, inputModel);
-    } 
+    }
     Logger.warn(`Java generator, cannot generate this type of model, ${model.name}`);
     return Promise.resolve(RenderOutput.toRenderOutput({ result: '', renderedName: '', dependencies: [] }));
   }
 
   /**
    * Render a complete model result where the model code, library and model dependencies are all bundled appropriately.
-   * 
+   *
    * For Java you need to specify which package the model is placed under.
-   * 
-   * @param model 
-   * @param inputModel 
+   *
+   * @param model
+   * @param inputModel
    * @param options used to render the full output
    */
   async renderCompleteModel(model: ConstrainedMetaModel, inputModel: InputMetaModel, options: JavaRenderCompleteModelOptions): Promise<RenderOutput> {
-    if (isReservedJavaKeyword(options.packageName)) {
-      throw new Error(`You cannot use reserved Java keyword (${options.packageName}) as package name, please use another.`);
-    }
+    this.assertPackageIsValid(options);
 
     const outputModel = await this.render(model, inputModel);
     const modelDependencies = model.getNearestDependencies().map((dependencyModel) => {
@@ -96,8 +94,18 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderComp
     const outputContent = `package ${options.packageName};
 ${modelDependencies.join('\n')}
 ${outputModel.dependencies.join('\n')}
-${outputModel.result}`; 
+${outputModel.result}`;
     return RenderOutput.toRenderOutput({result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies});
+  }
+
+  private assertPackageIsValid(options: JavaRenderCompleteModelOptions) {
+    const reservedWords = options.packageName
+      .split('.')
+      .filter(subpackage => isReservedJavaKeyword(subpackage, true));
+
+    if (reservedWords.length > 0) {
+      throw new Error(`You cannot use '${options.packageName}' as a package name, contains reserved keywords: [${reservedWords.join(', ')}]`);
+    }
   }
 
   async renderClass(model: ConstrainedObjectModel, inputModel: InputMetaModel): Promise<RenderOutput> {
@@ -108,7 +116,7 @@ ${outputModel.result}`;
   }
 
   async renderEnum(model: ConstrainedEnumModel, inputModel: InputMetaModel): Promise<RenderOutput> {
-    const presets = this.getPresets('enum'); 
+    const presets = this.getPresets('enum');
     const renderer = new EnumRenderer(this.options, this, presets, model, inputModel);
     const result = await renderer.runSelfPreset();
     return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: renderer.dependencies});
