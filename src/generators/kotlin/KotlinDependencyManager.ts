@@ -1,4 +1,3 @@
-import { ConstrainedMetaModel } from '../../models';
 import { AbstractDependencyManager } from '../AbstractDependencyManager';
 import { KotlinOptions } from './KotlinGenerator';
 

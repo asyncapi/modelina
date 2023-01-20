@@ -1,9 +1,8 @@
 import { ConstrainedEnumValueModel } from '../../models';
-import { TypeMapping } from '../../helpers';
 import { defaultEnumKeyConstraints, defaultEnumValueConstraints } from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
-import { KotlinOptions, KotlinTypeMapping } from './KotlinGenerator';
+import { KotlinTypeMapping } from './KotlinGenerator';
 
 function enumFormatToNumberType(enumValueModel: ConstrainedEnumValueModel, format: string): string {
   switch (format) {

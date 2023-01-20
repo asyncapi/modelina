@@ -44,7 +44,6 @@ export class KotlinGenerator extends AbstractGenerator<KotlinOptions, KotlinRend
     super('Kotlin', realizedOptions);
   }
 
-
   /**
    * Returns the Kotlin options by merging custom options with default ones.
    */
@@ -118,8 +117,6 @@ export class KotlinGenerator extends AbstractGenerator<KotlinOptions, KotlinRend
    */
   async renderCompleteModel(model: ConstrainedMetaModel, inputModel: InputMetaModel, options: KotlinRenderCompleteModelOptions): Promise<RenderOutput> {
     const optionsToUse = KotlinGenerator.getKotlinOptions({...this.options, ...options});
-    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
-
     const outputModel = await this.render(model, inputModel, optionsToUse);
     const packageName = this.sanitizePackageName(options.packageName);
     const outputContent = `package ${packageName}
