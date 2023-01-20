@@ -3,6 +3,7 @@ import { InputMetaModel, OutputModel } from '../../models';
 import * as path from 'path';
 import { AbstractFileGenerator } from '../AbstractFileGenerator';
 import { FileHelpers } from '../../helpers';
+import { DeepPartial } from '../../utils';
 
 export class CSharpFileGenerator extends CSharpGenerator implements AbstractFileGenerator<CSharpRenderCompleteModelOptions> {
   /**
@@ -13,7 +14,7 @@ export class CSharpFileGenerator extends CSharpGenerator implements AbstractFile
    * @param options
    * @param ensureFilesWritten verify that the files is completely written before returning, this can happen if the file system is swamped with write requests. 
    */
-  public async generateToFiles(input: Record<string, unknown> | InputMetaModel, outputDirectory: string, options: CSharpRenderCompleteModelOptions, ensureFilesWritten = false): Promise<OutputModel[]> {
+  public async generateToFiles(input: Record<string, unknown> | InputMetaModel, outputDirectory: string, options: DeepPartial<CSharpRenderCompleteModelOptions>, ensureFilesWritten = false): Promise<OutputModel[]> {
     let generatedModels = await this.generateCompleteModels(input, options);
     //Filter anything out that have not been successfully generated
     generatedModels = generatedModels.filter((outputModel) => { return outputModel.modelName !== ''; });

@@ -5,7 +5,7 @@ import {
   defaultGeneratorOptions
 } from '../AbstractGenerator';
 import { ConstrainedEnumModel, ConstrainedMetaModel, ConstrainedObjectModel, InputMetaModel, MetaModel, RenderOutput } from '../../models';
-import { split, TypeMapping } from '../../helpers';
+import { split, SplitOptions, TypeMapping } from '../../helpers';
 import { PythonPreset, PYTHON_DEFAULT_PRESET } from './PythonPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
@@ -13,28 +13,54 @@ import { Logger } from '../..';
 import { constrainMetaModel, Constraints } from '../../helpers/ConstrainHelpers';
 import { PythonDefaultConstraints, PythonDefaultTypeMapping } from './PythonConstrainer';
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
+import { PythonDependencyManager } from './PythonDependencyManager';
 
 export interface PythonOptions extends CommonGeneratorOptions<PythonPreset> {
-  typeMapping: TypeMapping<PythonOptions>;
+  typeMapping: TypeMapping<PythonOptions, PythonDependencyManager>;
   constraints: Constraints;
   importsStyle: 'explicit' | 'implicit';
 }
+export type PythonTypeMapping = TypeMapping<PythonOptions, PythonDependencyManager>;
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface PythonRenderCompleteModelOptions {}
+export interface PythonRenderCompleteModelOptions { }
+
 export class PythonGenerator extends AbstractGenerator<PythonOptions, PythonRenderCompleteModelOptions> {
   static defaultOptions: PythonOptions = {
     ...defaultGeneratorOptions,
     defaultPreset: PYTHON_DEFAULT_PRESET,
     typeMapping: PythonDefaultTypeMapping,
     constraints: PythonDefaultConstraints,
-    importsStyle: 'implicit'
+    importsStyle: 'implicit',
+    // Temporarily set
+    dependencyManager: () => { return {} as PythonDependencyManager; }
   };
+
+  static defaultCompleteModelOptions: PythonRenderCompleteModelOptions = { };
 
   constructor(
     options?: DeepPartial<PythonOptions>,
   ) {
-    const realizedOptions = mergePartialAndDefault(PythonGenerator.defaultOptions, options) as PythonOptions;
+    const realizedOptions = PythonGenerator.getPythonOptions(options);
     super('Python', realizedOptions);
+  }
+
+  /**
+   * Returns the Python options by merging custom options with default ones.
+   */
+  static getPythonOptions(options?: DeepPartial<PythonOptions>): PythonOptions {
+    const optionsToUse = mergePartialAndDefault(PythonGenerator.defaultOptions, options) as PythonOptions;
+    //Always overwrite the dependency manager unless user explicitly state they want it (ignore default temporary dependency manager)
+    if (options?.dependencyManager === undefined) {
+      optionsToUse.dependencyManager = () => { return new PythonDependencyManager(optionsToUse); };
+    }
+    return optionsToUse;
+  }
+
+  /**
+   * Wrapper to get an instance of the dependency manager
+   */
+  getDependencyManager(options: PythonOptions): PythonDependencyManager {
+    return this.getDependencyManagerInstance(options) as PythonDependencyManager;
   }
 
   /**
@@ -42,20 +68,23 @@ export class PythonGenerator extends AbstractGenerator<PythonOptions, PythonRend
    */
   splitMetaModel(model: MetaModel): MetaModel[] {
     //These are the models that we have separate renderers for
-    const metaModelsToSplit = {
+    const metaModelsToSplit: SplitOptions = {
       splitEnum: true, 
       splitObject: true
     };
     return split(model, metaModelsToSplit);
   }
 
-  constrainToMetaModel(model: MetaModel): ConstrainedMetaModel {
-    return constrainMetaModel<PythonOptions>(
+  constrainToMetaModel(model: MetaModel, options: DeepPartial<PythonOptions>): ConstrainedMetaModel {
+    const optionsToUse = PythonGenerator.getPythonOptions({...this.options, ...options});
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
+    return constrainMetaModel<PythonOptions, PythonDependencyManager>(
       this.options.typeMapping, 
       this.options.constraints, 
       {
         metaModel: model,
-        options: this.options,
+        dependencyManager: dependencyManagerToUse,
+        options: {...this.options},
         constrainedName: '' //This is just a placeholder, it will be constrained within the function
       }
     );
@@ -67,11 +96,12 @@ export class PythonGenerator extends AbstractGenerator<PythonOptions, PythonRend
    * @param model 
    * @param inputModel 
    */
-  render(model: ConstrainedMetaModel, inputModel: InputMetaModel): Promise<RenderOutput> {
+  render(model: ConstrainedMetaModel, inputModel: InputMetaModel, options?: DeepPartial<PythonOptions>): Promise<RenderOutput> {
+    const optionsToUse = PythonGenerator.getPythonOptions({...this.options, ...options});
     if (model instanceof ConstrainedObjectModel) {
-      return this.renderClass(model, inputModel);
+      return this.renderClass(model, inputModel, optionsToUse);
     } else if (model instanceof ConstrainedEnumModel) {
-      return this.renderEnum(model, inputModel);
+      return this.renderEnum(model, inputModel, optionsToUse);
     } 
     Logger.warn(`Python generator, cannot generate this type of model, ${model.name}`);
     return Promise.resolve(RenderOutput.toRenderOutput({ result: '', renderedName: '', dependencies: [] }));
@@ -86,29 +116,37 @@ export class PythonGenerator extends AbstractGenerator<PythonOptions, PythonRend
    * @param inputModel 
    * @param options used to render the full output
    */
-  async renderCompleteModel(model: ConstrainedMetaModel, inputModel: InputMetaModel, options: PythonOptions): Promise<RenderOutput> {
-    const useExplicitImports = options.importsStyle === 'explicit';
-    const outputModel = await this.render(model, inputModel);
-    const modelDependencies = model.getNearestDependencies().map((dependencyModel) => {
-      return `from ${useExplicitImports ? '.' : ''}${dependencyModel.name} import ${dependencyModel.name}`;
-    });
+  async renderCompleteModel(
+    model: ConstrainedMetaModel, 
+    inputModel: InputMetaModel, 
+    completeModelOptions: Partial<PythonRenderCompleteModelOptions>,
+    options: DeepPartial<PythonOptions>): Promise<RenderOutput> {
+    //const completeModelOptionsToUse = mergePartialAndDefault(PythonGenerator.defaultCompleteModelOptions, completeModelOptions) as PythonRenderCompleteModelOptions;
+    const optionsToUse = PythonGenerator.getPythonOptions({...this.options, ...options});
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
+    const outputModel = await this.render(model, inputModel, {dependencyManager: dependencyManagerToUse});
+    const modelDependencies = model.getNearestDependencies().map((model) => {return dependencyManagerToUse.renderDependency(model);});
     const outputContent = `${modelDependencies.join('\n')}
 ${outputModel.dependencies.join('\n')}
 ${outputModel.result}`; 
     return RenderOutput.toRenderOutput({result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies});
   }
 
-  async renderClass(model: ConstrainedObjectModel, inputModel: InputMetaModel): Promise<RenderOutput> {
+  async renderClass(model: ConstrainedObjectModel, inputModel: InputMetaModel, options?: DeepPartial<PythonOptions>): Promise<RenderOutput> {
+    const optionsToUse = PythonGenerator.getPythonOptions({...this.options, ...options});
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('class');
-    const renderer = new ClassRenderer(this.options, this, presets, model, inputModel);
+    const renderer = new ClassRenderer(optionsToUse, this, presets, model, inputModel, dependencyManagerToUse);
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: renderer.dependencies});
+    return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: dependencyManagerToUse.dependencies});
   }
 
-  async renderEnum(model: ConstrainedEnumModel, inputModel: InputMetaModel): Promise<RenderOutput> {
+  async renderEnum(model: ConstrainedEnumModel, inputModel: InputMetaModel, options?: DeepPartial<PythonOptions>): Promise<RenderOutput> {
+    const optionsToUse = PythonGenerator.getPythonOptions({...this.options, ...options});
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('enum'); 
-    const renderer = new EnumRenderer(this.options, this, presets, model, inputModel);
+    const renderer = new EnumRenderer(optionsToUse, this, presets, model, inputModel, dependencyManagerToUse);
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: renderer.dependencies});
+    return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: dependencyManagerToUse.dependencies});
   }
 }

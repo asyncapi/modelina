@@ -20,7 +20,7 @@ export class ClassRenderer extends CSharpRenderer<ConstrainedObjectModel> {
 
     if (this.options?.collectionType === 'List' ||
       this.model.containsPropertyType(ConstrainedDictionaryModel)) {
-      this.addDependency('using System.Collections.Generic;');
+      this.dependencyManager.addDependency('using System.Collections.Generic;');
     }
 
     return `public class ${this.model.name}

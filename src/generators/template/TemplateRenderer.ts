@@ -1,6 +1,7 @@
 import { AbstractRenderer } from '../AbstractRenderer';
 import { TemplateGenerator, TemplateOptions } from './TemplateGenerator';
 import { ConstrainedMetaModel, InputMetaModel, Preset } from '../../models';
+import { TemplateDependencyManager } from './TemplateDependencyManager';
 
 /**
  * Common renderer for Template
@@ -14,6 +15,7 @@ export abstract class TemplateRenderer<RendererModelType extends ConstrainedMeta
     presets: Array<[Preset, unknown]>,
     model: RendererModelType, 
     inputModel: InputMetaModel,
+    public dependencyManager: TemplateDependencyManager
   ) {
     super(options, generator, presets, model, inputModel);
   }

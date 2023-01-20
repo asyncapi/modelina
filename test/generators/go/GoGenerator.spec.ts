@@ -151,7 +151,7 @@ describe('GoGenerator', () => {
           {
             struct: {
               self({ renderer, content }) {
-                renderer.addDependency('time');
+                renderer.dependencyManager.addDependency('time');
                 return content;
               },
             }

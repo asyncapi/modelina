@@ -3,8 +3,8 @@ import { ClassPresetType, PythonPreset } from '../PythonPreset';
 
 const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
   async self({renderer, model}) {
-    renderer.addDependency('from typing import Optional, Any');
-    renderer.addDependency('from pydantic import BaseModel, Field');
+    renderer.dependencyManager.addDependency('from typing import Optional, Any');
+    renderer.dependencyManager.addDependency('from pydantic import BaseModel, Field');
 
     const defaultClassString = await renderer.defaultSelf();
 

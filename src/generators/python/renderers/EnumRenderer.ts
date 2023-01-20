@@ -39,7 +39,7 @@ ${this.indent(this.renderBlock(content, 2))}`;
 
 export const PYTHON_DEFAULT_ENUM_PRESET: EnumPresetType<PythonOptions> = {
   self({ renderer }) {
-    renderer.addDependency('from enum import Enum');
+    renderer.dependencyManager.addDependency('from enum import Enum');
     return renderer.defaultSelf();
   },
   item({ item }) {

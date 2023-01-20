@@ -1,10 +1,10 @@
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultEnumKeyConstraints, defaultEnumValueConstraints } from './constrainer/EnumConstrainer';
-import { Constraints, TypeMapping } from '../../helpers';
-import { JavaScriptOptions } from './JavaScriptGenerator';
+import { Constraints } from '../../helpers';
+import { JavaScriptTypeMapping } from './JavaScriptGenerator';
 
-export const JavaScriptDefaultTypeMapping: TypeMapping<JavaScriptOptions> = {
+export const JavaScriptDefaultTypeMapping: JavaScriptTypeMapping = {
   Object (): string {
     return ''; 
   },

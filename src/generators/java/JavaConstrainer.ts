@@ -1,9 +1,8 @@
 import { ConstrainedEnumValueModel } from '../../models';
-import { TypeMapping } from '../../helpers';
 import { defaultEnumKeyConstraints, defaultEnumValueConstraints } from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
-import { JavaOptions } from './JavaGenerator';
+import { JavaTypeMapping } from './JavaGenerator';
 
 function enumFormatToNumberType(enumValueModel: ConstrainedEnumValueModel, format: string): string {
   switch (format) {
@@ -64,7 +63,7 @@ const interpretUnionValueType = (types: string[]): string => {
   return 'Object';
 };
 
-export const JavaDefaultTypeMapping: TypeMapping<JavaOptions> = {
+export const JavaDefaultTypeMapping: JavaTypeMapping = {
   Object({ constrainedModel }): string {
     return constrainedModel.name;
   },

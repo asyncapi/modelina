@@ -3,6 +3,8 @@ import { RustGenerator, RustOptions } from './RustGenerator';
 import { InputMetaModel, Preset, ConstrainedMetaModel } from '../../models';
 import { FormatHelpers } from '../../helpers/FormatHelpers';
 import { deriveCopy, deriveHash, derivePartialEq, deriveEq, derivePartialOrd, deriveOrd } from './RustConstrainer';
+import { RustDependencyManager } from './RustDependencyManager';
+
 /**
  * Common renderer for Rust types
  * 
@@ -15,6 +17,7 @@ export abstract class RustRenderer<RendererModelType extends ConstrainedMetaMode
     presets: Array<[Preset, unknown]>,
     model: RendererModelType,
     inputModel: InputMetaModel,
+    public dependencyManager: RustDependencyManager
   ) {
     super(options, generator, presets, model, inputModel);
   }

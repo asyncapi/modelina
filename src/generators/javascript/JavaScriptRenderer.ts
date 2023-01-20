@@ -2,6 +2,7 @@ import { AbstractRenderer } from '../AbstractRenderer';
 import { JavaScriptGenerator, JavaScriptOptions } from './JavaScriptGenerator';
 import { FormatHelpers } from '../../helpers';
 import { Preset, ConstrainedMetaModel, InputMetaModel } from '../../models';
+import { JavaScriptDependencyManager } from './JavaScriptDependencyManager';
 
 /**
  * Common renderer for JavaScript types
@@ -15,6 +16,7 @@ export abstract class JavaScriptRenderer<RendererModelType extends ConstrainedMe
     presets: Array<[Preset, unknown]>,
     model: RendererModelType,
     inputModel: InputMetaModel,
+    public dependencyManager: JavaScriptDependencyManager
   ) {
     super(options, generator, presets, model, inputModel);
   }

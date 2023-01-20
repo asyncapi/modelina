@@ -49,6 +49,9 @@ These are examples that can be applied in all scenarios.
 - [custom-logging](./custom-logging) - A basic example where a custom logger is used.
 - [generate-to-files](./generate-to-files) - A basic example that shows how you can generate the models directly to files.
 - [indentation-type-and-size](./indentation-type-and-size) - This example shows how to change the indentation type and size of the generated model.
+- [change-type-mapping](./change-type-mapping/) - A basic example showing how to change the type of a model in some context.
+- [change-type-mapping-with-dependency](./change-type-mapping-with-dependency/) - A basic example showing how to use the dependency manager to inject your own custom type with a dependency instead of the default type.
+
 
 ## Simple generator examples
 These are all the basic generator examples that shows a bare minimal example of a generator:

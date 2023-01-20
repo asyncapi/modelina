@@ -9,7 +9,7 @@ import {JavaPreset} from '../JavaPreset';
 export const JAVA_CONSTRAINTS_PRESET: JavaPreset = {
   class: {
     self({renderer, content}) {
-      renderer.addDependency('import javax.validation.constraints.*;');
+      renderer.dependencyManager.addDependency('import javax.validation.constraints.*;');
       return content;
     },
     // eslint-disable-next-line sonarjs/cognitive-complexity

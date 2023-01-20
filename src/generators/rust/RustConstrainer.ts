@@ -1,8 +1,8 @@
 import { defaultEnumKeyConstraints, defaultEnumValueConstraints } from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
-import { RustOptions } from './RustGenerator';
-import { FormatHelpers, Constraints, TypeMapping } from '../../helpers';
+import { RustTypeMapping } from './RustGenerator';
+import { FormatHelpers, Constraints } from '../../helpers';
 import { ConstrainedAnyModel, ConstrainedArrayModel, ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedFloatModel, ConstrainedMetaModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedUnionModel } from '../../models';
 
 export function deriveHash(model: ConstrainedMetaModel): boolean {
@@ -198,7 +198,7 @@ export function allCopyable(model: ConstrainedMetaModel): boolean {
   return false;
 }
 
-export const RustDefaultTypeMapping: TypeMapping<RustOptions> = {
+export const RustDefaultTypeMapping: RustTypeMapping = {
   Object({ constrainedModel }): string {
     return constrainedModel.name;
   },

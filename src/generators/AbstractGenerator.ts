@@ -1,15 +1,25 @@
 import { InputMetaModel, OutputModel, Preset, Presets, RenderOutput, ProcessorOptions, MetaModel, ConstrainedMetaModel } from '../models';
 import { InputProcessor } from '../processors';
 import { IndentationTypes } from '../helpers';
-import { isPresetWithOptions } from '../utils';
-export interface CommonGeneratorOptions<P extends Preset = Preset> {
+import { DeepPartial, isPresetWithOptions } from '../utils';
+import { AbstractDependencyManager } from './AbstractDependencyManager';
+
+export interface CommonGeneratorOptions<P extends Preset = Preset, DependencyManager extends AbstractDependencyManager = AbstractDependencyManager> {
   indentation?: {
     type: IndentationTypes;
     size: number;
   };
   defaultPreset?: P;
   presets?: Presets<P>;
-  processorOptions?: ProcessorOptions
+  processorOptions?: ProcessorOptions;
+  /**
+   * This dependency manager type serves two functions.
+   * 1. It can be used to provide a factory for generate functions 
+   * 2. It can be used to provide a single instance of a dependency manager, to add all dependencies together
+   * 
+   * This depends on context and where it's used. 
+   */
+  dependencyManager?: (() => DependencyManager) | DependencyManager;
 }
 
 export const defaultGeneratorOptions: CommonGeneratorOptions = {
@@ -23,16 +33,17 @@ export const defaultGeneratorOptions: CommonGeneratorOptions = {
  * Abstract generator which must be implemented by each language
  */
 export abstract class AbstractGenerator<
-  Options extends CommonGeneratorOptions = CommonGeneratorOptions, 
-  RenderCompleteModelOptions = any> {
+  Options extends CommonGeneratorOptions, 
+  RenderCompleteModelOptions> {
   constructor(
     public readonly languageName: string,
     public readonly options: Options
   ) { }
 
-  public abstract render(model: MetaModel, inputModel: InputMetaModel): Promise<RenderOutput>;
-  public abstract renderCompleteModel(model: MetaModel, inputModel: InputMetaModel, options: RenderCompleteModelOptions): Promise<RenderOutput>;
-  public abstract constrainToMetaModel(model: MetaModel): ConstrainedMetaModel;
+  public abstract render(model: MetaModel, inputModel: InputMetaModel, options?: DeepPartial<Options>): Promise<RenderOutput>;
+  public abstract renderCompleteModel(model: MetaModel, inputModel: InputMetaModel, completeOptions: Partial<RenderCompleteModelOptions>, options?: DeepPartial<Options>): Promise<RenderOutput>;
+  public abstract constrainToMetaModel(model: MetaModel, options: DeepPartial<Options>): ConstrainedMetaModel;
+  public abstract getDependencyManager(options: Options): AbstractDependencyManager;
   public abstract splitMetaModel(model: MetaModel): MetaModel[];
 
   public process(input: Record<string, unknown>): Promise<InputMetaModel> {
@@ -40,18 +51,30 @@ export abstract class AbstractGenerator<
   }
 
   /**
+   * This function returns an instance of the dependency manager which is either a factory or an instance.
+   */
+  protected getDependencyManagerInstance(options: Options): AbstractDependencyManager {
+    if (options.dependencyManager === undefined) {
+      throw new Error('Internal error, could not find dependency manager instance');
+    }
+    if (typeof options.dependencyManager === 'function') {
+      return options.dependencyManager();
+    }
+    return options.dependencyManager;
+  }
+
+  /**
    * Generates the full output of a model, instead of a scattered model.
    * 
    * OutputModels result is no longer the model itself, but including package, package dependencies and model dependencies.
    * 
-   * @param input 
-   * @param options to use for rendering full output
    */
-  public async generateCompleteModels(input: any | InputMetaModel, options: RenderCompleteModelOptions): Promise<OutputModel[]> {
+  public async generateCompleteModels(input: any | InputMetaModel, completeOptions: Partial<RenderCompleteModelOptions>): Promise<OutputModel[]> {
     const inputModel = await this.processInput(input);
     const renders = Object.values(inputModel.models).map(async (model) => {
-      const constrainedModel = this.constrainToMetaModel(model);
-      const renderedOutput = await this.renderCompleteModel(constrainedModel, inputModel, options);
+      const dependencyManager = this.getDependencyManager(this.options);
+      const constrainedModel = this.constrainToMetaModel(model, {dependencyManager} as DeepPartial<Options>);
+      const renderedOutput = await this.renderCompleteModel(constrainedModel, inputModel, completeOptions, {dependencyManager} as DeepPartial<Options>);
       return OutputModel.toOutputModel({ 
         result: renderedOutput.result,
         modelName: renderedOutput.renderedName, 
@@ -65,14 +88,13 @@ export abstract class AbstractGenerator<
 
   /**
    * Generates a scattered model where dependencies and rendered results are separated. 
-   * 
-   * @param input 
    */
   public async generate(input: any | InputMetaModel): Promise<OutputModel[]> {
     const inputModel = await this.processInput(input);
     const renders = Object.values(inputModel.models).map(async (model) => {
-      const constrainedModel = this.constrainToMetaModel(model);
-      const renderedOutput = await this.render(constrainedModel, inputModel);
+      const dependencyManager = this.getDependencyManager(this.options);
+      const constrainedModel = this.constrainToMetaModel(model, {dependencyManager} as DeepPartial<Options>);
+      const renderedOutput = await this.render(constrainedModel, inputModel, {dependencyManager} as DeepPartial<Options>);
       return OutputModel.toOutputModel({ 
         result: renderedOutput.result,
         modelName: renderedOutput.renderedName, 
@@ -105,6 +127,9 @@ export abstract class AbstractGenerator<
     return rawInputModel;
   }
 
+  /**
+   * Get all presets (default and custom ones from options) for a given preset type (class, enum, etc).  
+   */
   protected getPresets(presetType: string): Array<[Preset, unknown]> {
     const filteredPresets: Array<[Preset, unknown]> = [];
 

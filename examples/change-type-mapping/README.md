@@ -1,6 +1,6 @@
 # Change type mapping
 
-This example shows how to overwrite the default type mapping, and in this case we overwrite the default rendering of the NumberMetaModel `number` and instead use `integer`.
+This example shows how to overwrite the default type mapping, and in this case we overwrite the default rendering of the FloatModel `number` and instead use `integer`.
 
 ## How to run this example
 

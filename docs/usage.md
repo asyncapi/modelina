@@ -36,6 +36,27 @@ For more specific integration options, please check out the [integration documen
 
 <!-- tocstop -->
 
+## Generator's options
+
+For Modelina, there exist 3 types of options for the generation process.
+1. Default options, are the default options the rest overwrite.
+2. Generator options, are used as the baseline options used for each model rendering, unless otherwise specified.
+3. Render options, are the last options to specify before the rendering of a model, this is used to specialize the options for individual rendering of a model.
+
+Generator options are passed as the first argument to the generator's constructor. Check the example:
+
+```ts
+const generator = new TypeScriptGenerator({ ...options });
+```
+
+Render options are passed as the first argument to the generator's render function. Check the example:
+
+```ts
+const generator = ...
+generator.render(model, inputModel, { ...options });
+
+```
+
 ## Understanding the output format
 
 The output format is designed for you to use the generated models in further contexts. It might be part of a larger code generation such as AsyncAPI templates. This means that you can glue multiple models together into one large file, or split it out as you see fit.

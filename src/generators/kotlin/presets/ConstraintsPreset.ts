@@ -11,7 +11,7 @@ import {ClassRenderer} from '../renderers/ClassRenderer';
 export const KOTLIN_CONSTRAINTS_PRESET: KotlinPreset = {
   class: {
     self({renderer, content}) {
-      renderer.addDependency('import javax.validation.constraints.*');
+      renderer.dependencyManager.addDependency('javax.validation.constraints.*');
       return content;
     },
     property({ renderer, property, content}) {
