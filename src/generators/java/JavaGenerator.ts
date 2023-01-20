@@ -120,7 +120,7 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderComp
     const optionsToUse = JavaGenerator.getJavaOptions({...this.options, ...options});
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
 
-    this.assertPackageIsValid(options);
+    this.assertPackageIsValid(completeModelOptionsToUse);
 
     const outputModel = await this.render(model, inputModel, optionsToUse);
     const modelDependencies = dependencyManagerToUse.renderAllModelDependencies(model, completeModelOptionsToUse.packageName);
