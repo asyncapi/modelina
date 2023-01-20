@@ -196,6 +196,10 @@ Check is done using referential equality</p>
 <dt><a href="#interpretName">interpretName(schema)</a></dt>
 <dd><p>Find the name for simplified version of schema</p>
 </dd>
+<dt><a href="#isClass">isClass(obj)</a></dt>
+<dd><p>Return true or false based on whether the input object is a regular object or a class</p>
+<p>Taken from: <a href="https://stackoverflow.com/a/43197340/6803886">https://stackoverflow.com/a/43197340/6803886</a></p>
+</dd>
 <dt><a href="#mergePartialAndDefault">mergePartialAndDefault()</a></dt>
 <dd><p>Merge a non optional value with custom optional values to form a full value that has all properties sat.</p>
 </dd>
@@ -209,35 +213,32 @@ Abstract generator which must be implemented by each language
 **Kind**: global class  
 
 * [AbstractGenerator](#AbstractGenerator)
-    * [.generateCompleteModels(input, options)](#AbstractGenerator+generateCompleteModels)
-    * [.generate(input)](#AbstractGenerator+generate)
+    * [.getDependencyManagerInstance()](#AbstractGenerator+getDependencyManagerInstance)
+    * [.generateCompleteModels()](#AbstractGenerator+generateCompleteModels)
+    * [.generate()](#AbstractGenerator+generate)
     * [.processInput(input)](#AbstractGenerator+processInput)
+    * [.getPresets()](#AbstractGenerator+getPresets)
 
+<a name="AbstractGenerator+getDependencyManagerInstance"></a>
+
+### abstractGenerator.getDependencyManagerInstance()
+This function returns an instance of the dependency manager which is either a factory or an instance.
+
+**Kind**: instance method of [<code>AbstractGenerator</code>](#AbstractGenerator)  
 <a name="AbstractGenerator+generateCompleteModels"></a>
 
-### abstractGenerator.generateCompleteModels(input, options)
+### abstractGenerator.generateCompleteModels()
 Generates the full output of a model, instead of a scattered model.
 
 OutputModels result is no longer the model itself, but including package, package dependencies and model dependencies.
 
 **Kind**: instance method of [<code>AbstractGenerator</code>](#AbstractGenerator)  
-
-| Param | Description |
-| --- | --- |
-| input |  |
-| options | to use for rendering full output |
-
 <a name="AbstractGenerator+generate"></a>
 
-### abstractGenerator.generate(input)
+### abstractGenerator.generate()
 Generates a scattered model where dependencies and rendered results are separated.
 
 **Kind**: instance method of [<code>AbstractGenerator</code>](#AbstractGenerator)  
-
-| Param |
-| --- |
-| input | 
-
 <a name="AbstractGenerator+processInput"></a>
 
 ### abstractGenerator.processInput(input)
@@ -250,23 +251,18 @@ based on the requirements of the generators
 | --- |
 | input | 
 
+<a name="AbstractGenerator+getPresets"></a>
+
+### abstractGenerator.getPresets()
+Get all presets (default and custom ones from options) for a given preset type (class, enum, etc).
+
+**Kind**: instance method of [<code>AbstractGenerator</code>](#AbstractGenerator)  
 <a name="AbstractRenderer"></a>
 
 ## AbstractRenderer
 Abstract renderer with common helper methods
 
 **Kind**: global class  
-<a name="AbstractRenderer+addDependency"></a>
-
-### abstractRenderer.addDependency(dependency)
-Adds a dependency while ensuring that only one dependency is preset at a time.
-
-**Kind**: instance method of [<code>AbstractRenderer</code>](#AbstractRenderer)  
-
-| Param | Description |
-| --- | --- |
-| dependency | complete dependency string so it can be rendered as is. |
-
 <a name="AsyncapiV2Schema"></a>
 
 ## AsyncapiV2Schema
@@ -1520,6 +1516,19 @@ Find the name for simplified version of schema
 | Param | Description |
 | --- | --- |
 | schema | to find the name |
+
+<a name="isClass"></a>
+
+## isClass(obj)
+Return true or false based on whether the input object is a regular object or a class
+
+Taken from: https://stackoverflow.com/a/43197340/6803886
+
+**Kind**: global function  
+
+| Param |
+| --- |
+| obj | 
 
 <a name="mergePartialAndDefault"></a>
 
