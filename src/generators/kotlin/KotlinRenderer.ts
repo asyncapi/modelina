@@ -2,6 +2,7 @@ import { AbstractRenderer } from '../AbstractRenderer';
 import { KotlinGenerator, KotlinOptions } from './KotlinGenerator';
 import { ConstrainedMetaModel, InputMetaModel, Preset } from '../../models';
 import { FormatHelpers } from '../../helpers';
+import { KotlinDependencyManager } from './KotlinDependencyManager';
 
 /**
  * Common renderer for Kotlin
@@ -15,6 +16,7 @@ export abstract class KotlinRenderer<RendererModelType extends ConstrainedMetaMo
     presets: Array<[Preset, unknown]>,
     model: RendererModelType,
     inputModel: InputMetaModel,
+    public dependencyManager: KotlinDependencyManager
   ) {
     super(options, generator, presets, model, inputModel);
   }

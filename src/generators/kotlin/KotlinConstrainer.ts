@@ -1,9 +1,8 @@
 import { ConstrainedEnumValueModel } from '../../models';
-import { TypeMapping } from '../../helpers';
 import { defaultEnumKeyConstraints, defaultEnumValueConstraints } from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
-import { KotlinOptions } from './KotlinGenerator';
+import { KotlinTypeMapping } from './KotlinGenerator';
 
 function enumFormatToNumberType(enumValueModel: ConstrainedEnumValueModel, format: string): string {
   switch (format) {
@@ -63,7 +62,7 @@ function interpretUnionValueType(types: string[]): string {
   return 'Any';
 }
 
-export const KotlinDefaultTypeMapping: TypeMapping<KotlinOptions> = {
+export const KotlinDefaultTypeMapping: KotlinTypeMapping = {
   Object ({constrainedModel}): string {
     return constrainedModel.name;
   },

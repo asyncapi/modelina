@@ -13,12 +13,14 @@ import { Logger } from '../..';
 import { constrainMetaModel, Constraints } from '../../helpers/ConstrainHelpers';
 import { KotlinDefaultConstraints, KotlinDefaultTypeMapping } from './KotlinConstrainer';
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
+import { KotlinDependencyManager } from './KotlinDependencyManager';
 
 export interface KotlinOptions extends CommonGeneratorOptions<KotlinPreset> {
-  typeMapping: TypeMapping<KotlinOptions>;
+  typeMapping: TypeMapping<KotlinOptions, KotlinDependencyManager>;
   constraints: Constraints;
   collectionType: 'List' | 'Array';
 }
+export type KotlinTypeMapping = TypeMapping<KotlinOptions, KotlinDependencyManager>;
 export interface KotlinRenderCompleteModelOptions {
   packageName: string
 }
@@ -38,9 +40,29 @@ export class KotlinGenerator extends AbstractGenerator<KotlinOptions, KotlinRend
   constructor(
     options?: DeepPartial<KotlinOptions>,
   ) {
-    const realizedOptions = mergePartialAndDefault(KotlinGenerator.defaultOptions, options) as KotlinOptions;
+    const realizedOptions = KotlinGenerator.getKotlinOptions(options);
     super('Kotlin', realizedOptions);
   }
+
+  /**
+   * Returns the Kotlin options by merging custom options with default ones.
+   */
+  static getKotlinOptions(options?: DeepPartial<KotlinOptions>): KotlinOptions {
+    const optionsToUse = mergePartialAndDefault(KotlinGenerator.defaultOptions, options) as KotlinOptions;
+    //Always overwrite the dependency manager unless user explicitly state they want it (ignore default temporary dependency manager)
+    if (options?.dependencyManager === undefined) {
+      optionsToUse.dependencyManager = () => { return new KotlinDependencyManager(optionsToUse); };
+    }
+    return optionsToUse;
+  }
+
+  /**
+   * Wrapper to get an instance of the dependency manager
+   */
+  getDependencyManager(options: KotlinOptions): KotlinDependencyManager {
+    return this.getDependencyManagerInstance(options) as KotlinDependencyManager;
+  }
+
   /**
    * This function makes sure we split up the MetaModels accordingly to what we want to render as models.
    */
@@ -52,13 +74,16 @@ export class KotlinGenerator extends AbstractGenerator<KotlinOptions, KotlinRend
     return split(model, metaModelsToSplit);
   }
 
-  constrainToMetaModel(model: MetaModel): ConstrainedMetaModel {
-    return constrainMetaModel<KotlinOptions>(
-      this.options.typeMapping,
-      this.options.constraints,
+  constrainToMetaModel(model: MetaModel, options: DeepPartial<KotlinOptions>): ConstrainedMetaModel {
+    const optionsToUse = KotlinGenerator.getKotlinOptions({...this.options, ...options});
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
+    return constrainMetaModel<KotlinOptions, KotlinDependencyManager>(
+      optionsToUse.typeMapping,
+      optionsToUse.constraints,
       {
         metaModel: model,
-        options: this.options,
+        dependencyManager: dependencyManagerToUse,
+        options: optionsToUse,
         constrainedName: '' //This is just a placeholder, it will be constrained within the function
       }
     );
@@ -70,11 +95,12 @@ export class KotlinGenerator extends AbstractGenerator<KotlinOptions, KotlinRend
    * @param model
    * @param inputModel
    */
-  render(model: ConstrainedMetaModel, inputModel: InputMetaModel): Promise<RenderOutput> {
+  render(model: ConstrainedMetaModel, inputModel: InputMetaModel, options?: DeepPartial<KotlinOptions>): Promise<RenderOutput> {
+    const optionsToUse = KotlinGenerator.getKotlinOptions({...this.options, ...options});
     if (model instanceof ConstrainedObjectModel) {
-      return this.renderClass(model, inputModel);
+      return this.renderClass(model, inputModel, optionsToUse);
     } else if (model instanceof ConstrainedEnumModel) {
-      return this.renderEnum(model, inputModel);
+      return this.renderEnum(model, inputModel, optionsToUse);
     }
     Logger.warn(`Kotlin generator, cannot generate this type of model, ${model.name}`);
     return Promise.resolve(RenderOutput.toRenderOutput({ result: '', renderedName: '', dependencies: [] }));
@@ -90,8 +116,8 @@ export class KotlinGenerator extends AbstractGenerator<KotlinOptions, KotlinRend
    * @param options used to render the full output
    */
   async renderCompleteModel(model: ConstrainedMetaModel, inputModel: InputMetaModel, options: KotlinRenderCompleteModelOptions): Promise<RenderOutput> {
-    const outputModel = await this.render(model, inputModel);
-
+    const optionsToUse = KotlinGenerator.getKotlinOptions({...this.options, ...options});
+    const outputModel = await this.render(model, inputModel, optionsToUse);
     const packageName = this.sanitizePackageName(options.packageName);
     const outputContent = `package ${packageName}
 ${outputModel.dependencies.join('\n')}
@@ -107,17 +133,21 @@ ${outputModel.result}`;
       .join('.');
   }
 
-  async renderClass(model: ConstrainedObjectModel, inputModel: InputMetaModel): Promise<RenderOutput> {
+  async renderClass(model: ConstrainedObjectModel, inputModel: InputMetaModel, options?: DeepPartial<KotlinOptions>): Promise<RenderOutput> {
+    const optionsToUse = KotlinGenerator.getKotlinOptions({...this.options, ...options});
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('class');
-    const renderer = new ClassRenderer(this.options, this, presets, model, inputModel);
+    const renderer = new ClassRenderer(this.options, this, presets, model, inputModel, dependencyManagerToUse);
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: renderer.dependencies});
+    return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: dependencyManagerToUse.dependencies});
   }
 
-  async renderEnum(model: ConstrainedEnumModel, inputModel: InputMetaModel): Promise<RenderOutput> {
+  async renderEnum(model: ConstrainedEnumModel, inputModel: InputMetaModel, options?: DeepPartial<KotlinOptions>): Promise<RenderOutput> {
+    const optionsToUse = KotlinGenerator.getKotlinOptions({...this.options, ...options});
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('enum');
-    const renderer = new EnumRenderer(this.options, this, presets, model, inputModel);
+    const renderer = new EnumRenderer(this.options, this, presets, model, inputModel, dependencyManagerToUse);
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: renderer.dependencies});
+    return RenderOutput.toRenderOutput({result, renderedName: model.name, dependencies: dependencyManagerToUse.dependencies});
   }
 }
