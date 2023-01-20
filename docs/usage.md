@@ -10,6 +10,7 @@ For more specific integration options, please check out the [integration documen
 
 <!-- toc -->
 
+- [Generator's options](#generators-options)
 - [Understanding the output format](#understanding-the-output-format)
 - [Generate models from AsyncAPI documents](#generate-models-from-asyncapi-documents)
   * [Limitations and Compatibility](#limitations-and-compatibility)
