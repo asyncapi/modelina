@@ -1,5 +1,5 @@
-import { 
-  AbstractGenerator, 
+import {
+  AbstractGenerator,
   CommonGeneratorOptions,
   defaultGeneratorOptions
 } from '../AbstractGenerator';
@@ -10,7 +10,7 @@ import { ClassRenderer } from './renderers/ClassRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { isReservedJavaKeyword } from './Constants';
 import { Logger } from '../../';
-import { constrainMetaModel, Constraints } from '../../helpers/ConstrainHelpers';
+import { constrainMetaModel, Constraints } from '../../helpers';
 import { JavaDefaultConstraints, JavaDefaultTypeMapping } from './JavaConstrainer';
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 import { JavaDependencyManager } from './JavaDependencyManager';
@@ -27,7 +27,7 @@ export interface JavaRenderCompleteModelOptions {
 export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderCompleteModelOptions> {
   static defaultOptions: JavaOptions = {
     ...defaultGeneratorOptions,
-    defaultPreset: JAVA_DEFAULT_PRESET,     
+    defaultPreset: JAVA_DEFAULT_PRESET,
     collectionType: 'Array',
     typeMapping: JavaDefaultTypeMapping,
     constraints: JavaDefaultConstraints
@@ -89,9 +89,9 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderComp
 
   /**
    * Render a scattered model, where the source code and library and model dependencies are separated.
-   * 
-   * @param model 
-   * @param inputModel 
+   *
+   * @param model
+   * @param inputModel
    */
   render(model: ConstrainedMetaModel, inputModel: InputMetaModel, options?: DeepPartial<JavaOptions>): Promise<RenderOutput> {
     const optionsToUse = JavaGenerator.getJavaOptions({...this.options, ...options});
@@ -106,11 +106,11 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderComp
 
   /**
    * Render a complete model result where the model code, library and model dependencies are all bundled appropriately.
-   * 
+   *
    * For Java you need to specify which package the model is placed under.
-   * 
-   * @param model 
-   * @param inputModel 
+   *
+   * @param model
+   * @param inputModel
    * @param options used to render the full output
    */
   async renderCompleteModel(model: ConstrainedMetaModel, inputModel: InputMetaModel, 
@@ -120,19 +120,27 @@ export class JavaGenerator extends AbstractGenerator<JavaOptions, JavaRenderComp
     const optionsToUse = JavaGenerator.getJavaOptions({...this.options, ...options});
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
 
-    if (isReservedJavaKeyword(completeModelOptionsToUse.packageName)) {
-      throw new Error(`You cannot use reserved Java keyword (${completeModelOptionsToUse.packageName}) as package name, please use another.`);
-    }
+    this.assertPackageIsValid(options);
 
     const outputModel = await this.render(model, inputModel, optionsToUse);
     const modelDependencies = dependencyManagerToUse.renderAllModelDependencies(model, completeModelOptionsToUse.packageName);
     const outputContent = `package ${completeModelOptionsToUse.packageName};
 ${modelDependencies}
 ${outputModel.dependencies.join('\n')}
-${outputModel.result}`; 
+${outputModel.result}`;
     return RenderOutput.toRenderOutput({result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies});
   }
 
+  private assertPackageIsValid(options: JavaRenderCompleteModelOptions) {
+    const reservedWords = options.packageName
+      .split('.')
+      .filter(subpackage => isReservedJavaKeyword(subpackage, true));
+
+    if (reservedWords.length > 0) {
+      throw new Error(`You cannot use '${options.packageName}' as a package name, contains reserved keywords: [${reservedWords.join(', ')}]`);
+    }
+  }
+  
   async renderClass(model: ConstrainedObjectModel, inputModel: InputMetaModel, options?: DeepPartial<JavaOptions>): Promise<RenderOutput> {
     const optionsToUse = JavaGenerator.getJavaOptions({...this.options, ...options});
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
