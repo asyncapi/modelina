@@ -11,17 +11,24 @@ export interface CSharpCommonPresetOptions {
 /**
  * Render `equal` function based on model's properties
  */
-function renderEqual({ renderer, model }: {
-  renderer: CSharpRenderer<any>,
-  model: ConstrainedObjectModel,
+function renderEqual({
+  renderer,
+  model
+}: {
+  renderer: CSharpRenderer<any>;
+  model: ConstrainedObjectModel;
 }): string {
   const properties = model.properties || {};
   const propertyKeys = Object.keys(properties);
-  let equalProperties = propertyKeys.map(propertyName => {
-    const accessorMethodProp = FormatHelpers.upperFirst(propertyName);
-    return `${accessorMethodProp} == model.${accessorMethodProp}`;
-  }).join(' && \n');
-  equalProperties = `return ${equalProperties !== '' ? equalProperties : 'true'}`;
+  let equalProperties = propertyKeys
+    .map((propertyName) => {
+      const accessorMethodProp = FormatHelpers.upperFirst(propertyName);
+      return `${accessorMethodProp} == model.${accessorMethodProp}`;
+    })
+    .join(' && \n');
+  equalProperties = `return ${
+    equalProperties !== '' ? equalProperties : 'true'
+  }`;
   const methodContent = `if(obj is ${model.name} model)
 {
 ${renderer.indent('if(ReferenceEquals(this, model)) { return true; }')}
@@ -39,13 +46,20 @@ ${renderer.indent(methodContent)}
 /**
  * Render `hashCode` function based on model's properties
  */
-function renderHashCode({ renderer, model }: {
-  renderer: CSharpRenderer<any>,
-  model: ConstrainedObjectModel,
+function renderHashCode({
+  renderer,
+  model
+}: {
+  renderer: CSharpRenderer<any>;
+  model: ConstrainedObjectModel;
 }): string {
   const properties = model.properties || {};
   const propertyKeys = Object.keys(properties);
-  const hashProperties = propertyKeys.map(propertyName => `hash.Add(${FormatHelpers.upperFirst(propertyName)});`).join('\n');
+  const hashProperties = propertyKeys
+    .map(
+      (propertyName) => `hash.Add(${FormatHelpers.upperFirst(propertyName)});`
+    )
+    .join('\n');
 
   return `public override int GetHashCode()
 {
@@ -56,8 +70,8 @@ ${renderer.indent(hashProperties, 2)}
 }
 
 /**
- * Preset which adds `Equals`, `GetHashCode` functions to class. 
- * 
+ * Preset which adds `Equals`, `GetHashCode` functions to class.
+ *
  * @implements {CSharpPreset}
  */
 export const CSHARP_COMMON_PRESET: CSharpPreset<CSharpCommonPresetOptions> = {
@@ -66,8 +80,8 @@ export const CSHARP_COMMON_PRESET: CSharpPreset<CSharpCommonPresetOptions> = {
       options = options || {};
       const blocks: string[] = [];
 
-      if (options.equal === undefined || options.equal === true) { 
-        blocks.push(renderEqual({ renderer, model })); 
+      if (options.equal === undefined || options.equal === true) {
+        blocks.push(renderEqual({ renderer, model }));
       }
       if (options.hash === undefined || options.hash === true) {
         renderer.dependencyManager.addDependency('using System;');
@@ -75,6 +89,6 @@ export const CSHARP_COMMON_PRESET: CSharpPreset<CSharpCommonPresetOptions> = {
       }
 
       return renderer.renderBlock([content, ...blocks], 2);
-    },
+    }
   }
 };

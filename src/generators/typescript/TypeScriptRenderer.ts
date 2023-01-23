@@ -6,15 +6,21 @@ import { TypeScriptDependencyManager } from './TypeScriptDependencyManager';
 
 /**
  * Common renderer for TypeScript types
- * 
+ *
  * @extends AbstractRenderer
  */
-export abstract class TypeScriptRenderer<RendererModelType extends ConstrainedMetaModel = ConstrainedMetaModel> extends AbstractRenderer<TypeScriptOptions, TypeScriptGenerator, RendererModelType> {
+export abstract class TypeScriptRenderer<
+  RendererModelType extends ConstrainedMetaModel = ConstrainedMetaModel
+> extends AbstractRenderer<
+  TypeScriptOptions,
+  TypeScriptGenerator,
+  RendererModelType
+> {
   constructor(
     options: TypeScriptOptions,
     generator: TypeScriptGenerator,
     presets: Array<[Preset, unknown]>,
-    model: RendererModelType, 
+    model: RendererModelType,
     inputModel: InputMetaModel,
     public dependencyManager: TypeScriptDependencyManager
   ) {
@@ -23,7 +29,7 @@ export abstract class TypeScriptRenderer<RendererModelType extends ConstrainedMe
 
   renderComments(lines: string | string[]): string {
     lines = FormatHelpers.breakLines(lines);
-    const renderedLines = lines.map(line => ` * ${line}`).join('\n');
+    const renderedLines = lines.map((line) => ` * ${line}`).join('\n');
     return `/**
 ${renderedLines}
  */`;

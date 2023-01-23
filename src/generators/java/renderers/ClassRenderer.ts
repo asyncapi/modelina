@@ -1,12 +1,16 @@
 import { JavaRenderer } from '../JavaRenderer';
-import { ConstrainedDictionaryModel, ConstrainedObjectModel, ConstrainedObjectPropertyModel } from '../../../models';
+import {
+  ConstrainedDictionaryModel,
+  ConstrainedObjectModel,
+  ConstrainedObjectPropertyModel
+} from '../../../models';
 import { FormatHelpers } from '../../../helpers';
 import { JavaOptions } from '../JavaGenerator';
 import { ClassPresetType } from '../JavaPreset';
 
 /**
  * Renderer for Java's `class` type
- * 
+ *
  * @extends JavaRenderer
  */
 export class ClassRenderer extends JavaRenderer<ConstrainedObjectModel> {
@@ -15,7 +19,7 @@ export class ClassRenderer extends JavaRenderer<ConstrainedObjectModel> {
       await this.renderProperties(),
       await this.runCtorPreset(),
       await this.renderAccessors(),
-      await this.runAdditionalContentPreset(),
+      await this.runAdditionalContentPreset()
     ];
 
     if (this.options?.collectionType === 'List') {
@@ -24,7 +28,7 @@ export class ClassRenderer extends JavaRenderer<ConstrainedObjectModel> {
     if (this.model.containsPropertyType(ConstrainedDictionaryModel)) {
       this.dependencyManager.addDependency('import java.util.Map;');
     }
-    
+
     return `public class ${this.model.name} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
@@ -86,7 +90,9 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
     return `private ${property.property.type} ${property.propertyName};`;
   },
   getter({ property }) {
-    const getterName = `get${FormatHelpers.toPascalCase(property.propertyName)}`;
+    const getterName = `get${FormatHelpers.toPascalCase(
+      property.propertyName
+    )}`;
     return `public ${property.property.type} ${getterName}() { return this.${property.propertyName}; }`;
   },
   setter({ property }) {

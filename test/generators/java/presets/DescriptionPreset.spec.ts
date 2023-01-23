@@ -1,4 +1,7 @@
-import { JavaGenerator, JAVA_DESCRIPTION_PRESET } from '../../../../src/generators'; 
+import {
+  JavaGenerator,
+  JAVA_DESCRIPTION_PRESET
+} from '../../../../src/generators';
 
 describe('JAVA_DESCRIPTION_PRESET', () => {
   let generator: JavaGenerator;
@@ -13,13 +16,17 @@ describe('JAVA_DESCRIPTION_PRESET', () => {
       description: 'Description for class',
       examples: [{ prop: 'value' }],
       properties: {
-        prop: { type: 'string', description: 'Description for prop', examples: ['exampleValue'] },
-      },
+        prop: {
+          type: 'string',
+          description: 'Description for prop',
+          examples: ['exampleValue']
+        }
+      }
     };
     const expectedDependencies = ['import java.util.Map;'];
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
-    expect(models[0].result).toMatchSnapshot(); 
+    expect(models[0].result).toMatchSnapshot();
     expect(models[0].dependencies).toEqual(expectedDependencies);
   });
 
@@ -29,15 +36,12 @@ describe('JAVA_DESCRIPTION_PRESET', () => {
       type: 'string',
       description: 'Description for enum',
       examples: ['value'],
-      enum: [
-        'on',
-        'off',
-      ]
+      enum: ['on', 'off']
     };
 
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
-    expect(models[0].result).toMatchSnapshot(); 
+    expect(models[0].result).toMatchSnapshot();
     expect(models[0].dependencies).toEqual([]);
   });
 });

@@ -1,5 +1,7 @@
-const spy = jest.spyOn(global.console, 'log').mockImplementation(() => { return; });
-import {generate} from './index';
+const spy = jest.spyOn(global.console, 'log').mockImplementation(() => {
+  return;
+});
+import { generate } from './index';
 
 describe(`Should be able to generate Java models from a TypeScript type file 
 along with specific options`, () => {
@@ -12,4 +14,3 @@ along with specific options`, () => {
     expect(spy.mock.calls[1]).toMatchSnapshot();
   });
 });
-

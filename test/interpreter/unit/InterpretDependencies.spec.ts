@@ -6,7 +6,7 @@ jest.mock('../../../src/interpreter/Interpreter');
 jest.mock('../../../src/models/CommonModel');
 jest.mock('../../../src/interpreter/Utils');
 /**
- * Some of these test are purely theoretical and have little if any merit 
+ * Some of these test are purely theoretical and have little if any merit
  * on a JSON Schema which actually makes sense but are used to test the principles.
  */
 describe('Interpretation of dependencies', () => {
@@ -19,8 +19,8 @@ describe('Interpretation of dependencies', () => {
 
   test('should not do anything if schema does not contain dependencies', () => {
     const model = new CommonModel();
-    const interpreter = new Interpreter(); 
-    
+    const interpreter = new Interpreter();
+
     interpretDependencies({}, model, interpreter);
 
     expect(interpreter.interpretAndCombineSchema).not.toHaveBeenCalled();
@@ -28,9 +28,9 @@ describe('Interpretation of dependencies', () => {
   });
   test('should not do anything with property dependencies', () => {
     const model = new CommonModel();
-    const interpreter = new Interpreter(); 
-    const schema = { dependencies: {dep1: ['dep2']} };
-    
+    const interpreter = new Interpreter();
+    const schema = { dependencies: { dep1: ['dep2'] } };
+
     interpretDependencies(schema, model, interpreter);
 
     expect(interpreter.interpretAndCombineSchema).not.toHaveBeenCalled();
@@ -39,11 +39,17 @@ describe('Interpretation of dependencies', () => {
 
   test('should interpret and combine schema dependencies', () => {
     const model = new CommonModel();
-    const schema = { dependencies: {dep1: {}} };
+    const schema = { dependencies: { dep1: {} } };
     const interpreter = new Interpreter();
 
     interpretDependencies(schema, model, interpreter);
 
-    expect(interpreter.interpretAndCombineSchema).toHaveBeenNthCalledWith(1, schema.dependencies.dep1, model, schema, Interpreter.defaultInterpreterOptions);
+    expect(interpreter.interpretAndCombineSchema).toHaveBeenNthCalledWith(
+      1,
+      schema.dependencies.dep1,
+      model,
+      schema,
+      Interpreter.defaultInterpreterOptions
+    );
   });
 });

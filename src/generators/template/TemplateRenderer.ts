@@ -5,15 +5,21 @@ import { TemplateDependencyManager } from './TemplateDependencyManager';
 
 /**
  * Common renderer for Template
- * 
+ *
  * @extends AbstractRenderer
  */
-export abstract class TemplateRenderer<RendererModelType extends ConstrainedMetaModel> extends AbstractRenderer<TemplateOptions, TemplateGenerator, RendererModelType> {
+export abstract class TemplateRenderer<
+  RendererModelType extends ConstrainedMetaModel
+> extends AbstractRenderer<
+  TemplateOptions,
+  TemplateGenerator,
+  RendererModelType
+> {
   constructor(
     options: TemplateOptions,
     generator: TemplateGenerator,
     presets: Array<[Preset, unknown]>,
-    model: RendererModelType, 
+    model: RendererModelType,
     inputModel: InputMetaModel,
     public dependencyManager: TemplateDependencyManager
   ) {

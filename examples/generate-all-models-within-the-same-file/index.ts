@@ -9,13 +9,12 @@ const jsonSchemaDraft7 = {
   properties: {
     email: {
       type: 'string',
-      enum: ['example1@test.com', 'example2@test.com'],
-    },
-  },
+      enum: ['example1@test.com', 'example2@test.com']
+    }
+  }
 };
 export async function generate(): Promise<void> {
-  const outputFile =
-    './output';
+  const outputFile = './output';
   const models = await generator.generate(jsonSchemaDraft7);
   const modelCode = models.map((outputModel) => {
     return outputModel.result;

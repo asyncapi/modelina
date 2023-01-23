@@ -1,21 +1,30 @@
 import { CSharpPreset } from '../CSharpPreset';
-import { ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedObjectModel, ConstrainedReferenceModel } from '../../../models';
+import {
+  ConstrainedDictionaryModel,
+  ConstrainedEnumModel,
+  ConstrainedObjectModel,
+  ConstrainedReferenceModel
+} from '../../../models';
 import { CSharpOptions } from '../CSharpGenerator';
 import { pascalCase } from 'change-case';
 
 /**
  * Render `serialize` function based on model
  */
-function renderSerialize({ model }: {
-  model: ConstrainedObjectModel
-}): string {
+function renderSerialize({ model }: { model: ConstrainedObjectModel }): string {
   const corePropsWrite = Object.values(model.properties)
-    .filter((prop) => !(prop.property instanceof ConstrainedDictionaryModel) || prop.property.serializationType === 'normal')
+    .filter(
+      (prop) =>
+        !(prop.property instanceof ConstrainedDictionaryModel) ||
+        prop.property.serializationType === 'normal'
+    )
     .map((prop) => {
       const propertyAccessor = pascalCase(prop.propertyName);
       let toJson = `jo.Add("${prop.unconstrainedPropertyName}", JToken.FromObject(value.${propertyAccessor}, serializer));`;
-      if (prop.property instanceof ConstrainedReferenceModel 
-        && prop.property.ref instanceof ConstrainedEnumModel) {
+      if (
+        prop.property instanceof ConstrainedReferenceModel &&
+        prop.property.ref instanceof ConstrainedEnumModel
+      ) {
         toJson = `var enumValue = ${prop.property.name}Extensions.GetValue((${prop.property.name})value.${propertyAccessor});
 var stringEnumValue = enumValue.ToString();
 // C# converts booleans to uppercase True and False, which newtonsoft cannot understand
@@ -29,7 +38,11 @@ jo.Add("${prop.unconstrainedPropertyName}", jsonToken);`;
 }`;
     });
   const unwrapPropsWrite = Object.values(model.properties)
-    .filter((prop) => prop.property instanceof ConstrainedDictionaryModel && prop.property.serializationType === 'unwrap')
+    .filter(
+      (prop) =>
+        prop.property instanceof ConstrainedDictionaryModel &&
+        prop.property.serializationType === 'unwrap'
+    )
     .map((prop) => {
       const propertyAccessor = pascalCase(prop.propertyName);
       return `if (value.${propertyAccessor} != null)
@@ -42,7 +55,9 @@ jo.Add("${prop.unconstrainedPropertyName}", jsonToken);`;
   }
 }`;
     });
-  return `public override void WriteJson(JsonWriter writer, ${model.name} value, JsonSerializer serializer)
+  return `public override void WriteJson(JsonWriter writer, ${
+    model.name
+  } value, JsonSerializer serializer)
 {
   JObject jo = new JObject();
 
@@ -56,18 +71,28 @@ jo.Add("${prop.unconstrainedPropertyName}", jsonToken);`;
 /**
  * Render `deserialize` function based on model
  */
-function renderDeserialize({ model }: {
-  model: ConstrainedObjectModel
+function renderDeserialize({
+  model
+}: {
+  model: ConstrainedObjectModel;
 }): string {
-  const unwrapDictionaryProps = Object.values(model.properties)
-    .filter((prop) => prop.property instanceof ConstrainedDictionaryModel && prop.property.serializationType === 'unwrap');
-  const coreProps = Object.values(model.properties)
-    .filter((prop) => !(prop.property instanceof ConstrainedDictionaryModel) || prop.property.serializationType === 'normal');
+  const unwrapDictionaryProps = Object.values(model.properties).filter(
+    (prop) =>
+      prop.property instanceof ConstrainedDictionaryModel &&
+      prop.property.serializationType === 'unwrap'
+  );
+  const coreProps = Object.values(model.properties).filter(
+    (prop) =>
+      !(prop.property instanceof ConstrainedDictionaryModel) ||
+      prop.property.serializationType === 'normal'
+  );
   const corePropsRead = coreProps.map((prop) => {
     const propertyAccessor = pascalCase(prop.propertyName);
     let toValue = `jo["${prop.unconstrainedPropertyName}"].ToObject<${prop.property.type}>(serializer)`;
-    if (prop.property instanceof ConstrainedReferenceModel 
-        && prop.property.ref instanceof ConstrainedEnumModel) {
+    if (
+      prop.property instanceof ConstrainedReferenceModel &&
+      prop.property.ref instanceof ConstrainedEnumModel
+    ) {
       toValue = `${prop.property.name}Extensions.To${prop.property.name}(jo["${prop.unconstrainedPropertyName}"])`;
     }
     return `if(jo["${prop.unconstrainedPropertyName}"] != null) {
@@ -79,20 +104,33 @@ function renderDeserialize({ model }: {
   });
   const dictionaryInitializers = unwrapDictionaryProps.map((prop) => {
     const propertyAccessor = pascalCase(prop.propertyName);
-    return `value.${propertyAccessor} = new Dictionary<${(prop.property as ConstrainedDictionaryModel).key.type}, ${(prop.property as ConstrainedDictionaryModel).value.type}>();`;
+    return `value.${propertyAccessor} = new Dictionary<${
+      (prop.property as ConstrainedDictionaryModel).key.type
+    }, ${(prop.property as ConstrainedDictionaryModel).value.type}>();`;
   });
   const unwrapDictionaryRead = unwrapDictionaryProps.map((prop) => {
     const propertyAccessor = pascalCase(prop.propertyName);
-    return `value.${propertyAccessor}[additionalProperty.Name] = additionalProperty.Value.ToObject<${(prop.property as ConstrainedDictionaryModel).value.type}>(serializer);`;
+    return `value.${propertyAccessor}[additionalProperty.Name] = additionalProperty.Value.ToObject<${
+      (prop.property as ConstrainedDictionaryModel).value.type
+    }>(serializer);`;
   });
-  const additionalPropertiesCode = unwrapDictionaryProps.length !== 0 ? `var additionalProperties = jo.Properties().Where((prop) => ${nonDictionaryPropCheck.join(' || ')});
+  const additionalPropertiesCode =
+    unwrapDictionaryProps.length !== 0
+      ? `var additionalProperties = jo.Properties().Where((prop) => ${nonDictionaryPropCheck.join(
+          ' || '
+        )});
   ${dictionaryInitializers}
 
   foreach (var additionalProperty in additionalProperties)
   {
     ${unwrapDictionaryRead.join('\n')}
-  }` : '';
-  return `public override ${model.name} ReadJson(JsonReader reader, System.Type objectType, ${model.name} existingValue, bool hasExistingValue, JsonSerializer serializer)
+  }`
+      : '';
+  return `public override ${
+    model.name
+  } ReadJson(JsonReader reader, System.Type objectType, ${
+    model.name
+  } existingValue, bool hasExistingValue, JsonSerializer serializer)
 {
   JObject jo = JObject.Load(reader);
   ${model.name} value = new ${model.name}();
@@ -106,21 +144,24 @@ function renderDeserialize({ model }: {
 
 /**
  * Preset which adds Newtonsoft/JSON.net converters for serializing and deserializing the data models
- * 
+ *
  * @implements {CSharpPreset}
  */
-export const CSHARP_NEWTONSOFT_SERIALIZER_PRESET: CSharpPreset<CSharpOptions> = {
-  class: {
-    self: ({ renderer, content, model }) => {
-      renderer.dependencyManager.addDependency('using Newtonsoft.Json;');
-      renderer.dependencyManager.addDependency('using Newtonsoft.Json.Linq;');
-      renderer.dependencyManager.addDependency('using System.Collections.Generic;');
-      renderer.dependencyManager.addDependency('using System.Linq;');
+export const CSHARP_NEWTONSOFT_SERIALIZER_PRESET: CSharpPreset<CSharpOptions> =
+  {
+    class: {
+      self: ({ renderer, content, model }) => {
+        renderer.dependencyManager.addDependency('using Newtonsoft.Json;');
+        renderer.dependencyManager.addDependency('using Newtonsoft.Json.Linq;');
+        renderer.dependencyManager.addDependency(
+          'using System.Collections.Generic;'
+        );
+        renderer.dependencyManager.addDependency('using System.Linq;');
 
-      const deserialize = renderDeserialize({ model });
-      const serialize = renderSerialize({ model });
+        const deserialize = renderDeserialize({ model });
+        const serialize = renderSerialize({ model });
 
-      return `[JsonConverter(typeof(${model.name}Converter))]
+        return `[JsonConverter(typeof(${model.name}Converter))]
 ${content}
 
 public class ${model.name}Converter : JsonConverter<${model.name}>
@@ -131,6 +172,6 @@ public class ${model.name}Converter : JsonConverter<${model.name}>
   public override bool CanRead => true;
   public override bool CanWrite => true;
 }`;
-    },
-  },
-};
+      }
+    }
+  };

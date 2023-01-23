@@ -5,7 +5,13 @@ import { MockTypeScriptRenderer } from '../../TestUtils/TestRenderers';
 describe('TypeScriptRenderer', () => {
   let renderer: TypeScriptRenderer<any>;
   beforeEach(() => {
-    renderer = new MockTypeScriptRenderer(TypeScriptGenerator.defaultOptions, new TypeScriptGenerator(), [], new ConstrainedObjectModel('', undefined, '', {}), new InputMetaModel());
+    renderer = new MockTypeScriptRenderer(
+      TypeScriptGenerator.defaultOptions,
+      new TypeScriptGenerator(),
+      [],
+      new ConstrainedObjectModel('', undefined, '', {}),
+      new InputMetaModel()
+    );
   });
 
   describe('renderComments()', () => {

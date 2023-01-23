@@ -1,5 +1,8 @@
 import { KotlinRenderer } from '../KotlinRenderer';
-import { ConstrainedObjectModel, ConstrainedObjectPropertyModel } from '../../../models';
+import {
+  ConstrainedObjectModel,
+  ConstrainedObjectPropertyModel
+} from '../../../models';
 import { KotlinOptions } from '../KotlinGenerator';
 import { ClassPresetType } from '../KotlinPreset';
 
@@ -10,13 +13,15 @@ import { ClassPresetType } from '../KotlinPreset';
  */
 export class ClassRenderer extends KotlinRenderer<ConstrainedObjectModel> {
   async defaultSelf(hasProperties: boolean): Promise<string> {
-    return hasProperties ? await this.defaultWithProperties() : `class ${this.model.name} {}`;
+    return hasProperties
+      ? await this.defaultWithProperties()
+      : `class ${this.model.name} {}`;
   }
 
   private async defaultWithProperties(): Promise<string> {
     const content = [
       await this.renderProperties(),
-      await this.runAdditionalContentPreset(),
+      await this.runAdditionalContentPreset()
     ];
 
     return `data class ${this.model.name}(

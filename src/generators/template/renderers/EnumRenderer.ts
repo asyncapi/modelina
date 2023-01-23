@@ -1,11 +1,14 @@
 import { TemplateRenderer } from '../TemplateRenderer';
-import { ConstrainedEnumModel, ConstrainedEnumValueModel} from '../../../models';
+import {
+  ConstrainedEnumModel,
+  ConstrainedEnumValueModel
+} from '../../../models';
 import { EnumPresetType } from '../TemplatePreset';
 import { TemplateOptions } from '../TemplateGenerator';
 
 /**
  * Renderer for Template's `enum` type
- * 
+ *
  * @extends TemplateRenderer
  */
 export class EnumRenderer extends TemplateRenderer<ConstrainedEnumModel> {
@@ -39,7 +42,9 @@ ${this.indent(this.renderBlock(content, 2))}
 
 export const TEMPLATE_DEFAULT_ENUM_PRESET: EnumPresetType<TemplateOptions> = {
   self({ renderer }) {
-    renderer.dependencyManager.addDependency('import com.fasterxml.jackson.annotation.*;');
+    renderer.dependencyManager.addDependency(
+      'import com.fasterxml.jackson.annotation.*;'
+    );
     return renderer.defaultSelf();
   },
   item({ item }) {
@@ -73,5 +78,5 @@ public static ${model.type} fromValue(${enumValueType} value) {
   }
   throw new IllegalArgumentException("Unexpected value '" + value + "'");
 }`;
-  },
+  }
 };

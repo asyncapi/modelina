@@ -3,7 +3,7 @@ import { pascalCase } from 'change-case';
 
 const generator = new TypeScriptGenerator({
   constraints: {
-    modelName: ({modelName}) => {
+    modelName: ({ modelName }) => {
       return 'MyOwnCustomModelName';
     }
   }
@@ -21,7 +21,7 @@ const jsonSchemaDraft7 = {
   }
 };
 
-export async function generate() : Promise<void> {
+export async function generate(): Promise<void> {
   const models = await generator.generate(jsonSchemaDraft7);
   for (const model of models) {
     console.log(model.result);

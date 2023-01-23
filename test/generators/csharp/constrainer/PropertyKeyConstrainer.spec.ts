@@ -1,14 +1,42 @@
 import { CSharpDefaultConstraints } from '../../../../src/generators/csharp/CSharpConstrainer';
-import { ConstrainedObjectModel, ConstrainedObjectPropertyModel, ObjectModel, ObjectPropertyModel } from '../../../../src';
-import { DefaultPropertyKeyConstraints, defaultPropertyKeyConstraints, PropertyKeyConstraintOptions } from '../../../../src/generators/csharp/constrainer/PropertyKeyConstrainer';
+import {
+  ConstrainedObjectModel,
+  ConstrainedObjectPropertyModel,
+  ObjectModel,
+  ObjectPropertyModel
+} from '../../../../src';
+import {
+  DefaultPropertyKeyConstraints,
+  defaultPropertyKeyConstraints,
+  PropertyKeyConstraintOptions
+} from '../../../../src/generators/csharp/constrainer/PropertyKeyConstrainer';
 describe('PropertyKeyConstrainer', () => {
   const objectModel = new ObjectModel('MyObjectModelName', undefined, {});
-  const constrainedObjectModel = new ConstrainedObjectModel('MyObjectModelName', undefined, '', {});
+  const constrainedObjectModel = new ConstrainedObjectModel(
+    'MyObjectModelName',
+    undefined,
+    '',
+    {}
+  );
 
   const constrainPropertyName = (propertyName: string) => {
-    const objectPropertyModel = new ObjectPropertyModel(propertyName, false, objectModel);
-    const constrainedObjectPropertyModel = new ConstrainedObjectPropertyModel('', '', objectPropertyModel.required, constrainedObjectModel);
-    return CSharpDefaultConstraints.propertyKey({constrainedObjectModel, objectModel, objectPropertyModel, constrainedObjectPropertyModel });
+    const objectPropertyModel = new ObjectPropertyModel(
+      propertyName,
+      false,
+      objectModel
+    );
+    const constrainedObjectPropertyModel = new ConstrainedObjectPropertyModel(
+      '',
+      '',
+      objectPropertyModel.required,
+      constrainedObjectModel
+    );
+    return CSharpDefaultConstraints.propertyKey({
+      constrainedObjectModel,
+      objectModel,
+      objectPropertyModel,
+      constrainedObjectPropertyModel
+    });
   };
 
   test('should never render special chars', () => {
@@ -33,14 +61,44 @@ describe('PropertyKeyConstrainer', () => {
   });
   test('should not contain duplicate properties', () => {
     const objectModel = new ObjectModel('test', undefined, {});
-    const constrainedObjectModel = new ConstrainedObjectModel('test', undefined, '', {});
-    const objectPropertyModel = new ObjectPropertyModel('reservedReturn', false, objectModel);
-    const constrainedObjectPropertyModel = new ConstrainedObjectPropertyModel('reservedReturn', '', objectPropertyModel.required, constrainedObjectModel);
-    const objectPropertyModel2 = new ObjectPropertyModel('return', false, objectModel);
-    const constrainedObjectPropertyModel2 = new ConstrainedObjectPropertyModel('return', '', objectPropertyModel.required, constrainedObjectModel);
-    constrainedObjectModel.properties['reservedReturn'] = constrainedObjectPropertyModel;
-    constrainedObjectModel.properties['return'] = constrainedObjectPropertyModel2;
-    const constrainedKey = CSharpDefaultConstraints.propertyKey({constrainedObjectModel, objectModel, objectPropertyModel: objectPropertyModel2, constrainedObjectPropertyModel: constrainedObjectPropertyModel2});
+    const constrainedObjectModel = new ConstrainedObjectModel(
+      'test',
+      undefined,
+      '',
+      {}
+    );
+    const objectPropertyModel = new ObjectPropertyModel(
+      'reservedReturn',
+      false,
+      objectModel
+    );
+    const constrainedObjectPropertyModel = new ConstrainedObjectPropertyModel(
+      'reservedReturn',
+      '',
+      objectPropertyModel.required,
+      constrainedObjectModel
+    );
+    const objectPropertyModel2 = new ObjectPropertyModel(
+      'return',
+      false,
+      objectModel
+    );
+    const constrainedObjectPropertyModel2 = new ConstrainedObjectPropertyModel(
+      'return',
+      '',
+      objectPropertyModel.required,
+      constrainedObjectModel
+    );
+    constrainedObjectModel.properties['reservedReturn'] =
+      constrainedObjectPropertyModel;
+    constrainedObjectModel.properties['return'] =
+      constrainedObjectPropertyModel2;
+    const constrainedKey = CSharpDefaultConstraints.propertyKey({
+      constrainedObjectModel,
+      objectModel,
+      objectPropertyModel: objectPropertyModel2,
+      constrainedObjectPropertyModel: constrainedObjectPropertyModel2
+    });
     expect(constrainedKey).toEqual('reservedReservedReturn');
   });
   test('should never render reserved keywords', () => {
@@ -57,10 +115,26 @@ describe('PropertyKeyConstrainer', () => {
         NO_RESERVED_KEYWORDS: jest.fn().mockReturnValue(''),
         NO_ENCLOSING_NAMES: jest.fn().mockReturnValue('')
       };
-      const constrainFunction = defaultPropertyKeyConstraints(mockedConstraintCallbacks);
-      const objectPropertyModel = new ObjectPropertyModel('', false, objectModel);
-      const constrainedObjectPropertyModel = new ConstrainedObjectPropertyModel('', '', objectPropertyModel.required, constrainedObjectModel);
-      constrainFunction({constrainedObjectModel, objectModel, objectPropertyModel, constrainedObjectPropertyModel});
+      const constrainFunction = defaultPropertyKeyConstraints(
+        mockedConstraintCallbacks
+      );
+      const objectPropertyModel = new ObjectPropertyModel(
+        '',
+        false,
+        objectModel
+      );
+      const constrainedObjectPropertyModel = new ConstrainedObjectPropertyModel(
+        '',
+        '',
+        objectPropertyModel.required,
+        constrainedObjectModel
+      );
+      constrainFunction({
+        constrainedObjectModel,
+        objectModel,
+        objectPropertyModel,
+        constrainedObjectPropertyModel
+      });
       //Expect all callbacks to be called
       for (const jestMockCallback of Object.values(mockedConstraintCallbacks)) {
         expect(jestMockCallback).toHaveBeenCalled();
@@ -75,12 +149,31 @@ describe('PropertyKeyConstrainer', () => {
         jest.spyOn(DefaultPropertyKeyConstraints, 'NO_RESERVED_KEYWORDS'),
         jest.spyOn(DefaultPropertyKeyConstraints, 'NO_ENCLOSING_NAMES')
       ];
-      const overwrittenDefaultFunction = jest.spyOn(DefaultPropertyKeyConstraints, 'NAMING_FORMATTER');
+      const overwrittenDefaultFunction = jest.spyOn(
+        DefaultPropertyKeyConstraints,
+        'NAMING_FORMATTER'
+      );
       const jestCallback = jest.fn().mockReturnValue('');
-      const constrainFunction = defaultPropertyKeyConstraints({NAMING_FORMATTER: jestCallback});
-      const objectPropertyModel = new ObjectPropertyModel('', false, objectModel);
-      const constrainedObjectPropertyModel = new ConstrainedObjectPropertyModel('', '', objectPropertyModel.required, constrainedObjectModel);
-      const constrainedValue = constrainFunction({constrainedObjectModel, objectModel, objectPropertyModel, constrainedObjectPropertyModel});
+      const constrainFunction = defaultPropertyKeyConstraints({
+        NAMING_FORMATTER: jestCallback
+      });
+      const objectPropertyModel = new ObjectPropertyModel(
+        '',
+        false,
+        objectModel
+      );
+      const constrainedObjectPropertyModel = new ConstrainedObjectPropertyModel(
+        '',
+        '',
+        objectPropertyModel.required,
+        constrainedObjectModel
+      );
+      const constrainedValue = constrainFunction({
+        constrainedObjectModel,
+        objectModel,
+        objectPropertyModel,
+        constrainedObjectPropertyModel
+      });
       expect(constrainedValue).toEqual('');
       expect(jestCallback).toHaveBeenCalled();
       expect(overwrittenDefaultFunction).not.toHaveBeenCalled();

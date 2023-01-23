@@ -8,9 +8,9 @@ const jsonSchemaDraft4 = {
   properties: {
     email: {
       type: 'string',
-      format: 'email',
-    },
-  },
+      format: 'email'
+    }
+  }
 };
 
 export async function generate(): Promise<void> {

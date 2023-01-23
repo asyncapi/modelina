@@ -4,10 +4,14 @@ const alterschema = require('alterschema');
 
 function getInputSchema(originalInput: any): string {
   if (originalInput.$schema !== undefined) {
-    if (originalInput.$schema.includes('http://json-schema.org/draft-04/schema')) {
+    if (
+      originalInput.$schema.includes('http://json-schema.org/draft-04/schema')
+    ) {
       return 'draft4';
     }
-    if (originalInput.$schema.includes('http://json-schema.org/draft-06/schema')) {
+    if (
+      originalInput.$schema.includes('http://json-schema.org/draft-06/schema')
+    ) {
       return 'draft6';
     }
   }
@@ -21,10 +25,17 @@ function getInputSchema(originalInput: any): string {
  */
 export const TS_JSONBINPACK_PRESET: TypeScriptPreset = {
   class: {
-    async additionalContent({renderer, content, model}) {
-      renderer.dependencyManager.addTypeScriptDependency('jsonbinpack', 'jsonbinpack');
-    
-      const jsonSchema = await alterschema(model.originalInput, getInputSchema(model.originalInput), '2020-12');
+    async additionalContent({ renderer, content, model }) {
+      renderer.dependencyManager.addTypeScriptDependency(
+        'jsonbinpack',
+        'jsonbinpack'
+      );
+
+      const jsonSchema = await alterschema(
+        model.originalInput,
+        getInputSchema(model.originalInput),
+        '2020-12'
+      );
       const json = JSON.stringify(jsonSchema);
       const packContent = `
 public async jsonbinSerialize(): Promise<Buffer>{

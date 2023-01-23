@@ -1,11 +1,14 @@
 import { TypeScriptRenderer } from '../TypeScriptRenderer';
-import { ConstrainedEnumModel, ConstrainedEnumValueModel } from '../../../models';
+import {
+  ConstrainedEnumModel,
+  ConstrainedEnumValueModel
+} from '../../../models';
 import { EnumPresetType } from '../TypeScriptPreset';
 import { TypeScriptOptions } from '../TypeScriptGenerator';
 
 /**
  * Renderer for TypeScript's `enum` type
- * 
+ *
  * @extends TypeScriptRenderer
  */
 export class EnumRenderer extends TypeScriptRenderer<ConstrainedEnumModel> {
@@ -22,7 +25,7 @@ ${this.indent(this.renderBlock(content, 2))}
 
   renderUnionEnum(model: ConstrainedEnumModel): string {
     const enums = model.values || [];
-    const enumTypes = enums.map(t => t.value).join(' | ');
+    const enumTypes = enums.map((t) => t.value).join(' | ');
     return `type ${model.name} = ${enumTypes};`;
   }
 

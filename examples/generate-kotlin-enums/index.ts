@@ -1,4 +1,4 @@
-import { KotlinGenerator} from '../../src';
+import { KotlinGenerator } from '../../src';
 
 const generator = new KotlinGenerator();
 const jsonSchemaDraft7 = {
@@ -6,10 +6,10 @@ const jsonSchemaDraft7 = {
   additionalProperties: false,
   $id: 'protocol',
   type: ['string', 'int', 'boolean'],
-  enum: ['HTTP', 1, 'HTTPS', true],
+  enum: ['HTTP', 1, 'HTTPS', true]
 };
 
-export async function generate() : Promise<void> {
+export async function generate(): Promise<void> {
   const models = await generator.generate(jsonSchemaDraft7);
   for (const model of models) {
     console.log(model.result);

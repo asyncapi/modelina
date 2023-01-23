@@ -6,10 +6,12 @@ import { GoDependencyManager } from './GoDependencyManager';
 
 /**
  * Common renderer for Go types
- * 
+ *
  * @extends AbstractRenderer
  */
-export abstract class GoRenderer<RendererModelType extends ConstrainedMetaModel> extends AbstractRenderer<GoOptions, GoGenerator, RendererModelType> {
+export abstract class GoRenderer<
+  RendererModelType extends ConstrainedMetaModel
+> extends AbstractRenderer<GoOptions, GoGenerator, RendererModelType> {
   constructor(
     options: GoOptions,
     generator: GoGenerator,
@@ -23,6 +25,6 @@ export abstract class GoRenderer<RendererModelType extends ConstrainedMetaModel>
 
   renderComments(lines: string | string[]): string {
     lines = FormatHelpers.breakLines(lines);
-    return lines.map(line => `// ${line}`).join('\n');
+    return lines.map((line) => `// ${line}`).join('\n');
   }
 }

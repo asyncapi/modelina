@@ -1,4 +1,6 @@
-const spy = jest.spyOn(global.console, 'log').mockImplementation(() => { return; });
+const spy = jest.spyOn(global.console, 'log').mockImplementation(() => {
+  return;
+});
 import { generate } from './index';
 
 describe('Should render the typescript class with 4 tabs as indentation', () => {

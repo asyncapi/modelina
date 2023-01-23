@@ -1,12 +1,16 @@
 import { CSharpRenderer } from '../CSharpRenderer';
-import { ConstrainedDictionaryModel, ConstrainedObjectModel, ConstrainedObjectPropertyModel} from '../../../models';
+import {
+  ConstrainedDictionaryModel,
+  ConstrainedObjectModel,
+  ConstrainedObjectPropertyModel
+} from '../../../models';
 import { pascalCase } from 'change-case';
 import { CsharpClassPreset } from '../CSharpPreset';
 import { CSharpOptions } from '../CSharpGenerator';
 
 /**
  * Renderer for CSharp's `struct` type
- * 
+ *
  * @extends CSharpRenderer
  */
 export class ClassRenderer extends CSharpRenderer<ConstrainedObjectModel> {
@@ -15,11 +19,13 @@ export class ClassRenderer extends CSharpRenderer<ConstrainedObjectModel> {
       await this.renderProperties(),
       await this.runCtorPreset(),
       await this.renderAccessors(),
-      await this.runAdditionalContentPreset(),
+      await this.runAdditionalContentPreset()
     ];
 
-    if (this.options?.collectionType === 'List' ||
-      this.model.containsPropertyType(ConstrainedDictionaryModel)) {
+    if (
+      this.options?.collectionType === 'List' ||
+      this.model.containsPropertyType(ConstrainedDictionaryModel)
+    ) {
       this.dependencyManager.addDependency('using System.Collections.Generic;');
     }
 
@@ -57,19 +63,35 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 
   runAccessorPreset(property: ConstrainedObjectPropertyModel): Promise<string> {
-    return this.runPreset('accessor', { property, options: this.options, renderer: this });
+    return this.runPreset('accessor', {
+      property,
+      options: this.options,
+      renderer: this
+    });
   }
 
   runPropertyPreset(property: ConstrainedObjectPropertyModel): Promise<string> {
-    return this.runPreset('property', { property, options: this.options, renderer: this });
+    return this.runPreset('property', {
+      property,
+      options: this.options,
+      renderer: this
+    });
   }
 
   runGetterPreset(property: ConstrainedObjectPropertyModel): Promise<string> {
-    return this.runPreset('getter', { property, options: this.options, renderer: this });
+    return this.runPreset('getter', {
+      property,
+      options: this.options,
+      renderer: this
+    });
   }
 
   runSetterPreset(property: ConstrainedObjectPropertyModel): Promise<string> {
-    return this.runPreset('setter', { property, options: this.options, renderer: this });
+    return this.runPreset('setter', {
+      property,
+      options: this.options,
+      renderer: this
+    });
   }
 }
 
@@ -81,7 +103,9 @@ export const CSHARP_DEFAULT_CLASS_PRESET: CsharpClassPreset<CSharpOptions> = {
     if (options?.autoImplementedProperties) {
       const getter = await renderer.runGetterPreset(property);
       const setter = await renderer.runSetterPreset(property);
-      return `public ${property.property.type} ${pascalCase(property.propertyName)} { ${getter} ${setter} }`;
+      return `public ${property.property.type} ${pascalCase(
+        property.propertyName
+      )} { ${getter} ${setter} }`;
     }
     return `private ${property.property.type} ${property.propertyName};`;
   },

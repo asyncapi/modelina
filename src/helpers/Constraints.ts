@@ -1,4 +1,7 @@
-import { ConstrainedObjectModel, ConstrainedEnumModel} from '../models/ConstrainedMetaModel';
+import {
+  ConstrainedObjectModel,
+  ConstrainedEnumModel
+} from '../models/ConstrainedMetaModel';
 import { ObjectModel, EnumModel } from '../models/MetaModel';
 
 export function NO_NUMBER_START_CHAR(value: string): string {
@@ -10,36 +13,47 @@ export function NO_NUMBER_START_CHAR(value: string): string {
 }
 
 /**
- * Because a lot of the other constrain functions (such as NO_NUMBER_START_CHAR, NO_EMPTY_VALUE, etc) they might manipulate the property names by append, prepend, or manipulate it any other way. 
+ * Because a lot of the other constrain functions (such as NO_NUMBER_START_CHAR, NO_EMPTY_VALUE, etc) they might manipulate the property names by append, prepend, or manipulate it any other way.
  * We then need to make sure that they don't clash with any existing properties, this is what this function handles.
  * If so, prepend `reserved_` to the property name and recheck.
- * 
+ *
  * @param constrainedObjectModel the current constrained object model, which contains already existing constrained properties
  * @param objectModel the raw object model which is non-constrained to the output language.
  * @param propertyName one of the properties in objectModel which might have been manipulated
  * @param namingFormatter the name formatter which are used to format the property key
  */
-export function NO_DUPLICATE_PROPERTIES(constrainedObjectModel: ConstrainedObjectModel, objectModel: ObjectModel, propertyName: string, namingFormatter: (value: string) => string): string {
+export function NO_DUPLICATE_PROPERTIES(
+  constrainedObjectModel: ConstrainedObjectModel,
+  objectModel: ObjectModel,
+  propertyName: string,
+  namingFormatter: (value: string) => string
+): string {
   // Make sure that the given property name is formatted correctly for further comparisons
   const formattedPropertyName = namingFormatter(propertyName);
   let newPropertyName = propertyName;
   const alreadyPartOfMetaModel = Object.keys(objectModel.properties)
     .filter((key) => propertyName !== key) // Filter out the potential same property name that we can safely ignore for this check.
     .includes(formattedPropertyName);
-  const alreadyPartOfConstrainedModel = Object.keys(constrainedObjectModel.properties)
-    .includes(formattedPropertyName);
+  const alreadyPartOfConstrainedModel = Object.keys(
+    constrainedObjectModel.properties
+  ).includes(formattedPropertyName);
   if (alreadyPartOfMetaModel || alreadyPartOfConstrainedModel) {
     newPropertyName = `reserved_${propertyName}`;
-    newPropertyName = NO_DUPLICATE_PROPERTIES(constrainedObjectModel, objectModel, newPropertyName, namingFormatter);
+    newPropertyName = NO_DUPLICATE_PROPERTIES(
+      constrainedObjectModel,
+      objectModel,
+      newPropertyName,
+      namingFormatter
+    );
   }
   return newPropertyName;
 }
 
 /**
- * Because a lot of the other constrain functions (such as NO_NUMBER_START_CHAR, NO_EMPTY_VALUE, etc) they might manipulate the enum keys by append, prepend, or manipulate it any other way. 
+ * Because a lot of the other constrain functions (such as NO_NUMBER_START_CHAR, NO_EMPTY_VALUE, etc) they might manipulate the enum keys by append, prepend, or manipulate it any other way.
  * We then need to make sure that they don't clash with any existing enum keys, this is what this function handles.
  * If so, prepend `reserved_` to the enum key and recheck.
- * 
+ *
  * @param constrainedEnumModel the current constrained enum model, which contains already existing constrained enum keys
  * @param enumModel the raw enum model which is non-constrained to the output language.
  * @param enumKey one of the enum keys in enumModel which might have been manipulated.
@@ -50,15 +64,16 @@ export function NO_DUPLICATE_PROPERTIES(constrainedObjectModel: ConstrainedObjec
  * @returns {string} the potential new enum key that does not clash with existing enum keys.
  */
 export function NO_DUPLICATE_ENUM_KEYS(
-  constrainedEnumModel: ConstrainedEnumModel, 
-  enumModel: EnumModel, 
+  constrainedEnumModel: ConstrainedEnumModel,
+  enumModel: EnumModel,
   enumKey: string,
   namingFormatter: (value: string) => string,
   enumKeyToCheck: string = enumKey,
   onNameChange: (currentEnumKey: string) => string = (currentEnumKey) => {
     return `reserved_${currentEnumKey}`;
   },
-  onNameChangeToCheck: (currentEnumKey: string) => string = onNameChange): string {
+  onNameChangeToCheck: (currentEnumKey: string) => string = onNameChange
+): string {
   const formattedEnumKey = namingFormatter(enumKeyToCheck);
   let newEnumKey = enumKey;
 
@@ -69,11 +84,19 @@ export function NO_DUPLICATE_ENUM_KEYS(
   const alreadyPartOfConstrainedModel = constrainedEnumModel.values
     .map((model) => model.key)
     .includes(formattedEnumKey);
-  
+
   if (alreadyPartOfMetaModel || alreadyPartOfConstrainedModel) {
     newEnumKey = onNameChange(newEnumKey);
     enumKeyToCheck = onNameChangeToCheck(enumKeyToCheck);
-    newEnumKey = NO_DUPLICATE_ENUM_KEYS(constrainedEnumModel, enumModel, newEnumKey, namingFormatter, enumKeyToCheck, onNameChange, onNameChangeToCheck);
+    newEnumKey = NO_DUPLICATE_ENUM_KEYS(
+      constrainedEnumModel,
+      enumModel,
+      newEnumKey,
+      namingFormatter,
+      enumKeyToCheck,
+      onNameChange,
+      onNameChangeToCheck
+    );
   }
   return newEnumKey;
 }
@@ -87,14 +110,19 @@ export function NO_EMPTY_VALUE(value: string): string {
 
 export function NO_RESERVED_KEYWORDS(
   propertyName: string,
-  reservedKeywordCallback: (value: string) => boolean): string {
-  if (reservedKeywordCallback(propertyName)) { 
+  reservedKeywordCallback: (value: string) => boolean
+): string {
+  if (reservedKeywordCallback(propertyName)) {
     return `reserved_${propertyName}`;
   }
   return propertyName;
 }
 
-export function checkForReservedKeyword(word: string, wordList: string[], forceLowerCase = true): boolean {
+export function checkForReservedKeyword(
+  word: string,
+  wordList: string[],
+  forceLowerCase = true
+): boolean {
   let wordListToCheck = [...wordList];
   let wordToCheck = word;
   if (forceLowerCase) {

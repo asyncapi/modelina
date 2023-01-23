@@ -39,8 +39,12 @@ describe('Interpretation of oneOf', () => {
 
     InterpretOneOf(schema, model, interpreter, { allowInheritance: false });
 
-    expect(interpreter.interpret).toHaveBeenNthCalledWith(1, schema.oneOf[0], { allowInheritance: false });
-    expect(interpreter.interpret).toHaveBeenNthCalledWith(2, schema.oneOf[1], { allowInheritance: false });
+    expect(interpreter.interpret).toHaveBeenNthCalledWith(1, schema.oneOf[0], {
+      allowInheritance: false
+    });
+    expect(interpreter.interpret).toHaveBeenNthCalledWith(2, schema.oneOf[1], {
+      allowInheritance: false
+    });
     expect(model.addItemUnion).toHaveBeenCalledTimes(2);
     expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });

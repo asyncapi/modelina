@@ -2,15 +2,24 @@ import { AbstractRenderer } from '../AbstractRenderer';
 import { RustGenerator, RustOptions } from './RustGenerator';
 import { InputMetaModel, Preset, ConstrainedMetaModel } from '../../models';
 import { FormatHelpers } from '../../helpers/FormatHelpers';
-import { deriveCopy, deriveHash, derivePartialEq, deriveEq, derivePartialOrd, deriveOrd } from './RustConstrainer';
+import {
+  deriveCopy,
+  deriveHash,
+  derivePartialEq,
+  deriveEq,
+  derivePartialOrd,
+  deriveOrd
+} from './RustConstrainer';
 import { RustDependencyManager } from './RustDependencyManager';
 
 /**
  * Common renderer for Rust types
- * 
+ *
  * @extends AbstractRenderer
  */
-export abstract class RustRenderer<RendererModelType extends ConstrainedMetaModel> extends AbstractRenderer<RustOptions, RustGenerator, RendererModelType> {
+export abstract class RustRenderer<
+  RendererModelType extends ConstrainedMetaModel
+> extends AbstractRenderer<RustOptions, RustGenerator, RendererModelType> {
   constructor(
     options: RustOptions,
     generator: RustGenerator,
@@ -24,7 +33,7 @@ export abstract class RustRenderer<RendererModelType extends ConstrainedMetaMode
 
   renderComments(lines: string | string[]): string {
     lines = FormatHelpers.breakLines(lines);
-    return lines.map(line => `// ${line}`).join('\n');
+    return lines.map((line) => `// ${line}`).join('\n');
   }
 
   renderMacro(model: ConstrainedMetaModel): string {

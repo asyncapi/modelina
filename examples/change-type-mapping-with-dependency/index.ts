@@ -2,9 +2,12 @@ import { TypeScriptGenerator } from '../../src';
 
 const generator = new TypeScriptGenerator({
   typeMapping: {
-    Float: ({dependencyManager}) => {
+    Float: ({ dependencyManager }) => {
       // Let let the TypeScript dependency manager handle rendering the dependency based on the TypeScript options (i.e moduleSystem).
-      dependencyManager.addTypeScriptDependency('MyCustomClass', '../some/path/to/MyCustomClass');
+      dependencyManager.addTypeScriptDependency(
+        'MyCustomClass',
+        '../some/path/to/MyCustomClass'
+      );
       // Or just do it manually, but then the moduleSystem options is not uphold. This is what most generators support
       // dependencyManager.addDependency('import MyCustomClass from \'../some/path/to/class\';');
 
@@ -25,7 +28,7 @@ const jsonSchemaDraft7 = {
   }
 };
 
-export async function generate() : Promise<void> {
+export async function generate(): Promise<void> {
   const models = await generator.generate(jsonSchemaDraft7);
   for (const model of models) {
     console.log(model.result);

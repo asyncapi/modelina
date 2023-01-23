@@ -1,5 +1,5 @@
 import { JavaRenderer } from '../JavaRenderer';
-import { ConstrainedEnumModel} from '../../../models';
+import { ConstrainedEnumModel } from '../../../models';
 import { EnumPresetType } from '../JavaPreset';
 import { JavaOptions } from '../JavaGenerator';
 
@@ -36,7 +36,7 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 
   runItemPreset(item: any): Promise<string> {
-    return this.runPreset('item', {item});
+    return this.runPreset('item', { item });
   }
 
   runCtorPreset(): Promise<string> {
@@ -53,11 +53,11 @@ ${this.indent(this.renderBlock(content, 2))}
 }
 
 export const JAVA_DEFAULT_ENUM_PRESET: EnumPresetType<JavaOptions> = {
-  self({renderer}) {
+  self({ renderer }) {
     return renderer.defaultSelf();
   },
   item({ item, model }) {
-    //Cast the enum type just to be sure, as some cases can be `int` type with floating value. 
+    //Cast the enum type just to be sure, as some cases can be `int` type with floating value.
     return `${item.key}((${model.type})${item.value})`;
   },
   ctor({ model }) {
@@ -73,7 +73,10 @@ ${model.name}(${model.type} value) {
 }`;
   },
   fromValue({ model }) {
-    const valueComparitor = model.type.charAt(0) === model.type.charAt(0).toUpperCase() ? 'e.value.equals(value)' : 'e.value == value';
+    const valueComparitor =
+      model.type.charAt(0) === model.type.charAt(0).toUpperCase()
+        ? 'e.value.equals(value)'
+        : 'e.value == value';
     return `public static ${model.name} fromValue(${model.type} value) {
   for (${model.name} e : ${model.name}.values()) {
     if (${valueComparitor}) {

@@ -6,7 +6,7 @@ import { FormatHelpers } from '../../../helpers';
 import { defaultModelNameConstraints } from '../constrainer/ModelNameConstrainer';
 /**
  * Renderer for Rust's supporting files
- * 
+ *
  * @extends RustRenderer
  */
 export class PackageRenderer extends RustRenderer<ConstrainedMetaModel> {
@@ -21,14 +21,20 @@ export const RUST_DEFAULT_PACKAGE_PRESET: PackagePresetType<RustOptions> = {
   },
 
   lib({ inputModel, renderer }) {
-    const modelNames: string[] = Object.values(inputModel.models).map((m: MetaModel) => m.name);
-    const imports = renderer.renderBlock(modelNames.map(modelName => {
-      let mod = defaultModelNameConstraints()({ modelName });
-      mod = FormatHelpers.snakeCase(mod);
-      return `
+    const modelNames: string[] = Object.values(inputModel.models).map(
+      (m: MetaModel) => m.name
+    );
+    const imports = renderer.renderBlock(
+      modelNames
+        .map((modelName) => {
+          let mod = defaultModelNameConstraints()({ modelName });
+          mod = FormatHelpers.snakeCase(mod);
+          return `
 pub mod ${mod};
 pub use self::${mod}::*;`;
-    }).flat());
+        })
+        .flat()
+    );
 
     return `#[macro_use]
 extern crate serde;
@@ -37,7 +43,16 @@ ${imports}`;
   },
 
   manifest({ packageOptions }) {
-    const { packageName, packageVersion, homepage, authors, repository, description, license, edition } = packageOptions;
+    const {
+      packageName,
+      packageVersion,
+      homepage,
+      authors,
+      repository,
+      description,
+      license,
+      edition
+    } = packageOptions;
     const authorsString = authors.map((a: string) => `"${a}"`).join(',');
     return `[package]
 name = "${packageName}"

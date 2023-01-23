@@ -1,4 +1,10 @@
-import { InputMetaModel, CommonModel, ToOutputModelArg, OutputModel, ConstrainedAnyModel } from '../../src/models'; 
+import {
+  InputMetaModel,
+  CommonModel,
+  ToOutputModelArg,
+  OutputModel,
+  ConstrainedAnyModel
+} from '../../src/models';
 
 describe('OutputModel', () => {
   test('should return an OutputModel', () => {

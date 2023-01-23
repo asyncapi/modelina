@@ -1,4 +1,9 @@
-import { AbstractRenderer, InputMetaModel, RenderOutput, ConstrainedAnyModel } from '../../src';
+import {
+  AbstractRenderer,
+  InputMetaModel,
+  RenderOutput,
+  ConstrainedAnyModel
+} from '../../src';
 import { GoRenderer } from '../../src/generators/go/GoRenderer';
 import { CSharpRenderer } from '../../src/generators/csharp/CSharpRenderer';
 import { JavaRenderer } from '../../src/generators/java/JavaRenderer';
@@ -12,20 +17,28 @@ import { KotlinRenderer } from '../../src/generators/kotlin/KotlinRenderer';
 
 export class TestRenderer extends AbstractRenderer {
   constructor(presets = []) {
-    super(testOptions, new TestGenerator(), presets, new ConstrainedAnyModel('', undefined, ''), new InputMetaModel());
+    super(
+      testOptions,
+      new TestGenerator(),
+      presets,
+      new ConstrainedAnyModel('', undefined, ''),
+      new InputMetaModel()
+    );
   }
   render(): Promise<RenderOutput> {
-    return Promise.resolve(RenderOutput.toRenderOutput({ result: '', renderedName: '' }));
+    return Promise.resolve(
+      RenderOutput.toRenderOutput({ result: '', renderedName: '' })
+    );
   }
 }
 
-export class MockJavaRenderer extends JavaRenderer<any> { }
-export class MockTypeScriptRenderer extends TypeScriptRenderer<any> { }
-export class MockGoRenderer extends GoRenderer<any> { }
-export class MockCSharpRenderer extends CSharpRenderer<any> { }
-export class MockJavaScriptRenderer extends JavaScriptRenderer<any> { }
-export class MockDartRenderer extends DartRenderer<any> { }
-export class MockRustRenderer extends RustRenderer<any> { }
-export class MockPythonRenderer extends PythonRenderer<any> { }
+export class MockJavaRenderer extends JavaRenderer<any> {}
+export class MockTypeScriptRenderer extends TypeScriptRenderer<any> {}
+export class MockGoRenderer extends GoRenderer<any> {}
+export class MockCSharpRenderer extends CSharpRenderer<any> {}
+export class MockJavaScriptRenderer extends JavaScriptRenderer<any> {}
+export class MockDartRenderer extends DartRenderer<any> {}
+export class MockRustRenderer extends RustRenderer<any> {}
+export class MockPythonRenderer extends PythonRenderer<any> {}
 
-export class MockKotlinRenderer extends KotlinRenderer<any> { }
+export class MockKotlinRenderer extends KotlinRenderer<any> {}

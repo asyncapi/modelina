@@ -12,9 +12,9 @@ describe('Should be able to generate models to files', () => {
     const expectedRootDir = __dirname.includes('examples')
       ? __dirname
       : path.resolve(
-        __dirname,
-        './examples/generate-all-models-within-the-same-file/output'
-      );
+          __dirname,
+          './examples/generate-all-models-within-the-same-file/output'
+        );
     const expectedFilePath = path.resolve(expectedRootDir, 'Root.java');
     await generate();
     expect(spy.mock.calls.length).toBeGreaterThanOrEqual(1);

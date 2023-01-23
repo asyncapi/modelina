@@ -5,17 +5,19 @@ const generator = new CSharpGenerator({
     {
       class: {
         // Self is used to overwrite the entire rendering behavior of the class
-        self: async ({renderer, options, model}) => {
+        self: async ({ renderer, options, model }) => {
           //Render all the class content
           const content = [
             await renderer.renderProperties(),
             await renderer.runCtorPreset(),
             await renderer.renderAccessors(),
-            await renderer.runAdditionalContentPreset(),
+            await renderer.runAdditionalContentPreset()
           ];
-      
-          if (options?.collectionType === 'List' ||
-            model.containsPropertyType(ConstrainedDictionaryModel)) {
+
+          if (
+            options?.collectionType === 'List' ||
+            model.containsPropertyType(ConstrainedDictionaryModel)
+          ) {
             renderer.addDependency('using System.Collections.Generic;');
           }
           return `public class ${model.name} : IEvent
@@ -43,7 +45,7 @@ const jsonSchemaDraft7 = {
   }
 };
 
-export async function generate() : Promise<void> {
+export async function generate(): Promise<void> {
   const models = await generator.generate(jsonSchemaDraft7);
   for (const model of models) {
     console.log(model.result);

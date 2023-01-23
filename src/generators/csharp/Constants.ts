@@ -80,6 +80,13 @@ export const RESERVED_CSHARP_KEYWORDS = [
   'while'
 ];
 
-export function isReservedCSharpKeyword(word: string, forceLowerCase = true): boolean {
-  return checkForReservedKeyword(word, RESERVED_CSHARP_KEYWORDS, forceLowerCase);
+export function isReservedCSharpKeyword(
+  word: string,
+  forceLowerCase = true
+): boolean {
+  return checkForReservedKeyword(
+    word,
+    RESERVED_CSHARP_KEYWORDS,
+    forceLowerCase
+  );
 }

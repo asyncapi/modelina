@@ -1,13 +1,27 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { ConstrainedEnumModel, EnumModel } from '../../../models';
-import { NO_NUMBER_START_CHAR, NO_DUPLICATE_ENUM_KEYS, NO_EMPTY_VALUE, NO_RESERVED_KEYWORDS } from '../../../helpers/Constraints';
-import { FormatHelpers, EnumKeyConstraint, EnumValueConstraint } from '../../../helpers';
+import {
+  NO_NUMBER_START_CHAR,
+  NO_DUPLICATE_ENUM_KEYS,
+  NO_EMPTY_VALUE,
+  NO_RESERVED_KEYWORDS
+} from '../../../helpers/Constraints';
+import {
+  FormatHelpers,
+  EnumKeyConstraint,
+  EnumValueConstraint
+} from '../../../helpers';
 import { isReservedRustKeyword } from '../Constants';
 
 export type ModelEnumKeyConstraints = {
   NO_SPECIAL_CHAR: (value: string) => string;
   NO_NUMBER_START_CHAR: (value: string) => string;
-  NO_DUPLICATE_KEYS: (constrainedEnumModel: ConstrainedEnumModel, enumModel: EnumModel, value: string, namingFormatter: (value: string) => string) => string;
+  NO_DUPLICATE_KEYS: (
+    constrainedEnumModel: ConstrainedEnumModel,
+    enumModel: EnumModel,
+    value: string,
+    namingFormatter: (value: string) => string
+  ) => string;
   NO_EMPTY_VALUE: (value: string) => string;
   NAMING_FORMATTER: (value: string) => string;
   NO_RESERVED_KEYWORDS: (value: string) => string;
@@ -16,7 +30,10 @@ export type ModelEnumKeyConstraints = {
 export const DefaultEnumKeyConstraints: ModelEnumKeyConstraints = {
   NO_SPECIAL_CHAR: (value: string) => {
     //Exclude '_', '$' because they are allowed as enum keys
-    return FormatHelpers.replaceSpecialCharacters(value, { exclude: [' ', '_'], separator: '_' });
+    return FormatHelpers.replaceSpecialCharacters(value, {
+      exclude: [' ', '_'],
+      separator: '_'
+    });
   },
   NO_NUMBER_START_CHAR,
   NO_DUPLICATE_KEYS: NO_DUPLICATE_ENUM_KEYS,
@@ -27,7 +44,9 @@ export const DefaultEnumKeyConstraints: ModelEnumKeyConstraints = {
   }
 };
 
-export function defaultEnumKeyConstraints(customConstraints?: Partial<ModelEnumKeyConstraints>): EnumKeyConstraint {
+export function defaultEnumKeyConstraints(
+  customConstraints?: Partial<ModelEnumKeyConstraints>
+): EnumKeyConstraint {
   const constraints = { ...DefaultEnumKeyConstraints, ...customConstraints };
 
   return ({ enumKey, enumModel, constrainedEnumModel }) => {
@@ -37,7 +56,12 @@ export function defaultEnumKeyConstraints(customConstraints?: Partial<ModelEnumK
     constrainedEnumKey = constraints.NO_EMPTY_VALUE(constrainedEnumKey);
     //If the enum key has been manipulated, lets make sure it don't clash with existing keys
     if (constrainedEnumKey !== enumKey) {
-      constrainedEnumKey = constraints.NO_DUPLICATE_KEYS(constrainedEnumModel, enumModel, constrainedEnumKey, constraints.NAMING_FORMATTER);
+      constrainedEnumKey = constraints.NO_DUPLICATE_KEYS(
+        constrainedEnumModel,
+        enumModel,
+        constrainedEnumKey,
+        constraints.NAMING_FORMATTER
+      );
     }
     constrainedEnumKey = constraints.NAMING_FORMATTER(constrainedEnumKey);
 

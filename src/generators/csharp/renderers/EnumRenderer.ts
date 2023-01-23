@@ -1,11 +1,14 @@
 import { CSharpRenderer } from '../CSharpRenderer';
-import { ConstrainedEnumModel, ConstrainedEnumValueModel } from '../../../models';
+import {
+  ConstrainedEnumModel,
+  ConstrainedEnumValueModel
+} from '../../../models';
 import { EnumPresetType } from '../CSharpPreset';
 import { CSharpOptions } from '../CSharpGenerator';
 
 /**
  * Renderer for C#'s `enum` type
- * 
+ *
  * @extends CSharpRenderer
  */
 export class EnumRenderer extends CSharpRenderer<ConstrainedEnumModel> {
@@ -23,12 +26,16 @@ return null;`;
 ${this.indent(toEnumCaseItemValues)}
 }
 return null;`;
-    const classContent = `public static ${this.model.type}? GetValue(this ${this.model.name} enumValue)
+    const classContent = `public static ${this.model.type}? GetValue(this ${
+      this.model.name
+    } enumValue)
 {
 ${this.indent(enumValueSwitch)}
 }
 
-public static ${this.model.name}? To${this.model.name}(${this.model.type}? value)
+public static ${this.model.name}? To${this.model.name}(${
+      this.model.type
+    }? value)
 {
 ${this.indent(valueSwitch)}
 }`;
@@ -63,7 +70,9 @@ ${this.indent(classContent)}
     const items: string[] = [];
 
     for (const enumValue of enums) {
-      items.push(`case ${enumValue.value}: return ${this.model.name}.${enumValue.key};`);
+      items.push(
+        `case ${enumValue.value}: return ${this.model.name}.${enumValue.key};`
+      );
     }
 
     const content = items.join('\n');
@@ -74,7 +83,9 @@ ${this.indent(classContent)}
     const items: string[] = [];
 
     for (const enumValue of enums) {
-      items.push(`case ${this.model.name}.${enumValue.key}: return ${enumValue.value};`);
+      items.push(
+        `case ${this.model.name}.${enumValue.key}: return ${enumValue.value};`
+      );
     }
 
     const content = items.join('\n');
@@ -92,5 +103,5 @@ export const CSHARP_DEFAULT_ENUM_PRESET: EnumPresetType<CSharpOptions> = {
   },
   item({ item }) {
     return item.key;
-  },
+  }
 };

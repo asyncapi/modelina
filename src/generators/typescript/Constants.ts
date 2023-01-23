@@ -66,9 +66,18 @@ export const RESERVED_TYPESCRIPT_KEYWORDS = [
 ];
 
 /**
- * Not only do we need to check reserved TS keywords, but we have a transitive dependency 
+ * Not only do we need to check reserved TS keywords, but we have a transitive dependency
  * on JS keywords as well because of potential transpilation process.
  */
-export function isReservedTypeScriptKeyword(word: string, forceLowerCase = true): boolean {
-  return checkForReservedKeyword(word, RESERVED_TYPESCRIPT_KEYWORDS, forceLowerCase) || isReservedJavaScriptKeyword(word);
+export function isReservedTypeScriptKeyword(
+  word: string,
+  forceLowerCase = true
+): boolean {
+  return (
+    checkForReservedKeyword(
+      word,
+      RESERVED_TYPESCRIPT_KEYWORDS,
+      forceLowerCase
+    ) || isReservedJavaScriptKeyword(word)
+  );
 }

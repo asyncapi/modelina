@@ -1,22 +1,26 @@
 import { RustRenderer } from '../RustRenderer';
 import { StructPresetType } from '../RustPreset';
-import { ConstrainedObjectModel, ConstrainedObjectPropertyModel, ConstrainedReferenceModel } from '../../../models';
+import {
+  ConstrainedObjectModel,
+  ConstrainedObjectPropertyModel,
+  ConstrainedReferenceModel
+} from '../../../models';
 import { RustOptions } from '../RustGenerator';
 
 /**
  * Renderer for Rust `struct` type
- * 
+ *
  * @extends RustRenderer
  */
 export class StructRenderer extends RustRenderer<ConstrainedObjectModel> {
   public async defaultSelf(): Promise<string> {
-    const content = [
-      await this.renderFields(),
-    ];
+    const content = [await this.renderFields()];
 
     const structMacro = await this.runStructMacroPreset();
 
-    const doc = this.renderComments(`${this.model.name} represents a ${this.model.name} model.`);
+    const doc = this.renderComments(
+      `${this.model.name} represents a ${this.model.name} model.`
+    );
     const additionalContent = await this.runAdditionalContentPreset();
     return `${doc}
 ${structMacro}
@@ -76,5 +80,5 @@ export const RUST_DEFAULT_STRUCT_PRESET: StructPresetType<RustOptions> = {
       fieldType = `Option<${fieldType}>`;
     }
     return `pub ${field.propertyName}: ${fieldType},`;
-  },
+  }
 };

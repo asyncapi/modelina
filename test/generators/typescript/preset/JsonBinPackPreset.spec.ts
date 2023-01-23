@@ -1,4 +1,8 @@
-import {TS_COMMON_PRESET, TS_JSONBINPACK_PRESET, TypeScriptGenerator} from '../../../../src';
+import {
+  TS_COMMON_PRESET,
+  TS_JSONBINPACK_PRESET,
+  TypeScriptGenerator
+} from '../../../../src';
 
 const doc = {
   $id: 'Test',
@@ -11,15 +15,15 @@ const doc = {
     numberProp: {
       type: 'number',
       description: 'Description',
-      examples: 'Example',
+      examples: 'Example'
     },
     objectProp: {
       type: 'object',
       $id: 'NestedTest',
       properties: { stringProp: { type: 'string' } },
-      examples: ['Example 1', 'Example 2'],
-    },
-  },
+      examples: ['Example 1', 'Example 2']
+    }
+  }
 };
 
 describe('JsonBinPack preset', () => {
@@ -66,7 +70,7 @@ describe('JsonBinPack preset', () => {
     };
     const models = await generator.generate(input);
     expect(models).toHaveLength(1);
-    expect(models[0].result).toMatchSnapshot(); 
+    expect(models[0].result).toMatchSnapshot();
   });
 
   test('should work fine with JSON Schema draft 4', async () => {
@@ -82,7 +86,7 @@ describe('JsonBinPack preset', () => {
     };
     const models = await generator.generate(input);
     expect(models).toHaveLength(1);
-    expect(models[0].result).toMatchSnapshot(); 
+    expect(models[0].result).toMatchSnapshot();
   });
 
   test('should work fine with JSON Schema draft 6', async () => {
@@ -98,6 +102,6 @@ describe('JsonBinPack preset', () => {
     };
     const models = await generator.generate(input);
     expect(models).toHaveLength(1);
-    expect(models[0].result).toMatchSnapshot(); 
+    expect(models[0].result).toMatchSnapshot();
   });
 });

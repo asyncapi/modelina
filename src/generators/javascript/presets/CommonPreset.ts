@@ -1,6 +1,12 @@
 import { JavaScriptRenderer } from '../JavaScriptRenderer';
 import { JavaScriptPreset } from '../JavaScriptPreset';
-import { ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedMetaModel, ConstrainedObjectModel, ConstrainedReferenceModel } from '../../../models';
+import {
+  ConstrainedDictionaryModel,
+  ConstrainedEnumModel,
+  ConstrainedMetaModel,
+  ConstrainedObjectModel,
+  ConstrainedReferenceModel
+} from '../../../models';
 import renderExampleFunction from './utils/ExampleFunction';
 
 export interface JavaScriptCommonPresetOptions {
@@ -11,8 +17,14 @@ export interface JavaScriptCommonPresetOptions {
 function realizePropertyFactory(prop: string) {
   return `$\{typeof ${prop} === 'number' || typeof ${prop} === 'boolean' ? ${prop} : JSON.stringify(${prop})}`;
 }
-function renderMarshalProperty(modelInstanceVariable: string, model: ConstrainedMetaModel) {
-  if (model instanceof ConstrainedReferenceModel && !(model.ref instanceof ConstrainedEnumModel)) {
+function renderMarshalProperty(
+  modelInstanceVariable: string,
+  model: ConstrainedMetaModel
+) {
+  if (
+    model instanceof ConstrainedReferenceModel &&
+    !(model.ref instanceof ConstrainedEnumModel)
+  ) {
     //Referenced enums only need standard marshalling, so lets filter those away
     return `$\{${modelInstanceVariable}.marshal()}`;
   }
@@ -23,7 +35,10 @@ function renderMarshalProperties(model: ConstrainedObjectModel) {
   const propertyKeys = [...Object.entries(properties)];
   const marshalProperties = propertyKeys.map(([prop, propModel]) => {
     const modelInstanceVariable = `this.${prop}`;
-    const propMarshalCode = renderMarshalProperty(modelInstanceVariable, propModel.property);
+    const propMarshalCode = renderMarshalProperty(
+      modelInstanceVariable,
+      propModel.property
+    );
     const marshalCode = `json += \`"${propModel.unconstrainedPropertyName}": ${propMarshalCode},\`;`;
     return `if(${modelInstanceVariable} !== undefined) {
   ${marshalCode} 
@@ -35,9 +50,12 @@ function renderMarshalProperties(model: ConstrainedObjectModel) {
 /**
  * Render `marshal` function based on model
  */
-function renderMarshal({ renderer, model }: {
-  renderer: JavaScriptRenderer<any>,
-  model: ConstrainedObjectModel
+function renderMarshal({
+  renderer,
+  model
+}: {
+  renderer: JavaScriptRenderer<any>;
+  model: ConstrainedObjectModel;
 }): string {
   return `marshal(){
   let json = '{'
@@ -48,9 +66,15 @@ ${renderer.indent(renderMarshalProperties(model))}
 }`;
 }
 
-function renderUnmarshalProperty(modelInstanceVariable: string, model: ConstrainedMetaModel) {
+function renderUnmarshalProperty(
+  modelInstanceVariable: string,
+  model: ConstrainedMetaModel
+) {
   //Referenced enums only need standard marshalling, so lets filter those away
-  if (model instanceof ConstrainedReferenceModel && model.ref instanceof ConstrainedEnumModel) {
+  if (
+    model instanceof ConstrainedReferenceModel &&
+    model.ref instanceof ConstrainedEnumModel
+  ) {
     return `${model.type}.unmarshal(${modelInstanceVariable})`;
   }
   return `${modelInstanceVariable}`;
@@ -58,14 +82,23 @@ function renderUnmarshalProperty(modelInstanceVariable: string, model: Constrain
 function renderUnmarshalProperties(model: ConstrainedObjectModel) {
   const properties = model.properties || {};
   const propertyKeys = [...Object.entries(properties)];
-  const normalProperties = propertyKeys.filter(([,propModel]) => !(propModel instanceof ConstrainedDictionaryModel) || propModel.serializationType === 'normal');
-  const unmarshalNormalProperties = normalProperties.map(([prop, propModel]) => {
-    const modelInstanceVariable = `obj["${propModel.unconstrainedPropertyName}"]`;
-    const unmarshalCode = renderUnmarshalProperty(modelInstanceVariable, propModel.property);
-    return `if (${modelInstanceVariable} !== undefined) {
+  const normalProperties = propertyKeys.filter(
+    ([, propModel]) =>
+      !(propModel instanceof ConstrainedDictionaryModel) ||
+      propModel.serializationType === 'normal'
+  );
+  const unmarshalNormalProperties = normalProperties.map(
+    ([prop, propModel]) => {
+      const modelInstanceVariable = `obj["${propModel.unconstrainedPropertyName}"]`;
+      const unmarshalCode = renderUnmarshalProperty(
+        modelInstanceVariable,
+        propModel.property
+      );
+      return `if (${modelInstanceVariable} !== undefined) {
   instance.${prop} = ${unmarshalCode};
 }`;
-  });
+    }
+  );
 
   return `
 ${unmarshalNormalProperties.join('\n')}
@@ -73,17 +106,30 @@ ${unmarshalNormalProperties.join('\n')}
 `;
 }
 
-function renderUnmarshalUnwrapProperties(model: ConstrainedObjectModel, renderer: JavaScriptRenderer<any>) {
+function renderUnmarshalUnwrapProperties(
+  model: ConstrainedObjectModel,
+  renderer: JavaScriptRenderer<any>
+) {
   const unmarshalAdditionalProperties = [];
   const setAdditionalPropertiesMap = [];
-  const unwrappedDictionaryProperties = Object.entries(model.properties).filter(([,propModel]) => propModel instanceof ConstrainedDictionaryModel && propModel.serializationType === 'unwrap');
-  for (const [prop,] of unwrappedDictionaryProperties) {
+  const unwrappedDictionaryProperties = Object.entries(model.properties).filter(
+    ([, propModel]) =>
+      propModel instanceof ConstrainedDictionaryModel &&
+      propModel.serializationType === 'unwrap'
+  );
+  for (const [prop] of unwrappedDictionaryProperties) {
     const modelInstanceVariable = 'value';
     const unmarshalCode = renderUnmarshalProperty(modelInstanceVariable, model);
-    setAdditionalPropertiesMap.push(`if (instance.${prop} === undefined) {instance.${prop} = new Map();}`);
-    unmarshalAdditionalProperties.push(`instance.${prop}.set(key, ${unmarshalCode});`);
+    setAdditionalPropertiesMap.push(
+      `if (instance.${prop} === undefined) {instance.${prop} = new Map();}`
+    );
+    unmarshalAdditionalProperties.push(
+      `instance.${prop}.set(key, ${unmarshalCode});`
+    );
   }
-  const propertyNames = Object.keys(model.properties).map((prop => `"${prop}"`));
+  const propertyNames = Object.keys(model.properties).map(
+    (prop) => `"${prop}"`
+  );
   return `
 //Not part of core properties
 ${setAdditionalPropertiesMap.join('\n')}
@@ -96,12 +142,18 @@ ${renderer.indent(unmarshalAdditionalProperties.join('\n'), 2)}
 /**
  * Render `unmarshal` function based on model
  */
-function renderUnmarshal({ renderer, model }: {
-  renderer: JavaScriptRenderer<any>,
-  model: ConstrainedObjectModel
+function renderUnmarshal({
+  renderer,
+  model
+}: {
+  renderer: JavaScriptRenderer<any>;
+  model: ConstrainedObjectModel;
 }): string {
   const unmarshalProperties = renderUnmarshalProperties(model);
-  const unmarshalUnwrapProperties = renderUnmarshalUnwrapProperties(model, renderer);
+  const unmarshalUnwrapProperties = renderUnmarshalUnwrapProperties(
+    model,
+    renderer
+  );
   return `unmarshal(json){
   const obj = typeof json === "object" ? json : JSON.parse(json);
   const instance = new ${model.name}({});
@@ -115,24 +167,25 @@ ${renderer.indent(unmarshalUnwrapProperties)}
 }
 
 /**
- * Preset which adds `marshal`, `unmarshal` functions to class. 
- * 
+ * Preset which adds `marshal`, `unmarshal` functions to class.
+ *
  * @implements {JavaScriptPreset}
  */
-export const JS_COMMON_PRESET: JavaScriptPreset<JavaScriptCommonPresetOptions> = {
-  class: {
-    additionalContent({ renderer, model, content, options }) {
-      options = options || {};
-      const blocks: string[] = [];
+export const JS_COMMON_PRESET: JavaScriptPreset<JavaScriptCommonPresetOptions> =
+  {
+    class: {
+      additionalContent({ renderer, model, content, options }) {
+        options = options || {};
+        const blocks: string[] = [];
 
-      if (options.marshalling === true) {
-        blocks.push(renderMarshal({ renderer, model }));
-        blocks.push(renderUnmarshal({ renderer, model }));
+        if (options.marshalling === true) {
+          blocks.push(renderMarshal({ renderer, model }));
+          blocks.push(renderUnmarshal({ renderer, model }));
+        }
+        if (options.example === true) {
+          blocks.push(renderExampleFunction({ model }));
+        }
+        return renderer.renderBlock([content, ...blocks], 2);
       }
-      if (options.example === true) {
-        blocks.push(renderExampleFunction({ model }));
-      }
-      return renderer.renderBlock([content, ...blocks], 2);
-    },
-  }
-};
+    }
+  };

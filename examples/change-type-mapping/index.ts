@@ -2,7 +2,12 @@ import { TypeScriptGenerator } from '../../src';
 
 const generator = new TypeScriptGenerator({
   typeMapping: {
-    String: ({constrainedModel, options, partOfProperty, dependencyManager}) => {
+    String: ({
+      constrainedModel,
+      options,
+      partOfProperty,
+      dependencyManager
+    }) => {
       return 'integer';
     }
   }
@@ -20,7 +25,7 @@ const jsonSchemaDraft7 = {
   }
 };
 
-export async function generate() : Promise<void> {
+export async function generate(): Promise<void> {
   const models = await generator.generate(jsonSchemaDraft7);
   for (const model of models) {
     console.log(model.result);

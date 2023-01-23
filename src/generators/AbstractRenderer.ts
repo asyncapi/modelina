@@ -14,7 +14,7 @@ export abstract class AbstractRenderer<
     protected readonly options: O,
     readonly generator: G,
     protected readonly presets: Array<[Preset, unknown]>,
-    protected readonly model: RendererModelType, 
+    protected readonly model: RendererModelType,
     protected readonly inputModel: InputMetaModel
   ) {}
 
@@ -27,11 +27,7 @@ export abstract class AbstractRenderer<
     return lines.filter(Boolean).join(n);
   }
 
-  indent(
-    content: string, 
-    size?: number, 
-    type?: IndentationTypes,
-  ): string {
+  indent(content: string, size?: number, type?: IndentationTypes): string {
     size = size || this.options.indentation?.size;
     type = type || this.options.indentation?.type;
     return FormatHelpers.indent(content, size, type);
@@ -40,24 +36,24 @@ export abstract class AbstractRenderer<
   runSelfPreset(): Promise<string> {
     return this.runPreset('self');
   }
-  
+
   runAdditionalContentPreset(): Promise<string> {
     return this.runPreset('additionalContent');
   }
-  
+
   async runPreset(
     functionName: string,
-    params: Record<string, unknown> = {},
+    params: Record<string, unknown> = {}
   ): Promise<string> {
     let content = '';
     for (const [preset, options] of this.presets) {
       if (typeof preset[String(functionName)] === 'function') {
-        const presetRenderedContent: any = await preset[String(functionName)]({ 
-          ...params, 
-          renderer: this, 
-          content, 
-          options, 
-          model: this.model, 
+        const presetRenderedContent: any = await preset[String(functionName)]({
+          ...params,
+          renderer: this,
+          content,
+          options,
+          model: this.model,
           inputModel: this.inputModel
         });
         if (typeof presetRenderedContent === 'string') {

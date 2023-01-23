@@ -1,11 +1,15 @@
 import { GoRenderer } from '../GoRenderer';
 import { StructPresetType } from '../GoPreset';
-import { ConstrainedObjectModel, ConstrainedObjectPropertyModel, ConstrainedReferenceModel } from '../../../models';
+import {
+  ConstrainedObjectModel,
+  ConstrainedObjectPropertyModel,
+  ConstrainedReferenceModel
+} from '../../../models';
 import { GoOptions } from '../GoGenerator';
 
 /**
  * Renderer for Go's `struct` type
- * 
+ *
  * @extends GoRenderer
  */
 export class StructRenderer extends GoRenderer<ConstrainedObjectModel> {
@@ -14,9 +18,11 @@ export class StructRenderer extends GoRenderer<ConstrainedObjectModel> {
       await this.renderFields(),
       await this.runAdditionalContentPreset()
     ];
-    
-    const doc = this.renderComments(`${this.model.name} represents a ${this.model.name} model.`);
-    
+
+    const doc = this.renderComments(
+      `${this.model.name} represents a ${this.model.name} model.`
+    );
+
     return `${doc}
 type ${this.model.name} struct {
 ${this.indent(this.renderBlock(content, 2))}
@@ -46,8 +52,8 @@ export const GO_DEFAULT_STRUCT_PRESET: StructPresetType<GoOptions> = {
   field({ field }) {
     let fieldType = field.property.type;
     if (field.property instanceof ConstrainedReferenceModel) {
-      fieldType = `*${fieldType}`; 
+      fieldType = `*${fieldType}`;
     }
-    return `${ field.propertyName } ${ fieldType }`;
-  },
+    return `${field.propertyName} ${fieldType}`;
+  }
 };

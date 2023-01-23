@@ -1,4 +1,4 @@
-import { JavaGenerator, JAVA_JACKSON_PRESET } from '../../../../src/generators'; 
+import { JavaGenerator, JAVA_JACKSON_PRESET } from '../../../../src/generators';
 
 describe('JAVA_JACKSON_PRESET', () => {
   let generator: JavaGenerator;
@@ -12,15 +12,18 @@ describe('JAVA_JACKSON_PRESET', () => {
       type: 'object',
       properties: {
         min_number_prop: { type: 'number' },
-        max_number_prop: { type: 'number' },
-      },
+        max_number_prop: { type: 'number' }
+      }
     };
-    const expectedDependencies = ['import java.util.Map;', 'import com.fasterxml.jackson.annotation.*;'];
+    const expectedDependencies = [
+      'import java.util.Map;',
+      'import com.fasterxml.jackson.annotation.*;'
+    ];
 
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
-    expect(models[0].result).toMatchSnapshot(); 
-    expect(models[0].dependencies).toEqual(expectedDependencies); 
+    expect(models[0].result).toMatchSnapshot();
+    expect(models[0].dependencies).toEqual(expectedDependencies);
   });
 
   test('should render Jackson annotations for enum', async () => {
@@ -29,17 +32,14 @@ describe('JAVA_JACKSON_PRESET', () => {
       type: 'string',
       description: 'Description for enum',
       examples: ['value'],
-      enum: [
-        'on',
-        'off',
-      ]
+      enum: ['on', 'off']
     };
-    
+
     const expectedDependencies = ['import com.fasterxml.jackson.annotation.*;'];
 
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
-    expect(models[0].result).toMatchSnapshot(); 
-    expect(models[0].dependencies).toEqual(expectedDependencies); 
+    expect(models[0].result).toMatchSnapshot();
+    expect(models[0].dependencies).toEqual(expectedDependencies);
   });
 });

@@ -9,7 +9,7 @@ const jsonSchemaDraft7 = {
   type: 'object',
   properties: {
     min_number_prop: { type: 'number' },
-    max_number_prop: { type: 'number' },
+    max_number_prop: { type: 'number' }
   }
 };
 

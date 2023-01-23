@@ -14,10 +14,18 @@ describe('GoGenerator', () => {
         city: { type: 'string', description: 'City description' },
         state: { type: 'string' },
         house_number: { type: 'number' },
-        marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
-        members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
-        tuple_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
-        array_type: { type: 'array', items: { type: 'string' } },
+        marriage: {
+          type: 'boolean',
+          description: 'Status if marriage live in given house'
+        },
+        members: {
+          oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
+        },
+        tuple_type: {
+          type: 'array',
+          items: [{ type: 'string' }, { type: 'number' }]
+        },
+        array_type: { type: 'array', items: { type: 'string' } }
       },
       required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
       additionalProperties: {
@@ -27,7 +35,7 @@ describe('GoGenerator', () => {
         '^S(.?*)test&': {
           type: 'string'
         }
-      },
+      }
     };
 
     const models = await generator.generate(doc);
@@ -40,7 +48,7 @@ describe('GoGenerator', () => {
       $id: 'CustomStruct',
       type: 'object',
       properties: {
-        property: { type: 'string' },
+        property: { type: 'string' }
       },
       additionalProperties: {
         type: 'string'
@@ -52,7 +60,7 @@ describe('GoGenerator', () => {
           struct: {
             field({ field }) {
               return `${field.propertyName} ${field.property.type}`; // private fields
-            },
+            }
           }
         }
       ]
@@ -66,7 +74,7 @@ describe('GoGenerator', () => {
   test('should render `enum` with mixed types', async () => {
     const doc = {
       $id: 'Things',
-      enum: ['Texas', 1, '1', false, { test: 'test' }],
+      enum: ['Texas', 1, '1', false, { test: 'test' }]
     };
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
@@ -77,7 +85,7 @@ describe('GoGenerator', () => {
     const doc = {
       $id: 'CustomEnum',
       type: 'string',
-      enum: ['Texas', 'Alabama', 'California'],
+      enum: ['Texas', 'Alabama', 'California']
     };
 
     generator = new GoGenerator({
@@ -86,7 +94,7 @@ describe('GoGenerator', () => {
           enum: {
             self({ content }) {
               return content;
-            },
+            }
           }
         }
       ]
@@ -106,17 +114,29 @@ describe('GoGenerator', () => {
           city: { type: 'string', description: 'City description' },
           state: { type: 'string' },
           house_number: { type: 'number' },
-          marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
-          members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
-          array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
-          other_model: { type: 'object', $id: 'OtherModel', properties: { street_name: { type: 'string' } } },
+          marriage: {
+            type: 'boolean',
+            description: 'Status if marriage live in given house'
+          },
+          members: {
+            oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
+          },
+          array_type: {
+            type: 'array',
+            items: [{ type: 'string' }, { type: 'number' }]
+          },
+          other_model: {
+            type: 'object',
+            $id: 'OtherModel',
+            properties: { street_name: { type: 'string' } }
+          }
         },
         patternProperties: {
           '^S(.?*)test&': {
             type: 'string'
           }
         },
-        required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+        required: ['street_name', 'city', 'state', 'house_number', 'array_type']
       };
       const config = { packageName: 'some_package' };
       const models = await generator.generateCompleteModels(doc, config);
@@ -134,17 +154,29 @@ describe('GoGenerator', () => {
           city: { type: 'string', description: 'City description' },
           state: { type: 'string' },
           house_number: { type: 'number' },
-          marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
-          members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
-          array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
-          other_model: { type: 'object', $id: 'OtherModel', properties: { street_name: { type: 'string' } } },
+          marriage: {
+            type: 'boolean',
+            description: 'Status if marriage live in given house'
+          },
+          members: {
+            oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
+          },
+          array_type: {
+            type: 'array',
+            items: [{ type: 'string' }, { type: 'number' }]
+          },
+          other_model: {
+            type: 'object',
+            $id: 'OtherModel',
+            properties: { street_name: { type: 'string' } }
+          }
         },
         patternProperties: {
           '^S(.?*)test&': {
             type: 'string'
           }
         },
-        required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+        required: ['street_name', 'city', 'state', 'house_number', 'array_type']
       };
       generator = new GoGenerator({
         presets: [
@@ -153,7 +185,7 @@ describe('GoGenerator', () => {
               self({ renderer, content }) {
                 renderer.dependencyManager.addDependency('time');
                 return content;
-              },
+              }
             }
           }
         ]

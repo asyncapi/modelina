@@ -7,7 +7,8 @@ const generator = new CSharpGenerator({
       options: {
         autoImplementedProperties: true
       }
-    }]
+    }
+  ]
 });
 
 const jsonSchemaDraft7 = {
@@ -27,7 +28,7 @@ const jsonSchemaDraft7 = {
     },
     numberProp: {
       type: 'number'
-    },
+    }
   }
 };
 

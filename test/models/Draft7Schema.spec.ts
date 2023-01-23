@@ -1,4 +1,4 @@
-import {Draft7Schema} from '../../src/models/Draft7Schema';
+import { Draft7Schema } from '../../src/models/Draft7Schema';
 
 describe('Draft7Schema', () => {
   describe('multipleOf', () => {
@@ -22,7 +22,7 @@ describe('Draft7Schema', () => {
       expect(d.$id).toEqual(doc.$id);
     });
   });
-  
+
   describe('maximum', () => {
     test('should return a number', () => {
       const doc = { type: 'number', maximum: 10 };
@@ -33,7 +33,7 @@ describe('Draft7Schema', () => {
       expect(d.maximum).toEqual(doc.maximum);
     });
   });
-  
+
   describe('exclusiveMaximum', () => {
     test('should return a number', () => {
       const doc = { type: 'number', exclusiveMaximum: 10 };
@@ -44,7 +44,7 @@ describe('Draft7Schema', () => {
       expect(d.exclusiveMaximum).toEqual(doc.exclusiveMaximum);
     });
   });
-  
+
   describe('minimum', () => {
     test('should return a number', () => {
       const doc = { type: 'number', minimum: 10 };
@@ -55,7 +55,7 @@ describe('Draft7Schema', () => {
       expect(d.minimum).toEqual(doc.minimum);
     });
   });
-  
+
   describe('exclusiveMinimum', () => {
     test('should return a number', () => {
       const doc = { type: 'number', exclusiveMinimum: 10 };
@@ -66,7 +66,7 @@ describe('Draft7Schema', () => {
       expect(d.exclusiveMinimum).toEqual(doc.exclusiveMinimum);
     });
   });
-  
+
   describe('maxLength', () => {
     test('should return a number', () => {
       const doc = { type: 'string', maxLength: 10 };
@@ -77,7 +77,7 @@ describe('Draft7Schema', () => {
       expect(d.maxLength).toEqual(doc.maxLength);
     });
   });
-  
+
   describe('minLength', () => {
     test('should return a number', () => {
       const doc = { type: 'string', minLength: 10 };
@@ -88,7 +88,7 @@ describe('Draft7Schema', () => {
       expect(d.minLength).toEqual(doc.minLength);
     });
   });
-  
+
   describe('pattern', () => {
     test('should return a string', () => {
       const doc = { type: 'string', pattern: '^test' };
@@ -99,7 +99,7 @@ describe('Draft7Schema', () => {
       expect(d.pattern).toEqual(doc.pattern);
     });
   });
-  
+
   describe('maxItems', () => {
     test('should return a number', () => {
       const doc = { type: 'array', maxItems: 10 };
@@ -110,7 +110,7 @@ describe('Draft7Schema', () => {
       expect(d.maxItems).toEqual(doc.maxItems);
     });
   });
-  
+
   describe('minItems', () => {
     test('should return a number', () => {
       const doc = { type: 'array', minItems: 10 };
@@ -121,7 +121,7 @@ describe('Draft7Schema', () => {
       expect(d.minItems).toEqual(doc.minItems);
     });
   });
-  
+
   describe('uniqueItems', () => {
     test('should return a boolean', () => {
       const doc = { type: 'array', uniqueItems: true };
@@ -186,7 +186,7 @@ describe('Draft7Schema', () => {
       expect(typeof d.type).toEqual('string');
       expect(d.type).toEqual(doc.type);
     });
-    
+
     test('should return an array of strings', () => {
       const doc = { type: ['number', 'string'] };
       const d = Draft7Schema.toSchema(doc) as Draft7Schema;
@@ -259,7 +259,7 @@ describe('Draft7Schema', () => {
       expect(d.items!.constructor.name).toEqual('Draft7Schema');
       expect(d.items).toEqual(doc.items);
     });
-    
+
     test('should return an array of Draft7Schema objects', () => {
       const doc = { items: [{ type: 'string' }, { type: 'number' }] };
       const d = Draft7Schema.toSchema(doc) as Draft7Schema;
@@ -297,7 +297,7 @@ describe('Draft7Schema', () => {
       expect(d.additionalProperties!.constructor.name).toEqual('Draft7Schema');
       expect(d.additionalProperties).toEqual(doc.additionalProperties);
     });
-    
+
     test('should return a boolean', () => {
       const doc = { additionalProperties: true };
       const d = Draft7Schema.toSchema(doc) as Draft7Schema;
@@ -306,7 +306,7 @@ describe('Draft7Schema', () => {
       expect(typeof d.additionalProperties).toEqual('boolean');
       expect(d.additionalProperties).toEqual(doc.additionalProperties);
     });
-    
+
     test('should return undefined when not defined', () => {
       const doc = {};
       const d = Draft7Schema.toSchema(doc) as Draft7Schema;
@@ -324,14 +324,14 @@ describe('Draft7Schema', () => {
       expect(d.additionalItems!.constructor.name).toEqual('Draft7Schema');
       expect(d.additionalItems).toEqual(doc.additionalItems);
     });
-    
+
     test('should return undefined when not defined', () => {
       const doc = {};
       const d = Draft7Schema.toSchema(doc) as Draft7Schema;
       expect(typeof d).toEqual('object');
       expect(d.additionalItems).toEqual(undefined);
     });
-    
+
     test('should return undefined when undefined', () => {
       const doc = { additionalItems: undefined };
       const d = Draft7Schema.toSchema(doc) as Draft7Schema;
@@ -364,7 +364,7 @@ describe('Draft7Schema', () => {
       expect(typeof d.const).toEqual('number');
       expect(d.const).toEqual(doc.const);
     });
-    
+
     test('should return null', () => {
       const doc = { type: 'object', const: null };
       const d = Draft7Schema.toSchema(doc) as Draft7Schema;
@@ -372,7 +372,7 @@ describe('Draft7Schema', () => {
       expect(d.const).not.toBeUndefined();
       expect(d.const).toEqual(doc.const);
     });
-    
+
     test('should return an object', () => {
       const doc = { type: 'object', const: { test: true } };
       const d = Draft7Schema.toSchema(doc) as Draft7Schema;
@@ -381,7 +381,7 @@ describe('Draft7Schema', () => {
       expect(typeof d.const).toEqual('object');
       expect(d.const).toEqual(doc.const);
     });
-    
+
     test('should return an array', () => {
       const doc = { type: 'object', const: ['test'] };
       const d = Draft7Schema.toSchema(doc) as Draft7Schema;
@@ -405,7 +405,10 @@ describe('Draft7Schema', () => {
 
   describe('dependencies', () => {
     test('should return a map with an array value', () => {
-      const doc = { properties: { test: { type: 'string' }, test2: { type: 'number' } }, dependencies: { test: ['test2'] } };
+      const doc = {
+        properties: { test: { type: 'string' }, test2: { type: 'number' } },
+        dependencies: { test: ['test2'] }
+      };
       const d = Draft7Schema.toSchema(doc) as Draft7Schema;
       expect(typeof d).toEqual('object');
       expect(d.dependencies).not.toBeUndefined();
@@ -416,9 +419,12 @@ describe('Draft7Schema', () => {
         expect(v).toEqual((doc.dependencies as Record<string, any>)[key]);
       }
     });
-    
+
     test('should return a map with a Draft7Schema value', () => {
-      const doc = { properties: { test: { type: 'string' } }, dependencies: { test: { properties: { test2: { type: 'number' } } } } };
+      const doc = {
+        properties: { test: { type: 'string' } },
+        dependencies: { test: { properties: { test2: { type: 'number' } } } }
+      };
       const d = Draft7Schema.toSchema(doc) as Draft7Schema;
       expect(typeof d).toEqual('object');
       expect(d.dependencies).not.toBeUndefined();
@@ -463,7 +469,7 @@ describe('Draft7Schema', () => {
       expect(d.then).toEqual(doc.then);
     });
   });
-  
+
   describe('else', () => {
     test('should return a Draft7Schema object', () => {
       const doc = { else: { type: 'string' } };
@@ -510,7 +516,7 @@ describe('Draft7Schema', () => {
 
   describe('description', () => {
     test('should return a string', () => {
-      const doc = { description: 'some description'};
+      const doc = { description: 'some description' };
       const d = Draft7Schema.toSchema(doc) as Draft7Schema;
       expect(typeof d).toEqual('object');
       expect(d.description).not.toBeUndefined();
@@ -579,7 +585,7 @@ describe('Draft7Schema', () => {
 
   describe('$ref', () => {
     test('should return a string ', () => {
-      const doc = { $ref: 'some/reference'};
+      const doc = { $ref: 'some/reference' };
       const d = Draft7Schema.toSchema(doc) as Draft7Schema;
       expect(typeof d).toEqual('object');
       expect(d.$ref).not.toBeUndefined();
@@ -601,11 +607,14 @@ describe('Draft7Schema', () => {
 
   describe('toSchema', () => {
     test('should throw error when trying to convert non-object', () => {
-      const expectedError = 'Could not convert input to expected copy of Draft7Schema';
-      expect(() => { Draft7Schema.toSchema(1 as any); }).toThrow(expectedError);
+      const expectedError =
+        'Could not convert input to expected copy of Draft7Schema';
+      expect(() => {
+        Draft7Schema.toSchema(1 as any);
+      }).toThrow(expectedError);
     });
     test('should handle recursive schemas', () => {
-      const recursiveDoc = { type: 'object', properties: { } };
+      const recursiveDoc = { type: 'object', properties: {} };
       const doc = { type: 'object', properties: { test: recursiveDoc } };
       (recursiveDoc.properties as any)['test'] = doc;
       const d = Draft7Schema.toSchema(doc) as Draft7Schema;
@@ -614,7 +623,7 @@ describe('Draft7Schema', () => {
       expect(typeof d2).toEqual('object');
     });
     test('should never return the same instance of properties', () => {
-      const doc = { type: 'string', properties: {test: {type: 'string'}} };
+      const doc = { type: 'string', properties: { test: { type: 'string' } } };
       const d = Draft7Schema.toSchema(doc) as Draft7Schema;
       expect(typeof d).toEqual('object');
       const d2 = Draft7Schema.toSchema(d as any) as Draft7Schema;
@@ -624,19 +633,19 @@ describe('Draft7Schema', () => {
       expect((d2.properties!['test'] as Draft7Schema).$id).not.toEqual('test');
     });
     test('should never return the same instance of items', () => {
-      const doc = { type: 'string', items: [{type: 'string'}] };
+      const doc = { type: 'string', items: [{ type: 'string' }] };
       const d = Draft7Schema.toSchema(doc) as Draft7Schema;
       expect(typeof d).toEqual('object');
       const d2 = Draft7Schema.toSchema(d as any) as Draft7Schema;
       expect(typeof d2).toEqual('object');
-      const d_items : Draft7Schema[] = d.items as Draft7Schema[];
-      const d2_items : Draft7Schema[] = d2.items as Draft7Schema[];
+      const d_items: Draft7Schema[] = d.items as Draft7Schema[];
+      const d2_items: Draft7Schema[] = d2.items as Draft7Schema[];
       d_items[0].$id = 'test';
       expect(d_items[0].$id).toEqual('test');
       expect(d2_items[0].$id).not.toEqual('test');
     });
     test('should never convert value properties', () => {
-      const doc = { const: { test: { type: 'string'} } };
+      const doc = { const: { test: { type: 'string' } } };
       const d = Draft7Schema.toSchema(doc) as Draft7Schema;
       expect(typeof d).toEqual('object');
       expect(d.const instanceof Draft7Schema).toEqual(false);

@@ -2,24 +2,25 @@ import { JavaGenerator } from '../../src';
 import * as path from 'path';
 import * as fs from 'fs';
 
-const generator = new JavaGenerator(
-  {
-    processorOptions: {
-      typescript: {
-        compilerOptions: {
-          strictNullChecks: true
-        }
+const generator = new JavaGenerator({
+  processorOptions: {
+    typescript: {
+      compilerOptions: {
+        strictNullChecks: true
       }
     }
   }
-);
+});
 
 const file = path.resolve(__dirname, './typescriptFile.ts');
-const fileContents = fs.readFileSync(path.resolve(__dirname, './typescriptFile.ts'),'utf-8');
+const fileContents = fs.readFileSync(
+  path.resolve(__dirname, './typescriptFile.ts'),
+  'utf-8'
+);
 
-export async function generate() : Promise<void> {
+export async function generate(): Promise<void> {
   const models = await generator.generate({
-    fileContents, 
+    fileContents,
     baseFile: file
   });
 

@@ -1,4 +1,8 @@
-import { TS_JSONBINPACK_PRESET, TypeScriptGenerator, TS_COMMON_PRESET} from '../../src';
+import {
+  TS_JSONBINPACK_PRESET,
+  TypeScriptGenerator,
+  TS_COMMON_PRESET
+} from '../../src';
 
 const generator = new TypeScriptGenerator({
   presets: [

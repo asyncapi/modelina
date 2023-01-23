@@ -13,14 +13,18 @@ function lengthInUtf8Bytes(str: string): number {
 export class FileHelpers {
   /**
    * Node specific file writer, which writes the content to the specified filepath.
-   * 
+   *
    * This function is invasive, as it overwrite any existing files with the same name as the model.
-   * 
+   *
    * @param content to write
    * @param filePath to write to,
-   * @param ensureFilesWritten veryify that the files is completely written before returning, this can happen if the file system is swamped with write requests. 
+   * @param ensureFilesWritten veryify that the files is completely written before returning, this can happen if the file system is swamped with write requests.
    */
-  static writerToFileSystem(content: string, filePath: string, ensureFilesWritten = false): Promise<void> {
+  static writerToFileSystem(
+    content: string,
+    filePath: string,
+    ensureFilesWritten = false
+  ): Promise<void> {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve, reject) => {
       try {
@@ -29,12 +33,12 @@ export class FileHelpers {
         await fs.mkdir(path.dirname(outputFilePath), { recursive: true });
         // eslint-disable-next-line security/detect-non-literal-fs-filename
         await fs.writeFile(outputFilePath, content);
-  
+
         /**
          * It happens that the promise is resolved before the file is actually written to.
-         * 
+         *
          * This often happen if the file system is swamped with write requests in either benchmarks or in our blackbox tests.
-         * 
+         *
          * To avoid this we dont resolve until we are sure the file is written and exists.
          */
         if (ensureFilesWritten) {

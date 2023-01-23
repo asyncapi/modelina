@@ -9,7 +9,9 @@ import { KotlinDependencyManager } from './KotlinDependencyManager';
  *
  * @extends AbstractRenderer
  */
-export abstract class KotlinRenderer<RendererModelType extends ConstrainedMetaModel> extends AbstractRenderer<KotlinOptions, KotlinGenerator, RendererModelType> {
+export abstract class KotlinRenderer<
+  RendererModelType extends ConstrainedMetaModel
+> extends AbstractRenderer<KotlinOptions, KotlinGenerator, RendererModelType> {
   constructor(
     options: KotlinOptions,
     generator: KotlinGenerator,
@@ -23,14 +25,20 @@ export abstract class KotlinRenderer<RendererModelType extends ConstrainedMetaMo
 
   renderComments(lines: string | string[]): string {
     lines = FormatHelpers.breakLines(lines);
-    const newLiteral = lines.map(line => ` * ${line}`).join('\n');
+    const newLiteral = lines.map((line) => ` * ${line}`).join('\n');
     return `/**
 ${newLiteral}
  */`;
   }
 
-  renderAnnotation(annotationName: string, value?: any | Record<string, any>, prefix?: 'field:' | 'get:' | 'param:'): string {
-    const name = `@${!prefix ? '' : prefix}${FormatHelpers.upperFirst(annotationName)}`;
+  renderAnnotation(
+    annotationName: string,
+    value?: any | Record<string, any>,
+    prefix?: 'field:' | 'get:' | 'param:'
+  ): string {
+    const name = `@${!prefix ? '' : prefix}${FormatHelpers.upperFirst(
+      annotationName
+    )}`;
 
     if (value === undefined || value === null) {
       return name;
@@ -52,10 +60,13 @@ ${newLiteral}
 }
 
 function concatenateEntries(entries: [string, unknown][] = []): string {
-  return entries.map(([paramName, newValue]) => {
-    if (paramName && newValue !== undefined) {
-      return `${paramName}=${newValue}`;
-    }
-    return newValue;
-  }).filter(v => v !== undefined).join(', ');
+  return entries
+    .map(([paramName, newValue]) => {
+      if (paramName && newValue !== undefined) {
+        return `${paramName}=${newValue}`;
+      }
+      return newValue;
+    })
+    .filter((v) => v !== undefined)
+    .join(', ');
 }

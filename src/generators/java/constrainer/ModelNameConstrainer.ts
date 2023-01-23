@@ -1,4 +1,8 @@
-import { NO_NUMBER_START_CHAR, NO_EMPTY_VALUE, NO_RESERVED_KEYWORDS} from '../../../helpers/Constraints';
+import {
+  NO_NUMBER_START_CHAR,
+  NO_EMPTY_VALUE,
+  NO_RESERVED_KEYWORDS
+} from '../../../helpers/Constraints';
 import { FormatHelpers, ModelNameConstraint } from '../../../helpers';
 import { isReservedJavaKeyword } from '../Constants';
 
@@ -14,7 +18,10 @@ export const DefaultModelNameConstraints: ModelNameConstraints = {
   NO_SPECIAL_CHAR: (value: string) => {
     //Exclude ` ` because it gets formatted by NAMING_FORMATTER
     //Exclude '_', '$' because they are allowed
-    return FormatHelpers.replaceSpecialCharacters(value, { exclude: [' ', '_'], separator: '_' });
+    return FormatHelpers.replaceSpecialCharacters(value, {
+      exclude: [' ', '_'],
+      separator: '_'
+    });
   },
   NO_NUMBER_START_CHAR,
   NO_EMPTY_VALUE,
@@ -22,13 +29,15 @@ export const DefaultModelNameConstraints: ModelNameConstraints = {
     return FormatHelpers.toPascalCase(value);
   },
   NO_RESERVED_KEYWORDS: (value: string) => {
-    return NO_RESERVED_KEYWORDS(value, isReservedJavaKeyword); 
+    return NO_RESERVED_KEYWORDS(value, isReservedJavaKeyword);
   }
 };
-export function defaultModelNameConstraints(customConstraints?: Partial<ModelNameConstraints>): ModelNameConstraint {
-  const constraints = {...DefaultModelNameConstraints, ...customConstraints};
+export function defaultModelNameConstraints(
+  customConstraints?: Partial<ModelNameConstraints>
+): ModelNameConstraint {
+  const constraints = { ...DefaultModelNameConstraints, ...customConstraints };
 
-  return ({modelName}) => {
+  return ({ modelName }) => {
     let constrainedValue = modelName;
     constrainedValue = constraints.NO_SPECIAL_CHAR(constrainedValue);
     constrainedValue = constraints.NO_NUMBER_START_CHAR(constrainedValue);

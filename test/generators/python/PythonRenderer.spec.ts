@@ -7,7 +7,14 @@ import { MockPythonRenderer } from '../../TestUtils/TestRenderers';
 describe('PythonRenderer', () => {
   let renderer: PythonRenderer<any>;
   beforeEach(() => {
-    renderer = new MockPythonRenderer(PythonGenerator.defaultOptions, new PythonGenerator(), [], new ConstrainedObjectModel('', undefined, '', {}), new InputMetaModel(), new PythonDependencyManager(PythonGenerator.defaultOptions));
+    renderer = new MockPythonRenderer(
+      PythonGenerator.defaultOptions,
+      new PythonGenerator(),
+      [],
+      new ConstrainedObjectModel('', undefined, '', {}),
+      new InputMetaModel(),
+      new PythonDependencyManager(PythonGenerator.defaultOptions)
+    );
   });
 
   describe('renderComments()', () => {
@@ -17,7 +24,8 @@ someComment
 """`);
     });
     test('Should be able to render multiple comments', () => {
-      expect(renderer.renderComments(['someComment', 'someComment'])).toEqual(`"""
+      expect(renderer.renderComments(['someComment', 'someComment']))
+        .toEqual(`"""
 someComment
 someComment
 """`);

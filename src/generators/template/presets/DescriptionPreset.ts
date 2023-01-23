@@ -1,8 +1,8 @@
 import { TemplatePreset } from '../TemplatePreset';
 
 /**
- * Preset which adds description to rendered model. 
- * 
+ * Preset which adds description to rendered model.
+ *
  * @implements {TemplatePreset}
  */
 export const TEMPLATE_DESCRIPTION_PRESET: TemplatePreset = {
@@ -20,6 +20,6 @@ export const TEMPLATE_DESCRIPTION_PRESET: TemplatePreset = {
     self({ content }) {
       const renderedDesc = 'my description';
       return `${renderedDesc}\n${content}`;
-    },
+    }
   }
 };

@@ -39,21 +39,16 @@ export const RESERVED_KEYWORDS_ILLEGAL_AS_PARAMETER = [
   'while'
 ];
 
-export const ILLEGAL_ENUM_FIELDS = [
-  'as?',
-  '!in',
-  '!is'
-];
+export const ILLEGAL_ENUM_FIELDS = ['as?', '!in', '!is'];
 
 export function isInvalidKotlinEnumKey(word: string): boolean {
-  return checkForReservedKeyword(
-    word,
-    ILLEGAL_ENUM_FIELDS,
-    true
-  );
+  return checkForReservedKeyword(word, ILLEGAL_ENUM_FIELDS, true);
 }
 
-export function isReservedKotlinKeyword(word: string, forceLowerCase = true): boolean {
+export function isReservedKotlinKeyword(
+  word: string,
+  forceLowerCase = true
+): boolean {
   return checkForReservedKeyword(
     word,
     RESERVED_KEYWORDS_ILLEGAL_AS_PARAMETER,

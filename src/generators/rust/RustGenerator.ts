@@ -3,13 +3,33 @@ import {
   CommonGeneratorOptions,
   defaultGeneratorOptions
 } from '../AbstractGenerator';
-import { OutputModel, InputMetaModel, RenderOutput, ConstrainedObjectModel, ConstrainedEnumModel, ConstrainedMetaModel, MetaModel, ConstrainedTupleModel, ConstrainedUnionModel } from '../../models';
-import { constrainMetaModel, Constraints, IndentationTypes, split, SplitOptions, TypeMapping } from '../../helpers';
+import {
+  OutputModel,
+  InputMetaModel,
+  RenderOutput,
+  ConstrainedObjectModel,
+  ConstrainedEnumModel,
+  ConstrainedMetaModel,
+  MetaModel,
+  ConstrainedTupleModel,
+  ConstrainedUnionModel
+} from '../../models';
+import {
+  constrainMetaModel,
+  Constraints,
+  IndentationTypes,
+  split,
+  SplitOptions,
+  TypeMapping
+} from '../../helpers';
 import { RustPreset, RUST_DEFAULT_PRESET } from './RustPreset';
 import { StructRenderer } from './renderers/StructRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { Logger } from '../../utils/LoggingInterface';
-import { RustDefaultConstraints, RustDefaultTypeMapping } from './RustConstrainer';
+import {
+  RustDefaultConstraints,
+  RustDefaultTypeMapping
+} from './RustConstrainer';
 import { TupleRenderer } from './renderers/TupleRenderer';
 import { UnionRenderer } from './renderers/UnionRenderer';
 import { PackageRenderer } from './renderers/PackageRenderer';
@@ -17,12 +37,12 @@ import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 import { RustDependencyManager } from './RustDependencyManager';
 export interface RustOptions extends CommonGeneratorOptions<RustPreset> {
   typeMapping: TypeMapping<RustOptions, RustDependencyManager>;
-  constraints: Constraints
+  constraints: Constraints;
 }
 export type RustTypeMapping = TypeMapping<RustOptions, RustDependencyManager>;
 
 export enum RustPackageFeatures {
-  json,
+  json
 }
 
 export interface RustPackageOptions {
@@ -34,12 +54,12 @@ export interface RustPackageOptions {
   license: string;
   description: string;
   edition: string;
-  packageFeatures: RustPackageFeatures[]
+  packageFeatures: RustPackageFeatures[];
 }
 
 export interface RustRenderCompleteModelOptions {
-  supportFiles: boolean
-  package: RustPackageOptions
+  supportFiles: boolean;
+  package: RustPackageOptions;
 }
 
 export const defaultRustRenderCompleteModelOptions = {
@@ -56,15 +76,17 @@ export const defaultRustRenderCompleteModelOptions = {
     edition: '2018',
     packageFeatures: [RustPackageFeatures.json] as RustPackageFeatures[]
   } as RustPackageOptions
-
 };
 
-export class ConstrainedSupportFileModel extends ConstrainedMetaModel { }
+export class ConstrainedSupportFileModel extends ConstrainedMetaModel {}
 
 /**
  * Generator for Rust
  */
-export class RustGenerator extends AbstractGenerator<RustOptions, RustRenderCompleteModelOptions> {
+export class RustGenerator extends AbstractGenerator<
+  RustOptions,
+  RustRenderCompleteModelOptions
+> {
   static defaultOptions: RustOptions = {
     ...defaultGeneratorOptions,
     defaultPreset: RUST_DEFAULT_PRESET,
@@ -75,12 +97,12 @@ export class RustGenerator extends AbstractGenerator<RustOptions, RustRenderComp
       size: 4
     },
     // Temporarily set
-    dependencyManager: () => { return {} as RustDependencyManager;}
+    dependencyManager: () => {
+      return {} as RustDependencyManager;
+    }
   };
 
-  constructor(
-    options?: DeepPartial<RustOptions>,
-  ) {
+  constructor(options?: DeepPartial<RustOptions>) {
     const realizedOptions = RustGenerator.getRustOptions(options);
     super('Rust', realizedOptions);
   }
@@ -89,10 +111,15 @@ export class RustGenerator extends AbstractGenerator<RustOptions, RustRenderComp
    * Returns the Rust options by merging custom options with default ones.
    */
   static getRustOptions(options?: DeepPartial<RustOptions>): RustOptions {
-    const optionsToUse = mergePartialAndDefault(RustGenerator.defaultOptions, options) as RustOptions;
+    const optionsToUse = mergePartialAndDefault(
+      RustGenerator.defaultOptions,
+      options
+    ) as RustOptions;
     //Always overwrite the dependency manager unless user explicitly state they want it (ignore default temporary dependency manager)
     if (options?.dependencyManager === undefined) {
-      optionsToUse.dependencyManager = () => { return new RustDependencyManager(optionsToUse); };
+      optionsToUse.dependencyManager = () => {
+        return new RustDependencyManager(optionsToUse);
+      };
     }
     return optionsToUse;
   }
@@ -100,10 +127,15 @@ export class RustGenerator extends AbstractGenerator<RustOptions, RustRenderComp
   /**
    * Returns the Rust options by merging custom options with default ones.
    */
-  static getRustCompleteOptions(options?: DeepPartial<RustRenderCompleteModelOptions>): RustRenderCompleteModelOptions {
-    return mergePartialAndDefault(defaultRustRenderCompleteModelOptions, options) as RustRenderCompleteModelOptions;
+  static getRustCompleteOptions(
+    options?: DeepPartial<RustRenderCompleteModelOptions>
+  ): RustRenderCompleteModelOptions {
+    return mergePartialAndDefault(
+      defaultRustRenderCompleteModelOptions,
+      options
+    ) as RustRenderCompleteModelOptions;
   }
-  
+
   /**
    * Wrapper to get an instance of the dependency manager
    */
@@ -118,13 +150,19 @@ export class RustGenerator extends AbstractGenerator<RustOptions, RustRenderComp
       splitObject: true,
       splitTuple: true,
       splitArray: false,
-      splitUnion: true,
+      splitUnion: true
     };
     return split(model, metaModelsToSplit);
   }
 
-  constrainToMetaModel(model: MetaModel, options: DeepPartial<RustOptions>): ConstrainedMetaModel {
-    const optionsToUse = RustGenerator.getRustOptions({...this.options, ...options});
+  constrainToMetaModel(
+    model: MetaModel,
+    options: DeepPartial<RustOptions>
+  ): ConstrainedMetaModel {
+    const optionsToUse = RustGenerator.getRustOptions({
+      ...this.options,
+      ...options
+    });
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     return constrainMetaModel<RustOptions, RustDependencyManager>(
       this.options.typeMapping,
@@ -138,8 +176,15 @@ export class RustGenerator extends AbstractGenerator<RustOptions, RustRenderComp
     );
   }
 
-  render(model: ConstrainedMetaModel, inputModel: InputMetaModel, options?: DeepPartial<RustOptions>): Promise<RenderOutput> {
-    const optionsToUse = RustGenerator.getRustOptions({...this.options, ...options});
+  render(
+    model: ConstrainedMetaModel,
+    inputModel: InputMetaModel,
+    options?: DeepPartial<RustOptions>
+  ): Promise<RenderOutput> {
+    const optionsToUse = RustGenerator.getRustOptions({
+      ...this.options,
+      ...options
+    });
     if (model instanceof ConstrainedObjectModel) {
       return this.renderStruct(model, inputModel, optionsToUse);
     } else if (model instanceof ConstrainedEnumModel) {
@@ -149,8 +194,16 @@ export class RustGenerator extends AbstractGenerator<RustOptions, RustRenderComp
     } else if (model instanceof ConstrainedUnionModel) {
       return this.renderUnion(model, inputModel, optionsToUse);
     }
-    Logger.warn(`Rust generator, cannot generate this type of model, ${model.name}`);
-    return Promise.resolve(RenderOutput.toRenderOutput({ result: '', renderedName: '', dependencies: [] }));
+    Logger.warn(
+      `Rust generator, cannot generate this type of model, ${model.name}`
+    );
+    return Promise.resolve(
+      RenderOutput.toRenderOutput({
+        result: '',
+        renderedName: '',
+        dependencies: []
+      })
+    );
   }
 
   /**
@@ -161,75 +214,221 @@ export class RustGenerator extends AbstractGenerator<RustOptions, RustRenderComp
    * @param options
    */
   async renderCompleteModel(
-    model: ConstrainedMetaModel, 
-    inputModel: InputMetaModel, 
+    model: ConstrainedMetaModel,
+    inputModel: InputMetaModel,
     _completeModelOptions: Partial<RustRenderCompleteModelOptions>,
-    options: DeepPartial<RustOptions>): Promise<RenderOutput> {
-    const optionsToUse = RustGenerator.getRustOptions({...this.options, ...options});
+    options: DeepPartial<RustOptions>
+  ): Promise<RenderOutput> {
+    const optionsToUse = RustGenerator.getRustOptions({
+      ...this.options,
+      ...options
+    });
     Logger.debug('Generating complete models with options: ', optionsToUse);
     const outputModel = await this.render(model, inputModel);
     const outputContent = outputModel.result;
-    return RenderOutput.toRenderOutput({ result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies });
+    return RenderOutput.toRenderOutput({
+      result: outputContent,
+      renderedName: outputModel.renderedName,
+      dependencies: outputModel.dependencies
+    });
   }
 
-  async renderEnum(model: ConstrainedEnumModel, inputModel: InputMetaModel, options?: DeepPartial<RustOptions>): Promise<RenderOutput> {
-    const optionsToUse = RustGenerator.getRustOptions({...this.options, ...options});
+  async renderEnum(
+    model: ConstrainedEnumModel,
+    inputModel: InputMetaModel,
+    options?: DeepPartial<RustOptions>
+  ): Promise<RenderOutput> {
+    const optionsToUse = RustGenerator.getRustOptions({
+      ...this.options,
+      ...options
+    });
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('enum');
-    const renderer = new EnumRenderer(optionsToUse, this, presets, model, inputModel, dependencyManagerToUse);
+    const renderer = new EnumRenderer(
+      optionsToUse,
+      this,
+      presets,
+      model,
+      inputModel,
+      dependencyManagerToUse
+    );
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({ result, renderedName: model.name, dependencies: dependencyManagerToUse.dependencies });
+    return RenderOutput.toRenderOutput({
+      result,
+      renderedName: model.name,
+      dependencies: dependencyManagerToUse.dependencies
+    });
   }
 
-  async renderStruct(model: ConstrainedObjectModel, inputModel: InputMetaModel, options?: DeepPartial<RustOptions>): Promise<RenderOutput> {
-    const optionsToUse = RustGenerator.getRustOptions({...this.options, ...options});
+  async renderStruct(
+    model: ConstrainedObjectModel,
+    inputModel: InputMetaModel,
+    options?: DeepPartial<RustOptions>
+  ): Promise<RenderOutput> {
+    const optionsToUse = RustGenerator.getRustOptions({
+      ...this.options,
+      ...options
+    });
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('struct');
-    const renderer = new StructRenderer(optionsToUse, this, presets, model, inputModel, dependencyManagerToUse);
+    const renderer = new StructRenderer(
+      optionsToUse,
+      this,
+      presets,
+      model,
+      inputModel,
+      dependencyManagerToUse
+    );
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({ result, renderedName: model.name, dependencies: dependencyManagerToUse.dependencies });
+    return RenderOutput.toRenderOutput({
+      result,
+      renderedName: model.name,
+      dependencies: dependencyManagerToUse.dependencies
+    });
   }
-  
-  async renderTuple(model: ConstrainedTupleModel, inputModel: InputMetaModel, options?: DeepPartial<RustOptions>): Promise<RenderOutput> {
-    const optionsToUse = RustGenerator.getRustOptions({...this.options, ...options});
+
+  async renderTuple(
+    model: ConstrainedTupleModel,
+    inputModel: InputMetaModel,
+    options?: DeepPartial<RustOptions>
+  ): Promise<RenderOutput> {
+    const optionsToUse = RustGenerator.getRustOptions({
+      ...this.options,
+      ...options
+    });
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('tuple');
-    const renderer = new TupleRenderer(optionsToUse, this, presets, model, inputModel, dependencyManagerToUse);
+    const renderer = new TupleRenderer(
+      optionsToUse,
+      this,
+      presets,
+      model,
+      inputModel,
+      dependencyManagerToUse
+    );
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({ result, renderedName: model.name, dependencies: dependencyManagerToUse.dependencies });
+    return RenderOutput.toRenderOutput({
+      result,
+      renderedName: model.name,
+      dependencies: dependencyManagerToUse.dependencies
+    });
   }
 
-  async renderUnion(model: ConstrainedUnionModel, inputModel: InputMetaModel, options?: DeepPartial<RustOptions>): Promise<RenderOutput> {
-    const optionsToUse = RustGenerator.getRustOptions({...this.options, ...options});
+  async renderUnion(
+    model: ConstrainedUnionModel,
+    inputModel: InputMetaModel,
+    options?: DeepPartial<RustOptions>
+  ): Promise<RenderOutput> {
+    const optionsToUse = RustGenerator.getRustOptions({
+      ...this.options,
+      ...options
+    });
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('union');
-    const renderer = new UnionRenderer(optionsToUse, this, presets, model, inputModel, dependencyManagerToUse);
+    const renderer = new UnionRenderer(
+      optionsToUse,
+      this,
+      presets,
+      model,
+      inputModel,
+      dependencyManagerToUse
+    );
     const result = await renderer.runSelfPreset();
-    return RenderOutput.toRenderOutput({ result, renderedName: model.name, dependencies: dependencyManagerToUse.dependencies });
+    return RenderOutput.toRenderOutput({
+      result,
+      renderedName: model.name,
+      dependencies: dependencyManagerToUse.dependencies
+    });
   }
-  async renderManifest(model: ConstrainedMetaModel, inputModel: InputMetaModel, completeModelOptions: Partial<RustRenderCompleteModelOptions>, options?: DeepPartial<RustOptions>): Promise<RenderOutput> {
-    const optionsToUse = RustGenerator.getRustOptions({...this.options, ...options});
+  async renderManifest(
+    model: ConstrainedMetaModel,
+    inputModel: InputMetaModel,
+    completeModelOptions: Partial<RustRenderCompleteModelOptions>,
+    options?: DeepPartial<RustOptions>
+  ): Promise<RenderOutput> {
+    const optionsToUse = RustGenerator.getRustOptions({
+      ...this.options,
+      ...options
+    });
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('package');
-    const renderer = new PackageRenderer(optionsToUse, this, presets, model, inputModel, dependencyManagerToUse);
-    const result = await renderer.runPreset('manifest', { packageOptions: completeModelOptions.package, inputModel });
-    return RenderOutput.toRenderOutput({ result, renderedName: model.name, dependencies: dependencyManagerToUse.dependencies });
+    const renderer = new PackageRenderer(
+      optionsToUse,
+      this,
+      presets,
+      model,
+      inputModel,
+      dependencyManagerToUse
+    );
+    const result = await renderer.runPreset('manifest', {
+      packageOptions: completeModelOptions.package,
+      inputModel
+    });
+    return RenderOutput.toRenderOutput({
+      result,
+      renderedName: model.name,
+      dependencies: dependencyManagerToUse.dependencies
+    });
   }
-  async renderLib(model: ConstrainedMetaModel, inputModel: InputMetaModel, completeModelOptions: Partial<RustRenderCompleteModelOptions>, options?: DeepPartial<RustOptions>): Promise<RenderOutput> {
-    const optionsToUse = RustGenerator.getRustOptions({...this.options, ...options});
+  async renderLib(
+    model: ConstrainedMetaModel,
+    inputModel: InputMetaModel,
+    completeModelOptions: Partial<RustRenderCompleteModelOptions>,
+    options?: DeepPartial<RustOptions>
+  ): Promise<RenderOutput> {
+    const optionsToUse = RustGenerator.getRustOptions({
+      ...this.options,
+      ...options
+    });
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('package');
-    const renderer = new PackageRenderer(optionsToUse, this, presets, model, inputModel, dependencyManagerToUse);
-    const result = await renderer.runPreset('lib', { packageOptions: completeModelOptions.package, inputModel });
-    return RenderOutput.toRenderOutput({ result, renderedName: model.name, dependencies: dependencyManagerToUse.dependencies });
+    const renderer = new PackageRenderer(
+      optionsToUse,
+      this,
+      presets,
+      model,
+      inputModel,
+      dependencyManagerToUse
+    );
+    const result = await renderer.runPreset('lib', {
+      packageOptions: completeModelOptions.package,
+      inputModel
+    });
+    return RenderOutput.toRenderOutput({
+      result,
+      renderedName: model.name,
+      dependencies: dependencyManagerToUse.dependencies
+    });
   }
 
-  async generateCompleteSupport(input: Record<string, unknown> | InputMetaModel, completeModelOptions: Partial<RustRenderCompleteModelOptions>, options?: DeepPartial<RustOptions>): Promise<OutputModel[]> {
+  async generateCompleteSupport(
+    input: Record<string, unknown> | InputMetaModel,
+    completeModelOptions: Partial<RustRenderCompleteModelOptions>,
+    options?: DeepPartial<RustOptions>
+  ): Promise<OutputModel[]> {
     const inputModel = await this.processInput(input);
-    const manifestMetaModel = new ConstrainedSupportFileModel('Cargo.toml', inputModel, 'supportFile');
-    const libMetaModel = new ConstrainedSupportFileModel('src/lib.rs', inputModel, 'supportFile');
-    const manifestOutput = await this.renderManifest(manifestMetaModel, inputModel, completeModelOptions, options);
-    const libOutput = await this.renderLib(libMetaModel, inputModel, completeModelOptions, options);
+    const manifestMetaModel = new ConstrainedSupportFileModel(
+      'Cargo.toml',
+      inputModel,
+      'supportFile'
+    );
+    const libMetaModel = new ConstrainedSupportFileModel(
+      'src/lib.rs',
+      inputModel,
+      'supportFile'
+    );
+    const manifestOutput = await this.renderManifest(
+      manifestMetaModel,
+      inputModel,
+      completeModelOptions,
+      options
+    );
+    const libOutput = await this.renderLib(
+      libMetaModel,
+      inputModel,
+      completeModelOptions,
+      options
+    );
 
     return [
       OutputModel.toOutputModel({

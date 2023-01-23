@@ -3,10 +3,7 @@ import { AbstractDependencyManager } from '../AbstractDependencyManager';
 import { JavaScriptOptions } from './JavaScriptGenerator';
 
 export class JavaScriptDependencyManager extends AbstractDependencyManager {
-  constructor(
-    public options: JavaScriptOptions,
-    dependencies: string[] = []
-  ) {
+  constructor(public options: JavaScriptOptions, dependencies: string[] = []) {
     super(dependencies);
   }
 
@@ -14,6 +11,10 @@ export class JavaScriptDependencyManager extends AbstractDependencyManager {
    * Simple helper function to render a dependency based on the module system that the user defines.
    */
   renderDependency(toImport: string, fromModule: string): string {
-    return renderJavaScriptDependency(toImport, fromModule, this.options.moduleSystem);
+    return renderJavaScriptDependency(
+      toImport,
+      fromModule,
+      this.options.moduleSystem
+    );
   }
 }

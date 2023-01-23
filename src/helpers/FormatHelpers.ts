@@ -4,12 +4,12 @@ import {
   paramCase,
   constantCase,
   snakeCase,
-  pascalCaseTransformMerge,
+  pascalCaseTransformMerge
 } from 'change-case';
 
 export enum IndentationTypes {
   TABS = 'tabs',
-  SPACES = 'spaces',
+  SPACES = 'spaces'
 }
 
 const specialCharacterReplacements = new Map<string, string>([
@@ -20,7 +20,7 @@ const specialCharacterReplacements = new Map<string, string>([
   ['$', 'dollar'],
   ['%', 'percent'],
   ['&', 'ampersand'],
-  ['\'', 'apostrophe'],
+  ["'", 'apostrophe'],
   ['(', 'roundleft'],
   [')', 'roundright'],
   ['*', 'asterisk'],
@@ -45,10 +45,13 @@ const specialCharacterReplacements = new Map<string, string>([
   ['{', 'curlyleft'],
   ['|', 'vertical'],
   ['}', 'curlyright'],
-  ['~', 'tilde'],
+  ['~', 'tilde']
 ]);
 
-interface ReplaceSpecialCharactersOptions { separator?: string, exclude?: string[] }
+interface ReplaceSpecialCharactersOptions {
+  separator?: string;
+  exclude?: string[];
+}
 
 export class FormatHelpers {
   /**
@@ -111,22 +114,34 @@ export class FormatHelpers {
    * Transform into lower case string with an underscore between words.
    * @param {string} value to transform
    * @returns {string}
-  */
+   */
   static toSnakeCase = snakeCase;
 
   /**
-  * Replace special characters (Not 0-9,a-z,A-Z) with character names
-  * @param {string} value to transform
-  * @param {ReplaceSpecialCharactersOptions} options
-  * @returns {string}
-  */
-  static replaceSpecialCharacters(string: string, options?: ReplaceSpecialCharactersOptions): string {
+   * Replace special characters (Not 0-9,a-z,A-Z) with character names
+   * @param {string} value to transform
+   * @param {ReplaceSpecialCharactersOptions} options
+   * @returns {string}
+   */
+  static replaceSpecialCharacters(
+    string: string,
+    options?: ReplaceSpecialCharactersOptions
+  ): string {
     const separator = options?.separator ?? '';
     return [...string].reduce((sum: string, c: string, i: number) => {
-      if (options?.exclude?.includes(c)) { return sum + c; }
+      if (options?.exclude?.includes(c)) {
+        return sum + c;
+      }
       const replacement = specialCharacterReplacements.get(c);
-      if (replacement === undefined) { return sum + c; }
-      return sum + (sum.endsWith(separator) || sum.length === 0 ? '' : separator) + replacement + (i === string.length - 1 ? '' : separator);
+      if (replacement === undefined) {
+        return sum + c;
+      }
+      return (
+        sum +
+        (sum.endsWith(separator) || sum.length === 0 ? '' : separator) +
+        replacement +
+        (i === string.length - 1 ? '' : separator)
+      );
     }, '');
   }
 
@@ -137,7 +152,7 @@ export class FormatHelpers {
    */
   static breakLines(lines: string | string[]): string[] {
     lines = Array.isArray(lines) ? lines : [lines];
-    return lines.map(line => line.split('\n')).flatMap(line => line);
+    return lines.map((line) => line.split('\n')).flatMap((line) => line);
   }
 
   /**
@@ -147,7 +162,11 @@ export class FormatHelpers {
    * @param {IndentationTypes} type the type of indendations to use. SPACES by default.
    * @returns {string}
    */
-  static indent(content = '', size = 1, type: IndentationTypes = IndentationTypes.SPACES): string {
+  static indent(
+    content = '',
+    size = 1,
+    type: IndentationTypes = IndentationTypes.SPACES
+  ): string {
     if (size < 1) {
       return content;
     }
@@ -156,7 +175,10 @@ export class FormatHelpers {
     if (content.includes('\n')) {
       const newLineArray = content.split('\n');
       return newLineArray.reduce((accumulator, value) => {
-        const newValue = value.trim() === '' ? value : `${this.getIndentation(size, type)}${value}`;
+        const newValue =
+          value.trim() === ''
+            ? value
+            : `${this.getIndentation(size, type)}${value}`;
         return accumulator === '' ? newValue : `${accumulator}\n${newValue}`;
       }, '');
     }
@@ -170,14 +192,17 @@ export class FormatHelpers {
    * @param {IndentationTypes} type the type of indendations to use. SPACES by default.
    * @returns {string}
    */
-  private static getIndentation(size = 0, type: IndentationTypes = IndentationTypes.SPACES): string {
+  private static getIndentation(
+    size = 0,
+    type: IndentationTypes = IndentationTypes.SPACES
+  ): string {
     const whitespaceChar = type === IndentationTypes.SPACES ? ' ' : '\t';
     return Array(size).fill(whitespaceChar).join('');
   }
 
   /**
    * Render given JSON Schema example to string
-   * 
+   *
    * @param {Array<Any>} examples to render
    * @returns {string}
    */
@@ -185,7 +210,9 @@ export class FormatHelpers {
     let renderedExamples = '';
     if (Array.isArray(examples)) {
       for (const example of examples) {
-        if (renderedExamples !== '') { renderedExamples += ', '; }
+        if (renderedExamples !== '') {
+          renderedExamples += ', ';
+        }
         if (typeof example === 'object') {
           try {
             renderedExamples += JSON.stringify(example);
@@ -201,9 +228,10 @@ export class FormatHelpers {
   }
 
   static snakeCase(renderName: string): string {
-    return renderName.replace(/\W+/g, ' ')
+    return renderName
+      .replace(/\W+/g, ' ')
       .split(/ |\B(?=[A-Z])/)
-      .map(word => word.toLowerCase())
+      .map((word) => word.toLowerCase())
       .join('_');
   }
 }

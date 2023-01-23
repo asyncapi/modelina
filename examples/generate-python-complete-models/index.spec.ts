@@ -1,6 +1,9 @@
-import {generate} from './index';
+import { generate } from './index';
 
-const createLogMock = () => jest.spyOn(global.console, 'log').mockImplementation(() => { return; });
+const createLogMock = () =>
+  jest.spyOn(global.console, 'log').mockImplementation(() => {
+    return;
+  });
 
 describe('Should be able to render python models', () => {
   afterEach(() => {

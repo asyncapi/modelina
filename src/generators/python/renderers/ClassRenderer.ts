@@ -1,11 +1,14 @@
 import { PythonRenderer } from '../PythonRenderer';
-import { ConstrainedObjectModel, ConstrainedObjectPropertyModel } from '../../../models';
+import {
+  ConstrainedObjectModel,
+  ConstrainedObjectPropertyModel
+} from '../../../models';
 import { PythonOptions } from '../PythonGenerator';
 import { ClassPresetType } from '../PythonPreset';
 
 /**
  * Renderer for Python's `class` type
- * 
+ *
  * @extends PythonRenderer
  */
 export class ClassRenderer extends PythonRenderer<ConstrainedObjectModel> {
@@ -14,7 +17,7 @@ export class ClassRenderer extends PythonRenderer<ConstrainedObjectModel> {
       await this.renderProperties(),
       await this.runCtorPreset(),
       await this.renderAccessors(),
-      await this.runAdditionalContentPreset(),
+      await this.runAdditionalContentPreset()
     ];
 
     return `class ${this.model.name}: 
@@ -74,7 +77,7 @@ export const PYTHON_DEFAULT_CLASS_PRESET: ClassPresetType<PythonOptions> = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
-  ctor({renderer, model}) {
+  ctor({ renderer, model }) {
     const properties = model.properties || {};
     let body = '';
     if (Object.keys(properties).length > 0) {
@@ -100,5 +103,5 @@ def ${property.propertyName}(self):\n\treturn self._${property.propertyName}`;
   setter({ property }) {
     return `@${property.propertyName}.setter
 def ${property.propertyName}(self, ${property.propertyName}):\n\tself._${property.propertyName} = ${property.propertyName}`;
-  },
+  }
 };

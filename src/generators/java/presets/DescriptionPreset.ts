@@ -3,10 +3,14 @@ import { JavaPreset } from '../JavaPreset';
 import { FormatHelpers } from '../../../helpers';
 import { ConstrainedMetaModel } from '../../../models';
 
-function renderDescription({ renderer, content, item }: {
-  renderer: JavaRenderer<any>,
-  content: string,
-  item: ConstrainedMetaModel,
+function renderDescription({
+  renderer,
+  content,
+  item
+}: {
+  renderer: JavaRenderer<any>;
+  content: string;
+  item: ConstrainedMetaModel;
 }): string {
   let desc = item.originalInput['description'];
   const examples = item.originalInput['examples'];
@@ -25,8 +29,8 @@ function renderDescription({ renderer, content, item }: {
 }
 
 /**
- * Preset which adds description to rendered model. 
- * 
+ * Preset which adds description to rendered model.
+ *
  * @implements {JavaPreset}
  */
 export const JAVA_DESCRIPTION_PRESET: JavaPreset = {
@@ -41,6 +45,6 @@ export const JAVA_DESCRIPTION_PRESET: JavaPreset = {
   enum: {
     self({ renderer, model, content }) {
       return renderDescription({ renderer, content, item: model });
-    },
+    }
   }
 };

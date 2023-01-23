@@ -46,7 +46,7 @@ export const RESERVED_RUST_KEYWORDS = [
   // weak keywrods
   // these keywords have special meaning only in certain contexts, but are included as reserved keywords here for simplicity
   'union',
-  '\'static',
+  "'static",
   'macro_rules',
   // keywords reserved for future use
   // https://doc.rust-lang.org/reference/keywords.html#reserved-keywords

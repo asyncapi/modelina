@@ -23,14 +23,14 @@ const jsonSchemaDraft7 = {
         },
         protocol: {
           type: 'string',
-          enum: ['HTTP', 'HTTPS'],
+          enum: ['HTTP', 'HTTPS']
         }
       }
     }
   }
 };
 
-export async function generate() : Promise<void> {
+export async function generate(): Promise<void> {
   const models = await generator.generate(jsonSchemaDraft7);
   for (const model of models) {
     console.log(model.result);

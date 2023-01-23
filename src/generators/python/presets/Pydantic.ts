@@ -2,13 +2,20 @@ import { PythonOptions } from '../PythonGenerator';
 import { ClassPresetType, PythonPreset } from '../PythonPreset';
 
 const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
-  async self({renderer, model}) {
-    renderer.dependencyManager.addDependency('from typing import Optional, Any');
-    renderer.dependencyManager.addDependency('from pydantic import BaseModel, Field');
+  async self({ renderer, model }) {
+    renderer.dependencyManager.addDependency(
+      'from typing import Optional, Any'
+    );
+    renderer.dependencyManager.addDependency(
+      'from pydantic import BaseModel, Field'
+    );
 
     const defaultClassString = await renderer.defaultSelf();
 
-    return defaultClassString.replace(`class ${model.name}:`, `class ${model.name}(BaseModel):`);
+    return defaultClassString.replace(
+      `class ${model.name}:`,
+      `class ${model.name}(BaseModel):`
+    );
   },
   property(params) {
     const type = params.property.required

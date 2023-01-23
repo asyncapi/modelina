@@ -14,7 +14,7 @@ describe('KotlinGenerator', () => {
       $id: 'Address',
       type: 'object',
       properties: {
-        class: { type: 'string' },
+        class: { type: 'string' }
       },
       additionalProperties: false
     };
@@ -33,20 +33,28 @@ describe('KotlinGenerator', () => {
         city: { type: 'string', description: 'City description' },
         state: { type: 'string' },
         house_number: { type: 'number' },
-        marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
-        members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
-        array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
+        marriage: {
+          type: 'boolean',
+          description: 'Status if marriage live in given house'
+        },
+        members: {
+          oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
+        },
+        array_type: {
+          type: 'array',
+          items: [{ type: 'string' }, { type: 'number' }]
+        },
         date: { type: 'string', format: 'date' },
         time: { type: 'string', format: 'time' },
         dateTime: { type: 'string', format: 'date-time' },
-        binary: { type: 'string', format: 'binary' },
+        binary: { type: 'string', format: 'binary' }
       },
       patternProperties: {
         '^S(.?*)test&': {
           type: 'string'
         }
       },
-      required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+      required: ['street_name', 'city', 'state', 'house_number', 'array_type']
     };
 
     const expectedDependencies = [];
@@ -61,7 +69,7 @@ describe('KotlinGenerator', () => {
     const doc = {
       $id: 'States',
       type: 'string',
-      enum: ['Texas', 'Alabama', 'California', 'New York'],
+      enum: ['Texas', 'Alabama', 'California', 'New York']
     };
     const expectedDependencies = [];
 
@@ -75,7 +83,7 @@ describe('KotlinGenerator', () => {
     const doc = {
       $id: 'Numbers',
       type: 'integer',
-      enum: [0, 1, 2, 3],
+      enum: [0, 1, 2, 3]
     };
 
     const models = await generator.generate(doc);
@@ -87,7 +95,7 @@ describe('KotlinGenerator', () => {
     const doc = {
       $id: 'Union',
       type: ['string', 'integer', 'boolean'],
-      enum: ['Texas', 'Alabama', 0, 1, '1', true, {test: 'test'}],
+      enum: ['Texas', 'Alabama', 0, 1, '1', true, { test: 'test' }]
     };
 
     const models = await generator.generate(doc);
@@ -114,9 +122,9 @@ describe('KotlinGenerator', () => {
       properties: {
         arrayType: {
           type: 'array',
-          items: { type: 'integer'},
+          items: { type: 'integer' },
           additionalItems: false
-        },
+        }
       }
     };
 
@@ -136,19 +144,31 @@ describe('KotlinGenerator', () => {
         city: { type: 'string', description: 'City description' },
         state: { type: 'string' },
         house_number: { type: 'number' },
-        marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
-        members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
-        array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
-        other_model: { type: 'object', $id: 'OtherModel', properties: {street_name: { type: 'string' }} },
+        marriage: {
+          type: 'boolean',
+          description: 'Status if marriage live in given house'
+        },
+        members: {
+          oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
+        },
+        array_type: {
+          type: 'array',
+          items: [{ type: 'string' }, { type: 'number' }]
+        },
+        other_model: {
+          type: 'object',
+          $id: 'OtherModel',
+          properties: { street_name: { type: 'string' } }
+        }
       },
       patternProperties: {
         '^S(.?*)test&': {
           type: 'string'
         }
       },
-      required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+      required: ['street_name', 'city', 'state', 'house_number', 'array_type']
     };
-    const config = {packageName: 'test.package'};
+    const config = { packageName: 'test.package' };
     const models = await generator.generateCompleteModels(doc, config);
     expect(models).toHaveLength(2);
     expect(models[0].result).toMatchSnapshot();
@@ -163,18 +183,26 @@ describe('KotlinGenerator', () => {
         city: { type: 'string', description: 'City description' },
         state: { type: 'string' },
         house_number: { type: 'number' },
-        marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
-        members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
-        array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
+        marriage: {
+          type: 'boolean',
+          description: 'Status if marriage live in given house'
+        },
+        members: {
+          oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
+        },
+        array_type: {
+          type: 'array',
+          items: [{ type: 'string' }, { type: 'number' }]
+        }
       },
       patternProperties: {
         '^S(.?*)test&': {
           type: 'string'
         }
       },
-      required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+      required: ['street_name', 'city', 'state', 'house_number', 'array_type']
     };
-    const config = {packageName: 'test.class.package'};
+    const config = { packageName: 'test.class.package' };
     const models = await generator.generateCompleteModels(doc, config);
 
     const expectedPackageDeclaration = 'package test.`class`.`package';

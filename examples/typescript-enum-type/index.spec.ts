@@ -1,7 +1,9 @@
-const spy = jest.spyOn(global.console, 'log').mockImplementation(() => { return; });
+const spy = jest.spyOn(global.console, 'log').mockImplementation(() => {
+  return;
+});
 import { generate } from './index';
 function timeout(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 describe('Should be able to render correct enums based on options', () => {
   afterAll(() => {

@@ -5,7 +5,7 @@ import { TypeScriptRenderer } from '../TypeScriptRenderer';
 const renderDescription = ({
   renderer,
   content,
-  item,
+  item
 }: {
   renderer: TypeScriptRenderer<ConstrainedMetaModel>;
   content: string;
@@ -52,11 +52,11 @@ export const TS_DESCRIPTION_PRESET: TypeScriptPreset = {
   type: {
     self({ renderer, model, content }) {
       return renderDescription({ renderer, content, item: model });
-    },
+    }
   },
   enum: {
     self({ renderer, model, content }) {
       return renderDescription({ renderer, content, item: model });
-    },
-  },
+    }
+  }
 };

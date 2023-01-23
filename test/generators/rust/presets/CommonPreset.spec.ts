@@ -1,6 +1,10 @@
 import {
-  defaultRustRenderCompleteModelOptions, RustGenerator, RustRenderCompleteModelOptions, RUST_COMMON_PRESET,
-  defaultRustCommonPresetOptions, RustCommonPresetOptions
+  defaultRustRenderCompleteModelOptions,
+  RustGenerator,
+  RustRenderCompleteModelOptions,
+  RUST_COMMON_PRESET,
+  defaultRustCommonPresetOptions,
+  RustCommonPresetOptions
 } from '../../../../src/generators';
 
 describe('RUST_COMMON_PRESET', () => {
@@ -13,10 +17,14 @@ describe('RUST_COMMON_PRESET', () => {
     test('should render `enum` without Default implementation', async () => {
       const doc = {
         $id: 'Things',
-        enum: ['Texas', 1, '1', false, { test: 'test' }],
+        enum: ['Texas', 1, '1', false, { test: 'test' }]
       };
 
-      generator = new RustGenerator({ presets: [{ preset: RUST_COMMON_PRESET, options: { implementDefault: false } }] });
+      generator = new RustGenerator({
+        presets: [
+          { preset: RUST_COMMON_PRESET, options: { implementDefault: false } }
+        ]
+      });
 
       const models = await generator.generate(doc);
       expect(models).toHaveLength(1);
@@ -26,7 +34,7 @@ describe('RUST_COMMON_PRESET', () => {
     test('should render `enum` with mixed types (union type) and Default implementation', async () => {
       const doc = {
         $id: 'Things',
-        enum: ['Texas', 1, '1', false, { test: 'test' }],
+        enum: ['Texas', 1, '1', false, { test: 'test' }]
       };
       const models = await generator.generate(doc);
       expect(models).toHaveLength(1);
@@ -38,13 +46,17 @@ describe('RUST_COMMON_PRESET', () => {
         $id: '_address',
         type: 'object',
         properties: {
-          members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
-          optional_members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
+          members: {
+            oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
+          },
+          optional_members: {
+            oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
+          }
         },
         required: ['members'],
         additionalProperties: {
           type: 'string'
-        },
+        }
       };
       const models = await generator.generate(doc);
       expect(models).toHaveLength(3); // Address, Members, OptionalMembers
@@ -57,13 +69,17 @@ describe('RUST_COMMON_PRESET', () => {
         $id: '_address',
         type: 'object',
         properties: {
-          members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
-          optional_members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
+          members: {
+            oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
+          },
+          optional_members: {
+            oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
+          }
         },
         required: ['members'],
         additionalProperties: {
           type: 'string'
-        },
+        }
       };
       const models = await generator.generate(doc);
       expect(models).toHaveLength(3); // Address, Members, OptionalMembers
@@ -78,10 +94,14 @@ describe('RUST_COMMON_PRESET', () => {
         $id: 'CustomEnum',
         type: 'string',
         default: 'Texas',
-        enum: ['Texas', 'Alabama', 'California'],
+        enum: ['Texas', 'Alabama', 'California']
       };
 
-      const options = { ...defaultRustRenderCompleteModelOptions, implementDefault: true, packageName: 'test' } as RustRenderCompleteModelOptions;
+      const options = {
+        ...defaultRustRenderCompleteModelOptions,
+        implementDefault: true,
+        packageName: 'test'
+      } as RustRenderCompleteModelOptions;
 
       const models = await generator.generateCompleteModels(doc, options);
       expect(models).toHaveLength(1);
@@ -110,16 +130,16 @@ describe('RUST_COMMON_PRESET', () => {
               name: { type: 'string' },
               birth: { type: 'number' }
             },
-            required: ['name', 'birth'],
+            required: ['name', 'birth']
           }
         },
         properties: {
           students: {
             type: 'array',
             items: { $ref: '#/definitions/student' }
-          },
+          }
         },
-        required: ['students'],
+        required: ['students']
       };
 
       const models = await generator.generate(doc);
@@ -139,16 +159,28 @@ describe('RUST_COMMON_PRESET', () => {
         city: { type: 'string', description: 'City description' },
         state: { type: 'string' },
         house_number: { type: 'number' },
-        marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
-        members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
-        tuple_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }], additionalItems: false },
-        array_type: { type: 'array', items: { type: 'string' }, additionalItems: false },
-
+        marriage: {
+          type: 'boolean',
+          description: 'Status if marriage live in given house'
+        },
+        members: {
+          oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
+        },
+        tuple_type: {
+          type: 'array',
+          items: [{ type: 'string' }, { type: 'number' }],
+          additionalItems: false
+        },
+        array_type: {
+          type: 'array',
+          items: { type: 'string' },
+          additionalItems: false
+        }
       },
       required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
       additionalProperties: {
         type: 'string'
-      },
+      }
     };
 
     test('should render `struct` without Default or new() implementation', async () => {
@@ -158,7 +190,9 @@ describe('RUST_COMMON_PRESET', () => {
         implementNew: false
       };
 
-      generator = new RustGenerator({ presets: [{ preset: RUST_COMMON_PRESET, options }] });
+      generator = new RustGenerator({
+        presets: [{ preset: RUST_COMMON_PRESET, options }]
+      });
 
       const models = await generator.generate(doc);
       expect(models).toHaveLength(3);

@@ -14,7 +14,11 @@ describe('FormatHelpers', () => {
       expect(breakedTexts).toStrictEqual(['text1', 'text2', 'text3']);
     });
     test('should support multiple lines', () => {
-      const breakedTexts = FormatHelpers.breakLines(['text1', 'text2', 'text3']);
+      const breakedTexts = FormatHelpers.breakLines([
+        'text1',
+        'text2',
+        'text3'
+      ]);
       expect(breakedTexts).toHaveLength(3);
       expect(breakedTexts).toStrictEqual(['text1', 'text2', 'text3']);
     });
@@ -59,32 +63,50 @@ describe('FormatHelpers', () => {
     });
 
     test('should surround replaced parts with separators from each other', () => {
-      const content = FormatHelpers.replaceSpecialCharacters('&\'()*+', { separator: '_' });
-      expect(content).toEqual('ampersand_apostrophe_roundleft_roundright_asterisk_plus');
+      const content = FormatHelpers.replaceSpecialCharacters("&'()*+", {
+        separator: '_'
+      });
+      expect(content).toEqual(
+        'ampersand_apostrophe_roundleft_roundright_asterisk_plus'
+      );
     });
 
     test('should surround replaced parts with separators from text', () => {
-      const content = FormatHelpers.replaceSpecialCharacters(',-.test/:;', { separator: '_' });
+      const content = FormatHelpers.replaceSpecialCharacters(',-.test/:;', {
+        separator: '_'
+      });
       expect(content).toEqual('comma_minus_dot_test_slash_colon_semicolon');
     });
 
     test('should surround replaced parts with separators from text at the beginning', () => {
-      const content = FormatHelpers.replaceSpecialCharacters('test<=>?@[', { separator: '_' });
+      const content = FormatHelpers.replaceSpecialCharacters('test<=>?@[', {
+        separator: '_'
+      });
       expect(content).toEqual('test_less_equal_greater_question_at_squareleft');
     });
 
     test('should surround replaced parts with separators from text at the end', () => {
-      const content = FormatHelpers.replaceSpecialCharacters('\\]^_`test', { separator: '_' });
-      expect(content).toEqual('backslash_squareright_circumflex_underscore_graveaccent_test');
+      const content = FormatHelpers.replaceSpecialCharacters('\\]^_`test', {
+        separator: '_'
+      });
+      expect(content).toEqual(
+        'backslash_squareright_circumflex_underscore_graveaccent_test'
+      );
     });
 
     test('should exclude one special characters if defined', () => {
-      const content = FormatHelpers.replaceSpecialCharacters('{|}~_', { separator: ' ', exclude: ['_'] });
+      const content = FormatHelpers.replaceSpecialCharacters('{|}~_', {
+        separator: ' ',
+        exclude: ['_']
+      });
       expect(content).toEqual('curlyleft vertical curlyright tilde _');
     });
 
     test('should exclude many special characters if defined', () => {
-      const content = FormatHelpers.replaceSpecialCharacters('{?_', { separator: ' ', exclude: ['_', '?', '{'] });
+      const content = FormatHelpers.replaceSpecialCharacters('{?_', {
+        separator: ' ',
+        exclude: ['_', '?', '{']
+      });
       expect(content).toEqual('{?_');
     });
   });
