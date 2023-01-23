@@ -1,4 +1,4 @@
-import {DartGenerator} from '../../../src/generators';
+import { DartGenerator } from '../../../src/generators';
 
 describe('DartGenerator', () => {
   let generator: DartGenerator;
@@ -14,20 +14,28 @@ describe('DartGenerator', () => {
       $id: 'Address',
       type: 'object',
       properties: {
-        street_name: {type: 'string'},
-        city: {type: 'string', description: 'City description'},
-        state: {type: 'string'},
-        house_number: {type: 'number'},
-        marriage: {type: 'boolean', description: 'Status if marriage live in given house'},
-        members: {oneOf: [{type: 'string'}, {type: 'number'}, {type: 'boolean'}],},
-        array_type: {type: 'array', items: [{type: 'string'}, {type: 'number'}]},
+        street_name: { type: 'string' },
+        city: { type: 'string', description: 'City description' },
+        state: { type: 'string' },
+        house_number: { type: 'number' },
+        marriage: {
+          type: 'boolean',
+          description: 'Status if marriage live in given house'
+        },
+        members: {
+          oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
+        },
+        array_type: {
+          type: 'array',
+          items: [{ type: 'string' }, { type: 'number' }]
+        }
       },
       patternProperties: {
         '^S(.?*)test&': {
           type: 'string'
         }
       },
-      required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+      required: ['street_name', 'city', 'state', 'house_number', 'array_type']
     };
 
     const models = await generator.generate(doc);
@@ -39,7 +47,7 @@ describe('DartGenerator', () => {
     const doc = {
       $id: 'States',
       type: 'string',
-      enum: ['Texas', 'Alabama', 'California', 'New York'],
+      enum: ['Texas', 'Alabama', 'California', 'New York']
     };
 
     const models = await generator.generate(doc);
@@ -51,7 +59,7 @@ describe('DartGenerator', () => {
     const doc = {
       $id: 'Numbers',
       type: 'integer',
-      enum: [0, 1, 2, 3],
+      enum: [0, 1, 2, 3]
     };
 
     const models = await generator.generate(doc);
@@ -63,17 +71,17 @@ describe('DartGenerator', () => {
     const doc = {
       $id: 'CustomEnum',
       type: 'string',
-      enum: ['Texas', 'Alabama', 'California'],
+      enum: ['Texas', 'Alabama', 'California']
     };
 
     generator = new DartGenerator({
       presets: [
         {
           enum: {
-            self({renderer, content}) {
+            self({ renderer, content }) {
               const annotation = renderer.renderAnnotation('EnumAnnotation');
               return `${annotation}\n${content}`;
-            },
+            }
           }
         }
       ]
@@ -90,25 +98,37 @@ describe('DartGenerator', () => {
       $id: 'Address',
       type: 'object',
       properties: {
-        street_name: {type: 'string'},
-        city: {type: 'string', description: 'City description'},
-        state: {type: 'string'},
-        house_number: {type: 'number'},
-        marriage: {type: 'boolean', description: 'Status if marriage live in given house'},
-        members: {oneOf: [{type: 'string'}, {type: 'number'}, {type: 'boolean'}],},
-        array_type: {type: 'array', items: [{type: 'string'}, {type: 'number'}]},
-        other_model: {type: 'object', $id: 'OtherModel', properties: {street_name: {type: 'string'}}},
+        street_name: { type: 'string' },
+        city: { type: 'string', description: 'City description' },
+        state: { type: 'string' },
+        house_number: { type: 'number' },
+        marriage: {
+          type: 'boolean',
+          description: 'Status if marriage live in given house'
+        },
+        members: {
+          oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
+        },
+        array_type: {
+          type: 'array',
+          items: [{ type: 'string' }, { type: 'number' }]
+        },
+        other_model: {
+          type: 'object',
+          $id: 'OtherModel',
+          properties: { street_name: { type: 'string' } }
+        }
       },
       patternProperties: {
         '^S(.?*)test&': {
           type: 'string'
         }
       },
-      required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+      required: ['street_name', 'city', 'state', 'house_number', 'array_type']
     };
 
-    const config = {packageName: 'test.package'};
-    
+    const config = { packageName: 'test.package' };
+
     const models = await generator.generateCompleteModels(doc, config);
     expect(models).toHaveLength(2);
     expect(models[0].result).toMatchSnapshot();

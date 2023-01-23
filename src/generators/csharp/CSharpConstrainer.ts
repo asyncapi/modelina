@@ -1,30 +1,39 @@
-import { ConstrainedEnumValueModel, ConstrainedObjectPropertyModel } from '../../models';
-import { defaultEnumKeyConstraints, defaultEnumValueConstraints } from './constrainer/EnumConstrainer';
+import {
+  ConstrainedEnumValueModel,
+  ConstrainedObjectPropertyModel
+} from '../../models';
+import {
+  defaultEnumKeyConstraints,
+  defaultEnumValueConstraints
+} from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
 import { CSharpTypeMapping } from './CSharpGenerator';
 
-function getFullTypeDefinition(typeName: string, partOfProperty: ConstrainedObjectPropertyModel | undefined) {
-  return partOfProperty?.required ?? true
-    ? typeName
-    : `${typeName}?`;
+function getFullTypeDefinition(
+  typeName: string,
+  partOfProperty: ConstrainedObjectPropertyModel | undefined
+) {
+  return partOfProperty?.required ?? true ? typeName : `${typeName}?`;
 }
 
-const fromEnumValueToType = (enumValueModel: ConstrainedEnumValueModel): string => {
+const fromEnumValueToType = (
+  enumValueModel: ConstrainedEnumValueModel
+): string => {
   switch (typeof enumValueModel.value) {
-  case 'boolean':
-    return 'bool';
-  case 'number':
-  case 'bigint':
-    if (Number.isInteger(enumValueModel.value)) {
-      return 'int';
-    }
-    return 'double';
-  case 'string':
-    return 'string';
-  case 'object':
-  default:
-    return 'dynamic';
+    case 'boolean':
+      return 'bool';
+    case 'number':
+    case 'bigint':
+      if (Number.isInteger(enumValueModel.value)) {
+        return 'int';
+      }
+      return 'double';
+    case 'string':
+      return 'string';
+    case 'object':
+    default:
+      return 'dynamic';
   }
 };
 
@@ -57,9 +66,10 @@ export const CSharpDefaultTypeMapping: CSharpTypeMapping = {
     return getFullTypeDefinition(`(${tupleTypes.join(', ')})`, partOfProperty);
   },
   Array({ constrainedModel, options, partOfProperty }): string {
-    const typeString = options.collectionType && options.collectionType === 'List'
-      ? `IEnumerable<${constrainedModel.valueModel.type}>`
-      : `${constrainedModel.valueModel.type}[]`;
+    const typeString =
+      options.collectionType && options.collectionType === 'List'
+        ? `IEnumerable<${constrainedModel.valueModel.type}>`
+        : `${constrainedModel.valueModel.type}[]`;
 
     return getFullTypeDefinition(typeString, partOfProperty);
   },
@@ -83,7 +93,10 @@ export const CSharpDefaultTypeMapping: CSharpTypeMapping = {
     return getFullTypeDefinition('dynamic', partOfProperty);
   },
   Dictionary({ constrainedModel, partOfProperty }): string {
-    return getFullTypeDefinition(`Dictionary<${constrainedModel.key.type}, ${constrainedModel.value.type}>`, partOfProperty);
+    return getFullTypeDefinition(
+      `Dictionary<${constrainedModel.key.type}, ${constrainedModel.value.type}>`,
+      partOfProperty
+    );
   }
 };
 

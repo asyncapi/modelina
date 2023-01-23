@@ -1,10 +1,8 @@
-import {TS_DESCRIPTION_PRESET, TypeScriptGenerator} from '../../src';
+import { TS_DESCRIPTION_PRESET, TypeScriptGenerator } from '../../src';
 
 const generator = new TypeScriptGenerator({
   modelType: 'interface',
-  presets: [
-    TS_DESCRIPTION_PRESET,
-  ]
+  presets: [TS_DESCRIPTION_PRESET]
 });
 const jsonSchemaDraft7 = {
   $schema: 'http://json-schema.org/draft-07/schema#',
@@ -18,15 +16,15 @@ const jsonSchemaDraft7 = {
     numberProp: {
       type: 'number',
       description: 'Description',
-      examples: 'Example',
+      examples: 'Example'
     },
     objectProp: {
       type: 'object',
       $id: 'NestedTest',
       properties: { stringProp: { type: 'string' } },
-      examples: ['Example 1', 'Example 2'],
-    },
-  },
+      examples: ['Example 1', 'Example 2']
+    }
+  }
 };
 
 export async function generate(): Promise<void> {

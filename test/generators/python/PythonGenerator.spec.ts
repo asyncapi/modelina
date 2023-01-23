@@ -10,7 +10,7 @@ describe('PythonGenerator', () => {
     test('should render `enum` with mixed types (union type)', async () => {
       const doc = {
         $id: 'Things',
-        enum: ['Texas', 1, '1', false, { test: 'test' }],
+        enum: ['Texas', 1, '1', false, { test: 'test' }]
       };
       const models = await generator.generate(doc);
       expect(models).toHaveLength(1);
@@ -21,7 +21,7 @@ describe('PythonGenerator', () => {
       const doc = {
         $id: 'CustomEnum',
         type: 'string',
-        enum: ['Texas', 'Alabama', 'California'],
+        enum: ['Texas', 'Alabama', 'California']
       };
 
       generator = new PythonGenerator({
@@ -30,7 +30,7 @@ describe('PythonGenerator', () => {
             enum: {
               self({ content }) {
                 return content;
-              },
+              }
             }
           }
         ]
@@ -77,16 +77,24 @@ describe('PythonGenerator', () => {
           city: { type: 'string', description: 'City description' },
           state: { type: 'string' },
           house_number: { type: 'number' },
-          marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
-          members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
-          array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
+          marriage: {
+            type: 'boolean',
+            description: 'Status if marriage live in given house'
+          },
+          members: {
+            oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
+          },
+          array_type: {
+            type: 'array',
+            items: [{ type: 'string' }, { type: 'number' }]
+          }
         },
         patternProperties: {
           '^S(.?*)test&': {
             type: 'string'
           }
         },
-        required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+        required: ['street_name', 'city', 'state', 'house_number', 'array_type']
       };
       const expectedDependencies: string[] = [];
       const models = await generator.generate(doc);
@@ -94,35 +102,37 @@ describe('PythonGenerator', () => {
       expect(models[0].result).toMatchSnapshot();
       expect(models[0].dependencies).toEqual(expectedDependencies);
     });
-  
+
     test('should work with custom preset for `class` type', async () => {
       const doc = {
         $id: 'CustomClass',
         type: 'object',
         properties: {
-          property: { type: 'string' },
+          property: { type: 'string' }
         }
       };
-      generator = new PythonGenerator({ presets: [
-        {
-          class: {
-            property({ content }) {
-              const annotation = 'test1';
-              return `${annotation}\n${content}`;
-            },
-            getter({ content }) {
-              const annotation = 'test2';
-              return `${annotation}\n${content}`;
-            },
-            setter({ content }) {
-              const annotation = 'test3';
-              return `${annotation}\n${content}`;
-            },
+      generator = new PythonGenerator({
+        presets: [
+          {
+            class: {
+              property({ content }) {
+                const annotation = 'test1';
+                return `${annotation}\n${content}`;
+              },
+              getter({ content }) {
+                const annotation = 'test2';
+                return `${annotation}\n${content}`;
+              },
+              setter({ content }) {
+                const annotation = 'test3';
+                return `${annotation}\n${content}`;
+              }
+            }
           }
-        }
-      ] });
+        ]
+      });
       const expectedDependencies: string[] = [];
-  
+
       const models = await generator.generate(doc);
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot();
@@ -136,7 +146,7 @@ describe('PythonGenerator', () => {
       };
       generator = new PythonGenerator();
       const expectedDependencies: string[] = [];
-  
+
       const models = await generator.generate(doc);
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot();

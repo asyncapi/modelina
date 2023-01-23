@@ -1,11 +1,14 @@
 import { PythonRenderer } from '../PythonRenderer';
-import { ConstrainedEnumModel, ConstrainedEnumValueModel} from '../../../models';
+import {
+  ConstrainedEnumModel,
+  ConstrainedEnumValueModel
+} from '../../../models';
 import { EnumPresetType } from '../PythonPreset';
 import { PythonOptions } from '../PythonGenerator';
 
 /**
  * Renderer for Python's `enum` type
- * 
+ *
  * @extends PythonRenderer
  */
 export class EnumRenderer extends PythonRenderer<ConstrainedEnumModel> {
@@ -31,7 +34,7 @@ ${this.indent(this.renderBlock(content, 2))}`;
     const content = items.join('\n');
     return `${content}`;
   }
-  
+
   runItemPreset(item: ConstrainedEnumValueModel): Promise<string> {
     return this.runPreset('item', { item });
   }
@@ -44,5 +47,5 @@ export const PYTHON_DEFAULT_ENUM_PRESET: EnumPresetType<PythonOptions> = {
   },
   item({ item }) {
     return `${item.key} = ${item.value}`;
-  },
+  }
 };

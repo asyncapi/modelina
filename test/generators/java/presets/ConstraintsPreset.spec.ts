@@ -1,4 +1,7 @@
-import { JavaGenerator, JAVA_CONSTRAINTS_PRESET } from '../../../../src/generators';
+import {
+  JavaGenerator,
+  JAVA_CONSTRAINTS_PRESET
+} from '../../../../src/generators';
 
 describe('JAVA_CONSTRAINTS_PRESET', () => {
   let generator: JavaGenerator;
@@ -13,12 +16,15 @@ describe('JAVA_CONSTRAINTS_PRESET', () => {
       properties: {
         min_number_prop: { type: 'number', minimum: 0 },
         max_number_prop: { type: 'number', exclusiveMaximum: 100 },
-        array_prop: { type: 'array', minItems: 2, maxItems: 3, },
+        array_prop: { type: 'array', minItems: 2, maxItems: 3 },
         string_prop: { type: 'string', pattern: '^I_', minLength: 3 }
       },
       required: ['min_number_prop', 'max_number_prop']
     };
-    const expectedDependencies = ['import java.util.Map;', 'import javax.validation.constraints.*;'];
+    const expectedDependencies = [
+      'import java.util.Map;',
+      'import javax.validation.constraints.*;'
+    ];
 
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);

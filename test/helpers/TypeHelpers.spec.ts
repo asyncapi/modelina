@@ -1,5 +1,21 @@
-import { getTypeFromMapping, TypeMapping } from '../../src/helpers'; 
-import { CommonModel, ConstrainedAnyModel, ConstrainedArrayModel, ConstrainedBooleanModel, ConstrainedDictionaryModel, ConstrainedEnumModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedMetaModel, ConstrainedObjectModel, ConstrainedObjectPropertyModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedUnionModel } from '../../src/models';
+import { getTypeFromMapping, TypeMapping } from '../../src/helpers';
+import {
+  CommonModel,
+  ConstrainedAnyModel,
+  ConstrainedArrayModel,
+  ConstrainedBooleanModel,
+  ConstrainedDictionaryModel,
+  ConstrainedEnumModel,
+  ConstrainedFloatModel,
+  ConstrainedIntegerModel,
+  ConstrainedMetaModel,
+  ConstrainedObjectModel,
+  ConstrainedObjectPropertyModel,
+  ConstrainedReferenceModel,
+  ConstrainedStringModel,
+  ConstrainedTupleModel,
+  ConstrainedUnionModel
+} from '../../src/models';
 
 describe('TypeHelpers', () => {
   describe('getTypeFromMapping', () => {
@@ -7,7 +23,7 @@ describe('TypeHelpers', () => {
       Object: jest.fn().mockReturnValue('test'),
       Reference: jest.fn().mockReturnValue('test'),
       Any: jest.fn().mockReturnValue('test'),
-      Float: jest.fn().mockReturnValue('test'), 
+      Float: jest.fn().mockReturnValue('test'),
       Integer: jest.fn().mockReturnValue('test'),
       String: jest.fn().mockReturnValue('test'),
       Boolean: jest.fn().mockReturnValue('test'),
@@ -23,30 +39,56 @@ describe('TypeHelpers', () => {
       }
     }
     test('should return undefined with generic constrained model', () => {
-      const constrainedModel = new CustomConstrainedMetaModel('', undefined, '');
+      const constrainedModel = new CustomConstrainedMetaModel(
+        '',
+        undefined,
+        ''
+      );
       const t = () => {
-        getTypeFromMapping(typeMapping, {constrainedModel, options: {}});
+        getTypeFromMapping(typeMapping, { constrainedModel, options: {} });
       };
       expect(t).toThrow('Could not find type for model');
     });
 
     const modelsToCheck = [
       new ConstrainedObjectModel('', undefined, '', {}),
-      new ConstrainedReferenceModel('', undefined, '', new CustomConstrainedMetaModel('', undefined, '')),
+      new ConstrainedReferenceModel(
+        '',
+        undefined,
+        '',
+        new CustomConstrainedMetaModel('', undefined, '')
+      ),
       new ConstrainedAnyModel('', undefined, ''),
       new ConstrainedFloatModel('', undefined, ''),
       new ConstrainedIntegerModel('', undefined, ''),
       new ConstrainedStringModel('', undefined, ''),
       new ConstrainedBooleanModel('', undefined, ''),
       new ConstrainedTupleModel('', undefined, '', []),
-      new ConstrainedArrayModel('', undefined, '', new CustomConstrainedMetaModel('', undefined, '')),
+      new ConstrainedArrayModel(
+        '',
+        undefined,
+        '',
+        new CustomConstrainedMetaModel('', undefined, '')
+      ),
       new ConstrainedEnumModel('', undefined, '', []),
       new ConstrainedUnionModel('', undefined, '', []),
-      new ConstrainedDictionaryModel('', undefined, '', new CustomConstrainedMetaModel('', undefined, ''), new CustomConstrainedMetaModel('', undefined, ''))
+      new ConstrainedDictionaryModel(
+        '',
+        undefined,
+        '',
+        new CustomConstrainedMetaModel('', undefined, ''),
+        new CustomConstrainedMetaModel('', undefined, '')
+      )
     ];
-    test.each(modelsToCheck)('should return type from mapping', (constrainedModel: ConstrainedMetaModel) => {
-      const foundType = getTypeFromMapping(typeMapping, {constrainedModel, options: {}});
-      expect(foundType).toEqual('test');
-    });
+    test.each(modelsToCheck)(
+      'should return type from mapping',
+      (constrainedModel: ConstrainedMetaModel) => {
+        const foundType = getTypeFromMapping(typeMapping, {
+          constrainedModel,
+          options: {}
+        });
+        expect(foundType).toEqual('test');
+      }
+    );
   });
 });

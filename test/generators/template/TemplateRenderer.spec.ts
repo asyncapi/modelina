@@ -6,7 +6,13 @@ import { MockTemplateRenderer } from '../../TestUtils/TestRenderers';
 describe('TemplateRenderer', () => {
   let renderer: TemplateRenderer<any>;
   beforeEach(() => {
-    renderer = new MockTemplateRenderer(TemplateGenerator.defaultOptions, new TemplateGenerator(), [], new ConstrainedObjectModel('', undefined, '', {}), new InputMetaModel());
+    renderer = new MockTemplateRenderer(
+      TemplateGenerator.defaultOptions,
+      new TemplateGenerator(),
+      [],
+      new ConstrainedObjectModel('', undefined, '', {}),
+      new InputMetaModel()
+    );
   });
 
   describe('renderComments()', () => {

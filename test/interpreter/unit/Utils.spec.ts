@@ -1,6 +1,10 @@
-
 import { CommonModel } from '../../../src/models/CommonModel';
-import { interpretName, inferTypeFromValue, isModelObject, isEnum } from '../../../src/interpreter/Utils';
+import {
+  interpretName,
+  inferTypeFromValue,
+  isModelObject,
+  isEnum
+} from '../../../src/interpreter/Utils';
 
 describe('utils', () => {
   describe('isEnum', () => {
@@ -31,7 +35,15 @@ describe('utils', () => {
     });
     test('should return false if contains all types', () => {
       const model = new CommonModel();
-      model.type = ['object', 'string', 'number', 'array', 'boolean', 'null', 'integer'];
+      model.type = [
+        'object',
+        'string',
+        'number',
+        'array',
+        'boolean',
+        'null',
+        'integer'
+      ];
       const isModel = isModelObject(model);
       expect(isModel).toEqual(false);
     });

@@ -29,7 +29,7 @@ describe('Interpretation of', () => {
     const model = new CommonModel();
     const interpreter = new Interpreter();
     (interpreter.interpret as jest.Mock).mockReturnValue(undefined);
-    
+
     interpretItems(schema, model, interpreter);
 
     expect(model.type).toBeUndefined();
@@ -45,8 +45,16 @@ describe('Interpretation of', () => {
 
       interpretItems(schema, model, interpreter);
 
-      expect(interpreter.interpret).toHaveBeenNthCalledWith(1, { type: 'string' }, Interpreter.defaultInterpreterOptions);
-      expect(model.addItem).toHaveBeenNthCalledWith(1, mockedReturnModel, schema);
+      expect(interpreter.interpret).toHaveBeenNthCalledWith(
+        1,
+        { type: 'string' },
+        Interpreter.defaultInterpreterOptions
+      );
+      expect(model.addItem).toHaveBeenNthCalledWith(
+        1,
+        mockedReturnModel,
+        schema
+      );
     });
     test('should infer type of model', () => {
       const schema: any = { items: { type: 'string' } };
@@ -70,10 +78,28 @@ describe('Interpretation of', () => {
 
       interpretItems(schema, model, interpreter);
 
-      expect(interpreter.interpret).toHaveBeenNthCalledWith(1, { type: 'string' }, Interpreter.defaultInterpreterOptions);
-      expect(interpreter.interpret).toHaveBeenNthCalledWith(2, { type: 'number' }, Interpreter.defaultInterpreterOptions);
-      expect(model.addItemTuple).toHaveBeenNthCalledWith(1, mockedReturnModel, schema, 0);
-      expect(model.addItemTuple).toHaveBeenNthCalledWith(2, mockedReturnModel, schema, 1);
+      expect(interpreter.interpret).toHaveBeenNthCalledWith(
+        1,
+        { type: 'string' },
+        Interpreter.defaultInterpreterOptions
+      );
+      expect(interpreter.interpret).toHaveBeenNthCalledWith(
+        2,
+        { type: 'number' },
+        Interpreter.defaultInterpreterOptions
+      );
+      expect(model.addItemTuple).toHaveBeenNthCalledWith(
+        1,
+        mockedReturnModel,
+        schema,
+        0
+      );
+      expect(model.addItemTuple).toHaveBeenNthCalledWith(
+        2,
+        mockedReturnModel,
+        schema,
+        1
+      );
     });
     test('should infer type of model', () => {
       const schema: any = { items: [{ type: 'string' }, { type: 'number' }] };
@@ -83,7 +109,7 @@ describe('Interpretation of', () => {
       (interpreter.interpret as jest.Mock).mockReturnValue(mockedReturnModel);
 
       interpretItems(schema, model, interpreter);
-      
+
       expect(model.addTypes).toHaveBeenNthCalledWith(1, 'array');
     });
   });

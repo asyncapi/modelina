@@ -21,11 +21,19 @@ describe('Interpretation of additionalItems', () => {
 
     interpretAdditionalItems(schema, model, interpreter);
 
-    expect(interpreter.interpret).toHaveBeenNthCalledWith(1, { type: 'string' }, Interpreter.defaultInterpreterOptions);
-    expect(model.addAdditionalItems).toHaveBeenNthCalledWith(1, mockedReturnModel, schema);
+    expect(interpreter.interpret).toHaveBeenNthCalledWith(
+      1,
+      { type: 'string' },
+      Interpreter.defaultInterpreterOptions
+    );
+    expect(model.addAdditionalItems).toHaveBeenNthCalledWith(
+      1,
+      mockedReturnModel,
+      schema
+    );
   });
   test('should ignore model if interpreter cannot interpret additionalItems schema', () => {
-    const schema: any = { };
+    const schema: any = {};
     const model = new CommonModel();
     model.type = 'array';
     const interpreter = new Interpreter();
@@ -44,11 +52,15 @@ describe('Interpretation of additionalItems', () => {
 
     interpretAdditionalItems(schema, model, interpreter);
 
-    expect(interpreter.interpret).toHaveBeenNthCalledWith(1, false, Interpreter.defaultInterpreterOptions);
+    expect(interpreter.interpret).toHaveBeenNthCalledWith(
+      1,
+      false,
+      Interpreter.defaultInterpreterOptions
+    );
     expect(model.addAdditionalItems).not.toHaveBeenCalled();
   });
   test('should only work if model is array type', () => {
-    const schema: any = { };
+    const schema: any = {};
     const model = new CommonModel();
     model.type = 'string';
     const interpreter = new Interpreter();
@@ -61,7 +73,7 @@ describe('Interpretation of additionalItems', () => {
     expect(model.addAdditionalItems).not.toHaveBeenCalled();
   });
   test('should default to true', () => {
-    const schema: any = { };
+    const schema: any = {};
     const model = new CommonModel();
     model.type = 'array';
     const interpreter = new Interpreter();
@@ -69,8 +81,16 @@ describe('Interpretation of additionalItems', () => {
     (interpreter.interpret as jest.Mock).mockReturnValue(mockedReturnModel);
 
     interpretAdditionalItems(schema, model, interpreter);
-    
-    expect(interpreter.interpret).toHaveBeenNthCalledWith(1, true, Interpreter.defaultInterpreterOptions);
-    expect(model.addAdditionalItems).toHaveBeenNthCalledWith(1, mockedReturnModel, schema);
+
+    expect(interpreter.interpret).toHaveBeenNthCalledWith(
+      1,
+      true,
+      Interpreter.defaultInterpreterOptions
+    );
+    expect(model.addAdditionalItems).toHaveBeenNthCalledWith(
+      1,
+      mockedReturnModel,
+      schema
+    );
   });
 });

@@ -3,17 +3,18 @@ import * as fs from 'fs';
 
 /**
  * Read all the files in the folder, and return the appropriate Jest `each` entries.
- * @param folder 
+ * @param folder
  */
 function readFilesInFolder(folder: string) {
   // eslint-disable-next-line no-undef
   const fullPath = path.resolve(__dirname, `./docs/${folder}`);
   // eslint-disable-next-line security/detect-non-literal-fs-filename
-  return fs.readdirSync(fullPath).map(
-    (file) => {
-      return { file: `./docs/${folder}/${file}`, outputDirectory: `./output/${folder}/${path.parse(file).name}` };
-    }
-  );
+  return fs.readdirSync(fullPath).map((file) => {
+    return {
+      file: `./docs/${folder}/${file}`,
+      outputDirectory: `./output/${folder}/${path.parse(file).name}`
+    };
+  });
 }
 
 const OpenAPI3_0Files = readFilesInFolder('OpenAPI-3_0');
@@ -55,24 +56,26 @@ const filesToTest = [
   ...jsonSchemaDraft6Files.filter(({ file }) => {
     // Too large to process in normal blackbox testing, can be used to locally test stuff.
     return !file.includes('fhir-full.json');
-  }),
+  })
 ];
 
 /**
  * Officially only use one specific file for each input type, and the rest is for local testing.
- * 
+ *
  * Otherwise the CI system will take far too long.
  */
 export default filesToTest.filter(({ file }) => {
-  return file.includes('AsyncAPI-2_0/dummy.json') ||
-    file.includes('AsyncAPI-2_1/dummy.json') || 
-    file.includes('AsyncAPI-2_2/dummy.json') || 
-    file.includes('AsyncAPI-2_3/dummy.json') || 
-    file.includes('AsyncAPI-2_4/dummy.json') || 
-    file.includes('AsyncAPI-2_5/streetlight_kafka.json') || 
-    file.includes('JsonSchemaDraft-4/draft-4-core.json') || 
-    file.includes('JsonSchemaDraft-6/draft-6-core.json') || 
-    file.includes('JsonSchemaDraft-7/draft-7-core.json') || 
-    file.includes('OpenAPI-3_0/petstore.json') || 
-    file.includes('Swagger-2_0/petstore.json');
+  return (
+    file.includes('AsyncAPI-2_0/dummy.json') ||
+    file.includes('AsyncAPI-2_1/dummy.json') ||
+    file.includes('AsyncAPI-2_2/dummy.json') ||
+    file.includes('AsyncAPI-2_3/dummy.json') ||
+    file.includes('AsyncAPI-2_4/dummy.json') ||
+    file.includes('AsyncAPI-2_5/streetlight_kafka.json') ||
+    file.includes('JsonSchemaDraft-4/draft-4-core.json') ||
+    file.includes('JsonSchemaDraft-6/draft-6-core.json') ||
+    file.includes('JsonSchemaDraft-7/draft-7-core.json') ||
+    file.includes('OpenAPI-3_0/petstore.json') ||
+    file.includes('Swagger-2_0/petstore.json')
+  );
 });

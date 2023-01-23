@@ -14,16 +14,16 @@ export class InputProcessor {
   private processors: Map<string, AbstractInputProcessor> = new Map();
 
   constructor() {
-    this.setProcessor('asyncapi', new AsyncAPIInputProcessor()); 
-    this.setProcessor('swagger', new SwaggerInputProcessor()); 
-    this.setProcessor('openapi', new OpenAPIInputProcessor()); 
+    this.setProcessor('asyncapi', new AsyncAPIInputProcessor());
+    this.setProcessor('swagger', new SwaggerInputProcessor());
+    this.setProcessor('openapi', new OpenAPIInputProcessor());
     this.setProcessor('default', new JsonSchemaInputProcessor());
     this.setProcessor('typescript', new TypeScriptInputProcessor());
   }
-  
+
   /**
    * Set a processor.
-   * 
+   *
    * @param type of processor
    * @param processor
    */
@@ -32,22 +32,24 @@ export class InputProcessor {
   }
 
   /**
-   * 
+   *
    * @returns all processors
    */
-  getProcessors() : Map<string, AbstractInputProcessor> {
+  getProcessors(): Map<string, AbstractInputProcessor> {
     return this.processors;
   }
 
   /**
    * The processor code which delegates the processing to the correct implementation.
-   * 
+   *
    * @param input to process
    * @param options passed to the processors
    */
   process(input: any, options?: ProcessorOptions): Promise<InputMetaModel> {
     for (const [type, processor] of this.processors) {
-      if (type === 'default') {continue;}
+      if (type === 'default') {
+        continue;
+      }
       if (processor.shouldProcess(input)) {
         return processor.process(input, options);
       }
@@ -59,4 +61,3 @@ export class InputProcessor {
     return Promise.reject(new Error('No default processor found'));
   }
 }
-

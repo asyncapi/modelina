@@ -1,5 +1,7 @@
-const spy = jest.spyOn(global.console, 'log').mockImplementation(() => { return; });
-import {generate} from './index';
+const spy = jest.spyOn(global.console, 'log').mockImplementation(() => {
+  return;
+});
+import { generate } from './index';
 
 describe('Should be able to generate models with javax.validation.constraints annotations', () => {
   afterAll(() => {

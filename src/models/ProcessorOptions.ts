@@ -3,7 +3,7 @@ import { InterpreterOptions } from '../interpreter/Interpreter';
 import { TypeScriptInputProcessorOptions } from '../processors/index';
 
 export interface ProcessorOptions {
-  asyncapi?: ParseOptions,
-  typescript?: TypeScriptInputProcessorOptions,
-  interpreter?: InterpreterOptions
+  asyncapi?: ParseOptions;
+  typescript?: TypeScriptInputProcessorOptions;
+  interpreter?: InterpreterOptions;
 }

@@ -37,6 +37,13 @@ export const RESERVED_PYTHON_KEYWORDS = [
   'exec'
 ];
 
-export function isReservedPythonKeyword(word: string, forceLowerCase = true): boolean {
-  return checkForReservedKeyword(word, RESERVED_PYTHON_KEYWORDS, forceLowerCase);
+export function isReservedPythonKeyword(
+  word: string,
+  forceLowerCase = true
+): boolean {
+  return checkForReservedKeyword(
+    word,
+    RESERVED_PYTHON_KEYWORDS,
+    forceLowerCase
+  );
 }

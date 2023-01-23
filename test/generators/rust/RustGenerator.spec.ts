@@ -1,4 +1,8 @@
-import { defaultRustRenderCompleteModelOptions, RustGenerator, RustRenderCompleteModelOptions } from '../../../src/generators';
+import {
+  defaultRustRenderCompleteModelOptions,
+  RustGenerator,
+  RustRenderCompleteModelOptions
+} from '../../../src/generators';
 
 describe('RustGenerator', () => {
   let generator: RustGenerator;
@@ -26,7 +30,7 @@ describe('RustGenerator', () => {
       const doc = {
         $id: 'Numbers',
         type: 'integer',
-        enum: [0, 1, 2, 3],
+        enum: [0, 1, 2, 3]
       };
 
       const models = await generator.generate(doc);
@@ -37,7 +41,7 @@ describe('RustGenerator', () => {
     test('should render `enum` with mixed types (union type)', async () => {
       const doc = {
         $id: 'Things_123',
-        enum: ['Texas', 1, '1', false, { test: 'test' }],
+        enum: ['Texas', 1, '1', false, { test: 'test' }]
       };
       const models = await generator.generate(doc);
       expect(models).toHaveLength(1);
@@ -48,7 +52,7 @@ describe('RustGenerator', () => {
       const doc = {
         $id: 'CustomEnum',
         type: 'string',
-        enum: ['Texas', 'Alabama', 'California'],
+        enum: ['Texas', 'Alabama', 'California']
       };
 
       generator = new RustGenerator({
@@ -57,7 +61,7 @@ describe('RustGenerator', () => {
             enum: {
               self({ content }) {
                 return content;
-              },
+              }
             }
           }
         ]
@@ -74,10 +78,14 @@ describe('RustGenerator', () => {
         $id: 'CustomEnum',
         type: 'string',
         default: 'Texas',
-        enum: ['Texas', 'Alabama', 'California'],
+        enum: ['Texas', 'Alabama', 'California']
       };
 
-      const options = { ...defaultRustRenderCompleteModelOptions, implementDefault: true, packageName: 'test' } as RustRenderCompleteModelOptions;
+      const options = {
+        ...defaultRustRenderCompleteModelOptions,
+        implementDefault: true,
+        packageName: 'test'
+      } as RustRenderCompleteModelOptions;
 
       const models = await generator.generateCompleteModels(doc, options);
       expect(models).toHaveLength(1);
@@ -103,21 +111,33 @@ describe('RustGenerator', () => {
         city: { type: 'string', description: 'City description' },
         state: { type: 'string' },
         house_number: { type: 'number' },
-        marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
-        members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
-        tuple_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }], additionalItems: false },
-        array_type: { type: 'array', items: { type: 'string' }, additionalItems: false },
+        marriage: {
+          type: 'boolean',
+          description: 'Status if marriage live in given house'
+        },
+        members: {
+          oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
+        },
+        tuple_type: {
+          type: 'array',
+          items: [{ type: 'string' }, { type: 'number' }],
+          additionalItems: false
+        },
+        array_type: {
+          type: 'array',
+          items: { type: 'string' },
+          additionalItems: false
+        }
         // not yet implemented
         // tuple_type_with_untyped_additional_items: { type: 'array', items: [{ type: 'string' }, { type: 'number' }], additionalItems: true },
         // tuple_type_with_typed_additional_items: { type: 'array', items: [{ type: 'string' }, { type: 'number' }], additionalItems: { type: 'string' } },
         // array_type_with_typed_additional_items: { type: 'array', items: { type: 'string' }, additionalItems: { type: 'string' } },
         // array_type_with_any_additional_items: { type: 'array', items: { type: 'string' }, additionalItems: true },
-
       },
       required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
       additionalProperties: {
         type: 'string'
-      },
+      }
       // not yet implemented
       // patternProperties: {
       //     '^S(.?*)test&': {
@@ -135,7 +155,12 @@ describe('RustGenerator', () => {
     });
 
     test('Should render complete models', async () => {
-      const options = { ...defaultRustRenderCompleteModelOptions, implementDefault: true, implementNew: true, supportFiles: true } as RustRenderCompleteModelOptions;
+      const options = {
+        ...defaultRustRenderCompleteModelOptions,
+        implementDefault: true,
+        implementNew: true,
+        supportFiles: true
+      } as RustRenderCompleteModelOptions;
 
       const models = await generator.generateCompleteModels(doc, options);
       expect(models).toHaveLength(3);
@@ -150,9 +175,14 @@ describe('RustGenerator', () => {
       const doc = {
         $id: 'Numbers',
         type: 'integer',
-        enum: [0, 1, 2, 3],
+        enum: [0, 1, 2, 3]
       };
-      const options = { ...defaultRustRenderCompleteModelOptions, implementDefault: true, implementNew: true, supportFiles: true } as RustRenderCompleteModelOptions;
+      const options = {
+        ...defaultRustRenderCompleteModelOptions,
+        implementDefault: true,
+        implementNew: true,
+        supportFiles: true
+      } as RustRenderCompleteModelOptions;
       const output = await generator.generateCompleteSupport(doc, options);
       expect(output).toHaveLength(2);
       expect(output[0].result).toMatchSnapshot(); // Cargo.toml
@@ -177,10 +207,10 @@ describe('RustGenerator', () => {
               oneOf: [
                 { $ref: '#/components/schemas/Cat' },
                 { $ref: '#/components/schemas/Dog' },
-                { $ref: '#/components/schemas/StickInsect' },
+                { $ref: '#/components/schemas/StickInsect' }
               ]
             }
-          },
+          }
         },
         schemas: {
           Pet: {
@@ -194,12 +224,9 @@ describe('RustGenerator', () => {
               },
               name: {
                 type: 'string'
-              },
+              }
             },
-            required: [
-              'petType',
-              'name',
-            ],
+            required: ['petType', 'name']
           },
           Cat: {
             allOf: [
@@ -214,17 +241,10 @@ describe('RustGenerator', () => {
                   huntingSkill: {
                     $id: 'HuntingSkill',
                     type: 'string',
-                    enum: [
-                      'clueless',
-                      'lazy',
-                      'adventurous',
-                      'aggressive'
-                    ]
+                    enum: ['clueless', 'lazy', 'adventurous', 'aggressive']
                   }
                 },
-                required: [
-                  'huntingSkill'
-                ]
+                required: ['huntingSkill']
               }
             ]
           },
@@ -245,9 +265,7 @@ describe('RustGenerator', () => {
                     minimum: 0
                   }
                 },
-                required: [
-                  'packSize'
-                ]
+                required: ['packSize']
               }
             ]
           },
@@ -262,15 +280,13 @@ describe('RustGenerator', () => {
                     const: 'StickBug'
                   },
                   color: {
-                    type: 'string',
+                    type: 'string'
                   }
                 },
-                required: [
-                  'color'
-                ]
+                required: ['color']
               }
             ]
-          },
+          }
         }
       }
     };

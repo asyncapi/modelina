@@ -5,10 +5,10 @@ import { GoOptions } from '../GoGenerator';
 
 /**
  * Renderer for Go's `enum` type
- * 
+ *
  * This renderer is a generic solution that works for all types of enum values.
  * This is also why you wont see `type MyEnum string´ even if possible.
- * 
+ *
  * @extends GoRenderer
  */
 export class EnumRenderer extends GoRenderer<ConstrainedEnumModel> {
@@ -18,9 +18,11 @@ export class EnumRenderer extends GoRenderer<ConstrainedEnumModel> {
     const temp = this.model.values.map((value) => {
       return `${this.model.name}Values[${value.key}]: ${value.key},`;
     });
-    const values = this.model.values.map((value) => {
-      return value.value;
-    }).join(',');
+    const values = this.model.values
+      .map((value) => {
+        return value.value;
+      })
+      .join(',');
 
     return `${doc}
 type ${this.model.name} uint

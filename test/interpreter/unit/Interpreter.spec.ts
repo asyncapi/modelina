@@ -1,5 +1,9 @@
-import {Interpreter} from '../../../src/interpreter/Interpreter';
-import {interpretName, isEnum, isModelObject} from '../../../src/interpreter/Utils';
+import { Interpreter } from '../../../src/interpreter/Interpreter';
+import {
+  interpretName,
+  isEnum,
+  isModelObject
+} from '../../../src/interpreter/Utils';
 import interpretProperties from '../../../src/interpreter/InterpretProperties';
 import interpretConst from '../../../src/interpreter/InterpretConst';
 import interpretEnum from '../../../src/interpreter/InterpretEnum';
@@ -24,7 +28,7 @@ jest.mock('../../../src/interpreter/InterpretDependencies');
 jest.mock('../../../src/interpreter/InterpretAdditionalItems');
 CommonModel.mergeCommonModels = jest.fn();
 /**
- * Some of these test are purely theoretical and have little if any merit 
+ * Some of these test are purely theoretical and have little if any merit
  * on a JSON Schema which actually makes sense but are used to test the principles.
  */
 describe('Interpreter', () => {
@@ -63,7 +67,15 @@ describe('Interpreter', () => {
     const interpreter = new Interpreter();
     const model = interpreter.interpret(schema);
     expect(model).not.toBeUndefined();
-    expect(model?.type).toEqual(['object', 'string', 'number', 'array', 'boolean', 'null', 'integer']);
+    expect(model?.type).toEqual([
+      'object',
+      'string',
+      'number',
+      'array',
+      'boolean',
+      'null',
+      'integer'
+    ]);
   });
   test('should set id of model if enum', () => {
     const schema = { enum: ['value'] };
@@ -99,13 +111,16 @@ describe('Interpreter', () => {
   });
 
   test('should support recursive schemas', () => {
-    const schema1: Draft7Schema = { };
+    const schema1: Draft7Schema = {};
     const schema2 = { anyOf: [schema1] };
     schema1.anyOf = [schema2];
     const interpreter = new Interpreter();
     const model = interpreter.interpret(schema1);
     expect(model).not.toBeUndefined();
-    expect(model).toMatchObject({originalInput: schema1, $id: 'anonymSchema2'});
+    expect(model).toMatchObject({
+      originalInput: schema1,
+      $id: 'anonymSchema2'
+    });
   });
   describe('combineSchemas', () => {
     test('should combine single schema with model', () => {
@@ -117,21 +132,36 @@ describe('Interpreter', () => {
       expectedSimplifiedModel.required = ['test'];
       expectedSimplifiedModel.originalInput = schema;
       interpreter.interpretAndCombineSchema(schema, model, schema);
-      expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(1, model, expectedSimplifiedModel, schema);
+      expect(CommonModel.mergeCommonModels).toHaveBeenNthCalledWith(
+        1,
+        model,
+        expectedSimplifiedModel,
+        schema
+      );
     });
   });
   test('should always try to interpret properties', () => {
     const schema = {};
     const interpreter = new Interpreter();
     interpreter.interpret(schema);
-    expect(interpretProperties).toHaveBeenNthCalledWith(1, schema, expect.anything(), interpreter, Interpreter.defaultInterpreterOptions);
+    expect(interpretProperties).toHaveBeenNthCalledWith(
+      1,
+      schema,
+      expect.anything(),
+      interpreter,
+      Interpreter.defaultInterpreterOptions
+    );
   });
 
   test('should always try to interpret const', () => {
     const schema = {};
     const interpreter = new Interpreter();
     interpreter.interpret(schema);
-    expect(interpretConst).toHaveBeenNthCalledWith(1, schema, expect.anything());
+    expect(interpretConst).toHaveBeenNthCalledWith(
+      1,
+      schema,
+      expect.anything()
+    );
   });
   test('should always try to interpret enum', () => {
     const schema = {};
@@ -143,37 +173,73 @@ describe('Interpreter', () => {
     const schema = {};
     const interpreter = new Interpreter();
     interpreter.interpret(schema);
-    expect(interpretAllOf).toHaveBeenNthCalledWith(1, schema, expect.anything(), expect.anything(), Interpreter.defaultInterpreterOptions);
+    expect(interpretAllOf).toHaveBeenNthCalledWith(
+      1,
+      schema,
+      expect.anything(),
+      expect.anything(),
+      Interpreter.defaultInterpreterOptions
+    );
   });
   test('should always try to interpret items', () => {
     const schema = {};
     const interpreter = new Interpreter();
     interpreter.interpret(schema);
-    expect(interpretItems).toHaveBeenNthCalledWith(1, schema, expect.anything(), interpreter, Interpreter.defaultInterpreterOptions);
+    expect(interpretItems).toHaveBeenNthCalledWith(
+      1,
+      schema,
+      expect.anything(),
+      interpreter,
+      Interpreter.defaultInterpreterOptions
+    );
   });
   test('should always try to interpret additionalProperties', () => {
     const schema = {};
     const interpreter = new Interpreter();
     interpreter.interpret(schema);
-    expect(interpretAdditionalProperties).toHaveBeenNthCalledWith(1, schema, expect.anything(), interpreter, Interpreter.defaultInterpreterOptions);
+    expect(interpretAdditionalProperties).toHaveBeenNthCalledWith(
+      1,
+      schema,
+      expect.anything(),
+      interpreter,
+      Interpreter.defaultInterpreterOptions
+    );
   });
   test('should always try to interpret not', () => {
     const schema = {};
     const interpreter = new Interpreter();
     interpreter.interpret(schema);
-    expect(interpretNot).toHaveBeenNthCalledWith(1, schema, expect.anything(), interpreter, Interpreter.defaultInterpreterOptions);
+    expect(interpretNot).toHaveBeenNthCalledWith(
+      1,
+      schema,
+      expect.anything(),
+      interpreter,
+      Interpreter.defaultInterpreterOptions
+    );
   });
   test('should always try to interpret dependencies', () => {
     const schema = {};
     const interpreter = new Interpreter();
     interpreter.interpret(schema);
-    expect(interpretDependencies).toHaveBeenNthCalledWith(1, schema, expect.anything(), expect.anything(), Interpreter.defaultInterpreterOptions);
+    expect(interpretDependencies).toHaveBeenNthCalledWith(
+      1,
+      schema,
+      expect.anything(),
+      expect.anything(),
+      Interpreter.defaultInterpreterOptions
+    );
   });
   test('should always try to interpret additionalItems', () => {
     const schema = {};
     const interpreter = new Interpreter();
     interpreter.interpret(schema);
-    expect(interpretAdditionalItems).toHaveBeenNthCalledWith(1, schema, expect.anything(), expect.anything(), Interpreter.defaultInterpreterOptions);
+    expect(interpretAdditionalItems).toHaveBeenNthCalledWith(
+      1,
+      schema,
+      expect.anything(),
+      expect.anything(),
+      Interpreter.defaultInterpreterOptions
+    );
   });
   test('should support primitive roots', () => {
     const schema = { type: 'string' };

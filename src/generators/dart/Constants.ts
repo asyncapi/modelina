@@ -1,7 +1,7 @@
 import { checkForReservedKeyword } from '../../helpers';
 
 export const RESERVED_DART_KEYWORDS = [
-  'abstract', 
+  'abstract',
   'as',
   'assert',
   'async',
@@ -63,9 +63,12 @@ export const RESERVED_DART_KEYWORDS = [
   'void',
   'while',
   'with',
-  'yield',
+  'yield'
 ];
 
-export function isReservedDartKeyword(word: string, forceLowerCase = true): boolean {
+export function isReservedDartKeyword(
+  word: string,
+  forceLowerCase = true
+): boolean {
   return checkForReservedKeyword(word, RESERVED_DART_KEYWORDS, forceLowerCase);
 }

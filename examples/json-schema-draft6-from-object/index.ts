@@ -13,7 +13,7 @@ const jsonSchemaDraft6 = {
   }
 };
 
-export async function generate() : Promise<void> {
+export async function generate(): Promise<void> {
   const models = await generator.generate(jsonSchemaDraft6);
   for (const model of models) {
     console.log(model.result);

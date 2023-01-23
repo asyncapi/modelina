@@ -1,4 +1,7 @@
-import { KotlinGenerator, KOTLIN_DESCRIPTION_PRESET } from '../../../../src/generators/kotlin'; 
+import {
+  KotlinGenerator,
+  KOTLIN_DESCRIPTION_PRESET
+} from '../../../../src/generators/kotlin';
 
 describe('KOTLIN_DESCRIPTION_PRESET', () => {
   let generator: KotlinGenerator;
@@ -13,8 +16,12 @@ describe('KOTLIN_DESCRIPTION_PRESET', () => {
       description: 'Description for class',
       examples: [{ prop: 'value' }],
       properties: {
-        prop: { type: 'string', description: 'Description for prop', examples: ['exampleValue'] },
-      },
+        prop: {
+          type: 'string',
+          description: 'Description for prop',
+          examples: ['exampleValue']
+        }
+      }
     };
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
@@ -27,10 +34,7 @@ describe('KOTLIN_DESCRIPTION_PRESET', () => {
       type: 'string',
       description: 'Description for enum',
       examples: ['value'],
-      enum: [
-        'on',
-        'off',
-      ]
+      enum: ['on', 'off']
     };
 
     const models = await generator.generate(doc);

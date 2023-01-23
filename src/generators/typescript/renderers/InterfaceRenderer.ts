@@ -4,7 +4,7 @@ import { InterfacePresetType } from '../TypeScriptPreset';
 
 /**
  * Renderer for TypeScript's `interface` type
- * 
+ *
  * @extends TypeScriptRenderer
  */
 export class InterfaceRenderer extends TypeScriptObjectRenderer {
@@ -20,11 +20,12 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 }
 
-export const TS_DEFAULT_INTERFACE_PRESET: InterfacePresetType<TypeScriptOptions> = {
-  self({ renderer }) {
-    return renderer.defaultSelf();
-  },
-  property({ renderer, property }) {
-    return renderer.renderProperty(property);
-  }
-};
+export const TS_DEFAULT_INTERFACE_PRESET: InterfacePresetType<TypeScriptOptions> =
+  {
+    self({ renderer }) {
+      return renderer.defaultSelf();
+    },
+    property({ renderer, property }) {
+      return renderer.renderProperty(property);
+    }
+  };

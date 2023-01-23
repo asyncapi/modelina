@@ -1,11 +1,14 @@
 import { JavaScriptRenderer } from '../JavaScriptRenderer';
-import { ConstrainedObjectModel, ConstrainedObjectPropertyModel } from '../../../models';
+import {
+  ConstrainedObjectModel,
+  ConstrainedObjectPropertyModel
+} from '../../../models';
 import { JavaScriptOptions } from '../JavaScriptGenerator';
 import { ClassPresetType } from '../JavaScriptPreset';
 
 /**
  * Renderer for JavaScript's `class` type
- * 
+ *
  * @extends JavaScriptRenderer
  */
 export class ClassRenderer extends JavaScriptRenderer<ConstrainedObjectModel> {
@@ -16,7 +19,7 @@ export class ClassRenderer extends JavaScriptRenderer<ConstrainedObjectModel> {
       await this.renderAccessors(),
       await this.runAdditionalContentPreset()
     ];
-    
+
     return `class ${this.model.name} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
@@ -70,14 +73,16 @@ export const JS_DEFAULT_CLASS_PRESET: ClassPresetType<JavaScriptOptions> = {
   },
   ctor({ renderer, model }) {
     const properties = model.properties || {};
-    const assignments = Object.entries(properties).map(([propertyName, property]) => {
-      if (!property.required) {
-        return `if (input.hasOwnProperty('${propertyName}')) {
+    const assignments = Object.entries(properties).map(
+      ([propertyName, property]) => {
+        if (!property.required) {
+          return `if (input.hasOwnProperty('${propertyName}')) {
   this.${propertyName} = input.${propertyName};
 }`;
+        }
+        return `this.${propertyName} = input.${propertyName};`;
       }
-      return `this.${propertyName} = input.${propertyName};`;
-    });
+    );
     const body = renderer.renderBlock(assignments);
 
     return `constructor(input) {
@@ -92,5 +97,5 @@ ${renderer.indent(body)}
   },
   setter({ property }) {
     return `set ${property.propertyName}(${property.propertyName}) { this.${property.propertyName} = ${property.propertyName}; }`;
-  },
+  }
 };

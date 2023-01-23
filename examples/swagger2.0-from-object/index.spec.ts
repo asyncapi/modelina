@@ -1,4 +1,6 @@
-const spy = jest.spyOn(global.console, 'log').mockImplementation(() => { return; });
+const spy = jest.spyOn(global.console, 'log').mockImplementation(() => {
+  return;
+});
 import { generate } from './index';
 describe('Should be able to process a pure Swagger 2.0 object', () => {
   afterAll(() => {

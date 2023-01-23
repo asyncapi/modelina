@@ -6,32 +6,42 @@ import {
   ConstrainedStringModel
 } from '../../../models';
 import { KotlinPreset } from '../KotlinPreset';
-import {ClassRenderer} from '../renderers/ClassRenderer';
+import { ClassRenderer } from '../renderers/ClassRenderer';
 
 export const KOTLIN_CONSTRAINTS_PRESET: KotlinPreset = {
   class: {
-    self({renderer, content}) {
-      renderer.dependencyManager.addDependency('javax.validation.constraints.*');
+    self({ renderer, content }) {
+      renderer.dependencyManager.addDependency(
+        'javax.validation.constraints.*'
+      );
       return content;
     },
-    property({ renderer, property, content}) {
+    property({ renderer, property, content }) {
       const annotations: string[] = [];
 
       if (property.required) {
         annotations.push(renderer.renderAnnotation('NotNull', null, 'get:'));
       }
 
-      annotations.push(...getTypeSpecificAnnotations(property.property, renderer));
+      annotations.push(
+        ...getTypeSpecificAnnotations(property.property, renderer)
+      );
 
       return renderer.renderBlock([...annotations, content]);
     }
   }
 };
 
-function getTypeSpecificAnnotations(property: ConstrainedMetaModel, renderer: ClassRenderer): string[] {
+function getTypeSpecificAnnotations(
+  property: ConstrainedMetaModel,
+  renderer: ClassRenderer
+): string[] {
   if (property instanceof ConstrainedStringModel) {
     return getStringAnnotations(property, renderer);
-  } else if (property instanceof ConstrainedFloatModel || property instanceof ConstrainedIntegerModel) {
+  } else if (
+    property instanceof ConstrainedFloatModel ||
+    property instanceof ConstrainedIntegerModel
+  ) {
     return getNumericAnnotations(property, renderer);
   } else if (property instanceof ConstrainedArrayModel) {
     return getArrayAnnotations(property, renderer);
@@ -40,7 +50,10 @@ function getTypeSpecificAnnotations(property: ConstrainedMetaModel, renderer: Cl
   return [];
 }
 
-function getStringAnnotations(property: ConstrainedStringModel, renderer: ClassRenderer): string[] {
+function getStringAnnotations(
+  property: ConstrainedStringModel,
+  renderer: ClassRenderer
+): string[] {
   const annotations: string[] = [];
   const originalInput = property.originalInput;
 
@@ -54,7 +67,10 @@ function getStringAnnotations(property: ConstrainedStringModel, renderer: ClassR
     );
   }
 
-  if (originalInput['minLength'] !== undefined || originalInput['maxLength'] !== undefined) {
+  if (
+    originalInput['minLength'] !== undefined ||
+    originalInput['maxLength'] !== undefined
+  ) {
     annotations.push(
       renderer.renderAnnotation(
         'Size',
@@ -67,12 +83,17 @@ function getStringAnnotations(property: ConstrainedStringModel, renderer: ClassR
   return annotations;
 }
 
-function getNumericAnnotations(property: ConstrainedIntegerModel | ConstrainedFloatModel, renderer: ClassRenderer): string[] {
+function getNumericAnnotations(
+  property: ConstrainedIntegerModel | ConstrainedFloatModel,
+  renderer: ClassRenderer
+): string[] {
   const annotations: string[] = [];
   const originalInput = property.originalInput;
 
   if (originalInput['minimum'] !== undefined) {
-    annotations.push(renderer.renderAnnotation('Min', originalInput['minimum'], 'get:'));
+    annotations.push(
+      renderer.renderAnnotation('Min', originalInput['minimum'], 'get:')
+    );
   }
 
   if (originalInput['exclusiveMinimum'] !== undefined) {
@@ -80,12 +101,15 @@ function getNumericAnnotations(property: ConstrainedIntegerModel | ConstrainedFl
       renderer.renderAnnotation(
         'Min',
         originalInput['exclusiveMinimum'] + 1,
-        'get:')
+        'get:'
+      )
     );
   }
 
   if (originalInput['maximum'] !== undefined) {
-    annotations.push(renderer.renderAnnotation('Max', originalInput['maximum'], 'get:'));
+    annotations.push(
+      renderer.renderAnnotation('Max', originalInput['maximum'], 'get:')
+    );
   }
 
   if (originalInput['exclusiveMaximum'] !== undefined) {
@@ -93,18 +117,25 @@ function getNumericAnnotations(property: ConstrainedIntegerModel | ConstrainedFl
       renderer.renderAnnotation(
         'Max',
         originalInput['exclusiveMaximum'] - 1,
-        'get:')
+        'get:'
+      )
     );
   }
 
   return annotations;
 }
 
-function getArrayAnnotations(property: ConstrainedArrayModel, renderer: ClassRenderer): string[] {
+function getArrayAnnotations(
+  property: ConstrainedArrayModel,
+  renderer: ClassRenderer
+): string[] {
   const annotations: string[] = [];
   const originalInput = property.originalInput;
 
-  if (originalInput['minItems'] !== undefined || originalInput['maxItems'] !== undefined) {
+  if (
+    originalInput['minItems'] !== undefined ||
+    originalInput['maxItems'] !== undefined
+  ) {
     annotations.push(
       renderer.renderAnnotation(
         'Size',

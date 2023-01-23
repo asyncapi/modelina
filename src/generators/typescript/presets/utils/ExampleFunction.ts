@@ -1,18 +1,32 @@
-import { ConstrainedArrayModel, ConstrainedBooleanModel, ConstrainedEnumModel, ConstrainedFloatModel, ConstrainedIntegerModel, ConstrainedMetaModel, ConstrainedObjectModel, ConstrainedReferenceModel, ConstrainedStringModel, ConstrainedTupleModel, ConstrainedUnionModel } from '../../../../models';
+import {
+  ConstrainedArrayModel,
+  ConstrainedBooleanModel,
+  ConstrainedEnumModel,
+  ConstrainedFloatModel,
+  ConstrainedIntegerModel,
+  ConstrainedMetaModel,
+  ConstrainedObjectModel,
+  ConstrainedReferenceModel,
+  ConstrainedStringModel,
+  ConstrainedTupleModel,
+  ConstrainedUnionModel
+} from '../../../../models';
 
 /**
  * Inferring first acceptable value from the model.
- * 
- * @param model 
+ *
+ * @param model
  */
-export function renderValueFromModel(model: ConstrainedMetaModel): string | undefined {
+export function renderValueFromModel(
+  model: ConstrainedMetaModel
+): string | undefined {
   if (model instanceof ConstrainedEnumModel && model.values.length > 0) {
     //Greedy example
     return model.values[0].value;
   } else if (model instanceof ConstrainedReferenceModel) {
     return `${model.name}.example()`;
   } else if (model instanceof ConstrainedUnionModel && model.union.length > 0) {
-    //Greedy example 
+    //Greedy example
     return renderValueFromModel(model.union[0]);
   } else if (model instanceof ConstrainedArrayModel) {
     const arrayType = renderValueFromModel(model.valueModel);
@@ -30,15 +44,17 @@ export function renderValueFromModel(model: ConstrainedMetaModel): string | unde
     return '0.0';
   } else if (model instanceof ConstrainedBooleanModel) {
     return 'true';
-  } 
+  }
   return undefined;
 }
 
 /**
  * Render `example` function based on model properties.
  */
-export default function renderExampleFunction({ model }: {
-  model: ConstrainedObjectModel,
+export default function renderExampleFunction({
+  model
+}: {
+  model: ConstrainedObjectModel;
 }): string {
   const properties = model.properties || {};
   const setProperties = [];
@@ -48,11 +64,13 @@ export default function renderExampleFunction({ model }: {
       //Unable to determine example value, skip property.
       continue;
     }
-    setProperties.push(`  instance.${propertyName} = ${potentialRenderedValue};`);
+    setProperties.push(
+      `  instance.${propertyName} = ${potentialRenderedValue};`
+    );
   }
   return `public static example(): ${model.type} {
   const instance = new ${model.type}({} as any);
-${(setProperties.join('\n'))}
+${setProperties.join('\n')}
   return instance;
 }`;
 }

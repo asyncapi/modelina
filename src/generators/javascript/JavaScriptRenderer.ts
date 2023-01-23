@@ -6,10 +6,16 @@ import { JavaScriptDependencyManager } from './JavaScriptDependencyManager';
 
 /**
  * Common renderer for JavaScript types
- * 
+ *
  * @extends AbstractRenderer
  */
-export abstract class JavaScriptRenderer<RendererModelType extends ConstrainedMetaModel> extends AbstractRenderer<JavaScriptOptions, JavaScriptGenerator, RendererModelType> {
+export abstract class JavaScriptRenderer<
+  RendererModelType extends ConstrainedMetaModel
+> extends AbstractRenderer<
+  JavaScriptOptions,
+  JavaScriptGenerator,
+  RendererModelType
+> {
   constructor(
     options: JavaScriptOptions,
     generator: JavaScriptGenerator,
@@ -23,7 +29,7 @@ export abstract class JavaScriptRenderer<RendererModelType extends ConstrainedMe
 
   renderComments(lines: string | string[]): string {
     lines = FormatHelpers.breakLines(lines);
-    const content = lines.map(line => ` * ${line}`).join('\n');
+    const content = lines.map((line) => ` * ${line}`).join('\n');
     return `/**
 ${content}
  */`;

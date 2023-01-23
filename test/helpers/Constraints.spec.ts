@@ -1,5 +1,22 @@
-import { NO_NUMBER_START_CHAR, NO_EMPTY_VALUE, NO_DUPLICATE_PROPERTIES, FormatHelpers, NO_DUPLICATE_ENUM_KEYS } from '../../src/helpers';
-import { AnyModel, ConstrainedAnyModel, ConstrainedEnumModel, ConstrainedEnumValueModel, ConstrainedObjectModel, ConstrainedObjectPropertyModel, EnumModel, EnumValueModel, ObjectModel, ObjectPropertyModel } from '../../src/models';
+import {
+  NO_NUMBER_START_CHAR,
+  NO_EMPTY_VALUE,
+  NO_DUPLICATE_PROPERTIES,
+  FormatHelpers,
+  NO_DUPLICATE_ENUM_KEYS
+} from '../../src/helpers';
+import {
+  AnyModel,
+  ConstrainedAnyModel,
+  ConstrainedEnumModel,
+  ConstrainedEnumValueModel,
+  ConstrainedObjectModel,
+  ConstrainedObjectPropertyModel,
+  EnumModel,
+  EnumValueModel,
+  ObjectModel,
+  ObjectPropertyModel
+} from '../../src/models';
 
 describe('Constraints', () => {
   describe('NO_NUMBER_START_CHAR', () => {
@@ -25,42 +42,119 @@ describe('Constraints', () => {
   });
   describe('NO_DUPLICATE_PROPERTIES', () => {
     test('should not do anything with no duplicate properties', () => {
-      const constrainedModel = new ConstrainedObjectModel('', undefined, '', {});
+      const constrainedModel = new ConstrainedObjectModel(
+        '',
+        undefined,
+        '',
+        {}
+      );
       const metaModel = new ObjectModel('', undefined, {
-        Test: new ObjectPropertyModel('Test', false, new AnyModel('', undefined))
+        Test: new ObjectPropertyModel(
+          'Test',
+          false,
+          new AnyModel('', undefined)
+        )
       });
-      const renderedValue = NO_DUPLICATE_PROPERTIES(constrainedModel, metaModel, 'Test', FormatHelpers.toPascalCase);
+      const renderedValue = NO_DUPLICATE_PROPERTIES(
+        constrainedModel,
+        metaModel,
+        'Test',
+        FormatHelpers.toPascalCase
+      );
       expect(renderedValue).toEqual('Test');
     });
     test('should not use formatted property name which another raw property is', () => {
-      const constrainedModel = new ConstrainedObjectModel('', undefined, '', {});
+      const constrainedModel = new ConstrainedObjectModel(
+        '',
+        undefined,
+        '',
+        {}
+      );
       const metaModel = new ObjectModel('', undefined, {
-        test: new ObjectPropertyModel('test', false, new AnyModel('', undefined)),
-        Test: new ObjectPropertyModel('Test', false, new AnyModel('', undefined))
+        test: new ObjectPropertyModel(
+          'test',
+          false,
+          new AnyModel('', undefined)
+        ),
+        Test: new ObjectPropertyModel(
+          'Test',
+          false,
+          new AnyModel('', undefined)
+        )
       });
-      const renderedValue = NO_DUPLICATE_PROPERTIES(constrainedModel, metaModel, 'test', FormatHelpers.toPascalCase);
+      const renderedValue = NO_DUPLICATE_PROPERTIES(
+        constrainedModel,
+        metaModel,
+        'test',
+        FormatHelpers.toPascalCase
+      );
       expect(renderedValue).toEqual('reserved_test');
     });
     test('should should keep the raw property name if no clash', () => {
-      const constrainedModel = new ConstrainedObjectModel('', undefined, '', {});
+      const constrainedModel = new ConstrainedObjectModel(
+        '',
+        undefined,
+        '',
+        {}
+      );
       const metaModel = new ObjectModel('', undefined, {
-        test: new ObjectPropertyModel('test', false, new AnyModel('', undefined)),
-        Test: new ObjectPropertyModel('Test', false, new AnyModel('', undefined))
+        test: new ObjectPropertyModel(
+          'test',
+          false,
+          new AnyModel('', undefined)
+        ),
+        Test: new ObjectPropertyModel(
+          'Test',
+          false,
+          new AnyModel('', undefined)
+        )
       });
-      const renderedValue = NO_DUPLICATE_PROPERTIES(constrainedModel, metaModel, 'Test', FormatHelpers.toPascalCase);
+      const renderedValue = NO_DUPLICATE_PROPERTIES(
+        constrainedModel,
+        metaModel,
+        'Test',
+        FormatHelpers.toPascalCase
+      );
       expect(renderedValue).toEqual('Test');
     });
     test('should be able to handle multiple reserved properties', () => {
       const constrainedModel = new ConstrainedObjectModel('', undefined, '', {
-        Test: new ConstrainedObjectPropertyModel('Test', 'Test', false, new ConstrainedAnyModel('', undefined, '')),
-        ReservedTest: new ConstrainedObjectPropertyModel('ReservedTest', 'ReservedTest', false, new ConstrainedAnyModel('', undefined, ''))
+        Test: new ConstrainedObjectPropertyModel(
+          'Test',
+          'Test',
+          false,
+          new ConstrainedAnyModel('', undefined, '')
+        ),
+        ReservedTest: new ConstrainedObjectPropertyModel(
+          'ReservedTest',
+          'ReservedTest',
+          false,
+          new ConstrainedAnyModel('', undefined, '')
+        )
       });
       const metaModel = new ObjectModel('', undefined, {
-        test: new ObjectPropertyModel('test', false, new AnyModel('', undefined)),
-        Test: new ObjectPropertyModel('Test', false, new AnyModel('', undefined)),
-        ReservedTest: new ObjectPropertyModel('ReservedTest', false, new AnyModel('', undefined))
+        test: new ObjectPropertyModel(
+          'test',
+          false,
+          new AnyModel('', undefined)
+        ),
+        Test: new ObjectPropertyModel(
+          'Test',
+          false,
+          new AnyModel('', undefined)
+        ),
+        ReservedTest: new ObjectPropertyModel(
+          'ReservedTest',
+          false,
+          new AnyModel('', undefined)
+        )
       });
-      const renderedValue = NO_DUPLICATE_PROPERTIES(constrainedModel, metaModel, 'test', FormatHelpers.toPascalCase);
+      const renderedValue = NO_DUPLICATE_PROPERTIES(
+        constrainedModel,
+        metaModel,
+        'test',
+        FormatHelpers.toPascalCase
+      );
       expect(renderedValue).toEqual('reserved_reserved_test');
     });
   });
@@ -70,7 +164,12 @@ describe('Constraints', () => {
       const metaModel = new EnumModel('', undefined, [
         new EnumValueModel('test', new AnyModel('', undefined))
       ]);
-      const renderedValue = NO_DUPLICATE_ENUM_KEYS(constrainedModel, metaModel, 'test', FormatHelpers.toPascalCase);
+      const renderedValue = NO_DUPLICATE_ENUM_KEYS(
+        constrainedModel,
+        metaModel,
+        'test',
+        FormatHelpers.toPascalCase
+      );
       expect(renderedValue).toEqual('test');
     });
     test('should not use formatted enum key which another raw enum key is', () => {
@@ -79,7 +178,12 @@ describe('Constraints', () => {
         new EnumValueModel('test', new AnyModel('', undefined)),
         new EnumValueModel('Test', new AnyModel('', undefined))
       ]);
-      const renderedValue = NO_DUPLICATE_ENUM_KEYS(constrainedModel, metaModel, 'test', FormatHelpers.toPascalCase);
+      const renderedValue = NO_DUPLICATE_ENUM_KEYS(
+        constrainedModel,
+        metaModel,
+        'test',
+        FormatHelpers.toPascalCase
+      );
       expect(renderedValue).toEqual('reserved_test');
     });
     test('should should keep the raw enum key if no clash', () => {
@@ -88,20 +192,33 @@ describe('Constraints', () => {
         new EnumValueModel('test', new AnyModel('', undefined)),
         new EnumValueModel('Test', new AnyModel('', undefined))
       ]);
-      const renderedValue = NO_DUPLICATE_ENUM_KEYS(constrainedModel, metaModel, 'Test', FormatHelpers.toPascalCase);
+      const renderedValue = NO_DUPLICATE_ENUM_KEYS(
+        constrainedModel,
+        metaModel,
+        'Test',
+        FormatHelpers.toPascalCase
+      );
       expect(renderedValue).toEqual('Test');
     });
     test('should be able to handle multiple reserved enum keys', () => {
       const constrainedModel = new ConstrainedEnumModel('', undefined, '', [
         new ConstrainedEnumValueModel('Test', new AnyModel('', undefined)),
-        new ConstrainedEnumValueModel('ReservedTest', new AnyModel('', undefined))
+        new ConstrainedEnumValueModel(
+          'ReservedTest',
+          new AnyModel('', undefined)
+        )
       ]);
       const metaModel = new EnumModel('', undefined, [
         new EnumValueModel('test', new AnyModel('', undefined)),
         new EnumValueModel('Test', new AnyModel('', undefined)),
         new EnumValueModel('ReservedTest', new AnyModel('', undefined))
       ]);
-      const renderedValue = NO_DUPLICATE_ENUM_KEYS(constrainedModel, metaModel, 'test', FormatHelpers.toPascalCase);
+      const renderedValue = NO_DUPLICATE_ENUM_KEYS(
+        constrainedModel,
+        metaModel,
+        'test',
+        FormatHelpers.toPascalCase
+      );
       expect(renderedValue).toEqual('reserved_reserved_test');
     });
   });

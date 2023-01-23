@@ -1,11 +1,16 @@
 import { TypeScriptGenerator, TypeScriptOptions } from './TypeScriptGenerator';
-import { ConstrainedObjectModel, ConstrainedObjectPropertyModel, InputMetaModel, Preset } from '../../models';
+import {
+  ConstrainedObjectModel,
+  ConstrainedObjectPropertyModel,
+  InputMetaModel,
+  Preset
+} from '../../models';
 import { TypeScriptRenderer } from './TypeScriptRenderer';
 import { TypeScriptDependencyManager } from './TypeScriptDependencyManager';
 
 /**
  * Common renderer for TypeScript types
- * 
+ *
  * @extends AbstractRenderer
  */
 export abstract class TypeScriptObjectRenderer extends TypeScriptRenderer<ConstrainedObjectModel> {
@@ -13,7 +18,7 @@ export abstract class TypeScriptObjectRenderer extends TypeScriptRenderer<Constr
     options: TypeScriptOptions,
     generator: TypeScriptGenerator,
     presets: Array<[Preset, unknown]>,
-    model: ConstrainedObjectModel, 
+    model: ConstrainedObjectModel,
     inputModel: InputMetaModel,
     dependencyManager: TypeScriptDependencyManager
   ) {
@@ -36,7 +41,9 @@ export abstract class TypeScriptObjectRenderer extends TypeScriptRenderer<Constr
   }
 
   renderProperty(property: ConstrainedObjectPropertyModel): string {
-    return `${property.propertyName}${property.required === false ? '?' : ''}: ${property.property.type};`;
+    return `${property.propertyName}${
+      property.required === false ? '?' : ''
+    }: ${property.property.type};`;
   }
 
   runPropertyPreset(property: ConstrainedObjectPropertyModel): Promise<string> {

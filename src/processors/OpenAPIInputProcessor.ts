@@ -14,16 +14,25 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
 
   /**
    * Process the input as a OpenAPI V3.0 document
-   * 
-   * @param input 
+   *
+   * @param input
    */
-  async process(input: any, options?: ProcessorOptions): Promise<InputMetaModel> {
-    if (!this.shouldProcess(input)) {throw new Error('Input is not a OpenAPI document so it cannot be processed.');}
+  async process(
+    input: any,
+    options?: ProcessorOptions
+  ): Promise<InputMetaModel> {
+    if (!this.shouldProcess(input)) {
+      throw new Error(
+        'Input is not a OpenAPI document so it cannot be processed.'
+      );
+    }
 
     Logger.debug('Processing input as an OpenAPI document');
     const inputModel = new InputMetaModel();
     inputModel.originalInput = input;
-    const api = (await SwaggerParser.dereference(input as any) as unknown) as OpenAPIV3.Document;
+    const api = (await SwaggerParser.dereference(
+      input as any
+    )) as unknown as OpenAPIV3.Document;
 
     for (const [path, pathObject] of Object.entries(api.paths)) {
       this.processPath(pathObject, path, inputModel, options);
@@ -31,7 +40,12 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
     return inputModel;
   }
 
-  private processPath(pathObject: OpenAPIV3.PathItemObject | undefined, path: string, inputModel: InputMetaModel, options?: ProcessorOptions) {
+  private processPath(
+    pathObject: OpenAPIV3.PathItemObject | undefined,
+    path: string,
+    inputModel: InputMetaModel,
+    options?: ProcessorOptions
+  ) {
     if (pathObject) {
       //Remove all special chars from path
       let formattedPathName = path.replace(/[^\w\s*]+/g, '');
@@ -39,61 +53,157 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
       formattedPathName = formattedPathName.replace(/\//, '');
       //Replace all segment separators '/'
       formattedPathName = formattedPathName.replace(/\//gm, '_');
-      this.processOperation(pathObject.get, `${formattedPathName}_get`, inputModel, options);
-      this.processOperation(pathObject.put, `${formattedPathName}_put`, inputModel, options);
-      this.processOperation(pathObject.post, `${formattedPathName}_post`, inputModel, options);
-      this.processOperation(pathObject.delete, `${formattedPathName}_delete`, inputModel, options);
-      this.processOperation(pathObject.options, `${formattedPathName}_options`, inputModel, options);
-      this.processOperation(pathObject.head, `${formattedPathName}_head`, inputModel, options);
-      this.processOperation(pathObject.patch, `${formattedPathName}_patch`, inputModel, options);
-      this.processOperation(pathObject.trace, `${formattedPathName}_trace`, inputModel, options);
-    } 
+      this.processOperation(
+        pathObject.get,
+        `${formattedPathName}_get`,
+        inputModel,
+        options
+      );
+      this.processOperation(
+        pathObject.put,
+        `${formattedPathName}_put`,
+        inputModel,
+        options
+      );
+      this.processOperation(
+        pathObject.post,
+        `${formattedPathName}_post`,
+        inputModel,
+        options
+      );
+      this.processOperation(
+        pathObject.delete,
+        `${formattedPathName}_delete`,
+        inputModel,
+        options
+      );
+      this.processOperation(
+        pathObject.options,
+        `${formattedPathName}_options`,
+        inputModel,
+        options
+      );
+      this.processOperation(
+        pathObject.head,
+        `${formattedPathName}_head`,
+        inputModel,
+        options
+      );
+      this.processOperation(
+        pathObject.patch,
+        `${formattedPathName}_patch`,
+        inputModel,
+        options
+      );
+      this.processOperation(
+        pathObject.trace,
+        `${formattedPathName}_trace`,
+        inputModel,
+        options
+      );
+    }
   }
 
-  private processOperation(operation: OpenAPIV3.OperationObject | undefined, path: string, inputModel: InputMetaModel, options?: ProcessorOptions) {
+  private processOperation(
+    operation: OpenAPIV3.OperationObject | undefined,
+    path: string,
+    inputModel: InputMetaModel,
+    options?: ProcessorOptions
+  ) {
     if (operation) {
       this.iterateResponses(operation.responses, path, inputModel, options);
 
       if (operation.requestBody) {
-        this.iterateMediaType((operation.requestBody as OpenAPIV3.RequestBodyObject).content || {}, path, inputModel, options);
+        this.iterateMediaType(
+          (operation.requestBody as OpenAPIV3.RequestBodyObject).content || {},
+          path,
+          inputModel,
+          options
+        );
       }
-      
+
       if (operation.callbacks) {
-        for (const [callbackName, callback] of Object.entries(operation.callbacks)) {
+        for (const [callbackName, callback] of Object.entries(
+          operation.callbacks
+        )) {
           const callbackObject = callback as OpenAPIV3.CallbackObject;
-          for (const [callbackPath, callbackPathObject] of Object.entries(callbackObject)) {
-            this.processPath(callbackPathObject, `${path}_callback_${callbackName}_${callbackPath}`, inputModel, options);
+          for (const [callbackPath, callbackPathObject] of Object.entries(
+            callbackObject
+          )) {
+            this.processPath(
+              callbackPathObject,
+              `${path}_callback_${callbackName}_${callbackPath}`,
+              inputModel,
+              options
+            );
           }
         }
       }
     }
   }
 
-  private iterateResponses(responses: OpenAPIV3.ResponsesObject, path: string, inputModel: InputMetaModel, options?: ProcessorOptions) {
+  private iterateResponses(
+    responses: OpenAPIV3.ResponsesObject,
+    path: string,
+    inputModel: InputMetaModel,
+    options?: ProcessorOptions
+  ) {
     for (const [responseName, response] of Object.entries(responses)) {
       //Replace any '/' with '_'
       const formattedResponseName = responseName.replace(/\//, '_');
-      this.iterateMediaType((response as OpenAPIV3.ResponseObject).content || {}, `${path}_${formattedResponseName}`, inputModel, options);
+      this.iterateMediaType(
+        (response as OpenAPIV3.ResponseObject).content || {},
+        `${path}_${formattedResponseName}`,
+        inputModel,
+        options
+      );
     }
   }
 
-  private iterateMediaType(mediaTypes: {[media: string]: OpenAPIV3.MediaTypeObject}, path: string, inputModel: InputMetaModel, options?: ProcessorOptions) {
+  private iterateMediaType(
+    mediaTypes: { [media: string]: OpenAPIV3.MediaTypeObject },
+    path: string,
+    inputModel: InputMetaModel,
+    options?: ProcessorOptions
+  ) {
     for (const [mediaContent, mediaTypeObject] of Object.entries(mediaTypes)) {
       const mediaType = mediaTypeObject;
-      if (mediaType.schema === undefined) { continue; }
-      const mediaTypeSchema = (mediaType.schema as unknown) as OpenAPIV3.SchemaObject;
+      if (mediaType.schema === undefined) {
+        continue;
+      }
+      const mediaTypeSchema =
+        mediaType.schema as unknown as OpenAPIV3.SchemaObject;
       //Replace any '/' with '_'
       const formattedMediaContent = mediaContent.replace(/\//, '_');
-      this.includeSchema(mediaTypeSchema, `${path}_${formattedMediaContent}`, inputModel, options);
+      this.includeSchema(
+        mediaTypeSchema,
+        `${path}_${formattedMediaContent}`,
+        inputModel,
+        options
+      );
     }
   }
 
-  private includeSchema(schema: OpenAPIV3.SchemaObject, name: string, inputModel: InputMetaModel, options?: ProcessorOptions) {
-    const internalSchema = OpenAPIInputProcessor.convertToInternalSchema(schema, name);
-    const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(internalSchema, options);
+  private includeSchema(
+    schema: OpenAPIV3.SchemaObject,
+    name: string,
+    inputModel: InputMetaModel,
+    options?: ProcessorOptions
+  ) {
+    const internalSchema = OpenAPIInputProcessor.convertToInternalSchema(
+      schema,
+      name
+    );
+    const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(
+      internalSchema,
+      options
+    );
     if (newCommonModel.$id !== undefined) {
       if (inputModel.models[newCommonModel.$id] !== undefined) {
-        Logger.warn(`Overwriting existing model with $id ${newCommonModel.$id}, are there two models with the same id present?`, newCommonModel);
+        Logger.warn(
+          `Overwriting existing model with $id ${newCommonModel.$id}, are there two models with the same id present?`,
+          newCommonModel
+        );
       }
       const metaModel = convertToMetaModel(newCommonModel);
       inputModel.models[metaModel.name] = metaModel;
@@ -104,35 +214,43 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
 
   /**
    * Converts a schema to the internal schema format.
-   * 
+   *
    * @param schema to convert
    * @param name of the schema
    */
   static convertToInternalSchema(
     schema: OpenAPIV3.SchemaObject,
-    name: string): OpenapiV3Schema {
+    name: string
+  ): OpenapiV3Schema {
     let internalSchema = OpenapiV3Schema.toSchema(schema as any);
-    internalSchema = JsonSchemaInputProcessor.reflectSchemaNames(internalSchema, {}, name, true);
+    internalSchema = JsonSchemaInputProcessor.reflectSchemaNames(
+      internalSchema,
+      {},
+      name,
+      true
+    );
     return internalSchema;
   }
 
   /**
-	 * Figures out if an object is of type OpenAPI V3.0.x document and supported
-	 * 
-	 * @param input 
-	 */
-  shouldProcess(input: any) : boolean {
+   * Figures out if an object is of type OpenAPI V3.0.x document and supported
+   *
+   * @param input
+   */
+  shouldProcess(input: any): boolean {
     const version = this.tryGetVersionOfDocument(input);
-    if (!version) {return false;}
+    if (!version) {
+      return false;
+    }
     return OpenAPIInputProcessor.supportedVersions.includes(version);
   }
 
   /**
    * Try to find the AsyncAPI version from the input. If it cannot undefined are returned, if it can, the version is returned.
-   * 
-   * @param input 
+   *
+   * @param input
    */
-  tryGetVersionOfDocument(input: any) : string | undefined {
+  tryGetVersionOfDocument(input: any): string | undefined {
     return input && input.openapi;
   }
 }

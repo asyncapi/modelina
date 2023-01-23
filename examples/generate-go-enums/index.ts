@@ -9,17 +9,17 @@ const jsonSchemaDraft7 = {
     cities: {
       $id: 'cities',
       type: 'string',
-      enum: ['London', 'Rome', 'Brussels'],
+      enum: ['London', 'Rome', 'Brussels']
     },
     options: {
       $id: 'options',
       type: ['integer', 'boolean', 'string'],
-      enum: [123, 213, true, 'Run'],
-    },
+      enum: [123, 213, true, 'Run']
+    }
   }
 };
 
-export async function generate() : Promise<void> {
+export async function generate(): Promise<void> {
   const models = await generator.generate(jsonSchemaDraft7);
   for (const model of models) {
     console.log(model.result);

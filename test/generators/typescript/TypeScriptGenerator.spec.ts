@@ -31,18 +31,31 @@ describe('TypeScriptGenerator', () => {
         city: { type: 'string', description: 'City description' },
         state: { type: 'string' },
         house_number: { type: 'number' },
-        marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
-        members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
-        tuple_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }], additionalItems: false },
-        tuple_type_with_additional_items: { type: 'array', items: [{ type: 'string' }, { type: 'number' }], additionalItems: true },
-        array_type: { type: 'array', items: { type: 'string' } },
+        marriage: {
+          type: 'boolean',
+          description: 'Status if marriage live in given house'
+        },
+        members: {
+          oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
+        },
+        tuple_type: {
+          type: 'array',
+          items: [{ type: 'string' }, { type: 'number' }],
+          additionalItems: false
+        },
+        tuple_type_with_additional_items: {
+          type: 'array',
+          items: [{ type: 'string' }, { type: 'number' }],
+          additionalItems: true
+        },
+        array_type: { type: 'array', items: { type: 'string' } }
       },
       patternProperties: {
         '^S(.?*)test&': {
           type: 'string'
         }
       },
-      required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+      required: ['street_name', 'city', 'state', 'house_number', 'array_type']
     };
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
@@ -55,7 +68,7 @@ describe('TypeScriptGenerator', () => {
       $id: 'CustomClass',
       type: 'object',
       properties: {
-        property: { type: 'string' },
+        property: { type: 'string' }
       }
     };
 
@@ -66,7 +79,7 @@ describe('TypeScriptGenerator', () => {
             property({ property, content }) {
               return `@JsonProperty("${property.propertyName}")
 ${content}`;
-            },
+            }
           }
         }
       ]
@@ -87,18 +100,31 @@ ${content}`;
         city: { type: 'string', description: 'City description' },
         state: { type: 'string' },
         house_number: { type: 'number' },
-        marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
-        members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
-        tuple_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }], additionalItems: false },
-        tuple_type_with_additional_items: { type: 'array', items: [{ type: 'string' }, { type: 'number' }], additionalItems: true },
-        array_type: { type: 'array', items: { type: 'string' } },
+        marriage: {
+          type: 'boolean',
+          description: 'Status if marriage live in given house'
+        },
+        members: {
+          oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
+        },
+        tuple_type: {
+          type: 'array',
+          items: [{ type: 'string' }, { type: 'number' }],
+          additionalItems: false
+        },
+        tuple_type_with_additional_items: {
+          type: 'array',
+          items: [{ type: 'string' }, { type: 'number' }],
+          additionalItems: true
+        },
+        array_type: { type: 'array', items: { type: 'string' } }
       },
       patternProperties: {
         '^S(.?*)test&': {
           type: 'string'
         }
       },
-      required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+      required: ['street_name', 'city', 'state', 'house_number', 'array_type']
     };
 
     generator = new TypeScriptGenerator({ modelType: 'interface' });
@@ -113,7 +139,7 @@ ${content}`;
       $id: 'CustomInterface',
       type: 'object',
       properties: {
-        property: { type: 'string' },
+        property: { type: 'string' }
       }
     };
 
@@ -123,7 +149,7 @@ ${content}`;
           interface: {
             self({ content }) {
               return content;
-            },
+            }
           }
         }
       ]
@@ -139,7 +165,7 @@ ${content}`;
     const doc = {
       $id: 'States',
       type: 'string',
-      enum: ['Texas', 'Alabama', 'California'],
+      enum: ['Texas', 'Alabama', 'California']
     };
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
@@ -151,7 +177,7 @@ ${content}`;
     const doc = {
       $id: 'States',
       type: 'string',
-      enum: ['Texas', 'Alabama', 'California'],
+      enum: ['Texas', 'Alabama', 'California']
     };
 
     generator = new TypeScriptGenerator({ enumType: 'union' });
@@ -177,7 +203,7 @@ ${content}`;
       $id: 'States',
       enum: ['test+', 'test', 'test-', 'test?!', '*test']
     };
-    
+
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot();
@@ -188,7 +214,7 @@ ${content}`;
     const doc = {
       $id: 'CustomEnum',
       type: 'string',
-      enum: ['Texas', 'Alabama', 'California'],
+      enum: ['Texas', 'Alabama', 'California']
     };
 
     generator = new TypeScriptGenerator({
@@ -197,7 +223,7 @@ ${content}`;
           enum: {
             self({ content }) {
               return content;
-            },
+            }
           }
         }
       ]
@@ -212,7 +238,7 @@ ${content}`;
   test('should render `type` type - primitive', async () => {
     const doc = {
       $id: 'TypePrimitive',
-      type: 'string',
+      type: 'string'
     };
 
     const models = await generator.generate(doc);
@@ -224,9 +250,9 @@ ${content}`;
   test('should render `type` type - enum', async () => {
     const doc = {
       $id: 'TypeEnum',
-      enum: ['Texas', 'Alabama', 'California', 0, 1, false, true],
+      enum: ['Texas', 'Alabama', 'California', 0, 1, false, true]
     };
-    
+
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot();
@@ -236,9 +262,9 @@ ${content}`;
   test('should render `type` type - union', async () => {
     const doc = {
       $id: 'TypeUnion',
-      type: ['string', 'number', 'boolean'],
+      type: ['string', 'number', 'boolean']
     };
-    
+
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot();
@@ -251,7 +277,7 @@ ${content}`;
       type: 'array',
       items: {
         $id: 'StringArray',
-        type: 'string',
+        type: 'string'
       }
     };
 
@@ -267,7 +293,7 @@ ${content}`;
       type: 'array',
       items: {
         $id: 'StringArray',
-        type: ['string', 'number', 'boolean'],
+        type: ['string', 'number', 'boolean']
       }
     };
 
@@ -285,17 +311,29 @@ ${content}`;
       city: { type: 'string', description: 'City description' },
       state: { type: 'string' },
       house_number: { type: 'number' },
-      marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
-      members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
-      array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
-      other_model: { type: 'object', $id: 'OtherModel', properties: { street_name: { type: 'string' } } },
+      marriage: {
+        type: 'boolean',
+        description: 'Status if marriage live in given house'
+      },
+      members: {
+        oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
+      },
+      array_type: {
+        type: 'array',
+        items: [{ type: 'string' }, { type: 'number' }]
+      },
+      other_model: {
+        type: 'object',
+        $id: 'OtherModel',
+        properties: { street_name: { type: 'string' } }
+      }
     },
     patternProperties: {
       '^S(.?*)test&': {
         type: 'string'
       }
     },
-    required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+    required: ['street_name', 'city', 'state', 'house_number', 'array_type']
   };
 
   test('should render models and their dependencies for CJS module system', async () => {
@@ -303,7 +341,7 @@ ${content}`;
       moduleSystem: 'CJS'
     });
     const models = await generator.generateCompleteModels(doc, {});
-    
+
     expect(models).toHaveLength(2);
     expect(models[0].result).toMatchSnapshot();
     expect(models[1].result).toMatchSnapshot();
@@ -313,7 +351,9 @@ ${content}`;
     generator = new TypeScriptGenerator({
       moduleSystem: 'CJS'
     });
-    const models = await generator.generateCompleteModels(doc, {exportType: 'named'});
+    const models = await generator.generateCompleteModels(doc, {
+      exportType: 'named'
+    });
     expect(models).toHaveLength(2);
     expect(models[0].result).toMatchSnapshot();
     expect(models[1].result).toMatchSnapshot();
@@ -333,7 +373,9 @@ ${content}`;
     generator = new TypeScriptGenerator({
       moduleSystem: 'ESM'
     });
-    const models = await generator.generateCompleteModels(doc, {exportType: 'named'});
+    const models = await generator.generateCompleteModels(doc, {
+      exportType: 'named'
+    });
     expect(models).toHaveLength(2);
     expect(models[0].result).toMatchSnapshot();
     expect(models[1].result).toMatchSnapshot();
@@ -354,10 +396,10 @@ ${content}`;
               oneOf: [
                 { $ref: '#/components/schemas/Cat' },
                 { $ref: '#/components/schemas/Dog' },
-                { $ref: '#/components/schemas/StickInsect' },
+                { $ref: '#/components/schemas/StickInsect' }
               ]
             }
-          },
+          }
         },
         schemas: {
           Pet: {
@@ -371,12 +413,9 @@ ${content}`;
               },
               name: {
                 type: 'string'
-              },
+              }
             },
-            required: [
-              'petType',
-              'name',
-            ],
+            required: ['petType', 'name']
           },
           Cat: {
             allOf: [
@@ -390,17 +429,10 @@ ${content}`;
                   },
                   huntingSkill: {
                     type: 'string',
-                    enum: [
-                      'clueless',
-                      'lazy',
-                      'adventurous',
-                      'aggressive'
-                    ]
+                    enum: ['clueless', 'lazy', 'adventurous', 'aggressive']
                   }
                 },
-                required: [
-                  'huntingSkill'
-                ]
+                required: ['huntingSkill']
               }
             ]
           },
@@ -421,9 +453,7 @@ ${content}`;
                     minimum: 0
                   }
                 },
-                required: [
-                  'packSize'
-                ]
+                required: ['packSize']
               }
             ]
           },
@@ -438,15 +468,13 @@ ${content}`;
                     const: 'StickBug'
                   },
                   color: {
-                    type: 'string',
+                    type: 'string'
                   }
                 },
-                required: [
-                  'color'
-                ]
+                required: ['color']
               }
             ]
-          },
+          }
         }
       }
     };
@@ -467,7 +495,7 @@ ${content}`;
 
     test('should render enum with discriminator', async () => {
       const models = await generator.generate(asyncapiDoc);
-      const enums = models.filter(model => model.result.includes('enum'));
+      const enums = models.filter((model) => model.result.includes('enum'));
 
       expect(enums).toHaveLength(2);
       const discriminatorEnum = enums[0];
@@ -490,15 +518,13 @@ ${content}`;
           Pet: {
             payload: {
               title: 'Pet',
-              allOf: [
-                { $ref: '#/components/schemas/Animal' },
-              ],
+              allOf: [{ $ref: '#/components/schemas/Animal' }],
               oneOf: [
                 { $ref: '#/components/schemas/Cat' },
-                { $ref: '#/components/schemas/Dog' },
-              ],
+                { $ref: '#/components/schemas/Dog' }
+              ]
             }
-          },
+          }
         },
         schemas: {
           Animal: {
@@ -509,13 +535,13 @@ ${content}`;
             properties: {
               animalType: {
                 title: 'Animal Type',
-                type: 'string',
+                type: 'string'
               },
               age: {
                 type: 'integer',
-                min: 0,
-              },
-            },
+                min: 0
+              }
+            }
           },
           Cat: {
             title: 'Cat',
@@ -528,12 +554,9 @@ ${content}`;
               huntingSkill: {
                 title: 'Hunting Skill',
                 type: 'string',
-                enum: [
-                  'clueless',
-                  'lazy',
-                ],
-              },
-            },
+                enum: ['clueless', 'lazy']
+              }
+            }
           },
           Dog: {
             title: 'Dog',
@@ -546,13 +569,10 @@ ${content}`;
               breed: {
                 title: 'Dog Breed',
                 type: 'string',
-                enum: [
-                  'bulldog',
-                  'bichons frise',
-                ],
-              },
-            },
-          },
+                enum: ['bulldog', 'bichons frise']
+              }
+            }
+          }
         }
       }
     };
@@ -597,19 +617,19 @@ ${content}`;
               properties: {
                 petType: {
                   title: 'Pet Type',
-                  type: 'string',
+                  type: 'string'
                 },
                 age: {
                   type: 'integer',
-                  min: 0,
-                },
+                  min: 0
+                }
               },
               oneOf: [
                 { $ref: '#/components/schemas/Cat' },
-                { $ref: '#/components/schemas/Dog' },
-              ],
+                { $ref: '#/components/schemas/Dog' }
+              ]
             }
-          },
+          }
         },
         schemas: {
           Cat: {
@@ -623,12 +643,9 @@ ${content}`;
               huntingSkill: {
                 title: 'Hunting Skill',
                 type: 'string',
-                enum: [
-                  'clueless',
-                  'lazy',
-                ],
-              },
-            },
+                enum: ['clueless', 'lazy']
+              }
+            }
           },
           Dog: {
             title: 'Dog',
@@ -641,13 +658,10 @@ ${content}`;
               breed: {
                 title: 'Dog Breed',
                 type: 'string',
-                enum: [
-                  'bulldog',
-                  'bichons frise',
-                ],
-              },
-            },
-          },
+                enum: ['bulldog', 'bichons frise']
+              }
+            }
+          }
         }
       }
     };

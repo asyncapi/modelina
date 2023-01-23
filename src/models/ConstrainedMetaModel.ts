@@ -2,16 +2,13 @@ import { makeUnique } from '../helpers/DependencyHelpers';
 import { MetaModel } from './MetaModel';
 
 export abstract class ConstrainedMetaModel extends MetaModel {
-  constructor(
-    name: string,
-    originalInput: any, 
-    public type: string) {
+  constructor(name: string, originalInput: any, public type: string) {
     super(name, originalInput);
   }
 
   /**
    * Get the nearest constrained meta models for the constrained model.
-   * 
+   *
    * This is often used when you want to know which other models you are referencing.
    */
   getNearestDependencies(): ConstrainedMetaModel[] {
@@ -22,29 +19,28 @@ export abstract class ConstrainedMetaModel extends MetaModel {
 export class ConstrainedReferenceModel extends ConstrainedMetaModel {
   constructor(
     name: string,
-    originalInput: any, 
-    type: string, 
-    public ref: ConstrainedMetaModel) {
+    originalInput: any,
+    type: string,
+    public ref: ConstrainedMetaModel
+  ) {
     super(name, originalInput, type);
   }
 }
-export class ConstrainedAnyModel extends ConstrainedMetaModel { }
-export class ConstrainedFloatModel extends ConstrainedMetaModel { }
-export class ConstrainedIntegerModel extends ConstrainedMetaModel { }
-export class ConstrainedStringModel extends ConstrainedMetaModel { }
-export class ConstrainedBooleanModel extends ConstrainedMetaModel { }
+export class ConstrainedAnyModel extends ConstrainedMetaModel {}
+export class ConstrainedFloatModel extends ConstrainedMetaModel {}
+export class ConstrainedIntegerModel extends ConstrainedMetaModel {}
+export class ConstrainedStringModel extends ConstrainedMetaModel {}
+export class ConstrainedBooleanModel extends ConstrainedMetaModel {}
 export class ConstrainedTupleValueModel {
-  constructor(
-    public index: number, 
-    public value: ConstrainedMetaModel) {
-  }
+  constructor(public index: number, public value: ConstrainedMetaModel) {}
 }
 export class ConstrainedTupleModel extends ConstrainedMetaModel {
   constructor(
     name: string,
-    originalInput: any, 
-    type: string, 
-    public tuple: ConstrainedTupleValueModel[]) {
+    originalInput: any,
+    type: string,
+    public tuple: ConstrainedTupleValueModel[]
+  ) {
     super(name, originalInput, type);
   }
 
@@ -55,13 +51,16 @@ export class ConstrainedTupleModel extends ConstrainedMetaModel {
         dependencyModels.push(tupleModel.value);
       } else {
         //Lets check the non-reference model for dependencies
-        dependencyModels = [...dependencyModels, ...tupleModel.value.getNearestDependencies()];
+        dependencyModels = [
+          ...dependencyModels,
+          ...tupleModel.value.getNearestDependencies()
+        ];
       }
     }
-    
+
     //Ensure no duplicate references
     dependencyModels = makeUnique(dependencyModels);
-    
+
     return dependencyModels;
   }
 }
@@ -70,15 +69,16 @@ export class ConstrainedObjectPropertyModel {
     public propertyName: string,
     public unconstrainedPropertyName: string,
     public required: boolean,
-    public property: ConstrainedMetaModel) {
-  }
+    public property: ConstrainedMetaModel
+  ) {}
 }
 export class ConstrainedArrayModel extends ConstrainedMetaModel {
   constructor(
     name: string,
-    originalInput: any, 
-    type: string, 
-    public valueModel: ConstrainedMetaModel) {
+    originalInput: any,
+    type: string,
+    public valueModel: ConstrainedMetaModel
+  ) {
     super(name, originalInput, type);
   }
 
@@ -86,7 +86,7 @@ export class ConstrainedArrayModel extends ConstrainedMetaModel {
     if (this.valueModel.name !== this.name) {
       if (this.valueModel instanceof ConstrainedReferenceModel) {
         return [this.valueModel];
-      } 
+      }
       return this.valueModel.getNearestDependencies();
     }
     return [];
@@ -95,9 +95,10 @@ export class ConstrainedArrayModel extends ConstrainedMetaModel {
 export class ConstrainedUnionModel extends ConstrainedMetaModel {
   constructor(
     name: string,
-    originalInput: any, 
-    type: string, 
-    public union: ConstrainedMetaModel[]) {
+    originalInput: any,
+    type: string,
+    public union: ConstrainedMetaModel[]
+  ) {
     super(name, originalInput, type);
   }
 
@@ -108,10 +109,13 @@ export class ConstrainedUnionModel extends ConstrainedMetaModel {
         dependencyModels.push(unionModel);
       } else {
         //Lets check the non-reference model for dependencies
-        dependencyModels = [...dependencyModels, ...unionModel.getNearestDependencies()];
+        dependencyModels = [
+          ...dependencyModels,
+          ...unionModel.getNearestDependencies()
+        ];
       }
     }
-    
+
     //Ensure no duplicate references
     dependencyModels = makeUnique(dependencyModels);
 
@@ -119,28 +123,27 @@ export class ConstrainedUnionModel extends ConstrainedMetaModel {
   }
 }
 export class ConstrainedEnumValueModel {
-  constructor(
-    public key: string, 
-    public value: any) {
-  }
+  constructor(public key: string, public value: any) {}
 }
 export class ConstrainedEnumModel extends ConstrainedMetaModel {
   constructor(
     name: string,
-    originalInput: any, 
-    type: string, 
-    public values: ConstrainedEnumValueModel[]) {
+    originalInput: any,
+    type: string,
+    public values: ConstrainedEnumValueModel[]
+  ) {
     super(name, originalInput, type);
   }
 }
 export class ConstrainedDictionaryModel extends ConstrainedMetaModel {
   constructor(
     name: string,
-    originalInput: any, 
-    type: string, 
-    public key: ConstrainedMetaModel, 
-    public value: ConstrainedMetaModel, 
-    public serializationType: 'unwrap' | 'normal' = 'normal') {
+    originalInput: any,
+    type: string,
+    public key: ConstrainedMetaModel,
+    public value: ConstrainedMetaModel,
+    public serializationType: 'unwrap' | 'normal' = 'normal'
+  ) {
     super(name, originalInput, type);
   }
 
@@ -152,10 +155,13 @@ export class ConstrainedDictionaryModel extends ConstrainedMetaModel {
         dependencyModels.push(model);
       } else {
         //Lets check the non-reference model for dependencies
-        dependencyModels = [...dependencyModels, ...model.getNearestDependencies()];
+        dependencyModels = [
+          ...dependencyModels,
+          ...model.getNearestDependencies()
+        ];
       }
     }
-   
+
     //Ensure no duplicate references
     dependencyModels = makeUnique(dependencyModels);
 
@@ -166,9 +172,10 @@ export class ConstrainedDictionaryModel extends ConstrainedMetaModel {
 export class ConstrainedObjectModel extends ConstrainedMetaModel {
   constructor(
     name: string,
-    originalInput: any, 
+    originalInput: any,
     type: string,
-    public properties: { [key: string]: ConstrainedObjectPropertyModel; }) {
+    public properties: { [key: string]: ConstrainedObjectPropertyModel }
+  ) {
     super(name, originalInput, type);
   }
 
@@ -179,7 +186,10 @@ export class ConstrainedObjectModel extends ConstrainedMetaModel {
         dependencyModels.push(modelProperty.property);
       } else {
         //Lets check the non-reference model for dependencies
-        dependencyModels = [...dependencyModels, ...modelProperty.property.getNearestDependencies()];
+        dependencyModels = [
+          ...dependencyModels,
+          ...modelProperty.property.getNearestDependencies()
+        ];
       }
     }
 
@@ -193,16 +203,18 @@ export class ConstrainedObjectModel extends ConstrainedMetaModel {
 
     return dependencyModels;
   }
-  
+
   /**
    * More specifics on the type setup here: https://github.com/Microsoft/TypeScript/wiki/FAQ#why-cant-i-write-typeof-t-new-t-or-instanceof-t-in-my-generic-function
-   *  
-   * @param propertyType 
+   *
+   * @param propertyType
    */
-  containsPropertyType<T>(propertyType: { new(...args: any[]): T }) : boolean {
-    const foundPropertiesWithType = Object.values(this.properties).filter((property) => {
-      return property.property instanceof propertyType;
-    });
+  containsPropertyType<T>(propertyType: { new (...args: any[]): T }): boolean {
+    const foundPropertiesWithType = Object.values(this.properties).filter(
+      (property) => {
+        return property.property instanceof propertyType;
+      }
+    );
     return foundPropertiesWithType.length !== 0;
   }
 }

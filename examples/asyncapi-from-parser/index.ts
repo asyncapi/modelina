@@ -29,7 +29,7 @@ const AsyncAPIDocument = {
   }
 };
 
-export async function generate() : Promise<void> {
+export async function generate(): Promise<void> {
   const parser = new Parser();
   const { document } = await parser.parse(JSON.stringify(AsyncAPIDocument));
   const models = await generator.generate(document);

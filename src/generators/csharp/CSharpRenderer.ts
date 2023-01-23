@@ -6,10 +6,12 @@ import { CSharpDependencyManager } from './CSharpDependencyManager';
 
 /**
  * Common renderer for CSharp types
- * 
+ *
  * @extends AbstractRenderer
  */
-export abstract class CSharpRenderer<RendererModelType extends ConstrainedMetaModel> extends AbstractRenderer<CSharpOptions, CSharpGenerator, RendererModelType> {
+export abstract class CSharpRenderer<
+  RendererModelType extends ConstrainedMetaModel
+> extends AbstractRenderer<CSharpOptions, CSharpGenerator, RendererModelType> {
   constructor(
     options: CSharpOptions,
     generator: CSharpGenerator,
@@ -23,6 +25,6 @@ export abstract class CSharpRenderer<RendererModelType extends ConstrainedMetaMo
 
   renderComments(lines: string | string[]): string {
     lines = FormatHelpers.breakLines(lines);
-    return lines.map(line => `// ${line}`).join('\n');
+    return lines.map((line) => `// ${line}`).join('\n');
   }
 }

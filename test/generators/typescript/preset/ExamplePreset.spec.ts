@@ -1,4 +1,7 @@
-import { TypeScriptGenerator, TS_COMMON_PRESET } from '../../../../src/generators';
+import {
+  TypeScriptGenerator,
+  TS_COMMON_PRESET
+} from '../../../../src/generators';
 const doc = {
   $id: 'Test',
   type: 'object',
@@ -7,17 +10,21 @@ const doc = {
   properties: {
     'string prop': { type: 'string' },
     numberProp: { type: 'number' },
-    objectProp: { type: 'object', $id: 'NestedTest', properties: {stringProp: { type: 'string' }}}
+    objectProp: {
+      type: 'object',
+      $id: 'NestedTest',
+      properties: { stringProp: { type: 'string' } }
+    }
   },
   patternProperties: {
     '^S(.?)test': {
       type: 'string'
     }
-  },
+  }
 };
 describe('Example function generation', () => {
   test('should render example function for model', async () => {
-    const generator = new TypeScriptGenerator({ 
+    const generator = new TypeScriptGenerator({
       presets: [
         {
           preset: TS_COMMON_PRESET,
@@ -29,7 +36,7 @@ describe('Example function generation', () => {
     });
     const models = await generator.generate(doc);
     expect(models).toHaveLength(2);
-    expect(models[0].result).toMatchSnapshot(); 
-    expect(models[1].result).toMatchSnapshot(); 
+    expect(models[0].result).toMatchSnapshot();
+    expect(models[1].result).toMatchSnapshot();
   });
 });

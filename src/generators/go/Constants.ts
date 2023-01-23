@@ -28,6 +28,9 @@ export const RESERVED_GO_KEYWORDS = [
   'var'
 ];
 
-export function isReservedGoKeyword(word: string, forceLowerCase = true): boolean {
+export function isReservedGoKeyword(
+  word: string,
+  forceLowerCase = true
+): boolean {
   return checkForReservedKeyword(word, RESERVED_GO_KEYWORDS, forceLowerCase);
 }

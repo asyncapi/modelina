@@ -31,12 +31,12 @@ describe('Interpretation of oneOf with properties', () => {
       properties: {
         animalType: {
           title: 'Animal Type',
-          type: 'string',
+          type: 'string'
         },
         age: {
           type: 'integer',
-          min: 0,
-        },
+          min: 0
+        }
       },
       oneOf: [
         {
@@ -49,12 +49,9 @@ describe('Interpretation of oneOf with properties', () => {
             huntingSkill: {
               title: 'Hunting Skill',
               type: 'string',
-              enum: [
-                'clueless',
-                'lazy',
-              ],
-            },
-          },
+              enum: ['clueless', 'lazy']
+            }
+          }
         },
         {
           title: 'Dog',
@@ -67,19 +64,18 @@ describe('Interpretation of oneOf with properties', () => {
             breed: {
               title: 'Dog Breed',
               type: 'string',
-              enum: [
-                'bulldog',
-                'bichons frise',
-              ],
-            },
-          },
+              enum: ['bulldog', 'bichons frise']
+            }
+          }
         }
-      ],
+      ]
     };
 
     const interpreter = new Interpreter();
 
-    interpretOneOfWithProperties(schema, model, interpreter, { allowInheritance: false });
+    interpretOneOfWithProperties(schema, model, interpreter, {
+      allowInheritance: false
+    });
 
     expect(model.type).toBeUndefined();
     expect(model.union).toHaveLength(2);

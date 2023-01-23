@@ -1,5 +1,8 @@
-import {DartRenderer} from '../DartRenderer';
-import {ConstrainedObjectModel, ConstrainedObjectPropertyModel} from '../../../models';
+import { DartRenderer } from '../DartRenderer';
+import {
+  ConstrainedObjectModel,
+  ConstrainedObjectPropertyModel
+} from '../../../models';
 import { ClassPresetType } from '../DartPreset';
 import { DartOptions } from '../DartGenerator';
 
@@ -14,7 +17,7 @@ export class ClassRenderer extends DartRenderer<ConstrainedObjectModel> {
       await this.renderProperties(),
       await this.runCtorPreset(),
       await this.renderAccessors(),
-      await this.runAdditionalContentPreset(),
+      await this.runAdditionalContentPreset()
     ];
 
     return `class ${this.model.name} {
@@ -42,7 +45,7 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 
   runPropertyPreset(property: ConstrainedObjectPropertyModel): Promise<string> {
-    return this.runPreset('property', {property});
+    return this.runPreset('property', { property });
   }
 
   /**
@@ -57,13 +60,13 @@ ${this.indent(this.renderBlock(content, 2))}
 }
 
 export const DART_DEFAULT_CLASS_PRESET: ClassPresetType<DartOptions> = {
-  self({renderer}) {
+  self({ renderer }) {
     return renderer.defaultSelf();
   },
-  property({property}) {
+  property({ property }) {
     return `${property.property.type}? ${property.propertyName};`;
   },
-  ctor({model}) {
+  ctor({ model }) {
     return `${model.name}();`;
   }
 };

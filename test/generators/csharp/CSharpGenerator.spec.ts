@@ -15,10 +15,18 @@ describe('CSharpGenerator', () => {
         city: { type: 'string', description: 'City description' },
         state: { type: 'string' },
         house_number: { type: 'number' },
-        marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
-        members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
-        tuple_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
-        array_type: { type: 'array', items: { type: 'string' } },
+        marriage: {
+          type: 'boolean',
+          description: 'Status if marriage live in given house'
+        },
+        members: {
+          oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
+        },
+        tuple_type: {
+          type: 'array',
+          items: [{ type: 'string' }, { type: 'number' }]
+        },
+        array_type: { type: 'array', items: { type: 'string' } }
       },
       required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
       additionalProperties: {
@@ -28,19 +36,21 @@ describe('CSharpGenerator', () => {
         '^S(.?*)test&': {
           type: 'string'
         }
-      },
+      }
     };
 
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot();
-    expect(models[0].dependencies).toEqual(['using System.Collections.Generic;']);
+    expect(models[0].dependencies).toEqual([
+      'using System.Collections.Generic;'
+    ]);
   });
 
   test('should render `enum` type', async () => {
     const doc = {
       $id: 'Things',
-      enum: ['Texas', '1', 1, false, {test: 'test'}],
+      enum: ['Texas', '1', 1, false, { test: 'test' }]
     };
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
@@ -54,7 +64,7 @@ describe('CSharpGenerator', () => {
       type: 'string',
       enum: ['test+', 'test', 'test-', 'test?!', '*test']
     };
-    
+
     generator = new CSharpGenerator();
 
     const models = await generator.generate(doc);
@@ -72,19 +82,31 @@ describe('CSharpGenerator', () => {
         city: { type: 'string', description: 'City description' },
         state: { type: 'string' },
         house_number: { type: 'number' },
-        marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
-        members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
-        array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
-        other_model: { type: 'object', $id: 'OtherModel', properties: {street_name: { type: 'string' }} },
+        marriage: {
+          type: 'boolean',
+          description: 'Status if marriage live in given house'
+        },
+        members: {
+          oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
+        },
+        array_type: {
+          type: 'array',
+          items: [{ type: 'string' }, { type: 'number' }]
+        },
+        other_model: {
+          type: 'object',
+          $id: 'OtherModel',
+          properties: { street_name: { type: 'string' } }
+        }
       },
       patternProperties: {
         '^S(.?*)test&': {
           type: 'string'
         }
       },
-      required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+      required: ['street_name', 'city', 'state', 'house_number', 'array_type']
     };
-    const config = {namespace: 'Test.Namespace'};
+    const config = { namespace: 'Test.Namespace' };
     const models = await generator.generateCompleteModels(doc, config);
     expect(models).toHaveLength(2);
     expect(models[0].result).toMatchSnapshot();
@@ -100,20 +122,32 @@ describe('CSharpGenerator', () => {
         city: { type: 'string', description: 'City description' },
         state: { type: 'string' },
         house_number: { type: 'number' },
-        marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
-        members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
-        array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
+        marriage: {
+          type: 'boolean',
+          description: 'Status if marriage live in given house'
+        },
+        members: {
+          oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
+        },
+        array_type: {
+          type: 'array',
+          items: [{ type: 'string' }, { type: 'number' }]
+        }
       },
       patternProperties: {
         '^S(.?*)test&': {
           type: 'string'
         }
       },
-      required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+      required: ['street_name', 'city', 'state', 'house_number', 'array_type']
     };
-    const config = {namespace: 'true'};
-    const expectedError = new Error('You cannot use reserved CSharp keyword (true) as namespace, please use another.');
-    await expect(generator.generateCompleteModels(doc, config)).rejects.toEqual(expectedError);
+    const config = { namespace: 'true' };
+    const expectedError = new Error(
+      'You cannot use reserved CSharp keyword (true) as namespace, please use another.'
+    );
+    await expect(generator.generateCompleteModels(doc, config)).rejects.toEqual(
+      expectedError
+    );
   });
 
   describe('class renderer', () => {
@@ -121,7 +155,7 @@ describe('CSharpGenerator', () => {
       $id: 'CustomClass',
       type: 'object',
       properties: {
-        property: { type: 'string' },
+        property: { type: 'string' }
       },
       additionalProperties: {
         type: 'string'
@@ -129,37 +163,45 @@ describe('CSharpGenerator', () => {
     };
 
     test('should be able to overwrite accessor preset hook', async () => {
-      generator = new CSharpGenerator({ presets: [
-        {
-          class: {
-            accessor() {
-              return 'my own custom factory';
+      generator = new CSharpGenerator({
+        presets: [
+          {
+            class: {
+              accessor() {
+                return 'my own custom factory';
+              }
             }
           }
-        }
-      ] });
-  
+        ]
+      });
+
       const models = await generator.generate(doc);
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot();
-      expect(models[0].dependencies).toEqual(['using System.Collections.Generic;']);
+      expect(models[0].dependencies).toEqual([
+        'using System.Collections.Generic;'
+      ]);
     });
 
     test('should be able to overwrite property preset hook', async () => {
-      generator = new CSharpGenerator({ presets: [
-        {
-          class: {
-            property() {
-              return 'my own property';
-            },
+      generator = new CSharpGenerator({
+        presets: [
+          {
+            class: {
+              property() {
+                return 'my own property';
+              }
+            }
           }
-        }
-      ] });
+        ]
+      });
 
       const models = await generator.generate(doc);
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot();
-      expect(models[0].dependencies).toEqual(['using System.Collections.Generic;']);
+      expect(models[0].dependencies).toEqual([
+        'using System.Collections.Generic;'
+      ]);
     });
   });
 });

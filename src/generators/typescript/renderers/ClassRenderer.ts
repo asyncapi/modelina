@@ -5,7 +5,7 @@ import { ClassPresetType } from '../TypeScriptPreset';
 
 /**
  * Renderer for TypeScript's `class` type
- * 
+ *
  * @extends TypeScriptRenderer
  */
 export class ClassRenderer extends TypeScriptObjectRenderer {
@@ -52,7 +52,7 @@ export const TS_DEFAULT_CLASS_PRESET: ClassPresetType<TypeScriptOptions> = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
-  ctor({ renderer, model }) : string {
+  ctor({ renderer, model }): string {
     const properties = model.properties || {};
     const assignments = Object.keys(properties).map((propertyName) => {
       return `this._${propertyName} = input.${propertyName};`;
@@ -71,9 +71,15 @@ ${renderer.indent(renderer.renderBlock(assignments))}
     return `private _${renderer.renderProperty(property)}`;
   },
   getter({ property }): string {
-    return `get ${property.propertyName}(): ${property.property.type}${property.required === false ? ' | undefined' : ''} { return this._${property.propertyName}; }`;
+    return `get ${property.propertyName}(): ${property.property.type}${
+      property.required === false ? ' | undefined' : ''
+    } { return this._${property.propertyName}; }`;
   },
   setter({ property }): string {
-    return `set ${property.propertyName}(${property.propertyName}: ${property.property.type}${property.required === false ? ' | undefined' : ''}) { this._${property.propertyName} = ${property.propertyName}; }`;
-  },
+    return `set ${property.propertyName}(${property.propertyName}: ${
+      property.property.type
+    }${property.required === false ? ' | undefined' : ''}) { this._${
+      property.propertyName
+    } = ${property.propertyName}; }`;
+  }
 };

@@ -1,4 +1,10 @@
-import { RustFileGenerator, RustRenderCompleteModelOptions, RUST_COMMON_PRESET, defaultRustRenderCompleteModelOptions, RustPackageFeatures } from '../../src/generators';
+import {
+  RustFileGenerator,
+  RustRenderCompleteModelOptions,
+  RUST_COMMON_PRESET,
+  defaultRustRenderCompleteModelOptions,
+  RustPackageFeatures
+} from '../../src/generators';
 import * as path from 'path';
 
 const doc = {
@@ -9,10 +15,23 @@ const doc = {
     city: { type: 'string', description: 'City description' },
     state: { type: 'string' },
     house_number: { type: 'number' },
-    marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
-    members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
-    tuple_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }], additionalItems: false },
-    array_type: { type: 'array', items: { type: 'string' }, additionalItems: false },
+    marriage: {
+      type: 'boolean',
+      description: 'Status if marriage live in given house'
+    },
+    members: {
+      oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
+    },
+    tuple_type: {
+      type: 'array',
+      items: [{ type: 'string' }, { type: 'number' }],
+      additionalItems: false
+    },
+    array_type: {
+      type: 'array',
+      items: { type: 'string' },
+      additionalItems: false
+    },
     enum_type: {
       enum: ['Texas', 'Alabama', 'California'],
       default: 'California'
@@ -21,7 +40,7 @@ const doc = {
   required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
   additionalProperties: {
     type: 'string'
-  },
+  }
 };
 
 export async function generate(): Promise<void> {
@@ -29,7 +48,8 @@ export async function generate(): Promise<void> {
   const generator = new RustFileGenerator({
     presets: [
       {
-        preset: RUST_COMMON_PRESET, options: {
+        preset: RUST_COMMON_PRESET,
+        options: {
           implementNew: true,
           implementDefault: true
         }

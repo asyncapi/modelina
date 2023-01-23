@@ -6,15 +6,17 @@ import { PythonDependencyManager } from './PythonDependencyManager';
 
 /**
  * Common renderer for Python
- * 
+ *
  * @extends AbstractRenderer
  */
-export abstract class PythonRenderer<RendererModelType extends ConstrainedMetaModel> extends AbstractRenderer<PythonOptions, PythonGenerator, RendererModelType> {
+export abstract class PythonRenderer<
+  RendererModelType extends ConstrainedMetaModel
+> extends AbstractRenderer<PythonOptions, PythonGenerator, RendererModelType> {
   constructor(
     options: PythonOptions,
     generator: PythonGenerator,
     presets: Array<[Preset, unknown]>,
-    model: RendererModelType, 
+    model: RendererModelType,
     inputModel: InputMetaModel,
     public dependencyManager: PythonDependencyManager
   ) {

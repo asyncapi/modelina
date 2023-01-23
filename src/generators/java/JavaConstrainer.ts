@@ -1,48 +1,57 @@
 import { ConstrainedEnumValueModel } from '../../models';
-import { defaultEnumKeyConstraints, defaultEnumValueConstraints } from './constrainer/EnumConstrainer';
+import {
+  defaultEnumKeyConstraints,
+  defaultEnumValueConstraints
+} from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
 import { JavaTypeMapping } from './JavaGenerator';
 
-function enumFormatToNumberType(enumValueModel: ConstrainedEnumValueModel, format: string): string {
+function enumFormatToNumberType(
+  enumValueModel: ConstrainedEnumValueModel,
+  format: string
+): string {
   switch (format) {
-  case 'integer':
-  case 'int32':
-    return 'int';
-  case 'long':
-  case 'int64':
-    return 'long';
-  case 'float':
-    return 'float';
-  case 'double':
-    return 'double';
-  default:
-    if (Number.isInteger(enumValueModel.value)) {
+    case 'integer':
+    case 'int32':
       return 'int';
-    } 
-    return 'double';
+    case 'long':
+    case 'int64':
+      return 'long';
+    case 'float':
+      return 'float';
+    case 'double':
+      return 'double';
+    default:
+      if (Number.isInteger(enumValueModel.value)) {
+        return 'int';
+      }
+      return 'double';
   }
 }
 
-const fromEnumValueToType = (enumValueModel: ConstrainedEnumValueModel, format: string): string => {
+const fromEnumValueToType = (
+  enumValueModel: ConstrainedEnumValueModel,
+  format: string
+): string => {
   switch (typeof enumValueModel.value) {
-  case 'boolean':
-    return 'boolean';
-  case 'number':
-  case 'bigint':
-    return enumFormatToNumberType(enumValueModel, format);
-  case 'object':
-    return 'Object';
-  case 'string':
-    return 'String';
-  default:
-    return 'Object';
+    case 'boolean':
+      return 'boolean';
+    case 'number':
+    case 'bigint':
+      return enumFormatToNumberType(enumValueModel, format);
+    case 'object':
+      return 'Object';
+    case 'string':
+      return 'String';
+    default:
+      return 'Object';
   }
 };
 
 /**
  * Converts union of different number types to the most strict type it can be.
- * 
+ *
  * int + double = double (long + double, float + double can never happen, otherwise this would be converted to double)
  * int + float = float (long + float can never happen, otherwise this would be the case as well)
  * int + long = long
@@ -75,46 +84,52 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
   },
   Float({ constrainedModel }): string {
     let type = 'Double';
-    const format = constrainedModel.originalInput && constrainedModel.originalInput['format'];
+    const format =
+      constrainedModel.originalInput &&
+      constrainedModel.originalInput['format'];
     switch (format) {
-    case 'float':
-      type = 'float';
-      break;
+      case 'float':
+        type = 'float';
+        break;
     }
     return type;
   },
   Integer({ constrainedModel }): string {
     let type = 'Integer';
-    const format = constrainedModel.originalInput && constrainedModel.originalInput['format'];
+    const format =
+      constrainedModel.originalInput &&
+      constrainedModel.originalInput['format'];
     switch (format) {
-    case 'integer':
-    case 'int32':
-      type = 'int';
-      break;
-    case 'long':
-    case 'int64':
-      type = 'long';
-      break;
+      case 'integer':
+      case 'int32':
+        type = 'int';
+        break;
+      case 'long':
+      case 'int64':
+        type = 'long';
+        break;
     }
     return type;
   },
   String({ constrainedModel }): string {
     let type = 'String';
-    const format = constrainedModel.originalInput && constrainedModel.originalInput['format'];
+    const format =
+      constrainedModel.originalInput &&
+      constrainedModel.originalInput['format'];
     switch (format) {
-    case 'date':
-      type = 'java.time.LocalDate';
-      break;
-    case 'time':
-      type = 'java.time.OffsetTime';
-      break;
-    case 'dateTime':
-    case 'date-time':
-      type = 'java.time.OffsetDateTime';
-      break;
-    case 'binary':
-      type = 'byte[]';
-      break;
+      case 'date':
+        type = 'java.time.LocalDate';
+        break;
+      case 'time':
+        type = 'java.time.OffsetTime';
+        break;
+      case 'dateTime':
+      case 'date-time':
+        type = 'java.time.OffsetDateTime';
+        break;
+      case 'binary':
+        type = 'byte[]';
+        break;
     }
     return type;
   },
@@ -136,8 +151,12 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
     return `${constrainedModel.valueModel.type}[]`;
   },
   Enum({ constrainedModel }): string {
-    const format = constrainedModel.originalInput && constrainedModel.originalInput['format'];
-    const valueTypes = constrainedModel.values.map((enumValue) => fromEnumValueToType(enumValue, format));
+    const format =
+      constrainedModel.originalInput &&
+      constrainedModel.originalInput['format'];
+    const valueTypes = constrainedModel.values.map((enumValue) =>
+      fromEnumValueToType(enumValue, format)
+    );
     const uniqueTypes = valueTypes.filter((item, pos) => {
       return valueTypes.indexOf(item) === pos;
     });

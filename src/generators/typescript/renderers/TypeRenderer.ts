@@ -5,7 +5,7 @@ import { TypeScriptOptions } from '../TypeScriptGenerator';
 
 /**
  * Renderer for TypeScript's `type` type
- * 
+ *
  * @extends TypeScriptRenderer
  */
 export class TypeRenderer extends TypeScriptRenderer<ConstrainedMetaModel> {
@@ -17,5 +17,5 @@ export class TypeRenderer extends TypeScriptRenderer<ConstrainedMetaModel> {
 export const TS_DEFAULT_TYPE_PRESET: TypePresetType<TypeScriptOptions> = {
   self({ renderer }) {
     return renderer.defaultSelf();
-  },
+  }
 };

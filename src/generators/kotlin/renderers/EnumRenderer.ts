@@ -1,5 +1,8 @@
 import { KotlinRenderer } from '../KotlinRenderer';
-import { ConstrainedEnumModel, ConstrainedEnumValueModel} from '../../../models';
+import {
+  ConstrainedEnumModel,
+  ConstrainedEnumValueModel
+} from '../../../models';
 import { EnumPresetType } from '../KotlinPreset';
 import { KotlinOptions } from '../KotlinGenerator';
 
@@ -43,7 +46,7 @@ ${this.indent(this.renderBlock(content, 2))}
 }
 
 export const KOTLIN_DEFAULT_ENUM_PRESET: EnumPresetType<KotlinOptions> = {
-  self({renderer, model}) {
+  self({ renderer, model }) {
     return renderer.defaultSelf(model.type);
   },
   item({ item }) {

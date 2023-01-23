@@ -1,5 +1,5 @@
-import {DartRenderer} from '../DartRenderer';
-import {ConstrainedEnumModel} from '../../../models';
+import { DartRenderer } from '../DartRenderer';
+import { ConstrainedEnumModel } from '../../../models';
 import { EnumPresetType } from '../DartPreset';
 import { DartOptions } from '../DartGenerator';
 
@@ -10,9 +10,7 @@ import { DartOptions } from '../DartGenerator';
  */
 export class EnumRenderer extends DartRenderer<ConstrainedEnumModel> {
   async defaultSelf(): Promise<string> {
-    const content = [
-      await this.renderItems(),
-    ];
+    const content = [await this.renderItems()];
     return `enum ${this.model.name} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
@@ -30,15 +28,15 @@ ${this.indent(this.renderBlock(content, 2))}
     return `${content}`;
   }
   runItemPreset(item: any): Promise<string> {
-    return this.runPreset('item', {item});
+    return this.runPreset('item', { item });
   }
 }
 
 export const DART_DEFAULT_ENUM_PRESET: EnumPresetType<DartOptions> = {
-  self({renderer}) {
+  self({ renderer }) {
     return renderer.defaultSelf();
   },
-  item({item}) {
+  item({ item }) {
     return `${item.value}`;
-  },
+  }
 };

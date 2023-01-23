@@ -1,56 +1,80 @@
-import { MetaModel, ReferenceModel, EnumModel, UnionModel, ArrayModel, TupleModel, StringModel, IntegerModel, FloatModel, BooleanModel, ObjectModel, DictionaryModel} from '../models';
+/* eslint-disable sonarjs/cognitive-complexity */
+
+import {
+  MetaModel,
+  ReferenceModel,
+  EnumModel,
+  UnionModel,
+  ArrayModel,
+  TupleModel,
+  StringModel,
+  IntegerModel,
+  FloatModel,
+  BooleanModel,
+  ObjectModel,
+  DictionaryModel
+} from '../models';
 
 export type SplitOptions = {
-  splitEnum?: boolean,
-  splitUnion?: boolean,
-  splitArray?: boolean,
-  splitTuple?: boolean,
-  splitString?: boolean,
-  splitInteger?: boolean,
-  splitFloat?: boolean,
-  splitBoolean?: boolean,
-  splitObject?: boolean,
-  splitDictionary?: boolean
-}
+  splitEnum?: boolean;
+  splitUnion?: boolean;
+  splitArray?: boolean;
+  splitTuple?: boolean;
+  splitString?: boolean;
+  splitInteger?: boolean;
+  splitFloat?: boolean;
+  splitBoolean?: boolean;
+  splitObject?: boolean;
+  splitDictionary?: boolean;
+};
 
 /**
  * Try split the model
- * @param model 
- * @param options 
- * @param models 
+ * @param model
+ * @param options
+ * @param models
  * @returns whether the new or old MetaModel to use.
  */
-// eslint-disable-next-line sonarjs/cognitive-complexity
-const trySplitModel = (model: MetaModel, options: SplitOptions, models: MetaModel[]): MetaModel => {
-  const shouldSplit = options.splitEnum === true && model instanceof EnumModel ||
-    options.splitUnion === true && model instanceof UnionModel ||
-    options.splitArray === true && model instanceof ArrayModel ||
-    options.splitTuple === true && model instanceof TupleModel ||
-    options.splitString === true && model instanceof StringModel ||
-    options.splitInteger === true && model instanceof IntegerModel ||
-    options.splitFloat === true && model instanceof FloatModel ||
-    options.splitBoolean === true && model instanceof BooleanModel ||
-    options.splitObject === true && model instanceof ObjectModel ||
-    options.splitDictionary === true && model instanceof DictionaryModel;
+const trySplitModel = (
+  model: MetaModel,
+  options: SplitOptions,
+  models: MetaModel[]
+): MetaModel => {
+  const shouldSplit =
+    (options.splitEnum === true && model instanceof EnumModel) ||
+    (options.splitUnion === true && model instanceof UnionModel) ||
+    (options.splitArray === true && model instanceof ArrayModel) ||
+    (options.splitTuple === true && model instanceof TupleModel) ||
+    (options.splitString === true && model instanceof StringModel) ||
+    (options.splitInteger === true && model instanceof IntegerModel) ||
+    (options.splitFloat === true && model instanceof FloatModel) ||
+    (options.splitBoolean === true && model instanceof BooleanModel) ||
+    (options.splitObject === true && model instanceof ObjectModel) ||
+    (options.splitDictionary === true && model instanceof DictionaryModel);
 
   if (shouldSplit) {
     if (!models.includes(model)) {
       models.push(model);
     }
     return new ReferenceModel(model.name, model.originalInput, model);
-  } 
+  }
   return model;
 };
 
 /**
  * Overwrite the nested models with references where required.
- * 
- * @param model 
- * @param options 
- * @param models 
+ *
+ * @param model
+ * @param options
+ * @param models
  * @returns an array of all the split models
  */
-export const split = (model: MetaModel, options: SplitOptions, models: MetaModel[] = [model], alreadySeenModels: MetaModel[] = []): MetaModel[] => {
+export const split = (
+  model: MetaModel,
+  options: SplitOptions,
+  models: MetaModel[] = [model],
+  alreadySeenModels: MetaModel[] = []
+): MetaModel[] => {
   if (!alreadySeenModels.includes(model)) {
     alreadySeenModels.push(model);
   } else {
@@ -59,7 +83,11 @@ export const split = (model: MetaModel, options: SplitOptions, models: MetaModel
   if (model instanceof ObjectModel) {
     for (const [prop, propModel] of Object.entries(model.properties)) {
       const propertyModel = propModel.property;
-      model.properties[String(prop)].property = trySplitModel(propModel.property, options, models);
+      model.properties[String(prop)].property = trySplitModel(
+        propModel.property,
+        options,
+        models
+      );
       split(propertyModel, options, models, alreadySeenModels);
     }
   } else if (model instanceof UnionModel) {

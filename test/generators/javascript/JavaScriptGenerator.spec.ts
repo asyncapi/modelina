@@ -1,4 +1,4 @@
-import { JavaScriptGenerator } from '../../../src/generators'; 
+import { JavaScriptGenerator } from '../../../src/generators';
 
 describe('JavaScriptGenerator', () => {
   let generator: JavaScriptGenerator;
@@ -15,9 +15,9 @@ describe('JavaScriptGenerator', () => {
         reservedEnum: { type: 'string' }
       },
       additionalProperties: false,
-      required: ['reservedEnum', 'enum'],
+      required: ['reservedEnum', 'enum']
     };
-    
+
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot();
@@ -29,10 +29,10 @@ describe('JavaScriptGenerator', () => {
       $id: 'Address',
       type: 'object',
       properties: {
-        enum: { type: 'string', enum: ['test', 'test2'] },
-      },
+        enum: { type: 'string', enum: ['test', 'test2'] }
+      }
     };
-    
+
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot();
@@ -48,18 +48,26 @@ describe('JavaScriptGenerator', () => {
         city: { type: 'string', description: 'City description' },
         state: { type: 'string' },
         house_number: { type: 'number' },
-        marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
-        members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
-        array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
+        marriage: {
+          type: 'boolean',
+          description: 'Status if marriage live in given house'
+        },
+        members: {
+          oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
+        },
+        array_type: {
+          type: 'array',
+          items: [{ type: 'string' }, { type: 'number' }]
+        }
       },
       patternProperties: {
         '^S(.?*)test&': {
           type: 'string'
         }
       },
-      required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+      required: ['street_name', 'city', 'state', 'house_number', 'array_type']
     };
-    
+
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot();
@@ -69,7 +77,7 @@ describe('JavaScriptGenerator', () => {
   test('should not render another type than `object`', async () => {
     const doc = {
       $id: 'AnyType',
-      type: ['string', 'number'],
+      type: ['string', 'number']
     };
 
     const inputModel = await generator.process(doc);
@@ -86,33 +94,35 @@ describe('JavaScriptGenerator', () => {
       $id: 'CustomClass',
       type: 'object',
       properties: {
-        property: { type: 'string' },
+        property: { type: 'string' }
       },
       additionalProperties: false
     };
-    generator = new JavaScriptGenerator({ presets: [
-      {
-        class: {
-          self({ content }) {
-            return `export ${content}`;
-          },
-          property({ content }) {
-            return `#${content}`;
-          },
-          ctor() {
-            return `constructor(input) {
+    generator = new JavaScriptGenerator({
+      presets: [
+        {
+          class: {
+            self({ content }) {
+              return `export ${content}`;
+            },
+            property({ content }) {
+              return `#${content}`;
+            },
+            ctor() {
+              return `constructor(input) {
   this.#property = input.property;
 }`;
-          },
-          getter() {
-            return 'get property() { return this.#property; }';
-          },
-          setter() {
-            return 'set property(property) { this.#property = property; }';
+            },
+            getter() {
+              return 'get property() { return this.#property; }';
+            },
+            setter() {
+              return 'set property(property) { this.#property = property; }';
+            }
           }
         }
-      }
-    ] });
+      ]
+    });
 
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
@@ -129,19 +139,32 @@ describe('JavaScriptGenerator', () => {
         city: { type: 'string', description: 'City description' },
         state: { type: 'string' },
         house_number: { type: 'number' },
-        marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
-        members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
-        array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
-        other_model: { type: 'object', $id: 'OtherModel', properties: { street_name: { type: 'string' } }, required: ['street_name'] },
+        marriage: {
+          type: 'boolean',
+          description: 'Status if marriage live in given house'
+        },
+        members: {
+          oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
+        },
+        array_type: {
+          type: 'array',
+          items: [{ type: 'string' }, { type: 'number' }]
+        },
+        other_model: {
+          type: 'object',
+          $id: 'OtherModel',
+          properties: { street_name: { type: 'string' } },
+          required: ['street_name']
+        }
       },
       patternProperties: {
         '^S(.?*)test&': {
           type: 'string'
         }
       },
-      required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+      required: ['street_name', 'city', 'state', 'house_number', 'array_type']
     };
-    generator = new JavaScriptGenerator({moduleSystem: 'CJS'});
+    generator = new JavaScriptGenerator({ moduleSystem: 'CJS' });
     const models = await generator.generateCompleteModels(doc, {});
     expect(models).toHaveLength(2);
     expect(models[0].result).toMatchSnapshot();
@@ -156,19 +179,32 @@ describe('JavaScriptGenerator', () => {
         city: { type: 'string', description: 'City description' },
         state: { type: 'string' },
         house_number: { type: 'number' },
-        marriage: { type: 'boolean', description: 'Status if marriage live in given house' },
-        members: { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }], },
-        array_type: { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
-        other_model: { type: 'object', $id: 'OtherModel', properties: { street_name: { type: 'string' } }, required: ['street_name'] },
+        marriage: {
+          type: 'boolean',
+          description: 'Status if marriage live in given house'
+        },
+        members: {
+          oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
+        },
+        array_type: {
+          type: 'array',
+          items: [{ type: 'string' }, { type: 'number' }]
+        },
+        other_model: {
+          type: 'object',
+          $id: 'OtherModel',
+          properties: { street_name: { type: 'string' } },
+          required: ['street_name']
+        }
       },
       patternProperties: {
         '^S(.?*)test&': {
           type: 'string'
         }
       },
-      required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+      required: ['street_name', 'city', 'state', 'house_number', 'array_type']
     };
-    generator = new JavaScriptGenerator({moduleSystem: 'ESM'});
+    generator = new JavaScriptGenerator({ moduleSystem: 'ESM' });
     const models = await generator.generateCompleteModels(doc, {});
     expect(models).toHaveLength(2);
     expect(models[0].result).toMatchSnapshot();

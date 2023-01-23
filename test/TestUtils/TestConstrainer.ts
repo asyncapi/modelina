@@ -13,12 +13,16 @@ export const mockedTypeMapping: TypeMapping<any> = {
   Array: jest.fn().mockReturnValue('test'),
   Enum: jest.fn().mockReturnValue('test'),
   Union: jest.fn().mockReturnValue('test'),
-  Dictionary: jest.fn().mockReturnValue('test'),
+  Dictionary: jest.fn().mockReturnValue('test')
 };
 
 export const mockedConstraints: Constraints = {
-  enumKey: jest.fn().mockImplementation(({enumKey}) => enumKey),
-  enumValue: jest.fn().mockImplementation(({enumValue}) => enumValue),
-  modelName: jest.fn().mockImplementation(({modelName}) => modelName),
-  propertyKey: jest.fn().mockImplementation(({objectPropertyModel}) => objectPropertyModel.propertyName)
+  enumKey: jest.fn().mockImplementation(({ enumKey }) => enumKey),
+  enumValue: jest.fn().mockImplementation(({ enumValue }) => enumValue),
+  modelName: jest.fn().mockImplementation(({ modelName }) => modelName),
+  propertyKey: jest
+    .fn()
+    .mockImplementation(
+      ({ objectPropertyModel }) => objectPropertyModel.propertyName
+    )
 };

@@ -26,20 +26,22 @@ describe('Interpretation of oneOf with allOf', () => {
   test('should add oneOf items to CommonModel union', () => {
     const model = new CommonModel();
     const schema = {
-      allOf: [{
-        title: 'Animal',
-        type: 'object',
-        properties: {
-          animalType: {
-            title: 'Animal Type',
-            type: 'string',
-          },
-          age: {
-            type: 'integer',
-            min: 0,
-          },
-        },
-      }],
+      allOf: [
+        {
+          title: 'Animal',
+          type: 'object',
+          properties: {
+            animalType: {
+              title: 'Animal Type',
+              type: 'string'
+            },
+            age: {
+              type: 'integer',
+              min: 0
+            }
+          }
+        }
+      ],
       oneOf: [
         {
           title: 'Cat',
@@ -51,12 +53,9 @@ describe('Interpretation of oneOf with allOf', () => {
             huntingSkill: {
               title: 'Hunting Skill',
               type: 'string',
-              enum: [
-                'clueless',
-                'lazy',
-              ],
-            },
-          },
+              enum: ['clueless', 'lazy']
+            }
+          }
         },
         {
           title: 'Dog',
@@ -69,19 +68,18 @@ describe('Interpretation of oneOf with allOf', () => {
             breed: {
               title: 'Dog Breed',
               type: 'string',
-              enum: [
-                'bulldog',
-                'bichons frise',
-              ],
-            },
-          },
+              enum: ['bulldog', 'bichons frise']
+            }
+          }
         }
-      ],
+      ]
     };
 
     const interpreter = new Interpreter();
 
-    InterpretOneOfWithAllOf(schema, model, interpreter, { allowInheritance: false });
+    InterpretOneOfWithAllOf(schema, model, interpreter, {
+      allowInheritance: false
+    });
 
     expect(model.type).toBeUndefined();
     expect(model.union).toHaveLength(2);

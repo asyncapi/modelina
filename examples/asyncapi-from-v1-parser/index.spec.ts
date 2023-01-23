@@ -1,5 +1,7 @@
-const spy = jest.spyOn(global.console, 'log').mockImplementation(() => { return; });
-import {generate} from './index';
+const spy = jest.spyOn(global.console, 'log').mockImplementation(() => {
+  return;
+});
+import { generate } from './index';
 
 describe('Should be able to process already parsed AsyncAPI document from old parser', () => {
   afterAll(() => {

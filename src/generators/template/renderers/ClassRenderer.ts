@@ -1,12 +1,16 @@
 import { TemplateRenderer } from '../TemplateRenderer';
-import { ConstrainedDictionaryModel, ConstrainedObjectModel, ConstrainedObjectPropertyModel } from '../../../models';
+import {
+  ConstrainedDictionaryModel,
+  ConstrainedObjectModel,
+  ConstrainedObjectPropertyModel
+} from '../../../models';
 import { FormatHelpers } from '../../../helpers';
 import { TemplateOptions } from '../TemplateGenerator';
 import { ClassPresetType } from '../TemplatePreset';
 
 /**
  * Renderer for Template's `class` type
- * 
+ *
  * @extends TemplateRenderer
  */
 export class ClassRenderer extends TemplateRenderer<ConstrainedObjectModel> {
@@ -15,7 +19,7 @@ export class ClassRenderer extends TemplateRenderer<ConstrainedObjectModel> {
       await this.renderProperties(),
       await this.runCtorPreset(),
       await this.renderAccessors(),
-      await this.runAdditionalContentPreset(),
+      await this.runAdditionalContentPreset()
     ];
 
     return `public class ${this.model.name} {
@@ -79,7 +83,9 @@ export const TEMPLATE_DEFAULT_CLASS_PRESET: ClassPresetType<TemplateOptions> = {
     return `private ${property.property.type} ${property.propertyName};`;
   },
   getter({ property }) {
-    const getterName = `get${FormatHelpers.toPascalCase(property.propertyName)}`;
+    const getterName = `get${FormatHelpers.toPascalCase(
+      property.propertyName
+    )}`;
     return `public ${property.property.type} ${getterName}() { return this.${property.propertyName}; }`;
   },
   setter({ property }) {

@@ -1,16 +1,21 @@
 import { RustRenderer } from '../RustRenderer';
-import { ConstrainedTupleModel, ConstrainedTupleValueModel } from '../../../models';
+import {
+  ConstrainedTupleModel,
+  ConstrainedTupleValueModel
+} from '../../../models';
 import { TuplePresetType } from '../RustPreset';
 import { RustOptions } from '../RustGenerator';
 
 /**
  * Renderer for Rust's `Tuple` type
- * 
+ *
  * @extends TupleRenderer
  */
 export class TupleRenderer extends RustRenderer<ConstrainedTupleModel> {
   public async defaultSelf(): Promise<string> {
-    const doc = this.renderComments(`${this.model.name} represents a ${this.model.name} model.`);
+    const doc = this.renderComments(
+      `${this.model.name} represents a ${this.model.name} model.`
+    );
     const structMacro = await this.runStructMacroPreset();
     const additionalContent = await this.runAdditionalContentPreset();
     const fields = await this.renderFields();
@@ -50,6 +55,4 @@ export const RUST_DEFAULT_TUPLE_PRESET: TuplePresetType<RustOptions> = {
   field({ field }) {
     return field.value.type;
   }
-
 };
-

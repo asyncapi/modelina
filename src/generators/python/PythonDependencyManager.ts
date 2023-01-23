@@ -3,10 +3,7 @@ import { AbstractDependencyManager } from '../AbstractDependencyManager';
 import { PythonOptions } from './PythonGenerator';
 
 export class PythonDependencyManager extends AbstractDependencyManager {
-  constructor(
-    public options: PythonOptions,
-    dependencies: string[] = []
-  ) {
+  constructor(public options: PythonOptions, dependencies: string[] = []) {
     super(dependencies);
   }
 
@@ -15,6 +12,8 @@ export class PythonDependencyManager extends AbstractDependencyManager {
    */
   renderDependency(model: ConstrainedMetaModel): string {
     const useExplicitImports = this.options.importsStyle === 'explicit';
-    return `from ${useExplicitImports ? '.' : ''}${model.name} import ${model.name}`;
+    return `from ${useExplicitImports ? '.' : ''}${model.name} import ${
+      model.name
+    }`;
   }
 }

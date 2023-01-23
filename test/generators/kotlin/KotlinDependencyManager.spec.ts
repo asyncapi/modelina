@@ -3,9 +3,14 @@ import { KotlinDependencyManager } from '../../../src/generators/kotlin/KotlinDe
 describe('KotlinDependencyManager', () => {
   describe('addDependency()', () => {
     test('Should be able to render dependency', () => {
-      const dependencyManager = new KotlinDependencyManager(KotlinGenerator.defaultOptions, []);
+      const dependencyManager = new KotlinDependencyManager(
+        KotlinGenerator.defaultOptions,
+        []
+      );
       dependencyManager.addDependency('javax.validation.*');
-      expect(dependencyManager.dependencies).toEqual(['import javax.validation.*']);
+      expect(dependencyManager.dependencies).toEqual([
+        'import javax.validation.*'
+      ]);
     });
   });
 });

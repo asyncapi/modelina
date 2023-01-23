@@ -1,4 +1,4 @@
-import {DART_JSON_PRESET, DartFileGenerator} from '../../src';
+import { DART_JSON_PRESET, DartFileGenerator } from '../../src';
 
 const jsonSchemaDraft7 = {
   $schema: 'http://json-schema.org/draft-07/schema#',
@@ -14,7 +14,7 @@ const jsonSchemaDraft7 = {
 
 const generator = new DartFileGenerator({ presets: [DART_JSON_PRESET] });
 
-export async function generate() : Promise<void> {
+export async function generate(): Promise<void> {
   const models = await generator.generate(jsonSchemaDraft7);
   for (const model of models) {
     console.log(model.result);
@@ -23,4 +23,3 @@ export async function generate() : Promise<void> {
 if (require.main === module) {
   generate();
 }
-

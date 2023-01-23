@@ -7,17 +7,17 @@ const jsonSchemaDraft7 = {
   additionalProperties: false,
   properties: {
     requiredBoolean: {
-      type: 'boolean',
+      type: 'boolean'
     },
     notRequiredBoolean: {
-      type: 'boolean',
+      type: 'boolean'
     },
     requiredString: {
       type: 'string'
     },
     notRequiredString: {
       type: 'string'
-    },
+    }
   },
   required: ['requiredBoolean', 'requiredString']
 };

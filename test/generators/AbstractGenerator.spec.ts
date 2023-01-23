@@ -1,5 +1,5 @@
 import { InputMetaModel, CommonModel, AnyModel } from '../../src/models';
-import {TestGenerator} from '../TestUtils/TestGenerator';
+import { TestGenerator } from '../TestUtils/TestGenerator';
 describe('AbstractGenerator', () => {
   let generator: TestGenerator;
   beforeEach(() => {
@@ -56,7 +56,7 @@ describe('AbstractGenerator', () => {
     expect(commonInputModel.models[keys[0]].originalInput).toEqual({
       $id: 'test',
       type: 'string',
-      'x-modelgen-inferred-name': 'root',
+      'x-modelgen-inferred-name': 'root'
     });
   });
 
@@ -64,7 +64,10 @@ describe('AbstractGenerator', () => {
     const doc: any = { type: 'string', $id: 'SomeModel' };
     const commonInputModel = await generator.process(doc);
     const keys = Object.keys(commonInputModel.models);
-    const renderedContent = await generator.render(commonInputModel.models[keys[0]], commonInputModel);
+    const renderedContent = await generator.render(
+      commonInputModel.models[keys[0]],
+      commonInputModel
+    );
 
     expect(renderedContent.result).toEqual('SomeModel');
     expect(renderedContent.renderedName).toEqual('TestName');
@@ -73,7 +76,9 @@ describe('AbstractGenerator', () => {
 
   describe('getPresets()', () => {
     test('getPresets()', () => {
-      const newGenerator = new TestGenerator({presets: [{preset: {test: 'test2'}, options: {}}]});
+      const newGenerator = new TestGenerator({
+        presets: [{ preset: { test: 'test2' }, options: {} }]
+      });
       expect(newGenerator.testGetPresets('test')).toEqual([['test2', {}]]);
     });
   });

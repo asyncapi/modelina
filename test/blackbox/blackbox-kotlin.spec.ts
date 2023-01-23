@@ -11,7 +11,9 @@ import {
   InputMetaModel,
   InputProcessor,
   KotlinFileGenerator,
-  KOTLIN_DEFAULT_PRESET, JAVA_COMMON_PRESET, KOTLIN_CONSTRAINTS_PRESET,
+  KOTLIN_DEFAULT_PRESET,
+  JAVA_COMMON_PRESET,
+  KOTLIN_CONSTRAINTS_PRESET
 } from '../../src';
 import { execCommand } from './utils/Utils';
 import filesToTest from './BlackBoxTestFiles';
@@ -30,50 +32,72 @@ function deleteDirectoryIfExists(directory: string) {
 }
 
 const isWindows = process.platform === 'win32';
-const describeIf = (condition: boolean) => condition ? describe : describe.skip;
+const describeIf = (condition: boolean) =>
+  condition ? describe : describe.skip;
 
 // Windows environment has a weird setup, where it is using Kotlin Native instead of Kotlin JVM as it's compiler
 // (See https://github.com/asyncapi/modelina/issues/1080)
-describeIf(!isWindows).each(filesToTest)('Should be able to generate with inputs', ({ file, outputDirectory }) => {
-  jest.setTimeout(1000000);
-  const fileToGenerateFor = path.resolve(__dirname, file);
-  const outputDirectoryPath = path.resolve(__dirname, outputDirectory, 'kotlin');
+describeIf(!isWindows).each(filesToTest)(
+  'Should be able to generate with inputs',
+  ({ file, outputDirectory }) => {
+    jest.setTimeout(1000000);
+    const fileToGenerateFor = path.resolve(__dirname, file);
+    const outputDirectoryPath = path.resolve(
+      __dirname,
+      outputDirectory,
+      'kotlin'
+    );
 
-  let models: InputMetaModel;
-  beforeAll(async () => {
-    deleteDirectoryIfExists(outputDirectoryPath);
-    models = await generate(fileToGenerateFor);
-  });
-
-  describe(file, () => {
-    const kotlinGeneratorOptions = [
-      {
-        generatorOption: {},
-        description: 'default generator',
-        renderOutputPath: path.resolve(outputDirectoryPath, './class/default')
-      },
-      {
-        generatorOption: {
-          presets: [
-            KOTLIN_CONSTRAINTS_PRESET
-          ]
-        },
-        description: 'constraints preset',
-        renderOutputPath: path.resolve(outputDirectoryPath, './class/constraints')
-      }
-    ];
-
-    describe.each(kotlinGeneratorOptions)('should be able to generate and compile Kotlin', ({ generatorOption, renderOutputPath }) => {
-      test('class and enums', async () => {
-        const generator = new KotlinFileGenerator(generatorOption);
-        const dependencyPath = path.resolve(__dirname, './dependencies/kotlin/*');
-
-        const generatedModels = await generator.generateToFiles(models, renderOutputPath, { packageName: 'main'});
-        expect(generatedModels).not.toHaveLength(0);
-
-        const compileCommand = `kotlinc ${path.resolve(renderOutputPath, '*.kt')} -cp ${dependencyPath} -d ${renderOutputPath}`;
-        await execCommand(compileCommand);
-      });
+    let models: InputMetaModel;
+    beforeAll(async () => {
+      deleteDirectoryIfExists(outputDirectoryPath);
+      models = await generate(fileToGenerateFor);
     });
-  });
-});
+
+    describe(file, () => {
+      const kotlinGeneratorOptions = [
+        {
+          generatorOption: {},
+          description: 'default generator',
+          renderOutputPath: path.resolve(outputDirectoryPath, './class/default')
+        },
+        {
+          generatorOption: {
+            presets: [KOTLIN_CONSTRAINTS_PRESET]
+          },
+          description: 'constraints preset',
+          renderOutputPath: path.resolve(
+            outputDirectoryPath,
+            './class/constraints'
+          )
+        }
+      ];
+
+      describe.each(kotlinGeneratorOptions)(
+        'should be able to generate and compile Kotlin',
+        ({ generatorOption, renderOutputPath }) => {
+          test('class and enums', async () => {
+            const generator = new KotlinFileGenerator(generatorOption);
+            const dependencyPath = path.resolve(
+              __dirname,
+              './dependencies/kotlin/*'
+            );
+
+            const generatedModels = await generator.generateToFiles(
+              models,
+              renderOutputPath,
+              { packageName: 'main' }
+            );
+            expect(generatedModels).not.toHaveLength(0);
+
+            const compileCommand = `kotlinc ${path.resolve(
+              renderOutputPath,
+              '*.kt'
+            )} -cp ${dependencyPath} -d ${renderOutputPath}`;
+            await execCommand(compileCommand);
+          });
+        }
+      );
+    });
+  }
+);
