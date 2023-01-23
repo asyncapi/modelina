@@ -106,4 +106,4 @@ Sometimes it is desirable to change the default behavior of the `Interpreter`. W
 - `additionalProperties` - according to JSON schema spec, by default, `additionalProperties` is set to `true`
 - `additionalItems` - according to JSON schema spec, by default, `additionalItems` is set to `true`
 
-Check out this [example out for a live demonstration](../examples/overwrite-interpreter-options/) for how to overwrite the interpreter options.
+Check out this [example out for a live demonstration](../examples/overwrite-interpreter-options/) for how to customize the behavior of `additionalItems` and `additionalProperties`.

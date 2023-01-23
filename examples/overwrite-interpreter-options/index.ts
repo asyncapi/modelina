@@ -10,28 +10,7 @@ import { isModelObject } from '../../src/interpreter/Utils';
 const generator = new TypeScriptGenerator({
   processorOptions: {
     interpreter: {
-      additionalProperties: (
-        schema: InterpreterSchemaType,
-        model: CommonModel,
-        interpreter: Interpreter,
-        options?: InterpreterOptions
-      ) => {
-        if (typeof schema === 'boolean' || isModelObject(model) === false) {
-          return;
-        }
-
-        // Here we ensure that if additionalProperties are missing
-        // then schema schema.additionalProperties will set to false
-        const additionalPropertiesModel = interpreter.interpret(
-          schema.additionalProperties === undefined
-            ? false
-            : schema.additionalProperties,
-          options
-        );
-        if (additionalPropertiesModel !== undefined) {
-          model.addAdditionalProperty(additionalPropertiesModel, schema);
-        }
-      }
+      ignoreAdditionalProperties: true
     }
   }
 });
