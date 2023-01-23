@@ -269,7 +269,7 @@ describe('JavaGenerator', () => {
     };
     const config = { packageName: 'valid.package.correct.class' };
     const expectedError = new Error(
-      "You cannot use 'valid.package.correct.class' as a package name, contains reserved keywords: [package, class]"
+      `You cannot use 'valid.package.correct.class' as a package name, contains reserved keywords: [package, class]`
     );
     await expect(generator.generateCompleteModels(doc, config)).rejects.toEqual(
       expectedError

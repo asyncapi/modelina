@@ -31,8 +31,8 @@ describe('DART_JSON_PRESET', () => {
 
     const classModel = await generator.renderClass(model, inputModel);
     const expectedDependencies = [
-      "import 'package:json_annotation/json_annotation.dart';",
-      "part 'clazz.g.dart';",
+      `import 'package:json_annotation/json_annotation.dart';`,
+      `part 'clazz.g.dart';`,
       '@JsonSerializable()'
     ];
     expect(classModel.result).toMatchSnapshot();

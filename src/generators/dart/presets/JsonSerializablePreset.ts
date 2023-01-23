@@ -11,7 +11,7 @@ export const DART_JSON_PRESET: DartPreset = {
     self({ renderer, model, content }) {
       const snakeformattedModelName = FormatHelpers.snakeCase(model.name);
       renderer.dependencyManager.addDependency(
-        "import 'package:json_annotation/json_annotation.dart';"
+        `import 'package:json_annotation/json_annotation.dart';`
       );
       renderer.dependencyManager.addDependency(
         `part '${snakeformattedModelName}.g.dart';`
@@ -28,7 +28,7 @@ Map<String, dynamic> toJson() => _$${model.name}ToJson(this);`;
     self({ renderer, model, content }) {
       const snakeformattedModelName = FormatHelpers.snakeCase(model.name);
       renderer.dependencyManager.addDependency(
-        "import 'package:json_annotation/json_annotation.dart';"
+        `import 'package:json_annotation/json_annotation.dart';`
       );
       renderer.dependencyManager.addDependency(
         `part '${snakeformattedModelName}.g.dart';`

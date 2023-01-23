@@ -1,3 +1,5 @@
+/* eslint-disable sonarjs/cognitive-complexity */
+
 import {
   MetaModel,
   ReferenceModel,
@@ -33,7 +35,6 @@ export type SplitOptions = {
  * @param models
  * @returns whether the new or old MetaModel to use.
  */
-// eslint-disable-next-line sonarjs/cognitive-complexity
 const trySplitModel = (
   model: MetaModel,
   options: SplitOptions,

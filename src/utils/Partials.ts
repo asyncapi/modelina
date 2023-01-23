@@ -1,9 +1,8 @@
-/* eslint-disable security/detect-object-injection */
+/* eslint-disable security/detect-object-injection, @typescript-eslint/ban-types */
 
 /**
  * Deep partial type that does NOT partial function arguments.
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
 export type DeepPartial<T> = T extends Function
   ? T
   : T extends object

@@ -58,12 +58,12 @@ describe('FormatHelpers', () => {
 
   describe('replaceSpecialCharacters', () => {
     test('should replace any special character', () => {
-      const content = FormatHelpers.replaceSpecialCharacters(' !"#$%');
+      const content = FormatHelpers.replaceSpecialCharacters(' !`#$%');
       expect(content).toEqual('spaceexclamationquotationhashdollarpercent');
     });
 
     test('should surround replaced parts with separators from each other', () => {
-      const content = FormatHelpers.replaceSpecialCharacters("&'()*+", {
+      const content = FormatHelpers.replaceSpecialCharacters(`&'()*+`, {
         separator: '_'
       });
       expect(content).toEqual(

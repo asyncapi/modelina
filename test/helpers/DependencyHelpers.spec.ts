@@ -13,7 +13,7 @@ describe('DependencyHelper', () => {
         'test2',
         'CJS'
       );
-      expect(renderedDependency).toEqual("const test = require('test2');");
+      expect(renderedDependency).toEqual(`const test = require('test2');`);
     });
     test('should render accurate ESM dependency', () => {
       const renderedDependency = renderJavaScriptDependency(
@@ -21,7 +21,7 @@ describe('DependencyHelper', () => {
         'test2',
         'ESM'
       );
-      expect(renderedDependency).toEqual("import test from 'test2';");
+      expect(renderedDependency).toEqual(`import test from 'test2';`);
     });
   });
   describe('makeUnique', () => {

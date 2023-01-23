@@ -42,7 +42,7 @@ describe('Reserved keywords', () => {
     expect(isReservedRustKeyword('where')).toBe(true);
     expect(isReservedRustKeyword('while')).toBe(true);
     expect(isReservedRustKeyword('union')).toBe(true);
-    expect(isReservedRustKeyword("'static")).toBe(true);
+    expect(isReservedRustKeyword(`'static`)).toBe(true);
     expect(isReservedRustKeyword('macro_rules')).toBe(true);
     expect(isReservedRustKeyword('abstract')).toBe(true);
     expect(isReservedRustKeyword('become')).toBe(true);

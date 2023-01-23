@@ -9,7 +9,7 @@ describe('TypeScriptDependencyManager', () => {
       );
       expect(
         dependencyManager.renderDependency('someComment', 'someComment2')
-      ).toEqual("import someComment from 'someComment2';");
+      ).toEqual(`import someComment from 'someComment2';`);
     });
   });
 });
