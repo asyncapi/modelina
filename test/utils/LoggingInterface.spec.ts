@@ -1,4 +1,4 @@
-import {ModelLoggingInterface, Logger} from '../../src'; 
+import { ModelLoggingInterface, Logger } from '../../src';
 
 describe('LoggingInterface', () => {
   test('should work when no logging interface have been defined', () => {

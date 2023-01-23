@@ -4,14 +4,16 @@
     "@typescript-eslint",
     "sonarjs",
     "security",
-    "github"
+    "github",
+    "prettier"
   ],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:sonarjs/recommended",
-    "plugin:security/recommended"
+    "plugin:security/recommended",
+    "prettier"
   ],
   "rules": {
     "strict": 0,
@@ -78,10 +80,6 @@
     ],
     "no-spaced-func": 2,
     "semi-spacing": 2,
-    "quotes": [
-      2,
-      "single"
-    ],
     "key-spacing": [
       2,
       {
@@ -89,19 +87,8 @@
         "afterColon": true
       }
     ],
-    "indent": [
-      2,
-      2
-    ],
     "no-lonely-if": 2,
     "no-floating-decimal": 2,
-    "brace-style": [
-      2,
-      "1tbs",
-      {
-        "allowSingleLine": true
-      }
-    ],
     "comma-style": [
       2,
       "last"
@@ -183,7 +170,9 @@
     "prefer-const": 2,
     "prefer-spread": 2,
     "prefer-template": 2,
-    "@typescript-eslint/no-unused-vars": 2
+    "@typescript-eslint/no-unused-vars": 2,
+    "prettier/prettier": 2,
+    "sonarjs/no-identical-functions": "off"
   },
   "overrides": [
     {

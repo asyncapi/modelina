@@ -1,8 +1,7 @@
 import { CSharpRenderer } from '../CSharpRenderer';
 import { CSharpPreset } from '../CSharpPreset';
-
-import { getUniquePropertyName, FormatHelpers, DefaultPropertyNames } from '../../../helpers';
-import { CommonModel } from '../../../models';
+import { FormatHelpers } from '../../../helpers';
+import { ConstrainedObjectModel } from '../../../models';
 
 export interface CSharpCommonPresetOptions {
   equal: boolean;
@@ -12,25 +11,25 @@ export interface CSharpCommonPresetOptions {
 /**
  * Render `equal` function based on model's properties
  */
-function renderEqual({ renderer, model }: {
-  renderer: CSharpRenderer,
-  model: CommonModel,
+function renderEqual({
+  renderer,
+  model
+}: {
+  renderer: CSharpRenderer<any>;
+  model: ConstrainedObjectModel;
 }): string {
-  const formattedModelName = renderer.nameType(model.$id);
   const properties = model.properties || {};
   const propertyKeys = Object.keys(properties);
-  if (model.additionalProperties) {
-    propertyKeys.push(getUniquePropertyName(model, DefaultPropertyNames.additionalProperties));
-  }
-  for (const [pattern, patternModel] of Object.entries(model.patternProperties || {})) {
-    propertyKeys.push(getUniquePropertyName(patternModel, `${pattern}${DefaultPropertyNames.patternProperties}`));
-  }
-  let equalProperties = propertyKeys.map(prop => {
-    const accessorMethodProp = FormatHelpers.upperFirst(renderer.nameProperty(prop));
-    return `${accessorMethodProp} == model.${accessorMethodProp}`;
-  }).join(' && \n');
-  equalProperties = `return ${equalProperties !== '' ? equalProperties : 'true'}`;
-  const methodContent = `if(obj is ${formattedModelName} model)
+  let equalProperties = propertyKeys
+    .map((propertyName) => {
+      const accessorMethodProp = FormatHelpers.upperFirst(propertyName);
+      return `${accessorMethodProp} == model.${accessorMethodProp}`;
+    })
+    .join(' && \n');
+  equalProperties = `return ${
+    equalProperties !== '' ? equalProperties : 'true'
+  }`;
+  const methodContent = `if(obj is ${model.name} model)
 {
 ${renderer.indent('if(ReferenceEquals(this, model)) { return true; }')}
 ${renderer.indent(equalProperties)};
@@ -47,19 +46,20 @@ ${renderer.indent(methodContent)}
 /**
  * Render `hashCode` function based on model's properties
  */
-function renderHashCode({ renderer, model }: {
-  renderer: CSharpRenderer,
-  model: CommonModel,
+function renderHashCode({
+  renderer,
+  model
+}: {
+  renderer: CSharpRenderer<any>;
+  model: ConstrainedObjectModel;
 }): string {
   const properties = model.properties || {};
   const propertyKeys = Object.keys(properties);
-  if (model.additionalProperties) {
-    propertyKeys.push(getUniquePropertyName(model, DefaultPropertyNames.additionalProperties));
-  }
-  for (const [pattern, patternModel] of Object.entries(model.patternProperties || {})) {
-    propertyKeys.push(getUniquePropertyName(patternModel, `${pattern}${DefaultPropertyNames.patternProperties}`));
-  }
-  const hashProperties = propertyKeys.map(prop => `hash.Add(${FormatHelpers.upperFirst(renderer.nameProperty(prop))});`).join('\n');
+  const hashProperties = propertyKeys
+    .map(
+      (propertyName) => `hash.Add(${FormatHelpers.upperFirst(propertyName)});`
+    )
+    .join('\n');
 
   return `public override int GetHashCode()
 {
@@ -70,8 +70,8 @@ ${renderer.indent(hashProperties, 2)}
 }
 
 /**
- * Preset which adds `Equals`, `GetHashCode` functions to class. 
- * 
+ * Preset which adds `Equals`, `GetHashCode` functions to class.
+ *
  * @implements {CSharpPreset}
  */
 export const CSHARP_COMMON_PRESET: CSharpPreset<CSharpCommonPresetOptions> = {
@@ -80,13 +80,15 @@ export const CSHARP_COMMON_PRESET: CSharpPreset<CSharpCommonPresetOptions> = {
       options = options || {};
       const blocks: string[] = [];
 
-      if (options.equal === undefined || options.equal === true) { blocks.push(renderEqual({ renderer, model })); }
-      if (options.hashCode === undefined || options.hashCode === true) {
-        renderer.addDependency('using System;');
+      if (options.equal === undefined || options.equal === true) {
+        blocks.push(renderEqual({ renderer, model }));
+      }
+      if (options.hash === undefined || options.hash === true) {
+        renderer.dependencyManager.addDependency('using System;');
         blocks.push(renderHashCode({ renderer, model }));
       }
 
       return renderer.renderBlock([content, ...blocks], 2);
-    },
+    }
   }
 };
