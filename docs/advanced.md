@@ -15,6 +15,7 @@ This document contains many of the advanced use-cases that you may stumble upon 
 - [Change the generated indentation type and size](#change-the-generated-indentation-type-and-size)
 - [Change the type mapping](#change-the-type-mapping)
 - [Changing the constrain rules](#changing-the-constrain-rules)
+- [Changing the interpreter options](#changing-the-interpreter-options)
 
 <!-- tocstop -->
 
@@ -98,3 +99,11 @@ There can be multiple reasons why you want to change the default constrain rules
 Check out this [example out for a live demonstration](../examples/overwrite-default-constraint/) for how to overwrite the default constraints.
 
 Check out this [example out for a live demonstration](../examples/overwrite-naming-formatting/) for how to overwrite the naming formatting for models.
+
+## Changing the interpreter options
+
+Sometimes it is desirable to change the default behavior of the `Interpreter`. While most of the default behavior of the `Interpreter` is fine, there are areas that would be nice to customize. Some of these are:
+- `additionalProperties` - according to JSON schema spec, by default, `additionalProperties` is set to `true`
+- `additionalItems` - according to JSON schema spec, by default, `additionalItems` is set to `true`
+
+Check out this [example out for a live demonstration](../examples/overwrite-interpreter-options/) for how to overwrite the interpreter options.

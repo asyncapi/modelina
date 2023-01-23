@@ -23,27 +23,40 @@ import interpretOneOfWithAllOf from './InterpretOneOfWithAllOf';
 import interpretOneOfWithProperties from './InterpretOneOfWithProperties';
 
 /* eslint-disable no-use-before-define */
-export type InterpreterComplexFunc = (schema: InterpreterSchemaType, model: CommonModel, interpreter : Interpreter, options?: InterpreterOptions) => void;
-export type InterpreterFunc = (schema: InterpreterSchemaType, model: CommonModel) => void;
+export type InterpreterComplexFunc = (
+  schema: InterpreterSchemaType,
+  model: CommonModel,
+  interpreter: Interpreter,
+  options?: InterpreterOptions
+) => void;
+export type InterpreterFunc = (
+  schema: InterpreterSchemaType,
+  model: CommonModel
+) => void;
 export type InterpreterOptions = {
-  allowInheritance?: boolean,
-  patternProperties?: InterpreterComplexFunc,
-  additionalProperties?: InterpreterComplexFunc,
-  additionalItems?: InterpreterComplexFunc,
-  items?: InterpreterComplexFunc,
-  properties?: InterpreterComplexFunc,
-  allOf?: InterpreterComplexFunc,
-  oneOf?: InterpreterComplexFunc,
-  oneOfWithAllOf?: InterpreterComplexFunc,
-  oneOfWithProperties?: InterpreterComplexFunc,
-  anyOf?: InterpreterComplexFunc,
-  dependencies?: InterpreterComplexFunc,
-  not?: InterpreterComplexFunc,
-  const?: InterpreterFunc,
-  enum?: InterpreterFunc
+  allowInheritance?: boolean;
+  patternProperties?: InterpreterComplexFunc;
+  additionalProperties?: InterpreterComplexFunc;
+  additionalItems?: InterpreterComplexFunc;
+  items?: InterpreterComplexFunc;
+  properties?: InterpreterComplexFunc;
+  allOf?: InterpreterComplexFunc;
+  oneOf?: InterpreterComplexFunc;
+  oneOfWithAllOf?: InterpreterComplexFunc;
+  oneOfWithProperties?: InterpreterComplexFunc;
+  anyOf?: InterpreterComplexFunc;
+  dependencies?: InterpreterComplexFunc;
+  not?: InterpreterComplexFunc;
+  const?: InterpreterFunc;
+  enum?: InterpreterFunc;
 };
 /* eslint-enable no-use-before-define */
-export type InterpreterSchemas = Draft6Schema | Draft4Schema | Draft7Schema | SwaggerV2Schema | AsyncapiV2Schema;
+export type InterpreterSchemas =
+  | Draft6Schema
+  | Draft4Schema
+  | Draft7Schema
+  | SwaggerV2Schema
+  | AsyncapiV2Schema;
 export type InterpreterSchemaType = InterpreterSchemas | boolean;
 
 export class Interpreter {
@@ -122,7 +135,12 @@ export class Interpreter {
     }
   }
 
-  private interpretSchemaObject(model: CommonModel, schema: InterpreterSchemas, interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions) {
+  // eslint-disable-next-line sonarjs/cognitive-complexity
+  private interpretSchemaObject(
+    model: CommonModel,
+    schema: InterpreterSchemas,
+    interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions
+  ) {
     if (schema.type !== undefined) {
       model.addTypes(schema.type);
     }
@@ -131,20 +149,34 @@ export class Interpreter {
     }
 
     const defaultInterpreterOptions = Interpreter.defaultInterpreterOptions;
-    const patternPropertiesFunc = (interpreterOptions.patternProperties || defaultInterpreterOptions.patternProperties) as InterpreterComplexFunc;
-    const additionalPropertiesFunc = (interpreterOptions.additionalProperties || defaultInterpreterOptions.additionalProperties) as InterpreterComplexFunc;
-    const additionalItemsFunc = (interpreterOptions.additionalItems || defaultInterpreterOptions.additionalItems) as InterpreterComplexFunc;
-    const itemsFunc = (interpreterOptions.items || defaultInterpreterOptions.items) as InterpreterComplexFunc;
-    const propertiesFunc = (interpreterOptions.properties || defaultInterpreterOptions.properties) as InterpreterComplexFunc;
-    const allOfFunc = (interpreterOptions.allOf || defaultInterpreterOptions.allOf) as InterpreterComplexFunc;
-    const oneOfFunc = (interpreterOptions.oneOf || defaultInterpreterOptions.oneOf) as InterpreterComplexFunc;
-    const oneOfWithAllOfFunc = (interpreterOptions.oneOfWithAllOf || defaultInterpreterOptions.oneOfWithAllOf) as InterpreterComplexFunc;
-    const oneOfWithPropertiesFunc = (interpreterOptions.oneOfWithProperties || defaultInterpreterOptions.oneOfWithProperties) as InterpreterComplexFunc;
-    const anyOfFunc = (interpreterOptions.anyOf || defaultInterpreterOptions.anyOf) as InterpreterComplexFunc;
-    const dependenciesFunc = (interpreterOptions.dependencies || defaultInterpreterOptions.dependencies) as InterpreterComplexFunc;
-    const constFunc = (interpreterOptions.const || defaultInterpreterOptions.const) as InterpreterFunc;
-    const enumFunc = (interpreterOptions.enum || defaultInterpreterOptions.enum) as InterpreterFunc;
-    const notFunc = (interpreterOptions.not || defaultInterpreterOptions.not) as InterpreterComplexFunc;
+    const patternPropertiesFunc = (interpreterOptions.patternProperties ||
+      defaultInterpreterOptions.patternProperties) as InterpreterComplexFunc;
+    const additionalPropertiesFunc = (interpreterOptions.additionalProperties ||
+      defaultInterpreterOptions.additionalProperties) as InterpreterComplexFunc;
+    const additionalItemsFunc = (interpreterOptions.additionalItems ||
+      defaultInterpreterOptions.additionalItems) as InterpreterComplexFunc;
+    const itemsFunc = (interpreterOptions.items ||
+      defaultInterpreterOptions.items) as InterpreterComplexFunc;
+    const propertiesFunc = (interpreterOptions.properties ||
+      defaultInterpreterOptions.properties) as InterpreterComplexFunc;
+    const allOfFunc = (interpreterOptions.allOf ||
+      defaultInterpreterOptions.allOf) as InterpreterComplexFunc;
+    const oneOfFunc = (interpreterOptions.oneOf ||
+      defaultInterpreterOptions.oneOf) as InterpreterComplexFunc;
+    const oneOfWithAllOfFunc = (interpreterOptions.oneOfWithAllOf ||
+      defaultInterpreterOptions.oneOfWithAllOf) as InterpreterComplexFunc;
+    const oneOfWithPropertiesFunc = (interpreterOptions.oneOfWithProperties ||
+      defaultInterpreterOptions.oneOfWithProperties) as InterpreterComplexFunc;
+    const anyOfFunc = (interpreterOptions.anyOf ||
+      defaultInterpreterOptions.anyOf) as InterpreterComplexFunc;
+    const dependenciesFunc = (interpreterOptions.dependencies ||
+      defaultInterpreterOptions.dependencies) as InterpreterComplexFunc;
+    const constFunc = (interpreterOptions.const ||
+      defaultInterpreterOptions.const) as InterpreterFunc;
+    const enumFunc = (interpreterOptions.enum ||
+      defaultInterpreterOptions.enum) as InterpreterFunc;
+    const notFunc = (interpreterOptions.not ||
+      defaultInterpreterOptions.not) as InterpreterComplexFunc;
 
     patternPropertiesFunc(schema, model, this, interpreterOptions);
     additionalPropertiesFunc(schema, model, this, interpreterOptions);
