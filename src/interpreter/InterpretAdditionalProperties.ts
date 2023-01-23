@@ -23,9 +23,11 @@ export default function interpretAdditionalProperties(
   if (typeof schema === 'boolean' || isModelObject(model) === false) {
     return;
   }
+  const ignoreAdditionalProperties =
+    interpreterOptions.ignoreAdditionalProperties || false;
   const additionalPropertiesModel = interpreter.interpret(
     schema.additionalProperties === undefined
-      ? true
+      ? !ignoreAdditionalProperties
       : schema.additionalProperties,
     interpreterOptions
   );
