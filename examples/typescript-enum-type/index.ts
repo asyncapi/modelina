@@ -7,7 +7,7 @@ const jsonSchemaDraft7 = {
   type: 'object',
   additionalProperties: false,
   properties: {
-    eventType: {
+    event: {
       type: 'string',
       enum: ['ping', 'pong']
     }
@@ -27,6 +27,4 @@ export async function generate(): Promise<void> {
     console.log(model.result);
   }
 }
-if (require.main === module) {
-  generate();
-}
+generate();

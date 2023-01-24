@@ -2,8 +2,3 @@ node_modules
 docs
 lib
 output
-src/generators/template
-test/generators/template
-examples/integrate-with-react
-src/processors/TemplateInputProcessor.ts
-test/processors/TemplateInputProcessor.spec.ts

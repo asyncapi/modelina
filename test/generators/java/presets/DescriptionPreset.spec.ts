@@ -1,7 +1,4 @@
-import {
-  JavaGenerator,
-  JAVA_DESCRIPTION_PRESET
-} from '../../../../src/generators';
+import { JavaGenerator, JAVA_DESCRIPTION_PRESET } from '../../../../src/generators'; 
 
 describe('JAVA_DESCRIPTION_PRESET', () => {
   let generator: JavaGenerator;
@@ -16,18 +13,35 @@ describe('JAVA_DESCRIPTION_PRESET', () => {
       description: 'Description for class',
       examples: [{ prop: 'value' }],
       properties: {
-        prop: {
-          type: 'string',
-          description: 'Description for prop',
-          examples: ['exampleValue']
-        }
-      }
+        prop: { type: 'string', description: 'Description for prop', examples: ['exampleValue'] },
+      },
     };
+    const expected = `/**
+ * Description for class
+ * Examples: {"prop":"value"}
+ */
+public class Clazz {
+  private String prop;
+  private Map<String, Object> additionalProperties;
+
+  /**
+   * Description for prop
+   * Examples: exampleValue
+   */
+  public String getProp() { return this.prop; }
+  public void setProp(String prop) { this.prop = prop; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}`;
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models['Clazz'];
+
+    const classModel = await generator.renderClass(model, inputModel);
     const expectedDependencies = ['import java.util.Map;'];
-    const models = await generator.generate(doc);
-    expect(models).toHaveLength(1);
-    expect(models[0].result).toMatchSnapshot();
-    expect(models[0].dependencies).toEqual(expectedDependencies);
+    expect(classModel.result).toEqual(expected);
+    expect(classModel.dependencies).toEqual(expectedDependencies);
   });
 
   test('should render description and examples for enum', async () => {
@@ -36,12 +50,48 @@ describe('JAVA_DESCRIPTION_PRESET', () => {
       type: 'string',
       description: 'Description for enum',
       examples: ['value'],
-      enum: ['on', 'off']
+      enum: [
+        'on',
+        'off',
+      ]
     };
+    const expected = `/**
+ * Description for enum
+ * Examples: value
+ */
+public enum Enum {
+  ON("on"), OFF("off");
 
-    const models = await generator.generate(doc);
-    expect(models).toHaveLength(1);
-    expect(models[0].result).toMatchSnapshot();
-    expect(models[0].dependencies).toEqual([]);
+  private String value;
+
+  Enum(String value) {
+    this.value = value;
+  }
+
+  public String getValue() {
+    return value;
+  }
+
+  public static Enum fromValue(String value) {
+    for (Enum e : Enum.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException("Unexpected value '" + value + "'");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+}`;
+
+    const inputModel = await generator.process(doc);
+    const model = inputModel.models['Enum'];
+
+    const enumModel = await generator.renderEnum(model, inputModel);
+    expect(enumModel.result).toEqual(expected);
+    expect(enumModel.dependencies).toEqual([]);
   });
 });

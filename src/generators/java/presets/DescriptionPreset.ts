@@ -1,19 +1,15 @@
 import { JavaRenderer } from '../JavaRenderer';
 import { JavaPreset } from '../JavaPreset';
 import { FormatHelpers } from '../../../helpers';
-import { ConstrainedMetaModel } from '../../../models';
+import { CommonModel } from '../../../models';
 
-function renderDescription({
-  renderer,
-  content,
-  item
-}: {
-  renderer: JavaRenderer<any>;
-  content: string;
-  item: ConstrainedMetaModel;
+function renderDescription({ renderer, content, item }: {
+  renderer: JavaRenderer,
+  content: string,
+  item: CommonModel,
 }): string {
-  let desc = item.originalInput['description'];
-  const examples = item.originalInput['examples'];
+  let desc = item.getFromOriginalInput('description');
+  const examples = item.getFromOriginalInput('examples');
 
   if (Array.isArray(examples)) {
     const renderedExamples = FormatHelpers.renderJSONExamples(examples);
@@ -29,8 +25,8 @@ function renderDescription({
 }
 
 /**
- * Preset which adds description to rendered model.
- *
+ * Preset which adds description to rendered model. 
+ * 
  * @implements {JavaPreset}
  */
 export const JAVA_DESCRIPTION_PRESET: JavaPreset = {
@@ -39,12 +35,12 @@ export const JAVA_DESCRIPTION_PRESET: JavaPreset = {
       return renderDescription({ renderer, content, item: model });
     },
     getter({ renderer, property, content }) {
-      return renderDescription({ renderer, content, item: property.property });
+      return renderDescription({ renderer, content, item: property });
     }
   },
   enum: {
     self({ renderer, model, content }) {
       return renderDescription({ renderer, content, item: model });
-    }
+    },
   }
 };

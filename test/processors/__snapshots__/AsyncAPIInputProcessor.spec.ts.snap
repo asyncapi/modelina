@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AsyncAPIInputProcessor process() should be able to process parsed objects 1`] = `
-InputMetaModel {
+CommonInputModel {
   "models": Object {},
   "originalInput": AsyncAPIDocument {
     "_json": Object {
@@ -21,7 +21,19 @@ InputMetaModel {
                 "type": "object",
                 "x-parser-schema-id": "<anonymous-schema-1>",
               },
+              "schemaFormat": "application/vnd.aai.asyncapi;version=2.0.0",
               "x-parser-message-name": "<anonymous-message-1>",
+              "x-parser-message-parsed": true,
+              "x-parser-original-payload": Object {
+                "properties": Object {
+                  "email": Object {
+                    "format": "email",
+                    "type": "string",
+                  },
+                },
+                "type": "object",
+              },
+              "x-parser-original-schema-format": "application/vnd.aai.asyncapi;version=2.0.0",
             },
           },
         },
@@ -31,83 +43,14 @@ InputMetaModel {
         "title": "Signup service example (internal)",
         "version": "0.1.0",
       },
-      "x-parser-api-version": 1,
       "x-parser-spec-parsed": true,
-    },
-    "_meta": Object {
-      "asyncapi": Object {
-        "input": "{
-  \\"asyncapi\\": \\"2.0.0\\",
-  \\"defaultContentType\\": \\"application/json\\",
-  \\"info\\": {
-    \\"title\\": \\"Signup service example (internal)\\",
-    \\"version\\": \\"0.1.0\\"
-  },
-  \\"channels\\": {
-    \\"/user/signedup\\": {
-      \\"subscribe\\": {
-        \\"message\\": {
-          \\"payload\\": {
-            \\"type\\": \\"object\\",
-            \\"properties\\": {
-              \\"email\\": {
-                \\"type\\": \\"string\\",
-                \\"format\\": \\"email\\"
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}",
-        "parsed": Object {
-          "asyncapi": "2.0.0",
-          "channels": Object {
-            "/user/signedup": Object {
-              "subscribe": Object {
-                "message": Object {
-                  "payload": Object {
-                    "properties": Object {
-                      "email": Object {
-                        "format": "email",
-                        "type": "string",
-                        "x-parser-schema-id": "<anonymous-schema-2>",
-                      },
-                    },
-                    "type": "object",
-                    "x-parser-schema-id": "<anonymous-schema-1>",
-                  },
-                  "x-parser-message-name": "<anonymous-message-1>",
-                },
-              },
-            },
-          },
-          "defaultContentType": "application/json",
-          "info": Object {
-            "title": "Signup service example (internal)",
-            "version": "0.1.0",
-          },
-          "x-parser-api-version": 1,
-          "x-parser-spec-parsed": true,
-        },
-        "semver": Object {
-          "major": 2,
-          "minor": 0,
-          "patch": 0,
-          "rc": undefined,
-          "version": "2.0.0",
-        },
-        "source": undefined,
-      },
-      "pointer": "/",
     },
   },
 }
 `;
 
 exports[`AsyncAPIInputProcessor process() should be able to process pure object 1`] = `
-InputMetaModel {
+CommonInputModel {
   "models": Object {},
   "originalInput": AsyncAPIDocument {
     "_json": Object {
@@ -127,7 +70,19 @@ InputMetaModel {
                 "type": "object",
                 "x-parser-schema-id": "<anonymous-schema-1>",
               },
+              "schemaFormat": "application/vnd.aai.asyncapi;version=2.0.0",
               "x-parser-message-name": "<anonymous-message-1>",
+              "x-parser-message-parsed": true,
+              "x-parser-original-payload": Object {
+                "properties": Object {
+                  "email": Object {
+                    "format": "email",
+                    "type": "string",
+                  },
+                },
+                "type": "object",
+              },
+              "x-parser-original-schema-format": "application/vnd.aai.asyncapi;version=2.0.0",
             },
           },
         },
@@ -137,76 +92,7 @@ InputMetaModel {
         "title": "Signup service example (internal)",
         "version": "0.1.0",
       },
-      "x-parser-api-version": 1,
       "x-parser-spec-parsed": true,
-    },
-    "_meta": Object {
-      "asyncapi": Object {
-        "input": Object {
-          "asyncapi": "2.0.0",
-          "channels": Object {
-            "/user/signedup": Object {
-              "subscribe": Object {
-                "message": Object {
-                  "payload": Object {
-                    "properties": Object {
-                      "email": Object {
-                        "format": "email",
-                        "type": "string",
-                      },
-                    },
-                    "type": "object",
-                  },
-                },
-              },
-            },
-          },
-          "defaultContentType": "application/json",
-          "info": Object {
-            "title": "Signup service example (internal)",
-            "version": "0.1.0",
-          },
-        },
-        "parsed": Object {
-          "asyncapi": "2.0.0",
-          "channels": Object {
-            "/user/signedup": Object {
-              "subscribe": Object {
-                "message": Object {
-                  "payload": Object {
-                    "properties": Object {
-                      "email": Object {
-                        "format": "email",
-                        "type": "string",
-                        "x-parser-schema-id": "<anonymous-schema-2>",
-                      },
-                    },
-                    "type": "object",
-                    "x-parser-schema-id": "<anonymous-schema-1>",
-                  },
-                  "x-parser-message-name": "<anonymous-message-1>",
-                },
-              },
-            },
-          },
-          "defaultContentType": "application/json",
-          "info": Object {
-            "title": "Signup service example (internal)",
-            "version": "0.1.0",
-          },
-          "x-parser-api-version": 1,
-          "x-parser-spec-parsed": true,
-        },
-        "semver": Object {
-          "major": 2,
-          "minor": 0,
-          "patch": 0,
-          "rc": undefined,
-          "version": "2.0.0",
-        },
-        "source": undefined,
-      },
-      "pointer": "/",
     },
   },
 }

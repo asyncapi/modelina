@@ -401,18 +401,6 @@
       ]
     },
     {
-      "login": "zaytsevand",
-      "name": "Andrey Zaytsev",
-      "avatar_url": "https://avatars.githubusercontent.com/u/5207748?v=4",
-      "profile": "https://github.com/zaytsevand",
-      "contributions": [
-        "code",
-        "example",
-        "doc",
-        "test"
-      ]
-    },
-    {
       "login": "codingtenshi",
       "name": "Tenshi Codes",
       "avatar_url": "https://avatars.githubusercontent.com/u/116377630?v=4",
@@ -447,17 +435,6 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/6918360?v=4",
       "profile": "https://github.com/200Puls",
       "contributions": [
-        "code",
-        "test"
-      ]
-    },
-    {
-      "login": "anaysarkar7",
-      "name": "Anay Sarkar",
-      "avatar_url": "https://avatars.githubusercontent.com/u/53341181?v=4",
-      "profile": "https://linktr.ee/anaysarkar7",
-      "contributions": [
-        "example",
         "code",
         "test"
       ]

@@ -19,3 +19,23 @@ class Person {
 module.exports = Person;",
 ]
 `;
+
+exports[`Should be able to render models to ESM module system and should log expected output to console 2`] = `
+Array [
+  "const Person = require('./Person');
+
+class Root {
+  person;
+
+  constructor(input) {
+    if (input.hasOwnProperty('person')) {
+      this.person = input.person;
+    }
+  }
+
+  get person() { return this.person; }
+  set person(person) { this.person = person; }
+}
+module.exports = Root;",
+]
+`;

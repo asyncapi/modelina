@@ -1,18 +1,15 @@
-import {
-  InputMetaModel,
-  CommonModel,
-  ToOutputModelArg,
-  OutputModel,
-  ConstrainedAnyModel
-} from '../../src/models';
+import { CommonInputModel, CommonModel, ToOutputModelArg, OutputModel } from '../../src/models'; 
 
 describe('OutputModel', () => {
   test('should return an OutputModel', () => {
+    const doc: any = { $id: 'test' };
+    const commonModel = CommonModel.toCommonModel(doc);
+
     const ioutput: ToOutputModelArg = {
       result: 'result',
-      model: new ConstrainedAnyModel('', undefined, ''),
+      model: commonModel,
       modelName: 'someModel',
-      inputModel: new InputMetaModel(),
+      inputModel: new CommonInputModel(),
       dependencies: ['test']
     };
     const output = OutputModel.toOutputModel(ioutput);
@@ -25,11 +22,14 @@ describe('OutputModel', () => {
   });
 
   test('should return an array of OutputModel', () => {
+    const doc: any = { $id: 'test' };
+    const commonModel = CommonModel.toCommonModel(doc);
+
     const ioutput: ToOutputModelArg = {
       result: 'result',
-      model: new ConstrainedAnyModel('', undefined, ''),
+      model: commonModel,
       modelName: 'someModel',
-      inputModel: new InputMetaModel(),
+      inputModel: new CommonInputModel(),
       dependencies: ['test']
     };
     const output = OutputModel.toOutputModel([ioutput, ioutput]);

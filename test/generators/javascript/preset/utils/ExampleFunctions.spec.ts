@@ -1,95 +1,60 @@
+import { JavaScriptGenerator } from '../../../../../src/generators';
 import { renderValueFromModel } from '../../../../../src/generators/javascript/presets/utils/ExampleFunction';
-import {
-  CommonModel,
-  ConstrainedAnyModel,
-  ConstrainedArrayModel,
-  ConstrainedBooleanModel,
-  ConstrainedIntegerModel,
-  ConstrainedReferenceModel,
-  ConstrainedStringModel,
-  ConstrainedTupleModel,
-  ConstrainedTupleValueModel,
-  ConstrainedUnionModel
-} from '../../../../../src/models';
+import { JavaScriptRenderer } from '../../../../../src/generators/javascript/JavaScriptRenderer';
+import { CommonInputModel, CommonModel } from '../../../../../src/models';
+class MockJavaScriptRenderer extends JavaScriptRenderer {
+}
+const renderer = new MockJavaScriptRenderer(JavaScriptGenerator.defaultOptions, new JavaScriptGenerator(), [], new CommonModel(), new CommonInputModel());
 describe('Example preset', () => {
   describe('.renderValueFromModel()', () => {
     test('should render refs correctly', () => {
-      const refModel = new ConstrainedAnyModel(
-        'SomeOtherModel',
-        undefined,
-        'SomeOtherModel'
-      );
-      const model = new ConstrainedReferenceModel(
-        'test',
-        undefined,
-        '',
-        refModel
-      );
-      const output = renderValueFromModel(model);
+      const input = CommonModel.toCommonModel({ $ref: 'SomeOtherModel' });
+      const output = renderValueFromModel(input, renderer);
       expect(output).toEqual('SomeOtherModel.example()');
     });
     describe('types', () => {
       test('Should render strings correctly', () => {
-        const model = new ConstrainedStringModel('test', undefined, '');
-        const output = renderValueFromModel(model);
+        const input = CommonModel.toCommonModel({ type: 'string' });
+        const output = renderValueFromModel(input, renderer);
         expect(output).toEqual('"string"');
       });
       test('Should render numbers correctly', () => {
-        const model = new ConstrainedIntegerModel('test', undefined, '');
-        const output = renderValueFromModel(model);
+        const input = CommonModel.toCommonModel({ type: 'number' });
+        const output = renderValueFromModel(input, renderer);
         expect(output).toEqual('0');
       });
       test('Should render booleans correctly', () => {
-        const model = new ConstrainedBooleanModel('test', undefined, '');
-        const output = renderValueFromModel(model);
+        const input = CommonModel.toCommonModel({ type: 'boolean' });
+        const output = renderValueFromModel(input, renderer);
         expect(output).toEqual('true');
       });
       test('Should use first value if there is more then one', () => {
-        const stringModel = new ConstrainedStringModel('test', undefined, '');
-        const booleanModel = new ConstrainedBooleanModel('test', undefined, '');
-        const model = new ConstrainedUnionModel('test', undefined, '', [
-          booleanModel,
-          stringModel
-        ]);
-        const output = renderValueFromModel(model);
+        const input = CommonModel.toCommonModel({ type: ['boolean', 'string'] });
+        const output = renderValueFromModel(input, renderer);
         expect(output).toEqual('true');
       });
       describe('array', () => {
+        test('should not render anything if no items are defined', () => {
+          const input = CommonModel.toCommonModel({ type: 'array' });
+          const output = renderValueFromModel(input, renderer);
+          expect(output).toEqual('[]');
+        });
         test('should render multiple array values', () => {
-          const stringModel = new ConstrainedStringModel('test', undefined, '');
-          const integerModel = new ConstrainedIntegerModel(
-            'test',
-            undefined,
-            ''
-          );
-          const model = new ConstrainedTupleModel('test', undefined, '', [
-            new ConstrainedTupleValueModel(0, stringModel),
-            new ConstrainedTupleValueModel(1, integerModel)
-          ]);
-          const output = renderValueFromModel(model);
+          const input = CommonModel.toCommonModel({ type: 'array', items: [{ type: 'string' }, { type: 'number' }] });
+          const output = renderValueFromModel(input, renderer);
           expect(output).toEqual('["string", 0]');
         });
         test('should render single array value', () => {
-          const arrayModel = new ConstrainedStringModel(
-            'test',
-            undefined,
-            'String'
-          );
-          const model = new ConstrainedArrayModel(
-            'test',
-            undefined,
-            '',
-            arrayModel
-          );
-          const output = renderValueFromModel(model);
+          const input = CommonModel.toCommonModel({ type: 'array', items: { type: 'string' } });
+          const output = renderValueFromModel(input, renderer);
           expect(output).toEqual('["string"]');
         });
       });
       test('Should ignore if none are present', () => {
-        const model = new ConstrainedAnyModel('test', undefined, '');
-        const output = renderValueFromModel(model);
+        const input = CommonModel.toCommonModel({ type: [] });
+        const output = renderValueFromModel(input, renderer);
         expect(output).toBeUndefined();
       });
     });
   });
-});
+});    

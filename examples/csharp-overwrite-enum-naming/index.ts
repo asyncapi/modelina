@@ -1,43 +1,48 @@
 import { CSharpGenerator } from '../../src';
-import { DefaultEnumKeyConstraints } from '../../src/generators/csharp/constrainer/EnumConstrainer';
 
-const generator = new CSharpGenerator({
-  constraints: {
-    enumKey: ({ enumModel, enumKey }) => {
-      // Lets see if an enum has an associated custom name
-      const hasCustomName =
-        enumModel.originalInput !== undefined &&
-        enumModel.originalInput['x-enumNames'] !== undefined;
-      if (hasCustomName) {
-        // Lets see if the specific value has an associated name
-        const customName = enumModel.originalInput['x-enumNames'][enumKey];
-        if (customName !== undefined) {
-          return customName;
+const generator = new CSharpGenerator({ 
+  presets: [
+    {
+      enum: {
+        item: ({model, item, content}) => {
+          // Lets see if an enum has any associated names
+          const hasCustomName = model.originalInput !== undefined && model.originalInput['x-enumNames'] !== undefined;
+          if (hasCustomName) {
+            // Lets see if the specific value has an associated name
+            const customName = model.originalInput['x-enumNames'][item];
+            if (customName !== undefined) {
+              return customName;
+            }
+          }
+          return content;
         }
       }
     }
-  }
+  ]
 });
 
 const jsonSchemaDraft7 = {
   $schema: 'http://json-schema.org/draft-07/schema#',
   title: 'OrderStatus',
   type: 'number',
-  enum: [30, 40, 50, 99],
+  enum: [
+    30,
+    40,
+    50,
+    99
+  ],
   'x-enumNames': {
     30: 'Ordered',
     40: 'UnderDelivery',
-    50: 'Delivered',
+    50: 'Deliveret',
     99: 'Cancelled'
   }
 };
 
-export async function generate(): Promise<void> {
+export async function generate() : Promise<void> {
   const models = await generator.generate(jsonSchemaDraft7);
   for (const model of models) {
     console.log(model.result);
   }
 }
-if (require.main === module) {
-  generate();
-}
+generate();
