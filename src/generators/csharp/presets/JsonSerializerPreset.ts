@@ -1,105 +1,118 @@
 import { CSharpRenderer } from '../CSharpRenderer';
 import { CSharpPreset } from '../CSharpPreset';
-import {
-  ConstrainedDictionaryModel,
-  ConstrainedEnumModel,
-  ConstrainedObjectModel,
-  ConstrainedObjectPropertyModel,
-  ConstrainedReferenceModel
-} from '../../../models';
-import { CSharpOptions } from '../CSharpGenerator';
+import { getUniquePropertyName, DefaultPropertyNames, FormatHelpers, TypeHelpers, ModelKind } from '../../../helpers';
+import { CommonInputModel, CommonModel } from '../../../models';
 
-function renderSerializeProperty(
-  modelInstanceVariable: string,
-  model: ConstrainedObjectPropertyModel
-) {
+function renderSerializeProperty(modelInstanceVariable: string, model: CommonModel, inputModel: CommonInputModel) {
   let value = modelInstanceVariable;
-  //Special case where a referenced enum model need to be accessed
-  if (
-    model.property instanceof ConstrainedReferenceModel &&
-    model.property.ref instanceof ConstrainedEnumModel
-  ) {
-    value = `${model.property.type}.GetValue()`;
+  if (model.$ref) {
+    const resolvedModel = inputModel.models[model.$ref];
+    const propertyModelKind = TypeHelpers.extractKind(resolvedModel);
+    //Referenced enums is the only one who need custom serialization
+    if (propertyModelKind === ModelKind.ENUM) {
+      value = `${value}.GetValue()`;
+    }
   }
   return `JsonSerializer.Serialize(writer, ${value}, options);`;
 }
 
-function renderSerializeProperties(model: ConstrainedObjectModel) {
-  let serializeProperties = '';
-  if (model.properties !== undefined) {
-    for (const [propertyName, propertyModel] of Object.entries(
-      model.properties
-    )) {
-      const modelInstanceVariable = `value.${propertyName}`;
-      if (
-        propertyModel.property instanceof ConstrainedDictionaryModel &&
-        propertyModel.property.serializationType === 'unwrap'
-      ) {
-        serializeProperties += `// Unwrap dictionary properties
-if (${modelInstanceVariable} != null) {
-  foreach (var unwrappedProperty in ${modelInstanceVariable})
+function renderSerializeAdditionalProperties(model: CommonModel, renderer: CSharpRenderer, inputModel: CommonInputModel) {
+  const serializeAdditionalProperties = '';
+  if (model.additionalProperties !== undefined) {
+    let additionalPropertyName = getUniquePropertyName(model, DefaultPropertyNames.additionalProperties);
+    additionalPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(additionalPropertyName, model.additionalProperties));
+    return `// Unwrap additional properties in object
+if (value.AdditionalProperties != null) {
+  foreach (var additionalProperty in value.${additionalPropertyName})
   {
-    // Ignore any unwrapped properties which might already be part of the core properties
-    if (properties.Any(prop => prop.Name == unwrappedProperty.Key))
+    //Ignore any additional properties which might already be part of the core properties
+    if (properties.Any(prop => prop.Name == additionalProperty.Key))
     {
         continue;
     }
-    // Write property name and let the serializer serialize the value itself
-    writer.WritePropertyName(unwrappedProperty.Key);
-    ${renderSerializeProperty('unwrappedProperty.Value', propertyModel)}
+    // write property name and let the serializer serialize the value itself
+    writer.WritePropertyName(additionalProperty.Key);
+    ${renderSerializeProperty('additionalProperty.Value', model.additionalProperties, inputModel)}
   }
 }`;
-      }
+  }
+  return serializeAdditionalProperties;
+}
+
+function renderSerializeProperties(model: CommonModel, renderer: CSharpRenderer, inputModel: CommonInputModel) {
+  let serializeProperties = '';
+  if (model.properties !== undefined) {
+    for (const [propertyName, propertyModel] of Object.entries(model.properties)) {
+      const formattedPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(propertyName, propertyModel));
+      const modelInstanceVariable = `value.${formattedPropertyName}`;
       serializeProperties += `if(${modelInstanceVariable} != null) { 
   // write property name and let the serializer serialize the value itself
-  writer.WritePropertyName("${propertyModel.unconstrainedPropertyName}");
-  ${renderSerializeProperty(modelInstanceVariable, propertyModel)}
+  writer.WritePropertyName("${propertyName}");
+  ${renderSerializeProperty(modelInstanceVariable, propertyModel, inputModel)}
 }\n`;
     }
   }
   return serializeProperties;
 }
+function renderSerializePatternProperties(model: CommonModel, renderer: CSharpRenderer, inputModel: CommonInputModel) {
+  let serializePatternProperties = '';
+  if (model.patternProperties !== undefined) {
+    for (const [pattern, patternModel] of Object.entries(model.patternProperties)) {
+      let patternPropertyName = getUniquePropertyName(model, `${pattern}${DefaultPropertyNames.patternProperties}`);
+      patternPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(patternPropertyName, patternModel));
+      serializePatternProperties += `// Unwrap pattern properties in object
+if(value.${patternPropertyName} != null) { 
+  foreach (var patternProp in value.${patternPropertyName})
+  {
+    //Ignore any pattern properties which might already be part of the core properties
+    if (properties.Any(prop => prop.Name == patternProp.Key))
+    {
+        continue;
+    }
+    // write property name and let the serializer serialize the value itself
+    writer.WritePropertyName(patternProp.Key);
+    ${renderSerializeProperty('patternProp.Value', patternModel, inputModel)}
+  }
+}`;
+    }
+  }
+  return serializePatternProperties;
+}
 
-function renderPropertiesList(
-  model: ConstrainedObjectModel,
-  renderer: CSharpRenderer<any>
-) {
-  const unwrappedDictionaryProperties = Object.values(model.properties)
-    .filter((model) => {
-      return (
-        model.property instanceof ConstrainedDictionaryModel &&
-        model.property.serializationType === 'unwrap'
-      );
-    })
-    .map((value) => {
-      return value.propertyName;
-    });
-
+function renderPropertiesList(model: CommonModel, renderer: CSharpRenderer) {
+  const propertyFilter: string[] = [];
+  if (model.additionalProperties !== undefined) {
+    let additionalPropertyName = getUniquePropertyName(model, DefaultPropertyNames.additionalProperties);
+    additionalPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(additionalPropertyName, model.additionalProperties));
+    propertyFilter.push(`prop.Name != "${additionalPropertyName}"`);
+  }
+  for (const [pattern, patternModel] of Object.entries(model.patternProperties || {})) {
+    let patternPropertyName = getUniquePropertyName(model, `${pattern}${DefaultPropertyNames.patternProperties}`);
+    patternPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(patternPropertyName, patternModel));
+    propertyFilter.push(`prop.Name != "${patternPropertyName}"`);
+  }
   let propertiesList = 'var properties = value.GetType().GetProperties();';
-  if (unwrappedDictionaryProperties.length > 0) {
-    renderer.dependencyManager.addDependency('using System.Linq;');
-    propertiesList = `var properties = value.GetType().GetProperties().Where(prop => ${unwrappedDictionaryProperties.join(
-      ' && '
-    )});`;
+  if (propertyFilter.length > 0) {
+    renderer.addDependency('using System.Linq;');
+    propertiesList = `var properties = value.GetType().GetProperties().Where(prop => ${propertyFilter.join(' && ')});`;
   }
   return propertiesList;
 }
 /**
  * Render `serialize` function based on model
  */
-function renderSerialize({
-  renderer,
-  model
-}: {
-  renderer: CSharpRenderer<any>;
-  model: ConstrainedObjectModel;
+function renderSerialize({ renderer, model, inputModel }: {
+  renderer: CSharpRenderer,
+  model: CommonModel,
+  inputModel: CommonInputModel
 }): string {
-  const serializeProperties = renderSerializeProperties(model);
+  const formattedModelName = renderer.nameType(model.$id);
+  const serializeProperties = renderSerializeProperties(model, renderer, inputModel);
+  const serializePatternProperties = renderSerializePatternProperties(model, renderer, inputModel);
+  const serializeAdditionalProperties = renderSerializeAdditionalProperties(model, renderer, inputModel);
   const propertiesList = renderPropertiesList(model, renderer);
 
-  return `public override void Write(Utf8JsonWriter writer, ${
-    model.name
-  } value, JsonSerializerOptions options)
+  return `public override void Write(Utf8JsonWriter writer, ${formattedModelName} value, JsonSerializerOptions options)
 {
   if (value == null)
   {
@@ -112,67 +125,94 @@ function renderSerialize({
 
 ${renderer.indent(serializeProperties)}
 
+${renderer.indent(serializePatternProperties)}
+
+${renderer.indent(serializeAdditionalProperties)}
+
   writer.WriteEndObject();
 }`;
-}
+} 
 
-function renderDeserializeProperty(model: ConstrainedObjectPropertyModel) {
-  //Referenced enums is the only one who need custom serialization
-  if (
-    model.property instanceof ConstrainedReferenceModel &&
-    model.property.ref instanceof ConstrainedEnumModel
-  ) {
-    return `${model.property.name}Extension.To${model.property.name}(JsonSerializer.Deserialize<dynamic>(ref reader, options))`;
+function renderDeserializeProperty(type: string, model: CommonModel, inputModel: CommonInputModel) {
+  if (model.$ref) {
+    const resolvedModel = inputModel.models[model.$ref];
+    const propertyModelKind = TypeHelpers.extractKind(resolvedModel);
+    //Referenced enums is the only one who need custom serialization
+    if (propertyModelKind === ModelKind.ENUM) {
+      return `${type}Extensions.To${type}(JsonSerializer.Deserialize<dynamic>(ref reader, options))`;
+    }
   }
-  return `JsonSerializer.Deserialize<${model.property.type}>(ref reader, options)`;
+  return `JsonSerializer.Deserialize<${type}>(ref reader, options)`;
 }
 
-function renderDeserializeProperties(model: ConstrainedObjectModel) {
+function renderDeserializeProperties(model: CommonModel, renderer: CSharpRenderer, inputModel: CommonInputModel) {
   const propertyEntries = Object.entries(model.properties || {});
   const deserializeProperties = propertyEntries.map(([prop, propModel]) => {
-    //Unwrapped dictionary properties, need to be unwrapped in JSON
-    if (
-      propModel.property instanceof ConstrainedDictionaryModel &&
-      propModel.property.serializationType === 'unwrap'
-    ) {
-      return `if(instance.${prop} == null) { instance.${prop} = new Dictionary<${
-        propModel.property.key.type
-      }, ${propModel.property.key.type}>(); }
-      var deserializedValue = ${renderDeserializeProperty(propModel)};
-      instance.${prop}.Add(propertyName, deserializedValue);
-      continue;`;
-    }
-    return `if (propertyName == "${propModel.unconstrainedPropertyName}")
-  {
-    var value = ${renderDeserializeProperty(propModel)};
-    instance.${prop} = value;
-    continue;
-  }`;
+    const formattedPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(prop, propModel));
+    const propertyModelType = renderer.renderType(propModel);
+    return `if (propertyName == "${prop}")
+{
+  var value = ${renderDeserializeProperty(propertyModelType, propModel, inputModel)};
+  instance.${formattedPropertyName} = value;
+  continue;
+}`;
   });
   return deserializeProperties.join('\n');
+}
+
+function renderDeserializePatternProperties(model: CommonModel, renderer: CSharpRenderer, inputModel: CommonInputModel) {
+  if (model.patternProperties === undefined) {
+    return '';
+  }
+  const patternProperties = Object.entries(model.patternProperties).map(([pattern, patternModel]) => {
+    let patternPropertyName = getUniquePropertyName(model, `${pattern}${DefaultPropertyNames.patternProperties}`);
+    patternPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(patternPropertyName, patternModel));
+    const patternPropertyType = renderer.renderType(patternModel);
+    return `if(instance.${patternPropertyName} == null) { instance.${patternPropertyName} = new Dictionary<string, ${patternPropertyType}>(); }
+var match = Regex.Match(propertyName, @"${pattern}");
+if (match.Success)
+{
+  var deserializedValue = ${renderDeserializeProperty(patternPropertyType, patternModel, inputModel)};
+  instance.${patternPropertyName}.Add(propertyName, deserializedValue);
+  continue;
+}`;
+  });
+  return patternProperties.join('\n');
+}
+
+function renderDeserializeAdditionalProperties(model: CommonModel, renderer: CSharpRenderer, inputModel: CommonInputModel) {
+  if (model.additionalProperties === undefined) {
+    return ''; 
+  }
+  let additionalPropertyName = getUniquePropertyName(model, DefaultPropertyNames.additionalProperties);
+  additionalPropertyName = FormatHelpers.upperFirst(renderer.nameProperty(additionalPropertyName, model.additionalProperties));
+  const additionalPropertyType = renderer.renderType(model.additionalProperties);
+  return `if(instance.${additionalPropertyName} == null) { instance.${additionalPropertyName} = new Dictionary<string, ${additionalPropertyType}>(); }
+var deserializedValue = ${renderDeserializeProperty(additionalPropertyType, model.additionalProperties, inputModel)};
+instance.${additionalPropertyName}.Add(propertyName, deserializedValue);
+continue;`;
 }
 
 /**
  * Render `deserialize` function based on model
  */
-function renderDeserialize({
-  renderer,
-  model
-}: {
-  renderer: CSharpRenderer<any>;
-  model: ConstrainedObjectModel;
+function renderDeserialize({ renderer, model, inputModel }: {
+  renderer: CSharpRenderer,
+  model: CommonModel,
+  inputModel: CommonInputModel
 }): string {
-  const deserializeProperties = renderDeserializeProperties(model);
-  return `public override ${
-    model.name
-  } Read(ref Utf8JsonReader reader, System.Type typeToConvert, JsonSerializerOptions options)
+  const formattedModelName = renderer.nameType(model.$id);
+  const deserializeProperties = renderDeserializeProperties(model, renderer, inputModel);
+  const deserializePatternProperties = renderDeserializePatternProperties(model, renderer, inputModel);
+  const deserializeAdditionalProperties = renderDeserializeAdditionalProperties(model, renderer, inputModel);
+  return `public override ${formattedModelName} Read(ref Utf8JsonReader reader, System.Type typeToConvert, JsonSerializerOptions options)
 {
   if (reader.TokenType != JsonTokenType.StartObject)
   {
     throw new JsonException();
   }
 
-  var instance = new ${model.name}();
+  var instance = new ${formattedModelName}();
   
   while (reader.Read())
   {
@@ -189,35 +229,36 @@ function renderDeserialize({
 
     string propertyName = reader.GetString();
 ${renderer.indent(deserializeProperties, 4)}
+
+${renderer.indent(deserializePatternProperties, 4)}
+
+${renderer.indent(deserializeAdditionalProperties, 4)}
   }
   
   throw new JsonException();
 }`;
-}
+} 
 
 /**
- * Preset which adds `serialize` and `deserialize` functions to class.
- *
+ * Preset which adds `serialize` and `deserialize` functions to class. 
+ * 
  * @implements {CSharpPreset}
  */
-export const CSHARP_JSON_SERIALIZER_PRESET: CSharpPreset<CSharpOptions> = {
+export const CSHARP_JSON_SERIALIZER_PRESET: CSharpPreset = {
   class: {
-    self({ renderer, model, content }) {
-      renderer.dependencyManager.addDependency('using System.Text.Json;');
-      renderer.dependencyManager.addDependency(
-        'using System.Text.Json.Serialization;'
-      );
-      renderer.dependencyManager.addDependency(
-        'using System.Text.RegularExpressions;'
-      );
+    self({ renderer, model, content, inputModel}) {
+      renderer.addDependency('using System.Text.Json;');
+      renderer.addDependency('using System.Text.Json.Serialization;');
+      renderer.addDependency('using System.Text.RegularExpressions;');
+      
+      const formattedModelName = renderer.nameType(model.$id);
+      const deserialize = renderDeserialize({renderer, model, inputModel});
+      const serialize = renderSerialize({renderer, model, inputModel});
 
-      const deserialize = renderDeserialize({ renderer, model });
-      const serialize = renderSerialize({ renderer, model });
-
-      return `[JsonConverter(typeof(${model.name}Converter))]
+      return `[JsonConverter(typeof(${formattedModelName}Converter))]
 ${content}
 
-internal class ${model.name}Converter : JsonConverter<${model.name}>
+internal class ${formattedModelName}Converter : JsonConverter<${formattedModelName}>
 {
   public override bool CanConvert(System.Type objectType)
   {

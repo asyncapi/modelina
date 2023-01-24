@@ -1,9 +1,7 @@
-import { ParseOptions } from '@asyncapi/parser';
-import { InterpreterOptions } from '../interpreter/Interpreter';
+import { ParserOptions } from '@asyncapi/parser';
 import { TypeScriptInputProcessorOptions } from '../processors/index';
 
 export interface ProcessorOptions {
-  asyncapi?: ParseOptions;
-  typescript?: TypeScriptInputProcessorOptions;
-  interpreter?: InterpreterOptions;
+  asyncapi?: ParserOptions,
+  typescript?: TypeScriptInputProcessorOptions,
 }

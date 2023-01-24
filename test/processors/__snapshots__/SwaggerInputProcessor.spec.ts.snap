@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SwaggerInputProcessor process() should process the swagger document accurately 1`] = `
-InputMetaModel {
+CommonInputModel {
   "models": Object {},
   "originalInput": Object {
     "definitions": Object {

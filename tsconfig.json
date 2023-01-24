@@ -23,10 +23,5 @@
   "include": [
     "src/**/*.ts",
   ],
-  "exclude": ["node_modules", "lib", "examples", "src/generator/template", "src/processors/TemplateInputProcessor"],
-  "ts-node": {
-    "compilerOptions": {
-      "module": "CommonJS"
-    }
-  }
+  "exclude": ["node_modules", "lib", "examples"]
 }

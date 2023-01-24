@@ -4,7 +4,6 @@
 
 <!-- toc -->
 
-- [The Processing](#the-processing)
 - [Contributing](#contributing)
 - [Usage](#usage)
 - [Advanced](#advanced)
@@ -13,17 +12,11 @@
 - [Generators](#generators)
 - [Presets](#presets)
 - [Interpretation of JSON Schema](#interpretation-of-json-schema)
-- [Migration](#migration)
 - [Languages](#languages)
 
 <!-- tocstop -->
 
 This document gives the overview of all the available documentation for Modelina.
-
-### [The Processing](./input-processing.md)
-Contains information how the internals of the processing works.
-
-This document contains all the information you need to understand the internal meta model and processes.
 
 ### [Contributing](./contributing.md)
 Contains all the information you need to contribute to this project.
@@ -46,20 +39,13 @@ Details which different generator options are supported.
 ### [Presets](./presets.md)
 Goes more in-depth into how the preset system works, which enables full customization of generators.
 
-### [Interpretation of JSON Schema](./inputs/JSON_Schema.md)
+### [Interpretation of JSON Schema](./interpretation_of_JSON_Schema.md)
 Explains how a JSON Schema is interpreted to a data model.
-
-### [Migration](./migration.md)
-As time goes on, major versions are inevitible and expected! You can find the migration guides here.
 
 ### Languages
 Each language has its own limitations, corner cases, and features; thus, each language has separate documentation.
 - [C#](./languages/Csharp.md)
-- [Dart](./languages/Dart.md)
 - [Go](./languages/Go.md)
 - [Java](./languages/Java.md)
 - [JavaScript](./languages/JavaScript.md)
-- [Rust](./languages/Rust.md)
-- [Python](./languages/Python.md)
 - [TypeScript](./languages/TypeScript.md)
-- [Kotlin](./languages/Kotlin.md)

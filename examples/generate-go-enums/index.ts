@@ -9,22 +9,25 @@ const jsonSchemaDraft7 = {
     cities: {
       $id: 'cities',
       type: 'string',
-      enum: ['London', 'Rome', 'Brussels']
+      enum: ['London', 'Rome', 'Brussels'],
+    },
+    click_options: {
+      $id: 'click_options',
+      type: 'string',
+      enum: ['click_and_play', 'click&pay'],
     },
     options: {
       $id: 'options',
-      type: ['integer', 'boolean', 'string'],
-      enum: [123, 213, true, 'Run']
-    }
+      type: 'integer',
+      enum: ['first_option', 'second_option'],
+    },
   }
 };
 
-export async function generate(): Promise<void> {
+export async function generate() : Promise<void> {
   const models = await generator.generate(jsonSchemaDraft7);
   for (const model of models) {
     console.log(model.result);
   }
 }
-if (require.main === module) {
-  generate();
-}
+generate();

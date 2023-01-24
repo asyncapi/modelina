@@ -4,9 +4,9 @@ exports[`Should be able to generate a model to overwrite the Equal and GetHashCo
 Array [
   "public class Root
 {
-  private string? email;
+  private string email;
 
-  public string? Email 
+  public string Email 
   {
     get { return email; }
     set { email = value; }

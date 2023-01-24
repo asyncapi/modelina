@@ -28,24 +28,12 @@
 
 ## Generator's options
 
-For Modelina, there exist 3 types of options for the generation process.
-1. Default options, are the default options the rest overwrite.
-2. Generator options, are used as the baseline that is by default used for each model render.
-3. Render options, are the last resort to specialize options for the individual rendering of a model, that overwrite the generator options.
+Each generator extends default options for the generator. It means that the generator can also have additional options.
 
-Generator options are passed as the first argument to the generator's constructor. Check the example:
+Options are passed as the first argument to the generator's constructor. Check the example:
 
 ```ts
 const generator = new TypeScriptGenerator({ ...options });
-```
-
-Render options are passed as the first argument to the generator's render function. Check the example:
-
-```ts
-const generator = ...
-const model = ...
-const inputModel = ...
-generator.render(model, inputModel, { ...options });
 ```
 
 Default generator options (common to all generators) are as follows:

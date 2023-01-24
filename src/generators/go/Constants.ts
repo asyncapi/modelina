@@ -1,5 +1,3 @@
-import { checkForReservedKeyword } from '../../helpers';
-
 export const RESERVED_GO_KEYWORDS = [
   'break',
   'case',
@@ -28,9 +26,6 @@ export const RESERVED_GO_KEYWORDS = [
   'var'
 ];
 
-export function isReservedGoKeyword(
-  word: string,
-  forceLowerCase = true
-): boolean {
-  return checkForReservedKeyword(word, RESERVED_GO_KEYWORDS, forceLowerCase);
+export function isReservedGoKeyword(word: string): boolean {
+  return RESERVED_GO_KEYWORDS.includes(word);
 }

@@ -25,15 +25,15 @@ export class SwaggerV2ExternalDocumentation {
 
 /**
  * OpenAPI 2.0 (Swagger 2.0) schema model
- *
+ * 
  * Based on Draft 4, but with restricted keywords and definitions
- *
+ * 
  * Restrictions (keywords not allowed)
  *  - oneOf
  *  - anyOf
  *  - patternProperties
  *  - not
- *
+ * 
  * https://swagger.io/specification/v2/#schemaObject
  */
 export class SwaggerV2Schema {
@@ -54,13 +54,13 @@ export class SwaggerV2Schema {
   minProperties?: number;
   allOf?: SwaggerV2Schema[];
   format?: string;
-  definitions?: { [key: string]: SwaggerV2Schema };
+  definitions?: { [key: string]: SwaggerV2Schema; };
   description?: string;
   default?: any;
   type?: string | string[];
   enum?: any[];
   items?: SwaggerV2Schema | SwaggerV2Schema[];
-  properties?: { [key: string]: SwaggerV2Schema };
+  properties?: { [key: string]: SwaggerV2Schema; };
   additionalProperties?: SwaggerV2Schema | boolean;
   $ref?: string;
   required?: string[];
@@ -79,22 +79,17 @@ export class SwaggerV2Schema {
 
   /**
    * Takes a deep copy of the input object and converts it to an instance of SwaggerV2Schema.
-   *
-   * @param object
+   * 
+   * @param object 
    */
   static toSchema(object: Record<string, unknown>): SwaggerV2Schema {
     const convertedSchema = SwaggerV2Schema.internalToSchema(object);
     if (convertedSchema instanceof SwaggerV2Schema) {
       return convertedSchema;
     }
-    throw new Error(
-      'Could not convert input to expected copy of SwaggerV2Schema'
-    );
+    throw new Error('Could not convert input to expected copy of SwaggerV2Schema');
   }
-  private static internalToSchema(
-    object: any,
-    seenSchemas: Map<any, SwaggerV2Schema> = new Map()
-  ): any {
+  private static internalToSchema(object: any, seenSchemas: Map<any, SwaggerV2Schema> = new Map()): any {
     // if primitive types return as is
     if (null === object || 'object' !== typeof object) {
       return object;
@@ -107,10 +102,7 @@ export class SwaggerV2Schema {
     if (object instanceof Array) {
       const copy: any = [];
       for (let i = 0, len = object.length; i < len; i++) {
-        copy[Number(i)] = SwaggerV2Schema.internalToSchema(
-          object[Number(i)],
-          seenSchemas
-        );
+        copy[Number(i)] = SwaggerV2Schema.internalToSchema(object[Number(i)], seenSchemas);
       }
       return copy;
     }
@@ -121,11 +113,11 @@ export class SwaggerV2Schema {
       let copyProp = prop;
 
       // Ignore value properties (those with `any` type) as they should be saved as is regardless of value
-      if (propName !== 'default' && propName !== 'enum') {
+      if (propName !== 'default' &&
+        propName !== 'enum') { 
         // Custom convert to External documentation instance
         if (propName === 'externalDocs') {
-          schema.externalDocs =
-            SwaggerV2ExternalDocumentation.toExternalDocumentation(prop);
+          schema.externalDocs = SwaggerV2ExternalDocumentation.toExternalDocumentation(prop);
           continue;
         } else if (propName === 'xml') {
           schema.xml = SwaggerV2Xml.toXml(prop);

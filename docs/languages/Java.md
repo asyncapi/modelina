@@ -12,12 +12,8 @@ There are special use-cases that each language supports; this document pertains 
 - [Include toString function for the class](#include-tostring-function-for-the-class)
 - [Include JavaDoc for properties](#include-javadoc-for-properties)
 - [Include Javax validation constraint annotations for properties](#include-javax-validation-constraint-annotations-for-properties)
-- [Generate serializer and deserializer functionality](#generate-serializer-and-deserializer-functionality)
-  * [To and from JSON](#to-and-from-json)
-    + [Jackson annotation](#jackson-annotation)
-    + [JSON marshaling and unmarshaling methods](#json-marshaling-and-unmarshaling-methods)
-  * [To and from XML](#to-and-from-xml)
-  * [To and from binary](#to-and-from-binary)
+- [Include Jackson annotations for the class](#include-jackson-annotations-for-the-class)
+- [Include JSON marshaling and unmarshaling methods](#include-json-marshaling-and-unmarshaling-methods)
 
 <!-- tocstop -->
 
@@ -57,38 +53,17 @@ In some cases, when you generate the models from JSON Schema, you may want to in
 
 Check out this [example for a live demonstration](../../examples/java-generate-javax-constraint-annotation).
 
-## Generate serializer and deserializer functionality
-
-The most widely used usecase for Modelina is to generate models that include serilization and deserialization functionality to convert the models into payload data. This payload data can of course be many different kinds, JSON, XML, raw binary, you name it.
-
-As you normally only need one library to do this, we developers can never get enough with creating new stuff, therefore there might be one specific library you need or want to integrate with. Therefore there is not one specific preset that offers everything. Below is a list of all the supported serialization presets. 
-
-### To and from JSON
-Here are all the supported presets and the libraries they use: 
-
-- [Jackson annotation](#jackson-annotation) 
-- [JSON marshaling and unmarshaling methods](#json-marshaling-and-unmarshaling-methods) 
-
-#### Jackson annotation
+## Include Jackson annotations for the class
 
 To generate Java data models with Jackson annotation using `JAVA_JACKSON_PRESET` option.
 
 Check out this [example for a live demonstration](../../examples/java-generate-jackson-annotation).
 
-**External dependencies**
-Requires [com.fasterxml.jackson.annotation](https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations) to work.
-
-#### JSON marshaling and unmarshaling methods
+## Include JSON marshaling and unmarshaling methods
 
 Sometimes you just want to convert your class to JSON without the use of annotations such as Jackson.
 
 Check out this [example for a live demonstration](../../examples/java-generate-marshalling).
 
-**External dependencies**
-Requires [org.json package](https://search.maven.org/artifact/org.json/json/20211205/bundle) to work.
-
-### To and from XML
-Currently not supported, [let everyone know you need it](https://github.com/asyncapi/modelina/issues/new?assignees=&labels=enhancement&template=enhancement.md)!
-
-### To and from binary
-Currently not supported, [let everyone know you need it](https://github.com/asyncapi/modelina/issues/new?assignees=&labels=enhancement&template=enhancement.md)!
+External dependencies
+- Requires [org.json package](https://search.maven.org/artifact/org.json/json/20211205/bundle) to work

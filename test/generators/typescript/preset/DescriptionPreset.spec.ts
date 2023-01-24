@@ -1,4 +1,4 @@
-import { TS_DESCRIPTION_PRESET, TypeScriptGenerator } from '../../../../src';
+import {TS_DESCRIPTION_PRESET, TypeScriptGenerator} from '../../../../src';
 
 const doc = {
   $id: 'Test',
@@ -11,29 +11,37 @@ const doc = {
     numberProp: {
       type: 'number',
       description: 'Description',
-      examples: 'Example'
+      examples: 'Example',
     },
     objectProp: {
       type: 'object',
       $id: 'NestedTest',
       properties: { stringProp: { type: 'string' } },
-      examples: ['Example 1', 'Example 2']
-    }
-  }
+      examples: ['Example 1', 'Example 2'],
+    },
+  },
 };
 
 describe('Description generation', () => {
   let generator: TypeScriptGenerator;
   beforeEach(() => {
     generator = new TypeScriptGenerator({
-      presets: [TS_DESCRIPTION_PRESET]
+      presets: [TS_DESCRIPTION_PRESET],
     });
   });
 
   test('should render example function for model', async () => {
-    const models = await generator.generate(doc);
-    expect(models).toHaveLength(2);
-    expect(models[0].result).toMatchSnapshot();
-    expect(models[1].result).toMatchSnapshot();
+    const inputModel = await generator.process(doc);
+    const testModel = inputModel.models['Test'];
+    const nestedTestModel = inputModel.models['NestedTest'];
+
+    const testClass = await generator.renderClass(testModel, inputModel);
+    const nestedTestClass = await generator.renderClass(
+      nestedTestModel,
+      inputModel
+    );
+
+    expect(testClass.result).toMatchSnapshot();
+    expect(nestedTestClass.result).toMatchSnapshot();
   });
 });

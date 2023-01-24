@@ -7,8 +7,7 @@ const generator = new CSharpGenerator({
       options: {
         autoImplementedProperties: true
       }
-    }
-  ]
+    }]
 });
 
 const jsonSchemaDraft7 = {
@@ -28,7 +27,7 @@ const jsonSchemaDraft7 = {
     },
     numberProp: {
       type: 'number'
-    }
+    },
   }
 };
 
@@ -38,6 +37,4 @@ export async function generate(): Promise<void> {
     console.log(model.result);
   }
 }
-if (require.main === module) {
-  generate();
-}
+generate();

@@ -3,5 +3,3 @@ node_modules
 coverage
 lib
 *.DS_Store
-.idea
-output

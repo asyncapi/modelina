@@ -11,22 +11,17 @@ class Test {
    * @example Example
    */
   private _numberProp?: number;
-  /**
-   * @example Example 1, Example 2
-   */
   private _objectProp?: NestedTest;
-  private _additionalProperties?: Map<string, any>;
+  private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null>;
 
   constructor(input: {
     stringProp: string,
     numberProp?: number,
     objectProp?: NestedTest,
-    additionalProperties?: Map<string, any>,
   }) {
     this._stringProp = input.stringProp;
     this._numberProp = input.numberProp;
     this._objectProp = input.objectProp;
-    this._additionalProperties = input.additionalProperties;
   }
 
   get stringProp(): string { return this._stringProp; }
@@ -38,8 +33,8 @@ class Test {
   get objectProp(): NestedTest | undefined { return this._objectProp; }
   set objectProp(objectProp: NestedTest | undefined) { this._objectProp = objectProp; }
 
-  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
-  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
+  get additionalProperties(): Map<String, object | string | number | Array<unknown> | boolean | null> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<String, object | string | number | Array<unknown> | boolean | null> | undefined) { this._additionalProperties = additionalProperties; }
 }"
 `;
 
@@ -49,20 +44,18 @@ exports[`Description generation should render example function for model 2`] = `
  */
 class NestedTest {
   private _stringProp?: string;
-  private _additionalProperties?: Map<string, any>;
+  private _additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null>;
 
   constructor(input: {
     stringProp?: string,
-    additionalProperties?: Map<string, any>,
   }) {
     this._stringProp = input.stringProp;
-    this._additionalProperties = input.additionalProperties;
   }
 
   get stringProp(): string | undefined { return this._stringProp; }
   set stringProp(stringProp: string | undefined) { this._stringProp = stringProp; }
 
-  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
-  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
+  get additionalProperties(): Map<String, object | string | number | Array<unknown> | boolean | null> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<String, object | string | number | Array<unknown> | boolean | null> | undefined) { this._additionalProperties = additionalProperties; }
 }"
 `;

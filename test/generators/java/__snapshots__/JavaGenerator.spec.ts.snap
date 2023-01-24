@@ -1,218 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`JavaGenerator should not render reserved keyword 1`] = `
-"public class Address {
-  private String reservedReservedEnum;
-  private String reservedEnum;
-
-  public String getReservedReservedEnum() { return this.reservedReservedEnum; }
-  public void setReservedReservedEnum(String reservedReservedEnum) { this.reservedReservedEnum = reservedReservedEnum; }
-
-  public String getReservedEnum() { return this.reservedEnum; }
-  public void setReservedEnum(String reservedEnum) { this.reservedEnum = reservedEnum; }
-}"
-`;
-
-exports[`JavaGenerator should render \`class\` type 1`] = `
-"public class Address {
-  private String streetName;
-  private String city;
-  private String state;
-  private Double houseNumber;
-  private Boolean marriage;
-  private Object members;
-  private Object[] arrayType;
-  private Map<String, Object> additionalProperties;
-
-  public String getStreetName() { return this.streetName; }
-  public void setStreetName(String streetName) { this.streetName = streetName; }
-
-  public String getCity() { return this.city; }
-  public void setCity(String city) { this.city = city; }
-
-  public String getState() { return this.state; }
-  public void setState(String state) { this.state = state; }
-
-  public Double getHouseNumber() { return this.houseNumber; }
-  public void setHouseNumber(Double houseNumber) { this.houseNumber = houseNumber; }
-
-  public Boolean getMarriage() { return this.marriage; }
-  public void setMarriage(Boolean marriage) { this.marriage = marriage; }
-
-  public Object getMembers() { return this.members; }
-  public void setMembers(Object members) { this.members = members; }
-
-  public Object[] getArrayType() { return this.arrayType; }
-  public void setArrayType(Object[] arrayType) { this.arrayType = arrayType; }
-
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-}"
-`;
-
-exports[`JavaGenerator should render \`enum\` type (integer type) 1`] = `
-"public enum Numbers {
-  NUMBER_0((int)0), NUMBER_1((int)1), NUMBER_2((int)2), NUMBER_3((int)3);
-
-  private int value;
-
-  Numbers(int value) {
-    this.value = value;
-  }
-
-  public int getValue() {
-    return value;
-  }
-
-  public static Numbers fromValue(int value) {
-    for (Numbers e : Numbers.values()) {
-      if (e.value == value) {
-        return e;
-      }
-    }
-    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
-  }
-
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-}"
-`;
-
-exports[`JavaGenerator should render \`enum\` type (string type) 1`] = `
-"public enum States {
-  TEXAS((String)\\"Texas\\"), ALABAMA((String)\\"Alabama\\"), CALIFORNIA((String)\\"California\\"), NEW_YORK((String)\\"New York\\");
-
-  private String value;
-
-  States(String value) {
-    this.value = value;
-  }
-
-  public String getValue() {
-    return value;
-  }
-
-  public static States fromValue(String value) {
-    for (States e : States.values()) {
-      if (e.value.equals(value)) {
-        return e;
-      }
-    }
-    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
-  }
-
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-}"
-`;
-
-exports[`JavaGenerator should render \`enum\` type (union type) 1`] = `
-"public enum Union {
-  TEXAS((Object)\\"Texas\\"), ALABAMA((Object)\\"Alabama\\"), NUMBER_0((Object)0), NUMBER_1((Object)1), RESERVED_NUMBER_1((Object)\\"1\\"), TRUE((Object)\\"true\\"), CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT((Object)\\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\");
-
-  private Object value;
-
-  Union(Object value) {
-    this.value = value;
-  }
-
-  public Object getValue() {
-    return value;
-  }
-
-  public static Union fromValue(Object value) {
-    for (Union e : Union.values()) {
-      if (e.value.equals(value)) {
-        return e;
-      }
-    }
-    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
-  }
-
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-}"
-`;
-
-exports[`JavaGenerator should render List type for collections 1`] = `
-"public class CustomClass {
-  private List<Object> arrayType;
-
-  public List<Object> getArrayType() { return this.arrayType; }
-  public void setArrayType(List<Object> arrayType) { this.arrayType = arrayType; }
-}"
-`;
-
-exports[`JavaGenerator should render custom preset for \`enum\` type 1`] = `
-"@EnumAnnotation
-public enum CustomEnum {
-  TEXAS((String)\\"Texas\\"), ALABAMA((String)\\"Alabama\\"), CALIFORNIA((String)\\"California\\");
-
-  private String value;
-
-  CustomEnum(String value) {
-    this.value = value;
-  }
-
-  public String getValue() {
-    return value;
-  }
-
-  public static CustomEnum fromValue(String value) {
-    for (CustomEnum e : CustomEnum.values()) {
-      if (e.value.equals(value)) {
-        return e;
-      }
-    }
-    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
-  }
-
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-}"
-`;
-
-exports[`JavaGenerator should render enums with translated special characters 1`] = `
-"public enum States {
-  TEST_PLUS((String)\\"test+\\"), TEST((String)\\"test\\"), TEST_MINUS((String)\\"test-\\"), TEST_QUESTION_EXCLAMATION((String)\\"test?!\\"), ASTERISK_TEST((String)\\"*test\\");
-
-  private String value;
-
-  States(String value) {
-    this.value = value;
-  }
-
-  public String getValue() {
-    return value;
-  }
-
-  public static States fromValue(String value) {
-    for (States e : States.values()) {
-      if (e.value.equals(value)) {
-        return e;
-      }
-    }
-    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
-  }
-
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-}"
-`;
-
 exports[`JavaGenerator should render models and their dependencies 1`] = `
-"package test.packageName;
-import test.packageName.OtherModel;
+"package test.package;
+import test.package.OtherModel;
 import java.util.Map;
 public class Address {
   private String streetName;
@@ -224,6 +14,7 @@ public class Address {
   private Object[] arrayType;
   private OtherModel otherModel;
   private Map<String, Object> additionalProperties;
+  private Map<String, String> sTestPatternProperties;
 
   public String getStreetName() { return this.streetName; }
   public void setStreetName(String streetName) { this.streetName = streetName; }
@@ -251,11 +42,14 @@ public class Address {
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  public Map<String, String> getSTestPatternProperties() { return this.sTestPatternProperties; }
+  public void setSTestPatternProperties(Map<String, String> sTestPatternProperties) { this.sTestPatternProperties = sTestPatternProperties; }
 }"
 `;
 
 exports[`JavaGenerator should render models and their dependencies 2`] = `
-"package test.packageName;
+"package test.package;
 
 import java.util.Map;
 public class OtherModel {
@@ -266,25 +60,6 @@ public class OtherModel {
   public void setStreetName(String streetName) { this.streetName = streetName; }
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-}"
-`;
-
-exports[`JavaGenerator should work custom preset for \`class\` type 1`] = `
-"public class CustomClass {
-  @JsonProperty(\\"property\\")
-  private String property;
-  @JsonProperty(\\"additionalProperties\\")
-  private Map<String, Object> additionalProperties;
-
-  @JsonProperty(\\"property\\")
-  public String getProperty() { return this.property; }
-  @JsonProperty(\\"property\\")
-  public void setProperty(String property) { this.property = property; }
-
-  @JsonProperty(\\"additionalProperties\\")
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  @JsonProperty(\\"additionalProperties\\")
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }"
 `;

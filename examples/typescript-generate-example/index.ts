@@ -29,6 +29,4 @@ export async function generate(): Promise<void> {
     console.log(model.result);
   }
 }
-if (require.main === module) {
-  generate();
-}
+generate();

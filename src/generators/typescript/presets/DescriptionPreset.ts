@@ -1,18 +1,18 @@
-import { ConstrainedMetaModel } from '../../../models';
+import { CommonModel } from '../../../models';
 import { TypeScriptPreset } from '../TypeScriptPreset';
 import { TypeScriptRenderer } from '../TypeScriptRenderer';
 
 const renderDescription = ({
   renderer,
   content,
-  item
+  item,
 }: {
-  renderer: TypeScriptRenderer<ConstrainedMetaModel>;
+  renderer: TypeScriptRenderer;
   content: string;
-  item: ConstrainedMetaModel;
+  item: CommonModel;
 }): string => {
-  const desc = item.originalInput.description?.trim();
-  const examples = item.originalInput.examples;
+  const desc = item.getFromOriginalInput('description')?.trim();
+  const examples = item.getFromOriginalInput('examples');
   const formattedExamples = `@example ${
     examples?.join ? examples.join(', ') : examples
   }`;
@@ -38,7 +38,7 @@ export const TS_DESCRIPTION_PRESET: TypeScriptPreset = {
       return renderDescription({ renderer, content, item: model });
     },
     property({ renderer, property, content }) {
-      return renderDescription({ renderer, content, item: property.property });
+      return renderDescription({ renderer, content, item: property });
     }
   },
   interface: {
@@ -46,17 +46,17 @@ export const TS_DESCRIPTION_PRESET: TypeScriptPreset = {
       return renderDescription({ renderer, content, item: model });
     },
     property({ renderer, property, content }) {
-      return renderDescription({ renderer, content, item: property.property });
+      return renderDescription({ renderer, content, item: property });
     }
   },
   type: {
     self({ renderer, model, content }) {
       return renderDescription({ renderer, content, item: model });
-    }
+    },
   },
   enum: {
     self({ renderer, model, content }) {
       return renderDescription({ renderer, content, item: model });
-    }
-  }
+    },
+  },
 };

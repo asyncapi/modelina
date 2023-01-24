@@ -1,11 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TypeScriptInputProcessor process() should be able to process input 1`] = `
-InputMetaModel {
+CommonInputModel {
   "models": Object {},
-  "originalInput": "export type Shape = {
+  "originalInput": "
+export type Shape = {
   size: number;
-};
+}
 
 export interface InnerData {
   age: number;
@@ -23,11 +24,12 @@ export interface ShapesData {
 `;
 
 exports[`TypeScriptInputProcessor process() should be able to process input with user provided options 1`] = `
-InputMetaModel {
+CommonInputModel {
   "models": Object {},
-  "originalInput": "export type Shape = {
+  "originalInput": "
+export type Shape = {
   size: number;
-};
+}
 
 export interface InnerData {
   age: number;
