@@ -1,6 +1,6 @@
 import { JavaGenerator, JAVA_DESCRIPTION_PRESET } from '../../src';
 
-const generator = new JavaGenerator({ 
+const generator = new JavaGenerator({
   presets: [JAVA_DESCRIPTION_PRESET]
 });
 const jsonSchemaDraft7 = {
@@ -10,14 +10,20 @@ const jsonSchemaDraft7 = {
   description: 'Description for class',
   examples: [{ prop: 'value' }],
   properties: {
-    prop: { type: 'string', description: 'Description for prop', examples: ['exampleValue'] },
-  },
+    prop: {
+      type: 'string',
+      description: 'Description for prop',
+      examples: ['exampleValue']
+    }
+  }
 };
 
-export async function generate() : Promise<void> {
+export async function generate(): Promise<void> {
   const models = await generator.generate(jsonSchemaDraft7);
   for (const model of models) {
     console.log(model.result);
   }
 }
-generate();
+if (require.main === module) {
+  generate();
+}

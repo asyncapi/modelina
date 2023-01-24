@@ -12,7 +12,7 @@ const swaggerDocument = {
     '/test': {
       post: {
         parameters: [
-          { 
+          {
             in: 'body',
             schema: {
               $schema: 'http://json-schema.org/draft-07/schema#',
@@ -55,4 +55,6 @@ export async function generate(): Promise<void> {
   }
 }
 
-generate();
+if (require.main === module) {
+  generate();
+}

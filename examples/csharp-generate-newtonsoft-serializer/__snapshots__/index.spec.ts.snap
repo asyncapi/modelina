@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to generate a model with functions to serialize the data model into JSON  and should log expected output to console 1`] = `
+Array [
+  "[JsonConverter(typeof(RootConverter))]
+public class Root
+{
+  private string? email;
+
+  public string? Email 
+  {
+    get { return email; }
+    set { email = value; }
+  }
+}
+
+public class RootConverter : JsonConverter<Root>
+{
+  public override Root ReadJson(JsonReader reader, System.Type objectType, Root existingValue, bool hasExistingValue, JsonSerializer serializer)
+{
+  JObject jo = JObject.Load(reader);
+  Root value = new Root();
+
+  if(jo[\\"email\\"] != null) {
+  value.Email = jo[\\"email\\"].ToObject<string?>(serializer);
+}
+
+  
+  return value;
+}
+  public override void WriteJson(JsonWriter writer, Root value, JsonSerializer serializer)
+{
+  JObject jo = new JObject();
+
+  if (value.Email != null)
+{
+  jo.Add(\\"email\\", JToken.FromObject(value.Email, serializer));
+}
+  
+
+  jo.WriteTo(writer);
+}
+
+  public override bool CanRead => true;
+  public override bool CanWrite => true;
+}",
+]
+`;

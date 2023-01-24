@@ -1,4 +1,3 @@
-
 /**
  * Logging interface for the model generation library
  */
@@ -11,7 +10,7 @@ export interface ModelLoggingInterface {
 
 /**
  * Logger class for the model generation library
- * 
+ *
  * This class acts as a forefront for any external loggers which is why it also implements the interface itself.
  */
 export class LoggerClass implements ModelLoggingInterface {
@@ -40,7 +39,7 @@ export class LoggerClass implements ModelLoggingInterface {
 
   /**
    * Sets the logger to use for the model generation library
-   * 
+   *
    * @param logger to add
    */
   setLogger(logger?: ModelLoggingInterface): void {

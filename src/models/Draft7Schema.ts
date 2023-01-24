@@ -19,17 +19,17 @@ export class Draft7Schema {
   oneOf?: (Draft7Schema | boolean)[];
   anyOf?: (Draft7Schema | boolean)[];
   not?: Draft7Schema | boolean;
-  dependencies?: { [key: string]: Draft7Schema | boolean | string[]; };
+  dependencies?: { [key: string]: Draft7Schema | boolean | string[] };
   format?: string;
-  definitions?: { [key: string]: Draft7Schema | boolean; };
+  definitions?: { [key: string]: Draft7Schema | boolean };
   description?: string;
   default?: any;
   type?: string | string[];
   enum?: any[];
   items?: Draft7Schema | Draft7Schema[] | boolean;
-  properties?: { [key: string]: Draft7Schema | boolean; };
+  properties?: { [key: string]: Draft7Schema | boolean };
   additionalProperties?: Draft7Schema | boolean;
-  patternProperties?: { [key: string]: Draft7Schema | boolean; };
+  patternProperties?: { [key: string]: Draft7Schema | boolean };
   $ref?: string;
   required?: string[];
   additionalItems?: Draft7Schema | boolean;
@@ -57,8 +57,8 @@ export class Draft7Schema {
 
   /**
    * Takes a deep copy of the input object and converts it to an instance of Draft7Schema.
-   * 
-   * @param object 
+   *
+   * @param object
    */
   static toSchema(object: Record<string, unknown>): Draft7Schema {
     const convertedSchema = Draft7Schema.internalToSchema(object);
@@ -67,7 +67,10 @@ export class Draft7Schema {
     }
     throw new Error('Could not convert input to expected copy of Draft7Schema');
   }
-  private static internalToSchema(object: any, seenSchemas: Map<any, Draft7Schema> = new Map()): any {
+  private static internalToSchema(
+    object: any,
+    seenSchemas: Map<any, Draft7Schema> = new Map()
+  ): any {
     // if primitive types return as is
     if (null === object || 'object' !== typeof object) {
       return object;
@@ -80,7 +83,10 @@ export class Draft7Schema {
     if (object instanceof Array) {
       const copy: any = [];
       for (let i = 0, len = object.length; i < len; i++) {
-        copy[Number(i)] = Draft7Schema.internalToSchema(object[Number(i)], seenSchemas);
+        copy[Number(i)] = Draft7Schema.internalToSchema(
+          object[Number(i)],
+          seenSchemas
+        );
       }
       return copy;
     }
@@ -91,10 +97,12 @@ export class Draft7Schema {
       let copyProp = prop;
 
       // Ignore value properties (those with `any` type) as they should be saved as is regardless of value
-      if (propName !== 'default' &&
+      if (
+        propName !== 'default' &&
         propName !== 'examples' &&
         propName !== 'const' &&
-        propName !== 'enum') {
+        propName !== 'enum'
+      ) {
         copyProp = Draft7Schema.internalToSchema(prop, seenSchemas);
       }
       (schema as any)[String(propName)] = copyProp;

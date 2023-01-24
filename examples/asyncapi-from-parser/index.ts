@@ -1,4 +1,4 @@
-import { parse } from '@asyncapi/parser';
+import { Parser } from '@asyncapi/parser';
 import { TypeScriptGenerator } from '../../src';
 
 const generator = new TypeScriptGenerator();
@@ -29,11 +29,14 @@ const AsyncAPIDocument = {
   }
 };
 
-export async function generate() : Promise<void> {
-  const parsedDoc = await parse(JSON.stringify(AsyncAPIDocument));
-  const models = await generator.generate(parsedDoc as any);
+export async function generate(): Promise<void> {
+  const parser = new Parser();
+  const { document } = await parser.parse(JSON.stringify(AsyncAPIDocument));
+  const models = await generator.generate(document);
   for (const model of models) {
     console.log(model.result);
   }
 }
-generate();
+if (require.main === module) {
+  generate();
+}
