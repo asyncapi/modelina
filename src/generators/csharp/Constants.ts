@@ -1,3 +1,5 @@
+import { checkForReservedKeyword } from '../../helpers';
+
 export const RESERVED_CSHARP_KEYWORDS = [
   'abstract',
   'as',
@@ -78,6 +80,13 @@ export const RESERVED_CSHARP_KEYWORDS = [
   'while'
 ];
 
-export function isReservedCSharpKeyword(word: string): boolean {
-  return RESERVED_CSHARP_KEYWORDS.includes(word);
+export function isReservedCSharpKeyword(
+  word: string,
+  forceLowerCase = true
+): boolean {
+  return checkForReservedKeyword(
+    word,
+    RESERVED_CSHARP_KEYWORDS,
+    forceLowerCase
+  );
 }

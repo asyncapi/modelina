@@ -1,5 +1,99 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`JavaScriptGenerator should not render \`class\` with reserved keyword 1`] = `
+"class Address {
+  reservedReservedEnum;
+  reservedEnum;
+
+  constructor(input) {
+    this.reservedReservedEnum = input.reservedReservedEnum;
+    this.reservedEnum = input.reservedEnum;
+  }
+
+  get reservedReservedEnum() { return this.reservedReservedEnum; }
+  set reservedReservedEnum(reservedReservedEnum) { this.reservedReservedEnum = reservedReservedEnum; }
+
+  get reservedEnum() { return this.reservedEnum; }
+  set reservedEnum(reservedEnum) { this.reservedEnum = reservedEnum; }
+}"
+`;
+
+exports[`JavaScriptGenerator should not render enums type 1`] = `
+"class Address {
+  reservedEnum;
+  additionalProperties;
+
+  constructor(input) {
+    if (input.hasOwnProperty('reservedEnum')) {
+      this.reservedEnum = input.reservedEnum;
+    }
+    if (input.hasOwnProperty('additionalProperties')) {
+      this.additionalProperties = input.additionalProperties;
+    }
+  }
+
+  get reservedEnum() { return this.reservedEnum; }
+  set reservedEnum(reservedEnum) { this.reservedEnum = reservedEnum; }
+
+  get additionalProperties() { return this.additionalProperties; }
+  set additionalProperties(additionalProperties) { this.additionalProperties = additionalProperties; }
+}"
+`;
+
+exports[`JavaScriptGenerator should render \`class\` type 1`] = `
+"class Address {
+  streetName;
+  city;
+  state;
+  houseNumber;
+  marriage;
+  members;
+  arrayType;
+  additionalProperties;
+
+  constructor(input) {
+    this.streetName = input.streetName;
+    this.city = input.city;
+    this.state = input.state;
+    this.houseNumber = input.houseNumber;
+    if (input.hasOwnProperty('marriage')) {
+      this.marriage = input.marriage;
+    }
+    if (input.hasOwnProperty('members')) {
+      this.members = input.members;
+    }
+    this.arrayType = input.arrayType;
+    if (input.hasOwnProperty('additionalProperties')) {
+      this.additionalProperties = input.additionalProperties;
+    }
+  }
+
+  get streetName() { return this.streetName; }
+  set streetName(streetName) { this.streetName = streetName; }
+
+  get city() { return this.city; }
+  set city(city) { this.city = city; }
+
+  get state() { return this.state; }
+  set state(state) { this.state = state; }
+
+  get houseNumber() { return this.houseNumber; }
+  set houseNumber(houseNumber) { this.houseNumber = houseNumber; }
+
+  get marriage() { return this.marriage; }
+  set marriage(marriage) { this.marriage = marriage; }
+
+  get members() { return this.members; }
+  set members(members) { this.members = members; }
+
+  get arrayType() { return this.arrayType; }
+  set arrayType(arrayType) { this.arrayType = arrayType; }
+
+  get additionalProperties() { return this.additionalProperties; }
+  set additionalProperties(additionalProperties) { this.additionalProperties = additionalProperties; }
+}"
+`;
+
 exports[`JavaScriptGenerator should render models and their dependencies for CJS module system 1`] = `
 "const OtherModel = require('./OtherModel');
 
@@ -13,7 +107,6 @@ class Address {
   arrayType;
   otherModel;
   additionalProperties;
-  sTestPatternProperties;
 
   constructor(input) {
     this.streetName = input.streetName;
@@ -29,6 +122,9 @@ class Address {
     this.arrayType = input.arrayType;
     if (input.hasOwnProperty('otherModel')) {
       this.otherModel = input.otherModel;
+    }
+    if (input.hasOwnProperty('additionalProperties')) {
+      this.additionalProperties = input.additionalProperties;
     }
   }
 
@@ -58,9 +154,6 @@ class Address {
 
   get additionalProperties() { return this.additionalProperties; }
   set additionalProperties(additionalProperties) { this.additionalProperties = additionalProperties; }
-
-  get sTestPatternProperties() { return this.sTestPatternProperties; }
-  set sTestPatternProperties(sTestPatternProperties) { this.sTestPatternProperties = sTestPatternProperties; }
 }
 module.exports = Address;"
 `;
@@ -74,6 +167,9 @@ class OtherModel {
 
   constructor(input) {
     this.streetName = input.streetName;
+    if (input.hasOwnProperty('additionalProperties')) {
+      this.additionalProperties = input.additionalProperties;
+    }
   }
 
   get streetName() { return this.streetName; }
@@ -98,7 +194,6 @@ class Address {
   arrayType;
   otherModel;
   additionalProperties;
-  sTestPatternProperties;
 
   constructor(input) {
     this.streetName = input.streetName;
@@ -114,6 +209,9 @@ class Address {
     this.arrayType = input.arrayType;
     if (input.hasOwnProperty('otherModel')) {
       this.otherModel = input.otherModel;
+    }
+    if (input.hasOwnProperty('additionalProperties')) {
+      this.additionalProperties = input.additionalProperties;
     }
   }
 
@@ -143,9 +241,6 @@ class Address {
 
   get additionalProperties() { return this.additionalProperties; }
   set additionalProperties(additionalProperties) { this.additionalProperties = additionalProperties; }
-
-  get sTestPatternProperties() { return this.sTestPatternProperties; }
-  set sTestPatternProperties(sTestPatternProperties) { this.sTestPatternProperties = sTestPatternProperties; }
 }
 export default Address;
 "
@@ -160,6 +255,9 @@ class OtherModel {
 
   constructor(input) {
     this.streetName = input.streetName;
+    if (input.hasOwnProperty('additionalProperties')) {
+      this.additionalProperties = input.additionalProperties;
+    }
   }
 
   get streetName() { return this.streetName; }
@@ -170,4 +268,17 @@ class OtherModel {
 }
 export default OtherModel;
 "
+`;
+
+exports[`JavaScriptGenerator should work custom preset for \`class\` type 1`] = `
+"export class CustomClass {
+  #property;
+
+  constructor(input) {
+    this.#property = input.property;
+  }
+
+  get property() { return this.#property; }
+  set property(property) { this.#property = property; }
+}"
 `;

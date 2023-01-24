@@ -1,4 +1,4 @@
-import { ToRenderOutputArg, RenderOutput } from '../../src/models'; 
+import { ToRenderOutputArg, RenderOutput } from '../../src/models';
 
 describe('RenderOutput', () => {
   test('should return an RenderOutput', () => {

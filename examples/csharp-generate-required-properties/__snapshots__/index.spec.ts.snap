@@ -7,7 +7,7 @@ Array [
   private bool requiredBoolean;
   private bool? notRequiredBoolean;
   private string requiredString;
-  private string notRequiredString;
+  private string? notRequiredString;
 
   public bool RequiredBoolean 
   {
@@ -27,7 +27,7 @@ Array [
     set { requiredString = value; }
   }
 
-  public string NotRequiredString 
+  public string? NotRequiredString 
   {
     get { return notRequiredString; }
     set { notRequiredString = value; }

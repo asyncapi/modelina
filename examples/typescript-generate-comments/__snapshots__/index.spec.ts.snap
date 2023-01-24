@@ -13,32 +13,11 @@ interface Test {
    * @example Example
    */
   numberProp?: number;
-  objectProp?: NestedTest;
-  additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null>;
-}",
-  ],
-  Array [
-    "/**
- * @example Example 1, Example 2
- */
-interface NestedTest {
-  stringProp?: string;
-  additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null>;
-}",
-  ],
-  Array [
-    "/**
- * Main Description
- */
-interface Test {
-  stringProp: string;
   /**
-   * Description
-   * @example Example
+   * @example Example 1, Example 2
    */
-  numberProp?: number;
   objectProp?: NestedTest;
-  additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null>;
+  additionalProperties?: Map<string, any>;
 }",
   ],
   Array [
@@ -47,7 +26,7 @@ interface Test {
  */
 interface NestedTest {
   stringProp?: string;
-  additionalProperties?: Map<String, object | string | number | Array<unknown> | boolean | null>;
+  additionalProperties?: Map<string, any>;
 }",
   ],
 ]

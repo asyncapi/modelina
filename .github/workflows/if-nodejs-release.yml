@@ -10,6 +10,7 @@ on:
       - master
       # below lines are not enough to have release supported for these branches
       # make sure configuration of `semantic-release` package mentions these branches
+      - next
       - next-spec
       - next-major
       - next-major-spec

@@ -6,7 +6,6 @@ exports[`Example function generation should render example function for model 1`
   numberProp;
   objectProp;
   additionalProperties;
-  sTestPatternProperties;
 
   constructor(input) {
     this.stringProp = input.stringProp;
@@ -15,6 +14,9 @@ exports[`Example function generation should render example function for model 1`
     }
     if (input.hasOwnProperty('objectProp')) {
       this.objectProp = input.objectProp;
+    }
+    if (input.hasOwnProperty('additionalProperties')) {
+      this.additionalProperties = input.additionalProperties;
     }
   }
 
@@ -30,14 +32,11 @@ exports[`Example function generation should render example function for model 1`
   get additionalProperties() { return this.additionalProperties; }
   set additionalProperties(additionalProperties) { this.additionalProperties = additionalProperties; }
 
-  get sTestPatternProperties() { return this.sTestPatternProperties; }
-  set sTestPatternProperties(sTestPatternProperties) { this.sTestPatternProperties = sTestPatternProperties; }
-
   example(){
     const instance = new Test({});
     instance.stringProp = \\"string\\";
     instance.numberProp = 0;
-    instance.objectProp = NestedTest.example();
+    instance.objectProp = .example();
     return instance;
   }
 }"
@@ -51,6 +50,9 @@ exports[`Example function generation should render example function for model 2`
   constructor(input) {
     if (input.hasOwnProperty('stringProp')) {
       this.stringProp = input.stringProp;
+    }
+    if (input.hasOwnProperty('additionalProperties')) {
+      this.additionalProperties = input.additionalProperties;
     }
   }
 

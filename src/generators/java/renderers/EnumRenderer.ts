@@ -1,13 +1,14 @@
 import { JavaRenderer } from '../JavaRenderer';
-import { FormatHelpers } from '../../../helpers';
-import { JavaEnumPreset } from '../JavaPreset';
+import { ConstrainedEnumModel } from '../../../models';
+import { EnumPresetType } from '../JavaPreset';
+import { JavaOptions } from '../JavaGenerator';
 
 /**
  * Renderer for Java's `enum` type
  *
  * @extends JavaRenderer
  */
-export class EnumRenderer extends JavaRenderer {
+export class EnumRenderer extends JavaRenderer<ConstrainedEnumModel> {
   async defaultSelf(): Promise<string> {
     const content = [
       await this.renderItems(),
@@ -16,14 +17,13 @@ export class EnumRenderer extends JavaRenderer {
       await this.runFromValuePreset(),
       await this.runAdditionalContentPreset()
     ];
-    const formattedName = this.nameType(this.model.$id);
-    return `public enum ${formattedName} {
+    return `public enum ${this.model.name} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
   }
 
   async renderItems(): Promise<string> {
-    const enums = this.model.enum || [];
+    const enums = this.model.values || [];
     const items: string[] = [];
 
     for (const value of enums) {
@@ -35,45 +35,8 @@ ${this.indent(this.renderBlock(content, 2))}
     return `${content};`;
   }
 
-  normalizeKey(value: any): string {
-    let key;
-    switch (typeof value) {
-    case 'bigint':
-    case 'number': {
-      key = `number_${value}`;
-      break;
-    }
-    case 'boolean': {
-      key = `boolean_${value}`;
-      break;
-    }
-    case 'object': {
-      key = JSON.stringify(value);
-      break;
-    }
-    default: {
-      key = FormatHelpers.replaceSpecialCharacters(String(value), {exclude: [' ', '_'], separator: '_'});
-      //Ensure no special char can be the beginning letter 
-      if (!(/^[a-zA-Z]+$/).test(key.charAt(0))) {
-        key = `string_${key}`;
-      }
-    }
-    }
-    return FormatHelpers.toConstantCase(key);
-  }
-
-  normalizeValue(value: any): string {
-    if (typeof value === 'string') {
-      return `"${value}"`;
-    }
-    if (typeof value === 'object') {
-      return `"${JSON.stringify(value).replace(/"/g, '\\"')}"`;
-    }
-    return String(value);
-  }
-
   runItemPreset(item: any): Promise<string> {
-    return this.runPreset('item', {item});
+    return this.runPreset('item', { item });
   }
 
   runCtorPreset(): Promise<string> {
@@ -89,39 +52,34 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 }
 
-export const JAVA_DEFAULT_ENUM_PRESET: JavaEnumPreset = {
-  self({renderer}) {
+export const JAVA_DEFAULT_ENUM_PRESET: EnumPresetType<JavaOptions> = {
+  self({ renderer }) {
     return renderer.defaultSelf();
   },
-  item({renderer, item}) {
-    const key = renderer.normalizeKey(item);
-    const value = renderer.normalizeValue(item);
-    return `${key}(${value})`;
+  item({ item, model }) {
+    //Cast the enum type just to be sure, as some cases can be `int` type with floating value.
+    return `${item.key}((${model.type})${item.value})`;
   },
-  ctor({renderer, model}) {
-    const enumName = renderer.nameType(model.$id);
-    const type = Array.isArray(model.type) ? 'Object' : model.type;
-    const classType = renderer.toClassType(renderer.toJavaType(type, model));
-    return `private ${classType} value;
+  ctor({ model }) {
+    return `private ${model.type} value;
 
-${enumName}(${classType} value) {
+${model.name}(${model.type} value) {
   this.value = value;
 }`;
   },
-  getValue({renderer, model}) {
-    const type = Array.isArray(model.type) ? 'Object' : model.type;
-    const classType = renderer.toClassType(renderer.toJavaType(type, model));
-    return `public ${classType} getValue() {
+  getValue({ model }) {
+    return `public ${model.type} getValue() {
   return value;
 }`;
   },
-  fromValue({renderer, model}) {
-    const enumName = renderer.nameType(model.$id);
-    const type = Array.isArray(model.type) ? 'Object' : model.type;
-    const classType = renderer.toClassType(renderer.toJavaType(type, model));
-    return `public static ${enumName} fromValue(${classType} value) {
-  for (${enumName} e : ${enumName}.values()) {
-    if (e.value.equals(value)) {
+  fromValue({ model }) {
+    const valueComparitor =
+      model.type.charAt(0) === model.type.charAt(0).toUpperCase()
+        ? 'e.value.equals(value)'
+        : 'e.value == value';
+    return `public static ${model.name} fromValue(${model.type} value) {
+  for (${model.name} e : ${model.name}.values()) {
+    if (${valueComparitor}) {
       return e;
     }
   }

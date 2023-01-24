@@ -3,54 +3,147 @@ import {
   CommonGeneratorOptions,
   defaultGeneratorOptions
 } from '../AbstractGenerator';
-import {CommonModel, CommonInputModel, RenderOutput} from '../../models';
-import {CommonNamingConvention, CommonNamingConventionImplementation, ModelKind, TypeHelpers} from '../../helpers';
-import {DartPreset, DART_DEFAULT_PRESET} from './DartPreset';
-import {ClassRenderer} from './renderers/ClassRenderer';
-import {EnumRenderer} from './renderers/EnumRenderer';
-import {isReservedDartKeyword} from './Constants';
-import {Logger} from '../../';
-import {FormatHelpers} from '../../helpers/FormatHelpers';
-
+import {
+  RenderOutput,
+  ConstrainedMetaModel,
+  MetaModel,
+  ConstrainedObjectModel,
+  ConstrainedEnumModel,
+  InputMetaModel
+} from '../../models';
+import {
+  constrainMetaModel,
+  Constraints,
+  split,
+  SplitOptions,
+  TypeMapping
+} from '../../helpers';
+import { DartPreset, DART_DEFAULT_PRESET } from './DartPreset';
+import { ClassRenderer } from './renderers/ClassRenderer';
+import { EnumRenderer } from './renderers/EnumRenderer';
+import { isReservedDartKeyword } from './Constants';
+import { Logger } from '../../';
+import {
+  DartDefaultConstraints,
+  DartDefaultTypeMapping
+} from './DartConstrainer';
+import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
+import { DartDependencyManager } from './DartDependencyManager';
 export interface DartOptions extends CommonGeneratorOptions<DartPreset> {
   collectionType?: 'List';
-  namingConvention?: CommonNamingConvention;
+  typeMapping: TypeMapping<DartOptions, DartDependencyManager>;
+  constraints: Constraints;
 }
+export type DartTypeMapping = TypeMapping<DartOptions, DartDependencyManager>;
 
 export interface DartRenderCompleteModelOptions {
   packageName: string;
 }
 
-export class DartGenerator extends AbstractGenerator<DartOptions, DartRenderCompleteModelOptions> {
+export class DartGenerator extends AbstractGenerator<
+  DartOptions,
+  DartRenderCompleteModelOptions
+> {
   static defaultOptions: DartOptions = {
     ...defaultGeneratorOptions,
     defaultPreset: DART_DEFAULT_PRESET,
     collectionType: 'List',
-    namingConvention: CommonNamingConventionImplementation
+    typeMapping: DartDefaultTypeMapping,
+    constraints: DartDefaultConstraints
   };
 
-  constructor(
-    options: DartOptions = DartGenerator.defaultOptions,
-  ) {
-    super('Dart', DartGenerator.defaultOptions, options);
+  static defaultCompleteModelOptions: DartRenderCompleteModelOptions = {
+    packageName: 'AsyncapiModels'
+  };
+
+  constructor(options?: DeepPartial<DartOptions>) {
+    const realizedOptions = DartGenerator.getDartOptions(options);
+    super('Dart', realizedOptions);
   }
 
+  /**
+   * Returns the Dart options by merging custom options with default ones.
+   */
+  static getDartOptions(options?: DeepPartial<DartOptions>): DartOptions {
+    const optionsToUse = mergePartialAndDefault(
+      DartGenerator.defaultOptions,
+      options
+    ) as DartOptions;
+    //Always overwrite the dependency manager unless user explicitly state they want it (ignore default temporary dependency manager)
+    if (options?.dependencyManager === undefined) {
+      optionsToUse.dependencyManager = () => {
+        return new DartDependencyManager(optionsToUse);
+      };
+    }
+    return optionsToUse;
+  }
+
+  /**
+   * Wrapper to get an instance of the dependency manager
+   */
+  getDependencyManager(options: DartOptions): DartDependencyManager {
+    return this.getDependencyManagerInstance(options) as DartDependencyManager;
+  }
+
+  splitMetaModel(model: MetaModel): MetaModel[] {
+    //These are the models that we have separate renderers for
+    const metaModelsToSplit: SplitOptions = {
+      splitEnum: true,
+      splitObject: true
+    };
+    return split(model, metaModelsToSplit);
+  }
+
+  constrainToMetaModel(
+    model: MetaModel,
+    options: DeepPartial<DartOptions>
+  ): ConstrainedMetaModel {
+    const optionsToUse = DartGenerator.getDartOptions({
+      ...this.options,
+      ...options
+    });
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
+    return constrainMetaModel<DartOptions, DartDependencyManager>(
+      this.options.typeMapping,
+      this.options.constraints,
+      {
+        metaModel: model,
+        dependencyManager: dependencyManagerToUse,
+        options: this.options,
+        constrainedName: '' //This is just a placeholder, it will be constrained within the function
+      }
+    );
+  }
   /**
    * Render a scattered model, where the source code and library and model dependencies are separated.
    *
    * @param model
    * @param inputModel
    */
-  render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
-    const kind = TypeHelpers.extractKind(model);
-    // We don't support union in Dart generator, however, if union is an object, we render it as a class.
-    if (kind === ModelKind.OBJECT || (kind === ModelKind.UNION && model.type?.includes('object'))) {
-      return this.renderClass(model, inputModel);
-    } else if (kind === ModelKind.ENUM) {
-      return this.renderEnum(model, inputModel);
+  render(
+    model: ConstrainedMetaModel,
+    inputModel: InputMetaModel,
+    options?: DeepPartial<DartOptions>
+  ): Promise<RenderOutput> {
+    const optionsToUse = DartGenerator.getDartOptions({
+      ...this.options,
+      ...options
+    });
+    if (model instanceof ConstrainedObjectModel) {
+      return this.renderClass(model, inputModel, optionsToUse);
+    } else if (model instanceof ConstrainedEnumModel) {
+      return this.renderEnum(model, inputModel, optionsToUse);
     }
-    Logger.warn(`Dart generator, cannot generate this type of model, ${model.$id}`);
-    return Promise.resolve(RenderOutput.toRenderOutput({result: '', renderedName: '', dependencies: []}));
+    Logger.warn(
+      `Dart generator, cannot generate this type of model, ${model.name}`
+    );
+    return Promise.resolve(
+      RenderOutput.toRenderOutput({
+        result: '',
+        renderedName: '',
+        dependencies: []
+      })
+    );
   }
 
   /**
@@ -62,21 +155,33 @@ export class DartGenerator extends AbstractGenerator<DartOptions, DartRenderComp
    * @param inputModel
    * @param options used to render the full output
    */
-  async renderCompleteModel(model: CommonModel, inputModel: CommonInputModel, options: DartRenderCompleteModelOptions): Promise<RenderOutput> {
-    if (isReservedDartKeyword(options.packageName)) {
-      throw new Error(`You cannot use reserved Dart keyword (${options.packageName}) as package name, please use another.`);
+  async renderCompleteModel(
+    model: ConstrainedMetaModel,
+    inputModel: InputMetaModel,
+    completeModelOptions: Partial<DartRenderCompleteModelOptions>,
+    options: DeepPartial<DartOptions>
+  ): Promise<RenderOutput> {
+    const completeModelOptionsToUse = mergePartialAndDefault(
+      DartGenerator.defaultCompleteModelOptions,
+      completeModelOptions
+    ) as DartRenderCompleteModelOptions;
+    const optionsToUse = DartGenerator.getDartOptions({
+      ...this.options,
+      ...options
+    });
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
+    if (isReservedDartKeyword(completeModelOptionsToUse.packageName)) {
+      throw new Error(
+        `You cannot use reserved Dart keyword (${completeModelOptionsToUse.packageName}) as package name, please use another.`
+      );
     }
 
-    const outputModel = await this.render(model, inputModel);
-    const modelDependencies = model.getNearestDependencies().map((dependencyModelName) => {
-      const formattedDependencyModelName = this.options.namingConvention?.type ? this.options.namingConvention.type(dependencyModelName, {
-        inputModel,
-        model: inputModel.models[String(dependencyModelName)],
-        reservedKeywordCallback: isReservedDartKeyword
-      }) : dependencyModelName;
-      return `import 'package:${options.packageName}/${FormatHelpers.snakeCase(formattedDependencyModelName)}.dart';`;
-    });
-    const outputContent = `${modelDependencies.join('\n')}
+    const outputModel = await this.render(model, inputModel, optionsToUse);
+    const modelDependencies = dependencyManagerToUse.renderAllModelDependencies(
+      model,
+      completeModelOptionsToUse.packageName
+    );
+    const outputContent = `${modelDependencies}
       ${outputModel.dependencies.join('\n')}
       ${outputModel.result}`;
     return RenderOutput.toRenderOutput({
@@ -86,19 +191,57 @@ export class DartGenerator extends AbstractGenerator<DartOptions, DartRenderComp
     });
   }
 
-  async renderClass(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
+  async renderClass(
+    model: ConstrainedObjectModel,
+    inputModel: InputMetaModel,
+    options?: DeepPartial<DartOptions>
+  ): Promise<RenderOutput> {
+    const optionsToUse = DartGenerator.getDartOptions({
+      ...this.options,
+      ...options
+    });
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('class');
-    const renderer = new ClassRenderer(this.options, this, presets, model, inputModel);
+    const renderer = new ClassRenderer(
+      optionsToUse,
+      this,
+      presets,
+      model,
+      inputModel,
+      dependencyManagerToUse
+    );
     const result = await renderer.runSelfPreset();
-    const renderedName = FormatHelpers.snakeCase(renderer.nameType(model.$id, model));
-    return RenderOutput.toRenderOutput({result, renderedName, dependencies: renderer.dependencies});
+    return RenderOutput.toRenderOutput({
+      result,
+      renderedName: model.name,
+      dependencies: dependencyManagerToUse.dependencies
+    });
   }
 
-  async renderEnum(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
+  async renderEnum(
+    model: ConstrainedEnumModel,
+    inputModel: InputMetaModel,
+    options?: DeepPartial<DartOptions>
+  ): Promise<RenderOutput> {
+    const optionsToUse = DartGenerator.getDartOptions({
+      ...this.options,
+      ...options
+    });
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('enum');
-    const renderer = new EnumRenderer(this.options, this, presets, model, inputModel);
+    const renderer = new EnumRenderer(
+      optionsToUse,
+      this,
+      presets,
+      model,
+      inputModel,
+      dependencyManagerToUse
+    );
     const result = await renderer.runSelfPreset();
-    const renderedName = FormatHelpers.snakeCase(renderer.nameType(model.$id, model));
-    return RenderOutput.toRenderOutput({result, renderedName, dependencies: renderer.dependencies});
+    return RenderOutput.toRenderOutput({
+      result,
+      renderedName: model.name,
+      dependencies: dependencyManagerToUse.dependencies
+    });
   }
 }
