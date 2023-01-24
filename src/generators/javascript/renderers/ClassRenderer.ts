@@ -1,14 +1,17 @@
 import { JavaScriptRenderer } from '../JavaScriptRenderer';
-
-import { CommonModel, ClassPreset, PropertyType } from '../../../models';
-import { DefaultPropertyNames, FormatHelpers, getUniquePropertyName } from '../../../helpers';
+import {
+  ConstrainedObjectModel,
+  ConstrainedObjectPropertyModel
+} from '../../../models';
+import { JavaScriptOptions } from '../JavaScriptGenerator';
+import { ClassPresetType } from '../JavaScriptPreset';
 
 /**
  * Renderer for JavaScript's `class` type
- * 
+ *
  * @extends JavaScriptRenderer
  */
-export class ClassRenderer extends JavaScriptRenderer {
+export class ClassRenderer extends JavaScriptRenderer<ConstrainedObjectModel> {
   public async defaultSelf(): Promise<string> {
     const content = [
       await this.renderProperties(),
@@ -16,9 +19,8 @@ export class ClassRenderer extends JavaScriptRenderer {
       await this.renderAccessors(),
       await this.runAdditionalContentPreset()
     ];
-    
-    const formattedName = this.model.$id && FormatHelpers.toPascalCase(this.model.$id);
-    return `class ${formattedName} {
+
+    return `class ${this.model.name} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
   }
@@ -31,72 +33,69 @@ ${this.indent(this.renderBlock(content, 2))}
     const properties = this.model.properties || {};
     const content: string[] = [];
 
-    for (const [propertyName, property] of Object.entries(properties)) {
-      const getter = await this.runGetterPreset(propertyName, property);
-      const setter = await this.runSetterPreset(propertyName, property);
+    for (const property of Object.values(properties)) {
+      const getter = await this.runGetterPreset(property);
+      const setter = await this.runSetterPreset(property);
       content.push(this.renderBlock([getter, setter]));
-    }
-
-    if (this.model.additionalProperties !== undefined) {
-      const propertyName = getUniquePropertyName(this.model, DefaultPropertyNames.additionalProperties);
-      const getter = await this.runGetterPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
-      const setter = await this.runSetterPreset(propertyName, this.model.additionalProperties, PropertyType.additionalProperty);
-      content.push(this.renderBlock([getter, setter]));
-    }
-
-    if (this.model.patternProperties !== undefined) {
-      for (const [pattern, patternModel] of Object.entries(this.model.patternProperties)) {
-        const propertyName = getUniquePropertyName(this.model, `${pattern}${DefaultPropertyNames.patternProperties}`);
-        const getter = await this.runGetterPreset(propertyName, patternModel, PropertyType.patternProperties);
-        const setter = await this.runSetterPreset(propertyName, patternModel, PropertyType.patternProperties);
-        content.push(this.renderBlock([getter, setter]));
-      }
     }
 
     return this.renderBlock(content, 2);
   }
 
-  runGetterPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
-    return this.runPreset('getter', { propertyName, property, type });
+  runGetterPreset(property: ConstrainedObjectPropertyModel): Promise<string> {
+    return this.runPreset('getter', { property });
   }
 
-  runSetterPreset(propertyName: string, property: CommonModel, type: PropertyType = PropertyType.property): Promise<string> {
-    return this.runPreset('setter', { propertyName, property, type });
+  runSetterPreset(property: ConstrainedObjectPropertyModel): Promise<string> {
+    return this.runPreset('setter', { property });
+  }
+
+  async renderProperties(): Promise<string> {
+    const properties = this.model.properties || {};
+    const content: string[] = [];
+
+    for (const property of Object.values(properties)) {
+      const rendererProperty = await this.runPropertyPreset(property);
+      content.push(rendererProperty);
+    }
+
+    return this.renderBlock(content);
+  }
+
+  runPropertyPreset(property: ConstrainedObjectPropertyModel): Promise<string> {
+    return this.runPreset('property', { property });
   }
 }
 
-export const JS_DEFAULT_CLASS_PRESET: ClassPreset<ClassRenderer> = {
+export const JS_DEFAULT_CLASS_PRESET: ClassPresetType<JavaScriptOptions> = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
   ctor({ renderer, model }) {
     const properties = model.properties || {};
-    const assigments = Object.entries(properties).map(([propertyName, property]) => {
-      if (!model.isRequired(propertyName)) {
-        propertyName = renderer.nameProperty(propertyName, property);
-        return `if (input.hasOwnProperty('${propertyName}')) {
+    const assignments = Object.entries(properties).map(
+      ([propertyName, property]) => {
+        if (!property.required) {
+          return `if (input.hasOwnProperty('${propertyName}')) {
   this.${propertyName} = input.${propertyName};
 }`;
+        }
+        return `this.${propertyName} = input.${propertyName};`;
       }
-      propertyName = renderer.nameProperty(propertyName, property);
-      return `this.${propertyName} = input.${propertyName};`;
-    });
-    const body = renderer.renderBlock(assigments);
+    );
+    const body = renderer.renderBlock(assignments);
 
     return `constructor(input) {
 ${renderer.indent(body)}
 }`;
   },
-  property({ renderer, propertyName, property }) {
-    propertyName = renderer.nameProperty(propertyName, property);
-    return `${propertyName};`;
+  property({ property }) {
+    return `${property.propertyName};`;
   },
-  getter({ renderer, propertyName, property }) {
-    propertyName = renderer.nameProperty(propertyName, property);
-    return `get ${propertyName}() { return this.${propertyName}; }`;
+  getter({ property }) {
+    return `get ${property.propertyName}() { return this.${property.propertyName}; }`;
   },
-  setter({ renderer, propertyName, property }) {
-    propertyName = renderer.nameProperty(propertyName, property);
-    return `set ${propertyName}(${propertyName}) { this.${propertyName} = ${propertyName}; }`;
-  },
+  setter({ property }) {
+    return `set ${property.propertyName}(${property.propertyName}) { this.${property.propertyName} = ${property.propertyName}; }`;
+  }
 };

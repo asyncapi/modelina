@@ -1,39 +1,49 @@
 import { GoRenderer } from '../GoRenderer';
-import { EnumPreset, CommonModel } from '../../../models';
-import { FormatHelpers } from '../../../helpers';
+import { ConstrainedEnumModel } from '../../../models';
+import { EnumPresetType } from '../GoPreset';
+import { GoOptions } from '../GoGenerator';
 
 /**
  * Renderer for Go's `enum` type
- * 
+ *
+ * This renderer is a generic solution that works for all types of enum values.
+ * This is also why you wont see `type MyEnum string´ even if possible.
+ *
  * @extends GoRenderer
  */
-export class EnumRenderer extends GoRenderer {
+export class EnumRenderer extends GoRenderer<ConstrainedEnumModel> {
   public defaultSelf(): string {
-    const formattedName = this.nameType(this.model.$id);
-    const type = this.enumType(this.model);
-    const doc = formattedName && this.renderCommentForEnumType(formattedName, type);
-    // eslint-disable-next-line sonarjs/no-duplicate-string
-    if (type === 'interface{}') {
-      return `${doc}
-type ${formattedName} ${type}`;
-    }
-
-    const enumValues = this.renderConstValuesForEnumType(formattedName, type, <string[]> this.model.enum);
+    const doc = this.renderCommentForEnumType(this.model.name, this.model.type);
+    const enumValues = this.renderConstValuesForEnumType();
+    const temp = this.model.values.map((value) => {
+      return `${this.model.name}Values[${value.key}]: ${value.key},`;
+    });
+    const values = this.model.values
+      .map((value) => {
+        return value.value;
+      })
+      .join(',');
 
     return `${doc}
-type ${formattedName} ${type}
+type ${this.model.name} uint
 
 const (
 ${this.indent(this.renderBlock(enumValues))}
-)`;
-  }
+)
 
-  enumType(model: CommonModel): string {
-    if (this.model.type === undefined || Array.isArray(this.model.type)) {
-      return 'interface{}';
-    }
+// Value returns the value of the enum.
+func (op ${this.model.name}) Value() any {
+	if op >= ${this.model.name}(len(${this.model.name}Values)) {
+		return nil
+	}
+	return ${this.model.name}Values[op]
+}
 
-    return this.toGoType(this.model.type, model);
+var ${this.model.name}Values = []any{${values}}
+var ValuesTo${this.model.name} = map[any]${this.model.name}{
+${this.indent(this.renderBlock(temp))}
+}
+`;
   }
 
   renderCommentForEnumType(name: string, type: string): string {
@@ -41,28 +51,21 @@ ${this.indent(this.renderBlock(enumValues))}
     return this.renderComments(`${name} represents an enum of ${globalType}.`);
   }
 
-  renderConstValuesForEnumType(typeName: string, innerType: string, values: string[]): string[] {
-    const firstName = typeName.concat(FormatHelpers.upperFirst(FormatHelpers.toCamelCase(values[0].toString())));
-
-    let enumValues = [innerType === 'string' ? `${firstName} ${typeName} = "${values[0]}"` : `${firstName} ${typeName} = iota`];
-
-    for (const value of values.slice(1)) {
-      const name = typeName.concat(FormatHelpers.upperFirst(FormatHelpers.toCamelCase(value)));
-
-      if (innerType === 'string') {
-        enumValues = enumValues.concat(`${name} = "${value}"`);
+  renderConstValuesForEnumType(): string[] {
+    return this.model.values.map((enumValue, index) => {
+      if (index === 0) {
+        return `${enumValue.key} ${this.model.name} = iota`;
       }
-      if (innerType === 'int') {
-        enumValues = enumValues.concat(`${name}`);
+      if (typeof enumValue.value === 'string') {
+        return enumValue.key;
       }
-    }
-
-    return enumValues;
+      return enumValue.key;
+    });
   }
 }
 
-export const GO_DEFAULT_ENUM_PRESET: EnumPreset<EnumRenderer> = {
+export const GO_DEFAULT_ENUM_PRESET: EnumPresetType<GoOptions> = {
   self({ renderer }) {
     return renderer.defaultSelf();
-  },
+  }
 };

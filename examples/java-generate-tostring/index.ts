@@ -8,10 +8,10 @@ const generator = new JavaGenerator({
         equal: false,
         hashCode: false,
         classToString: true,
-        marshalling: false,
-      },
-    },
-  ],
+        marshalling: false
+      }
+    }
+  ]
 });
 
 const jsonSchemaDraft7 = {
@@ -26,10 +26,12 @@ const jsonSchemaDraft7 = {
   }
 };
 
-export async function generate() : Promise<void> {
+export async function generate(): Promise<void> {
   const models = await generator.generate(jsonSchemaDraft7);
   for (const model of models) {
     console.log(model.result);
   }
 }
-generate();
+if (require.main === module) {
+  generate();
+}

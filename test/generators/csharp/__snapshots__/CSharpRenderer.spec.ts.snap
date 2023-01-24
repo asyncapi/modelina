@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CSharpRenderer renderComments() should render multiple lines correctly 1`] = `
+"// test
+// test2"
+`;
+
+exports[`CSharpRenderer renderComments() should render no lines 1`] = `""`;
+
+exports[`CSharpRenderer renderComments() should render single lines correctly 1`] = `"// test"`;

@@ -3,88 +3,140 @@ import {
   CommonGeneratorOptions,
   defaultGeneratorOptions
 } from '../AbstractGenerator';
-import { CommonModel, CommonInputModel, RenderOutput } from '../../models';
-import { TypeHelpers, ModelKind, FormatHelpers } from '../../helpers';
+import {
+  InputMetaModel,
+  RenderOutput,
+  ConstrainedObjectModel,
+  ConstrainedEnumModel,
+  ConstrainedMetaModel,
+  MetaModel
+} from '../../models';
+import {
+  constrainMetaModel,
+  Constraints,
+  split,
+  SplitOptions,
+  TypeMapping
+} from '../../helpers';
 import { GoPreset, GO_DEFAULT_PRESET } from './GoPreset';
 import { StructRenderer } from './renderers/StructRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
-import { pascalCaseTransformMerge } from 'change-case';
 import { Logger } from '../../utils/LoggingInterface';
-import { isReservedGoKeyword } from './Constants';
-/**
- * The Go naming convention type
- */
-export type GoNamingConvention = {
-  type?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel, reservedKeywordCallback?: (name: string) => boolean }) => string;
-  field?: (name: string | undefined, ctx: { model: CommonModel, inputModel: CommonInputModel, field?: CommonModel, reservedKeywordCallback?: (name: string) => boolean }) => string;
-};
-
-/**
- * A GoNamingConvention implementation for Go
- */
-export const GoNamingConventionImplementation: GoNamingConvention = {
-  type: (name: string | undefined, ctx) => {
-    if (!name) { return ''; }
-    let formattedName = FormatHelpers.toPascalCase(name, { transform: pascalCaseTransformMerge });
-    if (ctx.reservedKeywordCallback !== undefined && ctx.reservedKeywordCallback(formattedName)) {
-      formattedName = FormatHelpers.toPascalCase(`reserved_${formattedName}`);
-    }
-    return formattedName;
-  },
-  // eslint-disable-next-line sonarjs/no-identical-functions
-  field: (name: string | undefined, ctx) => {
-    if (!name) { return ''; }
-    let formattedName = FormatHelpers.toPascalCase(name, { transform: pascalCaseTransformMerge });
-    if (ctx.reservedKeywordCallback !== undefined && ctx.reservedKeywordCallback(formattedName)) {
-      formattedName = FormatHelpers.toPascalCase(`reserved_${formattedName}`);
-      if (Object.keys(ctx.model.properties || {}).includes(formattedName)) {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        return GoNamingConventionImplementation.field!(`reserved_${formattedName}`, ctx);
-      }
-    }
-    return formattedName;
-  }
-};
+import { GoDefaultConstraints, GoDefaultTypeMapping } from './GoConstrainer';
+import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
+import { GoDependencyManager } from './GoDependencyManager';
 
 export interface GoOptions extends CommonGeneratorOptions<GoPreset> {
-  namingConvention?: GoNamingConvention;
+  typeMapping: TypeMapping<GoOptions, GoDependencyManager>;
+  constraints: Constraints;
 }
+export type GoTypeMapping = TypeMapping<GoOptions, GoDependencyManager>;
 
 export interface GoRenderCompleteModelOptions {
-  packageName: string
+  packageName: string;
 }
 
 /**
  * Generator for Go
  */
-export class GoGenerator extends AbstractGenerator<GoOptions, GoRenderCompleteModelOptions> {
+export class GoGenerator extends AbstractGenerator<
+  GoOptions,
+  GoRenderCompleteModelOptions
+> {
   static defaultOptions: GoOptions = {
     ...defaultGeneratorOptions,
     defaultPreset: GO_DEFAULT_PRESET,
-    namingConvention: GoNamingConventionImplementation
+    typeMapping: GoDefaultTypeMapping,
+    constraints: GoDefaultConstraints
   };
-  constructor(
-    options: GoOptions = GoGenerator.defaultOptions,
-  ) {
-    super('Go', GoGenerator.defaultOptions, options);
+
+  static defaultCompleteModelOptions: GoRenderCompleteModelOptions = {
+    packageName: 'AsyncapiModels'
+  };
+
+  constructor(options?: DeepPartial<GoOptions>) {
+    const realizedOptions = GoGenerator.getGoOptions(options);
+    super('Go', realizedOptions);
   }
-  reservedGoKeyword(name: string): boolean {
-    return isReservedGoKeyword(name);
-  }
-  render(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
-    const kind = TypeHelpers.extractKind(model);
-    switch (kind) {
-    case ModelKind.UNION:
-      // We don't support union in Go generator, however, if union is an object, we render it as a struct.
-      if (!model.type?.includes('object')) { break; }
-      return this.renderStruct(model, inputModel);
-    case ModelKind.OBJECT:
-      return this.renderStruct(model, inputModel);
-    case ModelKind.ENUM:
-      return this.renderEnum(model, inputModel);
+
+  /**
+   * Returns the Go options by merging custom options with default ones.
+   */
+  static getGoOptions(options?: DeepPartial<GoOptions>): GoOptions {
+    const optionsToUse = mergePartialAndDefault(
+      GoGenerator.defaultOptions,
+      options
+    ) as GoOptions;
+    //Always overwrite the dependency manager unless user explicitly state they want it (ignore default temporary dependency manager)
+    if (options?.dependencyManager === undefined) {
+      optionsToUse.dependencyManager = () => {
+        return new GoDependencyManager(optionsToUse);
+      };
     }
-    Logger.warn(`Go generator, cannot generate this type of model, ${model.$id}`);
-    return Promise.resolve(RenderOutput.toRenderOutput({ result: '', renderedName: '', dependencies: [] }));
+    return optionsToUse;
+  }
+
+  /**
+   * Wrapper to get an instance of the dependency manager
+   */
+  getDependencyManager(options: GoOptions): GoDependencyManager {
+    return this.getDependencyManagerInstance(options) as GoDependencyManager;
+  }
+
+  splitMetaModel(model: MetaModel): MetaModel[] {
+    //These are the models that we have separate renderers for
+    const metaModelsToSplit: SplitOptions = {
+      splitEnum: true,
+      splitObject: true
+    };
+    return split(model, metaModelsToSplit);
+  }
+
+  constrainToMetaModel(
+    model: MetaModel,
+    options: DeepPartial<GoOptions>
+  ): ConstrainedMetaModel {
+    const optionsToUse = GoGenerator.getGoOptions({
+      ...this.options,
+      ...options
+    });
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
+    return constrainMetaModel<GoOptions, GoDependencyManager>(
+      this.options.typeMapping,
+      this.options.constraints,
+      {
+        metaModel: model,
+        dependencyManager: dependencyManagerToUse,
+        options: this.options,
+        constrainedName: '' //This is just a placeholder, it will be constrained within the function
+      }
+    );
+  }
+
+  render(
+    model: ConstrainedMetaModel,
+    inputModel: InputMetaModel,
+    options?: DeepPartial<GoOptions>
+  ): Promise<RenderOutput> {
+    const optionsToUse = GoGenerator.getGoOptions({
+      ...this.options,
+      ...options
+    });
+    if (model instanceof ConstrainedObjectModel) {
+      return this.renderStruct(model, inputModel, optionsToUse);
+    } else if (model instanceof ConstrainedEnumModel) {
+      return this.renderEnum(model, inputModel, optionsToUse);
+    }
+    Logger.warn(
+      `Go generator, cannot generate this type of model, ${model.name}`
+    );
+    return Promise.resolve(
+      RenderOutput.toRenderOutput({
+        result: '',
+        renderedName: '',
+        dependencies: []
+      })
+    );
   }
 
   /**
@@ -94,35 +146,94 @@ export class GoGenerator extends AbstractGenerator<GoOptions, GoRenderCompleteMo
    * @param inputModel
    * @param options
    */
-  async renderCompleteModel(model: CommonModel, inputModel: CommonInputModel, options: GoRenderCompleteModelOptions): Promise<RenderOutput> {
-    const outputModel = await this.render(model, inputModel);
+  async renderCompleteModel(
+    model: ConstrainedMetaModel,
+    inputModel: InputMetaModel,
+    completeModelOptions: Partial<GoRenderCompleteModelOptions>,
+    options: DeepPartial<GoOptions>
+  ): Promise<RenderOutput> {
+    const completeModelOptionsToUse = mergePartialAndDefault(
+      GoGenerator.defaultCompleteModelOptions,
+      completeModelOptions
+    ) as GoRenderCompleteModelOptions;
+    const optionsToUse = GoGenerator.getGoOptions({
+      ...this.options,
+      ...options
+    });
+    const outputModel = await this.render(model, inputModel, optionsToUse);
     let importCode = '';
     if (outputModel.dependencies.length > 0) {
-      const dependencies = outputModel.dependencies.map((dependency) => { return `"${dependency}"`; }).join('\n');
+      const dependencies = outputModel.dependencies
+        .map((dependency) => {
+          return `"${dependency}"`;
+        })
+        .join('\n');
       importCode = `import (  
   ${dependencies}
 )`;
     }
     const outputContent = `
-package ${options.packageName}
+package ${completeModelOptionsToUse.packageName}
 ${importCode}
 ${outputModel.result}`;
-    return RenderOutput.toRenderOutput({ result: outputContent, renderedName: outputModel.renderedName, dependencies: outputModel.dependencies });
+    return RenderOutput.toRenderOutput({
+      result: outputContent,
+      renderedName: outputModel.renderedName,
+      dependencies: outputModel.dependencies
+    });
   }
 
-  async renderEnum(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
+  async renderEnum(
+    model: ConstrainedEnumModel,
+    inputModel: InputMetaModel,
+    options?: DeepPartial<GoOptions>
+  ): Promise<RenderOutput> {
+    const optionsToUse = GoGenerator.getGoOptions({
+      ...this.options,
+      ...options
+    });
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('enum');
-    const renderer = new EnumRenderer(this.options, this, presets, model, inputModel);
+    const renderer = new EnumRenderer(
+      optionsToUse,
+      this,
+      presets,
+      model,
+      inputModel,
+      dependencyManagerToUse
+    );
     const result = await renderer.runSelfPreset();
-    const renderedName = renderer.nameType(model.$id, model);
-    return RenderOutput.toRenderOutput({ result, renderedName, dependencies: renderer.dependencies });
+    return RenderOutput.toRenderOutput({
+      result,
+      renderedName: model.name,
+      dependencies: dependencyManagerToUse.dependencies
+    });
   }
 
-  async renderStruct(model: CommonModel, inputModel: CommonInputModel): Promise<RenderOutput> {
+  async renderStruct(
+    model: ConstrainedObjectModel,
+    inputModel: InputMetaModel,
+    options?: DeepPartial<GoOptions>
+  ): Promise<RenderOutput> {
+    const optionsToUse = GoGenerator.getGoOptions({
+      ...this.options,
+      ...options
+    });
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('struct');
-    const renderer = new StructRenderer(this.options, this, presets, model, inputModel);
+    const renderer = new StructRenderer(
+      optionsToUse,
+      this,
+      presets,
+      model,
+      inputModel,
+      dependencyManagerToUse
+    );
     const result = await renderer.runSelfPreset();
-    const renderedName = renderer.nameType(model.$id, model);
-    return RenderOutput.toRenderOutput({ result, renderedName, dependencies: renderer.dependencies });
+    return RenderOutput.toRenderOutput({
+      result,
+      renderedName: model.name,
+      dependencies: dependencyManagerToUse.dependencies
+    });
   }
 }
