@@ -93,4 +93,70 @@ describe('Interpretation of additionalProperties', () => {
       schema
     );
   });
+  test('should apply ignoreAdditionalProperties for schemas with properties', () => {
+    const schema: any = { properties: { property1: { type: 'string' } } };;
+    const model = new CommonModel();
+    model.type = 'object';
+    const interpreter = new Interpreter();
+    const options = {ignoreAdditionalProperties: true};
+    const mockedReturnModel = new CommonModel();
+    (interpreter.interpret as jest.Mock).mockReturnValue(mockedReturnModel);
+
+    interpretAdditionalProperties(schema, model, interpreter, options);
+
+    expect(interpreter.interpret).toHaveBeenNthCalledWith(
+      1,
+      false,
+      options
+    );
+    expect(model.addAdditionalProperty).toHaveBeenNthCalledWith(
+      1,
+      mockedReturnModel,
+      schema
+    );
+  });
+  test('should not apply ignoreAdditionalProperties for schemas explicit additionalProperties', () => {
+    const schema: any = { additionalProperties: true };;
+    const model = new CommonModel();
+    model.type = 'object';
+    const interpreter = new Interpreter();
+    const options = {ignoreAdditionalProperties: true};
+    const mockedReturnModel = new CommonModel();
+    (interpreter.interpret as jest.Mock).mockReturnValue(mockedReturnModel);
+
+    interpretAdditionalProperties(schema, model, interpreter, options);
+
+    expect(interpreter.interpret).toHaveBeenNthCalledWith(
+      1,
+      true,
+      options
+    );
+    expect(model.addAdditionalProperty).toHaveBeenNthCalledWith(
+      1,
+      mockedReturnModel,
+      schema
+    );
+  });
+  test('should not apply ignoreAdditionalProperties if no other properties defined', () => {
+    const schema: any = { };;
+    const model = new CommonModel();
+    model.type = 'object';
+    const interpreter = new Interpreter();
+    const options = {ignoreAdditionalProperties: true};
+    const mockedReturnModel = new CommonModel();
+    (interpreter.interpret as jest.Mock).mockReturnValue(mockedReturnModel);
+
+    interpretAdditionalProperties(schema, model, interpreter, options);
+
+    expect(interpreter.interpret).toHaveBeenNthCalledWith(
+      1,
+      true,
+      options
+    );
+    expect(model.addAdditionalProperty).toHaveBeenNthCalledWith(
+      1,
+      mockedReturnModel,
+      schema
+    );
+  });
 });
