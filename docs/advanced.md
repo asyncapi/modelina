@@ -102,10 +102,12 @@ Check out this [example out for a live demonstration](../examples/overwrite-nami
 
 ## Customizing the interpreter options
 
-According to JSON schema if `additionalProperties` or `additionalItems` are omitted, their default value is `true`. `Interpreter` class honors this behavior, however for people coming from other code generators like `Open API Genertor` or `JSON Schema 2 POJO` this might come as a surprise.
+According to JSON schema draft 7, if `additionalProperties` or `additionalItems` are omitted, their default value is `true`. The `Interpreter` honors this behavior, however this creates more loose models that might not be the intention for the developer. 
 
-To avoid adding `additionalProperties: false` or `additionalItems: false` to all your specs just to get the same behavior as other code generators, this can be achieved by configuring interpreter options:
-- `ignoreAdditionalProperties` - if set, it ensures that `additionalProperties` is considered to be set to `false`
-- `ignoreAdditionalItems` - if set, it ensures that `additionalItems` is considered to be set to `false`
+We suggest to not use this option, as it limits your models when they are in compliance with the schema it was generated from. Instead adapt your schemas to be more strict by setting these keywords to `false`. This option should really only be used when you have no control over your input.
+
+To set the interpreter up to ignore the default behavior, you can further restrict your models with the following options:
+- `ignoreAdditionalProperties` - if set, it ensures that `additionalProperties` by default is ignored.
+- `ignoreAdditionalItems` - if set, it ensures that `additionalItems` by default is ignored.
 
 Check out this [example out for a live demonstration](../examples/passing-interpreter-options/) for how to customize the behavior of `additionalProperties`.
