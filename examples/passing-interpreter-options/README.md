@@ -1,6 +1,6 @@
-# Overwrite interpreter options
+# Passing interpreter options
 
-This example shows how to overwrite the interpreter options.
+This example shows how to pass interpreter options.
 
 ## How to run this example
 
