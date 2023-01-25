@@ -28,7 +28,7 @@ export default function interpretAdditionalProperties(
   }
   const additionalPropertiesModel = interpreter.interpret(
     schema.additionalProperties === undefined
-      ? false
+      ? true
       : schema.additionalProperties,
     interpreterOptions
   );
