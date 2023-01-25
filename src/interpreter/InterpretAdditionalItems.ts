@@ -19,15 +19,14 @@ export default function interpretAdditionalItems(
   interpreter: Interpreter,
   interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions
 ): void {
+  if (interpreterOptions.ignoreAdditionalItems === true) {
+    return;
+  }
   if (typeof schema === 'boolean' || model.type?.includes('array') === false) {
     return;
   }
-  const ignoreAdditionalItems =
-    interpreterOptions.ignoreAdditionalItems || false;
   const additionalItemsModel = interpreter.interpret(
-    schema.additionalItems === undefined
-      ? !ignoreAdditionalItems
-      : schema.additionalItems,
+    schema.additionalItems === undefined ? true : schema.additionalItems,
     interpreterOptions
   );
   if (additionalItemsModel !== undefined) {

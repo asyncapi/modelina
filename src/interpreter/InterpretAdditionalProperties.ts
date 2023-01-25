@@ -20,14 +20,15 @@ export default function interpretAdditionalProperties(
   interpreter: Interpreter,
   interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions
 ): void {
+  if (interpreterOptions.ignoreAdditionalProperties === true) {
+    return;
+  }
   if (typeof schema === 'boolean' || isModelObject(model) === false) {
     return;
   }
-  const ignoreAdditionalProperties =
-    interpreterOptions.ignoreAdditionalProperties || false;
   const additionalPropertiesModel = interpreter.interpret(
     schema.additionalProperties === undefined
-      ? !ignoreAdditionalProperties
+      ? false
       : schema.additionalProperties,
     interpreterOptions
   );
