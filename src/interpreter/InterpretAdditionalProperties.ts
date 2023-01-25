@@ -26,19 +26,20 @@ export default function interpretAdditionalProperties(
   let defaultAdditionalProperties = true;
   const hasProperties = Object.keys(schema.properties || {}).length > 0;
   //Only ignore additionalProperties if the schema already has properties defined, otherwise its gonna be interpreted as a map
-  if(hasProperties && interpreterOptions.ignoreAdditionalProperties === true) {
+  if (hasProperties && interpreterOptions.ignoreAdditionalProperties === true) {
     defaultAdditionalProperties = false;
   }
 
-  const additionalProperties = schema.additionalProperties === undefined
-    ? defaultAdditionalProperties
-    : schema.additionalProperties;
+  const additionalProperties =
+    schema.additionalProperties === undefined
+      ? defaultAdditionalProperties
+      : schema.additionalProperties;
 
   const additionalPropertiesModel = interpreter.interpret(
     additionalProperties,
     interpreterOptions
   );
-  
+
   if (additionalPropertiesModel !== undefined) {
     model.addAdditionalProperty(additionalPropertiesModel, schema);
   }

@@ -94,21 +94,17 @@ describe('Interpretation of additionalItems', () => {
     );
   });
   test('should apply ignoreAdditionalItems for schemas with items', () => {
-    const schema: any = { items: {type: "string"}};
+    const schema: any = { items: { type: 'string' } };
     const model = new CommonModel();
     model.type = 'array';
     const interpreter = new Interpreter();
     const mockedReturnModel = new CommonModel();
-    const options = {ignoreAdditionalItems: true};
+    const options = { ignoreAdditionalItems: true };
     (interpreter.interpret as jest.Mock).mockReturnValue(mockedReturnModel);
 
     interpretAdditionalItems(schema, model, interpreter, options);
 
-    expect(interpreter.interpret).toHaveBeenNthCalledWith(
-      1,
-      false,
-      options
-    );
+    expect(interpreter.interpret).toHaveBeenNthCalledWith(1, false, options);
     expect(model.addAdditionalItems).toHaveBeenNthCalledWith(
       1,
       mockedReturnModel,
@@ -117,21 +113,17 @@ describe('Interpretation of additionalItems', () => {
   });
 
   test('should not apply ignoreAdditionalItems for schemas without items', () => {
-    const schema: any = { };
+    const schema: any = {};
     const model = new CommonModel();
     model.type = 'array';
     const interpreter = new Interpreter();
     const mockedReturnModel = new CommonModel();
-    const options = {ignoreAdditionalItems: true};
+    const options = { ignoreAdditionalItems: true };
     (interpreter.interpret as jest.Mock).mockReturnValue(mockedReturnModel);
 
     interpretAdditionalItems(schema, model, interpreter, options);
 
-    expect(interpreter.interpret).toHaveBeenNthCalledWith(
-      1,
-      true,
-      options
-    );
+    expect(interpreter.interpret).toHaveBeenNthCalledWith(1, true, options);
     expect(model.addAdditionalItems).toHaveBeenNthCalledWith(
       1,
       mockedReturnModel,
@@ -139,21 +131,17 @@ describe('Interpretation of additionalItems', () => {
     );
   });
   test('should not apply ignoreAdditionalItems for schemas with explicit additionalItems', () => {
-    const schema: any = { additionalItems: true};
+    const schema: any = { additionalItems: true };
     const model = new CommonModel();
     model.type = 'array';
     const interpreter = new Interpreter();
     const mockedReturnModel = new CommonModel();
-    const options = {ignoreAdditionalItems: true};
+    const options = { ignoreAdditionalItems: true };
     (interpreter.interpret as jest.Mock).mockReturnValue(mockedReturnModel);
 
     interpretAdditionalItems(schema, model, interpreter, options);
 
-    expect(interpreter.interpret).toHaveBeenNthCalledWith(
-      1,
-      true,
-      options
-    );
+    expect(interpreter.interpret).toHaveBeenNthCalledWith(1, true, options);
     expect(model.addAdditionalItems).toHaveBeenNthCalledWith(
       1,
       mockedReturnModel,

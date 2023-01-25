@@ -25,19 +25,19 @@ import interpretOneOfWithProperties from './InterpretOneOfWithProperties';
 export type InterpreterOptions = {
   allowInheritance?: boolean;
   /**
-   * For JSON Schema draft 7, additionalProperties are by default true, but it might create an unintended property for the models. 
-   * 
+   * For JSON Schema draft 7, additionalProperties are by default true, but it might create an unintended property for the models.
+   *
    * Use this option to ignore default additionalProperties for models that has other properties with them.
-   * 
+   *
    * ONLY use this option if you do not have control over your schema files.
    * Instead adapt your schemas to be more strict by setting `additionalProperties: false`.
    */
   ignoreAdditionalProperties?: boolean;
   /**
    * For JSON Schema draft 7, additionalItems are by default true, but it might create an unintended types for arrays.
-   * 
+   *
    * Use this option to ignore default additionalItems for models, as long as there is other types sat for the array.
-   * 
+   *
    * ONLY use this option if you do not have control over the schema files you use to generate the models from.
    * Instead you should adapt your schemas to be more strict by setting `additionalItems: false`.
    */

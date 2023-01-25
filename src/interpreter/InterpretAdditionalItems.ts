@@ -25,11 +25,15 @@ export default function interpretAdditionalItems(
   const hasArrayTypes = schema.items !== undefined;
   let defaultAdditionalItems = true;
   if (hasArrayTypes && interpreterOptions.ignoreAdditionalItems !== undefined) {
-    defaultAdditionalItems = interpreterOptions.ignoreAdditionalItems ? false : true;
+    defaultAdditionalItems = interpreterOptions.ignoreAdditionalItems
+      ? false
+      : true;
   }
 
   const additionalItemsModel = interpreter.interpret(
-    schema.additionalItems === undefined ? defaultAdditionalItems : schema.additionalItems,
+    schema.additionalItems === undefined
+      ? defaultAdditionalItems
+      : schema.additionalItems,
     interpreterOptions
   );
   if (additionalItemsModel !== undefined) {
