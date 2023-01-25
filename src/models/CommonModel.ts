@@ -471,16 +471,6 @@ export class CommonModel {
           mergeFrom,
           originalInput
         );
-
-        if (
-          mergeTo.properties[String(propName)].$id?.includes(
-            'anonymous_schema'
-          ) &&
-          !propValue.$id?.includes('anonymous_schema')
-        ) {
-          mergeTo.properties[String(propName)].$id = propValue.$id;
-        }
-
         mergeTo.properties[String(propName)] = CommonModel.mergeCommonModels(
           mergeTo.properties[String(propName)],
           propValue,
@@ -770,7 +760,16 @@ export class CommonModel {
         ...new Set([...(mergeTo.required || []), ...mergeFrom.required])
       ];
     }
-    mergeTo.$id = mergeTo.$id || mergeFrom.$id;
+
+    if (
+      mergeTo.$id?.includes('anonymous_schema') &&
+      !mergeFrom.$id?.includes('anonymous_schema')
+    ) {
+      mergeTo.$id = mergeFrom.$id;
+    } else {
+      mergeTo.$id = mergeTo.$id || mergeFrom.$id;
+    }
+
     mergeTo.extend = mergeTo.extend || mergeFrom.extend;
     mergeTo.originalInput = originalInput;
     return mergeTo;

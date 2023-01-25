@@ -531,7 +531,7 @@ describe('CommonModel', () => {
         expect(dogModel.properties).toHaveProperty('packSize');
         expect(dogModel.properties).not.toHaveProperty('huntingSkill');
       });
-      test.only('should be merged when mergeTo is anonymous_schema and mergeFrom is not anonymous_schema', () => {
+      test('should be merged when mergeTo property is anonymous_schema and mergeFrom property is not anonymous_schema', () => {
         const doc = {
           $id: 'CloudEvent',
           type: 'object',
