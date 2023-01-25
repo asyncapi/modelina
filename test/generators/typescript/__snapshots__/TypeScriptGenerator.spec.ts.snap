@@ -97,6 +97,113 @@ exports[`TypeScriptGenerator AsyncAPI with polymorphism should render enum with 
 }"
 `;
 
+exports[`TypeScriptGenerator CloudEvent handle allOf with const in CloudEvent type 1`] = `
+Array [
+  "class Dog {
+  private _id: string;
+  private _source: string;
+  private _specversion: string;
+  private _reservedType: DogType;
+  private _dataschema?: string;
+  private _time?: string;
+  private _additionalProperties?: Map<string, any>;
+
+  constructor(input: {
+    id: string,
+    source: string,
+    specversion: string,
+    reservedType: DogType,
+    dataschema?: string,
+    time?: string,
+    additionalProperties?: Map<string, any>,
+  }) {
+    this._id = input.id;
+    this._source = input.source;
+    this._specversion = input.specversion;
+    this._reservedType = input.reservedType;
+    this._dataschema = input.dataschema;
+    this._time = input.time;
+    this._additionalProperties = input.additionalProperties;
+  }
+
+  get id(): string { return this._id; }
+  set id(id: string) { this._id = id; }
+
+  get source(): string { return this._source; }
+  set source(source: string) { this._source = source; }
+
+  get specversion(): string { return this._specversion; }
+  set specversion(specversion: string) { this._specversion = specversion; }
+
+  get reservedType(): DogType { return this._reservedType; }
+  set reservedType(reservedType: DogType) { this._reservedType = reservedType; }
+
+  get dataschema(): string | undefined { return this._dataschema; }
+  set dataschema(dataschema: string | undefined) { this._dataschema = dataschema; }
+
+  get time(): string | undefined { return this._time; }
+  set time(time: string | undefined) { this._time = time; }
+
+  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
+}",
+  "enum DogType {
+  DOG = \\"Dog\\",
+}",
+  "class Cat {
+  private _id: string;
+  private _source: string;
+  private _specversion: string;
+  private _reservedType: CatType;
+  private _dataschema?: string;
+  private _time?: string;
+  private _additionalProperties?: Map<string, any>;
+
+  constructor(input: {
+    id: string,
+    source: string,
+    specversion: string,
+    reservedType: CatType,
+    dataschema?: string,
+    time?: string,
+    additionalProperties?: Map<string, any>,
+  }) {
+    this._id = input.id;
+    this._source = input.source;
+    this._specversion = input.specversion;
+    this._reservedType = input.reservedType;
+    this._dataschema = input.dataschema;
+    this._time = input.time;
+    this._additionalProperties = input.additionalProperties;
+  }
+
+  get id(): string { return this._id; }
+  set id(id: string) { this._id = id; }
+
+  get source(): string { return this._source; }
+  set source(source: string) { this._source = source; }
+
+  get specversion(): string { return this._specversion; }
+  set specversion(specversion: string) { this._specversion = specversion; }
+
+  get reservedType(): CatType { return this._reservedType; }
+  set reservedType(reservedType: CatType) { this._reservedType = reservedType; }
+
+  get dataschema(): string | undefined { return this._dataschema; }
+  set dataschema(dataschema: string | undefined) { this._dataschema = dataschema; }
+
+  get time(): string | undefined { return this._time; }
+  set time(time: string | undefined) { this._time = time; }
+
+  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
+}",
+  "enum CatType {
+  CAT = \\"Cat\\",
+}",
+]
+`;
+
 exports[`TypeScriptGenerator Combine oneOf and allOf should combine oneOf and allOf 1`] = `
 Array [
   "type Pet = Cat | Dog;",

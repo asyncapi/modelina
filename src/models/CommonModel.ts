@@ -471,6 +471,16 @@ export class CommonModel {
           mergeFrom,
           originalInput
         );
+
+        if (
+          mergeTo.properties[String(propName)].$id?.includes(
+            'anonymous_schema'
+          ) &&
+          !propValue.$id?.includes('anonymous_schema')
+        ) {
+          mergeTo.properties[String(propName)].$id = propValue.$id;
+        }
+
         mergeTo.properties[String(propName)] = CommonModel.mergeCommonModels(
           mergeTo.properties[String(propName)],
           propValue,

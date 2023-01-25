@@ -686,4 +686,118 @@ ${content}`;
       expect(dog?.result).not.toContain('huntingSkill');
     });
   });
+
+  describe('CloudEvent', () => {
+    test.only('handle allOf with const in CloudEvent type', async () => {
+      const asyncapiDoc = {
+        asyncapi: '2.5.0',
+        info: {
+          title: 'CloudEvent example',
+          version: '1.0.0'
+        },
+        channels: {
+          pet: {
+            publish: {
+              message: {
+                // this should create a union type, but currently does not
+                oneOf: [
+                  {
+                    $ref: '#/components/messages/Dog'
+                  },
+                  {
+                    $ref: '#/components/messages/Cat'
+                  }
+                ]
+              }
+            }
+          }
+        },
+        components: {
+          messages: {
+            Dog: {
+              payload: {
+                title: 'Dog',
+                allOf: [
+                  {
+                    $ref: '#/components/schemas/CloudEvent'
+                  },
+                  {
+                    type: 'object',
+                    properties: {
+                      type: {
+                        title: 'DogType',
+                        const: 'Dog'
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            Cat: {
+              payload: {
+                title: 'Cat',
+                allOf: [
+                  {
+                    $ref: '#/components/schemas/CloudEvent'
+                  },
+                  {
+                    type: 'object',
+                    properties: {
+                      type: {
+                        title: 'CatType',
+                        const: 'Cat'
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          schemas: {
+            CloudEvent: {
+              title: 'CloudEvent',
+              type: 'object',
+              properties: {
+                id: {
+                  type: 'string'
+                },
+                source: {
+                  type: 'string',
+                  format: 'uri-reference'
+                },
+                specversion: {
+                  type: 'string',
+                  default: '1.0',
+                  examples: ['1.0']
+                },
+                type: {
+                  type: 'string'
+                },
+                dataschema: {
+                  type: 'string',
+                  format: 'uri'
+                },
+                time: {
+                  type: 'string',
+                  format: 'date-time'
+                }
+              },
+              required: ['id', 'source', 'specversion', 'type']
+            }
+          }
+        }
+      };
+
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+
+      const dog = models.find((model) => model.modelName === 'Dog');
+      expect(dog).not.toBeUndefined();
+      expect(dog?.result).toContain('DogType');
+
+      const cat = models.find((model) => model.modelName === 'Cat');
+      expect(cat).not.toBeUndefined();
+      expect(cat?.result).toContain('CatType');
+    });
+  });
 });
