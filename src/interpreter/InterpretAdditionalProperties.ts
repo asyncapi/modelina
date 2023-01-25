@@ -20,6 +20,9 @@ export default function interpretAdditionalProperties(
   interpreter: Interpreter,
   interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions
 ): void {
+  if (interpreterOptions.ignoreAdditionalProperties === true) {
+    return;
+  }
   if (typeof schema === 'boolean' || isModelObject(model) === false) {
     return;
   }

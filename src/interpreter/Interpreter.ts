@@ -24,6 +24,8 @@ import interpretOneOfWithProperties from './InterpretOneOfWithProperties';
 
 export type InterpreterOptions = {
   allowInheritance?: boolean;
+  ignoreAdditionalProperties?: boolean;
+  ignoreAdditionalItems?: boolean;
 };
 export type InterpreterSchemas =
   | Draft6Schema
@@ -35,7 +37,9 @@ export type InterpreterSchemaType = InterpreterSchemas | boolean;
 
 export class Interpreter {
   static defaultInterpreterOptions: InterpreterOptions = {
-    allowInheritance: false
+    allowInheritance: false,
+    ignoreAdditionalProperties: false,
+    ignoreAdditionalItems: false
   };
 
   private anonymCounter = 1;
