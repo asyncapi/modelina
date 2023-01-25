@@ -104,7 +104,7 @@ Check out this [example out for a live demonstration](../examples/overwrite-nami
 
 According to JSON schema draft 7, if `additionalProperties` or `additionalItems` are omitted, their default value is `true`. The `Interpreter` honors this behavior, however this creates more loose models that might not be the intention for the developer. 
 
-We suggest to not use this option, as it limits your models when they are in compliance with the schema it was generated from. Instead adapt your schemas to be more strict by setting these keywords to `false`. This option should really only be used when you have no control over your input.
+We suggest not using this option if it can be avoided, as it limits your generated models to include any additional properties, and would simply be ignored. Instead adapt your schemas to be more strict by setting these keywords to `false`. This option should really only be used when you have no control over your input and the output is unintended.
 
 To set the interpreter up to ignore the default behavior, you can further restrict your models with the following options:
 - `ignoreAdditionalProperties` - if set, it ensures that `additionalProperties` by default is ignored.
