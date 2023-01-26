@@ -769,7 +769,6 @@ export class CommonModel {
     } else {
       mergeTo.$id = mergeTo.$id || mergeFrom.$id;
     }
-
     mergeTo.extend = mergeTo.extend || mergeFrom.extend;
     mergeTo.originalInput = originalInput;
     return mergeTo;

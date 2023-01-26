@@ -686,7 +686,6 @@ ${content}`;
       expect(dog?.result).not.toContain('huntingSkill');
     });
   });
-
   describe('CloudEvent', () => {
     const asyncapiDoc = {
       asyncapi: '2.5.0',
