@@ -19,6 +19,9 @@ export default function interpretAdditionalItems(
   interpreter: Interpreter,
   interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions
 ): void {
+  if (interpreterOptions.ignoreAdditionalItems === true) {
+    return;
+  }
   if (typeof schema === 'boolean' || model.type?.includes('array') === false) {
     return;
   }

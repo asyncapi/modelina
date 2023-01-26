@@ -15,6 +15,7 @@ This document contains many of the advanced use-cases that you may stumble upon 
 - [Change the generated indentation type and size](#change-the-generated-indentation-type-and-size)
 - [Change the type mapping](#change-the-type-mapping)
 - [Changing the constrain rules](#changing-the-constrain-rules)
+- [Customizing the interpreter options](#customizing-the-interpreter-options)
 
 <!-- tocstop -->
 
@@ -98,3 +99,13 @@ There can be multiple reasons why you want to change the default constrain rules
 Check out this [example out for a live demonstration](../examples/overwrite-default-constraint/) for how to overwrite the default constraints.
 
 Check out this [example out for a live demonstration](../examples/overwrite-naming-formatting/) for how to overwrite the naming formatting for models.
+
+## Customizing the interpreter options
+
+According to JSON schema if `additionalProperties` or `additionalItems` are omitted, their default value is `true`. `Interpreter` class honors this behavior, however for people coming from other code generators like `Open API Genertor` or `JSON Schema 2 POJO` this might come as a surprise.
+
+To avoid adding `additionalProperties: false` or `additionalItems: false` to all your specs just to get the same behavior as other code generators, this can be achieved by configuring interpreter options:
+- `ignoreAdditionalProperties` - if set, it ensures that `additionalProperties` is considered to be set to `false`
+- `ignoreAdditionalItems` - if set, it ensures that `additionalItems` is considered to be set to `false`
+
+Check out this [example out for a live demonstration](../examples/passing-interpreter-options/) for how to customize the behavior of `additionalProperties`.
