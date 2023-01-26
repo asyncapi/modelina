@@ -18,6 +18,7 @@
 <!-- toc -->
 
 - [Installing Modelina](#installing-modelina)
+- [AsyncAPI CLI](#asyncapi-cli)
 - [Features](#features)
 - [Roadmap](#roadmap)
 - [Requirements](#requirements)
@@ -259,7 +260,7 @@ The following table provides a short summary of available features for supported
 ## Roadmap
 This is the roadmap that is currently in focus by the [CODEOWNERS](./CODEOWNERS)
 
-- [Reach version 1.0](https://github.com/asyncapi/modelina/milestone/3)
+- [1 year roadmap](https://github.com/asyncapi/modelina/milestone/4)
 
 ## Requirements
 The following are a requirement in order to use Modelina.
