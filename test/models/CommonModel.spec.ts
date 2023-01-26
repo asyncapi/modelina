@@ -531,6 +531,31 @@ describe('CommonModel', () => {
         expect(dogModel.properties).toHaveProperty('packSize');
         expect(dogModel.properties).not.toHaveProperty('huntingSkill');
       });
+      test('should be merged when mergeTo property is anonymous_schema and mergeFrom property is not anonymous_schema', () => {
+        const doc = {
+          $id: 'CloudEvent',
+          type: 'object',
+          properties: {
+            type: {
+              $id: 'anonymous_schema_1',
+              type: 'string'
+            }
+          }
+        };
+        const mergeTo = CommonModel.toCommonModel(doc);
+        const mergeFrom = CommonModel.toCommonModel({
+          $id: 'Cat',
+          type: 'object',
+          properties: {
+            type: {
+              $id: 'CatType',
+              const: 'Cat'
+            }
+          }
+        });
+        const merged = CommonModel.mergeCommonModels(mergeTo, mergeFrom, doc);
+        expect(merged.properties?.type.$id).toContain('CatType');
+      });
     });
 
     describe('patternProperties', () => {
