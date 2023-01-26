@@ -40,7 +40,7 @@ npm install @asyncapi/modelina
 
 ## AsyncAPI CLI
 
-Run this command to install Modelina in your project:
+Run this command to use [Modelina as part of the AsyncAPI CLI](https://github.com/asyncapi/cli#usage):
 
 ```bash
 asyncapi generate models <language> ./asyncapi.json
