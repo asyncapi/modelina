@@ -48,4 +48,4 @@ components:
         - type
 ```
 
-The _type_ property in the _CloudEvent_ schema will in this case have an _anonymous_schema_ id. Modelina will not use the id from the other schema in the _allOf_ list, meaning it will be _DogType_ and _CatType_ in this example.
+The _type_ property in the _CloudEvent_ schema will in this case have an _anonymous_schema_ id. If another schema in the _allOf_ list has the same property and an id other than _anonymous_schema_, it will now use that id. Meaning, in this example, it will be _DogType_ and _CatType_.
