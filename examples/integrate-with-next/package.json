@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --no-cache",
+    "test": "jest --no-cache --debug",
     "test:watch": "jest --watch"
   },
   "dependencies": {

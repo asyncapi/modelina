@@ -1,4 +1,5 @@
 const nextJest = require('next/jest')
+const { isCaseOrDefaultClause } = require('typescript')
 
 const createJestConfig = nextJest({
   // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
@@ -15,8 +16,11 @@ const customJestConfig = {
     '^@/pages/(.*)$': '<rootDir>/src/pages/$1',
   },
   testEnvironment: 'jest-environment-jsdom',
-  transform: {}
+  "transformIgnorePatterns": [
+    "<rootDir>/../../node_modules/@stoplight/spectral-core/node_modules/jsonpath-plus",
+    "<rootDir>/../../node_modules/@stoplight/spectral-core/node_modules/jsonpath-plus/dist",
+    "<rootDir>/../../node_modules/@stoplight/spectral-core/node_modules/(?!jsonpath-plus)"
+  ],
 }
-
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
 module.exports = createJestConfig(customJestConfig)
