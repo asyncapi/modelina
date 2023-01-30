@@ -12,13 +12,11 @@ const customJestConfig = {
   moduleNameMapper: {
     // Handle module aliases (this will be automatically configured for you soon)
     '^@/components/(.*)$': '<rootDir>/components/$1',
-    '^@/pages/(.*)$': '<rootDir>/src/pages/$1',
+    '^@/pages/(.*)$': '<rootDir>/src/pages/$1'
   },
   testEnvironment: 'jest-environment-jsdom',
   "transformIgnorePatterns": [
-    "<rootDir>/../../node_modules/@stoplight/spectral-core/node_modules/jsonpath-plus",
-    "<rootDir>/../../node_modules/@stoplight/spectral-core/node_modules/jsonpath-plus/dist",
-    "<rootDir>/../../node_modules/@stoplight/spectral-core/node_modules/(?!jsonpath-plus)"
+    "/node_modules/(?!(jsonpath-plus)).+\\.js$"
   ],
 }
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
