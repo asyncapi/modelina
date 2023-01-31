@@ -1,86 +1,47 @@
 import React from 'react';
-import { TS_COMMON_PRESET, TypeScriptGenerator } from "@asyncapi/modelina/lib/cjs";
 import Select from './Select';
+import { ModelinaTypeScriptOptions } from '@/types';
+import { withRouter, NextRouter } from 'next/router';
 
-interface GeneratorCallbackProps {
-  generator: any;
-  generatorCode: string
-};
-
-type GeneratorReactProps = { 
-  onGeneratorChange: (args: GeneratorCallbackProps) => void;
-  onInit: (args: GeneratorCallbackProps) => void;
-};
-
+interface WithRouterProps {
+  router: NextRouter,
+  setNewConfig: (propertyKey: string, propertyValue: string) => void
+}
 type TypeScriptGeneratorState = {
-  variant: "class" | "interface" | undefined;
-  marshalling: boolean;
+  tsMarshalling: boolean;
+  tsModelType: "class" | "interface" | undefined;
 }
 
 export const defaultState: TypeScriptGeneratorState = { 
-  marshalling: false, 
-  variant: 'class' 
+  tsMarshalling: false, 
+  tsModelType: 'class' 
 };
 
-/**
- * Function for getting the generator for class model type as well as the code that comprise of the generator, just in text form.
- */
-export function getGeneratorCode(state: TypeScriptGeneratorState = defaultState): GeneratorCallbackProps {
-  const generator = new TypeScriptGenerator({
-    modelType: state.variant,
-    presets: [
-      {
-        preset: TS_COMMON_PRESET,
-        options: {
-          marshalling: state.marshalling
-        }
-      }
-    ]
-  });
 
-  const generateInstanceCode = `const generator = new TypeScriptGenerator({
-  modelType: 'class',
-  ${state.marshalling ? `presets: [
-    {
-      preset: TS_COMMON_PRESET,
-      options: {
-        marshalling: true
-      }
-    }
-  ]` : ''}
-});`.replace(/^\s*\n/gm, '');
-
-  const generatorCode = `import { TypeScriptGenerator, TS_COMMON_PRESET } from '@asyncapi/modelina';
-
-${generateInstanceCode}`
-
-  return { generator, generatorCode };
-}
-export default class TypeScriptReactGenerator extends React.Component<GeneratorReactProps, TypeScriptGeneratorState> {
-  constructor(props: GeneratorReactProps) {
+class TypeScriptReactGenerator extends React.Component<WithRouterProps, TypeScriptGeneratorState> {
+  constructor(props: any) {
     super(props)
-    this.state = defaultState;
+    const query = this.props.router.query as ModelinaTypeScriptOptions;
+    const localState = defaultState;
+    if(query.tsMarshalling !== undefined) {
+      localState.tsMarshalling = (query.tsMarshalling === 'true');
+    }
+    if(query.tsModelType !== undefined) {
+      localState.tsModelType = query.tsModelType as any;
+    }
+    this.state = localState;
     this.onChangeMarshalling = this.onChangeMarshalling.bind(this);
     this.onChangeVariant = this.onChangeVariant.bind(this);
-    this.onNewSettings = this.onNewSettings.bind(this);
-    this.props.onInit(getGeneratorCode(this.state));
   }
-
-  componentDidMount() {
-  }
-
+  
   onChangeMarshalling(event: any) {
-    const newState = {...this.state, marshalling: event.target.checked}
-    this.setState(newState)
-    this.onNewSettings(newState)
+    this.props.setNewConfig("tsMarshalling", String(event.target.checked));
+    this.setState({...this.state, tsModelType: event.target.checked});
   }
+
   onChangeVariant(variant: any) {
-    const newState = {...this.state, variant}
-    this.setState(newState)
-    this.onNewSettings(newState)
-  }
-  async onNewSettings(state: any) {
-    this.props.onGeneratorChange(getGeneratorCode(state))
+    this.props.setNewConfig("tsModelType", String(variant));
+    this.setState({...this.state, tsModelType: variant});
   }
 
   render() {
@@ -97,11 +58,11 @@ export default class TypeScriptReactGenerator extends React.Component<GeneratorR
               />
           </label>
         </li>
-        {this.state.variant === 'class' ? (
+        {this.state.tsModelType === 'class' ? (
           <li>
             <label className="flex items-center py-2 justify-between cursor-pointer">
               <span className="text-sm mr-2">Include un/marshal functions</span>
-              <input type="checkbox" className="form-checkbox cursor-pointer" name="marshalling" checked={this.state.marshalling} onChange={this.onChangeMarshalling} />
+              <input type="checkbox" className="form-checkbox cursor-pointer" name="marshalling" checked={this.state.tsMarshalling} onChange={this.onChangeMarshalling} />
             </label>
           </li>
         ) : null}
@@ -109,3 +70,4 @@ export default class TypeScriptReactGenerator extends React.Component<GeneratorR
     );
   }
 }
+export default withRouter(TypeScriptReactGenerator);
