@@ -28,9 +28,10 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     '2.2.0',
     '2.3.0',
     '2.4.0',
-    '2.5.0'
+    '2.5.0',
+    '2.6.0'
   ];
-
+  
   /**
    * Process the input as an AsyncAPI document
    *
