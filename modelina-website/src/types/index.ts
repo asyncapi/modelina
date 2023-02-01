@@ -30,9 +30,10 @@ export interface ModelinaTypeScriptOptions {
   tsModelType?: string;
   tsMarshalling?: string;
 }
-
-export interface ModelinaOptions extends ParsedUrlQuery, ModelinaTypeScriptOptions { 
+export interface ModelinaGeneralOptions {
   language?: string;
+}
+export interface ModelinaOptions extends ParsedUrlQuery, ModelinaTypeScriptOptions, ModelinaGeneralOptions { 
   input?: string;
 }
 
@@ -40,6 +41,12 @@ export interface PostPageQuery extends ModelinaOptions {
   selectedModel?: string;
 }
 export interface SocketIoGenerateMessage extends ModelinaOptions {}
+export const modelinaLanguageOptions = [
+  {
+    "value": "typescript",
+    "text": "TypeScript"
+  }
+];
 
 export const defaultAsyncapiDocument = {
   "asyncapi": "2.5.0",

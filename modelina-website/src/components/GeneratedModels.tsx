@@ -16,47 +16,24 @@ interface ModelsGeneratorProps {
 };
 
 type GeneratedModelsComponentState = {
-  selectedModel?: string,
-  selectedCode?: string,
+  selectedModel?: string
 }
 class GeneratedModelsComponent extends React.Component<GeneratedModelsComponentProps, GeneratedModelsComponentState> {
   constructor(props: GeneratedModelsComponentProps) {
     super(props);
     this.setNewModel = this.setNewModel.bind(this);
-    this.getNewModel = this.getNewModel.bind(this);
-
-    let selectedModel = '';
-    let selectedCode = '';
-    if(this.props.showAllInOneFile === true) { 
-      //Merge all models together
-      selectedCode = this.props.models.map(model => `${model.code}`).join('\n\n');
-    } 
+    const query = this.props.router.query as PostPageQuery;
+    let selectedModel = query.selectedModel;
 
     this.state = {
-      selectedModel,
-      selectedCode
+      selectedModel
     }
   }
 
   componentDidMount(): void {
     const query = this.props.router.query as PostPageQuery;
     let selectedModel = query.selectedModel;
-    let selectedCode = '';
-
-    if(this.props.showAllInOneFile === true) { 
-      if(query.selectedModel !== undefined) {
-        const newModels = this.getNewModel(selectedModel);
-        console.log(newModels);
-        selectedModel = newModels.selectedModel;
-        selectedCode = newModels.selectedCode;
-      } else {
-        if(this.props.models.length > 0) {
-          selectedModel = this.props.models[0].name;
-          selectedCode = this.props.models[0].code;
-        }
-      }
-    }
-    
+    this.setState({...this.state, selectedModel});
   }
 
   setNewQuery(queryKey: string, queryValue: string) {
@@ -67,53 +44,53 @@ class GeneratedModelsComponent extends React.Component<GeneratedModelsComponentP
     Router.push(newQuery, undefined, { scroll: false });
   }
 
-  getNewModel(modelName: string | undefined) : {selectedCode: string, selectedModel: string} {
-    let newModelCode: string = '';
-    if(modelName !== undefined) {
-      //Find the appropriate model to show
-      if(this.props.models.length > 0) {
-        for (const model of this.props.models) {
-          if(model.name === modelName) {
-            newModelCode = model.code;
-            continue;
-          }
-        }
-        if(newModelCode === '') {
-          //If the model is not found default to first one
-          const defaultModel = this.props.models[0];
-          newModelCode = defaultModel.code;
-          modelName = defaultModel.name;
-        }
-      }
-      return {selectedCode: newModelCode, selectedModel: modelName};
-    }
-    return {selectedCode: newModelCode, selectedModel: ''};
-  }
   setNewModel(modelName: string){
-    const {selectedCode, selectedModel} = this.getNewModel(modelName);
-    this.setNewQuery("selectedModel", selectedModel);
-    this.setState({...this.state, selectedCode, selectedModel});
+    this.setNewQuery("selectedModel", modelName);
+    this.setState({...this.state, selectedModel: modelName});
 
   }
 
   render() {
+    let selectedCode = '';
+    let selectedModel = this.state.selectedModel;
+
+    if(this.props.showAllInOneFile === true) { 
+      //Merge all models together
+      selectedCode = this.props.models.map(model => `${model.code}`).join('\n\n');
+    } else if(this.state.selectedModel !== undefined) {
+      for (const model of this.props.models) {
+        if(model.name === this.state.selectedModel) {
+          selectedCode = model.code;
+          continue;
+        }
+      }
+    }
+
+    if(selectedCode === '' && this.props.models.length > 0) {
+      //If the model is not found default to first one
+      const defaultModel = this.props.models[0];
+      selectedCode = defaultModel.code;
+      selectedModel = defaultModel.name;
+    }
+
+    console.log(this.props.router.query);
     if(this.props.showAllInOneFile === true) {
       return (
         <div className="h-full bg-code-editor-dark text-white rounded-b shadow-lg font-bold">
           <MonacoEditorWrapper
             options={{readOnly: true}}
             language={this.props.language}
-            value={this.state.selectedCode} />
+            value={selectedCode} />
         </div>
       )
     } else {
       return (
-        <div className="grid grid-cols-3">
+        <div className="grid grid-cols-3 h-full">
           <div className="col-span-2 h-full bg-code-editor-dark text-white rounded-b shadow-lg font-bold">
             <MonacoEditorWrapper
               options={{readOnly: true}}
               language={this.props.language}
-              value={this.state.selectedCode} />
+              value={selectedCode} />
           </div>
           <div className="overflow-hidden bg-white shadow sm:rounded-lg">
             <div className="px-4 py-5 sm:px-6">
@@ -124,7 +101,7 @@ class GeneratedModelsComponent extends React.Component<GeneratedModelsComponentP
               <dl>
                 {this.props.models.map((model, index) => {
                   let backgroundColor;
-                  if(model.name === this.state.selectedModel) {
+                  if(model.name === selectedModel) {
                     backgroundColor = "bg-blue-100";
                   } else {
                     backgroundColor = index % 2 === 0 ? "bg-gray-50" : "bg-white";

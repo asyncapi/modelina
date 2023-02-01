@@ -1,10 +1,10 @@
-import ModelinaPlayground from '@/components/PlaygroundComponent';
+import Playground from '@/components/Playground';
 import Head from 'next/head';
 import { Inter } from '@next/font/google';
 import styles from '@/styles/Home.module.css';
 
 const inter = Inter({ subsets: ['latin'] });
-export default function Playground() {
+export default function PlaygroundPage() {
   return (
     <>
       <Head>
@@ -18,7 +18,7 @@ export default function Playground() {
           <div className={styles.center}>
             <h1>Modelina generated code</h1>
           </div>
-          <ModelinaPlayground />
+          <Playground />
         </div>
       </main>
     </>
