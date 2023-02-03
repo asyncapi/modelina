@@ -224,8 +224,8 @@ describe('ConstrainedMetaModel', () => {
       );
     });
     test('should return property dependency even if the name is the same as property', () => {
-      const stringModel = new StringModel('prop', undefined);
-      const referenceModel = new ReferenceModel('prop', undefined, stringModel);
+      const stringModel = new StringModel('arrayProp', undefined);
+      const referenceModel = new ReferenceModel('arrayProp', undefined, stringModel);
       const arrayModel = new ArrayModel('arrayProp', undefined, referenceModel);
       const referenceArrayPropertyModel = new ObjectPropertyModel(
         'arrayProp',
