@@ -9,6 +9,7 @@ The documents being tested can be found under [docs](./docs), which contain docu
 - [AsyncAPI 2.3](./docs/AsyncAPI-2_3)
 - [AsyncAPI 2.4](./docs/AsyncAPI-2_4)
 - [AsyncAPI 2.5](./docs/AsyncAPI-2_5)
+- [AsyncAPI 2.6](./docs/AsyncAPI-2_6)
 - [JSON Schema draft 4](./docs/JsonSchemaDraft-4)
 - [JSON Schema draft 6](./docs/JsonSchemaDraft-6)
 - [JSON Schema draft 7](./docs/JsonSchemaDraft-7)
