@@ -191,7 +191,7 @@ The following table provides a short summary of available features for supported
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-models-from-asyncapi-documents">AsyncAPI</a></td>
-    <td>We support the following AsyncAPI versions: <em>2.0.0 -> 2.5.0</em>, which generates models for all the defined message payloads.</td>
+    <td>We support the following AsyncAPI versions: <em>2.0.0 -> 2.6.0</em>, which generates models for all the defined message payloads.</td>
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-models-from-json-schema-documents">JSON Schema</a></td>

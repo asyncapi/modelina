@@ -37,7 +37,7 @@
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.9",
     "@apidevtools/swagger-parser": "^10.0.3",
-    "@asyncapi/parser": "^2.0.0-next-major.11",
+    "@asyncapi/parser": "^2.0.0-next-major.13",
     "@swc/core": "^1.3.5",
     "@swc/jest": "^0.2.23",
     "alterschema": "^1.1.2",

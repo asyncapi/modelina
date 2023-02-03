@@ -66,6 +66,18 @@ describe('AsyncAPIInputProcessor', () => {
       const parsedObject = { asyncapi: '2.5.0' };
       expect(processor.shouldProcess(parsedObject)).toEqual(true);
     });
+    test('should be able to process AsyncAPI 2.6.0', () => {
+      const parsedObject = { asyncapi: '2.6.0' };
+      expect(processor.shouldProcess(parsedObject)).toEqual(true);
+    });
+    test('should not be able to process AsyncAPI 2.x', () => {
+      const parsedObject = { asyncapi: '2.123.0' };
+      expect(processor.shouldProcess(parsedObject)).toEqual(false);
+    });
+    test('should not be able to process AsyncAPI 3.x', () => {
+      const parsedObject = { asyncapi: '3.0.0' };
+      expect(processor.shouldProcess(parsedObject)).toEqual(false);
+    });
   });
   describe('tryGetVersionOfDocument()', () => {
     const processor = new AsyncAPIInputProcessor();
