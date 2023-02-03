@@ -225,7 +225,11 @@ describe('ConstrainedMetaModel', () => {
     });
     test('should return property dependency even if the name is the same as property', () => {
       const stringModel = new StringModel('arrayProp', undefined);
-      const referenceModel = new ReferenceModel('arrayProp', undefined, stringModel);
+      const referenceModel = new ReferenceModel(
+        'arrayProp',
+        undefined,
+        stringModel
+      );
       const arrayModel = new ArrayModel('arrayProp', undefined, referenceModel);
       const referenceArrayPropertyModel = new ObjectPropertyModel(
         'arrayProp',
@@ -243,7 +247,10 @@ describe('ConstrainedMetaModel', () => {
       }) as ConstrainedObjectModel;
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(1);
-      expect(dependencies[0]).toEqual((model.properties['arrayProp'].property as ConstrainedArrayModel).valueModel);
+      expect(dependencies[0]).toEqual(
+        (model.properties['arrayProp'].property as ConstrainedArrayModel)
+          .valueModel
+      );
     });
     test('should return all reference dependencies', () => {
       const stringModel = new StringModel('', undefined);
@@ -364,7 +371,6 @@ describe('ConstrainedMetaModel', () => {
       expect(dependencies).toHaveLength(1);
       expect(dependencies[0]).toEqual(model.properties['reference'].property);
     });
-    
 
     describe('containsPropertyType', () => {
       test('should find present property type and those who are not', () => {
