@@ -16,10 +16,10 @@ export default function Footer() {
 
           <div className="mr-14 w-full md:w-auto">
             <div className="">
-              <Link href="/">
-                <a className="cursor-pointer">
-                  <AsyncAPILogoLight className="h-10 w-auto mt-3" />
-                </a>
+              <Link href="/" className="cursor-pointer">
+
+                <AsyncAPILogoLight className="h-10 w-auto mt-3" />
+
               </Link>
            </div>
             <div className="">
@@ -39,13 +39,17 @@ export default function Footer() {
                 </div>
                 <ul className="justify-center">
                   <li className="py-2">
-                    <Link href="/about">
-                      <a className="text-base leading-6 text-cool-gray hover:text-white transition ease-in-out duration-300">About</a>
+                    <Link
+                      href="/about"
+                      className="text-base leading-6 text-cool-gray hover:text-white transition ease-in-out duration-300">
+                      About
                     </Link>
                   </li>
                   <li className="py-2">
-                    <Link href="/blog">
-                      <a className="text-base leading-6 text-cool-gray hover:text-white transition ease-in-out duration-300">Blog</a>
+                    <Link
+                      href="/blog"
+                      className="text-base leading-6 text-cool-gray hover:text-white transition ease-in-out duration-300">
+                      Blog
                     </Link>
                   </li>
                   <li className="py-2">
@@ -54,8 +58,10 @@ export default function Footer() {
                     </a>
                   </li>
                   <li className="py-2">
-                    <Link href="/jobs">
-                      <a className="text-base leading-6 text-cool-gray hover:text-white transition ease-in-out duration-300">Jobs</a>
+                    <Link
+                      href="/jobs"
+                      className="text-base leading-6 text-cool-gray hover:text-white transition ease-in-out duration-300">
+                      Jobs
                     </Link>
                   </li>
                   <li className="py-2">
@@ -171,5 +177,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

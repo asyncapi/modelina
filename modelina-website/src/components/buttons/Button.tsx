@@ -36,21 +36,26 @@ export default function Button({
   }
 
   return (
-    <Link href={href} passHref>
-      <a {...props} target={target} rel="noopener noreferrer" className={buttonSize === 'small' ? smallButtonClasses : classNames}>
-        {
-          icon && iconPosition === 'left' && (
-            <span className="inline-block mr-2">{icon}</span>
-          )
-        }
-        <span className="inline-block">{text}</span>
-        {
-          icon && iconPosition === 'right' && (
-            <span className="inline-block ml-2">{icon}</span>
-          )
-        }
-      </a>
-    </Link>
-  )
+    (<Link
+      href={href}
+      passHref
+      target={target}
+      rel="noopener noreferrer"
+      className={buttonSize === 'small' ? smallButtonClasses : classNames}
+      {...props}>
+      {
+        icon && iconPosition === 'left' && (
+          <span className="inline-block mr-2">{icon}</span>
+        )
+      }
+      <span className="inline-block">{text}</span>
+      {
+        icon && iconPosition === 'right' && (
+          <span className="inline-block ml-2">{icon}</span>
+        )
+      }
+
+    </Link>)
+  );
 }
 

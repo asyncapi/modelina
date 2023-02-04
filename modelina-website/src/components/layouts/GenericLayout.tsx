@@ -1,17 +1,16 @@
 import Head from './Head';
 import NavBar from './NavBar'
 import Container from './Container'
-import Footer from './Footer';
 import StickyNavbar from './StickyNavbar'
 
 export default function GenericLayout({
   title,
   description,
-  image,
+  image = '/img/social/modelina-card.jpg',
   children,
   wide = true
 }: any) {
-  if (!title || !description || !image) throw new Error('Props `title`, `description`, and `image` are required at GenericLayout component.')
+  if (!title || !description) throw new Error('Props `title`, and `description` are required at GenericLayout component.')
   
   return (
     <>

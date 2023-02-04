@@ -31,10 +31,10 @@ export default function NavBar({
         {!hideLogo && (
           <div className="lg:w-auto lg:flex-1">
             <div className="flex">
-              <Link href="/">
-                <a className="cursor-pointer">
-                  <AsyncAPILogo className="h-8 w-auto sm:h-8" />
-                </a>
+              <Link href="/" className="cursor-pointer">
+
+                <AsyncAPILogo className="h-8 w-auto sm:h-8" />
+
               </Link>
             </div>
           </div>
@@ -52,9 +52,8 @@ export default function NavBar({
         <nav className="hidden lg:flex lg:items-center lg:justify-end space-x-6 xl:space-x-10 w-full">
           <div className="relative" onMouseLeave={() => showMenu(null)}>
             <NavItem 
-              text="Docs" 
-              href='/docs'
-              hasDropdown
+              text="Playground" 
+              href='/playground'
             />
           </div>
 
@@ -68,5 +67,5 @@ export default function NavBar({
       {/* Mobile menu, show/hide based on mobile menu state. */}
       {mobileMenuOpen && <MobileNavMenu onClickClose={() => setMobileMenuOpen(false)} />}
     </div>
-  )
+  );
 }

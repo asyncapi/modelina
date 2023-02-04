@@ -11,9 +11,7 @@ export default function MobileNavMenu ({
           <div className="pt-5 pb-6 px-5 space-y-6">
             <div className="flex items-center justify-between">
               <Link href="/" className="flex">
-                <a className="cursor-pointer">
                 <AsyncAPILogo className="h-8 w-auto" />
-                </a>
               </Link>
               <div className="flex flex-row items-center justify-content -mr-2">
                 <button onClick={onClickClose} type="button" className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
@@ -24,10 +22,17 @@ export default function MobileNavMenu ({
               </div>
             </div>
             <div className="py-2 space-y-2">
-              <Link href="/docs" className="flex">
+              <Link href="/docs" className="flex" legacyBehavior>
                 <h4 className="text-gray-500 font-medium block mb-4">
                   <a className="cursor-pointer">
                     Docs
+                  </a>
+                </h4>
+              </Link>
+              <Link href="/playground" className="flex" legacyBehavior>
+                <h4 className="text-gray-500 font-medium block mb-4">
+                  <a className="cursor-pointer">
+                    Playground
                   </a>
                 </h4>
               </Link>
@@ -36,5 +41,5 @@ export default function MobileNavMenu ({
         </div>
       </div>
     </div>
-  )
+  );
 }
