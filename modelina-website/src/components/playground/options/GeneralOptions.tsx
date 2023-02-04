@@ -4,34 +4,43 @@ import { modelinaLanguageOptions } from '@/types';
 import { PlaygroundGeneralConfigContext } from '@/components/contexts/PlaygroundGeneralConfigContext';
 
 interface WithRouterProps {
-  setNewConfig?: (queryKey: string, queryValue: string) => void
+  setNewConfig?: (queryKey: string, queryValue: string) => void;
 }
-type GeneralOptionsState = {}
+interface GeneralOptionsState {}
 
-export const defaultState: GeneralOptionsState = { };
+export const defaultState: GeneralOptionsState = {};
 
-class GeneralOptions extends React.Component<WithRouterProps, GeneralOptionsState> {
+class GeneralOptions extends React.Component<
+  WithRouterProps,
+  GeneralOptionsState
+> {
   static contextType = PlaygroundGeneralConfigContext;
   declare context: React.ContextType<typeof PlaygroundGeneralConfigContext>;
-  
+
   constructor(props: any) {
-    super(props)
+    super(props);
     this.state = defaultState;
     this.onChangeLanguage = this.onChangeLanguage.bind(this);
   }
 
   onChangeLanguage(language: any) {
-    if (this.props.setNewConfig) this.props.setNewConfig("language", String(language));
+    if (this.props.setNewConfig) {
+      this.props.setNewConfig('language', String(language));
+    }
   }
 
   render() {
-    console.log(this.context?.language)
+    console.log(this.context?.language);
     return (
       <ul className="flex flex-col">
-        <h3 className="text-lg font-medium leading-6 text-gray-900">General options</h3>
+        <h3 className="text-lg font-medium leading-6 text-gray-900">
+          General options
+        </h3>
         <li>
           <label className="flex items-center py-2 justify-between cursor-pointer">
-            <span className="mt-1 max-w-2xl text-sm text-gray-500">Output type</span>
+            <span className="mt-1 max-w-2xl text-sm text-gray-500">
+              Output type
+            </span>
             <Select
               options={modelinaLanguageOptions}
               value={this.context?.language}

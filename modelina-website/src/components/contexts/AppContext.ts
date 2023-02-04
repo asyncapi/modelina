@@ -1,5 +1,5 @@
 import { createContext } from 'react';
 export interface AppContext {
-    path: string
+  path: string;
 }
 export default createContext<AppContext>({ path: '' });

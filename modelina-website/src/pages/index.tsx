@@ -7,7 +7,8 @@ import Heading from '@/components/typography/Heading';
 import Paragraph from '@/components/typography/Paragraph';
 
 export default function Index() {
-  const description = 'Sometimes you just want to generate data models for your payload. Modelina is a library for generating data models based on inputs such as AsyncAPI, OpenAPI, or JSON Schema documents.';
+  const description =
+    'Sometimes you just want to generate data models for your payload. Modelina is a library for generating data models based on inputs such as AsyncAPI, OpenAPI, or JSON Schema documents.';
   const image = '/img/social/modelina-card.jpg';
 
   return (
@@ -36,7 +37,14 @@ export default function Index() {
               Get started immediately with Modelina through the AsyncAPI Cli.
             </Paragraph>
             <div className="mt-8">
-              <CodeBlock language="generator-cli" showLineNumbers={false} className="mt-8" textSizeClassName="text-sm">asyncapi generate models typescript ./asyncapi.json</CodeBlock>
+              <CodeBlock
+                language="generator-cli"
+                showLineNumbers={false}
+                className="mt-8"
+                textSizeClassName="text-sm"
+              >
+                asyncapi generate models typescript ./asyncapi.json
+              </CodeBlock>
               <div className="mt-8">
                 <GithubButton
                   className="block mt-2 md:mt-0 md:inline-block w-full sm:w-auto mt-8"
@@ -46,13 +54,20 @@ export default function Index() {
             </div>
           </div>
           <div className="relative lg:mt-8 h-full">
-            <img src={'/img/card/cli-card.jpg'} />
+            <img src={'/img/card/cli-card.jpg'} alt={'CLI card'} />
           </div>
         </div>
 
         <div className="relative mt-12 lg:mt-20 lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center">
           <div className="relative lg:mt-8">
-            <CodeBlock language="bash" showLineNumbers={false} className="mt-8" textSizeClassName="text-sm">npm install @asyncapi/modelina</CodeBlock>
+            <CodeBlock
+              language="bash"
+              showLineNumbers={false}
+              className="mt-8"
+              textSizeClassName="text-sm"
+            >
+              npm install @asyncapi/modelina
+            </CodeBlock>
           </div>
           <div className="relative mb-8 lg:mt-8">
             <Heading level="h4" typeStyle="heading-md-semibold">
@@ -62,7 +77,14 @@ export default function Index() {
               Install and get started with Modelina right out the gate.
             </Paragraph>
             <div className="mt-8">
-              <CodeBlock language="bash" showLineNumbers={false} className="mt-8" textSizeClassName="text-sm">npm install @asyncapi/modelina</CodeBlock>
+              <CodeBlock
+                language="bash"
+                showLineNumbers={false}
+                className="mt-8"
+                textSizeClassName="text-sm"
+              >
+                npm install @asyncapi/modelina
+              </CodeBlock>
               <div className="mt-8">
                 <Button
                   className="hidden mt-2 md:mt-0 lg:inline-block md:ml-2"
@@ -80,7 +102,10 @@ export default function Index() {
             Usage
           </Heading>
           <Paragraph className="mt-4 max-w-3xl mx-auto">
-            Modelina can be used in a wide range of scenarios, and is build to be apart of the core toolbox you can customize to your hearts desire. <b>Here is just a fraction of what you can do with Modelina.</b>
+            Modelina can be used in a wide range of scenarios, and is build to
+            be apart of the core toolbox you can customize to your hearts
+            desire.{' '}
+            <b>Here is just a fraction of what you can do with Modelina.</b>
           </Paragraph>
         </div>
 
@@ -88,10 +113,19 @@ export default function Index() {
           <table className="min-w-full relative lg:mt-8">
             <tbody>
               <tr className="border-b">
-                <td className="text-sm text-gray-900 font-light px-6 py-4"><b>Modelina lets you generate data models from many types of <a href="#inputs">inputs</a></b></td>
                 <td className="text-sm text-gray-900 font-light px-6 py-4">
-
-                  <CodeBlock language="typescript" showLineNumbers={false} className="mt-8" textSizeClassName="text-sm">
+                  <b>
+                    Modelina lets you generate data models from many types of{' '}
+                    <a href="#inputs">inputs</a>
+                  </b>
+                </td>
+                <td className="text-sm text-gray-900 font-light px-6 py-4">
+                  <CodeBlock
+                    language="typescript"
+                    showLineNumbers={false}
+                    className="mt-8"
+                    textSizeClassName="text-sm"
+                  >
                     {`const asyncapi = ...
 const jsonschema = ...
 const openapi = ...
@@ -104,10 +138,19 @@ const models = await generator.generate(
                 </td>
               </tr>
               <tr className="border-b">
-                <td className="text-sm text-gray-900 font-light px-6 py-4"><b>Use the same inputs across a range of different <a href="#outputs">generators</a></b></td>
                 <td className="text-sm text-gray-900 font-light px-6 py-4">
-
-                  <CodeBlock language="typescript" showLineNumbers={false} className="mt-8" textSizeClassName="text-sm">
+                  <b>
+                    Use the same inputs across a range of different{' '}
+                    <a href="#outputs">generators</a>
+                  </b>
+                </td>
+                <td className="text-sm text-gray-900 font-light px-6 py-4">
+                  <CodeBlock
+                    language="typescript"
+                    showLineNumbers={false}
+                    className="mt-8"
+                    textSizeClassName="text-sm"
+                  >
                     {`const generator = new TypeScriptGenerator();
 const generator = new CsharpGenerator();
 const generator = new JavaGenerator();
@@ -118,16 +161,20 @@ const models = await generator.generate(input);`}
                 </td>
               </tr>
               <tr className="border-b">
-                <td className="text-sm text-gray-900 font-light px-6 py-4"><b>Easily let you interact with the generated models.</b>
-
-                  - Want to show the generated models on a website? Sure!
-                  - Want to generate the models into files? Sure!
-                  - Want to combine all the models into one single file? Sure!
-
-                  Whatever interaction you need, you can create.</td>
                 <td className="text-sm text-gray-900 font-light px-6 py-4">
-
-                  <CodeBlock language="typescript" showLineNumbers={false} className="mt-8" textSizeClassName="text-sm">
+                  <b>Easily let you interact with the generated models.</b>-
+                  Want to show the generated models on a website? Sure! - Want
+                  to generate the models into files? Sure! - Want to combine all
+                  the models into one single file? Sure! Whatever interaction
+                  you need, you can create.
+                </td>
+                <td className="text-sm text-gray-900 font-light px-6 py-4">
+                  <CodeBlock
+                    language="typescript"
+                    showLineNumbers={false}
+                    className="mt-8"
+                    textSizeClassName="text-sm"
+                  >
                     {`const models = await generator.generate(input);
 for (const model in models) { 
   const generatedCode = generatedModel.result;
@@ -140,11 +187,21 @@ for (const model in models) {
                 </td>
               </tr>
               <tr className="border-b">
-                <td className="text-sm text-gray-900 font-light px-6 py-4"><b>Easily modify how models are <a href="./docs/constraints.md">constrained</a> into the output</b></td>
+                <td className="text-sm text-gray-900 font-light px-6 py-4">
+                  <b>
+                    Easily modify how models are{' '}
+                    <a href="./docs/constraints.md">constrained</a> into the
+                    output
+                  </b>
+                </td>
 
                 <td className="text-sm text-gray-900 font-light px-6 py-4">
-
-                  <CodeBlock language="typescript" showLineNumbers={false} className="mt-8" textSizeClassName="text-sm">
+                  <CodeBlock
+                    language="typescript"
+                    showLineNumbers={false}
+                    className="mt-8"
+                    textSizeClassName="text-sm"
+                  >
                     {`const generator = new TypeScriptGenerator({
   constraints: {
     modelName: ({modelName}) => {
@@ -157,11 +214,23 @@ for (const model in models) {
                 </td>
               </tr>
               <tr className="border-b">
-                <td className="text-sm text-gray-900 font-light px-6 py-4"><b>Seamlessly layer additional or replacement code <a href="./docs/presets.md">on top of each other to customize the models</a> to your use-case</b></td>
+                <td className="text-sm text-gray-900 font-light px-6 py-4">
+                  <b>
+                    Seamlessly layer additional or replacement code{' '}
+                    <a href="./docs/presets.md">
+                      on top of each other to customize the models
+                    </a>{' '}
+                    to your use-case
+                  </b>
+                </td>
 
                 <td className="text-sm text-gray-900 font-light px-6 py-4">
-
-                  <CodeBlock language="typescript" showLineNumbers={false} className="mt-8" textSizeClassName="text-sm">
+                  <CodeBlock
+                    language="typescript"
+                    showLineNumbers={false}
+                    className="mt-8"
+                    textSizeClassName="text-sm"
+                  >
                     {`const generator = new TypeScriptGenerator({
   presets: [
     {
@@ -181,11 +250,22 @@ const models = await generator.generate(input);`}
                 </td>
               </tr>
               <tr className="border-b">
-                <td className="text-sm text-gray-900 font-light px-6 py-4"><b>Seamlessly lets you <a href="./docs/presets.md">combine multiple layers of additional or replacement code</a></b></td>
+                <td className="text-sm text-gray-900 font-light px-6 py-4">
+                  <b>
+                    Seamlessly lets you{' '}
+                    <a href="./docs/presets.md">
+                      combine multiple layers of additional or replacement code
+                    </a>
+                  </b>
+                </td>
 
                 <td className="text-sm text-gray-900 font-light px-6 py-4">
-
-                  <CodeBlock language="typescript" showLineNumbers={false} className="mt-8" textSizeClassName="text-sm">
+                  <CodeBlock
+                    language="typescript"
+                    showLineNumbers={false}
+                    className="mt-8"
+                    textSizeClassName="text-sm"
+                  >
                     {`const myCustomFunction1 = {
   class: {
     additionalContent({ content }) {

@@ -12,44 +12,65 @@ import RustGeneratorOptions from './options/RustGeneratorOptions';
 import PythonGeneratorOptions from './options/PythonGeneratorOptions';
 
 interface WithRouterProps {
-  setNewConfig?: (queryKey: string, queryValue: string) => void
+  setNewConfig?: (queryKey: string, queryValue: string) => void;
 }
-type GeneralOptionsState = {}
+interface PlaygroundOptionsState {}
 
-export const defaultState: GeneralOptionsState = { };
+export const defaultState: PlaygroundOptionsState = {};
 
-class PlaygroundOptions extends React.Component<WithRouterProps, GeneralOptionsState> {
+class PlaygroundOptions extends React.Component<
+  WithRouterProps,
+  PlaygroundOptionsState
+> {
   static contextType = PlaygroundGeneralConfigContext;
   declare context: React.ContextType<typeof PlaygroundGeneralConfigContext>;
   constructor(props: any) {
-    super(props)
+    super(props);
     this.state = defaultState;
   }
 
   render() {
     let generatorOptions;
     if (this.context?.language === 'typescript') {
-      generatorOptions = <TypeScriptGeneratorOptions setNewConfig={this.props.setNewConfig} />
+      generatorOptions = (
+        <TypeScriptGeneratorOptions setNewConfig={this.props.setNewConfig} />
+      );
     } else if (this.context?.language === 'javascript') {
-      generatorOptions = <JavaScriptGeneratorOptions setNewConfig={this.props.setNewConfig} />
+      generatorOptions = (
+        <JavaScriptGeneratorOptions setNewConfig={this.props.setNewConfig} />
+      );
     } else if (this.context?.language === 'csharp') {
-      generatorOptions = <CSharpGeneratorOptions setNewConfig={this.props.setNewConfig} />
+      generatorOptions = (
+        <CSharpGeneratorOptions setNewConfig={this.props.setNewConfig} />
+      );
     } else if (this.context?.language === 'dart') {
-      generatorOptions = <DartGeneratorOptions setNewConfig={this.props.setNewConfig} />
+      generatorOptions = (
+        <DartGeneratorOptions setNewConfig={this.props.setNewConfig} />
+      );
     } else if (this.context?.language === 'go') {
-      generatorOptions = <GoGeneratorOptions setNewConfig={this.props.setNewConfig} />
+      generatorOptions = (
+        <GoGeneratorOptions setNewConfig={this.props.setNewConfig} />
+      );
     } else if (this.context?.language === 'java') {
-      generatorOptions = <JavaGeneratorOptions setNewConfig={this.props.setNewConfig} />
+      generatorOptions = (
+        <JavaGeneratorOptions setNewConfig={this.props.setNewConfig} />
+      );
     } else if (this.context?.language === 'kotlin') {
-      generatorOptions = <KotlinGeneratorOptions setNewConfig={this.props.setNewConfig} />
+      generatorOptions = (
+        <KotlinGeneratorOptions setNewConfig={this.props.setNewConfig} />
+      );
     } else if (this.context?.language === 'rust') {
-      generatorOptions = <RustGeneratorOptions setNewConfig={this.props.setNewConfig} />
+      generatorOptions = (
+        <RustGeneratorOptions setNewConfig={this.props.setNewConfig} />
+      );
     } else if (this.context?.language === 'python') {
-      generatorOptions = <PythonGeneratorOptions setNewConfig={this.props.setNewConfig} />
+      generatorOptions = (
+        <PythonGeneratorOptions setNewConfig={this.props.setNewConfig} />
+      );
     }
     return (
       <div className="p-12 rounded-b shadow-lg font-bold">
-        <GeneralOptions setNewConfig={this.props.setNewConfig}/>
+        <GeneralOptions setNewConfig={this.props.setNewConfig} />
         {generatorOptions}
       </div>
     );

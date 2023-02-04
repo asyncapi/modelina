@@ -1,7 +1,7 @@
 import Head from './Head';
-import NavBar from './NavBar'
-import Container from './Container'
-import StickyNavbar from './StickyNavbar'
+import NavBar from './NavBar';
+import Container from './Container';
+import StickyNavbar from './StickyNavbar';
 
 export default function GenericLayout({
   title,
@@ -10,21 +10,19 @@ export default function GenericLayout({
   children,
   wide = true
 }: any) {
-  if (!title || !description) throw new Error('Props `title`, and `description` are required at GenericLayout component.')
-  
+  if (!title || !description) {
+    throw new Error(
+      'Props `title`, and `description` are required at GenericLayout component.'
+    );
+  }
+
   return (
     <>
-      <Head
-        title={title}
-        description={description}
-        image={image}
-      />
-     <StickyNavbar>
-       <NavBar className="max-w-screen-xl block px-4 sm:px-6 lg:px-8 mx-auto" />
-     </StickyNavbar>
-      <Container wide={wide}>
-        {children}
-      </Container>
+      <Head title={title} description={description} image={image} />
+      <StickyNavbar>
+        <NavBar className="max-w-screen-xl block px-4 sm:px-6 lg:px-8 mx-auto" />
+      </StickyNavbar>
+      <Container wide={wide}>{children}</Container>
     </>
-  )
+  );
 }

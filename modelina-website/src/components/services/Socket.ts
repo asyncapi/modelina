@@ -1,6 +1,5 @@
-
-import SocketIOClient from "socket.io-client";
+import SocketIOClient from 'socket.io-client';
 
 export const socket = SocketIOClient(process.env.BASE_URL || '/', {
-  path: "/api/socketio",
+  path: '/api/socketio'
 });

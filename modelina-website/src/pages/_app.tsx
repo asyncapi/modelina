@@ -1,8 +1,8 @@
 import Head from 'next/head';
-import AppContext from '../components/contexts/AppContext'
-import Footer from "../components/layouts/Footer";
+import AppContext from '../components/contexts/AppContext';
+import Footer from '../components/layouts/Footer';
 
-import '../styles/globals.css'
+import '../styles/globals.css';
 
 export default function App({ Component, pageProps, router }: any) {
   return (
@@ -17,5 +17,5 @@ export default function App({ Component, pageProps, router }: any) {
         </div>
       </div>
     </AppContext.Provider>
-  )
+  );
 }

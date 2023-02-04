@@ -1,34 +1,47 @@
-import { NextApiRequest } from "next";
-import { defaultAsyncapiDocument, NextApiResponseServerIO, SocketIoChannels, SocketIoGenerateMessage, SocketIoUpdateMessage } from "../../types";
-import { Server as ServerIO, Socket } from "socket.io";
-import { Server as NetServer } from "http";
-import { decode } from "js-base64";
-import { getTypeScriptGeneratorCode, getTypeScriptModels } from "@/SocketIo/TypeScriptGenerator";
-import { getJavaScriptGeneratorCode, getJavaScriptModels } from "@/SocketIo/JavaScriptGenerator";
-import { getJavaGeneratorCode, getJavaModels } from "@/SocketIo/JavaGenerator";
-import { getGoGeneratorCode, getGoModels } from "@/SocketIo/GoGenerator";
-import { getDartGeneratorCode, getDartModels } from "@/SocketIo/DartGenerator";
-import { getPythonGeneratorCode, getPythonModels } from "@/SocketIo/PythonGenerator";
-import { getRustGeneratorCode, getRustModels } from "@/SocketIo/RustGenerator";
-import { getCSharpGeneratorCode, getCSharpModels } from "@/SocketIo/CSharpGenerator";
-// import { Logger, ModelLoggingInterface } from "../../../../";
-// const customLogger: ModelLoggingInterface = {
-//   debug: console.debug,
-//   info: console.info,
-//   warn: console.warn,
-//   error: console.error
-// };
-// Logger.setLogger(customLogger);
+import { NextApiRequest } from 'next';
+import {
+  defaultAsyncapiDocument,
+  NextApiResponseServerIO,
+  SocketIoChannels,
+  SocketIoGenerateMessage,
+  SocketIoUpdateMessage
+} from '../../types';
+import { Server as ServerIO, Socket } from 'socket.io';
+import { Server as NetServer } from 'http';
+import { decode } from 'js-base64';
+import {
+  getTypeScriptGeneratorCode,
+  getTypeScriptModels
+} from '@/SocketIo/TypeScriptGenerator';
+import {
+  getJavaScriptGeneratorCode,
+  getJavaScriptModels
+} from '@/SocketIo/JavaScriptGenerator';
+import { getJavaGeneratorCode, getJavaModels } from '@/SocketIo/JavaGenerator';
+import { getGoGeneratorCode, getGoModels } from '@/SocketIo/GoGenerator';
+import { getDartGeneratorCode, getDartModels } from '@/SocketIo/DartGenerator';
+import {
+  getPythonGeneratorCode,
+  getPythonModels
+} from '@/SocketIo/PythonGenerator';
+import { getRustGeneratorCode, getRustModels } from '@/SocketIo/RustGenerator';
+import {
+  getCSharpGeneratorCode,
+  getCSharpModels
+} from '@/SocketIo/CSharpGenerator';
 
 export const config = {
   api: {
-    bodyParser: false,
-  },
+    bodyParser: false
+  }
 };
 
-async function generateNewCode(socket: Socket, message: SocketIoGenerateMessage) {
+async function generateNewCode(
+  socket: Socket,
+  message: SocketIoGenerateMessage
+) {
   try {
-    let input: object = defaultAsyncapiDocument;
+    let input: any = defaultAsyncapiDocument;
     if (message.input !== undefined) {
       const inputString = decode(message.input);
       console.log(message);
@@ -38,7 +51,7 @@ async function generateNewCode(socket: Socket, message: SocketIoGenerateMessage)
     }
 
     const language = message.language || 'typescript';
-    let props: SocketIoUpdateMessage = { generatorCode: '', models: [] };
+    const props: SocketIoUpdateMessage = { generatorCode: '', models: [] };
     switch (language) {
       case 'typescript':
         props.models = await getTypeScriptModels(input, message);
@@ -77,27 +90,35 @@ async function generateNewCode(socket: Socket, message: SocketIoGenerateMessage)
     }
     const updateMessage: SocketIoUpdateMessage = props;
     socket.emit(SocketIoChannels.UPDATE, updateMessage);
-  } catch(e) {
+  } catch (e) {
     console.error(e);
   }
 }
 
-export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
+function setupSocketIoServer(
+  req: NextApiRequest,
+  res: NextApiResponseServerIO
+) {
   if (!res.socket.server.io) {
-    console.log("New Socket.io server...");
+    console.log('New Socket.io server...');
     // adapt Next's net Server to http Server
     const httpServer: NetServer = res.socket.server as any;
     const io = new ServerIO(httpServer, {
-      path: "/api/socketio",
+      path: '/api/socketio'
     });
 
-    io.on("connection", (socket) => {
-      socket.on(SocketIoChannels.GENERATE, (message: SocketIoGenerateMessage) => {
-        generateNewCode(socket, message);
-      });
+    io.on('connection', (socket) => {
+      socket.on(
+        SocketIoChannels.GENERATE,
+        async (message: SocketIoGenerateMessage) => {
+          await generateNewCode(socket, message);
+        }
+      );
     });
     // append SocketIO server to Next.js socket server response
     res.socket.server.io = io;
   }
   res.end();
-};
+}
+
+export default setupSocketIoServer;
