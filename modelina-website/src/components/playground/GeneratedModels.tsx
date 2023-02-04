@@ -1,5 +1,5 @@
 import React from "react";
-import {PlaygroundGeneratedContextInstance} from "../contexts/PlaygroundGeneratedContext";
+import {PlaygroundGeneratedContext} from "../contexts/PlaygroundGeneratedContext";
 import MonacoEditorWrapper from "../MonacoEditorWrapper";
 
 interface GeneratedModelsComponentProps {
@@ -11,17 +11,17 @@ type GeneratedModelsComponentState = {
   selectedModel?: string
 }
 class GeneratedModelsComponent extends React.Component<GeneratedModelsComponentProps, GeneratedModelsComponentState> {
-  static contextType = PlaygroundGeneratedContextInstance;
-  declare context: React.ContextType<typeof PlaygroundGeneratedContextInstance>
+  static contextType = PlaygroundGeneratedContext;
+  declare context: React.ContextType<typeof PlaygroundGeneratedContext>
   constructor(props: GeneratedModelsComponentProps) {
     super(props);
-    this.setNewModel = this.setNewModel.bind(this);
+    this.setNewQuery = this.setNewQuery.bind(this);
     this.state = {
       selectedModel: ''
     }
   }
 
-  setNewModel(modelName: string){
+  setNewQuery(modelName: string){
     if (this.props.setNewQuery) this.props.setNewQuery("selectedModel", modelName);
     this.setState({...this.state, selectedModel: modelName});
   }
@@ -61,7 +61,7 @@ class GeneratedModelsComponent extends React.Component<GeneratedModelsComponentP
     } else {
       return (
         <div className="grid grid-cols-3 h-full">
-          <div className="overflow-hidden bg-white shadow sm:rounded-lg">
+          <div className="overflow-scroll bg-white shadow sm:rounded-lg">
             <div className="px-4 py-5 sm:px-6">
               <h3 className="text-lg font-medium leading-6 text-gray-900">Generated Models</h3>
               <p className="mt-1 max-w-2xl text-sm text-gray-500">This list contains all the generated models, select one to show their generated code</p>
@@ -75,7 +75,7 @@ class GeneratedModelsComponent extends React.Component<GeneratedModelsComponentP
                   } else {
                     backgroundColor = index % 2 === 0 ? "bg-gray-50" : "bg-white";
                   }
-                  return <div key={"GeneratedModel" + model.name} onClick={() => {this.setNewModel(model.name)}} className={`${backgroundColor} px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6`}>
+                  return <div key={"GeneratedModel" + model.name} onClick={() => {this.setNewQuery(model.name)}} className={`${backgroundColor} px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6`}>
                   <dt className="text-sm font-medium text-gray-500">{model.name}</dt>
                 </div>
                 })}

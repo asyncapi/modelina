@@ -1,18 +1,18 @@
 import React from 'react';
 import Select from '../../Select';
-import { PlaygroundTypeScriptConfigContextInstance } from '@/components/contexts/PlaygroundTypeScriptConfigContext';
+import { PlaygroundTypeScriptConfigContext } from '@/components/contexts/PlaygroundConfigContext';
 
-interface WithRouterProps {
-  setNewQuery?: (queryKey: string, queryValue: string) => void
+interface TypeScriptGeneratorOptionsProps {
+  setNewConfig?: (queryKey: string, queryValue: string) => void
 }
 
 type TypeScriptGeneratorState = { }
 
 export const defaultState: TypeScriptGeneratorState = { };
 
-class TypeScriptGeneratorOptions extends React.Component<WithRouterProps, TypeScriptGeneratorState> {
-  static contextType = PlaygroundTypeScriptConfigContextInstance;
-  declare context: React.ContextType<typeof PlaygroundTypeScriptConfigContextInstance>
+class TypeScriptGeneratorOptions extends React.Component<TypeScriptGeneratorOptionsProps, TypeScriptGeneratorState> {
+  static contextType = PlaygroundTypeScriptConfigContext;
+  declare context: React.ContextType<typeof PlaygroundTypeScriptConfigContext>
   constructor(props: any) {
     super(props)
     this.state = defaultState;
@@ -21,12 +21,12 @@ class TypeScriptGeneratorOptions extends React.Component<WithRouterProps, TypeSc
   }
   
   onChangeMarshalling(event: any) {
-    if (this.props.setNewQuery) this.props.setNewQuery("tsMarshalling", event.target.checked);
+    if (this.props.setNewConfig) this.props.setNewConfig("tsMarshalling", event.target.checked);
     
   }
 
   onChangeVariant(variant: any) {
-    if (this.props.setNewQuery) this.props.setNewQuery("tsModelType", String(variant));
+    if (this.props.setNewConfig) this.props.setNewConfig("tsModelType", String(variant));
 
   }
 

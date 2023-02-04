@@ -8,18 +8,20 @@ import GeneratedModelsComponent from './GeneratedModels';
 import PlaygroundOptions from './PlaygroundOptions';
 import Heading from '../typography/Heading';
 import Paragraph from '../typography/Paragraph';
-import { PlaygroundGeneratedContextInstance } from '../contexts/PlaygroundGeneratedContext';
-import { PlaygroundGeneralConfigContextInstance } from '../contexts/PlaygroundGeneralConfigContext';
-import { PlaygroundTypeScriptConfigContextInstance } from '../contexts/PlaygroundTypeScriptConfigContext';
+import { PlaygroundGeneratedContext } from '../contexts/PlaygroundGeneratedContext';
+import { PlaygroundGeneralConfigContext } from '../contexts/PlaygroundGeneralConfigContext';
+import { PlaygroundTypeScriptConfigContext, PlaygroundCSharpConfigContext, PlaygroundDartConfigContext, PlaygroundGoConfigContext, PlaygroundJavaConfigContext, PlaygroundJavaScriptConfigContext, PlaygroundKotlinConfigContext, PlaygroundPythonConfigContext, PlaygroundRustConfigContext } from '../contexts/PlaygroundConfigContext';
 interface WithRouterProps {
-  router: NextRouter
+  router: NextRouter;
 }
 
 interface ModelsGeneratorProps {
   code: string;
   name: string;
 };
-interface ModelinaPlaygroundProps extends WithRouterProps { };
+interface ModelinaPlaygroundProps extends WithRouterProps { 
+  maxInputSize?: number;
+};
 
 type ModelinaPlaygroundState = {
   input: string,
@@ -29,11 +31,15 @@ type ModelinaPlaygroundState = {
     editorLoaded: boolean,
     hasReceivedCode: boolean
   },
-  config: ModelinaOptions,
   showGeneratorCode: boolean
 }
 
 class Playground extends React.Component<ModelinaPlaygroundProps, ModelinaPlaygroundState> {
+  config: ModelinaOptions =  {
+    language: 'typescript',
+    tsMarshalling: false,
+    tsModelType: 'class'
+  };
   constructor(props: ModelinaPlaygroundProps) {
     super(props);
     this.state = {
@@ -44,25 +50,27 @@ class Playground extends React.Component<ModelinaPlaygroundProps, ModelinaPlaygr
         editorLoaded: false,
         hasReceivedCode: false
       },
-      showGeneratorCode: false,
-      config: {
-        language: 'typescript',
-        tsMarshalling: false,
-        tsModelType: 'class'
-      }
+      showGeneratorCode: false
     }
+    this.setNewConfig = this.setNewConfig.bind(this);
     this.setNewQuery = this.setNewQuery.bind(this);
     this.generateNewCode = this.generateNewCode.bind(this);
+  }
+
+  setNewConfig(config: string, configValue: any) {
+    this.setNewQuery(config, configValue);
+    (this.config as any)[config] = configValue;
+    this.generateNewCode(this.state.input);
   }
 
   /**
    * Set a query key and value  
    */
-  setNewQuery(queryKey: string, queryValue: string) {
+  setNewQuery(queryKey: string, queryValue: any) {
     const newQuery = {
       query: { ...this.props.router.query },
     }
-    newQuery.query[queryKey] = queryValue;
+    newQuery.query[queryKey] = String(queryValue);
     Router.push(newQuery, undefined, { scroll: false });
   }
 
@@ -70,14 +78,37 @@ class Playground extends React.Component<ModelinaPlaygroundProps, ModelinaPlaygr
    * Tell the socket io server that we want some code
    */
   generateNewCode(input: string) {
-    const message: SocketIoGenerateMessage = {
-      ...this.state.config,
-      input: encode(JSON.stringify(JSON.parse(input)))
+
+    try {
+      const message: SocketIoGenerateMessage = {
+        ...this.config,
+        input: encode(JSON.stringify(JSON.parse(input)))
+      }
+      if (message.input.length > (this.props.maxInputSize || 30000)) {
+        console.error("Input too large, use smaller example");
+      } else {
+        socket.emit(SocketIoChannels.GENERATE, message);
+      }
+    } catch(e) {
+      console.error("Could not generate new code"); 
     }
-    socket.emit(SocketIoChannels.GENERATE, message);
   }
 
+
+
   componentDidMount(): void {
+    const query = this.props.router.query as ModelinaQueryOptions;
+    if (query.tsMarshalling !== undefined) {
+      this.config.tsMarshalling = (query.tsMarshalling === 'true');
+    }
+    if (query.tsModelType !== undefined) {
+      this.config.tsModelType = query.tsModelType as any;
+    }
+    if (query.language !== undefined) {
+      this.config.language = query.language as any;
+    }
+    console.log(query);
+
     // update chat on new message dispatched
     socket.on(SocketIoChannels.UPDATE, (message: SocketIoUpdateMessage) => {
       this.setState({
@@ -95,20 +126,6 @@ class Playground extends React.Component<ModelinaPlaygroundProps, ModelinaPlaygr
 
   render() {
     const { loaded } = this.state;
-    const query = this.props.router.query as ModelinaQueryOptions;
-    const localState = {...this.state};
-
-    if (query.tsMarshalling !== undefined) {
-      localState.config.tsMarshalling = (query.tsMarshalling === 'true');
-    }
-    if (query.tsModelType !== undefined) {
-      localState.config.tsModelType = query.tsModelType as any;
-    }
-    if(query.language !== undefined) {
-      localState.config.language = query.language as any;
-    }
-    console.log(localState);
-
     const isHardLoaded = loaded.hasReceivedCode;
     const isSoftLoaded = loaded.editorLoaded;
     const isLoaded = isHardLoaded && isSoftLoaded;
@@ -134,69 +151,83 @@ class Playground extends React.Component<ModelinaPlaygroundProps, ModelinaPlaygr
           </Paragraph>
         </div>
         {loader}
-        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4 ${isLoaded ? '' : 'invisible'}`}>
-          <div className="flex flex-wrap col-span-2">
-            <div className="basis-full" style={{ height: "500px" }}>
-              <div className="overflow-hidden bg-white shadow sm:rounded-lg flex flex-row">
-                <div className="px-4 py-5 sm:px-6 basis-6/12">
-                  <h3 className="text-lg font-medium leading-6 text-gray-900">Modelina Options</h3>
-                  <p className="mt-1 max-w-2xl text-sm text-gray-500">Change the generation options, or see the Modelina configuration you can use directly in your library</p>
-                </div>
+        <div className={`grid grid-cols-2 gap-4 mt-4 ${isLoaded ? '' : 'invisible'}`}>
+          <div className="col-span-2" style={{ height: "500px" }}>
+            <div className="overflow-hidden bg-white shadow sm:rounded-lg flex flex-row">
+              <div className="px-4 py-5 sm:px-6 basis-6/12">
+                <h3 className="text-lg font-medium leading-6 text-gray-900">Modelina Options</h3>
+                <p className="mt-1 max-w-2xl text-sm text-gray-500">Change the generation options, or see the Modelina configuration you can use directly in your library</p>
+              </div>
 
-                <div onClick={() => { this.setState({ ...this.state, showGeneratorCode: false }) }} className={`${!this.state.showGeneratorCode ? "bg-blue-100" : "bg-white"} px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 basis-3/12`}>
-                  <dt className="text-sm font-medium text-gray-500">Options</dt>
-                </div>
-                <div onClick={() => { this.setState({ ...this.state, showGeneratorCode: true }) }} className={`${this.state.showGeneratorCode ? "bg-blue-100" : "bg-white"} px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 basis-3/12`}>
-                  <dt className="text-sm font-medium text-gray-500">Generator code</dt>
-                </div>
+              <div onClick={() => { this.setState({ ...this.state, showGeneratorCode: false }) }} className={`${!this.state.showGeneratorCode ? "bg-blue-100" : "bg-white"} px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 basis-3/12`}>
+                <h3 className="text-lg font-medium leading-6 text-gray-900">Options</h3>
               </div>
-              {
-                this.state.showGeneratorCode ?
-                  <div className="bg-code-editor-dark text-white rounded-b shadow-lg font-bold" style={{ height: "400px" }}>
-                    <MonacoEditorWrapper
-                      options={{ readOnly: true }}
-                      language="typescript"
-                      value={this.state.generatorCode || ''}
-                    />
-                  </div>
-                  :
-                  <PlaygroundGeneralConfigContextInstance.Provider
-                    value={{ language: localState.config.language }}
+              <div onClick={() => { this.setState({ ...this.state, showGeneratorCode: true }) }} className={`${this.state.showGeneratorCode ? "bg-blue-100" : "bg-white"} px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 basis-3/12`}>
+                <h3 className="text-lg font-medium leading-6 text-gray-900">Generator code</h3>
+              </div>
+            </div>
+            {
+              this.state.showGeneratorCode ?
+                <div className="bg-code-editor-dark text-white rounded-b shadow-lg font-bold" style={{ height: "400px" }}>
+                  <MonacoEditorWrapper
+                    options={{ readOnly: true }}
+                    language="typescript"
+                    value={this.state.generatorCode || ''}
+                  />
+                </div>
+                :
+                <PlaygroundGeneralConfigContext.Provider
+                  value={{ language: this.config.language }}
+                >
+                  <PlaygroundTypeScriptConfigContext.Provider
+                    value={{ tsMarshalling: this.config.tsMarshalling, tsModelType: this.config.tsModelType }}
                   >
-                    <PlaygroundTypeScriptConfigContextInstance.Provider
-                      value={{ tsMarshalling: localState.config.tsMarshalling, tsModelType: localState.config.tsModelType }}
-                    >
-                      <PlaygroundOptions setNewQuery={this.setNewQuery} />
-                    </PlaygroundTypeScriptConfigContextInstance.Provider>
-                  </PlaygroundGeneralConfigContextInstance.Provider>
-              }
-            </div>
-            <div className="basis-1/2">
-              <div className="h-full bg-code-editor-dark text-white rounded-b shadow-lg font-bold">
-                <MonacoEditorWrapper
-                  value={this.state.input}
-                  onChange={(_, change) => {
-                    const encodedString = encode(change);
-                    //this.setNewQuery("input", encodedString);
-                    this.setState({ ...this.state, input: change });
-                    this.generateNewCode(change);
-                  }}
-                  editorDidMount={() => {
-                    this.setState({ loaded: { ...this.state.loaded, editorLoaded: true } });
-                  }}
-                  language="json"
-                />
-              </div>
-            </div>
-            <div className="basis-1/2" style={{ height: "750px" }}>
-              <PlaygroundGeneratedContextInstance.Provider
-                value={{ language: localState.config.language, models: localState.models }}
-              >
-                <GeneratedModelsComponent setNewQuery={this.setNewQuery} />
-              </PlaygroundGeneratedContextInstance.Provider>
+                    <PlaygroundJavaScriptConfigContext.Provider value={{}}>
+                      <PlaygroundCSharpConfigContext.Provider value={{}}>
+                        <PlaygroundDartConfigContext.Provider value={{}}>
+                          <PlaygroundGoConfigContext.Provider value={{}}>
+                            <PlaygroundJavaConfigContext.Provider value={{}}>
+                              <PlaygroundKotlinConfigContext.Provider value={{}}>
+                                <PlaygroundRustConfigContext.Provider value={{}}>
+                                  <PlaygroundPythonConfigContext.Provider value={{}}>
+                                    <PlaygroundOptions setNewConfig={this.setNewConfig} />
+                                  </PlaygroundPythonConfigContext.Provider>
+                                </PlaygroundRustConfigContext.Provider>
+                              </PlaygroundKotlinConfigContext.Provider>
+                            </PlaygroundJavaConfigContext.Provider>
+                          </PlaygroundGoConfigContext.Provider>
+                        </PlaygroundDartConfigContext.Provider>
+                      </PlaygroundCSharpConfigContext.Provider>
+                    </PlaygroundJavaScriptConfigContext.Provider>
+                  </PlaygroundTypeScriptConfigContext.Provider>
+                </PlaygroundGeneralConfigContext.Provider>
+            }
+          </div>
+          <div className="max-xl:col-span-2 xl:grid-cols-1">
+            <div className="h-full bg-code-editor-dark text-white rounded-b shadow-lg font-bold"  style={{ height: "750px" }}>
+              <MonacoEditorWrapper
+                value={this.state.input}
+                onChange={(_, change) => {
+                  const encodedString = encode(change);
+                  //this.setNewConfig("input", encodedString);
+                  this.setState({ ...this.state, input: change });
+                  this.generateNewCode(change);
+                }}
+                editorDidMount={() => {
+                  this.setState({ loaded: { ...this.state.loaded, editorLoaded: true } });
+                }}
+                language="json"
+              />
             </div>
           </div>
-        </div>
+          <div className="max-xl:col-span-2 xl:grid-cols-1" style={{ height: "750px" }}>
+            <PlaygroundGeneratedContext.Provider
+              value={{ language: this.config.language, models: this.state.models }}
+            >
+              <GeneratedModelsComponent setNewQuery={this.setNewQuery} />
+            </PlaygroundGeneratedContext.Provider>
+          </div>
+          </div>
       </div>
     )
   }

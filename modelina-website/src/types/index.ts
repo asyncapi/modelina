@@ -37,7 +37,7 @@ export interface ModelinaCSharpOptions { }
 export interface ModelinaKotlinOptions { }
 export interface ModelinaRustOptions { }
 export interface ModelinaPythonOptions { }
-export interface ModelinadDartOptions { }
+export interface ModelinaDartOptions { }
 export interface ModelinaGeneralOptions {
   language: 'typescript' | 'java' | 'go' | 'javascript' | 'csharp' | 'kotlin' | 'rust' | 'python' | 'dart';
 }
@@ -52,7 +52,7 @@ export interface ModelinaCSharpQueryOptions { }
 export interface ModelinaKotlinQueryOptions { }
 export interface ModelinaRustQueryOptions { }
 export interface ModelinaPythonQueryOptions { }
-export interface ModelinadDartQueryOptions { }
+export interface ModelinaDartQueryOptions { }
 
 export interface ModelinaTypeScriptQueryOptions {
   tsMarshalling?: string;
@@ -61,6 +61,7 @@ export interface ModelinaTypeScriptQueryOptions {
 
 export interface ModelinaOptions extends 
   ModelinaGeneralOptions, 
+  ModelinaTypeScriptOptions, 
   ModelinaJavaOptions, 
   ModelinaGoOptions, 
   ModelinaJavaScriptOptions, 
@@ -68,7 +69,7 @@ export interface ModelinaOptions extends
   ModelinaKotlinOptions, 
   ModelinaRustOptions, 
   ModelinaPythonOptions,
-  ModelinadDartOptions {
+  ModelinaDartOptions {
 }
 export interface ModelinaQueryOptions extends 
   ParsedUrlQuery, 
@@ -81,8 +82,7 @@ export interface ModelinaQueryOptions extends
   ModelinaKotlinQueryOptions, 
   ModelinaRustQueryOptions, 
   ModelinaPythonQueryOptions,
-  ModelinadDartQueryOptions { 
-  input?: string;
+  ModelinaDartQueryOptions {
 }
 
 export interface SocketIoGenerateMessage extends ModelinaOptions {

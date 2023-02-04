@@ -1,18 +1,11 @@
 import { InputProcessor, Logger, ModelLoggingInterface, TS_COMMON_PRESET, TypeScriptGenerator, TypeScriptOptions } from "../../../";
-import { convertModelToProps } from "./Helpers";
+import { convertModelsToProps } from "./Helpers";
 import { ModelinaTypeScriptOptions, ModelProps, SocketIoUpdateMessage } from "../types";
 
 /**
  * This is the server side part of the TypeScript generator, that takes input and generator parameters and generate the models.
  */
 export async function getTypeScriptModels(input: object, generatorOptions: ModelinaTypeScriptOptions): Promise<ModelProps[]> {
-  const customLogger: ModelLoggingInterface = {
-    debug: console.debug,
-    info: console.info,
-    warn: console.warn,
-    error: console.error
-  };
-  Logger.setLogger(customLogger);
   let options: Partial<TypeScriptOptions> = {
     presets: []
   };
@@ -20,7 +13,7 @@ export async function getTypeScriptModels(input: object, generatorOptions: Model
   if (generatorOptions.tsModelType) {
     options.modelType = generatorOptions.tsModelType as any;
   }
-  if (generatorOptions.tsMarshalling && generatorOptions.tsMarshalling === 'true') {
+  if (generatorOptions.tsMarshalling === true) {
     options.presets?.push({
       preset: TS_COMMON_PRESET,
       options: {
@@ -29,9 +22,13 @@ export async function getTypeScriptModels(input: object, generatorOptions: Model
     });
   }
   try {
+    const processedInput = await InputProcessor.processor.process(input);
+    console.log("Processed Input");
     const generator = new TypeScriptGenerator(options);
-    const generatedModels = await generator.generateCompleteModels(input, { exportType: 'default' });
-    const propModels = convertModelToProps(generatedModels);
+    const allGeneratedModels = [];
+    const generatedModels = await generator.generateCompleteModels(processedInput, { exportType: 'default' });
+    console.log("DONE");
+    const propModels = convertModelsToProps(generatedModels);
     return propModels;
   } catch (e) {
     console.error("Could not generate models");
@@ -48,7 +45,7 @@ export function getTypeScriptGeneratorCode(generatorOptions: ModelinaTypeScriptO
     optionString.push(`modelType: '${generatorOptions.tsModelType}'`);
   }
 
-  if (generatorOptions.tsMarshalling && generatorOptions.tsMarshalling === 'true') {
+  if (generatorOptions.tsMarshalling === true) {
     optionStringPresets.push(`{
       preset: TS_COMMON_PRESET,
       options: {

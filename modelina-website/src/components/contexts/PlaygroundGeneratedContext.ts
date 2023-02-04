@@ -1,8 +1,8 @@
 import { createContext } from 'react';
 
-export interface PlaygroundGeneratedContext {
+export interface PlaygroundGenerated {
   models: any[],
   language: string
 }
 
-export const PlaygroundGeneratedContextInstance = createContext<PlaygroundGeneratedContext | null>(null);
+export const PlaygroundGeneratedContext = createContext<PlaygroundGenerated | null>(null);

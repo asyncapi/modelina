@@ -1,8 +1,8 @@
 import { createContext } from 'react';
 
-export interface PlaygroundGeneralConfigContext {
+export interface PlaygroundGeneralConfig {
   language: string,
   showAllInOneFile?: boolean
 }
 
-export const PlaygroundGeneralConfigContextInstance = createContext<PlaygroundGeneralConfigContext | null>(null);
+export const PlaygroundGeneralConfigContext = createContext<PlaygroundGeneralConfig | null>(null);
