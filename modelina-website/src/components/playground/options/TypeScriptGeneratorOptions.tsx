@@ -1,50 +1,36 @@
 import React from 'react';
-import Select from './Select';
-import { ModelinaTypeScriptOptions } from '@/types';
-import { withRouter, NextRouter } from 'next/router';
+import Select from '../../Select';
+import { PlaygroundTypeScriptConfigContextInstance } from '@/components/contexts/PlaygroundTypeScriptConfigContext';
 
 interface WithRouterProps {
-  router: NextRouter,
-  setNewConfig: (propertyKey: string, propertyValue: string) => void
-}
-type TypeScriptGeneratorState = {
-  tsMarshalling: boolean;
-  tsModelType: "class" | "interface" | undefined;
+  setNewQuery?: (queryKey: string, queryValue: string) => void
 }
 
-export const defaultState: TypeScriptGeneratorState = { 
-  tsMarshalling: false, 
-  tsModelType: 'class' 
-};
+type TypeScriptGeneratorState = { }
+
+export const defaultState: TypeScriptGeneratorState = { };
 
 class TypeScriptGeneratorOptions extends React.Component<WithRouterProps, TypeScriptGeneratorState> {
+  static contextType = PlaygroundTypeScriptConfigContextInstance;
+  declare context: React.ContextType<typeof PlaygroundTypeScriptConfigContextInstance>
   constructor(props: any) {
     super(props)
-    const localState = defaultState;
-    this.state = localState;
+    this.state = defaultState;
     this.onChangeMarshalling = this.onChangeMarshalling.bind(this);
     this.onChangeVariant = this.onChangeVariant.bind(this);
   }
   
   onChangeMarshalling(event: any) {
-    this.props.setNewConfig("tsMarshalling", event.target.checked);
-    this.setState({...this.state, tsMarshalling: event.target.checked});
+    if (this.props.setNewQuery) this.props.setNewQuery("tsMarshalling", event.target.checked);
+    
   }
 
   onChangeVariant(variant: any) {
-    this.props.setNewConfig("tsModelType", String(variant));
-    this.setState({...this.state, tsModelType: variant});
+    if (this.props.setNewQuery) this.props.setNewQuery("tsModelType", String(variant));
+
   }
 
   render() {
-    const query = this.props.router.query as ModelinaTypeScriptOptions;
-    const localState = {...this.state};
-    if(query.tsMarshalling !== undefined) {
-      localState.tsMarshalling = (query.tsMarshalling === 'true');
-    }
-    if(query.tsModelType !== undefined) {
-      localState.tsModelType = query.tsModelType as any;
-    }
     return (
       <ul className="flex flex-col">
         <h3 className="text-lg font-medium leading-6 text-gray-900">TypeScript Specific options</h3>
@@ -53,20 +39,20 @@ class TypeScriptGeneratorOptions extends React.Component<WithRouterProps, TypeSc
             <span className="mt-1 max-w-2xl text-sm text-gray-500">TypeScript class variant</span>
             <Select
               options={[{ value: 'class', text: 'Class' }, { value: 'interface', text: 'Interface' }]}
-              value={localState.tsModelType}
+              value={this.context?.tsModelType}
               onChange={this.onChangeVariant}
               className="shadow-outline-blue cursor-pointer"
             />
           </label>
         </li>
-        {localState.tsModelType === 'class' ? (
+        {this.context?.tsModelType === 'class' ? (
           <li>
             <label className="flex items-center py-2 justify-between cursor-pointer">
               <span className="mt-1 max-w-2xl text-sm text-gray-500">Include un/marshal functions</span>
               <input type="checkbox" 
                 className="form-checkbox cursor-pointer" 
                 name="marshalling" 
-                checked={localState.tsMarshalling} 
+                checked={this.context.tsMarshalling} 
                 onChange={this.onChangeMarshalling} />
             </label>
           </li>
@@ -75,4 +61,4 @@ class TypeScriptGeneratorOptions extends React.Component<WithRouterProps, TypeSc
     );
   }
 }
-export default withRouter(TypeScriptGeneratorOptions);
+export default TypeScriptGeneratorOptions;

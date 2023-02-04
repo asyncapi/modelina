@@ -27,24 +27,103 @@ export interface SocketIoUpdateMessage {
 }
 
 export interface ModelinaTypeScriptOptions {
-  tsModelType?: string;
-  tsMarshalling?: string;
+  tsMarshalling: boolean;
+  tsModelType: "class" | "interface" | undefined;
 }
+export interface ModelinaJavaOptions { }
+export interface ModelinaGoOptions { }
+export interface ModelinaJavaScriptOptions { }
+export interface ModelinaCSharpOptions { }
+export interface ModelinaKotlinOptions { }
+export interface ModelinaRustOptions { }
+export interface ModelinaPythonOptions { }
+export interface ModelinadDartOptions { }
 export interface ModelinaGeneralOptions {
-  language?: string;
+  language: 'typescript' | 'java' | 'go' | 'javascript' | 'csharp' | 'kotlin' | 'rust' | 'python' | 'dart';
 }
-export interface ModelinaOptions extends ParsedUrlQuery, ModelinaTypeScriptOptions, ModelinaGeneralOptions { 
+export interface ModelinaGeneralQueryOptions {
+  language: string;
+}
+
+export interface ModelinaJavaQueryOptions {}
+export interface ModelinaGoQueryOptions { }
+export interface ModelinaJavaScriptQueryOptions { }
+export interface ModelinaCSharpQueryOptions { }
+export interface ModelinaKotlinQueryOptions { }
+export interface ModelinaRustQueryOptions { }
+export interface ModelinaPythonQueryOptions { }
+export interface ModelinadDartQueryOptions { }
+
+export interface ModelinaTypeScriptQueryOptions {
+  tsMarshalling?: string;
+  tsModelType?: string;
+}
+
+export interface ModelinaOptions extends 
+  ModelinaGeneralOptions, 
+  ModelinaJavaOptions, 
+  ModelinaGoOptions, 
+  ModelinaJavaScriptOptions, 
+  ModelinaCSharpOptions, 
+  ModelinaKotlinOptions, 
+  ModelinaRustOptions, 
+  ModelinaPythonOptions,
+  ModelinadDartOptions {
+}
+export interface ModelinaQueryOptions extends 
+  ParsedUrlQuery, 
+  ModelinaGeneralQueryOptions,
+  ModelinaTypeScriptQueryOptions,
+  ModelinaJavaQueryOptions, 
+  ModelinaGoQueryOptions, 
+  ModelinaJavaScriptQueryOptions, 
+  ModelinaCSharpQueryOptions, 
+  ModelinaKotlinQueryOptions, 
+  ModelinaRustQueryOptions, 
+  ModelinaPythonQueryOptions,
+  ModelinadDartQueryOptions { 
   input?: string;
 }
 
-export interface PostPageQuery extends ModelinaOptions {
-  selectedModel?: string;
+export interface SocketIoGenerateMessage extends ModelinaOptions {
+  input: string
 }
-export interface SocketIoGenerateMessage extends ModelinaOptions {}
 export const modelinaLanguageOptions = [
   {
     "value": "typescript",
     "text": "TypeScript"
+  },
+  { 
+    "value": "java", 
+    "text": "Java" 
+  },
+  { 
+    "value": "go", 
+    "text": "Go" 
+  },
+  { 
+    "value": "javascript", 
+    "text": "JavaScript" 
+  },
+  { 
+    "value": "csharp", 
+    "text": "C#" 
+  },
+  { 
+    "value": "kotlin", 
+    "text": "Kotlin" 
+  },
+  { 
+    "value": "rust", 
+    "text": "Rust" 
+  },
+  { 
+    "value": "python", 
+    "text": "Python" 
+  },
+  { 
+    "value": "dart", 
+    "text": "Dart" 
   }
 ];
 

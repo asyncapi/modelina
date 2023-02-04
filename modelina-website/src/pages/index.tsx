@@ -3,7 +3,6 @@ import GithubButton from '@/components/buttons/GithubButton';
 import CodeBlock from '@/components/CodeBlock';
 import IconRocket from '@/components/icons/Rocket';
 import GenericLayout from '@/components/layouts/GenericLayout';
-import MonacoEditorWrapper from '@/components/MonacoEditorWrapper';
 import Heading from '@/components/typography/Heading';
 import Paragraph from '@/components/typography/Paragraph';
 
@@ -42,12 +41,6 @@ export default function Index() {
                 <GithubButton
                   className="block mt-2 md:mt-0 md:inline-block w-full sm:w-auto mt-8"
                   href="https://github.com/asyncapi/cli"
-                />
-                <Button
-                  className="hidden mt-2 md:mt-0 lg:inline-block md:ml-2"
-                  text="Try it now"
-                  href="https://github.com/asyncapi/cli#usage"
-                  icon={<IconRocket className="inline-block -mt-1 w-6 h-6" />}
                 />
               </div>
             </div>

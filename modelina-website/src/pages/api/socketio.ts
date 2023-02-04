@@ -25,7 +25,7 @@ export default async (req: NextApiRequest, res: NextApiResponseServerIO) => {
         let input: object = defaultAsyncapiDocument;
         if(message.input !== undefined) {
           const inputString = decode(message.input);
-          console.log(inputString);
+          console.log(message);
           // const jsonSafe = inputString.replace(/'/g, '"');
           // const jsonEnsuredQutoation = jsonSafe.replace(/(['"])?([a-zA-Z0-9_$-]+)(['"])?:([^\/])/g, '"$2":$4');
           input = JSON.parse(inputString);
