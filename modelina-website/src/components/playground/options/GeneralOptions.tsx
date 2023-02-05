@@ -30,7 +30,6 @@ class GeneralOptions extends React.Component<
   }
 
   render() {
-    console.log(this.context?.language);
     return (
       <ul className="flex flex-col">
         <h3 className="text-lg font-medium leading-6 text-gray-900">

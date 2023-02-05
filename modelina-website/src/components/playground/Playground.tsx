@@ -66,6 +66,7 @@ class Playground extends React.Component<
     tsMarshalling: false,
     tsModelType: 'class'
   };
+  hasLoadedQuery: boolean = false;
   constructor(props: ModelinaPlaygroundProps) {
     super(props);
     this.state = {
@@ -119,7 +120,6 @@ class Playground extends React.Component<
           method: 'POST'
         }).then(async (res) => {
           const response: UpdateMessage = await res.json();
-          console.log(response);
           let generatorCode = '';
           switch (this.config.language) {
             case 'typescript':
@@ -165,7 +165,12 @@ class Playground extends React.Component<
     }
   }
 
-  componentDidMount(): void {
+  render() {
+    const { loaded } = this.state;
+    const isHardLoaded = loaded.hasReceivedCode;
+    const isSoftLoaded = loaded.editorLoaded;
+    const isLoaded = isHardLoaded && isSoftLoaded;
+
     const query = this.props.router.query as ModelinaQueryOptions;
     if (query.tsMarshalling !== undefined) {
       this.config.tsMarshalling = query.tsMarshalling === 'true';
@@ -176,15 +181,11 @@ class Playground extends React.Component<
     if (query.language !== undefined) {
       this.config.language = query.language as any;
     }
-    console.log(query);
-    this.generateNewCode(this.state.input);
-  }
-
-  render() {
-    const { loaded } = this.state;
-    const isHardLoaded = loaded.hasReceivedCode;
-    const isSoftLoaded = loaded.editorLoaded;
-    const isLoaded = isHardLoaded && isSoftLoaded;
+    if (this.props.router.isReady && !this.hasLoadedQuery) {
+      this.hasLoadedQuery = true;
+      this.generateNewCode(this.state.input);
+    }
+    
     let loader;
     if (!isHardLoaded) {
       loader = (
@@ -211,7 +212,7 @@ class Playground extends React.Component<
             library instead.
           </Paragraph>
         </div>
-        {loader}
+        {loader} 
         <div
           className={`grid grid-cols-2 gap-4 mt-4 ${
             isLoaded ? '' : 'invisible'
