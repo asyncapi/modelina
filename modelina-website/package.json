@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build --no-lint",
+    "export": "next export",
     "start": "next start",
     "lint": "next lint -c ./.eslintrc"
   },
