@@ -15,10 +15,6 @@
     "@tailwindcss/forms": "^0.5.2",
     "@tailwindcss/line-clamp": "^0.4.0",
     "@tailwindcss/typography": "^0.5.2",
-    "@types/node": "18.11.18",
-    "@types/react": "18.0.27",
-    "@types/react-dom": "18.0.10",
-    "@types/socket.io-client": "^3.0.0",
     "cssnano": "^5.1.14",
     "eslint": "8.32.0",
     "eslint-config-next": "13.1.5",
@@ -41,6 +37,10 @@
   "devDependencies": {
     "@types/lodash": "^4.14.191",
     "@types/lowlight": "0.0.3",
+    "@types/node": "18.11.18",
+    "@types/react": "18.0.27",
+    "@types/react-dom": "18.0.10",
+    "@types/socket.io-client": "^3.0.0",
     "autoprefixer": "^10.4.13"
   }
 }

@@ -1,7 +1,7 @@
 /* eslint-disable no-useless-escape, security/detect-object-injection, sonarjs/no-duplicate-string */
 import { useState } from 'react';
 import Highlight from 'react-syntax-highlighter';
-import {lowlight} from 'lowlight';
+import {registerLanguage} from 'lowlight';
 import IconClipboard from './icons/Clipboard';
 import Caption from './Caption';
 const theme = {
@@ -302,7 +302,7 @@ export default function CodeBlock({
   );
 }
 
-lowlight?.registerLanguage('asyncapi+yaml', (hljs) => {
+registerLanguage('asyncapi+yaml', (hljs: any) => {
   const LITERALS = 'true false yes no null';
 
   // YAML spec allows non-reserved URI characters in tags.
@@ -483,7 +483,7 @@ lowlight?.registerLanguage('asyncapi+yaml', (hljs) => {
   };
 });
 
-lowlight?.registerLanguage('generator-cli', () => ({
+registerLanguage('generator-cli', () => ({
   name: 'generator-cli',
   case_insensitive: true,
   contains: [
