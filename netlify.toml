@@ -7,4 +7,8 @@
   NPM_VERSION = "8.1.2"
 
 [functions]
-  directory = "modelina-website/src/pages/api"
+  directory = "modelina-website/.next/server/pages/api"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
