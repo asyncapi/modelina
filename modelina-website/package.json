@@ -40,6 +40,7 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.191",
+    "@types/lowlight": "0.0.3",
     "autoprefixer": "^10.4.13"
   }
 }
