@@ -115,13 +115,13 @@ class Playground extends React.Component<
         console.error('Input too large, use smaller example');
       } else {
 
-        fetch('/api/generate', {
+        fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/generate`, {
           body: JSON.stringify(message),
           method: 'POST'
         })
-        .then((res) => res.json())
-        .then((data: UpdateMessage) => {
-          console.log(data);
+        .then(async (res) => {
+          const response: UpdateMessage = await res.json()
+          console.log(response);
           let generatorCode = '';
           switch (this.config.language) {
             case 'typescript':
@@ -154,7 +154,7 @@ class Playground extends React.Component<
           this.setState({
             ...this.state,
             generatorCode,
-            models: data.models,
+            models: response.models,
             loaded: {
               ...this.state.loaded,
               hasReceivedCode: true

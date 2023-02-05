@@ -8,7 +8,3 @@
 
 [functions]
   directory = "modelina-website/.next/server/pages/api"
-
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/:splat"
