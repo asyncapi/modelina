@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { Handler, HandlerEvent, HandlerContext } from "@netlify/functions";
-
+import { HandlerEvent } from '@netlify/functions';
 import {
   defaultAsyncapiDocument,
   GenerateMessage,
@@ -16,9 +15,7 @@ import { getPythonModels } from '@/pages/api/functions/PythonGenerator';
 import { getRustModels } from '@/pages/api/functions/RustGenerator';
 import { getCSharpModels } from '@/pages/api/functions/CSharpGenerator';
 
-export async function generateNewCode(
-  message: GenerateMessage
-) {
+export async function generateNewCode(message: GenerateMessage) {
   let input: any = defaultAsyncapiDocument;
   if (message.input !== undefined) {
     const inputString = decode(message.input);
@@ -60,15 +57,12 @@ export async function generateNewCode(
   return props;
 }
 
-async function generate(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+async function generate(req: NextApiRequest, res: NextApiResponse) {
   try {
     const message: GenerateMessage = JSON.parse(req.body);
     const response = await generateNewCode(message);
     return res.status(200).json(response);
-  } catch(e) {
+  } catch (e) {
     console.error(e);
     return res.status(500).json({
       error: 'There was an error generating the models'
@@ -81,20 +75,21 @@ export default generate;
 /**
  * Netlify function specifi code, can be ignored in local development
  */
-export async function handler(event: HandlerEvent, context: HandlerContext) {
-  if (event.httpMethod !== "POST") {
+export async function handler(event: HandlerEvent) {
+  if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: `Method ${event.httpMethod} Not Allowed` };
-  }  if (!event.body) {
-    return { statusCode: 405, body: "Missing body" };
+  }
+  if (!event.body) {
+    return { statusCode: 405, body: 'Missing body' };
   }
   try {
     const message = JSON.parse(event.body) as GenerateMessage;
     const response = await generateNewCode(message);
     return {
       statusCode: 200,
-      body: JSON.stringify(response) 
+      body: JSON.stringify(response)
     };
-  } catch(e) {
+  } catch (e) {
     console.error(e);
     return {
       statusCode: 500,
@@ -103,4 +98,4 @@ export async function handler(event: HandlerEvent, context: HandlerContext) {
       })
     };
   }
-};
+}

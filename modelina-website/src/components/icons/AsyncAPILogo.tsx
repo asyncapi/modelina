@@ -1,4 +1,6 @@
-export default function AsyncAPILogo({className = "h-10 w-auto mt-0.5"}: any) {
+export default function AsyncAPILogo({
+  className = 'h-10 w-auto mt-0.5'
+}: any) {
   return (
     <svg
       className={className}

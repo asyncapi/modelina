@@ -5,6 +5,7 @@ import IconRocket from '@/components/icons/Rocket';
 import GenericLayout from '@/components/layouts/GenericLayout';
 import Heading from '@/components/typography/Heading';
 import Paragraph from '@/components/typography/Paragraph';
+import Image from 'next/image';
 
 export default function Index() {
   const description =
@@ -54,7 +55,12 @@ export default function Index() {
             </div>
           </div>
           <div className="relative lg:mt-8 h-full">
-            <img src={'/img/card/cli-card.jpg'} alt={'CLI card'} />
+            <Image
+              src={'/img/card/cli-card.jpg'}
+              fill
+              sizes='100vw'
+              alt={'CLI card'}
+            />
           </div>
         </div>
 

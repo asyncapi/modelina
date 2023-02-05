@@ -6,6 +6,7 @@ export default function Heading({
   children
 }: any) {
   let classNames = '';
+  /* eslint-disable-next-line no-undef */
   const Tag = `${level}` as keyof JSX.IntrinsicElements;
   switch (typeStyle) {
     case 'heading-lg':

@@ -114,13 +114,11 @@ class Playground extends React.Component<
       if (message.input.length > (this.props.maxInputSize || 30000)) {
         console.error('Input too large, use smaller example');
       } else {
-
         fetch(`${process.env.NEXT_PUBLIC_API_PATH}/generate`, {
           body: JSON.stringify(message),
           method: 'POST'
-        })
-        .then(async (res) => {
-          const response: UpdateMessage = await res.json()
+        }).then(async (res) => {
+          const response: UpdateMessage = await res.json();
           console.log(response);
           let generatorCode = '';
           switch (this.config.language) {

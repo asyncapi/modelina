@@ -37,10 +37,7 @@ export default function HeadComponent({
 
       {/* Load Work Sans font */}
       <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-      />
+      <link rel="preconnect" href="https://fonts.gstatic.com" />
 
       {/* Icons */}
       <link rel="icon" href="/favicon.ico" />
