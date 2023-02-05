@@ -2,6 +2,8 @@
 
 This website is a `Next` + TypeScript website.
 
+The website is being deployed to Netlify along side serverless functions.
+
 ## Playground
 
 Here is a quick overview of where some of the functions for rendering the playground work:

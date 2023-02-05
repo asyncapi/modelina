@@ -4,6 +4,7 @@ on:
   pull_request_target:
     paths:
       - 'modelina-website'
+      - 'netlify.toml'
     branches:
       - master
     types: [opened, reopened, synchronize, ready_for_review]
@@ -20,7 +21,7 @@ jobs:
         uses: jakepartusch/wait-for-netlify-action@v1
         id: netlify
         with:
-          site_name: asyncapi-website
+          site_name: modelina
           max_timeout: 600
 
       - name: Lighthouse Audit
@@ -28,7 +29,7 @@ jobs:
         uses: treosh/lighthouse-ci-action@9.3.0
         with:
           urls: |
-            https://deploy-preview-$PR_NUMBER--asyncapi-website.netlify.app/
+            https://deploy-preview-$PR_NUMBER--modelina.netlify.app/
           configPath: ./.github/workflows/lighthouserc.json
           uploadArtifacts: true
           temporaryPublicStorage: true
