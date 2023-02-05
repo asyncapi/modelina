@@ -1,5 +1,5 @@
-import { OutputModel } from '../../../';
-import { ModelProps } from '../types';
+import { OutputModel } from '../../../../../';
+import { ModelProps } from '../../../types';
 
 /**
  * Converts the output model of Modelina to props

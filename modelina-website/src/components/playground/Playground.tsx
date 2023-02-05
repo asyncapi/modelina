@@ -4,13 +4,11 @@ import {
   defaultAsyncapiDocument,
   ModelinaOptions,
   ModelinaQueryOptions,
-  SocketIoChannels,
-  SocketIoGenerateMessage,
-  SocketIoUpdateMessage
+  GenerateMessage,
+  UpdateMessage
 } from '@/types';
 import Router, { withRouter, NextRouter } from 'next/router';
 import { encode } from 'js-base64';
-import { socket } from '../services/Socket';
 import GeneratedModelsComponent from './GeneratedModels';
 import PlaygroundOptions from './PlaygroundOptions';
 import Heading from '../typography/Heading';
@@ -28,6 +26,14 @@ import {
   PlaygroundPythonConfigContext,
   PlaygroundRustConfigContext
 } from '../contexts/PlaygroundConfigContext';
+import { getTypeScriptGeneratorCode } from '@/helpers/GeneratorCode/TypeScriptGenerator';
+import { getJavaScriptGeneratorCode } from '@/helpers/GeneratorCode/JavaScriptGenerator';
+import { getJavaGeneratorCode } from '@/helpers/GeneratorCode/JavaGenerator';
+import { getGoGeneratorCode } from '@/helpers/GeneratorCode/GoGenerator';
+import { getCSharpGeneratorCode } from '@/helpers/GeneratorCode/CSharpGenerator';
+import { getRustGeneratorCode } from '@/helpers/GeneratorCode/RustGenerator';
+import { getPythonGeneratorCode } from '@/helpers/GeneratorCode/PythonGenerator';
+import { getDartGeneratorCode } from '@/helpers/GeneratorCode/DartGenerator';
 interface WithRouterProps {
   router: NextRouter;
 }
@@ -101,14 +107,60 @@ class Playground extends React.Component<
    */
   generateNewCode(input: string) {
     try {
-      const message: SocketIoGenerateMessage = {
+      const message: GenerateMessage = {
         ...this.config,
         input: encode(JSON.stringify(JSON.parse(input)))
       };
       if (message.input.length > (this.props.maxInputSize || 30000)) {
         console.error('Input too large, use smaller example');
       } else {
-        socket.emit(SocketIoChannels.GENERATE, message);
+
+        fetch('/api/generate', {
+          body: JSON.stringify(message),
+          method: 'POST'
+        })
+        .then((res) => res.json())
+        .then((data: UpdateMessage) => {
+          console.log(data);
+          let generatorCode = '';
+          switch (this.config.language) {
+            case 'typescript':
+              generatorCode = getTypeScriptGeneratorCode(message);
+              break;
+            case 'javascript':
+              generatorCode = getJavaScriptGeneratorCode(message);
+              break;
+            case 'java':
+              generatorCode = getJavaGeneratorCode(message);
+              break;
+            case 'go':
+              generatorCode = getGoGeneratorCode(message);
+              break;
+            case 'csharp':
+              generatorCode = getCSharpGeneratorCode(message);
+              break;
+            case 'rust':
+              generatorCode = getRustGeneratorCode(message);
+              break;
+            case 'python':
+              generatorCode = getPythonGeneratorCode(message);
+              break;
+            case 'dart':
+              generatorCode = getDartGeneratorCode(message);
+              break;
+            default:
+              break;
+          }
+          this.setState({
+            ...this.state,
+            generatorCode,
+            models: data.models,
+            loaded: {
+              ...this.state.loaded,
+              hasReceivedCode: true
+            }
+          });
+        });
       }
     } catch (e) {
       console.error('Could not generate new code');
@@ -127,19 +179,6 @@ class Playground extends React.Component<
       this.config.language = query.language as any;
     }
     console.log(query);
-
-    // update chat on new message dispatched
-    socket.on(SocketIoChannels.UPDATE, (message: SocketIoUpdateMessage) => {
-      this.setState({
-        ...this.state,
-        generatorCode: message.generatorCode,
-        models: message.models,
-        loaded: {
-          ...this.state.loaded,
-          hasReceivedCode: true
-        }
-      });
-    });
     this.generateNewCode(this.state.input);
   }
 
