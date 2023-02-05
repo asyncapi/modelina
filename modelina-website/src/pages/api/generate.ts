@@ -14,7 +14,7 @@ import { getPythonModels } from '@/pages/api/functions/PythonGenerator';
 import { getRustModels } from '@/pages/api/functions/RustGenerator';
 import { getCSharpModels } from '@/pages/api/functions/CSharpGenerator';
 
-async function generateNewCode(
+export async function generateNewCode(
   message: GenerateMessage
 ) {
   let input: any = defaultAsyncapiDocument;
@@ -75,14 +75,3 @@ async function generate(
 }
 
 export default generate;
-
-// Netlify specific to run this in the background.
-// This enables the function to run in the background for up to 15 minutes
-export const config = {
-  type: "experimental-background",
-  api: {
-    bodyParser: true, // Defaults to true. Setting this to false disables body parsing and allows you to consume the request body as stream or raw-body.
-    responseLimit: false, // Determines how much data should be sent from the response body. It is automatically enabled and defaults to 4mb.
-    externalResolver: false, // Disables warnings for unresolved requests if the route is being handled by an external resolver like Express.js or Connect. Defaults to false.
-  }
-}
