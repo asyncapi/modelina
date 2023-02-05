@@ -92,7 +92,7 @@ export async function handler(event: HandlerEvent, context: HandlerContext) {
     const response = await generateNewCode(message);
     return {
       statusCode: 200,
-      body: response 
+      body: JSON.stringify(response) 
     };
   } catch(e) {
     console.error(e);
