@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { GoGenerator, GoOptions } from '../../../../../';
 import { convertModelsToProps } from './Helpers';
-import { ModelinaGoOptions, ModelProps, UpdateMessage } from '../../../types';
+import { ModelinaGoOptions, ModelProps } from '../../../types';
 
 /**
  * This is the server side part of the Go generator, that takes input and generator parameters and generate the models.

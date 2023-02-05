@@ -17,6 +17,44 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+          
+      - name: Modelina Core Install dependencies
+        id: first-installation-core
+        run: npm install --loglevel verbose
+        continue-on-error: true
+
+      - if: steps.first-installation-core.outputs.status == 'failure'
+        name: Modelina Core Clear NPM cache and install deps again
+        run: | 
+          npm cache clean --force
+          npm install --loglevel verbose
+
+      - name: Build Modelina
+        run: npm run build:prod
+
+      - name: Modelina Website Install dependencies
+        id: first-installation-website
+        run: cd modelina-website && npm install --loglevel verbose
+        continue-on-error: true
+
+      - if: steps.first-installation-website.outputs.status == 'failure'
+        name: Modelina Website Clear NPM cache and install deps again
+        run: | 
+          cd modelina-website && npm cache clean --force
+          cd modelina-website && npm install --loglevel verbose
+
+      - name: Lint Modelina website
+        run: cd modelina-website && npm run lint
+
+      - name: Build Modelina website
+        run: cd modelina-website && npm run build
+
       - name: Await Netlify Preview
         uses: jakepartusch/wait-for-netlify-action@v1
         id: netlify
