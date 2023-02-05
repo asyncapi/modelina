@@ -78,9 +78,12 @@ async function generate(
 
 export default generate;
 
+/**
+ * Netlify function specifi code, can be ignored in local development
+ */
 export async function handler(event: HandlerEvent, context: HandlerContext) {
   if (event.httpMethod !== "POST") {
-    return { statusCode: 405, body: "Method Not Allowed" };
+    return { statusCode: 405, body: `Method ${event.httpMethod} Not Allowed` };
   }  if (!event.body) {
     return { statusCode: 405, body: "Missing body" };
   }
