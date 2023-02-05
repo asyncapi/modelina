@@ -1,4 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { Handler, HandlerEvent, HandlerContext } from "@netlify/functions";
+
 import {
   defaultAsyncapiDocument,
   GenerateMessage,
@@ -75,3 +77,27 @@ async function generate(
 }
 
 export default generate;
+
+export async function handler(event: HandlerEvent, context: HandlerContext) {
+  if (event.httpMethod !== "POST") {
+    return { statusCode: 405, body: "Method Not Allowed" };
+  }  if (!event.body) {
+    return { statusCode: 405, body: "Missing body" };
+  }
+  try {
+    const message = JSON.parse(event.body) as GenerateMessage;
+    const response = await generateNewCode(message);
+    return {
+      statusCode: 200,
+      body: response 
+    };
+  } catch(e) {
+    console.error(e);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        error: 'There was an error generating the models'
+      })
+    };
+  }
+};
