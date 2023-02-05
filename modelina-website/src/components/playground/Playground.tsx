@@ -115,7 +115,7 @@ class Playground extends React.Component<
         console.error('Input too large, use smaller example');
       } else {
 
-        fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/generate`, {
+        fetch(`${String(process.env.NETLIFY) === 'true' ? '/.netlify/functions' : '/api' }/generate`, {
           body: JSON.stringify(message),
           method: 'POST'
         })
