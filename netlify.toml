@@ -1,6 +1,7 @@
 [build]
   command = "npm run build:prod && cd modelina-website && npm ci && npm run build"
   publish = "modelina-website/.next"
+  environment = { NEXT_PUBLIC_API_PATH = "/.netlify/functions" }
 
 [build.environment]
   NODE_VERSION = "16.13.2"
