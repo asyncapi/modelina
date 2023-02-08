@@ -40,7 +40,7 @@ To include functionality that convert the models using the [System.Text.Json](ht
 Check out this [example for a live demonstration](../../examples/csharp-generate-json-serializer).
 
 **External dependencies**
-Requires [System.Text.Json](https://devblogs.microsoft.com/dotnet/try-the-new-system-text-json-apis/), [System.Text.Json.Serialization](https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-how-to?pivots=dotnet-6-0) and [System.Text.RegularExpressions](https://docs.microsoft.com/en-us/dotnet/api/system.text.regularexpressions?view=net-6.0) to work.
+Requires [System.Text.Json](https://devblogs.microsoft.com/dotnet/try-the-new-system-text-json-apis/), [System.Text.Json.Serialization](https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-how-to?pivots=dotnet-6-0),[System.Text.RegularExpressions](https://docs.microsoft.com/en-us/dotnet/api/system.text.regularexpressions?view=net-6.0) and [Microsoft.CSharp version 4.7](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version) to work.
 
 #### Using Newtonsoft/Json.NET
 
