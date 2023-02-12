@@ -1,8 +1,7 @@
 [![AsyncAPI Modelina](./docs/img/readme-banner.png)](https://www.asyncapi.com/tools/modelina)
-
-[![blackbox pipeline status](<https://img.shields.io/github/workflow/status/asyncapi/modelina/Blackbox%20testing%20(Stay%20Awhile%20and%20Listen)?label=blackbox%20testing>)](https://github.com/asyncapi/modelina/actions/workflows/blackbox-testing.yml?query=branch%3Amaster++)
+[![blackbox pipeline status](<https://img.shields.io/github/actions/workflow/status/asyncapi/modelina/blackbox-testing.yml?label=blackbox%20testing>)](https://github.com/asyncapi/modelina/actions/workflows/blackbox-testing.yml?query=branch%3Amaster++)
 [![Coverage Status](https://coveralls.io/repos/github/asyncapi/modelina/badge.svg?branch=master)](https://coveralls.io/github/asyncapi/modelina?branch=master)
-[![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 ![Maintenance score](https://img.shields.io/npms-io/maintenance-score/@asyncapi/modelina)
 [![Npm latest version](https://img.shields.io/npm/v/@asyncapi/modelina)](https://www.npmjs.com/package/@asyncapi/modelina)
 [![License](https://img.shields.io/github/license/asyncapi/modelina)](https://github.com/asyncapi/modelina/blob/master/LICENSE)
@@ -19,6 +18,7 @@
 <!-- toc -->
 
 - [Installing Modelina](#installing-modelina)
+- [AsyncAPI CLI](#asyncapi-cli)
 - [Features](#features)
 - [Roadmap](#roadmap)
 - [Requirements](#requirements)
@@ -37,6 +37,14 @@ Run this command to install Modelina in your project:
 
 ```bash
 npm install @asyncapi/modelina
+```
+
+## AsyncAPI CLI
+
+If you have the [AsyncAPI CLI installed](https://github.com/asyncapi/cli#installation), you can run the following command to use [Modelina](https://github.com/asyncapi/cli#usage):
+
+```bash
+asyncapi generate models <language> ./asyncapi.json
 ```
 
 <h2 align="center">What Does Modelina Do?</h2>
@@ -183,7 +191,7 @@ The following table provides a short summary of available features for supported
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-models-from-asyncapi-documents">AsyncAPI</a></td>
-    <td>We support the following AsyncAPI versions: <em>2.0.0 -> 2.5.0</em>, which generates models for all the defined message payloads.</td>
+    <td>We support the following AsyncAPI versions: <em>2.0.0 -> 2.6.0</em>, which generates models for all the defined message payloads.</td>
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-models-from-json-schema-documents">JSON Schema</a></td>
@@ -252,7 +260,7 @@ The following table provides a short summary of available features for supported
 ## Roadmap
 This is the roadmap that is currently in focus by the [CODEOWNERS](./CODEOWNERS)
 
-- [Reach version 1.0](https://github.com/asyncapi/modelina/milestone/3)
+- [1 year roadmap](https://github.com/asyncapi/modelina/milestone/4)
 
 ## Requirements
 The following are a requirement in order to use Modelina.

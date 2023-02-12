@@ -27,6 +27,7 @@ const AsyncAPIV2_2Files = readFilesInFolder('AsyncAPI-2_2');
 const AsyncAPIV2_3Files = readFilesInFolder('AsyncAPI-2_3');
 const AsyncAPIV2_4Files = readFilesInFolder('AsyncAPI-2_4');
 const AsyncAPIV2_5Files = readFilesInFolder('AsyncAPI-2_5');
+const AsyncAPIV2_6Files = readFilesInFolder('AsyncAPI-2_6');
 
 const filesToTest = [
   ...OpenAPI3_0Files.filter(({ file }) => {
@@ -45,6 +46,7 @@ const filesToTest = [
   ...AsyncAPIV2_3Files,
   ...AsyncAPIV2_4Files,
   ...AsyncAPIV2_5Files,
+  ...AsyncAPIV2_6Files,
   ...jsonSchemaDraft4Files.filter(({ file }) => {
     // Too large to process in normal blackbox testing, can be used lto ocally test stuff.
     return !file.includes('aws-cloudformation.json');
@@ -72,6 +74,7 @@ export default filesToTest.filter(({ file }) => {
     file.includes('AsyncAPI-2_3/dummy.json') ||
     file.includes('AsyncAPI-2_4/dummy.json') ||
     file.includes('AsyncAPI-2_5/streetlight_kafka.json') ||
+    file.includes('AsyncAPI-2_6/dummy.json') ||
     file.includes('JsonSchemaDraft-4/draft-4-core.json') ||
     file.includes('JsonSchemaDraft-6/draft-6-core.json') ||
     file.includes('JsonSchemaDraft-7/draft-7-core.json') ||
