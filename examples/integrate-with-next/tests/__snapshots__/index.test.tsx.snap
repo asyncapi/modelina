@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Jest Snapshot testing suite Matches DOM Snapshot 1`] = `
+<div>
+  <main
+    class="main"
+  >
+    <div
+      class="center"
+    >
+      <h1>
+        Modelina generated code
+      </h1>
+    </div>
+  </main>
+</div>
+`;

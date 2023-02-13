@@ -1,23 +1,25 @@
 import { getGeneratedCode } from '../modelina';
 import Head from 'next/head';
-import { Inter } from '@next/font/google';
 import styles from '@/styles/Home.module.css';
 
-const inter = Inter({ subsets: ['latin'] });
-
-function HomePage({models}: any) {
+function HomePage({ models }: any): any {
   // Create a good representation of the models here
-  const codeModels = models.map((model: any) => {
-    return <div key={model.name} style={{padding: "15px"}}>
-      <h4>Model: {model.name}</h4>
-      <div className={styles.grid} style={{overflow: "auto", padding: "15px"}}>
-        <pre>
-          <code>
-            {model.result}
-          </code>
-        </pre>
+  console.log(models);
+  const safeModels = models || [];
+  const codeModels = safeModels.map((model: any) => {
+    return (
+      <div key={model.name} style={{ padding: '15px' }}>
+        <h4>Model: {model.name}</h4>
+        <div
+          className={styles.grid}
+          style={{ overflow: 'auto', padding: '15px' }}
+        >
+          <pre>
+            <code>{model.result}</code>
+          </pre>
+        </div>
       </div>
-    </div>
+    );
   });
 
   return (
@@ -29,7 +31,7 @@ function HomePage({models}: any) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-      <div className={styles.center}>
+        <div className={styles.center}>
           <h1>Modelina generated code</h1>
         </div>
         {codeModels}
@@ -40,26 +42,36 @@ function HomePage({models}: any) {
 
 /**
  * Use server side functions to retrieve the generated code from Modelina.
- * 
+ *
  * If you need the user to provide inputs to the generation process
  * you can use the context parameter: https://nextjs.org/docs/api-reference/data-fetching/get-server-side-props#context-parameter
- * 
+ *
  * Or you can use something like Socket.io.
  */
-export async function getServerSideProps() {
-  const models = await getGeneratedCode();
-  // Only return the relevant information that is needed.
-  const propsToReturn = models.map((model) => {
-    return { 
-      result: model.result, 
-      name: model.modelName
+export async function getServerSideProps(): Promise<any> {
+  try{
+    const models = await getGeneratedCode();
+    // Only return the relevant information that is needed.
+    const propsToReturn = models.map((model) => {
+      return {
+        result: model.result,
+        name: model.modelName
+      };
+    });
+    return {
+      props: {
+        models: propsToReturn
+      }
     };
-  })
+  } catch(e) {
+    console.error(e);
+  }
+
   return {
     props: {
-      models: propsToReturn
+      models: []
     }
-  }
+  };
 }
 
 export default HomePage;
