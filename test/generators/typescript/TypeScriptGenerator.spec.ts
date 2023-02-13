@@ -697,7 +697,6 @@ ${content}`;
         pet: {
           publish: {
             message: {
-              // this should create a union type, but currently does not
               oneOf: [
                 {
                   $ref: '#/components/messages/Dog'

@@ -11,10 +11,15 @@ import { InputMetaModel, ProcessorOptions } from '../models';
 import { Logger } from '../utils';
 import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
 import { convertToMetaModel } from '../helpers';
-import type {
+import {
   AsyncAPIDocumentInterface,
-  SchemaInterface as AsyncAPISchema
+  SchemaInterface as AsyncAPISchemaInterface,
+  SchemaV2 as AsyncAPISchema
 } from '@asyncapi/parser';
+import {
+  OperationObject,
+  AsyncAPISchemaObject
+} from '@asyncapi/parser/cjs/spec-types/v2';
 
 /**
  * Class for processing AsyncAPI inputs
@@ -74,30 +79,79 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     }
 
     inputModel.originalInput = doc;
-    // Go over all the message payloads and convert them to models
-    for (const message of doc.allMessages()) {
-      const payload = message.payload();
-      if (payload) {
-        const schema = AsyncAPIInputProcessor.convertToInternalSchema(payload);
-        const newCommonModel =
-          JsonSchemaInputProcessor.convertSchemaToCommonModel(schema, options);
-        if (newCommonModel.$id !== undefined) {
-          if (inputModel.models[newCommonModel.$id] !== undefined) {
-            Logger.warn(
-              `Overwriting existing model with $id ${newCommonModel.$id}, are there two models with the same id present?`,
-              newCommonModel
-            );
-          }
-          const metaModel = convertToMetaModel(newCommonModel);
-          inputModel.models[metaModel.name] = metaModel;
-        } else {
+
+    const addToInputModel = (payload: AsyncAPISchemaInterface) => {
+      const schema = AsyncAPIInputProcessor.convertToInternalSchema(payload);
+      const newCommonModel =
+        JsonSchemaInputProcessor.convertSchemaToCommonModel(schema, options);
+
+      if (newCommonModel.$id !== undefined) {
+        if (inputModel.models[newCommonModel.$id] !== undefined) {
           Logger.warn(
-            'Model did not have $id which is required, ignoring.',
+            `Overwriting existing model with $id ${newCommonModel.$id}, are there two models with the same id present?`,
             newCommonModel
           );
         }
+        const metaModel = convertToMetaModel(newCommonModel);
+        // console.log('metaModel', metaModel);
+        inputModel.models[metaModel.name] = metaModel;
+      } else {
+        Logger.warn(
+          'Model did not have $id which is required, ignoring.',
+          newCommonModel
+        );
+      }
+    };
+
+    // Go over all the message payloads and convert them to models
+    const channels = doc.channels();
+
+    if (channels.length) {
+      for (const channel of doc.channels()) {
+        for (const operation of channel.operations()) {
+          const operationJson = operation.json<OperationObject>();
+
+          if (!operationJson.message) {
+            continue;
+          }
+
+          if ('oneOf' in operationJson.message) {
+            const oneOf: AsyncAPISchemaObject[] = [];
+
+            for (const message of operation.messages()) {
+              const payload = message.payload();
+
+              if (!payload) {
+                continue;
+              }
+
+              oneOf.push(payload.json());
+            }
+
+            const payload = new AsyncAPISchema({
+              $id: channel.id(),
+              pointer: channel.meta().pointer,
+              oneOf
+            });
+
+            addToInputModel(payload);
+          } else if ('payload' in operationJson.message) {
+            const payload: AsyncAPISchemaInterface =
+              operationJson.message.payload;
+
+            addToInputModel(payload);
+          }
+        }
+      }
+    } else {
+      for (const message of doc.allMessages()) {
+        const payload = message.payload();
+        if (payload) {
+          addToInputModel(payload);
+        }
       }
     }
+
     return inputModel;
   }
 
@@ -112,7 +166,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
   /* eslint-disable @typescript-eslint/no-non-null-assertion */
   // eslint-disable-next-line sonarjs/cognitive-complexity
   static convertToInternalSchema(
-    schema: AsyncAPISchema | boolean,
+    schema: AsyncAPISchemaInterface | boolean,
     alreadyIteratedSchemas: Map<string, AsyncapiV2Schema> = new Map()
   ): AsyncapiV2Schema | boolean {
     if (typeof schema === 'boolean') {
@@ -219,13 +273,15 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     }
     if (schema.items()) {
       if (Array.isArray(schema.items())) {
-        convertedSchema.items = (schema.items() as AsyncAPISchema[]).map(
+        convertedSchema.items = (
+          schema.items() as AsyncAPISchemaInterface[]
+        ).map(
           (item) => this.convertToInternalSchema(item),
           alreadyIteratedSchemas
         );
       } else {
         convertedSchema.items = this.convertToInternalSchema(
-          schema.items() as AsyncAPISchema,
+          schema.items() as AsyncAPISchemaInterface,
           alreadyIteratedSchemas
         );
       }
