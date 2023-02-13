@@ -24,6 +24,30 @@ There are a few exceptions to the features Modelina support in a website environ
 
 - You cannot use the [file generator](./advanced.md#generate-models-to-separate-files) to write to the client's disk, instead utilize the `generateCompleteModels` function, that gives you the same generated output in memory instead of writing it to files.
 
+
+### FAQ
+
+#### TypeScript and Jest
+If you ever encounter `Jest encountered an unexpected token` and something along the lines of:
+
+```
+Details:
+
+    /Users/lagoni/Documents/github/generator-model-sdk/node_modules/@stoplight/spectral-core/node_modules/jsonpath-plus/dist/index-browser-esm.js:1103
+    export { JSONPath };
+    ^^^^^^
+
+    SyntaxError: Unexpected token 'export'
+```
+
+Make sure your Jest configuration contains the following:
+
+```
+transformIgnorePatterns = [
+  '/node_modules/@stoplight/spectral-core/node_modules/(!?jsonpath-plus)',
+];
+```
+
 ### Security NOTICE
 Do NOT enable users to write their own option callbacks. This includes but not limits to preset hooks and constrain rules. The reason for this is that in some cases it will enable arbitrary code execution on your webserver (which you most probably don't want!). 
 
