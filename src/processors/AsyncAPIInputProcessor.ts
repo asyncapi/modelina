@@ -93,7 +93,6 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
           );
         }
         const metaModel = convertToMetaModel(newCommonModel);
-        // console.log('metaModel', metaModel);
         inputModel.models[metaModel.name] = metaModel;
       } else {
         Logger.warn(
@@ -135,11 +134,13 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
             });
 
             addToInputModel(payload);
-          } else if ('payload' in operationJson.message) {
-            const payload: AsyncAPISchemaInterface =
-              operationJson.message.payload;
-
-            addToInputModel(payload);
+          } else {
+            for (const message of operation.messages()) {
+              const payload = message.payload();
+              if (payload) {
+                addToInputModel(payload);
+              }
+            }
           }
         }
       }
