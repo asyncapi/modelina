@@ -2,16 +2,7 @@ import {
   createAsyncAPIDocument,
   isAsyncAPIDocument,
   isOldAsyncAPIDocument,
-  Parser
-} from '@asyncapi/parser';
-import { createDetailedAsyncAPI } from '@asyncapi/parser/cjs/utils';
-import { AbstractInputProcessor } from './AbstractInputProcessor';
-import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
-import { InputMetaModel, ProcessorOptions } from '../models';
-import { Logger } from '../utils';
-import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
-import { convertToMetaModel } from '../helpers';
-import {
+  Parser,
   AsyncAPIDocumentInterface,
   SchemaInterface as AsyncAPISchemaInterface,
   SchemaV2 as AsyncAPISchema
@@ -20,6 +11,13 @@ import {
   OperationObject,
   AsyncAPISchemaObject
 } from '@asyncapi/parser/cjs/spec-types/v2';
+import { createDetailedAsyncAPI } from '@asyncapi/parser/cjs/utils';
+import { AbstractInputProcessor } from './AbstractInputProcessor';
+import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
+import { InputMetaModel, ProcessorOptions } from '../models';
+import { Logger } from '../utils';
+import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
+import { convertToMetaModel } from '../helpers';
 
 /**
  * Class for processing AsyncAPI inputs
