@@ -3,9 +3,8 @@ import Head from 'next/head';
 import styles from '@/styles/Home.module.css';
 
 function HomePage({ models }: any): any {
-  // Create a good representation of the models here
-  console.log(models);
   const safeModels = models || [];
+  // Create a good representation of the models here
   const codeModels = safeModels.map((model: any) => {
     return (
       <div key={model.name} style={{ padding: '15px' }}>
