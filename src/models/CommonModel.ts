@@ -484,7 +484,7 @@ export class CommonModel {
         const mergeToProperty = mergeTo.properties[String(propName)];
 
         mergeTo.properties[String(propName)] = CommonModel.mergeCommonModels(
-          // takes a deep copy of the mergeTo model if the id of mergeTo is anonymous to avoid accidentally merging models from other schemas
+          // takes a deep copy of the mergeTo model if the id of mergeTo is anonymous to avoid carrying over properties to other models
           CommonModel.idIncludesAnonymousSchema(mergeToProperty)
             ? CommonModel.toCommonModel(mergeToProperty)
             : mergeToProperty,

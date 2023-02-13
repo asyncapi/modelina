@@ -531,6 +531,58 @@ describe('CommonModel', () => {
         expect(dogModel.properties).toHaveProperty('packSize');
         expect(dogModel.properties).not.toHaveProperty('huntingSkill');
       });
+      test('should not carry over properties to other models #2', () => {
+        const petModel = CommonModel.toCommonModel({
+          title: 'Pet',
+          type: 'object',
+          properties: {
+            breed: {
+              $id: 'anonymous_schema_1',
+              type: 'string'
+            }
+          }
+        });
+
+        const cat = {};
+        const catModel = CommonModel.toCommonModel(cat);
+        CommonModel.mergeCommonModels(catModel, petModel, cat);
+        CommonModel.mergeCommonModels(
+          catModel,
+          CommonModel.toCommonModel({
+            title: 'Cat',
+            properties: {
+              breed: {
+                $id: 'CatBreed',
+                type: 'string'
+              }
+            }
+          }),
+          cat
+        );
+
+        const dog = {};
+        const dogModel = CommonModel.toCommonModel(dog);
+        CommonModel.mergeCommonModels(dogModel, petModel, dog);
+        CommonModel.mergeCommonModels(
+          dogModel,
+          CommonModel.toCommonModel({
+            title: 'Dog',
+            properties: {
+              breed: {
+                $id: 'DogBreed',
+                type: 'string'
+              }
+            }
+          }),
+          dog
+        );
+
+        expect(catModel.properties).toHaveProperty('breed');
+        expect(catModel.properties?.breed.$id).toBe('CatBreed');
+
+        expect(dogModel.properties).toHaveProperty('breed');
+        expect(dogModel.properties?.breed.$id).toBe('DogBreed');
+      });
       test('should be merged when mergeTo property is anonymous_schema and mergeFrom property is not anonymous_schema', () => {
         const doc = {
           $id: 'CloudEvent',
