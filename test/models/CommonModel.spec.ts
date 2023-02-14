@@ -531,8 +531,8 @@ describe('CommonModel', () => {
         expect(dogModel.properties).toHaveProperty('packSize');
         expect(dogModel.properties).not.toHaveProperty('huntingSkill');
       });
-      test('should not carry over properties to other models #2', () => {
-        const petModel = CommonModel.toCommonModel({
+      test.only('should not carry over properties to other models when mergeTo property is anonymous_schema', () => {
+        const pet = {
           title: 'Pet',
           type: 'object',
           properties: {
@@ -541,7 +541,8 @@ describe('CommonModel', () => {
               type: 'string'
             }
           }
-        });
+        };
+        const petModel = CommonModel.toCommonModel(pet);
 
         const cat = {};
         const catModel = CommonModel.toCommonModel(cat);
