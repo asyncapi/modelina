@@ -7,10 +7,7 @@ import {
   SchemaInterface as AsyncAPISchemaInterface,
   SchemaV2 as AsyncAPISchema
 } from '@asyncapi/parser';
-import {
-  OperationObject,
-  AsyncAPISchemaObject
-} from '@asyncapi/parser/cjs/spec-types/v2';
+import { AsyncAPISchemaObject } from '@asyncapi/parser/cjs/spec-types/v2';
 import { createDetailedAsyncAPI } from '@asyncapi/parser/cjs/utils';
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
@@ -106,16 +103,13 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     if (channels.length) {
       for (const channel of doc.channels()) {
         for (const operation of channel.operations()) {
-          const operationJson = operation.json<OperationObject>();
+          const operationMessages = operation.messages();
 
-          if (!operationJson.message) {
-            continue;
-          }
-
-          if ('oneOf' in operationJson.message) {
+          // treat multiple messages as oneOf
+          if (operationMessages.length > 1) {
             const oneOf: AsyncAPISchemaObject[] = [];
 
-            for (const message of operation.messages()) {
+            for (const message of operationMessages) {
               const payload = message.payload();
 
               if (!payload) {
@@ -132,12 +126,10 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
             });
 
             addToInputModel(payload);
-          } else {
-            for (const message of operation.messages()) {
-              const payload = message.payload();
-              if (payload) {
-                addToInputModel(payload);
-              }
+          } else if (operationMessages.length === 1) {
+            const payload = operationMessages[0].payload();
+            if (payload) {
+              addToInputModel(payload);
             }
           }
         }
