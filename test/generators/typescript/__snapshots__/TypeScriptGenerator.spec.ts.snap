@@ -367,7 +367,7 @@ exports[`TypeScriptGenerator should render \`class\` type 1`] = `
   private _members?: string | number | boolean;
   private _tupleType?: [string, number];
   private _tupleTypeWithAdditionalItems?: (string | number | any)[];
-  private _arrayType: (string | any)[];
+  private _arrayType: string[];
   private _additionalProperties?: Map<string, any | string>;
 
   constructor(input: {
@@ -379,7 +379,7 @@ exports[`TypeScriptGenerator should render \`class\` type 1`] = `
     members?: string | number | boolean,
     tupleType?: [string, number],
     tupleTypeWithAdditionalItems?: (string | number | any)[],
-    arrayType: (string | any)[],
+    arrayType: string[],
     additionalProperties?: Map<string, any | string>,
   }) {
     this._streetName = input.streetName;
@@ -418,8 +418,8 @@ exports[`TypeScriptGenerator should render \`class\` type 1`] = `
   get tupleTypeWithAdditionalItems(): (string | number | any)[] | undefined { return this._tupleTypeWithAdditionalItems; }
   set tupleTypeWithAdditionalItems(tupleTypeWithAdditionalItems: (string | number | any)[] | undefined) { this._tupleTypeWithAdditionalItems = tupleTypeWithAdditionalItems; }
 
-  get arrayType(): (string | any)[] { return this._arrayType; }
-  set arrayType(arrayType: (string | any)[]) { this._arrayType = arrayType; }
+  get arrayType(): string[] { return this._arrayType; }
+  set arrayType(arrayType: string[]) { this._arrayType = arrayType; }
 
   get additionalProperties(): Map<string, any | string> | undefined { return this._additionalProperties; }
   set additionalProperties(additionalProperties: Map<string, any | string> | undefined) { this._additionalProperties = additionalProperties; }
@@ -446,14 +446,14 @@ exports[`TypeScriptGenerator should render \`interface\` type 1`] = `
   members?: string | number | boolean;
   tupleType?: [string, number];
   tupleTypeWithAdditionalItems?: (string | number | any)[];
-  arrayType: (string | any)[];
+  arrayType: string[];
   additionalProperties?: Map<string, any | string>;
 }"
 `;
 
-exports[`TypeScriptGenerator should render \`type\` type - array of primitive type 1`] = `"type TypeArray = (string | any)[];"`;
+exports[`TypeScriptGenerator should render \`type\` type - array of primitive type 1`] = `"type TypeArray = string[];"`;
 
-exports[`TypeScriptGenerator should render \`type\` type - array of union type 1`] = `"type TypeArray = (string | number | boolean | any)[];"`;
+exports[`TypeScriptGenerator should render \`type\` type - array of union type 1`] = `"type TypeArray = (string | number | boolean)[];"`;
 
 exports[`TypeScriptGenerator should render \`type\` type - enum 1`] = `
 "enum TypeEnum {

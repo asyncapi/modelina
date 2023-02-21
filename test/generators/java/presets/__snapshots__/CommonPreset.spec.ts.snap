@@ -6,7 +6,7 @@ exports[`JAVA_COMMON_PRESET should render accurately when there is no additional
   private String stringProp;
   private Double numberProp;
   private Boolean booleanProp;
-  private Object[] arrayProp;
+  private String[] arrayProp;
 
   public Boolean getRequiredProp() { return this.requiredProp; }
   public void setRequiredProp(Boolean requiredProp) { this.requiredProp = requiredProp; }
@@ -20,8 +20,8 @@ exports[`JAVA_COMMON_PRESET should render accurately when there is no additional
   public Boolean getBooleanProp() { return this.booleanProp; }
   public void setBooleanProp(Boolean booleanProp) { this.booleanProp = booleanProp; }
 
-  public Object[] getArrayProp() { return this.arrayProp; }
-  public void setArrayProp(Object[] arrayProp) { this.arrayProp = arrayProp; }
+  public String[] getArrayProp() { return this.arrayProp; }
+  public void setArrayProp(String[] arrayProp) { this.arrayProp = arrayProp; }
 
   @Override
   public boolean equals(Object o) {
@@ -75,7 +75,7 @@ exports[`JAVA_COMMON_PRESET should render common function in class by common pre
   private String stringProp;
   private Double numberProp;
   private Boolean booleanProp;
-  private Object[] arrayProp;
+  private String[] arrayProp;
   private Map<String, Object> additionalProperties;
 
   public Boolean getRequiredProp() { return this.requiredProp; }
@@ -90,8 +90,8 @@ exports[`JAVA_COMMON_PRESET should render common function in class by common pre
   public Boolean getBooleanProp() { return this.booleanProp; }
   public void setBooleanProp(Boolean booleanProp) { this.booleanProp = booleanProp; }
 
-  public Object[] getArrayProp() { return this.arrayProp; }
-  public void setArrayProp(Object[] arrayProp) { this.arrayProp = arrayProp; }
+  public String[] getArrayProp() { return this.arrayProp; }
+  public void setArrayProp(String[] arrayProp) { this.arrayProp = arrayProp; }
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
@@ -150,7 +150,7 @@ exports[`JAVA_COMMON_PRESET with option should not render any functions when all
   private String stringProp;
   private Double numberProp;
   private Boolean booleanProp;
-  private Object[] arrayProp;
+  private String[] arrayProp;
   private Map<String, Object> additionalProperties;
 
   public Boolean getRequiredProp() { return this.requiredProp; }
@@ -165,8 +165,8 @@ exports[`JAVA_COMMON_PRESET with option should not render any functions when all
   public Boolean getBooleanProp() { return this.booleanProp; }
   public void setBooleanProp(Boolean booleanProp) { this.booleanProp = booleanProp; }
 
-  public Object[] getArrayProp() { return this.arrayProp; }
-  public void setArrayProp(Object[] arrayProp) { this.arrayProp = arrayProp; }
+  public String[] getArrayProp() { return this.arrayProp; }
+  public void setArrayProp(String[] arrayProp) { this.arrayProp = arrayProp; }
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
@@ -179,7 +179,7 @@ exports[`JAVA_COMMON_PRESET with option should render all functions 1`] = `
   private String stringProp;
   private Double numberProp;
   private Boolean booleanProp;
-  private Object[] arrayProp;
+  private String[] arrayProp;
   private Map<String, Object> additionalProperties;
 
   public Boolean getRequiredProp() { return this.requiredProp; }
@@ -194,8 +194,8 @@ exports[`JAVA_COMMON_PRESET with option should render all functions 1`] = `
   public Boolean getBooleanProp() { return this.booleanProp; }
   public void setBooleanProp(Boolean booleanProp) { this.booleanProp = booleanProp; }
 
-  public Object[] getArrayProp() { return this.arrayProp; }
-  public void setArrayProp(Object[] arrayProp) { this.arrayProp = arrayProp; }
+  public String[] getArrayProp() { return this.arrayProp; }
+  public void setArrayProp(String[] arrayProp) { this.arrayProp = arrayProp; }
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
@@ -254,7 +254,7 @@ exports[`JAVA_COMMON_PRESET with option should render classToString 1`] = `
   private String stringProp;
   private Double numberProp;
   private Boolean booleanProp;
-  private Object[] arrayProp;
+  private String[] arrayProp;
   private Map<String, Object> additionalProperties;
 
   public Boolean getRequiredProp() { return this.requiredProp; }
@@ -269,8 +269,8 @@ exports[`JAVA_COMMON_PRESET with option should render classToString 1`] = `
   public Boolean getBooleanProp() { return this.booleanProp; }
   public void setBooleanProp(Boolean booleanProp) { this.booleanProp = booleanProp; }
 
-  public Object[] getArrayProp() { return this.arrayProp; }
-  public void setArrayProp(Object[] arrayProp) { this.arrayProp = arrayProp; }
+  public String[] getArrayProp() { return this.arrayProp; }
+  public void setArrayProp(String[] arrayProp) { this.arrayProp = arrayProp; }
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
@@ -306,7 +306,7 @@ exports[`JAVA_COMMON_PRESET with option should render equals 1`] = `
   private String stringProp;
   private Double numberProp;
   private Boolean booleanProp;
-  private Object[] arrayProp;
+  private String[] arrayProp;
   private Map<String, Object> additionalProperties;
 
   public Boolean getRequiredProp() { return this.requiredProp; }
@@ -321,8 +321,8 @@ exports[`JAVA_COMMON_PRESET with option should render equals 1`] = `
   public Boolean getBooleanProp() { return this.booleanProp; }
   public void setBooleanProp(Boolean booleanProp) { this.booleanProp = booleanProp; }
 
-  public Object[] getArrayProp() { return this.arrayProp; }
-  public void setArrayProp(Object[] arrayProp) { this.arrayProp = arrayProp; }
+  public String[] getArrayProp() { return this.arrayProp; }
+  public void setArrayProp(String[] arrayProp) { this.arrayProp = arrayProp; }
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
@@ -353,7 +353,7 @@ exports[`JAVA_COMMON_PRESET with option should render hashCode 1`] = `
   private String stringProp;
   private Double numberProp;
   private Boolean booleanProp;
-  private Object[] arrayProp;
+  private String[] arrayProp;
   private Map<String, Object> additionalProperties;
 
   public Boolean getRequiredProp() { return this.requiredProp; }
@@ -368,8 +368,8 @@ exports[`JAVA_COMMON_PRESET with option should render hashCode 1`] = `
   public Boolean getBooleanProp() { return this.booleanProp; }
   public void setBooleanProp(Boolean booleanProp) { this.booleanProp = booleanProp; }
 
-  public Object[] getArrayProp() { return this.arrayProp; }
-  public void setArrayProp(Object[] arrayProp) { this.arrayProp = arrayProp; }
+  public String[] getArrayProp() { return this.arrayProp; }
+  public void setArrayProp(String[] arrayProp) { this.arrayProp = arrayProp; }
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
@@ -387,7 +387,7 @@ exports[`JAVA_COMMON_PRESET with option should render un/marshal 1`] = `
   private String stringProp;
   private Double numberProp;
   private Boolean booleanProp;
-  private Object[] arrayProp;
+  private String[] arrayProp;
   private Map<String, Object> additionalProperties;
 
   public Boolean getRequiredProp() { return this.requiredProp; }
@@ -402,8 +402,8 @@ exports[`JAVA_COMMON_PRESET with option should render un/marshal 1`] = `
   public Boolean getBooleanProp() { return this.booleanProp; }
   public void setBooleanProp(Boolean booleanProp) { this.booleanProp = booleanProp; }
 
-  public Object[] getArrayProp() { return this.arrayProp; }
-  public void setArrayProp(Object[] arrayProp) { this.arrayProp = arrayProp; }
+  public String[] getArrayProp() { return this.arrayProp; }
+  public void setArrayProp(String[] arrayProp) { this.arrayProp = arrayProp; }
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
@@ -447,7 +447,7 @@ exports[`JAVA_COMMON_PRESET with option should render un/marshal 1`] = `
             result.setBooleanProp(jsonObject.getBoolean(\\"booleanProp\\"));
           }
     if(jsonObject.has(\\"arrayProp\\")) {
-            result.setArrayProp(jsonObject.getObject[](\\"arrayProp\\"));
+            result.setArrayProp(jsonObject.getString[](\\"arrayProp\\"));
           }
     if(jsonObject.has(\\"additionalProperties\\")) {
             result.setAdditionalProperties(jsonObject.getMap<String, Object>(\\"additionalProperties\\"));

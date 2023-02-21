@@ -445,15 +445,9 @@ export function convertToArrayModel(
     return undefined;
   }
 
-  const isNormalArray =
-    !Array.isArray(jsonSchemaModel.items) &&
-    jsonSchemaModel.additionalItems === undefined &&
-    jsonSchemaModel.items !== undefined;
-  //item multiple types + additionalItems sat = both count, as normal array
-  //item single type + additionalItems sat = contradicting, only items count, as normal array
-  //item not sat + additionalItems sat = anything is allowed, as normal array
-  //item single type + additionalItems not sat = normal array
-  //item not sat + additionalItems not sat = normal array, any type
+  const isNormalArray = !Array.isArray(jsonSchemaModel.items);
+  //items single type = normal array
+  //items not sat = normal array, any type
   if (isNormalArray) {
     const placeholderModel = new AnyModel('', undefined);
     const metaModel = new ArrayModel(
@@ -462,12 +456,13 @@ export function convertToArrayModel(
       placeholderModel
     );
     alreadySeenModels.set(jsonSchemaModel, metaModel);
-
-    const valueModel = convertToMetaModel(
-      jsonSchemaModel.items as CommonModel,
-      alreadySeenModels
-    );
-    metaModel.valueModel = valueModel;
+    if (jsonSchemaModel.items !== undefined) {
+      const valueModel = convertToMetaModel(
+        jsonSchemaModel.items as CommonModel,
+        alreadySeenModels
+      );
+      metaModel.valueModel = valueModel;
+    }
     return metaModel;
   }
 
