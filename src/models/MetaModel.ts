@@ -1,5 +1,9 @@
 export class MetaModel {
-  constructor(public name: string, public originalInput: any) {}
+  constructor(
+    public name: string,
+    public originalInput: any,
+    public isNullable: boolean = false
+  ) {}
 }
 
 export class ReferenceModel extends MetaModel {
@@ -19,7 +23,13 @@ export class TupleModel extends MetaModel {
   constructor(
     name: string,
     originalInput: any,
-    public tuple: TupleValueModel[]
+    public tuple: TupleValueModel[],
+    /**
+     * Mark the tuple as as being able to contain additional values.
+     *
+     * In some outputs they would generate simple arrays.
+     */
+    public additionalValue: MetaModel | undefined = undefined
   ) {
     super(name, originalInput);
   }

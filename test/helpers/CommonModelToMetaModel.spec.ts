@@ -17,6 +17,17 @@ describe('CommonModelToMetaModel', () => {
   afterEach(() => {
     jest.restoreAllMocks();
   });
+  test('should apply null type', () => {
+    const cm = new CommonModel();
+    cm.$id = 'test';
+    cm.type = ['string', 'null'];
+
+    const model = convertToMetaModel(cm);
+
+    expect(model).not.toBeUndefined();
+    expect(model instanceof StringModel).toEqual(true);
+    expect(model.isNullable).toEqual(true);
+  });
   test('should default to any model', () => {
     const cm = new CommonModel();
     cm.$id = 'test';
@@ -28,15 +39,7 @@ describe('CommonModelToMetaModel', () => {
   });
   test('should convert to any model', () => {
     const cm = new CommonModel();
-    cm.type = [
-      'string',
-      'number',
-      'integer',
-      'boolean',
-      'object',
-      'array',
-      'null'
-    ];
+    cm.type = ['string', 'number', 'integer', 'boolean', 'object', 'array'];
     cm.$id = 'test';
 
     const model = convertToMetaModel(cm);

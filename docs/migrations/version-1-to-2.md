@@ -49,3 +49,17 @@ components:
 ```
 
 The _type_ property in the _CloudEvent_ schema will in this case have an _anonymous_schema_ id. If another schema in the _allOf_ list has the same property and an id other than _anonymous_schema_, it will now use that id. Meaning, in this example, it will be _DogType_ and _CatType_.
+
+# Nullable models
+
+Each [meta model](../internal-model.md) up until now where not able to be marked as nullable, but now they can be through `isNullable`. Here are the different outputs and how they now apply nullable types:
+
+### TypeScript
+### C#
+### Java
+### Kotlin
+### Rust 
+### Python
+### Go
+### Dart
+
