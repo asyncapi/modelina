@@ -29,11 +29,22 @@ export default function interpretOneOf(
   ) {
     return;
   }
+  let nullModel;
   for (const oneOfSchema of schema.oneOf) {
     const oneOfModel = interpreter.interpret(oneOfSchema, interpreterOptions);
     if (oneOfModel === undefined) {
       continue;
     }
-    model.addItemUnion(oneOfModel);
+    if (oneOfModel.type === 'null') {
+      nullModel = oneOfModel;
+    } else {
+      model.addItemUnion(oneOfModel);
+    }
+  }
+  if (nullModel) {
+    for (const unionModel of model.union || []) {
+      unionModel.addTypes('null');
+    }
+    model.addTypes('null');
   }
 }

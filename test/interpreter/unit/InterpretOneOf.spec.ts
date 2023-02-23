@@ -48,4 +48,27 @@ describe('Interpretation of oneOf', () => {
     expect(model.addItemUnion).toHaveBeenCalledTimes(2);
     expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });
+  test('should add merge null oneOf into the rest of the unions', () => {
+    const model = new CommonModel();
+    model.addItemUnion = jest.fn();
+    const schema = { oneOf: [{}, {}] };
+    const interpreter = new Interpreter();
+    const nullType = new CommonModel();
+    nullType.type = 'null';
+    (interpreter.interpret as jest.Mock)
+      .mockReturnValue(new CommonModel())
+      .mockReturnValueOnce(nullType);
+    (isModelObject as jest.Mock).mockReturnValue(false);
+
+    InterpretOneOf(schema, model, interpreter, { allowInheritance: false });
+
+    expect(interpreter.interpret).toHaveBeenNthCalledWith(1, schema.oneOf[0], {
+      allowInheritance: false
+    });
+    expect(interpreter.interpret).toHaveBeenNthCalledWith(2, schema.oneOf[1], {
+      allowInheritance: false
+    });
+    expect(model.addItemUnion).toHaveBeenCalledTimes(1);
+    expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
+  });
 });

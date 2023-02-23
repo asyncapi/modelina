@@ -55,11 +55,28 @@ The _type_ property in the _CloudEvent_ schema will in this case have an _anonym
 Each [meta model](../internal-model.md) up until now where not able to be marked as nullable, but now they can be through `isNullable`. Here are the different outputs and how they now apply nullable types:
 
 ### TypeScript
-### C#
-### Java
-### Kotlin
-### Rust 
-### Python
-### Go
-### Dart
+Is not affected by this change.
 
+### JavaScript
+Is not affected by this change.
+
+### C#
+Is not affected by this change.
+
+### Java
+Is not affected by this change.
+
+### Kotlin
+Is not affected by this change.
+
+### Rust 
+Is not affected by this change.
+
+### Python
+Is not affected by this change.
+
+### Go
+Is not affected by this change.
+
+### Dart
+Is not affected by this change.
