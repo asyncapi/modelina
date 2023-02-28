@@ -134,6 +134,13 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
           }
         }
       }
+
+      for (const message of doc.messages()) {
+        const payload = message.payload();
+        if (payload) {
+          addToInputModel(payload);
+        }
+      }
     } else {
       for (const message of doc.allMessages()) {
         const payload = message.payload();
