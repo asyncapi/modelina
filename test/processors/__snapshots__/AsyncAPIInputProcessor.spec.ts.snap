@@ -3,6 +3,922 @@
 exports[`AsyncAPIInputProcessor process() should be able to process operation with oneOf 1`] = `
 InputMetaModel {
   "models": Object {
+    "Cat": ObjectModel {
+      "name": "Cat",
+      "originalInput": AsyncapiV2Schema {
+        "allOf": Array [
+          AsyncapiV2Schema {
+            "properties": Object {
+              "dataschema": AsyncapiV2Schema {
+                "format": "uri",
+                "type": "string",
+                "x-modelgen-inferred-name": "anonymous_schema_6",
+                "x-parser-schema-id": "<anonymous-schema-6>",
+              },
+              "id": AsyncapiV2Schema {
+                "type": "string",
+                "x-modelgen-inferred-name": "anonymous_schema_2",
+                "x-parser-schema-id": "<anonymous-schema-2>",
+              },
+              "source": AsyncapiV2Schema {
+                "format": "uri-reference",
+                "type": "string",
+                "x-modelgen-inferred-name": "anonymous_schema_3",
+                "x-parser-schema-id": "<anonymous-schema-3>",
+              },
+              "specversion": AsyncapiV2Schema {
+                "default": "1.0",
+                "examples": Array [
+                  "1.0",
+                ],
+                "type": "string",
+                "x-modelgen-inferred-name": "anonymous_schema_4",
+                "x-parser-schema-id": "<anonymous-schema-4>",
+              },
+              "time": AsyncapiV2Schema {
+                "format": "date-time",
+                "type": "string",
+                "x-modelgen-inferred-name": "anonymous_schema_7",
+                "x-parser-schema-id": "<anonymous-schema-7>",
+              },
+              "type": AsyncapiV2Schema {
+                "type": "string",
+                "x-modelgen-inferred-name": "anonymous_schema_5",
+                "x-parser-schema-id": "<anonymous-schema-5>",
+              },
+            },
+            "required": Array [
+              "id",
+              "source",
+              "specversion",
+              "type",
+            ],
+            "title": "CloudEvent",
+            "type": "object",
+            "x-modelgen-inferred-name": "CloudEvent",
+            "x-parser-schema-id": "CloudEvent",
+          },
+          AsyncapiV2Schema {
+            "properties": Object {
+              "type": AsyncapiV2Schema {
+                "const": "Cat",
+                "title": "CatType",
+                "x-modelgen-inferred-name": "anonymous_schema_12",
+                "x-parser-schema-id": "<anonymous-schema-12>",
+              },
+            },
+            "type": "object",
+            "x-modelgen-inferred-name": "anonymous_schema_11",
+            "x-parser-schema-id": "<anonymous-schema-11>",
+          },
+        ],
+        "title": "Cat",
+        "x-modelgen-inferred-name": "anonymous_schema_10",
+        "x-parser-schema-id": "<anonymous-schema-10>",
+      },
+      "properties": Object {
+        "additionalProperties": ObjectPropertyModel {
+          "property": DictionaryModel {
+            "key": StringModel {
+              "name": "additionalProperties",
+              "originalInput": Array [
+                AsyncapiV2Schema {
+                  "allOf": Array [
+                    AsyncapiV2Schema {
+                      "properties": Object {
+                        "dataschema": AsyncapiV2Schema {
+                          "format": "uri",
+                          "type": "string",
+                          "x-modelgen-inferred-name": "anonymous_schema_6",
+                          "x-parser-schema-id": "<anonymous-schema-6>",
+                        },
+                        "id": AsyncapiV2Schema {
+                          "type": "string",
+                          "x-modelgen-inferred-name": "anonymous_schema_2",
+                          "x-parser-schema-id": "<anonymous-schema-2>",
+                        },
+                        "source": AsyncapiV2Schema {
+                          "format": "uri-reference",
+                          "type": "string",
+                          "x-modelgen-inferred-name": "anonymous_schema_3",
+                          "x-parser-schema-id": "<anonymous-schema-3>",
+                        },
+                        "specversion": AsyncapiV2Schema {
+                          "default": "1.0",
+                          "examples": Array [
+                            "1.0",
+                          ],
+                          "type": "string",
+                          "x-modelgen-inferred-name": "anonymous_schema_4",
+                          "x-parser-schema-id": "<anonymous-schema-4>",
+                        },
+                        "time": AsyncapiV2Schema {
+                          "format": "date-time",
+                          "type": "string",
+                          "x-modelgen-inferred-name": "anonymous_schema_7",
+                          "x-parser-schema-id": "<anonymous-schema-7>",
+                        },
+                        "type": AsyncapiV2Schema {
+                          "type": "string",
+                          "x-modelgen-inferred-name": "anonymous_schema_5",
+                          "x-parser-schema-id": "<anonymous-schema-5>",
+                        },
+                      },
+                      "required": Array [
+                        "id",
+                        "source",
+                        "specversion",
+                        "type",
+                      ],
+                      "title": "CloudEvent",
+                      "type": "object",
+                      "x-modelgen-inferred-name": "CloudEvent",
+                      "x-parser-schema-id": "CloudEvent",
+                    },
+                    AsyncapiV2Schema {
+                      "properties": Object {
+                        "type": AsyncapiV2Schema {
+                          "const": "Cat",
+                          "title": "CatType",
+                          "x-modelgen-inferred-name": "anonymous_schema_12",
+                          "x-parser-schema-id": "<anonymous-schema-12>",
+                        },
+                      },
+                      "type": "object",
+                      "x-modelgen-inferred-name": "anonymous_schema_11",
+                      "x-parser-schema-id": "<anonymous-schema-11>",
+                    },
+                  ],
+                  "title": "Cat",
+                  "x-modelgen-inferred-name": "anonymous_schema_10",
+                  "x-parser-schema-id": "<anonymous-schema-10>",
+                },
+              ],
+            },
+            "name": "additionalProperties",
+            "originalInput": Array [
+              AsyncapiV2Schema {
+                "allOf": Array [
+                  AsyncapiV2Schema {
+                    "properties": Object {
+                      "dataschema": AsyncapiV2Schema {
+                        "format": "uri",
+                        "type": "string",
+                        "x-modelgen-inferred-name": "anonymous_schema_6",
+                        "x-parser-schema-id": "<anonymous-schema-6>",
+                      },
+                      "id": AsyncapiV2Schema {
+                        "type": "string",
+                        "x-modelgen-inferred-name": "anonymous_schema_2",
+                        "x-parser-schema-id": "<anonymous-schema-2>",
+                      },
+                      "source": AsyncapiV2Schema {
+                        "format": "uri-reference",
+                        "type": "string",
+                        "x-modelgen-inferred-name": "anonymous_schema_3",
+                        "x-parser-schema-id": "<anonymous-schema-3>",
+                      },
+                      "specversion": AsyncapiV2Schema {
+                        "default": "1.0",
+                        "examples": Array [
+                          "1.0",
+                        ],
+                        "type": "string",
+                        "x-modelgen-inferred-name": "anonymous_schema_4",
+                        "x-parser-schema-id": "<anonymous-schema-4>",
+                      },
+                      "time": AsyncapiV2Schema {
+                        "format": "date-time",
+                        "type": "string",
+                        "x-modelgen-inferred-name": "anonymous_schema_7",
+                        "x-parser-schema-id": "<anonymous-schema-7>",
+                      },
+                      "type": AsyncapiV2Schema {
+                        "type": "string",
+                        "x-modelgen-inferred-name": "anonymous_schema_5",
+                        "x-parser-schema-id": "<anonymous-schema-5>",
+                      },
+                    },
+                    "required": Array [
+                      "id",
+                      "source",
+                      "specversion",
+                      "type",
+                    ],
+                    "title": "CloudEvent",
+                    "type": "object",
+                    "x-modelgen-inferred-name": "CloudEvent",
+                    "x-parser-schema-id": "CloudEvent",
+                  },
+                  AsyncapiV2Schema {
+                    "properties": Object {
+                      "type": AsyncapiV2Schema {
+                        "const": "Cat",
+                        "title": "CatType",
+                        "x-modelgen-inferred-name": "anonymous_schema_12",
+                        "x-parser-schema-id": "<anonymous-schema-12>",
+                      },
+                    },
+                    "type": "object",
+                    "x-modelgen-inferred-name": "anonymous_schema_11",
+                    "x-parser-schema-id": "<anonymous-schema-11>",
+                  },
+                ],
+                "title": "Cat",
+                "x-modelgen-inferred-name": "anonymous_schema_10",
+                "x-parser-schema-id": "<anonymous-schema-10>",
+              },
+            ],
+            "serializationType": "unwrap",
+            "value": AnyModel {
+              "name": "undefined",
+              "originalInput": AsyncapiV2Schema {
+                "allOf": Array [
+                  AsyncapiV2Schema {
+                    "properties": Object {
+                      "dataschema": AsyncapiV2Schema {
+                        "format": "uri",
+                        "type": "string",
+                        "x-modelgen-inferred-name": "anonymous_schema_6",
+                        "x-parser-schema-id": "<anonymous-schema-6>",
+                      },
+                      "id": AsyncapiV2Schema {
+                        "type": "string",
+                        "x-modelgen-inferred-name": "anonymous_schema_2",
+                        "x-parser-schema-id": "<anonymous-schema-2>",
+                      },
+                      "source": AsyncapiV2Schema {
+                        "format": "uri-reference",
+                        "type": "string",
+                        "x-modelgen-inferred-name": "anonymous_schema_3",
+                        "x-parser-schema-id": "<anonymous-schema-3>",
+                      },
+                      "specversion": AsyncapiV2Schema {
+                        "default": "1.0",
+                        "examples": Array [
+                          "1.0",
+                        ],
+                        "type": "string",
+                        "x-modelgen-inferred-name": "anonymous_schema_4",
+                        "x-parser-schema-id": "<anonymous-schema-4>",
+                      },
+                      "time": AsyncapiV2Schema {
+                        "format": "date-time",
+                        "type": "string",
+                        "x-modelgen-inferred-name": "anonymous_schema_7",
+                        "x-parser-schema-id": "<anonymous-schema-7>",
+                      },
+                      "type": AsyncapiV2Schema {
+                        "type": "string",
+                        "x-modelgen-inferred-name": "anonymous_schema_5",
+                        "x-parser-schema-id": "<anonymous-schema-5>",
+                      },
+                    },
+                    "required": Array [
+                      "id",
+                      "source",
+                      "specversion",
+                      "type",
+                    ],
+                    "title": "CloudEvent",
+                    "type": "object",
+                    "x-modelgen-inferred-name": "CloudEvent",
+                    "x-parser-schema-id": "CloudEvent",
+                  },
+                  AsyncapiV2Schema {
+                    "properties": Object {
+                      "type": AsyncapiV2Schema {
+                        "const": "Cat",
+                        "title": "CatType",
+                        "x-modelgen-inferred-name": "anonymous_schema_12",
+                        "x-parser-schema-id": "<anonymous-schema-12>",
+                      },
+                    },
+                    "type": "object",
+                    "x-modelgen-inferred-name": "anonymous_schema_11",
+                    "x-parser-schema-id": "<anonymous-schema-11>",
+                  },
+                ],
+                "title": "Cat",
+                "x-modelgen-inferred-name": "anonymous_schema_10",
+                "x-parser-schema-id": "<anonymous-schema-10>",
+              },
+            },
+          },
+          "propertyName": "additionalProperties",
+          "required": false,
+        },
+        "dataschema": ObjectPropertyModel {
+          "property": StringModel {
+            "name": "anonymous_schema_6",
+            "originalInput": AsyncapiV2Schema {
+              "format": "uri",
+              "type": "string",
+              "x-modelgen-inferred-name": "anonymous_schema_6",
+              "x-parser-schema-id": "<anonymous-schema-6>",
+            },
+          },
+          "propertyName": "dataschema",
+          "required": false,
+        },
+        "id": ObjectPropertyModel {
+          "property": StringModel {
+            "name": "anonymous_schema_2",
+            "originalInput": AsyncapiV2Schema {
+              "type": "string",
+              "x-modelgen-inferred-name": "anonymous_schema_2",
+              "x-parser-schema-id": "<anonymous-schema-2>",
+            },
+          },
+          "propertyName": "id",
+          "required": true,
+        },
+        "source": ObjectPropertyModel {
+          "property": StringModel {
+            "name": "anonymous_schema_3",
+            "originalInput": AsyncapiV2Schema {
+              "format": "uri-reference",
+              "type": "string",
+              "x-modelgen-inferred-name": "anonymous_schema_3",
+              "x-parser-schema-id": "<anonymous-schema-3>",
+            },
+          },
+          "propertyName": "source",
+          "required": true,
+        },
+        "specversion": ObjectPropertyModel {
+          "property": StringModel {
+            "name": "anonymous_schema_4",
+            "originalInput": AsyncapiV2Schema {
+              "default": "1.0",
+              "examples": Array [
+                "1.0",
+              ],
+              "type": "string",
+              "x-modelgen-inferred-name": "anonymous_schema_4",
+              "x-parser-schema-id": "<anonymous-schema-4>",
+            },
+          },
+          "propertyName": "specversion",
+          "required": true,
+        },
+        "time": ObjectPropertyModel {
+          "property": StringModel {
+            "name": "anonymous_schema_7",
+            "originalInput": AsyncapiV2Schema {
+              "format": "date-time",
+              "type": "string",
+              "x-modelgen-inferred-name": "anonymous_schema_7",
+              "x-parser-schema-id": "<anonymous-schema-7>",
+            },
+          },
+          "propertyName": "time",
+          "required": false,
+        },
+        "type": ObjectPropertyModel {
+          "property": EnumModel {
+            "name": "CatType",
+            "originalInput": AsyncapiV2Schema {
+              "allOf": Array [
+                AsyncapiV2Schema {
+                  "properties": Object {
+                    "dataschema": AsyncapiV2Schema {
+                      "format": "uri",
+                      "type": "string",
+                      "x-modelgen-inferred-name": "anonymous_schema_6",
+                      "x-parser-schema-id": "<anonymous-schema-6>",
+                    },
+                    "id": AsyncapiV2Schema {
+                      "type": "string",
+                      "x-modelgen-inferred-name": "anonymous_schema_2",
+                      "x-parser-schema-id": "<anonymous-schema-2>",
+                    },
+                    "source": AsyncapiV2Schema {
+                      "format": "uri-reference",
+                      "type": "string",
+                      "x-modelgen-inferred-name": "anonymous_schema_3",
+                      "x-parser-schema-id": "<anonymous-schema-3>",
+                    },
+                    "specversion": AsyncapiV2Schema {
+                      "default": "1.0",
+                      "examples": Array [
+                        "1.0",
+                      ],
+                      "type": "string",
+                      "x-modelgen-inferred-name": "anonymous_schema_4",
+                      "x-parser-schema-id": "<anonymous-schema-4>",
+                    },
+                    "time": AsyncapiV2Schema {
+                      "format": "date-time",
+                      "type": "string",
+                      "x-modelgen-inferred-name": "anonymous_schema_7",
+                      "x-parser-schema-id": "<anonymous-schema-7>",
+                    },
+                    "type": AsyncapiV2Schema {
+                      "type": "string",
+                      "x-modelgen-inferred-name": "anonymous_schema_5",
+                      "x-parser-schema-id": "<anonymous-schema-5>",
+                    },
+                  },
+                  "required": Array [
+                    "id",
+                    "source",
+                    "specversion",
+                    "type",
+                  ],
+                  "title": "CloudEvent",
+                  "type": "object",
+                  "x-modelgen-inferred-name": "CloudEvent",
+                  "x-parser-schema-id": "CloudEvent",
+                },
+                AsyncapiV2Schema {
+                  "properties": Object {
+                    "type": AsyncapiV2Schema {
+                      "const": "Cat",
+                      "title": "CatType",
+                      "x-modelgen-inferred-name": "anonymous_schema_12",
+                      "x-parser-schema-id": "<anonymous-schema-12>",
+                    },
+                  },
+                  "type": "object",
+                  "x-modelgen-inferred-name": "anonymous_schema_11",
+                  "x-parser-schema-id": "<anonymous-schema-11>",
+                },
+              ],
+              "title": "Cat",
+              "x-modelgen-inferred-name": "anonymous_schema_10",
+              "x-parser-schema-id": "<anonymous-schema-10>",
+            },
+            "values": Array [
+              EnumValueModel {
+                "key": "Cat",
+                "value": "Cat",
+              },
+            ],
+          },
+          "propertyName": "type",
+          "required": true,
+        },
+      },
+    },
+    "Dog": ObjectModel {
+      "name": "Dog",
+      "originalInput": AsyncapiV2Schema {
+        "allOf": Array [
+          AsyncapiV2Schema {
+            "properties": Object {
+              "dataschema": AsyncapiV2Schema {
+                "format": "uri",
+                "type": "string",
+                "x-modelgen-inferred-name": "anonymous_schema_6",
+                "x-parser-schema-id": "<anonymous-schema-6>",
+              },
+              "id": AsyncapiV2Schema {
+                "type": "string",
+                "x-modelgen-inferred-name": "anonymous_schema_2",
+                "x-parser-schema-id": "<anonymous-schema-2>",
+              },
+              "source": AsyncapiV2Schema {
+                "format": "uri-reference",
+                "type": "string",
+                "x-modelgen-inferred-name": "anonymous_schema_3",
+                "x-parser-schema-id": "<anonymous-schema-3>",
+              },
+              "specversion": AsyncapiV2Schema {
+                "default": "1.0",
+                "examples": Array [
+                  "1.0",
+                ],
+                "type": "string",
+                "x-modelgen-inferred-name": "anonymous_schema_4",
+                "x-parser-schema-id": "<anonymous-schema-4>",
+              },
+              "time": AsyncapiV2Schema {
+                "format": "date-time",
+                "type": "string",
+                "x-modelgen-inferred-name": "anonymous_schema_7",
+                "x-parser-schema-id": "<anonymous-schema-7>",
+              },
+              "type": AsyncapiV2Schema {
+                "type": "string",
+                "x-modelgen-inferred-name": "anonymous_schema_5",
+                "x-parser-schema-id": "<anonymous-schema-5>",
+              },
+            },
+            "required": Array [
+              "id",
+              "source",
+              "specversion",
+              "type",
+            ],
+            "title": "CloudEvent",
+            "type": "object",
+            "x-modelgen-inferred-name": "CloudEvent",
+            "x-parser-schema-id": "CloudEvent",
+          },
+          AsyncapiV2Schema {
+            "properties": Object {
+              "type": AsyncapiV2Schema {
+                "const": "Dog",
+                "title": "DogType",
+                "x-modelgen-inferred-name": "anonymous_schema_9",
+                "x-parser-schema-id": "<anonymous-schema-9>",
+              },
+            },
+            "type": "object",
+            "x-modelgen-inferred-name": "anonymous_schema_8",
+            "x-parser-schema-id": "<anonymous-schema-8>",
+          },
+        ],
+        "title": "Dog",
+        "x-modelgen-inferred-name": "anonymous_schema_1",
+        "x-parser-schema-id": "<anonymous-schema-1>",
+      },
+      "properties": Object {
+        "additionalProperties": ObjectPropertyModel {
+          "property": DictionaryModel {
+            "key": StringModel {
+              "name": "additionalProperties",
+              "originalInput": Array [
+                AsyncapiV2Schema {
+                  "allOf": Array [
+                    AsyncapiV2Schema {
+                      "properties": Object {
+                        "dataschema": AsyncapiV2Schema {
+                          "format": "uri",
+                          "type": "string",
+                          "x-modelgen-inferred-name": "anonymous_schema_6",
+                          "x-parser-schema-id": "<anonymous-schema-6>",
+                        },
+                        "id": AsyncapiV2Schema {
+                          "type": "string",
+                          "x-modelgen-inferred-name": "anonymous_schema_2",
+                          "x-parser-schema-id": "<anonymous-schema-2>",
+                        },
+                        "source": AsyncapiV2Schema {
+                          "format": "uri-reference",
+                          "type": "string",
+                          "x-modelgen-inferred-name": "anonymous_schema_3",
+                          "x-parser-schema-id": "<anonymous-schema-3>",
+                        },
+                        "specversion": AsyncapiV2Schema {
+                          "default": "1.0",
+                          "examples": Array [
+                            "1.0",
+                          ],
+                          "type": "string",
+                          "x-modelgen-inferred-name": "anonymous_schema_4",
+                          "x-parser-schema-id": "<anonymous-schema-4>",
+                        },
+                        "time": AsyncapiV2Schema {
+                          "format": "date-time",
+                          "type": "string",
+                          "x-modelgen-inferred-name": "anonymous_schema_7",
+                          "x-parser-schema-id": "<anonymous-schema-7>",
+                        },
+                        "type": AsyncapiV2Schema {
+                          "type": "string",
+                          "x-modelgen-inferred-name": "anonymous_schema_5",
+                          "x-parser-schema-id": "<anonymous-schema-5>",
+                        },
+                      },
+                      "required": Array [
+                        "id",
+                        "source",
+                        "specversion",
+                        "type",
+                      ],
+                      "title": "CloudEvent",
+                      "type": "object",
+                      "x-modelgen-inferred-name": "CloudEvent",
+                      "x-parser-schema-id": "CloudEvent",
+                    },
+                    AsyncapiV2Schema {
+                      "properties": Object {
+                        "type": AsyncapiV2Schema {
+                          "const": "Dog",
+                          "title": "DogType",
+                          "x-modelgen-inferred-name": "anonymous_schema_9",
+                          "x-parser-schema-id": "<anonymous-schema-9>",
+                        },
+                      },
+                      "type": "object",
+                      "x-modelgen-inferred-name": "anonymous_schema_8",
+                      "x-parser-schema-id": "<anonymous-schema-8>",
+                    },
+                  ],
+                  "title": "Dog",
+                  "x-modelgen-inferred-name": "anonymous_schema_1",
+                  "x-parser-schema-id": "<anonymous-schema-1>",
+                },
+              ],
+            },
+            "name": "additionalProperties",
+            "originalInput": Array [
+              AsyncapiV2Schema {
+                "allOf": Array [
+                  AsyncapiV2Schema {
+                    "properties": Object {
+                      "dataschema": AsyncapiV2Schema {
+                        "format": "uri",
+                        "type": "string",
+                        "x-modelgen-inferred-name": "anonymous_schema_6",
+                        "x-parser-schema-id": "<anonymous-schema-6>",
+                      },
+                      "id": AsyncapiV2Schema {
+                        "type": "string",
+                        "x-modelgen-inferred-name": "anonymous_schema_2",
+                        "x-parser-schema-id": "<anonymous-schema-2>",
+                      },
+                      "source": AsyncapiV2Schema {
+                        "format": "uri-reference",
+                        "type": "string",
+                        "x-modelgen-inferred-name": "anonymous_schema_3",
+                        "x-parser-schema-id": "<anonymous-schema-3>",
+                      },
+                      "specversion": AsyncapiV2Schema {
+                        "default": "1.0",
+                        "examples": Array [
+                          "1.0",
+                        ],
+                        "type": "string",
+                        "x-modelgen-inferred-name": "anonymous_schema_4",
+                        "x-parser-schema-id": "<anonymous-schema-4>",
+                      },
+                      "time": AsyncapiV2Schema {
+                        "format": "date-time",
+                        "type": "string",
+                        "x-modelgen-inferred-name": "anonymous_schema_7",
+                        "x-parser-schema-id": "<anonymous-schema-7>",
+                      },
+                      "type": AsyncapiV2Schema {
+                        "type": "string",
+                        "x-modelgen-inferred-name": "anonymous_schema_5",
+                        "x-parser-schema-id": "<anonymous-schema-5>",
+                      },
+                    },
+                    "required": Array [
+                      "id",
+                      "source",
+                      "specversion",
+                      "type",
+                    ],
+                    "title": "CloudEvent",
+                    "type": "object",
+                    "x-modelgen-inferred-name": "CloudEvent",
+                    "x-parser-schema-id": "CloudEvent",
+                  },
+                  AsyncapiV2Schema {
+                    "properties": Object {
+                      "type": AsyncapiV2Schema {
+                        "const": "Dog",
+                        "title": "DogType",
+                        "x-modelgen-inferred-name": "anonymous_schema_9",
+                        "x-parser-schema-id": "<anonymous-schema-9>",
+                      },
+                    },
+                    "type": "object",
+                    "x-modelgen-inferred-name": "anonymous_schema_8",
+                    "x-parser-schema-id": "<anonymous-schema-8>",
+                  },
+                ],
+                "title": "Dog",
+                "x-modelgen-inferred-name": "anonymous_schema_1",
+                "x-parser-schema-id": "<anonymous-schema-1>",
+              },
+            ],
+            "serializationType": "unwrap",
+            "value": AnyModel {
+              "name": "undefined",
+              "originalInput": AsyncapiV2Schema {
+                "allOf": Array [
+                  AsyncapiV2Schema {
+                    "properties": Object {
+                      "dataschema": AsyncapiV2Schema {
+                        "format": "uri",
+                        "type": "string",
+                        "x-modelgen-inferred-name": "anonymous_schema_6",
+                        "x-parser-schema-id": "<anonymous-schema-6>",
+                      },
+                      "id": AsyncapiV2Schema {
+                        "type": "string",
+                        "x-modelgen-inferred-name": "anonymous_schema_2",
+                        "x-parser-schema-id": "<anonymous-schema-2>",
+                      },
+                      "source": AsyncapiV2Schema {
+                        "format": "uri-reference",
+                        "type": "string",
+                        "x-modelgen-inferred-name": "anonymous_schema_3",
+                        "x-parser-schema-id": "<anonymous-schema-3>",
+                      },
+                      "specversion": AsyncapiV2Schema {
+                        "default": "1.0",
+                        "examples": Array [
+                          "1.0",
+                        ],
+                        "type": "string",
+                        "x-modelgen-inferred-name": "anonymous_schema_4",
+                        "x-parser-schema-id": "<anonymous-schema-4>",
+                      },
+                      "time": AsyncapiV2Schema {
+                        "format": "date-time",
+                        "type": "string",
+                        "x-modelgen-inferred-name": "anonymous_schema_7",
+                        "x-parser-schema-id": "<anonymous-schema-7>",
+                      },
+                      "type": AsyncapiV2Schema {
+                        "type": "string",
+                        "x-modelgen-inferred-name": "anonymous_schema_5",
+                        "x-parser-schema-id": "<anonymous-schema-5>",
+                      },
+                    },
+                    "required": Array [
+                      "id",
+                      "source",
+                      "specversion",
+                      "type",
+                    ],
+                    "title": "CloudEvent",
+                    "type": "object",
+                    "x-modelgen-inferred-name": "CloudEvent",
+                    "x-parser-schema-id": "CloudEvent",
+                  },
+                  AsyncapiV2Schema {
+                    "properties": Object {
+                      "type": AsyncapiV2Schema {
+                        "const": "Dog",
+                        "title": "DogType",
+                        "x-modelgen-inferred-name": "anonymous_schema_9",
+                        "x-parser-schema-id": "<anonymous-schema-9>",
+                      },
+                    },
+                    "type": "object",
+                    "x-modelgen-inferred-name": "anonymous_schema_8",
+                    "x-parser-schema-id": "<anonymous-schema-8>",
+                  },
+                ],
+                "title": "Dog",
+                "x-modelgen-inferred-name": "anonymous_schema_1",
+                "x-parser-schema-id": "<anonymous-schema-1>",
+              },
+            },
+          },
+          "propertyName": "additionalProperties",
+          "required": false,
+        },
+        "dataschema": ObjectPropertyModel {
+          "property": StringModel {
+            "name": "anonymous_schema_6",
+            "originalInput": AsyncapiV2Schema {
+              "format": "uri",
+              "type": "string",
+              "x-modelgen-inferred-name": "anonymous_schema_6",
+              "x-parser-schema-id": "<anonymous-schema-6>",
+            },
+          },
+          "propertyName": "dataschema",
+          "required": false,
+        },
+        "id": ObjectPropertyModel {
+          "property": StringModel {
+            "name": "anonymous_schema_2",
+            "originalInput": AsyncapiV2Schema {
+              "type": "string",
+              "x-modelgen-inferred-name": "anonymous_schema_2",
+              "x-parser-schema-id": "<anonymous-schema-2>",
+            },
+          },
+          "propertyName": "id",
+          "required": true,
+        },
+        "source": ObjectPropertyModel {
+          "property": StringModel {
+            "name": "anonymous_schema_3",
+            "originalInput": AsyncapiV2Schema {
+              "format": "uri-reference",
+              "type": "string",
+              "x-modelgen-inferred-name": "anonymous_schema_3",
+              "x-parser-schema-id": "<anonymous-schema-3>",
+            },
+          },
+          "propertyName": "source",
+          "required": true,
+        },
+        "specversion": ObjectPropertyModel {
+          "property": StringModel {
+            "name": "anonymous_schema_4",
+            "originalInput": AsyncapiV2Schema {
+              "default": "1.0",
+              "examples": Array [
+                "1.0",
+              ],
+              "type": "string",
+              "x-modelgen-inferred-name": "anonymous_schema_4",
+              "x-parser-schema-id": "<anonymous-schema-4>",
+            },
+          },
+          "propertyName": "specversion",
+          "required": true,
+        },
+        "time": ObjectPropertyModel {
+          "property": StringModel {
+            "name": "anonymous_schema_7",
+            "originalInput": AsyncapiV2Schema {
+              "format": "date-time",
+              "type": "string",
+              "x-modelgen-inferred-name": "anonymous_schema_7",
+              "x-parser-schema-id": "<anonymous-schema-7>",
+            },
+          },
+          "propertyName": "time",
+          "required": false,
+        },
+        "type": ObjectPropertyModel {
+          "property": EnumModel {
+            "name": "DogType",
+            "originalInput": AsyncapiV2Schema {
+              "allOf": Array [
+                AsyncapiV2Schema {
+                  "properties": Object {
+                    "dataschema": AsyncapiV2Schema {
+                      "format": "uri",
+                      "type": "string",
+                      "x-modelgen-inferred-name": "anonymous_schema_6",
+                      "x-parser-schema-id": "<anonymous-schema-6>",
+                    },
+                    "id": AsyncapiV2Schema {
+                      "type": "string",
+                      "x-modelgen-inferred-name": "anonymous_schema_2",
+                      "x-parser-schema-id": "<anonymous-schema-2>",
+                    },
+                    "source": AsyncapiV2Schema {
+                      "format": "uri-reference",
+                      "type": "string",
+                      "x-modelgen-inferred-name": "anonymous_schema_3",
+                      "x-parser-schema-id": "<anonymous-schema-3>",
+                    },
+                    "specversion": AsyncapiV2Schema {
+                      "default": "1.0",
+                      "examples": Array [
+                        "1.0",
+                      ],
+                      "type": "string",
+                      "x-modelgen-inferred-name": "anonymous_schema_4",
+                      "x-parser-schema-id": "<anonymous-schema-4>",
+                    },
+                    "time": AsyncapiV2Schema {
+                      "format": "date-time",
+                      "type": "string",
+                      "x-modelgen-inferred-name": "anonymous_schema_7",
+                      "x-parser-schema-id": "<anonymous-schema-7>",
+                    },
+                    "type": AsyncapiV2Schema {
+                      "type": "string",
+                      "x-modelgen-inferred-name": "anonymous_schema_5",
+                      "x-parser-schema-id": "<anonymous-schema-5>",
+                    },
+                  },
+                  "required": Array [
+                    "id",
+                    "source",
+                    "specversion",
+                    "type",
+                  ],
+                  "title": "CloudEvent",
+                  "type": "object",
+                  "x-modelgen-inferred-name": "CloudEvent",
+                  "x-parser-schema-id": "CloudEvent",
+                },
+                AsyncapiV2Schema {
+                  "properties": Object {
+                    "type": AsyncapiV2Schema {
+                      "const": "Dog",
+                      "title": "DogType",
+                      "x-modelgen-inferred-name": "anonymous_schema_9",
+                      "x-parser-schema-id": "<anonymous-schema-9>",
+                    },
+                  },
+                  "type": "object",
+                  "x-modelgen-inferred-name": "anonymous_schema_8",
+                  "x-parser-schema-id": "<anonymous-schema-8>",
+                },
+              ],
+              "title": "Dog",
+              "x-modelgen-inferred-name": "anonymous_schema_1",
+              "x-parser-schema-id": "<anonymous-schema-1>",
+            },
+            "values": Array [
+              EnumValueModel {
+                "key": "Dog",
+                "value": "Dog",
+              },
+            ],
+          },
+          "propertyName": "type",
+          "required": true,
+        },
+      },
+    },
     "pet": UnionModel {
       "name": "pet",
       "originalInput": AsyncapiV2Schema {
