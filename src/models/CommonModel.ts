@@ -433,6 +433,15 @@ export class CommonModel {
   }
 
   /**
+   * Returns true if the $id of a CommonModel includes anonymous_schema
+   *
+   * @param commonModel
+   */
+  private static idIncludesAnonymousSchema(commonModel: CommonModel) {
+    return commonModel.$id?.includes('anonymous_schema');
+  }
+
+  /**
    * Merge two common model properties together
    *
    * @param mergeTo
@@ -471,8 +480,14 @@ export class CommonModel {
           mergeFrom,
           originalInput
         );
+
+        const mergeToProperty = mergeTo.properties[String(propName)];
+
         mergeTo.properties[String(propName)] = CommonModel.mergeCommonModels(
-          mergeTo.properties[String(propName)],
+          // takes a deep copy of the mergeTo model if the id of mergeTo is anonymous to avoid carrying over properties to other models
+          CommonModel.idIncludesAnonymousSchema(mergeToProperty)
+            ? CommonModel.toCommonModel(mergeToProperty)
+            : mergeToProperty,
           propValue,
           originalInput,
           alreadyIteratedModels
@@ -762,8 +777,8 @@ export class CommonModel {
     }
 
     if (
-      mergeTo.$id?.includes('anonymous_schema') &&
-      !mergeFrom.$id?.includes('anonymous_schema')
+      CommonModel.idIncludesAnonymousSchema(mergeTo) &&
+      !CommonModel.idIncludesAnonymousSchema(mergeFrom)
     ) {
       mergeTo.$id = mergeFrom.$id;
     } else {
