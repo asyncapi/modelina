@@ -83,13 +83,10 @@ export class ConstrainedArrayModel extends ConstrainedMetaModel {
   }
 
   getNearestDependencies(): ConstrainedMetaModel[] {
-    if (this.valueModel.name !== this.name) {
-      if (this.valueModel instanceof ConstrainedReferenceModel) {
-        return [this.valueModel];
-      }
-      return this.valueModel.getNearestDependencies();
+    if (this.valueModel instanceof ConstrainedReferenceModel) {
+      return [this.valueModel];
     }
-    return [];
+    return this.valueModel.getNearestDependencies();
   }
 }
 export class ConstrainedUnionModel extends ConstrainedMetaModel {
