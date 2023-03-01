@@ -1,15 +1,14 @@
 [![AsyncAPI Modelina](./docs/img/readme-banner.png)](https://www.asyncapi.com/tools/modelina)
-
-[![blackbox pipeline status](<https://img.shields.io/github/workflow/status/asyncapi/modelina/Blackbox%20testing%20(Stay%20Awhile%20and%20Listen)?label=blackbox%20testing>)](https://github.com/asyncapi/modelina/actions/workflows/blackbox-testing.yml?query=branch%3Amaster++)
+[![blackbox pipeline status](<https://img.shields.io/github/actions/workflow/status/asyncapi/modelina/blackbox-testing.yml?label=blackbox%20testing>)](https://github.com/asyncapi/modelina/actions/workflows/blackbox-testing.yml?query=branch%3Amaster++)
 [![Coverage Status](https://coveralls.io/repos/github/asyncapi/modelina/badge.svg?branch=master)](https://coveralls.io/github/asyncapi/modelina?branch=master)
-[![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 ![Maintenance score](https://img.shields.io/npms-io/maintenance-score/@asyncapi/modelina)
 [![Npm latest version](https://img.shields.io/npm/v/@asyncapi/modelina)](https://www.npmjs.com/package/@asyncapi/modelina)
 [![License](https://img.shields.io/github/license/asyncapi/modelina)](https://github.com/asyncapi/modelina/blob/master/LICENSE)
 [![last commit](https://img.shields.io/github/last-commit/asyncapi/modelina)](https://github.com/asyncapi/modelina/commits/master)
 [![Discussions](https://img.shields.io/github/discussions/asyncapi/modelina)](https://github.com/asyncapi/modelina/discussions)
 [![Playground](https://img.shields.io/website?label=playground&url=https%3A%2F%2Fwww.asyncapi.com%2Ftools%2Fmodelina)](https://www.asyncapi.com/tools/modelina) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-41-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-43-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ---
@@ -19,6 +18,7 @@
 <!-- toc -->
 
 - [Installing Modelina](#installing-modelina)
+- [AsyncAPI CLI](#asyncapi-cli)
 - [Features](#features)
 - [Roadmap](#roadmap)
 - [Requirements](#requirements)
@@ -37,6 +37,14 @@ Run this command to install Modelina in your project:
 
 ```bash
 npm install @asyncapi/modelina
+```
+
+## AsyncAPI CLI
+
+If you have the [AsyncAPI CLI installed](https://github.com/asyncapi/cli#installation), you can run the following command to use [Modelina](https://github.com/asyncapi/cli#usage):
+
+```bash
+asyncapi generate models <language> ./asyncapi.json
 ```
 
 <h2 align="center">What Does Modelina Do?</h2>
@@ -183,7 +191,7 @@ The following table provides a short summary of available features for supported
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-models-from-asyncapi-documents">AsyncAPI</a></td>
-    <td>We support the following AsyncAPI versions: <em>2.0.0 -> 2.5.0</em>, which generates models for all the defined message payloads.</td>
+    <td>We support the following AsyncAPI versions: <em>2.0.0 -> 2.6.0</em>, which generates models for all the defined message payloads.</td>
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-models-from-json-schema-documents">JSON Schema</a></td>
@@ -252,7 +260,7 @@ The following table provides a short summary of available features for supported
 ## Roadmap
 This is the roadmap that is currently in focus by the [CODEOWNERS](./CODEOWNERS)
 
-- [Reach version 1.0](https://github.com/asyncapi/modelina/milestone/3)
+- [1 year roadmap](https://github.com/asyncapi/modelina/milestone/4)
 
 ## Requirements
 The following are a requirement in order to use Modelina.
@@ -349,18 +357,20 @@ Thanks go out to these wonderful people ([emoji key](https://allcontributors.org
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/kennethaasan"><img src="https://avatars.githubusercontent.com/u/1437394?v=4?s=100" width="100px;" alt="Kenneth Aasan"/><br /><sub><b>Kenneth Aasan</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=kennethaasan" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=kennethaasan" title="Tests">⚠️</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/amit-ksh"><img src="https://avatars.githubusercontent.com/u/91947037?v=4?s=100" width="100px;" alt="Amit Kumar Sharma"/><br /><sub><b>Amit Kumar Sharma</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=amit-ksh" title="Tests">⚠️</a> <a href="https://github.com/asyncapi/modelina/commits?author=amit-ksh" title="Documentation">📖</a> <a href="#example-amit-ksh" title="Examples">💡</a></td>
     </tr>
-    <tr>     
-      <td align="center"><a href="https://github.com/zaytsevand"><img src="https://avatars.githubusercontent.com/u/5207748?v=4?s=100" width="100px;" alt="Andrey Zaytsev"/><br /><sub><b>Andrey Zaytsev</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=zaytsevand" title="Code">💻</a> <a href="#example-zaytsevand" title="Examples">💡</a> <a href="https://github.com/asyncapi/modelina/commits?author=zaytsevand" title="Documentation">📖</a> <a href="https://github.com/asyncapi/modelina/commits?author=zaytsevand" title="Tests">⚠️</a></td>
-      <td align="center"><a href="https://github.com/codingtenshi"><img src="https://avatars.githubusercontent.com/u/116377630?v=4?s=100" width="100px;" alt="Tenshi Codes"/><br /><sub><b>Tenshi Codes</b></sub></a><br /><a href="#infra-codingtenshi" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
-      <td align="center"><a href="http://yushiomote.org/"><img src="https://avatars.githubusercontent.com/u/3733915?v=4?s=100" width="100px;" alt="Yushi OMOTE"/><br /><sub><b>Yushi OMOTE</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/issues?q=author%3AYushiOMOTE" title="Bug reports">🐛</a> <a href="https://github.com/asyncapi/modelina/commits?author=YushiOMOTE" title="Code">💻</a></td>
-      <td align="center"><a href="https://malcherczyk.pl"><img src="https://avatars.githubusercontent.com/u/17534504?v=4?s=100" width="100px;" alt="Zbigniew Malcherczyk"/><br /><sub><b>Zbigniew Malcherczyk</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/issues?q=author%3AFerror" title="Bug reports">🐛</a> <a href="#infra-Ferror" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
-      <td align="center"><a href="https://github.com/200Puls"><img src="https://avatars.githubusercontent.com/u/6918360?v=4?s=100" width="100px;" alt="200Puls"/><br /><sub><b>200Puls</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=200Puls" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=200Puls" title="Tests">⚠️</a></td>
-      <td align="center"><a href="https://linktr.ee/anaysarkar7"><img src="https://avatars.githubusercontent.com/u/53341181?v=4?s=100" width="100px;" alt="Anay Sarkar"/><br /><sub><b>Anay Sarkar</b></sub></a><br /><a href="#example-anaysarkar7" title="Examples">💡</a> <a href="https://github.com/asyncapi/modelina/commits?author=anaysarkar7" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=anaysarkar7" title="Tests">⚠️</a></td>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/zaytsevand"><img src="https://avatars.githubusercontent.com/u/5207748?v=4?s=100" width="100px;" alt="Andrey Zaytsev"/><br /><sub><b>Andrey Zaytsev</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=zaytsevand" title="Code">💻</a> <a href="#example-zaytsevand" title="Examples">💡</a> <a href="https://github.com/asyncapi/modelina/commits?author=zaytsevand" title="Documentation">📖</a> <a href="https://github.com/asyncapi/modelina/commits?author=zaytsevand" title="Tests">⚠️</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/codingtenshi"><img src="https://avatars.githubusercontent.com/u/116377630?v=4?s=100" width="100px;" alt="Tenshi Codes"/><br /><sub><b>Tenshi Codes</b></sub></a><br /><a href="#infra-codingtenshi" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://yushiomote.org/"><img src="https://avatars.githubusercontent.com/u/3733915?v=4?s=100" width="100px;" alt="Yushi OMOTE"/><br /><sub><b>Yushi OMOTE</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/issues?q=author%3AYushiOMOTE" title="Bug reports">🐛</a> <a href="https://github.com/asyncapi/modelina/commits?author=YushiOMOTE" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://malcherczyk.pl"><img src="https://avatars.githubusercontent.com/u/17534504?v=4?s=100" width="100px;" alt="Zbigniew Malcherczyk"/><br /><sub><b>Zbigniew Malcherczyk</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/issues?q=author%3AFerror" title="Bug reports">🐛</a> <a href="#infra-Ferror" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/200Puls"><img src="https://avatars.githubusercontent.com/u/6918360?v=4?s=100" width="100px;" alt="200Puls"/><br /><sub><b>200Puls</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=200Puls" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=200Puls" title="Tests">⚠️</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://linktr.ee/anaysarkar7"><img src="https://avatars.githubusercontent.com/u/53341181?v=4?s=100" width="100px;" alt="Anay Sarkar"/><br /><sub><b>Anay Sarkar</b></sub></a><br /><a href="#example-anaysarkar7" title="Examples">💡</a> <a href="https://github.com/asyncapi/modelina/commits?author=anaysarkar7" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=anaysarkar7" title="Tests">⚠️</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/LouisXhaferi"><img src="https://avatars.githubusercontent.com/u/52397677?v=4?s=100" width="100px;" alt="Louis Xhaferi"/><br /><sub><b>Louis Xhaferi</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=LouisXhaferi" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=LouisXhaferi" title="Tests">⚠️</a> <a href="https://github.com/asyncapi/modelina/commits?author=LouisXhaferi" title="Documentation">📖</a> <a href="#example-LouisXhaferi" title="Examples">💡</a> <a href="#maintenance-LouisXhaferi" title="Maintenance">🚧</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/sambhavgupta0705"><img src="https://avatars.githubusercontent.com/u/81870866?v=4?s=100" width="100px;" alt="Sambhav Gupta"/><br /><sub><b>Sambhav Gupta</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=sambhavgupta0705" title="Documentation">📖</a></td>
     </tr>
   </tbody>
 </table>
-
 
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
