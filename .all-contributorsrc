@@ -386,7 +386,9 @@
       "profile": "https://github.com/kennethaasan",
       "contributions": [
         "code",
-        "test"
+        "test",
+        "maintenance",
+        "doc"
       ]
     },
     {
