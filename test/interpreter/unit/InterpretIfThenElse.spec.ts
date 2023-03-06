@@ -2,7 +2,7 @@ import { CommonModel } from '../../../src/models/CommonModel';
 import { Interpreter } from '../../../src/interpreter/Interpreter';
 import InterpretIfThenElse from '../../../src/interpreter/InterpretIfThenElse';
 
-describe('Interpretation of oneOf with allOf', () => {
+describe('Interpretation of if/then/else', () => {
   beforeEach(() => {
     jest.resetAllMocks();
   });
