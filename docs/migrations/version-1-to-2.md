@@ -53,3 +53,7 @@ The _type_ property in the _CloudEvent_ schema will in this case have an _anonym
 ## Creates union type for operation message oneOf
 
 In the example above, where `operation.message.oneOf` is set, Modelina will now generate a union type for it. Previously, Modelina ignored this union type, and only generated models for the content of `operation.message.oneOf`. In the example above, that meant models for `Dog` and `Cat`. Now, Modelina will generate a union type of `Pet` in addition to `Dog` and `Cat`.
+
+## Fixes required properties when if/then/else is used
+
+Required properties in schemas inside if/then/else is made optional when merged with the original schema.
