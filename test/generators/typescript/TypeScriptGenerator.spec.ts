@@ -798,4 +798,121 @@ ${content}`;
       expect(cat?.result).toContain('CatType');
     });
   });
+
+  describe('if/then/else', () => {
+    const asyncapiDoc = {
+      asyncapi: '2.5.0',
+      info: {
+        title: 'if/else/then example',
+        version: '1.0.0'
+      },
+      channels: {
+        event: {
+          publish: {
+            message: {
+              oneOf: [
+                {
+                  $ref: '#/components/messages/Event1'
+                },
+                {
+                  $ref: '#/components/messages/Event2'
+                }
+              ]
+            }
+          }
+        }
+      },
+      components: {
+        messages: {
+          Event1: {
+            payload: {
+              title: 'Event1',
+              type: 'object',
+              properties: {
+                id: {
+                  type: 'string'
+                },
+                action: {
+                  title: 'Action',
+                  type: 'string',
+                  enum: ['ADD', 'UPDATE', 'DELETE'],
+                  default: 'ADD'
+                }
+              },
+              required: ['id'],
+              allOf: [
+                {
+                  if: {
+                    properties: {
+                      action: {
+                        const: 'DELETE'
+                      }
+                    },
+                    required: ['action']
+                  },
+                  else: {
+                    $ref: '#/components/schemas/Event'
+                  }
+                }
+              ]
+            }
+          },
+          Event2: {
+            payload: {
+              title: 'Event2',
+              type: 'object',
+              properties: {
+                id: {
+                  type: 'string'
+                },
+                action: {
+                  title: 'Action',
+                  type: 'string',
+                  enum: ['ADD', 'UPDATE', 'DELETE'],
+                  default: 'ADD'
+                }
+              },
+              required: ['id'],
+              allOf: [
+                {
+                  if: {
+                    properties: {
+                      action: {
+                        const: 'DELETE'
+                      }
+                    },
+                    required: ['action']
+                  },
+                  else: {
+                    allOf: [
+                      {
+                        $ref: '#/components/schemas/Event'
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        },
+        schemas: {
+          Event: {
+            type: 'object',
+            properties: {
+              event_time: {
+                type: 'string',
+                format: 'date-time'
+              }
+            },
+            required: ['event_time']
+          }
+        }
+      }
+    };
+
+    test.only('handle if/then/else required properties', async () => {
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+  });
 });

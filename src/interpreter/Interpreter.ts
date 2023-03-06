@@ -21,6 +21,7 @@ import interpretOneOf from './InterpretOneOf';
 import interpretAnyOf from './InterpretAnyOf';
 import interpretOneOfWithAllOf from './InterpretOneOfWithAllOf';
 import interpretOneOfWithProperties from './InterpretOneOfWithProperties';
+import InterpretIfThenElse from './InterpretIfThenElse';
 
 export type InterpreterOptions = {
   allowInheritance?: boolean;
@@ -140,24 +141,7 @@ export class Interpreter {
     interpretDependencies(schema, model, this, interpreterOptions);
     interpretConst(schema, model);
     interpretEnum(schema, model);
-
-    if (
-      !(schema instanceof Draft4Schema) &&
-      !(schema instanceof Draft6Schema)
-    ) {
-      this.interpretAndCombineSchema(
-        schema.then,
-        model,
-        schema,
-        interpreterOptions
-      );
-      this.interpretAndCombineSchema(
-        schema.else,
-        model,
-        schema,
-        interpreterOptions
-      );
-    }
+    InterpretIfThenElse(schema, model, this, interpreterOptions);
 
     interpretNot(schema, model, this, interpreterOptions);
 

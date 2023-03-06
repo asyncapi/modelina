@@ -337,6 +337,77 @@ Array [
 ]
 `;
 
+exports[`TypeScriptGenerator if/then/else handle if/then/else required properties 1`] = `
+Array [
+  "type ReservedEvent = Event1 | Event2;",
+  "class Event1 {
+  private _id: string;
+  private _action?: Action;
+  private _eventTime?: string;
+  private _additionalProperties?: Map<string, any>;
+
+  constructor(input: {
+    id: string,
+    action?: Action,
+    eventTime?: string,
+    additionalProperties?: Map<string, any>,
+  }) {
+    this._id = input.id;
+    this._action = input.action;
+    this._eventTime = input.eventTime;
+    this._additionalProperties = input.additionalProperties;
+  }
+
+  get id(): string { return this._id; }
+  set id(id: string) { this._id = id; }
+
+  get action(): Action | undefined { return this._action; }
+  set action(action: Action | undefined) { this._action = action; }
+
+  get eventTime(): string | undefined { return this._eventTime; }
+  set eventTime(eventTime: string | undefined) { this._eventTime = eventTime; }
+
+  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
+}",
+  "enum Action {
+  ADD = \\"ADD\\",
+  UPDATE = \\"UPDATE\\",
+  RESERVED_DELETE = \\"DELETE\\",
+}",
+  "class Event2 {
+  private _id: string;
+  private _action?: Action;
+  private _eventTime?: string;
+  private _additionalProperties?: Map<string, any>;
+
+  constructor(input: {
+    id: string,
+    action?: Action,
+    eventTime?: string,
+    additionalProperties?: Map<string, any>,
+  }) {
+    this._id = input.id;
+    this._action = input.action;
+    this._eventTime = input.eventTime;
+    this._additionalProperties = input.additionalProperties;
+  }
+
+  get id(): string { return this._id; }
+  set id(id: string) { this._id = id; }
+
+  get action(): Action | undefined { return this._action; }
+  set action(action: Action | undefined) { this._action = action; }
+
+  get eventTime(): string | undefined { return this._eventTime; }
+  set eventTime(eventTime: string | undefined) { this._eventTime = eventTime; }
+
+  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
+}",
+]
+`;
+
 exports[`TypeScriptGenerator should not render \`class\` with reserved keyword 1`] = `
 "class Address {
   private _reservedReservedEnum?: string;
