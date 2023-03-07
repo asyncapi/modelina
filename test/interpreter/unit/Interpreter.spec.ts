@@ -13,6 +13,7 @@ import interpretAdditionalProperties from '../../../src/interpreter/InterpretAdd
 import interpretAdditionalItems from '../../../src/interpreter/InterpretAdditionalItems';
 import interpretNot from '../../../src/interpreter/InterpretNot';
 import interpretDependencies from '../../../src/interpreter/InterpretDependencies';
+import InterpretIfThenElse from '../../../src/interpreter/InterpretIfThenElse';
 import { CommonModel } from '../../../src/models';
 import { Draft7Schema } from '../../../src/models/Draft7Schema';
 
@@ -223,6 +224,18 @@ describe('Interpreter', () => {
     const interpreter = new Interpreter();
     interpreter.interpret(schema);
     expect(interpretDependencies).toHaveBeenNthCalledWith(
+      1,
+      schema,
+      expect.anything(),
+      expect.anything(),
+      Interpreter.defaultInterpreterOptions
+    );
+  });
+  test('should always try to interpret if/then/else', () => {
+    const schema = {};
+    const interpreter = new Interpreter();
+    interpreter.interpret(schema);
+    expect(InterpretIfThenElse).toHaveBeenNthCalledWith(
       1,
       schema,
       expect.anything(),
