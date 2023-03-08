@@ -4,7 +4,7 @@ exports[`Should be able to render auto-implemented properties in CSharp and shou
 Array [
   "public class Root
 {
-  public dynamic[]? Emails { get; set; }
+  public string[]? Emails { get; set; }
   public string? StringProp { get; set; }
   public double? NumberProp { get; set; }
 }",

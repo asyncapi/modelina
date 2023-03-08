@@ -103,7 +103,7 @@ type Address struct {
   Marriage bool
   Members interface{}
   TupleType []interface{}
-  ArrayType []interface{}
+  ArrayType []string
   AdditionalProperties map[string]interface{}
 }"
 `;

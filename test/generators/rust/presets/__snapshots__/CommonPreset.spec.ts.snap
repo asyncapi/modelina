@@ -197,13 +197,13 @@ exports[`RUST_COMMON_PRESET Enum should render reserved union for dict array 1`]
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Class {
     #[serde(rename=\\"students\\")]
-    pub students: Vec<crate::Union>,
+    pub students: Vec<crate::Student>,
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
     pub additional_properties: Option<std::collections::HashMap<String, serde_json::Value>>,
 }
 
 impl Class {
-    pub fn new(students: Vec<crate::Union>, additional_properties: Option<std::collections::HashMap<String, serde_json::Value>>) -> Class {
+    pub fn new(students: Vec<crate::Student>, additional_properties: Option<std::collections::HashMap<String, serde_json::Value>>) -> Class {
         Class {
             students,
             additional_properties,
@@ -214,20 +214,6 @@ impl Class {
 `;
 
 exports[`RUST_COMMON_PRESET Enum should render reserved union for dict array 2`] = `
-"// Union represents a union of types: Student, serde_json::Value
-#[derive(Clone, Debug, Deserialize, Serialize)]
-#[serde(untagged)]
-pub enum Union {
-    #[serde(rename=\\"Student\\")]
-    Student(crate::Student),
-    #[serde(rename=\\"Undefined\\")]
-    Undefined(serde_json::Value),
-}
-
-"
-`;
-
-exports[`RUST_COMMON_PRESET Enum should render reserved union for dict array 3`] = `
 "// Student represents a Student model.
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Student {
