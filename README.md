@@ -11,6 +11,8 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-43-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
+Your one-stop tool for generating accurate and well-tested models for representing the message payloads. Use it as a tool in your development workflow, or a library in a larger integrations, entirely in your control.
+
 ---
 
 <!-- toc is generated with GitHub Actions do not remove toc markers -->
@@ -288,6 +290,8 @@ Breaking changes are allowed and expected at a frequent rate, of course where it
 We of course will do our best to uphold this, but mistakes can happen, and if you notice any breaking changes please let us know!
 
 Because of the number of the limited number of champions, only the most recent major version will be maintained.
+
+Major versions are currently happening at a 3-month cadence (in a similar fashion as the AsyncAPI specification), this will happen in January, April, June, and September. 
 
 ## Development
 We try to make it as easy for you as possible to set up your development environment to contribute to Modelina. You can find the development documentation [here](./docs/development.md).
