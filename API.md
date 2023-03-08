@@ -313,6 +313,7 @@ Common internal representation for a model.
         * [.addExtendedModel(extendedModel)](#CommonModel+addExtendedModel)
     * _static_
         * [.toCommonModel(object)](#CommonModel.toCommonModel) ⇒
+        * [.idIncludesAnonymousSchema(commonModel)](#CommonModel.idIncludesAnonymousSchema)
         * [.mergeProperties(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergeProperties)
         * [.mergeAdditionalProperties(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergeAdditionalProperties)
         * [.mergeAdditionalItems(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergeAdditionalItems)
@@ -520,6 +521,17 @@ Takes a deep copy of the input object and converts it to an instance of CommonMo
 | Param | Description |
 | --- | --- |
 | object | to transform |
+
+<a name="CommonModel.idIncludesAnonymousSchema"></a>
+
+### CommonModel.idIncludesAnonymousSchema(commonModel)
+Returns true if the $id of a CommonModel includes anonymous_schema
+
+**Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
+
+| Param |
+| --- |
+| commonModel | 
 
 <a name="CommonModel.mergeProperties"></a>
 

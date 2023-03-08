@@ -99,6 +99,7 @@ exports[`TypeScriptGenerator AsyncAPI with polymorphism should render enum with 
 
 exports[`TypeScriptGenerator CloudEvent handle allOf with const in CloudEvent type 1`] = `
 Array [
+  "type Pet = Dog | Cat;",
   "class Dog {
   private _id: string;
   private _source: string;
