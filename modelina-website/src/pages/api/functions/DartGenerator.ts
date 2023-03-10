@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { DartGenerator, DartOptions } from '../../../../../';
+import { DartGenerator, DartOptions } from '../../../../..';
 import { convertModelsToProps } from './Helpers';
 import { ModelinaDartOptions, ModelProps } from '../../../types';
 
