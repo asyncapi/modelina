@@ -64,23 +64,13 @@ export default function Index() {
           </div>
         </div>
 
-        <div className="relative mt-12 lg:mt-20 lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center">
-          <div className="relative lg:mt-8">
-            <CodeBlock
-              language="bash"
-              showLineNumbers={false}
-              className="mt-8"
-              textSizeClassName="text-sm"
-            >
-              npm install @asyncapi/modelina
-            </CodeBlock>
-          </div>
-          <div className="relative mb-8 lg:mt-8">
+        <div className="relative mt-12 lg:mt-20 lg:grid lg:grid-cols-4 lg:gap-8 lg:items-center">
+          <div className="relative mb-8 lg:mt-8 lg:col-start-2 lg:col-span-2">
             <Heading level="h4" typeStyle="heading-md-semibold">
               Installation
             </Heading>
             <Paragraph className="mt-3 lg:pr-4">
-              Install and get started with Modelina right out the gate.
+              Install Modelina as a library to take full control.
             </Paragraph>
             <div className="mt-8">
               <CodeBlock
