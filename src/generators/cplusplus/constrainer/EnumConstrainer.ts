@@ -65,7 +65,7 @@ export function defaultEnumKeyConstraints(
         constrainedEnumModel,
         enumModel,
         constrainedEnumKey,
-        constraints.NAMING_FORMATTER!
+        constraints.NAMING_FORMATTER
       );
     }
     constrainedEnumKey = constraints.NAMING_FORMATTER(constrainedEnumKey);
@@ -78,7 +78,7 @@ export function defaultEnumKeyConstraints(
  */
 export function defaultEnumValueConstraints(): EnumValueConstraint {
   return ({ enumValue }) => {
-    let constrainedEnumValue = enumValue;
+    let constrainedEnumValue;
     switch (typeof enumValue) {
       case 'string':
       case 'boolean':

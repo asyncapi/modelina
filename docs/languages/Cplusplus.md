@@ -1,6 +1,8 @@
 # C++
 There are special use-cases that each language supports; this document pertains to **C++ models**.
 
+We use v17 of C++ as our baseline.
+
 <!-- toc is generated with GitHub Actions do not remove toc markers -->
 
 <!-- toc -->
