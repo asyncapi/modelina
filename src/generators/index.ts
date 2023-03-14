@@ -9,5 +9,4 @@ export * from './python';
 export * from './go';
 export * from './rust';
 export * from './kotlin';
-export * from './cplusplus';
 export * from './AbstractFileGenerator';

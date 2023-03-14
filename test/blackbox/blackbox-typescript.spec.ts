@@ -59,7 +59,7 @@ describe.each(filesToTest)(
           const generatedModels = await generator.generateToFiles(
             models,
             renderOutputPath,
-            { exportType: 'default' }
+            {}
           );
           expect(generatedModels).not.toHaveLength(0);
 
