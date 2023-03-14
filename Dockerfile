@@ -5,7 +5,7 @@ RUN apt-get update -yq \
     && apt-get install -yq curl
 
 # Install C++ compiler
-RUN apt-get install build-essential
+RUN apt-get install -yq build-essential
 
 # Install nodejs
 RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
