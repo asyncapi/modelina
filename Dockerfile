@@ -4,6 +4,9 @@ FROM openjdk:16.0.1-jdk-slim-buster
 RUN apt-get update -yq \
     && apt-get install -yq curl
 
+# Install C++ compiler
+RUN apt-get install build-essential
+
 # Install nodejs
 RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
     && apt-get install -yq nodejs
