@@ -4,6 +4,6 @@ exports[`Should be able to render TypeScript Models and should log expected outp
 Array [
   "struct root {
     std::string email;
-}",
+};",
 ]
 `;
