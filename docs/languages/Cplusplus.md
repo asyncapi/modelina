@@ -5,13 +5,10 @@ There are special use-cases that each language supports; this document pertains 
 
 <!-- toc -->
 
-- [Rendering complete models to a specific module system](#rendering-complete-models-to-a-specific-module-system)
 - [Generate serializer and deserializer functionality](#generate-serializer-and-deserializer-functionality)
   * [To and from JSON](#to-and-from-json)
-    + [Generate marshalling and unmarshalling functions](#generate-marshalling-and-unmarshalling-functions)
   * [To and from XML](#to-and-from-xml)
   * [To and from binary](#to-and-from-binary)
-- [Generate example data function](#generate-example-data-function)
 
 <!-- tocstop -->
 

@@ -7,6 +7,7 @@ This document is to help you keep an overview of of the differences between Mode
 <!-- toc -->
 
 - [jsonschema2pojo (v1)](#jsonschema2pojo-v1)
+- [QuickType](#quicktype)
 
 <!-- tocstop -->
 

@@ -34,6 +34,7 @@ For more specific integration options, please check out the [integration documen
 - [Generate Rust models](#generate-rust-models)
 - [Generate Python models](#generate-python-models)
 - [Generate Kotlin models](#generate-kotlin-models)
+- [Generate C++ models](#generate-c-models)
 
 <!-- tocstop -->
 
