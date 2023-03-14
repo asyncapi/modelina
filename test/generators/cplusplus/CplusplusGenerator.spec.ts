@@ -96,7 +96,12 @@ describe('CplusplusGenerator', () => {
         },
         required: ['street_name', 'city', 'state', 'house_number', 'array_type']
       };
-      const expectedDependencies: string[] = [];
+      const expectedDependencies: string[] = [
+        '#include <string>',
+        '#include <variant>',
+        '#include <vector>',
+        '#include <map>'
+      ];
       const models = await generator.generate(doc);
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot();
@@ -123,7 +128,10 @@ describe('CplusplusGenerator', () => {
           }
         ]
       });
-      const expectedDependencies: string[] = [];
+      const expectedDependencies: string[] = [
+        '#include <string>',
+        '#include <map>'
+      ];
 
       const models = await generator.generate(doc);
       expect(models).toHaveLength(1);
