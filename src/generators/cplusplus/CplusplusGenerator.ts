@@ -47,17 +47,19 @@ export class CplusplusGenerator extends AbstractGenerator<
     constraints: CplusplusDefaultConstraints
   };
 
+  static defaultCompleteModelOptions: CplusplusRenderCompleteModelOptions = {
+    namespace: 'Asyncapi.Models'
+  };
+
   constructor(options?: DeepPartial<CplusplusOptions>) {
-    const realizedOptions = CplusplusGenerator.getCplusplusOptions(options);
+    const realizedOptions = CplusplusGenerator.getOptions(options);
     super('Cplusplus', realizedOptions);
   }
 
   /**
    * Returns the Cplusplus options by merging custom options with default ones.
    */
-  static getCplusplusOptions(
-    options?: DeepPartial<CplusplusOptions>
-  ): CplusplusOptions {
+  static getOptions(options?: DeepPartial<CplusplusOptions>): CplusplusOptions {
     const optionsToUse = mergePartialAndDefault(
       CplusplusGenerator.defaultOptions,
       options
@@ -96,7 +98,7 @@ export class CplusplusGenerator extends AbstractGenerator<
     model: MetaModel,
     options: DeepPartial<CplusplusOptions>
   ): ConstrainedMetaModel {
-    const optionsToUse = CplusplusGenerator.getCplusplusOptions({
+    const optionsToUse = CplusplusGenerator.getOptions({
       ...this.options,
       ...options
     });
@@ -121,12 +123,17 @@ export class CplusplusGenerator extends AbstractGenerator<
    */
   render(
     model: ConstrainedMetaModel,
-    inputModel: InputMetaModel
+    inputModel: InputMetaModel,
+    options?: DeepPartial<CplusplusOptions>
   ): Promise<RenderOutput> {
+    const optionsToUse = CplusplusGenerator.getOptions({
+      ...this.options,
+      ...options
+    });
     if (model instanceof ConstrainedObjectModel) {
-      return this.renderClass(model, inputModel);
+      return this.renderClass(model, inputModel, optionsToUse);
     } else if (model instanceof ConstrainedEnumModel) {
-      return this.renderEnum(model, inputModel);
+      return this.renderEnum(model, inputModel, optionsToUse);
     }
     Logger.warn(
       `C++ generator, cannot generate this type of model, ${model.name}`
@@ -152,16 +159,36 @@ export class CplusplusGenerator extends AbstractGenerator<
   async renderCompleteModel(
     model: ConstrainedMetaModel,
     inputModel: InputMetaModel,
-    options: CplusplusRenderCompleteModelOptions
+    completeModelOptions: Partial<CplusplusRenderCompleteModelOptions>,
+    options: DeepPartial<CplusplusOptions>
   ): Promise<RenderOutput> {
-    if (isReservedCplusplusKeyword(options.namespace)) {
+    const completeModelOptionsToUse = mergePartialAndDefault(
+      CplusplusGenerator.defaultCompleteModelOptions,
+      completeModelOptions
+    ) as CplusplusRenderCompleteModelOptions;
+    if (isReservedCplusplusKeyword(completeModelOptionsToUse.namespace)) {
       throw new Error(
-        `You cannot use reserved C++ keyword (${options.namespace}) as namespace, please use another.`
+        `You cannot use reserved C++ keyword (${completeModelOptionsToUse.namespace}) as namespace, please use another.`
       );
     }
+    const optionsToUse = CplusplusGenerator.getOptions({
+      ...this.options,
+      ...options
+    });
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
 
-    const outputModel = await this.render(model, inputModel);
-    const outputContent = `namespace ${options.namespace}{
+    const outputModel = await this.render(model, inputModel, {
+      ...optionsToUse,
+      dependencyManager: dependencyManagerToUse
+    });
+
+    const forwardReference = model.getNearestDependencies().map((model) => {
+      //Forward reference
+      return `struct ${model.name};`;
+    });
+    const outputContent = `${outputModel.dependencies.join('\n')}
+namespace ${completeModelOptionsToUse.namespace}{
+  ${forwardReference.join('\n')}
   ${outputModel.result}
 }`;
     return RenderOutput.toRenderOutput({
@@ -176,7 +203,7 @@ export class CplusplusGenerator extends AbstractGenerator<
     inputModel: InputMetaModel,
     options?: Partial<CplusplusOptions>
   ): Promise<RenderOutput> {
-    const optionsToUse = CplusplusGenerator.getCplusplusOptions({
+    const optionsToUse = CplusplusGenerator.getOptions({
       ...this.options,
       ...options
     });
@@ -203,7 +230,7 @@ export class CplusplusGenerator extends AbstractGenerator<
     inputModel: InputMetaModel,
     options?: Partial<CplusplusOptions>
   ): Promise<RenderOutput> {
-    const optionsToUse = CplusplusGenerator.getCplusplusOptions({
+    const optionsToUse = CplusplusGenerator.getOptions({
       ...this.options,
       ...options
     });

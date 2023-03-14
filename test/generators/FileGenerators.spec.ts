@@ -11,7 +11,8 @@ import {
   CSharpFileGenerator,
   RustFileGenerator,
   PythonFileGenerator,
-  KotlinFileGenerator
+  KotlinFileGenerator,
+  CplusplusFileGenerator
 } from '../../src';
 import * as path from 'path';
 
@@ -60,6 +61,11 @@ const generatorsToTest = [
     generator: new KotlinFileGenerator(),
     generatorOptions: { packageName: 'SomePackage' },
     fileExtension: 'kt'
+  },
+  {
+    generator: new CplusplusFileGenerator(),
+    generatorOptions: { namespace: 'SomeNamespace' },
+    fileExtension: 'cpp'
   }
 ];
 

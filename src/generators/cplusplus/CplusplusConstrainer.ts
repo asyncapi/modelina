@@ -14,10 +14,10 @@ export const CplusplusDefaultTypeMapping: TypeMapping<
 > = {
   Object({ constrainedModel }): string {
     //Returning name here because all object models have been split out
-    return constrainedModel.name;
+    return `${constrainedModel.name}*`;
   },
   Reference({ constrainedModel }): string {
-    return constrainedModel.name;
+    return `${constrainedModel.name}*`;
   },
   Any(): string {
     return 'void*';
@@ -48,7 +48,7 @@ export const CplusplusDefaultTypeMapping: TypeMapping<
   },
   Enum({ constrainedModel }): string {
     //Returning name here because all enum models have been split out
-    return constrainedModel.name;
+    return `${constrainedModel.name}*`;
   },
   Union({ constrainedModel, dependencyManager }): string {
     const types = constrainedModel.union.map((model) => {

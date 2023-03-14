@@ -38,11 +38,11 @@ describe.each(filesToTest)(
         const generatedModels = await generator.generateToFiles(
           models,
           renderOutputPath,
-          { namespace: 'modelina' }
+          { namespace: 'TestNamespace' }
         );
         expect(generatedModels).not.toHaveLength(0);
 
-        const transpileCommand = `tsc --downlevelIteration -t es5 --baseUrl ${renderOutputPath}`;
+        const transpileCommand = `cd ${renderOutputPath} && g++ -std=c++17 *.cpp -c`;
         await execCommand(transpileCommand);
       });
     });

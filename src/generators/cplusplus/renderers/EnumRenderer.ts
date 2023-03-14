@@ -1,7 +1,8 @@
 import { CplusplusRenderer } from '../CplusplusRenderer';
 import {
   ConstrainedEnumModel,
-  ConstrainedEnumValueModel
+  ConstrainedEnumValueModel,
+  ConstrainedIntegerModel
 } from '../../../models';
 import { EnumPresetType } from '../CplusplusPreset';
 import { CplusplusOptions } from '../CplusplusGenerator';
@@ -19,7 +20,7 @@ export class EnumRenderer extends CplusplusRenderer<ConstrainedEnumModel> {
     ];
     return `enum class ${this.model.name} {
 ${this.indent(this.renderBlock(content, 2))}
-}`;
+};`;
   }
 
   async renderItems(): Promise<string> {
@@ -32,7 +33,7 @@ ${this.indent(this.renderBlock(content, 2))}
     }
 
     const content = items.join(', ');
-    return `${content};`;
+    return `${content}`;
   }
 
   runItemPreset(item: ConstrainedEnumValueModel): Promise<string> {
@@ -45,6 +46,9 @@ export const CPLUSPLUS_DEFAULT_ENUM_PRESET: EnumPresetType<CplusplusOptions> = {
     return renderer.defaultSelf();
   },
   item({ item }) {
-    return `${item.key} = ${item.value}`;
+    if (item.value instanceof ConstrainedIntegerModel) {
+      return `${item.key} = ${item.value}`;
+    }
+    return `${item.key}`;
   }
 };
