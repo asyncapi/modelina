@@ -15,13 +15,20 @@ import {
   ConstrainedUnionModel,
   TypeScriptGenerator
 } from '../../../src';
+import { TypeScriptDependencyManager } from '../../../src/generators/typescript/TypeScriptDependencyManager';
+const defaultDependencyManager = new TypeScriptDependencyManager(
+  TypeScriptGenerator.defaultOptions,
+  []
+);
+
 describe('TypeScriptConstrainer', () => {
   describe('ObjectModel', () => {
     test('should render the constrained name as type', () => {
       const model = new ConstrainedObjectModel('test', undefined, '', {});
       const type = TypeScriptDefaultTypeMapping.Object({
         constrainedModel: model,
-        options: TypeScriptGenerator.defaultOptions
+        options: TypeScriptGenerator.defaultOptions,
+        dependencyManager: defaultDependencyManager
       });
       expect(type).toEqual(model.name);
     });
@@ -37,7 +44,8 @@ describe('TypeScriptConstrainer', () => {
       );
       const type = TypeScriptDefaultTypeMapping.Reference({
         constrainedModel: model,
-        options: TypeScriptGenerator.defaultOptions
+        options: TypeScriptGenerator.defaultOptions,
+        dependencyManager: defaultDependencyManager
       });
       expect(type).toEqual(model.name);
     });
@@ -47,7 +55,8 @@ describe('TypeScriptConstrainer', () => {
       const model = new ConstrainedAnyModel('test', undefined, '');
       const type = TypeScriptDefaultTypeMapping.Any({
         constrainedModel: model,
-        options: TypeScriptGenerator.defaultOptions
+        options: TypeScriptGenerator.defaultOptions,
+        dependencyManager: defaultDependencyManager
       });
       expect(type).toEqual('any');
     });
@@ -57,7 +66,8 @@ describe('TypeScriptConstrainer', () => {
       const model = new ConstrainedFloatModel('test', undefined, '');
       const type = TypeScriptDefaultTypeMapping.Float({
         constrainedModel: model,
-        options: TypeScriptGenerator.defaultOptions
+        options: TypeScriptGenerator.defaultOptions,
+        dependencyManager: defaultDependencyManager
       });
       expect(type).toEqual('number');
     });
@@ -67,7 +77,8 @@ describe('TypeScriptConstrainer', () => {
       const model = new ConstrainedIntegerModel('test', undefined, '');
       const type = TypeScriptDefaultTypeMapping.Integer({
         constrainedModel: model,
-        options: TypeScriptGenerator.defaultOptions
+        options: TypeScriptGenerator.defaultOptions,
+        dependencyManager: defaultDependencyManager
       });
       expect(type).toEqual('number');
     });
@@ -77,7 +88,8 @@ describe('TypeScriptConstrainer', () => {
       const model = new ConstrainedStringModel('test', undefined, '');
       const type = TypeScriptDefaultTypeMapping.String({
         constrainedModel: model,
-        options: TypeScriptGenerator.defaultOptions
+        options: TypeScriptGenerator.defaultOptions,
+        dependencyManager: defaultDependencyManager
       });
       expect(type).toEqual('string');
     });
@@ -87,7 +99,8 @@ describe('TypeScriptConstrainer', () => {
       const model = new ConstrainedBooleanModel('test', undefined, '');
       const type = TypeScriptDefaultTypeMapping.Boolean({
         constrainedModel: model,
-        options: TypeScriptGenerator.defaultOptions
+        options: TypeScriptGenerator.defaultOptions,
+        dependencyManager: defaultDependencyManager
       });
       expect(type).toEqual('boolean');
     });
@@ -106,7 +119,8 @@ describe('TypeScriptConstrainer', () => {
       ]);
       const type = TypeScriptDefaultTypeMapping.Tuple({
         constrainedModel: model,
-        options: TypeScriptGenerator.defaultOptions
+        options: TypeScriptGenerator.defaultOptions,
+        dependencyManager: defaultDependencyManager
       });
       expect(type).toEqual('[String]');
     });
@@ -124,7 +138,8 @@ describe('TypeScriptConstrainer', () => {
       ]);
       const type = TypeScriptDefaultTypeMapping.Tuple({
         constrainedModel: model,
-        options: TypeScriptGenerator.defaultOptions
+        options: TypeScriptGenerator.defaultOptions,
+        dependencyManager: defaultDependencyManager
       });
       expect(type).toEqual('[String, String]');
     });
@@ -145,7 +160,8 @@ describe('TypeScriptConstrainer', () => {
       );
       const type = TypeScriptDefaultTypeMapping.Array({
         constrainedModel: model,
-        options: TypeScriptGenerator.defaultOptions
+        options: TypeScriptGenerator.defaultOptions,
+        dependencyManager: defaultDependencyManager
       });
       expect(type).toEqual('String[]');
     });
@@ -170,7 +186,8 @@ describe('TypeScriptConstrainer', () => {
       );
       const type = TypeScriptDefaultTypeMapping.Array({
         constrainedModel: model,
-        options: TypeScriptGenerator.defaultOptions
+        options: TypeScriptGenerator.defaultOptions,
+        dependencyManager: defaultDependencyManager
       });
       expect(type).toEqual('(String | any)[]');
     });
@@ -181,7 +198,8 @@ describe('TypeScriptConstrainer', () => {
       const model = new ConstrainedEnumModel('test', undefined, '', []);
       const type = TypeScriptDefaultTypeMapping.Enum({
         constrainedModel: model,
-        options: TypeScriptGenerator.defaultOptions
+        options: TypeScriptGenerator.defaultOptions,
+        dependencyManager: defaultDependencyManager
       });
       expect(type).toEqual(model.name);
     });
@@ -199,7 +217,8 @@ describe('TypeScriptConstrainer', () => {
       ]);
       const type = TypeScriptDefaultTypeMapping.Union({
         constrainedModel: model,
-        options: TypeScriptGenerator.defaultOptions
+        options: TypeScriptGenerator.defaultOptions,
+        dependencyManager: defaultDependencyManager
       });
       expect(type).toEqual('String');
     });
@@ -220,7 +239,8 @@ describe('TypeScriptConstrainer', () => {
       ]);
       const type = TypeScriptDefaultTypeMapping.Union({
         constrainedModel: model,
-        options: TypeScriptGenerator.defaultOptions
+        options: TypeScriptGenerator.defaultOptions,
+        dependencyManager: defaultDependencyManager
       });
       expect(type).toEqual('String | String');
     });
@@ -243,7 +263,8 @@ describe('TypeScriptConstrainer', () => {
       );
       const type = TypeScriptDefaultTypeMapping.Dictionary({
         constrainedModel: model,
-        options: TypeScriptGenerator.defaultOptions
+        options: TypeScriptGenerator.defaultOptions,
+        dependencyManager: defaultDependencyManager
       });
       expect(type).toEqual('Map<String, String>');
     });
@@ -266,7 +287,8 @@ describe('TypeScriptConstrainer', () => {
         options: {
           ...TypeScriptGenerator.defaultOptions,
           mapType: 'indexedObject'
-        }
+        },
+        dependencyManager: defaultDependencyManager
       });
       expect(type).toEqual('{ [name: String]: String }');
     });
@@ -286,7 +308,8 @@ describe('TypeScriptConstrainer', () => {
       );
       const type = TypeScriptDefaultTypeMapping.Dictionary({
         constrainedModel: model,
-        options: { ...TypeScriptGenerator.defaultOptions, mapType: 'record' }
+        options: { ...TypeScriptGenerator.defaultOptions, mapType: 'record' },
+        dependencyManager: defaultDependencyManager
       });
       expect(type).toEqual('Record<String, String>');
     });
@@ -311,7 +334,8 @@ describe('TypeScriptConstrainer', () => {
       );
       const type = TypeScriptDefaultTypeMapping.Dictionary({
         constrainedModel: model,
-        options: TypeScriptGenerator.defaultOptions
+        options: TypeScriptGenerator.defaultOptions,
+        dependencyManager: defaultDependencyManager
       });
       expect(type).toEqual('Map<any, String>');
     });
