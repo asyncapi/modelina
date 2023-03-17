@@ -4,7 +4,9 @@ import {
   Draft4Schema,
   SwaggerV2Schema,
   AsyncapiV2Schema,
-  Draft7Schema
+  Draft7Schema,
+  MergingOptions,
+  defaultMergingOptions
 } from '../models';
 import { interpretName } from './Utils';
 import interpretProperties from './InterpretProperties';
@@ -149,13 +151,19 @@ export class Interpreter {
         schema.then,
         model,
         schema,
-        interpreterOptions
+        interpreterOptions,
+        {
+          constrictModels: false
+        }
       );
       this.interpretAndCombineSchema(
         schema.else,
         model,
         schema,
-        interpreterOptions
+        interpreterOptions,
+        {
+          constrictModels: false
+        }
       );
     }
 
@@ -177,14 +185,21 @@ export class Interpreter {
     schema: InterpreterSchemaType | undefined,
     currentModel: CommonModel,
     rootSchema: any,
-    interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions
+    interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions,
+    mergingOptions: MergingOptions = defaultMergingOptions
   ): void {
     if (typeof schema !== 'object') {
       return;
     }
     const model = this.interpret(schema, interpreterOptions);
     if (model !== undefined) {
-      CommonModel.mergeCommonModels(currentModel, model, rootSchema);
+      CommonModel.mergeCommonModels(
+        currentModel,
+        model,
+        rootSchema,
+        new Map(),
+        mergingOptions
+      );
     }
   }
 }

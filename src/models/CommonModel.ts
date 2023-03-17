@@ -1,5 +1,12 @@
 import { Logger } from '../utils';
 
+export interface MergingOptions {
+  constrictModels: boolean;
+}
+export const defaultMergingOptions: MergingOptions = {
+  constrictModels: true
+};
+
 /**
  * Common internal representation for a model.
  */
@@ -453,7 +460,8 @@ export class CommonModel {
     mergeTo: CommonModel,
     mergeFrom: CommonModel,
     originalInput: any,
-    alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()
+    alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map(),
+    options: MergingOptions = defaultMergingOptions
   ) {
     if (!mergeTo.properties) {
       mergeTo.properties = mergeFrom.properties;
@@ -490,7 +498,8 @@ export class CommonModel {
             : mergeToProperty,
           propValue,
           originalInput,
-          alreadyIteratedModels
+          alreadyIteratedModels,
+          options
         );
       }
     }
@@ -507,7 +516,8 @@ export class CommonModel {
     mergeTo: CommonModel,
     mergeFrom: CommonModel,
     originalInput: any,
-    alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()
+    alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map(),
+    options: MergingOptions = defaultMergingOptions
   ) {
     const mergeToAdditionalProperties = mergeTo.additionalProperties;
     const mergeFromAdditionalProperties = mergeFrom.additionalProperties;
@@ -527,7 +537,8 @@ export class CommonModel {
           mergeToAdditionalProperties,
           mergeFromAdditionalProperties,
           originalInput,
-          alreadyIteratedModels
+          alreadyIteratedModels,
+          options
         );
       }
     }
@@ -545,7 +556,8 @@ export class CommonModel {
     mergeTo: CommonModel,
     mergeFrom: CommonModel,
     originalInput: any,
-    alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()
+    alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map(),
+    options: MergingOptions = defaultMergingOptions
   ) {
     const mergeToAdditionalItems = mergeTo.additionalItems;
     const mergeFromAdditionalItems = mergeFrom.additionalItems;
@@ -565,7 +577,8 @@ export class CommonModel {
           mergeToAdditionalItems,
           mergeFromAdditionalItems,
           originalInput,
-          alreadyIteratedModels
+          alreadyIteratedModels,
+          options
         );
       }
     }
@@ -584,7 +597,8 @@ export class CommonModel {
     mergeTo: CommonModel,
     mergeFrom: CommonModel,
     originalInput: any,
-    alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()
+    alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map(),
+    options: MergingOptions = defaultMergingOptions
   ) {
     if (mergeFrom.items === undefined) {
       return;
@@ -604,7 +618,8 @@ export class CommonModel {
         mergeToItems,
         mergeFrom.items,
         originalInput,
-        alreadyIteratedModels
+        alreadyIteratedModels,
+        options
       );
     }
 
@@ -616,7 +631,8 @@ export class CommonModel {
             mergeToItems[Number(index)],
             mergeFromTupleModel,
             originalInput,
-            alreadyIteratedModels
+            alreadyIteratedModels,
+            options
           );
       }
     }
@@ -640,7 +656,8 @@ export class CommonModel {
     mergeTo: CommonModel,
     mergeFrom: CommonModel,
     originalInput: any,
-    alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()
+    alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map(),
+    options: MergingOptions = defaultMergingOptions
   ) {
     const mergeToPatternProperties = mergeTo.patternProperties;
     const mergeFromPatternProperties = mergeFrom.patternProperties;
@@ -665,7 +682,8 @@ export class CommonModel {
                 mergeToPatternProperties[String(pattern)],
                 patternModel,
                 originalInput,
-                alreadyIteratedModels
+                alreadyIteratedModels,
+                options
               );
           } else {
             mergeToPatternProperties[String(pattern)] = patternModel;
@@ -704,7 +722,6 @@ export class CommonModel {
       }
     }
   }
-
   /**
    * Only merge if left side is undefined and right side is sat OR both sides are defined
    *
@@ -717,7 +734,8 @@ export class CommonModel {
     mergeTo: CommonModel | undefined,
     mergeFrom: CommonModel,
     originalInput: any,
-    alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()
+    alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map(),
+    options: MergingOptions = defaultMergingOptions
   ): CommonModel {
     if (mergeTo === undefined) {
       return mergeFrom;
@@ -739,38 +757,43 @@ export class CommonModel {
       mergeTo,
       mergeFrom,
       originalInput,
-      alreadyIteratedModels
+      alreadyIteratedModels,
+      options
     );
     CommonModel.mergePatternProperties(
       mergeTo,
       mergeFrom,
       originalInput,
-      alreadyIteratedModels
+      alreadyIteratedModels,
+      options
     );
     CommonModel.mergeAdditionalItems(
       mergeTo,
       mergeFrom,
       originalInput,
-      alreadyIteratedModels
+      alreadyIteratedModels,
+      options
     );
     CommonModel.mergeProperties(
       mergeTo,
       mergeFrom,
       originalInput,
-      alreadyIteratedModels
+      alreadyIteratedModels,
+      options
     );
     CommonModel.mergeItems(
       mergeTo,
       mergeFrom,
       originalInput,
-      alreadyIteratedModels
+      alreadyIteratedModels,
+      options
     );
     CommonModel.mergeTypes(mergeTo, mergeFrom);
 
     if (mergeFrom.enum !== undefined) {
       mergeTo.enum = [...new Set([...(mergeTo.enum || []), ...mergeFrom.enum])];
     }
-    if (mergeFrom.required !== undefined) {
+    if (mergeFrom.required !== undefined && options.constrictModels === true) {
       mergeTo.required = [
         ...new Set([...(mergeTo.required || []), ...mergeFrom.required])
       ];

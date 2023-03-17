@@ -337,6 +337,41 @@ Array [
 ]
 `;
 
+exports[`TypeScriptGenerator if/then/else handle if/then/else required properties 1`] = `
+Array [
+  "class Root {
+  private _condition?: string;
+  private _test?: Test;
+
+  constructor(input: {
+    condition?: string,
+    test?: Test,
+  }) {
+    this._condition = input.condition;
+    this._test = input.test;
+  }
+
+  get condition(): string | undefined { return this._condition; }
+  set condition(condition: string | undefined) { this._condition = condition; }
+
+  get test(): Test | undefined { return this._test; }
+  set test(test: Test | undefined) { this._test = test; }
+}",
+  "class Test {
+  private _test2?: any;
+
+  constructor(input: {
+    test2?: any,
+  }) {
+    this._test2 = input.test2;
+  }
+
+  get test2(): any | undefined { return this._test2; }
+  set test2(test2: any | undefined) { this._test2 = test2; }
+}",
+]
+`;
+
 exports[`TypeScriptGenerator should not render \`class\` with reserved keyword 1`] = `
 "class Address {
   private _reservedReservedEnum?: string;

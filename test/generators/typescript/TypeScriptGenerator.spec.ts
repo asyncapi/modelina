@@ -6,6 +6,41 @@ describe('TypeScriptGenerator', () => {
     generator = new TypeScriptGenerator();
   });
 
+  describe('if/then/else', () => {
+    const asyncapiDoc = {
+      $schema: 'http://json-schema.org/draft-07/schema#',
+      properties: {
+        condition: {
+          type: 'string'
+        },
+        test: {
+          properties: {
+            test2: true
+          }
+        }
+      },
+      if: {
+        properties: {
+          condition: {
+            const: 'something'
+          }
+        }
+      },
+      then: {
+        properties: {
+          test: {
+            required: ['test2']
+          }
+        }
+      }
+    };
+
+    test.only('handle if/then/else required properties', async () => {
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+  });
+
   test('should not render `class` with reserved keyword', async () => {
     const doc = {
       $id: 'Address',
