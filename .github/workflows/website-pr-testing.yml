@@ -1,0 +1,108 @@
+name: Test website
+
+on:
+  pull_request_target:
+    paths:
+      - 'modelina-website'
+      - 'netlify.toml'
+    branches:
+      - master
+    types: [opened, reopened, synchronize, ready_for_review]
+
+jobs:
+  lighthouse-ci:
+    name: Lighthouse CI
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+          
+      - name: Modelina Core Install dependencies
+        id: first-installation-core
+        run: npm install --loglevel verbose
+        continue-on-error: true
+
+      - if: steps.first-installation-core.outputs.status == 'failure'
+        name: Modelina Core Clear NPM cache and install deps again
+        run: | 
+          npm cache clean --force
+          npm install --loglevel verbose
+
+      - name: Build Modelina
+        run: npm run build:prod
+
+      - name: Modelina Website Install dependencies
+        id: first-installation-website
+        run: cd modelina-website && npm install --loglevel verbose
+        continue-on-error: true
+
+      - if: steps.first-installation-website.outputs.status == 'failure'
+        name: Modelina Website Clear NPM cache and install deps again
+        run: | 
+          cd modelina-website && npm cache clean --force
+          cd modelina-website && npm install --loglevel verbose
+
+      - name: Lint Modelina website
+        run: cd modelina-website && npm run lint
+
+      - name: Build Modelina website
+        run: cd modelina-website && npm run build
+
+      - name: Await Netlify Preview
+        uses: jakepartusch/wait-for-netlify-action@v1
+        id: netlify
+        with:
+          site_name: modelina
+          max_timeout: 600
+
+      - name: Lighthouse Audit
+        id: lighthouse_audit
+        uses: treosh/lighthouse-ci-action@9.3.0
+        with:
+          urls: |
+            https://deploy-preview-$PR_NUMBER--modelina.netlify.app/
+          configPath: ./.github/workflows/lighthouserc.json
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number}}
+
+      - name: Lighthouse Score Report
+        id: lighthouse_score_report
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const result = ${{ steps.lighthouse_audit.outputs.manifest }}[0].summary
+            const links = ${{ steps.lighthouse_audit.outputs.links }}
+            const formatResult = (res) => Math.round((res * 100))
+            Object.keys(result).forEach(key => result[key] = formatResult(result[key]))
+            const score = res => res >= 90 ? '🟢' : res >= 50 ? '🟠' : '🔴'
+            const comment = [
+                `⚡️ [Lighthouse report](${Object.values(links)[0]}) for the changes in this PR:`,
+                '| Category | Score |',
+                '| --- | --- |',
+                `| ${score(result.performance)} Performance | ${result.performance} |`,
+                `| ${score(result.accessibility)} Accessibility | ${result.accessibility} |`,
+                `| ${score(result['best-practices'])} Best practices | ${result['best-practices']} |`,
+                `| ${score(result.seo)} SEO | ${result.seo} |`,
+                `| ${score(result.pwa)} PWA | ${result.pwa} |`,
+                ' ',
+                `*Lighthouse ran on [${Object.keys(links)[0]}](${Object.keys(links)[0]})*`
+            ].join('\n')
+             core.setOutput("comment", comment);
+      - name: LightHouse Statistic Comment
+        id: lighthouse_statistic_comment
+        uses: marocchino/sticky-pull-request-comment@v2.2.0
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ github.event.pull_request.number }}
+          header: lighthouse
+          message: ${{ steps.lighthouse_score_report.outputs.comment }}
