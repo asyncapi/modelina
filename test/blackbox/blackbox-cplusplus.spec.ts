@@ -42,7 +42,7 @@ describe.each(filesToTest)(
         );
         expect(generatedModels).not.toHaveLength(0);
 
-        const transpileCommand = `cd ${renderOutputPath} && g++ -std=c++17 *.cpp -c`;
+        const transpileCommand = `cd ${renderOutputPath} && g++ -std=c++17 *.hpp -c`;
         await execCommand(transpileCommand);
       });
     });

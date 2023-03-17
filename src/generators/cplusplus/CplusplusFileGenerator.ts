@@ -32,7 +32,7 @@ export class CplusplusFileGenerator
     for (const outputModel of generatedModels) {
       const filePath = path.resolve(
         outputDirectory,
-        `${outputModel.modelName}.cpp`
+        `${outputModel.modelName}.hpp`
       );
       await FileHelpers.writerToFileSystem(
         outputModel.result,

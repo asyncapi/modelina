@@ -65,7 +65,7 @@ const generatorsToTest = [
   {
     generator: new CplusplusFileGenerator(),
     generatorOptions: { namespace: 'SomeNamespace' },
-    fileExtension: 'cpp'
+    fileExtension: 'hpp'
   }
 ];
 
