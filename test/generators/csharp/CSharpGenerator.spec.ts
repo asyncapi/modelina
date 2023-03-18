@@ -3,7 +3,7 @@ import { CSharpGenerator } from '../../../src/generators';
 describe('CSharpGenerator', () => {
   let generator: CSharpGenerator;
   beforeEach(() => {
-    generator = new CSharpGenerator();
+    generator = new CSharpGenerator({ modelType: "class"});
   });
 
   test('should render `class` type', async () => {
