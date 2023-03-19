@@ -31,11 +31,12 @@ export interface CsharpRecordPreset<O> extends ClassPreset<RecordRenderer, O> {
 }
 
 export type ClassPresetType<O> = CsharpClassPreset<O>;
+export type RecordPresetType<O> = CsharpRecordPreset<O>;
 export type EnumPresetType<O> = EnumPreset<EnumRenderer, O>;
 
 export type CSharpPreset<O = any> = Preset<{
   class: CsharpClassPreset<O>;
-  record: CsharpRecordPreset<0>;
+  record: CsharpRecordPreset<O>;
   enum: EnumPreset<EnumRenderer, O>;
 }>;
 

@@ -5,7 +5,7 @@ import {
   ConstrainedObjectPropertyModel
 } from '../../../models';
 import { pascalCase } from 'change-case';
-import { CsharpClassPreset } from '../CSharpPreset';
+import { CsharpRecordPreset } from '../CSharpPreset';
 import { CSharpOptions } from '../CSharpGenerator';
 
 /**
@@ -95,7 +95,7 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 }
 
-export const CSHARP_DEFAULT_RECORD_PRESET: CsharpClassPreset<CSharpOptions> = {
+export const CSHARP_DEFAULT_RECORD_PRESET: CsharpRecordPreset<CSharpOptions> = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
