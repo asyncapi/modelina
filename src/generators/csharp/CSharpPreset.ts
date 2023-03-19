@@ -4,7 +4,8 @@ import {
   ClassPreset,
   PresetArgs,
   PropertyArgs,
-  ConstrainedObjectModel
+  ConstrainedObjectModel,
+  InterfacePreset
 } from '../../models';
 import { CSharpOptions } from './CSharpGenerator';
 import {
@@ -27,7 +28,13 @@ export interface CsharpClassPreset<O> extends ClassPreset<ClassRenderer, O> {
   ) => Promise<string> | string;
 }
 
-export interface CsharpRecordPreset<O> extends ClassPreset<RecordRenderer, O> {
+export interface CsharpRecordPreset<O> extends InterfacePreset<RecordRenderer, O> {
+  getter?: (
+      args: PresetArgs<RecordRenderer, O, ConstrainedObjectModel> & PropertyArgs
+  ) => Promise<string> | string;
+  setter?: (
+      args: PresetArgs<RecordRenderer, O, ConstrainedObjectModel> & PropertyArgs
+  ) => Promise<string> | string;
 }
 
 export type ClassPresetType<O> = CsharpClassPreset<O>;

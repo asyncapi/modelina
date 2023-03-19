@@ -17,8 +17,6 @@ export class RecordRenderer extends CSharpRenderer<ConstrainedObjectModel> {
   public async defaultSelf(): Promise<string> {
     const content = [
       await this.renderProperties(),
-      await this.runCtorPreset(),
-      await this.renderAccessors(),
       await this.runAdditionalContentPreset()
     ];
 
@@ -45,29 +43,6 @@ ${this.indent(this.renderBlock(content, 2))}
     }
 
     return this.renderBlock(content);
-  }
-
-  async renderAccessors(): Promise<string> {
-    const properties = this.model.properties || {};
-    const content: string[] = [];
-
-    for (const property of Object.values(properties)) {
-      content.push(await this.runAccessorPreset(property));
-    }
-
-    return this.renderBlock(content, 2);
-  }
-
-  runCtorPreset(): Promise<string> {
-    return this.runPreset('ctor');
-  }
-
-  runAccessorPreset(property: ConstrainedObjectPropertyModel): Promise<string> {
-    return this.runPreset('accessor', {
-      property,
-      options: this.options,
-      renderer: this
-    });
   }
 
   runPropertyPreset(property: ConstrainedObjectPropertyModel): Promise<string> {
@@ -99,17 +74,20 @@ export const CSHARP_DEFAULT_RECORD_PRESET: CsharpRecordPreset<CSharpOptions> = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
-  async property({renderer, property, options}) {
+  async property({ renderer, property }) {
     const getter = await renderer.runGetterPreset(property);
     const setter = await renderer.runSetterPreset(property);
     return `public ${property.required ? 'required ' : ''}${property.property.type} ${pascalCase(
         property.propertyName
     )} { ${getter} ${setter} }`;
   },
-  getter({ options, property }) {
+  getter() {
     return 'get;';
   },
-  setter({ options, property }) {
+  setter() {
     return 'init;';
+  }, 
+  additionalContent() {
+    return '';
   }
 };
