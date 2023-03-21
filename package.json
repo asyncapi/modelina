@@ -3,7 +3,7 @@
   "version": "1.2.1",
   "description": "Library for generating data models based on inputs such as AsyncAPI, OpenAPI, or JSON Schema documents",
   "license": "Apache-2.0",
-  "homepage": "https://github.com/asyncapi/modelina",
+  "homepage": "https://www.modelina.org",
   "bugs": {
     "url": "https://github.com/asyncapi/modelina/issues"
   },
@@ -46,6 +46,7 @@
     "typescript-json-schema": "^0.53.0"
   },
   "devDependencies": {
+    "@asyncapi/parserV1": "npm:@asyncapi/parser@^1.17.2",
     "@semantic-release/commit-analyzer": "^9.0.1",
     "@semantic-release/github": "^8.0.1",
     "@semantic-release/npm": "^8.0.0",
@@ -54,6 +55,7 @@
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "ajv": "^8.6.3",
+    "concurrently": "^7.5.0",
     "conventional-changelog-conventionalcommits": "^4.6.1",
     "cross-env": "^7.0.3",
     "eslint": "7.32.0",
@@ -69,9 +71,7 @@
     "semantic-release": "^19.0.3",
     "ts-jest": "^27.0.5",
     "ts-node": "^10.3.0",
-    "typescript": "^4.4.4",
-    "@asyncapi/parserV1": "npm:@asyncapi/parser@^1.17.2",
-    "concurrently": "^7.5.0"
+    "typescript": "^4.4.4"
   },
   "scripts": {
     "build": "tsc",
