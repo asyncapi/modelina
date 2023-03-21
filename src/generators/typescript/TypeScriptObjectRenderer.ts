@@ -25,6 +25,14 @@ export abstract class TypeScriptObjectRenderer extends TypeScriptRenderer<Constr
     super(options, generator, presets, model, inputModel, dependencyManager);
   }
 
+  getConstValue(property: ConstrainedObjectPropertyModel): string | undefined {
+    const constValue = property.getConstantValue();
+
+    if (constValue) {
+      return `${property.property.type}.${constValue.key}`;
+    }
+  }
+
   /**
    * Render all the properties for the model by calling the property preset per property.
    */
@@ -45,10 +53,10 @@ export abstract class TypeScriptObjectRenderer extends TypeScriptRenderer<Constr
       property.required === false ? '?' : ''
     }: ${property.property.type}`;
 
-    const constValue = property.getConstantValue();
+    const constValue = this.getConstValue(property);
 
     if (constValue) {
-      return `${renderedProperty} = ${property.property.type}.${constValue.key};`;
+      return `${renderedProperty} = ${constValue};`;
     }
 
     return `${renderedProperty};`;
