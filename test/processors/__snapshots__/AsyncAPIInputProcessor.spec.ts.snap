@@ -377,6 +377,10 @@ InputMetaModel {
         },
         "type": ObjectPropertyModel {
           "property": EnumModel {
+            "constValue": EnumValueModel {
+              "key": "Cat",
+              "value": "Cat",
+            },
             "name": "CatType",
             "originalInput": AsyncapiV2Schema {
               "allOf": Array [
@@ -835,6 +839,10 @@ InputMetaModel {
         },
         "type": ObjectPropertyModel {
           "property": EnumModel {
+            "constValue": EnumValueModel {
+              "key": "Dog",
+              "value": "Dog",
+            },
             "name": "DogType",
             "originalInput": AsyncapiV2Schema {
               "allOf": Array [
@@ -1445,6 +1453,10 @@ InputMetaModel {
             },
             "type": ObjectPropertyModel {
               "property": EnumModel {
+                "constValue": EnumValueModel {
+                  "key": "Dog",
+                  "value": "Dog",
+                },
                 "name": "DogType",
                 "originalInput": AsyncapiV2Schema {
                   "allOf": Array [
@@ -1903,6 +1915,10 @@ InputMetaModel {
             },
             "type": ObjectPropertyModel {
               "property": EnumModel {
+                "constValue": EnumValueModel {
+                  "key": "Cat",
+                  "value": "Cat",
+                },
                 "name": "CatType",
                 "originalInput": AsyncapiV2Schema {
                   "allOf": Array [
