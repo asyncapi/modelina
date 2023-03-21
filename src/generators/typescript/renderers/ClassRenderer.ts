@@ -59,7 +59,7 @@ export const TS_DEFAULT_CLASS_PRESET: ClassPresetType<TypeScriptOptions> = {
 
     for (const [propertyName, property] of Object.entries(properties)) {
       // if const value exists we should not render it in the constructor
-      if (renderer.getConstValue(property)) {
+      if (property.hasConstantValue()) {
         continue;
       }
       assignments.push(`this._${propertyName} = input.${propertyName};`);
@@ -80,9 +80,9 @@ ${renderer.indent(renderer.renderBlock(assignments))}
       property.required === false ? ' | undefined' : ''
     } { return this._${property.propertyName}; }`;
   },
-  setter({ renderer, property }): string {
+  setter({ property }): string {
     // if const value exists we should not render a setter
-    if (renderer.getConstValue(property)) {
+    if (property.hasConstantValue()) {
       return '';
     }
 

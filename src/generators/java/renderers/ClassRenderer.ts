@@ -80,6 +80,14 @@ ${this.indent(this.renderBlock(content, 2))}
   runSetterPreset(property: ConstrainedObjectPropertyModel): Promise<string> {
     return this.runPreset('setter', { property });
   }
+
+  getConstValue(property: ConstrainedObjectPropertyModel): string | undefined {
+    const constValue = property.getConstantValue();
+
+    if (constValue) {
+      return `private final ${property.property.type} ${property.propertyName} = ${property.property.type}.${constValue.key};`;
+    }
+  }
 }
 
 export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
@@ -90,7 +98,7 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
     const constValue = renderer.getConstValue(property);
 
     if (constValue) {
-      return `private final ${property.property.type} ${property.propertyName} = ${property.property.type}.${constValue.key};`;
+      return constValue;
     }
 
     return `private ${property.property.type} ${property.propertyName};`;
@@ -101,8 +109,8 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
     )}`;
     return `public ${property.property.type} ${getterName}() { return this.${property.propertyName}; }`;
   },
-  setter({ renderer, property }) {
-    if (renderer.getConstValue(property)) {
+  setter({ property }) {
+    if (property.hasConstantValue()) {
       return '';
     }
     const setterName = FormatHelpers.toPascalCase(property.propertyName);

@@ -73,17 +73,4 @@ export abstract class AbstractRenderer<
     }
     return content;
   }
-
-  getConstValue(
-    property: ConstrainedObjectPropertyModel
-  ): ConstrainedEnumValueModel | undefined {
-    if (
-      property.property instanceof ConstrainedReferenceModel &&
-      property.property.ref instanceof ConstrainedEnumModel &&
-      property.property.ref.constValue
-    ) {
-      return property.property.ref.constValue;
-    }
-    return undefined;
-  }
 }

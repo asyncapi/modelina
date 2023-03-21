@@ -45,7 +45,7 @@ export abstract class TypeScriptObjectRenderer extends TypeScriptRenderer<Constr
       property.required === false ? '?' : ''
     }: ${property.property.type}`;
 
-    const constValue = this.getConstValue(property);
+    const constValue = property.getConstantValue();
 
     if (constValue) {
       return `${renderedProperty} = ${property.property.type}.${constValue.key};`;
