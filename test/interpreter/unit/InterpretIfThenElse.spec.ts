@@ -70,4 +70,41 @@ describe('Interpretation of if/then/else', () => {
     expect(model2.properties?.event_time).toBeDefined();
     expect(model2.required).toBe(undefined);
   });
+
+  test('should handle recursive schemas', () => {
+    const schema = {
+      $schema: 'http://json-schema.org/draft-07/schema#',
+      properties: {
+        condition: {
+          type: 'string'
+        },
+        test: {
+          properties: {
+            test2: {
+              type: 'string'
+            }
+          }
+        }
+      },
+      if: {
+        properties: {
+          condition: {
+            const: 'something'
+          }
+        }
+      },
+      then: {
+        properties: {
+          test: {
+            required: ['test2']
+          }
+        }
+      }
+    };
+
+    const model = new Interpreter().interpret(schema);
+
+    expect(model?.properties?.test).toBeDefined();
+    expect(model?.properties?.test.required).toBe(undefined);
+  });
 });

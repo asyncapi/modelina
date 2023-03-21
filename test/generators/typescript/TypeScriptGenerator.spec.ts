@@ -800,118 +800,107 @@ ${content}`;
   });
 
   describe('if/then/else', () => {
-    const asyncapiDoc = {
-      asyncapi: '2.5.0',
-      info: {
-        title: 'if/else/then example',
-        version: '1.0.0'
-      },
-      channels: {
-        event: {
-          publish: {
-            message: {
-              oneOf: [
-                {
-                  $ref: '#/components/messages/Event1'
-                },
-                {
-                  $ref: '#/components/messages/Event2'
-                }
-              ]
-            }
-          }
-        }
-      },
-      components: {
-        messages: {
-          Event1: {
-            payload: {
-              title: 'Event1',
-              type: 'object',
-              properties: {
-                id: {
-                  type: 'string'
-                },
-                action: {
-                  title: 'Action',
-                  type: 'string',
-                  enum: ['ADD', 'UPDATE', 'DELETE'],
-                  default: 'ADD'
-                }
-              },
-              required: ['id'],
-              allOf: [
-                {
-                  if: {
-                    properties: {
-                      action: {
-                        const: 'DELETE'
-                      }
-                    },
-                    required: ['action']
-                  },
-                  else: {
-                    $ref: '#/components/schemas/Event'
-                  }
-                }
-              ]
-            }
-          },
-          Event2: {
-            payload: {
-              title: 'Event2',
-              type: 'object',
-              properties: {
-                id: {
-                  type: 'string'
-                },
-                action: {
-                  title: 'Action',
-                  type: 'string',
-                  enum: ['ADD', 'UPDATE', 'DELETE'],
-                  default: 'ADD'
-                }
-              },
-              required: ['id'],
-              allOf: [
-                {
-                  if: {
-                    properties: {
-                      action: {
-                        const: 'DELETE'
-                      }
-                    },
-                    required: ['action']
-                  },
-                  else: {
-                    allOf: [
-                      {
-                        $ref: '#/components/schemas/Event'
-                      }
-                    ]
-                  }
-                }
-              ]
+    test('handle if/then/else required properties', async () => {
+      const asyncapiDoc = {
+        asyncapi: '2.6.0',
+        info: {
+          title: 'if/else/then example',
+          version: '1.0.0'
+        },
+        channels: {
+          event: {
+            publish: {
+              message: {
+                $ref: '#/components/messages/Event'
+              }
             }
           }
         },
-        schemas: {
-          Event: {
-            type: 'object',
-            properties: {
-              event_time: {
-                type: 'string',
-                format: 'date-time'
+        components: {
+          messages: {
+            Event: {
+              payload: {
+                title: 'Event',
+                type: 'object',
+                properties: {
+                  id: {
+                    type: 'string'
+                  },
+                  action: {
+                    title: 'Action',
+                    type: 'string',
+                    enum: ['ADD', 'UPDATE', 'DELETE'],
+                    default: 'ADD'
+                  }
+                },
+                required: ['id'],
+                allOf: [
+                  {
+                    if: {
+                      properties: {
+                        action: {
+                          const: 'DELETE'
+                        }
+                      },
+                      required: ['action']
+                    },
+                    else: {
+                      $ref: '#/components/schemas/EventAddOrUpdate'
+                    }
+                  }
+                ]
               }
-            },
-            required: ['event_time']
+            }
+          },
+          schemas: {
+            EventAddOrUpdate: {
+              type: 'object',
+              properties: {
+                event_time: {
+                  type: 'string',
+                  format: 'date-time'
+                }
+              },
+              required: ['event_time']
+            }
           }
         }
-      }
-    };
+      };
 
-    test.only('handle if/then/else required properties', async () => {
       const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+
+    test('handle recursive schemas', async () => {
+      const models = await generator.generate({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        properties: {
+          condition: {
+            type: 'string'
+          },
+          test: {
+            properties: {
+              test2: {
+                type: 'string'
+              }
+            }
+          }
+        },
+        if: {
+          properties: {
+            condition: {
+              const: 'something'
+            }
+          }
+        },
+        then: {
+          properties: {
+            test: {
+              required: ['test2']
+            }
+          }
+        }
+      });
       expect(models.map((model) => model.result)).toMatchSnapshot();
     });
   });

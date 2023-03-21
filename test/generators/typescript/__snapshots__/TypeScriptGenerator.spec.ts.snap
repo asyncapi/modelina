@@ -339,8 +339,7 @@ Array [
 
 exports[`TypeScriptGenerator if/then/else handle if/then/else required properties 1`] = `
 Array [
-  "type ReservedEvent = Event1 | Event2;",
-  "class Event1 {
+  "class ReservedEvent {
   private _id: string;
   private _action?: Action;
   private _eventTime?: string;
@@ -375,35 +374,40 @@ Array [
   UPDATE = \\"UPDATE\\",
   RESERVED_DELETE = \\"DELETE\\",
 }",
-  "class Event2 {
-  private _id: string;
-  private _action?: Action;
-  private _eventTime?: string;
-  private _additionalProperties?: Map<string, any>;
+]
+`;
+
+exports[`TypeScriptGenerator if/then/else handle recursive schemas 1`] = `
+Array [
+  "class Root {
+  private _condition?: string;
+  private _test?: Test;
 
   constructor(input: {
-    id: string,
-    action?: Action,
-    eventTime?: string,
-    additionalProperties?: Map<string, any>,
+    condition?: string,
+    test?: Test,
   }) {
-    this._id = input.id;
-    this._action = input.action;
-    this._eventTime = input.eventTime;
-    this._additionalProperties = input.additionalProperties;
+    this._condition = input.condition;
+    this._test = input.test;
   }
 
-  get id(): string { return this._id; }
-  set id(id: string) { this._id = id; }
+  get condition(): string | undefined { return this._condition; }
+  set condition(condition: string | undefined) { this._condition = condition; }
 
-  get action(): Action | undefined { return this._action; }
-  set action(action: Action | undefined) { this._action = action; }
+  get test(): Test | undefined { return this._test; }
+  set test(test: Test | undefined) { this._test = test; }
+}",
+  "class Test {
+  private _test2?: string;
 
-  get eventTime(): string | undefined { return this._eventTime; }
-  set eventTime(eventTime: string | undefined) { this._eventTime = eventTime; }
+  constructor(input: {
+    test2?: string,
+  }) {
+    this._test2 = input.test2;
+  }
 
-  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
-  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
+  get test2(): string | undefined { return this._test2; }
+  set test2(test2: string | undefined) { this._test2 = test2; }
 }",
 ]
 `;

@@ -50,31 +50,26 @@ export default function InterpretIfThenElse(
 }
 
 function interpretIfThenElseItem(
-  schema: InterpreterSchemaType,
+  thenOrElseSchema: InterpreterSchemaType,
   model: CommonModel,
   interpreter: Interpreter,
   interpreterOptions: InterpreterOptions
 ) {
-  if (typeof schema === 'boolean') {
+  if (
+    typeof thenOrElseSchema === 'boolean' ||
+    thenOrElseSchema instanceof Draft4Schema ||
+    thenOrElseSchema instanceof Draft6Schema
+  ) {
     return;
   }
 
-  schema.required = undefined;
-
-  if (schema.allOf) {
-    for (const allOf of schema.allOf) {
-      if (typeof allOf === 'boolean') {
-        continue;
-      }
-
-      allOf.required = undefined;
-    }
-  }
-
   interpreter.interpretAndCombineSchema(
-    schema,
+    thenOrElseSchema,
     model,
-    schema,
-    interpreterOptions
+    thenOrElseSchema,
+    interpreterOptions,
+    {
+      constrictModels: false
+    }
   );
 }
