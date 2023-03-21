@@ -14,7 +14,7 @@ import interpretAdditionalItems from '../../../src/interpreter/InterpretAddition
 import interpretNot from '../../../src/interpreter/InterpretNot';
 import interpretDependencies from '../../../src/interpreter/InterpretDependencies';
 import InterpretIfThenElse from '../../../src/interpreter/InterpretIfThenElse';
-import { CommonModel } from '../../../src/models';
+import { CommonModel, defaultMergingOptions } from '../../../src/models';
 import { Draft7Schema } from '../../../src/models/Draft7Schema';
 
 jest.mock('../../../src/interpreter/Utils');
@@ -138,7 +138,9 @@ describe('Interpreter', () => {
         1,
         model,
         expectedSimplifiedModel,
-        schema
+        schema,
+        new Map(),
+        defaultMergingOptions
       );
     });
   });
