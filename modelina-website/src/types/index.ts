@@ -12,6 +12,7 @@ export interface UpdateMessage {
 export interface ModelinaTypeScriptOptions {
   tsMarshalling: boolean;
   tsModelType: 'class' | 'interface' | undefined;
+  tsEnumType: 'union' | 'enum' | undefined;
 }
 export interface ModelinaJavaOptions {}
 export interface ModelinaGoOptions {}
@@ -49,6 +50,7 @@ export interface ModelinaDartQueryOptions {}
 export interface ModelinaTypeScriptQueryOptions {
   tsMarshalling?: string;
   tsModelType?: string;
+  tsEnumType?: string;
 }
 
 export interface ModelinaOptions
