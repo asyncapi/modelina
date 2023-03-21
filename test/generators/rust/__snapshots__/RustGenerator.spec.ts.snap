@@ -248,7 +248,7 @@ pub struct TupleType(String, f64);
 "
 `;
 
-exports[`RustGenerator Struct & Complete Models should render \`struct\` type  1`] = `
+exports[`RustGenerator Struct & Complete Models should render \`struct\` type 1`] = `
 "// Address represents a Address model.
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Address {
@@ -274,7 +274,7 @@ pub struct Address {
 "
 `;
 
-exports[`RustGenerator Struct & Complete Models should render \`struct\` type  2`] = `
+exports[`RustGenerator Struct & Complete Models should render \`struct\` type 2`] = `
 "// Members represents a union of types: String, f64, bool
 #[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 #[serde(untagged)]
@@ -290,7 +290,7 @@ pub enum Members {
 "
 `;
 
-exports[`RustGenerator Struct & Complete Models should render \`struct\` type  3`] = `
+exports[`RustGenerator Struct & Complete Models should render \`struct\` type 3`] = `
 "// TupleType represents a TupleType model.
 #[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 pub struct TupleType(String, f64);
