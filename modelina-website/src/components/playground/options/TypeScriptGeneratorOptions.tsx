@@ -21,6 +21,7 @@ class TypeScriptGeneratorOptions extends React.Component<
     this.state = defaultState;
     this.onChangeMarshalling = this.onChangeMarshalling.bind(this);
     this.onChangeVariant = this.onChangeVariant.bind(this);
+    this.onChangeEnumType = this.onChangeEnumType.bind(this);
   }
 
   onChangeMarshalling(event: any) {
@@ -32,6 +33,12 @@ class TypeScriptGeneratorOptions extends React.Component<
   onChangeVariant(variant: any) {
     if (this.props.setNewConfig) {
       this.props.setNewConfig('tsModelType', String(variant));
+    }
+  }
+
+  onChangeEnumType(enumType: any) {
+    if (this.props.setNewConfig) {
+      this.props.setNewConfig('tsEnumType', String(enumType));
     }
   }
 
@@ -53,6 +60,22 @@ class TypeScriptGeneratorOptions extends React.Component<
               ]}
               value={this.context?.tsModelType}
               onChange={this.onChangeVariant}
+              className="shadow-outline-blue cursor-pointer"
+            />
+          </label>
+        </li>
+        <li>
+          <label className="flex items-center py-2 justify-between cursor-pointer">
+            <span className="mt-1 max-w-2xl text-sm text-gray-500">
+              TypeScript enum type
+            </span>
+            <Select
+              options={[
+                { value: 'union', text: 'Union' },
+                { value: 'enum', text: 'Enum' }
+              ]}
+              value={this.context?.tsEnumType}
+              onChange={this.onChangeEnumType}
               className="shadow-outline-blue cursor-pointer"
             />
           </label>

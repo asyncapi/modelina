@@ -64,7 +64,8 @@ class Playground extends React.Component<
   config: ModelinaOptions = {
     language: 'typescript',
     tsMarshalling: false,
-    tsModelType: 'class'
+    tsModelType: 'class',
+    tsEnumType: 'enum',
   };
   hasLoadedQuery: boolean = false;
   constructor(props: ModelinaPlaygroundProps) {
@@ -273,7 +274,8 @@ class Playground extends React.Component<
                 <PlaygroundTypeScriptConfigContext.Provider
                   value={{
                     tsMarshalling: this.config.tsMarshalling,
-                    tsModelType: this.config.tsModelType
+                    tsModelType: this.config.tsModelType,
+                    tsEnumType: this.config.tsEnumType
                   }}
                 >
                   <PlaygroundJavaScriptConfigContext.Provider value={{}}>

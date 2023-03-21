@@ -29,6 +29,9 @@ export async function getTypeScriptModels(
       }
     });
   }
+  if(generatorOptions.tsEnumType) {
+    options.enumType = generatorOptions.tsEnumType as any;
+  }
   try {
     const processedInput = await InputProcessor.processor.process(input);
     const generator = new TypeScriptGenerator(options);
