@@ -21,7 +21,7 @@ export function getTypeScriptGeneratorCode(
   }
 
   if (generatorOptions.tsEnumType) {
-    optionString.push(`enumType: '${generatorOptions.tsEnumType}'`);
+    optionString.push(`    enumType: '${generatorOptions.tsEnumType}'`);
   }
 
   const presetOptions =
