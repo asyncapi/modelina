@@ -114,7 +114,10 @@ function renderUnmarshalProperty(
   }
   return `${modelInstanceVariable}`;
 }
-function renderUnmarshalProperties(model: ConstrainedObjectModel) {
+function renderUnmarshalProperties(
+  renderer: ClassRenderer,
+  model: ConstrainedObjectModel
+) {
   const properties = model.properties || {};
   const propertyKeys = [...Object.entries(properties)];
   const propertyNames = propertyKeys.map(([name]) => {
@@ -124,6 +127,11 @@ function renderUnmarshalProperties(model: ConstrainedObjectModel) {
   const unwrapDictionaryProperties = [];
   const normalProperties = [];
   for (const entry of propertyKeys) {
+    // if const value exists, we don't need to unmarshal this property because it exist in the class/interface
+    if (renderer.getConstValue(entry[1])) {
+      continue;
+    }
+
     if (
       entry[1].property instanceof ConstrainedDictionaryModel &&
       entry[1].property.serializationType === 'unwrap'
@@ -190,7 +198,7 @@ function renderUnmarshal({
   renderer: ClassRenderer;
   model: ConstrainedObjectModel;
 }): string {
-  const unmarshalProperties = renderUnmarshalProperties(model);
+  const unmarshalProperties = renderUnmarshalProperties(renderer, model);
   return `public static unmarshal(json: string | object): ${model.type} {
   const obj = typeof json === "object" ? json : JSON.parse(json);
   const instance = new ${model.type}({} as any);

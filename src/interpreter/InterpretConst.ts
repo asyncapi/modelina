@@ -22,6 +22,7 @@ export default function interpretConst(
 
   const schemaConst = schema.const;
   model.enum = [schemaConst];
+  model.const = schemaConst;
 
   //If schema does not contain type interpret the schema
   if (schema.type === undefined) {

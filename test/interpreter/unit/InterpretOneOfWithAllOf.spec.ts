@@ -88,7 +88,7 @@ describe('Interpretation of oneOf with allOf', () => {
     expect(cat).not.toBeUndefined();
     expect(cat?.properties?.animalType).toMatchObject({
       $id: 'Animal Type',
-      enum: ['Cat', 'Dog']
+      enum: ['Cat']
     });
     expect(cat?.properties).toHaveProperty('age');
     expect(cat?.properties).toHaveProperty('huntingSkill');

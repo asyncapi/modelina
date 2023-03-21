@@ -54,12 +54,17 @@ export const TS_DEFAULT_CLASS_PRESET: ClassPresetType<TypeScriptOptions> = {
   },
   ctor({ renderer, model }): string {
     const properties = model.properties || {};
-    const assignments = Object.keys(properties).map((propertyName) => {
-      return `this._${propertyName} = input.${propertyName};`;
-    });
-    const ctorProperties = Object.values(properties).map((property) => {
-      return renderer.renderProperty(property).replace(';', ',');
-    });
+    const assignments: string[] = [];
+    const ctorProperties: string[] = [];
+
+    for (const [propertyName, property] of Object.entries(properties)) {
+      // if const value exists we should not render it in the constructor
+      if (renderer.getConstValue(property)) {
+        continue;
+      }
+      assignments.push(`this._${propertyName} = input.${propertyName};`);
+      ctorProperties.push(renderer.renderProperty(property).replace(';', ','));
+    }
 
     return `constructor(input: {
 ${renderer.indent(renderer.renderBlock(ctorProperties))}
@@ -75,7 +80,12 @@ ${renderer.indent(renderer.renderBlock(assignments))}
       property.required === false ? ' | undefined' : ''
     } { return this._${property.propertyName}; }`;
   },
-  setter({ property }): string {
+  setter({ renderer, property }): string {
+    // if const value exists we should not render a setter
+    if (renderer.getConstValue(property)) {
+      return '';
+    }
+
     return `set ${property.propertyName}(${property.propertyName}: ${
       property.property.type
     }${property.required === false ? ' | undefined' : ''}) { this._${

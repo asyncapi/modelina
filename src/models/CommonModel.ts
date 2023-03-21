@@ -9,6 +9,7 @@ export class CommonModel {
   $id?: string;
   type?: string | string[];
   enum?: any[];
+  const?: any;
   items?: CommonModel | CommonModel[];
   properties?: { [key: string]: CommonModel };
   additionalProperties?: CommonModel;
@@ -481,17 +482,27 @@ export class CommonModel {
           originalInput
         );
 
-        const mergeToProperty = mergeTo.properties[String(propName)];
+        // takes a deep copy of the mergeTo model if the id of mergeTo is anonymous to avoid carrying over properties to other models
+        const mergeToModel = CommonModel.idIncludesAnonymousSchema(
+          mergeTo.properties[String(propName)]
+        )
+          ? CommonModel.toCommonModel(mergeTo.properties[String(propName)])
+          : mergeTo.properties[String(propName)];
 
-        mergeTo.properties[String(propName)] = CommonModel.mergeCommonModels(
-          // takes a deep copy of the mergeTo model if the id of mergeTo is anonymous to avoid carrying over properties to other models
-          CommonModel.idIncludesAnonymousSchema(mergeToProperty)
-            ? CommonModel.toCommonModel(mergeToProperty)
-            : mergeToProperty,
+        const mergedModel = CommonModel.mergeCommonModels(
+          mergeToModel,
           propValue,
           originalInput,
           alreadyIteratedModels
         );
+
+        if (propValue.const) {
+          mergeTo.properties[String(propName)] =
+            CommonModel.toCommonModel(mergedModel);
+          mergeTo.properties[String(propName)].const = propValue.const;
+        } else {
+          mergeTo.properties[String(propName)] = mergedModel;
+        }
       }
     }
   }
@@ -770,6 +781,9 @@ export class CommonModel {
     if (mergeFrom.enum !== undefined) {
       mergeTo.enum = [...new Set([...(mergeTo.enum || []), ...mergeFrom.enum])];
     }
+
+    mergeTo.const = mergeTo.const || mergeFrom.const;
+
     if (mergeFrom.required !== undefined) {
       mergeTo.required = [
         ...new Set([...(mergeTo.required || []), ...mergeFrom.required])

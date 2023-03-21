@@ -408,7 +408,7 @@ ${content}`;
             discriminator: 'petType',
             properties: {
               petType: {
-                $id: 'PetType',
+                title: 'PetType',
                 type: 'string'
               },
               name: {
@@ -429,6 +429,7 @@ ${content}`;
                   },
                   huntingSkill: {
                     type: 'string',
+                    title: 'HuntingSkill',
                     enum: ['clueless', 'lazy', 'adventurous', 'aggressive']
                   }
                 },

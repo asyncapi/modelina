@@ -127,7 +127,8 @@ export class ConstrainedEnumModel extends ConstrainedMetaModel {
     name: string,
     originalInput: any,
     type: string,
-    public values: ConstrainedEnumValueModel[]
+    public values: ConstrainedEnumValueModel[],
+    public constValue?: ConstrainedEnumValueModel
   ) {
     super(name, originalInput, type);
   }

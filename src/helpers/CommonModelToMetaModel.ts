@@ -254,17 +254,25 @@ export function convertToEnumModel(
   if (!isEnumModel(jsonSchemaModel)) {
     return undefined;
   }
+
+  const enumValueToEnumValueModel = (enumValue: unknown): EnumValueModel => {
+    if (typeof enumValue !== 'string') {
+      return new EnumValueModel(JSON.stringify(enumValue), enumValue);
+    }
+    return new EnumValueModel(enumValue, enumValue);
+  };
+
   const metaModel = new EnumModel(name, jsonSchemaModel.originalInput, []);
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   for (const enumValue of jsonSchemaModel.enum!) {
-    let enumKey = enumValue;
-    if (typeof enumValue !== 'string') {
-      enumKey = JSON.stringify(enumValue);
-    }
-    const enumValueModel = new EnumValueModel(enumKey, enumValue);
-    metaModel.values.push(enumValueModel);
+    metaModel.values.push(enumValueToEnumValueModel(enumValue));
   }
+
+  if (jsonSchemaModel.const) {
+    metaModel.constValue = enumValueToEnumValueModel(jsonSchemaModel.const);
+  }
+
   return metaModel;
 }
 export function convertToBooleanModel(

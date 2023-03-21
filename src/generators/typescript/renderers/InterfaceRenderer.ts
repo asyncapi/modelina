@@ -1,3 +1,4 @@
+// import { ConstrainedObjectPropertyModel } from 'models';
 import { TypeScriptOptions } from '../TypeScriptGenerator';
 import { TypeScriptObjectRenderer } from '../TypeScriptObjectRenderer';
 import { InterfacePresetType } from '../TypeScriptPreset';

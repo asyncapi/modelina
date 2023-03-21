@@ -31,7 +31,8 @@ import {
   EnumModel,
   DictionaryModel,
   MetaModel,
-  ObjectPropertyModel
+  ObjectPropertyModel,
+  EnumValueModel
 } from '../models/MetaModel';
 import { getTypeFromMapping, TypeMapping } from './TypeHelpers';
 
@@ -435,7 +436,9 @@ function ConstrainEnumModel<
     []
   );
 
-  for (const enumValue of context.metaModel.values) {
+  const enumValueToConstrainedEnumValueModel = (
+    enumValue: EnumValueModel
+  ): ConstrainedEnumValueModel => {
     const constrainedEnumKey = constrainRules.enumKey({
       enumKey: String(enumValue.key),
       enumModel: context.metaModel,
@@ -446,19 +449,31 @@ function ConstrainEnumModel<
       enumModel: context.metaModel,
       constrainedEnumModel: constrainedModel
     });
-
-    const constrainedEnumValueModel = new ConstrainedEnumValueModel(
+    return new ConstrainedEnumValueModel(
       constrainedEnumKey,
       constrainedEnumValue
     );
-    constrainedModel.values.push(constrainedEnumValueModel);
+  };
+
+  for (const enumValue of context.metaModel.values) {
+    constrainedModel.values.push(
+      enumValueToConstrainedEnumValueModel(enumValue)
+    );
   }
+
   constrainedModel.type = getTypeFromMapping(typeMapping, {
     constrainedModel,
     options: context.options,
     partOfProperty: context.partOfProperty,
     dependencyManager: context.dependencyManager
   });
+
+  if (context.metaModel.constValue) {
+    constrainedModel.constValue = enumValueToConstrainedEnumValueModel(
+      context.metaModel.constValue
+    );
+  }
+
   return constrainedModel;
 }
 
