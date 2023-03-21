@@ -19,6 +19,6 @@ describe('Should be able to generate models to files', () => {
     await generate();
     expect(spy.mock.calls.length).toBeGreaterThanOrEqual(1);
     expect(spy.mock.calls[spy.mock.calls.length - 1]).toMatchSnapshot();
-    expect(fs.existsSync(expectedFilePath));
+    expect(fs.existsSync(expectedFilePath)).toBe(true);
   });
 });

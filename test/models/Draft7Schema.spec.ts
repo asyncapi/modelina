@@ -584,7 +584,7 @@ describe('Draft7Schema', () => {
   });
 
   describe('$ref', () => {
-    test('should return a string ', () => {
+    test('should return a string', () => {
       const doc = { $ref: 'some/reference' };
       const d = Draft7Schema.toSchema(doc) as Draft7Schema;
       expect(typeof d).toEqual('object');

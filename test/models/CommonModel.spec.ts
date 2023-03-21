@@ -123,7 +123,7 @@ describe('CommonModel', () => {
     });
   });
   describe('extend', () => {
-    test('should return a string ', () => {
+    test('should return a string', () => {
       const doc = { extend: 'reference' };
       const d = CommonModel.toCommonModel(doc);
       expect(d.extend).not.toBeUndefined();
@@ -531,7 +531,7 @@ describe('CommonModel', () => {
         expect(dogModel.properties).toHaveProperty('packSize');
         expect(dogModel.properties).not.toHaveProperty('huntingSkill');
       });
-      test.only('should not carry over properties to other models when mergeTo property is anonymous_schema', () => {
+      test('should not carry over properties to other models when mergeTo property is anonymous_schema', () => {
         const pet = {
           title: 'Pet',
           type: 'object',
