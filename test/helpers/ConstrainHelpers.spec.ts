@@ -83,7 +83,7 @@ describe('ConstrainHelpers', () => {
         options: {},
         constrainedName: ''
       });
-      expect(mockedTypeMapping.String).toBeCalledWith(
+      expect(mockedTypeMapping.String).toHaveBeenCalledWith(
         expect.objectContaining({ partOfProperty: expect.objectContaining({}) })
       );
     });

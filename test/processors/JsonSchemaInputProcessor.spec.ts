@@ -262,7 +262,7 @@ describe('JsonSchemaInputProcessor', () => {
         },
         $ref: '#/definitions/root/definitions/innerRoot'
       };
-      expect(() => processor.handleRootReference(schema)).toThrowError(
+      expect(() => processor.handleRootReference(schema)).toThrow(
         'Cannot handle input, because it has a root `$ref`, please manually resolve the first reference.'
       );
     });
