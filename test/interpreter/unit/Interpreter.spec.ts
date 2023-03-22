@@ -27,7 +27,7 @@ jest.mock('../../../src/interpreter/InterpretAdditionalProperties');
 jest.mock('../../../src/interpreter/InterpretNot');
 jest.mock('../../../src/interpreter/InterpretDependencies');
 jest.mock('../../../src/interpreter/InterpretAdditionalItems');
-jest.mock('../../../src/interpreter/InterpretIfThenElse');
+jest.mock('../../../src/interpreter/InterpretThenElse');
 CommonModel.mergeCommonModels = jest.fn();
 /**
  * Some of these test are purely theoretical and have little if any merit
