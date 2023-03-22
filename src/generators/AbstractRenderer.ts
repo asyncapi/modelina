@@ -1,13 +1,5 @@
 import { AbstractGenerator, CommonGeneratorOptions } from './AbstractGenerator';
-import {
-  ConstrainedEnumModel,
-  ConstrainedEnumValueModel,
-  ConstrainedMetaModel,
-  ConstrainedObjectPropertyModel,
-  ConstrainedReferenceModel,
-  InputMetaModel,
-  Preset
-} from '../models';
+import { ConstrainedMetaModel, InputMetaModel, Preset } from '../models';
 import { FormatHelpers, IndentationTypes } from '../helpers';
 
 /**

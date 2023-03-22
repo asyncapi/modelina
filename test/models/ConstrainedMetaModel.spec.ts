@@ -7,9 +7,9 @@ import {
   ConstrainedBooleanModel,
   ConstrainedDictionaryModel,
   ConstrainedEnumModel,
+  ConstrainedEnumValueModel,
   ConstrainedObjectModel,
   ConstrainedObjectPropertyModel,
-  ConstrainedReferenceModel,
   ConstrainedStringModel,
   ConstrainedTupleModel,
   ConstrainedUnionModel,
@@ -24,7 +24,8 @@ import {
   StringModel,
   TupleModel,
   TupleValueModel,
-  UnionModel
+  UnionModel,
+  ConstrainedReferenceModel
 } from '../../src/models';
 import {
   mockedConstraints,
@@ -391,6 +392,39 @@ describe('ConstrainedMetaModel', () => {
           false
         );
       });
+    });
+
+    test('should return constant value if reference model is an enum model', () => {
+      const constrainedEnumValueModel = new ConstrainedEnumValueModel(
+        'testKey',
+        'testValue'
+      );
+
+      const constrainedObjectPropertyModel = new ConstrainedObjectPropertyModel(
+        'testModel',
+        '',
+        false,
+        new ConstrainedReferenceModel(
+          'testRefModel',
+          undefined,
+          '',
+          new ConstrainedEnumModel(
+            'testEnum',
+            undefined,
+            '',
+            [constrainedEnumValueModel],
+            constrainedEnumValueModel
+          )
+        )
+      );
+
+      expect(constrainedObjectPropertyModel.hasConstantValue()).toBe(true);
+      expect(constrainedObjectPropertyModel.getConstantValue()?.key).toBe(
+        constrainedEnumValueModel.key
+      );
+      expect(constrainedObjectPropertyModel.getConstantValue()?.value).toBe(
+        constrainedEnumValueModel.value
+      );
     });
   });
   describe('EnumModel', () => {

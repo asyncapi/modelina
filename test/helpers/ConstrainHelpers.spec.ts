@@ -8,7 +8,6 @@ import {
   ConstrainedBooleanModel,
   ConstrainedDictionaryModel,
   ConstrainedEnumModel,
-  ConstrainedEnumValueModel,
   ConstrainedFloatModel,
   ConstrainedIntegerModel,
   ConstrainedObjectModel,
@@ -351,9 +350,13 @@ describe('ConstrainHelpers', () => {
   });
   describe('constrain EnumModel', () => {
     test('should constrain correctly', () => {
-      const metaModel = new EnumModel('test', undefined, [
-        new EnumValueModel('test', 123)
-      ]);
+      const metaModelValue = new EnumValueModel('test', 123);
+      const metaModel = new EnumModel(
+        'test',
+        undefined,
+        [metaModelValue],
+        metaModelValue
+      );
       const constrainedModel = constrainMetaModel(
         mockedTypeMapping,
         mockedConstraints,
@@ -369,6 +372,8 @@ describe('ConstrainHelpers', () => {
       expect(mockedTypeMapping.Enum).toHaveBeenCalledTimes(1);
       expect(enumModel.values[0].key).toEqual('test');
       expect(enumModel.values[0].value).toEqual(123);
+      expect(enumModel.constValue?.key).toEqual('test');
+      expect(enumModel.constValue?.value).toEqual(123);
     });
   });
   describe('constrain DictionaryModel', () => {

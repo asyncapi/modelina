@@ -251,7 +251,7 @@ export function convertToEnumModel(
   jsonSchemaModel: CommonModel,
   name: string
 ): EnumModel | undefined {
-  if (!isEnumModel(jsonSchemaModel)) {
+  if (!isEnumModel(jsonSchemaModel) && !jsonSchemaModel.const) {
     return undefined;
   }
 
@@ -264,9 +264,10 @@ export function convertToEnumModel(
 
   const metaModel = new EnumModel(name, jsonSchemaModel.originalInput, []);
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  for (const enumValue of jsonSchemaModel.enum!) {
-    metaModel.values.push(enumValueToEnumValueModel(enumValue));
+  if (jsonSchemaModel.enum) {
+    for (const enumValue of jsonSchemaModel.enum) {
+      metaModel.values.push(enumValueToEnumValueModel(enumValue));
+    }
   }
 
   if (jsonSchemaModel.const) {

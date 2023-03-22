@@ -30,6 +30,7 @@ describe('Interpretation of const', () => {
     const model = new CommonModel();
     interpretConst(schema, model);
     expect(model.enum).toEqual([schema.const]);
+    expect(model.const).toEqual(schema.const);
     expect(inferTypeFromValue).toHaveBeenNthCalledWith(1, 'test');
     expect(model.setType).toHaveBeenNthCalledWith(1, 'string');
   });
