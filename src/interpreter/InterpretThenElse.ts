@@ -7,7 +7,7 @@ import {
 import { Draft4Schema, Draft6Schema } from '../models';
 
 /**
- * Interpreter function for if/then/else keywords.
+ * Interpreter function for then/else keywords.
  *
  * It merges schemas into existing model
  *
@@ -16,7 +16,7 @@ import { Draft4Schema, Draft6Schema } from '../models';
  * @param interpreter
  * @param interpreterOptions to control the interpret process
  */
-export default function InterpretIfThenElse(
+export default function InterpretThenElse(
   schema: InterpreterSchemaType,
   model: CommonModel,
   interpreter: Interpreter,
@@ -31,25 +31,15 @@ export default function InterpretIfThenElse(
   }
 
   if (schema.then) {
-    interpretIfThenElseItem(
-      schema.then,
-      model,
-      interpreter,
-      interpreterOptions
-    );
+    interpretThenElseItem(schema.then, model, interpreter, interpreterOptions);
   }
 
   if (schema.else) {
-    interpretIfThenElseItem(
-      schema.else,
-      model,
-      interpreter,
-      interpreterOptions
-    );
+    interpretThenElseItem(schema.else, model, interpreter, interpreterOptions);
   }
 }
 
-function interpretIfThenElseItem(
+function interpretThenElseItem(
   thenOrElseSchema: InterpreterSchemaType,
   model: CommonModel,
   interpreter: Interpreter,

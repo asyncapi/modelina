@@ -1,8 +1,8 @@
 import { CommonModel } from '../../../src/models/CommonModel';
 import { Interpreter } from '../../../src/interpreter/Interpreter';
-import InterpretIfThenElse from '../../../src/interpreter/InterpretIfThenElse';
+import InterpretThenElse from '../../../src/interpreter/InterpretThenElse';
 
-describe('Interpretation of if/then/else', () => {
+describe('Interpretation of then/else', () => {
   beforeEach(() => {
     jest.resetAllMocks();
   });
@@ -10,13 +10,13 @@ describe('Interpretation of if/then/else', () => {
     jest.restoreAllMocks();
   });
 
-  test('should not do anything if schema does not contain if/then/else', () => {
+  test('should not do anything if schema does not contain then/else', () => {
     const model = new CommonModel();
     model.addItemUnion = jest.fn();
     const interpreter = new Interpreter();
     interpreter.interpret = jest.fn();
 
-    InterpretIfThenElse({}, model, interpreter);
+    InterpretThenElse({}, model, interpreter);
 
     expect(interpreter.interpret).not.toHaveBeenCalled();
     expect(model.addItemUnion).not.toHaveBeenCalled();
@@ -38,7 +38,7 @@ describe('Interpretation of if/then/else', () => {
       required: ['event_time']
     };
 
-    InterpretIfThenElse(
+    InterpretThenElse(
       {
         then: {
           ...eventSchema
@@ -52,7 +52,7 @@ describe('Interpretation of if/then/else', () => {
     expect(model1.properties?.event_time).toBeDefined();
     expect(model1.required).toBe(undefined);
 
-    InterpretIfThenElse(
+    InterpretThenElse(
       {
         else: {
           allOf: [
