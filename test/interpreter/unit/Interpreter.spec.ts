@@ -13,7 +13,7 @@ import interpretAdditionalProperties from '../../../src/interpreter/InterpretAdd
 import interpretAdditionalItems from '../../../src/interpreter/InterpretAdditionalItems';
 import interpretNot from '../../../src/interpreter/InterpretNot';
 import interpretDependencies from '../../../src/interpreter/InterpretDependencies';
-import InterpretIfThenElse from '../../../src/interpreter/InterpretIfThenElse';
+import InterpretThenElse from '../../../src/interpreter/InterpretThenElse';
 import { CommonModel, defaultMergingOptions } from '../../../src/models';
 import { Draft7Schema } from '../../../src/models/Draft7Schema';
 
@@ -237,7 +237,7 @@ describe('Interpreter', () => {
     const schema = {};
     const interpreter = new Interpreter();
     interpreter.interpret(schema);
-    expect(InterpretIfThenElse).toHaveBeenNthCalledWith(
+    expect(InterpretThenElse).toHaveBeenNthCalledWith(
       1,
       schema,
       expect.anything(),
