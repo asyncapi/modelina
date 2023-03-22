@@ -299,7 +299,7 @@ describe('JavaConstrainer', () => {
       });
       expect(type).toEqual('boolean');
     });
-    test('should render generic number enum value with format  ', () => {
+    test('should render generic number enum value with format', () => {
       const enumValue = new ConstrainedEnumValueModel('test', 123);
       const model = new ConstrainedEnumModel('test', undefined, '', [
         enumValue

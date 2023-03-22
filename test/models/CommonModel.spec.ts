@@ -123,7 +123,7 @@ describe('CommonModel', () => {
     });
   });
   describe('extend', () => {
-    test('should return a string ', () => {
+    test('should return a string', () => {
       const doc = { extend: 'reference' };
       const d = CommonModel.toCommonModel(doc);
       expect(d.extend).not.toBeUndefined();

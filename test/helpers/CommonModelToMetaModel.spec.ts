@@ -134,6 +134,7 @@ describe('CommonModelToMetaModel', () => {
 
     expect(model).not.toBeUndefined();
     expect(model instanceof ArrayModel).toEqual(true);
+    expect((model as ArrayModel).valueModel instanceof AnyModel).toEqual(true);
   });
   test('should convert to object model', () => {
     const spm = new CommonModel();
@@ -273,8 +274,11 @@ describe('CommonModelToMetaModel', () => {
 
     expect(model).not.toBeUndefined();
     expect(model instanceof ArrayModel).toEqual(true);
+    expect((model as ArrayModel).valueModel instanceof StringModel).toEqual(
+      true
+    );
   });
-  test('should convert array with additional items to array model as union type', () => {
+  test('should not convert array with additional items to array model as union type', () => {
     const spm = new CommonModel();
     spm.type = 'string';
     const cm = new CommonModel();
@@ -287,7 +291,7 @@ describe('CommonModelToMetaModel', () => {
 
     expect(model).not.toBeUndefined();
     expect(model instanceof ArrayModel).toEqual(true);
-    expect((model as ArrayModel).valueModel instanceof UnionModel).toEqual(
+    expect((model as ArrayModel).valueModel instanceof StringModel).toEqual(
       true
     );
   });

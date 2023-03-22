@@ -50,6 +50,31 @@ components:
 
 The _type_ property in the _CloudEvent_ schema will in this case have an _anonymous_schema_ id. If another schema in the _allOf_ list has the same property and an id other than _anonymous_schema_, it will now use that id. Meaning, in this example, it will be _DogType_ and _CatType_.
 
+## Accurate array types
+
+For JSON Schema inputs (indirectly for AsyncAPI and OpenAPI), `additionalItems` was applied to regular array types, when it should only be applied for tuples.
+
+This means that a schema such as:
+```
+    "tags": {
+      "type": "array",
+      "items": {
+        "$ref": "http://asyncapi.com/definitions/2.6.0/tag.json"
+      },
+      "additionalItems": true
+    },
+```
+
+Would generate a type such as, in TypeScript:
+```
+private _tags?: (Tag | any)[];
+```
+
+Where it now generates:
+```
+private _tags?: Tag[];
+```
+
 ## Creates union type for operation message oneOf
 
 In the example above, where `operation.message.oneOf` is set, Modelina will now generate a union type for it. Previously, Modelina ignored this union type, and only generated models for the content of `operation.message.oneOf`. In the example above, that meant models for `Dog` and `Cat`. Now, Modelina will generate a union type of `Pet` in addition to `Dog` and `Cat`.
