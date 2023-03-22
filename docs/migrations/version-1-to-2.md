@@ -79,6 +79,9 @@ private _tags?: Tag[];
 
 In the example above, where `operation.message.oneOf` is set, Modelina will now generate a union type for it. Previously, Modelina ignored this union type, and only generated models for the content of `operation.message.oneOf`. In the example above, that meant models for `Dog` and `Cat`. Now, Modelina will generate a union type of `Pet` in addition to `Dog` and `Cat`.
 
-## Fixes required properties when if/then/else is used
 
-Required properties in schemas inside if/then/else is made optional when merged with the original schema.
+## Constraining models with then and else
+
+In v1, `required` properties defined within `then` or `else` (in JSON Schema input variants) would be directly applied to the encapsulating model, meaning it would be as if the `if` section is always true or false, depending on whether it's defined within `then` or `else` respectfully.
+
+In v2, `required` properties are no longer applied, but the rest of the structure is still.
