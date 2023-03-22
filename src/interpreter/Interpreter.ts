@@ -23,7 +23,7 @@ import interpretOneOf from './InterpretOneOf';
 import interpretAnyOf from './InterpretAnyOf';
 import interpretOneOfWithAllOf from './InterpretOneOfWithAllOf';
 import interpretOneOfWithProperties from './InterpretOneOfWithProperties';
-import InterpretIfThenElse from './InterpretIfThenElse';
+import InterpretThenElse from './InterpretThenElse';
 
 export type InterpreterOptions = {
   allowInheritance?: boolean;
@@ -143,7 +143,7 @@ export class Interpreter {
     interpretDependencies(schema, model, this, interpreterOptions);
     interpretConst(schema, model);
     interpretEnum(schema, model);
-    InterpretIfThenElse(schema, model, this, interpreterOptions);
+    InterpretThenElse(schema, model, this, interpreterOptions);
 
     interpretNot(schema, model, this, interpreterOptions);
 
