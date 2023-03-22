@@ -1,6 +1,10 @@
 import { Logger } from '../utils';
 
 export interface MergingOptions {
+  /**
+    * When models are merged, should merging models constrict the `merging to` model? 
+    * If false, `required` keyword would no longer be applied from the `merging from` model.
+    */
   constrictModels: boolean;
 }
 export const defaultMergingOptions: MergingOptions = {
