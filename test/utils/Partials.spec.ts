@@ -46,7 +46,7 @@ describe('mergePartialAndDefault', () => {
     ) as TestType;
     expect(realizedOptions.nestedObject.nested).toEqual('test2');
   });
-  test('should not overwrite old realized options ', () => {
+  test('should not overwrite old realized options', () => {
     interface TestType {
       nestedObject: {
         nested: string;
