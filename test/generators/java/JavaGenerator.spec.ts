@@ -1,4 +1,10 @@
-import { JavaGenerator } from '../../../src/generators';
+import {
+  JavaGenerator,
+  JAVA_COMMON_PRESET,
+  JAVA_CONSTRAINTS_PRESET,
+  JAVA_DESCRIPTION_PRESET,
+  JAVA_JACKSON_PRESET
+} from '../../../src/generators';
 
 describe('JavaGenerator', () => {
   let generator: JavaGenerator;
@@ -274,5 +280,128 @@ describe('JavaGenerator', () => {
     await expect(generator.generateCompleteModels(doc, config)).rejects.toEqual(
       expectedError
     );
+  });
+
+  describe('CloudEvent', () => {
+    const asyncapiDoc = {
+      asyncapi: '2.5.0',
+      info: {
+        title: 'CloudEvent example',
+        version: '1.0.0'
+      },
+      channels: {
+        pet: {
+          publish: {
+            message: {
+              oneOf: [
+                {
+                  $ref: '#/components/messages/Dog'
+                },
+                {
+                  $ref: '#/components/messages/Cat'
+                }
+              ]
+            }
+          }
+        }
+      },
+      components: {
+        messages: {
+          Dog: {
+            payload: {
+              title: 'Dog',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/CloudEvent'
+                },
+                {
+                  type: 'object',
+                  properties: {
+                    type: {
+                      title: 'DogType',
+                      const: 'Dog'
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          Cat: {
+            payload: {
+              title: 'Cat',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/CloudEvent'
+                },
+                {
+                  type: 'object',
+                  properties: {
+                    type: {
+                      title: 'CatType',
+                      const: 'Cat'
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        schemas: {
+          CloudEvent: {
+            title: 'CloudEvent',
+            type: 'object',
+            properties: {
+              id: {
+                type: 'string'
+              },
+              source: {
+                type: 'string',
+                format: 'uri-reference'
+              },
+              specversion: {
+                type: 'string',
+                default: '1.0',
+                examples: ['1.0']
+              },
+              type: {
+                type: 'string'
+              },
+              dataschema: {
+                type: 'string',
+                format: 'uri'
+              },
+              time: {
+                type: 'string',
+                format: 'date-time'
+              }
+            },
+            required: ['id', 'source', 'specversion', 'type']
+          }
+        }
+      }
+    };
+
+    test.only('handle allOf with const in CloudEvent type', async () => {
+      generator = new JavaGenerator({
+        presets: [
+          JAVA_COMMON_PRESET,
+          JAVA_JACKSON_PRESET,
+          JAVA_DESCRIPTION_PRESET,
+          JAVA_CONSTRAINTS_PRESET
+        ],
+        collectionType: 'List'
+      });
+
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+
+      const dog = models.find((model) => model.modelName === 'Dog');
+      expect(dog).not.toBeUndefined();
+      expect(dog?.result).toContain('DogType');
+
+      const cat = models.find((model) => model.modelName === 'Cat');
+      expect(cat).not.toBeUndefined();
+      expect(cat?.result).toContain('CatType');
+    });
   });
 });
