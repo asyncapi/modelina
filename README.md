@@ -1,4 +1,4 @@
-[![AsyncAPI Modelina](./docs/img/readme-banner.png)](https://www.asyncapi.com/tools/modelina)
+[![AsyncAPI Modelina](./docs/img/readme-banner.png)](https://www.modelina.org)
 [![blackbox pipeline status](<https://img.shields.io/github/actions/workflow/status/asyncapi/modelina/blackbox-testing.yml?label=blackbox%20testing>)](https://github.com/asyncapi/modelina/actions/workflows/blackbox-testing.yml?query=branch%3Amaster++)
 [![Coverage Status](https://coveralls.io/repos/github/asyncapi/modelina/badge.svg?branch=master)](https://coveralls.io/github/asyncapi/modelina?branch=master)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
@@ -7,9 +7,12 @@
 [![License](https://img.shields.io/github/license/asyncapi/modelina)](https://github.com/asyncapi/modelina/blob/master/LICENSE)
 [![last commit](https://img.shields.io/github/last-commit/asyncapi/modelina)](https://github.com/asyncapi/modelina/commits/master)
 [![Discussions](https://img.shields.io/github/discussions/asyncapi/modelina)](https://github.com/asyncapi/modelina/discussions)
-[![Playground](https://img.shields.io/website?label=playground&url=https%3A%2F%2Fwww.asyncapi.com%2Ftools%2Fmodelina)](https://www.asyncapi.com/tools/modelina) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-43-orange.svg?style=flat-square)](#contributors-)
+[![Website](https://img.shields.io/website?label=website&url=https%3A%2F%2Fwww.modelina.org)](https://www.modelina.org)
+[![Playground](https://img.shields.io/website?label=playground&url=https%3A%2F%2Fwww.modelina.org%2Fplayground)](https://www.modelina.org/playground) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-44-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
+
+Your one-stop tool for generating accurate and well-tested models for representing the message payloads. Use it as a tool in your development workflow, or a library in a larger integrations, entirely in your control.
 
 ---
 
@@ -289,6 +292,8 @@ We of course will do our best to uphold this, but mistakes can happen, and if yo
 
 Because of the number of the limited number of champions, only the most recent major version will be maintained.
 
+Major versions are currently happening at a 3-month cadence (in a similar fashion as the AsyncAPI specification), this will happen in January, April, June, and September. 
+
 ## Development
 We try to make it as easy for you as possible to set up your development environment to contribute to Modelina. You can find the development documentation [here](./docs/development.md).
 
@@ -354,7 +359,7 @@ Thanks go out to these wonderful people ([emoji key](https://allcontributors.org
       <td align="center" valign="top" width="14.28%"><a href="https://micro-jumbo.eu/"><img src="https://avatars.githubusercontent.com/u/11511697?v=4?s=100" width="100px;" alt="Cyprian Gracz"/><br /><sub><b>Cyprian Gracz</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=micro-jumbo" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=micro-jumbo" title="Tests">⚠️</a> <a href="https://github.com/asyncapi/modelina/issues?q=author%3Amicro-jumbo" title="Bug reports">🐛</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://www.printnanny.ai"><img src="https://avatars.githubusercontent.com/u/2601819?v=4?s=100" width="100px;" alt="Leigh Johnson"/><br /><sub><b>Leigh Johnson</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=leigh-johnson" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=leigh-johnson" title="Tests">⚠️</a> <a href="#example-leigh-johnson" title="Examples">💡</a> <a href="https://github.com/asyncapi/modelina/commits?author=leigh-johnson" title="Documentation">📖</a> <a href="#maintenance-leigh-johnson" title="Maintenance">🚧</a> <a href="https://github.com/asyncapi/modelina/pulls?q=is%3Apr+reviewed-by%3Aleigh-johnson" title="Reviewed Pull Requests">👀</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/nitintejuja"><img src="https://avatars.githubusercontent.com/u/95347924?v=4?s=100" width="100px;" alt="Nitin Tejuja"/><br /><sub><b>Nitin Tejuja</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=nitintejuja" title="Tests">⚠️</a> <a href="#example-nitintejuja" title="Examples">💡</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/kennethaasan"><img src="https://avatars.githubusercontent.com/u/1437394?v=4?s=100" width="100px;" alt="Kenneth Aasan"/><br /><sub><b>Kenneth Aasan</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=kennethaasan" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=kennethaasan" title="Tests">⚠️</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/kennethaasan"><img src="https://avatars.githubusercontent.com/u/1437394?v=4?s=100" width="100px;" alt="Kenneth Aasan"/><br /><sub><b>Kenneth Aasan</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=kennethaasan" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=kennethaasan" title="Tests">⚠️</a> <a href="#maintenance-kennethaasan" title="Maintenance">🚧</a> <a href="https://github.com/asyncapi/modelina/commits?author=kennethaasan" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/amit-ksh"><img src="https://avatars.githubusercontent.com/u/91947037?v=4?s=100" width="100px;" alt="Amit Kumar Sharma"/><br /><sub><b>Amit Kumar Sharma</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=amit-ksh" title="Tests">⚠️</a> <a href="https://github.com/asyncapi/modelina/commits?author=amit-ksh" title="Documentation">📖</a> <a href="#example-amit-ksh" title="Examples">💡</a></td>
     </tr>
     <tr>
@@ -368,6 +373,7 @@ Thanks go out to these wonderful people ([emoji key](https://allcontributors.org
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/sambhavgupta0705"><img src="https://avatars.githubusercontent.com/u/81870866?v=4?s=100" width="100px;" alt="Sambhav Gupta"/><br /><sub><b>Sambhav Gupta</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=sambhavgupta0705" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/prayutsu"><img src="https://avatars.githubusercontent.com/u/54636525?v=4?s=100" width="100px;" alt="Abhay Garg"/><br /><sub><b>Abhay Garg</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=prayutsu" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
