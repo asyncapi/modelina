@@ -386,7 +386,9 @@
       "profile": "https://github.com/kennethaasan",
       "contributions": [
         "code",
-        "test"
+        "test",
+        "maintenance",
+        "doc"
       ]
     },
     {
@@ -482,6 +484,15 @@
       "profile": "https://github.com/sambhavgupta0705",
       "contributions": [
         "doc"
+      ]
+    },
+    {
+      "login": "prayutsu",
+      "name": "Abhay Garg",
+      "avatar_url": "https://avatars.githubusercontent.com/u/54636525?v=4",
+      "profile": "https://github.com/prayutsu",
+      "contributions": [
+        "code"
       ]
     }
   ],
