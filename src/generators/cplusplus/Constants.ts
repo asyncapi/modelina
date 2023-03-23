@@ -101,30 +101,7 @@ export const RESERVED_CPLUSPLUS_KEYWORDS = [
   'final',
   'override',
   'transaction_safe',
-  'transaction_safe_dynamic',
-  'import',
-  'module ',
-  'if',
-  'elif',
-  'else',
-  'endif',
-  'ifdef',
-  'ifndef',
-  'elifdef',
-  'elifndef',
-  'define',
-  'undef',
-  'include',
-  'line',
-  'error',
-  'warning',
-  'pragma',
-  'defined',
-  '__has_include',
-  '__has_cpp_attribute',
-  'export',
-  'import',
-  'module'
+  'transaction_safe_dynamic'
 ];
 
 export function isReservedCplusplusKeyword(

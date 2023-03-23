@@ -24,7 +24,8 @@ import {
   PlaygroundJavaScriptConfigContext,
   PlaygroundKotlinConfigContext,
   PlaygroundPythonConfigContext,
-  PlaygroundRustConfigContext
+  PlaygroundRustConfigContext,
+  PlaygroundCplusplusConfigContext
 } from '../contexts/PlaygroundConfigContext';
 import { getTypeScriptGeneratorCode } from '@/helpers/GeneratorCode/TypeScriptGenerator';
 import { getJavaScriptGeneratorCode } from '@/helpers/GeneratorCode/JavaScriptGenerator';
@@ -34,6 +35,7 @@ import { getCSharpGeneratorCode } from '@/helpers/GeneratorCode/CSharpGenerator'
 import { getRustGeneratorCode } from '@/helpers/GeneratorCode/RustGenerator';
 import { getPythonGeneratorCode } from '@/helpers/GeneratorCode/PythonGenerator';
 import { getDartGeneratorCode } from '@/helpers/GeneratorCode/DartGenerator';
+import { getCplusplusGeneratorCode } from '@/helpers/GeneratorCode/CplusplusGenerator';
 interface WithRouterProps {
   router: NextRouter;
 }
@@ -148,6 +150,9 @@ class Playground extends React.Component<
             case 'dart':
               generatorCode = getDartGeneratorCode(message);
               break;
+            case 'cplusplus':
+              generatorCode = getCplusplusGeneratorCode(message);
+              break;
             default:
               break;
           }
@@ -193,7 +198,7 @@ class Playground extends React.Component<
       this.hasLoadedQuery = true;
       this.generateNewCode(this.state.input);
     }
-    
+
     let loader;
     if (!isHardLoaded) {
       loader = (
@@ -220,11 +225,10 @@ class Playground extends React.Component<
             library instead.
           </Paragraph>
         </div>
-        {loader} 
+        {loader}
         <div
-          className={`grid grid-cols-2 gap-4 mt-4 ${
-            isLoaded ? '' : 'invisible'
-          }`}
+          className={`grid grid-cols-2 gap-4 mt-4 ${isLoaded ? '' : 'invisible'
+            }`}
         >
           <div className="col-span-2" style={{ height: '500px' }}>
             <div className="overflow-hidden bg-white shadow sm:rounded-lg flex flex-row">
@@ -242,9 +246,8 @@ class Playground extends React.Component<
                 onClick={() => {
                   this.setState({ ...this.state, showGeneratorCode: false });
                 }}
-                className={`${
-                  !this.state.showGeneratorCode ? 'bg-blue-100' : 'bg-white'
-                } px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 basis-3/12`}
+                className={`${!this.state.showGeneratorCode ? 'bg-blue-100' : 'bg-white'
+                  } px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 basis-3/12`}
               >
                 <h3 className="text-lg font-medium leading-6 text-gray-900">
                   Options
@@ -254,9 +257,8 @@ class Playground extends React.Component<
                 onClick={() => {
                   this.setState({ ...this.state, showGeneratorCode: true });
                 }}
-                className={`${
-                  this.state.showGeneratorCode ? 'bg-blue-100' : 'bg-white'
-                } px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 basis-3/12`}
+                className={`${this.state.showGeneratorCode ? 'bg-blue-100' : 'bg-white'
+                  } px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 basis-3/12`}
               >
                 <h3 className="text-lg font-medium leading-6 text-gray-900">
                   Generator code
@@ -292,17 +294,19 @@ class Playground extends React.Component<
                       <PlaygroundDartConfigContext.Provider value={{}}>
                         <PlaygroundGoConfigContext.Provider value={{}}>
                           <PlaygroundJavaConfigContext.Provider value={{}}>
-                            <PlaygroundKotlinConfigContext.Provider value={{}}>
-                              <PlaygroundRustConfigContext.Provider value={{}}>
-                                <PlaygroundPythonConfigContext.Provider
-                                  value={{}}
-                                >
-                                  <PlaygroundOptions
-                                    setNewConfig={this.setNewConfig}
-                                  />
-                                </PlaygroundPythonConfigContext.Provider>
-                              </PlaygroundRustConfigContext.Provider>
-                            </PlaygroundKotlinConfigContext.Provider>
+                            <PlaygroundCplusplusConfigContext.Provider value={{}}>
+                              <PlaygroundKotlinConfigContext.Provider value={{}}>
+                                <PlaygroundRustConfigContext.Provider value={{}}>
+                                  <PlaygroundPythonConfigContext.Provider
+                                    value={{}}
+                                  >
+                                    <PlaygroundOptions
+                                      setNewConfig={this.setNewConfig}
+                                    />
+                                  </PlaygroundPythonConfigContext.Provider>
+                                </PlaygroundRustConfigContext.Provider>
+                              </PlaygroundKotlinConfigContext.Provider>
+                            </PlaygroundCplusplusConfigContext.Provider>
                           </PlaygroundJavaConfigContext.Provider>
                         </PlaygroundGoConfigContext.Provider>
                       </PlaygroundDartConfigContext.Provider>

@@ -1,6 +1,6 @@
-# TypeScript Data Models
+# C++ Data Models
 
-A basic example of how to use Modelina and output a TypeScript data model.
+A basic example of how to use Modelina and output a C++ data model.
 
 ## How to run this example
 
