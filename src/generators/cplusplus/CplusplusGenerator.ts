@@ -11,7 +11,7 @@ import {
   MetaModel,
   RenderOutput
 } from '../../models';
-import { split, TypeMapping } from '../../helpers';
+import { FormatHelpers, split, TypeMapping } from '../../helpers';
 import { CplusplusPreset, CPLUSPLUS_DEFAULT_PRESET } from './CplusplusPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
@@ -186,10 +186,20 @@ export class CplusplusGenerator extends AbstractGenerator<
       //Forward reference
       return `struct ${model.name};`;
     });
+    const formattedForwardReference = FormatHelpers.indent(
+      forwardReference.join('\n'),
+      2,
+      optionsToUse.indentation?.type
+    );
+    const formattedOutputResult = FormatHelpers.indent(
+      outputModel.result,
+      2,
+      optionsToUse.indentation?.type
+    );
     const outputContent = `${outputModel.dependencies.join('\n')}
 namespace ${completeModelOptionsToUse.namespace}{
-  ${forwardReference.join('\n')}
-  ${outputModel.result}
+${formattedForwardReference}
+${formattedOutputResult}
 }`;
     return RenderOutput.toRenderOutput({
       result: outputContent,

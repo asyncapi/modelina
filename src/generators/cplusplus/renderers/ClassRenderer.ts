@@ -19,7 +19,7 @@ export class ClassRenderer extends CplusplusRenderer<ConstrainedObjectModel> {
     ];
 
     return `struct ${this.model.name} {
-  ${this.indent(this.renderBlock(content, 2))}
+${this.indent(this.renderBlock(content, 2))}
 };`;
   }
 
