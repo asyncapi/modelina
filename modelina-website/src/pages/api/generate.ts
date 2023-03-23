@@ -14,6 +14,7 @@ import { getDartModels } from '@/pages/api/functions/DartGenerator';
 import { getPythonModels } from '@/pages/api/functions/PythonGenerator';
 import { getRustModels } from '@/pages/api/functions/RustGenerator';
 import { getCSharpModels } from '@/pages/api/functions/CSharpGenerator';
+import { getCplusplusModels } from './functions/CplusplusGenerator';
 
 export async function generateNewCode(message: GenerateMessage) {
   let input: any = defaultAsyncapiDocument;
@@ -38,6 +39,9 @@ export async function generateNewCode(message: GenerateMessage) {
       break;
     case 'go':
       props.models = await getGoModels(input, message);
+      break;
+    case 'cplusplus':
+      props.models = await getCplusplusModels(input, message);
       break;
     case 'csharp':
       props.models = await getCSharpModels(input, message);
