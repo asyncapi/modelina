@@ -66,6 +66,7 @@ class Playground extends React.Component<
     tsMarshalling: false,
     tsModelType: 'class',
     tsEnumType: 'enum',
+    csharpArrayType: 'Array'
   };
   hasLoadedQuery: boolean = false;
   constructor(props: ModelinaPlaygroundProps) {
@@ -179,8 +180,14 @@ class Playground extends React.Component<
     if (query.tsModelType !== undefined) {
       this.config.tsModelType = query.tsModelType as any;
     }
+    if (query.tsEnumType !== undefined) {
+      this.config.tsEnumType = query.tsEnumType as any;
+    }
     if (query.language !== undefined) {
       this.config.language = query.language as any;
+    }
+    if (query.csharpArrayType !== undefined) {
+      this.config.csharpArrayType = query.csharpArrayType as any;
     }
     if (this.props.router.isReady && !this.hasLoadedQuery) {
       this.hasLoadedQuery = true;
@@ -279,7 +286,9 @@ class Playground extends React.Component<
                   }}
                 >
                   <PlaygroundJavaScriptConfigContext.Provider value={{}}>
-                    <PlaygroundCSharpConfigContext.Provider value={{}}>
+                    <PlaygroundCSharpConfigContext.Provider value={{
+                      csharpArrayType: this.config.csharpArrayType,
+                    }}>
                       <PlaygroundDartConfigContext.Provider value={{}}>
                         <PlaygroundGoConfigContext.Provider value={{}}>
                           <PlaygroundJavaConfigContext.Provider value={{}}>

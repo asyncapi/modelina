@@ -7,6 +7,10 @@ export function getCSharpGeneratorCode(
   const optionString: string[] = [];
   const optionStringPresets: string[] = [];
 
+  if (generatorOptions.csharpArrayType) {
+    optionString.push(`arrayType: '${generatorOptions.csharpArrayType}'`);
+  }
+
   const presetOptions =
     optionStringPresets.length > 0
       ? `${optionString.length > 0 ? ',' : ''}
