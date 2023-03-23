@@ -17,7 +17,7 @@ export const CplusplusDefaultTypeMapping: TypeMapping<
     return `${constrainedModel.name}`;
   },
   Reference({ constrainedModel }): string {
-    return `${constrainedModel.name}*`;
+    return `${constrainedModel.name}`;
   },
   Any({ dependencyManager }): string {
     dependencyManager.addDependency('#include <utility>');
