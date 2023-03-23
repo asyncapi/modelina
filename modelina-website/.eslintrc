@@ -1,0 +1,12 @@
+{
+  "extends": [
+    "../.eslintrc",
+    "next"
+  ],
+  "rules": {
+    "@typescript-eslint/no-empty-interface": "off",
+    "no-console": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-empty-function": "off"
+  }
+}
