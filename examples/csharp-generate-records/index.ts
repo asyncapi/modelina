@@ -1,14 +1,26 @@
-import { CSharpGenerator } from '../../src';
+import {CSHARP_COMMON_PRESET, CSHARP_JSON_SERIALIZER_PRESET, CSharpGenerator} from '../../src';
 
-const generator = new CSharpGenerator({ modelType: 'record' });
+const generator = new CSharpGenerator({ 
+  modelType: 'record',
+  collectionType: 'List',
+});
 const jsonSchemaDraft7 = {
   $schema: 'http://json-schema.org/draft-07/schema#',
   type: 'object',
   additionalProperties: false,
+  required: [
+      "name"
+  ],
   properties: {
     email: {
-      type: 'string',
-      format: 'email'
+      type: 'array',
+      items: {
+        type: 'string',
+        format: 'email'
+      }
+    },
+    name: {
+      type: 'string'
     }
   }
 };
