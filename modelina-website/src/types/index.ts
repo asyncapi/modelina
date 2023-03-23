@@ -17,7 +17,9 @@ export interface ModelinaTypeScriptOptions {
 export interface ModelinaJavaOptions {}
 export interface ModelinaGoOptions {}
 export interface ModelinaJavaScriptOptions {}
-export interface ModelinaCSharpOptions {}
+export interface ModelinaCSharpOptions {
+  csharpArrayType: 'List' | 'Array' | undefined;
+}
 export interface ModelinaKotlinOptions {}
 export interface ModelinaRustOptions {}
 export interface ModelinaPythonOptions {}
@@ -41,7 +43,9 @@ export interface ModelinaGeneralQueryOptions {
 export interface ModelinaJavaQueryOptions {}
 export interface ModelinaGoQueryOptions {}
 export interface ModelinaJavaScriptQueryOptions {}
-export interface ModelinaCSharpQueryOptions {}
+export interface ModelinaCSharpQueryOptions {
+  csharpArrayType?: string;
+}
 export interface ModelinaKotlinQueryOptions {}
 export interface ModelinaRustQueryOptions {}
 export interface ModelinaPythonQueryOptions {}
