@@ -184,6 +184,10 @@ Check is done using referential equality</p>
 <dt><a href="#interpretProperties">interpretProperties(schema, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for interpreting properties keyword.</p>
 </dd>
+<dt><a href="#InterpretThenElse">InterpretThenElse(schema, model, interpreter, interpreterOptions)</a></dt>
+<dd><p>Interpreter function for then/else keywords.</p>
+<p>It merges schemas into existing model</p>
+</dd>
 <dt><a href="#isEnum">isEnum(model)</a></dt>
 <dd><p>Check if CommonModel is an enum</p>
 </dd>
@@ -1475,6 +1479,22 @@ Interpreter function for patternProperties keyword.
 
 ## interpretProperties(schema, model, interpreter, interpreterOptions)
 Interpreter function for interpreting properties keyword.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema |  |
+| model |  |
+| interpreter |  |
+| interpreterOptions | to control the interpret process |
+
+<a name="InterpretThenElse"></a>
+
+## InterpretThenElse(schema, model, interpreter, interpreterOptions)
+Interpreter function for then/else keywords.
+
+It merges schemas into existing model
 
 **Kind**: global function  
 
