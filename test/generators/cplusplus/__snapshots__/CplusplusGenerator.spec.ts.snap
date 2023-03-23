@@ -2,13 +2,13 @@
 
 exports[`CplusplusGenerator Class should not render reserved keyword 1`] = `
 "struct address {
-    std::string reserved_enum;
+  std::string reserved_enum;
 };"
 `;
 
 exports[`CplusplusGenerator Class should render \`class\` type 1`] = `
 "struct address {
-    std::string street_name;
+  std::string street_name;
   std::string city;
   std::string state;
   double house_number;
@@ -21,7 +21,7 @@ exports[`CplusplusGenerator Class should render \`class\` type 1`] = `
 
 exports[`CplusplusGenerator Class should work with custom preset for \`class\` type 1`] = `
 "struct custom_class {
-    test1
+  test1
   std::string property;
   test1
   std::map<std::string, std::any> additional_properties;

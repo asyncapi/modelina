@@ -45,7 +45,7 @@ describe('CplusplusConstrainer', () => {
         options: CplusplusGenerator.defaultOptions,
         dependencyManager: dependencyFactory()
       });
-      expect(type).toEqual(`${model.name}*`);
+      expect(type).toEqual(`${model.name}`);
     });
   });
   describe('Any', () => {
