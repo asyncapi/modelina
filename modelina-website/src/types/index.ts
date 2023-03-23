@@ -124,6 +124,10 @@ export const modelinaLanguageOptions = [
   {
     value: 'dart',
     text: 'Dart'
+  },
+  {
+    value: 'cplusplus',
+    text: 'C++'
   }
 ];
 

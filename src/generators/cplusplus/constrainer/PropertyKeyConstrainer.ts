@@ -2,8 +2,7 @@ import { ConstrainedObjectModel, ObjectModel } from '../../../models';
 import {
   NO_NUMBER_START_CHAR,
   NO_DUPLICATE_PROPERTIES,
-  NO_EMPTY_VALUE,
-  NO_RESERVED_KEYWORDS
+  NO_EMPTY_VALUE
 } from '../../../helpers/Constraints';
 import { FormatHelpers, PropertyKeyConstraint } from '../../../helpers';
 import { isReservedCplusplusKeyword } from '../Constants';
@@ -36,7 +35,10 @@ export const DefaultPropertyKeyConstraints: PropertyKeyConstraintOptions = {
   NO_EMPTY_VALUE,
   NAMING_FORMATTER: FormatHelpers.toSnakeCase,
   NO_RESERVED_KEYWORDS: (value: string) => {
-    return NO_RESERVED_KEYWORDS(value, isReservedCplusplusKeyword);
+    if (isReservedCplusplusKeyword(value)) {
+      return `_${value}`;
+    }
+    return value;
   }
 };
 /**
