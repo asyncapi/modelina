@@ -798,4 +798,110 @@ ${content}`;
       expect(cat?.result).toContain('CatType');
     });
   });
+
+  describe('if/then/else', () => {
+    test('handle if/then/else required properties', async () => {
+      const asyncapiDoc = {
+        asyncapi: '2.6.0',
+        info: {
+          title: 'if/else/then example',
+          version: '1.0.0'
+        },
+        channels: {
+          event: {
+            publish: {
+              message: {
+                $ref: '#/components/messages/Event'
+              }
+            }
+          }
+        },
+        components: {
+          messages: {
+            Event: {
+              payload: {
+                title: 'Event',
+                type: 'object',
+                properties: {
+                  id: {
+                    type: 'string'
+                  },
+                  action: {
+                    title: 'Action',
+                    type: 'string',
+                    enum: ['ADD', 'UPDATE', 'DELETE'],
+                    default: 'ADD'
+                  }
+                },
+                required: ['id'],
+                allOf: [
+                  {
+                    if: {
+                      properties: {
+                        action: {
+                          const: 'DELETE'
+                        }
+                      },
+                      required: ['action']
+                    },
+                    else: {
+                      $ref: '#/components/schemas/EventAddOrUpdate'
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          schemas: {
+            EventAddOrUpdate: {
+              type: 'object',
+              properties: {
+                event_time: {
+                  type: 'string',
+                  format: 'date-time'
+                }
+              },
+              required: ['event_time']
+            }
+          }
+        }
+      };
+
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+
+    test('handle recursive schemas', async () => {
+      const models = await generator.generate({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        properties: {
+          condition: {
+            type: 'string'
+          },
+          test: {
+            properties: {
+              test2: {
+                type: 'string'
+              }
+            }
+          }
+        },
+        if: {
+          properties: {
+            condition: {
+              const: 'something'
+            }
+          }
+        },
+        then: {
+          properties: {
+            test: {
+              required: ['test2']
+            }
+          }
+        }
+      });
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+  });
 });
