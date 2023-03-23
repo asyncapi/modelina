@@ -14,8 +14,8 @@ exports[`CplusplusGenerator Class should render \`class\` type 1`] = `
   double house_number;
   bool marriage;
   std::variant<std::string, double, bool> members;
-  std::vector<std::variant<std::string, double, void*>> array_type;
-  std::map<std::string, std::variant<void*, std::string>> additional_properties;
+  std::vector<std::variant<std::string, double, std::any>> array_type;
+  std::map<std::string, std::variant<std::any, std::string>> additional_properties;
 };"
 `;
 
@@ -24,7 +24,7 @@ exports[`CplusplusGenerator Class should work with custom preset for \`class\` t
     test1
   std::string property;
   test1
-  std::map<std::string, void*> additional_properties;
+  std::map<std::string, std::any> additional_properties;
 };"
 `;
 
