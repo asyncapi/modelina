@@ -2,6 +2,7 @@
 import {
   InputProcessor,
   TS_COMMON_PRESET,
+  TS_DESCRIPTION_PRESET,
   TypeScriptGenerator,
   TypeScriptOptions
 } from '../../../../../';
@@ -29,7 +30,13 @@ export async function getTypeScriptModels(
       }
     });
   }
-  if(generatorOptions.tsEnumType) {
+  if (generatorOptions.tsIncludeDescriptions === true) {
+    options.presets?.push({
+      preset: TS_DESCRIPTION_PRESET,
+      options: {}
+    });
+  }
+  if (generatorOptions.tsEnumType) {
     options.enumType = generatorOptions.tsEnumType as any;
   }
   try {
