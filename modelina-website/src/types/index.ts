@@ -13,6 +13,7 @@ export interface ModelinaTypeScriptOptions {
   tsMarshalling: boolean;
   tsModelType: 'class' | 'interface' | undefined;
   tsEnumType: 'union' | 'enum' | undefined;
+  tsIncludeDescriptions: boolean;
 }
 export interface ModelinaJavaOptions {}
 export interface ModelinaGoOptions {}
@@ -57,6 +58,7 @@ export interface ModelinaTypeScriptQueryOptions {
   tsMarshalling?: string;
   tsModelType?: string;
   tsEnumType?: string;
+  tsIncludeDescriptions?: string;
 }
 
 export interface ModelinaOptions
