@@ -16,6 +16,7 @@ export async function getCSharpModels(
 
   if (generatorOptions.csharpArrayType) {
     options.collectionType = generatorOptions.csharpArrayType as any;
+    options.autoImplementedProperties = generatorOptions.csharpAutoImplemented;
   }
 
   try {

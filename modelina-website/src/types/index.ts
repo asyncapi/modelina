@@ -19,6 +19,7 @@ export interface ModelinaGoOptions {}
 export interface ModelinaJavaScriptOptions {}
 export interface ModelinaCSharpOptions {
   csharpArrayType: 'List' | 'Array' | undefined;
+  csharpAutoImplemented: boolean;
 }
 export interface ModelinaKotlinOptions {}
 export interface ModelinaRustOptions {}
@@ -45,6 +46,7 @@ export interface ModelinaGoQueryOptions {}
 export interface ModelinaJavaScriptQueryOptions {}
 export interface ModelinaCSharpQueryOptions {
   csharpArrayType?: string;
+  csharpAutoImplemented?: string;
 }
 export interface ModelinaKotlinQueryOptions {}
 export interface ModelinaRustQueryOptions {}

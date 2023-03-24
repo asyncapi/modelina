@@ -66,7 +66,8 @@ class Playground extends React.Component<
     tsMarshalling: false,
     tsModelType: 'class',
     tsEnumType: 'enum',
-    csharpArrayType: 'Array'
+    csharpArrayType: 'Array',
+    csharpAutoImplemented: false
   };
   hasLoadedQuery: boolean = false;
   constructor(props: ModelinaPlaygroundProps) {
@@ -189,11 +190,15 @@ class Playground extends React.Component<
     if (query.csharpArrayType !== undefined) {
       this.config.csharpArrayType = query.csharpArrayType as any;
     }
+    if (query.csharpAutoImplemented !== undefined) {
+      this.config.csharpAutoImplemented =
+        query.csharpAutoImplemented === 'true';
+    }
     if (this.props.router.isReady && !this.hasLoadedQuery) {
       this.hasLoadedQuery = true;
       this.generateNewCode(this.state.input);
     }
-    
+
     let loader;
     if (!isHardLoaded) {
       loader = (
@@ -220,7 +225,7 @@ class Playground extends React.Component<
             library instead.
           </Paragraph>
         </div>
-        {loader} 
+        {loader}
         <div
           className={`grid grid-cols-2 gap-4 mt-4 ${
             isLoaded ? '' : 'invisible'
@@ -286,9 +291,12 @@ class Playground extends React.Component<
                   }}
                 >
                   <PlaygroundJavaScriptConfigContext.Provider value={{}}>
-                    <PlaygroundCSharpConfigContext.Provider value={{
-                      csharpArrayType: this.config.csharpArrayType,
-                    }}>
+                    <PlaygroundCSharpConfigContext.Provider
+                      value={{
+                        csharpArrayType: this.config.csharpArrayType,
+                        csharpAutoImplemented: this.config.csharpAutoImplemented
+                      }}
+                    >
                       <PlaygroundDartConfigContext.Provider value={{}}>
                         <PlaygroundGoConfigContext.Provider value={{}}>
                           <PlaygroundJavaConfigContext.Provider value={{}}>
