@@ -315,13 +315,7 @@ describe('JavaGenerator', () => {
                   $ref: '#/components/schemas/CloudEvent'
                 },
                 {
-                  type: 'object',
-                  properties: {
-                    type: {
-                      title: 'DogType',
-                      const: 'Dog'
-                    }
-                  }
+                  $ref: '#/components/schemas/Dog'
                 }
               ]
             }
@@ -334,13 +328,7 @@ describe('JavaGenerator', () => {
                   $ref: '#/components/schemas/CloudEvent'
                 },
                 {
-                  type: 'object',
-                  properties: {
-                    type: {
-                      title: 'CatType',
-                      const: 'Cat'
-                    }
-                  }
+                  $ref: '#/components/schemas/Cat'
                 }
               ]
             }
@@ -364,6 +352,7 @@ describe('JavaGenerator', () => {
                 examples: ['1.0']
               },
               type: {
+                title: 'CloudEventType',
                 type: 'string'
               },
               dataschema: {
@@ -376,6 +365,22 @@ describe('JavaGenerator', () => {
               }
             },
             required: ['id', 'source', 'specversion', 'type']
+          },
+          Dog: {
+            type: 'object',
+            properties: {
+              type: {
+                const: 'Dog'
+              }
+            }
+          },
+          Cat: {
+            type: 'object',
+            properties: {
+              type: {
+                const: 'Cat'
+              }
+            }
           }
         }
       }
@@ -397,11 +402,22 @@ describe('JavaGenerator', () => {
 
       const dog = models.find((model) => model.modelName === 'Dog');
       expect(dog).not.toBeUndefined();
-      expect(dog?.result).toContain('DogType');
+      expect(dog?.result).toContain(
+        'private final CloudEventType type = CloudEventType.DOG;'
+      );
 
       const cat = models.find((model) => model.modelName === 'Cat');
       expect(cat).not.toBeUndefined();
-      expect(cat?.result).toContain('CatType');
+      expect(cat?.result).toContain(
+        'private final CloudEventType type = CloudEventType.CAT;'
+      );
+
+      const cloudEventType = models.find(
+        (model) => model.modelName === 'CloudEventType'
+      );
+      expect(cloudEventType).not.toBeUndefined();
+      expect(cloudEventType?.result).toContain('DOG');
+      expect(cloudEventType?.result).toContain('CAT');
     });
   });
 });

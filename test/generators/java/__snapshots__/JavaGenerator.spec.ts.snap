@@ -15,7 +15,7 @@ Array [
   private String specversion;
   @NotNull
   @JsonProperty(\\"type\\")
-  private final DogType type = DogType.DOG;
+  private final CloudEventType type = CloudEventType.DOG;
   @JsonProperty(\\"dataschema\\")
   private String dataschema;
   @JsonProperty(\\"time\\")
@@ -34,7 +34,7 @@ Array [
   public String getSpecversion() { return this.specversion; }
   public void setSpecversion(String specversion) { this.specversion = specversion; }
 
-  public DogType getType() { return this.type; }
+  public CloudEventType getType() { return this.type; }
 
   public String getDataschema() { return this.dataschema; }
   public void setDataschema(String dataschema) { this.dataschema = dataschema; }
@@ -93,12 +93,12 @@ Array [
     return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
   }
 }",
-  "public enum DogType {
-  DOG((String)\\"Dog\\");
+  "public enum CloudEventType {
+  DOG((String)\\"Dog\\"), CAT((String)\\"Cat\\");
 
   private String value;
 
-  DogType(String value) {
+  CloudEventType(String value) {
     this.value = value;
   }
 
@@ -108,8 +108,8 @@ Array [
   }
 
   @JsonCreator
-  public static DogType fromValue(String value) {
-    for (DogType e : DogType.values()) {
+  public static CloudEventType fromValue(String value) {
+    for (CloudEventType e : CloudEventType.values()) {
       if (e.value.equals(value)) {
         return e;
       }
@@ -134,7 +134,7 @@ Array [
   private String specversion;
   @NotNull
   @JsonProperty(\\"type\\")
-  private final CatType type = CatType.CAT;
+  private final CloudEventType type = CloudEventType.CAT;
   @JsonProperty(\\"dataschema\\")
   private String dataschema;
   @JsonProperty(\\"time\\")
@@ -153,7 +153,7 @@ Array [
   public String getSpecversion() { return this.specversion; }
   public void setSpecversion(String specversion) { this.specversion = specversion; }
 
-  public CatType getType() { return this.type; }
+  public CloudEventType getType() { return this.type; }
 
   public String getDataschema() { return this.dataschema; }
   public void setDataschema(String dataschema) { this.dataschema = dataschema; }
@@ -210,35 +210,6 @@ Array [
       return \\"null\\";
     }
     return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
-  }
-}",
-  "public enum CatType {
-  CAT((String)\\"Cat\\");
-
-  private String value;
-
-  CatType(String value) {
-    this.value = value;
-  }
-
-  @JsonValue
-  public String getValue() {
-    return value;
-  }
-
-  @JsonCreator
-  public static CatType fromValue(String value) {
-    for (CatType e : CatType.values()) {
-      if (e.value.equals(value)) {
-        return e;
-      }
-    }
-    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
-  }
-
-  @Override
-  public String toString() {
-    return String.valueOf(value);
   }
 }",
 ]
