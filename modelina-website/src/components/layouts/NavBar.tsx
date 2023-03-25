@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import Modelina from '../icons/Modelina';
+import ModelinaLogo from '../icons/ModelinaLogo';
 import NavItem from './NavItem';
 import MobileNavMenu from './MobileNavMenu';
 import GithubButton from '../buttons/GithubButton';
@@ -30,7 +30,7 @@ export default function NavBar({ className = '', hideLogo = false }) {
           <div className="lg:w-auto lg:flex-1">
             <div className="flex">
               <Link href="https://modelina.org/" className="cursor-pointer">
-                <Modelina className="h-8 w-auto sm:h-8" />
+                <ModelinaLogo className="h-8 w-auto sm:h-8" />
               </Link>
             </div>
           </div>
