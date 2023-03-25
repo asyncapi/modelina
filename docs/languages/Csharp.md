@@ -85,7 +85,12 @@ Check out this [example for a live demonstration](../../examples/csharp-overwrit
 
 If you want the generated models to inherit from a custom class, you can overwrite the existing rendering behavior and create your own class setup.
 
-Check out this [example for a live demonstration](../../examples/csharp-use-inheritance).
+## Generate models as records 
+
+Since C# 9 the language now supports records as an alternative to classes suitable for roles like DTO's. Modelina can generate records by setting the `modelType: record` option. Note that this renderer does not support the `autoImplementedProperties` option as this is default with records. 
+
+Check out this [example for a live demonstration](../../examples/csharp-generate-records).
+
 # FAQ
 This is the most asked questions and answers which should be your GOTO list to check before asking anywhere else. Cause it might already have been answered!
 
