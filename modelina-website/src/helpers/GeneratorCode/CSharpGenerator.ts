@@ -16,6 +16,11 @@ export function getCSharpGeneratorCode(
       `   autoImplementedProperties: ${generatorOptions.csharpAutoImplemented}`
     );
   }
+  if (generatorOptions.cSharpOverwriteHashcode) {
+    optionString.push(
+      `   OverwriteHashcodeSupport : ${generatorOptions.cSharpOverwriteHashcode}`
+    );
+  }
 
   const presetOptions =
     optionStringPresets.length > 0
