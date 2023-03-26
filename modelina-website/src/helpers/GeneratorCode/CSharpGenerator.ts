@@ -16,9 +16,9 @@ export function getCSharpGeneratorCode(
       `   autoImplementedProperties: ${generatorOptions.csharpAutoImplemented}`
     );
   }
-  if (generatorOptions.cSharpOverwriteHashcode) {
+  if (generatorOptions.csharpOverwriteHashcode) {
     optionString.push(
-      `   OverwriteHashcodeSupport : ${generatorOptions.cSharpOverwriteHashcode}`
+      `   OverwriteHashcodeSupport : ${generatorOptions.csharpOverwriteHashcode}`
     );
   }
 

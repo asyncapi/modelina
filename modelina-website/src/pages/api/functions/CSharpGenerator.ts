@@ -17,7 +17,7 @@ export async function getCSharpModels(
   if (generatorOptions.csharpArrayType) {
     options.collectionType = generatorOptions.csharpArrayType as any;
     options.autoImplementedProperties = generatorOptions.csharpAutoImplemented;
-    options.OverwriteHashcodeSupport = generatorOptions.cSharpOverwriteHashcode;
+    options.OverwriteHashcodeSupport = generatorOptions.csharpOverwriteHashcode;
   }
 
   try {

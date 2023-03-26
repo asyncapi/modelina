@@ -21,7 +21,7 @@ export interface ModelinaJavaScriptOptions {}
 export interface ModelinaCSharpOptions {
   csharpArrayType: 'List' | 'Array' | undefined;
   csharpAutoImplemented: boolean;
-  cSharpOverwriteHashcode: boolean;
+  csharpOverwriteHashcode: boolean;
 }
 export interface ModelinaKotlinOptions {}
 export interface ModelinaRustOptions {}
