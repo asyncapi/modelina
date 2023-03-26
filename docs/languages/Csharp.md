@@ -17,6 +17,7 @@ There are special use-cases that each language supports; this document pertains 
   * [Change the collection type for arrays](#change-the-collection-type-for-arrays)
   * [Generate custom enum value names](#generate-custom-enum-value-names)
   * [Generate models with inheritance](#generate-models-with-inheritance)
+  * [Generate models as records](#generate-models-as-records)
 - [FAQ](#faq)
     + [Why is the type `dynamic` or `dynamic[]` when it should be `X`?](#why-is-the-type-dynamic-or-dynamic-when-it-should-be-x)
 
