@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render a C# record instead of a class using the modelType option and should log expected output to console 1`] = `
+Array [
+  "public record Root
+{
+  public IEnumerable<dynamic>? Email { get; init; }
+  public required string Name { get; init; }
+}",
+]
+`;
