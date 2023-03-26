@@ -22,7 +22,7 @@ import {
 import { CSharpPreset, CSHARP_DEFAULT_PRESET } from './CSharpPreset';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { ClassRenderer } from './renderers/ClassRenderer';
-import { RecordRenderer } from "./renderers/RecordRenderer";
+import { RecordRenderer } from './renderers/RecordRenderer';
 import { isReservedCSharpKeyword } from './Constants';
 import { Logger } from '../../index';
 import {

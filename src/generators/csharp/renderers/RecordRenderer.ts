@@ -77,16 +77,16 @@ export const CSHARP_DEFAULT_RECORD_PRESET: CsharpRecordPreset<CSharpOptions> = {
   async property({ renderer, property }) {
     const getter = await renderer.runGetterPreset(property);
     const setter = await renderer.runSetterPreset(property);
-    return `public ${property.required ? 'required ' : ''}${property.property.type} ${pascalCase(
-        property.propertyName
-    )} { ${getter} ${setter} }`;
+    return `public ${property.required ? 'required ' : ''}${
+      property.property.type
+    } ${pascalCase(property.propertyName)} { ${getter} ${setter} }`;
   },
   getter() {
     return 'get;';
   },
   setter() {
     return 'init;';
-  }, 
+  },
   additionalContent() {
     return '';
   }

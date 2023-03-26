@@ -17,9 +17,9 @@ import {
   EnumRenderer
 } from './renderers/EnumRenderer';
 import {
-  RecordRenderer, 
+  RecordRenderer,
   CSHARP_DEFAULT_RECORD_PRESET
-} from "./renderers/RecordRenderer";
+} from './renderers/RecordRenderer';
 
 // Our class preset uses custom `accessor` hook to craft getter and setters.
 export interface CsharpClassPreset<O> extends ClassPreset<ClassRenderer, O> {
@@ -28,12 +28,13 @@ export interface CsharpClassPreset<O> extends ClassPreset<ClassRenderer, O> {
   ) => Promise<string> | string;
 }
 
-export interface CsharpRecordPreset<O> extends InterfacePreset<RecordRenderer, O> {
+export interface CsharpRecordPreset<O>
+  extends InterfacePreset<RecordRenderer, O> {
   getter?: (
-      args: PresetArgs<RecordRenderer, O, ConstrainedObjectModel> & PropertyArgs
+    args: PresetArgs<RecordRenderer, O, ConstrainedObjectModel> & PropertyArgs
   ) => Promise<string> | string;
   setter?: (
-      args: PresetArgs<RecordRenderer, O, ConstrainedObjectModel> & PropertyArgs
+    args: PresetArgs<RecordRenderer, O, ConstrainedObjectModel> & PropertyArgs
   ) => Promise<string> | string;
 }
 

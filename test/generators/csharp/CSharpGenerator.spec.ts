@@ -3,7 +3,7 @@ import { CSharpGenerator } from '../../../src/generators';
 describe('CSharpGenerator', () => {
   let generator: CSharpGenerator;
   beforeEach(() => {
-    generator = new CSharpGenerator({ modelType: "class"});
+    generator = new CSharpGenerator({ modelType: 'class' });
   });
 
   test('should render `class` type', async () => {
@@ -46,7 +46,7 @@ describe('CSharpGenerator', () => {
       'using System.Collections.Generic;'
     ]);
   });
-  
+
   test('should render `record` type if chosen', async () => {
     const doc = {
       $id: '_address',
@@ -80,7 +80,7 @@ describe('CSharpGenerator', () => {
       }
     };
 
-    generator.options.modelType = "record";
+    generator.options.modelType = 'record';
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot();
