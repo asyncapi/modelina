@@ -201,7 +201,7 @@ class Playground extends React.Component<
         query.csharpAutoImplemented === 'true';
     }
     if (query.csharpOverwriteHashcode !== undefined) {
-      this.config.cSharpOverwriteHashcode =
+      this.config.csharpOverwriteHashcode =
         query.csharpOverwriteHashcode === 'true';
     }
 

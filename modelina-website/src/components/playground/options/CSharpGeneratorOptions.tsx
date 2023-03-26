@@ -90,7 +90,7 @@ class CSharpGeneratorOptions extends React.Component<
               type="checkbox"
               className="form-checkbox cursor-pointer"
               name="csharpOverwriteHashcode"
-              checked={this.context?.cSharpOverwriteHashcode}
+              checked={this.context?.csharpOverwriteHashcode}
               onChange={this.onChangeOverwriteHashCodeSupport}
             />
           </label>
