@@ -64,14 +64,14 @@ function renderMarshalProperties(model: ConstrainedObjectModel) {
         })
         .join(' || ');
       marshalCode = `let ${propName} = [];
-for (const unionItem of ${modelInstanceVariable}) {
-  if(${allUnionReferences}) {
-    ${propName}.push(unionItem.marshal());
-  } else {
-    ${propName}.push(typeof unionItem === 'number' || typeof unionItem === 'boolean' ? unionItem : JSON.stringify(unionItem))
+  for (const unionItem of ${modelInstanceVariable}) {
+    if(${allUnionReferences}) {
+      ${propName}.push(unionItem.marshal());
+    } else {
+      ${propName}.push(typeof unionItem === 'number' || typeof unionItem === 'boolean' ? unionItem : JSON.stringify(unionItem))
+    }
   }
-}
-json += \`"${propModel.unconstrainedPropertyName}": [\${${propName}.join(',')}],\`;`;
+  json += \`"${propModel.unconstrainedPropertyName}": [\${${propName}.join(',')}],\`;`;
     } else {
       const propMarshalCode = renderMarshalProperty(
         modelInstanceVariable,

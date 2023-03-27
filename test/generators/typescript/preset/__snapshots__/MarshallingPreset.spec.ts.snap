@@ -59,14 +59,14 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
     }
     if(this.unionTest !== undefined) {
       let unionTestJsonValues = [];
-    for (const unionItem of this.unionTest) {
-      if(unionItem instanceof NestedTest) {
-        unionTestJsonValues.push(unionItem.marshal());
-      } else {
-        unionTestJsonValues.push(typeof unionItem === 'number' || typeof unionItem === 'boolean' ? unionItem : JSON.stringify(unionItem))
+      for (const unionItem of this.unionTest) {
+        if(unionItem instanceof NestedTest) {
+          unionTestJsonValues.push(unionItem.marshal());
+        } else {
+          unionTestJsonValues.push(typeof unionItem === 'number' || typeof unionItem === 'boolean' ? unionItem : JSON.stringify(unionItem))
+        }
       }
-    }
-    json += \`\\"unionTest\\": [\${unionTestJsonValues.join(',')}],\`; 
+      json += \`\\"unionTest\\": [\${unionTestJsonValues.join(',')}],\`; 
     }
     if(this.additionalProperties !== undefined) { 
     for (const [key, value] of this.additionalProperties.entries()) {
