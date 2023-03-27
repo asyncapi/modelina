@@ -20,7 +20,7 @@ export const CplusplusDefaultTypeMapping: TypeMapping<
     return `${constrainedModel.name}`;
   },
   Any({ dependencyManager }): string {
-    dependencyManager.addDependency('#include <utility>');
+    dependencyManager.addDependency('#include <any>');
     return 'std::any';
   },
   Float(): string {
