@@ -23,7 +23,14 @@ const doc = {
       enum: ['Some enum String', true, { test: 'test' }, 2]
     },
     numberProp: { type: 'number' },
-    nestedObject: { $ref: '#/definitions/NestedTest' }
+    nestedObject: { $ref: '#/definitions/NestedTest' },
+    unionTest: {
+      oneOf: [
+        {
+          $ref: '#/definitions/NestedTest'
+        }
+      ]
+    }
   }
 };
 describe('Marshalling preset', () => {

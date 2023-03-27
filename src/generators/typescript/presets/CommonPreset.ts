@@ -4,7 +4,8 @@ import {
   ConstrainedDictionaryModel,
   ConstrainedReferenceModel,
   ConstrainedMetaModel,
-  ConstrainedEnumModel
+  ConstrainedEnumModel,
+  ConstrainedUnionModel
 } from '../../../models';
 import renderExampleFunction from './utils/ExampleFunction';
 import { ClassRenderer } from '../renderers/ClassRenderer';
@@ -28,6 +29,7 @@ function renderMarshalProperty(
   ) {
     return `$\{${modelInstanceVariable}.marshal()}`;
   }
+
   return realizePropertyFactory(modelInstanceVariable);
 }
 function renderMarshalProperties(model: ConstrainedObjectModel) {
@@ -50,11 +52,33 @@ function renderMarshalProperties(model: ConstrainedObjectModel) {
 
   const marshalNormalProperties = normalProperties.map(([prop, propModel]) => {
     const modelInstanceVariable = `this.${prop}`;
-    const propMarshalCode = renderMarshalProperty(
-      modelInstanceVariable,
-      propModel.property
-    );
-    const marshalCode = `json += \`"${propModel.unconstrainedPropertyName}": ${propMarshalCode},\`;`;
+    let marshalCode = '';
+    if (propModel.property instanceof ConstrainedUnionModel) {
+      const propName = `${prop}JsonValues`;
+      const allUnionReferences = propModel.property.union
+        .filter((model) => {
+          return model instanceof ConstrainedReferenceModel;
+        })
+        .map((model) => {
+          return `unionItem instanceof ${model.type}`;
+        })
+        .join(' || ');
+      marshalCode = `let ${propName} = [];
+for (const unionItem of ${modelInstanceVariable}) {
+  if(${allUnionReferences}) {
+    ${propName}.push(unionItem.marshal());
+  } else {
+    ${propName}.push(typeof unionItem === 'number' || typeof unionItem === 'boolean' ? unionItem : JSON.stringify(unionItem))
+  }
+}
+json += \`"${propModel.unconstrainedPropertyName}": [\${${propName}.join(',')}],\`;`;
+    } else {
+      const propMarshalCode = renderMarshalProperty(
+        modelInstanceVariable,
+        propModel.property
+      );
+      marshalCode = `json += \`"${propModel.unconstrainedPropertyName}": ${propMarshalCode},\`;`;
+    }
     return `if(${modelInstanceVariable} !== undefined) {
   ${marshalCode} 
 }`;
