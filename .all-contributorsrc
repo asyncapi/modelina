@@ -494,6 +494,18 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "henrikjon",
+      "name": "henrikjon",
+      "avatar_url": "https://avatars.githubusercontent.com/u/27212232?v=4",
+      "profile": "https://github.com/henrikjon",
+      "contributions": [
+        "code",
+        "test",
+        "doc",
+        "example"
+      ]
     }
   ],
   "contributorsPerLine": 7,
