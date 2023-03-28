@@ -5,7 +5,8 @@ import {
   ConstrainedReferenceModel,
   ConstrainedMetaModel,
   ConstrainedEnumModel,
-  ConstrainedUnionModel
+  ConstrainedUnionModel,
+  ConstrainedArrayModel
 } from '../../../models';
 import renderExampleFunction from './utils/ExampleFunction';
 import { ClassRenderer } from '../renderers/ClassRenderer';
@@ -32,6 +33,86 @@ function renderMarshalProperty(
 
   return realizePropertyFactory(modelInstanceVariable);
 }
+
+function renderUnionSerializationArray(
+  modelInstanceVariable: string,
+  prop: string,
+  unconstrainedProperty: string,
+  unionModel: ConstrainedUnionModel
+) {
+  const propName = `${prop}JsonValues`;
+  const allUnionReferences = unionModel.union
+    .filter((model) => {
+      return (
+        model instanceof ConstrainedReferenceModel &&
+        !(model.ref instanceof ConstrainedEnumModel)
+      );
+    })
+    .map((model) => {
+      return `unionItem instanceof ${model.type}`;
+    });
+  const allUnionReferencesCondition = allUnionReferences.join(' || ');
+  const hasUnionReference = allUnionReferences.length > 0;
+  let unionSerialization = `${propName}.push(typeof unionItem === 'number' || typeof unionItem === 'boolean' ? unionItem : JSON.stringify(unionItem))`;
+  if (hasUnionReference) {
+    unionSerialization = `if(${allUnionReferencesCondition}) {
+      ${propName}.push(unionItem.marshal());
+    } else {
+      ${propName}.push(typeof unionItem === 'number' || typeof unionItem === 'boolean' ? unionItem : JSON.stringify(unionItem))
+    }`;
+  }
+  return `let ${propName}: string[] = [];
+  for (const unionItem of ${modelInstanceVariable}) {
+    ${unionSerialization}
+  }
+  json += \`"${unconstrainedProperty}": [\${${propName}.join(',')}],\`;`;
+}
+function renderArraySerialization(
+  modelInstanceVariable: string,
+  prop: string,
+  unconstrainedProperty: string,
+  arrayModel: ConstrainedArrayModel
+) {
+  const propName = `${prop}JsonValues`;
+  return `let ${propName}: string[] = [];
+  for (const unionItem of ${modelInstanceVariable}) {
+    ${propName}.push(\`${renderMarshalProperty(
+    'unionItem',
+    arrayModel.valueModel
+  )}\`);
+  }
+  json += \`"${unconstrainedProperty}": [\${${propName}.join(',')}],\`;`;
+}
+function renderUnionSerialization(
+  modelInstanceVariable: string,
+  unconstrainedProperty: string,
+  unionModel: ConstrainedUnionModel
+) {
+  const allUnionReferences = unionModel.union
+    .filter((model) => {
+      return (
+        model instanceof ConstrainedReferenceModel &&
+        !(model.ref instanceof ConstrainedEnumModel)
+      );
+    })
+    .map((model) => {
+      return `${modelInstanceVariable} instanceof ${model.type}`;
+    });
+  const allUnionReferencesCondition = allUnionReferences.join(' || ');
+  const hasUnionReference = allUnionReferences.length > 0;
+  if (hasUnionReference) {
+    return `if(${allUnionReferencesCondition}) {
+    json += \`"${unconstrainedProperty}": $\{${modelInstanceVariable}.marshal()},\`;
+  } else {
+    json += \`"${unconstrainedProperty}": ${realizePropertyFactory(
+      modelInstanceVariable
+    )},\`;
+  }`;
+  }
+  return `json += \`"${unconstrainedProperty}": ${realizePropertyFactory(
+    modelInstanceVariable
+  )},\`;`;
+}
 function renderMarshalProperties(model: ConstrainedObjectModel) {
   const properties = model.properties || {};
   const propertyKeys = [...Object.entries(properties)];
@@ -53,25 +134,29 @@ function renderMarshalProperties(model: ConstrainedObjectModel) {
   const marshalNormalProperties = normalProperties.map(([prop, propModel]) => {
     const modelInstanceVariable = `this.${prop}`;
     let marshalCode = '';
-    if (propModel.property instanceof ConstrainedUnionModel) {
-      const propName = `${prop}JsonValues`;
-      const allUnionReferences = propModel.property.union
-        .filter((model) => {
-          return model instanceof ConstrainedReferenceModel;
-        })
-        .map((model) => {
-          return `unionItem instanceof ${model.type}`;
-        })
-        .join(' || ');
-      marshalCode = `let ${propName} = [];
-  for (const unionItem of ${modelInstanceVariable}) {
-    if(${allUnionReferences}) {
-      ${propName}.push(unionItem.marshal());
-    } else {
-      ${propName}.push(typeof unionItem === 'number' || typeof unionItem === 'boolean' ? unionItem : JSON.stringify(unionItem))
-    }
-  }
-  json += \`"${propModel.unconstrainedPropertyName}": [\${${propName}.join(',')}],\`;`;
+    if (
+      propModel.property instanceof ConstrainedArrayModel &&
+      propModel.property.valueModel instanceof ConstrainedUnionModel
+    ) {
+      marshalCode = renderUnionSerializationArray(
+        modelInstanceVariable,
+        prop,
+        propModel.unconstrainedPropertyName,
+        propModel.property.valueModel
+      );
+    } else if (propModel.property instanceof ConstrainedUnionModel) {
+      marshalCode = renderUnionSerialization(
+        modelInstanceVariable,
+        propModel.unconstrainedPropertyName,
+        propModel.property
+      );
+    } else if (propModel.property instanceof ConstrainedArrayModel) {
+      marshalCode = renderArraySerialization(
+        modelInstanceVariable,
+        prop,
+        propModel.unconstrainedPropertyName,
+        propModel.property
+      );
     } else {
       const propMarshalCode = renderMarshalProperty(
         modelInstanceVariable,

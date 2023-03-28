@@ -30,6 +30,27 @@ const doc = {
           $ref: '#/definitions/NestedTest'
         }
       ]
+    },
+    unionArrayTest: {
+      type: 'array',
+      additionalItems: false,
+      items: {
+        oneOf: [
+          {
+            $ref: '#/definitions/NestedTest'
+          },
+          {
+            type: 'string'
+          }
+        ]
+      }
+    },
+    arrayTest: {
+      type: 'array',
+      additionalItems: false,
+      items: {
+        $ref: '#/definitions/NestedTest'
+      }
     }
   }
 };
