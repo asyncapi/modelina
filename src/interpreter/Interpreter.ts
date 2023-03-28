@@ -129,6 +129,21 @@ export class Interpreter {
     if (schema.required !== undefined) {
       model.required = schema.required;
     }
+    if (schema instanceof AsyncapiV2Schema && schema.discriminator) {
+      model.discriminator = schema.discriminator;
+
+      if (!model.required?.includes(model.discriminator)) {
+        throw new Error(
+          `discriminator ${
+            model.discriminator
+          } must be a required property in schema ${JSON.stringify(
+            schema,
+            null,
+            2
+          )}`
+        );
+      }
+    }
 
     interpretPatternProperties(schema, model, this, interpreterOptions);
     interpretAdditionalItems(schema, model, this, interpreterOptions);

@@ -69,23 +69,23 @@ export class ConstrainedObjectPropertyModel {
     public propertyName: string,
     public unconstrainedPropertyName: string,
     public required: boolean,
-    public property: ConstrainedMetaModel
+    public property: ConstrainedMetaModel,
+    public constValue?: unknown
   ) {}
 
-  public getConstantValue(): ConstrainedEnumValueModel | undefined {
+  public isConstrainedEnumModel(): ConstrainedEnumModel | undefined {
     if (
       this.property instanceof ConstrainedReferenceModel &&
-      this.property.ref instanceof ConstrainedEnumModel &&
-      this.property.ref.constValue
+      this.property.ref instanceof ConstrainedEnumModel
     ) {
-      return this.property.ref.constValue;
+      return this.property.ref;
     }
-
-    return undefined;
   }
 
-  public hasConstantValue(): boolean {
-    return !!this.getConstantValue();
+  public isConstrainedStringModel(): ConstrainedStringModel | undefined {
+    if (this.property instanceof ConstrainedStringModel) {
+      return this.property;
+    }
   }
 }
 export class ConstrainedArrayModel extends ConstrainedMetaModel {
@@ -143,8 +143,7 @@ export class ConstrainedEnumModel extends ConstrainedMetaModel {
     name: string,
     originalInput: any,
     type: string,
-    public values: ConstrainedEnumValueModel[],
-    public constValue?: ConstrainedEnumValueModel
+    public values: ConstrainedEnumValueModel[]
   ) {
     super(name, originalInput, type);
   }

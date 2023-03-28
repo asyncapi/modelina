@@ -30,6 +30,7 @@ export default function interpretAllOf(
   ) {
     return;
   }
+
   for (const allOfSchema of schema.allOf) {
     const allOfModel = interpreter.interpret(allOfSchema, interpreterOptions);
     if (allOfModel === undefined) {

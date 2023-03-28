@@ -389,7 +389,8 @@ function constrainObjectModel<
       '',
       propertyMetaModel.propertyName,
       propertyMetaModel.required,
-      constrainedModel
+      constrainedModel,
+      propertyMetaModel.constValue
     );
     const constrainedPropertyName = constrainRules.propertyKey({
       objectPropertyModel: propertyMetaModel,
@@ -467,12 +468,6 @@ function ConstrainEnumModel<
     partOfProperty: context.partOfProperty,
     dependencyManager: context.dependencyManager
   });
-
-  if (context.metaModel.constValue) {
-    constrainedModel.constValue = enumValueToConstrainedEnumValueModel(
-      context.metaModel.constValue
-    );
-  }
 
   return constrainedModel;
 }

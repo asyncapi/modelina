@@ -20,7 +20,8 @@ export class CommonModel {
   $id?: string;
   type?: string | string[];
   enum?: any[];
-  const?: any;
+  const?: unknown;
+  discriminator?: string;
   items?: CommonModel | CommonModel[];
   properties?: { [key: string]: CommonModel };
   additionalProperties?: CommonModel;

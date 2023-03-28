@@ -28,14 +28,16 @@ export class ObjectPropertyModel {
   constructor(
     public propertyName: string,
     public required: boolean,
-    public property: MetaModel
+    public property: MetaModel,
+    public constValue?: unknown
   ) {}
 }
 export class ObjectModel extends MetaModel {
   constructor(
     name: string,
     originalInput: any,
-    public properties: { [key: string]: ObjectPropertyModel }
+    public properties: { [key: string]: ObjectPropertyModel },
+    public discriminator?: string
   ) {
     super(name, originalInput);
   }
@@ -57,8 +59,7 @@ export class EnumModel extends MetaModel {
   constructor(
     name: string,
     originalInput: any,
-    public values: EnumValueModel[],
-    public constValue?: EnumValueModel
+    public values: EnumValueModel[]
   ) {
     super(name, originalInput);
   }

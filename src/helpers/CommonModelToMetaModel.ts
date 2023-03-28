@@ -251,7 +251,7 @@ export function convertToEnumModel(
   jsonSchemaModel: CommonModel,
   name: string
 ): EnumModel | undefined {
-  if (!isEnumModel(jsonSchemaModel) && !jsonSchemaModel.const) {
+  if (!isEnumModel(jsonSchemaModel)) {
     return undefined;
   }
 
@@ -268,10 +268,6 @@ export function convertToEnumModel(
     for (const enumValue of jsonSchemaModel.enum) {
       metaModel.values.push(enumValueToEnumValueModel(enumValue));
     }
-  }
-
-  if (jsonSchemaModel.const) {
-    metaModel.constValue = enumValueToEnumValueModel(jsonSchemaModel.const);
   }
 
   return metaModel;
@@ -394,7 +390,12 @@ export function convertToObjectModel(
     return undefined;
   }
 
-  const metaModel = new ObjectModel(name, jsonSchemaModel.originalInput, {});
+  const metaModel = new ObjectModel(
+    name,
+    jsonSchemaModel.originalInput,
+    {},
+    jsonSchemaModel.discriminator
+  );
   //cache model before continuing
   if (!alreadySeenModels.has(jsonSchemaModel)) {
     alreadySeenModels.set(jsonSchemaModel, metaModel);
@@ -404,11 +405,18 @@ export function convertToObjectModel(
     jsonSchemaModel.properties || {}
   )) {
     const isRequired = jsonSchemaModel.isRequired(propertyName);
+
+    if (metaModel.discriminator === propertyName) {
+      prop.addEnum(metaModel.discriminator);
+    }
+
     const propertyModel = new ObjectPropertyModel(
       propertyName,
       isRequired,
-      convertToMetaModel(prop, alreadySeenModels)
+      convertToMetaModel(prop, alreadySeenModels),
+      jsonSchemaModel.const
     );
+
     metaModel.properties[String(propertyName)] = propertyModel;
   }
 
