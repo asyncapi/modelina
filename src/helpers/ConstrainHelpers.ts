@@ -83,7 +83,12 @@ export interface Constraints {
   propertyKey: PropertyKeyConstraint;
 }
 
-const placeHolderConstrainedObject = new ConstrainedAnyModel('', undefined, '');
+const placeHolderConstrainedObject = new ConstrainedAnyModel(
+  '',
+  undefined,
+  {},
+  ''
+);
 
 function constrainReferenceModel<
   Options,
@@ -97,6 +102,7 @@ function constrainReferenceModel<
   const constrainedModel = new ConstrainedReferenceModel(
     context.constrainedName,
     context.metaModel.originalInput,
+    context.metaModel.options,
     '',
     placeHolderConstrainedObject
   );
@@ -127,6 +133,7 @@ function constrainAnyModel<
   const constrainedModel = new ConstrainedAnyModel(
     context.constrainedName,
     context.metaModel.originalInput,
+    context.metaModel.options,
     ''
   );
   constrainedModel.type = getTypeFromMapping(typeMapping, {
@@ -147,6 +154,7 @@ function constrainFloatModel<
   const constrainedModel = new ConstrainedFloatModel(
     context.constrainedName,
     context.metaModel.originalInput,
+    context.metaModel.options,
     ''
   );
   constrainedModel.type = getTypeFromMapping(typeMapping, {
@@ -167,6 +175,7 @@ function constrainIntegerModel<
   const constrainedModel = new ConstrainedIntegerModel(
     context.constrainedName,
     context.metaModel.originalInput,
+    context.metaModel.options,
     ''
   );
   constrainedModel.type = getTypeFromMapping(typeMapping, {
@@ -187,6 +196,7 @@ function constrainStringModel<
   const constrainedModel = new ConstrainedStringModel(
     context.constrainedName,
     context.metaModel.originalInput,
+    context.metaModel.options,
     ''
   );
   constrainedModel.type = getTypeFromMapping(typeMapping, {
@@ -207,6 +217,7 @@ function constrainBooleanModel<
   const constrainedModel = new ConstrainedBooleanModel(
     context.constrainedName,
     context.metaModel.originalInput,
+    context.metaModel.options,
     ''
   );
   constrainedModel.type = getTypeFromMapping(typeMapping, {
@@ -229,6 +240,7 @@ function constrainTupleModel<
   const constrainedModel = new ConstrainedTupleModel(
     context.constrainedName,
     context.metaModel.originalInput,
+    context.metaModel.options,
     '',
     []
   );
@@ -264,6 +276,7 @@ function constrainArrayModel<
   const constrainedModel = new ConstrainedArrayModel(
     context.constrainedName,
     context.metaModel.originalInput,
+    context.metaModel.options,
     '',
     placeHolderConstrainedObject
   );
@@ -299,6 +312,7 @@ function constrainUnionModel<
   const constrainedModel = new ConstrainedUnionModel(
     context.constrainedName,
     context.metaModel.originalInput,
+    context.metaModel.options,
     '',
     []
   );
@@ -333,6 +347,7 @@ function constrainDictionaryModel<
   const constrainedModel = new ConstrainedDictionaryModel(
     context.constrainedName,
     context.metaModel.originalInput,
+    context.metaModel.options,
     '',
     placeHolderConstrainedObject,
     placeHolderConstrainedObject,
@@ -379,6 +394,7 @@ function constrainObjectModel<
   const constrainedModel = new ConstrainedObjectModel(
     context.constrainedName,
     context.metaModel.originalInput,
+    context.metaModel.options,
     '',
     {}
   );
@@ -389,8 +405,7 @@ function constrainObjectModel<
       '',
       propertyMetaModel.propertyName,
       propertyMetaModel.required,
-      constrainedModel,
-      propertyMetaModel.constValue
+      constrainedModel
     );
     const constrainedPropertyName = constrainRules.propertyKey({
       objectPropertyModel: propertyMetaModel,
@@ -433,6 +448,7 @@ function ConstrainEnumModel<
   const constrainedModel = new ConstrainedEnumModel(
     context.constrainedName,
     context.metaModel.originalInput,
+    context.metaModel.options,
     '',
     []
   );

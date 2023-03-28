@@ -26,7 +26,7 @@ export abstract class TypeScriptObjectRenderer extends TypeScriptRenderer<Constr
   }
 
   getConstValue(property: ConstrainedObjectPropertyModel): string | undefined {
-    if (!property.constValue) {
+    if (!property.hasConstValue()) {
       return undefined;
     }
 
@@ -35,7 +35,7 @@ export abstract class TypeScriptObjectRenderer extends TypeScriptRenderer<Constr
     if (constrainedEnumValueModel) {
       return `${property.property.type}.${constrainedEnumValueModel.key}`;
     } else if (property.isConstrainedStringModel()) {
-      return `'${property.constValue}'`;
+      return `'${property.getConstValue()}'`;
     }
   }
 

@@ -364,10 +364,7 @@ describe('CommonModelToMetaModel', () => {
         value: cm.const
       }
     ]);
-    expect((model as EnumModel).constValue).toEqual({
-      key: cm.const,
-      value: cm.const
-    });
+    expect(model.options.constValue).toEqual(cm.const);
   });
 
   test('should handle const', () => {
@@ -378,10 +375,7 @@ describe('CommonModelToMetaModel', () => {
     const model = convertToMetaModel(cm);
 
     expect(model).not.toBeUndefined();
-    expect(model instanceof EnumModel).toEqual(true);
-    expect((model as EnumModel).constValue).toEqual({
-      key: cm.const,
-      value: cm.const
-    });
+    expect(model instanceof AnyModel).toEqual(true);
+    expect(model.options.constValue).toEqual(cm.const);
   });
 });

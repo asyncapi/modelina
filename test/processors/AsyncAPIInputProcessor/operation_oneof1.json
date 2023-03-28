@@ -66,6 +66,7 @@
       "CloudEvent": {
         "title": "CloudEvent",
         "type": "object",
+        "discriminator": "type",
         "properties": {
           "id": {
             "type": "string"

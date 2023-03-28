@@ -11,10 +11,11 @@ import {
   PropertyKeyConstraintOptions
 } from '../../../../src/generators/csharp/constrainer/PropertyKeyConstrainer';
 describe('PropertyKeyConstrainer', () => {
-  const objectModel = new ObjectModel('MyObjectModelName', undefined, {});
+  const objectModel = new ObjectModel('MyObjectModelName', undefined, {}, {});
   const constrainedObjectModel = new ConstrainedObjectModel(
     'MyObjectModelName',
     undefined,
+    {},
     '',
     {}
   );
@@ -60,10 +61,11 @@ describe('PropertyKeyConstrainer', () => {
     expect(constrainedKey).toEqual('reservedMyObjectModelName');
   });
   test('should not contain duplicate properties', () => {
-    const objectModel = new ObjectModel('test', undefined, {});
+    const objectModel = new ObjectModel('test', undefined, {}, {});
     const constrainedObjectModel = new ConstrainedObjectModel(
       'test',
       undefined,
+      {},
       '',
       {}
     );

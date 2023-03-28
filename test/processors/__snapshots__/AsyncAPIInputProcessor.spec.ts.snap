@@ -5,12 +5,16 @@ InputMetaModel {
   "models": Object {
     "pet": UnionModel {
       "name": "pet",
+      "options": Object {
+        "constValue": undefined,
+      },
       "originalInput": AsyncapiV2Schema {
         "$id": "pet",
         "oneOf": Array [
           AsyncapiV2Schema {
             "allOf": Array [
               AsyncapiV2Schema {
+                "discriminator": "type",
                 "properties": Object {
                   "dataschema": AsyncapiV2Schema {
                     "format": "uri",
@@ -82,6 +86,7 @@ InputMetaModel {
           AsyncapiV2Schema {
             "allOf": Array [
               AsyncapiV2Schema {
+                "discriminator": "type",
                 "properties": Object {
                   "dataschema": AsyncapiV2Schema {
                     "format": "uri",
@@ -155,10 +160,15 @@ InputMetaModel {
       },
       "union": Array [
         ObjectModel {
+          "discriminator": "type",
           "name": "Dog",
+          "options": Object {
+            "constValue": undefined,
+          },
           "originalInput": AsyncapiV2Schema {
             "allOf": Array [
               AsyncapiV2Schema {
+                "discriminator": "type",
                 "properties": Object {
                   "dataschema": AsyncapiV2Schema {
                     "format": "uri",
@@ -232,10 +242,14 @@ InputMetaModel {
               "property": DictionaryModel {
                 "key": StringModel {
                   "name": "additionalProperties",
+                  "options": Object {
+                    "constValue": undefined,
+                  },
                   "originalInput": Array [
                     AsyncapiV2Schema {
                       "allOf": Array [
                         AsyncapiV2Schema {
+                          "discriminator": "type",
                           "properties": Object {
                             "dataschema": AsyncapiV2Schema {
                               "format": "uri",
@@ -307,10 +321,14 @@ InputMetaModel {
                   ],
                 },
                 "name": "additionalProperties",
+                "options": Object {
+                  "constValue": undefined,
+                },
                 "originalInput": Array [
                   AsyncapiV2Schema {
                     "allOf": Array [
                       AsyncapiV2Schema {
+                        "discriminator": "type",
                         "properties": Object {
                           "dataschema": AsyncapiV2Schema {
                             "format": "uri",
@@ -383,9 +401,13 @@ InputMetaModel {
                 "serializationType": "unwrap",
                 "value": AnyModel {
                   "name": "undefined",
+                  "options": Object {
+                    "constValue": undefined,
+                  },
                   "originalInput": AsyncapiV2Schema {
                     "allOf": Array [
                       AsyncapiV2Schema {
+                        "discriminator": "type",
                         "properties": Object {
                           "dataschema": AsyncapiV2Schema {
                             "format": "uri",
@@ -462,6 +484,9 @@ InputMetaModel {
             "dataschema": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_6",
+                "options": Object {
+                  "constValue": undefined,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "format": "uri",
                   "type": "string",
@@ -475,6 +500,9 @@ InputMetaModel {
             "id": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_2",
+                "options": Object {
+                  "constValue": undefined,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "type": "string",
                   "x-modelgen-inferred-name": "anonymous_schema_2",
@@ -487,6 +515,9 @@ InputMetaModel {
             "source": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_3",
+                "options": Object {
+                  "constValue": undefined,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "format": "uri-reference",
                   "type": "string",
@@ -500,6 +531,9 @@ InputMetaModel {
             "specversion": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_4",
+                "options": Object {
+                  "constValue": undefined,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "default": "1.0",
                   "examples": Array [
@@ -516,6 +550,9 @@ InputMetaModel {
             "time": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_7",
+                "options": Object {
+                  "constValue": undefined,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "format": "date-time",
                   "type": "string",
@@ -528,14 +565,14 @@ InputMetaModel {
             },
             "type": ObjectPropertyModel {
               "property": EnumModel {
-                "constValue": EnumValueModel {
-                  "key": "Dog",
-                  "value": "Dog",
-                },
                 "name": "DogType",
+                "options": Object {
+                  "constValue": "Dog",
+                },
                 "originalInput": AsyncapiV2Schema {
                   "allOf": Array [
                     AsyncapiV2Schema {
+                      "discriminator": "type",
                       "properties": Object {
                         "dataschema": AsyncapiV2Schema {
                           "format": "uri",
@@ -617,10 +654,15 @@ InputMetaModel {
           },
         },
         ObjectModel {
+          "discriminator": "type",
           "name": "Cat",
+          "options": Object {
+            "constValue": undefined,
+          },
           "originalInput": AsyncapiV2Schema {
             "allOf": Array [
               AsyncapiV2Schema {
+                "discriminator": "type",
                 "properties": Object {
                   "dataschema": AsyncapiV2Schema {
                     "format": "uri",
@@ -694,10 +736,14 @@ InputMetaModel {
               "property": DictionaryModel {
                 "key": StringModel {
                   "name": "additionalProperties",
+                  "options": Object {
+                    "constValue": undefined,
+                  },
                   "originalInput": Array [
                     AsyncapiV2Schema {
                       "allOf": Array [
                         AsyncapiV2Schema {
+                          "discriminator": "type",
                           "properties": Object {
                             "dataschema": AsyncapiV2Schema {
                               "format": "uri",
@@ -769,10 +815,14 @@ InputMetaModel {
                   ],
                 },
                 "name": "additionalProperties",
+                "options": Object {
+                  "constValue": undefined,
+                },
                 "originalInput": Array [
                   AsyncapiV2Schema {
                     "allOf": Array [
                       AsyncapiV2Schema {
+                        "discriminator": "type",
                         "properties": Object {
                           "dataschema": AsyncapiV2Schema {
                             "format": "uri",
@@ -845,9 +895,13 @@ InputMetaModel {
                 "serializationType": "unwrap",
                 "value": AnyModel {
                   "name": "undefined",
+                  "options": Object {
+                    "constValue": undefined,
+                  },
                   "originalInput": AsyncapiV2Schema {
                     "allOf": Array [
                       AsyncapiV2Schema {
+                        "discriminator": "type",
                         "properties": Object {
                           "dataschema": AsyncapiV2Schema {
                             "format": "uri",
@@ -924,6 +978,9 @@ InputMetaModel {
             "dataschema": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_6",
+                "options": Object {
+                  "constValue": undefined,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "format": "uri",
                   "type": "string",
@@ -937,6 +994,9 @@ InputMetaModel {
             "id": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_2",
+                "options": Object {
+                  "constValue": undefined,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "type": "string",
                   "x-modelgen-inferred-name": "anonymous_schema_2",
@@ -949,6 +1009,9 @@ InputMetaModel {
             "source": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_3",
+                "options": Object {
+                  "constValue": undefined,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "format": "uri-reference",
                   "type": "string",
@@ -962,6 +1025,9 @@ InputMetaModel {
             "specversion": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_4",
+                "options": Object {
+                  "constValue": undefined,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "default": "1.0",
                   "examples": Array [
@@ -978,6 +1044,9 @@ InputMetaModel {
             "time": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_7",
+                "options": Object {
+                  "constValue": undefined,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "format": "date-time",
                   "type": "string",
@@ -990,14 +1059,14 @@ InputMetaModel {
             },
             "type": ObjectPropertyModel {
               "property": EnumModel {
-                "constValue": EnumValueModel {
-                  "key": "Cat",
-                  "value": "Cat",
-                },
                 "name": "CatType",
+                "options": Object {
+                  "constValue": "Cat",
+                },
                 "originalInput": AsyncapiV2Schema {
                   "allOf": Array [
                     AsyncapiV2Schema {
+                      "discriminator": "type",
                       "properties": Object {
                         "dataschema": AsyncapiV2Schema {
                           "format": "uri",
@@ -1093,6 +1162,7 @@ InputMetaModel {
                   "payload": Object {
                     "allOf": Array [
                       Object {
+                        "discriminator": "type",
                         "properties": Object {
                           "dataschema": Object {
                             "format": "uri",
@@ -1157,6 +1227,7 @@ InputMetaModel {
                   "payload": Object {
                     "allOf": Array [
                       Object {
+                        "discriminator": "type",
                         "properties": Object {
                           "dataschema": Object {
                             "format": "uri",
@@ -1228,6 +1299,7 @@ InputMetaModel {
             "payload": Object {
               "allOf": Array [
                 Object {
+                  "discriminator": "type",
                   "properties": Object {
                     "dataschema": Object {
                       "format": "uri",
@@ -1292,6 +1364,7 @@ InputMetaModel {
             "payload": Object {
               "allOf": Array [
                 Object {
+                  "discriminator": "type",
                   "properties": Object {
                     "dataschema": Object {
                       "format": "uri",
@@ -1355,6 +1428,7 @@ InputMetaModel {
         },
         "schemas": Object {
           "CloudEvent": Object {
+            "discriminator": "type",
             "properties": Object {
               "dataschema": Object {
                 "format": "uri",
@@ -1478,6 +1552,7 @@ InputMetaModel {
       \\"CloudEvent\\": {
         \\"title\\": \\"CloudEvent\\",
         \\"type\\": \\"object\\",
+        \\"discriminator\\": \\"type\\",
         \\"properties\\": {
           \\"id\\": {
             \\"type\\": \\"string\\"
@@ -1520,6 +1595,7 @@ InputMetaModel {
                       "payload": Object {
                         "allOf": Array [
                           Object {
+                            "discriminator": "type",
                             "properties": Object {
                               "dataschema": Object {
                                 "format": "uri",
@@ -1584,6 +1660,7 @@ InputMetaModel {
                       "payload": Object {
                         "allOf": Array [
                           Object {
+                            "discriminator": "type",
                             "properties": Object {
                               "dataschema": Object {
                                 "format": "uri",
@@ -1655,6 +1732,7 @@ InputMetaModel {
                 "payload": Object {
                   "allOf": Array [
                     Object {
+                      "discriminator": "type",
                       "properties": Object {
                         "dataschema": Object {
                           "format": "uri",
@@ -1719,6 +1797,7 @@ InputMetaModel {
                 "payload": Object {
                   "allOf": Array [
                     Object {
+                      "discriminator": "type",
                       "properties": Object {
                         "dataschema": Object {
                           "format": "uri",
@@ -1782,6 +1861,7 @@ InputMetaModel {
             },
             "schemas": Object {
               "CloudEvent": Object {
+                "discriminator": "type",
                 "properties": Object {
                   "dataschema": Object {
                     "format": "uri",
@@ -1855,12 +1935,16 @@ InputMetaModel {
   "models": Object {
     "pet": UnionModel {
       "name": "pet",
+      "options": Object {
+        "constValue": undefined,
+      },
       "originalInput": AsyncapiV2Schema {
         "$id": "pet",
         "oneOf": Array [
           AsyncapiV2Schema {
             "allOf": Array [
               AsyncapiV2Schema {
+                "discriminator": "type",
                 "properties": Object {
                   "dataschema": AsyncapiV2Schema {
                     "format": "uri",
@@ -1932,6 +2016,7 @@ InputMetaModel {
           AsyncapiV2Schema {
             "allOf": Array [
               AsyncapiV2Schema {
+                "discriminator": "type",
                 "properties": Object {
                   "dataschema": AsyncapiV2Schema {
                     "format": "uri",
@@ -2005,10 +2090,15 @@ InputMetaModel {
       },
       "union": Array [
         ObjectModel {
+          "discriminator": "type",
           "name": "Dog",
+          "options": Object {
+            "constValue": undefined,
+          },
           "originalInput": AsyncapiV2Schema {
             "allOf": Array [
               AsyncapiV2Schema {
+                "discriminator": "type",
                 "properties": Object {
                   "dataschema": AsyncapiV2Schema {
                     "format": "uri",
@@ -2082,10 +2172,14 @@ InputMetaModel {
               "property": DictionaryModel {
                 "key": StringModel {
                   "name": "additionalProperties",
+                  "options": Object {
+                    "constValue": undefined,
+                  },
                   "originalInput": Array [
                     AsyncapiV2Schema {
                       "allOf": Array [
                         AsyncapiV2Schema {
+                          "discriminator": "type",
                           "properties": Object {
                             "dataschema": AsyncapiV2Schema {
                               "format": "uri",
@@ -2157,10 +2251,14 @@ InputMetaModel {
                   ],
                 },
                 "name": "additionalProperties",
+                "options": Object {
+                  "constValue": undefined,
+                },
                 "originalInput": Array [
                   AsyncapiV2Schema {
                     "allOf": Array [
                       AsyncapiV2Schema {
+                        "discriminator": "type",
                         "properties": Object {
                           "dataschema": AsyncapiV2Schema {
                             "format": "uri",
@@ -2233,9 +2331,13 @@ InputMetaModel {
                 "serializationType": "unwrap",
                 "value": AnyModel {
                   "name": "undefined",
+                  "options": Object {
+                    "constValue": undefined,
+                  },
                   "originalInput": AsyncapiV2Schema {
                     "allOf": Array [
                       AsyncapiV2Schema {
+                        "discriminator": "type",
                         "properties": Object {
                           "dataschema": AsyncapiV2Schema {
                             "format": "uri",
@@ -2312,6 +2414,9 @@ InputMetaModel {
             "dataschema": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_6",
+                "options": Object {
+                  "constValue": undefined,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "format": "uri",
                   "type": "string",
@@ -2325,6 +2430,9 @@ InputMetaModel {
             "id": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_2",
+                "options": Object {
+                  "constValue": undefined,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "type": "string",
                   "x-modelgen-inferred-name": "anonymous_schema_2",
@@ -2337,6 +2445,9 @@ InputMetaModel {
             "source": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_3",
+                "options": Object {
+                  "constValue": undefined,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "format": "uri-reference",
                   "type": "string",
@@ -2350,6 +2461,9 @@ InputMetaModel {
             "specversion": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_4",
+                "options": Object {
+                  "constValue": undefined,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "default": "1.0",
                   "examples": Array [
@@ -2366,6 +2480,9 @@ InputMetaModel {
             "time": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_7",
+                "options": Object {
+                  "constValue": undefined,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "format": "date-time",
                   "type": "string",
@@ -2378,14 +2495,14 @@ InputMetaModel {
             },
             "type": ObjectPropertyModel {
               "property": EnumModel {
-                "constValue": EnumValueModel {
-                  "key": "Dog",
-                  "value": "Dog",
-                },
                 "name": "CloudEventType",
+                "options": Object {
+                  "constValue": "Dog",
+                },
                 "originalInput": AsyncapiV2Schema {
                   "allOf": Array [
                     AsyncapiV2Schema {
+                      "discriminator": "type",
                       "properties": Object {
                         "dataschema": AsyncapiV2Schema {
                           "format": "uri",
@@ -2467,10 +2584,15 @@ InputMetaModel {
           },
         },
         ObjectModel {
+          "discriminator": "type",
           "name": "Cat",
+          "options": Object {
+            "constValue": undefined,
+          },
           "originalInput": AsyncapiV2Schema {
             "allOf": Array [
               AsyncapiV2Schema {
+                "discriminator": "type",
                 "properties": Object {
                   "dataschema": AsyncapiV2Schema {
                     "format": "uri",
@@ -2544,10 +2666,14 @@ InputMetaModel {
               "property": DictionaryModel {
                 "key": StringModel {
                   "name": "additionalProperties",
+                  "options": Object {
+                    "constValue": undefined,
+                  },
                   "originalInput": Array [
                     AsyncapiV2Schema {
                       "allOf": Array [
                         AsyncapiV2Schema {
+                          "discriminator": "type",
                           "properties": Object {
                             "dataschema": AsyncapiV2Schema {
                               "format": "uri",
@@ -2619,10 +2745,14 @@ InputMetaModel {
                   ],
                 },
                 "name": "additionalProperties",
+                "options": Object {
+                  "constValue": undefined,
+                },
                 "originalInput": Array [
                   AsyncapiV2Schema {
                     "allOf": Array [
                       AsyncapiV2Schema {
+                        "discriminator": "type",
                         "properties": Object {
                           "dataschema": AsyncapiV2Schema {
                             "format": "uri",
@@ -2695,9 +2825,13 @@ InputMetaModel {
                 "serializationType": "unwrap",
                 "value": AnyModel {
                   "name": "undefined",
+                  "options": Object {
+                    "constValue": undefined,
+                  },
                   "originalInput": AsyncapiV2Schema {
                     "allOf": Array [
                       AsyncapiV2Schema {
+                        "discriminator": "type",
                         "properties": Object {
                           "dataschema": AsyncapiV2Schema {
                             "format": "uri",
@@ -2774,6 +2908,9 @@ InputMetaModel {
             "dataschema": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_6",
+                "options": Object {
+                  "constValue": undefined,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "format": "uri",
                   "type": "string",
@@ -2787,6 +2924,9 @@ InputMetaModel {
             "id": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_2",
+                "options": Object {
+                  "constValue": undefined,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "type": "string",
                   "x-modelgen-inferred-name": "anonymous_schema_2",
@@ -2799,6 +2939,9 @@ InputMetaModel {
             "source": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_3",
+                "options": Object {
+                  "constValue": undefined,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "format": "uri-reference",
                   "type": "string",
@@ -2812,6 +2955,9 @@ InputMetaModel {
             "specversion": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_4",
+                "options": Object {
+                  "constValue": undefined,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "default": "1.0",
                   "examples": Array [
@@ -2828,6 +2974,9 @@ InputMetaModel {
             "time": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_7",
+                "options": Object {
+                  "constValue": undefined,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "format": "date-time",
                   "type": "string",
@@ -2840,14 +2989,14 @@ InputMetaModel {
             },
             "type": ObjectPropertyModel {
               "property": EnumModel {
-                "constValue": EnumValueModel {
-                  "key": "Cat",
-                  "value": "Cat",
-                },
                 "name": "CloudEventType",
+                "options": Object {
+                  "constValue": "Cat",
+                },
                 "originalInput": AsyncapiV2Schema {
                   "allOf": Array [
                     AsyncapiV2Schema {
+                      "discriminator": "type",
                       "properties": Object {
                         "dataschema": AsyncapiV2Schema {
                           "format": "uri",
@@ -2947,6 +3096,7 @@ InputMetaModel {
                   "payload": Object {
                     "allOf": Array [
                       Object {
+                        "discriminator": "type",
                         "properties": Object {
                           "dataschema": Object {
                             "format": "uri",
@@ -3011,6 +3161,7 @@ InputMetaModel {
                   "payload": Object {
                     "allOf": Array [
                       Object {
+                        "discriminator": "type",
                         "properties": Object {
                           "dataschema": Object {
                             "format": "uri",
@@ -3082,6 +3233,7 @@ InputMetaModel {
             "payload": Object {
               "allOf": Array [
                 Object {
+                  "discriminator": "type",
                   "properties": Object {
                     "dataschema": Object {
                       "format": "uri",
@@ -3146,6 +3298,7 @@ InputMetaModel {
             "payload": Object {
               "allOf": Array [
                 Object {
+                  "discriminator": "type",
                   "properties": Object {
                     "dataschema": Object {
                       "format": "uri",
@@ -3209,6 +3362,7 @@ InputMetaModel {
         },
         "schemas": Object {
           "CloudEvent": Object {
+            "discriminator": "type",
             "properties": Object {
               "dataschema": Object {
                 "format": "uri",
@@ -3331,6 +3485,7 @@ InputMetaModel {
       \\"CloudEvent\\": {
         \\"title\\": \\"CloudEvent\\",
         \\"type\\": \\"object\\",
+        \\"discriminator\\": \\"type\\",
         \\"properties\\": {
           \\"id\\": {
             \\"type\\": \\"string\\"
@@ -3374,6 +3529,7 @@ InputMetaModel {
                       "payload": Object {
                         "allOf": Array [
                           Object {
+                            "discriminator": "type",
                             "properties": Object {
                               "dataschema": Object {
                                 "format": "uri",
@@ -3438,6 +3594,7 @@ InputMetaModel {
                       "payload": Object {
                         "allOf": Array [
                           Object {
+                            "discriminator": "type",
                             "properties": Object {
                               "dataschema": Object {
                                 "format": "uri",
@@ -3509,6 +3666,7 @@ InputMetaModel {
                 "payload": Object {
                   "allOf": Array [
                     Object {
+                      "discriminator": "type",
                       "properties": Object {
                         "dataschema": Object {
                           "format": "uri",
@@ -3573,6 +3731,7 @@ InputMetaModel {
                 "payload": Object {
                   "allOf": Array [
                     Object {
+                      "discriminator": "type",
                       "properties": Object {
                         "dataschema": Object {
                           "format": "uri",
@@ -3636,6 +3795,7 @@ InputMetaModel {
             },
             "schemas": Object {
               "CloudEvent": Object {
+                "discriminator": "type",
                 "properties": Object {
                   "dataschema": Object {
                     "format": "uri",
@@ -3709,7 +3869,11 @@ exports[`AsyncAPIInputProcessor process() should be able to process parsed objec
 InputMetaModel {
   "models": Object {
     "anonymous_schema_1": ObjectModel {
+      "discriminator": undefined,
       "name": "anonymous_schema_1",
+      "options": Object {
+        "constValue": undefined,
+      },
       "originalInput": AsyncapiV2Schema {
         "properties": Object {
           "email": AsyncapiV2Schema {
@@ -3728,17 +3892,26 @@ InputMetaModel {
           "property": DictionaryModel {
             "key": StringModel {
               "name": "additionalProperties",
+              "options": Object {
+                "constValue": undefined,
+              },
               "originalInput": Array [
                 true,
               ],
             },
             "name": "additionalProperties",
+            "options": Object {
+              "constValue": undefined,
+            },
             "originalInput": Array [
               true,
             ],
             "serializationType": "unwrap",
             "value": AnyModel {
               "name": "undefined",
+              "options": Object {
+                "constValue": undefined,
+              },
               "originalInput": true,
             },
           },
@@ -3748,6 +3921,9 @@ InputMetaModel {
         "email": ObjectPropertyModel {
           "property": StringModel {
             "name": "anonymous_schema_2",
+            "options": Object {
+              "constValue": undefined,
+            },
             "originalInput": AsyncapiV2Schema {
               "format": "email",
               "type": "string",
@@ -3868,7 +4044,11 @@ exports[`AsyncAPIInputProcessor process() should be able to process pure object 
 InputMetaModel {
   "models": Object {
     "anonymous_schema_1": ObjectModel {
+      "discriminator": undefined,
       "name": "anonymous_schema_1",
+      "options": Object {
+        "constValue": undefined,
+      },
       "originalInput": AsyncapiV2Schema {
         "properties": Object {
           "email": AsyncapiV2Schema {
@@ -3887,17 +4067,26 @@ InputMetaModel {
           "property": DictionaryModel {
             "key": StringModel {
               "name": "additionalProperties",
+              "options": Object {
+                "constValue": undefined,
+              },
               "originalInput": Array [
                 true,
               ],
             },
             "name": "additionalProperties",
+            "options": Object {
+              "constValue": undefined,
+            },
             "originalInput": Array [
               true,
             ],
             "serializationType": "unwrap",
             "value": AnyModel {
               "name": "undefined",
+              "options": Object {
+                "constValue": undefined,
+              },
               "originalInput": true,
             },
           },
@@ -3907,6 +4096,9 @@ InputMetaModel {
         "email": ObjectPropertyModel {
           "property": StringModel {
             "name": "anonymous_schema_2",
+            "options": Object {
+              "constValue": undefined,
+            },
             "originalInput": AsyncapiV2Schema {
               "format": "email",
               "type": "string",

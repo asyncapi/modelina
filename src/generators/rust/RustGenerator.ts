@@ -410,11 +410,13 @@ export class RustGenerator extends AbstractGenerator<
     const manifestMetaModel = new ConstrainedSupportFileModel(
       'Cargo.toml',
       inputModel,
+      {},
       'supportFile'
     );
     const libMetaModel = new ConstrainedSupportFileModel(
       'src/lib.rs',
       inputModel,
+      {},
       'supportFile'
     );
     const manifestOutput = await this.renderManifest(

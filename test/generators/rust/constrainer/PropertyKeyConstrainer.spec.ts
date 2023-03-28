@@ -6,10 +6,11 @@ import {
   ObjectPropertyModel
 } from '../../../../src';
 describe('PropertyKeyConstrainer', () => {
-  const objectModel = new ObjectModel('test', undefined, {});
+  const objectModel = new ObjectModel('test', undefined, {}, {});
   const constrainedObjectModel = new ConstrainedObjectModel(
     'test',
     undefined,
+    {},
     '',
     {}
   );
@@ -53,10 +54,11 @@ describe('PropertyKeyConstrainer', () => {
     );
   });
   test('should not contain duplicate properties', () => {
-    const objectModel = new ObjectModel('test', undefined, {});
+    const objectModel = new ObjectModel('test', undefined, {}, {});
     const constrainedObjectModel = new ConstrainedObjectModel(
       'test',
       undefined,
+      {},
       '',
       {}
     );

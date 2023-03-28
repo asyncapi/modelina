@@ -128,7 +128,7 @@ function renderUnmarshalProperties(
   const normalProperties = [];
   for (const entry of propertyKeys) {
     // if const value exists, we don't need to unmarshal this property because it exist in the class/interface
-    if (entry[1].constValue) {
+    if (entry[1].hasConstValue()) {
       continue;
     }
 

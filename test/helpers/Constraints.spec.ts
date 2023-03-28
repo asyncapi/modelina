@@ -45,16 +45,22 @@ describe('Constraints', () => {
       const constrainedModel = new ConstrainedObjectModel(
         '',
         undefined,
+        {},
         '',
         {}
       );
-      const metaModel = new ObjectModel('', undefined, {
-        Test: new ObjectPropertyModel(
-          'Test',
-          false,
-          new AnyModel('', undefined)
-        )
-      });
+      const metaModel = new ObjectModel(
+        '',
+        undefined,
+        {},
+        {
+          Test: new ObjectPropertyModel(
+            'Test',
+            false,
+            new AnyModel('', undefined, {})
+          )
+        }
+      );
       const renderedValue = NO_DUPLICATE_PROPERTIES(
         constrainedModel,
         metaModel,
@@ -67,21 +73,27 @@ describe('Constraints', () => {
       const constrainedModel = new ConstrainedObjectModel(
         '',
         undefined,
+        {},
         '',
         {}
       );
-      const metaModel = new ObjectModel('', undefined, {
-        test: new ObjectPropertyModel(
-          'test',
-          false,
-          new AnyModel('', undefined)
-        ),
-        Test: new ObjectPropertyModel(
-          'Test',
-          false,
-          new AnyModel('', undefined)
-        )
-      });
+      const metaModel = new ObjectModel(
+        '',
+        undefined,
+        {},
+        {
+          test: new ObjectPropertyModel(
+            'test',
+            false,
+            new AnyModel('', undefined, {})
+          ),
+          Test: new ObjectPropertyModel(
+            'Test',
+            false,
+            new AnyModel('', undefined, {})
+          )
+        }
+      );
       const renderedValue = NO_DUPLICATE_PROPERTIES(
         constrainedModel,
         metaModel,
@@ -94,21 +106,27 @@ describe('Constraints', () => {
       const constrainedModel = new ConstrainedObjectModel(
         '',
         undefined,
+        {},
         '',
         {}
       );
-      const metaModel = new ObjectModel('', undefined, {
-        test: new ObjectPropertyModel(
-          'test',
-          false,
-          new AnyModel('', undefined)
-        ),
-        Test: new ObjectPropertyModel(
-          'Test',
-          false,
-          new AnyModel('', undefined)
-        )
-      });
+      const metaModel = new ObjectModel(
+        '',
+        undefined,
+        {},
+        {
+          test: new ObjectPropertyModel(
+            'test',
+            false,
+            new AnyModel('', undefined, {})
+          ),
+          Test: new ObjectPropertyModel(
+            'Test',
+            false,
+            new AnyModel('', undefined, {})
+          )
+        }
+      );
       const renderedValue = NO_DUPLICATE_PROPERTIES(
         constrainedModel,
         metaModel,
@@ -118,37 +136,48 @@ describe('Constraints', () => {
       expect(renderedValue).toEqual('Test');
     });
     test('should be able to handle multiple reserved properties', () => {
-      const constrainedModel = new ConstrainedObjectModel('', undefined, '', {
-        Test: new ConstrainedObjectPropertyModel(
-          'Test',
-          'Test',
-          false,
-          new ConstrainedAnyModel('', undefined, '')
-        ),
-        ReservedTest: new ConstrainedObjectPropertyModel(
-          'ReservedTest',
-          'ReservedTest',
-          false,
-          new ConstrainedAnyModel('', undefined, '')
-        )
-      });
-      const metaModel = new ObjectModel('', undefined, {
-        test: new ObjectPropertyModel(
-          'test',
-          false,
-          new AnyModel('', undefined)
-        ),
-        Test: new ObjectPropertyModel(
-          'Test',
-          false,
-          new AnyModel('', undefined)
-        ),
-        ReservedTest: new ObjectPropertyModel(
-          'ReservedTest',
-          false,
-          new AnyModel('', undefined)
-        )
-      });
+      const constrainedModel = new ConstrainedObjectModel(
+        '',
+        undefined,
+        {},
+        '',
+        {
+          Test: new ConstrainedObjectPropertyModel(
+            'Test',
+            'Test',
+            false,
+            new ConstrainedAnyModel('', undefined, {}, '')
+          ),
+          ReservedTest: new ConstrainedObjectPropertyModel(
+            'ReservedTest',
+            'ReservedTest',
+            false,
+            new ConstrainedAnyModel('', undefined, {}, '')
+          )
+        }
+      );
+      const metaModel = new ObjectModel(
+        '',
+        undefined,
+        {},
+        {
+          test: new ObjectPropertyModel(
+            'test',
+            false,
+            new AnyModel('', undefined, {})
+          ),
+          Test: new ObjectPropertyModel(
+            'Test',
+            false,
+            new AnyModel('', undefined, {})
+          ),
+          ReservedTest: new ObjectPropertyModel(
+            'ReservedTest',
+            false,
+            new AnyModel('', undefined, {})
+          )
+        }
+      );
       const renderedValue = NO_DUPLICATE_PROPERTIES(
         constrainedModel,
         metaModel,
@@ -160,9 +189,15 @@ describe('Constraints', () => {
   });
   describe('NO_DUPLICATE_ENUM_KEYS', () => {
     test('should not do anything with no duplicate enum keys', () => {
-      const constrainedModel = new ConstrainedEnumModel('', undefined, '', []);
-      const metaModel = new EnumModel('', undefined, [
-        new EnumValueModel('test', new AnyModel('', undefined))
+      const constrainedModel = new ConstrainedEnumModel(
+        '',
+        undefined,
+        {},
+        '',
+        []
+      );
+      const metaModel = new EnumModel('', undefined, {}, [
+        new EnumValueModel('test', new AnyModel('', undefined, {}))
       ]);
       const renderedValue = NO_DUPLICATE_ENUM_KEYS(
         constrainedModel,
@@ -173,10 +208,16 @@ describe('Constraints', () => {
       expect(renderedValue).toEqual('test');
     });
     test('should not use formatted enum key which another raw enum key is', () => {
-      const constrainedModel = new ConstrainedEnumModel('', undefined, '', []);
-      const metaModel = new EnumModel('', undefined, [
-        new EnumValueModel('test', new AnyModel('', undefined)),
-        new EnumValueModel('Test', new AnyModel('', undefined))
+      const constrainedModel = new ConstrainedEnumModel(
+        '',
+        undefined,
+        {},
+        '',
+        []
+      );
+      const metaModel = new EnumModel('', undefined, {}, [
+        new EnumValueModel('test', new AnyModel('', undefined, {})),
+        new EnumValueModel('Test', new AnyModel('', undefined, {}))
       ]);
       const renderedValue = NO_DUPLICATE_ENUM_KEYS(
         constrainedModel,
@@ -187,10 +228,16 @@ describe('Constraints', () => {
       expect(renderedValue).toEqual('reserved_test');
     });
     test('should should keep the raw enum key if no clash', () => {
-      const constrainedModel = new ConstrainedEnumModel('', undefined, '', []);
-      const metaModel = new EnumModel('', undefined, [
-        new EnumValueModel('test', new AnyModel('', undefined)),
-        new EnumValueModel('Test', new AnyModel('', undefined))
+      const constrainedModel = new ConstrainedEnumModel(
+        '',
+        undefined,
+        {},
+        '',
+        []
+      );
+      const metaModel = new EnumModel('', undefined, {}, [
+        new EnumValueModel('test', new AnyModel('', undefined, {})),
+        new EnumValueModel('Test', new AnyModel('', undefined, {}))
       ]);
       const renderedValue = NO_DUPLICATE_ENUM_KEYS(
         constrainedModel,
@@ -201,17 +248,22 @@ describe('Constraints', () => {
       expect(renderedValue).toEqual('Test');
     });
     test('should be able to handle multiple reserved enum keys', () => {
-      const constrainedModel = new ConstrainedEnumModel('', undefined, '', [
-        new ConstrainedEnumValueModel('Test', new AnyModel('', undefined)),
+      const constrainedModel = new ConstrainedEnumModel('', undefined, {}, '', [
+        new ConstrainedEnumValueModel(
+          'Test',
+          new AnyModel('', undefined, {}),
+          'Test'
+        ),
         new ConstrainedEnumValueModel(
           'ReservedTest',
-          new AnyModel('', undefined)
+          new AnyModel('', undefined, {}),
+          'ReservedTest'
         )
       ]);
-      const metaModel = new EnumModel('', undefined, [
-        new EnumValueModel('test', new AnyModel('', undefined)),
-        new EnumValueModel('Test', new AnyModel('', undefined)),
-        new EnumValueModel('ReservedTest', new AnyModel('', undefined))
+      const metaModel = new EnumModel('', undefined, {}, [
+        new EnumValueModel('test', new AnyModel('', undefined, {})),
+        new EnumValueModel('Test', new AnyModel('', undefined, {})),
+        new EnumValueModel('ReservedTest', new AnyModel('', undefined, {}))
       ]);
       const renderedValue = NO_DUPLICATE_ENUM_KEYS(
         constrainedModel,

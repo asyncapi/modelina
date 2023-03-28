@@ -310,6 +310,43 @@ Array [
 ]
 `;
 
+exports[`TypeScriptGenerator const should generate a const string 1`] = `
+Array [
+  "class LightMeasured {
+  private _reservedType?: string = 'test';
+
+  constructor(input: {
+  
+  }) {
+  
+  }
+
+  get reservedType(): string | undefined { return this._reservedType; }
+}",
+]
+`;
+
+exports[`TypeScriptGenerator const should generate a single enum with two values 1`] = `
+Array [
+  "class LightMeasured {
+  private _reservedType?: MyCommonEnums | 'MyMessage2';
+
+  constructor(input: {
+    reservedType?: MyCommonEnums | 'MyMessage2',
+  }) {
+    this._reservedType = input.reservedType;
+  }
+
+  get reservedType(): MyCommonEnums | 'MyMessage2' | undefined { return this._reservedType; }
+  set reservedType(reservedType: MyCommonEnums | 'MyMessage2' | undefined) { this._reservedType = reservedType; }
+}",
+  "enum MyCommonEnums {
+  MY_MESSAGE = \\"MyMessage\\",
+  MY_MESSAGE2 = \\"MyMessage2\\",
+}",
+]
+`;
+
 exports[`TypeScriptGenerator if/then/else handle if/then/else required properties 1`] = `
 Array [
   "class ReservedEvent {

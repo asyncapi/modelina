@@ -907,4 +907,50 @@ ${content}`;
       expect(models.map((model) => model.result)).toMatchSnapshot();
     });
   });
+
+  describe('const', () => {
+    test('should generate a const string', async () => {
+      const models = await generator.generate({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        title: 'LightMeasured',
+        additionalProperties: false,
+        properties: {
+          type: {
+            type: 'string',
+            const: 'test'
+          }
+        }
+      });
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+
+    test('should generate a single enum with two values', async () => {
+      const models = await generator.generate({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        title: 'LightMeasured',
+        additionalProperties: false,
+        properties: {
+          type: {
+            oneOf: [
+              {
+                $ref: '#/definitions/MyCommonEnums'
+              },
+              {
+                const: 'MyMessage2'
+              }
+            ]
+          }
+        },
+        definitions: {
+          MyCommonEnums: {
+            title: 'MyCommonEnums',
+            enum: ['MyMessage', 'MyMessage2']
+          }
+        }
+      });
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+  });
 });

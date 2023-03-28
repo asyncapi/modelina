@@ -82,7 +82,7 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 
   getConstValue(property: ConstrainedObjectPropertyModel): string | undefined {
-    if (!property.constValue) {
+    if (!property.hasConstValue()) {
       return undefined;
     }
 
@@ -91,7 +91,9 @@ ${this.indent(this.renderBlock(content, 2))}
     if (constrainedEnumValueModel) {
       return `private final ${property.property.type} ${property.propertyName} = ${property.property.type}.${constrainedEnumValueModel.key};`;
     } else if (property.isConstrainedStringModel()) {
-      return `private final ${property.property.type} ${property.propertyName} = '${property.constValue}';`;
+      return `private final ${property.property.type} ${
+        property.propertyName
+      } = '${property.getConstValue()}';`;
     }
   }
 }
@@ -116,7 +118,7 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
     return `public ${property.property.type} ${getterName}() { return this.${property.propertyName}; }`;
   },
   setter({ property }) {
-    if (property.constValue) {
+    if (property.hasConstValue()) {
       return '';
     }
     const setterName = FormatHelpers.toPascalCase(property.propertyName);

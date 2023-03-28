@@ -46,8 +46,12 @@ export const TypeScriptDefaultTypeMapping: TypeScriptTypeMapping = {
   Enum({ constrainedModel }): string {
     return constrainedModel.name;
   },
-  Union({ constrainedModel }): string {
-    const unionTypes = constrainedModel.union.map((unionModel) => {
+  Union(args): string {
+    const unionTypes = args.constrainedModel.union.map((unionModel) => {
+      if (unionModel.options.constValue) {
+        return `'${unionModel.options.constValue}'`;
+      }
+
       return unionModel.type;
     });
     return unionTypes.join(' | ');

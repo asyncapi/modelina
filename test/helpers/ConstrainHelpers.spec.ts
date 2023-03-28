@@ -34,27 +34,33 @@ import {
 } from '../TestUtils/TestConstrainer';
 
 describe('ConstrainHelpers', () => {
-  const placeHolderModel = new AnyModel('', undefined);
+  const placeHolderModel = new AnyModel('', undefined, {});
   afterEach(() => {
     jest.clearAllMocks();
   });
   describe('constrain ObjectModel', () => {
     test('should constrain correctly', () => {
-      const testProperty = new StringModel('', undefined);
-      const metaModel = new ObjectModel('test', undefined, {
-        testProperty: new ObjectPropertyModel(
-          'testProperty',
-          false,
-          testProperty
-        )
-      });
+      const testProperty = new StringModel('', undefined, {});
+      const metaModel = new ObjectModel(
+        'test',
+        undefined,
+        {},
+        {
+          testProperty: new ObjectPropertyModel(
+            'testProperty',
+            false,
+            testProperty
+          )
+        }
+      );
       const constrainedModel = constrainMetaModel(
         mockedTypeMapping,
         mockedConstraints,
         {
           metaModel,
           options: {},
-          constrainedName: ''
+          constrainedName: '',
+          dependencyManager: undefined as never
         }
       );
       expect(constrainedModel instanceof ConstrainedObjectModel).toEqual(true);
@@ -69,25 +75,31 @@ describe('ConstrainHelpers', () => {
     });
 
     test('should have access to partOfProperty', () => {
-      const testProperty = new StringModel('', undefined);
-      const metaModel = new ObjectModel('test', undefined, {
-        testProperty: new ObjectPropertyModel(
-          'testProperty',
-          false,
-          testProperty
-        )
-      });
+      const testProperty = new StringModel('', undefined, {});
+      const metaModel = new ObjectModel(
+        'test',
+        undefined,
+        {},
+        {
+          testProperty: new ObjectPropertyModel(
+            'testProperty',
+            false,
+            testProperty
+          )
+        }
+      );
       constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel,
         options: {},
-        constrainedName: ''
+        constrainedName: '',
+        dependencyManager: undefined as never
       });
       expect(mockedTypeMapping.String).toHaveBeenCalledWith(
         expect.objectContaining({ partOfProperty: expect.objectContaining({}) })
       );
     });
     test('should handle recursive models', () => {
-      const model = new ObjectModel('testObj', undefined, {});
+      const model = new ObjectModel('testObj', undefined, {}, {});
       const objectPropertyModel = new ObjectPropertyModel(
         'recursiveProp',
         false,
@@ -101,7 +113,8 @@ describe('ConstrainHelpers', () => {
         {
           metaModel: model,
           options: {},
-          constrainedName: ''
+          constrainedName: '',
+          dependencyManager: undefined as never
         }
       );
       expect(constrainedModel instanceof ConstrainedObjectModel).toEqual(true);
@@ -109,15 +122,16 @@ describe('ConstrainHelpers', () => {
   });
   describe('constrain ReferenceModel', () => {
     test('should constrain correctly', () => {
-      const stringModel = new StringModel('', undefined);
-      const metaModel = new ReferenceModel('', undefined, stringModel);
+      const stringModel = new StringModel('', undefined, {});
+      const metaModel = new ReferenceModel('', undefined, {}, stringModel);
       const constrainedModel = constrainMetaModel(
         mockedTypeMapping,
         mockedConstraints,
         {
           metaModel,
           options: {},
-          constrainedName: ''
+          constrainedName: '',
+          dependencyManager: undefined as never
         }
       );
       expect(constrainedModel instanceof ConstrainedReferenceModel).toEqual(
@@ -133,7 +147,7 @@ describe('ConstrainHelpers', () => {
     });
 
     test('should handle recursive models', () => {
-      const metaModel = new ReferenceModel('', undefined, placeHolderModel);
+      const metaModel = new ReferenceModel('', undefined, {}, placeHolderModel);
       metaModel.ref = metaModel;
       const constrainedModel = constrainMetaModel(
         mockedTypeMapping,
@@ -141,7 +155,8 @@ describe('ConstrainHelpers', () => {
         {
           metaModel,
           options: {},
-          constrainedName: ''
+          constrainedName: '',
+          dependencyManager: undefined as never
         }
       );
       expect(constrainedModel instanceof ConstrainedReferenceModel).toEqual(
@@ -151,14 +166,15 @@ describe('ConstrainHelpers', () => {
   });
   describe('constrain AnyModel', () => {
     test('should constrain correctly', () => {
-      const metaModel = new AnyModel('', undefined);
+      const metaModel = new AnyModel('', undefined, {});
       const constrainedModel = constrainMetaModel(
         mockedTypeMapping,
         mockedConstraints,
         {
           metaModel,
           options: {},
-          constrainedName: ''
+          constrainedName: '',
+          dependencyManager: undefined as never
         }
       );
       expect(constrainedModel instanceof ConstrainedAnyModel).toEqual(true);
@@ -168,14 +184,15 @@ describe('ConstrainHelpers', () => {
   });
   describe('constrain FloatModel', () => {
     test('should constrain correctly', () => {
-      const metaModel = new FloatModel('', undefined);
+      const metaModel = new FloatModel('', undefined, {});
       const constrainedModel = constrainMetaModel(
         mockedTypeMapping,
         mockedConstraints,
         {
           metaModel,
           options: {},
-          constrainedName: ''
+          constrainedName: '',
+          dependencyManager: undefined as never
         }
       );
       expect(constrainedModel instanceof ConstrainedFloatModel).toEqual(true);
@@ -185,14 +202,15 @@ describe('ConstrainHelpers', () => {
   });
   describe('constrain IntegerModel', () => {
     test('should constrain correctly', () => {
-      const metaModel = new IntegerModel('', undefined);
+      const metaModel = new IntegerModel('', undefined, {});
       const constrainedModel = constrainMetaModel(
         mockedTypeMapping,
         mockedConstraints,
         {
           metaModel,
           options: {},
-          constrainedName: ''
+          constrainedName: '',
+          dependencyManager: undefined as never
         }
       );
       expect(constrainedModel instanceof ConstrainedIntegerModel).toEqual(true);
@@ -202,14 +220,15 @@ describe('ConstrainHelpers', () => {
   });
   describe('constrain StringModel', () => {
     test('should constrain correctly', () => {
-      const metaModel = new StringModel('', undefined);
+      const metaModel = new StringModel('', undefined, {});
       const constrainedModel = constrainMetaModel(
         mockedTypeMapping,
         mockedConstraints,
         {
           metaModel,
           options: {},
-          constrainedName: ''
+          constrainedName: '',
+          dependencyManager: undefined as never
         }
       );
       expect(constrainedModel instanceof ConstrainedStringModel).toEqual(true);
@@ -219,14 +238,15 @@ describe('ConstrainHelpers', () => {
   });
   describe('constrain BooleanModel', () => {
     test('should constrain correctly', () => {
-      const metaModel = new BooleanModel('', undefined);
+      const metaModel = new BooleanModel('', undefined, {});
       const constrainedModel = constrainMetaModel(
         mockedTypeMapping,
         mockedConstraints,
         {
           metaModel,
           options: {},
-          constrainedName: ''
+          constrainedName: '',
+          dependencyManager: undefined as never
         }
       );
       expect(constrainedModel instanceof ConstrainedBooleanModel).toEqual(true);
@@ -237,8 +257,8 @@ describe('ConstrainHelpers', () => {
 
   describe('constrain TupleModel', () => {
     test('should constrain correctly', () => {
-      const stringModel = new StringModel('', undefined);
-      const metaModel = new TupleModel('test', undefined, [
+      const stringModel = new StringModel('', undefined, {});
+      const metaModel = new TupleModel('test', undefined, {}, [
         new TupleValueModel(0, stringModel)
       ]);
       const constrainedModel = constrainMetaModel(
@@ -247,7 +267,8 @@ describe('ConstrainHelpers', () => {
         {
           metaModel,
           options: {},
-          constrainedName: ''
+          constrainedName: '',
+          dependencyManager: undefined as never
         }
       );
       expect(constrainedModel instanceof ConstrainedTupleModel).toEqual(true);
@@ -260,7 +281,7 @@ describe('ConstrainHelpers', () => {
       expect(mockedTypeMapping.String).toHaveBeenCalledTimes(1);
     });
     test('should handle recursive models', () => {
-      const metaModel = new TupleModel('test', undefined, []);
+      const metaModel = new TupleModel('test', undefined, {}, []);
       metaModel.tuple.push(new TupleValueModel(0, metaModel));
       const constrainedModel = constrainMetaModel(
         mockedTypeMapping,
@@ -268,7 +289,8 @@ describe('ConstrainHelpers', () => {
         {
           metaModel,
           options: {},
-          constrainedName: ''
+          constrainedName: '',
+          dependencyManager: undefined as never
         }
       );
       expect(constrainedModel instanceof ConstrainedTupleModel).toEqual(true);
@@ -276,15 +298,16 @@ describe('ConstrainHelpers', () => {
   });
   describe('constrain ArrayModel', () => {
     test('should constrain correctly', () => {
-      const stringModel = new StringModel('', undefined);
-      const metaModel = new ArrayModel('test', undefined, stringModel);
+      const stringModel = new StringModel('', undefined, {});
+      const metaModel = new ArrayModel('test', undefined, {}, stringModel);
       const constrainedModel = constrainMetaModel(
         mockedTypeMapping,
         mockedConstraints,
         {
           metaModel,
           options: {},
-          constrainedName: ''
+          constrainedName: '',
+          dependencyManager: undefined as never
         }
       );
       expect(constrainedModel instanceof ConstrainedArrayModel).toEqual(true);
@@ -297,7 +320,7 @@ describe('ConstrainHelpers', () => {
       expect(mockedTypeMapping.String).toHaveBeenCalledTimes(1);
     });
     test('should handle recursive models', () => {
-      const metaModel = new ArrayModel('test', undefined, placeHolderModel);
+      const metaModel = new ArrayModel('test', undefined, {}, placeHolderModel);
       metaModel.valueModel = metaModel;
       const constrainedModel = constrainMetaModel(
         mockedTypeMapping,
@@ -305,7 +328,8 @@ describe('ConstrainHelpers', () => {
         {
           metaModel,
           options: {},
-          constrainedName: ''
+          constrainedName: '',
+          dependencyManager: undefined as never
         }
       );
       expect(constrainedModel instanceof ConstrainedArrayModel).toEqual(true);
@@ -313,15 +337,16 @@ describe('ConstrainHelpers', () => {
   });
   describe('constrain UnionModel', () => {
     test('should constrain correctly', () => {
-      const stringModel = new StringModel('', undefined);
-      const metaModel = new UnionModel('test', undefined, [stringModel]);
+      const stringModel = new StringModel('', undefined, {});
+      const metaModel = new UnionModel('test', undefined, {}, [stringModel]);
       const constrainedModel = constrainMetaModel(
         mockedTypeMapping,
         mockedConstraints,
         {
           metaModel,
           options: {},
-          constrainedName: ''
+          constrainedName: '',
+          dependencyManager: undefined as never
         }
       );
       expect(constrainedModel instanceof ConstrainedUnionModel).toEqual(true);
@@ -334,7 +359,7 @@ describe('ConstrainHelpers', () => {
       expect(mockedTypeMapping.String).toHaveBeenCalledTimes(1);
     });
     test('should handle recursive models', () => {
-      const metaModel = new UnionModel('test', undefined, []);
+      const metaModel = new UnionModel('test', undefined, {}, []);
       metaModel.union.push(metaModel);
       const constrainedModel = constrainMetaModel(
         mockedTypeMapping,
@@ -342,7 +367,8 @@ describe('ConstrainHelpers', () => {
         {
           metaModel,
           options: {},
-          constrainedName: ''
+          constrainedName: '',
+          dependencyManager: undefined as never
         }
       );
       expect(constrainedModel instanceof ConstrainedUnionModel).toEqual(true);
@@ -351,19 +377,17 @@ describe('ConstrainHelpers', () => {
   describe('constrain EnumModel', () => {
     test('should constrain correctly', () => {
       const metaModelValue = new EnumValueModel('test', 123);
-      const metaModel = new EnumModel(
-        'test',
-        undefined,
-        [metaModelValue],
+      const metaModel = new EnumModel('test', undefined, { constValue: 123 }, [
         metaModelValue
-      );
+      ]);
       const constrainedModel = constrainMetaModel(
         mockedTypeMapping,
         mockedConstraints,
         {
           metaModel,
           options: {},
-          constrainedName: ''
+          constrainedName: '',
+          dependencyManager: undefined as never
         }
       );
       expect(constrainedModel instanceof ConstrainedEnumModel).toEqual(true);
@@ -372,17 +396,17 @@ describe('ConstrainHelpers', () => {
       expect(mockedTypeMapping.Enum).toHaveBeenCalledTimes(1);
       expect(enumModel.values[0].key).toEqual('test');
       expect(enumModel.values[0].value).toEqual(123);
-      expect(enumModel.constValue?.key).toEqual('test');
-      expect(enumModel.constValue?.value).toEqual(123);
+      expect(enumModel.options.constValue).toEqual(123);
     });
   });
   describe('constrain DictionaryModel', () => {
     test('should constrain correctly', () => {
-      const stringModel = new StringModel('', undefined);
-      const stringModel2 = new StringModel('', undefined);
+      const stringModel = new StringModel('', undefined, {});
+      const stringModel2 = new StringModel('', undefined, {});
       const metaModel = new DictionaryModel(
         'test',
         undefined,
+        {},
         stringModel,
         stringModel2
       );
@@ -392,7 +416,8 @@ describe('ConstrainHelpers', () => {
         {
           metaModel,
           options: {},
-          constrainedName: ''
+          constrainedName: '',
+          dependencyManager: undefined as never
         }
       );
       expect(constrainedModel instanceof ConstrainedDictionaryModel).toEqual(
@@ -414,6 +439,7 @@ describe('ConstrainHelpers', () => {
       const metaModel = new DictionaryModel(
         'test',
         undefined,
+        {},
         placeHolderModel,
         placeHolderModel
       );
@@ -425,7 +451,8 @@ describe('ConstrainHelpers', () => {
         {
           metaModel,
           options: {},
-          constrainedName: ''
+          constrainedName: '',
+          dependencyManager: undefined as never
         }
       );
       expect(constrainedModel instanceof ConstrainedDictionaryModel).toEqual(

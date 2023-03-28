@@ -15,8 +15,15 @@ import {
   EnumModel,
   EnumValueModel,
   ObjectPropertyModel,
-  AnyModel
+  AnyModel,
+  MetaModelOptions
 } from '../models';
+
+function getMetaModelOptions(commonModel: CommonModel): MetaModelOptions {
+  return {
+    constValue: commonModel.const
+  };
+}
 
 export function convertToMetaModel(
   jsonSchemaModel: CommonModel,
@@ -93,7 +100,11 @@ export function convertToMetaModel(
     return booleanModel;
   }
   Logger.error('Failed to convert to MetaModel, defaulting to AnyModel');
-  return new AnyModel(modelName, jsonSchemaModel.originalInput);
+  return new AnyModel(
+    modelName,
+    jsonSchemaModel.originalInput,
+    getMetaModelOptions(jsonSchemaModel)
+  );
 }
 function isEnumModel(jsonSchemaModel: CommonModel): boolean {
   if (!Array.isArray(jsonSchemaModel.enum)) {
@@ -128,7 +139,12 @@ export function convertToUnionModel(
   ) {
     return undefined;
   }
-  const unionModel = new UnionModel(name, jsonSchemaModel.originalInput, []);
+  const unionModel = new UnionModel(
+    name,
+    jsonSchemaModel.originalInput,
+    getMetaModelOptions(jsonSchemaModel),
+    []
+  );
   //cache model before continuing
   if (!alreadySeenModels.has(jsonSchemaModel)) {
     alreadySeenModels.set(jsonSchemaModel, unionModel);
@@ -215,7 +231,11 @@ export function convertToStringModel(
   if (!jsonSchemaModel.type?.includes('string')) {
     return undefined;
   }
-  return new StringModel(name, jsonSchemaModel.originalInput);
+  return new StringModel(
+    name,
+    jsonSchemaModel.originalInput,
+    getMetaModelOptions(jsonSchemaModel)
+  );
 }
 export function convertToAnyModel(
   jsonSchemaModel: CommonModel,
@@ -227,7 +247,11 @@ export function convertToAnyModel(
   ) {
     return undefined;
   }
-  return new AnyModel(name, jsonSchemaModel.originalInput);
+  return new AnyModel(
+    name,
+    jsonSchemaModel.originalInput,
+    getMetaModelOptions(jsonSchemaModel)
+  );
 }
 export function convertToIntegerModel(
   jsonSchemaModel: CommonModel,
@@ -236,7 +260,11 @@ export function convertToIntegerModel(
   if (!jsonSchemaModel.type?.includes('integer')) {
     return undefined;
   }
-  return new IntegerModel(name, jsonSchemaModel.originalInput);
+  return new IntegerModel(
+    name,
+    jsonSchemaModel.originalInput,
+    getMetaModelOptions(jsonSchemaModel)
+  );
 }
 export function convertToFloatModel(
   jsonSchemaModel: CommonModel,
@@ -245,7 +273,11 @@ export function convertToFloatModel(
   if (!jsonSchemaModel.type?.includes('number')) {
     return undefined;
   }
-  return new FloatModel(name, jsonSchemaModel.originalInput);
+  return new FloatModel(
+    name,
+    jsonSchemaModel.originalInput,
+    getMetaModelOptions(jsonSchemaModel)
+  );
 }
 export function convertToEnumModel(
   jsonSchemaModel: CommonModel,
@@ -262,7 +294,12 @@ export function convertToEnumModel(
     return new EnumValueModel(enumValue, enumValue);
   };
 
-  const metaModel = new EnumModel(name, jsonSchemaModel.originalInput, []);
+  const metaModel = new EnumModel(
+    name,
+    jsonSchemaModel.originalInput,
+    getMetaModelOptions(jsonSchemaModel),
+    []
+  );
 
   if (jsonSchemaModel.enum) {
     for (const enumValue of jsonSchemaModel.enum) {
@@ -279,7 +316,11 @@ export function convertToBooleanModel(
   if (!jsonSchemaModel.type?.includes('boolean')) {
     return undefined;
   }
-  return new BooleanModel(name, jsonSchemaModel.originalInput);
+  return new BooleanModel(
+    name,
+    jsonSchemaModel.originalInput,
+    getMetaModelOptions(jsonSchemaModel)
+  );
 }
 
 /**
@@ -348,6 +389,7 @@ function convertAdditionalAndPatterns(
   return new UnionModel(
     name,
     getOriginalInputFromAdditionalAndPatterns(jsonSchemaModel),
+    getMetaModelOptions(jsonSchemaModel),
     Array.from(modelsAsValue.values())
   );
 }
@@ -363,7 +405,11 @@ export function convertToDictionaryModel(
   }
   const originalInput =
     getOriginalInputFromAdditionalAndPatterns(jsonSchemaModel);
-  const keyModel = new StringModel(name, originalInput);
+  const keyModel = new StringModel(
+    name,
+    originalInput,
+    getMetaModelOptions(jsonSchemaModel)
+  );
   const valueModel = convertAdditionalAndPatterns(
     jsonSchemaModel,
     name,
@@ -372,6 +418,7 @@ export function convertToDictionaryModel(
   return new DictionaryModel(
     name,
     originalInput,
+    getMetaModelOptions(jsonSchemaModel),
     keyModel,
     valueModel,
     'normal'
@@ -393,6 +440,7 @@ export function convertToObjectModel(
   const metaModel = new ObjectModel(
     name,
     jsonSchemaModel.originalInput,
+    getMetaModelOptions(jsonSchemaModel),
     {},
     jsonSchemaModel.discriminator
   );
@@ -409,8 +457,7 @@ export function convertToObjectModel(
     const propertyModel = new ObjectPropertyModel(
       propertyName,
       isRequired,
-      convertToMetaModel(prop, alreadySeenModels),
-      prop.const
+      convertToMetaModel(prop, alreadySeenModels)
     );
 
     metaModel.properties[String(propertyName)] = propertyModel;
@@ -426,7 +473,11 @@ export function convertToObjectModel(
     }
     const originalInput =
       getOriginalInputFromAdditionalAndPatterns(jsonSchemaModel);
-    const keyModel = new StringModel(propertyName, originalInput);
+    const keyModel = new StringModel(
+      propertyName,
+      originalInput,
+      getMetaModelOptions(jsonSchemaModel)
+    );
     const valueModel = convertAdditionalAndPatterns(
       jsonSchemaModel,
       propertyName,
@@ -435,6 +486,7 @@ export function convertToObjectModel(
     const dictionaryModel = new DictionaryModel(
       propertyName,
       originalInput,
+      getMetaModelOptions(jsonSchemaModel),
       keyModel,
       valueModel,
       'unwrap'
@@ -462,10 +514,15 @@ export function convertToArrayModel(
   //items single type = normal array
   //items not sat = normal array, any type
   if (isNormalArray) {
-    const placeholderModel = new AnyModel('', undefined);
+    const placeholderModel = new AnyModel(
+      '',
+      undefined,
+      getMetaModelOptions(jsonSchemaModel)
+    );
     const metaModel = new ArrayModel(
       name,
       jsonSchemaModel.originalInput,
+      getMetaModelOptions(jsonSchemaModel),
       placeholderModel
     );
     alreadySeenModels.set(jsonSchemaModel, metaModel);
@@ -479,10 +536,16 @@ export function convertToArrayModel(
     return metaModel;
   }
 
-  const valueModel = new UnionModel('union', jsonSchemaModel.originalInput, []);
+  const valueModel = new UnionModel(
+    'union',
+    jsonSchemaModel.originalInput,
+    getMetaModelOptions(jsonSchemaModel),
+    []
+  );
   const metaModel = new ArrayModel(
     name,
     jsonSchemaModel.originalInput,
+    getMetaModelOptions(jsonSchemaModel),
     valueModel
   );
   alreadySeenModels.set(jsonSchemaModel, metaModel);
@@ -518,7 +581,12 @@ export function convertToTupleModel(
 
   const items = jsonSchemaModel.items as CommonModel[];
   //item multiple types + additionalItems not sat = tuple of item type
-  const tupleModel = new TupleModel(name, jsonSchemaModel.originalInput, []);
+  const tupleModel = new TupleModel(
+    name,
+    jsonSchemaModel.originalInput,
+    getMetaModelOptions(jsonSchemaModel),
+    []
+  );
   alreadySeenModels.set(jsonSchemaModel, tupleModel);
   for (let i = 0; i < items.length; i++) {
     const item = items[Number(i)];
