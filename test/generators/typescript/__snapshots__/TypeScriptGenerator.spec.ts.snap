@@ -329,6 +329,33 @@ Array [
 exports[`TypeScriptGenerator const should generate a single enum with two values 1`] = `
 Array [
   "class LightMeasured {
+  private _reservedType?: ReservedType = ReservedType.MY_MESSAGE;
+  private _type2?: Type2 = Type2.MY_MESSAGE2;
+
+  constructor(input: {
+  
+  }) {
+  
+  }
+
+  get reservedType(): ReservedType | undefined { return this._reservedType; }
+
+  get type2(): Type2 | undefined { return this._type2; }
+}",
+  "enum ReservedType {
+  MY_MESSAGE = \\"MyMessage\\",
+  MY_MESSAGE2 = \\"MyMessage2\\",
+}",
+  "enum Type2 {
+  MY_MESSAGE = \\"MyMessage\\",
+  MY_MESSAGE2 = \\"MyMessage2\\",
+}",
+]
+`;
+
+exports[`TypeScriptGenerator const should generate a single enum with two values and a string enum 1`] = `
+Array [
+  "class LightMeasured {
   private _reservedType?: MyCommonEnums | 'MyMessage2';
 
   constructor(input: {

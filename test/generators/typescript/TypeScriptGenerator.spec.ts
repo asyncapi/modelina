@@ -925,7 +925,7 @@ ${content}`;
       expect(models.map((model) => model.result)).toMatchSnapshot();
     });
 
-    test('should generate a single enum with two values', async () => {
+    test('should generate a single enum with two values and a string enum', async () => {
       const models = await generator.generate({
         $schema: 'http://json-schema.org/draft-07/schema#',
         type: 'object',
@@ -946,6 +946,41 @@ ${content}`;
         definitions: {
           MyCommonEnums: {
             title: 'MyCommonEnums',
+            enum: ['MyMessage', 'MyMessage2']
+          }
+        }
+      });
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+
+    test('should generate a single enum with two values', async () => {
+      const models = await generator.generate({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        title: 'LightMeasured',
+        additionalProperties: false,
+        properties: {
+          type: {
+            const: 'MyMessage',
+            allOf: [
+              {
+                $ref: '#/definitions/MyCommonEnums'
+              }
+            ]
+          },
+          type2: {
+            allOf: [
+              {
+                $ref: '#/definitions/MyCommonEnums'
+              },
+              {
+                const: 'MyMessage2'
+              }
+            ]
+          }
+        },
+        definitions: {
+          MyCommonEnums: {
             enum: ['MyMessage', 'MyMessage2']
           }
         }
