@@ -338,6 +338,7 @@ describe('JavaGenerator', () => {
           CloudEvent: {
             title: 'CloudEvent',
             type: 'object',
+            discriminator: 'type',
             properties: {
               id: {
                 type: 'string'
@@ -348,8 +349,7 @@ describe('JavaGenerator', () => {
               },
               specversion: {
                 type: 'string',
-                default: '1.0',
-                examples: ['1.0']
+                const: '1.0'
               },
               type: {
                 title: 'CloudEventType',

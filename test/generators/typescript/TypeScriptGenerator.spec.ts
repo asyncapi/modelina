@@ -625,6 +625,7 @@ ${content}`;
                   min: 0
                 }
               },
+              required: ['petType'],
               oneOf: [
                 { $ref: '#/components/schemas/Cat' },
                 { $ref: '#/components/schemas/Dog' }
@@ -755,6 +756,7 @@ ${content}`;
           CloudEvent: {
             title: 'CloudEvent',
             type: 'object',
+            discriminator: 'type',
             properties: {
               id: {
                 type: 'string'

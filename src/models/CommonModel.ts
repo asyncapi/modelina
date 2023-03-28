@@ -5,7 +5,7 @@ export interface MergingOptions {
    * When models are merged, should merging models constrict the `merging to` model?
    * If false, `required` keyword would no longer be applied from the `merging from` model.
    */
-  constrictModels: boolean;
+  constrictModels?: boolean;
 }
 export const defaultMergingOptions: MergingOptions = {
   constrictModels: true
@@ -747,6 +747,7 @@ export class CommonModel {
    * @param originalInput corresponding input that got interpreted to this model
    * @param alreadyIteratedModels
    */
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   static mergeCommonModels(
     mergeTo: CommonModel | undefined,
     mergeFrom: CommonModel,
@@ -812,6 +813,8 @@ export class CommonModel {
     }
 
     mergeTo.const = mergeTo.const || mergeFrom.const;
+
+    mergeTo.discriminator = mergeTo.discriminator || mergeFrom.discriminator;
 
     if (mergeFrom.required !== undefined && options.constrictModels === true) {
       mergeTo.required = [

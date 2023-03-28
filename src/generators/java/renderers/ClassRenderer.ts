@@ -86,8 +86,10 @@ ${this.indent(this.renderBlock(content, 2))}
       return undefined;
     }
 
-    if (property.isConstrainedEnumModel()) {
-      return `private final ${property.property.type} ${property.propertyName} = ${property.property.type}.${property.constValue};`;
+    const constrainedEnumValueModel = property.getConstrainedEnumValueModel();
+
+    if (constrainedEnumValueModel) {
+      return `private final ${property.property.type} ${property.propertyName} = ${property.property.type}.${constrainedEnumValueModel.key};`;
     } else if (property.isConstrainedStringModel()) {
       return `private final ${property.property.type} ${property.propertyName} = '${property.constValue}';`;
     }

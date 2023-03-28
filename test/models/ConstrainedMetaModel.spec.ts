@@ -394,10 +394,13 @@ describe('ConstrainedMetaModel', () => {
       });
     });
 
-    test('should return constant value if reference model is an enum model', () => {
+    test('getConstrainedEnumValueModel should return the ConstrainedEnumValueModel when property is a reference model to a ConstrainedEnumModel', () => {
+      const testConst = 'testConst';
+
       const constrainedEnumValueModel = new ConstrainedEnumValueModel(
         'testKey',
-        'testValue'
+        testConst,
+        testConst
       );
 
       const constrainedObjectPropertyModel = new ConstrainedObjectPropertyModel(
@@ -408,22 +411,37 @@ describe('ConstrainedMetaModel', () => {
           'testRefModel',
           undefined,
           '',
-          new ConstrainedEnumModel(
-            'testEnum',
-            undefined,
-            '',
-            [constrainedEnumValueModel],
+          new ConstrainedEnumModel('testEnumModel', undefined, '', [
             constrainedEnumValueModel
-          )
-        )
+          ])
+        ),
+        testConst
       );
 
-      expect(constrainedObjectPropertyModel.hasConstantValue()).toBe(true);
-      expect(constrainedObjectPropertyModel.getConstantValue()?.key).toBe(
-        constrainedEnumValueModel.key
+      expect(constrainedObjectPropertyModel.constValue).toBe(testConst);
+      expect(
+        constrainedObjectPropertyModel.getConstrainedEnumValueModel()
+      ).toBe(constrainedEnumValueModel);
+      expect(constrainedObjectPropertyModel.isConstrainedStringModel()).toBe(
+        false
       );
-      expect(constrainedObjectPropertyModel.getConstantValue()?.value).toBe(
-        constrainedEnumValueModel.value
+    });
+
+    test('isConstrainedStringModel should return true when property is ConstrainedStringModel', () => {
+      const constrainedObjectPropertyModel = new ConstrainedObjectPropertyModel(
+        'testModel',
+        '',
+        false,
+        new ConstrainedStringModel('testStringModel', undefined, ''),
+        'testConst'
+      );
+
+      expect(constrainedObjectPropertyModel.constValue).toBe('testConst');
+      expect(
+        constrainedObjectPropertyModel.getConstrainedEnumValueModel()
+      ).toBeUndefined();
+      expect(constrainedObjectPropertyModel.isConstrainedStringModel()).toBe(
+        true
       );
     });
   });

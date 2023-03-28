@@ -1,5 +1,9 @@
-import { Draft4Schema, CommonModel } from '../models';
-import { InterpreterSchemaType } from './Interpreter';
+import { Draft4Schema, CommonModel, AsyncapiV2Schema } from '../models';
+import {
+  Interpreter,
+  InterpreterOptions,
+  InterpreterSchemaType
+} from './Interpreter';
 import { inferTypeFromValue } from './Utils';
 
 /**
@@ -7,10 +11,12 @@ import { inferTypeFromValue } from './Utils';
  *
  * @param schema
  * @param model
+ * @param interpreterOptions to control the interpret process
  */
 export default function interpretConst(
   schema: InterpreterSchemaType,
-  model: CommonModel
+  model: CommonModel,
+  interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions
 ): void {
   if (
     schema instanceof Draft4Schema ||
@@ -18,6 +24,10 @@ export default function interpretConst(
     schema.const === undefined
   ) {
     return;
+  }
+
+  if (schema instanceof AsyncapiV2Schema && interpreterOptions.discriminator) {
+    model.enum = [schema.const];
   }
 
   model.const = schema.const;

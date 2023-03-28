@@ -45,6 +45,10 @@ export type InterpreterOptions = {
    * Instead you should adapt your schemas to be more strict by setting `additionalItems: false`.
    */
   ignoreAdditionalItems?: boolean;
+  /**
+   * When interpreting a schema with discriminator set, this property will be set bet by the individual interpreters to make sure the discriminator becomes an enum.
+   */
+  discriminator?: string;
 };
 export type InterpreterSchemas =
   | Draft6Schema
@@ -130,7 +134,16 @@ export class Interpreter {
       model.required = schema.required;
     }
     if (schema instanceof AsyncapiV2Schema && schema.discriminator) {
+      interpreterOptions.discriminator = schema.discriminator;
       model.discriminator = schema.discriminator;
+
+      if (!schema.properties?.[model.discriminator]) {
+        throw new Error(
+          `discriminator ${
+            model.discriminator
+          } must be property in schema ${JSON.stringify(schema, null, 2)}`
+        );
+      }
 
       if (!model.required?.includes(model.discriminator)) {
         throw new Error(
@@ -156,7 +169,7 @@ export class Interpreter {
     interpretOneOfWithProperties(schema, model, this, interpreterOptions);
     interpretAnyOf(schema, model, this, interpreterOptions);
     interpretDependencies(schema, model, this, interpreterOptions);
-    interpretConst(schema, model);
+    interpretConst(schema, model, interpreterOptions);
     interpretEnum(schema, model);
     InterpretThenElse(schema, model, this, interpreterOptions);
 

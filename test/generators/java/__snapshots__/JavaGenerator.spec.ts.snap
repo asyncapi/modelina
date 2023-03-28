@@ -12,7 +12,7 @@ Array [
   private String source;
   @NotNull
   @JsonProperty(\\"specversion\\")
-  private String specversion;
+  private final String specversion = '1.0';
   @NotNull
   @JsonProperty(\\"type\\")
   private final CloudEventType type = CloudEventType.DOG;
@@ -28,11 +28,7 @@ Array [
   public String getSource() { return this.source; }
   public void setSource(String source) { this.source = source; }
 
-  /**
-   * Examples: 1.0
-   */
   public String getSpecversion() { return this.specversion; }
-  public void setSpecversion(String specversion) { this.specversion = specversion; }
 
   public CloudEventType getType() { return this.type; }
 
@@ -131,7 +127,7 @@ Array [
   private String source;
   @NotNull
   @JsonProperty(\\"specversion\\")
-  private String specversion;
+  private final String specversion = '1.0';
   @NotNull
   @JsonProperty(\\"type\\")
   private final CloudEventType type = CloudEventType.CAT;
@@ -147,11 +143,7 @@ Array [
   public String getSource() { return this.source; }
   public void setSource(String source) { this.source = source; }
 
-  /**
-   * Examples: 1.0
-   */
   public String getSpecversion() { return this.specversion; }
-  public void setSpecversion(String specversion) { this.specversion = specversion; }
 
   public CloudEventType getType() { return this.type; }
 

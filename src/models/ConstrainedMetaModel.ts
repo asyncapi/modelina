@@ -73,19 +73,19 @@ export class ConstrainedObjectPropertyModel {
     public constValue?: unknown
   ) {}
 
-  public isConstrainedEnumModel(): ConstrainedEnumModel | undefined {
+  public getConstrainedEnumValueModel(): ConstrainedEnumValueModel | undefined {
     if (
       this.property instanceof ConstrainedReferenceModel &&
       this.property.ref instanceof ConstrainedEnumModel
     ) {
-      return this.property.ref;
+      return this.property.ref?.values.find(
+        (value) => value.originalInput === this.constValue
+      );
     }
   }
 
-  public isConstrainedStringModel(): ConstrainedStringModel | undefined {
-    if (this.property instanceof ConstrainedStringModel) {
-      return this.property;
-    }
+  public isConstrainedStringModel(): boolean {
+    return this.property instanceof ConstrainedStringModel;
   }
 }
 export class ConstrainedArrayModel extends ConstrainedMetaModel {
@@ -136,7 +136,11 @@ export class ConstrainedUnionModel extends ConstrainedMetaModel {
   }
 }
 export class ConstrainedEnumValueModel {
-  constructor(public key: string, public value: any) {}
+  constructor(
+    public key: string,
+    public value: any,
+    public originalInput: unknown
+  ) {}
 }
 export class ConstrainedEnumModel extends ConstrainedMetaModel {
   constructor(

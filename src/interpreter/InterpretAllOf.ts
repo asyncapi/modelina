@@ -1,5 +1,5 @@
 import { Logger } from '../utils';
-import { CommonModel } from '../models/CommonModel';
+import { CommonModel, AsyncapiV2Schema } from '../models';
 import {
   Interpreter,
   InterpreterOptions,
@@ -17,6 +17,7 @@ import { isModelObject } from './Utils';
  * @param interpreter
  * @param interpreterOptions to control the interpret process
  */
+// eslint-disable-next-line sonarjs/cognitive-complexity
 export default function interpretAllOf(
   schema: InterpreterSchemaType,
   model: CommonModel,
@@ -29,6 +30,15 @@ export default function interpretAllOf(
     schema.oneOf
   ) {
     return;
+  }
+
+  for (const allOfSchema of schema.allOf) {
+    if (allOfSchema instanceof AsyncapiV2Schema && allOfSchema.discriminator) {
+      interpreterOptions = {
+        ...interpreterOptions,
+        discriminator: allOfSchema.discriminator
+      };
+    }
   }
 
   for (const allOfSchema of schema.allOf) {

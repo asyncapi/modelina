@@ -406,15 +406,11 @@ export function convertToObjectModel(
   )) {
     const isRequired = jsonSchemaModel.isRequired(propertyName);
 
-    if (metaModel.discriminator === propertyName) {
-      prop.addEnum(metaModel.discriminator);
-    }
-
     const propertyModel = new ObjectPropertyModel(
       propertyName,
       isRequired,
       convertToMetaModel(prop, alreadySeenModels),
-      jsonSchemaModel.const
+      prop.const
     );
 
     metaModel.properties[String(propertyName)] = propertyModel;

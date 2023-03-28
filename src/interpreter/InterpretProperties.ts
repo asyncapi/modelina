@@ -31,10 +31,13 @@ export default function interpretProperties(
   for (const [propertyName, propertySchema] of Object.entries(
     schema.properties
   )) {
-    const propertyModel = interpreter.interpret(
-      propertySchema,
-      interpreterOptions
-    );
+    const propertyModel = interpreter.interpret(propertySchema, {
+      ...interpreterOptions,
+      discriminator:
+        propertyName === interpreterOptions.discriminator
+          ? interpreterOptions.discriminator
+          : undefined
+    });
     if (propertyModel !== undefined) {
       model.addProperty(propertyName, propertyModel, schema);
     }

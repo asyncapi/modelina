@@ -30,8 +30,10 @@ export abstract class TypeScriptObjectRenderer extends TypeScriptRenderer<Constr
       return undefined;
     }
 
-    if (property.isConstrainedEnumModel()) {
-      return `${property.property.type}.${property.constValue}`;
+    const constrainedEnumValueModel = property.getConstrainedEnumValueModel();
+
+    if (constrainedEnumValueModel) {
+      return `${property.property.type}.${constrainedEnumValueModel.key}`;
     } else if (property.isConstrainedStringModel()) {
       return `'${property.constValue}'`;
     }

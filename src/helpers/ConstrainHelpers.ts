@@ -452,7 +452,8 @@ function ConstrainEnumModel<
     });
     return new ConstrainedEnumValueModel(
       constrainedEnumKey,
-      constrainedEnumValue
+      constrainedEnumValue,
+      enumValue.value
     );
   };
 
