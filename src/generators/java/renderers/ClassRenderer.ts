@@ -82,10 +82,14 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 
   getConstValue(property: ConstrainedObjectPropertyModel): string | undefined {
-    const constValue = property.getConstantValue();
+    const stringConstValue = property.getStringConstantValue();
+    if (stringConstValue) {
+      return `private final ${property.property.type} ${property.propertyName} = '${stringConstValue.value}';`;
+    }
 
-    if (constValue) {
-      return `private final ${property.property.type} ${property.propertyName} = ${property.property.type}.${constValue.key};`;
+    const enumConstValue = property.getEnumConstantValue();
+    if (enumConstValue) {
+      return `private final ${property.property.type} ${property.propertyName} = ${property.property.type}.${enumConstValue.key};`;
     }
   }
 }

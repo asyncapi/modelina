@@ -10,7 +10,18 @@ export class ReferenceModel extends MetaModel {
 export class AnyModel extends MetaModel {}
 export class FloatModel extends MetaModel {}
 export class IntegerModel extends MetaModel {}
-export class StringModel extends MetaModel {}
+export class StrongConstModel {
+  constructor(public value: string) {}
+}
+export class StringModel extends MetaModel {
+  constructor(
+    name: string,
+    originalInput: any,
+    public constValue?: StrongConstModel
+  ) {
+    super(name, originalInput);
+  }
+}
 export class BooleanModel extends MetaModel {}
 export class TupleValueModel {
   constructor(public index: number, public value: MetaModel) {}

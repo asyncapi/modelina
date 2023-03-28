@@ -29,7 +29,19 @@ export class ConstrainedReferenceModel extends ConstrainedMetaModel {
 export class ConstrainedAnyModel extends ConstrainedMetaModel {}
 export class ConstrainedFloatModel extends ConstrainedMetaModel {}
 export class ConstrainedIntegerModel extends ConstrainedMetaModel {}
-export class ConstrainedStringModel extends ConstrainedMetaModel {}
+export class ConstrainedStringConstModel {
+  constructor(public value: string) {}
+}
+export class ConstrainedStringModel extends ConstrainedMetaModel {
+  constructor(
+    name: string,
+    originalInput: any,
+    type: string,
+    public constValue?: ConstrainedStringConstModel
+  ) {
+    super(name, originalInput, type);
+  }
+}
 export class ConstrainedBooleanModel extends ConstrainedMetaModel {}
 export class ConstrainedTupleValueModel {
   constructor(public index: number, public value: ConstrainedMetaModel) {}
@@ -72,7 +84,22 @@ export class ConstrainedObjectPropertyModel {
     public property: ConstrainedMetaModel
   ) {}
 
-  public getConstantValue(): ConstrainedEnumValueModel | undefined {
+  public getStringConstantValue(): ConstrainedStringConstModel | undefined {
+    if (
+      this.property instanceof ConstrainedStringModel &&
+      this.property.constValue
+    ) {
+      return this.property.constValue;
+    }
+
+    return undefined;
+  }
+
+  public hasStringConstantValue(): boolean {
+    return !!this.getStringConstantValue();
+  }
+
+  public getEnumConstantValue(): ConstrainedEnumValueModel | undefined {
     if (
       this.property instanceof ConstrainedReferenceModel &&
       this.property.ref instanceof ConstrainedEnumModel &&
@@ -84,8 +111,12 @@ export class ConstrainedObjectPropertyModel {
     return undefined;
   }
 
+  public hasEnumConstantValue(): boolean {
+    return !!this.getEnumConstantValue();
+  }
+
   public hasConstantValue(): boolean {
-    return !!this.getConstantValue();
+    return this.hasStringConstantValue() || this.hasEnumConstantValue();
   }
 }
 export class ConstrainedArrayModel extends ConstrainedMetaModel {

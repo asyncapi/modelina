@@ -15,21 +15,20 @@ describe('Interpretation of const', () => {
     const schema: any = { type: 'string' };
     interpretConst(schema, model);
     expect(model.setType).not.toHaveBeenCalled();
-    expect(model.enum).toBeUndefined();
+    expect(model.const).toBeUndefined();
   });
   test('should not infer type from const if schema have type', () => {
     const model = new CommonModel();
     const schema: any = { type: 'string', const: 'test' };
     interpretConst(schema, model);
     expect(model.setType).not.toHaveBeenCalled();
-    expect(model.enum).toEqual([schema.const]);
+    expect(model.const).toEqual(schema.const);
   });
-  test('should infer type and enum', () => {
+  test('should infer type and const', () => {
     (inferTypeFromValue as jest.Mock).mockReturnValue('string');
     const schema: any = { const: 'test' };
     const model = new CommonModel();
     interpretConst(schema, model);
-    expect(model.enum).toEqual([schema.const]);
     expect(model.const).toEqual(schema.const);
     expect(inferTypeFromValue).toHaveBeenNthCalledWith(1, 'test');
     expect(model.setType).toHaveBeenNthCalledWith(1, 'string');
@@ -39,7 +38,7 @@ describe('Interpretation of const', () => {
     const schema: any = { const: 'test' };
     const model = new CommonModel();
     interpretConst(schema, model);
-    expect(model.enum).toEqual([schema.const]);
+    expect(model.const).toEqual(schema.const);
     expect(model.setType).not.toHaveBeenCalled();
     expect(inferTypeFromValue).toHaveBeenNthCalledWith(1, 'test');
   });

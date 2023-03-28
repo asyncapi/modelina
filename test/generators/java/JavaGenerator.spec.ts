@@ -348,11 +348,9 @@ describe('JavaGenerator', () => {
               },
               specversion: {
                 type: 'string',
-                default: '1.0',
-                examples: ['1.0']
+                const: '1.0'
               },
               type: {
-                title: 'CloudEventType',
                 type: 'string'
               },
               dataschema: {
@@ -402,22 +400,11 @@ describe('JavaGenerator', () => {
 
       const dog = models.find((model) => model.modelName === 'Dog');
       expect(dog).not.toBeUndefined();
-      expect(dog?.result).toContain(
-        'private final CloudEventType type = CloudEventType.DOG;'
-      );
+      expect(dog?.result).toContain("private final String type = 'Dog';");
 
       const cat = models.find((model) => model.modelName === 'Cat');
       expect(cat).not.toBeUndefined();
-      expect(cat?.result).toContain(
-        'private final CloudEventType type = CloudEventType.CAT;'
-      );
-
-      const cloudEventType = models.find(
-        (model) => model.modelName === 'CloudEventType'
-      );
-      expect(cloudEventType).not.toBeUndefined();
-      expect(cloudEventType?.result).toContain('DOG');
-      expect(cloudEventType?.result).toContain('CAT');
+      expect(cat?.result).toContain("private final String type = 'Cat';");
     });
   });
 });

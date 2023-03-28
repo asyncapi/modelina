@@ -12,10 +12,10 @@ Array [
   private String source;
   @NotNull
   @JsonProperty(\\"specversion\\")
-  private String specversion;
+  private final String specversion = '1.0';
   @NotNull
   @JsonProperty(\\"type\\")
-  private final CloudEventType type = CloudEventType.DOG;
+  private final String type = 'Dog';
   @JsonProperty(\\"dataschema\\")
   private String dataschema;
   @JsonProperty(\\"time\\")
@@ -28,13 +28,9 @@ Array [
   public String getSource() { return this.source; }
   public void setSource(String source) { this.source = source; }
 
-  /**
-   * Examples: 1.0
-   */
   public String getSpecversion() { return this.specversion; }
-  public void setSpecversion(String specversion) { this.specversion = specversion; }
 
-  public CloudEventType getType() { return this.type; }
+  public String getType() { return this.type; }
 
   public String getDataschema() { return this.dataschema; }
   public void setDataschema(String dataschema) { this.dataschema = dataschema; }
@@ -93,35 +89,6 @@ Array [
     return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
   }
 }",
-  "public enum CloudEventType {
-  DOG((String)\\"Dog\\"), CAT((String)\\"Cat\\");
-
-  private String value;
-
-  CloudEventType(String value) {
-    this.value = value;
-  }
-
-  @JsonValue
-  public String getValue() {
-    return value;
-  }
-
-  @JsonCreator
-  public static CloudEventType fromValue(String value) {
-    for (CloudEventType e : CloudEventType.values()) {
-      if (e.value.equals(value)) {
-        return e;
-      }
-    }
-    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
-  }
-
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-}",
   "public class Cat {
   @NotNull
   @JsonProperty(\\"id\\")
@@ -131,10 +98,10 @@ Array [
   private String source;
   @NotNull
   @JsonProperty(\\"specversion\\")
-  private String specversion;
+  private final String specversion = '1.0';
   @NotNull
   @JsonProperty(\\"type\\")
-  private final CloudEventType type = CloudEventType.CAT;
+  private final String type = 'Cat';
   @JsonProperty(\\"dataschema\\")
   private String dataschema;
   @JsonProperty(\\"time\\")
@@ -147,13 +114,9 @@ Array [
   public String getSource() { return this.source; }
   public void setSource(String source) { this.source = source; }
 
-  /**
-   * Examples: 1.0
-   */
   public String getSpecversion() { return this.specversion; }
-  public void setSpecversion(String specversion) { this.specversion = specversion; }
 
-  public CloudEventType getType() { return this.type; }
+  public String getType() { return this.type; }
 
   public String getDataschema() { return this.dataschema; }
   public void setDataschema(String dataschema) { this.dataschema = dataschema; }

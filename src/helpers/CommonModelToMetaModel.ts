@@ -15,7 +15,8 @@ import {
   EnumModel,
   EnumValueModel,
   ObjectPropertyModel,
-  AnyModel
+  AnyModel,
+  StrongConstModel
 } from '../models';
 
 export function convertToMetaModel(
@@ -215,7 +216,14 @@ export function convertToStringModel(
   if (!jsonSchemaModel.type?.includes('string')) {
     return undefined;
   }
-  return new StringModel(name, jsonSchemaModel.originalInput);
+
+  const stringModel = new StringModel(name, jsonSchemaModel.originalInput);
+
+  if (jsonSchemaModel.const) {
+    stringModel.constValue = new StrongConstModel(jsonSchemaModel.const);
+  }
+
+  return stringModel;
 }
 export function convertToAnyModel(
   jsonSchemaModel: CommonModel,
@@ -251,7 +259,7 @@ export function convertToEnumModel(
   jsonSchemaModel: CommonModel,
   name: string
 ): EnumModel | undefined {
-  if (!isEnumModel(jsonSchemaModel) && !jsonSchemaModel.const) {
+  if (!isEnumModel(jsonSchemaModel)) {
     return undefined;
   }
 

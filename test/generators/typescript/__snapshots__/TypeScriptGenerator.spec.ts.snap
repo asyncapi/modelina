@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TypeScriptGenerator AsyncAPI with polymorphism should render 6 models (1 oneOf, 3 classes and 2 enums) 1`] = `
+exports[`TypeScriptGenerator AsyncAPI with polymorphism should render 6 models (1 oneOf, 3 classes and 1 enum) 1`] = `
 Array [
   "type AnonymousSchema_1 = Cat | Dog | StickInsect;",
   "class Cat {
-  private _petType: PetType = PetType.CAT;
+  private _petType: string = 'Cat';
   private _reservedName: string;
   private _huntingSkill: HuntingSkill;
 
@@ -16,18 +16,13 @@ Array [
     this._huntingSkill = input.huntingSkill;
   }
 
-  get petType(): PetType { return this._petType; }
+  get petType(): string { return this._petType; }
 
   get reservedName(): string { return this._reservedName; }
   set reservedName(reservedName: string) { this._reservedName = reservedName; }
 
   get huntingSkill(): HuntingSkill { return this._huntingSkill; }
   set huntingSkill(huntingSkill: HuntingSkill) { this._huntingSkill = huntingSkill; }
-}",
-  "enum PetType {
-  CAT = \\"Cat\\",
-  DOG = \\"Dog\\",
-  STICK_BUG = \\"StickBug\\",
 }",
   "enum HuntingSkill {
   CLUELESS = \\"clueless\\",
@@ -36,7 +31,7 @@ Array [
   AGGRESSIVE = \\"aggressive\\",
 }",
   "class Dog {
-  private _petType: PetType = PetType.DOG;
+  private _petType: string = 'Dog';
   private _reservedName: string;
   private _packSize: number;
 
@@ -48,7 +43,7 @@ Array [
     this._packSize = input.packSize;
   }
 
-  get petType(): PetType { return this._petType; }
+  get petType(): string { return this._petType; }
 
   get reservedName(): string { return this._reservedName; }
   set reservedName(reservedName: string) { this._reservedName = reservedName; }
@@ -57,7 +52,7 @@ Array [
   set packSize(packSize: number) { this._packSize = packSize; }
 }",
   "class StickInsect {
-  private _petType: PetType = PetType.STICK_BUG;
+  private _petType: string = 'StickBug';
   private _reservedName: string;
   private _color: string;
 
@@ -69,7 +64,7 @@ Array [
     this._color = input.color;
   }
 
-  get petType(): PetType { return this._petType; }
+  get petType(): string { return this._petType; }
 
   get reservedName(): string { return this._reservedName; }
   set reservedName(reservedName: string) { this._reservedName = reservedName; }
@@ -81,10 +76,11 @@ Array [
 `;
 
 exports[`TypeScriptGenerator AsyncAPI with polymorphism should render enum with discriminator 1`] = `
-"enum PetType {
-  CAT = \\"Cat\\",
-  DOG = \\"Dog\\",
-  STICK_BUG = \\"StickBug\\",
+"enum HuntingSkill {
+  CLUELESS = \\"clueless\\",
+  LAZY = \\"lazy\\",
+  ADVENTUROUS = \\"adventurous\\",
+  AGGRESSIVE = \\"aggressive\\",
 }"
 `;
 
@@ -95,7 +91,7 @@ Array [
   private _id: string;
   private _source: string;
   private _specversion: string;
-  private _reservedType: DogType = DogType.DOG;
+  private _reservedType: string = 'Dog';
   private _dataschema?: string;
   private _time?: string;
   private _additionalProperties?: Map<string, any>;
@@ -125,7 +121,7 @@ Array [
   get specversion(): string { return this._specversion; }
   set specversion(specversion: string) { this._specversion = specversion; }
 
-  get reservedType(): DogType { return this._reservedType; }
+  get reservedType(): string { return this._reservedType; }
 
   get dataschema(): string | undefined { return this._dataschema; }
   set dataschema(dataschema: string | undefined) { this._dataschema = dataschema; }
@@ -135,15 +131,12 @@ Array [
 
   get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
   set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
-}",
-  "enum DogType {
-  DOG = \\"Dog\\",
 }",
   "class Cat {
   private _id: string;
   private _source: string;
   private _specversion: string;
-  private _reservedType: CatType = CatType.CAT;
+  private _reservedType: string = 'Cat';
   private _dataschema?: string;
   private _time?: string;
   private _additionalProperties?: Map<string, any>;
@@ -173,7 +166,7 @@ Array [
   get specversion(): string { return this._specversion; }
   set specversion(specversion: string) { this._specversion = specversion; }
 
-  get reservedType(): CatType { return this._reservedType; }
+  get reservedType(): string { return this._reservedType; }
 
   get dataschema(): string | undefined { return this._dataschema; }
   set dataschema(dataschema: string | undefined) { this._dataschema = dataschema; }
@@ -183,9 +176,6 @@ Array [
 
   get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
   set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
-}",
-  "enum CatType {
-  CAT = \\"Cat\\",
 }",
 ]
 `;
@@ -194,7 +184,7 @@ exports[`TypeScriptGenerator Combine oneOf and allOf should combine oneOf and al
 Array [
   "type Pet = Cat | Dog;",
   "class Cat {
-  private _animalType?: AnimalType = AnimalType.CAT;
+  private _animalType?: string = 'Cat';
   private _age?: number;
   private _huntingSkill?: HuntingSkill;
 
@@ -206,7 +196,7 @@ Array [
     this._huntingSkill = input.huntingSkill;
   }
 
-  get animalType(): AnimalType | undefined { return this._animalType; }
+  get animalType(): string | undefined { return this._animalType; }
 
   get age(): number | undefined { return this._age; }
   set age(age: number | undefined) { this._age = age; }
@@ -214,16 +204,12 @@ Array [
   get huntingSkill(): HuntingSkill | undefined { return this._huntingSkill; }
   set huntingSkill(huntingSkill: HuntingSkill | undefined) { this._huntingSkill = huntingSkill; }
 }",
-  "enum AnimalType {
-  CAT = \\"Cat\\",
-  DOG = \\"Dog\\",
-}",
   "enum HuntingSkill {
   CLUELESS = \\"clueless\\",
   LAZY = \\"lazy\\",
 }",
   "class Dog {
-  private _animalType?: AnimalType = AnimalType.DOG;
+  private _animalType?: string = 'Dog';
   private _age?: number;
   private _breed?: DogBreed;
 
@@ -235,7 +221,7 @@ Array [
     this._breed = input.breed;
   }
 
-  get animalType(): AnimalType | undefined { return this._animalType; }
+  get animalType(): string | undefined { return this._animalType; }
 
   get age(): number | undefined { return this._age; }
   set age(age: number | undefined) { this._age = age; }
@@ -254,7 +240,7 @@ exports[`TypeScriptGenerator Combine properties and oneOf should combine propert
 Array [
   "type Pet = Cat | Dog;",
   "class Cat {
-  private _petType?: PetType = PetType.CAT;
+  private _petType?: string = 'Cat';
   private _age?: number;
   private _huntingSkill?: HuntingSkill;
 
@@ -266,7 +252,7 @@ Array [
     this._huntingSkill = input.huntingSkill;
   }
 
-  get petType(): PetType | undefined { return this._petType; }
+  get petType(): string | undefined { return this._petType; }
 
   get age(): number | undefined { return this._age; }
   set age(age: number | undefined) { this._age = age; }
@@ -274,16 +260,12 @@ Array [
   get huntingSkill(): HuntingSkill | undefined { return this._huntingSkill; }
   set huntingSkill(huntingSkill: HuntingSkill | undefined) { this._huntingSkill = huntingSkill; }
 }",
-  "enum PetType {
-  CAT = \\"Cat\\",
-  DOG = \\"Dog\\",
-}",
   "enum HuntingSkill {
   CLUELESS = \\"clueless\\",
   LAZY = \\"lazy\\",
 }",
   "class Dog {
-  private _petType?: PetType = PetType.DOG;
+  private _petType?: string = 'Dog';
   private _age?: number;
   private _breed?: DogBreed;
 
@@ -295,7 +277,7 @@ Array [
     this._breed = input.breed;
   }
 
-  get petType(): PetType | undefined { return this._petType; }
+  get petType(): string | undefined { return this._petType; }
 
   get age(): number | undefined { return this._age; }
   set age(age: number | undefined) { this._age = age; }

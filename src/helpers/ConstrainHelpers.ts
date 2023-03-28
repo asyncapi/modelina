@@ -187,7 +187,8 @@ function constrainStringModel<
   const constrainedModel = new ConstrainedStringModel(
     context.constrainedName,
     context.metaModel.originalInput,
-    ''
+    '',
+    context.metaModel.constValue
   );
   constrainedModel.type = getTypeFromMapping(typeMapping, {
     constrainedModel,

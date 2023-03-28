@@ -480,9 +480,9 @@ ${content}`;
       }
     };
 
-    test('should render 6 models (1 oneOf, 3 classes and 2 enums)', async () => {
+    test('should render 6 models (1 oneOf, 3 classes and 1 enum)', async () => {
       const models = await generator.generate(asyncapiDoc);
-      expect(models).toHaveLength(6);
+      expect(models).toHaveLength(5);
       expect(models.map((model) => model.result)).toMatchSnapshot();
 
       const cat = models.find((model) => model.modelName === 'Cat');
@@ -498,11 +498,10 @@ ${content}`;
       const models = await generator.generate(asyncapiDoc);
       const enums = models.filter((model) => model.result.includes('enum'));
 
-      expect(enums).toHaveLength(2);
-      const discriminatorEnum = enums[0];
-      expect(discriminatorEnum?.modelName).not.toContain('AnonymousSchema');
-      // Should contain Cat, Dog, and StickBug
-      expect(discriminatorEnum?.result).toMatchSnapshot();
+      expect(enums).toHaveLength(1);
+      const huntingSkill = enums[0];
+      expect(huntingSkill?.modelName).not.toContain('AnonymousSchema');
+      expect(huntingSkill?.result).toMatchSnapshot();
     });
   });
 
@@ -580,7 +579,7 @@ ${content}`;
 
     test('should combine oneOf and allOf', async () => {
       const models = await generator.generate(asyncapiDoc);
-      expect(models).toHaveLength(6);
+      expect(models).toHaveLength(5);
       expect(models.map((model) => model.result)).toMatchSnapshot();
 
       const cat = models.find((model) => model.modelName === 'Cat');
@@ -669,7 +668,7 @@ ${content}`;
 
     test('should combine properties and oneOf', async () => {
       const models = await generator.generate(asyncapiDoc);
-      expect(models).toHaveLength(6);
+      expect(models).toHaveLength(5);
       expect(models.map((model) => model.result)).toMatchSnapshot();
 
       const cat = models.find((model) => model.modelName === 'Cat');
@@ -792,11 +791,11 @@ ${content}`;
 
       const dog = models.find((model) => model.modelName === 'Dog');
       expect(dog).not.toBeUndefined();
-      expect(dog?.result).toContain('DogType');
+      expect(dog?.result).toContain("private _reservedType: string = 'Dog';");
 
       const cat = models.find((model) => model.modelName === 'Cat');
       expect(cat).not.toBeUndefined();
-      expect(cat?.result).toContain('CatType');
+      expect(cat?.result).toContain("private _reservedType: string = 'Cat';");
     });
   });
 

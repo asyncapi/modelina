@@ -25,7 +25,8 @@ import {
   TupleModel,
   TupleValueModel,
   UnionModel,
-  ConstrainedReferenceModel
+  ConstrainedReferenceModel,
+  ConstrainedStringConstModel
 } from '../../src/models';
 import {
   mockedConstraints,
@@ -394,6 +395,32 @@ describe('ConstrainedMetaModel', () => {
       });
     });
 
+    test('should return constant value if string model has a const value', () => {
+      const constrainedStringConstModel = new ConstrainedStringConstModel(
+        'testValue'
+      );
+
+      const constrainedObjectPropertyModel = new ConstrainedObjectPropertyModel(
+        'testModel',
+        '',
+        false,
+        new ConstrainedStringModel(
+          'testStringModel',
+          undefined,
+          '',
+          constrainedStringConstModel
+        )
+      );
+
+      expect(constrainedObjectPropertyModel.hasStringConstantValue()).toBe(
+        true
+      );
+      expect(constrainedObjectPropertyModel.hasConstantValue()).toBe(true);
+      expect(
+        constrainedObjectPropertyModel.getStringConstantValue()?.value
+      ).toBe(constrainedStringConstModel.value);
+    });
+
     test('should return constant value if reference model is an enum model', () => {
       const constrainedEnumValueModel = new ConstrainedEnumValueModel(
         'testKey',
@@ -418,11 +445,12 @@ describe('ConstrainedMetaModel', () => {
         )
       );
 
+      expect(constrainedObjectPropertyModel.hasEnumConstantValue()).toBe(true);
       expect(constrainedObjectPropertyModel.hasConstantValue()).toBe(true);
-      expect(constrainedObjectPropertyModel.getConstantValue()?.key).toBe(
+      expect(constrainedObjectPropertyModel.getEnumConstantValue()?.key).toBe(
         constrainedEnumValueModel.key
       );
-      expect(constrainedObjectPropertyModel.getConstantValue()?.value).toBe(
+      expect(constrainedObjectPropertyModel.getEnumConstantValue()?.value).toBe(
         constrainedEnumValueModel.value
       );
     });
