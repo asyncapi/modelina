@@ -12,7 +12,7 @@ Array [
   private String source;
   @NotNull
   @JsonProperty(\\"specversion\\")
-  private final String specversion = '1.0';
+  private final String specversion = \\"1.0\\";
   @NotNull
   @JsonProperty(\\"type\\")
   private final CloudEventType type = CloudEventType.DOG;
@@ -127,7 +127,7 @@ Array [
   private String source;
   @NotNull
   @JsonProperty(\\"specversion\\")
-  private final String specversion = '1.0';
+  private final String specversion = \\"1.0\\";
   @NotNull
   @JsonProperty(\\"type\\")
   private final CloudEventType type = CloudEventType.CAT;

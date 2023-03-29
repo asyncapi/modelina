@@ -93,7 +93,7 @@ ${this.indent(this.renderBlock(content, 2))}
     } else if (property.isConstrainedStringModel()) {
       return `private final ${property.property.type} ${
         property.propertyName
-      } = '${property.getConstValue()}';`;
+      } = "${property.getConstValue()}";`;
     }
   }
 }
