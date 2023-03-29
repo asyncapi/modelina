@@ -15,7 +15,7 @@ import {
   ConstrainedTupleValueModel,
   ConstrainedUnionModel
 } from '../../../src';
-import {PhpDependencyManager} from "../../../src/generators/php/PhpDependencyManager";
+import { PhpDependencyManager } from '../../../src/generators/php/PhpDependencyManager';
 
 describe('PhpConstrainer', () => {
   describe('ObjectModel', () => {

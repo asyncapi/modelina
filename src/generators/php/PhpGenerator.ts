@@ -21,15 +21,11 @@ import {
   constrainMetaModel,
   Constraints
 } from '../../helpers/ConstrainHelpers';
-import {
-  PhpDefaultConstraints,
-  PhpDefaultTypeMapping
-} from './PhpConstrainer';
+import { PhpDefaultConstraints, PhpDefaultTypeMapping } from './PhpConstrainer';
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 import { PhpDependencyManager } from './PhpDependencyManager';
 
-export interface PhpOptions
-  extends CommonGeneratorOptions<PhpPreset> {
+export interface PhpOptions extends CommonGeneratorOptions<PhpPreset> {
   typeMapping: TypeMapping<PhpOptions, PhpDependencyManager>;
   constraints: Constraints;
 }
@@ -55,9 +51,7 @@ export class PhpGenerator extends AbstractGenerator<
   /**
    * Returns the Php options by merging custom options with default ones.
    */
-  static getPhpOptions(
-    options?: DeepPartial<PhpOptions>
-  ): PhpOptions {
+  static getPhpOptions(options?: DeepPartial<PhpOptions>): PhpOptions {
     const optionsToUse = mergePartialAndDefault(
       PhpGenerator.defaultOptions,
       options
@@ -75,9 +69,7 @@ export class PhpGenerator extends AbstractGenerator<
    * Wrapper to get an instance of the dependency manager
    */
   getDependencyManager(options: PhpOptions): PhpDependencyManager {
-    return this.getDependencyManagerInstance(
-      options
-    ) as PhpDependencyManager;
+    return this.getDependencyManagerInstance(options) as PhpDependencyManager;
   }
 
   /**

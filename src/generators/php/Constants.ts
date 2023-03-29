@@ -6,9 +6,5 @@ export function isReservedPhpKeyword(
   word: string,
   forceLowerCase = true
 ): boolean {
-  return checkForReservedKeyword(
-    word,
-    RESERVED_PHP_KEYWORDS,
-    forceLowerCase
-  );
+  return checkForReservedKeyword(word, RESERVED_PHP_KEYWORDS, forceLowerCase);
 }

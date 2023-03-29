@@ -5,21 +5,21 @@ import { PhpPreset } from '../PhpPreset';
  *
  * @implements {PhpPreset}
  */
+
+const DESC = 'my description';
+
 export const PHP_DESCRIPTION_PRESET: PhpPreset = {
   class: {
     self({ content }) {
-      const renderedDesc = 'my description';
-      return `${renderedDesc}\n${content}`;
+      return `${DESC}\n${content}`;
     },
     getter({ content }) {
-      const renderedDesc = 'my description';
-      return `${renderedDesc}\n${content}`;
+      return `${DESC}\n${content}`;
     }
   },
   enum: {
     self({ content }) {
-      const renderedDesc = 'my description';
-      return `${renderedDesc}\n${content}`;
+      return `${DESC}\n${content}`;
     }
   }
 };

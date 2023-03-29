@@ -2,7 +2,7 @@ import { AbstractRenderer } from '../AbstractRenderer';
 import { PhpGenerator, PhpOptions } from './PhpGenerator';
 import { ConstrainedMetaModel, InputMetaModel, Preset } from '../../models';
 import { PhpDependencyManager } from './PhpDependencyManager';
-import {FormatHelpers} from "../../helpers";
+import { FormatHelpers } from '../../helpers';
 
 /**
  * Common renderer for PHP
@@ -11,11 +11,7 @@ import {FormatHelpers} from "../../helpers";
  */
 export abstract class PhpRenderer<
   RendererModelType extends ConstrainedMetaModel
-> extends AbstractRenderer<
-  PhpOptions,
-  PhpGenerator,
-  RendererModelType
-> {
+> extends AbstractRenderer<PhpOptions, PhpGenerator, RendererModelType> {
   constructor(
     options: PhpOptions,
     generator: PhpGenerator,

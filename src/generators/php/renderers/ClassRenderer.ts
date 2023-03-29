@@ -1,6 +1,5 @@
 import { PhpRenderer } from '../PhpRenderer';
 import {
-  ConstrainedDictionaryModel,
   ConstrainedObjectModel,
   ConstrainedObjectPropertyModel
 } from '../../../models';
