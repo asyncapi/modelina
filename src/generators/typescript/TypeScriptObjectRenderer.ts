@@ -57,15 +57,15 @@ export abstract class TypeScriptObjectRenderer extends TypeScriptRenderer<Constr
   renderProperty(property: ConstrainedObjectPropertyModel): string {
     const renderedProperty = `${property.propertyName}${
       property.required === false ? '?' : ''
-    }: ${property.property.type}`;
+    }`;
 
     const constValue = this.getConstValue(property);
 
     if (constValue) {
-      return `${renderedProperty} = ${constValue};`;
+      return `${renderedProperty}: ${constValue} = ${constValue};`;
     }
 
-    return `${renderedProperty};`;
+    return `${renderedProperty}: ${property.property.type};`;
   }
 
   runPropertyPreset(property: ConstrainedObjectPropertyModel): Promise<string> {

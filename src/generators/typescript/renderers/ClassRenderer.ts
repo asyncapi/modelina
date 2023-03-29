@@ -75,10 +75,14 @@ ${renderer.indent(renderer.renderBlock(assignments))}
   property({ renderer, property }): string {
     return `private _${renderer.renderProperty(property)}`;
   },
-  getter({ property }): string {
-    return `get ${property.propertyName}(): ${property.property.type}${
-      property.required === false ? ' | undefined' : ''
-    } { return this._${property.propertyName}; }`;
+  getter({ renderer, property }): string {
+    const constValue = renderer.getConstValue(property);
+
+    return `get ${property.propertyName}(): ${
+      constValue ? constValue : property.property.type
+    }${property.required === false ? ' | undefined' : ''} { return this._${
+      property.propertyName
+    }; }`;
   },
   setter({ property }): string {
     // if const value exists we should not render a setter
