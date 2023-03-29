@@ -100,3 +100,38 @@ properties:
 ```
 
 The `country` property will not have a setter and will automatically be initialized.
+
+## Discriminator
+
+(Discriminator)[https://www.asyncapi.com/docs/reference/specification/v2.6.0#schemaComposition] is now supported.
+
+```yaml
+schemas:
+  Pet:
+    type: object
+    discriminator: petType
+    properties:
+      petType:
+        type: string
+      name:
+        type: string
+    required:
+      - petType
+      - name
+  Cat:
+    allOf:
+      - $ref: '#/components/schemas/Pet'
+      - type: object
+        properties:
+          petType:
+            const: Cat
+  Dog:
+    allOf:
+      - $ref: '#/components/schemas/Pet'
+      - type: object
+        properties:
+          petType:
+            const: Dog
+```
+
+This example will generate a model for `Cat` and `Dog` where `PetType` is a shared enum that contains two values (`Cat` and `Dog`). `PetType` will not have a setter, and will automatically be initialized.
