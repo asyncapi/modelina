@@ -133,10 +133,6 @@ export class Interpreter {
     if (schema.required !== undefined) {
       model.required = schema.required;
     }
-    if (schema instanceof AsyncapiV2Schema && schema.discriminator) {
-      interpreterOptions.discriminator = schema.discriminator;
-      model.discriminator = schema.discriminator;
-    }
 
     interpretPatternProperties(schema, model, this, interpreterOptions);
     interpretAdditionalItems(schema, model, this, interpreterOptions);

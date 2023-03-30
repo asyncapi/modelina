@@ -50,8 +50,7 @@ export class ObjectModel extends MetaModel {
     name: string,
     originalInput: any,
     options: MetaModelOptions,
-    public properties: { [key: string]: ObjectPropertyModel },
-    public discriminator?: string
+    public properties: { [key: string]: ObjectPropertyModel }
   ) {
     super(name, originalInput, options);
   }

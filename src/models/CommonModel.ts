@@ -21,7 +21,6 @@ export class CommonModel {
   type?: string | string[];
   enum?: any[];
   const?: unknown;
-  discriminator?: string;
   items?: CommonModel | CommonModel[];
   properties?: { [key: string]: CommonModel };
   additionalProperties?: CommonModel;
@@ -813,8 +812,6 @@ export class CommonModel {
     }
 
     mergeTo.const = mergeTo.const || mergeFrom.const;
-
-    mergeTo.discriminator = mergeTo.discriminator || mergeFrom.discriminator;
 
     if (mergeFrom.required !== undefined && options.constrictModels === true) {
       mergeTo.required = [

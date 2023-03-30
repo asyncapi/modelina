@@ -441,8 +441,7 @@ export function convertToObjectModel(
     name,
     jsonSchemaModel.originalInput,
     getMetaModelOptions(jsonSchemaModel),
-    {},
-    jsonSchemaModel.discriminator
+    {}
   );
   //cache model before continuing
   if (!alreadySeenModels.has(jsonSchemaModel)) {
