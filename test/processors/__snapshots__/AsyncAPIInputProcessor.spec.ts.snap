@@ -160,7 +160,6 @@ InputMetaModel {
       },
       "union": Array [
         ObjectModel {
-          "discriminator": "type",
           "name": "Dog",
           "options": Object {
             "constValue": undefined,
@@ -654,7 +653,6 @@ InputMetaModel {
           },
         },
         ObjectModel {
-          "discriminator": "type",
           "name": "Cat",
           "options": Object {
             "constValue": undefined,
@@ -2090,7 +2088,6 @@ InputMetaModel {
       },
       "union": Array [
         ObjectModel {
-          "discriminator": "type",
           "name": "Dog",
           "options": Object {
             "constValue": undefined,
@@ -2584,7 +2581,6 @@ InputMetaModel {
           },
         },
         ObjectModel {
-          "discriminator": "type",
           "name": "Cat",
           "options": Object {
             "constValue": undefined,
@@ -3869,7 +3865,6 @@ exports[`AsyncAPIInputProcessor process() should be able to process parsed objec
 InputMetaModel {
   "models": Object {
     "anonymous_schema_1": ObjectModel {
-      "discriminator": undefined,
       "name": "anonymous_schema_1",
       "options": Object {
         "constValue": undefined,
@@ -4044,7 +4039,6 @@ exports[`AsyncAPIInputProcessor process() should be able to process pure object 
 InputMetaModel {
   "models": Object {
     "anonymous_schema_1": ObjectModel {
-      "discriminator": undefined,
       "name": "anonymous_schema_1",
       "options": Object {
         "constValue": undefined,
