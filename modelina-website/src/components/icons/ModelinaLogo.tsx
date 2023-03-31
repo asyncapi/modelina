@@ -1,4 +1,4 @@
-export default function AsyncAPILogo({
+export default function ModelinaLogo({
   className = 'h-10 w-auto mt-0.5'
   }: any) {
   return (
