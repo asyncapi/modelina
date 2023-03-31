@@ -152,7 +152,7 @@ exports[`CSharpGenerator should render \`record\` type if chosen 1`] = `
   public bool? Marriage { get; init; }
   public dynamic? Members { get; init; }
   public dynamic[]? TupleType { get; init; }
-  public required dynamic[] ArrayType { get; init; }
+  public required string[] ArrayType { get; init; }
   public Dictionary<string, dynamic>? AdditionalProperties { get; init; }
 }"
 `;
