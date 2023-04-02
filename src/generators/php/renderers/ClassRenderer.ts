@@ -8,7 +8,7 @@ import { PhpOptions } from '../PhpGenerator';
 import { ClassPresetType } from '../PhpPreset';
 
 /**
- * Renderer for Php's `class` type
+ * Renderer for PHP's `class` type
  *
  * @extends PhpRenderer
  */
@@ -21,7 +21,8 @@ export class ClassRenderer extends PhpRenderer<ConstrainedObjectModel> {
       await this.runAdditionalContentPreset()
     ];
 
-    return `public class ${this.model.name} {
+    return `final class ${this.model.name}
+{
 ${this.indent(this.renderBlock(content, 2))}
 }`;
   }
@@ -79,16 +80,16 @@ export const PHP_DEFAULT_CLASS_PRESET: ClassPresetType<PhpOptions> = {
     return renderer.defaultSelf();
   },
   property({ property }) {
-    return `private ${property.property.type} ${property.propertyName};`;
+    return `private ${property.property.type} $${property.propertyName};`;
   },
   getter({ property }) {
     const getterName = `get${FormatHelpers.toPascalCase(
       property.propertyName
     )}`;
-    return `public ${property.property.type} ${getterName}() { return this.${property.propertyName}; }`;
+    return `public function ${getterName}(): ${property.property.type} { return $this->${property.propertyName}; }`;
   },
   setter({ property }) {
     const setterName = FormatHelpers.toPascalCase(property.propertyName);
-    return `public void set${setterName}(${property.property.type} ${property.propertyName}) { this.${property.propertyName} = ${property.propertyName}; }`;
+    return `public function set${setterName}(${property.property.type} $${property.propertyName}): void { $this->${property.propertyName} = $${property.propertyName}; }`;
   }
 };

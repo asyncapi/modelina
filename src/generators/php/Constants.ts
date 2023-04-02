@@ -71,7 +71,7 @@ export const RESERVED_PHP_KEYWORDS = [
   'while',
   'xor',
   'yield',
-  'from',
+  'from'
 ];
 
 export function isReservedPhpKeyword(
