@@ -65,7 +65,7 @@ describe('PhpConstrainer', () => {
         options: PhpGenerator.defaultOptions,
         dependencyManager: new PhpDependencyManager(PhpGenerator.defaultOptions)
       });
-      expect(type).toEqual('');
+      expect(type).toEqual('float');
     });
   });
   describe('Integer', () => {
@@ -76,7 +76,7 @@ describe('PhpConstrainer', () => {
         options: PhpGenerator.defaultOptions,
         dependencyManager: new PhpDependencyManager(PhpGenerator.defaultOptions)
       });
-      expect(type).toEqual('');
+      expect(type).toEqual('int');
     });
   });
   describe('String', () => {
@@ -87,7 +87,7 @@ describe('PhpConstrainer', () => {
         options: PhpGenerator.defaultOptions,
         dependencyManager: new PhpDependencyManager(PhpGenerator.defaultOptions)
       });
-      expect(type).toEqual('');
+      expect(type).toEqual('string');
     });
   });
   describe('Boolean', () => {
@@ -98,7 +98,7 @@ describe('PhpConstrainer', () => {
         options: PhpGenerator.defaultOptions,
         dependencyManager: new PhpDependencyManager(PhpGenerator.defaultOptions)
       });
-      expect(type).toEqual('');
+      expect(type).toEqual('bool');
     });
   });
 
@@ -159,7 +159,7 @@ describe('PhpConstrainer', () => {
         options: PhpGenerator.defaultOptions,
         dependencyManager: new PhpDependencyManager(PhpGenerator.defaultOptions)
       });
-      expect(type).toEqual('');
+      expect(type).toEqual('array');
     });
   });
 

@@ -14,6 +14,7 @@ export class PhpFileGenerator
    * @param input
    * @param outputDirectory where you want the models generated to
    * @param options
+   * @param ensureFilesWritten
    */
   public async generateToFiles(
     input: Record<string, unknown> | InputMetaModel,
@@ -21,7 +22,7 @@ export class PhpFileGenerator
     options?: PhpRenderCompleteModelOptions,
     ensureFilesWritten = false
   ): Promise<OutputModel[]> {
-    let generatedModels = await this.generateCompleteModels(
+    let generatedModels: OutputModel[] = await this.generateCompleteModels(
       input,
       options || {}
     );
@@ -32,7 +33,7 @@ export class PhpFileGenerator
     for (const outputModel of generatedModels) {
       const filePath = path.resolve(
         outputDirectory,
-        `${outputModel.modelName}.MYEXTENSION`
+        `${outputModel.modelName}.php`
       );
       await FileHelpers.writerToFileSystem(
         outputModel.result,

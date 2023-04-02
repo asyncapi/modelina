@@ -23,22 +23,22 @@ export const PhpDefaultTypeMapping: TypeMapping<
     return '';
   },
   Float(): string {
-    return '';
+    return 'float';
   },
   Integer(): string {
-    return '';
+    return 'int';
   },
   String(): string {
-    return '';
+    return 'string';
   },
   Boolean(): string {
-    return '';
+    return 'bool';
   },
   Tuple(): string {
     return '';
   },
   Array(): string {
-    return '';
+    return 'array';
   },
   Enum({ constrainedModel }): string {
     //Returning name here because all enum models have been split out

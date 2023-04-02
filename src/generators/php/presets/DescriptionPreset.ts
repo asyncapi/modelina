@@ -11,15 +11,15 @@ const DESC = 'my description';
 export const PHP_DESCRIPTION_PRESET: PhpPreset = {
   class: {
     self({ content }) {
-      return `${DESC}\n${content}`;
+      return `//${DESC}\n${content}`;
     },
     getter({ content }) {
-      return `${DESC}\n${content}`;
+      return `//${DESC}\n${content}`;
     }
   },
   enum: {
     self({ content }) {
-      return `${DESC}\n${content}`;
+      return `//${DESC}\n${content}`;
     }
   }
 };

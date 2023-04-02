@@ -3,7 +3,7 @@ import {
   PHP_DESCRIPTION_PRESET
 } from '../../../../src/generators/php';
 
-describe('Php_DESCRIPTION_PRESET', () => {
+describe('PHP_DESCRIPTION_PRESET', () => {
   let generator: PhpGenerator;
   beforeEach(() => {
     generator = new PhpGenerator({
