@@ -13,6 +13,7 @@ export interface ModelinaTypeScriptOptions {
   tsMarshalling: boolean;
   tsModelType: 'class' | 'interface' | undefined;
   tsEnumType: 'union' | 'enum' | undefined;
+  tsIncludeDescriptions: boolean;
 }
 export interface ModelinaJavaOptions {}
 export interface ModelinaCplusplusOptions {}
@@ -20,6 +21,7 @@ export interface ModelinaGoOptions {}
 export interface ModelinaJavaScriptOptions {}
 export interface ModelinaCSharpOptions {
   csharpArrayType: 'List' | 'Array' | undefined;
+  csharpAutoImplemented: boolean;
 }
 export interface ModelinaKotlinOptions {}
 export interface ModelinaRustOptions {}
@@ -47,6 +49,7 @@ export interface ModelinaGoQueryOptions {}
 export interface ModelinaJavaScriptQueryOptions {}
 export interface ModelinaCSharpQueryOptions {
   csharpArrayType?: string;
+  csharpAutoImplemented?: string;
 }
 export interface ModelinaKotlinQueryOptions {}
 export interface ModelinaRustQueryOptions {}
@@ -58,6 +61,7 @@ export interface ModelinaTypeScriptQueryOptions {
   tsMarshalling?: string;
   tsModelType?: string;
   tsEnumType?: string;
+  tsIncludeDescriptions?: string;
 }
 
 export interface ModelinaOptions

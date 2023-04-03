@@ -38,7 +38,3 @@ ENV PATH $PATH:/usr/lib/kotlinc/bin
 
 # Setup library
 RUN apt-get install -yq chromium
-
-COPY package.json package-lock.json ./
-RUN npm install
-COPY . ./
