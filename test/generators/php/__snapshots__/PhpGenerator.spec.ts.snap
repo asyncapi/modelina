@@ -22,9 +22,9 @@ exports[`PhpGenerator Class should render \`class\` type 1`] = `
   private string $state;
   private float $houseNumber;
   private bool $marriage;
-  private  $members;
+  private mixed $members;
   private array $arrayType;
-  private  $additionalProperties;
+  private mixed $additionalProperties;
 
   public function getStreetName(): string { return $this->streetName; }
   public function setStreetName(string $streetName): void { $this->streetName = $streetName; }
@@ -41,14 +41,14 @@ exports[`PhpGenerator Class should render \`class\` type 1`] = `
   public function getMarriage(): bool { return $this->marriage; }
   public function setMarriage(bool $marriage): void { $this->marriage = $marriage; }
 
-  public function getMembers():  { return $this->members; }
-  public function setMembers( $members): void { $this->members = $members; }
+  public function getMembers(): mixed { return $this->members; }
+  public function setMembers(mixed $members): void { $this->members = $members; }
 
   public function getArrayType(): array { return $this->arrayType; }
   public function setArrayType(array $arrayType): void { $this->arrayType = $arrayType; }
 
-  public function getAdditionalProperties():  { return $this->additionalProperties; }
-  public function setAdditionalProperties( $additionalProperties): void { $this->additionalProperties = $additionalProperties; }
+  public function getAdditionalProperties(): mixed { return $this->additionalProperties; }
+  public function setAdditionalProperties(mixed $additionalProperties): void { $this->additionalProperties = $additionalProperties; }
 }"
 `;
 
@@ -58,7 +58,7 @@ exports[`PhpGenerator Class should work with custom preset for \`class\` type 1`
   test1
   private string $property;
   test1
-  private  $additionalProperties;
+  private mixed $additionalProperties;
 
   test2
   public function getProperty(): string { return $this->property; }
@@ -66,9 +66,9 @@ exports[`PhpGenerator Class should work with custom preset for \`class\` type 1`
   public function setProperty(string $property): void { $this->property = $property; }
 
   test2
-  public function getAdditionalProperties():  { return $this->additionalProperties; }
+  public function getAdditionalProperties(): mixed { return $this->additionalProperties; }
   test3
-  public function setAdditionalProperties( $additionalProperties): void { $this->additionalProperties = $additionalProperties; }
+  public function setAdditionalProperties(mixed $additionalProperties): void { $this->additionalProperties = $additionalProperties; }
 }"
 `;
 

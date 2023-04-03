@@ -54,7 +54,7 @@ describe('PhpConstrainer', () => {
         options: PhpGenerator.defaultOptions,
         dependencyManager: new PhpDependencyManager(PhpGenerator.defaultOptions)
       });
-      expect(type).toEqual('');
+      expect(type).toEqual('mixed');
     });
   });
   describe('Float', () => {
@@ -118,7 +118,7 @@ describe('PhpConstrainer', () => {
         options: PhpGenerator.defaultOptions,
         dependencyManager: new PhpDependencyManager(PhpGenerator.defaultOptions)
       });
-      expect(type).toEqual('');
+      expect(type).toEqual('mixed');
     });
     test('should render multiple tuple types', () => {
       const stringModel = new ConstrainedStringModel(
@@ -137,7 +137,7 @@ describe('PhpConstrainer', () => {
         options: PhpGenerator.defaultOptions,
         dependencyManager: new PhpDependencyManager(PhpGenerator.defaultOptions)
       });
-      expect(type).toEqual('');
+      expect(type).toEqual('mixed');
     });
   });
 
@@ -186,7 +186,7 @@ describe('PhpConstrainer', () => {
         options: PhpGenerator.defaultOptions,
         dependencyManager: new PhpDependencyManager(PhpGenerator.defaultOptions)
       });
-      expect(type).toEqual('');
+      expect(type).toEqual('mixed');
     });
     test('should render multiple types', () => {
       const unionModel1 = new ConstrainedStringModel('test', undefined, 'str');
@@ -200,7 +200,7 @@ describe('PhpConstrainer', () => {
         options: PhpGenerator.defaultOptions,
         dependencyManager: new PhpDependencyManager(PhpGenerator.defaultOptions)
       });
-      expect(type).toEqual('');
+      expect(type).toEqual('mixed');
     });
   });
 
@@ -220,7 +220,7 @@ describe('PhpConstrainer', () => {
         options: PhpGenerator.defaultOptions,
         dependencyManager: new PhpDependencyManager(PhpGenerator.defaultOptions)
       });
-      expect(type).toEqual('');
+      expect(type).toEqual('mixed');
     });
   });
 });
