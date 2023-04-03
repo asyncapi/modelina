@@ -77,7 +77,7 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
       } 
     }
     if(this.unionArrayTest !== undefined) {
-      let unionArrayTestJsonValues: string[] = [];
+      let unionArrayTestJsonValues: any[] = [];
       for (const unionItem of this.unionArrayTest) {
         if(unionItem instanceof NestedTest) {
           unionArrayTestJsonValues.push(unionItem.marshal());
@@ -88,7 +88,7 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
       json += \`\\"unionArrayTest\\": [\${unionArrayTestJsonValues.join(',')}],\`; 
     }
     if(this.arrayTest !== undefined) {
-      let arrayTestJsonValues: string[] = [];
+      let arrayTestJsonValues: any[] = [];
       for (const unionItem of this.arrayTest) {
         arrayTestJsonValues.push(\`\${unionItem.marshal()}\`);
       }
