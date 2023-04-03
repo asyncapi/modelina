@@ -138,5 +138,24 @@ describe('PhpGenerator', () => {
       expect(models[0].result).toMatchSnapshot();
       expect(models[0].dependencies).toEqual(expectedDependencies);
     });
+
+    test('should render optional/nullable properties', async () => {
+      const doc = {
+        $id: 'Address',
+        type: 'object',
+        properties: {
+          street_name: { type: 'string' },
+          city: { type: 'string', description: 'City description' },
+          state: { type: 'string' },
+          house_number: { type: 'number' }
+        },
+        additionalProperties: false,
+        required: ['street_name', 'city']
+      };
+
+      const models = await generator.generate(doc);
+      expect(models).toHaveLength(1);
+      expect(models[0].result).toMatchSnapshot();
+    });
   });
 });

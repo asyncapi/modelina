@@ -20,7 +20,7 @@ export const PhpDefaultTypeMapping: TypeMapping<
     return constrainedModel.name;
   },
   Any(): string {
-    return '';
+    return 'mixed';
   },
   Float(): string {
     return 'float';
@@ -35,7 +35,7 @@ export const PhpDefaultTypeMapping: TypeMapping<
     return 'bool';
   },
   Tuple(): string {
-    return '';
+    return 'mixed';
   },
   Array(): string {
     return 'array';
@@ -45,10 +45,10 @@ export const PhpDefaultTypeMapping: TypeMapping<
     return constrainedModel.name;
   },
   Union(): string {
-    return '';
+    return 'mixed';
   },
   Dictionary(): string {
-    return '';
+    return 'mixed';
   }
 };
 

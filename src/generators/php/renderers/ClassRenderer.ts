@@ -80,16 +80,29 @@ export const PHP_DEFAULT_CLASS_PRESET: ClassPresetType<PhpOptions> = {
     return renderer.defaultSelf();
   },
   property({ property }) {
-    return `private ${property.property.type} $${property.propertyName};`;
+    const propertyType =
+      property.required || property.property.type === 'mixed'
+        ? property.property.type
+        : `?${property.property.type}`;
+
+    return `private ${propertyType} $${property.propertyName};`;
   },
   getter({ property }) {
-    const getterName = `get${FormatHelpers.toPascalCase(
-      property.propertyName
-    )}`;
-    return `public function ${getterName}(): ${property.property.type} { return $this->${property.propertyName}; }`;
+    const getterName = FormatHelpers.toPascalCase(property.propertyName);
+    const propertyType =
+      property.required || property.property.type === 'mixed'
+        ? property.property.type
+        : `?${property.property.type}`;
+
+    return `public function get${getterName}(): ${propertyType} { return $this->${property.propertyName}; }`;
   },
   setter({ property }) {
     const setterName = FormatHelpers.toPascalCase(property.propertyName);
-    return `public function set${setterName}(${property.property.type} $${property.propertyName}): void { $this->${property.propertyName} = $${property.propertyName}; }`;
+    const propertyType =
+      property.required || property.property.type === 'mixed'
+        ? property.property.type
+        : `?${property.property.type}`;
+
+    return `public function set${setterName}(${propertyType} $${property.propertyName}): void { $this->${property.propertyName} = $${property.propertyName}; }`;
   }
 };
