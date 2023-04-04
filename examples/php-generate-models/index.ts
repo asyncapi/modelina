@@ -1,4 +1,4 @@
-import { OutputModel, PhpGenerator} from '../../src';
+import { OutputModel, PhpGenerator } from '../../src';
 
 const generator: PhpGenerator = new PhpGenerator();
 const jsonSchemaDraft7 = {
@@ -20,5 +20,5 @@ export async function generate(): Promise<void> {
   }
 }
 if (require.main === module) {
-  generate()
+  generate();
 }
