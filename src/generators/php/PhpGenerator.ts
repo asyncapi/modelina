@@ -121,7 +121,7 @@ export class PhpGenerator extends AbstractGenerator<
       return this.renderEnum(model, inputModel);
     }
     Logger.warn(
-      `Php generator, cannot generate this type of model, ${model.name}`
+      `PHP generator, cannot generate this type of model, ${model.name}`
     );
     return Promise.resolve(
       RenderOutput.toRenderOutput({
@@ -148,7 +148,7 @@ export class PhpGenerator extends AbstractGenerator<
   ): Promise<RenderOutput> {
     if (isReservedPhpKeyword(options.packageName)) {
       throw new Error(
-        `You cannot use reserved Php keyword (${options.packageName}) as package name, please use another.`
+        `You cannot use reserved PHP keyword (${options.packageName}) as package name, please use another.`
       );
     }
 
@@ -156,9 +156,9 @@ export class PhpGenerator extends AbstractGenerator<
     const modelDependencies = model
       .getNearestDependencies()
       .map((dependencyModel) => {
-        return `import ${options.packageName}.${dependencyModel.name};`;
+        return `use ${options.packageName}\\${dependencyModel.name};`;
       });
-    const outputContent = `package ${options.packageName};
+    const outputContent = `namespace ${options.packageName};
 ${modelDependencies.join('\n')}
 ${outputModel.dependencies.join('\n')}
 ${outputModel.result}`;
