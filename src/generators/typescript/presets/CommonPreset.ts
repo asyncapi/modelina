@@ -61,7 +61,7 @@ function renderUnionSerializationArray(
       ${propName}.push(typeof unionItem === 'number' || typeof unionItem === 'boolean' ? unionItem : JSON.stringify(unionItem))
     }`;
   }
-  return `let ${propName}: string[] = [];
+  return `let ${propName}: any[] = [];
   for (const unionItem of ${modelInstanceVariable}) {
     ${unionSerialization}
   }
@@ -74,7 +74,7 @@ function renderArraySerialization(
   arrayModel: ConstrainedArrayModel
 ) {
   const propName = `${prop}JsonValues`;
-  return `let ${propName}: string[] = [];
+  return `let ${propName}: any[] = [];
   for (const unionItem of ${modelInstanceVariable}) {
     ${propName}.push(\`${renderMarshalProperty(
     'unionItem',
