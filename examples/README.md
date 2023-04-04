@@ -23,6 +23,7 @@ We love contributions and new examples that does not already exist, you can foll
 - [C#](#c%23)
 - [TypeScript](#typescript)
 - [Kotlin](#kotlin)
+- [PHP](#php)
 - [Other examples](#other-examples)
 
 <!-- tocstop -->
@@ -120,6 +121,10 @@ These are all specific examples only relevant to the Kotlin generator:
 - [kotlin-generate-javax-constraint-annotations](./kotlin-generate-javax-constraint-annotation)
 - [kotlin-change-collection-type](./kotlin-change-collection-type)
 
+## PHP
+These are all specific examples only relevant to the PHP generator:
+- [php-generate-example](./php-generate-models) - A basic example of how to use Modelina and output a PHP class.
+
 ## Other examples
-Miscelanious examples that do not fit into the otherwise grouping.
+Miscellaneous examples that do not fit into the otherwise grouping.
 - [TEMPLATE](./TEMPLATE) - A basic template used to create new examples.
