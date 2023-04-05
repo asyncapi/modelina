@@ -14,7 +14,19 @@ import {
 import { execCommand } from './utils/Utils';
 import filesToTest from './BlackBoxTestFiles';
 
-describe.each(filesToTest)(
+/**
+ * The C++ generator does not support recursive objects that many examples showcase.
+ */
+const nonRecursiveFilesToTest = filesToTest.filter(({ file }) => {
+  return (
+    file.includes('OpenAPI-3_0/petstore.json') ||
+    file.includes('AsyncAPI-2_5/streetlight_kafka.json') ||
+    file.includes('AsyncAPI-2_6/dummy.json') ||
+    file.includes('Swagger-2_0/petstore.json')
+  );
+});
+
+describe.each(nonRecursiveFilesToTest)(
   'Should be able to generate with inputs',
   ({ file, outputDirectory }) => {
     jest.setTimeout(1000000);
@@ -42,7 +54,7 @@ describe.each(filesToTest)(
         );
         expect(generatedModels).not.toHaveLength(0);
 
-        const transpileCommand = `cd ${renderOutputPath} && g++ -std=c++17 *.hpp -c`;
+        const transpileCommand = `cd ${renderOutputPath} && g++ -std=c++17 *.hpp -c -I ./`;
         await execCommand(transpileCommand);
       });
     });

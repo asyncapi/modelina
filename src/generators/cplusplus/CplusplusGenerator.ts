@@ -182,23 +182,18 @@ export class CplusplusGenerator extends AbstractGenerator<
       dependencyManager: dependencyManagerToUse
     });
 
-    const forwardReference = model.getNearestDependencies().map((model) => {
+    const imports = model.getNearestDependencies().map((model) => {
       //Forward reference
-      return `struct ${model.name};`;
+      return `#import "${model.name}.hpp"`;
     });
-    const formattedForwardReference = FormatHelpers.indent(
-      forwardReference.join('\n'),
-      2,
-      optionsToUse.indentation?.type
-    );
     const formattedOutputResult = FormatHelpers.indent(
       outputModel.result,
       2,
       optionsToUse.indentation?.type
     );
     const outputContent = `${outputModel.dependencies.join('\n')}
+${imports.join('\n')}
 namespace ${completeModelOptionsToUse.namespace}{
-${formattedForwardReference}
 ${formattedOutputResult}
 }`;
     return RenderOutput.toRenderOutput({

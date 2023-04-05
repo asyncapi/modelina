@@ -3,6 +3,8 @@ There are special use-cases that each language supports; this document pertains 
 
 We use v17 of C++ as our baseline.
 
+Circular models are not supported at all within the generator.
+
 <!-- toc is generated with GitHub Actions do not remove toc markers -->
 
 <!-- toc -->

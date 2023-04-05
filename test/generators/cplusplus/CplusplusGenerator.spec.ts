@@ -99,7 +99,7 @@ describe('CplusplusGenerator', () => {
       const expectedDependencies: string[] = [
         '#include <string>',
         '#include <variant>',
-        '#include <utility>',
+        '#include <any>',
         '#include <vector>',
         '#include <map>'
       ];
@@ -131,7 +131,7 @@ describe('CplusplusGenerator', () => {
       });
       const expectedDependencies: string[] = [
         '#include <string>',
-        '#include <utility>',
+        '#include <any>',
         '#include <map>'
       ];
 
