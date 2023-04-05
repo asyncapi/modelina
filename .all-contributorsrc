@@ -485,6 +485,27 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "prayutsu",
+      "name": "Abhay Garg",
+      "avatar_url": "https://avatars.githubusercontent.com/u/54636525?v=4",
+      "profile": "https://github.com/prayutsu",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "henrikjon",
+      "name": "henrikjon",
+      "avatar_url": "https://avatars.githubusercontent.com/u/27212232?v=4",
+      "profile": "https://github.com/henrikjon",
+      "contributions": [
+        "code",
+        "test",
+        "doc",
+        "example"
+      ]
     }
   ],
   "contributorsPerLine": 7,

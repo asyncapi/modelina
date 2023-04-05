@@ -1,4 +1,4 @@
-import AsyncAPILogo from '../icons/AsyncAPILogo';
+import ModelinaLogo from '../icons/ModelinaLogo';
 import Link from 'next/link';
 
 export default function MobileNavMenu({ onClickClose = () => {} }) {
@@ -9,7 +9,7 @@ export default function MobileNavMenu({ onClickClose = () => {} }) {
           <div className="pt-5 pb-6 px-5 space-y-6">
             <div className="flex items-center justify-between">
               <Link href="/" className="flex">
-                <AsyncAPILogo className="h-8 w-auto" />
+                <ModelinaLogo className="h-8 w-auto" />
               </Link>
               <div className="flex flex-row items-center justify-content -mr-2">
                 <button

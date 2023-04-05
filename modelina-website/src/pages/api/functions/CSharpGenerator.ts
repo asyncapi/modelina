@@ -14,6 +14,11 @@ export async function getCSharpModels(
     presets: []
   };
 
+  if (generatorOptions.csharpArrayType) {
+    options.collectionType = generatorOptions.csharpArrayType as any;
+    options.autoImplementedProperties = generatorOptions.csharpAutoImplemented;
+  }
+
   try {
     const generator = new CSharpGenerator(options);
     const generatedModels = await generator.generateCompleteModels(input, {

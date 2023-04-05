@@ -20,6 +20,16 @@ export function getTypeScriptGeneratorCode(
     }`);
   }
 
+  if (generatorOptions.tsEnumType) {
+    optionString.push(`    enumType: '${generatorOptions.tsEnumType}'`);
+  }
+
+  if (generatorOptions.tsIncludeDescriptions === true) {
+    optionStringPresets.push(`{
+      preset: TS_DESCRIPTION_PRESET,
+    }`);
+  }
+
   const presetOptions =
     optionStringPresets.length > 0
       ? `${optionString.length > 0 ? ',' : ''}
