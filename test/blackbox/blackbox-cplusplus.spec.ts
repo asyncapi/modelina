@@ -54,7 +54,7 @@ describe.each(nonRecursiveFilesToTest)(
         );
         expect(generatedModels).not.toHaveLength(0);
 
-        const transpileCommand = `cd ${renderOutputPath} && g++ -std=c++17 *.hpp -c -I ./`;
+        const transpileCommand = `cd ${renderOutputPath} && g++ -std=c++17 *.hpp -fsyntax-only -I ./`;
         await execCommand(transpileCommand);
       });
     });
