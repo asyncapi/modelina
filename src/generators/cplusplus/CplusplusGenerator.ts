@@ -183,15 +183,15 @@ export class CplusplusGenerator extends AbstractGenerator<
     });
 
     const imports = model.getNearestDependencies().map((model) => {
-      //Forward reference
-      return `#import "${model.name}.hpp"`;
+      return `#include "${model.name}.hpp"`;
     });
     const formattedOutputResult = FormatHelpers.indent(
       outputModel.result,
       2,
       optionsToUse.indentation?.type
     );
-    const outputContent = `${outputModel.dependencies.join('\n')}
+    const outputContent = `#pragma once
+${outputModel.dependencies.join('\n')}
 ${imports.join('\n')}
 namespace ${completeModelOptionsToUse.namespace}{
 ${formattedOutputResult}
