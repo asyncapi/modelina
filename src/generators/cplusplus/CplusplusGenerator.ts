@@ -190,8 +190,7 @@ export class CplusplusGenerator extends AbstractGenerator<
       2,
       optionsToUse.indentation?.type
     );
-    const outputContent = `#pragma once
-${outputModel.dependencies.join('\n')}
+    const outputContent = `${outputModel.dependencies.join('\n')}
 ${imports.join('\n')}
 namespace ${completeModelOptionsToUse.namespace}{
 ${formattedOutputResult}
