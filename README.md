@@ -30,7 +30,7 @@ Your one-stop tool for generating accurate and well-tested models for representi
 - [Versioning and maintenance](#versioning-and-maintenance)
 - [Development](#development)
 - [Contributing](#contributing)
-- [Contributors ✨](#contributors-%E2%9C%A8)
+- [Contributors ✨](#contributors-)
 
 <!-- tocstop -->
 
