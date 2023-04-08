@@ -71,7 +71,8 @@
     "semantic-release": "^19.0.3",
     "ts-jest": "^27.0.5",
     "ts-node": "^10.3.0",
-    "typescript": "^4.4.4"
+    "typescript": "^4.4.4",
+    "@netlify/plugin-nextjs": "4.32.2"
   },
   "scripts": {
     "build": "tsc",
