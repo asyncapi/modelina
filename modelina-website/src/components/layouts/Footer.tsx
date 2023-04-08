@@ -15,7 +15,7 @@ export default function Footer() {
         <nav className="py-4 sm:py-10 flex flex-wrap justify-between">
           <div className="mr-14 w-full md:w-auto">
             <div className="">
-              <Link href="asyncapi.com/" className="cursor-pointer">
+              <Link href="https://www.asyncapi.com/" className="cursor-pointer">
                 <AsyncAPILogoLight className="h-10 w-auto mt-3" />
               </Link>
             </div>
@@ -42,7 +42,7 @@ export default function Footer() {
                 <ul className="justify-center">
                   <li className="py-2">
                     <Link
-                      href="asyncapi.com/about"
+                      href="https://www.asyncapi.com/about"
                       className="text-base leading-6 text-cool-gray hover:text-white transition ease-in-out duration-300"
                     >
                       About
@@ -50,7 +50,7 @@ export default function Footer() {
                   </li>
                   <li className="py-2">
                     <Link
-                      href="asyncapi.com/blog"
+                      href="https://www.asyncapi.com/blog"
                       className="text-base leading-6 text-cool-gray hover:text-white transition ease-in-out duration-300"
                     >
                       Blog
