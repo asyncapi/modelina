@@ -48,7 +48,6 @@ class TypeScriptGeneratorOptions extends React.Component<
   onChangeModuleSystem(moduleSystem: any) {
     if (this.props.setNewConfig) {
       this.props.setNewConfig('tsModuleSystem', String(moduleSystem));
-      console.log(moduleSystem)
     }
   }
 
