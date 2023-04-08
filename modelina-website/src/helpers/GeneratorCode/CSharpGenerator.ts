@@ -17,6 +17,11 @@ export function getCSharpGeneratorCode(
     );
   }
 
+  if (generatorOptions.csharpOverwriteHashcode) {
+    optionString.push(
+      `   OverwriteHashcodeSupport : ${generatorOptions.csharpOverwriteHashcode}`
+    );
+  }
   const presetOptions =
     optionStringPresets.length > 0
       ? `${optionString.length > 0 ? ',' : ''}

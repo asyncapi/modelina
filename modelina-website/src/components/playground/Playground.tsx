@@ -69,6 +69,7 @@ class Playground extends React.Component<
     tsIncludeDescriptions: false,
     csharpArrayType: 'Array',
     csharpAutoImplemented: false,
+    csharpOverwriteHashcode: false,
   };
   hasLoadedQuery: boolean = false;
   constructor(props: ModelinaPlaygroundProps) {
@@ -199,6 +200,10 @@ class Playground extends React.Component<
       this.config.csharpAutoImplemented =
         query.csharpAutoImplemented === 'true';
     }
+    if (query.csharpOverwriteHashcode !== undefined) {
+      this.config.csharpOverwriteHashcode =
+        query.csharpOverwriteHashcode === 'true';
+    }
     if (this.props.router.isReady && !this.hasLoadedQuery) {
       this.hasLoadedQuery = true;
       this.generateNewCode(this.state.input);
@@ -301,6 +306,7 @@ class Playground extends React.Component<
                       value={{
                         csharpArrayType: this.config.csharpArrayType,
                         csharpAutoImplemented: this.config.csharpAutoImplemented,
+                        csharpOverwriteHashcode: this.config.csharpOverwriteHashcode
                       }}
                     >
                       <PlaygroundDartConfigContext.Provider value={{}}>
