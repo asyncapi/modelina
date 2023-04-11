@@ -68,6 +68,7 @@ class Playground extends React.Component<
     tsMarshalling: false,
     tsModelType: 'class',
     tsEnumType: 'enum',
+    tsModuleSystem: 'CJS',
     tsIncludeDescriptions: false,
     csharpArrayType: 'Array',
     csharpAutoImplemented: false,
@@ -294,6 +295,7 @@ class Playground extends React.Component<
                   value={{
                     tsMarshalling: this.config.tsMarshalling,
                     tsModelType: this.config.tsModelType,
+                    tsModuleSystem: this.config.tsModuleSystem,
                     tsEnumType: this.config.tsEnumType,
                     tsIncludeDescriptions: this.config.tsIncludeDescriptions
                   }}

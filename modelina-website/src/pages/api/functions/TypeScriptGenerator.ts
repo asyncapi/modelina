@@ -36,6 +36,9 @@ export async function getTypeScriptModels(
       options: {}
     });
   }
+  if (generatorOptions.tsModuleSystem) {
+    options.moduleSystem = generatorOptions.tsModuleSystem as any;
+  }
   if (generatorOptions.tsEnumType) {
     options.enumType = generatorOptions.tsEnumType as any;
   }
