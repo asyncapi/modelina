@@ -12,12 +12,11 @@ export const CplusplusDefaultTypeMapping: TypeMapping<
   CplusplusOptions,
   CplusplusDependencyManager
 > = {
-  Object({ constrainedModel }): string {
-    //Returning name here because all object models have been split out
-    return `${constrainedModel.name}`;
+  Object({ constrainedModel, options }): string {
+    return `${options.namespace}::${constrainedModel.name}`;
   },
-  Reference({ constrainedModel }): string {
-    return `${constrainedModel.name}`;
+  Reference({ constrainedModel, options }): string {
+    return `${options.namespace}::${constrainedModel.name}`;
   },
   Any({ dependencyManager }): string {
     dependencyManager.addDependency('#include <any>');
@@ -47,9 +46,9 @@ export const CplusplusDefaultTypeMapping: TypeMapping<
     dependencyManager.addDependency('#include <vector>');
     return `std::vector<${constrainedModel.valueModel.type}>`;
   },
-  Enum({ constrainedModel }): string {
+  Enum({ constrainedModel, options }): string {
     //Returning name here because all enum models have been split out
-    return `${constrainedModel.name}`;
+    return `${options.namespace}::${constrainedModel.name}`;
   },
   Union({ constrainedModel, dependencyManager }): string {
     const types = constrainedModel.union.map((model) => {

@@ -28,7 +28,7 @@ describe('CplusplusConstrainer', () => {
         options: CplusplusGenerator.defaultOptions,
         dependencyManager: dependencyFactory()
       });
-      expect(type).toEqual(`${model.name}`);
+      expect(type).toEqual(`AsyncapiModels::${model.name}`);
     });
   });
   describe('Reference', () => {
@@ -45,7 +45,7 @@ describe('CplusplusConstrainer', () => {
         options: CplusplusGenerator.defaultOptions,
         dependencyManager: dependencyFactory()
       });
-      expect(type).toEqual(`${model.name}`);
+      expect(type).toEqual(`AsyncapiModels::${model.name}`);
     });
   });
   describe('Any', () => {
@@ -173,7 +173,7 @@ describe('CplusplusConstrainer', () => {
         options: CplusplusGenerator.defaultOptions,
         dependencyManager: dependencyFactory()
       });
-      expect(type).toEqual(`${model.name}`);
+      expect(type).toEqual(`AsyncapiModels::${model.name}`);
     });
   });
 

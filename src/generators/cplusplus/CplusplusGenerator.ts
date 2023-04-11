@@ -32,10 +32,10 @@ export interface CplusplusOptions
   extends CommonGeneratorOptions<CplusplusPreset> {
   typeMapping: TypeMapping<CplusplusOptions, CplusplusDependencyManager>;
   constraints: Constraints;
-}
-export interface CplusplusRenderCompleteModelOptions {
   namespace: string;
 }
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface CplusplusRenderCompleteModelOptions {}
 export class CplusplusGenerator extends AbstractGenerator<
   CplusplusOptions,
   CplusplusRenderCompleteModelOptions
@@ -44,12 +44,11 @@ export class CplusplusGenerator extends AbstractGenerator<
     ...defaultGeneratorOptions,
     defaultPreset: CPLUSPLUS_DEFAULT_PRESET,
     typeMapping: CplusplusDefaultTypeMapping,
-    constraints: CplusplusDefaultConstraints
+    constraints: CplusplusDefaultConstraints,
+    namespace: 'AsyncapiModels'
   };
 
-  static defaultCompleteModelOptions: CplusplusRenderCompleteModelOptions = {
-    namespace: 'Asyncapi.Models'
-  };
+  static defaultCompleteModelOptions: CplusplusRenderCompleteModelOptions = {};
 
   constructor(options?: DeepPartial<CplusplusOptions>) {
     const realizedOptions = CplusplusGenerator.getOptions(options);
@@ -130,6 +129,11 @@ export class CplusplusGenerator extends AbstractGenerator<
       ...this.options,
       ...options
     });
+    if (isReservedCplusplusKeyword(optionsToUse.namespace)) {
+      throw new Error(
+        `You cannot use reserved C++ keyword (${optionsToUse.namespace}) as namespace, please use another.`
+      );
+    }
     if (model instanceof ConstrainedObjectModel) {
       return this.renderClass(model, inputModel, optionsToUse);
     } else if (model instanceof ConstrainedEnumModel) {
@@ -162,15 +166,11 @@ export class CplusplusGenerator extends AbstractGenerator<
     completeModelOptions: Partial<CplusplusRenderCompleteModelOptions>,
     options: DeepPartial<CplusplusOptions>
   ): Promise<RenderOutput> {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const completeModelOptionsToUse = mergePartialAndDefault(
       CplusplusGenerator.defaultCompleteModelOptions,
       completeModelOptions
     ) as CplusplusRenderCompleteModelOptions;
-    if (isReservedCplusplusKeyword(completeModelOptionsToUse.namespace)) {
-      throw new Error(
-        `You cannot use reserved C++ keyword (${completeModelOptionsToUse.namespace}) as namespace, please use another.`
-      );
-    }
     const optionsToUse = CplusplusGenerator.getOptions({
       ...this.options,
       ...options
@@ -192,7 +192,7 @@ export class CplusplusGenerator extends AbstractGenerator<
     );
     const outputContent = `${outputModel.dependencies.join('\n')}
 ${imports.join('\n')}
-namespace ${completeModelOptionsToUse.namespace}{
+namespace ${optionsToUse.namespace}{
 ${formattedOutputResult}
 }`;
     return RenderOutput.toRenderOutput({
