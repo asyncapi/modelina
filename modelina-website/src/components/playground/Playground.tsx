@@ -34,6 +34,8 @@ import { getCSharpGeneratorCode } from '@/helpers/GeneratorCode/CSharpGenerator'
 import { getRustGeneratorCode } from '@/helpers/GeneratorCode/RustGenerator';
 import { getPythonGeneratorCode } from '@/helpers/GeneratorCode/PythonGenerator';
 import { getDartGeneratorCode } from '@/helpers/GeneratorCode/DartGenerator';
+import Error from '../Error';
+
 interface WithRouterProps {
   router: NextRouter;
 }
@@ -55,6 +57,7 @@ type ModelinaPlaygroundState = {
     hasReceivedCode: boolean;
   };
   showGeneratorCode: boolean;
+  error: boolean;
 };
 
 class Playground extends React.Component<
@@ -81,7 +84,8 @@ class Playground extends React.Component<
         editorLoaded: false,
         hasReceivedCode: false
       },
-      showGeneratorCode: false
+      showGeneratorCode: false,
+      error: false,
     };
     this.setNewConfig = this.setNewConfig.bind(this);
     this.setNewQuery = this.setNewQuery.bind(this);
@@ -118,6 +122,7 @@ class Playground extends React.Component<
       };
       if (message.input.length > (this.props.maxInputSize || 30000)) {
         console.error('Input too large, use smaller example');
+        this.setState({ ...this.state, error: true });
       } else {
         fetch(`${process.env.NEXT_PUBLIC_API_PATH}/generate`, {
           body: JSON.stringify(message),
@@ -160,12 +165,14 @@ class Playground extends React.Component<
             loaded: {
               ...this.state.loaded,
               hasReceivedCode: true
-            }
+            },
+            error: false,
           });
         });
       }
     } catch (e) {
       console.error('Could not generate new code');
+      this.setState({ ...this.state, error: true });
     }
   }
 
@@ -232,9 +239,8 @@ class Playground extends React.Component<
         </div>
         {loader}
         <div
-          className={`grid grid-cols-2 gap-4 mt-4 ${
-            isLoaded ? '' : 'invisible'
-          }`}
+          className={`grid grid-cols-2 gap-4 mt-4 ${isLoaded ? '' : 'invisible'
+            }`}
         >
           <div className="col-span-2" style={{ height: '500px' }}>
             <div className="overflow-hidden bg-white shadow sm:rounded-lg flex flex-row">
@@ -252,9 +258,8 @@ class Playground extends React.Component<
                 onClick={() => {
                   this.setState({ ...this.state, showGeneratorCode: false });
                 }}
-                className={`${
-                  !this.state.showGeneratorCode ? 'bg-blue-100' : 'bg-white'
-                } px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 basis-3/12`}
+                className={`${!this.state.showGeneratorCode ? 'bg-blue-100' : 'bg-white'
+                  } px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 basis-3/12`}
               >
                 <h3 className="text-lg font-medium leading-6 text-gray-900">
                   Options
@@ -264,9 +269,8 @@ class Playground extends React.Component<
                 onClick={() => {
                   this.setState({ ...this.state, showGeneratorCode: true });
                 }}
-                className={`${
-                  this.state.showGeneratorCode ? 'bg-blue-100' : 'bg-white'
-                } px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 basis-3/12`}
+                className={`${this.state.showGeneratorCode ? 'bg-blue-100' : 'bg-white'
+                  } px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 basis-3/12`}
               >
                 <h3 className="text-lg font-medium leading-6 text-gray-900">
                   Generator code
@@ -350,14 +354,18 @@ class Playground extends React.Component<
             className="max-xl:col-span-2 xl:grid-cols-1"
             style={{ height: '750px' }}
           >
-            <PlaygroundGeneratedContext.Provider
-              value={{
-                language: this.config.language,
-                models: this.state.models
-              }}
-            >
-              <GeneratedModelsComponent setNewQuery={this.setNewQuery} />
-            </PlaygroundGeneratedContext.Provider>
+            {this.state.error ? (
+              <Error statusCode={400} />
+            ) : (
+              <PlaygroundGeneratedContext.Provider
+                value={{
+                  language: this.config.language,
+                  models: this.state.models
+                }}
+              >
+                <GeneratedModelsComponent setNewQuery={this.setNewQuery} />
+              </PlaygroundGeneratedContext.Provider>
+            )}
           </div>
         </div>
       </div>
