@@ -18,4 +18,9 @@ You can find an example of its use [here](../../examples/generate-python-pydanti
 ## Generate models with JSON Serializer and Deserializer methods
 Using the preset [PYTON_JSON_SERIALIZER](../../src/generators/python/presets/JsonSerializer.ts), you can generate `serializeToJson` method to convert model instance to JSON and `deserializeFromJson` method to convert JSON to model instance.
 
+### Limitations
+1. Above preset doesn't unwrap properties of type `ConstrainedDictionaryModel` with `serialilzationType = unwrap`
+2. The serialized JSON object will have the same property names as defined in the model object.
+
+
 Check out [this example for a live demonstration.](../../examples/python-generate-json-serializer-and-deserializer/index.ts)
