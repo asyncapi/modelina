@@ -34,7 +34,7 @@ import { getCSharpGeneratorCode } from '@/helpers/GeneratorCode/CSharpGenerator'
 import { getRustGeneratorCode } from '@/helpers/GeneratorCode/RustGenerator';
 import { getPythonGeneratorCode } from '@/helpers/GeneratorCode/PythonGenerator';
 import { getDartGeneratorCode } from '@/helpers/GeneratorCode/DartGenerator';
-import Error from '../Error';
+import CustomError from '../CustomError';
 
 interface WithRouterProps {
   router: NextRouter;
@@ -69,6 +69,7 @@ class Playground extends React.Component<
     tsMarshalling: false,
     tsModelType: 'class',
     tsEnumType: 'enum',
+    tsModuleSystem: 'CJS',
     tsIncludeDescriptions: false,
     csharpArrayType: 'Array',
     csharpAutoImplemented: false,
@@ -296,6 +297,7 @@ class Playground extends React.Component<
                   value={{
                     tsMarshalling: this.config.tsMarshalling,
                     tsModelType: this.config.tsModelType,
+                    tsModuleSystem: this.config.tsModuleSystem,
                     tsEnumType: this.config.tsEnumType,
                     tsIncludeDescriptions: this.config.tsIncludeDescriptions
                   }}
@@ -355,7 +357,7 @@ class Playground extends React.Component<
             style={{ height: '750px' }}
           >
             {this.state.error ? (
-              <Error statusCode={400} />
+              <CustomError statusCode={400} />
             ) : (
               <PlaygroundGeneratedContext.Provider
                 value={{

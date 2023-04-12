@@ -9,7 +9,7 @@
 [![Discussions](https://img.shields.io/github/discussions/asyncapi/modelina)](https://github.com/asyncapi/modelina/discussions)
 [![Website](https://img.shields.io/website?label=website&url=https%3A%2F%2Fwww.modelina.org)](https://www.modelina.org)
 [![Playground](https://img.shields.io/website?label=playground&url=https%3A%2F%2Fwww.modelina.org%2Fplayground)](https://www.modelina.org/playground) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-45-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-45-orange.svg?style=flat-square)](#contributors)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Your one-stop tool for generating accurate and well-tested models for representing the message payloads. Use it as a tool in your development workflow, or a library in a larger integrations, entirely in your control.
@@ -30,7 +30,7 @@ Your one-stop tool for generating accurate and well-tested models for representi
 - [Versioning and maintenance](#versioning-and-maintenance)
 - [Development](#development)
 - [Contributing](#contributing)
-- [Contributors ✨](#contributors-%E2%9C%A8)
+- [Contributors](#contributors)
 
 <!-- tocstop -->
 
@@ -308,7 +308,7 @@ If no documentation helps you, here is how you can reach out to get help:
 - Generally, it's always a good idea to do everything in public, but in some cases, it might not be possible. In those circumstances you can contact the following: 
   - [jonaslagoni](https://github.com/jonaslagoni) (on [AsyncAPI Slack](https://asyncapi.com/slack-invite), [Twitter](https://twitter.com/jonaslagoni), [Email](mailto:jonas-lt@live.dk), [LinkedIn](https://www.linkedin.com/in/jonaslagoni/))
 
-## Contributors ✨
+## Contributors 
 
 Thanks go out to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 

@@ -13,6 +13,7 @@ export interface ModelinaTypeScriptOptions {
   tsMarshalling: boolean;
   tsModelType: 'class' | 'interface' | undefined;
   tsEnumType: 'union' | 'enum' | undefined;
+  tsModuleSystem: 'ESM' | 'CJS' | undefined;
   tsIncludeDescriptions: boolean;
 }
 export interface ModelinaJavaOptions {}

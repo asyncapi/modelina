@@ -22,6 +22,7 @@ class TypeScriptGeneratorOptions extends React.Component<
     this.onChangeMarshalling = this.onChangeMarshalling.bind(this);
     this.onChangeVariant = this.onChangeVariant.bind(this);
     this.onChangeEnumType = this.onChangeEnumType.bind(this);
+    this.onChangeModuleSystem = this.onChangeModuleSystem.bind(this);
     this.onChangeIncludeDescriptions =
       this.onChangeIncludeDescriptions.bind(this);
   }
@@ -41,6 +42,12 @@ class TypeScriptGeneratorOptions extends React.Component<
   onChangeVariant(variant: any) {
     if (this.props.setNewConfig) {
       this.props.setNewConfig('tsModelType', String(variant));
+    }
+  }
+
+  onChangeModuleSystem(moduleSystem: any) {
+    if (this.props.setNewConfig) {
+      this.props.setNewConfig('tsModuleSystem', String(moduleSystem));
     }
   }
 
@@ -84,6 +91,22 @@ class TypeScriptGeneratorOptions extends React.Component<
               ]}
               value={this.context?.tsEnumType}
               onChange={this.onChangeEnumType}
+              className="shadow-outline-blue cursor-pointer"
+            />
+          </label>
+        </li>
+        <li>
+          <label className="flex items-center py-2 justify-between cursor-pointer">
+            <span className="mt-1 max-w-2xl text-sm text-gray-500">
+              TypeScript module system
+            </span>
+            <Select
+              options={[
+                { value: 'ESM', text: 'ESM' },
+                { value: 'CJS', text: 'CJS' }
+              ]}
+              value={this.context?.tsModuleSystem}
+              onChange={this.onChangeModuleSystem}
               className="shadow-outline-blue cursor-pointer"
             />
           </label>
