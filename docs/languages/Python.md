@@ -22,5 +22,4 @@ Using the preset [PYTON_JSON_SERIALIZER](../../src/generators/python/presets/Jso
 1. Above preset doesn't unwrap properties of type `ConstrainedDictionaryModel` with `serialilzationType = unwrap`
 2. The serialized JSON object will have the same property names as defined in the model object.
 
-
 Check out [this example for a live demonstration.](../../examples/python-generate-json-serializer-and-deserializer/index.ts)
