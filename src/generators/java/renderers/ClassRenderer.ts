@@ -80,33 +80,21 @@ ${this.indent(this.renderBlock(content, 2))}
   runSetterPreset(property: ConstrainedObjectPropertyModel): Promise<string> {
     return this.runPreset('setter', { property });
   }
-
-  getConstValue(property: ConstrainedObjectPropertyModel): string | undefined {
-    if (!property.hasConstValue()) {
-      return undefined;
-    }
-
-    const constrainedEnumValueModel = property.getConstrainedEnumValueModel();
-
-    if (constrainedEnumValueModel) {
-      return `private final ${property.property.type} ${property.propertyName} = ${property.property.type}.${constrainedEnumValueModel.key};`;
-    } else if (property.isConstrainedStringModel()) {
-      return `private final ${property.property.type} ${
-        property.propertyName
-      } = "${property.getConstValue()}";`;
-    }
-  }
 }
 
 export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
-  property({ renderer, property }) {
-    const constValue = renderer.getConstValue(property);
+  property({ property }) {
+    if (property.property.options.constValue) {
+      const constrainedEnumValueModel = property.getConstrainedEnumValueModel();
 
-    if (constValue) {
-      return constValue;
+      if (constrainedEnumValueModel) {
+        return `private final ${property.property.type} ${property.propertyName} = ${property.property.type}.${constrainedEnumValueModel.key};`;
+      } else if (property.isConstrainedStringModel()) {
+        return `private final ${property.property.type} ${property.propertyName} = "${property.property.options.constValue}";`;
+      }
     }
 
     return `private ${property.property.type} ${property.propertyName};`;
@@ -118,7 +106,7 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
     return `public ${property.property.type} ${getterName}() { return this.${property.propertyName}; }`;
   },
   setter({ property }) {
-    if (property.hasConstValue()) {
+    if (property.property.options.constValue) {
       return '';
     }
     const setterName = FormatHelpers.toPascalCase(property.propertyName);

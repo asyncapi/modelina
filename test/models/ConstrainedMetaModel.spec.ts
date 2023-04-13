@@ -474,7 +474,9 @@ describe('ConstrainedMetaModel', () => {
         )
       );
 
-      expect(constrainedObjectPropertyModel.hasConstValue()).toBe(true);
+      expect(constrainedObjectPropertyModel.property.options.constValue).toBe(
+        testConst
+      );
       expect(
         constrainedObjectPropertyModel.getConstrainedEnumValueModel()
       ).toBe(constrainedEnumValueModel);
@@ -496,7 +498,9 @@ describe('ConstrainedMetaModel', () => {
         )
       );
 
-      expect(constrainedObjectPropertyModel.hasConstValue()).toBe(true);
+      expect(constrainedObjectPropertyModel.property.options.constValue).toBe(
+        'testConst'
+      );
       expect(
         constrainedObjectPropertyModel.getConstrainedEnumValueModel()
       ).toBeUndefined();

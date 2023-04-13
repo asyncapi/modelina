@@ -25,20 +25,6 @@ export abstract class TypeScriptObjectRenderer extends TypeScriptRenderer<Constr
     super(options, generator, presets, model, inputModel, dependencyManager);
   }
 
-  getConstValue(property: ConstrainedObjectPropertyModel): string | undefined {
-    if (!property.hasConstValue()) {
-      return undefined;
-    }
-
-    const constrainedEnumValueModel = property.getConstrainedEnumValueModel();
-
-    if (constrainedEnumValueModel) {
-      return `${property.property.type}.${constrainedEnumValueModel.key}`;
-    } else if (property.isConstrainedStringModel()) {
-      return `'${property.getConstValue()}'`;
-    }
-  }
-
   /**
    * Render all the properties for the model by calling the property preset per property.
    */
@@ -59,7 +45,17 @@ export abstract class TypeScriptObjectRenderer extends TypeScriptRenderer<Constr
       property.required === false ? '?' : ''
     }`;
 
-    const constValue = this.getConstValue(property);
+    let constValue: string | undefined;
+
+    if (property.property.options.constValue) {
+      const constrainedEnumValueModel = property.getConstrainedEnumValueModel();
+
+      if (constrainedEnumValueModel) {
+        constValue = `${property.property.type}.${constrainedEnumValueModel.key}`;
+      } else if (property.isConstrainedStringModel()) {
+        constValue = `'${property.property.options.constValue}'`;
+      }
+    }
 
     if (constValue) {
       return `${renderedProperty}: ${constValue} = ${constValue};`;

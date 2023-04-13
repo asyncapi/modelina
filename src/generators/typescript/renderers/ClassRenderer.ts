@@ -59,7 +59,7 @@ export const TS_DEFAULT_CLASS_PRESET: ClassPresetType<TypeScriptOptions> = {
 
     for (const [propertyName, property] of Object.entries(properties)) {
       // if const value exists we should not render it in the constructor
-      if (property.hasConstValue()) {
+      if (property.property.options.constValue) {
         continue;
       }
       assignments.push(`this._${propertyName} = input.${propertyName};`);
@@ -75,8 +75,18 @@ ${renderer.indent(renderer.renderBlock(assignments))}
   property({ renderer, property }): string {
     return `private _${renderer.renderProperty(property)}`;
   },
-  getter({ renderer, property }): string {
-    const constValue = renderer.getConstValue(property);
+  getter({ property }): string {
+    let constValue: string | undefined;
+
+    if (property.property.options.constValue) {
+      const constrainedEnumValueModel = property.getConstrainedEnumValueModel();
+
+      if (constrainedEnumValueModel) {
+        constValue = `${property.property.type}.${constrainedEnumValueModel.key}`;
+      } else if (property.isConstrainedStringModel()) {
+        constValue = `'${property.property.options.constValue}'`;
+      }
+    }
 
     return `get ${property.propertyName}(): ${
       constValue ? constValue : property.property.type
@@ -86,7 +96,7 @@ ${renderer.indent(renderer.renderBlock(assignments))}
   },
   setter({ property }): string {
     // if const value exists we should not render a setter
-    if (property.hasConstValue()) {
+    if (property.property.options.constValue) {
       return '';
     }
 

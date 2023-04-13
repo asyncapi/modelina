@@ -85,21 +85,13 @@ export class ConstrainedObjectPropertyModel {
       this.property.ref instanceof ConstrainedEnumModel
     ) {
       return this.property.ref?.values.find(
-        (value) => value.originalInput === this.getConstValue()
+        (value) => value.originalInput === this.property.options.constValue
       );
     }
   }
 
   public isConstrainedStringModel(): boolean {
     return this.property instanceof ConstrainedStringModel;
-  }
-
-  public getConstValue(): unknown {
-    return this.property.options.constValue;
-  }
-
-  public hasConstValue(): boolean {
-    return !!this.getConstValue();
   }
 }
 export class ConstrainedArrayModel extends ConstrainedMetaModel {
