@@ -76,20 +76,10 @@ ${renderer.indent(renderer.renderBlock(assignments))}
     return `private _${renderer.renderProperty(property)}`;
   },
   getter({ property }): string {
-    let constValue: string | undefined;
-
-    if (property.property.options.constValue) {
-      const constrainedEnumValueModel = property.getConstrainedEnumValueModel();
-
-      if (constrainedEnumValueModel) {
-        constValue = `${property.property.type}.${constrainedEnumValueModel.key}`;
-      } else if (property.isConstrainedStringModel()) {
-        constValue = `'${property.property.options.constValue}'`;
-      }
-    }
-
     return `get ${property.propertyName}(): ${
-      constValue ? constValue : property.property.type
+      property.property.options.constValue
+        ? property.property.options.constValue
+        : property.property.type
     }${property.required === false ? ' | undefined' : ''} { return this._${
       property.propertyName
     }; }`;

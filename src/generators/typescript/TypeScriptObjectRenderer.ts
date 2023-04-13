@@ -45,20 +45,8 @@ export abstract class TypeScriptObjectRenderer extends TypeScriptRenderer<Constr
       property.required === false ? '?' : ''
     }`;
 
-    let constValue: string | undefined;
-
     if (property.property.options.constValue) {
-      const constrainedEnumValueModel = property.getConstrainedEnumValueModel();
-
-      if (constrainedEnumValueModel) {
-        constValue = `${property.property.type}.${constrainedEnumValueModel.key}`;
-      } else if (property.isConstrainedStringModel()) {
-        constValue = `'${property.property.options.constValue}'`;
-      }
-    }
-
-    if (constValue) {
-      return `${renderedProperty}: ${constValue} = ${constValue};`;
+      return `${renderedProperty}: ${property.property.options.constValue} = ${property.property.options.constValue};`;
     }
 
     return `${renderedProperty}: ${property.property.type};`;

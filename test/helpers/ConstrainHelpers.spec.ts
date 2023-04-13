@@ -40,7 +40,9 @@ describe('ConstrainHelpers', () => {
   });
   describe('constrain ObjectModel', () => {
     test('should constrain correctly', () => {
-      const testProperty = new StringModel('', undefined, {});
+      const testProperty = new StringModel('', undefined, {
+        constValue: 'testConst'
+      });
       const metaModel = new ObjectModel(
         'test',
         undefined,
@@ -70,6 +72,7 @@ describe('ConstrainHelpers', () => {
       ).toEqual(true);
       expect(mockedConstraints.modelName).toHaveBeenCalledTimes(2);
       expect(mockedConstraints.propertyKey).toHaveBeenCalledTimes(1);
+      expect(mockedConstraints.constant).toHaveBeenCalledTimes(1);
       expect(mockedTypeMapping.Object).toHaveBeenCalledTimes(1);
       expect(mockedTypeMapping.String).toHaveBeenCalledTimes(1);
     });

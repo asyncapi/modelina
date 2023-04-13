@@ -78,21 +78,6 @@ export class ConstrainedObjectPropertyModel {
     public required: boolean,
     public property: ConstrainedMetaModel
   ) {}
-
-  public getConstrainedEnumValueModel(): ConstrainedEnumValueModel | undefined {
-    if (
-      this.property instanceof ConstrainedReferenceModel &&
-      this.property.ref instanceof ConstrainedEnumModel
-    ) {
-      return this.property.ref?.values.find(
-        (value) => value.originalInput === this.property.options.constValue
-      );
-    }
-  }
-
-  public isConstrainedStringModel(): boolean {
-    return this.property instanceof ConstrainedStringModel;
-  }
 }
 export class ConstrainedArrayModel extends ConstrainedMetaModel {
   constructor(

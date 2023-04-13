@@ -88,13 +88,7 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
   },
   property({ property }) {
     if (property.property.options.constValue) {
-      const constrainedEnumValueModel = property.getConstrainedEnumValueModel();
-
-      if (constrainedEnumValueModel) {
-        return `private final ${property.property.type} ${property.propertyName} = ${property.property.type}.${constrainedEnumValueModel.key};`;
-      } else if (property.isConstrainedStringModel()) {
-        return `private final ${property.property.type} ${property.propertyName} = "${property.property.options.constValue}";`;
-      }
+      return `private final ${property.property.type} ${property.propertyName} = ${property.property.options.constValue};`;
     }
 
     return `private ${property.property.type} ${property.propertyName};`;

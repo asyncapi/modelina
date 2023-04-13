@@ -1,4 +1,4 @@
-import { TypeMapping } from '../../helpers';
+import { Constraints, TypeMapping } from '../../helpers';
 import {
   defaultEnumKeyConstraints,
   defaultEnumValueConstraints
@@ -52,7 +52,7 @@ export const TemplateDefaultTypeMapping: TypeMapping<
   }
 };
 
-export const TemplateDefaultConstraints = {
+export const TemplateDefaultConstraints: Constraints = {
   enumKey: defaultEnumKeyConstraints(),
   enumValue: defaultEnumValueConstraints(),
   modelName: defaultModelNameConstraints(),

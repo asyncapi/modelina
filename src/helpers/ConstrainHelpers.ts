@@ -76,11 +76,19 @@ export type PropertyKeyContext = {
 
 export type PropertyKeyConstraint = (context: PropertyKeyContext) => string;
 
+export type ConstantContext = {
+  constrainedObjectPropertyModel: ConstrainedObjectPropertyModel;
+  constValue: unknown;
+};
+
+export type ConstantConstraint = (context: ConstantContext) => unknown;
+
 export interface Constraints {
   enumKey: EnumKeyConstraint;
   enumValue: EnumValueConstraint;
   modelName: ModelNameConstraint;
   propertyKey: PropertyKeyConstraint;
+  constant: ConstantConstraint;
 }
 
 const placeHolderConstrainedObject = new ConstrainedAnyModel(
@@ -425,6 +433,16 @@ function constrainObjectModel<
       alreadySeenModels
     );
     constrainedPropertyModel.property = constrainedProperty;
+
+    if (constrainedPropertyModel.property.options.constValue) {
+      const constrainedConstant = constrainRules.constant({
+        constrainedObjectPropertyModel: constrainedPropertyModel,
+        constValue: constrainedPropertyModel.property.options.constValue
+      });
+      constrainedPropertyModel.property.options.constValue =
+        constrainedConstant;
+    }
+
     constrainedModel.properties[String(constrainedPropertyName)] =
       constrainedPropertyModel;
   }

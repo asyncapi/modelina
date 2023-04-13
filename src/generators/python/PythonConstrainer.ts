@@ -1,3 +1,4 @@
+import { Constraints } from '../../helpers';
 import {
   defaultEnumKeyConstraints,
   defaultEnumValueConstraints
@@ -53,7 +54,7 @@ export const PythonDefaultTypeMapping: PythonTypeMapping = {
   }
 };
 
-export const PythonDefaultConstraints = {
+export const PythonDefaultConstraints: Constraints = {
   enumKey: defaultEnumKeyConstraints(),
   enumValue: defaultEnumValueConstraints(),
   modelName: defaultModelNameConstraints(),
