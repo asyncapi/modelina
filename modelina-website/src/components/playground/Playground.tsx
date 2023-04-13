@@ -66,7 +66,9 @@ class Playground extends React.Component<
     tsMarshalling: false,
     tsModelType: 'class',
     tsEnumType: 'enum',
-    csharpArrayType: 'Array'
+    tsIncludeDescriptions: false,
+    csharpArrayType: 'Array',
+    csharpAutoImplemented: false,
   };
   hasLoadedQuery: boolean = false;
   constructor(props: ModelinaPlaygroundProps) {
@@ -183,17 +185,25 @@ class Playground extends React.Component<
     if (query.tsEnumType !== undefined) {
       this.config.tsEnumType = query.tsEnumType as any;
     }
+    if (query.tsIncludeDescriptions !== undefined) {
+      this.config.tsIncludeDescriptions =
+        query.tsIncludeDescriptions === 'true';
+    }
     if (query.language !== undefined) {
       this.config.language = query.language as any;
     }
     if (query.csharpArrayType !== undefined) {
       this.config.csharpArrayType = query.csharpArrayType as any;
     }
+    if (query.csharpAutoImplemented !== undefined) {
+      this.config.csharpAutoImplemented =
+        query.csharpAutoImplemented === 'true';
+    }
     if (this.props.router.isReady && !this.hasLoadedQuery) {
       this.hasLoadedQuery = true;
       this.generateNewCode(this.state.input);
     }
-    
+
     let loader;
     if (!isHardLoaded) {
       loader = (
@@ -220,7 +230,7 @@ class Playground extends React.Component<
             library instead.
           </Paragraph>
         </div>
-        {loader} 
+        {loader}
         <div
           className={`grid grid-cols-2 gap-4 mt-4 ${
             isLoaded ? '' : 'invisible'
@@ -282,13 +292,17 @@ class Playground extends React.Component<
                   value={{
                     tsMarshalling: this.config.tsMarshalling,
                     tsModelType: this.config.tsModelType,
-                    tsEnumType: this.config.tsEnumType
+                    tsEnumType: this.config.tsEnumType,
+                    tsIncludeDescriptions: this.config.tsIncludeDescriptions
                   }}
                 >
                   <PlaygroundJavaScriptConfigContext.Provider value={{}}>
-                    <PlaygroundCSharpConfigContext.Provider value={{
-                      csharpArrayType: this.config.csharpArrayType,
-                    }}>
+                    <PlaygroundCSharpConfigContext.Provider
+                      value={{
+                        csharpArrayType: this.config.csharpArrayType,
+                        csharpAutoImplemented: this.config.csharpAutoImplemented,
+                      }}
+                    >
                       <PlaygroundDartConfigContext.Provider value={{}}>
                         <PlaygroundGoConfigContext.Provider value={{}}>
                           <PlaygroundJavaConfigContext.Provider value={{}}>
