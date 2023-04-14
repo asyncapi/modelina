@@ -1,5 +1,9 @@
+export interface MetaModelOptionsConst {
+  originalInput: unknown;
+}
+
 export interface MetaModelOptions {
-  constValue?: unknown;
+  const?: MetaModelOptionsConst;
 }
 
 export class MetaModel {

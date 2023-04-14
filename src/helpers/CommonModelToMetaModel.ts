@@ -20,9 +20,15 @@ import {
 } from '../models';
 
 function getMetaModelOptions(commonModel: CommonModel): MetaModelOptions {
-  return {
-    constValue: commonModel.const
-  };
+  const options: MetaModelOptions = {};
+
+  if (commonModel.const) {
+    options.const = {
+      originalInput: commonModel.const
+    };
+  }
+
+  return options;
 }
 
 export function convertToMetaModel(

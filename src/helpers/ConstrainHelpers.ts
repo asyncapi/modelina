@@ -77,8 +77,7 @@ export type PropertyKeyContext = {
 export type PropertyKeyConstraint = (context: PropertyKeyContext) => string;
 
 export type ConstantContext = {
-  constrainedObjectPropertyModel: ConstrainedObjectPropertyModel;
-  constValue: unknown;
+  constrainedMetaModel: ConstrainedMetaModel;
 };
 
 export type ConstantConstraint = (context: ConstantContext) => unknown;
@@ -129,6 +128,14 @@ function constrainReferenceModel<
     partOfProperty: context.partOfProperty,
     dependencyManager: context.dependencyManager
   });
+
+  if (constrainedModel.options.const) {
+    const constrainedConstant = constrainRules.constant({
+      constrainedMetaModel: constrainedModel
+    });
+    constrainedModel.options.const.value = constrainedConstant;
+  }
+
   return constrainedModel;
 }
 function constrainAnyModel<
@@ -434,15 +441,6 @@ function constrainObjectModel<
     );
     constrainedPropertyModel.property = constrainedProperty;
 
-    if (constrainedPropertyModel.property.options.constValue) {
-      const constrainedConstant = constrainRules.constant({
-        constrainedObjectPropertyModel: constrainedPropertyModel,
-        constValue: constrainedPropertyModel.property.options.constValue
-      });
-      constrainedPropertyModel.property.options.constValue =
-        constrainedConstant;
-    }
-
     constrainedModel.properties[String(constrainedPropertyName)] =
       constrainedPropertyModel;
   }
@@ -507,6 +505,7 @@ function ConstrainEnumModel<
   return constrainedModel;
 }
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 export function constrainMetaModel<
   Options,
   DependencyManager extends AbstractDependencyManager
@@ -600,6 +599,13 @@ export function constrainMetaModel<
     });
   }
   if (simpleModel !== undefined) {
+    if (simpleModel.options.const) {
+      const constrainedConstant = constrainRules.constant({
+        constrainedMetaModel: simpleModel
+      });
+      simpleModel.options.const.value = constrainedConstant;
+    }
+
     alreadySeenModels.set(context.metaModel, simpleModel);
     return simpleModel;
   }

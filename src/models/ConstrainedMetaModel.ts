@@ -1,11 +1,24 @@
 import { makeUnique } from '../helpers/DependencyHelpers';
-import { MetaModel, MetaModelOptions } from './MetaModel';
+import {
+  MetaModel,
+  MetaModelOptions,
+  MetaModelOptionsConst
+} from './MetaModel';
+
+export interface ConstrainedMetaModelOptionsConst
+  extends MetaModelOptionsConst {
+  value?: unknown;
+}
+
+export interface ConstrainedMetaModelOptions extends MetaModelOptions {
+  const?: ConstrainedMetaModelOptionsConst;
+}
 
 export abstract class ConstrainedMetaModel extends MetaModel {
   constructor(
     name: string,
     originalInput: any,
-    options: MetaModelOptions,
+    public options: ConstrainedMetaModelOptions,
     public type: string
   ) {
     super(name, originalInput, options);
@@ -25,7 +38,7 @@ export class ConstrainedReferenceModel extends ConstrainedMetaModel {
   constructor(
     name: string,
     originalInput: any,
-    options: MetaModelOptions,
+    options: ConstrainedMetaModelOptions,
     type: string,
     public ref: ConstrainedMetaModel
   ) {
@@ -44,7 +57,7 @@ export class ConstrainedTupleModel extends ConstrainedMetaModel {
   constructor(
     name: string,
     originalInput: any,
-    options: MetaModelOptions,
+    options: ConstrainedMetaModelOptions,
     type: string,
     public tuple: ConstrainedTupleValueModel[]
   ) {
@@ -83,7 +96,7 @@ export class ConstrainedArrayModel extends ConstrainedMetaModel {
   constructor(
     name: string,
     originalInput: any,
-    options: MetaModelOptions,
+    options: ConstrainedMetaModelOptions,
     type: string,
     public valueModel: ConstrainedMetaModel
   ) {
@@ -101,7 +114,7 @@ export class ConstrainedUnionModel extends ConstrainedMetaModel {
   constructor(
     name: string,
     originalInput: any,
-    options: MetaModelOptions,
+    options: ConstrainedMetaModelOptions,
     type: string,
     public union: ConstrainedMetaModel[]
   ) {
@@ -139,7 +152,7 @@ export class ConstrainedEnumModel extends ConstrainedMetaModel {
   constructor(
     name: string,
     originalInput: any,
-    options: MetaModelOptions,
+    options: ConstrainedMetaModelOptions,
     type: string,
     public values: ConstrainedEnumValueModel[]
   ) {
@@ -150,7 +163,7 @@ export class ConstrainedDictionaryModel extends ConstrainedMetaModel {
   constructor(
     name: string,
     originalInput: any,
-    options: MetaModelOptions,
+    options: ConstrainedMetaModelOptions,
     type: string,
     public key: ConstrainedMetaModel,
     public value: ConstrainedMetaModel,
@@ -185,7 +198,7 @@ export class ConstrainedObjectModel extends ConstrainedMetaModel {
   constructor(
     name: string,
     originalInput: any,
-    options: MetaModelOptions,
+    options: ConstrainedMetaModelOptions,
     type: string,
     public properties: { [key: string]: ConstrainedObjectPropertyModel }
   ) {

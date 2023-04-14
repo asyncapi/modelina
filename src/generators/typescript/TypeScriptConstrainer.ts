@@ -50,8 +50,8 @@ export const TypeScriptDefaultTypeMapping: TypeScriptTypeMapping = {
   },
   Union(args): string {
     const unionTypes = args.constrainedModel.union.map((unionModel) => {
-      if (unionModel.options.constValue) {
-        return `'${unionModel.options.constValue}'`;
+      if (unionModel.options.const?.value) {
+        return `${unionModel.options.const.value}`;
       }
 
       return unionModel.type;

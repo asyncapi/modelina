@@ -40,9 +40,7 @@ describe('ConstrainHelpers', () => {
   });
   describe('constrain ObjectModel', () => {
     test('should constrain correctly', () => {
-      const testProperty = new StringModel('', undefined, {
-        constValue: 'testConst'
-      });
+      const testProperty = new StringModel('', undefined, {});
       const metaModel = new ObjectModel(
         'test',
         undefined,
@@ -72,7 +70,6 @@ describe('ConstrainHelpers', () => {
       ).toEqual(true);
       expect(mockedConstraints.modelName).toHaveBeenCalledTimes(2);
       expect(mockedConstraints.propertyKey).toHaveBeenCalledTimes(1);
-      expect(mockedConstraints.constant).toHaveBeenCalledTimes(1);
       expect(mockedTypeMapping.Object).toHaveBeenCalledTimes(1);
       expect(mockedTypeMapping.String).toHaveBeenCalledTimes(1);
     });
@@ -125,7 +122,9 @@ describe('ConstrainHelpers', () => {
   });
   describe('constrain ReferenceModel', () => {
     test('should constrain correctly', () => {
-      const stringModel = new StringModel('', undefined, {});
+      const stringModel = new StringModel('', undefined, {
+        const: { originalInput: 'testConst' }
+      });
       const metaModel = new ReferenceModel('', undefined, {}, stringModel);
       const constrainedModel = constrainMetaModel(
         mockedTypeMapping,
@@ -147,6 +146,7 @@ describe('ConstrainHelpers', () => {
       expect(mockedConstraints.modelName).toHaveBeenCalledTimes(2);
       expect(mockedTypeMapping.String).toHaveBeenCalledTimes(1);
       expect(mockedTypeMapping.Reference).toHaveBeenCalledTimes(1);
+      expect(mockedConstraints.constant).toHaveBeenCalledTimes(1);
     });
 
     test('should handle recursive models', () => {
@@ -223,7 +223,9 @@ describe('ConstrainHelpers', () => {
   });
   describe('constrain StringModel', () => {
     test('should constrain correctly', () => {
-      const metaModel = new StringModel('', undefined, {});
+      const metaModel = new StringModel('', undefined, {
+        const: { originalInput: 'testConst' }
+      });
       const constrainedModel = constrainMetaModel(
         mockedTypeMapping,
         mockedConstraints,
@@ -237,6 +239,7 @@ describe('ConstrainHelpers', () => {
       expect(constrainedModel instanceof ConstrainedStringModel).toEqual(true);
       expect(mockedConstraints.modelName).toHaveBeenCalledTimes(1);
       expect(mockedTypeMapping.String).toHaveBeenCalledTimes(1);
+      expect(mockedConstraints.constant).toHaveBeenCalledTimes(1);
     });
   });
   describe('constrain BooleanModel', () => {

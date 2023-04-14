@@ -364,7 +364,7 @@ describe('CommonModelToMetaModel', () => {
         value: cm.const
       }
     ]);
-    expect(model.options.constValue).toEqual(cm.const);
+    expect(model.options.const?.originalInput).toEqual(cm.const);
   });
 
   test('should handle const', () => {
@@ -376,6 +376,6 @@ describe('CommonModelToMetaModel', () => {
 
     expect(model).not.toBeUndefined();
     expect(model instanceof AnyModel).toEqual(true);
-    expect(model.options.constValue).toEqual(cm.const);
+    expect(model.options.const?.originalInput).toEqual(cm.const);
   });
 });
