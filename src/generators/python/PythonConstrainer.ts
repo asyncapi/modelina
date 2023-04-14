@@ -5,6 +5,7 @@ import {
 } from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
+import { defaultConstantConstraints } from './constrainer/ConstantConstrainer';
 import { PythonTypeMapping } from './PythonGenerator';
 
 export const PythonDefaultTypeMapping: PythonTypeMapping = {
@@ -58,5 +59,6 @@ export const PythonDefaultConstraints: Constraints = {
   enumKey: defaultEnumKeyConstraints(),
   enumValue: defaultEnumValueConstraints(),
   modelName: defaultModelNameConstraints(),
-  propertyKey: defaultPropertyKeyConstraints()
+  propertyKey: defaultPropertyKeyConstraints(),
+  constant: defaultConstantConstraints()
 };

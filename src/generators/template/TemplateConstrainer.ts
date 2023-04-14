@@ -5,6 +5,7 @@ import {
 } from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
+import { defaultConstantConstraints } from './constrainer/ConstantConstrainer';
 import { TemplateDependencyManager } from './TemplateDependencyManager';
 import { TemplateOptions } from './TemplateGenerator';
 
@@ -56,5 +57,6 @@ export const TemplateDefaultConstraints: Constraints = {
   enumKey: defaultEnumKeyConstraints(),
   enumValue: defaultEnumValueConstraints(),
   modelName: defaultModelNameConstraints(),
-  propertyKey: defaultPropertyKeyConstraints()
+  propertyKey: defaultPropertyKeyConstraints(),
+  constant: defaultConstantConstraints()
 };
