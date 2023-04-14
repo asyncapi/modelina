@@ -386,7 +386,7 @@ describe('JavaGenerator', () => {
       }
     };
 
-    test.only('handle allOf with const in CloudEvent type', async () => {
+    test('handle allOf with const in CloudEvent type', async () => {
       generator = new JavaGenerator({
         presets: [
           JAVA_COMMON_PRESET,

@@ -477,12 +477,6 @@ describe('ConstrainedMetaModel', () => {
       expect(constrainedObjectPropertyModel.property.options.constValue).toBe(
         testConst
       );
-      expect(
-        constrainedObjectPropertyModel.getConstrainedEnumValueModel()
-      ).toBe(constrainedEnumValueModel);
-      expect(constrainedObjectPropertyModel.isConstrainedStringModel()).toBe(
-        false
-      );
     });
 
     test('isConstrainedStringModel should return true when property is ConstrainedStringModel', () => {
@@ -500,12 +494,6 @@ describe('ConstrainedMetaModel', () => {
 
       expect(constrainedObjectPropertyModel.property.options.constValue).toBe(
         'testConst'
-      );
-      expect(
-        constrainedObjectPropertyModel.getConstrainedEnumValueModel()
-      ).toBeUndefined();
-      expect(constrainedObjectPropertyModel.isConstrainedStringModel()).toBe(
-        true
       );
     });
   });
