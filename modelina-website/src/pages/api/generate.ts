@@ -61,7 +61,12 @@ async function generate(req: NextApiRequest, res: NextApiResponse) {
   try {
     const message: GenerateMessage = JSON.parse(req.body);
     const response = await generateNewCode(message);
-    return res.status(200).json(response);
+    if (response.models.length) {
+      return res.status(200).json(response);
+    }
+    else {
+      throw new Error("Input is not an correct AsyncAPI document so it cannot be processed.");
+    }
   } catch (e) {
     console.error(e);
     return res.status(500).json({

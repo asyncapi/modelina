@@ -58,6 +58,8 @@ type ModelinaPlaygroundState = {
   };
   showGeneratorCode: boolean;
   error: boolean;
+  statusCode: number;
+  errorMessage: string;
 };
 
 class Playground extends React.Component<
@@ -87,6 +89,8 @@ class Playground extends React.Component<
       },
       showGeneratorCode: false,
       error: false,
+      statusCode: 400,
+      errorMessage: 'Bad Request',
     };
     this.setNewConfig = this.setNewConfig.bind(this);
     this.setNewQuery = this.setNewQuery.bind(this);
@@ -123,12 +127,15 @@ class Playground extends React.Component<
       };
       if (message.input.length > (this.props.maxInputSize || 30000)) {
         console.error('Input too large, use smaller example');
-        this.setState({ ...this.state, error: true });
+        this.setState({ ...this.state, error: true, errorMessage: 'Input too large, use smaller example', statusCode: 400 });
       } else {
         fetch(`${process.env.NEXT_PUBLIC_API_PATH}/generate`, {
           body: JSON.stringify(message),
           method: 'POST'
         }).then(async (res) => {
+          if (!res.ok) {
+            throw new Error(res.statusText);
+          }
           const response: UpdateMessage = await res.json();
           let generatorCode = '';
           switch (this.config.language) {
@@ -168,12 +175,17 @@ class Playground extends React.Component<
               hasReceivedCode: true
             },
             error: false,
+            statusCode: 200,
+            errorMessage: '',
           });
+        }).catch(error => {
+          console.error(error);
+          this.setState({ ...this.state, error: true, errorMessage: error.message, statusCode: 500 });
         });
       }
     } catch (e) {
       console.error('Could not generate new code');
-      this.setState({ ...this.state, error: true });
+      this.setState({ ...this.state, error: true, errorMessage: 'Could not generate new code', statusCode: 400 });
     }
   }
 
@@ -357,7 +369,7 @@ class Playground extends React.Component<
             style={{ height: '750px' }}
           >
             {this.state.error ? (
-              <CustomError statusCode={400} />
+              <CustomError statusCode={this.state.statusCode} errorMessage={this.state.errorMessage} />
             ) : (
               <PlaygroundGeneratedContext.Provider
                 value={{

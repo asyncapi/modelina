@@ -1,22 +1,19 @@
 import Heading from './typography/Heading';
 import Paragraph from './typography/Paragraph';
-function CustomError({ statusCode }: { statusCode: number }) {
+import Exclamation from "./icons/Exclamation";
+
+function CustomError({ statusCode, errorMessage }: {statusCode: number, errorMessage: string}) {
   return (
-    <div className="bg-code-editor-dark text-red-400 rounded-b shadow-lg flex h-full text-center">
+    <div className="bg-code-editor-dark text-gray-700 rounded-b shadow-lg flex h-full text-center">
       <div className="m-auto">
+        <Exclamation/>
         <Heading> Error: {statusCode} </Heading>
-        <Paragraph className="mt-4 max-w-3xl mx-auto text-red-400">
-          Could not generate new code!
+        <Paragraph className="mt-4 max-w-3xl mx-auto">
+          {errorMessage}
         </Paragraph>
       </div>
     </div>
-  )
+  );
 }
 
-CustomError.getInitialProps = ({ res , err }: {res: any, err: any}) => {
-    const error = err ? err.statusCode : 404;
-    const statusCode = res ? res.statusCode : error;
-    return { statusCode }
-}
-  
 export default CustomError;
