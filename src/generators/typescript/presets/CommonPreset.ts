@@ -223,10 +223,7 @@ function renderUnmarshalProperty(
   }
   return `${modelInstanceVariable}`;
 }
-function renderUnmarshalProperties(
-  renderer: ClassRenderer,
-  model: ConstrainedObjectModel
-) {
+function renderUnmarshalProperties(model: ConstrainedObjectModel) {
   const properties = model.properties || {};
   const propertyKeys = [...Object.entries(properties)];
   const propertyNames = propertyKeys.map(([name]) => {
@@ -307,7 +304,7 @@ function renderUnmarshal({
   renderer: ClassRenderer;
   model: ConstrainedObjectModel;
 }): string {
-  const unmarshalProperties = renderUnmarshalProperties(renderer, model);
+  const unmarshalProperties = renderUnmarshalProperties(model);
   return `public static unmarshal(json: string | object): ${model.type} {
   const obj = typeof json === "object" ? json : JSON.parse(json);
   const instance = new ${model.type}({} as any);
