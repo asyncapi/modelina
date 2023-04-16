@@ -1,7 +1,7 @@
 import ModelinaLogo from '../icons/ModelinaLogo';
 import Link from 'next/link';
 
-export default function MobileNavMenu({ onClickClose = () => {} }) {
+export default function MobileNavMenu({ onClickClose = () => { } }) {
   return (
     <div className="fixed top-0 inset-x-0 py-2 transition transform origin-top-right max-h-full lg:hidden overflow-y-scroll">
       <div className="rounded-lg shadow-lg">
@@ -34,11 +34,6 @@ export default function MobileNavMenu({ onClickClose = () => {} }) {
               </div>
             </div>
             <div className="py-2 space-y-2">
-              <Link href="/" className="flex" legacyBehavior>
-                <h4 className="text-gray-500 font-medium block mb-4">
-                  <a className="cursor-pointer">Modelina</a>
-                </h4>
-              </Link>
               <Link href="/playground" className="flex" legacyBehavior>
                 <h4 className="text-gray-500 font-medium block mb-4">
                   <a className="cursor-pointer">Playground</a>
