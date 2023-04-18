@@ -441,7 +441,7 @@ describe('JavaConstrainer', () => {
         constrainedModel: model,
         ...defaultOptions
       });
-      expect(type).toEqual('Object');
+      expect(type).toEqual('test');
     });
   });
 

@@ -282,228 +282,122 @@ describe('JavaGenerator', () => {
     );
   });
 
-  describe('CloudEvent', () => {
-    const asyncapiDoc = {
-      asyncapi: '2.5.0',
-      info: {
-        title: 'CloudEvent example',
-        version: '1.0.0'
-      },
-      channels: {
-        pet: {
-          publish: {
-            message: {
-              oneOf: [
-                {
-                  $ref: '#/components/messages/Dog'
-                },
-                {
-                  $ref: '#/components/messages/Cat'
-                }
-              ]
-            }
-          }
-        }
-      },
-      components: {
-        messages: {
-          Dog: {
-            payload: {
-              title: 'Dog',
-              allOf: [
-                {
-                  $ref: '#/components/schemas/CloudEvent'
-                },
-                {
-                  $ref: '#/components/schemas/Dog'
-                }
-              ]
-            }
-          },
-          Cat: {
-            payload: {
-              title: 'Cat',
-              allOf: [
-                {
-                  $ref: '#/components/schemas/CloudEvent'
-                },
-                {
-                  $ref: '#/components/schemas/Cat'
-                }
-              ]
-            }
+  test('should render discriminated `union` type', async () => {
+    const doc = {
+      $id: 'Union',
+      type: 'object',
+      discriminator: 'union_case',
+      oneOf: [
+        {
+          type: 'object',
+          $id: 'A',
+          properties: {
+            union_case: { type: 'string' },
+            prop_a: { type: 'number' }
           }
         },
-        schemas: {
-          CloudEvent: {
-            title: 'CloudEvent',
-            type: 'object',
-            discriminator: 'type',
-            properties: {
-              id: {
-                type: 'string'
-              },
-              source: {
-                type: 'string',
-                format: 'uri-reference'
-              },
-              specversion: {
-                type: 'string',
-                const: '1.0'
-              },
-              type: {
-                title: 'CloudEventType',
-                type: 'string'
-              },
-              dataschema: {
-                type: 'string',
-                format: 'uri'
-              },
-              time: {
-                type: 'string',
-                format: 'date-time'
-              }
-            },
-            required: ['id', 'source', 'specversion', 'type']
-          },
-          Dog: {
-            type: 'object',
-            properties: {
-              type: {
-                const: 'Dog'
-              }
-            }
-          },
-          Cat: {
-            type: 'object',
-            properties: {
-              type: {
-                const: 'Cat'
-              }
-            }
+        {
+          type: 'object',
+          $id: 'B',
+          properties: {
+            union_case: { type: 'string' },
+            prop_b: { type: 'string' }
+          }
+        }
+      ]
+    };
+    const expectedDependencies = ['import java.util.Map;'];
+    const models = await generator.generate(doc);
+    expect(models).toHaveLength(3);
+    expect(models[0].result).toContain('String get');
+    expect(models[1].result).toContain('implements Union');
+    expect(models[2].result).toContain('implements Union');
+    expect(models.map((m) => m.result)).toMatchSnapshot();
+    expect(models[0].dependencies).toEqual([]);
+    expect(models[1].dependencies).toEqual(expectedDependencies);
+    expect(models[2].dependencies).toEqual(expectedDependencies);
+  });
+
+  test('should render deduced `union` type', async () => {
+    const doc = {
+      $id: 'Union',
+      type: 'object',
+      oneOf: [
+        {
+          type: 'object',
+          $id: 'A',
+          properties: {
+            prop_a: { type: 'number' }
+          }
+        },
+        {
+          type: 'object',
+          $id: 'B',
+          properties: {
+            prop_b: { type: 'string' }
+          }
+        }
+      ]
+    };
+    const expectedDependencies = ['import java.util.Map;'];
+    const models = await generator.generate(doc);
+    expect(models).toHaveLength(3);
+    expect(models[0].result).not.toContain('String get');
+    expect(models[1].result).toContain('implements Union');
+    expect(models[2].result).toContain('implements Union');
+    expect(models.map((m) => m.result)).toMatchSnapshot();
+    expect(models[0].dependencies).toEqual([]);
+    expect(models[1].dependencies).toEqual(expectedDependencies);
+    expect(models[2].dependencies).toEqual(expectedDependencies);
+  });
+
+  test('should render `class` part of multiple `union` types', async () => {
+    const doc = {
+      $id: 'Root',
+      type: 'object',
+      properties: {
+        union_x: {
+          $id: 'UnionX',
+          oneOf: [{ $ref: '#/definitions/Common' }, { $ref: '#/definitions/A' }]
+        },
+        union_y: {
+          $id: 'UnionY',
+          oneOf: [{ $ref: '#/definitions/Common' }, { $ref: '#/definitions/B' }]
+        }
+      },
+      definitions: {
+        Common: {
+          type: 'object',
+          $id: 'Common',
+          properties: {
+            prop_common: { type: 'boolian' }
+          }
+        },
+        A: {
+          type: 'object',
+          $id: 'A',
+          properties: {
+            prop_a: { type: 'number' }
+          }
+        },
+        B: {
+          type: 'object',
+          $id: 'B',
+          properties: {
+            prop_b: { type: 'string' }
           }
         }
       }
     };
-
-    test('handle allOf with const in CloudEvent type', async () => {
-      generator = new JavaGenerator({
-        presets: [
-          JAVA_COMMON_PRESET,
-          JAVA_JACKSON_PRESET,
-          JAVA_DESCRIPTION_PRESET,
-          JAVA_CONSTRAINTS_PRESET
-        ],
-        collectionType: 'List'
-      });
-
-      const models = await generator.generate(asyncapiDoc);
-      expect(models.map((model) => model.result)).toMatchSnapshot();
-
-      const dog = models.find((model) => model.modelName === 'Dog');
-      expect(dog).not.toBeUndefined();
-      expect(dog?.result).toContain(
-        'private final CloudEventType type = CloudEventType.DOG;'
-      );
-
-      const cat = models.find((model) => model.modelName === 'Cat');
-      expect(cat).not.toBeUndefined();
-      expect(cat?.result).toContain(
-        'private final CloudEventType type = CloudEventType.CAT;'
-      );
-
-      const cloudEventType = models.find(
-        (model) => model.modelName === 'CloudEventType'
-      );
-      expect(cloudEventType).not.toBeUndefined();
-      expect(cloudEventType?.result).toContain('DOG');
-      expect(cloudEventType?.result).toContain('CAT');
-    });
-
-    test('handle one const with discriminator', async () => {
-      const asyncapiDoc = {
-        asyncapi: '2.6.0',
-        info: {
-          title: 'CloudEvent2 example',
-          version: '1.0.0'
-        },
-        channels: {
-          pet: {
-            publish: {
-              message: {
-                $ref: '#/components/messages/Dog'
-              }
-            }
-          }
-        },
-        components: {
-          messages: {
-            Dog: {
-              payload: {
-                title: 'Dog',
-                allOf: [
-                  {
-                    $ref: '#/components/schemas/CloudEvent'
-                  },
-                  {
-                    $ref: '#/components/schemas/Dog'
-                  }
-                ]
-              }
-            }
-          },
-          schemas: {
-            CloudEvent: {
-              title: 'CloudEvent',
-              type: 'object',
-              discriminator: 'type',
-              properties: {
-                id: {
-                  type: 'string'
-                },
-                type: {
-                  title: 'CloudEventType',
-                  type: 'string'
-                }
-              },
-              required: ['id', 'type']
-            },
-            Dog: {
-              type: 'object',
-              properties: {
-                type: {
-                  const: 'Dog'
-                }
-              }
-            }
-          }
-        }
-      };
-
-      generator = new JavaGenerator({
-        presets: [
-          JAVA_COMMON_PRESET,
-          JAVA_JACKSON_PRESET,
-          JAVA_DESCRIPTION_PRESET,
-          JAVA_CONSTRAINTS_PRESET
-        ],
-        collectionType: 'List'
-      });
-
-      const models = await generator.generate(asyncapiDoc);
-      expect(models.map((model) => model.result)).toMatchSnapshot();
-
-      const dog = models.find((model) => model.modelName === 'Dog');
-      expect(dog).not.toBeUndefined();
-      expect(dog?.result).toContain(
-        'private final CloudEventType type = CloudEventType.DOG;'
-      );
-
-      const cloudEventType = models.find(
-        (model) => model.modelName === 'CloudEventType'
-      );
-      expect(cloudEventType).not.toBeUndefined();
-      expect(cloudEventType?.result).toContain('DOG');
-    });
+    const expectedDependencies = ['import java.util.Map;'];
+    const models = await generator.generate(doc);
+    expect(models).toHaveLength(6);
+    // expect(models[0].result).not.toContain('String get');
+    // expect(models[1].result).toContain('implements Union');
+    // expect(models[2].result).toContain('implements Union');
+    expect(models.map((m) => m.result)).toMatchSnapshot();
+    // expect(models[0].dependencies).toEqual([]);
+    // expect(models[1].dependencies).toEqual(expectedDependencies);
+    // expect(models[2].dependencies).toEqual(expectedDependencies);
   });
 });

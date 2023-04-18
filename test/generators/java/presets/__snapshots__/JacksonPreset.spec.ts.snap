@@ -19,6 +19,92 @@ exports[`JAVA_JACKSON_PRESET should render Jackson annotations for class 1`] = `
 }"
 `;
 
+exports[`JAVA_JACKSON_PRESET should render Jackson annotations for deduced union 1`] = `
+Array [
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.DEDUCTION)
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = A.class, name = \\"A\\"),
+  @JsonSubTypes.Type(value = B.class, name = \\"B\\")
+})
+/**
+ * Union represents a union of types: A, B
+ */
+public interface Union {
+  
+}",
+  "public class A implements Union {
+  @JsonProperty(\\"prop_a\\")
+  private Double propA;
+  private Map<String, Object> additionalProperties;
+
+  public Double getPropA() { return this.propA; }
+  public void setPropA(Double propA) { this.propA = propA; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+  "public class B implements Union {
+  @JsonProperty(\\"prop_b\\")
+  private String propB;
+  private Map<String, Object> additionalProperties;
+
+  public String getPropB() { return this.propB; }
+  public void setPropB(String propB) { this.propB = propB; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+]
+`;
+
+exports[`JAVA_JACKSON_PRESET should render Jackson annotations for discriminated union 1`] = `
+Array [
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property=\\"union_case\\")
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = A.class, name = \\"A\\"),
+  @JsonSubTypes.Type(value = B.class, name = \\"B\\")
+})
+/**
+ * Union represents a union of types: A, B
+ */
+public interface Union {
+  String getUnionCase();
+}",
+  "public class A implements Union {
+  @JsonProperty(\\"union_case\\")
+  private String unionCase = \\"A\\";
+  @JsonProperty(\\"prop_a\\")
+  private Double propA;
+  private Map<String, Object> additionalProperties;
+
+  public String getUnionCase() { return this.unionCase; }
+  public void setUnionCase(String unionCase) { this.unionCase = unionCase; }
+
+  public Double getPropA() { return this.propA; }
+  public void setPropA(Double propA) { this.propA = propA; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+  "public class B implements Union {
+  @JsonProperty(\\"union_case\\")
+  private String unionCase = \\"B\\";
+  @JsonProperty(\\"prop_b\\")
+  private String propB;
+  private Map<String, Object> additionalProperties;
+
+  public String getUnionCase() { return this.unionCase; }
+  public void setUnionCase(String unionCase) { this.unionCase = unionCase; }
+
+  public String getPropB() { return this.propB; }
+  public void setPropB(String propB) { this.propB = propB; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+]
+`;
+
 exports[`JAVA_JACKSON_PRESET should render Jackson annotations for enum 1`] = `
 "public enum ReservedEnum {
   ON((String)\\"on\\"), OFF((String)\\"off\\");

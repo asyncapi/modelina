@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to generate data models for jackson annotation and should log expected output to console 1`] = `
+Array [
+  Array [
+    "/**
+ * Vehicle represents a union of types: Car, Truck
+ */
+public interface Vehicle {
+  String getVehicleType();
+}",
+  ],
+  Array [
+    "public class Car implements Vehicle {
+  private String vehicleType = \\"Car\\";
+  private String name;
+  private Map<String, Object> additionalProperties;
+
+  public String getVehicleType() { return this.vehicleType; }
+  public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
+
+  public String getName() { return this.name; }
+  public void setName(String name) { this.name = name; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+  ],
+  Array [
+    "public class Truck implements Vehicle {
+  private String vehicleType = \\"Truck\\";
+  private String name;
+  private Map<String, Object> additionalProperties;
+
+  public String getVehicleType() { return this.vehicleType; }
+  public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
+
+  public String getName() { return this.name; }
+  public void setName(String name) { this.name = name; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+  ],
+]
+`;

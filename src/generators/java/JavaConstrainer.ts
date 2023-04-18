@@ -170,9 +170,8 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
 
     return uniqueTypes[0];
   },
-  Union(): string {
-    //Because Java have no notion of unions (and no custom implementation), we have to render it as any value.
-    return 'Object';
+  Union({ constrainedModel }): string {
+    return constrainedModel.name;
   },
   Dictionary({ constrainedModel }): string {
     //Limitations to Java is that maps cannot have specific value types...
