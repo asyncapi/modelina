@@ -148,7 +148,7 @@ Check is done using referential equality</p>
 <dd><p>Interpreter function for anyOf keyword.</p>
 <p>It puts the schema reference into the items field.</p>
 </dd>
-<dt><a href="#interpretConst">interpretConst(schema, model)</a></dt>
+<dt><a href="#interpretConst">interpretConst(schema, model, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for const keyword for draft version &gt; 4</p>
 </dd>
 <dt><a href="#interpretDependencies">interpretDependencies(schema, model)</a></dt>
@@ -1336,15 +1336,16 @@ It puts the schema reference into the items field.
 
 <a name="interpretConst"></a>
 
-## interpretConst(schema, model)
+## interpretConst(schema, model, interpreterOptions)
 Interpreter function for const keyword for draft version > 4
 
 **Kind**: global function  
 
-| Param |
-| --- |
-| schema | 
-| model | 
+| Param | Description |
+| --- | --- |
+| schema |  |
+| model |  |
+| interpreterOptions | to control the interpret process |
 
 <a name="interpretDependencies"></a>
 
