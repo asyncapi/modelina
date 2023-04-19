@@ -7,7 +7,7 @@ import {
   ConstrainedBooleanModel,
   ConstrainedDictionaryModel,
   ConstrainedEnumModel,
-  ConstrainedEnumValueModel,
+  ConstrainedMetaModel,
   ConstrainedObjectModel,
   ConstrainedObjectPropertyModel,
   ConstrainedStringModel,
@@ -24,8 +24,7 @@ import {
   StringModel,
   TupleModel,
   TupleValueModel,
-  UnionModel,
-  ConstrainedReferenceModel
+  UnionModel
 } from '../../src/models';
 import {
   mockedConstraints,
@@ -33,6 +32,28 @@ import {
 } from '../TestUtils/TestConstrainer';
 
 describe('ConstrainedMetaModel', () => {
+  test('should not carry over options from metaModel to constrainedModel', () => {
+    const metaModel = new StringModel('', undefined, {
+      const: {
+        originalInput: 'testConst'
+      }
+    });
+
+    class ConstrainedTestModel extends ConstrainedMetaModel {}
+
+    const constrainedTestModel = new ConstrainedTestModel(
+      '',
+      undefined,
+      metaModel.options,
+      ''
+    );
+
+    expect(constrainedTestModel.options === metaModel.options).toEqual(false);
+    expect(
+      constrainedTestModel.options.const === metaModel.options.const
+    ).toEqual(false);
+  });
+
   describe('ReferenceModel', () => {
     test('should return no dependencies', () => {
       const stringModel = new StringModel('', undefined, {});
@@ -448,53 +469,6 @@ describe('ConstrainedMetaModel', () => {
           false
         );
       });
-    });
-
-    test('getConstrainedEnumValueModel should return the ConstrainedEnumValueModel when property is a reference model to a ConstrainedEnumModel', () => {
-      const testConst = 'testConst';
-
-      const constrainedEnumValueModel = new ConstrainedEnumValueModel(
-        'testKey',
-        testConst,
-        testConst
-      );
-
-      const constrainedObjectPropertyModel = new ConstrainedObjectPropertyModel(
-        'testModel',
-        '',
-        false,
-        new ConstrainedReferenceModel(
-          'testRefModel',
-          undefined,
-          { constValue: testConst },
-          '',
-          new ConstrainedEnumModel('testEnumModel', undefined, {}, '', [
-            constrainedEnumValueModel
-          ])
-        )
-      );
-
-      expect(constrainedObjectPropertyModel.property.options.constValue).toBe(
-        testConst
-      );
-    });
-
-    test('isConstrainedStringModel should return true when property is ConstrainedStringModel', () => {
-      const constrainedObjectPropertyModel = new ConstrainedObjectPropertyModel(
-        'testModel',
-        '',
-        false,
-        new ConstrainedStringModel(
-          'testStringModel',
-          undefined,
-          { constValue: 'testConst' },
-          ''
-        )
-      );
-
-      expect(constrainedObjectPropertyModel.property.options.constValue).toBe(
-        'testConst'
-      );
     });
   });
   describe('EnumModel', () => {
