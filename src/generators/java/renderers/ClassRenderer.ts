@@ -87,6 +87,10 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
     return renderer.defaultSelf();
   },
   property({ property }) {
+    if (property.property.options.const?.value) {
+      return `private final ${property.property.type} ${property.propertyName} = ${property.property.options.const.value};`;
+    }
+
     return `private ${property.property.type} ${property.propertyName};`;
   },
   getter({ property }) {
@@ -96,6 +100,9 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
     return `public ${property.property.type} ${getterName}() { return this.${property.propertyName}; }`;
   },
   setter({ property }) {
+    if (property.property.options.const?.value) {
+      return '';
+    }
     const setterName = FormatHelpers.toPascalCase(property.propertyName);
     return `public void set${setterName}(${property.property.type} ${property.propertyName}) { this.${property.propertyName} = ${property.propertyName}; }`;
   }

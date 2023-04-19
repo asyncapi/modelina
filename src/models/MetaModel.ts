@@ -1,10 +1,27 @@
+export interface MetaModelOptionsConst {
+  originalInput: unknown;
+}
+
+export interface MetaModelOptions {
+  const?: MetaModelOptionsConst;
+}
+
 export class MetaModel {
-  constructor(public name: string, public originalInput: any) {}
+  constructor(
+    public name: string,
+    public originalInput: any,
+    public options: MetaModelOptions
+  ) {}
 }
 
 export class ReferenceModel extends MetaModel {
-  constructor(name: string, originalInput: any, public ref: MetaModel) {
-    super(name, originalInput);
+  constructor(
+    name: string,
+    originalInput: any,
+    options: MetaModelOptions,
+    public ref: MetaModel
+  ) {
+    super(name, originalInput, options);
   }
 }
 export class AnyModel extends MetaModel {}
@@ -19,9 +36,10 @@ export class TupleModel extends MetaModel {
   constructor(
     name: string,
     originalInput: any,
+    options: MetaModelOptions,
     public tuple: TupleValueModel[]
   ) {
-    super(name, originalInput);
+    super(name, originalInput, options);
   }
 }
 export class ObjectPropertyModel {
@@ -35,19 +53,31 @@ export class ObjectModel extends MetaModel {
   constructor(
     name: string,
     originalInput: any,
+    options: MetaModelOptions,
     public properties: { [key: string]: ObjectPropertyModel }
   ) {
-    super(name, originalInput);
+    super(name, originalInput, options);
   }
 }
 export class ArrayModel extends MetaModel {
-  constructor(name: string, originalInput: any, public valueModel: MetaModel) {
-    super(name, originalInput);
+  constructor(
+    name: string,
+    originalInput: any,
+    options: MetaModelOptions,
+    public valueModel: MetaModel
+  ) {
+    super(name, originalInput, options);
   }
 }
+
 export class UnionModel extends MetaModel {
-  constructor(name: string, originalInput: any, public union: MetaModel[]) {
-    super(name, originalInput);
+  constructor(
+    name: string,
+    originalInput: any,
+    options: MetaModelOptions,
+    public union: MetaModel[]
+  ) {
+    super(name, originalInput, options);
   }
 }
 export class EnumValueModel {
@@ -57,19 +87,21 @@ export class EnumModel extends MetaModel {
   constructor(
     name: string,
     originalInput: any,
+    options: MetaModelOptions,
     public values: EnumValueModel[]
   ) {
-    super(name, originalInput);
+    super(name, originalInput, options);
   }
 }
 export class DictionaryModel extends MetaModel {
   constructor(
     name: string,
     originalInput: any,
+    options: MetaModelOptions,
     public key: MetaModel,
     public value: MetaModel,
     public serializationType: 'unwrap' | 'normal' = 'normal'
   ) {
-    super(name, originalInput);
+    super(name, originalInput, options);
   }
 }

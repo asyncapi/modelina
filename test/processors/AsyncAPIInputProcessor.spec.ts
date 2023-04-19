@@ -7,8 +7,12 @@ const basicDocString = fs.readFileSync(
   path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'),
   'utf8'
 );
-const operationOneOfDocString = fs.readFileSync(
-  path.resolve(__dirname, './AsyncAPIInputProcessor/operation_oneof.json'),
+const operationOneOf1DocString = fs.readFileSync(
+  path.resolve(__dirname, './AsyncAPIInputProcessor/operation_oneof1.json'),
+  'utf8'
+);
+const operationOneOf2DocString = fs.readFileSync(
+  path.resolve(__dirname, './AsyncAPIInputProcessor/operation_oneof2.json'),
   'utf8'
 );
 jest.mock('../../src/utils/LoggingInterface');
@@ -119,8 +123,15 @@ describe('AsyncAPIInputProcessor', () => {
       expect(commonInputModel).toMatchSnapshot();
     });
 
-    test('should be able to process operation with oneOf', async () => {
-      const { document } = await parser.parse(operationOneOfDocString);
+    test('should be able to process operation with oneOf #1', async () => {
+      const { document } = await parser.parse(operationOneOf1DocString);
+      const processor = new AsyncAPIInputProcessor();
+      const commonInputModel = await processor.process(document);
+      expect(commonInputModel).toMatchSnapshot();
+    });
+
+    test('should be able to process operation with oneOf #2', async () => {
+      const { document } = await parser.parse(operationOneOf2DocString);
       const processor = new AsyncAPIInputProcessor();
       const commonInputModel = await processor.process(document);
       expect(commonInputModel).toMatchSnapshot();

@@ -11,7 +11,7 @@ import { AsyncAPISchemaObject } from '@asyncapi/parser/cjs/spec-types/v2';
 import { createDetailedAsyncAPI } from '@asyncapi/parser/cjs/utils';
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
-import { InputMetaModel, ProcessorOptions } from '../models';
+import { InputMetaModel, ProcessorOptions, UnionModel } from '../models';
 import { Logger } from '../utils';
 import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
 import { convertToMetaModel } from '../helpers';
@@ -77,6 +77,21 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     inputModel.originalInput = doc;
 
     const addToInputModel = (payload: AsyncAPISchemaInterface) => {
+      const id = payload.title() || payload.id();
+
+      for (const model of Object.values(inputModel.models)) {
+        if (model instanceof UnionModel) {
+          for (const union of model.union) {
+            if (union.name === id) {
+              Logger.warn(
+                `Model ${id} has already been added to the input model`
+              );
+              return;
+            }
+          }
+        }
+      }
+
       const schema = AsyncAPIInputProcessor.convertToInternalSchema(payload);
       const newCommonModel =
         JsonSchemaInputProcessor.convertSchemaToCommonModel(schema, options);
@@ -120,11 +135,13 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
               oneOf.push(payload.json());
             }
 
-            const payload = new AsyncAPISchema({
-              $id: channel.id(),
-              pointer: channel.meta().pointer,
-              oneOf
-            });
+            const payload = new AsyncAPISchema(
+              {
+                $id: channel.id(),
+                oneOf
+              },
+              channel.meta()
+            );
 
             addToInputModel(payload);
           } else if (operationMessages.length === 1) {
@@ -198,21 +215,21 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     if (schema.allOf()) {
       convertedSchema.allOf = schema
         .allOf()!
-        .map((item: any) =>
+        .map((item) =>
           this.convertToInternalSchema(item, alreadyIteratedSchemas)
         );
     }
     if (schema.oneOf()) {
       convertedSchema.oneOf = schema
         .oneOf()!
-        .map((item: any) =>
+        .map((item) =>
           this.convertToInternalSchema(item, alreadyIteratedSchemas)
         );
     }
     if (schema.anyOf()) {
       convertedSchema.anyOf = schema
         .anyOf()!
-        .map((item: any) =>
+        .map((item) =>
           this.convertToInternalSchema(item, alreadyIteratedSchemas)
         );
     }

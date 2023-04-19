@@ -164,6 +164,7 @@ describe('Interpreter', () => {
     expect(interpretConst).toHaveBeenNthCalledWith(
       1,
       schema,
+      expect.anything(),
       expect.anything()
     );
   });

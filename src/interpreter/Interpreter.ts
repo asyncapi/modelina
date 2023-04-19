@@ -45,6 +45,10 @@ export type InterpreterOptions = {
    * Instead you should adapt your schemas to be more strict by setting `additionalItems: false`.
    */
   ignoreAdditionalItems?: boolean;
+  /**
+   * When interpreting a schema with discriminator set, this property will be set bet by the individual interpreters to make sure the discriminator becomes an enum.
+   */
+  discriminator?: string;
 };
 export type InterpreterSchemas =
   | Draft6Schema
@@ -141,7 +145,7 @@ export class Interpreter {
     interpretOneOfWithProperties(schema, model, this, interpreterOptions);
     interpretAnyOf(schema, model, this, interpreterOptions);
     interpretDependencies(schema, model, this, interpreterOptions);
-    interpretConst(schema, model);
+    interpretConst(schema, model, interpreterOptions);
     interpretEnum(schema, model);
     InterpretThenElse(schema, model, this, interpreterOptions);
 

@@ -5,7 +5,7 @@ export interface MergingOptions {
    * When models are merged, should merging models constrict the `merging to` model?
    * If false, `required` keyword would no longer be applied from the `merging from` model.
    */
-  constrictModels: boolean;
+  constrictModels?: boolean;
 }
 export const defaultMergingOptions: MergingOptions = {
   constrictModels: true
@@ -20,6 +20,7 @@ export class CommonModel {
   $id?: string;
   type?: string | string[];
   enum?: any[];
+  const?: unknown;
   items?: CommonModel | CommonModel[];
   properties?: { [key: string]: CommonModel };
   additionalProperties?: CommonModel;
@@ -493,18 +494,28 @@ export class CommonModel {
           originalInput
         );
 
-        const mergeToProperty = mergeTo.properties[String(propName)];
+        // takes a deep copy of the mergeTo model if the id of mergeTo is anonymous to avoid carrying over properties to other models
+        const mergeToModel = CommonModel.idIncludesAnonymousSchema(
+          mergeTo.properties[String(propName)]
+        )
+          ? CommonModel.toCommonModel(mergeTo.properties[String(propName)])
+          : mergeTo.properties[String(propName)];
 
-        mergeTo.properties[String(propName)] = CommonModel.mergeCommonModels(
-          // takes a deep copy of the mergeTo model if the id of mergeTo is anonymous to avoid carrying over properties to other models
-          CommonModel.idIncludesAnonymousSchema(mergeToProperty)
-            ? CommonModel.toCommonModel(mergeToProperty)
-            : mergeToProperty,
+        const mergedModel = CommonModel.mergeCommonModels(
+          mergeToModel,
           propValue,
           originalInput,
           alreadyIteratedModels,
           options
         );
+
+        if (propValue.const) {
+          mergeTo.properties[String(propName)] =
+            CommonModel.toCommonModel(mergedModel);
+          mergeTo.properties[String(propName)].const = propValue.const;
+        } else {
+          mergeTo.properties[String(propName)] = mergedModel;
+        }
       }
     }
   }
@@ -735,6 +746,7 @@ export class CommonModel {
    * @param originalInput corresponding input that got interpreted to this model
    * @param alreadyIteratedModels
    */
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   static mergeCommonModels(
     mergeTo: CommonModel | undefined,
     mergeFrom: CommonModel,
@@ -798,6 +810,9 @@ export class CommonModel {
     if (mergeFrom.enum !== undefined) {
       mergeTo.enum = [...new Set([...(mergeTo.enum || []), ...mergeFrom.enum])];
     }
+
+    mergeTo.const = mergeTo.const || mergeFrom.const;
+
     if (mergeFrom.required !== undefined && options.constrictModels === true) {
       mergeTo.required = [
         ...new Set([...(mergeTo.required || []), ...mergeFrom.required])

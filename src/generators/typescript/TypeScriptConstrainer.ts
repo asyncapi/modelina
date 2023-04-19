@@ -6,7 +6,9 @@ import {
 } from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
+import { defaultConstantConstraints } from './constrainer/ConstantConstrainer';
 import { TypeScriptTypeMapping } from './TypeScriptGenerator';
+import { Constraints } from '../../helpers';
 
 export const TypeScriptDefaultTypeMapping: TypeScriptTypeMapping = {
   Object({ constrainedModel }): string {
@@ -46,8 +48,12 @@ export const TypeScriptDefaultTypeMapping: TypeScriptTypeMapping = {
   Enum({ constrainedModel }): string {
     return constrainedModel.name;
   },
-  Union({ constrainedModel }): string {
-    const unionTypes = constrainedModel.union.map((unionModel) => {
+  Union(args): string {
+    const unionTypes = args.constrainedModel.union.map((unionModel) => {
+      if (unionModel.options.const?.value) {
+        return `${unionModel.options.const.value}`;
+      }
+
       return unionModel.type;
     });
     return unionTypes.join(' | ');
@@ -75,9 +81,10 @@ export const TypeScriptDefaultTypeMapping: TypeScriptTypeMapping = {
   }
 };
 
-export const TypeScriptDefaultConstraints = {
+export const TypeScriptDefaultConstraints: Constraints = {
   enumKey: defaultEnumKeyConstraints(),
   enumValue: defaultEnumValueConstraints(),
   modelName: defaultModelNameConstraints(),
-  propertyKey: defaultPropertyKeyConstraints()
+  propertyKey: defaultPropertyKeyConstraints(),
+  constant: defaultConstantConstraints()
 };

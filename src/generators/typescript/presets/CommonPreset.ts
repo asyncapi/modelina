@@ -233,6 +233,11 @@ function renderUnmarshalProperties(model: ConstrainedObjectModel) {
   const unwrapDictionaryProperties = [];
   const normalProperties = [];
   for (const entry of propertyKeys) {
+    // if const value exists, we don't need to unmarshal this property because it exist in the class/interface
+    if (entry[1].property.options.const) {
+      continue;
+    }
+
     if (
       entry[1].property instanceof ConstrainedDictionaryModel &&
       entry[1].property.serializationType === 'unwrap'

@@ -7,9 +7,9 @@ import {
   ConstrainedBooleanModel,
   ConstrainedDictionaryModel,
   ConstrainedEnumModel,
+  ConstrainedEnumValueModel,
   ConstrainedObjectModel,
   ConstrainedObjectPropertyModel,
-  ConstrainedReferenceModel,
   ConstrainedStringModel,
   ConstrainedTupleModel,
   ConstrainedUnionModel,
@@ -24,7 +24,8 @@ import {
   StringModel,
   TupleModel,
   TupleValueModel,
-  UnionModel
+  UnionModel,
+  ConstrainedReferenceModel
 } from '../../src/models';
 import {
   mockedConstraints,
@@ -34,13 +35,14 @@ import {
 describe('ConstrainedMetaModel', () => {
   describe('ReferenceModel', () => {
     test('should return no dependencies', () => {
-      const stringModel = new StringModel('', undefined);
-      const rawModel = new ReferenceModel('', undefined, stringModel);
+      const stringModel = new StringModel('', undefined, {});
+      const rawModel = new ReferenceModel('', undefined, {}, stringModel);
 
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
         constrainedName: '',
-        options: undefined
+        options: undefined,
+        dependencyManager: undefined as never
       });
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(0);
@@ -48,12 +50,13 @@ describe('ConstrainedMetaModel', () => {
   });
   describe('StringModel', () => {
     test('should return no dependencies', () => {
-      const rawModel = new StringModel('', undefined);
+      const rawModel = new StringModel('', undefined, {});
 
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
         constrainedName: '',
-        options: undefined
+        options: undefined,
+        dependencyManager: undefined as never
       });
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(0);
@@ -61,12 +64,13 @@ describe('ConstrainedMetaModel', () => {
   });
   describe('AnyModel', () => {
     test('should return no dependencies', () => {
-      const rawModel = new AnyModel('', undefined);
+      const rawModel = new AnyModel('', undefined, {});
 
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
         constrainedName: '',
-        options: undefined
+        options: undefined,
+        dependencyManager: undefined as never
       });
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(0);
@@ -74,12 +78,13 @@ describe('ConstrainedMetaModel', () => {
   });
   describe('FloatModel', () => {
     test('should return no dependencies', () => {
-      const rawModel = new FloatModel('', undefined);
+      const rawModel = new FloatModel('', undefined, {});
 
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
         constrainedName: '',
-        options: undefined
+        options: undefined,
+        dependencyManager: undefined as never
       });
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(0);
@@ -87,12 +92,13 @@ describe('ConstrainedMetaModel', () => {
   });
   describe('IntegerModel', () => {
     test('should return no dependencies', () => {
-      const rawModel = new IntegerModel('', undefined);
+      const rawModel = new IntegerModel('', undefined, {});
 
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
         constrainedName: '',
-        options: undefined
+        options: undefined,
+        dependencyManager: undefined as never
       });
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(0);
@@ -100,12 +106,13 @@ describe('ConstrainedMetaModel', () => {
   });
   describe('BooleanModel', () => {
     test('should return no dependencies', () => {
-      const rawModel = new BooleanModel('', undefined);
+      const rawModel = new BooleanModel('', undefined, {});
 
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
         constrainedName: '',
-        options: undefined
+        options: undefined,
+        dependencyManager: undefined as never
       });
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(0);
@@ -113,11 +120,11 @@ describe('ConstrainedMetaModel', () => {
   });
   describe('TupleModel', () => {
     test('should return all reference dependencies', () => {
-      const stringModel = new StringModel('', undefined);
-      const referenceModel = new ReferenceModel('', undefined, stringModel);
+      const stringModel = new StringModel('', undefined, {});
+      const referenceModel = new ReferenceModel('', undefined, {}, stringModel);
       const referenceTupleModel = new TupleValueModel(0, referenceModel);
       const stringTupleModel = new TupleValueModel(1, stringModel);
-      const rawModel = new TupleModel('test', undefined, [
+      const rawModel = new TupleModel('test', undefined, {}, [
         referenceTupleModel,
         stringTupleModel
       ]);
@@ -125,29 +132,31 @@ describe('ConstrainedMetaModel', () => {
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
         constrainedName: '',
-        options: undefined
+        options: undefined,
+        dependencyManager: undefined as never
       }) as ConstrainedTupleModel;
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(1);
       expect(dependencies[0]).toEqual(model.tuple[0].value);
     });
     test('should return inner reference dependencies', () => {
-      const stringModel = new StringModel('', undefined);
-      const referenceModel = new ReferenceModel('', undefined, stringModel);
-      const unionModel = new UnionModel('union', undefined, [
+      const stringModel = new StringModel('', undefined, {});
+      const referenceModel = new ReferenceModel('', undefined, {}, stringModel);
+      const unionModel = new UnionModel('union', undefined, {}, [
         stringModel,
         referenceModel
       ]);
       const unionTupleModel = new TupleValueModel(0, unionModel);
       const stringTupleModel = new TupleValueModel(1, stringModel);
-      const rawModel = new TupleModel('test', undefined, [
+      const rawModel = new TupleModel('test', undefined, {}, [
         unionTupleModel,
         stringTupleModel
       ]);
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
         constrainedName: '',
-        options: undefined
+        options: undefined,
+        dependencyManager: undefined as never
       }) as ConstrainedTupleModel;
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(1);
@@ -157,11 +166,11 @@ describe('ConstrainedMetaModel', () => {
     });
 
     test('should not return duplicate dependencies', () => {
-      const stringModel = new StringModel('', undefined);
-      const referenceModel = new ReferenceModel('', undefined, stringModel);
+      const stringModel = new StringModel('', undefined, {});
+      const referenceModel = new ReferenceModel('', undefined, {}, stringModel);
       const referenceTupleModel = new TupleValueModel(0, referenceModel);
       const reference2TupleModel = new TupleValueModel(1, referenceModel);
-      const rawModel = new TupleModel('test', undefined, [
+      const rawModel = new TupleModel('test', undefined, {}, [
         referenceTupleModel,
         reference2TupleModel
       ]);
@@ -169,19 +178,25 @@ describe('ConstrainedMetaModel', () => {
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
         constrainedName: '',
-        options: undefined
+        options: undefined,
+        dependencyManager: undefined as never
       }) as ConstrainedTupleModel;
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(1);
     });
 
     test('should not return duplicate dependencies when different reference instances', () => {
-      const stringModel = new StringModel('', undefined);
-      const referenceModel = new ReferenceModel('', undefined, stringModel);
-      const referenceModel2 = new ReferenceModel('', undefined, stringModel);
+      const stringModel = new StringModel('', undefined, {});
+      const referenceModel = new ReferenceModel('', undefined, {}, stringModel);
+      const referenceModel2 = new ReferenceModel(
+        '',
+        undefined,
+        {},
+        stringModel
+      );
       const referenceTupleModel = new TupleValueModel(0, referenceModel);
       const reference2TupleModel = new TupleValueModel(1, referenceModel2);
-      const rawModel = new TupleModel('test', undefined, [
+      const rawModel = new TupleModel('test', undefined, {}, [
         referenceTupleModel,
         reference2TupleModel
       ]);
@@ -189,7 +204,8 @@ describe('ConstrainedMetaModel', () => {
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
         constrainedName: '',
-        options: undefined
+        options: undefined,
+        dependencyManager: undefined as never
       }) as ConstrainedTupleModel;
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(1);
@@ -197,9 +213,9 @@ describe('ConstrainedMetaModel', () => {
   });
   describe('ObjectModel', () => {
     test('should return inner reference dependencies', () => {
-      const stringModel = new StringModel('', undefined);
-      const referenceModel = new ReferenceModel('', undefined, stringModel);
-      const unionModel = new UnionModel('union', undefined, [
+      const stringModel = new StringModel('', undefined, {});
+      const referenceModel = new ReferenceModel('', undefined, {}, stringModel);
+      const unionModel = new UnionModel('union', undefined, {}, [
         stringModel,
         referenceModel
       ]);
@@ -208,14 +224,20 @@ describe('ConstrainedMetaModel', () => {
         false,
         unionModel
       );
-      const rawModel = new ObjectModel('test', undefined, {
-        union: unionObjectPropertyModel
-      });
+      const rawModel = new ObjectModel(
+        'test',
+        undefined,
+        {},
+        {
+          union: unionObjectPropertyModel
+        }
+      );
 
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
         constrainedName: '',
-        options: undefined
+        options: undefined,
+        dependencyManager: undefined as never
       }) as ConstrainedObjectModel;
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(1);
@@ -224,26 +246,38 @@ describe('ConstrainedMetaModel', () => {
       );
     });
     test('should return property dependency even if the name is the same as property', () => {
-      const stringModel = new StringModel('arrayProp', undefined);
+      const stringModel = new StringModel('arrayProp', undefined, {});
       const referenceModel = new ReferenceModel(
         'arrayProp',
         undefined,
+        {},
         stringModel
       );
-      const arrayModel = new ArrayModel('arrayProp', undefined, referenceModel);
+      const arrayModel = new ArrayModel(
+        'arrayProp',
+        undefined,
+        {},
+        referenceModel
+      );
       const referenceArrayPropertyModel = new ObjectPropertyModel(
         'arrayProp',
         false,
         arrayModel
       );
-      const rawModel = new ObjectModel('test', undefined, {
-        arrayProp: referenceArrayPropertyModel
-      });
+      const rawModel = new ObjectModel(
+        'test',
+        undefined,
+        {},
+        {
+          arrayProp: referenceArrayPropertyModel
+        }
+      );
 
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
         constrainedName: '',
-        options: undefined
+        options: undefined,
+        dependencyManager: undefined as never
       }) as ConstrainedObjectModel;
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(1);
@@ -253,8 +287,8 @@ describe('ConstrainedMetaModel', () => {
       );
     });
     test('should return all reference dependencies', () => {
-      const stringModel = new StringModel('', undefined);
-      const referenceModel = new ReferenceModel('', undefined, stringModel);
+      const stringModel = new StringModel('', undefined, {});
+      const referenceModel = new ReferenceModel('', undefined, {}, stringModel);
       const referenceObjectPropertyModel = new ObjectPropertyModel(
         'reference',
         false,
@@ -265,15 +299,21 @@ describe('ConstrainedMetaModel', () => {
         false,
         stringModel
       );
-      const rawModel = new ObjectModel('test', undefined, {
-        reference: referenceObjectPropertyModel,
-        string: stringObjectPropertyModel
-      });
+      const rawModel = new ObjectModel(
+        'test',
+        undefined,
+        {},
+        {
+          reference: referenceObjectPropertyModel,
+          string: stringObjectPropertyModel
+        }
+      );
 
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
         constrainedName: '',
-        options: undefined
+        options: undefined,
+        dependencyManager: undefined as never
       }) as ConstrainedObjectModel;
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(1);
@@ -281,10 +321,11 @@ describe('ConstrainedMetaModel', () => {
     });
 
     test('should not return self reference', () => {
-      const rawModel = new ObjectModel('ObjectTest', undefined, {});
+      const rawModel = new ObjectModel('ObjectTest', undefined, {}, {});
       const referenceModel = new ReferenceModel(
         rawModel.name,
         undefined,
+        {},
         rawModel
       );
       const referenceObjectPropertyModel = new ObjectPropertyModel(
@@ -297,17 +338,19 @@ describe('ConstrainedMetaModel', () => {
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
         constrainedName: '',
-        options: undefined
+        options: undefined,
+        dependencyManager: undefined as never
       }) as ConstrainedObjectModel;
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(0);
     });
 
     test('should not return duplicate dependencies', () => {
-      const stringModel = new StringModel('string', undefined);
+      const stringModel = new StringModel('string', undefined, {});
       const referenceModel = new ReferenceModel(
         'reference',
         undefined,
+        {},
         stringModel
       );
       const referenceObjectPropertyModel = new ObjectPropertyModel(
@@ -320,15 +363,21 @@ describe('ConstrainedMetaModel', () => {
         false,
         referenceModel
       );
-      const rawModel = new ObjectModel('test', undefined, {
-        reference: referenceObjectPropertyModel,
-        reference2: reference2ObjectPropertyModel
-      });
+      const rawModel = new ObjectModel(
+        'test',
+        undefined,
+        {},
+        {
+          reference: referenceObjectPropertyModel,
+          reference2: reference2ObjectPropertyModel
+        }
+      );
 
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
         constrainedName: '',
-        options: undefined
+        options: undefined,
+        dependencyManager: undefined as never
       }) as ConstrainedObjectModel;
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(1);
@@ -336,15 +385,17 @@ describe('ConstrainedMetaModel', () => {
     });
 
     test('should not return duplicate dependencies when different reference instances', () => {
-      const stringModel = new StringModel('string', undefined);
+      const stringModel = new StringModel('string', undefined, {});
       const referenceModel = new ReferenceModel(
         'reference',
         undefined,
+        {},
         stringModel
       );
       const referenceModel2 = new ReferenceModel(
         'reference',
         undefined,
+        {},
         stringModel
       );
       const referenceObjectPropertyModel = new ObjectPropertyModel(
@@ -357,15 +408,21 @@ describe('ConstrainedMetaModel', () => {
         false,
         referenceModel2
       );
-      const rawModel = new ObjectModel('test', undefined, {
-        reference: referenceObjectPropertyModel,
-        reference2: reference2ObjectPropertyModel
-      });
+      const rawModel = new ObjectModel(
+        'test',
+        undefined,
+        {},
+        {
+          reference: referenceObjectPropertyModel,
+          reference2: reference2ObjectPropertyModel
+        }
+      );
 
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
         constrainedName: '',
-        options: undefined
+        options: undefined,
+        dependencyManager: undefined as never
       }) as ConstrainedObjectModel;
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(1);
@@ -374,14 +431,14 @@ describe('ConstrainedMetaModel', () => {
 
     describe('containsPropertyType', () => {
       test('should find present property type and those who are not', () => {
-        const stringModel = new ConstrainedStringModel('', undefined, '');
+        const stringModel = new ConstrainedStringModel('', undefined, {}, '');
         const stringObjectPropertyModel = new ConstrainedObjectPropertyModel(
           'string',
           '',
           false,
           stringModel
         );
-        const rawModel = new ConstrainedObjectModel('test', undefined, '', {
+        const rawModel = new ConstrainedObjectModel('test', undefined, {}, '', {
           string: stringObjectPropertyModel
         });
         expect(rawModel.containsPropertyType(ConstrainedStringModel)).toEqual(
@@ -392,6 +449,53 @@ describe('ConstrainedMetaModel', () => {
         );
       });
     });
+
+    test('getConstrainedEnumValueModel should return the ConstrainedEnumValueModel when property is a reference model to a ConstrainedEnumModel', () => {
+      const testConst = 'testConst';
+
+      const constrainedEnumValueModel = new ConstrainedEnumValueModel(
+        'testKey',
+        testConst,
+        testConst
+      );
+
+      const constrainedObjectPropertyModel = new ConstrainedObjectPropertyModel(
+        'testModel',
+        '',
+        false,
+        new ConstrainedReferenceModel(
+          'testRefModel',
+          undefined,
+          { constValue: testConst },
+          '',
+          new ConstrainedEnumModel('testEnumModel', undefined, {}, '', [
+            constrainedEnumValueModel
+          ])
+        )
+      );
+
+      expect(constrainedObjectPropertyModel.property.options.constValue).toBe(
+        testConst
+      );
+    });
+
+    test('isConstrainedStringModel should return true when property is ConstrainedStringModel', () => {
+      const constrainedObjectPropertyModel = new ConstrainedObjectPropertyModel(
+        'testModel',
+        '',
+        false,
+        new ConstrainedStringModel(
+          'testStringModel',
+          undefined,
+          { constValue: 'testConst' },
+          ''
+        )
+      );
+
+      expect(constrainedObjectPropertyModel.property.options.constValue).toBe(
+        'testConst'
+      );
+    });
   });
   describe('EnumModel', () => {
     test('should return no dependencies', () => {
@@ -400,7 +504,7 @@ describe('ConstrainedMetaModel', () => {
         'referenceModel'
       );
       const stringEnumValueModel = new EnumValueModel('string', 'stringModel');
-      const rawModel = new EnumModel('test', undefined, [
+      const rawModel = new EnumModel('test', undefined, {}, [
         referenceEnumValueModel,
         stringEnumValueModel
       ]);
@@ -408,7 +512,8 @@ describe('ConstrainedMetaModel', () => {
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
         constrainedName: '',
-        options: undefined
+        options: undefined,
+        dependencyManager: undefined as never
       }) as ConstrainedEnumModel;
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(0);
@@ -416,11 +521,12 @@ describe('ConstrainedMetaModel', () => {
   });
   describe('DictionaryModel', () => {
     test('should return all reference dependencies', () => {
-      const stringModel = new StringModel('', undefined);
-      const referenceModel = new ReferenceModel('', undefined, stringModel);
+      const stringModel = new StringModel('', undefined, {});
+      const referenceModel = new ReferenceModel('', undefined, {}, stringModel);
       const rawModel = new DictionaryModel(
         'test',
         undefined,
+        {},
         referenceModel,
         stringModel
       );
@@ -428,7 +534,8 @@ describe('ConstrainedMetaModel', () => {
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
         constrainedName: '',
-        options: undefined
+        options: undefined,
+        dependencyManager: undefined as never
       }) as ConstrainedDictionaryModel;
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(1);
@@ -436,15 +543,16 @@ describe('ConstrainedMetaModel', () => {
     });
 
     test('should return inner reference dependencies', () => {
-      const stringModel = new StringModel('', undefined);
-      const referenceModel = new ReferenceModel('', undefined, stringModel);
-      const unionModel = new UnionModel('union', undefined, [
+      const stringModel = new StringModel('', undefined, {});
+      const referenceModel = new ReferenceModel('', undefined, {}, stringModel);
+      const unionModel = new UnionModel('union', undefined, {}, [
         stringModel,
         referenceModel
       ]);
       const rawModel = new DictionaryModel(
         'test',
         undefined,
+        {},
         unionModel,
         stringModel
       );
@@ -452,7 +560,8 @@ describe('ConstrainedMetaModel', () => {
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
         constrainedName: '',
-        options: undefined
+        options: undefined,
+        dependencyManager: undefined as never
       }) as ConstrainedDictionaryModel;
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(1);
@@ -462,11 +571,12 @@ describe('ConstrainedMetaModel', () => {
     });
 
     test('should not return duplicate dependencies', () => {
-      const stringModel = new StringModel('', undefined);
-      const referenceModel = new ReferenceModel('', undefined, stringModel);
+      const stringModel = new StringModel('', undefined, {});
+      const referenceModel = new ReferenceModel('', undefined, {}, stringModel);
       const rawModel = new DictionaryModel(
         'test',
         undefined,
+        {},
         referenceModel,
         referenceModel
       );
@@ -474,7 +584,8 @@ describe('ConstrainedMetaModel', () => {
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
         constrainedName: '',
-        options: undefined
+        options: undefined,
+        dependencyManager: undefined as never
       }) as ConstrainedDictionaryModel;
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(1);
@@ -482,12 +593,18 @@ describe('ConstrainedMetaModel', () => {
     });
 
     test('should not return duplicate dependencies when different reference instances', () => {
-      const stringModel = new StringModel('', undefined);
-      const referenceModel = new ReferenceModel('', undefined, stringModel);
-      const referenceModel2 = new ReferenceModel('', undefined, stringModel);
+      const stringModel = new StringModel('', undefined, {});
+      const referenceModel = new ReferenceModel('', undefined, {}, stringModel);
+      const referenceModel2 = new ReferenceModel(
+        '',
+        undefined,
+        {},
+        stringModel
+      );
       const rawModel = new DictionaryModel(
         'test',
         undefined,
+        {},
         referenceModel,
         referenceModel2
       );
@@ -495,7 +612,8 @@ describe('ConstrainedMetaModel', () => {
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
         constrainedName: '',
-        options: undefined
+        options: undefined,
+        dependencyManager: undefined as never
       }) as ConstrainedDictionaryModel;
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(1);
@@ -504,45 +622,48 @@ describe('ConstrainedMetaModel', () => {
   });
   describe('ArrayModel', () => {
     test('should return all reference dependencies', () => {
-      const stringModel = new StringModel('', undefined);
-      const referenceModel = new ReferenceModel('', undefined, stringModel);
-      const rawModel = new ArrayModel('test', undefined, referenceModel);
+      const stringModel = new StringModel('', undefined, {});
+      const referenceModel = new ReferenceModel('', undefined, {}, stringModel);
+      const rawModel = new ArrayModel('test', undefined, {}, referenceModel);
 
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
         constrainedName: '',
-        options: undefined
+        options: undefined,
+        dependencyManager: undefined as never
       }) as ConstrainedArrayModel;
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(1);
       expect(dependencies[0]).toEqual(model.valueModel);
     });
     test('should return nothing if no references are used', () => {
-      const stringModel = new StringModel('', undefined);
-      const rawModel = new ArrayModel('', undefined, stringModel);
+      const stringModel = new StringModel('', undefined, {});
+      const rawModel = new ArrayModel('', undefined, {}, stringModel);
 
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
         constrainedName: '',
-        options: undefined
+        options: undefined,
+        dependencyManager: undefined as never
       });
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(0);
     });
 
     test('should return inner reference dependencies', () => {
-      const stringModel = new StringModel('', undefined);
-      const referenceModel = new ReferenceModel('', undefined, stringModel);
-      const unionModel = new UnionModel('union', undefined, [
+      const stringModel = new StringModel('', undefined, {});
+      const referenceModel = new ReferenceModel('', undefined, {}, stringModel);
+      const unionModel = new UnionModel('union', undefined, {}, [
         stringModel,
         referenceModel
       ]);
-      const rawModel = new ArrayModel('', undefined, unionModel);
+      const rawModel = new ArrayModel('', undefined, {}, unionModel);
 
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
         constrainedName: '',
-        options: undefined
+        options: undefined,
+        dependencyManager: undefined as never
       }) as ConstrainedArrayModel;
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(1);
@@ -553,9 +674,9 @@ describe('ConstrainedMetaModel', () => {
   });
   describe('UnionModel', () => {
     test('should return all reference dependencies', () => {
-      const stringModel = new StringModel('', undefined);
-      const referenceModel = new ReferenceModel('', undefined, stringModel);
-      const rawModel = new UnionModel('test', undefined, [
+      const stringModel = new StringModel('', undefined, {});
+      const referenceModel = new ReferenceModel('', undefined, {}, stringModel);
+      const rawModel = new UnionModel('test', undefined, {}, [
         referenceModel,
         stringModel
       ]);
@@ -563,7 +684,8 @@ describe('ConstrainedMetaModel', () => {
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
         constrainedName: '',
-        options: undefined
+        options: undefined,
+        dependencyManager: undefined as never
       }) as ConstrainedUnionModel;
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(1);
@@ -571,9 +693,9 @@ describe('ConstrainedMetaModel', () => {
     });
 
     test('should not return duplicate dependencies', () => {
-      const stringModel = new StringModel('', undefined);
-      const referenceModel = new ReferenceModel('', undefined, stringModel);
-      const rawModel = new UnionModel('test', undefined, [
+      const stringModel = new StringModel('', undefined, {});
+      const referenceModel = new ReferenceModel('', undefined, {}, stringModel);
+      const rawModel = new UnionModel('test', undefined, {}, [
         referenceModel,
         referenceModel
       ]);
@@ -581,7 +703,8 @@ describe('ConstrainedMetaModel', () => {
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
         constrainedName: '',
-        options: undefined
+        options: undefined,
+        dependencyManager: undefined as never
       }) as ConstrainedUnionModel;
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(1);
@@ -589,10 +712,15 @@ describe('ConstrainedMetaModel', () => {
     });
 
     test('should not return duplicate dependencies when different reference instances', () => {
-      const stringModel = new StringModel('', undefined);
-      const referenceModel = new ReferenceModel('', undefined, stringModel);
-      const referenceModel2 = new ReferenceModel('', undefined, stringModel);
-      const rawModel = new UnionModel('test', undefined, [
+      const stringModel = new StringModel('', undefined, {});
+      const referenceModel = new ReferenceModel('', undefined, {}, stringModel);
+      const referenceModel2 = new ReferenceModel(
+        '',
+        undefined,
+        {},
+        stringModel
+      );
+      const rawModel = new UnionModel('test', undefined, {}, [
         referenceModel,
         referenceModel2
       ]);
@@ -600,7 +728,8 @@ describe('ConstrainedMetaModel', () => {
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
         constrainedName: '',
-        options: undefined
+        options: undefined,
+        dependencyManager: undefined as never
       }) as ConstrainedUnionModel;
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(1);

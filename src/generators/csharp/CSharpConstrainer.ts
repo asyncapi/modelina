@@ -1,3 +1,4 @@
+import { Constraints } from '../../helpers';
 import {
   ConstrainedEnumValueModel,
   ConstrainedObjectPropertyModel
@@ -8,6 +9,7 @@ import {
 } from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
+import { defaultConstantConstraints } from './constrainer/ConstantConstrainer';
 import { CSharpTypeMapping } from './CSharpGenerator';
 
 function getFullTypeDefinition(
@@ -100,9 +102,10 @@ export const CSharpDefaultTypeMapping: CSharpTypeMapping = {
   }
 };
 
-export const CSharpDefaultConstraints = {
+export const CSharpDefaultConstraints: Constraints = {
   enumKey: defaultEnumKeyConstraints(),
   enumValue: defaultEnumValueConstraints(),
   modelName: defaultModelNameConstraints(),
-  propertyKey: defaultPropertyKeyConstraints()
+  propertyKey: defaultPropertyKeyConstraints(),
+  constant: defaultConstantConstraints()
 };

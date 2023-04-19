@@ -31,7 +31,8 @@ import {
   EnumModel,
   DictionaryModel,
   MetaModel,
-  ObjectPropertyModel
+  ObjectPropertyModel,
+  EnumValueModel
 } from '../models/MetaModel';
 import { getTypeFromMapping, TypeMapping } from './TypeHelpers';
 
@@ -75,14 +76,26 @@ export type PropertyKeyContext = {
 
 export type PropertyKeyConstraint = (context: PropertyKeyContext) => string;
 
+export type ConstantContext = {
+  constrainedMetaModel: ConstrainedMetaModel;
+};
+
+export type ConstantConstraint = (context: ConstantContext) => unknown;
+
 export interface Constraints {
   enumKey: EnumKeyConstraint;
   enumValue: EnumValueConstraint;
   modelName: ModelNameConstraint;
   propertyKey: PropertyKeyConstraint;
+  constant: ConstantConstraint;
 }
 
-const placeHolderConstrainedObject = new ConstrainedAnyModel('', undefined, '');
+const placeHolderConstrainedObject = new ConstrainedAnyModel(
+  '',
+  undefined,
+  {},
+  ''
+);
 
 function constrainReferenceModel<
   Options,
@@ -96,6 +109,7 @@ function constrainReferenceModel<
   const constrainedModel = new ConstrainedReferenceModel(
     context.constrainedName,
     context.metaModel.originalInput,
+    context.metaModel.options,
     '',
     placeHolderConstrainedObject
   );
@@ -114,6 +128,14 @@ function constrainReferenceModel<
     partOfProperty: context.partOfProperty,
     dependencyManager: context.dependencyManager
   });
+
+  if (constrainedModel.options.const) {
+    const constrainedConstant = constrainRules.constant({
+      constrainedMetaModel: constrainedModel
+    });
+    constrainedModel.options.const.value = constrainedConstant;
+  }
+
   return constrainedModel;
 }
 function constrainAnyModel<
@@ -126,6 +148,7 @@ function constrainAnyModel<
   const constrainedModel = new ConstrainedAnyModel(
     context.constrainedName,
     context.metaModel.originalInput,
+    context.metaModel.options,
     ''
   );
   constrainedModel.type = getTypeFromMapping(typeMapping, {
@@ -146,6 +169,7 @@ function constrainFloatModel<
   const constrainedModel = new ConstrainedFloatModel(
     context.constrainedName,
     context.metaModel.originalInput,
+    context.metaModel.options,
     ''
   );
   constrainedModel.type = getTypeFromMapping(typeMapping, {
@@ -166,6 +190,7 @@ function constrainIntegerModel<
   const constrainedModel = new ConstrainedIntegerModel(
     context.constrainedName,
     context.metaModel.originalInput,
+    context.metaModel.options,
     ''
   );
   constrainedModel.type = getTypeFromMapping(typeMapping, {
@@ -186,6 +211,7 @@ function constrainStringModel<
   const constrainedModel = new ConstrainedStringModel(
     context.constrainedName,
     context.metaModel.originalInput,
+    context.metaModel.options,
     ''
   );
   constrainedModel.type = getTypeFromMapping(typeMapping, {
@@ -206,6 +232,7 @@ function constrainBooleanModel<
   const constrainedModel = new ConstrainedBooleanModel(
     context.constrainedName,
     context.metaModel.originalInput,
+    context.metaModel.options,
     ''
   );
   constrainedModel.type = getTypeFromMapping(typeMapping, {
@@ -228,6 +255,7 @@ function constrainTupleModel<
   const constrainedModel = new ConstrainedTupleModel(
     context.constrainedName,
     context.metaModel.originalInput,
+    context.metaModel.options,
     '',
     []
   );
@@ -263,6 +291,7 @@ function constrainArrayModel<
   const constrainedModel = new ConstrainedArrayModel(
     context.constrainedName,
     context.metaModel.originalInput,
+    context.metaModel.options,
     '',
     placeHolderConstrainedObject
   );
@@ -298,6 +327,7 @@ function constrainUnionModel<
   const constrainedModel = new ConstrainedUnionModel(
     context.constrainedName,
     context.metaModel.originalInput,
+    context.metaModel.options,
     '',
     []
   );
@@ -332,6 +362,7 @@ function constrainDictionaryModel<
   const constrainedModel = new ConstrainedDictionaryModel(
     context.constrainedName,
     context.metaModel.originalInput,
+    context.metaModel.options,
     '',
     placeHolderConstrainedObject,
     placeHolderConstrainedObject,
@@ -378,6 +409,7 @@ function constrainObjectModel<
   const constrainedModel = new ConstrainedObjectModel(
     context.constrainedName,
     context.metaModel.originalInput,
+    context.metaModel.options,
     '',
     {}
   );
@@ -408,6 +440,7 @@ function constrainObjectModel<
       alreadySeenModels
     );
     constrainedPropertyModel.property = constrainedProperty;
+
     constrainedModel.properties[String(constrainedPropertyName)] =
       constrainedPropertyModel;
   }
@@ -431,11 +464,14 @@ function ConstrainEnumModel<
   const constrainedModel = new ConstrainedEnumModel(
     context.constrainedName,
     context.metaModel.originalInput,
+    context.metaModel.options,
     '',
     []
   );
 
-  for (const enumValue of context.metaModel.values) {
+  const enumValueToConstrainedEnumValueModel = (
+    enumValue: EnumValueModel
+  ): ConstrainedEnumValueModel => {
     const constrainedEnumKey = constrainRules.enumKey({
       enumKey: String(enumValue.key),
       enumModel: context.metaModel,
@@ -446,22 +482,30 @@ function ConstrainEnumModel<
       enumModel: context.metaModel,
       constrainedEnumModel: constrainedModel
     });
-
-    const constrainedEnumValueModel = new ConstrainedEnumValueModel(
+    return new ConstrainedEnumValueModel(
       constrainedEnumKey,
-      constrainedEnumValue
+      constrainedEnumValue,
+      enumValue.value
     );
-    constrainedModel.values.push(constrainedEnumValueModel);
+  };
+
+  for (const enumValue of context.metaModel.values) {
+    constrainedModel.values.push(
+      enumValueToConstrainedEnumValueModel(enumValue)
+    );
   }
+
   constrainedModel.type = getTypeFromMapping(typeMapping, {
     constrainedModel,
     options: context.options,
     partOfProperty: context.partOfProperty,
     dependencyManager: context.dependencyManager
   });
+
   return constrainedModel;
 }
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 export function constrainMetaModel<
   Options,
   DependencyManager extends AbstractDependencyManager
@@ -555,6 +599,13 @@ export function constrainMetaModel<
     });
   }
   if (simpleModel !== undefined) {
+    if (simpleModel.options.const) {
+      const constrainedConstant = constrainRules.constant({
+        constrainedMetaModel: simpleModel
+      });
+      simpleModel.options.const.value = constrainedConstant;
+    }
+
     alreadySeenModels.set(context.metaModel, simpleModel);
     return simpleModel;
   }

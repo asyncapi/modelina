@@ -4,57 +4,51 @@ exports[`TypeScriptGenerator AsyncAPI with polymorphism should render 6 models (
 Array [
   "type AnonymousSchema_1 = Cat | Dog | StickInsect;",
   "class Cat {
-  private _petType: PetType;
+  private _petType: PetType.CAT = PetType.CAT;
   private _reservedName: string;
-  private _huntingSkill: AnonymousSchema_5;
+  private _huntingSkill: HuntingSkill;
 
   constructor(input: {
-    petType: PetType,
     reservedName: string,
-    huntingSkill: AnonymousSchema_5,
+    huntingSkill: HuntingSkill,
   }) {
-    this._petType = input.petType;
     this._reservedName = input.reservedName;
     this._huntingSkill = input.huntingSkill;
   }
 
-  get petType(): PetType { return this._petType; }
-  set petType(petType: PetType) { this._petType = petType; }
+  get petType(): PetType.CAT { return this._petType; }
 
   get reservedName(): string { return this._reservedName; }
   set reservedName(reservedName: string) { this._reservedName = reservedName; }
 
-  get huntingSkill(): AnonymousSchema_5 { return this._huntingSkill; }
-  set huntingSkill(huntingSkill: AnonymousSchema_5) { this._huntingSkill = huntingSkill; }
+  get huntingSkill(): HuntingSkill { return this._huntingSkill; }
+  set huntingSkill(huntingSkill: HuntingSkill) { this._huntingSkill = huntingSkill; }
 }",
   "enum PetType {
   CAT = \\"Cat\\",
   DOG = \\"Dog\\",
   STICK_BUG = \\"StickBug\\",
 }",
-  "enum AnonymousSchema_5 {
+  "enum HuntingSkill {
   CLUELESS = \\"clueless\\",
   LAZY = \\"lazy\\",
   ADVENTUROUS = \\"adventurous\\",
   AGGRESSIVE = \\"aggressive\\",
 }",
   "class Dog {
-  private _petType: PetType;
+  private _petType: PetType.DOG = PetType.DOG;
   private _reservedName: string;
   private _packSize: number;
 
   constructor(input: {
-    petType: PetType,
     reservedName: string,
     packSize: number,
   }) {
-    this._petType = input.petType;
     this._reservedName = input.reservedName;
     this._packSize = input.packSize;
   }
 
-  get petType(): PetType { return this._petType; }
-  set petType(petType: PetType) { this._petType = petType; }
+  get petType(): PetType.DOG { return this._petType; }
 
   get reservedName(): string { return this._reservedName; }
   set reservedName(reservedName: string) { this._reservedName = reservedName; }
@@ -63,22 +57,19 @@ Array [
   set packSize(packSize: number) { this._packSize = packSize; }
 }",
   "class StickInsect {
-  private _petType: PetType;
+  private _petType: PetType.STICK_BUG = PetType.STICK_BUG;
   private _reservedName: string;
   private _color: string;
 
   constructor(input: {
-    petType: PetType,
     reservedName: string,
     color: string,
   }) {
-    this._petType = input.petType;
     this._reservedName = input.reservedName;
     this._color = input.color;
   }
 
-  get petType(): PetType { return this._petType; }
-  set petType(petType: PetType) { this._petType = petType; }
+  get petType(): PetType.STICK_BUG { return this._petType; }
 
   get reservedName(): string { return this._reservedName; }
   set reservedName(reservedName: string) { this._reservedName = reservedName; }
@@ -104,7 +95,7 @@ Array [
   private _id: string;
   private _source: string;
   private _specversion: string;
-  private _reservedType: DogType;
+  private _reservedType: DogType.DOG = DogType.DOG;
   private _dataschema?: string;
   private _time?: string;
   private _additionalProperties?: Map<string, any>;
@@ -113,7 +104,6 @@ Array [
     id: string,
     source: string,
     specversion: string,
-    reservedType: DogType,
     dataschema?: string,
     time?: string,
     additionalProperties?: Map<string, any>,
@@ -121,7 +111,6 @@ Array [
     this._id = input.id;
     this._source = input.source;
     this._specversion = input.specversion;
-    this._reservedType = input.reservedType;
     this._dataschema = input.dataschema;
     this._time = input.time;
     this._additionalProperties = input.additionalProperties;
@@ -136,8 +125,7 @@ Array [
   get specversion(): string { return this._specversion; }
   set specversion(specversion: string) { this._specversion = specversion; }
 
-  get reservedType(): DogType { return this._reservedType; }
-  set reservedType(reservedType: DogType) { this._reservedType = reservedType; }
+  get reservedType(): DogType.DOG { return this._reservedType; }
 
   get dataschema(): string | undefined { return this._dataschema; }
   set dataschema(dataschema: string | undefined) { this._dataschema = dataschema; }
@@ -155,7 +143,7 @@ Array [
   private _id: string;
   private _source: string;
   private _specversion: string;
-  private _reservedType: CatType;
+  private _reservedType: CatType.CAT = CatType.CAT;
   private _dataschema?: string;
   private _time?: string;
   private _additionalProperties?: Map<string, any>;
@@ -164,7 +152,6 @@ Array [
     id: string,
     source: string,
     specversion: string,
-    reservedType: CatType,
     dataschema?: string,
     time?: string,
     additionalProperties?: Map<string, any>,
@@ -172,7 +159,6 @@ Array [
     this._id = input.id;
     this._source = input.source;
     this._specversion = input.specversion;
-    this._reservedType = input.reservedType;
     this._dataschema = input.dataschema;
     this._time = input.time;
     this._additionalProperties = input.additionalProperties;
@@ -187,8 +173,7 @@ Array [
   get specversion(): string { return this._specversion; }
   set specversion(specversion: string) { this._specversion = specversion; }
 
-  get reservedType(): CatType { return this._reservedType; }
-  set reservedType(reservedType: CatType) { this._reservedType = reservedType; }
+  get reservedType(): CatType.CAT { return this._reservedType; }
 
   get dataschema(): string | undefined { return this._dataschema; }
   set dataschema(dataschema: string | undefined) { this._dataschema = dataschema; }
@@ -209,22 +194,19 @@ exports[`TypeScriptGenerator Combine oneOf and allOf should combine oneOf and al
 Array [
   "type Pet = Cat | Dog;",
   "class Cat {
-  private _animalType?: AnimalType;
+  private _animalType?: AnimalType.CAT = AnimalType.CAT;
   private _age?: number;
   private _huntingSkill?: HuntingSkill;
 
   constructor(input: {
-    animalType?: AnimalType,
     age?: number,
     huntingSkill?: HuntingSkill,
   }) {
-    this._animalType = input.animalType;
     this._age = input.age;
     this._huntingSkill = input.huntingSkill;
   }
 
-  get animalType(): AnimalType | undefined { return this._animalType; }
-  set animalType(animalType: AnimalType | undefined) { this._animalType = animalType; }
+  get animalType(): AnimalType.CAT | undefined { return this._animalType; }
 
   get age(): number | undefined { return this._age; }
   set age(age: number | undefined) { this._age = age; }
@@ -241,22 +223,19 @@ Array [
   LAZY = \\"lazy\\",
 }",
   "class Dog {
-  private _animalType?: AnimalType;
+  private _animalType?: AnimalType.DOG = AnimalType.DOG;
   private _age?: number;
   private _breed?: DogBreed;
 
   constructor(input: {
-    animalType?: AnimalType,
     age?: number,
     breed?: DogBreed,
   }) {
-    this._animalType = input.animalType;
     this._age = input.age;
     this._breed = input.breed;
   }
 
-  get animalType(): AnimalType | undefined { return this._animalType; }
-  set animalType(animalType: AnimalType | undefined) { this._animalType = animalType; }
+  get animalType(): AnimalType.DOG | undefined { return this._animalType; }
 
   get age(): number | undefined { return this._age; }
   set age(age: number | undefined) { this._age = age; }
@@ -275,22 +254,19 @@ exports[`TypeScriptGenerator Combine properties and oneOf should combine propert
 Array [
   "type Pet = Cat | Dog;",
   "class Cat {
-  private _petType?: PetType;
+  private _petType: PetType.CAT = PetType.CAT;
   private _age?: number;
   private _huntingSkill?: HuntingSkill;
 
   constructor(input: {
-    petType?: PetType,
     age?: number,
     huntingSkill?: HuntingSkill,
   }) {
-    this._petType = input.petType;
     this._age = input.age;
     this._huntingSkill = input.huntingSkill;
   }
 
-  get petType(): PetType | undefined { return this._petType; }
-  set petType(petType: PetType | undefined) { this._petType = petType; }
+  get petType(): PetType.CAT { return this._petType; }
 
   get age(): number | undefined { return this._age; }
   set age(age: number | undefined) { this._age = age; }
@@ -307,22 +283,19 @@ Array [
   LAZY = \\"lazy\\",
 }",
   "class Dog {
-  private _petType?: PetType;
+  private _petType: PetType.DOG = PetType.DOG;
   private _age?: number;
   private _breed?: DogBreed;
 
   constructor(input: {
-    petType?: PetType,
     age?: number,
     breed?: DogBreed,
   }) {
-    this._petType = input.petType;
     this._age = input.age;
     this._breed = input.breed;
   }
 
-  get petType(): PetType | undefined { return this._petType; }
-  set petType(petType: PetType | undefined) { this._petType = petType; }
+  get petType(): PetType.DOG { return this._petType; }
 
   get age(): number | undefined { return this._age; }
   set age(age: number | undefined) { this._age = age; }
@@ -333,6 +306,70 @@ Array [
   "enum DogBreed {
   BULLDOG = \\"bulldog\\",
   BICHONS_SPACE_FRISE = \\"bichons frise\\",
+}",
+]
+`;
+
+exports[`TypeScriptGenerator const should generate a const string 1`] = `
+Array [
+  "class LightMeasured {
+  private _reservedType?: 'test' = 'test';
+
+  constructor(input: {
+  
+  }) {
+  
+  }
+
+  get reservedType(): 'test' | undefined { return this._reservedType; }
+}",
+]
+`;
+
+exports[`TypeScriptGenerator const should generate a single enum with two values 1`] = `
+Array [
+  "class LightMeasured {
+  private _reservedType?: ReservedType.MY_MESSAGE = ReservedType.MY_MESSAGE;
+  private _type2?: Type2.MY_MESSAGE2 = Type2.MY_MESSAGE2;
+
+  constructor(input: {
+  
+  }) {
+  
+  }
+
+  get reservedType(): ReservedType.MY_MESSAGE | undefined { return this._reservedType; }
+
+  get type2(): Type2.MY_MESSAGE2 | undefined { return this._type2; }
+}",
+  "enum ReservedType {
+  MY_MESSAGE = \\"MyMessage\\",
+  MY_MESSAGE2 = \\"MyMessage2\\",
+}",
+  "enum Type2 {
+  MY_MESSAGE = \\"MyMessage\\",
+  MY_MESSAGE2 = \\"MyMessage2\\",
+}",
+]
+`;
+
+exports[`TypeScriptGenerator const should generate a single enum with two values and a string enum 1`] = `
+Array [
+  "class LightMeasured {
+  private _reservedType?: MyCommonEnums | 'MyMessage2';
+
+  constructor(input: {
+    reservedType?: MyCommonEnums | 'MyMessage2',
+  }) {
+    this._reservedType = input.reservedType;
+  }
+
+  get reservedType(): MyCommonEnums | 'MyMessage2' | undefined { return this._reservedType; }
+  set reservedType(reservedType: MyCommonEnums | 'MyMessage2' | undefined) { this._reservedType = reservedType; }
+}",
+  "enum MyCommonEnums {
+  MY_MESSAGE = \\"MyMessage\\",
+  MY_MESSAGE2 = \\"MyMessage2\\",
 }",
 ]
 `;

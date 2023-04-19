@@ -1,7 +1,6 @@
-/* eslint-disable no-undef */
 import { Constraints, TypeMapping } from '../../src/helpers';
 
-export const mockedTypeMapping: TypeMapping<any> = {
+export const mockedTypeMapping: TypeMapping<any, any> = {
   Object: jest.fn().mockReturnValue('test'),
   Reference: jest.fn().mockReturnValue('test'),
   Any: jest.fn().mockReturnValue('test'),
@@ -24,5 +23,6 @@ export const mockedConstraints: Constraints = {
     .fn()
     .mockImplementation(
       ({ objectPropertyModel }) => objectPropertyModel.propertyName
-    )
+    ),
+  constant: jest.fn().mockImplementation(({ constValue }) => constValue)
 };

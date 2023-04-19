@@ -34,7 +34,6 @@
               "type": "object",
               "properties": {
                 "type": {
-                  "title": "DogType",
                   "const": "Dog"
                 }
               }
@@ -53,7 +52,6 @@
               "type": "object",
               "properties": {
                 "type": {
-                  "title": "CatType",
                   "const": "Cat"
                 }
               }
@@ -66,6 +64,7 @@
       "CloudEvent": {
         "title": "CloudEvent",
         "type": "object",
+        "discriminator": "type",
         "properties": {
           "id": {
             "type": "string"
@@ -80,6 +79,7 @@
             "examples": ["1.0"]
           },
           "type": {
+            "title": "CloudEventType",
             "type": "string"
           },
           "dataschema": {

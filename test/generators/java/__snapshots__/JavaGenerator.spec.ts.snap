@@ -1,5 +1,212 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`JavaGenerator CloudEvent handle allOf with const in CloudEvent type 1`] = `
+Array [
+  "",
+  "public class Dog {
+  @NotNull
+  @JsonProperty(\\"id\\")
+  private String id;
+  @NotNull
+  @JsonProperty(\\"source\\")
+  private String source;
+  @NotNull
+  @JsonProperty(\\"specversion\\")
+  private final String specversion = \\"1.0\\";
+  @NotNull
+  @JsonProperty(\\"type\\")
+  private final CloudEventType type = CloudEventType.DOG;
+  @JsonProperty(\\"dataschema\\")
+  private String dataschema;
+  @JsonProperty(\\"time\\")
+  private java.time.OffsetDateTime time;
+  private Map<String, Object> additionalProperties;
+
+  public String getId() { return this.id; }
+  public void setId(String id) { this.id = id; }
+
+  public String getSource() { return this.source; }
+  public void setSource(String source) { this.source = source; }
+
+  public String getSpecversion() { return this.specversion; }
+
+  public CloudEventType getType() { return this.type; }
+
+  public String getDataschema() { return this.dataschema; }
+  public void setDataschema(String dataschema) { this.dataschema = dataschema; }
+
+  public java.time.OffsetDateTime getTime() { return this.time; }
+  public void setTime(java.time.OffsetDateTime time) { this.time = time; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Dog self = (Dog) o;
+      return 
+        Objects.equals(this.id, self.id) &&
+        Objects.equals(this.source, self.source) &&
+        Objects.equals(this.specversion, self.specversion) &&
+        Objects.equals(this.type, self.type) &&
+        Objects.equals(this.dataschema, self.dataschema) &&
+        Objects.equals(this.time, self.time) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)id, (Object)source, (Object)specversion, (Object)type, (Object)dataschema, (Object)time, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Dog {\\\\n\\" +   
+      \\"    id: \\" + toIndentedString(id) + \\"\\\\n\\" +
+      \\"    source: \\" + toIndentedString(source) + \\"\\\\n\\" +
+      \\"    specversion: \\" + toIndentedString(specversion) + \\"\\\\n\\" +
+      \\"    type: \\" + toIndentedString(type) + \\"\\\\n\\" +
+      \\"    dataschema: \\" + toIndentedString(dataschema) + \\"\\\\n\\" +
+      \\"    time: \\" + toIndentedString(time) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+  "public enum CloudEventType {
+  DOG((String)\\"Dog\\"), CAT((String)\\"Cat\\");
+
+  private String value;
+
+  CloudEventType(String value) {
+    this.value = value;
+  }
+
+  @JsonValue
+  public String getValue() {
+    return value;
+  }
+
+  @JsonCreator
+  public static CloudEventType fromValue(String value) {
+    for (CloudEventType e : CloudEventType.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+}",
+  "public class Cat {
+  @NotNull
+  @JsonProperty(\\"id\\")
+  private String id;
+  @NotNull
+  @JsonProperty(\\"source\\")
+  private String source;
+  @NotNull
+  @JsonProperty(\\"specversion\\")
+  private final String specversion = \\"1.0\\";
+  @NotNull
+  @JsonProperty(\\"type\\")
+  private final CloudEventType type = CloudEventType.CAT;
+  @JsonProperty(\\"dataschema\\")
+  private String dataschema;
+  @JsonProperty(\\"time\\")
+  private java.time.OffsetDateTime time;
+  private Map<String, Object> additionalProperties;
+
+  public String getId() { return this.id; }
+  public void setId(String id) { this.id = id; }
+
+  public String getSource() { return this.source; }
+  public void setSource(String source) { this.source = source; }
+
+  public String getSpecversion() { return this.specversion; }
+
+  public CloudEventType getType() { return this.type; }
+
+  public String getDataschema() { return this.dataschema; }
+  public void setDataschema(String dataschema) { this.dataschema = dataschema; }
+
+  public java.time.OffsetDateTime getTime() { return this.time; }
+  public void setTime(java.time.OffsetDateTime time) { this.time = time; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Cat self = (Cat) o;
+      return 
+        Objects.equals(this.id, self.id) &&
+        Objects.equals(this.source, self.source) &&
+        Objects.equals(this.specversion, self.specversion) &&
+        Objects.equals(this.type, self.type) &&
+        Objects.equals(this.dataschema, self.dataschema) &&
+        Objects.equals(this.time, self.time) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)id, (Object)source, (Object)specversion, (Object)type, (Object)dataschema, (Object)time, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Cat {\\\\n\\" +   
+      \\"    id: \\" + toIndentedString(id) + \\"\\\\n\\" +
+      \\"    source: \\" + toIndentedString(source) + \\"\\\\n\\" +
+      \\"    specversion: \\" + toIndentedString(specversion) + \\"\\\\n\\" +
+      \\"    type: \\" + toIndentedString(type) + \\"\\\\n\\" +
+      \\"    dataschema: \\" + toIndentedString(dataschema) + \\"\\\\n\\" +
+      \\"    time: \\" + toIndentedString(time) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+]
+`;
+
 exports[`JavaGenerator should not render reserved keyword 1`] = `
 "public class Address {
   private String reservedReservedEnum;
