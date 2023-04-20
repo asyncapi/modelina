@@ -41,7 +41,7 @@ class GeneratedModelsComponent extends React.Component<
           .map((model: any) => `${model.code}`)
           .join('\n\n');
       } else if (this.state.selectedModel !== undefined && this.context.models) {
-        for (const model of this.context?.models) {
+        for (const model of this.context.models) {
           if (model.name === this.state.selectedModel) {
             selectedCode = model.code;
             break;

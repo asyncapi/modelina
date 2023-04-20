@@ -129,6 +129,17 @@ class Playground extends React.Component<
         console.error('Input too large, use smaller example');
         this.setState({ ...this.state, error: true, errorMessage: 'Input too large, use smaller example', statusCode: 400 });
       } else {
+        const generators: { [key: string]: Function } = {
+          typescript: getTypeScriptGeneratorCode,
+          javascript: getJavaScriptGeneratorCode,
+          java: getJavaGeneratorCode,
+          go: getGoGeneratorCode,
+          csharp: getCSharpGeneratorCode,
+          rust: getRustGeneratorCode,
+          python: getPythonGeneratorCode,
+          dart: getDartGeneratorCode,
+        }
+        const generatorCode = generators[this.config.language](message);
         fetch(`${process.env.NEXT_PUBLIC_API_PATH}/generate`, {
           body: JSON.stringify(message),
           method: 'POST'
@@ -137,35 +148,6 @@ class Playground extends React.Component<
             throw new Error(res.statusText);
           }
           const response: UpdateMessage = await res.json();
-          let generatorCode = '';
-          switch (this.config.language) {
-            case 'typescript':
-              generatorCode = getTypeScriptGeneratorCode(message);
-              break;
-            case 'javascript':
-              generatorCode = getJavaScriptGeneratorCode(message);
-              break;
-            case 'java':
-              generatorCode = getJavaGeneratorCode(message);
-              break;
-            case 'go':
-              generatorCode = getGoGeneratorCode(message);
-              break;
-            case 'csharp':
-              generatorCode = getCSharpGeneratorCode(message);
-              break;
-            case 'rust':
-              generatorCode = getRustGeneratorCode(message);
-              break;
-            case 'python':
-              generatorCode = getPythonGeneratorCode(message);
-              break;
-            case 'dart':
-              generatorCode = getDartGeneratorCode(message);
-              break;
-            default:
-              break;
-          }
           this.setState({
             ...this.state,
             generatorCode,
@@ -183,9 +165,9 @@ class Playground extends React.Component<
           this.setState({ ...this.state, error: true, errorMessage: error.message, statusCode: 500 });
         });
       }
-    } catch (e) {
-      console.error('Could not generate new code');
-      this.setState({ ...this.state, error: true, errorMessage: 'Could not generate new code', statusCode: 400 });
+    } catch (e: any) {
+      console.error(e);
+      this.setState({ ...this.state, error: true, errorMessage: e.message, statusCode: 400 });
     }
   }
 
