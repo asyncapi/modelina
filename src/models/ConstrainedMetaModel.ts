@@ -15,13 +15,24 @@ export interface ConstrainedMetaModelOptions extends MetaModelOptions {
 }
 
 export abstract class ConstrainedMetaModel extends MetaModel {
+  public options: ConstrainedMetaModelOptions;
+
   constructor(
     name: string,
     originalInput: any,
-    public options: ConstrainedMetaModelOptions,
+    options: ConstrainedMetaModelOptions,
     public type: string
   ) {
     super(name, originalInput, options);
+    this.options = {
+      ...options
+    };
+
+    if (options.const) {
+      this.options.const = {
+        ...options.const
+      };
+    }
   }
 
   /**
