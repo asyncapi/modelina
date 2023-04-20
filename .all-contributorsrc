@@ -515,6 +515,26 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "Savio629",
+      "name": "Savio Dias",
+      "avatar_url": "https://avatars.githubusercontent.com/u/91362589?v=4",
+      "profile": "https://github.com/Savio629",
+      "contributions": [
+        "code",
+        "infra",
+        "bug"
+      ]
+    },
+    {
+      "login": "ishaan812",
+      "name": "Ishaan Shah",
+      "avatar_url": "https://avatars.githubusercontent.com/u/70190533?v=4",
+      "profile": "https://github.com/ishaan812",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
