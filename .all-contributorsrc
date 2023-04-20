@@ -492,7 +492,10 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/54636525?v=4",
       "profile": "https://github.com/prayutsu",
       "contributions": [
-        "code"
+        "code",
+        "example",
+        "test",
+        "doc"
       ]
     },
     {
