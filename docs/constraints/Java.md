@@ -38,4 +38,4 @@ These are the constraints that is applied to enum keys. The `Rule key` is what y
 |NO_DUPLICATE_KEYS|No duplicate enum keys|If any of the above constraints changes the enum key, we must make sure that no duplicates exist within the same enum. If any is encountered `reserved_` is pre-pended. This is done recursively until no duplicates are found.| 
 
 ## Constant
-These are the constraints that are applied to constants. Currently, there are no options to overwrite the default behaviour.
+These are the constraints that are applied to constants. Currently, there are no hooks one can overwrite inside it.
