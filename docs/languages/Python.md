@@ -7,6 +7,8 @@ There are special use-cases that each language supports; this document pertains 
 <!-- toc -->
 
 - [Generate Pydantic models](#generate-pydantic-models)
+- [Generate models with JSON Serializer and Deserializer methods](#generate-models-with-json-serializer-and-deserializer-methods)
+  * [Limitations](#limitations)
 
 <!-- tocstop -->
 
