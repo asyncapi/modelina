@@ -3,7 +3,7 @@ const spy = jest.spyOn(global.console, 'log').mockImplementation(() => {
 });
 import { generate } from './index';
 
-describe('Should be able to render TEMPLATE', () => {
+describe('Should be able to render JSON serialization and deserialization functions', () => {
   afterAll(() => {
     jest.restoreAllMocks();
   });
