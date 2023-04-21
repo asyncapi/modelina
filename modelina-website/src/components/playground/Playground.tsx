@@ -162,7 +162,7 @@ class Playground extends React.Component<
           });
         }).catch(error => {
           console.error(error);
-          this.setState({ ...this.state, error: true, errorMessage: error.message, statusCode: 500 });
+          this.setState({ ...this.state, error: true, errorMessage: "Input is not an correct AsyncAPI document so it cannot be processed.", statusCode: 500 });
         });
       }
     } catch (e: any) {

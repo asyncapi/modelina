@@ -4,11 +4,13 @@ import Exclamation from "./icons/Exclamation";
 
 function CustomError({ statusCode, errorMessage }: {statusCode: number, errorMessage: string}) {
   return (
-    <div className="bg-code-editor-dark text-gray-700 rounded-b shadow-lg flex h-full text-center">
+    <div className="bg-code-editor-dark text-red-600 rounded-b shadow-lg flex h-full text-center">
       <div className="m-auto">
-        <Exclamation/>
+        <div className="m-auto w-28 h-28">
+          <Exclamation />
+        </div>
         <Heading> Error: {statusCode} </Heading>
-        <Paragraph className="mt-4 max-w-3xl mx-auto">
+        <Paragraph className="mt-4 mx-auto font-semibold text-red-600">
           {errorMessage}
         </Paragraph>
       </div>
