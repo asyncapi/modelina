@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PYTHON_JSON_SERIALIZER_PRESET should render serializer and deserializer for class 1`] = `
+"class Test: 
+  def __init__(self, input):
+    if hasattr(input, 'prop'):
+    	self._prop = input.prop
+    if hasattr(input, 'additionalProperties'):
+    	self._additionalProperties = input.additionalProperties
+
+  @property
+  def prop(self):
+  	return self._prop
+  @prop.setter
+  def prop(self, prop):
+  	self._prop = prop
+
+  @property
+  def additionalProperties(self):
+  	return self._additionalProperties
+  @additionalProperties.setter
+  def additionalProperties(self, additionalProperties):
+  	self._additionalProperties = additionalProperties
+
+  def serializeToJson(self):
+    return json.dumps(self.__dict__, default=lambda o: o.__dict__, indent=2)
+
+  @staticmethod
+  def deserializeFromJson(json_string):
+    return Test(**json.loads(json_string))
+"
+`;
