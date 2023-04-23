@@ -1,4 +1,4 @@
-import { ConstrainedObjectPropertyModel } from 'models';
+import { ConstrainedObjectPropertyModel } from '../../models';
 import { TypeMapping } from '../../helpers';
 import {
   defaultEnumKeyConstraints,
