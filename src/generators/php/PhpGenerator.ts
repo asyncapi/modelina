@@ -150,11 +150,10 @@ export class PhpGenerator extends AbstractGenerator<
     inputModel: InputMetaModel,
     options: PhpRenderCompleteModelOptions
   ): Promise<RenderOutput> {
-
     const completeModelOptionsToUse = mergePartialAndDefault(
-        PhpGenerator.defaultCompleteModelOptions,
-        options
-    )
+      PhpGenerator.defaultCompleteModelOptions,
+      options
+    );
 
     if (isReservedPhpKeyword(completeModelOptionsToUse.packageName)) {
       throw new Error(
@@ -162,7 +161,9 @@ export class PhpGenerator extends AbstractGenerator<
       );
     }
 
-    const declares = completeModelOptionsToUse.declareStrictTypes ? 'declare(strict_types=1);' : '';
+    const declares = completeModelOptionsToUse.declareStrictTypes
+      ? 'declare(strict_types=1);'
+      : '';
     const outputModel = await this.render(model, inputModel);
     const modelDependencies = model
       .getNearestDependencies()
