@@ -3,7 +3,7 @@
 exports[`Should be able to render C++ models and should log expected output to console 1`] = `
 Array [
   "struct root {
-  std::string email;
+  std::optional<std::string> email;
 };",
 ]
 `;
