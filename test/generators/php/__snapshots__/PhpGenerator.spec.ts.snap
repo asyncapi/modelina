@@ -102,7 +102,7 @@ final class CustomClass
 "
 `;
 
-exports[`PhpGenerator Class custom 1`] = `
+exports[`PhpGenerator Class should render complete model 1`] = `
 "
 <?php
 declare(strict_types=1);

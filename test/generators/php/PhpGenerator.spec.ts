@@ -139,7 +139,7 @@ describe('PhpGenerator', () => {
       expect(models[0].dependencies).toEqual(expectedDependencies);
     });
 
-    test('custom', async () => {
+    test('should render complete model', async () => {
       const doc = {
         $id: 'CustomClass',
         type: 'object',
@@ -148,10 +148,7 @@ describe('PhpGenerator', () => {
         }
       };
 
-      const models = await generator.generateCompleteModels(doc, {
-        packageName: 'Asyncapi',
-        declareStrictTypes: true,
-      });
+      const models = await generator.generateCompleteModels(doc, {});
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot();
     });
