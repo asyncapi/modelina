@@ -1,4 +1,25 @@
 import { PhpPreset } from '../PhpPreset';
+import { ConstrainedEnumModel, ConstrainedObjectModel } from "../../../models";
+
+function renderDescription({
+  content,
+  model
+}: {
+  content: string;
+  model: ConstrainedObjectModel | ConstrainedEnumModel;
+}): string {
+
+  if (!model.originalInput['description']) {
+    return content;
+  }
+
+  const description = model.originalInput['description'];
+
+  return `
+/**
+ * ${description}
+ */${content}`;
+}
 
 /**
  * Preset which adds description to rendered model.
@@ -6,20 +27,15 @@ import { PhpPreset } from '../PhpPreset';
  * @implements {PhpPreset}
  */
 
-const DESC = 'my description';
-
 export const PHP_DESCRIPTION_PRESET: PhpPreset = {
   class: {
-    self({ content }) {
-      return `//${DESC}\n${content}`;
+    self({ content, model }) {
+      return renderDescription({content, model});
     },
-    getter({ content }) {
-      return `//${DESC}\n${content}`;
-    }
   },
   enum: {
-    self({ content }) {
-      return `//${DESC}\n${content}`;
+    self({ content, model }) {
+      return renderDescription({content, model});
     }
   }
 };

@@ -31,6 +31,7 @@ export interface PhpOptions extends CommonGeneratorOptions<PhpPreset> {
 }
 export interface PhpRenderCompleteModelOptions {
   packageName: string;
+  declareStrictTypes: boolean;
 }
 export class PhpGenerator extends AbstractGenerator<
   PhpOptions,
@@ -41,6 +42,11 @@ export class PhpGenerator extends AbstractGenerator<
     defaultPreset: PHP_DEFAULT_PRESET,
     typeMapping: PhpDefaultTypeMapping,
     constraints: PhpDefaultConstraints
+  };
+
+  static defaultCompleteModelOptions: PhpRenderCompleteModelOptions = {
+    packageName: 'Asyncapi',
+    declareStrictTypes: true
   };
 
   constructor(options?: DeepPartial<PhpOptions>) {
@@ -135,8 +141,6 @@ export class PhpGenerator extends AbstractGenerator<
   /**
    * Render a complete model result where the model code, library and model dependencies are all bundled appropriately.
    *
-   * For Php you need to specify which package the model is placed under.
-   *
    * @param model
    * @param inputModel
    * @param options used to render the full output
@@ -146,22 +150,34 @@ export class PhpGenerator extends AbstractGenerator<
     inputModel: InputMetaModel,
     options: PhpRenderCompleteModelOptions
   ): Promise<RenderOutput> {
-    if (isReservedPhpKeyword(options.packageName)) {
+
+    const completeModelOptionsToUse = mergePartialAndDefault(
+        PhpGenerator.defaultCompleteModelOptions,
+        options
+    )
+
+    if (isReservedPhpKeyword(completeModelOptionsToUse.packageName)) {
       throw new Error(
         `You cannot use reserved PHP keyword (${options.packageName}) as package name, please use another.`
       );
     }
 
+    const declares = completeModelOptionsToUse.declareStrictTypes ? 'declare(strict_types=1);' : '';
     const outputModel = await this.render(model, inputModel);
     const modelDependencies = model
       .getNearestDependencies()
       .map((dependencyModel) => {
-        return `use ${options.packageName}\\${dependencyModel.name};`;
+        return `use ${completeModelOptionsToUse.packageName}\\${dependencyModel.name};`;
       });
-    const outputContent = `namespace ${options.packageName};
+    const outputContent = `
+<?php
+${declares}
+
+namespace ${completeModelOptionsToUse.packageName};
 ${modelDependencies.join('\n')}
 ${outputModel.dependencies.join('\n')}
 ${outputModel.result}`;
+
     return RenderOutput.toRenderOutput({
       result: outputContent,
       renderedName: outputModel.renderedName,
