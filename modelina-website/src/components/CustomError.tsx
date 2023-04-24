@@ -1,5 +1,4 @@
 import Heading from './typography/Heading';
-import Paragraph from './typography/Paragraph';
 import Exclamation from "./icons/Exclamation";
 
 function CustomError({ statusCode, errorMessage }: {statusCode: number, errorMessage: string}) {
