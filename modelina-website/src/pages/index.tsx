@@ -97,7 +97,7 @@ export default function Index() {
             src = {'/img/card/modelina-card.jpg'}
             fill 
             sizes='100vw'
-            alt = {'CLI card'}
+            alt = {'Modelina card'}
           />
           </div>
         </div>
