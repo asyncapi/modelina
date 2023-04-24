@@ -10,9 +10,9 @@ function CustomError({ statusCode, errorMessage }: {statusCode: number, errorMes
           <Exclamation />
         </div>
         <Heading> Error: {statusCode} </Heading>
-        <Paragraph className="mt-4 mx-auto font-semibold text-red-600">
+        <p className="mt-4 mx-auto text-lg font-semibold text-red-600">
           {errorMessage}
-        </Paragraph>
+        </p>
       </div>
     </div>
   );
