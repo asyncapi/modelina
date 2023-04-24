@@ -19,7 +19,7 @@ describe('PhpRenderer', () => {
 
   describe('renderComments()', () => {
     test('Should be able to render comments', () => {
-      expect(renderer.renderComments('someComment')).toEqual('// someComment');
+      expect(renderer.renderComments('someComment')).toEqual('* someComment');
     });
   });
 });

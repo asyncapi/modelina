@@ -25,6 +25,6 @@ export abstract class PhpRenderer<
 
   renderComments(lines: string | string[]): string {
     lines = FormatHelpers.breakLines(lines);
-    return lines.map((line) => `// ${line}`).join('\n');
+    return lines.map((line) => `* ${line}`).join('\n');
   }
 }

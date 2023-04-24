@@ -1,7 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`PhpGenerator Class should not render reserved keyword 1`] = `
-"final class Address
+"
+final class Address
 {
   private ?string $enum;
   private ?string $reservedEnum;
@@ -11,11 +12,13 @@ exports[`PhpGenerator Class should not render reserved keyword 1`] = `
 
   public function getReservedEnum(): ?string { return $this->reservedEnum; }
   public function setReservedEnum(?string $reservedEnum): void { $this->reservedEnum = $reservedEnum; }
-}"
+}
+"
 `;
 
 exports[`PhpGenerator Class should render \`class\` type 1`] = `
-"final class Address
+"
+final class Address
 {
   private string $streetName;
   private string $city;
@@ -49,11 +52,13 @@ exports[`PhpGenerator Class should render \`class\` type 1`] = `
 
   public function getAdditionalProperties(): mixed { return $this->additionalProperties; }
   public function setAdditionalProperties(mixed $additionalProperties): void { $this->additionalProperties = $additionalProperties; }
-}"
+}
+"
 `;
 
 exports[`PhpGenerator Class should render optional/nullable properties 1`] = `
-"final class Address
+"
+final class Address
 {
   private string $streetName;
   private string $city;
@@ -71,11 +76,13 @@ exports[`PhpGenerator Class should render optional/nullable properties 1`] = `
 
   public function getHouseNumber(): ?float { return $this->houseNumber; }
   public function setHouseNumber(?float $houseNumber): void { $this->houseNumber = $houseNumber; }
-}"
+}
+"
 `;
 
 exports[`PhpGenerator Class should work with custom preset for \`class\` type 1`] = `
-"final class CustomClass
+"
+final class CustomClass
 {
   test1
   private ?string $property;
@@ -91,36 +98,66 @@ exports[`PhpGenerator Class should work with custom preset for \`class\` type 1`
   public function getAdditionalProperties(): mixed { return $this->additionalProperties; }
   test3
   public function setAdditionalProperties(mixed $additionalProperties): void { $this->additionalProperties = $additionalProperties; }
-}"
+}
+"
+`;
+
+exports[`PhpGenerator Class should render complete model 1`] = `
+"
+<?php
+declare(strict_types=1);
+
+namespace Asyncapi;
+
+
+
+final class CustomClass
+{
+  private ?string $property;
+  private mixed $additionalProperties;
+
+  public function getProperty(): ?string { return $this->property; }
+  public function setProperty(?string $property): void { $this->property = $property; }
+
+  public function getAdditionalProperties(): mixed { return $this->additionalProperties; }
+  public function setAdditionalProperties(mixed $additionalProperties): void { $this->additionalProperties = $additionalProperties; }
+}
+"
 `;
 
 exports[`PhpGenerator Enum should render \`enum\` with mixed types (union type) 1`] = `
-"enum Things
+"
+enum Things
 {
   case TEXAS;
   case NUMBER_1;
   case RESERVED_NUMBER_1;
   case FALSE;
   case CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT;
-}"
+}
+"
 `;
 
 exports[`PhpGenerator Enum should render enums with translated special characters 1`] = `
-"enum States
+"
+enum States
 {
   case TEST_PLUS;
   case DOLLAR_TEST;
   case TEST_MINUS;
   case TEST_QUESTION_EXCLAMATION;
   case ASTERISK_TEST;
-}"
+}
+"
 `;
 
 exports[`PhpGenerator Enum should work custom preset for \`enum\` type 1`] = `
-"enum CustomEnum
+"
+enum CustomEnum
 {
   case TEXAS;
   case ALABAMA;
   case CALIFORNIA;
-}"
+}
+"
 `;

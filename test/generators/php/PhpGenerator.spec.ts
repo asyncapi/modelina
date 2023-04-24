@@ -139,6 +139,20 @@ describe('PhpGenerator', () => {
       expect(models[0].dependencies).toEqual(expectedDependencies);
     });
 
+    test('should render complete model', async () => {
+      const doc = {
+        $id: 'CustomClass',
+        type: 'object',
+        properties: {
+          property: { type: 'string' }
+        }
+      };
+
+      const models = await generator.generateCompleteModels(doc, {});
+      expect(models).toHaveLength(1);
+      expect(models[0].result).toMatchSnapshot();
+    });
+
     test('should render optional/nullable properties', async () => {
       const doc = {
         $id: 'Address',
