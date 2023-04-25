@@ -30,7 +30,7 @@ export interface PhpOptions extends CommonGeneratorOptions<PhpPreset> {
   constraints: Constraints;
 }
 export interface PhpRenderCompleteModelOptions {
-  packageName: string;
+  namespace: string;
   declareStrictTypes: boolean;
 }
 export class PhpGenerator extends AbstractGenerator<
@@ -45,7 +45,7 @@ export class PhpGenerator extends AbstractGenerator<
   };
 
   static defaultCompleteModelOptions: PhpRenderCompleteModelOptions = {
-    packageName: 'Asyncapi',
+    namespace: 'Asyncapi',
     declareStrictTypes: true
   };
 
@@ -155,9 +155,9 @@ export class PhpGenerator extends AbstractGenerator<
       options
     );
 
-    if (isReservedPhpKeyword(completeModelOptionsToUse.packageName)) {
+    if (isReservedPhpKeyword(completeModelOptionsToUse.namespace)) {
       throw new Error(
-        `You cannot use reserved PHP keyword (${options.packageName}) as package name, please use another.`
+        `You cannot use reserved PHP keyword (${options.namespace}) as package name, please use another.`
       );
     }
 
@@ -168,13 +168,13 @@ export class PhpGenerator extends AbstractGenerator<
     const modelDependencies = model
       .getNearestDependencies()
       .map((dependencyModel) => {
-        return `use ${completeModelOptionsToUse.packageName}\\${dependencyModel.name};`;
+        return `use ${completeModelOptionsToUse.namespace}\\${dependencyModel.name};`;
       });
     const outputContent = `
 <?php
 ${declares}
 
-namespace ${completeModelOptionsToUse.packageName};
+namespace ${completeModelOptionsToUse.namespace};
 ${modelDependencies.join('\n')}
 ${outputModel.dependencies.join('\n')}
 ${outputModel.result}`;

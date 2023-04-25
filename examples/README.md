@@ -125,6 +125,7 @@ These are all specific examples only relevant to the Kotlin generator:
 ## PHP
 These are all specific examples only relevant to the PHP generator:
 - [php-generate-models](./php-generate-models) - A basic example of how to use Modelina and output a PHP class.
+- [php-generate-complete-models](./php-generate-complete-models) - An example that will output PHP complete class with dependencies and headers.
 
 ## Other examples
 Miscellaneous examples that do not fit into the otherwise grouping.
