@@ -34,7 +34,7 @@ For more specific integration options, please check out the [integration documen
 - [Generate Rust models](#generate-rust-models)
 - [Generate Python models](#generate-python-models)
 - [Generate Kotlin models](#generate-kotlin-models)
-- [Generate C++ models](#generate-c-models)
+- [Generate C++ (cplusplus) models](#generate-c-cplusplus-models)
 
 <!-- tocstop -->
 
@@ -200,6 +200,6 @@ Python is one of the many output languages we support. Check out this [basic exa
 
 Kotlin is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-kotlin-models) as well as [how to generate enums](../examples/generate-kotlin-enums) and the following [Kotlin documentation for more advanced use-cases](./languages/Kotlin.md).
 
-## Generate C++ models
+## Generate C++ (cplusplus) models
 
-Kotlin is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-cplusplus-models) and the following [C++ documentation for more advanced use-cases](./languages/Cplusplus.md).
+C++ is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-cplusplus-models) and the following [C++ documentation for more advanced use-cases](./languages/Cplusplus.md).
