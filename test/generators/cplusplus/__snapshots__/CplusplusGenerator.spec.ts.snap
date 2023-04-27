@@ -8,13 +8,13 @@ exports[`CplusplusGenerator Class should not render reserved keyword 1`] = `
 
 exports[`CplusplusGenerator Class should render \`class\` type 1`] = `
 "struct address {
-  std::optional<std::string> street_name;
-  std::optional<std::string> city;
-  std::optional<std::string> state;
-  std::optional<double> house_number;
+  std::string street_name;
+  std::string city;
+  std::string state;
+  double house_number;
   std::optional<bool> marriage;
   std::optional<std::variant<std::string, double, bool>> members;
-  std::optional<std::vector<std::variant<std::string, double, std::any>>> array_type;
+  std::vector<std::variant<std::string, double, std::any>> array_type;
   std::optional<std::map<std::string, std::variant<std::any, std::string>>> additional_properties;
 };"
 `;

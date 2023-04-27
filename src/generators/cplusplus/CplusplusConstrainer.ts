@@ -14,7 +14,7 @@ function ensureOptional(
   partOfProperty: ConstrainedObjectPropertyModel | undefined,
   dependencyManager: CplusplusDependencyManager
 ): string {
-  if (partOfProperty !== undefined) {
+  if (partOfProperty !== undefined && partOfProperty.required !== true) {
     dependencyManager.addDependency('#include <optional>');
     return `std::optional<${type}>`;
   }
