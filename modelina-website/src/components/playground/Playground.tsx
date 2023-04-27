@@ -36,6 +36,8 @@ import { getRustGeneratorCode } from '@/helpers/GeneratorCode/RustGenerator';
 import { getPythonGeneratorCode } from '@/helpers/GeneratorCode/PythonGenerator';
 import { getDartGeneratorCode } from '@/helpers/GeneratorCode/DartGenerator';
 import { getCplusplusGeneratorCode } from '@/helpers/GeneratorCode/CplusplusGenerator';
+import CustomError from '../CustomError';
+
 interface WithRouterProps {
   router: NextRouter;
 }
@@ -57,6 +59,9 @@ type ModelinaPlaygroundState = {
     hasReceivedCode: boolean;
   };
   showGeneratorCode: boolean;
+  error: boolean;
+  statusCode: number;
+  errorMessage: string;
 };
 
 class Playground extends React.Component<
@@ -84,7 +89,10 @@ class Playground extends React.Component<
         editorLoaded: false,
         hasReceivedCode: false
       },
-      showGeneratorCode: false
+      showGeneratorCode: false,
+      error: false,
+      statusCode: 400,
+      errorMessage: 'Bad Request',
     };
     this.setNewConfig = this.setNewConfig.bind(this);
     this.setNewQuery = this.setNewQuery.bind(this);
@@ -121,44 +129,28 @@ class Playground extends React.Component<
       };
       if (message.input.length > (this.props.maxInputSize || 30000)) {
         console.error('Input too large, use smaller example');
+        this.setState({ ...this.state, error: true, errorMessage: 'Input too large, use smaller example', statusCode: 400 });
       } else {
+        const generators: { [key: string]: Function } = {
+          typescript: getTypeScriptGeneratorCode,
+          javascript: getJavaScriptGeneratorCode,
+          java: getJavaGeneratorCode,
+          go: getGoGeneratorCode,
+          csharp: getCSharpGeneratorCode,
+          rust: getRustGeneratorCode,
+          python: getPythonGeneratorCode,
+          dart: getDartGeneratorCode,
+          cplusplus: getCplusplusGeneratorCode
+        }
+        const generatorCode = generators[this.config.language](message);
         fetch(`${process.env.NEXT_PUBLIC_API_PATH}/generate`, {
           body: JSON.stringify(message),
           method: 'POST'
         }).then(async (res) => {
-          const response: UpdateMessage = await res.json();
-          let generatorCode = '';
-          switch (this.config.language) {
-            case 'typescript':
-              generatorCode = getTypeScriptGeneratorCode(message);
-              break;
-            case 'javascript':
-              generatorCode = getJavaScriptGeneratorCode(message);
-              break;
-            case 'java':
-              generatorCode = getJavaGeneratorCode(message);
-              break;
-            case 'go':
-              generatorCode = getGoGeneratorCode(message);
-              break;
-            case 'csharp':
-              generatorCode = getCSharpGeneratorCode(message);
-              break;
-            case 'rust':
-              generatorCode = getRustGeneratorCode(message);
-              break;
-            case 'python':
-              generatorCode = getPythonGeneratorCode(message);
-              break;
-            case 'dart':
-              generatorCode = getDartGeneratorCode(message);
-              break;
-            case 'cplusplus':
-              generatorCode = getCplusplusGeneratorCode(message);
-              break;
-            default:
-              break;
+          if (!res.ok) {
+            throw new Error(res.statusText);
           }
+          const response: UpdateMessage = await res.json();
           this.setState({
             ...this.state,
             generatorCode,
@@ -166,12 +158,19 @@ class Playground extends React.Component<
             loaded: {
               ...this.state.loaded,
               hasReceivedCode: true
-            }
+            },
+            error: false,
+            statusCode: 200,
+            errorMessage: '',
           });
+        }).catch(error => {
+          console.error(error);
+          this.setState({ ...this.state, error: true, errorMessage: "Input is not an correct AsyncAPI document so it cannot be processed.", statusCode: 500 });
         });
       }
-    } catch (e) {
-      console.error('Could not generate new code');
+    } catch (e: any) {
+      console.error(e);
+      this.setState({ ...this.state, error: true, errorMessage: "Input is not an correct AsyncAPI document so it cannot be processed.", statusCode: 400 });
     }
   }
 
@@ -356,14 +355,18 @@ class Playground extends React.Component<
             className="max-xl:col-span-2 xl:grid-cols-1"
             style={{ height: '750px' }}
           >
-            <PlaygroundGeneratedContext.Provider
-              value={{
-                language: this.config.language,
-                models: this.state.models
-              }}
-            >
-              <GeneratedModelsComponent setNewQuery={this.setNewQuery} />
-            </PlaygroundGeneratedContext.Provider>
+            {this.state.error ? (
+              <CustomError statusCode={this.state.statusCode} errorMessage={this.state.errorMessage} />
+            ) : (
+              <PlaygroundGeneratedContext.Provider
+                value={{
+                  language: this.config.language,
+                  models: this.state.models
+                }}
+              >
+                <GeneratedModelsComponent setNewQuery={this.setNewQuery} />
+              </PlaygroundGeneratedContext.Provider>
+            )}
           </div>
         </div>
       </div>

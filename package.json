@@ -69,7 +69,7 @@
     "jsdoc-to-markdown": "^7.1.0",
     "markdown-toc": "^1.2.0",
     "puppeteer": "^16.0.0",
-    "semantic-release": "^19.0.3",
+    "semantic-release": "^21.0.1",
     "ts-jest": "^27.0.5",
     "ts-node": "^10.3.0",
     "typescript": "^4.4.4"
