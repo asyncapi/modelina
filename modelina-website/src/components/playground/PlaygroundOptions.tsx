@@ -10,6 +10,7 @@ import JavaGeneratorOptions from './options/JavaGeneratorOptions';
 import KotlinGeneratorOptions from './options/KotlinGeneratorOptions';
 import RustGeneratorOptions from './options/RustGeneratorOptions';
 import PythonGeneratorOptions from './options/PythonGeneratorOptions';
+import CplusplusGeneratorOptions from './options/CplusplusGeneratorOptions';
 
 interface WithRouterProps {
   setNewConfig?: (queryKey: string, queryValue: string) => void;
@@ -50,6 +51,10 @@ class PlaygroundOptions extends React.Component<
     } else if (this.context?.language === 'go') {
       generatorOptions = (
         <GoGeneratorOptions setNewConfig={this.props.setNewConfig} />
+      );
+    } else if (this.context?.language === 'cplusplus') {
+      generatorOptions = (
+        <CplusplusGeneratorOptions setNewConfig={this.props.setNewConfig} />
       );
     } else if (this.context?.language === 'java') {
       generatorOptions = (

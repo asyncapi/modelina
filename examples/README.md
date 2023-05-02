@@ -4,7 +4,6 @@ This directory contains a series of self-contained examples to help you get star
 
 We love contributions and new examples that does not already exist, you can follow [this guide to contribute one](../docs/contributing.md#adding-examples)!
 
-
 ---
 
 ## Groups of Examples
@@ -42,7 +41,6 @@ These examples show a specific input and how they can be used:
 
 ## General examples
 These are examples that can be applied in all scenarios.
-
 - [include-custom-function](./include-custom-function) - A basic example where a custom function is included.
 - [overwrite-naming-formatting](./overwrite-naming-formatting) - A basic example how to overwrite default naming format constraint in this case, overwriting returning a constant case format.
 - [overwrite-default-constraint](./overwrite-default-constraint/) -  A basic example how to overwrite the entire constraint logic and not just a single single part of the default behavior, in this case overwriting the model naming constraint.
@@ -63,6 +61,7 @@ These are all the basic generator examples that shows a bare minimal example of 
 - [generate-go-models](./generate-go-models) - A basic example to generate Go data models
 - [generate-javascript-models](./generate-javascript-models) - A basic example to generate JavaScript data models
 - [generate-kotlin-models](./generate-kotlin-models) - A basic example to generate Kotlin data models
+- [generate-cplusplus-models](./generate-cplusplus-models) - A basic example to generate C++ data models
 
 ## Integrations
 These are examples of how you can integrate Modelina into a specific scenario:
@@ -75,12 +74,10 @@ These are all specific examples only relevant to the Python generator:
 
 ## JavaScript
 These are all specific examples only relevant to the JavaScript generator:
-
 - [javascript-use-esm](./javascript-use-esm) - A basic example that generate the models to use ESM module system.
 - [javascript-use-cjs](./javascript-use-cjs) - A basic example that generate the models to use CJS module system.
 - [javascript-generate-marshalling](./javascript-generate-marshalling) - A basic example of how to use the un/marshalling functionality of the javascript class.
 - [javascript-generate-example](./javascript-generate-example) - A basic example of how to use Modelina and output a JavaScript class with an example function.
-
 
 ## Java
 These are all specific examples only relevant to the Java generator:

@@ -14,6 +14,7 @@ import { getDartModels } from '@/pages/api/functions/DartGenerator';
 import { getPythonModels } from '@/pages/api/functions/PythonGenerator';
 import { getRustModels } from '@/pages/api/functions/RustGenerator';
 import { getCSharpModels } from '@/pages/api/functions/CSharpGenerator';
+import { getCplusplusModels } from './functions/CplusplusGenerator';
 
 export async function generateNewCode(message: GenerateMessage): Promise<UpdateMessage | Error> {
   let input: any = defaultAsyncapiDocument;
@@ -35,6 +36,7 @@ export async function generateNewCode(message: GenerateMessage): Promise<UpdateM
     'rust': getRustModels,
     'python': getPythonModels,
     'dart': getDartModels,
+    'cplusplus': getCplusplusModels
   }
 
   if (typeof modelGenerators[language] !== 'function') {
