@@ -558,6 +558,15 @@
         "review",
         "test"
       ]
+    },
+    {
+      "login": "swordmaster2k",
+      "name": "Joshua Michael Daly",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3354016?v=4",
+      "profile": "https://github.com/swordmaster2k",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
