@@ -547,6 +547,17 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "beku-epitome",
+      "name": "beku-epitome",
+      "avatar_url": "https://avatars.githubusercontent.com/u/115151513?v=4",
+      "profile": "https://github.com/beku-epitome",
+      "contributions": [
+        "code",
+        "review",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
