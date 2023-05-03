@@ -33,7 +33,8 @@ Array [
  * UnionX represents a union of types: Common, A
  */
 public interface UnionX {
-  
+  Map<String, Object> getAdditionalProperties();
+  void setAdditionalProperties(Map<String, Object> additionalProperties);
 }",
   "public class Common implements UnionX, UnionY {
   private Object propCommon;
@@ -59,7 +60,8 @@ public interface UnionX {
  * UnionY represents a union of types: Common, B
  */
 public interface UnionY {
-  
+  Map<String, Object> getAdditionalProperties();
+  void setAdditionalProperties(Map<String, Object> additionalProperties);
 }",
   "public class B implements UnionY {
   private String propB;
@@ -247,7 +249,8 @@ Array [
  * Union represents a union of types: A, B
  */
 public interface Union {
-  
+  Map<String, Object> getAdditionalProperties();
+  void setAdditionalProperties(Map<String, Object> additionalProperties);
 }",
   "public class A implements Union {
   private Double propA;
@@ -279,6 +282,9 @@ Array [
  */
 public interface Union {
   String getUnionCase();
+  void setUnionCase(String unionCase);
+  Map<String, Object> getAdditionalProperties();
+  void setAdditionalProperties(Map<String, Object> additionalProperties);
 }",
   "public class A implements Union {
   private String unionCase = \\"A\\";

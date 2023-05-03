@@ -7,7 +7,8 @@ Array [
  * Vehicle represents a union of types: Car, Truck
  */
 public interface Vehicle {
-  
+  Map<String, Object> getAdditionalProperties();
+  void setAdditionalProperties(Map<String, Object> additionalProperties);
 }",
   ],
   Array [

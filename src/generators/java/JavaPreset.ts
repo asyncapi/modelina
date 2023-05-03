@@ -7,7 +7,8 @@ import {
   PresetArgs,
   EnumArgs,
   ConstrainedEnumModel,
-  ConstrainedUnionModel
+  ConstrainedUnionModel,
+  PropertyArgs
 } from '../../models';
 import { JavaOptions } from './JavaGenerator';
 import {
@@ -42,8 +43,11 @@ export interface UnionPreset<R extends AbstractRenderer, O>
   extends CommonPreset<R, O, ConstrainedUnionModel> {
   ctor?: (args: PresetArgs<R, O, ConstrainedUnionModel>) => string;
   enum?: (args: PresetArgs<R, O, ConstrainedUnionModel>) => string;
-  discriminatorGetter?: (
-    args: PresetArgs<R, O, ConstrainedUnionModel>
+  getter?: (
+    args: PresetArgs<R, O, ConstrainedUnionModel> & PropertyArgs
+  ) => string;
+  setter?: (
+    args: PresetArgs<R, O, ConstrainedUnionModel> & PropertyArgs
   ) => string;
 }
 

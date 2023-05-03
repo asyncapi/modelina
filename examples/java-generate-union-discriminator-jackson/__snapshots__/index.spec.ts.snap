@@ -13,6 +13,11 @@ Array [
  */
 public interface Vehicle {
   String getVehicleType();
+  void setVehicleType(String vehicleType);
+  String getName();
+  void setName(String name);
+  Map<String, Object> getAdditionalProperties();
+  void setAdditionalProperties(Map<String, Object> additionalProperties);
 }",
   ],
   Array [
