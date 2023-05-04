@@ -2,8 +2,13 @@ export interface MetaModelOptionsConst {
   originalInput: unknown;
 }
 
+export interface MetaModelOptionsDiscriminator {
+  originalInput: string;
+}
+
 export interface MetaModelOptions {
   const?: MetaModelOptionsConst;
+  discriminator?: MetaModelOptionsDiscriminator;
 }
 
 export class MetaModel {

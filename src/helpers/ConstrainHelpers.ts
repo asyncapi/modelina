@@ -315,6 +315,36 @@ function constrainArrayModel<
   });
   return constrainedModel;
 }
+function addDiscriminatorTypeToUnionModel(
+  constrainedModel: ConstrainedUnionModel
+) {
+  if (!constrainedModel.options.discriminator) {
+    return;
+  }
+
+  const propertyTypes = new Set();
+
+  for (const union of constrainedModel.union) {
+    if (union instanceof ConstrainedReferenceModel) {
+      const ref = union.ref;
+
+      if (ref instanceof ConstrainedObjectModel) {
+        const discriminatorProp =
+          ref.properties[constrainedModel.options.discriminator.originalInput];
+
+        if (discriminatorProp) {
+          propertyTypes.add(discriminatorProp.property.name);
+        }
+      }
+    }
+  }
+
+  if (propertyTypes.size === 1) {
+    constrainedModel.options.discriminator.type = propertyTypes
+      .keys()
+      .next().value;
+  }
+}
 function constrainUnionModel<
   Options,
   DependencyManager extends AbstractDependencyManager
@@ -342,12 +372,16 @@ function constrainUnionModel<
     );
   });
   constrainedModel.union = constrainedUnionModels;
+
   constrainedModel.type = getTypeFromMapping(typeMapping, {
     constrainedModel,
     options: context.options,
     partOfProperty: context.partOfProperty,
     dependencyManager: context.dependencyManager
   });
+
+  addDiscriminatorTypeToUnionModel(constrainedModel);
+
   return constrainedModel;
 }
 function constrainDictionaryModel<
