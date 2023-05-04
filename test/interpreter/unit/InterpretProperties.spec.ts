@@ -2,6 +2,7 @@
 import { CommonModel } from '../../../src/models/CommonModel';
 import { Interpreter } from '../../../src/interpreter/Interpreter';
 import interpretProperties from '../../../src/interpreter/InterpretProperties';
+import { AsyncapiV2Schema } from '../../../src';
 jest.mock('../../../src/interpreter/Interpreter');
 jest.mock('../../../src/models/CommonModel');
 CommonModel.mergeCommonModels = jest.fn();
@@ -69,5 +70,28 @@ describe('Interpretation of properties', () => {
       mockedReturnModel,
       schema
     );
+  });
+
+  test('should set discriminator when discriminator is set in interpreterOptions', () => {
+    const property = AsyncapiV2Schema.toSchema({
+      type: 'string'
+    });
+    const schema = AsyncapiV2Schema.toSchema({
+      type: 'object',
+      properties: {
+        discriminatorProperty: property
+      }
+    });
+    const model = new CommonModel();
+    const interpreter = new Interpreter();
+
+    interpretProperties(schema, model, interpreter, {
+      discriminator: 'discriminatorProperty'
+    });
+
+    expect(model.discriminator).toBe('discriminatorProperty');
+    expect(interpreter.interpret).toHaveBeenCalledWith(property, {
+      discriminator: 'discriminatorProperty'
+    });
   });
 });

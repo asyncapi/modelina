@@ -81,6 +81,7 @@ describe('Interpretation of oneOf with properties', () => {
 
     expect(model.type).toBeUndefined();
     expect(model.union).toHaveLength(2);
+    expect(model.discriminator).toBe('animalType');
 
     const cat = model.union?.find((item) => item.$id === 'Cat');
     expect(cat).not.toBeUndefined();
