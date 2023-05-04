@@ -282,111 +282,8 @@ describe('JavaGenerator', () => {
     );
   });
 
-  describe('CloudEvent', () => {
-    const asyncapiDoc = {
-      asyncapi: '2.5.0',
-      info: {
-        title: 'CloudEvent example',
-        version: '1.0.0'
-      },
-      channels: {
-        pet: {
-          publish: {
-            message: {
-              oneOf: [
-                {
-                  $ref: '#/components/messages/Dog'
-                },
-                {
-                  $ref: '#/components/messages/Cat'
-                }
-              ]
-            }
-          }
-        }
-      },
-      components: {
-        messages: {
-          Dog: {
-            payload: {
-              title: 'Dog',
-              allOf: [
-                {
-                  $ref: '#/components/schemas/CloudEvent'
-                },
-                {
-                  $ref: '#/components/schemas/Dog'
-                }
-              ]
-            }
-          },
-          Cat: {
-            payload: {
-              title: 'Cat',
-              allOf: [
-                {
-                  $ref: '#/components/schemas/CloudEvent'
-                },
-                {
-                  $ref: '#/components/schemas/Cat'
-                }
-              ]
-            }
-          }
-        },
-        schemas: {
-          CloudEvent: {
-            title: 'CloudEvent',
-            type: 'object',
-            discriminator: 'type',
-            properties: {
-              id: {
-                type: 'string'
-              },
-              source: {
-                type: 'string',
-                format: 'uri-reference'
-              },
-              specversion: {
-                type: 'string',
-                const: '1.0'
-              },
-              type: {
-                title: 'CloudEventType',
-                type: 'string'
-              },
-              dataschema: {
-                type: 'string',
-                format: 'uri'
-              },
-              time: {
-                type: 'string',
-                format: 'date-time'
-              }
-            },
-            required: ['id', 'source', 'specversion', 'type']
-          },
-          Dog: {
-            type: 'object',
-            properties: {
-              type: {
-                const: 'Dog'
-              }
-            }
-          },
-          Cat: {
-            type: 'object',
-            properties: {
-              type: {
-                const: 'Cat'
-              }
-            }
-          }
-        }
-      }
-    };
-
-    test('handle allOf with const in CloudEvent type', async () => {
+  describe('oneOf/discriminator with jackson preset', () => {
+    beforeEach(() => {
       generator = new JavaGenerator({
         presets: [
           JAVA_COMMON_PRESET,
@@ -396,6 +293,111 @@ describe('JavaGenerator', () => {
         ],
         collectionType: 'List'
       });
+    });
+
+    test('handle allOf with const in CloudEvent type', async () => {
+      const asyncapiDoc = {
+        asyncapi: '2.5.0',
+        info: {
+          title: 'CloudEvent example',
+          version: '1.0.0'
+        },
+        channels: {
+          pet: {
+            publish: {
+              message: {
+                oneOf: [
+                  {
+                    $ref: '#/components/messages/Dog'
+                  },
+                  {
+                    $ref: '#/components/messages/Cat'
+                  }
+                ]
+              }
+            }
+          }
+        },
+        components: {
+          messages: {
+            Dog: {
+              payload: {
+                title: 'Dog',
+                allOf: [
+                  {
+                    $ref: '#/components/schemas/CloudEvent'
+                  },
+                  {
+                    $ref: '#/components/schemas/Dog'
+                  }
+                ]
+              }
+            },
+            Cat: {
+              payload: {
+                title: 'Cat',
+                allOf: [
+                  {
+                    $ref: '#/components/schemas/CloudEvent'
+                  },
+                  {
+                    $ref: '#/components/schemas/Cat'
+                  }
+                ]
+              }
+            }
+          },
+          schemas: {
+            CloudEvent: {
+              title: 'CloudEvent',
+              type: 'object',
+              discriminator: 'type',
+              properties: {
+                id: {
+                  type: 'string'
+                },
+                source: {
+                  type: 'string',
+                  format: 'uri-reference'
+                },
+                specversion: {
+                  type: 'string',
+                  const: '1.0'
+                },
+                type: {
+                  title: 'CloudEventType',
+                  type: 'string'
+                },
+                dataschema: {
+                  type: 'string',
+                  format: 'uri'
+                },
+                time: {
+                  type: 'string',
+                  format: 'date-time'
+                }
+              },
+              required: ['id', 'source', 'specversion', 'type']
+            },
+            Dog: {
+              type: 'object',
+              properties: {
+                type: {
+                  const: 'Dog'
+                }
+              }
+            },
+            Cat: {
+              type: 'object',
+              properties: {
+                type: {
+                  const: 'Cat'
+                }
+              }
+            }
+          }
+        }
+      };
 
       const models = await generator.generate(asyncapiDoc);
       expect(models.map((model) => model.result)).toMatchSnapshot();
@@ -418,6 +420,116 @@ describe('JavaGenerator', () => {
       expect(cloudEventType).not.toBeUndefined();
       expect(cloudEventType?.result).toContain('DOG');
       expect(cloudEventType?.result).toContain('CAT');
+    });
+
+    test('handle setting title with const', async () => {
+      const asyncapiDoc = {
+        asyncapi: '2.5.0',
+        info: {
+          title: 'CloudEvent example',
+          version: '1.0.0'
+        },
+        channels: {
+          pet: {
+            publish: {
+              message: {
+                oneOf: [
+                  {
+                    $ref: '#/components/messages/Dog'
+                  },
+                  {
+                    $ref: '#/components/messages/Cat'
+                  }
+                ]
+              }
+            }
+          }
+        },
+        components: {
+          messages: {
+            Dog: {
+              payload: {
+                title: 'Dog',
+                allOf: [
+                  {
+                    $ref: '#/components/schemas/CloudEvent'
+                  },
+                  {
+                    $ref: '#/components/schemas/Dog'
+                  }
+                ]
+              }
+            },
+            Cat: {
+              payload: {
+                title: 'Cat',
+                allOf: [
+                  {
+                    $ref: '#/components/schemas/CloudEvent'
+                  },
+                  {
+                    $ref: '#/components/schemas/Cat'
+                  }
+                ]
+              }
+            }
+          },
+          schemas: {
+            CloudEvent: {
+              title: 'CloudEvent',
+              type: 'object',
+              discriminator: 'type',
+              properties: {
+                type: {
+                  type: 'string'
+                }
+              },
+              required: ['type']
+            },
+            Dog: {
+              type: 'object',
+              properties: {
+                type: {
+                  title: 'DogType',
+                  const: 'Dog'
+                }
+              }
+            },
+            Cat: {
+              type: 'object',
+              properties: {
+                type: {
+                  title: 'CatType',
+                  const: 'Cat'
+                }
+              }
+            }
+          }
+        }
+      };
+
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+
+      const dog = models.find((model) => model.modelName === 'Dog');
+      expect(dog).not.toBeUndefined();
+      expect(dog?.result).toContain(
+        'private final DogType type = DogType.DOG;'
+      );
+
+      const cat = models.find((model) => model.modelName === 'Cat');
+      expect(cat).not.toBeUndefined();
+      expect(cat?.result).toContain(
+        'private final CatType type = CatType.CAT;'
+      );
+
+      const dogType = models.find((model) => model.modelName === 'DogType');
+      expect(dogType).not.toBeUndefined();
+      expect(dogType?.result).toContain('DOG');
+
+      const catType = models.find((model) => model.modelName === 'CatType');
+      expect(catType).not.toBeUndefined();
+      expect(catType?.result).toContain('CAT');
     });
 
     test('handle one const with discriminator', async () => {
@@ -480,16 +592,6 @@ describe('JavaGenerator', () => {
         }
       };
 
-      generator = new JavaGenerator({
-        presets: [
-          JAVA_COMMON_PRESET,
-          JAVA_JACKSON_PRESET,
-          JAVA_DESCRIPTION_PRESET,
-          JAVA_CONSTRAINTS_PRESET
-        ],
-        collectionType: 'List'
-      });
-
       const models = await generator.generate(asyncapiDoc);
       expect(models.map((model) => model.result)).toMatchSnapshot();
 
@@ -504,6 +606,79 @@ describe('JavaGenerator', () => {
       );
       expect(cloudEventType).not.toBeUndefined();
       expect(cloudEventType?.result).toContain('DOG');
+    });
+
+    test('handle oneOf with discriminator with Jackson', async () => {
+      const asyncapiDoc = {
+        asyncapi: '2.6.0',
+        info: {
+          title: 'Vehicle',
+          version: '1.0.0'
+        },
+        channels: {},
+        components: {
+          messages: {
+            Vehicle: {
+              payload: {
+                title: 'Vehicle',
+                discriminator: 'vehicleType',
+                oneOf: [
+                  { $ref: '#/components/schemas/Car' },
+                  { $ref: '#/components/schemas/Truck' }
+                ]
+              }
+            }
+          },
+          schemas: {
+            Car: {
+              title: 'Car',
+              type: 'object',
+              properties: {
+                vehicleType: { type: 'string' },
+                name: { type: 'string' }
+              }
+            },
+            Truck: {
+              title: 'Truck',
+              type: 'object',
+              properties: {
+                vehicleType: { type: 'string' },
+                name: { type: 'string' }
+              }
+            }
+          }
+        }
+      };
+
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+
+    test('handle oneOf without discriminator with Jackson deduction', async () => {
+      const jsonSchemaDraft7 = {
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        title: 'Vehicle',
+        type: 'object',
+        oneOf: [
+          {
+            title: 'Car',
+            type: 'object',
+            properties: {
+              passengers: { type: 'string' }
+            }
+          },
+          {
+            title: 'Truck',
+            type: 'object',
+            properties: {
+              cargo: { type: 'string' }
+            }
+          }
+        ]
+      };
+
+      const models = await generator.generate(jsonSchemaDraft7);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
     });
   });
 });

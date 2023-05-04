@@ -1,9 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`JavaGenerator CloudEvent handle allOf with const in CloudEvent type 1`] = `
+exports[`JavaGenerator oneOf/discriminator with jackson preset handle allOf with const in CloudEvent type 1`] = `
 Array [
-  "",
-  "public class Dog {
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property=\\"type\\")
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = Dog.class, name = \\"Dog\\"),
+  @JsonSubTypes.Type(value = Cat.class, name = \\"Cat\\")
+})
+/**
+ * Pet represents a union of types: Dog, Cat
+ */
+public interface Pet {
+  CloudEventType getType();
+}",
+  "public class Dog implements Pet {
   @NotNull
   @JsonProperty(\\"id\\")
   private String id;
@@ -118,7 +128,7 @@ Array [
     return String.valueOf(value);
   }
 }",
-  "public class Cat {
+  "public class Cat implements Pet {
   @NotNull
   @JsonProperty(\\"id\\")
   private String id;
@@ -207,7 +217,7 @@ Array [
 ]
 `;
 
-exports[`JavaGenerator CloudEvent handle one const with discriminator 1`] = `
+exports[`JavaGenerator oneOf/discriminator with jackson preset handle one const with discriminator 1`] = `
 Array [
   "public class Dog {
   @NotNull
@@ -283,6 +293,420 @@ Array [
   @JsonCreator
   public static CloudEventType fromValue(String value) {
     for (CloudEventType e : CloudEventType.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+}",
+]
+`;
+
+exports[`JavaGenerator oneOf/discriminator with jackson preset handle oneOf with discriminator with Jackson 1`] = `
+Array [
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property=\\"vehicleType\\")
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = Car.class, name = \\"Car\\"),
+  @JsonSubTypes.Type(value = Truck.class, name = \\"Truck\\")
+})
+/**
+ * Vehicle represents a union of types: Car, Truck
+ */
+public interface Vehicle {
+  
+}",
+  "public class Car implements Vehicle {
+  @JsonProperty(\\"vehicleType\\")
+  private String vehicleType;
+  @JsonProperty(\\"name\\")
+  private String name;
+  private Map<String, Object> additionalProperties;
+
+  public String getVehicleType() { return this.vehicleType; }
+  public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
+
+  public String getName() { return this.name; }
+  public void setName(String name) { this.name = name; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Car self = (Car) o;
+      return 
+        Objects.equals(this.vehicleType, self.vehicleType) &&
+        Objects.equals(this.name, self.name) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)vehicleType, (Object)name, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Car {\\\\n\\" +   
+      \\"    vehicleType: \\" + toIndentedString(vehicleType) + \\"\\\\n\\" +
+      \\"    name: \\" + toIndentedString(name) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+  "public class Truck implements Vehicle {
+  @JsonProperty(\\"vehicleType\\")
+  private String vehicleType;
+  @JsonProperty(\\"name\\")
+  private String name;
+  private Map<String, Object> additionalProperties;
+
+  public String getVehicleType() { return this.vehicleType; }
+  public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
+
+  public String getName() { return this.name; }
+  public void setName(String name) { this.name = name; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Truck self = (Truck) o;
+      return 
+        Objects.equals(this.vehicleType, self.vehicleType) &&
+        Objects.equals(this.name, self.name) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)vehicleType, (Object)name, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Truck {\\\\n\\" +   
+      \\"    vehicleType: \\" + toIndentedString(vehicleType) + \\"\\\\n\\" +
+      \\"    name: \\" + toIndentedString(name) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+]
+`;
+
+exports[`JavaGenerator oneOf/discriminator with jackson preset handle oneOf without discriminator with Jackson deduction 1`] = `
+Array [
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.DEDUCTION)
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = Car.class, name = \\"Car\\"),
+  @JsonSubTypes.Type(value = Truck.class, name = \\"Truck\\")
+})
+/**
+ * Vehicle represents a union of types: Car, Truck
+ */
+public interface Vehicle {
+  
+}",
+  "public class Car implements Vehicle {
+  @JsonProperty(\\"passengers\\")
+  private String passengers;
+  private Map<String, Object> additionalProperties;
+
+  public String getPassengers() { return this.passengers; }
+  public void setPassengers(String passengers) { this.passengers = passengers; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Car self = (Car) o;
+      return 
+        Objects.equals(this.passengers, self.passengers) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)passengers, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Car {\\\\n\\" +   
+      \\"    passengers: \\" + toIndentedString(passengers) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+  "public class Truck implements Vehicle {
+  @JsonProperty(\\"cargo\\")
+  private String cargo;
+  private Map<String, Object> additionalProperties;
+
+  public String getCargo() { return this.cargo; }
+  public void setCargo(String cargo) { this.cargo = cargo; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Truck self = (Truck) o;
+      return 
+        Objects.equals(this.cargo, self.cargo) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)cargo, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Truck {\\\\n\\" +   
+      \\"    cargo: \\" + toIndentedString(cargo) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+]
+`;
+
+exports[`JavaGenerator oneOf/discriminator with jackson preset handle setting title with const 1`] = `
+Array [
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property=\\"type\\")
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = Dog.class, name = \\"Dog\\"),
+  @JsonSubTypes.Type(value = Cat.class, name = \\"Cat\\")
+})
+/**
+ * Pet represents a union of types: Dog, Cat
+ */
+public interface Pet {
+  
+}",
+  "public class Dog implements Pet {
+  @NotNull
+  @JsonProperty(\\"type\\")
+  private final DogType type = DogType.DOG;
+  private Map<String, Object> additionalProperties;
+
+  public DogType getType() { return this.type; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Dog self = (Dog) o;
+      return 
+        Objects.equals(this.type, self.type) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)type, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Dog {\\\\n\\" +   
+      \\"    type: \\" + toIndentedString(type) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+  "public enum DogType {
+  DOG((String)\\"Dog\\");
+
+  private String value;
+
+  DogType(String value) {
+    this.value = value;
+  }
+
+  @JsonValue
+  public String getValue() {
+    return value;
+  }
+
+  @JsonCreator
+  public static DogType fromValue(String value) {
+    for (DogType e : DogType.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+}",
+  "public class Cat implements Pet {
+  @NotNull
+  @JsonProperty(\\"type\\")
+  private final CatType type = CatType.CAT;
+  private Map<String, Object> additionalProperties;
+
+  public CatType getType() { return this.type; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Cat self = (Cat) o;
+      return 
+        Objects.equals(this.type, self.type) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)type, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Cat {\\\\n\\" +   
+      \\"    type: \\" + toIndentedString(type) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+  "public enum CatType {
+  CAT((String)\\"Cat\\");
+
+  private String value;
+
+  CatType(String value) {
+    this.value = value;
+  }
+
+  @JsonValue
+  public String getValue() {
+    return value;
+  }
+
+  @JsonCreator
+  public static CatType fromValue(String value) {
+    for (CatType e : CatType.values()) {
       if (e.value.equals(value)) {
         return e;
       }
