@@ -37,6 +37,8 @@ export default function interpretOneOfWithAllOf(
         ...interpreterOptions,
         discriminator: allOfSchema.discriminator
       };
+
+      model.discriminator = allOfSchema.discriminator;
     }
   }
 
