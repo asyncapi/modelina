@@ -8,7 +8,10 @@ const generator = new JavaFileGenerator({
 
 generator.generateToFiles(
   input,
-  // eslint-disable-next-line no-undef
-  path.resolve(__dirname, './runtime-java/src/main/java/com/mycompany/app/generic'),
+  path.resolve(
+    // eslint-disable-next-line no-undef
+    __dirname,
+    './runtime-java/src/main/java/com/mycompany/app/generic'
+  ),
   { packageName: 'com.mycompany.app.generic' }
 );
