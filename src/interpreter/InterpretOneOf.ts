@@ -1,4 +1,4 @@
-import { CommonModel } from '../models/CommonModel';
+import { AsyncapiV2Schema, CommonModel } from '../models';
 import {
   Interpreter,
   InterpreterOptions,
@@ -29,11 +29,26 @@ export default function interpretOneOf(
   ) {
     return;
   }
+
+  if (schema instanceof AsyncapiV2Schema && schema.discriminator) {
+    interpreterOptions = {
+      ...interpreterOptions,
+      discriminator: schema.discriminator
+    };
+
+    model.discriminator = schema.discriminator;
+  }
+
   for (const oneOfSchema of schema.oneOf) {
     const oneOfModel = interpreter.interpret(oneOfSchema, interpreterOptions);
     if (oneOfModel === undefined) {
       continue;
     }
+
+    if (oneOfModel.discriminator) {
+      model.discriminator = oneOfModel.discriminator;
+    }
+
     model.addItemUnion(oneOfModel);
   }
 }

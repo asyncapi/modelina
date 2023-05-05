@@ -35,6 +35,8 @@ export default function interpretOneOfWithProperties(
       ...interpreterOptions,
       discriminator: schema.discriminator
     };
+
+    model.discriminator = schema.discriminator;
   }
 
   for (const oneOfSchema of schema.oneOf) {
