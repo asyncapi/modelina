@@ -379,6 +379,48 @@ describe('ConstrainHelpers', () => {
       );
       expect(constrainedModel instanceof ConstrainedUnionModel).toEqual(true);
     });
+    test('should handle discriminator', () => {
+      const objectModel = new ObjectModel(
+        'objectTest',
+        undefined,
+        {},
+        {
+          testDiscriminator: new ObjectPropertyModel(
+            'testDiscriminator',
+            true,
+            new StringModel('String', undefined, {})
+          )
+        }
+      );
+      const refModel = new ReferenceModel(
+        'refTest',
+        undefined,
+        {},
+        objectModel
+      );
+      const metaModel = new UnionModel(
+        'unionTest',
+        undefined,
+        {
+          discriminator: {
+            originalInput: 'testDiscriminator'
+          }
+        },
+        [refModel]
+      );
+      const constrainedModel = constrainMetaModel(
+        mockedTypeMapping,
+        mockedConstraints,
+        {
+          metaModel,
+          options: {},
+          constrainedName: '',
+          dependencyManager: undefined as never
+        }
+      );
+      expect(constrainedModel instanceof ConstrainedUnionModel).toEqual(true);
+      expect(constrainedModel.options.discriminator?.type).toEqual('String');
+    });
   });
   describe('constrain EnumModel', () => {
     test('should constrain correctly', () => {
