@@ -19,6 +19,6 @@ buildNumber.properties
 
 src/main/java/com/mycompany/app/generic
 
-binary
+bin
 .settings
 java_runtime_node
