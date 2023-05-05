@@ -319,7 +319,7 @@ Array [
  * Vehicle represents a union of types: Car, Truck
  */
 public interface Vehicle {
-  
+  String getVehicleType();
 }",
   "public class Car implements Vehicle {
   @JsonProperty(\\"vehicleType\\")
