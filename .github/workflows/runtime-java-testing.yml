@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: 14
       - name: Build library
-        run: npm install && npm run build
+        run: npm install && npm run build:prod
       - uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
