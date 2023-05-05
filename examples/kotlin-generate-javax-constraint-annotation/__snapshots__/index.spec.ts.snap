@@ -10,13 +10,13 @@ Array [
     @get:Max(99)
     val maxNumberProp: Double,
     @get:Min(101)
-    val minNumberPropExclusive: Double,
+    val minNumberPropExclusive: Double? = null,
     @get:Size(min=2, max=3)
-    val arrayProp: List<Any>,
+    val arrayProp: List<Any>? = null,
     @get:Pattern(regexp=\\"^I_\\")
     @get:Size(min=3)
-    val stringProp: String,
-    val additionalProperties: Map<String, Any>,
+    val stringProp: String? = null,
+    val additionalProperties: Map<String, Any>? = null,
 )",
 ]
 `;
