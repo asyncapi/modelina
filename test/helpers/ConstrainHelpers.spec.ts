@@ -344,7 +344,7 @@ describe('ConstrainHelpers', () => {
   describe('constrain UnionModel', () => {
     test('should constrain correctly', () => {
       const stringModel = new StringModel('', undefined, {});
-      const metaModel = new UnionModel('test', undefined, {}, [stringModel]);
+      const metaModel = new UnionModel('test2', undefined, {}, [stringModel]);
       const constrainedModel = constrainMetaModel(
         mockedTypeMapping,
         mockedConstraints,
@@ -365,7 +365,7 @@ describe('ConstrainHelpers', () => {
       expect(mockedTypeMapping.String).toHaveBeenCalledTimes(1);
     });
     test('should handle recursive models', () => {
-      const metaModel = new UnionModel('test', undefined, {}, []);
+      const metaModel = new UnionModel('test2', undefined, {}, []);
       metaModel.union.push(metaModel);
       const constrainedModel = constrainMetaModel(
         mockedTypeMapping,
@@ -381,31 +381,22 @@ describe('ConstrainHelpers', () => {
     });
     test('should handle discriminator', () => {
       const objectModel = new ObjectModel(
-        'objectTest',
+        '',
         undefined,
         {},
         {
           testDiscriminator: new ObjectPropertyModel(
             'testDiscriminator',
             true,
-            new StringModel('String', undefined, {})
+            new StringModel('', undefined, {})
           )
         }
       );
-      const refModel = new ReferenceModel(
-        'refTest',
-        undefined,
-        {},
-        objectModel
-      );
+      const refModel = new ReferenceModel('', undefined, {}, objectModel);
       const metaModel = new UnionModel(
-        'unionTest',
+        '',
         undefined,
-        {
-          discriminator: {
-            originalInput: 'testDiscriminator'
-          }
-        },
+        { discriminator: { originalInput: 'testDiscriminator' } },
         [refModel]
       );
       const constrainedModel = constrainMetaModel(
@@ -419,7 +410,7 @@ describe('ConstrainHelpers', () => {
         }
       );
       expect(constrainedModel instanceof ConstrainedUnionModel).toEqual(true);
-      expect(constrainedModel.options.discriminator?.type).toEqual('String');
+      expect(constrainedModel.options.discriminator?.type).toEqual('test');
     });
   });
   describe('constrain EnumModel', () => {
