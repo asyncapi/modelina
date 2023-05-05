@@ -5,7 +5,11 @@ InputMetaModel {
   "models": Object {
     "pet": UnionModel {
       "name": "pet",
-      "options": Object {},
+      "options": Object {
+        "discriminator": Object {
+          "originalInput": "type",
+        },
+      },
       "originalInput": AsyncapiV2Schema {
         "$id": "pet",
         "oneOf": Array [
@@ -159,7 +163,11 @@ InputMetaModel {
       "union": Array [
         ObjectModel {
           "name": "Dog",
-          "options": Object {},
+          "options": Object {
+            "discriminator": Object {
+              "originalInput": "type",
+            },
+          },
           "originalInput": AsyncapiV2Schema {
             "allOf": Array [
               AsyncapiV2Schema {
@@ -237,7 +245,11 @@ InputMetaModel {
               "property": DictionaryModel {
                 "key": StringModel {
                   "name": "additionalProperties",
-                  "options": Object {},
+                  "options": Object {
+                    "discriminator": Object {
+                      "originalInput": "type",
+                    },
+                  },
                   "originalInput": Array [
                     AsyncapiV2Schema {
                       "allOf": Array [
@@ -314,7 +326,11 @@ InputMetaModel {
                   ],
                 },
                 "name": "additionalProperties",
-                "options": Object {},
+                "options": Object {
+                  "discriminator": Object {
+                    "originalInput": "type",
+                  },
+                },
                 "originalInput": Array [
                   AsyncapiV2Schema {
                     "allOf": Array [
@@ -636,7 +652,11 @@ InputMetaModel {
         },
         ObjectModel {
           "name": "Cat",
-          "options": Object {},
+          "options": Object {
+            "discriminator": Object {
+              "originalInput": "type",
+            },
+          },
           "originalInput": AsyncapiV2Schema {
             "allOf": Array [
               AsyncapiV2Schema {
@@ -714,7 +734,11 @@ InputMetaModel {
               "property": DictionaryModel {
                 "key": StringModel {
                   "name": "additionalProperties",
-                  "options": Object {},
+                  "options": Object {
+                    "discriminator": Object {
+                      "originalInput": "type",
+                    },
+                  },
                   "originalInput": Array [
                     AsyncapiV2Schema {
                       "allOf": Array [
@@ -791,7 +815,11 @@ InputMetaModel {
                   ],
                 },
                 "name": "additionalProperties",
-                "options": Object {},
+                "options": Object {
+                  "discriminator": Object {
+                    "originalInput": "type",
+                  },
+                },
                 "originalInput": Array [
                   AsyncapiV2Schema {
                     "allOf": Array [
@@ -1899,7 +1927,11 @@ InputMetaModel {
   "models": Object {
     "pet": UnionModel {
       "name": "pet",
-      "options": Object {},
+      "options": Object {
+        "discriminator": Object {
+          "originalInput": "type",
+        },
+      },
       "originalInput": AsyncapiV2Schema {
         "$id": "pet",
         "oneOf": Array [
@@ -2053,7 +2085,11 @@ InputMetaModel {
       "union": Array [
         ObjectModel {
           "name": "Dog",
-          "options": Object {},
+          "options": Object {
+            "discriminator": Object {
+              "originalInput": "type",
+            },
+          },
           "originalInput": AsyncapiV2Schema {
             "allOf": Array [
               AsyncapiV2Schema {
@@ -2131,7 +2167,11 @@ InputMetaModel {
               "property": DictionaryModel {
                 "key": StringModel {
                   "name": "additionalProperties",
-                  "options": Object {},
+                  "options": Object {
+                    "discriminator": Object {
+                      "originalInput": "type",
+                    },
+                  },
                   "originalInput": Array [
                     AsyncapiV2Schema {
                       "allOf": Array [
@@ -2208,7 +2248,11 @@ InputMetaModel {
                   ],
                 },
                 "name": "additionalProperties",
-                "options": Object {},
+                "options": Object {
+                  "discriminator": Object {
+                    "originalInput": "type",
+                  },
+                },
                 "originalInput": Array [
                   AsyncapiV2Schema {
                     "allOf": Array [
@@ -2530,7 +2574,11 @@ InputMetaModel {
         },
         ObjectModel {
           "name": "Cat",
-          "options": Object {},
+          "options": Object {
+            "discriminator": Object {
+              "originalInput": "type",
+            },
+          },
           "originalInput": AsyncapiV2Schema {
             "allOf": Array [
               AsyncapiV2Schema {
@@ -2608,7 +2656,11 @@ InputMetaModel {
               "property": DictionaryModel {
                 "key": StringModel {
                   "name": "additionalProperties",
-                  "options": Object {},
+                  "options": Object {
+                    "discriminator": Object {
+                      "originalInput": "type",
+                    },
+                  },
                   "originalInput": Array [
                     AsyncapiV2Schema {
                       "allOf": Array [
@@ -2685,7 +2737,11 @@ InputMetaModel {
                   ],
                 },
                 "name": "additionalProperties",
-                "options": Object {},
+                "options": Object {
+                  "discriminator": Object {
+                    "originalInput": "type",
+                  },
+                },
                 "originalInput": Array [
                   AsyncapiV2Schema {
                     "allOf": Array [

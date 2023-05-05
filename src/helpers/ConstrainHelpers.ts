@@ -333,7 +333,7 @@ function addDiscriminatorTypeToUnionModel(
           ref.properties[constrainedModel.options.discriminator.originalInput];
 
         if (discriminatorProp) {
-          propertyTypes.add(discriminatorProp.property.name);
+          propertyTypes.add(discriminatorProp.property.type);
         }
       }
     }
