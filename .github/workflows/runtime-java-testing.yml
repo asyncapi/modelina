@@ -3,6 +3,11 @@ on:
   push:
   pull_request:
     types: [opened, reopened, synchronize, ready_for_review]
+    paths:
+      - 'src/generators/java/**'
+      - 'test/runtime/runtime-java/**'
+      - 'test/runtime/**java**'
+
 jobs:
   test:
     name: Runtime testing Java Models
