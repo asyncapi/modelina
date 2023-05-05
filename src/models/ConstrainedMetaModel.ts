@@ -40,6 +40,12 @@ export abstract class ConstrainedMetaModel extends MetaModel {
         ...options.const
       };
     }
+
+    if (options.discriminator) {
+      this.options.discriminator = {
+        ...options.discriminator
+      };
+    }
   }
 
   /**

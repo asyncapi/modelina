@@ -36,6 +36,9 @@ describe('ConstrainedMetaModel', () => {
     const metaModel = new StringModel('', undefined, {
       const: {
         originalInput: 'testConst'
+      },
+      discriminator: {
+        originalInput: 'testDiscriminator'
       }
     });
 
@@ -51,6 +54,10 @@ describe('ConstrainedMetaModel', () => {
     expect(constrainedTestModel.options === metaModel.options).toEqual(false);
     expect(
       constrainedTestModel.options.const === metaModel.options.const
+    ).toEqual(false);
+    expect(
+      constrainedTestModel.options.discriminator ===
+        metaModel.options.discriminator
     ).toEqual(false);
   });
 
