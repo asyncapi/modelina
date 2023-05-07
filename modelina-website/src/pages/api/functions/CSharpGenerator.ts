@@ -27,9 +27,9 @@ export async function getCSharpModels(
       namespace: 'asyncapi.models'
     });
     return convertModelsToProps(generatedModels);
-  } catch (e) {
+  } catch (e : any) {
     console.error('Could not generate models');
     console.error(e);
+    return e.message;
   }
-  return [];
 }

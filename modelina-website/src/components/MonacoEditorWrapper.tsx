@@ -34,6 +34,10 @@ export default function MonacoEditorWrapper({
 
     editorDidMount(editor.getValue, editor);
   };
+  //Alias because Modelina uses cplusplus
+  if(language === 'cplusplus') {
+    language = 'cpp';
+  }
 
   useEffect(() => {
     // do conditional chaining

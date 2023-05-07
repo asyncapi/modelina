@@ -17,6 +17,7 @@ export interface ModelinaTypeScriptOptions {
   tsIncludeDescriptions: boolean;
 }
 export interface ModelinaJavaOptions {}
+export interface ModelinaCplusplusOptions {}
 export interface ModelinaGoOptions {}
 export interface ModelinaJavaScriptOptions {}
 export interface ModelinaCSharpOptions {
@@ -38,7 +39,8 @@ export interface ModelinaGeneralOptions {
     | 'kotlin'
     | 'rust'
     | 'python'
-    | 'dart';
+    | 'dart'
+    | 'cplusplus';
 }
 export interface ModelinaGeneralQueryOptions {
   language: string;
@@ -55,6 +57,7 @@ export interface ModelinaCSharpQueryOptions {
 export interface ModelinaKotlinQueryOptions {}
 export interface ModelinaRustQueryOptions {}
 export interface ModelinaPythonQueryOptions {}
+export interface ModelinaCplusplusQueryOptions {}
 export interface ModelinaDartQueryOptions {}
 
 export interface ModelinaTypeScriptQueryOptions {
@@ -86,6 +89,7 @@ export interface ModelinaQueryOptions
     ModelinaKotlinQueryOptions,
     ModelinaRustQueryOptions,
     ModelinaPythonQueryOptions,
+    ModelinaCplusplusQueryOptions,
     ModelinaDartQueryOptions {}
 
 export interface GenerateMessage extends ModelinaOptions {
@@ -127,6 +131,10 @@ export const modelinaLanguageOptions = [
   {
     value: 'dart',
     text: 'Dart'
+  },
+  {
+    value: 'cplusplus',
+    text: 'C++'
   }
 ];
 

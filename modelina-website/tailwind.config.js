@@ -66,6 +66,18 @@ const colorGray = {
   900: '#242929'
 }
 
+const colorRed = {
+  100: '#FFE6E6',
+  200: '#FFB3B3',
+  300: '#FF8080',
+  400: '#FF4D4D',
+  500: '#FF1A1A',
+  600: '#CC0000',
+  700: '#990000',
+  800: '#660000',
+  900: '#330000'
+}
+
 function getColors(color, shades) {
   const result = {}
   shades.forEach(shade => {
@@ -79,7 +91,7 @@ module.exports = {
     "./src/pages/**/*.tsx",
     "./src/components/**/*.tsx",
   ],
-  theme:{
+  theme: {
     fontWeight: {
       'extra-light': 200,
       light: 300,
@@ -91,9 +103,9 @@ module.exports = {
       black: 900
     },
     fontFamily: {
-      'sans': ['Inter', ...defaultTheme.fontFamily.sans], 
+      'sans': ['Inter', ...defaultTheme.fontFamily.sans],
       'heading': ['Work Sans', ...defaultTheme.fontFamily.sans],
-      'body': ['Inter', ...defaultTheme.fontFamily.sans], 
+      'body': ['Inter', ...defaultTheme.fontFamily.sans],
       'mono': ['Fira Code VF', 'Fira Code', ...defaultTheme.fontFamily.mono],
     },
     minWidth: {
@@ -108,12 +120,13 @@ module.exports = {
         'secondary': colorSecondary,
         'pink': colorPink,
         'yellow': colorYellow,
+        'red': colorRed,
         'code-editor': {
-          'dark' : '#252f3f',
+          'dark': '#252f3f',
           'dark-highlight': '#3e4d64',
         },
         'dark': '#1B1130',
-        'cool-gray':'#9C96A8',
+        'cool-gray': '#9C96A8',
         'hub': '#252f3f',
         'slack': '#371038',
         'mac-window': {
@@ -134,8 +147,8 @@ module.exports = {
         '12ch': '12ch',
         '14ch': '14ch',
       },
-      width:{
-         'fit': 'fit-content'
+      width: {
+        'fit': 'fit-content'
       },
       height: {
         '88': '22rem',
@@ -166,7 +179,7 @@ module.exports = {
       },
       margin: {
         '36': '9rem'
-      },  
+      },
       borderRadius: {
         'xl': '1rem',
       },
@@ -212,14 +225,15 @@ module.exports = {
         '.font-ligatures-contextual': {
           'font-variant-ligatures': 'contextual',
         },
-        '.scroll-none':{
+        '.scroll-none': {
           'scrollbar-width': 'none',
-          '-ms-overflow-style': 'none', 
+          '-ms-overflow-style': 'none',
         },
-        '.scroll-none::-webkit-scrollbar':{
-          'display':'none',
-          'scroll-behavior':'smooth',
+        '.scroll-none::-webkit-scrollbar': {
+          'display': 'none',
+          'scroll-behavior': 'smooth',
         }
-      })})
+      })
+    })
   ],
 }
