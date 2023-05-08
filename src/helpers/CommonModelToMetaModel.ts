@@ -30,7 +30,7 @@ function getMetaModelOptions(commonModel: CommonModel): MetaModelOptions {
 
   if (commonModel.discriminator) {
     options.discriminator = {
-      originalInput: commonModel.discriminator
+      discriminator: commonModel.discriminator
     };
   }
 

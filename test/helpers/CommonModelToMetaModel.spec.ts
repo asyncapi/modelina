@@ -388,7 +388,7 @@ describe('CommonModelToMetaModel', () => {
 
     expect(model).not.toBeUndefined();
     expect(model instanceof AnyModel).toEqual(true);
-    expect(model.options.discriminator?.originalInput).toEqual(
+    expect(model.options.discriminator?.discriminator).toEqual(
       cm.discriminator
     );
   });

@@ -396,7 +396,7 @@ describe('ConstrainHelpers', () => {
       const metaModel = new UnionModel(
         '',
         undefined,
-        { discriminator: { originalInput: 'testDiscriminator' } },
+        { discriminator: { discriminator: 'testDiscriminator' } },
         [refModel]
       );
       const constrainedModel = constrainMetaModel(

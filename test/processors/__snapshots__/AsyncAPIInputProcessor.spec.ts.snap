@@ -7,7 +7,7 @@ InputMetaModel {
       "name": "pet",
       "options": Object {
         "discriminator": Object {
-          "originalInput": "type",
+          "discriminator": "type",
         },
       },
       "originalInput": AsyncapiV2Schema {
@@ -165,7 +165,7 @@ InputMetaModel {
           "name": "Dog",
           "options": Object {
             "discriminator": Object {
-              "originalInput": "type",
+              "discriminator": "type",
             },
           },
           "originalInput": AsyncapiV2Schema {
@@ -247,7 +247,7 @@ InputMetaModel {
                   "name": "additionalProperties",
                   "options": Object {
                     "discriminator": Object {
-                      "originalInput": "type",
+                      "discriminator": "type",
                     },
                   },
                   "originalInput": Array [
@@ -328,7 +328,7 @@ InputMetaModel {
                 "name": "additionalProperties",
                 "options": Object {
                   "discriminator": Object {
-                    "originalInput": "type",
+                    "discriminator": "type",
                   },
                 },
                 "originalInput": Array [
@@ -654,7 +654,7 @@ InputMetaModel {
           "name": "Cat",
           "options": Object {
             "discriminator": Object {
-              "originalInput": "type",
+              "discriminator": "type",
             },
           },
           "originalInput": AsyncapiV2Schema {
@@ -736,7 +736,7 @@ InputMetaModel {
                   "name": "additionalProperties",
                   "options": Object {
                     "discriminator": Object {
-                      "originalInput": "type",
+                      "discriminator": "type",
                     },
                   },
                   "originalInput": Array [
@@ -817,7 +817,7 @@ InputMetaModel {
                 "name": "additionalProperties",
                 "options": Object {
                   "discriminator": Object {
-                    "originalInput": "type",
+                    "discriminator": "type",
                   },
                 },
                 "originalInput": Array [
@@ -1929,7 +1929,7 @@ InputMetaModel {
       "name": "pet",
       "options": Object {
         "discriminator": Object {
-          "originalInput": "type",
+          "discriminator": "type",
         },
       },
       "originalInput": AsyncapiV2Schema {
@@ -2087,7 +2087,7 @@ InputMetaModel {
           "name": "Dog",
           "options": Object {
             "discriminator": Object {
-              "originalInput": "type",
+              "discriminator": "type",
             },
           },
           "originalInput": AsyncapiV2Schema {
@@ -2169,7 +2169,7 @@ InputMetaModel {
                   "name": "additionalProperties",
                   "options": Object {
                     "discriminator": Object {
-                      "originalInput": "type",
+                      "discriminator": "type",
                     },
                   },
                   "originalInput": Array [
@@ -2250,7 +2250,7 @@ InputMetaModel {
                 "name": "additionalProperties",
                 "options": Object {
                   "discriminator": Object {
-                    "originalInput": "type",
+                    "discriminator": "type",
                   },
                 },
                 "originalInput": Array [
@@ -2576,7 +2576,7 @@ InputMetaModel {
           "name": "Cat",
           "options": Object {
             "discriminator": Object {
-              "originalInput": "type",
+              "discriminator": "type",
             },
           },
           "originalInput": AsyncapiV2Schema {
@@ -2658,7 +2658,7 @@ InputMetaModel {
                   "name": "additionalProperties",
                   "options": Object {
                     "discriminator": Object {
-                      "originalInput": "type",
+                      "discriminator": "type",
                     },
                   },
                   "originalInput": Array [
@@ -2739,7 +2739,7 @@ InputMetaModel {
                 "name": "additionalProperties",
                 "options": Object {
                   "discriminator": Object {
-                    "originalInput": "type",
+                    "discriminator": "type",
                   },
                 },
                 "originalInput": Array [
