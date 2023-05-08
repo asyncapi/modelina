@@ -454,8 +454,7 @@ function constrainObjectModel<
       '',
       propertyMetaModel.propertyName,
       propertyMetaModel.required,
-      constrainedModel,
-      context.metaModel.options
+      constrainedModel
     );
     const constrainedPropertyName = constrainRules.propertyKey({
       objectPropertyModel: propertyMetaModel,

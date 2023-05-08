@@ -20,8 +20,6 @@ export const JAVA_JACKSON_PRESET: JavaPreset = {
       return content;
     },
     property({ renderer, property, content }) {
-      const blocks: string[] = [];
-
       //Properties that are dictionaries with unwrapped options, cannot get the annotation because it cannot be accurately unwrapped by the jackson library.
       const isDictionary =
         property.property instanceof ConstrainedDictionaryModel;
@@ -30,22 +28,13 @@ export const JAVA_JACKSON_PRESET: JavaPreset = {
         (property.property as ConstrainedDictionaryModel).serializationType ===
           'unwrap';
       if (!hasUnwrappedOptions) {
-        blocks.push(
-          renderer.renderAnnotation(
-            'JsonProperty',
-            `"${property.unconstrainedPropertyName}"`
-          )
+        const annotation = renderer.renderAnnotation(
+          'JsonProperty',
+          `"${property.unconstrainedPropertyName}"`
         );
-
-        if (
-          property.propertyName ===
-          property.options.discriminator?.originalInput
-        ) {
-          blocks.push(renderer.renderAnnotation('JsonTypeId'));
-        }
+        return renderer.renderBlock([annotation, content]);
       }
-
-      return renderer.renderBlock([...blocks, content]);
+      return renderer.renderBlock([content]);
     }
   },
   enum: {
