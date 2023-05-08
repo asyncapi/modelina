@@ -3,7 +3,7 @@ export interface MetaModelOptionsConst {
 }
 
 export interface MetaModelOptionsDiscriminator {
-  originalInput: string;
+  discriminator: string;
 }
 
 export interface MetaModelOptions {

@@ -330,7 +330,7 @@ function addDiscriminatorTypeToUnionModel(
 
       if (ref instanceof ConstrainedObjectModel) {
         const discriminatorProp =
-          ref.properties[constrainedModel.options.discriminator.originalInput];
+          ref.properties[constrainedModel.options.discriminator.discriminator];
 
         if (discriminatorProp) {
           propertyTypes.add(discriminatorProp.property.type);
