@@ -47,7 +47,7 @@ export const JAVA_DEFAULT_UNION_PRESET: UnionPresetType<JavaOptions> = {
     }
 
     return `${model.options.discriminator.type} get${FormatHelpers.toPascalCase(
-      model.options.discriminator.originalInput
+      model.options.discriminator.discriminator
     )}();`;
   }
 };

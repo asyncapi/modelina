@@ -63,7 +63,7 @@ ${content}`;
           renderer.renderAnnotation('JsonTypeInfo', {
             use: 'JsonTypeInfo.Id.NAME',
             include: 'JsonTypeInfo.As.PROPERTY',
-            property: `"${discriminator.originalInput}"`
+            property: `"${discriminator.discriminator}"`
           })
         );
 
@@ -74,7 +74,7 @@ ${content}`;
               union.ref instanceof ConstrainedObjectModel
             ) {
               const discriminatorProp =
-                union.ref.properties[discriminator.originalInput].property;
+                union.ref.properties[discriminator.discriminator].property;
 
               if (discriminatorProp.options.const) {
                 return `  @JsonSubTypes.Type(value = ${union.name}.class, name = "${discriminatorProp.options.const.originalInput}")`;
