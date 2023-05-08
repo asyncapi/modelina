@@ -378,4 +378,18 @@ describe('CommonModelToMetaModel', () => {
     expect(model instanceof AnyModel).toEqual(true);
     expect(model.options.const?.originalInput).toEqual(cm.const);
   });
+
+  test('should handle discriminator', () => {
+    const cm = new CommonModel();
+    cm.$id = 'test';
+    cm.discriminator = 'testDiscriminator';
+
+    const model = convertToMetaModel(cm);
+
+    expect(model).not.toBeUndefined();
+    expect(model instanceof AnyModel).toEqual(true);
+    expect(model.options.discriminator?.discriminator).toEqual(
+      cm.discriminator
+    );
+  });
 });

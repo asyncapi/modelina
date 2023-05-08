@@ -28,6 +28,12 @@ function getMetaModelOptions(commonModel: CommonModel): MetaModelOptions {
     };
   }
 
+  if (commonModel.discriminator) {
+    options.discriminator = {
+      discriminator: commonModel.discriminator
+    };
+  }
+
   return options;
 }
 

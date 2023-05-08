@@ -2,7 +2,8 @@ import { makeUnique } from '../helpers/DependencyHelpers';
 import {
   MetaModel,
   MetaModelOptions,
-  MetaModelOptionsConst
+  MetaModelOptionsConst,
+  MetaModelOptionsDiscriminator
 } from './MetaModel';
 
 export interface ConstrainedMetaModelOptionsConst
@@ -10,8 +11,14 @@ export interface ConstrainedMetaModelOptionsConst
   value?: unknown;
 }
 
+export interface ConstrainedMetaModelOptionsDiscriminator
+  extends MetaModelOptionsDiscriminator {
+  type?: string;
+}
+
 export interface ConstrainedMetaModelOptions extends MetaModelOptions {
   const?: ConstrainedMetaModelOptionsConst;
+  discriminator?: ConstrainedMetaModelOptionsDiscriminator;
 }
 
 export abstract class ConstrainedMetaModel extends MetaModel {
@@ -31,6 +38,12 @@ export abstract class ConstrainedMetaModel extends MetaModel {
     if (options.const) {
       this.options.const = {
         ...options.const
+      };
+    }
+
+    if (options.discriminator) {
+      this.options.discriminator = {
+        ...options.discriminator
       };
     }
   }
