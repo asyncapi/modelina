@@ -108,12 +108,14 @@ export class ConstrainedTupleModel extends ConstrainedMetaModel {
     return dependencyModels;
   }
 }
+
 export class ConstrainedObjectPropertyModel {
   constructor(
     public propertyName: string,
     public unconstrainedPropertyName: string,
     public required: boolean,
-    public property: ConstrainedMetaModel
+    public property: ConstrainedMetaModel,
+    public options: ConstrainedMetaModelOptions
   ) {}
 }
 export class ConstrainedArrayModel extends ConstrainedMetaModel {

@@ -25,6 +25,7 @@ public interface Pet {
   private final String specversion = \\"1.0\\";
   @NotNull
   @JsonProperty(\\"type\\")
+  @JsonTypeId
   private final CloudEventType type = CloudEventType.DOG;
   @JsonProperty(\\"dataschema\\")
   private String dataschema;
@@ -140,6 +141,7 @@ public interface Pet {
   private final String specversion = \\"1.0\\";
   @NotNull
   @JsonProperty(\\"type\\")
+  @JsonTypeId
   private final CloudEventType type = CloudEventType.CAT;
   @JsonProperty(\\"dataschema\\")
   private String dataschema;
@@ -225,6 +227,7 @@ Array [
   private String id;
   @NotNull
   @JsonProperty(\\"type\\")
+  @JsonTypeId
   private final CloudEventType type = CloudEventType.DOG;
   private Map<String, Object> additionalProperties;
 
@@ -323,6 +326,7 @@ public interface Vehicle {
 }",
   "public class Car implements Vehicle {
   @JsonProperty(\\"vehicleType\\")
+  @JsonTypeId
   private String vehicleType;
   @JsonProperty(\\"name\\")
   private String name;
@@ -379,6 +383,7 @@ public interface Vehicle {
 }",
   "public class Truck implements Vehicle {
   @JsonProperty(\\"vehicleType\\")
+  @JsonTypeId
   private String vehicleType;
   @JsonProperty(\\"name\\")
   private String name;
@@ -566,6 +571,7 @@ public interface Pet {
   "public class Dog implements Pet {
   @NotNull
   @JsonProperty(\\"type\\")
+  @JsonTypeId
   private final DogType type = DogType.DOG;
   private Map<String, Object> additionalProperties;
 
@@ -644,6 +650,7 @@ public interface Pet {
   "public class Cat implements Pet {
   @NotNull
   @JsonProperty(\\"type\\")
+  @JsonTypeId
   private final CatType type = CatType.CAT;
   private Map<String, Object> additionalProperties;
 
