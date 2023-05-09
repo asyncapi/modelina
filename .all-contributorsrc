@@ -563,6 +563,18 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "dlkj",
+      "name": "Daniel KJ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/243059?v=4",
+      "profile": "https://github.com/dlkj",
+      "contributions": [
+        "code",
+        "test",
+        "example",
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
