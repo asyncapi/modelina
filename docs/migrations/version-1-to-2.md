@@ -161,3 +161,102 @@ data class Response(
     val message: String? = null
 )
 ```
+
+## Interface for objects in oneOf for Java
+
+In Java, if a oneOf includes objects, there will be created an interface. All the classes that are part of the oneOf, implements the interface. The Jackson preset includes support for unions by setting @JsonTypeInfo and @JsonSubTypes annotations.
+
+```yaml
+components:
+  messages:
+    Vehicle:
+      payload:
+        title: Vehicle
+        type: object
+        discriminator: vehicleType
+        properties:
+          vehicleType:
+            title: VehicleType
+            type: string
+        required:
+          - vehicleType
+        oneOf:
+          - $ref: '#/components/schemas/Cat'
+          - $ref: '#/components/schemas/Truck'
+  schemas:
+    Car:
+      type: object
+      properties:
+        vehicleType:
+          const: Car
+    Truck:
+      type: object
+      properties:
+        vehicleType:
+          const: Truck
+```
+
+will generate
+
+```java
+@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property=\\"vehicleType\\")
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = Car.class, name = \\"Car\\"),
+  @JsonSubTypes.Type(value = Truck.class, name = \\"Truck\\")
+})
+/**
+ * Vehicle represents a union of types: Car, Truck
+ */
+public interface Vehicle {
+  VehicleType getVehicleType();
+}
+
+public class Car implements Vehicle {
+  @NotNull
+  @JsonProperty(\\"vehicleType\\")
+  private final VehicleType vehicleType = VehicleType.CAR;
+  private Map<String, Object> additionalProperties;
+
+  public VehicleType getVehicleType() { return this.vehicleType; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}
+
+public enum VehicleType {
+  CAR((String)\\"Car\\"), TRUCK((String)\\"Truck\\");
+
+  private String value;
+
+  VehicleType(String value) {
+    this.value = value;
+  }
+
+  @JsonValue
+  public String getValue() {
+    return value;
+  }
+
+  @JsonCreator
+  public static VehicleType fromValue(String value) {
+    for (VehicleType e : VehicleType.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+}
+
+public class Truck implements Vehicle {
+  @NotNull
+  @JsonProperty(\\"vehicleType\\")
+  private final VehicleType vehicleType = VehicleType.TRUCK;
+  private Map<String, Object> additionalProperties;
+
+  public VehicleType getVehicleType() { return this.vehicleType; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}
+```
