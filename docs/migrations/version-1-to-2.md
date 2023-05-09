@@ -181,7 +181,7 @@ components:
         required:
           - vehicleType
         oneOf:
-          - $ref: '#/components/schemas/Cat'
+          - $ref: '#/components/schemas/Car'
           - $ref: '#/components/schemas/Truck'
   schemas:
     Car:
