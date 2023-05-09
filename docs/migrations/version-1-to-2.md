@@ -135,3 +135,29 @@ schemas:
 ```
 
 This example will generate a model for `Cat` and `Dog` where `PetType` is a shared enum that contains two values (`Cat` and `Dog`). `PetType` will not have a setter, and will automatically be initialized.
+
+## Optional properties in Kotlin
+
+In Kotlin, if property is not `required` in JSON Schema, it will be nullable in Kotlin with default value `null`.
+
+```yaml
+Response:
+  type: object
+  properties:
+    result:
+      type: string
+    message:
+      type: string
+  required:
+    - result
+  additionalProperties: false
+```
+
+will generate
+
+```kotlin
+data class Response(
+    val result: String,
+    val message: String? = null
+)
+```
