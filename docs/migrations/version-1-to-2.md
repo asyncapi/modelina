@@ -199,10 +199,10 @@ components:
 will generate
 
 ```java
-@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property=\\"vehicleType\\")
+@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property="vehicleType")
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = Car.class, name = \\"Car\\"),
-  @JsonSubTypes.Type(value = Truck.class, name = \\"Truck\\")
+  @JsonSubTypes.Type(value = Car.class, name = "Car"),
+  @JsonSubTypes.Type(value = Truck.class, name = "Truck")
 })
 /**
  * Vehicle represents a union of types: Car, Truck
@@ -224,7 +224,7 @@ public class Car implements Vehicle {
 }
 
 public enum VehicleType {
-  CAR((String)\\"Car\\"), TRUCK((String)\\"Truck\\");
+  CAR((String)"Car"), TRUCK((String)"Truck");
 
   private String value;
 
@@ -244,13 +244,13 @@ public enum VehicleType {
         return e;
       }
     }
-    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+    throw new IllegalArgumentException("Unexpected value '" + value + "'");
   }
 }
 
 public class Truck implements Vehicle {
   @NotNull
-  @JsonProperty(\\"vehicleType\\")
+  @JsonProperty("vehicleType")
   private final VehicleType vehicleType = VehicleType.TRUCK;
   private Map<String, Object> additionalProperties;
 
