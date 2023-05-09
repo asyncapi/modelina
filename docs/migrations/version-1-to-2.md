@@ -246,6 +246,11 @@ public enum VehicleType {
     }
     throw new IllegalArgumentException("Unexpected value '" + value + "'");
   }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
 }
 
 public class Truck implements Vehicle {
