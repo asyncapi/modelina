@@ -164,8 +164,7 @@ data class Response(
 
 ## Interface for objects in oneOf for Java
 
-In Java, if a oneOf includes objects, there will be created an interface. All the classes that are part of the oneOf, implements the interface.
-The Jackson preset includes support for unions by setting @JsonTypeInfo and @JsonSubTypes annotations.
+In Java, if a oneOf includes objects, there will be created an interface. All the classes that are part of the oneOf, implements the interface. The Jackson preset includes support for unions by setting @JsonTypeInfo and @JsonSubTypes annotations.
 
 ```yaml
 components:
