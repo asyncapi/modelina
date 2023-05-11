@@ -161,20 +161,20 @@ export class PhpGenerator extends AbstractGenerator<
       );
     }
 
-    const declares = completeModelOptionsToUse.declareStrictTypes
+    const declares: string = completeModelOptionsToUse.declareStrictTypes
       ? 'declare(strict_types=1);'
       : '';
-    const outputModel = await this.render(model, inputModel);
-    const modelDependencies = model
+    const outputModel: RenderOutput = await this.render(model, inputModel);
+    const modelDependencies: string[] = model
       .getNearestDependencies()
       .map((dependencyModel) => {
         return `use ${completeModelOptionsToUse.namespace}\\${dependencyModel.name};`;
       });
-    const outputContent = `
-<?php
+    const outputContent = `<?php
 ${declares}
 
 namespace ${completeModelOptionsToUse.namespace};
+
 ${modelDependencies.join('\n')}
 ${outputModel.dependencies.join('\n')}
 ${outputModel.result}`;
@@ -191,13 +191,14 @@ ${outputModel.result}`;
     inputModel: InputMetaModel,
     options?: Partial<PhpOptions>
   ): Promise<RenderOutput> {
-    const optionsToUse = PhpGenerator.getPhpOptions({
+    const optionsToUse: PhpOptions = PhpGenerator.getPhpOptions({
       ...this.options,
       ...options
     });
-    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
+    const dependencyManagerToUse: PhpDependencyManager =
+      this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('class');
-    const renderer = new ClassRenderer(
+    const renderer: ClassRenderer = new ClassRenderer(
       this.options,
       this,
       presets,
@@ -205,7 +206,7 @@ ${outputModel.result}`;
       inputModel,
       dependencyManagerToUse
     );
-    const result = await renderer.runSelfPreset();
+    const result: string = await renderer.runSelfPreset();
     return RenderOutput.toRenderOutput({
       result,
       renderedName: model.name,
@@ -222,9 +223,10 @@ ${outputModel.result}`;
       ...this.options,
       ...options
     });
-    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
+    const dependencyManagerToUse: PhpDependencyManager =
+      this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('enum');
-    const renderer = new EnumRenderer(
+    const renderer: EnumRenderer = new EnumRenderer(
       this.options,
       this,
       presets,
@@ -232,7 +234,7 @@ ${outputModel.result}`;
       inputModel,
       dependencyManagerToUse
     );
-    const result = await renderer.runSelfPreset();
+    const result: string = await renderer.runSelfPreset();
     return RenderOutput.toRenderOutput({
       result,
       renderedName: model.name,

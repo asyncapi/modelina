@@ -14,8 +14,7 @@ import { PhpOptions } from '../PhpGenerator';
 export class EnumRenderer extends PhpRenderer<ConstrainedEnumModel> {
   async defaultSelf(): Promise<string> {
     const content = [await this.renderItems()];
-    return `
-enum ${this.model.name}
+    return `enum ${this.model.name}
 {
 ${this.indent(this.renderBlock(content, 2))}
 }

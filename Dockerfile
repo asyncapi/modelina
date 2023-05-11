@@ -13,11 +13,11 @@ RUN curl -fsSL https://golang.org/dl/go1.16.8.linux-amd64.tar.gz | tar -C /usr/l
 ENV PATH="${PATH}:/usr/local/go/bin"
 
 # Install dotnet SDK
-RUN apt install apt-transport-https dirmngr gnupg ca-certificates -yq  \
+RUN apt-get install apt-transport-https dirmngr gnupg ca-certificates -yq  \
     && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF \
     && echo "deb https://download.mono-project.com/repo/debian stable-buster main" | tee /etc/apt/sources.list.d/mono-official-stable.list \
-    && apt update -yq  \
-    && apt install mono-devel -yq
+    && apt-get update -yq  \
+    && apt-get install mono-devel -yq
 
 # Install rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
@@ -26,12 +26,18 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 RUN apt-get install -yq python
 
 # Install Kotlin
-RUN apt install -yq wget unzip  \
+RUN apt-get install -yq wget unzip  \
     && cd /usr/lib \
     && wget -q https://github.com/JetBrains/kotlin/releases/download/v1.8.0/kotlin-compiler-1.8.0.zip \
     && unzip -qq kotlin-compiler-*.zip
 
 ENV PATH $PATH:/usr/lib/kotlinc/bin
+
+# Install PHP
+RUN wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg \
+    && echo "deb https://packages.sury.org/php/ buster main" > /etc/apt/sources.list.d/php.list \
+    && apt-get update -yq \
+    && apt-get install -y php8.2
 
 # Setup library
 RUN apt-get install -yq chromium

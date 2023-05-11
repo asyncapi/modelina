@@ -2,8 +2,7 @@
 
 exports[`Should be able to render PHP and should log expected output to console 1`] = `
 Array [
-  "
-final class Root
+  "final class Root
 {
   private ?string $email;
 

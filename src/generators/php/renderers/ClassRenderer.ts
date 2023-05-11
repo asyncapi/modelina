@@ -21,8 +21,7 @@ export class ClassRenderer extends PhpRenderer<ConstrainedObjectModel> {
       await this.runAdditionalContentPreset()
     ];
 
-    return `
-final class ${this.model.name}
+    return `final class ${this.model.name}
 {
 ${this.indent(this.renderBlock(content, 2))}
 }
