@@ -62,10 +62,14 @@ describe('Interpretation of oneOf', () => {
       });
       const model = new CommonModel();
       const interpreter = new Interpreter();
+      (interpreter.discriminatorProperty as jest.Mock).mockReturnValue(
+        schema.discriminator
+      );
 
       InterpretOneOf(schema, model, interpreter, {});
 
       expect(model.discriminator).toBe(schema.discriminator);
+      expect(interpreter.discriminatorProperty).toHaveBeenCalledWith(schema);
       expect(interpreter.interpret).toHaveBeenCalledWith(item1, {
         discriminator: schema.discriminator
       });

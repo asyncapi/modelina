@@ -1,4 +1,10 @@
-import { Draft4Schema, CommonModel, AsyncapiV2Schema } from '../models';
+import {
+  Draft4Schema,
+  CommonModel,
+  AsyncapiV2Schema,
+  SwaggerV2Schema,
+  OpenapiV3Schema
+} from '../models';
 import {
   Interpreter,
   InterpreterOptions,
@@ -26,7 +32,12 @@ export default function interpretConst(
     return;
   }
 
-  if (schema instanceof AsyncapiV2Schema && interpreterOptions.discriminator) {
+  if (
+    (schema instanceof AsyncapiV2Schema ||
+      schema instanceof SwaggerV2Schema ||
+      schema instanceof OpenapiV3Schema) &&
+    interpreterOptions.discriminator
+  ) {
     model.enum = [schema.const];
   }
 

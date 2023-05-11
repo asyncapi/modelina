@@ -1,5 +1,5 @@
 import { Logger } from '../utils';
-import { CommonModel, AsyncapiV2Schema } from '../models';
+import { CommonModel } from '../models';
 import {
   Interpreter,
   InterpreterOptions,
@@ -33,13 +33,13 @@ export default function interpretAllOf(
   }
 
   for (const allOfSchema of schema.allOf) {
-    if (allOfSchema instanceof AsyncapiV2Schema && allOfSchema.discriminator) {
+    const discriminator = interpreter.discriminatorProperty(allOfSchema);
+    if (discriminator !== undefined) {
       interpreterOptions = {
         ...interpreterOptions,
-        discriminator: allOfSchema.discriminator
+        discriminator
       };
-
-      model.discriminator = allOfSchema.discriminator;
+      model.discriminator = discriminator;
     }
   }
 

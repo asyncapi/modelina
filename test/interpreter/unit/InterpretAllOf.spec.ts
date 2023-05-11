@@ -122,10 +122,14 @@ describe('Interpretation of allOf', () => {
     const model = new CommonModel();
     const interpreter = new Interpreter();
     (interpreter.interpret as jest.Mock).mockReturnValue(new CommonModel());
+    (interpreter.discriminatorProperty as jest.Mock).mockReturnValue(
+      item1.discriminator
+    );
 
     interpretAllOf(schema, model, interpreter, {});
 
     expect(model.discriminator).toBe(item1.discriminator);
+    expect(interpreter.discriminatorProperty).toHaveBeenCalledWith(item1);
     expect(interpreter.interpretAndCombineSchema).toHaveBeenCalledWith(
       item1,
       model,

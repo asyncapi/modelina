@@ -222,14 +222,14 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
     schema: OpenAPIV3.SchemaObject,
     name: string
   ): OpenapiV3Schema {
-    let internalSchema = OpenapiV3Schema.toSchema(schema as any);
-    internalSchema = JsonSchemaInputProcessor.reflectSchemaNames(
-      internalSchema,
+    const namedSchema = JsonSchemaInputProcessor.reflectSchemaNames(
+      schema,
       {},
       name,
       true
     );
-    return internalSchema;
+
+    return OpenapiV3Schema.toSchema(namedSchema);
   }
 
   /**

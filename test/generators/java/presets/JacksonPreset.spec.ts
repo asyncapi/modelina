@@ -45,7 +45,7 @@ describe('JAVA_JACKSON_PRESET', () => {
   });
 
   describe('union', () => {
-    test('handle oneOf with discriminator with Jackson', async () => {
+    test('handle oneOf with AsyncAPI discriminator with Jackson', async () => {
       const asyncapiDoc = {
         asyncapi: '2.6.0',
         info: {
@@ -88,6 +88,112 @@ describe('JAVA_JACKSON_PRESET', () => {
       };
 
       const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+
+    test('handle oneOf with Swagger v2 discriminator with Jackson', async () => {
+      const openapiDoc = {
+        swagger: '2.0',
+        info: {
+          title: 'Vehicle',
+          version: '1.0.0'
+        },
+        paths: {
+          '/vehicles': {
+            get: {
+              responses: {
+                200: {
+                  description: 'successful operation',
+                  schema: {
+                    type: 'object',
+                    title: 'Vehicle',
+                    discriminator: 'vehicleType',
+                    oneOf: [
+                      { $ref: '#/components/schemas/Car' },
+                      { $ref: '#/components/schemas/Truck' }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        components: {
+          schemas: {
+            Car: {
+              title: 'Car',
+              type: 'object',
+              properties: {
+                vehicleType: { type: 'string' }
+              }
+            },
+            Truck: {
+              title: 'Truck',
+              type: 'object',
+              properties: {
+                vehicleType: { type: 'string' }
+              }
+            }
+          }
+        }
+      };
+
+      const models = await generator.generate(openapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+
+    test('handle oneOf with OpenAPI v3 discriminator with Jackson', async () => {
+      const openapiDoc = {
+        openapi: '3.0.3',
+        info: {
+          title: 'Vehicle',
+          version: '1.0.0'
+        },
+        paths: {
+          '/vehicles': {
+            get: {
+              responses: {
+                200: {
+                  description: 'successful operation',
+                  content: {
+                    'application/json': {
+                      schema: {
+                        type: 'object',
+                        title: 'Vehicle',
+                        discriminator: { propertyName: 'vehicleType' },
+                        oneOf: [
+                          { $ref: '#/components/schemas/Car' },
+                          { $ref: '#/components/schemas/Truck' }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        components: {
+          schemas: {
+            Car: {
+              title: 'Car',
+              type: 'object',
+              properties: {
+                vehicleType: { type: 'string' }
+              }
+            },
+            Truck: {
+              title: 'Truck',
+              type: 'object',
+              properties: {
+                vehicleType: { type: 'string' }
+              }
+            }
+          }
+        }
+      };
+
+      const models = await generator.generate(openapiDoc);
       expect(models.map((model) => model.result)).toMatchSnapshot();
     });
 

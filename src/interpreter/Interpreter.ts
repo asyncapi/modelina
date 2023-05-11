@@ -6,7 +6,8 @@ import {
   AsyncapiV2Schema,
   Draft7Schema,
   MergingOptions,
-  defaultMergingOptions
+  defaultMergingOptions,
+  OpenapiV3Schema
 } from '../models';
 import { interpretName } from './Utils';
 import interpretProperties from './InterpretProperties';
@@ -46,7 +47,7 @@ export type InterpreterOptions = {
    */
   ignoreAdditionalItems?: boolean;
   /**
-   * When interpreting a schema with discriminator set, this property will be set bet by the individual interpreters to make sure the discriminator becomes an enum.
+   * When interpreting a schema with discriminator set, this property will be set best by the individual interpreters to make sure the discriminator becomes an enum.
    */
   discriminator?: string;
 };
@@ -55,6 +56,7 @@ export type InterpreterSchemas =
   | Draft4Schema
   | Draft7Schema
   | SwaggerV2Schema
+  | OpenapiV3Schema
   | AsyncapiV2Schema;
 export type InterpreterSchemaType = InterpreterSchemas | boolean;
 
@@ -182,6 +184,28 @@ export class Interpreter {
         new Map(),
         mergingOptions
       );
+    }
+  }
+
+  /**
+   * Get the discriminator property name for the schema, if the schema has one
+   *
+   * @param schema
+   * @returns discriminator name property
+   */
+  discriminatorProperty(schema: InterpreterSchemaType): string | undefined {
+    if (
+      (schema instanceof AsyncapiV2Schema ||
+        schema instanceof SwaggerV2Schema) &&
+      schema.discriminator
+    ) {
+      return schema.discriminator;
+    } else if (
+      schema instanceof OpenapiV3Schema &&
+      schema.discriminator &&
+      schema.discriminator.propertyName
+    ) {
+      return schema.discriminator.propertyName;
     }
   }
 }
