@@ -1,4 +1,4 @@
-import { AbstractRenderer } from '../../generators/AbstractRenderer';
+import { AbstractRenderer } from 'generators/AbstractRenderer';
 import {
   Preset,
   ClassPreset,
