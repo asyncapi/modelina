@@ -1,8 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`PhpGenerator Class should not render reserved keyword 1`] = `
-"
-final class Address
+"final class Address
 {
   private ?string $enum;
   private ?string $reservedEnum;
@@ -17,8 +16,7 @@ final class Address
 `;
 
 exports[`PhpGenerator Class should render \`class\` type 1`] = `
-"
-final class Address
+"final class Address
 {
   private string $streetName;
   private string $city;
@@ -57,8 +55,7 @@ final class Address
 `;
 
 exports[`PhpGenerator Class should render optional/nullable properties 1`] = `
-"
-final class Address
+"final class Address
 {
   private string $streetName;
   private string $city;
@@ -81,8 +78,7 @@ final class Address
 `;
 
 exports[`PhpGenerator Class should work with custom preset for \`class\` type 1`] = `
-"
-final class CustomClass
+"final class CustomClass
 {
   test1
   private ?string $property;
@@ -103,8 +99,7 @@ final class CustomClass
 `;
 
 exports[`PhpGenerator Class should render complete model 1`] = `
-"
-<?php
+"<?php
 declare(strict_types=1);
 
 namespace Asyncapi;
@@ -126,8 +121,7 @@ final class CustomClass
 `;
 
 exports[`PhpGenerator Enum should render \`enum\` with mixed types (union type) 1`] = `
-"
-enum Things
+"enum Things
 {
   case TEXAS;
   case NUMBER_1;
@@ -139,8 +133,7 @@ enum Things
 `;
 
 exports[`PhpGenerator Enum should render enums with translated special characters 1`] = `
-"
-enum States
+"enum States
 {
   case TEST_PLUS;
   case DOLLAR_TEST;
@@ -152,8 +145,7 @@ enum States
 `;
 
 exports[`PhpGenerator Enum should work custom preset for \`enum\` type 1`] = `
-"
-enum CustomEnum
+"enum CustomEnum
 {
   case TEXAS;
   case ALABAMA;

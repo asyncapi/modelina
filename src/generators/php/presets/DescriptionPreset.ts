@@ -17,7 +17,8 @@ function renderDescription({
   return `
 /**
  * ${description}
- */${content}`;
+ */
+${content}`;
 }
 
 /**

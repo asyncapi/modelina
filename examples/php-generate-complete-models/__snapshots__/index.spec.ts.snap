@@ -2,8 +2,7 @@
 
 exports[`Should be able to render PHP and should log expected output to console 1`] = `
 Array [
-  "
-<?php
+  "<?php
 declare(strict_types=1);
 
 namespace Asyncapi;
