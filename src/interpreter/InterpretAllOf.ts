@@ -1,10 +1,5 @@
 import { Logger } from '../utils';
-import {
-  CommonModel,
-  AsyncapiV2Schema,
-  SwaggerV2Schema,
-  OpenapiV3Schema
-} from '../models';
+import { CommonModel } from '../models';
 import {
   Interpreter,
   InterpreterOptions,
@@ -38,28 +33,13 @@ export default function interpretAllOf(
   }
 
   for (const allOfSchema of schema.allOf) {
-    if (
-      (allOfSchema instanceof AsyncapiV2Schema ||
-        allOfSchema instanceof SwaggerV2Schema) &&
-      allOfSchema.discriminator
-    ) {
+    const discriminator = interpreter.discriminatorProperty(allOfSchema);
+    if (discriminator !== undefined) {
       interpreterOptions = {
         ...interpreterOptions,
-        discriminator: allOfSchema.discriminator
+        discriminator
       };
-
-      model.discriminator = allOfSchema.discriminator;
-    } else if (
-      allOfSchema instanceof OpenapiV3Schema &&
-      allOfSchema.discriminator &&
-      allOfSchema.discriminator.propertyName
-    ) {
-      interpreterOptions = {
-        ...interpreterOptions,
-        discriminator: allOfSchema.discriminator.propertyName
-      };
-
-      model.discriminator = allOfSchema.discriminator.propertyName;
+      model.discriminator = discriminator;
     }
   }
 

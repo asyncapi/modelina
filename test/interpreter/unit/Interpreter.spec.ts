@@ -14,7 +14,13 @@ import interpretAdditionalItems from '../../../src/interpreter/InterpretAddition
 import interpretNot from '../../../src/interpreter/InterpretNot';
 import interpretDependencies from '../../../src/interpreter/InterpretDependencies';
 import InterpretThenElse from '../../../src/interpreter/InterpretThenElse';
-import { CommonModel, defaultMergingOptions } from '../../../src/models';
+import {
+  AsyncapiV2Schema,
+  CommonModel,
+  OpenapiV3Schema,
+  SwaggerV2Schema,
+  defaultMergingOptions
+} from '../../../src/models';
 import { Draft7Schema } from '../../../src/models/Draft7Schema';
 
 jest.mock('../../../src/interpreter/Utils');
@@ -269,6 +275,40 @@ describe('Interpreter', () => {
       },
       $id: 'anonymSchema1',
       type: 'string'
+    });
+  });
+  describe('discriminatorProperty', () => {
+    test('should interpret AsyncapiV2Schema discriminator property', () => {
+      const schema = AsyncapiV2Schema.toSchema({
+        discriminator: 'AsyncapiV2SchemaDiscriminatorPropertyName',
+        type: 'object',
+        $id: 'test'
+      });
+      const interpreter = new Interpreter();
+      const discriminator = interpreter.discriminatorProperty(schema);
+      expect(discriminator).toBe('AsyncapiV2SchemaDiscriminatorPropertyName');
+    });
+    test('should interpret SwaggerV2Schema discriminator property', () => {
+      const schema = SwaggerV2Schema.toSchema({
+        discriminator: 'SwaggerV2SchemaDiscriminatorPropertyName',
+        type: 'object',
+        $id: 'test'
+      });
+      const interpreter = new Interpreter();
+      const discriminator = interpreter.discriminatorProperty(schema);
+      expect(discriminator).toBe('SwaggerV2SchemaDiscriminatorPropertyName');
+    });
+    test('should interpret OpenapiV3Schema discriminator property', () => {
+      const schema = OpenapiV3Schema.toSchema({
+        discriminator: {
+          propertyName: 'OpenapiV3SchemaDiscriminatorPropertyName'
+        },
+        type: 'object',
+        $id: 'test'
+      });
+      const interpreter = new Interpreter();
+      const discriminator = interpreter.discriminatorProperty(schema);
+      expect(discriminator).toBe('OpenapiV3SchemaDiscriminatorPropertyName');
     });
   });
 });

@@ -186,4 +186,26 @@ export class Interpreter {
       );
     }
   }
+
+  /**
+   * Get the discriminator property name for the schema, if the schema has one
+   *
+   * @param schema
+   * @returns discriminator name property
+   */
+  discriminatorProperty(schema: InterpreterSchemaType): string | undefined {
+    if (
+      (schema instanceof AsyncapiV2Schema ||
+        schema instanceof SwaggerV2Schema) &&
+      schema.discriminator
+    ) {
+      return schema.discriminator;
+    } else if (
+      schema instanceof OpenapiV3Schema &&
+      schema.discriminator &&
+      schema.discriminator.propertyName
+    ) {
+      return schema.discriminator.propertyName;
+    }
+  }
 }

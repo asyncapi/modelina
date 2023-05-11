@@ -1,9 +1,4 @@
-import {
-  CommonModel,
-  AsyncapiV2Schema,
-  OpenapiV3Schema,
-  SwaggerV2Schema
-} from '../models';
+import { CommonModel } from '../models';
 import {
   Interpreter,
   InterpreterOptions,
@@ -35,28 +30,12 @@ export default function interpretOneOfWithProperties(
     return;
   }
 
-  if (
-    (schema instanceof AsyncapiV2Schema || schema instanceof SwaggerV2Schema) &&
-    schema.discriminator
-  ) {
-    interpreterOptions = {
-      ...interpreterOptions,
-      discriminator: schema.discriminator
-    };
-
-    model.discriminator = schema.discriminator;
-  } else if (
-    schema instanceof OpenapiV3Schema &&
-    schema.discriminator &&
-    schema.discriminator.propertyName
-  ) {
-    interpreterOptions = {
-      ...interpreterOptions,
-      discriminator: schema.discriminator.propertyName
-    };
-
-    model.discriminator = schema.discriminator.propertyName;
-  }
+  const discriminator = interpreter.discriminatorProperty(schema);
+  interpreterOptions = {
+    ...interpreterOptions,
+    discriminator
+  };
+  model.discriminator = discriminator;
 
   for (const oneOfSchema of schema.oneOf) {
     const oneOfModel = interpreter.interpret(oneOfSchema, interpreterOptions);
