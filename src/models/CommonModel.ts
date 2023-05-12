@@ -21,7 +21,6 @@ export class CommonModel {
   type?: string | string[];
   enum?: any[];
   const?: unknown;
-  nullable?: boolean;
   discriminator?: string;
   items?: CommonModel | CommonModel[];
   properties?: { [key: string]: CommonModel };

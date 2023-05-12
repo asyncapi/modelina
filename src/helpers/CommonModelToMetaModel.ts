@@ -28,10 +28,8 @@ function getMetaModelOptions(commonModel: CommonModel): MetaModelOptions {
     };
   }
 
-  if (commonModel.type) {
-    options.const = {
-      originalInput: commonModel.const
-    };
+  if (Array.isArray(commonModel.type) && commonModel.type.includes('null')) {
+    options.isNullable = true;
   }
 
   if (commonModel.discriminator) {
@@ -118,16 +116,10 @@ export function convertToMetaModel(
     return booleanModel;
   }
   Logger.error('Failed to convert to MetaModel, defaulting to AnyModel');
-<<<<<<< HEAD
-  return applyNullable(
-    new AnyModel(modelName, jsonSchemaModel.originalInput),
-    jsonSchemaModel
-=======
   return new AnyModel(
     modelName,
     jsonSchemaModel.originalInput,
     getMetaModelOptions(jsonSchemaModel)
->>>>>>> next
   );
 }
 function isEnumModel(jsonSchemaModel: CommonModel): boolean {
@@ -264,16 +256,10 @@ export function convertToStringModel(
   if (!jsonSchemaModel.type?.includes('string')) {
     return undefined;
   }
-<<<<<<< HEAD
-  return applyNullable(
-    new StringModel(name, jsonSchemaModel.originalInput),
-    jsonSchemaModel
-=======
   return new StringModel(
     name,
     jsonSchemaModel.originalInput,
     getMetaModelOptions(jsonSchemaModel)
->>>>>>> next
   );
 }
 export function convertToAnyModel(
@@ -286,16 +272,10 @@ export function convertToAnyModel(
   ) {
     return undefined;
   }
-<<<<<<< HEAD
-  return applyNullable(
-    new AnyModel(name, jsonSchemaModel.originalInput),
-    jsonSchemaModel
-=======
   return new AnyModel(
     name,
     jsonSchemaModel.originalInput,
     getMetaModelOptions(jsonSchemaModel)
->>>>>>> next
   );
 }
 export function convertToIntegerModel(
@@ -305,16 +285,10 @@ export function convertToIntegerModel(
   if (!jsonSchemaModel.type?.includes('integer')) {
     return undefined;
   }
-<<<<<<< HEAD
-  return applyNullable(
-    new IntegerModel(name, jsonSchemaModel.originalInput),
-    jsonSchemaModel
-=======
   return new IntegerModel(
     name,
     jsonSchemaModel.originalInput,
     getMetaModelOptions(jsonSchemaModel)
->>>>>>> next
   );
 }
 export function convertToFloatModel(
@@ -324,16 +298,10 @@ export function convertToFloatModel(
   if (!jsonSchemaModel.type?.includes('number')) {
     return undefined;
   }
-<<<<<<< HEAD
-  return applyNullable(
-    new FloatModel(name, jsonSchemaModel.originalInput),
-    jsonSchemaModel
-=======
   return new FloatModel(
     name,
     jsonSchemaModel.originalInput,
     getMetaModelOptions(jsonSchemaModel)
->>>>>>> next
   );
 }
 export function convertToEnumModel(
@@ -373,16 +341,10 @@ export function convertToBooleanModel(
   if (!jsonSchemaModel.type?.includes('boolean')) {
     return undefined;
   }
-<<<<<<< HEAD
-  return applyNullable(
-    new BooleanModel(name, jsonSchemaModel.originalInput),
-    jsonSchemaModel
-=======
   return new BooleanModel(
     name,
     jsonSchemaModel.originalInput,
     getMetaModelOptions(jsonSchemaModel)
->>>>>>> next
   );
 }
 
@@ -449,21 +411,11 @@ function convertAdditionalAndPatterns(
   if (modelsAsValue.size === 1) {
     return Array.from(modelsAsValue.values())[0];
   }
-<<<<<<< HEAD
-  return applyNullable(
-    new UnionModel(
-      name,
-      getOriginalInputFromAdditionalAndPatterns(jsonSchemaModel),
-      Array.from(modelsAsValue.values())
-    ),
-    jsonSchemaModel
-=======
   return new UnionModel(
     name,
     getOriginalInputFromAdditionalAndPatterns(jsonSchemaModel),
     getMetaModelOptions(jsonSchemaModel),
     Array.from(modelsAsValue.values())
->>>>>>> next
   );
 }
 
@@ -488,11 +440,6 @@ export function convertToDictionaryModel(
     name,
     alreadySeenModels
   );
-<<<<<<< HEAD
-  return applyNullable(
-    new DictionaryModel(name, originalInput, keyModel, valueModel, 'normal'),
-    jsonSchemaModel
-=======
   return new DictionaryModel(
     name,
     originalInput,
@@ -500,7 +447,6 @@ export function convertToDictionaryModel(
     keyModel,
     valueModel,
     'normal'
->>>>>>> next
   );
 }
 
