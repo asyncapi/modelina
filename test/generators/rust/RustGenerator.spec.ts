@@ -146,7 +146,7 @@ describe('RustGenerator', () => {
       // },
     };
 
-    test('should render `struct` type ', async () => {
+    test('should render `struct` type', async () => {
       const models = await generator.generate(doc);
       expect(models).toHaveLength(3); // Adress, TupleType, and Member models should be generated
       expect(models[0].result).toMatchSnapshot(); // Address model
@@ -219,7 +219,7 @@ describe('RustGenerator', () => {
             discriminator: 'petType',
             properties: {
               petType: {
-                $id: 'PetType',
+                title: 'PetType',
                 type: 'string'
               },
               name: {

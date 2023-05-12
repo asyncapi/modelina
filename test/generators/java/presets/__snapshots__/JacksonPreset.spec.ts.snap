@@ -50,3 +50,89 @@ exports[`JAVA_JACKSON_PRESET should render Jackson annotations for enum 1`] = `
   }
 }"
 `;
+
+exports[`JAVA_JACKSON_PRESET union handle oneOf with discriminator with Jackson 1`] = `
+Array [
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property=\\"vehicleType\\")
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = Car.class, name = \\"Car\\"),
+  @JsonSubTypes.Type(value = Truck.class, name = \\"Truck\\")
+})
+/**
+ * Vehicle represents a union of types: Car, Truck
+ */
+public interface Vehicle {
+  String getVehicleType();
+}",
+  "public class Car implements Vehicle {
+  @JsonProperty(\\"vehicleType\\")
+  private String vehicleType;
+  @JsonProperty(\\"name\\")
+  private String name;
+  private Map<String, Object> additionalProperties;
+
+  public String getVehicleType() { return this.vehicleType; }
+  public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
+
+  public String getName() { return this.name; }
+  public void setName(String name) { this.name = name; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+  "public class Truck implements Vehicle {
+  @JsonProperty(\\"vehicleType\\")
+  private String vehicleType;
+  @JsonProperty(\\"name\\")
+  private String name;
+  private Map<String, Object> additionalProperties;
+
+  public String getVehicleType() { return this.vehicleType; }
+  public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
+
+  public String getName() { return this.name; }
+  public void setName(String name) { this.name = name; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+]
+`;
+
+exports[`JAVA_JACKSON_PRESET union handle oneOf without discriminator with Jackson deduction 1`] = `
+Array [
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.DEDUCTION)
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = Car.class, name = \\"Car\\"),
+  @JsonSubTypes.Type(value = Truck.class, name = \\"Truck\\")
+})
+/**
+ * Vehicle represents a union of types: Car, Truck
+ */
+public interface Vehicle {
+  
+}",
+  "public class Car implements Vehicle {
+  @JsonProperty(\\"passengers\\")
+  private String passengers;
+  private Map<String, Object> additionalProperties;
+
+  public String getPassengers() { return this.passengers; }
+  public void setPassengers(String passengers) { this.passengers = passengers; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+  "public class Truck implements Vehicle {
+  @JsonProperty(\\"cargo\\")
+  private String cargo;
+  private Map<String, Object> additionalProperties;
+
+  public String getCargo() { return this.cargo; }
+  public void setCargo(String cargo) { this.cargo = cargo; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+]
+`;

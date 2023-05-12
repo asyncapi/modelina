@@ -1,0 +1,98 @@
+{
+  "asyncapi": "2.5.0",
+  "defaultContentType": "application/json",
+  "info": {
+    "title": "CloudEvent example",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "pet": {
+      "publish": {
+        "message": {
+          "oneOf": [
+            {
+              "$ref": "#/components/messages/Dog"
+            },
+            {
+              "$ref": "#/components/messages/Cat"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "components": {
+    "messages": {
+      "Dog": {
+        "payload": {
+          "title": "Dog",
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/CloudEvent"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "const": "Dog"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "Cat": {
+        "payload": {
+          "title": "Cat",
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/CloudEvent"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "const": "Cat"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "schemas": {
+      "CloudEvent": {
+        "title": "CloudEvent",
+        "type": "object",
+        "discriminator": "type",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string",
+            "format": "uri-reference"
+          },
+          "specversion": {
+            "type": "string",
+            "default": "1.0",
+            "examples": ["1.0"]
+          },
+          "type": {
+            "title": "CloudEventType",
+            "type": "string"
+          },
+          "dataschema": {
+            "type": "string",
+            "format": "uri"
+          },
+          "time": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": ["id", "source", "specversion", "type"]
+      }
+    }
+  }
+}

@@ -3,7 +3,7 @@ const spy = jest.spyOn(global.console, 'log').mockImplementation(() => {
 });
 import { generate } from './index';
 
-describe('Should be able to render C# models ', () => {
+describe('Should be able to render C# models', () => {
   afterAll(() => {
     jest.restoreAllMocks();
   });

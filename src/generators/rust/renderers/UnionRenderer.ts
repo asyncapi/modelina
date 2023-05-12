@@ -58,10 +58,10 @@ export const RUST_DEFAULT_UNION_PRESET: UnionPresetType<RustOptions> = {
 
   structMacro({ model, renderer }) {
     const blocks = [renderer.renderMacro(model)];
-    if (model.originalInput.discriminator !== undefined) {
+    if (model.options.discriminator) {
       // when discriminator is provided, polymorphic type is internally-tagged:
       // https://serde.rs/enum-representations.html#internally-tagged
-      const discriminatorBlock = `#[serde(tag = "${model.originalInput.discriminator}")]`;
+      const discriminatorBlock = `#[serde(tag = "${model.options.discriminator.discriminator}")]`;
       blocks.push(discriminatorBlock);
     } else {
       // otherwise if a discriminator field is not provided, use untagged representation

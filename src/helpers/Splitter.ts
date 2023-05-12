@@ -56,7 +56,12 @@ const trySplitModel = (
     if (!models.includes(model)) {
       models.push(model);
     }
-    return new ReferenceModel(model.name, model.originalInput, model);
+    return new ReferenceModel(
+      model.name,
+      model.originalInput,
+      model.options,
+      model
+    );
   }
   return model;
 };

@@ -1,3 +1,4 @@
+import { Constraints } from '../../helpers';
 import { ConstrainedEnumValueModel } from '../../models';
 import {
   defaultEnumKeyConstraints,
@@ -5,6 +6,7 @@ import {
 } from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
+import { defaultConstantConstraints } from './constrainer/ConstantConstrainer';
 import { KotlinTypeMapping } from './KotlinGenerator';
 
 function enumFormatToNumberType(
@@ -154,9 +156,10 @@ export const KotlinDefaultTypeMapping: KotlinTypeMapping = {
   }
 };
 
-export const KotlinDefaultConstraints = {
+export const KotlinDefaultConstraints: Constraints = {
   enumKey: defaultEnumKeyConstraints(),
   enumValue: defaultEnumValueConstraints(),
   modelName: defaultModelNameConstraints(),
-  propertyKey: defaultPropertyKeyConstraints()
+  propertyKey: defaultPropertyKeyConstraints(),
+  constant: defaultConstantConstraints()
 };

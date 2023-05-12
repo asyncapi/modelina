@@ -1,4 +1,4 @@
-import { CommonModel } from '../models/CommonModel';
+import { CommonModel, AsyncapiV2Schema } from '../models';
 import {
   Interpreter,
   InterpreterOptions,
@@ -29,6 +29,17 @@ export default function interpretOneOfWithAllOf(
     interpreterOptions.allowInheritance
   ) {
     return;
+  }
+
+  for (const allOfSchema of schema.allOf) {
+    if (allOfSchema instanceof AsyncapiV2Schema && allOfSchema.discriminator) {
+      interpreterOptions = {
+        ...interpreterOptions,
+        discriminator: allOfSchema.discriminator
+      };
+
+      model.discriminator = allOfSchema.discriminator;
+    }
   }
 
   for (const oneOfSchema of schema.oneOf) {

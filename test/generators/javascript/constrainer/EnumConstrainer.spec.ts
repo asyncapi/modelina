@@ -5,10 +5,11 @@ import {
   ConstrainedEnumValueModel
 } from '../../../../src';
 describe('EnumConstrainer', () => {
-  const enumModel = new EnumModel('test', undefined, []);
+  const enumModel = new EnumModel('test', undefined, {}, []);
   const constrainedEnumModel = new ConstrainedEnumModel(
     'test',
     undefined,
+    {},
     '',
     []
   );
@@ -33,11 +34,13 @@ describe('EnumConstrainer', () => {
     test('should not contain duplicate keys', () => {
       const existingConstrainedEnumValueModel = new ConstrainedEnumValueModel(
         'EMPTY',
+        'return',
         'return'
       );
       const constrainedEnumModel = new ConstrainedEnumModel(
         'test',
         undefined,
+        {},
         '',
         [existingConstrainedEnumValueModel]
       );

@@ -1,9 +1,51 @@
 import { makeUnique } from '../helpers/DependencyHelpers';
-import { MetaModel } from './MetaModel';
+import {
+  MetaModel,
+  MetaModelOptions,
+  MetaModelOptionsConst,
+  MetaModelOptionsDiscriminator
+} from './MetaModel';
+
+export interface ConstrainedMetaModelOptionsConst
+  extends MetaModelOptionsConst {
+  value?: unknown;
+}
+
+export interface ConstrainedMetaModelOptionsDiscriminator
+  extends MetaModelOptionsDiscriminator {
+  type?: string;
+}
+
+export interface ConstrainedMetaModelOptions extends MetaModelOptions {
+  const?: ConstrainedMetaModelOptionsConst;
+  discriminator?: ConstrainedMetaModelOptionsDiscriminator;
+}
 
 export abstract class ConstrainedMetaModel extends MetaModel {
-  constructor(name: string, originalInput: any, public type: string) {
-    super(name, originalInput);
+  public options: ConstrainedMetaModelOptions;
+
+  constructor(
+    name: string,
+    originalInput: any,
+    options: ConstrainedMetaModelOptions,
+    public type: string
+  ) {
+    super(name, originalInput, options);
+    this.options = {
+      ...options
+    };
+
+    if (options.const) {
+      this.options.const = {
+        ...options.const
+      };
+    }
+
+    if (options.discriminator) {
+      this.options.discriminator = {
+        ...options.discriminator
+      };
+    }
   }
 
   /**
@@ -20,10 +62,11 @@ export class ConstrainedReferenceModel extends ConstrainedMetaModel {
   constructor(
     name: string,
     originalInput: any,
+    options: ConstrainedMetaModelOptions,
     type: string,
     public ref: ConstrainedMetaModel
   ) {
-    super(name, originalInput, type);
+    super(name, originalInput, options, type);
   }
 }
 export class ConstrainedAnyModel extends ConstrainedMetaModel {}
@@ -38,10 +81,11 @@ export class ConstrainedTupleModel extends ConstrainedMetaModel {
   constructor(
     name: string,
     originalInput: any,
+    options: ConstrainedMetaModelOptions,
     type: string,
     public tuple: ConstrainedTupleValueModel[]
   ) {
-    super(name, originalInput, type);
+    super(name, originalInput, options, type);
   }
 
   getNearestDependencies(): ConstrainedMetaModel[] {
@@ -76,30 +120,29 @@ export class ConstrainedArrayModel extends ConstrainedMetaModel {
   constructor(
     name: string,
     originalInput: any,
+    options: ConstrainedMetaModelOptions,
     type: string,
     public valueModel: ConstrainedMetaModel
   ) {
-    super(name, originalInput, type);
+    super(name, originalInput, options, type);
   }
 
   getNearestDependencies(): ConstrainedMetaModel[] {
-    if (this.valueModel.name !== this.name) {
-      if (this.valueModel instanceof ConstrainedReferenceModel) {
-        return [this.valueModel];
-      }
-      return this.valueModel.getNearestDependencies();
+    if (this.valueModel instanceof ConstrainedReferenceModel) {
+      return [this.valueModel];
     }
-    return [];
+    return this.valueModel.getNearestDependencies();
   }
 }
 export class ConstrainedUnionModel extends ConstrainedMetaModel {
   constructor(
     name: string,
     originalInput: any,
+    options: ConstrainedMetaModelOptions,
     type: string,
     public union: ConstrainedMetaModel[]
   ) {
-    super(name, originalInput, type);
+    super(name, originalInput, options, type);
   }
 
   getNearestDependencies(): ConstrainedMetaModel[] {
@@ -123,28 +166,34 @@ export class ConstrainedUnionModel extends ConstrainedMetaModel {
   }
 }
 export class ConstrainedEnumValueModel {
-  constructor(public key: string, public value: any) {}
+  constructor(
+    public key: string,
+    public value: any,
+    public originalInput: unknown
+  ) {}
 }
 export class ConstrainedEnumModel extends ConstrainedMetaModel {
   constructor(
     name: string,
     originalInput: any,
+    options: ConstrainedMetaModelOptions,
     type: string,
     public values: ConstrainedEnumValueModel[]
   ) {
-    super(name, originalInput, type);
+    super(name, originalInput, options, type);
   }
 }
 export class ConstrainedDictionaryModel extends ConstrainedMetaModel {
   constructor(
     name: string,
     originalInput: any,
+    options: ConstrainedMetaModelOptions,
     type: string,
     public key: ConstrainedMetaModel,
     public value: ConstrainedMetaModel,
     public serializationType: 'unwrap' | 'normal' = 'normal'
   ) {
-    super(name, originalInput, type);
+    super(name, originalInput, options, type);
   }
 
   getNearestDependencies(): ConstrainedMetaModel[] {
@@ -173,10 +222,11 @@ export class ConstrainedObjectModel extends ConstrainedMetaModel {
   constructor(
     name: string,
     originalInput: any,
+    options: ConstrainedMetaModelOptions,
     type: string,
     public properties: { [key: string]: ConstrainedObjectPropertyModel }
   ) {
-    super(name, originalInput, type);
+    super(name, originalInput, options, type);
   }
 
   getNearestDependencies(): ConstrainedMetaModel[] {

@@ -39,6 +39,7 @@ describe.each(filesToTest)(
       models = await processor.process(input);
     });
     describe(file, () => {
+      // eslint-disable-next-line jest/no-disabled-tests
       describe.skip('should be able to generate Rust', () => {
         test('struct with serde_json', async () => {
           const generator = new RustFileGenerator();

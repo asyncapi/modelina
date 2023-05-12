@@ -13,7 +13,8 @@ import interpretAdditionalProperties from '../../../src/interpreter/InterpretAdd
 import interpretAdditionalItems from '../../../src/interpreter/InterpretAdditionalItems';
 import interpretNot from '../../../src/interpreter/InterpretNot';
 import interpretDependencies from '../../../src/interpreter/InterpretDependencies';
-import { CommonModel } from '../../../src/models';
+import InterpretThenElse from '../../../src/interpreter/InterpretThenElse';
+import { CommonModel, defaultMergingOptions } from '../../../src/models';
 import { Draft7Schema } from '../../../src/models/Draft7Schema';
 
 jest.mock('../../../src/interpreter/Utils');
@@ -26,6 +27,7 @@ jest.mock('../../../src/interpreter/InterpretAdditionalProperties');
 jest.mock('../../../src/interpreter/InterpretNot');
 jest.mock('../../../src/interpreter/InterpretDependencies');
 jest.mock('../../../src/interpreter/InterpretAdditionalItems');
+jest.mock('../../../src/interpreter/InterpretThenElse');
 CommonModel.mergeCommonModels = jest.fn();
 /**
  * Some of these test are purely theoretical and have little if any merit
@@ -136,7 +138,9 @@ describe('Interpreter', () => {
         1,
         model,
         expectedSimplifiedModel,
-        schema
+        schema,
+        new Map(),
+        defaultMergingOptions
       );
     });
   });
@@ -160,6 +164,7 @@ describe('Interpreter', () => {
     expect(interpretConst).toHaveBeenNthCalledWith(
       1,
       schema,
+      expect.anything(),
       expect.anything()
     );
   });
@@ -222,6 +227,18 @@ describe('Interpreter', () => {
     const interpreter = new Interpreter();
     interpreter.interpret(schema);
     expect(interpretDependencies).toHaveBeenNthCalledWith(
+      1,
+      schema,
+      expect.anything(),
+      expect.anything(),
+      Interpreter.defaultInterpreterOptions
+    );
+  });
+  test('should always try to interpret if/then/else', () => {
+    const schema = {};
+    const interpreter = new Interpreter();
+    interpreter.interpret(schema);
+    expect(InterpretThenElse).toHaveBeenNthCalledWith(
       1,
       schema,
       expect.anything(),

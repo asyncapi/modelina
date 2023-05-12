@@ -29,7 +29,7 @@ describe('CSharpConstrainer', () => {
   };
   describe('ObjectModel', () => {
     test('should render the constrained name as type', () => {
-      const model = new ConstrainedObjectModel('test', undefined, '', {});
+      const model = new ConstrainedObjectModel('test', undefined, {}, '', {});
       const type = CSharpDefaultTypeMapping.Object({
         constrainedModel: model,
         ...defaultOptions
@@ -39,10 +39,11 @@ describe('CSharpConstrainer', () => {
   });
   describe('Reference', () => {
     test('should render the constrained name as type', () => {
-      const refModel = new ConstrainedAnyModel('test', undefined, '');
+      const refModel = new ConstrainedAnyModel('test', undefined, {}, '');
       const model = new ConstrainedReferenceModel(
         'test',
         undefined,
+        {},
         '',
         refModel
       );
@@ -55,7 +56,7 @@ describe('CSharpConstrainer', () => {
   });
   describe('Any', () => {
     test('should render type', () => {
-      const model = new ConstrainedAnyModel('test', undefined, '');
+      const model = new ConstrainedAnyModel('test', undefined, {}, '');
       const type = CSharpDefaultTypeMapping.Any({
         constrainedModel: model,
         ...defaultOptions
@@ -65,7 +66,7 @@ describe('CSharpConstrainer', () => {
   });
   describe('Float', () => {
     test('should render type', () => {
-      const model = new ConstrainedFloatModel('test', undefined, '');
+      const model = new ConstrainedFloatModel('test', undefined, {}, '');
       const type = CSharpDefaultTypeMapping.Float({
         constrainedModel: model,
         ...defaultOptions
@@ -75,7 +76,7 @@ describe('CSharpConstrainer', () => {
   });
   describe('Integer', () => {
     test('should render type', () => {
-      const model = new ConstrainedIntegerModel('test', undefined, '');
+      const model = new ConstrainedIntegerModel('test', undefined, {}, '');
       const type = CSharpDefaultTypeMapping.Integer({
         constrainedModel: model,
         ...defaultOptions
@@ -85,7 +86,7 @@ describe('CSharpConstrainer', () => {
   });
   describe('String', () => {
     test('should render type', () => {
-      const model = new ConstrainedStringModel('test', undefined, '');
+      const model = new ConstrainedStringModel('test', undefined, {}, '');
       const type = CSharpDefaultTypeMapping.String({
         constrainedModel: model,
         ...defaultOptions
@@ -95,7 +96,7 @@ describe('CSharpConstrainer', () => {
   });
   describe('Boolean', () => {
     test('should render type', () => {
-      const model = new ConstrainedBooleanModel('test', undefined, '');
+      const model = new ConstrainedBooleanModel('test', undefined, {}, '');
       const type = CSharpDefaultTypeMapping.Boolean({
         constrainedModel: model,
         ...defaultOptions
@@ -109,10 +110,11 @@ describe('CSharpConstrainer', () => {
       const tupleModel = new ConstrainedBooleanModel(
         'test',
         undefined,
+        {},
         'string'
       );
       const tupleValueModel = new ConstrainedTupleValueModel(0, tupleModel);
-      const model = new ConstrainedTupleModel('test', undefined, '', [
+      const model = new ConstrainedTupleModel('test', undefined, {}, '', [
         tupleValueModel
       ]);
       const type = CSharpDefaultTypeMapping.Tuple({
@@ -125,11 +127,12 @@ describe('CSharpConstrainer', () => {
       const tupleModel = new ConstrainedBooleanModel(
         'test',
         undefined,
+        {},
         'string'
       );
       const tupleValueModel0 = new ConstrainedTupleValueModel(0, tupleModel);
       const tupleValueModel1 = new ConstrainedTupleValueModel(1, tupleModel);
-      const model = new ConstrainedTupleModel('test', undefined, '', [
+      const model = new ConstrainedTupleModel('test', undefined, {}, '', [
         tupleValueModel0,
         tupleValueModel1
       ]);
@@ -146,11 +149,13 @@ describe('CSharpConstrainer', () => {
       const arrayModel = new ConstrainedStringModel(
         'test',
         undefined,
+        {},
         'String'
       );
       const model = new ConstrainedArrayModel(
         'test',
         undefined,
+        {},
         '',
         arrayModel
       );
@@ -169,11 +174,13 @@ describe('CSharpConstrainer', () => {
       const arrayModel = new ConstrainedStringModel(
         'test',
         undefined,
+        {},
         'String'
       );
       const model = new ConstrainedArrayModel(
         'test',
         undefined,
+        {},
         '',
         arrayModel
       );
@@ -192,8 +199,12 @@ describe('CSharpConstrainer', () => {
 
   describe('Enum', () => {
     test('should render string enum values as String type', () => {
-      const enumValue = new ConstrainedEnumValueModel('test', 'string type');
-      const model = new ConstrainedEnumModel('test', undefined, '', [
+      const enumValue = new ConstrainedEnumValueModel(
+        'test',
+        'string type',
+        {}
+      );
+      const model = new ConstrainedEnumModel('test', undefined, {}, '', [
         enumValue
       ]);
       const type = CSharpDefaultTypeMapping.Enum({
@@ -203,8 +214,8 @@ describe('CSharpConstrainer', () => {
       expect(type).toEqual('string');
     });
     test('should render boolean enum values as boolean type', () => {
-      const enumValue = new ConstrainedEnumValueModel('test', true);
-      const model = new ConstrainedEnumModel('test', undefined, '', [
+      const enumValue = new ConstrainedEnumValueModel('test', true, {});
+      const model = new ConstrainedEnumModel('test', undefined, {}, '', [
         enumValue
       ]);
       const type = CSharpDefaultTypeMapping.Enum({
@@ -213,9 +224,9 @@ describe('CSharpConstrainer', () => {
       });
       expect(type).toEqual('bool');
     });
-    test('should render generic number enum value with format  ', () => {
-      const enumValue = new ConstrainedEnumValueModel('test', 123);
-      const model = new ConstrainedEnumModel('test', undefined, '', [
+    test('should render generic number enum value with format', () => {
+      const enumValue = new ConstrainedEnumValueModel('test', 123, {});
+      const model = new ConstrainedEnumModel('test', undefined, {}, '', [
         enumValue
       ]);
       const type = CSharpDefaultTypeMapping.Enum({
@@ -225,8 +236,8 @@ describe('CSharpConstrainer', () => {
       expect(type).toEqual('int');
     });
     test('should render object enum value as generic Object', () => {
-      const enumValue = new ConstrainedEnumValueModel('test', {});
-      const model = new ConstrainedEnumModel('test', undefined, '', [
+      const enumValue = new ConstrainedEnumValueModel('test', {}, {});
+      const model = new ConstrainedEnumModel('test', undefined, {}, '', [
         enumValue
       ]);
       const type = CSharpDefaultTypeMapping.Enum({
@@ -236,9 +247,13 @@ describe('CSharpConstrainer', () => {
       expect(type).toEqual('dynamic');
     });
     test('should render multiple value types as generic Object', () => {
-      const enumValue2 = new ConstrainedEnumValueModel('test', true);
-      const enumValue1 = new ConstrainedEnumValueModel('test', 'string type');
-      const model = new ConstrainedEnumModel('test', undefined, '', [
+      const enumValue2 = new ConstrainedEnumValueModel('test', true, {});
+      const enumValue1 = new ConstrainedEnumValueModel(
+        'test',
+        'string type',
+        {}
+      );
+      const model = new ConstrainedEnumModel('test', undefined, {}, '', [
         enumValue1,
         enumValue2
       ]);
@@ -249,9 +264,9 @@ describe('CSharpConstrainer', () => {
       expect(type).toEqual('dynamic');
     });
     test('should render double and integer as dynamic type', () => {
-      const enumValue2 = new ConstrainedEnumValueModel('test', 123);
-      const enumValue1 = new ConstrainedEnumValueModel('test', 123.12);
-      const model = new ConstrainedEnumModel('test', undefined, '', [
+      const enumValue2 = new ConstrainedEnumValueModel('test', 123, {});
+      const enumValue1 = new ConstrainedEnumValueModel('test', 123.12, {});
+      const model = new ConstrainedEnumModel('test', undefined, {}, '', [
         enumValue1,
         enumValue2
       ]);
@@ -265,7 +280,7 @@ describe('CSharpConstrainer', () => {
 
   describe('Union', () => {
     test('should render type', () => {
-      const model = new ConstrainedUnionModel('test', undefined, '', []);
+      const model = new ConstrainedUnionModel('test', undefined, {}, '', []);
       const type = CSharpDefaultTypeMapping.Union({
         constrainedModel: model,
         ...defaultOptions
@@ -276,15 +291,22 @@ describe('CSharpConstrainer', () => {
 
   describe('Dictionary', () => {
     test('should render type', () => {
-      const keyModel = new ConstrainedStringModel('test', undefined, 'String');
+      const keyModel = new ConstrainedStringModel(
+        'test',
+        undefined,
+        {},
+        'String'
+      );
       const valueModel = new ConstrainedStringModel(
         'test',
         undefined,
+        {},
         'String'
       );
       const model = new ConstrainedDictionaryModel(
         'test',
         undefined,
+        {},
         '',
         keyModel,
         valueModel

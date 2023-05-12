@@ -148,7 +148,7 @@ Check is done using referential equality</p>
 <dd><p>Interpreter function for anyOf keyword.</p>
 <p>It puts the schema reference into the items field.</p>
 </dd>
-<dt><a href="#interpretConst">interpretConst(schema, model)</a></dt>
+<dt><a href="#interpretConst">interpretConst(schema, model, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for const keyword for draft version &gt; 4</p>
 </dd>
 <dt><a href="#interpretDependencies">interpretDependencies(schema, model)</a></dt>
@@ -183,6 +183,10 @@ Check is done using referential equality</p>
 </dd>
 <dt><a href="#interpretProperties">interpretProperties(schema, model, interpreter, interpreterOptions)</a></dt>
 <dd><p>Interpreter function for interpreting properties keyword.</p>
+</dd>
+<dt><a href="#InterpretThenElse">InterpretThenElse(schema, model, interpreter, interpreterOptions)</a></dt>
+<dd><p>Interpreter function for then/else keywords.</p>
+<p>It merges schemas into existing model</p>
 </dd>
 <dt><a href="#isEnum">isEnum(model)</a></dt>
 <dd><p>Check if CommonModel is an enum</p>
@@ -313,6 +317,7 @@ Common internal representation for a model.
         * [.addExtendedModel(extendedModel)](#CommonModel+addExtendedModel)
     * _static_
         * [.toCommonModel(object)](#CommonModel.toCommonModel) ⇒
+        * [.idIncludesAnonymousSchema(commonModel)](#CommonModel.idIncludesAnonymousSchema)
         * [.mergeProperties(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergeProperties)
         * [.mergeAdditionalProperties(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergeAdditionalProperties)
         * [.mergeAdditionalItems(mergeTo, mergeFrom, originalInput, alreadyIteratedModels)](#CommonModel.mergeAdditionalItems)
@@ -520,6 +525,17 @@ Takes a deep copy of the input object and converts it to an instance of CommonMo
 | Param | Description |
 | --- | --- |
 | object | to transform |
+
+<a name="CommonModel.idIncludesAnonymousSchema"></a>
+
+### CommonModel.idIncludesAnonymousSchema(commonModel)
+Returns true if the $id of a CommonModel includes anonymous_schema
+
+**Kind**: static method of [<code>CommonModel</code>](#CommonModel)  
+
+| Param |
+| --- |
+| commonModel | 
 
 <a name="CommonModel.mergeProperties"></a>
 
@@ -1320,15 +1336,16 @@ It puts the schema reference into the items field.
 
 <a name="interpretConst"></a>
 
-## interpretConst(schema, model)
+## interpretConst(schema, model, interpreterOptions)
 Interpreter function for const keyword for draft version > 4
 
 **Kind**: global function  
 
-| Param |
-| --- |
-| schema | 
-| model | 
+| Param | Description |
+| --- | --- |
+| schema |  |
+| model |  |
+| interpreterOptions | to control the interpret process |
 
 <a name="interpretDependencies"></a>
 
@@ -1463,6 +1480,22 @@ Interpreter function for patternProperties keyword.
 
 ## interpretProperties(schema, model, interpreter, interpreterOptions)
 Interpreter function for interpreting properties keyword.
+
+**Kind**: global function  
+
+| Param | Description |
+| --- | --- |
+| schema |  |
+| model |  |
+| interpreter |  |
+| interpreterOptions | to control the interpret process |
+
+<a name="InterpretThenElse"></a>
+
+## InterpretThenElse(schema, model, interpreter, interpreterOptions)
+Interpreter function for then/else keywords.
+
+It merges schemas into existing model
 
 **Kind**: global function  
 

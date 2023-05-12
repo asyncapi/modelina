@@ -1,6 +1,7 @@
 import { CommonModel } from '../../../src/models/CommonModel';
 import { Interpreter } from '../../../src/interpreter/Interpreter';
 import InterpretOneOfWithAllOf from '../../../src/interpreter/InterpretOneOfWithAllOf';
+import { AsyncapiV2Schema } from '../../../src';
 
 describe('Interpretation of oneOf with allOf', () => {
   beforeEach(() => {
@@ -25,11 +26,12 @@ describe('Interpretation of oneOf with allOf', () => {
 
   test('should add oneOf items to CommonModel union', () => {
     const model = new CommonModel();
-    const schema = {
+    const schema = AsyncapiV2Schema.toSchema({
       allOf: [
         {
           title: 'Animal',
           type: 'object',
+          discriminator: 'animalType',
           properties: {
             animalType: {
               title: 'Animal Type',
@@ -73,7 +75,7 @@ describe('Interpretation of oneOf with allOf', () => {
           }
         }
       ]
-    };
+    });
 
     const interpreter = new Interpreter();
 
@@ -83,12 +85,13 @@ describe('Interpretation of oneOf with allOf', () => {
 
     expect(model.type).toBeUndefined();
     expect(model.union).toHaveLength(2);
+    expect(model.discriminator).toBe('animalType');
 
     const cat = model.union?.find((item) => item.$id === 'Cat');
     expect(cat).not.toBeUndefined();
     expect(cat?.properties?.animalType).toMatchObject({
       $id: 'Animal Type',
-      enum: ['Cat', 'Dog']
+      enum: ['Cat']
     });
     expect(cat?.properties).toHaveProperty('age');
     expect(cat?.properties).toHaveProperty('huntingSkill');

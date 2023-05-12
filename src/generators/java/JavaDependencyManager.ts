@@ -3,6 +3,8 @@ import { AbstractDependencyManager } from '../AbstractDependencyManager';
 import { JavaOptions } from './JavaGenerator';
 
 export class JavaDependencyManager extends AbstractDependencyManager {
+  private modelDependencies: ConstrainedMetaModel[] = [];
+
   constructor(public options: JavaOptions, dependencies: string[] = []) {
     super(dependencies);
   }
@@ -15,11 +17,14 @@ export class JavaDependencyManager extends AbstractDependencyManager {
     model: ConstrainedMetaModel,
     packageName: string
   ): string {
-    return model
-      .getNearestDependencies()
+    return [...this.modelDependencies, ...model.getNearestDependencies()]
       .map((dependencyModel) => {
         return this.renderImport(dependencyModel, packageName);
       })
       .join('\n');
+  }
+
+  addModelDependency(model: ConstrainedMetaModel): void {
+    this.modelDependencies.push(model);
   }
 }

@@ -17,6 +17,7 @@ There are special use-cases that each language supports; this document pertains 
   * [Change the collection type for arrays](#change-the-collection-type-for-arrays)
   * [Generate custom enum value names](#generate-custom-enum-value-names)
   * [Generate models with inheritance](#generate-models-with-inheritance)
+  * [Generate models as records](#generate-models-as-records)
 - [FAQ](#faq)
     + [Why is the type `dynamic` or `dynamic[]` when it should be `X`?](#why-is-the-type-dynamic-or-dynamic-when-it-should-be-x)
 
@@ -40,7 +41,7 @@ To include functionality that convert the models using the [System.Text.Json](ht
 Check out this [example for a live demonstration](../../examples/csharp-generate-json-serializer).
 
 **External dependencies**
-Requires [System.Text.Json](https://devblogs.microsoft.com/dotnet/try-the-new-system-text-json-apis/), [System.Text.Json.Serialization](https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-how-to?pivots=dotnet-6-0) and [System.Text.RegularExpressions](https://docs.microsoft.com/en-us/dotnet/api/system.text.regularexpressions?view=net-6.0) to work.
+Requires [System.Text.Json](https://devblogs.microsoft.com/dotnet/try-the-new-system-text-json-apis/), [System.Text.Json.Serialization](https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-how-to?pivots=dotnet-6-0), [System.Text.RegularExpressions](https://docs.microsoft.com/en-us/dotnet/api/system.text.regularexpressions?view=net-6.0) and [Microsoft.CSharp version 4.7](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version) to work.
 
 #### Using Newtonsoft/Json.NET
 
@@ -85,7 +86,12 @@ Check out this [example for a live demonstration](../../examples/csharp-overwrit
 
 If you want the generated models to inherit from a custom class, you can overwrite the existing rendering behavior and create your own class setup.
 
-Check out this [example for a live demonstration](../../examples/csharp-use-inheritance).
+## Generate models as records 
+
+Since C# 9 the language now supports records as an alternative to classes suitable for roles like DTO's. Modelina can generate records by setting the `modelType: record` option. Note that this renderer does not support the `autoImplementedProperties` option as this is default with records. 
+
+Check out this [example for a live demonstration](../../examples/csharp-generate-records).
+
 # FAQ
 This is the most asked questions and answers which should be your GOTO list to check before asking anywhere else. Cause it might already have been answered!
 

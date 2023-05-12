@@ -36,3 +36,6 @@ These are the constraints that is applied to enum keys. The `Rule key` is what y
 |NO_RESERVED_KEYWORDS|No reserved keywords|Java has a list of reserved keywords ([see the full list here](../../src/generators/java/Constants.ts))|
 |NAMING_FORMATTER|Must be formatted equally|Model name is formatted using pascal case|
 |NO_DUPLICATE_KEYS|No duplicate enum keys|If any of the above constraints changes the enum key, we must make sure that no duplicates exist within the same enum. If any is encountered `reserved_` is pre-pended. This is done recursively until no duplicates are found.| 
+
+## Constant
+These are the constraints that are applied to constants. Currently, there are no hooks one can overwrite inside it.

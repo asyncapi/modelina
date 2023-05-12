@@ -22,7 +22,7 @@ describe('GoConstrainer', () => {
   };
   describe('ObjectModel', () => {
     test('should render the constrained name as type', () => {
-      const model = new ConstrainedObjectModel('test', undefined, '', {});
+      const model = new ConstrainedObjectModel('test', undefined, {}, '', {});
       const type = GoDefaultTypeMapping.Object({
         constrainedModel: model,
         ...defaultOptions
@@ -32,10 +32,11 @@ describe('GoConstrainer', () => {
   });
   describe('Reference', () => {
     test('should render the constrained name as type', () => {
-      const refModel = new ConstrainedAnyModel('test', undefined, '');
+      const refModel = new ConstrainedAnyModel('test', undefined, {}, '');
       const model = new ConstrainedReferenceModel(
         'test',
         undefined,
+        {},
         '',
         refModel
       );
@@ -48,7 +49,7 @@ describe('GoConstrainer', () => {
   });
   describe('Any', () => {
     test('should render type', () => {
-      const model = new ConstrainedAnyModel('test', undefined, '');
+      const model = new ConstrainedAnyModel('test', undefined, {}, '');
       const type = GoDefaultTypeMapping.Any({
         constrainedModel: model,
         ...defaultOptions
@@ -58,7 +59,7 @@ describe('GoConstrainer', () => {
   });
   describe('Float', () => {
     test('should render type', () => {
-      const model = new ConstrainedFloatModel('test', undefined, '');
+      const model = new ConstrainedFloatModel('test', undefined, {}, '');
       const type = GoDefaultTypeMapping.Float({
         constrainedModel: model,
         ...defaultOptions
@@ -68,7 +69,7 @@ describe('GoConstrainer', () => {
   });
   describe('Integer', () => {
     test('should render type', () => {
-      const model = new ConstrainedIntegerModel('test', undefined, '');
+      const model = new ConstrainedIntegerModel('test', undefined, {}, '');
       const type = GoDefaultTypeMapping.Integer({
         constrainedModel: model,
         ...defaultOptions
@@ -78,7 +79,7 @@ describe('GoConstrainer', () => {
   });
   describe('String', () => {
     test('should render type', () => {
-      const model = new ConstrainedStringModel('test', undefined, '');
+      const model = new ConstrainedStringModel('test', undefined, {}, '');
       const type = GoDefaultTypeMapping.String({
         constrainedModel: model,
         ...defaultOptions
@@ -88,7 +89,7 @@ describe('GoConstrainer', () => {
   });
   describe('Boolean', () => {
     test('should render type', () => {
-      const model = new ConstrainedBooleanModel('test', undefined, '');
+      const model = new ConstrainedBooleanModel('test', undefined, {}, '');
       const type = GoDefaultTypeMapping.Boolean({
         constrainedModel: model,
         ...defaultOptions
@@ -99,7 +100,7 @@ describe('GoConstrainer', () => {
 
   describe('Tuple', () => {
     test('should render type', () => {
-      const model = new ConstrainedTupleModel('test', undefined, '', []);
+      const model = new ConstrainedTupleModel('test', undefined, {}, '', []);
       const type = GoDefaultTypeMapping.Tuple({
         constrainedModel: model,
         ...defaultOptions
@@ -113,11 +114,13 @@ describe('GoConstrainer', () => {
       const arrayModel = new ConstrainedStringModel(
         'test',
         undefined,
+        {},
         'string'
       );
       const model = new ConstrainedArrayModel(
         'test',
         undefined,
+        {},
         '',
         arrayModel
       );
@@ -131,7 +134,7 @@ describe('GoConstrainer', () => {
 
   describe('Enum', () => {
     test('should render the constrained name as type', () => {
-      const model = new ConstrainedEnumModel('test', undefined, '', []);
+      const model = new ConstrainedEnumModel('test', undefined, {}, '', []);
       const type = GoDefaultTypeMapping.Enum({
         constrainedModel: model,
         ...defaultOptions
@@ -142,7 +145,7 @@ describe('GoConstrainer', () => {
 
   describe('Union', () => {
     test('should render type', () => {
-      const model = new ConstrainedUnionModel('test', undefined, '', []);
+      const model = new ConstrainedUnionModel('test', undefined, {}, '', []);
       const type = GoDefaultTypeMapping.Union({
         constrainedModel: model,
         ...defaultOptions
@@ -153,15 +156,22 @@ describe('GoConstrainer', () => {
 
   describe('Dictionary', () => {
     test('should render type', () => {
-      const keyModel = new ConstrainedStringModel('test', undefined, 'string');
+      const keyModel = new ConstrainedStringModel(
+        'test',
+        undefined,
+        {},
+        'string'
+      );
       const valueModel = new ConstrainedStringModel(
         'test',
         undefined,
+        {},
         'string'
       );
       const model = new ConstrainedDictionaryModel(
         'test',
         undefined,
+        {},
         '',
         keyModel,
         valueModel

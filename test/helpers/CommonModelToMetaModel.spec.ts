@@ -137,6 +137,7 @@ describe('CommonModelToMetaModel', () => {
 
     expect(model).not.toBeUndefined();
     expect(model instanceof ArrayModel).toEqual(true);
+    expect((model as ArrayModel).valueModel instanceof AnyModel).toEqual(true);
   });
   test('should convert to object model', () => {
     const spm = new CommonModel();
@@ -276,8 +277,11 @@ describe('CommonModelToMetaModel', () => {
 
     expect(model).not.toBeUndefined();
     expect(model instanceof ArrayModel).toEqual(true);
+    expect((model as ArrayModel).valueModel instanceof StringModel).toEqual(
+      true
+    );
   });
-  test('should convert array with additional items to array model as union type', () => {
+  test('should not convert array with additional items to array model as union type', () => {
     const spm = new CommonModel();
     spm.type = 'string';
     const cm = new CommonModel();
@@ -290,7 +294,7 @@ describe('CommonModelToMetaModel', () => {
 
     expect(model).not.toBeUndefined();
     expect(model instanceof ArrayModel).toEqual(true);
-    expect((model as ArrayModel).valueModel instanceof UnionModel).toEqual(
+    expect((model as ArrayModel).valueModel instanceof StringModel).toEqual(
       true
     );
   });
@@ -344,5 +348,51 @@ describe('CommonModelToMetaModel', () => {
 
     expect(model).not.toBeUndefined();
     expect(model instanceof ObjectModel).toEqual(true);
+  });
+
+  test('should handle const and enum', () => {
+    const cm = new CommonModel();
+    cm.$id = 'test';
+    cm.type = 'string';
+    cm.enum = ['testConst'];
+    cm.const = 'testConst';
+
+    const model = convertToMetaModel(cm);
+
+    expect(model).not.toBeUndefined();
+    expect(model instanceof EnumModel).toEqual(true);
+    expect((model as EnumModel).values).toEqual([
+      {
+        key: cm.const,
+        value: cm.const
+      }
+    ]);
+    expect(model.options.const?.originalInput).toEqual(cm.const);
+  });
+
+  test('should handle const', () => {
+    const cm = new CommonModel();
+    cm.$id = 'test';
+    cm.const = 'testConst';
+
+    const model = convertToMetaModel(cm);
+
+    expect(model).not.toBeUndefined();
+    expect(model instanceof AnyModel).toEqual(true);
+    expect(model.options.const?.originalInput).toEqual(cm.const);
+  });
+
+  test('should handle discriminator', () => {
+    const cm = new CommonModel();
+    cm.$id = 'test';
+    cm.discriminator = 'testDiscriminator';
+
+    const model = convertToMetaModel(cm);
+
+    expect(model).not.toBeUndefined();
+    expect(model instanceof AnyModel).toEqual(true);
+    expect(model.options.discriminator?.discriminator).toEqual(
+      cm.discriminator
+    );
   });
 });

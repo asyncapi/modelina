@@ -100,6 +100,7 @@ These are all specific examples only relevant to the C# generator:
 - [csharp-generate-newtonsoft-serializer](./csharp-generate-newtonsoft-serializer) - A basic example on how to generate models that include function to serialize the data models to and form JSON with Newtonsoft.
 - [csharp-overwrite-enum-naming](./csharp-overwrite-enum-naming) - A basic example on how to generate enum value names.
 - [csharp-use-inheritance](./csharp-use-inheritance) - A basic example that shows how to introduce inheritance to classes 
+- [csharp-generate-records](./csharp-generate-records) - A basic example that shows how to change C# model type from class to record.
 
 ## TypeScript
 These are all specific examples only relevant to the TypeScript generator:

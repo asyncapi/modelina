@@ -10,10 +10,11 @@ import {
   DefaultEnumKeyConstraints
 } from '../../../../src/generators/typescript/constrainer/EnumConstrainer';
 describe('EnumConstrainer', () => {
-  const enumModel = new EnumModel('test', undefined, []);
+  const enumModel = new EnumModel('test', undefined, {}, []);
   const constrainedEnumModel = new ConstrainedEnumModel(
     'test',
     undefined,
+    {},
     '',
     []
   );
@@ -38,11 +39,13 @@ describe('EnumConstrainer', () => {
     test('should not contain duplicate keys', () => {
       const existingConstrainedEnumValueModel = new ConstrainedEnumValueModel(
         'EMPTY',
+        'return',
         'return'
       );
       const constrainedEnumModel = new ConstrainedEnumModel(
         'test',
         undefined,
+        {},
         '',
         [existingConstrainedEnumValueModel]
       );
@@ -97,29 +100,29 @@ describe('EnumConstrainer', () => {
       });
       expect(constrainedValue).toEqual('"true"');
     });
-    test.skip('should render numbers', () => {
+    test('should render numbers', () => {
       const constrainedValue = TypeScriptDefaultConstraints.enumValue({
         enumModel,
         constrainedEnumModel,
         enumValue: 123
       });
-      expect(constrainedValue).toEqual(123);
+      expect(constrainedValue).toEqual('123');
     });
-    test.skip('should render object', () => {
+    test('should render object', () => {
       const constrainedValue = TypeScriptDefaultConstraints.enumValue({
         enumModel,
         constrainedEnumModel,
         enumValue: { test: 'test' }
       });
-      expect(constrainedValue).toEqual('"{\\"test\\":\\"test\\"}"');
+      expect(constrainedValue).toEqual('\'{"test":"test"}\'');
     });
-    test.skip('should render unknown value', () => {
+    test('should render unknown value', () => {
       const constrainedValue = TypeScriptDefaultConstraints.enumValue({
         enumModel,
         constrainedEnumModel,
         enumValue: undefined
       });
-      expect(constrainedValue).toEqual('"undefined"');
+      expect(constrainedValue).toEqual('undefined');
     });
   });
   describe('custom constraints', () => {

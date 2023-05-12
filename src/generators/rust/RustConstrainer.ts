@@ -19,6 +19,7 @@ import {
   ConstrainedTupleModel,
   ConstrainedUnionModel
 } from '../../models';
+import { defaultConstantConstraints } from './constrainer/ConstantConstrainer';
 
 export function deriveHash(model: ConstrainedMetaModel): boolean {
   // float primitives and std::collection::HashMap do not implement Hash trait
@@ -359,5 +360,6 @@ export const RustDefaultConstraints: Constraints = {
   enumKey: defaultEnumKeyConstraints(),
   enumValue: defaultEnumValueConstraints(),
   modelName: defaultModelNameConstraints(),
-  propertyKey: defaultPropertyKeyConstraints()
+  propertyKey: defaultPropertyKeyConstraints(),
+  constant: defaultConstantConstraints()
 };

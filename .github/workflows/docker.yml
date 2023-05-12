@@ -1,0 +1,32 @@
+name: Build Docker Image
+
+on:
+  push: ~
+
+jobs:
+  build-image:
+    name: Build Docker Image
+    env:
+      DOCKER_BUILDKIT: 1 # Requires Latest Buildx in docker CLI
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [linux/amd64,linux/arm64]
+
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Set Up QEMU
+        uses: docker/setup-qemu-action@v2
+      -
+        name: Set Up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Build Image
+        uses: docker/build-push-action@v3
+        with:
+          push: false
+          load: false
+          platforms: ${{ matrix.platform }}
+          cache-from: type=gha
+          cache-to: type=gha

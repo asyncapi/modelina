@@ -2,7 +2,9 @@ import { JavaRenderer } from '../JavaRenderer';
 import {
   ConstrainedDictionaryModel,
   ConstrainedObjectModel,
-  ConstrainedObjectPropertyModel
+  ConstrainedObjectPropertyModel,
+  ConstrainedUnionModel,
+  UnionModel
 } from '../../../models';
 import { FormatHelpers } from '../../../helpers';
 import { JavaOptions } from '../JavaGenerator';
@@ -27,6 +29,20 @@ export class ClassRenderer extends JavaRenderer<ConstrainedObjectModel> {
     }
     if (this.model.containsPropertyType(ConstrainedDictionaryModel)) {
       this.dependencyManager.addDependency('import java.util.Map;');
+    }
+
+    const parentUnions = this.getParentUnions();
+
+    if (parentUnions) {
+      for (const parentUnion of parentUnions) {
+        this.dependencyManager.addModelDependency(parentUnion);
+      }
+
+      return `public class ${this.model.name} implements ${parentUnions
+        .map((pu) => pu.name)
+        .join(', ')} {
+${this.indent(this.renderBlock(content, 2))}
+}`;
     }
 
     return `public class ${this.model.name} {
@@ -80,6 +96,35 @@ ${this.indent(this.renderBlock(content, 2))}
   runSetterPreset(property: ConstrainedObjectPropertyModel): Promise<string> {
     return this.runPreset('setter', { property });
   }
+
+  private getParentUnions() {
+    const parentUnions: ConstrainedUnionModel[] = [];
+
+    for (const model of Object.values(this.inputModel.models)) {
+      if (model instanceof UnionModel) {
+        // Create a ConstrainedUnionModel of all Union Models
+        const unionModel = this.generator.constrainToMetaModel(
+          model,
+          this.options
+        ) as ConstrainedUnionModel;
+
+        // Cheeck if the current model is a child model of any of the unions
+        if (
+          unionModel.union.some(
+            (m) => m.name === this.model.name && m.type === this.model.type
+          )
+        ) {
+          parentUnions.push(unionModel);
+        }
+      }
+    }
+
+    if (!parentUnions.length) {
+      return undefined;
+    }
+
+    return parentUnions;
+  }
 }
 
 export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
@@ -87,6 +132,10 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
     return renderer.defaultSelf();
   },
   property({ property }) {
+    if (property.property.options.const?.value) {
+      return `private final ${property.property.type} ${property.propertyName} = ${property.property.options.const.value};`;
+    }
+
     return `private ${property.property.type} ${property.propertyName};`;
   },
   getter({ property }) {
@@ -96,6 +145,9 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
     return `public ${property.property.type} ${getterName}() { return this.${property.propertyName}; }`;
   },
   setter({ property }) {
+    if (property.property.options.const?.value) {
+      return '';
+    }
     const setterName = FormatHelpers.toPascalCase(property.propertyName);
     return `public void set${setterName}(${property.property.type} ${property.propertyName}) { this.${property.propertyName} = ${property.propertyName}; }`;
   }

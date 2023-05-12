@@ -386,7 +386,9 @@
       "profile": "https://github.com/kennethaasan",
       "contributions": [
         "code",
-        "test"
+        "test",
+        "maintenance",
+        "doc"
       ]
     },
     {
@@ -473,6 +475,36 @@
         "doc",
         "example",
         "maintenance"
+      ]
+    },
+    {
+      "login": "sambhavgupta0705",
+      "name": "Sambhav Gupta",
+      "avatar_url": "https://avatars.githubusercontent.com/u/81870866?v=4",
+      "profile": "https://github.com/sambhavgupta0705",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "prayutsu",
+      "name": "Abhay Garg",
+      "avatar_url": "https://avatars.githubusercontent.com/u/54636525?v=4",
+      "profile": "https://github.com/prayutsu",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "henrikjon",
+      "name": "henrikjon",
+      "avatar_url": "https://avatars.githubusercontent.com/u/27212232?v=4",
+      "profile": "https://github.com/henrikjon",
+      "contributions": [
+        "code",
+        "test",
+        "doc",
+        "example"
       ]
     }
   ],

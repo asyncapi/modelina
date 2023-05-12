@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Should be able to generate a model with custom input and output  and should log expected output to console 1`] = `
+exports[`Should be able to generate a model with custom input and output and should log expected output to console 1`] = `
 Array [
   "public class Address
 {

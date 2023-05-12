@@ -4,7 +4,9 @@ import {
   Draft4Schema,
   SwaggerV2Schema,
   AsyncapiV2Schema,
-  Draft7Schema
+  Draft7Schema,
+  MergingOptions,
+  defaultMergingOptions
 } from '../models';
 import { interpretName } from './Utils';
 import interpretProperties from './InterpretProperties';
@@ -21,11 +23,32 @@ import interpretOneOf from './InterpretOneOf';
 import interpretAnyOf from './InterpretAnyOf';
 import interpretOneOfWithAllOf from './InterpretOneOfWithAllOf';
 import interpretOneOfWithProperties from './InterpretOneOfWithProperties';
+import InterpretThenElse from './InterpretThenElse';
 
 export type InterpreterOptions = {
   allowInheritance?: boolean;
+  /**
+   * For JSON Schema draft 7, additionalProperties are by default true, but it might create an unintended property for the models.
+   *
+   * Use this option to ignore default additionalProperties for models that has other properties with them.
+   *
+   * ONLY use this option if you do not have control over your schema files.
+   * Instead adapt your schemas to be more strict by setting `additionalProperties: false`.
+   */
   ignoreAdditionalProperties?: boolean;
+  /**
+   * For JSON Schema draft 7, additionalItems are by default true, but it might create an unintended types for arrays.
+   *
+   * Use this option to ignore default additionalItems for models, as long as there is other types sat for the array.
+   *
+   * ONLY use this option if you do not have control over the schema files you use to generate the models from.
+   * Instead you should adapt your schemas to be more strict by setting `additionalItems: false`.
+   */
   ignoreAdditionalItems?: boolean;
+  /**
+   * When interpreting a schema with discriminator set, this property will be set bet by the individual interpreters to make sure the discriminator becomes an enum.
+   */
+  discriminator?: string;
 };
 export type InterpreterSchemas =
   | Draft6Schema
@@ -112,8 +135,8 @@ export class Interpreter {
     }
 
     interpretPatternProperties(schema, model, this, interpreterOptions);
-    interpretAdditionalProperties(schema, model, this, interpreterOptions);
     interpretAdditionalItems(schema, model, this, interpreterOptions);
+    interpretAdditionalProperties(schema, model, this, interpreterOptions);
     interpretItems(schema, model, this, interpreterOptions);
     interpretProperties(schema, model, this, interpreterOptions);
     interpretAllOf(schema, model, this, interpreterOptions);
@@ -122,26 +145,9 @@ export class Interpreter {
     interpretOneOfWithProperties(schema, model, this, interpreterOptions);
     interpretAnyOf(schema, model, this, interpreterOptions);
     interpretDependencies(schema, model, this, interpreterOptions);
-    interpretConst(schema, model);
+    interpretConst(schema, model, interpreterOptions);
     interpretEnum(schema, model);
-
-    if (
-      !(schema instanceof Draft4Schema) &&
-      !(schema instanceof Draft6Schema)
-    ) {
-      this.interpretAndCombineSchema(
-        schema.then,
-        model,
-        schema,
-        interpreterOptions
-      );
-      this.interpretAndCombineSchema(
-        schema.else,
-        model,
-        schema,
-        interpreterOptions
-      );
-    }
+    InterpretThenElse(schema, model, this, interpreterOptions);
 
     interpretNot(schema, model, this, interpreterOptions);
 
@@ -161,14 +167,21 @@ export class Interpreter {
     schema: InterpreterSchemaType | undefined,
     currentModel: CommonModel,
     rootSchema: any,
-    interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions
+    interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions,
+    mergingOptions: MergingOptions = defaultMergingOptions
   ): void {
     if (typeof schema !== 'object') {
       return;
     }
     const model = this.interpret(schema, interpreterOptions);
     if (model !== undefined) {
-      CommonModel.mergeCommonModels(currentModel, model, rootSchema);
+      CommonModel.mergeCommonModels(
+        currentModel,
+        model,
+        rootSchema,
+        new Map(),
+        mergingOptions
+      );
     }
   }
 }

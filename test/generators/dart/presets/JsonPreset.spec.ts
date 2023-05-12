@@ -13,18 +13,18 @@ describe('DART_JSON_PRESET', () => {
   });
 
   test('should render json annotations', async () => {
-    const model = new ConstrainedObjectModel('Clazz', undefined, 'Clazz', {
+    const model = new ConstrainedObjectModel('Clazz', undefined, {}, 'Clazz', {
       minNumberProp: new ConstrainedObjectPropertyModel(
         'minNumberProp',
         'min_number_prop',
         false,
-        new ConstrainedFloatModel('minNumberProp', undefined, 'double')
+        new ConstrainedFloatModel('minNumberProp', undefined, {}, 'double')
       ),
       maxNumberProp: new ConstrainedObjectPropertyModel(
         'maxNumberProp',
         'max_number_prop',
         false,
-        new ConstrainedFloatModel('maxNumberProp', undefined, 'double')
+        new ConstrainedFloatModel('maxNumberProp', undefined, {}, 'double')
       )
     });
     const inputModel = new InputMetaModel();
