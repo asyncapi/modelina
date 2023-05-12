@@ -24,7 +24,8 @@ import {
   PlaygroundJavaScriptConfigContext,
   PlaygroundKotlinConfigContext,
   PlaygroundPythonConfigContext,
-  PlaygroundRustConfigContext
+  PlaygroundRustConfigContext,
+  PlaygroundCplusplusConfigContext
 } from '../contexts/PlaygroundConfigContext';
 import { getTypeScriptGeneratorCode } from '@/helpers/GeneratorCode/TypeScriptGenerator';
 import { getJavaScriptGeneratorCode } from '@/helpers/GeneratorCode/JavaScriptGenerator';
@@ -34,6 +35,7 @@ import { getCSharpGeneratorCode } from '@/helpers/GeneratorCode/CSharpGenerator'
 import { getRustGeneratorCode } from '@/helpers/GeneratorCode/RustGenerator';
 import { getPythonGeneratorCode } from '@/helpers/GeneratorCode/PythonGenerator';
 import { getDartGeneratorCode } from '@/helpers/GeneratorCode/DartGenerator';
+import { getCplusplusGeneratorCode } from '@/helpers/GeneratorCode/CplusplusGenerator';
 import CustomError from '../CustomError';
 
 interface WithRouterProps {
@@ -138,6 +140,7 @@ class Playground extends React.Component<
           rust: getRustGeneratorCode,
           python: getPythonGeneratorCode,
           dart: getDartGeneratorCode,
+          cplusplus: getCplusplusGeneratorCode
         }
         const generatorCode = generators[this.config.language](message);
         fetch(`${process.env.NEXT_PUBLIC_API_PATH}/generate`, {
@@ -306,17 +309,19 @@ class Playground extends React.Component<
                       <PlaygroundDartConfigContext.Provider value={{}}>
                         <PlaygroundGoConfigContext.Provider value={{}}>
                           <PlaygroundJavaConfigContext.Provider value={{}}>
-                            <PlaygroundKotlinConfigContext.Provider value={{}}>
-                              <PlaygroundRustConfigContext.Provider value={{}}>
-                                <PlaygroundPythonConfigContext.Provider
-                                  value={{}}
-                                >
-                                  <PlaygroundOptions
-                                    setNewConfig={this.setNewConfig}
-                                  />
-                                </PlaygroundPythonConfigContext.Provider>
-                              </PlaygroundRustConfigContext.Provider>
-                            </PlaygroundKotlinConfigContext.Provider>
+                            <PlaygroundCplusplusConfigContext.Provider value={{}}>
+                              <PlaygroundKotlinConfigContext.Provider value={{}}>
+                                <PlaygroundRustConfigContext.Provider value={{}}>
+                                  <PlaygroundPythonConfigContext.Provider
+                                    value={{}}
+                                  >
+                                    <PlaygroundOptions
+                                      setNewConfig={this.setNewConfig}
+                                    />
+                                  </PlaygroundPythonConfigContext.Provider>
+                                </PlaygroundRustConfigContext.Provider>
+                              </PlaygroundKotlinConfigContext.Provider>
+                            </PlaygroundCplusplusConfigContext.Provider>
                           </PlaygroundJavaConfigContext.Provider>
                         </PlaygroundGoConfigContext.Provider>
                       </PlaygroundDartConfigContext.Provider>

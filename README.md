@@ -9,7 +9,7 @@
 [![Discussions](https://img.shields.io/github/discussions/asyncapi/modelina)](https://github.com/asyncapi/modelina/discussions)
 [![Website](https://img.shields.io/website?label=website&url=https%3A%2F%2Fwww.modelina.org)](https://www.modelina.org)
 [![Playground](https://img.shields.io/website?label=playground&url=https%3A%2F%2Fwww.modelina.org%2Fplayground)](https://www.modelina.org/playground) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-48-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-52-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Your one-stop tool for generating accurate and well-tested models for representing the message payloads. Use it as a tool in your development workflow, or a library in a larger integrations, entirely in your control.
@@ -258,6 +258,10 @@ The following table provides a short summary of available features for supported
     <td><a href="./docs/usage.md#generate-kotlin-models">Kotlin</a></td>
     <td>Class and enum generation: <em>use of data classes where appropriate, custom indentation type and size, etc </em></td>
   </tr>
+  <tr>
+    <td><a href="./docs/usage.md#generate-cplusplus-models">C++</a></td>
+    <td>Class and enum generation: <em>custom indentation type and size, etc </em></td>
+  </tr>
 </table>
 
 ## Roadmap
@@ -369,7 +373,7 @@ Thanks go out to these wonderful people ([emoji key](https://allcontributors.org
       <td align="center" valign="top" width="14.28%"><a href="https://malcherczyk.pl"><img src="https://avatars.githubusercontent.com/u/17534504?v=4?s=100" width="100px;" alt="Zbigniew Malcherczyk"/><br /><sub><b>Zbigniew Malcherczyk</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/issues?q=author%3AFerror" title="Bug reports">🐛</a> <a href="#infra-Ferror" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/200Puls"><img src="https://avatars.githubusercontent.com/u/6918360?v=4?s=100" width="100px;" alt="200Puls"/><br /><sub><b>200Puls</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=200Puls" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=200Puls" title="Tests">⚠️</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://linktr.ee/anaysarkar7"><img src="https://avatars.githubusercontent.com/u/53341181?v=4?s=100" width="100px;" alt="Anay Sarkar"/><br /><sub><b>Anay Sarkar</b></sub></a><br /><a href="#example-anaysarkar7" title="Examples">💡</a> <a href="https://github.com/asyncapi/modelina/commits?author=anaysarkar7" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=anaysarkar7" title="Tests">⚠️</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/LouisXhaferi"><img src="https://avatars.githubusercontent.com/u/52397677?v=4?s=100" width="100px;" alt="Louis Xhaferi"/><br /><sub><b>Louis Xhaferi</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=LouisXhaferi" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=LouisXhaferi" title="Tests">⚠️</a> <a href="https://github.com/asyncapi/modelina/commits?author=LouisXhaferi" title="Documentation">📖</a> <a href="#example-LouisXhaferi" title="Examples">💡</a> <a href="#maintenance-LouisXhaferi" title="Maintenance">🚧</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/LouisXhaferi"><img src="https://avatars.githubusercontent.com/u/52397677?v=4?s=100" width="100px;" alt="Louis Xhaferi"/><br /><sub><b>Louis Xhaferi</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=LouisXhaferi" title="Code">💻</a></td>
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/sambhavgupta0705"><img src="https://avatars.githubusercontent.com/u/81870866?v=4?s=100" width="100px;" alt="Sambhav Gupta"/><br /><sub><b>Sambhav Gupta</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=sambhavgupta0705" title="Documentation">📖</a></td>
@@ -378,6 +382,12 @@ Thanks go out to these wonderful people ([emoji key](https://allcontributors.org
       <td align="center" valign="top" width="14.28%"><a href="https://yasirdeveloper.netlify.app/"><img src="https://avatars.githubusercontent.com/u/74600745?v=4?s=100" width="100px;" alt="Mohammad Yasir"/><br /><sub><b>Mohammad Yasir</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=Yasir761" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Savio629"><img src="https://avatars.githubusercontent.com/u/91362589?v=4?s=100" width="100px;" alt="Savio Dias"/><br /><sub><b>Savio Dias</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=Savio629" title="Code">💻</a> <a href="#infra-Savio629" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/asyncapi/modelina/issues?q=author%3ASavio629" title="Bug reports">🐛</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/ishaan812"><img src="https://avatars.githubusercontent.com/u/70190533?v=4?s=100" width="100px;" alt="Ishaan Shah"/><br /><sub><b>Ishaan Shah</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=ishaan812" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Shreyas0410"><img src="https://avatars.githubusercontent.com/u/70795867?v=4?s=100" width="100px;" alt="Shreyas0410"/><br /><sub><b>Shreyas0410</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=Shreyas0410" title="Code">💻</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/beku-epitome"><img src="https://avatars.githubusercontent.com/u/115151513?v=4?s=100" width="100px;" alt="beku-epitome"/><br /><sub><b>beku-epitome</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=beku-epitome" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/pulls?q=is%3Apr+reviewed-by%3Abeku-epitome" title="Reviewed Pull Requests">👀</a> <a href="https://github.com/asyncapi/modelina/commits?author=beku-epitome" title="Tests">⚠️</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/swordmaster2k"><img src="https://avatars.githubusercontent.com/u/3354016?v=4?s=100" width="100px;" alt="Joshua Michael Daly"/><br /><sub><b>Joshua Michael Daly</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/issues?q=author%3Aswordmaster2k" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/dlkj"><img src="https://avatars.githubusercontent.com/u/243059?v=4?s=100" width="100px;" alt="Daniel KJ"/><br /><sub><b>Daniel KJ</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=dlkj" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=dlkj" title="Tests">⚠️</a> <a href="#example-dlkj" title="Examples">💡</a> <a href="https://github.com/asyncapi/modelina/pulls?q=is%3Apr+reviewed-by%3Adlkj" title="Reviewed Pull Requests">👀</a></td>
     </tr>
   </tbody>
 </table>
