@@ -5,7 +5,7 @@ const getDirectories = async source =>
   (await readdir(source, { withFileTypes: true }))
     .filter(dirent => dirent.isDirectory())
     .map(dirent => dirent.name);
-
+const examplesDirPath = path.resolve(__dirname, '../../examples');
 /**
  * Find the proper language type for the output code.
  * 
@@ -55,19 +55,15 @@ function getLanguage(exampleName) {
   return 'typescript';
 }
 
-async function start() {
-  const examplesDirPath = path.resolve(__dirname, '../../examples');
-  let exampleDirs = await getDirectories(examplesDirPath);
-  exampleDirs = exampleDirs.filter((dir) => dir !== 'TEMPLATE' && dir !== 'integrate-with-react');
-  const templateConfig = {};
-  console.log(exampleDirs);
-  for (const example of exampleDirs) {
-    const exampleDirPath = path.resolve(examplesDirPath, example);
-    let templateCode = await readFile(path.resolve(exampleDirPath, 'index.ts'), "utf-8");
-    templateCode = templateCode.replaceAll(/from '\.\.\/\.\.\/src[^']*/g, "from '@asyncapi/modelina");
-
-    const consoleLogOutputPath = path.resolve(exampleDirPath, './__snapshots__/index.spec.ts.snap');
-    let output = require(consoleLogOutputPath);
+async function getCode(exampleDirPath) {
+  let code = await readFile(path.resolve(exampleDirPath, 'index.ts'), "utf-8");
+  //Make sure the examples dont use local references
+  code = code.replaceAll(/from '\.\.\/\.\.\/src[^']*/g, "from '@asyncapi/modelina");
+  return code;
+}
+function getOutput(exampleDirPath){
+  const consoleLogOutputPath = path.resolve(exampleDirPath, './__snapshots__/index.spec.ts.snap');
+  let output = require(consoleLogOutputPath);
     output = Object.values(output).map((exportValue) => {
       const searchValue = 'Array [\n  \"\"';
       exportValue = exportValue.slice(searchValue.length, exportValue.length);
@@ -75,20 +71,54 @@ async function start() {
       exportValue = exportValue.replaceAll("\\", "");
       return exportValue;
     }).join('\n\n');
-    let description = await readFile(path.resolve(exampleDirPath, './README.md'), "utf-8");
-    const runExampleStart = description.search('## How to run this example');
-    description = description.slice(0, runExampleStart);
+  return output;
+}
+async function getDescription(exampleDirPath){
+  let description = await readFile(path.resolve(exampleDirPath, './README.md'), "utf-8");
+  const runExampleStart = description.search('## How to run this example');
+  description = description.slice(0, runExampleStart);
+  return description;
+}
+
+/**
+ * Build the examples config
+ */
+async function start() {
+  let exampleDirs = await getDirectories(examplesDirPath);
+  //Filter out any examples that either:
+  // 1. are impossible to show
+  // 2. should not be shown 
+  exampleDirs = exampleDirs.filter((dir) => dir !== 'TEMPLATE' && dir !== 'integrate-with-react');
+  const templateConfig = {};
+
+  for (const example of exampleDirs) {
+    const exampleDirPath = path.resolve(examplesDirPath, example);
+    const code = await getCode(exampleDirPath);
+    const output = getOutput(exampleDirPath);
+    const description = await getDescription(exampleDirPath);
+    const language = getLanguage(example);
     templateConfig[example] = {
       description: description,
       displayName: example,
-      code: templateCode,
+      code,
       output,
-      language: getLanguage(example)
+      language
     }
   }
-  console.log(templateConfig);
+
   const outputFile = path.resolve(__dirname, '../config/examples.json')
   await writeFile(outputFile, JSON.stringify(templateConfig, null, 4));
+
+  let mainReadme = await readFile(path.resolve(__dirname, '../../examples/README.md'), 'utf-8');
+  // Replace all local references to examples with queries
+  mainReadme = mainReadme.replaceAll(/\(.\/(.*?)\)/g, '(?selectedExample=$1)');
+  mainReadme = mainReadme.replace('<!-- toc is generated with GitHub Actions do not remove toc markers -->', '');
+  mainReadme = mainReadme.replace('<!-- toc -->', '');
+  mainReadme = mainReadme.replace('<!-- tocstop -->', '');
+  mainReadme = mainReadme.replace('../docs/contributing.md', 'https://github.com/asyncapi/modelina/tree/master/examples/../docs/contributing.md');
+  mainReadme = mainReadme.replace('- [integrate with React](?selectedExample=integrate-with-react/)', '- [integrate with React](https://github.com/asyncapi/modelina/tree/master/examples/integrate-with-react)');
+  mainReadme = mainReadme.replace('- [TEMPLATE](?selectedExample=TEMPLATE)', '- [TEMPLATE](https://github.com/asyncapi/modelina/tree/master/examples/TEMPLATE)');
+  await writeFile(path.resolve(__dirname, '../config/examples_readme.json'), JSON.stringify(mainReadme))
 }
 
 start();

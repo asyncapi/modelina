@@ -3,7 +3,11 @@ import MonacoEditorWrapper from '../MonacoEditorWrapper';
 import Router, { withRouter, NextRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import ExamplesList from "../../../config/examples.json";
+import ExamplesReadme from "../../../config/examples_readme.json";
+import rehypeSlug from "rehype-slug";
+import remarkGfm from "remark-gfm";
 import ReactMarkdown from 'react-markdown';
+import GithubButton from '../buttons/GithubButton';
 const examplesIterator = Object.entries(ExamplesList);
 interface WithRouterProps {
   router: NextRouter;
@@ -46,8 +50,12 @@ class Examples extends React.Component<
     const newQuery = {
       query: { ...this.props.router.query }
     };
-    /* eslint-disable-next-line security/detect-object-injection */
-    newQuery.query[queryKey] = String(queryValue);
+    if(queryValue) {
+      /* eslint-disable-next-line security/detect-object-injection */
+      newQuery.query[queryKey] = String(queryValue);
+    } else {
+      delete newQuery.query[queryKey];
+    }
     Router.push(newQuery, undefined, { scroll: true });
   }
   render() {
@@ -61,22 +69,17 @@ class Examples extends React.Component<
     let example: Example | undefined;
     if(selectedExample) {
       example = (ExamplesList as any)[selectedExample];
-    } else {
-      example = ExamplesList['adapting-input-and-output'];
     }
     
     return (
       <div className="py-4 lg:py-8">
-        <div>
-
-        </div>
         <div
           className={`grid grid-cols-4 gap-4 mt-4`}
         >
           <div className={`col-span-1`}>
             {
               examplesIterator.map((value) => {
-                return <div className={`hover:bg-sky-500/[.3] ${value[0] === selectedExample && 'bg-sky-500/[.3]'}`} onClick={() => {this.setNewQuery('selectedExample', value[0])}}>{value[1].displayName}</div>
+                return <div className={`hover:bg-sky-500/[.3] ${value[0] === selectedExample && 'bg-sky-500/[.3]'} p-2`} onClick={() => {this.setNewQuery('selectedExample', value[0])}}>{value[1].displayName}</div>
               })
             }
           </div>
@@ -87,8 +90,14 @@ class Examples extends React.Component<
                 className={`grid grid-cols-2 gap-4 mt-4`}
               >
                 <div className={`col-span-1`}>
-                  <div className="prose">
+                  <GithubButton
+                    text="See Example on GitHub"
+                    href={`https://github.com/asyncapi/modelina/tree/master/examples/${selectedExample}`}
+                    inNav="true"
+                  />
+                  <div className="prose p-6">
                     <ReactMarkdown>{example.description}</ReactMarkdown>
+                    <a href={`https://github.com/asyncapi/modelina/tree/master/examples/${selectedExample}/README.md`} className="bg-blue-100 hover:bg-blue-200 text-blue-800 text-xs font-semibold p-2 rounded border border-blue-400">Edit Description</a>
                   </div>
 
                   <div
@@ -122,7 +131,18 @@ class Examples extends React.Component<
                 </div>
               </div>
               :
-              <div></div>
+              <div>
+                <div className="prose">
+                  <div className={"flex justify-end"}>
+                    <GithubButton
+                      text="Edit readme on GitHub"
+                      href={`https://github.com/asyncapi/modelina/tree/master/examples/README.md`}
+                      inNav="true"
+                    />
+                  </div>
+                  <ReactMarkdown rehypePlugins={[rehypeSlug]} remarkPlugins={[remarkGfm]}>{ExamplesReadme}</ReactMarkdown>
+                </div>
+              </div>
             }
           </div>
         </div>

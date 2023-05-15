@@ -11,6 +11,7 @@
     "build:examples": "node scripts/build-examples.js"
   },
   "dependencies": {
+    "@jsdevtools/rehype-toc": "^3.0.2",
     "@monaco-editor/react": "^4.4.6",
     "@netlify/functions": "^1.4.0",
     "@next/font": "13.1.5",
@@ -30,6 +31,7 @@
     "react-dom": "18.2.0",
     "react-markdown": "^8.0.7",
     "react-syntax-highlighter": "15.5.0",
+    "rehype-slug": "^5.1.0",
     "remark-gfm": "^3.0.1",
     "swiper": "^8.3.2",
     "tailwind-merge": "^1.8.1",
