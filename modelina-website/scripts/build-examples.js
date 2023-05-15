@@ -1,5 +1,5 @@
 const path = require('path');
-const {readdir, readFile, writeFile} = require('fs/promises');
+const {readdir, readFile, writeFile, mkdir, } = require('fs/promises');
 
 const getDirectories = async source =>
   (await readdir(source, { withFileTypes: true }))
@@ -84,6 +84,11 @@ async function getDescription(exampleDirPath){
  * Build the examples config
  */
 async function start() {
+  const configDirPath = path.resolve(__dirname, '../config');
+  try {
+    await mkdir(configDirPath);
+  } catch(e) {}
+
   let exampleDirs = await getDirectories(examplesDirPath);
   //Filter out any examples that either:
   // 1. are impossible to show
@@ -106,7 +111,7 @@ async function start() {
     }
   }
 
-  const outputFile = path.resolve(__dirname, '../config/examples.json')
+  const outputFile = path.resolve(__dirname, '../config/examples.json');
   await writeFile(outputFile, JSON.stringify(templateConfig, null, 4));
 
   let mainReadme = await readFile(path.resolve(__dirname, '../../examples/README.md'), 'utf-8');
@@ -118,7 +123,8 @@ async function start() {
   mainReadme = mainReadme.replace('../docs/contributing.md', 'https://github.com/asyncapi/modelina/tree/master/examples/../docs/contributing.md');
   mainReadme = mainReadme.replace('- [integrate with React](?selectedExample=integrate-with-react/)', '- [integrate with React](https://github.com/asyncapi/modelina/tree/master/examples/integrate-with-react)');
   mainReadme = mainReadme.replace('- [TEMPLATE](?selectedExample=TEMPLATE)', '- [TEMPLATE](https://github.com/asyncapi/modelina/tree/master/examples/TEMPLATE)');
-  await writeFile(path.resolve(__dirname, '../config/examples_readme.json'), JSON.stringify(mainReadme))
+  const readmePath = path.resolve(__dirname, '../config/examples_readme.json');
+  await writeFile(readmePath, JSON.stringify(mainReadme))
 }
 
 start();

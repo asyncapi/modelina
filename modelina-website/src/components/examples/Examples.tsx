@@ -44,7 +44,7 @@ class Examples extends React.Component<
   }
 
   /**
-   * Set a query key and value
+   * Set a query key and value or unset depending on value
    */
   setNewQuery(queryKey: string, queryValue: any) {
     const newQuery = {
