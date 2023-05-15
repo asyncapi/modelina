@@ -127,4 +127,4 @@ async function start() {
   await writeFile(readmePath, JSON.stringify(mainReadme))
 }
 
-start();
+start().catch(console.error);

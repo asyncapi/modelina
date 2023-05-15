@@ -34,7 +34,6 @@ class Examples extends React.Component<
   ModelinaExamplesProps,
   ModelinaExamplesState
 > {
-  hasLoadedQuery: boolean = false;
   constructor(props: ModelinaExamplesProps) {
     super(props);
     this.state = {
@@ -79,7 +78,7 @@ class Examples extends React.Component<
           <div className={`col-span-1`}>
             {
               examplesIterator.map((value) => {
-                return <div className={`hover:bg-sky-500/[.3] ${value[0] === selectedExample && 'bg-sky-500/[.3]'} p-2`} onClick={() => {this.setNewQuery('selectedExample', value[0])}}>{value[1].displayName}</div>
+                return <div key={value[0]} className={`hover:bg-sky-500/[.3] ${value[0] === selectedExample && 'bg-sky-500/[.3]'} p-2`} onClick={() => {this.setNewQuery('selectedExample', value[0])}}>{value[1].displayName}</div>
               })
             }
           </div>
