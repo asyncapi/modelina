@@ -58,7 +58,7 @@ public interface Vehicle {
 
 exports[`JavaGenerator oneOf/discriminator with jackson preset handle allOf with const in CloudEvent type 1`] = `
 Array [
-  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property=\\"type\\")
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"type\\")
 @JsonSubTypes({
   @JsonSubTypes.Type(value = Dog.class, name = \\"Dog\\"),
   @JsonSubTypes.Type(value = Cat.class, name = \\"Cat\\")
@@ -366,7 +366,7 @@ Array [
 
 exports[`JavaGenerator oneOf/discriminator with jackson preset handle setting title with const 1`] = `
 Array [
-  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property=\\"type\\")
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"type\\")
 @JsonSubTypes({
   @JsonSubTypes.Type(value = Dog.class, name = \\"Dog\\"),
   @JsonSubTypes.Type(value = Cat.class, name = \\"Cat\\")
