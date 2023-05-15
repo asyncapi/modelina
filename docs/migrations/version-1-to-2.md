@@ -199,7 +199,7 @@ components:
 will generate
 
 ```java
-@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property="vehicleType")
+@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property="vehicleType")
 @JsonSubTypes({
   @JsonSubTypes.Type(value = Car.class, name = "Car"),
   @JsonSubTypes.Type(value = Truck.class, name = "Truck")
