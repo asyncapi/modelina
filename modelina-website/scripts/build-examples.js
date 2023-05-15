@@ -58,7 +58,7 @@ function getLanguage(exampleName) {
 async function getCode(exampleDirPath) {
   let code = await readFile(path.resolve(exampleDirPath, 'index.ts'), "utf-8");
   //Make sure the examples dont use local references
-  code = code.replaceAll(/from '\.\.\/\.\.\/src[^']*/g, "from '@asyncapi/modelina");
+  code = code.replace(/from '\.\.\/\.\.\/src[^']*/g, "from '@asyncapi/modelina");
   return code;
 }
 function getOutput(exampleDirPath){
@@ -68,7 +68,7 @@ function getOutput(exampleDirPath){
       const searchValue = 'Array [\n  \"\"';
       exportValue = exportValue.slice(searchValue.length, exportValue.length);
       exportValue = exportValue.slice(0, exportValue.length-5);
-      exportValue = exportValue.replaceAll("\\", "");
+      exportValue = exportValue.replace(/\\/g, "");
       return exportValue;
     }).join('\n\n');
   return output;
@@ -116,7 +116,7 @@ async function start() {
 
   let mainReadme = await readFile(path.resolve(__dirname, '../../examples/README.md'), 'utf-8');
   // Replace all local references to examples with queries
-  mainReadme = mainReadme.replaceAll(/\(.\/(.*?)\)/g, '(?selectedExample=$1)');
+  mainReadme = mainReadme.replace(/\(.\/(.*?)\)/g, '(?selectedExample=$1)');
   mainReadme = mainReadme.replace('<!-- toc is generated with GitHub Actions do not remove toc markers -->', '');
   mainReadme = mainReadme.replace('<!-- toc -->', '');
   mainReadme = mainReadme.replace('<!-- tocstop -->', '');
