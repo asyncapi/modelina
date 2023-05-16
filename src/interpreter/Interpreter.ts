@@ -114,6 +114,7 @@ export class Interpreter {
         'number',
         'array',
         'boolean',
+        'null',
         'integer'
       ]);
     } else if (typeof schema === 'object') {

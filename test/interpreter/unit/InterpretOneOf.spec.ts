@@ -69,7 +69,7 @@ describe('Interpretation of oneOf', () => {
     expect(interpreter.interpret).toHaveBeenNthCalledWith(2, schema.oneOf[1], {
       allowInheritance: false
     });
-    expect(model.addItemUnion).toHaveBeenCalledTimes(1);
+    expect(model.addItemUnion).toHaveBeenCalledTimes(2);
     expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });
   describe('discriminator', () => {

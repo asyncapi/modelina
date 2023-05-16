@@ -1,4 +1,4 @@
-import { ConstrainedUnionModel } from '../../models';
+import { ConstrainedMetaModel, ConstrainedUnionModel } from '../../models';
 import { Logger } from '../../utils';
 import {
   defaultEnumKeyConstraints,
@@ -9,7 +9,12 @@ import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrai
 import { defaultConstantConstraints } from './constrainer/ConstantConstrainer';
 import { TypeScriptTypeMapping } from './TypeScriptGenerator';
 import { Constraints } from '../../helpers';
-
+function applyNullable(model: ConstrainedMetaModel, type: string) {
+  if(model.options.isNullable) {
+    return `${type} | null`;
+  }
+  return type;
+}
 export const TypeScriptDefaultTypeMapping: TypeScriptTypeMapping = {
   Object({ constrainedModel }): string {
     return constrainedModel.name;
@@ -20,30 +25,32 @@ export const TypeScriptDefaultTypeMapping: TypeScriptTypeMapping = {
   Any(): string {
     return 'any';
   },
-  Float(): string {
-    return 'number';
+  Float({constrainedModel}): string {
+    return applyNullable(constrainedModel, 'number');
   },
-  Integer(): string {
-    return 'number';
+  Integer({constrainedModel}): string {
+    return applyNullable(constrainedModel, 'number');
   },
-  String(): string {
-    return 'string';
+  String({constrainedModel}): string {
+    return applyNullable(constrainedModel, 'string');
   },
-  Boolean(): string {
-    return 'boolean';
+  Boolean({constrainedModel}): string {
+    return applyNullable(constrainedModel, 'boolean');
   },
   Tuple({ constrainedModel }): string {
     const tupleTypes = constrainedModel.tuple.map((constrainedType) => {
       return constrainedType.value.type;
     });
-    return `[${tupleTypes.join(', ')}]`;
+    let tupleType = `[${tupleTypes.join(', ')}]`;
+    return applyNullable(constrainedModel, tupleType);
   },
   Array({ constrainedModel }): string {
     let arrayType = constrainedModel.valueModel.type;
     if (constrainedModel.valueModel instanceof ConstrainedUnionModel) {
       arrayType = `(${arrayType})`;
     }
-    return `${arrayType}[]`;
+    arrayType = `${arrayType}[]`;
+    return applyNullable(constrainedModel, arrayType);
   },
   Enum({ constrainedModel }): string {
     return constrainedModel.name;
@@ -56,7 +63,7 @@ export const TypeScriptDefaultTypeMapping: TypeScriptTypeMapping = {
 
       return unionModel.type;
     });
-    return unionTypes.join(' | ');
+    return applyNullable(args.constrainedModel, unionTypes.join(' | '));
   },
   Dictionary({ constrainedModel, options }): string {
     let keyType;
@@ -69,15 +76,19 @@ export const TypeScriptDefaultTypeMapping: TypeScriptTypeMapping = {
     } else {
       keyType = constrainedModel.key.type;
     }
+    let dictionaryType;
     switch (options.mapType) {
       case 'indexedObject':
-        return `{ [name: ${keyType}]: ${constrainedModel.value.type} }`;
+        dictionaryType = `{ [name: ${keyType}]: ${constrainedModel.value.type} }`;
+        break;
       case 'record':
-        return `Record<${keyType}, ${constrainedModel.value.type}>`;
-      default:
+        dictionaryType = `Record<${keyType}, ${constrainedModel.value.type}>`;
+        break;
       case 'map':
-        return `Map<${keyType}, ${constrainedModel.value.type}>`;
+        dictionaryType = `Map<${keyType}, ${constrainedModel.value.type}>`;
+        break;
     }
+    return applyNullable(constrainedModel, dictionaryType);
   }
 };
 

@@ -30,6 +30,8 @@ function getMetaModelOptions(commonModel: CommonModel): MetaModelOptions {
 
   if (Array.isArray(commonModel.type) && commonModel.type.includes('null')) {
     options.isNullable = true;
+  } else {
+    options.isNullable = false
   }
 
   if (commonModel.discriminator) {
@@ -144,23 +146,25 @@ export function convertToUnionModel(
   alreadySeenModels: Map<CommonModel, MetaModel>
 ): UnionModel | undefined {
   const containsUnions = Array.isArray(jsonSchemaModel.union);
-  const containsSimpleTypeUnion =
-    (Array.isArray(jsonSchemaModel.type) &&
-      jsonSchemaModel.type.length > 1 &&
-      !jsonSchemaModel.type.includes('null')) ||
-    (Array.isArray(jsonSchemaModel.type) && jsonSchemaModel.type.length > 2);
+
+  // Should not create union from two types where one is null
+  const containsTypeWithNull = Array.isArray(jsonSchemaModel.type) && jsonSchemaModel.type.length === 2 && jsonSchemaModel.type.includes('null');
+  const containsSimpleTypeUnion = Array.isArray(jsonSchemaModel.type) && jsonSchemaModel.type.length > 2 && !containsTypeWithNull;
   const containsAllTypesButNull =
     Array.isArray(jsonSchemaModel.type) &&
-    jsonSchemaModel.type.length > 6 &&
+    jsonSchemaModel.type.length >= 6 &&
     !jsonSchemaModel.type.includes('null');
   const containsAllTypes =
     (Array.isArray(jsonSchemaModel.type) &&
       jsonSchemaModel.type.length === 7) ||
     containsAllTypesButNull;
+
+  //Lets see whether we should have a union or not.
   if (
     (!containsSimpleTypeUnion && !containsUnions) ||
     isEnumModel(jsonSchemaModel) ||
-    containsAllTypes
+    containsAllTypes ||
+    containsTypeWithNull
   ) {
     return undefined;
   }
@@ -170,6 +174,7 @@ export function convertToUnionModel(
     getMetaModelOptions(jsonSchemaModel),
     []
   );
+
   //cache model before continuing
   if (!alreadySeenModels.has(jsonSchemaModel)) {
     alreadySeenModels.set(jsonSchemaModel, unionModel);
@@ -178,11 +183,16 @@ export function convertToUnionModel(
   // Has multiple types, so convert to union
   if (containsUnions && jsonSchemaModel.union) {
     for (const unionCommonModel of jsonSchemaModel.union) {
-      const unionMetaModel = convertToMetaModel(
-        unionCommonModel,
-        alreadySeenModels
-      );
-      unionModel.union.push(unionMetaModel);
+      const isSingleNullType = (Array.isArray(unionCommonModel.type) && unionCommonModel.type.length === 1 && unionCommonModel.type?.includes('null')) || unionCommonModel.type === 'null';
+      if(isSingleNullType) {
+        unionModel.options.isNullable = true;
+      } else {
+        const unionMetaModel = convertToMetaModel(
+          unionCommonModel,
+          alreadySeenModels
+        );
+        unionModel.union.push(unionMetaModel);
+      }
     }
     return unionModel;
   }
