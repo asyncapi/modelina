@@ -60,8 +60,8 @@ describe('JavaGenerator', () => {
     };
     const expectedDependencies = ['import java.util.Map;'];
     const models = await generator.generate(doc);
-    expect(models).toHaveLength(1);
-    expect(models[0].result).toMatchSnapshot();
+    expect(models).toHaveLength(4);
+    expect(models.map((model) => model.result)).toMatchSnapshot();
     expect(models[0].dependencies).toEqual(expectedDependencies);
   });
 
@@ -241,9 +241,8 @@ describe('JavaGenerator', () => {
     };
     const config = { packageName: 'test.packageName' };
     const models = await generator.generateCompleteModels(doc, config);
-    expect(models).toHaveLength(2);
-    expect(models[0].result).toMatchSnapshot();
-    expect(models[1].result).toMatchSnapshot();
+    expect(models).toHaveLength(5);
+    expect(models.map((model) => model.result)).toMatchSnapshot();
   });
   test('should throw error when reserved keyword is used in any part of the package name', async () => {
     const doc = {
