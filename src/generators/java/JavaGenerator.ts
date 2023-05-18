@@ -90,7 +90,8 @@ export class JavaGenerator extends AbstractGenerator<
     //These are the models that we have separate renderers for
     const metaModelsToSplit: SplitOptions = {
       splitEnum: true,
-      splitObject: true
+      splitObject: true,
+      splitUnion: true
     };
     return split(model, metaModelsToSplit);
   }

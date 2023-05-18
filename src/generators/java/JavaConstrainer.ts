@@ -79,7 +79,8 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
     return constrainedModel.name;
   },
   Reference({ constrainedModel }): string {
-    return constrainedModel.name;
+    //propagate the type mapping of the referenced model
+    return constrainedModel.ref.type;
   },
   Any(): string {
     return 'Object';
@@ -170,9 +171,35 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
 
     return uniqueTypes[0];
   },
-  Union(): string {
-    //Because Java have no notion of unions (and no custom implementation), we have to render it as any value.
-    return 'Object';
+  Union({ constrainedModel }): string {
+    //We don't have a good solution for unions including primitive types and
+    //collection types, so they are represented by the 'Object' type
+    if (
+      constrainedModel.union.find(
+        (u) =>
+          //Primitive types and boxed versions
+          u.type.toLowerCase() === 'byte' ||
+          u.type.toLowerCase() === 'short' ||
+          u.type === 'int' ||
+          u.type === 'Integer' ||
+          u.type.toLowerCase() === 'long' ||
+          u.type.toLowerCase() === 'float' ||
+          u.type.toLowerCase() === 'double' ||
+          u.type === 'char' ||
+          u.type === 'Character' ||
+          u.type.toLowerCase() === 'boolean' ||
+          u.type.toLowerCase() === 'int' ||
+          //Collections
+          u.type.startsWith('Map<') ||
+          u.type.startsWith('List<') ||
+          u.type.startsWith('Set<') ||
+          u.type === 'String' ||
+          u.type.endsWith('[]')
+      )
+    ) {
+      return 'Object';
+    }
+    return constrainedModel.type;
   },
   Dictionary({ constrainedModel }): string {
     //Limitations to Java is that maps cannot have specific value types...
