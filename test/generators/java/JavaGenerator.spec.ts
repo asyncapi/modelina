@@ -734,6 +734,73 @@ describe('JavaGenerator', () => {
         expect(cloudEventType).not.toBeUndefined();
         expect(cloudEventType?.result).toContain('DOG');
       });
+      test('should create an interface for child models', async () => {
+        const asyncapiDoc = {
+          asyncapi: '2.6.0',
+          info: {
+            title: 'Vehicle example',
+            version: '1.0.0'
+          },
+          channels: {},
+          components: {
+            messages: {
+              Vehicle: {
+                payload: {
+                  title: 'Cargo',
+                  type: 'object',
+                  properties: {
+                    vehicle: {
+                      $ref: '#/components/schemas/Vehicle'
+                    }
+                  }
+                }
+              }
+            },
+            schemas: {
+              Vehicle: {
+                title: 'Vehicle',
+                type: 'object',
+                discriminator: 'vehicleType',
+                properties: {
+                  vehicleType: {
+                    title: 'VehicleType',
+                    type: 'string'
+                  }
+                },
+                required: ['vehicleType'],
+                oneOf: [
+                  {
+                    $ref: '#/components/schemas/Car'
+                  },
+                  {
+                    $ref: '#/components/schemas/Truck'
+                  }
+                ]
+              },
+              Car: {
+                type: 'object',
+                properties: {
+                  vehicleType: {
+                    const: 'Car'
+                  }
+                }
+              },
+
+              Truck: {
+                type: 'object',
+                properties: {
+                  vehicleType: {
+                    const: 'Truck'
+                  }
+                }
+              }
+            }
+          }
+        };
+
+        const models = await generator.generate(asyncapiDoc);
+        expect(models.map((model) => model.result)).toMatchSnapshot();
+      });
     });
   });
 });

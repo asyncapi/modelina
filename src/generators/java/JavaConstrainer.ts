@@ -79,13 +79,11 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
     return constrainedModel.name;
   },
   Reference({ constrainedModel }): string {
-    //propagate the type mapping of the referenced model
     if (constrainedModel.ref instanceof ConstrainedEnumModel) {
       //use the enum name rather than the underlying type of the Enum
       return constrainedModel.ref.name;
-    } else {
-      return constrainedModel.ref.type;
     }
+    return constrainedModel.ref.type;
   },
   Any(): string {
     return 'Object';
@@ -194,6 +192,7 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
           u.type === 'Character' ||
           u.type.toLowerCase() === 'boolean' ||
           u.type.toLowerCase() === 'int' ||
+          u.type === 'Object' ||
           //Collections
           u.type.startsWith('Map<') ||
           u.type.startsWith('List<') ||
