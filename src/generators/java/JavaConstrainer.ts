@@ -1,5 +1,5 @@
 import { Constraints } from '../../helpers';
-import { ConstrainedEnumValueModel } from '../../models';
+import { ConstrainedEnumModel, ConstrainedEnumValueModel } from '../../models';
 import {
   defaultEnumKeyConstraints,
   defaultEnumValueConstraints
@@ -80,7 +80,12 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
   },
   Reference({ constrainedModel }): string {
     //propagate the type mapping of the referenced model
-    return constrainedModel.ref.type;
+    if (constrainedModel.ref instanceof ConstrainedEnumModel) {
+      //use the enum name rather than the underlying type of the Enum
+      return constrainedModel.ref.name;
+    } else {
+      return constrainedModel.ref.type;
+    }
   },
   Any(): string {
     return 'Object';
@@ -199,7 +204,7 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
     ) {
       return 'Object';
     }
-    return constrainedModel.type;
+    return constrainedModel.name;
   },
   Dictionary({ constrainedModel }): string {
     //Limitations to Java is that maps cannot have specific value types...

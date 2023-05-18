@@ -33,8 +33,13 @@ describe('JavaConstrainer', () => {
     });
   });
   describe('Reference', () => {
-    test('should render the constrained name as type', () => {
-      const refModel = new ConstrainedAnyModel('test', undefined, {}, '');
+    test('should render non-enum referenced type', () => {
+      const refModel = new ConstrainedAnyModel(
+        'ref-name',
+        undefined,
+        {},
+        'ref-type'
+      );
       const model = new ConstrainedReferenceModel(
         'test',
         undefined,
@@ -46,7 +51,28 @@ describe('JavaConstrainer', () => {
         constrainedModel: model,
         ...defaultOptions
       });
-      expect(type).toEqual(model.name);
+      expect(type).toEqual(refModel.type);
+    });
+    test('should render enum referenced name', () => {
+      const refModel = new ConstrainedEnumModel(
+        'ref-name',
+        undefined,
+        {},
+        'ref-type',
+        []
+      );
+      const model = new ConstrainedReferenceModel(
+        'test',
+        undefined,
+        {},
+        '',
+        refModel
+      );
+      const type = JavaDefaultTypeMapping.Reference({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual(refModel.name);
     });
   });
   describe('Any', () => {
@@ -435,8 +461,27 @@ describe('JavaConstrainer', () => {
   });
 
   describe('Union', () => {
-    test('should render type', () => {
-      const model = new ConstrainedUnionModel('test', undefined, {}, '', []);
+    test('should render the constrained name for non-primitive type unions', () => {
+      const union = new ConstrainedAnyModel(
+        'test-union',
+        undefined,
+        {},
+        'UnionType'
+      );
+      const model = new ConstrainedUnionModel('test', undefined, {}, '', [
+        union
+      ]);
+      const type = JavaDefaultTypeMapping.Union({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('test');
+    });
+    test('should render Object for primitive type unions', () => {
+      const union = new ConstrainedAnyModel('test-union', undefined, {}, 'int');
+      const model = new ConstrainedUnionModel('test', undefined, {}, '', [
+        union
+      ]);
       const type = JavaDefaultTypeMapping.Union({
         constrainedModel: model,
         ...defaultOptions
