@@ -8,3 +8,5 @@ examples/integrate-with-react
 src/processors/TemplateInputProcessor.ts
 test/processors/TemplateInputProcessor.spec.ts
 modelina-website
+
+test/runtime/runtime-**/**
