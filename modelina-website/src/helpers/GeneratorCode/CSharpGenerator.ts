@@ -18,9 +18,14 @@ export function getCSharpGeneratorCode(
   }
 
   if (generatorOptions.csharpOverwriteHashcode) {
-    optionString.push(
-      `   OverwriteHashcodeSupport : ${generatorOptions.csharpOverwriteHashcode}`
-    );
+    optionStringPresets.push(`
+    {
+      preset: CSHARP_COMMON_PRESET,
+      options: {
+        equal: false,
+        hashCode: true
+      }
+    }`)
   }
   const presetOptions =
     optionStringPresets.length > 0
