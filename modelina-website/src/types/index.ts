@@ -15,6 +15,8 @@ export interface ModelinaTypeScriptOptions {
   tsEnumType: 'union' | 'enum' | undefined;
   tsModuleSystem: 'ESM' | 'CJS' | undefined;
   tsIncludeDescriptions: boolean;
+  tsIncludeJsonBinPack: boolean;
+  tsIncludeExampleFunction: boolean;
 }
 export interface ModelinaJavaOptions {}
 export interface ModelinaCplusplusOptions {}
@@ -63,6 +65,8 @@ export interface ModelinaTypeScriptQueryOptions {
   tsModelType?: string;
   tsEnumType?: string;
   tsIncludeDescriptions?: string;
+  tsIncludeJsonBinPack?: string;
+  tsIncludeExampleFunction?: string;
 }
 
 export interface ModelinaOptions

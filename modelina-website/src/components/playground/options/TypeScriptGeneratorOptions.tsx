@@ -23,6 +23,8 @@ class TypeScriptGeneratorOptions extends React.Component<
     this.onChangeVariant = this.onChangeVariant.bind(this);
     this.onChangeEnumType = this.onChangeEnumType.bind(this);
     this.onChangeModuleSystem = this.onChangeModuleSystem.bind(this);
+    this.onChangeIncludeExampleFunction = this.onChangeIncludeExampleFunction.bind(this);
+    this.onChangeIncludeJsonBinPack = this.onChangeIncludeJsonBinPack.bind(this);
     this.onChangeIncludeDescriptions =
       this.onChangeIncludeDescriptions.bind(this);
   }
@@ -54,6 +56,21 @@ class TypeScriptGeneratorOptions extends React.Component<
   onChangeEnumType(enumType: any) {
     if (this.props.setNewConfig) {
       this.props.setNewConfig('tsEnumType', String(enumType));
+    }
+  }
+
+  onChangeIncludeJsonBinPack(event: any) {
+    if (this.props.setNewConfig) {
+      this.props.setNewConfig('tsIncludeJsonBinPack', event.target.checked);
+
+      // This option require the marshalling functions as well
+      this.onChangeMarshalling(event);
+    }
+  }
+
+  onChangeIncludeExampleFunction(event: any) {
+    if (this.props.setNewConfig) {
+      this.props.setNewConfig('tsIncludeExampleFunction', event.target.checked);
     }
   }
 
@@ -137,6 +154,38 @@ class TypeScriptGeneratorOptions extends React.Component<
                 name="marshalling"
                 checked={this.context?.tsMarshalling}
                 onChange={this.onChangeMarshalling}
+              />
+            </label>
+          </li>
+        ) : null}
+        {this.context?.tsModelType === 'class' ? (
+          <li>
+            <label className="flex items-center py-2 justify-between cursor-pointer">
+              <span className="mt-1 max-w-2xl text-sm text-gray-500">
+                Include JsonBinPack support
+              </span>
+              <input
+                type="checkbox"
+                className="form-checkbox cursor-pointer"
+                name="jsonbinpack"
+                checked={this.context?.tsIncludeJsonBinPack}
+                onChange={this.onChangeIncludeJsonBinPack}
+              />
+            </label>
+          </li>
+        ) : null}
+        {this.context?.tsModelType === 'class' ? (
+          <li>
+            <label className="flex items-center py-2 justify-between cursor-pointer">
+              <span className="mt-1 max-w-2xl text-sm text-gray-500">
+                Include example functions
+              </span>
+              <input
+                type="checkbox"
+                className="form-checkbox cursor-pointer"
+                name="exampleFunction"
+                checked={this.context?.tsIncludeExampleFunction}
+                onChange={this.onChangeIncludeExampleFunction}
               />
             </label>
           </li>

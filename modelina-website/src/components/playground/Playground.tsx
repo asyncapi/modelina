@@ -75,6 +75,8 @@ class Playground extends React.Component<
     tsEnumType: 'enum',
     tsModuleSystem: 'CJS',
     tsIncludeDescriptions: false,
+    tsIncludeExampleFunction: false,
+    tsIncludeJsonBinPack: false,
     csharpArrayType: 'Array',
     csharpAutoImplemented: false,
   };
@@ -113,8 +115,12 @@ class Playground extends React.Component<
     const newQuery = {
       query: { ...this.props.router.query }
     };
-    /* eslint-disable-next-line security/detect-object-injection */
-    newQuery.query[queryKey] = String(queryValue);
+    if(queryValue === false) {
+      delete newQuery.query[queryKey];
+    } else {
+      /* eslint-disable-next-line security/detect-object-injection */
+      newQuery.query[queryKey] = String(queryValue);
+    }
     Router.push(newQuery, undefined, { scroll: false });
   }
 
@@ -194,6 +200,14 @@ class Playground extends React.Component<
       this.config.tsIncludeDescriptions =
         query.tsIncludeDescriptions === 'true';
     }
+    if (query.tsIncludeJsonBinPack !== undefined) {
+      this.config.tsIncludeJsonBinPack =
+        query.tsIncludeJsonBinPack === 'true';
+    }
+    if (query.tsIncludeExampleFunction !== undefined) {
+      this.config.tsIncludeExampleFunction =
+        query.tsIncludeExampleFunction === 'true';
+    }
     if (query.language !== undefined) {
       this.config.language = query.language as any;
     }
@@ -240,7 +254,7 @@ class Playground extends React.Component<
           className={`grid grid-cols-2 gap-4 mt-4 ${isLoaded ? '' : 'invisible'
             }`}
         >
-          <div className="col-span-2" style={{ height: '500px' }}>
+          <div className="col-span-2">
             <div className="overflow-hidden bg-white shadow sm:rounded-lg flex flex-row">
               <div className="px-4 py-5 sm:px-6 basis-6/12">
                 <h3 className="text-lg font-medium leading-6 text-gray-900">
@@ -296,7 +310,9 @@ class Playground extends React.Component<
                     tsModelType: this.config.tsModelType,
                     tsModuleSystem: this.config.tsModuleSystem,
                     tsEnumType: this.config.tsEnumType,
-                    tsIncludeDescriptions: this.config.tsIncludeDescriptions
+                    tsIncludeDescriptions: this.config.tsIncludeDescriptions,
+                    tsIncludeExampleFunction: this.config.tsIncludeExampleFunction,
+                    tsIncludeJsonBinPack: this.config.tsIncludeJsonBinPack
                   }}
                 >
                   <PlaygroundJavaScriptConfigContext.Provider value={{}}>
