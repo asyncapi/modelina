@@ -131,6 +131,18 @@ function isEnumModel(jsonSchemaModel: CommonModel): boolean {
   return true;
 }
 
+function shouldBeAnyType(jsonSchemaModel: CommonModel): boolean {
+  const containsAllTypesButNull =
+    Array.isArray(jsonSchemaModel.type) &&
+    jsonSchemaModel.type.length >= 6 &&
+    !jsonSchemaModel.type.includes('null');
+  const containsAllTypes =
+    (Array.isArray(jsonSchemaModel.type) &&
+      jsonSchemaModel.type.length === 7) ||
+    containsAllTypesButNull;
+  return containsAllTypesButNull || containsAllTypes;
+}
+
 /**
  * Converts a CommonModel into multiple models wrapped in a union model.
  *
@@ -149,21 +161,14 @@ export function convertToUnionModel(
 
   // Should not create union from two types where one is null
   const containsTypeWithNull = Array.isArray(jsonSchemaModel.type) && jsonSchemaModel.type.length === 2 && jsonSchemaModel.type.includes('null');
-  const containsSimpleTypeUnion = Array.isArray(jsonSchemaModel.type) && jsonSchemaModel.type.length > 2 && !containsTypeWithNull;
-  const containsAllTypesButNull =
-    Array.isArray(jsonSchemaModel.type) &&
-    jsonSchemaModel.type.length >= 6 &&
-    !jsonSchemaModel.type.includes('null');
-  const containsAllTypes =
-    (Array.isArray(jsonSchemaModel.type) &&
-      jsonSchemaModel.type.length === 7) ||
-    containsAllTypesButNull;
+  const containsSimpleTypeUnion = Array.isArray(jsonSchemaModel.type) && jsonSchemaModel.type.length > 1 && !containsTypeWithNull;
+  const isAnyType = shouldBeAnyType(jsonSchemaModel);
 
   //Lets see whether we should have a union or not.
   if (
     (!containsSimpleTypeUnion && !containsUnions) ||
     isEnumModel(jsonSchemaModel) ||
-    containsAllTypes ||
+    isAnyType ||
     containsTypeWithNull
   ) {
     return undefined;
@@ -276,9 +281,10 @@ export function convertToAnyModel(
   jsonSchemaModel: CommonModel,
   name: string
 ): AnyModel | undefined {
+  const isAnyType = shouldBeAnyType(jsonSchemaModel);
   if (
     !Array.isArray(jsonSchemaModel.type) ||
-    jsonSchemaModel.type.length !== 7
+    !isAnyType
   ) {
     return undefined;
   }

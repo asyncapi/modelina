@@ -5,7 +5,7 @@ Array [
   "public class InnerData {
   private Double age;
   private String name;
-  private Boolean free;
+  private boolean free;
   private Map<String, Object> additionalProperties;
 
   public Double getAge() { return this.age; }
@@ -14,8 +14,8 @@ Array [
   public String getName() { return this.name; }
   public void setName(String name) { this.name = name; }
 
-  public Boolean getFree() { return this.free; }
-  public void setFree(Boolean free) { this.free = free; }
+  public boolean getFree() { return this.free; }
+  public void setFree(boolean free) { this.free = free; }
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }

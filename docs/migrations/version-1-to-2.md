@@ -271,7 +271,8 @@ public class Truck implements Vehicle {
 Each [meta model](../internal-model.md) up until now where not able to be marked as nullable, but now they can be through `isNullable`. Here are the different outputs and how they now apply nullable types.
 
 ### TypeScript
-Is not affected by this change.
+
+Across all models, if they are nullable they will get the union `x | null`.
 
 ### JavaScript
 Is not affected by this change.
@@ -280,7 +281,7 @@ Is not affected by this change.
 Is not affected by this change.
 
 ### Java
-Is not affected by this change.
+With this update, Float, Integer and Boolean meta models are rendered between their primitive types (for example `float`) and wrapper classes (for example `Float`) for nullable.
 
 ### Kotlin
 Is not affected by this change.

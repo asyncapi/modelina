@@ -95,6 +95,16 @@ describe('CommonModelToMetaModel', () => {
   });
   test('should convert to any model', () => {
     const cm = new CommonModel();
+    cm.type = ['string', 'number', 'integer', 'boolean', 'object', 'array', 'null'];
+    cm.$id = 'test';
+
+    const model = convertToMetaModel(cm);
+
+    expect(model).not.toBeUndefined();
+    expect(model instanceof AnyModel).toEqual(true);
+  });
+  test('should convert to any model with missing null', () => {
+    const cm = new CommonModel();
     cm.type = ['string', 'number', 'integer', 'boolean', 'object', 'array'];
     cm.$id = 'test';
 

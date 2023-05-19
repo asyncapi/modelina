@@ -91,7 +91,7 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
       constrainedModel.originalInput['format'];
     switch (format) {
       case 'float':
-        type = 'float';
+        type = constrainedModel.options.isNullable ? 'Float' : 'float';
         break;
     }
     return type;
