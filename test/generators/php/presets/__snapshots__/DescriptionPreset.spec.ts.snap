@@ -1,8 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`PHP_DESCRIPTION_PRESET should render description and examples for class 1`] = `
-"
-/**
+"/**
  * Description for class
  */
 final class Clazz
@@ -20,8 +19,7 @@ final class Clazz
 `;
 
 exports[`PHP_DESCRIPTION_PRESET should render description and examples for enum 1`] = `
-"
-/**
+"/**
  * Description for enum
  */
 enum Enum
