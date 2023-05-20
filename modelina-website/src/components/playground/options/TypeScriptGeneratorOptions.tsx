@@ -3,7 +3,7 @@ import Select from '../../Select';
 import { PlaygroundTypeScriptConfigContext } from '@/components/contexts/PlaygroundConfigContext';
 
 interface TypeScriptGeneratorOptionsProps {
-  setNewConfig?: (queryKey: string, queryValue: string) => void;
+  setNewConfig?: (queryKey: string, queryValue: any, updateCode?: boolean) => void;
 }
 
 interface TypeScriptGeneratorState {}
@@ -31,7 +31,12 @@ class TypeScriptGeneratorOptions extends React.Component<
 
   onChangeMarshalling(event: any) {
     if (this.props.setNewConfig) {
-      this.props.setNewConfig('tsMarshalling', event.target.checked);
+      this.props.setNewConfig('tsMarshalling', event.target.checked, false);
+      console.log(this.context);
+      if(event.target.checked === false) {
+        if (this.context) this.context.tsIncludeJsonBinPack = false;
+        this.props.setNewConfig('tsIncludeJsonBinPack', event.target.checked);
+      }
     }
   }
 
@@ -61,10 +66,11 @@ class TypeScriptGeneratorOptions extends React.Component<
 
   onChangeIncludeJsonBinPack(event: any) {
     if (this.props.setNewConfig) {
-      this.props.setNewConfig('tsIncludeJsonBinPack', event.target.checked);
-
-      // This option require the marshalling functions as well
-      this.onChangeMarshalling(event);
+      this.props.setNewConfig('tsIncludeJsonBinPack', event.target.checked, false);
+      console.log(event.target.checked);
+      if(this.context?.tsMarshalling === false && event.target.checked === true) {
+        this.props.setNewConfig('tsMarshalling', event.target.checked);
+      }
     }
   }
 

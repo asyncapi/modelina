@@ -101,11 +101,13 @@ class Playground extends React.Component<
     this.generateNewCode = this.generateNewCode.bind(this);
   }
 
-  setNewConfig(config: string, configValue: any) {
+  setNewConfig(config: string, configValue: any, updateCode?: boolean) {
     this.setNewQuery(config, configValue);
     /* eslint-disable-next-line security/detect-object-injection */
     (this.config as any)[config] = configValue;
-    this.generateNewCode(this.state.input);
+    if(updateCode === true || updateCode === undefined) {
+      this.generateNewCode(this.state.input);
+    }
   }
 
   /**
