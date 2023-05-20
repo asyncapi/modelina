@@ -14,8 +14,7 @@ function renderDescription({
 
   const description = model.originalInput['description'];
 
-  return `
-/**
+  return `/**
  * ${description}
  */
 ${content}`;
