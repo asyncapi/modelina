@@ -25,7 +25,8 @@ import {
   PlaygroundKotlinConfigContext,
   PlaygroundPythonConfigContext,
   PlaygroundRustConfigContext,
-  PlaygroundCplusplusConfigContext
+  PlaygroundCplusplusConfigContext,
+  PlaygroundPhpConfigContext
 } from '../contexts/PlaygroundConfigContext';
 import { getTypeScriptGeneratorCode } from '@/helpers/GeneratorCode/TypeScriptGenerator';
 import { getJavaScriptGeneratorCode } from '@/helpers/GeneratorCode/JavaScriptGenerator';
@@ -37,6 +38,7 @@ import { getPythonGeneratorCode } from '@/helpers/GeneratorCode/PythonGenerator'
 import { getDartGeneratorCode } from '@/helpers/GeneratorCode/DartGenerator';
 import { getCplusplusGeneratorCode } from '@/helpers/GeneratorCode/CplusplusGenerator';
 import CustomError from '../CustomError';
+import { getPhpGeneratorCode } from '@/helpers/GeneratorCode/PhpGenerator';
 
 interface WithRouterProps {
   router: NextRouter;
@@ -77,6 +79,7 @@ class Playground extends React.Component<
     tsIncludeDescriptions: false,
     csharpArrayType: 'Array',
     csharpAutoImplemented: false,
+    phpIncludeDescriptions: false
   };
   hasLoadedQuery: boolean = false;
   constructor(props: ModelinaPlaygroundProps) {
@@ -140,7 +143,8 @@ class Playground extends React.Component<
           rust: getRustGeneratorCode,
           python: getPythonGeneratorCode,
           dart: getDartGeneratorCode,
-          cplusplus: getCplusplusGeneratorCode
+          cplusplus: getCplusplusGeneratorCode,
+          php: getPhpGeneratorCode
         }
         const generatorCode = generators[this.config.language](message);
         fetch(`${process.env.NEXT_PUBLIC_API_PATH}/generate`, {
@@ -203,6 +207,10 @@ class Playground extends React.Component<
     if (query.csharpAutoImplemented !== undefined) {
       this.config.csharpAutoImplemented =
         query.csharpAutoImplemented === 'true';
+    }
+    if (query.phpIncludeDescriptions !== undefined) {
+      this.config.phpIncludeDescriptions =
+        query.phpIncludeDescriptions === 'true';
     }
     if (this.props.router.isReady && !this.hasLoadedQuery) {
       this.hasLoadedQuery = true;
@@ -309,19 +317,25 @@ class Playground extends React.Component<
                       <PlaygroundDartConfigContext.Provider value={{}}>
                         <PlaygroundGoConfigContext.Provider value={{}}>
                           <PlaygroundJavaConfigContext.Provider value={{}}>
-                            <PlaygroundCplusplusConfigContext.Provider value={{}}>
-                              <PlaygroundKotlinConfigContext.Provider value={{}}>
-                                <PlaygroundRustConfigContext.Provider value={{}}>
-                                  <PlaygroundPythonConfigContext.Provider
-                                    value={{}}
-                                  >
-                                    <PlaygroundOptions
-                                      setNewConfig={this.setNewConfig}
-                                    />
-                                  </PlaygroundPythonConfigContext.Provider>
-                                </PlaygroundRustConfigContext.Provider>
-                              </PlaygroundKotlinConfigContext.Provider>
-                            </PlaygroundCplusplusConfigContext.Provider>
+                            <PlaygroundPhpConfigContext.Provider 
+                              value={{
+                                phpIncludeDescriptions: this.config.phpIncludeDescriptions
+                              }}
+                            >
+                              <PlaygroundCplusplusConfigContext.Provider value={{}}>
+                                <PlaygroundKotlinConfigContext.Provider value={{}}>
+                                  <PlaygroundRustConfigContext.Provider value={{}}>
+                                    <PlaygroundPythonConfigContext.Provider
+                                      value={{}}
+                                    >
+                                      <PlaygroundOptions
+                                        setNewConfig={this.setNewConfig}
+                                      />
+                                    </PlaygroundPythonConfigContext.Provider>
+                                  </PlaygroundRustConfigContext.Provider>
+                                </PlaygroundKotlinConfigContext.Provider>
+                              </PlaygroundCplusplusConfigContext.Provider>
+                            </PlaygroundPhpConfigContext.Provider>
                           </PlaygroundJavaConfigContext.Provider>
                         </PlaygroundGoConfigContext.Provider>
                       </PlaygroundDartConfigContext.Provider>

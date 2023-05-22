@@ -18,6 +18,9 @@ export interface ModelinaTypeScriptOptions {
 }
 export interface ModelinaJavaOptions {}
 export interface ModelinaCplusplusOptions {}
+export interface ModelinaPhpOptions {
+  phpIncludeDescriptions: boolean;
+}
 export interface ModelinaGoOptions {}
 export interface ModelinaJavaScriptOptions {}
 export interface ModelinaCSharpOptions {
@@ -39,7 +42,8 @@ export interface ModelinaGeneralOptions {
     | 'rust'
     | 'python'
     | 'dart'
-    | 'cplusplus';
+    | 'cplusplus'
+    | 'php';
 }
 export interface ModelinaGeneralQueryOptions {
   language: string;
@@ -57,6 +61,9 @@ export interface ModelinaRustQueryOptions {}
 export interface ModelinaPythonQueryOptions {}
 export interface ModelinaCplusplusQueryOptions {}
 export interface ModelinaDartQueryOptions {}
+export interface ModelinaPhpQueryOptions {
+  phpIncludeDescriptions?: string;
+}
 
 export interface ModelinaTypeScriptQueryOptions {
   tsMarshalling?: string;
@@ -75,7 +82,8 @@ export interface ModelinaOptions
     ModelinaKotlinOptions,
     ModelinaRustOptions,
     ModelinaPythonOptions,
-    ModelinaDartOptions {}
+    ModelinaDartOptions,
+    ModelinaPhpOptions {}
 export interface ModelinaQueryOptions
   extends ParsedUrlQuery,
     ModelinaGeneralQueryOptions,
@@ -88,7 +96,8 @@ export interface ModelinaQueryOptions
     ModelinaRustQueryOptions,
     ModelinaPythonQueryOptions,
     ModelinaCplusplusQueryOptions,
-    ModelinaDartQueryOptions {}
+    ModelinaDartQueryOptions,
+    ModelinaPhpQueryOptions {}
 
 export interface GenerateMessage extends ModelinaOptions {
   input: string;
@@ -133,6 +142,10 @@ export const modelinaLanguageOptions = [
   {
     value: 'cplusplus',
     text: 'C++'
+  },
+  {
+    value: 'php',
+    text: 'PHP'
   }
 ];
 
