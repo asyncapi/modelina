@@ -440,7 +440,11 @@
       "profile": "https://malcherczyk.pl",
       "contributions": [
         "bug",
-        "infra"
+        "infra",
+        "code",
+        "example",
+        "test",
+        "review"
       ]
     },
     {
