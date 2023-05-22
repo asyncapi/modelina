@@ -74,8 +74,6 @@ class Playground extends React.Component<
     modelNamingFormat: 'default',
     enumKeyNamingFormat: 'default',
     indentationType: 'spaces',
-    showAllInOneFile: false,
-    showCustomFunctionExample: false,
     showTypeMappingExample: false,
     tsMarshalling: false,
     tsModelType: 'class',
@@ -200,17 +198,11 @@ class Playground extends React.Component<
     if (query.modelNamingFormat !== undefined) {
       this.config.modelNamingFormat = query.modelNamingFormat as any;
     }
-    if (query.showAllInOneFile !== undefined) {
-      this.config.showAllInOneFile = query.showAllInOneFile  === 'true';
-    }
     if (query.showTypeMappingExample !== undefined) {
       this.config.showTypeMappingExample = query.showTypeMappingExample  === 'true';
     }
     if (query.indentationType !== undefined) {
       this.config.indentationType = query.indentationType as any;
-    }
-    if (query.showCustomFunctionExample !== undefined) {
-      this.config.showCustomFunctionExample = query.showCustomFunctionExample  === 'true';
     }
     if (query.tsMarshalling !== undefined) {
       this.config.tsMarshalling = query.tsMarshalling === 'true';

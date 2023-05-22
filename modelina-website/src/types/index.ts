@@ -44,7 +44,6 @@ export interface ModelinaGeneralOptions {
   indentationType: 
     | 'tabs'
     | 'spaces';
-  showCustomFunctionExample: boolean;
   propertyNamingFormat: 
     | 'default'
     | 'snake_case'
@@ -71,7 +70,6 @@ export interface ModelinaGeneralQueryOptions {
   language: string;
   showTypeMappingExample?: string;
   indentationType?: string;
-  showCustomFunctionExample?: string;
   propertyNamingFormat?: string;
   modelNamingFormat?: string;
   enumKeyNamingFormat?: string;
