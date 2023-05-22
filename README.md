@@ -262,6 +262,10 @@ The following table provides a short summary of available features for supported
     <td><a href="./docs/usage.md#generate-cplusplus-models">C++</a></td>
     <td>Class and enum generation: <em>custom indentation type and size, etc </em></td>
   </tr>
+  <tr>
+    <td><a href="./docs/usage.md#generate-php-models">PHP</a></td>
+    <td>Class and enum generation: <em>custom indentation type and size, descriptions, etc </em></td>
+  </tr>
 </table>
 
 ## Roadmap
