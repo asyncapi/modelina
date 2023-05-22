@@ -6,50 +6,32 @@ const getDirectories = async source =>
     .filter(dirent => dirent.isDirectory())
     .map(dirent => dirent.name);
 const examplesDirPath = path.resolve(__dirname, '../../examples');
+
+const nameMapping = [
+  'typescript',
+  'java',
+  'javascript',
+  'kotlin',
+  'rust',
+  'typescript',
+  'python',
+  'csharp',
+  'dart',
+  'go',
+  'cplusplus',
+  'php'
+];
+
 /**
  * Find the proper language type for the output code.
  * 
  * Default to typescript if nothing is indicated in the name of the example
  */
 function getLanguage(exampleName) {
-  if(exampleName.includes('typescript')) {
-    return 'typescript';
-  }
-
-  if(exampleName.includes('java')) {
-    return 'java';
-  }
-
-  if(exampleName.includes('javascript')) {
-    return 'javascript';
-  }
-
-  if(exampleName.includes('kotlin')) {
-    return 'kotlin';
-  }
-
-  if(exampleName.includes('rust')) {
-    return 'rust';
-  }
-
-  if(exampleName.includes('typescript')) {
-    return 'typescript';
-  }
-
-  if(exampleName.includes('python')) {
-    return 'python';
-  }
-
-  if(exampleName.includes('csharp')) {
-    return 'csharp';
-  }
-
-  if(exampleName.includes('dart')) {
-    return 'dart';
-  }
-
-  if(exampleName.includes('go')) {
-    return 'go';
+  for (const name of nameMapping) {
+    if(exampleName.includes(name)) {
+      return name;
+    }
   }
 
   return 'typescript';
