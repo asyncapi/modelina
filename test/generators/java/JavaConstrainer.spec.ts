@@ -33,47 +33,52 @@ describe('JavaConstrainer', () => {
     });
   });
   describe('Reference', () => {
-    test('should render non-enum referenced type', () => {
-      const refModel = new ConstrainedAnyModel(
-        'ref-name',
+    test('should render the constrained name as type for non-built-in union types', () => {
+      const unionType = new ConstrainedAnyModel(
+        'union-type-name',
         undefined,
         {},
-        'ref-type'
+        'UnionType'
       );
+      const union = new ConstrainedUnionModel('Union', undefined, {}, '', [
+        unionType
+      ]);
       const model = new ConstrainedReferenceModel(
         'test',
         undefined,
         {},
         '',
-        refModel
+        union
       );
       const type = JavaDefaultTypeMapping.Reference({
         constrainedModel: model,
         ...defaultOptions
       });
-      expect(type).toEqual(refModel.type);
+      expect(type).toEqual(model.name);
     });
-    test('should render enum referenced name', () => {
-      const refModel = new ConstrainedEnumModel(
-        'ref-name',
-        undefined,
-        {},
-        'ref-type',
-        []
-      );
-      const model = new ConstrainedReferenceModel(
-        'test',
-        undefined,
-        {},
-        '',
-        refModel
-      );
-      const type = JavaDefaultTypeMapping.Reference({
-        constrainedModel: model,
-        ...defaultOptions
-      });
-      expect(type).toEqual(refModel.name);
+  });
+  test('should render Object for built-in union types', () => {
+    const unionType = new ConstrainedAnyModel(
+      'String',
+      undefined,
+      {},
+      'String'
+    );
+    const union = new ConstrainedUnionModel('Union', undefined, {}, '', [
+      unionType
+    ]);
+    const model = new ConstrainedReferenceModel(
+      'test',
+      undefined,
+      {},
+      '',
+      union
+    );
+    const type = JavaDefaultTypeMapping.Reference({
+      constrainedModel: model,
+      ...defaultOptions
     });
+    expect(type).toEqual('Object');
   });
   describe('Any', () => {
     test('should render type', () => {
@@ -461,7 +466,7 @@ describe('JavaConstrainer', () => {
   });
 
   describe('Union', () => {
-    test('should render the constrained name for non-primitive type unions', () => {
+    test('should render the constrained name for non-built-in type unions', () => {
       const union = new ConstrainedAnyModel(
         'test-union',
         undefined,
@@ -477,7 +482,7 @@ describe('JavaConstrainer', () => {
       });
       expect(type).toEqual('test');
     });
-    test('should render Object for primitive type unions', () => {
+    test('should render Object for built-in type unions', () => {
       const union = new ConstrainedAnyModel('test-union', undefined, {}, 'int');
       const model = new ConstrainedUnionModel('test', undefined, {}, '', [
         union

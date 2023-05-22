@@ -1,5 +1,5 @@
 import { Constraints } from '../../helpers';
-import { ConstrainedEnumModel, ConstrainedEnumValueModel } from '../../models';
+import { ConstrainedEnumValueModel, ConstrainedUnionModel } from '../../models';
 import {
   defaultEnumKeyConstraints,
   defaultEnumValueConstraints
@@ -74,16 +74,49 @@ const interpretUnionValueType = (types: string[]): string => {
   return 'Object';
 };
 
+function unionIncludesBuiltInTypes(model: ConstrainedUnionModel): boolean {
+  if (model.union instanceof Boolean) {
+    return true;
+  }
+  const builtInType = model.union.find(
+    (u) =>
+      //Primitive types and boxed versions
+      u.type.toLowerCase() === 'byte' ||
+      u.type.toLowerCase() === 'short' ||
+      u.type === 'int' ||
+      u.type === 'Integer' ||
+      u.type.toLowerCase() === 'long' ||
+      u.type.toLowerCase() === 'float' ||
+      u.type.toLowerCase() === 'double' ||
+      u.type === 'char' ||
+      u.type === 'Character' ||
+      u.type.toLowerCase() === 'boolean' ||
+      u.type.toLowerCase() === 'int' ||
+      u.type === 'Object' ||
+      u.type === 'String' ||
+      //Collections
+      u.type.startsWith('Map<') ||
+      u.type.startsWith('List<') ||
+      u.type.startsWith('Set<') ||
+      u.type.endsWith('[]')
+  );
+  return builtInType !== undefined;
+}
+
 export const JavaDefaultTypeMapping: JavaTypeMapping = {
   Object({ constrainedModel }): string {
     return constrainedModel.name;
   },
   Reference({ constrainedModel }): string {
-    if (constrainedModel.ref instanceof ConstrainedEnumModel) {
-      //use the enum name rather than the underlying type of the Enum
-      return constrainedModel.ref.name;
+    if (
+      constrainedModel.ref instanceof ConstrainedUnionModel &&
+      unionIncludesBuiltInTypes(constrainedModel.ref)
+    ) {
+      //We only have partial strong typed support for union models
+      //Use object if the union includes built-in Java types
+      return 'Object';
     }
-    return constrainedModel.ref.type;
+    return constrainedModel.name;
   },
   Any(): string {
     return 'Object';
@@ -175,32 +208,9 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
     return uniqueTypes[0];
   },
   Union({ constrainedModel }): string {
-    //We don't have a good solution for unions including primitive types and
-    //collection types, so they are represented by the 'Object' type
-    if (
-      constrainedModel.union.find(
-        (u) =>
-          //Primitive types and boxed versions
-          u.type.toLowerCase() === 'byte' ||
-          u.type.toLowerCase() === 'short' ||
-          u.type === 'int' ||
-          u.type === 'Integer' ||
-          u.type.toLowerCase() === 'long' ||
-          u.type.toLowerCase() === 'float' ||
-          u.type.toLowerCase() === 'double' ||
-          u.type === 'char' ||
-          u.type === 'Character' ||
-          u.type.toLowerCase() === 'boolean' ||
-          u.type.toLowerCase() === 'int' ||
-          u.type === 'Object' ||
-          //Collections
-          u.type.startsWith('Map<') ||
-          u.type.startsWith('List<') ||
-          u.type.startsWith('Set<') ||
-          u.type === 'String' ||
-          u.type.endsWith('[]')
-      )
-    ) {
+    if (unionIncludesBuiltInTypes(constrainedModel)) {
+      //We only have partial strong typed support for union models
+      //Use object if the union includes built-in Java types
       return 'Object';
     }
     return constrainedModel.name;
