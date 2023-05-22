@@ -33,7 +33,22 @@ describe('JavaConstrainer', () => {
     });
   });
   describe('Reference', () => {
-    test('should render the constrained name as type for non-built-in union types', () => {
+    test('should render the constrained name as type', () => {
+      const refModel = new ConstrainedAnyModel('test', undefined, {}, '');
+      const model = new ConstrainedReferenceModel(
+        'test',
+        undefined,
+        {},
+        '',
+        refModel
+      );
+      const type = JavaDefaultTypeMapping.Reference({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual(model.name);
+    });
+    test('should render the constrained name as type for unions with non-built-in types', () => {
       const unionType = new ConstrainedAnyModel(
         'union-type-name',
         undefined,
@@ -57,7 +72,7 @@ describe('JavaConstrainer', () => {
       expect(type).toEqual(model.name);
     });
   });
-  test('should render Object for built-in union types', () => {
+  test('should render Object for unions with built-in types', () => {
     const unionType = new ConstrainedAnyModel(
       'String',
       undefined,
