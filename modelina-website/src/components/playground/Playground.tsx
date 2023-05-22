@@ -37,6 +37,7 @@ import { getPythonGeneratorCode } from '@/helpers/GeneratorCode/PythonGenerator'
 import { getDartGeneratorCode } from '@/helpers/GeneratorCode/DartGenerator';
 import { getCplusplusGeneratorCode } from '@/helpers/GeneratorCode/CplusplusGenerator';
 import CustomError from '../CustomError';
+import { getKotlinGeneratorCode } from '@/helpers/GeneratorCode/KotlinGenerator';
 
 interface WithRouterProps {
   router: NextRouter;
@@ -140,7 +141,8 @@ class Playground extends React.Component<
           rust: getRustGeneratorCode,
           python: getPythonGeneratorCode,
           dart: getDartGeneratorCode,
-          cplusplus: getCplusplusGeneratorCode
+          cplusplus: getCplusplusGeneratorCode,
+          kotlin: getKotlinGeneratorCode
         }
         const generatorCode = generators[this.config.language](message);
         fetch(`${process.env.NEXT_PUBLIC_API_PATH}/generate`, {
