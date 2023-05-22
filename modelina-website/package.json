@@ -2,12 +2,13 @@
   "name": "modelina-website",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
-    "build": "next build --no-lint",
+    "dev": "npm run build:examples && cross-env NODE_OPTIONS='--inspect' next dev",
+    "build": "npm run build:examples && next build --no-lint",
     "build:modelina": "cd .. && npm i && npm run build:prod",
     "export": "next export",
     "start": "next start",
-    "lint": "next lint -c ./.eslintrc"
+    "lint": "next lint -c ./.eslintrc",
+    "build:examples": "node scripts/build-examples.js"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.4.6",
@@ -16,7 +17,7 @@
     "@tailwindcss/aspect-ratio": "^0.4.0",
     "@tailwindcss/forms": "^0.5.2",
     "@tailwindcss/line-clamp": "^0.4.0",
-    "@tailwindcss/typography": "^0.5.2",
+    "@tailwindcss/typography": "^0.5.9",
     "cssnano": "^5.1.14",
     "eslint": "8.32.0",
     "eslint-config-next": "13.1.5",
@@ -25,9 +26,12 @@
     "lowlight": "^1.12.1",
     "next": "^13.1.5",
     "postcss": "^8.4.21",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-markdown": "^8.0.7",
     "react-syntax-highlighter": "15.5.0",
+    "rehype-slug": "^5.1.0",
+    "remark-gfm": "^3.0.1",
     "swiper": "^8.3.2",
     "tailwind-merge": "^1.8.1",
     "tailwindcss": "^3.2.4"
