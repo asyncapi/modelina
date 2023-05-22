@@ -1,5 +1,5 @@
 /**
- * Blackbox tests are the final line of defence, that takes different real-life example documents and generate their corresponding models in all supported languages.
+ * Blackbox tests are the final line of defense, that takes different real-life example documents and generate their corresponding models in all supported languages.
  *
  * For those languages where it is possible, the models are compiled/transpiled to ensure there are no syntax errors in generated models.
  *
