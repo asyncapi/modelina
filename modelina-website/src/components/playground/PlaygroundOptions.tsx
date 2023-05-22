@@ -1,7 +1,6 @@
 import React from 'react';
 import TypeScriptGeneratorOptions from './options/TypeScriptGeneratorOptions';
 import GeneralOptions from './options/GeneralOptions';
-import { PlaygroundGeneralConfigContext } from '../contexts/PlaygroundGeneralConfigContext';
 import JavaScriptGeneratorOptions from './options/JavaScriptGeneratorOptions';
 import CSharpGeneratorOptions from './options/CSharpGeneratorOptions';
 import DartGeneratorOptions from './options/DartGeneratorOptions';
@@ -11,6 +10,7 @@ import KotlinGeneratorOptions from './options/KotlinGeneratorOptions';
 import RustGeneratorOptions from './options/RustGeneratorOptions';
 import PythonGeneratorOptions from './options/PythonGeneratorOptions';
 import CplusplusGeneratorOptions from './options/CplusplusGeneratorOptions';
+import { PlaygroundGeneralConfigContext } from '../contexts/PlaygroundConfigContext';
 
 interface WithRouterProps {
   setNewConfig?: (queryKey: string, queryValue: string) => void;

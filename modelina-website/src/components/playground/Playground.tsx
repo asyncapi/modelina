@@ -14,7 +14,6 @@ import PlaygroundOptions from './PlaygroundOptions';
 import Heading from '../typography/Heading';
 import Paragraph from '../typography/Paragraph';
 import { PlaygroundGeneratedContext } from '../contexts/PlaygroundGeneratedContext';
-import { PlaygroundGeneralConfigContext } from '../contexts/PlaygroundGeneralConfigContext';
 import {
   PlaygroundTypeScriptConfigContext,
   PlaygroundCSharpConfigContext,
@@ -25,7 +24,8 @@ import {
   PlaygroundKotlinConfigContext,
   PlaygroundPythonConfigContext,
   PlaygroundRustConfigContext,
-  PlaygroundCplusplusConfigContext
+  PlaygroundCplusplusConfigContext,
+  PlaygroundGeneralConfigContext
 } from '../contexts/PlaygroundConfigContext';
 import { getTypeScriptGeneratorCode } from '@/helpers/GeneratorCode/TypeScriptGenerator';
 import { getJavaScriptGeneratorCode } from '@/helpers/GeneratorCode/JavaScriptGenerator';
@@ -70,6 +70,13 @@ class Playground extends React.Component<
 > {
   config: ModelinaOptions = {
     language: 'typescript',
+    propertyNamingFormat: 'default',
+    modelNamingFormat: 'default',
+    enumKeyNamingFormat: 'default',
+    indentationType: 'spaces',
+    showAllInOneFile: false,
+    showCustomFunctionExample: false,
+    showTypeMappingExample: false,
     tsMarshalling: false,
     tsModelType: 'class',
     tsEnumType: 'enum',
@@ -181,6 +188,30 @@ class Playground extends React.Component<
     const isLoaded = isHardLoaded && isSoftLoaded;
 
     const query = this.props.router.query as ModelinaQueryOptions;
+    if (query.language !== undefined) {
+      this.config.language = query.language as any;
+    }
+    if (query.enumKeyNamingFormat !== undefined) {
+      this.config.enumKeyNamingFormat = query.enumKeyNamingFormat as any;
+    }
+    if (query.propertyNamingFormat !== undefined) {
+      this.config.propertyNamingFormat = query.propertyNamingFormat as any;
+    }
+    if (query.modelNamingFormat !== undefined) {
+      this.config.modelNamingFormat = query.modelNamingFormat as any;
+    }
+    if (query.showAllInOneFile !== undefined) {
+      this.config.showAllInOneFile = query.showAllInOneFile  === 'true';
+    }
+    if (query.showTypeMappingExample !== undefined) {
+      this.config.showTypeMappingExample = query.showTypeMappingExample  === 'true';
+    }
+    if (query.indentationType !== undefined) {
+      this.config.indentationType = query.indentationType as any;
+    }
+    if (query.showCustomFunctionExample !== undefined) {
+      this.config.showCustomFunctionExample = query.showCustomFunctionExample  === 'true';
+    }
     if (query.tsMarshalling !== undefined) {
       this.config.tsMarshalling = query.tsMarshalling === 'true';
     }
@@ -193,9 +224,6 @@ class Playground extends React.Component<
     if (query.tsIncludeDescriptions !== undefined) {
       this.config.tsIncludeDescriptions =
         query.tsIncludeDescriptions === 'true';
-    }
-    if (query.language !== undefined) {
-      this.config.language = query.language as any;
     }
     if (query.csharpArrayType !== undefined) {
       this.config.csharpArrayType = query.csharpArrayType as any;
@@ -287,37 +315,18 @@ class Playground extends React.Component<
                 />
               </div>
             ) : (
-              <PlaygroundGeneralConfigContext.Provider
-                value={{ language: this.config.language }}
-              >
-                <PlaygroundTypeScriptConfigContext.Provider
-                  value={{
-                    tsMarshalling: this.config.tsMarshalling,
-                    tsModelType: this.config.tsModelType,
-                    tsModuleSystem: this.config.tsModuleSystem,
-                    tsEnumType: this.config.tsEnumType,
-                    tsIncludeDescriptions: this.config.tsIncludeDescriptions
-                  }}
-                >
-                  <PlaygroundJavaScriptConfigContext.Provider value={{}}>
-                    <PlaygroundCSharpConfigContext.Provider
-                      value={{
-                        csharpArrayType: this.config.csharpArrayType,
-                        csharpAutoImplemented: this.config.csharpAutoImplemented,
-                      }}
-                    >
-                      <PlaygroundDartConfigContext.Provider value={{}}>
-                        <PlaygroundGoConfigContext.Provider value={{}}>
-                          <PlaygroundJavaConfigContext.Provider value={{}}>
-                            <PlaygroundCplusplusConfigContext.Provider value={{}}>
-                              <PlaygroundKotlinConfigContext.Provider value={{}}>
-                                <PlaygroundRustConfigContext.Provider value={{}}>
-                                  <PlaygroundPythonConfigContext.Provider
-                                    value={{}}
-                                  >
-                                    <PlaygroundOptions
-                                      setNewConfig={this.setNewConfig}
-                                    />
+              <PlaygroundGeneralConfigContext.Provider value={this.config}>
+                <PlaygroundTypeScriptConfigContext.Provider value={this.config}>
+                  <PlaygroundJavaScriptConfigContext.Provider value={this.config}>
+                    <PlaygroundCSharpConfigContext.Provider value={this.config}>
+                      <PlaygroundDartConfigContext.Provider value={this.config}>
+                        <PlaygroundGoConfigContext.Provider value={this.config}>
+                          <PlaygroundJavaConfigContext.Provider value={this.config}>
+                            <PlaygroundCplusplusConfigContext.Provider value={this.config}>
+                              <PlaygroundKotlinConfigContext.Provider value={this.config}>
+                                <PlaygroundRustConfigContext.Provider value={this.config}>
+                                  <PlaygroundPythonConfigContext.Provider value={this.config}>
+                                    <PlaygroundOptions setNewConfig={this.setNewConfig}/>
                                   </PlaygroundPythonConfigContext.Provider>
                                 </PlaygroundRustConfigContext.Provider>
                               </PlaygroundKotlinConfigContext.Provider>

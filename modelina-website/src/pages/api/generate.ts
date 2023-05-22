@@ -50,6 +50,7 @@ export async function generateNewCode(message: GenerateMessage): Promise<UpdateM
       throw new Error(response);
     }
     props.models = Array.isArray(response) ? response : [];
+    
     return props;
   } catch (error : any) {
     return new Error(error.message);
