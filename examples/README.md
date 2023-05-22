@@ -44,20 +44,20 @@ These examples show a specific input and how they can be used:
 These are examples that can be applied in all scenarios.
 - [include-custom-function](./include-custom-function) - A basic example where a custom function is included.
 - [overwrite-naming-formatting](./overwrite-naming-formatting) - A basic example how to overwrite default naming format constraint in this case, overwriting returning a constant case format.
-- [overwrite-default-constraint](./overwrite-default-constraint/) -  A basic example how to overwrite the entire constraint logic and not just a single single part of the default behavior, in this case overwriting the model naming constraint.
+- [overwrite-default-constraint](./overwrite-default-constraint) -  A basic example how to overwrite the entire constraint logic and not just a single single part of the default behavior, in this case overwriting the model naming constraint.
 - [custom-logging](./custom-logging) - A basic example where a custom logger is used.
 - [generate-to-files](./generate-to-files) - A basic example that shows how you can generate the models directly to files.
 - [indentation-type-and-size](./indentation-type-and-size) - This example shows how to change the indentation type and size of the generated model.
-- [change-type-mapping](./change-type-mapping/) - A basic example showing how to change the type of a model in some context.
-- [change-type-mapping-with-dependency](./change-type-mapping-with-dependency/) - A basic example showing how to use the dependency manager to inject your own custom type with a dependency instead of the default type.
+- [change-type-mapping](./change-type-mapping) - A basic example showing how to change the type of a model in some context.
+- [change-type-mapping-with-dependency](./change-type-mapping-with-dependency) - A basic example showing how to use the dependency manager to inject your own custom type with a dependency instead of the default type.
 
 
 ## Simple generator examples
 These are all the basic generator examples that shows a bare minimal example of a generator:
 - [generate-typescript-models](./generate-typescript-models) - A basic example to generate TypeScript data models
 - [generate-csharp-models](./generate-csharp-models) - A basic example to generate C# data models
-- [generate-python-models](./generate-python-models/) - A basic example showing how to generate Python models.
-- [rust-generate-crate](./rust-generate-crate/) - A basic example showing how to generate a Rust package.
+- [generate-python-models](./generate-python-models) - A basic example showing how to generate Python models.
+- [rust-generate-crate](./rust-generate-crate) - A basic example showing how to generate a Rust package.
 - [generate-java-models](./generate-java-models) - A basic example to generate Java data models.
 - [generate-go-models](./generate-go-models) - A basic example to generate Go data models
 - [generate-javascript-models](./generate-javascript-models) - A basic example to generate JavaScript data models
@@ -66,12 +66,12 @@ These are all the basic generator examples that shows a bare minimal example of 
 
 ## Integrations
 These are examples of how you can integrate Modelina into a specific scenario:
-- [integrate with React](./integrate-with-react/) - A basic example that shows how you can integrate Modelina with React.
+- [integrate with React](./integrate-with-react) - A basic example that shows how you can integrate Modelina with React.
 
 ## Python
 These are all specific examples only relevant to the Python generator:
-- [generate-python-pydantic-models](./generate-python-pydantic-models/) - An example showing how to generate Python pydantic models.
-- [python-generate-json-serializer-and-deseriazlier](./python-generate-json-serializer-and-deserializer/) - An example that shows how to generate the models with JSON serializer and deserializer.
+- [generate-python-pydantic-models](./generate-python-pydantic-models) - An example showing how to generate Python pydantic models.
+- [python-generate-json-serializer-and-deseriazlier](./python-generate-json-serializer-and-deserializer) - An example that shows how to generate the models with JSON serializer and deserializer.
 
 ## JavaScript
 These are all specific examples only relevant to the JavaScript generator:
@@ -85,9 +85,9 @@ These are all specific examples only relevant to the Java generator:
 - [java-generate-tostring](./java-generate-tostring) - A basic example that shows how to generate models that overwrite the `toString` method
 - [java-change-collection-type](./java-change-collection-type) - An example to render collections as List in Java.
 - [java-generate-hashcode](./java-generate-hashcode) - A basic example that shows how to generate models that overwrite the `hashCode` method
-- [java-from-typescript-type](./java-from-typescript-type/) - A basic example that shows how to generate a Java model from a TypeScript type input file.
+- [java-from-typescript-type](./java-from-typescript-type) - A basic example that shows how to generate a Java model from a TypeScript type input file.
 - [java-generate-marshalling](./java-generate-marshalling) - A basic example of how to use the un/marshalling functionality of the java class.
-- [java-from-typescript-type-with-options](./java-from-typescript-type-with-options/) - A basic example that shows how to generate a Java model from a TypeScript type input file along with user provided options.
+- [java-from-typescript-type-with-options](./java-from-typescript-type-with-options) - A basic example that shows how to generate a Java model from a TypeScript type input file along with user provided options.
 - [java-generate-equals](./java-generate-equals) - A basic example that shows how to generate models that overwrite the `equal` method
 - [java-generate-javax-constraint-annotation](./java-generate-javax-constraint-annotation) - A basic example that shows how Java data models having `javax.validation.constraints` annotations can be generated.
 - [java-generate-javadoc](./java-generate-javadoc) - A basic example of how to generate Java models including JavaDocs.
