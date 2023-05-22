@@ -12,6 +12,7 @@ import {
   RustFileGenerator,
   PythonFileGenerator,
   KotlinFileGenerator,
+  PhpFileGenerator,
   CplusplusFileGenerator
 } from '../../src';
 import * as path from 'path';
@@ -61,6 +62,11 @@ const generatorsToTest = [
     generator: new KotlinFileGenerator(),
     generatorOptions: { packageName: 'SomePackage' },
     fileExtension: 'kt'
+  },
+  {
+    generator: new PhpFileGenerator(),
+    generatorOptions: { packageName: 'SomePackage' },
+    fileExtension: 'php'
   },
   {
     generator: new CplusplusFileGenerator(),
