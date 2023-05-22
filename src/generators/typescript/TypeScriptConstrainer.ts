@@ -10,7 +10,7 @@ import { defaultConstantConstraints } from './constrainer/ConstantConstrainer';
 import { TypeScriptTypeMapping } from './TypeScriptGenerator';
 import { Constraints } from '../../helpers';
 function applyNullable(model: ConstrainedMetaModel, type: string) {
-  if(model.options.isNullable) {
+  if (model.options.isNullable) {
     return `${type} | null`;
   }
   return type;
@@ -25,23 +25,23 @@ export const TypeScriptDefaultTypeMapping: TypeScriptTypeMapping = {
   Any(): string {
     return 'any';
   },
-  Float({constrainedModel}): string {
+  Float({ constrainedModel }): string {
     return applyNullable(constrainedModel, 'number');
   },
-  Integer({constrainedModel}): string {
+  Integer({ constrainedModel }): string {
     return applyNullable(constrainedModel, 'number');
   },
-  String({constrainedModel}): string {
+  String({ constrainedModel }): string {
     return applyNullable(constrainedModel, 'string');
   },
-  Boolean({constrainedModel}): string {
+  Boolean({ constrainedModel }): string {
     return applyNullable(constrainedModel, 'boolean');
   },
   Tuple({ constrainedModel }): string {
     const tupleTypes = constrainedModel.tuple.map((constrainedType) => {
       return constrainedType.value.type;
     });
-    let tupleType = `[${tupleTypes.join(', ')}]`;
+    const tupleType = `[${tupleTypes.join(', ')}]`;
     return applyNullable(constrainedModel, tupleType);
   },
   Array({ constrainedModel }): string {

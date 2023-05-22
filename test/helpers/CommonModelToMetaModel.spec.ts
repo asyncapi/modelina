@@ -22,9 +22,9 @@ describe('CommonModelToMetaModel', () => {
       const cm = new CommonModel();
       cm.$id = 'test';
       cm.type = ['string', 'null'];
-  
+
       const model = convertToMetaModel(cm);
-  
+
       expect(model).not.toBeUndefined();
       expect(model instanceof StringModel).toEqual(true);
       expect(model.options.isNullable).toEqual(true);
@@ -33,9 +33,9 @@ describe('CommonModelToMetaModel', () => {
       const cm = new CommonModel();
       cm.$id = 'test';
       cm.type = ['string'];
-  
+
       const model = convertToMetaModel(cm);
-  
+
       expect(model).not.toBeUndefined();
       expect(model instanceof StringModel).toEqual(true);
       expect(model.options.isNullable).toEqual(false);
@@ -48,13 +48,10 @@ describe('CommonModelToMetaModel', () => {
 
       const cm = new CommonModel();
       cm.$id = 'test';
-      cm.union = [
-        cm1,
-        cm2
-      ];
+      cm.union = [cm1, cm2];
 
       const model = convertToMetaModel(cm);
-  
+
       expect(model).not.toBeUndefined();
       expect(model instanceof UnionModel).toEqual(true);
       expect(model.options.isNullable).toEqual(true);
@@ -70,20 +67,17 @@ describe('CommonModelToMetaModel', () => {
 
       const cm = new CommonModel();
       cm.$id = 'test';
-      cm.union = [
-        cm1,
-        cm2
-      ];
+      cm.union = [cm1, cm2];
 
       const model = convertToMetaModel(cm);
-  
+
       expect(model).not.toBeUndefined();
       expect(model instanceof UnionModel).toEqual(true);
       expect((model as UnionModel).union.length).toEqual(2);
       expect((model as UnionModel).union[0].options.isNullable).toEqual(true);
       expect((model as UnionModel).union[1].options.isNullable).toEqual(false);
     });
-  })
+  });
   test('should default to any model', () => {
     const cm = new CommonModel();
     cm.$id = 'test';
@@ -95,7 +89,15 @@ describe('CommonModelToMetaModel', () => {
   });
   test('should convert to any model', () => {
     const cm = new CommonModel();
-    cm.type = ['string', 'number', 'integer', 'boolean', 'object', 'array', 'null'];
+    cm.type = [
+      'string',
+      'number',
+      'integer',
+      'boolean',
+      'object',
+      'array',
+      'null'
+    ];
     cm.$id = 'test';
 
     const model = convertToMetaModel(cm);

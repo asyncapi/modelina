@@ -135,7 +135,7 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
     }
     return type;
   },
-  Boolean({constrainedModel}): string {
+  Boolean({ constrainedModel }): string {
     return constrainedModel.options.isNullable ? 'Boolean' : 'boolean';
   },
   Tuple({ options }): string {

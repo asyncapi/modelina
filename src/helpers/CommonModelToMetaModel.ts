@@ -31,7 +31,7 @@ function getMetaModelOptions(commonModel: CommonModel): MetaModelOptions {
   if (Array.isArray(commonModel.type) && commonModel.type.includes('null')) {
     options.isNullable = true;
   } else {
-    options.isNullable = false
+    options.isNullable = false;
   }
 
   if (commonModel.discriminator) {
@@ -160,8 +160,14 @@ export function convertToUnionModel(
   const containsUnions = Array.isArray(jsonSchemaModel.union);
 
   // Should not create union from two types where one is null
-  const containsTypeWithNull = Array.isArray(jsonSchemaModel.type) && jsonSchemaModel.type.length === 2 && jsonSchemaModel.type.includes('null');
-  const containsSimpleTypeUnion = Array.isArray(jsonSchemaModel.type) && jsonSchemaModel.type.length > 1 && !containsTypeWithNull;
+  const containsTypeWithNull =
+    Array.isArray(jsonSchemaModel.type) &&
+    jsonSchemaModel.type.length === 2 &&
+    jsonSchemaModel.type.includes('null');
+  const containsSimpleTypeUnion =
+    Array.isArray(jsonSchemaModel.type) &&
+    jsonSchemaModel.type.length > 1 &&
+    !containsTypeWithNull;
   const isAnyType = shouldBeAnyType(jsonSchemaModel);
 
   //Lets see whether we should have a union or not.
@@ -188,8 +194,12 @@ export function convertToUnionModel(
   // Has multiple types, so convert to union
   if (containsUnions && jsonSchemaModel.union) {
     for (const unionCommonModel of jsonSchemaModel.union) {
-      const isSingleNullType = (Array.isArray(unionCommonModel.type) && unionCommonModel.type.length === 1 && unionCommonModel.type?.includes('null')) || unionCommonModel.type === 'null';
-      if(isSingleNullType) {
+      const isSingleNullType =
+        (Array.isArray(unionCommonModel.type) &&
+          unionCommonModel.type.length === 1 &&
+          unionCommonModel.type?.includes('null')) ||
+        unionCommonModel.type === 'null';
+      if (isSingleNullType) {
         unionModel.options.isNullable = true;
       } else {
         const unionMetaModel = convertToMetaModel(
@@ -282,10 +292,7 @@ export function convertToAnyModel(
   name: string
 ): AnyModel | undefined {
   const isAnyType = shouldBeAnyType(jsonSchemaModel);
-  if (
-    !Array.isArray(jsonSchemaModel.type) ||
-    !isAnyType
-  ) {
+  if (!Array.isArray(jsonSchemaModel.type) || !isAnyType) {
     return undefined;
   }
   return new AnyModel(

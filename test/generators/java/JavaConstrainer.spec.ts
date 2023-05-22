@@ -92,7 +92,12 @@ describe('JavaConstrainer', () => {
       expect(type).toEqual('int');
     });
     test('should render nullable type', () => {
-      const model = new ConstrainedIntegerModel('test', undefined, {isNullable: true}, '');
+      const model = new ConstrainedIntegerModel(
+        'test',
+        undefined,
+        { isNullable: true },
+        ''
+      );
       const type = JavaDefaultTypeMapping.Integer({
         constrainedModel: model,
         ...defaultOptions
@@ -237,7 +242,12 @@ describe('JavaConstrainer', () => {
       expect(type).toEqual('boolean');
     });
     test('should render nullable type', () => {
-      const model = new ConstrainedBooleanModel('test', undefined, {isNullable: true}, '');
+      const model = new ConstrainedBooleanModel(
+        'test',
+        undefined,
+        { isNullable: true },
+        ''
+      );
       const type = JavaDefaultTypeMapping.Boolean({
         constrainedModel: model,
         ...defaultOptions
