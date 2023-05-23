@@ -61,7 +61,7 @@ export default function NavBar({ className = '', hideLogo = false }) {
 
         <nav className="hidden lg:flex lg:items-center lg:justify-end space-x-6 xl:space-x-10 w-full">
           <div className="relative" onMouseLeave={() => showMenu(false)}>
-            <NavItem text="Modelina" href="/" />
+            <NavItem text="Examples" href="/examples" />
           </div>
 
           <div className="relative" onMouseLeave={() => showMenu(false)}>

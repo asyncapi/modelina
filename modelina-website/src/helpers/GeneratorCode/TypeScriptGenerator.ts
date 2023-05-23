@@ -30,6 +30,10 @@ export function getTypeScriptGeneratorCode(
     }`);
   }
 
+  if (generatorOptions.tsModuleSystem) {
+    optionString.push(`moduleSystem: '${generatorOptions.tsModuleSystem}'`);
+  }
+
   const presetOptions =
     optionStringPresets.length > 0
       ? `${optionString.length > 0 ? ',' : ''}

@@ -24,7 +24,8 @@ import {
   PlaygroundJavaScriptConfigContext,
   PlaygroundKotlinConfigContext,
   PlaygroundPythonConfigContext,
-  PlaygroundRustConfigContext
+  PlaygroundRustConfigContext,
+  PlaygroundCplusplusConfigContext
 } from '../contexts/PlaygroundConfigContext';
 import { getTypeScriptGeneratorCode } from '@/helpers/GeneratorCode/TypeScriptGenerator';
 import { getJavaScriptGeneratorCode } from '@/helpers/GeneratorCode/JavaScriptGenerator';
@@ -34,6 +35,9 @@ import { getCSharpGeneratorCode } from '@/helpers/GeneratorCode/CSharpGenerator'
 import { getRustGeneratorCode } from '@/helpers/GeneratorCode/RustGenerator';
 import { getPythonGeneratorCode } from '@/helpers/GeneratorCode/PythonGenerator';
 import { getDartGeneratorCode } from '@/helpers/GeneratorCode/DartGenerator';
+import { getCplusplusGeneratorCode } from '@/helpers/GeneratorCode/CplusplusGenerator';
+import CustomError from '../CustomError';
+
 interface WithRouterProps {
   router: NextRouter;
 }
@@ -55,6 +59,9 @@ type ModelinaPlaygroundState = {
     hasReceivedCode: boolean;
   };
   showGeneratorCode: boolean;
+  error: boolean;
+  statusCode: number;
+  errorMessage: string;
 };
 
 class Playground extends React.Component<
@@ -66,9 +73,11 @@ class Playground extends React.Component<
     tsMarshalling: false,
     tsModelType: 'class',
     tsEnumType: 'enum',
+    tsModuleSystem: 'CJS',
     tsIncludeDescriptions: false,
     csharpArrayType: 'Array',
     csharpAutoImplemented: false,
+    csharpOverwriteHashcode: false,
   };
   hasLoadedQuery: boolean = false;
   constructor(props: ModelinaPlaygroundProps) {
@@ -81,7 +90,10 @@ class Playground extends React.Component<
         editorLoaded: false,
         hasReceivedCode: false
       },
-      showGeneratorCode: false
+      showGeneratorCode: false,
+      error: false,
+      statusCode: 400,
+      errorMessage: 'Bad Request',
     };
     this.setNewConfig = this.setNewConfig.bind(this);
     this.setNewQuery = this.setNewQuery.bind(this);
@@ -118,41 +130,28 @@ class Playground extends React.Component<
       };
       if (message.input.length > (this.props.maxInputSize || 30000)) {
         console.error('Input too large, use smaller example');
+        this.setState({ ...this.state, error: true, errorMessage: 'Input too large, use smaller example', statusCode: 400 });
       } else {
+        const generators: { [key: string]: Function } = {
+          typescript: getTypeScriptGeneratorCode,
+          javascript: getJavaScriptGeneratorCode,
+          java: getJavaGeneratorCode,
+          go: getGoGeneratorCode,
+          csharp: getCSharpGeneratorCode,
+          rust: getRustGeneratorCode,
+          python: getPythonGeneratorCode,
+          dart: getDartGeneratorCode,
+          cplusplus: getCplusplusGeneratorCode
+        }
+        const generatorCode = generators[this.config.language](message);
         fetch(`${process.env.NEXT_PUBLIC_API_PATH}/generate`, {
           body: JSON.stringify(message),
           method: 'POST'
         }).then(async (res) => {
-          const response: UpdateMessage = await res.json();
-          let generatorCode = '';
-          switch (this.config.language) {
-            case 'typescript':
-              generatorCode = getTypeScriptGeneratorCode(message);
-              break;
-            case 'javascript':
-              generatorCode = getJavaScriptGeneratorCode(message);
-              break;
-            case 'java':
-              generatorCode = getJavaGeneratorCode(message);
-              break;
-            case 'go':
-              generatorCode = getGoGeneratorCode(message);
-              break;
-            case 'csharp':
-              generatorCode = getCSharpGeneratorCode(message);
-              break;
-            case 'rust':
-              generatorCode = getRustGeneratorCode(message);
-              break;
-            case 'python':
-              generatorCode = getPythonGeneratorCode(message);
-              break;
-            case 'dart':
-              generatorCode = getDartGeneratorCode(message);
-              break;
-            default:
-              break;
+          if (!res.ok) {
+            throw new Error(res.statusText);
           }
+          const response: UpdateMessage = await res.json();
           this.setState({
             ...this.state,
             generatorCode,
@@ -160,12 +159,19 @@ class Playground extends React.Component<
             loaded: {
               ...this.state.loaded,
               hasReceivedCode: true
-            }
+            },
+            error: false,
+            statusCode: 200,
+            errorMessage: '',
           });
+        }).catch(error => {
+          console.error(error);
+          this.setState({ ...this.state, error: true, errorMessage: "Input is not an correct AsyncAPI document so it cannot be processed.", statusCode: 500 });
         });
       }
-    } catch (e) {
-      console.error('Could not generate new code');
+    } catch (e: any) {
+      console.error(e);
+      this.setState({ ...this.state, error: true, errorMessage: "Input is not an correct AsyncAPI document so it cannot be processed.", statusCode: 400 });
     }
   }
 
@@ -198,6 +204,10 @@ class Playground extends React.Component<
     if (query.csharpAutoImplemented !== undefined) {
       this.config.csharpAutoImplemented =
         query.csharpAutoImplemented === 'true';
+    }
+    if (query.csharpOverwriteHashcode !== undefined) {
+      this.config.csharpOverwriteHashcode =
+        query.csharpOverwriteHashcode === 'true';
     }
     if (this.props.router.isReady && !this.hasLoadedQuery) {
       this.hasLoadedQuery = true;
@@ -232,9 +242,8 @@ class Playground extends React.Component<
         </div>
         {loader}
         <div
-          className={`grid grid-cols-2 gap-4 mt-4 ${
-            isLoaded ? '' : 'invisible'
-          }`}
+          className={`grid grid-cols-2 gap-4 mt-4 ${isLoaded ? '' : 'invisible'
+            }`}
         >
           <div className="col-span-2" style={{ height: '500px' }}>
             <div className="overflow-hidden bg-white shadow sm:rounded-lg flex flex-row">
@@ -252,9 +261,8 @@ class Playground extends React.Component<
                 onClick={() => {
                   this.setState({ ...this.state, showGeneratorCode: false });
                 }}
-                className={`${
-                  !this.state.showGeneratorCode ? 'bg-blue-100' : 'bg-white'
-                } px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 basis-3/12`}
+                className={`${!this.state.showGeneratorCode ? 'bg-blue-100' : 'bg-white'
+                  } px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 basis-3/12`}
               >
                 <h3 className="text-lg font-medium leading-6 text-gray-900">
                   Options
@@ -264,9 +272,8 @@ class Playground extends React.Component<
                 onClick={() => {
                   this.setState({ ...this.state, showGeneratorCode: true });
                 }}
-                className={`${
-                  this.state.showGeneratorCode ? 'bg-blue-100' : 'bg-white'
-                } px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 basis-3/12`}
+                className={`${this.state.showGeneratorCode ? 'bg-blue-100' : 'bg-white'
+                  } px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 basis-3/12`}
               >
                 <h3 className="text-lg font-medium leading-6 text-gray-900">
                   Generator code
@@ -292,6 +299,7 @@ class Playground extends React.Component<
                   value={{
                     tsMarshalling: this.config.tsMarshalling,
                     tsModelType: this.config.tsModelType,
+                    tsModuleSystem: this.config.tsModuleSystem,
                     tsEnumType: this.config.tsEnumType,
                     tsIncludeDescriptions: this.config.tsIncludeDescriptions
                   }}
@@ -301,22 +309,25 @@ class Playground extends React.Component<
                       value={{
                         csharpArrayType: this.config.csharpArrayType,
                         csharpAutoImplemented: this.config.csharpAutoImplemented,
+                        csharpOverwriteHashcode: this.config.csharpOverwriteHashcode
                       }}
                     >
                       <PlaygroundDartConfigContext.Provider value={{}}>
                         <PlaygroundGoConfigContext.Provider value={{}}>
                           <PlaygroundJavaConfigContext.Provider value={{}}>
-                            <PlaygroundKotlinConfigContext.Provider value={{}}>
-                              <PlaygroundRustConfigContext.Provider value={{}}>
-                                <PlaygroundPythonConfigContext.Provider
-                                  value={{}}
-                                >
-                                  <PlaygroundOptions
-                                    setNewConfig={this.setNewConfig}
-                                  />
-                                </PlaygroundPythonConfigContext.Provider>
-                              </PlaygroundRustConfigContext.Provider>
-                            </PlaygroundKotlinConfigContext.Provider>
+                            <PlaygroundCplusplusConfigContext.Provider value={{}}>
+                              <PlaygroundKotlinConfigContext.Provider value={{}}>
+                                <PlaygroundRustConfigContext.Provider value={{}}>
+                                  <PlaygroundPythonConfigContext.Provider
+                                    value={{}}
+                                  >
+                                    <PlaygroundOptions
+                                      setNewConfig={this.setNewConfig}
+                                    />
+                                  </PlaygroundPythonConfigContext.Provider>
+                                </PlaygroundRustConfigContext.Provider>
+                              </PlaygroundKotlinConfigContext.Provider>
+                            </PlaygroundCplusplusConfigContext.Provider>
                           </PlaygroundJavaConfigContext.Provider>
                         </PlaygroundGoConfigContext.Provider>
                       </PlaygroundDartConfigContext.Provider>
@@ -350,14 +361,18 @@ class Playground extends React.Component<
             className="max-xl:col-span-2 xl:grid-cols-1"
             style={{ height: '750px' }}
           >
-            <PlaygroundGeneratedContext.Provider
-              value={{
-                language: this.config.language,
-                models: this.state.models
-              }}
-            >
-              <GeneratedModelsComponent setNewQuery={this.setNewQuery} />
-            </PlaygroundGeneratedContext.Provider>
+            {this.state.error ? (
+              <CustomError statusCode={this.state.statusCode} errorMessage={this.state.errorMessage} />
+            ) : (
+              <PlaygroundGeneratedContext.Provider
+                value={{
+                  language: this.config.language,
+                  models: this.state.models
+                }}
+              >
+                <GeneratedModelsComponent setNewQuery={this.setNewQuery} />
+              </PlaygroundGeneratedContext.Provider>
+            )}
           </div>
         </div>
       </div>
