@@ -14,6 +14,7 @@
 - [Presets](#presets)
 - [Interpretation of JSON Schema](#interpretation-of-json-schema)
 - [Migration](#migration)
+- [Coming from other tools](#coming-from-other-tools)
 - [Languages](#languages)
 
 <!-- tocstop -->
@@ -50,7 +51,10 @@ Goes more in-depth into how the preset system works, which enables full customiz
 Explains how a JSON Schema is interpreted to a data model.
 
 ### [Migration](./migration.md)
-As time goes on, major versions are inevitible and expected! You can find the migration guides here.
+As time goes on, major versions are inevitable and expected! You can find the migration guides here.
+
+### [Coming from other tools](./other-tools.md)
+Contains specific information about the differences between a lot of other common model generation tools. 
 
 ### Languages
 Each language has its own limitations, corner cases, and features; thus, each language has separate documentation.
@@ -63,3 +67,4 @@ Each language has its own limitations, corner cases, and features; thus, each la
 - [Python](./languages/Python.md)
 - [TypeScript](./languages/TypeScript.md)
 - [Kotlin](./languages/Kotlin.md)
+- [C++](./languages/Cplusplus.md)
