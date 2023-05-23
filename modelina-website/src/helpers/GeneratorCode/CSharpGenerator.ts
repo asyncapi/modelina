@@ -17,6 +17,16 @@ export function getCSharpGeneratorCode(
     );
   }
 
+  if (generatorOptions.csharpOverwriteHashcode) {
+    optionStringPresets.push(`
+    {
+      preset: CSHARP_COMMON_PRESET,
+      options: {
+        equal: false,
+        hashCode: true
+      }
+    }`)
+  }
   const presetOptions =
     optionStringPresets.length > 0
       ? `${optionString.length > 0 ? ',' : ''}

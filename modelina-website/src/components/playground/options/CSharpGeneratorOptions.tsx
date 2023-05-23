@@ -22,6 +22,8 @@ class CSharpGeneratorOptions extends React.Component<
     this.onChangeArrayType = this.onChangeArrayType.bind(this);
     this.onChangeAutoImplementProperties =
       this.onChangeAutoImplementProperties.bind(this);
+      this.onChangeOverwriteHashCodeSupport =
+          this.onChangeOverwriteHashCodeSupport.bind(this);
   }
 
   onChangeArrayType(arrayType: any) {
@@ -33,6 +35,12 @@ class CSharpGeneratorOptions extends React.Component<
   onChangeAutoImplementProperties(event: any) {
     if (this.props.setNewConfig) {
       this.props.setNewConfig('csharpAutoImplemented', event.target.checked);
+    }
+  }
+
+  onChangeOverwriteHashCodeSupport(event: any) {
+    if (this.props.setNewConfig) {
+      this.props.setNewConfig('csharpOverwriteHashcode', event.target.checked);
     }
   }
 
@@ -69,6 +77,20 @@ class CSharpGeneratorOptions extends React.Component<
               name="csharpAutoImplemented"
               checked={this.context?.csharpAutoImplemented}
               onChange={this.onChangeAutoImplementProperties}
+            />
+          </label>
+        </li>
+        <li>
+          <label className="flex items-center py-2 justify-between cursor-pointer">
+            <span className="mt-1 max-w-2xl text-sm text-gray-500">
+              Include OverWrite HashCode Support
+            </span>
+            <input
+              type="checkbox"
+              className="form-checkbox cursor-pointer"
+              name="csharpOverwriteHashcode"
+              checked={this.context?.csharpOverwriteHashcode}
+              onChange={this.onChangeOverwriteHashCodeSupport}
             />
           </label>
         </li>
