@@ -4,6 +4,9 @@ FROM openjdk:16.0.1-jdk-slim-buster
 RUN apt-get update -yq \
     && apt-get install -yq curl
 
+# Install C++ compiler
+RUN apt-get install -yq build-essential
+
 # Install nodejs
 RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
     && apt-get install -yq nodejs
@@ -32,6 +35,12 @@ RUN apt install -yq wget unzip  \
     && unzip -qq kotlin-compiler-*.zip
 
 ENV PATH $PATH:/usr/lib/kotlinc/bin
+
+# Install PHP
+RUN wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg \
+    && echo "deb https://packages.sury.org/php/ buster main" > /etc/apt/sources.list.d/php.list \
+    && apt-get update -yq \
+    && apt-get install -y php8.2
 
 # Setup library
 RUN apt-get install -yq chromium

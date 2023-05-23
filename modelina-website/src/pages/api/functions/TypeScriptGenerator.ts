@@ -36,6 +36,9 @@ export async function getTypeScriptModels(
       options: {}
     });
   }
+  if (generatorOptions.tsModuleSystem) {
+    options.moduleSystem = generatorOptions.tsModuleSystem as any;
+  }
   if (generatorOptions.tsEnumType) {
     options.enumType = generatorOptions.tsEnumType as any;
   }
@@ -47,9 +50,9 @@ export async function getTypeScriptModels(
       { exportType: 'default' }
     );
     return convertModelsToProps(generatedModels);
-  } catch (e) {
+  } catch (e : any) {
     console.error('Could not generate models');
     console.error(e);
+    return e.message;
   }
-  return [];
 }
