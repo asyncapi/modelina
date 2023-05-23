@@ -182,7 +182,12 @@ describe('PhpConstrainer', () => {
 
   describe('Union', () => {
     test('should render type', () => {
-      const unionModel = new ConstrainedStringModel('test', undefined, {}, 'str');
+      const unionModel = new ConstrainedStringModel(
+        'test',
+        undefined,
+        {},
+        'str'
+      );
       const model = new ConstrainedUnionModel('test', undefined, {}, '', [
         unionModel
       ]);
@@ -194,8 +199,18 @@ describe('PhpConstrainer', () => {
       expect(type).toEqual('mixed');
     });
     test('should render multiple types', () => {
-      const unionModel1 = new ConstrainedStringModel('test', undefined, {}, 'str');
-      const unionModel2 = new ConstrainedStringModel('test', undefined, {}, 'str');
+      const unionModel1 = new ConstrainedStringModel(
+        'test',
+        undefined,
+        {},
+        'str'
+      );
+      const unionModel2 = new ConstrainedStringModel(
+        'test',
+        undefined,
+        {},
+        'str'
+      );
       const model = new ConstrainedUnionModel('test', undefined, {}, '', [
         unionModel1,
         unionModel2
@@ -212,7 +227,12 @@ describe('PhpConstrainer', () => {
   describe('Dictionary', () => {
     test('should render type', () => {
       const keyModel = new ConstrainedStringModel('test', undefined, {}, 'str');
-      const valueModel = new ConstrainedStringModel('test', undefined, {}, 'str');
+      const valueModel = new ConstrainedStringModel(
+        'test',
+        undefined,
+        {},
+        'str'
+      );
       const model = new ConstrainedDictionaryModel(
         'test',
         undefined,
