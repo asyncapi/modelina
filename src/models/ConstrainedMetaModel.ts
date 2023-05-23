@@ -16,9 +16,10 @@ export interface ConstrainedMetaModelOptionsDiscriminator
   type?: string;
 }
 
-export interface ConstrainedMetaModelOptions extends MetaModelOptions {
+export class ConstrainedMetaModelOptions extends MetaModelOptions {
   const?: ConstrainedMetaModelOptionsConst;
   discriminator?: ConstrainedMetaModelOptionsDiscriminator;
+  isNullable?: boolean = false;
 }
 
 export abstract class ConstrainedMetaModel extends MetaModel {

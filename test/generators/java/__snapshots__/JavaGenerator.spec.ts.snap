@@ -555,7 +555,7 @@ exports[`JavaGenerator should render \`class\` type 1`] = `
   private String city;
   private String state;
   private Double houseNumber;
-  private Boolean marriage;
+  private boolean marriage;
   private Object members;
   private Object[] arrayType;
   private Map<String, Object> additionalProperties;
@@ -572,8 +572,8 @@ exports[`JavaGenerator should render \`class\` type 1`] = `
   public Double getHouseNumber() { return this.houseNumber; }
   public void setHouseNumber(Double houseNumber) { this.houseNumber = houseNumber; }
 
-  public Boolean getMarriage() { return this.marriage; }
-  public void setMarriage(Boolean marriage) { this.marriage = marriage; }
+  public boolean getMarriage() { return this.marriage; }
+  public void setMarriage(boolean marriage) { this.marriage = marriage; }
 
   public Object getMembers() { return this.members; }
   public void setMembers(Object members) { this.members = members; }
@@ -755,7 +755,7 @@ public class Address {
   private String city;
   private String state;
   private Double houseNumber;
-  private Boolean marriage;
+  private boolean marriage;
   private Object members;
   private Object[] arrayType;
   private OtherModel otherModel;
@@ -773,8 +773,8 @@ public class Address {
   public Double getHouseNumber() { return this.houseNumber; }
   public void setHouseNumber(Double houseNumber) { this.houseNumber = houseNumber; }
 
-  public Boolean getMarriage() { return this.marriage; }
-  public void setMarriage(Boolean marriage) { this.marriage = marriage; }
+  public boolean getMarriage() { return this.marriage; }
+  public void setMarriage(boolean marriage) { this.marriage = marriage; }
 
   public Object getMembers() { return this.members; }
   public void setMembers(Object members) { this.members = members; }

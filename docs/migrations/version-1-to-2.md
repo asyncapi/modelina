@@ -265,3 +265,38 @@ public class Truck implements Vehicle {
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }
 ```
+
+# Nullable models
+
+Each [meta model](../internal-model.md) up until now where not able to be marked as nullable, but now they can be through `isNullable`. Here are the different outputs and how they now apply nullable types.
+
+### TypeScript
+
+Across all models, if they are nullable they will get the union `x | null`.
+
+### JavaScript
+Is not affected by this change.
+
+### C#
+Is not affected by this change.
+
+### Java
+With this update, Float, Integer and Boolean meta models are rendered between their primitive types (for example `float`) and wrapper classes (for example `Float`) for nullable.
+
+### Kotlin
+Is not affected by this change.
+
+### Rust 
+Is not affected by this change.
+
+### Python
+Is not affected by this change.
+
+### Go
+Is not affected by this change.
+
+### Dart
+Is not affected by this change.
+
+### C++
+Is not affected by this change.

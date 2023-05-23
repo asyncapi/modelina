@@ -9,6 +9,7 @@ InputMetaModel {
         "discriminator": Object {
           "discriminator": "type",
         },
+        "isNullable": false,
       },
       "originalInput": AsyncapiV2Schema {
         "$id": "pet",
@@ -167,6 +168,7 @@ InputMetaModel {
             "discriminator": Object {
               "discriminator": "type",
             },
+            "isNullable": false,
           },
           "originalInput": AsyncapiV2Schema {
             "allOf": Array [
@@ -249,6 +251,7 @@ InputMetaModel {
                     "discriminator": Object {
                       "discriminator": "type",
                     },
+                    "isNullable": false,
                   },
                   "originalInput": Array [
                     AsyncapiV2Schema {
@@ -330,6 +333,7 @@ InputMetaModel {
                   "discriminator": Object {
                     "discriminator": "type",
                   },
+                  "isNullable": false,
                 },
                 "originalInput": Array [
                   AsyncapiV2Schema {
@@ -408,7 +412,9 @@ InputMetaModel {
                 "serializationType": "unwrap",
                 "value": AnyModel {
                   "name": "undefined",
-                  "options": Object {},
+                  "options": Object {
+                    "isNullable": true,
+                  },
                   "originalInput": AsyncapiV2Schema {
                     "allOf": Array [
                       AsyncapiV2Schema {
@@ -489,7 +495,9 @@ InputMetaModel {
             "dataschema": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_6",
-                "options": Object {},
+                "options": Object {
+                  "isNullable": false,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "format": "uri",
                   "type": "string",
@@ -503,7 +511,9 @@ InputMetaModel {
             "id": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_2",
-                "options": Object {},
+                "options": Object {
+                  "isNullable": false,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "type": "string",
                   "x-modelgen-inferred-name": "anonymous_schema_2",
@@ -516,7 +526,9 @@ InputMetaModel {
             "source": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_3",
-                "options": Object {},
+                "options": Object {
+                  "isNullable": false,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "format": "uri-reference",
                   "type": "string",
@@ -530,7 +542,9 @@ InputMetaModel {
             "specversion": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_4",
-                "options": Object {},
+                "options": Object {
+                  "isNullable": false,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "default": "1.0",
                   "examples": Array [
@@ -547,7 +561,9 @@ InputMetaModel {
             "time": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_7",
-                "options": Object {},
+                "options": Object {
+                  "isNullable": false,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "format": "date-time",
                   "type": "string",
@@ -565,6 +581,7 @@ InputMetaModel {
                   "const": Object {
                     "originalInput": "Dog",
                   },
+                  "isNullable": false,
                 },
                 "originalInput": AsyncapiV2Schema {
                   "allOf": Array [
@@ -656,6 +673,7 @@ InputMetaModel {
             "discriminator": Object {
               "discriminator": "type",
             },
+            "isNullable": false,
           },
           "originalInput": AsyncapiV2Schema {
             "allOf": Array [
@@ -738,6 +756,7 @@ InputMetaModel {
                     "discriminator": Object {
                       "discriminator": "type",
                     },
+                    "isNullable": false,
                   },
                   "originalInput": Array [
                     AsyncapiV2Schema {
@@ -819,6 +838,7 @@ InputMetaModel {
                   "discriminator": Object {
                     "discriminator": "type",
                   },
+                  "isNullable": false,
                 },
                 "originalInput": Array [
                   AsyncapiV2Schema {
@@ -897,7 +917,9 @@ InputMetaModel {
                 "serializationType": "unwrap",
                 "value": AnyModel {
                   "name": "undefined",
-                  "options": Object {},
+                  "options": Object {
+                    "isNullable": true,
+                  },
                   "originalInput": AsyncapiV2Schema {
                     "allOf": Array [
                       AsyncapiV2Schema {
@@ -978,7 +1000,9 @@ InputMetaModel {
             "dataschema": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_6",
-                "options": Object {},
+                "options": Object {
+                  "isNullable": false,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "format": "uri",
                   "type": "string",
@@ -992,7 +1016,9 @@ InputMetaModel {
             "id": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_2",
-                "options": Object {},
+                "options": Object {
+                  "isNullable": false,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "type": "string",
                   "x-modelgen-inferred-name": "anonymous_schema_2",
@@ -1005,7 +1031,9 @@ InputMetaModel {
             "source": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_3",
-                "options": Object {},
+                "options": Object {
+                  "isNullable": false,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "format": "uri-reference",
                   "type": "string",
@@ -1019,7 +1047,9 @@ InputMetaModel {
             "specversion": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_4",
-                "options": Object {},
+                "options": Object {
+                  "isNullable": false,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "default": "1.0",
                   "examples": Array [
@@ -1036,7 +1066,9 @@ InputMetaModel {
             "time": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_7",
-                "options": Object {},
+                "options": Object {
+                  "isNullable": false,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "format": "date-time",
                   "type": "string",
@@ -1054,6 +1086,7 @@ InputMetaModel {
                   "const": Object {
                     "originalInput": "Cat",
                   },
+                  "isNullable": false,
                 },
                 "originalInput": AsyncapiV2Schema {
                   "allOf": Array [
@@ -1931,6 +1964,7 @@ InputMetaModel {
         "discriminator": Object {
           "discriminator": "type",
         },
+        "isNullable": false,
       },
       "originalInput": AsyncapiV2Schema {
         "$id": "pet",
@@ -2089,6 +2123,7 @@ InputMetaModel {
             "discriminator": Object {
               "discriminator": "type",
             },
+            "isNullable": false,
           },
           "originalInput": AsyncapiV2Schema {
             "allOf": Array [
@@ -2171,6 +2206,7 @@ InputMetaModel {
                     "discriminator": Object {
                       "discriminator": "type",
                     },
+                    "isNullable": false,
                   },
                   "originalInput": Array [
                     AsyncapiV2Schema {
@@ -2252,6 +2288,7 @@ InputMetaModel {
                   "discriminator": Object {
                     "discriminator": "type",
                   },
+                  "isNullable": false,
                 },
                 "originalInput": Array [
                   AsyncapiV2Schema {
@@ -2330,7 +2367,9 @@ InputMetaModel {
                 "serializationType": "unwrap",
                 "value": AnyModel {
                   "name": "undefined",
-                  "options": Object {},
+                  "options": Object {
+                    "isNullable": true,
+                  },
                   "originalInput": AsyncapiV2Schema {
                     "allOf": Array [
                       AsyncapiV2Schema {
@@ -2411,7 +2450,9 @@ InputMetaModel {
             "dataschema": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_6",
-                "options": Object {},
+                "options": Object {
+                  "isNullable": false,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "format": "uri",
                   "type": "string",
@@ -2425,7 +2466,9 @@ InputMetaModel {
             "id": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_2",
-                "options": Object {},
+                "options": Object {
+                  "isNullable": false,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "type": "string",
                   "x-modelgen-inferred-name": "anonymous_schema_2",
@@ -2438,7 +2481,9 @@ InputMetaModel {
             "source": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_3",
-                "options": Object {},
+                "options": Object {
+                  "isNullable": false,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "format": "uri-reference",
                   "type": "string",
@@ -2452,7 +2497,9 @@ InputMetaModel {
             "specversion": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_4",
-                "options": Object {},
+                "options": Object {
+                  "isNullable": false,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "default": "1.0",
                   "examples": Array [
@@ -2469,7 +2516,9 @@ InputMetaModel {
             "time": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_7",
-                "options": Object {},
+                "options": Object {
+                  "isNullable": false,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "format": "date-time",
                   "type": "string",
@@ -2487,6 +2536,7 @@ InputMetaModel {
                   "const": Object {
                     "originalInput": "Dog",
                   },
+                  "isNullable": false,
                 },
                 "originalInput": AsyncapiV2Schema {
                   "allOf": Array [
@@ -2578,6 +2628,7 @@ InputMetaModel {
             "discriminator": Object {
               "discriminator": "type",
             },
+            "isNullable": false,
           },
           "originalInput": AsyncapiV2Schema {
             "allOf": Array [
@@ -2660,6 +2711,7 @@ InputMetaModel {
                     "discriminator": Object {
                       "discriminator": "type",
                     },
+                    "isNullable": false,
                   },
                   "originalInput": Array [
                     AsyncapiV2Schema {
@@ -2741,6 +2793,7 @@ InputMetaModel {
                   "discriminator": Object {
                     "discriminator": "type",
                   },
+                  "isNullable": false,
                 },
                 "originalInput": Array [
                   AsyncapiV2Schema {
@@ -2819,7 +2872,9 @@ InputMetaModel {
                 "serializationType": "unwrap",
                 "value": AnyModel {
                   "name": "undefined",
-                  "options": Object {},
+                  "options": Object {
+                    "isNullable": true,
+                  },
                   "originalInput": AsyncapiV2Schema {
                     "allOf": Array [
                       AsyncapiV2Schema {
@@ -2900,7 +2955,9 @@ InputMetaModel {
             "dataschema": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_6",
-                "options": Object {},
+                "options": Object {
+                  "isNullable": false,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "format": "uri",
                   "type": "string",
@@ -2914,7 +2971,9 @@ InputMetaModel {
             "id": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_2",
-                "options": Object {},
+                "options": Object {
+                  "isNullable": false,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "type": "string",
                   "x-modelgen-inferred-name": "anonymous_schema_2",
@@ -2927,7 +2986,9 @@ InputMetaModel {
             "source": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_3",
-                "options": Object {},
+                "options": Object {
+                  "isNullable": false,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "format": "uri-reference",
                   "type": "string",
@@ -2941,7 +3002,9 @@ InputMetaModel {
             "specversion": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_4",
-                "options": Object {},
+                "options": Object {
+                  "isNullable": false,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "default": "1.0",
                   "examples": Array [
@@ -2958,7 +3021,9 @@ InputMetaModel {
             "time": ObjectPropertyModel {
               "property": StringModel {
                 "name": "anonymous_schema_7",
-                "options": Object {},
+                "options": Object {
+                  "isNullable": false,
+                },
                 "originalInput": AsyncapiV2Schema {
                   "format": "date-time",
                   "type": "string",
@@ -2976,6 +3041,7 @@ InputMetaModel {
                   "const": Object {
                     "originalInput": "Cat",
                   },
+                  "isNullable": false,
                 },
                 "originalInput": AsyncapiV2Schema {
                   "allOf": Array [
@@ -3854,7 +3920,9 @@ InputMetaModel {
   "models": Object {
     "anonymous_schema_1": ObjectModel {
       "name": "anonymous_schema_1",
-      "options": Object {},
+      "options": Object {
+        "isNullable": false,
+      },
       "originalInput": AsyncapiV2Schema {
         "properties": Object {
           "email": AsyncapiV2Schema {
@@ -3873,20 +3941,26 @@ InputMetaModel {
           "property": DictionaryModel {
             "key": StringModel {
               "name": "additionalProperties",
-              "options": Object {},
+              "options": Object {
+                "isNullable": false,
+              },
               "originalInput": Array [
                 true,
               ],
             },
             "name": "additionalProperties",
-            "options": Object {},
+            "options": Object {
+              "isNullable": false,
+            },
             "originalInput": Array [
               true,
             ],
             "serializationType": "unwrap",
             "value": AnyModel {
               "name": "undefined",
-              "options": Object {},
+              "options": Object {
+                "isNullable": true,
+              },
               "originalInput": true,
             },
           },
@@ -3896,7 +3970,9 @@ InputMetaModel {
         "email": ObjectPropertyModel {
           "property": StringModel {
             "name": "anonymous_schema_2",
-            "options": Object {},
+            "options": Object {
+              "isNullable": false,
+            },
             "originalInput": AsyncapiV2Schema {
               "format": "email",
               "type": "string",
@@ -4018,7 +4094,9 @@ InputMetaModel {
   "models": Object {
     "anonymous_schema_1": ObjectModel {
       "name": "anonymous_schema_1",
-      "options": Object {},
+      "options": Object {
+        "isNullable": false,
+      },
       "originalInput": AsyncapiV2Schema {
         "properties": Object {
           "email": AsyncapiV2Schema {
@@ -4037,20 +4115,26 @@ InputMetaModel {
           "property": DictionaryModel {
             "key": StringModel {
               "name": "additionalProperties",
-              "options": Object {},
+              "options": Object {
+                "isNullable": false,
+              },
               "originalInput": Array [
                 true,
               ],
             },
             "name": "additionalProperties",
-            "options": Object {},
+            "options": Object {
+              "isNullable": false,
+            },
             "originalInput": Array [
               true,
             ],
             "serializationType": "unwrap",
             "value": AnyModel {
               "name": "undefined",
-              "options": Object {},
+              "options": Object {
+                "isNullable": true,
+              },
               "originalInput": true,
             },
           },
@@ -4060,7 +4144,9 @@ InputMetaModel {
         "email": ObjectPropertyModel {
           "property": StringModel {
             "name": "anonymous_schema_2",
-            "options": Object {},
+            "options": Object {
+              "isNullable": false,
+            },
             "originalInput": AsyncapiV2Schema {
               "format": "email",
               "type": "string",

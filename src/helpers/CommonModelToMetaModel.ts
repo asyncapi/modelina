@@ -28,6 +28,12 @@ function getMetaModelOptions(commonModel: CommonModel): MetaModelOptions {
     };
   }
 
+  if (Array.isArray(commonModel.type) && commonModel.type.includes('null')) {
+    options.isNullable = true;
+  } else {
+    options.isNullable = false;
+  }
+
   if (commonModel.discriminator) {
     options.discriminator = {
       discriminator: commonModel.discriminator
@@ -125,6 +131,18 @@ function isEnumModel(jsonSchemaModel: CommonModel): boolean {
   return true;
 }
 
+function shouldBeAnyType(jsonSchemaModel: CommonModel): boolean {
+  const containsAllTypesButNull =
+    Array.isArray(jsonSchemaModel.type) &&
+    jsonSchemaModel.type.length >= 6 &&
+    !jsonSchemaModel.type.includes('null');
+  const containsAllTypes =
+    (Array.isArray(jsonSchemaModel.type) &&
+      jsonSchemaModel.type.length === 7) ||
+    containsAllTypesButNull;
+  return containsAllTypesButNull || containsAllTypes;
+}
+
 /**
  * Converts a CommonModel into multiple models wrapped in a union model.
  *
@@ -140,14 +158,24 @@ export function convertToUnionModel(
   alreadySeenModels: Map<CommonModel, MetaModel>
 ): UnionModel | undefined {
   const containsUnions = Array.isArray(jsonSchemaModel.union);
+
+  // Should not create union from two types where one is null
+  const containsTypeWithNull =
+    Array.isArray(jsonSchemaModel.type) &&
+    jsonSchemaModel.type.length === 2 &&
+    jsonSchemaModel.type.includes('null');
   const containsSimpleTypeUnion =
-    Array.isArray(jsonSchemaModel.type) && jsonSchemaModel.type.length > 1;
-  const containsAllTypes =
-    Array.isArray(jsonSchemaModel.type) && jsonSchemaModel.type.length === 7;
+    Array.isArray(jsonSchemaModel.type) &&
+    jsonSchemaModel.type.length > 1 &&
+    !containsTypeWithNull;
+  const isAnyType = shouldBeAnyType(jsonSchemaModel);
+
+  //Lets see whether we should have a union or not.
   if (
     (!containsSimpleTypeUnion && !containsUnions) ||
     isEnumModel(jsonSchemaModel) ||
-    containsAllTypes
+    isAnyType ||
+    containsTypeWithNull
   ) {
     return undefined;
   }
@@ -157,6 +185,7 @@ export function convertToUnionModel(
     getMetaModelOptions(jsonSchemaModel),
     []
   );
+
   //cache model before continuing
   if (!alreadySeenModels.has(jsonSchemaModel)) {
     alreadySeenModels.set(jsonSchemaModel, unionModel);
@@ -165,11 +194,20 @@ export function convertToUnionModel(
   // Has multiple types, so convert to union
   if (containsUnions && jsonSchemaModel.union) {
     for (const unionCommonModel of jsonSchemaModel.union) {
-      const unionMetaModel = convertToMetaModel(
-        unionCommonModel,
-        alreadySeenModels
-      );
-      unionModel.union.push(unionMetaModel);
+      const isSingleNullType =
+        (Array.isArray(unionCommonModel.type) &&
+          unionCommonModel.type.length === 1 &&
+          unionCommonModel.type?.includes('null')) ||
+        unionCommonModel.type === 'null';
+      if (isSingleNullType) {
+        unionModel.options.isNullable = true;
+      } else {
+        const unionMetaModel = convertToMetaModel(
+          unionCommonModel,
+          alreadySeenModels
+        );
+        unionModel.union.push(unionMetaModel);
+      }
     }
     return unionModel;
   }
@@ -253,10 +291,8 @@ export function convertToAnyModel(
   jsonSchemaModel: CommonModel,
   name: string
 ): AnyModel | undefined {
-  if (
-    !Array.isArray(jsonSchemaModel.type) ||
-    jsonSchemaModel.type.length !== 7
-  ) {
+  const isAnyType = shouldBeAnyType(jsonSchemaModel);
+  if (!Array.isArray(jsonSchemaModel.type) || !isAnyType) {
     return undefined;
   }
   return new AnyModel(

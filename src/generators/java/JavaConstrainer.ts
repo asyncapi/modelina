@@ -91,24 +91,24 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
       constrainedModel.originalInput['format'];
     switch (format) {
       case 'float':
-        type = 'float';
+        type = constrainedModel.options.isNullable ? 'Float' : 'float';
         break;
     }
     return type;
   },
   Integer({ constrainedModel }): string {
-    let type = 'Integer';
+    let type = constrainedModel.options.isNullable ? 'Integer' : 'int';
     const format =
       constrainedModel.originalInput &&
       constrainedModel.originalInput['format'];
     switch (format) {
       case 'integer':
       case 'int32':
-        type = 'int';
+        type = constrainedModel.options.isNullable ? 'Integer' : 'int';
         break;
       case 'long':
       case 'int64':
-        type = 'long';
+        type = constrainedModel.options.isNullable ? 'Long' : 'long';
         break;
     }
     return type;
@@ -135,8 +135,8 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
     }
     return type;
   },
-  Boolean(): string {
-    return 'Boolean';
+  Boolean({ constrainedModel }): string {
+    return constrainedModel.options.isNullable ? 'Boolean' : 'boolean';
   },
   Tuple({ options }): string {
     //Because Java have no notion of tuples (and no custom implementation), we have to render it as a list of any value.

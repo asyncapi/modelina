@@ -6,9 +6,10 @@ export interface MetaModelOptionsDiscriminator {
   discriminator: string;
 }
 
-export interface MetaModelOptions {
+export class MetaModelOptions {
   const?: MetaModelOptionsConst;
   discriminator?: MetaModelOptionsDiscriminator;
+  isNullable?: boolean = false;
 }
 
 export class MetaModel {

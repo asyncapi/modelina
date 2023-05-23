@@ -49,7 +49,6 @@ describe('Interpretation of oneOf', () => {
     expect(model.addItemUnion).toHaveBeenCalledTimes(2);
     expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });
-
   describe('discriminator', () => {
     test('should set discriminator when discriminator is set in schema', () => {
       const item1 = AsyncapiV2Schema.toSchema({
