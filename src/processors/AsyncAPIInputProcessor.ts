@@ -8,9 +8,9 @@ import {
   AsyncAPIDocumentInterface,
   SchemaInterface as AsyncAPISchema
 } from '@asyncapi/parser';
-import { AvroSchemaParser } from '@asyncapi/parser/cjs/schema-parser/avro-schema-parser';
-import { OpenAPISchemaParser } from '@asyncapi/parser/cjs/schema-parser/openapi-schema-parser';
-import { RamlSchemaParser } from '@asyncapi/parser/cjs/schema-parser/raml-schema-parser';
+import { AvroSchemaParser } from '@asyncapi/avro-schema-parser';
+import { OpenAPISchemaParser } from '@asyncapi/openapi-schema-parser';
+import { RamlDTSchemaParser } from '@asyncapi/raml-dt-schema-parser';
 import { createDetailedAsyncAPI } from '@asyncapi/parser/cjs/utils';
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
@@ -28,7 +28,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     super();
     this.parser.registerSchemaParser(AvroSchemaParser());
     this.parser.registerSchemaParser(OpenAPISchemaParser());
-    this.parser.registerSchemaParser(RamlSchemaParser());
+    this.parser.registerSchemaParser(RamlDTSchemaParser());
   }
 
   static supportedVersions = [
