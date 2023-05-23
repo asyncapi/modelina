@@ -42,7 +42,7 @@ Modelina uses something called **presets** to extend the rendered model. You can
     + [Python](#python)
       - [**Class**](#class-5)
       - [**Enum**](#enum-5)
-    + [C++](#c)
+    + [C++ (csplusplus)](#c-csplusplus)
       - [**Class**](#class-6)
       - [**Enum**](#enum-6)
     + [Kotlin](#kotlin)
@@ -527,7 +527,7 @@ This preset is a generator for the meta model `ConstrainedEnumModel` and [can be
 |---|---|---|
 | `item` | A method to extend enum's item. | `item` object as a [`ConstrainedEnumValueModel`](./internal-model.md#the-constrained-meta-model) instance, which contains the value and key of enum's item. |
 
-### C++
+### C++ (csplusplus)
 
 #### **Class**
 
