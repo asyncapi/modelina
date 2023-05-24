@@ -217,13 +217,13 @@ class Playground extends React.Component<
     let loader;
     if (!isHardLoaded) {
       loader = (
-        <div className="mt-12 text-2xl absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2">
+        <div className="text-xl text-center mt-16 lg:mt-56 md:text-2xl">
           Loading Modelina Playground. Connecting to playground server...
         </div>
       );
     } else if (!isSoftLoaded) {
       loader = (
-        <div className="mt-12 text-2xl absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2">
+        <div className="text-xl text-center mt-16 lg:mt-56 md:text-2xl">
           Loading Modelina Playground. Rendering playground components...
         </div>
       );
