@@ -107,7 +107,7 @@ class CSharpGeneratorOptions extends React.Component<
             <input
               type="checkbox"
               className="form-checkbox cursor-pointer"
-              name="csharpOverwriteHashcode"
+              name="csharpIncludeJson"
               checked={this.context?.csharpIncludeJson}
               onChange={this.onChangeIncludeJson}
             />
