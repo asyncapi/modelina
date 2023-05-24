@@ -484,7 +484,10 @@
       "profile": "https://github.com/sambhavgupta0705",
       "contributions": [
         "doc",
-        "review"
+        "review",
+        "design",
+        "code",
+        "bug"
       ]
     },
     {
