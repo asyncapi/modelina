@@ -579,6 +579,15 @@
         "example",
         "review"
       ]
+    },
+    {
+      "login": "Bhavik-ag",
+      "name": "Bhavik Agarwal",
+      "avatar_url": "https://avatars.githubusercontent.com/u/73033511?v=4",
+      "profile": "https://codeyt.com/",
+      "contributions": [
+        "design"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -587,5 +596,6 @@
   "repoType": "github",
   "repoHost": "https://github.com",
   "skipCi": false,
-  "commitConvention": "none"
+  "commitConvention": "none",
+  "commitType": "docs"
 }
