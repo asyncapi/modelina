@@ -24,6 +24,7 @@ export interface ModelinaCSharpOptions {
   csharpArrayType: 'List' | 'Array' | undefined;
   csharpAutoImplemented: boolean;
   csharpOverwriteHashcode: boolean;
+  csharpIncludeJson: boolean;
 }
 export interface ModelinaKotlinOptions {}
 export interface ModelinaRustOptions {}
