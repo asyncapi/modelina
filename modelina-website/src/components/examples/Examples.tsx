@@ -77,7 +77,7 @@ class Examples extends React.Component<
         <div className="bg-white px-4 sm:px-6 lg:px-8 w-full xl:max-w-7xl xl:mx-auto">
           {!showMenu && (
             <div className="lg:hidden">
-              <button onClick={() => { this.setState({ showMenu: true }) }} className="flex text-gray-500 px-4 sm:px-6 md:px-8 hover:text-gray-900 focus:outline-none" aria-label="Open sidebar">
+              <button onClick={() => { this.setState({ showMenu: true }) }} className="flex text-gray-500 ml-6  hover:text-gray-900 focus:outline-none" aria-label="Open sidebar">
                 <span>Open Navigation ➔</span>
               </button>
             </div>
@@ -155,7 +155,7 @@ class Examples extends React.Component<
                 </div>
               </div>
             </div>
-            <div className="flex flex-col ml-4 w-0 flex-1 max-w-full lg:max-w-(screen-16)">
+            <div className="flex flex-col ml-6 w-0 flex-1 max-w-full lg:max-w-(screen-16)">
               {
                 example ?
                   <div
@@ -167,7 +167,7 @@ class Examples extends React.Component<
                         href={`https://github.com/asyncapi/modelina/tree/master/examples/${selectedExample}`}
                         inNav="true"
                       />
-                      <div className="prose p-6">
+                      <div className="prose py-6">
                         <ReactMarkdown>{example.description}</ReactMarkdown>
                         <a href={`https://github.com/asyncapi/modelina/tree/master/examples/${selectedExample}/README.md`} className="bg-blue-100 hover:bg-blue-200 text-blue-800 text-xs font-semibold p-2 rounded border border-blue-400">Edit Description</a>
                       </div>
@@ -205,7 +205,7 @@ class Examples extends React.Component<
                   </div>
                   :
                   <div className="prose" style={{ maxWidth: '100%' }}>
-                    <div className={"flex justify-end"}>
+                    <div className={"flex md:justify-end my-4 md:my-0"}>
                       <GithubButton
                         text="Edit readme on GitHub"
                         href={`https://github.com/asyncapi/modelina/tree/master/examples/README.md`}
