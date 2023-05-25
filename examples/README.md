@@ -32,6 +32,9 @@ We love contributions and new examples that does not already exist, you can foll
 ## Input examples
 These examples show a specific input and how they can be used:
 - [asyncapi-from-object](./asyncapi-from-object) - A basic example where an AsyncAPI JS object is used to generate models.
+- [asyncapi-avro-schema](./asyncapi-avro-schema) - A basic example of how to use Modelina with an AsyncAPI document using AVRO 1.9 as schema format for the payload.
+- [asyncapi-openapi-schema](./asyncapi-openapi-schema) - A basic example of how to use Modelina with an AsyncAPI document using OpenAPI 3.0 Schema for the payload.
+- [asyncapi-raml-schema](./asyncapi-raml-schema) - A basic example of how to use Modelina with an AsyncAPI document using RAML 1.0 data types as payload format.
 - [asyncapi-from-parser](./asyncapi-from-parser) - A basic example where an AsyncAPI JS object from the [parser-js](https://github.com/asyncapi/parser-js) is used to generate models.
 - [asyncapi-from-v1-parser](./asyncapi-from-v1-parser) - A basic example where an AsyncAPI JS object from the old v1 [parser-js](https://github.com/asyncapi/parser-js) is used to generate models.
 - [json-schema-draft7-from-object](./json-schema-draft7-from-object) - A basic example where a JSON Schema draft 7 JS object is used to generate models.
@@ -44,13 +47,12 @@ These examples show a specific input and how they can be used:
 These are examples that can be applied in all scenarios.
 - [include-custom-function](./include-custom-function) - A basic example where a custom function is included.
 - [overwrite-naming-formatting](./overwrite-naming-formatting) - A basic example how to overwrite default naming format constraint in this case, overwriting returning a constant case format.
-- [overwrite-default-constraint](./overwrite-default-constraint) -  A basic example how to overwrite the entire constraint logic and not just a single single part of the default behavior, in this case overwriting the model naming constraint.
+- [overwrite-default-constraint](./overwrite-default-constraint/) -  A basic example how to overwrite the entire constraint logic and not just a single part of the default behavior, in this case overwriting the model naming constraint.
 - [custom-logging](./custom-logging) - A basic example where a custom logger is used.
 - [generate-to-files](./generate-to-files) - A basic example that shows how you can generate the models directly to files.
 - [indentation-type-and-size](./indentation-type-and-size) - This example shows how to change the indentation type and size of the generated model.
 - [change-type-mapping](./change-type-mapping) - A basic example showing how to change the type of a model in some context.
 - [change-type-mapping-with-dependency](./change-type-mapping-with-dependency) - A basic example showing how to use the dependency manager to inject your own custom type with a dependency instead of the default type.
-
 
 ## Simple generator examples
 These are all the basic generator examples that shows a bare minimal example of a generator:
