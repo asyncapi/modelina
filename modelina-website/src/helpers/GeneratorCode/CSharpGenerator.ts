@@ -27,6 +27,13 @@ export function getCSharpGeneratorCode(
       }
     }`)
   }
+
+  if (generatorOptions.csharpIncludeJson) {
+    optionStringPresets.push(`
+    CSHARP_JSON_SERIALIZER_PRESET
+    `)
+  }
+
   const presetOptions =
     optionStringPresets.length > 0
       ? `${optionString.length > 0 ? ',' : ''}

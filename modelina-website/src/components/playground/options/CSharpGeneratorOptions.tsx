@@ -20,10 +20,9 @@ class CSharpGeneratorOptions extends React.Component<
     super(props);
     this.state = defaultState;
     this.onChangeArrayType = this.onChangeArrayType.bind(this);
-    this.onChangeAutoImplementProperties =
-      this.onChangeAutoImplementProperties.bind(this);
-      this.onChangeOverwriteHashCodeSupport =
-          this.onChangeOverwriteHashCodeSupport.bind(this);
+    this.onChangeAutoImplementProperties = this.onChangeAutoImplementProperties.bind(this);
+    this.onChangeOverwriteHashCodeSupport = this.onChangeOverwriteHashCodeSupport.bind(this);
+    this.onChangeIncludeJson = this.onChangeIncludeJson.bind(this);
   }
 
   onChangeArrayType(arrayType: any) {
@@ -41,6 +40,12 @@ class CSharpGeneratorOptions extends React.Component<
   onChangeOverwriteHashCodeSupport(event: any) {
     if (this.props.setNewConfig) {
       this.props.setNewConfig('csharpOverwriteHashcode', event.target.checked);
+    }
+  }
+
+  onChangeIncludeJson(event: any) {
+    if (this.props.setNewConfig) {
+      this.props.setNewConfig('csharpIncludeJson', event.target.checked);
     }
   }
 
@@ -91,6 +96,20 @@ class CSharpGeneratorOptions extends React.Component<
               name="csharpOverwriteHashcode"
               checked={this.context?.csharpOverwriteHashcode}
               onChange={this.onChangeOverwriteHashCodeSupport}
+            />
+          </label>
+        </li>
+        <li>
+          <label className="flex items-center py-2 justify-between cursor-pointer">
+            <span className="mt-1 max-w-2xl text-sm text-gray-500">
+              Include JSON serialization
+            </span>
+            <input
+              type="checkbox"
+              className="form-checkbox cursor-pointer"
+              name="csharpIncludeJson"
+              checked={this.context?.csharpIncludeJson}
+              onChange={this.onChangeIncludeJson}
             />
           </label>
         </li>

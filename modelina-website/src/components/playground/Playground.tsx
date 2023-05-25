@@ -81,6 +81,7 @@ class Playground extends React.Component<
     csharpAutoImplemented: false,
     phpIncludeDescriptions: false,
     csharpOverwriteHashcode: false,
+    csharpIncludeJson: false,
   };
   hasLoadedQuery: boolean = false;
   constructor(props: ModelinaPlaygroundProps) {
@@ -217,6 +218,10 @@ class Playground extends React.Component<
       this.config.phpIncludeDescriptions =
         query.phpIncludeDescriptions === 'true';
     }
+    if (query.csharpIncludeJson !== undefined) {
+      this.config.csharpIncludeJson =
+        query.csharpIncludeJson === 'true';
+    }
     if (this.props.router.isReady && !this.hasLoadedQuery) {
       this.hasLoadedQuery = true;
       this.generateNewCode(this.state.input);
@@ -317,7 +322,8 @@ class Playground extends React.Component<
                       value={{
                         csharpArrayType: this.config.csharpArrayType,
                         csharpAutoImplemented: this.config.csharpAutoImplemented,
-                        csharpOverwriteHashcode: this.config.csharpOverwriteHashcode
+                        csharpOverwriteHashcode: this.config.csharpOverwriteHashcode,
+                        csharpIncludeJson: this.config.csharpIncludeJson
                       }}
                     >
                       <PlaygroundDartConfigContext.Provider value={{}}>
