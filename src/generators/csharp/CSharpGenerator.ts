@@ -38,6 +38,7 @@ export interface CSharpOptions extends CommonGeneratorOptions<CSharpPreset> {
   constraints: Constraints;
   autoImplementedProperties: boolean;
   modelType: 'class' | 'record';
+  presets: any[];
 }
 export type CSharpTypeMapping = TypeMapping<
   CSharpOptions,

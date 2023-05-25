@@ -14,6 +14,7 @@ export async function getCSharpModels(
   const options: Partial<CSharpOptions> = {
     presets: []
   };
+  options.presets = [];
 
   if (generatorOptions.csharpArrayType) {
     options.collectionType = generatorOptions.csharpArrayType as any;
@@ -31,7 +32,6 @@ export async function getCSharpModels(
   if (generatorOptions.csharpIncludeJson) {
     options.presets.push(CSHARP_JSON_SERIALIZER_PRESET)
   }
-  
 
   try {
     const generator = new CSharpGenerator(options);

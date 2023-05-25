@@ -54,6 +54,7 @@ export interface ModelinaCSharpQueryOptions {
   csharpArrayType?: string;
   csharpAutoImplemented?: string;
   csharpOverwriteHashcode?:string;
+  csharpIncludeJson?: string;
 }
 export interface ModelinaKotlinQueryOptions {}
 export interface ModelinaRustQueryOptions {}
