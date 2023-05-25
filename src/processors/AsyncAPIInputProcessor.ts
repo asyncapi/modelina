@@ -1,9 +1,16 @@
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-var-requires */
 import {
   createAsyncAPIDocument,
   isAsyncAPIDocument,
   isOldAsyncAPIDocument,
-  Parser
+  Parser,
+  AsyncAPIDocumentInterface,
+  SchemaInterface as AsyncAPISchema
 } from '@asyncapi/parser';
+import { AvroSchemaParser } from '@asyncapi/avro-schema-parser';
+import { OpenAPISchemaParser } from '@asyncapi/openapi-schema-parser';
+import { RamlDTSchemaParser } from '@asyncapi/raml-dt-schema-parser';
 import { createDetailedAsyncAPI } from '@asyncapi/parser/cjs/utils';
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
@@ -11,16 +18,18 @@ import { InputMetaModel, ProcessorOptions } from '../models';
 import { Logger } from '../utils';
 import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
 import { convertToMetaModel } from '../helpers';
-import type {
-  AsyncAPIDocumentInterface,
-  SchemaInterface as AsyncAPISchema
-} from '@asyncapi/parser';
 
 /**
  * Class for processing AsyncAPI inputs
  */
 export class AsyncAPIInputProcessor extends AbstractInputProcessor {
   private parser = new Parser();
+  constructor() {
+    super();
+    this.parser.registerSchemaParser(AvroSchemaParser());
+    this.parser.registerSchemaParser(OpenAPISchemaParser());
+    this.parser.registerSchemaParser(RamlDTSchemaParser());
+  }
 
   static supportedVersions = [
     '2.0.0',

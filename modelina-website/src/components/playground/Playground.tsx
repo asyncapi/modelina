@@ -79,7 +79,8 @@ class Playground extends React.Component<
     tsIncludeDescriptions: false,
     csharpArrayType: 'Array',
     csharpAutoImplemented: false,
-    phpIncludeDescriptions: false
+    phpIncludeDescriptions: false,
+    csharpOverwriteHashcode: false,
   };
   hasLoadedQuery: boolean = false;
   constructor(props: ModelinaPlaygroundProps) {
@@ -208,6 +209,10 @@ class Playground extends React.Component<
       this.config.csharpAutoImplemented =
         query.csharpAutoImplemented === 'true';
     }
+    if (query.csharpOverwriteHashcode !== undefined) {
+      this.config.csharpOverwriteHashcode =
+        query.csharpOverwriteHashcode === 'true';
+    }
     if (query.phpIncludeDescriptions !== undefined) {
       this.config.phpIncludeDescriptions =
         query.phpIncludeDescriptions === 'true';
@@ -220,13 +225,13 @@ class Playground extends React.Component<
     let loader;
     if (!isHardLoaded) {
       loader = (
-        <div className="mt-12 text-2xl absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2">
+        <div className="text-xl text-center mt-16 lg:mt-56 md:text-2xl">
           Loading Modelina Playground. Connecting to playground server...
         </div>
       );
     } else if (!isSoftLoaded) {
       loader = (
-        <div className="mt-12 text-2xl absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2">
+        <div className="text-xl text-center mt-16 lg:mt-56 md:text-2xl">
           Loading Modelina Playground. Rendering playground components...
         </div>
       );
@@ -312,6 +317,7 @@ class Playground extends React.Component<
                       value={{
                         csharpArrayType: this.config.csharpArrayType,
                         csharpAutoImplemented: this.config.csharpAutoImplemented,
+                        csharpOverwriteHashcode: this.config.csharpOverwriteHashcode
                       }}
                     >
                       <PlaygroundDartConfigContext.Provider value={{}}>
