@@ -170,10 +170,6 @@ export class FormatHelpers {
     if (size < 1) {
       return content;
     }
-    const getIndentation = () => {
-      const whitespaceChar = type === IndentationTypes.SPACES ? ' ' : '\t';
-      return Array(size).fill(whitespaceChar).join('');
-    };
 
     // if the content includes new lines ensure that they have the added indentation as well.
     if (content.includes('\n')) {
@@ -182,18 +178,18 @@ export class FormatHelpers {
         const newValue =
           value.trim() === ''
             ? value
-            : `${getIndentation}${value}`;
+            : `${this.getIndentation(size, type)}${value}`;
         return accumulator === '' ? newValue : `${accumulator}\n${newValue}`;
       }, '');
     }
-    return `${getIndentation()}${content}`;
+    return `${this.getIndentation(size, type)}${content}`;
   }
 
   /**
-   * Get the indentation string based on how many and which type of indentation are requested.
+   * Get the indendation string based on how many and which type of indentation are requested.
    * @private
-   * @param {number} size the number of indentations to use
-   * @param {IndentationTypes} type the type of indentations to use. SPACES by default.
+   * @param {number} size the number of indendations to use
+   * @param {IndentationTypes} type the type of indendations to use. SPACES by default.
    * @returns {string}
    */
   private static getIndentation(
