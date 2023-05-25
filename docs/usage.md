@@ -14,7 +14,6 @@ For more specific integration options, please check out the [integration documen
 - [Understanding the output format](#understanding-the-output-format)
 - [Generate models from AsyncAPI documents](#generate-models-from-asyncapi-documents)
   * [Limitations and Compatibility](#limitations-and-compatibility)
-    + [Message Schema formats](#message-schema-formats)
     + [Polymorphism](#polymorphism)
 - [Generate models from JSON Schema documents](#generate-models-from-json-schema-documents)
 - [Generate models from Swagger 2.0 documents](#generate-models-from-swagger-20-documents)
