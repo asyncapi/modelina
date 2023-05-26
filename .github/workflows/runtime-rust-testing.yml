@@ -28,6 +28,8 @@ jobs:
           toolchain: stable
           override: true
           components: rustfmt, clippy, rust-src
+      - name: Generate Rust models
+        run: npm run generate:runtime:rust        
       - name: Run runtime tests
         run: npm run test:runtime:rust
       
