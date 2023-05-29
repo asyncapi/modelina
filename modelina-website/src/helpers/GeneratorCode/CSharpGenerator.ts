@@ -1,25 +1,24 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ModelinaCSharpOptions } from '../../types';
+import { format } from 'prettier/standalone';
+import parserBabel from 'prettier/parser-babel';
 
 export function getCSharpGeneratorCode(
   generatorOptions: ModelinaCSharpOptions
 ) {
   const optionString: string[] = [];
   const optionStringPresets: string[] = [];
+  const importsString: string[] = [];
 
   if (generatorOptions.csharpArrayType) {
     optionString.push(`collectionType: '${generatorOptions.csharpArrayType}'`);
   }
-
   if (generatorOptions.csharpAutoImplemented) {
-    optionString.push(
-      `   autoImplementedProperties: ${generatorOptions.csharpAutoImplemented}`
-    );
+    optionString.push(`autoImplementedProperties: ${generatorOptions.csharpAutoImplemented}`);
   }
-
   if (generatorOptions.csharpOverwriteHashcode) {
-    optionStringPresets.push(`
-    {
+    importsString.push('CSHARP_COMMON_PRESET')
+    optionStringPresets.push(`{
       preset: CSHARP_COMMON_PRESET,
       options: {
         equal: false,
@@ -29,38 +28,30 @@ export function getCSharpGeneratorCode(
   }
 
   if (generatorOptions.csharpIncludeJson) {
-    optionStringPresets.push(`
-    CSHARP_JSON_SERIALIZER_PRESET
-    `)
+    importsString.push('CSHARP_JSON_SERIALIZER_PRESET')
+    optionStringPresets.push('CSHARP_JSON_SERIALIZER_PRESET')
   }
   if (generatorOptions.csharpIncludeNewtonsoft) {
-    optionStringPresets.push(`
-    CSHARP_NEWTONSOFT_SERIALIZER_PRESET
-    `)
+    importsString.push('CSHARP_NEWTONSOFT_SERIALIZER_PRESET')
+    optionStringPresets.push('CSHARP_NEWTONSOFT_SERIALIZER_PRESET')
   }
 
-  const presetOptions =
-    optionStringPresets.length > 0
-      ? `${optionString.length > 0 ? ',' : ''}
-    presets: [
-      ${optionStringPresets.join(', \n')}
-    ]`
-      : '';
+  const presetOptions = optionStringPresets.length > 0 ? `presets: [${optionStringPresets.join(',')}]` : '';
   let fullOptions = '';
   if (optionStringPresets.length > 0 || optionString.length > 0) {
-    fullOptions = `{
-    ${optionString.join(';\n')}${presetOptions}
-  }`;
+    fullOptions = `{ ${optionString.join(',')} , ${presetOptions} }`;
   }
-  const generateInstanceCode =
-    `const generator = new CSharpGenerator(${fullOptions});`.replace(
-      /^\s*\n/gm,
-      ''
-    );
 
-  return `// Use the following code as starting point
-// To generate the models exactly as displayed in the playground
-import { CSharpGenerator } from '@asyncapi/modelina';
-  
-${generateInstanceCode}`;
+  return format(`// Use the following code as starting point
+    // To generate the models exactly as displayed in the playground
+    import { CSharpGenerator, ${importsString.length ? importsString.join(',') : ''} } from '@asyncapi/modelina';
+
+    const generator = new CSharpGenerator(${fullOptions});`, 
+    {
+      semi: true,
+      trailingComma: "none",
+      parser: "babel",
+      plugins: [parserBabel],
+    }
+  );
 }
