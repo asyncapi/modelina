@@ -43,11 +43,12 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 }
 
-export const CPLUSPLUS_DEFAULT_CLASS_PRESET: ClassPresetType<CplusplusOptions> = {
-  self({ renderer }) {
-    return renderer.defaultSelf();
-  },
-  property({ property }) {
-    return `${property.property.type} ${property.propertyName};`;
-  }
-};
+export const CPLUSPLUS_DEFAULT_CLASS_PRESET: ClassPresetType<CplusplusOptions> =
+  {
+    self({ renderer }) {
+      return renderer.defaultSelf();
+    },
+    property({ property }) {
+      return `${property.property.type} ${property.propertyName};`;
+    }
+  };
