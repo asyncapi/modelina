@@ -38,6 +38,7 @@ import { getPythonGeneratorCode } from '@/helpers/GeneratorCode/PythonGenerator'
 import { getDartGeneratorCode } from '@/helpers/GeneratorCode/DartGenerator';
 import { getCplusplusGeneratorCode } from '@/helpers/GeneratorCode/CplusplusGenerator';
 import CustomError from '../CustomError';
+import { getKotlinGeneratorCode } from '@/helpers/GeneratorCode/KotlinGenerator';
 import { getPhpGeneratorCode } from '@/helpers/GeneratorCode/PhpGenerator';
 
 interface WithRouterProps {
@@ -147,6 +148,7 @@ class Playground extends React.Component<
           python: getPythonGeneratorCode,
           dart: getDartGeneratorCode,
           cplusplus: getCplusplusGeneratorCode,
+          kotlin: getKotlinGeneratorCode,
           php: getPhpGeneratorCode
         }
         const generatorCode = generators[this.config.language](message);
