@@ -1,6 +1,6 @@
 {
   "title": "AsyncAPI Modelina",
-  "description": "Modelina is a tool you can use to generate data models to represent the message payloads in a highly customizable manner.",
+  "description": "Generate payload models into Java, TypeScript, Go, etc, you name it, from AsyncAPI documents. This tool gives you full control over the models through high customization",
   "links": {
     "websiteUrl": "https://modelina.org",
     "docsUrl": "https://github.com/asyncapi/modelina/tree/master/docs",
