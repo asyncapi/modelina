@@ -18,11 +18,17 @@ export interface ModelinaTypeScriptOptions {
 }
 export interface ModelinaJavaOptions {}
 export interface ModelinaCplusplusOptions {}
+export interface ModelinaPhpOptions {
+  phpIncludeDescriptions: boolean;
+}
 export interface ModelinaGoOptions {}
 export interface ModelinaJavaScriptOptions {}
 export interface ModelinaCSharpOptions {
   csharpArrayType: 'List' | 'Array' | undefined;
   csharpAutoImplemented: boolean;
+  csharpOverwriteHashcode: boolean;
+  csharpIncludeJson: boolean;
+  csharpIncludeNewtonsoft: boolean;
 }
 export interface ModelinaKotlinOptions {}
 export interface ModelinaRustOptions {}
@@ -39,7 +45,8 @@ export interface ModelinaGeneralOptions {
     | 'rust'
     | 'python'
     | 'dart'
-    | 'cplusplus';
+    | 'cplusplus'
+    | 'php';
 }
 export interface ModelinaGeneralQueryOptions {
   language: string;
@@ -51,12 +58,18 @@ export interface ModelinaJavaScriptQueryOptions {}
 export interface ModelinaCSharpQueryOptions {
   csharpArrayType?: string;
   csharpAutoImplemented?: string;
+  csharpOverwriteHashcode?:string;
+  csharpIncludeJson?: string;
+  csharpIncludeNewtonsoft?: string;
 }
 export interface ModelinaKotlinQueryOptions {}
 export interface ModelinaRustQueryOptions {}
 export interface ModelinaPythonQueryOptions {}
 export interface ModelinaCplusplusQueryOptions {}
 export interface ModelinaDartQueryOptions {}
+export interface ModelinaPhpQueryOptions {
+  phpIncludeDescriptions?: string;
+}
 
 export interface ModelinaTypeScriptQueryOptions {
   tsMarshalling?: string;
@@ -75,7 +88,8 @@ export interface ModelinaOptions
     ModelinaKotlinOptions,
     ModelinaRustOptions,
     ModelinaPythonOptions,
-    ModelinaDartOptions {}
+    ModelinaDartOptions,
+    ModelinaPhpOptions {}
 export interface ModelinaQueryOptions
   extends ParsedUrlQuery,
     ModelinaGeneralQueryOptions,
@@ -88,7 +102,8 @@ export interface ModelinaQueryOptions
     ModelinaRustQueryOptions,
     ModelinaPythonQueryOptions,
     ModelinaCplusplusQueryOptions,
-    ModelinaDartQueryOptions {}
+    ModelinaDartQueryOptions,
+    ModelinaPhpQueryOptions {}
 
 export interface GenerateMessage extends ModelinaOptions {
   input: string;
@@ -133,6 +148,10 @@ export const modelinaLanguageOptions = [
   {
     value: 'cplusplus',
     text: 'C++'
+  },
+  {
+    value: 'php',
+    text: 'PHP'
   }
 ];
 

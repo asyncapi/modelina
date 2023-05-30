@@ -440,7 +440,11 @@
       "profile": "https://malcherczyk.pl",
       "contributions": [
         "bug",
-        "infra"
+        "infra",
+        "code",
+        "example",
+        "test",
+        "review"
       ]
     },
     {
@@ -479,7 +483,11 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/81870866?v=4",
       "profile": "https://github.com/sambhavgupta0705",
       "contributions": [
-        "doc"
+        "doc",
+        "review",
+        "design",
+        "code",
+        "bug"
       ]
     },
     {
@@ -575,6 +583,25 @@
         "example",
         "review"
       ]
+    },
+    {
+      "login": "Bhavik-ag",
+      "name": "Bhavik Agarwal",
+      "avatar_url": "https://avatars.githubusercontent.com/u/73033511?v=4",
+      "profile": "https://codeyt.com/",
+      "contributions": [
+        "design"
+      ]
+    },
+    {
+      "login": "kaushik-rishi",
+      "name": "Rishi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52498617?v=4",
+      "profile": "https://github.com/kaushik-rishi",
+      "contributions": [
+        "code",
+        "design"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -583,5 +610,6 @@
   "repoType": "github",
   "repoHost": "https://github.com",
   "skipCi": false,
-  "commitConvention": "none"
+  "commitConvention": "none",
+  "commitType": "docs"
 }

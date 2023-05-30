@@ -27,10 +27,11 @@ If you want to run the BlackBox tests locally, you have to install a couple of d
 - To run the `C#` BlackBox tests, you need to have C# compiler installed globally. - https://www.mono-project.com/download/stable/
 - To run the `Go` BlackBox tests, you need to have GoLang installed - https://golang.org/doc/install
 - To run the `Python` BlackBox tests, you need to have python installed - https://www.python.org/downloads/
+- To run the `PHP` BlackBox tests, you need to have PHP installed - https://www.php.net/downloads.php/
 - To run the `Rust` BlackBox tests, you need to have rust installed - https://www.rust-lang.org/tools/install (if you are on mac you might also need to install xcode `xcode-select --install`)
 - To run the `Kotlin` BlackBox tests, you need to have a JDK >= 8 as well as kotlinc installed - https://kotlinlang.org/docs/command-line.html
 - To run the `C++` BlackBox tests, you need to have a GNU C++ compiler installed - https://gcc.gnu.org/install/
 
-By default, the BlackBox tests are not run with the regular `npm run test`, but can be run with `npm run test:blackbox`. Or run individual BlackBox tests you can run the commands `npm run test:blackbox:${language}` where language is one of `csharp`, `go`, `java`, `javascript`, `python`, `rust`, `typescript`, etc.
+By default, the BlackBox tests are not run with the regular `npm run test`, but can be run with `npm run test:blackbox`. Or run individual BlackBox tests you can run the commands `npm run test:blackbox:${language}` where language is one of `csharp`, `go`, `java`, `javascript`, `python`, `php`, `rust`, `typescript`, etc.
 
 To run the BlackBox tests through Docker, run the command `npm run docker:test:blackbox`.

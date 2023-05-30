@@ -8,7 +8,8 @@ export default function GenericLayout({
   description,
   image = '/img/social/modelina-card.jpg',
   children,
-  wide = true
+  wide = true,
+  full = false
 }: any) {
   if (!title || !description) {
     throw new Error(
@@ -22,7 +23,7 @@ export default function GenericLayout({
       <StickyNavbar>
         <NavBar className="max-w-screen-xl block px-4 sm:px-6 lg:px-8 mx-auto" />
       </StickyNavbar>
-      <Container wide={wide}>{children}</Container>
+      <Container wide={wide} full={full}>{children}</Container>
     </>
   );
 }

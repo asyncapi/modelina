@@ -34,6 +34,11 @@ export default function MobileNavMenu({ onClickClose = () => { } }) {
               </div>
             </div>
             <div className="py-2 space-y-2">
+              <Link href="/examples" className="flex" legacyBehavior>
+                <h4 className="text-gray-500 font-medium block mb-4">
+                  <a className="cursor-pointer">Examples</a>
+                </h4>
+              </Link>
               <Link href="/playground" className="flex" legacyBehavior>
                 <h4 className="text-gray-500 font-medium block mb-4">
                   <a className="cursor-pointer">Playground</a>
