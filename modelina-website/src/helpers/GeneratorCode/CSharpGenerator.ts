@@ -33,6 +33,11 @@ export function getCSharpGeneratorCode(
     CSHARP_JSON_SERIALIZER_PRESET
     `)
   }
+  if (generatorOptions.csharpIncludeNewtonsoft) {
+    optionStringPresets.push(`
+    CSHARP_NEWTONSOFT_SERIALIZER_PRESET
+    `)
+  }
 
   const presetOptions =
     optionStringPresets.length > 0
