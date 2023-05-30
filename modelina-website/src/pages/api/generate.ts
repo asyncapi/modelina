@@ -15,6 +15,7 @@ import { getPythonModels } from '@/pages/api/functions/PythonGenerator';
 import { getRustModels } from '@/pages/api/functions/RustGenerator';
 import { getCSharpModels } from '@/pages/api/functions/CSharpGenerator';
 import { getCplusplusModels } from './functions/CplusplusGenerator';
+import { getKotlinModels } from './functions/KotlinGenerator';
 import { getPhpModels } from './functions/PhpGenerator';
 
 export async function generateNewCode(message: GenerateMessage): Promise<UpdateMessage | Error> {
@@ -36,6 +37,7 @@ export async function generateNewCode(message: GenerateMessage): Promise<UpdateM
     'csharp': getCSharpModels,
     'rust': getRustModels,
     'python': getPythonModels,
+    'kotlin': getKotlinModels,
     'dart': getDartModels,
     'cplusplus': getCplusplusModels,
     'php': getPhpModels
