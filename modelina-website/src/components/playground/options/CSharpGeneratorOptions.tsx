@@ -23,7 +23,7 @@ class CSharpGeneratorOptions extends React.Component<
     this.onChangeAutoImplementProperties = this.onChangeAutoImplementProperties.bind(this);
     this.onChangeOverwriteHashCodeSupport = this.onChangeOverwriteHashCodeSupport.bind(this);
     this.onChangeIncludeJson = this.onChangeIncludeJson.bind(this);
-    
+    this.onChangeOverwriteEqualSupport = this.onChangeOverwriteEqualSupport.bind(this);
   }
 
   onChangeArrayType(arrayType: any) {
@@ -47,6 +47,12 @@ class CSharpGeneratorOptions extends React.Component<
   onChangeIncludeJson(event: any) {
     if (this.props.setNewConfig) {
       this.props.setNewConfig('csharpIncludeJson', event.target.checked);
+    }
+  }
+
+  onChangeOverwriteEqualSupport(event: any) {
+    if (this.props.setNewConfig) {
+      this.props.setNewConfig('csharpOverwriteEqual', event.target.checked);
     }
   }
 
@@ -111,6 +117,20 @@ class CSharpGeneratorOptions extends React.Component<
               name="csharpIncludeJson"
               checked={this.context?.csharpIncludeJson}
               onChange={this.onChangeIncludeJson}
+            />
+          </label>
+        </li>
+        <li>
+          <label className="flex items-center py-2 justify-between cursor-pointer">
+            <span className="mt-1 max-w-2xl text-sm text-gray-500">
+              Include OverWrite Equal Support
+            </span>
+            <input
+              type="checkbox"
+              className="form-checkbox cursor-pointer"
+              name="csharpOverwriteEqual"
+              checked={this.context?.csharpOverwriteEqual}
+              onChange={this.onChangeOverwriteEqualSupport}
             />
           </label>
         </li>

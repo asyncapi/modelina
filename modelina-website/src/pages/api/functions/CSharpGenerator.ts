@@ -32,7 +32,15 @@ export async function getCSharpModels(
   if (generatorOptions.csharpIncludeJson) {
     options.presets.push(CSHARP_JSON_SERIALIZER_PRESET)
   }
-
+  if(generatorOptions.csharpOverwriteEqual){
+    options.presets.push({
+      preset: CSHARP_COMMON_PRESET,
+      options: {
+        equal: generatorOptions.csharpOverwriteEqual,
+        hashCode: true
+      }
+    })
+  }
   try {
     const generator = new CSharpGenerator(options);
     const generatedModels = await generator.generateCompleteModels(input, {
