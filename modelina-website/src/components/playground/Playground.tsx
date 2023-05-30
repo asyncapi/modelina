@@ -77,6 +77,9 @@ class Playground extends React.Component<
     tsIncludeDescriptions: false,
     csharpArrayType: 'Array',
     csharpAutoImplemented: false,
+    csharpOverwriteHashcode: false,
+    csharpIncludeJson: false,
+    csharpIncludeNewtonsoft: false,
   };
   hasLoadedQuery: boolean = false;
   constructor(props: ModelinaPlaygroundProps) {
@@ -204,6 +207,18 @@ class Playground extends React.Component<
       this.config.csharpAutoImplemented =
         query.csharpAutoImplemented === 'true';
     }
+    if (query.csharpOverwriteHashcode !== undefined) {
+      this.config.csharpOverwriteHashcode =
+        query.csharpOverwriteHashcode === 'true';
+    }
+    if (query.csharpIncludeJson !== undefined) {
+      this.config.csharpIncludeJson =
+        query.csharpIncludeJson === 'true';
+    }
+    if (query.csharpIncludeNewtonsoft !== undefined) {
+      this.config.csharpIncludeNewtonsoft =
+        query.csharpIncludeNewtonsoft === 'true';
+    }
     if (this.props.router.isReady && !this.hasLoadedQuery) {
       this.hasLoadedQuery = true;
       this.generateNewCode(this.state.input);
@@ -212,13 +227,13 @@ class Playground extends React.Component<
     let loader;
     if (!isHardLoaded) {
       loader = (
-        <div className="mt-12 text-2xl absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2">
+        <div className="text-xl text-center mt-16 lg:mt-56 md:text-2xl">
           Loading Modelina Playground. Connecting to playground server...
         </div>
       );
     } else if (!isSoftLoaded) {
       loader = (
-        <div className="mt-12 text-2xl absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2">
+        <div className="text-xl text-center mt-16 lg:mt-56 md:text-2xl">
           Loading Modelina Playground. Rendering playground components...
         </div>
       );
@@ -304,6 +319,9 @@ class Playground extends React.Component<
                       value={{
                         csharpArrayType: this.config.csharpArrayType,
                         csharpAutoImplemented: this.config.csharpAutoImplemented,
+                        csharpOverwriteHashcode: this.config.csharpOverwriteHashcode,
+                        csharpIncludeJson: this.config.csharpIncludeJson,
+                        csharpIncludeNewtonsoft: this.config.csharpIncludeNewtonsoft
                       }}
                     >
                       <PlaygroundDartConfigContext.Provider value={{}}>

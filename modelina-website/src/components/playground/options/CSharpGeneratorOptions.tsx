@@ -20,8 +20,10 @@ class CSharpGeneratorOptions extends React.Component<
     super(props);
     this.state = defaultState;
     this.onChangeArrayType = this.onChangeArrayType.bind(this);
-    this.onChangeAutoImplementProperties =
-      this.onChangeAutoImplementProperties.bind(this);
+    this.onChangeAutoImplementProperties = this.onChangeAutoImplementProperties.bind(this);
+    this.onChangeOverwriteHashCodeSupport = this.onChangeOverwriteHashCodeSupport.bind(this);
+    this.onChangeIncludeJson = this.onChangeIncludeJson.bind(this);
+    this.onChangeIncludeNewtonsoft = this.onChangeIncludeNewtonsoft.bind(this);
   }
 
   onChangeArrayType(arrayType: any) {
@@ -33,6 +35,24 @@ class CSharpGeneratorOptions extends React.Component<
   onChangeAutoImplementProperties(event: any) {
     if (this.props.setNewConfig) {
       this.props.setNewConfig('csharpAutoImplemented', event.target.checked);
+    }
+  }
+
+  onChangeOverwriteHashCodeSupport(event: any) {
+    if (this.props.setNewConfig) {
+      this.props.setNewConfig('csharpOverwriteHashcode', event.target.checked);
+    }
+  }
+
+  onChangeIncludeJson(event: any) {
+    if (this.props.setNewConfig) {
+      this.props.setNewConfig('csharpIncludeJson', event.target.checked);
+    }
+  }
+
+  onChangeIncludeNewtonsoft(event: any) {
+    if (this.props.setNewConfig) {
+      this.props.setNewConfig('csharpIncludeNewtonsoft', event.target.checked);
     }
   }
 
@@ -69,6 +89,48 @@ class CSharpGeneratorOptions extends React.Component<
               name="csharpAutoImplemented"
               checked={this.context?.csharpAutoImplemented}
               onChange={this.onChangeAutoImplementProperties}
+            />
+          </label>
+        </li>
+        <li>
+          <label className="flex items-center py-2 justify-between cursor-pointer">
+            <span className="mt-1 max-w-2xl text-sm text-gray-500">
+              Include OverWrite HashCode Support
+            </span>
+            <input
+              type="checkbox"
+              className="form-checkbox cursor-pointer"
+              name="csharpOverwriteHashcode"
+              checked={this.context?.csharpOverwriteHashcode}
+              onChange={this.onChangeOverwriteHashCodeSupport}
+            />
+          </label>
+        </li>
+        <li>
+          <label className="flex items-center py-2 justify-between cursor-pointer">
+            <span className="mt-1 max-w-2xl text-sm text-gray-500">
+              Include JSON serialization
+            </span>
+            <input
+              type="checkbox"
+              className="form-checkbox cursor-pointer"
+              name="csharpIncludeJson"
+              checked={this.context?.csharpIncludeJson}
+              onChange={this.onChangeIncludeJson}
+            />
+          </label>
+        </li>
+        <li>
+          <label className="flex items-center py-2 justify-between cursor-pointer">
+            <span className="mt-1 max-w-2xl text-sm text-gray-500">
+              Include Newtonsoft serialization
+            </span>
+            <input
+              type="checkbox"
+              className="form-checkbox cursor-pointer"
+              name="csharpIncludeNewtonsoft"
+              checked={this.context?.csharpIncludeNewtonsoft}
+              onChange={this.onChangeIncludeNewtonsoft}
             />
           </label>
         </li>

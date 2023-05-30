@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to process an AsyncAPI object with AVRO schema type and should log expected output to console 1`] = `
+Array [
+  "class ComDotCompanyDotUser {
+  private _displayName: string;
+  private _email: string;
+  private _age: number;
+  private _additionalProperties?: Map<string, any>;
+
+  constructor(input: {
+    displayName: string,
+    email: string,
+    age: number,
+    additionalProperties?: Map<string, any>,
+  }) {
+    this._displayName = input.displayName;
+    this._email = input.email;
+    this._age = input.age;
+    this._additionalProperties = input.additionalProperties;
+  }
+
+  get displayName(): string { return this._displayName; }
+  set displayName(displayName: string) { this._displayName = displayName; }
+
+  get email(): string { return this._email; }
+  set email(email: string) { this._email = email; }
+
+  get age(): number { return this._age; }
+  set age(age: number) { this._age = age; }
+
+  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
+}",
+]
+`;
