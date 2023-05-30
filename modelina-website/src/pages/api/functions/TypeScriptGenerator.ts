@@ -3,6 +3,7 @@ import {
   InputProcessor,
   TS_COMMON_PRESET,
   TS_DESCRIPTION_PRESET,
+  TS_JSONBINPACK_PRESET,
   TypeScriptGenerator,
   TypeScriptOptions
 } from '../../../../../';
@@ -22,26 +23,43 @@ export async function getTypeScriptModels(
   if (generatorOptions.tsModelType) {
     options.modelType = generatorOptions.tsModelType as any;
   }
-  if (generatorOptions.tsMarshalling === true) {
+
+  if (generatorOptions.tsMarshalling === true ||
+    generatorOptions.tsIncludeExampleFunction === true) {
+    let commonOptions: any = {};
+    if(generatorOptions.tsMarshalling === true) {
+      commonOptions.marshalling = true;
+    }
+
+    if (generatorOptions.tsIncludeExampleFunction === true) {
+      commonOptions.example = true;
+    }
+
     options.presets?.push({
       preset: TS_COMMON_PRESET,
-      options: {
-        marshalling: true
-      }
+      options: commonOptions
     });
   }
+  
+  if (generatorOptions.tsIncludeJsonBinPack === true) {
+    options.presets?.push(TS_JSONBINPACK_PRESET);
+  }
+
   if (generatorOptions.tsIncludeDescriptions === true) {
     options.presets?.push({
       preset: TS_DESCRIPTION_PRESET,
       options: {}
     });
   }
+
   if (generatorOptions.tsModuleSystem) {
     options.moduleSystem = generatorOptions.tsModuleSystem as any;
   }
+
   if (generatorOptions.tsEnumType) {
     options.enumType = generatorOptions.tsEnumType as any;
   }
+
   try {
     const processedInput = await InputProcessor.processor.process(input);
     const generator = new TypeScriptGenerator(options);
