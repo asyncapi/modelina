@@ -12,7 +12,14 @@ export function getPythonGeneratorCode(
   
   return `// Use the following code as starting point
 // To generate the models exactly as displayed in the playground
-import { PythonGenerator, pythonDefaultEnumKeyConstraints, pythonDefaultModelNameConstraints, pythonDefaultPropertyKeyConstraints } from '@asyncapi/modelina';
+import { 
+  PythonGenerator, 
+  IndentationTypes, 
+  FormatHelpers, 
+  pythonDefaultEnumKeyConstraints, 
+  pythonDefaultModelNameConstraints, 
+  pythonDefaultPropertyKeyConstraints 
+} from '@asyncapi/modelina';
   
 ${generateInstanceCode}`;
 }

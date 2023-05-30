@@ -105,12 +105,14 @@ export function getGeneralGeneratorCode(
         break;
     }
   }
-   
-  optionString.push(`constraints: {
+  if(constraints.length > 0) {
+    optionString.push(`constraints: {
 ${constraints.map((value) => {
   return indent(value, 2, IndentationTypes.SPACES);
 }).join(',\n')}
-}`);
+}`); 
+  }
+
   if (generatorOptions.indentationType) {
     switch (generatorOptions.indentationType) {
       case 'spaces':

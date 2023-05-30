@@ -24,7 +24,14 @@ export function getDartGeneratorCode(
 
   return `// Use the following code as starting point
 // To generate the models exactly as displayed in the playground
-import { DartGenerator, dartDefaultEnumKeyConstraints, dartDefaultModelNameConstraints, dartDefaultPropertyKeyConstraints } from '@asyncapi/modelina';
+import { 
+  DartGenerator, 
+  IndentationTypes, 
+  FormatHelpers, 
+  dartDefaultEnumKeyConstraints, 
+  dartDefaultModelNameConstraints, 
+  dartDefaultPropertyKeyConstraints 
+} from '@asyncapi/modelina';
   
 ${generateInstanceCode}`;
 }

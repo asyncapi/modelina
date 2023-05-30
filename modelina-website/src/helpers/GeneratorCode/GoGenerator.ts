@@ -24,7 +24,14 @@ export function getGoGeneratorCode(
 
   return `// Use the following code as starting point
 // To generate the models exactly as displayed in the playground
-import { GoGenerator, goDefaultEnumKeyConstraints, goDefaultModelNameConstraints, goDefaultPropertyKeyConstraints } from '@asyncapi/modelina';
+import { 
+  GoGenerator, 
+  IndentationTypes, 
+  FormatHelpers, 
+  goDefaultEnumKeyConstraints, 
+  goDefaultModelNameConstraints, 
+  goDefaultPropertyKeyConstraints 
+} from '@asyncapi/modelina';
 
 ${generateInstanceCode}`;
 }

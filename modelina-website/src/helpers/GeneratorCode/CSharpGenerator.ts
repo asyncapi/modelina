@@ -31,32 +31,34 @@ export function getCSharpGeneratorCode(
   }
 
   if (generatorOptions.csharpOverwriteHashcode) {
-    optionStringPresets.push(`
-    {
-      preset: CSHARP_COMMON_PRESET,
-      options: {
-        equal: false,
-        hashCode: true
-      }
-    }`)
+    optionStringPresets.push(`{
+  preset: CSHARP_COMMON_PRESET,
+  options: {
+    equal: false,
+    hashCode: true
+  }
+}`)
   }
 
   if (generatorOptions.csharpIncludeJson) {
-    optionStringPresets.push(`
-    CSHARP_JSON_SERIALIZER_PRESET
-    `)
+    optionStringPresets.push(`CSHARP_JSON_SERIALIZER_PRESET`)
   }
   if (generatorOptions.csharpIncludeNewtonsoft) {
-    optionStringPresets.push(`
-    CSHARP_NEWTONSOFT_SERIALIZER_PRESET
-    `)
+    optionStringPresets.push(`CSHARP_NEWTONSOFT_SERIALIZER_PRESET`)
   }
 
   const generateInstanceCode = renderGeneratorInstanceCode(optionString, optionStringPresets, 'CSharpGenerator');
 
   return `// Use the following code as starting point
 // To generate the models exactly as displayed in the playground
-import { CSharpGenerator, csharpDefaultEnumKeyConstraints, csharpDefaultModelNameConstraints, csharpDefaultPropertyKeyConstraints } from '@asyncapi/modelina';
+import { 
+  CSharpGenerator, 
+  IndentationTypes, 
+  FormatHelpers, 
+  csharpDefaultEnumKeyConstraints, 
+  csharpDefaultModelNameConstraints, 
+  csharpDefaultPropertyKeyConstraints 
+} from '@asyncapi/modelina';
   
 ${generateInstanceCode}`;
 }

@@ -24,7 +24,14 @@ export function getJavaGeneratorCode(
 
   return `// Use the following code as starting point
 // To generate the models exactly as displayed in the playground
-import { JavaGenerator, javaDefaultEnumKeyConstraints, javaDefaultModelNameConstraints, javaDefaultPropertyKeyConstraints } from '@asyncapi/modelina';
+import { 
+  JavaGenerator, 
+  IndentationTypes, 
+  FormatHelpers, 
+  javaDefaultEnumKeyConstraints, 
+  javaDefaultModelNameConstraints, 
+  javaDefaultPropertyKeyConstraints 
+} from '@asyncapi/modelina';
   
 ${generateInstanceCode}`;
 }

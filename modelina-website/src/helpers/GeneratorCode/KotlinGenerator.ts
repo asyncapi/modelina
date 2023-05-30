@@ -24,7 +24,14 @@ export function getKotlinGeneratorCode(
 
   return `// Use the following code as starting point
 // To generate the models exactly as displayed in the playground
-import { KotlinGenerator, kotlinDefaultEnumKeyConstraints, kotlinDefaultModelNameConstraints, kotlinDefaultPropertyKeyConstraints } from '@asyncapi/modelina';
+import { 
+  KotlinGenerator, 
+  IndentationTypes, 
+  FormatHelpers, 
+  kotlinDefaultEnumKeyConstraints, 
+  kotlinDefaultModelNameConstraints, 
+  kotlinDefaultPropertyKeyConstraints 
+} from '@asyncapi/modelina';
   
 ${generateInstanceCode}`;
 }

@@ -24,7 +24,14 @@ export function getRustGeneratorCode(
 
   return `// Use the following code as starting point
 // To generate the models exactly as displayed in the playground
-import { RustGenerator, rustDefaultEnumKeyConstraints, rustDefaultModelNameConstraints, rustDefaultPropertyKeyConstraints } from '@asyncapi/modelina';
+import { 
+  RustGenerator, 
+  IndentationTypes, 
+  FormatHelpers, 
+  rustDefaultEnumKeyConstraints, 
+  rustDefaultModelNameConstraints, 
+  rustDefaultPropertyKeyConstraints
+} from '@asyncapi/modelina';
   
 ${generateInstanceCode}`;
 }

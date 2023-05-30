@@ -12,7 +12,14 @@ export function getJavaScriptGeneratorCode(
 
   return `// Use the following code as starting point
 // To generate the models exactly as displayed in the playground
-import { JavaScriptGenerator, javaScriptDefaultEnumKeyConstraints, javaScriptDefaultModelNameConstraints, javaScriptDefaultPropertyKeyConstraints } from '@asyncapi/modelina';
+import { 
+  JavaScriptGenerator, 
+  IndentationTypes, 
+  FormatHelpers, 
+  javaScriptDefaultEnumKeyConstraints, 
+  javaScriptDefaultModelNameConstraints, 
+  javaScriptDefaultPropertyKeyConstraints 
+} from '@asyncapi/modelina';
   
 ${generateInstanceCode}`;
 }

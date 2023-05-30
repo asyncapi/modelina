@@ -29,7 +29,15 @@ export function getPhpGeneratorCode(generatorOptions: ModelinaPhpOptions) {
 
   return `// Use the following code as starting point
 // To generate the models exactly as displayed in the playground
-import { PhpGenerator, PHP_DESCRIPTION_PRESET } from '@asyncapi/modelina';
+import { 
+  PhpGenerator, 
+  PHP_DESCRIPTION_PRESET, 
+  IndentationTypes, 
+  FormatHelpers,
+  phpDefaultEnumKeyConstraints, 
+  phpDefaultPropertyKeyConstraints,
+  phpDefaultModelNameConstraints
+} from '@asyncapi/modelina';
   
 ${generateInstanceCode}`;
 }
