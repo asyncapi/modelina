@@ -46,4 +46,5 @@
 # Language Champions for Rust and its presets
 */generators/rust @leigh-johnson
 
-# Language Champions for Kotlin and it's presets
+# Language Champions for PHP and it's presets
+*/generators/php @ferror
