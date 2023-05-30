@@ -22,7 +22,6 @@ class GeneralOptions extends React.Component<
     this.state = defaultState;
     this.onChangeLanguage = this.onChangeLanguage.bind(this);
     this.onChangeShowTypeMappingExample = this.onChangeShowTypeMappingExample.bind(this);
-    this.onChangeShowCustomFunctionExample = this.onChangeShowCustomFunctionExample.bind(this);
     this.onChangeIndentationType = this.onChangeIndentationType.bind(this);
     this.onChangePropertyNamingFormat = this.onChangePropertyNamingFormat.bind(this);
     this.onChangeModelNamingFormat = this.onChangeModelNamingFormat.bind(this);
@@ -38,12 +37,6 @@ class GeneralOptions extends React.Component<
   onChangeShowTypeMappingExample(event: any) {
     if (this.props.setNewConfig) {
       this.props.setNewConfig('showTypeMappingExample', event.target.checked);
-    }
-  }
-
-  onChangeShowCustomFunctionExample(event: any) {
-    if (this.props.setNewConfig) {
-      this.props.setNewConfig('showCustomFunctionExample', event.target.checked);
     }
   }
 
