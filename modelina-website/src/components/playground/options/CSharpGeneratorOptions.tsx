@@ -23,6 +23,7 @@ class CSharpGeneratorOptions extends React.Component<
     this.onChangeAutoImplementProperties = this.onChangeAutoImplementProperties.bind(this);
     this.onChangeOverwriteHashCodeSupport = this.onChangeOverwriteHashCodeSupport.bind(this);
     this.onChangeIncludeJson = this.onChangeIncludeJson.bind(this);
+    
   }
 
   onChangeArrayType(arrayType: any) {
