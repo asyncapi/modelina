@@ -70,7 +70,7 @@ describe('AsyncAPIInputProcessor', () => {
       const parsedObject = { asyncapi: '2.6.0' };
       expect(processor.shouldProcess(parsedObject)).toEqual(true);
     });
-    test('should not be able to process AsyncAPI 2.x', () => {
+    test('should not be able to process unsupported AsyncAPI 2.x', () => {
       const parsedObject = { asyncapi: '2.123.0' };
       expect(processor.shouldProcess(parsedObject)).toEqual(false);
     });
