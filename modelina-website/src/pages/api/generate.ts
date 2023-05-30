@@ -14,58 +14,62 @@ import { getDartModels } from '@/pages/api/functions/DartGenerator';
 import { getPythonModels } from '@/pages/api/functions/PythonGenerator';
 import { getRustModels } from '@/pages/api/functions/RustGenerator';
 import { getCSharpModels } from '@/pages/api/functions/CSharpGenerator';
+import { getCplusplusModels } from './functions/CplusplusGenerator';
 
-export async function generateNewCode(message: GenerateMessage) {
+export async function generateNewCode(message: GenerateMessage): Promise<UpdateMessage | Error> {
   let input: any = defaultAsyncapiDocument;
   if (message.input !== undefined) {
-    const inputString = decode(message.input);
-    // const jsonSafe = inputString.replace(/'/g, '"');
-    // const jsonEnsuredQutoation = jsonSafe.replace(/(['"])?([a-zA-Z0-9_$-]+)(['"])?:([^\/])/g, '"$2":$4');
+    const inputString: string = decode(message.input);
     input = JSON.parse(inputString);
   }
 
-  const language = message.language || 'typescript';
+  const language: string = message.language || 'typescript';
   const props: UpdateMessage = { models: [] };
-  switch (language) {
-    case 'typescript':
-      props.models = await getTypeScriptModels(input, message);
-      break;
-    case 'javascript':
-      props.models = await getJavaScriptModels(input, message);
-      break;
-    case 'java':
-      props.models = await getJavaModels(input, message);
-      break;
-    case 'go':
-      props.models = await getGoModels(input, message);
-      break;
-    case 'csharp':
-      props.models = await getCSharpModels(input, message);
-      break;
-    case 'rust':
-      props.models = await getRustModels(input, message);
-      break;
-    case 'python':
-      props.models = await getPythonModels(input, message);
-      break;
-    case 'dart':
-      props.models = await getDartModels(input, message);
-      break;
-    default:
-      break;
+  let response: any = '';
+  
+  const modelGenerators: {[key: string]: Function} = {
+    'typescript': getTypeScriptModels,
+    'javascript': getJavaScriptModels,
+    'java': getJavaModels,
+    'go': getGoModels,    
+    'csharp': getCSharpModels,
+    'rust': getRustModels,
+    'python': getPythonModels,
+    'dart': getDartModels,
+    'cplusplus': getCplusplusModels
   }
-  return props;
+
+  if (typeof modelGenerators[language] !== 'function') {
+    return new Error('Invalid language specified');
+  }
+
+  try {
+    response = await modelGenerators[language](input, message);
+
+    if (typeof response === 'string') {
+      throw new Error(response);
+    }
+    props.models = Array.isArray(response) ? response : [];
+    return props;
+  } catch (error : any) {
+    return new Error(error.message);
+  }
 }
 
 async function generate(req: NextApiRequest, res: NextApiResponse) {
   try {
     const message: GenerateMessage = JSON.parse(req.body);
     const response = await generateNewCode(message);
-    return res.status(200).json(response);
-  } catch (e) {
+    if (Object.keys(response).includes('models') && Object.values(response).length > 0) {
+      return res.status(200).json(response);
+    }
+    else {
+      throw new Error("Input is not an correct AsyncAPI document so it cannot be processed.");
+    }
+  } catch (e : any) {
     console.error(e);
     return res.status(500).json({
-      error: 'There was an error generating the models'
+      error: e.message
     });
   }
 }

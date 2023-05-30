@@ -3,7 +3,7 @@ import { CSharpGenerator } from '../../../src/generators';
 describe('CSharpGenerator', () => {
   let generator: CSharpGenerator;
   beforeEach(() => {
-    generator = new CSharpGenerator();
+    generator = new CSharpGenerator({ modelType: 'class' });
   });
 
   test('should render `class` type', async () => {
@@ -39,6 +39,48 @@ describe('CSharpGenerator', () => {
       }
     };
 
+    const models = await generator.generate(doc);
+    expect(models).toHaveLength(1);
+    expect(models[0].result).toMatchSnapshot();
+    expect(models[0].dependencies).toEqual([
+      'using System.Collections.Generic;'
+    ]);
+  });
+
+  test('should render `record` type if chosen', async () => {
+    const doc = {
+      $id: '_address',
+      type: 'object',
+      properties: {
+        street_name: { type: 'string' },
+        city: { type: 'string', description: 'City description' },
+        state: { type: 'string' },
+        house_number: { type: 'number' },
+        marriage: {
+          type: 'boolean',
+          description: 'Status if marriage live in given house'
+        },
+        members: {
+          oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
+        },
+        tuple_type: {
+          type: 'array',
+          items: [{ type: 'string' }, { type: 'number' }]
+        },
+        array_type: { type: 'array', items: { type: 'string' } }
+      },
+      required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+      additionalProperties: {
+        type: 'string'
+      },
+      patternProperties: {
+        '^S(.?*)test&': {
+          type: 'string'
+        }
+      }
+    };
+
+    generator.options.modelType = 'record';
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot();

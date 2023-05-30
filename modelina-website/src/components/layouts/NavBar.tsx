@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import AsyncAPILogo from '../icons/AsyncAPILogo';
+import ModelinaLogo from '../icons/ModelinaLogo';
 import NavItem from './NavItem';
 import MobileNavMenu from './MobileNavMenu';
 import GithubButton from '../buttons/GithubButton';
@@ -29,8 +29,8 @@ export default function NavBar({ className = '', hideLogo = false }) {
         {!hideLogo && (
           <div className="lg:w-auto lg:flex-1">
             <div className="flex">
-              <Link href="https://www.asyncapi.com" className="cursor-pointer">
-                <AsyncAPILogo className="h-8 w-auto sm:h-8" />
+              <Link href="https://modelina.org/" className="cursor-pointer">
+                <ModelinaLogo className="h-8 w-auto sm:h-8" />
               </Link>
             </div>
           </div>
@@ -61,7 +61,7 @@ export default function NavBar({ className = '', hideLogo = false }) {
 
         <nav className="hidden lg:flex lg:items-center lg:justify-end space-x-6 xl:space-x-10 w-full">
           <div className="relative" onMouseLeave={() => showMenu(false)}>
-            <NavItem text="Modelina" href="/" />
+            <NavItem text="Examples" href="/examples" />
           </div>
 
           <div className="relative" onMouseLeave={() => showMenu(false)}>

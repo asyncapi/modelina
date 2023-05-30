@@ -1,0 +1,155 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PhpGenerator Class should not render reserved keyword 1`] = `
+"final class Address
+{
+  private ?string $enum;
+  private ?string $reservedEnum;
+
+  public function getEnum(): ?string { return $this->enum; }
+  public function setEnum(?string $enum): void { $this->enum = $enum; }
+
+  public function getReservedEnum(): ?string { return $this->reservedEnum; }
+  public function setReservedEnum(?string $reservedEnum): void { $this->reservedEnum = $reservedEnum; }
+}
+"
+`;
+
+exports[`PhpGenerator Class should render \`class\` type 1`] = `
+"final class Address
+{
+  private string $streetName;
+  private string $city;
+  private string $state;
+  private float $houseNumber;
+  private ?bool $marriage;
+  private mixed $members;
+  private array $arrayType;
+  private mixed $additionalProperties;
+
+  public function getStreetName(): string { return $this->streetName; }
+  public function setStreetName(string $streetName): void { $this->streetName = $streetName; }
+
+  public function getCity(): string { return $this->city; }
+  public function setCity(string $city): void { $this->city = $city; }
+
+  public function getState(): string { return $this->state; }
+  public function setState(string $state): void { $this->state = $state; }
+
+  public function getHouseNumber(): float { return $this->houseNumber; }
+  public function setHouseNumber(float $houseNumber): void { $this->houseNumber = $houseNumber; }
+
+  public function getMarriage(): ?bool { return $this->marriage; }
+  public function setMarriage(?bool $marriage): void { $this->marriage = $marriage; }
+
+  public function getMembers(): mixed { return $this->members; }
+  public function setMembers(mixed $members): void { $this->members = $members; }
+
+  public function getArrayType(): array { return $this->arrayType; }
+  public function setArrayType(array $arrayType): void { $this->arrayType = $arrayType; }
+
+  public function getAdditionalProperties(): mixed { return $this->additionalProperties; }
+  public function setAdditionalProperties(mixed $additionalProperties): void { $this->additionalProperties = $additionalProperties; }
+}
+"
+`;
+
+exports[`PhpGenerator Class should render optional/nullable properties 1`] = `
+"final class Address
+{
+  private string $streetName;
+  private string $city;
+  private ?string $state;
+  private ?float $houseNumber;
+
+  public function getStreetName(): string { return $this->streetName; }
+  public function setStreetName(string $streetName): void { $this->streetName = $streetName; }
+
+  public function getCity(): string { return $this->city; }
+  public function setCity(string $city): void { $this->city = $city; }
+
+  public function getState(): ?string { return $this->state; }
+  public function setState(?string $state): void { $this->state = $state; }
+
+  public function getHouseNumber(): ?float { return $this->houseNumber; }
+  public function setHouseNumber(?float $houseNumber): void { $this->houseNumber = $houseNumber; }
+}
+"
+`;
+
+exports[`PhpGenerator Class should work with custom preset for \`class\` type 1`] = `
+"final class CustomClass
+{
+  test1
+  private ?string $property;
+  test1
+  private mixed $additionalProperties;
+
+  test2
+  public function getProperty(): ?string { return $this->property; }
+  test3
+  public function setProperty(?string $property): void { $this->property = $property; }
+
+  test2
+  public function getAdditionalProperties(): mixed { return $this->additionalProperties; }
+  test3
+  public function setAdditionalProperties(mixed $additionalProperties): void { $this->additionalProperties = $additionalProperties; }
+}
+"
+`;
+
+exports[`PhpGenerator Class should render complete model 1`] = `
+"<?php
+declare(strict_types=1);
+
+namespace Asyncapi;
+
+
+
+final class CustomClass
+{
+  private ?string $property;
+  private mixed $additionalProperties;
+
+  public function getProperty(): ?string { return $this->property; }
+  public function setProperty(?string $property): void { $this->property = $property; }
+
+  public function getAdditionalProperties(): mixed { return $this->additionalProperties; }
+  public function setAdditionalProperties(mixed $additionalProperties): void { $this->additionalProperties = $additionalProperties; }
+}
+"
+`;
+
+exports[`PhpGenerator Enum should render \`enum\` with mixed types (union type) 1`] = `
+"enum Things
+{
+  case TEXAS;
+  case NUMBER_1;
+  case RESERVED_NUMBER_1;
+  case FALSE;
+  case CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT;
+}
+"
+`;
+
+exports[`PhpGenerator Enum should render enums with translated special characters 1`] = `
+"enum States
+{
+  case TEST_PLUS;
+  case DOLLAR_TEST;
+  case TEST_MINUS;
+  case TEST_QUESTION_EXCLAMATION;
+  case ASTERISK_TEST;
+}
+"
+`;
+
+exports[`PhpGenerator Enum should work custom preset for \`enum\` type 1`] = `
+"enum CustomEnum
+{
+  case TEXAS;
+  case ALABAMA;
+  case CALIFORNIA;
+}
+"
+`;

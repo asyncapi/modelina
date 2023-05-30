@@ -18,9 +18,9 @@ export async function getDartModels(
     const generator = new DartGenerator(options);
     const generatedModels = await generator.generateCompleteModels(input, {});
     return convertModelsToProps(generatedModels);
-  } catch (e) {
+  } catch (e : any) {
     console.error('Could not generate models');
     console.error(e);
+    return e.message;
   }
-  return [];
 }

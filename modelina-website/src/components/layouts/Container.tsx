@@ -9,7 +9,8 @@ export default function Container({
   flexReverse = false,
   cssBreakingPoint = 'md',
   className = '',
-  as
+  as,
+  full = false
 }: any) {
   const commonClassNames = `${
     flex ? `${cssBreakingPoint === 'lg' ? 'lg:flex' : 'md:flex'}` : 'block'
@@ -23,8 +24,10 @@ export default function Container({
       : ''
   } ${className} ${padding}`;
   const wideClassNames = `max-w-screen-xl ${commonClassNames}`;
+  const fullClassNames = ` max-w-full ${commonClassNames}`;
   const regularClassNames = `max-w-4xl ${commonClassNames}`;
   const normalClassNames = `${
+    full ? fullClassNames :
     wide ? wideClassNames : regularClassNames
   } mx-auto w-full`;
   const fluidClassNames = `${commonClassNames}`;

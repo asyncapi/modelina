@@ -1,3 +1,4 @@
+
 import Button from '@/components/buttons/Button';
 import GithubButton from '@/components/buttons/GithubButton';
 import CodeBlock from '@/components/CodeBlock';
@@ -64,8 +65,8 @@ export default function Index() {
           </div>
         </div>
 
-        <div className="relative mt-12 lg:mt-20 lg:grid lg:grid-cols-4 lg:gap-8 lg:items-center">
-          <div className="relative mb-8 lg:mt-8 lg:col-start-2 lg:col-span-2">
+        <div className="relative mt-12 lg:mt-20 lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center">
+          <div className="relative mb-8 lg:mt-8">
             <Heading level="h4" typeStyle="heading-md-semibold">
               Installation
             </Heading>
@@ -91,8 +92,16 @@ export default function Index() {
               </div>
             </div>
           </div>
+          <div className = "relative lg:mt-8 h-full">
+            <Image 
+            src = {'/img/card/modelina-card.jpg'}
+            fill 
+            sizes='100vw'
+            alt = {'Modelina card'}
+          />
+          </div>
         </div>
-
+        
         <div className="relative text-center mt-12">
           <Heading level="h1" typeStyle="heading-lg">
             Usage

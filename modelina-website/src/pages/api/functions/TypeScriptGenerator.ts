@@ -2,6 +2,7 @@
 import {
   InputProcessor,
   TS_COMMON_PRESET,
+  TS_DESCRIPTION_PRESET,
   TypeScriptGenerator,
   TypeScriptOptions
 } from '../../../../../';
@@ -29,6 +30,18 @@ export async function getTypeScriptModels(
       }
     });
   }
+  if (generatorOptions.tsIncludeDescriptions === true) {
+    options.presets?.push({
+      preset: TS_DESCRIPTION_PRESET,
+      options: {}
+    });
+  }
+  if (generatorOptions.tsModuleSystem) {
+    options.moduleSystem = generatorOptions.tsModuleSystem as any;
+  }
+  if (generatorOptions.tsEnumType) {
+    options.enumType = generatorOptions.tsEnumType as any;
+  }
   try {
     const processedInput = await InputProcessor.processor.process(input);
     const generator = new TypeScriptGenerator(options);
@@ -37,9 +50,9 @@ export async function getTypeScriptModels(
       { exportType: 'default' }
     );
     return convertModelsToProps(generatedModels);
-  } catch (e) {
+  } catch (e : any) {
     console.error('Could not generate models');
     console.error(e);
+    return e.message;
   }
-  return [];
 }

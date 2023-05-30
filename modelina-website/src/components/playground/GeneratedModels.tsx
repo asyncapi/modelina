@@ -40,7 +40,7 @@ class GeneratedModelsComponent extends React.Component<
         selectedCode = this.context.models
           .map((model: any) => `${model.code}`)
           .join('\n\n');
-      } else if (this.state.selectedModel !== undefined) {
+      } else if (this.state.selectedModel !== undefined && this.context.models) {
         for (const model of this.context.models) {
           if (model.name === this.state.selectedModel) {
             selectedCode = model.code;
@@ -49,7 +49,7 @@ class GeneratedModelsComponent extends React.Component<
         }
       }
 
-      if (selectedCode === '' && this.context.models.length > 0) {
+      if (selectedCode === '' && (this.context.models && this.context.models.length > 0)) {
         //If the model is not found default to first one
         const defaultModel = this.context.models[0];
         selectedCode = defaultModel.code;
@@ -60,25 +60,27 @@ class GeneratedModelsComponent extends React.Component<
   }
 
   renderModels(selectedModel = '') {
-    return this.context?.models.map((model, index) => {
-      let backgroundColor;
-      if (model.name === selectedModel) {
-        backgroundColor = 'bg-blue-100';
-      } else {
-        backgroundColor = index % 2 === 0 ? 'bg-gray-50' : 'bg-white';
-      }
-      return (
-        <div
-          key={`GeneratedModel${model.name}`}
-          onClick={() => {
-            this.setNewQuery(model.name);
-          }}
-          className={`${backgroundColor} px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6`}
-        >
-          <dt className="text-sm font-medium text-gray-500">{model.name}</dt>
-        </div>
-      );
-    });
+    if(this.context?.models){
+      return this.context?.models.map((model, index) => {
+        let backgroundColor;
+        if (model.name === selectedModel) {
+          backgroundColor = 'bg-blue-100';
+        } else {
+          backgroundColor = index % 2 === 0 ? 'bg-gray-50' : 'bg-white';
+        }
+        return (
+          <div
+            key={`GeneratedModel${model.name}`}
+            onClick={() => {
+              this.setNewQuery(model.name);
+            }}
+            className={`${backgroundColor} px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6`}
+          >
+            <dt className="text-sm font-medium text-gray-500">{model.name}</dt>
+          </div>
+        );
+      });
+    };
   }
 
   render() {

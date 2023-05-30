@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CplusplusGenerator Class should not render reserved keyword 1`] = `
+"struct address {
+  std::optional<std::string> reserved_enum;
+};"
+`;
+
+exports[`CplusplusGenerator Class should render \`class\` type 1`] = `
+"struct address {
+  std::string street_name;
+  std::string city;
+  std::string state;
+  double house_number;
+  std::optional<bool> marriage;
+  std::optional<std::variant<std::string, double, bool>> members;
+  std::vector<std::variant<std::string, double, std::any>> array_type;
+  std::optional<std::map<std::string, std::variant<std::any, std::string>>> additional_properties;
+};"
+`;
+
+exports[`CplusplusGenerator Class should work with custom preset for \`class\` type 1`] = `
+"struct custom_class {
+  test1
+  std::optional<std::string> property;
+  test1
+  std::optional<std::map<std::string, std::any>> additional_properties;
+};"
+`;
+
+exports[`CplusplusGenerator Enum should render \`enum\` with mixed types (union type) 1`] = `
+"enum class things {
+  texas, number_1, reserved_number_1, reserved_false, curlyleft_quotation_test_quotation_colon_quotation_test_quotation_curlyright
+};"
+`;
+
+exports[`CplusplusGenerator Enum should render enums with translated special characters 1`] = `
+"enum class states {
+  test_plus, dollar_test, test_minus, test_question_exclamation, asterisk_test
+};"
+`;
+
+exports[`CplusplusGenerator Enum should work custom preset for \`enum\` type 1`] = `
+"enum class custom_enum {
+  texas, alabama, california
+};"
+`;

@@ -12,11 +12,21 @@ export interface UpdateMessage {
 export interface ModelinaTypeScriptOptions {
   tsMarshalling: boolean;
   tsModelType: 'class' | 'interface' | undefined;
+  tsEnumType: 'union' | 'enum' | undefined;
+  tsModuleSystem: 'ESM' | 'CJS' | undefined;
+  tsIncludeDescriptions: boolean;
 }
 export interface ModelinaJavaOptions {}
+export interface ModelinaCplusplusOptions {}
 export interface ModelinaGoOptions {}
 export interface ModelinaJavaScriptOptions {}
-export interface ModelinaCSharpOptions {}
+export interface ModelinaCSharpOptions {
+  csharpArrayType: 'List' | 'Array' | undefined;
+  csharpAutoImplemented: boolean;
+  csharpOverwriteHashcode: boolean;
+  csharpIncludeJson: boolean;
+  csharpIncludeNewtonsoft: boolean;
+}
 export interface ModelinaKotlinOptions {}
 export interface ModelinaRustOptions {}
 export interface ModelinaPythonOptions {}
@@ -31,7 +41,8 @@ export interface ModelinaGeneralOptions {
     | 'kotlin'
     | 'rust'
     | 'python'
-    | 'dart';
+    | 'dart'
+    | 'cplusplus';
 }
 export interface ModelinaGeneralQueryOptions {
   language: string;
@@ -40,15 +51,24 @@ export interface ModelinaGeneralQueryOptions {
 export interface ModelinaJavaQueryOptions {}
 export interface ModelinaGoQueryOptions {}
 export interface ModelinaJavaScriptQueryOptions {}
-export interface ModelinaCSharpQueryOptions {}
+export interface ModelinaCSharpQueryOptions {
+  csharpArrayType?: string;
+  csharpAutoImplemented?: string;
+  csharpOverwriteHashcode?:string;
+  csharpIncludeJson?: string;
+  csharpIncludeNewtonsoft?: string;
+}
 export interface ModelinaKotlinQueryOptions {}
 export interface ModelinaRustQueryOptions {}
 export interface ModelinaPythonQueryOptions {}
+export interface ModelinaCplusplusQueryOptions {}
 export interface ModelinaDartQueryOptions {}
 
 export interface ModelinaTypeScriptQueryOptions {
   tsMarshalling?: string;
   tsModelType?: string;
+  tsEnumType?: string;
+  tsIncludeDescriptions?: string;
 }
 
 export interface ModelinaOptions
@@ -73,6 +93,7 @@ export interface ModelinaQueryOptions
     ModelinaKotlinQueryOptions,
     ModelinaRustQueryOptions,
     ModelinaPythonQueryOptions,
+    ModelinaCplusplusQueryOptions,
     ModelinaDartQueryOptions {}
 
 export interface GenerateMessage extends ModelinaOptions {
@@ -114,6 +135,10 @@ export const modelinaLanguageOptions = [
   {
     value: 'dart',
     text: 'Dart'
+  },
+  {
+    value: 'cplusplus',
+    text: 'C++'
   }
 ];
 
