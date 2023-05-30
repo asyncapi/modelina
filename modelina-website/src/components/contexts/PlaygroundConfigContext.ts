@@ -2,6 +2,7 @@ import {
   ModelinaCplusplusOptions,
   ModelinaCSharpOptions,
   ModelinaDartOptions,
+  ModelinaGeneralOptions,
   ModelinaGoOptions,
   ModelinaJavaOptions,
   ModelinaJavaScriptOptions,
@@ -33,5 +34,7 @@ export const PlaygroundPythonConfigContext =
   createContext<ModelinaPythonOptions | null>(null);
 export const PlaygroundCplusplusConfigContext =
   createContext<ModelinaCplusplusOptions | null>(null);
+export const PlaygroundGeneralConfigContext =
+  createContext<ModelinaGeneralOptions | null>(null);
 export const PlaygroundPhpConfigContext =
   createContext<ModelinaPhpOptions | null>(null);
