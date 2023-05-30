@@ -12,8 +12,10 @@ export async function getCSharpModels(
   input: any,
   generatorOptions: ModelinaCSharpOptions
 ): Promise<ModelProps[]> {
-  const options: DeepPartial<CSharpOptions> = {};
-  options.presets = [];
+  const options: DeepPartial<CSharpOptions> = {
+    presets: []
+  };
+
   applyGeneralOptions(generatorOptions, options, csharpDefaultEnumKeyConstraints, csharpDefaultPropertyKeyConstraints, csharpDefaultModelNameConstraints);
 
   if (generatorOptions.csharpArrayType) {
@@ -24,7 +26,7 @@ export async function getCSharpModels(
     options.autoImplementedProperties = generatorOptions.csharpAutoImplemented;
   }
   if (generatorOptions.csharpOverwriteHashcode) {
-    options.presets.push({
+    options.presets?.push({
       preset: CSHARP_COMMON_PRESET,
       options: {
         equal: false,
@@ -33,10 +35,10 @@ export async function getCSharpModels(
     })
   }
   if (generatorOptions.csharpIncludeJson) {
-    options.presets.push(CSHARP_JSON_SERIALIZER_PRESET)
+    options.presets?.push(CSHARP_JSON_SERIALIZER_PRESET)
   }
   if (generatorOptions.csharpIncludeNewtonsoft) {
-    options.presets.push(CSHARP_NEWTONSOFT_SERIALIZER_PRESET)
+    options.presets?.push(CSHARP_NEWTONSOFT_SERIALIZER_PRESET)
   }
 
   if (generatorOptions.showTypeMappingExample) {
