@@ -8,7 +8,7 @@ export function getJavaGeneratorCode(
   const optionString: string[] = getGeneralGeneratorCode(generatorOptions, 'javaDefaultEnumKeyConstraints', 'javaDefaultPropertyKeyConstraints', 'javaDefaultModelNameConstraints');
   const optionStringPresets: string[] = [];
 
-  if(generatorOptions.showTypeMappingExample) {
+  if(generatorOptions.showTypeMappingExample === true) {
     optionString.push(`typeMapping: {
   Integer: ({ dependencyManager, constrainedModel, options, partOfProperty }) => {
     // Add custom dependency for your type if required.

@@ -3,10 +3,14 @@ import {
   InputProcessor,
   PHP_DESCRIPTION_PRESET,
   PhpGenerator,
-  PhpOptions
+  PhpOptions,
+  phpDefaultEnumKeyConstraints,
+  phpDefaultModelNameConstraints,
+  phpDefaultPropertyKeyConstraints
 } from '../../../../../';
-import { convertModelsToProps } from './Helpers';
+import { applyGeneralOptions, convertModelsToProps } from './Helpers';
 import { ModelinaPhpOptions, ModelProps } from '../../../types';
+import { DeepPartial } from '../../../../../lib/types/utils';
 
 /**
  * This is the server side part of the PHP generator, that takes input and generator parameters and generate the models.
@@ -15,14 +19,26 @@ export async function getPhpModels(
   input: any,
   generatorOptions: ModelinaPhpOptions
 ): Promise<ModelProps[]> {
-  const options: Partial<PhpOptions> = {
+  const options: DeepPartial<PhpOptions> = {
     presets: []
   };
+
+  applyGeneralOptions(generatorOptions, options, phpDefaultEnumKeyConstraints, phpDefaultPropertyKeyConstraints, phpDefaultModelNameConstraints);
+
   if (generatorOptions.phpIncludeDescriptions === true) {
     options.presets?.push({
       preset: PHP_DESCRIPTION_PRESET,
       options: {}
     });
+  }
+
+  if (generatorOptions.showTypeMappingExample === true) {
+    options.typeMapping = {
+      Integer: ({ dependencyManager }) => {
+        dependencyManager.addDependency('use ArrayObject');
+        return 'ArrayObject';
+      }
+    }
   }
   try {
     const processedInput = await InputProcessor.processor.process(input);

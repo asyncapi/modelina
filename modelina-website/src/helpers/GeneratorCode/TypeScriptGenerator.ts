@@ -12,10 +12,6 @@ export function getTypeScriptGeneratorCode(
     optionString.push(`modelType: '${generatorOptions.tsModelType}'`);
   }
 
-  if (generatorOptions.tsEnumType) {
-    optionString.push(`enumType: '${generatorOptions.tsEnumType}'`);
-  }
-
   if (generatorOptions.tsIncludeDescriptions === true) {
     optionStringPresets.push(`{
   preset: TS_DESCRIPTION_PRESET,
@@ -34,9 +30,9 @@ export function getTypeScriptGeneratorCode(
     }
 
     optionStringPresets.push(`{
-    preset: TS_COMMON_PRESET,
-    options: ${JSON.stringify(commonOptions)}
-  }`);
+  preset: TS_COMMON_PRESET,
+  options: ${JSON.stringify(commonOptions)}
+}`);
   }
 
   if (generatorOptions.tsEnumType) {
@@ -45,8 +41,8 @@ export function getTypeScriptGeneratorCode(
 
   if (generatorOptions.tsIncludeDescriptions === true) {
     optionStringPresets.push(`{
-      preset: TS_DESCRIPTION_PRESET,
-    }`);
+    preset: TS_DESCRIPTION_PRESET,
+  }`);
   }
 
   if (generatorOptions.tsIncludeJsonBinPack === true) {
@@ -57,7 +53,7 @@ export function getTypeScriptGeneratorCode(
     optionString.push(`moduleSystem: '${generatorOptions.tsModuleSystem}'`);
   }
 
-  if(generatorOptions.showTypeMappingExample) {
+  if(generatorOptions.showTypeMappingExample === true) {
     optionString.push(`typeMapping: {
   Integer: ({ dependencyManager, constrainedModel, options, partOfProperty }) => {
     // Add custom dependency for your type if required. 
