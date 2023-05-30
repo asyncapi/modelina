@@ -15,14 +15,23 @@ export interface ModelinaTypeScriptOptions extends ModelinaGeneralOptions {
   tsEnumType: 'union' | 'enum' | undefined;
   tsModuleSystem: 'ESM' | 'CJS' | undefined;
   tsIncludeDescriptions: boolean;
+  tsIncludeJsonBinPack: boolean;
+  tsIncludeExampleFunction: boolean;
 }
+
 export interface ModelinaJavaOptions extends ModelinaGeneralOptions {}
 export interface ModelinaCplusplusOptions extends ModelinaGeneralOptions {}
 export interface ModelinaGoOptions extends ModelinaGeneralOptions {}
 export interface ModelinaJavaScriptOptions extends ModelinaGeneralOptions {}
+export interface ModelinaPhpOptions extends ModelinaGeneralOptions {
+  phpIncludeDescriptions: boolean;
+}
 export interface ModelinaCSharpOptions extends ModelinaGeneralOptions {
   csharpArrayType: 'List' | 'Array' | undefined;
   csharpAutoImplemented: boolean;
+  csharpOverwriteHashcode: boolean;
+  csharpIncludeJson: boolean;
+  csharpIncludeNewtonsoft: boolean;
 }
 export interface ModelinaKotlinOptions extends ModelinaGeneralOptions {}
 export interface ModelinaRustOptions extends ModelinaGeneralOptions {}
@@ -39,7 +48,8 @@ export interface ModelinaGeneralOptions {
     | 'rust'
     | 'python'
     | 'dart'
-    | 'cplusplus';
+    | 'cplusplus'
+    | 'php';
   showTypeMappingExample: boolean;
   indentationType: 
     | 'tabs'
@@ -81,18 +91,26 @@ export interface ModelinaJavaScriptQueryOptions {}
 export interface ModelinaCSharpQueryOptions {
   csharpArrayType?: string;
   csharpAutoImplemented?: string;
+  csharpOverwriteHashcode?:string;
+  csharpIncludeJson?: string;
+  csharpIncludeNewtonsoft?: string;
 }
 export interface ModelinaKotlinQueryOptions {}
 export interface ModelinaRustQueryOptions {}
 export interface ModelinaPythonQueryOptions {}
 export interface ModelinaCplusplusQueryOptions {}
 export interface ModelinaDartQueryOptions {}
+export interface ModelinaPhpQueryOptions {
+  phpIncludeDescriptions?: string;
+}
 
 export interface ModelinaTypeScriptQueryOptions {
   tsMarshalling?: string;
   tsModelType?: string;
   tsEnumType?: string;
   tsIncludeDescriptions?: string;
+  tsIncludeJsonBinPack?: string;
+  tsIncludeExampleFunction?: string;
 }
 
 export interface ModelinaOptions
@@ -105,7 +123,8 @@ export interface ModelinaOptions
     ModelinaKotlinOptions,
     ModelinaRustOptions,
     ModelinaPythonOptions,
-    ModelinaDartOptions {}
+    ModelinaDartOptions,
+    ModelinaPhpOptions {}
 export interface ModelinaQueryOptions
   extends ParsedUrlQuery,
     ModelinaGeneralQueryOptions,
@@ -118,7 +137,8 @@ export interface ModelinaQueryOptions
     ModelinaRustQueryOptions,
     ModelinaPythonQueryOptions,
     ModelinaCplusplusQueryOptions,
-    ModelinaDartQueryOptions {}
+    ModelinaDartQueryOptions,
+    ModelinaPhpQueryOptions {}
 
 export interface GenerateMessage extends ModelinaOptions {
   input: string;
@@ -163,6 +183,10 @@ export const modelinaLanguageOptions = [
   {
     value: 'cplusplus',
     text: 'C++'
+  },
+  {
+    value: 'php',
+    text: 'PHP'
   }
 ];
 

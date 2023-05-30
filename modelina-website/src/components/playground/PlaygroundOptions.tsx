@@ -10,6 +10,7 @@ import KotlinGeneratorOptions from './options/KotlinGeneratorOptions';
 import RustGeneratorOptions from './options/RustGeneratorOptions';
 import PythonGeneratorOptions from './options/PythonGeneratorOptions';
 import CplusplusGeneratorOptions from './options/CplusplusGeneratorOptions';
+import PhpGeneratorOptions from './options/PhpGeneratorOptions';
 import { PlaygroundGeneralConfigContext } from '../contexts/PlaygroundConfigContext';
 
 interface WithRouterProps {
@@ -71,6 +72,10 @@ class PlaygroundOptions extends React.Component<
     } else if (this.context?.language === 'python') {
       generatorOptions = (
         <PythonGeneratorOptions setNewConfig={this.props.setNewConfig} />
+      );
+    } else if (this.context?.language === 'php') {
+      generatorOptions = (
+        <PhpGeneratorOptions setNewConfig={this.props.setNewConfig} />
       );
     }
     return (

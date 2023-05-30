@@ -12,15 +12,6 @@ export function getTypeScriptGeneratorCode(
     optionString.push(`modelType: '${generatorOptions.tsModelType}'`);
   }
 
-  if (generatorOptions.tsMarshalling === true) {
-    optionStringPresets.push(`{
-  preset: TS_COMMON_PRESET,
-  options: {
-    marshalling: true
-  }
-}`);
-  }
-
   if (generatorOptions.tsEnumType) {
     optionString.push(`enumType: '${generatorOptions.tsEnumType}'`);
   }
@@ -29,6 +20,37 @@ export function getTypeScriptGeneratorCode(
     optionStringPresets.push(`{
   preset: TS_DESCRIPTION_PRESET,
 }`);
+  }
+
+  if (generatorOptions.tsMarshalling === true ||
+    generatorOptions.tsIncludeExampleFunction === true) {
+    let commonOptions: any = {};
+    if(generatorOptions.tsMarshalling === true) {
+      commonOptions.marshalling = true;
+    }
+
+    if (generatorOptions.tsIncludeExampleFunction === true) {
+      commonOptions.example = true;
+    }
+
+    optionStringPresets.push(`{
+    preset: TS_COMMON_PRESET,
+    options: ${JSON.stringify(commonOptions)}
+  }`);
+  }
+
+  if (generatorOptions.tsEnumType) {
+    optionString.push(`enumType: '${generatorOptions.tsEnumType}'`);
+  }
+
+  if (generatorOptions.tsIncludeDescriptions === true) {
+    optionStringPresets.push(`{
+      preset: TS_DESCRIPTION_PRESET,
+    }`);
+  }
+
+  if (generatorOptions.tsIncludeJsonBinPack === true) {
+    optionStringPresets.push(`TS_JSONBINPACK_PRESET`);
   }
 
   if (generatorOptions.tsModuleSystem) {

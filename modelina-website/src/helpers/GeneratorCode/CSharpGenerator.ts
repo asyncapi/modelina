@@ -30,6 +30,28 @@ export function getCSharpGeneratorCode(
 }`);
   }
 
+  if (generatorOptions.csharpOverwriteHashcode) {
+    optionStringPresets.push(`
+    {
+      preset: CSHARP_COMMON_PRESET,
+      options: {
+        equal: false,
+        hashCode: true
+      }
+    }`)
+  }
+
+  if (generatorOptions.csharpIncludeJson) {
+    optionStringPresets.push(`
+    CSHARP_JSON_SERIALIZER_PRESET
+    `)
+  }
+  if (generatorOptions.csharpIncludeNewtonsoft) {
+    optionStringPresets.push(`
+    CSHARP_NEWTONSOFT_SERIALIZER_PRESET
+    `)
+  }
+
   const generateInstanceCode = renderGeneratorInstanceCode(optionString, optionStringPresets, 'CSharpGenerator');
 
   return `// Use the following code as starting point
