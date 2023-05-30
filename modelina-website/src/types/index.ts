@@ -26,6 +26,7 @@ export interface ModelinaCSharpOptions {
   csharpOverwriteHashcode: boolean;
   csharpIncludeJson: boolean;
   csharpOverwriteEqual: boolean;
+  csharpIncludeNewtonsoft: boolean;
 }
 export interface ModelinaKotlinOptions {}
 export interface ModelinaRustOptions {}
@@ -56,7 +57,6 @@ export interface ModelinaCSharpQueryOptions {
   csharpAutoImplemented?: string;
   csharpOverwriteHashcode?:string;
   csharpIncludeJson?: string;
-  csharpOverwriteEqual?: string;
 }
 export interface ModelinaKotlinQueryOptions {}
 export interface ModelinaRustQueryOptions {}
