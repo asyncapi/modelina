@@ -14,7 +14,6 @@ For more specific integration options, please check out the [integration documen
 - [Understanding the output format](#understanding-the-output-format)
 - [Generate models from AsyncAPI documents](#generate-models-from-asyncapi-documents)
   * [Limitations and Compatibility](#limitations-and-compatibility)
-    + [Message Schema formats](#message-schema-formats)
     + [Polymorphism](#polymorphism)
 - [Generate models from JSON Schema documents](#generate-models-from-json-schema-documents)
 - [Generate models from Swagger 2.0 documents](#generate-models-from-swagger-20-documents)
@@ -34,6 +33,8 @@ For more specific integration options, please check out the [integration documen
 - [Generate Rust models](#generate-rust-models)
 - [Generate Python models](#generate-python-models)
 - [Generate Kotlin models](#generate-kotlin-models)
+- [Generate C++ (cplusplus) models](#generate-c-cplusplus-models)
+- [Generate PHP models](#generate-php-models)
 
 <!-- tocstop -->
 
@@ -84,21 +85,16 @@ There are two ways to generate models for an AsyncAPI document.
 - [Generate from a parsed AsyncAPI 2.x document, from the old v1 parser](../examples/asyncapi-from-v1-parser)
 - [Generate from an AsyncAPI 2.x JS object](../examples/asyncapi-from-object)
 
-The library expects the `asyncapi` property for the document to be set in order to understand the input format.
-
-The message payloads, since it is a JSON Schema variant, is [interpreted as a such](./inputs/JSON_Schema.md).
+The message payloads, regardless of schemaFormat, are converted to a JSON Schema variant and is [interpreted as a such](./inputs/JSON_Schema.md).
 
 ### Limitations and Compatibility
 These are the current known limitation of the AsyncAPI input.
-
-#### Message Schema formats
-Currently, only a limited number of schema formats are supported and we currently rely on the [AsyncAPI parser](https://github.com/asyncapi/parser-js/) to handle those schema formats and convert them into [AsyncAPI Schema format](https://github.com/asyncapi/parser-js/#custom-message-parsers). At some point in the future, Modelina will support all native schema formats, so it does not matter which standard you use to define the message payloads, you will be able to generate models from it.
 
 #### Polymorphism
 
 Through the AsyncAPI Schema you are able to use `discriminator` for achieving polymorphism. Current version of Modelina does not generate the expected inheritance of models, instead it's current behavior is to [merge the schemas together](./inputs/JSON_Schema.md#processing-sub-schemas). This means you will still get access to the properties that missing inherited model has, but without the inheritance.
 
-Long term if this is something you wish was supported, voice your [opionion here](https://github.com/asyncapi/modelina/issues/108).
+Long term if this is something you wish was supported, voice your [opinion here](https://github.com/asyncapi/modelina/issues/108).
 
 ## Generate models from JSON Schema documents
 
@@ -146,7 +142,7 @@ These are the current known limitation of the OpenAPI inputs.
 
 Through the OpenAPI 3.0 Schema you are able to use `discriminator` for achieving polymorphism. Current version of Modelina does not generate the expected inheritance of models, instead it's current behavior is to [merge the schemas together](./inputs/JSON_Schema.md#processing-sub-schemas). This means you will still get access to the properties that missing inherited model has, but without the inheritance.
 
-Long term if this is something you wish was supported, voice your [opionion here](https://github.com/asyncapi/modelina/issues/108).
+Long term if this is something you wish was supported, voice your [opinion here](https://github.com/asyncapi/modelina/issues/108).
 
 ## Generate models from TypeScript type files
 
@@ -198,3 +194,11 @@ Python is one of the many output languages we support. Check out this [basic exa
 ## Generate Kotlin models
 
 Kotlin is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-kotlin-models) as well as [how to generate enums](../examples/generate-kotlin-enums) and the following [Kotlin documentation for more advanced use-cases](./languages/Kotlin.md).
+
+## Generate C++ (cplusplus) models
+
+C++ is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-cplusplus-models) and the following [C++ documentation for more advanced use-cases](./languages/Cplusplus.md).
+
+## Generate PHP models
+
+PHP is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/php-generate-models/) and the following [PHP documentation for more advanced use-cases](./languages/Php.md).

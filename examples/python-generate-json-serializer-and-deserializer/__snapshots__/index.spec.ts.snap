@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render JSON serialization and deserialization functions and should log expected output to console 1`] = `
+Array [
+  "class Root: 
+  def __init__(self, input):
+    if hasattr(input, 'email'):
+    	self._email = input.email
+    if hasattr(input, 'additionalProperties'):
+    	self._additionalProperties = input.additionalProperties
+
+  @property
+  def email(self):
+  	return self._email
+  @email.setter
+  def email(self, email):
+  	self._email = email
+
+  @property
+  def additionalProperties(self):
+  	return self._additionalProperties
+  @additionalProperties.setter
+  def additionalProperties(self, additionalProperties):
+  	self._additionalProperties = additionalProperties
+
+  def serializeToJson(self):
+    return json.dumps(self.__dict__, default=lambda o: o.__dict__, indent=2)
+
+  @staticmethod
+  def deserializeFromJson(json_string):
+    return Root(**json.loads(json_string))
+",
+]
+`;

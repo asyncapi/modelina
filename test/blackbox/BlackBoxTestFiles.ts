@@ -17,6 +17,7 @@ function readFilesInFolder(folder: string) {
   });
 }
 
+const Swagger2Files = readFilesInFolder('Swagger-2_0');
 const OpenAPI3_0Files = readFilesInFolder('OpenAPI-3_0');
 const jsonSchemaDraft7Files = readFilesInFolder('JsonSchemaDraft-7');
 const jsonSchemaDraft6Files = readFilesInFolder('JsonSchemaDraft-6');
@@ -30,6 +31,7 @@ const AsyncAPIV2_5Files = readFilesInFolder('AsyncAPI-2_5');
 const AsyncAPIV2_6Files = readFilesInFolder('AsyncAPI-2_6');
 
 const filesToTest = [
+  ...Swagger2Files,
   ...OpenAPI3_0Files.filter(({ file }) => {
     // Too large to process in normal blackbox testing, can be used to locally test stuff.
     return !file.includes('postman-api.json');

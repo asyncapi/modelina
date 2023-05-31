@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PHP_DESCRIPTION_PRESET should render description and examples for class 1`] = `
+"/**
+ * Description for class
+ */
+final class Clazz
+{
+  private ?string $prop;
+  private mixed $additionalProperties;
+
+  public function getProp(): ?string { return $this->prop; }
+  public function setProp(?string $prop): void { $this->prop = $prop; }
+
+  public function getAdditionalProperties(): mixed { return $this->additionalProperties; }
+  public function setAdditionalProperties(mixed $additionalProperties): void { $this->additionalProperties = $additionalProperties; }
+}
+"
+`;
+
+exports[`PHP_DESCRIPTION_PRESET should render description and examples for enum 1`] = `
+"/**
+ * Description for enum
+ */
+enum Enum
+{
+  case ON;
+  case OFF;
+}
+"
+`;

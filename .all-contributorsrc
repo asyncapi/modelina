@@ -386,7 +386,9 @@
       "profile": "https://github.com/kennethaasan",
       "contributions": [
         "code",
-        "test"
+        "test",
+        "maintenance",
+        "doc"
       ]
     },
     {
@@ -438,7 +440,11 @@
       "profile": "https://malcherczyk.pl",
       "contributions": [
         "bug",
-        "infra"
+        "infra",
+        "code",
+        "example",
+        "test",
+        "review"
       ]
     },
     {
@@ -468,11 +474,7 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/52397677?v=4",
       "profile": "https://github.com/LouisXhaferi",
       "contributions": [
-        "code",
-        "test",
-        "doc",
-        "example",
-        "maintenance"
+        "code"
       ]
     },
     {
@@ -481,7 +483,134 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/81870866?v=4",
       "profile": "https://github.com/sambhavgupta0705",
       "contributions": [
+        "doc",
+        "review",
+        "design",
+        "code",
+        "bug"
+      ]
+    },
+    {
+      "login": "prayutsu",
+      "name": "Abhay Garg",
+      "avatar_url": "https://avatars.githubusercontent.com/u/54636525?v=4",
+      "profile": "https://github.com/prayutsu",
+      "contributions": [
+        "code",
+        "example",
+        "test",
         "doc"
+      ]
+    },
+    {
+      "login": "henrikjon",
+      "name": "henrikjon",
+      "avatar_url": "https://avatars.githubusercontent.com/u/27212232?v=4",
+      "profile": "https://github.com/henrikjon",
+      "contributions": [
+        "code",
+        "test",
+        "doc",
+        "example"
+      ]
+    },
+    {
+      "login": "Yasir761",
+      "name": "Mohammad Yasir",
+      "avatar_url": "https://avatars.githubusercontent.com/u/74600745?v=4",
+      "profile": "https://yasirdeveloper.netlify.app/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Savio629",
+      "name": "Savio Dias",
+      "avatar_url": "https://avatars.githubusercontent.com/u/91362589?v=4",
+      "profile": "https://github.com/Savio629",
+      "contributions": [
+        "code",
+        "infra",
+        "bug"
+      ]
+    },
+    {
+      "login": "ishaan812",
+      "name": "Ishaan Shah",
+      "avatar_url": "https://avatars.githubusercontent.com/u/70190533?v=4",
+      "profile": "https://github.com/ishaan812",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Shreyas0410",
+      "name": "Shreyas0410",
+      "avatar_url": "https://avatars.githubusercontent.com/u/70795867?v=4",
+      "profile": "https://github.com/Shreyas0410",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "beku-epitome",
+      "name": "beku-epitome",
+      "avatar_url": "https://avatars.githubusercontent.com/u/115151513?v=4",
+      "profile": "https://github.com/beku-epitome",
+      "contributions": [
+        "code",
+        "review",
+        "test"
+      ]
+    },
+    {
+      "login": "swordmaster2k",
+      "name": "Joshua Michael Daly",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3354016?v=4",
+      "profile": "https://github.com/swordmaster2k",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "dlkj",
+      "name": "Daniel KJ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/243059?v=4",
+      "profile": "https://github.com/dlkj",
+      "contributions": [
+        "code",
+        "test",
+        "example",
+        "review"
+      ]
+    },
+    {
+      "login": "Bhavik-ag",
+      "name": "Bhavik Agarwal",
+      "avatar_url": "https://avatars.githubusercontent.com/u/73033511?v=4",
+      "profile": "https://codeyt.com/",
+      "contributions": [
+        "design"
+      ]
+    },
+    {
+      "login": "kaushik-rishi",
+      "name": "Rishi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52498617?v=4",
+      "profile": "https://github.com/kaushik-rishi",
+      "contributions": [
+        "code",
+        "design"
+      ]
+    },
+    {
+      "login": "RohithBoppey",
+      "name": "Rohith Boppey",
+      "avatar_url": "https://avatars.githubusercontent.com/u/73538974?v=4",
+      "profile": "https://rohithboppey.netlify.app",
+      "contributions": [
+        "code",
+        "design"
       ]
     }
   ],
@@ -491,5 +620,6 @@
   "repoType": "github",
   "repoHost": "https://github.com",
   "skipCi": false,
-  "commitConvention": "none"
+  "commitConvention": "none",
+  "commitType": "docs"
 }

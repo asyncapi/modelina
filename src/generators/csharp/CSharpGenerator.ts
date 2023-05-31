@@ -22,6 +22,7 @@ import {
 import { CSharpPreset, CSHARP_DEFAULT_PRESET } from './CSharpPreset';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { ClassRenderer } from './renderers/ClassRenderer';
+import { RecordRenderer } from './renderers/RecordRenderer';
 import { isReservedCSharpKeyword } from './Constants';
 import { Logger } from '../../index';
 import {
@@ -36,6 +37,7 @@ export interface CSharpOptions extends CommonGeneratorOptions<CSharpPreset> {
   typeMapping: TypeMapping<CSharpOptions, CSharpDependencyManager>;
   constraints: Constraints;
   autoImplementedProperties: boolean;
+  modelType: 'class' | 'record';
 }
 export type CSharpTypeMapping = TypeMapping<
   CSharpOptions,
@@ -60,6 +62,7 @@ export class CSharpGenerator extends AbstractGenerator<
     typeMapping: CSharpDefaultTypeMapping,
     constraints: CSharpDefaultConstraints,
     autoImplementedProperties: false,
+    modelType: 'class',
     // Temporarily set
     dependencyManager: () => {
       return {} as CSharpDependencyManager;
@@ -193,6 +196,9 @@ ${FormatHelpers.indent(
       ...options
     });
     if (model instanceof ConstrainedObjectModel) {
+      if (this.options.modelType === 'record') {
+        return this.renderRecord(model, inputModel, optionsToUse);
+      }
       return this.renderClass(model, inputModel, optionsToUse);
     } else if (model instanceof ConstrainedEnumModel) {
       return this.renderEnum(model, inputModel, optionsToUse);
@@ -248,6 +254,33 @@ ${FormatHelpers.indent(
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('class');
     const renderer = new ClassRenderer(
+      this.options,
+      this,
+      presets,
+      model,
+      inputModel,
+      dependencyManagerToUse
+    );
+    const result = await renderer.runSelfPreset();
+    return RenderOutput.toRenderOutput({
+      result,
+      renderedName: model.name,
+      dependencies: dependencyManagerToUse.dependencies
+    });
+  }
+
+  async renderRecord(
+    model: ConstrainedObjectModel,
+    inputModel: InputMetaModel,
+    options?: Partial<CSharpOptions>
+  ): Promise<RenderOutput> {
+    const optionsToUse = CSharpGenerator.getCSharpOptions({
+      ...this.options,
+      ...options
+    });
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
+    const presets = this.getPresets('record');
+    const renderer = new RecordRenderer(
       this.options,
       this,
       presets,

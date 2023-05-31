@@ -7,7 +7,7 @@
 # The default owners are automatically added as reviewers when you open a pull request unless different owners are specified in the file.
 
 # Core Champions that does a little of everything
-* @magicmatatjahu @jonaslagoni @asyncapi-bot-eve
+* @magicmatatjahu @jonaslagoni @kennethaasan @asyncapi-bot-eve
 
 # Documentation champions
 /docs
@@ -46,5 +46,5 @@
 # Language Champions for Rust and its presets
 */generators/rust @leigh-johnson
 
-# Language Champions for Kotlin and it's presets
-*/generators/kotlin @LouisXhaferi
+# Language Champions for PHP and it's presets
+*/generators/php @ferror

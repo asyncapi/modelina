@@ -52,6 +52,7 @@ export const RESERVED_CSHARP_KEYWORDS = [
   'protected',
   'public',
   'readonly',
+  'record',
   'ref',
   'return',
   'sbyte',

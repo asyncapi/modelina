@@ -7,6 +7,8 @@ There are special use-cases that each language supports; this document pertains 
 <!-- toc -->
 
 - [Generate Pydantic models](#generate-pydantic-models)
+- [Generate models with JSON Serializer and Deserializer methods](#generate-models-with-json-serializer-and-deserializer-methods)
+  * [Limitations](#limitations)
 
 <!-- tocstop -->
 
@@ -14,3 +16,12 @@ There are special use-cases that each language supports; this document pertains 
 In some cases you might want to use [pydantic](https://pypi.org/project/pydantic/) data validation and settings management using Python type hints for the models.
 
 You can find an example of its use [here](../../examples/generate-python-pydantic-models/index.ts)
+
+## Generate models with JSON Serializer and Deserializer methods
+Using the preset [PYTON_JSON_SERIALIZER](../../src/generators/python/presets/JsonSerializer.ts), you can generate `serializeToJson` method to convert model instance to JSON and `deserializeFromJson` method to convert JSON to model instance.
+
+### Limitations
+1. Above preset doesn't unwrap properties of type `ConstrainedDictionaryModel` with `serialilzationType = unwrap`
+2. The serialized JSON object will have the same property names as defined in the model object.
+
+Check out [this example for a live demonstration.](../../examples/python-generate-json-serializer-and-deserializer/index.ts)

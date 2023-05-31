@@ -142,6 +142,21 @@ public static class ThingsExtensions
 "
 `;
 
+exports[`CSharpGenerator should render \`record\` type if chosen 1`] = `
+"public record Address
+{
+  public required string StreetName { get; init; }
+  public required string City { get; init; }
+  public required string State { get; init; }
+  public required double HouseNumber { get; init; }
+  public bool? Marriage { get; init; }
+  public dynamic? Members { get; init; }
+  public dynamic[]? TupleType { get; init; }
+  public required dynamic[] ArrayType { get; init; }
+  public Dictionary<string, dynamic>? AdditionalProperties { get; init; }
+}"
+`;
+
 exports[`CSharpGenerator should render enums with translated special characters 1`] = `
 "public enum States
 {

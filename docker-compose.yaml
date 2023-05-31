@@ -1,0 +1,8 @@
+services:
+  modelina:
+    working_dir: /app/
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/app:delegated
