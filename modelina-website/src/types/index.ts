@@ -9,21 +9,24 @@ export interface UpdateMessage {
   models: ModelProps[];
 }
 
-export interface ModelinaTypeScriptOptions {
+export interface ModelinaTypeScriptOptions extends ModelinaGeneralOptions {
   tsMarshalling: boolean;
   tsModelType: 'class' | 'interface' | undefined;
   tsEnumType: 'union' | 'enum' | undefined;
   tsModuleSystem: 'ESM' | 'CJS' | undefined;
   tsIncludeDescriptions: boolean;
+  tsIncludeJsonBinPack: boolean;
+  tsIncludeExampleFunction: boolean;
 }
-export interface ModelinaJavaOptions {}
-export interface ModelinaCplusplusOptions {}
-export interface ModelinaPhpOptions {
+
+export interface ModelinaJavaOptions extends ModelinaGeneralOptions {}
+export interface ModelinaCplusplusOptions extends ModelinaGeneralOptions {}
+export interface ModelinaGoOptions extends ModelinaGeneralOptions {}
+export interface ModelinaJavaScriptOptions extends ModelinaGeneralOptions {}
+export interface ModelinaPhpOptions extends ModelinaGeneralOptions {
   phpIncludeDescriptions: boolean;
 }
-export interface ModelinaGoOptions {}
-export interface ModelinaJavaScriptOptions {}
-export interface ModelinaCSharpOptions {
+export interface ModelinaCSharpOptions extends ModelinaGeneralOptions {
   csharpArrayType: 'List' | 'Array' | undefined;
   csharpAutoImplemented: boolean;
   csharpOverwriteHashcode: boolean;
@@ -31,10 +34,10 @@ export interface ModelinaCSharpOptions {
   csharpOverwriteEqual: boolean;
   csharpIncludeNewtonsoft: boolean;
 }
-export interface ModelinaKotlinOptions {}
-export interface ModelinaRustOptions {}
-export interface ModelinaPythonOptions {}
-export interface ModelinaDartOptions {}
+export interface ModelinaKotlinOptions extends ModelinaGeneralOptions {}
+export interface ModelinaRustOptions extends ModelinaGeneralOptions {}
+export interface ModelinaPythonOptions extends ModelinaGeneralOptions {}
+export interface ModelinaDartOptions extends ModelinaGeneralOptions {}
 export interface ModelinaGeneralOptions {
   language:
     | 'typescript'
@@ -48,9 +51,39 @@ export interface ModelinaGeneralOptions {
     | 'dart'
     | 'cplusplus'
     | 'php';
+  showTypeMappingExample: boolean;
+  indentationType: 
+    | 'tabs'
+    | 'spaces';
+  propertyNamingFormat: 
+    | 'default'
+    | 'snake_case'
+    | 'pascal_case'
+    | 'camel_case'
+    | 'param_case'
+    | 'constant_case';
+  modelNamingFormat:
+    | 'default'
+    | 'snake_case'
+    | 'pascal_case'
+    | 'camel_case'
+    | 'param_case'
+    | 'constant_case';
+  enumKeyNamingFormat:
+    | 'default'
+    | 'snake_case'
+    | 'pascal_case'
+    | 'camel_case'
+    | 'param_case'
+    | 'constant_case';
 }
 export interface ModelinaGeneralQueryOptions {
   language: string;
+  showTypeMappingExample?: string;
+  indentationType?: string;
+  propertyNamingFormat?: string;
+  modelNamingFormat?: string;
+  enumKeyNamingFormat?: string;
 }
 
 export interface ModelinaJavaQueryOptions {}
@@ -76,6 +109,8 @@ export interface ModelinaTypeScriptQueryOptions {
   tsModelType?: string;
   tsEnumType?: string;
   tsIncludeDescriptions?: string;
+  tsIncludeJsonBinPack?: string;
+  tsIncludeExampleFunction?: string;
 }
 
 export interface ModelinaOptions

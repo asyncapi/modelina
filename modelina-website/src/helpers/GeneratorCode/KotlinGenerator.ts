@@ -1,34 +1,37 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ModelinaKotlinOptions } from '../../types';
+import { getGeneralGeneratorCode, renderGeneratorInstanceCode } from './GeneralGenerator';
 
 export function getKotlinGeneratorCode(
   generatorOptions: ModelinaKotlinOptions
 ) {
-  const optionString: string[] = [];
+  const optionString: string[] = getGeneralGeneratorCode(generatorOptions, 'kotlinDefaultEnumKeyConstraints', 'kotlinDefaultPropertyKeyConstraints', 'kotlinDefaultModelNameConstraints');
   const optionStringPresets: string[] = [];
 
-  const presetOptions =
-    optionStringPresets.length > 0
-      ? `${optionString.length > 0 ? ',' : ''}
-    presets: [
-      ${optionStringPresets.join(', \n')}
-    ]`
-      : '';
-  let fullOptions = '';
-  if (optionStringPresets.length > 0 || optionString.length > 0) {
-    fullOptions = `{
-    ${optionString.join(';\n')}${presetOptions}
-  }`;
+  if(generatorOptions.showTypeMappingExample === true) {
+    optionString.push(`typeMapping: {
+  Integer: ({ dependencyManager, constrainedModel, options, partOfProperty }) => {
+    // Add custom dependency for your type if required.
+    dependencyManager.addDependency('import kotlinx.datetime.*');
+
+    //Return the type for the integer model
+    return 'LocalDate';
   }
-  const generateInstanceCode =
-    `const generator = new KotlinGenerator(${fullOptions});`.replace(
-      /^\s*\n/gm,
-      ''
-    );
+}`);
+  }
+
+  const generateInstanceCode = renderGeneratorInstanceCode(optionString, optionStringPresets, 'KotlinGenerator');
 
   return `// Use the following code as starting point
 // To generate the models exactly as displayed in the playground
-import { KotlinGenerator } from '@asyncapi/modelina';
+import { 
+  KotlinGenerator, 
+  IndentationTypes, 
+  FormatHelpers, 
+  kotlinDefaultEnumKeyConstraints, 
+  kotlinDefaultModelNameConstraints, 
+  kotlinDefaultPropertyKeyConstraints 
+} from '@asyncapi/modelina';
   
 ${generateInstanceCode}`;
 }
