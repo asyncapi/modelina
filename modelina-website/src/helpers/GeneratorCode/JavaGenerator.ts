@@ -1,32 +1,37 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ModelinaJavaOptions } from '../../types';
+import { getGeneralGeneratorCode, renderGeneratorInstanceCode } from './GeneralGenerator';
 
-export function getJavaGeneratorCode(generatorOptions: ModelinaJavaOptions) {
-  const optionString: string[] = [];
+export function getJavaGeneratorCode(
+  generatorOptions: ModelinaJavaOptions
+) {
+  const optionString: string[] = getGeneralGeneratorCode(generatorOptions, 'javaDefaultEnumKeyConstraints', 'javaDefaultPropertyKeyConstraints', 'javaDefaultModelNameConstraints');
   const optionStringPresets: string[] = [];
 
-  const presetOptions =
-    optionStringPresets.length > 0
-      ? `${optionString.length > 0 ? ',' : ''}
-    presets: [
-      ${optionStringPresets.join(', \n')}
-    ]`
-      : '';
-  let fullOptions = '';
-  if (optionStringPresets.length > 0 || optionString.length > 0) {
-    fullOptions = `{
-    ${optionString.join(';\n')}${presetOptions}
-  }`;
+  if(generatorOptions.showTypeMappingExample === true) {
+    optionString.push(`typeMapping: {
+  Integer: ({ dependencyManager, constrainedModel, options, partOfProperty }) => {
+    // Add custom dependency for your type if required.
+    dependencyManager.addDependency('import java.util.ArrayList;');
+
+    //Return the type for the integer model
+    return 'long';
   }
-  const generateInstanceCode =
-    `const generator = new JavaGenerator(${fullOptions});`.replace(
-      /^\s*\n/gm,
-      ''
-    );
+}`);
+  }
+
+  const generateInstanceCode = renderGeneratorInstanceCode(optionString, optionStringPresets, 'JavaGenerator');
 
   return `// Use the following code as starting point
 // To generate the models exactly as displayed in the playground
-import { JavaGenerator } from '@asyncapi/modelina';
+import { 
+  JavaGenerator, 
+  IndentationTypes, 
+  FormatHelpers, 
+  javaDefaultEnumKeyConstraints, 
+  javaDefaultModelNameConstraints, 
+  javaDefaultPropertyKeyConstraints 
+} from '@asyncapi/modelina';
   
 ${generateInstanceCode}`;
 }
