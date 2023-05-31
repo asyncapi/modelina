@@ -45,7 +45,7 @@ export async function getPhpModels(
     const generator = new PhpGenerator(options);
     const generatedModels = await generator.generateCompleteModels(
       processedInput,
-      { namespace: 'asyncapi.models' }
+      { namespace: 'AsyncAPI\\Models' }
     );
     return convertModelsToProps(generatedModels);
   } catch (e : any) {
