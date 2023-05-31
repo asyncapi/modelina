@@ -39,7 +39,7 @@ export async function getCSharpModels(
   }
 
   if(generatorOptions.csharpOverwriteEqual){
-    options.presets.push({
+    options.presets?.push({
       preset: CSHARP_COMMON_PRESET,
       options: {
         equal: generatorOptions.csharpOverwriteEqual,

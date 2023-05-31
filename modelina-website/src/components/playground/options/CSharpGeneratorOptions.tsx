@@ -102,7 +102,7 @@ class CSharpGeneratorOptions extends React.Component<
         <li>
           <label className="flex items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
-              Include OverWrite HashCode Support
+              Include Overwrite HashCode Support
             </span>
             <input
               type="checkbox"
@@ -116,7 +116,7 @@ class CSharpGeneratorOptions extends React.Component<
         <li>
           <label className="flex items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
-              Include OverWrite Equal Support
+              Include Overwrite Equal Support
             </span>
             <input
               type="checkbox"
