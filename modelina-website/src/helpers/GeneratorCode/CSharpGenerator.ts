@@ -50,17 +50,16 @@ export function getCSharpGeneratorCode(
   }
 
   if(generatorOptions.csharpOverwriteEqual){
-    optionStringPresets.push(`
-    {
-      preset: CSHARP_COMMON_PRESET,
-      options: {
-        equal: true,
-        hashCode: true
-      }
-    }
-    `)
+    optionStringPresets.push(`{
+  preset: CSHARP_COMMON_PRESET,
+  options: {
+    equal: true,
+    hashCode: true
+  }
+}`);
   }
 
+<<<<<<< HEAD
   const presetOptions =
     optionStringPresets.length > 0
       ? `${optionString.length > 0 ? ',' : ''}
@@ -79,6 +78,9 @@ export function getCSharpGeneratorCode(
       /^\s*\n/gm,
       ''
     );
+=======
+  const generateInstanceCode = renderGeneratorInstanceCode(optionString, optionStringPresets, 'CSharpGenerator');
+>>>>>>> cd72322f86251ce1f78049cc4d7908195f2647ae
 
   return `// Use the following code as starting point
 // To generate the models exactly as displayed in the playground
