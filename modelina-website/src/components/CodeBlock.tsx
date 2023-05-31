@@ -222,7 +222,7 @@ export default function CodeBlock({
             style={theme}
             showLineNumbers={showLineNumbers}
             startingLineNumber={startingLineNumber}
-            lineNumberContainerProps={{
+            linenumbercontainerprops={{
               className: 'pl-2 float-left left-0 sticky bg-code-editor-dark',
               style: {}
             }}
