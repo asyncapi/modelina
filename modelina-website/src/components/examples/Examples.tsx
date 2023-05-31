@@ -169,7 +169,7 @@ class Examples extends React.Component<
                       />
                       <div className="prose py-6">
                         <ReactMarkdown>{example.description}</ReactMarkdown>
-                        <a href={`https://github.com/asyncapi/modelina/tree/master/examples/${selectedExample}/README.md`} className="bg-blue-100 hover:bg-blue-200 text-blue-800 text-xs font-semibold p-2 rounded border border-blue-400">Edit Description</a>
+                        <a href={`https://github.com/asyncapi/modelina/edit/master/examples/${selectedExample}/README.md`} className="bg-blue-100 hover:bg-blue-200 text-blue-800 text-xs font-semibold p-2 rounded border border-blue-400">Edit Description</a>
                       </div>
                     </div>
                     <div className={`col-span-1`}>
@@ -208,7 +208,7 @@ class Examples extends React.Component<
                     <div className={"flex md:justify-end my-4 md:my-0"}>
                       <GithubButton
                         text="Edit readme on GitHub"
-                        href={`https://github.com/asyncapi/modelina/tree/master/examples/README.md`}
+                        href={`https://github.com/asyncapi/modelina/edit/master/examples/README.md`}
                         inNav="true"
                       />
                     </div>

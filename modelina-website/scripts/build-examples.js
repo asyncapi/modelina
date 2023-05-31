@@ -59,6 +59,8 @@ async function getDescription(exampleDirPath){
   let description = await readFile(path.resolve(exampleDirPath, './README.md'), "utf-8");
   const runExampleStart = description.search('## How to run this example');
   description = description.slice(0, runExampleStart);
+  // Replace all local references to examples with queries
+  description = description.replace(/\(..\/(.*?)(\/)?\)/g, '(?selectedExample=$1)');
   return description;
 }
 
@@ -97,8 +99,9 @@ async function start() {
   await writeFile(outputFile, JSON.stringify(templateConfig, null, 4));
 
   let mainReadme = await readFile(path.resolve(__dirname, '../../examples/README.md'), 'utf-8');
+  
   // Replace all local references to examples with queries
-  mainReadme = mainReadme.replace(/\(.\/(.*?)\)/g, '(?selectedExample=$1)');
+  mainReadme = mainReadme.replace(/\(.\/(.*?)(\/)?\)/g, '(?selectedExample=$1)');
   mainReadme = mainReadme.replace('<!-- toc is generated with GitHub Actions do not remove toc markers -->', '');
   mainReadme = mainReadme.replace('<!-- toc -->', '');
   mainReadme = mainReadme.replace('<!-- tocstop -->', '');
