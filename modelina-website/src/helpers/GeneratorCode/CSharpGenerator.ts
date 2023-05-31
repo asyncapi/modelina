@@ -44,9 +44,7 @@ export function getCSharpGeneratorCode(
     optionStringPresets.push(`CSHARP_JSON_SERIALIZER_PRESET`)
   }
   if (generatorOptions.csharpIncludeNewtonsoft) {
-    optionStringPresets.push(`
-    CSHARP_NEWTONSOFT_SERIALIZER_PRESET
-    `)
+    optionStringPresets.push(`CSHARP_NEWTONSOFT_SERIALIZER_PRESET`)
   }
 
   if(generatorOptions.csharpOverwriteEqual){
