@@ -43,7 +43,7 @@ export async function getCSharpModels(
       preset: CSHARP_COMMON_PRESET,
       options: {
         equal: generatorOptions.csharpOverwriteEqual,
-        hashCode: true
+        hashCode: false
       }
     })
   }  
