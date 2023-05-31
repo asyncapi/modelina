@@ -54,7 +54,7 @@ export function getCSharpGeneratorCode(
     preset: CSHARP_COMMON_PRESET,
     options: {
       equal: true,
-      hashCode: true
+      hashCode: false
     }
   }`);
   }
