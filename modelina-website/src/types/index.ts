@@ -94,6 +94,8 @@ export interface ModelinaCSharpQueryOptions {
   csharpAutoImplemented?: string;
   csharpOverwriteHashcode?:string;
   csharpIncludeJson?: string;
+  csharpOverwriteEqual?: string;
+  csharpIncludeNewtonsoft?: string;
 }
 export interface ModelinaKotlinQueryOptions {}
 export interface ModelinaRustQueryOptions {}

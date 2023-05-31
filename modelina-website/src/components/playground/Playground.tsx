@@ -262,9 +262,13 @@ class Playground extends React.Component<
       this.config.csharpIncludeJson =
         query.csharpIncludeJson === 'true';
     }
-    if (query.csharpIncludeJson !== undefined) {
-      this.config.csharpIncludeJson =
-        query.csharpIncludeJson === 'true';
+    if (query.csharpOverwriteEqual !== undefined) {
+      this.config.csharpOverwriteEqual =
+        query.csharpOverwriteEqual === 'true';
+    }
+    if (query.csharpIncludeNewtonsoft !== undefined) {
+      this.config.csharpIncludeNewtonsoft =
+        query.csharpIncludeNewtonsoft === 'true';
     }
     if (this.props.router.isReady && !this.hasLoadedQuery) {
       this.hasLoadedQuery = true;
