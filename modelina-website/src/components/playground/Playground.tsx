@@ -90,6 +90,7 @@ class Playground extends React.Component<
     phpIncludeDescriptions: false,
     csharpOverwriteHashcode: false,
     csharpIncludeJson: false,
+    csharpOverwriteEqual: false,
     csharpIncludeNewtonsoft: false,
   };
   hasLoadedQuery: boolean = false;
@@ -260,6 +261,10 @@ class Playground extends React.Component<
     if (query.csharpIncludeJson !== undefined) {
       this.config.csharpIncludeJson =
         query.csharpIncludeJson === 'true';
+    }
+    if (query.csharpOverwriteEqual !== undefined) {
+      this.config.csharpOverwriteEqual =
+        query.csharpOverwriteEqual === 'true';
     }
     if (query.csharpIncludeNewtonsoft !== undefined) {
       this.config.csharpIncludeNewtonsoft =

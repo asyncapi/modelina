@@ -37,6 +37,16 @@ export async function getCSharpModels(
   if (generatorOptions.csharpIncludeJson) {
     options.presets?.push(CSHARP_JSON_SERIALIZER_PRESET)
   }
+
+  if(generatorOptions.csharpOverwriteEqual){
+    options.presets?.push({
+      preset: CSHARP_COMMON_PRESET,
+      options: {
+        equal: generatorOptions.csharpOverwriteEqual,
+        hashCode: false
+      }
+    })
+  }  
   if (generatorOptions.csharpIncludeNewtonsoft) {
     options.presets?.push(CSHARP_NEWTONSOFT_SERIALIZER_PRESET)
   }

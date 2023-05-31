@@ -47,6 +47,16 @@ export function getCSharpGeneratorCode(
     optionStringPresets.push(`CSHARP_NEWTONSOFT_SERIALIZER_PRESET`)
   }
 
+  if(generatorOptions.csharpOverwriteEqual){
+    optionStringPresets.push(`{
+    preset: CSHARP_COMMON_PRESET,
+    options: {
+      equal: true,
+      hashCode: false
+    }
+  }`);
+  }
+
   const generateInstanceCode = renderGeneratorInstanceCode(optionString, optionStringPresets, 'CSharpGenerator');
 
   return `// Use the following code as starting point
