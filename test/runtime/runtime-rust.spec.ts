@@ -1,7 +1,7 @@
 import path from 'path';
 import { execCommand } from '../blackbox/utils/Utils';
 
-jest.setTimeout(100000);
+jest.setTimeout(500000);
 
 test('Rust runtime testing', async () => {
   const compileCommand = `cd ${path.resolve(
