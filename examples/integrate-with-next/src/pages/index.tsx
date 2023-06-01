@@ -1,11 +1,55 @@
 import { getGeneratedCode } from '../modelina';
 import Head from 'next/head';
 import styles from '@/styles/Home.module.css';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 
-function HomePage({ models }: any): any {
+export type GeneratedModel = {
+  name: string;
+  result: string;
+}
+
+export type HomePageProps = {
+  models: GeneratedModel[]
+}
+
+/**
+ * Use server side functions to retrieve the generated code from Modelina.
+ *
+ * If you need the user to provide inputs to the generation process
+ * you can use the context parameter: https://nextjs.org/docs/api-reference/data-fetching/get-server-side-props#context-parameter
+ *
+ * Or you can use something like Socket.io.
+ */
+export const getServerSideProps: GetServerSideProps<HomePageProps> = async () => {
+  try{
+    const models = await getGeneratedCode();
+    // Only return the relevant information that is needed.
+    const propsToReturn = models.map((model) : GeneratedModel => {
+      return {
+        result: model.result,
+        name: model.modelName
+      };
+    });
+    return {
+      props: {
+        models: propsToReturn
+      }
+    };
+  } catch(e) {
+    console.error(e);
+  }
+
+  return {
+    props: {
+      models: []
+    }
+  };
+}
+
+function HomePage({ models }: InferGetServerSidePropsType<typeof getServerSideProps>): any {
   const safeModels = models || [];
   // Create a good representation of the models here
-  const codeModels = safeModels.map((model: any) => {
+  const codeModels = safeModels.map((model: GeneratedModel) => {
     return (
       <div key={model.name} style={{ padding: '15px' }}>
         <h4>Model: {model.name}</h4>
@@ -37,40 +81,6 @@ function HomePage({ models }: any): any {
       </main>
     </>
   );
-}
-
-/**
- * Use server side functions to retrieve the generated code from Modelina.
- *
- * If you need the user to provide inputs to the generation process
- * you can use the context parameter: https://nextjs.org/docs/api-reference/data-fetching/get-server-side-props#context-parameter
- *
- * Or you can use something like Socket.io.
- */
-export async function getServerSideProps(): Promise<any> {
-  try{
-    const models = await getGeneratedCode();
-    // Only return the relevant information that is needed.
-    const propsToReturn = models.map((model) => {
-      return {
-        result: model.result,
-        name: model.modelName
-      };
-    });
-    return {
-      props: {
-        models: propsToReturn
-      }
-    };
-  } catch(e) {
-    console.error(e);
-  }
-
-  return {
-    props: {
-      models: []
-    }
-  };
 }
 
 export default HomePage;
