@@ -4,11 +4,11 @@ exports[`JSON serializer preset should render serialize and deserialize converte
 "[JsonConverter(typeof(TestConverter))]
 public class Test
 {
-  private string stringProp;
-  private double? numberProp;
-  private EnumTest? enumProp;
-  private NestedTest? objectProp;
-  private Dictionary<string, dynamic>? additionalProperties;
+  private string stringProp ;
+  private double? numberProp ;
+  private EnumTest? enumProp ;
+  private NestedTest? objectProp ;
+  private Dictionary<string, dynamic>? additionalProperties ;
 
   public string StringProp 
   {
@@ -203,8 +203,8 @@ exports[`JSON serializer preset should render serialize and deserialize converte
 "[JsonConverter(typeof(NestedTestConverter))]
 public class NestedTest
 {
-  private string? stringProp;
-  private Dictionary<string, dynamic>? additionalProperties;
+  private string? stringProp ;
+  private Dictionary<string, dynamic>? additionalProperties ;
 
   public string? StringProp 
   {

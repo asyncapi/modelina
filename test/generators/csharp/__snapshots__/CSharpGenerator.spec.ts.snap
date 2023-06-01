@@ -3,8 +3,8 @@
 exports[`CSharpGenerator class renderer should be able to overwrite accessor preset hook 1`] = `
 "public class CustomClass
 {
-  private string? property;
-  private Dictionary<string, string>? additionalProperties;
+  private string? property ;
+  private Dictionary<string, string>? additionalProperties ;
 
   my own custom factory
 
@@ -35,15 +35,15 @@ exports[`CSharpGenerator class renderer should be able to overwrite property pre
 exports[`CSharpGenerator should render \`class\` type 1`] = `
 "public class Address
 {
-  private string streetName;
-  private string city;
-  private string state;
-  private double houseNumber;
-  private bool? marriage;
-  private dynamic? members;
-  private dynamic[]? tupleType;
-  private dynamic[] arrayType;
-  private Dictionary<string, dynamic>? additionalProperties;
+  private string streetName ;
+  private string city ;
+  private string state ;
+  private double houseNumber ;
+  private bool? marriage ;
+  private dynamic? members ;
+  private dynamic[]? tupleType ;
+  private dynamic[] arrayType ;
+  private Dictionary<string, dynamic>? additionalProperties ;
 
   public string StreetName 
   {
@@ -205,15 +205,15 @@ exports[`CSharpGenerator should render models and their dependencies 1`] = `
 
   public class Address
   {
-    private string streetName;
-    private string city;
-    private string state;
-    private double houseNumber;
-    private bool? marriage;
-    private dynamic? members;
-    private dynamic[] arrayType;
-    private OtherModel? otherModel;
-    private Dictionary<string, dynamic>? additionalProperties;
+    private string streetName ;
+    private string city ;
+    private string state ;
+    private double houseNumber ;
+    private bool? marriage ;
+    private dynamic? members ;
+    private dynamic[] arrayType ;
+    private OtherModel? otherModel ;
+    private Dictionary<string, dynamic>? additionalProperties ;
 
     public string StreetName 
     {
@@ -279,8 +279,8 @@ exports[`CSharpGenerator should render models and their dependencies 2`] = `
 
   public class OtherModel
   {
-    private string? streetName;
-    private Dictionary<string, dynamic>? additionalProperties;
+    private string? streetName ;
+    private Dictionary<string, dynamic>? additionalProperties ;
 
     public string? StreetName 
     {
