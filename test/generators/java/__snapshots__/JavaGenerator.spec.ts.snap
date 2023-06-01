@@ -777,24 +777,9 @@ Array [
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }",
-  "/**
- * Members represents a union of types: String, Double, Boolean
- */
-public interface Members {
-  
-}",
-  "/**
- * Union represents a union of types: String, Double, Object
- */
-public interface Union {
-  
-}",
-  "/**
- * AdditionalProperties represents a union of types: Object, String
- */
-public interface AdditionalProperties {
-  
-}",
+  "",
+  "",
+  "",
 ]
 `;
 
@@ -961,10 +946,7 @@ exports[`JavaGenerator should render enums with translated special characters 1`
 exports[`JavaGenerator should render models and their dependencies 1`] = `
 Array [
   "package test.packageName;
-import test.packageName.Members;
-import test.packageName.Union;
 import test.packageName.OtherModel;
-import test.packageName.AdditionalProperties;
 import java.util.Map;
 public class Address {
   private String streetName;
@@ -1007,21 +989,11 @@ public class Address {
   "package test.packageName;
 
 
-/**
- * Members represents a union of types: String, Double, Boolean
- */
-public interface Members {
-  
-}",
+",
   "package test.packageName;
 
 
-/**
- * Union represents a union of types: String, Double, Object
- */
-public interface Union {
-  
-}",
+",
   "package test.packageName;
 
 import java.util.Map;
@@ -1038,12 +1010,7 @@ public class OtherModel {
   "package test.packageName;
 
 
-/**
- * AdditionalProperties represents a union of types: Object, String
- */
-public interface AdditionalProperties {
-  
-}",
+",
 ]
 `;
 

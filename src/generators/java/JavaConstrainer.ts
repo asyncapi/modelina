@@ -79,7 +79,9 @@ const interpretUnionValueType = (types: string[]): string => {
   return 'Object';
 };
 
-function unionIncludesBuiltInTypes(model: ConstrainedUnionModel): boolean {
+export function unionIncludesBuiltInTypes(
+  model: ConstrainedUnionModel
+): boolean {
   return !model.union.every(
     (union) =>
       union instanceof ConstrainedObjectModel ||

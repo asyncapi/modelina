@@ -1,5 +1,10 @@
-import { ConstrainedMetaModel } from '../../models';
+import {
+  ConstrainedMetaModel,
+  ConstrainedReferenceModel,
+  ConstrainedUnionModel
+} from '../../models';
 import { AbstractDependencyManager } from '../AbstractDependencyManager';
+import { unionIncludesBuiltInTypes } from './JavaConstrainer';
 import { JavaOptions } from './JavaGenerator';
 
 export class JavaDependencyManager extends AbstractDependencyManager {
@@ -18,6 +23,17 @@ export class JavaDependencyManager extends AbstractDependencyManager {
     packageName: string
   ): string {
     return [...this.modelDependencies, ...model.getNearestDependencies()]
+      .filter((dependencyModel) => {
+        if (dependencyModel instanceof ConstrainedUnionModel) {
+          return !unionIncludesBuiltInTypes(dependencyModel);
+        } else if (
+          dependencyModel instanceof ConstrainedReferenceModel &&
+          dependencyModel.ref instanceof ConstrainedUnionModel
+        ) {
+          return !unionIncludesBuiltInTypes(dependencyModel.ref);
+        }
+        return true;
+      })
       .map((dependencyModel) => {
         return this.renderImport(dependencyModel, packageName);
       })
