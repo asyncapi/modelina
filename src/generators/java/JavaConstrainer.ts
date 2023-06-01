@@ -1,5 +1,10 @@
 import { Constraints } from '../../helpers';
-import { ConstrainedEnumValueModel, ConstrainedUnionModel } from '../../models';
+import {
+  ConstrainedEnumValueModel,
+  ConstrainedObjectModel,
+  ConstrainedReferenceModel,
+  ConstrainedUnionModel
+} from '../../models';
 import {
   defaultEnumKeyConstraints,
   defaultEnumValueConstraints
@@ -75,32 +80,12 @@ const interpretUnionValueType = (types: string[]): string => {
 };
 
 function unionIncludesBuiltInTypes(model: ConstrainedUnionModel): boolean {
-  if (model.union instanceof Boolean) {
-    return true;
-  }
-  const builtInType = model.union.find(
-    (u) =>
-      //Primitive types and boxed versions
-      u.type.toLowerCase() === 'byte' ||
-      u.type.toLowerCase() === 'short' ||
-      u.type === 'int' ||
-      u.type === 'Integer' ||
-      u.type.toLowerCase() === 'long' ||
-      u.type.toLowerCase() === 'float' ||
-      u.type.toLowerCase() === 'double' ||
-      u.type === 'char' ||
-      u.type === 'Character' ||
-      u.type.toLowerCase() === 'boolean' ||
-      u.type.toLowerCase() === 'int' ||
-      u.type === 'Object' ||
-      u.type === 'String' ||
-      //Collections
-      u.type.startsWith('Map<') ||
-      u.type.startsWith('List<') ||
-      u.type.startsWith('Set<') ||
-      u.type.endsWith('[]')
+  return !model.union.every(
+    (union) =>
+      union instanceof ConstrainedObjectModel ||
+      (union instanceof ConstrainedReferenceModel &&
+        union.ref instanceof ConstrainedObjectModel)
   );
-  return builtInType !== undefined;
 }
 
 export const JavaDefaultTypeMapping: JavaTypeMapping = {
