@@ -9,7 +9,7 @@
 [![Discussions](https://img.shields.io/github/discussions/asyncapi/modelina)](https://github.com/asyncapi/modelina/discussions)
 [![Website](https://img.shields.io/website?label=website&url=https%3A%2F%2Fwww.modelina.org)](https://www.modelina.org)
 [![Playground](https://img.shields.io/website?label=playground&url=https%3A%2F%2Fwww.modelina.org%2Fplayground)](https://www.modelina.org/playground) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-55-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-56-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Your one-stop tool for generating accurate and well-tested models for representing the message payloads. Use it as a tool in your development workflow, or a library in a larger integrations, entirely in your control.
@@ -44,7 +44,7 @@ npm install @asyncapi/modelina
 
 ## AsyncAPI CLI
 
-If you have the [AsyncAPI CLI installed](https://github.com/asyncapi/cli#installation), you can run the following command to use [Modelina](https://github.com/asyncapi/cli#usage):
+If you have the [AsyncAPI CLI installed](https://github.com/asyncapi/cli#installation) (ONLY support AsyncAPI inputs), you can run the following command to use [Modelina](https://github.com/asyncapi/cli#usage):
 
 ```bash
 asyncapi generate models <language> ./asyncapi.json
@@ -395,6 +395,7 @@ Thanks go out to these wonderful people ([emoji key](https://allcontributors.org
       <td align="center" valign="top" width="14.28%"><a href="https://codeyt.com/"><img src="https://avatars.githubusercontent.com/u/73033511?v=4?s=100" width="100px;" alt="Bhavik Agarwal"/><br /><sub><b>Bhavik Agarwal</b></sub></a><br /><a href="#design-Bhavik-ag" title="Design">🎨</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/kaushik-rishi"><img src="https://avatars.githubusercontent.com/u/52498617?v=4?s=100" width="100px;" alt="Rishi"/><br /><sub><b>Rishi</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=kaushik-rishi" title="Code">💻</a> <a href="#design-kaushik-rishi" title="Design">🎨</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://rohithboppey.netlify.app"><img src="https://avatars.githubusercontent.com/u/73538974?v=4?s=100" width="100px;" alt="Rohith Boppey"/><br /><sub><b>Rohith Boppey</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=RohithBoppey" title="Code">💻</a> <a href="#design-RohithBoppey" title="Design">🎨</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://ashishpadhy.live"><img src="https://avatars.githubusercontent.com/u/100484401?v=4?s=100" width="100px;" alt="Ashish Padhy"/><br /><sub><b>Ashish Padhy</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=Shurtu-gal" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
