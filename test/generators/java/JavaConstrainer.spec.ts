@@ -48,6 +48,53 @@ describe('JavaConstrainer', () => {
       });
       expect(type).toEqual(model.name);
     });
+    test('should render the constrained name as type for unions with ConstrainedObjectModel types', () => {
+      const unionType = new ConstrainedObjectModel(
+        'union-type-name',
+        undefined,
+        {},
+        'UnionType',
+        {}
+      );
+      const union = new ConstrainedUnionModel('Union', undefined, {}, '', [
+        unionType
+      ]);
+      const model = new ConstrainedReferenceModel(
+        'test',
+        undefined,
+        {},
+        '',
+        union
+      );
+      const type = JavaDefaultTypeMapping.Reference({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual(model.name);
+    });
+  });
+  test('should render Object for unions with built-in types', () => {
+    const unionType = new ConstrainedAnyModel(
+      'String',
+      undefined,
+      {},
+      'String'
+    );
+    const union = new ConstrainedUnionModel('Union', undefined, {}, '', [
+      unionType
+    ]);
+    const model = new ConstrainedReferenceModel(
+      'test',
+      undefined,
+      {},
+      '',
+      union
+    );
+    const type = JavaDefaultTypeMapping.Reference({
+      constrainedModel: model,
+      ...defaultOptions
+    });
+    expect(type).toEqual('Object');
   });
   describe('Any', () => {
     test('should render type', () => {
@@ -461,8 +508,52 @@ describe('JavaConstrainer', () => {
   });
 
   describe('Union', () => {
-    test('should render type', () => {
-      const model = new ConstrainedUnionModel('test', undefined, {}, '', []);
+    test('should render the constrained name for ConstrainedObjectModel type unions', () => {
+      const union = new ConstrainedObjectModel(
+        'test-union',
+        undefined,
+        {},
+        'UnionType',
+        {}
+      );
+      const model = new ConstrainedUnionModel('test', undefined, {}, '', [
+        union
+      ]);
+      const type = JavaDefaultTypeMapping.Union({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('test');
+    });
+    test('should render the constrained name for referenced ConstrainedObjectModel type unions', () => {
+      const union = new ConstrainedObjectModel(
+        'test-union',
+        undefined,
+        {},
+        'UnionType',
+        {}
+      );
+      const unionRef = new ConstrainedReferenceModel(
+        'test-union-ref',
+        undefined,
+        {},
+        'UnionRefType',
+        union
+      );
+      const model = new ConstrainedUnionModel('test', undefined, {}, '', [
+        unionRef
+      ]);
+      const type = JavaDefaultTypeMapping.Union({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('test');
+    });
+    test('should render Object for non ConstrainedObjectModel type unions', () => {
+      const union = new ConstrainedAnyModel('test-union', undefined, {}, 'int');
+      const model = new ConstrainedUnionModel('test', undefined, {}, '', [
+        union
+      ]);
       const type = JavaDefaultTypeMapping.Union({
         constrainedModel: model,
         ...defaultOptions

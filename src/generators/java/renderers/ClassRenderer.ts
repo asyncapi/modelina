@@ -9,6 +9,7 @@ import {
 import { FormatHelpers } from '../../../helpers';
 import { JavaOptions } from '../JavaGenerator';
 import { ClassPresetType } from '../JavaPreset';
+import { unionIncludesBuiltInTypes } from '../JavaConstrainer';
 
 /**
  * Renderer for Java's `class` type
@@ -97,7 +98,7 @@ ${this.indent(this.renderBlock(content, 2))}
     return this.runPreset('setter', { property });
   }
 
-  private getParentUnions() {
+  private getParentUnions(): ConstrainedUnionModel[] | undefined {
     const parentUnions: ConstrainedUnionModel[] = [];
 
     for (const model of Object.values(this.inputModel.models)) {
@@ -108,8 +109,9 @@ ${this.indent(this.renderBlock(content, 2))}
           this.options
         ) as ConstrainedUnionModel;
 
-        // Cheeck if the current model is a child model of any of the unions
+        // Check if the current model is a child model of any of the union interfaces
         if (
+          !unionIncludesBuiltInTypes(unionModel) &&
           unionModel.union.some(
             (m) => m.name === this.model.name && m.type === this.model.type
           )

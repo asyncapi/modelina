@@ -1,5 +1,10 @@
 import { Constraints } from '../../helpers';
-import { ConstrainedEnumValueModel } from '../../models';
+import {
+  ConstrainedEnumValueModel,
+  ConstrainedObjectModel,
+  ConstrainedReferenceModel,
+  ConstrainedUnionModel
+} from '../../models';
 import {
   defaultEnumKeyConstraints,
   defaultEnumValueConstraints
@@ -74,11 +79,30 @@ const interpretUnionValueType = (types: string[]): string => {
   return 'Object';
 };
 
+export function unionIncludesBuiltInTypes(
+  model: ConstrainedUnionModel
+): boolean {
+  return !model.union.every(
+    (union) =>
+      union instanceof ConstrainedObjectModel ||
+      (union instanceof ConstrainedReferenceModel &&
+        union.ref instanceof ConstrainedObjectModel)
+  );
+}
+
 export const JavaDefaultTypeMapping: JavaTypeMapping = {
   Object({ constrainedModel }): string {
     return constrainedModel.name;
   },
   Reference({ constrainedModel }): string {
+    if (
+      constrainedModel.ref instanceof ConstrainedUnionModel &&
+      unionIncludesBuiltInTypes(constrainedModel.ref)
+    ) {
+      //We only have partial strong typed support for union models
+      //Use object if the union includes built-in Java types
+      return 'Object';
+    }
     return constrainedModel.name;
   },
   Any(): string {
@@ -170,9 +194,13 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
 
     return uniqueTypes[0];
   },
-  Union(): string {
-    //Because Java have no notion of unions (and no custom implementation), we have to render it as any value.
-    return 'Object';
+  Union({ constrainedModel }): string {
+    if (unionIncludesBuiltInTypes(constrainedModel)) {
+      //We only have partial strong typed support for union models
+      //Use object if the union includes built-in Java types
+      return 'Object';
+    }
+    return constrainedModel.name;
   },
   Dictionary({ constrainedModel }): string {
     //Limitations to Java is that maps cannot have specific value types...

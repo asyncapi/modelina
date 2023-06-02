@@ -26,7 +26,8 @@ import { isReservedJavaKeyword } from './Constants';
 import { Logger } from '../../';
 import {
   JavaDefaultConstraints,
-  JavaDefaultTypeMapping
+  JavaDefaultTypeMapping,
+  unionIncludesBuiltInTypes
 } from './JavaConstrainer';
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 import { JavaDependencyManager } from './JavaDependencyManager';
@@ -90,7 +91,8 @@ export class JavaGenerator extends AbstractGenerator<
     //These are the models that we have separate renderers for
     const metaModelsToSplit: SplitOptions = {
       splitEnum: true,
-      splitObject: true
+      splitObject: true,
+      splitUnion: true
     };
     return split(model, metaModelsToSplit);
   }
@@ -135,7 +137,10 @@ export class JavaGenerator extends AbstractGenerator<
       return this.renderClass(model, inputModel, optionsToUse);
     } else if (model instanceof ConstrainedEnumModel) {
       return this.renderEnum(model, inputModel, optionsToUse);
-    } else if (model instanceof ConstrainedUnionModel) {
+    } else if (
+      model instanceof ConstrainedUnionModel &&
+      !unionIncludesBuiltInTypes(model)
+    ) {
       return this.renderUnion(model, inputModel, optionsToUse);
     }
     Logger.warn(
