@@ -592,6 +592,26 @@
       "contributions": [
         "design"
       ]
+    },
+    {
+      "login": "kaushik-rishi",
+      "name": "Rishi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52498617?v=4",
+      "profile": "https://github.com/kaushik-rishi",
+      "contributions": [
+        "code",
+        "design"
+      ]
+    },
+    {
+      "login": "RohithBoppey",
+      "name": "Rohith Boppey",
+      "avatar_url": "https://avatars.githubusercontent.com/u/73538974?v=4",
+      "profile": "https://rohithboppey.netlify.app",
+      "contributions": [
+        "code",
+        "design"
+      ]
     }
   ],
   "contributorsPerLine": 7,
