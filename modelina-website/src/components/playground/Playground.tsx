@@ -303,7 +303,7 @@ class Playground extends React.Component<
         </div>
         {loader}
         <div
-          className={`grid grid-cols-2 gap-4 mt-4 ${isLoaded ? '' : 'invisible'
+          className={`mt-4 ${isLoaded ? '' : 'invisible'
             }`}
         >
           <div className="col-span-2">
@@ -380,9 +380,9 @@ class Playground extends React.Component<
               </PlaygroundGeneralConfigContext.Provider>
             )}
           </div>
-          <div className="max-xl:col-span-2 xl:grid-cols-1">
+          <div className="w-full">
             <div
-              className="h-full bg-code-editor-dark text-white rounded-b shadow-lg font-bold"
+              className="mt-4"
               style={{ height: '750px' }}
             >
               <MonacoEditorWrapper
@@ -400,6 +400,7 @@ class Playground extends React.Component<
               />
             </div>
           </div>
+
           <div
             className="max-xl:col-span-2 xl:grid-cols-1"
             style={{ height: '750px' }}
