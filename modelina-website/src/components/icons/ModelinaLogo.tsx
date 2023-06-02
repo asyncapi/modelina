@@ -1,8 +1,8 @@
 export default function ModelinaLogo({
-  className = 'h-10 w-auto mt-0.5'
+  className = ''
   }: any) {
   return (
-  <svg width="140" height="45" viewBox="0 0 495 195" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg className={className} width="140" height="45" viewBox="0 0 495 195" fill="none" xmlns="http://www.w3.org/2000/svg">
   <rect width="500" height="195" fill=""/>
   <path d="M64.363 62.8374H30.637C21.134 62.8374 13.5 70.6891 13.5 80.2879V114.712C13.5 124.311 21.134 132.163 30.637 132.163H64.363C73.866 132.163 81.5 124.311 81.5 114.712V80.2879C81.5 70.6891 73.866 62.8374 64.363 62.8374Z" stroke="url(#paint1_linear_1553_359)" strokeWidth="6"/>
   <mask id="path-2-inside-1_1553_359" fill="white">
