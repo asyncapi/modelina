@@ -18,6 +18,7 @@ There are special use-cases that each language supports; this document pertains 
   * [Generate custom enum value names](#generate-custom-enum-value-names)
   * [Generate models with inheritance](#generate-models-with-inheritance)
   * [Generate models as records](#generate-models-as-records)
+  * [Generate code that handles nullable mode](#generate-code-that-handles-nullable-mode)
 - [FAQ](#faq)
     + [Why is the type `dynamic` or `dynamic[]` when it should be `X`?](#why-is-the-type-dynamic-or-dynamic-when-it-should-be-x)
 
@@ -80,7 +81,7 @@ Check out this [example for a live demonstration](../../examples/csharp-change-c
 
 When using AsyncAPI or JSON Schema, it is not possible to associate enum names with values however with extensions it is. 
 
-Check out this [example for a live demonstration](../../examples/csharp-overwrite-enum-naming/).
+Check out this [example for a live demonstration](../../examples/csharp-overwrite-enum-naming).
 
 ## Generate models with inheritance
 
@@ -91,6 +92,13 @@ If you want the generated models to inherit from a custom class, you can overwri
 Since C# 9 the language now supports records as an alternative to classes suitable for roles like DTO's. Modelina can generate records by setting the `modelType: record` option. Note that this renderer does not support the `autoImplementedProperties` option as this is default with records. 
 
 Check out this [example for a live demonstration](../../examples/csharp-generate-records).
+
+## Generate code that handles nullable mode
+
+Since C# 8 the language now supports nullable reference types. Modelina can generate code that handles nullable mode by setting the `handleNullable: true` option.
+If your project use nullable, you should set this parameter to `true` to avoid warnings.
+
+Check out this [example for a live demonstration](../../examples/csharp-generate-handle-nullable).
 
 # FAQ
 This is the most asked questions and answers which should be your GOTO list to check before asking anywhere else. Cause it might already have been answered!
