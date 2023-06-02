@@ -74,7 +74,7 @@ class GeneratedModelsComponent extends React.Component<
             onClick={() => {
               this.setNewQuery(model.name);
             }}
-            className={`${backgroundColor} px-12 py-5 flex flex-auto sm:gap-4 sm:px-6`}
+            className={`${backgroundColor} px-4 py-5 flex flex-auto sm:gap-4 sm:px-6`}
           >
             <dt className="text-sm font-bold text-gray-700">{model.name}</dt>
           </div>
