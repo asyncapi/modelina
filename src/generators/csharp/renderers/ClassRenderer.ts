@@ -103,7 +103,7 @@ export const CSHARP_DEFAULT_CLASS_PRESET: CsharpClassPreset<CSharpOptions> = {
 
     let nullablePropertyEnding = '';
     if (options?.handleNullable && !property.required) {
-      nullablePropertyEnding = '= null!';
+      nullablePropertyEnding = ' = null!';
     }
 
     if (options?.autoImplementedProperties) {
@@ -113,9 +113,9 @@ export const CSHARP_DEFAULT_CLASS_PRESET: CsharpClassPreset<CSharpOptions> = {
       const semiColon = nullablePropertyEnding !== '' ? ';' : '';
       return `public ${property.property.type} ${pascalCase(
         property.propertyName
-      )} { ${getter} ${setter} } ${nullablePropertyEnding}${semiColon}`;
+      )} { ${getter} ${setter} }${nullablePropertyEnding}${semiColon}`;
     }
-    return `private ${property.property.type} ${property.propertyName} ${nullablePropertyEnding};`;
+    return `private ${property.property.type} ${property.propertyName}${nullablePropertyEnding};`;
   },
   async accessor({ renderer, options, property }) {
     const formattedAccessorName = pascalCase(property.propertyName);
