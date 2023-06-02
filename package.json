@@ -100,6 +100,8 @@
     "test:blackbox:java": "cross-env CI=true jest ./test/blackbox/blackbox-java.spec.ts",
     "test:runtime:java": "cross-env CI=true jest ./test/runtime/runtime-java.spec.ts",
     "generate:runtime:java": "cross-env CI=true ts-node ./test/runtime/runtime-java.ts",
+    "test:runtime:cplusplus": "cross-env CI=true jest ./test/runtime/runtime-cplusplus.spec.ts",
+    "generate:runtime:cplusplus": "cross-env CI=true ts-node ./test/runtime/runtime-cplusplus.ts",
     "test:watch": "jest --watch",
     "docs": "npm run docs:markdown",
     "docs:markdown": "jsdoc2md lib/cjs/index.js -f lib/cjs/**/*.js > API.md",
