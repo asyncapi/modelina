@@ -3,10 +3,10 @@
 exports[`CSHARP_COMMON_PRESET should render Equals support function 1`] = `
 "public class Test
 {
-  private string stringProp ;
-  private double? numberProp ;
-  private NestedTest? objectProp ;
-  private Dictionary<string, dynamic>? additionalProperties ;
+  private string stringProp;
+  private double? numberProp;
+  private NestedTest? objectProp;
+  private Dictionary<string, dynamic>? additionalProperties;
 
   public string StringProp 
   {
@@ -61,8 +61,8 @@ exports[`CSHARP_COMMON_PRESET should render Equals support function 1`] = `
 exports[`CSHARP_COMMON_PRESET should render Equals support function 2`] = `
 "public class NestedTest
 {
-  private string? stringProp ;
-  private Dictionary<string, dynamic>? additionalProperties ;
+  private string? stringProp;
+  private Dictionary<string, dynamic>? additionalProperties;
 
   public string? StringProp 
   {
@@ -101,10 +101,10 @@ exports[`CSHARP_COMMON_PRESET should render Equals support function 2`] = `
 exports[`CSHARP_COMMON_PRESET should render GetHashCode support function 1`] = `
 "public class Test
 {
-  private string stringProp ;
-  private double? numberProp ;
-  private NestedTest? objectProp ;
-  private Dictionary<string, dynamic>? additionalProperties ;
+  private string stringProp;
+  private double? numberProp;
+  private NestedTest? objectProp;
+  private Dictionary<string, dynamic>? additionalProperties;
 
   public string StringProp 
   {
@@ -145,8 +145,8 @@ exports[`CSHARP_COMMON_PRESET should render GetHashCode support function 1`] = `
 exports[`CSHARP_COMMON_PRESET should render GetHashCode support function 2`] = `
 "public class NestedTest
 {
-  private string? stringProp ;
-  private Dictionary<string, dynamic>? additionalProperties ;
+  private string? stringProp;
+  private Dictionary<string, dynamic>? additionalProperties;
 
   public string? StringProp 
   {
