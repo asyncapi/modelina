@@ -28,5 +28,7 @@ module.exports = {
     '<rootDir>/examples/TEMPLATE',
     '<rootDir>/test/generators/template',
     '<rootDir>/test/processors/TemplateInputProcessor.spec.ts'
-  ]
+  ],
+  preset: 'ts-jest',
+  testEnvironment: 'node'
 };
