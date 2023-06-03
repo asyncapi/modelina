@@ -87,11 +87,18 @@ class GeneralOptions extends React.Component<
                 />
               </svg>
               Output type
-              <span className="opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300 ease-in ">
-                <span className="absolute -left-1/2 bg-blue-200 text-white text-xs py-1 px-2 rounded-lg bottom-full transform translate-x-[-7rem] translate-y-1/2">
-                  Additional information about the output type
+              <div className=' group'>
+              <span className="opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-in ">
+                <span className="absolute -left-[6rem] bg-blue-200 text-white text-xs py-1 px-2 rounded-lg bottom-full transform translate-x-[-7rem] translate-y-1/2">
+                <div className=" max-h-32 overflow-y-auto  min-w-40">
+
+                  Additional information about the output type 
+                  <a href="https://example.com" target="_blank" rel="noopener noreferrer" className='text-blue-400'> Click here</a> to visit the website.
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium ipsam, ex quis veritatis totam quo. Cupiditate sequi laudantium corporis commodi.
+                  </div>
                 </span>
               </span>
+              </div>
             </span>
             <Select
               options={modelinaLanguageOptions}
