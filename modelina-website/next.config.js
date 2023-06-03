@@ -15,14 +15,4 @@ const nextConfig = {
   basePath: basePath
 }
 
-module.exports = nextConfig,{
-  async redirects() {
-    return [
-      {
-        source: '/(.*)',
-        destination: '/404',
-        permanent: false,
-      },
-    ];
-  },
-};
+module.exports = nextConfig
