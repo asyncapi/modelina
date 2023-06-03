@@ -12,5 +12,5 @@
 
 [[redirects]]
     from = "/*"
-    to = "/404.tsx"
+    to = "/404"
     status = 404
