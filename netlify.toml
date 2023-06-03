@@ -7,6 +7,12 @@
   NPM_VERSION = "8.1.2"
   NEXT_PUBLIC_API_PATH = "/.netlify/functions"
 
+[[redirects]]
+  from = "/*"
+  to = "/modelina-website/404.tsx"
+  status = 404
+
+
 [functions]
   directory = "modelina-website/.next/server/pages/api"
 
