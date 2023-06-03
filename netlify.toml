@@ -10,7 +10,3 @@
 [functions]
   directory = "modelina-website/.next/server/pages/api"
 
-[[redirects]]
-    from = "/*"
-    to = "/404"
-    status = 404
