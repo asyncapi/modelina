@@ -27,9 +27,7 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '11'
-      - name: Setup Kotlin
-        run: curl -sLO https://github.com/JetBrains/kotlin/releases/latest/download/kotlin-compiler.zip && unzip -d kotlin kotlin-compiler.zip
-      - name: Add Kotlin to PATH
-        run: echo "::add-path::$(pwd)/kotlin/kotlinc/bin"
+      - name: Generate Kotlin models
+        run: npm run generate:runtime:kotlin 
       - name: Run runtime tests
         run: npm run test:runtime:kotlin

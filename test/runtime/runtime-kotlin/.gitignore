@@ -1,0 +1,5 @@
+# Gradle-specific files
+build/
+
+# Generated Src files
+src/test/kotlin/Address.kt
