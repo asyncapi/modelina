@@ -63,7 +63,7 @@ export async function getCSharpModels(
   try {
     const generator = new CSharpGenerator(options);
     const generatedModels = await generator.generateCompleteModels(input, {
-      namespace: 'asyncapi.models'
+      namespace: generatorOptions.csharpNamespace || 'asyncapi.models'
     });
     return convertModelsToProps(generatedModels);
   } catch (e : any) {

@@ -25,6 +25,7 @@ class CSharpGeneratorOptions extends React.Component<
     this.onChangeIncludeJson = this.onChangeIncludeJson.bind(this);
     this.onChangeOverwriteEqualSupport = this.onChangeOverwriteEqualSupport.bind(this);
     this.onChangeIncludeNewtonsoft = this.onChangeIncludeNewtonsoft.bind(this);
+    this.onChangeNamespace = this.onChangeNamespace.bind(this);
   }
 
   onChangeArrayType(arrayType: any) {
@@ -63,12 +64,32 @@ class CSharpGeneratorOptions extends React.Component<
     }
   }
 
+  onChangeNamespace(event: any) {
+    if (this.props.setNewConfig) {
+      this.props.setNewConfig('csharpNamespace', event.target.value);
+    }
+  }
+
   render() {
     return (
       <ul className="flex flex-col">
         <h3 className="text-lg font-medium leading-6 text-gray-900">
           CSharp Specific options
         </h3>
+        <li>
+          <label className="flex items-center py-2 justify-between cursor-pointer">
+            <span className="mt-1 max-w-2xl text-sm text-gray-500">
+              Namespace
+            </span>
+            <input
+              type="text"
+              className="form-input rounded-md border-gray-300 cursor-pointer font-regular text-md text-gray-700 hover:bg-gray-50 focus-within:text-gray-900"
+              name="csharpNamespace"
+              value={this.context?.csharpNamespace}
+              onChange={this.onChangeNamespace}
+            />
+          </label>
+        </li>
         <li>
           <label className="flex items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
