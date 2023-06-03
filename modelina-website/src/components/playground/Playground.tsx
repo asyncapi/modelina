@@ -290,7 +290,7 @@ class Playground extends React.Component<
       );
     }
     return (
-      <div className="py-16 overflow-hidden lg:py-24">
+      <div className="py-16 lg:py-24">
         <div className="relative text-center">
           <Heading level="h1" typeStyle="heading-lg">
             Modelina Playground
