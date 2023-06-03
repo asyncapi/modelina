@@ -64,4 +64,25 @@ export class FileHelpers {
       }
     });
   }
+
+  /*
+  TODO: loadConfigFile
+  - error handling (file reading & error cases)
+  - unit tests
+  */
+  static async getConfigFromFile(configFilePath: string): Promise<any> {
+    // do we want to check for the existence of file using this method, or just read the file and catch the error ?
+    // i hope this is the better way
+    const isExists = await fs.stat(configFilePath);
+    if (isExists) {
+
+    } else {
+      // what do we want to do ?
+      // raise an error ?
+    }
+
+    const configOptions = require(configFilePath);
+    console.log(configOptions);
+    return configOptions;
+  }
 }
