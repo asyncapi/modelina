@@ -74,9 +74,9 @@ class GeneratedModelsComponent extends React.Component<
             onClick={() => {
               this.setNewQuery(model.name);
             }}
-            className={`${backgroundColor} px-12 py-5 flex flex-auto sm:gap-4 sm:px-6`}
+            className={`${backgroundColor} px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6`}
           >
-            <dt className="text-sm font-bold text-gray-700">{model.name}</dt>
+            <dt className="text-sm font-medium text-gray-500">{model.name}</dt>
           </div>
         );
       });
@@ -98,10 +98,10 @@ class GeneratedModelsComponent extends React.Component<
       );
     }
     return (
-      <div className="h-full w-full">
-        <div className="overflow-hidden mt-2 mb-4 bg-white shadow sm:rounded-lg ">
+      <div className="grid grid-cols-3 h-full">
+        <div className="overflow-scroll bg-white shadow sm:rounded-lg">
           <div className="px-4 py-5 sm:px-6">
-            <h3 className="text-lg font-medium leading-6 text-gray-900 ">
+            <h3 className="text-lg font-medium leading-6 text-gray-900">
               Generated Models
             </h3>
             <p className="mt-1 max-w-2xl text-sm text-gray-500">
@@ -109,8 +109,8 @@ class GeneratedModelsComponent extends React.Component<
               their generated code
             </p>
           </div>
-          <div className="w-full ">
-            <dt className="md:flex ">{modelsToRender}</dt>
+          <div className="border-t border-gray-200">
+            <dl>{modelsToRender}</dl>
           </div>
         </div>
         <div className="col-span-2 h-full bg-code-editor-dark text-white rounded-b shadow-lg font-bold">
