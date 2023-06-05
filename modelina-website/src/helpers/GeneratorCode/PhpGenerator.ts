@@ -12,6 +12,10 @@ export function getPhpGeneratorCode(generatorOptions: ModelinaPhpOptions) {
   }`);
   }
 
+  if(generatorOptions.phpNamespace) {
+    optionString.push(`namespace: '${generatorOptions.phpNamespace}'`);
+  }
+
   if(generatorOptions.showTypeMappingExample === true) {
     optionString.push(`typeMapping: {
   Integer: ({ dependencyManager, constrainedModel, options, partOfProperty }) => {
