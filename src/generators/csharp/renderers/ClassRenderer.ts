@@ -100,14 +100,21 @@ export const CSHARP_DEFAULT_CLASS_PRESET: CsharpClassPreset<CSharpOptions> = {
     return renderer.defaultSelf();
   },
   async property({ renderer, property, options }) {
+    let nullablePropertyEnding = '';
+    if (options?.handleNullable && !property.required) {
+      nullablePropertyEnding = ' = null!';
+    }
+
     if (options?.autoImplementedProperties) {
       const getter = await renderer.runGetterPreset(property);
       const setter = await renderer.runSetterPreset(property);
+
+      const semiColon = nullablePropertyEnding !== '' ? ';' : '';
       return `public ${property.property.type} ${pascalCase(
         property.propertyName
-      )} { ${getter} ${setter} }`;
+      )} { ${getter} ${setter} }${nullablePropertyEnding}${semiColon}`;
     }
-    return `private ${property.property.type} ${property.propertyName};`;
+    return `private ${property.property.type} ${property.propertyName}${nullablePropertyEnding};`;
   },
   async accessor({ renderer, options, property }) {
     const formattedAccessorName = pascalCase(property.propertyName);

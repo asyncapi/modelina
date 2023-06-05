@@ -623,6 +623,18 @@
         "test",
         "infra"
       ]
+    },
+    {
+      "login": "JFCote",
+      "name": "Jean-François Côté",
+      "avatar_url": "https://avatars.githubusercontent.com/u/14336900?v=4",
+      "profile": "http://jfcote.github.io",
+      "contributions": [
+        "code",
+        "test",
+        "example",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
