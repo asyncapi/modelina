@@ -22,6 +22,10 @@ export function getCSharpGeneratorCode(
     optionString.push(`namespace: '${generatorOptions.csharpNamespace}'`);
   }
 
+  if (generatorOptions.csharpNullable) {
+    optionString.push(`nullable: ${generatorOptions.csharpNullable}`);
+  }
+
   if(generatorOptions.showTypeMappingExample === true) {
     optionString.push(`typeMapping: {
   Integer: ({ dependencyManager, constrainedModel, options, partOfProperty }) => {

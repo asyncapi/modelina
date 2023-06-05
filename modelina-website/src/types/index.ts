@@ -37,6 +37,7 @@ export interface ModelinaCSharpOptions extends ModelinaGeneralOptions {
   csharpOverwriteEqual: boolean;
   csharpIncludeNewtonsoft: boolean;
   csharpNamespace?: string;
+  csharpNullable: boolean;
 }
 export interface ModelinaKotlinOptions extends ModelinaGeneralOptions {}
 export interface ModelinaRustOptions extends ModelinaGeneralOptions {}
@@ -101,6 +102,7 @@ export interface ModelinaCSharpQueryOptions {
   csharpOverwriteEqual?: string;
   csharpIncludeNewtonsoft?: string;
   csharpNamespace?: string;
+  csharpNullable?: string;
 }
 export interface ModelinaKotlinQueryOptions {}
 export interface ModelinaRustQueryOptions {}

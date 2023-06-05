@@ -28,6 +28,7 @@ class CSharpGeneratorOptions extends React.Component<
     this.onChangeIncludeJson = this.onChangeIncludeJson.bind(this);
     this.onChangeOverwriteEqualSupport = this.onChangeOverwriteEqualSupport.bind(this);
     this.onChangeIncludeNewtonsoft = this.onChangeIncludeNewtonsoft.bind(this);
+    this.onChangeNullable = this.onChangeNullable.bind(this);
     this.onChangeNamespace = this.onChangeNamespace.bind(this);
     this.debouncedSetNewConfig = this.debouncedSetNewConfig.bind(this);
   }
@@ -65,6 +66,12 @@ class CSharpGeneratorOptions extends React.Component<
   onChangeIncludeNewtonsoft(event: any) {
     if (this.props.setNewConfig) {
       this.props.setNewConfig('csharpIncludeNewtonsoft', event.target.checked);
+    }
+  }
+
+  onChangeNullable(event: any) {
+    if (this.props.setNewConfig) {
+      this.props.setNewConfig('csharpNullable', event.target.checked);
     }
   }
 
@@ -184,6 +191,20 @@ class CSharpGeneratorOptions extends React.Component<
               name="csharpIncludeNewtonsoft"
               checked={this.context?.csharpIncludeNewtonsoft}
               onChange={this.onChangeIncludeNewtonsoft}
+            />
+          </label>
+        </li>
+        <li>
+          <label className="flex items-center py-2 justify-between cursor-pointer">
+            <span className="mt-1 max-w-2xl text-sm text-gray-500">
+              Nullable
+            </span>
+            <input
+              type="checkbox"
+              className="form-checkbox cursor-pointer"
+              name="csharpNullable"
+              checked={this.context?.csharpNullable}
+              onChange={this.onChangeNullable}
             />
           </label>
         </li>
