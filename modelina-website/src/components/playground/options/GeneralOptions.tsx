@@ -1,7 +1,9 @@
+"use client"
 import React from 'react';
 import Select from '../../Select';
 import { modelinaLanguageOptions } from '@/types';
 import { PlaygroundGeneralConfigContext } from '@/components/contexts/PlaygroundConfigContext';
+import InfoModal from '@/components/InfoModal';
 
 interface WithRouterProps {
   setNewConfig?: (queryKey: string, queryValue: string) => void;
@@ -64,41 +66,28 @@ class GeneralOptions extends React.Component<
     }
   }
 
+  
+
+
   render() {
     return (
       <ul className="flex flex-col">
         <h3 className="text-lg font-medium leading-6 text-gray-900">
           General options
         </h3>
-        <li className="relative">
-          <label className="flex items-center py-2 justify-between cursor-pointer">
-            <span className="mt-1 max-w-2xl text-sm text-gray-500 relative group flex items-center">
-              <svg
-                className=" -ml-5 mr-2"
-                width="7"
-                height="13"
-                viewBox="0 0 7 13"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M5.25 0C4.2875 0 3.5 0.73125 3.5 1.625C3.5 2.51875 4.2875 3.25 5.25 3.25C6.2125 3.25 7 2.51875 7 1.625C7 0.73125 6.2125 0 5.25 0ZM2.625 4.0625C1.1725 4.0625 0 5.15125 0 6.5H1.75C1.75 6.045 2.135 5.6875 2.625 5.6875C3.115 5.6875 3.5 6.045 3.5 6.5C3.5 6.955 1.75 9.165 1.75 10.5625C1.75 11.96 2.9225 13 4.375 13C5.8275 13 7 11.9112 7 10.5625H5.25C5.25 11.0175 4.865 11.375 4.375 11.375C3.885 11.375 3.5 11.0175 3.5 10.5625C3.5 9.9775 5.25 7.5725 5.25 6.5C5.25 5.18375 4.0775 4.0625 2.625 4.0625Z"
-                  fill="#DBD9D9"
-                />
-              </svg>
-              Output type
-              <div className=' group'>
-              <span className="opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-in ">
-                <span className="absolute -left-[6rem] bg-blue-200 text-white text-xs py-1 px-2 rounded-lg bottom-full transform translate-x-[-7rem] translate-y-1/2">
-                <div className=" max-h-32 overflow-y-auto  min-w-40">
+        <li className=' flex items-center mt-3'>
+          <InfoModal
+            html={`
+              Additional information about the output type
+              <a href="https://example.com" target="_blank" rel="noopener noreferrer" class="text-blue-400 underline">Click here</a> to visit the website.
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium ipsam, ex quis veritatis totam quo. Cupiditate sequi laudantium corporis commodi.
+            `}
+            text={'Output type :'}
+          />
 
-                  Additional information about the output type 
-                  <a href="https://example.com" target="_blank" rel="noopener noreferrer" className='text-blue-400'> Click here</a> to visit the website.
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium ipsam, ex quis veritatis totam quo. Cupiditate sequi laudantium corporis commodi.
-                  </div>
-                </span>
-              </span>
-              </div>
+          <label className="flex flex-grow justify-between items-center cursor-pointer">
+            <span className=" text-sm text-gray-500">
+              Output type
             </span>
             <Select
               options={modelinaLanguageOptions}
@@ -108,6 +97,7 @@ class GeneralOptions extends React.Component<
             />
           </label>
         </li>
+
         <li>
           <label className="flex items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
