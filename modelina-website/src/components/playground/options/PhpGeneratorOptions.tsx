@@ -1,11 +1,14 @@
 import React from 'react';
 import { PlaygroundPhpConfigContext } from '@/components/contexts/PlaygroundConfigContext';
+import { debounce } from 'lodash';
 
 interface PhpGeneratorOptionsProps {
   setNewConfig?: (queryKey: string, queryValue: string) => void;
 }
 
-interface PhpGeneratorState {}
+interface PhpGeneratorState {
+  namespace?: string;
+}
 
 export const defaultState: PhpGeneratorState = {};
 
@@ -19,8 +22,13 @@ class PhpGeneratorOptions extends React.Component<
     super(props);
     this.state = defaultState;
     this.onChangeIncludeDescriptions =
-      this.onChangeIncludeDescriptions.bind(this);
+    this.onChangeIncludeDescriptions.bind(this);
     this.onChangeNamespace = this.onChangeNamespace.bind(this);
+    this.debouncedSetNewConfig = this.debouncedSetNewConfig.bind(this);
+  }
+
+  componentDidMount() {
+    this.setState({ ...this.state, namespace: this.context?.phpNamespace });
   }
 
   onChangeIncludeDescriptions(event: any) {
@@ -30,10 +38,13 @@ class PhpGeneratorOptions extends React.Component<
   }
 
   onChangeNamespace(event: any) {
+    this.setState({ ...this.state, namespace: event.target.value })
     if (this.props.setNewConfig) {
-      this.props.setNewConfig('phpNamespace', event.target.value);
+      this.debouncedSetNewConfig('phpNamespace', event.target.value);
     }
   }
+
+  debouncedSetNewConfig = debounce(this.props.setNewConfig || (() => {}), 500);
 
   render() {
     return (
@@ -50,7 +61,7 @@ class PhpGeneratorOptions extends React.Component<
               type="text"
               className="form-input rounded-md border-gray-300 cursor-pointer font-regular text-md text-gray-700 hover:bg-gray-50 focus-within:text-gray-900"
               name="phpNamespace"
-              value={this.context?.phpNamespace}
+              value={this.state?.namespace}
               onChange={this.onChangeNamespace}
             />
           </label>

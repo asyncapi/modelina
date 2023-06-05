@@ -91,10 +91,10 @@ class Playground extends React.Component<
     csharpIncludeJson: false,
     csharpOverwriteEqual: false,
     csharpIncludeNewtonsoft: false,
-    csharpNamespace: '',
+    csharpNamespace: 'asyncapi.models',
     phpIncludeDescriptions: false,
-    phpNamespace: '',
-    cplusplusNamespace: '',
+    phpNamespace: 'AsyncAPI/Models',
+    cplusplusNamespace: 'AsyncapiModels',
   };
   hasLoadedQuery: boolean = false;
   constructor(props: ModelinaPlaygroundProps) {

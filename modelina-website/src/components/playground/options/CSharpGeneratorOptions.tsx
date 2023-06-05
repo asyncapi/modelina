@@ -1,12 +1,15 @@
 import React from 'react';
 import { PlaygroundCSharpConfigContext } from '@/components/contexts/PlaygroundConfigContext';
 import Select from '@/components/Select';
+import { debounce } from 'lodash';
 
 interface CSharpGeneratorOptionsProps {
   setNewConfig?: (queryKey: string, queryValue: string) => void;
 }
 
-interface CSharpGeneratorState {}
+interface CSharpGeneratorState {
+  namespace?: string;
+}
 
 export const defaultState: CSharpGeneratorState = {};
 
@@ -26,6 +29,7 @@ class CSharpGeneratorOptions extends React.Component<
     this.onChangeOverwriteEqualSupport = this.onChangeOverwriteEqualSupport.bind(this);
     this.onChangeIncludeNewtonsoft = this.onChangeIncludeNewtonsoft.bind(this);
     this.onChangeNamespace = this.onChangeNamespace.bind(this);
+    this.debouncedSetNewConfig = this.debouncedSetNewConfig.bind(this);
   }
 
   onChangeArrayType(arrayType: any) {
@@ -64,11 +68,18 @@ class CSharpGeneratorOptions extends React.Component<
     }
   }
 
+  componentDidMount() {
+    this.setState({ ...this.state, namespace: this.context?.csharpNamespace });
+  }
+
   onChangeNamespace(event: any) {
+    this.setState({ ...this.state, namespace: event.target.value })
     if (this.props.setNewConfig) {
-      this.props.setNewConfig('csharpNamespace', event.target.value);
+      this.debouncedSetNewConfig('csharpNamespace', event.target.value);
     }
   }
+
+  debouncedSetNewConfig = debounce(this.props.setNewConfig || (() => {}), 500);
 
   render() {
     return (
@@ -85,7 +96,7 @@ class CSharpGeneratorOptions extends React.Component<
               type="text"
               className="form-input rounded-md border-gray-300 cursor-pointer font-regular text-md text-gray-700 hover:bg-gray-50 focus-within:text-gray-900"
               name="csharpNamespace"
-              value={this.context?.csharpNamespace}
+              value={this.state.namespace}
               onChange={this.onChangeNamespace}
             />
           </label>

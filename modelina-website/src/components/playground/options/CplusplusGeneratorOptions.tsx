@@ -1,11 +1,14 @@
 import React from 'react';
 import { PlaygroundCplusplusConfigContext } from '@/components/contexts/PlaygroundConfigContext';
+import { debounce } from 'lodash';
 
 interface CplusplusGeneratorOptionsProps {
   setNewConfig?: (queryKey: string, queryValue: string) => void;
 }
 
-interface CplusplusGeneratorState {}
+interface CplusplusGeneratorState {
+  namespace?: string;
+}
 
 export const defaultState: CplusplusGeneratorState = {};
 
@@ -18,14 +21,23 @@ class CplusplusGeneratorOptions extends React.Component<
   constructor(props: any) {
     super(props);
     this.state = defaultState;
+    this.setState({ ...this.state, namespace: this.context?.cplusplusNamespace });
     this.onChangeNamespace = this.onChangeNamespace.bind(this);
+    this.debouncedSetNewConfig = this.debouncedSetNewConfig.bind(this);
+  }
+
+  componentDidMount() {
+    this.setState({ ...this.state, namespace: this.context?.cplusplusNamespace });
   }
 
   onChangeNamespace(event: any) {
+    this.setState({ ...this.state, namespace: event.target.value })
     if (this.props.setNewConfig) {
-      this.props.setNewConfig('cplusplusNamespace', event.target.value);
+      this.debouncedSetNewConfig('cplusplusNamespace', event.target.value);
     }
   }
+
+  debouncedSetNewConfig = debounce(this.props.setNewConfig || (() => {}), 500);
 
   render() {
     return (
@@ -42,7 +54,7 @@ class CplusplusGeneratorOptions extends React.Component<
               type="text"
               className="form-input rounded-md border-gray-300 cursor-pointer font-regular text-md text-gray-700 hover:bg-gray-50 focus-within:text-gray-900"
               name="cplusplusNamespace"
-              value={this.context?.cplusplusNamespace}
+              value={this.state.namespace}
               onChange={this.onChangeNamespace}
             />
           </label>
