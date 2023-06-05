@@ -7,7 +7,7 @@ import {
 /** @type {TypeScriptOptions} */
 const config = {
   enumType: 'union',
-  modelType: 'class',
+  modelType: 'interface',
   indentation: {
     size: 10,
     type: IndentationTypes.SPACES
