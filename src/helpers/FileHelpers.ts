@@ -67,14 +67,12 @@ export class FileHelpers {
 
   static async getConfigFromFile(configPath: string): Promise<any> {
     const configFilePath = path.resolve(configPath);
-    // do we want to check for the existence of file using this method, or just read the file and catch the error ?
-    // i hope this is the better way
-    const isExists = await fs.stat(configFilePath);
-    if (isExists) {
-
-    } else {
-      // what do we want to do ?
-      // raise an error ?
+    try {
+      await fs.stat(configFilePath);
+    } catch (err) {
+      throw new Error(
+        `No file exists on the specified location ${configFilePath}`
+      );
     }
 
     const configOptions = require(configFilePath);
