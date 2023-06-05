@@ -18,6 +18,10 @@ export function getCSharpGeneratorCode(
     );
   }
 
+  if (generatorOptions.csharpNamespace) {
+    optionString.push(`namespace: '${generatorOptions.csharpNamespace}'`);
+  }
+
   if(generatorOptions.showTypeMappingExample === true) {
     optionString.push(`typeMapping: {
   Integer: ({ dependencyManager, constrainedModel, options, partOfProperty }) => {

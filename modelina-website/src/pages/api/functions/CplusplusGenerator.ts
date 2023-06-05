@@ -12,6 +12,7 @@ export async function getCplusplusModels(
   generatorOptions: ModelinaCplusplusOptions
 ): Promise<ModelProps[]> {
   const options: DeepPartial<CplusplusOptions> = {
+    namespace: generatorOptions.cplusplusNamespace || 'AsyncapiModels',
     presets: []
   };
   applyGeneralOptions(generatorOptions, options, cplusplusDefaultEnumKeyConstraints, cplusplusDefaultPropertyKeyConstraints, cplusplusDefaultModelNameConstraints);
