@@ -92,6 +92,7 @@ class Playground extends React.Component<
     csharpOverwriteEqual: false,
     csharpIncludeNewtonsoft: false,
     csharpNamespace: 'asyncapi.models',
+    csharpNullable: false,
     phpIncludeDescriptions: false,
     phpNamespace: 'AsyncAPI/Models',
     cplusplusNamespace: 'AsyncapiModels',
@@ -278,6 +279,9 @@ class Playground extends React.Component<
     }
     if (query.csharpNamespace !== undefined) {
       this.config.csharpNamespace = query.csharpNamespace;
+    }
+    if (query.csharpNullable !== undefined) {
+      this.config.csharpNullable = query.csharpNullable === 'true';
     }
     if(query.cplusplusNamespace !== undefined) {
       this.config.cplusplusNamespace = query.cplusplusNamespace;
