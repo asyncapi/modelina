@@ -8,6 +8,10 @@ export function getCplusplusGeneratorCode(
   const optionString: string[] = getGeneralGeneratorCode(generatorOptions, 'cplusplusDefaultEnumKeyConstraints', 'cplusplusDefaultPropertyKeyConstraints', 'cplusplusDefaultModelNameConstraints');
   const optionStringPresets: string[] = [];
 
+  if (generatorOptions.cplusplusNamespace) {
+    optionString.push(`namespace: '${generatorOptions.cplusplusNamespace}'`);
+  }
+
   if(generatorOptions.showTypeMappingExample === true) {
     optionString.push(`typeMapping: {
   Integer: ({ dependencyManager, constrainedModel, options, partOfProperty }) => {
