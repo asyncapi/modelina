@@ -76,15 +76,13 @@ class GeneralOptions extends React.Component<
           General options
         </h3>
         <li className=' flex items-center mt-3'>
-          <InfoModal
-            html={`
-              Additional information about the output type
-              <a href="https://example.com" target="_blank" rel="noopener noreferrer" class="text-blue-400 underline">Click here</a> to visit the website.
+          <InfoModal text="Output type :">
+            <p>
+              Additional information about the output type{' '}
+              <a href="https://example.com" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">Click here</a> to visit the website.
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium ipsam, ex quis veritatis totam quo. Cupiditate sequi laudantium corporis commodi.
-            `}
-            text={'Output type :'}
-          />
-
+            </p>
+          </InfoModal>
           <label className="flex flex-grow justify-between items-center cursor-pointer">
             <span className=" text-sm text-gray-500">
               Output type
