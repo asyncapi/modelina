@@ -300,15 +300,15 @@ exports[`CSharpGenerator should render models and their dependencies 2`] = `
 exports[`CSharpGenerator should render null-forgiving operator if handleNullable is chosen 1`] = `
 "public class Address
 {
-  private string streetName;
-  private string city;
-  private string state;
-  private double houseNumber;
-  private bool? marriage = null!;
-  private dynamic? members = null!;
-  private dynamic[]? tupleType = null!;
-  private dynamic[] arrayType;
-  private Dictionary<string, dynamic>? additionalProperties = null!;
+  private string streetName = null!;
+  private string city = null!;
+  private string state = null!;
+  private double houseNumber = null!;
+  private bool? marriage;
+  private dynamic? members;
+  private dynamic[]? tupleType;
+  private dynamic[] arrayType = null!;
+  private Dictionary<string, dynamic>? additionalProperties;
 
   public string StreetName 
   {

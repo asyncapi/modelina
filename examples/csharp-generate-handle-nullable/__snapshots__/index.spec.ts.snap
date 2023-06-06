@@ -4,8 +4,8 @@ exports[`Should be able to render a C# class with null warning removed with hand
 Array [
   "public class Root
 {
-  public string? Email { get; set; } = null!;
-  public string Name { get; set; }
+  public string? Email { get; set; }
+  public string Name { get; set; } = null!;
 }",
 ]
 `;
