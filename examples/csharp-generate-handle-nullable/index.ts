@@ -33,7 +33,7 @@ const jsonSchemaDraft7 = {
         type: 'object',
         name: 'Foo'
       }
-    },
+    }
   }
 };
 

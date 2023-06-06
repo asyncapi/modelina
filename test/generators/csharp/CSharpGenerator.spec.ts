@@ -61,14 +61,14 @@ describe('CSharpGenerator', () => {
           description: 'Status if marriage live in given house'
         },
         house_type: {
-            type: 'string',
-            enum: ['apartment', 'house', 'condo'],
-            description: 'Type of house'
+          type: 'string',
+          enum: ['apartment', 'house', 'condo'],
+          description: 'Type of house'
         },
         terrace_type: {
-            type: 'string',
-            enum: ['wood', 'concrete', 'brick'],
-            description: 'Type of terrace'
+          type: 'string',
+          enum: ['wood', 'concrete', 'brick'],
+          description: 'Type of terrace'
         },
         members: {
           oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
@@ -79,7 +79,14 @@ describe('CSharpGenerator', () => {
         },
         array_type: { type: 'array', items: { type: 'string' } }
       },
-      required: ['street_name', 'city', 'state', 'house_number', 'array_type', 'house_type'],
+      required: [
+        'street_name',
+        'city',
+        'state',
+        'house_number',
+        'array_type',
+        'house_type'
+      ],
       additionalProperties: {
         type: 'string'
       },

@@ -1,5 +1,9 @@
 import { checkForReservedKeyword } from '../../helpers';
-import { ConstrainedObjectPropertyModel, ConstrainedEnumModel, ConstrainedReferenceModel } from '../../models';
+import {
+  ConstrainedObjectPropertyModel,
+  ConstrainedEnumModel,
+  ConstrainedReferenceModel
+} from '../../models';
 
 export const RESERVED_CSHARP_KEYWORDS = [
   'abstract',
@@ -93,16 +97,30 @@ export function isReservedCSharpKeyword(
   );
 }
 
-const PRIMITIVES = ['bool', 'byte', 'sbyte', 'char', 'decimal', 'double', 'float', 'int', 'uint', 'long', 'ulong', 'short', 'ushort']
-export function isPrimitive(property: ConstrainedObjectPropertyModel) {
+const PRIMITIVES = [
+  'bool',
+  'byte',
+  'sbyte',
+  'char',
+  'decimal',
+  'double',
+  'float',
+  'int',
+  'uint',
+  'long',
+  'ulong',
+  'short',
+  'ushort'
+];
+export function isPrimitive(property: ConstrainedObjectPropertyModel): boolean {
   return PRIMITIVES.includes(property.property.type);
 }
 
-export function isEnum(property: ConstrainedObjectPropertyModel) {
+export function isEnum(property: ConstrainedObjectPropertyModel): boolean {
   if (property.property
-        && property.property instanceof ConstrainedReferenceModel
-        && property.property.ref !== undefined
-        && property.property.ref instanceof ConstrainedEnumModel) {
+    && property.property instanceof ConstrainedReferenceModel
+    && property.property.ref !== undefined
+    && property.property.ref instanceof ConstrainedEnumModel) {
     return true;
   }
 
