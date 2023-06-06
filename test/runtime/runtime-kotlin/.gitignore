@@ -2,4 +2,4 @@
 build/
 
 # Generated Src files
-src/test/kotlin/Address.kt
+src/main/kotlin/com/mycompany/app/generic

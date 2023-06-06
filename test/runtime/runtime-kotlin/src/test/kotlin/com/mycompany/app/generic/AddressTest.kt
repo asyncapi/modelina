@@ -1,3 +1,5 @@
+package com.mycompany.app.generic
+
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.hamcrest.CoreMatchers.containsString

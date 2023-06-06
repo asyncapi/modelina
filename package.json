@@ -46,13 +46,13 @@
     "alterschema": "^1.1.2",
     "change-case": "^4.1.2",
     "openapi-types": "9.3.0",
-    "typescript-json-schema": "^0.53.0"
+    "typescript-json-schema": "^0.53.0",
+    "winston": "^3.9.0"
   },
   "devDependencies": {
     "@asyncapi/parserV1": "npm:@asyncapi/parser@^1.17.2",
     "@netlify/plugin-nextjs": "4.32.2",
     "@types/jest": "^27.0.2",
-    "@types/node": "^20.2.5",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "ajv": "^8.6.3",
