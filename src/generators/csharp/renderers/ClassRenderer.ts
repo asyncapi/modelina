@@ -7,6 +7,7 @@ import {
 import { pascalCase } from 'change-case';
 import { CsharpClassPreset } from '../CSharpPreset';
 import { CSharpOptions } from '../CSharpGenerator';
+import { isPrimitive, isEnum } from '../Constants';
 
 /**
  * Renderer for CSharp's `struct` type
@@ -101,7 +102,12 @@ export const CSHARP_DEFAULT_CLASS_PRESET: CsharpClassPreset<CSharpOptions> = {
   },
   async property({ renderer, property, options }) {
     let nullablePropertyEnding = '';
-    if (options?.handleNullable && property.required) {
+    if (
+      options?.handleNullable &&
+      property.required &&
+      !isPrimitive(property) &&
+      !isEnum(property)
+    ) {
       nullablePropertyEnding = ' = null!';
     }
 
