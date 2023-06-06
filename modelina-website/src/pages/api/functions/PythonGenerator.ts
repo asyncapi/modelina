@@ -18,7 +18,7 @@ export async function getPythonModels(
   try {
     const generator = new PythonGenerator(options);
     const generatedModels = await generator.generateCompleteModels(input, {
-      packageName: 'asyncapi.models'
+      packageName: generatorOptions.pythonPackageName || 'asyncapi.models'
     });
     return convertModelsToProps(generatedModels);
   } catch (e : any) {

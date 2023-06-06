@@ -96,6 +96,10 @@ class Playground extends React.Component<
     phpIncludeDescriptions: false,
     phpNamespace: 'AsyncAPI/Models',
     cplusplusNamespace: 'AsyncapiModels',
+    pythonPackageName: 'asyncapi.models',
+    javaPackageName: 'asyncapi.models',
+    goPackageName: 'asyncapi.models',
+    kotlinPackageName: 'asyncapi.models'
   };
   hasLoadedQuery: boolean = false;
   constructor(props: ModelinaPlaygroundProps) {
@@ -285,6 +289,18 @@ class Playground extends React.Component<
     }
     if(query.cplusplusNamespace !== undefined) {
       this.config.cplusplusNamespace = query.cplusplusNamespace;
+    }
+    if(query.pythonPackageName !== undefined) {
+      this.config.pythonPackageName = query.pythonPackageName;
+    }
+    if (query.javaPackageName !== undefined) {
+      this.config.javaPackageName = query.javaPackageName;
+    }
+    if(query.goPackageName !== undefined) {
+      this.config.goPackageName = query.goPackageName;
+    }
+    if (query.kotlinPackageName !== undefined) {
+      this.config.kotlinPackageName = query.kotlinPackageName;
     }
     if (this.props.router.isReady && !this.hasLoadedQuery) {
       this.hasLoadedQuery = true;

@@ -19,11 +19,15 @@ export interface ModelinaTypeScriptOptions extends ModelinaGeneralOptions {
   tsIncludeExampleFunction: boolean;
 }
 
-export interface ModelinaJavaOptions extends ModelinaGeneralOptions {}
+export interface ModelinaJavaOptions extends ModelinaGeneralOptions {
+  javaPackageName?: string;
+}
 export interface ModelinaCplusplusOptions extends ModelinaGeneralOptions {
   cplusplusNamespace?: string;
 }
-export interface ModelinaGoOptions extends ModelinaGeneralOptions {}
+export interface ModelinaGoOptions extends ModelinaGeneralOptions {
+  goPackageName?: string;
+}
 export interface ModelinaJavaScriptOptions extends ModelinaGeneralOptions {}
 export interface ModelinaPhpOptions extends ModelinaGeneralOptions {
   phpIncludeDescriptions: boolean;
@@ -39,9 +43,13 @@ export interface ModelinaCSharpOptions extends ModelinaGeneralOptions {
   csharpNamespace?: string;
   csharpNullable: boolean;
 }
-export interface ModelinaKotlinOptions extends ModelinaGeneralOptions {}
+export interface ModelinaKotlinOptions extends ModelinaGeneralOptions {
+  kotlinPackageName?: string;
+}
 export interface ModelinaRustOptions extends ModelinaGeneralOptions {}
-export interface ModelinaPythonOptions extends ModelinaGeneralOptions {}
+export interface ModelinaPythonOptions extends ModelinaGeneralOptions {
+  pythonPackageName?: string;
+}
 export interface ModelinaDartOptions extends ModelinaGeneralOptions {}
 export interface ModelinaGeneralOptions {
   language:
@@ -91,8 +99,12 @@ export interface ModelinaGeneralQueryOptions {
   enumKeyNamingFormat?: string;
 }
 
-export interface ModelinaJavaQueryOptions {}
-export interface ModelinaGoQueryOptions {}
+export interface ModelinaJavaQueryOptions {
+  javaPackageName?: string;
+}
+export interface ModelinaGoQueryOptions {
+  goPackageName?: string;
+}
 export interface ModelinaJavaScriptQueryOptions {}
 export interface ModelinaCSharpQueryOptions {
   csharpArrayType?: string;
@@ -104,9 +116,13 @@ export interface ModelinaCSharpQueryOptions {
   csharpNamespace?: string;
   csharpNullable?: string;
 }
-export interface ModelinaKotlinQueryOptions {}
+export interface ModelinaKotlinQueryOptions {
+  kotlinPackageName?: string;
+}
 export interface ModelinaRustQueryOptions {}
-export interface ModelinaPythonQueryOptions {}
+export interface ModelinaPythonQueryOptions {
+  pythonPackageName?: string;
+}
 export interface ModelinaCplusplusQueryOptions {
   cplusplusNamespace?: string;
 }

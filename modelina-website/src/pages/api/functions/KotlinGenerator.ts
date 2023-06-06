@@ -28,7 +28,7 @@ export async function getKotlinModels(
   try {
     const generator = new KotlinGenerator(options);
     const generatedModels = await generator.generateCompleteModels(input, {
-      packageName: 'asyncapi.models'
+      packageName: generatorOptions.kotlinPackageName || 'asyncapi.models'
     });
     return convertModelsToProps(generatedModels);
   } catch (e) {
