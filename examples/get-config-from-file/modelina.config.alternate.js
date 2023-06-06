@@ -1,6 +1,6 @@
 import {
   TS_COMMON_PRESET,
-  IndentationTypes
+  IndentationTypes,
   TypeScriptOptions
 } from '../../src';
 

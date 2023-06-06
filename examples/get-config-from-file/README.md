@@ -1,6 +1,6 @@
-# TODO: Your example title
+# Get config from file
 
-TODO: Your example description
+An example of using the `getConfigFromFile` function. We get the config from a file and pass it to a `TypescriptGenerator`
 
 ## How to run this example
 
