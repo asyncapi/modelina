@@ -117,10 +117,12 @@ export function isPrimitive(property: ConstrainedObjectPropertyModel): boolean {
 }
 
 export function isEnum(property: ConstrainedObjectPropertyModel): boolean {
-  if (property.property
-    && property.property instanceof ConstrainedReferenceModel
-    && property.property.ref !== undefined
-    && property.property.ref instanceof ConstrainedEnumModel) {
+  if (
+    property.property &&
+    property.property instanceof ConstrainedReferenceModel &&
+    property.property.ref !== undefined &&
+    property.property.ref instanceof ConstrainedEnumModel
+  ) {
     return true;
   }
 
