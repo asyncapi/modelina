@@ -1,4 +1,5 @@
 import { checkForReservedKeyword } from '../../helpers';
+import { ConstrainedObjectPropertyModel, ConstrainedEnumModel, ConstrainedReferenceModel } from '../../models';
 
 export const RESERVED_CSHARP_KEYWORDS = [
   'abstract',
@@ -90,4 +91,21 @@ export function isReservedCSharpKeyword(
     RESERVED_CSHARP_KEYWORDS,
     forceLowerCase
   );
+}
+
+const PRIMITIVES = ['bool', 'byte', 'sbyte', 'char', 'decimal', 'double', 'float', 'int', 'uint', 'long', 'ulong', 'short', 'ushort']
+export function isPrimitive(property: ConstrainedObjectPropertyModel) {
+  return PRIMITIVES.includes(property.property.type);
+}
+
+export function isEnum(property: ConstrainedObjectPropertyModel) {
+  console.debug(property);
+  if (property.property
+        && property.property instanceof ConstrainedReferenceModel
+        && property.property.ref !== undefined
+        && property.property.ref instanceof ConstrainedEnumModel) {
+    return true;
+  }
+
+  return false;
 }
