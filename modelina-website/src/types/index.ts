@@ -47,9 +47,7 @@ export interface ModelinaKotlinOptions extends ModelinaGeneralOptions {
   kotlinPackageName?: string;
 }
 export interface ModelinaRustOptions extends ModelinaGeneralOptions {}
-export interface ModelinaPythonOptions extends ModelinaGeneralOptions {
-  pythonPackageName?: string;
-}
+export interface ModelinaPythonOptions extends ModelinaGeneralOptions {}
 export interface ModelinaDartOptions extends ModelinaGeneralOptions {}
 export interface ModelinaGeneralOptions {
   language:
@@ -120,9 +118,7 @@ export interface ModelinaKotlinQueryOptions {
   kotlinPackageName?: string;
 }
 export interface ModelinaRustQueryOptions {}
-export interface ModelinaPythonQueryOptions {
-  pythonPackageName?: string;
-}
+export interface ModelinaPythonQueryOptions {}
 export interface ModelinaCplusplusQueryOptions {
   cplusplusNamespace?: string;
 }
