@@ -102,10 +102,12 @@ export const CSHARP_DEFAULT_CLASS_PRESET: CsharpClassPreset<CSharpOptions> = {
   },
   async property({ renderer, property, options }) {
     let nullablePropertyEnding = '';
-    if (options?.handleNullable
-        && property.required
-        && !isPrimitive(property)
-        && !isEnum(property)) {
+    if (
+      options?.handleNullable &&
+      property.required &&
+      !isPrimitive(property) &&
+      !isEnum(property)
+    ) {
       nullablePropertyEnding = ' = null!';
     }
 
