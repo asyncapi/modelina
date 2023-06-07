@@ -6,6 +6,9 @@ Array [
 {
   public string? Email { get; set; }
   public string Name { get; set; } = null!;
+  public int Age { get; set; }
+  public dynamic[]? NullableFoos { get; set; }
+  public dynamic[] MandatoryFoos { get; set; } = null!;
 }",
 ]
 `;
