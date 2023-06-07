@@ -28,7 +28,7 @@ export async function getJavaModels(
   try {
     const generator = new JavaGenerator(options);
     const generatedModels = await generator.generateCompleteModels(input, {
-      packageName: 'asyncapi.models'
+      packageName: generatorOptions.javaPackageName || 'asyncapi.models'
     });
     return convertModelsToProps(generatedModels);
   } catch (e : any) {
