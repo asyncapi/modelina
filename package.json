@@ -46,8 +46,7 @@
     "alterschema": "^1.1.2",
     "change-case": "^4.1.2",
     "openapi-types": "9.3.0",
-    "typescript-json-schema": "^0.53.0",
-    "winston": "^3.9.0"
+    "typescript-json-schema": "^0.53.0"
   },
   "devDependencies": {
     "@asyncapi/parserV1": "npm:@asyncapi/parser@^1.17.2",
