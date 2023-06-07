@@ -100,6 +100,8 @@
     "test:blackbox:java": "cross-env CI=true jest ./test/blackbox/blackbox-java.spec.ts",
     "test:runtime:java": "cross-env CI=true jest ./test/runtime/runtime-java.spec.ts",
     "generate:runtime:java": "cross-env CI=true ts-node ./test/runtime/runtime-java.ts",
+    "test:runtime:kotlin": "cross-env CI=true jest ./test/runtime/runtime-kotlin.spec.ts",
+    "generate:runtime:kotlin": "cross-env CI=true ts-node ./test/runtime/runtime-kotlin.ts",
     "test:runtime:rust": "cross-env CI=true jest ./test/runtime/runtime-rust.spec.ts",
     "generate:runtime:rust": "cross-env CI=true ts-node ./test/runtime/runtime-rust.ts",
     "test:runtime:php": "cross-env CI=true jest ./test/runtime/runtime-php.spec.ts",
