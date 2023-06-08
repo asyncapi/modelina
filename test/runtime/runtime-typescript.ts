@@ -3,12 +3,14 @@ import path from 'path';
 import input from './generic-input.json';
 
 const generator = new TypeScriptFileGenerator({
-  presets: [{
-    preset: TS_COMMON_PRESET,
-    options: {
-      marshalling: true
+  presets: [
+    {
+      preset: TS_COMMON_PRESET,
+      options: {
+        marshalling: true
+      }
     }
-  }]
+  ]
 });
 
 generator.generateToFiles(
