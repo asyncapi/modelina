@@ -87,11 +87,18 @@ class Playground extends React.Component<
     tsIncludeJsonBinPack: false,
     csharpArrayType: 'Array',
     csharpAutoImplemented: false,
-    phpIncludeDescriptions: false,
     csharpOverwriteHashcode: false,
     csharpIncludeJson: false,
     csharpOverwriteEqual: false,
     csharpIncludeNewtonsoft: false,
+    csharpNamespace: 'asyncapi.models',
+    csharpNullable: false,
+    phpIncludeDescriptions: false,
+    phpNamespace: 'AsyncAPI/Models',
+    cplusplusNamespace: 'AsyncapiModels',
+    javaPackageName: 'asyncapi.models',
+    goPackageName: 'asyncapi.models',
+    kotlinPackageName: 'asyncapi.models'
   };
   hasLoadedQuery: boolean = false;
   constructor(props: ModelinaPlaygroundProps) {
@@ -258,6 +265,9 @@ class Playground extends React.Component<
       this.config.phpIncludeDescriptions =
         query.phpIncludeDescriptions === 'true';
     }
+    if (query.phpNamespace !== undefined) {
+      this.config.phpNamespace = query.phpNamespace;
+    }
     if (query.csharpIncludeJson !== undefined) {
       this.config.csharpIncludeJson =
         query.csharpIncludeJson === 'true';
@@ -269,6 +279,24 @@ class Playground extends React.Component<
     if (query.csharpIncludeNewtonsoft !== undefined) {
       this.config.csharpIncludeNewtonsoft =
         query.csharpIncludeNewtonsoft === 'true';
+    }
+    if (query.csharpNamespace !== undefined) {
+      this.config.csharpNamespace = query.csharpNamespace;
+    }
+    if (query.csharpNullable !== undefined) {
+      this.config.csharpNullable = query.csharpNullable === 'true';
+    }
+    if(query.cplusplusNamespace !== undefined) {
+      this.config.cplusplusNamespace = query.cplusplusNamespace;
+    }
+    if (query.javaPackageName !== undefined) {
+      this.config.javaPackageName = query.javaPackageName;
+    }
+    if(query.goPackageName !== undefined) {
+      this.config.goPackageName = query.goPackageName;
+    }
+    if (query.kotlinPackageName !== undefined) {
+      this.config.kotlinPackageName = query.kotlinPackageName;
     }
     if (this.props.router.isReady && !this.hasLoadedQuery) {
       this.hasLoadedQuery = true;
@@ -290,7 +318,7 @@ class Playground extends React.Component<
       );
     }
     return (
-      <div className="py-16 overflow-hidden lg:py-24">
+      <div className="py-16 lg:py-24">
         <div className="relative text-center">
           <Heading level="h1" typeStyle="heading-lg">
             Modelina Playground

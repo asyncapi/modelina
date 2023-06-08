@@ -19,12 +19,19 @@ export interface ModelinaTypeScriptOptions extends ModelinaGeneralOptions {
   tsIncludeExampleFunction: boolean;
 }
 
-export interface ModelinaJavaOptions extends ModelinaGeneralOptions {}
-export interface ModelinaCplusplusOptions extends ModelinaGeneralOptions {}
-export interface ModelinaGoOptions extends ModelinaGeneralOptions {}
+export interface ModelinaJavaOptions extends ModelinaGeneralOptions {
+  javaPackageName?: string;
+}
+export interface ModelinaCplusplusOptions extends ModelinaGeneralOptions {
+  cplusplusNamespace?: string;
+}
+export interface ModelinaGoOptions extends ModelinaGeneralOptions {
+  goPackageName?: string;
+}
 export interface ModelinaJavaScriptOptions extends ModelinaGeneralOptions {}
 export interface ModelinaPhpOptions extends ModelinaGeneralOptions {
   phpIncludeDescriptions: boolean;
+  phpNamespace?: string;
 }
 export interface ModelinaCSharpOptions extends ModelinaGeneralOptions {
   csharpArrayType: 'List' | 'Array' | undefined;
@@ -33,8 +40,12 @@ export interface ModelinaCSharpOptions extends ModelinaGeneralOptions {
   csharpIncludeJson: boolean;
   csharpOverwriteEqual: boolean;
   csharpIncludeNewtonsoft: boolean;
+  csharpNamespace?: string;
+  csharpNullable: boolean;
 }
-export interface ModelinaKotlinOptions extends ModelinaGeneralOptions {}
+export interface ModelinaKotlinOptions extends ModelinaGeneralOptions {
+  kotlinPackageName?: string;
+}
 export interface ModelinaRustOptions extends ModelinaGeneralOptions {}
 export interface ModelinaPythonOptions extends ModelinaGeneralOptions {}
 export interface ModelinaDartOptions extends ModelinaGeneralOptions {}
@@ -86,8 +97,12 @@ export interface ModelinaGeneralQueryOptions {
   enumKeyNamingFormat?: string;
 }
 
-export interface ModelinaJavaQueryOptions {}
-export interface ModelinaGoQueryOptions {}
+export interface ModelinaJavaQueryOptions {
+  javaPackageName?: string;
+}
+export interface ModelinaGoQueryOptions {
+  goPackageName?: string;
+}
 export interface ModelinaJavaScriptQueryOptions {}
 export interface ModelinaCSharpQueryOptions {
   csharpArrayType?: string;
@@ -96,14 +111,21 @@ export interface ModelinaCSharpQueryOptions {
   csharpIncludeJson?: string;
   csharpOverwriteEqual?: string;
   csharpIncludeNewtonsoft?: string;
+  csharpNamespace?: string;
+  csharpNullable?: string;
 }
-export interface ModelinaKotlinQueryOptions {}
+export interface ModelinaKotlinQueryOptions {
+  kotlinPackageName?: string;
+}
 export interface ModelinaRustQueryOptions {}
 export interface ModelinaPythonQueryOptions {}
-export interface ModelinaCplusplusQueryOptions {}
+export interface ModelinaCplusplusQueryOptions {
+  cplusplusNamespace?: string;
+}
 export interface ModelinaDartQueryOptions {}
 export interface ModelinaPhpQueryOptions {
   phpIncludeDescriptions?: string;
+  phpNamespace?: string;
 }
 
 export interface ModelinaTypeScriptQueryOptions {
@@ -126,7 +148,8 @@ export interface ModelinaOptions
     ModelinaRustOptions,
     ModelinaPythonOptions,
     ModelinaDartOptions,
-    ModelinaPhpOptions {}
+    ModelinaPhpOptions, 
+    ModelinaCplusplusOptions {}
 export interface ModelinaQueryOptions
   extends ParsedUrlQuery,
     ModelinaGeneralQueryOptions,

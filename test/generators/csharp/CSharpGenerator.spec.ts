@@ -47,6 +47,65 @@ describe('CSharpGenerator', () => {
     ]);
   });
 
+  test('should render null-forgiving operator if handleNullable is chosen', async () => {
+    const doc = {
+      $id: '_address',
+      type: 'object',
+      properties: {
+        street_name: { type: 'string' },
+        city: { type: 'string', description: 'City description' },
+        state: { type: 'string' },
+        house_number: { type: 'number' },
+        marriage: {
+          type: 'boolean',
+          description: 'Status if marriage live in given house'
+        },
+        house_type: {
+          type: 'string',
+          enum: ['apartment', 'house', 'condo'],
+          description: 'Type of house'
+        },
+        terrace_type: {
+          type: 'string',
+          enum: ['wood', 'concrete', 'brick'],
+          description: 'Type of terrace'
+        },
+        members: {
+          oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
+        },
+        tuple_type: {
+          type: 'array',
+          items: [{ type: 'string' }, { type: 'number' }]
+        },
+        array_type: { type: 'array', items: { type: 'string' } }
+      },
+      required: [
+        'street_name',
+        'city',
+        'state',
+        'house_number',
+        'array_type',
+        'house_type'
+      ],
+      additionalProperties: {
+        type: 'string'
+      },
+      patternProperties: {
+        '^S(.?*)test&': {
+          type: 'string'
+        }
+      }
+    };
+
+    generator.options.handleNullable = true;
+    const models = await generator.generate(doc);
+    expect(models).toHaveLength(3);
+    expect(models[0].result).toMatchSnapshot();
+    expect(models[0].dependencies).toEqual([
+      'using System.Collections.Generic;'
+    ]);
+  });
+
   test('should render `record` type if chosen', async () => {
     const doc = {
       $id: '_address',

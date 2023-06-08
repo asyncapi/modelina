@@ -51,6 +51,10 @@ export async function getCSharpModels(
     options.presets?.push(CSHARP_NEWTONSOFT_SERIALIZER_PRESET)
   }
 
+  if (generatorOptions.csharpNullable) {
+    options.handleNullable = generatorOptions.csharpNullable;
+  }
+
   if (generatorOptions.showTypeMappingExample) {
     options.typeMapping = {
       Integer: ({ dependencyManager }) => {
@@ -63,7 +67,7 @@ export async function getCSharpModels(
   try {
     const generator = new CSharpGenerator(options);
     const generatedModels = await generator.generateCompleteModels(input, {
-      namespace: 'asyncapi.models'
+      namespace: generatorOptions.csharpNamespace || 'asyncapi.models'
     });
     return convertModelsToProps(generatedModels);
   } catch (e : any) {

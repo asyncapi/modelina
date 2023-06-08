@@ -1,7 +1,9 @@
+"use client"
 import React from 'react';
 import Select from '../../Select';
 import { modelinaLanguageOptions } from '@/types';
 import { PlaygroundGeneralConfigContext } from '@/components/contexts/PlaygroundConfigContext';
+import InfoModal from '@/components/InfoModal';
 
 interface WithRouterProps {
   setNewConfig?: (queryKey: string, queryValue: string) => void;
@@ -64,15 +66,26 @@ class GeneralOptions extends React.Component<
     }
   }
 
+  
+
+
   render() {
     return (
       <ul className="flex flex-col">
         <h3 className="text-lg font-medium leading-6 text-gray-900">
           General options
         </h3>
-        <li>
-          <label className="flex items-center py-2 justify-between cursor-pointer">
-            <span className="mt-1 max-w-2xl text-sm text-gray-500">
+        <li className=' flex items-center mt-3'>
+          <InfoModal text="Output type :">
+            <p>
+              The provided option allows you to change the type of output you want to generate.
+              However, please be aware that certain outputs may not be supported within the playground
+              environment. To obtain an updated list of supported outputs, kindly refer to {' '}
+              <a href="https://github.com/asyncapi/modelina#features" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">the main readme file</a>.
+            </p>
+          </InfoModal>
+          <label className="flex flex-grow justify-between items-center cursor-pointer">
+            <span className=" text-sm text-gray-500">
               Output type
             </span>
             <Select
@@ -83,6 +96,7 @@ class GeneralOptions extends React.Component<
             />
           </label>
         </li>
+
         <li>
           <label className="flex items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
