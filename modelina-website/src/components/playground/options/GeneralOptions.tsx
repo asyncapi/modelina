@@ -78,9 +78,10 @@ class GeneralOptions extends React.Component<
         <li className=' flex items-center mt-3'>
           <InfoModal text="Output type :">
             <p>
-              Additional information about the output type{' '}
-              <a href="https://example.com" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">Click here</a> to visit the website.
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium ipsam, ex quis veritatis totam quo. Cupiditate sequi laudantium corporis commodi.
+              The provided option allows you to change the type of output you want to generate.
+              However, please be aware that certain outputs may not be supported within the playground
+              environment. To obtain an updated list of supported outputs, kindly refer to {' '}
+              <a href="https://github.com/asyncapi/modelina#features" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">the main readme file</a>.
             </p>
           </InfoModal>
           <label className="flex flex-grow justify-between items-center cursor-pointer">
