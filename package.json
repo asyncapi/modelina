@@ -106,6 +106,8 @@
     "generate:runtime:rust": "cross-env CI=true ts-node ./test/runtime/runtime-rust.ts",
     "test:runtime:php": "cross-env CI=true jest ./test/runtime/runtime-php.spec.ts",
     "generate:runtime:php": "cross-env CI=true ts-node ./test/runtime/runtime-php.ts",
+    "test:runtime:typescript": "cross-env CI=true jest ./test/runtime/runtime-typescript",
+    "generate:runtime:typescript": "cross-env CI=true ts-node ./test/runtime/runtime-typescript.ts",
     "test:watch": "jest --watch",
     "docs": "npm run docs:markdown",
     "docs:markdown": "jsdoc2md lib/cjs/index.js -f lib/cjs/**/*.js > API.md",
