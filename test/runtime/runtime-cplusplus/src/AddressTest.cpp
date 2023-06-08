@@ -1,7 +1,7 @@
 
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#include "lib/doctest.h"
-#include "lib/nlohmann/json.hpp"
+#include "utils/doctest.h"
+#include "utils/nlohmann/json.hpp"
 
 #include <string>
 #include <vector>
