@@ -18,37 +18,30 @@ Here is a quick overview of where some of the functions for rendering the playgr
 - `src/components/playground/Playground.tsx` is the main playground component, and is the one rendered by the playground page.
 - `src/components/playground/GeneratedModels.tsx` is the playground component responsible for rendering the generated models.
 
-## Contributors flow
+## Run modelina locally
 
-1. Fork the repository by clicking on `Fork` option on top right of the main repository.
+Contributions to `modelina` check out [git-workflow](https://github.com/asyncapi/community/blob/master/git-workflow.md)
 
-2. Open Command Prompt on your local computer.
 
-3. Clone the forked repository by adding your own GitHub username in place of `<username>`.
-   For multiple contributions it is recommended to have [proper configuration of forked repo](https://github.com/asyncapi/community/blob/master/git-workflow.md).
 
-```bash
-    git clone https://github.com/<username>/website/
-```
-
-4. Navigate to the website directory.
+1. Navigate to the website directory.
 
 ```bash
     cd website
 ```
 
-5. Install all website dependencies. 
+2. Install all website dependencies. 
 
 ```bash
     npm install
 ```
 
-6. Run the website locally.
+3. Run the website locally.
 
 ```bash
     npm run dev
 ```
 
-7. Access the live development server at [localhost:3000](http://localhost:3000).
+4. ccess the live development server at [localhost:3000](http://localhost:3000).
 
 You'll be able to access the development server and you can contribute accordingly.
