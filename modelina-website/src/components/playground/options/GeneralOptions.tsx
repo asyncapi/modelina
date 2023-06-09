@@ -97,8 +97,15 @@ class GeneralOptions extends React.Component<
           </label>
         </li>
 
-        <li>
-          <label className="flex items-center py-2 justify-between cursor-pointer">
+        <li className=' flex items-center'>
+          <InfoModal text="Include change type mapping example :">
+            <p>
+              In code generation, a common task is to map the data types from the input model to the output code. One approach to accomplish this is by using type mapping.
+              <br/><br/>
+              'Change type mapping' refers to the process of transforming one data type to another data type. This is a common technique in programming when data types need to be converted to make them compatible with another system or process
+            </p>
+          </InfoModal>
+          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Include change type mapping example
             </span>
@@ -111,8 +118,13 @@ class GeneralOptions extends React.Component<
             />
           </label>
         </li>
-        <li>
-          <label className="flex items-center py-2 justify-between cursor-pointer">
+        <li className=' flex items-center'>
+          <InfoModal text="Change indentation type :">
+            <p>
+            The indentation type option allows you to choose between using tabs or spaces for indentation in the generated code.
+            </p>
+          </InfoModal>
+          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Change indentation type
             </span>
@@ -128,8 +140,25 @@ class GeneralOptions extends React.Component<
             />
           </label>
         </li>
-        <li>
-          <label className="flex items-center py-2 justify-between cursor-pointer">
+        <li className=' flex items-center'>
+          <InfoModal text="Change property naming format :">
+            <p>
+              This option allows you to customize the naming style for properties in your code. It provides several options to choose from:
+              <br/> <br/>
+              Default: This option refers to the default naming format for properties, which may vary depending on the programming language or coding convention being used.
+              <br/> <br/>
+              Snake case: Property names are written in lowercase letters, and words are separated by underscores. (e.g: property_name)
+              <br/> <br/>
+              Pascal case: Property names start with an uppercase letter, and subsequent words are also capitalized. (e.g: PropertyName)
+              <br/> <br/>
+              Camel case: Property names start with a lowercase letter, and subsequent words are capitalized. (e.g: propertyName)
+              <br/> <br/>
+              Param case: Property names use hyphens to separate words, and all letters are in lowercase. (e.g: property-name)
+              <br/> <br/>
+              Constant case: Property names are written in uppercase letters, and words are separated by underscores. (e.g: PROPERTY_NAME)
+            </p>
+          </InfoModal>
+          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Change property naming format
             </span>
@@ -149,8 +178,25 @@ class GeneralOptions extends React.Component<
             />
           </label>
         </li>
-        <li>
-          <label className="flex items-center py-2 justify-between cursor-pointer">
+        <li className=' flex items-center'>
+          <InfoModal text="Change model naming format :">
+            <p>
+              This option allows you to modify the naming style for models in your code. It includes the following options
+              <br/> <br/>
+              Default: This option refers to the default naming format for models, which may vary depending on the programming language or coding convention being used.
+              <br/> <br/>
+              Snake case: Model names are written in lowercase letters, and words are separated by underscores. (e.g: model_name)
+              <br/> <br/>
+              Pascal case: Model names start with an uppercase letter, and subsequent words are also capitalized. (e.g: ModelName)
+              <br/> <br/>
+              Camel case: Model names start with a lowercase letter, and subsequent words are capitalized. (e.g: modelName)
+              <br/> <br/>
+              Param case: Model names use hyphens to separate words, and all letters are in lowercase. (e.g: model-name)
+              <br/> <br/>
+              Constant case: Model names are written in uppercase letters, and words are separated by underscores. (e.g: MODEL_NAME)
+            </p>
+          </InfoModal>
+          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Change model naming format
             </span>
@@ -170,8 +216,25 @@ class GeneralOptions extends React.Component<
             />
           </label>
         </li>
-        <li>
-          <label className="flex items-center py-2 justify-between cursor-pointer">
+        <li className=' flex items-center'>
+          <InfoModal text="Change enum key naming format :">
+            <p>
+              This option allows you to customize the naming style for keys within your enum declarations. It provides several options to choose from:
+              <br/> <br/>
+              Default: This option refers to the default naming format for enum keys, which may vary depending on the programming language or coding convention being used.
+              <br/> <br/>
+              Snake case: Enum key names are written in lowercase letters, and words are separated by underscores. (e.g: enum_key)
+              <br/> <br/>
+              Pascal case: Enum key names start with an uppercase letter, and subsequent words are also capitalized. (e.g: EnumKey)
+              <br/> <br/>
+              Camel case: Enum key names start with a lowercase letter, and subsequent words are capitalized. (e.g: enumKey)
+              <br/> <br/>
+              Param case: Enum key names use hyphens to separate words, and all letters are in lowercase. (e.g: enum-key)
+              <br/> <br/>
+              Constant case: Enum key names are written in uppercase letters, and words are separated by underscores. (e.g: ENUM_KEY)
+            </p>
+          </InfoModal>
+          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Change enum key naming format
             </span>
