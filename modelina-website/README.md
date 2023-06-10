@@ -18,16 +18,16 @@ Here is a quick overview of where some of the functions for rendering the playgr
 - `src/components/playground/Playground.tsx` is the main playground component, and is the one rendered by the playground page.
 - `src/components/playground/GeneratedModels.tsx` is the playground component responsible for rendering the generated models.
 
-## Run modelina locally
+## Run Modelina Website locally
 
-Contributions to `modelina` check out [git-workflow](https://github.com/asyncapi/community/blob/master/git-workflow.md)
+Checkout documentation that explains [git-workflow](https://github.com/asyncapi/community/blob/master/git-workflow.md) used in our repositories.
 
 
 
 1. Navigate to the website directory.
 
 ```bash
-    cd website
+    cd website-website
 ```
 
 2. Install all website dependencies. 
@@ -42,6 +42,6 @@ Contributions to `modelina` check out [git-workflow](https://github.com/asyncapi
     npm run dev
 ```
 
-4. ccess the live development server at [localhost:3000](http://localhost:3000).
+4. Access the live development server at [localhost:3000](http://localhost:3000).
 
 You'll be able to access the development server and you can contribute accordingly.
