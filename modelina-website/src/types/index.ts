@@ -1,5 +1,19 @@
 import { ParsedUrlQuery } from 'querystring';
 
+export interface params extends ParsedUrlQuery {
+  page: string;
+}
+
+export interface Doc {
+  content: string;
+  data?: {
+    title: string;
+    description: string;
+    date: string;
+  };
+  slug: string;
+}
+
 export interface ModelProps {
   code: string;
   name: string;
