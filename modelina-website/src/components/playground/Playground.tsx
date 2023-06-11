@@ -97,6 +97,14 @@ class Playground extends React.Component<
     phpNamespace: 'AsyncAPI/Models',
     cplusplusNamespace: 'AsyncapiModels',
     javaPackageName: 'asyncapi.models',
+    javaIncludeJackson: false,
+    javaIncludeMarshaling: false,
+    javaArrayType: 'Array',
+    javaOverwriteHashcode: false,
+    javaOverwriteEqual: false,
+    javaOverwriteToString: false,
+    javaJavaDocs: false,
+    javaJavaxAnnotation: false,
     goPackageName: 'asyncapi.models',
     kotlinPackageName: 'asyncapi.models'
   };
@@ -291,6 +299,37 @@ class Playground extends React.Component<
     }
     if (query.javaPackageName !== undefined) {
       this.config.javaPackageName = query.javaPackageName;
+    }
+    if (query.javaIncludeJackson !== undefined) {
+      this.config.javaIncludeJackson =
+        query.javaIncludeJackson === 'true';
+    }
+    if (query.javaIncludeMarshaling !== undefined) {
+      this.config.javaIncludeMarshaling =
+        query.javaIncludeMarshaling === 'true';
+    }
+    if (query.javaArrayType !== undefined) {
+      this.config.javaArrayType = query.javaArrayType as any;
+    }
+    if (query.javaOverwriteHashcode !== undefined) {
+      this.config.javaOverwriteHashcode =
+        query.javaOverwriteHashcode === 'true';
+    }
+    if (query.javaOverwriteEqual !== undefined) {
+      this.config.javaOverwriteEqual =
+        query.javaOverwriteEqual === 'true';
+    }
+    if (query.javaOverwriteToString !== undefined) {
+      this.config.javaOverwriteToString =
+        query.javaOverwriteToString === 'true';
+    }
+    if (query.javaJavaDocs !== undefined) {
+      this.config.javaJavaDocs =
+        query.javaJavaDocs === 'true';
+    }
+    if (query.javaJavaxAnnotation !== undefined) {
+      this.config.javaJavaxAnnotation =
+        query.javaJavaxAnnotation === 'true';
     }
     if(query.goPackageName !== undefined) {
       this.config.goPackageName = query.goPackageName;

@@ -20,6 +20,54 @@ export function getJavaGeneratorCode(
 }`);
   }
 
+  if (generatorOptions.javaIncludeJackson) {
+    optionStringPresets.push(`JAVA_JACKSON_PRESET`)
+  }
+
+  if (generatorOptions.javaIncludeMarshaling) {
+    optionStringPresets.push(`JAVA_COMMON_PRESET`)
+  }
+
+  if (generatorOptions.javaArrayType) {
+    optionString.push(`collectionType: '${generatorOptions.javaArrayType}'`);
+  }
+
+  if (generatorOptions.javaOverwriteHashcode) {
+    optionStringPresets.push(`
+    {
+      preset: JAVA_COMMON_PRESET,
+      options: {
+        hashCode: true
+      }
+    }`)
+  }
+
+  if(generatorOptions.javaOverwriteEqual){
+    optionStringPresets.push(`{
+    preset: JAVA_COMMON_PRESET,
+    options: {
+      equal: true
+    }
+  }`);
+  }
+
+  if(generatorOptions.javaOverwriteToString){
+    optionStringPresets.push(`{
+    preset: JAVA_COMMON_PRESET,
+    options: {
+      classToString: true,
+    }
+  }`);
+  }
+
+  if (generatorOptions.javaJavaDocs) {
+    optionStringPresets.push(`JAVA_DESCRIPTION_PRESET`)
+  }
+
+  if (generatorOptions.javaJavaxAnnotation) {
+    optionStringPresets.push(`JAVA_CONSTRAINTS_PRESET`)
+  }
+
   const generateInstanceCode = renderGeneratorInstanceCode(optionString, optionStringPresets, 'JavaGenerator');
 
   return `// Use the following code as starting point
