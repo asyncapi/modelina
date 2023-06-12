@@ -208,7 +208,8 @@ class TypeScriptGeneratorOptions extends React.Component<
           <li className='flex items-center'>
             <InfoModal text='Typesript include JsonBinPack support: ' >
               <p>
-                It indicates whether the JsonBinPack support should be included in the generated code.
+                It indicates whether the <a href={'https://www.jsonbinpack.org/'}>JsonBinPack</a> support should be included in the generated code. 
+                This allows you to convert models to a buffer, which is highly space-efficient, instead of sending pure JSON data over the wire.
                 <br/> <br/>
                 The default value is false.
                 <br/><br/>
@@ -218,11 +219,10 @@ class TypeScriptGeneratorOptions extends React.Component<
                   <li>
                     This functionality has two requirements:
                     <ol className='list-decimal list-inside'>
-                      <li>You MUST manually install the library jsonbinpack.</li>
+                      <li>You MUST manually install the library <a href={'https://www.jsonbinpack.org/'}>JsonBinPack</a>.</li>
                       <li>You MUST also use the Generate un/marshal functions for classes</li>
                     </ol>
                   </li>
-                  <li>This feature allows you to convert models to a buffer, which is highly space-efficient, instead of sending pure JSON data over the wire.</li>
                 </ul>
               </p>
             </InfoModal>
@@ -244,11 +244,9 @@ class TypeScriptGeneratorOptions extends React.Component<
           <li className='flex items-center'>
             <InfoModal text='Typesript include example functions: ' >
               <p>
-                It indicates whether the example functions should be included in the generated code.
+                It indicates whether the generated code should include a function that returns an example instance of the model with placeholder values.
                 <br/> <br/>
                 The default value is false.
-                <br/> <br/>
-                <b>Example</b> - This option returns an instance of the class with example values where you want a simple example instance of the generated data model.
               </p>
             </InfoModal>
             <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
