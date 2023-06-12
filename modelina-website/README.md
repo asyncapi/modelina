@@ -27,7 +27,7 @@ Checkout documentation that explains [git-workflow](https://github.com/asyncapi/
 1. Navigate to the website directory.
 
 ```bash
-    cd website-website
+    cd modelina-website
 ```
 
 2. Install all website dependencies. 
