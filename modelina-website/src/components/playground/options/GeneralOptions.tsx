@@ -100,9 +100,9 @@ class GeneralOptions extends React.Component<
         <li className=' flex items-center'>
           <InfoModal text="Include change type mapping example :">
             <p>
-              In code generation, a common task is to map the data types from the input model to the output code. One approach to accomplish this is by using type mapping.
+              In code generation, a common task is to map the data types from the input model to the output. In Modelina you can do this through type mapping.
               <br/><br/>
-              'Change type mapping' refers to the process of transforming one data type to another data type. This is a common technique in programming when data types need to be converted to make them compatible with another system or process
+              This option includes a simple example type mapping, that maps integers to a custom type.
             </p>
           </InfoModal>
           <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
@@ -143,7 +143,7 @@ class GeneralOptions extends React.Component<
         <li className=' flex items-center'>
           <InfoModal text="Change property naming format :">
             <p>
-              This option allows you to customize the naming style for properties in your code. It provides several options to choose from:
+              This option allows you to customize the naming style for properties in your code. There are no limitations to how you can format it, but for this simple example it provides the following options:
               <br/> <br/>
               Default: This option refers to the default naming format for properties, which may vary depending on the programming language or coding convention being used.
               <br/> <br/>
@@ -181,7 +181,7 @@ class GeneralOptions extends React.Component<
         <li className=' flex items-center'>
           <InfoModal text="Change model naming format :">
             <p>
-              This option allows you to modify the naming style for models in your code. It includes the following options
+              This option allows you to customize the naming style for properties in your code. There are no limitations to how you can format it, but for this simple example it provides the following options:
               <br/> <br/>
               Default: This option refers to the default naming format for models, which may vary depending on the programming language or coding convention being used.
               <br/> <br/>
@@ -219,7 +219,7 @@ class GeneralOptions extends React.Component<
         <li className=' flex items-center'>
           <InfoModal text="Change enum key naming format :">
             <p>
-              This option allows you to customize the naming style for keys within your enum declarations. It provides several options to choose from:
+              This option allows you to customize the naming style for properties in your code. There are no limitations to how you can format it, but for this simple example it provides the following options:
               <br/> <br/>
               Default: This option refers to the default naming format for enum keys, which may vary depending on the programming language or coding convention being used.
               <br/> <br/>
