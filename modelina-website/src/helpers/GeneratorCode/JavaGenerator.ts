@@ -25,7 +25,15 @@ export function getJavaGeneratorCode(
   }
 
   if (generatorOptions.javaIncludeMarshaling) {
-    optionStringPresets.push(`JAVA_COMMON_PRESET`)
+    optionStringPresets.push(`{
+      preset: JAVA_COMMON_PRESET,
+      options: {
+        equal: false,
+        hashCode: false,
+        classToString: false,
+        marshalling: true
+      }
+    }`)
   }
 
   if (generatorOptions.javaArrayType) {
@@ -37,27 +45,36 @@ export function getJavaGeneratorCode(
     {
       preset: JAVA_COMMON_PRESET,
       options: {
-        hashCode: true
+        equal: false,
+        hashCode: true,
+        classToString: false,
+        marshalling: false
       }
     }`)
   }
 
   if(generatorOptions.javaOverwriteEqual){
     optionStringPresets.push(`{
-    preset: JAVA_COMMON_PRESET,
-    options: {
-      equal: true
-    }
-  }`);
+      preset: JAVA_COMMON_PRESET,
+      options: {
+        equal: generatorOptions.javaOverwriteEqual,
+        hashCode: false,
+        classToString: false,
+        marshalling: false
+      }
+    }`);
   }
 
   if(generatorOptions.javaOverwriteToString){
     optionStringPresets.push(`{
-    preset: JAVA_COMMON_PRESET,
-    options: {
-      classToString: true,
-    }
-  }`);
+      preset: JAVA_COMMON_PRESET,
+      options: {
+        equal: false,
+        hashCode: false,
+        classToString: generatorOptions.javaOverwriteToString,
+        marshalling: false
+      }
+    }`);
   }
 
   if (generatorOptions.javaJavaDocs) {
