@@ -8,7 +8,7 @@ export function getJavaGeneratorCode(
   const optionString: string[] = getGeneralGeneratorCode(generatorOptions, 'javaDefaultEnumKeyConstraints', 'javaDefaultPropertyKeyConstraints', 'javaDefaultModelNameConstraints');
   const optionStringPresets: string[] = [];
 
-  if(generatorOptions.showTypeMappingExample === true) {
+  if (generatorOptions.showTypeMappingExample === true) {
     optionString.push(`typeMapping: {
   Integer: ({ dependencyManager, constrainedModel, options, partOfProperty }) => {
     // Add custom dependency for your type if required.
@@ -18,6 +18,70 @@ export function getJavaGeneratorCode(
     return 'long';
   }
 }`);
+  }
+
+  if (generatorOptions.javaIncludeJackson) {
+    optionStringPresets.push(`JAVA_JACKSON_PRESET`)
+  }
+
+  if (generatorOptions.javaIncludeMarshaling) {
+    optionStringPresets.push(`{
+  preset: JAVA_COMMON_PRESET,
+  options: {
+    equal: false,
+    hashCode: false,
+    classToString: false,
+    marshalling: true
+  }
+}`);
+  }
+
+  if (generatorOptions.javaArrayType) {
+    optionString.push(`collectionType: '${generatorOptions.javaArrayType}'`);
+  }
+
+  if (generatorOptions.javaOverwriteHashcode) {
+    optionStringPresets.push(`{
+  preset: JAVA_COMMON_PRESET,
+  options: {
+    equal: false,
+    hashCode: true,
+    classToString: false,
+    marshalling: false
+  }
+}`);
+  }
+
+  if (generatorOptions.javaOverwriteEqual) {
+    optionStringPresets.push(`{
+  preset: JAVA_COMMON_PRESET,
+  options: {
+    equal: true,
+    hashCode: false,
+    classToString: false,
+    marshalling: false
+  }
+}`);
+  }
+
+  if (generatorOptions.javaOverwriteToString) {
+    optionStringPresets.push(`{
+  preset: JAVA_COMMON_PRESET,
+  options: {
+    equal: false,
+    hashCode: false,
+    classToString: true,
+    marshalling: false
+  }
+}`);
+  }
+
+  if (generatorOptions.javaJavaDocs) {
+    optionStringPresets.push(`JAVA_DESCRIPTION_PRESET`)
+  }
+
+  if (generatorOptions.javaJavaxAnnotation) {
+    optionStringPresets.push(`JAVA_CONSTRAINTS_PRESET`)
   }
 
   const generateInstanceCode = renderGeneratorInstanceCode(optionString, optionStringPresets, 'JavaGenerator');
