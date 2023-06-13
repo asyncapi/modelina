@@ -22,7 +22,15 @@ export async function getJavaModels(
   }
 
   if (generatorOptions.javaIncludeMarshaling) {
-    options.presets?.push(JAVA_COMMON_PRESET)
+    options.presets?.push({
+      preset: JAVA_COMMON_PRESET,
+      options: {
+        equal: false,
+        hashCode: false,
+        classToString: false,
+        marshalling: true
+      }
+    })
   }
 
   if (generatorOptions.javaArrayType) {
@@ -34,7 +42,10 @@ export async function getJavaModels(
       {
         preset: JAVA_COMMON_PRESET,
         options: {
-          hashCode: generatorOptions.javaOverwriteHashcode
+          equal: false,
+          hashCode: generatorOptions.javaOverwriteHashcode,
+          classToString: false,
+          marshalling: false
         }
       }
     )
@@ -44,7 +55,10 @@ export async function getJavaModels(
     options.presets?.push({
       preset: JAVA_COMMON_PRESET,
       options: {
-        equal: generatorOptions.javaOverwriteEqual
+        equal: generatorOptions.javaOverwriteEqual,
+        hashCode: false,
+        classToString: false,
+        marshalling: false
       }
     })
   }
@@ -53,7 +67,10 @@ export async function getJavaModels(
     options.presets?.push({
       preset: JAVA_COMMON_PRESET,
       options: {
-        classToString: generatorOptions.javaOverwriteToString
+        equal: false,
+        hashCode: false,
+        classToString: generatorOptions.javaOverwriteToString,
+        marshalling: false
       }
     })
   }
