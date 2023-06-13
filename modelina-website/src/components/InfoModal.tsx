@@ -26,7 +26,7 @@ export default function InfoModal(props: InfoModalProps){
                 <div className='fixed max-w-[45rem] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-2 rounded-md'>
                     <div className=' px-3 py-2 text-sm font-mono'>
                         <div className=' flex justify-between mb-3'><h2>{props.text}</h2><button onClick={onCloseModal} className='p-1 px-2 -mt-1 -mr-2 border-2 border-slate-200 items-center justify-center aspect-1 text-xs rounded-full'><p>X</p></button></div>
-                        <div className="max-h-32 overflow-y-auto min-w-40">
+                        <div className="max-h-64 overflow-y-auto min-w-40">
                             {props.children}
                         </div>    
                     </div>
