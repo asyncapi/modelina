@@ -181,7 +181,7 @@ class GeneralOptions extends React.Component<
         <li className=' flex items-center'>
           <InfoModal text="Change model naming format :">
             <p>
-              This option allows you to customize the naming style for properties in your code. There are no limitations to how you can format it, but for this simple example it provides the following options:
+            This option allows you to customize the naming style for model names. There are no limitations to how you can format it, but for this simple example it provides the following options:
               <br/> <br/>
               Default: This option refers to the default naming format for models, which may vary depending on the programming language or coding convention being used.
               <br/> <br/>
@@ -219,7 +219,7 @@ class GeneralOptions extends React.Component<
         <li className=' flex items-center'>
           <InfoModal text="Change enum key naming format :">
             <p>
-              This option allows you to customize the naming style for properties in your code. There are no limitations to how you can format it, but for this simple example it provides the following options:
+            This option allows you to customize the naming style for enum keys. There are no limitations to how you can format it, but for this simple example it provides the following options:
               <br/> <br/>
               Default: This option refers to the default naming format for enum keys, which may vary depending on the programming language or coding convention being used.
               <br/> <br/>
