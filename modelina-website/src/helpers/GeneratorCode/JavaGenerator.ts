@@ -8,7 +8,7 @@ export function getJavaGeneratorCode(
   const optionString: string[] = getGeneralGeneratorCode(generatorOptions, 'javaDefaultEnumKeyConstraints', 'javaDefaultPropertyKeyConstraints', 'javaDefaultModelNameConstraints');
   const optionStringPresets: string[] = [];
 
-  if(generatorOptions.showTypeMappingExample === true) {
+  if (generatorOptions.showTypeMappingExample === true) {
     optionString.push(`typeMapping: {
   Integer: ({ dependencyManager, constrainedModel, options, partOfProperty }) => {
     // Add custom dependency for your type if required.
@@ -26,14 +26,14 @@ export function getJavaGeneratorCode(
 
   if (generatorOptions.javaIncludeMarshaling) {
     optionStringPresets.push(`{
-      preset: JAVA_COMMON_PRESET,
-      options: {
-        equal: false,
-        hashCode: false,
-        classToString: false,
-        marshalling: true
-      }
-    }`)
+  preset: JAVA_COMMON_PRESET,
+  options: {
+    equal: false,
+    hashCode: false,
+    classToString: false,
+    marshalling: true
+  }
+}`);
   }
 
   if (generatorOptions.javaArrayType) {
@@ -41,40 +41,39 @@ export function getJavaGeneratorCode(
   }
 
   if (generatorOptions.javaOverwriteHashcode) {
-    optionStringPresets.push(`
-    {
-      preset: JAVA_COMMON_PRESET,
-      options: {
-        equal: false,
-        hashCode: true,
-        classToString: false,
-        marshalling: false
-      }
-    }`)
+    optionStringPresets.push(`{
+  preset: JAVA_COMMON_PRESET,
+  options: {
+    equal: false,
+    hashCode: true,
+    classToString: false,
+    marshalling: false
+  }
+}`);
   }
 
-  if(generatorOptions.javaOverwriteEqual){
+  if (generatorOptions.javaOverwriteEqual) {
     optionStringPresets.push(`{
-      preset: JAVA_COMMON_PRESET,
-      options: {
-        equal: generatorOptions.javaOverwriteEqual,
-        hashCode: false,
-        classToString: false,
-        marshalling: false
-      }
-    }`);
+  preset: JAVA_COMMON_PRESET,
+  options: {
+    equal: true,
+    hashCode: false,
+    classToString: false,
+    marshalling: false
+  }
+}`);
   }
 
-  if(generatorOptions.javaOverwriteToString){
+  if (generatorOptions.javaOverwriteToString) {
     optionStringPresets.push(`{
-      preset: JAVA_COMMON_PRESET,
-      options: {
-        equal: false,
-        hashCode: false,
-        classToString: generatorOptions.javaOverwriteToString,
-        marshalling: false
-      }
-    }`);
+  preset: JAVA_COMMON_PRESET,
+  options: {
+    equal: false,
+    hashCode: false,
+    classToString: true,
+    marshalling: false
+  }
+}`);
   }
 
   if (generatorOptions.javaJavaDocs) {

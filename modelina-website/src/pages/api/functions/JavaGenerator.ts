@@ -43,7 +43,7 @@ export async function getJavaModels(
         preset: JAVA_COMMON_PRESET,
         options: {
           equal: false,
-          hashCode: generatorOptions.javaOverwriteHashcode,
+          hashCode: true,
           classToString: false,
           marshalling: false
         }
@@ -51,11 +51,11 @@ export async function getJavaModels(
     )
   }
 
-  if(generatorOptions.javaOverwriteEqual){
+  if (generatorOptions.javaOverwriteEqual) {
     options.presets?.push({
       preset: JAVA_COMMON_PRESET,
       options: {
-        equal: generatorOptions.javaOverwriteEqual,
+        equal: true,
         hashCode: false,
         classToString: false,
         marshalling: false
@@ -69,7 +69,7 @@ export async function getJavaModels(
       options: {
         equal: false,
         hashCode: false,
-        classToString: generatorOptions.javaOverwriteToString,
+        classToString: true,
         marshalling: false
       }
     })
