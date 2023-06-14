@@ -60,6 +60,16 @@ describe('CSharpGenerator', () => {
           type: 'boolean',
           description: 'Status if marriage live in given house'
         },
+        house_type: {
+          type: 'string',
+          enum: ['apartment', 'house', 'condo'],
+          description: 'Type of house'
+        },
+        terrace_type: {
+          type: 'string',
+          enum: ['wood', 'concrete', 'brick'],
+          description: 'Type of terrace'
+        },
         members: {
           oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
         },
@@ -69,7 +79,14 @@ describe('CSharpGenerator', () => {
         },
         array_type: { type: 'array', items: { type: 'string' } }
       },
-      required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+      required: [
+        'street_name',
+        'city',
+        'state',
+        'house_number',
+        'array_type',
+        'house_type'
+      ],
       additionalProperties: {
         type: 'string'
       },
@@ -82,7 +99,7 @@ describe('CSharpGenerator', () => {
 
     generator.options.handleNullable = true;
     const models = await generator.generate(doc);
-    expect(models).toHaveLength(1);
+    expect(models).toHaveLength(3);
     expect(models[0].result).toMatchSnapshot();
     expect(models[0].dependencies).toEqual([
       'using System.Collections.Generic;'

@@ -303,8 +303,10 @@ exports[`CSharpGenerator should render null-forgiving operator if handleNullable
   private string streetName = null!;
   private string city = null!;
   private string state = null!;
-  private double houseNumber = null!;
+  private double houseNumber;
   private bool? marriage;
+  private HouseType houseType;
+  private TerraceType? terraceType;
   private dynamic? members;
   private dynamic[]? tupleType;
   private dynamic[] arrayType = null!;
@@ -338,6 +340,18 @@ exports[`CSharpGenerator should render null-forgiving operator if handleNullable
   {
     get { return marriage; }
     set { marriage = value; }
+  }
+
+  public HouseType HouseType 
+  {
+    get { return houseType; }
+    set { houseType = value; }
+  }
+
+  public TerraceType? TerraceType 
+  {
+    get { return terraceType; }
+    set { terraceType = value; }
   }
 
   public dynamic? Members 

@@ -8,7 +8,7 @@ const jsonSchemaDraft7 = {
   $schema: 'http://json-schema.org/draft-07/schema#',
   type: 'object',
   additionalProperties: false,
-  required: ['name'],
+  required: ['name', 'age', 'mandatoryFoos'],
   properties: {
     email: {
       type: 'string',
@@ -16,6 +16,23 @@ const jsonSchemaDraft7 = {
     },
     name: {
       type: 'string'
+    },
+    age: {
+      type: 'integer'
+    },
+    nullableFoos: {
+      type: 'array',
+      items: {
+        type: 'object',
+        name: 'Foo'
+      }
+    },
+    mandatoryFoos: {
+      type: 'array',
+      items: {
+        type: 'object',
+        name: 'Foo'
+      }
     }
   }
 };
