@@ -96,6 +96,17 @@ class Playground extends React.Component<
     phpIncludeDescriptions: false,
     phpNamespace: 'AsyncAPI/Models',
     cplusplusNamespace: 'AsyncapiModels',
+    javaPackageName: 'asyncapi.models',
+    javaIncludeJackson: false,
+    javaIncludeMarshaling: false,
+    javaArrayType: 'Array',
+    javaOverwriteHashcode: false,
+    javaOverwriteEqual: false,
+    javaOverwriteToString: false,
+    javaJavaDocs: false,
+    javaJavaxAnnotation: false,
+    goPackageName: 'asyncapi.models',
+    kotlinPackageName: 'asyncapi.models'
   };
   hasLoadedQuery: boolean = false;
   constructor(props: ModelinaPlaygroundProps) {
@@ -286,6 +297,46 @@ class Playground extends React.Component<
     if(query.cplusplusNamespace !== undefined) {
       this.config.cplusplusNamespace = query.cplusplusNamespace;
     }
+    if (query.javaPackageName !== undefined) {
+      this.config.javaPackageName = query.javaPackageName;
+    }
+    if (query.javaIncludeJackson !== undefined) {
+      this.config.javaIncludeJackson =
+        query.javaIncludeJackson === 'true';
+    }
+    if (query.javaIncludeMarshaling !== undefined) {
+      this.config.javaIncludeMarshaling =
+        query.javaIncludeMarshaling === 'true';
+    }
+    if (query.javaArrayType !== undefined) {
+      this.config.javaArrayType = query.javaArrayType as any;
+    }
+    if (query.javaOverwriteHashcode !== undefined) {
+      this.config.javaOverwriteHashcode =
+        query.javaOverwriteHashcode === 'true';
+    }
+    if (query.javaOverwriteEqual !== undefined) {
+      this.config.javaOverwriteEqual =
+        query.javaOverwriteEqual === 'true';
+    }
+    if (query.javaOverwriteToString !== undefined) {
+      this.config.javaOverwriteToString =
+        query.javaOverwriteToString === 'true';
+    }
+    if (query.javaJavaDocs !== undefined) {
+      this.config.javaJavaDocs =
+        query.javaJavaDocs === 'true';
+    }
+    if (query.javaJavaxAnnotation !== undefined) {
+      this.config.javaJavaxAnnotation =
+        query.javaJavaxAnnotation === 'true';
+    }
+    if(query.goPackageName !== undefined) {
+      this.config.goPackageName = query.goPackageName;
+    }
+    if (query.kotlinPackageName !== undefined) {
+      this.config.kotlinPackageName = query.kotlinPackageName;
+    }
     if (this.props.router.isReady && !this.hasLoadedQuery) {
       this.hasLoadedQuery = true;
       this.generateNewCode(this.state.input);
@@ -306,7 +357,7 @@ class Playground extends React.Component<
       );
     }
     return (
-      <div className="py-16 overflow-hidden lg:py-24">
+      <div className="py-16 lg:py-24">
         <div className="relative text-center">
           <Heading level="h1" typeStyle="heading-lg">
             Modelina Playground
