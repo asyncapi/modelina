@@ -11,6 +11,7 @@ export default function PlaygroundPage() {
       description={description}
       image={image}
       wide
+      full
     >
       <Playground />
     </GenericLayout>

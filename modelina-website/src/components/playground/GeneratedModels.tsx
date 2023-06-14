@@ -98,18 +98,18 @@ class GeneratedModelsComponent extends React.Component<
       );
     }
     return (
-      <div className="grid grid-cols-3 h-full">
-        <div className="overflow-scroll bg-white shadow sm:rounded-lg">
-          <div className="px-4 py-5 sm:px-6">
+      <div className="h-full">
+        <div className="overflow-hidden flex bg-white shadow sm:rounded-lg">
+          <div className="px-4 py-4 sm:px-6">
             <h3 className="text-lg font-medium leading-6 text-gray-900">
               Generated Models
             </h3>
-            <p className="mt-1 max-w-2xl text-sm text-gray-500">
+            <p className="mt-1 max-w-2xl text-sm  text-gray-500">
               This list contains all the generated models, select one to show
               their generated code
             </p>
           </div>
-          <div className="border-t border-gray-200">
+          <div className="border-t flex-col-2 w-3/4 border-gray-200">
             <dl>{modelsToRender}</dl>
           </div>
         </div>

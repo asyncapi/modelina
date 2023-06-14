@@ -41,6 +41,9 @@ import CustomError from '../CustomError';
 import { getKotlinGeneratorCode } from '@/helpers/GeneratorCode/KotlinGenerator';
 import { getPhpGeneratorCode } from '@/helpers/GeneratorCode/PhpGenerator';
 
+type GeneratedModelsComponentState = {
+  selectedModel?: string;
+};
 interface WithRouterProps {
   router: NextRouter;
 }
@@ -418,7 +421,7 @@ class Playground extends React.Component<
           </div>
           <div
             className="max-xl:col-span-2 xl:grid-cols-1"
-            style={{ height: '750px' }}
+            style={{ height: '629px' }}
           >
             {this.state.error ? (
               <CustomError statusCode={this.state.statusCode} errorMessage={this.state.errorMessage} />
