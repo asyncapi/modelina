@@ -59,7 +59,7 @@ class PhpGeneratorOptions extends React.Component<
               In PHP namespaces are used to organize code into logical groups. It helps to avoid naming conflicts and allows to use the same class names in different namespaces.
             </p>
           </InfoModal>
-          <label className="flex items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Namespace
             </span>
@@ -80,7 +80,7 @@ class PhpGeneratorOptions extends React.Component<
               The default value is false.
             </p>
           </InfoModal>
-          <label className="flex items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Include Descriptions
             </span>
