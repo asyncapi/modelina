@@ -2,6 +2,7 @@ import React from 'react';
 import { debounce } from 'lodash';
 import { PlaygroundJavaConfigContext } from '@/components/contexts/PlaygroundConfigContext';
 import Select from '@/components/Select';
+import InfoModal from '@/components/InfoModal';
 
 interface JavaGeneratorOptionsProps {
   setNewConfig?: (queryKey: string, queryValue: string) => void;
@@ -101,8 +102,15 @@ class JavaGeneratorOptions extends React.Component<
         <h3 className="text-lg font-medium leading-6 text-gray-900">
           Java Specific options
         </h3>
-        <li>
-          <label className="flex items-center py-2 justify-between cursor-pointer">
+        <li className=' flex items-center'>
+          <InfoModal text="Package Name :">
+            <p>
+            In Java, a package name is a way to organize and group related classes and interfaces. It is a naming convention that helps prevent naming conflicts and provides a hierarchical structure to the Java codebase.
+            <br/><br/>
+            A package name is written as  series of identifiers separated by dots ('.'). Each identifier represents a level in the package hierarchy. For example, a package name could be 'com.example.myapp'.
+            </p>
+          </InfoModal>
+          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Package Name
             </span>
@@ -115,8 +123,15 @@ class JavaGeneratorOptions extends React.Component<
             />
           </label>
         </li>
-        <li>
-          <label className="flex items-center py-2 justify-between cursor-pointer">
+        <li className=' flex items-center'>
+          <InfoModal text="Include Jackson serialization :">
+            <p>
+            Jackson annotations are a set of annotations provided by the Jackson library, which is a popular Java-based JSON processing library. These annotations are used to configure and control how Java objects are serialized to JSON and deserialized from JSON.
+            <br/><br/>
+            Annotations in Java are represented by the @ symbol followed by the annotation name. 
+            </p>
+          </InfoModal>
+          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Include Jackson serialization
             </span>
@@ -129,8 +144,19 @@ class JavaGeneratorOptions extends React.Component<
             />
           </label>
         </li>
-        <li>
-          <label className="flex items-center py-2 justify-between cursor-pointer">
+        <li className=' flex items-center'>
+          <InfoModal text="Include Marshaling serialization :">
+            <p>
+            This option indicates whether the marshal and unmarshal functions would be included in the generated code or not 
+            <br/><br/>
+            the defalult value is false
+            <br/><br/>
+            marshal - this function takes an instance of the class and return a JSON object.
+            <br/><br/>
+            unmarshal - this function takes a JSON object and returns an instanve of the class.
+            </p>
+          </InfoModal>
+          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Include Marshaling serialization
             </span>
@@ -143,8 +169,15 @@ class JavaGeneratorOptions extends React.Component<
             />
           </label>
         </li>
-        <li>
-          <label className="flex items-center py-2 justify-between cursor-pointer">
+        <li className=' flex items-center'>
+          <InfoModal text="Java array type :">
+            <p>
+            This option allows you to swithch between rendering collections as List type or Array.
+            <br/><br/>
+            the default value is Array.
+            </p>
+          </InfoModal>
+          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Java array type
             </span>
@@ -159,8 +192,15 @@ class JavaGeneratorOptions extends React.Component<
             />
           </label>
         </li>
-        <li>
-          <label className="flex items-center py-2 justify-between cursor-pointer">
+        <li className=' flex items-center'>
+          <InfoModal text="Include Overwrite HashCode Support :">
+            <p>
+            In Java, the hashCode() method is used to generate a unique numeric value (hash code) for an object. The default implementation of hashCode() in the Object class generates hash codes based on the memory address of the object, which may not be suitable for all classes.
+            <br/><br/>
+            By enabling the option to overwrite hashCode support, you can provide your own implementation of the hashCode() method in a class. This allows you to define a hash code generation algorithm based on the specific properties and requirements of the class.
+            </p>
+          </InfoModal>
+          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Include Overwrite HashCode Support
             </span>
@@ -173,8 +213,15 @@ class JavaGeneratorOptions extends React.Component<
             />
           </label>
         </li>
-        <li>
-          <label className="flex items-center py-2 justify-between cursor-pointer">
+        <li className=' flex items-center'>
+          <InfoModal text="Include Overwrite Equal Support :">
+            <p>
+            n Java, the equals() method is used to determine if two objects are equal based on their content rather than their memory addresses. The default implementation of equals() in the Object class performs a reference equality check, meaning it only returns true if the compared objects are the same instance in memory.
+            <br/><br/>
+            By enabling the option to overwrite equal support, you can provide your own implementation of the equals() method in a class. This allows you to define the equality criteria based on the specific properties and requirements of the class.
+            </p>
+          </InfoModal>
+          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Include Overwrite Equal Support
             </span>
@@ -187,8 +234,15 @@ class JavaGeneratorOptions extends React.Component<
             />
           </label>
         </li>
-        <li>
-          <label className="flex items-center py-2 justify-between cursor-pointer">
+        <li className=' flex items-center'>
+          <InfoModal text="Include Overwrite toString Support :">
+            <p>
+            In Java, the toString() method is used to provide a string representation of an object. The default implementation in the Object class returns a string consisting of the class name, an "@" symbol, and the hexadecimal representation of the object's hash code.
+            <br/><br/>
+            By enabling the option to overwrite toString() support, you can define your own implementation of the toString() method for a class. This allows you to provide a more meaningful and customized string representation of the object based on its properties.
+            </p>
+          </InfoModal>
+          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Include Overwrite toString Support
             </span>
@@ -201,8 +255,15 @@ class JavaGeneratorOptions extends React.Component<
             />
           </label>
         </li>
-        <li>
-          <label className="flex items-center py-2 justify-between cursor-pointer">
+        <li className=' flex items-center'>
+          <InfoModal text="Include javaDocs :">
+            <p>
+            Enabling this option will incude the description of the properties as comments in the generated code.
+            <br/><br/>
+            The default value if false.
+            </p>
+          </InfoModal>
+          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Include javaDocs
             </span>
@@ -215,8 +276,13 @@ class JavaGeneratorOptions extends React.Component<
             />
           </label>
         </li>
-        <li>
-          <label className="flex items-center py-2 justify-between cursor-pointer">
+        <li className=' flex items-center'>
+          <InfoModal text="Include Javax validation constraints  :">
+            <p>
+              By using the 'javax.validation.constraints' annotations, you can ensure that the data in your Java object adheres to specific rules and constraints. This helps in validating user input, ensuring data integrity, and facilitating error handling and validation reporting.
+            </p>
+          </InfoModal>
+          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Include Javax validation constraints 
             </span>
