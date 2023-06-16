@@ -1,0 +1,33 @@
+name: Runtime testing Kotlin models
+
+on:
+  push:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+    paths:
+      - 'src/generators/kotlin/**'
+      - 'test/runtime/runtime-kotlin/**'
+      - 'test/runtime/**kotlin**'
+
+jobs:
+  test:
+    name: Runtime testing Kotlin Models
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: Build library
+        run: npm install && npm run build:prod
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+      - name: Generate Kotlin models
+        run: npm run generate:runtime:kotlin 
+      - name: Run runtime tests
+        run: npm run test:runtime:kotlin
