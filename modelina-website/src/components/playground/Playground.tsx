@@ -401,7 +401,7 @@ class Playground extends React.Component<
                   this.setState({ ...this.state, showGeneratorCode: true });
                 }}
                 className={`${this.state.showGeneratorCode ? 'bg-blue-100' : 'bg-white'
-                  } px-4 py-5 sm:grid  sm:gap-4 sm:px-6 basis-3/12`}
+                  } px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 basis-3/12`}
               >
                 <h3 className="text-lg font-medium leading-6 text-gray-900">
                   Generator code
