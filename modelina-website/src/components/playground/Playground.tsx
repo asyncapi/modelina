@@ -41,9 +41,6 @@ import CustomError from '../CustomError';
 import { getKotlinGeneratorCode } from '@/helpers/GeneratorCode/KotlinGenerator';
 import { getPhpGeneratorCode } from '@/helpers/GeneratorCode/PhpGenerator';
 
-type GeneratedModelsComponentState = {
-  selectedModel?: string;
-};
 interface WithRouterProps {
   router: NextRouter;
 }
@@ -404,7 +401,7 @@ class Playground extends React.Component<
                   this.setState({ ...this.state, showGeneratorCode: true });
                 }}
                 className={`${this.state.showGeneratorCode ? 'bg-blue-100' : 'bg-white'
-                  } px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 basis-3/12`}
+                  } px-4 py-5 sm:grid  sm:gap-4 sm:px-6 basis-3/12`}
               >
                 <h3 className="text-lg font-medium leading-6 text-gray-900">
                   Generator code
@@ -472,7 +469,7 @@ class Playground extends React.Component<
           </div>
           <div
             className="max-xl:col-span-2 xl:grid-cols-1"
-            style={{ height: '629px' }}
+            style={{ height: '750px' }}
           >
             {this.state.error ? (
               <CustomError statusCode={this.state.statusCode} errorMessage={this.state.errorMessage} />
