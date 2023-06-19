@@ -159,8 +159,7 @@ class CSharpGeneratorOptions extends React.Component<
               Auto-implemented properties in C# allow you to define properties
               without explicitly writing the backing field. The compiler
               automatically generates the backing field and the get/set methods
-              for you. When the{' '}
-              <strong>Include auto-implemented properties</strong> option is
+              for you. When the <strong>Include auto-implemented properties</strong> option is
               enabled, the generated C# data models will use this simplified
               syntax for property declarations, reducing the amount of
               boilerplate code you need to write.
@@ -185,8 +184,7 @@ class CSharpGeneratorOptions extends React.Component<
               In C#, the GetHashCode() method is used to generate a hash code
               for an object. This method is often overridden when you need to
               define custom equality comparisons or store objects in hash-based
-              data structures. By enabling the{' '}
-              <strong>Include Overwrite HashCode Support</strong> option, the
+              data structures. By enabling the <strong>Include Overwrite HashCode Support</strong> option, the
               generated C# data models will include support for overwriting the
               GetHashCode() method, allowing you to customize the hash code
               calculation based on the model's properties.
@@ -212,8 +210,7 @@ class CSharpGeneratorOptions extends React.Component<
               equality. By default, it performs reference equality comparison.
               However, in certain cases, you may want to override this method to
               provide custom equality logic based on specific properties or
-              criteria. Enabling the{' '}
-              <strong>Include Overwrite Equal Support</strong> option in the
+              criteria. Enabling the <strong>Include Overwrite Equal Support</strong> option in the
               generated C# data models includes support for overwriting the
               Equals() method, allowing you to define your own equality
               comparisons.
@@ -236,8 +233,7 @@ class CSharpGeneratorOptions extends React.Component<
           <InfoModal text="Include JSON serialization:">
             <p className="font-regular">
               In C#, JSON serialization is the process of converting an object
-              to its JSON representation and vice versa. Enabling the{' '}
-              <strong>Include JSON serialization</strong> option in the
+              to its JSON representation and vice versa. Enabling the <strong>Include JSON serialization</strong> option in the
               generated C# data models includes the necessary attributes and
               code to facilitate JSON serialization, making it easy to serialize
               the models to JSON format or deserialize JSON data into instances
@@ -262,8 +258,7 @@ class CSharpGeneratorOptions extends React.Component<
             <p className="font-regular">
               Newtonsoft.Json (Json.NET) is a popular third-party JSON
               serialization library for C#. It provides advanced features and
-              customization options for working with JSON data. When the
-              <strong>Include Newtonsoft serialization</strong> option is
+              customization options for working with JSON data. When the <strong>Include Newtonsoft serialization</strong> option is
               enabled in the generated C# data models, the necessary attributes
               and code are included to support serialization and deserialization
               using the Json.NET library.
@@ -287,8 +282,7 @@ class CSharpGeneratorOptions extends React.Component<
             <p className="font-regular">
               In C#, the nullable feature allows you to explicitly indicate
               whether a value type (such as int, bool, etc.) or a reference type
-              (such as a class) can accept null values. By enabling the
-              <strong>Nullable</strong> option in the generated C# data models,
+              (such as a class) can accept null values. By enabling the <strong>Nullable</strong> option in the generated C# data models,
               you allow properties to be nullable, meaning they can have a null
               value in addition to their normal value range. This provides
               flexibility when dealing with optional or unknown data values.
