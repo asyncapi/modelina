@@ -98,9 +98,9 @@ class CSharpGeneratorOptions extends React.Component<
         <h3 className="text-lg font-medium leading-6 text-gray-900">
           CSharp Specific options
         </h3>
-        <li className="flex items-center">
-          <InfoModal text="Package Name :">
-            <p>
+ <li className="flex items-center">
+          <InfoModal text="Namespace:">
+            <p className="font-regular">
               In C#, a namespace is used to organize code into logical groups
               and avoid naming conflicts. It provides a way to uniquely identify
               classes, structs, interfaces, and other types within a project. By
@@ -123,14 +123,13 @@ class CSharpGeneratorOptions extends React.Component<
           </label>
         </li>
         <li className="flex items-center">
-          <InfoModal text="Package Name :">
-            <p>
+          <InfoModal text="C# array type:">
+            <p className="font-regular">
               In C#, arrays are used to store collections of elements of the
-              same type. The <strong>C# array type</strong> option determines
-              how arrays are represented in the generated C# data models. If you
-              choose the
-              <strong>array</strong> type, the models will use the C# array
-              syntax, such as int[] or string[].
+              same type. The <strong>C# array type</strong> option
+              determines how arrays are represented in the generated C# data
+              models. If you choose the <strong>array</strong> type, the models will use the C# array syntax,
+              such as int[] or string[].
               <br />
               <br />
               Alternatively, if you choose the <strong>List</strong> type, the
@@ -154,9 +153,9 @@ class CSharpGeneratorOptions extends React.Component<
             />
           </label>
         </li>
-        <li className="flex items-center">
-          <InfoModal text="Package Name :">
-            <p>
+ <li className="flex items-center">
+          <InfoModal text="Include auto-implemented properties:">
+            <p className="font-regular">
               Auto-implemented properties in C# allow you to define properties
               without explicitly writing the backing field. The compiler
               automatically generates the backing field and the get/set methods
@@ -180,9 +179,9 @@ class CSharpGeneratorOptions extends React.Component<
             />
           </label>
         </li>
-        <li className="flex items-center">
-          <InfoModal text="Package Name :">
-            <p>
+ <li className="flex items-center">
+          <InfoModal text="Include Overwrite HashCode Support:">
+            <p className="font-regular">
               In C#, the GetHashCode() method is used to generate a hash code
               for an object. This method is often overridden when you need to
               define custom equality comparisons or store objects in hash-based
@@ -190,7 +189,7 @@ class CSharpGeneratorOptions extends React.Component<
               <strong>Include Overwrite HashCode Support</strong> option, the
               generated C# data models will include support for overwriting the
               GetHashCode() method, allowing you to customize the hash code
-              calculation based on the model&apos;s properties.
+              calculation based on the model's properties.
             </p>
           </InfoModal>
           <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
@@ -206,9 +205,9 @@ class CSharpGeneratorOptions extends React.Component<
             />
           </label>
         </li>
-        <li className="flex items-center">
-          <InfoModal text="Package Name :">
-            <p>
+ <li className="flex items-center">
+          <InfoModal text="Include Overwrite Equal Support:">
+            <p className="font-regular">
               The Equals() method in C# is used to compare two objects for
               equality. By default, it performs reference equality comparison.
               However, in certain cases, you may want to override this method to
@@ -233,9 +232,9 @@ class CSharpGeneratorOptions extends React.Component<
             />
           </label>
         </li>
-        <li className="flex items-center">
-          <InfoModal text="Package Name :">
-            <p>
+ <li className="flex items-center">
+          <InfoModal text="Include JSON serialization:">
+            <p className="font-regular">
               In C#, JSON serialization is the process of converting an object
               to its JSON representation and vice versa. Enabling the{' '}
               <strong>Include JSON serialization</strong> option in the
@@ -258,9 +257,9 @@ class CSharpGeneratorOptions extends React.Component<
             />
           </label>
         </li>
-        <li className="flex items-center">
-          <InfoModal text="Package Name :">
-            <p>
+ <li className="flex items-center">
+          <InfoModal text="Include Newtonsoft serialization:">
+            <p className="font-regular">
               Newtonsoft.Json (Json.NET) is a popular third-party JSON
               serialization library for C#. It provides advanced features and
               customization options for working with JSON data. When the
@@ -283,9 +282,9 @@ class CSharpGeneratorOptions extends React.Component<
             />
           </label>
         </li>
-        <li className="flex items-center">
-          <InfoModal text="Package Name :">
-            <p>
+ <li className="flex items-center">
+          <InfoModal text="Nullable:">
+            <p className="font-regular">
               In C#, the nullable feature allows you to explicitly indicate
               whether a value type (such as int, bool, etc.) or a reference type
               (such as a class) can accept null values. By enabling the
