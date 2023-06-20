@@ -51,6 +51,10 @@ export async function getCSharpModels(
     options.presets?.push(CSHARP_NEWTONSOFT_SERIALIZER_PRESET)
   }
 
+  if (generatorOptions.csharpNullable) {
+    options.handleNullable = generatorOptions.csharpNullable;
+  }
+
   if (generatorOptions.showTypeMappingExample) {
     options.typeMapping = {
       Integer: ({ dependencyManager }) => {

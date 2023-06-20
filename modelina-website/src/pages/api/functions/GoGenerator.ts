@@ -28,7 +28,7 @@ export async function getGoModels(
   try {
     const generator = new GoGenerator(options);
     const generatedModels = await generator.generateCompleteModels(input, {
-      packageName: 'asyncapi.models'
+      packageName: generatorOptions.goPackageName || 'asyncapi.models'
     });
     return convertModelsToProps(generatedModels);
   } catch (e : any) {

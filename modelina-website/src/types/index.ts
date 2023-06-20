@@ -19,11 +19,23 @@ export interface ModelinaTypeScriptOptions extends ModelinaGeneralOptions {
   tsIncludeExampleFunction: boolean;
 }
 
-export interface ModelinaJavaOptions extends ModelinaGeneralOptions {}
+export interface ModelinaJavaOptions extends ModelinaGeneralOptions {
+  javaPackageName?: string;
+  javaIncludeJackson: boolean;
+  javaIncludeMarshaling: boolean;
+  javaArrayType: 'List' | 'Array' | undefined;
+  javaOverwriteHashcode: boolean;
+  javaOverwriteEqual: boolean;
+  javaOverwriteToString: boolean;
+  javaJavaDocs: boolean;
+  javaJavaxAnnotation: boolean;
+}
 export interface ModelinaCplusplusOptions extends ModelinaGeneralOptions {
   cplusplusNamespace?: string;
 }
-export interface ModelinaGoOptions extends ModelinaGeneralOptions {}
+export interface ModelinaGoOptions extends ModelinaGeneralOptions {
+  goPackageName?: string;
+}
 export interface ModelinaJavaScriptOptions extends ModelinaGeneralOptions {}
 export interface ModelinaPhpOptions extends ModelinaGeneralOptions {
   phpIncludeDescriptions: boolean;
@@ -37,8 +49,11 @@ export interface ModelinaCSharpOptions extends ModelinaGeneralOptions {
   csharpOverwriteEqual: boolean;
   csharpIncludeNewtonsoft: boolean;
   csharpNamespace?: string;
+  csharpNullable: boolean;
 }
-export interface ModelinaKotlinOptions extends ModelinaGeneralOptions {}
+export interface ModelinaKotlinOptions extends ModelinaGeneralOptions {
+  kotlinPackageName?: string;
+}
 export interface ModelinaRustOptions extends ModelinaGeneralOptions {}
 export interface ModelinaPythonOptions extends ModelinaGeneralOptions {}
 export interface ModelinaDartOptions extends ModelinaGeneralOptions {}
@@ -90,8 +105,20 @@ export interface ModelinaGeneralQueryOptions {
   enumKeyNamingFormat?: string;
 }
 
-export interface ModelinaJavaQueryOptions {}
-export interface ModelinaGoQueryOptions {}
+export interface ModelinaJavaQueryOptions {
+  javaPackageName?: string;
+  javaIncludeJackson?: string;
+  javaIncludeMarshaling?: string;
+  javaArrayType?: string;
+  javaOverwriteHashcode?:string;
+  javaOverwriteEqual?: string;
+  javaOverwriteToString?: string;
+  javaJavaDocs?: string;
+  javaJavaxAnnotation?: string;
+}
+export interface ModelinaGoQueryOptions {
+  goPackageName?: string;
+}
 export interface ModelinaJavaScriptQueryOptions {}
 export interface ModelinaCSharpQueryOptions {
   csharpArrayType?: string;
@@ -101,8 +128,11 @@ export interface ModelinaCSharpQueryOptions {
   csharpOverwriteEqual?: string;
   csharpIncludeNewtonsoft?: string;
   csharpNamespace?: string;
+  csharpNullable?: string;
 }
-export interface ModelinaKotlinQueryOptions {}
+export interface ModelinaKotlinQueryOptions {
+  kotlinPackageName?: string;
+}
 export interface ModelinaRustQueryOptions {}
 export interface ModelinaPythonQueryOptions {}
 export interface ModelinaCplusplusQueryOptions {
