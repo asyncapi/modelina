@@ -126,7 +126,7 @@ class JavaGeneratorOptions extends React.Component<
         <li className=' flex items-center'>
           <InfoModal text="Include Jackson serialization :">
             <p>
-            Jackson annotations are a set of annotations provided by the Jackson library, which is a popular Java-based JSON processing library. These annotations are used to configure and control how Java objects are serialized to JSON and deserialized from JSON.
+            When you enable the "Include Jackson serialization" option, it means that the code generator will include the necessary annotations from the Jackson library in the generated code. These annotations are used to configure and control how Java objects are serialized to JSON and deserialized from JSON.
             <br/><br/>
             Annotations in Java are represented by the @ symbol followed by the annotation name. 
             </p>
@@ -172,9 +172,9 @@ class JavaGeneratorOptions extends React.Component<
         <li className=' flex items-center'>
           <InfoModal text="Java array type :">
             <p>
-            This option allows you to swithch between rendering collections as List type or Array.
+            This option allows you to switch between rendering collections as List type or Array.
             <br/><br/>
-            the default value is Array.
+            The default value is Array.
             </p>
           </InfoModal>
           <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
@@ -195,9 +195,9 @@ class JavaGeneratorOptions extends React.Component<
         <li className=' flex items-center'>
           <InfoModal text="Include Overwrite HashCode Support :">
             <p>
-            In Java, the hashCode() method is used to generate a unique numeric value (hash code) for an object. The default implementation of hashCode() in the Object class generates hash codes based on the memory address of the object, which may not be suitable for all classes.
+            In Java, the "hashCode()" method is used to generate a unique numeric value (hash code) for an object. The default implementation of hashCode() in the Object class generates hash codes based on the memory address of the object, which may not be suitable for all classes.
             <br/><br/>
-            By enabling the option to overwrite hashCode support, you can provide your own implementation of the hashCode() method in a class. This allows you to define a hash code generation algorithm based on the specific properties and requirements of the class.
+            When you enable the "Include Overwrite HashCode Support" option, it means that the code generator will automatically generate a customized implementation of the hashCode() method for the class you are working with. Instead of using the default implementation.
             </p>
           </InfoModal>
           <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
@@ -216,9 +216,9 @@ class JavaGeneratorOptions extends React.Component<
         <li className=' flex items-center'>
           <InfoModal text="Include Overwrite Equal Support :">
             <p>
-            n Java, the equals() method is used to determine if two objects are equal based on their content rather than their memory addresses. The default implementation of equals() in the Object class performs a reference equality check, meaning it only returns true if the compared objects are the same instance in memory.
+            In Java, the "equals()" method is used to determine if two objects are equal based on their content rather than their memory addresses. The default implementation of equals() in the Object class performs a reference equality check, meaning it only returns true if the compared objects are the same instance in memory.
             <br/><br/>
-            By enabling the option to overwrite equal support, you can provide your own implementation of the equals() method in a class. This allows you to define the equality criteria based on the specific properties and requirements of the class.
+            When you enable the "Include Overwrite Equal Support" option, it means that the code generator will automatically generate a customized implementation of the equals() method for the class you are working with. Instead of using the default implementation.
             </p>
           </InfoModal>
           <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
@@ -237,9 +237,9 @@ class JavaGeneratorOptions extends React.Component<
         <li className=' flex items-center'>
           <InfoModal text="Include Overwrite toString Support :">
             <p>
-            In Java, the toString() method is used to provide a string representation of an object. The default implementation in the Object class returns a string consisting of the class name, an "@" symbol, and the hexadecimal representation of the object's hash code.
+            In Java, the "toString()" method is a built-in method defined in the Object class and inherited by all other classes. Its purpose is to provide a string representation of an object. By default, the toString() method in the Object class returns a string that includes the class name, an "@" symbol, and the hexadecimal representation of the object's hash code.
             <br/><br/>
-            By enabling the option to overwrite toString() support, you can define your own implementation of the toString() method for a class. This allows you to provide a more meaningful and customized string representation of the object based on its properties.
+            When you enable the "Include Overwrite toString Support" option, it means that the code generator will automatically generate a customized implementation of the toString() method for the class you are working with. Instead of using the default implementation.
             </p>
           </InfoModal>
           <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
@@ -258,7 +258,7 @@ class JavaGeneratorOptions extends React.Component<
         <li className=' flex items-center'>
           <InfoModal text="Include javaDocs :">
             <p>
-            Enabling this option will incude the description of the properties as comments in the generated code.
+            Enabling this option will include the description of the properties as comments in the generated code.
             <br/><br/>
             The default value if false.
             </p>
