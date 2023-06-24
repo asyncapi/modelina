@@ -1,6 +1,7 @@
 import React from 'react';
 import { PlaygroundPhpConfigContext } from '@/components/contexts/PlaygroundConfigContext';
 import { debounce } from 'lodash';
+import InfoModal from '@/components/InfoModal';
 
 interface PhpGeneratorOptionsProps {
   setNewConfig?: (queryKey: string, queryValue: string) => void;
@@ -52,8 +53,13 @@ class PhpGeneratorOptions extends React.Component<
         <h3 className="text-lg font-medium leading-6 text-gray-900">
           PHP Specific options
         </h3>
-        <li>
-          <label className="flex items-center py-2 justify-between cursor-pointer">
+        <li className='flex items-center'>
+          <InfoModal text="PHP namespace to use for generated models" >
+            <p>
+              In PHP namespaces are used to organize code into logical groups. It helps to avoid naming conflicts and allows to use the same class names in different namespaces.
+            </p>
+          </InfoModal>
+          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Namespace
             </span>
@@ -66,8 +72,15 @@ class PhpGeneratorOptions extends React.Component<
             />
           </label>
         </li>
-        <li>
-          <label className="flex items-center py-2 justify-between cursor-pointer">
+        <li className='flex items-center'>
+          <InfoModal text="Include descriptions in generated models" >
+            <p>
+              It indicates whether the descriptions should be included in the generated code.
+              <br/> <br/>
+              The default value is false.
+            </p>
+          </InfoModal>
+          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Include Descriptions
             </span>
