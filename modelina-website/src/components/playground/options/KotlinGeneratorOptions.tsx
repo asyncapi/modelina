@@ -1,6 +1,7 @@
 import React from 'react';
 import { debounce } from 'lodash';
 import { PlaygroundKotlinConfigContext } from '@/components/contexts/PlaygroundConfigContext';
+import InfoModal from '@/components/InfoModal';
 
 interface KotlinGeneratorOptionsProps {
   setNewConfig?: (queryKey: string, queryValue: string) => void;
@@ -44,8 +45,13 @@ class KotlinGeneratorOptions extends React.Component<
         <h3 className="text-lg font-medium leading-6 text-gray-900">
           Kotlin Specific options
         </h3>
-        <li>
-          <label className="flex items-center py-2 justify-between cursor-pointer">
+        <li className=' flex items-center'>
+        <InfoModal text="Package Name :">
+            <p>
+            In Kotlin, a package name is used to organize classes, functions, and other code elements into logical groups or containers. It helps in avoiding naming conflicts and provides a way to structure your code.
+            </p>
+          </InfoModal>
+          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Package Name
             </span>
