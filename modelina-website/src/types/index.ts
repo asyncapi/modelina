@@ -9,26 +9,54 @@ export interface UpdateMessage {
   models: ModelProps[];
 }
 
-export interface ModelinaTypeScriptOptions {
+export interface ModelinaTypeScriptOptions extends ModelinaGeneralOptions {
   tsMarshalling: boolean;
   tsModelType: 'class' | 'interface' | undefined;
   tsEnumType: 'union' | 'enum' | undefined;
   tsModuleSystem: 'ESM' | 'CJS' | undefined;
   tsIncludeDescriptions: boolean;
+  tsIncludeJsonBinPack: boolean;
+  tsIncludeExampleFunction: boolean;
 }
-export interface ModelinaJavaOptions {}
-export interface ModelinaCplusplusOptions {}
-export interface ModelinaGoOptions {}
-export interface ModelinaJavaScriptOptions {}
-export interface ModelinaCSharpOptions {
+
+export interface ModelinaJavaOptions extends ModelinaGeneralOptions {
+  javaPackageName?: string;
+  javaIncludeJackson: boolean;
+  javaIncludeMarshaling: boolean;
+  javaArrayType: 'List' | 'Array' | undefined;
+  javaOverwriteHashcode: boolean;
+  javaOverwriteEqual: boolean;
+  javaOverwriteToString: boolean;
+  javaJavaDocs: boolean;
+  javaJavaxAnnotation: boolean;
+}
+export interface ModelinaCplusplusOptions extends ModelinaGeneralOptions {
+  cplusplusNamespace?: string;
+}
+export interface ModelinaGoOptions extends ModelinaGeneralOptions {
+  goPackageName?: string;
+}
+export interface ModelinaJavaScriptOptions extends ModelinaGeneralOptions {}
+export interface ModelinaPhpOptions extends ModelinaGeneralOptions {
+  phpIncludeDescriptions: boolean;
+  phpNamespace?: string;
+}
+export interface ModelinaCSharpOptions extends ModelinaGeneralOptions {
   csharpArrayType: 'List' | 'Array' | undefined;
   csharpAutoImplemented: boolean;
   csharpOverwriteHashcode: boolean;
+  csharpIncludeJson: boolean;
+  csharpOverwriteEqual: boolean;
+  csharpIncludeNewtonsoft: boolean;
+  csharpNamespace?: string;
+  csharpNullable: boolean;
 }
-export interface ModelinaKotlinOptions {}
-export interface ModelinaRustOptions {}
-export interface ModelinaPythonOptions {}
-export interface ModelinaDartOptions {}
+export interface ModelinaKotlinOptions extends ModelinaGeneralOptions {
+  kotlinPackageName?: string;
+}
+export interface ModelinaRustOptions extends ModelinaGeneralOptions {}
+export interface ModelinaPythonOptions extends ModelinaGeneralOptions {}
+export interface ModelinaDartOptions extends ModelinaGeneralOptions {}
 export interface ModelinaGeneralOptions {
   language:
     | 'typescript'
@@ -40,31 +68,89 @@ export interface ModelinaGeneralOptions {
     | 'rust'
     | 'python'
     | 'dart'
-    | 'cplusplus';
+    | 'cplusplus'
+    | 'php';
+  showTypeMappingExample: boolean;
+  indentationType: 
+    | 'tabs'
+    | 'spaces';
+  propertyNamingFormat: 
+    | 'default'
+    | 'snake_case'
+    | 'pascal_case'
+    | 'camel_case'
+    | 'param_case'
+    | 'constant_case';
+  modelNamingFormat:
+    | 'default'
+    | 'snake_case'
+    | 'pascal_case'
+    | 'camel_case'
+    | 'param_case'
+    | 'constant_case';
+  enumKeyNamingFormat:
+    | 'default'
+    | 'snake_case'
+    | 'pascal_case'
+    | 'camel_case'
+    | 'param_case'
+    | 'constant_case';
 }
 export interface ModelinaGeneralQueryOptions {
   language: string;
+  showTypeMappingExample?: string;
+  indentationType?: string;
+  propertyNamingFormat?: string;
+  modelNamingFormat?: string;
+  enumKeyNamingFormat?: string;
 }
 
-export interface ModelinaJavaQueryOptions {}
-export interface ModelinaGoQueryOptions {}
+export interface ModelinaJavaQueryOptions {
+  javaPackageName?: string;
+  javaIncludeJackson?: string;
+  javaIncludeMarshaling?: string;
+  javaArrayType?: string;
+  javaOverwriteHashcode?:string;
+  javaOverwriteEqual?: string;
+  javaOverwriteToString?: string;
+  javaJavaDocs?: string;
+  javaJavaxAnnotation?: string;
+}
+export interface ModelinaGoQueryOptions {
+  goPackageName?: string;
+}
 export interface ModelinaJavaScriptQueryOptions {}
 export interface ModelinaCSharpQueryOptions {
   csharpArrayType?: string;
   csharpAutoImplemented?: string;
   csharpOverwriteHashcode?:string;
+  csharpIncludeJson?: string;
+  csharpOverwriteEqual?: string;
+  csharpIncludeNewtonsoft?: string;
+  csharpNamespace?: string;
+  csharpNullable?: string;
 }
-export interface ModelinaKotlinQueryOptions {}
+export interface ModelinaKotlinQueryOptions {
+  kotlinPackageName?: string;
+}
 export interface ModelinaRustQueryOptions {}
 export interface ModelinaPythonQueryOptions {}
-export interface ModelinaCplusplusQueryOptions {}
+export interface ModelinaCplusplusQueryOptions {
+  cplusplusNamespace?: string;
+}
 export interface ModelinaDartQueryOptions {}
+export interface ModelinaPhpQueryOptions {
+  phpIncludeDescriptions?: string;
+  phpNamespace?: string;
+}
 
 export interface ModelinaTypeScriptQueryOptions {
   tsMarshalling?: string;
   tsModelType?: string;
   tsEnumType?: string;
   tsIncludeDescriptions?: string;
+  tsIncludeJsonBinPack?: string;
+  tsIncludeExampleFunction?: string;
 }
 
 export interface ModelinaOptions
@@ -77,7 +163,9 @@ export interface ModelinaOptions
     ModelinaKotlinOptions,
     ModelinaRustOptions,
     ModelinaPythonOptions,
-    ModelinaDartOptions {}
+    ModelinaDartOptions,
+    ModelinaPhpOptions, 
+    ModelinaCplusplusOptions {}
 export interface ModelinaQueryOptions
   extends ParsedUrlQuery,
     ModelinaGeneralQueryOptions,
@@ -90,7 +178,8 @@ export interface ModelinaQueryOptions
     ModelinaRustQueryOptions,
     ModelinaPythonQueryOptions,
     ModelinaCplusplusQueryOptions,
-    ModelinaDartQueryOptions {}
+    ModelinaDartQueryOptions,
+    ModelinaPhpQueryOptions {}
 
 export interface GenerateMessage extends ModelinaOptions {
   input: string;
@@ -135,6 +224,10 @@ export const modelinaLanguageOptions = [
   {
     value: 'cplusplus',
     text: 'C++'
+  },
+  {
+    value: 'php',
+    text: 'PHP'
   }
 ];
 

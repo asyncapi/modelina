@@ -16,7 +16,7 @@
 */processors/AsyncAPIInputProcessor*.ts
 
 # Input Champions for TypeScript input
-*/processors/TypeScriptInputProcessor*.ts @ron-debajyoti
+*/processors/TypeScriptInputProcessor*.ts
 
 # Input Champions for OpenAPI input
 */processors/OpenAPIInputProcessor*.ts
@@ -38,7 +38,7 @@
 */generators/java
 
 # Language Champions for C# and it's presets
-*/generators/csharp @ron-debajyoti
+*/generators/csharp
 
 # Language Champions for Dart and it's presets
 */generators/dart
@@ -46,4 +46,5 @@
 # Language Champions for Rust and its presets
 */generators/rust @leigh-johnson
 
-# Language Champions for Kotlin and it's presets
+# Language Champions for PHP and it's presets
+*/generators/php @ferror

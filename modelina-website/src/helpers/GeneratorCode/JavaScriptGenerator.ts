@@ -1,34 +1,25 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ModelinaJavaScriptOptions } from '../../types';
+import { getGeneralGeneratorCode, renderGeneratorInstanceCode } from './GeneralGenerator';
 
 export function getJavaScriptGeneratorCode(
   generatorOptions: ModelinaJavaScriptOptions
 ) {
-  const optionString: string[] = [];
+  const optionString: string[] = getGeneralGeneratorCode(generatorOptions, 'javaScriptDefaultEnumKeyConstraints', 'javaScriptDefaultPropertyKeyConstraints', 'javaScriptDefaultModelNameConstraints');
   const optionStringPresets: string[] = [];
 
-  const presetOptions =
-    optionStringPresets.length > 0
-      ? `${optionString.length > 0 ? ',' : ''}
-    presets: [
-      ${optionStringPresets.join(', \n')}
-    ]`
-      : '';
-  let fullOptions = '';
-  if (optionStringPresets.length > 0 || optionString.length > 0) {
-    fullOptions = `{
-    ${optionString.join(';\n')}${presetOptions}
-  }`;
-  }
-  const generateInstanceCode =
-    `const generator = new JavaScriptGenerator(${fullOptions});`.replace(
-      /^\s*\n/gm,
-      ''
-    );
+  const generateInstanceCode = renderGeneratorInstanceCode(optionString, optionStringPresets, 'JavaScriptGenerator');
 
   return `// Use the following code as starting point
 // To generate the models exactly as displayed in the playground
-import { JavaScriptGenerator } from '@asyncapi/modelina';
+import { 
+  JavaScriptGenerator, 
+  IndentationTypes, 
+  FormatHelpers, 
+  javaScriptDefaultEnumKeyConstraints, 
+  javaScriptDefaultModelNameConstraints, 
+  javaScriptDefaultPropertyKeyConstraints 
+} from '@asyncapi/modelina';
   
 ${generateInstanceCode}`;
 }
