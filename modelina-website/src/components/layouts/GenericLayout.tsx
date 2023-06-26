@@ -9,9 +9,7 @@ export default function GenericLayout({
   image = '/img/social/modelina-card.jpg',
   children,
   wide = true,
-  full = false,
-  padding,
-  footerPadding = 'mb-12'
+  full = false
 }: any) {
   if (!title || !description) {
     throw new Error(
@@ -20,12 +18,12 @@ export default function GenericLayout({
   }
 
   return (
-    <div className={footerPadding}>
+    <>
       <Head title={title} description={description} image={image} />
       <StickyNavbar>
         <NavBar className="max-w-screen-xl block px-4 sm:px-6 lg:px-8 mx-auto" />
       </StickyNavbar>
-      <Container wide={wide} full={full} padding={padding}>{children}</Container>
-    </div>
+      <Container wide={wide} full={full}>{children}</Container>
+    </>
   );
 }
