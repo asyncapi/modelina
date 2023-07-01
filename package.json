@@ -52,7 +52,6 @@
   },
   "devDependencies": {
     "@asyncapi/parserV1": "npm:@asyncapi/parser@^1.17.2",
-    "@netlify/plugin-nextjs": "4.32.2",
     "@types/jest": "^27.0.2",
     "@typescript-eslint/eslint-plugin": "^5.56.0",
     "@typescript-eslint/parser": "^5.56.0",
