@@ -83,7 +83,7 @@
     "docker:test:blackbox": "docker compose run modelina npm run test:blackbox",
     "test": "npm run test:library && npm run test:examples",
     "test:update": "npm run test:library -- -u && npm run test:examples:update",
-    "test:library": "cross-env CI=true jest --coverage --testPathIgnorePatterns ./test/blackbox --testPathIgnorePatterns ./test/runtime --testPathIgnorePatterns ./examples",
+    "test:library": "./node_modules/.bin/cross-env CI=true jest --coverage --testPathIgnorePatterns ./test/blackbox --testPathIgnorePatterns ./test/runtime --testPathIgnorePatterns ./examples",
     "test:examples": "npm run test:examples:regular && npm run test:examples:websites",
     "test:examples:update": "npm run test:examples:regular -- -u && npm run test:examples:websites -- -u",
     "test:examples:regular": "cross-env CI=true jest ./examples --testPathIgnorePatterns ./examples/integrate-with-react",
