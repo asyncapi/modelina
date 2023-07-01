@@ -133,7 +133,7 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
     }
 
     if (instance.additionalProperties === undefined) {instance.additionalProperties = new Map();}
-      for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"[object Object]\\",\\"[object Object]\\",\\"[object Object]\\",\\"[object Object]\\",\\"[object Object]\\",\\"[object Object]\\",\\"[object Object]\\",\\"[object Object]\\"].includes(key);}))) {
+      for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"string prop\\",\\"enumProp\\",\\"numberProp\\",\\"nestedObject\\",\\"unionTest\\",\\"unionArrayTest\\",\\"arrayTest\\",\\"additionalProperties\\"].includes(key);}))) {
         instance.additionalProperties.set(key, NestedTest.unmarshal(value as any));
       }
 
@@ -196,7 +196,7 @@ exports[`Marshalling preset should render un/marshal code 3`] = `
     }
 
     if (instance.additionalProperties === undefined) {instance.additionalProperties = new Map();}
-      for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"[object Object]\\",\\"[object Object]\\"].includes(key);}))) {
+      for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"stringProp\\",\\"additionalProperties\\"].includes(key);}))) {
         instance.additionalProperties.set(key, value as any);
       }
 

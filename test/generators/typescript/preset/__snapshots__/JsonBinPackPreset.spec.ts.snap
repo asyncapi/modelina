@@ -45,7 +45,7 @@ exports[`JsonBinPack preset should work fine with AsyncAPI inputs 1`] = `
     }
 
     if (instance.additionalProperties === undefined) {instance.additionalProperties = new Map();}
-      for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"[object Object]\\",\\"[object Object]\\"].includes(key);}))) {
+      for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"email\\",\\"additionalProperties\\"].includes(key);}))) {
         instance.additionalProperties.set(key, value as any);
       }
 
@@ -111,7 +111,7 @@ exports[`JsonBinPack preset should work fine with JSON Schema draft 4 1`] = `
     }
 
     if (instance.additionalProperties === undefined) {instance.additionalProperties = new Map();}
-      for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"[object Object]\\",\\"[object Object]\\"].includes(key);}))) {
+      for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"email\\",\\"additionalProperties\\"].includes(key);}))) {
         instance.additionalProperties.set(key, value as any);
       }
 
@@ -177,7 +177,7 @@ exports[`JsonBinPack preset should work fine with JSON Schema draft 6 1`] = `
     }
 
     if (instance.additionalProperties === undefined) {instance.additionalProperties = new Map();}
-      for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"[object Object]\\",\\"[object Object]\\"].includes(key);}))) {
+      for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"email\\",\\"additionalProperties\\"].includes(key);}))) {
         instance.additionalProperties.set(key, value as any);
       }
 

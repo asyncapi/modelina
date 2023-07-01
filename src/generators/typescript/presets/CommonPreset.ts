@@ -226,8 +226,8 @@ function renderUnmarshalProperty(
 function renderUnmarshalProperties(model: ConstrainedObjectModel) {
   const properties = model.properties || {};
   const propertyKeys = [...Object.entries(properties)];
-  const originalPropertyNames = propertyKeys.map(([, name]) => {
-    return name;
+  const originalPropertyNames = propertyKeys.map(([, model]) => {
+    return model.unconstrainedPropertyName;
   });
   //These are a bit special as 'unwrap' dictionary models means they have to be unwrapped within the JSON object.
   const unwrapDictionaryProperties = [];

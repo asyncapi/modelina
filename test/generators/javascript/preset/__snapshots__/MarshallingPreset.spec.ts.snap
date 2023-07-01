@@ -60,7 +60,7 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
     //Not part of core properties
 
     //Only go over remaining. properties 
-    for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"stringProp\\",\\"numberProp\\",\\"additionalProperties\\"].includes(key);}))) {
+    for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"string prop\\",\\"numberProp\\",\\"additionalProperties\\"].includes(key);}))) {
   
     }
 
