@@ -22,7 +22,7 @@ jobs:
         with:
           node-version: 14
           cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
+          cache-dependency-path: 'package-lock.json'
           
       - name: Modelina Core Install dependencies
         id: first-installation-core
