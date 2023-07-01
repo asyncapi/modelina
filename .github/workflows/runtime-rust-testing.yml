@@ -24,7 +24,7 @@ jobs:
         with:
           node-version: "${{ steps.lockversion.outputs.version }}"
           cache: 'npm'
-          cache-dependency-path: 'package-lock.json'
+          cache-dependency-path: '**/package-lock.json'
       - name: Build library
         run: npm install && npm run build:prod
       - name: Install Rust

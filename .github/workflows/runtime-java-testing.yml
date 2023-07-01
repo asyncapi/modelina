@@ -15,16 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Check package-lock version
-        uses: asyncapi/.github/.github/actions/get-node-version-from-package-lock@master
-        id: lockversion
+        uses: actions/checkout@v2
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v1
         with:
-          node-version: "${{ steps.lockversion.outputs.version }}"
-          cache: 'npm'
-          cache-dependency-path: 'package-lock.json'
+          node-version: 14
       - name: Build library
         run: npm install && npm run build:prod
       - uses: actions/setup-java@v2

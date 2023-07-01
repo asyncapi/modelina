@@ -56,7 +56,7 @@ jobs:
         with:
           node-version: "${{ steps.lockversion.outputs.version }}"
           cache: 'npm'
-          cache-dependency-path: 'package-lock.json'
+          cache-dependency-path: '**/package-lock.json'
       - if: steps.packagejson.outputs.exists == 'true'
         name: Install dependencies
         id: first-installation
