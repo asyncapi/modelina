@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { PythonGenerator, PythonOptions } from '../../../../../';
-import { convertModelsToProps } from './Helpers';
+import { PythonGenerator, PythonOptions, pythonDefaultEnumKeyConstraints, pythonDefaultModelNameConstraints, pythonDefaultPropertyKeyConstraints } from '../../../../../';
+import { applyGeneralOptions, convertModelsToProps } from './Helpers';
 import { ModelinaPythonOptions, ModelProps } from '../../../types';
 
 /**
@@ -13,12 +13,11 @@ export async function getPythonModels(
   const options: Partial<PythonOptions> = {
     presets: []
   };
+  applyGeneralOptions(generatorOptions, options, pythonDefaultEnumKeyConstraints, pythonDefaultPropertyKeyConstraints, pythonDefaultModelNameConstraints);
 
   try {
     const generator = new PythonGenerator(options);
-    const generatedModels = await generator.generateCompleteModels(input, {
-      packageName: 'asyncapi.models'
-    });
+    const generatedModels = await generator.generateCompleteModels(input, {});
     return convertModelsToProps(generatedModels);
   } catch (e : any) {
     console.error('Could not generate models');
