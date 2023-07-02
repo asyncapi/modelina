@@ -1,14 +1,14 @@
 
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "utils/doctest.h"
-#include "utils/nlohmann/json.hpp"
+// #include "utils/nlohmann/json.hpp"
 
 #include <string>
 #include <vector>
 
 #include "lib/generated/address.hpp"
 
-using json = nlohmann::json;
+// using json = nlohmann::json;
 
 TEST_CASE("Should make an object of the generated class")
 {
