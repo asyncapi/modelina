@@ -26,5 +26,7 @@ jobs:
         uses: aminya/setup-cpp@v0.28.0
       - name: Generate C++ models
         run: npm run generate:runtime:cplusplus
+      - name: Clone git submodules
+        run: git submodule update --init --recursive
       - name: Run runtime tests
         run: npm run test:runtime:cplusplus
