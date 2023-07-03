@@ -7,6 +7,6 @@ test('C++ runtime testing', async () => {
   const compileCommand = `cd ${path.resolve(
     __dirname,
     './runtime-cplusplus/src'
-  )} && c++ -std=c++17 -o AddressTest.out AddressTest.cpp && ./AddressTest.out`;
+  )} && git submodule update --init && c++ -std=c++17 -o AddressTest.out AddressTest.cpp && ./AddressTest.out`;
   await execCommand(compileCommand);
 });
