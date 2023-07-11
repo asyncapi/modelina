@@ -1,6 +1,12 @@
 const path = require('path');
 const {readdir, readFile, writeFile, mkdir, } = require('fs/promises');
 
+const refactorExampleName = (name) => {
+  const [first, ...rest] = name.split('-');
+  return first.charAt(0).toUpperCase() + first.slice(1) + " " + rest.join(" ")
+
+}
+
 const getDirectories = async source =>
   (await readdir(source, { withFileTypes: true }))
     .filter(dirent => dirent.isDirectory())
@@ -88,7 +94,7 @@ async function start() {
     const language = getLanguage(example);
     templateConfig[example] = {
       description: description,
-      displayName: example,
+      displayName: refactorExampleName(example),
       code,
       output,
       language
