@@ -3,16 +3,16 @@
 exports[`JAVA_JACKSON_PRESET should render Jackson annotations for class 1`] = `
 "public class Clazz {
   @JsonProperty(\\"min_number_prop\\")
-  private Double minNumberProp;
+  private double minNumberProp;
   @JsonProperty(\\"max_number_prop\\")
-  private Double maxNumberProp;
+  private double maxNumberProp;
   private Map<String, Object> additionalProperties;
 
-  public Double getMinNumberProp() { return this.minNumberProp; }
-  public void setMinNumberProp(Double minNumberProp) { this.minNumberProp = minNumberProp; }
+  public double getMinNumberProp() { return this.minNumberProp; }
+  public void setMinNumberProp(double minNumberProp) { this.minNumberProp = minNumberProp; }
 
-  public Double getMaxNumberProp() { return this.maxNumberProp; }
-  public void setMaxNumberProp(Double maxNumberProp) { this.maxNumberProp = maxNumberProp; }
+  public double getMaxNumberProp() { return this.maxNumberProp; }
+  public void setMaxNumberProp(double maxNumberProp) { this.maxNumberProp = maxNumberProp; }
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }

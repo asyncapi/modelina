@@ -109,7 +109,7 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
     return 'Object';
   },
   Float({ constrainedModel }): string {
-    let type = 'Double';
+    let type = constrainedModel.options.isNullable ? 'Double' : 'double';
     const format =
       constrainedModel.originalInput &&
       constrainedModel.originalInput['format'];
