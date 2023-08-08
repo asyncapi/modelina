@@ -623,6 +623,67 @@
         "test",
         "infra"
       ]
+    },
+    {
+      "login": "JFCote",
+      "name": "Jean-François Côté",
+      "avatar_url": "https://avatars.githubusercontent.com/u/14336900?v=4",
+      "profile": "http://jfcote.github.io",
+      "contributions": [
+        "code",
+        "test",
+        "example",
+        "doc"
+      ]
+    },
+    {
+      "login": "SumantxD",
+      "name": "Sumant.xD",
+      "avatar_url": "https://avatars.githubusercontent.com/u/65810424?v=4",
+      "profile": "https://github.com/SumantxD",
+      "contributions": [
+        "test",
+        "infra",
+        "code"
+      ]
+    },
+    {
+      "login": "aryanas159",
+      "name": "Aryan Singh",
+      "avatar_url": "https://avatars.githubusercontent.com/u/114330931?v=4",
+      "profile": "https://github.com/aryanas159",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "markuspoerschke",
+      "name": "Markus Poerschke",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1222377?v=4",
+      "profile": "http://markus.poerschke.nrw",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "jamesmoey",
+      "name": "James Moey",
+      "avatar_url": "https://avatars.githubusercontent.com/u/457472?v=4",
+      "profile": "https://github.com/jamesmoey",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "tomwolanski",
+      "name": "tomwolanski",
+      "avatar_url": "https://avatars.githubusercontent.com/u/68085653?v=4",
+      "profile": "https://github.com/tomwolanski",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,

@@ -38,6 +38,7 @@ export interface CSharpOptions extends CommonGeneratorOptions<CSharpPreset> {
   constraints: Constraints;
   autoImplementedProperties: boolean;
   modelType: 'class' | 'record';
+  handleNullable: boolean;
 }
 export type CSharpTypeMapping = TypeMapping<
   CSharpOptions,
@@ -62,6 +63,7 @@ export class CSharpGenerator extends AbstractGenerator<
     typeMapping: CSharpDefaultTypeMapping,
     constraints: CSharpDefaultConstraints,
     autoImplementedProperties: false,
+    handleNullable: false,
     modelType: 'class',
     // Temporarily set
     dependencyManager: () => {

@@ -10,4 +10,4 @@ src/processors/TemplateInputProcessor.ts
 test/processors/TemplateInputProcessor.spec.ts
 modelina-website
 
-test/runtime/runtime-**/**
+test/runtime/runtime-**

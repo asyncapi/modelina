@@ -87,11 +87,26 @@ class Playground extends React.Component<
     tsIncludeJsonBinPack: false,
     csharpArrayType: 'Array',
     csharpAutoImplemented: false,
-    phpIncludeDescriptions: false,
     csharpOverwriteHashcode: false,
     csharpIncludeJson: false,
     csharpOverwriteEqual: false,
     csharpIncludeNewtonsoft: false,
+    csharpNamespace: 'asyncapi.models',
+    csharpNullable: false,
+    phpIncludeDescriptions: false,
+    phpNamespace: 'AsyncAPI/Models',
+    cplusplusNamespace: 'AsyncapiModels',
+    javaPackageName: 'asyncapi.models',
+    javaIncludeJackson: false,
+    javaIncludeMarshaling: false,
+    javaArrayType: 'Array',
+    javaOverwriteHashcode: false,
+    javaOverwriteEqual: false,
+    javaOverwriteToString: false,
+    javaJavaDocs: false,
+    javaJavaxAnnotation: false,
+    goPackageName: 'asyncapi.models',
+    kotlinPackageName: 'asyncapi.models'
   };
   hasLoadedQuery: boolean = false;
   constructor(props: ModelinaPlaygroundProps) {
@@ -258,6 +273,9 @@ class Playground extends React.Component<
       this.config.phpIncludeDescriptions =
         query.phpIncludeDescriptions === 'true';
     }
+    if (query.phpNamespace !== undefined) {
+      this.config.phpNamespace = query.phpNamespace;
+    }
     if (query.csharpIncludeJson !== undefined) {
       this.config.csharpIncludeJson =
         query.csharpIncludeJson === 'true';
@@ -269,6 +287,55 @@ class Playground extends React.Component<
     if (query.csharpIncludeNewtonsoft !== undefined) {
       this.config.csharpIncludeNewtonsoft =
         query.csharpIncludeNewtonsoft === 'true';
+    }
+    if (query.csharpNamespace !== undefined) {
+      this.config.csharpNamespace = query.csharpNamespace;
+    }
+    if (query.csharpNullable !== undefined) {
+      this.config.csharpNullable = query.csharpNullable === 'true';
+    }
+    if(query.cplusplusNamespace !== undefined) {
+      this.config.cplusplusNamespace = query.cplusplusNamespace;
+    }
+    if (query.javaPackageName !== undefined) {
+      this.config.javaPackageName = query.javaPackageName;
+    }
+    if (query.javaIncludeJackson !== undefined) {
+      this.config.javaIncludeJackson =
+        query.javaIncludeJackson === 'true';
+    }
+    if (query.javaIncludeMarshaling !== undefined) {
+      this.config.javaIncludeMarshaling =
+        query.javaIncludeMarshaling === 'true';
+    }
+    if (query.javaArrayType !== undefined) {
+      this.config.javaArrayType = query.javaArrayType as any;
+    }
+    if (query.javaOverwriteHashcode !== undefined) {
+      this.config.javaOverwriteHashcode =
+        query.javaOverwriteHashcode === 'true';
+    }
+    if (query.javaOverwriteEqual !== undefined) {
+      this.config.javaOverwriteEqual =
+        query.javaOverwriteEqual === 'true';
+    }
+    if (query.javaOverwriteToString !== undefined) {
+      this.config.javaOverwriteToString =
+        query.javaOverwriteToString === 'true';
+    }
+    if (query.javaJavaDocs !== undefined) {
+      this.config.javaJavaDocs =
+        query.javaJavaDocs === 'true';
+    }
+    if (query.javaJavaxAnnotation !== undefined) {
+      this.config.javaJavaxAnnotation =
+        query.javaJavaxAnnotation === 'true';
+    }
+    if(query.goPackageName !== undefined) {
+      this.config.goPackageName = query.goPackageName;
+    }
+    if (query.kotlinPackageName !== undefined) {
+      this.config.kotlinPackageName = query.kotlinPackageName;
     }
     if (this.props.router.isReady && !this.hasLoadedQuery) {
       this.hasLoadedQuery = true;
@@ -290,7 +357,7 @@ class Playground extends React.Component<
       );
     }
     return (
-      <div className="py-16 overflow-hidden lg:py-24">
+      <div className="py-16 lg:py-24">
         <div className="relative text-center">
           <Heading level="h1" typeStyle="heading-lg">
             Modelina Playground

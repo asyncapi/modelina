@@ -47,7 +47,7 @@ These examples show a specific input and how they can be used:
 These are examples that can be applied in all scenarios.
 - [include-custom-function](./include-custom-function) - A basic example where a custom function is included.
 - [overwrite-naming-formatting](./overwrite-naming-formatting) - A basic example how to overwrite default naming format constraint in this case, overwriting returning a constant case format.
-- [overwrite-default-constraint](./overwrite-default-constraint/) -  A basic example how to overwrite the entire constraint logic and not just a single part of the default behavior, in this case overwriting the model naming constraint.
+- [overwrite-default-constraint](./overwrite-default-constraint) -  A basic example how to overwrite the entire constraint logic and not just a single part of the default behavior, in this case overwriting the model naming constraint.
 - [custom-logging](./custom-logging) - A basic example where a custom logger is used.
 - [generate-to-files](./generate-to-files) - A basic example that shows how you can generate the models directly to files.
 - [indentation-type-and-size](./indentation-type-and-size) - This example shows how to change the indentation type and size of the generated model.
@@ -103,6 +103,7 @@ These are all specific examples only relevant to the C# generator:
 - [csharp-overwrite-enum-naming](./csharp-overwrite-enum-naming) - A basic example on how to generate enum value names.
 - [csharp-use-inheritance](./csharp-use-inheritance) - A basic example that shows how to introduce inheritance to classes 
 - [csharp-generate-records](./csharp-generate-records) - A basic example that shows how to change C# model type from class to record.
+- [csharp-generate-handle-nullable](./csharp-generate-handle-nullable) - A basic example that shows how generate code than handles nullable mode and prevent warnings.
 
 ## TypeScript
 These are all specific examples only relevant to the TypeScript generator:

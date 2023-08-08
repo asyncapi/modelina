@@ -1,0 +1,3 @@
+[submodule "test/runtime/runtime-cplusplus/src/utils/doctest"]
+	path = test/runtime/runtime-cplusplus/src/utils/doctest
+	url = https://github.com/doctest/doctest
