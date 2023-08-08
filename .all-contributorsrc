@@ -675,6 +675,15 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "tomwolanski",
+      "name": "tomwolanski",
+      "avatar_url": "https://avatars.githubusercontent.com/u/68085653?v=4",
+      "profile": "https://github.com/tomwolanski",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
