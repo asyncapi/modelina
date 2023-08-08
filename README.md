@@ -9,7 +9,7 @@
 [![Discussions](https://img.shields.io/github/discussions/asyncapi/modelina)](https://github.com/asyncapi/modelina/discussions)
 [![Website](https://img.shields.io/website?label=website&url=https%3A%2F%2Fwww.modelina.org)](https://www.modelina.org)
 [![Playground](https://img.shields.io/website?label=playground&url=https%3A%2F%2Fwww.modelina.org%2Fplayground)](https://www.modelina.org/playground) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-60-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-61-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Your one-stop tool for generating accurate and well-tested models for representing the message payloads. Use it as a tool in your development workflow, or a library in a larger integrations, entirely in your control.
@@ -402,6 +402,7 @@ Thanks go out to these wonderful people ([emoji key](https://allcontributors.org
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/SumantxD"><img src="https://avatars.githubusercontent.com/u/65810424?v=4?s=100" width="100px;" alt="Sumant.xD"/><br /><sub><b>Sumant.xD</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=SumantxD" title="Tests">⚠️</a> <a href="#infra-SumantxD" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="https://github.com/asyncapi/modelina/commits?author=SumantxD" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/aryanas159"><img src="https://avatars.githubusercontent.com/u/114330931?v=4?s=100" width="100px;" alt="Aryan Singh"/><br /><sub><b>Aryan Singh</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=aryanas159" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://markus.poerschke.nrw"><img src="https://avatars.githubusercontent.com/u/1222377?v=4?s=100" width="100px;" alt="Markus Poerschke"/><br /><sub><b>Markus Poerschke</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=markuspoerschke" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=markuspoerschke" title="Tests">⚠️</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/jamesmoey"><img src="https://avatars.githubusercontent.com/u/457472?v=4?s=100" width="100px;" alt="James Moey"/><br /><sub><b>James Moey</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=jamesmoey" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=jamesmoey" title="Tests">⚠️</a></td>
     </tr>
   </tbody>
 </table>
