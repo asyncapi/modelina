@@ -483,7 +483,11 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/81870866?v=4",
       "profile": "https://github.com/sambhavgupta0705",
       "contributions": [
-        "doc"
+        "doc",
+        "review",
+        "design",
+        "code",
+        "bug"
       ]
     },
     {
@@ -579,6 +583,107 @@
         "example",
         "review"
       ]
+    },
+    {
+      "login": "Bhavik-ag",
+      "name": "Bhavik Agarwal",
+      "avatar_url": "https://avatars.githubusercontent.com/u/73033511?v=4",
+      "profile": "https://codeyt.com/",
+      "contributions": [
+        "design"
+      ]
+    },
+    {
+      "login": "kaushik-rishi",
+      "name": "Rishi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/52498617?v=4",
+      "profile": "https://github.com/kaushik-rishi",
+      "contributions": [
+        "code",
+        "design"
+      ]
+    },
+    {
+      "login": "RohithBoppey",
+      "name": "Rohith Boppey",
+      "avatar_url": "https://avatars.githubusercontent.com/u/73538974?v=4",
+      "profile": "https://rohithboppey.netlify.app",
+      "contributions": [
+        "code",
+        "design"
+      ]
+    },
+    {
+      "login": "Shurtu-gal",
+      "name": "Ashish Padhy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/100484401?v=4",
+      "profile": "http://ashishpadhy.live",
+      "contributions": [
+        "code",
+        "test",
+        "infra"
+      ]
+    },
+    {
+      "login": "JFCote",
+      "name": "Jean-François Côté",
+      "avatar_url": "https://avatars.githubusercontent.com/u/14336900?v=4",
+      "profile": "http://jfcote.github.io",
+      "contributions": [
+        "code",
+        "test",
+        "example",
+        "doc"
+      ]
+    },
+    {
+      "login": "SumantxD",
+      "name": "Sumant.xD",
+      "avatar_url": "https://avatars.githubusercontent.com/u/65810424?v=4",
+      "profile": "https://github.com/SumantxD",
+      "contributions": [
+        "test",
+        "infra",
+        "code"
+      ]
+    },
+    {
+      "login": "aryanas159",
+      "name": "Aryan Singh",
+      "avatar_url": "https://avatars.githubusercontent.com/u/114330931?v=4",
+      "profile": "https://github.com/aryanas159",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "markuspoerschke",
+      "name": "Markus Poerschke",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1222377?v=4",
+      "profile": "http://markus.poerschke.nrw",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "jamesmoey",
+      "name": "James Moey",
+      "avatar_url": "https://avatars.githubusercontent.com/u/457472?v=4",
+      "profile": "https://github.com/jamesmoey",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "tomwolanski",
+      "name": "tomwolanski",
+      "avatar_url": "https://avatars.githubusercontent.com/u/68085653?v=4",
+      "profile": "https://github.com/tomwolanski",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -587,5 +692,6 @@
   "repoType": "github",
   "repoHost": "https://github.com",
   "skipCi": false,
-  "commitConvention": "none"
+  "commitConvention": "none",
+  "commitType": "docs"
 }

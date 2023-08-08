@@ -1,32 +1,37 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ModelinaGoOptions } from '../../types';
+import { getGeneralGeneratorCode, renderGeneratorInstanceCode } from './GeneralGenerator';
 
-export function getGoGeneratorCode(generatorOptions: ModelinaGoOptions) {
-  const optionString: string[] = [];
+export function getGoGeneratorCode(
+  generatorOptions: ModelinaGoOptions
+) {
+  const optionString: string[] = getGeneralGeneratorCode(generatorOptions, 'goDefaultEnumKeyConstraints', 'goDefaultPropertyKeyConstraints', 'goDefaultModelNameConstraints');
   const optionStringPresets: string[] = [];
 
-  const presetOptions =
-    optionStringPresets.length > 0
-      ? `${optionString.length > 0 ? ',' : ''}
-    presets: [
-      ${optionStringPresets.join(', \n')}
-    ]`
-      : '';
-  let fullOptions = '';
-  if (optionStringPresets.length > 0 || optionString.length > 0) {
-    fullOptions = `{
-    ${optionString.join(';\n')}${presetOptions}
-  }`;
+  if(generatorOptions.showTypeMappingExample === true) {
+    optionString.push(`typeMapping: {
+  Integer: ({ dependencyManager, constrainedModel, options, partOfProperty }) => {
+    // Add custom dependency for your type if required.
+    dependencyManager.addDependency('parent "family/father"');
+
+    //Return the type for the integer model
+    return 'int64';
   }
-  const generateInstanceCode =
-    `const generator = new GoGenerator(${fullOptions});`.replace(
-      /^\s*\n/gm,
-      ''
-    );
+}`);
+  }
+
+  const generateInstanceCode = renderGeneratorInstanceCode(optionString, optionStringPresets, 'GoGenerator');
 
   return `// Use the following code as starting point
 // To generate the models exactly as displayed in the playground
-import { GoGenerator } from '@asyncapi/modelina';
-  
+import { 
+  GoGenerator, 
+  IndentationTypes, 
+  FormatHelpers, 
+  goDefaultEnumKeyConstraints, 
+  goDefaultModelNameConstraints, 
+  goDefaultPropertyKeyConstraints 
+} from '@asyncapi/modelina';
+
 ${generateInstanceCode}`;
 }

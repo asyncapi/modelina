@@ -127,8 +127,8 @@ function renderUnmarshalUnwrapProperties(
       `instance.${prop}.set(key, ${unmarshalCode});`
     );
   }
-  const propertyNames = Object.keys(model.properties).map(
-    (prop) => `"${prop}"`
+  const propertyNames = Object.values(model.properties).map(
+    (model) => `"${model.unconstrainedPropertyName}"`
   );
   return `
 //Not part of core properties

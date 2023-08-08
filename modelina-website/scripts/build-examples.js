@@ -1,6 +1,12 @@
 const path = require('path');
 const {readdir, readFile, writeFile, mkdir, } = require('fs/promises');
 
+const refactorExampleName = (name) => {
+  const [first, ...rest] = name.split('-');
+  return first.charAt(0).toUpperCase() + first.slice(1) + " " + rest.join(" ")
+
+}
+
 const getDirectories = async source =>
   (await readdir(source, { withFileTypes: true }))
     .filter(dirent => dirent.isDirectory())
@@ -59,6 +65,8 @@ async function getDescription(exampleDirPath){
   let description = await readFile(path.resolve(exampleDirPath, './README.md'), "utf-8");
   const runExampleStart = description.search('## How to run this example');
   description = description.slice(0, runExampleStart);
+  // Replace all local references to examples with queries
+  description = description.replace(/\(..\/(.*?)(\/)?\)/g, '(?selectedExample=$1)');
   return description;
 }
 
@@ -86,7 +94,7 @@ async function start() {
     const language = getLanguage(example);
     templateConfig[example] = {
       description: description,
-      displayName: example,
+      displayName: refactorExampleName(example),
       code,
       output,
       language
@@ -97,8 +105,9 @@ async function start() {
   await writeFile(outputFile, JSON.stringify(templateConfig, null, 4));
 
   let mainReadme = await readFile(path.resolve(__dirname, '../../examples/README.md'), 'utf-8');
+  
   // Replace all local references to examples with queries
-  mainReadme = mainReadme.replace(/\(.\/(.*?)\)/g, '(?selectedExample=$1)');
+  mainReadme = mainReadme.replace(/\(.\/(.*?)(\/)?\)/g, '(?selectedExample=$1)');
   mainReadme = mainReadme.replace('<!-- toc is generated with GitHub Actions do not remove toc markers -->', '');
   mainReadme = mainReadme.replace('<!-- toc -->', '');
   mainReadme = mainReadme.replace('<!-- tocstop -->', '');

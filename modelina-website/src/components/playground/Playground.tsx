@@ -14,7 +14,6 @@ import PlaygroundOptions from './PlaygroundOptions';
 import Heading from '../typography/Heading';
 import Paragraph from '../typography/Paragraph';
 import { PlaygroundGeneratedContext } from '../contexts/PlaygroundGeneratedContext';
-import { PlaygroundGeneralConfigContext } from '../contexts/PlaygroundGeneralConfigContext';
 import {
   PlaygroundTypeScriptConfigContext,
   PlaygroundCSharpConfigContext,
@@ -25,7 +24,9 @@ import {
   PlaygroundKotlinConfigContext,
   PlaygroundPythonConfigContext,
   PlaygroundRustConfigContext,
-  PlaygroundCplusplusConfigContext
+  PlaygroundCplusplusConfigContext,
+  PlaygroundGeneralConfigContext,
+  PlaygroundPhpConfigContext
 } from '../contexts/PlaygroundConfigContext';
 import { getTypeScriptGeneratorCode } from '@/helpers/GeneratorCode/TypeScriptGenerator';
 import { getJavaScriptGeneratorCode } from '@/helpers/GeneratorCode/JavaScriptGenerator';
@@ -37,6 +38,8 @@ import { getPythonGeneratorCode } from '@/helpers/GeneratorCode/PythonGenerator'
 import { getDartGeneratorCode } from '@/helpers/GeneratorCode/DartGenerator';
 import { getCplusplusGeneratorCode } from '@/helpers/GeneratorCode/CplusplusGenerator';
 import CustomError from '../CustomError';
+import { getKotlinGeneratorCode } from '@/helpers/GeneratorCode/KotlinGenerator';
+import { getPhpGeneratorCode } from '@/helpers/GeneratorCode/PhpGenerator';
 
 interface WithRouterProps {
   router: NextRouter;
@@ -70,14 +73,40 @@ class Playground extends React.Component<
 > {
   config: ModelinaOptions = {
     language: 'typescript',
+    propertyNamingFormat: 'default',
+    modelNamingFormat: 'default',
+    enumKeyNamingFormat: 'default',
+    indentationType: 'spaces',
+    showTypeMappingExample: false,
     tsMarshalling: false,
     tsModelType: 'class',
     tsEnumType: 'enum',
     tsModuleSystem: 'CJS',
     tsIncludeDescriptions: false,
+    tsIncludeExampleFunction: false,
+    tsIncludeJsonBinPack: false,
     csharpArrayType: 'Array',
     csharpAutoImplemented: false,
     csharpOverwriteHashcode: false,
+    csharpIncludeJson: false,
+    csharpOverwriteEqual: false,
+    csharpIncludeNewtonsoft: false,
+    csharpNamespace: 'asyncapi.models',
+    csharpNullable: false,
+    phpIncludeDescriptions: false,
+    phpNamespace: 'AsyncAPI/Models',
+    cplusplusNamespace: 'AsyncapiModels',
+    javaPackageName: 'asyncapi.models',
+    javaIncludeJackson: false,
+    javaIncludeMarshaling: false,
+    javaArrayType: 'Array',
+    javaOverwriteHashcode: false,
+    javaOverwriteEqual: false,
+    javaOverwriteToString: false,
+    javaJavaDocs: false,
+    javaJavaxAnnotation: false,
+    goPackageName: 'asyncapi.models',
+    kotlinPackageName: 'asyncapi.models'
   };
   hasLoadedQuery: boolean = false;
   constructor(props: ModelinaPlaygroundProps) {
@@ -100,11 +129,13 @@ class Playground extends React.Component<
     this.generateNewCode = this.generateNewCode.bind(this);
   }
 
-  setNewConfig(config: string, configValue: any) {
+  setNewConfig(config: string, configValue: any, updateCode?: boolean) {
     this.setNewQuery(config, configValue);
     /* eslint-disable-next-line security/detect-object-injection */
     (this.config as any)[config] = configValue;
-    this.generateNewCode(this.state.input);
+    if(updateCode === true || updateCode === undefined) {
+      this.generateNewCode(this.state.input);
+    }
   }
 
   /**
@@ -114,8 +145,12 @@ class Playground extends React.Component<
     const newQuery = {
       query: { ...this.props.router.query }
     };
-    /* eslint-disable-next-line security/detect-object-injection */
-    newQuery.query[queryKey] = String(queryValue);
+    if(queryValue === false) {
+      delete newQuery.query[queryKey];
+    } else {
+      /* eslint-disable-next-line security/detect-object-injection */
+      newQuery.query[queryKey] = String(queryValue);
+    }
     Router.push(newQuery, undefined, { scroll: false });
   }
 
@@ -141,7 +176,9 @@ class Playground extends React.Component<
           rust: getRustGeneratorCode,
           python: getPythonGeneratorCode,
           dart: getDartGeneratorCode,
-          cplusplus: getCplusplusGeneratorCode
+          cplusplus: getCplusplusGeneratorCode,
+          kotlin: getKotlinGeneratorCode,
+          php: getPhpGeneratorCode
         }
         const generatorCode = generators[this.config.language](message);
         fetch(`${process.env.NEXT_PUBLIC_API_PATH}/generate`, {
@@ -182,6 +219,24 @@ class Playground extends React.Component<
     const isLoaded = isHardLoaded && isSoftLoaded;
 
     const query = this.props.router.query as ModelinaQueryOptions;
+    if (query.language !== undefined) {
+      this.config.language = query.language as any;
+    }
+    if (query.enumKeyNamingFormat !== undefined) {
+      this.config.enumKeyNamingFormat = query.enumKeyNamingFormat as any;
+    }
+    if (query.propertyNamingFormat !== undefined) {
+      this.config.propertyNamingFormat = query.propertyNamingFormat as any;
+    }
+    if (query.modelNamingFormat !== undefined) {
+      this.config.modelNamingFormat = query.modelNamingFormat as any;
+    }
+    if (query.showTypeMappingExample !== undefined) {
+      this.config.showTypeMappingExample = query.showTypeMappingExample  === 'true';
+    }
+    if (query.indentationType !== undefined) {
+      this.config.indentationType = query.indentationType as any;
+    }
     if (query.tsMarshalling !== undefined) {
       this.config.tsMarshalling = query.tsMarshalling === 'true';
     }
@@ -195,8 +250,13 @@ class Playground extends React.Component<
       this.config.tsIncludeDescriptions =
         query.tsIncludeDescriptions === 'true';
     }
-    if (query.language !== undefined) {
-      this.config.language = query.language as any;
+    if (query.tsIncludeJsonBinPack !== undefined) {
+      this.config.tsIncludeJsonBinPack =
+        query.tsIncludeJsonBinPack === 'true';
+    }
+    if (query.tsIncludeExampleFunction !== undefined) {
+      this.config.tsIncludeExampleFunction =
+        query.tsIncludeExampleFunction === 'true';
     }
     if (query.csharpArrayType !== undefined) {
       this.config.csharpArrayType = query.csharpArrayType as any;
@@ -209,6 +269,74 @@ class Playground extends React.Component<
       this.config.csharpOverwriteHashcode =
         query.csharpOverwriteHashcode === 'true';
     }
+    if (query.phpIncludeDescriptions !== undefined) {
+      this.config.phpIncludeDescriptions =
+        query.phpIncludeDescriptions === 'true';
+    }
+    if (query.phpNamespace !== undefined) {
+      this.config.phpNamespace = query.phpNamespace;
+    }
+    if (query.csharpIncludeJson !== undefined) {
+      this.config.csharpIncludeJson =
+        query.csharpIncludeJson === 'true';
+    }
+    if (query.csharpOverwriteEqual !== undefined) {
+      this.config.csharpOverwriteEqual =
+        query.csharpOverwriteEqual === 'true';
+    }
+    if (query.csharpIncludeNewtonsoft !== undefined) {
+      this.config.csharpIncludeNewtonsoft =
+        query.csharpIncludeNewtonsoft === 'true';
+    }
+    if (query.csharpNamespace !== undefined) {
+      this.config.csharpNamespace = query.csharpNamespace;
+    }
+    if (query.csharpNullable !== undefined) {
+      this.config.csharpNullable = query.csharpNullable === 'true';
+    }
+    if(query.cplusplusNamespace !== undefined) {
+      this.config.cplusplusNamespace = query.cplusplusNamespace;
+    }
+    if (query.javaPackageName !== undefined) {
+      this.config.javaPackageName = query.javaPackageName;
+    }
+    if (query.javaIncludeJackson !== undefined) {
+      this.config.javaIncludeJackson =
+        query.javaIncludeJackson === 'true';
+    }
+    if (query.javaIncludeMarshaling !== undefined) {
+      this.config.javaIncludeMarshaling =
+        query.javaIncludeMarshaling === 'true';
+    }
+    if (query.javaArrayType !== undefined) {
+      this.config.javaArrayType = query.javaArrayType as any;
+    }
+    if (query.javaOverwriteHashcode !== undefined) {
+      this.config.javaOverwriteHashcode =
+        query.javaOverwriteHashcode === 'true';
+    }
+    if (query.javaOverwriteEqual !== undefined) {
+      this.config.javaOverwriteEqual =
+        query.javaOverwriteEqual === 'true';
+    }
+    if (query.javaOverwriteToString !== undefined) {
+      this.config.javaOverwriteToString =
+        query.javaOverwriteToString === 'true';
+    }
+    if (query.javaJavaDocs !== undefined) {
+      this.config.javaJavaDocs =
+        query.javaJavaDocs === 'true';
+    }
+    if (query.javaJavaxAnnotation !== undefined) {
+      this.config.javaJavaxAnnotation =
+        query.javaJavaxAnnotation === 'true';
+    }
+    if(query.goPackageName !== undefined) {
+      this.config.goPackageName = query.goPackageName;
+    }
+    if (query.kotlinPackageName !== undefined) {
+      this.config.kotlinPackageName = query.kotlinPackageName;
+    }
     if (this.props.router.isReady && !this.hasLoadedQuery) {
       this.hasLoadedQuery = true;
       this.generateNewCode(this.state.input);
@@ -217,19 +345,19 @@ class Playground extends React.Component<
     let loader;
     if (!isHardLoaded) {
       loader = (
-        <div className="mt-12 text-2xl absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2">
+        <div className="text-xl text-center mt-16 lg:mt-56 md:text-2xl">
           Loading Modelina Playground. Connecting to playground server...
         </div>
       );
     } else if (!isSoftLoaded) {
       loader = (
-        <div className="mt-12 text-2xl absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2">
+        <div className="text-xl text-center mt-16 lg:mt-56 md:text-2xl">
           Loading Modelina Playground. Rendering playground components...
         </div>
       );
     }
     return (
-      <div className="py-16 overflow-hidden lg:py-24">
+      <div className="py-16 lg:py-24">
         <div className="relative text-center">
           <Heading level="h1" typeStyle="heading-lg">
             Modelina Playground
@@ -245,7 +373,7 @@ class Playground extends React.Component<
           className={`grid grid-cols-2 gap-4 mt-4 ${isLoaded ? '' : 'invisible'
             }`}
         >
-          <div className="col-span-2" style={{ height: '500px' }}>
+          <div className="col-span-2">
             <div className="overflow-hidden bg-white shadow sm:rounded-lg flex flex-row">
               <div className="px-4 py-5 sm:px-6 basis-6/12">
                 <h3 className="text-lg font-medium leading-6 text-gray-900">
@@ -292,42 +420,24 @@ class Playground extends React.Component<
                 />
               </div>
             ) : (
-              <PlaygroundGeneralConfigContext.Provider
-                value={{ language: this.config.language }}
-              >
-                <PlaygroundTypeScriptConfigContext.Provider
-                  value={{
-                    tsMarshalling: this.config.tsMarshalling,
-                    tsModelType: this.config.tsModelType,
-                    tsModuleSystem: this.config.tsModuleSystem,
-                    tsEnumType: this.config.tsEnumType,
-                    tsIncludeDescriptions: this.config.tsIncludeDescriptions
-                  }}
-                >
-                  <PlaygroundJavaScriptConfigContext.Provider value={{}}>
-                    <PlaygroundCSharpConfigContext.Provider
-                      value={{
-                        csharpArrayType: this.config.csharpArrayType,
-                        csharpAutoImplemented: this.config.csharpAutoImplemented,
-                        csharpOverwriteHashcode: this.config.csharpOverwriteHashcode
-                      }}
-                    >
-                      <PlaygroundDartConfigContext.Provider value={{}}>
-                        <PlaygroundGoConfigContext.Provider value={{}}>
-                          <PlaygroundJavaConfigContext.Provider value={{}}>
-                            <PlaygroundCplusplusConfigContext.Provider value={{}}>
-                              <PlaygroundKotlinConfigContext.Provider value={{}}>
-                                <PlaygroundRustConfigContext.Provider value={{}}>
-                                  <PlaygroundPythonConfigContext.Provider
-                                    value={{}}
-                                  >
-                                    <PlaygroundOptions
-                                      setNewConfig={this.setNewConfig}
-                                    />
-                                  </PlaygroundPythonConfigContext.Provider>
-                                </PlaygroundRustConfigContext.Provider>
-                              </PlaygroundKotlinConfigContext.Provider>
-                            </PlaygroundCplusplusConfigContext.Provider>
+              <PlaygroundGeneralConfigContext.Provider value={this.config}>
+                <PlaygroundTypeScriptConfigContext.Provider value={this.config}>
+                  <PlaygroundJavaScriptConfigContext.Provider value={this.config}>
+                    <PlaygroundCSharpConfigContext.Provider value={this.config}>
+                      <PlaygroundDartConfigContext.Provider value={this.config}>
+                        <PlaygroundGoConfigContext.Provider value={this.config}>
+                          <PlaygroundJavaConfigContext.Provider value={this.config}>
+                            <PlaygroundPhpConfigContext.Provider value={this.config}>
+                              <PlaygroundCplusplusConfigContext.Provider value={this.config}>
+                                <PlaygroundKotlinConfigContext.Provider value={this.config}>
+                                  <PlaygroundRustConfigContext.Provider value={this.config}>
+                                    <PlaygroundPythonConfigContext.Provider value={this.config}>
+                                      <PlaygroundOptions setNewConfig={this.setNewConfig}/>
+                                    </PlaygroundPythonConfigContext.Provider>
+                                  </PlaygroundRustConfigContext.Provider>
+                                </PlaygroundKotlinConfigContext.Provider>
+                              </PlaygroundCplusplusConfigContext.Provider>
+                            </PlaygroundPhpConfigContext.Provider>
                           </PlaygroundJavaConfigContext.Provider>
                         </PlaygroundGoConfigContext.Provider>
                       </PlaygroundDartConfigContext.Provider>

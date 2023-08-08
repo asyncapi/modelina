@@ -68,6 +68,10 @@ export default function NavBar({ className = '', hideLogo = false }) {
             <NavItem text="Playground" href="/playground" />
           </div>
 
+          <div className="relative" onMouseLeave={() => showMenu(false)}>
+            <NavItem text="API docs" href="/docs/api" />
+          </div>
+
           <div className="flex flex-row items-center justify-content">
             <GithubButton
               text="Star on GitHub"

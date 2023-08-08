@@ -113,6 +113,19 @@ describe('JavaConstrainer', () => {
         constrainedModel: model,
         ...defaultOptions
       });
+      expect(type).toEqual('double');
+    });
+    test('should render nullable type', () => {
+      const model = new ConstrainedFloatModel(
+        'test',
+        undefined,
+        { isNullable: true },
+        ''
+      );
+      const type = JavaDefaultTypeMapping.Float({
+        constrainedModel: model,
+        ...defaultOptions
+      });
       expect(type).toEqual('Double');
     });
     test('should render double when original input has number format', () => {

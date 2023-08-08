@@ -15,6 +15,7 @@
 - [Interpretation of JSON Schema](#interpretation-of-json-schema)
 - [Migration](#migration)
 - [Coming from other tools](#coming-from-other-tools)
+- [API Documentation](#api-documentation)
 - [Languages](#languages)
 
 <!-- tocstop -->
@@ -55,6 +56,10 @@ As time goes on, major versions are inevitable and expected! You can find the mi
 
 ### [Coming from other tools](./other-tools.md)
 Contains specific information about the differences between a lot of other common model generation tools. 
+
+### [API Documentation](https://modelina.org/docs/api)
+
+No one wants to read the code to find information about it, instead use the [/docs/api](https://modelina.org/docs/api) page on the website to find what you are looking for!
 
 ### Languages
 Each language has its own limitations, corner cases, and features; thus, each language has separate documentation.

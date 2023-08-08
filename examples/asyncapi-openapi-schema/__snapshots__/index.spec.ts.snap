@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to process an AsyncAPI object with OpenAPI schema type and should log expected output to console 1`] = `
+Array [
+  "class AnonymousSchema_1 {
+  private _title?: string | null;
+  private _author?: string;
+  private _additionalProperties?: Map<string, any>;
+
+  constructor(input: {
+    title?: string | null,
+    author?: string,
+    additionalProperties?: Map<string, any>,
+  }) {
+    this._title = input.title;
+    this._author = input.author;
+    this._additionalProperties = input.additionalProperties;
+  }
+
+  get title(): string | null | undefined { return this._title; }
+  set title(title: string | null | undefined) { this._title = title; }
+
+  get author(): string | undefined { return this._author; }
+  set author(author: string | undefined) { this._author = author; }
+
+  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
+}",
+]
+`;

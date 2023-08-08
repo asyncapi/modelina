@@ -1,0 +1,41 @@
+name: Runtime Testing Rust Models
+on: 
+  push:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths: 
+      - 'src/generators/rust/**'
+      - 'test/runtime/runtime-rust/**'
+      - 'test/runtime/**rust**'
+
+jobs:
+  test:
+    name: Runtime Testing Rust Models
+    if: "github.event.pull_request.draft == false &&!((github.actor == 'asyncapi-bot' && startsWith(github.event.pull_request.title, 'ci: update global workflows')) || (github.actor == 'asyncapi-bot' && startsWith(github.event.pull_request.title, 'chore(release):')) || (github.actor == 'allcontributors' && startsWith(github.event.pull_request.title, 'docs: add')))"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Check package-lock version
+        uses: asyncapi/.github/.github/actions/get-node-version-from-package-lock@master
+        id: lockversion
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "${{ steps.lockversion.outputs.version }}"
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+      - name: Build library
+        run: npm install && npm run build:prod
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+          components: rustfmt, clippy, rust-src
+      - name: Generate Rust models
+        run: npm run generate:runtime:rust        
+      - name: Run runtime tests
+        run: npm run test:runtime:rust
+      
+
