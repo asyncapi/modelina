@@ -665,6 +665,16 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "jamesmoey",
+      "name": "James Moey",
+      "avatar_url": "https://avatars.githubusercontent.com/u/457472?v=4",
+      "profile": "https://github.com/jamesmoey",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
