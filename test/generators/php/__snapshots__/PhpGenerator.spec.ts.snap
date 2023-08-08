@@ -132,6 +132,18 @@ exports[`PhpGenerator Enum should render \`enum\` with mixed types (union type) 
 "
 `;
 
+exports[`PhpGenerator Enum should render \`enum\` with presets applied 1`] = `
+"enum Things
+{
+  case A;
+  case B;
+  case C;
+
+  // additional content
+}
+// self content"
+`;
+
 exports[`PhpGenerator Enum should render enums with translated special characters 1`] = `
 "enum States
 {
