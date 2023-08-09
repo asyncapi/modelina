@@ -63,7 +63,8 @@ ${content}`;
           renderer.renderAnnotation('JsonTypeInfo', {
             use: 'JsonTypeInfo.Id.NAME',
             include: 'JsonTypeInfo.As.EXISTING_PROPERTY',
-            property: `"${discriminator.discriminator}"`
+            property: `"${discriminator.discriminator}"`,
+            visible: 'true'
           })
         );
 
