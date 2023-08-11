@@ -46,7 +46,11 @@ export abstract class TypeScriptObjectRenderer extends TypeScriptRenderer<Constr
     }`;
 
     if (property.property.options.const?.value) {
-      return `${renderedProperty}: ${property.property.options.const.value} = ${property.property.options.const.value};`;
+      return `${renderedProperty}: ${property.property.options.const.value}${
+        this.options.modelType === 'class'
+          ? ` = ${property.property.options.const.value}`
+          : ''
+      };`;
     }
 
     return `${renderedProperty}: ${property.property.type};`;
