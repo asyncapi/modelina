@@ -684,6 +684,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "Ksisa",
+      "name": "Kristupas",
+      "avatar_url": "https://avatars.githubusercontent.com/u/53404771?v=4",
+      "profile": "https://github.com/Ksisa",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
