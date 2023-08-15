@@ -40,6 +40,10 @@ function getMetaModelOptions(commonModel: CommonModel): MetaModelOptions {
     };
   }
 
+  if (commonModel.format) {
+    options.format = commonModel.format;
+  }
+
   return options;
 }
 

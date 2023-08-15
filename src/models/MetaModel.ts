@@ -10,6 +10,7 @@ export class MetaModelOptions {
   const?: MetaModelOptionsConst;
   discriminator?: MetaModelOptionsDiscriminator;
   isNullable?: boolean = false;
+  format?: string;
 }
 
 export class MetaModel {

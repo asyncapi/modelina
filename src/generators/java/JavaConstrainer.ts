@@ -138,26 +138,19 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
     return type;
   },
   String({ constrainedModel }): string {
-    let type = 'String';
-    const format =
-      constrainedModel.originalInput &&
-      constrainedModel.originalInput['format'];
-    switch (format) {
+    switch (constrainedModel.options.format) {
       case 'date':
-        type = 'java.time.LocalDate';
-        break;
+        return 'java.time.LocalDate';
       case 'time':
-        type = 'java.time.OffsetTime';
-        break;
+        return 'java.time.OffsetTime';
       case 'dateTime':
       case 'date-time':
-        type = 'java.time.OffsetDateTime';
-        break;
+        return 'java.time.OffsetDateTime';
       case 'binary':
-        type = 'byte[]';
-        break;
+        return 'byte[]';
+      default:
+        return 'String';
     }
-    return type;
   },
   Boolean({ constrainedModel }): string {
     return constrainedModel.options.isNullable ? 'Boolean' : 'boolean';

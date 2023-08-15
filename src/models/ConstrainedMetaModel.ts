@@ -20,6 +20,7 @@ export class ConstrainedMetaModelOptions extends MetaModelOptions {
   const?: ConstrainedMetaModelOptionsConst;
   discriminator?: ConstrainedMetaModelOptionsDiscriminator;
   isNullable?: boolean = false;
+  format?: string;
 }
 
 export abstract class ConstrainedMetaModel extends MetaModel {
