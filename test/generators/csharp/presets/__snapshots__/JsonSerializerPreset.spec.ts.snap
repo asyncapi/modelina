@@ -114,22 +114,22 @@ internal class TestConverter : JsonConverter<Test>
   
     writer.WriteStartObject();
 
-    if(value.StringProp != null) { 
+    if(value.StringProp != null) {
       // write property name and let the serializer serialize the value itself
       writer.WritePropertyName(\\"string prop\\");
       JsonSerializer.Serialize(writer, value.StringProp, options);
     }
-    if(value.NumberProp != null) { 
+    if(value.NumberProp != null) {
       // write property name and let the serializer serialize the value itself
       writer.WritePropertyName(\\"numberProp\\");
       JsonSerializer.Serialize(writer, value.NumberProp, options);
     }
-    if(value.EnumProp != null) { 
+    if(value.EnumProp != null) {
       // write property name and let the serializer serialize the value itself
       writer.WritePropertyName(\\"enumProp\\");
-      JsonSerializer.Serialize(writer, EnumTest?.GetValue(), options);
+      JsonSerializer.Serialize(writer, value.EnumTest?.GetValue(), options);
     }
-    if(value.ObjectProp != null) { 
+    if(value.ObjectProp != null) {
       // write property name and let the serializer serialize the value itself
       writer.WritePropertyName(\\"objectProp\\");
       JsonSerializer.Serialize(writer, value.ObjectProp, options);
@@ -147,7 +147,7 @@ internal class TestConverter : JsonConverter<Test>
         writer.WritePropertyName(unwrappedProperty.Key);
         JsonSerializer.Serialize(writer, unwrappedProperty.Value, options);
       }
-    }if(value.AdditionalProperties != null) { 
+    }if(value.AdditionalProperties != null) {
       // write property name and let the serializer serialize the value itself
       writer.WritePropertyName(\\"additionalProperties\\");
       JsonSerializer.Serialize(writer, value.AdditionalProperties, options);
@@ -274,7 +274,7 @@ internal class NestedTestConverter : JsonConverter<NestedTest>
   
     writer.WriteStartObject();
 
-    if(value.StringProp != null) { 
+    if(value.StringProp != null) {
       // write property name and let the serializer serialize the value itself
       writer.WritePropertyName(\\"stringProp\\");
       JsonSerializer.Serialize(writer, value.StringProp, options);
@@ -292,7 +292,7 @@ internal class NestedTestConverter : JsonConverter<NestedTest>
         writer.WritePropertyName(unwrappedProperty.Key);
         JsonSerializer.Serialize(writer, unwrappedProperty.Value, options);
       }
-    }if(value.AdditionalProperties != null) { 
+    }if(value.AdditionalProperties != null) {
       // write property name and let the serializer serialize the value itself
       writer.WritePropertyName(\\"additionalProperties\\");
       JsonSerializer.Serialize(writer, value.AdditionalProperties, options);
