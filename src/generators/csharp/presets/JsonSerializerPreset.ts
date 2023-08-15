@@ -51,7 +51,7 @@ if (${modelInstanceVariable} != null) {
   }
 }`;
       }
-      serializeProperties += `if(${modelInstanceVariable} != null) { 
+      serializeProperties += `if(${modelInstanceVariable} != null) {
   // write property name and let the serializer serialize the value itself
   writer.WritePropertyName("${propertyModel.unconstrainedPropertyName}");
   ${renderSerializeProperty(modelInstanceVariable, propertyModel)}
