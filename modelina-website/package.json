@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "npm run build:examples && cross-env NODE_OPTIONS='--inspect' next dev",
     "build": "npm run build:examples && next build --no-lint",
-    "build:modelina": "cd .. && npm i && npm run build:prod",
+    "build:modelina": "cd .. && npm i && npm run build:prod && npm run docs:api",
     "export": "next export",
     "start": "next start",
     "lint": "next lint -c ./.eslintrc",

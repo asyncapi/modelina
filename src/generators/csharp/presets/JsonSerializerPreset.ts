@@ -8,6 +8,7 @@ import {
   ConstrainedReferenceModel
 } from '../../../models';
 import { CSharpOptions } from '../CSharpGenerator';
+import { pascalCase } from 'change-case';
 
 function renderSerializeProperty(
   modelInstanceVariable: string,
@@ -19,7 +20,7 @@ function renderSerializeProperty(
     model.property instanceof ConstrainedReferenceModel &&
     model.property.ref instanceof ConstrainedEnumModel
   ) {
-    value = `${model.property.type}.GetValue()`;
+    value = `value.${model.property.type}.GetValue()`;
   }
   return `JsonSerializer.Serialize(writer, ${value}, options);`;
 }
@@ -30,7 +31,7 @@ function renderSerializeProperties(model: ConstrainedObjectModel) {
     for (const [propertyName, propertyModel] of Object.entries(
       model.properties
     )) {
-      const modelInstanceVariable = `value.${propertyName}`;
+      const modelInstanceVariable = `value.${pascalCase(propertyName)}`;
       if (
         propertyModel.property instanceof ConstrainedDictionaryModel &&
         propertyModel.property.serializationType === 'unwrap'
@@ -50,7 +51,7 @@ if (${modelInstanceVariable} != null) {
   }
 }`;
       }
-      serializeProperties += `if(${modelInstanceVariable} != null) { 
+      serializeProperties += `if(${modelInstanceVariable} != null) {
   // write property name and let the serializer serialize the value itself
   writer.WritePropertyName("${propertyModel.unconstrainedPropertyName}");
   ${renderSerializeProperty(modelInstanceVariable, propertyModel)}
@@ -72,7 +73,7 @@ function renderPropertiesList(
       );
     })
     .map((value) => {
-      return value.propertyName;
+      return `prop.Name != "${pascalCase(value.propertyName)}"`;
     });
 
   let propertiesList = 'var properties = value.GetType().GetProperties();';
@@ -122,7 +123,7 @@ function renderDeserializeProperty(model: ConstrainedObjectPropertyModel) {
     model.property instanceof ConstrainedReferenceModel &&
     model.property.ref instanceof ConstrainedEnumModel
   ) {
-    return `${model.property.name}Extension.To${model.property.name}(JsonSerializer.Deserialize<dynamic>(ref reader, options))`;
+    return `${model.property.name}Extensions.To${model.property.name}(JsonSerializer.Deserialize<dynamic>(ref reader, options))`;
   }
   return `JsonSerializer.Deserialize<${model.property.type}>(ref reader, options)`;
 }
@@ -130,22 +131,23 @@ function renderDeserializeProperty(model: ConstrainedObjectPropertyModel) {
 function renderDeserializeProperties(model: ConstrainedObjectModel) {
   const propertyEntries = Object.entries(model.properties || {});
   const deserializeProperties = propertyEntries.map(([prop, propModel]) => {
+    const pascalProp = pascalCase(prop);
     //Unwrapped dictionary properties, need to be unwrapped in JSON
     if (
       propModel.property instanceof ConstrainedDictionaryModel &&
       propModel.property.serializationType === 'unwrap'
     ) {
-      return `if(instance.${prop} == null) { instance.${prop} = new Dictionary<${
+      return `if(instance.${pascalProp} == null) { instance.${pascalProp} = new Dictionary<${
         propModel.property.key.type
-      }, ${propModel.property.key.type}>(); }
+      }, ${propModel.property.value.type}>(); }
       var deserializedValue = ${renderDeserializeProperty(propModel)};
-      instance.${prop}.Add(propertyName, deserializedValue);
+      instance.${pascalProp}.Add(propertyName, deserializedValue);
       continue;`;
     }
     return `if (propertyName == "${propModel.unconstrainedPropertyName}")
   {
     var value = ${renderDeserializeProperty(propModel)};
-    instance.${prop} = value;
+    instance.${pascalProp} = value;
     continue;
   }`;
   });

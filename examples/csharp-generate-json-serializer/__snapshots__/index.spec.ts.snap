@@ -47,7 +47,7 @@ internal class RootConverter : JsonConverter<Root>
       if (propertyName == \\"email\\")
         {
           var value = JsonSerializer.Deserialize<string?>(ref reader, options);
-          instance.email = value;
+          instance.Email = value;
           continue;
         }
     }
@@ -65,10 +65,10 @@ internal class RootConverter : JsonConverter<Root>
   
     writer.WriteStartObject();
 
-    if(value.email != null) { 
+    if(value.Email != null) {
       // write property name and let the serializer serialize the value itself
       writer.WritePropertyName(\\"email\\");
-      JsonSerializer.Serialize(writer, value.email, options);
+      JsonSerializer.Serialize(writer, value.Email, options);
     }
 
 

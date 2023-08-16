@@ -35,6 +35,14 @@ export interface ModelinaTypeScriptOptions extends ModelinaGeneralOptions {
 
 export interface ModelinaJavaOptions extends ModelinaGeneralOptions {
   javaPackageName?: string;
+  javaIncludeJackson: boolean;
+  javaIncludeMarshaling: boolean;
+  javaArrayType: 'List' | 'Array' | undefined;
+  javaOverwriteHashcode: boolean;
+  javaOverwriteEqual: boolean;
+  javaOverwriteToString: boolean;
+  javaJavaDocs: boolean;
+  javaJavaxAnnotation: boolean;
 }
 export interface ModelinaCplusplusOptions extends ModelinaGeneralOptions {
   cplusplusNamespace?: string;
@@ -113,6 +121,14 @@ export interface ModelinaGeneralQueryOptions {
 
 export interface ModelinaJavaQueryOptions {
   javaPackageName?: string;
+  javaIncludeJackson?: string;
+  javaIncludeMarshaling?: string;
+  javaArrayType?: string;
+  javaOverwriteHashcode?:string;
+  javaOverwriteEqual?: string;
+  javaOverwriteToString?: string;
+  javaJavaDocs?: string;
+  javaJavaxAnnotation?: string;
 }
 export interface ModelinaGoQueryOptions {
   goPackageName?: string;

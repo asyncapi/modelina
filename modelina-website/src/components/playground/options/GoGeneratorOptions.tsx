@@ -1,6 +1,7 @@
 import React from 'react';
 import { debounce } from 'lodash';
 import { PlaygroundGoConfigContext } from '@/components/contexts/PlaygroundConfigContext';
+import InfoModal from '@/components/InfoModal';
 
 interface GoGeneratorOptionsProps {
   setNewConfig?: (queryKey: string, queryValue: string) => void;
@@ -45,8 +46,13 @@ class GoGeneratorOptions extends React.Component<
         <h3 className="text-lg font-medium leading-6 text-gray-900">
           Go Specific options
         </h3>
-        <li>
-          <label className="flex items-center py-2 justify-between cursor-pointer">
+        <li className=' flex items-center'>
+        <InfoModal text="Package Name :">
+            <p>
+            In Go, a package name is used to organize code into logical groups or containers. It serves as a namespace for the code elements within it and helps in avoiding naming conflicts.
+            </p>
+          </InfoModal>
+          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Package Name
             </span>
