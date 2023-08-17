@@ -52,6 +52,7 @@ export async function getCSharpModels(
   }
 
   if (generatorOptions.csharpNullable) {
+    // @ts-ignore
     options.handleNullable = generatorOptions.csharpNullable;
   }
 
