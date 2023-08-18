@@ -7,6 +7,7 @@ public class Test
   private string stringProp;
   private double? numberProp;
   private EnumTest? enumProp;
+  private double? numberPropWithCapitalCase;
   private NestedTest? objectProp;
   private Dictionary<string, dynamic>? additionalProperties;
 
@@ -26,6 +27,12 @@ public class Test
   {
     get { return enumProp; }
     set { enumProp = value; }
+  }
+
+  public double? NumberPropWithCapitalCase 
+  {
+    get { return numberPropWithCapitalCase; }
+    set { numberPropWithCapitalCase = value; }
   }
 
   public NestedTest? ObjectProp 
@@ -89,6 +96,12 @@ internal class TestConverter : JsonConverter<Test>
           instance.EnumProp = value;
           continue;
         }
+      if (string.Equals(propertyName, \\"NumberPropWithCapitalCase\\", StringComparison.OrdinalIgnoreCase))
+        {
+          var value = JsonSerializer.Deserialize<double?>(ref reader, options);
+          instance.NumberPropWithCapitalCase = value;
+          continue;
+        }
       if (string.Equals(propertyName, \\"objectProp\\", StringComparison.OrdinalIgnoreCase))
         {
           var value = JsonSerializer.Deserialize<NestedTest?>(ref reader, options);
@@ -128,6 +141,11 @@ internal class TestConverter : JsonConverter<Test>
       // write property name and let the serializer serialize the value itself
       writer.WritePropertyName(\\"enumProp\\");
       JsonSerializer.Serialize(writer, value.EnumTest?.GetValue(), options);
+    }
+    if(value.NumberPropWithCapitalCase != null) {
+      // write property name and let the serializer serialize the value itself
+      writer.WritePropertyName(\\"NumberPropWithCapitalCase\\");
+      JsonSerializer.Serialize(writer, value.NumberPropWithCapitalCase, options);
     }
     if(value.ObjectProp != null) {
       // write property name and let the serializer serialize the value itself

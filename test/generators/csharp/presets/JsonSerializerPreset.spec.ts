@@ -14,6 +14,7 @@ const doc = {
       $id: 'EnumTest',
       enum: ['Some enum String', true, { test: 'test' }, 2]
     },
+    NumberPropWithCapitalCase: { type: 'number' },
     objectProp: {
       type: 'object',
       $id: 'NestedTest',
