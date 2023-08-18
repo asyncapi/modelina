@@ -66,10 +66,10 @@ internal class RootConverter : JsonConverter<Root>
     writer.WriteStartObject();
 
     if(value.Email != null) {
-      // write property name and let the serializer serialize the value itself
-      writer.WritePropertyName(\\"email\\");
-      JsonSerializer.Serialize(writer, value.Email, options);
-    }
+        // write property name and let the serializer serialize the value itself
+        writer.WritePropertyName(\\"email\\");
+        JsonSerializer.Serialize(writer, value.Email, options);
+      }
 
 
     writer.WriteEndObject();
