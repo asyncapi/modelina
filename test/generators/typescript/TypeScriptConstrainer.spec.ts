@@ -249,6 +249,38 @@ describe('TypeScriptConstrainer', () => {
       });
       expect(type).toEqual('String | String');
     });
+    test('should render union in union', () => {
+      const unionModel1 = new ConstrainedStringModel(
+        'test1',
+        undefined,
+        {},
+        'String'
+      );
+      const unionModel2 = new ConstrainedStringModel(
+        'test2',
+        undefined,
+        {},
+        'String'
+      );
+      const model2 = new ConstrainedUnionModel(
+        'model2',
+        undefined,
+        {},
+        unionModel1.type,
+        [unionModel1]
+      );
+      const model1 = new ConstrainedUnionModel('model2', undefined, {}, '', [
+        unionModel2,
+        model2
+      ]);
+      model2.union.push(model1);
+      const type = TypeScriptDefaultTypeMapping.Union({
+        constrainedModel: model1,
+        options: TypeScriptGenerator.defaultOptions,
+        dependencyManager: undefined as never
+      });
+      expect(type).toEqual('String | String');
+    });
   });
 
   describe('Dictionary', () => {

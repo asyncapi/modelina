@@ -56,13 +56,17 @@ export const TypeScriptDefaultTypeMapping: TypeScriptTypeMapping = {
     return constrainedModel.name;
   },
   Union(args): string {
-    const unionTypes = args.constrainedModel.union.map((unionModel) => {
+    const unionTypes = [];
+    for (const unionModel of args.constrainedModel.union) {
       if (unionModel.options.const?.value) {
-        return `${unionModel.options.const.value}`;
+        unionTypes.push(`${unionModel.options.const.value}`);
       }
-
-      return unionModel.type;
-    });
+      // Ignore any model that dont have a type yet (usually self-reference)
+      if (unionModel.type === '') {
+        continue;
+      }
+      unionTypes.push(unionModel.type);
+    }
     return applyNullable(args.constrainedModel, unionTypes.join(' | '));
   },
   Dictionary({ constrainedModel, options }): string {

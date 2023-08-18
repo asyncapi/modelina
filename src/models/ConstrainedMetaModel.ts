@@ -148,10 +148,12 @@ export class ConstrainedUnionModel extends ConstrainedMetaModel {
 
   getNearestDependencies(): ConstrainedMetaModel[] {
     let dependencyModels: ConstrainedMetaModel[] = [];
+
+    //ignore recursive union
     for (const unionModel of Object.values(this.union)) {
       if (unionModel instanceof ConstrainedReferenceModel) {
         dependencyModels.push(unionModel);
-      } else {
+      } else if (unionModel !== this) {
         //Lets check the non-reference model for dependencies
         dependencyModels = [
           ...dependencyModels,
