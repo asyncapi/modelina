@@ -71,25 +71,25 @@ internal class TestConverter : JsonConverter<Test>
       }
 
       string propertyName = reader.GetString();
-      if (propertyName == \\"string prop\\")
+      if (string.Equals(propertyName, \\"string prop\\", StringComparison.OrdinalIgnoreCase))
         {
           var value = JsonSerializer.Deserialize<string>(ref reader, options);
           instance.StringProp = value;
           continue;
         }
-      if (propertyName == \\"numberProp\\")
+      if (string.Equals(propertyName, \\"numberProp\\", StringComparison.OrdinalIgnoreCase))
         {
           var value = JsonSerializer.Deserialize<double?>(ref reader, options);
           instance.NumberProp = value;
           continue;
         }
-      if (propertyName == \\"enumProp\\")
+      if (string.Equals(propertyName, \\"enumProp\\", StringComparison.OrdinalIgnoreCase))
         {
           var value = EnumTestExtensions.ToEnumTest(JsonSerializer.Deserialize<dynamic>(ref reader, options));
           instance.EnumProp = value;
           continue;
         }
-      if (propertyName == \\"objectProp\\")
+      if (string.Equals(propertyName, \\"objectProp\\", StringComparison.OrdinalIgnoreCase))
         {
           var value = JsonSerializer.Deserialize<NestedTest?>(ref reader, options);
           instance.ObjectProp = value;
@@ -249,7 +249,7 @@ internal class NestedTestConverter : JsonConverter<NestedTest>
       }
 
       string propertyName = reader.GetString();
-      if (propertyName == \\"stringProp\\")
+      if (string.Equals(propertyName, \\"stringProp\\", StringComparison.OrdinalIgnoreCase))
         {
           var value = JsonSerializer.Deserialize<string?>(ref reader, options);
           instance.StringProp = value;

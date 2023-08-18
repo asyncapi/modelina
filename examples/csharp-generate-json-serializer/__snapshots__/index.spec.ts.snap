@@ -44,7 +44,7 @@ internal class RootConverter : JsonConverter<Root>
       }
 
       string propertyName = reader.GetString();
-      if (propertyName == \\"email\\")
+      if (string.Equals(propertyName, \\"email\\", StringComparison.OrdinalIgnoreCase))
         {
           var value = JsonSerializer.Deserialize<string?>(ref reader, options);
           instance.Email = value;

@@ -144,7 +144,7 @@ function renderDeserializeProperties(model: ConstrainedObjectModel) {
       instance.${pascalProp}.Add(propertyName, deserializedValue);
       continue;`;
     }
-    return `if (propertyName == "${propModel.unconstrainedPropertyName}")
+    return `if (string.Equals(propertyName, "${propModel.unconstrainedPropertyName}", StringComparison.OrdinalIgnoreCase))
   {
     var value = ${renderDeserializeProperty(propModel)};
     instance.${pascalProp} = value;
