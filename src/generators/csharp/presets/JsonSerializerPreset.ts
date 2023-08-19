@@ -20,7 +20,7 @@ function renderSerializeProperty(
     model.property instanceof ConstrainedReferenceModel &&
     model.property.ref instanceof ConstrainedEnumModel
   ) {
-    value = `${model.property.type}.GetValue()`;
+    value = `value.${model.property.type}.GetValue()`;
   }
   return `JsonSerializer.Serialize(writer, ${value}, options);`;
 }
@@ -51,7 +51,7 @@ if (${modelInstanceVariable} != null) {
   }
 }`;
       }
-      serializeProperties += `if(${modelInstanceVariable} != null) { 
+      serializeProperties += `if(${modelInstanceVariable} != null) {
   // write property name and let the serializer serialize the value itself
   writer.WritePropertyName("${propertyModel.unconstrainedPropertyName}");
   ${renderSerializeProperty(modelInstanceVariable, propertyModel)}
@@ -123,7 +123,7 @@ function renderDeserializeProperty(model: ConstrainedObjectPropertyModel) {
     model.property instanceof ConstrainedReferenceModel &&
     model.property.ref instanceof ConstrainedEnumModel
   ) {
-    return `${model.property.name}Extension.To${model.property.name}(JsonSerializer.Deserialize<dynamic>(ref reader, options))`;
+    return `${model.property.name}Extensions.To${model.property.name}(JsonSerializer.Deserialize<dynamic>(ref reader, options))`;
   }
   return `JsonSerializer.Deserialize<${model.property.type}>(ref reader, options)`;
 }
