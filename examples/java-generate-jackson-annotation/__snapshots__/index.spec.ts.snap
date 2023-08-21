@@ -4,16 +4,18 @@ exports[`Should be able to generate data models for jackson annotation and shoul
 Array [
   "public class Root {
   @JsonProperty(\\"min_number_prop\\")
-  private double minNumberProp;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Double minNumberProp;
   @JsonProperty(\\"max_number_prop\\")
-  private double maxNumberProp;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Double maxNumberProp;
   private Map<String, Object> additionalProperties;
 
-  public double getMinNumberProp() { return this.minNumberProp; }
-  public void setMinNumberProp(double minNumberProp) { this.minNumberProp = minNumberProp; }
+  public Double getMinNumberProp() { return this.minNumberProp; }
+  public void setMinNumberProp(Double minNumberProp) { this.minNumberProp = minNumberProp; }
 
-  public double getMaxNumberProp() { return this.maxNumberProp; }
-  public void setMaxNumberProp(double maxNumberProp) { this.maxNumberProp = maxNumberProp; }
+  public Double getMaxNumberProp() { return this.maxNumberProp; }
+  public void setMaxNumberProp(Double maxNumberProp) { this.maxNumberProp = maxNumberProp; }
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
