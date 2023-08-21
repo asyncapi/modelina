@@ -10,6 +10,7 @@ export class MetaModelOptions {
   const?: MetaModelOptionsConst;
   discriminator?: MetaModelOptionsDiscriminator;
   isNullable?: boolean = false;
+  isRequired?: boolean = false;
 }
 
 export class MetaModel {

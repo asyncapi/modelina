@@ -83,8 +83,10 @@ public interface Pet {
   @JsonProperty(\\"type\\")
   private final CloudEventType type = CloudEventType.DOG;
   @JsonProperty(\\"dataschema\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private String dataschema;
   @JsonProperty(\\"time\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private java.time.OffsetDateTime time;
   private Map<String, Object> additionalProperties;
 
@@ -198,8 +200,10 @@ public interface Pet {
   @JsonProperty(\\"type\\")
   private final CloudEventType type = CloudEventType.CAT;
   @JsonProperty(\\"dataschema\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private String dataschema;
   @JsonProperty(\\"time\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private java.time.OffsetDateTime time;
   private Map<String, Object> additionalProperties;
 
@@ -540,6 +544,7 @@ exports[`JavaGenerator oneOf/discriminator with jackson preset should create an 
 Array [
   "public class Cargo {
   @JsonProperty(\\"vehicle\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Vehicle vehicle;
   private Map<String, Object> additionalProperties;
 
@@ -748,7 +753,7 @@ Array [
   private String city;
   private String state;
   private double houseNumber;
-  private boolean marriage;
+  private Boolean marriage;
   private Object members;
   private Object[] arrayType;
   private Map<String, Object> additionalProperties;
@@ -765,8 +770,8 @@ Array [
   public double getHouseNumber() { return this.houseNumber; }
   public void setHouseNumber(double houseNumber) { this.houseNumber = houseNumber; }
 
-  public boolean getMarriage() { return this.marriage; }
-  public void setMarriage(boolean marriage) { this.marriage = marriage; }
+  public Boolean getMarriage() { return this.marriage; }
+  public void setMarriage(Boolean marriage) { this.marriage = marriage; }
 
   public Object getMembers() { return this.members; }
   public void setMembers(Object members) { this.members = members; }
@@ -953,7 +958,7 @@ public class Address {
   private String city;
   private String state;
   private double houseNumber;
-  private boolean marriage;
+  private Boolean marriage;
   private Object members;
   private Object[] arrayType;
   private OtherModel otherModel;
@@ -971,8 +976,8 @@ public class Address {
   public double getHouseNumber() { return this.houseNumber; }
   public void setHouseNumber(double houseNumber) { this.houseNumber = houseNumber; }
 
-  public boolean getMarriage() { return this.marriage; }
-  public void setMarriage(boolean marriage) { this.marriage = marriage; }
+  public Boolean getMarriage() { return this.marriage; }
+  public void setMarriage(Boolean marriage) { this.marriage = marriage; }
 
   public Object getMembers() { return this.members; }
   public void setMembers(Object members) { this.members = members; }

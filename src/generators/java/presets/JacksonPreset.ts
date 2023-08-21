@@ -28,11 +28,27 @@ export const JAVA_JACKSON_PRESET: JavaPreset = {
         (property.property as ConstrainedDictionaryModel).serializationType ===
           'unwrap';
       if (!hasUnwrappedOptions) {
-        const annotation = renderer.renderAnnotation(
-          'JsonProperty',
-          `"${property.unconstrainedPropertyName}"`
+        const blocks: string[] = [];
+
+        blocks.push(
+          renderer.renderAnnotation(
+            'JsonProperty',
+            `"${property.unconstrainedPropertyName}"`
+          )
         );
-        return renderer.renderBlock([annotation, content]);
+
+        if (!property.required) {
+          blocks.push(
+            renderer.renderAnnotation(
+              'JsonInclude',
+              'JsonInclude.Include.NON_NULL'
+            )
+          );
+        }
+
+        blocks.push(content);
+
+        return renderer.renderBlock(blocks);
       }
       return renderer.renderBlock([content]);
     }

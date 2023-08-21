@@ -14,7 +14,8 @@ describe('JAVA_JACKSON_PRESET', () => {
       properties: {
         min_number_prop: { type: 'number' },
         max_number_prop: { type: 'number' }
-      }
+      },
+      required: ['min_number_prop']
     };
     const expectedDependencies = [
       'import java.util.Map;',

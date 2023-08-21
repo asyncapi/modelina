@@ -5,14 +5,15 @@ exports[`JAVA_JACKSON_PRESET should render Jackson annotations for class 1`] = `
   @JsonProperty(\\"min_number_prop\\")
   private double minNumberProp;
   @JsonProperty(\\"max_number_prop\\")
-  private double maxNumberProp;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Double maxNumberProp;
   private Map<String, Object> additionalProperties;
 
   public double getMinNumberProp() { return this.minNumberProp; }
   public void setMinNumberProp(double minNumberProp) { this.minNumberProp = minNumberProp; }
 
-  public double getMaxNumberProp() { return this.maxNumberProp; }
-  public void setMaxNumberProp(double maxNumberProp) { this.maxNumberProp = maxNumberProp; }
+  public Double getMaxNumberProp() { return this.maxNumberProp; }
+  public void setMaxNumberProp(Double maxNumberProp) { this.maxNumberProp = maxNumberProp; }
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
@@ -66,8 +67,10 @@ public interface Vehicle {
 }",
   "public class Car implements Vehicle {
   @JsonProperty(\\"vehicleType\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private String vehicleType;
   @JsonProperty(\\"name\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private String name;
   private Map<String, Object> additionalProperties;
 
@@ -82,8 +85,10 @@ public interface Vehicle {
 }",
   "public class Truck implements Vehicle {
   @JsonProperty(\\"vehicleType\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private String vehicleType;
   @JsonProperty(\\"name\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private String name;
   private Map<String, Object> additionalProperties;
 
@@ -114,6 +119,7 @@ public interface Vehicle {
 }",
   "public class Car implements Vehicle {
   @JsonProperty(\\"vehicleType\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private String vehicleType;
   private Map<String, Object> additionalProperties;
 
@@ -125,6 +131,7 @@ public interface Vehicle {
 }",
   "public class Truck implements Vehicle {
   @JsonProperty(\\"vehicleType\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private String vehicleType;
   private Map<String, Object> additionalProperties;
 
@@ -152,6 +159,7 @@ public interface Vehicle {
 }",
   "public class Car implements Vehicle {
   @JsonProperty(\\"vehicleType\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private String vehicleType;
   private Map<String, Object> additionalProperties;
 
@@ -163,6 +171,7 @@ public interface Vehicle {
 }",
   "public class Truck implements Vehicle {
   @JsonProperty(\\"vehicleType\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private String vehicleType;
   private Map<String, Object> additionalProperties;
 
@@ -190,6 +199,7 @@ public interface Vehicle {
 }",
   "public class Car implements Vehicle {
   @JsonProperty(\\"passengers\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private String passengers;
   private Map<String, Object> additionalProperties;
 
@@ -201,6 +211,7 @@ public interface Vehicle {
 }",
   "public class Truck implements Vehicle {
   @JsonProperty(\\"cargo\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private String cargo;
   private Map<String, Object> additionalProperties;
 

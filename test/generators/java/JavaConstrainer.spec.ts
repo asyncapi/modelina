@@ -108,12 +108,30 @@ describe('JavaConstrainer', () => {
   });
   describe('Float', () => {
     test('should render type', () => {
-      const model = new ConstrainedFloatModel('test', undefined, {}, '');
+      const model = new ConstrainedFloatModel(
+        'test',
+        undefined,
+        { isRequired: true },
+        ''
+      );
       const type = JavaDefaultTypeMapping.Float({
         constrainedModel: model,
         ...defaultOptions
       });
       expect(type).toEqual('double');
+    });
+    test('should render optional type', () => {
+      const model = new ConstrainedFloatModel(
+        'test',
+        undefined,
+        { isRequired: false, isNullable: false },
+        ''
+      );
+      const type = JavaDefaultTypeMapping.Float({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('Double');
     });
     test('should render nullable type', () => {
       const model = new ConstrainedFloatModel(
@@ -132,7 +150,7 @@ describe('JavaConstrainer', () => {
       const model = new ConstrainedFloatModel(
         'test',
         { format: 'float' },
-        {},
+        { isRequired: true },
         ''
       );
       const type = JavaDefaultTypeMapping.Float({
@@ -144,7 +162,12 @@ describe('JavaConstrainer', () => {
   });
   describe('Integer', () => {
     test('should render type', () => {
-      const model = new ConstrainedIntegerModel('test', undefined, {}, '');
+      const model = new ConstrainedIntegerModel(
+        'test',
+        undefined,
+        { isRequired: true },
+        ''
+      );
       const type = JavaDefaultTypeMapping.Integer({
         constrainedModel: model,
         ...defaultOptions
@@ -168,7 +191,7 @@ describe('JavaConstrainer', () => {
       const model = new ConstrainedIntegerModel(
         'test',
         { format: 'integer' },
-        {},
+        { isRequired: true },
         ''
       );
       const type = JavaDefaultTypeMapping.Integer({
@@ -181,7 +204,7 @@ describe('JavaConstrainer', () => {
       const model = new ConstrainedIntegerModel(
         'test',
         { format: 'int32' },
-        {},
+        { isRequired: true },
         ''
       );
       const type = JavaDefaultTypeMapping.Integer({
@@ -194,7 +217,7 @@ describe('JavaConstrainer', () => {
       const model = new ConstrainedIntegerModel(
         'test',
         { format: 'long' },
-        {},
+        { isRequired: true },
         ''
       );
       const type = JavaDefaultTypeMapping.Integer({
@@ -207,7 +230,7 @@ describe('JavaConstrainer', () => {
       const model = new ConstrainedIntegerModel(
         'test',
         { format: 'int64' },
-        {},
+        { isRequired: true },
         ''
       );
       const type = JavaDefaultTypeMapping.Integer({
@@ -294,7 +317,12 @@ describe('JavaConstrainer', () => {
   });
   describe('Boolean', () => {
     test('should render type', () => {
-      const model = new ConstrainedBooleanModel('test', undefined, {}, '');
+      const model = new ConstrainedBooleanModel(
+        'test',
+        undefined,
+        { isRequired: true },
+        ''
+      );
       const type = JavaDefaultTypeMapping.Boolean({
         constrainedModel: model,
         ...defaultOptions

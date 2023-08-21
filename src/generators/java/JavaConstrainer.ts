@@ -1,6 +1,7 @@
 import { Constraints } from '../../helpers';
 import {
   ConstrainedEnumValueModel,
+  ConstrainedMetaModel,
   ConstrainedObjectModel,
   ConstrainedReferenceModel,
   ConstrainedUnionModel
@@ -90,6 +91,21 @@ export function unionIncludesBuiltInTypes(
   );
 }
 
+function getType(
+  constrainedModel: ConstrainedMetaModel,
+  typeWhenNullableOrOptional: string,
+  type: string
+) {
+  if (
+    constrainedModel.options.isNullable ||
+    !constrainedModel.options.isRequired
+  ) {
+    return typeWhenNullableOrOptional;
+  }
+
+  return type;
+}
+
 export const JavaDefaultTypeMapping: JavaTypeMapping = {
   Object({ constrainedModel }): string {
     return constrainedModel.name;
@@ -109,31 +125,27 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
     return 'Object';
   },
   Float({ constrainedModel }): string {
-    let type = constrainedModel.options.isNullable ? 'Double' : 'double';
     const format =
       constrainedModel.originalInput &&
       constrainedModel.originalInput['format'];
     switch (format) {
       case 'float':
-        type = constrainedModel.options.isNullable ? 'Float' : 'float';
-        break;
+        return getType(constrainedModel, 'Float', 'float');
     }
-    return type;
+    return getType(constrainedModel, 'Double', 'double');
   },
   Integer({ constrainedModel }): string {
-    let type = constrainedModel.options.isNullable ? 'Integer' : 'int';
+    const type = getType(constrainedModel, 'Integer', 'int');
     const format =
       constrainedModel.originalInput &&
       constrainedModel.originalInput['format'];
     switch (format) {
       case 'integer':
       case 'int32':
-        type = constrainedModel.options.isNullable ? 'Integer' : 'int';
-        break;
+        return type;
       case 'long':
       case 'int64':
-        type = constrainedModel.options.isNullable ? 'Long' : 'long';
-        break;
+        return getType(constrainedModel, 'Long', 'long');
     }
     return type;
   },
@@ -160,7 +172,7 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
     return type;
   },
   Boolean({ constrainedModel }): string {
-    return constrainedModel.options.isNullable ? 'Boolean' : 'boolean';
+    return getType(constrainedModel, 'Boolean', 'boolean');
   },
   Tuple({ options }): string {
     //Because Java have no notion of tuples (and no custom implementation), we have to render it as a list of any value.

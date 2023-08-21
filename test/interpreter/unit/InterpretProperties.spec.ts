@@ -53,6 +53,7 @@ describe('Interpretation of properties', () => {
   test('should go trough properties and add it to model', () => {
     const schema: any = { properties: { property1: { type: 'string' } } };
     const model = new CommonModel();
+    model.required = ['property1'];
     const interpreter = new Interpreter();
     const mockedReturnModel = new CommonModel();
     (interpreter.interpret as jest.Mock).mockReturnValue(mockedReturnModel);
@@ -70,6 +71,7 @@ describe('Interpretation of properties', () => {
       mockedReturnModel,
       schema
     );
+    expect(mockedReturnModel.propertyIsRequired).toBe(true);
   });
 
   test('should set discriminator when discriminator is set in interpreterOptions', () => {

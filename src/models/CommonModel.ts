@@ -29,6 +29,7 @@ export class CommonModel {
   required?: string[];
   additionalItems?: CommonModel;
   union?: CommonModel[];
+  propertyIsRequired?: boolean;
 
   /**
    * Takes a deep copy of the input object and converts it to an instance of CommonModel.
@@ -819,6 +820,9 @@ export class CommonModel {
         ...new Set([...(mergeTo.required || []), ...mergeFrom.required])
       ];
     }
+
+    mergeTo.propertyIsRequired =
+      mergeTo.propertyIsRequired || mergeFrom.propertyIsRequired;
 
     if (
       CommonModel.idIncludesAnonymousSchema(mergeTo) &&
