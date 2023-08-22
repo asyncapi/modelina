@@ -88,6 +88,7 @@ public interface Pet {
   @JsonProperty(\\"time\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private java.time.OffsetDateTime time;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public String getId() { return this.id; }
@@ -205,6 +206,7 @@ public interface Pet {
   @JsonProperty(\\"time\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private java.time.OffsetDateTime time;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public String getId() { return this.id; }
@@ -286,6 +288,7 @@ Array [
   @NotNull
   @JsonProperty(\\"type\\")
   private final CloudEventType type = CloudEventType.DOG;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public String getId() { return this.id; }
@@ -385,6 +388,7 @@ public interface Pet {
   @NotNull
   @JsonProperty(\\"type\\")
   private final DogType type = DogType.DOG;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public DogType getType() { return this.type; }
@@ -463,6 +467,7 @@ public interface Pet {
   @NotNull
   @JsonProperty(\\"type\\")
   private final CatType type = CatType.CAT;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public CatType getType() { return this.type; }
@@ -546,6 +551,7 @@ Array [
   @JsonProperty(\\"vehicle\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Vehicle vehicle;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public Vehicle getVehicle() { return this.vehicle; }
@@ -607,6 +613,7 @@ public interface Vehicle {
   @NotNull
   @JsonProperty(\\"vehicleType\\")
   private final VehicleType vehicleType = VehicleType.CAR;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public VehicleType getVehicleType() { return this.vehicleType; }
@@ -685,6 +692,7 @@ public interface Vehicle {
   @NotNull
   @JsonProperty(\\"vehicleType\\")
   private final VehicleType vehicleType = VehicleType.TRUCK;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public VehicleType getVehicleType() { return this.vehicleType; }

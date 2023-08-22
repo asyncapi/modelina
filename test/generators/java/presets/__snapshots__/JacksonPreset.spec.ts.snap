@@ -7,6 +7,7 @@ exports[`JAVA_JACKSON_PRESET should render Jackson annotations for class 1`] = `
   @JsonProperty(\\"max_number_prop\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Double maxNumberProp;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public double getMinNumberProp() { return this.minNumberProp; }
@@ -72,6 +73,7 @@ public interface Vehicle {
   @JsonProperty(\\"name\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String name;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public String getVehicleType() { return this.vehicleType; }
@@ -90,6 +92,7 @@ public interface Vehicle {
   @JsonProperty(\\"name\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String name;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public String getVehicleType() { return this.vehicleType; }
@@ -121,6 +124,7 @@ public interface Vehicle {
   @JsonProperty(\\"vehicleType\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String vehicleType;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public String getVehicleType() { return this.vehicleType; }
@@ -133,6 +137,7 @@ public interface Vehicle {
   @JsonProperty(\\"vehicleType\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String vehicleType;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public String getVehicleType() { return this.vehicleType; }
@@ -161,6 +166,7 @@ public interface Vehicle {
   @JsonProperty(\\"vehicleType\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String vehicleType;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public String getVehicleType() { return this.vehicleType; }
@@ -173,6 +179,7 @@ public interface Vehicle {
   @JsonProperty(\\"vehicleType\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String vehicleType;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public String getVehicleType() { return this.vehicleType; }
@@ -201,6 +208,7 @@ public interface Vehicle {
   @JsonProperty(\\"passengers\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String passengers;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public String getPassengers() { return this.passengers; }
@@ -213,6 +221,7 @@ public interface Vehicle {
   @JsonProperty(\\"cargo\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String cargo;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public String getCargo() { return this.cargo; }
