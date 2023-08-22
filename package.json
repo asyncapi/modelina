@@ -8,7 +8,7 @@
     "url": "https://github.com/asyncapi/modelina/issues"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=18"
   },
   "repository": {
     "type": "git",
