@@ -1,6 +1,6 @@
 {
   "name": "@asyncapi/modelina",
-  "version": "2.0.0-next.17",
+  "version": "2.0.0-next.18",
   "description": "Library for generating data models based on inputs such as AsyncAPI, OpenAPI, or JSON Schema documents",
   "license": "Apache-2.0",
   "homepage": "https://www.modelina.org",
@@ -8,7 +8,7 @@
     "url": "https://github.com/asyncapi/modelina/issues"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=18"
   },
   "repository": {
     "type": "git",
