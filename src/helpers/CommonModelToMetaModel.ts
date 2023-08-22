@@ -40,10 +40,6 @@ function getMetaModelOptions(commonModel: CommonModel): MetaModelOptions {
     };
   }
 
-  if (commonModel.propertyIsRequired) {
-    options.isRequired = true;
-  }
-
   if (commonModel.format) {
     options.format = commonModel.format;
   }

@@ -29,7 +29,6 @@ export class CommonModel {
   required?: string[];
   additionalItems?: CommonModel;
   union?: CommonModel[];
-  propertyIsRequired?: boolean;
   format?: string;
 
   /**
@@ -821,9 +820,6 @@ export class CommonModel {
         ...new Set([...(mergeTo.required || []), ...mergeFrom.required])
       ];
     }
-
-    mergeTo.propertyIsRequired =
-      mergeTo.propertyIsRequired || mergeFrom.propertyIsRequired;
 
     mergeTo.format = mergeTo.format || mergeFrom.format;
 
