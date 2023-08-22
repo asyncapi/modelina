@@ -1,6 +1,6 @@
 {
   "name": "@asyncapi/modelina",
-  "version": "1.8.10",
+  "version": "1.8.11",
   "description": "Library for generating data models based on inputs such as AsyncAPI, OpenAPI, or JSON Schema documents",
   "license": "Apache-2.0",
   "homepage": "https://www.modelina.org",
@@ -113,6 +113,8 @@
     "generate:runtime:php": "cross-env CI=true ts-node ./test/runtime/runtime-php.ts",
     "test:runtime:typescript": "cd ./test/runtime/runtime-typescript && npm i && npm run test",
     "generate:runtime:typescript": "cross-env CI=true ts-node ./test/runtime/runtime-typescript.ts",
+    "test:runtime:csharp": "cross-env CI=true jest ./test/runtime/runtime-csharp.spec.ts",
+    "generate:runtime:csharp": "cross-env CI=true ts-node ./test/runtime/runtime-csharp.ts",
     "test:watch": "jest --watch",
     "docs": "npm run docs:api",
     "docs:api": "typedoc src/index.ts --out ./modelina-website/public/docs/api/generated --name Modelina",
