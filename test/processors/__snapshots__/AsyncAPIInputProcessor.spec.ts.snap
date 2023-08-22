@@ -496,6 +496,7 @@ InputMetaModel {
               "property": StringModel {
                 "name": "anonymous_schema_6",
                 "options": Object {
+                  "format": "uri",
                   "isNullable": false,
                 },
                 "originalInput": AsyncapiV2Schema {
@@ -528,6 +529,7 @@ InputMetaModel {
               "property": StringModel {
                 "name": "anonymous_schema_3",
                 "options": Object {
+                  "format": "uri-reference",
                   "isNullable": false,
                   "isRequired": true,
                 },
@@ -565,6 +567,7 @@ InputMetaModel {
               "property": StringModel {
                 "name": "anonymous_schema_7",
                 "options": Object {
+                  "format": "date-time",
                   "isNullable": false,
                 },
                 "originalInput": AsyncapiV2Schema {
@@ -1005,6 +1008,7 @@ InputMetaModel {
               "property": StringModel {
                 "name": "anonymous_schema_6",
                 "options": Object {
+                  "format": "uri",
                   "isNullable": false,
                 },
                 "originalInput": AsyncapiV2Schema {
@@ -1037,6 +1041,7 @@ InputMetaModel {
               "property": StringModel {
                 "name": "anonymous_schema_3",
                 "options": Object {
+                  "format": "uri-reference",
                   "isNullable": false,
                   "isRequired": true,
                 },
@@ -1074,6 +1079,7 @@ InputMetaModel {
               "property": StringModel {
                 "name": "anonymous_schema_7",
                 "options": Object {
+                  "format": "date-time",
                   "isNullable": false,
                 },
                 "originalInput": AsyncapiV2Schema {
@@ -2459,6 +2465,7 @@ InputMetaModel {
               "property": StringModel {
                 "name": "anonymous_schema_6",
                 "options": Object {
+                  "format": "uri",
                   "isNullable": false,
                 },
                 "originalInput": AsyncapiV2Schema {
@@ -2491,6 +2498,7 @@ InputMetaModel {
               "property": StringModel {
                 "name": "anonymous_schema_3",
                 "options": Object {
+                  "format": "uri-reference",
                   "isNullable": false,
                   "isRequired": true,
                 },
@@ -2528,6 +2536,7 @@ InputMetaModel {
               "property": StringModel {
                 "name": "anonymous_schema_7",
                 "options": Object {
+                  "format": "date-time",
                   "isNullable": false,
                 },
                 "originalInput": AsyncapiV2Schema {
@@ -2968,6 +2977,7 @@ InputMetaModel {
               "property": StringModel {
                 "name": "anonymous_schema_6",
                 "options": Object {
+                  "format": "uri",
                   "isNullable": false,
                 },
                 "originalInput": AsyncapiV2Schema {
@@ -3000,6 +3010,7 @@ InputMetaModel {
               "property": StringModel {
                 "name": "anonymous_schema_3",
                 "options": Object {
+                  "format": "uri-reference",
                   "isNullable": false,
                   "isRequired": true,
                 },
@@ -3037,6 +3048,7 @@ InputMetaModel {
               "property": StringModel {
                 "name": "anonymous_schema_7",
                 "options": Object {
+                  "format": "date-time",
                   "isNullable": false,
                 },
                 "originalInput": AsyncapiV2Schema {
@@ -3987,6 +3999,7 @@ InputMetaModel {
           "property": StringModel {
             "name": "anonymous_schema_2",
             "options": Object {
+              "format": "email",
               "isNullable": false,
             },
             "originalInput": AsyncapiV2Schema {
@@ -4161,6 +4174,7 @@ InputMetaModel {
           "property": StringModel {
             "name": "anonymous_schema_2",
             "options": Object {
+              "format": "email",
               "isNullable": false,
             },
             "originalInput": AsyncapiV2Schema {

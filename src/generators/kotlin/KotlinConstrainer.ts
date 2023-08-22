@@ -11,7 +11,7 @@ import { KotlinTypeMapping } from './KotlinGenerator';
 
 function enumFormatToNumberType(
   enumValueModel: ConstrainedEnumValueModel,
-  format: string
+  format: string | undefined
 ): string {
   switch (format) {
     case 'integer':
@@ -31,7 +31,7 @@ function enumFormatToNumberType(
 
 function fromEnumValueToKotlinType(
   enumValueModel: ConstrainedEnumValueModel,
-  format: string
+  format: string | undefined
 ): string {
   switch (typeof enumValueModel.value) {
     case 'boolean':
@@ -84,22 +84,16 @@ export const KotlinDefaultTypeMapping: KotlinTypeMapping = {
     return 'Any';
   },
   Float({ constrainedModel }): string {
-    const format =
-      constrainedModel.originalInput &&
-      constrainedModel.originalInput['format'];
-    return format === 'float' ? 'Float' : 'Double';
+    return constrainedModel.options.format === 'float' ? 'Float' : 'Double';
   },
   Integer({ constrainedModel }): string {
-    const format =
-      constrainedModel.originalInput &&
-      constrainedModel.originalInput['format'];
-    return format === 'long' || format === 'int64' ? 'Long' : 'Int';
+    return constrainedModel.options.format === 'long' ||
+      constrainedModel.options.format === 'int64'
+      ? 'Long'
+      : 'Int';
   },
   String({ constrainedModel }): string {
-    const format =
-      constrainedModel.originalInput &&
-      constrainedModel.originalInput['format'];
-    switch (format) {
+    switch (constrainedModel.options.format) {
       case 'date': {
         return 'java.time.LocalDate';
       }
@@ -134,11 +128,8 @@ export const KotlinDefaultTypeMapping: KotlinTypeMapping = {
     return isList ? `List<${type}>` : `Array<${type}>`;
   },
   Enum({ constrainedModel }): string {
-    const format =
-      constrainedModel.originalInput &&
-      constrainedModel.originalInput['format'];
     const valueTypes = constrainedModel.values.map((enumValue) =>
-      fromEnumValueToKotlinType(enumValue, format)
+      fromEnumValueToKotlinType(enumValue, constrainedModel.options.format)
     );
     const uniqueTypes = [...new Set(valueTypes)];
 

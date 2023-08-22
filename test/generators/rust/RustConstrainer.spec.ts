@@ -76,11 +76,11 @@ describe('RustConstrainer', () => {
       });
       expect(type).toEqual('f64');
     });
-    test('should render f32 when original input has number format', () => {
+    test('should render f32 when format has number format', () => {
       const model = new ConstrainedFloatModel(
         'test',
-        { format: 'float32' },
         {},
+        { format: 'float32' },
         ''
       );
       const type = RustDefaultTypeMapping.Float({
@@ -99,11 +99,11 @@ describe('RustConstrainer', () => {
       });
       expect(type).toEqual('i32');
     });
-    test('should render int when original input has integer format', () => {
+    test('should render int when format has integer format', () => {
       const model = new ConstrainedIntegerModel(
         'test',
+        {},
         { format: 'integer' },
-        {},
         ''
       );
       const type = RustDefaultTypeMapping.Integer({
@@ -112,11 +112,11 @@ describe('RustConstrainer', () => {
       });
       expect(type).toEqual('i32');
     });
-    test('should render int when original input has int32 format', () => {
+    test('should render int when format has int32 format', () => {
       const model = new ConstrainedIntegerModel(
         'test',
+        {},
         { format: 'int32' },
-        {},
         ''
       );
       const type = RustDefaultTypeMapping.Integer({
@@ -125,11 +125,11 @@ describe('RustConstrainer', () => {
       });
       expect(type).toEqual('i32');
     });
-    test('should render long when original input has long format', () => {
+    test('should render long when format has long format', () => {
       const model = new ConstrainedIntegerModel(
         'test',
-        { format: 'long' },
         {},
+        { format: 'long' },
         ''
       );
       const type = RustDefaultTypeMapping.Integer({
@@ -138,11 +138,11 @@ describe('RustConstrainer', () => {
       });
       expect(type).toEqual('i64');
     });
-    test('should render long when original input has int64 format', () => {
+    test('should render long when format has int64 format', () => {
       const model = new ConstrainedIntegerModel(
         'test',
-        { format: 'int64' },
         {},
+        { format: 'int64' },
         ''
       );
       const type = RustDefaultTypeMapping.Integer({
@@ -161,11 +161,11 @@ describe('RustConstrainer', () => {
       });
       expect(type).toEqual('String');
     });
-    test('should render Vec<u8> when original input has binary format', () => {
+    test('should render Vec<u8> when format has binary format', () => {
       const model = new ConstrainedStringModel(
         'test',
-        { format: 'binary' },
         {},
+        { format: 'binary' },
         ''
       );
       const type = RustDefaultTypeMapping.String({

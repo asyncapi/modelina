@@ -63,12 +63,14 @@ describe('Interpreter', () => {
   });
   test('should inherit type from schema', () => {
     const schema = {
-      type: 'string'
+      type: 'string',
+      format: 'date-time'
     };
     const interpreter = new Interpreter();
     const model = interpreter.interpret(schema);
     expect(model).not.toBeUndefined();
     expect(model?.type).toEqual('string');
+    expect(model?.format).toEqual('date-time');
   });
   test('should return model with all types if true schema', () => {
     const schema = true;

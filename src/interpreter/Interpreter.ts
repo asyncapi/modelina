@@ -135,6 +135,9 @@ export class Interpreter {
     if (schema.required !== undefined) {
       model.required = schema.required;
     }
+    if (schema.format) {
+      model.format = schema.format;
+    }
 
     interpretPatternProperties(schema, model, this, interpreterOptions);
     interpretAdditionalItems(schema, model, this, interpreterOptions);

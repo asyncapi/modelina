@@ -17,7 +17,7 @@ import { JavaTypeMapping } from './JavaGenerator';
 
 function enumFormatToNumberType(
   enumValueModel: ConstrainedEnumValueModel,
-  format: string
+  format: string | undefined
 ): string {
   switch (format) {
     case 'integer':
@@ -40,7 +40,7 @@ function enumFormatToNumberType(
 
 const fromEnumValueToType = (
   enumValueModel: ConstrainedEnumValueModel,
-  format: string
+  format: string | undefined
 ): string => {
   switch (typeof enumValueModel.value) {
     case 'boolean':
@@ -125,51 +125,40 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
     return 'Object';
   },
   Float({ constrainedModel }): string {
-    const format =
-      constrainedModel.originalInput &&
-      constrainedModel.originalInput['format'];
-    switch (format) {
+    switch (constrainedModel.options.format) {
       case 'float':
         return getType(constrainedModel, 'Float', 'float');
+      default:
+        return getType(constrainedModel, 'Double', 'double');
     }
-    return getType(constrainedModel, 'Double', 'double');
   },
   Integer({ constrainedModel }): string {
     const type = getType(constrainedModel, 'Integer', 'int');
-    const format =
-      constrainedModel.originalInput &&
-      constrainedModel.originalInput['format'];
-    switch (format) {
+    switch (constrainedModel.options.format) {
       case 'integer':
       case 'int32':
         return type;
       case 'long':
       case 'int64':
         return getType(constrainedModel, 'Long', 'long');
+      default:
+        return type;
     }
-    return type;
   },
   String({ constrainedModel }): string {
-    let type = 'String';
-    const format =
-      constrainedModel.originalInput &&
-      constrainedModel.originalInput['format'];
-    switch (format) {
+    switch (constrainedModel.options.format) {
       case 'date':
-        type = 'java.time.LocalDate';
-        break;
+        return 'java.time.LocalDate';
       case 'time':
-        type = 'java.time.OffsetTime';
-        break;
+        return 'java.time.OffsetTime';
       case 'dateTime':
       case 'date-time':
-        type = 'java.time.OffsetDateTime';
-        break;
+        return 'java.time.OffsetDateTime';
       case 'binary':
-        type = 'byte[]';
-        break;
+        return 'byte[]';
+      default:
+        return 'String';
     }
-    return type;
   },
   Boolean({ constrainedModel }): string {
     return getType(constrainedModel, 'Boolean', 'boolean');
@@ -189,11 +178,8 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
     return `${constrainedModel.valueModel.type}[]`;
   },
   Enum({ constrainedModel }): string {
-    const format =
-      constrainedModel.originalInput &&
-      constrainedModel.originalInput['format'];
     const valueTypes = constrainedModel.values.map((enumValue) =>
-      fromEnumValueToType(enumValue, format)
+      fromEnumValueToType(enumValue, constrainedModel.options.format)
     );
     const uniqueTypes = valueTypes.filter((item, pos) => {
       return valueTypes.indexOf(item) === pos;
