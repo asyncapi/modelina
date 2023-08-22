@@ -27,14 +27,43 @@ export const JAVA_JACKSON_PRESET: JavaPreset = {
         isDictionary &&
         (property.property as ConstrainedDictionaryModel).serializationType ===
           'unwrap';
-      if (!hasUnwrappedOptions) {
-        const annotation = renderer.renderAnnotation(
+
+      const blocks: string[] = [];
+
+      if (hasUnwrappedOptions) {
+        if (!property.required) {
+          blocks.push(
+            renderer.renderAnnotation(
+              'JsonInclude',
+              'JsonInclude.Include.NON_NULL'
+            )
+          );
+        }
+
+        blocks.push(content);
+
+        return renderer.renderBlock(blocks);
+      }
+
+      blocks.push(
+        renderer.renderAnnotation(
           'JsonProperty',
           `"${property.unconstrainedPropertyName}"`
+        )
+      );
+
+      if (!property.required) {
+        blocks.push(
+          renderer.renderAnnotation(
+            'JsonInclude',
+            'JsonInclude.Include.NON_NULL'
+          )
         );
-        return renderer.renderBlock([annotation, content]);
       }
-      return renderer.renderBlock([content]);
+
+      blocks.push(content);
+
+      return renderer.renderBlock(blocks);
     }
   },
   enum: {

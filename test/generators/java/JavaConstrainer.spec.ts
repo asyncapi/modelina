@@ -9,6 +9,7 @@ import {
   ConstrainedFloatModel,
   ConstrainedIntegerModel,
   ConstrainedObjectModel,
+  ConstrainedObjectPropertyModel,
   ConstrainedReferenceModel,
   ConstrainedStringModel,
   ConstrainedTupleModel,
@@ -111,9 +112,29 @@ describe('JavaConstrainer', () => {
       const model = new ConstrainedFloatModel('test', undefined, {}, '');
       const type = JavaDefaultTypeMapping.Float({
         constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'test',
+          'test',
+          true,
+          model
+        ),
         ...defaultOptions
       });
       expect(type).toEqual('double');
+    });
+    test('should render optional type', () => {
+      const model = new ConstrainedFloatModel('test', undefined, {}, '');
+      const type = JavaDefaultTypeMapping.Float({
+        constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'test',
+          'test',
+          false,
+          model
+        ),
+        ...defaultOptions
+      });
+      expect(type).toEqual('Double');
     });
     test('should render nullable type', () => {
       const model = new ConstrainedFloatModel(
@@ -137,6 +158,12 @@ describe('JavaConstrainer', () => {
       );
       const type = JavaDefaultTypeMapping.Float({
         constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'test',
+          'test',
+          true,
+          model
+        ),
         ...defaultOptions
       });
       expect(type).toEqual('float');
@@ -147,6 +174,12 @@ describe('JavaConstrainer', () => {
       const model = new ConstrainedIntegerModel('test', undefined, {}, '');
       const type = JavaDefaultTypeMapping.Integer({
         constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'test',
+          'test',
+          true,
+          model
+        ),
         ...defaultOptions
       });
       expect(type).toEqual('int');
@@ -173,6 +206,12 @@ describe('JavaConstrainer', () => {
       );
       const type = JavaDefaultTypeMapping.Integer({
         constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'test',
+          'test',
+          true,
+          model
+        ),
         ...defaultOptions
       });
       expect(type).toEqual('int');
@@ -186,6 +225,12 @@ describe('JavaConstrainer', () => {
       );
       const type = JavaDefaultTypeMapping.Integer({
         constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'test',
+          'test',
+          true,
+          model
+        ),
         ...defaultOptions
       });
       expect(type).toEqual('int');
@@ -199,6 +244,12 @@ describe('JavaConstrainer', () => {
       );
       const type = JavaDefaultTypeMapping.Integer({
         constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'test',
+          'test',
+          true,
+          model
+        ),
         ...defaultOptions
       });
       expect(type).toEqual('long');
@@ -212,6 +263,12 @@ describe('JavaConstrainer', () => {
       );
       const type = JavaDefaultTypeMapping.Integer({
         constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'test',
+          'test',
+          true,
+          model
+        ),
         ...defaultOptions
       });
       expect(type).toEqual('long');
@@ -297,6 +354,12 @@ describe('JavaConstrainer', () => {
       const model = new ConstrainedBooleanModel('test', undefined, {}, '');
       const type = JavaDefaultTypeMapping.Boolean({
         constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'test',
+          'test',
+          true,
+          model
+        ),
         ...defaultOptions
       });
       expect(type).toEqual('boolean');

@@ -83,9 +83,12 @@ public interface Pet {
   @JsonProperty(\\"type\\")
   private final CloudEventType type = CloudEventType.DOG;
   @JsonProperty(\\"dataschema\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private String dataschema;
   @JsonProperty(\\"time\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private java.time.OffsetDateTime time;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public String getId() { return this.id; }
@@ -198,9 +201,12 @@ public interface Pet {
   @JsonProperty(\\"type\\")
   private final CloudEventType type = CloudEventType.CAT;
   @JsonProperty(\\"dataschema\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private String dataschema;
   @JsonProperty(\\"time\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private java.time.OffsetDateTime time;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public String getId() { return this.id; }
@@ -282,6 +288,7 @@ Array [
   @NotNull
   @JsonProperty(\\"type\\")
   private final CloudEventType type = CloudEventType.DOG;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public String getId() { return this.id; }
@@ -381,6 +388,7 @@ public interface Pet {
   @NotNull
   @JsonProperty(\\"type\\")
   private final DogType type = DogType.DOG;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public DogType getType() { return this.type; }
@@ -459,6 +467,7 @@ public interface Pet {
   @NotNull
   @JsonProperty(\\"type\\")
   private final CatType type = CatType.CAT;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public CatType getType() { return this.type; }
@@ -540,7 +549,9 @@ exports[`JavaGenerator oneOf/discriminator with jackson preset should create an 
 Array [
   "public class Cargo {
   @JsonProperty(\\"vehicle\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Vehicle vehicle;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public Vehicle getVehicle() { return this.vehicle; }
@@ -602,6 +613,7 @@ public interface Vehicle {
   @NotNull
   @JsonProperty(\\"vehicleType\\")
   private final VehicleType vehicleType = VehicleType.CAR;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public VehicleType getVehicleType() { return this.vehicleType; }
@@ -680,6 +692,7 @@ public interface Vehicle {
   @NotNull
   @JsonProperty(\\"vehicleType\\")
   private final VehicleType vehicleType = VehicleType.TRUCK;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public VehicleType getVehicleType() { return this.vehicleType; }
@@ -748,7 +761,7 @@ Array [
   private String city;
   private String state;
   private double houseNumber;
-  private boolean marriage;
+  private Boolean marriage;
   private Object members;
   private Object[] arrayType;
   private Map<String, Object> additionalProperties;
@@ -765,8 +778,8 @@ Array [
   public double getHouseNumber() { return this.houseNumber; }
   public void setHouseNumber(double houseNumber) { this.houseNumber = houseNumber; }
 
-  public boolean getMarriage() { return this.marriage; }
-  public void setMarriage(boolean marriage) { this.marriage = marriage; }
+  public Boolean getMarriage() { return this.marriage; }
+  public void setMarriage(Boolean marriage) { this.marriage = marriage; }
 
   public Object getMembers() { return this.members; }
   public void setMembers(Object members) { this.members = members; }
@@ -953,7 +966,7 @@ public class Address {
   private String city;
   private String state;
   private double houseNumber;
-  private boolean marriage;
+  private Boolean marriage;
   private Object members;
   private Object[] arrayType;
   private OtherModel otherModel;
@@ -971,8 +984,8 @@ public class Address {
   public double getHouseNumber() { return this.houseNumber; }
   public void setHouseNumber(double houseNumber) { this.houseNumber = houseNumber; }
 
-  public boolean getMarriage() { return this.marriage; }
-  public void setMarriage(boolean marriage) { this.marriage = marriage; }
+  public Boolean getMarriage() { return this.marriage; }
+  public void setMarriage(Boolean marriage) { this.marriage = marriage; }
 
   public Object getMembers() { return this.members; }
   public void setMembers(Object members) { this.members = members; }
