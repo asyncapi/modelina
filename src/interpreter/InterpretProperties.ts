@@ -45,9 +45,6 @@ export default function interpretProperties(
       discriminator
     });
     if (propertyModel !== undefined) {
-      if (model.required?.includes(propertyName)) {
-        propertyModel.propertyIsRequired = true;
-      }
       model.addProperty(propertyName, propertyModel, schema);
     }
   }

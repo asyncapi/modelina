@@ -513,7 +513,6 @@ InputMetaModel {
                 "name": "anonymous_schema_2",
                 "options": Object {
                   "isNullable": false,
-                  "isRequired": true,
                 },
                 "originalInput": AsyncapiV2Schema {
                   "type": "string",
@@ -529,7 +528,6 @@ InputMetaModel {
                 "name": "anonymous_schema_3",
                 "options": Object {
                   "isNullable": false,
-                  "isRequired": true,
                 },
                 "originalInput": AsyncapiV2Schema {
                   "format": "uri-reference",
@@ -546,7 +544,6 @@ InputMetaModel {
                 "name": "anonymous_schema_4",
                 "options": Object {
                   "isNullable": false,
-                  "isRequired": true,
                 },
                 "originalInput": AsyncapiV2Schema {
                   "default": "1.0",
@@ -585,7 +582,6 @@ InputMetaModel {
                     "originalInput": "Dog",
                   },
                   "isNullable": false,
-                  "isRequired": true,
                 },
                 "originalInput": AsyncapiV2Schema {
                   "allOf": Array [
@@ -1022,7 +1018,6 @@ InputMetaModel {
                 "name": "anonymous_schema_2",
                 "options": Object {
                   "isNullable": false,
-                  "isRequired": true,
                 },
                 "originalInput": AsyncapiV2Schema {
                   "type": "string",
@@ -1038,7 +1033,6 @@ InputMetaModel {
                 "name": "anonymous_schema_3",
                 "options": Object {
                   "isNullable": false,
-                  "isRequired": true,
                 },
                 "originalInput": AsyncapiV2Schema {
                   "format": "uri-reference",
@@ -1055,7 +1049,6 @@ InputMetaModel {
                 "name": "anonymous_schema_4",
                 "options": Object {
                   "isNullable": false,
-                  "isRequired": true,
                 },
                 "originalInput": AsyncapiV2Schema {
                   "default": "1.0",
@@ -1094,7 +1087,6 @@ InputMetaModel {
                     "originalInput": "Cat",
                   },
                   "isNullable": false,
-                  "isRequired": true,
                 },
                 "originalInput": AsyncapiV2Schema {
                   "allOf": Array [
@@ -2476,7 +2468,6 @@ InputMetaModel {
                 "name": "anonymous_schema_2",
                 "options": Object {
                   "isNullable": false,
-                  "isRequired": true,
                 },
                 "originalInput": AsyncapiV2Schema {
                   "type": "string",
@@ -2492,7 +2483,6 @@ InputMetaModel {
                 "name": "anonymous_schema_3",
                 "options": Object {
                   "isNullable": false,
-                  "isRequired": true,
                 },
                 "originalInput": AsyncapiV2Schema {
                   "format": "uri-reference",
@@ -2509,7 +2499,6 @@ InputMetaModel {
                 "name": "anonymous_schema_4",
                 "options": Object {
                   "isNullable": false,
-                  "isRequired": true,
                 },
                 "originalInput": AsyncapiV2Schema {
                   "default": "1.0",
@@ -2548,7 +2537,6 @@ InputMetaModel {
                     "originalInput": "Dog",
                   },
                   "isNullable": false,
-                  "isRequired": true,
                 },
                 "originalInput": AsyncapiV2Schema {
                   "allOf": Array [
@@ -2985,7 +2973,6 @@ InputMetaModel {
                 "name": "anonymous_schema_2",
                 "options": Object {
                   "isNullable": false,
-                  "isRequired": true,
                 },
                 "originalInput": AsyncapiV2Schema {
                   "type": "string",
@@ -3001,7 +2988,6 @@ InputMetaModel {
                 "name": "anonymous_schema_3",
                 "options": Object {
                   "isNullable": false,
-                  "isRequired": true,
                 },
                 "originalInput": AsyncapiV2Schema {
                   "format": "uri-reference",
@@ -3018,7 +3004,6 @@ InputMetaModel {
                 "name": "anonymous_schema_4",
                 "options": Object {
                   "isNullable": false,
-                  "isRequired": true,
                 },
                 "originalInput": AsyncapiV2Schema {
                   "default": "1.0",
@@ -3057,7 +3042,6 @@ InputMetaModel {
                     "originalInput": "Cat",
                   },
                   "isNullable": false,
-                  "isRequired": true,
                 },
                 "originalInput": AsyncapiV2Schema {
                   "allOf": Array [
