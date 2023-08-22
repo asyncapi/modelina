@@ -83,7 +83,7 @@ async function start() {
   //Filter out any examples that either:
   // 1. are impossible to show (react and next examples)
   // 2. should not be shown 
-  exampleDirs = exampleDirs.filter((dir) => dir !== 'TEMPLATE' && dir !== 'integrate-with-react' && dir !== 'integrate-with-next'));
+  exampleDirs = exampleDirs.filter((dir) => dir !== 'TEMPLATE' && dir !== 'integrate-with-react' && dir !== 'integrate-with-next');
   const templateConfig = {};
 
   for (const example of exampleDirs) {
