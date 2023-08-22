@@ -53,7 +53,7 @@ exports[`JAVA_JACKSON_PRESET should render Jackson annotations for enum 1`] = `
 
 exports[`JAVA_JACKSON_PRESET union handle oneOf with AsyncAPI discriminator with Jackson 1`] = `
 Array [
-  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"vehicleType\\")
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"vehicleType\\", visible=true)
 @JsonSubTypes({
   @JsonSubTypes.Type(value = Car.class, name = \\"Car\\"),
   @JsonSubTypes.Type(value = Truck.class, name = \\"Truck\\")
@@ -101,7 +101,7 @@ public interface Vehicle {
 
 exports[`JAVA_JACKSON_PRESET union handle oneOf with OpenAPI v3 discriminator with Jackson 1`] = `
 Array [
-  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"vehicleType\\")
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"vehicleType\\", visible=true)
 @JsonSubTypes({
   @JsonSubTypes.Type(value = Car.class, name = \\"Car\\"),
   @JsonSubTypes.Type(value = Truck.class, name = \\"Truck\\")
@@ -139,7 +139,7 @@ public interface Vehicle {
 
 exports[`JAVA_JACKSON_PRESET union handle oneOf with Swagger v2 discriminator with Jackson 1`] = `
 Array [
-  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"vehicleType\\")
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"vehicleType\\", visible=true)
 @JsonSubTypes({
   @JsonSubTypes.Type(value = Car.class, name = \\"Car\\"),
   @JsonSubTypes.Type(value = Truck.class, name = \\"Truck\\")
