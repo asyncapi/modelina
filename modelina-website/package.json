@@ -2,13 +2,15 @@
   "name": "modelina-website",
   "private": true,
   "scripts": {
-    "dev": "npm run build:examples && cross-env NODE_OPTIONS='--inspect' next dev",
-    "build": "npm run build:examples && next build --no-lint",
+    "dev": "npm run build:resources && cross-env NODE_OPTIONS='--inspect' next dev",
+    "build": "npm run build:resources && next build --no-lint",
     "build:modelina": "cd .. && npm i && npm run build:prod && npm run docs:api",
     "export": "next export",
     "start": "next start",
     "lint": "next lint -c ./.eslintrc",
-    "build:examples": "node scripts/build-examples.js"
+    "build:resources": "npm run build:examples && npm run build:docs",
+    "build:examples": "node scripts/build-examples.js",
+    "build:docs": "node scripts/build-docs.js"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.4.6",

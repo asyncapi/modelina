@@ -2,7 +2,7 @@ import GenericLayout from "@/components/layouts/GenericLayout";
 
 function iframe() {
   return {
-    __html: '<iframe src="/docs/api/generated/index.html" width="100%" height="100%"></iframe>'
+    __html: '<iframe src="/api/generated/index.html" width="100%" height="100%"></iframe>'
   }
 }
 
