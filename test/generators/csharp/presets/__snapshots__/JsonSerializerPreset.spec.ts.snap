@@ -147,12 +147,7 @@ internal class TestConverter : JsonConverter<Test>
         writer.WritePropertyName(unwrappedProperty.Key);
         JsonSerializer.Serialize(writer, unwrappedProperty.Value, options);
       }
-    }if(value.AdditionalProperties != null) {
-      // write property name and let the serializer serialize the value itself
-      writer.WritePropertyName(\\"additionalProperties\\");
-      JsonSerializer.Serialize(writer, value.AdditionalProperties, options);
     }
-
 
     writer.WriteEndObject();
   }
@@ -292,12 +287,7 @@ internal class NestedTestConverter : JsonConverter<NestedTest>
         writer.WritePropertyName(unwrappedProperty.Key);
         JsonSerializer.Serialize(writer, unwrappedProperty.Value, options);
       }
-    }if(value.AdditionalProperties != null) {
-      // write property name and let the serializer serialize the value itself
-      writer.WritePropertyName(\\"additionalProperties\\");
-      JsonSerializer.Serialize(writer, value.AdditionalProperties, options);
     }
-
 
     writer.WriteEndObject();
   }
