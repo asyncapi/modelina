@@ -1,6 +1,6 @@
-# Integrate with React
+# Integrate with Next
 
-A basic example of how to integrate Modelina into React.
+A basic example of how to integrate Modelina into Next. This particular example is with Jest and TypeScript.
 
 ## How to run this example
 
