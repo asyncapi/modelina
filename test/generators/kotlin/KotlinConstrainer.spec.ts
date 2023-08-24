@@ -67,11 +67,11 @@ describe('KotlinConstrainer', () => {
       });
       expect(type).toEqual('Double');
     });
-    test('should render Float when original input has number format', () => {
+    test('should render Float when format has number format', () => {
       const model = new ConstrainedFloatModel(
         'test',
-        { format: 'float' },
         {},
+        { format: 'float' },
         ''
       );
       const type = KotlinDefaultTypeMapping.Float({
@@ -92,11 +92,11 @@ describe('KotlinConstrainer', () => {
       });
       expect(type).toEqual('Int');
     });
-    test('should render Int when original input has integer format', () => {
+    test('should render Int when format has integer format', () => {
       const model = new ConstrainedIntegerModel(
         'test',
-        { format: 'int32' },
         {},
+        { format: 'int32' },
         ''
       );
       const type = KotlinDefaultTypeMapping.Integer({
@@ -106,11 +106,11 @@ describe('KotlinConstrainer', () => {
       });
       expect(type).toEqual('Int');
     });
-    test('should render Long when original input has long format', () => {
+    test('should render Long when format has long format', () => {
       const model = new ConstrainedIntegerModel(
         'test',
-        { format: 'long' },
         {},
+        { format: 'long' },
         ''
       );
       const type = KotlinDefaultTypeMapping.Integer({
@@ -120,11 +120,11 @@ describe('KotlinConstrainer', () => {
       });
       expect(type).toEqual('Long');
     });
-    test('should render Long when original input has int64 format', () => {
+    test('should render Long when format has int64 format', () => {
       const model = new ConstrainedIntegerModel(
         'test',
-        { format: 'int64' },
         {},
+        { format: 'int64' },
         ''
       );
       const type = KotlinDefaultTypeMapping.Integer({
@@ -145,11 +145,11 @@ describe('KotlinConstrainer', () => {
       });
       expect(type).toEqual('String');
     });
-    test('should render LocalDate when original input has date format', () => {
+    test('should render LocalDate when format has date format', () => {
       const model = new ConstrainedStringModel(
         'test',
-        { format: 'date' },
         {},
+        { format: 'date' },
         ''
       );
       const type = KotlinDefaultTypeMapping.String({
@@ -159,11 +159,11 @@ describe('KotlinConstrainer', () => {
       });
       expect(type).toEqual('java.time.LocalDate');
     });
-    test('should render OffsetTime when original input has time format', () => {
+    test('should render OffsetTime when format has time format', () => {
       const model = new ConstrainedStringModel(
         'test',
-        { format: 'time' },
         {},
+        { format: 'time' },
         ''
       );
       const type = KotlinDefaultTypeMapping.String({
@@ -173,11 +173,11 @@ describe('KotlinConstrainer', () => {
       });
       expect(type).toEqual('java.time.OffsetTime');
     });
-    test('should render OffsetDateTime when original input has dateTime format', () => {
+    test('should render OffsetDateTime when format has dateTime format', () => {
       const model = new ConstrainedStringModel(
         'test',
+        {},
         { format: 'dateTime' },
-        {},
         ''
       );
       const type = KotlinDefaultTypeMapping.String({
@@ -187,11 +187,11 @@ describe('KotlinConstrainer', () => {
       });
       expect(type).toEqual('java.time.OffsetDateTime');
     });
-    test('should render OffsetDateTime when original input has date-time format', () => {
+    test('should render OffsetDateTime when format has date-time format', () => {
       const model = new ConstrainedStringModel(
         'test',
+        {},
         { format: 'date-time' },
-        {},
         ''
       );
       const type = KotlinDefaultTypeMapping.String({
@@ -201,11 +201,11 @@ describe('KotlinConstrainer', () => {
       });
       expect(type).toEqual('java.time.OffsetDateTime');
     });
-    test('should render byte when original input has binary format', () => {
+    test('should render byte when format has binary format', () => {
       const model = new ConstrainedStringModel(
         'test',
-        { format: 'binary' },
         {},
+        { format: 'binary' },
         ''
       );
       const type = KotlinDefaultTypeMapping.String({
@@ -368,8 +368,8 @@ describe('KotlinConstrainer', () => {
       const enumValue = new ConstrainedEnumValueModel('test', 12.0, {});
       const model = new ConstrainedEnumModel(
         'test',
-        { format: 'float' },
         {},
+        { format: 'float' },
         '',
         [enumValue]
       );
@@ -384,8 +384,8 @@ describe('KotlinConstrainer', () => {
       const enumValue = new ConstrainedEnumValueModel('test', 12.0, {});
       const model = new ConstrainedEnumModel(
         'test',
-        { format: 'double' },
         {},
+        { format: 'double' },
         '',
         [enumValue]
       );
@@ -445,8 +445,8 @@ describe('KotlinConstrainer', () => {
       const enumValue1 = new ConstrainedEnumValueModel('test', 123, {});
       const model = new ConstrainedEnumModel(
         'test',
-        { format: 'long' },
         {},
+        { format: 'long' },
         '',
         [enumValue1, enumValue2]
       );

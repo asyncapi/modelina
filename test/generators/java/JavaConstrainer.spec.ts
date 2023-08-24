@@ -149,11 +149,11 @@ describe('JavaConstrainer', () => {
       });
       expect(type).toEqual('Double');
     });
-    test('should render double when original input has number format', () => {
+    test('should render double when format has number format', () => {
       const model = new ConstrainedFloatModel(
         'test',
-        { format: 'float' },
         {},
+        { format: 'float' },
         ''
       );
       const type = JavaDefaultTypeMapping.Float({
@@ -197,11 +197,11 @@ describe('JavaConstrainer', () => {
       });
       expect(type).toEqual('Integer');
     });
-    test('should render int when original input has integer format', () => {
+    test('should render int when format has integer format', () => {
       const model = new ConstrainedIntegerModel(
         'test',
+        {},
         { format: 'integer' },
-        {},
         ''
       );
       const type = JavaDefaultTypeMapping.Integer({
@@ -216,11 +216,11 @@ describe('JavaConstrainer', () => {
       });
       expect(type).toEqual('int');
     });
-    test('should render int when original input has int32 format', () => {
+    test('should render int when format has int32 format', () => {
       const model = new ConstrainedIntegerModel(
         'test',
+        {},
         { format: 'int32' },
-        {},
         ''
       );
       const type = JavaDefaultTypeMapping.Integer({
@@ -235,11 +235,11 @@ describe('JavaConstrainer', () => {
       });
       expect(type).toEqual('int');
     });
-    test('should render long when original input has long format', () => {
+    test('should render long when format has long format', () => {
       const model = new ConstrainedIntegerModel(
         'test',
-        { format: 'long' },
         {},
+        { format: 'long' },
         ''
       );
       const type = JavaDefaultTypeMapping.Integer({
@@ -254,11 +254,11 @@ describe('JavaConstrainer', () => {
       });
       expect(type).toEqual('long');
     });
-    test('should render long when original input has int64 format', () => {
+    test('should render long when format has int64 format', () => {
       const model = new ConstrainedIntegerModel(
         'test',
-        { format: 'int64' },
         {},
+        { format: 'int64' },
         ''
       );
       const type = JavaDefaultTypeMapping.Integer({
@@ -283,11 +283,11 @@ describe('JavaConstrainer', () => {
       });
       expect(type).toEqual('String');
     });
-    test('should render LocalDate when original input has date format', () => {
+    test('should render LocalDate when format has date format', () => {
       const model = new ConstrainedStringModel(
         'test',
-        { format: 'date' },
         {},
+        { format: 'date' },
         ''
       );
       const type = JavaDefaultTypeMapping.String({
@@ -296,11 +296,11 @@ describe('JavaConstrainer', () => {
       });
       expect(type).toEqual('java.time.LocalDate');
     });
-    test('should render OffsetTime when original input has time format', () => {
+    test('should render OffsetTime when format has time format', () => {
       const model = new ConstrainedStringModel(
         'test',
-        { format: 'time' },
         {},
+        { format: 'time' },
         ''
       );
       const type = JavaDefaultTypeMapping.String({
@@ -309,11 +309,11 @@ describe('JavaConstrainer', () => {
       });
       expect(type).toEqual('java.time.OffsetTime');
     });
-    test('should render OffsetDateTime when original input has dateTime format', () => {
+    test('should render OffsetDateTime when format has dateTime format', () => {
       const model = new ConstrainedStringModel(
         'test',
+        {},
         { format: 'dateTime' },
-        {},
         ''
       );
       const type = JavaDefaultTypeMapping.String({
@@ -322,11 +322,11 @@ describe('JavaConstrainer', () => {
       });
       expect(type).toEqual('java.time.OffsetDateTime');
     });
-    test('should render OffsetDateTime when original input has date-time format', () => {
+    test('should render OffsetDateTime when format has date-time format', () => {
       const model = new ConstrainedStringModel(
         'test',
+        {},
         { format: 'date-time' },
-        {},
         ''
       );
       const type = JavaDefaultTypeMapping.String({
@@ -335,11 +335,11 @@ describe('JavaConstrainer', () => {
       });
       expect(type).toEqual('java.time.OffsetDateTime');
     });
-    test('should render byte when original input has binary format', () => {
+    test('should render byte when format has binary format', () => {
       const model = new ConstrainedStringModel(
         'test',
-        { format: 'binary' },
         {},
+        { format: 'binary' },
         ''
       );
       const type = JavaDefaultTypeMapping.String({
@@ -498,8 +498,8 @@ describe('JavaConstrainer', () => {
       const enumValue = new ConstrainedEnumValueModel('test', 12.0, {});
       const model = new ConstrainedEnumModel(
         'test',
-        { format: 'float' },
         {},
+        { format: 'float' },
         '',
         [enumValue]
       );
@@ -513,8 +513,8 @@ describe('JavaConstrainer', () => {
       const enumValue = new ConstrainedEnumValueModel('test', 12.0, {});
       const model = new ConstrainedEnumModel(
         'test',
-        { format: 'double' },
         {},
+        { format: 'double' },
         '',
         [enumValue]
       );
@@ -570,8 +570,8 @@ describe('JavaConstrainer', () => {
       const enumValue1 = new ConstrainedEnumValueModel('test', 123, {});
       const model = new ConstrainedEnumModel(
         'test',
-        { format: 'long' },
         {},
+        { format: 'long' },
         '',
         [enumValue1, enumValue2]
       );

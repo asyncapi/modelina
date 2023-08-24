@@ -18,7 +18,7 @@ import { JavaTypeMapping } from './JavaGenerator';
 
 function enumFormatToNumberType(
   enumValueModel: ConstrainedEnumValueModel,
-  format: string
+  format: string | undefined
 ): string {
   switch (format) {
     case 'integer':
@@ -41,7 +41,7 @@ function enumFormatToNumberType(
 
 const fromEnumValueToType = (
   enumValueModel: ConstrainedEnumValueModel,
-  format: string
+  format: string | undefined
 ): string => {
   switch (typeof enumValueModel.value) {
     case 'boolean':
@@ -129,10 +129,7 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
     return 'Object';
   },
   Float({ constrainedModel, partOfProperty }): string {
-    const format =
-      constrainedModel.originalInput &&
-      constrainedModel.originalInput['format'];
-    switch (format) {
+    switch (constrainedModel.options.format) {
       case 'float':
         return getType({
           constrainedModel,
@@ -140,13 +137,14 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
           typeWhenNullableOrOptional: 'Float',
           type: 'float'
         });
+      default:
+        return getType({
+          constrainedModel,
+          partOfProperty,
+          typeWhenNullableOrOptional: 'Double',
+          type: 'double'
+        });
     }
-    return getType({
-      constrainedModel,
-      partOfProperty,
-      typeWhenNullableOrOptional: 'Double',
-      type: 'double'
-    });
   },
   Integer({ constrainedModel, partOfProperty }): string {
     const type = getType({
@@ -155,10 +153,7 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
       typeWhenNullableOrOptional: 'Integer',
       type: 'int'
     });
-    const format =
-      constrainedModel.originalInput &&
-      constrainedModel.originalInput['format'];
-    switch (format) {
+    switch (constrainedModel.options.format) {
       case 'integer':
       case 'int32':
         return type;
@@ -170,30 +165,24 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
           typeWhenNullableOrOptional: 'Long',
           type: 'long'
         });
+      default:
+        return type;
     }
-    return type;
   },
   String({ constrainedModel }): string {
-    let type = 'String';
-    const format =
-      constrainedModel.originalInput &&
-      constrainedModel.originalInput['format'];
-    switch (format) {
+    switch (constrainedModel.options.format) {
       case 'date':
-        type = 'java.time.LocalDate';
-        break;
+        return 'java.time.LocalDate';
       case 'time':
-        type = 'java.time.OffsetTime';
-        break;
+        return 'java.time.OffsetTime';
       case 'dateTime':
       case 'date-time':
-        type = 'java.time.OffsetDateTime';
-        break;
+        return 'java.time.OffsetDateTime';
       case 'binary':
-        type = 'byte[]';
-        break;
+        return 'byte[]';
+      default:
+        return 'String';
     }
-    return type;
   },
   Boolean({ constrainedModel, partOfProperty }): string {
     return getType({
@@ -218,11 +207,8 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
     return `${constrainedModel.valueModel.type}[]`;
   },
   Enum({ constrainedModel }): string {
-    const format =
-      constrainedModel.originalInput &&
-      constrainedModel.originalInput['format'];
     const valueTypes = constrainedModel.values.map((enumValue) =>
-      fromEnumValueToType(enumValue, format)
+      fromEnumValueToType(enumValue, constrainedModel.options.format)
     );
     const uniqueTypes = valueTypes.filter((item, pos) => {
       return valueTypes.indexOf(item) === pos;

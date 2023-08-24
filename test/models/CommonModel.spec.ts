@@ -245,6 +245,33 @@ describe('CommonModel', () => {
         expect(doc1.required).toBeUndefined();
       });
     });
+    describe('format', () => {
+      test('should be merged when only right side is defined', () => {
+        const doc = {};
+        let doc1 = CommonModel.toCommonModel(doc);
+        const doc2 = CommonModel.toCommonModel(doc);
+        doc2.format = 'date-time';
+        doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
+        expect(doc1.format).toEqual(doc2.format);
+      });
+      test('should not be merged when both sides are defined', () => {
+        const doc = {};
+        let doc1 = CommonModel.toCommonModel(doc);
+        const doc2 = CommonModel.toCommonModel(doc);
+        doc2.format = 'date-time';
+        doc1.format = 'date';
+        doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
+        expect(doc1.format).not.toEqual(doc2.format);
+        expect(doc1.format).toEqual('date');
+      });
+      test('should not change if nothing is defined', () => {
+        const doc = {};
+        let doc1 = CommonModel.toCommonModel(doc);
+        const doc2 = CommonModel.toCommonModel(doc);
+        doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
+        expect(doc1.format).toBeUndefined();
+      });
+    });
     describe('extend', () => {
       test('should be merged when only right side is defined', () => {
         const doc = {};

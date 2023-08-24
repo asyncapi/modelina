@@ -279,48 +279,37 @@ export const RustDefaultTypeMapping: RustTypeMapping = {
     return 'serde_json::Value';
   },
   Float({ constrainedModel }): string {
-    let type = 'f64';
-    const format =
-      constrainedModel.originalInput &&
-      constrainedModel.originalInput['format'];
-    switch (format) {
+    switch (constrainedModel.options.format) {
       case 'fp32':
       case 'f32':
       case 'float32':
-        type = 'f32';
-        break;
+        return 'f32';
+      default:
+        return 'f64';
     }
-    return type;
   },
   Integer({ constrainedModel }): string {
-    let type = 'i32';
-    const format =
-      constrainedModel.originalInput &&
-      constrainedModel.originalInput['format'];
-    switch (format) {
+    const type = 'i32';
+    switch (constrainedModel.options.format) {
       case 'integer':
       case 'int32':
-        break;
+        return type;
       case 'long':
       case 'int64':
-        type = 'i64';
-        break;
+        return 'i64';
+      default:
+        return type;
     }
-    return type;
   },
   String({ constrainedModel }): string {
-    let type = 'String';
-    const format =
-      constrainedModel.originalInput &&
-      constrainedModel.originalInput['format'];
-    switch (format) {
+    switch (constrainedModel.options.format) {
       case 'bytes':
       case 'bytes[]':
       case 'binary':
-        type = 'Vec<u8>';
-        break;
+        return 'Vec<u8>';
+      default:
+        return 'String';
     }
-    return type;
   },
   Boolean(): string {
     return 'bool';

@@ -29,6 +29,7 @@ export class CommonModel {
   required?: string[];
   additionalItems?: CommonModel;
   union?: CommonModel[];
+  format?: string;
 
   /**
    * Takes a deep copy of the input object and converts it to an instance of CommonModel.
@@ -819,6 +820,8 @@ export class CommonModel {
         ...new Set([...(mergeTo.required || []), ...mergeFrom.required])
       ];
     }
+
+    mergeTo.format = mergeTo.format || mergeFrom.format;
 
     if (
       CommonModel.idIncludesAnonymousSchema(mergeTo) &&

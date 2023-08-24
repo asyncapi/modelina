@@ -733,6 +733,87 @@ describe('JavaGenerator', () => {
         const models = await generator.generate(asyncapiDoc);
         expect(models.map((model) => model.result)).toMatchSnapshot();
       });
+
+      test('date-time format should render java.time.OffsetDateTime', async () => {
+        const asyncapiDoc = {
+          asyncapi: '2.6.0',
+          info: {
+            title: 'Event API',
+            version: 'v1'
+          },
+          channels: {
+            events: {
+              subscribe: {
+                message: {
+                  $ref: '#/components/messages/Event'
+                }
+              }
+            }
+          },
+          components: {
+            messages: {
+              Event: {
+                title: 'Event',
+                payload: {
+                  title: 'Event',
+                  type: 'object',
+                  properties: {
+                    action: {
+                      title: 'Action',
+                      type: 'string',
+                      enum: ['ADD', 'UPDATE', 'DELETE']
+                    }
+                  },
+                  required: ['action'],
+                  allOf: [
+                    {
+                      if: {
+                        properties: {
+                          action: {
+                            const: 'ADD'
+                          }
+                        },
+                        required: ['action']
+                      },
+                      then: {
+                        $ref: '#/components/schemas/Event.AddOrUpdate'
+                      }
+                    },
+                    {
+                      if: {
+                        properties: {
+                          action: {
+                            const: 'UPDATE'
+                          }
+                        },
+                        required: ['action']
+                      },
+                      then: {
+                        $ref: '#/components/schemas/Event.AddOrUpdate'
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            schemas: {
+              'Event.AddOrUpdate': {
+                type: 'object',
+                properties: {
+                  event_time: {
+                    type: 'string',
+                    format: 'date-time'
+                  }
+                },
+                required: ['event_time']
+              }
+            }
+          }
+        };
+
+        const models = await generator.generate(asyncapiDoc);
+        expect(models.map((model) => model.result)).toMatchSnapshot();
+      });
     });
   });
 });
