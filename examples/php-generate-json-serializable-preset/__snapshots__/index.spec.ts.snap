@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render PHP and should log expected output to console 1`] = `
+Array [
+  "<?php
+declare(strict_types=1);
+
+namespace Asyncapi;
+
+
+use JsonSerializable;
+final class Root implements JsonSerializable
+{
+  private ?string $email;
+
+  public function getEmail(): ?string { return $this->email; }
+  public function setEmail(?string $email): void { $this->email = $email; }
+
+  public function jsonSerialize(): array
+  {
+    return [
+      'email' => $this->email,
+    ];
+  }
+}
+",
+]
+`;
