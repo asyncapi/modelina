@@ -36,7 +36,6 @@ This will ensure that, for example, enum values and property names are serialize
 To add support of serialization to JSON, apply the `PHP_JSON_SERIALIZABLE_PRESET` preset.
 Check out this [example for a live demonstration](../../examples/php-generate-json-serializable-preset).
 
-Marshalling PHP objects from JSON is currently supported, [let everyone know you need it](https://github.com/asyncapi/modelina/issues/new?assignees=&labels=enhancement&template=enhancement.md)!
 
 ### To and from XML
 
