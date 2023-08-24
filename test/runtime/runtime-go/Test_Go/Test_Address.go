@@ -7,13 +7,16 @@ import (
 )
 
 func TestShouldbeAbleToSerializeModel(t *testing.T) {
+	nestedobj := runtimego.NestedObject{
+		Test: "test",
+	}
 	address := runtimego.Address{
 		StreetName:           "Test Address 2",
-		HouseNumber:          2.0,
+		HouseNumber:          2,
 		Marriage:             true,
-		Members:              nil,
-		ArrayType:            nil,
-		NestedObject:         nil,
+		Members:              2,
+		ArrayType:            []interface{}{2, "test"},
+		NestedObject:         &nestedobj,
 		AdditionalProperties: nil,
 	}
 
@@ -30,13 +33,16 @@ func TestShouldbeAbleToSerializeModel(t *testing.T) {
 }
 
 func TestShouldNotContainAdditionalPropertiesWhenSerialized(t *testing.T) {
+	nestedobj := runtimego.NestedObject{
+		Test: "test",
+	}
 	address := runtimego.Address{
 		StreetName:           "Test Address 2",
 		HouseNumber:          2.0,
 		Marriage:             true,
-		Members:              nil,
-		ArrayType:            nil,
-		NestedObject:         nil,
+		Members:              2,
+		ArrayType:            []interface{}{2, "test"},
+		NestedObject:         &nestedobj,
 		AdditionalProperties: nil,
 	}
 
