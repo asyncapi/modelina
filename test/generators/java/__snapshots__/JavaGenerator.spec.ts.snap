@@ -56,6 +56,99 @@ public interface Vehicle {
 ]
 `;
 
+exports[`JavaGenerator oneOf/discriminator with jackson preset date-time format should render java.time.OffsetDateTime 1`] = `
+Array [
+  "public class Event {
+  @NotNull
+  @JsonProperty(\\"action\\")
+  private Action action;
+  @JsonProperty(\\"event_time\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private java.time.OffsetDateTime eventTime;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public Action getAction() { return this.action; }
+  public void setAction(Action action) { this.action = action; }
+
+  public java.time.OffsetDateTime getEventTime() { return this.eventTime; }
+  public void setEventTime(java.time.OffsetDateTime eventTime) { this.eventTime = eventTime; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Event self = (Event) o;
+      return 
+        Objects.equals(this.action, self.action) &&
+        Objects.equals(this.eventTime, self.eventTime) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)action, (Object)eventTime, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Event {\\\\n\\" +   
+      \\"    action: \\" + toIndentedString(action) + \\"\\\\n\\" +
+      \\"    eventTime: \\" + toIndentedString(eventTime) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+  "public enum Action {
+  ADD((String)\\"ADD\\"), UPDATE((String)\\"UPDATE\\"), DELETE((String)\\"DELETE\\");
+
+  private String value;
+
+  Action(String value) {
+    this.value = value;
+  }
+
+  @JsonValue
+  public String getValue() {
+    return value;
+  }
+
+  @JsonCreator
+  public static Action fromValue(String value) {
+    for (Action e : Action.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+}",
+]
+`;
+
 exports[`JavaGenerator oneOf/discriminator with jackson preset handle allOf with const in CloudEvent type 1`] = `
 Array [
   "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"type\\", visible=true)
