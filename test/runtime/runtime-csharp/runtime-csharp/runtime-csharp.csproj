@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>runtime_csharp</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
+    <PackageReference Include="NUnit" Version="3.13.3" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
+    <PackageReference Include="NUnit.Analyzers" Version="3.3.0" />
+    <PackageReference Include="coverlet.collector" Version="3.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="src\" />
+    <None Remove="src\models\" />
+    <None Remove="test\" />
+    <None Remove="src\models\json_serializer\" />
+    <None Remove="test\models\" />
+    <None Remove="test\models\json_serializer\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\" />
+    <Folder Include="src\models\" />
+    <Folder Include="test\" />
+    <Folder Include="src\models\json_serializer\" />
+    <Folder Include="test\models\" />
+    <Folder Include="test\models\json_serializer\" />
+  </ItemGroup>
+</Project>

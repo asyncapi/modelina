@@ -50,12 +50,13 @@ if (${modelInstanceVariable} != null) {
     ${renderSerializeProperty('unwrappedProperty.Value', propertyModel)}
   }
 }`;
-      }
-      serializeProperties += `if(${modelInstanceVariable} != null) {
+      } else {
+        serializeProperties += `if(${modelInstanceVariable} != null) {
   // write property name and let the serializer serialize the value itself
   writer.WritePropertyName("${propertyModel.unconstrainedPropertyName}");
   ${renderSerializeProperty(modelInstanceVariable, propertyModel)}
 }\n`;
+      }
     }
   }
   return serializeProperties;
