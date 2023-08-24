@@ -1,6 +1,6 @@
 # PHP Generate JSON Serializable Models Example
 
-A basic example of how to use Modelina and output PHP model.
+A basic example of how to use Modelina and output PHP model that supports JSON serialization.
 
 ## How to run this example
 
