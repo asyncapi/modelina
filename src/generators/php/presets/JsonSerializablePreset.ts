@@ -1,6 +1,9 @@
 import { PhpPreset } from '../PhpPreset';
 import { PhpRenderer } from '../PhpRenderer';
-import { ConstrainedMetaModel } from '../../../models';
+import {
+  ConstrainedDictionaryModel,
+  ConstrainedMetaModel
+} from '../../../models';
 
 function renderSelf({
   content
@@ -27,6 +30,19 @@ export const PHP_JSON_SERIALIZABLE_PRESET: PhpPreset = {
       return renderSelf({ content, renderer });
     },
     additionalContent({ renderer, model, content }): string {
+      const serializedProperties = Object.values(model.properties).map(
+        (property) => {
+          if (
+            property.property instanceof ConstrainedDictionaryModel &&
+            property.property.serializationType === 'unwrap'
+          ) {
+            return `...$this->${property.propertyName},`;
+          }
+
+          return `'${property.unconstrainedPropertyName}' => $this->${property.propertyName},`;
+        }
+      );
+
       return (
         content +
         renderer.renderBlock([
@@ -35,17 +51,7 @@ export const PHP_JSON_SERIALIZABLE_PRESET: PhpPreset = {
           renderer.indent(
             renderer.renderBlock([
               'return [',
-              renderer.indent(
-                renderer.renderBlock(
-                  Object.values(model.properties).map((property) => {
-                    if (property.propertyName === 'additionalProperties') {
-                      return `...$this->${property.propertyName},`;
-                    }
-
-                    return `'${property.unconstrainedPropertyName}' => $this->${property.propertyName},`;
-                  })
-                )
-              ),
+              renderer.indent(renderer.renderBlock(serializedProperties)),
               '];'
             ])
           ),
@@ -68,11 +74,11 @@ export const PHP_JSON_SERIALIZABLE_PRESET: PhpPreset = {
             renderer.renderBlock([
               'return match($this) {',
               renderer.indent(
-                renderer.renderBlock([
-                  ...model.values.map(
+                renderer.renderBlock(
+                  Object.values(model.values).map(
                     (value) => `self::${value.key} => ${value.value},`
                   )
-                ])
+                )
               ),
               '};'
             ])
