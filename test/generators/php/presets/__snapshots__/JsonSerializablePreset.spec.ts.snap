@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`PHP_JSON_SERIALIZABLE_PRESET should render jsonSerialize method for class 1`] = `
-"final class Clazz implements JsonSerializable
+"final class Clazz implements \\\\JsonSerializable
 {
   private ?string $prop;
   private ?string $propMinusWithMinusDash;
@@ -29,7 +29,7 @@ exports[`PHP_JSON_SERIALIZABLE_PRESET should render jsonSerialize method for cla
 `;
 
 exports[`PHP_JSON_SERIALIZABLE_PRESET should render jsonSerialize method for enum 1`] = `
-"enum Enumm implements JsonSerializable
+"enum Enumm implements \\\\JsonSerializable
 {
   case VALUE_MINUS_A;
   case VALUE_MINUS_B;
@@ -39,6 +39,23 @@ exports[`PHP_JSON_SERIALIZABLE_PRESET should render jsonSerialize method for enu
     return match($this) {
       self::VALUE_MINUS_A => \\"value-A\\",
       self::VALUE_MINUS_B => \\"value-B\\",
+    };
+  }
+}
+"
+`;
+
+exports[`PHP_JSON_SERIALIZABLE_PRESET should render jsonSerialize method for enum with mixed types 1`] = `
+"enum Enumm implements \\\\JsonSerializable
+{
+  case NUMBER_1;
+  case B;
+
+  public function jsonSerialize(): mixed
+  {
+    return match($this) {
+      self::NUMBER_1 => 1,
+      self::B => \\"B\\",
     };
   }
 }

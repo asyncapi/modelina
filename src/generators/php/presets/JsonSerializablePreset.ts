@@ -3,16 +3,13 @@ import { PhpRenderer } from '../PhpRenderer';
 import { ConstrainedMetaModel } from '../../../models';
 
 function renderSelf({
-  content,
-  renderer
+  content
 }: {
   content: string;
   renderer: PhpRenderer<ConstrainedMetaModel>;
 }): string {
-  renderer.dependencyManager.addDependency('use JsonSerializable;');
-
   const contentLines = content.split('\n');
-  contentLines[0] += ` implements JsonSerializable`;
+  contentLines[0] += ` implements \\JsonSerializable`;
 
   return contentLines.join('\n');
 }

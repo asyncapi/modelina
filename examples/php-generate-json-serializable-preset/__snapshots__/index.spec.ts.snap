@@ -9,7 +9,7 @@ namespace Asyncapi;
 
 
 use JsonSerializable;
-final class Root implements JsonSerializable
+final class Root implements \\\\JsonSerializable
 {
   private ?string $email;
 

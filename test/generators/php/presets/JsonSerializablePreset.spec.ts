@@ -38,4 +38,16 @@ describe('PHP_JSON_SERIALIZABLE_PRESET', () => {
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot();
   });
+
+  test('should render jsonSerialize method for enum with mixed types', async () => {
+    const doc = {
+      $id: 'Enumm',
+      type: 'enum',
+      enum: [1, 'B']
+    };
+
+    const models = await generator.generate(doc);
+    expect(models).toHaveLength(1);
+    expect(models[0].result).toMatchSnapshot();
+  });
 });
