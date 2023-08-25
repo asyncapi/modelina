@@ -8,7 +8,7 @@ declare(strict_types=1);
 namespace Asyncapi;
 
 
-use JsonSerializable;
+
 final class Root implements \\\\JsonSerializable
 {
   private ?string $email;
