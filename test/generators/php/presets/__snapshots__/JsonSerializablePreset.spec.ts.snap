@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PHP_JSON_SERIALIZABLE_PRESET should render jsonSerialize method for class 1`] = `
+"final class Clazz implements \\\\JsonSerializable
+{
+  private ?string $prop;
+  private ?string $propMinusWithMinusDash;
+  private mixed $additionalProperties;
+
+  public function getProp(): ?string { return $this->prop; }
+  public function setProp(?string $prop): void { $this->prop = $prop; }
+
+  public function getPropMinusWithMinusDash(): ?string { return $this->propMinusWithMinusDash; }
+  public function setPropMinusWithMinusDash(?string $propMinusWithMinusDash): void { $this->propMinusWithMinusDash = $propMinusWithMinusDash; }
+
+  public function getAdditionalProperties(): mixed { return $this->additionalProperties; }
+  public function setAdditionalProperties(mixed $additionalProperties): void { $this->additionalProperties = $additionalProperties; }
+
+  public function jsonSerialize(): array
+  {
+    return [
+      'prop' => $this->prop,
+      'prop-with-dash' => $this->propMinusWithMinusDash,
+      ...$this->additionalProperties,
+    ];
+  }
+}
+"
+`;
+
+exports[`PHP_JSON_SERIALIZABLE_PRESET should render jsonSerialize method for enum 1`] = `
+"enum Enumm implements \\\\JsonSerializable
+{
+  case VALUE_MINUS_A;
+  case VALUE_MINUS_B;
+
+  public function jsonSerialize(): mixed
+  {
+    return match($this) {
+      self::VALUE_MINUS_A => \\"value-A\\",
+      self::VALUE_MINUS_B => \\"value-B\\",
+    };
+  }
+}
+"
+`;
+
+exports[`PHP_JSON_SERIALIZABLE_PRESET should render jsonSerialize method for enum with mixed types 1`] = `
+"enum Enumm implements \\\\JsonSerializable
+{
+  case NUMBER_1;
+  case B;
+
+  public function jsonSerialize(): mixed
+  {
+    return match($this) {
+      self::NUMBER_1 => 1,
+      self::B => \\"B\\",
+    };
+  }
+}
+"
+`;
