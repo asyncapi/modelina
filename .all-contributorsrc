@@ -663,7 +663,9 @@
       "profile": "http://markus.poerschke.nrw",
       "contributions": [
         "code",
-        "test"
+        "test",
+        "example",
+        "doc"
       ]
     },
     {
