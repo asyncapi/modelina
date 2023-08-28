@@ -695,6 +695,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "Devansh-Bhatt",
+      "name": "Devansh-Bhatt",
+      "avatar_url": "https://avatars.githubusercontent.com/u/94732079?v=4",
+      "profile": "https://github.com/Devansh-Bhatt",
+      "contributions": [
+        "test",
+        "infra"
+      ]
     }
   ],
   "contributorsPerLine": 7,
