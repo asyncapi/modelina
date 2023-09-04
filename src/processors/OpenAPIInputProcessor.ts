@@ -163,14 +163,16 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
   }
 
   private iterateParameters(
-    parameters: (OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject)[] | undefined,
+    parameters:
+      | (OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject)[]
+      | undefined,
     path: string,
     inputModel: InputMetaModel,
     options?: ProcessorOptions
   ) {
     for (const parameterObject of parameters || []) {
       const parameter = parameterObject as OpenAPIV3.ParameterObject;
-      if(parameter.schema){
+      if (parameter.schema) {
         this.includeSchema(
           parameter.schema as OpenAPIV3.SchemaObject,
           `${path}_parameter_${parameter.in}_${parameter.name}`,
