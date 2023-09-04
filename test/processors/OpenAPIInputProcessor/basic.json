@@ -5,6 +5,17 @@
   },
   "paths": {
     "/test": {
+      "parameters": [
+        {
+          "name": "Authorization",
+          "in": "header",
+          "required": true,
+          "description": "credentials that authenticate a user agent with a server",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
       "post": {
         "parameters": [
           {

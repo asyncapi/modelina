@@ -101,6 +101,7 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
         inputModel,
         options
       );
+      this.iterateParameters(pathObject.parameters, path, inputModel, options);
     }
   }
 
@@ -112,6 +113,7 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
   ) {
     if (operation) {
       this.iterateResponses(operation.responses, path, inputModel, options);
+      this.iterateParameters(operation.parameters, path, inputModel, options);
 
       if (operation.requestBody) {
         this.iterateMediaType(
@@ -157,6 +159,25 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
         inputModel,
         options
       );
+    }
+  }
+
+  private iterateParameters(
+    parameters: (OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject)[] | undefined,
+    path: string,
+    inputModel: InputMetaModel,
+    options?: ProcessorOptions
+  ) {
+    for (const parameterObject of parameters || []) {
+      const parameter = parameterObject as OpenAPIV3.ParameterObject;
+      if(parameter.schema){
+        this.includeSchema(
+          parameter.schema as OpenAPIV3.SchemaObject,
+          `${path}_parameter_${parameter.in}_${parameter.name}`,
+          inputModel,
+          options
+        );
+      }
     }
   }
 
