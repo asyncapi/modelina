@@ -568,7 +568,7 @@ Array [
       "format": "uri",
       "type": "string",
     },
-    "test_post_parameter_query_callbackUrl",
+    "test_post_parameters_query_callbackUrl",
   ],
   Array [
     Object {
@@ -790,7 +790,7 @@ Array [
     Object {
       "type": "string",
     },
-    "/test_parameter_header_Authorization",
+    "test_parameters_header_Authorization",
   ],
 ]
 `;
