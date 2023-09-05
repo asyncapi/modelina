@@ -197,6 +197,17 @@ InputMetaModel {
             },
           },
         },
+        "parameters": Array [
+          Object {
+            "description": "credentials that authenticate a user agent with a server",
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "schema": Object {
+              "type": "string",
+            },
+          },
+        ],
         "patch": Object {
           "requestBody": Object {
             "content": Object {
@@ -554,6 +565,13 @@ Array [
   ],
   Array [
     Object {
+      "format": "uri",
+      "type": "string",
+    },
+    "test_post_parameters_query_callbackUrl",
+  ],
+  Array [
+    Object {
       "properties": Object {
         "code": Object {
           "format": "int32",
@@ -767,6 +785,12 @@ Array [
       "type": "object",
     },
     "test_trace_application_json",
+  ],
+  Array [
+    Object {
+      "type": "string",
+    },
+    "test_parameters_header_Authorization",
   ],
 ]
 `;
