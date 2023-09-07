@@ -162,7 +162,6 @@ export class JavaGenerator extends AbstractGenerator<
         unionConstrainedModelsWithDepManager.push(
           getConstrainedMetaModelWithDepManager(model)
         );
-        continue;
       }
 
       constrainedModelsWithDepManager.push(
