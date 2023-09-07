@@ -7,6 +7,7 @@ import {
   ProcessorOptions,
   MetaModel,
   ConstrainedMetaModel,
+  UnionModel,
   ConstrainedUnionModel
 } from '../models';
 import { InputProcessor } from '../processors';
@@ -49,7 +50,6 @@ export interface AbstractGeneratorRenderArgs<
   constrainedModel: ConstrainedModel;
   inputModel: InputMetaModel;
   options?: DeepPartial<Options>;
-  unions?: ConstrainedUnionModel[];
 }
 
 export interface AbstractGeneratorRenderCompleteModelArgs<
@@ -60,7 +60,6 @@ export interface AbstractGeneratorRenderCompleteModelArgs<
   inputModel: InputMetaModel;
   completeOptions: Partial<RenderCompleteModelOptions>;
   options?: DeepPartial<Options>;
-  unions?: ConstrainedUnionModel[];
 }
 
 /**
@@ -128,26 +127,84 @@ export abstract class AbstractGenerator<
     completeOptions: Partial<RenderCompleteModelOptions>
   ): Promise<OutputModel[]> {
     const inputModel = await this.processInput(input);
-    const renders = Object.values(inputModel.models).map(async (model) => {
+
+    interface ConstrainedMetaModelWithDepManager {
+      constrainedModel: ConstrainedMetaModel;
+      dependencyManager: AbstractDependencyManager;
+    }
+
+    const getConstrainedMetaModelWithDepManager = (
+      model: MetaModel
+    ): ConstrainedMetaModelWithDepManager => {
       const dependencyManager = this.getDependencyManager(this.options);
       const constrainedModel = this.constrainToMetaModel(model, {
         dependencyManager
       } as DeepPartial<Options>);
-      const renderedOutput = await this.renderCompleteModel({
+      return {
         constrainedModel,
-        inputModel,
-        completeOptions,
-        options: { dependencyManager } as DeepPartial<Options>
-      });
-      return OutputModel.toOutputModel({
-        result: renderedOutput.result,
-        modelName: renderedOutput.renderedName,
-        dependencies: renderedOutput.dependencies,
-        model: constrainedModel,
-        inputModel
-      });
-    });
-    return Promise.all(renders);
+        dependencyManager
+      };
+    };
+
+    const unionConstrainedModelsWithDepManager: ConstrainedMetaModelWithDepManager[] =
+      [];
+    const constrainedModelsWithDepManager: ConstrainedMetaModelWithDepManager[] =
+      [];
+
+    for (const model of Object.values(inputModel.models)) {
+      if (model instanceof UnionModel) {
+        unionConstrainedModelsWithDepManager.push(
+          getConstrainedMetaModelWithDepManager(model)
+        );
+      }
+
+      constrainedModelsWithDepManager.push(
+        getConstrainedMetaModelWithDepManager(model)
+      );
+    }
+
+    for (const { constrainedModel } of constrainedModelsWithDepManager) {
+      for (const unionConstrainedModel of unionConstrainedModelsWithDepManager) {
+        if (
+          unionConstrainedModel.constrainedModel instanceof
+            ConstrainedUnionModel &&
+          unionConstrainedModel.constrainedModel.union.some(
+            (m) =>
+              m.name === constrainedModel.name &&
+              m.type === constrainedModel.type
+          )
+        ) {
+          if (!constrainedModel.options.parentUnions) {
+            constrainedModel.options.parentUnions = [];
+          }
+
+          constrainedModel.options.parentUnions.push(
+            unionConstrainedModel.constrainedModel
+          );
+        }
+      }
+    }
+
+    return Promise.all(
+      [
+        ...unionConstrainedModelsWithDepManager,
+        ...constrainedModelsWithDepManager
+      ].map(async ({ constrainedModel, dependencyManager }) => {
+        const renderedOutput = await this.renderCompleteModel({
+          constrainedModel,
+          inputModel,
+          completeOptions,
+          options: { dependencyManager } as DeepPartial<Options>
+        });
+        return OutputModel.toOutputModel({
+          result: renderedOutput.result,
+          modelName: renderedOutput.renderedName,
+          dependencies: renderedOutput.dependencies,
+          model: constrainedModel,
+          inputModel
+        });
+      })
+    );
   }
 
   /**

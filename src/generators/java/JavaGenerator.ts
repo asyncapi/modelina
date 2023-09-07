@@ -12,9 +12,7 @@ import {
   ConstrainedUnionModel,
   InputMetaModel,
   MetaModel,
-  OutputModel,
-  RenderOutput,
-  UnionModel
+  RenderOutput
 } from '../../models';
 import {
   split,
@@ -119,81 +117,6 @@ export class JavaGenerator extends AbstractGenerator<
         options: this.options,
         constrainedName: '' //This is just a placeholder, it will be constrained within the function
       }
-    );
-  }
-
-  /**
-   * Generates the full output of a model, instead of a scattered model.
-   *
-   * OutputModels result is no longer the model itself, but including package, package dependencies and model dependencies.
-   *
-   */
-  public async generateCompleteModels(
-    input: any | InputMetaModel,
-    completeOptions: Partial<JavaRenderCompleteModelOptions>
-  ): Promise<OutputModel[]> {
-    const inputModel = await this.processInput(input);
-
-    interface ConstrainedMetaModelWithDepManager {
-      constrainedModel: ConstrainedMetaModel;
-      dependencyManager: JavaDependencyManager;
-    }
-
-    const getConstrainedMetaModelWithDepManager = (
-      model: MetaModel
-    ): ConstrainedMetaModelWithDepManager => {
-      const dependencyManager = this.getDependencyManager(this.options);
-      const constrainedModel = this.constrainToMetaModel(model, {
-        dependencyManager
-      } as DeepPartial<JavaOptions>);
-      return {
-        constrainedModel,
-        dependencyManager
-      };
-    };
-
-    const unionConstrainedModelsWithDepManager: ConstrainedMetaModelWithDepManager[] =
-      [];
-    const constrainedModelsWithDepManager: ConstrainedMetaModelWithDepManager[] =
-      [];
-
-    for (const model of Object.values(inputModel.models)) {
-      if (model instanceof UnionModel) {
-        unionConstrainedModelsWithDepManager.push(
-          getConstrainedMetaModelWithDepManager(model)
-        );
-      }
-
-      constrainedModelsWithDepManager.push(
-        getConstrainedMetaModelWithDepManager(model)
-      );
-    }
-
-    const unions: ConstrainedUnionModel[] =
-      unionConstrainedModelsWithDepManager.map(
-        ({ constrainedModel }) => constrainedModel as ConstrainedUnionModel
-      );
-
-    return Promise.all(
-      [
-        ...unionConstrainedModelsWithDepManager,
-        ...constrainedModelsWithDepManager
-      ].map(async ({ constrainedModel, dependencyManager }) => {
-        const renderedOutput = await this.renderCompleteModel({
-          constrainedModel,
-          inputModel,
-          completeOptions,
-          unions,
-          options: { dependencyManager }
-        });
-        return OutputModel.toOutputModel({
-          result: renderedOutput.result,
-          modelName: renderedOutput.renderedName,
-          dependencies: renderedOutput.dependencies,
-          model: constrainedModel,
-          inputModel
-        });
-      })
     );
   }
 
@@ -322,8 +245,7 @@ ${outputModel.result}`;
       presets,
       args.constrainedModel,
       args.inputModel,
-      dependencyManagerToUse,
-      args.unions
+      dependencyManagerToUse
     );
     const result = await renderer.runSelfPreset();
     return RenderOutput.toRenderOutput({
