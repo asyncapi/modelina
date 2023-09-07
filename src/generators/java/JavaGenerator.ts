@@ -1,5 +1,7 @@
 import {
   AbstractGenerator,
+  AbstractGeneratorRenderArgs,
+  AbstractGeneratorRenderCompleteModelArgs,
   CommonGeneratorOptions,
   defaultGeneratorOptions
 } from '../AbstractGenerator';
@@ -10,7 +12,9 @@ import {
   ConstrainedUnionModel,
   InputMetaModel,
   MetaModel,
-  RenderOutput
+  OutputModel,
+  RenderOutput,
+  UnionModel
 } from '../../models';
 import {
   split,
@@ -119,32 +123,118 @@ export class JavaGenerator extends AbstractGenerator<
   }
 
   /**
+   * Generates the full output of a model, instead of a scattered model.
+   *
+   * OutputModels result is no longer the model itself, but including package, package dependencies and model dependencies.
+   *
+   */
+  public async generateCompleteModels(
+    input: any | InputMetaModel,
+    completeOptions: Partial<JavaRenderCompleteModelOptions>
+  ): Promise<OutputModel[]> {
+    const inputModel = await this.processInput(input);
+
+    interface ConstrainedMetaModelWithDepManager {
+      constrainedModel: ConstrainedMetaModel;
+      dependencyManager: JavaDependencyManager;
+    }
+
+    const getConstrainedMetaModelWithDepManager = (
+      model: MetaModel
+    ): ConstrainedMetaModelWithDepManager => {
+      const dependencyManager = this.getDependencyManager(this.options);
+      const constrainedModel = this.constrainToMetaModel(model, {
+        dependencyManager
+      } as DeepPartial<JavaOptions>);
+      return {
+        constrainedModel,
+        dependencyManager
+      };
+    };
+
+    const unionConstrainedModelsWithDepManager: ConstrainedMetaModelWithDepManager[] =
+      [];
+    const constrainedModelsWithDepManager: ConstrainedMetaModelWithDepManager[] =
+      [];
+
+    for (const model of Object.values(inputModel.models)) {
+      if (model instanceof UnionModel) {
+        unionConstrainedModelsWithDepManager.push(
+          getConstrainedMetaModelWithDepManager(model)
+        );
+        continue;
+      }
+
+      constrainedModelsWithDepManager.push(
+        getConstrainedMetaModelWithDepManager(model)
+      );
+    }
+
+    const unions: ConstrainedUnionModel[] =
+      unionConstrainedModelsWithDepManager.map(
+        ({ constrainedModel }) => constrainedModel as ConstrainedUnionModel
+      );
+
+    return Promise.all(
+      [
+        ...unionConstrainedModelsWithDepManager,
+        ...constrainedModelsWithDepManager
+      ].map(async ({ constrainedModel, dependencyManager }) => {
+        const renderedOutput = await this.renderCompleteModel({
+          constrainedModel,
+          inputModel,
+          completeOptions,
+          unions,
+          options: { dependencyManager }
+        });
+        return OutputModel.toOutputModel({
+          result: renderedOutput.result,
+          modelName: renderedOutput.renderedName,
+          dependencies: renderedOutput.dependencies,
+          model: constrainedModel,
+          inputModel
+        });
+      })
+    );
+  }
+
+  /**
    * Render a scattered model, where the source code and library and model dependencies are separated.
    *
    * @param model
    * @param inputModel
    */
   render(
-    model: ConstrainedMetaModel,
-    inputModel: InputMetaModel,
-    options?: DeepPartial<JavaOptions>
+    args: AbstractGeneratorRenderArgs<JavaOptions>
   ): Promise<RenderOutput> {
     const optionsToUse = JavaGenerator.getJavaOptions({
       ...this.options,
-      ...options
+      ...args.options
     });
-    if (model instanceof ConstrainedObjectModel) {
-      return this.renderClass(model, inputModel, optionsToUse);
-    } else if (model instanceof ConstrainedEnumModel) {
-      return this.renderEnum(model, inputModel, optionsToUse);
+    if (args.constrainedModel instanceof ConstrainedObjectModel) {
+      return this.renderClass({
+        ...args,
+        constrainedModel: args.constrainedModel,
+        options: optionsToUse
+      });
+    } else if (args.constrainedModel instanceof ConstrainedEnumModel) {
+      return this.renderEnum(
+        args.constrainedModel,
+        args.inputModel,
+        optionsToUse
+      );
     } else if (
-      model instanceof ConstrainedUnionModel &&
-      !unionIncludesBuiltInTypes(model)
+      args.constrainedModel instanceof ConstrainedUnionModel &&
+      !unionIncludesBuiltInTypes(args.constrainedModel)
     ) {
-      return this.renderUnion(model, inputModel, optionsToUse);
+      return this.renderUnion(
+        args.constrainedModel,
+        args.inputModel,
+        optionsToUse
+      );
     }
     Logger.warn(
-      `Java generator, cannot generate this type of model, ${model.name}`
+      `Java generator, cannot generate this type of model, ${args.constrainedModel.name}`
     );
     return Promise.resolve(
       RenderOutput.toRenderOutput({
@@ -165,26 +255,30 @@ export class JavaGenerator extends AbstractGenerator<
    * @param options used to render the full output
    */
   async renderCompleteModel(
-    model: ConstrainedMetaModel,
-    inputModel: InputMetaModel,
-    completeModelOptions: Partial<JavaRenderCompleteModelOptions>,
-    options: DeepPartial<JavaOptions>
+    args: AbstractGeneratorRenderCompleteModelArgs<
+      JavaOptions,
+      JavaRenderCompleteModelOptions
+    >
   ): Promise<RenderOutput> {
-    const completeModelOptionsToUse = mergePartialAndDefault(
-      JavaGenerator.defaultCompleteModelOptions,
-      completeModelOptions
-    ) as JavaRenderCompleteModelOptions;
+    const completeModelOptionsToUse =
+      mergePartialAndDefault<JavaRenderCompleteModelOptions>(
+        JavaGenerator.defaultCompleteModelOptions,
+        args.completeOptions
+      );
     const optionsToUse = JavaGenerator.getJavaOptions({
       ...this.options,
-      ...options
+      ...args.options
     });
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
 
     this.assertPackageIsValid(completeModelOptionsToUse);
 
-    const outputModel = await this.render(model, inputModel, optionsToUse);
+    const outputModel = await this.render({
+      ...args,
+      options: optionsToUse
+    });
     const modelDependencies = dependencyManagerToUse.renderAllModelDependencies(
-      model,
+      args.constrainedModel,
       completeModelOptionsToUse.packageName
     );
     const outputContent = `package ${completeModelOptionsToUse.packageName};
@@ -215,13 +309,11 @@ ${outputModel.result}`;
   }
 
   async renderClass(
-    model: ConstrainedObjectModel,
-    inputModel: InputMetaModel,
-    options?: DeepPartial<JavaOptions>
+    args: AbstractGeneratorRenderArgs<JavaOptions, ConstrainedObjectModel>
   ): Promise<RenderOutput> {
     const optionsToUse = JavaGenerator.getJavaOptions({
       ...this.options,
-      ...options
+      ...args.options
     });
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('class');
@@ -229,14 +321,15 @@ ${outputModel.result}`;
       optionsToUse,
       this,
       presets,
-      model,
-      inputModel,
-      dependencyManagerToUse
+      args.constrainedModel,
+      args.inputModel,
+      dependencyManagerToUse,
+      args.unions
     );
     const result = await renderer.runSelfPreset();
     return RenderOutput.toRenderOutput({
       result,
-      renderedName: model.name,
+      renderedName: args.constrainedModel.name,
       dependencies: dependencyManagerToUse.dependencies
     });
   }

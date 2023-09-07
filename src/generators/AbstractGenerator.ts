@@ -6,7 +6,8 @@ import {
   RenderOutput,
   ProcessorOptions,
   MetaModel,
-  ConstrainedMetaModel
+  ConstrainedMetaModel,
+  ConstrainedUnionModel
 } from '../models';
 import { InputProcessor } from '../processors';
 import { IndentationTypes } from '../helpers';
@@ -41,6 +42,27 @@ export const defaultGeneratorOptions: CommonGeneratorOptions = {
   }
 };
 
+export interface AbstractGeneratorRenderArgs<
+  Options extends CommonGeneratorOptions,
+  ConstrainedModel = ConstrainedMetaModel
+> {
+  constrainedModel: ConstrainedModel;
+  inputModel: InputMetaModel;
+  options?: DeepPartial<Options>;
+  unions?: ConstrainedUnionModel[];
+}
+
+export interface AbstractGeneratorRenderCompleteModelArgs<
+  Options extends CommonGeneratorOptions,
+  RenderCompleteModelOptions
+> {
+  constrainedModel: ConstrainedMetaModel;
+  inputModel: InputMetaModel;
+  completeOptions: Partial<RenderCompleteModelOptions>;
+  options?: DeepPartial<Options>;
+  unions?: ConstrainedUnionModel[];
+}
+
 /**
  * Abstract generator which must be implemented by each language
  */
@@ -54,15 +76,13 @@ export abstract class AbstractGenerator<
   ) {}
 
   public abstract render(
-    model: MetaModel,
-    inputModel: InputMetaModel,
-    options?: DeepPartial<Options>
+    args: AbstractGeneratorRenderArgs<Options>
   ): Promise<RenderOutput>;
   public abstract renderCompleteModel(
-    model: MetaModel,
-    inputModel: InputMetaModel,
-    completeOptions: Partial<RenderCompleteModelOptions>,
-    options?: DeepPartial<Options>
+    args: AbstractGeneratorRenderCompleteModelArgs<
+      Options,
+      RenderCompleteModelOptions
+    >
   ): Promise<RenderOutput>;
   public abstract constrainToMetaModel(
     model: MetaModel,
@@ -113,12 +133,12 @@ export abstract class AbstractGenerator<
       const constrainedModel = this.constrainToMetaModel(model, {
         dependencyManager
       } as DeepPartial<Options>);
-      const renderedOutput = await this.renderCompleteModel(
+      const renderedOutput = await this.renderCompleteModel({
         constrainedModel,
         inputModel,
         completeOptions,
-        { dependencyManager } as DeepPartial<Options>
-      );
+        options: { dependencyManager } as DeepPartial<Options>
+      });
       return OutputModel.toOutputModel({
         result: renderedOutput.result,
         modelName: renderedOutput.renderedName,
@@ -140,9 +160,13 @@ export abstract class AbstractGenerator<
       const constrainedModel = this.constrainToMetaModel(model, {
         dependencyManager
       } as DeepPartial<Options>);
-      const renderedOutput = await this.render(constrainedModel, inputModel, {
-        dependencyManager
-      } as DeepPartial<Options>);
+      const renderedOutput = await this.render({
+        constrainedModel,
+        inputModel,
+        options: {
+          dependencyManager
+        } as DeepPartial<Options>
+      });
       return OutputModel.toOutputModel({
         result: renderedOutput.result,
         modelName: renderedOutput.renderedName,

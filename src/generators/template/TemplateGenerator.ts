@@ -1,5 +1,7 @@
 import {
   AbstractGenerator,
+  AbstractGeneratorRenderArgs,
+  AbstractGeneratorRenderCompleteModelArgs,
   CommonGeneratorOptions,
   defaultGeneratorOptions
 } from '../AbstractGenerator';
@@ -45,6 +47,10 @@ export class TemplateGenerator extends AbstractGenerator<
     defaultPreset: TEMPLATE_DEFAULT_PRESET,
     typeMapping: TemplateDefaultTypeMapping,
     constraints: TemplateDefaultConstraints
+  };
+
+  static defaultCompleteModelOptions: TemplateRenderCompleteModelOptions = {
+    packageName: 'Asyncapi.Models'
   };
 
   constructor(options?: DeepPartial<TemplateOptions>) {
@@ -120,16 +126,15 @@ export class TemplateGenerator extends AbstractGenerator<
    * @param inputModel
    */
   render(
-    model: ConstrainedMetaModel,
-    inputModel: InputMetaModel
+    args: AbstractGeneratorRenderArgs<TemplateOptions>
   ): Promise<RenderOutput> {
-    if (model instanceof ConstrainedObjectModel) {
-      return this.renderClass(model, inputModel);
-    } else if (model instanceof ConstrainedEnumModel) {
-      return this.renderEnum(model, inputModel);
+    if (args.constrainedModel instanceof ConstrainedObjectModel) {
+      return this.renderClass(args.constrainedModel, args.inputModel);
+    } else if (args.constrainedModel instanceof ConstrainedEnumModel) {
+      return this.renderEnum(args.constrainedModel, args.inputModel);
     }
     Logger.warn(
-      `Template generator, cannot generate this type of model, ${model.name}`
+      `Template generator, cannot generate this type of model, ${args.constrainedModel.name}`
     );
     return Promise.resolve(
       RenderOutput.toRenderOutput({
@@ -150,23 +155,30 @@ export class TemplateGenerator extends AbstractGenerator<
    * @param options used to render the full output
    */
   async renderCompleteModel(
-    model: ConstrainedMetaModel,
-    inputModel: InputMetaModel,
-    options: TemplateRenderCompleteModelOptions
+    args: AbstractGeneratorRenderCompleteModelArgs<
+      TemplateOptions,
+      TemplateRenderCompleteModelOptions
+    >
   ): Promise<RenderOutput> {
-    if (isReservedTemplateKeyword(options.packageName)) {
+    const completeModelOptionsToUse =
+      mergePartialAndDefault<TemplateRenderCompleteModelOptions>(
+        TemplateGenerator.defaultCompleteModelOptions,
+        args.completeOptions
+      );
+
+    if (isReservedTemplateKeyword(completeModelOptionsToUse.packageName)) {
       throw new Error(
-        `You cannot use reserved Template keyword (${options.packageName}) as package name, please use another.`
+        `You cannot use reserved Template keyword (${args.completeOptions.packageName}) as package name, please use another.`
       );
     }
 
-    const outputModel = await this.render(model, inputModel);
-    const modelDependencies = model
+    const outputModel = await this.render(args);
+    const modelDependencies = args.constrainedModel
       .getNearestDependencies()
       .map((dependencyModel) => {
-        return `import ${options.packageName}.${dependencyModel.name};`;
+        return `import ${completeModelOptionsToUse.packageName}.${dependencyModel.name};`;
       });
-    const outputContent = `package ${options.packageName};
+    const outputContent = `package ${completeModelOptionsToUse.packageName};
 ${modelDependencies.join('\n')}
 ${outputModel.dependencies.join('\n')}
 ${outputModel.result}`;

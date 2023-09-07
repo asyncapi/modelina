@@ -4,19 +4,35 @@ import {
   ConstrainedObjectModel,
   ConstrainedObjectPropertyModel,
   ConstrainedUnionModel,
-  UnionModel
+  InputMetaModel,
+  Preset
 } from '../../../models';
 import { FormatHelpers } from '../../../helpers';
-import { JavaOptions } from '../JavaGenerator';
+import { JavaGenerator, JavaOptions } from '../JavaGenerator';
 import { ClassPresetType } from '../JavaPreset';
 import { unionIncludesBuiltInTypes } from '../JavaConstrainer';
+import { JavaDependencyManager } from '../JavaDependencyManager';
 
 /**
  * Renderer for Java's `class` type
  *
  * @extends JavaRenderer
  */
-export class ClassRenderer extends JavaRenderer<ConstrainedObjectModel> {
+export class ClassRenderer<
+  RendererModelType extends ConstrainedObjectModel = ConstrainedObjectModel
+> extends JavaRenderer<RendererModelType> {
+  constructor(
+    options: JavaOptions,
+    generator: JavaGenerator,
+    presets: Array<[Preset, unknown]>,
+    model: RendererModelType,
+    inputModel: InputMetaModel,
+    dependencyManager: JavaDependencyManager,
+    private unions: ConstrainedUnionModel[] | undefined
+  ) {
+    super(options, generator, presets, model, inputModel, dependencyManager);
+  }
+
   async defaultSelf(): Promise<string> {
     const content = [
       await this.renderProperties(),
@@ -101,23 +117,18 @@ ${this.indent(this.renderBlock(content, 2))}
   private getParentUnions(): ConstrainedUnionModel[] | undefined {
     const parentUnions: ConstrainedUnionModel[] = [];
 
-    for (const model of Object.values(this.inputModel.models)) {
-      if (model instanceof UnionModel) {
-        // Create a ConstrainedUnionModel of all Union Models
-        const unionModel = this.generator.constrainToMetaModel(
-          model,
-          this.options
-        ) as ConstrainedUnionModel;
+    if (!this.unions) {
+      return undefined;
+    }
 
-        // Check if the current model is a child model of any of the union interfaces
-        if (
-          !unionIncludesBuiltInTypes(unionModel) &&
-          unionModel.union.some(
-            (m) => m.name === this.model.name && m.type === this.model.type
-          )
-        ) {
-          parentUnions.push(unionModel);
-        }
+    for (const unionModel of this.unions) {
+      if (
+        !unionIncludesBuiltInTypes(unionModel) &&
+        unionModel.union.some(
+          (m) => m.name === this.model.name && m.type === this.model.type
+        )
+      ) {
+        parentUnions.push(unionModel);
       }
     }
 
