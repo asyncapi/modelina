@@ -62,7 +62,7 @@ describe('JavaGenerator', () => {
     const models = await generator.generate(doc);
     expect(models).toHaveLength(4);
     expect(models.map((model) => model.result)).toMatchSnapshot();
-    expect(models[0].dependencies).toEqual(expectedDependencies);
+    expect(models[3].dependencies).toEqual(expectedDependencies);
   });
 
   test('should work custom preset for `class` type', async () => {

@@ -116,18 +116,10 @@ export abstract class AbstractGenerator<
     return options.dependencyManager;
   }
 
-  /**
-   * Generates the full output of a model, instead of a scattered model.
-   *
-   * OutputModels result is no longer the model itself, but including package, package dependencies and model dependencies.
-   *
-   */
-  public async generateCompleteModels(
-    input: any | InputMetaModel,
-    completeOptions: Partial<RenderCompleteModelOptions>
-  ): Promise<OutputModel[]> {
-    const inputModel = await this.processInput(input);
-
+  private getConstrainedModels(inputModel: InputMetaModel): Array<{
+    constrainedModel: ConstrainedMetaModel;
+    dependencyManager: AbstractDependencyManager;
+  }> {
     interface ConstrainedMetaModelWithDepManager {
       constrainedModel: ConstrainedMetaModel;
       dependencyManager: AbstractDependencyManager;
@@ -156,6 +148,7 @@ export abstract class AbstractGenerator<
         unionConstrainedModelsWithDepManager.push(
           getConstrainedMetaModelWithDepManager(model)
         );
+        continue;
       }
 
       constrainedModelsWithDepManager.push(
@@ -185,25 +178,42 @@ export abstract class AbstractGenerator<
       }
     }
 
+    return [
+      ...unionConstrainedModelsWithDepManager,
+      ...constrainedModelsWithDepManager
+    ];
+  }
+
+  /**
+   * Generates the full output of a model, instead of a scattered model.
+   *
+   * OutputModels result is no longer the model itself, but including package, package dependencies and model dependencies.
+   *
+   */
+  public async generateCompleteModels(
+    input: any | InputMetaModel,
+    completeOptions: Partial<RenderCompleteModelOptions>
+  ): Promise<OutputModel[]> {
+    const inputModel = await this.processInput(input);
+
     return Promise.all(
-      [
-        ...unionConstrainedModelsWithDepManager,
-        ...constrainedModelsWithDepManager
-      ].map(async ({ constrainedModel, dependencyManager }) => {
-        const renderedOutput = await this.renderCompleteModel({
-          constrainedModel,
-          inputModel,
-          completeOptions,
-          options: { dependencyManager } as DeepPartial<Options>
-        });
-        return OutputModel.toOutputModel({
-          result: renderedOutput.result,
-          modelName: renderedOutput.renderedName,
-          dependencies: renderedOutput.dependencies,
-          model: constrainedModel,
-          inputModel
-        });
-      })
+      this.getConstrainedModels(inputModel).map(
+        async ({ constrainedModel, dependencyManager }) => {
+          const renderedOutput = await this.renderCompleteModel({
+            constrainedModel,
+            inputModel,
+            completeOptions,
+            options: { dependencyManager } as DeepPartial<Options>
+          });
+          return OutputModel.toOutputModel({
+            result: renderedOutput.result,
+            modelName: renderedOutput.renderedName,
+            dependencies: renderedOutput.dependencies,
+            model: constrainedModel,
+            inputModel
+          });
+        }
+      )
     );
   }
 
@@ -212,27 +222,27 @@ export abstract class AbstractGenerator<
    */
   public async generate(input: any | InputMetaModel): Promise<OutputModel[]> {
     const inputModel = await this.processInput(input);
-    const renders = Object.values(inputModel.models).map(async (model) => {
-      const dependencyManager = this.getDependencyManager(this.options);
-      const constrainedModel = this.constrainToMetaModel(model, {
-        dependencyManager
-      } as DeepPartial<Options>);
-      const renderedOutput = await this.render({
-        constrainedModel,
-        inputModel,
-        options: {
-          dependencyManager
-        } as DeepPartial<Options>
-      });
-      return OutputModel.toOutputModel({
-        result: renderedOutput.result,
-        modelName: renderedOutput.renderedName,
-        dependencies: renderedOutput.dependencies,
-        model: constrainedModel,
-        inputModel
-      });
-    });
-    return Promise.all(renders);
+
+    return Promise.all(
+      this.getConstrainedModels(inputModel).map(
+        async ({ constrainedModel, dependencyManager }) => {
+          const renderedOutput = await this.render({
+            constrainedModel,
+            inputModel,
+            options: {
+              dependencyManager
+            } as DeepPartial<Options>
+          });
+          return OutputModel.toOutputModel({
+            result: renderedOutput.result,
+            modelName: renderedOutput.renderedName,
+            dependencies: renderedOutput.dependencies,
+            model: constrainedModel,
+            inputModel
+          });
+        }
+      )
+    );
   }
 
   /**

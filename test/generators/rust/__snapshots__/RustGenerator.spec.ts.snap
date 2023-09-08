@@ -199,6 +199,22 @@ pub use self::numbers::*;"
 `;
 
 exports[`RustGenerator Struct & Complete Models Should render complete models 1`] = `
+"// Members represents a union of types: String, f64, bool
+#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
+#[serde(untagged)]
+pub enum Members {
+    #[serde(rename=\\"MembersOneOf0\\")]
+    MembersOneOf0(String),
+    #[serde(rename=\\"MembersOneOf1\\")]
+    MembersOneOf1(f64),
+    #[serde(rename=\\"MembersOneOf2\\")]
+    MembersOneOf2(bool),
+}
+
+"
+`;
+
+exports[`RustGenerator Struct & Complete Models Should render complete models 2`] = `
 "// Address represents a Address model.
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Address {
@@ -221,22 +237,6 @@ pub struct Address {
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
     pub additional_properties: Option<std::collections::HashMap<String, String>>,
 }
-"
-`;
-
-exports[`RustGenerator Struct & Complete Models Should render complete models 2`] = `
-"// Members represents a union of types: String, f64, bool
-#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
-#[serde(untagged)]
-pub enum Members {
-    #[serde(rename=\\"MembersOneOf0\\")]
-    MembersOneOf0(String),
-    #[serde(rename=\\"MembersOneOf1\\")]
-    MembersOneOf1(f64),
-    #[serde(rename=\\"MembersOneOf2\\")]
-    MembersOneOf2(bool),
-}
-
 "
 `;
 
@@ -249,6 +249,22 @@ pub struct TupleType(String, f64);
 `;
 
 exports[`RustGenerator Struct & Complete Models should render \`struct\` type 1`] = `
+"// Members represents a union of types: String, f64, bool
+#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
+#[serde(untagged)]
+pub enum Members {
+    #[serde(rename=\\"MembersOneOf0\\")]
+    MembersOneOf0(String),
+    #[serde(rename=\\"MembersOneOf1\\")]
+    MembersOneOf1(f64),
+    #[serde(rename=\\"MembersOneOf2\\")]
+    MembersOneOf2(bool),
+}
+
+"
+`;
+
+exports[`RustGenerator Struct & Complete Models should render \`struct\` type 2`] = `
 "// Address represents a Address model.
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Address {
@@ -271,22 +287,6 @@ pub struct Address {
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
     pub additional_properties: Option<std::collections::HashMap<String, String>>,
 }
-"
-`;
-
-exports[`RustGenerator Struct & Complete Models should render \`struct\` type 2`] = `
-"// Members represents a union of types: String, f64, bool
-#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
-#[serde(untagged)]
-pub enum Members {
-    #[serde(rename=\\"MembersOneOf0\\")]
-    MembersOneOf0(String),
-    #[serde(rename=\\"MembersOneOf1\\")]
-    MembersOneOf1(f64),
-    #[serde(rename=\\"MembersOneOf2\\")]
-    MembersOneOf2(bool),
-}
-
 "
 `;
 
