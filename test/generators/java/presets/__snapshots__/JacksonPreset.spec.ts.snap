@@ -55,7 +55,7 @@ exports[`JAVA_JACKSON_PRESET should render Jackson annotations for enum 1`] = `
 
 exports[`JAVA_JACKSON_PRESET union handle oneOf with AsyncAPI discriminator with Jackson 1`] = `
 Array [
-  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"vehicleType\\", visible=true)
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"vehicle_type\\", visible=true)
 @JsonSubTypes({
   @JsonSubTypes.Type(value = Car.class, name = \\"Car\\"),
   @JsonSubTypes.Type(value = Truck.class, name = \\"Truck\\")
@@ -64,10 +64,10 @@ Array [
  * Vehicle represents a union of types: Car, Truck
  */
 public interface Vehicle {
-  String getVehicleType();
+  
 }",
   "public class Car implements Vehicle {
-  @JsonProperty(\\"vehicleType\\")
+  @JsonProperty(\\"vehicle_type\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String vehicleType;
   @JsonProperty(\\"name\\")
@@ -86,7 +86,7 @@ public interface Vehicle {
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }",
   "public class Truck implements Vehicle {
-  @JsonProperty(\\"vehicleType\\")
+  @JsonProperty(\\"vehicle_type\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String vehicleType;
   @JsonProperty(\\"name\\")
