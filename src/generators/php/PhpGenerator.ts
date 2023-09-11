@@ -157,7 +157,7 @@ export class PhpGenerator extends AbstractGenerator<
 
     if (isReservedPhpKeyword(completeModelOptionsToUse.namespace)) {
       throw new Error(
-        `You cannot use reserved PHP keyword (${options.namespace}) as package name, please use another.`
+        `You cannot use reserved PHP keyword (${completeModelOptionsToUse.namespace}) as package name, please use another.`
       );
     }
 

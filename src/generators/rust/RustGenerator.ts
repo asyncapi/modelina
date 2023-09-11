@@ -35,6 +35,7 @@ import { UnionRenderer } from './renderers/UnionRenderer';
 import { PackageRenderer } from './renderers/PackageRenderer';
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 import { RustDependencyManager } from './RustDependencyManager';
+
 export interface RustOptions extends CommonGeneratorOptions<RustPreset> {
   typeMapping: TypeMapping<RustOptions, RustDependencyManager>;
   constraints: Constraints;

@@ -111,7 +111,7 @@ export class JavaScriptGenerator extends AbstractGenerator<
       ...options
     });
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
-    const outputModel = await this.render(model, inputModel);
+    const outputModel = await this.render(model, inputModel, optionsToUse);
     const modelDependencies = model.getNearestDependencies();
     //Ensure model dependencies have their rendered name
     const modelDependencyImports = modelDependencies.map((dependencyModel) => {
