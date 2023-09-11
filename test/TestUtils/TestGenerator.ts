@@ -7,8 +7,7 @@ import {
   MetaModel,
   ConstrainedAnyModel,
   Preset,
-  AbstractGeneratorRenderCompleteModelArgs,
-  AbstractGeneratorRenderArgs
+  InputMetaModel
 } from '../../src';
 import { AbstractDependencyManager } from '../../src/generators/AbstractDependencyManager';
 
@@ -31,21 +30,26 @@ export class TestGenerator extends AbstractGenerator<any, any> {
     return [model];
   }
 
-  public render(args: AbstractGeneratorRenderArgs<any>): Promise<RenderOutput> {
+  public render(
+    model: MetaModel,
+    inputModel: InputMetaModel
+  ): Promise<RenderOutput> {
     return Promise.resolve(
       RenderOutput.toRenderOutput({
-        result: args.constrainedModel.name || 'rendered content',
+        result: model.name || 'rendered content',
         renderedName: 'TestName'
       })
     );
   }
 
   public renderCompleteModel(
-    args: AbstractGeneratorRenderCompleteModelArgs<any, any>
+    model: MetaModel,
+    inputModel: InputMetaModel,
+    options: any
   ): Promise<RenderOutput> {
     return Promise.resolve(
       RenderOutput.toRenderOutput({
-        result: args.constrainedModel.name || 'rendered complete content',
+        result: model.name || 'rendered complete content',
         renderedName: 'TestName'
       })
     );

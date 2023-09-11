@@ -47,10 +47,6 @@ export class TemplateGenerator extends AbstractGenerator<
     constraints: TemplateDefaultConstraints
   };
 
-  static defaultCompleteModelOptions: TemplateRenderCompleteModelOptions = {
-    packageName: 'Asyncapi.Models'
-  };
-
   constructor(options?: DeepPartial<TemplateOptions>) {
     const realizedOptions = TemplateGenerator.getTemplateOptions(options);
     super('Template', realizedOptions);

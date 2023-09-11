@@ -170,11 +170,10 @@ export class JavaGenerator extends AbstractGenerator<
     completeModelOptions: Partial<JavaRenderCompleteModelOptions>,
     options: DeepPartial<JavaOptions>
   ): Promise<RenderOutput> {
-    const completeModelOptionsToUse =
-      mergePartialAndDefault<JavaRenderCompleteModelOptions>(
-        JavaGenerator.defaultCompleteModelOptions,
-        completeModelOptions
-      );
+    const completeModelOptionsToUse = mergePartialAndDefault(
+      JavaGenerator.defaultCompleteModelOptions,
+      completeModelOptions
+    ) as JavaRenderCompleteModelOptions;
     const optionsToUse = JavaGenerator.getJavaOptions({
       ...this.options,
       ...options

@@ -176,7 +176,6 @@ export class PythonGenerator extends AbstractGenerator<
     });
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const outputModel = await this.render(model, inputModel, {
-      ...optionsToUse,
       dependencyManager: dependencyManagerToUse
     });
     const modelDependencies = model.getNearestDependencies().map((model) => {
