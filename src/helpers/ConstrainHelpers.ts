@@ -329,8 +329,11 @@ function addDiscriminatorTypeToUnionModel(
       const ref = union.ref;
 
       if (ref instanceof ConstrainedObjectModel) {
-        const discriminatorProp =
-          ref.properties[constrainedModel.options.discriminator.discriminator];
+        const discriminatorProp = Object.values(ref.properties).find(
+          (model) =>
+            model.unconstrainedPropertyName ===
+            constrainedModel.options.discriminator?.discriminator
+        );
 
         if (discriminatorProp) {
           propertyTypes.add(discriminatorProp.property.type);
