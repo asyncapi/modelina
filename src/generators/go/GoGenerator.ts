@@ -1,7 +1,5 @@
 import {
   AbstractGenerator,
-  AbstractGeneratorRenderArgs,
-  AbstractGeneratorRenderCompleteModelArgs,
   CommonGeneratorOptions,
   defaultGeneratorOptions
 } from '../AbstractGenerator';
@@ -115,26 +113,22 @@ export class GoGenerator extends AbstractGenerator<
     );
   }
 
-  render(args: AbstractGeneratorRenderArgs<GoOptions>): Promise<RenderOutput> {
+  render(
+    model: ConstrainedMetaModel,
+    inputModel: InputMetaModel,
+    options?: DeepPartial<GoOptions>
+  ): Promise<RenderOutput> {
     const optionsToUse = GoGenerator.getGoOptions({
       ...this.options,
-      ...args.options
+      ...options
     });
-    if (args.constrainedModel instanceof ConstrainedObjectModel) {
-      return this.renderStruct(
-        args.constrainedModel,
-        args.inputModel,
-        optionsToUse
-      );
-    } else if (args.constrainedModel instanceof ConstrainedEnumModel) {
-      return this.renderEnum(
-        args.constrainedModel,
-        args.inputModel,
-        optionsToUse
-      );
+    if (model instanceof ConstrainedObjectModel) {
+      return this.renderStruct(model, inputModel, optionsToUse);
+    } else if (model instanceof ConstrainedEnumModel) {
+      return this.renderEnum(model, inputModel, optionsToUse);
     }
     Logger.warn(
-      `Go generator, cannot generate this type of model, ${args.constrainedModel.name}`
+      `Go generator, cannot generate this type of model, ${model.name}`
     );
     return Promise.resolve(
       RenderOutput.toRenderOutput({
@@ -153,23 +147,20 @@ export class GoGenerator extends AbstractGenerator<
    * @param options
    */
   async renderCompleteModel(
-    args: AbstractGeneratorRenderCompleteModelArgs<
-      GoOptions,
-      GoRenderCompleteModelOptions
-    >
+    model: ConstrainedMetaModel,
+    inputModel: InputMetaModel,
+    completeModelOptions: Partial<GoRenderCompleteModelOptions>,
+    options: DeepPartial<GoOptions>
   ): Promise<RenderOutput> {
     const completeModelOptionsToUse = mergePartialAndDefault(
       GoGenerator.defaultCompleteModelOptions,
-      args.completeOptions
+      completeModelOptions
     ) as GoRenderCompleteModelOptions;
     const optionsToUse = GoGenerator.getGoOptions({
       ...this.options,
-      ...args.options
+      ...options
     });
-    const outputModel = await this.render({
-      ...args,
-      options: optionsToUse
-    });
+    const outputModel = await this.render(model, inputModel, optionsToUse);
     let importCode = '';
     if (outputModel.dependencies.length > 0) {
       const dependencies = outputModel.dependencies

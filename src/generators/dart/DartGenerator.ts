@@ -1,7 +1,5 @@
 import {
   AbstractGenerator,
-  AbstractGeneratorRenderArgs,
-  AbstractGeneratorRenderCompleteModelArgs,
   CommonGeneratorOptions,
   defaultGeneratorOptions
 } from '../AbstractGenerator';
@@ -123,27 +121,21 @@ export class DartGenerator extends AbstractGenerator<
    * @param inputModel
    */
   render(
-    args: AbstractGeneratorRenderArgs<DartOptions>
+    model: ConstrainedMetaModel,
+    inputModel: InputMetaModel,
+    options?: DeepPartial<DartOptions>
   ): Promise<RenderOutput> {
     const optionsToUse = DartGenerator.getDartOptions({
       ...this.options,
-      ...args.options
+      ...options
     });
-    if (args.constrainedModel instanceof ConstrainedObjectModel) {
-      return this.renderClass(
-        args.constrainedModel,
-        args.inputModel,
-        optionsToUse
-      );
-    } else if (args.constrainedModel instanceof ConstrainedEnumModel) {
-      return this.renderEnum(
-        args.constrainedModel,
-        args.inputModel,
-        optionsToUse
-      );
+    if (model instanceof ConstrainedObjectModel) {
+      return this.renderClass(model, inputModel, optionsToUse);
+    } else if (model instanceof ConstrainedEnumModel) {
+      return this.renderEnum(model, inputModel, optionsToUse);
     }
     Logger.warn(
-      `Dart generator, cannot generate this type of model, ${args.constrainedModel.name}`
+      `Dart generator, cannot generate this type of model, ${model.name}`
     );
     return Promise.resolve(
       RenderOutput.toRenderOutput({
@@ -164,18 +156,18 @@ export class DartGenerator extends AbstractGenerator<
    * @param options used to render the full output
    */
   async renderCompleteModel(
-    args: AbstractGeneratorRenderCompleteModelArgs<
-      DartOptions,
-      DartRenderCompleteModelOptions
-    >
+    model: ConstrainedMetaModel,
+    inputModel: InputMetaModel,
+    completeModelOptions: Partial<DartRenderCompleteModelOptions>,
+    options: DeepPartial<DartOptions>
   ): Promise<RenderOutput> {
     const completeModelOptionsToUse = mergePartialAndDefault(
       DartGenerator.defaultCompleteModelOptions,
-      args.completeOptions
+      completeModelOptions
     ) as DartRenderCompleteModelOptions;
     const optionsToUse = DartGenerator.getDartOptions({
       ...this.options,
-      ...args.options
+      ...options
     });
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     if (isReservedDartKeyword(completeModelOptionsToUse.packageName)) {
@@ -184,9 +176,9 @@ export class DartGenerator extends AbstractGenerator<
       );
     }
 
-    const outputModel = await this.render({ ...args, options: optionsToUse });
+    const outputModel = await this.render(model, inputModel, optionsToUse);
     const modelDependencies = dependencyManagerToUse.renderAllModelDependencies(
-      args.constrainedModel,
+      model,
       completeModelOptionsToUse.packageName
     );
     const outputContent = `${modelDependencies}

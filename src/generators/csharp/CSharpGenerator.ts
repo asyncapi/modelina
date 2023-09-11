@@ -1,7 +1,5 @@
 import {
   AbstractGenerator,
-  AbstractGeneratorRenderArgs,
-  AbstractGeneratorRenderCompleteModelArgs,
   CommonGeneratorOptions,
   defaultGeneratorOptions
 } from '../AbstractGenerator';
@@ -148,18 +146,18 @@ export class CSharpGenerator extends AbstractGenerator<
    * @param options used to render the full output
    */
   async renderCompleteModel(
-    args: AbstractGeneratorRenderCompleteModelArgs<
-      CSharpOptions,
-      CSharpRenderCompleteModelOptions
-    >
+    model: ConstrainedMetaModel,
+    inputModel: InputMetaModel,
+    completeModelOptions: DeepPartial<CSharpRenderCompleteModelOptions>,
+    options: DeepPartial<CSharpOptions>
   ): Promise<RenderOutput> {
     const completeModelOptionsToUse = mergePartialAndDefault(
       CSharpGenerator.defaultCompleteModelOptions,
-      args.completeOptions
+      completeModelOptions
     ) as CSharpRenderCompleteModelOptions;
     const optionsToUse = CSharpGenerator.getCSharpOptions({
       ...this.options,
-      ...args.options
+      ...options
     });
     if (isReservedCSharpKeyword(completeModelOptionsToUse.namespace)) {
       throw new Error(
@@ -167,10 +165,7 @@ export class CSharpGenerator extends AbstractGenerator<
       );
     }
 
-    const outputModel = await this.render({
-      ...args,
-      options: optionsToUse
-    });
+    const outputModel = await this.render(model, inputModel);
 
     const outputDependencies =
       outputModel.dependencies.length === 0
@@ -194,34 +189,24 @@ ${FormatHelpers.indent(
   }
 
   render(
-    args: AbstractGeneratorRenderArgs<CSharpOptions>
+    model: ConstrainedMetaModel,
+    inputModel: InputMetaModel,
+    options?: DeepPartial<CSharpOptions>
   ): Promise<RenderOutput> {
     const optionsToUse = CSharpGenerator.getCSharpOptions({
       ...this.options,
-      ...args.options
+      ...options
     });
-    if (args.constrainedModel instanceof ConstrainedObjectModel) {
+    if (model instanceof ConstrainedObjectModel) {
       if (this.options.modelType === 'record') {
-        return this.renderRecord(
-          args.constrainedModel,
-          args.inputModel,
-          optionsToUse
-        );
+        return this.renderRecord(model, inputModel, optionsToUse);
       }
-      return this.renderClass(
-        args.constrainedModel,
-        args.inputModel,
-        optionsToUse
-      );
-    } else if (args.constrainedModel instanceof ConstrainedEnumModel) {
-      return this.renderEnum(
-        args.constrainedModel,
-        args.inputModel,
-        optionsToUse
-      );
+      return this.renderClass(model, inputModel, optionsToUse);
+    } else if (model instanceof ConstrainedEnumModel) {
+      return this.renderEnum(model, inputModel, optionsToUse);
     }
     Logger.warn(
-      `C# generator, cannot generate this type of model, ${args.constrainedModel.name}`
+      `C# generator, cannot generate this type of model, ${model.name}`
     );
     return Promise.resolve(
       RenderOutput.toRenderOutput({

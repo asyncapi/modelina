@@ -1,7 +1,5 @@
 import {
   AbstractGenerator,
-  AbstractGeneratorRenderArgs,
-  AbstractGeneratorRenderCompleteModelArgs,
   CommonGeneratorOptions,
   defaultGeneratorOptions
 } from '../AbstractGenerator';
@@ -128,27 +126,21 @@ export class KotlinGenerator extends AbstractGenerator<
    * @param inputModel
    */
   render(
-    args: AbstractGeneratorRenderArgs<KotlinOptions>
+    model: ConstrainedMetaModel,
+    inputModel: InputMetaModel,
+    options?: DeepPartial<KotlinOptions>
   ): Promise<RenderOutput> {
     const optionsToUse = KotlinGenerator.getKotlinOptions({
       ...this.options,
-      ...args.options
+      ...options
     });
-    if (args.constrainedModel instanceof ConstrainedObjectModel) {
-      return this.renderClass(
-        args.constrainedModel,
-        args.inputModel,
-        optionsToUse
-      );
-    } else if (args.constrainedModel instanceof ConstrainedEnumModel) {
-      return this.renderEnum(
-        args.constrainedModel,
-        args.inputModel,
-        optionsToUse
-      );
+    if (model instanceof ConstrainedObjectModel) {
+      return this.renderClass(model, inputModel, optionsToUse);
+    } else if (model instanceof ConstrainedEnumModel) {
+      return this.renderEnum(model, inputModel, optionsToUse);
     }
     Logger.warn(
-      `Kotlin generator, cannot generate this type of model, ${args.constrainedModel.name}`
+      `Kotlin generator, cannot generate this type of model, ${model.name}`
     );
     return Promise.resolve(
       RenderOutput.toRenderOutput({
@@ -169,22 +161,16 @@ export class KotlinGenerator extends AbstractGenerator<
    * @param options used to render the full output
    */
   async renderCompleteModel(
-    args: AbstractGeneratorRenderCompleteModelArgs<
-      KotlinOptions,
-      KotlinRenderCompleteModelOptions
-    >
+    model: ConstrainedMetaModel,
+    inputModel: InputMetaModel,
+    options: KotlinRenderCompleteModelOptions
   ): Promise<RenderOutput> {
     const optionsToUse = KotlinGenerator.getKotlinOptions({
       ...this.options,
-      ...args.options
+      ...options
     });
-    const outputModel = await this.render({
-      ...args,
-      options: optionsToUse
-    });
-    const packageName = this.sanitizePackageName(
-      args.completeOptions.packageName || 'Asyncapi.Models'
-    );
+    const outputModel = await this.render(model, inputModel, optionsToUse);
+    const packageName = this.sanitizePackageName(options.packageName);
     const outputContent = `package ${packageName}
 ${outputModel.dependencies.join('\n')}
 

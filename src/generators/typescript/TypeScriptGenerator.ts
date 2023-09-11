@@ -1,7 +1,5 @@
 import {
   AbstractGenerator,
-  AbstractGeneratorRenderArgs,
-  AbstractGeneratorRenderCompleteModelArgs,
   CommonGeneratorOptions,
   defaultGeneratorOptions
 } from '../AbstractGenerator';
@@ -158,28 +156,25 @@ export class TypeScriptGenerator extends AbstractGenerator<
    * @param options
    */
   async renderCompleteModel(
-    args: AbstractGeneratorRenderCompleteModelArgs<
-      TypeScriptOptions,
-      TypeScriptRenderCompleteModelOptions
-    >
+    model: ConstrainedMetaModel,
+    inputModel: InputMetaModel,
+    completeModelOptions: Partial<TypeScriptRenderCompleteModelOptions>,
+    options: DeepPartial<TypeScriptOptions>
   ): Promise<RenderOutput> {
     const completeModelOptionsToUse = mergePartialAndDefault(
       TypeScriptGenerator.defaultCompleteModelOptions,
-      args.completeOptions
+      completeModelOptions
     ) as TypeScriptRenderCompleteModelOptions;
     const optionsToUse = TypeScriptGenerator.getOptions({
       ...this.options,
-      ...args.options
+      ...options
     });
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
-    const outputModel = await this.render({
-      ...args,
-      options: {
-        ...optionsToUse,
-        dependencyManager: dependencyManagerToUse
-      }
+    const outputModel = await this.render(model, inputModel, {
+      ...optionsToUse,
+      dependencyManager: dependencyManagerToUse
     });
-    const modelDependencies = args.constrainedModel.getNearestDependencies();
+    const modelDependencies = model.getNearestDependencies();
 
     //Create the correct model dependency imports
     const modelDependencyImports = modelDependencies.map((model) => {
@@ -189,7 +184,7 @@ export class TypeScriptGenerator extends AbstractGenerator<
       );
     });
     const modelExport = dependencyManagerToUse.renderExport(
-      args.constrainedModel,
+      model,
       completeModelOptionsToUse.exportType
     );
 
@@ -212,37 +207,23 @@ ${modelCode}`;
    * Render any ConstrainedMetaModel to code based on the type
    */
   render(
-    args: AbstractGeneratorRenderArgs<TypeScriptOptions>
+    model: ConstrainedMetaModel,
+    inputModel: InputMetaModel,
+    options?: DeepPartial<TypeScriptOptions>
   ): Promise<RenderOutput> {
     const optionsToUse = TypeScriptGenerator.getOptions({
       ...this.options,
-      ...args.options
+      ...options
     });
-    if (args.constrainedModel instanceof ConstrainedObjectModel) {
+    if (model instanceof ConstrainedObjectModel) {
       if (this.options.modelType === 'interface') {
-        return this.renderInterface(
-          args.constrainedModel,
-          args.inputModel,
-          optionsToUse
-        );
+        return this.renderInterface(model, inputModel, optionsToUse);
       }
-      return this.renderClass(
-        args.constrainedModel,
-        args.inputModel,
-        optionsToUse
-      );
-    } else if (args.constrainedModel instanceof ConstrainedEnumModel) {
-      return this.renderEnum(
-        args.constrainedModel,
-        args.inputModel,
-        optionsToUse
-      );
+      return this.renderClass(model, inputModel, optionsToUse);
+    } else if (model instanceof ConstrainedEnumModel) {
+      return this.renderEnum(model, inputModel, optionsToUse);
     }
-    return this.renderType(
-      args.constrainedModel,
-      args.inputModel,
-      optionsToUse
-    );
+    return this.renderType(model, inputModel, optionsToUse);
   }
 
   async renderClass(

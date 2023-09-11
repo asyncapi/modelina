@@ -1,8 +1,6 @@
 /* eslint-disable no-console */
 import {
   AbstractGenerator,
-  AbstractGeneratorRenderArgs,
-  AbstractGeneratorRenderCompleteModelArgs,
   CommonGeneratorOptions,
   defaultGeneratorOptions
 } from '../AbstractGenerator';
@@ -131,27 +129,21 @@ export class PythonGenerator extends AbstractGenerator<
    * @param inputModel
    */
   render(
-    args: AbstractGeneratorRenderArgs<PythonOptions>
+    model: ConstrainedMetaModel,
+    inputModel: InputMetaModel,
+    options?: DeepPartial<PythonOptions>
   ): Promise<RenderOutput> {
     const optionsToUse = PythonGenerator.getPythonOptions({
       ...this.options,
-      ...args.options
+      ...options
     });
-    if (args.constrainedModel instanceof ConstrainedObjectModel) {
-      return this.renderClass(
-        args.constrainedModel,
-        args.inputModel,
-        optionsToUse
-      );
-    } else if (args.constrainedModel instanceof ConstrainedEnumModel) {
-      return this.renderEnum(
-        args.constrainedModel,
-        args.inputModel,
-        optionsToUse
-      );
+    if (model instanceof ConstrainedObjectModel) {
+      return this.renderClass(model, inputModel, optionsToUse);
+    } else if (model instanceof ConstrainedEnumModel) {
+      return this.renderEnum(model, inputModel, optionsToUse);
     }
     Logger.warn(
-      `Python generator, cannot generate this type of model, ${args.constrainedModel.name}`
+      `Python generator, cannot generate this type of model, ${model.name}`
     );
     return Promise.resolve(
       RenderOutput.toRenderOutput({
@@ -172,29 +164,24 @@ export class PythonGenerator extends AbstractGenerator<
    * @param options used to render the full output
    */
   async renderCompleteModel(
-    args: AbstractGeneratorRenderCompleteModelArgs<
-      PythonOptions,
-      PythonRenderCompleteModelOptions
-    >
+    model: ConstrainedMetaModel,
+    inputModel: InputMetaModel,
+    completeModelOptions: Partial<PythonRenderCompleteModelOptions>,
+    options: DeepPartial<PythonOptions>
   ): Promise<RenderOutput> {
     //const completeModelOptionsToUse = mergePartialAndDefault(PythonGenerator.defaultCompleteModelOptions, completeModelOptions) as PythonRenderCompleteModelOptions;
     const optionsToUse = PythonGenerator.getPythonOptions({
       ...this.options,
-      ...args.options
+      ...options
     });
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
-    const outputModel = await this.render({
-      ...args,
-      options: {
-        ...optionsToUse,
-        dependencyManager: dependencyManagerToUse
-      }
+    const outputModel = await this.render(model, inputModel, {
+      ...optionsToUse,
+      dependencyManager: dependencyManagerToUse
     });
-    const modelDependencies = args.constrainedModel
-      .getNearestDependencies()
-      .map((model) => {
-        return dependencyManagerToUse.renderDependency(model);
-      });
+    const modelDependencies = model.getNearestDependencies().map((model) => {
+      return dependencyManagerToUse.renderDependency(model);
+    });
     const outputContent = `${modelDependencies.join('\n')}
 ${outputModel.dependencies.join('\n')}
 ${outputModel.result}`;

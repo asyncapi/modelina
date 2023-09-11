@@ -1,7 +1,5 @@
 import {
   AbstractGenerator,
-  AbstractGeneratorRenderArgs,
-  AbstractGeneratorRenderCompleteModelArgs,
   CommonGeneratorOptions,
   defaultGeneratorOptions
 } from '../AbstractGenerator';
@@ -126,15 +124,16 @@ export class TemplateGenerator extends AbstractGenerator<
    * @param inputModel
    */
   render(
-    args: AbstractGeneratorRenderArgs<TemplateOptions>
+    model: ConstrainedMetaModel,
+    inputModel: InputMetaModel
   ): Promise<RenderOutput> {
-    if (args.constrainedModel instanceof ConstrainedObjectModel) {
-      return this.renderClass(args.constrainedModel, args.inputModel);
-    } else if (args.constrainedModel instanceof ConstrainedEnumModel) {
-      return this.renderEnum(args.constrainedModel, args.inputModel);
+    if (model instanceof ConstrainedObjectModel) {
+      return this.renderClass(model, inputModel);
+    } else if (model instanceof ConstrainedEnumModel) {
+      return this.renderEnum(model, inputModel);
     }
     Logger.warn(
-      `Template generator, cannot generate this type of model, ${args.constrainedModel.name}`
+      `Template generator, cannot generate this type of model, ${model.name}`
     );
     return Promise.resolve(
       RenderOutput.toRenderOutput({
@@ -155,30 +154,23 @@ export class TemplateGenerator extends AbstractGenerator<
    * @param options used to render the full output
    */
   async renderCompleteModel(
-    args: AbstractGeneratorRenderCompleteModelArgs<
-      TemplateOptions,
-      TemplateRenderCompleteModelOptions
-    >
+    model: ConstrainedMetaModel,
+    inputModel: InputMetaModel,
+    options: TemplateRenderCompleteModelOptions
   ): Promise<RenderOutput> {
-    const completeModelOptionsToUse =
-      mergePartialAndDefault<TemplateRenderCompleteModelOptions>(
-        TemplateGenerator.defaultCompleteModelOptions,
-        args.completeOptions
-      );
-
-    if (isReservedTemplateKeyword(completeModelOptionsToUse.packageName)) {
+    if (isReservedTemplateKeyword(options.packageName)) {
       throw new Error(
-        `You cannot use reserved Template keyword (${args.completeOptions.packageName}) as package name, please use another.`
+        `You cannot use reserved Template keyword (${options.packageName}) as package name, please use another.`
       );
     }
 
-    const outputModel = await this.render(args);
-    const modelDependencies = args.constrainedModel
+    const outputModel = await this.render(model, inputModel);
+    const modelDependencies = model
       .getNearestDependencies()
       .map((dependencyModel) => {
-        return `import ${completeModelOptionsToUse.packageName}.${dependencyModel.name};`;
+        return `import ${options.packageName}.${dependencyModel.name};`;
       });
-    const outputContent = `package ${completeModelOptionsToUse.packageName};
+    const outputContent = `package ${options.packageName};
 ${modelDependencies.join('\n')}
 ${outputModel.dependencies.join('\n')}
 ${outputModel.result}`;
