@@ -1,5 +1,7 @@
 import {
   AbstractGenerator,
+  AbstractGeneratorRenderArgs,
+  AbstractGeneratorRenderCompleteModelArgs,
   CommonGeneratorOptions,
   defaultGeneratorOptions
 } from '../AbstractGenerator';
@@ -100,19 +102,22 @@ export class JavaScriptGenerator extends AbstractGenerator<
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async renderCompleteModel(
-    model: ConstrainedMetaModel,
-    inputModel: InputMetaModel,
-    completeModelOptions: Partial<JavaScriptRenderCompleteModelOptions>,
-    options: DeepPartial<JavaScriptOptions>
+    args: AbstractGeneratorRenderCompleteModelArgs<
+      JavaScriptOptions,
+      JavaScriptRenderCompleteModelOptions
+    >
   ): Promise<RenderOutput> {
     //const completeModelOptionsToUse = mergePartialAndDefault(JavaScriptGenerator.defaultCompleteModelOptions, completeModelOptions) as JavaScriptRenderCompleteModelOptions;
     const optionsToUse = JavaScriptGenerator.getJavaScriptOptions({
       ...this.options,
-      ...options
+      ...args.options
     });
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
-    const outputModel = await this.render(model, inputModel, optionsToUse);
-    const modelDependencies = model.getNearestDependencies();
+    const outputModel = await this.render({
+      ...args,
+      options: optionsToUse
+    });
+    const modelDependencies = args.constrainedModel.getNearestDependencies();
     //Ensure model dependencies have their rendered name
     const modelDependencyImports = modelDependencies.map((dependencyModel) => {
       return dependencyManagerToUse.renderDependency(
@@ -141,18 +146,22 @@ ${modelCode}`;
   }
 
   render(
-    model: ConstrainedMetaModel,
-    inputModel: InputMetaModel,
-    options?: DeepPartial<JavaScriptOptions>
+    args: AbstractGeneratorRenderArgs<JavaScriptOptions>
   ): Promise<RenderOutput> {
     const optionsToUse = JavaScriptGenerator.getJavaScriptOptions({
       ...this.options,
-      ...options
+      ...args.options
     });
-    if (model instanceof ConstrainedObjectModel) {
-      return this.renderClass(model, inputModel, optionsToUse);
+    if (args.constrainedModel instanceof ConstrainedObjectModel) {
+      return this.renderClass(
+        args.constrainedModel,
+        args.inputModel,
+        optionsToUse
+      );
     }
-    Logger.warn(`JS generator, cannot generate model for '${model.name}'`);
+    Logger.warn(
+      `JS generator, cannot generate model for '${args.constrainedModel.name}'`
+    );
     return Promise.resolve(
       RenderOutput.toRenderOutput({
         result: '',

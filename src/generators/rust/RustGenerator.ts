@@ -1,5 +1,7 @@
 import {
   AbstractGenerator,
+  AbstractGeneratorRenderArgs,
+  AbstractGeneratorRenderCompleteModelArgs,
   CommonGeneratorOptions,
   defaultGeneratorOptions
 } from '../AbstractGenerator';
@@ -178,25 +180,39 @@ export class RustGenerator extends AbstractGenerator<
   }
 
   render(
-    model: ConstrainedMetaModel,
-    inputModel: InputMetaModel,
-    options?: DeepPartial<RustOptions>
+    args: AbstractGeneratorRenderArgs<RustOptions>
   ): Promise<RenderOutput> {
     const optionsToUse = RustGenerator.getRustOptions({
       ...this.options,
-      ...options
+      ...args.options
     });
-    if (model instanceof ConstrainedObjectModel) {
-      return this.renderStruct(model, inputModel, optionsToUse);
-    } else if (model instanceof ConstrainedEnumModel) {
-      return this.renderEnum(model, inputModel, optionsToUse);
-    } else if (model instanceof ConstrainedTupleModel) {
-      return this.renderTuple(model, inputModel, optionsToUse);
-    } else if (model instanceof ConstrainedUnionModel) {
-      return this.renderUnion(model, inputModel, optionsToUse);
+    if (args.constrainedModel instanceof ConstrainedObjectModel) {
+      return this.renderStruct(
+        args.constrainedModel,
+        args.inputModel,
+        optionsToUse
+      );
+    } else if (args.constrainedModel instanceof ConstrainedEnumModel) {
+      return this.renderEnum(
+        args.constrainedModel,
+        args.inputModel,
+        optionsToUse
+      );
+    } else if (args.constrainedModel instanceof ConstrainedTupleModel) {
+      return this.renderTuple(
+        args.constrainedModel,
+        args.inputModel,
+        optionsToUse
+      );
+    } else if (args.constrainedModel instanceof ConstrainedUnionModel) {
+      return this.renderUnion(
+        args.constrainedModel,
+        args.inputModel,
+        optionsToUse
+      );
     }
     Logger.warn(
-      `Rust generator, cannot generate this type of model, ${model.name}`
+      `Rust generator, cannot generate this type of model, ${args.constrainedModel.name}`
     );
     return Promise.resolve(
       RenderOutput.toRenderOutput({
@@ -215,17 +231,17 @@ export class RustGenerator extends AbstractGenerator<
    * @param options
    */
   async renderCompleteModel(
-    model: ConstrainedMetaModel,
-    inputModel: InputMetaModel,
-    _completeModelOptions: Partial<RustRenderCompleteModelOptions>,
-    options: DeepPartial<RustOptions>
+    args: AbstractGeneratorRenderCompleteModelArgs<
+      RustOptions,
+      RustRenderCompleteModelOptions
+    >
   ): Promise<RenderOutput> {
     const optionsToUse = RustGenerator.getRustOptions({
       ...this.options,
-      ...options
+      ...args.options
     });
     Logger.debug('Generating complete models with options: ', optionsToUse);
-    const outputModel = await this.render(model, inputModel);
+    const outputModel = await this.render({ ...args, options: optionsToUse });
     const outputContent = outputModel.result;
     return RenderOutput.toRenderOutput({
       result: outputContent,

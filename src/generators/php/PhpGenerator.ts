@@ -1,5 +1,7 @@
 import {
   AbstractGenerator,
+  AbstractGeneratorRenderArgs,
+  AbstractGeneratorRenderCompleteModelArgs,
   CommonGeneratorOptions,
   defaultGeneratorOptions
 } from '../AbstractGenerator';
@@ -117,17 +119,14 @@ export class PhpGenerator extends AbstractGenerator<
    * @param model
    * @param inputModel
    */
-  render(
-    model: ConstrainedMetaModel,
-    inputModel: InputMetaModel
-  ): Promise<RenderOutput> {
-    if (model instanceof ConstrainedObjectModel) {
-      return this.renderClass(model, inputModel);
-    } else if (model instanceof ConstrainedEnumModel) {
-      return this.renderEnum(model, inputModel);
+  render(args: AbstractGeneratorRenderArgs<PhpOptions>): Promise<RenderOutput> {
+    if (args.constrainedModel instanceof ConstrainedObjectModel) {
+      return this.renderClass(args.constrainedModel, args.inputModel);
+    } else if (args.constrainedModel instanceof ConstrainedEnumModel) {
+      return this.renderEnum(args.constrainedModel, args.inputModel);
     }
     Logger.warn(
-      `PHP generator, cannot generate this type of model, ${model.name}`
+      `PHP generator, cannot generate this type of model, ${args.constrainedModel.name}`
     );
     return Promise.resolve(
       RenderOutput.toRenderOutput({
@@ -146,14 +145,16 @@ export class PhpGenerator extends AbstractGenerator<
    * @param options used to render the full output
    */
   async renderCompleteModel(
-    model: ConstrainedMetaModel,
-    inputModel: InputMetaModel,
-    options: PhpRenderCompleteModelOptions
+    args: AbstractGeneratorRenderCompleteModelArgs<
+      PhpOptions,
+      PhpRenderCompleteModelOptions
+    >
   ): Promise<RenderOutput> {
-    const completeModelOptionsToUse = mergePartialAndDefault(
-      PhpGenerator.defaultCompleteModelOptions,
-      options
-    );
+    const completeModelOptionsToUse =
+      mergePartialAndDefault<PhpRenderCompleteModelOptions>(
+        PhpGenerator.defaultCompleteModelOptions,
+        args.completeOptions
+      );
 
     if (isReservedPhpKeyword(completeModelOptionsToUse.namespace)) {
       throw new Error(
@@ -164,8 +165,8 @@ export class PhpGenerator extends AbstractGenerator<
     const declares: string = completeModelOptionsToUse.declareStrictTypes
       ? 'declare(strict_types=1);'
       : '';
-    const outputModel: RenderOutput = await this.render(model, inputModel);
-    const modelDependencies: string[] = model
+    const outputModel: RenderOutput = await this.render(args);
+    const modelDependencies: string[] = args.constrainedModel
       .getNearestDependencies()
       .map((dependencyModel) => {
         return `use ${completeModelOptionsToUse.namespace}\\${dependencyModel.name};`;
