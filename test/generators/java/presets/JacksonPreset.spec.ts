@@ -1,4 +1,3 @@
-import { AsyncapiV2Schema } from '../../../../src';
 import { JavaGenerator, JAVA_JACKSON_PRESET } from '../../../../src/generators';
 
 describe('JAVA_JACKSON_PRESET', () => {
@@ -59,7 +58,7 @@ describe('JAVA_JACKSON_PRESET', () => {
             Vehicle: {
               payload: {
                 title: 'Vehicle',
-                discriminator: 'vehicleType',
+                discriminator: 'vehicle_type',
                 oneOf: [
                   { $ref: '#/components/schemas/Car' },
                   { $ref: '#/components/schemas/Truck' }
@@ -72,7 +71,7 @@ describe('JAVA_JACKSON_PRESET', () => {
               title: 'Car',
               type: 'object',
               properties: {
-                vehicleType: { type: 'string' },
+                vehicle_type: { type: 'string' },
                 name: { type: 'string' }
               }
             },
@@ -80,7 +79,7 @@ describe('JAVA_JACKSON_PRESET', () => {
               title: 'Truck',
               type: 'object',
               properties: {
-                vehicleType: { type: 'string' },
+                vehicle_type: { type: 'string' },
                 name: { type: 'string' }
               }
             }
