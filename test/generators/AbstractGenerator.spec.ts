@@ -1,8 +1,4 @@
-import {
-  InputMetaModel,
-  AnyModel,
-  ConstrainedMetaModel
-} from '../../src/models';
+import { InputMetaModel, AnyModel } from '../../src/models';
 import { TestGenerator } from '../TestUtils/TestGenerator';
 
 describe('AbstractGenerator', () => {
