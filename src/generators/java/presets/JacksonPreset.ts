@@ -103,11 +103,16 @@ ${content}`;
               union instanceof ConstrainedReferenceModel &&
               union.ref instanceof ConstrainedObjectModel
             ) {
-              const discriminatorProp =
-                union.ref.properties[discriminator.discriminator].property;
+              const discriminatorProp = Object.values(
+                union.ref.properties
+              ).find(
+                (model) =>
+                  model.unconstrainedPropertyName ===
+                  discriminator.discriminator
+              );
 
-              if (discriminatorProp.options.const) {
-                return `  @JsonSubTypes.Type(value = ${union.name}.class, name = "${discriminatorProp.options.const.originalInput}")`;
+              if (discriminatorProp?.property.options.const) {
+                return `  @JsonSubTypes.Type(value = ${union.name}.class, name = "${discriminatorProp.property.options.const.originalInput}")`;
               }
             }
 
