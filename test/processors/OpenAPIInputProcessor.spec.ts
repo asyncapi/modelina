@@ -9,7 +9,10 @@ const basicDoc = JSON.parse(
   )
 );
 jest.mock('../../src/utils/LoggingInterface');
-jest.spyOn(OpenAPIInputProcessor, 'convertToInternalSchema');
+const processorSpy = jest.spyOn(
+  OpenAPIInputProcessor,
+  'convertToInternalSchema'
+);
 const mockedReturnModels = [new CommonModel()];
 const mockedMetaModel = new AnyModel('', undefined);
 jest.mock('../../src/helpers/CommonModelToMetaModel', () => {
@@ -33,6 +36,9 @@ jest.mock('../../src/interpreter/Interpreter', () => {
 describe('OpenAPIInputProcessor', () => {
   afterAll(() => {
     jest.restoreAllMocks();
+  });
+  afterEach(() => {
+    jest.clearAllMocks();
   });
   describe('shouldProcess()', () => {
     const processor = new OpenAPIInputProcessor();
@@ -82,11 +88,47 @@ describe('OpenAPIInputProcessor', () => {
       const processor = new OpenAPIInputProcessor();
       const commonInputModel = await processor.process(basicDoc);
       expect(commonInputModel).toMatchSnapshot();
-      expect(
-        (
-          OpenAPIInputProcessor.convertToInternalSchema as any as jest.SpyInstance
-        ).mock.calls
-      ).toMatchSnapshot();
+      expect(processorSpy.mock.calls).toMatchSnapshot();
+    });
+    test('should include schema for parameters', async () => {
+      const doc = {
+        openapi: '3.0.3',
+        info: {},
+        paths: {
+          '/test': {
+            parameters: [
+              {
+                name: 'path_parameter',
+                in: 'header',
+                schema: { type: 'string' }
+              }
+            ],
+            get: {
+              parameters: [
+                {
+                  name: 'operation_parameter',
+                  in: 'query',
+                  schema: { type: 'string' }
+                }
+              ],
+              responses: {
+                204: {}
+              }
+            }
+          }
+        }
+      };
+
+      const processor = new OpenAPIInputProcessor();
+      await processor.process(doc);
+      expect(processorSpy.mock.calls).toContainEqual([
+        { type: 'string' },
+        'test_get_parameters_query_operation_parameter'
+      ]);
+      expect(processorSpy.mock.calls).toContainEqual([
+        { type: 'string' },
+        'test_parameters_header_path_parameter'
+      ]);
     });
   });
 });
