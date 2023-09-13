@@ -101,7 +101,7 @@ export abstract class AbstractGenerator<
 
   /**
    * Generates an array of ConstrainedMetaModel with its dependency manager from an InputMetaModel.
-   * It also adds parentUnions to the ConstrainedMetaModel's which can be used in renderers which needs to know what parents they belong to.
+   * It also adds parents to the ConstrainedMetaModel's which can be used in renderers which needs to know what parents they belong to.
    */
   private getConstrainedModels(inputModel: InputMetaModel): Array<{
     constrainedModel: ConstrainedMetaModel;
@@ -154,11 +154,11 @@ export abstract class AbstractGenerator<
               m.type === constrainedModel.type
           )
         ) {
-          if (!constrainedModel.options.parentUnions) {
-            constrainedModel.options.parentUnions = [];
+          if (!constrainedModel.options.parents) {
+            constrainedModel.options.parents = [];
           }
 
-          constrainedModel.options.parentUnions.push(
+          constrainedModel.options.parents.push(
             unionConstrainedModel.constrainedModel
           );
         }

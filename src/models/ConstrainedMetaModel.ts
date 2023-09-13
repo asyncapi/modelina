@@ -19,7 +19,7 @@ export interface ConstrainedMetaModelOptionsDiscriminator
 export class ConstrainedMetaModelOptions extends MetaModelOptions {
   const?: ConstrainedMetaModelOptionsConst;
   discriminator?: ConstrainedMetaModelOptionsDiscriminator;
-  parentUnions?: ConstrainedUnionModel[];
+  parents?: ConstrainedMetaModel[];
 }
 
 export abstract class ConstrainedMetaModel extends MetaModel {
