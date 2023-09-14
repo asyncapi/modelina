@@ -1,4 +1,8 @@
-import { InputMetaModel, AnyModel } from '../../src/models';
+import {
+  InputMetaModel,
+  AnyModel,
+  ConstrainedMetaModel
+} from '../../src/models';
 import { TestGenerator } from '../TestUtils/TestGenerator';
 
 describe('AbstractGenerator', () => {
@@ -65,10 +69,12 @@ describe('AbstractGenerator', () => {
     const doc: any = { type: 'string', $id: 'SomeModel' };
     const commonInputModel = await generator.process(doc);
     const keys = Object.keys(commonInputModel.models);
-    const renderedContent = await generator.render(
-      commonInputModel.models[keys[0]],
-      commonInputModel
-    );
+    const renderedContent = await generator.render({
+      constrainedModel: commonInputModel.models[
+        keys[0]
+      ] as ConstrainedMetaModel,
+      inputModel: commonInputModel
+    });
 
     expect(renderedContent.result).toEqual('SomeModel');
     expect(renderedContent.renderedName).toEqual('TestName');
