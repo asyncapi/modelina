@@ -183,7 +183,7 @@ export class KotlinGenerator extends AbstractGenerator<
       options: optionsToUse
     });
     const packageName = this.sanitizePackageName(
-      args.completeOptions.packageName || 'Asyncapi.Models'
+      args.completeOptions.packageName ?? 'Asyncapi.Models'
     );
     const outputContent = `package ${packageName}
 ${outputModel.dependencies.join('\n')}
