@@ -1,5 +1,6 @@
-import { InputMetaModel, CommonModel, AnyModel } from '../../src/models';
+import { InputMetaModel, AnyModel } from '../../src/models';
 import { TestGenerator } from '../TestUtils/TestGenerator';
+
 describe('AbstractGenerator', () => {
   let generator: TestGenerator;
   beforeEach(() => {
@@ -8,7 +9,7 @@ describe('AbstractGenerator', () => {
 
   test('generate() should return OutputModels', async () => {
     const cim = new InputMetaModel();
-    const model = new AnyModel('test', undefined);
+    const model = new AnyModel('test', undefined, {});
     cim.models[model.name] = model;
     const outputModels = await generator.generate(cim);
 
@@ -18,7 +19,7 @@ describe('AbstractGenerator', () => {
 
   test('generateCompleteModels() should return OutputModels', async () => {
     const cim = new InputMetaModel();
-    const model = new AnyModel('test', undefined);
+    const model = new AnyModel('test', undefined, {});
     cim.models[model.name] = model;
     const outputModels = await generator.generateCompleteModels(cim, {});
 
@@ -28,7 +29,7 @@ describe('AbstractGenerator', () => {
 
   test('generate() should process InputMetaModel instance', async () => {
     const cim = new InputMetaModel();
-    const model = new AnyModel('test', undefined);
+    const model = new AnyModel('test', undefined, {});
     cim.models[model.name] = model;
     const outputModels = await generator.generate(cim);
     expect(outputModels[0].result).toEqual('test');
@@ -37,7 +38,7 @@ describe('AbstractGenerator', () => {
 
   test('generateCompleteModels() should process InputMetaModel instance', async () => {
     const cim = new InputMetaModel();
-    const model = new AnyModel('test', undefined);
+    const model = new AnyModel('test', undefined, {});
     cim.models[model.name] = model;
     const outputModels = await generator.generateCompleteModels(cim, {});
 

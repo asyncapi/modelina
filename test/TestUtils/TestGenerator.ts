@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   AbstractGenerator,
-  InputMetaModel,
   IndentationTypes,
   RenderOutput,
   ConstrainedMetaModel,
   MetaModel,
   ConstrainedAnyModel,
-  Preset
+  Preset,
+  InputMetaModel
 } from '../../src';
 import { AbstractDependencyManager } from '../../src/generators/AbstractDependencyManager';
 
@@ -23,11 +23,13 @@ export class TestGenerator extends AbstractGenerator<any, any> {
   }
 
   public constrainToMetaModel(model: MetaModel): ConstrainedMetaModel {
-    return new ConstrainedAnyModel(model.name, undefined, '');
+    return new ConstrainedAnyModel(model.name, undefined, {}, '');
   }
+
   public splitMetaModel(model: MetaModel): MetaModel[] {
     return [model];
   }
+
   public render(
     model: MetaModel,
     inputModel: InputMetaModel
@@ -39,6 +41,7 @@ export class TestGenerator extends AbstractGenerator<any, any> {
       })
     );
   }
+
   public renderCompleteModel(
     model: MetaModel,
     inputModel: InputMetaModel,
@@ -51,9 +54,11 @@ export class TestGenerator extends AbstractGenerator<any, any> {
       })
     );
   }
+
   public testGetPresets(string: string): Array<[Preset, unknown]> {
     return this.getPresets(string);
   }
+
   public getDependencyManager(options: any): AbstractDependencyManager {
     return new AbstractDependencyManager();
   }

@@ -640,6 +640,17 @@ public interface Pet {
 
 exports[`JavaGenerator oneOf/discriminator with jackson preset should create an interface for child models 1`] = `
 Array [
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"vehicleType\\", visible=true)
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = Car.class, name = \\"Car\\"),
+  @JsonSubTypes.Type(value = Truck.class, name = \\"Truck\\")
+})
+/**
+ * Vehicle represents a union of types: Car, Truck
+ */
+public interface Vehicle {
+  VehicleType getVehicleType();
+}",
   "public class Cargo {
   @JsonProperty(\\"vehicle\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -690,17 +701,6 @@ Array [
     }
     return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
   }
-}",
-  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"vehicleType\\", visible=true)
-@JsonSubTypes({
-  @JsonSubTypes.Type(value = Car.class, name = \\"Car\\"),
-  @JsonSubTypes.Type(value = Truck.class, name = \\"Truck\\")
-})
-/**
- * Vehicle represents a union of types: Car, Truck
- */
-public interface Vehicle {
-  VehicleType getVehicleType();
 }",
   "public class Car implements Vehicle {
   @NotNull
@@ -849,6 +849,9 @@ exports[`JavaGenerator should not render reserved keyword 1`] = `
 
 exports[`JavaGenerator should render \`class\` type 1`] = `
 Array [
+  "",
+  "",
+  "",
   "public class Address {
   private String streetName;
   private String city;
@@ -883,9 +886,6 @@ Array [
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }",
-  "",
-  "",
-  "",
 ]
 `;
 
@@ -1052,6 +1052,18 @@ exports[`JavaGenerator should render enums with translated special characters 1`
 exports[`JavaGenerator should render models and their dependencies 1`] = `
 Array [
   "package test.packageName;
+
+
+",
+  "package test.packageName;
+
+
+",
+  "package test.packageName;
+
+
+",
+  "package test.packageName;
 import test.packageName.OtherModel;
 import java.util.Map;
 public class Address {
@@ -1094,14 +1106,6 @@ public class Address {
 }",
   "package test.packageName;
 
-
-",
-  "package test.packageName;
-
-
-",
-  "package test.packageName;
-
 import java.util.Map;
 public class OtherModel {
   private String streetName;
@@ -1113,10 +1117,6 @@ public class OtherModel {
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }",
-  "package test.packageName;
-
-
-",
 ]
 `;
 

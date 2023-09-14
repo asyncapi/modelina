@@ -3,8 +3,7 @@ import {
   ConstrainedDictionaryModel,
   ConstrainedObjectModel,
   ConstrainedObjectPropertyModel,
-  ConstrainedUnionModel,
-  UnionModel
+  ConstrainedUnionModel
 } from '../../../models';
 import { FormatHelpers } from '../../../helpers';
 import { JavaOptions } from '../JavaGenerator';
@@ -101,23 +100,16 @@ ${this.indent(this.renderBlock(content, 2))}
   private getParentUnions(): ConstrainedUnionModel[] | undefined {
     const parentUnions: ConstrainedUnionModel[] = [];
 
-    for (const model of Object.values(this.inputModel.models)) {
-      if (model instanceof UnionModel) {
-        // Create a ConstrainedUnionModel of all Union Models
-        const unionModel = this.generator.constrainToMetaModel(
-          model,
-          this.options
-        ) as ConstrainedUnionModel;
+    if (!this.model.options.parents) {
+      return undefined;
+    }
 
-        // Check if the current model is a child model of any of the union interfaces
-        if (
-          !unionIncludesBuiltInTypes(unionModel) &&
-          unionModel.union.some(
-            (m) => m.name === this.model.name && m.type === this.model.type
-          )
-        ) {
-          parentUnions.push(unionModel);
-        }
+    for (const model of this.model.options.parents) {
+      if (
+        model instanceof ConstrainedUnionModel &&
+        !unionIncludesBuiltInTypes(model)
+      ) {
+        parentUnions.push(model);
       }
     }
 
