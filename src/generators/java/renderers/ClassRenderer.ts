@@ -100,13 +100,16 @@ ${this.indent(this.renderBlock(content, 2))}
   private getParentUnions(): ConstrainedUnionModel[] | undefined {
     const parentUnions: ConstrainedUnionModel[] = [];
 
-    if (!this.model.options.parentUnions) {
+    if (!this.model.options.parents) {
       return undefined;
     }
 
-    for (const unionModel of this.model.options.parentUnions) {
-      if (!unionIncludesBuiltInTypes(unionModel)) {
-        parentUnions.push(unionModel);
+    for (const model of this.model.options.parents) {
+      if (
+        model instanceof ConstrainedUnionModel &&
+        !unionIncludesBuiltInTypes(model)
+      ) {
+        parentUnions.push(model);
       }
     }
 
