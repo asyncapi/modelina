@@ -54,4 +54,19 @@ ${newLiteral}
     }
     return values !== undefined ? `${name}(${values})` : name;
   }
+
+  static renderStringLiteral(value: string): string {
+    const escaped = value
+      .replace(/\\/g, '\\\\')
+      .replace(/\t/g, '\\t')
+      .replace(/\n/g, '\\n')
+      .replace(/\r/g, '\\r')
+      .replace(/\f/g, '\\f')
+      .replace(/"/g, '\\"');
+    return `"${escaped}"`;
+  }
+
+  renderStringLiteral(value: string): string {
+    return JavaRenderer.renderStringLiteral(value);
+  }
 }
