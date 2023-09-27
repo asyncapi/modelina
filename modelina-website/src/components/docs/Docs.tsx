@@ -1,17 +1,22 @@
 import React from 'react';
 import Router, { withRouter, NextRouter } from 'next/router';
 import { getMDXComponents } from '../MDX';
-import { MDXRemote } from 'next-mdx-remote';
 import DocsList from "../../../config/docs.json";
 import Link from 'next/link';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
+import rehypeSlug from "rehype-slug";
+import remarkGfm from "remark-gfm";
+import CodeBlock from '../CodeBlock';
+import rehypeRaw from 'rehype-raw';
+
 
 interface WithRouterProps {
   router: NextRouter;
 }
 
 interface ModelinaDocsProps extends WithRouterProps {
-  source: any, frontMatter: string, slug: string
+  source: any, 
+  slug: string
 }
 
 type ModelinaDocsState = {
@@ -31,20 +36,27 @@ class Docs extends React.Component<
 
   }
   renderMenuTree(value: any) {
-    const isSelected = value.slug === this.props.slug;
+    const isSelected = value.slug === `/docs/${this.props.slug}`;
     if(value.type === 'dir') {
-      return <ul className='border-l border-gray-200 pl-4 ml-3 mt-1'>
-        { value.subPaths.map(this.renderMenuTree) }
-      </ul>;
+      const hasRootReadme = value.content !== null;
+      let headerReadme;
+      if(hasRootReadme) {
+        headerReadme = <li key={value.slug} className={`cursor-pointer ${isSelected && 'bg-sky-500/[.3]'} p-2`} onClick={() => { this.setState({ showMenu: false }); } }><a href={`/docs/${value.slug.toLowerCase()}`}>{value.title}</a></li>;
+      } else {
+        headerReadme = <li key={value.slug} className={`p-2`}>{value.title}</li>;
+      }
+      return <>{headerReadme}<li>
+        <ul className='border-l border-gray-200 pl-4 ml-3 mt-1'>
+          {value.subPaths.map(this.renderMenuTree)}
+        </ul>
+      </li></>;
     } else {
-      return <li key={value.slug} className={`cursor-pointer hover:bg-sky-500/[.3] ${isSelected && 'bg-sky-500/[.3]'} p-2`} onClick={() => { this.setState({ showMenu: false }) }}><a href={value.slug}>{value.title}</a></li>;
+      return <li key={value.slug} className={`cursor-pointer ${isSelected && 'bg-sky-500/[.3]'} p-2`} onClick={() => { this.setState({ showMenu: false }) }}><a href={`/docs/${value.slug}`}>{value.title}</a></li>;
     }
   }
   render() {
     let { showMenu } = this.state;
-    console.log(this.props.source);
     const menuItems = this.renderMenuTree(DocsList.tree);
-
     return (
       <div className="py-4 lg:py-8">
         <div className="bg-white px-4 sm:px-6 lg:px-8 w-full xl:max-w-7xl xl:mx-auto">
@@ -90,7 +102,6 @@ class Docs extends React.Component<
                     </div>
                     <div className="flex-1 h-0 pt-5 overflow-y-auto">
                       <nav className="mt-5 px-2 mb-4">
-                        <p className="cursor-pointer p-2 font-semibold text-lg">Docs</p>
                         <ul className='border-l border-gray-200 pl-4 ml-3 mt-1'>
                           { menuItems }
                         </ul>
@@ -108,16 +119,33 @@ class Docs extends React.Component<
             <div className="hidden lg:flex lg:flex-shrink-0">
               <div className="flex flex-col w-64 border-r border-gray-200 bg-white py-2">
                 <div className="flex-1 flex flex-col md:overflow-y-auto md:sticky md:top-20 md:max-h-(screen-14)">
-
                   <nav className="flex-1 bg-white">
-                    <p className="cursor-pointer p-2 font-semibold text-lg">Docs</p>
-                      { menuItems }
+                    { menuItems }
                   </nav>
                 </div>
               </div>
             </div>
-            <div className="flex flex-col ml-6 w-0 flex-1 max-w-full lg:max-w-(screen-16)">
-              <ReactMarkdown>{this.props.source}</ReactMarkdown>
+            <div className="flex flex-col ml-6 w-0 flex-1 max-w-full lg:max-w-(screen-16) prose">
+              <ReactMarkdown 
+                rehypePlugins={[rehypeSlug, rehypeRaw]} 
+                remarkPlugins={[remarkGfm]} 
+                components={{
+                code({node, inline, className, children, ...props}) {
+                  const match = /language-(\w+)/.exec(className || '')
+                  return !inline && match ? (
+                    <CodeBlock
+                      {...props}
+                      children={String(children).replace(/\n$/, '')}
+                      language={match[1]}
+                      PreTag="div"
+                    />
+                  ) : (
+                    <code {...props} className={className}>
+                      {children}
+                    </code>
+                  )}}}>
+                {this.props.source}
+              </ReactMarkdown>
             </div>
           </div>
         </div>

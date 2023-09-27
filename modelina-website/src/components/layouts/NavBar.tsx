@@ -69,7 +69,7 @@ export default function NavBar({ className = '', hideLogo = false }) {
           </div>
 
           <div className="relative" onMouseLeave={() => showMenu(false)}>
-            <NavItem text="API docs" href="/docs/api" />
+            <NavItem text="Docs" href="/docs" />
           </div>
 
           <div className="flex flex-row items-center justify-content">

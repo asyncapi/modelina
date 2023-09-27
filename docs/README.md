@@ -51,13 +51,13 @@ Goes more in-depth into how the preset system works, which enables full customiz
 ### [Interpretation of JSON Schema](./inputs/JSON_Schema.md)
 Explains how a JSON Schema is interpreted to a data model.
 
-### [Migration](./migration.md)
+### [Migration](./migrations/README.md)
 As time goes on, major versions are inevitable and expected! You can find the migration guides here.
 
 ### [Coming from other tools](./other-tools.md)
 Contains specific information about the differences between a lot of other common model generation tools. 
 
-### [API Documentation](https://modelina.org/docs/api)
+### [API Documentation](https://modelina.org/apidocs)
 
 No one wants to read the code to find information about it, instead use the [/docs/api](https://modelina.org/docs/api) page on the website to find what you are looking for!
 

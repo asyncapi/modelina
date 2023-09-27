@@ -4,11 +4,11 @@ import Highlight from 'react-syntax-highlighter';
 import { registerLanguage } from 'lowlight';
 import IconClipboard from './icons/Clipboard';
 import Caption from './Caption';
+import React from 'react';
 const theme = {
   hljs: {
     display: 'inline-block',
     background: '#252f3f',
-    color: '#d6deeb'
   },
   'hljs-subst': {
     color: '#d6deeb'
@@ -220,6 +220,7 @@ export default function CodeBlock({
                 : language
             }
             style={theme}
+            theme={"darcula"}
             showLineNumbers={showLineNumbers}
             startingLineNumber={startingLineNumber}
             linenumbercontainerprops={{

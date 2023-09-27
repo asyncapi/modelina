@@ -114,7 +114,7 @@
     "generate:runtime:csharp": "cross-env CI=true ts-node ./test/runtime/runtime-csharp.ts",
     "test:watch": "jest --watch",
     "docs": "npm run docs:api",
-    "docs:api": "typedoc src/index.ts --out ./modelina-website/public/docs/api/generated --name Modelina",
+    "docs:api": "typedoc src/index.ts --out ./modelina-website/public/apidocs/generated --name Modelina",
     "lint": "eslint --max-warnings 0 --config .eslintrc .",
     "lint:fix": "eslint --max-warnings 0 --config .eslintrc . --fix",
     "release": "semantic-release",
