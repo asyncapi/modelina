@@ -38,3 +38,6 @@ next-env.d.ts
 
 /config
 public/img/docs
+
+# API documentation
+public/apidocs
