@@ -20,9 +20,6 @@ function prepareContent(content) {
   // Replace all references to local images for docs
   content = content.replace(/"(.*?)\/img\/(.*?)"/g, '"/img/docs/img/$2"');
 
-  // Replace all example links from local file links to website example links
-  // /examples/generate-all-models-within-same-file -> /examples?selectedExample=generate-all-models-within-same-file
-  
   return content;
 }
 
