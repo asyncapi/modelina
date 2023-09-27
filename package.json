@@ -1,6 +1,6 @@
 {
   "name": "@asyncapi/modelina",
-  "version": "1.8.12",
+  "version": "1.9.0",
   "description": "Library for generating data models based on inputs such as AsyncAPI, OpenAPI, or JSON Schema documents",
   "license": "Apache-2.0",
   "homepage": "https://www.modelina.org",
@@ -100,6 +100,8 @@
     "test:blackbox:java": "cross-env CI=true jest ./test/blackbox/blackbox-java.spec.ts",
     "test:runtime:java": "cross-env CI=true jest ./test/runtime/runtime-java.spec.ts",
     "generate:runtime:java": "cross-env CI=true ts-node ./test/runtime/runtime-java.ts",
+    "test:runtime:go": "cross-env CI=true jest ./test/runtime/runtime-go.spec.ts",
+    "generate:runtime:go": "cross-env CI=true ts-node ./test/runtime/runtime-go.ts",
     "test:runtime:cplusplus": "cross-env CI=true jest ./test/runtime/runtime-cplusplus.spec.ts",
     "generate:runtime:cplusplus": "cross-env CI=true ts-node ./test/runtime/runtime-cplusplus.ts",
     "test:runtime:kotlin": "cross-env CI=true jest ./test/runtime/runtime-kotlin.spec.ts",
