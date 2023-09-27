@@ -9,7 +9,7 @@ function prepareContent(content) {
   content = content.replace('<!-- toc is generated with GitHub Actions do not remove toc markers -->', '');
   content = content.replace('<!-- toc -->', '');
   content = content.replace('<!-- tocstop -->', '');
-  content = content.replaceAll('.md', '');
+  content = content.replace(/\.md/g, '');
 
   // Use correct example links
   content = content.replace(/\]\((.*?)examples\/(.*?)\/?\)/g, '](/examples?selectedExample=$2)');
