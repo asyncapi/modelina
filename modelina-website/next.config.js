@@ -12,16 +12,7 @@ if (isGithubActions) {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   assetPrefix: assetPrefix,
-  basePath: basePath,
-  redirects: () => {
-    return [
-      {
-        source: '/docs/(.\.md.*)',
-        destination: '/docs/$0',
-        permanent: true,
-      }
-    ]
-  }
+  basePath: basePath
 }
 
 module.exports = nextConfig

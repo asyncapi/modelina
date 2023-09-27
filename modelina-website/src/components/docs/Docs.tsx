@@ -1,8 +1,6 @@
 import React from 'react';
-import Router, { withRouter, NextRouter } from 'next/router';
-import { getMDXComponents } from '../MDX';
+import { withRouter, NextRouter } from 'next/router';
 import DocsList from "../../../config/docs.json";
-import Link from 'next/link';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
