@@ -48,7 +48,7 @@ Details which different generator options are supported.
 ### [Presets](./presets.md)
 Goes more in-depth into how the preset system works, which enables full customization of generators.
 
-### [Interpretation of JSON Schema](./inputs/JSON_Schema.md)
+### [Interpretation of JSON Schema](./inputs/json-schema.md)
 Explains how a JSON Schema is interpreted to a data model.
 
 ### [Migration](./migrations/README.md)
@@ -59,7 +59,7 @@ Contains specific information about the differences between a lot of other commo
 
 ### [API Documentation](https://modelina.org/apidocs)
 
-No one wants to read the code to find information about it, instead use the [/docs/api](https://modelina.org/docs/api) page on the website to find what you are looking for!
+No one wants to read the code to find information about it, instead use the [/apidocs](https://modelina.org/apidocs) page on the website to find what you are looking for!
 
 ### Languages
 Each language has its own limitations, corner cases, and features; thus, each language has separate documentation.

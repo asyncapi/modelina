@@ -6,6 +6,7 @@ import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import CodeBlock from '../CodeBlock';
 import rehypeRaw from 'rehype-raw';
+import GithubButton from '../buttons/GithubButton';
 
 
 interface WithRouterProps {
@@ -46,6 +47,7 @@ class Docs extends React.Component<
       return <>{headerReadme}<li>
         <ul className='border-l border-gray-200 pl-4 ml-3 mt-1'>
           {value.subPaths.map(this.renderMenuTree)}
+          <li key={'apidocs'} className={`cursor-pointer p-2`}><a href={'/apidocs'}>API Docs</a></li>
         </ul>
       </li></>;
     } else {
@@ -124,6 +126,14 @@ class Docs extends React.Component<
               </div>
             </div>
             <div className="flex flex-col ml-6 w-0 flex-1 max-w-full lg:max-w-(screen-16) prose">
+
+              <div className={"flex md:justify-end my-4 md:my-0"}>
+                <GithubButton
+                  text="Edit on GitHub"
+                  href={`https://github.com/asyncapi/modelina/edit/master/docs/${this.props.slug}`}
+                  inNav="true"
+                />
+              </div>
               <ReactMarkdown 
                 rehypePlugins={[rehypeSlug, rehypeRaw]} 
                 remarkPlugins={[remarkGfm]} 

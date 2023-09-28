@@ -10,6 +10,7 @@ function prepareContent(content) {
   content = content.replace('<!-- toc -->', '');
   content = content.replace('<!-- tocstop -->', '');
   content = content.replace(/\.md/g, '');
+  content = content.replace(/README/g, '');
 
   // Use correct example links
   content = content.replace(/\]\((.*?)examples\/(.*?)\/?\)/g, '](/examples?selectedExample=$2)');
@@ -36,8 +37,8 @@ async function buildDocsTree(rootPath) {
     //Ignore non-markdown and README files
     if(rootPath.endsWith('.md') && !rootPath.includes('README')) {
       let title = path.basename(rootPath, '.md');
-      title = title.replaceAll('-', ' ');
-      title = title.replaceAll('_', ' ');
+      title = title.replace(/_/g, ' ');
+      title = title.replace(/-/g, ' ');
       title = title.charAt(0).toUpperCase() + title.slice(1);
       let content = await readFile(rootPath, "utf8");
       content = prepareContent(content);
@@ -52,10 +53,16 @@ async function buildDocsTree(rootPath) {
   //Check if directory has main README file and use it's content 
   try{
     const dirRootReadmePath = path.resolve(rootPath, './README.md');
+    const isRootReadme = path.resolve(__dirname, '../../docs') === rootPath;
     let readmeFileStat = await stat(dirRootReadmePath);
     if(readmeFileStat.isFile()){
       readmeContent = await readFile(dirRootReadmePath, "utf8");
       readmeContent = prepareContent(readmeContent);
+      
+      if(isRootReadme) {
+        // Replace relative references (./some-ref.md) to absolute refs (/docs/some-ref)
+        readmeContent = readmeContent.replace(/\]\(\.\/(.*?)\)/g, '](/docs/$1)');
+      }
     }
   } catch(e) {}
 
