@@ -1,10 +1,10 @@
 /* eslint-disable no-useless-escape, security/detect-object-injection, sonarjs/no-duplicate-string */
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Highlight from 'react-syntax-highlighter';
 import { registerLanguage } from 'lowlight';
 import IconClipboard from './icons/Clipboard';
 import Caption from './Caption';
-import React from 'react';
+
 const theme = {
   hljs: {
     display: 'inline-block',

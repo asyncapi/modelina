@@ -50,7 +50,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
  */
 export const getStaticPaths: GetStaticPaths = async () => {
   const paths: any[] = []
-  for (let [slug, item] of Object.entries(DocsList.unwrapped)) {
+  for (let slug of Object.keys(DocsList.unwrapped)) {
     const split = slug.split('/');
     let param = {
       params: {
