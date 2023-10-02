@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { CSharpGenerator, CSharpOptions, csharpDefaultEnumKeyConstraints, csharpDefaultModelNameConstraints, csharpDefaultPropertyKeyConstraints } from '../../../../../';
+import { CSharpGenerator, CSharpOptions, csharpDefaultEnumKeyConstraints, csharpDefaultModelNameConstraints, csharpDefaultPropertyKeyConstraints, CSHARP_COMMON_PRESET, CSHARP_JSON_SERIALIZER_PRESET, CSHARP_NEWTONSOFT_SERIALIZER_PRESET } from '../../../../../';
 import { applyGeneralOptions, convertModelsToProps } from './Helpers';
 import { ModelinaCSharpOptions, ModelProps } from '../../../types';
 import { DeepPartial } from '../../../../../lib/types/utils';
-import { CSHARP_COMMON_PRESET, CSHARP_JSON_SERIALIZER_PRESET, CSHARP_NEWTONSOFT_SERIALIZER_PRESET } from '../../../../../';
 
 /**
  * This is the server side part of the CSharp generator, that takes input and generator parameters and generate the models.
