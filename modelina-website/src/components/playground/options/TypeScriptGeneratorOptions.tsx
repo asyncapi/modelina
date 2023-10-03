@@ -63,7 +63,7 @@ class TypeScriptGeneratorOptions extends React.Component<
   onChangeIncludeJsonBinPack(event: any) {
     if (this.props.setNewConfig) {
       const shouldIncludeMarshalling = this.context?.tsMarshalling === false && event.target.checked === true;
-      this.props.setNewConfig('tsIncludeJsonBinPack', event.target.checked, shouldIncludeMarshalling ? false : true);
+      this.props.setNewConfig('tsIncludeJsonBinPack', event.target.checked, !shouldIncludeMarshalling);
 
       if(shouldIncludeMarshalling) {
         this.props.setNewConfig('tsMarshalling', event.target.checked);
