@@ -172,7 +172,7 @@ export default function CodeBlock({
 
   function onClickCopy() {
     // check if navigator with clipboard exists (fallback for older browsers)
-    if (navigator && navigator.clipboard) {
+    if (navigator?.clipboard) {
       navigator.clipboard.writeText(codeBlocks[activeBlock].code).then(() => {
         setShowIsCopied(true);
         setTimeout(() => {
@@ -224,8 +224,7 @@ export default function CodeBlock({
               style: {}
             }}
             lineNumberProps={(lineNumber: any) => {
-              const isHighlighted =
-                highlightedLines && highlightedLines.includes(lineNumber);
+              const isHighlighted = highlightedLines?.includes(lineNumber) || false;
               return {
                 className: `${
                   isHighlighted
@@ -236,8 +235,7 @@ export default function CodeBlock({
             }}
             wrapLines={true}
             lineProps={(lineNumber) => {
-              const isHighlighted =
-                highlightedLines && highlightedLines.includes(lineNumber);
+              const isHighlighted = highlightedLines?.includes(lineNumber) || false;
               return {
                 className: `${
                   isHighlighted
