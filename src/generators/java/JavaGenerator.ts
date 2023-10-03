@@ -11,7 +11,13 @@ import {
   MetaModel,
   RenderOutput
 } from '../../models';
-import { split, SplitOptions, TypeMapping, constrainMetaModel, Constraints } from '../../helpers';
+import {
+  split,
+  SplitOptions,
+  TypeMapping,
+  constrainMetaModel,
+  Constraints
+} from '../../helpers';
 import { JavaPreset, JAVA_DEFAULT_PRESET } from './JavaPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
