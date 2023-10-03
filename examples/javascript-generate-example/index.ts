@@ -1,5 +1,4 @@
-import { JavaScriptGenerator } from '../../src';
-import { JS_COMMON_PRESET } from '../../src';
+import { JavaScriptGenerator, JS_COMMON_PRESET } from '../../src';
 
 const generator = new JavaScriptGenerator({
   presets: [
