@@ -489,7 +489,7 @@ registerLanguage('generator-cli', () => ({
       contains: [
         {
           className: 'asyncapi-file',
-          begin: / [\.\~\w\d_\/]+/,
+          begin: /[\.\~\w\/]+/,
           end: ' ',
           contains: [
             {
