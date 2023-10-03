@@ -705,6 +705,33 @@
         "test",
         "infra"
       ]
+    },
+    {
+      "login": "pipliya",
+      "name": "Ansh Pancholi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/56186142?v=4",
+      "profile": "https://github.com/pipliya",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Qypol342",
+      "name": "Maeght Loan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/37497007?v=4",
+      "profile": "https://github.com/Qypol342",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "princerajpoot20",
+      "name": "Prince Rajpoot",
+      "avatar_url": "https://avatars.githubusercontent.com/u/44585452?v=4",
+      "profile": "http://princerajpoot.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
