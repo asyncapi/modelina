@@ -9,14 +9,19 @@ function prepareContent(content) {
   content = content.replace('<!-- toc is generated with GitHub Actions do not remove toc markers -->', '');
   content = content.replace('<!-- toc -->', '');
   content = content.replace('<!-- tocstop -->', '');
-  content = content.replace(/\.md/g, '');
-  content = content.replace(/README/g, '');
+  
+  // Replace all relative links with .md (./readme.md) to pure names (./readme)
+  content = content.replace(/\]\(\.\/(.*?).md\)/g, '](/docs/$1)');
+  
+  // Use absolute links for anything relative and non-markdown related
+  content = content.replace(/\]\((\.(.*?))\)/g, '](https://github.com/asyncapi/modelina/blob/master/docs/.$2)');
+  
+  // Replace all relative links with README (./README) to  (./)
+  content = content.replace(/\]\(\.\/(.*?)README\)/g, '](./$1)');
 
   // Use correct example links
   content = content.replace(/\]\((.*?)examples\/(.*?)\/?\)/g, '](/examples?selectedExample=$2)');
 
-  // Use correct source code links
-  content = content.replace(/\]\((.*?)src\/(.*?)\)/g, '](https://github.com/asyncapi/modelina/blob/master/src/$2)');
 
   // Replace all references to local images for docs
   content = content.replace(/"(.*?)\/img\/(.*?)"/g, '"/img/docs/img/$2"');
