@@ -1,11 +1,4 @@
 import { TypeScriptGenerator } from '../../src';
-import { CommonModel } from '../../src';
-import {
-  InterpreterSchemaType,
-  Interpreter,
-  InterpreterOptions
-} from '../../src/interpreter/Interpreter';
-import { isModelObject } from '../../src/interpreter/Utils';
 
 const generator = new TypeScriptGenerator({
   processorOptions: {
