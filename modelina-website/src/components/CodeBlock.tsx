@@ -163,10 +163,7 @@ export default function CodeBlock({
 }: any) {
   const [activeBlock, setActiveBlock] = useState(0);
   const [showIsCopied, setShowIsCopied] = useState(false);
-  codeBlocks =
-    codeBlocks && codeBlocks.length
-      ? codeBlocks
-      : [{ code: children.replace(/\n$/, '') }];
+  codeBlocks = codeBlocks?.length ? codeBlocks : [{ code: children.replace(/\n$/, '') }];
 
   const tabItemsCommonClassNames =
     'inline-block border-teal-300 py-1 px-2 mx-px cursor-pointer hover:text-teal-300 font-bold';
