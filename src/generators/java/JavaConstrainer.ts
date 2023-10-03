@@ -84,21 +84,15 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
   },
   Float({ constrainedModel }): string {
     let type = 'Double';
-    const format =
-      constrainedModel.originalInput &&
-      constrainedModel.originalInput['format'];
-    switch (format) {
-      case 'float':
-        type = 'float';
-        break;
+    const format = constrainedModel.originalInput?.['format'];
+    if (format === 'float') {
+      type = 'float';
     }
     return type;
   },
   Integer({ constrainedModel }): string {
     let type = 'Integer';
-    const format =
-      constrainedModel.originalInput &&
-      constrainedModel.originalInput['format'];
+    const format = constrainedModel.originalInput?.['format'];
     switch (format) {
       case 'integer':
       case 'int32':
@@ -113,9 +107,7 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
   },
   String({ constrainedModel }): string {
     let type = 'String';
-    const format =
-      constrainedModel.originalInput &&
-      constrainedModel.originalInput['format'];
+    const format = constrainedModel.originalInput?.['format'];
     switch (format) {
       case 'date':
         type = 'java.time.LocalDate';
@@ -151,9 +143,7 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
     return `${constrainedModel.valueModel.type}[]`;
   },
   Enum({ constrainedModel }): string {
-    const format =
-      constrainedModel.originalInput &&
-      constrainedModel.originalInput['format'];
+    const format = constrainedModel.originalInput?.['format'];
     const valueTypes = constrainedModel.values.map((enumValue) =>
       fromEnumValueToType(enumValue, format)
     );
