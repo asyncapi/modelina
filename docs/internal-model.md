@@ -181,7 +181,7 @@ classDiagram
 
     class ConstrainedObjectModel{
         <<class>>
-        String, ConstrainedObjectPropertyModel properties
+        &lt;String, ObjectPropertyModel&gt; properties
     }
 
     class ConstrainedObjectPropertyModel{
