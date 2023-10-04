@@ -11,13 +11,18 @@ import {
   MetaModel,
   RenderOutput
 } from '../../models';
-import { split, SplitOptions, TypeMapping } from '../../helpers';
+import {
+  split,
+  SplitOptions,
+  TypeMapping,
+  constrainMetaModel,
+  Constraints
+} from '../../helpers';
 import { JavaPreset, JAVA_DEFAULT_PRESET } from './JavaPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { isReservedJavaKeyword } from './Constants';
 import { Logger } from '../../';
-import { constrainMetaModel, Constraints } from '../../helpers';
 import {
   JavaDefaultConstraints,
   JavaDefaultTypeMapping
