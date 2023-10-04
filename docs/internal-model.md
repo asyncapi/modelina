@@ -45,7 +45,7 @@ classDiagram
 
     class ObjectModel{
         <<class>>
-        String, ObjectPropertyModel properties
+        &lt;String, ObjectPropertyModel&gt; properties
     }
 
     class ObjectPropertyModel{
