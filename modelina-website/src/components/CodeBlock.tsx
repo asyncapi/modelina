@@ -164,10 +164,7 @@ export default function CodeBlock({
 }: any) {
   const [activeBlock, setActiveBlock] = useState(0);
   const [showIsCopied, setShowIsCopied] = useState(false);
-  codeBlocks =
-    codeBlocks && codeBlocks.length
-      ? codeBlocks
-      : [{ code: children.replace(/\n$/, '') }];
+  codeBlocks = codeBlocks?.length ? codeBlocks : [{ code: children.replace(/\n$/, '') }];
 
   const tabItemsCommonClassNames =
     'inline-block border-teal-300 py-1 px-2 mx-px cursor-pointer hover:text-teal-300 font-bold';
@@ -176,7 +173,7 @@ export default function CodeBlock({
 
   function onClickCopy() {
     // check if navigator with clipboard exists (fallback for older browsers)
-    if (navigator && navigator.clipboard) {
+    if (navigator?.clipboard) {
       navigator.clipboard.writeText(codeBlocks[activeBlock].code).then(() => {
         setShowIsCopied(true);
         setTimeout(() => {
@@ -228,8 +225,7 @@ export default function CodeBlock({
               style: {}
             }}
             lineNumberProps={(lineNumber: any) => {
-              const isHighlighted =
-                highlightedLines && highlightedLines.includes(lineNumber);
+              const isHighlighted = highlightedLines?.includes(lineNumber) || false;
               return {
                 className: `${
                   isHighlighted
@@ -240,8 +236,7 @@ export default function CodeBlock({
             }}
             wrapLines={true}
             lineProps={(lineNumber) => {
-              const isHighlighted =
-                highlightedLines && highlightedLines.includes(lineNumber);
+              const isHighlighted = highlightedLines?.includes(lineNumber) || false;
               return {
                 className: `${
                   isHighlighted
@@ -495,7 +490,7 @@ registerLanguage('generator-cli', () => ({
       contains: [
         {
           className: 'asyncapi-file',
-          begin: / [\.\~\w\d_\/]+/,
+          begin: /[.~\w/]+/,
           end: ' ',
           contains: [
             {
