@@ -43,13 +43,14 @@ async function buildDocsTree(rootPath) {
   if (!fileStat.isDirectory()) {
     //Ignore non-markdown and README files
     if(rootPath.endsWith('.md') && !rootPath.includes('README')) {
+      const relativeRootPath = rootPath.split(MODELINA_ROOT_PATH)[1];
       let title = path.basename(rootPath, '.md');
       title = title.replace(/_/g, ' ');
       title = title.replace(/-/g, ' ');
       title = title.charAt(0).toUpperCase() + title.slice(1);
       let content = await readFile(rootPath, "utf8");
       content = prepareContent(content);
-      return {type: 'file', fullPath: rootPath, slug: slug.split('.md')[0], title, content};
+      return {type: 'file', fullPath: rootPath, relativeRootPath: relativeRootPath, slug: slug.split('.md')[0], title, content};
     }
     return undefined;
   }
@@ -85,8 +86,9 @@ async function buildDocsTree(rootPath) {
     if(tree !== undefined) subPaths.push(tree);
   }
   const folderName = path.basename(rootPath);
+  const relativeRootPath = rootPath.split(MODELINA_ROOT_PATH)[1] + '/README.md';
   const pascalFolderName = folderName.replace(/(\w)(\w*)/g, function(g0,g1,g2){return g1.toUpperCase() + g2.toLowerCase();});
-  return {type: 'dir', fullPath: rootPath, title: pascalFolderName, slug, subPaths, content: readmeContent};
+  return {type: 'dir', fullPath: rootPath, relativeRootPath: relativeRootPath, title: pascalFolderName, slug, subPaths, content: readmeContent};
 }
 
 function unwrapTree(tree) {

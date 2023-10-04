@@ -8,7 +8,6 @@ import CodeBlock from '../CodeBlock';
 import rehypeRaw from 'rehype-raw';
 import GithubButton from '../buttons/GithubButton';
 
-
 interface WithRouterProps {
   router: NextRouter;
 }
@@ -34,6 +33,9 @@ class Docs extends React.Component<
     this.renderMenuTree = this.renderMenuTree.bind(this);
 
   }
+  /**
+   * Render the menu items dynamically in a depth first approach
+   */
   renderMenuTree(value: any, isRoot: boolean) {
     const isSelected = value.slug === `/docs/${this.props.slug}`;
     if(value.type === 'dir') {
@@ -44,8 +46,8 @@ class Docs extends React.Component<
       } else {
         headerReadme = <li key={value.slug} className={`p-2`}>{value.title}</li>;
       }
-      return <>{headerReadme}<li>
-        <ul className='border-l border-gray-200 pl-4 ml-3 mt-1'>
+      return <>{headerReadme}<li key={`${value.slug}-li`}>
+        <ul key={`${value.slug}-ul`} className='border-l border-gray-200 pl-4 ml-3 mt-1'>
           {isRoot && <li key={'apidocs'} className={`cursor-pointer p-2`}><a href={'/apidocs'}>API Docs</a></li>}
           {value.subPaths.map((subPath: any) => this.renderMenuTree(subPath, false))}
         </ul>
@@ -54,9 +56,11 @@ class Docs extends React.Component<
       return <li key={value.slug} className={`cursor-pointer ${isSelected && 'bg-sky-500/[.3]'} p-2`} onClick={() => { this.setState({ showMenu: false }) }}><a href={`/docs/${value.slug}`}>{value.title}</a></li>;
     }
   }
+
   render() {
     let { showMenu } = this.state;
     const menuItems = this.renderMenuTree(DocsList.tree, true);
+    const item = (DocsList.unwrapped as any)[this.props.slug];
     return (
       <div className="py-4 lg:py-8">
         <div className="bg-white px-4 sm:px-6 lg:px-8 w-full xl:max-w-7xl xl:mx-auto">
@@ -102,7 +106,7 @@ class Docs extends React.Component<
                     </div>
                     <div className="flex-1 h-0 pt-5 overflow-y-auto">
                       <nav className="mt-5 px-2 mb-4">
-                        <ul className='border-l border-gray-200 pl-4 ml-3 mt-1'>
+                        <ul key="rootMenuList" className='border-l border-gray-200 pl-4 ml-3 mt-1'>
                           { menuItems }
                         </ul>
                       </nav>
@@ -130,7 +134,7 @@ class Docs extends React.Component<
               <div className={"flex md:justify-end my-4 md:my-0"}>
                 <GithubButton
                   text="Edit on GitHub"
-                  href={`https://github.com/asyncapi/modelina/edit/master/docs/${this.props.slug}`}
+                  href={`https://github.com/asyncapi/modelina/edit/master${item.relativeRootPath}`}
                   inNav="true"
                 />
               </div>
