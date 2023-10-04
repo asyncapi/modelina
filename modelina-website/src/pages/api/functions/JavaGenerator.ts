@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { JavaGenerator, JavaOptions, javaDefaultEnumKeyConstraints, javaDefaultModelNameConstraints, javaDefaultPropertyKeyConstraints } from '../../../../../';
+import { JavaGenerator, JavaOptions, javaDefaultEnumKeyConstraints, javaDefaultModelNameConstraints, javaDefaultPropertyKeyConstraints, JAVA_JACKSON_PRESET, JAVA_COMMON_PRESET, JAVA_DESCRIPTION_PRESET, JAVA_CONSTRAINTS_PRESET } from '../../../../../';
 import { applyGeneralOptions, convertModelsToProps } from './Helpers';
 import { ModelinaJavaOptions, ModelProps } from '../../../types';
 import { DeepPartial } from '../../../../../lib/types/utils';
-import { JAVA_JACKSON_PRESET, JAVA_COMMON_PRESET, JAVA_DESCRIPTION_PRESET, JAVA_CONSTRAINTS_PRESET } from '../../../../../';
 
 /**
  * This is the server side part of the Java generator, that takes input and generator parameters and generate the models.
@@ -95,7 +94,7 @@ export async function getJavaModels(
   try {
     const generator = new JavaGenerator(options);
     const generatedModels = await generator.generateCompleteModels(input, {
-      packageName: generatorOptions.javaPackageName || 'asyncapi.models'
+      packageName: generatorOptions.javaPackageName ?? 'asyncapi.models'
     });
     return convertModelsToProps(generatedModels);
   } catch (e : any) {
