@@ -8,7 +8,6 @@ import CodeBlock from '../CodeBlock';
 import rehypeRaw from 'rehype-raw';
 import GithubButton from '../buttons/GithubButton';
 
-
 interface WithRouterProps {
   router: NextRouter;
 }
@@ -57,6 +56,7 @@ class Docs extends React.Component<
   render() {
     let { showMenu } = this.state;
     const menuItems = this.renderMenuTree(DocsList.tree, true);
+    const item = (DocsList.unwrapped as any)[this.props.slug];
     return (
       <div className="py-4 lg:py-8">
         <div className="bg-white px-4 sm:px-6 lg:px-8 w-full xl:max-w-7xl xl:mx-auto">
@@ -130,7 +130,7 @@ class Docs extends React.Component<
               <div className={"flex md:justify-end my-4 md:my-0"}>
                 <GithubButton
                   text="Edit on GitHub"
-                  href={`https://github.com/asyncapi/modelina/edit/master/docs/${this.props.slug}`}
+                  href={`https://github.com/asyncapi/modelina/edit/master/docs/${this.props.slug}${item.type === 'file' ? '.md' : ''}`}
                   inNav="true"
                 />
               </div>
