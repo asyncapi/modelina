@@ -4,6 +4,7 @@ import Highlight from 'react-syntax-highlighter';
 import { registerLanguage } from 'lowlight';
 import IconClipboard from './icons/Clipboard';
 import Caption from './Caption';
+
 const theme = {
   hljs: {
     display: 'inline-block',
