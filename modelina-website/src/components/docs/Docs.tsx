@@ -34,7 +34,7 @@ class Docs extends React.Component<
     this.renderMenuTree = this.renderMenuTree.bind(this);
 
   }
-  renderMenuTree(value: any) {
+  renderMenuTree(value: any, isRoot: boolean) {
     const isSelected = value.slug === `/docs/${this.props.slug}`;
     if(value.type === 'dir') {
       const hasRootReadme = value.content !== null;
@@ -46,8 +46,8 @@ class Docs extends React.Component<
       }
       return <>{headerReadme}<li>
         <ul className='border-l border-gray-200 pl-4 ml-3 mt-1'>
-          {value.subPaths.map(this.renderMenuTree)}
-          <li key={'apidocs'} className={`cursor-pointer p-2`}><a href={'/apidocs'}>API Docs</a></li>
+          {isRoot && <li key={'apidocs'} className={`cursor-pointer p-2`}><a href={'/apidocs'}>API Docs</a></li>}
+          {value.subPaths.map((subPath: any) => this.renderMenuTree(subPath, false))}
         </ul>
       </li></>;
     } else {
@@ -56,7 +56,7 @@ class Docs extends React.Component<
   }
   render() {
     let { showMenu } = this.state;
-    const menuItems = this.renderMenuTree(DocsList.tree);
+    const menuItems = this.renderMenuTree(DocsList.tree, true);
     return (
       <div className="py-4 lg:py-8">
         <div className="bg-white px-4 sm:px-6 lg:px-8 w-full xl:max-w-7xl xl:mx-auto">

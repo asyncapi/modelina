@@ -1,10 +1,12 @@
 const path = require('path');
-const { readdir, readFile, writeFile, mkdir, stat } = require('fs/promises');
-const { copyFileSync } = require('fs');
+const { readdir, readFile, writeFile, stat } = require('fs/promises');
 const DOCS_ROOT_PATH = path.join(__dirname, '../../docs');
 const DOCS_CONFIG_PATH = path.join(__dirname, '../config/docs.json');
 const MODELINA_ROOT_PATH = path.resolve(__dirname, '../../');
 
+/**
+ * Replace all the markdown and github specific stuff with something that works from the browser
+ */
 function prepareContent(content) { 
   content = content.replace('<!-- toc is generated with GitHub Actions do not remove toc markers -->', '');
   content = content.replace('<!-- toc -->', '');

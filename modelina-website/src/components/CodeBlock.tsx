@@ -9,6 +9,7 @@ const theme = {
   hljs: {
     display: 'inline-block',
     background: '#252f3f',
+    color: '#d6deeb'
   },
   'hljs-subst': {
     color: '#d6deeb'
@@ -220,7 +221,6 @@ export default function CodeBlock({
                 : language
             }
             style={theme}
-            theme={"darcula"}
             showLineNumbers={showLineNumbers}
             startingLineNumber={startingLineNumber}
             linenumbercontainerprops={{
