@@ -19,7 +19,6 @@ These are the meta models and their meaning:
 - **StringModel** represent string values.
 - **AnyModel** represent generic values that cannot otherwise be represented by one of the other models.
 
-
 ```mermaid
 ---
 title: Meta Model
