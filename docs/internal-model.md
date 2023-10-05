@@ -149,7 +149,7 @@ This means that if you accessed `EnumValueModel.key` you would get `something% s
 
 How and what are constrained?
 
-The answer to this question is not straightforward, cause each output has unique constraints that the meta models must adhere to. You can read more about [the constraint behavior here](constraints.md).
+The answer to this question is not straightforward, cause each output has unique constraints that the meta models must adhere to. You can read more about [the constraint behavior here](./constraints.md).
 
 ```mermaid
 ---
