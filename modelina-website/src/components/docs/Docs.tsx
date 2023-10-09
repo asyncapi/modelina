@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { withRouter, NextRouter } from 'next/router';
 import DocsList from "../../../config/docs.json";
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
@@ -7,6 +7,7 @@ import remarkGfm from "remark-gfm";
 import CodeBlock from '../CodeBlock';
 import rehypeRaw from 'rehype-raw';
 import GithubButton from '../buttons/GithubButton';
+import Script from 'next/script';
 
 interface WithRouterProps {
   router: NextRouter;
@@ -31,8 +32,8 @@ class Docs extends React.Component<
       showMenu: true
     };
     this.renderMenuTree = this.renderMenuTree.bind(this);
-
   }
+
   /**
    * Render the menu items dynamically in a depth first approach
    */
@@ -144,6 +145,9 @@ class Docs extends React.Component<
                 components={{
                 code({node, inline, className, children, ...props}) {
                   const match = /language-(\w+)/.exec(className || '')
+                  if(className === 'language-mermaid') {
+                    return <pre className="mermaid bg-white flex justify-center">{children}</pre>
+                  }
                   return !inline && match ? (
                     <CodeBlock
                       {...props}
@@ -158,6 +162,16 @@ class Docs extends React.Component<
                   )}}}>
                 {this.props.source}
               </ReactMarkdown>
+              <Script
+                type="module"
+                strategy="afterInteractive"
+                dangerouslySetInnerHTML={{
+                  __html: `
+                  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+                  mermaid.initialize({startOnLoad: true});
+                  mermaid.contentLoaded();`,
+                }}
+              />
             </div>
           </div>
         </div>
