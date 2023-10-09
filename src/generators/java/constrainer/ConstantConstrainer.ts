@@ -6,6 +6,7 @@ import {
   ConstrainedStringModel
 } from '../../../models';
 import { ConstantConstraint } from '../../../helpers';
+import { JavaRenderer } from '../JavaRenderer';
 
 const getConstrainedEnumModelConstant = (args: {
   constrainedMetaModel: ConstrainedMetaModel;
@@ -45,7 +46,7 @@ export function defaultConstantConstraints(): ConstantConstraint {
         constOptions
       });
     } else if (constrainedMetaModel instanceof ConstrainedStringModel) {
-      return `"${constOptions.originalInput}"`;
+      return JavaRenderer.renderStringLiteral(`${constOptions.originalInput}`);
     }
 
     return undefined;

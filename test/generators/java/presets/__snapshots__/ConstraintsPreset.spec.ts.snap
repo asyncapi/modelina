@@ -10,7 +10,7 @@ exports[`JAVA_CONSTRAINTS_PRESET should render constraints annotations 1`] = `
   private double maxNumberProp;
   @Size(min=2, max=3)
   private Object[] arrayProp;
-  @Pattern(regexp=\\"^I_\\")
+  @Pattern(regexp=\\"^\\\\\\\\w+(\\\\\\"\\\\\\\\.\\\\\\\\w+)*$\\")
   @Size(min=3)
   private String stringProp;
   private Map<String, Object> additionalProperties;

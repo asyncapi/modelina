@@ -33,7 +33,9 @@ export const JAVA_CONSTRAINTS_PRESET: JavaPreset = {
         const pattern = originalInput['pattern'];
         if (pattern !== undefined) {
           annotations.push(
-            renderer.renderAnnotation('Pattern', { regexp: `"${pattern}"` })
+            renderer.renderAnnotation('Pattern', {
+              regexp: renderer.renderStringLiteral(pattern)
+            })
           );
         }
         const minLength = originalInput['minLength'];
