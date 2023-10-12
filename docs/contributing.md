@@ -23,10 +23,10 @@ The Acceptance Criteria for _adding new features_ requires a few things in order
 1. **Not all feature requests from the community (or maintainers!) are accepted:** Even though you are welcome to create a new feature without an issue, it might be rejected and turn out to be a waste of your time. We don't want that to happen, so make sure to create an issue first and wait to see if it's accepted after community discussion of the proposal.
 1. **When creating tests for your new feature, aim for as high coverage numbers as possible:** When you run the tests (`npm run test`), you should see a `./coverage/lcov-report/index.html` file being generated. Use this to see in depth where your tests are not covering your implementation.
 1. **No documentation, no feature:** If a user cannot understand a new feature, that feature basically doesn't exist! Remember to make sure that any and all relevant [documentation](./) is consistently updated.
-    - New features such as new presets, generators or inputs, etc, need associated use case documentation along side [examples](../examples). This is not only to showcase the feature, but to ensure it will always work. Checkout our [adding examples](#-adding-examples) doc for more information on how to do this.
+    - New features such as new presets, generators or inputs, etc, need associated use case documentation along side [examples](../examples). This is not only to showcase the feature, but to ensure it will always work. Checkout our [adding examples](#adding-examples) doc for more information on how to do this.
 
 ### Adding examples
-The Acceptance Criteria Process for _adding examples_ is not only something we use to showcase features, but also to ensure those features always work. _(This is important since it is picked up by [our CI system](#What-does–the-CI-system-do-when-I-create-a-PR).)_
+The Acceptance Criteria Process for _adding examples_ is not only something we use to showcase features, but also to ensure those features always work. _(This is important since it is picked up by [our CI system](#what-does–the-ci-system-do-when-i-create-a-pr).)_
 
 Adding examples is quite straight forward, so don't feel shy! Here's how to do it:
 1. Duplicate the [TEMPLATE folder](https://github.com/asyncapi/modelina/tree/master/examples/TEMPLATE) and rename it to something that makes sense for your feature. If you can't think of anything, feel free to go with your first thought, since we can always discuss it in the PR afterwards.

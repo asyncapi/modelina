@@ -30,7 +30,7 @@ export default function NavBar({ className = '', hideLogo = false }) {
           <div className="lg:w-auto lg:flex-1">
             <div className="flex">
               <Link href="https://modelina.org/" className="cursor-pointer">
-                <ModelinaLogo className="h-8 w-auto sm:h-8" />
+                <ModelinaLogo className="h-16 w-auto sm:h-12" />
               </Link>
             </div>
           </div>
@@ -69,7 +69,7 @@ export default function NavBar({ className = '', hideLogo = false }) {
           </div>
 
           <div className="relative" onMouseLeave={() => showMenu(false)}>
-            <NavItem text="API docs" href="/docs/api" />
+            <NavItem text="Docs" href="/docs" />
           </div>
 
           <div className="flex flex-row items-center justify-content">

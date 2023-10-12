@@ -136,16 +136,16 @@ The order of interpretation:
 - `true` boolean schema infers all model types (`object`, `string`, `number`, `array`, `boolean`, `null`, `integer`) schemas.
 - `type` infers the initial model type.
 - `required` are interpreted as is.
-- `patternProperties` are merged together with any additionalProperties, where duplicate pattern models are [merged](#Merging-models).
-- `additionalProperties` are interpreted as is, where duplicate additionalProperties for the model are [merged](#Merging-models). If the schema does not define `additionalProperties` it defaults to `true` schema.
-- `additionalItems` are interpreted as is, where duplicate additionalItems for the model are [merged](#Merging-models). If the schema does not define `additionalItems` it defaults to `true` schema.
-- `items` are interpreted as ether tuples or simple array, where more than 1 item are [merged](#Merging-models). Usage of `items` infers `array` model type.
-- `properties` are interpreted as is, where duplicate `properties` for the model are [merged](#Merging-models). Usage of `properties` infers `object` model type.
+- `patternProperties` are merged together with any additionalProperties, where duplicate pattern models are [merged](#merging-models).
+- `additionalProperties` are interpreted as is, where duplicate additionalProperties for the model are [merged](#merging-models). If the schema does not define `additionalProperties` it defaults to `true` schema.
+- `additionalItems` are interpreted as is, where duplicate additionalItems for the model are [merged](#merging-models). If the schema does not define `additionalItems` it defaults to `true` schema.
+- `items` are interpreted as ether tuples or simple array, where more than 1 item are [merged](#merging-models). Usage of `items` infers `array` model type.
+- `properties` are interpreted as is, where duplicate `properties` for the model are [merged](#merging-models). Usage of `properties` infers `object` model type.
 - [allOf](#allOf-sub-schemas)
-- `dependencies` only apply to schema dependencies, since property dependencies adds nothing to the underlying model. Any schema dependencies are interpreted and then [merged](#Merging-models) together with the current interpreted model.
+- `dependencies` only apply to schema dependencies, since property dependencies adds nothing to the underlying model. Any schema dependencies are interpreted and then [merged](#merging-models) together with the current interpreted model.
 - `enum` is interpreted as is, where each `enum`. Usage of `enum` infers the enumerator value type to the model, but only if the schema does not have `type` specified.
 - `const` interpretation overwrite already interpreted `enum`. Usage of `const` infers the constant value type to the model, but only if the schema does not have `type` specified.
-- [allOf/oneOf/anyOf/then/else](#Processing-sub-schemas)
+- [allOf/oneOf/anyOf/then/else](#processing-sub-schemas)
 - [not](#interpreting-not-schemas)
 
 ## Interpreting not schemas
@@ -160,7 +160,7 @@ Currently, the following `not` model properties are interpreted:
 - boolean `not` schemas are not applied.
 
 ## Processing sub schemas
-The following JSON Schema keywords are [merged](#Merging-models) with the already interpreted model:
+The following JSON Schema keywords are [merged](#merging-models) with the already interpreted model:
 - `allOf`
 - `oneOf`
 - `anyOf`
@@ -170,7 +170,7 @@ The following JSON Schema keywords are [merged](#Merging-models) with the alread
 ## Merging models
 Because of the recursive nature of the interpreter (and the nested nature of JSON Schema) it happens that two models needs to be merged together. 
 
-If only one side has a property defined, it is used as is, if both have it defined they are merged based on the following logic (look [here](./input_processing.md#Internal-model-representation) for more information about the CommonModel and its properties):
+If only one side has a property defined, it is used as is, if both have it defined they are merged based on the following logic (look [here](./input_processing.md#internal-model-representation) for more information about the CommonModel and its properties):
 - `additionalProperties` if both models contain it the two are recursively merged together. 
 - `patternProperties` if both models contain it each pattern model are recursively merged together. 
 - `properties` if both models contain the same property the corresponding models are recursively merged together. 

@@ -14,7 +14,6 @@ class DartGeneratorOptions extends React.Component<
   DartGeneratorState
 > {
   static contextType = PlaygroundDartConfigContext;
-  declare context: React.ContextType<typeof PlaygroundDartConfigContext>;
   constructor(props: any) {
     super(props);
     this.state = defaultState;
