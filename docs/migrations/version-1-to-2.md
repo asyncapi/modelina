@@ -162,6 +162,38 @@ data class Response(
 )
 ```
 
+## Optional properties in Java
+In Java, if property is not `required` in JSON Schema, it should use nullable types instead of primitive.
+
+```yaml
+Response:
+  type: object
+  properties:
+    result:
+      type: number
+    message:
+      type: number
+  required:
+  - result
+  additionalProperties: false
+
+```
+
+Will now generate:
+
+```java
+public class Response {
+  private double result;
+  private Double message;
+
+  public double getResult() { return this.result; }
+  public void setResult(double result) { this.result = result; }
+
+  public Double getMessage() { return this.message; }
+  public void setMessage(Double message) { this.message = message; }
+}
+```
+
 ## Interface for objects in oneOf for Java
 
 In Java, if a oneOf includes objects, there will be created an interface. All the classes that are part of the oneOf, implements the interface. The Jackson preset includes support for unions by setting @JsonTypeInfo and @JsonSubTypes annotations.
@@ -265,38 +297,83 @@ public class Truck implements Vehicle {
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }
 ```
+# OpenAPI inputs now generate parameters as models
+For a given OpenAPI input, it now generate [parameter models on-top of the payload models](https://github.com/asyncapi/modelina/pull/1498) as the default behavior.
+
+# `renderCompleteModel` and `render` now use object arguments
+As parameters grow, regular arguments become cumbersome, so we are starting to [switch over to using object arguments](https://github.com/asyncapi/modelina/pull/1505).
+
+This means that the following functions are going to change from:
+
+```ts
+generator.renderCompleteModel(
+  constrainedModel,
+  inputModel,
+  completeOptions,
+  options
+);
+
+generator.render(
+  constrainedModel,
+  inputModel,
+  options
+);
+```
+
+To
+```ts
+generator.renderCompleteModel({
+  constrainedModel,
+  inputModel,
+  completeOptions,
+  options
+});
+
+generator.render({
+  constrainedModel,
+  inputModel,
+  options
+});
+```
 
 # Nullable models
 
 Each [meta model](../internal-model.md) up until now where not able to be marked as nullable, but now they can be through `isNullable`. Here are the different outputs and how they now apply nullable types.
 
-### TypeScript
+## TypeScript
 
 Across all models, if they are nullable they will get the union `x | null`.
 
-### JavaScript
+## JavaScript
 Is not affected by this change.
 
-### C#
+## C#
 Is not affected by this change.
 
-### Java
+## Java
 With this update, Float, Integer and Boolean meta models are rendered between their primitive types (for example `float`) and wrapper classes (for example `Float`) for nullable.
 
-### Kotlin
+[`Double` now also respect being nullable](https://github.com/asyncapi/modelina/pull/1439).
+
+## Kotlin
 Is not affected by this change.
 
-### Rust 
+## Rust 
 Is not affected by this change.
 
-### Python
+## Python
 Is not affected by this change.
 
-### Go
+## Go
 Is not affected by this change.
 
-### Dart
+## Dart
 Is not affected by this change.
 
-### C++
+## C++
 Is not affected by this change.
+
+# Upgrading to Node v18
+[As Node v14 is unmaintained we have upgraded to use Node v18.](https://github.com/asyncapi/modelina/pull/1422)
+
+
