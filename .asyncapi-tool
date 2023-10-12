@@ -10,7 +10,6 @@
     "language": "TypeScript",
     "technology": ["React JS", "Docker"],
     "categories": ["code-generator"],
-    "hasCommercial": false,
-    "isAsyncAPIOwner": true
+    "hasCommercial": false
   }
 }

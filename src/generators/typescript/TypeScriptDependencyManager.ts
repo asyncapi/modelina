@@ -4,7 +4,10 @@ import { ConstrainedMetaModel } from '../../models';
 import { TypeScriptExportType, TypeScriptOptions } from './TypeScriptGenerator';
 
 export class TypeScriptDependencyManager extends AbstractDependencyManager {
-  constructor(public options: TypeScriptOptions, dependencies: string[] = []) {
+  constructor(
+    public options: TypeScriptOptions,
+    dependencies: string[] = []
+  ) {
     super(dependencies);
   }
 

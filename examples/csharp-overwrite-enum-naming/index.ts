@@ -1,13 +1,11 @@
 import { CSharpGenerator } from '../../src';
-import { DefaultEnumKeyConstraints } from '../../src/generators/csharp/constrainer/EnumConstrainer';
 
 const generator = new CSharpGenerator({
   constraints: {
     enumKey: ({ enumModel, enumKey }) => {
       // Lets see if an enum has an associated custom name
       const hasCustomName =
-        enumModel.originalInput !== undefined &&
-        enumModel.originalInput['x-enumNames'] !== undefined;
+        enumModel?.originalInput?.['x-enumNames'] !== undefined;
       if (hasCustomName) {
         // Lets see if the specific value has an associated name
         const customName = enumModel.originalInput['x-enumNames'][enumKey];

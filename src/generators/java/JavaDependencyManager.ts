@@ -10,7 +10,10 @@ import { JavaOptions } from './JavaGenerator';
 export class JavaDependencyManager extends AbstractDependencyManager {
   private modelDependencies: ConstrainedMetaModel[] = [];
 
-  constructor(public options: JavaOptions, dependencies: string[] = []) {
+  constructor(
+    public options: JavaOptions,
+    dependencies: string[] = []
+  ) {
     super(dependencies);
   }
 

@@ -76,7 +76,10 @@ export class ConstrainedIntegerModel extends ConstrainedMetaModel {}
 export class ConstrainedStringModel extends ConstrainedMetaModel {}
 export class ConstrainedBooleanModel extends ConstrainedMetaModel {}
 export class ConstrainedTupleValueModel {
-  constructor(public index: number, public value: ConstrainedMetaModel) {}
+  constructor(
+    public index: number,
+    public value: ConstrainedMetaModel
+  ) {}
 }
 export class ConstrainedTupleModel extends ConstrainedMetaModel {
   constructor(

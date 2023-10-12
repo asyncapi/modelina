@@ -37,7 +37,10 @@ export class IntegerModel extends MetaModel {}
 export class StringModel extends MetaModel {}
 export class BooleanModel extends MetaModel {}
 export class TupleValueModel {
-  constructor(public index: number, public value: MetaModel) {}
+  constructor(
+    public index: number,
+    public value: MetaModel
+  ) {}
 }
 export class TupleModel extends MetaModel {
   constructor(
@@ -88,7 +91,10 @@ export class UnionModel extends MetaModel {
   }
 }
 export class EnumValueModel {
-  constructor(public key: string, public value: any) {}
+  constructor(
+    public key: string,
+    public value: any
+  ) {}
 }
 export class EnumModel extends MetaModel {
   constructor(

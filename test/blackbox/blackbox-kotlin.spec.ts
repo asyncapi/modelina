@@ -11,8 +11,6 @@ import {
   InputMetaModel,
   InputProcessor,
   KotlinFileGenerator,
-  KOTLIN_DEFAULT_PRESET,
-  JAVA_COMMON_PRESET,
   KOTLIN_CONSTRAINTS_PRESET
 } from '../../src';
 import { execCommand } from './utils/Utils';

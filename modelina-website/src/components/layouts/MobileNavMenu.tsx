@@ -44,9 +44,9 @@ export default function MobileNavMenu({ onClickClose = () => { } }) {
                   <a className="cursor-pointer">Playground</a>
                 </h4>
               </Link>
-              <Link href="/docs/api" className="flex" legacyBehavior>
+              <Link href="/docs" className="flex" legacyBehavior>
                 <h4 className="text-gray-500 font-medium block mb-4">
-                  <a className="cursor-pointer">API docs</a>
+                  <a className="cursor-pointer">Docs</a>
                 </h4>
               </Link>
             </div>

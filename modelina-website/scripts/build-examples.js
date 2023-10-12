@@ -111,7 +111,6 @@ async function start() {
   mainReadme = mainReadme.replace('<!-- toc is generated with GitHub Actions do not remove toc markers -->', '');
   mainReadme = mainReadme.replace('<!-- toc -->', '');
   mainReadme = mainReadme.replace('<!-- tocstop -->', '');
-  mainReadme = mainReadme.replace('../docs/contributing.md', 'https://github.com/asyncapi/modelina/tree/master/examples/../docs/contributing.md');
   mainReadme = mainReadme.replace('- [integrate with React](?selectedExample=integrate-with-react/)', '- [integrate with React](https://github.com/asyncapi/modelina/tree/master/examples/integrate-with-react)');
   mainReadme = mainReadme.replace('- [integrate with Next](?selectedExample=integrate-with-next/)', '- [integrate with Next](https://github.com/asyncapi/modelina/tree/master/examples/integrate-with-next)');
   mainReadme = mainReadme.replace('- [TEMPLATE](?selectedExample=TEMPLATE)', '- [TEMPLATE](https://github.com/asyncapi/modelina/tree/master/examples/TEMPLATE)');
