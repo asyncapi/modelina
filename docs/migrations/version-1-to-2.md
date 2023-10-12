@@ -1,10 +1,10 @@
 # Migration from v1 to v2
 
-This document contains all the breaking changes and migrations guidelines for adapting your code to the new version.
+This document contains all the breaking changes and migration guidelines for adapting your code to the new version.
 
-## Using preferred ids over anonymous ids
+## Using preferred IDs over anonymous IDs
 
-If you use _allOf_, and properties need to be merged, Modelina is now using preferred ids over anonymous ids. That means if a property has an id/title other than _anonymous_schema_ in one of the schemas in a _allOf_, it will use the non-anonymous id/title.
+If you use _allOf_, and properties need to be merged, Modelina is now using preferred IDs over anonymous IDs. That means if a property has an id/title other than _anonymous_schema_ in one of the schemas in a _allOf_, it will use the non-anonymous id/title.
 
 Example:
 
@@ -138,7 +138,7 @@ This example will generate a model for `Cat` and `Dog` where `PetType` is a shar
 
 ## Optional properties in Kotlin
 
-In Kotlin, if property is not `required` in JSON Schema, it will be nullable in Kotlin with default value `null`.
+In Kotlin, if the property is not `required` in JSON Schema, it will be nullable with the default value `null`.
 
 ```yaml
 Response:
@@ -153,7 +153,7 @@ Response:
   additionalProperties: false
 ```
 
-will generate
+will generate:
 
 ```kotlin
 data class Response(
@@ -163,7 +163,7 @@ data class Response(
 ```
 
 ## Optional properties in Java
-In Java, if property is not `required` in JSON Schema, it should use nullable types instead of primitive.
+In Java, if the property is not `required` in JSON Schema, it should use nullable types instead of primitive.
 
 ```yaml
 Response:
@@ -298,7 +298,7 @@ public class Truck implements Vehicle {
 }
 ```
 # OpenAPI inputs now generate parameters as models
-For a given OpenAPI input, it now generate [parameter models on-top of the payload models](https://github.com/asyncapi/modelina/pull/1498) as the default behavior.
+For a given OpenAPI input, it now generates [parameter models on top of the payload models](https://github.com/asyncapi/modelina/pull/1498) as the default behavior.
 
 # `renderCompleteModel` and `render` now use object arguments
 As parameters grow, regular arguments become cumbersome, so we are starting to [switch over to using object arguments](https://github.com/asyncapi/modelina/pull/1505).
@@ -338,7 +338,7 @@ generator.render({
 
 # Nullable models
 
-Each [meta model](../internal-model.md) up until now where not able to be marked as nullable, but now they can be through `isNullable`. Here are the different outputs and how they now apply nullable types.
+Each [meta model](../internal-model.md) up until now was not able to be marked as nullable, but now they can be through `isNullable`. Here are the different outputs and how they now apply nullable types.
 
 ## TypeScript
 
@@ -351,9 +351,9 @@ Is not affected by this change.
 Is not affected by this change.
 
 ## Java
-With this update, Float, Integer and Boolean meta models are rendered between their primitive types (for example `float`) and wrapper classes (for example `Float`) for nullable.
+With this update, Float, Integer, and Boolean meta models are rendered between their primitive types (for example `float`) and wrapper classes (for example `Float`) for nullable.
 
-[`Double` now also respect being nullable](https://github.com/asyncapi/modelina/pull/1439).
+[`Double` now also respects being nullable](https://github.com/asyncapi/modelina/pull/1439).
 
 ## Kotlin
 Is not affected by this change.
@@ -375,5 +375,3 @@ Is not affected by this change.
 
 # Upgrading to Node v18
 [As Node v14 is unmaintained we have upgraded to use Node v18.](https://github.com/asyncapi/modelina/pull/1422)
-
-
