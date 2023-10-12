@@ -77,9 +77,9 @@ function renderArraySerialization(
   return `let ${propName}: any[] = [];
   for (const unionItem of ${modelInstanceVariable}) {
     ${propName}.push(\`${renderMarshalProperty(
-    'unionItem',
-    arrayModel.valueModel
-  )}\`);
+      'unionItem',
+      arrayModel.valueModel
+    )}\`);
   }
   json += \`"${unconstrainedProperty}": [\${${propName}.join(',')}],\`;`;
 }

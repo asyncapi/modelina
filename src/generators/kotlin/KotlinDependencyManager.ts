@@ -2,7 +2,10 @@ import { AbstractDependencyManager } from '../AbstractDependencyManager';
 import { KotlinOptions } from './KotlinGenerator';
 
 export class KotlinDependencyManager extends AbstractDependencyManager {
-  constructor(public options: KotlinOptions, dependencies: string[] = []) {
+  constructor(
+    public options: KotlinOptions,
+    dependencies: string[] = []
+  ) {
     super(dependencies);
   }
 

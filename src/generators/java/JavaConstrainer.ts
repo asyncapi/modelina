@@ -207,7 +207,6 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
     return `${constrainedModel.valueModel.type}[]`;
   },
   Enum({ constrainedModel }): string {
-    const format = constrainedModel.originalInput?.['format'];
     const valueTypes = constrainedModel.values.map((enumValue) =>
       fromEnumValueToType(enumValue, constrainedModel.options.format)
     );

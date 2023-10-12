@@ -17,7 +17,8 @@ import { AbstractDependencyManager } from './AbstractDependencyManager';
 
 export interface CommonGeneratorOptions<
   P extends Preset = Preset,
-  DependencyManager extends AbstractDependencyManager = AbstractDependencyManager
+  DependencyManager extends
+    AbstractDependencyManager = AbstractDependencyManager
 > {
   indentation?: {
     type: IndentationTypes;
