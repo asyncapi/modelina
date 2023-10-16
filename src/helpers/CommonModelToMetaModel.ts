@@ -92,7 +92,7 @@ export function convertToMetaModel(
   if (booleanModel !== undefined) {
     return booleanModel;
   }
-  Logger.error('Failed to convert to MetaModel, defaulting to AnyModel');
+  Logger.warn('Failed to convert to MetaModel, defaulting to AnyModel');
   return new AnyModel(modelName, jsonSchemaModel.originalInput);
 }
 function isEnumModel(jsonSchemaModel: CommonModel): boolean {
