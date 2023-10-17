@@ -1,10 +1,12 @@
 {
-  "config" : { "example_name" : "change-type-mapping" },
+  "config": {
+    "example_name": "change-type-mapping"
+  },
   "scripts": {
-    "install": "cd ../.. && npm i",
-    "start": "../../node_modules/.bin/ts-node --cwd ../../ ./examples/$npm_package_config_example_name/index.ts",
-    "start:windows": "..\\..\\node_modules\\.bin\\ts-node --cwd ..\\..\\ .\\examples\\%npm_package_config_example_name%\\index.ts",
-    "test": "../../node_modules/.bin/jest --config=../../jest.config.js ./examples/$npm_package_config_example_name/index.spec.ts",
-    "test:windows": "..\\..\\node_modules\\.bin\\jest --config=..\\..\\jest.config.js examples/%npm_package_config_example_name%/index.spec.ts"
+    "install": "cd ../.. && npm install", // Change "i" to "install" for clarity
+    "start": "npm run build && ../../node_modules/.bin/ts-node ./examples/$npm_package_config_example_name/index.ts", // Added "npm run build" for better script behavior
+    "start:windows": "npm run build && ..\\..\\node_modules\\.bin\\ts-node .\\examples\\%npm_package_config_example_name%\\index.ts", // Added "npm run build" for consistency
+    "test": "npm run build && ../../node_modules/.bin/jest --config=../../jest.config.js ./examples/$npm_package_config_example_name/index.spec.ts", // Added "npm run build" for consistency
+    "test:windows": "npm run build && ..\\..\\node_modules\\.bin\\jest --config=..\\..\\jest.config.js examples/%npm_package_config_example_name%/index.spec.ts" // Added "npm run build" for consistency
   }
 }
