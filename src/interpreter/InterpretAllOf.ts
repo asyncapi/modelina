@@ -1,5 +1,5 @@
 import { Logger } from '../utils';
-import { CommonModel } from '../models/CommonModel';
+import { CommonModel } from '../models';
 import {
   Interpreter,
   InterpreterOptions,
@@ -17,6 +17,7 @@ import { isModelObject } from './Utils';
  * @param interpreter
  * @param interpreterOptions to control the interpret process
  */
+// eslint-disable-next-line sonarjs/cognitive-complexity
 export default function interpretAllOf(
   schema: InterpreterSchemaType,
   model: CommonModel,
@@ -30,6 +31,18 @@ export default function interpretAllOf(
   ) {
     return;
   }
+
+  for (const allOfSchema of schema.allOf) {
+    const discriminator = interpreter.discriminatorProperty(allOfSchema);
+    if (discriminator !== undefined) {
+      interpreterOptions = {
+        ...interpreterOptions,
+        discriminator
+      };
+      model.discriminator = discriminator;
+    }
+  }
+
   for (const allOfSchema of schema.allOf) {
     const allOfModel = interpreter.interpret(allOfSchema, interpreterOptions);
     if (allOfModel === undefined) {

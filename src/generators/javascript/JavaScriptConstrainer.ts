@@ -6,6 +6,7 @@ import {
 } from './constrainer/EnumConstrainer';
 import { Constraints } from '../../helpers';
 import { JavaScriptTypeMapping } from './JavaScriptGenerator';
+import { defaultConstantConstraints } from './constrainer/ConstantConstrainer';
 
 export const JavaScriptDefaultTypeMapping: JavaScriptTypeMapping = {
   Object(): string {
@@ -50,5 +51,6 @@ export const JavaScriptDefaultConstraints: Constraints = {
   enumKey: defaultEnumKeyConstraints(),
   enumValue: defaultEnumValueConstraints(),
   modelName: defaultModelNameConstraints(),
-  propertyKey: defaultPropertyKeyConstraints()
+  propertyKey: defaultPropertyKeyConstraints(),
+  constant: defaultConstantConstraints()
 };

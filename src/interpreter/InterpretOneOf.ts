@@ -1,4 +1,4 @@
-import { CommonModel } from '../models/CommonModel';
+import { CommonModel } from '../models';
 import {
   Interpreter,
   InterpreterOptions,
@@ -29,11 +29,24 @@ export default function interpretOneOf(
   ) {
     return;
   }
+
+  const discriminator = interpreter.discriminatorProperty(schema);
+  interpreterOptions = {
+    ...interpreterOptions,
+    discriminator
+  };
+  model.discriminator = discriminator;
+
   for (const oneOfSchema of schema.oneOf) {
     const oneOfModel = interpreter.interpret(oneOfSchema, interpreterOptions);
     if (oneOfModel === undefined) {
       continue;
     }
+
+    if (oneOfModel.discriminator) {
+      model.discriminator = oneOfModel.discriminator;
+    }
+
     model.addItemUnion(oneOfModel);
   }
 }

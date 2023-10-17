@@ -11,8 +11,8 @@ exports[`KOTLIN_DESCRIPTION_PRESET should render description and examples for cl
  * {\\"prop\\":\\"value\\"}
  */
 data class Clazz(
-    val prop: String,
-    val additionalProperties: Map<String, Any>,
+    val prop: String? = null,
+    val additionalProperties: Map<String, Any>? = null,
 )"
 `;
 

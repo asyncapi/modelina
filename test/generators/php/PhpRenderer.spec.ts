@@ -11,7 +11,7 @@ describe('PhpRenderer', () => {
       PhpGenerator.defaultOptions,
       new PhpGenerator(),
       [],
-      new ConstrainedObjectModel('', undefined, '', {}),
+      new ConstrainedObjectModel('', undefined, {}, '', {}),
       new InputMetaModel(),
       new PhpDependencyManager(PhpGenerator.defaultOptions)
     );

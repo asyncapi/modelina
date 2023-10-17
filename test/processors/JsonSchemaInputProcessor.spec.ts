@@ -57,9 +57,8 @@ describe('JsonSchemaInputProcessor', () => {
     });
     test('should process draft 7 schemas', async () => {
       const inputSchemaPath = './JsonSchemaInputProcessor/draft-7.json';
-      const { inputMetaModel, inputSchema } = await getCommonInput(
-        inputSchemaPath
-      );
+      const { inputMetaModel, inputSchema } =
+        await getCommonInput(inputSchemaPath);
       expect(inputMetaModel).toMatchObject({
         models: { test: mockedMetaModel },
         originalInput: inputSchema
@@ -75,9 +74,8 @@ describe('JsonSchemaInputProcessor', () => {
 
     test('should process draft 6 schemas', async () => {
       const inputSchemaPath = './JsonSchemaInputProcessor/draft-6.json';
-      const { inputMetaModel, inputSchema } = await getCommonInput(
-        inputSchemaPath
-      );
+      const { inputMetaModel, inputSchema } =
+        await getCommonInput(inputSchemaPath);
       expect(inputMetaModel).toMatchObject({
         models: { test: mockedMetaModel },
         originalInput: inputSchema
@@ -93,9 +91,8 @@ describe('JsonSchemaInputProcessor', () => {
 
     test('should process draft 4 schemas', async () => {
       const inputSchemaPath = './JsonSchemaInputProcessor/draft-4.json';
-      const { inputMetaModel, inputSchema } = await getCommonInput(
-        inputSchemaPath
-      );
+      const { inputMetaModel, inputSchema } =
+        await getCommonInput(inputSchemaPath);
       expect(inputMetaModel).toMatchObject({
         models: { test: mockedMetaModel },
         originalInput: inputSchema
@@ -111,9 +108,8 @@ describe('JsonSchemaInputProcessor', () => {
 
     test('should be able to use $ref', async () => {
       const inputSchemaPath = './JsonSchemaInputProcessor/references.json';
-      const { inputMetaModel, inputSchema } = await getCommonInput(
-        inputSchemaPath
-      );
+      const { inputMetaModel, inputSchema } =
+        await getCommonInput(inputSchemaPath);
       const expectedResolvedInput = {
         ...inputSchema,
         properties: { street_address: { type: 'string' } }
@@ -136,9 +132,8 @@ describe('JsonSchemaInputProcessor', () => {
     test('should be able to use $ref when circular', async () => {
       const inputSchemaPath =
         './JsonSchemaInputProcessor/references_circular.json';
-      const { inputMetaModel, inputSchema } = await getCommonInput(
-        inputSchemaPath
-      );
+      const { inputMetaModel, inputSchema } =
+        await getCommonInput(inputSchemaPath);
       const expectedResolvedInput = {
         ...inputSchema,
         definitions: {},
@@ -262,7 +257,7 @@ describe('JsonSchemaInputProcessor', () => {
         },
         $ref: '#/definitions/root/definitions/innerRoot'
       };
-      expect(() => processor.handleRootReference(schema)).toThrowError(
+      expect(() => processor.handleRootReference(schema)).toThrow(
         'Cannot handle input, because it has a root `$ref`, please manually resolve the first reference.'
       );
     });

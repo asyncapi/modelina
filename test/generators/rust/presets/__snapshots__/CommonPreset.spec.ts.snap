@@ -1,30 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Default implementation of integer type 1`] = `
-"// Address represents a Address model.
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct Address {
-    #[serde(rename=\\"members\\")]
-    pub members: Box<crate::Members>,
-    #[serde(rename=\\"optional_members\\", skip_serializing_if = \\"Option::is_none\\")]
-    pub optional_members: Option<Box<crate::OptionalMembers>>,
-    #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
-    pub additional_properties: Option<std::collections::HashMap<String, String>>,
-}
-
-impl Address {
-    pub fn new(members: crate::Members, optional_members: Option<crate::OptionalMembers>, additional_properties: Option<std::collections::HashMap<String, String>>) -> Address {
-        Address {
-            members: Box::new(members),
-            optional_members: optional_members.map(Box::new),
-            additional_properties,
-        }
-    }
-}
-"
-`;
-
-exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Default implementation of integer type 2`] = `
 "// Members represents a union of types: String, f64, bool
 #[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 #[serde(untagged)]
@@ -35,28 +11,28 @@ pub enum Members {
     MembersOneOf1(f64),
     #[serde(rename=\\"MembersOneOf2\\")]
     MembersOneOf2(bool),
+}
+
+"
+`;
+
+exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Default implementation of integer type 2`] = `
+"// OptionalMembers represents a union of types: String, f64, bool
+#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
+#[serde(untagged)]
+pub enum OptionalMembers {
+    #[serde(rename=\\"OptionalMembersOneOf0\\")]
+    OptionalMembersOneOf0(String),
+    #[serde(rename=\\"OptionalMembersOneOf1\\")]
+    OptionalMembersOneOf1(f64),
+    #[serde(rename=\\"OptionalMembersOneOf2\\")]
+    OptionalMembersOneOf2(bool),
 }
 
 "
 `;
 
 exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Default implementation of integer type 3`] = `
-"// OptionalMembers represents a union of types: String, f64, bool
-#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
-#[serde(untagged)]
-pub enum OptionalMembers {
-    #[serde(rename=\\"OptionalMembersOneOf0\\")]
-    OptionalMembersOneOf0(String),
-    #[serde(rename=\\"OptionalMembersOneOf1\\")]
-    OptionalMembersOneOf1(f64),
-    #[serde(rename=\\"OptionalMembersOneOf2\\")]
-    OptionalMembersOneOf2(bool),
-}
-
-"
-`;
-
-exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Default implementation of string type 1`] = `
 "// Address represents a Address model.
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct Address {
@@ -80,7 +56,7 @@ impl Address {
 "
 `;
 
-exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Default implementation of string type 2`] = `
+exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Default implementation of string type 1`] = `
 "// Members represents a union of types: String, f64, bool
 #[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 #[serde(untagged)]
@@ -96,7 +72,7 @@ pub enum Members {
 "
 `;
 
-exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Default implementation of string type 3`] = `
+exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Default implementation of string type 2`] = `
 "// OptionalMembers represents a union of types: String, f64, bool
 #[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
 #[serde(untagged)]
@@ -109,6 +85,30 @@ pub enum OptionalMembers {
     OptionalMembersOneOf2(bool),
 }
 
+"
+`;
+
+exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Default implementation of string type 3`] = `
+"// Address represents a Address model.
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct Address {
+    #[serde(rename=\\"members\\")]
+    pub members: Box<crate::Members>,
+    #[serde(rename=\\"optional_members\\", skip_serializing_if = \\"Option::is_none\\")]
+    pub optional_members: Option<Box<crate::OptionalMembers>>,
+    #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
+    pub additional_properties: Option<std::collections::HashMap<String, String>>,
+}
+
+impl Address {
+    pub fn new(members: crate::Members, optional_members: Option<crate::OptionalMembers>, additional_properties: Option<std::collections::HashMap<String, String>>) -> Address {
+        Address {
+            members: Box::new(members),
+            optional_members: optional_members.map(Box::new),
+            additional_properties,
+        }
+    }
+}
 "
 `;
 
@@ -197,13 +197,13 @@ exports[`RUST_COMMON_PRESET Enum should render reserved union for dict array 1`]
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Class {
     #[serde(rename=\\"students\\")]
-    pub students: Vec<crate::Union>,
+    pub students: Vec<crate::Student>,
     #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
     pub additional_properties: Option<std::collections::HashMap<String, serde_json::Value>>,
 }
 
 impl Class {
-    pub fn new(students: Vec<crate::Union>, additional_properties: Option<std::collections::HashMap<String, serde_json::Value>>) -> Class {
+    pub fn new(students: Vec<crate::Student>, additional_properties: Option<std::collections::HashMap<String, serde_json::Value>>) -> Class {
         Class {
             students,
             additional_properties,
@@ -214,20 +214,6 @@ impl Class {
 `;
 
 exports[`RUST_COMMON_PRESET Enum should render reserved union for dict array 2`] = `
-"// Union represents a union of types: Student, serde_json::Value
-#[derive(Clone, Debug, Deserialize, Serialize)]
-#[serde(untagged)]
-pub enum Union {
-    #[serde(rename=\\"Student\\")]
-    Student(crate::Student),
-    #[serde(rename=\\"Undefined\\")]
-    Undefined(serde_json::Value),
-}
-
-"
-`;
-
-exports[`RUST_COMMON_PRESET Enum should render reserved union for dict array 3`] = `
 "// Student represents a Student model.
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Student {
@@ -252,6 +238,22 @@ impl Student {
 `;
 
 exports[`RUST_COMMON_PRESET Struct & Complete Models should render \`struct\` type with all implementations 1`] = `
+"// Members represents a union of types: String, f64, bool
+#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
+#[serde(untagged)]
+pub enum Members {
+    #[serde(rename=\\"MembersOneOf0\\")]
+    MembersOneOf0(String),
+    #[serde(rename=\\"MembersOneOf1\\")]
+    MembersOneOf1(f64),
+    #[serde(rename=\\"MembersOneOf2\\")]
+    MembersOneOf2(bool),
+}
+
+"
+`;
+
+exports[`RUST_COMMON_PRESET Struct & Complete Models should render \`struct\` type with all implementations 2`] = `
 "// Address represents a Address model.
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Address {
@@ -293,22 +295,6 @@ impl Address {
 "
 `;
 
-exports[`RUST_COMMON_PRESET Struct & Complete Models should render \`struct\` type with all implementations 2`] = `
-"// Members represents a union of types: String, f64, bool
-#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
-#[serde(untagged)]
-pub enum Members {
-    #[serde(rename=\\"MembersOneOf0\\")]
-    MembersOneOf0(String),
-    #[serde(rename=\\"MembersOneOf1\\")]
-    MembersOneOf1(f64),
-    #[serde(rename=\\"MembersOneOf2\\")]
-    MembersOneOf2(bool),
-}
-
-"
-`;
-
 exports[`RUST_COMMON_PRESET Struct & Complete Models should render \`struct\` type with all implementations 3`] = `
 "// TupleType represents a TupleType model.
 #[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
@@ -324,31 +310,17 @@ impl TupleType {
 `;
 
 exports[`RUST_COMMON_PRESET Struct & Complete Models should render \`struct\` without Default or new() implementation 1`] = `
-"// Address represents a Address model.
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
-pub struct Address {
-    #[serde(rename=\\"street_name\\")]
-    pub street_name: String,
-    #[serde(rename=\\"city\\")]
-    pub city: String,
-    #[serde(rename=\\"state\\")]
-    pub state: String,
-    #[serde(rename=\\"house_number\\")]
-    pub house_number: f64,
-    #[serde(rename=\\"marriage\\", skip_serializing_if = \\"Option::is_none\\")]
-    pub marriage: Option<bool>,
-    #[serde(rename=\\"members\\", skip_serializing_if = \\"Option::is_none\\")]
-    pub members: Option<Box<crate::Members>>,
-    #[serde(rename=\\"tuple_type\\", skip_serializing_if = \\"Option::is_none\\")]
-    pub tuple_type: Option<Box<crate::TupleType>>,
-    #[serde(rename=\\"array_type\\")]
-    pub array_type: Vec<String>,
-    #[serde(rename=\\"additionalProperties\\", skip_serializing_if = \\"Option::is_none\\")]
-    pub additional_properties: Option<std::collections::HashMap<String, String>>,
+"// Members represents a union of types: String, f64, bool
+#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
+#[serde(untagged)]
+pub enum Members {
+    #[serde(rename=\\"MembersOneOf0\\")]
+    MembersOneOf0(String),
+    #[serde(rename=\\"MembersOneOf1\\")]
+    MembersOneOf1(f64),
+    #[serde(rename=\\"MembersOneOf2\\")]
+    MembersOneOf2(bool),
 }
 
-impl Address {
-    
-}
 "
 `;

@@ -13,7 +13,14 @@ import interpretAdditionalProperties from '../../../src/interpreter/InterpretAdd
 import interpretAdditionalItems from '../../../src/interpreter/InterpretAdditionalItems';
 import interpretNot from '../../../src/interpreter/InterpretNot';
 import interpretDependencies from '../../../src/interpreter/InterpretDependencies';
-import { CommonModel } from '../../../src/models';
+import InterpretThenElse from '../../../src/interpreter/InterpretThenElse';
+import {
+  AsyncapiV2Schema,
+  CommonModel,
+  OpenapiV3Schema,
+  SwaggerV2Schema,
+  defaultMergingOptions
+} from '../../../src/models';
 import { Draft7Schema } from '../../../src/models/Draft7Schema';
 
 jest.mock('../../../src/interpreter/Utils');
@@ -26,6 +33,7 @@ jest.mock('../../../src/interpreter/InterpretAdditionalProperties');
 jest.mock('../../../src/interpreter/InterpretNot');
 jest.mock('../../../src/interpreter/InterpretDependencies');
 jest.mock('../../../src/interpreter/InterpretAdditionalItems');
+jest.mock('../../../src/interpreter/InterpretThenElse');
 CommonModel.mergeCommonModels = jest.fn();
 /**
  * Some of these test are purely theoretical and have little if any merit
@@ -55,12 +63,14 @@ describe('Interpreter', () => {
   });
   test('should inherit type from schema', () => {
     const schema = {
-      type: 'string'
+      type: 'string',
+      format: 'date-time'
     };
     const interpreter = new Interpreter();
     const model = interpreter.interpret(schema);
     expect(model).not.toBeUndefined();
     expect(model?.type).toEqual('string');
+    expect(model?.format).toEqual('date-time');
   });
   test('should return model with all types if true schema', () => {
     const schema = true;
@@ -136,7 +146,9 @@ describe('Interpreter', () => {
         1,
         model,
         expectedSimplifiedModel,
-        schema
+        schema,
+        new Map(),
+        defaultMergingOptions
       );
     });
   });
@@ -160,6 +172,7 @@ describe('Interpreter', () => {
     expect(interpretConst).toHaveBeenNthCalledWith(
       1,
       schema,
+      expect.anything(),
       expect.anything()
     );
   });
@@ -229,6 +242,18 @@ describe('Interpreter', () => {
       Interpreter.defaultInterpreterOptions
     );
   });
+  test('should always try to interpret if/then/else', () => {
+    const schema = {};
+    const interpreter = new Interpreter();
+    interpreter.interpret(schema);
+    expect(InterpretThenElse).toHaveBeenNthCalledWith(
+      1,
+      schema,
+      expect.anything(),
+      expect.anything(),
+      Interpreter.defaultInterpreterOptions
+    );
+  });
   test('should always try to interpret additionalItems', () => {
     const schema = {};
     const interpreter = new Interpreter();
@@ -252,6 +277,40 @@ describe('Interpreter', () => {
       },
       $id: 'anonymSchema1',
       type: 'string'
+    });
+  });
+  describe('discriminatorProperty', () => {
+    test('should interpret AsyncapiV2Schema discriminator property', () => {
+      const schema = AsyncapiV2Schema.toSchema({
+        discriminator: 'AsyncapiV2SchemaDiscriminatorPropertyName',
+        type: 'object',
+        $id: 'test'
+      });
+      const interpreter = new Interpreter();
+      const discriminator = interpreter.discriminatorProperty(schema);
+      expect(discriminator).toBe('AsyncapiV2SchemaDiscriminatorPropertyName');
+    });
+    test('should interpret SwaggerV2Schema discriminator property', () => {
+      const schema = SwaggerV2Schema.toSchema({
+        discriminator: 'SwaggerV2SchemaDiscriminatorPropertyName',
+        type: 'object',
+        $id: 'test'
+      });
+      const interpreter = new Interpreter();
+      const discriminator = interpreter.discriminatorProperty(schema);
+      expect(discriminator).toBe('SwaggerV2SchemaDiscriminatorPropertyName');
+    });
+    test('should interpret OpenapiV3Schema discriminator property', () => {
+      const schema = OpenapiV3Schema.toSchema({
+        discriminator: {
+          propertyName: 'OpenapiV3SchemaDiscriminatorPropertyName'
+        },
+        type: 'object',
+        $id: 'test'
+      });
+      const interpreter = new Interpreter();
+      const discriminator = interpreter.discriminatorProperty(schema);
+      expect(discriminator).toBe('OpenapiV3SchemaDiscriminatorPropertyName');
     });
   });
 });

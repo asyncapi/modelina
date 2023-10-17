@@ -42,7 +42,7 @@ exports[`CSharpGenerator should render \`class\` type 1`] = `
   private bool? marriage;
   private dynamic? members;
   private dynamic[]? tupleType;
-  private dynamic[] arrayType;
+  private string[] arrayType;
   private Dictionary<string, dynamic>? additionalProperties;
 
   public string StreetName 
@@ -87,7 +87,7 @@ exports[`CSharpGenerator should render \`class\` type 1`] = `
     set { tupleType = value; }
   }
 
-  public dynamic[] ArrayType 
+  public string[] ArrayType 
   {
     get { return arrayType; }
     set { arrayType = value; }
@@ -152,7 +152,7 @@ exports[`CSharpGenerator should render \`record\` type if chosen 1`] = `
   public bool? Marriage { get; init; }
   public dynamic? Members { get; init; }
   public dynamic[]? TupleType { get; init; }
-  public required dynamic[] ArrayType { get; init; }
+  public required string[] ArrayType { get; init; }
   public Dictionary<string, dynamic>? AdditionalProperties { get; init; }
 }"
 `;
@@ -309,7 +309,7 @@ exports[`CSharpGenerator should render null-forgiving operator if handleNullable
   private TerraceType? terraceType;
   private dynamic? members;
   private dynamic[]? tupleType;
-  private dynamic[] arrayType = null!;
+  private string[] arrayType = null!;
   private Dictionary<string, dynamic>? additionalProperties;
 
   public string StreetName 
@@ -366,7 +366,7 @@ exports[`CSharpGenerator should render null-forgiving operator if handleNullable
     set { tupleType = value; }
   }
 
-  public dynamic[] ArrayType 
+  public string[] ArrayType 
   {
     get { return arrayType; }
     set { arrayType = value; }

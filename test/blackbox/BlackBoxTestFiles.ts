@@ -50,7 +50,7 @@ const filesToTest = [
   ...AsyncAPIV2_5Files,
   ...AsyncAPIV2_6Files,
   ...jsonSchemaDraft4Files.filter(({ file }) => {
-    // Too large to process in normal blackbox testing, can be used lto ocally test stuff.
+    // Too large to process in normal blackbox testing, can be used to locally test stuff.
     return !file.includes('aws-cloudformation.json');
   }),
   ...jsonSchemaDraft7Files.filter(({ file }) => {

@@ -3,7 +3,10 @@ import { AbstractDependencyManager } from '../AbstractDependencyManager';
 import { JavaScriptOptions } from './JavaScriptGenerator';
 
 export class JavaScriptDependencyManager extends AbstractDependencyManager {
-  constructor(public options: JavaScriptOptions, dependencies: string[] = []) {
+  constructor(
+    public options: JavaScriptOptions,
+    dependencies: string[] = []
+  ) {
     super(dependencies);
   }
 

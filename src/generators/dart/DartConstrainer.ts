@@ -1,9 +1,11 @@
+import { Constraints } from '../../helpers';
 import {
   defaultEnumKeyConstraints,
   defaultEnumValueConstraints
 } from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
+import { defaultConstantConstraints } from './constrainer/ConstantConstrainer';
 import { DartTypeMapping } from './DartGenerator';
 
 export const DartDefaultTypeMapping: DartTypeMapping = {
@@ -69,9 +71,10 @@ export const DartDefaultTypeMapping: DartTypeMapping = {
   }
 };
 
-export const DartDefaultConstraints = {
+export const DartDefaultConstraints: Constraints = {
   enumKey: defaultEnumKeyConstraints(),
   enumValue: defaultEnumValueConstraints(),
   modelName: defaultModelNameConstraints(),
-  propertyKey: defaultPropertyKeyConstraints()
+  propertyKey: defaultPropertyKeyConstraints(),
+  constant: defaultConstantConstraints()
 };

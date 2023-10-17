@@ -14,10 +14,10 @@ Array [
  * {\\"prop\\":\\"value\\"}, {\\"prop\\":\\"test\\"}
  */
 data class KDoc(
-    val prop: String,
-    val enum: Enum,
-    val nodesc: String,
-    val additionalProperties: Map<String, Any>,
+    val prop: String? = null,
+    val enum: Enum? = null,
+    val nodesc: String? = null,
+    val additionalProperties: Map<String, Any>? = null,
 )",
 ]
 `;

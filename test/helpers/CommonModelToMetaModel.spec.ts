@@ -17,6 +17,67 @@ describe('CommonModelToMetaModel', () => {
   afterEach(() => {
     jest.restoreAllMocks();
   });
+  describe('nullable', () => {
+    test('should apply null type', () => {
+      const cm = new CommonModel();
+      cm.$id = 'test';
+      cm.type = ['string', 'null'];
+
+      const model = convertToMetaModel(cm);
+
+      expect(model).not.toBeUndefined();
+      expect(model instanceof StringModel).toEqual(true);
+      expect(model.options.isNullable).toEqual(true);
+    });
+    test('should not apply null type', () => {
+      const cm = new CommonModel();
+      cm.$id = 'test';
+      cm.type = ['string'];
+
+      const model = convertToMetaModel(cm);
+
+      expect(model).not.toBeUndefined();
+      expect(model instanceof StringModel).toEqual(true);
+      expect(model.options.isNullable).toEqual(false);
+    });
+    test('should apply null for unions', () => {
+      const cm1 = new CommonModel();
+      cm1.type = ['null'];
+      const cm2 = new CommonModel();
+      cm2.type = ['string'];
+
+      const cm = new CommonModel();
+      cm.$id = 'test';
+      cm.union = [cm1, cm2];
+
+      const model = convertToMetaModel(cm);
+
+      expect(model).not.toBeUndefined();
+      expect(model instanceof UnionModel).toEqual(true);
+      expect(model.options.isNullable).toEqual(true);
+      expect((model as UnionModel).union.length).toEqual(1);
+      expect((model as UnionModel).union[0].options.isNullable).toEqual(false);
+    });
+
+    test('should not apply null for unions', () => {
+      const cm1 = new CommonModel();
+      cm1.type = ['string', 'null'];
+      const cm2 = new CommonModel();
+      cm2.type = ['string'];
+
+      const cm = new CommonModel();
+      cm.$id = 'test';
+      cm.union = [cm1, cm2];
+
+      const model = convertToMetaModel(cm);
+
+      expect(model).not.toBeUndefined();
+      expect(model instanceof UnionModel).toEqual(true);
+      expect((model as UnionModel).union.length).toEqual(2);
+      expect((model as UnionModel).union[0].options.isNullable).toEqual(true);
+      expect((model as UnionModel).union[1].options.isNullable).toEqual(false);
+    });
+  });
   test('should default to any model', () => {
     const cm = new CommonModel();
     cm.$id = 'test';
@@ -37,6 +98,16 @@ describe('CommonModelToMetaModel', () => {
       'array',
       'null'
     ];
+    cm.$id = 'test';
+
+    const model = convertToMetaModel(cm);
+
+    expect(model).not.toBeUndefined();
+    expect(model instanceof AnyModel).toEqual(true);
+  });
+  test('should convert to any model with missing null', () => {
+    const cm = new CommonModel();
+    cm.type = ['string', 'number', 'integer', 'boolean', 'object', 'array'];
     cm.$id = 'test';
 
     const model = convertToMetaModel(cm);
@@ -134,6 +205,7 @@ describe('CommonModelToMetaModel', () => {
 
     expect(model).not.toBeUndefined();
     expect(model instanceof ArrayModel).toEqual(true);
+    expect((model as ArrayModel).valueModel instanceof AnyModel).toEqual(true);
   });
   test('should convert to object model', () => {
     const spm = new CommonModel();
@@ -273,8 +345,11 @@ describe('CommonModelToMetaModel', () => {
 
     expect(model).not.toBeUndefined();
     expect(model instanceof ArrayModel).toEqual(true);
+    expect((model as ArrayModel).valueModel instanceof StringModel).toEqual(
+      true
+    );
   });
-  test('should convert array with additional items to array model as union type', () => {
+  test('should not convert array with additional items to array model as union type', () => {
     const spm = new CommonModel();
     spm.type = 'string';
     const cm = new CommonModel();
@@ -287,7 +362,7 @@ describe('CommonModelToMetaModel', () => {
 
     expect(model).not.toBeUndefined();
     expect(model instanceof ArrayModel).toEqual(true);
-    expect((model as ArrayModel).valueModel instanceof UnionModel).toEqual(
+    expect((model as ArrayModel).valueModel instanceof StringModel).toEqual(
       true
     );
   });
@@ -341,5 +416,51 @@ describe('CommonModelToMetaModel', () => {
 
     expect(model).not.toBeUndefined();
     expect(model instanceof ObjectModel).toEqual(true);
+  });
+
+  test('should handle const and enum', () => {
+    const cm = new CommonModel();
+    cm.$id = 'test';
+    cm.type = 'string';
+    cm.enum = ['testConst'];
+    cm.const = 'testConst';
+
+    const model = convertToMetaModel(cm);
+
+    expect(model).not.toBeUndefined();
+    expect(model instanceof EnumModel).toEqual(true);
+    expect((model as EnumModel).values).toEqual([
+      {
+        key: cm.const,
+        value: cm.const
+      }
+    ]);
+    expect(model.options.const?.originalInput).toEqual(cm.const);
+  });
+
+  test('should handle const', () => {
+    const cm = new CommonModel();
+    cm.$id = 'test';
+    cm.const = 'testConst';
+
+    const model = convertToMetaModel(cm);
+
+    expect(model).not.toBeUndefined();
+    expect(model instanceof AnyModel).toEqual(true);
+    expect(model.options.const?.originalInput).toEqual(cm.const);
+  });
+
+  test('should handle discriminator', () => {
+    const cm = new CommonModel();
+    cm.$id = 'test';
+    cm.discriminator = 'testDiscriminator';
+
+    const model = convertToMetaModel(cm);
+
+    expect(model).not.toBeUndefined();
+    expect(model instanceof AnyModel).toEqual(true);
+    expect(model.options.discriminator?.discriminator).toEqual(
+      cm.discriminator
+    );
   });
 });

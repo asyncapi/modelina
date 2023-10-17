@@ -24,7 +24,7 @@ describe('DartConstrainer', () => {
   };
   describe('ObjectModel', () => {
     test('should render the constrained name as type', () => {
-      const model = new ConstrainedObjectModel('test', undefined, '', {});
+      const model = new ConstrainedObjectModel('test', undefined, {}, '', {});
       const type = DartDefaultTypeMapping.Object({
         constrainedModel: model,
         ...defaultOptions
@@ -34,10 +34,11 @@ describe('DartConstrainer', () => {
   });
   describe('Reference', () => {
     test('should render the constrained name as type', () => {
-      const refModel = new ConstrainedAnyModel('test', undefined, '');
+      const refModel = new ConstrainedAnyModel('test', undefined, {}, '');
       const model = new ConstrainedReferenceModel(
         'test',
         undefined,
+        {},
         '',
         refModel
       );
@@ -50,7 +51,7 @@ describe('DartConstrainer', () => {
   });
   describe('Any', () => {
     test('should render type', () => {
-      const model = new ConstrainedAnyModel('test', undefined, '');
+      const model = new ConstrainedAnyModel('test', undefined, {}, '');
       const type = DartDefaultTypeMapping.Any({
         constrainedModel: model,
         ...defaultOptions
@@ -60,7 +61,7 @@ describe('DartConstrainer', () => {
   });
   describe('Float', () => {
     test('should render type', () => {
-      const model = new ConstrainedFloatModel('test', undefined, '');
+      const model = new ConstrainedFloatModel('test', undefined, {}, '');
       const type = DartDefaultTypeMapping.Float({
         constrainedModel: model,
         ...defaultOptions
@@ -70,7 +71,7 @@ describe('DartConstrainer', () => {
   });
   describe('Integer', () => {
     test('should render type', () => {
-      const model = new ConstrainedIntegerModel('test', undefined, '');
+      const model = new ConstrainedIntegerModel('test', undefined, {}, '');
       const type = DartDefaultTypeMapping.Integer({
         constrainedModel: model,
         ...defaultOptions
@@ -80,7 +81,7 @@ describe('DartConstrainer', () => {
   });
   describe('String', () => {
     test('should render type', () => {
-      const model = new ConstrainedStringModel('test', undefined, '');
+      const model = new ConstrainedStringModel('test', undefined, {}, '');
       const type = DartDefaultTypeMapping.String({
         constrainedModel: model,
         ...defaultOptions
@@ -90,7 +91,7 @@ describe('DartConstrainer', () => {
   });
   describe('Boolean', () => {
     test('should render type', () => {
-      const model = new ConstrainedBooleanModel('test', undefined, '');
+      const model = new ConstrainedBooleanModel('test', undefined, {}, '');
       const type = DartDefaultTypeMapping.Boolean({
         constrainedModel: model,
         ...defaultOptions
@@ -101,7 +102,7 @@ describe('DartConstrainer', () => {
 
   describe('Tuple', () => {
     test('should render default type', () => {
-      const model = new ConstrainedTupleModel('test', undefined, '', []);
+      const model = new ConstrainedTupleModel('test', undefined, {}, '', []);
       const optionsToUse: DartOptions = { ...DartGenerator.defaultOptions };
       const type = DartDefaultTypeMapping.Tuple({
         constrainedModel: model,
@@ -111,7 +112,7 @@ describe('DartConstrainer', () => {
       expect(type).toEqual('List<Object>');
     });
     test('should render type with custom collection type', () => {
-      const model = new ConstrainedTupleModel('test', undefined, '', []);
+      const model = new ConstrainedTupleModel('test', undefined, {}, '', []);
       const optionsToUse: DartOptions = {
         ...DartGenerator.defaultOptions,
         collectionType: 'List'
@@ -130,11 +131,13 @@ describe('DartConstrainer', () => {
       const arrayModel = new ConstrainedStringModel(
         'test',
         undefined,
+        {},
         'string'
       );
       const model = new ConstrainedArrayModel(
         'test',
         undefined,
+        {},
         '',
         arrayModel
       );
@@ -148,11 +151,13 @@ describe('DartConstrainer', () => {
       const arrayModel = new ConstrainedStringModel(
         'test',
         undefined,
+        {},
         'string'
       );
       const model = new ConstrainedArrayModel(
         'test',
         undefined,
+        {},
         '',
         arrayModel
       );
@@ -171,7 +176,7 @@ describe('DartConstrainer', () => {
 
   describe('Enum', () => {
     test('should render the constrained name as type', () => {
-      const model = new ConstrainedEnumModel('test', undefined, '', []);
+      const model = new ConstrainedEnumModel('test', undefined, {}, '', []);
       const type = DartDefaultTypeMapping.Enum({
         constrainedModel: model,
         ...defaultOptions
@@ -182,7 +187,7 @@ describe('DartConstrainer', () => {
 
   describe('Union', () => {
     test('should render type', () => {
-      const model = new ConstrainedUnionModel('test', undefined, '', []);
+      const model = new ConstrainedUnionModel('test', undefined, {}, '', []);
       const type = DartDefaultTypeMapping.Union({
         constrainedModel: model,
         ...defaultOptions
@@ -193,15 +198,22 @@ describe('DartConstrainer', () => {
 
   describe('Dictionary', () => {
     test('should render type', () => {
-      const keyModel = new ConstrainedStringModel('test', undefined, 'string');
+      const keyModel = new ConstrainedStringModel(
+        'test',
+        undefined,
+        {},
+        'string'
+      );
       const valueModel = new ConstrainedStringModel(
         'test',
         undefined,
+        {},
         'string'
       );
       const model = new ConstrainedDictionaryModel(
         'test',
         undefined,
+        {},
         '',
         keyModel,
         valueModel

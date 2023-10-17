@@ -2,7 +2,7 @@
 
 exports[`KotlinGenerator should not render reserved keyword 1`] = `
 "data class Address(
-    val reservedClass: String,
+    val reservedClass: String? = null,
 )"
 `;
 
@@ -12,14 +12,14 @@ exports[`KotlinGenerator should render \`data class\` type 1`] = `
     val city: String,
     val state: String,
     val houseNumber: Double,
-    val marriage: Boolean,
-    val members: Any,
+    val marriage: Boolean? = null,
+    val members: Any? = null,
     val arrayType: List<Any>,
-    val date: java.time.LocalDate,
-    val time: java.time.OffsetTime,
-    val dateTime: java.time.OffsetDateTime,
-    val binary: ByteArray,
-    val additionalProperties: Map<String, Any>,
+    val date: java.time.LocalDate? = null,
+    val time: java.time.OffsetTime? = null,
+    val dateTime: java.time.OffsetDateTime? = null,
+    val binary: ByteArray? = null,
+    val additionalProperties: Map<String, Any>? = null,
 )"
 `;
 
@@ -55,7 +55,7 @@ exports[`KotlinGenerator should render \`enum\` type (union type) 1`] = `
 
 exports[`KotlinGenerator should render List type for collections 1`] = `
 "data class CustomClass(
-    val arrayType: List<Int>,
+    val arrayType: List<Int>? = null,
 )"
 `;
 
@@ -78,11 +78,11 @@ data class Address(
     val city: String,
     val state: String,
     val houseNumber: Double,
-    val marriage: Boolean,
-    val members: Any,
+    val marriage: Boolean? = null,
+    val members: Any? = null,
     val arrayType: List<Any>,
-    val otherModel: OtherModel,
-    val additionalProperties: Map<String, Any>,
+    val otherModel: OtherModel? = null,
+    val additionalProperties: Map<String, Any>? = null,
 )"
 `;
 
@@ -91,7 +91,7 @@ exports[`KotlinGenerator should render models and their dependencies 2`] = `
 
 
 data class OtherModel(
-    val streetName: String,
-    val additionalProperties: Map<String, Any>,
+    val streetName: String? = null,
+    val additionalProperties: Map<String, Any>? = null,
 )"
 `;

@@ -38,7 +38,7 @@ describe('TypeScriptInputProcessor', () => {
   describe('process()', () => {
     test('should throw error when trying to process wrong input format', async () => {
       const processor = new TypeScriptInputProcessor();
-      await expect(processor.process({})).rejects.toThrowError(
+      await expect(processor.process({})).rejects.toThrow(
         'Input is not of the valid file format'
       );
     });

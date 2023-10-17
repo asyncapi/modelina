@@ -3,7 +3,7 @@ const spy = jest.spyOn(global.console, 'log').mockImplementation(() => {
 });
 import { generate } from './index';
 
-describe('Should be able to generate a model with custom input and output ', () => {
+describe('Should be able to generate a model with custom input and output', () => {
   afterAll(() => {
     jest.restoreAllMocks();
   });

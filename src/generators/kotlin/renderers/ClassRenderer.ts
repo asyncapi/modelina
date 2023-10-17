@@ -53,6 +53,8 @@ export const KOTLIN_DEFAULT_CLASS_PRESET: ClassPresetType<KotlinOptions> = {
     return renderer.defaultSelf(hasProperties);
   },
   property({ property }) {
-    return `val ${property.propertyName}: ${property.property.type},`;
+    return `val ${property.propertyName}: ${property.property.type}${
+      property.required ? '' : '? = null'
+    },`;
   }
 };

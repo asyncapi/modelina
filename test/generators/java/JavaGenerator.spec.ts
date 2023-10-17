@@ -1,4 +1,10 @@
-import { JavaGenerator } from '../../../src/generators';
+import {
+  JavaGenerator,
+  JAVA_COMMON_PRESET,
+  JAVA_CONSTRAINTS_PRESET,
+  JAVA_DESCRIPTION_PRESET,
+  JAVA_JACKSON_PRESET
+} from '../../../src/generators';
 
 describe('JavaGenerator', () => {
   let generator: JavaGenerator;
@@ -54,9 +60,9 @@ describe('JavaGenerator', () => {
     };
     const expectedDependencies = ['import java.util.Map;'];
     const models = await generator.generate(doc);
-    expect(models).toHaveLength(1);
-    expect(models[0].result).toMatchSnapshot();
-    expect(models[0].dependencies).toEqual(expectedDependencies);
+    expect(models).toHaveLength(4);
+    expect(models.map((model) => model.result)).toMatchSnapshot();
+    expect(models[3].dependencies).toEqual(expectedDependencies);
   });
 
   test('should work custom preset for `class` type', async () => {
@@ -235,9 +241,8 @@ describe('JavaGenerator', () => {
     };
     const config = { packageName: 'test.packageName' };
     const models = await generator.generateCompleteModels(doc, config);
-    expect(models).toHaveLength(2);
-    expect(models[0].result).toMatchSnapshot();
-    expect(models[1].result).toMatchSnapshot();
+    expect(models).toHaveLength(5);
+    expect(models.map((model) => model.result)).toMatchSnapshot();
   });
   test('should throw error when reserved keyword is used in any part of the package name', async () => {
     const doc = {
@@ -274,5 +279,541 @@ describe('JavaGenerator', () => {
     await expect(generator.generateCompleteModels(doc, config)).rejects.toEqual(
       expectedError
     );
+  });
+
+  describe('oneOf/discriminator', () => {
+    test('should create an interface', async () => {
+      const asyncapiDoc = {
+        asyncapi: '2.6.0',
+        info: {
+          title: 'Vehicle example',
+          version: '1.0.0'
+        },
+        channels: {},
+        components: {
+          messages: {
+            Vehicle: {
+              payload: {
+                title: 'Vehicle',
+                type: 'object',
+                discriminator: 'vehicleType',
+                properties: {
+                  vehicleType: {
+                    title: 'VehicleType',
+                    type: 'string'
+                  }
+                },
+                required: ['vehicleType'],
+                oneOf: [
+                  {
+                    $ref: '#/components/schemas/Car'
+                  },
+                  {
+                    $ref: '#/components/schemas/Truck'
+                  }
+                ]
+              }
+            }
+          },
+          schemas: {
+            Car: {
+              type: 'object',
+              properties: {
+                vehicleType: {
+                  const: 'Car'
+                }
+              }
+            },
+
+            Truck: {
+              type: 'object',
+              properties: {
+                vehicleType: {
+                  const: 'Truck'
+                }
+              }
+            }
+          }
+        }
+      };
+
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+
+    describe('with jackson preset', () => {
+      beforeEach(() => {
+        generator = new JavaGenerator({
+          presets: [
+            JAVA_COMMON_PRESET,
+            JAVA_JACKSON_PRESET,
+            JAVA_DESCRIPTION_PRESET,
+            JAVA_CONSTRAINTS_PRESET
+          ],
+          collectionType: 'List'
+        });
+      });
+
+      test('handle allOf with const in CloudEvent type', async () => {
+        const asyncapiDoc = {
+          asyncapi: '2.5.0',
+          info: {
+            title: 'CloudEvent example',
+            version: '1.0.0'
+          },
+          channels: {
+            pet: {
+              publish: {
+                message: {
+                  oneOf: [
+                    {
+                      $ref: '#/components/messages/Dog'
+                    },
+                    {
+                      $ref: '#/components/messages/Cat'
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          components: {
+            messages: {
+              Dog: {
+                payload: {
+                  title: 'Dog',
+                  allOf: [
+                    {
+                      $ref: '#/components/schemas/CloudEvent'
+                    },
+                    {
+                      $ref: '#/components/schemas/Dog'
+                    }
+                  ]
+                }
+              },
+              Cat: {
+                payload: {
+                  title: 'Cat',
+                  allOf: [
+                    {
+                      $ref: '#/components/schemas/CloudEvent'
+                    },
+                    {
+                      $ref: '#/components/schemas/Cat'
+                    }
+                  ]
+                }
+              }
+            },
+            schemas: {
+              CloudEvent: {
+                title: 'CloudEvent',
+                type: 'object',
+                discriminator: 'type',
+                properties: {
+                  id: {
+                    type: 'string'
+                  },
+                  source: {
+                    type: 'string',
+                    format: 'uri-reference'
+                  },
+                  specversion: {
+                    type: 'string',
+                    const: '1.0'
+                  },
+                  type: {
+                    title: 'CloudEventType',
+                    type: 'string'
+                  },
+                  dataschema: {
+                    type: 'string',
+                    format: 'uri'
+                  },
+                  time: {
+                    type: 'string',
+                    format: 'date-time'
+                  }
+                },
+                required: ['id', 'source', 'specversion', 'type']
+              },
+              Dog: {
+                type: 'object',
+                properties: {
+                  type: {
+                    const: 'Dog'
+                  }
+                }
+              },
+              Cat: {
+                type: 'object',
+                properties: {
+                  type: {
+                    const: 'Cat'
+                  }
+                }
+              }
+            }
+          }
+        };
+
+        const models = await generator.generate(asyncapiDoc);
+        expect(models.map((model) => model.result)).toMatchSnapshot();
+
+        const dog = models.find((model) => model.modelName === 'Dog');
+        expect(dog).not.toBeUndefined();
+        expect(dog?.result).toContain(
+          'private final CloudEventType type = CloudEventType.DOG;'
+        );
+
+        const cat = models.find((model) => model.modelName === 'Cat');
+        expect(cat).not.toBeUndefined();
+        expect(cat?.result).toContain(
+          'private final CloudEventType type = CloudEventType.CAT;'
+        );
+
+        const cloudEventType = models.find(
+          (model) => model.modelName === 'CloudEventType'
+        );
+        expect(cloudEventType).not.toBeUndefined();
+        expect(cloudEventType?.result).toContain('DOG');
+        expect(cloudEventType?.result).toContain('CAT');
+      });
+
+      test('handle setting title with const', async () => {
+        const asyncapiDoc = {
+          asyncapi: '2.5.0',
+          info: {
+            title: 'CloudEvent example',
+            version: '1.0.0'
+          },
+          channels: {
+            pet: {
+              publish: {
+                message: {
+                  oneOf: [
+                    {
+                      $ref: '#/components/messages/Dog'
+                    },
+                    {
+                      $ref: '#/components/messages/Cat'
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          components: {
+            messages: {
+              Dog: {
+                payload: {
+                  title: 'Dog',
+                  allOf: [
+                    {
+                      $ref: '#/components/schemas/CloudEvent'
+                    },
+                    {
+                      $ref: '#/components/schemas/Dog'
+                    }
+                  ]
+                }
+              },
+              Cat: {
+                payload: {
+                  title: 'Cat',
+                  allOf: [
+                    {
+                      $ref: '#/components/schemas/CloudEvent'
+                    },
+                    {
+                      $ref: '#/components/schemas/Cat'
+                    }
+                  ]
+                }
+              }
+            },
+            schemas: {
+              CloudEvent: {
+                title: 'CloudEvent',
+                type: 'object',
+                discriminator: 'type',
+                properties: {
+                  type: {
+                    type: 'string'
+                  }
+                },
+                required: ['type']
+              },
+              Dog: {
+                type: 'object',
+                properties: {
+                  type: {
+                    title: 'DogType',
+                    const: 'Dog'
+                  }
+                }
+              },
+              Cat: {
+                type: 'object',
+                properties: {
+                  type: {
+                    title: 'CatType',
+                    const: 'Cat'
+                  }
+                }
+              }
+            }
+          }
+        };
+
+        const models = await generator.generate(asyncapiDoc);
+        expect(models.map((model) => model.result)).toMatchSnapshot();
+
+        const dog = models.find((model) => model.modelName === 'Dog');
+        expect(dog).not.toBeUndefined();
+        expect(dog?.result).toContain(
+          'private final DogType type = DogType.DOG;'
+        );
+
+        const cat = models.find((model) => model.modelName === 'Cat');
+        expect(cat).not.toBeUndefined();
+        expect(cat?.result).toContain(
+          'private final CatType type = CatType.CAT;'
+        );
+
+        const dogType = models.find((model) => model.modelName === 'DogType');
+        expect(dogType).not.toBeUndefined();
+        expect(dogType?.result).toContain('DOG');
+
+        const catType = models.find((model) => model.modelName === 'CatType');
+        expect(catType).not.toBeUndefined();
+        expect(catType?.result).toContain('CAT');
+      });
+
+      test('handle one const with discriminator', async () => {
+        const asyncapiDoc = {
+          asyncapi: '2.6.0',
+          info: {
+            title: 'CloudEvent2 example',
+            version: '1.0.0'
+          },
+          channels: {
+            pet: {
+              publish: {
+                message: {
+                  $ref: '#/components/messages/Dog'
+                }
+              }
+            }
+          },
+          components: {
+            messages: {
+              Dog: {
+                payload: {
+                  title: 'Dog',
+                  allOf: [
+                    {
+                      $ref: '#/components/schemas/CloudEvent'
+                    },
+                    {
+                      $ref: '#/components/schemas/Dog'
+                    }
+                  ]
+                }
+              }
+            },
+            schemas: {
+              CloudEvent: {
+                title: 'CloudEvent',
+                type: 'object',
+                discriminator: 'type',
+                properties: {
+                  id: {
+                    type: 'string'
+                  },
+                  type: {
+                    title: 'CloudEventType',
+                    type: 'string'
+                  }
+                },
+                required: ['id', 'type']
+              },
+              Dog: {
+                type: 'object',
+                properties: {
+                  type: {
+                    const: 'Dog'
+                  }
+                }
+              }
+            }
+          }
+        };
+
+        const models = await generator.generate(asyncapiDoc);
+        expect(models.map((model) => model.result)).toMatchSnapshot();
+
+        const dog = models.find((model) => model.modelName === 'Dog');
+        expect(dog).not.toBeUndefined();
+        expect(dog?.result).toContain(
+          'private final CloudEventType type = CloudEventType.DOG;'
+        );
+
+        const cloudEventType = models.find(
+          (model) => model.modelName === 'CloudEventType'
+        );
+        expect(cloudEventType).not.toBeUndefined();
+        expect(cloudEventType?.result).toContain('DOG');
+      });
+      test('should create an interface for child models', async () => {
+        const asyncapiDoc = {
+          asyncapi: '2.6.0',
+          info: {
+            title: 'Vehicle example',
+            version: '1.0.0'
+          },
+          channels: {},
+          components: {
+            messages: {
+              Vehicle: {
+                payload: {
+                  title: 'Cargo',
+                  type: 'object',
+                  properties: {
+                    vehicle: {
+                      $ref: '#/components/schemas/Vehicle'
+                    }
+                  }
+                }
+              }
+            },
+            schemas: {
+              Vehicle: {
+                title: 'Vehicle',
+                type: 'object',
+                discriminator: 'vehicleType',
+                properties: {
+                  vehicleType: {
+                    title: 'VehicleType',
+                    type: 'string'
+                  }
+                },
+                required: ['vehicleType'],
+                oneOf: [
+                  {
+                    $ref: '#/components/schemas/Car'
+                  },
+                  {
+                    $ref: '#/components/schemas/Truck'
+                  }
+                ]
+              },
+              Car: {
+                type: 'object',
+                properties: {
+                  vehicleType: {
+                    const: 'Car'
+                  }
+                }
+              },
+
+              Truck: {
+                type: 'object',
+                properties: {
+                  vehicleType: {
+                    const: 'Truck'
+                  }
+                }
+              }
+            }
+          }
+        };
+
+        const models = await generator.generate(asyncapiDoc);
+        expect(models.map((model) => model.result)).toMatchSnapshot();
+      });
+
+      test('date-time format should render java.time.OffsetDateTime', async () => {
+        const asyncapiDoc = {
+          asyncapi: '2.6.0',
+          info: {
+            title: 'Event API',
+            version: 'v1'
+          },
+          channels: {
+            events: {
+              subscribe: {
+                message: {
+                  $ref: '#/components/messages/Event'
+                }
+              }
+            }
+          },
+          components: {
+            messages: {
+              Event: {
+                title: 'Event',
+                payload: {
+                  title: 'Event',
+                  type: 'object',
+                  properties: {
+                    action: {
+                      title: 'Action',
+                      type: 'string',
+                      enum: ['ADD', 'UPDATE', 'DELETE']
+                    }
+                  },
+                  required: ['action'],
+                  allOf: [
+                    {
+                      if: {
+                        properties: {
+                          action: {
+                            const: 'ADD'
+                          }
+                        },
+                        required: ['action']
+                      },
+                      then: {
+                        $ref: '#/components/schemas/Event.AddOrUpdate'
+                      }
+                    },
+                    {
+                      if: {
+                        properties: {
+                          action: {
+                            const: 'UPDATE'
+                          }
+                        },
+                        required: ['action']
+                      },
+                      then: {
+                        $ref: '#/components/schemas/Event.AddOrUpdate'
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            schemas: {
+              'Event.AddOrUpdate': {
+                type: 'object',
+                properties: {
+                  event_time: {
+                    type: 'string',
+                    format: 'date-time'
+                  }
+                },
+                required: ['event_time']
+              }
+            }
+          }
+        };
+
+        const models = await generator.generate(asyncapiDoc);
+        expect(models.map((model) => model.result)).toMatchSnapshot();
+      });
+    });
   });
 });

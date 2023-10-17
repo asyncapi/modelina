@@ -24,7 +24,7 @@ describe('JavaScriptConstrainer', () => {
   };
   describe('ObjectModel', () => {
     test('should have no type', () => {
-      const model = new ConstrainedObjectModel('test', undefined, '', {});
+      const model = new ConstrainedObjectModel('test', undefined, {}, '', {});
       const type = JavaScriptDefaultTypeMapping.Object({
         constrainedModel: model,
         ...defaultOptions
@@ -34,10 +34,11 @@ describe('JavaScriptConstrainer', () => {
   });
   describe('Reference', () => {
     test('should have no type', () => {
-      const refModel = new ConstrainedAnyModel('test', undefined, '');
+      const refModel = new ConstrainedAnyModel('test', undefined, {}, '');
       const model = new ConstrainedReferenceModel(
         'test',
         undefined,
+        {},
         '',
         refModel
       );
@@ -50,7 +51,7 @@ describe('JavaScriptConstrainer', () => {
   });
   describe('Any', () => {
     test('should have no type', () => {
-      const model = new ConstrainedAnyModel('test', undefined, '');
+      const model = new ConstrainedAnyModel('test', undefined, {}, '');
       const type = JavaScriptDefaultTypeMapping.Any({
         constrainedModel: model,
         ...defaultOptions
@@ -60,7 +61,7 @@ describe('JavaScriptConstrainer', () => {
   });
   describe('Float', () => {
     test('should have no type', () => {
-      const model = new ConstrainedFloatModel('test', undefined, '');
+      const model = new ConstrainedFloatModel('test', undefined, {}, '');
       const type = JavaScriptDefaultTypeMapping.Float({
         constrainedModel: model,
         ...defaultOptions
@@ -70,7 +71,7 @@ describe('JavaScriptConstrainer', () => {
   });
   describe('Integer', () => {
     test('should have no type', () => {
-      const model = new ConstrainedIntegerModel('test', undefined, '');
+      const model = new ConstrainedIntegerModel('test', undefined, {}, '');
       const type = JavaScriptDefaultTypeMapping.Integer({
         constrainedModel: model,
         ...defaultOptions
@@ -80,7 +81,7 @@ describe('JavaScriptConstrainer', () => {
   });
   describe('String', () => {
     test('should have no type', () => {
-      const model = new ConstrainedStringModel('test', undefined, '');
+      const model = new ConstrainedStringModel('test', undefined, {}, '');
       const type = JavaScriptDefaultTypeMapping.String({
         constrainedModel: model,
         ...defaultOptions
@@ -90,7 +91,7 @@ describe('JavaScriptConstrainer', () => {
   });
   describe('Boolean', () => {
     test('should have no type', () => {
-      const model = new ConstrainedBooleanModel('test', undefined, '');
+      const model = new ConstrainedBooleanModel('test', undefined, {}, '');
       const type = JavaScriptDefaultTypeMapping.Boolean({
         constrainedModel: model,
         ...defaultOptions
@@ -101,7 +102,7 @@ describe('JavaScriptConstrainer', () => {
 
   describe('Tuple', () => {
     test('should have no type', () => {
-      const model = new ConstrainedTupleModel('test', undefined, '', []);
+      const model = new ConstrainedTupleModel('test', undefined, {}, '', []);
       const type = JavaScriptDefaultTypeMapping.Tuple({
         constrainedModel: model,
         ...defaultOptions
@@ -115,11 +116,13 @@ describe('JavaScriptConstrainer', () => {
       const arrayModel = new ConstrainedStringModel(
         'test',
         undefined,
+        {},
         'String'
       );
       const model = new ConstrainedArrayModel(
         'test',
         undefined,
+        {},
         '',
         arrayModel
       );
@@ -133,7 +136,7 @@ describe('JavaScriptConstrainer', () => {
 
   describe('Enum', () => {
     test('should have no type', () => {
-      const model = new ConstrainedEnumModel('test', undefined, '', []);
+      const model = new ConstrainedEnumModel('test', undefined, {}, '', []);
       const type = JavaScriptDefaultTypeMapping.Enum({
         constrainedModel: model,
         ...defaultOptions
@@ -144,7 +147,7 @@ describe('JavaScriptConstrainer', () => {
 
   describe('Union', () => {
     test('should have no type', () => {
-      const model = new ConstrainedUnionModel('test', undefined, '', []);
+      const model = new ConstrainedUnionModel('test', undefined, {}, '', []);
       const type = JavaScriptDefaultTypeMapping.Union({
         constrainedModel: model,
         ...defaultOptions
@@ -155,15 +158,22 @@ describe('JavaScriptConstrainer', () => {
 
   describe('Dictionary', () => {
     test('should have no type', () => {
-      const keyModel = new ConstrainedStringModel('test', undefined, 'String');
+      const keyModel = new ConstrainedStringModel(
+        'test',
+        undefined,
+        {},
+        'String'
+      );
       const valueModel = new ConstrainedStringModel(
         'test',
         undefined,
+        {},
         'String'
       );
       const model = new ConstrainedDictionaryModel(
         'test',
         undefined,
+        {},
         '',
         keyModel,
         valueModel

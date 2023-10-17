@@ -2,11 +2,13 @@ import { JavaRenderer } from '../JavaRenderer';
 import {
   ConstrainedDictionaryModel,
   ConstrainedObjectModel,
-  ConstrainedObjectPropertyModel
+  ConstrainedObjectPropertyModel,
+  ConstrainedUnionModel
 } from '../../../models';
 import { FormatHelpers } from '../../../helpers';
 import { JavaOptions } from '../JavaGenerator';
 import { ClassPresetType } from '../JavaPreset';
+import { unionIncludesBuiltInTypes } from '../JavaConstrainer';
 
 /**
  * Renderer for Java's `class` type
@@ -27,6 +29,20 @@ export class ClassRenderer extends JavaRenderer<ConstrainedObjectModel> {
     }
     if (this.model.containsPropertyType(ConstrainedDictionaryModel)) {
       this.dependencyManager.addDependency('import java.util.Map;');
+    }
+
+    const parentUnions = this.getParentUnions();
+
+    if (parentUnions) {
+      for (const parentUnion of parentUnions) {
+        this.dependencyManager.addModelDependency(parentUnion);
+      }
+
+      return `public class ${this.model.name} implements ${parentUnions
+        .map((pu) => pu.name)
+        .join(', ')} {
+${this.indent(this.renderBlock(content, 2))}
+}`;
     }
 
     return `public class ${this.model.name} {
@@ -80,6 +96,29 @@ ${this.indent(this.renderBlock(content, 2))}
   runSetterPreset(property: ConstrainedObjectPropertyModel): Promise<string> {
     return this.runPreset('setter', { property });
   }
+
+  private getParentUnions(): ConstrainedUnionModel[] | undefined {
+    const parentUnions: ConstrainedUnionModel[] = [];
+
+    if (!this.model.options.parents) {
+      return undefined;
+    }
+
+    for (const model of this.model.options.parents) {
+      if (
+        model instanceof ConstrainedUnionModel &&
+        !unionIncludesBuiltInTypes(model)
+      ) {
+        parentUnions.push(model);
+      }
+    }
+
+    if (!parentUnions.length) {
+      return undefined;
+    }
+
+    return parentUnions;
+  }
 }
 
 export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
@@ -87,6 +126,10 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
     return renderer.defaultSelf();
   },
   property({ property }) {
+    if (property.property.options.const?.value) {
+      return `private final ${property.property.type} ${property.propertyName} = ${property.property.options.const.value};`;
+    }
+
     return `private ${property.property.type} ${property.propertyName};`;
   },
   getter({ property }) {
@@ -96,6 +139,9 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
     return `public ${property.property.type} ${getterName}() { return this.${property.propertyName}; }`;
   },
   setter({ property }) {
+    if (property.property.options.const?.value) {
+      return '';
+    }
     const setterName = FormatHelpers.toPascalCase(property.propertyName);
     return `public void set${setterName}(${property.property.type} ${property.propertyName}) { this.${property.propertyName} = ${property.propertyName}; }`;
   }

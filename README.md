@@ -276,7 +276,7 @@ This is the roadmap that is currently in focus by the [CODEOWNERS](./CODEOWNERS)
 ## Requirements
 The following are a requirement in order to use Modelina.
 
-- [NodeJS](https://nodejs.org/en/) >= 14
+- [NodeJS](https://nodejs.org/en/) >= 18
 
 ## Documentation
 A feature in Modelina cannot exists without an example and documentation for it. You can find all the [documentation here](./docs/README.md).

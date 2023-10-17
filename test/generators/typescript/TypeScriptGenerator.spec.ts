@@ -408,7 +408,7 @@ ${content}`;
             discriminator: 'petType',
             properties: {
               petType: {
-                $id: 'PetType',
+                title: 'PetType',
                 type: 'string'
               },
               name: {
@@ -429,6 +429,7 @@ ${content}`;
                   },
                   huntingSkill: {
                     type: 'string',
+                    title: 'HuntingSkill',
                     enum: ['clueless', 'lazy', 'adventurous', 'aggressive']
                   }
                 },
@@ -624,6 +625,7 @@ ${content}`;
                   min: 0
                 }
               },
+              required: ['petType'],
               oneOf: [
                 { $ref: '#/components/schemas/Cat' },
                 { $ref: '#/components/schemas/Dog' }
@@ -684,6 +686,306 @@ ${content}`;
       expect(dog?.result).toContain('age');
       expect(dog?.result).toContain('breed');
       expect(dog?.result).not.toContain('huntingSkill');
+    });
+  });
+  describe('CloudEvent', () => {
+    const asyncapiDoc = {
+      asyncapi: '2.5.0',
+      info: {
+        title: 'CloudEvent example',
+        version: '1.0.0'
+      },
+      channels: {
+        pet: {
+          publish: {
+            message: {
+              oneOf: [
+                {
+                  $ref: '#/components/messages/Dog'
+                },
+                {
+                  $ref: '#/components/messages/Cat'
+                }
+              ]
+            }
+          }
+        }
+      },
+      components: {
+        messages: {
+          Dog: {
+            payload: {
+              title: 'Dog',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/CloudEvent'
+                },
+                {
+                  type: 'object',
+                  properties: {
+                    type: {
+                      title: 'DogType',
+                      const: 'Dog'
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          Cat: {
+            payload: {
+              title: 'Cat',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/CloudEvent'
+                },
+                {
+                  type: 'object',
+                  properties: {
+                    type: {
+                      title: 'CatType',
+                      const: 'Cat'
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        schemas: {
+          CloudEvent: {
+            title: 'CloudEvent',
+            type: 'object',
+            discriminator: 'type',
+            properties: {
+              id: {
+                type: 'string'
+              },
+              source: {
+                type: 'string',
+                format: 'uri-reference'
+              },
+              specversion: {
+                type: 'string',
+                default: '1.0',
+                examples: ['1.0']
+              },
+              type: {
+                type: 'string'
+              },
+              dataschema: {
+                type: 'string',
+                format: 'uri'
+              },
+              time: {
+                type: 'string',
+                format: 'date-time'
+              }
+            },
+            required: ['id', 'source', 'specversion', 'type']
+          }
+        }
+      }
+    };
+
+    test('handle allOf with const in CloudEvent type', async () => {
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+
+      const dog = models.find((model) => model.modelName === 'Dog');
+      expect(dog).not.toBeUndefined();
+      expect(dog?.result).toContain('DogType');
+
+      const cat = models.find((model) => model.modelName === 'Cat');
+      expect(cat).not.toBeUndefined();
+      expect(cat?.result).toContain('CatType');
+    });
+  });
+
+  describe('if/then/else', () => {
+    test('handle if/then/else required properties', async () => {
+      const asyncapiDoc = {
+        asyncapi: '2.6.0',
+        info: {
+          title: 'if/else/then example',
+          version: '1.0.0'
+        },
+        channels: {
+          event: {
+            publish: {
+              message: {
+                $ref: '#/components/messages/Event'
+              }
+            }
+          }
+        },
+        components: {
+          messages: {
+            Event: {
+              payload: {
+                title: 'Event',
+                type: 'object',
+                properties: {
+                  id: {
+                    type: 'string'
+                  },
+                  action: {
+                    title: 'Action',
+                    type: 'string',
+                    enum: ['ADD', 'UPDATE', 'DELETE'],
+                    default: 'ADD'
+                  }
+                },
+                required: ['id'],
+                allOf: [
+                  {
+                    if: {
+                      properties: {
+                        action: {
+                          const: 'DELETE'
+                        }
+                      },
+                      required: ['action']
+                    },
+                    else: {
+                      $ref: '#/components/schemas/EventAddOrUpdate'
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          schemas: {
+            EventAddOrUpdate: {
+              type: 'object',
+              properties: {
+                event_time: {
+                  type: 'string',
+                  format: 'date-time'
+                }
+              },
+              required: ['event_time']
+            }
+          }
+        }
+      };
+
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+
+    test('handle recursive schemas', async () => {
+      const models = await generator.generate({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        properties: {
+          condition: {
+            type: 'string'
+          },
+          test: {
+            properties: {
+              test2: {
+                type: 'string'
+              }
+            }
+          }
+        },
+        if: {
+          properties: {
+            condition: {
+              const: 'something'
+            }
+          }
+        },
+        then: {
+          properties: {
+            test: {
+              required: ['test2']
+            }
+          }
+        }
+      });
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+  });
+
+  describe('const', () => {
+    test('should generate a const string', async () => {
+      const models = await generator.generate({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        title: 'LightMeasured',
+        additionalProperties: false,
+        properties: {
+          type: {
+            type: 'string',
+            const: 'test'
+          }
+        }
+      });
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+
+    test('should generate a single enum with two values and a string enum', async () => {
+      const models = await generator.generate({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        title: 'LightMeasured',
+        additionalProperties: false,
+        properties: {
+          type: {
+            oneOf: [
+              {
+                $ref: '#/definitions/MyCommonEnums'
+              },
+              {
+                const: 'MyMessage2'
+              }
+            ]
+          }
+        },
+        definitions: {
+          MyCommonEnums: {
+            title: 'MyCommonEnums',
+            enum: ['MyMessage', 'MyMessage2']
+          }
+        }
+      });
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+
+    test('should generate a single enum with two values', async () => {
+      const models = await generator.generate({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        title: 'LightMeasured',
+        additionalProperties: false,
+        properties: {
+          type: {
+            const: 'MyMessage',
+            allOf: [
+              {
+                $ref: '#/definitions/MyCommonEnums'
+              }
+            ]
+          },
+          type2: {
+            allOf: [
+              {
+                $ref: '#/definitions/MyCommonEnums'
+              },
+              {
+                const: 'MyMessage2'
+              }
+            ]
+          }
+        },
+        definitions: {
+          MyCommonEnums: {
+            enum: ['MyMessage', 'MyMessage2']
+          }
+        }
+      });
+      expect(models.map((model) => model.result)).toMatchSnapshot();
     });
   });
 });

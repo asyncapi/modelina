@@ -81,7 +81,7 @@ async function start() {
 
   let exampleDirs = await getDirectories(examplesDirPath);
   //Filter out any examples that either:
-  // 1. are impossible to show
+  // 1. are impossible to show (react and next examples)
   // 2. should not be shown 
   exampleDirs = exampleDirs.filter((dir) => dir !== 'TEMPLATE' && dir !== 'integrate-with-react' && dir !== 'integrate-with-next');
   const templateConfig = {};
@@ -112,7 +112,7 @@ async function start() {
   mainReadme = mainReadme.replace('<!-- toc -->', '');
   mainReadme = mainReadme.replace('<!-- tocstop -->', '');
   mainReadme = mainReadme.replace('- [integrate with React](?selectedExample=integrate-with-react/)', '- [integrate with React](https://github.com/asyncapi/modelina/tree/master/examples/integrate-with-react)');
-  mainReadme = mainReadme.replace('- [integrate with Next](?selectedExample=integrate-with-next/)', '- [integrate with React](https://github.com/asyncapi/modelina/tree/master/examples/integrate-with-next)');
+  mainReadme = mainReadme.replace('- [integrate with Next](?selectedExample=integrate-with-next/)', '- [integrate with Next](https://github.com/asyncapi/modelina/tree/master/examples/integrate-with-next)');
   mainReadme = mainReadme.replace('- [TEMPLATE](?selectedExample=TEMPLATE)', '- [TEMPLATE](https://github.com/asyncapi/modelina/tree/master/examples/TEMPLATE)');
   const readmePath = path.resolve(__dirname, '../config/examples_readme.json');
   await writeFile(readmePath, JSON.stringify(mainReadme))

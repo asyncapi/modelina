@@ -476,6 +476,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       | Draft6Schema
       | Draft7Schema
       | SwaggerV2Schema
+      | OpenapiV3Schema
       | AsyncapiV2Schema
       | boolean,
     options?: ProcessorOptions

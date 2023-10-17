@@ -1,9 +1,19 @@
-import { ConstrainedMetaModel } from '../../models';
+import {
+  ConstrainedMetaModel,
+  ConstrainedReferenceModel,
+  ConstrainedUnionModel
+} from '../../models';
 import { AbstractDependencyManager } from '../AbstractDependencyManager';
+import { unionIncludesBuiltInTypes } from './JavaConstrainer';
 import { JavaOptions } from './JavaGenerator';
 
 export class JavaDependencyManager extends AbstractDependencyManager {
-  constructor(public options: JavaOptions, dependencies: string[] = []) {
+  private modelDependencies: ConstrainedMetaModel[] = [];
+
+  constructor(
+    public options: JavaOptions,
+    dependencies: string[] = []
+  ) {
     super(dependencies);
   }
 
@@ -15,11 +25,25 @@ export class JavaDependencyManager extends AbstractDependencyManager {
     model: ConstrainedMetaModel,
     packageName: string
   ): string {
-    return model
-      .getNearestDependencies()
+    return [...this.modelDependencies, ...model.getNearestDependencies()]
+      .filter((dependencyModel) => {
+        if (dependencyModel instanceof ConstrainedUnionModel) {
+          return !unionIncludesBuiltInTypes(dependencyModel);
+        } else if (
+          dependencyModel instanceof ConstrainedReferenceModel &&
+          dependencyModel.ref instanceof ConstrainedUnionModel
+        ) {
+          return !unionIncludesBuiltInTypes(dependencyModel.ref);
+        }
+        return true;
+      })
       .map((dependencyModel) => {
         return this.renderImport(dependencyModel, packageName);
       })
       .join('\n');
+  }
+
+  addModelDependency(model: ConstrainedMetaModel): void {
+    this.modelDependencies.push(model);
   }
 }

@@ -4,22 +4,22 @@ exports[`JAVA_CONSTRAINTS_PRESET should render constraints annotations 1`] = `
 "public class Clazz {
   @NotNull
   @Min(0)
-  private Double minNumberProp;
+  private double minNumberProp;
   @NotNull
   @Max(99)
-  private Double maxNumberProp;
+  private double maxNumberProp;
   @Size(min=2, max=3)
   private Object[] arrayProp;
-  @Pattern(regexp=\\"^I_\\")
+  @Pattern(regexp=\\"^\\\\\\\\w+(\\\\\\"\\\\\\\\.\\\\\\\\w+)*$\\")
   @Size(min=3)
   private String stringProp;
   private Map<String, Object> additionalProperties;
 
-  public Double getMinNumberProp() { return this.minNumberProp; }
-  public void setMinNumberProp(Double minNumberProp) { this.minNumberProp = minNumberProp; }
+  public double getMinNumberProp() { return this.minNumberProp; }
+  public void setMinNumberProp(double minNumberProp) { this.minNumberProp = minNumberProp; }
 
-  public Double getMaxNumberProp() { return this.maxNumberProp; }
-  public void setMaxNumberProp(Double maxNumberProp) { this.maxNumberProp = maxNumberProp; }
+  public double getMaxNumberProp() { return this.maxNumberProp; }
+  public void setMaxNumberProp(double maxNumberProp) { this.maxNumberProp = maxNumberProp; }
 
   public Object[] getArrayProp() { return this.arrayProp; }
   public void setArrayProp(Object[] arrayProp) { this.arrayProp = arrayProp; }

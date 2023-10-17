@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Should be able to generate a model with functions to serialize the data model into JSON  and should log expected output to console 1`] = `
+exports[`Should be able to generate a model with functions to serialize the data model into JSON and should log expected output to console 1`] = `
 Array [
   "[JsonConverter(typeof(RootConverter))]
 public class Root
