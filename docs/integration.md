@@ -54,3 +54,20 @@ To be on the safeside, only enable the user to chose between the internal option
 
 ## Integrate Modelina in an AsyncAPI generator template
 TODO
+
+## Integrate Modelina into Maven
+
+There are at least two ways you can integrate Modelina into your build process for Maven projects, either with the AsyncAPI CLI or with a custom build script. Which one to choose all depends on your scenario, look below:
+
+**Custom build script**
+- DO work with other inputs then AsyncAPI
+- DO work when needing extensive build options and configurations
+
+Checkout the Maven example here: [Integrate Modelina into Maven](../examples/integrate-modelina-into-maven/maven-project/)
+
+**AsyncAPI CLI**
+
+- DO NOT work if you have other inputs then AsyncAPI
+- DO NOT need extensive build options and configuration
+
+We don't have a full example for this, but you can use similar concept as the custom build script. However, instead you just install and call the AsyncAPI CLI directly in the plugin execution when utilizing the [frontend-maven-plugin](https://github.com/eirslett/frontend-maven-plugin) and [more specifically the NPX execution](https://github.com/eirslett/frontend-maven-plugin#npx).

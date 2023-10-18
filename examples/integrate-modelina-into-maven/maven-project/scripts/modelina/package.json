@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@asyncapi/modelina": "file:../../../../",
+    "ts-node": "^10.3.0"
+  },
+  "scripts": {
+    "generate": "./node_modules/.bin/ts-node ./generate.ts",
+    "generate:windows": "..\\node_modules\\.bin\\ts-node .%\\generate.ts"
+  }
+}
