@@ -17,10 +17,6 @@ import INPUT from '../../asyncapi.json';
 const input = INPUT;
 
 // Generate all the files
-generator.generateToFiles(
-  input, 
-  FINAL_OUTPUT_PATH, 
-  {
-    packageName: 'java/com/mycompany/app'
-  }
-);
+generator.generateToFiles(input, FINAL_OUTPUT_PATH, {
+  packageName: 'com.mycompany.app'
+});
