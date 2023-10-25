@@ -120,7 +120,7 @@ async function start() {
   mainReadme = mainReadme.replace('<!-- toc -->', '');
   mainReadme = mainReadme.replace('<!-- tocstop -->', '');
   mainReadme = mainReadme.replace('../docs/contributing.md', 'https://github.com/asyncapi/modelina/tree/master/examples/../docs/contributing.md');
-  for (const exampleToIgnore of exampleToIgnore) {
+  for (const exampleToIgnore of examplesToIgnore) {
     mainReadme = mainReadme.replace(`- [${exampleToIgnore}](?selectedExample=${exampleToIgnore}/)`, `- [${exampleToIgnore}](https://github.com/asyncapi/modelina/tree/master/examples/${exampleToIgnore})`);
   }
   const readmePath = path.resolve(__dirname, '../config/examples_readme.json');
