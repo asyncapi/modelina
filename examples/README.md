@@ -70,7 +70,7 @@ These are all the basic generator examples that shows a bare minimal example of 
 These are examples of how you can integrate Modelina into a specific scenario:
 - [integrate-with-react](./integrate-with-react) - A basic example that shows how you can integrate Modelina with React.
 - [integrate-with-next](./integrate-with-next) - A basic example that shows how you can integrate Modelina with Next.
-- [integrate-modelina-into-maven/](./integrate-modelina-into-maven/) - A basic example that shows how you can integrate Modelina into the Java Maven build process.
+- [integrate-modelina-into-maven](./integrate-modelina-into-maven) - A basic example that shows how you can integrate Modelina into the Java Maven build process.
 
 ## Python
 These are all specific examples only relevant to the Python generator:
