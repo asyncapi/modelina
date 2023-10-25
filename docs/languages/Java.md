@@ -92,3 +92,6 @@ Currently not supported, [let everyone know you need it](https://github.com/asyn
 
 ### To and from binary
 Currently not supported, [let everyone know you need it](https://github.com/asyncapi/modelina/issues/new?assignees=&labels=enhancement&template=enhancement.md)!
+
+## Integrate Modelina into Maven
+We have created an example Maven project to show you how to generate AsyncAPI payload models from your AsyncAPI file and integrate it into the build process. [You can find the integration example here](../integration.md#integrate-modelina-into-maven).
