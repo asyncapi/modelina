@@ -1,7 +1,6 @@
 [build]
   command = "npm ci && npm run build:modelina && npm run build"
-  publish = ".next"
-  base = "modelina-website"
+  publish = "./.next"
 
 [build.environment]
   NODE_VERSION = "18.17.0"
