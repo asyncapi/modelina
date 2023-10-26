@@ -1,0 +1,15 @@
+[build]
+  command = "npm ci && npm run build:modelina && npm run build"
+  publish = ".next"
+  base = "modelina-website"
+
+[build.environment]
+  NODE_VERSION = "18.17.0"
+  NPM_VERSION = "9.6.7"
+  NEXT_PUBLIC_API_PATH = ".netlify/functions"
+
+[functions]
+  directory = ".next/server/pages/api"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
