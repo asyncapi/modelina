@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { HandlerEvent } from '@netlify/functions';
 import {
   defaultAsyncapiDocument,
   GenerateMessage,
@@ -61,7 +60,10 @@ export async function generateNewCode(message: GenerateMessage): Promise<UpdateM
   }
 }
 
-async function generate(req: NextApiRequest, res: NextApiResponse) {
+/**
+ * Next specific API function, why export default is necessary. Called when running locally.
+ */
+export default async function generate(req: NextApiRequest, res: NextApiResponse) {
   try {
     const message: GenerateMessage = JSON.parse(req.body);
     const response = await generateNewCode(message);
@@ -76,35 +78,5 @@ async function generate(req: NextApiRequest, res: NextApiResponse) {
     return res.status(500).json({
       error: e.message
     });
-  }
-}
-
-export default generate;
-
-/**
- * Netlify function specifi code, can be ignored in local development
- */
-export async function handler(event: HandlerEvent) {
-  if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: `Method ${event.httpMethod} Not Allowed` };
-  }
-  if (!event.body) {
-    return { statusCode: 405, body: 'Missing body' };
-  }
-  try {
-    const message = JSON.parse(event.body) as GenerateMessage;
-    const response = await generateNewCode(message);
-    return {
-      statusCode: 200,
-      body: JSON.stringify(response)
-    };
-  } catch (e) {
-    console.error(e);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        error: 'There was an error generating the models'
-      })
-    };
   }
 }
