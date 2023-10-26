@@ -110,4 +110,4 @@ const handler: Handler = async (event: HandlerEvent) => {
     };
   }
 }
-export { handler as default };
+export { handler as default, handler };
