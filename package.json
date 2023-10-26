@@ -51,7 +51,6 @@
     "typescript-json-schema": "^0.58.1"
   },
   "devDependencies": {
-    "@netlify/plugin-nextjs": "4.41.1",
     "@asyncapi/parserV1": "npm:@asyncapi/parser@^1.17.2",
     "@types/jest": "^27.0.2",
     "@typescript-eslint/eslint-plugin": "^6.7.5",

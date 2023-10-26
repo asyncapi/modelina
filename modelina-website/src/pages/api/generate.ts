@@ -64,23 +64,23 @@ export async function generateNewCode(message: GenerateMessage): Promise<UpdateM
 /**
  * Next specific API function, why export default is necessary. Called when running locally.
  */
-// export default async function generate(req: NextApiRequest, res: NextApiResponse) {
-//   try {
-//     const message: GenerateMessage = JSON.parse(req.body);
-//     const response = await generateNewCode(message);
-//     if (Object.keys(response).includes('models') && Object.values(response).length > 0) {
-//       return res.status(200).json(response);
-//     }
-//     else {
-//       throw new Error("Input is not an correct AsyncAPI document so it cannot be processed.");
-//     }
-//   } catch (e : any) {
-//     console.error(e);
-//     return res.status(500).json({
-//       error: e.message
-//     });
-//   }
-// }
+export default async function generate(req: NextApiRequest, res: NextApiResponse) {
+  try {
+    const message: GenerateMessage = JSON.parse(req.body);
+    const response = await generateNewCode(message);
+    if (Object.keys(response).includes('models') && Object.values(response).length > 0) {
+      return res.status(200).json(response);
+    }
+    else {
+      throw new Error("Input is not an correct AsyncAPI document so it cannot be processed.");
+    }
+  } catch (e : any) {
+    console.error(e);
+    return res.status(500).json({
+      error: e.message
+    });
+  }
+}
 
 /**
  * Netlify function specific code, can be ignored in local development.
@@ -110,4 +110,4 @@ const handler: Handler = async (event: HandlerEvent) => {
     };
   }
 }
-export { handler as default, handler };
+export { handler };

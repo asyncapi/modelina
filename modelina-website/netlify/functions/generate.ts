@@ -1,11 +1,10 @@
-import { generateNewCode } from "../../src/pages/api/generate";
-import { GenerateMessage } from "../../src/types";
+import { generateNewCode } from "@/pages/api/generate";
+import { GenerateMessage } from "@/types";
 import { Handler, HandlerEvent } from "@netlify/functions";
 
 /**
  * Netlify function specific code, can be ignored in local development.
  */
-
 const handler: Handler = async (event: HandlerEvent) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: `Method ${event.httpMethod} Not Allowed` };
@@ -30,4 +29,4 @@ const handler: Handler = async (event: HandlerEvent) => {
     };
   }
 }
-export { handler as default };
+export { handler };
