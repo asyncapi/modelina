@@ -50,6 +50,32 @@ describe('PhpGenerator', () => {
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot();
     });
+
+    test('should render `enum` with presets applied', async () => {
+      const doc = {
+        $id: 'Things',
+        enum: ['A', 'B', 'C']
+      };
+
+      generator = new PhpGenerator({
+        presets: [
+          {
+            enum: {
+              self({ content }) {
+                return `${content}// self content`;
+              },
+              additionalContent({ content }) {
+                return `${content}// additional content`;
+              }
+            }
+          }
+        ]
+      });
+
+      const models = await generator.generate(doc);
+      expect(models).toHaveLength(1);
+      expect(models[0].result).toMatchSnapshot();
+    });
   });
   describe('Class', () => {
     test('should not render reserved keyword', async () => {

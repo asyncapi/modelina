@@ -77,9 +77,9 @@ function renderArraySerialization(
   return `let ${propName}: any[] = [];
   for (const unionItem of ${modelInstanceVariable}) {
     ${propName}.push(\`${renderMarshalProperty(
-    'unionItem',
-    arrayModel.valueModel
-  )}\`);
+      'unionItem',
+      arrayModel.valueModel
+    )}\`);
   }
   json += \`"${unconstrainedProperty}": [\${${propName}.join(',')}],\`;`;
 }
@@ -226,13 +226,18 @@ function renderUnmarshalProperty(
 function renderUnmarshalProperties(model: ConstrainedObjectModel) {
   const properties = model.properties || {};
   const propertyKeys = [...Object.entries(properties)];
-  const propertyNames = propertyKeys.map(([name]) => {
-    return name;
+  const originalPropertyNames = propertyKeys.map(([, model]) => {
+    return model.unconstrainedPropertyName;
   });
   //These are a bit special as 'unwrap' dictionary models means they have to be unwrapped within the JSON object.
   const unwrapDictionaryProperties = [];
   const normalProperties = [];
   for (const entry of propertyKeys) {
+    // if const value exists, we don't need to unmarshal this property because it exist in the class/interface
+    if (entry[1].property.options.const) {
+      continue;
+    }
+
     if (
       entry[1].property instanceof ConstrainedDictionaryModel &&
       entry[1].property.serializationType === 'unwrap'
@@ -271,7 +276,7 @@ function renderUnmarshalProperties(model: ConstrainedObjectModel) {
       `instance.${prop}.set(key, ${unmarshalCode});`
     );
   }
-  const corePropertyKeys = propertyNames
+  const corePropertyKeys = originalPropertyNames
     .map((propertyKey) => `"${propertyKey}"`)
     .join(',');
   const unwrappedDictionaryCode =

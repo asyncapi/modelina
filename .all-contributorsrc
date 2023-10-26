@@ -635,6 +635,122 @@
         "example",
         "doc"
       ]
+    },
+    {
+      "login": "SumantxD",
+      "name": "Sumant.xD",
+      "avatar_url": "https://avatars.githubusercontent.com/u/65810424?v=4",
+      "profile": "https://github.com/SumantxD",
+      "contributions": [
+        "test",
+        "infra",
+        "code"
+      ]
+    },
+    {
+      "login": "aryanas159",
+      "name": "Aryan Singh",
+      "avatar_url": "https://avatars.githubusercontent.com/u/114330931?v=4",
+      "profile": "https://github.com/aryanas159",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "markuspoerschke",
+      "name": "Markus Poerschke",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1222377?v=4",
+      "profile": "http://markus.poerschke.nrw",
+      "contributions": [
+        "code",
+        "test",
+        "example",
+        "doc"
+      ]
+    },
+    {
+      "login": "jamesmoey",
+      "name": "James Moey",
+      "avatar_url": "https://avatars.githubusercontent.com/u/457472?v=4",
+      "profile": "https://github.com/jamesmoey",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "tomwolanski",
+      "name": "tomwolanski",
+      "avatar_url": "https://avatars.githubusercontent.com/u/68085653?v=4",
+      "profile": "https://github.com/tomwolanski",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "Ksisa",
+      "name": "Kristupas",
+      "avatar_url": "https://avatars.githubusercontent.com/u/53404771?v=4",
+      "profile": "https://github.com/Ksisa",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Devansh-Bhatt",
+      "name": "Devansh-Bhatt",
+      "avatar_url": "https://avatars.githubusercontent.com/u/94732079?v=4",
+      "profile": "https://github.com/Devansh-Bhatt",
+      "contributions": [
+        "test",
+        "infra"
+      ]
+    },
+    {
+      "login": "pipliya",
+      "name": "Ansh Pancholi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/56186142?v=4",
+      "profile": "https://github.com/pipliya",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Qypol342",
+      "name": "Maeght Loan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/37497007?v=4",
+      "profile": "https://github.com/Qypol342",
+      "contributions": [
+        "code",
+        "doc"
+      ]
+    },
+    {
+      "login": "princerajpoot20",
+      "name": "Prince Rajpoot",
+      "avatar_url": "https://avatars.githubusercontent.com/u/44585452?v=4",
+      "profile": "http://princerajpoot.com",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "harshit-senpai",
+      "name": "harshit mishra ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/93075068?v=4",
+      "profile": "https://github.com/harshit-senpai",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "PeteAudinate",
+      "name": "PeteAudinate",
+      "avatar_url": "https://avatars.githubusercontent.com/u/99274874?v=4",
+      "profile": "https://github.com/PeteAudinate",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

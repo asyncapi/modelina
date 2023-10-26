@@ -4,9 +4,9 @@ exports[`Should be able to render collections in C# as IEnumerable and should lo
 Array [
   "public class Root
 {
-  private IEnumerable<dynamic>? email;
+  private IEnumerable<string>? email;
 
-  public IEnumerable<dynamic>? Email 
+  public IEnumerable<string>? Email 
   {
     get { return email; }
     set { email = value; }

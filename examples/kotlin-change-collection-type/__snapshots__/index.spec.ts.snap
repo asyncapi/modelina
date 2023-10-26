@@ -3,7 +3,7 @@
 exports[`Should be able to render collections in Kotlin as Array and should log expected output to console 1`] = `
 Array [
   "data class Root(
-    val email: Array<String>,
+    val email: Array<String>? = null,
 )",
 ]
 `;

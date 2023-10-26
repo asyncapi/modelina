@@ -1,5 +1,7 @@
 import {
   AbstractGenerator,
+  AbstractGeneratorRenderArgs,
+  AbstractGeneratorRenderCompleteModelArgs,
   CommonGeneratorOptions,
   defaultGeneratorOptions
 } from '../AbstractGenerator';
@@ -121,26 +123,32 @@ export class CplusplusGenerator extends AbstractGenerator<
    * @param inputModel
    */
   render(
-    model: ConstrainedMetaModel,
-    inputModel: InputMetaModel,
-    options?: DeepPartial<CplusplusOptions>
+    args: AbstractGeneratorRenderArgs<CplusplusOptions>
   ): Promise<RenderOutput> {
     const optionsToUse = CplusplusGenerator.getOptions({
       ...this.options,
-      ...options
+      ...args.options
     });
     if (isReservedCplusplusKeyword(optionsToUse.namespace)) {
       throw new Error(
         `You cannot use reserved C++ keyword (${optionsToUse.namespace}) as namespace, please use another.`
       );
     }
-    if (model instanceof ConstrainedObjectModel) {
-      return this.renderClass(model, inputModel, optionsToUse);
-    } else if (model instanceof ConstrainedEnumModel) {
-      return this.renderEnum(model, inputModel, optionsToUse);
+    if (args.constrainedModel instanceof ConstrainedObjectModel) {
+      return this.renderClass(
+        args.constrainedModel,
+        args.inputModel,
+        optionsToUse
+      );
+    } else if (args.constrainedModel instanceof ConstrainedEnumModel) {
+      return this.renderEnum(
+        args.constrainedModel,
+        args.inputModel,
+        optionsToUse
+      );
     }
     Logger.warn(
-      `C++ generator, cannot generate this type of model, ${model.name}`
+      `C++ generator, cannot generate this type of model, ${args.constrainedModel.name}`
     );
     return Promise.resolve(
       RenderOutput.toRenderOutput({
@@ -161,30 +169,35 @@ export class CplusplusGenerator extends AbstractGenerator<
    * @param options used to render the full output
    */
   async renderCompleteModel(
-    model: ConstrainedMetaModel,
-    inputModel: InputMetaModel,
-    completeModelOptions: Partial<CplusplusRenderCompleteModelOptions>,
-    options: DeepPartial<CplusplusOptions>
+    args: AbstractGeneratorRenderCompleteModelArgs<
+      CplusplusOptions,
+      CplusplusRenderCompleteModelOptions
+    >
   ): Promise<RenderOutput> {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const completeModelOptionsToUse = mergePartialAndDefault(
       CplusplusGenerator.defaultCompleteModelOptions,
-      completeModelOptions
+      args.completeOptions
     ) as CplusplusRenderCompleteModelOptions;
     const optionsToUse = CplusplusGenerator.getOptions({
       ...this.options,
-      ...options
+      ...args.options
     });
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
 
-    const outputModel = await this.render(model, inputModel, {
-      ...optionsToUse,
-      dependencyManager: dependencyManagerToUse
+    const outputModel = await this.render({
+      ...args,
+      options: {
+        ...optionsToUse,
+        dependencyManager: dependencyManagerToUse
+      }
     });
 
-    const imports = model.getNearestDependencies().map((model) => {
-      return `#include "${model.name}.hpp"`;
-    });
+    const imports = args.constrainedModel
+      .getNearestDependencies()
+      .map((model) => {
+        return `#include "${model.name}.hpp"`;
+      });
     const formattedOutputResult = FormatHelpers.indent(
       outputModel.result,
       2,

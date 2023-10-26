@@ -1,5 +1,839 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`JavaGenerator oneOf/discriminator should create an interface 1`] = `
+Array [
+  "/**
+ * Vehicle represents a union of types: Car, Truck
+ */
+public interface Vehicle {
+  VehicleType getVehicleType();
+}",
+  "public class Car implements Vehicle {
+  private final VehicleType vehicleType = VehicleType.CAR;
+  private Map<String, Object> additionalProperties;
+
+  public VehicleType getVehicleType() { return this.vehicleType; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+  "public enum VehicleType {
+  CAR((String)\\"Car\\"), TRUCK((String)\\"Truck\\");
+
+  private String value;
+
+  VehicleType(String value) {
+    this.value = value;
+  }
+
+  public String getValue() {
+    return value;
+  }
+
+  public static VehicleType fromValue(String value) {
+    for (VehicleType e : VehicleType.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+}",
+  "public class Truck implements Vehicle {
+  private final VehicleType vehicleType = VehicleType.TRUCK;
+  private Map<String, Object> additionalProperties;
+
+  public VehicleType getVehicleType() { return this.vehicleType; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+]
+`;
+
+exports[`JavaGenerator oneOf/discriminator with jackson preset date-time format should render java.time.OffsetDateTime 1`] = `
+Array [
+  "public class Event {
+  @NotNull
+  @JsonProperty(\\"action\\")
+  private Action action;
+  @JsonProperty(\\"event_time\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private java.time.OffsetDateTime eventTime;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public Action getAction() { return this.action; }
+  public void setAction(Action action) { this.action = action; }
+
+  public java.time.OffsetDateTime getEventTime() { return this.eventTime; }
+  public void setEventTime(java.time.OffsetDateTime eventTime) { this.eventTime = eventTime; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Event self = (Event) o;
+      return 
+        Objects.equals(this.action, self.action) &&
+        Objects.equals(this.eventTime, self.eventTime) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)action, (Object)eventTime, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Event {\\\\n\\" +   
+      \\"    action: \\" + toIndentedString(action) + \\"\\\\n\\" +
+      \\"    eventTime: \\" + toIndentedString(eventTime) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+  "public enum Action {
+  ADD((String)\\"ADD\\"), UPDATE((String)\\"UPDATE\\"), DELETE((String)\\"DELETE\\");
+
+  private String value;
+
+  Action(String value) {
+    this.value = value;
+  }
+
+  @JsonValue
+  public String getValue() {
+    return value;
+  }
+
+  @JsonCreator
+  public static Action fromValue(String value) {
+    for (Action e : Action.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+}",
+]
+`;
+
+exports[`JavaGenerator oneOf/discriminator with jackson preset handle allOf with const in CloudEvent type 1`] = `
+Array [
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"type\\", visible=true)
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = Dog.class, name = \\"Dog\\"),
+  @JsonSubTypes.Type(value = Cat.class, name = \\"Cat\\")
+})
+/**
+ * Pet represents a union of types: Dog, Cat
+ */
+public interface Pet {
+  CloudEventType getType();
+}",
+  "public class Dog implements Pet {
+  @NotNull
+  @JsonProperty(\\"id\\")
+  private String id;
+  @NotNull
+  @JsonProperty(\\"source\\")
+  private String source;
+  @NotNull
+  @JsonProperty(\\"specversion\\")
+  private final String specversion = \\"1.0\\";
+  @NotNull
+  @JsonProperty(\\"type\\")
+  private final CloudEventType type = CloudEventType.DOG;
+  @JsonProperty(\\"dataschema\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String dataschema;
+  @JsonProperty(\\"time\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private java.time.OffsetDateTime time;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public String getId() { return this.id; }
+  public void setId(String id) { this.id = id; }
+
+  public String getSource() { return this.source; }
+  public void setSource(String source) { this.source = source; }
+
+  public String getSpecversion() { return this.specversion; }
+
+  public CloudEventType getType() { return this.type; }
+
+  public String getDataschema() { return this.dataschema; }
+  public void setDataschema(String dataschema) { this.dataschema = dataschema; }
+
+  public java.time.OffsetDateTime getTime() { return this.time; }
+  public void setTime(java.time.OffsetDateTime time) { this.time = time; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Dog self = (Dog) o;
+      return 
+        Objects.equals(this.id, self.id) &&
+        Objects.equals(this.source, self.source) &&
+        Objects.equals(this.specversion, self.specversion) &&
+        Objects.equals(this.type, self.type) &&
+        Objects.equals(this.dataschema, self.dataschema) &&
+        Objects.equals(this.time, self.time) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)id, (Object)source, (Object)specversion, (Object)type, (Object)dataschema, (Object)time, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Dog {\\\\n\\" +   
+      \\"    id: \\" + toIndentedString(id) + \\"\\\\n\\" +
+      \\"    source: \\" + toIndentedString(source) + \\"\\\\n\\" +
+      \\"    specversion: \\" + toIndentedString(specversion) + \\"\\\\n\\" +
+      \\"    type: \\" + toIndentedString(type) + \\"\\\\n\\" +
+      \\"    dataschema: \\" + toIndentedString(dataschema) + \\"\\\\n\\" +
+      \\"    time: \\" + toIndentedString(time) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+  "public enum CloudEventType {
+  DOG((String)\\"Dog\\"), CAT((String)\\"Cat\\");
+
+  private String value;
+
+  CloudEventType(String value) {
+    this.value = value;
+  }
+
+  @JsonValue
+  public String getValue() {
+    return value;
+  }
+
+  @JsonCreator
+  public static CloudEventType fromValue(String value) {
+    for (CloudEventType e : CloudEventType.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+}",
+  "public class Cat implements Pet {
+  @NotNull
+  @JsonProperty(\\"id\\")
+  private String id;
+  @NotNull
+  @JsonProperty(\\"source\\")
+  private String source;
+  @NotNull
+  @JsonProperty(\\"specversion\\")
+  private final String specversion = \\"1.0\\";
+  @NotNull
+  @JsonProperty(\\"type\\")
+  private final CloudEventType type = CloudEventType.CAT;
+  @JsonProperty(\\"dataschema\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String dataschema;
+  @JsonProperty(\\"time\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private java.time.OffsetDateTime time;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public String getId() { return this.id; }
+  public void setId(String id) { this.id = id; }
+
+  public String getSource() { return this.source; }
+  public void setSource(String source) { this.source = source; }
+
+  public String getSpecversion() { return this.specversion; }
+
+  public CloudEventType getType() { return this.type; }
+
+  public String getDataschema() { return this.dataschema; }
+  public void setDataschema(String dataschema) { this.dataschema = dataschema; }
+
+  public java.time.OffsetDateTime getTime() { return this.time; }
+  public void setTime(java.time.OffsetDateTime time) { this.time = time; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Cat self = (Cat) o;
+      return 
+        Objects.equals(this.id, self.id) &&
+        Objects.equals(this.source, self.source) &&
+        Objects.equals(this.specversion, self.specversion) &&
+        Objects.equals(this.type, self.type) &&
+        Objects.equals(this.dataschema, self.dataschema) &&
+        Objects.equals(this.time, self.time) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)id, (Object)source, (Object)specversion, (Object)type, (Object)dataschema, (Object)time, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Cat {\\\\n\\" +   
+      \\"    id: \\" + toIndentedString(id) + \\"\\\\n\\" +
+      \\"    source: \\" + toIndentedString(source) + \\"\\\\n\\" +
+      \\"    specversion: \\" + toIndentedString(specversion) + \\"\\\\n\\" +
+      \\"    type: \\" + toIndentedString(type) + \\"\\\\n\\" +
+      \\"    dataschema: \\" + toIndentedString(dataschema) + \\"\\\\n\\" +
+      \\"    time: \\" + toIndentedString(time) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+]
+`;
+
+exports[`JavaGenerator oneOf/discriminator with jackson preset handle one const with discriminator 1`] = `
+Array [
+  "public class Dog {
+  @NotNull
+  @JsonProperty(\\"id\\")
+  private String id;
+  @NotNull
+  @JsonProperty(\\"type\\")
+  private final CloudEventType type = CloudEventType.DOG;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public String getId() { return this.id; }
+  public void setId(String id) { this.id = id; }
+
+  public CloudEventType getType() { return this.type; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Dog self = (Dog) o;
+      return 
+        Objects.equals(this.id, self.id) &&
+        Objects.equals(this.type, self.type) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)id, (Object)type, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Dog {\\\\n\\" +   
+      \\"    id: \\" + toIndentedString(id) + \\"\\\\n\\" +
+      \\"    type: \\" + toIndentedString(type) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+  "public enum CloudEventType {
+  DOG((String)\\"Dog\\");
+
+  private String value;
+
+  CloudEventType(String value) {
+    this.value = value;
+  }
+
+  @JsonValue
+  public String getValue() {
+    return value;
+  }
+
+  @JsonCreator
+  public static CloudEventType fromValue(String value) {
+    for (CloudEventType e : CloudEventType.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+}",
+]
+`;
+
+exports[`JavaGenerator oneOf/discriminator with jackson preset handle setting title with const 1`] = `
+Array [
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"type\\", visible=true)
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = Dog.class, name = \\"Dog\\"),
+  @JsonSubTypes.Type(value = Cat.class, name = \\"Cat\\")
+})
+/**
+ * Pet represents a union of types: Dog, Cat
+ */
+public interface Pet {
+  
+}",
+  "public class Dog implements Pet {
+  @NotNull
+  @JsonProperty(\\"type\\")
+  private final DogType type = DogType.DOG;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public DogType getType() { return this.type; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Dog self = (Dog) o;
+      return 
+        Objects.equals(this.type, self.type) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)type, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Dog {\\\\n\\" +   
+      \\"    type: \\" + toIndentedString(type) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+  "public enum DogType {
+  DOG((String)\\"Dog\\");
+
+  private String value;
+
+  DogType(String value) {
+    this.value = value;
+  }
+
+  @JsonValue
+  public String getValue() {
+    return value;
+  }
+
+  @JsonCreator
+  public static DogType fromValue(String value) {
+    for (DogType e : DogType.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+}",
+  "public class Cat implements Pet {
+  @NotNull
+  @JsonProperty(\\"type\\")
+  private final CatType type = CatType.CAT;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public CatType getType() { return this.type; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Cat self = (Cat) o;
+      return 
+        Objects.equals(this.type, self.type) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)type, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Cat {\\\\n\\" +   
+      \\"    type: \\" + toIndentedString(type) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+  "public enum CatType {
+  CAT((String)\\"Cat\\");
+
+  private String value;
+
+  CatType(String value) {
+    this.value = value;
+  }
+
+  @JsonValue
+  public String getValue() {
+    return value;
+  }
+
+  @JsonCreator
+  public static CatType fromValue(String value) {
+    for (CatType e : CatType.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+}",
+]
+`;
+
+exports[`JavaGenerator oneOf/discriminator with jackson preset should create an interface for child models 1`] = `
+Array [
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"vehicleType\\", visible=true)
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = Car.class, name = \\"Car\\"),
+  @JsonSubTypes.Type(value = Truck.class, name = \\"Truck\\")
+})
+/**
+ * Vehicle represents a union of types: Car, Truck
+ */
+public interface Vehicle {
+  VehicleType getVehicleType();
+}",
+  "public class Cargo {
+  @JsonProperty(\\"vehicle\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Vehicle vehicle;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public Vehicle getVehicle() { return this.vehicle; }
+  public void setVehicle(Vehicle vehicle) { this.vehicle = vehicle; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Cargo self = (Cargo) o;
+      return 
+        Objects.equals(this.vehicle, self.vehicle) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)vehicle, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Cargo {\\\\n\\" +   
+      \\"    vehicle: \\" + toIndentedString(vehicle) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+  "public class Car implements Vehicle {
+  @NotNull
+  @JsonProperty(\\"vehicleType\\")
+  private final VehicleType vehicleType = VehicleType.CAR;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public VehicleType getVehicleType() { return this.vehicleType; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Car self = (Car) o;
+      return 
+        Objects.equals(this.vehicleType, self.vehicleType) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)vehicleType, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Car {\\\\n\\" +   
+      \\"    vehicleType: \\" + toIndentedString(vehicleType) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+  "public enum VehicleType {
+  CAR((String)\\"Car\\"), TRUCK((String)\\"Truck\\");
+
+  private String value;
+
+  VehicleType(String value) {
+    this.value = value;
+  }
+
+  @JsonValue
+  public String getValue() {
+    return value;
+  }
+
+  @JsonCreator
+  public static VehicleType fromValue(String value) {
+    for (VehicleType e : VehicleType.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+}",
+  "public class Truck implements Vehicle {
+  @NotNull
+  @JsonProperty(\\"vehicleType\\")
+  private final VehicleType vehicleType = VehicleType.TRUCK;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public VehicleType getVehicleType() { return this.vehicleType; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Truck self = (Truck) o;
+      return 
+        Objects.equals(this.vehicleType, self.vehicleType) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)vehicleType, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Truck {\\\\n\\" +   
+      \\"    vehicleType: \\" + toIndentedString(vehicleType) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+]
+`;
+
 exports[`JavaGenerator should not render reserved keyword 1`] = `
 "public class Address {
   private String reservedReservedEnum;
@@ -14,11 +848,15 @@ exports[`JavaGenerator should not render reserved keyword 1`] = `
 `;
 
 exports[`JavaGenerator should render \`class\` type 1`] = `
-"public class Address {
+Array [
+  "",
+  "",
+  "",
+  "public class Address {
   private String streetName;
   private String city;
   private String state;
-  private Double houseNumber;
+  private double houseNumber;
   private Boolean marriage;
   private Object members;
   private Object[] arrayType;
@@ -33,8 +871,8 @@ exports[`JavaGenerator should render \`class\` type 1`] = `
   public String getState() { return this.state; }
   public void setState(String state) { this.state = state; }
 
-  public Double getHouseNumber() { return this.houseNumber; }
-  public void setHouseNumber(Double houseNumber) { this.houseNumber = houseNumber; }
+  public double getHouseNumber() { return this.houseNumber; }
+  public void setHouseNumber(double houseNumber) { this.houseNumber = houseNumber; }
 
   public Boolean getMarriage() { return this.marriage; }
   public void setMarriage(Boolean marriage) { this.marriage = marriage; }
@@ -47,7 +885,8 @@ exports[`JavaGenerator should render \`class\` type 1`] = `
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-}"
+}",
+]
 `;
 
 exports[`JavaGenerator should render \`enum\` type (integer type) 1`] = `
@@ -211,14 +1050,27 @@ exports[`JavaGenerator should render enums with translated special characters 1`
 `;
 
 exports[`JavaGenerator should render models and their dependencies 1`] = `
-"package test.packageName;
+Array [
+  "package test.packageName;
+
+
+",
+  "package test.packageName;
+
+
+",
+  "package test.packageName;
+
+
+",
+  "package test.packageName;
 import test.packageName.OtherModel;
 import java.util.Map;
 public class Address {
   private String streetName;
   private String city;
   private String state;
-  private Double houseNumber;
+  private double houseNumber;
   private Boolean marriage;
   private Object members;
   private Object[] arrayType;
@@ -234,8 +1086,8 @@ public class Address {
   public String getState() { return this.state; }
   public void setState(String state) { this.state = state; }
 
-  public Double getHouseNumber() { return this.houseNumber; }
-  public void setHouseNumber(Double houseNumber) { this.houseNumber = houseNumber; }
+  public double getHouseNumber() { return this.houseNumber; }
+  public void setHouseNumber(double houseNumber) { this.houseNumber = houseNumber; }
 
   public Boolean getMarriage() { return this.marriage; }
   public void setMarriage(Boolean marriage) { this.marriage = marriage; }
@@ -251,11 +1103,8 @@ public class Address {
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-}"
-`;
-
-exports[`JavaGenerator should render models and their dependencies 2`] = `
-"package test.packageName;
+}",
+  "package test.packageName;
 
 import java.util.Map;
 public class OtherModel {
@@ -267,7 +1116,8 @@ public class OtherModel {
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-}"
+}",
+]
 `;
 
 exports[`JavaGenerator should work custom preset for \`class\` type 1`] = `

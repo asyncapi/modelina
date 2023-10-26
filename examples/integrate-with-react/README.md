@@ -1,6 +1,6 @@
-# Generate JavaScript Models
+# Integrate with React
 
-A basic example to generate JavaScript data models
+A basic example of how to integrate Modelina into React.
 
 ## How to run this example
 

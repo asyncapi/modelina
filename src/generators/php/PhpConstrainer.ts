@@ -1,4 +1,5 @@
 import { TypeMapping } from '../../helpers';
+import { defaultConstantConstraints } from './constrainer/ConstantConstrainer';
 import {
   defaultEnumKeyConstraints,
   defaultEnumValueConstraints
@@ -56,5 +57,6 @@ export const PhpDefaultConstraints = {
   enumKey: defaultEnumKeyConstraints(),
   enumValue: defaultEnumValueConstraints(),
   modelName: defaultModelNameConstraints(),
-  propertyKey: defaultPropertyKeyConstraints()
+  propertyKey: defaultPropertyKeyConstraints(),
+  constant: defaultConstantConstraints()
 };

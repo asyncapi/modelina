@@ -26,16 +26,17 @@ describe('DependencyHelper', () => {
   });
   describe('makeUnique', () => {
     test('should remove duplicate regular instances', () => {
-      const stringModel = new ConstrainedStringModel('', undefined, '');
+      const stringModel = new ConstrainedStringModel('', undefined, {}, '');
       const nonUniqueArray = [stringModel, stringModel];
       const uniqueArray = makeUnique(nonUniqueArray);
       expect(uniqueArray).toHaveLength(1);
     });
     test('should remove duplicate reference instances', () => {
-      const stringModel = new ConstrainedStringModel('', undefined, '');
+      const stringModel = new ConstrainedStringModel('', undefined, {}, '');
       const ref1 = new ConstrainedReferenceModel(
         '',
         undefined,
+        {},
         '',
         stringModel
       );
@@ -44,16 +45,18 @@ describe('DependencyHelper', () => {
       expect(uniqueArray).toHaveLength(1);
     });
     test('should remove duplicate reference instances if the same name but different instance', () => {
-      const stringModel = new ConstrainedStringModel('', undefined, '');
+      const stringModel = new ConstrainedStringModel('', undefined, {}, '');
       const ref1 = new ConstrainedReferenceModel(
         'name',
         undefined,
+        {},
         '',
         stringModel
       );
       const ref2 = new ConstrainedReferenceModel(
         'name',
         undefined,
+        {},
         '',
         stringModel
       );
@@ -62,16 +65,18 @@ describe('DependencyHelper', () => {
       expect(uniqueArray).toHaveLength(1);
     });
     test('should remove duplicate reference value instances', () => {
-      const stringModel = new ConstrainedStringModel('', undefined, '');
+      const stringModel = new ConstrainedStringModel('', undefined, {}, '');
       const ref1 = new ConstrainedReferenceModel(
         '',
         undefined,
+        {},
         '',
         stringModel
       );
       const ref2 = new ConstrainedReferenceModel(
         '',
         undefined,
+        {},
         '',
         stringModel
       );
@@ -80,14 +85,15 @@ describe('DependencyHelper', () => {
       expect(uniqueArray).toHaveLength(1);
     });
     test('should remove duplicate name and type models', () => {
-      const stringModel = new ConstrainedStringModel('', undefined, '');
+      const stringModel = new ConstrainedStringModel('', undefined, {}, '');
       const ref = new ConstrainedReferenceModel(
         'name',
         undefined,
+        {},
         'type',
         stringModel
       );
-      const any = new ConstrainedAnyModel('name', undefined, 'type');
+      const any = new ConstrainedAnyModel('name', undefined, {}, 'type');
       const nonUniqueArray = [ref, any];
       const uniqueArray = makeUnique(nonUniqueArray);
       expect(uniqueArray).toHaveLength(1);

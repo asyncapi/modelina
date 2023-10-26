@@ -123,7 +123,7 @@ describe('CommonModel', () => {
     });
   });
   describe('extend', () => {
-    test('should return a string ', () => {
+    test('should return a string', () => {
       const doc = { extend: 'reference' };
       const d = CommonModel.toCommonModel(doc);
       expect(d.extend).not.toBeUndefined();
@@ -243,6 +243,33 @@ describe('CommonModel', () => {
         const doc2 = CommonModel.toCommonModel(doc);
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
         expect(doc1.required).toBeUndefined();
+      });
+    });
+    describe('format', () => {
+      test('should be merged when only right side is defined', () => {
+        const doc = {};
+        let doc1 = CommonModel.toCommonModel(doc);
+        const doc2 = CommonModel.toCommonModel(doc);
+        doc2.format = 'date-time';
+        doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
+        expect(doc1.format).toEqual(doc2.format);
+      });
+      test('should not be merged when both sides are defined', () => {
+        const doc = {};
+        let doc1 = CommonModel.toCommonModel(doc);
+        const doc2 = CommonModel.toCommonModel(doc);
+        doc2.format = 'date-time';
+        doc1.format = 'date';
+        doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
+        expect(doc1.format).not.toEqual(doc2.format);
+        expect(doc1.format).toEqual('date');
+      });
+      test('should not change if nothing is defined', () => {
+        const doc = {};
+        let doc1 = CommonModel.toCommonModel(doc);
+        const doc2 = CommonModel.toCommonModel(doc);
+        doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
+        expect(doc1.format).toBeUndefined();
       });
     });
     describe('extend', () => {
@@ -530,6 +557,84 @@ describe('CommonModel', () => {
         expect(dogModel.properties).toHaveProperty('name');
         expect(dogModel.properties).toHaveProperty('packSize');
         expect(dogModel.properties).not.toHaveProperty('huntingSkill');
+      });
+      test('should not carry over properties to other models when mergeTo property is anonymous_schema', () => {
+        const pet = {
+          title: 'Pet',
+          type: 'object',
+          properties: {
+            breed: {
+              $id: 'anonymous_schema_1',
+              type: 'string'
+            }
+          }
+        };
+        const petModel = CommonModel.toCommonModel(pet);
+
+        const cat = {};
+        const catModel = CommonModel.toCommonModel(cat);
+        CommonModel.mergeCommonModels(catModel, petModel, cat);
+        CommonModel.mergeCommonModels(
+          catModel,
+          CommonModel.toCommonModel({
+            title: 'Cat',
+            properties: {
+              breed: {
+                $id: 'CatBreed',
+                type: 'string'
+              }
+            }
+          }),
+          cat
+        );
+
+        const dog = {};
+        const dogModel = CommonModel.toCommonModel(dog);
+        CommonModel.mergeCommonModels(dogModel, petModel, dog);
+        CommonModel.mergeCommonModels(
+          dogModel,
+          CommonModel.toCommonModel({
+            title: 'Dog',
+            properties: {
+              breed: {
+                $id: 'DogBreed',
+                type: 'string'
+              }
+            }
+          }),
+          dog
+        );
+
+        expect(catModel.properties).toHaveProperty('breed');
+        expect(catModel.properties?.breed.$id).toBe('CatBreed');
+
+        expect(dogModel.properties).toHaveProperty('breed');
+        expect(dogModel.properties?.breed.$id).toBe('DogBreed');
+      });
+      test('should be merged when mergeTo property is anonymous_schema and mergeFrom property is not anonymous_schema', () => {
+        const doc = {
+          $id: 'CloudEvent',
+          type: 'object',
+          properties: {
+            type: {
+              $id: 'anonymous_schema_1',
+              type: 'string'
+            }
+          }
+        };
+        const mergeTo = CommonModel.toCommonModel(doc);
+        const mergeFrom = CommonModel.toCommonModel({
+          $id: 'Cat',
+          type: 'object',
+          properties: {
+            type: {
+              $id: 'CatType',
+              const: 'Cat'
+            }
+          }
+        });
+        const merged = CommonModel.mergeCommonModels(mergeTo, mergeFrom, doc);
+        expect(merged.properties?.type.$id).toContain('CatType');
       });
     });
 

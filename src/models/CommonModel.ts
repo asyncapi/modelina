@@ -1,5 +1,16 @@
 import { Logger } from '../utils';
 
+export interface MergingOptions {
+  /**
+   * When models are merged, should merging models constrict the `merging to` model?
+   * If false, `required` keyword would no longer be applied from the `merging from` model.
+   */
+  constrictModels?: boolean;
+}
+export const defaultMergingOptions: MergingOptions = {
+  constrictModels: true
+};
+
 /**
  * Common internal representation for a model.
  */
@@ -9,6 +20,8 @@ export class CommonModel {
   $id?: string;
   type?: string | string[];
   enum?: any[];
+  const?: unknown;
+  discriminator?: string;
   items?: CommonModel | CommonModel[];
   properties?: { [key: string]: CommonModel };
   additionalProperties?: CommonModel;
@@ -16,6 +29,7 @@ export class CommonModel {
   required?: string[];
   additionalItems?: CommonModel;
   union?: CommonModel[];
+  format?: string;
 
   /**
    * Takes a deep copy of the input object and converts it to an instance of CommonModel.
@@ -433,6 +447,15 @@ export class CommonModel {
   }
 
   /**
+   * Returns true if the $id of a CommonModel includes anonymous_schema
+   *
+   * @param commonModel
+   */
+  private static idIncludesAnonymousSchema(commonModel: CommonModel) {
+    return commonModel.$id?.includes('anonymous_schema');
+  }
+
+  /**
    * Merge two common model properties together
    *
    * @param mergeTo
@@ -444,7 +467,8 @@ export class CommonModel {
     mergeTo: CommonModel,
     mergeFrom: CommonModel,
     originalInput: any,
-    alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()
+    alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map(),
+    options: MergingOptions = defaultMergingOptions
   ) {
     if (!mergeTo.properties) {
       mergeTo.properties = mergeFrom.properties;
@@ -471,12 +495,29 @@ export class CommonModel {
           mergeFrom,
           originalInput
         );
-        mergeTo.properties[String(propName)] = CommonModel.mergeCommonModels(
-          mergeTo.properties[String(propName)],
+
+        // takes a deep copy of the mergeTo model if the id of mergeTo is anonymous to avoid carrying over properties to other models
+        const mergeToModel = CommonModel.idIncludesAnonymousSchema(
+          mergeTo.properties[String(propName)]
+        )
+          ? CommonModel.toCommonModel(mergeTo.properties[String(propName)])
+          : mergeTo.properties[String(propName)];
+
+        const mergedModel = CommonModel.mergeCommonModels(
+          mergeToModel,
           propValue,
           originalInput,
-          alreadyIteratedModels
+          alreadyIteratedModels,
+          options
         );
+
+        if (propValue.const) {
+          mergeTo.properties[String(propName)] =
+            CommonModel.toCommonModel(mergedModel);
+          mergeTo.properties[String(propName)].const = propValue.const;
+        } else {
+          mergeTo.properties[String(propName)] = mergedModel;
+        }
       }
     }
   }
@@ -492,7 +533,8 @@ export class CommonModel {
     mergeTo: CommonModel,
     mergeFrom: CommonModel,
     originalInput: any,
-    alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()
+    alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map(),
+    options: MergingOptions = defaultMergingOptions
   ) {
     const mergeToAdditionalProperties = mergeTo.additionalProperties;
     const mergeFromAdditionalProperties = mergeFrom.additionalProperties;
@@ -512,7 +554,8 @@ export class CommonModel {
           mergeToAdditionalProperties,
           mergeFromAdditionalProperties,
           originalInput,
-          alreadyIteratedModels
+          alreadyIteratedModels,
+          options
         );
       }
     }
@@ -530,7 +573,8 @@ export class CommonModel {
     mergeTo: CommonModel,
     mergeFrom: CommonModel,
     originalInput: any,
-    alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()
+    alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map(),
+    options: MergingOptions = defaultMergingOptions
   ) {
     const mergeToAdditionalItems = mergeTo.additionalItems;
     const mergeFromAdditionalItems = mergeFrom.additionalItems;
@@ -550,7 +594,8 @@ export class CommonModel {
           mergeToAdditionalItems,
           mergeFromAdditionalItems,
           originalInput,
-          alreadyIteratedModels
+          alreadyIteratedModels,
+          options
         );
       }
     }
@@ -569,7 +614,8 @@ export class CommonModel {
     mergeTo: CommonModel,
     mergeFrom: CommonModel,
     originalInput: any,
-    alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()
+    alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map(),
+    options: MergingOptions = defaultMergingOptions
   ) {
     if (mergeFrom.items === undefined) {
       return;
@@ -589,7 +635,8 @@ export class CommonModel {
         mergeToItems,
         mergeFrom.items,
         originalInput,
-        alreadyIteratedModels
+        alreadyIteratedModels,
+        options
       );
     }
 
@@ -601,7 +648,8 @@ export class CommonModel {
             mergeToItems[Number(index)],
             mergeFromTupleModel,
             originalInput,
-            alreadyIteratedModels
+            alreadyIteratedModels,
+            options
           );
       }
     }
@@ -625,7 +673,8 @@ export class CommonModel {
     mergeTo: CommonModel,
     mergeFrom: CommonModel,
     originalInput: any,
-    alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()
+    alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map(),
+    options: MergingOptions = defaultMergingOptions
   ) {
     const mergeToPatternProperties = mergeTo.patternProperties;
     const mergeFromPatternProperties = mergeFrom.patternProperties;
@@ -650,7 +699,8 @@ export class CommonModel {
                 mergeToPatternProperties[String(pattern)],
                 patternModel,
                 originalInput,
-                alreadyIteratedModels
+                alreadyIteratedModels,
+                options
               );
           } else {
             mergeToPatternProperties[String(pattern)] = patternModel;
@@ -698,11 +748,13 @@ export class CommonModel {
    * @param originalInput corresponding input that got interpreted to this model
    * @param alreadyIteratedModels
    */
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   static mergeCommonModels(
     mergeTo: CommonModel | undefined,
     mergeFrom: CommonModel,
     originalInput: any,
-    alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map()
+    alreadyIteratedModels: Map<CommonModel, CommonModel> = new Map(),
+    options: MergingOptions = defaultMergingOptions
   ): CommonModel {
     if (mergeTo === undefined) {
       return mergeFrom;
@@ -724,43 +776,61 @@ export class CommonModel {
       mergeTo,
       mergeFrom,
       originalInput,
-      alreadyIteratedModels
+      alreadyIteratedModels,
+      options
     );
     CommonModel.mergePatternProperties(
       mergeTo,
       mergeFrom,
       originalInput,
-      alreadyIteratedModels
+      alreadyIteratedModels,
+      options
     );
     CommonModel.mergeAdditionalItems(
       mergeTo,
       mergeFrom,
       originalInput,
-      alreadyIteratedModels
+      alreadyIteratedModels,
+      options
     );
     CommonModel.mergeProperties(
       mergeTo,
       mergeFrom,
       originalInput,
-      alreadyIteratedModels
+      alreadyIteratedModels,
+      options
     );
     CommonModel.mergeItems(
       mergeTo,
       mergeFrom,
       originalInput,
-      alreadyIteratedModels
+      alreadyIteratedModels,
+      options
     );
     CommonModel.mergeTypes(mergeTo, mergeFrom);
 
     if (mergeFrom.enum !== undefined) {
       mergeTo.enum = [...new Set([...(mergeTo.enum || []), ...mergeFrom.enum])];
     }
-    if (mergeFrom.required !== undefined) {
+
+    mergeTo.const = mergeTo.const || mergeFrom.const;
+
+    if (mergeFrom.required !== undefined && options.constrictModels === true) {
       mergeTo.required = [
         ...new Set([...(mergeTo.required || []), ...mergeFrom.required])
       ];
     }
-    mergeTo.$id = mergeTo.$id || mergeFrom.$id;
+
+    mergeTo.format = mergeTo.format || mergeFrom.format;
+
+    if (
+      CommonModel.idIncludesAnonymousSchema(mergeTo) &&
+      !CommonModel.idIncludesAnonymousSchema(mergeFrom)
+    ) {
+      mergeTo.$id = mergeFrom.$id;
+    } else {
+      mergeTo.$id = mergeTo.$id || mergeFrom.$id;
+    }
     mergeTo.extend = mergeTo.extend || mergeFrom.extend;
     mergeTo.originalInput = originalInput;
     return mergeTo;

@@ -2,33 +2,21 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { Parser } from '@asyncapi/parser';
 import { AsyncAPIInputProcessor } from '../../src/processors/AsyncAPIInputProcessor';
-import { AnyModel, CommonModel } from '../../src/models';
 
 const basicDocString = fs.readFileSync(
   path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'),
   'utf8'
 );
+const operationOneOf1DocString = fs.readFileSync(
+  path.resolve(__dirname, './AsyncAPIInputProcessor/operation_oneof1.json'),
+  'utf8'
+);
+const operationOneOf2DocString = fs.readFileSync(
+  path.resolve(__dirname, './AsyncAPIInputProcessor/operation_oneof2.json'),
+  'utf8'
+);
 jest.mock('../../src/utils/LoggingInterface');
-const mockedReturnModels = [new CommonModel()];
-const mockedMetaModel = new AnyModel('', undefined);
-jest.mock('../../src/helpers/CommonModelToMetaModel', () => {
-  return {
-    convertToMetaModel: jest.fn().mockImplementation(() => {
-      return mockedMetaModel;
-    })
-  };
-});
-jest.mock('../../src/interpreter/Interpreter', () => {
-  return {
-    Interpreter: jest.fn().mockImplementation(() => {
-      return {
-        interpret: jest.fn().mockImplementation(() => {
-          return mockedReturnModels[0];
-        })
-      };
-    })
-  };
-});
+
 describe('AsyncAPIInputProcessor', () => {
   const parser = new Parser();
 
@@ -130,6 +118,20 @@ describe('AsyncAPIInputProcessor', () => {
 
     test('should be able to process parsed objects', async () => {
       const { document } = await parser.parse(basicDocString);
+      const processor = new AsyncAPIInputProcessor();
+      const commonInputModel = await processor.process(document);
+      expect(commonInputModel).toMatchSnapshot();
+    });
+
+    test('should be able to process operation with oneOf #1', async () => {
+      const { document } = await parser.parse(operationOneOf1DocString);
+      const processor = new AsyncAPIInputProcessor();
+      const commonInputModel = await processor.process(document);
+      expect(commonInputModel).toMatchSnapshot();
+    });
+
+    test('should be able to process operation with oneOf #2', async () => {
+      const { document } = await parser.parse(operationOneOf2DocString);
       const processor = new AsyncAPIInputProcessor();
       const commonInputModel = await processor.process(document);
       expect(commonInputModel).toMatchSnapshot();

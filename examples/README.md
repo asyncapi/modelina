@@ -68,7 +68,9 @@ These are all the basic generator examples that shows a bare minimal example of 
 
 ## Integrations
 These are examples of how you can integrate Modelina into a specific scenario:
-- [integrate with React](./integrate-with-react) - A basic example that shows how you can integrate Modelina with React.
+- [integrate-with-react](./integrate-with-react) - A basic example that shows how you can integrate Modelina with React.
+- [integrate-with-next](./integrate-with-next) - A basic example that shows how you can integrate Modelina with Next.
+- [integrate-modelina-into-maven](./integrate-modelina-into-maven) - A basic example that shows how you can integrate Modelina into the Java Maven build process.
 
 ## Python
 These are all specific examples only relevant to the Python generator:
@@ -93,6 +95,7 @@ These are all specific examples only relevant to the Java generator:
 - [java-generate-equals](./java-generate-equals) - A basic example that shows how to generate models that overwrite the `equal` method
 - [java-generate-javax-constraint-annotation](./java-generate-javax-constraint-annotation) - A basic example that shows how Java data models having `javax.validation.constraints` annotations can be generated.
 - [java-generate-javadoc](./java-generate-javadoc) - A basic example of how to generate Java models including JavaDocs.
+- [integrate-modelina-into-maven](./integrate-modelina-into-maven/) - A basic example that shows how you can integrate Modelina into the Java Maven build process.
 
 ## C#
 These are all specific examples only relevant to the C# generator:

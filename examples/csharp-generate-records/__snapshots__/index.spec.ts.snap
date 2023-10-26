@@ -4,7 +4,7 @@ exports[`Should be able to render a C# record instead of a class using the model
 Array [
   "public record Root
 {
-  public IEnumerable<dynamic>? Email { get; init; }
+  public IEnumerable<string>? Email { get; init; }
   public required string Name { get; init; }
 }",
 ]

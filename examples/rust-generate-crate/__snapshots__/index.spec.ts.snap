@@ -2,6 +2,24 @@
 
 exports[`Should be able to render Rust Models and should log expected output to console 1`] = `
 Array [
+  "// Members represents a union of types: String, f64, bool
+#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
+#[serde(untagged)]
+pub enum Members {
+    #[serde(rename=\\"MembersOneOf0\\")]
+    MembersOneOf0(String),
+    #[serde(rename=\\"MembersOneOf1\\")]
+    MembersOneOf1(f64),
+    #[serde(rename=\\"MembersOneOf2\\")]
+    MembersOneOf2(bool),
+}
+
+",
+]
+`;
+
+exports[`Should be able to render Rust Models and should log expected output to console 2`] = `
+Array [
   "// Address represents a Address model.
 #[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Address {
@@ -43,24 +61,6 @@ impl Address {
         }
     }
 }
-",
-]
-`;
-
-exports[`Should be able to render Rust Models and should log expected output to console 2`] = `
-Array [
-  "// Members represents a union of types: String, f64, bool
-#[derive(Clone, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
-#[serde(untagged)]
-pub enum Members {
-    #[serde(rename=\\"MembersOneOf0\\")]
-    MembersOneOf0(String),
-    #[serde(rename=\\"MembersOneOf1\\")]
-    MembersOneOf1(f64),
-    #[serde(rename=\\"MembersOneOf2\\")]
-    MembersOneOf2(bool),
-}
-
 ",
 ]
 `;

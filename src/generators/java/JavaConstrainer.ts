@@ -1,15 +1,24 @@
-import { ConstrainedEnumValueModel } from '../../models';
+import { Constraints } from '../../helpers';
+import {
+  ConstrainedEnumValueModel,
+  ConstrainedMetaModel,
+  ConstrainedObjectModel,
+  ConstrainedObjectPropertyModel,
+  ConstrainedReferenceModel,
+  ConstrainedUnionModel
+} from '../../models';
 import {
   defaultEnumKeyConstraints,
   defaultEnumValueConstraints
 } from './constrainer/EnumConstrainer';
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
+import { defaultConstantConstraints } from './constrainer/ConstantConstrainer';
 import { JavaTypeMapping } from './JavaGenerator';
 
 function enumFormatToNumberType(
   enumValueModel: ConstrainedEnumValueModel,
-  format: string
+  format: string | undefined
 ): string {
   switch (format) {
     case 'integer':
@@ -32,7 +41,7 @@ function enumFormatToNumberType(
 
 const fromEnumValueToType = (
   enumValueModel: ConstrainedEnumValueModel,
-  format: string
+  format: string | undefined
 ): string => {
   switch (typeof enumValueModel.value) {
     case 'boolean':
@@ -72,69 +81,116 @@ const interpretUnionValueType = (types: string[]): string => {
   return 'Object';
 };
 
+export function unionIncludesBuiltInTypes(
+  model: ConstrainedUnionModel
+): boolean {
+  return !model.union.every(
+    (union) =>
+      union instanceof ConstrainedObjectModel ||
+      (union instanceof ConstrainedReferenceModel &&
+        union.ref instanceof ConstrainedObjectModel)
+  );
+}
+
+function getType({
+  constrainedModel,
+  partOfProperty,
+  typeWhenNullableOrOptional,
+  type
+}: {
+  constrainedModel: ConstrainedMetaModel;
+  partOfProperty: ConstrainedObjectPropertyModel | undefined;
+  typeWhenNullableOrOptional: string;
+  type: string;
+}) {
+  if (constrainedModel.options.isNullable || !partOfProperty?.required) {
+    return typeWhenNullableOrOptional;
+  }
+
+  return type;
+}
+
 export const JavaDefaultTypeMapping: JavaTypeMapping = {
   Object({ constrainedModel }): string {
     return constrainedModel.name;
   },
   Reference({ constrainedModel }): string {
+    if (
+      constrainedModel.ref instanceof ConstrainedUnionModel &&
+      unionIncludesBuiltInTypes(constrainedModel.ref)
+    ) {
+      //We only have partial strong typed support for union models
+      //Use object if the union includes built-in Java types
+      return 'Object';
+    }
     return constrainedModel.name;
   },
   Any(): string {
     return 'Object';
   },
-  Float({ constrainedModel }): string {
-    let type = 'Double';
-    const format =
-      constrainedModel.originalInput &&
-      constrainedModel.originalInput['format'];
-    switch (format) {
+  Float({ constrainedModel, partOfProperty }): string {
+    switch (constrainedModel.options.format) {
       case 'float':
-        type = 'float';
-        break;
+        return getType({
+          constrainedModel,
+          partOfProperty,
+          typeWhenNullableOrOptional: 'Float',
+          type: 'float'
+        });
+      default:
+        return getType({
+          constrainedModel,
+          partOfProperty,
+          typeWhenNullableOrOptional: 'Double',
+          type: 'double'
+        });
     }
-    return type;
   },
-  Integer({ constrainedModel }): string {
-    let type = 'Integer';
-    const format =
-      constrainedModel.originalInput &&
-      constrainedModel.originalInput['format'];
-    switch (format) {
+  Integer({ constrainedModel, partOfProperty }): string {
+    const type = getType({
+      constrainedModel,
+      partOfProperty,
+      typeWhenNullableOrOptional: 'Integer',
+      type: 'int'
+    });
+    switch (constrainedModel.options.format) {
       case 'integer':
       case 'int32':
-        type = 'int';
-        break;
+        return type;
       case 'long':
       case 'int64':
-        type = 'long';
-        break;
+        return getType({
+          constrainedModel,
+          partOfProperty,
+          typeWhenNullableOrOptional: 'Long',
+          type: 'long'
+        });
+      default:
+        return type;
     }
-    return type;
   },
   String({ constrainedModel }): string {
-    let type = 'String';
-    const format =
-      constrainedModel.originalInput &&
-      constrainedModel.originalInput['format'];
-    switch (format) {
+    switch (constrainedModel.options.format) {
       case 'date':
-        type = 'java.time.LocalDate';
-        break;
+        return 'java.time.LocalDate';
       case 'time':
-        type = 'java.time.OffsetTime';
-        break;
+        return 'java.time.OffsetTime';
       case 'dateTime':
       case 'date-time':
-        type = 'java.time.OffsetDateTime';
-        break;
+        return 'java.time.OffsetDateTime';
       case 'binary':
-        type = 'byte[]';
-        break;
+        return 'byte[]';
+      default:
+        return 'String';
     }
-    return type;
   },
-  Boolean(): string {
-    return 'Boolean';
+  Boolean({ constrainedModel, partOfProperty }): string {
+    return getType({
+      constrainedModel,
+      partOfProperty,
+      typeWhenNullableOrOptional: 'Boolean',
+      type: 'boolean'
+    });
   },
   Tuple({ options }): string {
     //Because Java have no notion of tuples (and no custom implementation), we have to render it as a list of any value.
@@ -151,11 +207,8 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
     return `${constrainedModel.valueModel.type}[]`;
   },
   Enum({ constrainedModel }): string {
-    const format =
-      constrainedModel.originalInput &&
-      constrainedModel.originalInput['format'];
     const valueTypes = constrainedModel.values.map((enumValue) =>
-      fromEnumValueToType(enumValue, format)
+      fromEnumValueToType(enumValue, constrainedModel.options.format)
     );
     const uniqueTypes = valueTypes.filter((item, pos) => {
       return valueTypes.indexOf(item) === pos;
@@ -165,11 +218,16 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
     if (uniqueTypes.length > 1) {
       return interpretUnionValueType(uniqueTypes);
     }
+
     return uniqueTypes[0];
   },
-  Union(): string {
-    //Because Java have no notion of unions (and no custom implementation), we have to render it as any value.
-    return 'Object';
+  Union({ constrainedModel }): string {
+    if (unionIncludesBuiltInTypes(constrainedModel)) {
+      //We only have partial strong typed support for union models
+      //Use object if the union includes built-in Java types
+      return 'Object';
+    }
+    return constrainedModel.name;
   },
   Dictionary({ constrainedModel }): string {
     //Limitations to Java is that maps cannot have specific value types...
@@ -180,9 +238,10 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
   }
 };
 
-export const JavaDefaultConstraints = {
+export const JavaDefaultConstraints: Constraints = {
   enumKey: defaultEnumKeyConstraints(),
   enumValue: defaultEnumValueConstraints(),
   modelName: defaultModelNameConstraints(),
-  propertyKey: defaultPropertyKeyConstraints()
+  propertyKey: defaultPropertyKeyConstraints(),
+  constant: defaultConstantConstraints()
 };

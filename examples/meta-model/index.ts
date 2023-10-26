@@ -7,8 +7,8 @@ import {
 } from '../../src';
 
 const generator = new TypeScriptGenerator();
-const customModel = new ObjectModel('SomeName', undefined, {});
-const stringModel = new StringModel('test property name', undefined);
+const customModel = new ObjectModel('SomeName', undefined, {}, {});
+const stringModel = new StringModel('test property name', undefined, {});
 const propertyModel = new ObjectPropertyModel(
   stringModel.name,
   false,

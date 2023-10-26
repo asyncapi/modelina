@@ -1,5 +1,7 @@
 import {
   AbstractGenerator,
+  AbstractGeneratorRenderArgs,
+  AbstractGeneratorRenderCompleteModelArgs,
   CommonGeneratorOptions,
   defaultGeneratorOptions
 } from '../AbstractGenerator';
@@ -7,23 +9,31 @@ import {
   ConstrainedEnumModel,
   ConstrainedMetaModel,
   ConstrainedObjectModel,
+  ConstrainedUnionModel,
   InputMetaModel,
   MetaModel,
   RenderOutput
 } from '../../models';
-import { split, SplitOptions, TypeMapping } from '../../helpers';
+import {
+  split,
+  SplitOptions,
+  TypeMapping,
+  constrainMetaModel,
+  Constraints
+} from '../../helpers';
 import { JavaPreset, JAVA_DEFAULT_PRESET } from './JavaPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { isReservedJavaKeyword } from './Constants';
 import { Logger } from '../../';
-import { constrainMetaModel, Constraints } from '../../helpers';
 import {
   JavaDefaultConstraints,
-  JavaDefaultTypeMapping
+  JavaDefaultTypeMapping,
+  unionIncludesBuiltInTypes
 } from './JavaConstrainer';
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 import { JavaDependencyManager } from './JavaDependencyManager';
+import { UnionRenderer } from './renderers/UnionRenderer';
 
 export interface JavaOptions extends CommonGeneratorOptions<JavaPreset> {
   collectionType: 'List' | 'Array';
@@ -83,7 +93,8 @@ export class JavaGenerator extends AbstractGenerator<
     //These are the models that we have separate renderers for
     const metaModelsToSplit: SplitOptions = {
       splitEnum: true,
-      splitObject: true
+      splitObject: true,
+      splitUnion: true
     };
     return split(model, metaModelsToSplit);
   }
@@ -116,21 +127,36 @@ export class JavaGenerator extends AbstractGenerator<
    * @param inputModel
    */
   render(
-    model: ConstrainedMetaModel,
-    inputModel: InputMetaModel,
-    options?: DeepPartial<JavaOptions>
+    args: AbstractGeneratorRenderArgs<JavaOptions>
   ): Promise<RenderOutput> {
     const optionsToUse = JavaGenerator.getJavaOptions({
       ...this.options,
-      ...options
+      ...args.options
     });
-    if (model instanceof ConstrainedObjectModel) {
-      return this.renderClass(model, inputModel, optionsToUse);
-    } else if (model instanceof ConstrainedEnumModel) {
-      return this.renderEnum(model, inputModel, optionsToUse);
+    if (args.constrainedModel instanceof ConstrainedObjectModel) {
+      return this.renderClass({
+        ...args,
+        constrainedModel: args.constrainedModel,
+        options: optionsToUse
+      });
+    } else if (args.constrainedModel instanceof ConstrainedEnumModel) {
+      return this.renderEnum(
+        args.constrainedModel,
+        args.inputModel,
+        optionsToUse
+      );
+    } else if (
+      args.constrainedModel instanceof ConstrainedUnionModel &&
+      !unionIncludesBuiltInTypes(args.constrainedModel)
+    ) {
+      return this.renderUnion(
+        args.constrainedModel,
+        args.inputModel,
+        optionsToUse
+      );
     }
     Logger.warn(
-      `Java generator, cannot generate this type of model, ${model.name}`
+      `Java generator, cannot generate this type of model, ${args.constrainedModel.name}`
     );
     return Promise.resolve(
       RenderOutput.toRenderOutput({
@@ -151,26 +177,30 @@ export class JavaGenerator extends AbstractGenerator<
    * @param options used to render the full output
    */
   async renderCompleteModel(
-    model: ConstrainedMetaModel,
-    inputModel: InputMetaModel,
-    completeModelOptions: Partial<JavaRenderCompleteModelOptions>,
-    options: DeepPartial<JavaOptions>
+    args: AbstractGeneratorRenderCompleteModelArgs<
+      JavaOptions,
+      JavaRenderCompleteModelOptions
+    >
   ): Promise<RenderOutput> {
-    const completeModelOptionsToUse = mergePartialAndDefault(
-      JavaGenerator.defaultCompleteModelOptions,
-      completeModelOptions
-    ) as JavaRenderCompleteModelOptions;
+    const completeModelOptionsToUse =
+      mergePartialAndDefault<JavaRenderCompleteModelOptions>(
+        JavaGenerator.defaultCompleteModelOptions,
+        args.completeOptions
+      );
     const optionsToUse = JavaGenerator.getJavaOptions({
       ...this.options,
-      ...options
+      ...args.options
     });
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
 
     this.assertPackageIsValid(completeModelOptionsToUse);
 
-    const outputModel = await this.render(model, inputModel, optionsToUse);
+    const outputModel = await this.render({
+      ...args,
+      options: optionsToUse
+    });
     const modelDependencies = dependencyManagerToUse.renderAllModelDependencies(
-      model,
+      args.constrainedModel,
       completeModelOptionsToUse.packageName
     );
     const outputContent = `package ${completeModelOptionsToUse.packageName};
@@ -201,13 +231,11 @@ ${outputModel.result}`;
   }
 
   async renderClass(
-    model: ConstrainedObjectModel,
-    inputModel: InputMetaModel,
-    options?: DeepPartial<JavaOptions>
+    args: AbstractGeneratorRenderArgs<JavaOptions, ConstrainedObjectModel>
   ): Promise<RenderOutput> {
     const optionsToUse = JavaGenerator.getJavaOptions({
       ...this.options,
-      ...options
+      ...args.options
     });
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('class');
@@ -215,14 +243,14 @@ ${outputModel.result}`;
       optionsToUse,
       this,
       presets,
-      model,
-      inputModel,
+      args.constrainedModel,
+      args.inputModel,
       dependencyManagerToUse
     );
     const result = await renderer.runSelfPreset();
     return RenderOutput.toRenderOutput({
       result,
-      renderedName: model.name,
+      renderedName: args.constrainedModel.name,
       dependencies: dependencyManagerToUse.dependencies
     });
   }
@@ -239,6 +267,33 @@ ${outputModel.result}`;
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('enum');
     const renderer = new EnumRenderer(
+      optionsToUse,
+      this,
+      presets,
+      model,
+      inputModel,
+      dependencyManagerToUse
+    );
+    const result = await renderer.runSelfPreset();
+    return RenderOutput.toRenderOutput({
+      result,
+      renderedName: model.name,
+      dependencies: dependencyManagerToUse.dependencies
+    });
+  }
+
+  async renderUnion(
+    model: ConstrainedUnionModel,
+    inputModel: InputMetaModel,
+    options: DeepPartial<JavaOptions>
+  ): Promise<RenderOutput> {
+    const optionsToUse = JavaGenerator.getJavaOptions({
+      ...this.options,
+      ...options
+    });
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
+    const presets = this.getPresets('union');
+    const renderer = new UnionRenderer(
       optionsToUse,
       this,
       presets,

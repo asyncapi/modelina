@@ -4,7 +4,10 @@ import {
   Draft4Schema,
   SwaggerV2Schema,
   AsyncapiV2Schema,
-  Draft7Schema
+  Draft7Schema,
+  MergingOptions,
+  defaultMergingOptions,
+  OpenapiV3Schema
 } from '../models';
 import { interpretName } from './Utils';
 import interpretProperties from './InterpretProperties';
@@ -21,6 +24,7 @@ import interpretOneOf from './InterpretOneOf';
 import interpretAnyOf from './InterpretAnyOf';
 import interpretOneOfWithAllOf from './InterpretOneOfWithAllOf';
 import interpretOneOfWithProperties from './InterpretOneOfWithProperties';
+import InterpretThenElse from './InterpretThenElse';
 
 export type InterpreterOptions = {
   allowInheritance?: boolean;
@@ -42,12 +46,17 @@ export type InterpreterOptions = {
    * Instead you should adapt your schemas to be more strict by setting `additionalItems: false`.
    */
   ignoreAdditionalItems?: boolean;
+  /**
+   * When interpreting a schema with discriminator set, this property will be set best by the individual interpreters to make sure the discriminator becomes an enum.
+   */
+  discriminator?: string;
 };
 export type InterpreterSchemas =
   | Draft6Schema
   | Draft4Schema
   | Draft7Schema
   | SwaggerV2Schema
+  | OpenapiV3Schema
   | AsyncapiV2Schema;
 export type InterpreterSchemaType = InterpreterSchemas | boolean;
 
@@ -126,6 +135,9 @@ export class Interpreter {
     if (schema.required !== undefined) {
       model.required = schema.required;
     }
+    if (schema.format) {
+      model.format = schema.format;
+    }
 
     interpretPatternProperties(schema, model, this, interpreterOptions);
     interpretAdditionalItems(schema, model, this, interpreterOptions);
@@ -138,26 +150,9 @@ export class Interpreter {
     interpretOneOfWithProperties(schema, model, this, interpreterOptions);
     interpretAnyOf(schema, model, this, interpreterOptions);
     interpretDependencies(schema, model, this, interpreterOptions);
-    interpretConst(schema, model);
+    interpretConst(schema, model, interpreterOptions);
     interpretEnum(schema, model);
-
-    if (
-      !(schema instanceof Draft4Schema) &&
-      !(schema instanceof Draft6Schema)
-    ) {
-      this.interpretAndCombineSchema(
-        schema.then,
-        model,
-        schema,
-        interpreterOptions
-      );
-      this.interpretAndCombineSchema(
-        schema.else,
-        model,
-        schema,
-        interpreterOptions
-      );
-    }
+    InterpretThenElse(schema, model, this, interpreterOptions);
 
     interpretNot(schema, model, this, interpreterOptions);
 
@@ -177,14 +172,43 @@ export class Interpreter {
     schema: InterpreterSchemaType | undefined,
     currentModel: CommonModel,
     rootSchema: any,
-    interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions
+    interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions,
+    mergingOptions: MergingOptions = defaultMergingOptions
   ): void {
     if (typeof schema !== 'object') {
       return;
     }
     const model = this.interpret(schema, interpreterOptions);
     if (model !== undefined) {
-      CommonModel.mergeCommonModels(currentModel, model, rootSchema);
+      CommonModel.mergeCommonModels(
+        currentModel,
+        model,
+        rootSchema,
+        new Map(),
+        mergingOptions
+      );
+    }
+  }
+
+  /**
+   * Get the discriminator property name for the schema, if the schema has one
+   *
+   * @param schema
+   * @returns discriminator name property
+   */
+  discriminatorProperty(schema: InterpreterSchemaType): string | undefined {
+    if (
+      (schema instanceof AsyncapiV2Schema ||
+        schema instanceof SwaggerV2Schema) &&
+      schema.discriminator
+    ) {
+      return schema.discriminator;
+    } else if (
+      schema instanceof OpenapiV3Schema &&
+      schema.discriminator &&
+      schema.discriminator.propertyName
+    ) {
+      return schema.discriminator.propertyName;
     }
   }
 }

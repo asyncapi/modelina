@@ -10,11 +10,16 @@ describe('Splitter', () => {
     jest.restoreAllMocks();
   });
   test('should split models when asked for it', () => {
-    const stringModel = new StringModel('testString', undefined);
+    const stringModel = new StringModel('testString', undefined, {});
     const propertyModel = new ObjectPropertyModel('test', false, stringModel);
-    const model = new ObjectModel('testObj', undefined, {
-      test: propertyModel
-    });
+    const model = new ObjectModel(
+      'testObj',
+      undefined,
+      {},
+      {
+        test: propertyModel
+      }
+    );
     const options: SplitOptions = {
       splitString: true
     };
@@ -24,6 +29,7 @@ describe('Splitter', () => {
     expectedObjectModel.properties['test'].property = new ReferenceModel(
       stringModel.name,
       stringModel.originalInput,
+      {},
       stringModel
     );
 
@@ -33,11 +39,16 @@ describe('Splitter', () => {
     expect(splittedModels[1] instanceof StringModel).toEqual(true);
   });
   test('should not split models when not asked for', () => {
-    const stringModel = new StringModel('testString', undefined);
+    const stringModel = new StringModel('testString', undefined, {});
     const propertyModel = new ObjectPropertyModel('test', false, stringModel);
-    const model = new ObjectModel('testObj', undefined, {
-      test: propertyModel
-    });
+    const model = new ObjectModel(
+      'testObj',
+      undefined,
+      {},
+      {
+        test: propertyModel
+      }
+    );
     const options: SplitOptions = {
       splitString: false
     };
@@ -47,11 +58,16 @@ describe('Splitter', () => {
     expect(splittedModels[0]).toEqual(model);
   });
   test('should not split models when asked for something else', () => {
-    const stringModel = new StringModel('testString', undefined);
+    const stringModel = new StringModel('testString', undefined, {});
     const propertyModel = new ObjectPropertyModel('test', false, stringModel);
-    const model = new ObjectModel('testObj', undefined, {
-      test: propertyModel
-    });
+    const model = new ObjectModel(
+      'testObj',
+      undefined,
+      {},
+      {
+        test: propertyModel
+      }
+    );
     const options: SplitOptions = {
       splitBoolean: true
     };
@@ -60,26 +76,36 @@ describe('Splitter', () => {
     expect(splittedModels[0]).toEqual(model);
   });
   test('should split out nested models', () => {
-    const nestedStringModel = new StringModel('nestedString', undefined);
+    const nestedStringModel = new StringModel('nestedString', undefined, {});
     const nestedPropertyModel = new ObjectPropertyModel(
       'nestedStringProp',
       false,
       nestedStringModel
     );
-    const nestedObjectModel = new ObjectModel('nestedTestObj', undefined, {
-      test: nestedPropertyModel
-    });
+    const nestedObjectModel = new ObjectModel(
+      'nestedTestObj',
+      undefined,
+      {},
+      {
+        test: nestedPropertyModel
+      }
+    );
     const objectPropertyModel = new ObjectPropertyModel(
       'stringProp',
       false,
       nestedObjectModel
     );
-    const stringModel = new StringModel('string', undefined);
+    const stringModel = new StringModel('string', undefined, {});
     const propertyModel = new ObjectPropertyModel('test', false, stringModel);
-    const model = new ObjectModel('testObj', undefined, {
-      test: propertyModel,
-      nested: objectPropertyModel
-    });
+    const model = new ObjectModel(
+      'testObj',
+      undefined,
+      {},
+      {
+        test: propertyModel,
+        nested: objectPropertyModel
+      }
+    );
     const options: SplitOptions = {
       splitString: true,
       splitObject: true
@@ -92,25 +118,35 @@ describe('Splitter', () => {
     expect(splittedModels[3]).toEqual(nestedStringModel);
   });
   test('should handle already seen models', () => {
-    const stringModel = new StringModel('string', undefined);
+    const stringModel = new StringModel('string', undefined, {});
     const nestedPropertyModel = new ObjectPropertyModel(
       'nestedStringProp',
       false,
       stringModel
     );
-    const nestedObjectModel = new ObjectModel('nestedTestObj', undefined, {
-      test: nestedPropertyModel
-    });
+    const nestedObjectModel = new ObjectModel(
+      'nestedTestObj',
+      undefined,
+      {},
+      {
+        test: nestedPropertyModel
+      }
+    );
     const objectPropertyModel = new ObjectPropertyModel(
       'stringProp',
       false,
       nestedObjectModel
     );
     const propertyModel = new ObjectPropertyModel('test', false, stringModel);
-    const model = new ObjectModel('testObj', undefined, {
-      test: propertyModel,
-      nested: objectPropertyModel
-    });
+    const model = new ObjectModel(
+      'testObj',
+      undefined,
+      {},
+      {
+        test: propertyModel,
+        nested: objectPropertyModel
+      }
+    );
     const options: SplitOptions = {
       splitString: true,
       splitObject: true
@@ -122,7 +158,7 @@ describe('Splitter', () => {
     expect(splittedModels[2]).toEqual(nestedObjectModel);
   });
   test('should handle recursive models', () => {
-    const model = new ObjectModel('testObj', undefined, {});
+    const model = new ObjectModel('testObj', undefined, {}, {});
     const objectPropertyModel = new ObjectPropertyModel(
       'recursiveProp',
       false,

@@ -1,4 +1,3 @@
-import { OpenAPIV2 } from 'openapi-types';
 import { TypeScriptGenerator } from '../../src';
 
 const generator = new TypeScriptGenerator();

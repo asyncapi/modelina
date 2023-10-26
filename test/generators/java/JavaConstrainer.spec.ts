@@ -9,6 +9,7 @@ import {
   ConstrainedFloatModel,
   ConstrainedIntegerModel,
   ConstrainedObjectModel,
+  ConstrainedObjectPropertyModel,
   ConstrainedReferenceModel,
   ConstrainedStringModel,
   ConstrainedTupleModel,
@@ -24,7 +25,7 @@ describe('JavaConstrainer', () => {
   };
   describe('ObjectModel', () => {
     test('should render the constrained name as type', () => {
-      const model = new ConstrainedObjectModel('test', undefined, '', {});
+      const model = new ConstrainedObjectModel('test', undefined, {}, '', {});
       const type = JavaDefaultTypeMapping.Object({
         constrainedModel: model,
         ...defaultOptions
@@ -34,10 +35,11 @@ describe('JavaConstrainer', () => {
   });
   describe('Reference', () => {
     test('should render the constrained name as type', () => {
-      const refModel = new ConstrainedAnyModel('test', undefined, '');
+      const refModel = new ConstrainedAnyModel('test', undefined, {}, '');
       const model = new ConstrainedReferenceModel(
         'test',
         undefined,
+        {},
         '',
         refModel
       );
@@ -47,10 +49,57 @@ describe('JavaConstrainer', () => {
       });
       expect(type).toEqual(model.name);
     });
+    test('should render the constrained name as type for unions with ConstrainedObjectModel types', () => {
+      const unionType = new ConstrainedObjectModel(
+        'union-type-name',
+        undefined,
+        {},
+        'UnionType',
+        {}
+      );
+      const union = new ConstrainedUnionModel('Union', undefined, {}, '', [
+        unionType
+      ]);
+      const model = new ConstrainedReferenceModel(
+        'test',
+        undefined,
+        {},
+        '',
+        union
+      );
+      const type = JavaDefaultTypeMapping.Reference({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual(model.name);
+    });
+  });
+  test('should render Object for unions with built-in types', () => {
+    const unionType = new ConstrainedAnyModel(
+      'String',
+      undefined,
+      {},
+      'String'
+    );
+    const union = new ConstrainedUnionModel('Union', undefined, {}, '', [
+      unionType
+    ]);
+    const model = new ConstrainedReferenceModel(
+      'test',
+      undefined,
+      {},
+      '',
+      union
+    );
+    const type = JavaDefaultTypeMapping.Reference({
+      constrainedModel: model,
+      ...defaultOptions
+    });
+    expect(type).toEqual('Object');
   });
   describe('Any', () => {
     test('should render type', () => {
-      const model = new ConstrainedAnyModel('test', undefined, '');
+      const model = new ConstrainedAnyModel('test', undefined, {}, '');
       const type = JavaDefaultTypeMapping.Any({
         constrainedModel: model,
         ...defaultOptions
@@ -60,17 +109,61 @@ describe('JavaConstrainer', () => {
   });
   describe('Float', () => {
     test('should render type', () => {
-      const model = new ConstrainedFloatModel('test', undefined, '');
+      const model = new ConstrainedFloatModel('test', undefined, {}, '');
+      const type = JavaDefaultTypeMapping.Float({
+        constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'test',
+          'test',
+          true,
+          model
+        ),
+        ...defaultOptions
+      });
+      expect(type).toEqual('double');
+    });
+    test('should render optional type', () => {
+      const model = new ConstrainedFloatModel('test', undefined, {}, '');
+      const type = JavaDefaultTypeMapping.Float({
+        constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'test',
+          'test',
+          false,
+          model
+        ),
+        ...defaultOptions
+      });
+      expect(type).toEqual('Double');
+    });
+    test('should render nullable type', () => {
+      const model = new ConstrainedFloatModel(
+        'test',
+        undefined,
+        { isNullable: true },
+        ''
+      );
       const type = JavaDefaultTypeMapping.Float({
         constrainedModel: model,
         ...defaultOptions
       });
       expect(type).toEqual('Double');
     });
-    test('should render double when original input has number format', () => {
-      const model = new ConstrainedFloatModel('test', { format: 'float' }, '');
+    test('should render double when format has number format', () => {
+      const model = new ConstrainedFloatModel(
+        'test',
+        {},
+        { format: 'float' },
+        ''
+      );
       const type = JavaDefaultTypeMapping.Float({
         constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'test',
+          'test',
+          true,
+          model
+        ),
         ...defaultOptions
       });
       expect(type).toEqual('float');
@@ -78,53 +171,104 @@ describe('JavaConstrainer', () => {
   });
   describe('Integer', () => {
     test('should render type', () => {
-      const model = new ConstrainedIntegerModel('test', undefined, '');
+      const model = new ConstrainedIntegerModel('test', undefined, {}, '');
+      const type = JavaDefaultTypeMapping.Integer({
+        constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'test',
+          'test',
+          true,
+          model
+        ),
+        ...defaultOptions
+      });
+      expect(type).toEqual('int');
+    });
+    test('should render nullable type', () => {
+      const model = new ConstrainedIntegerModel(
+        'test',
+        undefined,
+        { isNullable: true },
+        ''
+      );
       const type = JavaDefaultTypeMapping.Integer({
         constrainedModel: model,
         ...defaultOptions
       });
       expect(type).toEqual('Integer');
     });
-    test('should render int when original input has integer format', () => {
+    test('should render int when format has integer format', () => {
       const model = new ConstrainedIntegerModel(
         'test',
+        {},
         { format: 'integer' },
         ''
       );
       const type = JavaDefaultTypeMapping.Integer({
         constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'test',
+          'test',
+          true,
+          model
+        ),
         ...defaultOptions
       });
       expect(type).toEqual('int');
     });
-    test('should render int when original input has int32 format', () => {
+    test('should render int when format has int32 format', () => {
       const model = new ConstrainedIntegerModel(
         'test',
+        {},
         { format: 'int32' },
         ''
       );
       const type = JavaDefaultTypeMapping.Integer({
         constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'test',
+          'test',
+          true,
+          model
+        ),
         ...defaultOptions
       });
       expect(type).toEqual('int');
     });
-    test('should render long when original input has long format', () => {
-      const model = new ConstrainedIntegerModel('test', { format: 'long' }, '');
+    test('should render long when format has long format', () => {
+      const model = new ConstrainedIntegerModel(
+        'test',
+        {},
+        { format: 'long' },
+        ''
+      );
       const type = JavaDefaultTypeMapping.Integer({
         constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'test',
+          'test',
+          true,
+          model
+        ),
         ...defaultOptions
       });
       expect(type).toEqual('long');
     });
-    test('should render long when original input has int64 format', () => {
+    test('should render long when format has int64 format', () => {
       const model = new ConstrainedIntegerModel(
         'test',
+        {},
         { format: 'int64' },
         ''
       );
       const type = JavaDefaultTypeMapping.Integer({
         constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'test',
+          'test',
+          true,
+          model
+        ),
         ...defaultOptions
       });
       expect(type).toEqual('long');
@@ -132,32 +276,43 @@ describe('JavaConstrainer', () => {
   });
   describe('String', () => {
     test('should render type', () => {
-      const model = new ConstrainedStringModel('test', undefined, '');
+      const model = new ConstrainedStringModel('test', undefined, {}, '');
       const type = JavaDefaultTypeMapping.String({
         constrainedModel: model,
         ...defaultOptions
       });
       expect(type).toEqual('String');
     });
-    test('should render LocalDate when original input has date format', () => {
-      const model = new ConstrainedStringModel('test', { format: 'date' }, '');
+    test('should render LocalDate when format has date format', () => {
+      const model = new ConstrainedStringModel(
+        'test',
+        {},
+        { format: 'date' },
+        ''
+      );
       const type = JavaDefaultTypeMapping.String({
         constrainedModel: model,
         ...defaultOptions
       });
       expect(type).toEqual('java.time.LocalDate');
     });
-    test('should render OffsetTime when original input has time format', () => {
-      const model = new ConstrainedStringModel('test', { format: 'time' }, '');
+    test('should render OffsetTime when format has time format', () => {
+      const model = new ConstrainedStringModel(
+        'test',
+        {},
+        { format: 'time' },
+        ''
+      );
       const type = JavaDefaultTypeMapping.String({
         constrainedModel: model,
         ...defaultOptions
       });
       expect(type).toEqual('java.time.OffsetTime');
     });
-    test('should render OffsetDateTime when original input has dateTime format', () => {
+    test('should render OffsetDateTime when format has dateTime format', () => {
       const model = new ConstrainedStringModel(
         'test',
+        {},
         { format: 'dateTime' },
         ''
       );
@@ -167,9 +322,10 @@ describe('JavaConstrainer', () => {
       });
       expect(type).toEqual('java.time.OffsetDateTime');
     });
-    test('should render OffsetDateTime when original input has date-time format', () => {
+    test('should render OffsetDateTime when format has date-time format', () => {
       const model = new ConstrainedStringModel(
         'test',
+        {},
         { format: 'date-time' },
         ''
       );
@@ -179,9 +335,10 @@ describe('JavaConstrainer', () => {
       });
       expect(type).toEqual('java.time.OffsetDateTime');
     });
-    test('should render byte when original input has binary format', () => {
+    test('should render byte when format has binary format', () => {
       const model = new ConstrainedStringModel(
         'test',
+        {},
         { format: 'binary' },
         ''
       );
@@ -194,7 +351,26 @@ describe('JavaConstrainer', () => {
   });
   describe('Boolean', () => {
     test('should render type', () => {
-      const model = new ConstrainedBooleanModel('test', undefined, '');
+      const model = new ConstrainedBooleanModel('test', undefined, {}, '');
+      const type = JavaDefaultTypeMapping.Boolean({
+        constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'test',
+          'test',
+          true,
+          model
+        ),
+        ...defaultOptions
+      });
+      expect(type).toEqual('boolean');
+    });
+    test('should render nullable type', () => {
+      const model = new ConstrainedBooleanModel(
+        'test',
+        undefined,
+        { isNullable: true },
+        ''
+      );
       const type = JavaDefaultTypeMapping.Boolean({
         constrainedModel: model,
         ...defaultOptions
@@ -205,7 +381,7 @@ describe('JavaConstrainer', () => {
 
   describe('Tuple', () => {
     test('should render type', () => {
-      const model = new ConstrainedTupleModel('test', undefined, '', []);
+      const model = new ConstrainedTupleModel('test', undefined, {}, '', []);
       const type = JavaDefaultTypeMapping.Tuple({
         constrainedModel: model,
         ...defaultOptions
@@ -213,7 +389,7 @@ describe('JavaConstrainer', () => {
       expect(type).toEqual('Object[]');
     });
     test('should render tuple as list', () => {
-      const model = new ConstrainedTupleModel('test', undefined, '', []);
+      const model = new ConstrainedTupleModel('test', undefined, {}, '', []);
       const options: JavaOptions = {
         ...JavaGenerator.defaultOptions,
         collectionType: 'List'
@@ -232,11 +408,13 @@ describe('JavaConstrainer', () => {
       const arrayModel = new ConstrainedStringModel(
         'test',
         undefined,
+        {},
         'String'
       );
       const model = new ConstrainedArrayModel(
         'test',
         undefined,
+        {},
         '',
         arrayModel
       );
@@ -255,11 +433,13 @@ describe('JavaConstrainer', () => {
       const arrayModel = new ConstrainedStringModel(
         'test',
         undefined,
+        {},
         'String'
       );
       const model = new ConstrainedArrayModel(
         'test',
         undefined,
+        {},
         '',
         arrayModel
       );
@@ -278,8 +458,12 @@ describe('JavaConstrainer', () => {
 
   describe('Enum', () => {
     test('should render string enum values as String type', () => {
-      const enumValue = new ConstrainedEnumValueModel('test', 'string type');
-      const model = new ConstrainedEnumModel('test', undefined, '', [
+      const enumValue = new ConstrainedEnumValueModel(
+        'test',
+        'string type',
+        {}
+      );
+      const model = new ConstrainedEnumModel('test', undefined, {}, '', [
         enumValue
       ]);
       const type = JavaDefaultTypeMapping.Enum({
@@ -289,8 +473,8 @@ describe('JavaConstrainer', () => {
       expect(type).toEqual('String');
     });
     test('should render boolean enum values as boolean type', () => {
-      const enumValue = new ConstrainedEnumValueModel('test', true);
-      const model = new ConstrainedEnumModel('test', undefined, '', [
+      const enumValue = new ConstrainedEnumValueModel('test', true, {});
+      const model = new ConstrainedEnumModel('test', undefined, {}, '', [
         enumValue
       ]);
       const type = JavaDefaultTypeMapping.Enum({
@@ -299,9 +483,9 @@ describe('JavaConstrainer', () => {
       });
       expect(type).toEqual('boolean');
     });
-    test('should render generic number enum value with format  ', () => {
-      const enumValue = new ConstrainedEnumValueModel('test', 123);
-      const model = new ConstrainedEnumModel('test', undefined, '', [
+    test('should render generic number enum value with format', () => {
+      const enumValue = new ConstrainedEnumValueModel('test', 123, {});
+      const model = new ConstrainedEnumModel('test', undefined, {}, '', [
         enumValue
       ]);
       const type = JavaDefaultTypeMapping.Enum({
@@ -311,10 +495,14 @@ describe('JavaConstrainer', () => {
       expect(type).toEqual('int');
     });
     test('should render generic number enum value with float format as float type', () => {
-      const enumValue = new ConstrainedEnumValueModel('test', 12.0);
-      const model = new ConstrainedEnumModel('test', { format: 'float' }, '', [
-        enumValue
-      ]);
+      const enumValue = new ConstrainedEnumValueModel('test', 12.0, {});
+      const model = new ConstrainedEnumModel(
+        'test',
+        {},
+        { format: 'float' },
+        '',
+        [enumValue]
+      );
       const type = JavaDefaultTypeMapping.Enum({
         constrainedModel: model,
         ...defaultOptions
@@ -322,10 +510,14 @@ describe('JavaConstrainer', () => {
       expect(type).toEqual('float');
     });
     test('should render generic number enum value with double format as double type', () => {
-      const enumValue = new ConstrainedEnumValueModel('test', 12.0);
-      const model = new ConstrainedEnumModel('test', { format: 'double' }, '', [
-        enumValue
-      ]);
+      const enumValue = new ConstrainedEnumValueModel('test', 12.0, {});
+      const model = new ConstrainedEnumModel(
+        'test',
+        {},
+        { format: 'double' },
+        '',
+        [enumValue]
+      );
       const type = JavaDefaultTypeMapping.Enum({
         constrainedModel: model,
         ...defaultOptions
@@ -333,8 +525,8 @@ describe('JavaConstrainer', () => {
       expect(type).toEqual('double');
     });
     test('should render object enum value as generic Object', () => {
-      const enumValue = new ConstrainedEnumValueModel('test', {});
-      const model = new ConstrainedEnumModel('test', undefined, '', [
+      const enumValue = new ConstrainedEnumValueModel('test', {}, {});
+      const model = new ConstrainedEnumModel('test', undefined, {}, '', [
         enumValue
       ]);
       const type = JavaDefaultTypeMapping.Enum({
@@ -344,9 +536,13 @@ describe('JavaConstrainer', () => {
       expect(type).toEqual('Object');
     });
     test('should render multiple value types as generic Object', () => {
-      const enumValue2 = new ConstrainedEnumValueModel('test', true);
-      const enumValue1 = new ConstrainedEnumValueModel('test', 'string type');
-      const model = new ConstrainedEnumModel('test', undefined, '', [
+      const enumValue2 = new ConstrainedEnumValueModel('test', true, {});
+      const enumValue1 = new ConstrainedEnumValueModel(
+        'test',
+        'string type',
+        {}
+      );
+      const model = new ConstrainedEnumModel('test', undefined, {}, '', [
         enumValue1,
         enumValue2
       ]);
@@ -357,9 +553,9 @@ describe('JavaConstrainer', () => {
       expect(type).toEqual('Object');
     });
     test('should render double and integer as double type', () => {
-      const enumValue2 = new ConstrainedEnumValueModel('test', 123);
-      const enumValue1 = new ConstrainedEnumValueModel('test', 123.12);
-      const model = new ConstrainedEnumModel('test', undefined, '', [
+      const enumValue2 = new ConstrainedEnumValueModel('test', 123, {});
+      const enumValue1 = new ConstrainedEnumValueModel('test', 123.12, {});
+      const model = new ConstrainedEnumModel('test', undefined, {}, '', [
         enumValue1,
         enumValue2
       ]);
@@ -370,12 +566,15 @@ describe('JavaConstrainer', () => {
       expect(type).toEqual('double');
     });
     test('should render int and long as long type', () => {
-      const enumValue2 = new ConstrainedEnumValueModel('test', 123);
-      const enumValue1 = new ConstrainedEnumValueModel('test', 123);
-      const model = new ConstrainedEnumModel('test', { format: 'long' }, '', [
-        enumValue1,
-        enumValue2
-      ]);
+      const enumValue2 = new ConstrainedEnumValueModel('test', 123, {});
+      const enumValue1 = new ConstrainedEnumValueModel('test', 123, {});
+      const model = new ConstrainedEnumModel(
+        'test',
+        {},
+        { format: 'long' },
+        '',
+        [enumValue1, enumValue2]
+      );
       const type = JavaDefaultTypeMapping.Enum({
         constrainedModel: model,
         ...defaultOptions
@@ -385,8 +584,52 @@ describe('JavaConstrainer', () => {
   });
 
   describe('Union', () => {
-    test('should render type', () => {
-      const model = new ConstrainedUnionModel('test', undefined, '', []);
+    test('should render the constrained name for ConstrainedObjectModel type unions', () => {
+      const union = new ConstrainedObjectModel(
+        'test-union',
+        undefined,
+        {},
+        'UnionType',
+        {}
+      );
+      const model = new ConstrainedUnionModel('test', undefined, {}, '', [
+        union
+      ]);
+      const type = JavaDefaultTypeMapping.Union({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('test');
+    });
+    test('should render the constrained name for referenced ConstrainedObjectModel type unions', () => {
+      const union = new ConstrainedObjectModel(
+        'test-union',
+        undefined,
+        {},
+        'UnionType',
+        {}
+      );
+      const unionRef = new ConstrainedReferenceModel(
+        'test-union-ref',
+        undefined,
+        {},
+        'UnionRefType',
+        union
+      );
+      const model = new ConstrainedUnionModel('test', undefined, {}, '', [
+        unionRef
+      ]);
+      const type = JavaDefaultTypeMapping.Union({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('test');
+    });
+    test('should render Object for non ConstrainedObjectModel type unions', () => {
+      const union = new ConstrainedAnyModel('test-union', undefined, {}, 'int');
+      const model = new ConstrainedUnionModel('test', undefined, {}, '', [
+        union
+      ]);
       const type = JavaDefaultTypeMapping.Union({
         constrainedModel: model,
         ...defaultOptions
@@ -397,15 +640,22 @@ describe('JavaConstrainer', () => {
 
   describe('Dictionary', () => {
     test('should render type', () => {
-      const keyModel = new ConstrainedStringModel('test', undefined, 'String');
+      const keyModel = new ConstrainedStringModel(
+        'test',
+        undefined,
+        {},
+        'String'
+      );
       const valueModel = new ConstrainedStringModel(
         'test',
         undefined,
+        {},
         'String'
       );
       const model = new ConstrainedDictionaryModel(
         'test',
         undefined,
+        {},
         '',
         keyModel,
         valueModel
@@ -417,11 +667,22 @@ describe('JavaConstrainer', () => {
       expect(type).toEqual('Map<String, String>');
     });
     test('should not render simple integer type', () => {
-      const keyModel = new ConstrainedStringModel('test', undefined, 'String');
-      const valueModel = new ConstrainedIntegerModel('test', undefined, 'int');
+      const keyModel = new ConstrainedStringModel(
+        'test',
+        undefined,
+        {},
+        'String'
+      );
+      const valueModel = new ConstrainedIntegerModel(
+        'test',
+        undefined,
+        {},
+        'int'
+      );
       const model = new ConstrainedDictionaryModel(
         'test',
         undefined,
+        {},
         '',
         keyModel,
         valueModel

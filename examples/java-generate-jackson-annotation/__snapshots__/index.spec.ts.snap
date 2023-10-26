@@ -4,9 +4,12 @@ exports[`Should be able to generate data models for jackson annotation and shoul
 Array [
   "public class Root {
   @JsonProperty(\\"min_number_prop\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Double minNumberProp;
   @JsonProperty(\\"max_number_prop\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Double maxNumberProp;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public Double getMinNumberProp() { return this.minNumberProp; }

@@ -77,7 +77,6 @@ export default function HeadComponent({
       <meta property="og:url" content={permalink} />
       <meta property="og:image" content={image} />
       <meta property="og:description" content={description} />
-
       <title>{title}</title>
     </Head>
   );

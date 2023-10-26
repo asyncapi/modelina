@@ -32,7 +32,7 @@ describe('RustConstrainer', () => {
   };
   describe('ObjectModel', () => {
     test('should render the constrained name as type', () => {
-      const model = new ConstrainedObjectModel('test', undefined, '', {});
+      const model = new ConstrainedObjectModel('test', undefined, {}, '', {});
       const type = RustDefaultTypeMapping.Object({
         constrainedModel: model,
         ...defaultOptions
@@ -42,10 +42,11 @@ describe('RustConstrainer', () => {
   });
   describe('Reference', () => {
     test('should render the constrained name as type', () => {
-      const refModel = new ConstrainedAnyModel('test', undefined, '');
+      const refModel = new ConstrainedAnyModel('test', undefined, {}, '');
       const model = new ConstrainedReferenceModel(
         'test',
         undefined,
+        {},
         '',
         refModel
       );
@@ -58,7 +59,7 @@ describe('RustConstrainer', () => {
   });
   describe('Any', () => {
     test('should render type', () => {
-      const model = new ConstrainedAnyModel('test', undefined, '');
+      const model = new ConstrainedAnyModel('test', undefined, {}, '');
       const type = RustDefaultTypeMapping.Any({
         constrainedModel: model,
         ...defaultOptions
@@ -68,16 +69,17 @@ describe('RustConstrainer', () => {
   });
   describe('Float', () => {
     test('should render type', () => {
-      const model = new ConstrainedFloatModel('test', undefined, '');
+      const model = new ConstrainedFloatModel('test', undefined, {}, '');
       const type = RustDefaultTypeMapping.Float({
         constrainedModel: model,
         ...defaultOptions
       });
       expect(type).toEqual('f64');
     });
-    test('should render f32 when original input has number format', () => {
+    test('should render f32 when format has number format', () => {
       const model = new ConstrainedFloatModel(
         'test',
+        {},
         { format: 'float32' },
         ''
       );
@@ -90,16 +92,17 @@ describe('RustConstrainer', () => {
   });
   describe('Integer', () => {
     test('should render type', () => {
-      const model = new ConstrainedIntegerModel('test', undefined, '');
+      const model = new ConstrainedIntegerModel('test', undefined, {}, '');
       const type = RustDefaultTypeMapping.Integer({
         constrainedModel: model,
         ...defaultOptions
       });
       expect(type).toEqual('i32');
     });
-    test('should render int when original input has integer format', () => {
+    test('should render int when format has integer format', () => {
       const model = new ConstrainedIntegerModel(
         'test',
+        {},
         { format: 'integer' },
         ''
       );
@@ -109,9 +112,10 @@ describe('RustConstrainer', () => {
       });
       expect(type).toEqual('i32');
     });
-    test('should render int when original input has int32 format', () => {
+    test('should render int when format has int32 format', () => {
       const model = new ConstrainedIntegerModel(
         'test',
+        {},
         { format: 'int32' },
         ''
       );
@@ -121,17 +125,23 @@ describe('RustConstrainer', () => {
       });
       expect(type).toEqual('i32');
     });
-    test('should render long when original input has long format', () => {
-      const model = new ConstrainedIntegerModel('test', { format: 'long' }, '');
+    test('should render long when format has long format', () => {
+      const model = new ConstrainedIntegerModel(
+        'test',
+        {},
+        { format: 'long' },
+        ''
+      );
       const type = RustDefaultTypeMapping.Integer({
         constrainedModel: model,
         ...defaultOptions
       });
       expect(type).toEqual('i64');
     });
-    test('should render long when original input has int64 format', () => {
+    test('should render long when format has int64 format', () => {
       const model = new ConstrainedIntegerModel(
         'test',
+        {},
         { format: 'int64' },
         ''
       );
@@ -144,16 +154,17 @@ describe('RustConstrainer', () => {
   });
   describe('String', () => {
     test('should render type', () => {
-      const model = new ConstrainedStringModel('test', undefined, '');
+      const model = new ConstrainedStringModel('test', undefined, {}, '');
       const type = RustDefaultTypeMapping.String({
         constrainedModel: model,
         ...defaultOptions
       });
       expect(type).toEqual('String');
     });
-    test('should render Vec<u8> when original input has binary format', () => {
+    test('should render Vec<u8> when format has binary format', () => {
       const model = new ConstrainedStringModel(
         'test',
+        {},
         { format: 'binary' },
         ''
       );
@@ -166,7 +177,7 @@ describe('RustConstrainer', () => {
   });
   describe('Boolean', () => {
     test('should render type', () => {
-      const model = new ConstrainedBooleanModel('test', undefined, '');
+      const model = new ConstrainedBooleanModel('test', undefined, {}, '');
       const type = RustDefaultTypeMapping.Boolean({
         constrainedModel: model,
         ...defaultOptions
@@ -177,7 +188,7 @@ describe('RustConstrainer', () => {
 
   describe('Tuple', () => {
     test('should render type', () => {
-      const model = new ConstrainedTupleModel('Test', undefined, '', []);
+      const model = new ConstrainedTupleModel('Test', undefined, {}, '', []);
       const type = RustDefaultTypeMapping.Tuple({
         constrainedModel: model,
         ...defaultOptions
@@ -191,11 +202,13 @@ describe('RustConstrainer', () => {
       const arrayModel = new ConstrainedStringModel(
         'test',
         undefined,
+        {},
         'String'
       );
       const model = new ConstrainedArrayModel(
         'test',
         undefined,
+        {},
         '',
         arrayModel
       );
@@ -209,7 +222,7 @@ describe('RustConstrainer', () => {
 
   describe('Enum', () => {
     test('should render the constrained name as type', () => {
-      const model = new ConstrainedEnumModel('Test', undefined, '', []);
+      const model = new ConstrainedEnumModel('Test', undefined, {}, '', []);
       const type = RustDefaultTypeMapping.Enum({
         constrainedModel: model,
         ...defaultOptions
@@ -220,7 +233,7 @@ describe('RustConstrainer', () => {
 
   describe('Union', () => {
     test('should render type', () => {
-      const model = new ConstrainedUnionModel('Test', undefined, '', []);
+      const model = new ConstrainedUnionModel('Test', undefined, {}, '', []);
       const type = RustDefaultTypeMapping.Union({
         constrainedModel: model,
         ...defaultOptions
@@ -231,15 +244,22 @@ describe('RustConstrainer', () => {
 
   describe('Dictionary', () => {
     test('should render type', () => {
-      const keyModel = new ConstrainedStringModel('test', undefined, 'String');
+      const keyModel = new ConstrainedStringModel(
+        'test',
+        undefined,
+        {},
+        'String'
+      );
       const valueModel = new ConstrainedStringModel(
         'test',
         undefined,
+        {},
         'String'
       );
       const model = new ConstrainedDictionaryModel(
         'test',
         undefined,
+        {},
         '',
         keyModel,
         valueModel
@@ -253,100 +273,122 @@ describe('RustConstrainer', () => {
   });
 
   describe('derive', () => {
-    const i32Model = new ConstrainedIntegerModel('test', undefined, '');
+    const i32Model = new ConstrainedIntegerModel('test', undefined, {}, '');
     const i64Model = new ConstrainedIntegerModel(
       'test',
       { format: 'int64' },
+      {},
       ''
     );
-    const f64Model = new ConstrainedFloatModel('test', undefined, '');
+    const f64Model = new ConstrainedFloatModel('test', undefined, {}, '');
     const f32Model = new ConstrainedFloatModel(
       'test',
       { format: 'float32' },
+      {},
       ''
     );
     const dictModel = new ConstrainedDictionaryModel(
       'test',
       undefined,
+      {},
       '',
       f32Model,
       f64Model
     );
-    const anyModel = new ConstrainedAnyModel('test', undefined, '');
-    const boolModel = new ConstrainedBooleanModel('test', undefined, '');
-    const stringModel = new ConstrainedStringModel('test', undefined, 'String');
+    const anyModel = new ConstrainedAnyModel('test', undefined, {}, '');
+    const boolModel = new ConstrainedBooleanModel('test', undefined, {}, '');
+    const stringModel = new ConstrainedStringModel(
+      'test',
+      undefined,
+      {},
+      'String'
+    );
 
     describe('deriveCopy', () => {
       test('should return false for types that do not implement Copy trait', () => {
         const refModel = new ConstrainedReferenceModel(
           'test',
           undefined,
+          {},
           '',
           stringModel
         );
-        const tupleModel = new ConstrainedTupleModel('test', undefined, '', [
-          new ConstrainedTupleValueModel(0, stringModel),
-          new ConstrainedTupleValueModel(1, anyModel)
-        ]);
-        const unionModel = new ConstrainedUnionModel('test', undefined, '', [
-          stringModel,
-          refModel,
-          dictModel,
-          anyModel,
-          tupleModel
-        ]);
-        const enumModel = new ConstrainedEnumModel('test', undefined, '', [
-          new ConstrainedEnumValueModel('one', stringModel),
-          new ConstrainedEnumValueModel('two', stringModel)
+        const tupleModel = new ConstrainedTupleModel(
+          'test',
+          undefined,
+          {},
+          '',
+          [
+            new ConstrainedTupleValueModel(0, stringModel),
+            new ConstrainedTupleValueModel(1, anyModel)
+          ]
+        );
+        const unionModel = new ConstrainedUnionModel(
+          'test',
+          undefined,
+          {},
+          '',
+          [stringModel, refModel, dictModel, anyModel, tupleModel]
+        );
+        const enumModel = new ConstrainedEnumModel('test', undefined, {}, '', [
+          new ConstrainedEnumValueModel('one', stringModel, {}),
+          new ConstrainedEnumValueModel('two', stringModel, {})
         ]);
 
-        const objectModel = new ConstrainedObjectModel('test', undefined, '', {
-          stringProp: new ConstrainedObjectPropertyModel(
-            'test',
-            'test',
-            true,
-            stringModel
-          ),
-          refProp: new ConstrainedObjectPropertyModel(
-            'test',
-            'test',
-            true,
-            refModel
-          ),
-          dictProp: new ConstrainedObjectPropertyModel(
-            'test',
-            'test',
-            true,
-            dictModel
-          ),
-          anyProp: new ConstrainedObjectPropertyModel(
-            'test',
-            'test',
-            true,
-            anyModel
-          ),
-          tupleModel: new ConstrainedObjectPropertyModel(
-            'test',
-            'test',
-            true,
-            tupleModel
-          ),
-          unionModel: new ConstrainedObjectPropertyModel(
-            'test',
-            'test',
-            true,
-            unionModel
-          ),
-          enumModel: new ConstrainedObjectPropertyModel(
-            'test',
-            'test',
-            true,
-            enumModel
-          )
-        });
+        const objectModel = new ConstrainedObjectModel(
+          'test',
+          undefined,
+          {},
+          '',
+          {
+            stringProp: new ConstrainedObjectPropertyModel(
+              'test',
+              'test',
+              true,
+              stringModel
+            ),
+            refProp: new ConstrainedObjectPropertyModel(
+              'test',
+              'test',
+              true,
+              refModel
+            ),
+            dictProp: new ConstrainedObjectPropertyModel(
+              'test',
+              'test',
+              true,
+              dictModel
+            ),
+            anyProp: new ConstrainedObjectPropertyModel(
+              'test',
+              'test',
+              true,
+              anyModel
+            ),
+            tupleModel: new ConstrainedObjectPropertyModel(
+              'test',
+              'test',
+              true,
+              tupleModel
+            ),
+            unionModel: new ConstrainedObjectPropertyModel(
+              'test',
+              'test',
+              true,
+              unionModel
+            ),
+            enumModel: new ConstrainedObjectPropertyModel(
+              'test',
+              'test',
+              true,
+              enumModel
+            )
+          }
+        );
         const arrayModel = new ConstrainedArrayModel(
           'test',
           undefined,
+          {},
           '',
           refModel
         );
@@ -363,89 +405,115 @@ describe('RustConstrainer', () => {
       });
 
       test('should return true for types that implement Copy trait', () => {
-        const i32Model = new ConstrainedIntegerModel('test', undefined, '');
+        const i32Model = new ConstrainedIntegerModel('test', undefined, {}, '');
         const i64Model = new ConstrainedIntegerModel(
           'test',
           { format: 'int64' },
+          {},
           ''
         );
-        const f64Model = new ConstrainedFloatModel('test', undefined, '');
+        const f64Model = new ConstrainedFloatModel('test', undefined, {}, '');
         const f32Model = new ConstrainedFloatModel(
           'test',
           { format: 'float32' },
+          {},
           ''
         );
-        const boolModel = new ConstrainedBooleanModel('test', undefined, '');
-        const tupleModel = new ConstrainedTupleModel('test', undefined, '', [
-          new ConstrainedTupleValueModel(0, boolModel),
-          new ConstrainedTupleValueModel(1, boolModel)
-        ]);
+        const boolModel = new ConstrainedBooleanModel(
+          'test',
+          undefined,
+          {},
+          ''
+        );
+        const tupleModel = new ConstrainedTupleModel(
+          'test',
+          undefined,
+          {},
+          '',
+          [
+            new ConstrainedTupleValueModel(0, boolModel),
+            new ConstrainedTupleValueModel(1, boolModel)
+          ]
+        );
         const arrayModel = new ConstrainedArrayModel(
           'test',
           undefined,
+          {},
           '',
           i32Model
         );
-        const enumModel = new ConstrainedEnumModel('test', undefined, '', [
-          new ConstrainedEnumValueModel('one', i32Model),
-          new ConstrainedEnumValueModel('two', i32Model)
+        const enumModel = new ConstrainedEnumModel('test', undefined, {}, '', [
+          new ConstrainedEnumValueModel('one', i32Model, {}),
+          new ConstrainedEnumValueModel('two', i32Model, {})
         ]);
 
-        const unionModel = new ConstrainedUnionModel('test', undefined, '', [
-          i32Model,
-          i64Model,
-          f64Model,
-          f32Model,
-          boolModel,
-          tupleModel,
-          arrayModel,
-          enumModel
-        ]);
-
-        const objectModel = new ConstrainedObjectModel('test', undefined, '', {
-          i32Model: new ConstrainedObjectPropertyModel(
-            'test',
-            'test',
-            true,
-            i32Model
-          ),
-          i64Model: new ConstrainedObjectPropertyModel(
-            'test',
-            'test',
-            true,
-            i64Model
-          ),
-          f32Model: new ConstrainedObjectPropertyModel(
-            'test',
-            'test',
-            true,
-            f32Model
-          ),
-          f64Mode: new ConstrainedObjectPropertyModel(
-            'test',
-            'test',
-            true,
-            f64Model
-          ),
-          tupleModel: new ConstrainedObjectPropertyModel(
-            'test',
-            'test',
-            true,
-            tupleModel
-          ),
-          unionModel: new ConstrainedObjectPropertyModel(
-            'test',
-            'test',
-            true,
-            unionModel
-          ),
-          enumModel: new ConstrainedObjectPropertyModel(
-            'test',
-            'test',
-            true,
+        const unionModel = new ConstrainedUnionModel(
+          'test',
+          undefined,
+          {},
+          '',
+          [
+            i32Model,
+            i64Model,
+            f64Model,
+            f32Model,
+            boolModel,
+            tupleModel,
+            arrayModel,
             enumModel
-          )
-        });
+          ]
+        );
+
+        const objectModel = new ConstrainedObjectModel(
+          'test',
+          undefined,
+          {},
+          '',
+          {
+            i32Model: new ConstrainedObjectPropertyModel(
+              'test',
+              'test',
+              true,
+              i32Model
+            ),
+            i64Model: new ConstrainedObjectPropertyModel(
+              'test',
+              'test',
+              true,
+              i64Model
+            ),
+            f32Model: new ConstrainedObjectPropertyModel(
+              'test',
+              'test',
+              true,
+              f32Model
+            ),
+            f64Mode: new ConstrainedObjectPropertyModel(
+              'test',
+              'test',
+              true,
+              f64Model
+            ),
+            tupleModel: new ConstrainedObjectPropertyModel(
+              'test',
+              'test',
+              true,
+              tupleModel
+            ),
+            unionModel: new ConstrainedObjectPropertyModel(
+              'test',
+              'test',
+              true,
+              unionModel
+            ),
+            enumModel: new ConstrainedObjectPropertyModel(
+              'test',
+              'test',
+              true,
+              enumModel
+            )
+          }
+        );
 
         expect(deriveCopy(i32Model)).toEqual(true);
         expect(deriveCopy(i64Model)).toEqual(true);
@@ -469,74 +537,86 @@ describe('RustConstrainer', () => {
       });
 
       test('should return true for types that implement Hash trait', () => {
-        const tupleModel = new ConstrainedTupleModel('test', undefined, '', [
-          new ConstrainedTupleValueModel(0, boolModel),
-          new ConstrainedTupleValueModel(1, boolModel)
-        ]);
+        const tupleModel = new ConstrainedTupleModel(
+          'test',
+          undefined,
+          {},
+          '',
+          [
+            new ConstrainedTupleValueModel(0, boolModel),
+            new ConstrainedTupleValueModel(1, boolModel)
+          ]
+        );
         const arrayModel = new ConstrainedArrayModel(
           'test',
           undefined,
+          {},
           '',
           i32Model
         );
-        const enumModel = new ConstrainedEnumModel('test', undefined, '', [
-          new ConstrainedEnumValueModel('one', i32Model),
-          new ConstrainedEnumValueModel('two', i32Model)
+        const enumModel = new ConstrainedEnumModel('test', undefined, {}, '', [
+          new ConstrainedEnumValueModel('one', i32Model, {}),
+          new ConstrainedEnumValueModel('two', i32Model, {})
         ]);
 
-        const unionModel = new ConstrainedUnionModel('test', undefined, '', [
-          i32Model,
-          i64Model,
-          boolModel,
-          tupleModel,
-          arrayModel,
-          enumModel
-        ]);
+        const unionModel = new ConstrainedUnionModel(
+          'test',
+          undefined,
+          {},
+          '',
+          [i32Model, i64Model, boolModel, tupleModel, arrayModel, enumModel]
+        );
 
-        const objectModel = new ConstrainedObjectModel('test', undefined, '', {
-          stringProp: new ConstrainedObjectPropertyModel(
-            'test',
-            'test',
-            true,
-            stringModel
-          ),
-          i32Model: new ConstrainedObjectPropertyModel(
-            'test',
-            'test',
-            true,
-            i32Model
-          ),
-          i64Model: new ConstrainedObjectPropertyModel(
-            'test',
-            'test',
-            true,
-            i64Model
-          ),
-          boolProp: new ConstrainedObjectPropertyModel(
-            'test',
-            'test',
-            true,
-            boolModel
-          ),
-          tupleModel: new ConstrainedObjectPropertyModel(
-            'test',
-            'test',
-            true,
-            tupleModel
-          ),
-          unionModel: new ConstrainedObjectPropertyModel(
-            'test',
-            'test',
-            true,
-            unionModel
-          ),
-          enumModel: new ConstrainedObjectPropertyModel(
-            'test',
-            'test',
-            true,
-            enumModel
-          )
-        });
+        const objectModel = new ConstrainedObjectModel(
+          'test',
+          undefined,
+          {},
+          '',
+          {
+            stringProp: new ConstrainedObjectPropertyModel(
+              'test',
+              'test',
+              true,
+              stringModel
+            ),
+            i32Model: new ConstrainedObjectPropertyModel(
+              'test',
+              'test',
+              true,
+              i32Model
+            ),
+            i64Model: new ConstrainedObjectPropertyModel(
+              'test',
+              'test',
+              true,
+              i64Model
+            ),
+            boolProp: new ConstrainedObjectPropertyModel(
+              'test',
+              'test',
+              true,
+              boolModel
+            ),
+            tupleModel: new ConstrainedObjectPropertyModel(
+              'test',
+              'test',
+              true,
+              tupleModel
+            ),
+            unionModel: new ConstrainedObjectPropertyModel(
+              'test',
+              'test',
+              true,
+              unionModel
+            ),
+            enumModel: new ConstrainedObjectPropertyModel(
+              'test',
+              'test',
+              true,
+              enumModel
+            )
+          }
+        );
         expect(deriveHash(stringModel)).toEqual(true);
         expect(deriveHash(i32Model)).toEqual(true);
         expect(deriveHash(i64Model)).toEqual(true);
@@ -557,73 +637,85 @@ describe('RustConstrainer', () => {
       });
 
       test('should return true for types that implement Eq trait', () => {
-        const tupleModel = new ConstrainedTupleModel('test', undefined, '', [
-          new ConstrainedTupleValueModel(0, boolModel),
-          new ConstrainedTupleValueModel(1, boolModel)
-        ]);
+        const tupleModel = new ConstrainedTupleModel(
+          'test',
+          undefined,
+          {},
+          '',
+          [
+            new ConstrainedTupleValueModel(0, boolModel),
+            new ConstrainedTupleValueModel(1, boolModel)
+          ]
+        );
         const arrayModel = new ConstrainedArrayModel(
           'test',
           undefined,
+          {},
           '',
           i32Model
         );
-        const enumModel = new ConstrainedEnumModel('test', undefined, '', [
-          new ConstrainedEnumValueModel('one', i32Model),
-          new ConstrainedEnumValueModel('two', i32Model)
+        const enumModel = new ConstrainedEnumModel('test', undefined, {}, '', [
+          new ConstrainedEnumValueModel('one', i32Model, {}),
+          new ConstrainedEnumValueModel('two', i32Model, {})
         ]);
 
-        const unionModel = new ConstrainedUnionModel('test', undefined, '', [
-          i32Model,
-          i64Model,
-          boolModel,
-          tupleModel,
-          arrayModel,
-          enumModel
-        ]);
-        const objectModel = new ConstrainedObjectModel('test', undefined, '', {
-          stringProp: new ConstrainedObjectPropertyModel(
-            'test',
-            'test',
-            true,
-            stringModel
-          ),
-          i32Model: new ConstrainedObjectPropertyModel(
-            'test',
-            'test',
-            true,
-            i32Model
-          ),
-          i64Model: new ConstrainedObjectPropertyModel(
-            'test',
-            'test',
-            true,
-            i64Model
-          ),
-          boolProp: new ConstrainedObjectPropertyModel(
-            'test',
-            'test',
-            true,
-            boolModel
-          ),
-          tupleModel: new ConstrainedObjectPropertyModel(
-            'test',
-            'test',
-            true,
-            tupleModel
-          ),
-          unionModel: new ConstrainedObjectPropertyModel(
-            'test',
-            'test',
-            true,
-            unionModel
-          ),
-          enumModel: new ConstrainedObjectPropertyModel(
-            'test',
-            'test',
-            true,
-            enumModel
-          )
-        });
+        const unionModel = new ConstrainedUnionModel(
+          'test',
+          undefined,
+          {},
+          '',
+          [i32Model, i64Model, boolModel, tupleModel, arrayModel, enumModel]
+        );
+        const objectModel = new ConstrainedObjectModel(
+          'test',
+          undefined,
+          {},
+          '',
+          {
+            stringProp: new ConstrainedObjectPropertyModel(
+              'test',
+              'test',
+              true,
+              stringModel
+            ),
+            i32Model: new ConstrainedObjectPropertyModel(
+              'test',
+              'test',
+              true,
+              i32Model
+            ),
+            i64Model: new ConstrainedObjectPropertyModel(
+              'test',
+              'test',
+              true,
+              i64Model
+            ),
+            boolProp: new ConstrainedObjectPropertyModel(
+              'test',
+              'test',
+              true,
+              boolModel
+            ),
+            tupleModel: new ConstrainedObjectPropertyModel(
+              'test',
+              'test',
+              true,
+              tupleModel
+            ),
+            unionModel: new ConstrainedObjectPropertyModel(
+              'test',
+              'test',
+              true,
+              unionModel
+            ),
+            enumModel: new ConstrainedObjectPropertyModel(
+              'test',
+              'test',
+              true,
+              enumModel
+            )
+          }
+        );
         expect(deriveEq(stringModel)).toEqual(true);
         expect(deriveEq(i32Model)).toEqual(true);
         expect(deriveEq(i64Model)).toEqual(true);

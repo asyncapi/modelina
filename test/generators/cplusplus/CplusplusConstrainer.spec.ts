@@ -22,7 +22,7 @@ const dependencyFactory = () => {
 describe('CplusplusConstrainer', () => {
   describe('ObjectModel', () => {
     test('should render the constrained name as type', () => {
-      const model = new ConstrainedObjectModel('test', undefined, '', {});
+      const model = new ConstrainedObjectModel('test', undefined, {}, '', {});
       const type = CplusplusDefaultTypeMapping.Object({
         constrainedModel: model,
         options: CplusplusGenerator.defaultOptions,
@@ -33,10 +33,11 @@ describe('CplusplusConstrainer', () => {
   });
   describe('Reference', () => {
     test('should render the constrained name as type', () => {
-      const refModel = new ConstrainedAnyModel('test', undefined, '');
+      const refModel = new ConstrainedAnyModel('test', undefined, {}, '');
       const model = new ConstrainedReferenceModel(
         'test',
         undefined,
+        {},
         '',
         refModel
       );
@@ -50,7 +51,7 @@ describe('CplusplusConstrainer', () => {
   });
   describe('Any', () => {
     test('should render type', () => {
-      const model = new ConstrainedAnyModel('test', undefined, '');
+      const model = new ConstrainedAnyModel('test', undefined, {}, '');
       const type = CplusplusDefaultTypeMapping.Any({
         constrainedModel: model,
         options: CplusplusGenerator.defaultOptions,
@@ -61,7 +62,7 @@ describe('CplusplusConstrainer', () => {
   });
   describe('Float', () => {
     test('should render type', () => {
-      const model = new ConstrainedFloatModel('test', undefined, '');
+      const model = new ConstrainedFloatModel('test', undefined, {}, '');
       const type = CplusplusDefaultTypeMapping.Float({
         constrainedModel: model,
         options: CplusplusGenerator.defaultOptions,
@@ -72,7 +73,7 @@ describe('CplusplusConstrainer', () => {
   });
   describe('Integer', () => {
     test('should render type', () => {
-      const model = new ConstrainedIntegerModel('test', undefined, '');
+      const model = new ConstrainedIntegerModel('test', undefined, {}, '');
       const type = CplusplusDefaultTypeMapping.Integer({
         constrainedModel: model,
         options: CplusplusGenerator.defaultOptions,
@@ -83,7 +84,7 @@ describe('CplusplusConstrainer', () => {
   });
   describe('String', () => {
     test('should render type', () => {
-      const model = new ConstrainedStringModel('test', undefined, '');
+      const model = new ConstrainedStringModel('test', undefined, {}, '');
       const type = CplusplusDefaultTypeMapping.String({
         constrainedModel: model,
         options: CplusplusGenerator.defaultOptions,
@@ -94,7 +95,7 @@ describe('CplusplusConstrainer', () => {
   });
   describe('Boolean', () => {
     test('should render type', () => {
-      const model = new ConstrainedBooleanModel('test', undefined, '');
+      const model = new ConstrainedBooleanModel('test', undefined, {}, '');
       const type = CplusplusDefaultTypeMapping.Boolean({
         constrainedModel: model,
         options: CplusplusGenerator.defaultOptions,
@@ -109,10 +110,11 @@ describe('CplusplusConstrainer', () => {
       const stringModel = new ConstrainedStringModel(
         'test',
         undefined,
+        {},
         'std::string'
       );
       const tupleValueModel = new ConstrainedTupleValueModel(0, stringModel);
-      const model = new ConstrainedTupleModel('test', undefined, '', [
+      const model = new ConstrainedTupleModel('test', undefined, {}, '', [
         tupleValueModel
       ]);
       const type = CplusplusDefaultTypeMapping.Tuple({
@@ -126,11 +128,12 @@ describe('CplusplusConstrainer', () => {
       const stringModel = new ConstrainedStringModel(
         'test',
         undefined,
+        {},
         'std::string'
       );
       const tupleValueModel0 = new ConstrainedTupleValueModel(0, stringModel);
       const tupleValueModel1 = new ConstrainedTupleValueModel(1, stringModel);
-      const model = new ConstrainedTupleModel('test', undefined, '', [
+      const model = new ConstrainedTupleModel('test', undefined, {}, '', [
         tupleValueModel0,
         tupleValueModel1
       ]);
@@ -148,11 +151,13 @@ describe('CplusplusConstrainer', () => {
       const arrayModel = new ConstrainedStringModel(
         'test',
         undefined,
+        {},
         'std::string'
       );
       const model = new ConstrainedArrayModel(
         'test',
         undefined,
+        {},
         '',
         arrayModel
       );
@@ -167,7 +172,7 @@ describe('CplusplusConstrainer', () => {
 
   describe('Enum', () => {
     test('should render the constrained name as type', () => {
-      const model = new ConstrainedEnumModel('Test', undefined, '', []);
+      const model = new ConstrainedEnumModel('Test', undefined, {}, '', []);
       const type = CplusplusDefaultTypeMapping.Enum({
         constrainedModel: model,
         options: CplusplusGenerator.defaultOptions,
@@ -182,9 +187,10 @@ describe('CplusplusConstrainer', () => {
       const unionModel = new ConstrainedStringModel(
         'test',
         undefined,
+        {},
         'std::string'
       );
-      const model = new ConstrainedUnionModel('test', undefined, '', [
+      const model = new ConstrainedUnionModel('test', undefined, {}, '', [
         unionModel
       ]);
       const type = CplusplusDefaultTypeMapping.Union({
@@ -198,14 +204,16 @@ describe('CplusplusConstrainer', () => {
       const unionModel1 = new ConstrainedStringModel(
         'test',
         undefined,
+        {},
         'std::string'
       );
       const unionModel2 = new ConstrainedStringModel(
         'test',
         undefined,
+        {},
         'std::string'
       );
-      const model = new ConstrainedUnionModel('test', undefined, '', [
+      const model = new ConstrainedUnionModel('test', undefined, {}, '', [
         unionModel1,
         unionModel2
       ]);
@@ -223,16 +231,19 @@ describe('CplusplusConstrainer', () => {
       const keyModel = new ConstrainedStringModel(
         'test',
         undefined,
+        {},
         'std::string'
       );
       const valueModel = new ConstrainedStringModel(
         'test',
         undefined,
+        {},
         'std::string'
       );
       const model = new ConstrainedDictionaryModel(
         'test',
         undefined,
+        {},
         '',
         keyModel,
         valueModel

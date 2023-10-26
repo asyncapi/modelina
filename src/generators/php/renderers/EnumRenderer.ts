@@ -13,7 +13,10 @@ import { PhpOptions } from '../PhpGenerator';
  */
 export class EnumRenderer extends PhpRenderer<ConstrainedEnumModel> {
   async defaultSelf(): Promise<string> {
-    const content = [await this.renderItems()];
+    const content = [
+      await this.renderItems(),
+      await this.runAdditionalContentPreset()
+    ];
     return `enum ${this.model.name}
 {
 ${this.indent(this.renderBlock(content, 2))}

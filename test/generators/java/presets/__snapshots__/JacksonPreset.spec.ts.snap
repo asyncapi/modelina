@@ -3,13 +3,15 @@
 exports[`JAVA_JACKSON_PRESET should render Jackson annotations for class 1`] = `
 "public class Clazz {
   @JsonProperty(\\"min_number_prop\\")
-  private Double minNumberProp;
+  private double minNumberProp;
   @JsonProperty(\\"max_number_prop\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Double maxNumberProp;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
-  public Double getMinNumberProp() { return this.minNumberProp; }
-  public void setMinNumberProp(Double minNumberProp) { this.minNumberProp = minNumberProp; }
+  public double getMinNumberProp() { return this.minNumberProp; }
+  public void setMinNumberProp(double minNumberProp) { this.minNumberProp = minNumberProp; }
 
   public Double getMaxNumberProp() { return this.maxNumberProp; }
   public void setMaxNumberProp(Double maxNumberProp) { this.maxNumberProp = maxNumberProp; }
@@ -49,4 +51,184 @@ exports[`JAVA_JACKSON_PRESET should render Jackson annotations for enum 1`] = `
     return String.valueOf(value);
   }
 }"
+`;
+
+exports[`JAVA_JACKSON_PRESET union handle oneOf with AsyncAPI discriminator with Jackson 1`] = `
+Array [
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"vehicle_type\\", visible=true)
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = Car.class, name = \\"Car\\"),
+  @JsonSubTypes.Type(value = Truck.class, name = \\"Truck\\")
+})
+/**
+ * Vehicle represents a union of types: Car, Truck
+ */
+public interface Vehicle {
+  String getVehicleType();
+}",
+  "public class Car implements Vehicle {
+  @JsonProperty(\\"vehicle_type\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String vehicleType;
+  @JsonProperty(\\"name\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String name;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public String getVehicleType() { return this.vehicleType; }
+  public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
+
+  public String getName() { return this.name; }
+  public void setName(String name) { this.name = name; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+  "public class Truck implements Vehicle {
+  @JsonProperty(\\"vehicle_type\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String vehicleType;
+  @JsonProperty(\\"name\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String name;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public String getVehicleType() { return this.vehicleType; }
+  public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
+
+  public String getName() { return this.name; }
+  public void setName(String name) { this.name = name; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+]
+`;
+
+exports[`JAVA_JACKSON_PRESET union handle oneOf with OpenAPI v3 discriminator with Jackson 1`] = `
+Array [
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"vehicleType\\", visible=true)
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = Car.class, name = \\"Car\\"),
+  @JsonSubTypes.Type(value = Truck.class, name = \\"Truck\\")
+})
+/**
+ * Vehicle represents a union of types: Car, Truck
+ */
+public interface Vehicle {
+  String getVehicleType();
+}",
+  "public class Car implements Vehicle {
+  @JsonProperty(\\"vehicleType\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String vehicleType;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public String getVehicleType() { return this.vehicleType; }
+  public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+  "public class Truck implements Vehicle {
+  @JsonProperty(\\"vehicleType\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String vehicleType;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public String getVehicleType() { return this.vehicleType; }
+  public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+]
+`;
+
+exports[`JAVA_JACKSON_PRESET union handle oneOf with Swagger v2 discriminator with Jackson 1`] = `
+Array [
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"vehicleType\\", visible=true)
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = Car.class, name = \\"Car\\"),
+  @JsonSubTypes.Type(value = Truck.class, name = \\"Truck\\")
+})
+/**
+ * Vehicle represents a union of types: Car, Truck
+ */
+public interface Vehicle {
+  String getVehicleType();
+}",
+  "public class Car implements Vehicle {
+  @JsonProperty(\\"vehicleType\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String vehicleType;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public String getVehicleType() { return this.vehicleType; }
+  public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+  "public class Truck implements Vehicle {
+  @JsonProperty(\\"vehicleType\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String vehicleType;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public String getVehicleType() { return this.vehicleType; }
+  public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+]
+`;
+
+exports[`JAVA_JACKSON_PRESET union handle oneOf without discriminator with Jackson deduction 1`] = `
+Array [
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.DEDUCTION)
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = Car.class, name = \\"Car\\"),
+  @JsonSubTypes.Type(value = Truck.class, name = \\"Truck\\")
+})
+/**
+ * Vehicle represents a union of types: Car, Truck
+ */
+public interface Vehicle {
+  
+}",
+  "public class Car implements Vehicle {
+  @JsonProperty(\\"passengers\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String passengers;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public String getPassengers() { return this.passengers; }
+  public void setPassengers(String passengers) { this.passengers = passengers; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+  "public class Truck implements Vehicle {
+  @JsonProperty(\\"cargo\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String cargo;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public String getCargo() { return this.cargo; }
+  public void setCargo(String cargo) { this.cargo = cargo; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+]
 `;

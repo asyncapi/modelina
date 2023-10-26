@@ -17,7 +17,11 @@ describe('JAVA_CONSTRAINTS_PRESET', () => {
         min_number_prop: { type: 'number', minimum: 0 },
         max_number_prop: { type: 'number', exclusiveMaximum: 100 },
         array_prop: { type: 'array', minItems: 2, maxItems: 3 },
-        string_prop: { type: 'string', pattern: '^I_', minLength: 3 }
+        string_prop: {
+          type: 'string',
+          pattern: '^\\w+("\\.\\w+)*$',
+          minLength: 3
+        }
       },
       required: ['min_number_prop', 'max_number_prop']
     };

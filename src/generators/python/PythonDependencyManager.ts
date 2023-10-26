@@ -3,7 +3,10 @@ import { AbstractDependencyManager } from '../AbstractDependencyManager';
 import { PythonOptions } from './PythonGenerator';
 
 export class PythonDependencyManager extends AbstractDependencyManager {
-  constructor(public options: PythonOptions, dependencies: string[] = []) {
+  constructor(
+    public options: PythonOptions,
+    dependencies: string[] = []
+  ) {
     super(dependencies);
   }
 

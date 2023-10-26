@@ -36,4 +36,16 @@ describe('JavaRenderer', () => {
       ).toEqual('@SomeComment(test=test2)');
     });
   });
+
+  describe('renderStringLiteral()', () => {
+    test('Should be able to render string literal with special characters', () => {
+      expect(
+        renderer.renderStringLiteral(
+          'this is a "literal" string with \'special\' characters: \\a\n\t\\b'
+        )
+      ).toEqual(
+        '"this is a \\"literal\\" string with \'special\' characters: \\\\a\\n\\t\\\\b"'
+      );
+    });
+  });
 });

@@ -8,6 +8,7 @@ import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer'
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
 import { CplusplusDependencyManager } from './CplusplusDependencyManager';
 import { CplusplusOptions } from './CplusplusGenerator';
+import { defaultConstantConstraints } from './constrainer/ConstantConstrainer';
 
 function ensureOptional(
   type: string,
@@ -106,5 +107,6 @@ export const CplusplusDefaultConstraints = {
   enumKey: defaultEnumKeyConstraints(),
   enumValue: defaultEnumValueConstraints(),
   modelName: defaultModelNameConstraints(),
-  propertyKey: defaultPropertyKeyConstraints()
+  propertyKey: defaultPropertyKeyConstraints(),
+  constant: defaultConstantConstraints()
 };

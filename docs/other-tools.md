@@ -13,10 +13,10 @@ This document is to help you keep an overview of of the differences between Mode
 
 ## jsonschema2pojo (v1)
 
-Website: https://www.jsonschema2pojo.org/ </br>
-GitHub: https://github.com/joelittlejohn/jsonschema2pojo </br>
-Supported inputs: JSON/YAML and JSON Schema </br>
-Written in: Java </br>
+Website: https://www.jsonschema2pojo.org/ <br></br>
+GitHub: https://github.com/joelittlejohn/jsonschema2pojo <br></br>
+Supported inputs: JSON/YAML and JSON Schema <br></br>
+Written in: Java <br></br>
 
 Here is some of the noticeable differences with Modelina that is nice to know before jumping into it:
 

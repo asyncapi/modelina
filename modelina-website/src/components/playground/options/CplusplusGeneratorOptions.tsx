@@ -1,6 +1,7 @@
 import React from 'react';
 import { PlaygroundCplusplusConfigContext } from '@/components/contexts/PlaygroundConfigContext';
 import { debounce } from 'lodash';
+import InfoModal from '@/components/InfoModal';
 
 interface CplusplusGeneratorOptionsProps {
   setNewConfig?: (queryKey: string, queryValue: string) => void;
@@ -45,8 +46,13 @@ class CplusplusGeneratorOptions extends React.Component<
         <h3 className="text-lg font-medium leading-6 text-gray-900">
           C++ Specific options
         </h3>
-        <li>
-          <label className="flex items-center py-2 justify-between cursor-pointer">
+        <li className=' flex items-center'>
+          <InfoModal text="Namespace :">
+            <p>
+            In C++, a namespace is a feature that allows you to organize your code into logical groups or containers. It helps in avoiding naming conflicts between different parts of your code and provides a way to encapsulate related code.
+            </p>
+          </InfoModal>
+          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Namespace
             </span>

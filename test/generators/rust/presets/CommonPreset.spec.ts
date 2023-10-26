@@ -143,10 +143,9 @@ describe('RUST_COMMON_PRESET', () => {
       };
 
       const models = await generator.generate(doc);
-      expect(models).toHaveLength(3);
+      expect(models).toHaveLength(2);
       expect(models[0].result).toMatchSnapshot();
       expect(models[1].result).toMatchSnapshot();
-      expect(models[2].result).toMatchSnapshot();
     });
   });
 

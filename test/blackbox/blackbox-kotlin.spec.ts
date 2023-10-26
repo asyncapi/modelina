@@ -1,5 +1,5 @@
 /**
- * Blackbox tests are the final line of defence, that takes different real-life example documents and generate their corresponding models in all supported languages.
+ * Blackbox tests are the final line of defense, that takes different real-life example documents and generate their corresponding models in all supported languages.
  *
  * For those languages where it is possible, the models are compiled/transpiled to ensure there are no syntax errors in generated models.
  *
@@ -11,8 +11,6 @@ import {
   InputMetaModel,
   InputProcessor,
   KotlinFileGenerator,
-  KOTLIN_DEFAULT_PRESET,
-  JAVA_COMMON_PRESET,
   KOTLIN_CONSTRAINTS_PRESET
 } from '../../src';
 import { execCommand } from './utils/Utils';
@@ -75,8 +73,8 @@ describeIf(!isWindows).each(filesToTest)(
 
       describe.each(kotlinGeneratorOptions)(
         'should be able to generate and compile Kotlin',
-        ({ generatorOption, renderOutputPath }) => {
-          test('class and enums', async () => {
+        ({ generatorOption, renderOutputPath, description }) => {
+          test(`class and enums ${description}`, async () => {
             const generator = new KotlinFileGenerator(generatorOption);
             const dependencyPath = path.resolve(
               __dirname,

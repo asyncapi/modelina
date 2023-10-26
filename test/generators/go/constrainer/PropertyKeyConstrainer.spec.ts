@@ -11,10 +11,11 @@ import {
   PropertyKeyConstraintOptions
 } from '../../../../src/generators/go/constrainer/PropertyKeyConstrainer';
 describe('PropertyKeyConstrainer', () => {
-  const objectModel = new ObjectModel('test', undefined, {});
+  const objectModel = new ObjectModel('test', undefined, {}, {});
   const constrainedObjectModel = new ConstrainedObjectModel(
     'test',
     undefined,
+    {},
     '',
     {}
   );
@@ -56,10 +57,11 @@ describe('PropertyKeyConstrainer', () => {
     expect(constrainedKey).toEqual('SomeWeirdValueExclamationQuotationHash_2');
   });
   test('should not contain duplicate properties', () => {
-    const objectModel = new ObjectModel('test', undefined, {});
+    const objectModel = new ObjectModel('test', undefined, {}, {});
     const constrainedObjectModel = new ConstrainedObjectModel(
       'test',
       undefined,
+      {},
       '',
       {}
     );

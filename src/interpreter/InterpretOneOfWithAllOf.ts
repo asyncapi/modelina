@@ -1,4 +1,4 @@
-import { CommonModel } from '../models/CommonModel';
+import { CommonModel } from '../models';
 import {
   Interpreter,
   InterpreterOptions,
@@ -29,6 +29,17 @@ export default function interpretOneOfWithAllOf(
     interpreterOptions.allowInheritance
   ) {
     return;
+  }
+
+  for (const allOfSchema of schema.allOf) {
+    const discriminator = interpreter.discriminatorProperty(allOfSchema);
+    if (discriminator !== undefined) {
+      interpreterOptions = {
+        ...interpreterOptions,
+        discriminator
+      };
+      model.discriminator = discriminator;
+    }
   }
 
   for (const oneOfSchema of schema.oneOf) {

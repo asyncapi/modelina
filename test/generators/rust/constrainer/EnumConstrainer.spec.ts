@@ -8,10 +8,11 @@ import {
 import { RESERVED_RUST_KEYWORDS } from '../../../../src/generators/rust/Constants';
 import { defaultEnumKeyConstraints } from '../../../../src/generators/rust/constrainer/EnumConstrainer';
 describe('EnumConstrainer', () => {
-  const enumModel = new EnumModel('test', undefined, []);
+  const enumModel = new EnumModel('test', undefined, {}, []);
   const constrainedEnumModel = new ConstrainedEnumModel(
     'test',
     undefined,
+    {},
     '',
     []
   );
@@ -36,11 +37,13 @@ describe('EnumConstrainer', () => {
     test('should not contain duplicate keys', () => {
       const existingConstrainedEnumValueModel = new ConstrainedEnumValueModel(
         'EMPTY',
+        'return',
         'return'
       );
       const constrainedEnumModel = new ConstrainedEnumModel(
         'test',
         undefined,
+        {},
         '',
         [existingConstrainedEnumValueModel]
       );

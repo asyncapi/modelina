@@ -1,6 +1,12 @@
 const path = require('path');
 const {readdir, readFile, writeFile, mkdir, } = require('fs/promises');
 
+const refactorExampleName = (name) => {
+  const [first, ...rest] = name.split('-');
+  return first.charAt(0).toUpperCase() + first.slice(1) + " " + rest.join(" ")
+
+}
+
 const getDirectories = async source =>
   (await readdir(source, { withFileTypes: true }))
     .filter(dirent => dirent.isDirectory())
@@ -21,6 +27,14 @@ const nameMapping = [
   'cplusplus',
   'php'
 ];
+
+const examplesToIgnore = [
+  'integrate-with-react',
+  'integrate-with-next',
+  'integrate-modelina-into-maven',
+  'TEMPLATE'
+]
+
 
 /**
  * Find the proper language type for the output code.
@@ -47,7 +61,7 @@ function getOutput(exampleDirPath){
   const consoleLogOutputPath = path.resolve(exampleDirPath, './__snapshots__/index.spec.ts.snap');
   let output = require(consoleLogOutputPath);
     output = Object.values(output).map((exportValue) => {
-      const searchValue = 'Array [\n  \"\"';
+      const searchValue = 'Array [\n  ""';
       exportValue = exportValue.slice(searchValue.length, exportValue.length);
       exportValue = exportValue.slice(0, exportValue.length-5);
       exportValue = exportValue.replace(/\\/g, "");
@@ -75,9 +89,9 @@ async function start() {
 
   let exampleDirs = await getDirectories(examplesDirPath);
   //Filter out any examples that either:
-  // 1. are impossible to show
+  // 1. are impossible to show (react and next examples)
   // 2. should not be shown 
-  exampleDirs = exampleDirs.filter((dir) => dir !== 'TEMPLATE' && dir !== 'integrate-with-react');
+  exampleDirs = exampleDirs.filter((dir) => !examplesToIgnore.includes(dir));
   const templateConfig = {};
 
   for (const example of exampleDirs) {
@@ -88,7 +102,7 @@ async function start() {
     const language = getLanguage(example);
     templateConfig[example] = {
       description: description,
-      displayName: example,
+      displayName: refactorExampleName(example),
       code,
       output,
       language
@@ -106,8 +120,9 @@ async function start() {
   mainReadme = mainReadme.replace('<!-- toc -->', '');
   mainReadme = mainReadme.replace('<!-- tocstop -->', '');
   mainReadme = mainReadme.replace('../docs/contributing.md', 'https://github.com/asyncapi/modelina/tree/master/examples/../docs/contributing.md');
-  mainReadme = mainReadme.replace('- [integrate with React](?selectedExample=integrate-with-react/)', '- [integrate with React](https://github.com/asyncapi/modelina/tree/master/examples/integrate-with-react)');
-  mainReadme = mainReadme.replace('- [TEMPLATE](?selectedExample=TEMPLATE)', '- [TEMPLATE](https://github.com/asyncapi/modelina/tree/master/examples/TEMPLATE)');
+  for (const exampleToIgnore of examplesToIgnore) {
+    mainReadme = mainReadme.replace(`- [${exampleToIgnore}](?selectedExample=${exampleToIgnore})`, `- [${exampleToIgnore}](https://github.com/asyncapi/modelina/tree/master/examples/${exampleToIgnore})`);
+  }
   const readmePath = path.resolve(__dirname, '../config/examples_readme.json');
   await writeFile(readmePath, JSON.stringify(mainReadme))
 }

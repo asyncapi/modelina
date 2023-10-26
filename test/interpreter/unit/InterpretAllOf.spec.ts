@@ -3,6 +3,7 @@ import { CommonModel } from '../../../src/models/CommonModel';
 import { Interpreter } from '../../../src/interpreter/Interpreter';
 import { isModelObject } from '../../../src/interpreter/Utils';
 import interpretAllOf from '../../../src/interpreter/InterpretAllOf';
+import { AsyncapiV2Schema } from '../../../src/models';
 const interpreterOptionsAllowInheritance = { allowInheritance: true };
 jest.mock('../../../src/interpreter/Interpreter');
 jest.mock('../../../src/models/CommonModel');
@@ -109,5 +110,31 @@ describe('Interpretation of allOf', () => {
     expect(interpreter.interpretAndCombineSchema).not.toHaveBeenCalled();
     expect(isModelObject).toHaveBeenCalled();
     expect(model.addExtendedModel).toHaveBeenCalledWith(interpretedModel);
+  });
+
+  test('should set discriminator', () => {
+    const item1 = AsyncapiV2Schema.toSchema({
+      type: 'object',
+      $id: 'test',
+      discriminator: 'test'
+    });
+    const schema = AsyncapiV2Schema.toSchema({ allOf: [item1] });
+    const model = new CommonModel();
+    const interpreter = new Interpreter();
+    (interpreter.interpret as jest.Mock).mockReturnValue(new CommonModel());
+    (interpreter.discriminatorProperty as jest.Mock).mockReturnValue(
+      item1.discriminator
+    );
+
+    interpretAllOf(schema, model, interpreter, {});
+
+    expect(model.discriminator).toBe(item1.discriminator);
+    expect(interpreter.discriminatorProperty).toHaveBeenCalledWith(item1);
+    expect(interpreter.interpretAndCombineSchema).toHaveBeenCalledWith(
+      item1,
+      model,
+      schema,
+      { discriminator: item1.discriminator }
+    );
   });
 });
