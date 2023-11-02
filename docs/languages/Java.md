@@ -18,6 +18,7 @@ There are special use-cases that each language supports; this document pertains 
     + [JSON marshaling and unmarshaling methods](#json-marshaling-and-unmarshaling-methods)
   * [To and from XML](#to-and-from-xml)
   * [To and from binary](#to-and-from-binary)
+- [Integrate Modelina into Maven](#integrate-modelina-into-maven)
 
 <!-- tocstop -->
 
