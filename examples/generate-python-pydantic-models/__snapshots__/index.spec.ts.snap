@@ -3,8 +3,8 @@
 exports[`Should be able to render python models and should log expected output to console: class-model 1`] = `
 Array [
   "class Root(BaseModel): 
-  optionalField: Optional[str] = Field(alias='this field is optional')
-  requiredField: str = Field(alias='this field is required')
+  optionalField: Optional[str] = Field(alias='''this field is optional''')
+  requiredField: str = Field(alias='''this field is required''')
   noDescription: Optional[str] = Field()
   options: Optional[Options] = Field()
 ",
