@@ -1,5 +1,167 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`JavaGenerator allOf allowInheritance handle allOf with const in CloudEvent type 1`] = `
+Array [
+  "public class Dog implements CloudEvent {
+  @NotNull
+  @JsonProperty(\\"id\\")
+  private String id;
+  @NotNull
+  @JsonProperty(\\"type\\")
+  private final CloudEventType type = CloudEventType.DOG;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  @Override
+  public String getId() { return this.id; }
+  @Override
+  public void setId(String id) { this.id = id; }
+
+  @Override
+  public CloudEventType getType() { return this.type; }
+
+  @Override
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  @Override
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Dog self = (Dog) o;
+      return 
+        Objects.equals(this.id, self.id) &&
+        Objects.equals(this.type, self.type) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)id, (Object)type, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Dog {\\\\n\\" +   
+      \\"    id: \\" + toIndentedString(id) + \\"\\\\n\\" +
+      \\"    type: \\" + toIndentedString(type) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+  "public interface CloudEvent {
+          @NotNull
+  @JsonProperty(\\"id\\")
+  private String id;
+  @NotNull
+  @JsonProperty(\\"type\\")
+  private String type;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  @Override
+  public String getId() { return this.id; }
+  @Override
+  public void setId(String id) { this.id = id; }
+
+  @Override
+  public String getType() { return this.type; }
+  @Override
+  public void setType(String type) { this.type = type; }
+
+  @Override
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  @Override
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    CloudEvent self = (CloudEvent) o;
+      return 
+        Objects.equals(this.id, self.id) &&
+        Objects.equals(this.type, self.type) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)id, (Object)type, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class CloudEvent {\\\\n\\" +   
+      \\"    id: \\" + toIndentedString(id) + \\"\\\\n\\" +
+      \\"    type: \\" + toIndentedString(type) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+        }",
+  "public enum CloudEventType {
+  DOG((String)\\"Dog\\");
+
+  private String value;
+
+  CloudEventType(String value) {
+    this.value = value;
+  }
+
+  @JsonValue
+  public String getValue() {
+    return value;
+  }
+
+  @JsonCreator
+  public static CloudEventType fromValue(String value) {
+    for (CloudEventType e : CloudEventType.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+}",
+]
+`;
+
 exports[`JavaGenerator oneOf/discriminator should create an interface 1`] = `
 Array [
   "/**

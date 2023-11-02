@@ -31,15 +31,24 @@ export class ClassRenderer extends JavaRenderer<ConstrainedObjectModel> {
       this.dependencyManager.addDependency('import java.util.Map;');
     }
 
-    const parentUnions = this.getParentUnions();
+    if (this.model.options.isExtended) {
+      return `public interface ${this.model.name} {
+        ${this.indent(this.renderBlock(content, 2))}
+        }`;
+    }
 
-    if (parentUnions) {
-      for (const parentUnion of parentUnions) {
-        this.dependencyManager.addModelDependency(parentUnion);
+    const parentUnions = this.getParentUnions();
+    const extend = this.model.options.extend;
+
+    if (parentUnions || extend) {
+      const implement = [...(parentUnions ?? []), ...(extend ?? [])];
+
+      for (const i of implement) {
+        this.dependencyManager.addModelDependency(i);
       }
 
-      return `public class ${this.model.name} implements ${parentUnions
-        .map((pu) => pu.name)
+      return `public class ${this.model.name} implements ${implement
+        .map((i) => i.name)
         .join(', ')} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
@@ -136,13 +145,15 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
     const getterName = `get${FormatHelpers.toPascalCase(
       property.propertyName
     )}`;
-    return `public ${property.property.type} ${getterName}() { return this.${property.propertyName}; }`;
+    return `@Override
+public ${property.property.type} ${getterName}() { return this.${property.propertyName}; }`;
   },
   setter({ property }) {
     if (property.property.options.const?.value) {
       return '';
     }
     const setterName = FormatHelpers.toPascalCase(property.propertyName);
-    return `public void set${setterName}(${property.property.type} ${property.propertyName}) { this.${property.propertyName} = ${property.propertyName}; }`;
+    return `@Override
+public void set${setterName}(${property.property.type} ${property.propertyName}) { this.${property.propertyName} = ${property.propertyName}; }`;
   }
 };

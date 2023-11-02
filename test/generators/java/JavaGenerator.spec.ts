@@ -1,3 +1,4 @@
+import { ConstrainedUnionModel } from '../../../src';
 import {
   JavaGenerator,
   JAVA_COMMON_PRESET,
@@ -279,6 +280,144 @@ describe('JavaGenerator', () => {
     await expect(generator.generateCompleteModels(doc, config)).rejects.toEqual(
       expectedError
     );
+  });
+
+  describe('allOf allowInheritance', () => {
+    test.only('handle allOf with const in CloudEvent type', async () => {
+      const asyncapiDoc = {
+        asyncapi: '2.5.0',
+        info: {
+          title: 'CloudEvent example',
+          version: '1.0.0'
+        },
+        channels: {
+          pet: {
+            publish: {
+              message: {
+                $ref: '#/components/messages/Dog'
+                // oneOf: [
+                //   {
+                //     $ref: '#/components/messages/Dog'
+                //   },
+                //   {
+                //     $ref: '#/components/messages/Cat'
+                //   }
+                // ]
+              }
+            }
+          }
+        },
+        components: {
+          messages: {
+            Dog: {
+              payload: {
+                title: 'Dog',
+                allOf: [
+                  {
+                    $ref: '#/components/schemas/CloudEvent'
+                  },
+                  {
+                    type: 'object',
+                    properties: {
+                      type: {
+                        const: 'Dog'
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+            // Cat: {
+            //   payload: {
+            //     title: 'Cat',
+            //     allOf: [
+            //       {
+            //         $ref: '#/components/schemas/CloudEvent'
+            //       },
+            //       {
+            //         type: 'object',
+            //         properties: {
+            //           type: {
+            //             const: 'Cat'
+            //           }
+            //         }
+            //       }
+            //     ]
+            //   }
+            // }
+          },
+          schemas: {
+            CloudEvent: {
+              title: 'CloudEvent',
+              type: 'object',
+              discriminator: 'type',
+              properties: {
+                id: {
+                  type: 'string'
+                },
+                type: {
+                  title: 'CloudEventType',
+                  type: 'string'
+                }
+              },
+              required: ['id', 'type']
+            }
+          }
+        }
+      };
+
+      generator = new JavaGenerator({
+        presets: [
+          JAVA_COMMON_PRESET,
+          JAVA_JACKSON_PRESET,
+          JAVA_DESCRIPTION_PRESET,
+          JAVA_CONSTRAINTS_PRESET
+        ],
+        collectionType: 'List',
+        processorOptions: {
+          interpreter: {
+            allowInheritance: true
+          }
+        }
+      });
+
+      const models = await generator.generate(asyncapiDoc);
+
+      for (const model of models) {
+        console.log('model', model.model);
+
+        // console.log(model.model.options);
+
+        // if (model.model instanceof ConstrainedUnionModel) {
+        //   console.log(model.model);
+
+        //   for (const union of model.model.union) {
+        //     console.log(union);
+        //   }
+        // }
+      }
+
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+
+      // const dog = models.find((model) => model.modelName === 'Dog');
+      // expect(dog).not.toBeUndefined();
+      // expect(dog?.result).toContain(
+      //   'private final CloudEventType type = CloudEventType.DOG;'
+      // );
+
+      // const cat = models.find((model) => model.modelName === 'Cat');
+      // expect(cat).not.toBeUndefined();
+      // expect(cat?.result).toContain(
+      //   'private final CloudEventType type = CloudEventType.CAT;'
+      // );
+
+      // const cloudEventType = models.find(
+      //   (model) => model.modelName === 'CloudEventType'
+      // );
+      // expect(cloudEventType).not.toBeUndefined();
+      // expect(cloudEventType?.result).toContain('DOG');
+      // expect(cloudEventType?.result).toContain('CAT');
+    });
   });
 
   describe('oneOf/discriminator', () => {

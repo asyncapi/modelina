@@ -48,6 +48,7 @@ export default function interpretAllOf(
     if (allOfModel === undefined) {
       continue;
     }
+
     if (
       isModelObject(allOfModel) === true &&
       interpreterOptions.allowInheritance === true
@@ -57,19 +58,20 @@ export default function interpretAllOf(
         model,
         allOfModel
       );
-      model.addExtendedModel(allOfModel);
-    } else {
-      Logger.info(
-        'Processing allOf, inheritance is not enabled. AllOf model is merged together with already interpreted model',
-        model,
-        allOfModel
-      );
-      interpreter.interpretAndCombineSchema(
-        allOfSchema,
-        model,
-        schema,
-        interpreterOptions
-      );
+      model.addExtendedModel(CommonModel.toCommonModel(allOfModel));
     }
+
+    Logger.info(
+      'Processing allOf, inheritance is not enabled. AllOf model is merged together with already interpreted model',
+      model,
+      allOfModel
+    );
+
+    interpreter.interpretAndCombineSchema(
+      allOfSchema,
+      model,
+      schema,
+      interpreterOptions
+    );
   }
 }

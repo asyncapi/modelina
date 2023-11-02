@@ -159,6 +159,15 @@ export abstract class AbstractGenerator<
       constrainedModelsWithDepManager.push(
         getConstrainedMetaModelWithDepManager(model)
       );
+
+      if (model.options.extend?.length) {
+        for (const extend of model.options.extend) {
+          extend.options.isExtended = true;
+          constrainedModelsWithDepManager.push(
+            getConstrainedMetaModelWithDepManager(extend)
+          );
+        }
+      }
     }
 
     for (const { constrainedModel } of constrainedModelsWithDepManager) {
