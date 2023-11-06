@@ -10,6 +10,7 @@ This readme file goes into details how to integrate Modelina into various enviro
     + [TypeScript and Jest](#typescript-and-jest)
   * [Security NOTICE](#security-notice)
 - [Integrate Modelina in an AsyncAPI generator template](#integrate-modelina-in-an-asyncapi-generator-template)
+- [Integrate Modelina into Maven](#integrate-modelina-into-maven)
 
 <!-- tocstop -->
 
@@ -17,9 +18,9 @@ This readme file goes into details how to integrate Modelina into various enviro
 
 Integrating Modelina into websites is is one of the core features, and each framework is different, so here are some of examples:
 
-- [Using Modelina in React](../examples/integrate-with-react/)
-- [Using Modelina in Next](../examples/integrate-with-next/)
-- 
+- [Using Modelina in React](../examples/integrate-with-react)
+- [Using Modelina in Next](../examples/integrate-with-next)
+
 > NOTICE: Modelina only works server side and not on the client side. In the React example its always rendered on the server side, and with Next you have to utilize [data fetching techniques](https://nextjs.org/docs/basic-features/data-fetching/overview) to retrieve the generated code from the server. 
 
 There are a few exceptions to the features Modelina support in a website environment. Those are listed here below:
@@ -63,7 +64,7 @@ There are at least two ways you can integrate Modelina into your build process f
 - DO work with other inputs then AsyncAPI
 - DO work when needing extensive build options and configurations
 
-Checkout the Maven example here: [Integrate Modelina into Maven](../examples/integrate-modelina-into-maven/maven-project/)
+Checkout the Maven example here: [Integrate Modelina into Maven](../examples/integrate-modelina-into-maven)
 
 **AsyncAPI CLI**
 
