@@ -33,8 +33,8 @@ export class ClassRenderer extends JavaRenderer<ConstrainedObjectModel> {
 
     if (this.model.options.isExtended) {
       return `public interface ${this.model.name} {
-        ${this.indent(this.renderBlock(content, 2))}
-        }`;
+${this.indent(this.renderBlock(content, 2))}
+}`;
     }
 
     const parentUnions = this.getParentUnions();
@@ -134,25 +134,46 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
-  property({ property }) {
+  property({ property, model }) {
+    if (model.options.isExtended) {
+      return '';
+    }
+
     if (property.property.options.const?.value) {
       return `private final ${property.property.type} ${property.propertyName} = ${property.property.options.const.value};`;
     }
 
     return `private ${property.property.type} ${property.propertyName};`;
   },
-  getter({ property }) {
+  getter({ property, model }) {
     const getterName = `get${FormatHelpers.toPascalCase(
       property.propertyName
     )}`;
+
+    if (model.options.isExtended) {
+      return `public ${property.property.type} ${getterName}();`;
+    }
+
     return `@Override
 public ${property.property.type} ${getterName}() { return this.${property.propertyName}; }`;
   },
-  setter({ property }) {
+  setter({ property, model }) {
     if (property.property.options.const?.value) {
       return '';
     }
     const setterName = FormatHelpers.toPascalCase(property.propertyName);
+
+    if (model.options.isExtended) {
+      if (
+        model.options.discriminator?.discriminator ===
+        property.unconstrainedPropertyName
+      ) {
+        return '';
+      }
+
+      return `public void set${setterName}(${property.property.type} ${property.propertyName});`;
+    }
+
     return `@Override
 public void set${setterName}(${property.property.type} ${property.propertyName}) { this.${property.propertyName} = ${property.propertyName}; }`;
   }

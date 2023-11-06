@@ -77,30 +77,14 @@ public interface Pet {
   }
 }",
   "public interface CloudEvent {
-          @NotNull
-  @JsonProperty(\\"id\\")
-  private String id;
-  @NotNull
-  @JsonProperty(\\"type\\")
-  private String type;
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Object> additionalProperties;
+  public String getId();
+  public void setId(String id);
 
-  @Override
-  public String getId() { return this.id; }
-  @Override
-  public void setId(String id) { this.id = id; }
+  public String getType();
 
-  @Override
-  public String getType() { return this.type; }
-  @Override
-  public void setType(String type) { this.type = type; }
-
-  @Override
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  @Override
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-        }",
+  public Map<String, Object> getAdditionalProperties();
+  public void setAdditionalProperties(Map<String, Object> additionalProperties);
+}",
   "public enum CloudEventType {
   DOG((String)\\"Dog\\"), CAT((String)\\"Cat\\");
 
