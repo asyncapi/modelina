@@ -143,35 +143,47 @@ export abstract class AbstractGenerator<
       };
     };
 
-    const unionConstrainedModelsWithDepManager: ConstrainedMetaModelWithDepManager[] =
-      [];
-    const constrainedModelsWithDepManager: ConstrainedMetaModelWithDepManager[] =
-      [];
+    const unionConstrainedModelsWithDepManager = new Map<
+      string,
+      ConstrainedMetaModelWithDepManager
+    >();
+
+    const constrainedModelsWithDepManager = new Map<
+      string,
+      ConstrainedMetaModelWithDepManager
+    >();
 
     for (const model of Object.values(inputModel.models)) {
       if (model instanceof UnionModel) {
-        unionConstrainedModelsWithDepManager.push(
+        unionConstrainedModelsWithDepManager.set(
+          model.name,
           getConstrainedMetaModelWithDepManager(model)
         );
         continue;
       }
 
-      constrainedModelsWithDepManager.push(
+      constrainedModelsWithDepManager.set(
+        model.name,
         getConstrainedMetaModelWithDepManager(model)
       );
 
       if (model.options.extend?.length) {
         for (const extend of model.options.extend) {
           extend.options.isExtended = true;
-          constrainedModelsWithDepManager.push(
+          constrainedModelsWithDepManager.set(
+            extend.name,
             getConstrainedMetaModelWithDepManager(extend)
           );
         }
       }
     }
 
-    for (const { constrainedModel } of constrainedModelsWithDepManager) {
-      for (const unionConstrainedModel of unionConstrainedModelsWithDepManager) {
+    for (const [, { constrainedModel }] of Array.from(
+      constrainedModelsWithDepManager
+    )) {
+      for (const [, unionConstrainedModel] of Array.from(
+        unionConstrainedModelsWithDepManager
+      )) {
         if (
           unionConstrainedModel.constrainedModel instanceof
             ConstrainedUnionModel &&
@@ -193,8 +205,10 @@ export abstract class AbstractGenerator<
     }
 
     return [
-      ...unionConstrainedModelsWithDepManager,
-      ...constrainedModelsWithDepManager
+      ...Array.from(unionConstrainedModelsWithDepManager).map(
+        ([, model]) => model
+      ),
+      ...Array.from(constrainedModelsWithDepManager).map(([, model]) => model)
     ];
   }
 

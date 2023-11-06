@@ -2,7 +2,18 @@
 
 exports[`JavaGenerator allOf allowInheritance handle allOf with const in CloudEvent type 1`] = `
 Array [
-  "public class Dog implements CloudEvent {
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"type\\", visible=true)
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = Dog.class, name = \\"Dog\\"),
+  @JsonSubTypes.Type(value = Cat.class, name = \\"Cat\\")
+})
+/**
+ * Pet represents a union of types: Dog, Cat
+ */
+public interface Pet {
+  CloudEventType getType();
+}",
+  "public class Dog implements Pet, CloudEvent {
   @NotNull
   @JsonProperty(\\"id\\")
   private String id;
@@ -89,49 +100,9 @@ Array [
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   @Override
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    CloudEvent self = (CloudEvent) o;
-      return 
-        Objects.equals(this.id, self.id) &&
-        Objects.equals(this.type, self.type) &&
-        Objects.equals(this.additionalProperties, self.additionalProperties);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash((Object)id, (Object)type, (Object)additionalProperties);
-  }
-
-  @Override
-  public String toString() {
-    return \\"class CloudEvent {\\\\n\\" +   
-      \\"    id: \\" + toIndentedString(id) + \\"\\\\n\\" +
-      \\"    type: \\" + toIndentedString(type) + \\"\\\\n\\" +
-      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
-    \\"}\\";
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(Object o) {
-    if (o == null) {
-      return \\"null\\";
-    }
-    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
-  }
         }",
   "public enum CloudEventType {
-  DOG((String)\\"Dog\\");
+  DOG((String)\\"Dog\\"), CAT((String)\\"Cat\\");
 
   private String value;
 
@@ -159,6 +130,69 @@ Array [
     return String.valueOf(value);
   }
 }",
+  "public class Cat implements Pet, CloudEvent {
+  @NotNull
+  @JsonProperty(\\"id\\")
+  private String id;
+  @NotNull
+  @JsonProperty(\\"type\\")
+  private final CloudEventType type = CloudEventType.CAT;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  @Override
+  public String getId() { return this.id; }
+  @Override
+  public void setId(String id) { this.id = id; }
+
+  @Override
+  public CloudEventType getType() { return this.type; }
+
+  @Override
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  @Override
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Cat self = (Cat) o;
+      return 
+        Objects.equals(this.id, self.id) &&
+        Objects.equals(this.type, self.type) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)id, (Object)type, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Cat {\\\\n\\" +   
+      \\"    id: \\" + toIndentedString(id) + \\"\\\\n\\" +
+      \\"    type: \\" + toIndentedString(type) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
 ]
 `;
 
@@ -174,9 +208,12 @@ public interface Vehicle {
   private final VehicleType vehicleType = VehicleType.CAR;
   private Map<String, Object> additionalProperties;
 
+  @Override
   public VehicleType getVehicleType() { return this.vehicleType; }
 
+  @Override
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  @Override
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }",
   "public enum VehicleType {
@@ -210,9 +247,12 @@ public interface Vehicle {
   private final VehicleType vehicleType = VehicleType.TRUCK;
   private Map<String, Object> additionalProperties;
 
+  @Override
   public VehicleType getVehicleType() { return this.vehicleType; }
 
+  @Override
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  @Override
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }",
 ]
@@ -230,13 +270,19 @@ Array [
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @Override
   public Action getAction() { return this.action; }
+  @Override
   public void setAction(Action action) { this.action = action; }
 
+  @Override
   public java.time.OffsetDateTime getEventTime() { return this.eventTime; }
+  @Override
   public void setEventTime(java.time.OffsetDateTime eventTime) { this.eventTime = eventTime; }
 
+  @Override
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  @Override
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
   @Override
@@ -346,23 +392,35 @@ public interface Pet {
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @Override
   public String getId() { return this.id; }
+  @Override
   public void setId(String id) { this.id = id; }
 
+  @Override
   public String getSource() { return this.source; }
+  @Override
   public void setSource(String source) { this.source = source; }
 
+  @Override
   public String getSpecversion() { return this.specversion; }
 
+  @Override
   public CloudEventType getType() { return this.type; }
 
+  @Override
   public String getDataschema() { return this.dataschema; }
+  @Override
   public void setDataschema(String dataschema) { this.dataschema = dataschema; }
 
+  @Override
   public java.time.OffsetDateTime getTime() { return this.time; }
+  @Override
   public void setTime(java.time.OffsetDateTime time) { this.time = time; }
 
+  @Override
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  @Override
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
   @Override
@@ -464,23 +522,35 @@ public interface Pet {
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @Override
   public String getId() { return this.id; }
+  @Override
   public void setId(String id) { this.id = id; }
 
+  @Override
   public String getSource() { return this.source; }
+  @Override
   public void setSource(String source) { this.source = source; }
 
+  @Override
   public String getSpecversion() { return this.specversion; }
 
+  @Override
   public CloudEventType getType() { return this.type; }
 
+  @Override
   public String getDataschema() { return this.dataschema; }
+  @Override
   public void setDataschema(String dataschema) { this.dataschema = dataschema; }
 
+  @Override
   public java.time.OffsetDateTime getTime() { return this.time; }
+  @Override
   public void setTime(java.time.OffsetDateTime time) { this.time = time; }
 
+  @Override
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  @Override
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
   @Override
@@ -546,12 +616,17 @@ Array [
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @Override
   public String getId() { return this.id; }
+  @Override
   public void setId(String id) { this.id = id; }
 
+  @Override
   public CloudEventType getType() { return this.type; }
 
+  @Override
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  @Override
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
   @Override
@@ -646,9 +721,12 @@ public interface Pet {
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @Override
   public DogType getType() { return this.type; }
 
+  @Override
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  @Override
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
   @Override
@@ -725,9 +803,12 @@ public interface Pet {
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @Override
   public CatType getType() { return this.type; }
 
+  @Override
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  @Override
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
   @Override
@@ -820,10 +901,14 @@ public interface Vehicle {
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @Override
   public Vehicle getVehicle() { return this.vehicle; }
+  @Override
   public void setVehicle(Vehicle vehicle) { this.vehicle = vehicle; }
 
+  @Override
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  @Override
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
   @Override
@@ -871,9 +956,12 @@ public interface Vehicle {
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @Override
   public VehicleType getVehicleType() { return this.vehicleType; }
 
+  @Override
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  @Override
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
   @Override
@@ -950,9 +1038,12 @@ public interface Vehicle {
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @Override
   public VehicleType getVehicleType() { return this.vehicleType; }
 
+  @Override
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  @Override
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
   @Override
@@ -1001,10 +1092,14 @@ exports[`JavaGenerator should not render reserved keyword 1`] = `
   private String reservedReservedEnum;
   private String reservedEnum;
 
+  @Override
   public String getReservedReservedEnum() { return this.reservedReservedEnum; }
+  @Override
   public void setReservedReservedEnum(String reservedReservedEnum) { this.reservedReservedEnum = reservedReservedEnum; }
 
+  @Override
   public String getReservedEnum() { return this.reservedEnum; }
+  @Override
   public void setReservedEnum(String reservedEnum) { this.reservedEnum = reservedEnum; }
 }"
 `;
@@ -1024,28 +1119,44 @@ Array [
   private Object[] arrayType;
   private Map<String, Object> additionalProperties;
 
+  @Override
   public String getStreetName() { return this.streetName; }
+  @Override
   public void setStreetName(String streetName) { this.streetName = streetName; }
 
+  @Override
   public String getCity() { return this.city; }
+  @Override
   public void setCity(String city) { this.city = city; }
 
+  @Override
   public String getState() { return this.state; }
+  @Override
   public void setState(String state) { this.state = state; }
 
+  @Override
   public double getHouseNumber() { return this.houseNumber; }
+  @Override
   public void setHouseNumber(double houseNumber) { this.houseNumber = houseNumber; }
 
+  @Override
   public Boolean getMarriage() { return this.marriage; }
+  @Override
   public void setMarriage(Boolean marriage) { this.marriage = marriage; }
 
+  @Override
   public Object getMembers() { return this.members; }
+  @Override
   public void setMembers(Object members) { this.members = members; }
 
+  @Override
   public Object[] getArrayType() { return this.arrayType; }
+  @Override
   public void setArrayType(Object[] arrayType) { this.arrayType = arrayType; }
 
+  @Override
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  @Override
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }",
 ]
@@ -1145,7 +1256,9 @@ exports[`JavaGenerator should render List type for collections 1`] = `
 "public class CustomClass {
   private List<Object> arrayType;
 
+  @Override
   public List<Object> getArrayType() { return this.arrayType; }
+  @Override
   public void setArrayType(List<Object> arrayType) { this.arrayType = arrayType; }
 }"
 `;
@@ -1239,31 +1352,49 @@ public class Address {
   private OtherModel otherModel;
   private Map<String, Object> additionalProperties;
 
+  @Override
   public String getStreetName() { return this.streetName; }
+  @Override
   public void setStreetName(String streetName) { this.streetName = streetName; }
 
+  @Override
   public String getCity() { return this.city; }
+  @Override
   public void setCity(String city) { this.city = city; }
 
+  @Override
   public String getState() { return this.state; }
+  @Override
   public void setState(String state) { this.state = state; }
 
+  @Override
   public double getHouseNumber() { return this.houseNumber; }
+  @Override
   public void setHouseNumber(double houseNumber) { this.houseNumber = houseNumber; }
 
+  @Override
   public Boolean getMarriage() { return this.marriage; }
+  @Override
   public void setMarriage(Boolean marriage) { this.marriage = marriage; }
 
+  @Override
   public Object getMembers() { return this.members; }
+  @Override
   public void setMembers(Object members) { this.members = members; }
 
+  @Override
   public Object[] getArrayType() { return this.arrayType; }
+  @Override
   public void setArrayType(Object[] arrayType) { this.arrayType = arrayType; }
 
+  @Override
   public OtherModel getOtherModel() { return this.otherModel; }
+  @Override
   public void setOtherModel(OtherModel otherModel) { this.otherModel = otherModel; }
 
+  @Override
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  @Override
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }",
   "package test.packageName;
@@ -1273,10 +1404,14 @@ public class OtherModel {
   private String streetName;
   private Map<String, Object> additionalProperties;
 
+  @Override
   public String getStreetName() { return this.streetName; }
+  @Override
   public void setStreetName(String streetName) { this.streetName = streetName; }
 
+  @Override
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  @Override
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }",
 ]
@@ -1290,13 +1425,17 @@ exports[`JavaGenerator should work custom preset for \`class\` type 1`] = `
   private Map<String, Object> additionalProperties;
 
   @JsonProperty(\\"property\\")
+  @Override
   public String getProperty() { return this.property; }
   @JsonProperty(\\"property\\")
+  @Override
   public void setProperty(String property) { this.property = property; }
 
   @JsonProperty(\\"additionalProperties\\")
+  @Override
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   @JsonProperty(\\"additionalProperties\\")
+  @Override
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }"
 `;

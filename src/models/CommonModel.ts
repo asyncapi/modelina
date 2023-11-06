@@ -446,7 +446,10 @@ export class CommonModel {
       );
       return;
     }
-    this.extend.set(extendedModel.$id, extendedModel);
+    this.extend.set(
+      extendedModel.$id,
+      CommonModel.toCommonModel(extendedModel)
+    );
   }
 
   /**

@@ -50,6 +50,10 @@ export type InterpreterOptions = {
    * When interpreting a schema with discriminator set, this property will be set best by the individual interpreters to make sure the discriminator becomes an enum.
    */
   discriminator?: string;
+  /**
+   * Use this option to disable cache when interpreting schemas. This will affect merging of schemas.
+   */
+  disableCache: boolean;
 };
 export type InterpreterSchemas =
   | Draft6Schema
@@ -64,7 +68,8 @@ export class Interpreter {
   static defaultInterpreterOptions: InterpreterOptions = {
     allowInheritance: false,
     ignoreAdditionalProperties: false,
-    ignoreAdditionalItems: false
+    ignoreAdditionalItems: false,
+    disableCache: false
   };
 
   private anonymCounter = 1;
@@ -80,7 +85,7 @@ export class Interpreter {
     schema: InterpreterSchemaType,
     options: InterpreterOptions = Interpreter.defaultInterpreterOptions
   ): CommonModel | undefined {
-    if (this.seenSchemas.has(schema)) {
+    if (!options.disableCache && this.seenSchemas.has(schema)) {
       const cachedModel = this.seenSchemas.get(schema);
       if (cachedModel !== undefined) {
         return cachedModel;
@@ -92,7 +97,9 @@ export class Interpreter {
     }
     const model = new CommonModel();
     model.originalInput = schema;
-    this.seenSchemas.set(schema, model);
+    if (!options.disableCache) {
+      this.seenSchemas.set(schema, model);
+    }
     this.interpretSchema(model, schema, options);
     return model;
   }

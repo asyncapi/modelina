@@ -1,4 +1,3 @@
-import { ConstrainedUnionModel } from '../../../src';
 import {
   JavaGenerator,
   JAVA_COMMON_PRESET,
@@ -283,7 +282,7 @@ describe('JavaGenerator', () => {
   });
 
   describe('allOf allowInheritance', () => {
-    test.only('handle allOf with const in CloudEvent type', async () => {
+    test('handle allOf with const in CloudEvent type', async () => {
       const asyncapiDoc = {
         asyncapi: '2.5.0',
         info: {
@@ -294,15 +293,14 @@ describe('JavaGenerator', () => {
           pet: {
             publish: {
               message: {
-                $ref: '#/components/messages/Dog'
-                // oneOf: [
-                //   {
-                //     $ref: '#/components/messages/Dog'
-                //   },
-                //   {
-                //     $ref: '#/components/messages/Cat'
-                //   }
-                // ]
+                oneOf: [
+                  {
+                    $ref: '#/components/messages/Dog'
+                  },
+                  {
+                    $ref: '#/components/messages/Cat'
+                  }
+                ]
               }
             }
           }
@@ -326,25 +324,25 @@ describe('JavaGenerator', () => {
                   }
                 ]
               }
+            },
+            Cat: {
+              payload: {
+                title: 'Cat',
+                allOf: [
+                  {
+                    $ref: '#/components/schemas/CloudEvent'
+                  },
+                  {
+                    type: 'object',
+                    properties: {
+                      type: {
+                        const: 'Cat'
+                      }
+                    }
+                  }
+                ]
+              }
             }
-            // Cat: {
-            //   payload: {
-            //     title: 'Cat',
-            //     allOf: [
-            //       {
-            //         $ref: '#/components/schemas/CloudEvent'
-            //       },
-            //       {
-            //         type: 'object',
-            //         properties: {
-            //           type: {
-            //             const: 'Cat'
-            //           }
-            //         }
-            //       }
-            //     ]
-            //   }
-            // }
           },
           schemas: {
             CloudEvent: {
@@ -382,41 +380,7 @@ describe('JavaGenerator', () => {
       });
 
       const models = await generator.generate(asyncapiDoc);
-
-      for (const model of models) {
-        console.log('model', model.model);
-
-        // console.log(model.model.options);
-
-        // if (model.model instanceof ConstrainedUnionModel) {
-        //   console.log(model.model);
-
-        //   for (const union of model.model.union) {
-        //     console.log(union);
-        //   }
-        // }
-      }
-
       expect(models.map((model) => model.result)).toMatchSnapshot();
-
-      // const dog = models.find((model) => model.modelName === 'Dog');
-      // expect(dog).not.toBeUndefined();
-      // expect(dog?.result).toContain(
-      //   'private final CloudEventType type = CloudEventType.DOG;'
-      // );
-
-      // const cat = models.find((model) => model.modelName === 'Cat');
-      // expect(cat).not.toBeUndefined();
-      // expect(cat?.result).toContain(
-      //   'private final CloudEventType type = CloudEventType.CAT;'
-      // );
-
-      // const cloudEventType = models.find(
-      //   (model) => model.modelName === 'CloudEventType'
-      // );
-      // expect(cloudEventType).not.toBeUndefined();
-      // expect(cloudEventType?.result).toContain('DOG');
-      // expect(cloudEventType?.result).toContain('CAT');
     });
   });
 

@@ -197,12 +197,17 @@ export const JAVA_COMMON_PRESET: JavaPreset<JavaCommonPresetOptions> = {
       options = options || {};
       const blocks: string[] = [];
       const shouldContainEqual =
-        options.equal === undefined || options.equal === true;
+        (options.equal === undefined || options.equal === true) &&
+        !model.options.isExtended;
       const shouldContainHashCode =
-        options.hashCode === undefined || options.hashCode === true;
+        (options.hashCode === undefined || options.hashCode === true) &&
+        !model.options.isExtended;
       const shouldContainToString =
-        options.classToString === undefined || options.classToString === true;
-      const shouldContainMarshal = options.marshalling === true;
+        (options.classToString === undefined ||
+          options.classToString === true) &&
+        !model.options.isExtended;
+      const shouldContainMarshal =
+        options.marshalling === true && !model.options.isExtended;
 
       if (shouldContainEqual === true || shouldContainHashCode === true) {
         renderer.dependencyManager.addDependency('import java.util.Objects;');
