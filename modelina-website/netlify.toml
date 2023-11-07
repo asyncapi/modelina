@@ -8,7 +8,4 @@
   NEXT_PUBLIC_API_PATH = ".netlify/functions"
 
 [functions]
-  directory = ".next/server/pages/api"
-
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
+  directory = "modelina-website/.next/server/pages/api"

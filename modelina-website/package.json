@@ -14,7 +14,6 @@
     "copy:docs:img": "cp -r ../docs/img public/img/docs"
   },
   "dependencies": {
-    "@netlify/plugin-nextjs": "4.41.1",
     "@monaco-editor/react": "^4.6.0",
     "@netlify/functions": "1.4.0",
     "@tailwindcss/aspect-ratio": "^0.4.0",
