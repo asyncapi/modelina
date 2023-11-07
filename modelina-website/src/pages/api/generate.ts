@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { HandlerEvent } from '@netlify/functions';
 import {
   defaultAsyncapiDocument,
   GenerateMessage,
@@ -17,6 +16,7 @@ import { getCSharpModels } from '@/pages/api/functions/CSharpGenerator';
 import { getCplusplusModels } from './functions/CplusplusGenerator';
 import { getKotlinModels } from './functions/KotlinGenerator';
 import { getPhpModels } from './functions/PhpGenerator';
+import { Handler, HandlerEvent } from '@netlify/functions';
 
 export async function generateNewCode(message: GenerateMessage): Promise<UpdateMessage | Error> {
   let input: any = defaultAsyncapiDocument;
@@ -61,7 +61,10 @@ export async function generateNewCode(message: GenerateMessage): Promise<UpdateM
   }
 }
 
-async function generate(req: NextApiRequest, res: NextApiResponse) {
+/**
+ * Next specific API function, why export default is necessary. Called when running locally.
+ */
+export default async function generate(req: NextApiRequest, res: NextApiResponse) {
   try {
     const message: GenerateMessage = JSON.parse(req.body);
     const response = await generateNewCode(message);
@@ -79,12 +82,11 @@ async function generate(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default generate;
-
 /**
- * Netlify function specifi code, can be ignored in local development
+ * Netlify function specific code, can be ignored in local development.
  */
-export async function handler(event: HandlerEvent) {
+
+const handler: Handler = async (event: HandlerEvent) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: `Method ${event.httpMethod} Not Allowed` };
   }
@@ -108,3 +110,4 @@ export async function handler(event: HandlerEvent) {
     };
   }
 }
+export { handler };
