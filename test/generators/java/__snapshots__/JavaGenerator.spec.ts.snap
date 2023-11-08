@@ -20,6 +20,9 @@ public interface Pet {
   @NotNull
   @JsonProperty(\\"type\\")
   private final CloudEventType type = CloudEventType.DOG;
+  @JsonProperty(\\"data\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String data;
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
@@ -30,6 +33,9 @@ public interface Pet {
 
   @Override
   public CloudEventType getType() { return this.type; }
+
+  public String getData() { return this.data; }
+  public void setData(String data) { this.data = data; }
 
   @Override
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
@@ -48,12 +54,13 @@ public interface Pet {
       return 
         Objects.equals(this.id, self.id) &&
         Objects.equals(this.type, self.type) &&
+        Objects.equals(this.data, self.data) &&
         Objects.equals(this.additionalProperties, self.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash((Object)id, (Object)type, (Object)additionalProperties);
+    return Objects.hash((Object)id, (Object)type, (Object)data, (Object)additionalProperties);
   }
 
   @Override
@@ -61,6 +68,7 @@ public interface Pet {
     return \\"class Dog {\\\\n\\" +   
       \\"    id: \\" + toIndentedString(id) + \\"\\\\n\\" +
       \\"    type: \\" + toIndentedString(type) + \\"\\\\n\\" +
+      \\"    data: \\" + toIndentedString(data) + \\"\\\\n\\" +
       \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
     \\"}\\";
   }

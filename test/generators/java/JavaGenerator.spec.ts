@@ -319,6 +319,9 @@ describe('JavaGenerator', () => {
                     properties: {
                       type: {
                         const: 'Dog'
+                      },
+                      data: {
+                        type: 'string'
                       }
                     }
                   }

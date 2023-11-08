@@ -130,6 +130,22 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 }
 
+const getOverride = (
+  model: ConstrainedObjectModel,
+  property: ConstrainedObjectPropertyModel
+) => {
+  const isOverride = model.options.extend?.find((extend) => {
+    if (
+      extend instanceof ConstrainedObjectModel &&
+      extend.properties[property.propertyName]
+    ) {
+      return true;
+    }
+  });
+
+  return isOverride ? '@Override\n' : '';
+};
+
 export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
   self({ renderer }) {
     return renderer.defaultSelf();
@@ -158,8 +174,9 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
       return `public ${property.property.type} ${getterName}();`;
     }
 
-    return `@Override
-public ${property.property.type} ${getterName}() { return this.${property.propertyName}; }`;
+    return `${getOverride(model, property)}public ${
+      property.property.type
+    } ${getterName}() { return this.${property.propertyName}; }`;
   },
   setter({ property, model }) {
     if (property.property.options.const?.value) {
@@ -179,7 +196,10 @@ public ${property.property.type} ${getterName}() { return this.${property.proper
       return `public void set${setterName}(${property.property.type} ${property.propertyName});`;
     }
 
-    return `@Override
-public void set${setterName}(${property.property.type} ${property.propertyName}) { this.${property.propertyName} = ${property.propertyName}; }`;
+    return `${getOverride(model, property)}public void set${setterName}(${
+      property.property.type
+    } ${property.propertyName}) { this.${property.propertyName} = ${
+      property.propertyName
+    }; }`;
   }
 };
