@@ -151,6 +151,10 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
     )}`;
 
     if (model.options.isExtended) {
+      if (property.property instanceof ConstrainedDictionaryModel) {
+        return '';
+      }
+
       return `public ${property.property.type} ${getterName}();`;
     }
 
@@ -166,7 +170,8 @@ public ${property.property.type} ${getterName}() { return this.${property.proper
     if (model.options.isExtended) {
       if (
         model.options.discriminator?.discriminator ===
-        property.unconstrainedPropertyName
+          property.unconstrainedPropertyName ||
+        property.property instanceof ConstrainedDictionaryModel
       ) {
         return '';
       }

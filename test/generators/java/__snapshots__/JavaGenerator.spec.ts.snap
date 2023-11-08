@@ -81,9 +81,6 @@ public interface Pet {
   public void setId(String id);
 
   public String getType();
-
-  public Map<String, Object> getAdditionalProperties();
-  public void setAdditionalProperties(Map<String, Object> additionalProperties);
 }",
   "public enum CloudEventType {
   DOG((String)\\"Dog\\"), CAT((String)\\"Cat\\");
