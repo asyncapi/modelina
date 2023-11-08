@@ -16,7 +16,7 @@ import { getCSharpModels } from '@/pages/api/functions/CSharpGenerator';
 import { getCplusplusModels } from './functions/CplusplusGenerator';
 import { getKotlinModels } from './functions/KotlinGenerator';
 import { getPhpModels } from './functions/PhpGenerator';
-import { Handler, HandlerEvent } from '@netlify/functions';
+import { HandlerEvent } from '@netlify/functions';
 
 export async function generateNewCode(message: GenerateMessage): Promise<UpdateMessage | Error> {
   let input: any = defaultAsyncapiDocument;
@@ -86,13 +86,14 @@ export default async function generate(req: NextApiRequest, res: NextApiResponse
  * Netlify function specific code, can be ignored in local development.
  */
 
-const handler: Handler = async (event: HandlerEvent) => {
+export async function handler(event: HandlerEvent) {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: `Method ${event.httpMethod} Not Allowed` };
   }
   if (!event.body) {
     return { statusCode: 405, body: 'Missing body' };
   }
+  console.log('RUNNING____')
   try {
     const message = JSON.parse(event.body) as GenerateMessage;
     const response = await generateNewCode(message);
@@ -110,4 +111,3 @@ const handler: Handler = async (event: HandlerEvent) => {
     };
   }
 }
-export { handler };
