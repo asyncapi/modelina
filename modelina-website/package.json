@@ -40,7 +40,7 @@
   "devDependencies": {
     "@types/lodash": "^4.14.191",
     "@types/lowlight": "0.0.3",
-    "@types/node": "18.11.18",
+    "@types/node": "16.11.7",
     "@types/react": "18.0.27",
     "@types/react-dom": "18.0.10",
     "@types/react-syntax-highlighter": "^15.5.6",
