@@ -1,38 +1,27 @@
 /* eslint-disable no-undef */
 /* eslint-disable @typescript-eslint/no-var-requires */
 import {
-  createAsyncAPIDocument,
   isAsyncAPIDocument,
   isOldAsyncAPIDocument,
-  Parser,
   AsyncAPIDocumentInterface,
   SchemaInterface as AsyncAPISchemaInterface,
-  SchemaV2 as AsyncAPISchema
+  SchemaV2 as AsyncAPISchema,
+  createAsyncAPIDocument
 } from '@asyncapi/parser';
-import { AsyncAPISchemaObject } from '@asyncapi/parser/cjs/spec-types/v2';
-import { AvroSchemaParser } from '@asyncapi/avro-schema-parser';
-import { OpenAPISchemaParser } from '@asyncapi/openapi-schema-parser';
-import { RamlDTSchemaParser } from '@asyncapi/raml-dt-schema-parser';
-import { createDetailedAsyncAPI } from '@asyncapi/parser/cjs/utils';
+
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
 import { InputMetaModel, ProcessorOptions, UnionModel } from '../models';
 import { Logger } from '../utils';
 import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
 import { convertToMetaModel } from '../helpers';
+import { NewParser } from '@smoya/multi-parser';
+import { createDetailedAsyncAPI } from '@asyncapi/parser/cjs/utils';
 
 /**
  * Class for processing AsyncAPI inputs
  */
 export class AsyncAPIInputProcessor extends AbstractInputProcessor {
-  private parser = new Parser();
-  constructor() {
-    super();
-    this.parser.registerSchemaParser(AvroSchemaParser());
-    this.parser.registerSchemaParser(OpenAPISchemaParser());
-    this.parser.registerSchemaParser(RamlDTSchemaParser());
-  }
-
   static supportedVersions = [
     '2.0.0',
     '2.1.0',
@@ -60,15 +49,25 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     }
 
     Logger.debug('Processing input as an AsyncAPI document');
-    let doc: AsyncAPIDocumentInterface;
+    let doc: AsyncAPIDocumentInterface | undefined;
     const inputModel = new InputMetaModel();
-    if (!AsyncAPIInputProcessor.isFromParser(input)) {
-      const { document, diagnostics } = await this.parser.parse(
-        input as any,
-        options?.asyncapi || {}
+    if (isOldAsyncAPIDocument(input)) {
+      // Is from old parser
+      const parsedJSON = input.json();
+      const detailed = createDetailedAsyncAPI(parsedJSON, parsedJSON);
+      doc = createAsyncAPIDocument(detailed);
+    } else {
+      const parserOptions = options?.asyncapi || {};
+      const parser = NewParser(1, {
+        parserOptions,
+        includeSchemaParsers: true
+      });
+      const { document, diagnostics } = await parser.parse(
+        input,
+        parserOptions
       );
       if (document) {
-        doc = document;
+        doc = document as AsyncAPIDocumentInterface;
       } else {
         const err = new Error(
           'Input is not an correct AsyncAPI document so it cannot be processed.'
@@ -76,13 +75,9 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
         (err as any).diagnostics = diagnostics;
         throw err;
       }
-    } else if (AsyncAPIInputProcessor.isFromNewParser(input)) {
-      doc = input as AsyncAPIDocumentInterface;
-    } else {
-      // Is from old parser
-      const parsedJSON = input.json();
-      const detailed = createDetailedAsyncAPI(parsedJSON, parsedJSON);
-      doc = createAsyncAPIDocument(detailed);
+    }
+    if (!doc) {
+      throw new Error('Could not parse input as AsyncAPI document');
     }
 
     inputModel.originalInput = doc;
@@ -134,7 +129,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
 
           // treat multiple messages as oneOf
           if (operationMessages.length > 1) {
-            const oneOf: AsyncAPISchemaObject[] = [];
+            const oneOf: any[] = [];
 
             for (const message of operationMessages) {
               const payload = message.payload();
@@ -226,21 +221,21 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     if (schema.allOf()) {
       convertedSchema.allOf = schema
         .allOf()!
-        .map((item) =>
+        .map((item: any) =>
           this.convertToInternalSchema(item, alreadyIteratedSchemas)
         );
     }
     if (schema.oneOf()) {
       convertedSchema.oneOf = schema
         .oneOf()!
-        .map((item) =>
+        .map((item: any) =>
           this.convertToInternalSchema(item, alreadyIteratedSchemas)
         );
     }
     if (schema.anyOf()) {
       convertedSchema.anyOf = schema
         .anyOf()!
-        .map((item) =>
+        .map((item: any) =>
           this.convertToInternalSchema(item, alreadyIteratedSchemas)
         );
     }
