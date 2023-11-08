@@ -1,0 +1,11 @@
+[build]
+  command = "npm ci && npm run build:modelina && npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "16.20.1"
+  NPM_VERSION = "8.19.4"
+  NEXT_PUBLIC_API_PATH = "/.netlify/functions"
+
+[functions]
+  directory = ".next/server/pages/api"
