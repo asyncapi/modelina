@@ -87,8 +87,6 @@ public interface Pet {
   "public interface CloudEvent {
   public String getId();
   public void setId(String id);
-
-  public String getType();
 }",
   "public enum CloudEventType {
   DOG((String)\\"Dog\\"), CAT((String)\\"Cat\\");

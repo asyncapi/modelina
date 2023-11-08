@@ -146,6 +146,14 @@ const getOverride = (
   return isOverride ? '@Override\n' : '';
 };
 
+export const isDiscriminatorOrDictionary = (
+  model: ConstrainedObjectModel,
+  property: ConstrainedObjectPropertyModel
+): boolean =>
+  model.options.discriminator?.discriminator ===
+    property.unconstrainedPropertyName ||
+  property.property instanceof ConstrainedDictionaryModel;
+
 export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
   self({ renderer }) {
     return renderer.defaultSelf();
@@ -167,7 +175,7 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
     )}`;
 
     if (model.options.isExtended) {
-      if (property.property instanceof ConstrainedDictionaryModel) {
+      if (isDiscriminatorOrDictionary(model, property)) {
         return '';
       }
 
@@ -185,11 +193,7 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
     const setterName = FormatHelpers.toPascalCase(property.propertyName);
 
     if (model.options.isExtended) {
-      if (
-        model.options.discriminator?.discriminator ===
-          property.unconstrainedPropertyName ||
-        property.property instanceof ConstrainedDictionaryModel
-      ) {
+      if (isDiscriminatorOrDictionary(model, property)) {
         return '';
       }
 

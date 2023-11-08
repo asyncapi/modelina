@@ -358,7 +358,8 @@ describe('JavaGenerator', () => {
                 },
                 type: {
                   title: 'CloudEventType',
-                  type: 'string'
+                  type: 'string',
+                  description: 'test'
                 }
               },
               required: ['id', 'type']
