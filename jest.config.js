@@ -27,6 +27,7 @@ module.exports = {
   modulePathIgnorePatterns: [
     '<rootDir>/examples/TEMPLATE',
     '<rootDir>/test/generators/template',
-    '<rootDir>/test/processors/TemplateInputProcessor.spec.ts'
+    '<rootDir>/test/processors/TemplateInputProcessor.spec.ts',
+    'modelina-website'
   ]
 };

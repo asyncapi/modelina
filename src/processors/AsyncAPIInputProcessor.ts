@@ -11,7 +11,7 @@ import {
 
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
-import { InputMetaModel, ProcessorOptions, UnionModel } from '../models';
+import { InputMetaModel, ProcessorOptions } from '../models';
 import { Logger } from '../utils';
 import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
 import { convertToMetaModel } from '../helpers';
@@ -29,7 +29,9 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     '2.3.0',
     '2.4.0',
     '2.5.0',
-    '2.6.0'
+    '2.6.0',
+    '2.6.0',
+    '3.0.0'
   ];
 
   /**
@@ -58,7 +60,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       doc = createAsyncAPIDocument(detailed);
     } else {
       const parserOptions = options?.asyncapi || {};
-      const parser = NewParser(1, {
+      const parser = NewParser(2, {
         parserOptions,
         includeSchemaParsers: true
       });
@@ -67,7 +69,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
         parserOptions
       );
       if (document) {
-        doc = document as AsyncAPIDocumentInterface;
+        doc = document as unknown as AsyncAPIDocumentInterface;
       } else {
         const err = new Error(
           'Input is not an correct AsyncAPI document so it cannot be processed.'
@@ -83,21 +85,6 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     inputModel.originalInput = doc;
 
     const addToInputModel = (payload: AsyncAPISchemaInterface) => {
-      const id = payload.title() || payload.id();
-
-      for (const model of Object.values(inputModel.models)) {
-        if (model instanceof UnionModel) {
-          for (const union of model.union) {
-            if (union.name === id) {
-              Logger.warn(
-                `Model ${id} has already been added to the input model`
-              );
-              return;
-            }
-          }
-        }
-      }
-
       const schema = AsyncAPIInputProcessor.convertToInternalSchema(payload);
       const newCommonModel =
         JsonSchemaInputProcessor.convertSchemaToCommonModel(schema, options);
@@ -156,13 +143,6 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
               addToInputModel(payload);
             }
           }
-        }
-      }
-
-      for (const message of doc.messages()) {
-        const payload = message.payload();
-        if (payload) {
-          addToInputModel(payload);
         }
       }
     } else {
@@ -337,7 +317,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
             alreadyIteratedSchemas
           );
         } else {
-          dependencies[String(dependencyName)] = dependency as string[];
+          dependencies[String(dependencyName)] = dependency;
         }
       }
       convertedSchema.dependencies = dependencies;
@@ -404,7 +384,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     if (AsyncAPIInputProcessor.isFromParser(input)) {
       return input.version();
     }
-    return input && input.asyncapi;
+    return input?.asyncapi;
   }
 
   /**
