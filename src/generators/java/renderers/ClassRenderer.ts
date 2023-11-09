@@ -1,7 +1,6 @@
 import { JavaRenderer } from '../JavaRenderer';
 import {
   ConstrainedDictionaryModel,
-  ConstrainedEnumModel,
   ConstrainedObjectModel,
   ConstrainedObjectPropertyModel,
   ConstrainedReferenceModel,
@@ -41,10 +40,9 @@ ${this.indent(this.renderBlock(content, 2))}
 
     const parentUnions = this.getParentUnions();
     const extend = this.model.options.extend;
+    const implement = [...(parentUnions ?? []), ...(extend ?? [])];
 
-    if (parentUnions || extend) {
-      const implement = [...(parentUnions ?? []), ...(extend ?? [])];
-
+    if (implement.length) {
       for (const i of implement) {
         this.dependencyManager.addModelDependency(i);
       }
@@ -137,6 +135,10 @@ const getOverride = (
   property: ConstrainedObjectPropertyModel
 ) => {
   const isOverride = model.options.extend?.find((extend) => {
+    if (isDiscriminatorOrDictionary(model, property)) {
+      return false;
+    }
+
     if (
       extend instanceof ConstrainedObjectModel &&
       extend.properties[property.propertyName]

@@ -34,7 +34,6 @@ public interface Pet {
   @Override
   public void setId(String id) { this.id = id; }
 
-  @Override
   public CloudEventType getType() { return this.type; }
 
   @Override
@@ -45,9 +44,7 @@ public interface Pet {
   public String getData() { return this.data; }
   public void setData(String data) { this.data = data; }
 
-  @Override
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  @Override
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
   @Override
@@ -177,7 +174,6 @@ public interface Pet {
   @Override
   public void setId(String id) { this.id = id; }
 
-  @Override
   public CloudEventType getType() { return this.type; }
 
   @Override
@@ -185,9 +181,7 @@ public interface Pet {
   @Override
   public void setSequencetype(CloudEventDotSequenceType sequencetype) { this.sequencetype = sequencetype; }
 
-  @Override
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  @Override
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
   @Override
