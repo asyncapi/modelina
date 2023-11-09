@@ -360,6 +360,11 @@ describe('JavaGenerator', () => {
                   title: 'CloudEventType',
                   type: 'string',
                   description: 'test'
+                },
+                sequencetype: {
+                  title: 'CloudEvent.SequenceType',
+                  type: 'string',
+                  enum: ['Integer']
                 }
               },
               required: ['id', 'type']

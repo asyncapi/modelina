@@ -20,6 +20,9 @@ public interface Pet {
   @NotNull
   @JsonProperty(\\"type\\")
   private final CloudEventType type = CloudEventType.DOG;
+  @JsonProperty(\\"sequencetype\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private CloudEventDotSequenceType sequencetype;
   @JsonProperty(\\"data\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String data;
@@ -33,6 +36,11 @@ public interface Pet {
 
   @Override
   public CloudEventType getType() { return this.type; }
+
+  @Override
+  public CloudEventDotSequenceType getSequencetype() { return this.sequencetype; }
+  @Override
+  public void setSequencetype(CloudEventDotSequenceType sequencetype) { this.sequencetype = sequencetype; }
 
   public String getData() { return this.data; }
   public void setData(String data) { this.data = data; }
@@ -54,13 +62,14 @@ public interface Pet {
       return 
         Objects.equals(this.id, self.id) &&
         Objects.equals(this.type, self.type) &&
+        Objects.equals(this.sequencetype, self.sequencetype) &&
         Objects.equals(this.data, self.data) &&
         Objects.equals(this.additionalProperties, self.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash((Object)id, (Object)type, (Object)data, (Object)additionalProperties);
+    return Objects.hash((Object)id, (Object)type, (Object)sequencetype, (Object)data, (Object)additionalProperties);
   }
 
   @Override
@@ -68,6 +77,7 @@ public interface Pet {
     return \\"class Dog {\\\\n\\" +   
       \\"    id: \\" + toIndentedString(id) + \\"\\\\n\\" +
       \\"    type: \\" + toIndentedString(type) + \\"\\\\n\\" +
+      \\"    sequencetype: \\" + toIndentedString(sequencetype) + \\"\\\\n\\" +
       \\"    data: \\" + toIndentedString(data) + \\"\\\\n\\" +
       \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
     \\"}\\";
@@ -83,10 +93,6 @@ public interface Pet {
     }
     return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
   }
-}",
-  "public interface CloudEvent {
-  public String getId();
-  public void setId(String id);
 }",
   "public enum CloudEventType {
   DOG((String)\\"Dog\\"), CAT((String)\\"Cat\\");
@@ -117,6 +123,42 @@ public interface Pet {
     return String.valueOf(value);
   }
 }",
+  "public enum CloudEventDotSequenceType {
+  INTEGER((String)\\"Integer\\");
+
+  private String value;
+
+  CloudEventDotSequenceType(String value) {
+    this.value = value;
+  }
+
+  @JsonValue
+  public String getValue() {
+    return value;
+  }
+
+  @JsonCreator
+  public static CloudEventDotSequenceType fromValue(String value) {
+    for (CloudEventDotSequenceType e : CloudEventDotSequenceType.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+}",
+  "public interface CloudEvent {
+  public String getId();
+  public void setId(String id);
+
+  public CloudEventDotSequenceType getSequencetype();
+  public void setSequencetype(CloudEventDotSequenceType sequencetype);
+}",
   "public class Cat implements Pet, CloudEvent {
   @NotNull
   @JsonProperty(\\"id\\")
@@ -124,6 +166,9 @@ public interface Pet {
   @NotNull
   @JsonProperty(\\"type\\")
   private final CloudEventType type = CloudEventType.CAT;
+  @JsonProperty(\\"sequencetype\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private CloudEventDotSequenceType sequencetype;
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
@@ -134,6 +179,11 @@ public interface Pet {
 
   @Override
   public CloudEventType getType() { return this.type; }
+
+  @Override
+  public CloudEventDotSequenceType getSequencetype() { return this.sequencetype; }
+  @Override
+  public void setSequencetype(CloudEventDotSequenceType sequencetype) { this.sequencetype = sequencetype; }
 
   @Override
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
@@ -152,12 +202,13 @@ public interface Pet {
       return 
         Objects.equals(this.id, self.id) &&
         Objects.equals(this.type, self.type) &&
+        Objects.equals(this.sequencetype, self.sequencetype) &&
         Objects.equals(this.additionalProperties, self.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash((Object)id, (Object)type, (Object)additionalProperties);
+    return Objects.hash((Object)id, (Object)type, (Object)sequencetype, (Object)additionalProperties);
   }
 
   @Override
@@ -165,6 +216,7 @@ public interface Pet {
     return \\"class Cat {\\\\n\\" +   
       \\"    id: \\" + toIndentedString(id) + \\"\\\\n\\" +
       \\"    type: \\" + toIndentedString(type) + \\"\\\\n\\" +
+      \\"    sequencetype: \\" + toIndentedString(sequencetype) + \\"\\\\n\\" +
       \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
     \\"}\\";
   }

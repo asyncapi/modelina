@@ -143,47 +143,26 @@ export abstract class AbstractGenerator<
       };
     };
 
-    const unionConstrainedModelsWithDepManager = new Map<
-      string,
-      ConstrainedMetaModelWithDepManager
-    >();
-
-    const constrainedModelsWithDepManager = new Map<
-      string,
-      ConstrainedMetaModelWithDepManager
-    >();
+    const unionConstrainedModelsWithDepManager: ConstrainedMetaModelWithDepManager[] =
+      [];
+    const constrainedModelsWithDepManager: ConstrainedMetaModelWithDepManager[] =
+      [];
 
     for (const model of Object.values(inputModel.models)) {
       if (model instanceof UnionModel) {
-        unionConstrainedModelsWithDepManager.set(
-          model.name,
+        unionConstrainedModelsWithDepManager.push(
           getConstrainedMetaModelWithDepManager(model)
         );
         continue;
       }
 
-      constrainedModelsWithDepManager.set(
-        model.name,
+      constrainedModelsWithDepManager.push(
         getConstrainedMetaModelWithDepManager(model)
       );
-
-      if (model.options.extend?.length) {
-        for (const extend of model.options.extend) {
-          extend.options.isExtended = true;
-          constrainedModelsWithDepManager.set(
-            extend.name,
-            getConstrainedMetaModelWithDepManager(extend)
-          );
-        }
-      }
     }
 
-    for (const [, { constrainedModel }] of Array.from(
-      constrainedModelsWithDepManager
-    )) {
-      for (const [, unionConstrainedModel] of Array.from(
-        unionConstrainedModelsWithDepManager
-      )) {
+    for (const { constrainedModel } of constrainedModelsWithDepManager) {
+      for (const unionConstrainedModel of unionConstrainedModelsWithDepManager) {
         if (
           unionConstrainedModel.constrainedModel instanceof
             ConstrainedUnionModel &&
@@ -205,10 +184,8 @@ export abstract class AbstractGenerator<
     }
 
     return [
-      ...Array.from(unionConstrainedModelsWithDepManager).map(
-        ([, model]) => model
-      ),
-      ...Array.from(constrainedModelsWithDepManager).map(([, model]) => model)
+      ...unionConstrainedModelsWithDepManager,
+      ...constrainedModelsWithDepManager
     ];
   }
 

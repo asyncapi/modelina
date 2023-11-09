@@ -1,8 +1,10 @@
 import { JavaRenderer } from '../JavaRenderer';
 import {
   ConstrainedDictionaryModel,
+  ConstrainedEnumModel,
   ConstrainedObjectModel,
   ConstrainedObjectPropertyModel,
+  ConstrainedReferenceModel,
   ConstrainedUnionModel
 } from '../../../models';
 import { FormatHelpers } from '../../../helpers';
@@ -138,6 +140,14 @@ const getOverride = (
     if (
       extend instanceof ConstrainedObjectModel &&
       extend.properties[property.propertyName]
+    ) {
+      return true;
+    }
+
+    if (
+      extend instanceof ConstrainedReferenceModel &&
+      extend.ref instanceof ConstrainedObjectModel &&
+      extend.ref.properties[property.propertyName]
     ) {
       return true;
     }

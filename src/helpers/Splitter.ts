@@ -95,6 +95,19 @@ export const split = (
       );
       split(propertyModel, options, models, alreadySeenModels);
     }
+
+    if (model.options.extend?.length) {
+      for (let index = 0; index < model.options.extend.length; index++) {
+        const extendModel = model.options.extend[Number(index)];
+        extendModel.options.isExtended = true;
+        model.options.extend[Number(index)] = trySplitModel(
+          extendModel,
+          options,
+          models
+        );
+        split(extendModel, options, models, alreadySeenModels);
+      }
+    }
   } else if (model instanceof UnionModel) {
     for (let index = 0; index < model.union.length; index++) {
       const unionModel = model.union[Number(index)];
