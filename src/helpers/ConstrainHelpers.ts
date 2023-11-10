@@ -460,7 +460,7 @@ function constrainObjectModel<
 ): ConstrainedObjectModel {
   const options = getConstrainedMetaModelOptions(context.metaModel);
 
-  if (context.metaModel.options.extend) {
+  if (context.metaModel.options.extend?.length) {
     options.extend = [];
 
     for (const extend of context.metaModel.options.extend) {

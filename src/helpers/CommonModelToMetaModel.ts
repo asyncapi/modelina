@@ -514,10 +514,10 @@ export function convertToObjectModel(
     metaModel.properties[String(propertyName)] = propertyModel;
   }
 
-  if (jsonSchemaModel.extend) {
+  if (jsonSchemaModel.extend?.length) {
     metaModel.options.extend = [];
 
-    for (const [, extend] of Array.from(jsonSchemaModel.extend)) {
+    for (const extend of jsonSchemaModel.extend) {
       metaModel.options.extend.push(
         convertToMetaModel(extend, alreadySeenModels)
       );

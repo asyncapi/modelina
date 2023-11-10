@@ -15,7 +15,7 @@ export const defaultMergingOptions: MergingOptions = {
  * Common internal representation for a model.
  */
 export class CommonModel {
-  extend?: Map<string, CommonModel>;
+  extend?: CommonModel[];
   originalInput?: any;
   $id?: string;
   type?: string | string[];
@@ -437,8 +437,10 @@ export class CommonModel {
       );
       return;
     }
-    this.extend = this.extend ?? new Map<string, CommonModel>();
-    if (this.extend.has(extendedModel.$id)) {
+
+    if (
+      this.extend?.find((commonModel) => commonModel.$id === extendedModel.$id)
+    ) {
       Logger.info(
         `${this.$id} model already extends model ${extendedModel.$id}.`,
         this,
@@ -446,10 +448,8 @@ export class CommonModel {
       );
       return;
     }
-    this.extend.set(
-      extendedModel.$id,
-      CommonModel.toCommonModel(extendedModel)
-    );
+    this.extend = this.extend ?? [];
+    this.extend.push(extendedModel);
   }
 
   /**
