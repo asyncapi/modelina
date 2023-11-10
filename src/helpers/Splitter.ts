@@ -53,9 +53,30 @@ const trySplitModel = (
     (options.splitDictionary === true && model instanceof DictionaryModel);
 
   if (shouldSplit) {
-    if (!models.includes(model)) {
+    let hasModel: boolean = false;
+
+    for (const m of models) {
+      if (m === model) {
+        hasModel = true;
+      }
+
+      // If one model is not extended, we have to force both to not be extended
+      if (m.name === model.name) {
+        if (m.options.isExtended && model.options.isExtended) {
+          continue;
+        }
+
+        if (m.options.isExtended || model.options.isExtended) {
+          m.options.isExtended = false;
+          model.options.isExtended = false;
+        }
+      }
+    }
+
+    if (!hasModel) {
       models.push(model);
     }
+
     return new ReferenceModel(
       model.name,
       model.originalInput,

@@ -39,7 +39,9 @@ ${this.indent(this.renderBlock(content, 2))}
     }
 
     const parentUnions = this.getParentUnions();
-    const extend = this.model.options.extend;
+    const extend = this.model.options.extend?.filter(
+      (extend) => extend.options.isExtended
+    );
     const implement = [...(parentUnions ?? []), ...(extend ?? [])];
 
     if (implement.length) {
@@ -135,7 +137,10 @@ const getOverride = (
   property: ConstrainedObjectPropertyModel
 ) => {
   const isOverride = model.options.extend?.find((extend) => {
-    if (isDiscriminatorOrDictionary(model, property)) {
+    if (
+      !extend.options.isExtended ||
+      isDiscriminatorOrDictionary(model, property)
+    ) {
       return false;
     }
 

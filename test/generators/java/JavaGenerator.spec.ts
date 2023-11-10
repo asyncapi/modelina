@@ -322,6 +322,9 @@ describe('JavaGenerator', () => {
                       },
                       data: {
                         type: 'string'
+                      },
+                      test: {
+                        $ref: '#/components/schemas/TestAllOf'
                       }
                     }
                   }
@@ -340,6 +343,9 @@ describe('JavaGenerator', () => {
                     properties: {
                       type: {
                         const: 'Cat'
+                      },
+                      test: {
+                        $ref: '#/components/schemas/Test'
                       }
                     }
                   }
@@ -368,6 +374,29 @@ describe('JavaGenerator', () => {
                 }
               },
               required: ['id', 'type']
+            },
+            Test: {
+              title: 'Test',
+              type: 'object',
+              properties: {
+                testProp: {
+                  type: 'string'
+                }
+              }
+            },
+            TestAllOf: {
+              title: 'TestAllOf',
+              allOf: [
+                { $ref: '#/components/schemas/Test' },
+                {
+                  type: 'object',
+                  properties: {
+                    testProp2: {
+                      type: 'string'
+                    }
+                  }
+                }
+              ]
             }
           }
         }
