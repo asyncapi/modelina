@@ -120,7 +120,7 @@ describe('JavaConstrainer', () => {
         ),
         ...defaultOptions
       });
-      expect(type).toEqual('double');
+      expect(type).toEqual('number');
     });
     test('should render optional type', () => {
       const model = new ConstrainedFloatModel('test', undefined, {}, '');
@@ -134,7 +134,7 @@ describe('JavaConstrainer', () => {
         ),
         ...defaultOptions
       });
-      expect(type).toEqual('Double');
+      expect(type).toEqual('Number');
     });
     test('should render nullable type', () => {
       const model = new ConstrainedFloatModel(
@@ -147,9 +147,9 @@ describe('JavaConstrainer', () => {
         constrainedModel: model,
         ...defaultOptions
       });
-      expect(type).toEqual('Double');
+      expect(type).toEqual('Number');
     });
-    test('should render double when format has number format', () => {
+    test('should render float when format has float format', () => {
       const model = new ConstrainedFloatModel(
         'test',
         {},
@@ -167,6 +167,25 @@ describe('JavaConstrainer', () => {
         ...defaultOptions
       });
       expect(type).toEqual('float');
+    });
+    test('should render double when format has double format', () => {
+      const model = new ConstrainedFloatModel(
+        'test',
+        {},
+        { format: 'double' },
+        ''
+      );
+      const type = JavaDefaultTypeMapping.Float({
+        constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'test',
+          'test',
+          true,
+          model
+        ),
+        ...defaultOptions
+      });
+      expect(type).toEqual('double');
     });
   });
   describe('Integer', () => {

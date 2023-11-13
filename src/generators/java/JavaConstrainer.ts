@@ -137,12 +137,19 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
           typeWhenNullableOrOptional: 'Float',
           type: 'float'
         });
-      default:
+      case 'double':
         return getType({
           constrainedModel,
           partOfProperty,
           typeWhenNullableOrOptional: 'Double',
           type: 'double'
+        });
+      default:
+        return getType({
+          constrainedModel,
+          partOfProperty,
+          typeWhenNullableOrOptional: 'Number',
+          type: 'number'
         });
     }
   },

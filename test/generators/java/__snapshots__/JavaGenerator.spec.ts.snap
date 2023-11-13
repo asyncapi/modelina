@@ -856,7 +856,7 @@ Array [
   private String streetName;
   private String city;
   private String state;
-  private double houseNumber;
+  private number houseNumber;
   private Boolean marriage;
   private Object members;
   private Object[] arrayType;
@@ -871,8 +871,8 @@ Array [
   public String getState() { return this.state; }
   public void setState(String state) { this.state = state; }
 
-  public double getHouseNumber() { return this.houseNumber; }
-  public void setHouseNumber(double houseNumber) { this.houseNumber = houseNumber; }
+  public number getHouseNumber() { return this.houseNumber; }
+  public void setHouseNumber(number houseNumber) { this.houseNumber = houseNumber; }
 
   public Boolean getMarriage() { return this.marriage; }
   public void setMarriage(Boolean marriage) { this.marriage = marriage; }
@@ -1070,7 +1070,7 @@ public class Address {
   private String streetName;
   private String city;
   private String state;
-  private double houseNumber;
+  private number houseNumber;
   private Boolean marriage;
   private Object members;
   private Object[] arrayType;
@@ -1086,8 +1086,8 @@ public class Address {
   public String getState() { return this.state; }
   public void setState(String state) { this.state = state; }
 
-  public double getHouseNumber() { return this.houseNumber; }
-  public void setHouseNumber(double houseNumber) { this.houseNumber = houseNumber; }
+  public number getHouseNumber() { return this.houseNumber; }
+  public void setHouseNumber(number houseNumber) { this.houseNumber = houseNumber; }
 
   public Boolean getMarriage() { return this.marriage; }
   public void setMarriage(Boolean marriage) { this.marriage = marriage; }
