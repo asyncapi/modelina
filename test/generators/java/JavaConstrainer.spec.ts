@@ -120,7 +120,7 @@ describe('JavaConstrainer', () => {
         ),
         ...defaultOptions
       });
-      expect(type).toEqual('number');
+      expect(type).toEqual('Number');
     });
     test('should render optional type', () => {
       const model = new ConstrainedFloatModel('test', undefined, {}, '');

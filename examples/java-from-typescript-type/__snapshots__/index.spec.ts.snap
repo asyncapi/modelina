@@ -3,13 +3,13 @@
 exports[`Should be able to generate Java model from a TypeScript type file and should log expected output to console 1`] = `
 Array [
   "public class InnerData {
-  private number age;
+  private Number age;
   private String name;
   private boolean free;
   private Map<String, Object> additionalProperties;
 
-  public number getAge() { return this.age; }
-  public void setAge(number age) { this.age = age; }
+  public Number getAge() { return this.age; }
+  public void setAge(Number age) { this.age = age; }
 
   public String getName() { return this.name; }
   public void setName(String name) { this.name = name; }

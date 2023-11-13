@@ -149,7 +149,7 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
           constrainedModel,
           partOfProperty,
           typeWhenNullableOrOptional: 'Number',
-          type: 'number'
+          type: 'Number'
         });
     }
   },
