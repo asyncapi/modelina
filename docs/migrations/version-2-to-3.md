@@ -4,7 +4,7 @@ This document contains all the breaking changes and migrations guidelines for ad
 
 ### TypeScript
 
-Across all models, if they are nullable they will get the union `x | null`.
+Is not affected by this change.
 
 ### JavaScript
 
