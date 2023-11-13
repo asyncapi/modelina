@@ -5,10 +5,10 @@ Array [
   "public class JavaxAnnotation {
   @NotNull
   @Min(0)
-  private double minNumberProp;
+  private number minNumberProp;
   @NotNull
   @Max(99)
-  private double maxNumberProp;
+  private number maxNumberProp;
   @Size(min=2, max=3)
   private Object[] arrayProp;
   @Pattern(regexp=\\"^I_\\")
@@ -16,11 +16,11 @@ Array [
   private String stringProp;
   private Map<String, Object> additionalProperties;
 
-  public double getMinNumberProp() { return this.minNumberProp; }
-  public void setMinNumberProp(double minNumberProp) { this.minNumberProp = minNumberProp; }
+  public number getMinNumberProp() { return this.minNumberProp; }
+  public void setMinNumberProp(number minNumberProp) { this.minNumberProp = minNumberProp; }
 
-  public double getMaxNumberProp() { return this.maxNumberProp; }
-  public void setMaxNumberProp(double maxNumberProp) { this.maxNumberProp = maxNumberProp; }
+  public number getMaxNumberProp() { return this.maxNumberProp; }
+  public void setMaxNumberProp(number maxNumberProp) { this.maxNumberProp = maxNumberProp; }
 
   public Object[] getArrayProp() { return this.arrayProp; }
   public void setArrayProp(Object[] arrayProp) { this.arrayProp = arrayProp; }

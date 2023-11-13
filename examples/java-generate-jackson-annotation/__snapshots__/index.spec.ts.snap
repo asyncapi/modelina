@@ -5,18 +5,18 @@ Array [
   "public class Root {
   @JsonProperty(\\"min_number_prop\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Double minNumberProp;
+  private Number minNumberProp;
   @JsonProperty(\\"max_number_prop\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Double maxNumberProp;
+  private Number maxNumberProp;
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
-  public Double getMinNumberProp() { return this.minNumberProp; }
-  public void setMinNumberProp(Double minNumberProp) { this.minNumberProp = minNumberProp; }
+  public Number getMinNumberProp() { return this.minNumberProp; }
+  public void setMinNumberProp(Number minNumberProp) { this.minNumberProp = minNumberProp; }
 
-  public Double getMaxNumberProp() { return this.maxNumberProp; }
-  public void setMaxNumberProp(Double maxNumberProp) { this.maxNumberProp = maxNumberProp; }
+  public Number getMaxNumberProp() { return this.maxNumberProp; }
+  public void setMaxNumberProp(Number maxNumberProp) { this.maxNumberProp = maxNumberProp; }
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
