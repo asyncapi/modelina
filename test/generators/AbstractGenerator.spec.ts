@@ -1,3 +1,5 @@
+import path from 'path';
+import { InputType } from '../../src';
 import {
   InputMetaModel,
   AnyModel,
@@ -47,6 +49,25 @@ describe('AbstractGenerator', () => {
     const outputModels = await generator.generateCompleteModels(cim, {});
 
     expect(outputModels[0].result).toEqual('test');
+    expect(outputModels[0].modelName).toEqual('TestName');
+  });
+
+  test('generate() should process file input', async () => {
+    const newGenerator = new TestGenerator({
+      inputProcessor: { type: InputType.FILE }
+    });
+    const outputModels = await newGenerator.generate(path.resolve('test/generators/testasyncapi.yml'));
+    expect(outputModels[0].result).toEqual('anonymous_schema_1');
+    expect(outputModels[0].modelName).toEqual('TestName');
+  });
+
+  test('generateCompleteModels() should process InputMetaModel instance', async () => {
+    const newGenerator = new TestGenerator({
+      inputProcessor: { type: InputType.FILE }
+    });
+    const outputModels = await newGenerator.generate(path.resolve('test/generators/testasyncapi.yml'));
+
+    expect(outputModels[0].result).toEqual('anonymous_schema_1');
     expect(outputModels[0].modelName).toEqual('TestName');
   });
 

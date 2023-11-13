@@ -14,11 +14,12 @@ import { InputProcessor } from '../processors';
 import { IndentationTypes } from '../helpers';
 import { DeepPartial, isPresetWithOptions } from '../utils';
 import { AbstractDependencyManager } from './AbstractDependencyManager';
+import Parser, { fromFile } from '@asyncapi/parser';
 
 export interface CommonGeneratorOptions<
   P extends Preset = Preset,
   DependencyManager extends
-    AbstractDependencyManager = AbstractDependencyManager
+  AbstractDependencyManager = AbstractDependencyManager
 > {
   indentation?: {
     type: IndentationTypes;
@@ -27,6 +28,7 @@ export interface CommonGeneratorOptions<
   defaultPreset?: P;
   presets?: Presets<P>;
   processorOptions?: ProcessorOptions;
+  inputProcessor?: InputProcessorOptions;
   /**
    * This dependency manager type serves two functions.
    * 1. It can be used to provide a factory for generate functions
@@ -63,6 +65,16 @@ export interface AbstractGeneratorRenderCompleteModelArgs<
   options?: DeepPartial<Options>;
 }
 
+export interface InputProcessorOptions {
+  type?: InputType
+}
+
+export enum InputType {
+  FILE = 'file',
+  DOCUMENT = 'document',
+  OBJECT = 'object'
+}
+
 /**
  * Abstract generator which must be implemented by each language
  */
@@ -73,7 +85,7 @@ export abstract class AbstractGenerator<
   constructor(
     public readonly languageName: string,
     public readonly options: Options
-  ) {}
+  ) { }
 
   public abstract render(
     args: AbstractGeneratorRenderArgs<Options>
@@ -165,7 +177,7 @@ export abstract class AbstractGenerator<
       for (const unionConstrainedModel of unionConstrainedModelsWithDepManager) {
         if (
           unionConstrainedModel.constrainedModel instanceof
-            ConstrainedUnionModel &&
+          ConstrainedUnionModel &&
           unionConstrainedModel.constrainedModel.union.some(
             (m) =>
               m.name === constrainedModel.name &&
@@ -259,8 +271,7 @@ export abstract class AbstractGenerator<
   protected async processInput(
     input: any | InputMetaModel
   ): Promise<InputMetaModel> {
-    const rawInputModel =
-      input instanceof InputMetaModel ? input : await this.process(input);
+    const rawInputModel = await this.getRawInputModel(input)
 
     //Split out the models based on the language specific requirements of which models is rendered separately
     const splitOutModels: { [key: string]: MetaModel } = {};
@@ -272,6 +283,22 @@ export abstract class AbstractGenerator<
     }
     rawInputModel.models = splitOutModels;
     return rawInputModel;
+  }
+
+  protected async getRawInputModel(
+    input: any | InputMetaModel
+  ): Promise<InputMetaModel> {
+    const inputProcessorOptions = this.options.inputProcessor
+    switch (inputProcessorOptions?.type) {
+      case InputType.FILE:
+        const parser = new Parser();
+        const { document, diagnostics } = await fromFile(parser, input).parse();
+        // TODO : Want to log the diagnostics
+        if (!document) throw new Error('Invalid file input')
+        return this.process(document as any)
+      default:
+        return input instanceof InputMetaModel ? input : this.process(input);
+    }
   }
 
   /**
