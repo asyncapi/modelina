@@ -1,5 +1,102 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`AsyncAPIInputProcessor process() should be able to process file 1`] = `
+Object {
+  "anonymous_schema_1": ObjectModel {
+    "name": "anonymous_schema_1",
+    "options": Object {
+      "isNullable": false,
+    },
+    "originalInput": AsyncapiV2Schema {
+      "properties": Object {
+        "displayName": AsyncapiV2Schema {
+          "description": "Name of the user",
+          "type": "string",
+          "x-modelgen-inferred-name": "anonymous_schema_2",
+          "x-parser-schema-id": "<anonymous-schema-2>",
+        },
+        "email": AsyncapiV2Schema {
+          "description": "Email of the user",
+          "format": "email",
+          "type": "string",
+          "x-modelgen-inferred-name": "anonymous_schema_3",
+          "x-parser-schema-id": "<anonymous-schema-3>",
+        },
+      },
+      "type": "object",
+      "x-modelgen-inferred-name": "anonymous_schema_1",
+      "x-parser-schema-id": "<anonymous-schema-1>",
+    },
+    "properties": Object {
+      "additionalProperties": ObjectPropertyModel {
+        "property": DictionaryModel {
+          "key": StringModel {
+            "name": "additionalProperties",
+            "options": Object {
+              "isNullable": false,
+            },
+            "originalInput": Array [
+              true,
+            ],
+          },
+          "name": "additionalProperties",
+          "options": Object {
+            "isNullable": false,
+          },
+          "originalInput": Array [
+            true,
+          ],
+          "serializationType": "unwrap",
+          "value": AnyModel {
+            "name": "undefined",
+            "options": Object {
+              "isNullable": true,
+            },
+            "originalInput": true,
+          },
+        },
+        "propertyName": "additionalProperties",
+        "required": false,
+      },
+      "displayName": ObjectPropertyModel {
+        "property": StringModel {
+          "name": "anonymous_schema_2",
+          "options": Object {
+            "isNullable": false,
+          },
+          "originalInput": AsyncapiV2Schema {
+            "description": "Name of the user",
+            "type": "string",
+            "x-modelgen-inferred-name": "anonymous_schema_2",
+            "x-parser-schema-id": "<anonymous-schema-2>",
+          },
+        },
+        "propertyName": "displayName",
+        "required": false,
+      },
+      "email": ObjectPropertyModel {
+        "property": StringModel {
+          "name": "anonymous_schema_3",
+          "options": Object {
+            "format": "email",
+            "isNullable": false,
+          },
+          "originalInput": AsyncapiV2Schema {
+            "description": "Email of the user",
+            "format": "email",
+            "type": "string",
+            "x-modelgen-inferred-name": "anonymous_schema_3",
+            "x-parser-schema-id": "<anonymous-schema-3>",
+          },
+        },
+        "propertyName": "email",
+        "required": false,
+      },
+    },
+  },
+}
+`;
+
 exports[`AsyncAPIInputProcessor process() should be able to process operation with oneOf #1 1`] = `
 InputMetaModel {
   "models": Object {
@@ -4270,262 +4367,6 @@ InputMetaModel {
           "version": "2.0.0",
         },
         "source": undefined,
-      },
-      "pointer": "/",
-    },
-  },
-}
-`;
-exports[`AsyncAPIInputProcessor process() should be able to process file 1`] = `
-InputMetaModel {
-  "models": Object {
-    "anonymous_schema_1": ObjectModel {
-      "name": "anonymous_schema_1",
-      "options": Object {
-        "isNullable": false,
-      },
-      "originalInput": AsyncapiV2Schema {
-        "properties": Object {
-          "displayName": AsyncapiV2Schema {
-            "description": "Name of the user",
-            "type": "string",
-            "x-modelgen-inferred-name": "anonymous_schema_2",
-            "x-parser-schema-id": "<anonymous-schema-2>",
-          },
-          "email": AsyncapiV2Schema {
-            "description": "Email of the user",
-            "format": "email",
-            "type": "string",
-            "x-modelgen-inferred-name": "anonymous_schema_3",
-            "x-parser-schema-id": "<anonymous-schema-3>",
-          },
-        },
-        "type": "object",
-        "x-modelgen-inferred-name": "anonymous_schema_1",
-        "x-parser-schema-id": "<anonymous-schema-1>",
-      },
-      "properties": Object {
-        "additionalProperties": ObjectPropertyModel {
-          "property": DictionaryModel {
-            "key": StringModel {
-              "name": "additionalProperties",
-              "options": Object {
-                "isNullable": false,
-              },
-              "originalInput": Array [
-                true,
-              ],
-            },
-            "name": "additionalProperties",
-            "options": Object {
-              "isNullable": false,
-            },
-            "originalInput": Array [
-              true,
-            ],
-            "serializationType": "unwrap",
-            "value": AnyModel {
-              "name": "undefined",
-              "options": Object {
-                "isNullable": true,
-              },
-              "originalInput": true,
-            },
-          },
-          "propertyName": "additionalProperties",
-          "required": false,
-        },
-        "displayName": ObjectPropertyModel {
-          "property": StringModel {
-            "name": "anonymous_schema_2",
-            "options": Object {
-              "isNullable": false,
-            },
-            "originalInput": AsyncapiV2Schema {
-              "description": "Name of the user",
-              "type": "string",
-              "x-modelgen-inferred-name": "anonymous_schema_2",
-              "x-parser-schema-id": "<anonymous-schema-2>",
-            },
-          },
-          "propertyName": "displayName",
-          "required": false,
-        },
-        "email": ObjectPropertyModel {
-          "property": StringModel {
-            "name": "anonymous_schema_3",
-            "options": Object {
-              "format": "email",
-              "isNullable": false,
-            },
-            "originalInput": AsyncapiV2Schema {
-              "description": "Email of the user",
-              "format": "email",
-              "type": "string",
-              "x-modelgen-inferred-name": "anonymous_schema_3",
-              "x-parser-schema-id": "<anonymous-schema-3>",
-            },
-          },
-          "propertyName": "email",
-          "required": false,
-        },
-      },
-    },
-  },
-  "originalInput": AsyncAPIDocument {
-    "_json": Object {
-      "asyncapi": "2.6.0",
-      "channels": Object {
-        "user/signedup": Object {
-          "subscribe": Object {
-            "message": Object {
-              "payload": Object {
-                "properties": Object {
-                  "displayName": Object {
-                    "description": "Name of the user",
-                    "type": "string",
-                    "x-parser-schema-id": "<anonymous-schema-2>",
-                  },
-                  "email": Object {
-                    "description": "Email of the user",
-                    "format": "email",
-                    "type": "string",
-                    "x-parser-schema-id": "<anonymous-schema-3>",
-                  },
-                },
-                "type": "object",
-                "x-parser-schema-id": "<anonymous-schema-1>",
-              },
-              "x-parser-message-name": "UserSignedUp",
-            },
-          },
-        },
-      },
-      "components": Object {
-        "messages": Object {
-          "UserSignedUp": Object {
-            "payload": Object {
-              "properties": Object {
-                "displayName": Object {
-                  "description": "Name of the user",
-                  "type": "string",
-                  "x-parser-schema-id": "<anonymous-schema-2>",
-                },
-                "email": Object {
-                  "description": "Email of the user",
-                  "format": "email",
-                  "type": "string",
-                  "x-parser-schema-id": "<anonymous-schema-3>",
-                },
-              },
-              "type": "object",
-              "x-parser-schema-id": "<anonymous-schema-1>",
-            },
-            "x-parser-message-name": "UserSignedUp",
-          },
-        },
-      },
-      "info": Object {
-        "description": "This service is in charge of processing user signups",
-        "title": "Account Service",
-        "version": "1.0.0",
-      },
-      "x-parser-api-version": 1,
-      "x-parser-spec-parsed": true,
-    },
-    "_meta": Object {
-      "asyncapi": Object {
-        "input": "asyncapi: '2.6.0'
-info:
-  title: Account Service
-  version: 1.0.0
-  description: This service is in charge of processing user signups
-channels:
-  user/signedup:
-    subscribe:
-      message:
-        $ref: '#/components/messages/UserSignedUp'
-components:
-  messages:
-    UserSignedUp:
-      payload:
-        type: object
-        properties:
-          displayName:
-            type: string
-            description: Name of the user
-          email:
-            type: string
-            format: email
-            description: Email of the user",
-        "parsed": Object {
-          "asyncapi": "2.6.0",
-          "channels": Object {
-            "user/signedup": Object {
-              "subscribe": Object {
-                "message": Object {
-                  "payload": Object {
-                    "properties": Object {
-                      "displayName": Object {
-                        "description": "Name of the user",
-                        "type": "string",
-                        "x-parser-schema-id": "<anonymous-schema-2>",
-                      },
-                      "email": Object {
-                        "description": "Email of the user",
-                        "format": "email",
-                        "type": "string",
-                        "x-parser-schema-id": "<anonymous-schema-3>",
-                      },
-                    },
-                    "type": "object",
-                    "x-parser-schema-id": "<anonymous-schema-1>",
-                  },
-                  "x-parser-message-name": "UserSignedUp",
-                },
-              },
-            },
-          },
-          "components": Object {
-            "messages": Object {
-              "UserSignedUp": Object {
-                "payload": Object {
-                  "properties": Object {
-                    "displayName": Object {
-                      "description": "Name of the user",
-                      "type": "string",
-                      "x-parser-schema-id": "<anonymous-schema-2>",
-                    },
-                    "email": Object {
-                      "description": "Email of the user",
-                      "format": "email",
-                      "type": "string",
-                      "x-parser-schema-id": "<anonymous-schema-3>",
-                    },
-                  },
-                  "type": "object",
-                  "x-parser-schema-id": "<anonymous-schema-1>",
-                },
-                "x-parser-message-name": "UserSignedUp",
-              },
-            },
-          },
-          "info": Object {
-            "description": "This service is in charge of processing user signups",
-            "title": "Account Service",
-            "version": "1.0.0",
-          },
-          "x-parser-api-version": 1,
-          "x-parser-spec-parsed": true,
-        },
-        "semver": Object {
-          "major": 2,
-          "minor": 6,
-          "patch": 0,
-          "rc": undefined,
-          "version": "2.6.0",
-        },
-        "source": "/Users/nilkanthparmar/Documents/Projects/asyncapi/modelina/test/processors/AsyncAPIInputProcessor/testasyncapi.yml",
       },
       "pointer": "/",
     },

@@ -22,6 +22,7 @@ import { Logger } from '../utils';
 import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
 import { convertToMetaModel } from '../helpers';
 import fs from 'fs';
+import { fileURLToPath } from 'url';
 
 /**
  * Class for processing AsyncAPI inputs
@@ -56,7 +57,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     options?: ProcessorOptions
   ): Promise<InputMetaModel> {
     let rawInput = input;
-    if (this.isFilePathInput(input))
+    if (this.isFileInput(input))
       rawInput = await this.getParsedFileInput(input);
 
     if (!this.shouldProcess(rawInput)) {
@@ -396,7 +397,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     if (!input) {
       return false;
     }
-    if(this.isFilePathInput(input)){
+    if(this.isFileInput(input)){
       return true;
     }
     const version = this.tryGetVersionOfDocument(input);
@@ -439,11 +440,17 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     return isAsyncAPIDocument(input);
   }
 
-  isFilePathInput(input: any): boolean {
-    return typeof input === 'string' && fs.existsSync(input);
+  isFileInput(input: any): boolean {
+    return typeof input === 'string' && /^file:\/\//g.test(input);
   }
 
-  async getParsedFileInput(filePath: string): Promise<AsyncAPIDocumentInterface> {
+  async getParsedFileInput(input: string): Promise<AsyncAPIDocumentInterface> {
+    const filePath = fileURLToPath(input);
+    if(!fs.existsSync(filePath)){
+      throw new Error(
+        'File does not exists.'
+      );
+    }
     const parser = new Parser();
     const { document, diagnostics } = await fromFile(parser, filePath).parse();
     if (!document) {
