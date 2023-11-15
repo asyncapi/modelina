@@ -22,7 +22,7 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
       ? params.property.property.type
       : `Optional[${params.property.property.type}]`;
     const alias = params.property.property.originalInput['description']
-      ? `alias='${params.property.property.originalInput['description']}'`
+      ? `alias='''${params.property.property.originalInput['description']}'''`
       : '';
 
     return `${params.property.propertyName}: ${type} = Field(${alias})`;
