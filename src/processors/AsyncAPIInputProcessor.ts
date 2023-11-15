@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable @typescript-eslint/no-var-requires */
-import {
+import Parser, {
   isAsyncAPIDocument,
   isOldAsyncAPIDocument,
   AsyncAPIDocumentInterface,
@@ -426,7 +426,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
         'File does not exists.'
       );
     }
-    const parser = new NewParser();
+    const parser = new Parser();
     const { document, diagnostics } = await fromFile(parser, filePath).parse();
     if (!document) {
       const err = new Error(
