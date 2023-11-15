@@ -5,11 +5,25 @@ Array [
   "public class Root
 {
   private string? email;
+  private System.DateTime? dateTime;
+  private System.TimeSpan? timeSpan;
 
   public string? Email 
   {
     get { return email; }
     set { email = value; }
+  }
+
+  public System.DateTime? DateTime 
+  {
+    get { return dateTime; }
+    set { dateTime = value; }
+  }
+
+  public System.TimeSpan? TimeSpan 
+  {
+    get { return timeSpan; }
+    set { timeSpan = value; }
   }
 }",
 ]

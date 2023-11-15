@@ -93,6 +93,22 @@ describe('CSharpConstrainer', () => {
       });
       expect(type).toEqual('string');
     });
+    test('should render System.DateTime', () => {
+      const model = new ConstrainedStringModel('test', undefined, {}, '');
+      const type = CSharpDefaultTypeMapping.String({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('System.DateTime');
+    });
+    test('should render TimeSpan', () => {
+      const model = new ConstrainedStringModel('test', undefined, {}, '');
+      const type = CSharpDefaultTypeMapping.String({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('System.TimeSpan');
+    });
   });
   describe('Boolean', () => {
     test('should render type', () => {
