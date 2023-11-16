@@ -15,7 +15,8 @@ import {
   ConstrainedEnumModel,
   ConstrainedDictionaryModel,
   ConstrainedEnumValueModel,
-  ConstrainedObjectPropertyModel
+  ConstrainedObjectPropertyModel,
+  ConstrainedMetaModelOptions
 } from '../models/ConstrainedMetaModel';
 import {
   AnyModel,
@@ -97,6 +98,20 @@ const placeHolderConstrainedObject = new ConstrainedAnyModel(
   ''
 );
 
+function getConstrainedMetaModelOptions(
+  metaModel: MetaModel
+): ConstrainedMetaModelOptions {
+  const options: ConstrainedMetaModelOptions = {};
+
+  options.const = metaModel.options.const;
+  options.isNullable = metaModel.options.isNullable;
+  options.discriminator = metaModel.options.discriminator;
+  options.format = metaModel.options.format;
+  options.isExtended = metaModel.options.isExtended;
+
+  return options;
+}
+
 function constrainReferenceModel<
   Options,
   DependencyManager extends AbstractDependencyManager
@@ -109,7 +124,7 @@ function constrainReferenceModel<
   const constrainedModel = new ConstrainedReferenceModel(
     context.constrainedName,
     context.metaModel.originalInput,
-    context.metaModel.options,
+    getConstrainedMetaModelOptions(context.metaModel),
     '',
     placeHolderConstrainedObject
   );
@@ -148,7 +163,7 @@ function constrainAnyModel<
   const constrainedModel = new ConstrainedAnyModel(
     context.constrainedName,
     context.metaModel.originalInput,
-    context.metaModel.options,
+    getConstrainedMetaModelOptions(context.metaModel),
     ''
   );
   constrainedModel.type = getTypeFromMapping(typeMapping, {
@@ -169,7 +184,7 @@ function constrainFloatModel<
   const constrainedModel = new ConstrainedFloatModel(
     context.constrainedName,
     context.metaModel.originalInput,
-    context.metaModel.options,
+    getConstrainedMetaModelOptions(context.metaModel),
     ''
   );
   constrainedModel.type = getTypeFromMapping(typeMapping, {
@@ -190,7 +205,7 @@ function constrainIntegerModel<
   const constrainedModel = new ConstrainedIntegerModel(
     context.constrainedName,
     context.metaModel.originalInput,
-    context.metaModel.options,
+    getConstrainedMetaModelOptions(context.metaModel),
     ''
   );
   constrainedModel.type = getTypeFromMapping(typeMapping, {
@@ -211,7 +226,7 @@ function constrainStringModel<
   const constrainedModel = new ConstrainedStringModel(
     context.constrainedName,
     context.metaModel.originalInput,
-    context.metaModel.options,
+    getConstrainedMetaModelOptions(context.metaModel),
     ''
   );
   constrainedModel.type = getTypeFromMapping(typeMapping, {
@@ -232,7 +247,7 @@ function constrainBooleanModel<
   const constrainedModel = new ConstrainedBooleanModel(
     context.constrainedName,
     context.metaModel.originalInput,
-    context.metaModel.options,
+    getConstrainedMetaModelOptions(context.metaModel),
     ''
   );
   constrainedModel.type = getTypeFromMapping(typeMapping, {
@@ -255,7 +270,7 @@ function constrainTupleModel<
   const constrainedModel = new ConstrainedTupleModel(
     context.constrainedName,
     context.metaModel.originalInput,
-    context.metaModel.options,
+    getConstrainedMetaModelOptions(context.metaModel),
     '',
     []
   );
@@ -291,7 +306,7 @@ function constrainArrayModel<
   const constrainedModel = new ConstrainedArrayModel(
     context.constrainedName,
     context.metaModel.originalInput,
-    context.metaModel.options,
+    getConstrainedMetaModelOptions(context.metaModel),
     '',
     placeHolderConstrainedObject
   );
@@ -360,7 +375,7 @@ function constrainUnionModel<
   const constrainedModel = new ConstrainedUnionModel(
     context.constrainedName,
     context.metaModel.originalInput,
-    context.metaModel.options,
+    getConstrainedMetaModelOptions(context.metaModel),
     '',
     []
   );
@@ -399,7 +414,7 @@ function constrainDictionaryModel<
   const constrainedModel = new ConstrainedDictionaryModel(
     context.constrainedName,
     context.metaModel.originalInput,
-    context.metaModel.options,
+    getConstrainedMetaModelOptions(context.metaModel),
     '',
     placeHolderConstrainedObject,
     placeHolderConstrainedObject,
@@ -443,10 +458,31 @@ function constrainObjectModel<
   context: ConstrainContext<Options, ObjectModel, DependencyManager>,
   alreadySeenModels: Map<MetaModel, ConstrainedMetaModel>
 ): ConstrainedObjectModel {
+  const options = getConstrainedMetaModelOptions(context.metaModel);
+
+  if (context.metaModel.options.extend?.length) {
+    options.extend = [];
+
+    for (const extend of context.metaModel.options.extend) {
+      options.extend.push(
+        constrainMetaModel(
+          typeMapping,
+          constrainRules,
+          {
+            ...context,
+            metaModel: extend,
+            partOfProperty: undefined
+          },
+          alreadySeenModels
+        )
+      );
+    }
+  }
+
   const constrainedModel = new ConstrainedObjectModel(
     context.constrainedName,
     context.metaModel.originalInput,
-    context.metaModel.options,
+    options,
     '',
     {}
   );
@@ -481,6 +517,7 @@ function constrainObjectModel<
     constrainedModel.properties[String(constrainedPropertyName)] =
       constrainedPropertyModel;
   }
+
   constrainedModel.type = getTypeFromMapping(typeMapping, {
     constrainedModel,
     options: context.options,
@@ -501,7 +538,7 @@ function ConstrainEnumModel<
   const constrainedModel = new ConstrainedEnumModel(
     context.constrainedName,
     context.metaModel.originalInput,
-    context.metaModel.options,
+    getConstrainedMetaModelOptions(context.metaModel),
     '',
     []
   );
