@@ -18,7 +18,7 @@ import { AbstractDependencyManager } from './AbstractDependencyManager';
 export interface CommonGeneratorOptions<
   P extends Preset = Preset,
   DependencyManager extends
-  AbstractDependencyManager = AbstractDependencyManager
+    AbstractDependencyManager = AbstractDependencyManager
 > {
   indentation?: {
     type: IndentationTypes;
@@ -73,7 +73,7 @@ export abstract class AbstractGenerator<
   constructor(
     public readonly languageName: string,
     public readonly options: Options
-  ) { }
+  ) {}
 
   public abstract render(
     args: AbstractGeneratorRenderArgs<Options>
@@ -165,7 +165,7 @@ export abstract class AbstractGenerator<
       for (const unionConstrainedModel of unionConstrainedModelsWithDepManager) {
         if (
           unionConstrainedModel.constrainedModel instanceof
-          ConstrainedUnionModel &&
+            ConstrainedUnionModel &&
           unionConstrainedModel.constrainedModel.union.some(
             (m) =>
               m.name === constrainedModel.name &&
@@ -259,7 +259,8 @@ export abstract class AbstractGenerator<
   protected async processInput(
     input: any | InputMetaModel
   ): Promise<InputMetaModel> {
-    const rawInputModel = input instanceof InputMetaModel ? input : await this.process(input);
+    const rawInputModel =
+      input instanceof InputMetaModel ? input : await this.process(input);
 
     //Split out the models based on the language specific requirements of which models is rendered separately
     const splitOutModels: { [key: string]: MetaModel } = {};

@@ -20,7 +20,10 @@ const operationOneOf2DocString = fs.readFileSync(
   path.resolve(__dirname, './AsyncAPIInputProcessor/operation_oneof2.json'),
   'utf8'
 );
-const ymlFileURI = `file://${path.resolve(__dirname, './AsyncAPIInputProcessor/testasyncapi.yml')}`;
+const ymlFileURI = `file://${path.resolve(
+  __dirname,
+  './AsyncAPIInputProcessor/testasyncapi.yml'
+)}`;
 jest.mock('../../src/utils/LoggingInterface');
 
 describe('AsyncAPIInputProcessor', () => {
@@ -36,7 +39,7 @@ describe('AsyncAPIInputProcessor', () => {
       const { document } = await parser.parse(basicDocString);
       expect(processor.shouldProcess(document)).toEqual(true);
     });
-    test('should be able to detect file', async () => {
+    test('should be able to detect file', () => {
       expect(processor.shouldProcess(ymlFileURI)).toEqual(true);
     });
     test('should be able to process AsyncAPI 2.0.0', () => {
@@ -124,9 +127,9 @@ describe('AsyncAPIInputProcessor', () => {
 
     test('should throw error when file does not exists', async () => {
       const processor = new AsyncAPIInputProcessor();
-      await expect(
-        processor.process(`${ymlFileURI}test`)
-      ).rejects.toThrow('File does not exists.');
+      await expect(processor.process(`${ymlFileURI}test`)).rejects.toThrow(
+        'File does not exists.'
+      );
     });
 
     test('should be able to process pure object', async () => {
@@ -152,7 +155,7 @@ describe('AsyncAPIInputProcessor', () => {
     test('should be able to process file', async () => {
       const processor = new AsyncAPIInputProcessor();
       const commonInputModel = await processor.process(ymlFileURI);
-      expect(commonInputModel instanceof InputMetaModel).toBeTruthy()
+      expect(commonInputModel instanceof InputMetaModel).toBeTruthy();
       expect(commonInputModel.models).toMatchSnapshot();
     });
 
@@ -218,7 +221,7 @@ describe('AsyncAPIInputProcessor', () => {
       ).toEqual('anonymous_schema_8');
       expect(
         expected.properties.propWithObject.properties.propWithObject[
-        'x-modelgen-inferred-name'
+          'x-modelgen-inferred-name'
         ]
       ).toEqual('anonymous_schema_9');
 
