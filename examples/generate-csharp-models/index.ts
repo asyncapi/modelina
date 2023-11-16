@@ -10,13 +10,17 @@ const jsonSchemaDraft7 = {
       type: 'string',
       format: 'email'
     },
-    dateTime: {
+    today: {
       type: 'string',
       format: 'date-time'
     },
-    timeSpan: {
+    duration: {
       type: 'string',
       format: 'time'
+    },
+    userId: {
+      type: 'string',
+      format: 'uuid'
     }
   }
 };

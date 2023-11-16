@@ -5,8 +5,9 @@ Array [
   "public class Root
 {
   private string? email;
-  private System.DateTime? dateTime;
-  private System.TimeSpan? timeSpan;
+  private System.DateTime? today;
+  private System.TimeSpan? duration;
+  private System.Guid? userId;
 
   public string? Email 
   {
@@ -14,16 +15,22 @@ Array [
     set { email = value; }
   }
 
-  public System.DateTime? DateTime 
+  public System.DateTime? Today 
   {
-    get { return dateTime; }
-    set { dateTime = value; }
+    get { return today; }
+    set { today = value; }
   }
 
-  public System.TimeSpan? TimeSpan 
+  public System.TimeSpan? Duration 
   {
-    get { return timeSpan; }
-    set { timeSpan = value; }
+    get { return duration; }
+    set { duration = value; }
+  }
+
+  public System.Guid? UserId 
+  {
+    get { return userId; }
+    set { userId = value; }
   }
 }",
 ]
