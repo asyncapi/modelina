@@ -63,6 +63,8 @@ export const CSharpDefaultTypeMapping: CSharpTypeMapping = {
       case 'dateTime':
       case 'date-time':
         return getFullTypeDefinition('System.DateTime', partOfProperty);
+      case 'uuid':
+        return getFullTypeDefinition('System.Guid', partOfProperty);
       default:
         return getFullTypeDefinition('string', partOfProperty);
     }

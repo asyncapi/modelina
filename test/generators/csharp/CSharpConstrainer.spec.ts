@@ -94,7 +94,7 @@ describe('CSharpConstrainer', () => {
       expect(type).toEqual('string');
     });
     test('should render System.DateTime', () => {
-      const model = new ConstrainedStringModel('test', undefined, {}, '');
+      const model = new ConstrainedStringModel('test', undefined, { format: 'date-time' }, '');
       const type = CSharpDefaultTypeMapping.String({
         constrainedModel: model,
         ...defaultOptions
@@ -102,12 +102,20 @@ describe('CSharpConstrainer', () => {
       expect(type).toEqual('System.DateTime');
     });
     test('should render TimeSpan', () => {
-      const model = new ConstrainedStringModel('test', undefined, {}, '');
+      const model = new ConstrainedStringModel('test', undefined, { format: 'time' }, '');
       const type = CSharpDefaultTypeMapping.String({
         constrainedModel: model,
         ...defaultOptions
       });
       expect(type).toEqual('System.TimeSpan');
+    });
+    test('should render Guid', () => {
+      const model = new ConstrainedStringModel('test', undefined, { format: 'uuid' }, '');
+      const type = CSharpDefaultTypeMapping.String({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('System.Guid');
     });
   });
   describe('Boolean', () => {
