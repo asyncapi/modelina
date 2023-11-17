@@ -51,7 +51,10 @@ export type InterpreterOptions = {
    */
   discriminator?: string;
   /**
-   * Use this option to disable cache when interpreting schemas. This will affect merging of schemas.
+   * This options disables the seenSchemas cache in the Interpreter.
+   * Use this option to disable the seenSchemas cache when interpreting schemas.
+   * This will affect merging of schemas, and should only be used by the internal interpreters when allowInheritance is set to true.
+   * This allows the internal interpreters to keep clean copies of the schemas as CommonModel's.
    */
   disableCache?: boolean;
 };
