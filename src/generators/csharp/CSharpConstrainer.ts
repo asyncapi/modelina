@@ -55,8 +55,19 @@ export const CSharpDefaultTypeMapping: CSharpTypeMapping = {
   Integer({ partOfProperty }): string {
     return getFullTypeDefinition('int', partOfProperty);
   },
-  String({ partOfProperty }): string {
-    return getFullTypeDefinition('string', partOfProperty);
+  String({ constrainedModel, partOfProperty }): string {
+    switch (constrainedModel.options.format) {
+      case 'time':
+        return getFullTypeDefinition('System.TimeSpan', partOfProperty);
+      case 'date':
+      case 'dateTime':
+      case 'date-time':
+        return getFullTypeDefinition('System.DateTime', partOfProperty);
+      case 'uuid':
+        return getFullTypeDefinition('System.Guid', partOfProperty);
+      default:
+        return getFullTypeDefinition('string', partOfProperty);
+    }
   },
   Boolean({ partOfProperty }): string {
     return getFullTypeDefinition('bool', partOfProperty);
