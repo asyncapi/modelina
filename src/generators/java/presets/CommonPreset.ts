@@ -194,20 +194,19 @@ function renderUnmarshalling({
 export const JAVA_COMMON_PRESET: JavaPreset<JavaCommonPresetOptions> = {
   class: {
     additionalContent({ renderer, model, content, options }) {
+      if (model.options.isExtended) {
+        return '';
+      }
+
       options = options || {};
       const blocks: string[] = [];
       const shouldContainEqual =
-        (options.equal === undefined || options.equal === true) &&
-        !model.options.isExtended;
+        options.equal === undefined || options.equal === true;
       const shouldContainHashCode =
-        (options.hashCode === undefined || options.hashCode === true) &&
-        !model.options.isExtended;
+        options.hashCode === undefined || options.hashCode === true;
       const shouldContainToString =
-        (options.classToString === undefined ||
-          options.classToString === true) &&
-        !model.options.isExtended;
-      const shouldContainMarshal =
-        options.marshalling === true && !model.options.isExtended;
+        options.classToString === undefined || options.classToString === true;
+      const shouldContainMarshal = options.marshalling === true;
 
       if (shouldContainEqual === true || shouldContainHashCode === true) {
         renderer.dependencyManager.addDependency('import java.util.Objects;');

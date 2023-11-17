@@ -44,4 +44,67 @@ describe('JAVA_DESCRIPTION_PRESET', () => {
     expect(models[0].result).toMatchSnapshot();
     expect(models[0].dependencies).toEqual([]);
   });
+
+  test('should not render anything when isExtended is true and model is discriminator or dictionary', async () => {
+    const asyncapiDoc = {
+      asyncapi: '2.6.0',
+      info: {
+        title: 'Test',
+        version: '1.0.0'
+      },
+      channels: {},
+      components: {
+        messages: {
+          extendDoc: {
+            payload: {
+              title: 'extendDoc',
+              allOf: [
+                { $ref: '#/components/schemas/extend' },
+                {
+                  type: 'object',
+                  properties: {
+                    type: {
+                      const: 'ExtendDoc'
+                    },
+                    test2: {
+                      type: 'string',
+                      description: 'test',
+                      examples: ['test']
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        schemas: {
+          extend: {
+            type: 'object',
+            discriminator: 'type',
+            properties: {
+              type: {
+                title: 'discriminatorTest',
+                type: 'string'
+              },
+              test3: {
+                type: 'string'
+              }
+            },
+            required: ['type']
+          }
+        }
+      }
+    };
+    const generator = new JavaGenerator({
+      presets: [JAVA_DESCRIPTION_PRESET],
+      processorOptions: {
+        interpreter: {
+          allowInheritance: true
+        }
+      }
+    });
+    const models = await generator.generate(asyncapiDoc);
+    expect(models).toHaveLength(3);
+    expect(models.map((model) => model.result)).toMatchSnapshot();
+  });
 });

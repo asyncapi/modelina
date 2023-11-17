@@ -281,8 +281,8 @@ describe('JavaGenerator', () => {
     );
   });
 
-  describe('allOf allowInheritance', () => {
-    test('handle allOf with const in CloudEvent type', async () => {
+  describe('allowInheritance', () => {
+    test('should create interface for Pet and CloudEvent', async () => {
       const asyncapiDoc = {
         asyncapi: '2.5.0',
         info: {
