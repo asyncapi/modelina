@@ -208,4 +208,52 @@ describe('KotlinGenerator', () => {
     const expectedPackageDeclaration = 'package test.`class`.`package';
     expect(models[0].result).toContain(expectedPackageDeclaration);
   });
+
+  test.only('should create java.time.OffsetDateTime', async () => {
+    const asyncapiDoc = {
+      asyncapi: '2.6.0',
+      info: {
+        title: 'Test',
+        version: '1.0.0'
+      },
+      channels: {},
+      components: {
+        messages: {
+          ConcreteData: {
+            payload: {
+              title: 'ConcreteData',
+              type: 'object',
+              additionalProperties: false,
+              allOf: [{ $ref: '#/components/schemas/AbstractData' }],
+              required: ['someValue'],
+              properties: {
+                someValue: {
+                  type: 'number'
+                }
+              }
+            }
+          }
+        },
+        schemas: {
+          AbstractData: {
+            type: 'object',
+            required: ['deviceId', 'capturedAt'],
+            properties: {
+              deviceId: {
+                type: 'string',
+                format: 'uuid'
+              },
+              capturedAt: {
+                type: 'string',
+                format: 'date-time'
+              }
+            }
+          }
+        }
+      }
+    };
+
+    const models = await generator.generate(asyncapiDoc);
+    expect(models.map((model) => model.result)).toMatchSnapshot();
+  });
 });

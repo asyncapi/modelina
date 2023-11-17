@@ -1,5 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`KotlinGenerator should create java.time.OffsetDateTime 1`] = `
+Array [
+  "data class ConcreteData(
+    val someValue: Double,
+    val deviceId: String,
+    val capturedAt: java.time.OffsetDateTime,
+    val additionalProperties: Map<String, Any>? = null,
+)",
+]
+`;
+
 exports[`KotlinGenerator should not render reserved keyword 1`] = `
 "data class Address(
     val reservedClass: String? = null,
