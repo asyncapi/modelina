@@ -751,6 +751,17 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "jano-petras",
+      "name": "jano-petras",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1147848?v=4",
+      "profile": "https://github.com/jano-petras",
+      "contributions": [
+        "code",
+        "doc",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
