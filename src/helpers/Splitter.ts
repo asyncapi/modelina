@@ -60,8 +60,9 @@ const trySplitModel = (
         hasModel = true;
       }
 
-      // If one model is not extended, we have to force both to not be extended
+      // If a model with the same name is not extended somewhere, we have to force both not to be extended
       if (m.name === model.name) {
+        // if both are extended we can continue
         if (m.options.isExtended && model.options.isExtended) {
           continue;
         }

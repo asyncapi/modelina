@@ -7,6 +7,10 @@ const basicDocString = fs.readFileSync(
   path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'),
   'utf8'
 );
+const basicV3DocString = fs.readFileSync(
+  path.resolve(__dirname, './AsyncAPIInputProcessor/basic_v3.json'),
+  'utf8'
+);
 const operationOneOf1DocString = fs.readFileSync(
   path.resolve(__dirname, './AsyncAPIInputProcessor/operation_oneof1.json'),
   'utf8'
@@ -58,12 +62,12 @@ describe('AsyncAPIInputProcessor', () => {
       const parsedObject = { asyncapi: '2.6.0' };
       expect(processor.shouldProcess(parsedObject)).toEqual(true);
     });
+    test('should be able to process AsyncAPI 3.x', () => {
+      const parsedObject = { asyncapi: '3.0.0' };
+      expect(processor.shouldProcess(parsedObject)).toEqual(true);
+    });
     test('should not be able to process unsupported AsyncAPI 2.x', () => {
       const parsedObject = { asyncapi: '2.123.0' };
-      expect(processor.shouldProcess(parsedObject)).toEqual(false);
-    });
-    test('should not be able to process AsyncAPI 3.x', () => {
-      const parsedObject = { asyncapi: '3.0.0' };
       expect(processor.shouldProcess(parsedObject)).toEqual(false);
     });
   });
@@ -79,6 +83,10 @@ describe('AsyncAPIInputProcessor', () => {
     test('should be able to find AsyncAPI version from parsed document', async () => {
       const { document } = await parser.parse(basicDocString);
       expect(processor.tryGetVersionOfDocument(document)).toEqual('2.0.0');
+    });
+    test('should be able to find AsyncAPI version for v3', () => {
+      const basicDoc = JSON.parse(basicV3DocString);
+      expect(processor.tryGetVersionOfDocument(basicDoc)).toEqual('3.0.0');
     });
   });
   describe('isFromParser()', () => {
@@ -111,6 +119,12 @@ describe('AsyncAPIInputProcessor', () => {
 
     test('should be able to process pure object', async () => {
       const basicDoc = JSON.parse(basicDocString);
+      const processor = new AsyncAPIInputProcessor();
+      const commonInputModel = await processor.process(basicDoc);
+      expect(commonInputModel).toMatchSnapshot();
+    });
+    test('should be able to process pure object for v3', async () => {
+      const basicDoc = JSON.parse(basicV3DocString);
       const processor = new AsyncAPIInputProcessor();
       const commonInputModel = await processor.process(basicDoc);
       expect(commonInputModel).toMatchSnapshot();

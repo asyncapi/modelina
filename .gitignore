@@ -8,3 +8,5 @@ output
 # Where the runtime testing for Java places node modules
 java_runtime_node
 *.log
+# Local Netlify folder
+.netlify

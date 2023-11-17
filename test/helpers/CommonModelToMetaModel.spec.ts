@@ -263,6 +263,21 @@ describe('CommonModelToMetaModel', () => {
       (model as ObjectModel).properties['reserved_additionalProperties']
     ).not.toBeUndefined();
   });
+  test('should convert to object model and add extend model', () => {
+    const extend = new CommonModel();
+    extend.type = 'object';
+    extend.$id = 'extend';
+    const cm = new CommonModel();
+    cm.type = 'object';
+    cm.$id = 'test';
+    cm.extend = [extend];
+
+    const model = convertToMetaModel(cm);
+
+    expect(model instanceof ObjectModel).toEqual(true);
+    expect(model.options.extend?.length).toEqual(1);
+    expect(model.options.extend?.at(0) instanceof ObjectModel).toEqual(true);
+  });
 
   test('should merge both patternProperties and additionalProperties into one property', () => {
     const stringCM = new CommonModel();
