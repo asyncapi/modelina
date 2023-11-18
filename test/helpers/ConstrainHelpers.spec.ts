@@ -119,6 +119,35 @@ describe('ConstrainHelpers', () => {
       );
       expect(constrainedModel instanceof ConstrainedObjectModel).toEqual(true);
     });
+
+    test('should handle extend', () => {
+      const extendModel = new ObjectModel('extend', undefined, {}, {});
+      const metaModel = new ObjectModel(
+        'test',
+        undefined,
+        {
+          extend: [extendModel]
+        },
+        {}
+      );
+      const constrainedModel = constrainMetaModel(
+        mockedTypeMapping,
+        mockedConstraints,
+        {
+          metaModel,
+          options: {},
+          constrainedName: '',
+          dependencyManager: undefined as never
+        }
+      );
+      expect(constrainedModel instanceof ConstrainedObjectModel).toEqual(true);
+      expect(constrainedModel.options.extend?.length).toEqual(1);
+      expect(
+        constrainedModel.options.extend?.at(0) instanceof ConstrainedObjectModel
+      ).toEqual(true);
+      expect(mockedConstraints.modelName).toHaveBeenCalledTimes(2);
+      expect(mockedTypeMapping.Object).toHaveBeenCalledTimes(2);
+    });
   });
   describe('constrain ReferenceModel', () => {
     test('should constrain correctly', () => {

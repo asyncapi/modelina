@@ -15,7 +15,7 @@ export const defaultMergingOptions: MergingOptions = {
  * Common internal representation for a model.
  */
 export class CommonModel {
-  extend?: string[];
+  extend?: CommonModel[];
   originalInput?: any;
   $id?: string;
   type?: string | string[];
@@ -426,7 +426,10 @@ export class CommonModel {
    * @param extendedModel
    */
   addExtendedModel(extendedModel: CommonModel): void {
-    if (extendedModel.$id === undefined) {
+    if (
+      extendedModel.$id === undefined ||
+      CommonModel.idIncludesAnonymousSchema(extendedModel)
+    ) {
       Logger.error(
         'Found no $id for allOf model and cannot extend the existing model, this should never happen.',
         this,
@@ -434,8 +437,10 @@ export class CommonModel {
       );
       return;
     }
-    this.extend = this.extend || [];
-    if (this.extend.includes(extendedModel.$id)) {
+
+    if (
+      this.extend?.find((commonModel) => commonModel.$id === extendedModel.$id)
+    ) {
       Logger.info(
         `${this.$id} model already extends model ${extendedModel.$id}.`,
         this,
@@ -443,7 +448,8 @@ export class CommonModel {
       );
       return;
     }
-    this.extend.push(extendedModel.$id);
+    this.extend = this.extend ?? [];
+    this.extend.push(extendedModel);
   }
 
   /**
