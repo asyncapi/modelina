@@ -419,7 +419,7 @@ export class RustGenerator extends AbstractGenerator<
   }
 
   async generateCompleteSupport(
-    input: Record<string, unknown> | InputMetaModel,
+    input: any | InputMetaModel,
     completeModelOptions: Partial<RustRenderCompleteModelOptions>,
     options?: DeepPartial<RustOptions>
   ): Promise<OutputModel[]> {
