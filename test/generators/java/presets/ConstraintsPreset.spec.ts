@@ -35,4 +35,32 @@ describe('JAVA_CONSTRAINTS_PRESET', () => {
     expect(models[0].result).toMatchSnapshot();
     expect(models[0].dependencies).toEqual(expectedDependencies);
   });
+
+  test('should not render anything when isExtended is true', async () => {
+    const extend = {
+      $id: 'extend',
+      type: 'object',
+      properties: {
+        extendProp: {
+          type: 'string'
+        }
+      },
+      required: ['extendProp']
+    };
+    const extendDoc = {
+      $id: 'extendDoc',
+      allOf: [extend]
+    };
+    const generator = new JavaGenerator({
+      presets: [JAVA_CONSTRAINTS_PRESET],
+      processorOptions: {
+        interpreter: {
+          allowInheritance: true
+        }
+      }
+    });
+    const models = await generator.generate(extendDoc);
+    expect(models).toHaveLength(2);
+    expect(models.map((model) => model.result)).toMatchSnapshot();
+  });
 });

@@ -114,6 +114,115 @@ public class TestClass {
 }
 ```
 
+#### inheritance will generate interfaces
+
+Please read the section about [allowInheritance](#allowinheritance-set-to-true-will-enable-inheritance) first. When `allowInheritance` is enabled, interfaces will be generated for schemas that uses `allOf`:
+
+```yaml
+components:
+  messages:
+    Vehicle:
+      payload:
+        oneOf:
+          - $ref: '#/components/schemas/Car'
+          - $ref: '#/components/schemas/Truck'
+  schemas:
+    Vehicle:
+      title: Vehicle
+      type: object
+      discriminator: vehicleType
+      properties:
+        vehicleType:
+          title: VehicleType
+          type: string
+        length:
+          type: number
+          format: float
+      required:
+        - vehicleType
+    Car:
+      allOf:
+        - '#/components/schemas/Vehicle'
+        - type: object
+          properties:
+            vehicleType:
+              const: Car
+    Truck:
+      allOf:
+        - '#/components/schemas/Vehicle'
+        - type: object
+          properties:
+            vehicleType:
+              const: Truck
+```
+
+will generate
+
+```java
+public interface NewVehicle {
+  VehicleType getVehicleType();
+}
+
+public class Car implements NewVehicle, Vehicle {
+  private final VehicleType vehicleType = VehicleType.CAR;
+  private Float length;
+  private Map<String, Object> additionalProperties;
+
+  public VehicleType getVehicleType() { return this.vehicleType; }
+
+  @Override
+  public Float getLength() { return this.length; }
+  @Override
+  public void setLength(Float length) { this.length = length; }
+}
+
+public enum VehicleType {
+  CAR((String)\\"Car\\"), TRUCK((String)\\"Truck\\");
+
+  private String value;
+
+  VehicleType(String value) {
+    this.value = value;
+  }
+
+  public String getValue() {
+    return value;
+  }
+
+  public static VehicleType fromValue(String value) {
+    for (VehicleType e : VehicleType.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+}
+
+public interface Vehicle {
+  public Float getLength();
+  public void setLength(Float length);
+}
+
+public class Truck implements NewVehicle, Vehicle {
+  private final VehicleType vehicleType = VehicleType.TRUCK;
+  private Float length;
+  private Map<String, Object> additionalProperties;
+
+  public VehicleType getVehicleType() { return this.vehicleType; }
+
+  @Override
+  public Float getLength() { return this.length; }
+  @Override
+  public void setLength(Float length) { this.length = length; }
+}
+```
+
 ### Kotlin
 
 Is not affected by this change.

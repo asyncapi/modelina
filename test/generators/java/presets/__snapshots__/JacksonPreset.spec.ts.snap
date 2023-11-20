@@ -1,5 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`JAVA_JACKSON_PRESET should not render anything when isExtended is true 1`] = `
+Array [
+  "public class ExtendDoc implements Extend {
+  @JsonProperty(\\"extendProp\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String extendProp;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  @Override
+  public String getExtendProp() { return this.extendProp; }
+  @Override
+  public void setExtendProp(String extendProp) { this.extendProp = extendProp; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+  "public interface Extend {
+  public String getExtendProp();
+  public void setExtendProp(String extendProp);
+}",
+]
+`;
+
 exports[`JAVA_JACKSON_PRESET should render Jackson annotations for class 1`] = `
 "public class Clazz {
   @JsonProperty(\\"min_number_prop\\")
