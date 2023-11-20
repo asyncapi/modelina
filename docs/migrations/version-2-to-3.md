@@ -28,7 +28,68 @@ Is not affected by this change.
 
 ### C#
 
-Is not affected by this change.
+#### System.TimeSpan is used when format is time
+
+This example used to generate a `string`, but is now instead using `System.TimeSpan`.
+
+```yaml
+type: object
+properties:
+  duration:
+    type: string
+    format: time
+```
+
+will generate
+
+```csharp
+public class TestClass {
+  private System.TimeSpan duration;
+  ...
+}
+```
+
+#### System.DateTime is used when format is date-time
+
+This example used to generate a `string`, but is now instead using `System.DateTime`.
+
+```yaml
+type: object
+properties:
+  dob:
+    type: string
+    format: date-time
+```
+
+will generate
+
+```csharp
+public class TestClass {
+  private System.DateTime dob;
+  ...
+}
+```
+
+#### System.Guid is used when format is uuid
+
+This example used to generate a `string`, but is now instead using `System.Guid`.
+
+```yaml
+type: object
+properties:
+  uniqueId:
+    type: string
+    format: uuid
+```
+
+will generate
+
+```csharp
+public class TestClass {
+  private System.Guid uniqueId;
+  ...
+}
+```
 
 ### Java
 
