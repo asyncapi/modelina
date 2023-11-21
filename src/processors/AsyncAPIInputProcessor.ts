@@ -423,6 +423,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
 
   async getParsedFileInput(input: string): Promise<AsyncAPIDocumentInterface> {
     const filePath = fileURLToPath(input);
+    /* eslint-disable-next-line security/detect-non-literal-fs-filename -- Safe as it just checks file existance */
     if (!fs.existsSync(filePath)) {
       throw new Error('File does not exists.');
     }
