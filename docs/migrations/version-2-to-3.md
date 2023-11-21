@@ -233,7 +233,43 @@ Is not affected by this change.
 
 ### Python
 
-Is not affected by this change.
+#### Union type for the Pydantic preset supports Python pre 3.10
+
+Modelina used to use the newer way of representing unions in Python by using the `|` operator. In the Pydantic preset, this is now adjusted to support Python pre 3.10 by using `Union[Model1, Model2]` instead:
+
+```yaml
+title: UnionTest
+type: object
+  properties:
+    unionTest:
+      oneOf:
+        - title: Union1
+          type: object
+          properties:
+            testProp1:
+              type: string
+        - title: Union2
+          type: object
+          properties:
+            testProp2:
+              type: string
+```
+
+will generate
+
+```python
+class UnionTest(BaseModel):
+  unionTest: Optional[Union[Union1, Union2]] = Field()
+  additionalProperties: Optional[dict[Any, Any]] = Field()
+
+class Union1(BaseModel):
+  testProp1: Optional[str] = Field()
+  additionalProperties: Optional[dict[Any, Any]] = Field()
+
+class Union2(BaseModel):
+  testProp2: Optional[str] = Field()
+  additionalProperties: Optional[dict[Any, Any]] = Field()
+```
 
 ### Go
 
