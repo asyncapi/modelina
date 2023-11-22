@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { Parser } from '@asyncapi/parser';
 import { AsyncAPIInputProcessor } from '../../src/processors/AsyncAPIInputProcessor';
+import { InputMetaModel } from '../../src/models';
 
 const basicDocString = fs.readFileSync(
   path.resolve(__dirname, './AsyncAPIInputProcessor/basic.json'),
@@ -19,6 +20,10 @@ const operationOneOf2DocString = fs.readFileSync(
   path.resolve(__dirname, './AsyncAPIInputProcessor/operation_oneof2.json'),
   'utf8'
 );
+const ymlFileURI = `file://${path.resolve(
+  __dirname,
+  './AsyncAPIInputProcessor/testasyncapi.yml'
+)}`;
 jest.mock('../../src/utils/LoggingInterface');
 
 describe('AsyncAPIInputProcessor', () => {
@@ -33,6 +38,9 @@ describe('AsyncAPIInputProcessor', () => {
     test('should be able to detect parsed object', async () => {
       const { document } = await parser.parse(basicDocString);
       expect(processor.shouldProcess(document)).toEqual(true);
+    });
+    test('should be able to detect file', () => {
+      expect(processor.shouldProcess(ymlFileURI)).toEqual(true);
     });
     test('should be able to process AsyncAPI 2.0.0', () => {
       const parsedObject = { asyncapi: '2.0.0' };
@@ -117,6 +125,13 @@ describe('AsyncAPIInputProcessor', () => {
       );
     });
 
+    test('should throw error when file does not exists', async () => {
+      const processor = new AsyncAPIInputProcessor();
+      await expect(processor.process(`${ymlFileURI}test`)).rejects.toThrow(
+        'File does not exists.'
+      );
+    });
+
     test('should be able to process pure object', async () => {
       const basicDoc = JSON.parse(basicDocString);
       const processor = new AsyncAPIInputProcessor();
@@ -135,6 +150,13 @@ describe('AsyncAPIInputProcessor', () => {
       const processor = new AsyncAPIInputProcessor();
       const commonInputModel = await processor.process(document);
       expect(commonInputModel).toMatchSnapshot();
+    });
+
+    test('should be able to process file', async () => {
+      const processor = new AsyncAPIInputProcessor();
+      const commonInputModel = await processor.process(ymlFileURI);
+      expect(commonInputModel instanceof InputMetaModel).toBeTruthy();
+      expect(commonInputModel.models).toMatchSnapshot();
     });
 
     test('should be able to process operation with oneOf #1', async () => {

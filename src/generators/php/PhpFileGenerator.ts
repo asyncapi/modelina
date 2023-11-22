@@ -17,7 +17,7 @@ export class PhpFileGenerator
    * @param ensureFilesWritten
    */
   public async generateToFiles(
-    input: Record<string, unknown> | InputMetaModel,
+    input: any | InputMetaModel,
     outputDirectory: string,
     options?: PhpRenderCompleteModelOptions,
     ensureFilesWritten = false
