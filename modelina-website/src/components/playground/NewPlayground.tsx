@@ -11,6 +11,7 @@ import Router, { withRouter, NextRouter } from 'next/router';
 import { encode } from 'js-base64';
 import GeneratedModelsComponent from './GeneratedModels';
 import PlaygroundOptions from './PlaygroundOptions';
+import { Sidebar } from './Sidebar';
 import Heading from '../typography/Heading';
 import Paragraph from '../typography/Paragraph';
 import { PlaygroundGeneratedContext } from '../contexts/PlaygroundGeneratedContext';
@@ -357,134 +358,8 @@ class Playground extends React.Component<
       );
     }
     return (
-      <div className="py-16 lg:py-24">
-        <div className="relative text-center">
-          <Heading level="h1" typeStyle="heading-lg">
-            Modelina Playground
-          </Heading>
-          <Paragraph className="mt-4 max-w-3xl mx-auto">
-            Try out Modelina and see a small fraction of what it can do. Use it
-            to play around, with small examples, otherwise turn to the CLI or
-            library instead.
-          </Paragraph>
-        </div>
-        {loader}
-        <div
-          className={`grid grid-cols-2 gap-4 mt-4 ${isLoaded ? '' : 'invisible'
-            }`}
-        >
-          <div className="col-span-2">
-            <div className="overflow-hidden bg-white shadow sm:rounded-lg flex flex-row">
-              <div className="px-4 py-5 sm:px-6 basis-6/12">
-                <h3 className="text-lg font-medium leading-6 text-gray-900">
-                  Modelina Options
-                </h3>
-                <p className="mt-1 max-w-2xl text-sm text-gray-500">
-                  Change the generation options, or see the Modelina
-                  configuration you can use directly in your library
-                </p>
-              </div>
-
-              <div
-                onClick={() => {
-                  this.setState({ ...this.state, showGeneratorCode: false });
-                }}
-                className={`${!this.state.showGeneratorCode ? 'bg-blue-100' : 'bg-white'
-                  } px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 basis-3/12`}
-              >
-                <h3 className="text-lg font-medium leading-6 text-gray-900">
-                  Options
-                </h3>
-              </div>
-              <div
-                onClick={() => {
-                  this.setState({ ...this.state, showGeneratorCode: true });
-                }}
-                className={`${this.state.showGeneratorCode ? 'bg-blue-100' : 'bg-white'
-                  } px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 basis-3/12`}
-              >
-                <h3 className="text-lg font-medium leading-6 text-gray-900">
-                  Generator code
-                </h3>
-              </div>
-            </div>
-            {this.state.showGeneratorCode ? (
-              <div
-                className="bg-code-editor-dark text-white rounded-b shadow-lg font-bold"
-                style={{ height: '400px' }}
-              >
-                <MonacoEditorWrapper
-                  options={{ readOnly: true }}
-                  language="typescript"
-                  value={this.state.generatorCode || ''}
-                />
-              </div>
-            ) : (
-              <PlaygroundGeneralConfigContext.Provider value={this.config}>
-                <PlaygroundTypeScriptConfigContext.Provider value={this.config}>
-                  <PlaygroundJavaScriptConfigContext.Provider value={this.config}>
-                    <PlaygroundCSharpConfigContext.Provider value={this.config}>
-                      <PlaygroundDartConfigContext.Provider value={this.config}>
-                        <PlaygroundGoConfigContext.Provider value={this.config}>
-                          <PlaygroundJavaConfigContext.Provider value={this.config}>
-                            <PlaygroundPhpConfigContext.Provider value={this.config}>
-                              <PlaygroundCplusplusConfigContext.Provider value={this.config}>
-                                <PlaygroundKotlinConfigContext.Provider value={this.config}>
-                                  <PlaygroundRustConfigContext.Provider value={this.config}>
-                                    <PlaygroundPythonConfigContext.Provider value={this.config}>
-                                      <PlaygroundOptions setNewConfig={this.setNewConfig} />
-                                    </PlaygroundPythonConfigContext.Provider>
-                                  </PlaygroundRustConfigContext.Provider>
-                                </PlaygroundKotlinConfigContext.Provider>
-                              </PlaygroundCplusplusConfigContext.Provider>
-                            </PlaygroundPhpConfigContext.Provider>
-                          </PlaygroundJavaConfigContext.Provider>
-                        </PlaygroundGoConfigContext.Provider>
-                      </PlaygroundDartConfigContext.Provider>
-                    </PlaygroundCSharpConfigContext.Provider>
-                  </PlaygroundJavaScriptConfigContext.Provider>
-                </PlaygroundTypeScriptConfigContext.Provider>
-              </PlaygroundGeneralConfigContext.Provider>
-            )}
-          </div>
-          <div className="max-xl:col-span-2 xl:grid-cols-1">
-            <div
-              className="h-full bg-code-editor-dark text-white rounded-b shadow-lg font-bold"
-              style={{ height: '750px' }}
-            >
-              <MonacoEditorWrapper
-                value={this.state.input}
-                onChange={(_, change) => {
-                  this.setState({ ...this.state, input: change });
-                  this.generateNewCode(change);
-                }}
-                editorDidMount={() => {
-                  this.setState({
-                    loaded: { ...this.state.loaded, editorLoaded: true }
-                  });
-                }}
-                language="json"
-              />
-            </div>
-          </div>
-          <div
-            className="max-xl:col-span-2 xl:grid-cols-1"
-            style={{ height: '750px' }}
-          >
-            {this.state.error ? (
-              <CustomError statusCode={this.state.statusCode} errorMessage={this.state.errorMessage} />
-            ) : (
-              <PlaygroundGeneratedContext.Provider
-                value={{
-                  language: this.config.language,
-                  models: this.state.models
-                }}
-              >
-                <GeneratedModelsComponent setNewQuery={this.setNewQuery} />
-              </PlaygroundGeneratedContext.Provider>
-            )}
-          </div>
-        </div>
+      <div className="">
+        <Sidebar />
       </div>
     );
   }
