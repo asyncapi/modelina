@@ -29,6 +29,7 @@
     "postcss": "^8.4.31",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-icons": "^4.12.0",
     "react-markdown": "^8.0.7",
     "react-syntax-highlighter": "15.5.0",
     "rehype-raw": "^6.1.1",

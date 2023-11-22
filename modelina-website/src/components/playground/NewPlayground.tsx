@@ -358,7 +358,7 @@ class Playground extends React.Component<
       );
     }
     return (
-      <div className="">
+      <div className="flex flex-col h-screen w-full">
         <Sidebar />
       </div>
     );
