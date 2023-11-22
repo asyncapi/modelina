@@ -762,6 +762,18 @@
         "doc",
         "test"
       ]
+    },
+    {
+      "login": "nilkanth987",
+      "name": "Nilkanth Parmar",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12413581?v=4",
+      "profile": "https://github.com/nilkanth987",
+      "contributions": [
+        "code",
+        "test",
+        "example",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
