@@ -4,7 +4,7 @@ export const Tooltip: React.FunctionComponent<TippyProps> = ({
   placement = 'bottom',
   arrow = true,
   animation = 'shift-away',
-  className = 'text-xs bg-gray-900 text-center',
+  className = 'text-xs text-white bg-gray-900 text-center p-[2px]',
   hideOnClick = false,
   children,
   ...rest
