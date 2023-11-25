@@ -41,6 +41,7 @@ import { getCplusplusGeneratorCode } from '@/helpers/GeneratorCode/CplusplusGene
 import CustomError from '../CustomError';
 import { getKotlinGeneratorCode } from '@/helpers/GeneratorCode/KotlinGenerator';
 import { getPhpGeneratorCode } from '@/helpers/GeneratorCode/PhpGenerator';
+import { Content } from './Content';
 
 interface WithRouterProps {
   router: NextRouter;
@@ -358,8 +359,11 @@ class Playground extends React.Component<
       );
     }
     return (
-      <div className="flex flex-col h-screen w-full">
-        <Sidebar />
+      <div className="flex flex-col h-[90vh] w-full py-2">
+        <div className="flex flex-row flex-1 overflow-hidden">
+          <Sidebar />
+          <Content />
+        </div>
       </div>
     );
   }
