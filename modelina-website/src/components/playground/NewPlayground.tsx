@@ -29,6 +29,7 @@ import {
   PlaygroundGeneralConfigContext,
   PlaygroundPhpConfigContext
 } from '../contexts/PlaygroundConfigContext';
+import { PanelContextProvider } from '../contexts/PlaygroundPanelContext';
 import { getTypeScriptGeneratorCode } from '@/helpers/GeneratorCode/TypeScriptGenerator';
 import { getJavaScriptGeneratorCode } from '@/helpers/GeneratorCode/JavaScriptGenerator';
 import { getJavaGeneratorCode } from '@/helpers/GeneratorCode/JavaGenerator';
@@ -361,8 +362,10 @@ class Playground extends React.Component<
     return (
       <div className="flex flex-col h-[90vh] w-full py-2">
         <div className="flex flex-row flex-1 overflow-hidden">
-          <Sidebar />
-          <Content />
+          <PanelContextProvider>
+            <Sidebar />
+            <Content />
+          </PanelContextProvider>
         </div>
       </div>
     );

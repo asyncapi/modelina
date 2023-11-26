@@ -2,6 +2,7 @@ import React from 'react';
 import { IoOptionsOutline } from 'react-icons/io5';
 import { VscListSelection } from 'react-icons/vsc';
 import { Tooltip } from './Tooltip';
+import { usePanelContext } from '../contexts/PlaygroundPanelContext';
 
 interface SidebarItem {
   name: string;
@@ -15,13 +16,16 @@ interface SidebarItem {
 interface SidebarProps {}
 
 export const Sidebar: React.FunctionComponent<SidebarProps> = () => {
+  const { panel, setPanel } = usePanelContext();
   const sidebarItems: SidebarItem[] = [
     // Options
     {
       name: 'options',
       title: 'Options',
       isActive: false,
-      onClick: () => {},
+      onClick: () => {
+        setPanel(panel !== 'options' ? 'options' : '');
+      },
       icon: <IoOptionsOutline className="w-5 h-5" />,
       tooltip: 'Option'
     },
@@ -30,7 +34,9 @@ export const Sidebar: React.FunctionComponent<SidebarProps> = () => {
       name: 'outputExplorer',
       title: 'Output',
       isActive: false,
-      onClick: () => {},
+      onClick: () => {
+        setPanel(panel !== 'output' ? 'output' : '');
+      },
       icon: <VscListSelection className="w-5 h-5" />,
       tooltip: 'Output'
     }
