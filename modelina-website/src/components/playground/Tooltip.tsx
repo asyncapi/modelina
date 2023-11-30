@@ -1,3 +1,4 @@
+import React from 'react';
 import Tippy, { TippyProps } from '@tippyjs/react';
 
 export const Tooltip: React.FunctionComponent<TippyProps> = ({
@@ -10,8 +11,15 @@ export const Tooltip: React.FunctionComponent<TippyProps> = ({
   ...rest
 }) => {
   return (
-    <Tippy placement={placement} arrow={arrow} animation={animation} className={className} hideOnClick={hideOnClick} {...rest}>
+    <Tippy
+      placement={placement}
+      arrow={arrow}
+      animation={animation}
+      className={className}
+      hideOnClick={hideOnClick}
+      {...rest}
+    >
       {children}
     </Tippy>
-  )
-}
+  );
+};
