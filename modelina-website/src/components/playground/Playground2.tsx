@@ -1,0 +1,444 @@
+import React, { useState, useEffect } from 'react';
+import MonacoEditorWrapper from '../MonacoEditorWrapper';
+import {
+  defaultAsyncapiDocument,
+  ModelinaOptions,
+  ModelinaQueryOptions,
+  GenerateMessage,
+  UpdateMessage
+} from '@/types';
+import Router, { withRouter, NextRouter } from 'next/router';
+import { encode } from 'js-base64';
+import GeneratedModelsComponent from './GeneratedModels';
+import PlaygroundOptions from './PlaygroundOptions';
+import Heading from '../typography/Heading';
+import Paragraph from '../typography/Paragraph';
+import { PlaygroundGeneratedContext } from '../contexts/PlaygroundGeneratedContext';
+import {
+  PlaygroundTypeScriptConfigContext,
+  PlaygroundCSharpConfigContext,
+  PlaygroundDartConfigContext,
+  PlaygroundGoConfigContext,
+  PlaygroundJavaConfigContext,
+  PlaygroundJavaScriptConfigContext,
+  PlaygroundKotlinConfigContext,
+  PlaygroundPythonConfigContext,
+  PlaygroundRustConfigContext,
+  PlaygroundCplusplusConfigContext,
+  PlaygroundGeneralConfigContext,
+  PlaygroundPhpConfigContext
+} from '../contexts/PlaygroundConfigContext';
+import { getTypeScriptGeneratorCode } from '@/helpers/GeneratorCode/TypeScriptGenerator';
+import { getJavaScriptGeneratorCode } from '@/helpers/GeneratorCode/JavaScriptGenerator';
+import { getJavaGeneratorCode } from '@/helpers/GeneratorCode/JavaGenerator';
+import { getGoGeneratorCode } from '@/helpers/GeneratorCode/GoGenerator';
+import { getCSharpGeneratorCode } from '@/helpers/GeneratorCode/CSharpGenerator';
+import { getRustGeneratorCode } from '@/helpers/GeneratorCode/RustGenerator';
+import { getPythonGeneratorCode } from '@/helpers/GeneratorCode/PythonGenerator';
+import { getDartGeneratorCode } from '@/helpers/GeneratorCode/DartGenerator';
+import { getCplusplusGeneratorCode } from '@/helpers/GeneratorCode/CplusplusGenerator';
+import CustomError from '../CustomError';
+import { getKotlinGeneratorCode } from '@/helpers/GeneratorCode/KotlinGenerator';
+import { getPhpGeneratorCode } from '@/helpers/GeneratorCode/PhpGenerator';
+
+interface WithRouterProps {
+  router: NextRouter;
+}
+
+interface ModelsGeneratorProps {
+  code: string;
+  name: string;
+}
+interface ModelinaPlaygroundProps extends WithRouterProps {
+  maxInputSize?: number;
+}
+
+const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
+  const [input, setInput] = useState(JSON.stringify(defaultAsyncapiDocument, null, 4));
+  const [models, setModels] = useState<ModelsGeneratorProps[]>([]);
+  const [generatorCode, setGeneratorCode] = useState('');
+  const [loaded, setLoaded] = useState({
+    editorLoaded: false,
+    hasReceivedCode: false,
+  });
+  const [showGeneratorCode, setShowGeneratorCode] = useState(false);
+  const [error, setError] = useState(false);
+  const [statusCode, setStatusCode] = useState(400);
+  const [errorMessage, setErrorMessage] = useState('Bad Request');
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [hasLoadedQuery, setHasLoadedQuery] = useState(false);
+
+  const config: ModelinaOptions = {
+    language: 'typescript',
+    propertyNamingFormat: 'default',
+    modelNamingFormat: 'default',
+    enumKeyNamingFormat: 'default',
+    indentationType: 'spaces',
+    showTypeMappingExample: false,
+    tsMarshalling: false,
+    tsModelType: 'class',
+    tsEnumType: 'enum',
+    tsModuleSystem: 'CJS',
+    tsIncludeDescriptions: false,
+    tsIncludeExampleFunction: false,
+    tsIncludeJsonBinPack: false,
+    csharpArrayType: 'Array',
+    csharpAutoImplemented: false,
+    csharpOverwriteHashcode: false,
+    csharpIncludeJson: false,
+    csharpOverwriteEqual: false,
+    csharpIncludeNewtonsoft: false,
+    csharpNamespace: 'asyncapi.models',
+    csharpNullable: false,
+    phpIncludeDescriptions: false,
+    phpNamespace: 'AsyncAPI/Models',
+    cplusplusNamespace: 'AsyncapiModels',
+    javaPackageName: 'asyncapi.models',
+    javaIncludeJackson: false,
+    javaIncludeMarshaling: false,
+    javaArrayType: 'Array',
+    javaOverwriteHashcode: false,
+    javaOverwriteEqual: false,
+    javaOverwriteToString: false,
+    javaJavaDocs: false,
+    javaJavaxAnnotation: false,
+    goPackageName: 'asyncapi.models',
+    kotlinPackageName: 'asyncapi.models'
+  };
+
+  useEffect(() => {
+    const isHardLoaded = loaded.hasReceivedCode;
+    const isSoftLoaded = loaded.editorLoaded;
+    setIsLoaded(isHardLoaded && isSoftLoaded);
+
+    const query = props.router.query as ModelinaQueryOptions;
+    if (query.language !== undefined) {
+      config.language = query.language as any;
+    }
+    if (query.enumKeyNamingFormat !== undefined) {
+      config.enumKeyNamingFormat = query.enumKeyNamingFormat as any;
+    }
+    if (query.propertyNamingFormat !== undefined) {
+      config.propertyNamingFormat = query.propertyNamingFormat as any;
+    }
+    if (query.modelNamingFormat !== undefined) {
+      config.modelNamingFormat = query.modelNamingFormat as any;
+    }
+    if (query.showTypeMappingExample !== undefined) {
+      config.showTypeMappingExample = query.showTypeMappingExample === 'true';
+    }
+    if (query.indentationType !== undefined) {
+      config.indentationType = query.indentationType as any;
+    }
+    if (query.tsMarshalling !== undefined) {
+      config.tsMarshalling = query.tsMarshalling === 'true';
+    }
+    if (query.tsModelType !== undefined) {
+      config.tsModelType = query.tsModelType as any;
+    }
+    if (query.tsEnumType !== undefined) {
+      config.tsEnumType = query.tsEnumType as any;
+    }
+    if (query.tsIncludeDescriptions !== undefined) {
+      config.tsIncludeDescriptions = query.tsIncludeDescriptions === 'true';
+    }
+    if (query.tsIncludeJsonBinPack !== undefined) {
+      config.tsIncludeJsonBinPack = query.tsIncludeJsonBinPack === 'true';
+    }
+    if (query.tsIncludeExampleFunction !== undefined) {
+      config.tsIncludeExampleFunction = query.tsIncludeExampleFunction === 'true';
+    }
+    if (query.csharpArrayType !== undefined) {
+      config.csharpArrayType = query.csharpArrayType as any;
+    }
+    if (query.csharpAutoImplemented !== undefined) {
+      config.csharpAutoImplemented = query.csharpAutoImplemented === 'true';
+    }
+    if (query.csharpOverwriteHashcode !== undefined) {
+      config.csharpOverwriteHashcode = query.csharpOverwriteHashcode === 'true';
+    }
+    if (query.phpIncludeDescriptions !== undefined) {
+      config.phpIncludeDescriptions = query.phpIncludeDescriptions === 'true';
+    }
+    if (query.phpNamespace !== undefined) {
+      config.phpNamespace = query.phpNamespace;
+    }
+    if (query.csharpIncludeJson !== undefined) {
+      config.csharpIncludeJson = query.csharpIncludeJson === 'true';
+    }
+    if (query.csharpOverwriteEqual !== undefined) {
+      config.csharpOverwriteEqual = query.csharpOverwriteEqual === 'true';
+    }
+    if (query.csharpIncludeNewtonsoft !== undefined) {
+      config.csharpIncludeNewtonsoft = query.csharpIncludeNewtonsoft === 'true';
+    }
+    if (query.csharpNamespace !== undefined) {
+      config.csharpNamespace = query.csharpNamespace;
+    }
+    if (query.csharpNullable !== undefined) {
+      config.csharpNullable = query.csharpNullable === 'true';
+    }
+    if (query.cplusplusNamespace !== undefined) {
+      config.cplusplusNamespace = query.cplusplusNamespace;
+    }
+    if (query.javaPackageName !== undefined) {
+      config.javaPackageName = query.javaPackageName;
+    }
+    if (query.javaIncludeJackson !== undefined) {
+      config.javaIncludeJackson = query.javaIncludeJackson === 'true';
+    }
+    if (query.javaIncludeMarshaling !== undefined) {
+      config.javaIncludeMarshaling = query.javaIncludeMarshaling === 'true';
+    }
+    if (query.javaArrayType !== undefined) {
+      config.javaArrayType = query.javaArrayType as any;
+    }
+    if (query.javaOverwriteHashcode !== undefined) {
+      config.javaOverwriteHashcode = query.javaOverwriteHashcode === 'true';
+    }
+    if (query.javaOverwriteEqual !== undefined) {
+      config.javaOverwriteEqual = query.javaOverwriteEqual === 'true';
+    }
+    if (query.javaOverwriteToString !== undefined) {
+      config.javaOverwriteToString = query.javaOverwriteToString === 'true';
+    }
+    if (query.javaJavaDocs !== undefined) {
+      config.javaJavaDocs = query.javaJavaDocs === 'true';
+    }
+    if (query.javaJavaxAnnotation !== undefined) {
+      config.javaJavaxAnnotation = query.javaJavaxAnnotation === 'true';
+    }
+    if (query.goPackageName !== undefined) {
+      config.goPackageName = query.goPackageName;
+    }
+    if (query.kotlinPackageName !== undefined) {
+      config.kotlinPackageName = query.kotlinPackageName;
+    }
+
+    if (props.router.isReady && !hasLoadedQuery) {
+      setHasLoadedQuery(true);
+      generateNewCode(input);
+    }
+  }, [props.router.isReady, hasLoadedQuery]);
+
+  const setNewConfig = (config: string, configValue: any, updateCode?: boolean) => {
+    setNewQuery(config, configValue);
+    /* eslint-disable-next-line security/detect-object-injection */
+    (config as any)[config] = configValue;
+    if (updateCode === true || updateCode === undefined) {
+      generateNewCode(input);
+    }
+  };
+
+  /**
+   * Set a query key and value
+   */
+  const setNewQuery = (queryKey: string, queryValue: any) => {
+    const newQuery = {
+      query: { ...props.router.query }
+    };
+
+    if (queryValue === false) {
+      delete newQuery.query[queryKey];
+    } else {
+      /* eslint-disable-next-line security/detect-object-injection */
+      newQuery.query[queryKey] = String(queryValue);
+    }
+
+    Router.push(newQuery, undefined, { scroll: false });
+  };
+
+  /**
+   * Tell the socket io server that we want some code
+   */
+  const generateNewCode = (input: string) => {
+    try {
+      const message: GenerateMessage = {
+        ...config,
+        input: encode(JSON.stringify(JSON.parse(input)))
+      };
+
+      if (message.input.length > (props.maxInputSize || 30000)) {
+        console.error('Input too large, use a smaller example');
+        setError(true);
+        setErrorMessage('Input too large, use a smaller example');
+        setStatusCode(400);
+      } else {
+        const generators: { [key: string]: Function } = {
+          typescript: getTypeScriptGeneratorCode,
+          javascript: getJavaScriptGeneratorCode,
+          java: getJavaGeneratorCode,
+          go: getGoGeneratorCode,
+          csharp: getCSharpGeneratorCode,
+          rust: getRustGeneratorCode,
+          python: getPythonGeneratorCode,
+          dart: getDartGeneratorCode,
+          cplusplus: getCplusplusGeneratorCode,
+          kotlin: getKotlinGeneratorCode,
+          php: getPhpGeneratorCode
+        };
+
+        const generatorCode = generators[config.language](message);
+
+        fetch(`${process.env.NEXT_PUBLIC_API_PATH}/generate`, {
+          body: JSON.stringify(message),
+          method: 'POST'
+        }).then(async (res) => {
+          if (!res.ok) {
+            throw new Error(res.statusText);
+          }
+
+          const response: UpdateMessage = await res.json();
+          setGeneratorCode(generatorCode);
+          setModels(response.models);
+          setLoaded({
+            ...loaded,
+            hasReceivedCode: true
+          });
+          setError(false);
+          setStatusCode(200);
+          setErrorMessage('');
+        }).catch(error => {
+          console.error(error);
+          setError(true);
+          setErrorMessage("Input is not a correct AsyncAPI document, so it cannot be processed.");
+          setStatusCode(500);
+        });
+      }
+    } catch (e: any) {
+      console.error(e);
+      setError(true);
+      setErrorMessage("Input is not a correct AsyncAPI document, so it cannot be processed.");
+      setStatusCode(400);
+    }
+  };
+
+
+  // ... (remaining code)
+
+  return (
+    <div className="py-16 lg:py-24">
+      {
+        isLoaded
+          ?
+          <div className="text-xl text-center mt-16 lg:mt-56 md:text-2xl">
+            Loading Modelina Playground. Rendering playground components...
+          </div>
+          :
+          <div>
+            <div className="col-span-2">
+              <div className="overflow-hidden bg-white shadow sm:rounded-lg flex flex-row">
+                <div className="px-4 py-5 sm:px-6 basis-6/12">
+                  <h3 className="text-lg font-medium leading-6 text-gray-900">
+                    Modelina Options
+                  </h3>
+                  <p className="mt-1 max-w-2xl text-sm text-gray-500">
+                    , or see the Modelina
+                    configuration you can use directly in your library
+                  </p>
+                </div>
+
+                <div
+                  onClick={() => {
+                    setShowGeneratorCode(false);
+                  }}
+                  className={`${!showGeneratorCode ? 'bg-blue-100' : 'bg-white'
+                    } px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 basis-3/12`}
+                >
+                  <h3 className="text-lg font-medium leading-6 text-gray-900">
+                    Options
+                  </h3>
+                </div>
+                <div
+                  onClick={() => {
+                    setShowGeneratorCode(true);
+                  }}
+                  className={`${showGeneratorCode ? 'bg-blue-100' : 'bg-white'
+                    } px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 basis-3/12`}
+                >
+                  <h3 className="text-lg font-medium leading-6 text-gray-900">
+                    Generator code
+                  </h3>
+                </div>
+              </div>
+              {showGeneratorCode ? (
+                <div
+                  className="bg-code-editor-dark text-white rounded-b shadow-lg font-bold"
+                  style={{ height: '400px' }}
+                >
+                  <MonacoEditorWrapper
+                    options={{ readOnly: true }}
+                    language="typescript"
+                    value={generatorCode || ''}
+                  />
+                </div>
+              ) : (
+                <PlaygroundGeneralConfigContext.Provider value={config}>
+                  <PlaygroundTypeScriptConfigContext.Provider value={config}>
+                    <PlaygroundJavaScriptConfigContext.Provider value={config}>
+                      <PlaygroundCSharpConfigContext.Provider value={config}>
+                        <PlaygroundDartConfigContext.Provider value={config}>
+                          <PlaygroundGoConfigContext.Provider value={config}>
+                            <PlaygroundJavaConfigContext.Provider value={config}>
+                              <PlaygroundPhpConfigContext.Provider value={config}>
+                                <PlaygroundCplusplusConfigContext.Provider value={config}>
+                                  <PlaygroundKotlinConfigContext.Provider value={config}>
+                                    <PlaygroundRustConfigContext.Provider value={config}>
+                                      <PlaygroundPythonConfigContext.Provider value={config}>
+                                        <PlaygroundOptions setNewConfig={setNewConfig} />
+                                      </PlaygroundPythonConfigContext.Provider>
+                                    </PlaygroundRustConfigContext.Provider>
+                                  </PlaygroundKotlinConfigContext.Provider>
+                                </PlaygroundCplusplusConfigContext.Provider>
+                              </PlaygroundPhpConfigContext.Provider>
+                            </PlaygroundJavaConfigContext.Provider>
+                          </PlaygroundGoConfigContext.Provider>
+                        </PlaygroundDartConfigContext.Provider>
+                      </PlaygroundCSharpConfigContext.Provider>
+                    </PlaygroundJavaScriptConfigContext.Provider>
+                  </PlaygroundTypeScriptConfigContext.Provider>
+                </PlaygroundGeneralConfigContext.Provider>
+              )}
+            </div>
+            <div className="max-xl:col-span-2 xl:grid-cols-1">
+              <div
+                className="h-full bg-code-editor-dark text-white rounded-b shadow-lg font-bold"
+                style={{ height: '750px' }}
+              >
+                <MonacoEditorWrapper
+                  value={input}
+                  onChange={(_, change) => {
+                    setInput(change);
+                    generateNewCode(change);
+                  }}
+                  editorDidMount={() => {
+                    setLoaded({ ...loaded, editorLoaded: true });
+                  }}
+                  language="json"
+                />
+              </div>
+            </div>
+            <div
+              className="max-xl:col-span-2 xl:grid-cols-1"
+              style={{ height: '750px' }}
+            >
+              {error ? (
+                <CustomError statusCode={statusCode} errorMessage={errorMessage} />
+              ) : (
+                <PlaygroundGeneratedContext.Provider
+                  value={{
+                    language: config.language,
+                    models: models
+                  }}
+                >
+                  <GeneratedModelsComponent setNewQuery={setNewQuery} />
+                </PlaygroundGeneratedContext.Provider>
+              )}
+            </div>
+          </div>
+      }
+    </div>
+  );
+};
+
+export default withRouter(Playground);

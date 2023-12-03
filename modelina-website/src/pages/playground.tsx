@@ -1,4 +1,5 @@
 import Playground from '@/components/playground/Playground';
+import Playground2 from '@/components/playground/Playground2';
 import NewPlayground from '@/components/playground/NewPlayground';
 import GenericLayout from '@/components/layouts/GenericLayout';
 
@@ -15,7 +16,8 @@ export default function PlaygroundPage() {
       full
     >
       {/* <Playground /> */}
-      <NewPlayground />
+      {/* <NewPlayground /> */}
+      <Playground2 />
     </GenericLayout>
   );
 }
