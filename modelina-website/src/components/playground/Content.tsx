@@ -2,6 +2,8 @@
 
 import { FunctionComponent } from 'react';
 import { usePanelContext } from '../contexts/PlaygroundPanelContext';
+import { Navigation } from './Navigation';
+
 interface ContentProps {}
 
 export const Content: FunctionComponent<ContentProps> = () => {
@@ -12,8 +14,8 @@ export const Content: FunctionComponent<ContentProps> = () => {
     <div className="flex flex-1 flex-col sm:flex-row relative bg-orange-200">
       <div className="flex w-full h-full">
         {panelEnabled ? (
-          <div className={`bg-green-200 flex h-full w-[100%] sm:w-[20%]`}>
-            Navigation
+          <div className={`bg-[#1f2937] text-white flex h-full w-[100%] sm:w-[20%]`}>
+            <Navigation />
           </div>
         ) : null}
         <div

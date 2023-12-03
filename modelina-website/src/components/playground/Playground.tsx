@@ -380,7 +380,7 @@ class Playground extends React.Component<
                   Modelina Options
                 </h3>
                 <p className="mt-1 max-w-2xl text-sm text-gray-500">
-                  Change the generation options, or see the Modelina
+                  , or see the Modelina
                   configuration you can use directly in your library
                 </p>
               </div>
