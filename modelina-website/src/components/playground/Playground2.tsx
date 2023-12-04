@@ -9,11 +9,9 @@ import {
 } from '@/types';
 import Router, { withRouter, NextRouter } from 'next/router';
 import { encode } from 'js-base64';
-import GeneratedModelsComponent from './GeneratedModels';
 import PlaygroundOptions from './PlaygroundOptions';
 import Heading from '../typography/Heading';
 import Paragraph from '../typography/Paragraph';
-import { PlaygroundGeneratedContext } from '../contexts/PlaygroundGeneratedContext';
 import {
   PlaygroundTypeScriptConfigContext,
   PlaygroundCSharpConfigContext,
@@ -28,6 +26,7 @@ import {
   PlaygroundGeneralConfigContext,
   PlaygroundPhpConfigContext
 } from '../contexts/PlaygroundConfigContext';
+import { usePlaygroundContext } from '../contexts/PlaygroundContext';
 import { getTypeScriptGeneratorCode } from '@/helpers/GeneratorCode/TypeScriptGenerator';
 import { getJavaScriptGeneratorCode } from '@/helpers/GeneratorCode/JavaScriptGenerator';
 import { getJavaGeneratorCode } from '@/helpers/GeneratorCode/JavaGenerator';
@@ -37,9 +36,9 @@ import { getRustGeneratorCode } from '@/helpers/GeneratorCode/RustGenerator';
 import { getPythonGeneratorCode } from '@/helpers/GeneratorCode/PythonGenerator';
 import { getDartGeneratorCode } from '@/helpers/GeneratorCode/DartGenerator';
 import { getCplusplusGeneratorCode } from '@/helpers/GeneratorCode/CplusplusGenerator';
-import CustomError from '../CustomError';
 import { getKotlinGeneratorCode } from '@/helpers/GeneratorCode/KotlinGenerator';
 import { getPhpGeneratorCode } from '@/helpers/GeneratorCode/PhpGenerator';
+import { Content } from './Content';
 
 interface WithRouterProps {
   router: NextRouter;
@@ -54,19 +53,28 @@ interface ModelinaPlaygroundProps extends WithRouterProps {
 }
 
 const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
-  const [input, setInput] = useState(JSON.stringify(defaultAsyncapiDocument, null, 4));
-  const [models, setModels] = useState<ModelsGeneratorProps[]>([]);
-  const [generatorCode, setGeneratorCode] = useState('');
-  const [loaded, setLoaded] = useState({
-    editorLoaded: false,
-    hasReceivedCode: false,
-  });
-  const [showGeneratorCode, setShowGeneratorCode] = useState(false);
-  const [error, setError] = useState(false);
-  const [statusCode, setStatusCode] = useState(400);
-  const [errorMessage, setErrorMessage] = useState('Bad Request');
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [hasLoadedQuery, setHasLoadedQuery] = useState(false);
+  const {
+    input,
+    setInput,
+    models,
+    setModels,
+    generatorCode,
+    setGeneratorCode,
+    loaded,
+    setLoaded,
+    showGeneratorCode,
+    setShowGeneratorCode,
+    error,
+    setError,
+    statusCode,
+    setStatusCode,
+    errorMessage,
+    setErrorMessage,
+    isLoaded,
+    setIsLoaded,
+    hasLoadedQuery,
+    setHasLoadedQuery,
+  } = usePlaygroundContext();
 
   const config: ModelinaOptions = {
     language: 'typescript',
@@ -313,9 +321,6 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
     }
   };
 
-
-  // ... (remaining code)
-
   return (
     <div className="py-16 lg:py-24">
       {
@@ -400,41 +405,7 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
                 </PlaygroundGeneralConfigContext.Provider>
               )}
             </div>
-            <div className="max-xl:col-span-2 xl:grid-cols-1">
-              <div
-                className="h-full bg-code-editor-dark text-white rounded-b shadow-lg font-bold"
-                style={{ height: '750px' }}
-              >
-                <MonacoEditorWrapper
-                  value={input}
-                  onChange={(_, change) => {
-                    setInput(change);
-                    generateNewCode(change);
-                  }}
-                  editorDidMount={() => {
-                    setLoaded({ ...loaded, editorLoaded: true });
-                  }}
-                  language="json"
-                />
-              </div>
-            </div>
-            <div
-              className="max-xl:col-span-2 xl:grid-cols-1"
-              style={{ height: '750px' }}
-            >
-              {error ? (
-                <CustomError statusCode={statusCode} errorMessage={errorMessage} />
-              ) : (
-                <PlaygroundGeneratedContext.Provider
-                  value={{
-                    language: config.language,
-                    models: models
-                  }}
-                >
-                  <GeneratedModelsComponent setNewQuery={setNewQuery} />
-                </PlaygroundGeneratedContext.Provider>
-              )}
-            </div>
+            <Content config={config} setNewQuery={setNewQuery} generateNewCode={generateNewCode} />
           </div>
       }
     </div>
