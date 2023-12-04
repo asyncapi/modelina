@@ -4,7 +4,8 @@ import React, {
   useContext,
   Dispatch,
   SetStateAction,
-  useState
+  useState,
+  useMemo
 } from 'react';
 import { defaultAsyncapiDocument } from '@/types';
 
@@ -61,31 +62,56 @@ export const PlaygroundContextProvider: React.FC<{ children: React.ReactNode; }>
   const [hasLoadedQuery, setHasLoadedQuery] = useState(false);
   const [renderModels, setRenderModels] = React.useState<React.ReactNode | null>(null);
 
+  const contextValue = useMemo(() => ({
+    input,
+    setInput,
+    models,
+    setModels,
+    generatorCode,
+    setGeneratorCode,
+    loaded,
+    setLoaded,
+    showGeneratorCode,
+    setShowGeneratorCode,
+    error,
+    setError,
+    statusCode,
+    setStatusCode,
+    errorMessage,
+    setErrorMessage,
+    isLoaded,
+    setIsLoaded,
+    hasLoadedQuery,
+    setHasLoadedQuery,
+    renderModels,
+    setRenderModels
+  }), [
+    input,
+    setInput,
+    models,
+    setModels,
+    generatorCode,
+    setGeneratorCode,
+    loaded,
+    setLoaded,
+    showGeneratorCode,
+    setShowGeneratorCode,
+    error,
+    setError,
+    statusCode,
+    setStatusCode,
+    errorMessage,
+    setErrorMessage,
+    isLoaded,
+    setIsLoaded,
+    hasLoadedQuery,
+    setHasLoadedQuery,
+    renderModels,
+    setRenderModels,
+  ]);
+
   return (
-    <PlaygroundContext.Provider value={{
-      input,
-      setInput,
-      models,
-      setModels,
-      generatorCode,
-      setGeneratorCode,
-      loaded,
-      setLoaded,
-      showGeneratorCode,
-      setShowGeneratorCode,
-      error,
-      setError,
-      statusCode,
-      setStatusCode,
-      errorMessage,
-      setErrorMessage,
-      isLoaded,
-      setIsLoaded,
-      hasLoadedQuery,
-      setHasLoadedQuery,
-      renderModels,
-      setRenderModels
-    }}>
+    <PlaygroundContext.Provider value={contextValue}>
       {children}
     </PlaygroundContext.Provider>
   );

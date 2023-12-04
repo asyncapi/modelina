@@ -55,7 +55,7 @@ const GeneratedModelsComponent: React.FC<GeneratedModelsComponentProps> = ({
           <div
             key={`GeneratedModel${model.name}`}
             onClick={() => {
-              setNewQuery && setNewQuery('selectedModel', model.name);
+              setNewQuery?.('selectedModel', model.name);
               setSelectedModel(model.name);
               setShowGeneratorCode(false);
             }}

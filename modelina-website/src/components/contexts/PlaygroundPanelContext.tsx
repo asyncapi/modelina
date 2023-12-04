@@ -4,7 +4,8 @@ import React, {
   useContext,
   Dispatch,
   SetStateAction,
-  useState
+  useState,
+  useMemo
 } from 'react';
 
 interface PanelContextProps {
@@ -21,12 +22,17 @@ export const PanelContextProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
   const [panel, setPanel] = useState('');
+
+  const contextValue = useMemo(() => ({
+    panel,
+    setPanel
+  }), [
+    panel,
+    setPanel
+  ]);
   return (
     <PanelContext.Provider
-      value={{
-        panel,
-        setPanel
-      }}
+      value={contextValue}
     >
       {children}
     </PanelContext.Provider>

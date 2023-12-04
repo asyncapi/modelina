@@ -1,6 +1,6 @@
 'use client';
 
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useMemo } from 'react';
 import { usePanelContext } from '../contexts/PlaygroundPanelContext';
 import { PlaygroundGeneratedContext } from '../contexts/PlaygroundGeneratedContext';
 import { usePlaygroundContext } from '../contexts/PlaygroundContext';
@@ -31,6 +31,11 @@ export const Content: FunctionComponent<ContentProps> = ({ config, setNewConfig,
   } = usePlaygroundContext();
 
   const panelEnabled = panel !== '';
+
+  const PlaygroundGeneratedContextValue = useMemo(() => ({
+    language: config.language,
+    models: models
+  }), [config.language, models]);
   return (
     <div className="flex flex-1 flex-col sm:flex-row relative">
       <div className="flex w-full h-full">
@@ -75,10 +80,7 @@ export const Content: FunctionComponent<ContentProps> = ({ config, setNewConfig,
                 <CustomError statusCode={statusCode} errorMessage={errorMessage} />
               ) : (
                 <PlaygroundGeneratedContext.Provider
-                  value={{
-                    language: config.language,
-                    models: models
-                  }}
+                  value={PlaygroundGeneratedContextValue}
                 >
                   <GeneratedModelsComponent setNewQuery={setNewQuery} />
                 </PlaygroundGeneratedContext.Provider>
