@@ -326,7 +326,7 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
   return (
     <div>
       {
-        !isLoaded
+        isLoaded
           ?
           <div className="text-xl text-center mt-16 lg:mt-56 md:text-2xl">
             Loading Modelina Playground. Rendering playground components...
