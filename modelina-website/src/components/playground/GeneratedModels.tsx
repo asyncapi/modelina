@@ -14,7 +14,7 @@ const GeneratedModelsComponent: React.FC<GeneratedModelsComponentProps> = ({
 }) => {
   const context = useContext(PlaygroundGeneratedContext);
   const [selectedModel, setSelectedModel] = useState<string>('');
-  const { setRenderModels } = usePlaygroundContext();
+  const { setRenderModels, generatorCode, showGeneratorCode, setShowGeneratorCode } = usePlaygroundContext();
 
   const toShow = () => {
     let selectedCode = '';
@@ -44,9 +44,9 @@ const GeneratedModelsComponent: React.FC<GeneratedModelsComponentProps> = ({
 
   const renderModels = (selectedModel = '') => {
     if (context?.models) {
-      return context?.models.map((model, index) => {
+      return context?.models.map((model) => {
         let backgroundColor;
-        if (model.name === selectedModel) {
+        if (model.name === selectedModel && !showGeneratorCode) {
           backgroundColor = 'bg-[#21272d]';
         } else {
           backgroundColor = '';
@@ -57,6 +57,7 @@ const GeneratedModelsComponent: React.FC<GeneratedModelsComponentProps> = ({
             onClick={() => {
               setNewQuery && setNewQuery('selectedModel', model.name);
               setSelectedModel(model.name);
+              setShowGeneratorCode(false);
             }}
             className={`${backgroundColor} hover:bg-[#4b5563] px-2 py-2 w-full text-left`}
           >
@@ -92,7 +93,7 @@ const GeneratedModelsComponent: React.FC<GeneratedModelsComponentProps> = ({
         <MonacoEditorWrapper
           options={{ readOnly: true }}
           language={context?.language}
-          value={selectedCode}
+          value={showGeneratorCode ? generatorCode : selectedCode}
         />
       </div>
     </div>

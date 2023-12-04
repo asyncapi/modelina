@@ -47,7 +47,7 @@ export const Content: FunctionComponent<ContentProps> = ({ config, setNewConfig,
     <div className="flex flex-1 flex-col sm:flex-row relative">
       <div className="flex w-full h-full">
         {panelEnabled ? (
-          <div className={`bg-[#1f2937] text-white flex h-full w-[100%] sm:w-[20%]`}>
+          <div className={`bg-[#1f2937] text-white flex h-full w-[100%] sm:w-[30%]`}>
             <Navigation config={config} setNewConfig={setNewConfig} />
           </div>
         ) : null}
