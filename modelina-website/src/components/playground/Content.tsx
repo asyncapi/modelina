@@ -44,7 +44,7 @@ export const Content: FunctionComponent<ContentProps> = ({ config, setNewConfig,
 
   const panelEnabled = panel !== '';
   return (
-    <div className="flex flex-1 flex-col sm:flex-row relative bg-orange-200">
+    <div className="flex flex-1 flex-col sm:flex-row relative">
       <div className="flex w-full h-full">
         {panelEnabled ? (
           <div className={`bg-[#1f2937] text-white flex h-full w-[100%] sm:w-[20%]`}>
@@ -56,7 +56,7 @@ export const Content: FunctionComponent<ContentProps> = ({ config, setNewConfig,
             }`}
         >
           {/* EDITOR */}
-          <div className="bg-yellow-200 h-full flex-1">
+          <div className="h-full flex-1">
             <div className="max-xl:col-span-2 xl:grid-cols-1">
               <div
                 className="h-full bg-code-editor-dark text-white rounded-b shadow-lg font-bold"

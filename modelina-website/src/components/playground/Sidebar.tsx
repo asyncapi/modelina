@@ -43,7 +43,7 @@ export const Sidebar: React.FunctionComponent<SidebarProps> = () => {
   ];
 
   return (
-    <div className="flex flex-col h-full w-[40px] bg-gray-200 shadow-lg border-r border-gray-700 justify-start">
+    <div className="flex flex-col h-full w-[40px] bg-[#1f2937] shadow-lg border-r border-gray-700 justify-start">
       <div className="flex flex-col">
         {sidebarItems.map((item) => (
           <Tooltip
@@ -62,7 +62,7 @@ export const Sidebar: React.FunctionComponent<SidebarProps> = () => {
                 className={
                   item.isActive
                     ? 'bg-gray-900 p-2 rounded text-white'
-                    : 'p-2 text-gray-700 hover:text-gray-900'
+                    : 'p-2 text-gray-700 hover:text-white'
                 }
               >
                 {item.icon}

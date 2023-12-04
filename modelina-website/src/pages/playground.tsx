@@ -1,5 +1,5 @@
 import Playground from '@/components/playground/Playground';
-import Playground2 from '@/components/playground/Playground2';
+import OldPlayground from '@/components/playground/OldPlayground';
 import NewPlayground from '@/components/playground/NewPlayground';
 import GenericLayout from '@/components/layouts/GenericLayout';
 import { PlaygroundContextProvider } from '@/components/contexts/PlaygroundContext';
@@ -15,11 +15,13 @@ export default function PlaygroundPage() {
       image={image}
       wide
       full
+      padding = ""
+      footerPadding = "mb-0"
     >
       <PlaygroundContextProvider>
-        {/* <Playground /> */}
+        {/* <OldPlayground /> */}
         {/* <NewPlayground /> */}
-        <Playground2 />
+        <Playground />
       </PlaygroundContextProvider>
     </GenericLayout>
   );
