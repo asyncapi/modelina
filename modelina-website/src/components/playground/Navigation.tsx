@@ -1,8 +1,6 @@
 import React from "react";
-import Router, { withRouter, NextRouter } from 'next/router';
 import { usePanelContext } from "../contexts/PlaygroundPanelContext";
 import PlaygroundOptions from './PlaygroundOptions';
-import MonacoEditorWrapper from '../MonacoEditorWrapper';
 import {
   PlaygroundTypeScriptConfigContext,
   PlaygroundCSharpConfigContext,
@@ -17,29 +15,8 @@ import {
   PlaygroundGeneralConfigContext,
   PlaygroundPhpConfigContext
 } from '../contexts/PlaygroundConfigContext';
-import { getTypeScriptGeneratorCode } from '@/helpers/GeneratorCode/TypeScriptGenerator';
-import { getJavaScriptGeneratorCode } from '@/helpers/GeneratorCode/JavaScriptGenerator';
-import { getJavaGeneratorCode } from '@/helpers/GeneratorCode/JavaGenerator';
-import { getGoGeneratorCode } from '@/helpers/GeneratorCode/GoGenerator';
-import { getCSharpGeneratorCode } from '@/helpers/GeneratorCode/CSharpGenerator';
-import { getRustGeneratorCode } from '@/helpers/GeneratorCode/RustGenerator';
-import { getPythonGeneratorCode } from '@/helpers/GeneratorCode/PythonGenerator';
-import { getDartGeneratorCode } from '@/helpers/GeneratorCode/DartGenerator';
-import { getCplusplusGeneratorCode } from '@/helpers/GeneratorCode/CplusplusGenerator';
-import CustomError from '../CustomError';
-import { getKotlinGeneratorCode } from '@/helpers/GeneratorCode/KotlinGenerator';
-import { getPhpGeneratorCode } from '@/helpers/GeneratorCode/PhpGenerator';
-import { encode } from 'js-base64';
-import GeneratedModelsComponent from './GeneratedModels';
-import Heading from '../typography/Heading';
-import Paragraph from '../typography/Paragraph';
-import { PlaygroundGeneratedContext } from '../contexts/PlaygroundGeneratedContext';
 import {
-  defaultAsyncapiDocument,
   ModelinaOptions,
-  ModelinaQueryOptions,
-  GenerateMessage,
-  UpdateMessage
 } from '@/types';
 import { usePlaygroundContext } from "../contexts/PlaygroundContext";
 import InfoModal from "../InfoModal";

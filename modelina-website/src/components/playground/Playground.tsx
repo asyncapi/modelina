@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import MonacoEditorWrapper from '../MonacoEditorWrapper';
+import React, { useEffect } from 'react';
 import {
-  defaultAsyncapiDocument,
   ModelinaOptions,
   ModelinaQueryOptions,
   GenerateMessage,
@@ -9,23 +7,6 @@ import {
 } from '@/types';
 import Router, { withRouter, NextRouter } from 'next/router';
 import { encode } from 'js-base64';
-import PlaygroundOptions from './PlaygroundOptions';
-import Heading from '../typography/Heading';
-import Paragraph from '../typography/Paragraph';
-import {
-  PlaygroundTypeScriptConfigContext,
-  PlaygroundCSharpConfigContext,
-  PlaygroundDartConfigContext,
-  PlaygroundGoConfigContext,
-  PlaygroundJavaConfigContext,
-  PlaygroundJavaScriptConfigContext,
-  PlaygroundKotlinConfigContext,
-  PlaygroundPythonConfigContext,
-  PlaygroundRustConfigContext,
-  PlaygroundCplusplusConfigContext,
-  PlaygroundGeneralConfigContext,
-  PlaygroundPhpConfigContext
-} from '../contexts/PlaygroundConfigContext';
 import { PanelContextProvider } from '../contexts/PlaygroundPanelContext';
 import { usePlaygroundContext } from '../contexts/PlaygroundContext';
 import { getTypeScriptGeneratorCode } from '@/helpers/GeneratorCode/TypeScriptGenerator';
@@ -45,11 +26,6 @@ import { Content } from './Content';
 interface WithRouterProps {
   router: NextRouter;
 }
-
-interface ModelsGeneratorProps {
-  code: string;
-  name: string;
-}
 interface ModelinaPlaygroundProps extends WithRouterProps {
   maxInputSize?: number;
 }
@@ -57,20 +33,12 @@ interface ModelinaPlaygroundProps extends WithRouterProps {
 const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
   const {
     input,
-    setInput,
-    models,
     setModels,
-    generatorCode,
     setGeneratorCode,
     loaded,
     setLoaded,
-    showGeneratorCode,
-    setShowGeneratorCode,
-    error,
     setError,
-    statusCode,
     setStatusCode,
-    errorMessage,
     setErrorMessage,
     isLoaded,
     setIsLoaded,
