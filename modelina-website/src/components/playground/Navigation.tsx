@@ -64,11 +64,12 @@ const CustomButton: React.FunctionComponent<ButtonProps> = ({ title, disabled = 
 }
 
 const Output: React.FunctionComponent<OutputProps> = () => {
-
+  const { renderModels } = usePlaygroundContext();
+  console.log(renderModels);
   return (
     <div className="px-1 h-full w-full flex flex-col">
       <CustomButton title="Generator Code" />
-      
+
       <div className="flex">
         <InfoModal text="Generated Models: ">
           <p>
@@ -77,8 +78,7 @@ const Output: React.FunctionComponent<OutputProps> = () => {
         </InfoModal>
         <CustomButton title="Generated Models" disabled={true} />
       </div>
-      <CustomButton title="LightMeasured" />
-      <CustomButton title="TurnOn" />
+      {renderModels}
     </div>
   )
 }

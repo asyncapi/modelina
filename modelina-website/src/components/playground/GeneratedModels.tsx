@@ -1,6 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { PlaygroundGeneratedContext } from '../contexts/PlaygroundGeneratedContext';
 import MonacoEditorWrapper from '../MonacoEditorWrapper';
+import { usePlaygroundContext } from '../contexts/PlaygroundContext';
 
 interface GeneratedModelsComponentProps {
   showAllInOneFile?: boolean;
@@ -13,6 +14,7 @@ const GeneratedModelsComponent: React.FC<GeneratedModelsComponentProps> = ({
 }) => {
   const context = useContext(PlaygroundGeneratedContext);
   const [selectedModel, setSelectedModel] = useState<string>('');
+  const { setRenderModels } = usePlaygroundContext();
 
   const toShow = () => {
     let selectedCode = '';
@@ -45,9 +47,9 @@ const GeneratedModelsComponent: React.FC<GeneratedModelsComponentProps> = ({
       return context?.models.map((model, index) => {
         let backgroundColor;
         if (model.name === selectedModel) {
-          backgroundColor = 'bg-blue-100';
+          backgroundColor = 'bg-[#21272d]';
         } else {
-          backgroundColor = index % 2 === 0 ? 'bg-gray-50' : 'bg-white';
+          backgroundColor = '';
         }
         return (
           <div
@@ -56,9 +58,9 @@ const GeneratedModelsComponent: React.FC<GeneratedModelsComponentProps> = ({
               setNewQuery && setNewQuery('selectedModel', model.name);
               setSelectedModel(model.name);
             }}
-            className={`${backgroundColor} px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6`}
+            className={`${backgroundColor} hover:bg-[#4b5563] px-2 py-2 w-full text-left`}
           >
-            <dt className="text-sm font-medium text-gray-500">{model.name}</dt>
+            <dt className="text-xs">{model.name}</dt>
           </div>
         );
       });
@@ -66,7 +68,11 @@ const GeneratedModelsComponent: React.FC<GeneratedModelsComponentProps> = ({
   };
 
   const { selectedCode, updatedSelectedModel } = toShow();
-  const modelsToRender = renderModels(updatedSelectedModel);
+
+  useEffect(() => {
+    const modelsToRender = renderModels(updatedSelectedModel);
+    setRenderModels(modelsToRender);
+  }, [updatedSelectedModel]);
 
   if (showAllInOneFile === true) {
     return (
@@ -81,18 +87,7 @@ const GeneratedModelsComponent: React.FC<GeneratedModelsComponentProps> = ({
   }
 
   return (
-    <div className="grid grid-cols-3 h-full">
-      <div className="overflow-scroll bg-white shadow sm:rounded-lg">
-        <div className="px-4 py-5 sm:px-6">
-          <h3 className="text-lg font-medium leading-6 text-gray-900">Generated Models</h3>
-          <p className="mt-1 max-w-2xl text-sm text-gray-500">
-            This list contains all the generated models, select one to show their generated code
-          </p>
-        </div>
-        <div className="border-t border-gray-200">
-          <dl>{modelsToRender}</dl>
-        </div>
-      </div>
+    <div className="h-full">
       <div className="col-span-2 h-full bg-code-editor-dark text-white rounded-b shadow-lg font-bold">
         <MonacoEditorWrapper
           options={{ readOnly: true }}

@@ -39,6 +39,8 @@ interface PlaygroundContextProps {
   setIsLoaded: Dispatch<SetStateAction<boolean>>;
   hasLoadedQuery: boolean;
   setHasLoadedQuery: Dispatch<SetStateAction<boolean>>;
+  renderModels: React.ReactNode | null;
+  setRenderModels: (models: React.ReactNode) => void;
 }
 
 const PlaygroundContext = createContext<PlaygroundContextProps | undefined>(undefined);
@@ -57,6 +59,7 @@ export const PlaygroundContextProvider: React.FC<{ children: React.ReactNode; }>
   const [errorMessage, setErrorMessage] = useState('Bad Request');
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasLoadedQuery, setHasLoadedQuery] = useState(false);
+  const [renderModels, setRenderModels] = React.useState<React.ReactNode | null>(null);
 
   return (
     <PlaygroundContext.Provider value={{
@@ -80,6 +83,8 @@ export const PlaygroundContextProvider: React.FC<{ children: React.ReactNode; }>
       setIsLoaded,
       hasLoadedQuery,
       setHasLoadedQuery,
+      renderModels,
+      setRenderModels
     }}>
       {children}
     </PlaygroundContext.Provider>
