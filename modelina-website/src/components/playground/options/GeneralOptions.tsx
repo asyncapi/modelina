@@ -72,7 +72,7 @@ class GeneralOptions extends React.Component<
   render() {
     return (
       <ul className="flex flex-col">
-        <h3 className="text-lg font-medium leading-6 text-gray-900">
+        <h3 className="py-2 w-full text-left border-b-[1px] border-gray-700 text-sm">
           General options
         </h3>
         <li className=' flex items-center mt-3'>

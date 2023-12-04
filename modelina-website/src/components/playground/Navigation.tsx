@@ -41,11 +41,16 @@ import {
   GenerateMessage,
   UpdateMessage
 } from '@/types';
+import { usePlaygroundContext } from "../contexts/PlaygroundContext";
 
-interface OptionsProps { }
+interface OptionsProps {
+  config: ModelinaOptions;
+  setNewConfig: (config: string, configValue: any, updateCode?: boolean) => void;
+}
 interface OutputProps { }
 interface NavigationProps {
-  // router: NextRouter;
+  config: ModelinaOptions;
+  setNewConfig: (config: string, configValue: any, updateCode?: boolean) => void;
 }
 interface ButtonProps {
   title: string;
@@ -57,209 +62,137 @@ const CustomButton: React.FunctionComponent<ButtonProps> = ({ title, disabled = 
   return <button className={`px-2 py-2 w-full text-left ${disabled ? "border-b-[1px] border-gray-700 text-sm" : "hover:bg-[#4b5563] text-xs"} ${cn}`} disabled={disabled}>{title}</button>
 }
 
-export const Navigation: React.FunctionComponent<NavigationProps> = () => {
-  const { panel, setPanel } = usePanelContext();
+const Output: React.FunctionComponent<OutputProps> = () => {
 
-  const config: ModelinaOptions = {
-    language: 'typescript',
-    propertyNamingFormat: 'default',
-    modelNamingFormat: 'default',
-    enumKeyNamingFormat: 'default',
-    indentationType: 'spaces',
-    showTypeMappingExample: false,
-    tsMarshalling: false,
-    tsModelType: 'class',
-    tsEnumType: 'enum',
-    tsModuleSystem: 'CJS',
-    tsIncludeDescriptions: false,
-    tsIncludeExampleFunction: false,
-    tsIncludeJsonBinPack: false,
-    csharpArrayType: 'Array',
-    csharpAutoImplemented: false,
-    csharpOverwriteHashcode: false,
-    csharpIncludeJson: false,
-    csharpOverwriteEqual: false,
-    csharpIncludeNewtonsoft: false,
-    csharpNamespace: 'asyncapi.models',
-    csharpNullable: false,
-    phpIncludeDescriptions: false,
-    phpNamespace: 'AsyncAPI/Models',
-    cplusplusNamespace: 'AsyncapiModels',
-    javaPackageName: 'asyncapi.models',
-    javaIncludeJackson: false,
-    javaIncludeMarshaling: false,
-    javaArrayType: 'Array',
-    javaOverwriteHashcode: false,
-    javaOverwriteEqual: false,
-    javaOverwriteToString: false,
-    javaJavaDocs: false,
-    javaJavaxAnnotation: false,
-    goPackageName: 'asyncapi.models',
-    kotlinPackageName: 'asyncapi.models'
-  };
+  return (
+    <div className="h-full w-full flex flex-col">
+      <CustomButton title="Generator Code" />
+      <CustomButton title="Generated Models" disabled={true} />
+      <CustomButton title="LightMeasured" />
+      <CustomButton title="TurnOn" />
+    </div>
+  )
+}
 
-  // const setNewConfig = (config: string, configValue: any, updateCode?: boolean) => {
-  //   setNewQuery(config, configValue);
-  //   /* eslint-disable-next-line security/detect-object-injection */
-  //   (config as any)[config] = configValue;
-  //   if (updateCode === true || updateCode === undefined) {
-  //     generateNewCode(input);
-  //   }
-  // };
+const Options: React.FunctionComponent<OptionsProps> = ({ config, setNewConfig }) => {
+  const {
+    generatorCode,
+    showGeneratorCode,
+    setShowGeneratorCode,
+  } = usePlaygroundContext();
+  return (
+    // <div className="col-span-2">
+    //   <div className="overflow-hidden bg-white shadow sm:rounded-lg flex flex-row">
+    //     <div className="px-4 py-5 sm:px-6 basis-6/12">
+    //       <h3 className="text-lg font-medium leading-6 text-gray-900">
+    //         Modelina Options
+    //       </h3>
+    //       <p className="mt-1 max-w-2xl text-sm text-gray-500">
+    //         , or see the Modelina
+    //         configuration you can use directly in your library
+    //       </p>
+    //     </div>
 
-  // const setNewQuery = (queryKey: string, queryValue: any) => {
-  //   // Create a new object representing the updated query
-  //   const newQuery = {
-  //     query: { ...router.query }
-  //   };
-  
-    // // Check if the queryValue is false, and remove the queryKey if necessary
-    // if (queryValue === false) {
-    //   delete newQuery.query[queryKey];
-    // } else {
-    //   // Set the queryKey and queryValue in the new query object
-    //   newQuery.query[queryKey] = String(queryValue);
-    // }
-  
-    // // Use the Next.js Router to update the query in the URL
-    // Router.push(newQuery, undefined, { scroll: false });
-  // };
-  
-  // const generateNewCode = (input: string) => {
-  //   try {
-  //     const message: GenerateMessage = {
-  //       ...config,
-  //       input: encode(JSON.stringify(JSON.parse(input)))
-  //     };
-  
-  //     // Check if the input size is within limits
-  //     if (message.input.length > (maxInputSize || 30000)) {
-  //       console.error('Input too large, use a smaller example');
-  //       setError(true);
-  //       setErrorMessage('Input too large, use a smaller example');
-  //       setStatusCode(400);
-  //     } else {
-  //       const generators: { [key: string]: Function } = {
-  //         typescript: getTypeScriptGeneratorCode,
-  //         javascript: getJavaScriptGeneratorCode,
-  //         java: getJavaGeneratorCode,
-  //         go: getGoGeneratorCode,
-  //         csharp: getCSharpGeneratorCode,
-  //         rust: getRustGeneratorCode,
-  //         python: getPythonGeneratorCode,
-  //         dart: getDartGeneratorCode,
-  //         cplusplus: getCplusplusGeneratorCode,
-  //         kotlin: getKotlinGeneratorCode,
-  //         php: getPhpGeneratorCode
-  //       };
-  
-  //       // Call the appropriate generator based on the selected language
-  //       const generatorCode = generators[config.language](message);
-  
-  //       // Make a POST request to the API endpoint to generate code
-  //       fetch(`${process.env.NEXT_PUBLIC_API_PATH}/generate`, {
-  //         body: JSON.stringify(message),
-  //         method: 'POST'
-  //       }).then(async (res) => {
-  //         // Check if the response is successful
-  //         if (!res.ok) {
-  //           throw new Error(res.statusText);
-  //         }
-  
-  //         // Parse the response as JSON
-  //         const response: UpdateMessage = await res.json();
-  
-  //         // Update state with the generated code and models
-  //         setGeneratorCode(generatorCode);
-  //         setModels(response.models);
-  //         setLoaded({
-  //           ...loaded,
-  //           hasReceivedCode: true
-  //         });
-  //         setError(false);
-  //         setStatusCode(200);
-  //         setErrorMessage('');
-  //       }).catch(error => {
-  //         console.error(error);
-  //         setError(true);
-  //         setErrorMessage('Input is not a correct AsyncAPI document, so it cannot be processed.');
-  //         setStatusCode(500);
-  //       });
-  //     }
-  //   } catch (e: any) {
-  //     console.error(e);
-  //     setError(true);
-  //     setErrorMessage('Input is not a correct AsyncAPI document, so it cannot be processed.');
-  //     setStatusCode(400);
-  //   }
-  // };
-  
+    //     <div
+    //       onClick={() => {
+    //         setShowGeneratorCode(false);
+    //       }}
+    //       className={`${!showGeneratorCode ? 'bg-blue-100' : 'bg-white'
+    //         } px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 basis-3/12`}
+    //     >
+    //       <h3 className="text-lg font-medium leading-6 text-gray-900">
+    //         Options
+    //       </h3>
+    //     </div>
 
+    //     <div
+    //       onClick={() => {
+    //         setShowGeneratorCode(true);
+    //       }}
+    //       className={`${showGeneratorCode ? 'bg-blue-100' : 'bg-white'
+    //         } px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 basis-3/12`}
+    //     >
+    //       <h3 className="text-lg font-medium leading-6 text-gray-900">
+    //         Generator code
+    //       </h3>
+    //     </div>
+    //   </div>
+    //   {showGeneratorCode ? (
+    //     <div
+    //       className="bg-code-editor-dark text-white rounded-b shadow-lg font-bold"
+    //       style={{ height: '400px' }}
+    //     >
+    //       <MonacoEditorWrapper
+    //         options={{ readOnly: true }}
+    //         language="typescript"
+    //         value={generatorCode || ''}
+    //       />
+    //     </div>
+    //   ) : (
+    //     <PlaygroundGeneralConfigContext.Provider value={config}>
+    //       <PlaygroundTypeScriptConfigContext.Provider value={config}>
+    //         <PlaygroundJavaScriptConfigContext.Provider value={config}>
+    //           <PlaygroundCSharpConfigContext.Provider value={config}>
+    //             <PlaygroundDartConfigContext.Provider value={config}>
+    //               <PlaygroundGoConfigContext.Provider value={config}>
+    //                 <PlaygroundJavaConfigContext.Provider value={config}>
+    //                   <PlaygroundPhpConfigContext.Provider value={config}>
+    //                     <PlaygroundCplusplusConfigContext.Provider value={config}>
+    //                       <PlaygroundKotlinConfigContext.Provider value={config}>
+    //                         <PlaygroundRustConfigContext.Provider value={config}>
+    //                           <PlaygroundPythonConfigContext.Provider value={config}>
+    //                             <PlaygroundOptions setNewConfig={setNewConfig} />
+    //                           </PlaygroundPythonConfigContext.Provider>
+    //                         </PlaygroundRustConfigContext.Provider>
+    //                       </PlaygroundKotlinConfigContext.Provider>
+    //                     </PlaygroundCplusplusConfigContext.Provider>
+    //                   </PlaygroundPhpConfigContext.Provider>
+    //                 </PlaygroundJavaConfigContext.Provider>
+    //               </PlaygroundGoConfigContext.Provider>
+    //             </PlaygroundDartConfigContext.Provider>
+    //           </PlaygroundCSharpConfigContext.Provider>
+    //         </PlaygroundJavaScriptConfigContext.Provider>
+    //       </PlaygroundTypeScriptConfigContext.Provider>
+    //     </PlaygroundGeneralConfigContext.Provider>
+    //   )}
+    // </div>
 
-  const Output: React.FunctionComponent<OutputProps> = () => {
-  
-    return (
-      <div className="h-full w-full flex flex-col">
-        <CustomButton title="Generator Code" />
-        <CustomButton title="Generated Models" disabled={true} />
-        <CustomButton title="LightMeasured" />
-        <CustomButton title="TurnOn" />
-      </div>
-    )
-  }
+    <div className="options w-full h-full overflow-y-auto">
+      <PlaygroundGeneralConfigContext.Provider value={config}>
+          <PlaygroundTypeScriptConfigContext.Provider value={config}>
+            <PlaygroundJavaScriptConfigContext.Provider value={config}>
+              <PlaygroundCSharpConfigContext.Provider value={config}>
+                <PlaygroundDartConfigContext.Provider value={config}>
+                  <PlaygroundGoConfigContext.Provider value={config}>
+                    <PlaygroundJavaConfigContext.Provider value={config}>
+                      <PlaygroundPhpConfigContext.Provider value={config}>
+                        <PlaygroundCplusplusConfigContext.Provider value={config}>
+                          <PlaygroundKotlinConfigContext.Provider value={config}>
+                            <PlaygroundRustConfigContext.Provider value={config}>
+                              <PlaygroundPythonConfigContext.Provider value={config}>
+                                <PlaygroundOptions setNewConfig={setNewConfig} />
+                              </PlaygroundPythonConfigContext.Provider>
+                            </PlaygroundRustConfigContext.Provider>
+                          </PlaygroundKotlinConfigContext.Provider>
+                        </PlaygroundCplusplusConfigContext.Provider>
+                      </PlaygroundPhpConfigContext.Provider>
+                    </PlaygroundJavaConfigContext.Provider>
+                  </PlaygroundGoConfigContext.Provider>
+                </PlaygroundDartConfigContext.Provider>
+              </PlaygroundCSharpConfigContext.Provider>
+            </PlaygroundJavaScriptConfigContext.Provider>
+          </PlaygroundTypeScriptConfigContext.Provider>
+        </PlaygroundGeneralConfigContext.Provider>
+    </div>
+  )
+}
 
-  const Options: React.FunctionComponent<OptionsProps> = () => {
-    return (
-      // <div>
-      //   {this.state.showGeneratorCode ? (
-      //     <div
-      //       className="bg-code-editor-dark text-white rounded-b shadow-lg font-bold"
-      //       style={{ height: '400px' }}
-      //     >
-      //       <MonacoEditorWrapper
-      //         options={{ readOnly: true }}
-      //         language="typescript"
-      //         value={this.state.generatorCode || ''}
-      //       />
-      //     </div>
-      //   ) : (
-      //     <PlaygroundGeneralConfigContext.Provider value={config}>
-      //       <PlaygroundTypeScriptConfigContext.Provider value={config}>
-      //         <PlaygroundJavaScriptConfigContext.Provider value={config}>
-      //           <PlaygroundCSharpConfigContext.Provider value={config}>
-      //             <PlaygroundDartConfigContext.Provider value={config}>
-      //               <PlaygroundGoConfigContext.Provider value={config}>
-      //                 <PlaygroundJavaConfigContext.Provider value={config}>
-      //                   <PlaygroundPhpConfigContext.Provider value={config}>
-      //                     <PlaygroundCplusplusConfigContext.Provider value={config}>
-      //                       <PlaygroundKotlinConfigContext.Provider value={config}>
-      //                         <PlaygroundRustConfigContext.Provider value={config}>
-      //                           <PlaygroundPythonConfigContext.Provider value={config}>
-      //                             <PlaygroundOptions setNewConfig={setNewConfig} />
-      //                           </PlaygroundPythonConfigContext.Provider>
-      //                         </PlaygroundRustConfigContext.Provider>
-      //                       </PlaygroundKotlinConfigContext.Provider>
-      //                     </PlaygroundCplusplusConfigContext.Provider>
-      //                   </PlaygroundPhpConfigContext.Provider>
-      //                 </PlaygroundJavaConfigContext.Provider>
-      //               </PlaygroundGoConfigContext.Provider>
-      //             </PlaygroundDartConfigContext.Provider>
-      //           </PlaygroundCSharpConfigContext.Provider>
-      //         </PlaygroundJavaScriptConfigContext.Provider>
-      //       </PlaygroundTypeScriptConfigContext.Provider>
-      //     </PlaygroundGeneralConfigContext.Provider>
-      //   )}
-      // </div>
-  
-      <div>
-        Options
-      </div>
-    )
-  }
+export const Navigation: React.FunctionComponent<NavigationProps> = ({ config, setNewConfig }) => {
+  const { panel } = usePanelContext();
 
   return (
     <div className="h-full w-full">
-      {panel !== 'options' && <Options />}
+      {panel !== 'options' && <Options config={config} setNewConfig={setNewConfig} />}
       {panel !== 'output' && <Output />}
     </div>
   )

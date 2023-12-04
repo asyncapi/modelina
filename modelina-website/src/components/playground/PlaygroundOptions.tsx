@@ -79,7 +79,7 @@ class PlaygroundOptions extends React.Component<
       );
     }
     return (
-      <div className="p-12 rounded-b shadow-lg font-bold">
+      <div className="pl-8 pr-6 rounded-b shadow-lg overflow-y-auto">
         <GeneralOptions setNewConfig={this.props.setNewConfig} />
         {generatorOptions}
       </div>

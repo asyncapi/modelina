@@ -12,11 +12,12 @@ import { ModelinaOptions } from '@/types';
 
 interface ContentProps {
   config: ModelinaOptions;
+  setNewConfig: (config: string, configValue: any, updateCode?: boolean) => void;
   setNewQuery: (queryKey: string, queryValue: any) => void;
   generateNewCode: (input: string) => void;
 }
 
-export const Content: FunctionComponent<ContentProps> = ({ config, setNewQuery, generateNewCode }) => {
+export const Content: FunctionComponent<ContentProps> = ({ config, setNewConfig, setNewQuery, generateNewCode }) => {
   const { panel } = usePanelContext();
   const {
     input,
@@ -47,47 +48,54 @@ export const Content: FunctionComponent<ContentProps> = ({ config, setNewQuery, 
       <div className="flex w-full h-full">
         {panelEnabled ? (
           <div className={`bg-[#1f2937] text-white flex h-full w-[100%] sm:w-[20%]`}>
-            <Navigation />
+            <Navigation config={config} setNewConfig={setNewConfig} />
           </div>
         ) : null}
         <div
           className={`flex flex-col sm:flex-row h-full ${panelEnabled ? 'w-0 sm:w-full' : 'w-full'
             }`}
         >
-          <div className="max-xl:col-span-2 xl:grid-cols-1">
-            <div
-              className="h-full bg-code-editor-dark text-white rounded-b shadow-lg font-bold"
-              style={{ height: '750px' }}
-            >
-              <MonacoEditorWrapper
-                value={input}
-                onChange={(_, change) => {
-                  setInput(change);
-                  generateNewCode(change);
-                }}
-                editorDidMount={() => {
-                  setLoaded({ ...loaded, editorLoaded: true });
-                }}
-                language="json"
-              />
+          {/* EDITOR */}
+          <div className="bg-yellow-200 h-full flex-1">
+            <div className="max-xl:col-span-2 xl:grid-cols-1">
+              <div
+                className="h-full bg-code-editor-dark text-white rounded-b shadow-lg font-bold"
+                style={{ height: '750px' }}
+              >
+                <MonacoEditorWrapper
+                  value={input}
+                  onChange={(_, change) => {
+                    setInput(change);
+                    generateNewCode(change);
+                  }}
+                  editorDidMount={() => {
+                    setLoaded({ ...loaded, editorLoaded: true });
+                  }}
+                  language="json"
+                />
+              </div>
             </div>
           </div>
-          <div
-            className="max-xl:col-span-2 xl:grid-cols-1"
-            style={{ height: '750px' }}
-          >
-            {error ? (
-              <CustomError statusCode={statusCode} errorMessage={errorMessage} />
-            ) : (
-              <PlaygroundGeneratedContext.Provider
-                value={{
-                  language: config.language,
-                  models: models
-                }}
-              >
-                <GeneratedModelsComponent setNewQuery={setNewQuery} />
-              </PlaygroundGeneratedContext.Provider>
-            )}
+
+          {/* OUTPUT */}
+          <div className="h-full flex-1">
+            <div
+              className="max-xl:col-span-2 xl:grid-cols-1"
+              style={{ height: '750px' }}
+            >
+              {error ? (
+                <CustomError statusCode={statusCode} errorMessage={errorMessage} />
+              ) : (
+                <PlaygroundGeneratedContext.Provider
+                  value={{
+                    language: config.language,
+                    models: models
+                  }}
+                >
+                  <GeneratedModelsComponent setNewQuery={setNewQuery} />
+                </PlaygroundGeneratedContext.Provider>
+              )}
+            </div>
           </div>
         </div>
       </div>

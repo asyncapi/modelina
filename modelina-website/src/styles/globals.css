@@ -32,6 +32,27 @@ abbr[title] {
   text-decoration: none;
 }
 
+/* width */
+.options::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Track */
+.options::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+.options::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+.options::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 @keyframes GradientAnimation {
   0% {
     background-position: 0% 50%

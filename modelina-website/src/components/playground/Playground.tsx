@@ -373,7 +373,7 @@ class Playground extends React.Component<
           className={`grid grid-cols-2 gap-4 mt-4 ${isLoaded ? '' : 'invisible'
             }`}
         >
-          <div className="col-span-2">
+          {/* <div className="col-span-2">
             <div className="overflow-hidden bg-white shadow sm:rounded-lg flex flex-row">
               <div className="px-4 py-5 sm:px-6 basis-6/12">
                 <h3 className="text-lg font-medium leading-6 text-gray-900">
@@ -446,7 +446,7 @@ class Playground extends React.Component<
                 </PlaygroundTypeScriptConfigContext.Provider>
               </PlaygroundGeneralConfigContext.Provider>
             )}
-          </div>
+          </div> */}
           <div className="max-xl:col-span-2 xl:grid-cols-1">
             <div
               className="h-full bg-code-editor-dark text-white rounded-b shadow-lg font-bold"
