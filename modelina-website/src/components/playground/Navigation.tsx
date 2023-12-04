@@ -42,6 +42,7 @@ import {
   UpdateMessage
 } from '@/types';
 import { usePlaygroundContext } from "../contexts/PlaygroundContext";
+import InfoModal from "../InfoModal";
 
 interface OptionsProps {
   config: ModelinaOptions;
@@ -65,9 +66,17 @@ const CustomButton: React.FunctionComponent<ButtonProps> = ({ title, disabled = 
 const Output: React.FunctionComponent<OutputProps> = () => {
 
   return (
-    <div className="h-full w-full flex flex-col">
+    <div className="px-1 h-full w-full flex flex-col">
       <CustomButton title="Generator Code" />
-      <CustomButton title="Generated Models" disabled={true} />
+      
+      <div className="flex">
+        <InfoModal text="Generated Models: ">
+          <p>
+            This list contains all the generated models, select one to show their generated code.
+          </p>
+        </InfoModal>
+        <CustomButton title="Generated Models" disabled={true} />
+      </div>
       <CustomButton title="LightMeasured" />
       <CustomButton title="TurnOn" />
     </div>
@@ -159,30 +168,30 @@ const Options: React.FunctionComponent<OptionsProps> = ({ config, setNewConfig }
 
     <div className="options w-full h-full overflow-y-auto">
       <PlaygroundGeneralConfigContext.Provider value={config}>
-          <PlaygroundTypeScriptConfigContext.Provider value={config}>
-            <PlaygroundJavaScriptConfigContext.Provider value={config}>
-              <PlaygroundCSharpConfigContext.Provider value={config}>
-                <PlaygroundDartConfigContext.Provider value={config}>
-                  <PlaygroundGoConfigContext.Provider value={config}>
-                    <PlaygroundJavaConfigContext.Provider value={config}>
-                      <PlaygroundPhpConfigContext.Provider value={config}>
-                        <PlaygroundCplusplusConfigContext.Provider value={config}>
-                          <PlaygroundKotlinConfigContext.Provider value={config}>
-                            <PlaygroundRustConfigContext.Provider value={config}>
-                              <PlaygroundPythonConfigContext.Provider value={config}>
-                                <PlaygroundOptions setNewConfig={setNewConfig} />
-                              </PlaygroundPythonConfigContext.Provider>
-                            </PlaygroundRustConfigContext.Provider>
-                          </PlaygroundKotlinConfigContext.Provider>
-                        </PlaygroundCplusplusConfigContext.Provider>
-                      </PlaygroundPhpConfigContext.Provider>
-                    </PlaygroundJavaConfigContext.Provider>
-                  </PlaygroundGoConfigContext.Provider>
-                </PlaygroundDartConfigContext.Provider>
-              </PlaygroundCSharpConfigContext.Provider>
-            </PlaygroundJavaScriptConfigContext.Provider>
-          </PlaygroundTypeScriptConfigContext.Provider>
-        </PlaygroundGeneralConfigContext.Provider>
+        <PlaygroundTypeScriptConfigContext.Provider value={config}>
+          <PlaygroundJavaScriptConfigContext.Provider value={config}>
+            <PlaygroundCSharpConfigContext.Provider value={config}>
+              <PlaygroundDartConfigContext.Provider value={config}>
+                <PlaygroundGoConfigContext.Provider value={config}>
+                  <PlaygroundJavaConfigContext.Provider value={config}>
+                    <PlaygroundPhpConfigContext.Provider value={config}>
+                      <PlaygroundCplusplusConfigContext.Provider value={config}>
+                        <PlaygroundKotlinConfigContext.Provider value={config}>
+                          <PlaygroundRustConfigContext.Provider value={config}>
+                            <PlaygroundPythonConfigContext.Provider value={config}>
+                              <PlaygroundOptions setNewConfig={setNewConfig} />
+                            </PlaygroundPythonConfigContext.Provider>
+                          </PlaygroundRustConfigContext.Provider>
+                        </PlaygroundKotlinConfigContext.Provider>
+                      </PlaygroundCplusplusConfigContext.Provider>
+                    </PlaygroundPhpConfigContext.Provider>
+                  </PlaygroundJavaConfigContext.Provider>
+                </PlaygroundGoConfigContext.Provider>
+              </PlaygroundDartConfigContext.Provider>
+            </PlaygroundCSharpConfigContext.Provider>
+          </PlaygroundJavaScriptConfigContext.Provider>
+        </PlaygroundTypeScriptConfigContext.Provider>
+      </PlaygroundGeneralConfigContext.Provider>
     </div>
   )
 }

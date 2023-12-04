@@ -75,7 +75,7 @@ class GeneralOptions extends React.Component<
         <h3 className="py-2 w-full text-left border-b-[1px] border-gray-700 text-sm">
           General options
         </h3>
-        <li className=' flex items-center mt-3'>
+        <li className="flex gap-1 items-center mt-3">
           <InfoModal text="Output type :">
             <p>
               The provided option allows you to change the type of output you want to generate.
@@ -97,7 +97,7 @@ class GeneralOptions extends React.Component<
           </label>
         </li>
 
-        <li className=' flex items-center'>
+        <li className="flex gap-1 items-center">
           <InfoModal text="Include change type mapping example :">
             <p>
               In code generation, a common task is to map the data types from the input model to the output. In Modelina you can do this through type mapping.
@@ -118,7 +118,8 @@ class GeneralOptions extends React.Component<
             />
           </label>
         </li>
-        <li className=' flex items-center'>
+
+        <li className="flex gap-1 items-center">
           <InfoModal text="Change indentation type :">
             <p>
             The indentation type option allows you to choose between using tabs or spaces for indentation in the generated code.
@@ -140,7 +141,8 @@ class GeneralOptions extends React.Component<
             />
           </label>
         </li>
-        <li className=' flex items-center'>
+
+        <li className="flex gap-1 items-center">
           <InfoModal text="Change property naming format :">
             <p>
               This option allows you to customize the naming style for properties in your code. There are no limitations to how you can format it, but for this simple example it provides the following options:
@@ -178,7 +180,8 @@ class GeneralOptions extends React.Component<
             />
           </label>
         </li>
-        <li className=' flex items-center'>
+
+        <li className="flex gap-1 items-center">
           <InfoModal text="Change model naming format :">
             <p>
             This option allows you to customize the naming style for model names. There are no limitations to how you can format it, but for this simple example it provides the following options:
@@ -216,7 +219,8 @@ class GeneralOptions extends React.Component<
             />
           </label>
         </li>
-        <li className=' flex items-center'>
+
+        <li className="flex gap-1 items-center">
           <InfoModal text="Change enum key naming format :">
             <p>
             This option allows you to customize the naming style for enum keys. There are no limitations to how you can format it, but for this simple example it provides the following options:
