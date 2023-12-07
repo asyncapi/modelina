@@ -7,7 +7,6 @@ import {
 } from '@/types';
 import Router, { withRouter, NextRouter } from 'next/router';
 import { encode } from 'js-base64';
-import { PanelContextProvider } from '../contexts/PlaygroundPanelContext';
 import { usePlaygroundContext } from '../contexts/PlaygroundContext';
 import { getTypeScriptGeneratorCode } from '@/helpers/GeneratorCode/TypeScriptGenerator';
 import { getJavaScriptGeneratorCode } from '@/helpers/GeneratorCode/JavaScriptGenerator';
@@ -189,6 +188,7 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
     if (query.goPackageName !== undefined) {
       config.goPackageName = query.goPackageName;
     }
+
     if (query.kotlinPackageName !== undefined) {
       config.kotlinPackageName = query.kotlinPackageName;
     }
@@ -300,12 +300,14 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
             Loading Modelina Playground. Rendering playground components...
           </div>
           :
-          <div className="flex flex-col h-[90vh] w-full py-2">
-            <div className="flex flex-row flex-1 overflow-hidden">
-              <PanelContextProvider>
+          <div className="flex h-[90vh] w-full py-2">
+            <div className="flex overflow-hidden h-full w-full">
+              <div className='h-full w-[40px]'>
                 <Sidebar />
+              </div>
+              <div className='h-full w-[100%]'>
                 <Content config={config} setNewConfig={setNewConfig} setNewQuery={setNewQuery} generateNewCode={generateNewCode} />
-              </PanelContextProvider>
+              </div>
             </div>
           </div>
       }

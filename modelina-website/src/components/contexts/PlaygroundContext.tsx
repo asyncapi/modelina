@@ -20,6 +20,10 @@ interface LoadedState {
 }
 
 interface PlaygroundContextProps {
+  showOptions: boolean;
+  setShowOptions: Dispatch<SetStateAction<boolean>>;
+  showOutputNavigation: boolean;
+  setShowOutputNavigation: Dispatch<SetStateAction<boolean>>;
   input: string;
   setInput: Dispatch<SetStateAction<string>>;
   models: ModelsGeneratorProps[];
@@ -47,6 +51,8 @@ interface PlaygroundContextProps {
 const PlaygroundContext = createContext<PlaygroundContextProps | undefined>(undefined);
 
 export const PlaygroundContextProvider: React.FC<{ children: React.ReactNode; }> = ({ children }) => {
+  const [showOptions, setShowOptions] = useState(true);
+  const [showOutputNavigation, setShowOutputNavigation] = useState(true);
   const [input, setInput] = useState(JSON.stringify(defaultAsyncapiDocument, null, 4));
   const [models, setModels] = useState<ModelsGeneratorProps[]>([]);
   const [generatorCode, setGeneratorCode] = useState('');
@@ -63,6 +69,10 @@ export const PlaygroundContextProvider: React.FC<{ children: React.ReactNode; }>
   const [renderModels, setRenderModels] = React.useState<React.ReactNode | null>(null);
 
   const contextValue = useMemo(() => ({
+    showOptions,
+    setShowOptions,
+    showOutputNavigation,
+    setShowOutputNavigation,
     input,
     setInput,
     models,
@@ -86,6 +96,10 @@ export const PlaygroundContextProvider: React.FC<{ children: React.ReactNode; }>
     renderModels,
     setRenderModels
   }), [
+    showOptions,
+    setShowOptions,
+    showOutputNavigation,
+    setShowOutputNavigation,
     input,
     setInput,
     models,

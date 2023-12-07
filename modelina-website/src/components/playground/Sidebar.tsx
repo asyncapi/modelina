@@ -2,7 +2,7 @@ import React from 'react';
 import { IoOptionsOutline } from 'react-icons/io5';
 import { VscListSelection } from 'react-icons/vsc';
 import { Tooltip } from './Tooltip';
-import { usePanelContext } from '../contexts/PlaygroundPanelContext';
+import { usePlaygroundContext } from '../contexts/PlaygroundContext';
 
 interface SidebarItem {
   name: string;
@@ -16,7 +16,7 @@ interface SidebarItem {
 interface SidebarProps {}
 
 export const Sidebar: React.FunctionComponent<SidebarProps> = () => {
-  const { panel, setPanel } = usePanelContext();
+  const { setShowOptions, setShowOutputNavigation } = usePlaygroundContext();
   const sidebarItems: SidebarItem[] = [
     // Options
     {
@@ -24,7 +24,7 @@ export const Sidebar: React.FunctionComponent<SidebarProps> = () => {
       title: 'Options',
       isActive: false,
       onClick: () => {
-        setPanel(panel !== 'options' ? 'options' : '');
+        setShowOptions((prevShowOptions) => !prevShowOptions);
       },
       icon: <IoOptionsOutline className="w-5 h-5" />,
       tooltip: 'Option'
@@ -35,7 +35,7 @@ export const Sidebar: React.FunctionComponent<SidebarProps> = () => {
       title: 'Output',
       isActive: false,
       onClick: () => {
-        setPanel(panel !== 'output' ? 'output' : '');
+        setShowOutputNavigation((prevShowOutputNavigation) => !prevShowOutputNavigation);
       },
       icon: <VscListSelection className="w-5 h-5" />,
       tooltip: 'Output'
@@ -43,7 +43,7 @@ export const Sidebar: React.FunctionComponent<SidebarProps> = () => {
   ];
 
   return (
-    <div className="flex flex-col h-full w-[40px] bg-[#1f2937] shadow-lg border-r border-gray-700 justify-start">
+    <div className="flex flex-col h-full w-full bg-[#1f2937] shadow-lg border-r border-gray-700 justify-start">
       <div className="flex flex-col">
         {sidebarItems.map((item) => (
           <Tooltip

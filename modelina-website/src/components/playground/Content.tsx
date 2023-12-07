@@ -1,13 +1,13 @@
 'use client';
 
 import { FunctionComponent, useMemo } from 'react';
-import { usePanelContext } from '../contexts/PlaygroundPanelContext';
 import { PlaygroundGeneratedContext } from '../contexts/PlaygroundGeneratedContext';
 import { usePlaygroundContext } from '../contexts/PlaygroundContext';
-import { Navigation } from './Navigation';
-import GeneratedModelsComponent from './GeneratedModels';
 import MonacoEditorWrapper from '../MonacoEditorWrapper';
 import CustomError from '../CustomError';
+import OutputNavigation from './OutputNavigation';
+import { OptionsNavigation } from './OptionsNavigation';
+import GeneratedModelsComponent from './GeneratedModels';
 import { ModelinaOptions } from '@/types';
 
 interface ContentProps {
@@ -18,7 +18,6 @@ interface ContentProps {
 }
 
 export const Content: FunctionComponent<ContentProps> = ({ config, setNewConfig, setNewQuery, generateNewCode }) => {
-  const { panel } = usePanelContext();
   const {
     input,
     setInput,
@@ -28,64 +27,61 @@ export const Content: FunctionComponent<ContentProps> = ({ config, setNewConfig,
     error,
     statusCode,
     errorMessage,
+    showOptions,
+    showOutputNavigation,
   } = usePlaygroundContext();
-
-  const panelEnabled = panel !== '';
 
   const PlaygroundGeneratedContextValue = useMemo(() => ({
     language: config.language,
     models: models
   }), [config.language, models]);
-  return (
-    <div className="flex flex-1 flex-col sm:flex-row relative">
-      <div className="flex w-full h-full">
-        {panelEnabled ? (
-          <div className={`bg-[#1f2937] text-white flex h-full w-[100%] sm:w-[30%]`}>
-            <Navigation config={config} setNewConfig={setNewConfig} />
-          </div>
-        ) : null}
-        <div
-          className={`flex flex-col sm:flex-row h-full ${panelEnabled ? 'w-0 sm:w-full' : 'w-full'
-            }`}
-        >
-          {/* EDITOR */}
-          <div className="h-full flex-1">
-            <div className="max-xl:col-span-2 xl:grid-cols-1">
-              <div
-                className="h-full bg-code-editor-dark text-white rounded-b shadow-lg font-bold"
-                style={{ height: '750px' }}
-              >
-                <MonacoEditorWrapper
-                  value={input}
-                  onChange={(_, change) => {
-                    setInput(change);
-                    generateNewCode(change);
-                  }}
-                  editorDidMount={() => {
-                    setLoaded({ ...loaded, editorLoaded: true });
-                  }}
-                  language="json"
-                />
-              </div>
-            </div>
-          </div>
 
-          {/* OUTPUT */}
-          <div className="h-full flex-1">
-            <div
-              className="max-xl:col-span-2 xl:grid-cols-1"
-              style={{ height: '750px' }}
-            >
-              {error ? (
-                <CustomError statusCode={statusCode} errorMessage={errorMessage} />
-              ) : (
-                <PlaygroundGeneratedContext.Provider
-                  value={PlaygroundGeneratedContextValue}
-                >
-                  <GeneratedModelsComponent setNewQuery={setNewQuery} />
-                </PlaygroundGeneratedContext.Provider>
-              )}
+  return (
+    <div className="h-full w-full flex">
+      {/* OPTIONS & EDITOR */}
+      <div className="h-full w-[50%] flex">
+        {
+          showOptions && <div className={`bg-[#1f2937] text-white h-full w-[100%] sm:w-[35%]`}>
+            <OptionsNavigation config={config} setNewConfig={setNewConfig} />
+          </div>
+        }
+        <div className={`h-full ${showOptions ? "w-[65%]" : "w-full"}`}>
+          <div className="max-xl:col-span-2 xl:grid-cols-1">
+            <div className="h-[750px] bg-code-editor-dark text-white rounded-b shadow-lg font-bold">
+              <MonacoEditorWrapper
+                value={input}
+                onChange={(_, change) => {
+                  setInput(change);
+                  generateNewCode(change);
+                }}
+                editorDidMount={() => {
+                  setLoaded({ ...loaded, editorLoaded: true });
+                }}
+                language="json"
+              />
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* OUTPUT NAVIGATION AND OUTPUTS */}
+      <div className="h-full w-[50%] flex">
+        {
+          showOutputNavigation && <div className='h-full w-[100%] sm:w-[30%]'>
+            <OutputNavigation />
+          </div>
+        }
+        <div className={`h-full ${showOutputNavigation ? "w-[70%]" : "w-full"}`}>
+          <div className={`h-[750px]`}>
+            {error ? (
+              <CustomError statusCode={statusCode} errorMessage={errorMessage} />
+            ) : (
+              <PlaygroundGeneratedContext.Provider
+                value={PlaygroundGeneratedContextValue}
+              >
+                <GeneratedModelsComponent setNewQuery={setNewQuery} />
+              </PlaygroundGeneratedContext.Provider>
+            )}
           </div>
         </div>
       </div>
