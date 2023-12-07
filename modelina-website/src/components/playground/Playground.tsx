@@ -199,10 +199,10 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
     }
   }, [props.router.isReady, hasLoadedQuery]);
 
-  const setNewConfig = (config: string, configValue: any, updateCode?: boolean) => {
-    setNewQuery(config, configValue);
+  const setNewConfig = (configName: string, configValue: any, updateCode?: boolean) => {
+    setNewQuery(configName, configValue);
     /* eslint-disable-next-line security/detect-object-injection */
-    (config as any)[config] = configValue;
+    (config as any)[configName] = configValue;
     if (updateCode === true || updateCode === undefined) {
       generateNewCode(input);
     }
