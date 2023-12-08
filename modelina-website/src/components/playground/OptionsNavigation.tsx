@@ -1,5 +1,4 @@
 import React from "react";
-import PlaygroundOptions from './PlaygroundOptions';
 import {
   PlaygroundTypeScriptConfigContext,
   PlaygroundCSharpConfigContext,
@@ -14,10 +13,8 @@ import {
   PlaygroundGeneralConfigContext,
   PlaygroundPhpConfigContext
 } from '../contexts/PlaygroundConfigContext';
-import {
-  ModelinaOptions,
-} from '@/types';
 import { usePlaygroundContext } from "../contexts/PlaygroundContext";
+import PlaygroundOptions from './PlaygroundOptions';
 
 interface OptionsNavigationProps {
   setNewConfig: (config: string, configValue: any, updateCode?: boolean) => void;

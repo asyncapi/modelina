@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react';
+import Router, { withRouter, NextRouter } from 'next/router';
+import { encode } from 'js-base64';
 import {
-  ModelinaOptions,
   ModelinaQueryOptions,
   GenerateMessage,
   UpdateMessage
 } from '@/types';
-import Router, { withRouter, NextRouter } from 'next/router';
-import { encode } from 'js-base64';
-import { usePlaygroundContext } from '../contexts/PlaygroundContext';
 import { getTypeScriptGeneratorCode } from '@/helpers/GeneratorCode/TypeScriptGenerator';
 import { getJavaScriptGeneratorCode } from '@/helpers/GeneratorCode/JavaScriptGenerator';
 import { getJavaGeneratorCode } from '@/helpers/GeneratorCode/JavaGenerator';
@@ -19,6 +17,7 @@ import { getDartGeneratorCode } from '@/helpers/GeneratorCode/DartGenerator';
 import { getCplusplusGeneratorCode } from '@/helpers/GeneratorCode/CplusplusGenerator';
 import { getKotlinGeneratorCode } from '@/helpers/GeneratorCode/KotlinGenerator';
 import { getPhpGeneratorCode } from '@/helpers/GeneratorCode/PhpGenerator';
+import { usePlaygroundContext } from '../contexts/PlaygroundContext';
 import { Sidebar } from './Sidebar';
 import { Content } from './Content';
 

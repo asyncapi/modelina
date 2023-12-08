@@ -8,7 +8,6 @@ import CustomError from '../CustomError';
 import OutputNavigation from './OutputNavigation';
 import { OptionsNavigation } from './OptionsNavigation';
 import GeneratedModelsComponent from './GeneratedModels';
-import { ModelinaOptions } from '@/types';
 
 interface ContentProps {
   setNewConfig: (config: string, configValue: any, updateCode?: boolean) => void;

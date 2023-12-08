@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from 'react';
+import { PlaygroundGeneralConfigContext } from '../contexts/PlaygroundConfigContext';
 import TypeScriptGeneratorOptions from './options/TypeScriptGeneratorOptions';
 import GeneralOptions from './options/GeneralOptions';
 import JavaScriptGeneratorOptions from './options/JavaScriptGeneratorOptions';
@@ -11,7 +12,6 @@ import RustGeneratorOptions from './options/RustGeneratorOptions';
 import PythonGeneratorOptions from './options/PythonGeneratorOptions';
 import CplusplusGeneratorOptions from './options/CplusplusGeneratorOptions';
 import PhpGeneratorOptions from './options/PhpGeneratorOptions';
-import { PlaygroundGeneralConfigContext } from '../contexts/PlaygroundConfigContext';
 
 interface PlaygroundOptionsProps {
   setNewConfig?: (queryKey: string, queryValue: string) => void;
