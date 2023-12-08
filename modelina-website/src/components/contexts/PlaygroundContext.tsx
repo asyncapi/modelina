@@ -7,7 +7,7 @@ import React, {
   useState,
   useMemo
 } from 'react';
-import { defaultAsyncapiDocument } from '@/types';
+import { defaultAsyncapiDocument, ModelinaOptions } from '@/types';
 
 interface ModelsGeneratorProps {
   code: string;
@@ -24,6 +24,8 @@ interface PlaygroundContextProps {
   setShowOptions: Dispatch<SetStateAction<boolean>>;
   showOutputNavigation: boolean;
   setShowOutputNavigation: Dispatch<SetStateAction<boolean>>;
+  config: ModelinaOptions;
+  setConfig: Dispatch<SetStateAction<ModelinaOptions>>;
   input: string;
   setInput: Dispatch<SetStateAction<string>>;
   models: ModelsGeneratorProps[];
@@ -51,8 +53,47 @@ interface PlaygroundContextProps {
 const PlaygroundContext = createContext<PlaygroundContextProps | undefined>(undefined);
 
 export const PlaygroundContextProvider: React.FC<{ children: React.ReactNode; }> = ({ children }) => {
+  const defaultConfig: ModelinaOptions = {
+    language: 'typescript',
+    propertyNamingFormat: 'default',
+    modelNamingFormat: 'default',
+    enumKeyNamingFormat: 'default',
+    indentationType: 'spaces',
+    showTypeMappingExample: false,
+    tsMarshalling: false,
+    tsModelType: 'class',
+    tsEnumType: 'enum',
+    tsModuleSystem: 'CJS',
+    tsIncludeDescriptions: false,
+    tsIncludeExampleFunction: false,
+    tsIncludeJsonBinPack: false,
+    csharpArrayType: 'Array',
+    csharpAutoImplemented: false,
+    csharpOverwriteHashcode: false,
+    csharpIncludeJson: false,
+    csharpOverwriteEqual: false,
+    csharpIncludeNewtonsoft: false,
+    csharpNamespace: 'asyncapi.models',
+    csharpNullable: false,
+    phpIncludeDescriptions: false,
+    phpNamespace: 'AsyncAPI/Models',
+    cplusplusNamespace: 'AsyncapiModels',
+    javaPackageName: 'asyncapi.models',
+    javaIncludeJackson: false,
+    javaIncludeMarshaling: false,
+    javaArrayType: 'Array',
+    javaOverwriteHashcode: false,
+    javaOverwriteEqual: false,
+    javaOverwriteToString: false,
+    javaJavaDocs: false,
+    javaJavaxAnnotation: false,
+    goPackageName: 'asyncapi.models',
+    kotlinPackageName: 'asyncapi.models'
+  };
+
   const [showOptions, setShowOptions] = useState(true);
   const [showOutputNavigation, setShowOutputNavigation] = useState(true);
+  const [config, setConfig] = useState<ModelinaOptions>(defaultConfig);
   const [input, setInput] = useState(JSON.stringify(defaultAsyncapiDocument, null, 4));
   const [models, setModels] = useState<ModelsGeneratorProps[]>([]);
   const [generatorCode, setGeneratorCode] = useState('');
@@ -73,6 +114,8 @@ export const PlaygroundContextProvider: React.FC<{ children: React.ReactNode; }>
     setShowOptions,
     showOutputNavigation,
     setShowOutputNavigation,
+    config,
+    setConfig,
     input,
     setInput,
     models,
@@ -100,6 +143,8 @@ export const PlaygroundContextProvider: React.FC<{ children: React.ReactNode; }>
     setShowOptions,
     showOutputNavigation,
     setShowOutputNavigation,
+    config,
+    setConfig,
     input,
     setInput,
     models,

@@ -11,14 +11,14 @@ import GeneratedModelsComponent from './GeneratedModels';
 import { ModelinaOptions } from '@/types';
 
 interface ContentProps {
-  config: ModelinaOptions;
   setNewConfig: (config: string, configValue: any, updateCode?: boolean) => void;
   setNewQuery: (queryKey: string, queryValue: any) => void;
   generateNewCode: (input: string) => void;
 }
 
-export const Content: FunctionComponent<ContentProps> = ({ config, setNewConfig, setNewQuery, generateNewCode }) => {
+export const Content: FunctionComponent<ContentProps> = ({ setNewConfig, setNewQuery, generateNewCode }) => {
   const {
+    config,
     input,
     setInput,
     models,
@@ -41,8 +41,8 @@ export const Content: FunctionComponent<ContentProps> = ({ config, setNewConfig,
       {/* OPTIONS & EDITOR */}
       <div className="h-full w-[50%] flex">
         {
-          showOptions && <div className={`bg-[#1f2937] text-white h-full w-[100%] sm:w-[35%]`}>
-            <OptionsNavigation config={config} setNewConfig={setNewConfig} />
+          showOptions && <div className={`bg-[#1f2937] text-white h-full w-[100%] md:w-[35%]`}>
+            <OptionsNavigation setNewConfig={setNewConfig} />
           </div>
         }
         <div className={`h-full ${showOptions ? "w-[65%]" : "w-full"}`}>
@@ -67,7 +67,7 @@ export const Content: FunctionComponent<ContentProps> = ({ config, setNewConfig,
       {/* OUTPUT NAVIGATION AND OUTPUTS */}
       <div className="h-full w-[50%] flex">
         {
-          showOutputNavigation && <div className='h-full w-[100%] sm:w-[30%]'>
+          showOutputNavigation && <div className='h-full w-[100%] md:w-[30%]'>
             <OutputNavigation />
           </div>
         }

@@ -17,13 +17,14 @@ import {
 import {
   ModelinaOptions,
 } from '@/types';
+import { usePlaygroundContext } from "../contexts/PlaygroundContext";
 
 interface OptionsNavigationProps {
-  config: ModelinaOptions;
   setNewConfig: (config: string, configValue: any, updateCode?: boolean) => void;
 }
 
-export const OptionsNavigation: React.FunctionComponent<OptionsNavigationProps> = ({ config, setNewConfig }) => {
+export const OptionsNavigation: React.FunctionComponent<OptionsNavigationProps> = ({ setNewConfig }) => {
+  const { config } = usePlaygroundContext();
   return (
     <div className="options w-full h-full overflow-y-auto">
       <PlaygroundGeneralConfigContext.Provider value={config}>
