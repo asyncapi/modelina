@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { PlaygroundGeneralConfigContext } from '../contexts/PlaygroundConfigContext';
 import TypeScriptGeneratorOptions from './options/TypeScriptGeneratorOptions';
 import GeneralOptions from './options/GeneralOptions';
@@ -19,55 +19,56 @@ interface PlaygroundOptionsProps {
 
 const PlaygroundOptions: React.FC<PlaygroundOptionsProps> = ({ setNewConfig }) => {
   const context = useContext(PlaygroundGeneralConfigContext);
+  const [generatorOptions, setGeneratorOptions] = useState<React.ReactNode>(null);
 
-  let generatorOptions;
   const handleLanguageChange = () => {
     switch (context?.language) {
       case 'typescript':
-        generatorOptions = <TypeScriptGeneratorOptions setNewConfig={setNewConfig} />;
+        setGeneratorOptions(prevOptions => <TypeScriptGeneratorOptions setNewConfig={setNewConfig} />);
         break;
       case 'javascript':
-        generatorOptions = <JavaScriptGeneratorOptions setNewConfig={setNewConfig} />;
+        setGeneratorOptions(<JavaScriptGeneratorOptions setNewConfig={setNewConfig} />);
         break;
       case 'csharp':
-        generatorOptions = <CSharpGeneratorOptions setNewConfig={setNewConfig} />;
+        setGeneratorOptions(<CSharpGeneratorOptions setNewConfig={setNewConfig} />);
         break;
       case 'dart':
-        generatorOptions = <DartGeneratorOptions setNewConfig={setNewConfig} />;
+        setGeneratorOptions(<DartGeneratorOptions setNewConfig={setNewConfig} />);
         break;
       case 'go':
-        generatorOptions = <GoGeneratorOptions setNewConfig={setNewConfig} />;
+        setGeneratorOptions(<GoGeneratorOptions setNewConfig={setNewConfig} />);
         break;
       case 'cplusplus':
-        generatorOptions = <CplusplusGeneratorOptions setNewConfig={setNewConfig} />;
+        setGeneratorOptions(<CplusplusGeneratorOptions setNewConfig={setNewConfig} />);
         break;
       case 'java':
-        generatorOptions = <JavaGeneratorOptions setNewConfig={setNewConfig} />;
+        setGeneratorOptions(<JavaGeneratorOptions setNewConfig={setNewConfig} />);
         break;
       case 'kotlin':
-        generatorOptions = <KotlinGeneratorOptions setNewConfig={setNewConfig} />;
+        setGeneratorOptions(<KotlinGeneratorOptions setNewConfig={setNewConfig} />);
         break;
       case 'rust':
-        generatorOptions = <RustGeneratorOptions setNewConfig={setNewConfig} />;
+        setGeneratorOptions(<RustGeneratorOptions setNewConfig={setNewConfig} />);
         break;
       case 'python':
-        generatorOptions = <PythonGeneratorOptions setNewConfig={setNewConfig} />;
+        setGeneratorOptions(<PythonGeneratorOptions setNewConfig={setNewConfig} />);
         break;
       case 'php':
-        generatorOptions = <PhpGeneratorOptions setNewConfig={setNewConfig} />;
+        setGeneratorOptions(<PhpGeneratorOptions setNewConfig={setNewConfig} />);
         break;
       default:
-        generatorOptions = null;
+        setGeneratorOptions(prevOptions => null);
         break;
     }
   }
 
-  handleLanguageChange();
+  useEffect(() => {
+    handleLanguageChange();
+  }, [])
 
   useEffect(() => {
     handleLanguageChange();
-    console.log(context?.language);
-  }, [context?.language]);
+  }, [context?.language, setNewConfig]);
 
   return (
     <div className="px-1 rounded-b shadow-lg overflow-y-auto">

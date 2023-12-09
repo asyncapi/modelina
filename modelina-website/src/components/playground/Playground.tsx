@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Router, { withRouter, NextRouter } from 'next/router';
 import { encode } from 'js-base64';
 import {
@@ -45,6 +45,13 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
     hasLoadedQuery,
     setHasLoadedQuery,
   } = usePlaygroundContext();
+
+  // To avoid hydration error
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     const isHardLoaded = loaded.hasReceivedCode;
@@ -253,6 +260,10 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
       setStatusCode(400);
     }
   };
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div>
