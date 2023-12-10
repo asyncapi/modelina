@@ -46,8 +46,8 @@ const GeneratedModelsComponent: React.FC<GeneratedModelsComponentProps> = ({
     if (context?.models) {
       return context?.models.map((model) => {
         let backgroundColor;
-        if (model.name === selectedModel && !showGeneratorCode) {
-          backgroundColor = 'bg-[#21272d]';
+        if (!showGeneratorCode && model.name === selectedModel) {
+          backgroundColor = 'bg-[#3c4450]';
         } else {
           backgroundColor = '';
         }

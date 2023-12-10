@@ -84,14 +84,14 @@ class TypeScriptGeneratorOptions extends React.Component<
           TypeScript Specific options
         </h3>
         <li className="flex gap-1 items-center">
-          <InfoModal text='Typesript class variant' >
+          <InfoModal text='TypeScript class variant' >
             <p>
               It indicates which model type should be rendered for the object type. Its value can be either interface or class.
               <br /> <br />
               The default value is class.
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               TypeScript class variant
             </span>
@@ -107,14 +107,14 @@ class TypeScriptGeneratorOptions extends React.Component<
           </label>
         </li>
         <li className="flex gap-1 items-center">
-          <InfoModal text='Typesript enum type: ' >
+          <InfoModal text='TypeScript enum type: ' >
             <p>
               It indicates which type should be rendered for some enum type. Its value can be either union or enum.
               <br /> <br />
               The default value is union.
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               TypeScript enum type
             </span>
@@ -130,7 +130,7 @@ class TypeScriptGeneratorOptions extends React.Component<
           </label>
         </li>
         <li className="flex gap-1 items-center">
-          <InfoModal text='Typesript module system: ' >
+          <InfoModal text='TypeScript module system: ' >
             <p>
               It indicates which module system should be used for the generated code. Its value can be either ESM or CJS.
               <br /> <br />
@@ -141,7 +141,7 @@ class TypeScriptGeneratorOptions extends React.Component<
               <b>CJS</b> - CommonJS Modules. This uses the require/module.exports syntax.
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               TypeScript module system
             </span>
@@ -157,14 +157,14 @@ class TypeScriptGeneratorOptions extends React.Component<
           </label>
         </li>
         <li className="flex gap-1 items-center">
-          <InfoModal text='Typesript include descriptions: ' >
+          <InfoModal text='TypeScript include descriptions: ' >
             <p>
               It indicates whether the descriptions should be included in the generated code.
               <br /> <br />
               The default value is false.
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Include Descriptions
             </span>
@@ -179,7 +179,7 @@ class TypeScriptGeneratorOptions extends React.Component<
         </li>
         {this.context?.tsModelType === 'class' ? (
           <li className="flex gap-1 items-center">
-            <InfoModal text='Typesript include un/marshal functions: ' >
+            <InfoModal text='TypeScript include un/marshal functions: ' >
               <p>
                 It indicates whether the un/marshal functions should be included in the generated code.
                 <br /> <br />
@@ -190,7 +190,7 @@ class TypeScriptGeneratorOptions extends React.Component<
                 <b>Marshal</b> - This function takes an instance of the class and returns a JSON object.
               </p>
             </InfoModal>
-            <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+            <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
               <span className="mt-1 max-w-2xl text-sm text-gray-500">
                 Include un/marshal functions
               </span>
@@ -206,7 +206,7 @@ class TypeScriptGeneratorOptions extends React.Component<
         ) : null}
         {this.context?.tsModelType === 'class' ? (
           <li className="flex gap-1 items-center">
-            <InfoModal text='Typesript include JsonBinPack support: ' >
+            <InfoModal text='TypeScript include JsonBinPack support: ' >
               <p>
                 It indicates whether the <a href={'https://www.jsonbinpack.org/'}>JsonBinPack</a> support should be included in the generated code.
                 This allows you to convert models to a buffer, which is highly space-efficient, instead of sending pure JSON data over the wire.
@@ -226,7 +226,7 @@ class TypeScriptGeneratorOptions extends React.Component<
                 </ul>
               </p>
             </InfoModal>
-            <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+            <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
               <span className="mt-1 max-w-2xl text-sm text-gray-500">
                 Include JsonBinPack support
               </span>
@@ -242,14 +242,14 @@ class TypeScriptGeneratorOptions extends React.Component<
         ) : null}
         {this.context?.tsModelType === 'class' ? (
           <li className="flex gap-1 items-center">
-            <InfoModal text='Typesript include example functions: ' >
+            <InfoModal text='TypeScript include example functions: ' >
               <p>
                 It indicates whether the generated code should include a function that returns an example instance of the model with placeholder values.
                 <br /> <br />
                 The default value is false.
               </p>
             </InfoModal>
-            <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+            <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
               <span className="mt-1 max-w-2xl text-sm text-gray-500">
                 Include example functions
               </span>

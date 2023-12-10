@@ -84,7 +84,7 @@ class GeneralOptions extends React.Component<
               <a href="https://github.com/asyncapi/modelina#features" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">the main readme file</a>.
             </p>
           </InfoModal>
-          <label className="flex flex-grow justify-between items-center cursor-pointer">
+          <label className="flex flex-grow gap-1 justify-between items-center cursor-pointer">
             <span className=" text-sm text-gray-500">
               Output type
             </span>
@@ -105,7 +105,7 @@ class GeneralOptions extends React.Component<
               This option includes a simple example type mapping, that maps integers to a custom type.
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Include change type mapping example
             </span>
@@ -125,7 +125,7 @@ class GeneralOptions extends React.Component<
               The indentation type option allows you to choose between using tabs or spaces for indentation in the generated code.
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Change indentation type
             </span>
@@ -160,7 +160,7 @@ class GeneralOptions extends React.Component<
               Constant case: Property names are written in uppercase letters, and words are separated by underscores. (e.g: PROPERTY_NAME)
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Change property naming format
             </span>
@@ -199,7 +199,7 @@ class GeneralOptions extends React.Component<
               Constant case: Model names are written in uppercase letters, and words are separated by underscores. (e.g: MODEL_NAME)
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Change model naming format
             </span>
@@ -238,7 +238,7 @@ class GeneralOptions extends React.Component<
               Constant case: Enum key names are written in uppercase letters, and words are separated by underscores. (e.g: ENUM_KEY)
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Change enum key naming format
             </span>

@@ -102,7 +102,7 @@ class JavaGeneratorOptions extends React.Component<
         <h3 className="py-2 w-full text-left border-b-[1px] border-gray-700 text-sm">
           Java Specific options
         </h3>
-        <li className=' flex items-center'>
+        <li className='flex gap-1 items-center'>
           <InfoModal text="Package Name :">
             <p>
             In Java, a package name is a way to organize and group related classes and interfaces. It is a naming convention that helps prevent naming conflicts and provides a hierarchical structure to the Java codebase.
@@ -110,20 +110,20 @@ class JavaGeneratorOptions extends React.Component<
             A package name is written as  series of identifiers separated by dots ('.'). Each identifier represents a level in the package hierarchy. For example, a package name could be 'com.example.myapp'.
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Package Name
             </span>
             <input
               type="text"
-              className="form-input rounded-md border-gray-300 cursor-pointer font-regular text-md text-gray-700 hover:bg-gray-50 focus-within:text-gray-900"
+              className="form-input w-[88%] rounded-md border-gray-300 cursor-pointer font-regular text-md text-gray-700 hover:bg-gray-50 focus-within:text-gray-900"
               name="javaPackageName"
               value={this.state?.packageName}
               onChange={this.onChangePackageName}
             />
           </label>
         </li>
-        <li className=' flex items-center'>
+        <li className='flex gap-1 items-center'>
           <InfoModal text="Include Jackson serialization :">
             <p>
             When you enable the "Include Jackson serialization" option, it means that the code generator will include the necessary annotations from the Jackson library in the generated code. These annotations are used to configure and control how Java objects are serialized to JSON and deserialized from JSON.
@@ -131,7 +131,7 @@ class JavaGeneratorOptions extends React.Component<
             Annotations in Java are represented by the @ symbol followed by the annotation name. 
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Include Jackson serialization
             </span>
@@ -144,7 +144,7 @@ class JavaGeneratorOptions extends React.Component<
             />
           </label>
         </li>
-        <li className=' flex items-center'>
+        <li className='flex gap-1 items-center'>
           <InfoModal text="Include Marshaling serialization :">
             <p>
             This option indicates whether the marshal and unmarshal functions would be included in the generated code or not 
@@ -156,7 +156,7 @@ class JavaGeneratorOptions extends React.Component<
             unmarshal - this function takes a JSON object and returns an instanve of the class.
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Include Marshaling serialization
             </span>
@@ -169,7 +169,7 @@ class JavaGeneratorOptions extends React.Component<
             />
           </label>
         </li>
-        <li className=' flex items-center'>
+        <li className='flex gap-1 items-center'>
           <InfoModal text="Java array type :">
             <p>
             This option allows you to switch between rendering collections as List type or Array.
@@ -177,7 +177,7 @@ class JavaGeneratorOptions extends React.Component<
             The default value is Array.
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Java array type
             </span>
@@ -192,7 +192,7 @@ class JavaGeneratorOptions extends React.Component<
             />
           </label>
         </li>
-        <li className=' flex items-center'>
+        <li className='flex gap-1 items-center'>
           <InfoModal text="Include Overwrite HashCode Support :">
             <p>
             In Java, the "hashCode()" method is used to generate a unique numeric value (hash code) for an object. The default implementation of hashCode() in the Object class generates hash codes based on the memory address of the object, which may not be suitable for all classes.
@@ -200,7 +200,7 @@ class JavaGeneratorOptions extends React.Component<
             When you enable the "Include Overwrite HashCode Support" option, it means that the code generator will automatically generate a customized implementation of the hashCode() method for the class you are working with. Instead of using the default implementation.
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Include Overwrite HashCode Support
             </span>
@@ -213,7 +213,7 @@ class JavaGeneratorOptions extends React.Component<
             />
           </label>
         </li>
-        <li className=' flex items-center'>
+        <li className='flex gap-1 items-center'>
           <InfoModal text="Include Overwrite Equal Support :">
             <p>
             In Java, the "equals()" method is used to determine if two objects are equal based on their content rather than their memory addresses. The default implementation of equals() in the Object class performs a reference equality check, meaning it only returns true if the compared objects are the same instance in memory.
@@ -221,7 +221,7 @@ class JavaGeneratorOptions extends React.Component<
             When you enable the "Include Overwrite Equal Support" option, it means that the code generator will automatically generate a customized implementation of the equals() method for the class you are working with. Instead of using the default implementation.
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Include Overwrite Equal Support
             </span>
@@ -234,7 +234,7 @@ class JavaGeneratorOptions extends React.Component<
             />
           </label>
         </li>
-        <li className=' flex items-center'>
+        <li className='flex gap-1 items-center'>
           <InfoModal text="Include Overwrite toString Support :">
             <p>
             In Java, the "toString()" method is a built-in method defined in the Object class and inherited by all other classes. Its purpose is to provide a string representation of an object. By default, the toString() method in the Object class returns a string that includes the class name, an "@" symbol, and the hexadecimal representation of the object's hash code.
@@ -242,7 +242,7 @@ class JavaGeneratorOptions extends React.Component<
             When you enable the "Include Overwrite toString Support" option, it means that the code generator will automatically generate a customized implementation of the toString() method for the class you are working with. Instead of using the default implementation.
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Include Overwrite toString Support
             </span>
@@ -255,7 +255,7 @@ class JavaGeneratorOptions extends React.Component<
             />
           </label>
         </li>
-        <li className=' flex items-center'>
+        <li className='flex gap-1 items-center'>
           <InfoModal text="Include javaDocs :">
             <p>
             Enabling this option will include the description of the properties as comments in the generated code.
@@ -263,7 +263,7 @@ class JavaGeneratorOptions extends React.Component<
             The default value if false.
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Include javaDocs
             </span>
@@ -276,13 +276,13 @@ class JavaGeneratorOptions extends React.Component<
             />
           </label>
         </li>
-        <li className=' flex items-center'>
+        <li className='flex gap-1 items-center'>
           <InfoModal text="Include Javax validation constraints  :">
             <p>
               By using the 'javax.validation.constraints' annotations, you can ensure that the data in your Java object adheres to specific rules and constraints. This helps in validating user input, ensuring data integrity, and facilitating error handling and validation reporting.
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Include Javax validation constraints 
             </span>

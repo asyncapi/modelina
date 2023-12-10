@@ -40,13 +40,13 @@ export const Content: FunctionComponent<ContentProps> = ({ setNewConfig, setNewQ
       {/* OPTIONS & EDITOR */}
       <div className="h-full w-[50%] flex">
         {
-          showOptions && <div className={`bg-[#1f2937] text-white h-full w-[100%] md:w-[35%]`}>
+          showOptions && <div className={`bg-[#1f2937] text-white h-full w-[100%] md:w-[40%]`}>
             <OptionsNavigation setNewConfig={setNewConfig} />
           </div>
         }
-        <div className={`h-full ${showOptions ? "w-[65%]" : "w-full"}`}>
-          <div className="max-xl:col-span-2 xl:grid-cols-1">
-            <div className="h-[750px] bg-code-editor-dark text-white rounded-b shadow-lg font-bold">
+        <div className={`h-full ${showOptions ? "w-[60%]" : "w-full"}`}>
+          <div className="max-xl:col-span-2 xl:grid-cols-1 h-full">
+            <div className="h-full bg-code-editor-dark text-white rounded-b shadow-lg font-bold">
               <MonacoEditorWrapper
                 value={input}
                 onChange={(_, change) => {
@@ -71,7 +71,7 @@ export const Content: FunctionComponent<ContentProps> = ({ setNewConfig, setNewQ
           </div>
         }
         <div className={`h-full ${showOutputNavigation ? "w-[70%]" : "w-full"}`}>
-          <div className={`h-[750px]`}>
+          <div className={`h-full`}>
             {error ? (
               <CustomError statusCode={statusCode} errorMessage={errorMessage} />
             ) : (

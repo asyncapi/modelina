@@ -71,7 +71,7 @@ const PlaygroundOptions: React.FC<PlaygroundOptionsProps> = ({ setNewConfig }) =
   }, [context?.language, setNewConfig]);
 
   return (
-    <div className="px-1 rounded-b shadow-lg overflow-y-auto">
+    <div className="w-full h-full px-2 rounded-b overflow-y-auto">
       <GeneralOptions setNewConfig={setNewConfig} />
       {generatorOptions}
     </div>

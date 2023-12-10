@@ -38,7 +38,7 @@ export default function InfoModal(props: InfoModalProps) {
     return (
         <>
             <button onClick={onOpenModal}>
-                <div className='p-1 bg-slate-50 rounded-full'>
+                <div className='p-1 bg-slate-600 w-5 h-5 flex justify-center items-center rounded-full'>
                     <svg
                         className=" "
                         width="7"

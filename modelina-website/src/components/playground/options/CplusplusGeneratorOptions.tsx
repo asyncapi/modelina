@@ -46,19 +46,19 @@ class CplusplusGeneratorOptions extends React.Component<
         <h3 className="py-2 w-full text-left border-b-[1px] border-gray-700 text-sm">
           C++ Specific options
         </h3>
-        <li className=' flex items-center'>
+        <li className='flex gap-1 items-center'>
           <InfoModal text="Namespace :">
             <p>
             In C++, a namespace is a feature that allows you to organize your code into logical groups or containers. It helps in avoiding naming conflicts between different parts of your code and provides a way to encapsulate related code.
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Namespace
             </span>
             <input
               type="text"
-              className="form-input rounded-md border-gray-300 cursor-pointer font-regular text-md text-gray-700 hover:bg-gray-50 focus-within:text-gray-900"
+              className="form-input w-[90%] rounded-md border-gray-300 cursor-pointer font-regular text-md text-gray-700 hover:bg-gray-50 focus-within:text-gray-900"
               name="cplusplusNamespace"
               value={this.state.namespace}
               onChange={this.onChangeNamespace}
