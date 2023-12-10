@@ -73,7 +73,7 @@ const GeneratedModelsComponent: React.FC<GeneratedModelsComponentProps> = ({
   useEffect(() => {
     const modelsToRender = renderModels(updatedSelectedModel);
     setRenderModels(modelsToRender);
-  }, [updatedSelectedModel]);
+  }, [updatedSelectedModel, showGeneratorCode]);
 
   if (showAllInOneFile === true) {
     return (
