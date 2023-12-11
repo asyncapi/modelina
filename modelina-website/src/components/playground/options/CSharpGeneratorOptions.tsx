@@ -90,15 +90,15 @@ class CSharpGeneratorOptions extends React.Component<
     }
   }
 
-  debouncedSetNewConfig = debounce(this.props.setNewConfig || (() => {}), 500);
+  debouncedSetNewConfig = debounce(this.props.setNewConfig || (() => { }), 500);
 
   render() {
     return (
       <ul className="flex flex-col">
-        <h3 className="text-lg font-medium leading-6 text-gray-900">
+        <h3 className="py-2 w-full text-left border-b-[1px] border-gray-700">
           CSharp Specific options
         </h3>
- <li className="flex items-center">
+        <li className="flex gap-1 items-center">
           <InfoModal text="Namespace:">
             <p className="font-regular">
               In C#, a namespace is used to organize code into logical groups
@@ -109,20 +109,20 @@ class CSharpGeneratorOptions extends React.Component<
               of your code.
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Namespace
             </span>
             <input
               type="text"
-              className="form-input rounded-md border-gray-300 cursor-pointer font-regular text-md text-gray-700 hover:bg-gray-50 focus-within:text-gray-900"
+              className="form-input w-[90%] rounded-md border-gray-300 cursor-pointer font-regular text-md text-gray-700 hover:bg-gray-50 focus-within:text-gray-900"
               name="csharpNamespace"
               value={this.state.namespace}
               onChange={this.onChangeNamespace}
             />
           </label>
         </li>
-        <li className="flex items-center">
+        <li className="flex gap-1 items-center">
           <InfoModal text="C# array type:">
             <p className="font-regular">
               In C#, arrays are used to store collections of elements of the
@@ -138,7 +138,7 @@ class CSharpGeneratorOptions extends React.Component<
               functionality and flexibility for working with collections.
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               C# array type
             </span>
@@ -153,7 +153,7 @@ class CSharpGeneratorOptions extends React.Component<
             />
           </label>
         </li>
- <li className="flex items-center">
+        <li className="flex gap-1 items-center">
           <InfoModal text="Include auto-implemented properties:">
             <p className="font-regular">
               Auto-implemented properties in C# allow you to define properties
@@ -165,7 +165,7 @@ class CSharpGeneratorOptions extends React.Component<
               boilerplate code you need to write.
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Include auto-implemented properties
             </span>
@@ -178,7 +178,7 @@ class CSharpGeneratorOptions extends React.Component<
             />
           </label>
         </li>
- <li className="flex items-center">
+        <li className="flex gap-1 items-center">
           <InfoModal text="Include Overwrite HashCode Support:">
             <p className="font-regular">
               In C#, the GetHashCode() method is used to generate a hash code
@@ -190,7 +190,7 @@ class CSharpGeneratorOptions extends React.Component<
               calculation based on the model's properties.
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Include Overwrite HashCode Support
             </span>
@@ -203,7 +203,7 @@ class CSharpGeneratorOptions extends React.Component<
             />
           </label>
         </li>
- <li className="flex items-center">
+        <li className="flex gap-1 items-center">
           <InfoModal text="Include Overwrite Equal Support:">
             <p className="font-regular">
               The Equals() method in C# is used to compare two objects for
@@ -216,7 +216,7 @@ class CSharpGeneratorOptions extends React.Component<
               comparisons.
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Include Overwrite Equal Support
             </span>
@@ -229,7 +229,7 @@ class CSharpGeneratorOptions extends React.Component<
             />
           </label>
         </li>
- <li className="flex items-center">
+        <li className="flex gap-1 items-center">
           <InfoModal text="Include JSON serialization:">
             <p className="font-regular">
               In C#, JSON serialization is the process of converting an object
@@ -240,7 +240,7 @@ class CSharpGeneratorOptions extends React.Component<
               of the models.
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Include JSON serialization
             </span>
@@ -253,7 +253,7 @@ class CSharpGeneratorOptions extends React.Component<
             />
           </label>
         </li>
- <li className="flex items-center">
+        <li className="flex gap-1 items-center">
           <InfoModal text="Include Newtonsoft serialization:">
             <p className="font-regular">
               Newtonsoft.Json (Json.NET) is a popular third-party JSON
@@ -264,7 +264,7 @@ class CSharpGeneratorOptions extends React.Component<
               using the Json.NET library.
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Include Newtonsoft serialization
             </span>
@@ -277,7 +277,7 @@ class CSharpGeneratorOptions extends React.Component<
             />
           </label>
         </li>
- <li className="flex items-center">
+        <li className="flex gap-1 items-center">
           <InfoModal text="Nullable:">
             <p className="font-regular">
               In C#, the nullable feature allows you to explicitly indicate
@@ -288,7 +288,7 @@ class CSharpGeneratorOptions extends React.Component<
               flexibility when dealing with optional or unknown data values.
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Nullable
             </span>

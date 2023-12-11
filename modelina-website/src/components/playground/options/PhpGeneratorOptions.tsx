@@ -50,29 +50,29 @@ class PhpGeneratorOptions extends React.Component<
   render() {
     return (
       <ul className="flex flex-col">
-        <h3 className="text-lg font-medium leading-6 text-gray-900">
+        <h3 className="py-2 w-full text-left border-b-[1px] border-gray-700">
           PHP Specific options
         </h3>
-        <li className='flex items-center'>
+        <li className='flex gap-1 items-center'>
           <InfoModal text="PHP namespace to use for generated models" >
             <p>
               In PHP namespaces are used to organize code into logical groups. It helps to avoid naming conflicts and allows to use the same class names in different namespaces.
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Namespace
             </span>
             <input
               type="text"
-              className="form-input rounded-md border-gray-300 cursor-pointer font-regular text-md text-gray-700 hover:bg-gray-50 focus-within:text-gray-900"
+              className="form-input w-[90%] rounded-md border-gray-300 cursor-pointer font-regular text-md text-gray-700 hover:bg-gray-50 focus-within:text-gray-900"
               name="phpNamespace"
               value={this.state?.namespace}
               onChange={this.onChangeNamespace}
             />
           </label>
         </li>
-        <li className='flex items-center'>
+        <li className='flex gap-1 items-center'>
           <InfoModal text="Include descriptions in generated models" >
             <p>
               It indicates whether the descriptions should be included in the generated code.
@@ -80,7 +80,7 @@ class PhpGeneratorOptions extends React.Component<
               The default value is false.
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Include Descriptions
             </span>

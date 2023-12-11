@@ -7,7 +7,7 @@ interface TypeScriptGeneratorOptionsProps {
   setNewConfig?: (queryKey: string, queryValue: any, updateCode?: boolean) => void;
 }
 
-interface TypeScriptGeneratorState {}
+interface TypeScriptGeneratorState { }
 
 export const defaultState: TypeScriptGeneratorState = {};
 
@@ -65,7 +65,7 @@ class TypeScriptGeneratorOptions extends React.Component<
       const shouldIncludeMarshalling = this.context?.tsMarshalling === false && event.target.checked === true;
       this.props.setNewConfig('tsIncludeJsonBinPack', event.target.checked, !shouldIncludeMarshalling);
 
-      if(shouldIncludeMarshalling) {
+      if (shouldIncludeMarshalling) {
         this.props.setNewConfig('tsMarshalling', event.target.checked);
       }
     }
@@ -80,18 +80,18 @@ class TypeScriptGeneratorOptions extends React.Component<
   render() {
     return (
       <ul className="flex flex-col">
-        <h3 className="text-lg font-medium leading-6 text-gray-900">
+        <h3 className="py-2 w-full text-left border-b-[1px] border-gray-700">
           TypeScript Specific options
         </h3>
-        <li className='flex items-center'>
-          <InfoModal text='Typesript class variant' >
+        <li className="flex gap-1 items-center">
+          <InfoModal text='TypeScript class variant' >
             <p>
               It indicates which model type should be rendered for the object type. Its value can be either interface or class.
-              <br/> <br/>
+              <br /> <br />
               The default value is class.
-            </p>                
+            </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               TypeScript class variant
             </span>
@@ -106,15 +106,15 @@ class TypeScriptGeneratorOptions extends React.Component<
             />
           </label>
         </li>
-        <li className='flex items-center'>
-          <InfoModal text='Typesript enum type: ' >
+        <li className="flex gap-1 items-center">
+          <InfoModal text='TypeScript enum type: ' >
             <p>
               It indicates which type should be rendered for some enum type. Its value can be either union or enum.
-              <br/> <br/>
+              <br /> <br />
               The default value is union.
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               TypeScript enum type
             </span>
@@ -129,19 +129,19 @@ class TypeScriptGeneratorOptions extends React.Component<
             />
           </label>
         </li>
-        <li className='flex items-center'>
-          <InfoModal text='Typesript module system: ' >
+        <li className="flex gap-1 items-center">
+          <InfoModal text='TypeScript module system: ' >
             <p>
               It indicates which module system should be used for the generated code. Its value can be either ESM or CJS.
-              <br/> <br/>
+              <br /> <br />
               The default value is ESM.
-              <br/> <br/>
+              <br /> <br />
               <b>ESM</b> - ECMAScript Modules. This uses the import/export syntax.
-              <br/> <br/>
+              <br /> <br />
               <b>CJS</b> - CommonJS Modules. This uses the require/module.exports syntax.
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               TypeScript module system
             </span>
@@ -156,15 +156,15 @@ class TypeScriptGeneratorOptions extends React.Component<
             />
           </label>
         </li>
-        <li className='flex items-center'>
-          <InfoModal text='Typesript include descriptions: ' >
+        <li className="flex gap-1 items-center">
+          <InfoModal text='TypeScript include descriptions: ' >
             <p>
               It indicates whether the descriptions should be included in the generated code.
-              <br/> <br/>
+              <br /> <br />
               The default value is false.
             </p>
           </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+          <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
             <span className="mt-1 max-w-2xl text-sm text-gray-500">
               Include Descriptions
             </span>
@@ -178,19 +178,19 @@ class TypeScriptGeneratorOptions extends React.Component<
           </label>
         </li>
         {this.context?.tsModelType === 'class' ? (
-          <li className='flex items-center'>
-            <InfoModal text='Typesript include un/marshal functions: ' >
+          <li className="flex gap-1 items-center">
+            <InfoModal text='TypeScript include un/marshal functions: ' >
               <p>
                 It indicates whether the un/marshal functions should be included in the generated code.
-                <br/> <br/>
+                <br /> <br />
                 The default value is false.
-                <br/> <br/>
+                <br /> <br />
                 <b>Unmarshal</b> - This function takes a JSON object and returns an instance of the class.
-                <br/> <br/>
+                <br /> <br />
                 <b>Marshal</b> - This function takes an instance of the class and returns a JSON object.
               </p>
             </InfoModal>
-            <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+            <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
               <span className="mt-1 max-w-2xl text-sm text-gray-500">
                 Include un/marshal functions
               </span>
@@ -205,14 +205,14 @@ class TypeScriptGeneratorOptions extends React.Component<
           </li>
         ) : null}
         {this.context?.tsModelType === 'class' ? (
-          <li className='flex items-center'>
-            <InfoModal text='Typesript include JsonBinPack support: ' >
+          <li className="flex gap-1 items-center">
+            <InfoModal text='TypeScript include JsonBinPack support: ' >
               <p>
-                It indicates whether the <a href={'https://www.jsonbinpack.org/'}>JsonBinPack</a> support should be included in the generated code. 
+                It indicates whether the <a href={'https://www.jsonbinpack.org/'}>JsonBinPack</a> support should be included in the generated code.
                 This allows you to convert models to a buffer, which is highly space-efficient, instead of sending pure JSON data over the wire.
-                <br/> <br/>
+                <br /> <br />
                 The default value is false.
-                <br/><br/>
+                <br /><br />
                 <ul className='list-disc list-inside'>
                   <li className='list-disc'>This functionality is for the library jsonbinpack.</li>
                   <li>This preset can ONLY be used with AsyncAPI 2.x and JSON Schema draft 4 to 7 inputs.</li>
@@ -226,7 +226,7 @@ class TypeScriptGeneratorOptions extends React.Component<
                 </ul>
               </p>
             </InfoModal>
-            <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+            <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
               <span className="mt-1 max-w-2xl text-sm text-gray-500">
                 Include JsonBinPack support
               </span>
@@ -241,15 +241,15 @@ class TypeScriptGeneratorOptions extends React.Component<
           </li>
         ) : null}
         {this.context?.tsModelType === 'class' ? (
-          <li className='flex items-center'>
-            <InfoModal text='Typesript include example functions: ' >
+          <li className="flex gap-1 items-center">
+            <InfoModal text='TypeScript include example functions: ' >
               <p>
                 It indicates whether the generated code should include a function that returns an example instance of the model with placeholder values.
-                <br/> <br/>
+                <br /> <br />
                 The default value is false.
               </p>
             </InfoModal>
-            <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
+            <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
               <span className="mt-1 max-w-2xl text-sm text-gray-500">
                 Include example functions
               </span>
