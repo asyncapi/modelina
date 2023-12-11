@@ -3,9 +3,8 @@ import Tippy, { TippyProps } from '@tippyjs/react';
 
 export const Tooltip: React.FunctionComponent<TippyProps> = ({
   placement = 'bottom',
-  arrow = true,
   animation = 'shift-away',
-  className = 'text-xs text-white bg-gray-900 text-center p-[2px]',
+  className = 'text-xs text-white bg-gray-700 text-center px-1 py-[3px]',
   hideOnClick = false,
   children,
   ...rest
@@ -13,7 +12,6 @@ export const Tooltip: React.FunctionComponent<TippyProps> = ({
   return (
     <Tippy
       placement={placement}
-      arrow={arrow}
       animation={animation}
       className={className}
       hideOnClick={hideOnClick}

@@ -42,7 +42,7 @@ class KotlinGeneratorOptions extends React.Component<
   render() {
     return (
       <ul className="flex flex-col">
-        <h3 className="py-2 w-full text-left border-b-[1px] border-gray-700 text-sm">
+        <h3 className="py-2 w-full text-left border-b-[1px] border-gray-700">
           Kotlin Specific options
         </h3>
         <li className='flex gap-1 items-center'>

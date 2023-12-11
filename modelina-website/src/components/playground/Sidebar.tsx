@@ -27,7 +27,7 @@ export const Sidebar: React.FunctionComponent<SidebarProps> = () => {
         setShowOptions((prevShowOptions) => !prevShowOptions);
       },
       icon: <IoOptionsOutline className="w-5 h-5" />,
-      tooltip: 'Option'
+      tooltip: 'Show or hide all the options'
     },
     // Output Explorer
     {
@@ -38,7 +38,7 @@ export const Sidebar: React.FunctionComponent<SidebarProps> = () => {
         setShowOutputNavigation((prevShowOutputNavigation) => !prevShowOutputNavigation);
       },
       icon: <VscListSelection className="w-5 h-5" />,
-      tooltip: 'Output'
+      tooltip: 'Show or hide the list of output models'
     }
   ];
 

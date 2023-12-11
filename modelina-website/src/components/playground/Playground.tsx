@@ -276,7 +276,7 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
           :
           <div className="flex h-[90vh] w-full py-2">
             <div className="flex overflow-hidden h-full w-full">
-              <div className='h-full w-[40px]'>
+              <div className='h-full w-[50px]'>
                 <Sidebar />
               </div>
               <div className='h-full w-[100%]'>

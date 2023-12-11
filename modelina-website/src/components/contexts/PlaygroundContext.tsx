@@ -179,7 +179,7 @@ export const PlaygroundContextProvider: React.FC<{ children: React.ReactNode; }>
 export const usePlaygroundContext = () => {
   const context = useContext(PlaygroundContext);
   if (!context) {
-    throw new Error('usePlaygroundContext must be used within a PlaygroundContextProvider');
+    throw new Error('Playground was unable to load the context to display, please report this problem on GitHub.');
   }
   return context;
 };
