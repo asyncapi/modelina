@@ -24,7 +24,7 @@ const GoGeneratorOptions: React.FC<GoGeneratorOptionsProps> = ({ setNewConfig })
 
   useEffect(() => {
     setState({ ...state, packageName: context?.goPackageName });
-  }, [context]);
+  }, [context?.goPackageName]);
 
   const onChangePackageName = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
