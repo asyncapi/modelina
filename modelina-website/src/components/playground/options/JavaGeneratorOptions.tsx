@@ -38,56 +38,56 @@ const JavaGeneratorOptions: React.FC<JavaGeneratorOptionsProps> = ({ setNewConfi
 
   const onChangeIncludeJackson = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      setNewConfig && setNewConfig('javaIncludeJackson', event.target.checked);
+      setNewConfig?.('javaIncludeJackson', event.target.checked);
     },
     [setNewConfig]
   );
 
   const onChangeIncludeMarshaling = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      setNewConfig && setNewConfig('javaIncludeMarshaling', event.target.checked);
+      setNewConfig?.('javaIncludeMarshaling', event.target.checked);
     },
     [setNewConfig]
   );
 
   const onChangeArrayType = useCallback(
     (arrayType: string) => {
-      setNewConfig && setNewConfig('javaArrayType', arrayType);
+      setNewConfig?.('javaArrayType', arrayType);
     },
     [setNewConfig]
   );
 
   const onChangeOverwriteHashCodeSupport = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      setNewConfig && setNewConfig('javaOverwriteHashcode', event.target.checked);
+      setNewConfig?.('javaOverwriteHashcode', event.target.checked);
     },
     [setNewConfig]
   );
 
   const onChangeOverwriteEqualSupport = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      setNewConfig && setNewConfig('javaOverwriteEqual', event.target.checked);
+      setNewConfig?.('javaOverwriteEqual', event.target.checked);
     },
     [setNewConfig]
   );
 
   const onChangeOverwriteToStringSupport = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      setNewConfig && setNewConfig('javaOverwriteToString', event.target.checked);
+      setNewConfig?.('javaOverwriteToString', event.target.checked);
     },
     [setNewConfig]
   );
 
   const onChangeJavaDocs = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      setNewConfig && setNewConfig('javaJavaDocs', event.target.checked);
+      setNewConfig?.('javaJavaDocs', event.target.checked);
     },
     [setNewConfig]
   );
 
   const onChangeJavaxAnnotation = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      setNewConfig && setNewConfig('javaJavaxAnnotation', event.target.checked);
+      setNewConfig?.('javaJavaxAnnotation', event.target.checked);
     },
     [setNewConfig]
   );

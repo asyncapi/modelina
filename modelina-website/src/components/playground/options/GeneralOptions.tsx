@@ -18,39 +18,27 @@ const GeneralOptions: React.FC<GeneralOptionsProps> = ({ setNewConfig }) => {
   const [state, setState] = useState<GeneralOptionsState>(defaultState);
 
   const onChangeLanguage = (language: any) => {
-    if (setNewConfig) {
-      setNewConfig('language', String(language));
-    }
+      setNewConfig?.('language', String(language));
   };
 
   const onChangeShowTypeMappingExample = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (setNewConfig) {
-      setNewConfig('showTypeMappingExample', event.target.checked);
-    }
+      setNewConfig?.('showTypeMappingExample', event.target.checked);
   };
 
   const onChangeIndentationType = (value: any) => {
-    if (setNewConfig) {
-      setNewConfig('indentationType', String(value));
-    }
+      setNewConfig?.('indentationType', String(value));
   };
 
   const onChangePropertyNamingFormat = (value: any) => {
-    if (setNewConfig) {
-      setNewConfig('propertyNamingFormat', String(value));
-    }
+      setNewConfig?.('propertyNamingFormat', String(value));
   };
 
   const onChangeModelNamingFormat = (value: any) => {
-    if (setNewConfig) {
-      setNewConfig('modelNamingFormat', String(value));
-    }
+      setNewConfig?.('modelNamingFormat', String(value));
   };
 
   const onChangeEnumKeyNamingFormat = (value: any) => {
-    if (setNewConfig) {
-      setNewConfig('enumKeyNamingFormat', String(value));
-    }
+      setNewConfig?.('enumKeyNamingFormat', String(value));
   };
 
   return (

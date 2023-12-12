@@ -31,9 +31,8 @@ const CplusplusGeneratorOptions: React.FC<CplusplusGeneratorOptionsProps> = ({ s
       ...prevState,
       namespace: event.target.value,
     }));
-    if (setNewConfig) {
-      debouncedSetNewConfig('cplusplusNamespace', event.target.value);
-    }
+
+    setNewConfig && debouncedSetNewConfig('cplusplusNamespace', event.target.value);
   };
 
   return (

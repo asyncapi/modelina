@@ -26,52 +26,36 @@ const CSharpGeneratorOptions: React.FC<CSharpGeneratorOptionsProps> = ({ setNewC
   }, [context?.csharpNamespace])
 
   const onChangeArrayType = (arrayType: any) => {
-    if (setNewConfig) {
-      setNewConfig('csharpArrayType', String(arrayType));
-    }
+    setNewConfig?.('csharpArrayType', String(arrayType));
   };
 
   const onChangeAutoImplementProperties = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (setNewConfig) {
-      setNewConfig('csharpAutoImplemented', event.target.checked);
-    }
+    setNewConfig?.('csharpAutoImplemented', event.target.checked);
   };
 
   const onChangeOverwriteHashCodeSupport = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (setNewConfig) {
-      setNewConfig('csharpOverwriteHashcode', event.target.checked);
-    }
+    setNewConfig?.('csharpOverwriteHashcode', event.target.checked);
   };
 
   const onChangeIncludeJson = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (setNewConfig) {
-      setNewConfig('csharpIncludeJson', event.target.checked);
-    }
+    setNewConfig?.('csharpIncludeJson', event.target.checked);
   };
 
   const onChangeOverwriteEqualSupport = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (setNewConfig) {
-      setNewConfig('csharpOverwriteEqual', event.target.checked);
-    }
+    setNewConfig?.('csharpOverwriteEqual', event.target.checked);
   };
 
   const onChangeIncludeNewtonsoft = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (setNewConfig) {
-      setNewConfig('csharpIncludeNewtonsoft', event.target.checked);
-    }
+    setNewConfig?.('csharpIncludeNewtonsoft', event.target.checked);
   };
 
   const onChangeNullable = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (setNewConfig) {
-      setNewConfig('csharpNullable', event.target.checked);
-    }
+    setNewConfig?.('csharpNullable', event.target.checked);
   };
 
   const onChangeNamespace = (event: React.ChangeEvent<HTMLInputElement>) => {
     setState({ ...state, namespace: event.target.value });
-    if (setNewConfig) {
-      debouncedSetNewConfig('csharpNamespace', event.target.value);
-    }
+    setNewConfig && debouncedSetNewConfig('csharpNamespace', event.target.value);
   };
 
   const debouncedSetNewConfig = debounce(setNewConfig || (() => { }), 500);
