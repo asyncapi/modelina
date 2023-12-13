@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { PlaygroundJavaScriptConfigContext } from '@/components/contexts/PlaygroundConfigContext';
 
 interface JavaScriptGeneratorOptionsProps {
-  setNewConfig?: (queryKey: string, queryValue: string) => void;
+  setNewConfig?: (queryKey: string, queryValue: any) => void;
 }
 
 interface JavaScriptGeneratorState {}

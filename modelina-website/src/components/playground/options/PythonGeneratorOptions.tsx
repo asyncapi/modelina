@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { PlaygroundPythonConfigContext } from '@/components/contexts/PlaygroundConfigContext';
 
 interface PythonGeneratorOptionsProps {
-  setNewConfig?: (queryKey: string, queryValue: string) => void;
+  setNewConfig?: (queryKey: string, queryValue: any) => void;
 }
 
 interface PythonGeneratorState {}

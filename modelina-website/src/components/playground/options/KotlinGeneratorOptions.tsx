@@ -4,7 +4,7 @@ import { PlaygroundKotlinConfigContext } from '@/components/contexts/PlaygroundC
 import InfoModal from '@/components/InfoModal';
 
 interface KotlinGeneratorOptionsProps {
-  setNewConfig?: (queryKey: string, queryValue: string) => void;
+  setNewConfig?: (queryKey: string, queryValue: any) => void;
 }
 
 interface KotlinGeneratorState {
@@ -18,7 +18,7 @@ const KotlinGeneratorOptions: React.FC<KotlinGeneratorOptionsProps> = ({ setNewC
   const [state, setState] = useState<KotlinGeneratorState>(defaultState);
 
   const debouncedSetNewConfig = debounce(
-    (queryKey: string, queryValue: string) => setNewConfig?.(queryKey, queryValue),
+    (queryKey: string, queryValue: any) => setNewConfig?.(queryKey, queryValue),
     500
   );
   

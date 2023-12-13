@@ -4,7 +4,7 @@ import { PlaygroundPhpConfigContext } from '@/components/contexts/PlaygroundConf
 import InfoModal from '@/components/InfoModal';
 
 interface PhpGeneratorOptionsProps {
-  setNewConfig?: (queryKey: string, queryValue: string | boolean) => void;
+  setNewConfig?: (queryKey: string, queryValue: any) => void;
 }
 
 interface PhpGeneratorState {
@@ -18,7 +18,7 @@ const PhpGeneratorOptions: React.FC<PhpGeneratorOptionsProps> = ({ setNewConfig 
   const [state, setState] = useState<PhpGeneratorState>(defaultState);
 
   const debouncedSetNewConfig = debounce(
-    (queryKey: string, queryValue: string) => setNewConfig?.(queryKey, queryValue),
+    (queryKey: string, queryValue: any) => setNewConfig?.(queryKey, queryValue),
     500
   );
 

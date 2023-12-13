@@ -5,7 +5,7 @@ import Select from '@/components/Select';
 import InfoModal from '@/components/InfoModal';
 
 interface JavaGeneratorOptionsProps {
-  setNewConfig?: (queryKey: string, queryValue: string | boolean) => void;
+  setNewConfig?: (queryKey: string, queryValue: any) => void;
 }
 
 interface JavaGeneratorState {
@@ -23,7 +23,7 @@ const JavaGeneratorOptions: React.FC<JavaGeneratorOptionsProps> = ({ setNewConfi
   }, [context?.javaPackageName]);
 
   const debouncedSetNewConfig = debounce(
-    (queryKey: string, queryValue: string | boolean) => setNewConfig?.(queryKey, queryValue),
+    (queryKey: string, queryValue: any) => setNewConfig?.(queryKey, queryValue),
     500
   );
 

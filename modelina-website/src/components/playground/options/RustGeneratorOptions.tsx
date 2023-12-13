@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { PlaygroundRustConfigContext } from '@/components/contexts/PlaygroundConfigContext';
 
 interface RustGeneratorOptionsProps {
-  setNewConfig?: (queryKey: string, queryValue: string) => void;
+  setNewConfig?: (queryKey: string, queryValue: any) => void;
 }
 
 interface RustGeneratorState {}

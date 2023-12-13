@@ -5,7 +5,7 @@ import Select from '@/components/Select';
 import InfoModal from '@/components/InfoModal';
 
 interface CSharpGeneratorOptionsProps {
-  setNewConfig?: (queryKey: string, queryValue: string | boolean) => void;
+  setNewConfig?: (queryKey: string, queryValue: any) => void;
 }
 
 interface CSharpGeneratorState {

@@ -4,7 +4,7 @@ import { PlaygroundCplusplusConfigContext } from '@/components/contexts/Playgrou
 import InfoModal from '@/components/InfoModal';
 
 interface CplusplusGeneratorOptionsProps {
-  setNewConfig?: (queryKey: string, queryValue: string) => void;
+  setNewConfig?: (queryKey: string, queryValue: any) => void;
 }
 
 interface CplusplusGeneratorState {

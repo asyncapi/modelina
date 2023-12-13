@@ -6,7 +6,7 @@ import InfoModal from '@/components/InfoModal';
 import Select from '../../Select';
 
 interface GeneralOptionsProps {
-  setNewConfig?: (queryKey: string, queryValue: string | boolean) => void;
+  setNewConfig?: (queryKey: string, queryValue: any) => void;
 }
 
 interface GeneralOptionsState { }

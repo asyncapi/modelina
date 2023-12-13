@@ -4,7 +4,7 @@ import { PlaygroundGoConfigContext } from '@/components/contexts/PlaygroundConfi
 import InfoModal from '@/components/InfoModal';
 
 interface GoGeneratorOptionsProps {
-  setNewConfig?: (queryKey: string, queryValue: string) => void;
+  setNewConfig?: (queryKey: string, queryValue: any) => void;
 }
 
 interface GoGeneratorState {
@@ -18,7 +18,7 @@ const GoGeneratorOptions: React.FC<GoGeneratorOptionsProps> = ({ setNewConfig })
   const [state, setState] = useState<GoGeneratorState>(defaultState);
 
   const debouncedSetNewConfig = debounce(
-    (queryKey: string, queryValue: string) => setNewConfig?.(queryKey, queryValue),
+    (queryKey: string, queryValue: any) => setNewConfig?.(queryKey, queryValue),
     500
   );
 

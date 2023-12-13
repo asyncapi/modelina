@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { PlaygroundDartConfigContext } from '@/components/contexts/PlaygroundConfigContext';
 
 interface DartGeneratorOptionsProps {
-  setNewConfig?: (queryKey: string, queryValue: string) => void;
+  setNewConfig?: (queryKey: string, queryValue: any) => void;
 }
 
 interface DartGeneratorState { }
