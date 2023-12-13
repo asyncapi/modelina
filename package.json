@@ -37,7 +37,7 @@
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.9",
     "@apidevtools/swagger-parser": "^10.0.3",
-    "@asyncapi/avro-schema-parser": "^3.0.8",
+    "@asyncapi/avro-schema-parser": "^3.0.9",
     "@asyncapi/openapi-schema-parser": "^3.0.10",
     "@asyncapi/parser": "^2.1.2",
     "@asyncapi/raml-dt-schema-parser": "^4.0.10",
