@@ -48,7 +48,7 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 }
 
-export const SCALA_DEFAULT_ENUM_PRESET: EnumPresetType<KotlinOptions> = {
+export const SCALA_DEFAULT_ENUM_PRESET: EnumPresetType<ScalaOptions> = {
   self({ renderer, model }) {
     return renderer.defaultSelf(model.type);
   },
