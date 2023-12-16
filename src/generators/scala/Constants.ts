@@ -39,16 +39,12 @@ export const RESERVED_SCALA_KEYWORDS = [
   'var',
   'while',
   'with',
-  'yield',
+  'yield'
 ];
 
 export function isReservedScalaKeyword(
   word: string,
   forceLowerCase = true
 ): boolean {
-  return checkForReservedKeyword(
-    word,
-    RESERVED_SCALA_KEYWORDS,
-    forceLowerCase
-  );
+  return checkForReservedKeyword(word, RESERVED_SCALA_KEYWORDS, forceLowerCase);
 }

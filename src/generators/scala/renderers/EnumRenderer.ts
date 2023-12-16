@@ -5,7 +5,7 @@ import {
 } from '../../../models';
 import { EnumPresetType } from '../ScalaPreset';
 import { ScalaOptions } from '../ScalaGenerator';
-import { FormatHelpers } from 'helpers';
+import { FormatHelpers } from '../../../helpers';
 
 /**
  * Renderer for Scala's `enum` type
@@ -19,7 +19,7 @@ export class EnumRenderer extends ScalaRenderer<ConstrainedEnumModel> {
       await this.runFromValuePreset(),
       await this.runAdditionalContentPreset()
     ];
-    return `object ${this.model.name}  extends Enumeration {
+    return `object ${this.model.name} extends Enumeration {
   type ${this.model.name} = Value
 
 ${this.indent(this.renderBlock(content, 2))}
@@ -36,7 +36,7 @@ ${this.indent(this.renderBlock(content, 2))}
     }
 
     const content = items.join('\n');
-    return `${content};`;
+    return `${content}`;
   }
 
   runItemPreset(item: ConstrainedEnumValueModel): Promise<string> {
@@ -52,9 +52,9 @@ export const SCALA_DEFAULT_ENUM_PRESET: EnumPresetType<ScalaOptions> = {
   self({ renderer, model }) {
     return renderer.defaultSelf(model.type);
   },
-  item({ item }) {
+  item({ item, model }) {
     const key = FormatHelpers.toPascalCase(item.key);
 
-    return `val ${key} = Value("${item.value}")`
+    return `val ${key}: ${model.name}.Value = Value(${item.value})`;
   }
 };

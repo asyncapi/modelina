@@ -30,8 +30,7 @@ import {
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 import { ScalaDependencyManager } from './ScalaDependencyManager';
 
-export interface ScalaOptions
-  extends CommonGeneratorOptions<ScalaPreset> {
+export interface ScalaOptions extends CommonGeneratorOptions<ScalaPreset> {
   typeMapping: TypeMapping<ScalaOptions, ScalaDependencyManager>;
   constraints: Constraints;
   collectionType: 'List' | 'Array';
@@ -40,7 +39,7 @@ export interface ScalaOptions
 export type ScalaTypeMapping = TypeMapping<
   ScalaOptions,
   ScalaDependencyManager
->
+>;
 
 export interface ScalaRenderCompleteModelOptions {
   packageName: string;
@@ -66,9 +65,7 @@ export class ScalaGenerator extends AbstractGenerator<
   /**
    * Returns the Scala options by merging custom options with default ones.
    */
-  static getScalaOptions(
-    options?: DeepPartial<ScalaOptions>
-  ): ScalaOptions {
+  static getScalaOptions(options?: DeepPartial<ScalaOptions>): ScalaOptions {
     const optionsToUse = mergePartialAndDefault(
       ScalaGenerator.defaultOptions,
       options
@@ -86,9 +83,7 @@ export class ScalaGenerator extends AbstractGenerator<
    * Wrapper to get an instance of the dependency manager
    */
   getDependencyManager(options: ScalaOptions): ScalaDependencyManager {
-    return this.getDependencyManagerInstance(
-      options
-    ) as ScalaDependencyManager;
+    return this.getDependencyManagerInstance(options) as ScalaDependencyManager;
   }
 
   /**

@@ -24,7 +24,7 @@ describe('ScalaGenerator', () => {
     expect(models[0].result).toMatchSnapshot();
   });
 
-  test('should render `data class` type', async () => {
+  test('should render `case class` type', async () => {
     const doc = {
       $id: 'Address',
       type: 'object',
@@ -54,7 +54,7 @@ describe('ScalaGenerator', () => {
           type: 'string'
         }
       },
-      required: ['street_name', 'city', 'state', 'house_number', 'array_type']
+      required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
     };
 
     const expectedDependencies = [];
@@ -166,7 +166,7 @@ describe('ScalaGenerator', () => {
           type: 'string'
         }
       },
-      required: ['street_name', 'city', 'state', 'house_number', 'array_type']
+      required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
     };
     const config = { packageName: 'test.package' };
     const models = await generator.generateCompleteModels(doc, config);

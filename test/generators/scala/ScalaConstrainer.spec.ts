@@ -54,7 +54,7 @@ describe('ScalaConstrainer', () => {
         options: ScalaGenerator.defaultOptions,
         dependencyManager: undefined as never
       });
-      expect(type).toEqual('');
+      expect(type).toEqual('Any');
     });
   });
   describe('Float', () => {
@@ -213,7 +213,7 @@ describe('ScalaConstrainer', () => {
         options: ScalaGenerator.defaultOptions,
         dependencyManager: undefined as never
       });
-      expect(type).toEqual('ByteArray');
+      expect(type).toEqual('Array[Byte]');
     });
   });
 
@@ -291,7 +291,7 @@ describe('ScalaConstrainer', () => {
       };
       const type = ScalaDefaultTypeMapping.Array({
         constrainedModel: model,
-        options: ScalaGenerator.defaultOptions,
+        options,
         dependencyManager: undefined as never
       });
       expect(type).toEqual('Array[String]');
