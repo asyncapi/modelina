@@ -34,10 +34,18 @@ export interface ScalaOptions
   extends CommonGeneratorOptions<ScalaPreset> {
   typeMapping: TypeMapping<ScalaOptions, ScalaDependencyManager>;
   constraints: Constraints;
+  collectionType: 'List' | 'Array';
 }
+
+export type ScalaTypeMapping = TypeMapping<
+  ScalaOptions,
+  ScalaDependencyManager
+>
+
 export interface ScalaRenderCompleteModelOptions {
   packageName: string;
 }
+
 export class ScalaGenerator extends AbstractGenerator<
   ScalaOptions,
   ScalaRenderCompleteModelOptions
@@ -45,12 +53,9 @@ export class ScalaGenerator extends AbstractGenerator<
   static defaultOptions: ScalaOptions = {
     ...defaultGeneratorOptions,
     defaultPreset: SCALA_DEFAULT_PRESET,
+    collectionType: 'List',
     typeMapping: ScalaDefaultTypeMapping,
     constraints: ScalaDefaultConstraints
-  };
-
-  static defaultCompleteModelOptions: ScalaRenderCompleteModelOptions = {
-    packageName: 'Asyncapi.Models'
   };
 
   constructor(options?: DeepPartial<ScalaOptions>) {
@@ -90,7 +95,6 @@ export class ScalaGenerator extends AbstractGenerator<
    * This function makes sure we split up the MetaModels accordingly to what we want to render as models.
    */
   splitMetaModel(model: MetaModel): MetaModel[] {
-    //These are the models that we have separate renderers for
     const metaModelsToSplit = {
       splitEnum: true,
       splitObject: true
@@ -128,10 +132,22 @@ export class ScalaGenerator extends AbstractGenerator<
   render(
     args: AbstractGeneratorRenderArgs<ScalaOptions>
   ): Promise<RenderOutput> {
+    const optionsToUse = ScalaGenerator.getScalaOptions({
+      ...this.options,
+      ...args.options
+    });
     if (args.constrainedModel instanceof ConstrainedObjectModel) {
-      return this.renderClass(args.constrainedModel, args.inputModel);
+      return this.renderClass(
+        args.constrainedModel,
+        args.inputModel,
+        optionsToUse
+      );
     } else if (args.constrainedModel instanceof ConstrainedEnumModel) {
-      return this.renderEnum(args.constrainedModel, args.inputModel);
+      return this.renderEnum(
+        args.constrainedModel,
+        args.inputModel,
+        optionsToUse
+      );
     }
     Logger.warn(
       `Scala generator, cannot generate this type of model, ${args.constrainedModel.name}`
@@ -160,33 +176,37 @@ export class ScalaGenerator extends AbstractGenerator<
       ScalaRenderCompleteModelOptions
     >
   ): Promise<RenderOutput> {
-    const completeModelOptionsToUse =
-      mergePartialAndDefault<ScalaRenderCompleteModelOptions>(
-        ScalaGenerator.defaultCompleteModelOptions,
-        args.completeOptions
-      );
-
-    if (isReservedScalaKeyword(completeModelOptionsToUse.packageName)) {
-      throw new Error(
-        `You cannot use reserved Scala keyword (${args.completeOptions.packageName}) as package name, please use another.`
-      );
-    }
-
-    const outputModel = await this.render(args);
-    const modelDependencies = args.constrainedModel
-      .getNearestDependencies()
-      .map((dependencyModel) => {
-        return `import ${completeModelOptionsToUse.packageName}.${dependencyModel.name};`;
-      });
-    const outputContent = `package ${completeModelOptionsToUse.packageName};
-${modelDependencies.join('\n')}
+    const optionsToUse = ScalaGenerator.getScalaOptions({
+      ...this.options,
+      ...args.options
+    });
+    const outputModel = await this.render({
+      ...args,
+      options: optionsToUse
+    });
+    const packageName = this.sanitizePackageName(
+      args.completeOptions.packageName ?? 'Asyncapi.Models'
+    );
+    const outputContent = `package ${packageName}
 ${outputModel.dependencies.join('\n')}
+
 ${outputModel.result}`;
     return RenderOutput.toRenderOutput({
       result: outputContent,
       renderedName: outputModel.renderedName,
       dependencies: outputModel.dependencies
     });
+  }
+
+  private sanitizePackageName(packageName: string): string {
+    return packageName
+      .split('.')
+      .map((subpackage) =>
+        isReservedScalaKeyword(subpackage, true)
+          ? `\`${subpackage}\``
+          : subpackage
+      )
+      .join('.');
   }
 
   async renderClass(

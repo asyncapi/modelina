@@ -5,6 +5,7 @@ import {
 } from '../../../models';
 import { EnumPresetType } from '../ScalaPreset';
 import { ScalaOptions } from '../ScalaGenerator';
+import { FormatHelpers } from 'helpers';
 
 /**
  * Renderer for Scala's `enum` type
@@ -12,12 +13,15 @@ import { ScalaOptions } from '../ScalaGenerator';
  * @extends ScalaRenderer
  */
 export class EnumRenderer extends ScalaRenderer<ConstrainedEnumModel> {
-  async defaultSelf(): Promise<string> {
+  async defaultSelf(valueType: string): Promise<string> {
     const content = [
       await this.renderItems(),
+      await this.runFromValuePreset(),
       await this.runAdditionalContentPreset()
     ];
-    return `public enum ${this.model.name} {
+    return `object ${this.model.name}  extends Enumeration {
+  type ${this.model.name} = Value
+
 ${this.indent(this.renderBlock(content, 2))}
 }`;
   }
@@ -31,52 +35,26 @@ ${this.indent(this.renderBlock(content, 2))}
       items.push(renderedItem);
     }
 
-    const content = items.join(', ');
+    const content = items.join('\n');
     return `${content};`;
   }
 
   runItemPreset(item: ConstrainedEnumValueModel): Promise<string> {
     return this.runPreset('item', { item });
   }
+
+  runFromValuePreset(): Promise<string> {
+    return this.runPreset('fromValue');
+  }
 }
 
-export const SCALA_DEFAULT_ENUM_PRESET: EnumPresetType<ScalaOptions> = {
-  self({ renderer }) {
-    renderer.dependencyManager.addDependency(
-      'import com.fasterxml.jackson.annotation.*;'
-    );
-    return renderer.defaultSelf();
+export const SCALA_DEFAULT_ENUM_PRESET: EnumPresetType<KotlinOptions> = {
+  self({ renderer, model }) {
+    return renderer.defaultSelf(model.type);
   },
   item({ item }) {
-    return `${item.key}(${item.value})`;
-  },
-  additionalContent({ model }) {
-    const enumValueType = 'Object';
+    const key = FormatHelpers.toPascalCase(item.key);
 
-    return `private ${enumValueType} value;
-
-${model.type}(${enumValueType} value) {
-  this.value = value;
-}
-
-@JsonValue
-public ${enumValueType} getValue() {
-  return value;
-}
-
-@Override
-public String toString() {
-  return String.valueOf(value);
-}
-
-@JsonCreator
-public static ${model.type} fromValue(${enumValueType} value) {
-  for (${model.type} e : ${model.type}.values()) {
-    if (e.value.equals(value)) {
-      return e;
-    }
-  }
-  throw new IllegalArgumentException("Unexpected value '" + value + "'");
-}`;
+    return `val ${key} = Value("${item.value}")`
   }
 };

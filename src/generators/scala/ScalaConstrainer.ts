@@ -1,4 +1,5 @@
-import { Constraints, TypeMapping } from '../../helpers';
+import { Constraints } from '../../helpers';
+import { ConstrainedEnumValueModel } from '../../models';
 import {
   defaultEnumKeyConstraints,
   defaultEnumValueConstraints
@@ -6,50 +7,143 @@ import {
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
 import { defaultConstantConstraints } from './constrainer/ConstantConstrainer';
-import { ScalaDependencyManager } from './ScalaDependencyManager';
-import { ScalaOptions } from './ScalaGenerator';
+import { ScalaTypeMapping } from './ScalaGenerator';
 
-export const ScalaDefaultTypeMapping: TypeMapping<
-  ScalaOptions,
-  ScalaDependencyManager
-> = {
+function enumFormatToNumberType(
+  enumValueModel: ConstrainedEnumValueModel,
+  format: string | undefined
+): string {
+  switch (format) {
+    case 'integer':
+    case 'int32':
+      return 'Int';
+    case 'long':
+    case 'int64':
+      return 'Long';
+    case 'float':
+      return 'Float';
+    case 'double':
+      return 'Double';
+    default:
+      return Number.isInteger(enumValueModel.value) ? 'Int' : 'Double';
+  }
+}
+
+function fromEnumValueToKotlinType(
+  enumValueModel: ConstrainedEnumValueModel,
+  format: string | undefined
+): string {
+  switch (typeof enumValueModel.value) {
+    case 'boolean':
+      return 'Boolean';
+    case 'number':
+    case 'bigint':
+      return enumFormatToNumberType(enumValueModel, format);
+    case 'object':
+      return 'Any';
+    case 'string':
+      return 'String';
+    default:
+      return 'Any';
+  }
+}
+
+/**
+ * Converts union of different number types to the most strict type it can be.
+ *
+ * int + double = double (long + double, float + double can never happen, otherwise this would be converted to double)
+ * int + float = float (long + float can never happen, otherwise this would be the case as well)
+ * int + long = long
+ *
+ * Basically a copy from JavaConstrainer.ts
+ */
+function interpretUnionValueType(types: string[]): string {
+  if (types.includes('Double')) {
+    return 'Double';
+  }
+
+  if (types.includes('Float')) {
+    return 'Float';
+  }
+
+  if (types.includes('Long')) {
+    return 'Long';
+  }
+
+  return 'Any';
+}
+
+export const ScalaDefaultTypeMapping: ScalaTypeMapping = {
   Object({ constrainedModel }): string {
-    //Returning name here because all object models have been split out
     return constrainedModel.name;
   },
   Reference({ constrainedModel }): string {
     return constrainedModel.name;
   },
   Any(): string {
-    return '';
+    return 'Any';
   },
-  Float(): string {
-    return '';
+  Float({ constrainedModel }): string {
+    return constrainedModel.options.format === 'float' ? 'Float' : 'Double';
   },
-  Integer(): string {
-    return '';
+  Integer({ constrainedModel }): string {
+    return constrainedModel.options.format === 'long' ||
+      constrainedModel.options.format === 'int64'
+      ? 'Long'
+      : 'Int';
   },
-  String(): string {
-    return '';
+  String({ constrainedModel }): string {
+    switch (constrainedModel.options.format) {
+      case 'date': {
+        return 'java.time.LocalDate';
+      }
+      case 'time': {
+        return 'java.time.OffsetTime';
+      }
+      case 'dateTime':
+      case 'date-time': {
+        return 'java.time.OffsetDateTime';
+      }
+      case 'binary': {
+        return 'Array[Byte]';
+      }
+      default: {
+        return 'String';
+      }
+    }
   },
   Boolean(): string {
-    return '';
+    return 'Boolean';
   },
-  Tuple(): string {
-    return '';
+  // Since there are not tuples in Kotlin, we have to return a collection of `Any`
+  Tuple({ options }): string {
+    const isList = options.collectionType && options.collectionType === 'List';
+
+    return isList ? 'List[Any]' : 'Array[Any]';
   },
-  Array(): string {
-    return '';
+  Array({ constrainedModel, options }): string {
+    const isList = options.collectionType && options.collectionType === 'List';
+    const type = constrainedModel.valueModel.type;
+
+    return isList ? `List[${type}]` : `Array[${type}]`;
   },
   Enum({ constrainedModel }): string {
-    //Returning name here because all enum models have been split out
-    return constrainedModel.name;
+    const valueTypes = constrainedModel.values.map((enumValue) =>
+      fromEnumValueToKotlinType(enumValue, constrainedModel.options.format)
+    );
+    const uniqueTypes = [...new Set(valueTypes)];
+
+    // Enums cannot handle union types, default to a loose type
+    return uniqueTypes.length > 1
+      ? interpretUnionValueType(uniqueTypes)
+      : uniqueTypes[0];
   },
   Union(): string {
-    return '';
+    // No Unions in Kotlin, use Any for now.
+    return 'Any';
   },
-  Dictionary(): string {
-    return '';
+  Dictionary({ constrainedModel }): string {
+    return `Map[${constrainedModel.key.type}, ${constrainedModel.value.type}]`;
   }
 };
 

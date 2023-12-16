@@ -1,12 +1,17 @@
 import { ScalaRenderer } from '../ScalaRenderer';
 import {
-  ConstrainedDictionaryModel,
   ConstrainedObjectModel,
   ConstrainedObjectPropertyModel
 } from '../../../models';
-import { FormatHelpers } from '../../../helpers';
 import { ScalaOptions } from '../ScalaGenerator';
 import { ClassPresetType } from '../ScalaPreset';
+
+function getPropertyType(property: ConstrainedObjectPropertyModel): string {
+  const propertyType = property.required ? 
+    property.property.type : `Option[${property.property.type}]`;
+
+  return propertyType;
+}
 
 /**
  * Renderer for Scala's `class` type
@@ -14,26 +19,23 @@ import { ClassPresetType } from '../ScalaPreset';
  * @extends ScalaRenderer
  */
 export class ClassRenderer extends ScalaRenderer<ConstrainedObjectModel> {
-  async defaultSelf(): Promise<string> {
+  async defaultSelf(hasProperties: boolean): Promise<string> {
+    return hasProperties
+      ? await this.defaultWithProperties()
+      : `class ${this.model.name} {}`;
+  }
+
+  private async defaultWithProperties(): Promise<string> {
     const content = [
       await this.renderProperties(),
-      await this.runCtorPreset(),
-      await this.renderAccessors(),
       await this.runAdditionalContentPreset()
     ];
 
-    return `public class ${this.model.name} {
+    return `case class ${this.model.name}(
 ${this.indent(this.renderBlock(content, 2))}
-}`;
+)`;
   }
 
-  runCtorPreset(): Promise<string> {
-    return this.runPreset('ctor');
-  }
-
-  /**
-   * Render all the properties for the class.
-   */
   async renderProperties(): Promise<string> {
     const properties = this.model.properties || {};
     const content: string[] = [];
@@ -49,47 +51,17 @@ ${this.indent(this.renderBlock(content, 2))}
   runPropertyPreset(property: ConstrainedObjectPropertyModel): Promise<string> {
     return this.runPreset('property', { property });
   }
-
-  /**
-   * Render all the accessors for the properties
-   */
-  async renderAccessors(): Promise<string> {
-    const properties = this.model.properties || {};
-    const content: string[] = [];
-
-    for (const property of Object.values(properties)) {
-      const getter = await this.runGetterPreset(property);
-      const setter = await this.runSetterPreset(property);
-      content.push(this.renderBlock([getter, setter]));
-    }
-
-    return this.renderBlock(content, 2);
-  }
-
-  runGetterPreset(property: ConstrainedObjectPropertyModel): Promise<string> {
-    return this.runPreset('getter', { property });
-  }
-
-  runSetterPreset(property: ConstrainedObjectPropertyModel): Promise<string> {
-    return this.runPreset('setter', { property });
-  }
 }
 
 export const SCALA_DEFAULT_CLASS_PRESET: ClassPresetType<ScalaOptions> = {
-  self({ renderer }) {
-    return renderer.defaultSelf();
+  self({ renderer, model }) {
+    const hasProperties = Object.keys(model.properties).length > 0;
+
+    return renderer.defaultSelf(hasProperties);
   },
   property({ property }) {
-    return `private ${property.property.type} ${property.propertyName};`;
-  },
-  getter({ property }) {
-    const getterName = `get${FormatHelpers.toPascalCase(
-      property.propertyName
-    )}`;
-    return `public ${property.property.type} ${getterName}() { return this.${property.propertyName}; }`;
-  },
-  setter({ property }) {
-    const setterName = FormatHelpers.toPascalCase(property.propertyName);
-    return `public void set${setterName}(${property.property.type} ${property.propertyName}) { this.${property.propertyName} = ${property.propertyName}; }`;
+    const propertyType = getPropertyType(property);
+
+    return `${property.propertyName}: ${propertyType},`;
   }
 };
