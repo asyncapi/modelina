@@ -49,7 +49,7 @@ ${this.indent(this.renderBlock(content, 2))}
 }
 
 export const SCALA_DEFAULT_ENUM_PRESET: EnumPresetType<ScalaOptions> = {
-  self({ renderer, model }) {
+  self({ renderer }) {
     return renderer.defaultSelf();
   },
   item({ item, model }) {
