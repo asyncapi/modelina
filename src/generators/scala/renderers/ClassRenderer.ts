@@ -7,11 +7,9 @@ import { ScalaOptions } from '../ScalaGenerator';
 import { ClassPresetType } from '../ScalaPreset';
 
 function getPropertyType(property: ConstrainedObjectPropertyModel): string {
-  const propertyType = property.required
+  return property.required
     ? property.property.type
     : `Option[${property.property.type}]`;
-
-  return propertyType;
 }
 
 /**

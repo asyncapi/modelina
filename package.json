@@ -127,7 +127,8 @@
     "generate:assets": "npm run build:prod && npm run docs && npm run generate:readme:toc && npm run format",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION",
     "prepublishOnly": "npm run build:prod && npm run generate:readme:toc && npm run format",
-    "format": "prettier --config .prettierrc \"./**/*.ts\" --write"
+    "format": "prettier --config .prettierrc \"./**/*.ts\" --write",
+    "format-now": "prettier --config .prettierrc test/generators/scala/ScalaGenerator.spec.ts --write"
   },
   "publishConfig": {
     "access": "public"

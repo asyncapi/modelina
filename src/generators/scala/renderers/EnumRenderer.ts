@@ -13,7 +13,7 @@ import { FormatHelpers } from '../../../helpers';
  * @extends ScalaRenderer
  */
 export class EnumRenderer extends ScalaRenderer<ConstrainedEnumModel> {
-  async defaultSelf(valueType: string): Promise<string> {
+  async defaultSelf(): Promise<string> {
     const content = [
       await this.renderItems(),
       await this.runFromValuePreset(),
@@ -50,7 +50,7 @@ ${this.indent(this.renderBlock(content, 2))}
 
 export const SCALA_DEFAULT_ENUM_PRESET: EnumPresetType<ScalaOptions> = {
   self({ renderer, model }) {
-    return renderer.defaultSelf(model.type);
+    return renderer.defaultSelf();
   },
   item({ item, model }) {
     const key = FormatHelpers.toPascalCase(item.key);
