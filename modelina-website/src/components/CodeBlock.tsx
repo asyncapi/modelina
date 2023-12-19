@@ -224,7 +224,7 @@ export default function CodeBlock({
               className: 'pl-2 float-left left-0 sticky bg-code-editor-dark',
               style: {}
             }}
-            lineNumberProps={(lineNumber: any) => {
+            linenumberprops={(lineNumber: any) => {
               const isHighlighted = highlightedLines?.includes(lineNumber) || false;
               return {
                 className: `${

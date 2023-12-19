@@ -90,7 +90,7 @@ In v2, `required` properties are no longer applied, but the rest of the structur
 
 ## Constant values
 
-(Constant values)[https://json-schema.org/understanding-json-schema/reference/generic.html#constant-values] are now supported.
+[Constant values](https://json-schema.org/understanding-json-schema/reference/generic.html#constant-values) are now supported.
 
 ```yaml
 type: object
@@ -103,7 +103,7 @@ The `country` property will not have a setter and will automatically be initiali
 
 ## Discriminator
 
-(Discriminator)[https://www.asyncapi.com/docs/reference/specification/v2.6.0#schemaComposition] is now supported.
+[Discriminator](https://www.asyncapi.com/docs/reference/specification/v2.6.0#schemaComposition) is now supported.
 
 ```yaml
 schemas:
