@@ -2,7 +2,8 @@ import { JavaScriptDefaultConstraints } from '../../../../src/generators/javascr
 import { EnumModel } from '../../../../src/models/MetaModel';
 import {
   ConstrainedEnumModel,
-  ConstrainedEnumValueModel
+  ConstrainedEnumValueModel,
+  JavaScriptGenerator
 } from '../../../../src';
 describe('EnumConstrainer', () => {
   const enumModel = new EnumModel('test', undefined, {}, []);
@@ -19,7 +20,8 @@ describe('EnumConstrainer', () => {
       const constrainedKey = JavaScriptDefaultConstraints.enumKey({
         enumModel,
         constrainedEnumModel,
-        enumKey: '%'
+        enumKey: '%',
+        options: JavaScriptGenerator.defaultOptions
       });
       expect(constrainedKey).toEqual('%');
     });
@@ -27,7 +29,8 @@ describe('EnumConstrainer', () => {
       const constrainedKey = JavaScriptDefaultConstraints.enumKey({
         enumModel,
         constrainedEnumModel,
-        enumKey: '1'
+        enumKey: '1',
+        options: JavaScriptGenerator.defaultOptions
       });
       expect(constrainedKey).toEqual('1');
     });
@@ -47,7 +50,8 @@ describe('EnumConstrainer', () => {
       const constrainedKey = JavaScriptDefaultConstraints.enumKey({
         enumModel,
         constrainedEnumModel,
-        enumKey: ''
+        enumKey: '',
+        options: JavaScriptGenerator.defaultOptions
       });
       expect(constrainedKey).toEqual('');
     });
@@ -55,7 +59,8 @@ describe('EnumConstrainer', () => {
       const constrainedKey = JavaScriptDefaultConstraints.enumKey({
         enumModel,
         constrainedEnumModel,
-        enumKey: ''
+        enumKey: '',
+        options: JavaScriptGenerator.defaultOptions
       });
       expect(constrainedKey).toEqual('');
     });
@@ -63,7 +68,8 @@ describe('EnumConstrainer', () => {
       const constrainedKey = JavaScriptDefaultConstraints.enumKey({
         enumModel,
         constrainedEnumModel,
-        enumKey: 'some weird_value!"#2'
+        enumKey: 'some weird_value!"#2',
+        options: JavaScriptGenerator.defaultOptions
       });
       expect(constrainedKey).toEqual('some weird_value!"#2');
     });
@@ -71,7 +77,8 @@ describe('EnumConstrainer', () => {
       const constrainedKey = JavaScriptDefaultConstraints.enumKey({
         enumModel,
         constrainedEnumModel,
-        enumKey: 'return'
+        enumKey: 'return',
+        options: JavaScriptGenerator.defaultOptions
       });
       expect(constrainedKey).toEqual('return');
     });
@@ -81,7 +88,8 @@ describe('EnumConstrainer', () => {
       const constrainedValue = JavaScriptDefaultConstraints.enumValue({
         enumModel,
         constrainedEnumModel,
-        enumValue: 'string value'
+        enumValue: 'string value',
+        options: JavaScriptGenerator.defaultOptions
       });
       expect(constrainedValue).toEqual('string value');
     });
@@ -89,7 +97,8 @@ describe('EnumConstrainer', () => {
       const constrainedValue = JavaScriptDefaultConstraints.enumValue({
         enumModel,
         constrainedEnumModel,
-        enumValue: true
+        enumValue: true,
+        options: JavaScriptGenerator.defaultOptions
       });
       expect(constrainedValue).toEqual(true);
     });
@@ -97,7 +106,8 @@ describe('EnumConstrainer', () => {
       const constrainedValue = JavaScriptDefaultConstraints.enumValue({
         enumModel,
         constrainedEnumModel,
-        enumValue: 123
+        enumValue: 123,
+        options: JavaScriptGenerator.defaultOptions
       });
       expect(constrainedValue).toEqual(123);
     });
@@ -105,7 +115,8 @@ describe('EnumConstrainer', () => {
       const constrainedValue = JavaScriptDefaultConstraints.enumValue({
         enumModel,
         constrainedEnumModel,
-        enumValue: { test: 'test' }
+        enumValue: { test: 'test' },
+        options: JavaScriptGenerator.defaultOptions
       });
       expect(constrainedValue).toEqual({ test: 'test' });
     });
@@ -113,7 +124,8 @@ describe('EnumConstrainer', () => {
       const constrainedValue = JavaScriptDefaultConstraints.enumValue({
         enumModel,
         constrainedEnumModel,
-        enumValue: undefined
+        enumValue: undefined,
+        options: JavaScriptGenerator.defaultOptions
       });
       expect(constrainedValue).toEqual(undefined);
     });

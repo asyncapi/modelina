@@ -1,4 +1,3 @@
-import { Constraints } from '../../helpers';
 import {
   defaultEnumKeyConstraints,
   defaultEnumValueConstraints
@@ -49,7 +48,7 @@ export const GoDefaultTypeMapping: GoTypeMapping = {
   }
 };
 
-export const GoDefaultConstraints: Constraints = {
+export const GoDefaultConstraints = {
   enumKey: defaultEnumKeyConstraints(),
   enumValue: defaultEnumValueConstraints(),
   modelName: defaultModelNameConstraints(),

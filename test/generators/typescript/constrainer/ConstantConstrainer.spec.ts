@@ -2,7 +2,8 @@ import {
   ConstrainedEnumModel,
   ConstrainedEnumValueModel,
   ConstrainedReferenceModel,
-  ConstrainedStringModel
+  ConstrainedStringModel,
+  TypeScriptGenerator
 } from '../../../../src';
 import { defaultConstantConstraints } from '../../../../src/generators/typescript/constrainer/ConstantConstrainer';
 
@@ -14,7 +15,8 @@ describe('ConstantConstrainer', () => {
         undefined,
         {},
         'String'
-      )
+      ),
+      options: TypeScriptGenerator.defaultOptions
     });
     expect(constrainedConstant).toBeUndefined();
   });
@@ -38,7 +40,8 @@ describe('ConstantConstrainer', () => {
             'TestEnumType',
             [new ConstrainedEnumValueModel('testKey', 'testValue', 'testValue')]
           )
-        )
+        ),
+        options: TypeScriptGenerator.defaultOptions
       });
       expect(constrainedConstant).toEqual('TestRefType.testKey');
     });
@@ -53,7 +56,8 @@ describe('ConstantConstrainer', () => {
           { const: { originalInput: 'testValue' } },
           'TestEnumType',
           [new ConstrainedEnumValueModel('testKey', 'testValue', 'testValue')]
-        )
+        ),
+        options: TypeScriptGenerator.defaultOptions
       });
       expect(constrainedConstant).toEqual('TestEnumType.testKey');
     });
@@ -67,7 +71,8 @@ describe('ConstantConstrainer', () => {
           undefined,
           { const: { originalInput: 'testValue' } },
           'String'
-        )
+        ),
+        options: TypeScriptGenerator.defaultOptions
       });
       expect(constrainedConstant).toEqual("'testValue'");
     });

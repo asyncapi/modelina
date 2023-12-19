@@ -2,6 +2,7 @@ import { GoDefaultConstraints } from '../../../../src/generators/go/GoConstraine
 import {
   ConstrainedObjectModel,
   ConstrainedObjectPropertyModel,
+  GoGenerator,
   ObjectModel,
   ObjectPropertyModel
 } from '../../../../src';
@@ -36,7 +37,8 @@ describe('PropertyKeyConstrainer', () => {
       constrainedObjectModel,
       objectModel,
       objectPropertyModel,
-      constrainedObjectPropertyModel
+      constrainedObjectPropertyModel,
+      options: GoGenerator.defaultOptions
     });
   };
 
@@ -95,7 +97,8 @@ describe('PropertyKeyConstrainer', () => {
       constrainedObjectModel,
       objectModel,
       objectPropertyModel: objectPropertyModel2,
-      constrainedObjectPropertyModel: constrainedObjectPropertyModel2
+      constrainedObjectPropertyModel: constrainedObjectPropertyModel2,
+      options: GoGenerator.defaultOptions
     });
     expect(constrainedKey).toEqual('ReservedReservedReturn');
   });
@@ -130,7 +133,8 @@ describe('PropertyKeyConstrainer', () => {
         constrainedObjectModel,
         objectModel,
         objectPropertyModel,
-        constrainedObjectPropertyModel
+        constrainedObjectPropertyModel,
+        options: GoGenerator.defaultOptions
       });
       //Expect all callbacks to be called
       for (const jestMockCallback of Object.values(mockedConstraintCallbacks)) {
@@ -169,7 +173,8 @@ describe('PropertyKeyConstrainer', () => {
         constrainedObjectModel,
         objectModel,
         objectPropertyModel,
-        constrainedObjectPropertyModel
+        constrainedObjectPropertyModel,
+        options: GoGenerator.defaultOptions
       });
       expect(constrainedValue).toEqual('');
       expect(jestCallback).toHaveBeenCalled();

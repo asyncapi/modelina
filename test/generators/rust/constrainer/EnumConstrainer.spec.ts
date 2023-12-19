@@ -3,7 +3,8 @@ import { EnumModel } from '../../../../src/models/MetaModel';
 import {
   ConstrainedEnumModel,
   ConstrainedEnumValueModel,
-  EnumKeyConstraint
+  RustEnumKeyConstraint,
+  RustGenerator
 } from '../../../../src';
 import { defaultEnumKeyConstraints } from '../../../../src/generators/rust/constrainer/EnumConstrainer';
 describe('EnumConstrainer', () => {
@@ -21,7 +22,8 @@ describe('EnumConstrainer', () => {
       const constrainedKey = RustDefaultConstraints.enumKey({
         enumModel,
         constrainedEnumModel,
-        enumKey: '%'
+        enumKey: '%',
+        options: RustGenerator.defaultOptions
       });
       expect(constrainedKey).toEqual('Percent');
     });
@@ -29,7 +31,8 @@ describe('EnumConstrainer', () => {
       const constrainedKey = RustDefaultConstraints.enumKey({
         enumModel,
         constrainedEnumModel,
-        enumKey: '1'
+        enumKey: '1',
+        options: RustGenerator.defaultOptions
       });
       expect(constrainedKey).toEqual('Number_1');
     });
@@ -49,7 +52,8 @@ describe('EnumConstrainer', () => {
       const constrainedKey = RustDefaultConstraints.enumKey({
         enumModel,
         constrainedEnumModel,
-        enumKey: ''
+        enumKey: '',
+        options: RustGenerator.defaultOptions
       });
       expect(constrainedKey).toEqual('Empty');
     });
@@ -57,7 +61,8 @@ describe('EnumConstrainer', () => {
       const constrainedKey = RustDefaultConstraints.enumKey({
         enumModel,
         constrainedEnumModel,
-        enumKey: ''
+        enumKey: '',
+        options: RustGenerator.defaultOptions
       });
       expect(constrainedKey).toEqual('Empty');
     });
@@ -65,7 +70,8 @@ describe('EnumConstrainer', () => {
       const constrainedKey = RustDefaultConstraints.enumKey({
         enumModel,
         constrainedEnumModel,
-        enumKey: 'some weird_value!"#2'
+        enumKey: 'some weird_value!"#2',
+        options: RustGenerator.defaultOptions
       });
       expect(constrainedKey).toEqual(
         'SomeWeirdValueExclamationQuotationHash_2'
@@ -75,21 +81,23 @@ describe('EnumConstrainer', () => {
       const constrainedKey = RustDefaultConstraints.enumKey({
         enumModel,
         constrainedEnumModel,
-        enumKey: 'return'
+        enumKey: 'return',
+        options: RustGenerator.defaultOptions
       });
       expect(constrainedKey).toEqual('Return');
     });
 
     describe('custom constraints', () => {
       test('should make sure reserved keywords cannot be rendered', () => {
-        const customNamingFormat: Partial<EnumKeyConstraint> = {
+        const customNamingFormat: Partial<RustEnumKeyConstraint> = {
           NAMING_FORMATTER: (value) => value
         };
         const constrainFunction = defaultEnumKeyConstraints(customNamingFormat);
         const constrainedKey = constrainFunction({
           enumModel,
           constrainedEnumModel,
-          enumKey: 'return'
+          enumKey: 'return',
+          options: RustGenerator.defaultOptions
         });
         expect(constrainedKey).toEqual('reserved_return');
       });
@@ -100,7 +108,8 @@ describe('EnumConstrainer', () => {
       const constrainedValue = RustDefaultConstraints.enumValue({
         enumModel,
         constrainedEnumModel,
-        enumValue: 'string value'
+        enumValue: 'string value',
+        options: RustGenerator.defaultOptions
       });
       expect(constrainedValue).toEqual('string value');
     });
@@ -108,7 +117,8 @@ describe('EnumConstrainer', () => {
       const constrainedValue = RustDefaultConstraints.enumValue({
         enumModel,
         constrainedEnumModel,
-        enumValue: true
+        enumValue: true,
+        options: RustGenerator.defaultOptions
       });
       expect(constrainedValue).toEqual(true);
     });
@@ -116,7 +126,8 @@ describe('EnumConstrainer', () => {
       const constrainedValue = RustDefaultConstraints.enumValue({
         enumModel,
         constrainedEnumModel,
-        enumValue: 123
+        enumValue: 123,
+        options: RustGenerator.defaultOptions
       });
       expect(constrainedValue).toEqual(123);
     });
@@ -124,7 +135,8 @@ describe('EnumConstrainer', () => {
       const constrainedValue = RustDefaultConstraints.enumValue({
         enumModel,
         constrainedEnumModel,
-        enumValue: { test: 'test' }
+        enumValue: { test: 'test' },
+        options: RustGenerator.defaultOptions
       });
       expect(constrainedValue).toEqual({ test: 'test' });
     });
@@ -132,7 +144,8 @@ describe('EnumConstrainer', () => {
       const constrainedValue = RustDefaultConstraints.enumValue({
         enumModel,
         constrainedEnumModel,
-        enumValue: undefined
+        enumValue: undefined,
+        options: RustGenerator.defaultOptions
       });
       expect(constrainedValue).toEqual(undefined);
     });

@@ -26,7 +26,7 @@ export abstract class TypeScriptObjectRenderer extends TypeScriptRenderer<Constr
   }
 
   renderProperty(property: ConstrainedObjectPropertyModel): string {
-    const renderedProperty = `'${property.propertyName}'${
+    const renderedProperty = `${property.propertyName}${
       property.required === false ? '?' : ''
     }`;
 

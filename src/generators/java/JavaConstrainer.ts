@@ -1,4 +1,3 @@
-import { Constraints } from '../../helpers';
 import {
   ConstrainedEnumValueModel,
   ConstrainedMetaModel,
@@ -240,7 +239,7 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
   }
 };
 
-export const JavaDefaultConstraints: Constraints = {
+export const JavaDefaultConstraints = {
   enumKey: defaultEnumKeyConstraints(),
   enumValue: defaultEnumValueConstraints(),
   modelName: defaultModelNameConstraints(),

@@ -1,4 +1,3 @@
-import { Constraints } from '../../helpers';
 import {
   ConstrainedEnumValueModel,
   ConstrainedObjectPropertyModel
@@ -113,7 +112,7 @@ export const CSharpDefaultTypeMapping: CSharpTypeMapping = {
   }
 };
 
-export const CSharpDefaultConstraints: Constraints = {
+export const CSharpDefaultConstraints = {
   enumKey: defaultEnumKeyConstraints(),
   enumValue: defaultEnumValueConstraints(),
   modelName: defaultModelNameConstraints(),

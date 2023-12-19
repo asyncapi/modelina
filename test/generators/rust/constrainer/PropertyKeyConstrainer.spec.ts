@@ -3,7 +3,8 @@ import {
   ConstrainedObjectModel,
   ConstrainedObjectPropertyModel,
   ObjectModel,
-  ObjectPropertyModel
+  ObjectPropertyModel,
+  RustGenerator
 } from '../../../../src';
 describe('PropertyKeyConstrainer', () => {
   const objectModel = new ObjectModel('test', undefined, {}, {});
@@ -31,7 +32,8 @@ describe('PropertyKeyConstrainer', () => {
       constrainedObjectModel,
       objectModel,
       objectPropertyModel,
-      constrainedObjectPropertyModel
+      constrainedObjectPropertyModel,
+      options: RustGenerator.defaultOptions
     });
   };
 
@@ -92,7 +94,8 @@ describe('PropertyKeyConstrainer', () => {
       constrainedObjectModel,
       objectModel,
       objectPropertyModel: objectPropertyModel2,
-      constrainedObjectPropertyModel: constrainedObjectPropertyModel2
+      constrainedObjectPropertyModel: constrainedObjectPropertyModel2,
+      options: RustGenerator.defaultOptions
     });
     expect(constrainedKey).toEqual('reserved_reserved_return');
   });
