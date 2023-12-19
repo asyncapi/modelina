@@ -3,7 +3,7 @@ import {
   NO_EMPTY_VALUE,
   NO_RESERVED_KEYWORDS
 } from '../../../helpers/Constraints';
-import { FormatHelpers, ModelNameConstraint } from '../../../helpers';
+import { FormatHelpers } from '../../../helpers';
 import { isReservedPhpKeyword } from '../Constants';
 import { PhpModelNameConstraint } from '../PhpGenerator';
 

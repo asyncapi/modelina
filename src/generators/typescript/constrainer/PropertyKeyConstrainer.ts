@@ -5,12 +5,9 @@ import {
   NO_EMPTY_VALUE,
   NO_RESERVED_KEYWORDS
 } from '../../../helpers/Constraints';
-import { FormatHelpers, PropertyKeyConstraint } from '../../../helpers';
+import { FormatHelpers } from '../../../helpers';
 import { isReservedTypeScriptKeyword } from '../Constants';
-import {
-  TypeScriptOptions,
-  TypeScriptPropertyKeyConstraint
-} from '../TypeScriptGenerator';
+import { TypeScriptPropertyKeyConstraint } from '../TypeScriptGenerator';
 
 export type PropertyKeyConstraintOptions = {
   NO_SPECIAL_CHAR: (value: string) => string;

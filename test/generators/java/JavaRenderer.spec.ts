@@ -1,11 +1,7 @@
 import { JavaGenerator } from '../../../src/generators';
 import { JavaDependencyManager } from '../../../src/generators/java/JavaDependencyManager';
 import { JavaRenderer } from '../../../src/generators/java/JavaRenderer';
-import {
-  CommonModel,
-  ConstrainedObjectModel,
-  InputMetaModel
-} from '../../../src/models';
+import { ConstrainedObjectModel, InputMetaModel } from '../../../src/models';
 import { MockJavaRenderer } from '../../TestUtils/TestRenderers';
 
 describe('JavaRenderer', () => {

@@ -1,4 +1,3 @@
-import { EnumKeyConstraint, EnumValueConstraint } from '../../../helpers';
 import {
   JavaScriptEnumKeyConstraint,
   JavaScriptEnumValueConstraint

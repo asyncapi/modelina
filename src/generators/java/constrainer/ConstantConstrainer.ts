@@ -5,7 +5,6 @@ import {
   ConstrainedReferenceModel,
   ConstrainedStringModel
 } from '../../../models';
-import { ConstantConstraint } from '../../../helpers';
 import { JavaRenderer } from '../JavaRenderer';
 import { JavaConstantConstraint } from '../JavaGenerator';
 

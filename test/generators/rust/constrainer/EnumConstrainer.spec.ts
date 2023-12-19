@@ -5,7 +5,6 @@ import {
   ConstrainedEnumValueModel,
   EnumKeyConstraint
 } from '../../../../src';
-import { RESERVED_RUST_KEYWORDS } from '../../../../src/generators/rust/Constants';
 import { defaultEnumKeyConstraints } from '../../../../src/generators/rust/constrainer/EnumConstrainer';
 describe('EnumConstrainer', () => {
   const enumModel = new EnumModel('test', undefined, {}, []);

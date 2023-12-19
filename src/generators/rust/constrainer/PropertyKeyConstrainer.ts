@@ -5,7 +5,7 @@ import {
   NO_EMPTY_VALUE,
   NO_RESERVED_KEYWORDS
 } from '../../../helpers/Constraints';
-import { FormatHelpers, PropertyKeyConstraint } from '../../../helpers';
+import { FormatHelpers } from '../../../helpers';
 import { isReservedRustKeyword } from '../Constants';
 import { RustPropertyKeyConstraint } from '../RustGenerator';
 

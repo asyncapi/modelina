@@ -1,5 +1,4 @@
 import { TypeScriptGenerator } from '../../src';
-import { pascalCase } from 'change-case';
 
 const generator = new TypeScriptGenerator({
   constraints: {

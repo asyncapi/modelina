@@ -5,11 +5,7 @@ import {
   NO_EMPTY_VALUE,
   NO_RESERVED_KEYWORDS
 } from '../../../helpers/Constraints';
-import {
-  FormatHelpers,
-  EnumKeyConstraint,
-  EnumValueConstraint
-} from '../../../helpers';
+import { FormatHelpers } from '../../../helpers';
 import { isReservedGoKeyword } from '../Constants';
 import { GoEnumKeyConstraint, GoEnumValueConstraint } from '../GoGenerator';
 

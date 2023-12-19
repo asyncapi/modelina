@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { JsonSchemaInputProcessor } from '../../src/processors/JsonSchemaInputProcessor';
-import { AnyModel, CommonModel, StringModel } from '../../src/models';
+import { AnyModel, CommonModel } from '../../src/models';
 jest.mock('../../src/utils/LoggingInterface');
 jest.spyOn(JsonSchemaInputProcessor, 'convertSchemaToCommonModel');
 let mockedReturnModels = [new CommonModel()];

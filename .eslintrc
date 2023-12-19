@@ -6,7 +6,8 @@
     "security",
     "github",
     "jest",
-    "prettier"
+    "prettier",
+    "unused-imports"
   ],
   "extends": [
     "eslint:recommended",

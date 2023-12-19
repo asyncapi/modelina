@@ -5,16 +5,11 @@ import {
   NO_EMPTY_VALUE,
   NO_RESERVED_KEYWORDS
 } from '../../../helpers/Constraints';
-import {
-  EnumKeyConstraint,
-  EnumValueConstraint,
-  FormatHelpers
-} from '../../../helpers';
+import { FormatHelpers } from '../../../helpers';
 import { isReservedTypeScriptKeyword } from '../Constants';
 import {
   TypeScriptEnumKeyConstraint,
-  TypeScriptEnumValueConstraint,
-  TypeScriptOptions
+  TypeScriptEnumValueConstraint
 } from '../TypeScriptGenerator';
 
 export type ModelEnumKeyConstraints = {

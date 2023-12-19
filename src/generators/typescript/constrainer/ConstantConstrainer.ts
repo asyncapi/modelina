@@ -5,11 +5,7 @@ import {
   ConstrainedReferenceModel,
   ConstrainedStringModel
 } from '../../../models';
-import { ConstantConstraint } from '../../../helpers';
-import {
-  TypeScriptConstantConstraint,
-  TypeScriptOptions
-} from '../TypeScriptGenerator';
+import { TypeScriptConstantConstraint } from '../TypeScriptGenerator';
 
 const getConstrainedEnumModelConstant = (args: {
   constrainedMetaModel: ConstrainedMetaModel;
