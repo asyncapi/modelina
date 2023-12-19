@@ -23,6 +23,7 @@ There are many rules as such, but to get the full description about the default 
 - [JavaScript](./constraints/JavaScript.md)
 - [Rust](./constraints/Rust.md)
 - [TypeScript](./constraints/TypeScript.md)
+- [Python](./constraints/Python.md)
 
 Even though there are many of these constraints, there might be reasons you want to customize the behavior to make it suit your use-case. Therefore each of the constraint rules can be overwritten completely and allow for you to implement your own behavior.
 
