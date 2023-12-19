@@ -5,7 +5,7 @@ exports[`PYTHON_PYDANTIC_PRESET should render pydantic for class 1`] = `
   prop: Optional[str] = Field(alias='''test
     multi
     line
-    description''')
-  additionalProperties: Optional[dict[Any, Any]] = Field()
+    description''', default=None)
+  additionalProperties: Optional[dict[Any, Any]] = Field(default=None)
 "
 `;
