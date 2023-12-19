@@ -49,7 +49,7 @@ export default function Index() {
               </CodeBlock>
               <div className="mt-8">
                 <GithubButton
-                  className="block mt-2 md:mt-0 md:inline-block w-full sm:w-auto mt-8"
+                  className="block md:mt-0 md:inline-block w-full sm:w-auto mt-8"
                   href="https://github.com/asyncapi/cli"
                 />
               </div>
@@ -92,16 +92,16 @@ export default function Index() {
               </div>
             </div>
           </div>
-          <div className = "relative lg:mt-8 h-full">
-            <Image 
-            src = {'/img/card/modelina-card.jpg'}
-            fill 
-            sizes='100vw'
-            alt = {'Modelina card'}
-          />
+          <div className="relative lg:mt-8 h-full">
+            <Image
+              src={'/img/card/modelina-card.jpg'}
+              fill
+              sizes='100vw'
+              alt={'Modelina card'}
+            />
           </div>
         </div>
-        
+
         <div className="relative text-center mt-12">
           <Heading level="h1" typeStyle="heading-lg">
             Usage

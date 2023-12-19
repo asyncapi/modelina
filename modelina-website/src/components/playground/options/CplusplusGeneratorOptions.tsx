@@ -1,10 +1,10 @@
-import React from 'react';
-import { PlaygroundCplusplusConfigContext } from '@/components/contexts/PlaygroundConfigContext';
+import React, { useContext, useEffect, useState } from 'react';
 import { debounce } from 'lodash';
+import { PlaygroundCplusplusConfigContext } from '@/components/contexts/PlaygroundConfigContext';
 import InfoModal from '@/components/InfoModal';
 
 interface CplusplusGeneratorOptionsProps {
-  setNewConfig?: (queryKey: string, queryValue: string) => void;
+  setNewConfig?: (queryKey: string, queryValue: any) => void;
 }
 
 interface CplusplusGeneratorState {
@@ -13,60 +13,54 @@ interface CplusplusGeneratorState {
 
 export const defaultState: CplusplusGeneratorState = {};
 
-class CplusplusGeneratorOptions extends React.Component<
-  CplusplusGeneratorOptionsProps,
-  CplusplusGeneratorState
-> {
-  static contextType = PlaygroundCplusplusConfigContext;
-  declare context: React.ContextType<typeof PlaygroundCplusplusConfigContext>;
-  constructor(props: any) {
-    super(props);
-    this.state = defaultState;
-    this.setState({ ...this.state, namespace: this.context?.cplusplusNamespace });
-    this.onChangeNamespace = this.onChangeNamespace.bind(this);
-    this.debouncedSetNewConfig = this.debouncedSetNewConfig.bind(this);
-  }
+const CplusplusGeneratorOptions: React.FC<CplusplusGeneratorOptionsProps> = ({ setNewConfig }) => {
+  const context = useContext(PlaygroundCplusplusConfigContext);
+  const [state, setState] = useState<CplusplusGeneratorState>(defaultState);
 
-  componentDidMount() {
-    this.setState({ ...this.state, namespace: this.context?.cplusplusNamespace });
-  }
+  useEffect(() => {
+    setState((prevState) => ({
+      ...prevState,
+      namespace: context?.cplusplusNamespace,
+    }));
+  }, [context?.cplusplusNamespace]);
 
-  onChangeNamespace(event: any) {
-    this.setState({ ...this.state, namespace: event.target.value })
-    if (this.props.setNewConfig) {
-      this.debouncedSetNewConfig('cplusplusNamespace', event.target.value);
-    }
-  }
+  const debouncedSetNewConfig = debounce(setNewConfig || (() => { }), 500);
 
-  debouncedSetNewConfig = debounce(this.props.setNewConfig || (() => {}), 500);
+  const onChangeNamespace = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setState((prevState) => ({
+      ...prevState,
+      namespace: event.target.value,
+    }));
 
-  render() {
-    return (
-      <ul className="flex flex-col">
-        <h3 className="text-lg font-medium leading-6 text-gray-900">
-          C++ Specific options
-        </h3>
-        <li className=' flex items-center'>
-          <InfoModal text="Namespace :">
-            <p>
+    setNewConfig && debouncedSetNewConfig('cplusplusNamespace', event.target.value);
+  };
+
+  return (
+    <ul className="flex flex-col">
+      <h3 className="py-2 w-full text-left border-b-[1px] border-gray-700">
+        C++ Specific options
+      </h3>
+      <li className='flex gap-1 items-center'>
+        <InfoModal text="Namespace :">
+          <p>
             In C++, a namespace is a feature that allows you to organize your code into logical groups or containers. It helps in avoiding naming conflicts between different parts of your code and provides a way to encapsulate related code.
-            </p>
-          </InfoModal>
-          <label className="flex flex-grow items-center py-2 justify-between cursor-pointer">
-            <span className="mt-1 max-w-2xl text-sm text-gray-500">
-              Namespace
-            </span>
-            <input
-              type="text"
-              className="form-input rounded-md border-gray-300 cursor-pointer font-regular text-md text-gray-700 hover:bg-gray-50 focus-within:text-gray-900"
-              name="cplusplusNamespace"
-              value={this.state.namespace}
-              onChange={this.onChangeNamespace}
-            />
-          </label>
-        </li>
-      </ul>
-    );
-  }
+          </p>
+        </InfoModal>
+        <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
+          <span className="mt-1 max-w-2xl text-sm text-gray-500">
+            Namespace
+          </span>
+          <input
+            type="text"
+            className="form-input w-[90%] rounded-md border-gray-300 cursor-pointer font-regular text-md text-gray-700 hover:bg-gray-50 focus-within:text-gray-900"
+            name="cplusplusNamespace"
+            value={state.namespace}
+            onChange={onChangeNamespace}
+          />
+        </label>
+      </li>
+    </ul>
+  );
 }
+
 export default CplusplusGeneratorOptions;
