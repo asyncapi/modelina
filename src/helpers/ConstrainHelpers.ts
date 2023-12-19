@@ -49,46 +49,61 @@ export type ConstrainContext<
   dependencyManager: DependencyManager;
 };
 
-export type EnumKeyContext = {
+export type EnumKeyContext<Options> = {
   enumKey: string;
   constrainedEnumModel: ConstrainedEnumModel;
   enumModel: EnumModel;
+  options: Options;
 };
-export type EnumKeyConstraint = (context: EnumKeyContext) => string;
+export type EnumKeyConstraint<Options> = (
+  context: EnumKeyContext<Options>
+) => string;
 
-export type EnumValueContext = {
+export type EnumValueContext<Options> = {
   enumValue: any;
   constrainedEnumModel: ConstrainedEnumModel;
   enumModel: EnumModel;
+  options: Options;
 };
-export type EnumValueConstraint = (context: EnumValueContext) => any;
+export type EnumValueConstraint<Options> = (
+  context: EnumValueContext<Options>
+) => any;
 
-export type ModelNameContext = {
+export type ModelNameContext<Options> = {
   modelName: string;
+  options: Options;
 };
-export type ModelNameConstraint = (context: ModelNameContext) => string;
+export type ModelNameConstraint<Options> = (
+  context: ModelNameContext<Options>
+) => string;
 
-export type PropertyKeyContext = {
+export type PropertyKeyContext<Options> = {
   constrainedObjectPropertyModel: ConstrainedObjectPropertyModel;
   objectPropertyModel: ObjectPropertyModel;
   constrainedObjectModel: ConstrainedObjectModel;
   objectModel: ObjectModel;
+  options: Options;
 };
 
-export type PropertyKeyConstraint = (context: PropertyKeyContext) => string;
+export type PropertyKeyConstraint<Options> = (
+  context: PropertyKeyContext<Options>
+) => string;
 
-export type ConstantContext = {
+export type ConstantContext<Options> = {
   constrainedMetaModel: ConstrainedMetaModel;
+  options: Options;
 };
 
-export type ConstantConstraint = (context: ConstantContext) => unknown;
+export type ConstantConstraint<Options> = (
+  context: ConstantContext<Options>
+) => unknown;
 
-export interface Constraints {
-  enumKey: EnumKeyConstraint;
-  enumValue: EnumValueConstraint;
-  modelName: ModelNameConstraint;
-  propertyKey: PropertyKeyConstraint;
-  constant: ConstantConstraint;
+export interface Constraints<Options> {
+  enumKey: EnumKeyConstraint<Options>;
+  enumValue: EnumValueConstraint<Options>;
+  modelName: ModelNameConstraint<Options>;
+  propertyKey: PropertyKeyConstraint<Options>;
+  constant: ConstantConstraint<Options>;
 }
 
 const placeHolderConstrainedObject = new ConstrainedAnyModel(
@@ -117,7 +132,7 @@ function constrainReferenceModel<
   DependencyManager extends AbstractDependencyManager
 >(
   typeMapping: TypeMapping<Options, DependencyManager>,
-  constrainRules: Constraints,
+  constrainRules: Constraints<Options>,
   context: ConstrainContext<Options, ReferenceModel, DependencyManager>,
   alreadySeenModels: Map<MetaModel, ConstrainedMetaModel>
 ): ConstrainedReferenceModel {
@@ -146,7 +161,8 @@ function constrainReferenceModel<
 
   if (constrainedModel.options.const) {
     const constrainedConstant = constrainRules.constant({
-      constrainedMetaModel: constrainedModel
+      constrainedMetaModel: constrainedModel,
+      options: context.options
     });
     constrainedModel.options.const.value = constrainedConstant;
   }
@@ -263,7 +279,7 @@ function constrainTupleModel<
   DependencyManager extends AbstractDependencyManager
 >(
   typeMapping: TypeMapping<Options, DependencyManager>,
-  constrainRules: Constraints,
+  constrainRules: Constraints<Options>,
   context: ConstrainContext<Options, TupleModel, DependencyManager>,
   alreadySeenModels: Map<MetaModel, ConstrainedMetaModel>
 ): ConstrainedTupleModel {
@@ -299,7 +315,7 @@ function constrainArrayModel<
   DependencyManager extends AbstractDependencyManager
 >(
   typeMapping: TypeMapping<Options, DependencyManager>,
-  constrainRules: Constraints,
+  constrainRules: Constraints<Options>,
   context: ConstrainContext<Options, ArrayModel, DependencyManager>,
   alreadySeenModels: Map<MetaModel, ConstrainedMetaModel>
 ): ConstrainedArrayModel {
@@ -368,7 +384,7 @@ function constrainUnionModel<
   DependencyManager extends AbstractDependencyManager
 >(
   typeMapping: TypeMapping<Options, DependencyManager>,
-  constrainRules: Constraints,
+  constrainRules: Constraints<Options>,
   context: ConstrainContext<Options, UnionModel, DependencyManager>,
   alreadySeenModels: Map<MetaModel, ConstrainedMetaModel>
 ): ConstrainedUnionModel {
@@ -407,7 +423,7 @@ function constrainDictionaryModel<
   DependencyManager extends AbstractDependencyManager
 >(
   typeMapping: TypeMapping<Options, DependencyManager>,
-  constrainRules: Constraints,
+  constrainRules: Constraints<Options>,
   context: ConstrainContext<Options, DictionaryModel, DependencyManager>,
   alreadySeenModels: Map<MetaModel, ConstrainedMetaModel>
 ): ConstrainedDictionaryModel {
@@ -454,7 +470,7 @@ function constrainObjectModel<
   DependencyManager extends AbstractDependencyManager
 >(
   typeMapping: TypeMapping<Options, DependencyManager>,
-  constrainRules: Constraints,
+  constrainRules: Constraints<Options>,
   context: ConstrainContext<Options, ObjectModel, DependencyManager>,
   alreadySeenModels: Map<MetaModel, ConstrainedMetaModel>
 ): ConstrainedObjectModel {
@@ -499,7 +515,8 @@ function constrainObjectModel<
       objectPropertyModel: propertyMetaModel,
       constrainedObjectPropertyModel: constrainedPropertyModel,
       constrainedObjectModel: constrainedModel,
-      objectModel: context.metaModel
+      objectModel: context.metaModel,
+      options: context.options
     });
     constrainedPropertyModel.propertyName = constrainedPropertyName;
     const constrainedProperty = constrainMetaModel(
@@ -532,7 +549,7 @@ function ConstrainEnumModel<
   DependencyManager extends AbstractDependencyManager
 >(
   typeMapping: TypeMapping<Options, DependencyManager>,
-  constrainRules: Constraints,
+  constrainRules: Constraints<Options>,
   context: ConstrainContext<Options, EnumModel, DependencyManager>
 ): ConstrainedEnumModel {
   const constrainedModel = new ConstrainedEnumModel(
@@ -549,12 +566,14 @@ function ConstrainEnumModel<
     const constrainedEnumKey = constrainRules.enumKey({
       enumKey: String(enumValue.key),
       enumModel: context.metaModel,
-      constrainedEnumModel: constrainedModel
+      constrainedEnumModel: constrainedModel,
+      options: context.options
     });
     const constrainedEnumValue = constrainRules.enumValue({
       enumValue: enumValue.value,
       enumModel: context.metaModel,
-      constrainedEnumModel: constrainedModel
+      constrainedEnumModel: constrainedModel,
+      options: context.options
     });
     return new ConstrainedEnumValueModel(
       constrainedEnumKey,
@@ -585,7 +604,7 @@ export function constrainMetaModel<
   DependencyManager extends AbstractDependencyManager
 >(
   typeMapping: TypeMapping<Options, DependencyManager>,
-  constrainRules: Constraints,
+  constrainRules: Constraints<Options>,
   context: ConstrainContext<Options, MetaModel, DependencyManager>,
   alreadySeenModels: Map<MetaModel, ConstrainedMetaModel> = new Map()
 ): ConstrainedMetaModel {
@@ -593,7 +612,8 @@ export function constrainMetaModel<
     return alreadySeenModels.get(context.metaModel) as ConstrainedMetaModel;
   }
   const constrainedName = constrainRules.modelName({
-    modelName: context.metaModel.name
+    modelName: context.metaModel.name,
+    options: context.options
   });
   const newContext = { ...context, constrainedName };
   if (newContext.metaModel instanceof ObjectModel) {
@@ -675,7 +695,8 @@ export function constrainMetaModel<
   if (simpleModel !== undefined) {
     if (simpleModel.options.const) {
       const constrainedConstant = constrainRules.constant({
-        constrainedMetaModel: simpleModel
+        constrainedMetaModel: simpleModel,
+        options: context.options
       });
       simpleModel.options.const.value = constrainedConstant;
     }

@@ -19,7 +19,12 @@ import {
   SplitOptions,
   TypeMapping,
   constrainMetaModel,
-  Constraints
+  Constraints,
+  ConstantConstraint,
+  EnumKeyConstraint,
+  EnumValueConstraint,
+  PropertyKeyConstraint,
+  ModelNameConstraint
 } from '../../helpers';
 import { JavaPreset, JAVA_DEFAULT_PRESET } from './JavaPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
@@ -38,8 +43,13 @@ import { UnionRenderer } from './renderers/UnionRenderer';
 export interface JavaOptions extends CommonGeneratorOptions<JavaPreset> {
   collectionType: 'List' | 'Array';
   typeMapping: TypeMapping<JavaOptions, JavaDependencyManager>;
-  constraints: Constraints;
+  constraints: Constraints<JavaOptions>;
 }
+export type JavaConstantConstraint = ConstantConstraint<JavaOptions>;
+export type JavaEnumKeyConstraint = EnumKeyConstraint<JavaOptions>;
+export type JavaEnumValueConstraint = EnumValueConstraint<JavaOptions>;
+export type JavaModelNameConstraint = ModelNameConstraint<JavaOptions>;
+export type JavaPropertyKeyConstraint = PropertyKeyConstraint<JavaOptions>;
 export type JavaTypeMapping = TypeMapping<JavaOptions, JavaDependencyManager>;
 export interface JavaRenderCompleteModelOptions {
   packageName: string;

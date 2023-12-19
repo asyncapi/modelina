@@ -5,6 +5,7 @@ import {
 } from '../../../helpers/Constraints';
 import { FormatHelpers, ModelNameConstraint } from '../../../helpers';
 import { isReservedJavaKeyword } from '../Constants';
+import { JavaModelNameConstraint } from '../JavaGenerator';
 
 export type ModelNameConstraints = {
   NO_SPECIAL_CHAR: (value: string) => string;
@@ -34,7 +35,7 @@ export const DefaultModelNameConstraints: ModelNameConstraints = {
 };
 export function defaultModelNameConstraints(
   customConstraints?: Partial<ModelNameConstraints>
-): ModelNameConstraint {
+): JavaModelNameConstraint {
   const constraints = { ...DefaultModelNameConstraints, ...customConstraints };
 
   return ({ modelName }) => {

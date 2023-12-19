@@ -12,7 +12,7 @@ import Parser, {
 
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
-import { InputMetaModel, ProcessorOptions } from '../models';
+import { InputMetaModel, MetaModel, ProcessorOptions } from '../models';
 import { Logger } from '../utils';
 import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
 import { convertToMetaModel } from '../helpers';
@@ -91,7 +91,9 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
 
     inputModel.originalInput = doc;
 
-    const addToInputModel = (payload: AsyncAPISchemaInterface) => {
+    const addToInputModel = (
+      payload: AsyncAPISchemaInterface
+    ): MetaModel | undefined => {
       const schema = AsyncAPIInputProcessor.convertToInternalSchema(payload);
       const newCommonModel =
         JsonSchemaInputProcessor.convertSchemaToCommonModel(schema, options);
@@ -105,12 +107,12 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
         }
         const metaModel = convertToMetaModel(newCommonModel);
         inputModel.models[metaModel.name] = metaModel;
-      } else {
-        Logger.warn(
-          'Model did not have $id which is required, ignoring.',
-          newCommonModel
-        );
+        return metaModel;
       }
+      Logger.warn(
+        'Model did not have $id which is required, ignoring.',
+        newCommonModel
+      );
     };
 
     // Go over all the message payloads and convert them to models
@@ -176,34 +178,38 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
   // eslint-disable-next-line sonarjs/cognitive-complexity
   static convertToInternalSchema(
     schema: AsyncAPISchemaInterface | boolean,
-    alreadyIteratedSchemas: Map<string, AsyncapiV2Schema> = new Map()
+    alreadyIteratedSchemas: Map<string, AsyncapiV2Schema> = new Map(),
+    context: {
+      name?: string;
+    } = {}
   ): AsyncapiV2Schema | boolean {
     if (typeof schema === 'boolean') {
       return schema;
     }
-
-    let schemaUid = schema.id();
+    let uniqueId: string;
+    if (context.name) {
+      uniqueId = context.name;
+    } else {
+      uniqueId = schema.id();
+    }
     //Because the constraint functionality of generators cannot handle -, <, >, we remove them from the id if it's an anonymous schema.
     if (
-      typeof schemaUid !== 'undefined' &&
-      schemaUid.includes('<anonymous-schema')
+      typeof uniqueId !== 'undefined' &&
+      uniqueId.includes('<anonymous-schema')
     ) {
-      schemaUid = schemaUid
-        .replace('<', '')
-        .replace(/-/g, '_')
-        .replace('>', '');
+      uniqueId = uniqueId.replace('<', '').replace(/-/g, '_').replace('>', '');
     }
 
-    if (alreadyIteratedSchemas.has(schemaUid)) {
-      return alreadyIteratedSchemas.get(schemaUid) as AsyncapiV2Schema;
+    if (alreadyIteratedSchemas.has(uniqueId)) {
+      return alreadyIteratedSchemas.get(uniqueId) as AsyncapiV2Schema;
     }
 
     const convertedSchema = Object.assign(
       new AsyncapiV2Schema(),
       schema.json()
     );
-    convertedSchema[this.MODELGEN_INFFERED_NAME] = schemaUid;
-    alreadyIteratedSchemas.set(schemaUid, convertedSchema);
+    convertedSchema[this.MODELGEN_INFFERED_NAME] = uniqueId;
+    alreadyIteratedSchemas.set(uniqueId, convertedSchema);
 
     if (schema.allOf()) {
       convertedSchema.allOf = schema
@@ -304,7 +310,8 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       )) {
         properties[String(propertyName)] = this.convertToInternalSchema(
           propertySchema,
-          alreadyIteratedSchemas
+          alreadyIteratedSchemas,
+          { name: propertyName }
         );
       }
       convertedSchema.properties = properties;

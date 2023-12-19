@@ -7,6 +7,7 @@ import {
 } from '../../../helpers/Constraints';
 import { FormatHelpers, PropertyKeyConstraint } from '../../../helpers';
 import { isReservedKotlinKeyword } from '../Constants';
+import { KotlinPropertyKeyConstraint } from '../KotlinGenerator';
 
 export type PropertyKeyConstraintOptions = {
   NO_SPECIAL_CHAR: (value: string) => string;
@@ -42,7 +43,7 @@ export const DefaultPropertyKeyConstraints: PropertyKeyConstraintOptions = {
 
 export function defaultPropertyKeyConstraints(
   customConstraints?: Partial<PropertyKeyConstraintOptions>
-): PropertyKeyConstraint {
+): KotlinPropertyKeyConstraint {
   const constraints = {
     ...DefaultPropertyKeyConstraints,
     ...customConstraints

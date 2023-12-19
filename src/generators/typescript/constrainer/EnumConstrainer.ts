@@ -11,6 +11,11 @@ import {
   FormatHelpers
 } from '../../../helpers';
 import { isReservedTypeScriptKeyword } from '../Constants';
+import {
+  TypeScriptEnumKeyConstraint,
+  TypeScriptEnumValueConstraint,
+  TypeScriptOptions
+} from '../TypeScriptGenerator';
 
 export type ModelEnumKeyConstraints = {
   NO_SPECIAL_CHAR: (value: string) => string;
@@ -45,7 +50,7 @@ export const DefaultEnumKeyConstraints: ModelEnumKeyConstraints = {
 
 export function defaultEnumKeyConstraints(
   customConstraints?: Partial<ModelEnumKeyConstraints>
-): EnumKeyConstraint {
+): TypeScriptEnumKeyConstraint {
   const constraints = { ...DefaultEnumKeyConstraints, ...customConstraints };
 
   return ({ enumKey, enumModel, constrainedEnumModel }) => {
@@ -68,7 +73,7 @@ export function defaultEnumKeyConstraints(
   };
 }
 
-export function defaultEnumValueConstraints(): EnumValueConstraint {
+export function defaultEnumValueConstraints(): TypeScriptEnumValueConstraint {
   return ({ enumValue }) => {
     let normalizedEnumValue;
     switch (typeof enumValue) {

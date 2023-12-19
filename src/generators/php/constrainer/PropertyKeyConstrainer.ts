@@ -7,6 +7,7 @@ import {
 } from '../../../helpers/Constraints';
 import { FormatHelpers, PropertyKeyConstraint } from '../../../helpers';
 import { isReservedPhpKeyword } from '../Constants';
+import { PhpPropertyKeyConstraint } from '../PhpGenerator';
 
 export type PropertyKeyConstraintOptions = {
   NO_SPECIAL_CHAR: (value: string) => string;
@@ -44,7 +45,7 @@ export const DefaultPropertyKeyConstraints: PropertyKeyConstraintOptions = {
  */
 export function defaultPropertyKeyConstraints(
   customConstraints?: Partial<PropertyKeyConstraintOptions>
-): PropertyKeyConstraint {
+): PhpPropertyKeyConstraint {
   const constraints = {
     ...DefaultPropertyKeyConstraints,
     ...customConstraints

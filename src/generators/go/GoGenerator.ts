@@ -14,8 +14,13 @@ import {
   MetaModel
 } from '../../models';
 import {
+  ConstantConstraint,
   constrainMetaModel,
   Constraints,
+  EnumKeyConstraint,
+  EnumValueConstraint,
+  ModelNameConstraint,
+  PropertyKeyConstraint,
   split,
   SplitOptions,
   TypeMapping
@@ -30,8 +35,13 @@ import { GoDependencyManager } from './GoDependencyManager';
 
 export interface GoOptions extends CommonGeneratorOptions<GoPreset> {
   typeMapping: TypeMapping<GoOptions, GoDependencyManager>;
-  constraints: Constraints;
+  constraints: Constraints<GoOptions>;
 }
+export type GoConstantConstraint = ConstantConstraint<GoOptions>;
+export type GoEnumKeyConstraint = EnumKeyConstraint<GoOptions>;
+export type GoEnumValueConstraint = EnumValueConstraint<GoOptions>;
+export type GoModelNameConstraint = ModelNameConstraint<GoOptions>;
+export type GoPropertyKeyConstraint = PropertyKeyConstraint<GoOptions>;
 export type GoTypeMapping = TypeMapping<GoOptions, GoDependencyManager>;
 
 export interface GoRenderCompleteModelOptions {

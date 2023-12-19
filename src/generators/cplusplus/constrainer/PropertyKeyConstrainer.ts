@@ -4,8 +4,9 @@ import {
   NO_DUPLICATE_PROPERTIES,
   NO_EMPTY_VALUE
 } from '../../../helpers/Constraints';
-import { FormatHelpers, PropertyKeyConstraint } from '../../../helpers';
+import { FormatHelpers } from '../../../helpers';
 import { isReservedCplusplusKeyword } from '../Constants';
+import { CplusplusPropertyKeyConstraint } from '../CplusplusGenerator';
 
 export type PropertyKeyConstraintOptions = {
   NO_SPECIAL_CHAR: (value: string) => string;
@@ -46,7 +47,7 @@ export const DefaultPropertyKeyConstraints: PropertyKeyConstraintOptions = {
  */
 export function defaultPropertyKeyConstraints(
   customConstraints?: Partial<PropertyKeyConstraintOptions>
-): PropertyKeyConstraint {
+): CplusplusPropertyKeyConstraint {
   const constraints = {
     ...DefaultPropertyKeyConstraints,
     ...customConstraints

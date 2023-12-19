@@ -17,9 +17,14 @@ import {
   ConstrainedUnionModel
 } from '../../models';
 import {
+  ConstantConstraint,
   constrainMetaModel,
   Constraints,
+  EnumKeyConstraint,
+  EnumValueConstraint,
   IndentationTypes,
+  ModelNameConstraint,
+  PropertyKeyConstraint,
   split,
   SplitOptions,
   TypeMapping
@@ -40,8 +45,13 @@ import { RustDependencyManager } from './RustDependencyManager';
 
 export interface RustOptions extends CommonGeneratorOptions<RustPreset> {
   typeMapping: TypeMapping<RustOptions, RustDependencyManager>;
-  constraints: Constraints;
+  constraints: Constraints<RustOptions>;
 }
+export type RustConstantConstraint = ConstantConstraint<RustOptions>;
+export type RustEnumKeyConstraint = EnumKeyConstraint<RustOptions>;
+export type RustEnumValueConstraint = EnumValueConstraint<RustOptions>;
+export type RustModelNameConstraint = ModelNameConstraint<RustOptions>;
+export type RustPropertyKeyConstraint = PropertyKeyConstraint<RustOptions>;
 export type RustTypeMapping = TypeMapping<RustOptions, RustDependencyManager>;
 
 export enum RustPackageFeatures {

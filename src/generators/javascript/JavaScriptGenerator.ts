@@ -17,7 +17,12 @@ import {
   Constraints,
   split,
   constrainMetaModel,
-  SplitOptions
+  SplitOptions,
+  ConstantConstraint,
+  EnumKeyConstraint,
+  EnumValueConstraint,
+  ModelNameConstraint,
+  PropertyKeyConstraint
 } from '../../helpers';
 import { JavaScriptPreset, JS_DEFAULT_PRESET } from './JavaScriptPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
@@ -31,9 +36,18 @@ import { JavaScriptDependencyManager } from './JavaScriptDependencyManager';
 export interface JavaScriptOptions
   extends CommonGeneratorOptions<JavaScriptPreset> {
   typeMapping: TypeMapping<JavaScriptOptions, JavaScriptDependencyManager>;
-  constraints: Constraints;
+  constraints: Constraints<JavaScriptOptions>;
   moduleSystem: 'ESM' | 'CJS';
 }
+export type JavaScriptConstantConstraint =
+  ConstantConstraint<JavaScriptOptions>;
+export type JavaScriptEnumKeyConstraint = EnumKeyConstraint<JavaScriptOptions>;
+export type JavaScriptEnumValueConstraint =
+  EnumValueConstraint<JavaScriptOptions>;
+export type JavaScriptModelNameConstraint =
+  ModelNameConstraint<JavaScriptOptions>;
+export type JavaScriptPropertyKeyConstraint =
+  PropertyKeyConstraint<JavaScriptOptions>;
 export type JavaScriptTypeMapping = TypeMapping<
   JavaScriptOptions,
   JavaScriptDependencyManager

@@ -12,6 +12,10 @@ import {
   EnumValueConstraint
 } from '../../../helpers';
 import { isReservedRustKeyword } from '../Constants';
+import {
+  RustEnumKeyConstraint,
+  RustEnumValueConstraint
+} from '../RustGenerator';
 
 export type ModelEnumKeyConstraints = {
   NO_SPECIAL_CHAR: (value: string) => string;
@@ -46,7 +50,7 @@ export const DefaultEnumKeyConstraints: ModelEnumKeyConstraints = {
 
 export function defaultEnumKeyConstraints(
   customConstraints?: Partial<ModelEnumKeyConstraints>
-): EnumKeyConstraint {
+): RustEnumKeyConstraint {
   const constraints = { ...DefaultEnumKeyConstraints, ...customConstraints };
 
   return ({ enumKey, enumModel, constrainedEnumModel }) => {
@@ -72,7 +76,7 @@ export function defaultEnumKeyConstraints(
   };
 }
 
-export function defaultEnumValueConstraints(): EnumValueConstraint {
+export function defaultEnumValueConstraints(): RustEnumValueConstraint {
   return ({ enumValue }) => {
     return enumValue;
   };

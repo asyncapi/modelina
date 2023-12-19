@@ -1,12 +1,8 @@
-import { TypeScriptGenerator, TypeScriptOptions } from './TypeScriptGenerator';
 import {
   ConstrainedObjectModel,
-  ConstrainedObjectPropertyModel,
-  InputMetaModel,
-  Preset
+  ConstrainedObjectPropertyModel
 } from '../../models';
 import { TypeScriptRenderer } from './TypeScriptRenderer';
-import { TypeScriptDependencyManager } from './TypeScriptDependencyManager';
 
 /**
  * Common renderer for TypeScript types
@@ -14,17 +10,6 @@ import { TypeScriptDependencyManager } from './TypeScriptDependencyManager';
  * @extends AbstractRenderer
  */
 export abstract class TypeScriptObjectRenderer extends TypeScriptRenderer<ConstrainedObjectModel> {
-  constructor(
-    options: TypeScriptOptions,
-    generator: TypeScriptGenerator,
-    presets: Array<[Preset, unknown]>,
-    model: ConstrainedObjectModel,
-    inputModel: InputMetaModel,
-    dependencyManager: TypeScriptDependencyManager
-  ) {
-    super(options, generator, presets, model, inputModel, dependencyManager);
-  }
-
   /**
    * Render all the properties for the model by calling the property preset per property.
    */
@@ -41,7 +26,7 @@ export abstract class TypeScriptObjectRenderer extends TypeScriptRenderer<Constr
   }
 
   renderProperty(property: ConstrainedObjectPropertyModel): string {
-    const renderedProperty = `${property.propertyName}${
+    const renderedProperty = `'${property.propertyName}'${
       property.required === false ? '?' : ''
     }`;
 

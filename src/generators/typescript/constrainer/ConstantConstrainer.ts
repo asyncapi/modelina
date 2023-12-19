@@ -6,6 +6,10 @@ import {
   ConstrainedStringModel
 } from '../../../models';
 import { ConstantConstraint } from '../../../helpers';
+import {
+  TypeScriptConstantConstraint,
+  TypeScriptOptions
+} from '../TypeScriptGenerator';
 
 const getConstrainedEnumModelConstant = (args: {
   constrainedMetaModel: ConstrainedMetaModel;
@@ -21,7 +25,7 @@ const getConstrainedEnumModelConstant = (args: {
   }
 };
 
-export function defaultConstantConstraints(): ConstantConstraint {
+export function defaultConstantConstraints(): TypeScriptConstantConstraint {
   return ({ constrainedMetaModel }) => {
     const constOptions = constrainedMetaModel.options.const;
 

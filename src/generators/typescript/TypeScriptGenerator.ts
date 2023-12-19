@@ -14,8 +14,13 @@ import {
   RenderOutput
 } from '../../models';
 import {
+  ConstantConstraint,
   constrainMetaModel,
   Constraints,
+  EnumKeyConstraint,
+  EnumValueConstraint,
+  ModelNameConstraint,
+  PropertyKeyConstraint,
   split,
   SplitOptions,
   TypeMapping
@@ -44,9 +49,23 @@ export interface TypeScriptOptions
   enumType: 'enum' | 'union';
   mapType: 'indexedObject' | 'map' | 'record';
   typeMapping: TypeMapping<TypeScriptOptions, TypeScriptDependencyManager>;
-  constraints: Constraints;
+  constraints: Constraints<TypeScriptOptions>;
   moduleSystem: TypeScriptModuleSystemType;
+  /**
+   * Use raw property names instead of constrained ones,
+   * where you most likely need to access them with obj["propertyName"] instead of obj.propertyName
+   */
+  rawPropertyNames: boolean;
 }
+export type TypeScriptConstantConstraint =
+  ConstantConstraint<TypeScriptOptions>;
+export type TypeScriptEnumKeyConstraint = EnumKeyConstraint<TypeScriptOptions>;
+export type TypeScriptEnumValueConstraint =
+  EnumValueConstraint<TypeScriptOptions>;
+export type TypeScriptModelNameConstraint =
+  ModelNameConstraint<TypeScriptOptions>;
+export type TypeScriptPropertyKeyConstraint =
+  PropertyKeyConstraint<TypeScriptOptions>;
 export type TypeScriptTypeMapping = TypeMapping<
   TypeScriptOptions,
   TypeScriptDependencyManager
@@ -72,6 +91,7 @@ export class TypeScriptGenerator extends AbstractGenerator<
     typeMapping: TypeScriptDefaultTypeMapping,
     constraints: TypeScriptDefaultConstraints,
     moduleSystem: 'ESM',
+    rawPropertyNames: false,
     // Temporarily set
     dependencyManager: () => {
       return {} as TypeScriptDependencyManager;

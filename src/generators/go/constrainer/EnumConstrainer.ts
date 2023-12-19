@@ -11,6 +11,7 @@ import {
   EnumValueConstraint
 } from '../../../helpers';
 import { isReservedGoKeyword } from '../Constants';
+import { GoEnumKeyConstraint, GoEnumValueConstraint } from '../GoGenerator';
 
 export type ModelEnumKeyConstraints = {
   NO_SPECIAL_CHAR: (value: string) => string;
@@ -48,7 +49,7 @@ export const DefaultEnumKeyConstraints: ModelEnumKeyConstraints = {
 
 export function defaultEnumKeyConstraints(
   customConstraints?: Partial<ModelEnumKeyConstraints>
-): EnumKeyConstraint {
+): GoEnumKeyConstraint {
   const constraints = { ...DefaultEnumKeyConstraints, ...customConstraints };
 
   return ({ enumKey, enumModel, constrainedEnumModel }) => {
@@ -80,7 +81,7 @@ export function defaultEnumKeyConstraints(
   };
 }
 
-export function defaultEnumValueConstraints(): EnumValueConstraint {
+export function defaultEnumValueConstraints(): GoEnumValueConstraint {
   return ({ enumValue }) => {
     let constrainedEnumValue: any = JSON.stringify(enumValue);
     switch (typeof enumValue) {
