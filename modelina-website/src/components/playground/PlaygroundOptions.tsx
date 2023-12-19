@@ -14,7 +14,7 @@ import CplusplusGeneratorOptions from './options/CplusplusGeneratorOptions';
 import PhpGeneratorOptions from './options/PhpGeneratorOptions';
 
 interface PlaygroundOptionsProps {
-  setNewConfig?: (queryKey: string, queryValue: string) => void;
+  setNewConfig?: (queryKey: string, queryValue: any) => void;
 }
 
 const PlaygroundOptions: React.FC<PlaygroundOptionsProps> = ({ setNewConfig }) => {

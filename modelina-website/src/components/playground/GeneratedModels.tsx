@@ -5,7 +5,7 @@ import { usePlaygroundContext } from '../contexts/PlaygroundContext';
 
 interface GeneratedModelsComponentProps {
   showAllInOneFile?: boolean;
-  setNewQuery?: (queryKey: string, queryValue: string) => void;
+  setNewQuery?: (queryKey: string, queryValue: any) => void;
 }
 
 const GeneratedModelsComponent: React.FC<GeneratedModelsComponentProps> = ({
