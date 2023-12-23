@@ -341,7 +341,10 @@
       "profile": "https://github.com/artur-ciocanu",
       "contributions": [
         "code",
-        "bug"
+        "bug",
+        "example",
+        "doc",
+        "test"
       ]
     },
     {
