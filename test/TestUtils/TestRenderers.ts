@@ -15,6 +15,7 @@ import { RustRenderer } from '../../src/generators/rust/RustRenderer';
 import { PythonRenderer } from '../../src/generators/python/PythonRenderer';
 import { KotlinRenderer } from '../../src/generators/kotlin/KotlinRenderer';
 import { PhpRenderer } from '../../src/generators/php/PhpRenderer';
+import { ScalaRenderer } from '../../src/generators/scala/ScalaRenderer';
 
 export class TestRenderer extends AbstractRenderer {
   constructor(presets = []) {
@@ -43,3 +44,4 @@ export class MockRustRenderer extends RustRenderer<any> {}
 export class MockPythonRenderer extends PythonRenderer<any> {}
 export class MockKotlinRenderer extends KotlinRenderer<any> {}
 export class MockPhpRenderer extends PhpRenderer<any> {}
+export class MockScalaRenderer extends ScalaRenderer<any> {}
