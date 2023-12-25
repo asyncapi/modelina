@@ -23,7 +23,6 @@ Your one-stop tool for generating accurate and well-tested models for representi
 - [Installing Modelina](#installing-modelina)
 - [AsyncAPI CLI](#asyncapi-cli)
 - [Features](#features)
-- [Roadmap](#roadmap)
 - [Requirements](#requirements)
 - [Documentation](#documentation)
 - [Examples](#examples)
@@ -266,12 +265,11 @@ The following table provides a short summary of available features for supported
     <td><a href="./docs/usage.md#generate-php-models">PHP</a></td>
     <td>Class and enum generation: <em>custom indentation type and size, descriptions, etc </em></td>
   </tr>
+  <tr>
+    <td><a href="./docs/usage.md#generate-scala-models">Scala</a></td>
+    <td>Class and enum generation: <em>custom indentation type and size, descriptions, etc </em></td>
+  </tr>
 </table>
-
-## Roadmap
-This is the roadmap that is currently in focus by the [CODEOWNERS](./CODEOWNERS)
-
-- [1 year roadmap](https://github.com/asyncapi/modelina/milestone/4)
 
 ## Requirements
 The following are a requirement in order to use Modelina.
