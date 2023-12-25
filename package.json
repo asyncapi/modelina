@@ -118,7 +118,6 @@
     "test:runtime:csharp": "cross-env CI=true jest ./test/runtime/runtime-csharp.spec.ts",
     "generate:runtime:csharp": "cross-env CI=true ts-node ./test/runtime/runtime-csharp.ts",
     "test:watch": "jest --watch",
-    "test:ConstantConstrainer": "cross-env CI=true jest test/generators/cplusplus/constrainer/EnumConstrainer.spec.ts",
     "docs": "npm run docs:api",
     "docs:api": "typedoc src/index.ts --out ./modelina-website/public/apidocs/generated --name Modelina",
     "lint": "eslint --max-warnings 0 --config .eslintrc .",
