@@ -341,7 +341,10 @@
       "profile": "https://github.com/artur-ciocanu",
       "contributions": [
         "code",
-        "bug"
+        "bug",
+        "example",
+        "doc",
+        "test"
       ]
     },
     {
@@ -782,7 +785,19 @@
       "profile": "https://jaisarita.vercel.app/",
       "contributions": [
         "code",
-        "design"
+        "design",
+        "doc",
+        "maintenance"
+      ]
+    },
+    {
+      "login": "Harshil-Jani",
+      "name": "Harshil Jani",
+      "avatar_url": "https://avatars.githubusercontent.com/u/79367883?v=4",
+      "profile": "http://harshil.prose.sh",
+      "contributions": [
+        "code",
+        "test"
       ]
     }
   ],

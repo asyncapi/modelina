@@ -12,6 +12,8 @@ class &name {}
 class 1name {}
 ```
 
+## Customization
+
 There are many rules as such, but to get the full description about the default constraints here:
 
 - [C#](./constraints/CSharp.md)
@@ -21,6 +23,7 @@ There are many rules as such, but to get the full description about the default 
 - [JavaScript](./constraints/JavaScript.md)
 - [Rust](./constraints/Rust.md)
 - [TypeScript](./constraints/TypeScript.md)
+- [Python](./constraints/Python.md)
 
 Even though there are many of these constraints, there might be reasons you want to customize the behavior to make it suit your use-case. Therefore each of the constraint rules can be overwritten completely and allow for you to implement your own behavior.
 
@@ -28,7 +31,7 @@ We define these as two types, either you only want to change part of the logic, 
 - [Overwriting the formatter](../examples/overwrite-naming-formatting) and keep the rest of the constraints as is.
 - [Overwriting the entire naming constraint logic](../examples/overwrite-default-constraint) keeping none of the existing functionality which handles edge cases. It is recommended to **NOT** use this if it can be avoided, as you will limit yourself to what inputs can be generated to models. So make sure you know what you are doing :laughing:
 
-# Type mapping
+## Type mapping
 To make it easier to use the meta models in presets and generators, we need to figure out the types for each model. This is to enable you to access the types from a property rather then calling a function. This is especially relevant because Modelina cannot fit all use-cases out of the box, and we therefore strive to make it tailorable to what ever your needs may be. The type mapping is one of those things that enable you to fine tune the types for your purpose.
 
 Of course it's not all output formats that have a type such as JavaScript, therefore these are only used for strongly typed outputs.

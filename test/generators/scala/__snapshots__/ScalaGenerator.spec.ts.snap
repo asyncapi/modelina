@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ScalaGenerator should not render reserved keyword 1`] = `
+"case class Address(
+  reservedClass: Option[String],
+)"
+`;
+
+exports[`ScalaGenerator should render \`case class\` type 1`] = `
+"case class Address(
+  streetName: String,
+  city: String,
+  state: String,
+  houseNumber: Double,
+  marriage: Option[Boolean],
+  members: Option[Any],
+  arrayType: List[Any],
+  date: Option[java.time.LocalDate],
+  time: Option[java.time.OffsetTime],
+  dateTime: Option[java.time.OffsetDateTime],
+  binary: Option[Array[Byte]],
+  additionalProperties: Option[Map[String, Any]],
+)"
+`;
+
+exports[`ScalaGenerator should render \`enum class\` type (string type) 1`] = `
+"object States extends Enumeration {
+  type States = Value
+
+  val Texas: States.Value = Value(\\"Texas\\")
+  val Alabama: States.Value = Value(\\"Alabama\\")
+  val California: States.Value = Value(\\"California\\")
+  val NewYork: States.Value = Value(\\"New York\\")
+}"
+`;
+
+exports[`ScalaGenerator should render \`enum\` type (integer type) 1`] = `
+"object Numbers extends Enumeration {
+  type Numbers = Value
+
+  val Number_0: Numbers.Value = Value(0)
+  val Number_1: Numbers.Value = Value(1)
+  val Number_2: Numbers.Value = Value(2)
+  val Number_3: Numbers.Value = Value(3)
+}"
+`;
+
+exports[`ScalaGenerator should render \`enum\` type (union type) 1`] = `
+"object Union extends Enumeration {
+  type Union = Value
+
+  val Texas: Union.Value = Value(\\"Texas\\")
+  val Alabama: Union.Value = Value(\\"Alabama\\")
+  val Number_0: Union.Value = Value(0)
+  val Number_1: Union.Value = Value(1)
+  val ReservedNumber_1: Union.Value = Value(\\"1\\")
+  val ReservedTrue: Union.Value = Value(\\"true\\")
+  val CurlyleftQuotationTestQuotationColonQuotationTestQuotationCurlyright: Union.Value = Value(\\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\")
+}"
+`;
+
+exports[`ScalaGenerator should render List type for collections 1`] = `
+"case class CustomClass(
+  arrayType: Option[List[Int]],
+)"
+`;
+
+exports[`ScalaGenerator should render enums with translated special characters 1`] = `
+"object States extends Enumeration {
+  type States = Value
+
+  val TestPlus: States.Value = Value(\\"test+\\")
+  val Test: States.Value = Value(\\"test\\")
+  val TestMinus: States.Value = Value(\\"test-\\")
+  val TestQuestionExclamation: States.Value = Value(\\"test?!\\")
+  val AsteriskTest: States.Value = Value(\\"*test\\")
+}"
+`;
+
+exports[`ScalaGenerator should render models and their dependencies 1`] = `
+"package test.\`package\`
+
+
+case class Address(
+  streetName: String,
+  city: String,
+  state: String,
+  houseNumber: Double,
+  marriage: Option[Boolean],
+  members: Option[Any],
+  arrayType: List[Any],
+  otherModel: Option[OtherModel],
+  additionalProperties: Option[Map[String, Any]],
+)"
+`;
+
+exports[`ScalaGenerator should render models and their dependencies 2`] = `
+"package test.\`package\`
+
+
+case class OtherModel(
+  streetName: Option[String],
+  additionalProperties: Option[Map[String, Any]],
+)"
+`;
