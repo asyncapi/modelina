@@ -11,7 +11,7 @@ These are the constraints that is applied to model naming. The `Rule key` is wha
 |NO_NUMBER_START_CHAR|No numbers as starting characters|Default behavior is pre pending `number_` in front of the first character|
 |NO_EMPTY_VALUE|No empty values|Default behavior is to use `empty` as name. |
 |NO_RESERVED_KEYWORDS|No reserved keywords|Java has a list of reserved keywords ([see the full list here](../../src/generators/java/Constants.ts))|
-|NAMING_FORMATTER|Must be formatted equally|Property name is formatted using pascal case|
+|NAMING_FORMATTER|Must be formatted equally|Model name is formatted using pascal case|
 
 ## Property naming
 These are the constraints that is applied to object properties and the naming of them. The `Rule key` is what you can use in the options to overwrite the default behavior. See [constraint customization](./README.md#Customization).
