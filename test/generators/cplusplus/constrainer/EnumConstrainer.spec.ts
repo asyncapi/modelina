@@ -8,7 +8,7 @@ import {
   defaultEnumKeyConstraints,
   ModelEnumKeyConstraints,
   DefaultEnumKeyConstraints
-} from '../../../../src/generators/typescript/constrainer/EnumConstrainer';
+} from '../../../../src/generators/cplusplus/constrainer/EnumConstrainer';
 
 describe('EnumConstrainer', () => {
   const enumModel = new EnumModel('test', undefined, {}, []);
@@ -124,7 +124,7 @@ describe('EnumConstrainer', () => {
         constrainedEnumModel,
         enumValue: { test: 'test' }
       });
-      expect(constrainedValue).toEqual('\"{\\\"test\\\":\\\"test\\\"}\"');
+      expect(constrainedValue).toEqual('"{\\"test\\":\\"test\\"}"');
     });
 
     test('should render unknown value', () => {
@@ -133,7 +133,7 @@ describe('EnumConstrainer', () => {
         constrainedEnumModel,
         enumValue: undefined
       });
-      expect(constrainedValue).toEqual('\"undefined\"');
+      expect(constrainedValue).toEqual(`"undefined"`);
     });
   });
 
