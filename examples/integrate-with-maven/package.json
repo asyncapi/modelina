@@ -1,0 +1,12 @@
+{
+  "config": {
+    "example_name": "integrate-with-maven"
+  },
+  "scripts": {
+    "install": "(cd ../.. && npm i) && cd maven-project/scripts/modelina && npm i",
+    "start": "cd ./maven-project/scripts/modelina && npm run generate",
+    "start:windows": "cd ./maven-project/scripts/modelina && npm run generate:windows",
+    "test": "npm run start",
+    "test:windows": "npm run start:windows"
+  }
+}
