@@ -1,5 +1,9 @@
 import { CplusplusDefaultConstraints } from './../../../../src/generators/cplusplus/CplusplusConstrainer';
-import { ModelNameConstraints, DefaultModelNameConstraints, defaultModelNameConstraints } from './../../../../src/generators/cplusplus/constrainer/ModelNameConstrainer';
+import {
+  ModelNameConstraints,
+  DefaultModelNameConstraints,
+  defaultModelNameConstraints
+} from './../../../../src/generators/cplusplus/constrainer/ModelNameConstrainer';
 
 describe('ModelNameConstrainer', () => {
   test('should never render special chars', () => {
@@ -24,7 +28,9 @@ describe('ModelNameConstrainer', () => {
     const constrainedKey = CplusplusDefaultConstraints.modelName({
       modelName: 'some weird_value!"#2'
     });
-    expect(constrainedKey).toEqual('some_space_weird_value_exclamation_quotation_hash_2');
+    expect(constrainedKey).toEqual(
+      'some_space_weird_value_exclamation_quotation_hash_2'
+    );
   });
   test('should never render reserved keywords', () => {
     const constrainedKey = CplusplusDefaultConstraints.modelName({
