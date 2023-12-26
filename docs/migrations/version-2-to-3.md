@@ -282,3 +282,13 @@ Is not affected by this change.
 ### C++
 
 Is not affected by this change.
+
+### Options in constraints
+
+As part of https://github.com/asyncapi/modelina/issues/1475 we had the need to access options in the constraint logic, therefore all constraints now have direct access to the provided options.
+
+To make it easier we now expose types for each of the constraints in each language to make it easier to re-use in TS integrations. They can be accessed as following:
+
+```ts
+import { <language>ConstantConstraint, <language>EnumKeyConstraint, <language>EnumValueConstraint, <language>ModelNameConstraint, <language>PropertyKeyConstraint } from @asyncapi/modelina
+```

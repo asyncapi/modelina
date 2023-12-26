@@ -20,8 +20,13 @@ import { EnumRenderer } from './renderers/EnumRenderer';
 import { isReservedCplusplusKeyword } from './Constants';
 import { Logger } from '../..';
 import {
+  ConstantConstraint,
   constrainMetaModel,
-  Constraints
+  Constraints,
+  EnumKeyConstraint,
+  EnumValueConstraint,
+  ModelNameConstraint,
+  PropertyKeyConstraint
 } from '../../helpers/ConstrainHelpers';
 import {
   CplusplusDefaultConstraints,
@@ -33,9 +38,18 @@ import { CplusplusDependencyManager } from './CplusplusDependencyManager';
 export interface CplusplusOptions
   extends CommonGeneratorOptions<CplusplusPreset> {
   typeMapping: TypeMapping<CplusplusOptions, CplusplusDependencyManager>;
-  constraints: Constraints;
+  constraints: Constraints<CplusplusOptions>;
   namespace: string;
 }
+export type CplusplusConstantConstraint = ConstantConstraint<CplusplusOptions>;
+export type CplusplusEnumKeyConstraint = EnumKeyConstraint<CplusplusOptions>;
+export type CplusplusEnumValueConstraint =
+  EnumValueConstraint<CplusplusOptions>;
+export type CplusplusModelNameConstraint =
+  ModelNameConstraint<CplusplusOptions>;
+export type CplusplusPropertyKeyConstraint =
+  PropertyKeyConstraint<CplusplusOptions>;
+
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface CplusplusRenderCompleteModelOptions {}
 export class CplusplusGenerator extends AbstractGenerator<
