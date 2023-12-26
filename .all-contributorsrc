@@ -799,6 +799,15 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "Min2who",
+      "name": "Mintu Gogoi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/127925465?v=4",
+      "profile": "https://mintu-portfolio.netlify.app/",
+      "contributions": [
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
