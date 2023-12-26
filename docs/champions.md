@@ -18,23 +18,23 @@ You can checkout the [CODEOWNERS file](../CODEOWNERS) for an updated list of mai
 
 These are the areas that we mainly focus on getting having champions and where you can help out. However, keep in mind it is not limited to these alone.
 
-### :running: Core champions
+### 🏃 Core champions
 
 There is not one area that interest you, but rather the library as a whole, where you want to maintain and push forward the project and it's mission.
 
-### :books: Doc champions
+### 📚 Doc champions
 
 Doc champions are those who focus on the documentation and how users best go from 0 to 100 in order to use Modelina. Maybe you like to write technical documentation, or you love making tutorials, this would be for you!
 
-### :trident: Input champions
+### 🔱 Input champions
 
 Input champions are those who take charge of the input processing, it can either be a specific input processor (such as JSON Schema or AsyncAPI) or multiple. They maintain the process of converting the input to the internal model which Modelina can use to generate outputs to.
 
-### :wrench: Language champions
+### 🔧 Language champions
 
 Language champions are those who maintain of a specific language output, it can either be a specific generator (such as TypeScript or Java) or or multiple. They maintain the process of converting the internal model into usable data models in their respective language.
 
-### :sparkles: Website champions
+### ✨ Website champions
 
 Website champions are those who focus on the website (this includes playground). Maybe you are a designer or coder that loves to create great interactions for user, then this is would be for you!
 
@@ -125,4 +125,4 @@ Maintainers should feel free to pleasantly disagree with the work and decisions 
 
 There can be countless reasons why you want to step down as a champion and it is entirely your provocative at any time.
 
-To step down as a champion make a PR removing your name from the [CODEOWNERS file](../CODEOWNERS) and thats it :v:
+To step down as a champion make a PR removing your name from the [CODEOWNERS file](../CODEOWNERS) and thats it ✌️
