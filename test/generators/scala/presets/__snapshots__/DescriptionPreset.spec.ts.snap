@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SCALA_DESCRIPTION_PRESET should render description and examples for class 1`] = `
+"/**
+ * Description for class
+ * 
+ * @property prop Description for prop
+ * @property additionalProperties
+ * 
+ * Examples: 
+ * {\\"prop\\":\\"value\\"}
+ */
+case class Clazz(
+  prop: Option[String],
+  additionalProperties: Option[Map[String, Any]],
+)"
+`;
+
+exports[`SCALA_DESCRIPTION_PRESET should render description and examples for enum 1`] = `
+"/**
+ * Description for enum
+ * 
+ * Examples: 
+ * value
+ */
+object Enum extends Enumeration {
+  type Enum = Value
+
+  val On: Enum.Value = Value(\\"on\\")
+  val Off: Enum.Value = Value(\\"off\\")
+}"
+`;

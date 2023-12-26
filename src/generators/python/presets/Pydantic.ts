@@ -18,14 +18,18 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
     );
   },
   property(params) {
-    const type = params.property.required
-      ? params.property.property.type
-      : `Optional[${params.property.property.type}]`;
-    const alias = params.property.property.originalInput['description']
-      ? `alias='''${params.property.property.originalInput['description']}'''`
-      : '';
+    const { propertyName, required, property } = params.property;
+    const type = required ? property.type : `Optional[${property.type}]`;
+    const description = property.originalInput['description'];
+    const alias = description ? `alias='''${description}'''` : '';
+    const defaultValue = required ? '' : 'default=None';
 
-    return `${params.property.propertyName}: ${type} = Field(${alias})`;
+    if (alias && defaultValue) {
+      return `${propertyName}: ${type} = Field(${alias}, ${defaultValue})`;
+    } else if (alias) {
+      return `${propertyName}: ${type} = Field(${alias})`;
+    }
+    return `${propertyName}: ${type} = Field(${defaultValue})`;
   },
   ctor: () => '',
   getter: () => '',
