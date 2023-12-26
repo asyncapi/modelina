@@ -1,4 +1,4 @@
-import { ScalaGenerator } from '../../src/generators/scala';
+import { ScalaGenerator } from '../../src';
 
 const generator = new ScalaGenerator();
 const jsonSchemaDraft7 = {

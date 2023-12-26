@@ -1,5 +1,5 @@
 {
-  "config" : { "example_name" : "php-generate-documentation-preset" },
+  "config" : { "example_name" : "scala-generate-documentation" },
   "scripts": {
     "install": "cd ../.. && npm i",
     "start": "../../node_modules/.bin/ts-node --cwd ../../ ./examples/$npm_package_config_example_name/index.ts",

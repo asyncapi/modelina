@@ -1,4 +1,4 @@
-# PHP Generate Models With Documentation Preset
+# Scala Generate Models With Documentation Preset
 
 ## How to run this example
 

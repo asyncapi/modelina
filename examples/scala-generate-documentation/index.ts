@@ -1,7 +1,7 @@
-import { PhpGenerator, PHP_DESCRIPTION_PRESET } from '../../src';
+import { SCALA_DESCRIPTION_PRESET, ScalaGenerator } from '../../src';
 
-const generator: PhpGenerator = new PhpGenerator({
-  presets: [PHP_DESCRIPTION_PRESET]
+const generator = new ScalaGenerator({
+  presets: [SCALA_DESCRIPTION_PRESET]
 });
 const jsonSchemaDraft7 = {
   $schema: 'http://json-schema.org/draft-07/schema#',
