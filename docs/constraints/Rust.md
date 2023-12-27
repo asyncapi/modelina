@@ -33,7 +33,7 @@ These are the constraints that is applied to enum keys. The `Rule key` is what y
 |NO_NUMBER_START_CHAR|No numbers as starting characters|Default behavior is pre pending `number_` in front of the first character|
 |NO_EMPTY_VALUE|No empty values|Default behavior is to use `empty` as name. |
 |NO_RESERVED_KEYWORDS|No reserved keywords|Rust has a list of reserved keywords ([see the full list here](../../src/generators/rust/Constants.ts))|
-|NAMING_FORMATTER|Must be formatted equally|Property name is formatted using pascal case|
+|NAMING_FORMATTER|Must be formatted equally|Enum name is formatted using pascal case|
 |NO_DUPLICATE_KEYS|No duplicate enum keys|If any of the above constraints changes the enum key, we must make sure that no duplicates exist within the same enum. If any is encountered `reserved_` is pre-pended. This is done recursively until no duplicates are found.| 
 
 ## Constant
