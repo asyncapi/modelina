@@ -808,6 +808,15 @@
       "contributions": [
         "test"
       ]
+    },
+    {
+      "login": "devansh-m12",
+      "name": "Devansh Mahant",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86195162?v=4",
+      "profile": "https://github.com/devansh-m12",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
