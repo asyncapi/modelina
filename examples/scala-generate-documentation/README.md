@@ -1,6 +1,4 @@
-# Dart Data Models with json_annotation
-
-A basic example of how to use Modelina and output Dart models that include JSON annotations.
+# Scala Generate Models With Documentation Preset
 
 ## How to run this example
 
