@@ -31,7 +31,7 @@ const nameMapping = [
 const examplesToIgnore = [
   'integrate-with-react',
   'integrate-with-next',
-  'integrate-modelina-into-maven',
+  'integrate-with-maven',
   'TEMPLATE'
 ]
 
