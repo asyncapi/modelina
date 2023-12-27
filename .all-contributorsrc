@@ -341,7 +341,10 @@
       "profile": "https://github.com/artur-ciocanu",
       "contributions": [
         "code",
-        "bug"
+        "bug",
+        "example",
+        "doc",
+        "test"
       ]
     },
     {
@@ -794,6 +797,15 @@
       "profile": "http://harshil.prose.sh",
       "contributions": [
         "code",
+        "test"
+      ]
+    },
+    {
+      "login": "Min2who",
+      "name": "Mintu Gogoi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/127925465?v=4",
+      "profile": "https://mintu-portfolio.netlify.app/",
+      "contributions": [
         "test"
       ]
     }
