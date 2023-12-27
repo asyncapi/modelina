@@ -21,7 +21,7 @@ describe('EnumConstrainer', () => {
         constrainedEnumModel,
         enumKey: '%'
       });
-      expect(constrainedKey).toEqual('%');
+      expect(constrainedKey).toEqual('PERCENT');
     });
     test('should not render number as start char', () => {
       const constrainedKey = PythonDefaultConstraints.enumKey({
@@ -29,7 +29,7 @@ describe('EnumConstrainer', () => {
         constrainedEnumModel,
         enumKey: '1'
       });
-      expect(constrainedKey).toEqual('1');
+      expect(constrainedKey).toEqual('NUMBER_1');
     });
     test('should not contain duplicate keys', () => {
       const existingConstrainedEnumValueModel = new ConstrainedEnumValueModel(
@@ -49,7 +49,7 @@ describe('EnumConstrainer', () => {
         constrainedEnumModel,
         enumKey: ''
       });
-      expect(constrainedKey).toEqual('');
+      expect(constrainedKey).toEqual('RESERVED_EMPTY');
     });
     test('should never contain empty keys', () => {
       const constrainedKey = PythonDefaultConstraints.enumKey({
@@ -57,7 +57,7 @@ describe('EnumConstrainer', () => {
         constrainedEnumModel,
         enumKey: ''
       });
-      expect(constrainedKey).toEqual('');
+      expect(constrainedKey).toEqual('EMPTY');
     });
     test('should use constant naming format', () => {
       const constrainedKey = PythonDefaultConstraints.enumKey({
@@ -65,7 +65,7 @@ describe('EnumConstrainer', () => {
         constrainedEnumModel,
         enumKey: 'some weird_value!"#2'
       });
-      expect(constrainedKey).toEqual('some weird_value!"#2');
+      expect(constrainedKey).toEqual('SOME_WEIRD_VALUE_EXCLAMATION_QUOTATION_HASH_2');
     });
     test('should never render reserved keywords', () => {
       const constrainedKey = PythonDefaultConstraints.enumKey({
@@ -73,7 +73,7 @@ describe('EnumConstrainer', () => {
         constrainedEnumModel,
         enumKey: 'return'
       });
-      expect(constrainedKey).toEqual('return');
+      expect(constrainedKey).toEqual('RESERVED_RETURN');
     });
   });
   describe('enum values', () => {
