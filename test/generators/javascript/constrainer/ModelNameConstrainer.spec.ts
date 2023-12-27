@@ -23,7 +23,7 @@ describe('ModelNameConstrainer', () => {
     });
     expect(constrainedKey).toEqual('Empty');
   });
-  test('should use constant naming format', () => {
+  test('should use pascal naming format', () => {
     const constrainedKey = JavaScriptDefaultConstraints.modelName({
       modelName: 'some weird_value!"#2'
     });

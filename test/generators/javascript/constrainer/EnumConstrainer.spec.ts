@@ -59,7 +59,7 @@ describe('EnumConstrainer', () => {
       });
       expect(constrainedKey).toEqual('');
     });
-    test('should use constant naming format', () => {
+    test('should use pascal naming format', () => {
       const constrainedKey = JavaScriptDefaultConstraints.enumKey({
         enumModel,
         constrainedEnumModel,
