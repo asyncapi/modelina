@@ -64,7 +64,7 @@ There are at least two ways you can integrate Modelina into your build process f
 - DO work with other inputs then AsyncAPI
 - DO work when needing extensive build options and configurations
 
-Checkout the Maven example here: [Integrate Modelina into Maven](../examples/integrate-modelina-into-maven)
+Checkout the Maven example here: [Integrate Modelina into Maven](../examples/integrate-with-maven)
 
 **AsyncAPI CLI**
 

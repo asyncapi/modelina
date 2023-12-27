@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render Kotlin Enums and should log expected output to console 1`] = `
+Array [
+  "object Protocol extends Enumeration {
+  type Protocol = Value
+
+  val Http: Protocol.Value = Value(\\"HTTP\\")
+  val Number_1: Protocol.Value = Value(1)
+  val Https: Protocol.Value = Value(\\"HTTPS\\")
+  val ReservedTrue: Protocol.Value = Value(\\"true\\")
+}",
+]
+`;

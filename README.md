@@ -9,7 +9,7 @@
 [![Discussions](https://img.shields.io/github/discussions/asyncapi/modelina)](https://github.com/asyncapi/modelina/discussions)
 [![Website](https://img.shields.io/website?label=website&url=https%3A%2F%2Fwww.modelina.org)](https://www.modelina.org)
 [![Playground](https://img.shields.io/website?label=playground&url=https%3A%2F%2Fwww.modelina.org%2Fplayground)](https://www.modelina.org/playground) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-74-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-75-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Your one-stop tool for generating accurate and well-tested models for representing the message payloads. Use it as a tool in your development workflow, or a library in a larger integrations, entirely in your control.
@@ -23,7 +23,6 @@ Your one-stop tool for generating accurate and well-tested models for representi
 - [Installing Modelina](#installing-modelina)
 - [AsyncAPI CLI](#asyncapi-cli)
 - [Features](#features)
-- [Roadmap](#roadmap)
 - [Requirements](#requirements)
 - [Documentation](#documentation)
 - [Examples](#examples)
@@ -266,12 +265,11 @@ The following table provides a short summary of available features for supported
     <td><a href="./docs/usage.md#generate-php-models">PHP</a></td>
     <td>Class and enum generation: <em>custom indentation type and size, descriptions, etc </em></td>
   </tr>
+  <tr>
+    <td><a href="./docs/usage.md#generate-scala-models">Scala</a></td>
+    <td>Class and enum generation: <em>custom indentation type and size, descriptions, etc </em></td>
+  </tr>
 </table>
-
-## Roadmap
-This is the roadmap that is currently in focus by the [CODEOWNERS](./CODEOWNERS)
-
-- [1 year roadmap](https://github.com/asyncapi/modelina/milestone/4)
 
 ## Requirements
 The following are a requirement in order to use Modelina.
@@ -420,6 +418,7 @@ Thanks go out to these wonderful people ([emoji key](https://allcontributors.org
       <td align="center" valign="top" width="14.28%"><a href="https://jaisarita.vercel.app/"><img src="https://avatars.githubusercontent.com/u/43639341?v=4?s=100" width="100px;" alt="Ashmit JaiSarita Gupta"/><br /><sub><b>Ashmit JaiSarita Gupta</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=devilkiller-ag" title="Code">💻</a> <a href="#design-devilkiller-ag" title="Design">🎨</a> <a href="https://github.com/asyncapi/modelina/commits?author=devilkiller-ag" title="Documentation">📖</a> <a href="#maintenance-devilkiller-ag" title="Maintenance">🚧</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://harshil.prose.sh"><img src="https://avatars.githubusercontent.com/u/79367883?v=4?s=100" width="100px;" alt="Harshil Jani"/><br /><sub><b>Harshil Jani</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=Harshil-Jani" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=Harshil-Jani" title="Tests">⚠️</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://mintu-portfolio.netlify.app/"><img src="https://avatars.githubusercontent.com/u/127925465?v=4?s=100" width="100px;" alt="Mintu Gogoi"/><br /><sub><b>Mintu Gogoi</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=Min2who" title="Tests">⚠️</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/devansh-m12"><img src="https://avatars.githubusercontent.com/u/86195162?v=4?s=100" width="100px;" alt="Devansh Mahant"/><br /><sub><b>Devansh Mahant</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=devansh-m12" title="Documentation">📖</a></td>
     </tr>
   </tbody>
 </table>

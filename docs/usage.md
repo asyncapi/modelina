@@ -35,6 +35,7 @@ For more specific integration options, please check out the [integration documen
 - [Generate Kotlin models](#generate-kotlin-models)
 - [Generate C++ (cplusplus) models](#generate-c-cplusplus-models)
 - [Generate PHP models](#generate-php-models)
+- [Generate Scala models](#generate-scala-models)
 
 <!-- tocstop -->
 
@@ -201,4 +202,8 @@ C++ is one of the many output languages we support. Check out this [basic exampl
 
 ## Generate PHP models
 
-PHP is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/php-generate-models/) and the following [PHP documentation for more advanced use-cases](./languages/Php.md).
+PHP is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-php-models/) and the following [PHP documentation for more advanced use-cases](./languages/Php.md).
+
+## Generate Scala models
+
+Scala is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-scala-models/) and the following [Scala documentation for more advanced use-cases](./languages/Scala.md).
