@@ -58,7 +58,7 @@ export default function Footer() {
                   </li>
                   <li className="py-2">
                     <a
-                      href="https://asyncapi.threadless.com"
+                      href="https://www.store.asyncapi.com/collections/all-products"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-base leading-6 text-gray-500 hover:text-white transition ease-in-out duration-300"
