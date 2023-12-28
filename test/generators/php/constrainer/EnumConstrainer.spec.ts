@@ -6,7 +6,7 @@ import {
 } from '../../../../src';
 import {
   defaultEnumKeyConstraints,
-  ModelEnumKeyConstraints,
+  ModelEnumKeyConstraints
 } from '../../../../src/generators/php/constrainer/EnumConstrainer';
 
 describe('Php EnumConstrainer', () => {
