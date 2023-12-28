@@ -799,6 +799,33 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "Min2who",
+      "name": "Mintu Gogoi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/127925465?v=4",
+      "profile": "https://mintu-portfolio.netlify.app/",
+      "contributions": [
+        "test"
+      ]
+    },
+    {
+      "login": "devansh-m12",
+      "name": "Devansh Mahant",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86195162?v=4",
+      "profile": "https://github.com/devansh-m12",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "officialasishkumar",
+      "name": "Asish Kumar",
+      "avatar_url": "https://avatars.githubusercontent.com/u/87874775?v=4",
+      "profile": "https://github.com/officialasishkumar",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
