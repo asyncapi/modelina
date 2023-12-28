@@ -6,7 +6,6 @@ import {
   ObjectPropertyModel
 } from '../../../../src';
 import {
-  DefaultPropertyKeyConstraints,
   defaultPropertyKeyConstraints,
   PropertyKeyConstraintOptions
 } from '../../../../src/generators/php/constrainer/PropertyKeyConstrainer';
