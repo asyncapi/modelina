@@ -68,6 +68,10 @@ export interface ModelinaCSharpOptions extends ModelinaGeneralOptions {
 export interface ModelinaKotlinOptions extends ModelinaGeneralOptions {
   kotlinPackageName?: string;
 }
+export interface ModelinaScalaOptions extends ModelinaGeneralOptions {
+  scalaCollectionType : 'List' | 'Array' | undefined;
+  scalaPackageName?: string;
+}
 export interface ModelinaRustOptions extends ModelinaGeneralOptions {}
 export interface ModelinaPythonOptions extends ModelinaGeneralOptions {}
 export interface ModelinaDartOptions extends ModelinaGeneralOptions {}

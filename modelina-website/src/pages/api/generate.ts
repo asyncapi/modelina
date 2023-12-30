@@ -16,6 +16,7 @@ import { getCSharpModels } from '@/pages/api/functions/CSharpGenerator';
 import { getCplusplusModels } from './functions/CplusplusGenerator';
 import { getKotlinModels } from './functions/KotlinGenerator';
 import { getPhpModels } from './functions/PhpGenerator';
+import { getScalaModels } from './functions/ScalaGenerator';
 import { HandlerEvent } from '@netlify/functions';
 
 export async function generateNewCode(message: GenerateMessage): Promise<UpdateMessage | Error> {
@@ -40,7 +41,8 @@ export async function generateNewCode(message: GenerateMessage): Promise<UpdateM
     'kotlin': getKotlinModels,
     'dart': getDartModels,
     'cplusplus': getCplusplusModels,
-    'php': getPhpModels
+    'php': getPhpModels,
+    'scala': getScalaModels
   }
 
   if (typeof modelGenerators[language] !== 'function') {

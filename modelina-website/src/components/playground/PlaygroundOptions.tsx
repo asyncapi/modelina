@@ -12,6 +12,7 @@ import RustGeneratorOptions from './options/RustGeneratorOptions';
 import PythonGeneratorOptions from './options/PythonGeneratorOptions';
 import CplusplusGeneratorOptions from './options/CplusplusGeneratorOptions';
 import PhpGeneratorOptions from './options/PhpGeneratorOptions';
+import ScalaGeneratorOptions from './options/ScalaGeneratorOptions';
 
 interface PlaygroundOptionsProps {
   setNewConfig?: (queryKey: string, queryValue: any) => void;
@@ -55,6 +56,9 @@ const PlaygroundOptions: React.FC<PlaygroundOptionsProps> = ({ setNewConfig }) =
         break;
       case 'php':
         setGeneratorOptions(<PhpGeneratorOptions setNewConfig={setNewConfig} />);
+        break;
+        case 'scala':
+        setGeneratorOptions(<ScalaGeneratorOptions setNewConfig={setNewConfig} />);
         break;
       default:
         setGeneratorOptions(prevOptions => null);
