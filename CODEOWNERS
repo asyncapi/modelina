@@ -52,3 +52,6 @@
 
 # Language Champions for PHP and it's presets
 */generators/php @ferror
+
+# Language Champions for Scala and it's presets
+*/generators/scala @artur-ciocanu
