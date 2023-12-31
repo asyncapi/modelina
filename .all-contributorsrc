@@ -344,7 +344,8 @@
         "bug",
         "example",
         "doc",
-        "test"
+        "test",
+        "maintenance"
       ]
     },
     {
