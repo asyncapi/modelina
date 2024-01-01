@@ -10,6 +10,7 @@ import {
   defaultPropertyKeyConstraints,
   PropertyKeyConstraintOptions
 } from '../../../../src/generators/python/constrainer/PropertyKeyConstrainer';
+
 describe('PropertyKeyConstrainer', () => {
   const objectModel = new ObjectModel('test', undefined, {}, {});
   const constrainedObjectModel = new ConstrainedObjectModel(
@@ -50,7 +51,7 @@ describe('PropertyKeyConstrainer', () => {
   });
   test('should never contain empty name', () => {
     const constrainedKey = constrainPropertyName('');
-    expect(constrainedKey).toEqual('empty');
+    expect(constrainedKey).toEqual('reservedEmpty');
   });
   test('should use camel naming format', () => {
     const constrainedKey = constrainPropertyName('some weird_value!"#2');

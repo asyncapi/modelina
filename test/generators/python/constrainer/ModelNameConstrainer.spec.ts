@@ -4,6 +4,7 @@ import {
   defaultModelNameConstraints,
   ModelNameConstraints
 } from '../../../../src/generators/python/constrainer/ModelNameConstrainer';
+
 describe('ModelNameConstrainer', () => {
   test('should never render special chars', () => {
     const constrainedKey = PythonDefaultConstraints.modelName({
