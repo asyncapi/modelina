@@ -1,36 +1,37 @@
-import { JavaScriptDefaultConstraints } from '../../../../src/generators/javascript/JavaScriptConstrainer';
+import { PythonDefaultConstraints } from '../../../../src/generators/python/PythonConstrainer';
 import {
   DefaultModelNameConstraints,
   defaultModelNameConstraints,
   ModelNameConstraints
-} from '../../../../src/generators/javascript/constrainer/ModelNameConstrainer';
+} from '../../../../src/generators/python/constrainer/ModelNameConstrainer';
+
 describe('ModelNameConstrainer', () => {
   test('should never render special chars', () => {
-    const constrainedKey = JavaScriptDefaultConstraints.modelName({
+    const constrainedKey = PythonDefaultConstraints.modelName({
       modelName: '%'
     });
     expect(constrainedKey).toEqual('Percent');
   });
   test('should never render number as start char', () => {
-    const constrainedKey = JavaScriptDefaultConstraints.modelName({
+    const constrainedKey = PythonDefaultConstraints.modelName({
       modelName: '1'
     });
     expect(constrainedKey).toEqual('Number_1');
   });
   test('should never contain empty name', () => {
-    const constrainedKey = JavaScriptDefaultConstraints.modelName({
+    const constrainedKey = PythonDefaultConstraints.modelName({
       modelName: ''
     });
     expect(constrainedKey).toEqual('Empty');
   });
   test('should use pascal naming format', () => {
-    const constrainedKey = JavaScriptDefaultConstraints.modelName({
+    const constrainedKey = PythonDefaultConstraints.modelName({
       modelName: 'some weird_value!"#2'
     });
     expect(constrainedKey).toEqual('SomeWeirdValueExclamationQuotationHash_2');
   });
   test('should never render reserved keywords', () => {
-    const constrainedKey = JavaScriptDefaultConstraints.modelName({
+    const constrainedKey = PythonDefaultConstraints.modelName({
       modelName: 'return'
     });
     expect(constrainedKey).toEqual('ReservedReturn');

@@ -1,4 +1,4 @@
-import { JavaScriptDefaultConstraints } from '../../../../src/generators/javascript/JavaScriptConstrainer';
+import { PythonDefaultConstraints } from '../../../../src/generators/python/PythonConstrainer';
 import {
   ConstrainedObjectModel,
   ConstrainedObjectPropertyModel,
@@ -9,7 +9,8 @@ import {
   DefaultPropertyKeyConstraints,
   defaultPropertyKeyConstraints,
   PropertyKeyConstraintOptions
-} from '../../../../src/generators/javascript/constrainer/PropertyKeyConstrainer';
+} from '../../../../src/generators/python/constrainer/PropertyKeyConstrainer';
+
 describe('PropertyKeyConstrainer', () => {
   const objectModel = new ObjectModel('test', undefined, {}, {});
   const constrainedObjectModel = new ConstrainedObjectModel(
@@ -32,7 +33,7 @@ describe('PropertyKeyConstrainer', () => {
       objectPropertyModel.required,
       constrainedObjectModel
     );
-    return JavaScriptDefaultConstraints.propertyKey({
+    return PythonDefaultConstraints.propertyKey({
       constrainedObjectModel,
       objectModel,
       objectPropertyModel,
@@ -52,7 +53,7 @@ describe('PropertyKeyConstrainer', () => {
     const constrainedKey = constrainPropertyName('');
     expect(constrainedKey).toEqual('empty');
   });
-  test('should use pascal naming format', () => {
+  test('should use camel naming format', () => {
     const constrainedKey = constrainPropertyName('some weird_value!"#2');
     expect(constrainedKey).toEqual('someWeirdValueExclamationQuotationHash_2');
   });
@@ -91,7 +92,7 @@ describe('PropertyKeyConstrainer', () => {
       constrainedObjectPropertyModel;
     constrainedObjectModel.properties['return'] =
       constrainedObjectPropertyModel2;
-    const constrainedKey = JavaScriptDefaultConstraints.propertyKey({
+    const constrainedKey = PythonDefaultConstraints.propertyKey({
       constrainedObjectModel,
       objectModel,
       objectPropertyModel: objectPropertyModel2,
