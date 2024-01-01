@@ -788,7 +788,9 @@
         "code",
         "design",
         "doc",
-        "maintenance"
+        "maintenance",
+        "test",
+        "review"
       ]
     },
     {
