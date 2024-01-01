@@ -70,7 +70,9 @@ describe('EnumConstrainer', () => {
         constrainedEnumModel,
         enumKey: 'some weird_value!"#2'
       });
-      expect(constrainedKey).toEqual('SOME_WEIRD_VALUE_EXCLAMATION_QUOTATION_HASH_2');
+      expect(constrainedKey).toEqual(
+        'SOME_WEIRD_VALUE_EXCLAMATION_QUOTATION_HASH_2'
+      );
     });
 
     test('should never render reserved keywords', () => {
