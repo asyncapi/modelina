@@ -61,7 +61,7 @@ describe('EnumConstrainer', () => {
         constrainedEnumModel,
         enumKey: ''
       });
-      expect(constrainedKey).toEqual('RESERVED_EMPTY');
+      expect(constrainedKey).toEqual('EMPTY');
     });
 
     test('should use constant naming format', () => {

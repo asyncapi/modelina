@@ -51,7 +51,7 @@ describe('PropertyKeyConstrainer', () => {
   });
   test('should never contain empty name', () => {
     const constrainedKey = constrainPropertyName('');
-    expect(constrainedKey).toEqual('reservedEmpty');
+    expect(constrainedKey).toEqual('empty');
   });
   test('should use camel naming format', () => {
     const constrainedKey = constrainPropertyName('some weird_value!"#2');
