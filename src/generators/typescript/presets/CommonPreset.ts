@@ -34,6 +34,39 @@ function renderMarshalProperty(
   return realizePropertyFactory(modelInstanceVariable);
 }
 
+function renderDictionarySerialization(
+modelInstanceVariable: string,
+  prop: string,
+  unconstrainedProperty: string,
+  unionModel: ConstrainedUnionModel
+) {
+  const propName = `${prop}JsonValues`;
+  const allUnionReferences = unionModel.union
+    .filter((model) => {
+      return (
+        model instanceof ConstrainedReferenceModel &&
+        !(model.ref instanceof ConstrainedEnumModel)
+      );
+    })
+    .map((model) => {
+      return `unionItem instanceof ${model.type}`;
+    });
+  const allUnionReferencesCondition = allUnionReferences.join(' || ');
+  const hasUnionReference = allUnionReferences.length > 0;
+  let unionSerialization = `${propName}.push(typeof unionItem === 'number' || typeof unionItem === 'boolean' ? unionItem : JSON.stringify(unionItem))`;
+  if (hasUnionReference) {
+    unionSerialization = `if(${allUnionReferencesCondition}) {
+      ${propName}.push(unionItem.marshal());
+    } else {
+      ${propName}.push(typeof unionItem === 'number' || typeof unionItem === 'boolean' ? unionItem : JSON.stringify(unionItem))
+    }`;
+  }
+  return `let ${propName}: any[] = [];
+  for (const unionItem of ${modelInstanceVariable}) {
+    ${unionSerialization}
+  }
+  json += \`"${unconstrainedProperty}": [\${${propName}.join(',')}],\`;`;
+}
 function renderUnionSerializationArray(
   modelInstanceVariable: string,
   prop: string,
@@ -118,22 +151,21 @@ function renderMarshalProperties(model: ConstrainedObjectModel) {
   const propertyKeys = [...Object.entries(properties)];
 
   //These are a bit special as 'unwrap' dictionary models means they have to be unwrapped within the JSON object.
-  const unwrapDictionaryProperties = [];
-  const normalProperties = [];
-  for (const entry of propertyKeys) {
-    if (
-      entry[1].property instanceof ConstrainedDictionaryModel &&
-      entry[1].property.serializationType === 'unwrap'
-    ) {
-      unwrapDictionaryProperties.push(entry);
-    } else {
-      normalProperties.push(entry);
-    }
-  }
+  const unwrapDictionaryProperties = propertyKeys.filter(
+    ([, value]) =>
+      value.property instanceof ConstrainedDictionaryModel &&
+      value.property.serializationType === 'unwrap'
+  );
+  const normalProperties = propertyKeys.filter(
+    ([, value]) =>
+      !(value.property instanceof ConstrainedDictionaryModel) ||
+      (value.property instanceof ConstrainedDictionaryModel &&
+        value.property.serializationType !== 'unwrap')
+  );
 
   const marshalNormalProperties = normalProperties.map(([prop, propModel]) => {
     const modelInstanceVariable = `this.${prop}`;
-    let marshalCode = '';
+    let marshalCode;
     if (
       propModel.property instanceof ConstrainedArrayModel &&
       propModel.property.valueModel instanceof ConstrainedUnionModel
@@ -179,7 +211,7 @@ function renderMarshalProperties(model: ConstrainedObjectModel) {
       const marshalCode = `json += \`"$\{key}": ${patternPropertyMarshalCode},\`;`;
       return `if(this.${prop} !== undefined) { 
 for (const [key, value] of this.${prop}.entries()) {
-  //Only unwrap those who are not already a property in the JSON object
+  //Only unwrap those that are not already a property in the JSON object
   if(Object.keys(this).includes(String(key))) continue;
     ${marshalCode}
   }
@@ -287,11 +319,9 @@ function renderUnmarshalProperties(model: ConstrainedObjectModel) {
   }`
       : '';
 
-  return `
-${unmarshalNormalProperties.join('\n')}
+  return `${unmarshalNormalProperties.join('\n')}
 
-${unwrappedDictionaryCode}
-`;
+${unwrappedDictionaryCode}`;
 }
 
 /**
