@@ -18,7 +18,7 @@ There are special use-cases that each language supports; this document pertains 
 
 By default, descriptions are not rendered for the model; you can change that by applying `SCALA_DESCRIPTION_PRESET`.
 
-Check out this [example for a live demonstration](../../examples/php-generate-documentation-preset).
+Check out this [example for a live demonstration](../../examples/scala-generate-documentation).
 
 ## Generate serializer and deserializer functionality
 
