@@ -14,7 +14,11 @@ const doc = {
   },
   $id: 'Test',
   type: 'object',
-  additionalProperties: { $ref: '#/definitions/NestedTest' },
+  additionalProperties: { 
+    oneOf: [
+    {$ref: '#/definitions/NestedTest'}, 
+    {type: 'string'}
+  ] },
   required: ['string prop'],
   properties: {
     'string prop': { type: 'string' },
@@ -28,6 +32,9 @@ const doc = {
       oneOf: [
         {
           $ref: '#/definitions/NestedTest'
+        },
+        {
+          type: 'string'
         }
       ]
     },
@@ -51,6 +58,18 @@ const doc = {
       items: {
         $ref: '#/definitions/NestedTest'
       }
+    },
+    tupleTest: {
+      type: 'array',
+      additionalItems: false,
+      items: [
+        {
+          $ref: '#/definitions/NestedTest'
+        },
+        {
+          type: 'string'
+        }
+      ]
     }
   }
 };
