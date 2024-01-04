@@ -16,14 +16,18 @@ class 1name {}
 
 There are many rules as such, but to get the full description about the default constraints here:
 
+- [C++](./constraints/Csplusplus.md)
 - [C#](./constraints/CSharp.md)
 - [Dart](./constraints/Dart.md)
 - [Go](./constraints/Go.md)
 - [Java](./constraints/Java.md)
 - [JavaScript](./constraints/JavaScript.md)
-- [Rust](./constraints/Rust.md)
-- [TypeScript](./constraints/TypeScript.md)
+- [Kotlin](./constraints/Kotlin.md)
+- [PHP](./constraints/PHP.md)
 - [Python](./constraints/Python.md)
+- [Rust](./constraints/Rust.md)
+- [Scala](./constraints/Scala.md)
+- [TypeScript](./constraints/TypeScript.md)
 
 Even though there are many of these constraints, there might be reasons you want to customize the behavior to make it suit your use-case. Therefore each of the constraint rules can be overwritten completely and allow for you to implement your own behavior.
 

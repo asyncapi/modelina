@@ -200,7 +200,7 @@ The following table provides a short summary of available features for supported
     <td>We support the following JSON Schema versions: <em>Draft-4, Draft-6 and Draft-7</em></td>
   </tr>
   <tr>
-    <td>OpenAPI</td>
+    <td><a href="./docs/usage.md#generate-models-from-openapi-documents">OpenAPI</a></td>
     <td>We support the following OpenAPI versions: <em><a href="./docs/usage.md#generate-models-from-swagger-20-documents">Swagger 2.0</a> and <a href="./docs/usage.md#generate-models-from-openapi-documents">OpenAPI 3.0</a></em>, which generates models for all the defined request and response payloads.</td>
   </tr>
   <tr>

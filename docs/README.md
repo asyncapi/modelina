@@ -63,13 +63,15 @@ No one wants to read the code to find information about it, instead use the [/ap
 
 ### Languages
 Each language has its own limitations, corner cases, and features; thus, each language has separate documentation.
+- [C++](./languages/Cplusplus.md)
 - [C#](./languages/Csharp.md)
 - [Dart](./languages/Dart.md)
 - [Go](./languages/Go.md)
 - [Java](./languages/Java.md)
 - [JavaScript](./languages/JavaScript.md)
-- [Rust](./languages/Rust.md)
-- [Python](./languages/Python.md)
-- [TypeScript](./languages/TypeScript.md)
 - [Kotlin](./languages/Kotlin.md)
-- [C++](./languages/Cplusplus.md)
+- [PHP](./languages/Php.md)
+- [Python](./languages/Python.md)
+- [Rust](./languages/Rust.md)
+- [Scala](./languages/Scala.md)
+- [TypeScript](./languages/TypeScript.md)
