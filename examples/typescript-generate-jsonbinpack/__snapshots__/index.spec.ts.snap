@@ -37,7 +37,6 @@ Array [
 
     return instance;
   }
-
   public async jsonbinSerialize(): Promise<Buffer>{
     const jsonData = JSON.parse(this.marshal());
     const jsonbinpackEncodedSchema = await jsonbinpack.compileSchema({\\"$schema\\":\\"https://json-schema.org/draft/2020-12/schema\\",\\"$id\\":\\"Test\\",\\"type\\":\\"object\\",\\"additionalProperties\\":false,\\"properties\\":{\\"email\\":{\\"type\\":\\"string\\",\\"format\\":\\"email\\",\\"x-modelgen-inferred-name\\":\\"email\\"}},\\"x-modelgen-inferred-name\\":\\"root\\"});
