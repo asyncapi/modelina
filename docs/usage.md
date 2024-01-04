@@ -124,7 +124,7 @@ These are the current known limitation of the Swagger 2.0 input.
 
 Through the Swagger 2.0 Schema you are able to use `discriminator` for achieving polymorphism. Current version of Modelina does not generate the expected inheritance of models, instead it's current behavior is to [merge the schemas together](./inputs/JSON_Schema.md#processing-sub-schemas). This means you will still get access to the properties that missing inherited model has, but without the inheritance.
 
-Long term if this is something you wish was supported, voice your [opionion here](https://github.com/asyncapi/modelina/issues/108).
+Long term if this is something you wish was supported, voice your [opinion here](https://github.com/asyncapi/modelina/issues/108).
 
 ## Generate models from OpenAPI documents
 
