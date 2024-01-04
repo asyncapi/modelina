@@ -25,9 +25,8 @@ function renderUnmarshalProperty(
   return `${modelInstanceVariable}`;
 }
 
-
 /**
- * Render the code for unmarshalling of regular properties 
+ * Render the code for unmarshalling of regular properties
  */
 function unmarshalRegularProperty(propModel: ConstrainedObjectPropertyModel) {
   const modelInstanceVariable = `obj["${propModel.unconstrainedPropertyName}"]`;
@@ -41,7 +40,7 @@ function unmarshalRegularProperty(propModel: ConstrainedObjectPropertyModel) {
 }
 
 /**
- * Render the code for unmarshalling unwrappable dictionary models  
+ * Render the code for unmarshalling unwrappable dictionary models
  */
 function unmarshalDictionary(model: ConstrainedObjectModel) {
   const setDictionaryProperties = [];
@@ -59,9 +58,7 @@ function unmarshalDictionary(model: ConstrainedObjectModel) {
       modelInstanceVariable,
       (propModel.property as ConstrainedDictionaryModel).value
     );
-    setDictionaryProperties.push(
-      `instance.${prop} = new Map();`
-    );
+    setDictionaryProperties.push(`instance.${prop} = new Map();`);
     unmarshalDictionaryProperties.push(
       `instance.${prop}.set(key, ${unmarshalCode});`
     );

@@ -1,5 +1,9 @@
 import { ClassRenderer } from '../../renderers/ClassRenderer';
-import { getDictionary, getNormalProperties, getOriginalPropertyList } from '../../../../helpers';
+import {
+  getDictionary,
+  getNormalProperties,
+  getOriginalPropertyList
+} from '../../../../helpers';
 import {
   ConstrainedArrayModel,
   ConstrainedDictionaryModel,
@@ -29,23 +33,33 @@ function renderMarshalProperty(
 
   return realizePropertyFactory(modelInstanceVariable);
 }
+/**
+ * Render marshalling logic for tuples
+ */
 function renderTupleSerialization(
   modelInstanceVariable: string,
   unconstrainedProperty: string,
   tuple: ConstrainedTupleModel
 ) {
   const t = tuple.tuple.map((tupleEntry) => {
-    const temp = renderMarshalProperty(`${modelInstanceVariable}[${tupleEntry.index}]`, tupleEntry.value)
+    const temp = renderMarshalProperty(
+      `${modelInstanceVariable}[${tupleEntry.index}]`,
+      tupleEntry.value
+    );
     return `if(${modelInstanceVariable}[${tupleEntry.index}]) {
   serializedTuple[${tupleEntry.index}] = ${temp}
 } else {
   serializedTuple[${tupleEntry.index}] = null;
-}`
+}`;
   });
   return `const serializedTuple = [];
 ${t.join('\n')}
-json += \`"${unconstrainedProperty}": [\${serializedTuple.join(',')}],\`;`
+json += \`"${unconstrainedProperty}": [\${serializedTuple.join(',')}],\`;`;
 }
+
+/**
+ * Render marshalling logic for unions
+ */
 function renderUnionSerializationArray(
   modelInstanceVariable: string,
   prop: string,
@@ -55,8 +69,10 @@ function renderUnionSerializationArray(
   const propName = `${prop}JsonValues`;
   const allUnionReferences = unionModel.union
     .filter((model) => {
-      const isObjectReference = model instanceof ConstrainedReferenceModel && !(model.ref instanceof ConstrainedEnumModel)
-      return isObjectReference;
+      return (
+        model instanceof ConstrainedReferenceModel &&
+        !(model.ref instanceof ConstrainedEnumModel)
+      );
     })
     .map((model) => {
       return `unionItem instanceof ${model.type}`;
@@ -78,6 +94,9 @@ function renderUnionSerializationArray(
   json += \`"${unconstrainedProperty}": [\${${propName}.join(',')}],\`;`;
 }
 
+/**
+ * Render marshalling logic for Arrays
+ */
 function renderArraySerialization(
   modelInstanceVariable: string,
   prop: string,
@@ -95,6 +114,9 @@ function renderArraySerialization(
   json += \`"${unconstrainedProperty}": [\${${propName}.join(',')}],\`;`;
 }
 
+/**
+ * Render marshalling logic for unions
+ */
 function renderUnionSerialization(
   modelInstanceVariable: string,
   unconstrainedProperty: string,
@@ -126,38 +148,51 @@ function renderUnionSerialization(
   )},\`;`;
 }
 
+/**
+ * Render marshalling logic for dictionary types
+ */
 function renderDictionarySerialization(
   properties: Record<string, ConstrainedObjectPropertyModel>
 ) {
   const unwrapDictionaryProperties = getDictionary(properties);
   const originalPropertyNames = getOriginalPropertyList(properties);
-  const marshalUnwrapDictionaryProperties = unwrapDictionaryProperties.map(
-    ([prop, propModel]) => {
-      let dictionaryValueType;
-      if((propModel.property as ConstrainedDictionaryModel).value instanceof ConstrainedUnionModel) {
-        dictionaryValueType = renderUnionSerialization('value', '$\{key}', (propModel.property as ConstrainedDictionaryModel).value as ConstrainedUnionModel);
-      } else {
-        const type = renderMarshalProperty('value', propModel.property);
-        dictionaryValueType = `json += \`"$\{key}": ${type},\`;`;
-      }
-      return `if(this.${prop} !== undefined) { 
+  return unwrapDictionaryProperties.map(([prop, propModel]) => {
+    let dictionaryValueType;
+    if (
+      (propModel.property as ConstrainedDictionaryModel).value instanceof
+      ConstrainedUnionModel
+    ) {
+      dictionaryValueType = renderUnionSerialization(
+        'value',
+        '${key}',
+        (propModel.property as ConstrainedDictionaryModel)
+          .value as ConstrainedUnionModel
+      );
+    } else {
+      const type = renderMarshalProperty('value', propModel.property);
+      dictionaryValueType = `json += \`"$\{key}": ${type},\`;`;
+    }
+    return `if(this.${prop} !== undefined) { 
   for (const [key, value] of this.${prop}.entries()) {
     //Only unwrap those that are not already a property in the JSON object
-    if([${originalPropertyNames.map((value) => `"${value}"`).join(',')}].includes(String(key))) continue;
+    if([${originalPropertyNames
+      .map((value) => `"${value}"`)
+      .join(',')}].includes(String(key))) continue;
     ${dictionaryValueType}
   }
 }`;
-    }
-  );
-  return marshalUnwrapDictionaryProperties;
+  });
 }
 
+/**
+ * Render marshalling code for all the normal properties (not dictionaries with unwrap)
+ */
 function renderNormalProperties(
   properties: Record<string, ConstrainedObjectPropertyModel>
 ) {
   const normalProperties = getNormalProperties(properties);
 
-  const marshalNormalProperties = normalProperties.map(([prop, propModel]) => {
+  return normalProperties.map(([prop, propModel]) => {
     const modelInstanceVariable = `this.${prop}`;
     let marshalCode;
     if (
@@ -183,7 +218,6 @@ function renderNormalProperties(
         propModel.unconstrainedPropertyName,
         propModel.property
       );
-      renderTupleSerialization
     } else if (propModel.property instanceof ConstrainedTupleModel) {
       marshalCode = renderTupleSerialization(
         modelInstanceVariable,
@@ -201,7 +235,6 @@ function renderNormalProperties(
   ${marshalCode}
 }`;
   });
-  return marshalNormalProperties;
 }
 
 /**
@@ -216,8 +249,9 @@ export function renderMarshal({
 }): string {
   const properties = model.properties || {};
   const marshalNormalProperties = renderNormalProperties(properties);
-  const marshalUnwrapDictionaryProperties = renderDictionarySerialization(properties);
-  
+  const marshalUnwrapDictionaryProperties =
+    renderDictionarySerialization(properties);
+
   return `public marshal() : string {
   let json = '{'
 ${renderer.indent(marshalNormalProperties.join('\n'))}

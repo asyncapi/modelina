@@ -8,7 +8,7 @@ import {
  */
 export function getNormalProperties(
   properties: Record<string, ConstrainedObjectPropertyModel>
-) {
+): [string, ConstrainedObjectPropertyModel][] {
   return Object.entries(properties).filter(
     ([, value]) =>
       !(value.property instanceof ConstrainedDictionaryModel) ||
@@ -22,7 +22,7 @@ export function getNormalProperties(
  */
 export function getDictionary(
   properties: Record<string, ConstrainedObjectPropertyModel>
-) {
+): [string, ConstrainedObjectPropertyModel][] {
   return Object.entries(properties).filter(
     ([, value]) =>
       value.property instanceof ConstrainedDictionaryModel &&
@@ -35,7 +35,7 @@ export function getDictionary(
  */
 export function getOriginalPropertyList(
   properties: Record<string, ConstrainedObjectPropertyModel>
-) {
+): string[] {
   return Object.entries(properties).map(([, model]) => {
     return model.unconstrainedPropertyName;
   });
