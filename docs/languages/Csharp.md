@@ -87,11 +87,14 @@ Check out this [example for a live demonstration](../../examples/csharp-overwrit
 
 If you want the generated models to inherit from a custom class, you can overwrite the existing rendering behavior and create your own class setup.
 
+Check out this [example for a live demonstration](../../examples/csharp-generate-json-serializer).
+
+
 ## Generate models as records 
 
 Since C# 9 the language now supports records as an alternative to classes suitable for roles like DTO's. Modelina can generate records by setting the `modelType: record` option. Note that this renderer does not support the `autoImplementedProperties` option as this is default with records. 
 
-Check out this [example for a live demonstration](../../examples/csharp-generate-records).
+Check out this [example for a live demonstration](../../examples/csharp-use-inheritance).
 
 ## Generate code that handles nullable mode
 
@@ -106,4 +109,4 @@ This is the most asked questions and answers which should be your GOTO list to c
 ### Why is the type `dynamic` or `dynamic[]` when it should be `X`? 
 Often times you might encounter variables which as of type `dynamic` or `dynamic[]`, which is our fallback type when we cannot accurately find the right type.
 
-**If you are encountering this when your input is JSON Schema/OpenAPI/AsyncAPI**, it most likely is because of a property being defined as having multiple types as a union, which the C# generator cannot natively handle and fallback to `dynamic`. For arrays, you have to remember that `additionalItems` is by default `true`, this means that even though you use `items: { type: "string"}` by not setting `additionalItems: false`, it's the same as setting `items: { type: ["array", "boolean", "integer", "null", "number", "object", "string"]}`.
+**If you are encountering this when your input is JSON Schema/OpenAPI/AsyncAPI**, it most likely is because of a property being defined as having multiple types as a union, which the C# generator cannot natively handle and fallback to `dynamic`.

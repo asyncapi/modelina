@@ -23,7 +23,9 @@ function prepareContent(content) {
 
   // Use correct example links
   content = content.replace(/\]\((.*?)examples\/(.*?)\/?\)/g, '](/examples?selectedExample=$2)');
-
+  content = content.replace('/examples?selectedExample=integrate-with-react', 'https://github.com/asyncapi/modelina/tree/master/examples/integrate-with-react');
+  content = content.replace('/examples?selectedExample=integrate-with-next', 'https://github.com/asyncapi/modelina/tree/master/examples/integrate-with-next');
+  content = content.replace('/examples?selectedExample=integrate-with-maven', 'https://github.com/asyncapi/modelina/tree/master/examples/integrate-with-maven');
 
   // Replace all references to local images for docs
   content = content.replace(/"(.*?)\/img\/(.*?)"/g, '"/img/docs/img/$2"');
