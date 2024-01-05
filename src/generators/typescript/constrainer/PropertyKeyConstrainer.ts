@@ -7,7 +7,7 @@ import {
 } from '../../../helpers/Constraints';
 import { FormatHelpers } from '../../../helpers';
 import { isReservedTypeScriptKeyword } from '../Constants';
-import { TypeScriptPropertyKeyConstraint } from '../TypeScriptGenerator';
+import { TypeScriptOptions, TypeScriptPropertyKeyConstraint } from '../TypeScriptGenerator';
 
 export type PropertyKeyConstraintOptions = {
   NO_SPECIAL_CHAR: (value: string) => string;
@@ -20,11 +20,11 @@ export type PropertyKeyConstraintOptions = {
   ) => string;
   NO_EMPTY_VALUE: (value: string) => string;
   NAMING_FORMATTER: (value: string) => string;
-  NO_RESERVED_KEYWORDS: (value: string) => string;
+  NO_RESERVED_KEYWORDS: (value: string, options: TypeScriptOptions) => string;
 };
 
 export const DefaultPropertyKeyConstraints: PropertyKeyConstraintOptions = {
-  NO_SPECIAL_CHAR: (value: string) => {
+  NO_SPECIAL_CHAR: (value) => {
     //Exclude ` ` because it gets formatted by NAMING_FORMATTER
     //Exclude '_', '$' because they are allowed
     return FormatHelpers.replaceSpecialCharacters(value, {
@@ -36,8 +36,8 @@ export const DefaultPropertyKeyConstraints: PropertyKeyConstraintOptions = {
   NO_DUPLICATE_PROPERTIES,
   NO_EMPTY_VALUE,
   NAMING_FORMATTER: FormatHelpers.toCamelCase,
-  NO_RESERVED_KEYWORDS: (value: string) => {
-    return NO_RESERVED_KEYWORDS(value, isReservedTypeScriptKeyword);
+  NO_RESERVED_KEYWORDS: (value, options) => {
+    return NO_RESERVED_KEYWORDS(value, (word) => isReservedTypeScriptKeyword(word, true, options));
   }
 };
 export function defaultPropertyKeyConstraints(
@@ -48,7 +48,7 @@ export function defaultPropertyKeyConstraints(
     ...customConstraints
   };
 
-  return ({ objectPropertyModel, constrainedObjectModel, objectModel }) => {
+  return ({ objectPropertyModel, constrainedObjectModel, objectModel, options}) => {
     let constrainedPropertyKey = objectPropertyModel.propertyName;
 
     constrainedPropertyKey = constraints.NO_SPECIAL_CHAR(
@@ -59,7 +59,8 @@ export function defaultPropertyKeyConstraints(
     );
     constrainedPropertyKey = constraints.NO_EMPTY_VALUE(constrainedPropertyKey);
     constrainedPropertyKey = constraints.NO_RESERVED_KEYWORDS(
-      constrainedPropertyKey
+      constrainedPropertyKey,
+      options
     );
     //If the property name has been manipulated, lets make sure it don't clash with existing properties
     if (constrainedPropertyKey !== objectPropertyModel.propertyName) {

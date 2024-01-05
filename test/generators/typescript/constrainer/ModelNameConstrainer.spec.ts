@@ -40,6 +40,16 @@ describe('ModelNameConstrainer', () => {
       options: TypeScriptGenerator.defaultOptions
     });
     expect(constrainedKey).toEqual('ReservedReturn');
+  });  
+  test('should never render reserved JS keywords by default', () => {
+    const constrainedKey = TypeScriptDefaultConstraints.modelName({
+      modelName: 'location',
+      options: {
+        ...TypeScriptGenerator.defaultOptions,
+        useJavascriptReservedKeywords: true
+      }
+    });
+    expect(constrainedKey).toEqual('ReservedLocation');
   });
   describe('custom constraints', () => {
     test('should be able to overwrite all hooks', () => {

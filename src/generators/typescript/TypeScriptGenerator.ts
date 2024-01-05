@@ -52,6 +52,10 @@ export interface TypeScriptOptions
   constraints: Constraints<TypeScriptOptions>;
   moduleSystem: TypeScriptModuleSystemType;
   /**
+   * Use JS reserved keywords so the TS output models can easily be transpiled to JS
+   */
+  useJavascriptReservedKeywords: boolean;
+  /**
    * Use raw property names instead of constrained ones,
    * where you most likely need to access them with obj["propertyName"] instead of obj.propertyName
    */
@@ -92,6 +96,7 @@ export class TypeScriptGenerator extends AbstractGenerator<
     constraints: TypeScriptDefaultConstraints,
     moduleSystem: 'ESM',
     rawPropertyNames: false,
+    useJavascriptReservedKeywords: true,
     // Temporarily set
     dependencyManager: () => {
       return {} as TypeScriptDependencyManager;

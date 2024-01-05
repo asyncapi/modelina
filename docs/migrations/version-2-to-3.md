@@ -18,17 +18,21 @@ const generator = new JavaFileGenerator({
 });
 ```
 
-### TypeScript
+## TypeScript
+
+### JS reserved keywords are no longer applied by default
+
+```
+
+```
+
+## JavaScript
 
 Is not affected by this change.
 
-### JavaScript
+## C#
 
-Is not affected by this change.
-
-### C#
-
-#### System.TimeSpan is used when format is time
+### System.TimeSpan is used when format is time
 
 This example used to generate a `string`, but is now instead using `System.TimeSpan`.
 
@@ -49,7 +53,7 @@ public class TestClass {
 }
 ```
 
-#### System.DateTime is used when format is date-time
+### System.DateTime is used when format is date-time
 
 This example used to generate a `string`, but is now instead using `System.DateTime`.
 
@@ -70,7 +74,7 @@ public class TestClass {
 }
 ```
 
-#### System.Guid is used when format is uuid
+### System.Guid is used when format is uuid
 
 This example used to generate a `string`, but is now instead using `System.Guid`.
 
@@ -91,9 +95,9 @@ public class TestClass {
 }
 ```
 
-### Java
+## Java
 
-#### java.time.Duration is used when format is duration
+### java.time.Duration is used when format is duration
 
 This example used to generate a `String`, but is now instead using `java.time.Duration`.
 
@@ -114,7 +118,7 @@ public class TestClass {
 }
 ```
 
-#### inheritance will generate interfaces
+### inheritance will generate interfaces
 
 Please read the section about [allowInheritance](#allowinheritance-set-to-true-will-enable-inheritance) first. When `allowInheritance` is enabled, interfaces will be generated for schemas that uses `allOf`:
 
@@ -223,17 +227,17 @@ public class Truck implements NewVehicle, Vehicle {
 }
 ```
 
-### Kotlin
+## Kotlin
 
 Is not affected by this change.
 
-### Rust
+## Rust
 
 Is not affected by this change.
 
-### Python
+## Python
 
-#### Union type for the Pydantic preset supports Python pre 3.10
+### Union type for the Pydantic preset supports Python pre 3.10
 
 Modelina used to use the newer way of representing unions in Python by using the `|` operator. In the Pydantic preset, this is now adjusted to support Python pre 3.10 by using `Union[Model1, Model2]` instead:
 
@@ -271,19 +275,19 @@ class Union2(BaseModel):
   additionalProperties: Optional[dict[Any, Any]] = Field()
 ```
 
-### Go
+## Go
 
 Is not affected by this change.
 
-### Dart
+## Dart
 
 Is not affected by this change.
 
-### C++
+## C++
 
 Is not affected by this change.
 
-### Options in constraints
+## Options in constraints
 
 As part of https://github.com/asyncapi/modelina/issues/1475 we had the need to access options in the constraint logic, therefore all constraints now have direct access to the provided options.
 
