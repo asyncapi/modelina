@@ -40,7 +40,7 @@ describe('ModelNameConstrainer', () => {
       options: TypeScriptGenerator.defaultOptions
     });
     expect(constrainedKey).toEqual('ReservedReturn');
-  });  
+  });
   test('should never render reserved JS keywords by default', () => {
     const constrainedKey = TypeScriptDefaultConstraints.modelName({
       modelName: 'location',

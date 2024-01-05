@@ -80,6 +80,8 @@ export function isReservedTypeScriptKeyword(
     RESERVED_TYPESCRIPT_KEYWORDS,
     forceLowerCase
   );
-  const isJsReserved = options?.useJavascriptReservedKeywords ? isReservedJavaScriptKeyword(word) : false;
+  const isJsReserved = options?.useJavascriptReservedKeywords
+    ? isReservedJavaScriptKeyword(word)
+    : false;
   return isTsReserved || isJsReserved;
 }

@@ -40,7 +40,9 @@ export const DefaultEnumKeyConstraints: ModelEnumKeyConstraints = {
   NO_EMPTY_VALUE,
   NAMING_FORMATTER: FormatHelpers.toConstantCase,
   NO_RESERVED_KEYWORDS: (value: string, options: TypeScriptOptions) => {
-    return NO_RESERVED_KEYWORDS(value, (word) => isReservedTypeScriptKeyword(word, true, options));
+    return NO_RESERVED_KEYWORDS(value, (word) =>
+      isReservedTypeScriptKeyword(word, true, options)
+    );
   }
 };
 
@@ -54,7 +56,10 @@ export function defaultEnumKeyConstraints(
     constrainedEnumKey = constraints.NO_SPECIAL_CHAR(constrainedEnumKey);
     constrainedEnumKey = constraints.NO_NUMBER_START_CHAR(constrainedEnumKey);
     constrainedEnumKey = constraints.NO_EMPTY_VALUE(constrainedEnumKey);
-    constrainedEnumKey = constraints.NO_RESERVED_KEYWORDS(constrainedEnumKey, options);
+    constrainedEnumKey = constraints.NO_RESERVED_KEYWORDS(
+      constrainedEnumKey,
+      options
+    );
     //If the enum key has been manipulated, lets make sure it don't clash with existing keys
     if (constrainedEnumKey !== enumKey) {
       constrainedEnumKey = constraints.NO_DUPLICATE_KEYS(

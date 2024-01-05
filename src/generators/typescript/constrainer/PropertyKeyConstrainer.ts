@@ -7,7 +7,10 @@ import {
 } from '../../../helpers/Constraints';
 import { FormatHelpers } from '../../../helpers';
 import { isReservedTypeScriptKeyword } from '../Constants';
-import { TypeScriptOptions, TypeScriptPropertyKeyConstraint } from '../TypeScriptGenerator';
+import {
+  TypeScriptOptions,
+  TypeScriptPropertyKeyConstraint
+} from '../TypeScriptGenerator';
 
 export type PropertyKeyConstraintOptions = {
   NO_SPECIAL_CHAR: (value: string) => string;
@@ -37,7 +40,9 @@ export const DefaultPropertyKeyConstraints: PropertyKeyConstraintOptions = {
   NO_EMPTY_VALUE,
   NAMING_FORMATTER: FormatHelpers.toCamelCase,
   NO_RESERVED_KEYWORDS: (value, options) => {
-    return NO_RESERVED_KEYWORDS(value, (word) => isReservedTypeScriptKeyword(word, true, options));
+    return NO_RESERVED_KEYWORDS(value, (word) =>
+      isReservedTypeScriptKeyword(word, true, options)
+    );
   }
 };
 export function defaultPropertyKeyConstraints(
@@ -48,7 +53,12 @@ export function defaultPropertyKeyConstraints(
     ...customConstraints
   };
 
-  return ({ objectPropertyModel, constrainedObjectModel, objectModel, options}) => {
+  return ({
+    objectPropertyModel,
+    constrainedObjectModel,
+    objectModel,
+    options
+  }) => {
     let constrainedPropertyKey = objectPropertyModel.propertyName;
 
     constrainedPropertyKey = constraints.NO_SPECIAL_CHAR(

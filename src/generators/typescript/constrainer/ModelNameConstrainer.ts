@@ -5,7 +5,10 @@ import {
 } from '../../../helpers/Constraints';
 import { FormatHelpers } from '../../../helpers';
 import { isReservedTypeScriptKeyword } from '../Constants';
-import { TypeScriptModelNameConstraint, TypeScriptOptions } from '../TypeScriptGenerator';
+import {
+  TypeScriptModelNameConstraint,
+  TypeScriptOptions
+} from '../TypeScriptGenerator';
 
 export type ModelNameConstraints = {
   NO_SPECIAL_CHAR: (value: string) => string;
@@ -30,7 +33,9 @@ export const DefaultModelNameConstraints: ModelNameConstraints = {
     return FormatHelpers.toPascalCase(value);
   },
   NO_RESERVED_KEYWORDS: (value, options) => {
-    return NO_RESERVED_KEYWORDS(value, (word) => isReservedTypeScriptKeyword(word, true, options));
+    return NO_RESERVED_KEYWORDS(value, (word) =>
+      isReservedTypeScriptKeyword(word, true, options)
+    );
   }
 };
 export function defaultModelNameConstraints(
@@ -43,7 +48,10 @@ export function defaultModelNameConstraints(
     constrainedValue = constraints.NO_SPECIAL_CHAR(constrainedValue);
     constrainedValue = constraints.NO_NUMBER_START_CHAR(constrainedValue);
     constrainedValue = constraints.NO_EMPTY_VALUE(constrainedValue);
-    constrainedValue = constraints.NO_RESERVED_KEYWORDS(constrainedValue, options);
+    constrainedValue = constraints.NO_RESERVED_KEYWORDS(
+      constrainedValue,
+      options
+    );
     constrainedValue = constraints.NAMING_FORMATTER(constrainedValue);
     return constrainedValue;
   };
