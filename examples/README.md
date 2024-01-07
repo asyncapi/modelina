@@ -117,6 +117,7 @@ These are all specific examples only relevant to the TypeScript generator:
 - [typescript-use-esm](./typescript-use-esm) - A basic example that generate the models to use ESM module system.
 - [typescript-use-cjs](./typescript-use-cjs) - A basic example that generate the models to use CJS module system.
 - [typescript-generate-jsonbinpack](./typescript-generate-jsonbinpack) - A basic example showing how to generate models that include [jsonbinpack](https://github.com/sourcemeta/jsonbinpack) functionality.
+- [typescript-generate-raw-properties](./typescript-generate-raw-properties) - A basic example showing how to generate models that use raw properties for interface.
 
 ## Kotlin
 These are all specific examples only relevant to the Kotlin generator:

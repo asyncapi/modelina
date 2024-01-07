@@ -48,7 +48,11 @@ export function defaultPropertyKeyConstraints(
     ...customConstraints
   };
 
-  return ({ objectPropertyModel, constrainedObjectModel, objectModel }) => {
+  return ({
+    objectPropertyModel,
+    constrainedObjectModel,
+    objectModel
+  }) => {
     let constrainedPropertyKey = objectPropertyModel.propertyName;
 
     constrainedPropertyKey = constraints.NO_SPECIAL_CHAR(
