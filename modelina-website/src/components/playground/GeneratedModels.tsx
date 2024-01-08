@@ -15,6 +15,7 @@ const GeneratedModelsComponent: React.FC<GeneratedModelsComponentProps> = ({
   const context = useContext(PlaygroundGeneratedContext);
   const [selectedModel, setSelectedModel] = useState<string>('');
   const { setRenderModels, generatorCode, showGeneratorCode, setShowGeneratorCode } = usePlaygroundContext();
+  const { outputLoading } = usePlaygroundContext();
 
   const toShow = () => {
     let selectedCode = '';
@@ -75,6 +76,14 @@ const GeneratedModelsComponent: React.FC<GeneratedModelsComponentProps> = ({
     setRenderModels(modelsToRender);
   }, [updatedSelectedModel, showGeneratorCode]);
 
+  if (outputLoading) {
+    return (
+      <div className="h-full flex items-center justify-center bg-code-editor-dark transition-opacity">
+        <div className="text-white opacity-0">Loading...</div>
+      </div>
+    );
+  }
+
   if (showAllInOneFile === true) {
     return (
       <div className="h-full bg-code-editor-dark text-white rounded-b shadow-lg font-bold">
@@ -89,7 +98,7 @@ const GeneratedModelsComponent: React.FC<GeneratedModelsComponentProps> = ({
 
   return (
     <div className="h-full">
-      <div className="col-span-2 h-full bg-code-editor-dark text-white rounded-b shadow-lg font-bold">
+      <div className="col-span-2 h-full bg-code-editor-dark text-white rounded-b shadow-lg font-bold transition-opacity opacity-100">
         <MonacoEditorWrapper
           options={{ readOnly: true }}
           language={context?.language}
