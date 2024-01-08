@@ -52,8 +52,7 @@ export interface TypeScriptOptions
   constraints: Constraints<TypeScriptOptions>;
   moduleSystem: TypeScriptModuleSystemType;
   /**
-   * Use raw property names instead of constrained ones,
-   * where you most likely need to access them with obj["propertyName"] instead of obj.propertyName
+   * Use raw property names instead of constrained ones for interfaces.
    */
   rawPropertyNames: boolean;
 }
