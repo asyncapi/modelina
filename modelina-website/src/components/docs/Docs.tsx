@@ -25,7 +25,7 @@ const Docs: React.FC<ModelinaDocsProps> = ({ source, slug, router }) => {
    * Render the menu items dynamically in a depth first approach
    */
   const renderMenuTree = (value: any, isRoot: boolean) => {
-    const isSelected = value.slug === `/docs/${slug}`;
+    const isSelected = value.slug === `${slug}`;
     if (value.type === 'dir') {
       const hasRootReadme = value.content !== null;
       let headerReadme;
@@ -33,7 +33,7 @@ const Docs: React.FC<ModelinaDocsProps> = ({ source, slug, router }) => {
         headerReadme = (
           <li
             key={value.slug}
-            className={`cursor-pointer ${isSelected && 'bg-sky-500/[.3]'} p-2`}
+            className={`cursor-pointer hover:bg-sky-500/[.3] ${isSelected && 'bg-sky-500/[.3]'} p-2`}
             onClick={() => {
               setShowMenu(false);
             }}
@@ -59,7 +59,7 @@ const Docs: React.FC<ModelinaDocsProps> = ({ source, slug, router }) => {
       return (
         <li
           key={value.slug}
-          className={`cursor-pointer ${isSelected && 'bg-sky-500/[.3]'} p-2`}
+          className={`cursor-pointer hover:bg-sky-500/[.3] ${isSelected && 'bg-sky-500/[.3]'} p-2`}
           onClick={() => {
             setShowMenu(false);
           }}
