@@ -10,7 +10,7 @@ import Image from 'next/image';
 
 export default function Index() {
   const description =
-    'Sometimes you just want to generate data models for your payload. Modelina is a library for generating data models based on inputs such as AsyncAPI, OpenAPI, or JSON Schema documents.';
+    'Modelina is a library for generating data models based on inputs such as AsyncAPI, OpenAPI, or JSON Schema documents.';
   const image = '/img/social/modelina-card.jpg';
 
   return (
@@ -22,83 +22,94 @@ export default function Index() {
     >
       <div className="py-16 overflow-hidden lg:py-24">
         <div className="relative text-center">
-          <Heading level="h1" typeStyle="heading-lg">
-            Modelina
+          <Heading level="h1" typeStyle="heading-xl" className="mb-4">
+            Generate data models for payload
           </Heading>
           <Paragraph className="mt-4 max-w-3xl mx-auto">
             {description}
           </Paragraph>
         </div>
 
-        <div className="relative mt-12 lg:mt-20 lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center">
-          <div className="relative mb-8 lg:mt-8">
-            <Heading level="h4" typeStyle="heading-md-semibold">
-              AsyncAPI Cli
-            </Heading>
-            <Paragraph className="mt-3 lg:pr-4">
-              Get started immediately with Modelina through the AsyncAPI Cli.
-            </Paragraph>
-            <div className="mt-8">
-              <CodeBlock
-                language="generator-cli"
-                showLineNumbers={false}
-                className="mt-8"
-                textSizeClassName="text-sm"
-              >
-                asyncapi generate models typescript ./asyncapi.json
-              </CodeBlock>
-              <div className="mt-8">
-                <GithubButton
-                  className="block md:mt-0 md:inline-block w-full sm:w-auto mt-8"
-                  href="https://github.com/asyncapi/cli"
-                />
-              </div>
-            </div>
-          </div>
-          <div className="relative lg:mt-8 h-full">
-            <Image
-              src={'/img/card/cli-card.jpg'}
-              fill
-              sizes='100vw'
-              alt={'CLI card'}
-            />
-          </div>
+        <div className="relative text-center mt-12">
+          <Heading level="h1" typeStyle="heading-lg">
+            How to get started
+          </Heading>
+          <Paragraph className="mt-4 max-w-3xl mx-auto">
+            You can use through the AsyncAPI CLI or install it as a library.
+          </Paragraph>
         </div>
 
-        <div className="relative mt-12 lg:mt-20 lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center">
-          <div className="relative mb-8 lg:mt-8">
-            <Heading level="h4" typeStyle="heading-md-semibold">
-              Installation
-            </Heading>
-            <Paragraph className="mt-3 lg:pr-4">
-              Install Modelina as a library to take full control.
-            </Paragraph>
-            <div className="mt-8">
-              <CodeBlock
-                language="bash"
-                showLineNumbers={false}
-                className="mt-8"
-                textSizeClassName="text-sm"
-              >
-                npm install @asyncapi/modelina
-              </CodeBlock>
+        <div className='md:grid md:grid-cols-2 md:gap-8 md:items-start'>
+          <div className="relative grid md:gap-8 md:items-center">
+            <div className="relative hidden md:block md:mt-8 h-[300px]">
+              <Image
+                src={'/img/card/cli-card.jpg'}
+                fill
+                sizes='100%'
+                alt={'CLI card'}
+              />
+            </div>
+            <div className="relative mb-8 overflow-x-auto">
+              <Heading level="h4" typeStyle="heading-md-semibold">
+                AsyncAPI CLI
+              </Heading>
+              <Paragraph className="mt-3 md:pr-4">
+                Get started immediately with Modelina through the AsyncAPI CLI or by installing it as a library.
+              </Paragraph>
               <div className="mt-8">
-                <Button
-                  className="hidden mt-2 md:mt-0 lg:inline-block md:ml-2"
-                  text="Try The Playground"
-                  href="/playground"
-                  icon={<IconRocket className="inline-block -mt-1 w-6 h-6" />}
-                />
+                <CodeBlock
+                  language="generator-cli"
+                  showLineNumbers={false}
+                  className="mt-8"
+                  textSizeClassName="text-sm"
+                >
+                  asyncapi generate models typescript ./asyncapi.json
+                </CodeBlock>
+                <div className="mt-8">
+                  <GithubButton
+                    className="block md:mt-0 md:inline-block w-full sm:w-auto mt-8"
+                    href="https://github.com/asyncapi/cli"
+                  />
+                </div>
               </div>
             </div>
           </div>
-          <div className="relative lg:mt-8 h-full">
-            <Image
-              src={'/img/card/modelina-card.jpg'}
-              fill
-              sizes='100vw'
-              alt={'Modelina card'}
-            />
+
+          <div className="relative grid md:gap-8 md:items-center">
+            <div className="relative hidden md:block md:mt-8 h-[300px]">
+              <Image
+                src={'/img/card/modelina-card.jpg'}
+                fill
+                sizes='100%'
+                alt={'Modelina card'}
+              />
+            </div>
+            <div className="relative mb-8">
+              <Heading level="h4" typeStyle="heading-md-semibold">
+                Installation
+              </Heading>
+              <Paragraph className="mt-3 lg:pr-4">
+                Install Modelina as a library to take full control.
+              </Paragraph>
+              <div className="mt-8">
+                <CodeBlock
+                  language="bash"
+                  showLineNumbers={false}
+                  className="mt-8"
+                  textSizeClassName="text-sm"
+                >
+                  npm install @asyncapi/modelina
+                </CodeBlock>
+                <div className="mt-8">
+                  <Button
+                    className="hidden mt-2 md:mt-0 lg:inline-block md:ml-2"
+                    text="Try The Playground"
+                    href="/playground"
+                    icon={<IconRocket className="inline-block -mt-1 w-6 h-6" />}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
