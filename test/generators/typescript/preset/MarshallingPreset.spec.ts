@@ -14,11 +14,9 @@ const doc = {
   },
   $id: 'Test',
   type: 'object',
-  additionalProperties: { 
-    oneOf: [
-    {$ref: '#/definitions/NestedTest'}, 
-    {type: 'string'}
-  ] },
+  additionalProperties: {
+    oneOf: [{ $ref: '#/definitions/NestedTest' }, { type: 'string' }]
+  },
   required: ['string prop'],
   properties: {
     'string prop': { type: 'string' },
