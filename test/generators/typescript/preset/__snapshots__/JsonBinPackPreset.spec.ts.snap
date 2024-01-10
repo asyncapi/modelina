@@ -22,16 +22,15 @@ exports[`JsonBinPack preset should work fine with AsyncAPI inputs 1`] = `
   public marshal() : string {
     let json = '{'
     if(this.email !== undefined) {
-      json += \`\\"email\\": \${typeof this.email === 'number' || typeof this.email === 'boolean' ? this.email : JSON.stringify(this.email)},\`; 
+      json += \`\\"email\\": \${typeof this.email === 'number' || typeof this.email === 'boolean' ? this.email : JSON.stringify(this.email)},\`;
     }
     if(this.additionalProperties !== undefined) { 
-    for (const [key, value] of this.additionalProperties.entries()) {
-      //Only unwrap those who are not already a property in the JSON object
-      if(Object.keys(this).includes(String(key))) continue;
+      for (const [key, value] of this.additionalProperties.entries()) {
+        //Only unwrap those that are not already a property in the JSON object
+        if([\\"email\\",\\"additionalProperties\\"].includes(String(key))) continue;
         json += \`\\"\${key}\\": \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;
       }
     }
-
     //Remove potential last comma 
     return \`\${json.charAt(json.length-1) === ',' ? json.slice(0, json.length-1) : json}}\`;
   }
@@ -43,12 +42,12 @@ exports[`JsonBinPack preset should work fine with AsyncAPI inputs 1`] = `
     if (obj[\\"email\\"] !== undefined) {
       instance.email = obj[\\"email\\"];
     }
-
-    if (instance.additionalProperties === undefined) {instance.additionalProperties = new Map();}
-      for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"email\\",\\"additionalProperties\\"].includes(key);}))) {
-        instance.additionalProperties.set(key, value as any);
-      }
-
+  
+    instance.additionalProperties = new Map();
+    const propsToCheck = Object.entries(obj).filter((([key,]) => {return ![\\"email\\",\\"additionalProperties\\"].includes(key);}));
+    for (const [key, value] of propsToCheck) {
+      instance.additionalProperties.set(key, value as any);
+    }
     return instance;
   }
 
@@ -88,16 +87,15 @@ exports[`JsonBinPack preset should work fine with JSON Schema draft 4 1`] = `
   public marshal() : string {
     let json = '{'
     if(this.email !== undefined) {
-      json += \`\\"email\\": \${typeof this.email === 'number' || typeof this.email === 'boolean' ? this.email : JSON.stringify(this.email)},\`; 
+      json += \`\\"email\\": \${typeof this.email === 'number' || typeof this.email === 'boolean' ? this.email : JSON.stringify(this.email)},\`;
     }
     if(this.additionalProperties !== undefined) { 
-    for (const [key, value] of this.additionalProperties.entries()) {
-      //Only unwrap those who are not already a property in the JSON object
-      if(Object.keys(this).includes(String(key))) continue;
+      for (const [key, value] of this.additionalProperties.entries()) {
+        //Only unwrap those that are not already a property in the JSON object
+        if([\\"email\\",\\"additionalProperties\\"].includes(String(key))) continue;
         json += \`\\"\${key}\\": \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;
       }
     }
-
     //Remove potential last comma 
     return \`\${json.charAt(json.length-1) === ',' ? json.slice(0, json.length-1) : json}}\`;
   }
@@ -109,12 +107,12 @@ exports[`JsonBinPack preset should work fine with JSON Schema draft 4 1`] = `
     if (obj[\\"email\\"] !== undefined) {
       instance.email = obj[\\"email\\"];
     }
-
-    if (instance.additionalProperties === undefined) {instance.additionalProperties = new Map();}
-      for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"email\\",\\"additionalProperties\\"].includes(key);}))) {
-        instance.additionalProperties.set(key, value as any);
-      }
-
+  
+    instance.additionalProperties = new Map();
+    const propsToCheck = Object.entries(obj).filter((([key,]) => {return ![\\"email\\",\\"additionalProperties\\"].includes(key);}));
+    for (const [key, value] of propsToCheck) {
+      instance.additionalProperties.set(key, value as any);
+    }
     return instance;
   }
 
@@ -154,16 +152,15 @@ exports[`JsonBinPack preset should work fine with JSON Schema draft 6 1`] = `
   public marshal() : string {
     let json = '{'
     if(this.email !== undefined) {
-      json += \`\\"email\\": \${typeof this.email === 'number' || typeof this.email === 'boolean' ? this.email : JSON.stringify(this.email)},\`; 
+      json += \`\\"email\\": \${typeof this.email === 'number' || typeof this.email === 'boolean' ? this.email : JSON.stringify(this.email)},\`;
     }
     if(this.additionalProperties !== undefined) { 
-    for (const [key, value] of this.additionalProperties.entries()) {
-      //Only unwrap those who are not already a property in the JSON object
-      if(Object.keys(this).includes(String(key))) continue;
+      for (const [key, value] of this.additionalProperties.entries()) {
+        //Only unwrap those that are not already a property in the JSON object
+        if([\\"email\\",\\"additionalProperties\\"].includes(String(key))) continue;
         json += \`\\"\${key}\\": \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;
       }
     }
-
     //Remove potential last comma 
     return \`\${json.charAt(json.length-1) === ',' ? json.slice(0, json.length-1) : json}}\`;
   }
@@ -175,12 +172,12 @@ exports[`JsonBinPack preset should work fine with JSON Schema draft 6 1`] = `
     if (obj[\\"email\\"] !== undefined) {
       instance.email = obj[\\"email\\"];
     }
-
-    if (instance.additionalProperties === undefined) {instance.additionalProperties = new Map();}
-      for (const [key, value] of Object.entries(obj).filter((([key,]) => {return ![\\"email\\",\\"additionalProperties\\"].includes(key);}))) {
-        instance.additionalProperties.set(key, value as any);
-      }
-
+  
+    instance.additionalProperties = new Map();
+    const propsToCheck = Object.entries(obj).filter((([key,]) => {return ![\\"email\\",\\"additionalProperties\\"].includes(key);}));
+    for (const [key, value] of propsToCheck) {
+      instance.additionalProperties.set(key, value as any);
+    }
     return instance;
   }
 
