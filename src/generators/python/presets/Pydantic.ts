@@ -21,7 +21,7 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
   property(params) {
     let type = params.property.property.type;
     const propertyName = params.property.propertyName;
-    
+
     if (params.property.property instanceof ConstrainedUnionModel) {
       const unionTypes = params.property.property.union.map(
         (unionModel) => unionModel.type
