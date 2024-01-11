@@ -25,12 +25,12 @@ export default function NavBar({ className = '', hideLogo = false }) {
 
   return (
     <div className={`bg-white ${className} z-50`}>
-      <div className="flex w-full justify-between items-center py-6 lg:justify-start lg:space-x-10">
+      <div className="flex w-full justify-between items-center py-3 lg:justify-start lg:space-x-10">
         {!hideLogo && (
           <div className="lg:w-auto lg:flex-1">
             <div className="flex">
               <Link href="https://modelina.org/" className="cursor-pointer">
-                <ModelinaLogo className="h-16 w-auto sm:h-12" />
+                <ModelinaLogo className="h-12 w-auto sm:h-16" />
               </Link>
             </div>
           </div>
