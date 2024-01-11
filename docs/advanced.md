@@ -47,12 +47,17 @@ Check out this [example out for a live demonstration](../examples/include-custom
 
 One of the primary use-cases for the generated models, is to serialize and deserilize it to for example JSON, XML or binary. Each generator can have multiple ways to achieve this, and even support multiple libraries. This is achieved through presets, you can find them here for each output:
 
+- [C++](./languages/Cplusplus.md#generate-serializer-and-deserializer-functionality)
 - [C#](./languages/Csharp.md#generate-serializer-and-deserializer-functionality)
 - [Dart](./languages/Dart.md#generate-serializer-and-deserializer-functionality)
-- Go currently does not support this.
+- [Go](./languages/Go.md#generate-serializer-and-deserializer-functionality)
 - [Java](./languages/Java.md#generate-serializer-and-deserializer-functionality)
 - [JavaScript](./languages/JavaScript.md#generate-serializer-and-deserializer-functionality)
+- [Kotlin](./languages/Kotlin.md#generate-serializer-and-deserializer-functionality)
+- [PHP](./languages/Php.md#generate-serializer-and-deserializer-functionality)
+- [Python](./languages/Python.md#generate-serializer-and-deserializer-functionality)
 - [Rust](./languages/Rust.md)
+- [Scala](./languages/Scala.md#generate-serializer-and-deserializer-functionality)
 - [TypeScript](./languages/TypeScript.md#generate-serializer-and-deserializer-functionality)
 
 ## Adapting input and outputs

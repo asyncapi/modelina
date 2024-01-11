@@ -8,6 +8,7 @@ There are special use-cases that each language supports; this document pertains 
 - [Description Present](#description-present)
 - [Generate serializer and deserializer functionality](#generate-serializer-and-deserializer-functionality)
   * [To and from JSON](#to-and-from-json)
+    + [Generate json_encode function](#generate-json_encode-function)
   * [To and from XML](#to-and-from-xml)
   * [To and from binary](#to-and-from-binary)
 
@@ -28,6 +29,12 @@ As you normally only need one library to do this, we developers can never get en
 Therefore, there is not one specific preset that offers everything. Below is a list of all the supported serialization presets. 
 
 ### To and from JSON
+
+Here are all the supported presets and the libraries they use for converting to and from JSON: 
+
+- [Generate json_encode function](#generate-json_encode-function) 
+
+#### Generate json_encode function
 
 Objects in PHP can generally be serialized to JSON using the [`json_encode()` function](https://www.php.net/manual/en/function.json-encode.php).
 To ensure that the data is serialized correctly, the [`JsonSerializable` interface](https://www.php.net/manual/en/class.jsonserializable.php) needs to be implemented.
