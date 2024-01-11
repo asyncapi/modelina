@@ -20,6 +20,7 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
   },
   property(params) {
     let type = params.property.property.type;
+    const propertyName = params.property.propertyName;
 
     if (params.property.property instanceof ConstrainedUnionModel) {
       const unionTypes = params.property.property.union.map(
@@ -35,8 +36,14 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
     const alias = params.property.property.originalInput['description']
       ? `alias='''${params.property.property.originalInput['description']}'''`
       : '';
+    const defaultValue = params.property.required ? '' : 'default=None';
 
-    return `${params.property.propertyName}: ${type} = Field(${alias})`;
+    if (alias && defaultValue) {
+      return `${propertyName}: ${type} = Field(${alias}, ${defaultValue})`;
+    } else if (alias) {
+      return `${propertyName}: ${type} = Field(${alias})`;
+    }
+    return `${propertyName}: ${type} = Field(${defaultValue})`;
   },
   ctor: () => '',
   getter: () => '',

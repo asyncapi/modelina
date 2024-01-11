@@ -35,7 +35,7 @@ Adding examples is quite straight forward, so don't feel shy! Here's how to do i
 1. Adapt [this testing file](https://github.com/asyncapi/modelina/blob/1e71b3b2cab6bc2c277001fcafe7e1b8ed175ce9/examples/TEMPLATE/index.spec.ts#L4) for your use case. In most cases, it could be as simple as changing the title of the test!
 1. Add your example to our overall list of [examples](https://github.com/asyncapi/modelina/blob/master/examples/README.md).
 
-Aaaand you are done! :tada: 
+Aaaand you are done! 🎉
 
 ### Adding a new preset 
 Presets are for when you want to customize the generated output, they work like middleware that layers on top of each other, you can read more [about presets here](./presets.md).
@@ -83,7 +83,7 @@ describe('LANGUAGE_MY_PRESET', () => {
 ```
 Remember to replace `LANGUAGE` and `Language` with the appropriate values.
 
-Aaaand you are done! :tada: 
+Aaaand you are done! 🎉
 
 ### Adding a new input processor
 Input processors are the translators from inputs to MetaModel (read more about [the input processing here](./input-processing.md)). 
@@ -98,12 +98,12 @@ Here is how you can add a new input processor:
 7. Add your input processor as part of the [main input processor](../src/processors/InputProcessor.ts)
 8. Add a [test for the main input processor](../test/processors/InputProcessor.spec.ts) to ensure that your input processor are accessed accordingly.
 
-Thats it for the code and tests, now all that remains is docs and examples! :fire:
+Thats it for the code and tests, now all that remains is docs and examples! 🔥
 1. [Add a new example](#adding-examples) showcasing the new supported input.
 2. Add the [usage example to the usage document](./usage.md).
 3. Add the new supported input to the [main readme file](../README.md#features).
 
-Aaaand you are done! :tada: 
+Aaaand you are done! 🎉
 
 ### Adding a new generator
 Generators sits as the core of Modelina, which frames the core concepts of what you can generate. Therefore it's also no small task to create a new one, so dont get discourage, we are here to help you! 
@@ -167,4 +167,4 @@ That said, here is a general rundown on what's triggered by each PR:
 - [Coverall](https://github.com/asyncapi/modelina/blob/master/.github/workflows/coverall.yml) ensures we get test coverage statistics in each PR, thus ensuring we see how it affects overall test coverage. It creates a comment on the PR with the coverage status.
 - [SonarCloud](https://sonarcloud.io/dashboard?id=asyncapi_generator-model-sdk) runs a code analysis to ensure no bugs, security concerns, code smells, or duplicated code blocks. Make sure you address any concerns found by this bot, because it generates a comment to the PR if it finds any issue.
 
-At the end of the day, sometimes checks just fail, based on weird dependency problems. If any test failures occur that don't look like a problem you can fix, simply tag one of the maintainers. We're there to help! :smile:
+At the end of the day, sometimes checks just fail, based on weird dependency problems. If any test failures occur that don't look like a problem you can fix, simply tag one of the maintainers. We're there to help! 😄

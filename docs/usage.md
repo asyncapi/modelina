@@ -35,6 +35,7 @@ For more specific integration options, please check out the [integration documen
 - [Generate Kotlin models](#generate-kotlin-models)
 - [Generate C++ (cplusplus) models](#generate-c-cplusplus-models)
 - [Generate PHP models](#generate-php-models)
+- [Generate Scala models](#generate-scala-models)
 
 <!-- tocstop -->
 
@@ -123,7 +124,7 @@ These are the current known limitation of the Swagger 2.0 input.
 
 Through the Swagger 2.0 Schema you are able to use `discriminator` for achieving polymorphism. Current version of Modelina does not generate the expected inheritance of models, instead it's current behavior is to [merge the schemas together](./inputs/JSON_Schema.md#processing-sub-schemas). This means you will still get access to the properties that missing inherited model has, but without the inheritance.
 
-Long term if this is something you wish was supported, voice your [opionion here](https://github.com/asyncapi/modelina/issues/108).
+Long term if this is something you wish was supported, voice your [opinion here](https://github.com/asyncapi/modelina/issues/108).
 
 ## Generate models from OpenAPI documents
 
@@ -201,4 +202,8 @@ C++ is one of the many output languages we support. Check out this [basic exampl
 
 ## Generate PHP models
 
-PHP is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/php-generate-models/) and the following [PHP documentation for more advanced use-cases](./languages/Php.md).
+PHP is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-php-models/) and the following [PHP documentation for more advanced use-cases](./languages/Php.md).
+
+## Generate Scala models
+
+Scala is one of the many output languages we support. Check out this [basic example for a live demonstration](../examples/generate-scala-models/) and the following [Scala documentation for more advanced use-cases](./languages/Scala.md).
