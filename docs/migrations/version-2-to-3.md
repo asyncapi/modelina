@@ -21,9 +21,52 @@ const generator = new JavaFileGenerator({
 ## TypeScript
 
 ### JS reserved keywords are no longer applied by default
+By default up until now, JS reserved keywords have been checked for TS as well. Which means that something like:
 
 ```
+{
+  $schema: 'http://json-schema.org/draft-07/schema#',
+  type: 'object',
+  additionalProperties: false,
+  properties: {
+    location: {
+      type: 'string'
+    }
+  }
+}
+```
 
+Would be default be rendered as:
+```ts
+class Root {
+  private _reservedLocation?: string;
+
+  constructor(input: {
+    reservedLocation?: string,
+  }) {
+    this._reservedLocation = input.reservedLocation;
+  }
+
+  get reservedLocation(): string | undefined { return this._reservedLocation; }
+  set reservedLocation(reservedLocation: string | undefined) { this._reservedLocation = reservedLocation; }
+}
+```
+
+However, without setting `useJavascriptReservedKeywords: true` by default the following will be generated:
+
+```ts
+class Root {
+  private _location?: string;
+
+  constructor(input: {
+    location?: string,
+  }) {
+    this._location = input.location;
+  }
+
+  get location(): string | undefined { return this._location; }
+  set location(location: string | undefined) { this._location = location; }
+}
 ```
 
 ## JavaScript

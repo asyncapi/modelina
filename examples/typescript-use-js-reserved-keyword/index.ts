@@ -8,20 +8,14 @@ const jsonSchemaDraft7 = {
   type: 'object',
   additionalProperties: false,
   properties: {
-    person: {
-      type: 'object',
-      additionalProperties: false,
-      properties: {
-        location: {
-          type: 'string'
-        }
-      }
+    location: {
+      type: 'string'
     }
   }
 };
 
 export async function generate(): Promise<void> {
-  const models = await generator.generateCompleteModels(jsonSchemaDraft7, {});
+  const models = await generator.generate(jsonSchemaDraft7);
   for (const model of models) {
     console.log(model.result);
   }

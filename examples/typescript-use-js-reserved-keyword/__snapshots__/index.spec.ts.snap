@@ -1,9 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Should be able to render models to ESM module system and should log expected output to console 1`] = `
+exports[`Should be able to render models to not use reserved keywords from JS and should log expected output to console 1`] = `
 Array [
-  "
-class Person {
+  "class Root {
   private _reservedLocation?: string;
 
   constructor(input: {
@@ -14,8 +13,6 @@ class Person {
 
   get reservedLocation(): string | undefined { return this._reservedLocation; }
   set reservedLocation(reservedLocation: string | undefined) { this._reservedLocation = reservedLocation; }
-}
-export default Person;
-",
+}",
 ]
 `;
