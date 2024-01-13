@@ -10,6 +10,7 @@ import {
   ModelinaPhpOptions,
   ModelinaPythonOptions,
   ModelinaRustOptions,
+  ModelinaScalaOptions,
   ModelinaTypeScriptOptions
 } from '@/types';
 import { createContext } from 'react';
@@ -38,3 +39,4 @@ export const PlaygroundGeneralConfigContext =
   createContext<ModelinaGeneralOptions | null>(null);
 export const PlaygroundPhpConfigContext =
   createContext<ModelinaPhpOptions | null>(null);
+export const PlaygroundScalaConfigContext = createContext<ModelinaScalaOptions | null>(null)

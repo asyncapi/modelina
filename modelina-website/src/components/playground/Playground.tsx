@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Router, { withRouter, NextRouter } from 'next/router';
 import { encode } from 'js-base64';
-import {
-  ModelinaQueryOptions,
-  GenerateMessage,
-  UpdateMessage
-} from '@/types';
+import { ModelinaQueryOptions, GenerateMessage, UpdateMessage } from '@/types';
 import { getTypeScriptGeneratorCode } from '@/helpers/GeneratorCode/TypeScriptGenerator';
 import { getJavaScriptGeneratorCode } from '@/helpers/GeneratorCode/JavaScriptGenerator';
 import { getJavaGeneratorCode } from '@/helpers/GeneratorCode/JavaGenerator';
@@ -17,6 +13,7 @@ import { getDartGeneratorCode } from '@/helpers/GeneratorCode/DartGenerator';
 import { getCplusplusGeneratorCode } from '@/helpers/GeneratorCode/CplusplusGenerator';
 import { getKotlinGeneratorCode } from '@/helpers/GeneratorCode/KotlinGenerator';
 import { getPhpGeneratorCode } from '@/helpers/GeneratorCode/PhpGenerator';
+import { getScalaGeneratorCode } from '@/helpers/GeneratorCode/ScalaGenerator';
 import { usePlaygroundContext } from '../contexts/PlaygroundContext';
 import { Sidebar } from './Sidebar';
 import { Content } from './Content';
@@ -43,7 +40,7 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
     isLoaded,
     setIsLoaded,
     hasLoadedQuery,
-    setHasLoadedQuery,
+    setHasLoadedQuery
   } = usePlaygroundContext();
 
   // To avoid hydration error
@@ -63,16 +60,28 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
       setConfig({ ...config, language: query.language as any });
     }
     if (query.enumKeyNamingFormat !== undefined) {
-      setConfig({ ...config, enumKeyNamingFormat: query.enumKeyNamingFormat as any });
+      setConfig({
+        ...config,
+        enumKeyNamingFormat: query.enumKeyNamingFormat as any
+      });
     }
     if (query.propertyNamingFormat !== undefined) {
-      setConfig({ ...config, propertyNamingFormat: query.propertyNamingFormat as any });
+      setConfig({
+        ...config,
+        propertyNamingFormat: query.propertyNamingFormat as any
+      });
     }
     if (query.modelNamingFormat !== undefined) {
-      setConfig({ ...config, modelNamingFormat: query.modelNamingFormat as any });
+      setConfig({
+        ...config,
+        modelNamingFormat: query.modelNamingFormat as any
+      });
     }
     if (query.showTypeMappingExample !== undefined) {
-      setConfig({ ...config, showTypeMappingExample: query.showTypeMappingExample === 'true' });
+      setConfig({
+        ...config,
+        showTypeMappingExample: query.showTypeMappingExample === 'true'
+      });
     }
     if (query.indentationType !== undefined) {
       setConfig({ ...config, indentationType: query.indentationType as any });
@@ -87,37 +96,64 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
       setConfig({ ...config, tsEnumType: query.tsEnumType as any });
     }
     if (query.tsIncludeDescriptions !== undefined) {
-      setConfig({ ...config, tsIncludeDescriptions: query.tsIncludeDescriptions === 'true' });
+      setConfig({
+        ...config,
+        tsIncludeDescriptions: query.tsIncludeDescriptions === 'true'
+      });
     }
     if (query.tsIncludeJsonBinPack !== undefined) {
-      setConfig({ ...config, tsIncludeJsonBinPack: query.tsIncludeJsonBinPack === 'true' });
+      setConfig({
+        ...config,
+        tsIncludeJsonBinPack: query.tsIncludeJsonBinPack === 'true'
+      });
     }
     if (query.tsIncludeExampleFunction !== undefined) {
-      setConfig({ ...config, tsIncludeExampleFunction: query.tsIncludeExampleFunction === 'true' });
+      setConfig({
+        ...config,
+        tsIncludeExampleFunction: query.tsIncludeExampleFunction === 'true'
+      });
     }
     if (query.csharpArrayType !== undefined) {
       setConfig({ ...config, csharpArrayType: query.csharpArrayType as any });
     }
     if (query.csharpAutoImplemented !== undefined) {
-      setConfig({ ...config, csharpAutoImplemented: query.csharpAutoImplemented === 'true' });
+      setConfig({
+        ...config,
+        csharpAutoImplemented: query.csharpAutoImplemented === 'true'
+      });
     }
     if (query.csharpOverwriteHashcode !== undefined) {
-      setConfig({ ...config, csharpOverwriteHashcode: query.csharpOverwriteHashcode === 'true' });
+      setConfig({
+        ...config,
+        csharpOverwriteHashcode: query.csharpOverwriteHashcode === 'true'
+      });
     }
     if (query.phpIncludeDescriptions !== undefined) {
-      setConfig({ ...config, phpIncludeDescriptions: query.phpIncludeDescriptions === 'true' });
+      setConfig({
+        ...config,
+        phpIncludeDescriptions: query.phpIncludeDescriptions === 'true'
+      });
     }
     if (query.phpNamespace !== undefined) {
       setConfig({ ...config, phpNamespace: query.phpNamespace });
     }
     if (query.csharpIncludeJson !== undefined) {
-      setConfig({ ...config, csharpIncludeJson: query.csharpIncludeJson === 'true' });
+      setConfig({
+        ...config,
+        csharpIncludeJson: query.csharpIncludeJson === 'true'
+      });
     }
     if (query.csharpOverwriteEqual !== undefined) {
-      setConfig({ ...config, csharpOverwriteEqual: query.csharpOverwriteEqual === 'true' });
+      setConfig({
+        ...config,
+        csharpOverwriteEqual: query.csharpOverwriteEqual === 'true'
+      });
     }
     if (query.csharpIncludeNewtonsoft !== undefined) {
-      setConfig({ ...config, csharpIncludeNewtonsoft: query.csharpIncludeNewtonsoft === 'true' });
+      setConfig({
+        ...config,
+        csharpIncludeNewtonsoft: query.csharpIncludeNewtonsoft === 'true'
+      });
     }
     if (query.csharpNamespace !== undefined) {
       setConfig({ ...config, csharpNamespace: query.csharpNamespace });
@@ -132,28 +168,46 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
       setConfig({ ...config, javaPackageName: query.javaPackageName });
     }
     if (query.javaIncludeJackson !== undefined) {
-      setConfig({ ...config, javaIncludeJackson: query.javaIncludeJackson === 'true' });
+      setConfig({
+        ...config,
+        javaIncludeJackson: query.javaIncludeJackson === 'true'
+      });
     }
     if (query.javaIncludeMarshaling !== undefined) {
-      setConfig({ ...config, javaIncludeMarshaling: query.javaIncludeMarshaling === 'true' });
+      setConfig({
+        ...config,
+        javaIncludeMarshaling: query.javaIncludeMarshaling === 'true'
+      });
     }
     if (query.javaArrayType !== undefined) {
       setConfig({ ...config, javaArrayType: query.javaArrayType as any });
     }
     if (query.javaOverwriteHashcode !== undefined) {
-      setConfig({ ...config, javaOverwriteHashcode: query.javaOverwriteHashcode === 'true' });
+      setConfig({
+        ...config,
+        javaOverwriteHashcode: query.javaOverwriteHashcode === 'true'
+      });
     }
     if (query.javaOverwriteEqual !== undefined) {
-      setConfig({ ...config, javaOverwriteEqual: query.javaOverwriteEqual === 'true' });
+      setConfig({
+        ...config,
+        javaOverwriteEqual: query.javaOverwriteEqual === 'true'
+      });
     }
     if (query.javaOverwriteToString !== undefined) {
-      setConfig({ ...config, javaOverwriteToString: query.javaOverwriteToString === 'true' });
+      setConfig({
+        ...config,
+        javaOverwriteToString: query.javaOverwriteToString === 'true'
+      });
     }
     if (query.javaJavaDocs !== undefined) {
       setConfig({ ...config, javaJavaDocs: query.javaJavaDocs === 'true' });
     }
     if (query.javaJavaxAnnotation !== undefined) {
-      setConfig({ ...config, javaJavaxAnnotation: query.javaJavaxAnnotation === 'true' });
+      setConfig({
+        ...config,
+        javaJavaxAnnotation: query.javaJavaxAnnotation === 'true'
+      });
     }
     if (query.goPackageName !== undefined) {
       setConfig({ ...config, goPackageName: query.goPackageName });
@@ -163,13 +217,21 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
       setConfig({ ...config, kotlinPackageName: query.kotlinPackageName });
     }
 
+    if (query.ScalaPackageName !== undefined) {
+      setConfig({ ...config, ScalaPackageName: query.ScalaPackageName });
+    }
+
     if (props.router.isReady && !hasLoadedQuery) {
       setHasLoadedQuery(true);
       generateNewCode(input);
     }
   }, [props.router.isReady, hasLoadedQuery]);
 
-  const setNewConfig = (configName: string, configValue: any, updateCode?: boolean) => {
+  const setNewConfig = (
+    configName: string,
+    configValue: any,
+    updateCode?: boolean
+  ) => {
     setNewQuery(configName, configValue);
     /* eslint-disable-next-line security/detect-object-injection */
     (config as any)[configName] = configValue;
@@ -223,7 +285,8 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
           dart: getDartGeneratorCode,
           cplusplus: getCplusplusGeneratorCode,
           kotlin: getKotlinGeneratorCode,
-          php: getPhpGeneratorCode
+          php: getPhpGeneratorCode,
+          scala: getScalaGenerorCode
         };
 
         const generatorCode = generators[config.language](message);
@@ -231,32 +294,38 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
         fetch(`${process.env.NEXT_PUBLIC_API_PATH}/generate`, {
           body: JSON.stringify(message),
           method: 'POST'
-        }).then(async (res) => {
-          if (!res.ok) {
-            throw new Error(res.statusText);
-          }
+        })
+          .then(async (res) => {
+            if (!res.ok) {
+              throw new Error(res.statusText);
+            }
 
-          const response: UpdateMessage = await res.json();
-          setGeneratorCode(generatorCode);
-          setModels(response.models);
-          setLoaded({
-            ...loaded,
-            hasReceivedCode: true
+            const response: UpdateMessage = await res.json();
+            setGeneratorCode(generatorCode);
+            setModels(response.models);
+            setLoaded({
+              ...loaded,
+              hasReceivedCode: true
+            });
+            setError(false);
+            setStatusCode(200);
+            setErrorMessage('');
+          })
+          .catch((error) => {
+            console.error(error);
+            setError(true);
+            setErrorMessage(
+              'Input is not a correct AsyncAPI document, so it cannot be processed.'
+            );
+            setStatusCode(500);
           });
-          setError(false);
-          setStatusCode(200);
-          setErrorMessage('');
-        }).catch(error => {
-          console.error(error);
-          setError(true);
-          setErrorMessage("Input is not a correct AsyncAPI document, so it cannot be processed.");
-          setStatusCode(500);
-        });
       }
     } catch (e: any) {
       console.error(e);
       setError(true);
-      setErrorMessage("Input is not a correct AsyncAPI document, so it cannot be processed.");
+      setErrorMessage(
+        'Input is not a correct AsyncAPI document, so it cannot be processed.'
+      );
       setStatusCode(400);
     }
   };
@@ -267,24 +336,26 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
 
   return (
     <div>
-      {
-        isLoaded
-          ?
-          <div className="text-xl text-center mt-16 lg:mt-56 md:text-2xl">
-            Loading Modelina Playground. Rendering playground components...
-          </div>
-          :
-          <div className="flex h-[90vh] w-full py-2">
-            <div className="flex overflow-hidden h-full w-full">
-              <div className='h-full w-[50px]'>
-                <Sidebar />
-              </div>
-              <div className='h-full w-[100%]'>
-                <Content setNewConfig={setNewConfig} setNewQuery={setNewQuery} generateNewCode={generateNewCode} />
-              </div>
+      {isLoaded ? (
+        <div className="text-xl text-center mt-16 lg:mt-56 md:text-2xl">
+          Loading Modelina Playground. Rendering playground components...
+        </div>
+      ) : (
+        <div className="flex h-[90vh] w-full py-2">
+          <div className="flex overflow-hidden h-full w-full">
+            <div className="h-full w-[50px]">
+              <Sidebar />
+            </div>
+            <div className="h-full w-[100%]">
+              <Content
+                setNewConfig={setNewConfig}
+                setNewQuery={setNewQuery}
+                generateNewCode={generateNewCode}
+              />
             </div>
           </div>
-      }
+        </div>
+      )}
     </div>
   );
 };

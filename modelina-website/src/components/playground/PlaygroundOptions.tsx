@@ -18,57 +18,82 @@ interface PlaygroundOptionsProps {
   setNewConfig?: (queryKey: string, queryValue: any) => void;
 }
 
-const PlaygroundOptions: React.FC<PlaygroundOptionsProps> = ({ setNewConfig }) => {
+const PlaygroundOptions: React.FC<PlaygroundOptionsProps> = ({
+  setNewConfig
+}) => {
   const context = useContext(PlaygroundGeneralConfigContext);
-  const [generatorOptions, setGeneratorOptions] = useState<React.ReactNode>(null);
+  const [generatorOptions, setGeneratorOptions] =
+    useState<React.ReactNode>(null);
 
   const handleLanguageChange = () => {
     switch (context?.language) {
       case 'typescript':
-        setGeneratorOptions(prevOptions => <TypeScriptGeneratorOptions setNewConfig={setNewConfig} />);
+        setGeneratorOptions((prevOptions) => (
+          <TypeScriptGeneratorOptions setNewConfig={setNewConfig} />
+        ));
         break;
       case 'javascript':
-        setGeneratorOptions(<JavaScriptGeneratorOptions setNewConfig={setNewConfig} />);
+        setGeneratorOptions(
+          <JavaScriptGeneratorOptions setNewConfig={setNewConfig} />
+        );
         break;
       case 'csharp':
-        setGeneratorOptions(<CSharpGeneratorOptions setNewConfig={setNewConfig} />);
+        setGeneratorOptions(
+          <CSharpGeneratorOptions setNewConfig={setNewConfig} />
+        );
         break;
       case 'dart':
-        setGeneratorOptions(<DartGeneratorOptions setNewConfig={setNewConfig} />);
+        setGeneratorOptions(
+          <DartGeneratorOptions setNewConfig={setNewConfig} />
+        );
         break;
       case 'go':
         setGeneratorOptions(<GoGeneratorOptions setNewConfig={setNewConfig} />);
         break;
       case 'cplusplus':
-        setGeneratorOptions(<CplusplusGeneratorOptions setNewConfig={setNewConfig} />);
+        setGeneratorOptions(
+          <CplusplusGeneratorOptions setNewConfig={setNewConfig} />
+        );
         break;
       case 'java':
-        setGeneratorOptions(<JavaGeneratorOptions setNewConfig={setNewConfig} />);
+        setGeneratorOptions(
+          <JavaGeneratorOptions setNewConfig={setNewConfig} />
+        );
         break;
       case 'kotlin':
-        setGeneratorOptions(<KotlinGeneratorOptions setNewConfig={setNewConfig} />);
+        setGeneratorOptions(
+          <KotlinGeneratorOptions setNewConfig={setNewConfig} />
+        );
         break;
       case 'rust':
-        setGeneratorOptions(<RustGeneratorOptions setNewConfig={setNewConfig} />);
+        setGeneratorOptions(
+          <RustGeneratorOptions setNewConfig={setNewConfig} />
+        );
         break;
       case 'python':
-        setGeneratorOptions(<PythonGeneratorOptions setNewConfig={setNewConfig} />);
+        setGeneratorOptions(
+          <PythonGeneratorOptions setNewConfig={setNewConfig} />
+        );
         break;
       case 'php':
-        setGeneratorOptions(<PhpGeneratorOptions setNewConfig={setNewConfig} />);
+        setGeneratorOptions(
+          <PhpGeneratorOptions setNewConfig={setNewConfig} />
+        );
         break;
-        case 'scala':
-        setGeneratorOptions(<ScalaGeneratorOptions setNewConfig={setNewConfig} />);
+      case 'scala':
+        setGeneratorOptions(
+          <ScalaGeneratorOptions setNewConfig={setNewConfig} />
+        );
         break;
       default:
-        setGeneratorOptions(prevOptions => null);
+        setGeneratorOptions((prevOptions) => null);
         break;
     }
-  }
+  };
 
   useEffect(() => {
     handleLanguageChange();
-  }, [])
+  }, []);
 
   useEffect(() => {
     handleLanguageChange();
