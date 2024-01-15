@@ -28,7 +28,10 @@ export abstract class TypeScriptObjectRenderer extends TypeScriptRenderer<Constr
   renderProperty(property: ConstrainedObjectPropertyModel): string {
     const requiredProperty = property.required === false ? '?' : '';
     let preRenderedProperty;
-    if (this.options.rawPropertyNames && this.options.modelType === 'interface') {
+    if (
+      this.options.rawPropertyNames &&
+      this.options.modelType === 'interface'
+    ) {
       preRenderedProperty = `'${property.unconstrainedPropertyName}'`;
     } else {
       preRenderedProperty = property.propertyName;

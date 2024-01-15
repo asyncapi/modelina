@@ -1,6 +1,9 @@
 import { TypeScriptGenerator } from '../../src';
 
-const generator = new TypeScriptGenerator({ rawPropertyNames: true, modelType: 'interface'});
+const generator = new TypeScriptGenerator({
+  rawPropertyNames: true,
+  modelType: 'interface'
+});
 const jsonSchemaDraft7 = {
   $schema: 'http://json-schema.org/draft-07/schema#',
   type: 'object',
