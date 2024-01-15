@@ -54,7 +54,7 @@ describe('PropertyKeyConstrainer', () => {
     const constrainedKey = constrainPropertyName('');
     expect(constrainedKey).toEqual('empty');
   });
-  test('should use constant naming format', () => {
+  test('should use pascal naming format', () => {
     const constrainedKey = constrainPropertyName('some weird_value!"#2');
     expect(constrainedKey).toEqual('someWeirdValueExclamationQuotationHash_2');
   });

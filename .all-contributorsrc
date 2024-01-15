@@ -341,7 +341,11 @@
       "profile": "https://github.com/artur-ciocanu",
       "contributions": [
         "code",
-        "bug"
+        "bug",
+        "example",
+        "doc",
+        "test",
+        "maintenance"
       ]
     },
     {
@@ -782,7 +786,57 @@
       "profile": "https://jaisarita.vercel.app/",
       "contributions": [
         "code",
-        "design"
+        "design",
+        "doc",
+        "maintenance",
+        "test",
+        "review"
+      ]
+    },
+    {
+      "login": "Harshil-Jani",
+      "name": "Harshil Jani",
+      "avatar_url": "https://avatars.githubusercontent.com/u/79367883?v=4",
+      "profile": "http://harshil.prose.sh",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "Min2who",
+      "name": "Mintu Gogoi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/127925465?v=4",
+      "profile": "https://mintu-portfolio.netlify.app/",
+      "contributions": [
+        "test"
+      ]
+    },
+    {
+      "login": "devansh-m12",
+      "name": "Devansh Mahant",
+      "avatar_url": "https://avatars.githubusercontent.com/u/86195162?v=4",
+      "profile": "https://github.com/devansh-m12",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "officialasishkumar",
+      "name": "Asish Kumar",
+      "avatar_url": "https://avatars.githubusercontent.com/u/87874775?v=4",
+      "profile": "https://github.com/officialasishkumar",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "ankur0904",
+      "name": "Ankur Singh",
+      "avatar_url": "https://avatars.githubusercontent.com/u/98346896?v=4",
+      "profile": "https://github.com/ankur0904",
+      "contributions": [
+        "doc"
       ]
     }
   ],

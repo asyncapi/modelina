@@ -16,13 +16,19 @@ We love contributions and new examples that does not already exist, you can foll
 - [General examples](#general-examples)
 - [Simple generator examples](#simple-generator-examples)
 - [Integrations](#integrations)
-- [Python](#python)
-- [JavaScript](#javascript)
-- [Java](#java)
-- [C#](#c%23)
-- [TypeScript](#typescript)
-- [Kotlin](#kotlin)
-- [PHP](#php)
+- [Language examples](#language-examples)
+  * [Python](#python)
+  * [JavaScript](#javascript)
+  * [Java](#java)
+  * [C#](#c%23)
+  * [TypeScript](#typescript)
+  * [Kotlin](#kotlin)
+  * [PHP](#php)
+  * [Scala](#scala)
+  * [Rust](#rust)
+  * [Dart](#dart)
+  * [Go](#go)
+  * [C++](#c)
 - [Other examples](#other-examples)
 
 <!-- tocstop -->
@@ -65,27 +71,37 @@ These are all the basic generator examples that shows a bare minimal example of 
 - [generate-javascript-models](./generate-javascript-models) - A basic example to generate JavaScript data models
 - [generate-kotlin-models](./generate-kotlin-models) - A basic example to generate Kotlin data models
 - [generate-cplusplus-models](./generate-cplusplus-models) - A basic example to generate C++ data models
+- [generate-php-models](./generate-cplusplus-models) - A basic example to generate PHP data models
+- [generate-scala-models](./generate-cplusplus-models) - A basic example to generate Scala data models
 
 ## Integrations
 These are examples of how you can integrate Modelina into a specific scenario:
 - [integrate-with-react](./integrate-with-react) - A basic example that shows how you can integrate Modelina with React.
 - [integrate-with-next](./integrate-with-next) - A basic example that shows how you can integrate Modelina with Next.
-- [integrate-modelina-into-maven](./integrate-modelina-into-maven) - A basic example that shows how you can integrate Modelina into the Java Maven build process.
+- [integrate-with-maven](./integrate-with-maven) - A basic example that shows how you can integrate Modelina into the Java Maven build process.
 
-## Python
+## Language examples
+These are all the examples for each language;
+
+### Python
 These are all specific examples only relevant to the Python generator:
+- [generate-python-models](./generate-python-models) - A basic example showing how to generate Python models.
+- [generate-python-complete-models](./generate-python-complete-models) - A basic example showing how to generate complete Python models.
 - [generate-python-pydantic-models](./generate-python-pydantic-models) - An example showing how to generate Python pydantic models.
 - [python-generate-json-serializer-and-deseriazlier](./python-generate-json-serializer-and-deserializer) - An example that shows how to generate the models with JSON serializer and deserializer.
 
-## JavaScript
+### JavaScript
 These are all specific examples only relevant to the JavaScript generator:
+- [generate-javascript-models](./generate-javascript-models) - A basic example to generate JavaScript data models
 - [javascript-use-esm](./javascript-use-esm) - A basic example that generate the models to use ESM module system.
 - [javascript-use-cjs](./javascript-use-cjs) - A basic example that generate the models to use CJS module system.
 - [javascript-generate-marshalling](./javascript-generate-marshalling) - A basic example of how to use the un/marshalling functionality of the javascript class.
 - [javascript-generate-example](./javascript-generate-example) - A basic example of how to use Modelina and output a JavaScript class with an example function.
 
-## Java
+### Java
 These are all specific examples only relevant to the Java generator:
+
+- [generate-java-models](./generate-java-models) - A basic example to generate Java data models.
 - [java-generate-tostring](./java-generate-tostring) - A basic example that shows how to generate models that overwrite the `toString` method
 - [java-change-collection-type](./java-change-collection-type) - An example to render collections as List in Java.
 - [java-generate-hashcode](./java-generate-hashcode) - A basic example that shows how to generate models that overwrite the `hashCode` method
@@ -95,10 +111,12 @@ These are all specific examples only relevant to the Java generator:
 - [java-generate-equals](./java-generate-equals) - A basic example that shows how to generate models that overwrite the `equal` method
 - [java-generate-javax-constraint-annotation](./java-generate-javax-constraint-annotation) - A basic example that shows how Java data models having `javax.validation.constraints` annotations can be generated.
 - [java-generate-javadoc](./java-generate-javadoc) - A basic example of how to generate Java models including JavaDocs.
-- [integrate-modelina-into-maven](./integrate-modelina-into-maven/) - A basic example that shows how you can integrate Modelina into the Java Maven build process.
+- [integrate-into-maven](./integrate-with-maven/) - A basic example that shows how you can integrate Modelina into the Java Maven build process.
 
-## C#
+### C#
 These are all specific examples only relevant to the C# generator:
+
+- [generate-csharp-models](./generate-csharp-models) - A basic example to generate C# data models
 - [csharp-generate-equals-and-hashcode](./csharp-generate-equals-and-hashcode) - A basic example on how to generate models that overwrite the `Equal` and `GetHashCode` methods
 - [csharp-generate-json-serializer](./csharp-generate-json-serializer) - A basic example on how to generate models that include function to serialize the data models to and from JSON with System.Text.Json.
 - [csharp-generate-newtonsoft-serializer](./csharp-generate-newtonsoft-serializer) - A basic example on how to generate models that include function to serialize the data models to and form JSON with Newtonsoft.
@@ -107,8 +125,10 @@ These are all specific examples only relevant to the C# generator:
 - [csharp-generate-records](./csharp-generate-records) - A basic example that shows how to change C# model type from class to record.
 - [csharp-generate-handle-nullable](./csharp-generate-handle-nullable) - A basic example that shows how generate code than handles nullable mode and prevent warnings.
 
-## TypeScript
+### TypeScript
 These are all specific examples only relevant to the TypeScript generator:
+
+- [generate-typescript-models](./generate-typescript-models) - A basic example to generate TypeScript data models
 - [typescript-interface](./typescript-interface) - A basic TypeScript generator that outputs interfaces.
 - [typescript-enum-type](./typescript-enum-type) - A basic example of how to use Modelina can output different types of enums in TypeScript.
 - [typescript-generate-example](./typescript-generate-example) - A basic example of how to use Modelina and output a TypeScript class with an example function.
@@ -118,19 +138,48 @@ These are all specific examples only relevant to the TypeScript generator:
 - [typescript-use-cjs](./typescript-use-cjs) - A basic example that generate the models to use CJS module system.
 - [typescript-generate-jsonbinpack](./typescript-generate-jsonbinpack) - A basic example showing how to generate models that include [jsonbinpack](https://github.com/sourcemeta/jsonbinpack) functionality.
 - [typescript-generate-raw-properties](./typescript-generate-raw-properties) - A basic example showing how to generate models that use raw properties for interface.
+- [typescript-use-js-reserved-keyword](./typescript-use-js-reserved-keyword) - A basic example showing how you can generate the models that take reserved JS keywords into account for model names, properties or enum keys. 
 
-## Kotlin
+
+### Kotlin
 These are all specific examples only relevant to the Kotlin generator:
+
+- [generate-kotlin-models](./generate-kotlin-models) - A basic example to generate Kotlin data models
 - [generate-kotlin-enums](./generate-kotlin-enums)
 - [kotlin-generate-kdoc](./kotlin-generate-kdoc)
 - [kotlin-generate-javax-constraint-annotations](./kotlin-generate-javax-constraint-annotation)
 - [kotlin-change-collection-type](./kotlin-change-collection-type)
 
-## PHP
+### PHP
 These are all specific examples only relevant to the PHP generator:
-- [php-generate-models](./php-generate-models) - A basic example of how to use Modelina and output a PHP class.
+
+- [generate-php-models](./generate-cplusplus-models) - A basic example to generate PHP data models
 - [php-generate-complete-models](./php-generate-complete-models) - An example that will output PHP complete class with dependencies and headers.
 - [php-generate-documentation-preset](./php-generate-documentation-preset) - An example that will output PHP complete class with documentation.
+
+### Scala
+These are all specific examples only relevant to the Scala generator:
+- [generate-scala-models](./generate-scala-models) - A basic example to generate Scala data models
+- [generate-scala-enums](./generate-scala-enums) - A basic example of how to use Modelina and output a Scala enums.
+- [scala-generate-documentation](./scala-generate-documentation) - A basic example of how to use Modelina and output a Scala models that include descriptions.
+
+### Rust
+These are all specific examples only relevant to the Rust generator;
+- [rust-generate-crate](./rust-generate-crate) - A basic example showing how to generate a Rust package.
+
+### Dart
+These are all specific examples only relevant to the Dart generator:
+- [generate-dart-models](./generate-dart-models) - A basic example showing how to generate Python models.
+- [dart-generate-json-annotation](./dart-generate-json-annotation) - A basic example of how to use Modelina and output Dart models that include JSON annotations.
+
+### Go
+These are all specific examples only relevant to the Go generator; 
+- [generate-go-enums](./generate-go-enums) - A basic example showing how to generate a Go enums.
+- [generate-go-models](./generate-go-models) - A basic example showing how to generate a Go models.
+
+### C++
+These are all specific examples only relevant to the C++ generator; 
+- [generate-cplusplus-models](./generate-cplusplus-models) - A basic example showing how to generate a C++ models.
 
 ## Other examples
 Miscellaneous examples that do not fit into the otherwise grouping.

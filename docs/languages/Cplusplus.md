@@ -1,10 +1,6 @@
 # C++
 There are special use-cases that each language supports; this document pertains to **C++ models**.
 
-Limitations:
-- We use v17 of C++ as our baseline.
-- Circular models are not supported.
-
 <!-- toc is generated with GitHub Actions do not remove toc markers -->
 
 <!-- toc -->
@@ -15,6 +11,10 @@ Limitations:
   * [To and from binary](#to-and-from-binary)
 
 <!-- tocstop -->
+
+Current limitations of C++:
+- We use v17 of C++ as our baseline.
+- Circular models are not supported.
 
 ## Generate serializer and deserializer functionality
 

@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render Kotlin Models and should log expected output to console 1`] = `
+Array [
+  "case class Root(
+  email: Option[String],
+  cache: Option[Int],
+  website: Option[Website],
+)",
+]
+`;

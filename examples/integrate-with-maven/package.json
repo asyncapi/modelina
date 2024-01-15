@@ -1,6 +1,6 @@
 {
   "config": {
-    "example_name": "integrate-modelina-into-maven"
+    "example_name": "integrate-with-maven"
   },
   "scripts": {
     "install": "(cd ../.. && npm i) && cd maven-project/scripts/modelina && npm i",

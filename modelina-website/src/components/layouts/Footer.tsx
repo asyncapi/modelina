@@ -58,7 +58,7 @@ export default function Footer() {
                   </li>
                   <li className="py-2">
                     <a
-                      href="https://asyncapi.threadless.com"
+                      href="https://www.store.asyncapi.com/collections/all-products"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-base leading-6 text-gray-500 hover:text-white transition ease-in-out duration-300"
@@ -225,7 +225,7 @@ export default function Footer() {
           <div className="w-full sm:w-2/3">
             <p className="text-left text-base leading-6 mb-3 text-cool-gray">
               Made with{' '}
-              <span className="font-mono text-secondary-500">:love:</span> by
+              <span>❤️</span> by
               the AsyncAPI Initiative.
             </p>
             <p className="text-left text-sm leading-6 text-cool-gray w-full sm:w-2/3">
