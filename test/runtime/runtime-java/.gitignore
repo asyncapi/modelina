@@ -17,7 +17,7 @@ buildNumber.properties
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
 
-src/main/java/com/mycompany/app/generic
+src/main
 
 bin
 .settings
