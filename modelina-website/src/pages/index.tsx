@@ -125,24 +125,22 @@ export default function Index() {
           </Paragraph>
         </div>
 
-        <div className="relative lg:mt-20 lg:items-center">
-          <table className="min-w-full relative lg:mt-8">
-            <tbody>
-              <tr className="border-b">
-                <td className="text-sm text-gray-900 font-light px-6 py-4">
-                  <b>
-                    Modelina lets you generate data models from many types of{' '}
-                    <a href="#inputs">inputs</a>
-                  </b>
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4">
-                  <CodeBlock
-                    language="typescript"
-                    showLineNumbers={false}
-                    className="mt-8"
-                    textSizeClassName="text-sm"
-                  >
-                    {`const asyncapi = ...
+        <table className="flex flex-col mt-8 md:mt-20">
+          <tbody>
+            <tr className='border-b mt-6 md:mt-0 flex flex-col md:flex-row-reverse'>
+              <td className="text-sm text-gray-900 font-light px-6 py-4 md:w-1/2 flex justify-center items-center">
+                <b>
+                  Modelina lets you generate data models from many types of{' '}
+                  <a href="#inputs" className='italic underline underline-offset-2'>inputs</a>
+                </b>
+              </td>
+              <td className="text-sm text-gray-900 font-light px-6 py-4 md:w-1/2">
+                <CodeBlock
+                  language="typescript"
+                  showLineNumbers={false}
+                  textSizeClassName="text-sm"
+                >
+                  {`const asyncapi = ...
 const jsonschema = ...
 const openapi = ...
 const metamodel = ...
@@ -150,48 +148,50 @@ const metamodel = ...
 const models = await generator.generate(
   asyncapi | jsonschema | openapi | metamodel
 );`}
-                  </CodeBlock>
-                </td>
-              </tr>
-              <tr className="border-b">
-                <td className="text-sm text-gray-900 font-light px-6 py-4">
-                  <b>
-                    Use the same inputs across a range of different{' '}
-                    <a href="#outputs">generators</a>
-                  </b>
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4">
-                  <CodeBlock
-                    language="typescript"
-                    showLineNumbers={false}
-                    className="mt-8"
-                    textSizeClassName="text-sm"
-                  >
-                    {`const generator = new TypeScriptGenerator();
+                </CodeBlock>
+              </td>
+            </tr>
+
+            <tr className='border-b mt-6 md:mt-0 flex flex-col md:flex-row'>
+              <td className="text-sm text-gray-900 font-light px-6 py-4 md:w-1/2 flex justify-center items-center">
+                <b>
+                  Use the same inputs across a range of different{' '}
+                  <a href="#outputs" className='italic underline underline-offset-2'>generators</a>
+                </b>
+              </td>
+              <td className="text-sm text-gray-900 font-light px-6 py-4 md:w-1/2">
+                <CodeBlock
+                  language="typescript"
+                  showLineNumbers={false}
+                  textSizeClassName="text-sm"
+                >
+                  {`const generator = new TypeScriptGenerator();
 const generator = new CsharpGenerator();
 const generator = new JavaGenerator();
 const generator = new RustGenerator();
 ...
 const models = await generator.generate(input);`}
-                  </CodeBlock>
-                </td>
-              </tr>
-              <tr className="border-b">
-                <td className="text-sm text-gray-900 font-light px-6 py-4">
+                </CodeBlock>
+              </td>
+            </tr>
+
+            <tr className='border-b mt-6 md:mt-0 flex flex-col md:flex-row-reverse'>
+              <td className="text-sm text-gray-900 font-light px-6 py-4 md:w-1/2 flex justify-center items-center">
+                <p>
                   <b>Easily let you interact with the generated models.</b>-
                   Want to show the generated models on a website? Sure! - Want
                   to generate the models into files? Sure! - Want to combine all
                   the models into one single file? Sure! Whatever interaction
                   you need, you can create.
-                </td>
-                <td className="text-sm text-gray-900 font-light px-6 py-4">
-                  <CodeBlock
-                    language="typescript"
-                    showLineNumbers={false}
-                    className="mt-8"
-                    textSizeClassName="text-sm"
-                  >
-                    {`const models = await generator.generate(input);
+                </p>
+              </td>
+              <td className="text-sm text-gray-900 font-light px-6 py-4 md:w-1/2">
+                <CodeBlock
+                  language="typescript"
+                  showLineNumbers={false}
+                  textSizeClassName="text-sm"
+                >
+                  {`const models = await generator.generate(input);
 for (const model in models) { 
   const generatedCode = generatedModel.result;
   const dependencies = generatedModel.dependencies;
@@ -199,26 +199,25 @@ for (const model in models) {
   const modelName = generatedModel.modelName;
   ...
 }`}
-                  </CodeBlock>
-                </td>
-              </tr>
-              <tr className="border-b">
-                <td className="text-sm text-gray-900 font-light px-6 py-4">
-                  <b>
-                    Easily modify how models are{' '}
-                    <a href="./docs/constraints.md">constrained</a> into the
-                    output
-                  </b>
-                </td>
+                </CodeBlock>
+              </td>
+            </tr>
 
-                <td className="text-sm text-gray-900 font-light px-6 py-4">
-                  <CodeBlock
-                    language="typescript"
-                    showLineNumbers={false}
-                    className="mt-8"
-                    textSizeClassName="text-sm"
-                  >
-                    {`const generator = new TypeScriptGenerator({
+            <tr className='border-b mt-6 md:mt-0 flex flex-col md:flex-row'>
+              <td className="text-sm text-gray-900 font-light px-6 py-4 md:w-1/2 flex justify-center items-center">
+                <b>
+                  Easily modify how models are{' '}
+                  <a href="./docs/constraints.md" className='italic underline underline-offset-2'>constrained</a> into the
+                  output
+                </b>
+              </td>
+              <td className="text-sm text-gray-900 font-light px-6 py-4 md:w-1/2">
+                <CodeBlock
+                  language="typescript"
+                  showLineNumbers={false}
+                  textSizeClassName="text-sm"
+                >
+                  {`const generator = new TypeScriptGenerator({
   constraints: {
     modelName: ({modelName}) => {
       // Implement your own constraining logic
@@ -226,28 +225,27 @@ for (const model in models) {
     }
   }
 });`}
-                  </CodeBlock>
-                </td>
-              </tr>
-              <tr className="border-b">
-                <td className="text-sm text-gray-900 font-light px-6 py-4">
-                  <b>
-                    Seamlessly layer additional or replacement code{' '}
-                    <a href="./docs/presets.md">
-                      on top of each other to customize the models
-                    </a>{' '}
-                    to your use-case
-                  </b>
-                </td>
+                </CodeBlock>
+              </td>
+            </tr>
 
-                <td className="text-sm text-gray-900 font-light px-6 py-4">
-                  <CodeBlock
-                    language="typescript"
-                    showLineNumbers={false}
-                    className="mt-8"
-                    textSizeClassName="text-sm"
-                  >
-                    {`const generator = new TypeScriptGenerator({
+            <tr className='border-b mt-6 md:mt-0 flex flex-col md:flex-row-reverse'>
+              <td className="text-sm text-gray-900 font-light px-6 py-4 md:w-1/2 flex justify-center items-center">
+                <b>
+                  Seamlessly layer additional or replacement code{' '}
+                  <a href="./docs/presets.md" className='italic underline underline-offset-2'>
+                    on top of each other to customize the models
+                  </a>{' '}
+                  to your use-case
+                </b>
+              </td>
+              <td className="text-sm text-gray-900 font-light px-6 py-4 md:w-1/2">
+                <CodeBlock
+                  language="typescript"
+                  showLineNumbers={false}
+                  textSizeClassName="text-sm"
+                >
+                  {`const generator = new TypeScriptGenerator({
   presets: [
     {
       class: {
@@ -262,27 +260,26 @@ public myCustomFunction(): string {
   ]
 });
 const models = await generator.generate(input);`}
-                  </CodeBlock>
-                </td>
-              </tr>
-              <tr className="border-b">
-                <td className="text-sm text-gray-900 font-light px-6 py-4">
-                  <b>
-                    Seamlessly lets you{' '}
-                    <a href="./docs/presets.md">
-                      combine multiple layers of additional or replacement code
-                    </a>
-                  </b>
-                </td>
+                </CodeBlock>
+              </td>
+            </tr>
 
-                <td className="text-sm text-gray-900 font-light px-6 py-4">
-                  <CodeBlock
-                    language="typescript"
-                    showLineNumbers={false}
-                    className="mt-8"
-                    textSizeClassName="text-sm"
-                  >
-                    {`const myCustomFunction1 = {
+            <tr className='border-b mt-6 md:mt-0 flex flex-col md:flex-row'>
+              <td className="text-sm text-gray-900 font-light px-6 py-4 md:w-1/2 flex justify-center items-center">
+                <b>
+                  Seamlessly lets you{' '}
+                  <a href="./docs/presets.md" className='italic underline underline-offset-2'>
+                    combine multiple layers of additional or replacement code
+                  </a>
+                </b>
+              </td>
+              <td className="text-sm text-gray-900 font-light px-6 py-4 md:w-1/2">
+                <CodeBlock
+                  language="typescript"
+                  showLineNumbers={false}
+                  textSizeClassName="text-sm"
+                >
+                  {`const myCustomFunction1 = {
   class: {
     additionalContent({ content }) {
       return \`\${content}
@@ -300,12 +297,11 @@ const generator = new TypeScriptGenerator({
   ]
 });
 const models = await generator.generate(input);`}
-                  </CodeBlock>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+                </CodeBlock>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </GenericLayout>
   );
