@@ -7,7 +7,6 @@ on:
     paths:
       - 'src/generators/python/**'
       - 'test/runtime/runtime-python/**'
-      - 'test/runtime/**kotlin**'
 jobs:
   test:
     name: Runtime testing Python Models
