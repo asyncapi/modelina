@@ -1,11 +1,10 @@
-import { PYTHON_DEFAULT_PRESET,PythonFileGenerator } from "../../";
+import { PYTHON_JSON_SERIALIZER_PRESET,PythonFileGenerator } from "../../";
 import path from "path";
 
 import input from "./generic-input.json";
 
 const generator = new PythonFileGenerator({
-    presets: [PYTHON_DEFAULT_PRESET],
-    
+    presets: [PYTHON_JSON_SERIALIZER_PRESET],
 });
 
 generator.generateToFiles(
