@@ -99,10 +99,10 @@ Whatever interaction you need, you can create.</td>
 ```typescript
 const models = await generator.generate(input);
 for (const model in models) { 
-  const generatedCode = generatedModel.result;
-  const dependencies = generatedModel.dependencies;
-  const modeltype = generatedModel.model.type;
-  const modelName = generatedModel.modelName;
+  const generatedCode = model.result;
+  const dependencies = model.dependencies;
+  const modeltype = model.type;
+  const modelName = model.modelName;
   ...
 }
 ```
