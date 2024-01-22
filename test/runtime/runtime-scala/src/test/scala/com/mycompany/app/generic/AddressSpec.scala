@@ -8,13 +8,10 @@ class AddressSpec extends AnyFlatSpec with Matchers {
     val address = Address(
       streetName = "Test address 2",
       houseNumber = 2,
-      marriage = Some(true),
-      members = Some(2),
+      marriage = true,
+      members = 2,
       arrayType = List(2, "test"),
-      nestedObject = Some(NestedObject("test", None))
-      additionalProperties = None
+      nestedObject = NestedObject(test = "test")
     )
-
-    address.nestedObject.get.additionalProperties shouldBe None
   }
 }

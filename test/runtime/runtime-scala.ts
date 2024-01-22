@@ -1,8 +1,8 @@
-import { SCALA_DEFAULT_PRESET, ScalaGenerator } from '../..';
+import { SCALA_DEFAULT_PRESET, ScalaFileGenerator } from '../..';
 import path from 'path';
 import input from './generic-input.json';
 
-const generator = new ScalaGenerator({
+const generator = new ScalaFileGenerator({
   presets: [SCALA_DEFAULT_PRESET]
 });
 
