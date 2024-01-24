@@ -35,7 +35,7 @@
     "./LICENSE"
   ],
   "dependencies": {
-    "@apidevtools/json-schema-ref-parser": "^9.0.9",
+    "@apidevtools/json-schema-ref-parser": "^11.1.0",
     "@apidevtools/swagger-parser": "^10.0.3",
     "@asyncapi/parser": "3.0.0-next-major-spec.8",
     "@smoya/multi-parser": "^4.0.0",

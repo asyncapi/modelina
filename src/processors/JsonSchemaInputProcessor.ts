@@ -1,5 +1,5 @@
 import { AbstractInputProcessor } from './AbstractInputProcessor';
-import $RefParser from '@apidevtools/json-schema-ref-parser';
+import { dereference } from '@apidevtools/json-schema-ref-parser';
 import path from 'path';
 import {
   CommonModel,
@@ -15,6 +15,7 @@ import {
 import { Logger } from '../utils';
 import { Interpreter } from '../interpreter/Interpreter';
 import { convertToMetaModel } from '../helpers';
+import { ParserOptions } from '@apidevtools/json-schema-ref-parser/dist/lib/options';
 
 /**
  * Class for processing JSON Schema
@@ -84,7 +85,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       {},
       'root',
       true
-    ) as any;
+    );
     input = await this.dereferenceInputs(input);
     const parsedSchema = Draft7Schema.toSchema(input);
     const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(
@@ -114,7 +115,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       {},
       'root',
       true
-    ) as any;
+    );
     input = await this.dereferenceInputs(input);
     const parsedSchema = Draft4Schema.toSchema(input);
     const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(
@@ -144,7 +145,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       {},
       'root',
       true
-    ) as any;
+    );
     input = await this.dereferenceInputs(input);
     const parsedSchema = Draft6Schema.toSchema(input);
     const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(
@@ -197,12 +198,16 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
   public async dereferenceInputs(input: any): Promise<any> {
     input = this.handleRootReference(input);
     Logger.debug('Dereferencing all $ref instances');
-    const refParser = new $RefParser();
     // eslint-disable-next-line no-undef
     const localPath = `${process.cwd()}${path.sep}`;
-    const deRefOption: $RefParser.Options = {
+    const deRefOption: ParserOptions = {
       continueOnError: true,
-      dereference: { circular: true }
+      dereference: {
+        circular: true,
+        excludedPathMatcher: (path: string) => {
+          return path.includes('/examples/');
+        }
+      }
     };
     Logger.debug(
       `Trying to dereference all $ref instances from input, using option ${JSON.stringify(
@@ -210,7 +215,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       )}.`
     );
     try {
-      await refParser.dereference(localPath, input, deRefOption);
+      await dereference(localPath, input, deRefOption);
     } catch (e: any) {
       const errorMessage = `Could not dereference $ref in input, is all the references correct? ${e.message}`;
       Logger.error(errorMessage, e);
@@ -252,7 +257,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       return schema;
     }
 
-    schema = Object.assign({}, schema);
+    schema = { ...schema };
     if (isRoot) {
       namesStack[String(name)] = 0;
       (schema as any)[this.MODELGEN_INFFERED_NAME] = name;
