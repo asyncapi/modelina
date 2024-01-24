@@ -205,7 +205,10 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       dereference: {
         circular: true,
         excludedPathMatcher: (path: string) => {
-          return path.includes('/examples/');
+          return (
+            path.includes('/examples/') &&
+            !path.includes('/properties/examples/')
+          );
         }
       }
     };
