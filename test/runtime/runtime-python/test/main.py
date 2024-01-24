@@ -1,21 +1,7 @@
 import unittest
 import json
-
-class Address:
-    def __init__(self, street_name, house_number, marriage, members, array_type, nested_object):
-        self.street_name = street_name
-        self.house_number = house_number
-        self.marriage = marriage
-        self.members = members
-        self.array_type = array_type
-        self.nested_object = nested_object
-
-    def to_json(self):
-        return json.dumps(self.__dict__)    
-    
-class NestedObject:
-    def __init__(self, test):
-        self.test = test
+from main.Address import Address
+from main.NestedObject import NestedObject
 
 class TestAddress(unittest.TestCase):
 
