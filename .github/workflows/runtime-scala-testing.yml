@@ -1,0 +1,38 @@
+name: Runtime testing Scala models
+
+on:
+  push:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+    paths:
+      - 'src/generators/scala/**'
+      - 'test/runtime/runtime-scala/**'
+      - 'test/runtime/**scala**'
+
+jobs:
+  test:
+    name: Runtime testing Scala Models
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Check package-lock version
+        uses: asyncapi/.github/.github/actions/get-node-version-from-package-lock@master
+        id: lockversion
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "${{ steps.lockversion.outputs.version }}"
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+      - name: Build library
+        run: npm install && npm run build:prod
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+      - name: Generate Scala models
+        run: npm run generate:runtime:scala
+      - name: Run runtime tests
+        run: npm run test:runtime:scala

@@ -116,6 +116,8 @@
     "generate:runtime:typescript": "cross-env CI=true ts-node ./test/runtime/runtime-typescript.ts",
     "test:runtime:csharp": "cross-env CI=true jest ./test/runtime/runtime-csharp.spec.ts",
     "generate:runtime:csharp": "cross-env CI=true ts-node ./test/runtime/runtime-csharp.ts",
+    "test:runtime:scala": "cross-env CI=true jest ./test/runtime/runtime-scala.spec.ts",
+    "generate:runtime:scala": "cross-env CI=true ts-node ./test/runtime/runtime-scala.ts",
     "test:watch": "jest --watch",
     "docs": "npm run docs:api",
     "docs:api": "typedoc src/index.ts --out ./modelina-website/public/apidocs/generated --name Modelina",
