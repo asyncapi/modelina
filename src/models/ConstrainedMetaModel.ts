@@ -28,6 +28,7 @@ export class ConstrainedMetaModelOptions extends MetaModelOptions {
 export interface GetNearestDependenciesArgument {
   alreadyVisitedNodes: any[];
 }
+
 const defaultGetNearestDependenciesArgument: GetNearestDependenciesArgument = {
   alreadyVisitedNodes: []
 };
@@ -119,7 +120,6 @@ export class ConstrainedTupleModel extends ConstrainedMetaModel {
       } else if (
         !argumentsToUse.alreadyVisitedNodes.includes(tupleModel.value)
       ) {
-        argumentsToUse.alreadyVisitedNodes.push(tupleModel.value);
         //Lets check the non-reference model for dependencies
         dependencyModels = [
           ...dependencyModels,
@@ -163,9 +163,10 @@ export class ConstrainedArrayModel extends ConstrainedMetaModel {
     argumentsToUse.alreadyVisitedNodes.push(this);
     if (this.valueModel instanceof ConstrainedReferenceModel) {
       return [this.valueModel];
+    } else if (!argumentsToUse.alreadyVisitedNodes.includes(this.valueModel)) {
+      return this.valueModel.getNearestDependencies(argumentsToUse);
     }
-
-    return this.valueModel.getNearestDependencies(argumentsToUse);
+    return [];
   }
 }
 export class ConstrainedUnionModel extends ConstrainedMetaModel {
