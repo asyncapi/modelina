@@ -128,6 +128,7 @@ These are all specific examples only relevant to the C# generator:
 ### TypeScript
 These are all specific examples only relevant to the TypeScript generator:
 
+- [typescript-change-map-type](./typescript-change-map-type) - A basic example showing the use of `mapType` options.
 - [generate-typescript-models](./generate-typescript-models) - A basic example to generate TypeScript data models
 - [typescript-interface](./typescript-interface) - A basic TypeScript generator that outputs interfaces.
 - [typescript-enum-type](./typescript-enum-type) - A basic example of how to use Modelina can output different types of enums in TypeScript.
