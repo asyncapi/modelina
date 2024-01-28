@@ -31,9 +31,9 @@ Check out this [example out for a live demonstration](../../examples/typescript-
 
 Typescript offers different `mapType`s which can simplify the use based on the needs. This behavior can be changed through the [`mapType` configuration](https://github.com/asyncapi/modelina/blob/master/docs/generators.md#typescript).
 
-- Use `Map` when you need a dynamic collection of key-value pairs with built-in methods for manipulation.
-- Use `Record` when you want to define an object with specific keys and their corresponding value types.
-- Use `IndexedObject` (or an interface with index signature) for a more generic approach when working with objects with dynamic keys.
+- Use `map` when you need a dynamic collection of key-value pairs with built-in methods for manipulation.
+- Use `record` when you want to define an object with specific keys and their corresponding value types.
+- Use `indexedObject` (or an interface with index signature) for a more generic approach when working with objects with dynamic keys.
 
 An example of the generated code can be seen below:
 
@@ -41,12 +41,14 @@ An example of the generated code can be seen below:
   // mapType = indexedObject
   private _person?: { [name: string]: any };
 
-  // mapType = Map
+  // mapType = map
   private _person?: Map<string, any>;
 
-  // mapType = Record
+  // mapType = record
     private _person?: Record<string, any>;
 ```
+
+Also, check out this [example for a live demonstration](../../examples/typescript-change-map-type).
 
 ## Generate union types instead of enums
 
