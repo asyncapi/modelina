@@ -5,7 +5,7 @@ import { AnyModel, CommonModel } from '../../src/models';
 jest.mock('../../src/utils/LoggingInterface');
 jest.spyOn(JsonSchemaInputProcessor, 'convertSchemaToCommonModel');
 let mockedReturnModels = [new CommonModel()];
-const mockedMetaModel = new AnyModel('test', undefined);
+const mockedMetaModel = new AnyModel('test', undefined, {});
 jest.mock('../../src/helpers/CommonModelToMetaModel', () => {
   return {
     convertToMetaModel: jest.fn().mockImplementation(() => {
@@ -260,6 +260,38 @@ describe('JsonSchemaInputProcessor', () => {
       expect(() => processor.handleRootReference(schema)).toThrow(
         'Cannot handle input, because it has a root `$ref`, please manually resolve the first reference.'
       );
+    });
+    test('should not resolve example containing $ref keyword', async () => {
+      const processor = new JsonSchemaInputProcessor();
+      const schema = {
+        examples: [{ $ref: '#/none/existing/reference' }],
+        properties: {
+          $ref: {
+            type: 'string'
+          }
+        }
+      };
+      const dereferencedSchema = await processor.dereferenceInputs(schema);
+      expect(dereferencedSchema.examples[0]).toEqual({
+        $ref: '#/none/existing/reference'
+      });
+    });
+    test('should resolve example containing $ref keyword if part of properties', async () => {
+      const processor = new JsonSchemaInputProcessor();
+      const schema = {
+        definitions: {
+          reference: {
+            type: 'string'
+          }
+        },
+        properties: {
+          $ref: { $ref: '#/definitions/reference' }
+        }
+      };
+      const dereferencedSchema = await processor.dereferenceInputs(schema);
+      expect(dereferencedSchema.properties.$ref).toEqual({
+        type: 'string'
+      });
     });
   });
 
