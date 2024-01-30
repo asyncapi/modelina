@@ -163,6 +163,7 @@ export interface ModelinaTypeScriptQueryOptions {
   tsMarshalling?: string;
   tsModelType?: string;
   tsEnumType?: string;
+  tsMapType?: string;
   tsIncludeDescriptions?: string;
   tsIncludeJsonBinPack?: string;
   tsIncludeExampleFunction?: string;

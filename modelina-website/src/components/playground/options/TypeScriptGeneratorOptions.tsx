@@ -108,9 +108,9 @@ const TypeScriptGeneratorOptions: React.FC<TypeScriptGeneratorOptionsProps> = ({
       <li className="flex gap-1 items-center">
         <InfoModal text='TypeScript map type: ' >
           <p>
-            It indicates which type should be rendered for some map type. Its value can be either indexedObject, map or record.
+            It indicates which type should be rendered for some map type. Its value can be either map, indexedObject, or record.
             <br /> <br />
-            The default value is indexedObject.
+            The default value is map.
           </p>
         </InfoModal>
         <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
@@ -121,7 +121,7 @@ const TypeScriptGeneratorOptions: React.FC<TypeScriptGeneratorOptionsProps> = ({
             options={[
               { value: 'indexedObject', text: 'Indexed Object' },
               { value: 'map', text: 'Map' },
-              { value: 'record', text: 'record' }
+              { value: 'record', text: 'Record' }
             ]}
             value={context?.tsMapType}
             onChange={onChangeMapType}
