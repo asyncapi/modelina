@@ -69,6 +69,10 @@ export interface ModelinaKotlinOptions extends ModelinaGeneralOptions {
   kotlinPackageName?: string;
 }
 export interface ModelinaRustOptions extends ModelinaGeneralOptions {}
+export interface ModelinaScalaOptions extends ModelinaGeneralOptions {
+  scalaCollectionType: 'List' | 'Array' | undefined;
+  scalaPackageName?: string;
+}
 export interface ModelinaPythonOptions extends ModelinaGeneralOptions {}
 export interface ModelinaDartOptions extends ModelinaGeneralOptions {}
 export interface ModelinaGeneralOptions {
@@ -80,6 +84,7 @@ export interface ModelinaGeneralOptions {
     | 'csharp'
     | 'kotlin'
     | 'rust'
+    | 'scala'
     | 'python'
     | 'dart'
     | 'cplusplus'
@@ -148,6 +153,10 @@ export interface ModelinaKotlinQueryOptions {
   kotlinPackageName?: string;
 }
 export interface ModelinaRustQueryOptions {}
+export interface ModelinaScalaQueryOptions {
+  scalaCollectionType?: string;
+  scalaPackageName?: string;
+}
 export interface ModelinaPythonQueryOptions {}
 export interface ModelinaCplusplusQueryOptions {
   cplusplusNamespace?: string;
@@ -176,6 +185,7 @@ export interface ModelinaOptions
     ModelinaCSharpOptions,
     ModelinaKotlinOptions,
     ModelinaRustOptions,
+    ModelinaScalaOptions,
     ModelinaPythonOptions,
     ModelinaDartOptions,
     ModelinaPhpOptions, 
@@ -190,6 +200,7 @@ export interface ModelinaQueryOptions
     ModelinaCSharpQueryOptions,
     ModelinaKotlinQueryOptions,
     ModelinaRustQueryOptions,
+    ModelinaScalaQueryOptions,
     ModelinaPythonQueryOptions,
     ModelinaCplusplusQueryOptions,
     ModelinaDartQueryOptions,
@@ -226,6 +237,9 @@ export const modelinaLanguageOptions = [
   {
     value: 'rust',
     text: 'Rust'
+  },
+  { value: 'scala',
+    text: 'Scala'
   },
   {
     value: 'python',
