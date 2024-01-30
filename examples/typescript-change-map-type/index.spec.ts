@@ -10,6 +10,6 @@ describe('Should be able to render correct map type based on options', () => {
   test('and should log expected output to console', async (): Promise<void> => {
     await generate();
     expect(spy.mock.calls.length).toEqual(6);
-    expect(spy.mock.calls[0]).toMatchSnapshot();
+    expect(spy.mock.calls.join('\n')).toMatchSnapshot();
   });
 });
