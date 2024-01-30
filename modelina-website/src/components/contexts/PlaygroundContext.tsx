@@ -63,7 +63,7 @@ export const PlaygroundContextProvider: React.FC<{ children: React.ReactNode; }>
     tsMarshalling: false,
     tsModelType: 'class',
     tsEnumType: 'enum',
-    tsMapType: 'indexedObject',
+    tsMapType: 'map',
     tsModuleSystem: 'CJS',
     tsIncludeDescriptions: false,
     tsIncludeExampleFunction: false,
