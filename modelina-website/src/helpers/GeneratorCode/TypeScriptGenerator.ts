@@ -39,6 +39,10 @@ export function getTypeScriptGeneratorCode(
     optionString.push(`enumType: '${generatorOptions.tsEnumType}'`);
   }
 
+  if (generatorOptions.tsMapType) {
+    optionString.push(`mapType: '${generatorOptions.tsMapType}'`);
+  }
+
   if (generatorOptions.tsIncludeDescriptions === true) {
     optionStringPresets.push(`{
     preset: TS_DESCRIPTION_PRESET,

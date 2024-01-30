@@ -86,6 +86,9 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
     if (query.tsEnumType !== undefined) {
       setConfig({ ...config, tsEnumType: query.tsEnumType as any });
     }
+    if (query.tsMapType !== undefined) {
+      setConfig({ ...config, tsMapType: query.tsMapType as any });
+    }
     if (query.tsIncludeDescriptions !== undefined) {
       setConfig({ ...config, tsIncludeDescriptions: query.tsIncludeDescriptions === 'true' });
     }
