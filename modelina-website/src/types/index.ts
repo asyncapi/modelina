@@ -27,6 +27,7 @@ export interface ModelinaTypeScriptOptions extends ModelinaGeneralOptions {
   tsMarshalling: boolean;
   tsModelType: 'class' | 'interface' | undefined;
   tsEnumType: 'union' | 'enum' | undefined;
+  tsMapType: 'indexedObject' | 'map' | 'record' | undefined;
   tsModuleSystem: 'ESM' | 'CJS' | undefined;
   tsIncludeDescriptions: boolean;
   tsIncludeJsonBinPack: boolean;

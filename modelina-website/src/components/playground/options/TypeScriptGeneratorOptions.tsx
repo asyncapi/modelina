@@ -35,6 +35,10 @@ const TypeScriptGeneratorOptions: React.FC<TypeScriptGeneratorOptionsProps> = ({
     setNewConfig && setNewConfig('tsEnumType', enumType);
   };
 
+  const onChangeMapType = (mapType: string) => {
+    setNewConfig && setNewConfig('tsMapType', mapType);
+  };
+
   const onChangeIncludeJsonBinPack = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (setNewConfig) {
       const shouldIncludeMarshalling = context?.tsMarshalling === false && event.target.checked === true;
@@ -97,6 +101,30 @@ const TypeScriptGeneratorOptions: React.FC<TypeScriptGeneratorOptionsProps> = ({
             ]}
             value={context?.tsEnumType}
             onChange={onChangeEnumType}
+            className="shadow-outline-blue cursor-pointer"
+          />
+        </label>
+      </li>
+      <li className="flex gap-1 items-center">
+        <InfoModal text='TypeScript map type: ' >
+          <p>
+            It indicates which type should be rendered for some map type. Its value can be either indexedObject, map or record.
+            <br /> <br />
+            The default value is indexedObject.
+          </p>
+        </InfoModal>
+        <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
+          <span className="mt-1 max-w-2xl text-sm text-gray-500">
+            TypeScript map type
+          </span>
+          <Select
+            options={[
+              { value: 'indexedObject', text: 'Indexed Object' },
+              { value: 'map', text: 'Map' },
+              { value: 'record', text: 'record' }
+            ]}
+            value={context?.tsMapType}
+            onChange={onChangeMapType}
             className="shadow-outline-blue cursor-pointer"
           />
         </label>
