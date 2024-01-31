@@ -88,6 +88,8 @@ export const PlaygroundContextProvider: React.FC<{ children: React.ReactNode; }>
     javaOverwriteToString: false,
     javaJavaDocs: false,
     javaJavaxAnnotation: false,
+    scalaCollectionType: 'Array',
+    scalaPackageName: 'asyncapi.models',
     goPackageName: 'asyncapi.models',
     kotlinPackageName: 'asyncapi.models'
   };

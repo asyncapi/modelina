@@ -27,7 +27,9 @@ export async function getScalaModels(
 
     try {
         const generator = new ScalaGenerator(options);
-        const generatedModels = await generator.generateCompleteModels(input, {});
+        const generatedModels = await generator.generateCompleteModels(input, {
+            packageName: generatorOptions.scalaPackageName ?? 'asyncapi.models'
+        });
         return convertModelsToProps(generatedModels);
     } catch (e : any) {
         console.error('Could not generate models');
