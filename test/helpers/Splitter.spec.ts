@@ -174,4 +174,79 @@ describe('Splitter', () => {
     expect(splittedModels.length).toEqual(1);
     expect(splittedModels[0]).toEqual(model);
   });
+
+  describe('extend', () => {
+    test('should split models when extend exists in object model', () => {
+      const extendModel = new ObjectModel('extend', undefined, {}, {});
+      const model = new ObjectModel(
+        'testObj',
+        undefined,
+        {
+          extend: [extendModel]
+        },
+        {}
+      );
+
+      const options: SplitOptions = {
+        splitObject: true
+      };
+
+      const splittedModels = split(model, options);
+
+      expect(splittedModels.length).toEqual(2);
+      expect(splittedModels.at(0) instanceof ObjectModel).toEqual(true);
+      expect(splittedModels[0]).toEqual(model);
+      expect(splittedModels[0].options.extend).toEqual([
+        new ReferenceModel(
+          extendModel.name,
+          extendModel.originalInput,
+          {
+            isExtended: true
+          },
+          extendModel
+        )
+      ]);
+      expect(splittedModels.at(1) instanceof ObjectModel).toEqual(true);
+      expect(splittedModels[1]).toEqual(extendModel);
+      expect(splittedModels[1].options.extend).toBeUndefined();
+      expect(splittedModels[1].options.isExtended).toEqual(true);
+    });
+
+    test('should not set isExtended if a model with the same name is not extended somewhere', () => {
+      const extendModel = new ObjectModel('test', undefined, {}, {});
+      const model = new ObjectModel(
+        'model',
+        undefined,
+        {
+          extend: [extendModel]
+        },
+        {}
+      );
+
+      const options: SplitOptions = {
+        splitObject: true
+      };
+
+      const splittedModels = split(
+        new ObjectModel(
+          '',
+          undefined,
+          {},
+          {
+            model: new ObjectPropertyModel(model.name, true, model),
+            extendModel: new ObjectPropertyModel(
+              'test',
+              true,
+              new ObjectModel('test', undefined, {}, {})
+            )
+          }
+        ),
+        options
+      );
+
+      expect(splittedModels.length).toEqual(4);
+      expect(splittedModels.at(2)?.options.isExtended).toEqual(false);
+      expect(splittedModels.at(3)?.options.isExtended).toEqual(false);
+    });
+  });
 });

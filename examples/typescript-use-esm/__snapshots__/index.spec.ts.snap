@@ -2,6 +2,26 @@
 
 exports[`Should be able to render models to ESM module system and should log expected output to console 1`] = `
 Array [
+  "import Person from './Person';
+class Root {
+  private _person?: Person;
+
+  constructor(input: {
+    person?: Person,
+  }) {
+    this._person = input.person;
+  }
+
+  get person(): Person | undefined { return this._person; }
+  set person(person: Person | undefined) { this._person = person; }
+}
+export default Root;
+",
+]
+`;
+
+exports[`Should be able to render models to ESM module system and should log expected output to console 2`] = `
+Array [
   "
 class Person {
   private _email?: string;

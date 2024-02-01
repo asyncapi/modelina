@@ -100,4 +100,22 @@ describe('mergePartialAndDefault', () => {
     expect(realizedOptions.nestedObject instanceof TestClass).toEqual(true);
     expect(realizedOptions.nestedObject.test()).toEqual(true);
   });
+
+  test('should not return default options instance', () => {
+    interface TestType {
+      array: string[];
+    }
+    const defaultOptions: TestType = {
+      array: []
+    };
+    const partialOptions: DeepPartial<TestType> = {
+      array: ['test']
+    };
+    const realizedOptions = mergePartialAndDefault(
+      defaultOptions,
+      partialOptions
+    ) as TestType;
+    expect(defaultOptions).toEqual({ array: [] });
+    expect(realizedOptions).toEqual({ array: ['test'] });
+  });
 });

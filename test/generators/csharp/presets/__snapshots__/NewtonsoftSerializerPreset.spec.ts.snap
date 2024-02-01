@@ -55,7 +55,7 @@ if(jo[\\"numberProp\\"] != null) {
   value.NumberProp = jo[\\"numberProp\\"].ToObject<double?>(serializer);
 }
 if(jo[\\"enumProp\\"] != null) {
-  value.EnumProp = EnumTestExtensions.ToEnumTest(jo[\\"enumProp\\"]);
+  value.EnumProp = EnumTestExtensions.ToEnumTest(jo[\\"enumProp\\"].ToString());
 }
 if(jo[\\"objectProp\\"] != null) {
   value.ObjectProp = jo[\\"objectProp\\"].ToObject<NestedTest?>(serializer);
@@ -88,8 +88,7 @@ if (value.EnumProp != null)
 var stringEnumValue = enumValue.ToString();
 // C# converts booleans to uppercase True and False, which newtonsoft cannot understand
 var jsonStringCompliant = stringEnumValue == \\"True\\" || stringEnumValue == \\"False\\" ? stringEnumValue.ToLower() : stringEnumValue;
-var jsonToken = JToken.Parse(jsonStringCompliant);
-jo.Add(\\"enumProp\\", jsonToken);
+jo.Add(\\"enumProp\\", JToken.FromObject(jsonStringCompliant, serializer));
 }
 if (value.ObjectProp != null)
 {

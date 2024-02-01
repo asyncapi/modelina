@@ -1,7 +1,6 @@
 import {
   CSharpGenerator,
-  CSHARP_COMMON_PRESET,
-  CSHARP_DEFAULT_PRESET
+  CSHARP_COMMON_PRESET
 } from '../../../../src/generators';
 const doc = {
   $id: 'Test',

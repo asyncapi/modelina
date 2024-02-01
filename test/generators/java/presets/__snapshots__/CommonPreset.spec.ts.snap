@@ -173,6 +173,88 @@ exports[`JAVA_COMMON_PRESET with option should not render any functions when all
 }"
 `;
 
+exports[`JAVA_COMMON_PRESET with option should not render anything when isExtended is true 1`] = `
+Array [
+  "public class ExtendDoc implements Extend {
+  private String extendProp;
+  private Map<String, Object> additionalProperties;
+
+  @Override
+  public String getExtendProp() { return this.extendProp; }
+  @Override
+  public void setExtendProp(String extendProp) { this.extendProp = extendProp; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    ExtendDoc self = (ExtendDoc) o;
+      return 
+        Objects.equals(this.extendProp, self.extendProp) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)extendProp, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class ExtendDoc {\\\\n\\" +   
+      \\"    extendProp: \\" + toIndentedString(extendProp) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+
+  public String marshal() {
+    List<String> propList = new ArrayList();
+      if(this.extendProp != null) {
+            propList.add(\\"extendProp:\\"+this.extendProp.toString());
+        }
+    if(this.additionalProperties != null) {
+            propList.add(\\"additionalProperties:\\"+this.additionalProperties.toString());
+        }
+    return propList.stream().collect(Collectors.joining(\\",\\"));
+  }
+
+  public static ExtendDoc unmarshal(String json) {
+    ExtendDoc result = new ExtendDoc();
+    JSONObject jsonObject = new JSONObject(json);
+      if(jsonObject.has(\\"extendProp\\")) {
+            result.setExtendProp(jsonObject.getString(\\"extendProp\\"));
+          }
+    if(jsonObject.has(\\"additionalProperties\\")) {
+            result.setAdditionalProperties(jsonObject.getMap<String, Object>(\\"additionalProperties\\"));
+          }
+    return result;
+  }
+}",
+  "public interface Extend {
+  public String getExtendProp();
+  public void setExtendProp(String extendProp);
+}",
+]
+`;
+
 exports[`JAVA_COMMON_PRESET with option should render all functions 1`] = `
 "public class Clazz {
   private boolean requiredProp;

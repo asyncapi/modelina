@@ -3,8 +3,9 @@ import {
   NO_EMPTY_VALUE,
   NO_RESERVED_KEYWORDS
 } from '../../../helpers/Constraints';
-import { FormatHelpers, ModelNameConstraint } from '../../../helpers';
+import { FormatHelpers } from '../../../helpers';
 import { isReservedRustKeyword } from '../Constants';
+import { RustModelNameConstraint } from '../RustGenerator';
 
 export type ModelNameConstraints = {
   NO_SPECIAL_CHAR: (value: string) => string;
@@ -34,7 +35,7 @@ export const DefaultModelNameConstraints: ModelNameConstraints = {
 };
 export function defaultModelNameConstraints(
   customConstraints?: Partial<ModelNameConstraints>
-): ModelNameConstraint {
+): RustModelNameConstraint {
   const constraints = { ...DefaultModelNameConstraints, ...customConstraints };
 
   return ({ modelName }) => {

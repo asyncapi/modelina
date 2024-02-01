@@ -11,6 +11,8 @@ export class MetaModelOptions {
   discriminator?: MetaModelOptionsDiscriminator;
   isNullable?: boolean = false;
   format?: string;
+  extend?: MetaModel[];
+  isExtended?: boolean;
 }
 
 export class MetaModel {

@@ -17,7 +17,7 @@ export class JavaScriptFileGenerator
    * @param ensureFilesWritten verify that the files is completely written before returning, this can happen if the file system is swamped with write requests.
    */
   public async generateToFiles(
-    input: Record<string, unknown> | InputMetaModel,
+    input: any | InputMetaModel,
     outputDirectory: string,
     options?: JavaScriptRenderCompleteModelOptions,
     ensureFilesWritten = false

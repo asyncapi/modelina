@@ -16,7 +16,7 @@ export class CplusplusFileGenerator
    * @param options
    */
   public async generateToFiles(
-    input: Record<string, unknown> | InputMetaModel,
+    input: any | InputMetaModel,
     outputDirectory: string,
     options?: CplusplusRenderCompleteModelOptions,
     ensureFilesWritten = false

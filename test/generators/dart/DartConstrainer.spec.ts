@@ -13,8 +13,7 @@ import {
   ConstrainedReferenceModel,
   ConstrainedStringModel,
   ConstrainedTupleModel,
-  ConstrainedUnionModel,
-  InputMetaModel
+  ConstrainedUnionModel
 } from '../../../src/models';
 
 describe('DartConstrainer', () => {

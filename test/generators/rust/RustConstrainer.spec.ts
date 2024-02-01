@@ -20,9 +20,7 @@ import {
   ConstrainedTupleModel,
   ConstrainedUnionModel,
   RustGenerator,
-  RustOptions,
-  ConstrainedObjectPropertyModel,
-  ConstrainedMetaModel
+  ConstrainedObjectPropertyModel
 } from '../../../src';
 import { RustDependencyManager } from '../../../src/generators/rust/RustDependencyManager';
 describe('RustConstrainer', () => {

@@ -14,8 +14,13 @@ import {
   InputMetaModel
 } from '../../models';
 import {
+  ConstantConstraint,
   constrainMetaModel,
   Constraints,
+  EnumKeyConstraint,
+  EnumValueConstraint,
+  ModelNameConstraint,
+  PropertyKeyConstraint,
   split,
   SplitOptions,
   TypeMapping
@@ -34,8 +39,13 @@ import { DartDependencyManager } from './DartDependencyManager';
 export interface DartOptions extends CommonGeneratorOptions<DartPreset> {
   collectionType?: 'List';
   typeMapping: TypeMapping<DartOptions, DartDependencyManager>;
-  constraints: Constraints;
+  constraints: Constraints<DartOptions>;
 }
+export type DartConstantConstraint = ConstantConstraint<DartOptions>;
+export type DartEnumKeyConstraint = EnumKeyConstraint<DartOptions>;
+export type DartEnumValueConstraint = EnumValueConstraint<DartOptions>;
+export type DartModelNameConstraint = ModelNameConstraint<DartOptions>;
+export type DartPropertyKeyConstraint = PropertyKeyConstraint<DartOptions>;
 export type DartTypeMapping = TypeMapping<DartOptions, DartDependencyManager>;
 
 export interface DartRenderCompleteModelOptions {

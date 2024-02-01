@@ -6,12 +6,12 @@ import {
   NO_EMPTY_VALUE,
   NO_RESERVED_KEYWORDS
 } from '../../../helpers/Constraints';
-import {
-  FormatHelpers,
-  EnumKeyConstraint,
-  EnumValueConstraint
-} from '../../../helpers';
+import { FormatHelpers } from '../../../helpers';
 import { isReservedPythonKeyword } from '../Constants';
+import {
+  PythonEnumKeyConstraint,
+  PythonEnumValueConstraint
+} from '../PythonGenerator';
 
 export type ModelEnumKeyConstraints = {
   NO_SPECIAL_CHAR: (value: string) => string;
@@ -50,7 +50,7 @@ export const DefaultEnumKeyConstraints: ModelEnumKeyConstraints = {
  */
 export function defaultEnumKeyConstraints(
   customConstraints?: Partial<ModelEnumKeyConstraints>
-): EnumKeyConstraint {
+): PythonEnumKeyConstraint {
   const constraints = { ...DefaultEnumKeyConstraints, ...customConstraints };
 
   return ({ enumKey, enumModel, constrainedEnumModel }) => {
@@ -76,7 +76,7 @@ export function defaultEnumKeyConstraints(
 /**
  * Convert the enum value to a value that is compatible with Python
  */
-export function defaultEnumValueConstraints(): EnumValueConstraint {
+export function defaultEnumValueConstraints(): PythonEnumValueConstraint {
   return ({ enumValue }) => {
     let constrainedEnumValue = enumValue;
     switch (typeof enumValue) {
