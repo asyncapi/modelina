@@ -1,6 +1,6 @@
-import { ConstantConstraint } from '../../../helpers';
+import { ScalaConstantConstraint } from '../ScalaGenerator';
 
-export function defaultConstantConstraints(): ConstantConstraint {
+export function defaultConstantConstraints(): ScalaConstantConstraint {
   return () => {
     return undefined;
   };

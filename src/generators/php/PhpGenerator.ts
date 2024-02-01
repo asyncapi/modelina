@@ -20,8 +20,13 @@ import { EnumRenderer } from './renderers/EnumRenderer';
 import { isReservedPhpKeyword } from './Constants';
 import { Logger } from '../..';
 import {
+  ConstantConstraint,
   constrainMetaModel,
-  Constraints
+  Constraints,
+  EnumKeyConstraint,
+  EnumValueConstraint,
+  ModelNameConstraint,
+  PropertyKeyConstraint
 } from '../../helpers/ConstrainHelpers';
 import { PhpDefaultConstraints, PhpDefaultTypeMapping } from './PhpConstrainer';
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
@@ -29,8 +34,13 @@ import { PhpDependencyManager } from './PhpDependencyManager';
 
 export interface PhpOptions extends CommonGeneratorOptions<PhpPreset> {
   typeMapping: TypeMapping<PhpOptions, PhpDependencyManager>;
-  constraints: Constraints;
+  constraints: Constraints<PhpOptions>;
 }
+export type PhpConstantConstraint = ConstantConstraint<PhpOptions>;
+export type PhpEnumKeyConstraint = EnumKeyConstraint<PhpOptions>;
+export type PhpEnumValueConstraint = EnumValueConstraint<PhpOptions>;
+export type PhpModelNameConstraint = ModelNameConstraint<PhpOptions>;
+export type PhpPropertyKeyConstraint = PropertyKeyConstraint<PhpOptions>;
 export interface PhpRenderCompleteModelOptions {
   namespace: string;
   declareStrictTypes: boolean;

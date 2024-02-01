@@ -1,10 +1,27 @@
 import { TypeScriptGenerator } from '../../src';
-import { pascalCase } from 'change-case';
 
 const generator = new TypeScriptGenerator({
   constraints: {
-    modelName: ({ modelName }) => {
+    modelName: ({ modelName, options }) => {
       return 'MyOwnCustomModelName';
+    },
+    constant: ({ constrainedMetaModel, options }) => {
+      return 'MyCustomConst';
+    },
+    enumKey: ({ constrainedEnumModel, enumKey, enumModel, options }) => {
+      return 'MyCustomKey';
+    },
+    enumValue: ({ constrainedEnumModel, enumValue, enumModel, options }) => {
+      return 'MyCustomValue';
+    },
+    propertyKey: ({
+      constrainedObjectModel,
+      constrainedObjectPropertyModel,
+      objectModel,
+      objectPropertyModel,
+      options
+    }) => {
+      return 'MyCustomPropertyKey';
     }
   }
 });

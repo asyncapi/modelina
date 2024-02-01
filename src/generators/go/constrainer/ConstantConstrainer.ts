@@ -1,6 +1,6 @@
-import { ConstantConstraint } from '../../../helpers';
+import { GoConstantConstraint } from '../GoGenerator';
 
-export function defaultConstantConstraints(): ConstantConstraint {
+export function defaultConstantConstraints(): GoConstantConstraint {
   return () => {
     return undefined;
   };

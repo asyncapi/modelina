@@ -45,31 +45,39 @@ export default function interpretAllOf(
 
   for (const allOfSchema of schema.allOf) {
     const allOfModel = interpreter.interpret(allOfSchema, interpreterOptions);
+
     if (allOfModel === undefined) {
       continue;
     }
-    if (
-      isModelObject(allOfModel) === true &&
-      interpreterOptions.allowInheritance === true
-    ) {
-      Logger.info(
-        `Processing allOf, inheritance is enabled, ${model.$id} inherits from ${allOfModel.$id}`,
-        model,
-        allOfModel
-      );
-      model.addExtendedModel(allOfModel);
-    } else {
-      Logger.info(
-        'Processing allOf, inheritance is not enabled. AllOf model is merged together with already interpreted model',
-        model,
-        allOfModel
-      );
-      interpreter.interpretAndCombineSchema(
-        allOfSchema,
-        model,
-        schema,
-        interpreterOptions
-      );
+
+    if (interpreterOptions.allowInheritance === true) {
+      const allOfModelWithoutCache = interpreter.interpret(allOfSchema, {
+        ...interpreterOptions,
+        disableCache: true
+      });
+
+      if (allOfModelWithoutCache && isModelObject(allOfModelWithoutCache)) {
+        Logger.info(
+          `Processing allOf, inheritance is enabled, ${model.$id} inherits from ${allOfModelWithoutCache.$id}`,
+          model,
+          allOfModel
+        );
+
+        model.addExtendedModel(allOfModelWithoutCache);
+      }
     }
+
+    Logger.info(
+      'Processing allOf, inheritance is not enabled. AllOf model is merged together with already interpreted model',
+      model,
+      allOfModel
+    );
+
+    interpreter.interpretAndCombineSchema(
+      allOfSchema,
+      model,
+      schema,
+      interpreterOptions
+    );
   }
 }

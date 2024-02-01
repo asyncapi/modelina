@@ -5,12 +5,13 @@ import {
   NO_EMPTY_VALUE,
   NO_RESERVED_KEYWORDS
 } from '../../../helpers/Constraints';
-import {
-  EnumKeyConstraint,
-  EnumValueConstraint,
-  FormatHelpers
-} from '../../../helpers';
+import { FormatHelpers } from '../../../helpers';
 import { isReservedTypeScriptKeyword } from '../Constants';
+import {
+  TypeScriptEnumKeyConstraint,
+  TypeScriptEnumValueConstraint,
+  TypeScriptOptions
+} from '../TypeScriptGenerator';
 
 export type ModelEnumKeyConstraints = {
   NO_SPECIAL_CHAR: (value: string) => string;
@@ -23,7 +24,7 @@ export type ModelEnumKeyConstraints = {
   ) => string;
   NO_EMPTY_VALUE: (value: string) => string;
   NAMING_FORMATTER: (value: string) => string;
-  NO_RESERVED_KEYWORDS: (value: string) => string;
+  NO_RESERVED_KEYWORDS: (value: string, options: TypeScriptOptions) => string;
 };
 
 export const DefaultEnumKeyConstraints: ModelEnumKeyConstraints = {
@@ -38,22 +39,27 @@ export const DefaultEnumKeyConstraints: ModelEnumKeyConstraints = {
   NO_DUPLICATE_KEYS: NO_DUPLICATE_ENUM_KEYS,
   NO_EMPTY_VALUE,
   NAMING_FORMATTER: FormatHelpers.toConstantCase,
-  NO_RESERVED_KEYWORDS: (value: string) => {
-    return NO_RESERVED_KEYWORDS(value, isReservedTypeScriptKeyword);
+  NO_RESERVED_KEYWORDS: (value: string, options: TypeScriptOptions) => {
+    return NO_RESERVED_KEYWORDS(value, (word) =>
+      isReservedTypeScriptKeyword(word, true, options)
+    );
   }
 };
 
 export function defaultEnumKeyConstraints(
   customConstraints?: Partial<ModelEnumKeyConstraints>
-): EnumKeyConstraint {
+): TypeScriptEnumKeyConstraint {
   const constraints = { ...DefaultEnumKeyConstraints, ...customConstraints };
 
-  return ({ enumKey, enumModel, constrainedEnumModel }) => {
+  return ({ enumKey, enumModel, constrainedEnumModel, options }) => {
     let constrainedEnumKey = enumKey;
     constrainedEnumKey = constraints.NO_SPECIAL_CHAR(constrainedEnumKey);
     constrainedEnumKey = constraints.NO_NUMBER_START_CHAR(constrainedEnumKey);
     constrainedEnumKey = constraints.NO_EMPTY_VALUE(constrainedEnumKey);
-    constrainedEnumKey = constraints.NO_RESERVED_KEYWORDS(constrainedEnumKey);
+    constrainedEnumKey = constraints.NO_RESERVED_KEYWORDS(
+      constrainedEnumKey,
+      options
+    );
     //If the enum key has been manipulated, lets make sure it don't clash with existing keys
     if (constrainedEnumKey !== enumKey) {
       constrainedEnumKey = constraints.NO_DUPLICATE_KEYS(
@@ -68,7 +74,7 @@ export function defaultEnumKeyConstraints(
   };
 }
 
-export function defaultEnumValueConstraints(): EnumValueConstraint {
+export function defaultEnumValueConstraints(): TypeScriptEnumValueConstraint {
   return ({ enumValue }) => {
     let normalizedEnumValue;
     switch (typeof enumValue) {

@@ -2,7 +2,8 @@ import { JavaDefaultConstraints } from '../../../../src/generators/java/JavaCons
 import { EnumModel } from '../../../../src/models/MetaModel';
 import {
   ConstrainedEnumModel,
-  ConstrainedEnumValueModel
+  ConstrainedEnumValueModel,
+  JavaGenerator
 } from '../../../../src';
 import {
   defaultEnumKeyConstraints,
@@ -24,7 +25,8 @@ describe('EnumConstrainer', () => {
       const constrainedKey = JavaDefaultConstraints.enumKey({
         enumModel,
         constrainedEnumModel,
-        enumKey: '%'
+        enumKey: '%',
+        options: JavaGenerator.defaultOptions
       });
       expect(constrainedKey).toEqual('PERCENT');
     });
@@ -32,7 +34,8 @@ describe('EnumConstrainer', () => {
       const constrainedKey = JavaDefaultConstraints.enumKey({
         enumModel,
         constrainedEnumModel,
-        enumKey: '1'
+        enumKey: '1',
+        options: JavaGenerator.defaultOptions
       });
       expect(constrainedKey).toEqual('NUMBER_1');
     });
@@ -52,7 +55,8 @@ describe('EnumConstrainer', () => {
       const constrainedKey = JavaDefaultConstraints.enumKey({
         enumModel,
         constrainedEnumModel,
-        enumKey: ''
+        enumKey: '',
+        options: JavaGenerator.defaultOptions
       });
       expect(constrainedKey).toEqual('RESERVED_EMPTY');
     });
@@ -60,7 +64,8 @@ describe('EnumConstrainer', () => {
       const constrainedKey = JavaDefaultConstraints.enumKey({
         enumModel,
         constrainedEnumModel,
-        enumKey: ''
+        enumKey: '',
+        options: JavaGenerator.defaultOptions
       });
       expect(constrainedKey).toEqual('EMPTY');
     });
@@ -68,7 +73,8 @@ describe('EnumConstrainer', () => {
       const constrainedKey = JavaDefaultConstraints.enumKey({
         enumModel,
         constrainedEnumModel,
-        enumKey: 'some weird_value!"#2'
+        enumKey: 'some weird_value!"#2',
+        options: JavaGenerator.defaultOptions
       });
       expect(constrainedKey).toEqual(
         'SOME_WEIRD_VALUE_EXCLAMATION_QUOTATION_HASH_2'
@@ -78,7 +84,8 @@ describe('EnumConstrainer', () => {
       const constrainedKey = JavaDefaultConstraints.enumKey({
         enumModel,
         constrainedEnumModel,
-        enumKey: 'return'
+        enumKey: 'return',
+        options: JavaGenerator.defaultOptions
       });
       expect(constrainedKey).toEqual('RESERVED_RETURN');
     });
@@ -88,7 +95,8 @@ describe('EnumConstrainer', () => {
       const constrainedValue = JavaDefaultConstraints.enumValue({
         enumModel,
         constrainedEnumModel,
-        enumValue: 'string value'
+        enumValue: 'string value',
+        options: JavaGenerator.defaultOptions
       });
       expect(constrainedValue).toEqual('"string value"');
     });
@@ -96,7 +104,8 @@ describe('EnumConstrainer', () => {
       const constrainedValue = JavaDefaultConstraints.enumValue({
         enumModel,
         constrainedEnumModel,
-        enumValue: true
+        enumValue: true,
+        options: JavaGenerator.defaultOptions
       });
       expect(constrainedValue).toEqual('"true"');
     });
@@ -104,7 +113,8 @@ describe('EnumConstrainer', () => {
       const constrainedValue = JavaDefaultConstraints.enumValue({
         enumModel,
         constrainedEnumModel,
-        enumValue: 123
+        enumValue: 123,
+        options: JavaGenerator.defaultOptions
       });
       expect(constrainedValue).toEqual(123);
     });
@@ -112,7 +122,8 @@ describe('EnumConstrainer', () => {
       const constrainedValue = JavaDefaultConstraints.enumValue({
         enumModel,
         constrainedEnumModel,
-        enumValue: { test: 'test' }
+        enumValue: { test: 'test' },
+        options: JavaGenerator.defaultOptions
       });
       expect(constrainedValue).toEqual('"{\\"test\\":\\"test\\"}"');
     });
@@ -120,7 +131,8 @@ describe('EnumConstrainer', () => {
       const constrainedValue = JavaDefaultConstraints.enumValue({
         enumModel,
         constrainedEnumModel,
-        enumValue: undefined
+        enumValue: undefined,
+        options: JavaGenerator.defaultOptions
       });
       expect(constrainedValue).toEqual('"undefined"');
     });
@@ -137,7 +149,12 @@ describe('EnumConstrainer', () => {
       const constrainFunction = defaultEnumKeyConstraints(
         mockedConstraintCallbacks
       );
-      constrainFunction({ enumModel, constrainedEnumModel, enumKey: '' });
+      constrainFunction({
+        enumModel,
+        constrainedEnumModel,
+        enumKey: '',
+        options: JavaGenerator.defaultOptions
+      });
       //Expect all callbacks to be called
       for (const jestMockCallback of Object.values(mockedConstraintCallbacks)) {
         expect(jestMockCallback).toHaveBeenCalled();
@@ -159,7 +176,8 @@ describe('EnumConstrainer', () => {
       const constrainedValue = constrainFunction({
         enumModel,
         constrainedEnumModel,
-        enumKey: ''
+        enumKey: '',
+        options: JavaGenerator.defaultOptions
       });
       expect(constrainedValue).toEqual('');
       for (const jestMockCallback of spies) {

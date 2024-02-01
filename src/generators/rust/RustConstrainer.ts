@@ -5,7 +5,7 @@ import {
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
 import { RustTypeMapping } from './RustGenerator';
-import { FormatHelpers, Constraints } from '../../helpers';
+import { FormatHelpers } from '../../helpers';
 import {
   ConstrainedAnyModel,
   ConstrainedArrayModel,
@@ -345,7 +345,7 @@ export const RustDefaultTypeMapping: RustTypeMapping = {
   }
 };
 
-export const RustDefaultConstraints: Constraints = {
+export const RustDefaultConstraints = {
   enumKey: defaultEnumKeyConstraints(),
   enumValue: defaultEnumValueConstraints(),
   modelName: defaultModelNameConstraints(),

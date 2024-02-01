@@ -313,4 +313,13 @@ describe('Interpreter', () => {
       expect(discriminator).toBe('OpenapiV3SchemaDiscriminatorPropertyName');
     });
   });
+  test('should not use cache if disableCache is set', () => {
+    const schema = { type: 'object' };
+    const interpreter = new Interpreter();
+    const model1 = interpreter.interpret(schema, { disableCache: false });
+    expect(model1).not.toBeUndefined();
+    const model2 = interpreter.interpret(schema, { disableCache: true });
+    expect(model2).not.toBeUndefined();
+    expect(model1).not.toBe(model2);
+  });
 });

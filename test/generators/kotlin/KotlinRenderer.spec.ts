@@ -2,7 +2,6 @@ import { KotlinGenerator } from '../../../src/generators/kotlin';
 import { KotlinRenderer } from '../../../src/generators/kotlin/KotlinRenderer';
 import { ConstrainedObjectModel, InputMetaModel } from '../../../src/models';
 import { MockKotlinRenderer } from '../../TestUtils/TestRenderers';
-import { prefix } from 'concurrently/dist/src/defaults';
 
 describe('KotlinRenderer', () => {
   let renderer: KotlinRenderer<any>;

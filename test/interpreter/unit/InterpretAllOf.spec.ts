@@ -107,7 +107,6 @@ describe('Interpretation of allOf', () => {
       interpreterOptionsAllowInheritance
     );
 
-    expect(interpreter.interpretAndCombineSchema).not.toHaveBeenCalled();
     expect(isModelObject).toHaveBeenCalled();
     expect(model.addExtendedModel).toHaveBeenCalledWith(interpretedModel);
   });

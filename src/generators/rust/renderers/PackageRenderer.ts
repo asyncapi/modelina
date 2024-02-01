@@ -20,14 +20,14 @@ export const RUST_DEFAULT_PACKAGE_PRESET: PackagePresetType<RustOptions> = {
     return renderer.defaultSelf();
   },
 
-  lib({ inputModel, renderer }) {
+  lib({ inputModel, renderer, options }) {
     const modelNames: string[] = Object.values(inputModel.models).map(
       (m: MetaModel) => m.name
     );
     const imports = renderer.renderBlock(
       modelNames
         .map((modelName) => {
-          let mod = defaultModelNameConstraints()({ modelName });
+          let mod = defaultModelNameConstraints()({ modelName, options });
           mod = FormatHelpers.snakeCase(mod);
           return `
 pub mod ${mod};

@@ -31,4 +31,38 @@ describe('PYTHON_PYDANTIC_PRESET', () => {
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot();
   });
+
+  test('should render union to support Python < 3.10', async () => {
+    const doc = {
+      title: 'UnionTest',
+      type: 'object',
+      properties: {
+        unionTest: {
+          oneOf: [
+            {
+              title: 'Union1',
+              type: 'object',
+              properties: {
+                testProp1: {
+                  type: 'string'
+                }
+              }
+            },
+            {
+              title: 'Union2',
+              type: 'object',
+              properties: {
+                testProp2: {
+                  type: 'string'
+                }
+              }
+            }
+          ]
+        }
+      }
+    };
+
+    const models = await generator.generate(doc);
+    expect(models.map((model) => model.result)).toMatchSnapshot();
+  });
 });

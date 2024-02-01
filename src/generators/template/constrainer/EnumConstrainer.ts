@@ -12,6 +12,10 @@ import {
   EnumValueConstraint
 } from '../../../helpers';
 import { isReservedTemplateKeyword } from '../Constants';
+import {
+  TemplateEnumKeyConstraint,
+  TemplateEnumValueConstraint
+} from '../TemplateGenerator';
 
 export type ModelEnumKeyConstraints = {
   NO_SPECIAL_CHAR: (value: string) => string;
@@ -50,7 +54,7 @@ export const DefaultEnumKeyConstraints: ModelEnumKeyConstraints = {
  */
 export function defaultEnumKeyConstraints(
   customConstraints?: Partial<ModelEnumKeyConstraints>
-): EnumKeyConstraint {
+): TemplateEnumKeyConstraint {
   const constraints = { ...DefaultEnumKeyConstraints, ...customConstraints };
 
   return ({ enumKey, enumModel, constrainedEnumModel }) => {
@@ -76,7 +80,7 @@ export function defaultEnumKeyConstraints(
 /**
  * Convert the enum value to a value that is compatible with Template
  */
-export function defaultEnumValueConstraints(): EnumValueConstraint {
+export function defaultEnumValueConstraints(): TemplateEnumValueConstraint {
   return ({ enumValue }) => {
     let constrainedEnumValue = enumValue;
     switch (typeof enumValue) {

@@ -1,6 +1,6 @@
-import { ConstantConstraint } from '../../../helpers';
+import { CSharpConstantConstraint } from '../CSharpGenerator';
 
-export function defaultConstantConstraints(): ConstantConstraint {
+export function defaultConstantConstraints(): CSharpConstantConstraint {
   return () => {
     return undefined;
   };

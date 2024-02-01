@@ -15,7 +15,8 @@ import {
   ConstrainedEnumModel,
   ConstrainedDictionaryModel,
   ConstrainedEnumValueModel,
-  ConstrainedObjectPropertyModel
+  ConstrainedObjectPropertyModel,
+  ConstrainedMetaModelOptions
 } from '../models/ConstrainedMetaModel';
 import {
   AnyModel,
@@ -48,46 +49,61 @@ export type ConstrainContext<
   dependencyManager: DependencyManager;
 };
 
-export type EnumKeyContext = {
+export type EnumKeyContext<Options> = {
   enumKey: string;
   constrainedEnumModel: ConstrainedEnumModel;
   enumModel: EnumModel;
+  options: Options;
 };
-export type EnumKeyConstraint = (context: EnumKeyContext) => string;
+export type EnumKeyConstraint<Options> = (
+  context: EnumKeyContext<Options>
+) => string;
 
-export type EnumValueContext = {
+export type EnumValueContext<Options> = {
   enumValue: any;
   constrainedEnumModel: ConstrainedEnumModel;
   enumModel: EnumModel;
+  options: Options;
 };
-export type EnumValueConstraint = (context: EnumValueContext) => any;
+export type EnumValueConstraint<Options> = (
+  context: EnumValueContext<Options>
+) => any;
 
-export type ModelNameContext = {
+export type ModelNameContext<Options> = {
   modelName: string;
+  options: Options;
 };
-export type ModelNameConstraint = (context: ModelNameContext) => string;
+export type ModelNameConstraint<Options> = (
+  context: ModelNameContext<Options>
+) => string;
 
-export type PropertyKeyContext = {
+export type PropertyKeyContext<Options> = {
   constrainedObjectPropertyModel: ConstrainedObjectPropertyModel;
   objectPropertyModel: ObjectPropertyModel;
   constrainedObjectModel: ConstrainedObjectModel;
   objectModel: ObjectModel;
+  options: Options;
 };
 
-export type PropertyKeyConstraint = (context: PropertyKeyContext) => string;
+export type PropertyKeyConstraint<Options> = (
+  context: PropertyKeyContext<Options>
+) => string;
 
-export type ConstantContext = {
+export type ConstantContext<Options> = {
   constrainedMetaModel: ConstrainedMetaModel;
+  options: Options;
 };
 
-export type ConstantConstraint = (context: ConstantContext) => unknown;
+export type ConstantConstraint<Options> = (
+  context: ConstantContext<Options>
+) => unknown;
 
-export interface Constraints {
-  enumKey: EnumKeyConstraint;
-  enumValue: EnumValueConstraint;
-  modelName: ModelNameConstraint;
-  propertyKey: PropertyKeyConstraint;
-  constant: ConstantConstraint;
+export interface Constraints<Options> {
+  enumKey: EnumKeyConstraint<Options>;
+  enumValue: EnumValueConstraint<Options>;
+  modelName: ModelNameConstraint<Options>;
+  propertyKey: PropertyKeyConstraint<Options>;
+  constant: ConstantConstraint<Options>;
 }
 
 const placeHolderConstrainedObject = new ConstrainedAnyModel(
@@ -97,19 +113,33 @@ const placeHolderConstrainedObject = new ConstrainedAnyModel(
   ''
 );
 
+function getConstrainedMetaModelOptions(
+  metaModel: MetaModel
+): ConstrainedMetaModelOptions {
+  const options: ConstrainedMetaModelOptions = {};
+
+  options.const = metaModel.options.const;
+  options.isNullable = metaModel.options.isNullable;
+  options.discriminator = metaModel.options.discriminator;
+  options.format = metaModel.options.format;
+  options.isExtended = metaModel.options.isExtended;
+
+  return options;
+}
+
 function constrainReferenceModel<
   Options,
   DependencyManager extends AbstractDependencyManager
 >(
   typeMapping: TypeMapping<Options, DependencyManager>,
-  constrainRules: Constraints,
+  constrainRules: Constraints<Options>,
   context: ConstrainContext<Options, ReferenceModel, DependencyManager>,
   alreadySeenModels: Map<MetaModel, ConstrainedMetaModel>
 ): ConstrainedReferenceModel {
   const constrainedModel = new ConstrainedReferenceModel(
     context.constrainedName,
     context.metaModel.originalInput,
-    context.metaModel.options,
+    getConstrainedMetaModelOptions(context.metaModel),
     '',
     placeHolderConstrainedObject
   );
@@ -131,7 +161,8 @@ function constrainReferenceModel<
 
   if (constrainedModel.options.const) {
     const constrainedConstant = constrainRules.constant({
-      constrainedMetaModel: constrainedModel
+      constrainedMetaModel: constrainedModel,
+      options: context.options
     });
     constrainedModel.options.const.value = constrainedConstant;
   }
@@ -148,7 +179,7 @@ function constrainAnyModel<
   const constrainedModel = new ConstrainedAnyModel(
     context.constrainedName,
     context.metaModel.originalInput,
-    context.metaModel.options,
+    getConstrainedMetaModelOptions(context.metaModel),
     ''
   );
   constrainedModel.type = getTypeFromMapping(typeMapping, {
@@ -169,7 +200,7 @@ function constrainFloatModel<
   const constrainedModel = new ConstrainedFloatModel(
     context.constrainedName,
     context.metaModel.originalInput,
-    context.metaModel.options,
+    getConstrainedMetaModelOptions(context.metaModel),
     ''
   );
   constrainedModel.type = getTypeFromMapping(typeMapping, {
@@ -190,7 +221,7 @@ function constrainIntegerModel<
   const constrainedModel = new ConstrainedIntegerModel(
     context.constrainedName,
     context.metaModel.originalInput,
-    context.metaModel.options,
+    getConstrainedMetaModelOptions(context.metaModel),
     ''
   );
   constrainedModel.type = getTypeFromMapping(typeMapping, {
@@ -211,7 +242,7 @@ function constrainStringModel<
   const constrainedModel = new ConstrainedStringModel(
     context.constrainedName,
     context.metaModel.originalInput,
-    context.metaModel.options,
+    getConstrainedMetaModelOptions(context.metaModel),
     ''
   );
   constrainedModel.type = getTypeFromMapping(typeMapping, {
@@ -232,7 +263,7 @@ function constrainBooleanModel<
   const constrainedModel = new ConstrainedBooleanModel(
     context.constrainedName,
     context.metaModel.originalInput,
-    context.metaModel.options,
+    getConstrainedMetaModelOptions(context.metaModel),
     ''
   );
   constrainedModel.type = getTypeFromMapping(typeMapping, {
@@ -248,14 +279,14 @@ function constrainTupleModel<
   DependencyManager extends AbstractDependencyManager
 >(
   typeMapping: TypeMapping<Options, DependencyManager>,
-  constrainRules: Constraints,
+  constrainRules: Constraints<Options>,
   context: ConstrainContext<Options, TupleModel, DependencyManager>,
   alreadySeenModels: Map<MetaModel, ConstrainedMetaModel>
 ): ConstrainedTupleModel {
   const constrainedModel = new ConstrainedTupleModel(
     context.constrainedName,
     context.metaModel.originalInput,
-    context.metaModel.options,
+    getConstrainedMetaModelOptions(context.metaModel),
     '',
     []
   );
@@ -284,14 +315,14 @@ function constrainArrayModel<
   DependencyManager extends AbstractDependencyManager
 >(
   typeMapping: TypeMapping<Options, DependencyManager>,
-  constrainRules: Constraints,
+  constrainRules: Constraints<Options>,
   context: ConstrainContext<Options, ArrayModel, DependencyManager>,
   alreadySeenModels: Map<MetaModel, ConstrainedMetaModel>
 ): ConstrainedArrayModel {
   const constrainedModel = new ConstrainedArrayModel(
     context.constrainedName,
     context.metaModel.originalInput,
-    context.metaModel.options,
+    getConstrainedMetaModelOptions(context.metaModel),
     '',
     placeHolderConstrainedObject
   );
@@ -353,14 +384,14 @@ function constrainUnionModel<
   DependencyManager extends AbstractDependencyManager
 >(
   typeMapping: TypeMapping<Options, DependencyManager>,
-  constrainRules: Constraints,
+  constrainRules: Constraints<Options>,
   context: ConstrainContext<Options, UnionModel, DependencyManager>,
   alreadySeenModels: Map<MetaModel, ConstrainedMetaModel>
 ): ConstrainedUnionModel {
   const constrainedModel = new ConstrainedUnionModel(
     context.constrainedName,
     context.metaModel.originalInput,
-    context.metaModel.options,
+    getConstrainedMetaModelOptions(context.metaModel),
     '',
     []
   );
@@ -392,14 +423,14 @@ function constrainDictionaryModel<
   DependencyManager extends AbstractDependencyManager
 >(
   typeMapping: TypeMapping<Options, DependencyManager>,
-  constrainRules: Constraints,
+  constrainRules: Constraints<Options>,
   context: ConstrainContext<Options, DictionaryModel, DependencyManager>,
   alreadySeenModels: Map<MetaModel, ConstrainedMetaModel>
 ): ConstrainedDictionaryModel {
   const constrainedModel = new ConstrainedDictionaryModel(
     context.constrainedName,
     context.metaModel.originalInput,
-    context.metaModel.options,
+    getConstrainedMetaModelOptions(context.metaModel),
     '',
     placeHolderConstrainedObject,
     placeHolderConstrainedObject,
@@ -439,14 +470,35 @@ function constrainObjectModel<
   DependencyManager extends AbstractDependencyManager
 >(
   typeMapping: TypeMapping<Options, DependencyManager>,
-  constrainRules: Constraints,
+  constrainRules: Constraints<Options>,
   context: ConstrainContext<Options, ObjectModel, DependencyManager>,
   alreadySeenModels: Map<MetaModel, ConstrainedMetaModel>
 ): ConstrainedObjectModel {
+  const options = getConstrainedMetaModelOptions(context.metaModel);
+
+  if (context.metaModel.options.extend?.length) {
+    options.extend = [];
+
+    for (const extend of context.metaModel.options.extend) {
+      options.extend.push(
+        constrainMetaModel(
+          typeMapping,
+          constrainRules,
+          {
+            ...context,
+            metaModel: extend,
+            partOfProperty: undefined
+          },
+          alreadySeenModels
+        )
+      );
+    }
+  }
+
   const constrainedModel = new ConstrainedObjectModel(
     context.constrainedName,
     context.metaModel.originalInput,
-    context.metaModel.options,
+    options,
     '',
     {}
   );
@@ -463,7 +515,8 @@ function constrainObjectModel<
       objectPropertyModel: propertyMetaModel,
       constrainedObjectPropertyModel: constrainedPropertyModel,
       constrainedObjectModel: constrainedModel,
-      objectModel: context.metaModel
+      objectModel: context.metaModel,
+      options: context.options
     });
     constrainedPropertyModel.propertyName = constrainedPropertyName;
     const constrainedProperty = constrainMetaModel(
@@ -481,6 +534,7 @@ function constrainObjectModel<
     constrainedModel.properties[String(constrainedPropertyName)] =
       constrainedPropertyModel;
   }
+
   constrainedModel.type = getTypeFromMapping(typeMapping, {
     constrainedModel,
     options: context.options,
@@ -495,13 +549,13 @@ function ConstrainEnumModel<
   DependencyManager extends AbstractDependencyManager
 >(
   typeMapping: TypeMapping<Options, DependencyManager>,
-  constrainRules: Constraints,
+  constrainRules: Constraints<Options>,
   context: ConstrainContext<Options, EnumModel, DependencyManager>
 ): ConstrainedEnumModel {
   const constrainedModel = new ConstrainedEnumModel(
     context.constrainedName,
     context.metaModel.originalInput,
-    context.metaModel.options,
+    getConstrainedMetaModelOptions(context.metaModel),
     '',
     []
   );
@@ -512,12 +566,14 @@ function ConstrainEnumModel<
     const constrainedEnumKey = constrainRules.enumKey({
       enumKey: String(enumValue.key),
       enumModel: context.metaModel,
-      constrainedEnumModel: constrainedModel
+      constrainedEnumModel: constrainedModel,
+      options: context.options
     });
     const constrainedEnumValue = constrainRules.enumValue({
       enumValue: enumValue.value,
       enumModel: context.metaModel,
-      constrainedEnumModel: constrainedModel
+      constrainedEnumModel: constrainedModel,
+      options: context.options
     });
     return new ConstrainedEnumValueModel(
       constrainedEnumKey,
@@ -548,7 +604,7 @@ export function constrainMetaModel<
   DependencyManager extends AbstractDependencyManager
 >(
   typeMapping: TypeMapping<Options, DependencyManager>,
-  constrainRules: Constraints,
+  constrainRules: Constraints<Options>,
   context: ConstrainContext<Options, MetaModel, DependencyManager>,
   alreadySeenModels: Map<MetaModel, ConstrainedMetaModel> = new Map()
 ): ConstrainedMetaModel {
@@ -556,7 +612,8 @@ export function constrainMetaModel<
     return alreadySeenModels.get(context.metaModel) as ConstrainedMetaModel;
   }
   const constrainedName = constrainRules.modelName({
-    modelName: context.metaModel.name
+    modelName: context.metaModel.name,
+    options: context.options
   });
   const newContext = { ...context, constrainedName };
   if (newContext.metaModel instanceof ObjectModel) {
@@ -638,7 +695,8 @@ export function constrainMetaModel<
   if (simpleModel !== undefined) {
     if (simpleModel.options.const) {
       const constrainedConstant = constrainRules.constant({
-        constrainedMetaModel: simpleModel
+        constrainedMetaModel: simpleModel,
+        options: context.options
       });
       simpleModel.options.const.value = constrainedConstant;
     }

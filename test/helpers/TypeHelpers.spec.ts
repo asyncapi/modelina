@@ -1,6 +1,5 @@
 import { getTypeFromMapping, TypeMapping } from '../../src/helpers';
 import {
-  CommonModel,
   ConstrainedAnyModel,
   ConstrainedArrayModel,
   ConstrainedBooleanModel,
@@ -10,7 +9,6 @@ import {
   ConstrainedIntegerModel,
   ConstrainedMetaModel,
   ConstrainedObjectModel,
-  ConstrainedObjectPropertyModel,
   ConstrainedReferenceModel,
   ConstrainedStringModel,
   ConstrainedTupleModel,

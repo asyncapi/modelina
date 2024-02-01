@@ -2,7 +2,8 @@ import { GoDefaultConstraints } from '../../../../src/generators/go/GoConstraine
 import { EnumModel } from '../../../../src/models/MetaModel';
 import {
   ConstrainedEnumModel,
-  ConstrainedEnumValueModel
+  ConstrainedEnumValueModel,
+  GoGenerator
 } from '../../../../src';
 import {
   defaultEnumKeyConstraints,
@@ -24,7 +25,8 @@ describe('EnumConstrainer', () => {
       const constrainedKey = GoDefaultConstraints.enumKey({
         enumModel,
         constrainedEnumModel,
-        enumKey: '%'
+        enumKey: '%',
+        options: GoGenerator.defaultOptions
       });
       expect(constrainedKey).toEqual('TestPercent');
     });
@@ -32,7 +34,8 @@ describe('EnumConstrainer', () => {
       const constrainedKey = GoDefaultConstraints.enumKey({
         enumModel,
         constrainedEnumModel,
-        enumKey: '1'
+        enumKey: '1',
+        options: GoGenerator.defaultOptions
       });
       expect(constrainedKey).toEqual('TestNumber_1');
     });
@@ -52,7 +55,8 @@ describe('EnumConstrainer', () => {
       const constrainedKey = GoDefaultConstraints.enumKey({
         enumModel,
         constrainedEnumModel,
-        enumKey: ''
+        enumKey: '',
+        options: GoGenerator.defaultOptions
       });
       expect(constrainedKey).toEqual('TestReservedEmpty');
     });
@@ -60,7 +64,8 @@ describe('EnumConstrainer', () => {
       const constrainedKey = GoDefaultConstraints.enumKey({
         enumModel,
         constrainedEnumModel,
-        enumKey: ''
+        enumKey: '',
+        options: GoGenerator.defaultOptions
       });
       expect(constrainedKey).toEqual('TestEmpty');
     });
@@ -68,7 +73,8 @@ describe('EnumConstrainer', () => {
       const constrainedKey = GoDefaultConstraints.enumKey({
         enumModel,
         constrainedEnumModel,
-        enumKey: 'some weird_value!"#2'
+        enumKey: 'some weird_value!"#2',
+        options: GoGenerator.defaultOptions
       });
       expect(constrainedKey).toEqual(
         'TestSomeSpaceWeirdValueExclamationQuotationHash_2'
@@ -78,7 +84,8 @@ describe('EnumConstrainer', () => {
       const constrainedKey = GoDefaultConstraints.enumKey({
         enumModel,
         constrainedEnumModel,
-        enumKey: 'return'
+        enumKey: 'return',
+        options: GoGenerator.defaultOptions
       });
       expect(constrainedKey).toEqual('TestReservedReturn');
     });
@@ -88,7 +95,8 @@ describe('EnumConstrainer', () => {
       const constrainedValue = GoDefaultConstraints.enumValue({
         enumModel,
         constrainedEnumModel,
-        enumValue: 'string value'
+        enumValue: 'string value',
+        options: GoGenerator.defaultOptions
       });
       expect(constrainedValue).toEqual('"string value"');
     });
@@ -96,7 +104,8 @@ describe('EnumConstrainer', () => {
       const constrainedValue = GoDefaultConstraints.enumValue({
         enumModel,
         constrainedEnumModel,
-        enumValue: true
+        enumValue: true,
+        options: GoGenerator.defaultOptions
       });
       expect(constrainedValue).toEqual('true');
     });
@@ -104,7 +113,8 @@ describe('EnumConstrainer', () => {
       const constrainedValue = GoDefaultConstraints.enumValue({
         enumModel,
         constrainedEnumModel,
-        enumValue: 123
+        enumValue: 123,
+        options: GoGenerator.defaultOptions
       });
       expect(constrainedValue).toEqual(123);
     });
@@ -112,7 +122,8 @@ describe('EnumConstrainer', () => {
       const constrainedValue = GoDefaultConstraints.enumValue({
         enumModel,
         constrainedEnumModel,
-        enumValue: { test: 'test' }
+        enumValue: { test: 'test' },
+        options: GoGenerator.defaultOptions
       });
       expect(constrainedValue).toEqual('{"test":"test"}');
     });
@@ -120,7 +131,8 @@ describe('EnumConstrainer', () => {
       const constrainedValue = GoDefaultConstraints.enumValue({
         enumModel,
         constrainedEnumModel,
-        enumValue: undefined
+        enumValue: undefined,
+        options: GoGenerator.defaultOptions
       });
       expect(constrainedValue).toEqual(undefined);
     });
@@ -131,7 +143,8 @@ describe('EnumConstrainer', () => {
       const value = constrainFunction({
         enumModel,
         constrainedEnumModel,
-        enumKey: 'TEST'
+        enumKey: 'TEST',
+        options: GoGenerator.defaultOptions
       });
       expect(value).toEqual('TestTest');
     });
@@ -146,7 +159,12 @@ describe('EnumConstrainer', () => {
       const constrainFunction = defaultEnumKeyConstraints(
         mockedConstraintCallbacks
       );
-      constrainFunction({ enumModel, constrainedEnumModel, enumKey: '' });
+      constrainFunction({
+        enumModel,
+        constrainedEnumModel,
+        enumKey: '',
+        options: GoGenerator.defaultOptions
+      });
       //Expect all callbacks to be called
       for (const jestMockCallback of Object.values(mockedConstraintCallbacks)) {
         expect(jestMockCallback).toHaveBeenCalled();
@@ -168,7 +186,8 @@ describe('EnumConstrainer', () => {
       const constrainedValue = constrainFunction({
         enumModel,
         constrainedEnumModel,
-        enumKey: ''
+        enumKey: '',
+        options: GoGenerator.defaultOptions
       });
       expect(constrainedValue).toEqual('');
       for (const jestMockCallback of spies) {
