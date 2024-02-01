@@ -1,6 +1,6 @@
-import { ConstantConstraint } from '../../../helpers';
+import { PythonConstantConstraint } from '../PythonGenerator';
 
-export function defaultConstantConstraints(): ConstantConstraint {
+export function defaultConstantConstraints(): PythonConstantConstraint {
   return () => {
     return undefined;
   };

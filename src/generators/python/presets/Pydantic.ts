@@ -1,10 +1,11 @@
+import { ConstrainedUnionModel } from '../../../models';
 import { PythonOptions } from '../PythonGenerator';
 import { ClassPresetType, PythonPreset } from '../PythonPreset';
 
 const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
   async self({ renderer, model }) {
     renderer.dependencyManager.addDependency(
-      'from typing import Optional, Any'
+      'from typing import Optional, Any, Union'
     );
     renderer.dependencyManager.addDependency(
       'from pydantic import BaseModel, Field'
@@ -18,11 +19,24 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
     );
   },
   property(params) {
-    const { propertyName, required, property } = params.property;
-    const type = required ? property.type : `Optional[${property.type}]`;
-    const description = property.originalInput['description'];
-    const alias = description ? `alias='''${description}'''` : '';
-    const defaultValue = required ? '' : 'default=None';
+    let type = params.property.property.type;
+    const propertyName = params.property.propertyName;
+
+    if (params.property.property instanceof ConstrainedUnionModel) {
+      const unionTypes = params.property.property.union.map(
+        (unionModel) => unionModel.type
+      );
+      type = `Union[${unionTypes.join(', ')}]`;
+    }
+
+    if (!params.property.required) {
+      type = `Optional[${type}]`;
+    }
+
+    const alias = params.property.property.originalInput['description']
+      ? `alias='''${params.property.property.originalInput['description']}'''`
+      : '';
+    const defaultValue = params.property.required ? '' : 'default=None';
 
     if (alias && defaultValue) {
       return `${propertyName}: ${type} = Field(${alias}, ${defaultValue})`;

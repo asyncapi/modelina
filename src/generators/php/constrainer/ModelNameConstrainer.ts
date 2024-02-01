@@ -3,8 +3,9 @@ import {
   NO_EMPTY_VALUE,
   NO_RESERVED_KEYWORDS
 } from '../../../helpers/Constraints';
-import { FormatHelpers, ModelNameConstraint } from '../../../helpers';
+import { FormatHelpers } from '../../../helpers';
 import { isReservedPhpKeyword } from '../Constants';
+import { PhpModelNameConstraint } from '../PhpGenerator';
 
 export type ModelNameConstraints = {
   NO_SPECIAL_CHAR: (value: string) => string;
@@ -38,7 +39,7 @@ export const DefaultModelNameConstraints: ModelNameConstraints = {
  */
 export function defaultModelNameConstraints(
   customConstraints?: Partial<ModelNameConstraints>
-): ModelNameConstraint {
+): PhpModelNameConstraint {
   const constraints = { ...DefaultModelNameConstraints, ...customConstraints };
 
   return ({ modelName }) => {

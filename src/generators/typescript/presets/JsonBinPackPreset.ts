@@ -26,9 +26,8 @@ function getInputSchema(originalInput: any): string {
 export const TS_JSONBINPACK_PRESET: TypeScriptPreset = {
   class: {
     async additionalContent({ renderer, content, model }) {
-      renderer.dependencyManager.addTypeScriptDependency(
-        'jsonbinpack',
-        'jsonbinpack'
+      renderer.dependencyManager.addDependency(
+        "const jsonbinpack = require('jsonbinpack')"
       );
 
       const jsonSchema = await alterschema(
@@ -36,9 +35,9 @@ export const TS_JSONBINPACK_PRESET: TypeScriptPreset = {
         getInputSchema(model.originalInput),
         '2020-12'
       );
+      jsonSchema['$schema'] = 'https://json-schema.org/draft/2020-12/schema';
       const json = JSON.stringify(jsonSchema);
-      const packContent = `
-public async jsonbinSerialize(): Promise<Buffer>{
+      const packContent = `public async jsonbinSerialize(): Promise<Buffer>{
   const jsonData = JSON.parse(this.marshal());
   const jsonbinpackEncodedSchema = await jsonbinpack.compileSchema(${json});
   return jsonbinpack.serialize(jsonbinpackEncodedSchema, jsonData);

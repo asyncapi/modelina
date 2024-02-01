@@ -1,5 +1,6 @@
 import { checkForReservedKeyword } from '../../helpers';
 import { isReservedJavaScriptKeyword } from '../javascript/Constants';
+import { TypeScriptOptions } from './TypeScriptGenerator';
 export const RESERVED_TYPESCRIPT_KEYWORDS = [
   'break',
   'case',
@@ -71,13 +72,16 @@ export const RESERVED_TYPESCRIPT_KEYWORDS = [
  */
 export function isReservedTypeScriptKeyword(
   word: string,
-  forceLowerCase = true
+  forceLowerCase = true,
+  options: TypeScriptOptions | undefined
 ): boolean {
-  return (
-    checkForReservedKeyword(
-      word,
-      RESERVED_TYPESCRIPT_KEYWORDS,
-      forceLowerCase
-    ) || isReservedJavaScriptKeyword(word)
+  const isTsReserved = checkForReservedKeyword(
+    word,
+    RESERVED_TYPESCRIPT_KEYWORDS,
+    forceLowerCase
   );
+  const isJsReserved = options?.useJavascriptReservedKeywords
+    ? isReservedJavaScriptKeyword(word)
+    : false;
+  return isTsReserved || isJsReserved;
 }

@@ -1,6 +1,6 @@
-import { ConstantConstraint } from '../../../helpers';
+import { DartConstantConstraint } from '../DartGenerator';
 
-export function defaultConstantConstraints(): ConstantConstraint {
+export function defaultConstantConstraints(): DartConstantConstraint {
   return () => {
     return undefined;
   };

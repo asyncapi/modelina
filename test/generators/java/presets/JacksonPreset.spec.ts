@@ -44,6 +44,33 @@ describe('JAVA_JACKSON_PRESET', () => {
     expect(models[0].dependencies).toEqual(expectedDependencies);
   });
 
+  test('should not render anything when isExtended is true', async () => {
+    const extend = {
+      $id: 'extend',
+      type: 'object',
+      properties: {
+        extendProp: {
+          type: 'string'
+        }
+      }
+    };
+    const extendDoc = {
+      $id: 'extendDoc',
+      allOf: [extend]
+    };
+    const generator = new JavaGenerator({
+      presets: [JAVA_JACKSON_PRESET],
+      processorOptions: {
+        interpreter: {
+          allowInheritance: true
+        }
+      }
+    });
+    const models = await generator.generate(extendDoc);
+    expect(models).toHaveLength(2);
+    expect(models.map((model) => model.result)).toMatchSnapshot();
+  });
+
   describe('union', () => {
     test('handle oneOf with AsyncAPI discriminator with Jackson', async () => {
       const asyncapiDoc = {

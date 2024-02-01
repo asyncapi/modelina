@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
-using com.mycompany.app.generic;
+using com.mycompany.app.json_serializer;
 
-namespace runtime_csharp;
+namespace runtime_csharp.json_serializer;
 
 public class AddressTests
 {
@@ -18,13 +18,16 @@ public class AddressTests
         NestedObject nestedObject = new NestedObject();
         nestedObject.Test = "test";
         address.NestedObject = nestedObject;
-        address.StreetName = "test";
         address.Marriage = true;
         address.Members = 2;
         address.HouseNumber = 1;
         address.ArrayType = new dynamic[] { 1, "test" };
+        address.EnumTest = EnumTest.TEST;
+        address.AdditionalProperties = new Dictionary<string, dynamic>();
+        address.AdditionalProperties.Add("test_not_used", 2);
+
         string actualJsonString = JsonSerializer.Serialize(address);
-        string expectedJsonString = "{\"street_name\":\"test\",\"house_number\":1,\"marriage\":true,\"members\":2,\"array_type\":[1,\"test\"],\"nestedObject\":{\"test\":\"test\"}}";
+        string expectedJsonString = "{\"house_number\":1,\"marriage\":true,\"members\":2,\"array_type\":[1,\"test\"],\"nestedObject\":{\"test\":\"test\"},\"enumTest\":\"test\",\"test_not_used\":2}";
         Assert.That(actualJsonString, Is.EqualTo(expectedJsonString));
     }
 }

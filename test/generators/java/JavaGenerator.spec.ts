@@ -281,6 +281,147 @@ describe('JavaGenerator', () => {
     );
   });
 
+  describe('allowInheritance', () => {
+    test('should create interface for Pet and CloudEvent', async () => {
+      const asyncapiDoc = {
+        asyncapi: '2.5.0',
+        info: {
+          title: 'CloudEvent example',
+          version: '1.0.0'
+        },
+        channels: {
+          pet: {
+            publish: {
+              message: {
+                oneOf: [
+                  {
+                    $ref: '#/components/messages/Dog'
+                  },
+                  {
+                    $ref: '#/components/messages/Cat'
+                  }
+                ]
+              }
+            }
+          }
+        },
+        components: {
+          messages: {
+            Dog: {
+              payload: {
+                title: 'Dog',
+                allOf: [
+                  {
+                    $ref: '#/components/schemas/CloudEvent'
+                  },
+                  {
+                    type: 'object',
+                    properties: {
+                      type: {
+                        const: 'Dog'
+                      },
+                      data: {
+                        type: 'string'
+                      },
+                      test: {
+                        $ref: '#/components/schemas/TestAllOf'
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            Cat: {
+              payload: {
+                title: 'Cat',
+                allOf: [
+                  {
+                    $ref: '#/components/schemas/CloudEvent'
+                  },
+                  {
+                    type: 'object',
+                    properties: {
+                      type: {
+                        const: 'Cat'
+                      },
+                      test: {
+                        $ref: '#/components/schemas/Test'
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          schemas: {
+            CloudEvent: {
+              title: 'CloudEvent',
+              type: 'object',
+              discriminator: 'type',
+              properties: {
+                id: {
+                  type: 'string'
+                },
+                type: {
+                  title: 'CloudEventType',
+                  type: 'string',
+                  description: 'test'
+                },
+                sequencetype: {
+                  title: 'CloudEvent.SequenceType',
+                  type: 'string',
+                  enum: ['Integer']
+                }
+              },
+              required: ['id', 'type']
+            },
+            Test: {
+              title: 'Test',
+              type: 'object',
+              properties: {
+                testProp: {
+                  type: 'string'
+                }
+              }
+            },
+            TestAllOf: {
+              title: 'TestAllOf',
+              allOf: [
+                { $ref: '#/components/schemas/Test' },
+                {
+                  type: 'object',
+                  properties: {
+                    testProp2: {
+                      type: 'string'
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      };
+
+      generator = new JavaGenerator({
+        presets: [
+          JAVA_COMMON_PRESET,
+          JAVA_JACKSON_PRESET,
+          JAVA_DESCRIPTION_PRESET,
+          JAVA_CONSTRAINTS_PRESET
+        ],
+        collectionType: 'List',
+        processorOptions: {
+          interpreter: {
+            allowInheritance: true
+          }
+        }
+      });
+
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+  });
+
   describe('oneOf/discriminator', () => {
     test('should create an interface', async () => {
       const asyncapiDoc = {

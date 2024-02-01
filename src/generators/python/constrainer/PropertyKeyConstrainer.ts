@@ -5,8 +5,9 @@ import {
   NO_EMPTY_VALUE,
   NO_RESERVED_KEYWORDS
 } from '../../../helpers/Constraints';
-import { FormatHelpers, PropertyKeyConstraint } from '../../../helpers';
+import { FormatHelpers } from '../../../helpers';
 import { isReservedPythonKeyword } from '../Constants';
+import { PythonPropertyKeyConstraint } from '../PythonGenerator';
 
 export type PropertyKeyConstraintOptions = {
   NO_SPECIAL_CHAR: (value: string) => string;
@@ -44,7 +45,7 @@ export const DefaultPropertyKeyConstraints: PropertyKeyConstraintOptions = {
  */
 export function defaultPropertyKeyConstraints(
   customConstraints?: Partial<PropertyKeyConstraintOptions>
-): PropertyKeyConstraint {
+): PythonPropertyKeyConstraint {
   const constraints = {
     ...DefaultPropertyKeyConstraints,
     ...customConstraints

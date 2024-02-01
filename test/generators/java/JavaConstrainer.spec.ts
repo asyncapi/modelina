@@ -348,6 +348,19 @@ describe('JavaConstrainer', () => {
       });
       expect(type).toEqual('byte[]');
     });
+    test('should render Duration when format has duration format', () => {
+      const model = new ConstrainedStringModel(
+        'test',
+        {},
+        { format: 'duration' },
+        ''
+      );
+      const type = JavaDefaultTypeMapping.String({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('java.time.Duration');
+    });
   });
   describe('Boolean', () => {
     test('should render type', () => {

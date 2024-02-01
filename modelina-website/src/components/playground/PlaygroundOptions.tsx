@@ -9,6 +9,7 @@ import GoGeneratorOptions from './options/GoGeneratorOptions';
 import JavaGeneratorOptions from './options/JavaGeneratorOptions';
 import KotlinGeneratorOptions from './options/KotlinGeneratorOptions';
 import RustGeneratorOptions from './options/RustGeneratorOptions';
+import ScalaGeneratorOptions from './options/ScalaGeneratorOptions';
 import PythonGeneratorOptions from './options/PythonGeneratorOptions';
 import CplusplusGeneratorOptions from './options/CplusplusGeneratorOptions';
 import PhpGeneratorOptions from './options/PhpGeneratorOptions';
@@ -49,6 +50,9 @@ const PlaygroundOptions: React.FC<PlaygroundOptionsProps> = ({ setNewConfig }) =
         break;
       case 'rust':
         setGeneratorOptions(<RustGeneratorOptions setNewConfig={setNewConfig} />);
+        break;
+      case 'scala':
+        setGeneratorOptions(<ScalaGeneratorOptions setNewConfig={setNewConfig} />);
         break;
       case 'python':
         setGeneratorOptions(<PythonGeneratorOptions setNewConfig={setNewConfig} />);

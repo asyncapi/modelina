@@ -12,6 +12,7 @@ import { getJavaGeneratorCode } from '@/helpers/GeneratorCode/JavaGenerator';
 import { getGoGeneratorCode } from '@/helpers/GeneratorCode/GoGenerator';
 import { getCSharpGeneratorCode } from '@/helpers/GeneratorCode/CSharpGenerator';
 import { getRustGeneratorCode } from '@/helpers/GeneratorCode/RustGenerator';
+import { getScalaGeneratorCode } from '@/helpers/GeneratorCode/ScalaGenerator';
 import { getPythonGeneratorCode } from '@/helpers/GeneratorCode/PythonGenerator';
 import { getDartGeneratorCode } from '@/helpers/GeneratorCode/DartGenerator';
 import { getCplusplusGeneratorCode } from '@/helpers/GeneratorCode/CplusplusGenerator';
@@ -165,6 +166,18 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
     if (query.kotlinPackageName !== undefined) {
       setConfig({ ...config, kotlinPackageName: query.kotlinPackageName });
     }
+    if (query.scalaCollectionType !== undefined) {
+      setConfig({
+        ...config,
+        scalaCollectionType: query.scalaCollectionType as any
+      });
+    }
+    if (query.scalaPackageName !== undefined) {
+      setConfig({
+        ...config,
+        scalaPackageName: query.scalaPackageName as any
+      });
+    }
 
     if (props.router.isReady && !hasLoadedQuery) {
       setHasLoadedQuery(true);
@@ -222,6 +235,7 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
           go: getGoGeneratorCode,
           csharp: getCSharpGeneratorCode,
           rust: getRustGeneratorCode,
+          scala: getScalaGeneratorCode,
           python: getPythonGeneratorCode,
           dart: getDartGeneratorCode,
           cplusplus: getCplusplusGeneratorCode,

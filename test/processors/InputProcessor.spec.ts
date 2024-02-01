@@ -6,8 +6,7 @@ import {
   AsyncAPIInputProcessor,
   JsonSchemaInputProcessor,
   InputProcessor,
-  SwaggerInputProcessor,
-  TypeScriptInputProcessor
+  SwaggerInputProcessor
 } from '../../src/processors';
 import { OpenAPIInputProcessor } from '../../src/processors/OpenAPIInputProcessor';
 
