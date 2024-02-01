@@ -10,6 +10,7 @@ import {
   ModelinaPhpOptions,
   ModelinaPythonOptions,
   ModelinaRustOptions,
+  ModelinaScalaOptions,
   ModelinaTypeScriptOptions
 } from '@/types';
 import { createContext } from 'react';
@@ -24,6 +25,8 @@ export const PlaygroundGoConfigContext =
   createContext<ModelinaGoOptions | null>(null);
 export const PlaygroundRustConfigContext =
   createContext<ModelinaRustOptions | null>(null);
+export const PlaygroundScalaConfigContext =
+  createContext<ModelinaScalaOptions | null>(null);
 export const PlaygroundKotlinConfigContext =
   createContext<ModelinaKotlinOptions | null>(null);
 export const PlaygroundDartConfigContext =

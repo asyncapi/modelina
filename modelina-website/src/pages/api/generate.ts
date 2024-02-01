@@ -13,6 +13,7 @@ import { getDartModels } from '@/pages/api/functions/DartGenerator';
 import { getPythonModels } from '@/pages/api/functions/PythonGenerator';
 import { getRustModels } from '@/pages/api/functions/RustGenerator';
 import { getCSharpModels } from '@/pages/api/functions/CSharpGenerator';
+import { getScalaModels } from './functions/ScalaGenerator';
 import { getCplusplusModels } from './functions/CplusplusGenerator';
 import { getKotlinModels } from './functions/KotlinGenerator';
 import { getPhpModels } from './functions/PhpGenerator';
@@ -36,6 +37,7 @@ export async function generateNewCode(message: GenerateMessage): Promise<UpdateM
     'go': getGoModels,    
     'csharp': getCSharpModels,
     'rust': getRustModels,
+    'scala': getScalaModels,
     'python': getPythonModels,
     'kotlin': getKotlinModels,
     'dart': getDartModels,
