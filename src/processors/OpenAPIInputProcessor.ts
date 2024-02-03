@@ -10,7 +10,7 @@ import { convertToMetaModel } from '../helpers';
  * Class for processing OpenAPI V3.0 inputs
  */
 export class OpenAPIInputProcessor extends AbstractInputProcessor {
-  static supportedVersions = ['3.0.0', '3.0.1', '3.0.2', '3.0.3'];
+  static supportedVersions = ['3.0.0', '3.0.1', '3.0.2', '3.0.3', '3.1.0'];
 
   /**
    * Process the input as a OpenAPI V3.0 document
