@@ -107,7 +107,6 @@ export class OpenapiV3Schema {
   //OpenAPI 3.0 -> 3.1.0 additions
   contentEncoding?: string;
   contentMediaType?: string;
-  
   //Extensions
   [k: string]: any; // eslint-disable-line no-undef
 
