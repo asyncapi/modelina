@@ -2,7 +2,7 @@
 
 exports[`JSON serializer preset should render serialize and deserialize converters 1`] = `
 "[JsonConverter(typeof(TestConverter))]
-public class Test
+public partial class Test
 {
   private string stringProp;
   private double? numberProp;
@@ -196,7 +196,7 @@ public static class EnumTestExtensions
 
 exports[`JSON serializer preset should render serialize and deserialize converters 3`] = `
 "[JsonConverter(typeof(NestedTestConverter))]
-public class NestedTest
+public partial class NestedTest
 {
   private string? stringProp;
   private Dictionary<string, dynamic>? additionalProperties;
