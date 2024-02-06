@@ -838,6 +838,16 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "RowlandBanks",
+      "name": "RowlandBanks",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9962551?v=4",
+      "profile": "https://github.com/RowlandBanks",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
