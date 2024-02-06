@@ -2,7 +2,7 @@
 
 exports[`Should be able to render collections in C# as IEnumerable and should log expected output to console 1`] = `
 Array [
-  "public class Root
+  "public partial class Root
 {
   private IEnumerable<string>? email;
 
