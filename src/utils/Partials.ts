@@ -36,10 +36,11 @@ export function mergePartialAndDefault<T extends Record<string, any>>(
   customOptional?: DeepPartial<T>
 ): T {
   if (customOptional === undefined) {
-    return Object.assign({}, defaultNonOptional);
+    return { ...defaultNonOptional };
   }
+
   // create a new object
-  const target = Object.assign({}, defaultNonOptional) as Record<string, any>;
+  const target = { ...defaultNonOptional } as Record<string, any>;
 
   // deep merge the object into the target object
   for (const [propName, prop] of Object.entries(customOptional)) {
@@ -49,7 +50,6 @@ export function mergePartialAndDefault<T extends Record<string, any>>(
     const isArray = Array.isArray(prop);
     if (isArray) {
       // merge array into target with a new array instance so we dont touch the default value
-      target[propName] = Array(target[propName]);
       for (const [index, value] of prop.entries()) {
         target[propName][index] = value;
       }

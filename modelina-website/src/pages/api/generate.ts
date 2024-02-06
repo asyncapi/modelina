@@ -95,7 +95,6 @@ export async function handler(event: HandlerEvent) {
   if (!event.body) {
     return { statusCode: 405, body: 'Missing body' };
   }
-  console.log('RUNNING____')
   try {
     const message = JSON.parse(event.body) as GenerateMessage;
     const response = await generateNewCode(message);
