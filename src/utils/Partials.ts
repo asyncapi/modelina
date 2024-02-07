@@ -31,6 +31,7 @@ function isClass(obj: any): boolean {
 /**
  * Merge a non optional value with custom optional values to form a full value that has all properties sat.
  */
+// eslint-disable-next-line sonarjs/cognitive-complexity
 export function mergePartialAndDefault<T extends Record<string, any>>(
   defaultNonOptional: T,
   customOptional?: DeepPartial<T>
@@ -49,9 +50,13 @@ export function mergePartialAndDefault<T extends Record<string, any>>(
     const isRegularObject = !isClass(prop);
     const isArray = Array.isArray(prop);
     if (isArray) {
-      // merge array into target with a new array instance so we dont touch the default value
-      for (const [index, value] of prop.entries()) {
-        target[propName][index] = value;
+      if (target[propName] === undefined || target[propName].length === 0) {
+        target[propName] = prop;
+      } else {
+        // merge array into target with a new array instance so we dont touch the default value
+        for (const [index, value] of prop.entries()) {
+          target[propName][index] = value;
+        }
       }
     } else if (isObjectOrClass && isRegularObject) {
       target[propName] = mergePartialAndDefault(target[propName], prop);
