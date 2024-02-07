@@ -12,7 +12,7 @@ generator.generateToFiles(
     path.resolve(
         // eslint-disable-next-line no-undef
         __dirname,
-        "./runtime-python/test/main/"
+        "./runtime-python/src/main/"
     ),
     {}
 );

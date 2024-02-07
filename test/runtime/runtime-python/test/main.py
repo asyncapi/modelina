@@ -1,6 +1,8 @@
 import unittest
-from main.Address import Address
-from main.NestedObject import NestedObject
+import sys
+sys.path.insert(1, '../src/main/')
+from Address import Address
+from NestedObject import NestedObject
 import json
   
 class AddressData:
@@ -16,7 +18,7 @@ data =    {
             'marriage': True,
             'members': 3,
             'arrayType': ['test1', 'test2'],
-            'nestedObject': {'test': 'test'},
+            'nestedObject': {'test': 'test', 'additionalProperties': {'prop': 'value'}},
             'additionalProperties': {'prop': 'value'}
         }
 data_obj = Data(data)       
