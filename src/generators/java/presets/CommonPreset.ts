@@ -194,6 +194,10 @@ function renderUnmarshalling({
 export const JAVA_COMMON_PRESET: JavaPreset<JavaCommonPresetOptions> = {
   class: {
     additionalContent({ renderer, model, content, options }) {
+      if (model.options.isExtended) {
+        return '';
+      }
+
       options = options || {};
       const blocks: string[] = [];
       const shouldContainEqual =

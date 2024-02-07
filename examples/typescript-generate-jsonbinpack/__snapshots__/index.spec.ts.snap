@@ -17,10 +17,9 @@ Array [
   public marshal() : string {
     let json = '{'
     if(this.email !== undefined) {
-      json += \`\\"email\\": \${typeof this.email === 'number' || typeof this.email === 'boolean' ? this.email : JSON.stringify(this.email)},\`; 
+      json += \`\\"email\\": \${typeof this.email === 'number' || typeof this.email === 'boolean' ? this.email : JSON.stringify(this.email)},\`;
     }
-
-
+  
     //Remove potential last comma 
     return \`\${json.charAt(json.length-1) === ',' ? json.slice(0, json.length-1) : json}}\`;
   }
@@ -32,12 +31,10 @@ Array [
     if (obj[\\"email\\"] !== undefined) {
       instance.email = obj[\\"email\\"];
     }
-
-
-
+  
+  
     return instance;
   }
-
   public async jsonbinSerialize(): Promise<Buffer>{
     const jsonData = JSON.parse(this.marshal());
     const jsonbinpackEncodedSchema = await jsonbinpack.compileSchema({\\"$schema\\":\\"https://json-schema.org/draft/2020-12/schema\\",\\"$id\\":\\"Test\\",\\"type\\":\\"object\\",\\"additionalProperties\\":false,\\"properties\\":{\\"email\\":{\\"type\\":\\"string\\",\\"format\\":\\"email\\",\\"x-modelgen-inferred-name\\":\\"email\\"}},\\"x-modelgen-inferred-name\\":\\"root\\"});

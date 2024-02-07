@@ -19,7 +19,11 @@ export const JAVA_JACKSON_PRESET: JavaPreset = {
       renderer.dependencyManager.addDependency(JACKSON_ANNOTATION_DEPENDENCY);
       return content;
     },
-    property({ renderer, property, content }) {
+    property({ renderer, property, content, model }) {
+      if (model.options.isExtended) {
+        return '';
+      }
+
       //Properties that are dictionaries with unwrapped options, cannot get the annotation because it cannot be accurately unwrapped by the jackson library.
       const isDictionary =
         property.property instanceof ConstrainedDictionaryModel;

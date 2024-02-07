@@ -53,9 +53,31 @@ const trySplitModel = (
     (options.splitDictionary === true && model instanceof DictionaryModel);
 
   if (shouldSplit) {
-    if (!models.includes(model)) {
+    let hasModel: boolean = false;
+
+    for (const m of models) {
+      if (m === model) {
+        hasModel = true;
+      }
+
+      // If a model with the same name is not extended somewhere, we have to force both not to be extended
+      if (m.name === model.name) {
+        // if both are extended we can continue
+        if (m.options.isExtended && model.options.isExtended) {
+          continue;
+        }
+
+        if (m.options.isExtended || model.options.isExtended) {
+          m.options.isExtended = false;
+          model.options.isExtended = false;
+        }
+      }
+    }
+
+    if (!hasModel) {
       models.push(model);
     }
+
     return new ReferenceModel(
       model.name,
       model.originalInput,
@@ -94,6 +116,19 @@ export const split = (
         models
       );
       split(propertyModel, options, models, alreadySeenModels);
+    }
+
+    if (model.options.extend?.length) {
+      for (let index = 0; index < model.options.extend.length; index++) {
+        const extendModel = model.options.extend[Number(index)];
+        extendModel.options.isExtended = true;
+        model.options.extend[Number(index)] = trySplitModel(
+          extendModel,
+          options,
+          models
+        );
+        split(extendModel, options, models, alreadySeenModels);
+      }
     }
   } else if (model instanceof UnionModel) {
     for (let index = 0; index < model.union.length; index++) {

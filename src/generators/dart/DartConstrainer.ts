@@ -1,4 +1,3 @@
-import { Constraints } from '../../helpers';
 import {
   defaultEnumKeyConstraints,
   defaultEnumValueConstraints
@@ -71,7 +70,7 @@ export const DartDefaultTypeMapping: DartTypeMapping = {
   }
 };
 
-export const DartDefaultConstraints: Constraints = {
+export const DartDefaultConstraints = {
   enumKey: defaultEnumKeyConstraints(),
   enumValue: defaultEnumValueConstraints(),
   modelName: defaultModelNameConstraints(),

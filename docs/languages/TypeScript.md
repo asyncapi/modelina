@@ -7,6 +7,7 @@ There are special use-cases that each language supports; this document pertains 
 <!-- toc -->
 
 - [Generate an interface instead of classes](#generate-an-interface-instead-of-classes)
+- [Generate different `mapType`s for an `object` type](#generate-different-maptypes-for-an-object)
 - [Generate union types instead of enums](#generate-union-types-instead-of-enums)
 - [Generate serializer and deserializer functionality](#generate-serializer-and-deserializer-functionality)
   * [To and from JSON](#to-and-from-json)
@@ -17,6 +18,7 @@ There are special use-cases that each language supports; this document pertains 
 - [Generate example data function](#generate-example-data-function)
 - [Rendering complete models to a specific module system](#rendering-complete-models-to-a-specific-module-system)
 - [Rendering comments from description and example fields](#rendering-comments-from-description-and-example-fields)
+- [Rendering raw properties for interface](#rendering-raw-properties-for-interface)
 
 <!-- tocstop -->
 
@@ -25,6 +27,29 @@ There are special use-cases that each language supports; this document pertains 
 Sometimes you don't care about classes, but rather have interfaces generated. This can be changed through the [modelType configuration](https://github.com/asyncapi/modelina/blob/master/docs/generators.md#typescript).
 
 Check out this [example out for a live demonstration](../../examples/typescript-interface).
+
+## Generate different `mapType`s for an `object`
+
+Typescript offers different `mapType`s which can simplify the use based on the needs. This behavior can be changed through the [`mapType` configuration](https://github.com/asyncapi/modelina/blob/master/docs/generators.md#typescript).
+
+- Use `map` when you need a dynamic collection of key-value pairs with built-in methods for manipulation.
+- Use `record` when you want to define an object with specific keys and their corresponding value types.
+- Use `indexedObject` (or an interface with index signature) for a more generic approach when working with objects with dynamic keys.
+
+An example of the generated code can be seen below:
+
+```ts
+  // mapType = indexedObject
+  private _person?: { [name: string]: any };
+
+  // mapType = map
+  private _person?: Map<string, any>;
+
+  // mapType = record
+    private _person?: Record<string, any>;
+```
+
+Also, check out this [example for a live demonstration](../../examples/typescript-change-map-type).
 
 ## Generate union types instead of enums
 
@@ -102,3 +127,9 @@ Check out this [example for a live demonstration how to generate the complete Ty
 You can use the `TS_DESCRIPTION_PRESET` to generate JSDoc style comments from description and example fields in your model.
 
 See [this example](../../examples/typescript-generate-comments) for how this can be used.
+
+## Rendering raw properties for interface
+
+You can use the `rawPropertyNames: true` and `modelType: 'interface'` together to generate models that use raw properties.
+
+See [this example](../../examples/typescript-generate-raw-properties) for how this can be used.

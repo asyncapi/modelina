@@ -53,7 +53,7 @@ export const TemplateDefaultTypeMapping: TypeMapping<
   }
 };
 
-export const TemplateDefaultConstraints: Constraints = {
+export const TemplateDefaultConstraints = {
   enumKey: defaultEnumKeyConstraints(),
   enumValue: defaultEnumValueConstraints(),
   modelName: defaultModelNameConstraints(),

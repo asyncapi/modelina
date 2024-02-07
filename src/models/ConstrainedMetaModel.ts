@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { DeepPartial, mergePartialAndDefault } from '../utils';
 import { makeUnique } from '../helpers/DependencyHelpers';
 import {
   MetaModel,
@@ -20,7 +22,16 @@ export class ConstrainedMetaModelOptions extends MetaModelOptions {
   const?: ConstrainedMetaModelOptionsConst;
   discriminator?: ConstrainedMetaModelOptionsDiscriminator;
   parents?: ConstrainedMetaModel[];
+  extend?: ConstrainedMetaModel[];
 }
+
+export interface GetNearestDependenciesArgument {
+  alreadyVisitedNodes: any[];
+}
+
+const defaultGetNearestDependenciesArgument: GetNearestDependenciesArgument = {
+  alreadyVisitedNodes: []
+};
 
 export abstract class ConstrainedMetaModel extends MetaModel {
   public options: ConstrainedMetaModelOptions;
@@ -54,7 +65,9 @@ export abstract class ConstrainedMetaModel extends MetaModel {
    *
    * This is often used when you want to know which other models you are referencing.
    */
-  getNearestDependencies(): ConstrainedMetaModel[] {
+  getNearestDependencies(
+    arg?: DeepPartial<GetNearestDependenciesArgument>
+  ): ConstrainedMetaModel[] {
     return [];
   }
 }
@@ -92,16 +105,25 @@ export class ConstrainedTupleModel extends ConstrainedMetaModel {
     super(name, originalInput, options, type);
   }
 
-  getNearestDependencies(): ConstrainedMetaModel[] {
+  getNearestDependencies(
+    arg?: DeepPartial<GetNearestDependenciesArgument>
+  ): ConstrainedMetaModel[] {
+    const argumentsToUse = mergePartialAndDefault(
+      defaultGetNearestDependenciesArgument,
+      arg
+    ) as GetNearestDependenciesArgument;
+    argumentsToUse.alreadyVisitedNodes.push(this);
     let dependencyModels: ConstrainedMetaModel[] = [];
     for (const tupleModel of Object.values(this.tuple)) {
       if (tupleModel.value instanceof ConstrainedReferenceModel) {
         dependencyModels.push(tupleModel.value);
-      } else {
+      } else if (
+        !argumentsToUse.alreadyVisitedNodes.includes(tupleModel.value)
+      ) {
         //Lets check the non-reference model for dependencies
         dependencyModels = [
           ...dependencyModels,
-          ...tupleModel.value.getNearestDependencies()
+          ...tupleModel.value.getNearestDependencies(argumentsToUse)
         ];
       }
     }
@@ -131,11 +153,20 @@ export class ConstrainedArrayModel extends ConstrainedMetaModel {
     super(name, originalInput, options, type);
   }
 
-  getNearestDependencies(): ConstrainedMetaModel[] {
+  getNearestDependencies(
+    arg?: DeepPartial<GetNearestDependenciesArgument>
+  ): ConstrainedMetaModel[] {
+    const argumentsToUse = mergePartialAndDefault(
+      defaultGetNearestDependenciesArgument,
+      arg
+    ) as GetNearestDependenciesArgument;
+    argumentsToUse.alreadyVisitedNodes.push(this);
     if (this.valueModel instanceof ConstrainedReferenceModel) {
       return [this.valueModel];
+    } else if (!argumentsToUse.alreadyVisitedNodes.includes(this.valueModel)) {
+      return this.valueModel.getNearestDependencies(argumentsToUse);
     }
-    return this.valueModel.getNearestDependencies();
+    return [];
   }
 }
 export class ConstrainedUnionModel extends ConstrainedMetaModel {
@@ -149,16 +180,23 @@ export class ConstrainedUnionModel extends ConstrainedMetaModel {
     super(name, originalInput, options, type);
   }
 
-  getNearestDependencies(): ConstrainedMetaModel[] {
+  getNearestDependencies(
+    arg?: DeepPartial<GetNearestDependenciesArgument>
+  ): ConstrainedMetaModel[] {
+    const argumentsToUse = mergePartialAndDefault(
+      defaultGetNearestDependenciesArgument,
+      arg
+    ) as GetNearestDependenciesArgument;
+    argumentsToUse.alreadyVisitedNodes.push(this);
     let dependencyModels: ConstrainedMetaModel[] = [];
     for (const unionModel of Object.values(this.union)) {
       if (unionModel instanceof ConstrainedReferenceModel) {
         dependencyModels.push(unionModel);
-      } else {
+      } else if (!argumentsToUse.alreadyVisitedNodes.includes(unionModel)) {
         //Lets check the non-reference model for dependencies
         dependencyModels = [
           ...dependencyModels,
-          ...unionModel.getNearestDependencies()
+          ...unionModel.getNearestDependencies(argumentsToUse)
         ];
       }
     }
@@ -200,17 +238,24 @@ export class ConstrainedDictionaryModel extends ConstrainedMetaModel {
     super(name, originalInput, options, type);
   }
 
-  getNearestDependencies(): ConstrainedMetaModel[] {
+  getNearestDependencies(
+    arg?: DeepPartial<GetNearestDependenciesArgument>
+  ): ConstrainedMetaModel[] {
+    const argumentsToUse = mergePartialAndDefault(
+      defaultGetNearestDependenciesArgument,
+      arg
+    ) as GetNearestDependenciesArgument;
+    argumentsToUse.alreadyVisitedNodes.push(this);
     const dependencies = [this.key, this.value];
     let dependencyModels: ConstrainedMetaModel[] = [];
     for (const model of dependencies) {
       if (model instanceof ConstrainedReferenceModel) {
         dependencyModels.push(model);
-      } else {
+      } else if (!argumentsToUse.alreadyVisitedNodes.includes(model)) {
         //Lets check the non-reference model for dependencies
         dependencyModels = [
           ...dependencyModels,
-          ...model.getNearestDependencies()
+          ...model.getNearestDependencies(argumentsToUse)
         ];
       }
     }
@@ -233,16 +278,25 @@ export class ConstrainedObjectModel extends ConstrainedMetaModel {
     super(name, originalInput, options, type);
   }
 
-  getNearestDependencies(): ConstrainedMetaModel[] {
+  getNearestDependencies(
+    arg?: DeepPartial<GetNearestDependenciesArgument>
+  ): ConstrainedMetaModel[] {
+    const argumentsToUse = mergePartialAndDefault(
+      defaultGetNearestDependenciesArgument,
+      arg
+    ) as GetNearestDependenciesArgument;
+    argumentsToUse.alreadyVisitedNodes.push(this);
     let dependencyModels: ConstrainedMetaModel[] = [];
     for (const modelProperty of Object.values(this.properties)) {
       if (modelProperty.property instanceof ConstrainedReferenceModel) {
         dependencyModels.push(modelProperty.property);
-      } else {
+      } else if (
+        !argumentsToUse.alreadyVisitedNodes.includes(modelProperty.property)
+      ) {
         //Lets check the non-reference model for dependencies
         dependencyModels = [
           ...dependencyModels,
-          ...modelProperty.property.getNearestDependencies()
+          ...modelProperty.property.getNearestDependencies(argumentsToUse)
         ];
       }
     }

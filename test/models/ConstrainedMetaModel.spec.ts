@@ -38,7 +38,7 @@ describe('ConstrainedMetaModel', () => {
         originalInput: 'testConst'
       },
       discriminator: {
-        originalInput: 'testDiscriminator'
+        discriminator: 'testDiscriminator'
       }
     });
 
@@ -690,6 +690,44 @@ describe('ConstrainedMetaModel', () => {
       const dependencies = model.getNearestDependencies();
       expect(dependencies).toHaveLength(1);
       expect(dependencies[0]).toEqual(model.union[0]);
+    });
+
+    test('should handle shallow recursive models', () => {
+      const stringModel = new StringModel('', undefined, {});
+      const referenceModel = new ReferenceModel('', undefined, {}, stringModel);
+      const rawModel = new UnionModel('test', undefined, {}, [referenceModel]);
+      rawModel.union.push(rawModel);
+
+      const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
+        metaModel: rawModel,
+        constrainedName: '',
+        options: undefined,
+        dependencyManager: undefined as never
+      }) as ConstrainedUnionModel;
+      const dependencies = model.getNearestDependencies();
+      expect(dependencies).toHaveLength(1);
+      expect(dependencies[0]).toEqual(model.union[0]);
+    });
+
+    test('should handle deep recursive models', () => {
+      const stringModel = new StringModel('', undefined, {});
+      const referenceModel = new ReferenceModel('', undefined, {}, stringModel);
+      const rawModel = new UnionModel('test', undefined, {}, [
+        stringModel,
+        referenceModel
+      ]);
+      rawModel.union.push(rawModel);
+      referenceModel.ref = rawModel;
+
+      const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
+        metaModel: rawModel,
+        constrainedName: '',
+        options: undefined,
+        dependencyManager: undefined as never
+      }) as ConstrainedUnionModel;
+      const dependencies = model.getNearestDependencies();
+      expect(dependencies).toHaveLength(1);
+      expect(dependencies[0]).toEqual(model.union[1]);
     });
 
     test('should not return duplicate dependencies when different reference instances', () => {

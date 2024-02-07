@@ -8,7 +8,6 @@ import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer'
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
 import { defaultConstantConstraints } from './constrainer/ConstantConstrainer';
 import { TypeScriptTypeMapping } from './TypeScriptGenerator';
-import { Constraints } from '../../helpers';
 function applyNullable(model: ConstrainedMetaModel, type: string) {
   if (model.options.isNullable) {
     return `${type} | null`;
@@ -92,7 +91,7 @@ export const TypeScriptDefaultTypeMapping: TypeScriptTypeMapping = {
   }
 };
 
-export const TypeScriptDefaultConstraints: Constraints = {
+export const TypeScriptDefaultConstraints = {
   enumKey: defaultEnumKeyConstraints(),
   enumValue: defaultEnumValueConstraints(),
   modelName: defaultModelNameConstraints(),

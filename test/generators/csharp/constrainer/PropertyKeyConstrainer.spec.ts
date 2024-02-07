@@ -1,5 +1,6 @@
 import { CSharpDefaultConstraints } from '../../../../src/generators/csharp/CSharpConstrainer';
 import {
+  CSharpGenerator,
   ConstrainedObjectModel,
   ConstrainedObjectPropertyModel,
   ObjectModel,
@@ -36,7 +37,8 @@ describe('PropertyKeyConstrainer', () => {
       constrainedObjectModel,
       objectModel,
       objectPropertyModel,
-      constrainedObjectPropertyModel
+      constrainedObjectPropertyModel,
+      options: CSharpGenerator.defaultOptions
     });
   };
 
@@ -99,7 +101,8 @@ describe('PropertyKeyConstrainer', () => {
       constrainedObjectModel,
       objectModel,
       objectPropertyModel: objectPropertyModel2,
-      constrainedObjectPropertyModel: constrainedObjectPropertyModel2
+      constrainedObjectPropertyModel: constrainedObjectPropertyModel2,
+      options: CSharpGenerator.defaultOptions
     });
     expect(constrainedKey).toEqual('reservedReservedReturn');
   });
@@ -135,7 +138,8 @@ describe('PropertyKeyConstrainer', () => {
         constrainedObjectModel,
         objectModel,
         objectPropertyModel,
-        constrainedObjectPropertyModel
+        constrainedObjectPropertyModel,
+        options: CSharpGenerator.defaultOptions
       });
       //Expect all callbacks to be called
       for (const jestMockCallback of Object.values(mockedConstraintCallbacks)) {
@@ -174,7 +178,8 @@ describe('PropertyKeyConstrainer', () => {
         constrainedObjectModel,
         objectModel,
         objectPropertyModel,
-        constrainedObjectPropertyModel
+        constrainedObjectPropertyModel,
+        options: CSharpGenerator.defaultOptions
       });
       expect(constrainedValue).toEqual('');
       expect(jestCallback).toHaveBeenCalled();

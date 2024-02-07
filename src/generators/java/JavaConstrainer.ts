@@ -1,4 +1,3 @@
-import { Constraints } from '../../helpers';
 import {
   ConstrainedEnumValueModel,
   ConstrainedMetaModel,
@@ -178,6 +177,8 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
       case 'dateTime':
       case 'date-time':
         return 'java.time.OffsetDateTime';
+      case 'duration':
+        return 'java.time.Duration';
       case 'binary':
         return 'byte[]';
       default:
@@ -238,7 +239,7 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
   }
 };
 
-export const JavaDefaultConstraints: Constraints = {
+export const JavaDefaultConstraints = {
   enumKey: defaultEnumKeyConstraints(),
   enumValue: defaultEnumValueConstraints(),
   modelName: defaultModelNameConstraints(),

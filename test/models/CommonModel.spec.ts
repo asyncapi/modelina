@@ -277,7 +277,7 @@ describe('CommonModel', () => {
         const doc = {};
         let doc1 = CommonModel.toCommonModel(doc);
         const doc2 = CommonModel.toCommonModel(doc);
-        doc2.extend = ['test'];
+        doc2.extend = [doc1];
         doc1 = CommonModel.mergeCommonModels(doc1, doc2, doc);
         expect(doc1.extend).toEqual(doc2.extend);
       });
@@ -895,7 +895,7 @@ describe('CommonModel', () => {
       extendedModel.$id = 'test';
       const model = new CommonModel();
       model.addExtendedModel(extendedModel);
-      expect(model.extend).toEqual(['test']);
+      expect(model.extend).toEqual([extendedModel]);
     });
     test('should ignore model if it has no $id', () => {
       const extendedModel = new CommonModel();
@@ -909,7 +909,7 @@ describe('CommonModel', () => {
       const model = new CommonModel();
       model.addExtendedModel(extendedModel);
       model.addExtendedModel(extendedModel);
-      expect(model.extend).toEqual(['test']);
+      expect(model.extend).toEqual([extendedModel]);
     });
   });
   describe('setTypes', () => {

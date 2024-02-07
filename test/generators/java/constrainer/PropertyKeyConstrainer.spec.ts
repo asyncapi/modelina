@@ -2,6 +2,7 @@ import { JavaDefaultConstraints } from '../../../../src/generators/java/JavaCons
 import {
   ConstrainedObjectModel,
   ConstrainedObjectPropertyModel,
+  JavaGenerator,
   ObjectModel,
   ObjectPropertyModel
 } from '../../../../src';
@@ -36,7 +37,8 @@ describe('PropertyKeyConstrainer', () => {
       constrainedObjectModel,
       objectModel,
       objectPropertyModel,
-      constrainedObjectPropertyModel
+      constrainedObjectPropertyModel,
+      options: JavaGenerator.defaultOptions
     });
   };
   afterEach(() => {
@@ -98,7 +100,8 @@ describe('PropertyKeyConstrainer', () => {
       constrainedObjectModel,
       objectModel,
       objectPropertyModel: objectPropertyModel2,
-      constrainedObjectPropertyModel: constrainedObjectPropertyModel2
+      constrainedObjectPropertyModel: constrainedObjectPropertyModel2,
+      options: JavaGenerator.defaultOptions
     });
     expect(constrainedKey).toEqual('reservedReservedReturn');
   });
@@ -133,7 +136,8 @@ describe('PropertyKeyConstrainer', () => {
         constrainedObjectModel,
         objectModel,
         objectPropertyModel,
-        constrainedObjectPropertyModel
+        constrainedObjectPropertyModel,
+        options: JavaGenerator.defaultOptions
       });
       //Expect all callbacks to be called
       for (const jestMockCallback of Object.values(mockedConstraintCallbacks)) {
@@ -172,7 +176,8 @@ describe('PropertyKeyConstrainer', () => {
         constrainedObjectModel,
         objectModel,
         objectPropertyModel,
-        constrainedObjectPropertyModel
+        constrainedObjectPropertyModel,
+        options: JavaGenerator.defaultOptions
       });
       expect(constrainedValue).toEqual('');
       expect(jestCallback).toHaveBeenCalled();

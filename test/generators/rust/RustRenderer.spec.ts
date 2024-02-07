@@ -1,7 +1,6 @@
 import { RustGenerator } from '../../../src/generators';
 import { RustRenderer } from '../../../src/generators/rust/RustRenderer';
 import {
-  CommonModel,
   ConstrainedObjectModel,
   ConstrainedEnumModel,
   ConstrainedStringModel,

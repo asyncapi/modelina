@@ -1,6 +1,5 @@
 import { renderValueFromModel } from '../../../../../src/generators/javascript/presets/utils/ExampleFunction';
 import {
-  CommonModel,
   ConstrainedAnyModel,
   ConstrainedArrayModel,
   ConstrainedBooleanModel,

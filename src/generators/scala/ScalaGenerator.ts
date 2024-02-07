@@ -20,8 +20,13 @@ import { EnumRenderer } from './renderers/EnumRenderer';
 import { isReservedScalaKeyword } from './Constants';
 import { Logger } from '../..';
 import {
+  ConstantConstraint,
   constrainMetaModel,
-  Constraints
+  Constraints,
+  EnumKeyConstraint,
+  EnumValueConstraint,
+  ModelNameConstraint,
+  PropertyKeyConstraint
 } from '../../helpers/ConstrainHelpers';
 import {
   ScalaDefaultConstraints,
@@ -30,9 +35,14 @@ import {
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 import { ScalaDependencyManager } from './ScalaDependencyManager';
 
+export type ScalaConstantConstraint = ConstantConstraint<ScalaOptions>;
+export type ScalaEnumKeyConstraint = EnumKeyConstraint<ScalaOptions>;
+export type ScalaEnumValueConstraint = EnumValueConstraint<ScalaOptions>;
+export type ScalaModelNameConstraint = ModelNameConstraint<ScalaOptions>;
+export type ScalaPropertyKeyConstraint = PropertyKeyConstraint<ScalaOptions>;
 export interface ScalaOptions extends CommonGeneratorOptions<ScalaPreset> {
   typeMapping: TypeMapping<ScalaOptions, ScalaDependencyManager>;
-  constraints: Constraints;
+  constraints: Constraints<ScalaOptions>;
   collectionType: 'List' | 'Array';
 }
 

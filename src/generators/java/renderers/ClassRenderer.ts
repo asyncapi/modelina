@@ -3,6 +3,7 @@ import {
   ConstrainedDictionaryModel,
   ConstrainedObjectModel,
   ConstrainedObjectPropertyModel,
+  ConstrainedReferenceModel,
   ConstrainedUnionModel
 } from '../../../models';
 import { FormatHelpers } from '../../../helpers';
@@ -31,15 +32,25 @@ export class ClassRenderer extends JavaRenderer<ConstrainedObjectModel> {
       this.dependencyManager.addDependency('import java.util.Map;');
     }
 
-    const parentUnions = this.getParentUnions();
+    if (this.model.options.isExtended) {
+      return `public interface ${this.model.name} {
+${this.indent(this.renderBlock(content, 2))}
+}`;
+    }
 
-    if (parentUnions) {
-      for (const parentUnion of parentUnions) {
-        this.dependencyManager.addModelDependency(parentUnion);
+    const parentUnions = this.getParentUnions();
+    const extend = this.model.options.extend?.filter(
+      (extend) => extend.options.isExtended
+    );
+    const implement = [...(parentUnions ?? []), ...(extend ?? [])];
+
+    if (implement.length) {
+      for (const i of implement) {
+        this.dependencyManager.addModelDependency(i);
       }
 
-      return `public class ${this.model.name} implements ${parentUnions
-        .map((pu) => pu.name)
+      return `public class ${this.model.name} implements ${implement
+        .map((i) => i.name)
         .join(', ')} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
@@ -121,28 +132,95 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 }
 
+const getOverride = (
+  model: ConstrainedObjectModel,
+  property: ConstrainedObjectPropertyModel
+) => {
+  const isOverride = model.options.extend?.find((extend) => {
+    if (
+      !extend.options.isExtended ||
+      isDiscriminatorOrDictionary(model, property)
+    ) {
+      return false;
+    }
+
+    if (
+      extend instanceof ConstrainedObjectModel &&
+      extend.properties[property.propertyName]
+    ) {
+      return true;
+    }
+
+    if (
+      extend instanceof ConstrainedReferenceModel &&
+      extend.ref instanceof ConstrainedObjectModel &&
+      extend.ref.properties[property.propertyName]
+    ) {
+      return true;
+    }
+  });
+
+  return isOverride ? '@Override\n' : '';
+};
+
+export const isDiscriminatorOrDictionary = (
+  model: ConstrainedObjectModel,
+  property: ConstrainedObjectPropertyModel
+): boolean =>
+  model.options.discriminator?.discriminator ===
+    property.unconstrainedPropertyName ||
+  property.property instanceof ConstrainedDictionaryModel;
+
 export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
-  property({ property }) {
+  property({ property, model }) {
+    if (model.options.isExtended) {
+      return '';
+    }
+
     if (property.property.options.const?.value) {
       return `private final ${property.property.type} ${property.propertyName} = ${property.property.options.const.value};`;
     }
 
     return `private ${property.property.type} ${property.propertyName};`;
   },
-  getter({ property }) {
+  getter({ property, model }) {
     const getterName = `get${FormatHelpers.toPascalCase(
       property.propertyName
     )}`;
-    return `public ${property.property.type} ${getterName}() { return this.${property.propertyName}; }`;
+
+    if (model.options.isExtended) {
+      if (isDiscriminatorOrDictionary(model, property)) {
+        return '';
+      }
+
+      return `public ${property.property.type} ${getterName}();`;
+    }
+
+    return `${getOverride(model, property)}public ${
+      property.property.type
+    } ${getterName}() { return this.${property.propertyName}; }`;
   },
-  setter({ property }) {
+  setter({ property, model }) {
     if (property.property.options.const?.value) {
       return '';
     }
     const setterName = FormatHelpers.toPascalCase(property.propertyName);
-    return `public void set${setterName}(${property.property.type} ${property.propertyName}) { this.${property.propertyName} = ${property.propertyName}; }`;
+
+    if (model.options.isExtended) {
+      if (isDiscriminatorOrDictionary(model, property)) {
+        return '';
+      }
+
+      return `public void set${setterName}(${property.property.type} ${property.propertyName});`;
+    }
+
+    return `${getOverride(model, property)}public void set${setterName}(${
+      property.property.type
+    } ${property.propertyName}) { this.${property.propertyName} = ${
+      property.propertyName
+    }; }`;
   }
 };

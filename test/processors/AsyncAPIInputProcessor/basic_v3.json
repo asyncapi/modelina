@@ -1,0 +1,34 @@
+{
+  "asyncapi": "3.0.0",
+  "defaultContentType": "application/json",
+  "info": {
+    "title": "Signup service example (internal)",
+    "version": "0.1.0"
+  },
+  "channels": {
+    "userSignedUp": {
+      "address": "/user/signedup",
+      "messages": {
+        "userSignUpMessage": {
+          "payload": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "format": "email"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "operations": {
+    "userSignup": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/userSignedUp"
+      }
+    }
+  }
+}

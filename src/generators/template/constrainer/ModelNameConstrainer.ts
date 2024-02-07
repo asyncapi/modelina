@@ -5,6 +5,7 @@ import {
 } from '../../../helpers/Constraints';
 import { FormatHelpers, ModelNameConstraint } from '../../../helpers';
 import { isReservedTemplateKeyword } from '../Constants';
+import { TemplateModelNameConstraint } from '../TemplateGenerator';
 
 export type ModelNameConstraints = {
   NO_SPECIAL_CHAR: (value: string) => string;
@@ -38,7 +39,7 @@ export const DefaultModelNameConstraints: ModelNameConstraints = {
  */
 export function defaultModelNameConstraints(
   customConstraints?: Partial<ModelNameConstraints>
-): ModelNameConstraint {
+): TemplateModelNameConstraint {
   const constraints = { ...DefaultModelNameConstraints, ...customConstraints };
 
   return ({ modelName }) => {
