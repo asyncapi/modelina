@@ -1,5 +1,5 @@
 
-package com.mycompany.app.generic;
+package com.mycompany.app.jackson;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -9,6 +9,8 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
+import com.mycompany.app.jackson.Address;
+import com.mycompany.app.jackson.NestedObject;
 
 /**
  * Unit test for Address.
@@ -33,19 +35,8 @@ public class AddressTest
     {
     	ObjectMapper objectMapper = new ObjectMapper();
     	String json = objectMapper.writeValueAsString(address);
-        assertTrue( json != null );
-		assertTrue(json.length() != 0);
-    }
-
-    @Test
-    public void shouldNotContainAdditionalPropertiesWhenSerialized() throws JsonProcessingException
-    {
-		/**
-		 * additionalProperties should be unwrapped when serialized
-		 */
-    	ObjectMapper objectMapper = new ObjectMapper();
-    	String json = objectMapper.writeValueAsString(address);
-        assertTrue( true );
-        assertThat( json, not(containsString("additionalProperties")));
+		String expectedJson = "{\"street_name\":\"Test address 2\",\"house_number\":2.0,\"marriage\":true,\"members\":2,\"array_type\":[2,\"test\"],\"nestedObject\":{\"test\":\"test\"}}";
+        assertNotNull(json);
+		assertEquals(json, expectedJson);
     }
 }

@@ -1,4 +1,3 @@
-import { Constraints } from '../../helpers';
 import { ConstrainedEnumValueModel } from '../../models';
 import {
   defaultEnumKeyConstraints,
@@ -147,7 +146,7 @@ export const KotlinDefaultTypeMapping: KotlinTypeMapping = {
   }
 };
 
-export const KotlinDefaultConstraints: Constraints = {
+export const KotlinDefaultConstraints = {
   enumKey: defaultEnumKeyConstraints(),
   enumValue: defaultEnumValueConstraints(),
   modelName: defaultModelNameConstraints(),

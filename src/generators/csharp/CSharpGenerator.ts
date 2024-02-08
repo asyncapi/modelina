@@ -19,7 +19,12 @@ import {
   Constraints,
   constrainMetaModel,
   split,
-  SplitOptions
+  SplitOptions,
+  ConstantConstraint,
+  EnumKeyConstraint,
+  EnumValueConstraint,
+  ModelNameConstraint,
+  PropertyKeyConstraint
 } from '../../helpers';
 import { CSharpPreset, CSHARP_DEFAULT_PRESET } from './CSharpPreset';
 import { EnumRenderer } from './renderers/EnumRenderer';
@@ -37,11 +42,16 @@ import { CSharpDependencyManager } from './CSharpDependencyManager';
 export interface CSharpOptions extends CommonGeneratorOptions<CSharpPreset> {
   collectionType: 'List' | 'Array';
   typeMapping: TypeMapping<CSharpOptions, CSharpDependencyManager>;
-  constraints: Constraints;
+  constraints: Constraints<CSharpOptions>;
   autoImplementedProperties: boolean;
   modelType: 'class' | 'record';
   handleNullable: boolean;
 }
+export type CSharpConstantConstraint = ConstantConstraint<CSharpOptions>;
+export type CSharpEnumKeyConstraint = EnumKeyConstraint<CSharpOptions>;
+export type CSharpEnumValueConstraint = EnumValueConstraint<CSharpOptions>;
+export type CSharpModelNameConstraint = ModelNameConstraint<CSharpOptions>;
+export type CSharpPropertyKeyConstraint = PropertyKeyConstraint<CSharpOptions>;
 export type CSharpTypeMapping = TypeMapping<
   CSharpOptions,
   CSharpDependencyManager

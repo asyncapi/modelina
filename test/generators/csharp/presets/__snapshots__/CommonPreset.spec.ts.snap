@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`CSHARP_COMMON_PRESET should render Equals support function 1`] = `
-"public class Test
+"public partial class Test
 {
   private string stringProp;
   private double? numberProp;
@@ -59,7 +59,7 @@ exports[`CSHARP_COMMON_PRESET should render Equals support function 1`] = `
 `;
 
 exports[`CSHARP_COMMON_PRESET should render Equals support function 2`] = `
-"public class NestedTest
+"public partial class NestedTest
 {
   private string? stringProp;
   private Dictionary<string, dynamic>? additionalProperties;
@@ -99,7 +99,7 @@ exports[`CSHARP_COMMON_PRESET should render Equals support function 2`] = `
 `;
 
 exports[`CSHARP_COMMON_PRESET should render GetHashCode support function 1`] = `
-"public class Test
+"public partial class Test
 {
   private string stringProp;
   private double? numberProp;
@@ -143,7 +143,7 @@ exports[`CSHARP_COMMON_PRESET should render GetHashCode support function 1`] = `
 `;
 
 exports[`CSHARP_COMMON_PRESET should render GetHashCode support function 2`] = `
-"public class NestedTest
+"public partial class NestedTest
 {
   private string? stringProp;
   private Dictionary<string, dynamic>? additionalProperties;

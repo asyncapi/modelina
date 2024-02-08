@@ -6,12 +6,12 @@ import {
   NO_EMPTY_VALUE,
   NO_RESERVED_KEYWORDS
 } from '../../../helpers/Constraints';
-import {
-  EnumKeyConstraint,
-  EnumValueConstraint,
-  FormatHelpers
-} from '../../../helpers';
+import { FormatHelpers } from '../../../helpers';
 import { isReservedDartKeyword } from '../Constants';
+import {
+  DartEnumKeyConstraint,
+  DartEnumValueConstraint
+} from '../DartGenerator';
 
 export type ModelEnumKeyConstraints = {
   NO_SPECIAL_CHAR: (value: string) => string;
@@ -45,7 +45,7 @@ export const DefaultEnumKeyConstraints: ModelEnumKeyConstraints = {
 
 export function defaultEnumKeyConstraints(
   customConstraints?: Partial<ModelEnumKeyConstraints>
-): EnumKeyConstraint {
+): DartEnumKeyConstraint {
   const constraints = { ...DefaultEnumKeyConstraints, ...customConstraints };
 
   return ({ enumKey, enumModel, constrainedEnumModel }) => {
@@ -68,7 +68,7 @@ export function defaultEnumKeyConstraints(
   };
 }
 
-export function defaultEnumValueConstraints(): EnumValueConstraint {
+export function defaultEnumValueConstraints(): DartEnumValueConstraint {
   return ({ enumValue }) => {
     let constrainedEnumValue = enumValue;
     switch (typeof enumValue) {

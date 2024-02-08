@@ -7,7 +7,7 @@ import {
 import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer';
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
 import { defaultConstantConstraints } from './constrainer/ConstantConstrainer';
-import { ScalaTypeMapping } from './ScalaGenerator';
+import { ScalaOptions, ScalaTypeMapping } from './ScalaGenerator';
 
 function enumFormatToNumberType(
   enumValueModel: ConstrainedEnumValueModel,
@@ -147,7 +147,7 @@ export const ScalaDefaultTypeMapping: ScalaTypeMapping = {
   }
 };
 
-export const ScalaDefaultConstraints: Constraints = {
+export const ScalaDefaultConstraints: Constraints<ScalaOptions> = {
   enumKey: defaultEnumKeyConstraints(),
   enumValue: defaultEnumValueConstraints(),
   modelName: defaultModelNameConstraints(),

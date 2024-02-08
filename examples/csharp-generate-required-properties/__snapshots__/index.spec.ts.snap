@@ -2,7 +2,7 @@
 
 exports[`Should be able to render required properties without the question mark at the end if the type of it is not nullable and should log expected output to console 1`] = `
 Array [
-  "public class Root
+  "public partial class Root
 {
   private bool requiredBoolean;
   private bool? notRequiredBoolean;

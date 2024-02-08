@@ -4,7 +4,6 @@ import {
   defaultEnumKeyConstraints,
   defaultEnumValueConstraints
 } from './constrainer/EnumConstrainer';
-import { Constraints } from '../../helpers';
 import { JavaScriptTypeMapping } from './JavaScriptGenerator';
 import { defaultConstantConstraints } from './constrainer/ConstantConstrainer';
 
@@ -47,7 +46,7 @@ export const JavaScriptDefaultTypeMapping: JavaScriptTypeMapping = {
   }
 };
 
-export const JavaScriptDefaultConstraints: Constraints = {
+export const JavaScriptDefaultConstraints = {
   enumKey: defaultEnumKeyConstraints(),
   enumValue: defaultEnumValueConstraints(),
   modelName: defaultModelNameConstraints(),

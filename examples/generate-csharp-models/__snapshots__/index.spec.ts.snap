@@ -2,14 +2,35 @@
 
 exports[`Should be able to render C# models and should log expected output to console 1`] = `
 Array [
-  "public class Root
+  "public partial class Root
 {
   private string? email;
+  private System.DateTime? today;
+  private System.TimeSpan? duration;
+  private System.Guid? userId;
 
   public string? Email 
   {
     get { return email; }
     set { email = value; }
+  }
+
+  public System.DateTime? Today 
+  {
+    get { return today; }
+    set { today = value; }
+  }
+
+  public System.TimeSpan? Duration 
+  {
+    get { return duration; }
+    set { duration = value; }
+  }
+
+  public System.Guid? UserId 
+  {
+    get { return userId; }
+    set { userId = value; }
   }
 }",
 ]

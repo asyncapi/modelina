@@ -66,6 +66,10 @@ export async function getTypeScriptModels(
     options.enumType = generatorOptions.tsEnumType as any;
   }
 
+  if (generatorOptions.tsMapType) {
+    options.mapType = generatorOptions.tsMapType as any;
+  }
+  
   if (generatorOptions.showTypeMappingExample) {
     options.typeMapping = {
       Integer: ({ dependencyManager }) => {

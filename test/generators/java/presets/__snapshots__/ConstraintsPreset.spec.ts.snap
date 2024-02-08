@@ -1,5 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`JAVA_CONSTRAINTS_PRESET should not render anything when isExtended is true 1`] = `
+Array [
+  "public class ExtendDoc implements Extend {
+  @NotNull
+  private String extendProp;
+  private Map<String, Object> additionalProperties;
+
+  @Override
+  public String getExtendProp() { return this.extendProp; }
+  @Override
+  public void setExtendProp(String extendProp) { this.extendProp = extendProp; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+  "public interface Extend {
+  public String getExtendProp();
+  public void setExtendProp(String extendProp);
+}",
+]
+`;
+
 exports[`JAVA_CONSTRAINTS_PRESET should render constraints annotations 1`] = `
 "public class Clazz {
   @NotNull

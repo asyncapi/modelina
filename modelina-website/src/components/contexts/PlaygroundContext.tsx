@@ -63,6 +63,7 @@ export const PlaygroundContextProvider: React.FC<{ children: React.ReactNode; }>
     tsMarshalling: false,
     tsModelType: 'class',
     tsEnumType: 'enum',
+    tsMapType: 'map',
     tsModuleSystem: 'CJS',
     tsIncludeDescriptions: false,
     tsIncludeExampleFunction: false,
@@ -87,6 +88,8 @@ export const PlaygroundContextProvider: React.FC<{ children: React.ReactNode; }>
     javaOverwriteToString: false,
     javaJavaDocs: false,
     javaJavaxAnnotation: false,
+    scalaCollectionType: 'Array',
+    scalaPackageName: 'asyncapi.models',
     goPackageName: 'asyncapi.models',
     kotlinPackageName: 'asyncapi.models'
   };

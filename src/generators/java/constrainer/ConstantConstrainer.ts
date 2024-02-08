@@ -5,8 +5,8 @@ import {
   ConstrainedReferenceModel,
   ConstrainedStringModel
 } from '../../../models';
-import { ConstantConstraint } from '../../../helpers';
 import { JavaRenderer } from '../JavaRenderer';
+import { JavaConstantConstraint } from '../JavaGenerator';
 
 const getConstrainedEnumModelConstant = (args: {
   constrainedMetaModel: ConstrainedMetaModel;
@@ -22,7 +22,7 @@ const getConstrainedEnumModelConstant = (args: {
   }
 };
 
-export function defaultConstantConstraints(): ConstantConstraint {
+export function defaultConstantConstraints(): JavaConstantConstraint {
   return ({ constrainedMetaModel }) => {
     const constOptions = constrainedMetaModel.options.const;
 

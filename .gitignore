@@ -10,3 +10,5 @@ java_runtime_node
 *.log
 # Local Netlify folder
 .netlify
+.metals
+.scala-build

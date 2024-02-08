@@ -6,12 +6,12 @@ import {
   NO_EMPTY_VALUE,
   NO_RESERVED_KEYWORDS
 } from '../../../helpers/Constraints';
-import {
-  FormatHelpers,
-  EnumKeyConstraint,
-  EnumValueConstraint
-} from '../../../helpers';
+import { FormatHelpers } from '../../../helpers';
 import { isReservedCplusplusKeyword } from '../Constants';
+import {
+  CplusplusEnumKeyConstraint,
+  CplusplusEnumValueConstraint
+} from '../CplusplusGenerator';
 
 export type ModelEnumKeyConstraints = {
   NO_SPECIAL_CHAR: (value: string) => string;
@@ -50,7 +50,7 @@ export const DefaultEnumKeyConstraints: ModelEnumKeyConstraints = {
  */
 export function defaultEnumKeyConstraints(
   customConstraints?: Partial<ModelEnumKeyConstraints>
-): EnumKeyConstraint {
+): CplusplusEnumKeyConstraint {
   const constraints = { ...DefaultEnumKeyConstraints, ...customConstraints };
 
   return ({ enumKey, enumModel, constrainedEnumModel }) => {
@@ -76,7 +76,7 @@ export function defaultEnumKeyConstraints(
 /**
  * Convert the enum value to a value that is compatible with Cplusplus
  */
-export function defaultEnumValueConstraints(): EnumValueConstraint {
+export function defaultEnumValueConstraints(): CplusplusEnumValueConstraint {
   return ({ enumValue }) => {
     let constrainedEnumValue;
     switch (typeof enumValue) {

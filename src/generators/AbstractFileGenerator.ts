@@ -7,7 +7,7 @@ export type FileGenerator = (content: string, toFile: string) => Promise<void>;
  */
 export interface AbstractFileGenerator<RenderCompleteModelOptions> {
   generateToFiles(
-    input: Record<string, unknown> | InputMetaModel,
+    input: any | InputMetaModel,
     outputDirectory: string,
     options: RenderCompleteModelOptions
   ): Promise<OutputModel[]>;

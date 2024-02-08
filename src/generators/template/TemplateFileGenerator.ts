@@ -16,7 +16,7 @@ export class TemplateFileGenerator
    * @param options
    */
   public async generateToFiles(
-    input: Record<string, unknown> | InputMetaModel,
+    input: any | InputMetaModel,
     outputDirectory: string,
     options?: TemplateRenderCompleteModelOptions,
     ensureFilesWritten = false
