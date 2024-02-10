@@ -1,11 +1,29 @@
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { InputMetaModel } from '../models';
 import { Logger } from '../utils';
-import { convertToMetaModel } from '../helpers';
+import { AvroToMetaModel } from '../helpers/AvroToMetaModel';
 
 /**
  * Class for processing Avro Schema input
  */
+
+const avroType = [
+  'null',
+  'boolean',
+  'int',
+  'long',
+  'double',
+  'float',
+  'string',
+  'bytes',
+  'records',
+  'enums',
+  'arrays',
+  'maps',
+  'unions',
+  'fixed'
+];
+
 export class AvroSchemaInputProcessor extends AbstractInputProcessor {
   /**
    * Function processing an Avro Schema input
@@ -21,7 +39,7 @@ export class AvroSchemaInputProcessor extends AbstractInputProcessor {
     ) {
       return false;
     }
-    if (!input.type) {
+    if (!avroType.includes(input.type) || !input.name) {
       return false;
     }
     return true;
@@ -36,7 +54,7 @@ export class AvroSchemaInputProcessor extends AbstractInputProcessor {
     Logger.debug('Processing input as Avro Schema document');
     const inputModel = new InputMetaModel();
     inputModel.originalInput = input;
-    const metaModel = convertToMetaModel(input);
+    const metaModel = AvroToMetaModel(input);
     inputModel.models[metaModel.name] = metaModel;
     Logger.debug('Completed processing input as Avro Schema document');
 

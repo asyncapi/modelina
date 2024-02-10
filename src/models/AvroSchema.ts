@@ -2,26 +2,22 @@
  * Avro Schema model
  */
 
-// clear unknown to make code more robust
-
-export interface AvroField {
-  name?: string;
-  doc?: string;
-  type?: unknown;
-  default?: unknown;
-}
-
 export class AvroSchema {
-  type?: string | string[] | object;
+  type?: string | string[];
   name?: string;
   namespace?: string;
+  originalInput?: any;
+  const?: string;
+  discriminator?: string;
+  format?: string;
+  required?: string[];
+  extend?: AvroSchema[];
   doc?: string;
   aliases?: string[];
   symbols?: string[];
   items?: unknown;
   values?: unknown;
-  fields?: AvroField[];
-  order?: 'ascending' | 'descending' | 'ignore';
+  fields?: AvroSchema[];
   size?: number;
   example?: string | number;
   minimum?: number;
@@ -83,5 +79,18 @@ export class AvroSchema {
       (schema as any)[String(propName)] = copyProp;
     }
     return schema;
+  }
+
+  /**
+   * Checks if given property name is required in object
+   *
+   * @param propertyName given property name
+   * @returns {boolean}
+   */
+  isRequired(propertyName: any): boolean {
+    if (this.required === undefined) {
+      return false;
+    }
+    return this.required.includes(propertyName);
   }
 }
