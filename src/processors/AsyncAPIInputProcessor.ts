@@ -18,7 +18,10 @@ import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
 import { convertToMetaModel } from '../helpers';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
-import { ConvertDocumentParserAPIVersion, NewParser } from '@smoya/multi-parser';
+import {
+  ConvertDocumentParserAPIVersion,
+  NewParser
+} from '@smoya/multi-parser';
 import { createDetailedAsyncAPI } from '@asyncapi/parser/cjs/utils';
 
 /**
@@ -97,7 +100,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       throw new Error('Could not parse input as AsyncAPI document');
     }
 
-    inputModel.originalInput = doc.json();
+    inputModel.originalInput = doc;
 
     const addToInputModel = (payload: AsyncAPISchemaInterface) => {
       const schema = AsyncAPIInputProcessor.convertToInternalSchema(payload);

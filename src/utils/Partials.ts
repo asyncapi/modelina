@@ -36,34 +36,32 @@ export function mergePartialAndDefault<T extends Record<string, any>>(
   defaultNonOptional: T,
   customOptional?: DeepPartial<T>
 ): T {
-  if (customOptional === undefined) {
+  if (!customOptional) {
     return { ...defaultNonOptional };
   }
 
-  // create a new object
-  const target = { ...defaultNonOptional } as Record<string, any>;
-
-  // deep merge the object into the target object
-  for (const [propName, prop] of Object.entries(customOptional)) {
+  const mergeProps = (targetObj: any, newValue: any) => {
     const isObjectOrClass =
-      typeof prop === 'object' && target[propName] !== undefined;
-    const isRegularObject = !isClass(prop);
-    const isArray = Array.isArray(prop);
+      typeof newValue === 'object' && targetObj !== undefined;
+    const isRegularObject = !isClass(newValue);
+    const isArray = Array.isArray(newValue);
+
     if (isArray) {
-      if (target[propName] === undefined || target[propName].length === 0) {
-        target[propName] = prop;
-      } else {
-        // merge array into target with a new array instance so we dont touch the default value
-        for (const [index, value] of prop.entries()) {
-          target[propName][index] = value;
-        }
-      }
+      targetObj = targetObj ? [...targetObj, ...newValue] : [...newValue];
     } else if (isObjectOrClass && isRegularObject) {
-      target[propName] = mergePartialAndDefault(target[propName], prop);
-    } else if (prop) {
-      target[propName] = prop;
+      targetObj = mergePartialAndDefault(targetObj, newValue);
+    } else if (newValue !== undefined) {
+      targetObj = newValue;
+    }
+    return targetObj;
+  };
+
+  const merged: Record<string, any> = { ...defaultNonOptional };
+  for (const [propName, prop] of Object.entries(customOptional)) {
+    if (prop !== undefined) {
+      merged[propName] = mergeProps(merged[propName], prop);
     }
   }
 
-  return target as T;
+  return merged as T;
 }
