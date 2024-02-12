@@ -77,7 +77,20 @@ export class FormatHelpers {
    * @param {string} value to transform
    * @returns {string}
    */
-  static toCamelCase = camelCase;
+  static toCamelCase(renderName: string): string {
+    const splt = renderName.split(/([0-9]_)/g);
+    if (splt.length > 1) {
+      return splt
+        .map((part) => {
+          if (part.match(/[0-9]_/g)) {
+            return part;
+          }
+          return camelCase(part);
+        })
+        .join('');
+    }
+    return camelCase(renderName);
+  }
 
   /**
    * Transform into a string of capitalized words without separators.
