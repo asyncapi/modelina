@@ -7,7 +7,7 @@ There are special use-cases that each language supports; this document pertains 
 <!-- toc -->
 
 - [Generate an interface instead of classes](#generate-an-interface-instead-of-classes)
-- [Generate different `mapType`s for an `object` type](#generate-different-maptypes-for-an-object)
+- [Generate different `mapType`s for an `object`](#generate-different-maptypes-for-an-object)
 - [Generate union types instead of enums](#generate-union-types-instead-of-enums)
 - [Generate serializer and deserializer functionality](#generate-serializer-and-deserializer-functionality)
   * [To and from JSON](#to-and-from-json)
