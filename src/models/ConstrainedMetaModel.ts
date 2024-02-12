@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { DeepPartial, mergePartialAndDefault } from '../utils';
+import { DeepPartial } from '../utils';
 import { makeUnique } from '../helpers/DependencyHelpers';
 import {
   MetaModel,
@@ -108,10 +108,10 @@ export class ConstrainedTupleModel extends ConstrainedMetaModel {
   getNearestDependencies(
     arg?: DeepPartial<GetNearestDependenciesArgument>
   ): ConstrainedMetaModel[] {
-    const argumentsToUse = mergePartialAndDefault(
-      defaultGetNearestDependenciesArgument,
-      arg
-    ) as GetNearestDependenciesArgument;
+    const argumentsToUse = {
+      ...defaultGetNearestDependenciesArgument,
+      ...arg
+    };
     argumentsToUse.alreadyVisitedNodes.push(this);
     let dependencyModels: ConstrainedMetaModel[] = [];
     for (const tupleModel of Object.values(this.tuple)) {
@@ -156,10 +156,10 @@ export class ConstrainedArrayModel extends ConstrainedMetaModel {
   getNearestDependencies(
     arg?: DeepPartial<GetNearestDependenciesArgument>
   ): ConstrainedMetaModel[] {
-    const argumentsToUse = mergePartialAndDefault(
-      defaultGetNearestDependenciesArgument,
-      arg
-    ) as GetNearestDependenciesArgument;
+    const argumentsToUse = {
+      ...defaultGetNearestDependenciesArgument,
+      ...arg
+    };
     argumentsToUse.alreadyVisitedNodes.push(this);
     if (this.valueModel instanceof ConstrainedReferenceModel) {
       return [this.valueModel];
@@ -183,10 +183,10 @@ export class ConstrainedUnionModel extends ConstrainedMetaModel {
   getNearestDependencies(
     arg?: DeepPartial<GetNearestDependenciesArgument>
   ): ConstrainedMetaModel[] {
-    const argumentsToUse = mergePartialAndDefault(
-      defaultGetNearestDependenciesArgument,
-      arg
-    ) as GetNearestDependenciesArgument;
+    const argumentsToUse = {
+      ...defaultGetNearestDependenciesArgument,
+      ...arg
+    };
     argumentsToUse.alreadyVisitedNodes.push(this);
     let dependencyModels: ConstrainedMetaModel[] = [];
     for (const unionModel of Object.values(this.union)) {
@@ -241,10 +241,10 @@ export class ConstrainedDictionaryModel extends ConstrainedMetaModel {
   getNearestDependencies(
     arg?: DeepPartial<GetNearestDependenciesArgument>
   ): ConstrainedMetaModel[] {
-    const argumentsToUse = mergePartialAndDefault(
-      defaultGetNearestDependenciesArgument,
-      arg
-    ) as GetNearestDependenciesArgument;
+    const argumentsToUse = {
+      ...defaultGetNearestDependenciesArgument,
+      ...arg
+    };
     argumentsToUse.alreadyVisitedNodes.push(this);
     const dependencies = [this.key, this.value];
     let dependencyModels: ConstrainedMetaModel[] = [];
@@ -281,10 +281,10 @@ export class ConstrainedObjectModel extends ConstrainedMetaModel {
   getNearestDependencies(
     arg?: DeepPartial<GetNearestDependenciesArgument>
   ): ConstrainedMetaModel[] {
-    const argumentsToUse = mergePartialAndDefault(
-      defaultGetNearestDependenciesArgument,
-      arg
-    ) as GetNearestDependenciesArgument;
+    const argumentsToUse = {
+      ...defaultGetNearestDependenciesArgument,
+      ...arg
+    };
     argumentsToUse.alreadyVisitedNodes.push(this);
     let dependencyModels: ConstrainedMetaModel[] = [];
     for (const modelProperty of Object.values(this.properties)) {
