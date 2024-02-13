@@ -846,7 +846,8 @@
       "profile": "https://github.com/RowlandBanks",
       "contributions": [
         "code",
-        "test"
+        "test",
+        "bug"
       ]
     }
   ],
