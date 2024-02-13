@@ -50,6 +50,10 @@
     },
     "houseType": {
       "$ref": "#/$defs/housing-types"
+    },
+    "roofType": {
+      "$id": "TypeOfRoof",
+      "enum": ["tile", "straw", "wood", "metal"]
     }
   },
   "patternProperties": {
