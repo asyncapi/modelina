@@ -47,6 +47,9 @@
     },
     "enumTest": {
       "enum": ["test", "test2"]
+    },
+    "houseType": {
+      "$ref": "#/$defs/housing-types"
     }
   },
   "patternProperties": {
@@ -57,5 +60,11 @@
   "required": [
     "house_number",
     "array_type"
-  ]
+  ],
+  "$defs": {
+    "housing-types": {
+      "$id": "HousingType",
+      "enum": ["detached", "terraced", "bungalow", "flat"]
+    }
+  }
 }

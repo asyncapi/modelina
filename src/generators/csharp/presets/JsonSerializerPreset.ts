@@ -20,7 +20,7 @@ function renderSerializeProperty(
     model.property instanceof ConstrainedReferenceModel &&
     model.property.ref instanceof ConstrainedEnumModel
   ) {
-    value = `value.${model.property.type}.GetValue()`;
+    value = `${modelInstanceVariable}?.GetValue()`;
   }
   return `JsonSerializer.Serialize(writer, ${value}, options);`;
 }
