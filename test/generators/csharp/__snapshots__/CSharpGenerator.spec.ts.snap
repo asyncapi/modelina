@@ -41,7 +41,6 @@ exports[`CSharpGenerator class renderer should generate a const string 1`] = `
   public string Property 
   {
     get { return property; }
-    set { property = value; }
   }
 
   public Dictionary<string, string>? AdditionalProperties 

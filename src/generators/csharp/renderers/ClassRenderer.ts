@@ -138,6 +138,13 @@ export const CSHARP_DEFAULT_CLASS_PRESET: CsharpClassPreset<CSharpOptions> = {
       return '';
     }
 
+    if (property.property.options.const) {
+      return `public ${property.property.type} ${formattedAccessorName} 
+{
+  ${await renderer.runGetterPreset(property)}
+}`;
+    }
+
     return `public ${property.property.type} ${formattedAccessorName} 
 {
   ${await renderer.runGetterPreset(property)}
