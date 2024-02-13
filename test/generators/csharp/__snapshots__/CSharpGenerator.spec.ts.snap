@@ -32,6 +32,34 @@ exports[`CSharpGenerator class renderer should be able to overwrite property pre
 }"
 `;
 
+exports[`CSharpGenerator class renderer should generate a const string 1`] = `
+"public partial class CustomClass
+{
+  private const string property = \\"test\\";
+  private Dictionary<string, string>? additionalProperties;
+
+  public string Property 
+  {
+    get { return property; }
+    set { property = value; }
+  }
+
+  public Dictionary<string, string>? AdditionalProperties 
+  {
+    get { return additionalProperties; }
+    set { additionalProperties = value; }
+  }
+}"
+`;
+
+exports[`CSharpGenerator should generate a const string in record 1`] = `
+"public partial record Address
+{
+  public const string Property = \\"test\\";
+  public Dictionary<string, string>? AdditionalProperties { get; init; }
+}"
+`;
+
 exports[`CSharpGenerator should render \`class\` type 1`] = `
 "public partial class Address
 {
