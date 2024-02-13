@@ -1,6 +1,6 @@
 {
   "name": "@asyncapi/modelina",
-  "version": "3.0.0-next.15",
+  "version": "4.0.0-next.1",
   "description": "Library for generating data models based on inputs such as AsyncAPI, OpenAPI, or JSON Schema documents",
   "license": "Apache-2.0",
   "homepage": "https://www.modelina.org",
@@ -37,8 +37,8 @@
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^11.1.0",
     "@apidevtools/swagger-parser": "^10.0.3",
-    "@asyncapi/parser": "3.0.0-next-major-spec.8",
-    "@smoya/multi-parser": "^4.0.0",
+    "@asyncapi/parser": "^3.0.5",
+    "@smoya/multi-parser": "^5.0.1",
     "@swc/core": "^1.3.5",
     "@swc/jest": "^0.2.23",
     "@types/node": "^20.3.3",

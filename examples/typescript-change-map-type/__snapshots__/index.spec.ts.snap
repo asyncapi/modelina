@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render correct map type based on options and should log expected output to console 1`] = `
+"// Generator output as indexedObject
+class Root {
+  private _person?: { [name: string]: any };
+
+  constructor(input: {
+    person?: { [name: string]: any },
+  }) {
+    this._person = input.person;
+  }
+
+  get person(): { [name: string]: any } | undefined { return this._person; }
+  set person(person: { [name: string]: any } | undefined) { this._person = person; }
+}
+// Generator output as Map
+class Root {
+  private _person?: Map<string, any>;
+
+  constructor(input: {
+    person?: Map<string, any>,
+  }) {
+    this._person = input.person;
+  }
+
+  get person(): Map<string, any> | undefined { return this._person; }
+  set person(person: Map<string, any> | undefined) { this._person = person; }
+}
+// Generator output as Record
+class Root {
+  private _person?: Record<string, any>;
+
+  constructor(input: {
+    person?: Record<string, any>,
+  }) {
+    this._person = input.person;
+  }
+
+  get person(): Record<string, any> | undefined { return this._person; }
+  set person(person: Record<string, any> | undefined) { this._person = person; }
+}"
+`;

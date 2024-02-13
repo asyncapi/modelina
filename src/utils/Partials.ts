@@ -49,10 +49,7 @@ export function mergePartialAndDefault<T extends Record<string, any>>(
     const isArray = Array.isArray(prop);
     if (isArray) {
       // merge array into target with a new array instance so we dont touch the default value
-      target[propName] = Array(target[propName]);
-      for (const [index, value] of prop.entries()) {
-        target[propName][index] = value;
-      }
+      target[propName] = [...(target[propName] ?? []), ...(prop ?? [])];
     } else if (isObjectOrClass && isRegularObject) {
       target[propName] = mergePartialAndDefault(target[propName], prop);
     } else if (prop) {
