@@ -423,7 +423,7 @@ Thanks go out to these wonderful people ([emoji key](https://allcontributors.org
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/ankur0904"><img src="https://avatars.githubusercontent.com/u/98346896?v=4?s=100" width="100px;" alt="Ankur Singh"/><br /><sub><b>Ankur Singh</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=ankur0904" title="Documentation">📖</a></td>
     </tr>
     <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/RowlandBanks"><img src="https://avatars.githubusercontent.com/u/9962551?v=4?s=100" width="100px;" alt="RowlandBanks"/><br /><sub><b>RowlandBanks</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=RowlandBanks" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=RowlandBanks" title="Tests">⚠️</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/RowlandBanks"><img src="https://avatars.githubusercontent.com/u/9962551?v=4?s=100" width="100px;" alt="RowlandBanks"/><br /><sub><b>RowlandBanks</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=RowlandBanks" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=RowlandBanks" title="Tests">⚠️</a> <a href="https://github.com/asyncapi/modelina/issues?q=author%3ARowlandBanks" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
 </table>
