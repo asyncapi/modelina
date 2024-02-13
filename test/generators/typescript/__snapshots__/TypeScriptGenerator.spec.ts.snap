@@ -550,7 +550,8 @@ exports[`TypeScriptGenerator should render \`enum\` type 1`] = `
 exports[`TypeScriptGenerator should render \`enum\` type as \`union\` if option enumType = \`union\` 1`] = `"type States = \\"Texas\\" | \\"Alabama\\" | \\"California\\";"`;
 
 exports[`TypeScriptGenerator should render \`interface\` type 1`] = `
-"interface Address {
+"
+interface Address {
   streetName: string;
   city: string;
   state: string;
@@ -561,7 +562,8 @@ exports[`TypeScriptGenerator should render \`interface\` type 1`] = `
   tupleTypeWithAdditionalItems?: (string | number | any)[];
   arrayType: string[];
   additionalProperties?: Map<string, any | string>;
-}"
+}
+export type { Address };"
 `;
 
 exports[`TypeScriptGenerator should render \`type\` type - array of primitive type 1`] = `"type TypeArray = string[];"`;
