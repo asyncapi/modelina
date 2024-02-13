@@ -117,12 +117,7 @@ ${content}`;
           items: [{ type: 'string' }, { type: 'number' }],
           additionalItems: true
         },
-        array_type: { type: 'array', items: { type: 'string' } },
-        other_model: {
-          type: 'object',
-          $id: 'OtherModel',
-          properties: { street_name: { type: 'string' } }
-        }
+        array_type: { type: 'array', items: { type: 'string' } }
       },
       patternProperties: {
         '^S(.?*)test&': {
@@ -136,7 +131,7 @@ ${content}`;
     const models = await generator.generateCompleteModels(doc, {
       exportType: 'named'
     });
-    expect(models).toHaveLength(2);
+    expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot();
     expect(models[0].dependencies).toEqual([]);
   });

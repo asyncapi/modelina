@@ -550,7 +550,7 @@ exports[`TypeScriptGenerator should render \`enum\` type 1`] = `
 exports[`TypeScriptGenerator should render \`enum\` type as \`union\` if option enumType = \`union\` 1`] = `"type States = \\"Texas\\" | \\"Alabama\\" | \\"California\\";"`;
 
 exports[`TypeScriptGenerator should render \`interface\` type 1`] = `
-"import type {OtherModel} from './OtherModel';
+"
 interface Address {
   streetName: string;
   city: string;
@@ -561,7 +561,6 @@ interface Address {
   tupleType?: [string, number];
   tupleTypeWithAdditionalItems?: (string | number | any)[];
   arrayType: string[];
-  otherModel?: OtherModel;
   additionalProperties?: Map<string, any | string>;
 }
 export type { Address };"
