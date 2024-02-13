@@ -70,6 +70,7 @@ Below is a list of additional options available for a given generator.
 | Option | Type | Description | Default value |
 |---|---|---|---|
 | `renderTypes` | Boolean | Render signature for types. | `true` |
+| `mapType` | String |  It indicates which mapping type should be rendered for the `object` type. Its value can be one of `map`, `record` or `indexedObject`. | `map` |
 | `modelType` | String | It indicates which model type should be rendered for the `object` type. Its value can be either `interface` or `class`. | `class` |
 | `enumType` | String | It indicates which type should be rendered for the `enum` type. Its value can be either `union` or `enum`. | `enum` |
 | `namingConvention` | Object | Options for naming conventions. | - |
