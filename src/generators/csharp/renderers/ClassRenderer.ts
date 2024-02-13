@@ -115,10 +115,20 @@ export const CSHARP_DEFAULT_CLASS_PRESET: CsharpClassPreset<CSharpOptions> = {
       const getter = await renderer.runGetterPreset(property);
       const setter = await renderer.runSetterPreset(property);
 
+      if (property.property.options.const) {
+        return `public const ${property.property.type} ${pascalCase(
+          property.propertyName
+        )} { ${getter} } = ${property.property.options.const.value};`;
+      }
+
       const semiColon = nullablePropertyEnding !== '' ? ';' : '';
       return `public ${property.property.type} ${pascalCase(
         property.propertyName
       )} { ${getter} ${setter} }${nullablePropertyEnding}${semiColon}`;
+    }
+
+    if (property.property.options.const) {
+      return `private const ${property.property.type} ${property.propertyName} = ${property.property.options.const.value};`;
     }
     return `private ${property.property.type} ${property.propertyName}${nullablePropertyEnding};`;
   },
