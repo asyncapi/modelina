@@ -8,6 +8,7 @@ import {
   PlaygroundJavaScriptConfigContext,
   PlaygroundKotlinConfigContext,
   PlaygroundPythonConfigContext,
+  PlaygroundScalaConfigContext,
   PlaygroundRustConfigContext,
   PlaygroundCplusplusConfigContext,
   PlaygroundGeneralConfigContext,
@@ -35,9 +36,11 @@ export const OptionsNavigation: React.FunctionComponent<OptionsNavigationProps> 
                       <PlaygroundCplusplusConfigContext.Provider value={config}>
                         <PlaygroundKotlinConfigContext.Provider value={config}>
                           <PlaygroundRustConfigContext.Provider value={config}>
-                            <PlaygroundPythonConfigContext.Provider value={config}>
-                              <PlaygroundOptions setNewConfig={setNewConfig} />
-                            </PlaygroundPythonConfigContext.Provider>
+                            <PlaygroundScalaConfigContext.Provider value={config}>
+                              <PlaygroundPythonConfigContext.Provider value={config}>
+                                <PlaygroundOptions setNewConfig={setNewConfig} />
+                              </PlaygroundPythonConfigContext.Provider>
+                            </PlaygroundScalaConfigContext.Provider>
                           </PlaygroundRustConfigContext.Provider>
                         </PlaygroundKotlinConfigContext.Provider>
                       </PlaygroundCplusplusConfigContext.Provider>

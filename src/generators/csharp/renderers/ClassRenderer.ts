@@ -30,7 +30,7 @@ export class ClassRenderer extends CSharpRenderer<ConstrainedObjectModel> {
       this.dependencyManager.addDependency('using System.Collections.Generic;');
     }
 
-    return `public class ${this.model.name}
+    return `public partial class ${this.model.name}
 {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
