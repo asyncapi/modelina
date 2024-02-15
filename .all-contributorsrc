@@ -846,7 +846,20 @@
       "profile": "https://github.com/RowlandBanks",
       "contributions": [
         "code",
-        "test"
+        "test",
+        "bug"
+      ]
+    },
+    {
+      "login": "moritzkalwa",
+      "name": "Moritz Kalwa",
+      "avatar_url": "https://avatars.githubusercontent.com/u/62842654?v=4",
+      "profile": "https://moritzkalwa.dev/",
+      "contributions": [
+        "code",
+        "test",
+        "bug",
+        "doc"
       ]
     }
   ],

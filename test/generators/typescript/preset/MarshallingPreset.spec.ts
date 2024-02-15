@@ -68,6 +68,10 @@ const doc = {
           type: 'string'
         }
       ]
+    },
+    constTest: {
+      type: 'string',
+      const: 'TEST'
     }
   }
 };

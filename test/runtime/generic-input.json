@@ -47,6 +47,13 @@
     },
     "enumTest": {
       "enum": ["test", "test2"]
+    },
+    "houseType": {
+      "$ref": "#/$defs/housing-types"
+    },
+    "roofType": {
+      "$id": "TypeOfRoof",
+      "enum": ["tile", "straw", "wood", "metal"]
     }
   },
   "patternProperties": {
@@ -57,5 +64,11 @@
   "required": [
     "house_number",
     "array_type"
-  ]
+  ],
+  "$defs": {
+    "housing-types": {
+      "$id": "HousingType",
+      "enum": ["detached", "terraced", "bungalow", "flat"]
+    }
+  }
 }
