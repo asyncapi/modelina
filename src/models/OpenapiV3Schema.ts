@@ -84,8 +84,8 @@ export class OpenapiV3Schema {
   additionalItems?: OpenapiV3Schema | boolean;
 
   //Draft 6 modifications
-  exclusiveMaximum?: number;
-  exclusiveMinimum?: number;
+  exclusiveMaximum?: boolean | number;
+  exclusiveMinimum?: boolean | number;
   //Draft 6 replacements
   $id?: string; //Replaces 'id'
   //Draft 6 additions
