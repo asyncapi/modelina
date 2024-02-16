@@ -10,32 +10,33 @@ For more specific integration options, please check out the [integration documen
 
 <!-- toc -->
 
-- [Generator's options](#generators-options)
-- [Understanding the output format](#understanding-the-output-format)
-- [Generate models from AsyncAPI documents](#generate-models-from-asyncapi-documents)
-  * [Limitations and Compatibility](#limitations-and-compatibility)
-    + [Polymorphism](#polymorphism)
-- [Generate models from JSON Schema documents](#generate-models-from-json-schema-documents)
-- [Generate models from Swagger 2.0 documents](#generate-models-from-swagger-20-documents)
-  * [Limitations and Compatibility](#limitations-and-compatibility-1)
-    + [Polymorphism](#polymorphism-1)
-- [Generate models from OpenAPI documents](#generate-models-from-openapi-documents)
-    + [Limitations and Compatibility](#limitations-and-compatibility-2)
-      - [Polymorphism](#polymorphism-2)
-- [Generate models from TypeScript type files](#generate-models-from-typescript-type-files)
-- [Generate models from Meta models](#generate-models-from-meta-models)
-- [Generate Go models](#generate-go-models)
-- [Generate C# models](#generate-c%23-models)
-- [Generate Java models](#generate-java-models)
-- [Generate TypeScript models](#generate-typescript-models)
-- [Generate JavaScript models](#generate-javascript-models)
-- [Generate Dart models](#generate-dart-models)
-- [Generate Rust models](#generate-rust-models)
-- [Generate Python models](#generate-python-models)
-- [Generate Kotlin models](#generate-kotlin-models)
-- [Generate C++ (cplusplus) models](#generate-c-cplusplus-models)
-- [Generate PHP models](#generate-php-models)
-- [Generate Scala models](#generate-scala-models)
+- [Usages](#usages)
+  - [Generator's options](#generators-options)
+  - [Understanding the output format](#understanding-the-output-format)
+  - [Generate models from AsyncAPI documents](#generate-models-from-asyncapi-documents)
+    - [Limitations and Compatibility](#limitations-and-compatibility)
+      - [Polymorphism](#polymorphism)
+  - [Generate models from JSON Schema documents](#generate-models-from-json-schema-documents)
+  - [Generate models from Swagger 2.0 documents](#generate-models-from-swagger-20-documents)
+    - [Limitations and Compatibility](#limitations-and-compatibility-1)
+      - [Polymorphism](#polymorphism-1)
+  - [Generate models from OpenAPI documents](#generate-models-from-openapi-documents)
+      - [Limitations and Compatibility](#limitations-and-compatibility-2)
+        - [Polymorphism](#polymorphism-2)
+  - [Generate models from TypeScript type files](#generate-models-from-typescript-type-files)
+  - [Generate models from Meta models](#generate-models-from-meta-models)
+  - [Generate Go models](#generate-go-models)
+  - [Generate C# models](#generate-c-models)
+  - [Generate Java models](#generate-java-models)
+  - [Generate TypeScript models](#generate-typescript-models)
+  - [Generate JavaScript models](#generate-javascript-models)
+  - [Generate Dart models](#generate-dart-models)
+  - [Generate Rust models](#generate-rust-models)
+  - [Generate Python models](#generate-python-models)
+  - [Generate Kotlin models](#generate-kotlin-models)
+  - [Generate C++ (cplusplus) models](#generate-c-cplusplus-models)
+  - [Generate PHP models](#generate-php-models)
+  - [Generate Scala models](#generate-scala-models)
 
 <!-- tocstop -->
 
@@ -131,6 +132,7 @@ Long term if this is something you wish was supported, voice your [opinion here]
 There are one way to generate models from an OpenAPI document
 
 - [Generate from OpenAPI 3.0 JS object](../examples/openapi-from-object)
+- [Generate from OpenAPI 3.1 JS object](../examples/openapi-v3_1-from-object)
 
 The OpenAPI input processor expects that the property `openapi` is defined in order to know it should be processed.
 
