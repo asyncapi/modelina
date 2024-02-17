@@ -117,12 +117,7 @@ ${content}`;
           items: [{ type: 'string' }, { type: 'number' }],
           additionalItems: true
         },
-        array_type: { type: 'array', items: { type: 'string' } },
-        other_model: {
-          type: 'object',
-          $id: 'OtherModel',
-          properties: { street_name: { type: 'string' } }
-        }
+        array_type: { type: 'array', items: { type: 'string' } }
       },
       patternProperties: {
         '^S(.?*)test&': {
@@ -377,6 +372,19 @@ ${content}`;
   test('should render models and their dependencies for ESM module system with named exports', async () => {
     generator = new TypeScriptGenerator({
       moduleSystem: 'ESM'
+    });
+    const models = await generator.generateCompleteModels(doc, {
+      exportType: 'named'
+    });
+    expect(models).toHaveLength(2);
+    expect(models[0].result).toMatchSnapshot();
+    expect(models[1].result).toMatchSnapshot();
+  });
+
+  test('should render models and their dependencies for ESM module system with named exports as interfaces', async () => {
+    generator = new TypeScriptGenerator({
+      moduleSystem: 'ESM',
+      modelType: 'interface'
     });
     const models = await generator.generateCompleteModels(doc, {
       exportType: 'named'

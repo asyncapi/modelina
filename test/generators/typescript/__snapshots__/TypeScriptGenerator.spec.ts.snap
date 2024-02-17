@@ -560,7 +560,6 @@ exports[`TypeScriptGenerator should render \`interface\` type 1`] = `
   tupleType?: [string, number];
   tupleTypeWithAdditionalItems?: (string | number | any)[];
   arrayType: string[];
-  otherModel?: OtherModel;
   additionalProperties?: Map<string, any | string>;
 }"
 `;
@@ -947,6 +946,31 @@ class OtherModel {
   set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
 }
 export { OtherModel };"
+`;
+
+exports[`TypeScriptGenerator should render models and their dependencies for ESM module system with named exports as interfaces 1`] = `
+"import type {OtherModel} from './OtherModel';
+interface Address {
+  streetName: string;
+  city: string;
+  state: string;
+  houseNumber: number;
+  marriage?: boolean;
+  members?: string | number | boolean;
+  arrayType: (string | number | any)[];
+  otherModel?: OtherModel;
+  additionalProperties?: Map<string, any | string>;
+}
+export type { Address };"
+`;
+
+exports[`TypeScriptGenerator should render models and their dependencies for ESM module system with named exports as interfaces 2`] = `
+"
+interface OtherModel {
+  streetName?: string;
+  additionalProperties?: Map<string, any>;
+}
+export type { OtherModel };"
 `;
 
 exports[`TypeScriptGenerator should render union \`enum\` values 1`] = `
