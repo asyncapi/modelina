@@ -849,6 +849,28 @@
         "test",
         "bug"
       ]
+    },
+    {
+      "login": "moritzkalwa",
+      "name": "Moritz Kalwa",
+      "avatar_url": "https://avatars.githubusercontent.com/u/62842654?v=4",
+      "profile": "https://moritzkalwa.dev/",
+      "contributions": [
+        "code",
+        "test",
+        "bug",
+        "doc"
+      ]
+    },
+    {
+      "login": "akkshitgupta",
+      "name": "Akshit Gupta",
+      "avatar_url": "https://avatars.githubusercontent.com/u/96991785?v=4",
+      "profile": "https://github.com/akkshitgupta",
+      "contributions": [
+        "code",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
