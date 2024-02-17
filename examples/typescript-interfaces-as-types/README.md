@@ -1,4 +1,4 @@
-# TypeScript interface
+# TypeScript interface as types
 
 A basic example of how to use Modelina and output TypeScript interfaces that are exported as types using ESM Module Syntax.
 
