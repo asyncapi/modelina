@@ -39,6 +39,7 @@ export interface PythonOptions extends CommonGeneratorOptions<PythonPreset> {
   typeMapping: TypeMapping<PythonOptions, PythonDependencyManager>;
   constraints: Constraints<PythonOptions>;
   importsStyle: 'explicit' | 'implicit';
+  dependencyManager?: (() => PythonDependencyManager) | PythonDependencyManager;
 }
 export type PythonConstantConstraint = ConstantConstraint<PythonOptions>;
 export type PythonEnumKeyConstraint = EnumKeyConstraint<PythonOptions>;
