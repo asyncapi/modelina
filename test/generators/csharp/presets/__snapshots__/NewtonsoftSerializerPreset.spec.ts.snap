@@ -57,7 +57,6 @@ public class TestConverter : JsonConverter<Test>
   if(jo[\\"string prop\\"] != null) {
   value.StringProp = jo[\\"string prop\\"].ToObject<string>(serializer);
 }
-
 if(jo[\\"numberProp\\"] != null) {
   value.NumberProp = jo[\\"numberProp\\"].ToObject<double?>(serializer);
 }

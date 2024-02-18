@@ -83,7 +83,6 @@ internal class TestConverter : JsonConverter<Test>
           instance.StringProp = value;
           continue;
         }
-
       if (propertyName == \\"numberProp\\")
         {
           var value = JsonSerializer.Deserialize<double?>(ref reader, options);

@@ -85,22 +85,24 @@ function renderDeserialize({
       !(prop.property instanceof ConstrainedDictionaryModel) ||
       prop.property.serializationType === 'normal'
   );
-  const corePropsRead = coreProps.map((prop) => {
-    const propertyAccessor = pascalCase(prop.propertyName);
-    let toValue = `jo["${prop.unconstrainedPropertyName}"].ToObject<${prop.property.type}>(serializer)`;
-    if (
-      prop.property instanceof ConstrainedReferenceModel &&
-      prop.property.ref instanceof ConstrainedEnumModel
-    ) {
-      toValue = `${prop.property.name}Extensions.To${prop.property.name}(jo["${prop.unconstrainedPropertyName}"].ToString())`;
-    }
-    if (prop.property.options.const) {
-      return '';
-    }
-    return `if(jo["${prop.unconstrainedPropertyName}"] != null) {
+  const corePropsRead = coreProps
+    .map((prop) => {
+      const propertyAccessor = pascalCase(prop.propertyName);
+      let toValue = `jo["${prop.unconstrainedPropertyName}"].ToObject<${prop.property.type}>(serializer)`;
+      if (
+        prop.property instanceof ConstrainedReferenceModel &&
+        prop.property.ref instanceof ConstrainedEnumModel
+      ) {
+        toValue = `${prop.property.name}Extensions.To${prop.property.name}(jo["${prop.unconstrainedPropertyName}"].ToString())`;
+      }
+      if (prop.property.options.const) {
+        return undefined;
+      }
+      return `if(jo["${prop.unconstrainedPropertyName}"] != null) {
   value.${propertyAccessor} = ${toValue};
 }`;
-  });
+    })
+    .filter((prop): prop is string => !!prop);
   const nonDictionaryPropCheck = coreProps.map((prop) => {
     return `prop.Name != "${prop.unconstrainedPropertyName}"`;
   });

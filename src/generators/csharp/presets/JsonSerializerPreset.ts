@@ -131,30 +131,32 @@ function renderDeserializeProperty(model: ConstrainedObjectPropertyModel) {
 
 function renderDeserializeProperties(model: ConstrainedObjectModel) {
   const propertyEntries = Object.entries(model.properties || {});
-  const deserializeProperties = propertyEntries.map(([prop, propModel]) => {
-    const pascalProp = pascalCase(prop);
-    //Unwrapped dictionary properties, need to be unwrapped in JSON
-    if (
-      propModel.property instanceof ConstrainedDictionaryModel &&
-      propModel.property.serializationType === 'unwrap'
-    ) {
-      return `if(instance.${pascalProp} == null) { instance.${pascalProp} = new Dictionary<${
-        propModel.property.key.type
-      }, ${propModel.property.value.type}>(); }
+  const deserializeProperties = propertyEntries
+    .map(([prop, propModel]) => {
+      const pascalProp = pascalCase(prop);
+      //Unwrapped dictionary properties, need to be unwrapped in JSON
+      if (
+        propModel.property instanceof ConstrainedDictionaryModel &&
+        propModel.property.serializationType === 'unwrap'
+      ) {
+        return `if(instance.${pascalProp} == null) { instance.${pascalProp} = new Dictionary<${
+          propModel.property.key.type
+        }, ${propModel.property.value.type}>(); }
       var deserializedValue = ${renderDeserializeProperty(propModel)};
       instance.${pascalProp}.Add(propertyName, deserializedValue);
       continue;`;
-    }
-    if (propModel.property.options.const) {
-      return '';
-    }
-    return `if (propertyName == "${propModel.unconstrainedPropertyName}")
+      }
+      if (propModel.property.options.const) {
+        return undefined;
+      }
+      return `if (propertyName == "${propModel.unconstrainedPropertyName}")
   {
     var value = ${renderDeserializeProperty(propModel)};
     instance.${pascalProp} = value;
     continue;
   }`;
-  });
+    })
+    .filter((prop): prop is string => !!prop);
   return deserializeProperties.join('\n');
 }
 
