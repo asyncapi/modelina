@@ -94,6 +94,9 @@ function renderDeserialize({
     ) {
       toValue = `${prop.property.name}Extensions.To${prop.property.name}(jo["${prop.unconstrainedPropertyName}"].ToString())`;
     }
+    if (prop.property.options.const) {
+      return '';
+    }
     return `if(jo["${prop.unconstrainedPropertyName}"] != null) {
   value.${propertyAccessor} = ${toValue};
 }`;
