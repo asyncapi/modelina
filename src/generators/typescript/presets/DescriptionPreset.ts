@@ -37,7 +37,7 @@ export const TS_DESCRIPTION_PRESET: TypeScriptPreset = {
     self({ renderer, model, content }) {
       return renderDescription({ renderer, content, item: model });
     },
-    property({ renderer, property, content }) {
+    getter({ renderer, property, content }) {
       return renderDescription({ renderer, content, item: property.property });
     }
   },
