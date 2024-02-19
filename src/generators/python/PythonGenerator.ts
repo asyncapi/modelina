@@ -35,11 +35,11 @@ import {
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 import { PythonDependencyManager } from './PythonDependencyManager';
 
-export interface PythonOptions extends CommonGeneratorOptions<PythonPreset> {
+export interface PythonOptions
+  extends CommonGeneratorOptions<PythonPreset, PythonDependencyManager> {
   typeMapping: TypeMapping<PythonOptions, PythonDependencyManager>;
   constraints: Constraints<PythonOptions>;
   importsStyle: 'explicit' | 'implicit';
-  dependencyManager?: (() => PythonDependencyManager) | PythonDependencyManager;
 }
 export type PythonConstantConstraint = ConstantConstraint<PythonOptions>;
 export type PythonEnumKeyConstraint = EnumKeyConstraint<PythonOptions>;
