@@ -6,12 +6,12 @@ import {
   NO_EMPTY_VALUE,
   NO_RESERVED_KEYWORDS
 } from '../../../helpers/Constraints';
-import {
-  FormatHelpers,
-  EnumKeyConstraint,
-  EnumValueConstraint
-} from '../../../helpers';
+import { FormatHelpers } from '../../../helpers';
 import { isReservedJavaKeyword } from '../Constants';
+import {
+  JavaEnumKeyConstraint,
+  JavaEnumValueConstraint
+} from '../JavaGenerator';
 
 export type ModelEnumKeyConstraints = {
   NO_SPECIAL_CHAR: (value: string) => string;
@@ -46,7 +46,7 @@ export const DefaultEnumKeyConstraints: ModelEnumKeyConstraints = {
 
 export function defaultEnumKeyConstraints(
   customConstraints?: Partial<ModelEnumKeyConstraints>
-): EnumKeyConstraint {
+): JavaEnumKeyConstraint {
   const constraints = { ...DefaultEnumKeyConstraints, ...customConstraints };
 
   return ({ enumKey, enumModel, constrainedEnumModel }) => {
@@ -69,7 +69,7 @@ export function defaultEnumKeyConstraints(
   };
 }
 
-export function defaultEnumValueConstraints(): EnumValueConstraint {
+export function defaultEnumValueConstraints(): JavaEnumValueConstraint {
   return ({ enumValue }) => {
     let constrainedEnumValue = enumValue;
     switch (typeof enumValue) {

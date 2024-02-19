@@ -3,7 +3,8 @@ import {
   ConstrainedObjectModel,
   ConstrainedObjectPropertyModel,
   ObjectModel,
-  ObjectPropertyModel
+  ObjectPropertyModel,
+  TypeScriptGenerator
 } from '../../../../src';
 import {
   DefaultPropertyKeyConstraints,
@@ -36,7 +37,8 @@ describe('PropertyKeyConstrainer', () => {
       constrainedObjectModel,
       objectModel,
       objectPropertyModel,
-      constrainedObjectPropertyModel
+      constrainedObjectPropertyModel,
+      options: TypeScriptGenerator.defaultOptions
     });
   };
 
@@ -95,7 +97,8 @@ describe('PropertyKeyConstrainer', () => {
       constrainedObjectModel,
       objectModel,
       objectPropertyModel: objectPropertyModel2,
-      constrainedObjectPropertyModel: constrainedObjectPropertyModel2
+      constrainedObjectPropertyModel: constrainedObjectPropertyModel2,
+      options: TypeScriptGenerator.defaultOptions
     });
     expect(constrainedKey).toEqual('reservedReservedReturn');
   });
@@ -130,7 +133,8 @@ describe('PropertyKeyConstrainer', () => {
         constrainedObjectModel,
         objectModel,
         objectPropertyModel,
-        constrainedObjectPropertyModel
+        constrainedObjectPropertyModel,
+        options: TypeScriptGenerator.defaultOptions
       });
       //Expect all callbacks to be called
       for (const jestMockCallback of Object.values(mockedConstraintCallbacks)) {
@@ -169,7 +173,8 @@ describe('PropertyKeyConstrainer', () => {
         constrainedObjectModel,
         objectModel,
         objectPropertyModel,
-        constrainedObjectPropertyModel
+        constrainedObjectPropertyModel,
+        options: TypeScriptGenerator.defaultOptions
       });
       expect(constrainedValue).toEqual('');
       expect(jestCallback).toHaveBeenCalled();

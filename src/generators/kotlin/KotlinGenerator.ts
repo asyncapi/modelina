@@ -20,8 +20,13 @@ import { EnumRenderer } from './renderers/EnumRenderer';
 import { isReservedKotlinKeyword } from './Constants';
 import { Logger } from '../..';
 import {
+  ConstantConstraint,
   constrainMetaModel,
-  Constraints
+  Constraints,
+  EnumKeyConstraint,
+  EnumValueConstraint,
+  ModelNameConstraint,
+  PropertyKeyConstraint
 } from '../../helpers/ConstrainHelpers';
 import {
   KotlinDefaultConstraints,
@@ -32,9 +37,14 @@ import { KotlinDependencyManager } from './KotlinDependencyManager';
 
 export interface KotlinOptions extends CommonGeneratorOptions<KotlinPreset> {
   typeMapping: TypeMapping<KotlinOptions, KotlinDependencyManager>;
-  constraints: Constraints;
+  constraints: Constraints<KotlinOptions>;
   collectionType: 'List' | 'Array';
 }
+export type KotlinConstantConstraint = ConstantConstraint<KotlinOptions>;
+export type KotlinEnumKeyConstraint = EnumKeyConstraint<KotlinOptions>;
+export type KotlinEnumValueConstraint = EnumValueConstraint<KotlinOptions>;
+export type KotlinModelNameConstraint = ModelNameConstraint<KotlinOptions>;
+export type KotlinPropertyKeyConstraint = PropertyKeyConstraint<KotlinOptions>;
 export type KotlinTypeMapping = TypeMapping<
   KotlinOptions,
   KotlinDependencyManager

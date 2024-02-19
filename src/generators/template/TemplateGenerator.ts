@@ -20,8 +20,13 @@ import { EnumRenderer } from './renderers/EnumRenderer';
 import { isReservedTemplateKeyword } from './Constants';
 import { Logger } from '../..';
 import {
+  ConstantConstraint,
   constrainMetaModel,
-  Constraints
+  Constraints,
+  EnumKeyConstraint,
+  EnumValueConstraint,
+  ModelNameConstraint,
+  PropertyKeyConstraint
 } from '../../helpers/ConstrainHelpers';
 import {
   TemplateDefaultConstraints,
@@ -33,8 +38,14 @@ import { TemplateDependencyManager } from './TemplateDependencyManager';
 export interface TemplateOptions
   extends CommonGeneratorOptions<TemplatePreset> {
   typeMapping: TypeMapping<TemplateOptions, TemplateDependencyManager>;
-  constraints: Constraints;
+  constraints: Constraints<TemplateOptions>;
 }
+export type TemplateConstantConstraint = ConstantConstraint<TemplateOptions>;
+export type TemplateEnumKeyConstraint = EnumKeyConstraint<TemplateOptions>;
+export type TemplateEnumValueConstraint = EnumValueConstraint<TemplateOptions>;
+export type TemplateModelNameConstraint = ModelNameConstraint<TemplateOptions>;
+export type TemplatePropertyKeyConstraint =
+  PropertyKeyConstraint<TemplateOptions>;
 export interface TemplateRenderCompleteModelOptions {
   packageName: string;
 }

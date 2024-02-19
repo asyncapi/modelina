@@ -14,8 +14,13 @@ import {
   RenderOutput
 } from '../../models';
 import {
+  ConstantConstraint,
   constrainMetaModel,
   Constraints,
+  EnumKeyConstraint,
+  EnumValueConstraint,
+  ModelNameConstraint,
+  PropertyKeyConstraint,
   split,
   SplitOptions,
   TypeMapping
@@ -34,19 +39,38 @@ import { TypeScriptDependencyManager } from './TypeScriptDependencyManager';
 
 export type TypeScriptModuleSystemType = 'ESM' | 'CJS';
 export type TypeScriptExportType = 'named' | 'default';
+export type TypeScriptModelType = 'class' | 'interface';
 export interface TypeScriptOptions
   extends CommonGeneratorOptions<
     TypeScriptPreset,
     TypeScriptDependencyManager
   > {
   renderTypes: boolean;
-  modelType: 'class' | 'interface';
+  modelType: TypeScriptModelType;
   enumType: 'enum' | 'union';
   mapType: 'indexedObject' | 'map' | 'record';
   typeMapping: TypeMapping<TypeScriptOptions, TypeScriptDependencyManager>;
-  constraints: Constraints;
+  constraints: Constraints<TypeScriptOptions>;
   moduleSystem: TypeScriptModuleSystemType;
+  /**
+   * Use JS reserved keywords so the TS output models can easily be transpiled to JS
+   */
+  useJavascriptReservedKeywords: boolean;
+  /**
+   * Use raw property names instead of constrained ones,
+   * where you most likely need to access them with obj["propertyName"] instead of obj.propertyName
+   */
+  rawPropertyNames: boolean;
 }
+export type TypeScriptConstantConstraint =
+  ConstantConstraint<TypeScriptOptions>;
+export type TypeScriptEnumKeyConstraint = EnumKeyConstraint<TypeScriptOptions>;
+export type TypeScriptEnumValueConstraint =
+  EnumValueConstraint<TypeScriptOptions>;
+export type TypeScriptModelNameConstraint =
+  ModelNameConstraint<TypeScriptOptions>;
+export type TypeScriptPropertyKeyConstraint =
+  PropertyKeyConstraint<TypeScriptOptions>;
 export type TypeScriptTypeMapping = TypeMapping<
   TypeScriptOptions,
   TypeScriptDependencyManager
@@ -72,6 +96,8 @@ export class TypeScriptGenerator extends AbstractGenerator<
     typeMapping: TypeScriptDefaultTypeMapping,
     constraints: TypeScriptDefaultConstraints,
     moduleSystem: 'ESM',
+    rawPropertyNames: false,
+    useJavascriptReservedKeywords: true,
     // Temporarily set
     dependencyManager: () => {
       return {} as TypeScriptDependencyManager;
@@ -185,12 +211,14 @@ export class TypeScriptGenerator extends AbstractGenerator<
     const modelDependencyImports = modelDependencies.map((model) => {
       return dependencyManagerToUse.renderCompleteModelDependencies(
         model,
-        completeModelOptionsToUse.exportType
+        completeModelOptionsToUse.exportType,
+        optionsToUse.modelType
       );
     });
     const modelExport = dependencyManagerToUse.renderExport(
       args.constrainedModel,
-      completeModelOptionsToUse.exportType
+      completeModelOptionsToUse.exportType,
+      optionsToUse.modelType
     );
 
     const modelCode = `${outputModel.result}\n${modelExport}`;

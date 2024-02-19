@@ -1,4 +1,3 @@
-import { CplusplusDefaultConstraints } from '../../../../src/generators/cplusplus/CplusplusConstrainer';
 import {
   ConstrainedObjectModel,
   ConstrainedObjectPropertyModel,
@@ -6,7 +5,6 @@ import {
   ObjectPropertyModel
 } from '../../../../src';
 import {
-  DefaultPropertyKeyConstraints,
   PropertyKeyConstraintOptions,
   defaultPropertyKeyConstraints
 } from '../../../../src/generators/cplusplus/constrainer/PropertyKeyConstrainer';

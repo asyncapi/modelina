@@ -29,8 +29,7 @@ function renderSerialize({ model }: { model: ConstrainedObjectModel }): string {
 var stringEnumValue = enumValue.ToString();
 // C# converts booleans to uppercase True and False, which newtonsoft cannot understand
 var jsonStringCompliant = stringEnumValue == "True" || stringEnumValue == "False" ? stringEnumValue.ToLower() : stringEnumValue;
-var jsonToken = JToken.Parse(jsonStringCompliant);
-jo.Add("${prop.unconstrainedPropertyName}", jsonToken);`;
+jo.Add("${prop.unconstrainedPropertyName}", JToken.FromObject(jsonStringCompliant, serializer));`;
       }
       return `if (value.${propertyAccessor} != null)
 {
@@ -93,7 +92,9 @@ function renderDeserialize({
       prop.property instanceof ConstrainedReferenceModel &&
       prop.property.ref instanceof ConstrainedEnumModel
     ) {
-      toValue = `${prop.property.name}Extensions.To${prop.property.name}(jo["${prop.unconstrainedPropertyName}"])`;
+      toValue = `${prop.property.name}Extensions.To${prop.property.name}(jo["${
+        prop.unconstrainedPropertyName
+      }"].ToString())${prop.required ? '.Value' : ''}`;
     }
     return `if(jo["${prop.unconstrainedPropertyName}"] != null) {
   value.${propertyAccessor} = ${toValue};

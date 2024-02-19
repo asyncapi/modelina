@@ -27,7 +27,7 @@ export class RecordRenderer extends CSharpRenderer<ConstrainedObjectModel> {
       this.dependencyManager.addDependency('using System.Collections.Generic;');
     }
 
-    return `public record ${this.model.name}
+    return `public partial record ${this.model.name}
 {
 ${this.indent(this.renderBlock(content, 2))}
 }`;

@@ -1,5 +1,64 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`JAVA_DESCRIPTION_PRESET should not render anything when isExtended is true and model is discriminator or dictionary 1`] = `
+Array [
+  "public class ExtendDoc implements Extend {
+  private final DiscriminatorTest type = DiscriminatorTest.EXTEND_DOC;
+  private String test3;
+  private String test2;
+  private Map<String, Object> additionalProperties;
+
+  public DiscriminatorTest getType() { return this.type; }
+
+  @Override
+  public String getTest3() { return this.test3; }
+  @Override
+  public void setTest3(String test3) { this.test3 = test3; }
+
+  /**
+   * test
+   * Examples: test
+   */
+  public String getTest2() { return this.test2; }
+  public void setTest2(String test2) { this.test2 = test2; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+  "public enum DiscriminatorTest {
+  EXTEND_DOC((String)\\"ExtendDoc\\");
+
+  private String value;
+
+  DiscriminatorTest(String value) {
+    this.value = value;
+  }
+
+  public String getValue() {
+    return value;
+  }
+
+  public static DiscriminatorTest fromValue(String value) {
+    for (DiscriminatorTest e : DiscriminatorTest.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+}",
+  "public interface Extend {
+  public String getTest3();
+  public void setTest3(String test3);
+}",
+]
+`;
+
 exports[`JAVA_DESCRIPTION_PRESET should render description and examples for class 1`] = `
 "/**
  * Description for class

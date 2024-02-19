@@ -5,12 +5,12 @@ import {
   NO_EMPTY_VALUE,
   NO_RESERVED_KEYWORDS
 } from '../../../helpers/Constraints';
-import {
-  EnumKeyConstraint,
-  EnumValueConstraint,
-  FormatHelpers
-} from '../../../helpers';
+import { FormatHelpers } from '../../../helpers';
 import { isReservedCSharpKeyword } from '../Constants';
+import {
+  CSharpEnumKeyConstraint,
+  CSharpEnumValueConstraint
+} from '../CSharpGenerator';
 
 export type ModelEnumKeyConstraints = {
   NO_SPECIAL_CHAR: (value: string) => string;
@@ -49,7 +49,7 @@ export const DefaultEnumKeyConstraints: ModelEnumKeyConstraints = {
 
 export function defaultEnumKeyConstraints(
   customConstraints?: Partial<ModelEnumKeyConstraints>
-): EnumKeyConstraint {
+): CSharpEnumKeyConstraint {
   const constraints = { ...DefaultEnumKeyConstraints, ...customConstraints };
 
   return ({ enumKey, enumModel, constrainedEnumModel }) => {
@@ -72,7 +72,7 @@ export function defaultEnumKeyConstraints(
   };
 }
 
-export function defaultEnumValueConstraints(): EnumValueConstraint {
+export function defaultEnumValueConstraints(): CSharpEnumValueConstraint {
   return ({ enumValue }) => {
     let normalizedEnumValue;
     switch (typeof enumValue) {

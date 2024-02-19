@@ -128,15 +128,20 @@ These are all specific examples only relevant to the C# generator:
 ### TypeScript
 These are all specific examples only relevant to the TypeScript generator:
 
+- [typescript-change-map-type](./typescript-change-map-type) - A basic example showing the use of `mapType` options.
 - [generate-typescript-models](./generate-typescript-models) - A basic example to generate TypeScript data models
 - [typescript-interface](./typescript-interface) - A basic TypeScript generator that outputs interfaces.
 - [typescript-enum-type](./typescript-enum-type) - A basic example of how to use Modelina can output different types of enums in TypeScript.
 - [typescript-generate-example](./typescript-generate-example) - A basic example of how to use Modelina and output a TypeScript class with an example function.
 - [typescript-generate-marshalling](./typescript-generate-marshalling) - A basic example of how to use the un/marshalling functionality of the typescript class.
 - [typescript-generate-comments](./typescript-generate-comments) - A basic example of how to generate TypeScript interfaces with comments from description and example fields.
+- [typescript-interfaces-as-types](./typescript-interfaces-as-types) - A basic example that generate the models as interfaces and uses ESM module system syntax to import and export them as types.
 - [typescript-use-esm](./typescript-use-esm) - A basic example that generate the models to use ESM module system.
 - [typescript-use-cjs](./typescript-use-cjs) - A basic example that generate the models to use CJS module system.
 - [typescript-generate-jsonbinpack](./typescript-generate-jsonbinpack) - A basic example showing how to generate models that include [jsonbinpack](https://github.com/sourcemeta/jsonbinpack) functionality.
+- [typescript-generate-raw-properties](./typescript-generate-raw-properties) - A basic example showing how to generate models that use raw properties for interface.
+- [typescript-use-js-reserved-keyword](./typescript-use-js-reserved-keyword) - A basic example showing how you can generate the models that take reserved JS keywords into account for model names, properties or enum keys. 
+
 
 ### Kotlin
 These are all specific examples only relevant to the Kotlin generator:

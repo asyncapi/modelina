@@ -1,38 +1,33 @@
 /* eslint-disable no-undef */
 /* eslint-disable @typescript-eslint/no-var-requires */
 import {
-  createAsyncAPIDocument,
   isAsyncAPIDocument,
   isOldAsyncAPIDocument,
-  Parser,
   AsyncAPIDocumentInterface,
   SchemaInterface as AsyncAPISchemaInterface,
-  SchemaV2 as AsyncAPISchema
+  SchemaV2 as AsyncAPISchema,
+  fromFile,
+  createAsyncAPIDocument
 } from '@asyncapi/parser';
-import { AsyncAPISchemaObject } from '@asyncapi/parser/cjs/spec-types/v2';
-import { AvroSchemaParser } from '@asyncapi/avro-schema-parser';
-import { OpenAPISchemaParser } from '@asyncapi/openapi-schema-parser';
-import { RamlDTSchemaParser } from '@asyncapi/raml-dt-schema-parser';
-import { createDetailedAsyncAPI } from '@asyncapi/parser/cjs/utils';
+
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
-import { InputMetaModel, ProcessorOptions, UnionModel } from '../models';
+import { InputMetaModel, ProcessorOptions } from '../models';
 import { Logger } from '../utils';
 import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
 import { convertToMetaModel } from '../helpers';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+import {
+  ConvertDocumentParserAPIVersion,
+  NewParser
+} from '@smoya/multi-parser';
+import { createDetailedAsyncAPI } from '@asyncapi/parser/cjs/utils';
 
 /**
  * Class for processing AsyncAPI inputs
  */
 export class AsyncAPIInputProcessor extends AbstractInputProcessor {
-  private parser = new Parser();
-  constructor() {
-    super();
-    this.parser.registerSchemaParser(AvroSchemaParser());
-    this.parser.registerSchemaParser(OpenAPISchemaParser());
-    this.parser.registerSchemaParser(RamlDTSchemaParser());
-  }
-
   static supportedVersions = [
     '2.0.0',
     '2.1.0',
@@ -40,7 +35,8 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     '2.3.0',
     '2.4.0',
     '2.5.0',
-    '2.6.0'
+    '2.6.0',
+    '3.0.0'
   ];
 
   /**
@@ -53,22 +49,45 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     input?: any,
     options?: ProcessorOptions
   ): Promise<InputMetaModel> {
-    if (!this.shouldProcess(input)) {
+    const rawInput = input;
+    let doc: AsyncAPIDocumentInterface | undefined;
+
+    if (!this.shouldProcess(rawInput)) {
       throw new Error(
         'Input is not an AsyncAPI document so it cannot be processed.'
       );
     }
 
     Logger.debug('Processing input as an AsyncAPI document');
-    let doc: AsyncAPIDocumentInterface;
     const inputModel = new InputMetaModel();
-    if (!AsyncAPIInputProcessor.isFromParser(input)) {
-      const { document, diagnostics } = await this.parser.parse(
-        input as any,
-        options?.asyncapi || {}
-      );
+    if (isOldAsyncAPIDocument(rawInput)) {
+      // Is from old parser
+      const parsedJSON = rawInput.json();
+      const detailed = createDetailedAsyncAPI(parsedJSON, parsedJSON);
+      doc = createAsyncAPIDocument(detailed);
+    } else if (AsyncAPIInputProcessor.isFromNewParser(rawInput)) {
+      doc = ConvertDocumentParserAPIVersion(rawInput, 2) as any;
+    } else {
+      const parserOptions = options?.asyncapi || {};
+      const parser = NewParser(2, {
+        parserOptions,
+        includeSchemaParsers: true
+      });
+
+      let parserResult;
+      if (this.isFileInput(input)) {
+        const filePath = fileURLToPath(input);
+        /* eslint-disable-next-line security/detect-non-literal-fs-filename -- Safe as it just checks file existance */
+        if (!fs.existsSync(filePath)) {
+          throw new Error('File does not exists.');
+        }
+        parserResult = await fromFile(parser as any, filePath).parse();
+      } else {
+        parserResult = await parser.parse(rawInput, parserOptions);
+      }
+      const { document, diagnostics } = parserResult;
       if (document) {
-        doc = document;
+        doc = document as unknown as AsyncAPIDocumentInterface;
       } else {
         const err = new Error(
           'Input is not an correct AsyncAPI document so it cannot be processed.'
@@ -76,33 +95,14 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
         (err as any).diagnostics = diagnostics;
         throw err;
       }
-    } else if (AsyncAPIInputProcessor.isFromNewParser(input)) {
-      doc = input as AsyncAPIDocumentInterface;
-    } else {
-      // Is from old parser
-      const parsedJSON = input.json();
-      const detailed = createDetailedAsyncAPI(parsedJSON, parsedJSON);
-      doc = createAsyncAPIDocument(detailed);
+    }
+    if (!doc) {
+      throw new Error('Could not parse input as AsyncAPI document');
     }
 
     inputModel.originalInput = doc;
 
     const addToInputModel = (payload: AsyncAPISchemaInterface) => {
-      const id = payload.title() || payload.id();
-
-      for (const model of Object.values(inputModel.models)) {
-        if (model instanceof UnionModel) {
-          for (const union of model.union) {
-            if (union.name === id) {
-              Logger.warn(
-                `Model ${id} has already been added to the input model`
-              );
-              return;
-            }
-          }
-        }
-      }
-
       const schema = AsyncAPIInputProcessor.convertToInternalSchema(payload);
       const newCommonModel =
         JsonSchemaInputProcessor.convertSchemaToCommonModel(schema, options);
@@ -134,7 +134,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
 
           // treat multiple messages as oneOf
           if (operationMessages.length > 1) {
-            const oneOf: AsyncAPISchemaObject[] = [];
+            const oneOf: any[] = [];
 
             for (const message of operationMessages) {
               const payload = message.payload();
@@ -161,13 +161,6 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
               addToInputModel(payload);
             }
           }
-        }
-      }
-
-      for (const message of doc.messages()) {
-        const payload = message.payload();
-        if (payload) {
-          addToInputModel(payload);
         }
       }
     } else {
@@ -226,21 +219,21 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     if (schema.allOf()) {
       convertedSchema.allOf = schema
         .allOf()!
-        .map((item) =>
+        .map((item: any) =>
           this.convertToInternalSchema(item, alreadyIteratedSchemas)
         );
     }
     if (schema.oneOf()) {
       convertedSchema.oneOf = schema
         .oneOf()!
-        .map((item) =>
+        .map((item: any) =>
           this.convertToInternalSchema(item, alreadyIteratedSchemas)
         );
     }
     if (schema.anyOf()) {
       convertedSchema.anyOf = schema
         .anyOf()!
-        .map((item) =>
+        .map((item: any) =>
           this.convertToInternalSchema(item, alreadyIteratedSchemas)
         );
     }
@@ -342,7 +335,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
             alreadyIteratedSchemas
           );
         } else {
-          dependencies[String(dependencyName)] = dependency as string[];
+          dependencies[String(dependencyName)] = dependency;
         }
       }
       convertedSchema.dependencies = dependencies;
@@ -390,6 +383,9 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     if (!input) {
       return false;
     }
+    if (this.isFileInput(input)) {
+      return true;
+    }
     const version = this.tryGetVersionOfDocument(input);
     if (!version) {
       return false;
@@ -409,7 +405,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     if (AsyncAPIInputProcessor.isFromParser(input)) {
       return input.version();
     }
-    return input && input.asyncapi;
+    return input?.asyncapi;
   }
 
   /**
@@ -428,5 +424,10 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
    */
   static isFromNewParser(input?: any): boolean {
     return isAsyncAPIDocument(input);
+  }
+
+  isFileInput(input: any): boolean {
+    // prettier-ignore
+    return typeof input === 'string' && (/^file:\/\//g).test(input);
   }
 }

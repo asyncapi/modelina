@@ -9,7 +9,7 @@
 [![Discussions](https://img.shields.io/github/discussions/asyncapi/modelina)](https://github.com/asyncapi/modelina/discussions)
 [![Website](https://img.shields.io/website?label=website&url=https%3A%2F%2Fwww.modelina.org)](https://www.modelina.org)
 [![Playground](https://img.shields.io/website?label=playground&url=https%3A%2F%2Fwww.modelina.org%2Fplayground)](https://www.modelina.org/playground) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-77-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-80-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Your one-stop tool for generating accurate and well-tested models for representing the message payloads. Use it as a tool in your development workflow, or a library in a larger integrations, entirely in your control.
@@ -421,6 +421,11 @@ Thanks go out to these wonderful people ([emoji key](https://allcontributors.org
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/devansh-m12"><img src="https://avatars.githubusercontent.com/u/86195162?v=4?s=100" width="100px;" alt="Devansh Mahant"/><br /><sub><b>Devansh Mahant</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=devansh-m12" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/officialasishkumar"><img src="https://avatars.githubusercontent.com/u/87874775?v=4?s=100" width="100px;" alt="Asish Kumar"/><br /><sub><b>Asish Kumar</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=officialasishkumar" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/ankur0904"><img src="https://avatars.githubusercontent.com/u/98346896?v=4?s=100" width="100px;" alt="Ankur Singh"/><br /><sub><b>Ankur Singh</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=ankur0904" title="Documentation">📖</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/RowlandBanks"><img src="https://avatars.githubusercontent.com/u/9962551?v=4?s=100" width="100px;" alt="RowlandBanks"/><br /><sub><b>RowlandBanks</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=RowlandBanks" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=RowlandBanks" title="Tests">⚠️</a> <a href="https://github.com/asyncapi/modelina/issues?q=author%3ARowlandBanks" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://moritzkalwa.dev/"><img src="https://avatars.githubusercontent.com/u/62842654?v=4?s=100" width="100px;" alt="Moritz Kalwa"/><br /><sub><b>Moritz Kalwa</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=moritzkalwa" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=moritzkalwa" title="Tests">⚠️</a> <a href="https://github.com/asyncapi/modelina/issues?q=author%3Amoritzkalwa" title="Bug reports">🐛</a> <a href="https://github.com/asyncapi/modelina/commits?author=moritzkalwa" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/akkshitgupta"><img src="https://avatars.githubusercontent.com/u/96991785?v=4?s=100" width="100px;" alt="Akshit Gupta"/><br /><sub><b>Akshit Gupta</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=akkshitgupta" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/issues?q=author%3Aakkshitgupta" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
 </table>

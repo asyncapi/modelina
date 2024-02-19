@@ -20,8 +20,13 @@ import { ClassRenderer } from './renderers/ClassRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { Logger } from '../..';
 import {
+  ConstantConstraint,
   constrainMetaModel,
-  Constraints
+  Constraints,
+  EnumKeyConstraint,
+  EnumValueConstraint,
+  ModelNameConstraint,
+  PropertyKeyConstraint
 } from '../../helpers/ConstrainHelpers';
 import {
   PythonDefaultConstraints,
@@ -32,9 +37,14 @@ import { PythonDependencyManager } from './PythonDependencyManager';
 
 export interface PythonOptions extends CommonGeneratorOptions<PythonPreset> {
   typeMapping: TypeMapping<PythonOptions, PythonDependencyManager>;
-  constraints: Constraints;
+  constraints: Constraints<PythonOptions>;
   importsStyle: 'explicit' | 'implicit';
 }
+export type PythonConstantConstraint = ConstantConstraint<PythonOptions>;
+export type PythonEnumKeyConstraint = EnumKeyConstraint<PythonOptions>;
+export type PythonEnumValueConstraint = EnumValueConstraint<PythonOptions>;
+export type PythonModelNameConstraint = ModelNameConstraint<PythonOptions>;
+export type PythonPropertyKeyConstraint = PropertyKeyConstraint<PythonOptions>;
 export type PythonTypeMapping = TypeMapping<
   PythonOptions,
   PythonDependencyManager

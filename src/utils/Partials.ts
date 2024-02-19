@@ -36,17 +36,21 @@ export function mergePartialAndDefault<T extends Record<string, any>>(
   customOptional?: DeepPartial<T>
 ): T {
   if (customOptional === undefined) {
-    return defaultNonOptional;
+    return Object.assign({}, defaultNonOptional);
   }
   // create a new object
-  const target = { ...defaultNonOptional } as Record<string, any>;
+  const target = Object.assign({}, defaultNonOptional) as Record<string, any>;
 
   // deep merge the object into the target object
   for (const [propName, prop] of Object.entries(customOptional)) {
     const isObjectOrClass =
       typeof prop === 'object' && target[propName] !== undefined;
     const isRegularObject = !isClass(prop);
-    if (isObjectOrClass && isRegularObject) {
+    const isArray = Array.isArray(prop);
+    if (isArray) {
+      // merge array into target with a new array instance so we dont touch the default value
+      target[propName] = [...(target[propName] ?? []), ...(prop ?? [])];
+    } else if (isObjectOrClass && isRegularObject) {
       target[propName] = mergePartialAndDefault(target[propName], prop);
     } else if (prop) {
       target[propName] = prop;

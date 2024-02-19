@@ -1,7 +1,4 @@
-import {
-  defaultGeneratorOptions,
-  DartGenerator
-} from '../../../src/generators';
+import { DartGenerator } from '../../../src/generators';
 import { DartDependencyManager } from '../../../src/generators/dart/DartDependencyManager';
 import { DartRenderer } from '../../../src/generators/dart/DartRenderer';
 import { ConstrainedObjectModel, InputMetaModel } from '../../../src/models';

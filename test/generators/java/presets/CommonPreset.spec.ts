@@ -32,6 +32,7 @@ describe('JAVA_COMMON_PRESET', () => {
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot();
   });
+
   describe('with option', () => {
     test('should render all functions', async () => {
       const generator = new JavaGenerator({
@@ -160,6 +161,42 @@ describe('JAVA_COMMON_PRESET', () => {
         'import org.json.JSONObject;',
         'import java.util.Map;'
       ]);
+    });
+    test('should not render anything when isExtended is true', async () => {
+      const extend = {
+        $id: 'extend',
+        type: 'object',
+        properties: {
+          extendProp: {
+            type: 'string'
+          }
+        }
+      };
+      const extendDoc = {
+        $id: 'extendDoc',
+        allOf: [extend]
+      };
+      const generator = new JavaGenerator({
+        presets: [
+          {
+            preset: JAVA_COMMON_PRESET,
+            options: {
+              equal: true,
+              hashCode: true,
+              classToString: true,
+              marshalling: true
+            }
+          }
+        ],
+        processorOptions: {
+          interpreter: {
+            allowInheritance: true
+          }
+        }
+      });
+      const models = await generator.generate(extendDoc);
+      expect(models).toHaveLength(2);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
     });
   });
 });

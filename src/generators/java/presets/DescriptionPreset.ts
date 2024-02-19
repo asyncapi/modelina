@@ -2,6 +2,7 @@ import { JavaRenderer } from '../JavaRenderer';
 import { JavaPreset } from '../JavaPreset';
 import { FormatHelpers } from '../../../helpers';
 import { ConstrainedMetaModel } from '../../../models';
+import { isDiscriminatorOrDictionary } from '../renderers/ClassRenderer';
 
 function renderDescription({
   renderer,
@@ -38,7 +39,14 @@ export const JAVA_DESCRIPTION_PRESET: JavaPreset = {
     self({ renderer, model, content }) {
       return renderDescription({ renderer, content, item: model });
     },
-    getter({ renderer, property, content }) {
+    getter({ renderer, property, content, model }) {
+      if (
+        model.options.isExtended &&
+        isDiscriminatorOrDictionary(model, property)
+      ) {
+        return '';
+      }
+
       return renderDescription({ renderer, content, item: property.property });
     }
   },
