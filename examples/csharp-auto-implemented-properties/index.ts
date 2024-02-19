@@ -1,7 +1,7 @@
 import { CSharpGenerator } from '../../src';
 
 const generator = new CSharpGenerator({
-  autoImplementedProperties: false
+  autoImplementedProperties: true
 });
 
 const jsonSchemaDraft7 = {
