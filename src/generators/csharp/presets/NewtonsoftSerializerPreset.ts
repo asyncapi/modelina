@@ -92,7 +92,9 @@ function renderDeserialize({
       prop.property instanceof ConstrainedReferenceModel &&
       prop.property.ref instanceof ConstrainedEnumModel
     ) {
-      toValue = `${prop.property.name}Extensions.To${prop.property.name}(jo["${prop.unconstrainedPropertyName}"].ToString())`;
+      toValue = `${prop.property.name}Extensions.To${prop.property.name}(jo["${
+        prop.unconstrainedPropertyName
+      }"].ToString())${prop.required ? '.Value' : ''}`;
     }
     return `if(jo["${prop.unconstrainedPropertyName}"] != null) {
   value.${propertyAccessor} = ${toValue};
