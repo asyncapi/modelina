@@ -29,3 +29,33 @@ interface AnonymousSchema_1 {
   aa_00_testAttribute?: string;
 }
 ```
+
+## C#
+
+### Constant values are now properly rendered as const properties
+
+This example used to generate a `string` with a getter and setter, but will now generate a const string that is initialized to the const value provided. 
+
+```yaml
+type: object
+properties:
+  property:
+    type: string
+    const: 'abc'
+```
+
+will generate
+
+```csharp
+public class TestClass {
+  private const string property = "test";  
+  
+  public string Property 
+  {
+    get { return property; }
+  }
+  ...
+}
+```
+
+Notice that `Property` no longer has a `set` method. This might break existing models.
