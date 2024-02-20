@@ -1,7 +1,7 @@
 import { CSharpFileGenerator, JavaFileGenerator, JavaScriptFileGenerator, TypeScriptFileGenerator, GoFileGenerator, Logger, DartFileGenerator, PythonFileGenerator, RustFileGenerator, TS_COMMON_PRESET, TS_JSONBINPACK_PRESET, CSHARP_DEFAULT_PRESET, CSHARP_NEWTONSOFT_SERIALIZER_PRESET, CSHARP_COMMON_PRESET, CSHARP_JSON_SERIALIZER_PRESET, KotlinFileGenerator, TS_DESCRIPTION_PRESET, PhpFileGenerator, CplusplusFileGenerator, JAVA_CONSTRAINTS_PRESET, JAVA_JACKSON_PRESET, JAVA_COMMON_PRESET, JAVA_DESCRIPTION_PRESET } from '@asyncapi/modelina';
 import { Flags } from '@oclif/core';
 import { ConvertDocumentParserAPIVersion } from '@smoya/multi-parser';
-import Command from '../../base.js';
+import ModelinaCommand from '../../base.js';
 import { load } from '../../models/SpecificationFile.js';
 import { formatOutput, parse, validationFlags } from '../../parser.js';
 
@@ -22,7 +22,7 @@ enum Languages {
 }
 const possibleLanguageValues = Object.values(Languages).join(', ');
 
-export default class Models extends Command {
+export default class Models extends ModelinaCommand {
   static description = 'Generates typed models';
   static args = [
     {
@@ -31,7 +31,10 @@ export default class Models extends Command {
       options: Object.keys(Languages),
       required: true
     },
-    { name: 'file', description: 'Path or URL to the AsyncAPI document, or context-name', required: true },
+    { name: 'file', 
+      description: 'Path or URL to the AsyncAPI document, or context-name', 
+      required: true 
+    },
   ];
 
   static flags = {

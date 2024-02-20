@@ -1,6 +1,6 @@
 import { Command } from '@oclif/core';
 
-export default abstract class extends Command {
+export default abstract class ModelinaCommand extends Command {
   async catch(err: Error & { exitCode?: number; }): Promise<any> {
     try {
       return await super.catch(err);
