@@ -127,7 +127,7 @@ internal class TestConverter : JsonConverter<Test>
     if(value.EnumProp != null) {
       // write property name and let the serializer serialize the value itself
       writer.WritePropertyName(\\"enumProp\\");
-      JsonSerializer.Serialize(writer, value.EnumTest?.GetValue(), options);
+      JsonSerializer.Serialize(writer, value.EnumProp?.GetValue(), options);
     }
     if(value.ObjectProp != null) {
       // write property name and let the serializer serialize the value itself
