@@ -10,18 +10,11 @@ import { ConstrainedMetaModel } from '../models';
 export function renderJavaScriptDependency(
   toImport: string,
   fromModule: string,
-  moduleSystem: 'CJS' | 'ESM',
-  importType: 'type' | 'value' = 'value'
+  moduleSystem: 'CJS' | 'ESM'
 ): string {
-  const importValueStatement =
-    moduleSystem === 'CJS'
-      ? `const ${toImport} = require('${fromModule}');`
-      : `import ${toImport} from '${fromModule}';`;
-  const importTypeStatement =
-    moduleSystem === 'CJS'
-      ? `const ${toImport} = require('${fromModule}');`
-      : `import type ${toImport} from '${fromModule}';`;
-  return importType === 'type' ? importTypeStatement : importValueStatement;
+  return moduleSystem === 'CJS'
+    ? `const ${toImport} = require('${fromModule}');`
+    : `import ${toImport} from '${fromModule}';`;
 }
 
 /**
