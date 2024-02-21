@@ -29,10 +29,6 @@ function renderUnmarshalProperty(
  * Render the code for unmarshalling of regular properties
  */
 function unmarshalRegularProperty(propModel: ConstrainedObjectPropertyModel) {
-  if (propModel.property.options.const) {
-    return undefined;
-  }
-
   const modelInstanceVariable = `obj["${propModel.unconstrainedPropertyName}"]`;
   const unmarshalCode = renderUnmarshalProperty(
     modelInstanceVariable,

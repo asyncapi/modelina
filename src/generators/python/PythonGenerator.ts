@@ -35,8 +35,7 @@ import {
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 import { PythonDependencyManager } from './PythonDependencyManager';
 
-export interface PythonOptions
-  extends CommonGeneratorOptions<PythonPreset, PythonDependencyManager> {
+export interface PythonOptions extends CommonGeneratorOptions<PythonPreset> {
   typeMapping: TypeMapping<PythonOptions, PythonDependencyManager>;
   constraints: Constraints<PythonOptions>;
   importsStyle: 'explicit' | 'implicit';

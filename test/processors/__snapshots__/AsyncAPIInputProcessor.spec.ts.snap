@@ -1607,117 +1607,111 @@ InputMetaModel {
         "title": "CloudEvent example",
         "version": "1.0.0",
       },
-      "x-parser-api-version": 3,
+      "x-parser-api-version": 2,
       "x-parser-spec-parsed": true,
     },
     "_meta": Object {
       "asyncapi": Object {
-        "input": Object {
-          "asyncapi": "2.5.0",
-          "channels": Object {
-            "pet": Object {
-              "publish": Object {
-                "message": Object {
-                  "oneOf": Array [
-                    Object {
-                      "$ref": "#/components/messages/Dog",
-                    },
-                    Object {
-                      "$ref": "#/components/messages/Cat",
-                    },
-                  ],
-                },
-              },
+        "input": "{
+  \\"asyncapi\\": \\"2.5.0\\",
+  \\"defaultContentType\\": \\"application/json\\",
+  \\"info\\": {
+    \\"title\\": \\"CloudEvent example\\",
+    \\"version\\": \\"1.0.0\\"
+  },
+  \\"channels\\": {
+    \\"pet\\": {
+      \\"publish\\": {
+        \\"message\\": {
+          \\"oneOf\\": [
+            {
+              \\"$ref\\": \\"#/components/messages/Dog\\"
             },
-          },
-          "components": Object {
-            "messages": Object {
-              "Cat": Object {
-                "payload": Object {
-                  "allOf": Array [
-                    Object {
-                      "$ref": "#/components/schemas/CloudEvent",
-                    },
-                    Object {
-                      "properties": Object {
-                        "type": Object {
-                          "const": "Cat",
-                          "title": "CatType",
-                        },
-                      },
-                      "type": "object",
-                    },
-                  ],
-                  "title": "Cat",
-                },
-              },
-              "Dog": Object {
-                "payload": Object {
-                  "allOf": Array [
-                    Object {
-                      "$ref": "#/components/schemas/CloudEvent",
-                    },
-                    Object {
-                      "properties": Object {
-                        "type": Object {
-                          "const": "Dog",
-                          "title": "DogType",
-                        },
-                      },
-                      "type": "object",
-                    },
-                  ],
-                  "title": "Dog",
-                },
-              },
+            {
+              \\"$ref\\": \\"#/components/messages/Cat\\"
+            }
+          ]
+        }
+      }
+    }
+  },
+  \\"components\\": {
+    \\"messages\\": {
+      \\"Dog\\": {
+        \\"payload\\": {
+          \\"title\\": \\"Dog\\",
+          \\"allOf\\": [
+            {
+              \\"$ref\\": \\"#/components/schemas/CloudEvent\\"
             },
-            "schemas": Object {
-              "CloudEvent": Object {
-                "discriminator": "type",
-                "properties": Object {
-                  "dataschema": Object {
-                    "format": "uri",
-                    "type": "string",
-                  },
-                  "id": Object {
-                    "type": "string",
-                  },
-                  "source": Object {
-                    "format": "uri-reference",
-                    "type": "string",
-                  },
-                  "specversion": Object {
-                    "default": "1.0",
-                    "examples": Array [
-                      "1.0",
-                    ],
-                    "type": "string",
-                  },
-                  "time": Object {
-                    "format": "date-time",
-                    "type": "string",
-                  },
-                  "type": Object {
-                    "type": "string",
-                  },
-                },
-                "required": Array [
-                  "id",
-                  "source",
-                  "specversion",
-                  "type",
-                ],
-                "title": "CloudEvent",
-                "type": "object",
-              },
+            {
+              \\"type\\": \\"object\\",
+              \\"properties\\": {
+                \\"type\\": {
+                  \\"title\\": \\"DogType\\",
+                  \\"const\\": \\"Dog\\"
+                }
+              }
+            }
+          ]
+        }
+      },
+      \\"Cat\\": {
+        \\"payload\\": {
+          \\"title\\": \\"Cat\\",
+          \\"allOf\\": [
+            {
+              \\"$ref\\": \\"#/components/schemas/CloudEvent\\"
             },
+            {
+              \\"type\\": \\"object\\",
+              \\"properties\\": {
+                \\"type\\": {
+                  \\"title\\": \\"CatType\\",
+                  \\"const\\": \\"Cat\\"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    \\"schemas\\": {
+      \\"CloudEvent\\": {
+        \\"title\\": \\"CloudEvent\\",
+        \\"type\\": \\"object\\",
+        \\"discriminator\\": \\"type\\",
+        \\"properties\\": {
+          \\"id\\": {
+            \\"type\\": \\"string\\"
           },
-          "defaultContentType": "application/json",
-          "info": Object {
-            "title": "CloudEvent example",
-            "version": "1.0.0",
+          \\"source\\": {
+            \\"type\\": \\"string\\",
+            \\"format\\": \\"uri-reference\\"
           },
+          \\"specversion\\": {
+            \\"type\\": \\"string\\",
+            \\"default\\": \\"1.0\\",
+            \\"examples\\": [\\"1.0\\"]
+          },
+          \\"type\\": {
+            \\"type\\": \\"string\\"
+          },
+          \\"dataschema\\": {
+            \\"type\\": \\"string\\",
+            \\"format\\": \\"uri\\"
+          },
+          \\"time\\": {
+            \\"type\\": \\"string\\",
+            \\"format\\": \\"date-time\\"
+          }
         },
+        \\"required\\": [\\"id\\", \\"source\\", \\"specversion\\", \\"type\\"]
+      }
+    }
+  }
+}
+",
         "parsed": Object {
           "asyncapi": "2.5.0",
           "channels": Object {
@@ -2046,7 +2040,7 @@ InputMetaModel {
             "title": "CloudEvent example",
             "version": "1.0.0",
           },
-          "x-parser-api-version": 3,
+          "x-parser-api-version": 2,
           "x-parser-spec-parsed": true,
         },
         "semver": Object {
@@ -3579,116 +3573,110 @@ InputMetaModel {
         "title": "CloudEvent example",
         "version": "1.0.0",
       },
-      "x-parser-api-version": 3,
+      "x-parser-api-version": 2,
       "x-parser-spec-parsed": true,
     },
     "_meta": Object {
       "asyncapi": Object {
-        "input": Object {
-          "asyncapi": "2.5.0",
-          "channels": Object {
-            "pet": Object {
-              "publish": Object {
-                "message": Object {
-                  "oneOf": Array [
-                    Object {
-                      "$ref": "#/components/messages/Dog",
-                    },
-                    Object {
-                      "$ref": "#/components/messages/Cat",
-                    },
-                  ],
-                },
-              },
+        "input": "{
+  \\"asyncapi\\": \\"2.5.0\\",
+  \\"defaultContentType\\": \\"application/json\\",
+  \\"info\\": {
+    \\"title\\": \\"CloudEvent example\\",
+    \\"version\\": \\"1.0.0\\"
+  },
+  \\"channels\\": {
+    \\"pet\\": {
+      \\"publish\\": {
+        \\"message\\": {
+          \\"oneOf\\": [
+            {
+              \\"$ref\\": \\"#/components/messages/Dog\\"
             },
-          },
-          "components": Object {
-            "messages": Object {
-              "Cat": Object {
-                "payload": Object {
-                  "allOf": Array [
-                    Object {
-                      "$ref": "#/components/schemas/CloudEvent",
-                    },
-                    Object {
-                      "properties": Object {
-                        "type": Object {
-                          "const": "Cat",
-                        },
-                      },
-                      "type": "object",
-                    },
-                  ],
-                  "title": "Cat",
-                },
-              },
-              "Dog": Object {
-                "payload": Object {
-                  "allOf": Array [
-                    Object {
-                      "$ref": "#/components/schemas/CloudEvent",
-                    },
-                    Object {
-                      "properties": Object {
-                        "type": Object {
-                          "const": "Dog",
-                        },
-                      },
-                      "type": "object",
-                    },
-                  ],
-                  "title": "Dog",
-                },
-              },
+            {
+              \\"$ref\\": \\"#/components/messages/Cat\\"
+            }
+          ]
+        }
+      }
+    }
+  },
+  \\"components\\": {
+    \\"messages\\": {
+      \\"Dog\\": {
+        \\"payload\\": {
+          \\"title\\": \\"Dog\\",
+          \\"allOf\\": [
+            {
+              \\"$ref\\": \\"#/components/schemas/CloudEvent\\"
             },
-            "schemas": Object {
-              "CloudEvent": Object {
-                "discriminator": "type",
-                "properties": Object {
-                  "dataschema": Object {
-                    "format": "uri",
-                    "type": "string",
-                  },
-                  "id": Object {
-                    "type": "string",
-                  },
-                  "source": Object {
-                    "format": "uri-reference",
-                    "type": "string",
-                  },
-                  "specversion": Object {
-                    "default": "1.0",
-                    "examples": Array [
-                      "1.0",
-                    ],
-                    "type": "string",
-                  },
-                  "time": Object {
-                    "format": "date-time",
-                    "type": "string",
-                  },
-                  "type": Object {
-                    "title": "CloudEventType",
-                    "type": "string",
-                  },
-                },
-                "required": Array [
-                  "id",
-                  "source",
-                  "specversion",
-                  "type",
-                ],
-                "title": "CloudEvent",
-                "type": "object",
-              },
+            {
+              \\"type\\": \\"object\\",
+              \\"properties\\": {
+                \\"type\\": {
+                  \\"const\\": \\"Dog\\"
+                }
+              }
+            }
+          ]
+        }
+      },
+      \\"Cat\\": {
+        \\"payload\\": {
+          \\"title\\": \\"Cat\\",
+          \\"allOf\\": [
+            {
+              \\"$ref\\": \\"#/components/schemas/CloudEvent\\"
             },
+            {
+              \\"type\\": \\"object\\",
+              \\"properties\\": {
+                \\"type\\": {
+                  \\"const\\": \\"Cat\\"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    \\"schemas\\": {
+      \\"CloudEvent\\": {
+        \\"title\\": \\"CloudEvent\\",
+        \\"type\\": \\"object\\",
+        \\"discriminator\\": \\"type\\",
+        \\"properties\\": {
+          \\"id\\": {
+            \\"type\\": \\"string\\"
           },
-          "defaultContentType": "application/json",
-          "info": Object {
-            "title": "CloudEvent example",
-            "version": "1.0.0",
+          \\"source\\": {
+            \\"type\\": \\"string\\",
+            \\"format\\": \\"uri-reference\\"
           },
+          \\"specversion\\": {
+            \\"type\\": \\"string\\",
+            \\"default\\": \\"1.0\\",
+            \\"examples\\": [\\"1.0\\"]
+          },
+          \\"type\\": {
+            \\"title\\": \\"CloudEventType\\",
+            \\"type\\": \\"string\\"
+          },
+          \\"dataschema\\": {
+            \\"type\\": \\"string\\",
+            \\"format\\": \\"uri\\"
+          },
+          \\"time\\": {
+            \\"type\\": \\"string\\",
+            \\"format\\": \\"date-time\\"
+          }
         },
+        \\"required\\": [\\"id\\", \\"source\\", \\"specversion\\", \\"type\\"]
+      }
+    }
+  }
+}
+",
         "parsed": Object {
           "asyncapi": "2.5.0",
           "channels": Object {
@@ -4018,7 +4006,7 @@ InputMetaModel {
             "title": "CloudEvent example",
             "version": "1.0.0",
           },
-          "x-parser-api-version": 3,
+          "x-parser-api-version": 2,
           "x-parser-spec-parsed": true,
         },
         "semver": Object {
@@ -4136,36 +4124,36 @@ InputMetaModel {
         "title": "Signup service example (internal)",
         "version": "0.1.0",
       },
-      "x-parser-api-version": 3,
+      "x-parser-api-version": 2,
       "x-parser-spec-parsed": true,
     },
     "_meta": Object {
       "asyncapi": Object {
-        "input": Object {
-          "asyncapi": "2.0.0",
-          "channels": Object {
-            "/user/signedup": Object {
-              "subscribe": Object {
-                "message": Object {
-                  "payload": Object {
-                    "properties": Object {
-                      "email": Object {
-                        "format": "email",
-                        "type": "string",
-                      },
-                    },
-                    "type": "object",
-                  },
-                },
-              },
-            },
-          },
-          "defaultContentType": "application/json",
-          "info": Object {
-            "title": "Signup service example (internal)",
-            "version": "0.1.0",
-          },
-        },
+        "input": "{
+  \\"asyncapi\\": \\"2.0.0\\",
+  \\"defaultContentType\\": \\"application/json\\",
+  \\"info\\": {
+    \\"title\\": \\"Signup service example (internal)\\",
+    \\"version\\": \\"0.1.0\\"
+  },
+  \\"channels\\": {
+    \\"/user/signedup\\": {
+      \\"subscribe\\": {
+        \\"message\\": {
+          \\"payload\\": {
+            \\"type\\": \\"object\\",
+            \\"properties\\": {
+              \\"email\\": {
+                \\"type\\": \\"string\\",
+                \\"format\\": \\"email\\"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}",
         "parsed": Object {
           "asyncapi": "2.0.0",
           "channels": Object {
@@ -4193,7 +4181,7 @@ InputMetaModel {
             "title": "Signup service example (internal)",
             "version": "0.1.0",
           },
-          "x-parser-api-version": 3,
+          "x-parser-api-version": 2,
           "x-parser-spec-parsed": true,
         },
         "semver": Object {

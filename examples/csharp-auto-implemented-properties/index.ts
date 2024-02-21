@@ -1,7 +1,14 @@
-import { CSharpGenerator } from '../../src';
+import { CSharpGenerator, CSHARP_DEFAULT_PRESET } from '../../src';
 
 const generator = new CSharpGenerator({
-  autoImplementedProperties: true
+  presets: [
+    {
+      preset: CSHARP_DEFAULT_PRESET,
+      options: {
+        autoImplementedProperties: true
+      }
+    }
+  ]
 });
 
 const jsonSchemaDraft7 = {

@@ -10,7 +10,6 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
   private _unionArrayTest?: (NestedTest | string)[];
   private _arrayTest?: NestedTest[];
   private _tupleTest?: [NestedTest, string];
-  private _constTest?: 'TEST' = 'TEST';
   private _additionalProperties?: Map<string, NestedTest | string>;
 
   constructor(input: {
@@ -58,8 +57,6 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
 
   get tupleTest(): [NestedTest, string] | undefined { return this._tupleTest; }
   set tupleTest(tupleTest: [NestedTest, string] | undefined) { this._tupleTest = tupleTest; }
-
-  get constTest(): 'TEST' | undefined { return this._constTest; }
 
   get additionalProperties(): Map<string, NestedTest | string> | undefined { return this._additionalProperties; }
   set additionalProperties(additionalProperties: Map<string, NestedTest | string> | undefined) { this._additionalProperties = additionalProperties; }
@@ -117,13 +114,10 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
     }
     json += \`\\"tupleTest\\": [\${serializedTuple.join(',')}],\`;
     }
-    if(this.constTest !== undefined) {
-      json += \`\\"constTest\\": \${typeof this.constTest === 'number' || typeof this.constTest === 'boolean' ? this.constTest : JSON.stringify(this.constTest)},\`;
-    }
     if(this.additionalProperties !== undefined) { 
       for (const [key, value] of this.additionalProperties.entries()) {
         //Only unwrap those that are not already a property in the JSON object
-        if([\\"string prop\\",\\"enumProp\\",\\"numberProp\\",\\"nestedObject\\",\\"unionTest\\",\\"unionArrayTest\\",\\"arrayTest\\",\\"tupleTest\\",\\"constTest\\",\\"additionalProperties\\"].includes(String(key))) continue;
+        if([\\"string prop\\",\\"enumProp\\",\\"numberProp\\",\\"nestedObject\\",\\"unionTest\\",\\"unionArrayTest\\",\\"arrayTest\\",\\"tupleTest\\",\\"additionalProperties\\"].includes(String(key))) continue;
         if(value instanceof NestedTest) {
           json += \`\\"\${key}\\": \${value.marshal()},\`;
         } else {
@@ -163,10 +157,9 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
     if (obj[\\"tupleTest\\"] !== undefined) {
       instance.tupleTest = obj[\\"tupleTest\\"];
     }
-
   
     instance.additionalProperties = new Map();
-    const propsToCheck = Object.entries(obj).filter((([key,]) => {return ![\\"string prop\\",\\"enumProp\\",\\"numberProp\\",\\"nestedObject\\",\\"unionTest\\",\\"unionArrayTest\\",\\"arrayTest\\",\\"tupleTest\\",\\"constTest\\",\\"additionalProperties\\"].includes(key);}));
+    const propsToCheck = Object.entries(obj).filter((([key,]) => {return ![\\"string prop\\",\\"enumProp\\",\\"numberProp\\",\\"nestedObject\\",\\"unionTest\\",\\"unionArrayTest\\",\\"arrayTest\\",\\"tupleTest\\",\\"additionalProperties\\"].includes(key);}));
     for (const [key, value] of propsToCheck) {
       instance.additionalProperties.set(key, value as any);
     }

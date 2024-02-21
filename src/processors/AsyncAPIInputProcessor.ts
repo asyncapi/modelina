@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable @typescript-eslint/no-var-requires */
-import {
+import Parser, {
   isAsyncAPIDocument,
   isOldAsyncAPIDocument,
   AsyncAPIDocumentInterface,
@@ -18,10 +18,7 @@ import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
 import { convertToMetaModel } from '../helpers';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
-import {
-  ConvertDocumentParserAPIVersion,
-  NewParser
-} from '@smoya/multi-parser';
+import { NewParser } from '@smoya/multi-parser';
 import { createDetailedAsyncAPI } from '@asyncapi/parser/cjs/utils';
 
 /**
@@ -49,8 +46,10 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     input?: any,
     options?: ProcessorOptions
   ): Promise<InputMetaModel> {
-    const rawInput = input;
-    let doc: AsyncAPIDocumentInterface | undefined;
+    let rawInput = input;
+    if (this.isFileInput(input)) {
+      rawInput = await this.getParsedFileInput(input);
+    }
 
     if (!this.shouldProcess(rawInput)) {
       throw new Error(
@@ -59,33 +58,23 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     }
 
     Logger.debug('Processing input as an AsyncAPI document');
+    let doc: AsyncAPIDocumentInterface | undefined;
     const inputModel = new InputMetaModel();
     if (isOldAsyncAPIDocument(rawInput)) {
       // Is from old parser
       const parsedJSON = rawInput.json();
       const detailed = createDetailedAsyncAPI(parsedJSON, parsedJSON);
       doc = createAsyncAPIDocument(detailed);
-    } else if (AsyncAPIInputProcessor.isFromNewParser(rawInput)) {
-      doc = ConvertDocumentParserAPIVersion(rawInput, 2) as any;
     } else {
       const parserOptions = options?.asyncapi || {};
       const parser = NewParser(2, {
         parserOptions,
         includeSchemaParsers: true
       });
-
-      let parserResult;
-      if (this.isFileInput(input)) {
-        const filePath = fileURLToPath(input);
-        /* eslint-disable-next-line security/detect-non-literal-fs-filename -- Safe as it just checks file existance */
-        if (!fs.existsSync(filePath)) {
-          throw new Error('File does not exists.');
-        }
-        parserResult = await fromFile(parser as any, filePath).parse();
-      } else {
-        parserResult = await parser.parse(rawInput, parserOptions);
-      }
-      const { document, diagnostics } = parserResult;
+      const { document, diagnostics } = await parser.parse(
+        rawInput,
+        parserOptions
+      );
       if (document) {
         doc = document as unknown as AsyncAPIDocumentInterface;
       } else {
@@ -429,5 +418,23 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
   isFileInput(input: any): boolean {
     // prettier-ignore
     return typeof input === 'string' && (/^file:\/\//g).test(input);
+  }
+
+  async getParsedFileInput(input: string): Promise<AsyncAPIDocumentInterface> {
+    const filePath = fileURLToPath(input);
+    /* eslint-disable-next-line security/detect-non-literal-fs-filename -- Safe as it just checks file existance */
+    if (!fs.existsSync(filePath)) {
+      throw new Error('File does not exists.');
+    }
+    const parser = new Parser();
+    const { document, diagnostics } = await fromFile(parser, filePath).parse();
+    if (!document) {
+      const err = new Error(
+        'Input is not an correct AsyncAPI document so it cannot be processed.'
+      );
+      (err as any).diagnostics = diagnostics;
+      throw err;
+    }
+    return document;
   }
 }

@@ -18,7 +18,7 @@ In some cases you might want to use [pydantic](https://pypi.org/project/pydantic
 You can find an example of its use [here](../../examples/generate-python-pydantic-models/index.ts)
 
 ## Generate models with JSON Serializer and Deserializer methods
-Using the preset `PYTON_JSON_SERIALIZER`, you can generate `serializeToJson` method to convert model instance to JSON and `deserializeFromJson` method to convert JSON to model instance.
+Using the preset [PYTON_JSON_SERIALIZER](../../src/generators/python/presets/JsonSerializer.ts), you can generate `serializeToJson` method to convert model instance to JSON and `deserializeFromJson` method to convert JSON to model instance.
 
 ### Limitations
 1. Above preset doesn't unwrap properties of type `ConstrainedDictionaryModel` with `serialilzationType = unwrap`
