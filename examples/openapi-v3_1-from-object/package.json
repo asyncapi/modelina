@@ -1,5 +1,5 @@
 {
-  "config" : { "example_name" : "openapi-from-object" },
+  "config" : { "example_name" : "openapi-v3_1-from-object" },
   "scripts": {
     "install": "cd ../.. && npm i",
     "start": "../../node_modules/.bin/ts-node --cwd ../../ ./examples/$npm_package_config_example_name/index.ts",

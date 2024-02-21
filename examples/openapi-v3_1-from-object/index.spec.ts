@@ -2,7 +2,7 @@ const spy = jest.spyOn(global.console, 'log').mockImplementation(() => {
   return;
 });
 import { generate } from './index';
-describe('Should be able to process a pure OpenAPI object', () => {
+describe('Should be able to process a pure OpenAPI V3.1 object', () => {
   afterAll(() => {
     jest.restoreAllMocks();
   });

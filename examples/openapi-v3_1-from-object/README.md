@@ -1,4 +1,4 @@
-# OpenAPI from object
+# OpenAPI 3.1 from object
 
 A basic example of how to use Modelina with a basic OpenAPI v3.1.0 object.
 
