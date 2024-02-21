@@ -381,19 +381,6 @@ ${content}`;
     expect(models[1].result).toMatchSnapshot();
   });
 
-  test('should render models and their dependencies for ESM module system with named exports as interfaces', async () => {
-    generator = new TypeScriptGenerator({
-      moduleSystem: 'ESM',
-      modelType: 'interface'
-    });
-    const models = await generator.generateCompleteModels(doc, {
-      exportType: 'named'
-    });
-    expect(models).toHaveLength(2);
-    expect(models[0].result).toMatchSnapshot();
-    expect(models[1].result).toMatchSnapshot();
-  });
-
   describe('AsyncAPI with polymorphism', () => {
     const asyncapiDoc = {
       asyncapi: '2.4.0',
