@@ -17,9 +17,6 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "baseUrl": "./",
-    "paths": {
-      "@modelina/generators": ["../modelina/src/generators"]
-    }
   },
   "include": ["./src/**/*"],
   "ts-node": {
