@@ -1,7 +1,6 @@
 import { CSharpFileGenerator, JavaFileGenerator, JavaScriptFileGenerator, TypeScriptFileGenerator, GoFileGenerator, Logger, DartFileGenerator, PythonFileGenerator, RustFileGenerator, TS_COMMON_PRESET, TS_JSONBINPACK_PRESET, CSHARP_NEWTONSOFT_SERIALIZER_PRESET, CSHARP_COMMON_PRESET, CSHARP_JSON_SERIALIZER_PRESET, KotlinFileGenerator, TS_DESCRIPTION_PRESET, PhpFileGenerator, CplusplusFileGenerator, JAVA_CONSTRAINTS_PRESET, JAVA_JACKSON_PRESET, JAVA_COMMON_PRESET, JAVA_DESCRIPTION_PRESET, ScalaFileGenerator } from '@asyncapi/modelina';
 import { Flags } from '@oclif/core';
 import ModelinaCommand from '../../base';
-import { load } from '../../models/SpecificationFile';
 
 import type { AbstractGenerator, AbstractFileGenerator } from '@asyncapi/modelina';
 
@@ -168,7 +167,6 @@ export default class Models extends ModelinaCommand {
     const { args, flags } = await this.parse(Models);
     const { tsModelType, tsEnumType, tsIncludeComments, tsModuleSystem, tsExportType, tsJsonBinPack, tsMarshalling, tsExampleInstance, namespace, csharpAutoImplement, csharpArrayType, csharpNewtonsoft, csharpHashcode, csharpEqual, csharpSystemJson, packageName, javaIncludeComments, javaJackson, javaConstraints, output } = flags;
     const { language, file } = args;
-    const inputFile = (await load(file)) || (await load());
 
     Logger.setLogger({
       info: (message) => {
@@ -193,7 +191,7 @@ export default class Models extends ModelinaCommand {
       example: tsExampleInstance,
     };
     switch (language) {
-    case Languages.typescript:
+    case Languages.typescript: {
       presets.push({
         preset: TS_COMMON_PRESET,
         options
@@ -206,6 +204,7 @@ export default class Models extends ModelinaCommand {
         },
         TS_JSONBINPACK_PRESET);
       }
+
       fileGenerator = new TypeScriptFileGenerator({
         modelType: tsModelType as 'class' | 'interface',
         enumType: tsEnumType as 'enum' | 'union',
@@ -216,22 +215,31 @@ export default class Models extends ModelinaCommand {
         exportType: tsExportType
       };
       break;
-    case Languages.python:
+    }
+
+    case Languages.python: {
       fileGenerator = new PythonFileGenerator();
       break;
-    case Languages.rust:
+    }
+
+    case Languages.rust: {
       fileGenerator = new RustFileGenerator();
       break;
-    case Languages.csharp:
+    }
+
+    case Languages.csharp: {
       if (namespace === undefined) {
         throw new Error('In order to generate models to C#, we need to know which namespace they are under. Add `--namespace=NAMESPACE` to set the desired namespace.');
       }
+
       if (csharpNewtonsoft) {
         presets.push(CSHARP_NEWTONSOFT_SERIALIZER_PRESET);
       }
+
       if (csharpSystemJson) {
         presets.push(CSHARP_JSON_SERIALIZER_PRESET);
       }
+
       if (csharpHashcode || csharpEqual) {
         presets.push({
           preset: CSHARP_COMMON_PRESET,
@@ -252,36 +260,48 @@ export default class Models extends ModelinaCommand {
         namespace
       };
       break;
-    case Languages.cplusplus:
+    }
+
+    case Languages.cplusplus: {
       if (namespace === undefined) {
         throw new Error('In order to generate models to C++, we need to know which namespace they are under. Add `--namespace=NAMESPACE` to set the desired namespace.');
       }
+
       fileGenerator = new CplusplusFileGenerator({
         namespace
       });
       break;
-    case Languages.scala:
+    }
+
+    case Languages.scala: {
       if (packageName === undefined) {
         throw new Error('In order to generate models to Scala, we need to know which package they are under. Add `--packageName=PACKAGENAME` to set the desired package name.');
       }
+
       fileGenerator = new ScalaFileGenerator();
       fileOptions = {
         packageName
       };
       break;
-    case Languages.golang:
+    }
+
+    case Languages.golang: {
       if (packageName === undefined) {
         throw new Error('In order to generate models to Go, we need to know which package they are under. Add `--packageName=PACKAGENAME` to set the desired package name.');
       }
+
       fileGenerator = new GoFileGenerator();
       fileOptions = {
         packageName
       };
       break;
-    case Languages.java:
+    }
+
+    case Languages.java: {
       if (packageName === undefined) {
         throw new Error('In order to generate models to Java, we need to know which package they are under. Add `--packageName=PACKAGENAME` to set the desired package name.');
       }
+
       presets.push({
         preset: JAVA_COMMON_PRESET,
         options
@@ -294,38 +314,52 @@ export default class Models extends ModelinaCommand {
         packageName
       };
       break;
-    case Languages.javascript:
+    }
+
+    case Languages.javascript: {
       fileGenerator = new JavaScriptFileGenerator();
       break;
-    case Languages.dart:
+    }
+
+    case Languages.dart: {
       if (packageName === undefined) {
         throw new Error('In order to generate models to Dart, we need to know which package they are under. Add `--packageName=PACKAGENAME` to set the desired package name.');
       }
+
       fileGenerator = new DartFileGenerator();
       fileOptions = {
         packageName
       };
       break;
-    case Languages.kotlin:
+    }
+
+    case Languages.kotlin: {
       if (packageName === undefined) {
         throw new Error('In order to generate models to Kotlin, we need to know which package they are under. Add `--packageName=PACKAGENAME` to set the desired package name.');
       }
+
       fileGenerator = new KotlinFileGenerator();
       fileOptions = {
         packageName
       };
       break;
-    case Languages.php:
+    }
+
+    case Languages.php: {
       if (namespace === undefined) {
         throw new Error('In order to generate models to PHP, we need to know which namespace they are under. Add `--namespace=NAMESPACE` to set the desired namespace.');
       }
+
       fileGenerator = new PhpFileGenerator();
       fileOptions = {
         namespace
       };
       break;
-    default:
+    }
+
+    default: {
       throw new Error(`Could not determine generator for language ${language}, are you using one of the following values ${possibleLanguageValues}?`);
+    }
     }
 
     if (output) {

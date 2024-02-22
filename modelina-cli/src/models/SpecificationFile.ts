@@ -1,6 +1,6 @@
-import { promises as fs } from 'fs';
-import path from 'path';
-import { URL } from 'url';
+import { promises as fs } from 'node:fs';
+import path from 'node:path';
+import { URL } from 'node:url';
 import fetch from 'node-fetch';
 import yaml from 'js-yaml';
 import { loadContext } from './Context';
@@ -42,7 +42,7 @@ export class Specification {
   toJson(): Record<string, any> {
     try {
       return yaml.load(this.spec, {json: true}) as Record<string, any>;
-    } catch (e) {
+    } catch {
       return JSON.parse(this.spec);
     }
   }
@@ -71,6 +71,7 @@ export class Specification {
     if (this.kind === 'file') {
       return `File ${this.filePath}`;
     }
+
     return `URL ${this.fileURL}`;
   }
 
@@ -78,9 +79,10 @@ export class Specification {
     let spec;
     try {
       spec = await readFile(filepath, { encoding: 'utf8' });
-    } catch (error) {
+    } catch {
       throw new ErrorLoadingSpec('file', filepath);
     }
+
     return new Specification(spec, { filepath });
   }
 
@@ -91,9 +93,10 @@ export class Specification {
       if (!response.ok) {
         throw new ErrorLoadingSpec('url', URLpath);
       }
-    } catch (error) {
+    } catch {
       throw new ErrorLoadingSpec('url', URLpath);
     }
+
     return new Specification(await response?.text() as string, { fileURL: URLpath });
   }
 }
@@ -135,23 +138,24 @@ export async function load(filePathOrContextName?: string, loadType?: LoadType):
     if (type === TYPE_URL) {
       return Specification.fromURL(filePathOrContextName);
     }
+
     await fileExists(filePathOrContextName);
     return Specification.fromFile(filePathOrContextName);
   }
 
   try {
     return await loadFromContext();
-  } catch (e) {
+  } catch (error) {
     const autoDetectedSpecFile = await detectSpecFile();
     if (autoDetectedSpecFile) {
       return Specification.fromFile(autoDetectedSpecFile);
     }
 
-    if (e instanceof MissingContextFileError) {
+    if (error instanceof MissingContextFileError) {
       throw new ErrorLoadingSpec();
     }
 
-    throw e;
+    throw error;
   }
 }
 
@@ -164,8 +168,9 @@ export async function nameType(name: string): Promise<string> {
     if (await fileExists(name)) {
       return TYPE_FILE_PATH;
     }
+
     return TYPE_CONTEXT_NAME;
-  } catch (e) {
+  } catch {
     if (await isURL(name)) { return TYPE_URL; }
     return TYPE_CONTEXT_NAME;
   }
@@ -175,7 +180,7 @@ export async function isURL(urlpath: string): Promise<boolean> {
   try {
     const url = new URL(urlpath);
     return url.protocol === 'http:' || url.protocol === 'https:';
-  } catch (error) {
+  } catch {
     return false;
   }
 }
@@ -195,7 +200,7 @@ export async function fileExists(name: string): Promise<boolean> {
     }
    
     throw new ErrorLoadingSpec('file', name);
-  } catch (e) {
+  } catch {
     throw new ErrorLoadingSpec('file', name);
   }
 }
@@ -215,7 +220,7 @@ async function detectSpecFile(): Promise<string | undefined> {
     try {
       const exists = await fileExists(path.resolve(process.cwd(), filename));
       return exists ? filename : undefined;
-    } catch (e) {
+    } catch {
       // We did our best...
     }
   }));

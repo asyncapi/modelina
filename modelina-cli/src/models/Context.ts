@@ -1,6 +1,6 @@
-import { readFileSync, promises as fs, existsSync, lstatSync } from 'fs';
-import * as path from 'path';
-import * as os from 'os';
+import { readFileSync, promises as fs, existsSync, lstatSync } from 'node:fs';
+import * as path from 'node:path';
+import * as os from 'node:os';
 
 import {
   ContextNotFoundError,
@@ -89,32 +89,41 @@ export async function initContext(contextFilePath: string) {
 
   // prettier-ignore
   switch (contextFilePath) {
-  /* eslint-disable indent */
-    case '.':
+   
+    case '.': {
       contextWritePath = process.cwd() + path.sep + CONTEXT_FILENAME;
       break;
-    case './':
+    }
+
+    case './': {
       contextWritePath = REPO_ROOT_PATH + path.sep + CONTEXT_FILENAME;
       break;
+    }
+
     // There are two variants of `~` case because tilde expansion in UNIX
     // systems is not a guaranteed feature - sometimes `~` can return just `~`
     // instead of home directory path.
     // https://stackoverflow.com/questions/491877/how-to-find-a-users-home-directory-on-linux-or-unix#comment17161699_492669
-    case os.homedir():
+    case os.homedir(): {
       contextWritePath = os.homedir() + path.sep + CONTEXT_FILENAME;
       break;
-    case '~':
+    }
+
+    case '~': {
       contextWritePath = os.homedir() + path.sep + CONTEXT_FILENAME;
       break;
-    default:
+    }
+
+    default: {
       contextWritePath = process.cwd() + path.sep + CONTEXT_FILENAME;
+    }
   }
 
   try {
     await writeFile(contextWritePath, JSON.stringify(fileContent), {
       encoding: 'utf8',
     });
-  } catch (e) {
+  } catch {
     throw new ContextFileWriteError(contextWritePath);
   }
 
@@ -128,14 +137,19 @@ export async function loadContext(contextName?: string): Promise<string> {
     if (!context) {
       throw new ContextNotFoundError(contextName);
     }
+
     return context;
-  } else if (fileContent.current) {
+  }
+
+ if (fileContent.current) {
     const context = fileContent.store[fileContent.current];
     if (!context) {
       throw new ContextNotFoundError(fileContent.current);
     }
+
     return context;
   }
+
   throw new MissingCurrentContextError();
 }
 
@@ -159,9 +173,11 @@ export async function removeContext(contextName: string) {
   if (await isContextFileEmpty(fileContent)) {
     throw new ContextFileEmptyError(CONTEXT_FILE_PATH);
   }
+
   if (!fileContent.store[String(contextName)]) {
     throw new ContextNotFoundError(contextName);
   }
+
   if (fileContent.current === contextName) {
     delete fileContent.current;
   }
@@ -222,7 +238,7 @@ export async function loadContextFile(): Promise<IContextFile> {
   // error.
   try {
     await readFile(CONTEXT_FILE_PATH, { encoding: 'utf8' });
-  } catch (e) {
+  } catch {
     throw new MissingContextFileError();
   }
 
@@ -232,7 +248,7 @@ export async function loadContextFile(): Promise<IContextFile> {
     fileContent = JSON.parse(
       await readFile(CONTEXT_FILE_PATH, { encoding: 'utf8' })
     );
-  } catch (e) {
+  } catch {
     // https://stackoverflow.com/questions/29797946/handling-bad-json-parse-in-node-safely
     throw new ContextFileWrongFormatError(CONTEXT_FILE_PATH);
   }
@@ -256,7 +272,7 @@ async function saveContextFile(fileContent: IContextFile) {
       }),
       { encoding: 'utf8' }
     );
-  } catch (e) {
+  } catch {
     throw new ContextFileWriteError(CONTEXT_FILE_PATH);
   }
 }
@@ -306,6 +322,7 @@ async function getRepoRootPath(repoRootPath: string): Promise<string | null> {
 
     i--;
   }
+
   return null;
 }
 
@@ -329,7 +346,7 @@ async function getContextFilePath(): Promise<string | null> {
       // legitimate context file, then it is considered a legitimate context
       // file indeed.
       const fileContent = JSON.parse(
-        //we do not use await readFile because getContextFilePath cannot be called inside async function
+        // we do not use await readFile because getContextFilePath cannot be called inside async function
         readFileSync(currentPathString, {encoding: 'utf8'})
       );
       if (
@@ -343,6 +360,7 @@ async function getContextFilePath(): Promise<string | null> {
 
     currentPath.pop();
   }
+
   return null;
 }
 
@@ -351,10 +369,10 @@ async function isContextFileValid(fileContent: IContextFile): Promise<boolean> {
   return (
     [1, 2].includes(Object.keys(fileContent).length) &&
     fileContent.hasOwnProperty.call(fileContent, 'store') &&
-    !Array.from(Object.keys(fileContent.store)).find(
+    !Object.keys(fileContent.store).find(
       (elem) => typeof elem !== 'string'
     ) &&
-    !Array.from(Object.values(fileContent.store)).find(
+    !Object.values(fileContent.store).find(
       (elem) => typeof elem !== 'string'
     )
   );
