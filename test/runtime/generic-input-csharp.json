@@ -63,7 +63,8 @@
   },
   "required": [
     "house_number",
-    "array_type"
+    "array_type",
+    "houseType"
   ],
   "$defs": {
     "housing-types": {
