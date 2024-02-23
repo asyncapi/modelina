@@ -8,17 +8,12 @@ export class AvroSchema {
   namespace?: string;
   originalInput?: any;
   const?: string;
-  discriminator?: string;
-  format?: string;
   required?: string[];
-  extend?: AvroSchema[];
   doc?: string;
   aliases?: string[];
   symbols?: string[];
-  items?: unknown;
-  values?: unknown;
+  items?: string;
   fields?: AvroSchema[];
-  size?: number;
   example?: string | number;
   minimum?: number;
   maximum?: number;

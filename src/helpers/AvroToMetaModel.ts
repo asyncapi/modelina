@@ -19,26 +19,24 @@ import { Logger } from '../utils';
 function getMetaModelOptions(AvroModel: AvroSchema): MetaModelOptions {
   const options: MetaModelOptions = {};
 
-  if (AvroModel.const) {
-    options.const = {
-      originalInput: AvroModel.const
-    };
-  }
-  if (Array.isArray(AvroModel.type) && AvroModel.type.includes('null')) {
+  if (Array.isArray(AvroModel.type) && AvroModel.type !== null) {
     options.isNullable = true;
   } else {
     options.isNullable = false;
   }
-  if (AvroModel.discriminator) {
-    options.discriminator = {
-      discriminator: AvroModel.discriminator
-    };
-  }
-  if (AvroModel.format) {
-    options.format = AvroModel.format;
-  }
 
   return options;
+}
+
+function shouldBeAnyType(avroSchemaModel: AvroSchema): boolean {
+  // check the type array for the any type
+  const containsAllTypesButNotNull =
+    Array.isArray(avroSchemaModel.type) &&
+    avroSchemaModel.type.length >= 8 &&
+    avroSchemaModel.type !== null;
+  const containsAllTypes =
+    Array.isArray(avroSchemaModel.type) && avroSchemaModel.type.length === 10;
+  return containsAllTypesButNotNull || containsAllTypes;
 }
 
 export function AvroToMetaModel(
@@ -52,6 +50,13 @@ export function AvroToMetaModel(
 
   const modelName = avroSchemaModel.name || 'undefined';
 
+  if (shouldBeAnyType(avroSchemaModel)) {
+    return new AnyModel(
+      modelName,
+      avroSchemaModel.originalInput,
+      getMetaModelOptions(avroSchemaModel)
+    );
+  }
   const objectModel = toObjectModel(
     avroSchemaModel,
     modelName,
@@ -109,7 +114,7 @@ export function toBooleanModel(
   avroSchemaModel: AvroSchema,
   name: string
 ): BooleanModel | undefined {
-  if (!avroSchemaModel.type?.includes('boolean')) {
+  if (avroSchemaModel.type !== 'boolean') {
     return undefined;
   }
   return new BooleanModel(
@@ -122,10 +127,7 @@ export function toIntegerModel(
   avroSchemaModel: AvroSchema,
   name: string
 ): IntegerModel | undefined {
-  if (
-    !avroSchemaModel.type?.includes('int') ||
-    !avroSchemaModel.type?.includes('long')
-  ) {
+  if (avroSchemaModel.type !== 'int' && avroSchemaModel.type !== 'long') {
     return undefined;
   }
   return new IntegerModel(
@@ -138,10 +140,7 @@ export function toFloatModel(
   avroSchemaModel: AvroSchema,
   name: string
 ): FloatModel | undefined {
-  if (
-    !avroSchemaModel.type?.includes('float') ||
-    !avroSchemaModel.type?.includes('double')
-  ) {
+  if (avroSchemaModel.type !== 'float' && avroSchemaModel.type !== 'double') {
     return undefined;
   }
   return new FloatModel(
@@ -154,10 +153,7 @@ export function toStringModel(
   avroSchemaModel: AvroSchema,
   name: string
 ): StringModel | undefined {
-  if (
-    !avroSchemaModel.type?.includes('string') ||
-    !avroSchemaModel.type?.includes('bytes')
-  ) {
+  if (avroSchemaModel.type !== 'string') {
     return undefined;
   }
   return new StringModel(
@@ -171,7 +167,7 @@ export function toEnumModel(
   name: string
 ): EnumModel | undefined {
   if (
-    !avroSchemaModel.type?.includes('enum') ||
+    avroSchemaModel.type !== 'enum' ||
     !Array.isArray(avroSchemaModel.symbols)
   ) {
     return undefined;
@@ -197,27 +193,6 @@ export function toEnumModel(
   }
   return metaModel;
 }
-// checks if the typeof value can have any type
-function shouldBeAnyType(avroSchemaModel: AvroSchema): boolean {
-  // check the type array for the any type
-  const containsAllTypesButNotNull =
-    Array.isArray(avroSchemaModel.type) &&
-    avroSchemaModel.type.length >= 6 &&
-    !avroSchemaModel.type.includes('null');
-  const containsAllTypes =
-    (Array.isArray(avroSchemaModel.type) &&
-      avroSchemaModel.type.length === 7) ||
-    containsAllTypesButNotNull;
-  return containsAllTypesButNotNull || containsAllTypes;
-}
-/**
- * Converts a CommonModel into multiple models wrapped in a union model.
- *
- * Because a CommonModel might contain multiple models, it's name for each of those models would be the same, instead we slightly change the model name.
- * Each model has it's type as a name prepended to the union name.
- *
- * If the CommonModel has multiple types
- */
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function toUnionModel(
   avroSchemaModel: AvroSchema,
@@ -293,30 +268,14 @@ export function toUnionModel(
   if (objectModel !== undefined) {
     unionModel.union.push(objectModel);
   }
-  // const dictionaryModel = toDictionaryModel(
+  // const arrayModel = toArrayModel(
   //   avroSchemaModel,
-  //   `${name}_dictionary`,
+  //   `${name}_array`,
   //   alreadySeenModels
   // );
-  // if (dictionaryModel !== undefined) {
-  //   unionModel.union.push(dictionaryModel);
+  // if (arrayModel !== undefined) {
+  //   unionModel.union.push(arrayModel);
   // }
-  // const tupleModel = toTupleModel(
-  //   avroSchemaModel,
-  //   `${name}_tuple`,
-  //   alreadySeenModels
-  // );
-  // if (tupleModel !== undefined) {
-  //   unionModel.union.push(tupleModel);
-  // }
-  const arrayModel = toArrayModel(
-    avroSchemaModel,
-    `${name}_array`,
-    alreadySeenModels
-  );
-  if (arrayModel !== undefined) {
-    unionModel.union.push(arrayModel);
-  }
   const stringModel = toStringModel(avroSchemaModel, `${name}_string`);
   if (stringModel !== undefined) {
     unionModel.union.push(stringModel);
@@ -340,7 +299,7 @@ export function toObjectModel(
   name: string,
   alreadySeenModels: Map<AvroSchema, MetaModel>
 ): ObjectModel | undefined {
-  if (!avroSchemaModel.type?.includes('record')) {
+  if (avroSchemaModel.type !== 'record') {
     return undefined;
   }
   const metaModel = new ObjectModel(

@@ -15,13 +15,10 @@ const avroType = [
   'double',
   'float',
   'string',
-  'bytes',
-  'records',
-  'enums',
-  'arrays',
-  'maps',
-  'unions',
-  'fixed'
+  'record',
+  'enum',
+  'array',
+  'map'
 ];
 
 export class AvroSchemaInputProcessor extends AbstractInputProcessor {
