@@ -178,7 +178,8 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
       //Replace any '/' with '_'
       const formattedResponseName = responseName.replace(/\//, '_');
       this.iterateMediaType(
-        (response as OpenAPIV3.ResponseObject | OpenAPIV3_1.ResponseObject).content || {},
+        (response as OpenAPIV3.ResponseObject | OpenAPIV3_1.ResponseObject)
+          .content || {},
         `${path}_${formattedResponseName}`,
         inputModel,
         options
@@ -209,7 +210,9 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
   }
 
   private iterateMediaType(
-    mediaTypes: { [media: string]: OpenAPIV3.MediaTypeObject | OpenAPIV3_1.MediaTypeObject},
+    mediaTypes: {
+      [media: string]: OpenAPIV3.MediaTypeObject | OpenAPIV3_1.MediaTypeObject;
+    },
     path: string,
     inputModel: InputMetaModel,
     options?: ProcessorOptions
@@ -219,8 +222,9 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
       if (mediaType.schema === undefined) {
         continue;
       }
-      const mediaTypeSchema =
-        mediaType.schema as unknown as OpenAPIV3.SchemaObject | OpenAPIV3_1.SchemaObject;
+      const mediaTypeSchema = mediaType.schema as unknown as
+        | OpenAPIV3.SchemaObject
+        | OpenAPIV3_1.SchemaObject;
       //Replace any '/' with '_'
       const formattedMediaContent = mediaContent.replace(/\//, '_');
       this.includeSchema(
