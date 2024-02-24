@@ -1,6 +1,6 @@
 import { CSHARP_JSON_SERIALIZER_PRESET, CSHARP_NEWTONSOFT_SERIALIZER_PRESET, CSharpFileGenerator } from '../../';
 import path from 'path';
-import input from './generic-input.json';
+import input from './generic-input-csharp.json';
 
 async function generateJsonSerializer() {
   const generator = new CSharpFileGenerator({

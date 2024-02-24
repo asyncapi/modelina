@@ -61,7 +61,11 @@
       "type": "string"
     }
   },
-  "required": ["house_number", "array_type"],
+  "required": [
+    "house_number",
+    "array_type",
+    "houseType"
+  ],
   "$defs": {
     "housing-types": {
       "$id": "HousingType",
