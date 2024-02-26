@@ -124,7 +124,13 @@ function renderDeserializeProperty(model: ConstrainedObjectPropertyModel) {
     model.property instanceof ConstrainedReferenceModel &&
     model.property.ref instanceof ConstrainedEnumModel
   ) {
-    return `${model.property.name}Extensions.To${model.property.name}(JsonSerializer.Deserialize<dynamic>(ref reader, options))`;
+    var code = `${model.property.name}Extensions.To${model.property.name}(JsonSerializer.Deserialize<string>(ref reader, options))`;
+
+    if (model.required) {
+      code += `.GetValueOrDefault()`;
+    }
+
+    return code;
   }
   return `JsonSerializer.Deserialize<${model.property.type}>(ref reader, options)`;
 }
