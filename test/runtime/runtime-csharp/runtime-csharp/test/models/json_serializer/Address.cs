@@ -29,7 +29,16 @@ public class AddressTests
         address.AdditionalProperties.Add("test_not_used", 2);
 
         string actualJsonString = JsonSerializer.Serialize(address);
-        string expectedJsonString = "{\"house_number\":1,\"marriage\":true,\"members\":2,\"array_type\":[1,\"test\"],\"nestedObject\":{\"test\":\"test\"},\"enumTest\":\"test\",\"houseType\":\"flat\",\"roofType\":\"straw\",\"test_not_used\":2}";
+        const string expectedJsonString = "{\"house_number\":1,\"marriage\":true,\"members\":2,\"array_type\":[1,\"test\"],\"nestedObject\":{\"test\":\"test\"},\"enumTest\":\"test\",\"houseType\":\"flat\",\"roofType\":\"straw\",\"test_not_used\":2}";
+        Assert.That(actualJsonString, Is.EqualTo(expectedJsonString));
+    }
+
+    [Test]
+    public void TestRoundTrip()
+    {
+        const string expectedJsonString = "{\"house_number\":1,\"marriage\":true,\"members\":2,\"array_type\":[1,\"test\"],\"nestedObject\":{\"test\":\"test\"},\"enumTest\":\"test\",\"houseType\":\"flat\",\"roofType\":\"straw\",\"test_not_used\":2}";
+        Address address = JsonSerializer.Deserialize<Address>(expectedJsonString) ?? throw new Exception("Failed to deserialize address.");
+        string actualJsonString = JsonSerializer.Serialize(address);
         Assert.That(actualJsonString, Is.EqualTo(expectedJsonString));
     }
 }
