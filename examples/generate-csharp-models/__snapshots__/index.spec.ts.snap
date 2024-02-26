@@ -15,7 +15,7 @@ Array [
     set { email = value; }
   }
 
-  public System.DateTimeOffset? Today
+  public System.DateTimeOffset? Today 
   {
     get { return today; }
     set { today = value; }
