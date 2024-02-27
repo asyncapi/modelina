@@ -58,6 +58,10 @@ describe('OpenAPIInputProcessor', () => {
       const parsedObject = { openapi: '3.0.3' };
       expect(processor.shouldProcess(parsedObject)).toEqual(true);
     });
+    test('should be able to process OpenAPI 3.1.0 documents', () => {
+      const parsedObject = { openapi: '3.1.0' };
+      expect(processor.shouldProcess(parsedObject)).toEqual(true);
+    });
     test('should not be able to process other OpenAPI docs', () => {
       const parsedObject = { openapi: '1.0' };
       expect(processor.shouldProcess(parsedObject)).toEqual(false);

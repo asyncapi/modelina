@@ -131,6 +131,7 @@ Long term if this is something you wish was supported, voice your [opinion here]
 There are one way to generate models from an OpenAPI document
 
 - [Generate from OpenAPI 3.0 JS object](../examples/openapi-from-object)
+- [Generate from OpenAPI 3.1 JS object](../examples/openapi-v3_1-from-object)
 
 The OpenAPI input processor expects that the property `openapi` is defined in order to know it should be processed.
 

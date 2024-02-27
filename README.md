@@ -201,7 +201,7 @@ The following table provides a short summary of available features for supported
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-models-from-openapi-documents">OpenAPI</a></td>
-    <td>We support the following OpenAPI versions: <em><a href="./docs/usage.md#generate-models-from-swagger-20-documents">Swagger 2.0</a> and <a href="./docs/usage.md#generate-models-from-openapi-documents">OpenAPI 3.0</a></em>, which generates models for all the defined request and response payloads.</td>
+    <td>We support the following OpenAPI versions: <em><a href="./docs/usage.md#generate-models-from-swagger-20-documents">Swagger 2.0</a>, <a href="./docs/usage.md#generate-models-from-openapi-documents">OpenAPI 3.0 and 3.1</a></em>, which generates models for all the defined request and response payloads.</td>
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-model-from-typescript-type-files">TypeScript</a></td>
