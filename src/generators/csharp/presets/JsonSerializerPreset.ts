@@ -51,7 +51,7 @@ if (${modelInstanceVariable} != null) {
   }
 }`;
       } else {
-        var nullCheck = propertyModel.property.type == 'dynamic' || propertyModel.property.type == 'dynamic?' ? 
+        let nullCheck = propertyModel.property.type == 'dynamic' || propertyModel.property.type == 'dynamic?' ? 
           `${modelInstanceVariable} is JsonElement || ${modelInstanceVariable} != null` :
           `${modelInstanceVariable} != null`;
 
@@ -129,7 +129,7 @@ function renderDeserializeProperty(model: ConstrainedObjectPropertyModel, type?:
     model.property instanceof ConstrainedReferenceModel &&
     model.property.ref instanceof ConstrainedEnumModel
   ) {
-    var code = `${model.property.name}Extensions.To${model.property.name}(JsonSerializer.Deserialize<string>(ref reader, options))`;
+    let code = `${model.property.name}Extensions.To${model.property.name}(JsonSerializer.Deserialize<string>(ref reader, options))`;
 
     if (model.required) {
       code += `.GetValueOrDefault()`;
