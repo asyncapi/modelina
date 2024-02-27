@@ -102,7 +102,7 @@ const STRING_RENDERING_TYPES = [
   'System.DateTime',
   'System.DateTimeOffset',
   'System.Guid'
-]
+];
 
 const PRIMITIVES = [
   'bool',
