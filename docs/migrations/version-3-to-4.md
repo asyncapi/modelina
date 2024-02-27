@@ -59,3 +59,29 @@ public class TestClass {
 ```
 
 Notice that `Property` no longer has a `set` method. This might break existing models.
+
+### DateTime and DateTimeOffset are now properly rendered based on specification format
+
+In the previous version, `date-time` and `date` formats were rendered as `DateTime` and `DateTimeOffset` respectively. 
+This has been changed to render `DateTimeOffset` for `date-time` and `DateTime` for `date` formats.
+
+This might break existing implementation and require manual changes.
+
+The best thing to do is to fix your specification and use what you really need. If you don't care about the time and time zone, use `date` instead of `date-time`.
+Otherwise, keep the `date-time` format and update your code to use `DateTimeOffset` instead of `DateTime`.
+That usually means doing this:
+
+```csharp
+var dateTime = new DateTime(2008, 6, 19, 7, 0, 0);
+
+// Set the DateTime property of the ModelinaModel
+var modelinaModel = new ModelinaModel();
+modelinaModel.DateTime = dateTime;
+Console.WriteLine(modelinaModel.DateTime);
+
+// Get the DateTime property from the ModelinaModel
+DateTime dateTime2 = modelinaModel.DateTime.LocalDateTime;
+Console.WriteLine(dateTime2);
+```
+
+

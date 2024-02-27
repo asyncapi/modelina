@@ -97,7 +97,7 @@ describe('CSharpConstrainer', () => {
       const model = new ConstrainedStringModel(
         'test',
         undefined,
-        { format: 'date-time' },
+        { format: 'date' },
         ''
       );
       const type = CSharpDefaultTypeMapping.String({
@@ -105,6 +105,19 @@ describe('CSharpConstrainer', () => {
         ...defaultOptions
       });
       expect(type).toEqual('System.DateTime');
+    });
+    test('should render System.DateTimeOffset', () => {
+      const model = new ConstrainedStringModel(
+        'test',
+        undefined,
+        { format: 'date-time' },
+        ''
+      );
+      const type = CSharpDefaultTypeMapping.String({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('System.DateTimeOffset');
     });
     test('should render TimeSpan', () => {
       const model = new ConstrainedStringModel(
