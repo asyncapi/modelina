@@ -51,7 +51,11 @@ if (${modelInstanceVariable} != null) {
   }
 }`;
       } else {
-        serializeProperties += `if(${modelInstanceVariable} != null) {
+        var nullCheck = propertyModel.property.type == 'dynamic' || propertyModel.property.type == 'dynamic?' ? 
+          `${modelInstanceVariable} is JsonElement || ${modelInstanceVariable} != null` :
+          `${modelInstanceVariable} != null`;
+
+        serializeProperties += `if(${nullCheck}) {
   // write property name and let the serializer serialize the value itself
   writer.WritePropertyName("${propertyModel.unconstrainedPropertyName}");
   ${renderSerializeProperty(modelInstanceVariable, propertyModel)}
@@ -118,8 +122,9 @@ ${renderer.indent(serializeProperties)}
 }`;
 }
 
-function renderDeserializeProperty(model: ConstrainedObjectPropertyModel) {
+function renderDeserializeProperty(model: ConstrainedObjectPropertyModel, type?: string) {
   //Referenced enums is the only one who need custom serialization
+  type ??= model.property.type;
   if (
     model.property instanceof ConstrainedReferenceModel &&
     model.property.ref instanceof ConstrainedEnumModel
@@ -132,7 +137,7 @@ function renderDeserializeProperty(model: ConstrainedObjectPropertyModel) {
 
     return code;
   }
-  return `JsonSerializer.Deserialize<${model.property.type}>(ref reader, options)`;
+  return `JsonSerializer.Deserialize<${type}>(ref reader, options)`;
 }
 
 function renderDeserializeProperties(model: ConstrainedObjectModel) {
@@ -147,7 +152,7 @@ function renderDeserializeProperties(model: ConstrainedObjectModel) {
       return `if(instance.${pascalProp} == null) { instance.${pascalProp} = new Dictionary<${
         propModel.property.key.type
       }, ${propModel.property.value.type}>(); }
-      var deserializedValue = ${renderDeserializeProperty(propModel)};
+      var deserializedValue = ${renderDeserializeProperty(propModel, 'dynamic')};
       instance.${pascalProp}.Add(propertyName, deserializedValue);
       continue;`;
     }
