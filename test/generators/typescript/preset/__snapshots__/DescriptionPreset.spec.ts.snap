@@ -6,14 +6,7 @@ exports[`Description generation should render example function for model 1`] = `
  */
 class Test {
   private _stringProp: string;
-  /**
-   * Description
-   * @example Example
-   */
   private _numberProp?: number;
-  /**
-   * @example Example 1, Example 2
-   */
   private _objectProp?: NestedTest;
   private _additionalProperties?: Map<string, any>;
 
@@ -32,9 +25,16 @@ class Test {
   get stringProp(): string { return this._stringProp; }
   set stringProp(stringProp: string) { this._stringProp = stringProp; }
 
+  /**
+   * Description
+   * @example Example
+   */
   get numberProp(): number | undefined { return this._numberProp; }
   set numberProp(numberProp: number | undefined) { this._numberProp = numberProp; }
 
+  /**
+   * @example Example 1, Example 2
+   */
   get objectProp(): NestedTest | undefined { return this._objectProp; }
   set objectProp(objectProp: NestedTest | undefined) { this._objectProp = objectProp; }
 

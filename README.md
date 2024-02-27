@@ -9,7 +9,7 @@
 [![Discussions](https://img.shields.io/github/discussions/asyncapi/modelina)](https://github.com/asyncapi/modelina/discussions)
 [![Website](https://img.shields.io/website?label=website&url=https%3A%2F%2Fwww.modelina.org)](https://www.modelina.org)
 [![Playground](https://img.shields.io/website?label=playground&url=https%3A%2F%2Fwww.modelina.org%2Fplayground)](https://www.modelina.org/playground) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-79-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-81-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Your one-stop tool for generating accurate and well-tested models for representing the message payloads. Use it as a tool in your development workflow, or a library in a larger integrations, entirely in your control.
@@ -201,7 +201,7 @@ The following table provides a short summary of available features for supported
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-models-from-openapi-documents">OpenAPI</a></td>
-    <td>We support the following OpenAPI versions: <em><a href="./docs/usage.md#generate-models-from-swagger-20-documents">Swagger 2.0</a> and <a href="./docs/usage.md#generate-models-from-openapi-documents">OpenAPI 3.0</a></em>, which generates models for all the defined request and response payloads.</td>
+    <td>We support the following OpenAPI versions: <em><a href="./docs/usage.md#generate-models-from-swagger-20-documents">Swagger 2.0</a>, <a href="./docs/usage.md#generate-models-from-openapi-documents">OpenAPI 3.0 and 3.1</a></em>, which generates models for all the defined request and response payloads.</td>
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-model-from-typescript-type-files">TypeScript</a></td>
@@ -425,6 +425,8 @@ Thanks go out to these wonderful people ([emoji key](https://allcontributors.org
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/RowlandBanks"><img src="https://avatars.githubusercontent.com/u/9962551?v=4?s=100" width="100px;" alt="RowlandBanks"/><br /><sub><b>RowlandBanks</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=RowlandBanks" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=RowlandBanks" title="Tests">⚠️</a> <a href="https://github.com/asyncapi/modelina/issues?q=author%3ARowlandBanks" title="Bug reports">🐛</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://moritzkalwa.dev/"><img src="https://avatars.githubusercontent.com/u/62842654?v=4?s=100" width="100px;" alt="Moritz Kalwa"/><br /><sub><b>Moritz Kalwa</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=moritzkalwa" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=moritzkalwa" title="Tests">⚠️</a> <a href="https://github.com/asyncapi/modelina/issues?q=author%3Amoritzkalwa" title="Bug reports">🐛</a> <a href="https://github.com/asyncapi/modelina/commits?author=moritzkalwa" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/akkshitgupta"><img src="https://avatars.githubusercontent.com/u/96991785?v=4?s=100" width="100px;" alt="Akshit Gupta"/><br /><sub><b>Akshit Gupta</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=akkshitgupta" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/issues?q=author%3Aakkshitgupta" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Athul0491"><img src="https://avatars.githubusercontent.com/u/65664185?v=4?s=100" width="100px;" alt="Athul Tulasidasan"/><br /><sub><b>Athul Tulasidasan</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=Athul0491" title="Code">💻</a> <a href="#example-Athul0491" title="Examples">💡</a> <a href="https://github.com/asyncapi/modelina/commits?author=Athul0491" title="Documentation">📖</a> <a href="https://github.com/asyncapi/modelina/commits?author=Athul0491" title="Tests">⚠️</a></td>
     </tr>
   </tbody>
 </table>
