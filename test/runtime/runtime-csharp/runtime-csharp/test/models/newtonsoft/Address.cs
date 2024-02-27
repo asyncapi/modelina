@@ -23,7 +23,7 @@ public class AddressTests
         address.HouseNumber = 1;
         address.ArrayType = new dynamic[] { 1, "test" };
         address.EnumTest = EnumTest.TEST;
-        address.HouseType = HousingType.FLAT;
+        address.HouseType = (HousingType?)HousingType.FLAT;
         address.RoofType = TypeOfRoof.STRAW;
         address.AdditionalProperties = new Dictionary<string, dynamic>();
         address.AdditionalProperties.Add("test_not_used", 2);
