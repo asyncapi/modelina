@@ -23,30 +23,70 @@
         },
         {
           "type": "boolean"
+        },
+        {
+          "type": "null"
         }
       ]
     },
     "array_type": {
       "type": "array",
-      "items": [
-        {
-          "type": "string"
-        },
-        {
-          "type": "number"
+      "items": {
+        "type": "object",
+        "properties": {
+          "nested_property": {
+            "type": "string"
+          },
+          "nested_number": {
+            "type": "number"
+          },
+          "nested_bool": {
+            "type": "boolean"
+          }
         }
-      ]
+      }
     },
-    "nestedObject": {
-      "type": "object",
-      "properties": {
-        "test": {
+    "nestedArray": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
           "type": "string"
         }
       }
     },
+    "customFormat": {
+      "type": "string",
+      "format": "custom-date-time"
+    },
+    "email": {
+      "type": "string",
+      "format": "email"
+    },
+    "uuid": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "additionalConstraints": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 10
+    },
+    "nestedObject": {
+      "type": "object",
+      "properties": {
+        "nested_property": {
+          "type": "object",
+          "properties": {
+            "nested_test": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
     "enumTest": {
-      "enum": ["test", "test2"]
+      "enum": ["test", "test2", "test3", "test4"]
     },
     "houseType": {
       "$ref": "#/$defs/housing-types"
@@ -54,10 +94,22 @@
     "roofType": {
       "$id": "TypeOfRoof",
       "enum": ["tile", "straw", "wood", "metal"]
+    },
+    "dateOfBirth": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "bigNumber": {
+      "type": "number",
+      "minimum": 1000000000
+    },
+    "lowNumber": {
+      "type": "number",
+      "maximum": 0.000001
     }
   },
   "patternProperties": {
-    "^S(.?*)test&": {
+    "^S.*test$": {
       "type": "string"
     }
   },
