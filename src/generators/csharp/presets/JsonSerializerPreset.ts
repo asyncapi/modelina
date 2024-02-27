@@ -51,9 +51,11 @@ if (${modelInstanceVariable} != null) {
   }
 }`;
       } else {
-        let nullCheck = propertyModel.property.type == 'dynamic' || propertyModel.property.type == 'dynamic?' ? 
-          `${modelInstanceVariable} is JsonElement || ${modelInstanceVariable} != null` :
-          `${modelInstanceVariable} != null`;
+        const nullCheck =
+          propertyModel.property.type === 'dynamic' ||
+          propertyModel.property.type === 'dynamic?'
+            ? `${modelInstanceVariable} is JsonElement || ${modelInstanceVariable} != null`
+            : `${modelInstanceVariable} != null`;
 
         serializeProperties += `if(${nullCheck}) {
   // write property name and let the serializer serialize the value itself
@@ -122,7 +124,10 @@ ${renderer.indent(serializeProperties)}
 }`;
 }
 
-function renderDeserializeProperty(model: ConstrainedObjectPropertyModel, type?: string) {
+function renderDeserializeProperty(
+  model: ConstrainedObjectPropertyModel,
+  type?: string
+) {
   //Referenced enums is the only one who need custom serialization
   type ??= model.property.type;
   if (
@@ -152,7 +157,10 @@ function renderDeserializeProperties(model: ConstrainedObjectModel) {
       return `if(instance.${pascalProp} == null) { instance.${pascalProp} = new Dictionary<${
         propModel.property.key.type
       }, ${propModel.property.value.type}>(); }
-      var deserializedValue = ${renderDeserializeProperty(propModel, 'dynamic')};
+      var deserializedValue = ${renderDeserializeProperty(
+        propModel,
+        'dynamic'
+      )};
       instance.${pascalProp}.Add(propertyName, deserializedValue);
       continue;`;
     }
