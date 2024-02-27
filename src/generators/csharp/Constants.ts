@@ -120,7 +120,9 @@ const PRIMITIVES = [
   'ushort'
 ];
 
-export function isStringRenderingType(property: ConstrainedObjectPropertyModel): boolean {
+export function isStringRenderingType(
+  property: ConstrainedObjectPropertyModel
+): boolean {
   return STRING_RENDERING_TYPES.includes(property.property.type);
 }
 
