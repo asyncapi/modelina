@@ -3,14 +3,14 @@ import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
 import { InputMetaModel, OpenapiV3Schema, ProcessorOptions } from '../models';
 import { Logger } from '../utils';
 import SwaggerParser from '@apidevtools/swagger-parser';
-import { OpenAPIV3 } from 'openapi-types';
+import { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types';
 import { convertToMetaModel } from '../helpers';
 
 /**
  * Class for processing OpenAPI V3.0 inputs
  */
 export class OpenAPIInputProcessor extends AbstractInputProcessor {
-  static supportedVersions = ['3.0.0', '3.0.1', '3.0.2', '3.0.3'];
+  static supportedVersions = ['3.0.0', '3.0.1', '3.0.2', '3.0.3', '3.1.0'];
 
   /**
    * Process the input as a OpenAPI V3.0 document
@@ -30,18 +30,23 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
     Logger.debug('Processing input as an OpenAPI document');
     const inputModel = new InputMetaModel();
     inputModel.originalInput = input;
-    const api = (await SwaggerParser.dereference(
-      input as any
-    )) as unknown as OpenAPIV3.Document;
+    const api = (await SwaggerParser.dereference(input as any)) as unknown as
+      | OpenAPIV3.Document
+      | OpenAPIV3_1.Document;
 
-    for (const [path, pathObject] of Object.entries(api.paths)) {
-      this.processPath(pathObject, path, inputModel, options);
+    if (api && api.paths) {
+      for (const [path, pathObject] of Object.entries(api.paths)) {
+        this.processPath(pathObject, path, inputModel, options);
+      }
     }
     return inputModel;
   }
 
   private processPath(
-    pathObject: OpenAPIV3.PathItemObject | undefined,
+    pathObject:
+      | OpenAPIV3.PathItemObject
+      | OpenAPIV3_1.PathItemObject
+      | undefined,
     path: string,
     inputModel: InputMetaModel,
     options?: ProcessorOptions
@@ -111,12 +116,15 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
   }
 
   private processOperation(
-    operation: OpenAPIV3.OperationObject | undefined,
+    operation:
+      | OpenAPIV3.OperationObject
+      | OpenAPIV3_1.OperationObject
+      | undefined,
     path: string,
     inputModel: InputMetaModel,
     options?: ProcessorOptions
   ) {
-    if (operation) {
+    if (operation && operation.responses) {
       this.iterateResponses(operation.responses, path, inputModel, options);
       this.iterateParameters(
         operation.parameters,
@@ -127,7 +135,11 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
 
       if (operation.requestBody) {
         this.iterateMediaType(
-          (operation.requestBody as OpenAPIV3.RequestBodyObject).content || {},
+          (
+            operation.requestBody as
+              | OpenAPIV3.RequestBodyObject
+              | OpenAPIV3_1.RequestBodyObject
+          ).content || {},
           path,
           inputModel,
           options
@@ -138,7 +150,9 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
         for (const [callbackName, callback] of Object.entries(
           operation.callbacks
         )) {
-          const callbackObject = callback as OpenAPIV3.CallbackObject;
+          const callbackObject = callback as
+            | OpenAPIV3.CallbackObject
+            | OpenAPIV3_1.CallbackObject;
           for (const [callbackPath, callbackPathObject] of Object.entries(
             callbackObject
           )) {
@@ -155,7 +169,7 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
   }
 
   private iterateResponses(
-    responses: OpenAPIV3.ResponsesObject,
+    responses: OpenAPIV3.ResponsesObject | OpenAPIV3_1.ResponsesObject,
     path: string,
     inputModel: InputMetaModel,
     options?: ProcessorOptions
@@ -164,7 +178,8 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
       //Replace any '/' with '_'
       const formattedResponseName = responseName.replace(/\//, '_');
       this.iterateMediaType(
-        (response as OpenAPIV3.ResponseObject).content || {},
+        (response as OpenAPIV3.ResponseObject | OpenAPIV3_1.ResponseObject)
+          .content || {},
         `${path}_${formattedResponseName}`,
         inputModel,
         options
@@ -175,6 +190,7 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
   private iterateParameters(
     parameters:
       | (OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject)[]
+      | (OpenAPIV3_1.ReferenceObject | OpenAPIV3_1.ParameterObject)[]
       | undefined,
     path: string,
     inputModel: InputMetaModel,
@@ -194,7 +210,9 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
   }
 
   private iterateMediaType(
-    mediaTypes: { [media: string]: OpenAPIV3.MediaTypeObject },
+    mediaTypes: {
+      [media: string]: OpenAPIV3.MediaTypeObject | OpenAPIV3_1.MediaTypeObject;
+    },
     path: string,
     inputModel: InputMetaModel,
     options?: ProcessorOptions
@@ -204,8 +222,9 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
       if (mediaType.schema === undefined) {
         continue;
       }
-      const mediaTypeSchema =
-        mediaType.schema as unknown as OpenAPIV3.SchemaObject;
+      const mediaTypeSchema = mediaType.schema as unknown as
+        | OpenAPIV3.SchemaObject
+        | OpenAPIV3_1.SchemaObject;
       //Replace any '/' with '_'
       const formattedMediaContent = mediaContent.replace(/\//, '_');
       this.includeSchema(
@@ -218,7 +237,7 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
   }
 
   private includeSchema(
-    schema: OpenAPIV3.SchemaObject,
+    schema: OpenAPIV3.SchemaObject | OpenAPIV3_1.SchemaObject,
     name: string,
     inputModel: InputMetaModel,
     options?: ProcessorOptions
@@ -252,7 +271,7 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
    * @param name of the schema
    */
   static convertToInternalSchema(
-    schema: OpenAPIV3.SchemaObject,
+    schema: OpenAPIV3.SchemaObject | OpenAPIV3_1.SchemaObject,
     name: string
   ): OpenapiV3Schema {
     const namedSchema = JsonSchemaInputProcessor.reflectSchemaNames(
