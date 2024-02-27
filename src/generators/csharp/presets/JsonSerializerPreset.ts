@@ -128,8 +128,8 @@ function renderDeserializeProperty(
   model: ConstrainedObjectPropertyModel,
   type?: string
 ) {
-  //Referenced enums is the only one who need custom serialization
   type ??= model.property.type;
+  //Referenced enums is the only one who need custom serialization
   if (
     model.property instanceof ConstrainedReferenceModel &&
     model.property.ref instanceof ConstrainedEnumModel
