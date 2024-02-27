@@ -84,8 +84,8 @@ export class OpenapiV3Schema {
   additionalItems?: OpenapiV3Schema | boolean;
 
   //Draft 6 modifications
-  exclusiveMaximum?: number;
-  exclusiveMinimum?: number;
+  exclusiveMaximum?: boolean | number;
+  exclusiveMinimum?: boolean | number;
   //Draft 6 replacements
   $id?: string; //Replaces 'id'
   //Draft 6 additions
@@ -103,6 +103,10 @@ export class OpenapiV3Schema {
   externalDocs?: OpenAPIV3ExternalDocumentation;
   example?: any;
   deprecated?: boolean;
+
+  //OpenAPI 3.0 -> 3.1.0 additions
+  contentEncoding?: string;
+  contentMediaType?: string;
   //Extensions
   [k: string]: any; // eslint-disable-line no-undef
 
