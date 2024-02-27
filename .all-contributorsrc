@@ -871,6 +871,18 @@
         "code",
         "bug"
       ]
+    },
+    {
+      "login": "Athul0491",
+      "name": "Athul Tulasidasan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/65664185?v=4",
+      "profile": "https://github.com/Athul0491",
+      "contributions": [
+        "code",
+        "example",
+        "doc",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
