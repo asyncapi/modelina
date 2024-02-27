@@ -1,8 +1,12 @@
 {
   "compilerOptions": {
-    "module": "commonjs", 
-    "outDir": "dist",
-    "rootDir": "src",
+    "outDir": "./lib",
+    "baseUrl": "./src",
+    "target": "es6",
+    "module": "commonjs",
+    "lib": [
+      "esnext",
+    ],
     "declaration": true,
     "importHelpers": true,
     "allowJs": true,
@@ -12,14 +16,11 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "target": "es2022",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "baseUrl": "./",
   },
-  "include": ["./src/**/*"],
-  "ts-node": {
-    "esm": true
-  }
+  "include": [
+    "src"
+  ]
 }
