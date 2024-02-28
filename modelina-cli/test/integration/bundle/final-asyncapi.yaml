@@ -1,0 +1,41 @@
+asyncapi: 2.5.0
+info:
+  title: Account Service
+  version: 1.0.0
+  description: This service is in charge of processing user signups
+channels:
+  user/signedup:
+    subscribe:
+      message:
+        $ref: '#/components/messages/UserSignedUp'
+  user/loggedOut:
+    subcribe:
+      message:
+        $ref: '#/components/messages/UserLoggedOut'
+components:
+  messages:
+    UserSignedUp:
+      payload:
+        type: object
+        properties:
+          displayName:
+            type: string
+            description: Name of the user
+          email:
+            type: string
+            format: email
+            description: Email of the user
+    UserLoggedOut:
+      payload:
+        type: object
+        properties:
+          displayName:
+            type: string
+            description: Name of the user
+          userId:
+            type: string
+            description: Id the user
+          timestamp:
+            type: number
+            descriptio: Time stamp when the user logged out
+
