@@ -6,7 +6,7 @@ import {
   ConstrainedEnumModel
 } from '../../../models';
 
-export interface GoCommonPresetOption {
+export interface GoCommonPresetOptions {
   addJsonTag: boolean;
 }
 
@@ -48,7 +48,7 @@ function renderMarshallingFunctions({
   `;
 }
 
-export const GO_COMMON_PRESET: GoPreset<GoCommonPresetOption> = {
+export const GO_COMMON_PRESET: GoPreset<GoCommonPresetOptions> = {
   struct: {
     field: ({ content, field, options }) => {
       const blocks: string[] = [];
