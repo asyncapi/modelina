@@ -1,0 +1,19 @@
+{
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "generator": {
+    "renderer": "react",
+    "parameters": {
+      "version": {
+        "description": "Custom version to be used"
+      },
+      "mode": {
+        "description": "development or production"
+      }
+    }
+  },
+  "dependencies": {
+    "@asyncapi/generator-react-sdk": "^1.0.8"
+  }
+}

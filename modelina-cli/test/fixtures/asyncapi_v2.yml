@@ -1,0 +1,54 @@
+asyncapi: "2.1.0"
+info:
+  title: Streetlights API V2
+  version: "1.0.0"
+  description: |
+    The Smartylighting Streetlights API allows you
+    to remotely manage the city lights.
+  license:
+    name: Apache 2.0
+    url: "https://www.apache.org/licenses/LICENSE-2.0"
+servers:
+  mosquitto:
+    url: http://test.mosquitto.org
+    protocol: http
+channels:
+  user/signedup:
+    subscribe:
+      message:
+        $ref: "#/components/messages/UserSignedUp"
+  light/measured:
+    publish:
+      summary: Inform about environmental lighting conditions for a particular streetlight.
+      operationId: onLightMeasured
+      message:
+        name: LightMeasured
+        payload:
+          type: object
+          properties:
+            id:
+              type: integer
+              minimum: 1
+              description: Id of the streetlight.
+            lumens:
+              type: integer
+              minimum: 0
+              description: Light intensity measured in lumens.
+            sentAt:
+              type: string
+              format: date-time
+              description: Date and time when the message was sent.
+
+components:
+  messages:
+    UserSignedUp:
+      payload:
+        type: object
+        properties:
+          displayName:
+            type: string
+            description: Name of the user
+          email:
+            type: string
+            format: email
+            description: Email of the user
