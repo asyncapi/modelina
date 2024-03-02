@@ -17,7 +17,7 @@ Array [
     if(obj is Root model)
     {
       if(ReferenceEquals(this, model)) { return true; }
-      return Email == model.Email;
+      return Object.Equals(Email, model.Email);
     }
 
     return false;
