@@ -1,7 +1,0 @@
-{
-  "/servers/*/protocol": {
-    "add": "breaking",
-    "remove": "breaking",
-    "edit": "unclassified"
-  }
-}
