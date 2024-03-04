@@ -32,17 +32,16 @@ var ValuesToRoot = map[any]Root{
 }
 
  
-  func (op *Root) UnmarshalJSON(raw []byte) error {
-    var v any
-    if err := json.Unmarshal(raw, &v); err != nil {
-    return err
-    }
-    *op = ValuesToRoot[v]
-    return nil
+func (op *Root) UnmarshalJSON(raw []byte) error {
+  var v any
+  if err := json.Unmarshal(raw, &v); err != nil {
+  return err
   }
+  *op = ValuesToRoot[v]
+  return nil
+}
 
-  func (op Root) MarshalJSON() ([]byte, error) {
-    return json.Marshal(op.Value())
-  }  
-  "
+func (op Root) MarshalJSON() ([]byte, error) {
+  return json.Marshal(op.Value())
+}"
 `;

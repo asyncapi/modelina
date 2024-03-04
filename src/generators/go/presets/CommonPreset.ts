@@ -33,19 +33,18 @@ function renderMarshallingFunctions({
 }): string {
   renderer.dependencyManager.addDependency('encoding/json');
   return `
-  func (op *${model.name}) UnmarshalJSON(raw []byte) error {
-    var v any
-    if err := json.Unmarshal(raw, &v); err != nil {
-    return err
-    }
-    *op = ValuesTo${model.name}[v]
-    return nil
+func (op *${model.name}) UnmarshalJSON(raw []byte) error {
+  var v any
+  if err := json.Unmarshal(raw, &v); err != nil {
+  return err
   }
+  *op = ValuesTo${model.name}[v]
+  return nil
+}
 
-  func (op ${model.name}) MarshalJSON() ([]byte, error) {
-    return json.Marshal(op.Value())
-  }  
-  `;
+func (op ${model.name}) MarshalJSON() ([]byte, error) {
+  return json.Marshal(op.Value())
+}`;
 }
 
 export const GO_COMMON_PRESET: GoPreset<GoCommonPresetOptions> = {
