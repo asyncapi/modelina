@@ -25,11 +25,11 @@ The Modelina CLI makes it easier to generate AsyncAPI Models.
 
 <!-- usage -->
 ```sh-session
-$ npm install -g @asyncapi/modelina
+$ npm install -g @asyncapi/modelina-cli
 $ modelina COMMAND
 running command...
 $ modelina (--version)
-@asyncapi/modelina/0.0.0 darwin-x64 node-v18.19.0
+@asyncapi/modelina-cli/0.0.0 darwin-x64 node-v18.19.0
 $ modelina --help [COMMAND]
 USAGE
   $ modelina COMMAND
@@ -49,8 +49,7 @@ USAGE
 * [`modelina config context list`](#modelina-config-context-list)
 * [`modelina config context remove CONTEXT-NAME`](#modelina-config-context-remove-context-name)
 * [`modelina config context use CONTEXT-NAME`](#modelina-config-context-use-context-name)
-* [`modelina generate`](#modelina-generate)
-* [`modelina generate models LANGUAGE FILE`](#modelina-generate-models-language-file)
+* [`modelina generate LANGUAGE FILE`](#modelina-generate-language-file)
 
 ## `modelina config`
 
@@ -220,27 +219,13 @@ DESCRIPTION
 
 _See code: [src/commands/config/context/use.ts](https://github.com/asyncapi/modelina/blob/v0.0.0/src/commands/config/context/use.ts)_
 
-## `modelina generate`
-
-Generate models using AsyncAPI Modelina.
-
-```
-USAGE
-  $ modelina generate
-
-DESCRIPTION
-  Generate models using AsyncAPI Modelina.
-```
-
-_See code: [src/commands/generate/index.ts](https://github.com/asyncapi/modelina/blob/v0.0.0/src/commands/generate/index.ts)_
-
-## `modelina generate models LANGUAGE FILE`
+## `modelina generate LANGUAGE FILE`
 
 Generates typed models
 
 ```
 USAGE
-  $ modelina generate models LANGUAGE FILE [-h] [-o <value>] [--tsModelType class|interface] [--tsEnumType
+  $ modelina generate LANGUAGE FILE [-h] [-o <value>] [--tsModelType class|interface] [--tsEnumType
     enum|union] [--tsModuleSystem ESM|CJS] [--tsIncludeComments] [--tsExportType default|named] [--tsJsonBinPack]
     [--tsMarshalling] [--tsExampleInstance] [--packageName <value>] [--javaIncludeComments] [--javaJackson]
     [--javaConstraints] [--namespace <value>] [--csharpAutoImplement] [--csharpNewtonsoft] [--csharpArrayType
@@ -287,5 +272,5 @@ DESCRIPTION
   Generates typed models
 ```
 
-_See code: [src/commands/generate/models.ts](https://github.com/asyncapi/modelina/blob/v0.0.0/src/commands/generate/models.ts)_
+_See code: [src/commands/generate.ts](https://github.com/asyncapi/modelina/blob/v0.0.0/src/commands/generate.ts)_
 <!-- commandsstop -->
