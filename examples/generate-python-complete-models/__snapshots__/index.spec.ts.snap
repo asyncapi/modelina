@@ -5,11 +5,11 @@ Array [
   "
 
 class ObjProperty: 
-  def __init__(self, input: dict):
-    if hasattr(input, \\"number\\"):
-    	self._number: float = input[\\"number\\"]
-    if hasattr(input, \\"additionalProperties\\"):
-    	self._additionalProperties: dict[Any, Any] = input[\\"additionalProperties\\"]
+  def __init__(self, input):
+    if hasattr(input, 'number'):
+    	self._number = input.number
+    if hasattr(input, 'additionalProperties'):
+    	self._additionalProperties = input.additionalProperties
 
   @property
   def number(self):
@@ -33,11 +33,11 @@ Array [
   "
 
 class ObjProperty: 
-  def __init__(self, input: dict):
-    if hasattr(input, \\"number\\"):
-    	self._number: float = input[\\"number\\"]
-    if hasattr(input, \\"additionalProperties\\"):
-    	self._additionalProperties: dict[Any, Any] = input[\\"additionalProperties\\"]
+  def __init__(self, input):
+    if hasattr(input, 'number'):
+    	self._number = input.number
+    if hasattr(input, 'additionalProperties'):
+    	self._additionalProperties = input.additionalProperties
 
   @property
   def number(self):
@@ -61,11 +61,11 @@ Array [
   "from ObjProperty import ObjProperty
 
 class Root: 
-  def __init__(self, input: dict):
-    if hasattr(input, \\"email\\"):
-    	self._email: str = input[\\"email\\"]
-    if hasattr(input, \\"objProperty\\"):
-    	self._objProperty: ObjProperty = ObjProperty(input[\\"objProperty\\"])
+  def __init__(self, input):
+    if hasattr(input, 'email'):
+    	self._email = input.email
+    if hasattr(input, 'objProperty'):
+    	self._objProperty = input.objProperty
 
   @property
   def email(self):
@@ -89,11 +89,11 @@ Array [
   "from ObjProperty import ObjProperty
 
 class Root: 
-  def __init__(self, input: dict):
-    if hasattr(input, \\"email\\"):
-    	self._email: str = input[\\"email\\"]
-    if hasattr(input, \\"objProperty\\"):
-    	self._objProperty: ObjProperty = ObjProperty(input[\\"objProperty\\"])
+  def __init__(self, input):
+    if hasattr(input, 'email'):
+    	self._email = input.email
+    if hasattr(input, 'objProperty'):
+    	self._objProperty = input.objProperty
 
   @property
   def email(self):
